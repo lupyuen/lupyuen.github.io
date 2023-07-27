@@ -904,22 +904,21 @@ dtc \
 <p><a href="https://lupyuen.github.io/articles/semihost#nuttx-star64-with-initial-ram-disk"><strong>“NuttX Star64 with Initial RAM Disk”</strong></a></p>
 </li>
 </ul>
-<p>TODO</p>
-<p>Let’s modify NuttX for QEMU to mount the Apps Filesystem from an Initial RAM Disk (instead of Semihosting).</p>
-<p>(So later we can replicate this on Star64 JH7110 SBC)</p>
+<p>We did it with plenty of guidance from NuttX on <strong>LiteX Arty-A7</strong>. Here’s our Detailed Analysis…</p>
 <p>First we look at the Initial RAM Disk for LiteX Arty-A7…</p>
-<p><a href="https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=139629548#content/view/139629548">(About NuttX RAM Disks and ROM Disks)</a></p>
-<p>To generate the RAM Disk, we run this command: <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html">VexRISCV_SMP Core</a></p>
+<p>To generate the RAM Disk, we run this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
 genromfs -f romfs.img -d ../apps/bin -V &quot;NuttXBootVol&quot;
 </code></pre></div>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html">(Source)</a></p>
 <p><a href="https://www.systutorials.com/docs/linux/man/8-genromfs/">(About <code>genromfs</code>)</a></p>
-<p>LiteX Memory Map says where the RAM Disk is loaded…</p>
+<p><a href="https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=139629548#content/view/139629548">(About NuttX RAM Disks and ROM Disks)</a></p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html#booting"><strong>LiteX Memory Map</strong></a> tells us where the RAM Disk is loaded…</p>
 <div class="example-wrap"><pre class="language-text"><code>&quot;romfs.img&quot;:   &quot;0x40C00000&quot;,
 &quot;nuttx.bin&quot;:   &quot;0x40000000&quot;,
 &quot;opensbi.bin&quot;: &quot;0x40f00000&quot;
 </code></pre></div>
-<p>This is the LiteX Build Configuration for mounting the RAM Disk: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">knsh/defconfig</a></p>
+<p>This is the <strong>LiteX Build Configuration</strong> for mounting the RAM Disk: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_BOARDCTL_ROMDISK=y
 CONFIG_BOARD_LATE_INITIALIZE=y
 CONFIG_BUILD_KERNEL=y
@@ -938,11 +937,11 @@ CONFIG_RAW_BINARY=y
 CONFIG_SYSTEM_NSH_PROGNAME=&quot;init&quot;
 CONFIG_TESTING_GETPRIME=y
 </code></pre></div>
-<p>According to <a href="https://nuttx.apache.org/docs/latest/applications/nsh/nsh.html#nsh-start-up-script">NSH Start-Up Script</a>:</p>
+<p>Which is consistent with the doc on <a href="https://nuttx.apache.org/docs/latest/applications/nsh/nsh.html#nsh-start-up-script"><strong>NSH Start-Up Script</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_DISABLE_MOUNTPOINT not set
 CONFIG_FS_ROMFS enabled
 </code></pre></div>
-<p>The RAM Disk is mounted at LiteX Startup: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/src/litex_appinit.c#L76-L103">litex_appinit.c</a></p>
+<p>The RAM Disk is mounted at <strong>LiteX Startup</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/src/litex_appinit.c#L76-L103">litex_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void board_late_initialize(void)
 {
   #ifdef CONFIG_LITEX_APPLICATION_RAMDISK
@@ -988,7 +987,7 @@ int litex_mount_ramdisk(void)
   return ret;
 }
 </code></pre></div>
-<p><code>__ramdisk_start</code> is defined in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91">board_memorymap.h</a>:</p>
+<p><code>__ramdisk_start</code> is defined in the <strong>LiteX Memory Map</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91">board_memorymap.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* RAMDisk */
 #define RAMDISK_START     (uintptr_t)__ramdisk_start
 #define RAMDISK_SIZE      (uintptr_t)__ramdisk_size
@@ -997,7 +996,7 @@ int litex_mount_ramdisk(void)
 extern uint8_t          __ramdisk_start[];
 extern uint8_t          __ramdisk_size[];
 </code></pre></div>
-<p>And <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49">ld-kernel.script</a>:</p>
+<p>And the <strong>LiteX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49">ld-kernel.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>MEMORY
 {
   kflash (rx)   : ORIGIN = 0x40000000, LENGTH = 4096K   /* w/ cache */
