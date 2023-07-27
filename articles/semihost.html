@@ -78,10 +78,10 @@
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-boot-nuttx-over-tftp-with-initial-ram-disk">10 Appendix: Boot NuttX over TFTP with Initial RAM Disk</a><ul></ul></li>
 <li><a href="#appendix-configure-nuttx-for-initial-ram-disk">11 Appendix: Configure NuttX for Initial RAM Disk</a><ul></ul></li>
-<li><a href="#appendix-initial-ram-disk-for-litex-arty-a7">12 Appendix: Initial RAM Disk for LiteX Arty-A7</a><ul></ul></li>
-<li><a href="#appendix-ram-disk-address-for-risc-v-qemu">13 Appendix: RAM Disk Address for RISC-V QEMU</a><ul></ul></li>
-<li><a href="#appendix-device-tree-for-risc-v-qemu">14 Appendix: Device Tree for RISC-V QEMU</a><ul></ul></li></ul></nav><p>📝 <em>2 Aug 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="TODO" /></p>
+<li><a href="#appendix-ram-disk-address-for-risc-v-qemu">12 Appendix: RAM Disk Address for RISC-V QEMU</a><ul></ul></li>
+<li><a href="#appendix-device-tree-for-risc-v-qemu">13 Appendix: Device Tree for RISC-V QEMU</a><ul></ul></li>
+<li><a href="#appendix-initial-ram-disk-for-litex-arty-a7">14 Appendix: Initial RAM Disk for LiteX Arty-A7</a><ul></ul></li></ul></nav><p>📝 <em>2 Aug 2023</em></p>
+<p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="Booting NuttX on Star64 with Initial RAM Disk" /></p>
 <blockquote>
 <p><em>Once upon a time: There was a Very Naive Bloke (me!) who connected a <strong>Smartwatch to the internet…</strong></em></p>
 </blockquote>
@@ -207,7 +207,7 @@ slli zero, zero, 0x1f
 </code></pre></div>
 <p>That doesn’t do anything meaningful!</p>
 <p>Let’s talk about Semihosting…</p>
-<p><img src="https://lupyuen.github.io/images/semihost-qemu3.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/semihost-qemu3.jpg" alt="NuttX calls Semihosting to read the Apps Filesystem" /></p>
 <h1 id="nuttx-calls-semihosting"><a href="#nuttx-calls-semihosting">3 NuttX Calls Semihosting</a></h1>
 <p><em>Who calls ebreak? And why?</em></p>
 <p><strong><code>ebreak</code></strong> is called by <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_semihost.S#L20-L40"><strong>smh_call</strong></a>, which is called by <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75"><strong>host_call</strong></a>…</p>
@@ -461,7 +461,7 @@ CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
 ## CONFIG_FS_HOSTFS=y
 ## CONFIG_RISCV_SEMIHOSTING_HOSTFS=y
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-star64-for-initial-ram-disk">(How we configured for RAM Disk)</a></p>
+<p><a href="https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-star64-for-initial-ram-disk">(How we configured NuttX for RAM Disk)</a></p>
 <p>That’s it! These are the files that we modified in NuttX QEMU to load the Initial RAM Disk (without Semihosting)…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/33/files"><strong>Modified Files for NuttX QEMU with Initial RAM Disk</strong></a></li>
@@ -475,8 +475,12 @@ CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
 <li><a href="https://github.com/lupyuen/nuttx-star64#ram-disk-address-for-risc-v-qemu"><strong>“RAM Disk Address for RISC-V QEMU”</strong></a></li>
 </ul>
 <p>That’s why we copied the RAM Disk from <strong><code>0x8400</code> <code>0000</code></strong> to <strong>ramdisk_start</strong>.</p>
-<p>TODO: LiteX Arty-A7</p>
-<p><img src="https://lupyuen.github.io/images/semihost-runqemu.png" alt="TODO" /></p>
+<p><em>Wow how did we figure out all this?</em></p>
+<p>Actually we had plenty of guidance from NuttX on <strong>LiteX Arty-A7</strong>. Here’s our Detailed Analysis…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/semihost#appendix-initial-ram-disk-for-litex-arty-a7"><strong>“Initial RAM Disk for LiteX Arty-A7”</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/semihost-runqemu.png" alt="Booting NuttX QEMU with Initial RAM Disk" /></p>
 <h1 id="boot-nuttx-qemu-with-initial-ram-disk"><a href="#boot-nuttx-qemu-with-initial-ram-disk">7 Boot NuttX QEMU with Initial RAM Disk</a></h1>
 <p>We’re ready to run our modified NuttX QEMU… That loads the Initial RAM Disk!</p>
 <p>We build NuttX QEMU in Kernel Mode (as before). Then we generate the Initial RAM Disk <strong>initrd</strong>…</p>
@@ -534,16 +538,18 @@ nsh&gt;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1">(See the <strong>Run Log</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3">(See the <strong>Detailed Run Log</strong>)</a></p>
-<p>TODO</p>
+<p>We’ll see <strong>exec_spawn</strong> warnings like this…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls -l /system/bin/init
 posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
 exec_spawn: ERROR: Failed to load program &#39;ls&#39;: -2
 nxposix_spawn_exec: ERROR: exec failed: 2
  -r-xr-xr-x 3278720 /system/bin/init
 </code></pre></div>
-<p><img src="https://lupyuen.github.io/images/semihost-star64.jpg" alt="NuttX for Star64 JH7110 RISC-V SBC will mount the Apps Filesystem from an Initial RAM Disk" /></p>
+<p>But it’s OK to ignore them, because “<strong><code>ls</code></strong>” is a built-in Shell Command. (Not an Executable File from our Apps Filesystem)</p>
+<p>Now that we figured out Initial RAM Disk on QEMU, let’s do the same for Star64…</p>
+<p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="Booting NuttX on Star64 with Initial RAM Disk" /></p>
 <h1 id="nuttx-star64-with-initial-ram-disk"><a href="#nuttx-star64-with-initial-ram-disk">8 NuttX Star64 with Initial RAM Disk</a></h1>
-<p>One last thing for today… Booting NuttX on <strong>Star64 with Initial RAM Disk</strong>! (Instead of Semihosting)</p>
+<p>One last thing for today: Booting NuttX on <strong>Star64 with Initial RAM Disk</strong>! (Instead of Semihosting)</p>
 <p>We modify NuttX Star64 with the exact same steps as <a href="https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk"><strong>NuttX QEMU with Initial RAM Disk</strong></a>…</p>
 <ul>
 <li>
@@ -563,7 +569,7 @@ nxposix_spawn_exec: ERROR: exec failed: 2
 </li>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files#diff-4018c37bf9b08236b37a84273281d5511d48596be9e0e4c0980d730aa95dbbe8"><strong>knsh64/defconfig</strong></a>: Build Configuration for RAM Disk</p>
-<p><a href="https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-star64-for-initial-ram-disk">(How we configured for RAM Disk)</a></p>
+<p><a href="https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-star64-for-initial-ram-disk">(How we configured NuttX for RAM Disk)</a></p>
 </li>
 </ul>
 <p>Note that we copy the Initial RAM Disk from <strong><code>0x4610</code> <code>0000</code></strong> (instead of QEMU’s <code>0x8400</code> <code>0000</code>): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280">qemu_rv_mm_init.c</a></p>
@@ -656,7 +662,7 @@ nx_start: CPU0: Beginning Idle Loop
 </li>
 </ul>
 <p>We’ll find out in the next article!</p>
-<p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="NuttX Star64 with Initial RAM Disk" /></p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -679,15 +685,18 @@ nx_start: CPU0: Beginning Idle Loop
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/semihost.md"><strong>lupyuen.github.io/src/semihost.md</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/semihost-star64.jpg" alt="NuttX for Star64 JH7110 RISC-V SBC will mount the Apps Filesystem from an Initial RAM Disk" /></p>
+<p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="Booting NuttX on Star64 with Initial RAM Disk" /></p>
 <h1 id="appendix-boot-nuttx-over-tftp-with-initial-ram-disk"><a href="#appendix-boot-nuttx-over-tftp-with-initial-ram-disk">10 Appendix: Boot NuttX over TFTP with Initial RAM Disk</a></h1>
-<p>TODO</p>
-<p><em>What is the RAM Address of the Initial RAM Disk in Star64?</em></p>
-<p>Initial RAM Disk is loaded by Star64’s U-Boot Bootloader at <strong><code>0x4610</code> <code>0000</code></strong>…</p>
+<p>Previously we configured Star64’s U-Boot Bootloader to <strong>boot NuttX over TFTP</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/tftp"><strong>“Star64 JH7110 RISC-V SBC: Boot from Network with U-Boot and TFTP”</strong></a></li>
+</ul>
+<p>Now we need to tweak the U-Boot Settings to boot with our <strong>Initial RAM Disk</strong>.</p>
+<p>Star64’s U-Boot Bootloader loads our Initial RAM Disk at <strong><code>0x4610</code> <code>0000</code></strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ramdisk_addr_r=0x46100000
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
-<p>Which means that we need to add these TFTP Commands to U-Boot Bootloader…</p>
+<p>Which means that we need to add these <strong>TFTP Commands</strong> to U-Boot Bootloader…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Assume Initial RAM Disk is max 16 MB
 setenv ramdisk_size 0x1000000
 ## Check that it&#39;s correct
@@ -706,7 +715,7 @@ tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
 ## Changed this: Replaced `-` by `ramdisk_addr_r:ramdisk_size`
 booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 </code></pre></div>
-<p>Which will change our U-Boot Boot Script to…</p>
+<p>Which will change our <strong>U-Boot Boot Script</strong> to…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Load the NuttX Image from TFTP Server
 ## kernel_addr_r=0x40200000
 ## tftp_server=192.168.x.x
@@ -754,16 +763,25 @@ printenv bootcmd_tftp
 ## Save it for future reboots
 saveenv
 </code></pre></div>
+<p>Run the above commands in U-Boot. Power Star64 off and on.</p>
+<p>NuttX now boots with our Initial RAM Disk over TFTP…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/semihost#nuttx-star64-with-initial-ram-disk"><strong>“NuttX Star64 with Initial RAM Disk”</strong></a></li>
+</ul>
 <p><em>What happens if we omit the RAM Disk Size?</em></p>
-<div class="example-wrap"><pre class="language-text"><code>$ booti ${kernel_addr_r} ${ramdisk_addr_r} ${fdt_addr_r}
+<p>U-Boot won’t boot NuttX if we omit the RAM Disk Size…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## If we omit RAM Disk Size...
+## Boot Fails
+$ booti ${kernel_addr_r} ${ramdisk_addr_r} ${fdt_addr_r}
 Wrong Ramdisk Image Format
 Ramdisk image is corrupt or invalid
-
-## Assume max 16 MB
-$ booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
-## Boots OK
 </code></pre></div>
-<p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="TODO" /></p>
+<p>So we hardcode a maximum RAM Disk Size of 16 MB…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## If we assume RAM Disk Size is max 16 MB...
+## Boots OK
+$ booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="NuttX Star64 with Initial RAM Disk" /></p>
 <h1 id="appendix-configure-nuttx-for-initial-ram-disk"><a href="#appendix-configure-nuttx-for-initial-ram-disk">11 Appendix: Configure NuttX for Initial RAM Disk</a></h1>
 <p>TODO</p>
 <p>This is how we updated the NuttX Build Configuration in <code>make menuconfig</code>…</p>
@@ -798,7 +816,64 @@ CONFIG_INIT_MOUNT_SOURCE=&quot;&quot;
 <p>Updated Build Configuration:</p>
 <p>QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig">knsh64/defconfig</a></p>
 <p>Star64: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig">knsh64/defconfig</a></p>
-<h1 id="appendix-initial-ram-disk-for-litex-arty-a7"><a href="#appendix-initial-ram-disk-for-litex-arty-a7">12 Appendix: Initial RAM Disk for LiteX Arty-A7</a></h1>
+<h1 id="appendix-ram-disk-address-for-risc-v-qemu"><a href="#appendix-ram-disk-address-for-risc-v-qemu">12 Appendix: RAM Disk Address for RISC-V QEMU</a></h1>
+<p>TODO</p>
+<p><em>Can we enable logging for RISC-V QEMU?</em></p>
+<p>Yep we use the <code>-trace &quot;*&quot;</code> option like this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -initrd initrd \
+  -nographic \
+  -trace &quot;*&quot;
+</code></pre></div>
+<p>In the QEMU Command above we loaded the Initial RAM Disk <code>initrd</code>.</p>
+<p>To discover the RAM Address of the Initial RAM Disk, we check the QEMU Trace Log:</p>
+<div class="example-wrap"><pre class="language-text"><code>resettablloader_write_rom nuttx
+  ELF program header segment 0:
+  @0x80000000 size=0x2b374 ROM=0
+loader_write_rom nuttx
+  ELF program header segment 1:
+  @0x80200000 size=0x2a1 ROM=0
+loader_write_rom initrd:
+  @0x84000000 size=0x2fc3e8 ROM=0
+loader_write_rom fdt:
+  @0x87000000 size=0x100000 ROM=0
+</code></pre></div>
+<p>So Initial RAM Disk is loaded at <code>0x8400</code> <code>0000</code></p>
+<p>(<code>__ramdisk_start</code> from the previous section)</p>
+<p>Also we see that Kernel is loaded at <code>0x8000</code> <code>0000</code>, Device Tree at <code>0x8700</code> <code>0000</code>.</p>
+<p>We thought the Initial RAM Disk Address could be discovered from the Device Tree for RISC-V QEMU. But nope it’s not there…</p>
+<h1 id="appendix-device-tree-for-risc-v-qemu"><a href="#appendix-device-tree-for-risc-v-qemu">13 Appendix: Device Tree for RISC-V QEMU</a></h1>
+<p>TODO</p>
+<p>To dump the Device Tree for QEMU RISC-V, we specify <code>dumpdtb</code>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Dump Device Tree for QEMU RISC-V
+qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on,dumpdtb=qemu-riscv64.dtb \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+## Convert Device Tree to text format
+dtc \
+  -o qemu-riscv64.dts \
+  -O dts \
+  -I dtb \
+  qemu-riscv64.dtb
+</code></pre></div>
+<p>This produces the Device Tree for QEMU RISC-V…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-star64/blob/main/qemu-riscv64.dts">qemu-riscv64.dts: Device Tree for QEMU RISC-V</a></li>
+</ul>
+<p>Which is helpful for browsing the Memory Addresses of I/O Peripherals.</p>
+<h1 id="appendix-initial-ram-disk-for-litex-arty-a7"><a href="#appendix-initial-ram-disk-for-litex-arty-a7">14 Appendix: Initial RAM Disk for LiteX Arty-A7</a></h1>
 <p>TODO</p>
 <p>Let’s modify NuttX for QEMU to mount the Apps Filesystem from an Initial RAM Disk (instead of Semihosting).</p>
 <p>(So later we can replicate this on Star64 JH7110 SBC)</p>
@@ -911,63 +986,6 @@ __ramdisk_size = LENGTH(ramdisk);
 __ramdisk_end  = ORIGIN(ramdisk) + LENGTH(ramdisk);
 </code></pre></div>
 <p>Note that <code>__pgheap_size</code> needs to include <code>ramdisk</code>.</p>
-<h1 id="appendix-ram-disk-address-for-risc-v-qemu"><a href="#appendix-ram-disk-address-for-risc-v-qemu">13 Appendix: RAM Disk Address for RISC-V QEMU</a></h1>
-<p>TODO</p>
-<p><em>Can we enable logging for RISC-V QEMU?</em></p>
-<p>Yep we use the <code>-trace &quot;*&quot;</code> option like this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
-  -semihosting \
-  -M virt,aclint=on \
-  -cpu rv64 \
-  -smp 8 \
-  -bios none \
-  -kernel nuttx \
-  -initrd initrd \
-  -nographic \
-  -trace &quot;*&quot;
-</code></pre></div>
-<p>In the QEMU Command above we loaded the Initial RAM Disk <code>initrd</code>.</p>
-<p>To discover the RAM Address of the Initial RAM Disk, we check the QEMU Trace Log:</p>
-<div class="example-wrap"><pre class="language-text"><code>resettablloader_write_rom nuttx
-  ELF program header segment 0:
-  @0x80000000 size=0x2b374 ROM=0
-loader_write_rom nuttx
-  ELF program header segment 1:
-  @0x80200000 size=0x2a1 ROM=0
-loader_write_rom initrd:
-  @0x84000000 size=0x2fc3e8 ROM=0
-loader_write_rom fdt:
-  @0x87000000 size=0x100000 ROM=0
-</code></pre></div>
-<p>So Initial RAM Disk is loaded at <code>0x8400</code> <code>0000</code></p>
-<p>(<code>__ramdisk_start</code> from the previous section)</p>
-<p>Also we see that Kernel is loaded at <code>0x8000</code> <code>0000</code>, Device Tree at <code>0x8700</code> <code>0000</code>.</p>
-<p>We thought the Initial RAM Disk Address could be discovered from the Device Tree for RISC-V QEMU. But nope it’s not there…</p>
-<h1 id="appendix-device-tree-for-risc-v-qemu"><a href="#appendix-device-tree-for-risc-v-qemu">14 Appendix: Device Tree for RISC-V QEMU</a></h1>
-<p>TODO</p>
-<p>To dump the Device Tree for QEMU RISC-V, we specify <code>dumpdtb</code>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Dump Device Tree for QEMU RISC-V
-qemu-system-riscv64 \
-  -semihosting \
-  -M virt,aclint=on,dumpdtb=qemu-riscv64.dtb \
-  -cpu rv64 \
-  -smp 8 \
-  -bios none \
-  -kernel nuttx \
-  -nographic
-
-## Convert Device Tree to text format
-dtc \
-  -o qemu-riscv64.dts \
-  -O dts \
-  -I dtb \
-  qemu-riscv64.dtb
-</code></pre></div>
-<p>This produces the Device Tree for QEMU RISC-V…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/nuttx-star64/blob/main/qemu-riscv64.dts">qemu-riscv64.dts: Device Tree for QEMU RISC-V</a></li>
-</ul>
-<p>Which is helpful for browsing the Memory Addresses of I/O Peripherals.</p>
 
     
 </body>
