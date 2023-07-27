@@ -1,6 +1,6 @@
 # Star64 JH7110 + NuttX RTOS: RISC-V Semihosting and Initial RAM Disk
 
-📝 _2 Aug 2023_
+📝 _28 Jul 2023_
 
 ![Booting NuttX on Star64 with Initial RAM Disk](https://lupyuen.github.io/images/semihost-title.jpg)
 
@@ -24,7 +24,7 @@ In this article, we find out...
 
 - Why it crashes [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx2) on Star64
 
-- What's the __Apps Filesystem__ for NuttX
+- How it affects the __Apps Filesystem__ in NuttX
 
 - How we replaced Semihosting by __Initial RAM Disk "initrd"__ (pic above)
 
@@ -452,7 +452,7 @@ int mount_ramdisk(void) {
 
 (More about ROMFS in a while)
 
-We copied the RAM Disk from __`0x8400` `0000`__ to __ramdisk_start__: [qemu_rv_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280)
+Before mounting, we copy the RAM Disk from __`0x8400` `0000`__ to __ramdisk_start__: [qemu_rv_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280)
 
 ```c
 void qemu_rv_kernel_mappings(void) {
@@ -513,7 +513,7 @@ _What's ROMFS?_
 
 We could have used a FAT or EXT4 or NTFS Filesystem... But ROMFS is a lot simpler for NuttX.
 
-[(__ROMFS__ in NuttX)](https://nuttx.apache.org/docs/latest/components/filesystem.html)
+[(More about __ROMFS in NuttX__)](https://nuttx.apache.org/docs/latest/components/filesystem.html)
 
 _Why did we copy the RAM Disk from __`0x8400` `0000`__?_
 
@@ -751,15 +751,29 @@ nx_start: CPU0: Beginning Idle Loop
 
 [(See the __Output Log__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
 
-So many questions...
+So many questions (pic below)...
 
 - Why no __NuttX Shell__?
 
-- Why did __nx_start_application__ quit with "__`ret=3`__"?
+- Was NuttX Shell started correctly?
+
+  ([__nx_start_application__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/sched/init/nx_bringup.c#L297-L299) returned Process ID 3, seems OK)
+
+- Is __Console Output__ working in NuttX Shell?
+
+  (Highly sus!)
 
 - Are we using the right [__User Address Space__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/include/board_memorymap.h#L33-L38)?
 
+  And the right [__I/O Address Space__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L42-L47)?
+
+- How to handle [__RISC-V Timers in Supervisor Mode__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210)?
+
+  Do we need [__OpenSBI Timers__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.adoc#timer-extension-eid-0x54494d45-time)?
+
 We'll find out in the next article!
+
+(__TODO:__ Test Initial RAM Disk with MicroSD Card)
 
 ![NuttX Star64 with Initial RAM Disk](https://lupyuen.github.io/images/semihost-runstar64.png)
 
@@ -786,6 +800,10 @@ No more __Semihosting Problems__ with NuttX on Star64 JH7110 SBC!
 - By adapting the code from NuttX on __LiteX Arty-A7__
 
   (Which we also tested on __QEMU Emulator__)
+
+- Now we need to figure out why __NuttX Shell__ won't start
+
+  (Please join me next time!)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -917,6 +935,35 @@ NuttX now boots with our Initial RAM Disk over TFTP...
 
 - [__"NuttX Star64 with Initial RAM Disk"__](https://lupyuen.github.io/articles/semihost#nuttx-star64-with-initial-ram-disk)
 
+Here's the __U-Boot Log__...
+
+```text
+TFTP from server 192.168.x.x; our IP address is 192.168.x.x
+Filename 'Image'.
+Load address: 0x40200000
+Loading: 9 MiB/s
+done
+Bytes transferred = 2097800 (200288 hex)
+Using ethernet@16030000 device
+TFTP from server 192.168.x.x; our IP address is 192.168.x.x
+Filename 'jh7110-star64-pine64.dtb'.
+Load address: 0x46000000
+Loading: 8 MiB/s
+done
+Bytes transferred = 50235 (c43b hex)
+Using ethernet@16030000 device
+TFTP from server 192.168.x.x; our IP address is 192.168.x.x
+Filename 'initrd'.
+Load address: 0x46100000
+Loading: 371.1 KiB/s
+done
+Bytes transferred = 7930880 (790400 hex)
+## Flattened Device Tree blob at 46000000
+   Booting using the fdt blob at 0x46000000
+   Using Device Tree in place at 0000000046000000, end 000000004600f43a
+Starting kernel ...
+```
+
 _What if we omit the RAM Disk Size?_
 
 U-Boot won't boot NuttX if we omit the RAM Disk Size...
@@ -974,11 +1021,11 @@ Here are the steps for updating the NuttX Build Configuration in `make menuconfi
     CONFIG_INIT_MOUNT_SOURCE=""
     ```
 
-The updated Build Configuration Files...
+The steps above will produce the updated Build Configuration Files...
 
-- NuttX QEMU: [__knsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
+- __NuttX for QEMU:__ [__knsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
 
-- NuttX Star64: [__knsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
+- __NuttX for Star64:__ [__knsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
 
 # Appendix: RAM Disk Address for RISC-V QEMU
 
@@ -1003,7 +1050,7 @@ qemu-system-riscv64 \
   -trace "*"
 ```
 
-In the QEMU Command above we loaded the Initial RAM Disk __initrd__.
+In the QEMU Command above, we load the Initial RAM Disk __initrd__.
 
 To discover the RAM Address of the Initial RAM Disk, we check the __QEMU Trace Log__...
 
@@ -1069,7 +1116,7 @@ Earlier we modified NuttX QEMU and NuttX Star64 to load our __Initial RAM Disk__
 
 We did it with plenty of guidance from NuttX on __LiteX Arty-A7__, below is our Detailed Analysis.
 
-First we look at the Initial RAM Disk for LiteX Arty-A7. To generate the RAM Disk, we run this command...
+To __generate the RAM Disk__ for LiteX Arty-A7, we run this command...
 
 ```bash
 ## Generate the Initial RAM Disk `romfs.img`
@@ -1084,7 +1131,7 @@ genromfs \
 
 [(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html)
 
-[(About `genromfs`)](https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html)
+[(About __genromfs__)](https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html)
 
 [(About NuttX RAM Disks and ROM Disks)](https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=139629548#content/view/139629548)
 
@@ -1125,20 +1172,20 @@ CONFIG_DISABLE_MOUNTPOINT not set
 CONFIG_FS_ROMFS enabled
 ```
 
-The RAM Disk is mounted at __LiteX Startup__: [litex_appinit.c](https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/src/litex_appinit.c#L76-L103)
+We mount the RAM Disk at __LiteX Startup__: [litex_appinit.c](https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/src/litex_appinit.c#L76-L103)
 
 ```c
 void board_late_initialize(void)
 {
-  #ifdef CONFIG_LITEX_APPLICATION_RAMDISK
+#ifdef CONFIG_LITEX_APPLICATION_RAMDISK
   litex_mount_ramdisk();
-  #endif
+#endif
 
   litex_bringup();
 }
 ```
 
-`litex_bringup` mounts the RAM Disk at startup: [litex_ramdisk.c](https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/src/litex_ramdisk.c#L41-L98)
+Which calls __litex_mount_ramdisk__ to mount the RAM Disk: [litex_ramdisk.c](https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/src/litex_ramdisk.c#L41-L98)
 
 ```c
 #ifndef CONFIG_BUILD_KERNEL
@@ -1177,7 +1224,7 @@ int litex_mount_ramdisk(void)
 }
 ```
 
-`__ramdisk_start` is defined in the __LiteX Memory Map__: [board_memorymap.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91)
+__ramdisk_start__ and __ramdisk_size__ are defined in the __LiteX Memory Map__: [board_memorymap.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91)
 
 ```c
 /* RAMDisk */
@@ -1189,7 +1236,7 @@ extern uint8_t          __ramdisk_start[];
 extern uint8_t          __ramdisk_size[];
 ```
 
-And the __LiteX Linker Script__: [ld-kernel.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49)
+And also in the __LiteX Linker Script__: [ld-kernel.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49)
 
 ```text
 MEMORY
@@ -1210,4 +1257,4 @@ __ramdisk_size = LENGTH(ramdisk);
 __ramdisk_end  = ORIGIN(ramdisk) + LENGTH(ramdisk);
 ```
 
-Note that `__pgheap_size` needs to include `ramdisk`.
+Note that __pgheap_size__ needs to include __ramdisk__ size.
