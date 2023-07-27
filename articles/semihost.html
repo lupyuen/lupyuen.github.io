@@ -671,6 +671,7 @@ nx_start: CPU0: Beginning Idle Loop
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/semihost.md"><strong>lupyuen.github.io/src/semihost.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/semihost-star64.jpg" alt="NuttX for Star64 JH7110 RISC-V SBC will mount the Apps Filesystem from an Initial RAM Disk" /></p>
 <h1 id="appendix-boot-nuttx-over-tftp-with-initial-ram-disk"><a href="#appendix-boot-nuttx-over-tftp-with-initial-ram-disk">10 Appendix: Boot NuttX over TFTP with Initial RAM Disk</a></h1>
 <p>TODO</p>
 <p><em>What is the RAM Address of the Initial RAM Disk in Star64?</em></p>
@@ -753,7 +754,9 @@ Ramdisk image is corrupt or invalid
 ## Assume max 16 MB
 $ booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
 ## Boots OK
-</code></pre></div><h1 id="appendix-configure-nuttx-for-initial-ram-disk"><a href="#appendix-configure-nuttx-for-initial-ram-disk">11 Appendix: Configure NuttX for Initial RAM Disk</a></h1>
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="TODO" /></p>
+<h1 id="appendix-configure-nuttx-for-initial-ram-disk"><a href="#appendix-configure-nuttx-for-initial-ram-disk">11 Appendix: Configure NuttX for Initial RAM Disk</a></h1>
 <p>TODO</p>
 <p>This is how we updated the NuttX Build Configuration in <code>make menuconfig</code>…</p>
 <ul>
