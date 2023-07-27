@@ -318,7 +318,13 @@ clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
 123067DFAGHBC
 </code></pre></div>
-<p><strong>For Linux:</strong> We might need to load the <a href="https://lupyuen.github.io/articles/tftp#booti-command"><strong>Initial RAM Disk initrd</strong></a></p>
+<p>The latest version of NuttX on Star64 needs an <strong>Initial RAM Disk</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk"><strong>“Boot NuttX over TFTP with Initial RAM Disk”</strong></a></p>
+<p>(Same for Linux)</p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="Auto-Boot from Network, every time we power on" /></p>
 <h1 id="configure-u-boot-for-tftp"><a href="#configure-u-boot-for-tftp">5 Configure U-Boot for TFTP</a></h1>
 <p><em>But can we Auto-Boot from Network, every time we power on?</em></p>
