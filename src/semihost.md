@@ -802,11 +802,9 @@ ramdisk_addr_r=0x46100000
 Which means that we need to add these __TFTP Commands__ to U-Boot Bootloader...
 
 ```bash
-## Assume Initial RAM Disk is max 16 MB
+## Added this: Assume Initial RAM Disk is max 16 MB
 setenv ramdisk_size 0x1000000
-## Check that it's correct
 printenv ramdisk_size
-## Save it for future reboots
 saveenv
 
 ## Load Kernel and Device Tree over TFTP
@@ -881,12 +879,12 @@ NuttX now boots with our Initial RAM Disk over TFTP...
 
 - [__"NuttX Star64 with Initial RAM Disk"__](https://lupyuen.github.io/articles/semihost#nuttx-star64-with-initial-ram-disk)
 
-_What happens if we omit the RAM Disk Size?_
+_What if we omit the RAM Disk Size?_
 
 U-Boot won't boot NuttX if we omit the RAM Disk Size...
 
 ```bash
-## If we omit RAM Disk Size...
+## If we omit RAM Disk Size:
 ## Boot Fails
 $ booti ${kernel_addr_r} ${ramdisk_addr_r} ${fdt_addr_r}
 Wrong Ramdisk Image Format
@@ -896,10 +894,12 @@ Ramdisk image is corrupt or invalid
 So we hardcode a maximum RAM Disk Size of 16 MB...
 
 ```bash
-## If we assume RAM Disk Size is max 16 MB...
+## If we assume RAM Disk Size is max 16 MB:
 ## Boots OK
 $ booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
 ```
+
+Let's talk about the NuttX Configuration for Initial RAM Disk...
 
 ![NuttX Star64 with Initial RAM Disk](https://lupyuen.github.io/images/semihost-runstar64.png)
 
@@ -1034,8 +1034,14 @@ We did it with plenty of guidance from NuttX on __LiteX Arty-A7__, below is our 
 First we look at the Initial RAM Disk for LiteX Arty-A7. To generate the RAM Disk, we run this command...
 
 ```bash
-cd nuttx
-genromfs -f romfs.img -d ../apps/bin -V "NuttXBootVol"
+## Generate the Initial RAM Disk `romfs.img`
+## in ROMFS Filesystem Format
+## from the Apps Filesystem `../apps/bin`
+## and label it `NuttXBootVol`
+genromfs \
+  -f romfs.img \
+  -d ../apps/bin \ 
+  -V "NuttXBootVol"
 ```
 
 [(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html)
@@ -1044,7 +1050,7 @@ genromfs -f romfs.img -d ../apps/bin -V "NuttXBootVol"
 
 [(About NuttX RAM Disks and ROM Disks)](https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=139629548#content/view/139629548)
 
-[__LiteX Memory Map__](https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html#booting) tells us where the RAM Disk is loaded...
+[__LiteX Memory Map__](https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html#booting) tells us where the RAM Disk is loaded: __`0x40C0` `0000`__
 
 ```text
 "romfs.img":   "0x40C00000",
@@ -1052,7 +1058,7 @@ genromfs -f romfs.img -d ../apps/bin -V "NuttXBootVol"
 "opensbi.bin": "0x40f00000"
 ```
 
-This is the __LiteX Build Configuration__ for mounting the RAM Disk: [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34)
+This is the __LiteX Build Configuration__ for mounting the RAM Disk: [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig)
 
 ```bash
 CONFIG_BOARDCTL_ROMDISK=y
@@ -1074,7 +1080,7 @@ CONFIG_SYSTEM_NSH_PROGNAME="init"
 CONFIG_TESTING_GETPRIME=y
 ```
 
-Which is consistent with the doc on [__NSH Start-Up Script__](https://nuttx.apache.org/docs/latest/applications/nsh/nsh.html#nsh-start-up-script)...
+Which is consistent with the NuttX Doc on [__NSH Start-Up Script__](https://nuttx.apache.org/docs/latest/applications/nsh/nsh.html#nsh-start-up-script)...
 
 ```text
 CONFIG_DISABLE_MOUNTPOINT not set
