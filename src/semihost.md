@@ -542,9 +542,9 @@ genromfs \
   -V "NuttXBootVol"
 ```
 
-[(See the __Build Log__)](https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e)
-
 [(See the __Build Steps__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1)
+
+[(See the __Build Log__)](https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e)
 
 [(__genromfs__ generates a __ROMFS Filesystem__)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
 
@@ -608,7 +608,7 @@ nxposix_spawn_exec: ERROR: exec failed: 2
  -r-xr-xr-x 3278720 /system/bin/init
 ```
 
-![TODO](https://lupyuen.github.io/images/semihost-runstar64.png)
+![NuttX for Star64 JH7110 RISC-V SBC will mount the Apps Filesystem from an Initial RAM Disk](https://lupyuen.github.io/images/semihost-star64.jpg)
 
 # NuttX Star64 with Initial RAM Disk
 
@@ -616,52 +616,7 @@ TODO
 
 Now we can modify NuttX for Star64 JH7110 RISC-V SBC to mount the Apps Filesystem from an Initial RAM Disk. (Instead of Semihosting)
 
-![NuttX for Star64 JH7110 RISC-V SBC will mount the Apps Filesystem from an Initial RAM Disk](https://lupyuen.github.io/images/semihost-star64.jpg)
-
 We follow the steps from QEMU Kernel Mode's Initial RAM Disk. (See previous section)
-
-We build NuttX Star64 in Kernel Mode: [Build Steps](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
-
-```bash
-## Build NuttX Star64 in Kernel Mode
-tools/configure.sh rv-virt:knsh64
-make V=1 -j7
-
-## Build Apps Filesystem
-make export V=1
-pushd ../apps
-./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
-make import V=1
-popd
-```
-
-We generate the Initial RAM Disk `initrd` and copy to TFTP Folder (for Network Booting)...
-
-```bash
-## Generate Initial RAM Disk
-cd nuttx
-genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
-
-## Copy NuttX Binary Image, Device Tree and Initial RAM Disk to TFTP Folder
-cp nuttx.bin $HOME/tftproot/Image
-cp ../jh7110-star64-pine64.dtb $HOME/tftproot
-cp initrd $HOME/tftproot
-```
-
-[(See the __Build Log__)](https://gist.github.com/lupyuen/ae59a840c94280ce8d618699278a0436)
-
-[(See the __Build Steps__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
-
-[(About `genromfs`)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
-
-Initial RAM Disk `initrd` is 7.9 MB...
-
-```text
-→ ls -l initrd
--rw-r--r--  1 7930880 Jul 21 13:41 initrd
-```
-
-[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
 
 Below are the files that we changed in NuttX for Star64 to load the Initial RAM Disk (instead of Semihosting)...
 
@@ -669,7 +624,7 @@ Below are the files that we changed in NuttX for Star64 to load the Initial RAM 
 
 These are the same changes that we made earlier for QEMU Kernel Mode's Initial RAM Disk.
 
-(For a detailed explanation of the modified files, see the previous section_
+(For a detailed explanation of the modified files, see the previous section)
 
 Note that we copy the Initial RAM Disk from `0x4610` `0000` (instead of QEMU's `0x8400` `0000`): [qemu_rv_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280)
 
@@ -694,6 +649,47 @@ ramdisk_addr_r=0x46100000
 ```
 
 [(Source)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
+
+We build NuttX Star64 in Kernel Mode: [Build Steps](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
+
+We generate the Initial RAM Disk `initrd` and copy to TFTP Folder (for Network Booting)...
+
+```bash
+## Omitted: Build NuttX QEMU in Kernel Mode
+...
+## Omitted: Build Apps Filesystem for NuttX QEMU
+...
+## Generate the Initial RAM Disk `initrd`
+## in ROMFS Filesystem Format
+## from the Apps Filesystem `../apps/bin`
+## and label it `NuttXBootVol`
+genromfs \
+  -f initrd \
+  -d ../apps/bin \
+  -V "NuttXBootVol"
+
+## Copy NuttX Binary Image, Device Tree and
+## Initial RAM Disk to TFTP Folder
+cp nuttx.bin $HOME/tftproot/Image
+cp jh7110-star64-pine64.dtb $HOME/tftproot
+cp initrd $HOME/tftproot
+```
+
+[(See the __Build Steps__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
+
+[(See the __Build Log__)](https://gist.github.com/lupyuen/ae59a840c94280ce8d618699278a0436)
+
+[(__genromfs__ generates a __ROMFS Filesystem__)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
+
+Initial RAM Disk __initrd__ (with ROMFS inside) is still 7.9 MB...
+
+```text
+$ ls -l initrd
+-rw-r--r--  1 7930880 initrd
+```
+
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
+
 
 TODO: Boot over TFTP
 
@@ -727,6 +723,8 @@ nx_start: CPU0: Beginning Idle Loop
 
 [(See the __Output Log__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
 
+So many questions...
+
 TODO: Why no shell?
 
 TODO: Why `nx_start_application: ret=3`?
@@ -734,6 +732,8 @@ TODO: Why `nx_start_application: ret=3`?
 TODO: Check User Address Space
 
 TODO: Boot from MicroSD with Initial RAM Disk
+
+![TODO](https://lupyuen.github.io/images/semihost-runstar64.png)
 
 # What's Next
 
