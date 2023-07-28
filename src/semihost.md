@@ -801,7 +801,7 @@ No more __Semihosting Problems__ with NuttX on Star64 JH7110 SBC!
 
   (Which we also tested on __QEMU Emulator__)
 
-- Now we need to figure out why __NuttX Shell__ won't start
+- Now we need to figure out why __NuttX Shell__ won't appear
 
   (Please join me next time!)
 
