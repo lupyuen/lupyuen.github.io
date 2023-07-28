@@ -755,7 +755,7 @@ So many questions (pic below)...
 
 - Why no __NuttX Shell__?
 
-- Was NuttX Shell started correctly?
+  Was it started correctly?
 
   ([__nx_start_application__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/sched/init/nx_bringup.c#L297-L299) returned Process ID 3, seems OK)
 
