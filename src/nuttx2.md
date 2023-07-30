@@ -746,7 +746,7 @@ According to the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_
 
 OpenSBI boots on the __First Application Core__...
 
-Which is __Hart ID 1__. (Not 0)
+Which is why OpenSBI returns __Hart ID 1__. (Instead of 0)
 
 (Though we pass the Hart ID to NuttX as Hart 0, since NuttX expects [__Hart ID to start at 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L104-L110))
 
