@@ -700,6 +700,19 @@ A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000
 </ul>
 <p>Yep looks correct! But we’ll subtract 1 from Register A0 because NuttX expects Hart ID to start with 0.</p>
 <p>We’ll see this implementation in our modified NuttX Boot Code. (Next section)</p>
+<p><em>Why does OpenSBI return Hart ID 1? (Instead of 0)</em></p>
+<p>According to the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a> (Page 96), there are 5 RISC-V Cores in JH7110…</p>
+<ul>
+<li>
+<p><strong>Hart 0:</strong> S7 Monitor Core (RV64IMACB)</p>
+</li>
+<li>
+<p><strong>Harts 1 to 4:</strong> U74 Application Cores (RV64GCB)</p>
+</li>
+</ul>
+<p>OpenSBI boots on the <strong>First Application Core</strong>…</p>
+<p>Which is <strong>Hart ID 1</strong>. (Not 0)</p>
+<p>(Though we pass the Hart ID to NuttX as Hart 0, since NuttX expects <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L104-L110"><strong>Hart ID to start at 0</strong></a>)</p>
 <p><em>The Linux Boot Code looks confusing. What are CSR_IE and CSR_IP?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Mask all interrupts */
 csrw CSR_IE, zero
