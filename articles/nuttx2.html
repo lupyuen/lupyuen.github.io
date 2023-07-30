@@ -711,7 +711,7 @@ A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000
 </li>
 </ul>
 <p>OpenSBI boots on the <strong>First Application Core</strong>…</p>
-<p>Which is <strong>Hart ID 1</strong>. (Not 0)</p>
+<p>Which is why OpenSBI returns <strong>Hart ID 1</strong>. (Instead of 0)</p>
 <p>(Though we pass the Hart ID to NuttX as Hart 0, since NuttX expects <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L104-L110"><strong>Hart ID to start at 0</strong></a>)</p>
 <p><em>The Linux Boot Code looks confusing. What are CSR_IE and CSR_IP?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Mask all interrupts */
