@@ -74,11 +74,33 @@
 <li><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">5 Delegate Machine-Mode Interrupts to Supervisor-Mode</a><ul></ul></li>
 <li><a href="#nuttx-star64-handles-uart-interrupts">6 NuttX Star64 handles UART Interrupts</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>8 Aug 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="TODO" /></p>
-<p>TODO</p>
-<p><a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer. (Pic below)</p>
+<p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller in JH7110 (U74) SoC" /></p>
+<p>We’re almost ready with our barebones port of <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) to <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer! (Pic below)</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
-<p><a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX RTOS</strong></a> </p>
+<p>In this article, we find out…</p>
+<ul>
+<li>
+<p>Why there’s <strong>No Console Output</strong> from NuttX Apps</p>
+</li>
+<li>
+<p>How <strong>UART I/O</strong> works in NuttX QEMU</p>
+</li>
+<li>
+<p>How UART differs for <strong>Star64 vs QEMU</strong></p>
+</li>
+<li>
+<p>What’s the <strong>Platform-Level Interrupt Controller</strong> (PLIC)</p>
+</li>
+<li>
+<p>How we delegate <strong>Machine-Mode Interrupts to Supervisor-Mode</strong></p>
+</li>
+<li>
+<p>How NuttX Star64 handles <strong>UART Interrupts</strong></p>
+</li>
+<li>
+<p>Which leads to a new problem: 16550 UART Controller fires too many <strong>Spurious Interrupts</strong>!</p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/nuttx2-title.jpg" alt="Star64 RISC-V SBC" /></p>
 <h1 id="no-uart-output-from-nuttx-shell"><a href="#no-uart-output-from-nuttx-shell">1 No UART Output from NuttX Shell</a></h1>
 <p>TODO</p>
@@ -364,7 +386,7 @@ up_enable_irq: extirq=63, RISCV_IRQ_EXT=25
 <p><a href="https://github.com/riscv/riscv-plic-spec/blob/master/riscv-plic.adoc">PLIC Spec</a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="PLIC in JH7110 (U74) SoC" /></p>
+<p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller in JH7110 (U74) SoC" /></p>
 <p><em>How to configure PLIC to forward Interrupts to the Harts?</em></p>
 <p>The PLIC Memory Map is below…</p>
 <p>From <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">SiFive U74-MC Core Complex Manual</a> Page 193 (PLIC Memory Map)</p>
