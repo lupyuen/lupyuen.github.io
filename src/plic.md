@@ -1,4 +1,4 @@
-# Star64 JH7110 + NuttX RTOS: Serial I/O and PLIC Interrupts
+# Star64 JH7110 + NuttX RTOS: RISC-V PLIC Interrupts and Serial I/O
 
 📝 _8 Aug 2023_
 
@@ -16,9 +16,9 @@ In this article, we find out...
 
 - How UART I/O differs for __Star64 vs QEMU__
 
-- What's the __Platform-Level Interrupt Controller__ (PLIC)
+- What's the RISC-V __Platform-Level Interrupt Controller__ (PLIC)
 
-- How we delegate __Machine-Mode Interrupts to Supervisor-Mode__
+- How we delegate RISC-V __Machine-Mode Interrupts to Supervisor-Mode__
 
 - How NuttX Star64 handles __UART Interrupts__
 
