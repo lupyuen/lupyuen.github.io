@@ -417,26 +417,26 @@ From [SiFive U74-MC Core Complex Manual](https://starfivetech.com/uploads/u74mc_
 
 | Address | Attr | Description
 |---------|:----:|------------
-| 0x0C00_0004 | RW | Source 1 Priority
-| 0x0C00_0220 | RW | Source 136 Priority
-| 0x0C00_1000 | RO | Start of Pending Array
-| 0x0C00_1010 | RO | Last word of Pending Array
-| 0x0C00_2100 | RW | Start of Hart 1 S-Mode Interrupt Enables
-| 0x0C00_2110 | RW | End of Hart 1 S-Mode Interrupt Enables
-| 0x0C00_2200 | RW | Start of Hart 2 S-Mode Interrupt Enables
-| 0x0C00_2210 | RW | End of Hart 2 S-Mode Interrupt Enables
-| 0x0C00_2300 | RW | Start of Hart 3 S-Mode Interrupt Enables
-| 0x0C00_2310 | RW | End of Hart 3 S-Mode Interrupt Enables
-| 0x0C00_2400 | RW | Start of Hart 4 S-Mode Interrupt Enables
-| 0x0C00_2410 | RW | End of Hart 4 S-Mode Interrupt Enables
-| 0x0C20_2000 | RW | Hart 1 S-Mode Priority Threshold
-| 0x0C20_2004 | RW | Hart 1 S-Mode Claim / Complete 
-| 0x0C20_4000 | RW | Hart 2 S-Mode Priority Threshold
-| 0x0C20_4004 | RW | Hart 2 S-Mode Claim / Complete
-| 0x0C20_6000 | RW | Hart 3 S-Mode Priority Threshold
-| 0x0C20_6004 | RW | Hart 3 S-Mode Claim / Complete 
-| 0x0C20_8000 | RW | Hart 4 S-Mode Priority Threshold
-| 0x0C20_8004 | RW | Hart 4 S-Mode Claim / Complete
+| 0C00_0004 | RW | Source 1 Priority
+| 0C00_0220 | RW | Source 136 Priority
+| 0C00_1000 | RO | Start of Pending Array
+| 0C00_1010 | RO | Last word of Pending Array
+| 0C00_2100 | RW | Start of Hart 1 S-Mode Interrupt Enables
+| 0C00_2110 | RW | End of Hart 1 S-Mode Interrupt Enables
+| 0C00_2200 | RW | Start of Hart 2 S-Mode Interrupt Enables
+| 0C00_2210 | RW | End of Hart 2 S-Mode Interrupt Enables
+| 0C00_2300 | RW | Start of Hart 3 S-Mode Interrupt Enables
+| 0C00_2310 | RW | End of Hart 3 S-Mode Interrupt Enables
+| 0C00_2400 | RW | Start of Hart 4 S-Mode Interrupt Enables
+| 0C00_2410 | RW | End of Hart 4 S-Mode Interrupt Enables
+| 0C20_2000 | RW | Hart 1 S-Mode Priority Threshold
+| 0C20_2004 | RW | Hart 1 S-Mode Claim / Complete 
+| 0C20_4000 | RW | Hart 2 S-Mode Priority Threshold
+| 0C20_4004 | RW | Hart 2 S-Mode Claim / Complete
+| 0C20_6000 | RW | Hart 3 S-Mode Priority Threshold
+| 0C20_6004 | RW | Hart 3 S-Mode Claim / Complete 
+| 0C20_8000 | RW | Hart 4 S-Mode Priority Threshold
+| 0C20_8004 | RW | Hart 4 S-Mode Claim / Complete
 
 There are 5 Harts in JH7110...
 - __Hart 0:__ S7 Core (the limited core, unused)
