@@ -91,9 +91,9 @@ Let's find out why...
 
 # Serial I/O in NuttX QEMU
 
-TODO
+_What happens inside NuttX Serial I/O?_
 
-To understand how UART Output (`printf`) works in NuttX Apps (and NuttX Shell), we add logs to NuttX QEMU...
+To understand how NuttX Apps print to the Serial Console (via __`printf`__), we add Debug Logs to __NuttX QEMU__ (pic below)...
 
 ```text
 ABCnx_start: Entry
@@ -111,6 +111,19 @@ elf_symname: Symbol has no name
 elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
 elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
 up_exit: TCB=0x802088d0 exiting
+```
+
+[(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#uart-output-in-nuttx-qemu)
+
+[(__up_enable_irq__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L204)
+
+In the log above, NuttX QEMU enables UART Interrupts at __NuttX IRQ 35__. 
+
+(Equivalent to __RISC-V IRQ 10__, with IRQ Offset of 25)
+
+Then __NuttX Shell__ runs in QEMU...
+
+```text
 $%&riscv_doirq: irq=8
 $%&riscv_doirq: irq=8
 $%&riscv_doirq: irq=8
@@ -118,29 +131,42 @@ $%&riscv_doirq: irq=8
 $%&riscv_doirq: irq=8
 $%&riscv_doirq: irq=8
 $%&riscv_doirq: irq=8
-uart_write (0xc0200428):
-0000  2a 2a 2a 6d 61 69 6e 0a                          ***main.        
-FAAAAAAAADEF*F*F*FmFaFiFnF
-$%&riscv_doirq: irq=8
-$%&riscv_doirq: irq=8
-$%&riscv_doirq: irq=8
-...
-$%&riscv_doirq: irq=8
-$%&riscv_doirq: irq=8
-$%&riscv_doirq: irq=8
+```
+
+[(__riscv_doirq__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_doirq.c#L58-L131)
+
+__NuttX IRQ 8__ appears frequently in our log. That's for [__RISCV_IRQ_ECALLU__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L52-L74): ECALL from RISC-V User Mode to Supervisor Mode.
+
+This happens when our NuttX App (in User Mode) makes a __System Call__ to NuttX Kernel (in Supervisor Mode).
+
+Like for printing to the __Serial Console__...
+
+```text
 uart_write (0xc000a610):
 0000  0a 4e 75 74 74 53 68 65 6c 6c 20 28 4e 53 48 29  .NuttShell (NSH)
 0010  20 4e 75 74 74 58 2d 31 32 2e 30 2e 33 0a         NuttX-12.0.3.  
+```
+
+Then this Alphabet Soup appears...
+
+```text
 FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEF
 FNFuFtFtFSFhFeFlFlF F(FNFSFHF)F FNFuFtFtFXF-F1F2F.F0F.F3F
-$%&riscv_doirq: irq=8
-uart_write (0xc0015340):
-0000  6e 73 68 3e 20                                   nsh>            
-AAAAADEFnFsFhF>F $%&riscv_doirq: irq=8
-uart_write (0xc0015318):
-0000  1b 5b 4b                                         .[K             
-AAADEF[FK$%&riscv_doirq: irq=8
-nx_start: CPU0: Beginning Idle Loop
+```
+
+This says that the NuttX Kernel calls [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341) (print to Serial Console), which calls...
+
+[`A`] [__uart_putxmitchar__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286) (print one character) which calls...
+
+[`D`] [__uart_xmitchars__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107) (print to UART) which calls...
+
+[`E`] [__uart_txready__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68) (check for UART ready) and...
+
+[`F`] [__u16550_send__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587) (write to UART output)
+
+TODO: Keyboard
+
+```text
 $%^&riscv_doirq: irq=35
 #*ADEFa$%&riscv_doirq: irq=8
 $%^&riscv_doirq: irq=35
@@ -149,27 +175,17 @@ $%^&riscv_doirq: irq=35
 #*ADEFa$%&riscv_doirq: irq=8
 ```
 
-This says that NuttX Apps call [`uart_write`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341), which calls...
-
-- `A`: [`uart_putxmitchar`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L150-L286) which calls...
-
-- `D`: [`uart_xmitchars`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial_io.c#L42-L107) which calls...
-
-- `E`: [`uart_txready`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial_io.c#L63-L68) and...
-
-  `F`: [`u16550_send`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/uart_16550.c#L1542-L1556)
-  
 When we type something, the UART Input will trigger an Interrupt...
 
 (Also for NuttX Apps calling a System Function in NuttX Kernel)
 
-- `$`: [`exception_common`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/arch/risc-v/src/common/riscv_exception_common.S#L63-L189) calls...
+- [`$`] [__exception_common__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_exception_common.S#L63-L189) calls...
 
-- `#`: [`u16550_interrupt`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/uart_16550.c#L918-L1021) which calls...
+- [`#`] [__u16550_interrupt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L918-L1021) which calls...
 
-- `%^&`: [`riscv_dispatch_irq`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L51-L92) which calls...
+- [`%^&`] [__riscv_dispatch_irq__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L51-L92) which calls...
 
-- [`riscv_doirq`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/arch/risc-v/src/common/riscv_doirq.c#L58-L131)
+- [__riscv_doirq__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_doirq.c#L58-L131)
 
 _What is `riscv_doirq: irq=35`?_
 
@@ -177,13 +193,7 @@ This is the Interrupt triggered by UART Input.
 
 QEMU UART is at [RISC-V IRQ 10](https://github.com/lupyuen/nuttx-star64/blob/main/qemu-riscv64.dts#L225-L226), which becomes NuttX IRQ 35 (10 + 25).
 
-[(RISCV_IRQ_EXT = RISCV_IRQ_SEXT = 16 + 9 = 25)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/arch/risc-v/include/irq.h#L75-L86)
-
-_Why so many `riscv_doirq: irq=8`?_
-
-NuttX IRQ 8 is [`RISCV_IRQ_ECALLU`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/arch/risc-v/include/irq.h#L52-L74): ECALL from RISC-V User Mode to Supervisor Mode.
-
-This happens when the NuttX App (User Mode) calls a System Function in NuttX Kernel (Supervisor Mode).
+[(RISCV_IRQ_EXT = RISCV_IRQ_SEXT = 16 + 9 = 25)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L75-L86)
 
 ![UART Output in NuttX QEMU](https://lupyuen.github.io/images/plic-qemu.png)
 
