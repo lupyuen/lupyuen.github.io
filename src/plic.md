@@ -12,7 +12,7 @@ In this article, we find out...
 
 - Why there's __No Console Output__ from NuttX Apps
 
-- How __UART I/O__ works in NuttX QEMU
+- How __Serial I/O__ works in NuttX QEMU
 
 - How UART differs for __Star64 vs QEMU__
 
@@ -89,7 +89,7 @@ Let's find out why...
 
 ![NuttX Star64 with Initial RAM Disk](https://lupyuen.github.io/images/semihost-runstar64.png)
 
-# UART Output in NuttX QEMU
+# Serial I/O in NuttX QEMU
 
 TODO
 
@@ -189,7 +189,7 @@ This happens when the NuttX App (User Mode) calls a System Function in NuttX Ker
 
 Now we compare the above with Star64...
 
-# Compare UART Output: Star64 vs QEMU
+# Compare Serial I/O: Star64 vs QEMU
 
 TODO
 
