@@ -301,6 +301,10 @@ We said earlier that UART will trigger a [__Transmit Ready Interrupt__](https://
 
 But NuttX IRQ 57 is __never triggered__ in the Star64 Log!
 
+Thus there's our problem: NuttX on Star64 won't print to the Serial Output because __UART Interrupts are never triggered__.
+
+(NuttX Star64 won't respond to keypresses either)
+
 _There's a problem with our Interrupt Controller?_
 
 We checked the Star64 __Interrupt Settings__ and __Memory Map__...
@@ -311,7 +315,7 @@ We checked the Star64 __Interrupt Settings__ and __Memory Map__...
 
 - [__board_memorymap.h__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-0cb58f007c24e42ac3f868ec24239c5e1863ebbb72dfb995840bc9b80ad82723): Memory Map
 
-- [__knsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-4018c37bf9b08236b37a84273281d5511d48596be9e0e4c0980d730aa95dbbe8): Memory Map
+- [__knsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-4018c37bf9b08236b37a84273281d5511d48596be9e0e4c0980d730aa95dbbe8): Memory Configuration
 
   [(See the __JH7110 U74 Memory Map__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html)
 
@@ -321,29 +325,23 @@ Maybe we got the wrong UART IRQ Number? Let's verify...
 
 # Star64 UART Interrupt
 
-TODO
-
 _Is the UART IRQ Number correct?_
 
-Star64 UART is [RISC-V IRQ 32](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html), which becomes NuttX IRQ 57 (32 + 25).
+According to the [__JH7110 UART Doc__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html), the UART Interrupt is at __RISC-V IRQ 32__...
 
-[(RISCV_IRQ_EXT = RISCV_IRQ_SEXT = 16 + 9 = 25)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/arch/risc-v/include/irq.h#L75-L86)
+Which becomes NuttX IRQ 57. (Offset by 25)
+
+[(See __RISCV_IRQ_SEXT__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L75-L86)
+
+That's why we configure the __NuttX UART IRQ__ like so: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L10-L17)
 
 ```bash
 CONFIG_16550_UART0_IRQ=57
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L10-L17)
-
-Also from [JH7110 Interrupt Connections](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html): `u0_uart`	is at `global_interrupts[27]`
-
-Which is correct because [SiFive U74-MC Core Complex Manual](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 198) says that `global_interrupts[0]` is PLIC Interrupt ID 5.
-
-Thus `u0_uart`(IRQ 32) is at `global_interrupts[27]`.
-
 _Is it the same UART IRQ as Linux?_
 
-We check the Linux Device Tree...
+We dumped the __Linux Device Tree__ for JH7110...
 
 ```text
 dtc \
@@ -353,9 +351,7 @@ dtc \
   jh7110-visionfive-v2.dtb
 ```
 
-Which produces [jh7110-visionfive-v2.dts](https://github.com/lupyuen/nuttx-star64/blob/main/jh7110-visionfive-v2.dts)
-
-UART0 is indeed RISC-V IRQ 32: [jh7110-visionfive-v2.dts](https://github.com/lupyuen/nuttx-star64/blob/main/jh7110-visionfive-v2.dts#L619-L631)
+UART0 is indeed at RISC-V IRQ 32: [jh7110-visionfive-v2.dts](https://github.com/lupyuen/nuttx-star64/blob/main/jh7110-visionfive-v2.dts#L619-L631)
 
 ```text
 serial@10000000 {
@@ -373,85 +369,31 @@ serial@10000000 {
 };
 ```
 
-_Maybe the IRQ Numbers are different for NuttX vs Linux?_
+_What about the Global Interrupt Number?_
 
-We tried to enable a whole bunch of IRQs, but nothing got triggered...
+According to the doc on [__JH7110 Interrupt Connections__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html), __u0_uart__	is at __global_interrupts[27]__
+
+Which is correct because the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 198) says that...
 
 ```text
-up_enable_irq: irq=26
-up_enable_irq: extirq=1, RISCV_IRQ_EXT=25
-up_enable_irq: irq=27
-up_enable_irq: extirq=2, RISCV_IRQ_EXT=25
-up_enable_irq: irq=28
-up_enable_irq: extirq=3, RISCV_IRQ_EXT=25
-up_enable_irq: irq=29
-...
-up_enable_irq: irq=86
-up_enable_irq: extirq=61, RISCV_IRQ_EXT=25
-up_enable_irq: irq=87
-up_enable_irq: extirq=62, RISCV_IRQ_EXT=25
-up_enable_irq: irq=88
-up_enable_irq: extirq=63, RISCV_IRQ_EXT=25
+RISC=V IRQ = Global Interrupt Number + 5
 ```
 
-So there's definitely a problem with our Interrupt Controller.
+_Maybe IRQ 32 is too high? (QEMU UART IRQ is only 10)_
 
-_Maybe IRQ 32 is too high? (QEMU IRQ is only 10)_
+The doc on [__JH7110 Interrupt Connections__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html) says that Global Interrupts are numbered __0 to 126__. (127 total interrupts) 
 
-[JH7110 Interrupt Connections](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html) says that Global Interrupts are numbered 0 to 126 (127 total interrupts). That's a lot more than NuttX QEMU can handle.
+That's a lot more than NuttX QEMU can handle. So we patched it...
 
-Let's fix NuttX Star64 to support more IRQs.
+- [__irq.h__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-09f20ae7a4a374d390f5f93d478e820039f86256f7cdcce609996c9f99c71501): Increase to 127 IRQs
 
-From [qemu-rv/irq.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/qemu-rv/irq.h#L31-L40):
+- [__qemu_rv_irq.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-4d2def434fc283670f9b60826a12a9396787759b45aa156a4b6764c1a73fb0e4): Initialise 127 IRQs
 
-```c
-/* Map RISC-V exception code to NuttX IRQ */
+Though some parts are [__hardcoded to 64 IRQs__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-4d2def434fc283670f9b60826a12a9396787759b45aa156a4b6764c1a73fb0e4). (Needs more fixing)
 
-//// "JH7110 Interrupt Connections" says that Global Interrupts are 0 to 126 (127 total interrupts)
-//// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html
-#define NR_IRQS (RISCV_IRQ_SEXT + 127)
+Let's talk about the Interrupt Controller...
 
-// Previously:
-////#define QEMU_RV_IRQ_UART0  (RISCV_IRQ_MEXT + 10)
-////#define NR_IRQS (QEMU_RV_IRQ_UART0 + 1)
-```
-
-From [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L46-L72):
-
-```c
-void up_irqinitialize(void)
-{
-  ...
-  /* Set priority for all global interrupts to 1 (lowest) */
-  int id;
-  ////TODO: Why 52 PLIC Interrupts?
-  for (id = 1; id <= NR_IRQS; id++) //// Changed 52 to NR_IRQS
-    {
-      putreg32(1, (uintptr_t)(QEMU_RV_PLIC_PRIORITY + 4 * id));
-    }
-```
-
-This is hardcoded to 64 IRQs, we should fix in future: [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L143-L198)
-
-```c
-void up_enable_irq(int irq)
-{
-  ...
-  else if (irq > RISCV_IRQ_EXT)
-    {
-      extirq = irq - RISCV_IRQ_EXT;
-      _info("extirq=%d, RISCV_IRQ_EXT=%d\n", extirq, RISCV_IRQ_EXT);////
-
-      /* Set enable bit for the irq */
-
-      if (0 <= extirq && extirq <= 63) ////TODO: Why 63?
-        {
-          modifyreg32(QEMU_RV_PLIC_ENABLE1 + (4 * (extirq / 32)),
-                      0, 1 << (extirq % 32));
-        }
-```
-
-Now we study the NuttX Code for Platform-Level Interrupt Controller...
+![Platform-Level Interrupt Controller in JH7110 (U74) SoC](https://lupyuen.github.io/images/plic-title.jpg)
 
 # Platform-Level Interrupt Controller for Star64
 
@@ -466,8 +408,6 @@ We update the [NuttX PLIC Code](https://github.com/lupyuen2/wip-pinephone-nuttx/
 - [SiFive U74-MC Core Complex Manual](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)
 
 - [PLIC Spec](https://github.com/riscv/riscv-plic-spec/blob/master/riscv-plic.adoc)
-
-![Platform-Level Interrupt Controller in JH7110 (U74) SoC](https://lupyuen.github.io/images/plic-title.jpg)
 
 _How to configure PLIC to forward Interrupts to the Harts?_
 
