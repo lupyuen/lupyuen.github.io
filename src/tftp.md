@@ -50,6 +50,8 @@ The pic above shows our __Grand Plan__ for today...
 
     (It will try MicroSD first, before the Network Boot)
 
+    [(Watch the Demo on YouTube)](https://youtu.be/TdSJdiQFsv8)
+
 _Do we install anything on our SBC?_
 
 Everything we need is already in the __Internal Flash Memory__ of our SBC!
@@ -361,6 +363,8 @@ saveenv
 [(See the __Network Boot Log__)](https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-auto-network-boot)
 
 Now Star64 will __Auto-Boot from the Network__, every time we power up! (Pic above)
+
+[(Watch the Demo on YouTube)](https://youtu.be/TdSJdiQFsv8)
 
 [(It will try to boot from __MicroSD before Network__)](https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader)
 

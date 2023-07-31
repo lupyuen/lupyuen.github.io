@@ -945,6 +945,8 @@ NuttX now boots with our Initial RAM Disk over TFTP...
 
 - [__"NuttX Star64 with Initial RAM Disk"__](https://lupyuen.github.io/articles/semihost#nuttx-star64-with-initial-ram-disk)
 
+  [(Watch the Demo on YouTube)](https://youtu.be/TdSJdiQFsv8)
+
 Here's the __U-Boot Log__...
 
 ```text
