@@ -71,10 +71,11 @@
 <li><a href="#serial-output-in-nuttx-qemu">2 Serial Output in NuttX QEMU</a><ul></ul></li>
 <li><a href="#serial-input-in-nuttx-qemu">3 Serial Input in NuttX QEMU</a><ul></ul></li>
 <li><a href="#star64-vs-qemu-serial-io">4 Star64 vs QEMU Serial I/O</a><ul></ul></li>
-<li><a href="#platform-level-interrupt-controller-for-star64">5 Platform-Level Interrupt Controller for Star64</a><ul></ul></li>
-<li><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">6 Delegate Machine-Mode Interrupts to Supervisor-Mode</a><ul></ul></li>
-<li><a href="#nuttx-star64-handles-uart-interrupts">7 NuttX Star64 handles UART Interrupts</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>8 Aug 2023</em></p>
+<li><a href="#star64-uart-interrupt">5 Star64 UART Interrupt</a><ul></ul></li>
+<li><a href="#platform-level-interrupt-controller-for-star64">6 Platform-Level Interrupt Controller for Star64</a><ul></ul></li>
+<li><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">7 Delegate Machine-Mode Interrupts to Supervisor-Mode</a><ul></ul></li>
+<li><a href="#nuttx-star64-handles-uart-interrupts">8 NuttX Star64 handles UART Interrupts</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>8 Aug 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller in JH7110 (U74) SoC" /></p>
 <p>We’re almost ready with our barebones port of <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) to <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer! (Pic below)</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
@@ -223,12 +224,12 @@ FNFuFtFtFSFhFeFlFlF F(FNFSFHF)F FNFuFtFtFXF-F1F2F.F0F.F3F
 <h1 id="serial-input-in-nuttx-qemu"><a href="#serial-input-in-nuttx-qemu">3 Serial Input in NuttX QEMU</a></h1>
 <p><em>What happens when we type something in NuttX QEMU?</em></p>
 <p>Typing something in the Serial Console will trigger a <strong>UART Interrupt</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>$%^&amp;riscv_doirq: irq=35
-#*ADEFa$%&amp;riscv_doirq: irq=8
-$%^&amp;riscv_doirq: irq=35
-#*ADEFa$%&amp;riscv_doirq: irq=8
-$%^&amp;riscv_doirq: irq=35
-#*ADEFa$%&amp;riscv_doirq: irq=8
+<div class="example-wrap"><pre class="language-text"><code>$%^&amp;
+riscv_doirq: irq=35
+#*
+ADEFa
+$%&amp;
+riscv_doirq: irq=8
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#uart-output-in-nuttx-qemu">(See the <strong>Complete Log</strong>)</a></p>
 <p>That triggers a call to…</p>
@@ -266,7 +267,7 @@ $%^&amp;riscv_doirq: irq=35
 </ul>
 <p>Now we compare the above QEMU Log with Star64…</p>
 <h1 id="star64-vs-qemu-serial-io"><a href="#star64-vs-qemu-serial-io">4 Star64 vs QEMU Serial I/O</a></h1>
-<p><em>Earlier we said that Star64 NuttX couldn’t print to Serial Output. Why?</em></p>
+<p><em>Earlier we said that NuttX Star64 couldn’t print to Serial Console. Why?</em></p>
 <p>Let’s observe the <strong>Star64 Debug Log</strong> (and compare with QEMU Log)…</p>
 <div class="example-wrap"><pre class="language-text"><code>up_enable_irq:
   irq=57
@@ -274,36 +275,64 @@ $%^&amp;riscv_doirq: irq=35
   RISCV_IRQ_EXT=25
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#compare-uart-output-star64-vs-qemu">(See the <strong>Complete Log</strong>)</a></p>
-<p>TODO</p>
+<p>NuttX Star64 now enables <strong>UART Interrupts</strong> at NuttX IRQ 57. (RISC-V IRQ 32)</p>
+<p>(More about this in the next section)</p>
+<p>We see NuttX Shell making <strong>System Calls</strong> to NuttX Kernel (via NuttX IRQ 8)…</p>
 <div class="example-wrap"><pre class="language-text"><code>$%&amp;riscv_doirq: irq=8
 ...
 $%&amp;riscv_doirq: irq=8
 </code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>riscv_doirq: irq=8
-uart_write (0xc0015338):
+<p>Then NuttX Shell tries to <strong>print to Serial Output</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>uart_write (0xc0015338):
 0000  6e 73 68 3e 20                                   nsh&gt;            
 
 AAAAAD
 </code></pre></div>
-<p>From the previous section, we know that <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341"><code>uart_write</code></a>, should call…</p>
+<p>From the QEMU Log, we know that <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> (print to Serial Console) calls…</p>
 <ul>
 <li>
-<p><code>A</code>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L150-L286"><code>uart_putxmitchar</code></a> which calls…</p>
+<p>[<code>A</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286"><strong>uart_putxmitchar</strong></a> (write to Serial Buffer), which calls…</p>
 </li>
 <li>
-<p><code>D</code>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial_io.c#L42-L107"><code>uart_xmitchars</code></a> which calls…</p>
-</li>
-<li>
-<p><code>E</code>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial_io.c#L63-L68"><code>uart_txready</code></a> and…</p>
-<p><code>F</code>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/uart_16550.c#L1542-L1556"><code>u16550_send</code></a></p>
+<p>[<code>D</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> (print the Serial Buffer), but wait…</p>
 </li>
 </ul>
-<p>BUT from the above Star64 Log, we see that <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial_io.c#L63-L68"><code>uart_txready</code></a> is NOT Ready.</p>
-<p>That’s why NuttX Star64 doesn’t call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/uart_16550.c#L1542-L1556"><code>u16550_send</code></a> to print the output.</p>
-<p><em>Is our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/hardware/qemu_rv_memorymap.h#L27-L33"><strong>Interrupt Controller</strong></a> OK?</em></p>
-<p>NuttX Star64 doesn’t respond to UART Input. We’ll check why in a while.</p>
+<p><em>Something looks different from QEMU?</em></p>
+<p>Yeah these are missing from the Star64 Log…</p>
+<ul>
+<li>
+<p>[<code>E</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68"><strong>uart_txready</strong></a> (check for UART ready) and…</p>
+</li>
+<li>
+<p>[<code>F</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587"><strong>u16550_send</strong></a> (write to UART output)</p>
+</li>
+</ul>
+<p>Which means that UART is <strong>NOT ready to transmit</strong>!</p>
+<p><em>What happens next?</em></p>
+<p>We said earlier that UART will trigger a <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1628"><strong>Transmit Ready Interrupt</strong></a> when it’s ready to transmit more data.</p>
+<p>(Which triggers our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013"><strong>UART Interrupt Handler</strong></a> that calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> to send more data)</p>
+<p>But NuttX IRQ 57 is <strong>never triggered</strong> in the Star64 Log!</p>
+<p><em>There’s a problem with our Interrupt Controller?</em></p>
+<p>We checked the Star64 <strong>Interrupt Settings</strong> and <strong>Memory Map</strong>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-09f20ae7a4a374d390f5f93d478e820039f86256f7cdcce609996c9f99c71501"><strong>irq.h</strong></a>: Map RISC-V IRQ to NuttX IRQ</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-1d49cde8904f634c8963839554b7b626fd9083cf4205814b4e949630dc0a7dda"><strong>qemu_rv_memorymap.h</strong></a>: PLIC Address</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-0cb58f007c24e42ac3f868ec24239c5e1863ebbb72dfb995840bc9b80ad82723"><strong>board_memorymap.h</strong></a>: Memory Map</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-4018c37bf9b08236b37a84273281d5511d48596be9e0e4c0980d730aa95dbbe8"><strong>knsh64/defconfig</strong></a>: Memory Map</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html">(See the <strong>JH7110 U74 Memory Map</strong>)</a></p>
+</li>
+</ul>
+<p>But everything looks OK!</p>
+<p>Maybe we got the wrong UART IRQ Number? Let’s verify…</p>
+<h1 id="star64-uart-interrupt"><a href="#star64-uart-interrupt">5 Star64 UART Interrupt</a></h1>
+<p>TODO</p>
 <p><em>Is the UART IRQ Number correct?</em></p>
 <p>Star64 UART is <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html">RISC-V IRQ 32</a>, which becomes NuttX IRQ 57 (32 + 25).</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/arch/risc-v/include/irq.h#L75-L86">(RISCV_IRQ_EXT = RISCV_IRQ_SEXT = 16 + 9 = 25)</a></p>
@@ -399,7 +428,7 @@ up_enable_irq: extirq=63, RISCV_IRQ_EXT=25
         }
 </code></pre></div>
 <p>Now we study the NuttX Code for Platform-Level Interrupt Controller…</p>
-<h1 id="platform-level-interrupt-controller-for-star64"><a href="#platform-level-interrupt-controller-for-star64">5 Platform-Level Interrupt Controller for Star64</a></h1>
+<h1 id="platform-level-interrupt-controller-for-star64"><a href="#platform-level-interrupt-controller-for-star64">6 Platform-Level Interrupt Controller for Star64</a></h1>
 <p>TODO</p>
 <p>The Platform-Level Interrupt Controller (PLIC) handles Global Interrupts triggered by Peripherals (like UART).</p>
 <p>(PLIC works like Arm’s Global Interrupt Controller)</p>
@@ -487,7 +516,7 @@ up_enable_irq: extirq=63, RISCV_IRQ_EXT=25
 <p><img src="https://lupyuen.github.io/images/plic-hart.png" alt="PLIC in JH7110 (U74) SoC" /></p>
 <p>TODO: Do we need to handle CLINT?</p>
 <p>Let’s check that the RISC-V Interrupts are delegated correctly…</p>
-<h1 id="delegate-machine-mode-interrupts-to-supervisor-mode"><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">6 Delegate Machine-Mode Interrupts to Supervisor-Mode</a></h1>
+<h1 id="delegate-machine-mode-interrupts-to-supervisor-mode"><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">7 Delegate Machine-Mode Interrupts to Supervisor-Mode</a></h1>
 <p>TODO</p>
 <p><em>NuttX runs in RISC-V Supervisor Mode, which can’t handle Interrupts directly. (Needs Machine Mode) How can we be sure that the RISC-V Interrupts are correctly handled in Supervisor Mode?</em></p>
 <p>From <a href="https://sifive.cdn.prismic.io/sifive/0d163928-2128-42be-a75a-464df65e04e0_sifive-interrupt-cookbook.pdf">SiFive Interrupt Cookbook</a>, Page 15:</p>
@@ -544,7 +573,7 @@ Boot HART MEDELEG: 0x000000000000b109
 <li>Timer Interrupt: Interrupt ID: 5</li>
 <li>External Interrupt: Interrupt ID: 9</li>
 </ul>
-<h1 id="nuttx-star64-handles-uart-interrupts"><a href="#nuttx-star64-handles-uart-interrupts">7 NuttX Star64 handles UART Interrupts</a></h1>
+<h1 id="nuttx-star64-handles-uart-interrupts"><a href="#nuttx-star64-handles-uart-interrupts">8 NuttX Star64 handles UART Interrupts</a></h1>
 <p>TODO</p>
 <p><em>After fixing PLIC Interrupts on Star64… Are UART Interrupts OK?</em></p>
 <p>UART Interrupts at RISC-V IRQ 32 (NuttX IRQ 57) are now OK yay! But still no UART Output though…</p>
@@ -790,7 +819,7 @@ if ((status &amp; UART_IIR_INTSTATUS) != 0)
 <p>TODO: Check <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S">Linux Boot Code</a></p>
 <p>TODO: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/sbi.c">Linux SBI Interface</a></p>
 <p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_exception_m.S#L64">Handle Machine Exception</a></p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
