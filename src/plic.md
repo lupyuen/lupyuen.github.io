@@ -164,7 +164,11 @@ This says that the NuttX Kernel calls [__uart_write__](https://github.com/lupyue
 
 [`F`] [__u16550_send__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587) (write to UART output)
 
-In short, this happens when a NuttX App prints to the Serial Console...
+And that's what happens when a NuttX App prints to the Serial Console (via __printf__)...
+
+1.  NuttX App (in User Mode) makes a __System Call__ to NuttX Kernel (in Supervisor Mode)
+
+    [(__RISCV_IRQ_ECALLU__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L52-L74)
 
 1.  NuttX Kernel writes the output to the __Serial Buffer__
 
