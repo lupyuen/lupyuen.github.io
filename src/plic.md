@@ -98,20 +98,18 @@ _What happens in NuttX Serial Output?_
 To understand how NuttX Apps print to the Serial Console (via __printf__), we add Debug Logs to __NuttX QEMU__ (pic below)...
 
 ```text
-ABCnx_start: Entry
+ABC
+nx_start: Entry
 up_irq_enable: 
 up_enable_irq: irq=17
 up_enable_irq: RISCV_IRQ_SOFT=17
+
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 up_enable_irq: irq=35
 up_enable_irq: extirq=10, RISCV_IRQ_EXT=25
 work_start_lowpri: Starting low-priority kernel worker thread(s)
-board_late_initialize: 
 nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
 up_exit: TCB=0x802088d0 exiting
 ```
 
@@ -252,50 +250,32 @@ TODO
 In the previous section we added logs to UART I/O in NuttX QEMU. We add the same logs to NuttX Star64 and compare...
 
 ```text
-123067BCnx_start: Entry
-up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
 up_enable_irq: irq=57
 up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
 work_start_lowpri: Starting low-priority kernel worker thread(s)
-board_late_initialize: 
 nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
 nx_start_application: ret=3
 up_exit: TCB=0x404088d0 exiting
-$%&riscv_doirq: irq=8
-$%&riscv_doirq: irq=8
-$%&riscv_doirq: irq=8
-...
-$%&riscv_doirq: irq=8
-$%&riscv_doirq: irq=8
-$%&riscv_doirq: irq=8
-uart_write (0xc0200428):
-0000  2a 2a 2a 6d 61 69 6e 0a                          ***main.        
-AAAAAAAAAD$%&riscv_doirq: irq=8
-$%&riscv_doirq: irq=8
-$%&riscv_doirq: irq=8
+```
+
+[(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#compare-uart-output-star64-vs-qemu)
+
+TODO
+
+```text
 $%&riscv_doirq: irq=8
 ...
 $%&riscv_doirq: irq=8
-$%&riscv_doirq: irq=8
-$%&riscv_doirq: irq=8
-uart_write (0xc000a610):
-0000  0a 4e 75 74 74 53 68 65 6c 6c 20 28 4e 53 48 29  .NuttShell (NSH)
-0010  20 4e 75 74 74 58 2d 31 32 2e 30 2e 33 0a         NuttX-12.0.3.  
-AAAAAAAAAAAAAAAriscv_doirq: irq=8
+```
+
+TODO
+
+```text
+riscv_doirq: irq=8
 uart_write (0xc0015338):
 0000  6e 73 68 3e 20                                   nsh>            
-AAAAAD$%&riscv_doirq: irq=8
-uart_write (0xc0015310):
-0000  1b 5b 4b                                         .[K             
-AAAD$%&riscv_doirq: irq=8
-nx_start: CPU0: Beginning Idle Loop
+
+AAAAAD
 ```
 
 From the previous section, we know that [`uart_write`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341), should call...
