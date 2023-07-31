@@ -68,8 +68,8 @@
     <h1 class="title">Star64 JH7110 + NuttX RTOS: Console I/O and PLIC Interrupts</h1>
     <nav id="TOC"><ul>
 <li><a href="#no-console-output-from-nuttx-apps">1 No Console Output from NuttX Apps</a><ul></ul></li>
-<li><a href="#uart-output-in-nuttx-qemu">2 UART Output in NuttX QEMU</a><ul></ul></li>
-<li><a href="#compare-uart-output-star64-vs-qemu">3 Compare UART Output: Star64 vs QEMU</a><ul></ul></li>
+<li><a href="#serial-io-in-nuttx-qemu">2 Serial I/O in NuttX QEMU</a><ul></ul></li>
+<li><a href="#compare-serial-io-star64-vs-qemu">3 Compare Serial I/O: Star64 vs QEMU</a><ul></ul></li>
 <li><a href="#platform-level-interrupt-controller-for-star64">4 Platform-Level Interrupt Controller for Star64</a><ul></ul></li>
 <li><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">5 Delegate Machine-Mode Interrupts to Supervisor-Mode</a><ul></ul></li>
 <li><a href="#nuttx-star64-handles-uart-interrupts">6 NuttX Star64 handles UART Interrupts</a><ul></ul></li>
@@ -83,7 +83,7 @@
 <p>Why there’s <strong>No Console Output</strong> from NuttX Apps</p>
 </li>
 <li>
-<p>How <strong>UART I/O</strong> works in NuttX QEMU</p>
+<p>How <strong>Serial I/O</strong> works in NuttX QEMU</p>
 </li>
 <li>
 <p>How UART differs for <strong>Star64 vs QEMU</strong></p>
@@ -144,7 +144,7 @@ uart_write (0xc0015310):
 <p>Hence <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> is somehow broken for all NuttX Apps on Star64.</p>
 <p>Let’s find out why…</p>
 <p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="NuttX Star64 with Initial RAM Disk" /></p>
-<h1 id="uart-output-in-nuttx-qemu"><a href="#uart-output-in-nuttx-qemu">2 UART Output in NuttX QEMU</a></h1>
+<h1 id="serial-io-in-nuttx-qemu"><a href="#serial-io-in-nuttx-qemu">2 Serial I/O in NuttX QEMU</a></h1>
 <p>TODO</p>
 <p>To understand how UART Output (<code>printf</code>) works in NuttX Apps (and NuttX Shell), we add logs to NuttX QEMU…</p>
 <div class="example-wrap"><pre class="language-text"><code>ABCnx_start: Entry
@@ -237,7 +237,7 @@ $%^&amp;riscv_doirq: irq=35
 <p>This happens when the NuttX App (User Mode) calls a System Function in NuttX Kernel (Supervisor Mode).</p>
 <p><img src="https://lupyuen.github.io/images/plic-qemu.png" alt="UART Output in NuttX QEMU" /></p>
 <p>Now we compare the above with Star64…</p>
-<h1 id="compare-uart-output-star64-vs-qemu"><a href="#compare-uart-output-star64-vs-qemu">3 Compare UART Output: Star64 vs QEMU</a></h1>
+<h1 id="compare-serial-io-star64-vs-qemu"><a href="#compare-serial-io-star64-vs-qemu">3 Compare Serial I/O: Star64 vs QEMU</a></h1>
 <p>TODO</p>
 <p>In the previous section we added logs to UART I/O in NuttX QEMU. We add the same logs to NuttX Star64 and compare…</p>
 <div class="example-wrap"><pre class="language-text"><code>123067BCnx_start: Entry
