@@ -101,13 +101,11 @@ To understand how NuttX Apps print to the Serial Console (via __printf__), we ad
 ABC
 nx_start: Entry
 up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
+up_enable_irq: irq=17, RISCV_IRQ_SOFT=17
 
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
-up_enable_irq: irq=35
-up_enable_irq: extirq=10, RISCV_IRQ_EXT=25
+up_enable_irq: irq=35, extirq=10, RISCV_IRQ_EXT=25
 work_start_lowpri: Starting low-priority kernel worker thread(s)
 nx_start_application: Starting init task: /system/bin/init
 up_exit: TCB=0x802088d0 exiting
@@ -245,17 +243,15 @@ Now we compare the above QEMU Log with Star64...
 
 # Star64 vs QEMU Serial I/O
 
-TODO
+_Earlier we said that Star64 NuttX couldn't print to Serial Output. Why?_
 
-In the previous section we added logs to UART I/O in NuttX QEMU. We add the same logs to NuttX Star64 and compare...
+Let's observe the __Star64 Debug Log__ (and compare with QEMU Log)...
 
 ```text
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nx_start_application: Starting init task: /system/bin/init
-nx_start_application: ret=3
-up_exit: TCB=0x404088d0 exiting
+up_enable_irq:
+  irq=57
+  extirq=32
+  RISCV_IRQ_EXT=25
 ```
 
 [(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#compare-uart-output-star64-vs-qemu)
