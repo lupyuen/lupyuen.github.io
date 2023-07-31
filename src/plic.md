@@ -227,21 +227,25 @@ That triggers a call to...
 
 - [__irq_dispatch__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/sched/irq/irq_dispatch.c#L112-L191) (Dispatch NuttX Interrupt), which calls...
 
-- [`#`] [__u16550_interrupt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L918-L1021) (UART Interrupt Handler)
+- [`#`] [__u16550_interrupt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L918-L1004) (UART Interrupt Handler), which calls...
 
-TODO
+- [__uart_recvchars__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L109-L270) (write to Serial Receive Buffer)
 
-_What is `riscv_doirq: irq=35`?_
+Looks complicated, but that's how Serial I/O works with Buffering and Interrupts in NuttX!
 
-This is the Interrupt triggered by UART Input.
+_Why 2 Interrupts? IRQ 35 and IRQ 8?_
 
-QEMU UART is at [RISC-V IRQ 10](https://github.com/lupyuen/nuttx-star64/blob/main/qemu-riscv64.dts#L225-L226), which becomes NuttX IRQ 35 (10 + 25).
+- __NuttX IRQ 35__ (RISC-V IRQ 10) is the __QEMU UART Interrupt__ that's triggered when a character is received
 
-[(RISCV_IRQ_EXT = RISCV_IRQ_SEXT = 16 + 9 = 25)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L75-L86)
+  (That's us typing something)
 
-Now we compare the above with Star64...
+- __NuttX IRQ 8__ [(__RISCV_IRQ_ECALLU__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L52-L74) happens when a NuttX App makes a __System Call__ to NuttX Kernel
 
-# Compare Serial I/O: Star64 vs QEMU
+  (NuttX Shell calls NuttX Kernel to echo the key pressed)
+
+Now we compare the above QEMU Log with Star64...
+
+# Star64 vs QEMU Serial I/O
 
 TODO
 
