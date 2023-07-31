@@ -55,7 +55,7 @@ _Maybe NuttX Shell wasn't started correctly?_
 
 Let's find out! When NuttX Apps (and NuttX Shell) print to the Serial Console (via __`printf`__), this function will be called in the NuttX Kernel: [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341)
 
-Thus add Debug Logs to [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341). Something interesting appears...
+Thus we add Debug Logs to [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341). Something interesting happens...
 
 ```text
 uart_write (0xc000a610):
