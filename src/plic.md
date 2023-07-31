@@ -156,9 +156,9 @@ FNFuFtFtFSFhFeFlFlF F(FNFSFHF)F FNFuFtFtFXF-F1F2F.F0F.F3F
 
 This says that the NuttX Kernel calls [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341) (print to Serial Console), which calls...
 
-[`A`] [__uart_putxmitchar__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286) (write to buffer), which calls...
+[`A`] [__uart_putxmitchar__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286) (write to Serial Buffer), which calls...
 
-[`D`] [__uart_xmitchars__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107) (print buffer), which calls...
+[`D`] [__uart_xmitchars__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107) (print the Serial Buffer), which calls...
 
 [`E`] [__uart_txready__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68) (check for UART ready) and...
 
@@ -168,7 +168,7 @@ And that's what happens when a NuttX App prints to the Serial Console (via __pri
 
 1.  NuttX App (in User Mode) makes a __System Call__ to NuttX Kernel (in Supervisor Mode)
 
-    [(__RISCV_IRQ_ECALLU__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L52-L74)
+    [(__uart_write__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341)
 
 1.  NuttX Kernel writes the output to the __Serial Buffer__
 
