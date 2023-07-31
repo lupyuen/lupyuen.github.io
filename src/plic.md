@@ -415,28 +415,28 @@ The PLIC Memory Map is below...
 
 From [SiFive U74-MC Core Complex Manual](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) Page 193 (PLIC Memory Map)
 
-| Address | Width | Attr | Description
-|---------|-------|------|------------
-| 0x0C00_0004 | 4B | RW | Source 1 priority
-| 0x0C00_0220 | 4B | RW | Source 136 priority
-| 0x0C00_1000 | 4B | RO | Start of pending array
-| 0x0C00_1010 | 4B | RO | Last word of pending array
-| 0x0C00_2100 | 4B | RW | Start Hart 1 S-Mode interrupt enables
-| 0x0C00_2110 | 4B | RW | End Hart 1 S-Mode interrupt enables
-| 0x0C00_2200 | 4B | RW | Start Hart 2 S-Mode interrupt enables
-| 0x0C00_2210 | 4B | RW | End Hart 2 S-Mode interrupt enables
-| 0x0C00_2300 | 4B | RW | Start Hart 3 S-Mode interrupt enables
-| 0x0C00_2310 | 4B | RW | End Hart 3 S-Mode interrupt enables
-| 0x0C00_2400 | 4B | RW | Start Hart 4 S-Mode interrupt enables
-| 0x0C00_2410 | 4B | RW | End Hart 4 S-Mode interrupt enables
-| 0x0C20_2000 | 4B | RW | Hart 1 S-Mode priority threshold
-| 0x0C20_2004 | 4B | RW | Hart 1 S-Mode claim/complete 
-| 0x0C20_4000 | 4B | RW | Hart 2 S-Mode priority threshold
-| 0x0C20_4004 | 4B | RW | Hart 2 S-Mode claim/complete
-| 0x0C20_6000 | 4B | RW | Hart 3 S-Mode priority threshold
-| 0x0C20_6004 | 4B | RW | Hart 3 S-Mode claim/complete 
-| 0x0C20_8000 | 4B | RW | Hart 4 S-Mode priority threshold
-| 0x0C20_8004 | 4B | RW | Hart 4 S-Mode claim/complete
+| Address | Attr | Description
+|---------|:----:|------------
+| 0x0C00_0004 | RW | Source 1 Priority
+| 0x0C00_0220 | RW | Source 136 Priority
+| 0x0C00_1000 | RO | Start of Pending Array
+| 0x0C00_1010 | RO | Last word of Pending Array
+| 0x0C00_2100 | RW | Start of Hart 1 S-Mode Interrupt Enables
+| 0x0C00_2110 | RW | End of Hart 1 S-Mode Interrupt Enables
+| 0x0C00_2200 | RW | Start of Hart 2 S-Mode Interrupt Enables
+| 0x0C00_2210 | RW | End of Hart 2 S-Mode Interrupt Enables
+| 0x0C00_2300 | RW | Start of Hart 3 S-Mode Interrupt Enables
+| 0x0C00_2310 | RW | End of Hart 3 S-Mode Interrupt Enables
+| 0x0C00_2400 | RW | Start of Hart 4 S-Mode Interrupt Enables
+| 0x0C00_2410 | RW | End of Hart 4 S-Mode Interrupt Enables
+| 0x0C20_2000 | RW | Hart 1 S-Mode Priority Threshold
+| 0x0C20_2004 | RW | Hart 1 S-Mode Claim / Complete 
+| 0x0C20_4000 | RW | Hart 2 S-Mode Priority Threshold
+| 0x0C20_4004 | RW | Hart 2 S-Mode Claim / Complete
+| 0x0C20_6000 | RW | Hart 3 S-Mode Priority Threshold
+| 0x0C20_6004 | RW | Hart 3 S-Mode Claim / Complete 
+| 0x0C20_8000 | RW | Hart 4 S-Mode Priority Threshold
+| 0x0C20_8004 | RW | Hart 4 S-Mode Claim / Complete
 
 There are 5 Harts in JH7110...
 - __Hart 0:__ S7 Core (the limited core, unused)
@@ -460,14 +460,14 @@ Based on the above PLIC Memory Map, we fix the PLIC Addresses in NuttX to use Ha
 // #define QEMU_RV_PLIC_PENDING1    (QEMU_RV_PLIC_BASE + 0x001000)
 
 #ifdef CONFIG_ARCH_USE_S_MODE
-// | 0x0C00_2100 | 4B | RW | Start Hart 1 S-Mode interrupt enables
+// | 0x0C00_2100 | 4B | RW | Start Hart 1 S-Mode Interrupt Enables
 #  define QEMU_RV_PLIC_ENABLE1   (QEMU_RV_PLIC_BASE + 0x002100)
 #  define QEMU_RV_PLIC_ENABLE2   (QEMU_RV_PLIC_BASE + 0x002104)
 
-// | 0x0C20_2000 | 4B | RW | Hart 1 S-Mode priority threshold
+// | 0x0C20_2000 | 4B | RW | Hart 1 S-Mode Priority Threshold
 #  define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x202000)
 
-// | 0x0C20_2004 | 4B | RW | Hart 1 S-Mode claim/complete 
+// | 0x0C20_2004 | 4B | RW | Hart 1 S-Mode Claim / Complete 
 #  define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x202004)
 
 // Previously:
@@ -858,7 +858,7 @@ We tried to disable PLIC Interrupts for Machine Mode: [qemu_rv_irq.c](https://gi
 
 ```c
   // Disable All Global Interrupts for Hart 1 Machine-Mode
-  // | 0x0C00_2080 | 4B | RW | Start Hart 1 M-Mode interrupt enables
+  // | 0x0C00_2080 | 4B | RW | Start Hart 1 M-Mode Interrupt Enables
   #define QEMU_RV_PLIC_ENABLE1_MMODE   (QEMU_RV_PLIC_BASE + 0x002080)
   #define QEMU_RV_PLIC_ENABLE2_MMODE   (QEMU_RV_PLIC_BASE + 0x002084)
   putreg32(0x0, QEMU_RV_PLIC_ENABLE1_MMODE);
