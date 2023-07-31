@@ -2,15 +2,27 @@
 
 📝 _8 Aug 2023_
 
-![TODO](https://lupyuen.github.io/images/plic-title.jpg)
+![Platform-Level Interrupt Controller in JH7110 (U74) SoC](https://lupyuen.github.io/images/plic-title.jpg)
 
-TODO
-
-[__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer. (Pic below)
+We're almost ready with our barebones port of [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/nuttx2) (RTOS) to [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer! (Pic below)
 
 (Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
 
-[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx2) 
+In this article, we find out...
+
+- Why there's __No Console Output__ from NuttX Apps
+
+- How __UART I/O__ works in NuttX QEMU
+
+- How UART differs for __Star64 vs QEMU__
+
+- What's the __Platform-Level Interrupt Controller__ (PLIC)
+
+- How we delegate __Machine-Mode Interrupts to Supervisor-Mode__
+
+- How NuttX Star64 handles __UART Interrupts__
+
+- Which leads to a new problem: 16550 UART Controller fires too many __Spurious Interrupts__!
 
 ![Star64 RISC-V SBC](https://lupyuen.github.io/images/nuttx2-title.jpg)
 
@@ -357,7 +369,7 @@ We update the [NuttX PLIC Code](https://github.com/lupyuen2/wip-pinephone-nuttx/
 
 - [PLIC Spec](https://github.com/riscv/riscv-plic-spec/blob/master/riscv-plic.adoc)
 
-![PLIC in JH7110 (U74) SoC](https://lupyuen.github.io/images/plic-title.jpg)
+![Platform-Level Interrupt Controller in JH7110 (U74) SoC](https://lupyuen.github.io/images/plic-title.jpg)
 
 _How to configure PLIC to forward Interrupts to the Harts?_
 
