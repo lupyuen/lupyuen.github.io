@@ -400,9 +400,9 @@ AAAAAD
 <p><a href="https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller">(PLIC works like Arm’s <strong>Global Interrupt Controller</strong>)</a></p>
 </li>
 </ul>
-<p>The pic above shows how we may configure Star64’s PLIC to route Interrupts to each of the 5 RISC-V Cores.</p>
-<p><em>There are 5 RISC-V Cores in Star64?</em></p>
-<p>According to the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a> (Page 96), these are the 5 RISC-V Cores in JH7110…</p>
+<p>The pic above shows how we may configure Star64’s PLIC to <strong>route Interrupts</strong> to each of the 5 RISC-V Cores.</p>
+<p><em>Wow there are 5 RISC-V Cores in Star64?</em></p>
+<p>According to the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a> (Page 96), these are the RISC-V Cores in JH7110…</p>
 <ul>
 <li>
 <p><strong>Hart 0:</strong> S7 Monitor Core (RV64IMACB)</p>
@@ -414,13 +414,12 @@ AAAAAD
 <p>NuttX boots on the <strong>First Application Core</strong>, which is <strong>Hart 1</strong>.</p>
 <p>(Though we pass the Hart ID to NuttX as Hart 0, since NuttX expects <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L104-L110"><strong>Hart ID to start at 0</strong></a>)</p>
 <p><em>So we’ll route Interrupts to Hart 1?</em></p>
-<p>Yep, later we might add <strong>Harts 2 to 4</strong> after booting NuttX on the RISC-V Cores.</p>
+<p>Yep, later we might add <strong>Harts 2 to 4</strong> when we boot NuttX on the other Application Cores.</p>
 <p>(But probably not Hart 0, since it’s a special limited Monitor Core)</p>
-<p>TODO</p>
-<p>We update the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L45-L214">NuttX PLIC Code</a> based on these docs…</p>
+<p>Let’s check our NuttX PLIC Code…</p>
 <h2 id="plic-memory-map"><a href="#plic-memory-map">6.1 PLIC Memory Map</a></h2>
+<p><em>How do we program the PLIC?</em></p>
 <p>TODO</p>
-<p><em>How to configure PLIC to forward Interrupts to the Harts?</em></p>
 <p>The PLIC Memory Map is below…</p>
 <p>From <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">SiFive U74-MC Core Complex Manual</a> Page 193 (PLIC Memory Map)</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
@@ -429,7 +428,9 @@ AAAAAD
 <tr><td style="text-align: center">0C00_1000</td><td style="text-align: center">RO</td><td style="text-align: left">Start of Pending Array</td></tr>
 <tr><td style="text-align: center">0C00_1010</td><td style="text-align: center">RO</td><td style="text-align: left">Last word of Pending Array</td></tr>
 </tbody></table>
-</div><div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
+</div>
+<p>TODO</p>
+<div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: center">0C00_2100</td><td style="text-align: center">RW</td><td style="text-align: left">Start of Hart 1 S-Mode Interrupt Enables</td></tr>
 <tr><td style="text-align: center">0C00_2110</td><td style="text-align: center">RW</td><td style="text-align: left">End of Hart 1 S-Mode Interrupt Enables</td></tr>
 <tr><td style="text-align: center">0C00_2200</td><td style="text-align: center">RW</td><td style="text-align: left">Start of Hart 2 S-Mode Interrupt Enables</td></tr>
@@ -439,7 +440,9 @@ AAAAAD
 <tr><td style="text-align: center">0C00_2400</td><td style="text-align: center">RW</td><td style="text-align: left">Start of Hart 4 S-Mode Interrupt Enables</td></tr>
 <tr><td style="text-align: center">0C00_2410</td><td style="text-align: center">RW</td><td style="text-align: left">End of Hart 4 S-Mode Interrupt Enables</td></tr>
 </tbody></table>
-</div><div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
+</div>
+<p>TODO</p>
+<div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: center">0C20_2000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 1 S-Mode Priority Threshold</td></tr>
 <tr><td style="text-align: center">0C20_2004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 1 S-Mode Claim / Complete</td></tr>
 <tr><td style="text-align: center">0C20_4000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 2 S-Mode Priority Threshold</td></tr>
@@ -450,40 +453,28 @@ AAAAAD
 <tr><td style="text-align: center">0C20_8004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 4 S-Mode Claim / Complete</td></tr>
 </tbody></table>
 </div>
-<p>There are 5 Harts in JH7110…</p>
-<ul>
-<li><strong>Hart 0:</strong> S7 Core (the limited core, unused)</li>
-<li><strong>Harts 1 to 4:</strong> U7 Cores (the full cores)</li>
-</ul>
-<p>According to OpenSBI, we are now running on Hart 1. (Sounds right)</p>
-<p>(We pass the Hart ID to NuttX as Hart 0, since NuttX expects Hart ID to start at 0)</p>
 <p>Based on the above PLIC Memory Map, we fix the PLIC Addresses in NuttX to use Hart 1: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L59">qemu_rv_plic.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// | 0x0C00_0004 | 4B | RW | Source 1 priority
-#define QEMU_RV_PLIC_PRIORITY    (QEMU_RV_PLIC_BASE + 0x000000)
-
-// | 0x0C00_1000 | 4B | RO | Start of pending array
-#define QEMU_RV_PLIC_PENDING1    (QEMU_RV_PLIC_BASE + 0x001000)
-
-// Previously:
-// #define QEMU_RV_PLIC_PRIORITY    (QEMU_RV_PLIC_BASE + 0x000000)
-// #define QEMU_RV_PLIC_PENDING1    (QEMU_RV_PLIC_BASE + 0x001000)
+<div class="example-wrap"><pre class="language-c"><code>// PLIC Addresses for NuttX Star64:
+// | 0x0C00_0004 | RW | Source 1 priority
+// | 0x0C00_1000 | RO | Start of pending array
+#define QEMU_RV_PLIC_PRIORITY (QEMU_RV_PLIC_BASE + 0x000000)
+#define QEMU_RV_PLIC_PENDING1 (QEMU_RV_PLIC_BASE + 0x001000)
 
 #ifdef CONFIG_ARCH_USE_S_MODE
-// | 0x0C00_2100 | 4B | RW | Start Hart 1 S-Mode Interrupt Enables
-#  define QEMU_RV_PLIC_ENABLE1   (QEMU_RV_PLIC_BASE + 0x002100)
-#  define QEMU_RV_PLIC_ENABLE2   (QEMU_RV_PLIC_BASE + 0x002104)
+// | 0x0C00_2100 | RW | Start Hart 1 S-Mode Interrupt Enables
+#define QEMU_RV_PLIC_ENABLE1 (QEMU_RV_PLIC_BASE + 0x002100)
+#define QEMU_RV_PLIC_ENABLE2 (QEMU_RV_PLIC_BASE + 0x002104)
 
-// | 0x0C20_2000 | 4B | RW | Hart 1 S-Mode Priority Threshold
-#  define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x202000)
+// | 0x0C20_2000 | RW | Hart 1 S-Mode Priority Threshold
+// | 0x0C20_2004 | RW | Hart 1 S-Mode Claim / Complete 
+#define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x202000)
+#define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x202004)
 
-// | 0x0C20_2004 | 4B | RW | Hart 1 S-Mode Claim / Complete 
-#  define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x202004)
-
-// Previously:
-// #  define QEMU_RV_PLIC_ENABLE1   (QEMU_RV_PLIC_BASE + 0x002080)
-// #  define QEMU_RV_PLIC_ENABLE2   (QEMU_RV_PLIC_BASE + 0x002084)
-// #  define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x201000)
-// #  define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x201004)
+// Previously for NuttX QEMU:
+// #define QEMU_RV_PLIC_ENABLE1   (QEMU_RV_PLIC_BASE + 0x002080)
+// #define QEMU_RV_PLIC_ENABLE2   (QEMU_RV_PLIC_BASE + 0x002084)
+// #define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x201000)
+// #define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x201004)
 </code></pre></div>
 <p><em>What about the PLIC Base Address?</em></p>
 <p>According to <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html">U74 Memory Map</a>, the Base Addresses are:</p>
@@ -494,6 +485,7 @@ AAAAAD
 <div class="example-wrap"><pre class="language-c"><code>#define QEMU_RV_CLINT_BASE   0x02000000
 #define QEMU_RV_PLIC_BASE    0x0c000000
 </code></pre></div><h2 id="enable-plic-interrupts"><a href="#enable-plic-interrupts">6.2 Enable PLIC Interrupts</a></h2>
+<p><em>How to configure PLIC to forward Interrupts to the Harts?</em></p>
 <p>TODO: Priority</p>
 <h2 id="handle-plic-interrupts"><a href="#handle-plic-interrupts">6.3 Handle PLIC Interrupts</a></h2>
 <p>TODO</p>
