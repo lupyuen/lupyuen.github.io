@@ -67,7 +67,7 @@
 
     <h1 class="title">Star64 JH7110 + NuttX RTOS: Console I/O and PLIC Interrupts</h1>
     <nav id="TOC"><ul>
-<li><a href="#no-uart-output-from-nuttx-shell">1 No UART Output from NuttX Shell</a><ul></ul></li>
+<li><a href="#no-console-output-from-nuttx-apps">1 No Console Output from NuttX Apps</a><ul></ul></li>
 <li><a href="#uart-output-in-nuttx-qemu">2 UART Output in NuttX QEMU</a><ul></ul></li>
 <li><a href="#compare-uart-output-star64-vs-qemu">3 Compare UART Output: Star64 vs QEMU</a><ul></ul></li>
 <li><a href="#platform-level-interrupt-controller-for-star64">4 Platform-Level Interrupt Controller for Star64</a><ul></ul></li>
@@ -102,10 +102,28 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/nuttx2-title.jpg" alt="Star64 RISC-V SBC" /></p>
-<h1 id="no-uart-output-from-nuttx-shell"><a href="#no-uart-output-from-nuttx-shell">1 No UART Output from NuttX Shell</a></h1>
-<p>TODO</p>
-<p>From the previous article, we found out that NuttX Shell didn’t appear on Star64 JH7110 SBC.</p>
-<p>When we log <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341"><code>uart_write</code></a>, we see that the NuttX Shell is actually started!</p>
+<h1 id="no-console-output-from-nuttx-apps"><a href="#no-console-output-from-nuttx-apps">1 No Console Output from NuttX Apps</a></h1>
+<p>At the end of <a href="https://lupyuen.github.io/articles/semihost"><strong>our previous article</strong></a>, NuttX seems to boot fine on Star64 (pic below)…</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+123067DFHBCI
+nx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+board_late_initialize: 
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nx_start_application: ret=3
+up_exit: TCB=0x404088d0 exiting
+nx_start: CPU0: Beginning Idle Loop
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Output Log</strong>)</a></p>
+<p>But <strong>NuttX Shell</strong> doesn’t appear!</p>
+<p><em>Maybe NuttX Shell wasn’t started correctly?</em></p>
+<p>Let’s find out! When NuttX Apps (and NuttX Shell) print to the Serial Console (via <strong><code>printf</code></strong>), this function will be called in the NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a></p>
+<p>Thus add Debug Logs to <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a>. Something interesting appears…</p>
 <div class="example-wrap"><pre class="language-text"><code>uart_write (0xc000a610):
 0000  0a 4e 75 74 74 53 68 65 6c 6c 20 28 4e 53 48 29  .NuttShell (NSH)
 0010  20 4e 75 74 74 58 2d 31 32 2e 30 2e 33 0a         NuttX-12.0.3.  
@@ -116,9 +134,13 @@ uart_write (0xc0015338):
 uart_write (0xc0015310):
 0000  1b 5b 4b                                         .[K             
 </code></pre></div>
-<p>Just that the NuttX Shell couldn’t produce any UART Output.</p>
+<p>This says that NuttX Shell is actually started!</p>
+<p>Just that NuttX Shell <strong>couldn’t produce any Console Output</strong>.</p>
+<p><em>But we see other messages from NuttX Kernel!</em></p>
+<p>TODO</p>
 <p>(This happens to all NuttX Apps, but not to NuttX Kernel)</p>
 <p>Let’s find out why, by tracing the UART Output in NuttX QEMU…</p>
+<p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="NuttX Star64 with Initial RAM Disk" /></p>
 <h1 id="uart-output-in-nuttx-qemu"><a href="#uart-output-in-nuttx-qemu">2 UART Output in NuttX QEMU</a></h1>
 <p>TODO</p>
 <p>To understand how UART Output (<code>printf</code>) works in NuttX Apps (and NuttX Shell), we add logs to NuttX QEMU…</p>
