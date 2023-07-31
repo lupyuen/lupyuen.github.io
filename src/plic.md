@@ -53,7 +53,7 @@ But __NuttX Shell__ doesn't appear!
 
 _Maybe NuttX Shell wasn't started correctly?_
 
-Let's find out! When NuttX Apps (and NuttX Shell) print to the Serial Console (via __`printf`__), this function will be called in the NuttX Kernel: [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341)
+Let's find out! When NuttX Apps (and NuttX Shell) print to the Serial Console (via __printf__), this function will be called in the NuttX Kernel: [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341)
 
 Thus we add Debug Logs to [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341). Something interesting happens...
 
@@ -89,11 +89,11 @@ Let's find out why...
 
 ![NuttX Star64 with Initial RAM Disk](https://lupyuen.github.io/images/semihost-runstar64.png)
 
-# Serial I/O in NuttX QEMU
+# Serial Output in NuttX QEMU
 
-_What happens inside NuttX Serial I/O?_
+_What happens in NuttX Serial I/O?_
 
-To understand how NuttX Apps print to the Serial Console (via __`printf`__), we add Debug Logs to __NuttX QEMU__ (pic below)...
+To understand how NuttX Apps print to the Serial Console (via __printf__), we add Debug Logs to __NuttX QEMU__ (pic below)...
 
 ```text
 ABCnx_start: Entry
@@ -156,13 +156,45 @@ FNFuFtFtFSFhFeFlFlF F(FNFSFHF)F FNFuFtFtFXF-F1F2F.F0F.F3F
 
 This says that the NuttX Kernel calls [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341) (print to Serial Console), which calls...
 
-[`A`] [__uart_putxmitchar__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286) (print one character) which calls...
+[`A`] [__uart_putxmitchar__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286) (write to buffer), which calls...
 
-[`D`] [__uart_xmitchars__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107) (print to UART) which calls...
+[`D`] [__uart_xmitchars__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107) (print buffer), which calls...
 
 [`E`] [__uart_txready__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68) (check for UART ready) and...
 
 [`F`] [__u16550_send__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587) (write to UART output)
+
+In short, this happens when a NuttX App prints to the Serial Console...
+
+1.  NuttX Kernel writes the output to the __Serial Buffer__
+
+    [(__uart_putxmitchar__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286)
+
+1.  NuttX Kernel __reads the Serial Buffer__, one character at a time...
+
+    [(__uart_xmitchars__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107) 
+
+1.  If the __UART Transmit Status__ is ready...
+
+    [(__uart_txready__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68)
+
+1.  Write the character to __UART Output__
+
+    [(__u16550_send__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587)
+
+_What if UART Transmit Status is NOT ready?_
+
+UART will trigger a [__Transmit Ready Interrupt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1628) when it's ready to transmit more data.
+
+When this happens, our [__UART Interrupt Handler__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013) will call [__uart_xmitchars__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107) to send the Serial Buffer.
+
+(Which loops back to steps above)
+
+Now we walk through Serial Input...
+
+![Serial I/O in NuttX QEMU](https://lupyuen.github.io/images/plic-qemu.png)
+
+# Serial Input in NuttX QEMU
 
 TODO: Keyboard
 
@@ -194,8 +226,6 @@ This is the Interrupt triggered by UART Input.
 QEMU UART is at [RISC-V IRQ 10](https://github.com/lupyuen/nuttx-star64/blob/main/qemu-riscv64.dts#L225-L226), which becomes NuttX IRQ 35 (10 + 25).
 
 [(RISCV_IRQ_EXT = RISCV_IRQ_SEXT = 16 + 9 = 25)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L75-L86)
-
-![UART Output in NuttX QEMU](https://lupyuen.github.io/images/plic-qemu.png)
 
 Now we compare the above with Star64...
 
