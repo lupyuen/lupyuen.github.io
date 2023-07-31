@@ -147,7 +147,7 @@ uart_write (0xc0015310):
 <p>Let’s find out why…</p>
 <p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="NuttX Star64 with Initial RAM Disk" /></p>
 <h1 id="serial-output-in-nuttx-qemu"><a href="#serial-output-in-nuttx-qemu">2 Serial Output in NuttX QEMU</a></h1>
-<p><em>What happens in NuttX Serial I/O?</em></p>
+<p><em>What happens in NuttX Serial Output?</em></p>
 <p>To understand how NuttX Apps print to the Serial Console (via <strong>printf</strong>), we add Debug Logs to <strong>NuttX QEMU</strong> (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>ABCnx_start: Entry
 up_irq_enable: 
@@ -222,10 +222,11 @@ FNFuFtFtFSFhFeFlFlF F(FNFSFHF)F FNFuFtFtFXF-F1F2F.F0F.F3F
 <p>UART will trigger a <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1628"><strong>Transmit Ready Interrupt</strong></a> when it’s ready to transmit more data.</p>
 <p>When this happens, our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013"><strong>UART Interrupt Handler</strong></a> will call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> to send the Serial Buffer.</p>
 <p>(Which loops back to steps above)</p>
-<p>Now we walk through Serial Input…</p>
+<p>Now we do Serial Input…</p>
 <p><img src="https://lupyuen.github.io/images/plic-qemu.png" alt="Serial I/O in NuttX QEMU" /></p>
 <h1 id="serial-input-in-nuttx-qemu"><a href="#serial-input-in-nuttx-qemu">3 Serial Input in NuttX QEMU</a></h1>
-<p>TODO: Keyboard</p>
+<p><em>What happens when we type something in NuttX QEMU?</em></p>
+<p>Typing something in the Serial Console will trigger a <strong>UART Interrupt</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$%^&amp;riscv_doirq: irq=35
 #*ADEFa$%&amp;riscv_doirq: irq=8
 $%^&amp;riscv_doirq: irq=35
@@ -233,22 +234,26 @@ $%^&amp;riscv_doirq: irq=35
 $%^&amp;riscv_doirq: irq=35
 #*ADEFa$%&amp;riscv_doirq: irq=8
 </code></pre></div>
-<p>When we type something, the UART Input will trigger an Interrupt…</p>
-<p>(Also for NuttX Apps calling a System Function in NuttX Kernel)</p>
+<p><a href="https://github.com/lupyuen/nuttx-star64#uart-output-in-nuttx-qemu">(See the <strong>Complete Log</strong>)</a></p>
+<p>That triggers a call to…</p>
 <ul>
 <li>
-<p>[<code>$</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_exception_common.S#L63-L189"><strong>exception_common</strong></a> calls…</p>
+<p>[<code>$</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/arch/risc-v/src/common/riscv_exception_common.S#L63-L189"><strong>exception_common</strong></a> (RISC-V Exception Handler) which calls…</p>
 </li>
 <li>
-<p>[<code>#</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L918-L1021"><strong>u16550_interrupt</strong></a> which calls…</p>
+<p>[<code>%^&amp;</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L51-L92"><strong>riscv_dispatch_irq</strong></a> (Dispatch QEMU Interrupt), which calls…</p>
 </li>
 <li>
-<p>[<code>%^&amp;</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L51-L92"><strong>riscv_dispatch_irq</strong></a> which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_doirq.c#L58-L131"><strong>riscv_doirq</strong></a> (Dispatch RISC-V Interrupt), which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_doirq.c#L58-L131"><strong>riscv_doirq</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/sched/irq/irq_dispatch.c#L112-L191"><strong>irq_dispatch</strong></a> (Dispatch NuttX Interrupt), which calls…</p>
+</li>
+<li>
+<p>[<code>#</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L918-L1021"><strong>u16550_interrupt</strong></a> (UART Interrupt Handler)</p>
 </li>
 </ul>
+<p>TODO</p>
 <p><em>What is <code>riscv_doirq: irq=35</code>?</em></p>
 <p>This is the Interrupt triggered by UART Input.</p>
 <p>QEMU UART is at <a href="https://github.com/lupyuen/nuttx-star64/blob/main/qemu-riscv64.dts#L225-L226">RISC-V IRQ 10</a>, which becomes NuttX IRQ 35 (10 + 25).</p>
