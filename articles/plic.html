@@ -123,7 +123,7 @@ nx_start: CPU0: Beginning Idle Loop
 <p>But <strong>NuttX Shell</strong> doesn’t appear!</p>
 <p><em>Maybe NuttX Shell wasn’t started correctly?</em></p>
 <p>Let’s find out! When NuttX Apps (and NuttX Shell) print to the Serial Console (via <strong><code>printf</code></strong>), this function will be called in the NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a></p>
-<p>Thus add Debug Logs to <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a>. Something interesting appears…</p>
+<p>Thus we add Debug Logs to <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a>. Something interesting happens…</p>
 <div class="example-wrap"><pre class="language-text"><code>uart_write (0xc000a610):
 0000  0a 4e 75 74 74 53 68 65 6c 6c 20 28 4e 53 48 29  .NuttShell (NSH)
 0010  20 4e 75 74 74 58 2d 31 32 2e 30 2e 33 0a         NuttX-12.0.3.  
