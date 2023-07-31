@@ -397,17 +397,45 @@ Let's talk about the Interrupt Controller...
 
 # Platform-Level Interrupt Controller for Star64
 
+_What's this PLIC?_
+
+The RISC-V __Platform-Level Interrupt Controller (PLIC)__ inside Star64 handles Global Interrupts triggered by Peripherals. (Like the UART Controller)
+
+- [__SiFive U74-MC Core Complex Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)
+
+  "Platform-Level Interrupt Controller" (Page 192)
+
+- [__PLIC Specification__](https://github.com/riscv/riscv-plic-spec/blob/master/riscv-plic.adoc)
+
+  [(PLIC works like Arm's __Global Interrupt Controller__)](https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller)
+
+The pic above shows how we may configure Star64's PLIC to route Interrupts to each of the 5 RISC-V Cores.
+
+_There are 5 RISC-V Cores in Star64?_
+
+According to the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 96), these are the 5 RISC-V Cores in JH7110...
+
+- __Hart 0:__ S7 Monitor Core (RV64IMACB)
+
+- __Harts 1 to 4:__ U74 Application Cores (RV64GCB)
+
+NuttX boots on the __First Application Core__, which is __Hart 1__.
+
+(Though we pass the Hart ID to NuttX as Hart 0, since NuttX expects [__Hart ID to start at 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L104-L110))
+
+_So we'll route Interrupts to Hart 1?_
+
+Yep, later we might add __Harts 2 to 4__ after booting NuttX on the RISC-V Cores.
+
+(But probably not Hart 0, since it's a special limited Monitor Core)
+
 TODO
-
-The Platform-Level Interrupt Controller (PLIC) handles Global Interrupts triggered by Peripherals (like UART).
-
-(PLIC works like Arm's Global Interrupt Controller)
 
 We update the [NuttX PLIC Code](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L45-L214) based on these docs...
 
-- [SiFive U74-MC Core Complex Manual](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)
+## PLIC Memory Map
 
-- [PLIC Spec](https://github.com/riscv/riscv-plic-spec/blob/master/riscv-plic.adoc)
+TODO
 
 _How to configure PLIC to forward Interrupts to the Harts?_
 
@@ -415,12 +443,15 @@ The PLIC Memory Map is below...
 
 From [SiFive U74-MC Core Complex Manual](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) Page 193 (PLIC Memory Map)
 
-| Address | Attr | Description
-|---------|:----:|------------
+| Address | R/W | Description
+|:-------:|:---:|:-----------
 | 0C00_0004 | RW | Source 1 Priority
 | 0C00_0220 | RW | Source 136 Priority
 | 0C00_1000 | RO | Start of Pending Array
 | 0C00_1010 | RO | Last word of Pending Array
+
+| Address | R/W | Description
+|:-------:|:---:|:-----------
 | 0C00_2100 | RW | Start of Hart 1 S-Mode Interrupt Enables
 | 0C00_2110 | RW | End of Hart 1 S-Mode Interrupt Enables
 | 0C00_2200 | RW | Start of Hart 2 S-Mode Interrupt Enables
@@ -429,6 +460,9 @@ From [SiFive U74-MC Core Complex Manual](https://starfivetech.com/uploads/u74mc_
 | 0C00_2310 | RW | End of Hart 3 S-Mode Interrupt Enables
 | 0C00_2400 | RW | Start of Hart 4 S-Mode Interrupt Enables
 | 0C00_2410 | RW | End of Hart 4 S-Mode Interrupt Enables
+
+| Address | R/W | Description
+|:-------:|:---:|:-----------
 | 0C20_2000 | RW | Hart 1 S-Mode Priority Threshold
 | 0C20_2004 | RW | Hart 1 S-Mode Claim / Complete 
 | 0C20_4000 | RW | Hart 2 S-Mode Priority Threshold
@@ -492,6 +526,18 @@ Which are correct in NuttX: [qemu_rv_memorymap.h](https://github.com/lupyuen2/wi
 #define QEMU_RV_CLINT_BASE   0x02000000
 #define QEMU_RV_PLIC_BASE    0x0c000000
 ```
+
+## Enable PLIC Interrupts
+
+TODO: Priority
+
+## Handle PLIC Interrupts
+
+TODO
+
+## Claim PLIC Interrupts
+
+TODO
 
 Note that there's a Core-Local Interruptor (CLINT) that handles Local Interrupts...
 
