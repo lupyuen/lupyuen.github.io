@@ -203,12 +203,12 @@ _What happens when we type something in NuttX QEMU?_
 Typing something in the Serial Console will trigger a __UART Interrupt__...
 
 ```text
-$%^&riscv_doirq: irq=35
-#*ADEFa$%&riscv_doirq: irq=8
-$%^&riscv_doirq: irq=35
-#*ADEFa$%&riscv_doirq: irq=8
-$%^&riscv_doirq: irq=35
-#*ADEFa$%&riscv_doirq: irq=8
+$%^&
+riscv_doirq: irq=35
+#*
+ADEFa
+$%&
+riscv_doirq: irq=8
 ```
 
 [(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#uart-output-in-nuttx-qemu)
@@ -243,7 +243,7 @@ Now we compare the above QEMU Log with Star64...
 
 # Star64 vs QEMU Serial I/O
 
-_Earlier we said that Star64 NuttX couldn't print to Serial Output. Why?_
+_Earlier we said that NuttX Star64 couldn't print to Serial Console. Why?_
 
 Let's observe the __Star64 Debug Log__ (and compare with QEMU Log)...
 
@@ -256,7 +256,11 @@ up_enable_irq:
 
 [(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#compare-uart-output-star64-vs-qemu)
 
-TODO
+NuttX Star64 now enables __UART Interrupts__ at NuttX IRQ 57. (RISC-V IRQ 32)
+
+(More about this in the next section)
+
+We see NuttX Shell making __System Calls__ to NuttX Kernel (via NuttX IRQ 8)...
 
 ```text
 $%&riscv_doirq: irq=8
@@ -264,35 +268,60 @@ $%&riscv_doirq: irq=8
 $%&riscv_doirq: irq=8
 ```
 
-TODO
+Then NuttX Shell tries to __print to Serial Output__...
 
 ```text
-riscv_doirq: irq=8
 uart_write (0xc0015338):
 0000  6e 73 68 3e 20                                   nsh>            
 
 AAAAAD
 ```
 
-From the previous section, we know that [`uart_write`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341), should call...
+From the QEMU Log, we know that [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341) (print to Serial Console) calls...
 
-- `A`: [`uart_putxmitchar`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L150-L286) which calls...
+- [`A`] [__uart_putxmitchar__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286) (write to Serial Buffer), which calls...
 
-- `D`: [`uart_xmitchars`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial_io.c#L42-L107) which calls...
+- [`D`] [__uart_xmitchars__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107) (print the Serial Buffer), but wait...
 
-- `E`: [`uart_txready`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial_io.c#L63-L68) and...
+_Something looks different from QEMU?_
 
-  `F`: [`u16550_send`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/uart_16550.c#L1542-L1556)
+Yeah these are missing from the Star64 Log...
 
-BUT from the above Star64 Log, we see that [`uart_txready`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial_io.c#L63-L68) is NOT Ready.
+- [`E`] [__uart_txready__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68) (check for UART ready) and...
 
-That's why NuttX Star64 doesn't call [`u16550_send`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/uart_16550.c#L1542-L1556) to print the output.
+- [`F`] [__u16550_send__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587) (write to UART output)
 
-_Is our [__Interrupt Controller__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/hardware/qemu_rv_memorymap.h#L27-L33) OK?_
+Which means that UART is __NOT ready to transmit__!
 
-NuttX Star64 doesn't respond to UART Input. We'll check why in a while.
+_What happens next?_
 
-[(See the __JH7110 U74 Memory Map__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html)
+We said earlier that UART will trigger a [__Transmit Ready Interrupt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1628) when it's ready to transmit more data.
+
+(Which triggers our [__UART Interrupt Handler__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013) that calls [__uart_xmitchars__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107) to send more data)
+
+But NuttX IRQ 57 is __never triggered__ in the Star64 Log!
+
+_There's a problem with our Interrupt Controller?_
+
+We checked the Star64 __Interrupt Settings__ and __Memory Map__...
+
+- [__irq.h__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-09f20ae7a4a374d390f5f93d478e820039f86256f7cdcce609996c9f99c71501): Map RISC-V IRQ to NuttX IRQ
+
+- [__qemu_rv_memorymap.h__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-1d49cde8904f634c8963839554b7b626fd9083cf4205814b4e949630dc0a7dda): PLIC Address
+
+- [__board_memorymap.h__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-0cb58f007c24e42ac3f868ec24239c5e1863ebbb72dfb995840bc9b80ad82723): Memory Map
+
+- [__knsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-4018c37bf9b08236b37a84273281d5511d48596be9e0e4c0980d730aa95dbbe8): Memory Map
+
+  [(See the __JH7110 U74 Memory Map__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html)
+
+But everything looks OK!
+
+Maybe we got the wrong UART IRQ Number? Let's verify...
+
+# Star64 UART Interrupt
+
+TODO
 
 _Is the UART IRQ Number correct?_
 
