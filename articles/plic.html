@@ -122,8 +122,8 @@ nx_start: CPU0: Beginning Idle Loop
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Output Log</strong>)</a></p>
 <p>But <strong>NuttX Shell</strong> doesn’t appear!</p>
 <p><em>Maybe NuttX Shell wasn’t started correctly?</em></p>
-<p>Let’s find out! When NuttX Apps (and NuttX Shell) print to the Serial Console (via <strong><code>printf</code></strong>), this function will be called in the NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a></p>
-<p>Thus we add Debug Logs to <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a>. Something interesting happens…</p>
+<p>Let’s find out! When NuttX Apps (and NuttX Shell) print to the Serial Console (via <strong><code>printf</code></strong>), this function will be called in the NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a></p>
+<p>Thus we add Debug Logs to <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a>. Something interesting happens…</p>
 <div class="example-wrap"><pre class="language-text"><code>uart_write (0xc000a610):
 0000  0a 4e 75 74 74 53 68 65 6c 6c 20 28 4e 53 48 29  .NuttShell (NSH)
 0010  20 4e 75 74 74 58 2d 31 32 2e 30 2e 33 0a         NuttX-12.0.3.  
@@ -137,9 +137,12 @@ uart_write (0xc0015310):
 <p>This says that NuttX Shell is actually started!</p>
 <p>Just that NuttX Shell <strong>couldn’t produce any Console Output</strong>.</p>
 <p><em>But we see other messages from NuttX Kernel!</em></p>
-<p>TODO</p>
-<p>(This happens to all NuttX Apps, but not to NuttX Kernel)</p>
-<p>Let’s find out why, by tracing the UART Output in NuttX QEMU…</p>
+<p>That’s because NuttX Kernel doesn’t call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> to print messages.</p>
+<p>Instead, NuttX Kernel calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1730-L1765"><strong>up_putc</strong></a>. Which calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1657-L1672"><strong>u16550_putc</strong></a> to write directly to the UART Output Register.</p>
+<p><em>So uart_write is a lot more sophisticated than up_putc?</em></p>
+<p>Yep NuttX Apps will (indirectly) call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> to do Serial I/O with <strong>Buffering and Interrupts</strong>.</p>
+<p>Hence <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> is somehow broken for all NuttX Apps on Star64.</p>
+<p>Let’s find out why…</p>
 <p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="NuttX Star64 with Initial RAM Disk" /></p>
 <h1 id="uart-output-in-nuttx-qemu"><a href="#uart-output-in-nuttx-qemu">2 UART Output in NuttX QEMU</a></h1>
 <p>TODO</p>
