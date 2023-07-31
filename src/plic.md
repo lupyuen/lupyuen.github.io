@@ -53,9 +53,9 @@ But __NuttX Shell__ doesn't appear!
 
 _Maybe NuttX Shell wasn't started correctly?_
 
-Let's find out! When NuttX Apps (and NuttX Shell) print to the Serial Console (via __`printf`__), this function will be called in the NuttX Kernel: [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341)
+Let's find out! When NuttX Apps (and NuttX Shell) print to the Serial Console (via __`printf`__), this function will be called in the NuttX Kernel: [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341)
 
-Thus we add Debug Logs to [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341). Something interesting happens...
+Thus we add Debug Logs to [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341). Something interesting happens...
 
 ```text
 uart_write (0xc000a610):
@@ -75,11 +75,17 @@ Just that NuttX Shell __couldn't produce any Console Output__.
 
 _But we see other messages from NuttX Kernel!_
 
-TODO
+That's because NuttX Kernel doesn't call [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341) to print messages.
 
-(This happens to all NuttX Apps, but not to NuttX Kernel)
+Instead, NuttX Kernel calls [__up_putc__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1730-L1765). Which calls [__u16550_putc__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1657-L1672) to write directly to the UART Output Register.
 
-Let's find out why, by tracing the UART Output in NuttX QEMU...
+_So uart_write is a lot more sophisticated than up_putc?_
+
+Yep NuttX Apps will (indirectly) call [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341) to do Serial I/O with __Buffering and Interrupts__.
+
+Hence [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341) is somehow broken for all NuttX Apps on Star64.
+
+Let's find out why...
 
 ![NuttX Star64 with Initial RAM Disk](https://lupyuen.github.io/images/semihost-runstar64.png)
 
