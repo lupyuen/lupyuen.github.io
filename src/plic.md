@@ -26,13 +26,36 @@ In this article, we find out...
 
 ![Star64 RISC-V SBC](https://lupyuen.github.io/images/nuttx2-title.jpg)
 
-# No UART Output from NuttX Shell
+# No Console Output from NuttX Apps
 
-TODO
+At the end of [__our previous article__](https://lupyuen.github.io/articles/semihost), NuttX seems to boot fine on Star64 (pic below)...
 
-From the previous article, we found out that NuttX Shell didn't appear on Star64 JH7110 SBC.
+```text
+Starting kernel ...
+123067DFHBCI
+nx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+board_late_initialize: 
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nx_start_application: ret=3
+up_exit: TCB=0x404088d0 exiting
+nx_start: CPU0: Beginning Idle Loop
+```
 
-When we log [`uart_write`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341), we see that the NuttX Shell is actually started!
+[(See the __Output Log__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
+
+But __NuttX Shell__ doesn't appear!
+
+_Maybe NuttX Shell wasn't started correctly?_
+
+Let's find out! When NuttX Apps (and NuttX Shell) print to the Serial Console (via __`printf`__), this function will be called in the NuttX Kernel: [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341)
+
+Thus add Debug Logs to [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/drivers/serial/serial.c#L1172-L1341). Something interesting appears...
 
 ```text
 uart_write (0xc000a610):
@@ -46,11 +69,19 @@ uart_write (0xc0015310):
 0000  1b 5b 4b                                         .[K             
 ```
 
-Just that the NuttX Shell couldn't produce any UART Output.
+This says that NuttX Shell is actually started!
+
+Just that NuttX Shell __couldn't produce any Console Output__.
+
+_But we see other messages from NuttX Kernel!_
+
+TODO
 
 (This happens to all NuttX Apps, but not to NuttX Kernel)
 
 Let's find out why, by tracing the UART Output in NuttX QEMU...
+
+![NuttX Star64 with Initial RAM Disk](https://lupyuen.github.io/images/semihost-runstar64.png)
 
 # UART Output in NuttX QEMU
 
