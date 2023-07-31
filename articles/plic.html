@@ -72,7 +72,11 @@
 <li><a href="#serial-input-in-nuttx-qemu">3 Serial Input in NuttX QEMU</a><ul></ul></li>
 <li><a href="#star64-vs-qemu-serial-io">4 Star64 vs QEMU Serial I/O</a><ul></ul></li>
 <li><a href="#star64-uart-interrupt">5 Star64 UART Interrupt</a><ul></ul></li>
-<li><a href="#platform-level-interrupt-controller-for-star64">6 Platform-Level Interrupt Controller for Star64</a><ul></ul></li>
+<li><a href="#platform-level-interrupt-controller-for-star64">6 Platform-Level Interrupt Controller for Star64</a><ul>
+<li><a href="#plic-memory-map">6.1 PLIC Memory Map</a><ul></ul></li>
+<li><a href="#enable-plic-interrupts">6.2 Enable PLIC Interrupts</a><ul></ul></li>
+<li><a href="#handle-plic-interrupts">6.3 Handle PLIC Interrupts</a><ul></ul></li>
+<li><a href="#claim-plic-interrupts">6.4 Claim PLIC Interrupts</a><ul></ul></li></ul></li>
 <li><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">7 Delegate Machine-Mode Interrupts to Supervisor-Mode</a><ul></ul></li>
 <li><a href="#nuttx-star64-handles-uart-interrupts">8 NuttX Star64 handles UART Interrupts</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>8 Aug 2023</em></p>
@@ -384,42 +388,66 @@ AAAAAD
 <p>Let’s talk about the Interrupt Controller…</p>
 <p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller in JH7110 (U74) SoC" /></p>
 <h1 id="platform-level-interrupt-controller-for-star64"><a href="#platform-level-interrupt-controller-for-star64">6 Platform-Level Interrupt Controller for Star64</a></h1>
-<p>TODO</p>
-<p>The Platform-Level Interrupt Controller (PLIC) handles Global Interrupts triggered by Peripherals (like UART).</p>
-<p>(PLIC works like Arm’s Global Interrupt Controller)</p>
-<p>We update the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L45-L214">NuttX PLIC Code</a> based on these docs…</p>
+<p><em>What’s this PLIC?</em></p>
+<p>The RISC-V <strong>Platform-Level Interrupt Controller (PLIC)</strong> inside Star64 handles Global Interrupts triggered by Peripherals. (Like the UART Controller)</p>
 <ul>
 <li>
-<p><a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">SiFive U74-MC Core Complex Manual</a></p>
+<p><a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74-MC Core Complex Manual</strong></a></p>
+<p>“Platform-Level Interrupt Controller” (Page 192)</p>
 </li>
 <li>
-<p><a href="https://github.com/riscv/riscv-plic-spec/blob/master/riscv-plic.adoc">PLIC Spec</a></p>
+<p><a href="https://github.com/riscv/riscv-plic-spec/blob/master/riscv-plic.adoc"><strong>PLIC Specification</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller">(PLIC works like Arm’s <strong>Global Interrupt Controller</strong>)</a></p>
 </li>
 </ul>
+<p>The pic above shows how we may configure Star64’s PLIC to route Interrupts to each of the 5 RISC-V Cores.</p>
+<p><em>There are 5 RISC-V Cores in Star64?</em></p>
+<p>According to the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a> (Page 96), these are the 5 RISC-V Cores in JH7110…</p>
+<ul>
+<li>
+<p><strong>Hart 0:</strong> S7 Monitor Core (RV64IMACB)</p>
+</li>
+<li>
+<p><strong>Harts 1 to 4:</strong> U74 Application Cores (RV64GCB)</p>
+</li>
+</ul>
+<p>NuttX boots on the <strong>First Application Core</strong>, which is <strong>Hart 1</strong>.</p>
+<p>(Though we pass the Hart ID to NuttX as Hart 0, since NuttX expects <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L104-L110"><strong>Hart ID to start at 0</strong></a>)</p>
+<p><em>So we’ll route Interrupts to Hart 1?</em></p>
+<p>Yep, later we might add <strong>Harts 2 to 4</strong> after booting NuttX on the RISC-V Cores.</p>
+<p>(But probably not Hart 0, since it’s a special limited Monitor Core)</p>
+<p>TODO</p>
+<p>We update the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L45-L214">NuttX PLIC Code</a> based on these docs…</p>
+<h2 id="plic-memory-map"><a href="#plic-memory-map">6.1 PLIC Memory Map</a></h2>
+<p>TODO</p>
 <p><em>How to configure PLIC to forward Interrupts to the Harts?</em></p>
 <p>The PLIC Memory Map is below…</p>
 <p>From <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">SiFive U74-MC Core Complex Manual</a> Page 193 (PLIC Memory Map)</p>
-<div><table><thead><tr><th>Address</th><th style="text-align: center">Attr</th><th>Description</th></tr></thead><tbody>
-<tr><td>0C00_0004</td><td style="text-align: center">RW</td><td>Source 1 Priority</td></tr>
-<tr><td>0C00_0220</td><td style="text-align: center">RW</td><td>Source 136 Priority</td></tr>
-<tr><td>0C00_1000</td><td style="text-align: center">RO</td><td>Start of Pending Array</td></tr>
-<tr><td>0C00_1010</td><td style="text-align: center">RO</td><td>Last word of Pending Array</td></tr>
-<tr><td>0C00_2100</td><td style="text-align: center">RW</td><td>Start of Hart 1 S-Mode Interrupt Enables</td></tr>
-<tr><td>0C00_2110</td><td style="text-align: center">RW</td><td>End of Hart 1 S-Mode Interrupt Enables</td></tr>
-<tr><td>0C00_2200</td><td style="text-align: center">RW</td><td>Start of Hart 2 S-Mode Interrupt Enables</td></tr>
-<tr><td>0C00_2210</td><td style="text-align: center">RW</td><td>End of Hart 2 S-Mode Interrupt Enables</td></tr>
-<tr><td>0C00_2300</td><td style="text-align: center">RW</td><td>Start of Hart 3 S-Mode Interrupt Enables</td></tr>
-<tr><td>0C00_2310</td><td style="text-align: center">RW</td><td>End of Hart 3 S-Mode Interrupt Enables</td></tr>
-<tr><td>0C00_2400</td><td style="text-align: center">RW</td><td>Start of Hart 4 S-Mode Interrupt Enables</td></tr>
-<tr><td>0C00_2410</td><td style="text-align: center">RW</td><td>End of Hart 4 S-Mode Interrupt Enables</td></tr>
-<tr><td>0C20_2000</td><td style="text-align: center">RW</td><td>Hart 1 S-Mode Priority Threshold</td></tr>
-<tr><td>0C20_2004</td><td style="text-align: center">RW</td><td>Hart 1 S-Mode Claim / Complete</td></tr>
-<tr><td>0C20_4000</td><td style="text-align: center">RW</td><td>Hart 2 S-Mode Priority Threshold</td></tr>
-<tr><td>0C20_4004</td><td style="text-align: center">RW</td><td>Hart 2 S-Mode Claim / Complete</td></tr>
-<tr><td>0C20_6000</td><td style="text-align: center">RW</td><td>Hart 3 S-Mode Priority Threshold</td></tr>
-<tr><td>0C20_6004</td><td style="text-align: center">RW</td><td>Hart 3 S-Mode Claim / Complete</td></tr>
-<tr><td>0C20_8000</td><td style="text-align: center">RW</td><td>Hart 4 S-Mode Priority Threshold</td></tr>
-<tr><td>0C20_8004</td><td style="text-align: center">RW</td><td>Hart 4 S-Mode Claim / Complete</td></tr>
+<div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
+<tr><td style="text-align: center">0C00_0004</td><td style="text-align: center">RW</td><td style="text-align: left">Source 1 Priority</td></tr>
+<tr><td style="text-align: center">0C00_0220</td><td style="text-align: center">RW</td><td style="text-align: left">Source 136 Priority</td></tr>
+<tr><td style="text-align: center">0C00_1000</td><td style="text-align: center">RO</td><td style="text-align: left">Start of Pending Array</td></tr>
+<tr><td style="text-align: center">0C00_1010</td><td style="text-align: center">RO</td><td style="text-align: left">Last word of Pending Array</td></tr>
+</tbody></table>
+</div><div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
+<tr><td style="text-align: center">0C00_2100</td><td style="text-align: center">RW</td><td style="text-align: left">Start of Hart 1 S-Mode Interrupt Enables</td></tr>
+<tr><td style="text-align: center">0C00_2110</td><td style="text-align: center">RW</td><td style="text-align: left">End of Hart 1 S-Mode Interrupt Enables</td></tr>
+<tr><td style="text-align: center">0C00_2200</td><td style="text-align: center">RW</td><td style="text-align: left">Start of Hart 2 S-Mode Interrupt Enables</td></tr>
+<tr><td style="text-align: center">0C00_2210</td><td style="text-align: center">RW</td><td style="text-align: left">End of Hart 2 S-Mode Interrupt Enables</td></tr>
+<tr><td style="text-align: center">0C00_2300</td><td style="text-align: center">RW</td><td style="text-align: left">Start of Hart 3 S-Mode Interrupt Enables</td></tr>
+<tr><td style="text-align: center">0C00_2310</td><td style="text-align: center">RW</td><td style="text-align: left">End of Hart 3 S-Mode Interrupt Enables</td></tr>
+<tr><td style="text-align: center">0C00_2400</td><td style="text-align: center">RW</td><td style="text-align: left">Start of Hart 4 S-Mode Interrupt Enables</td></tr>
+<tr><td style="text-align: center">0C00_2410</td><td style="text-align: center">RW</td><td style="text-align: left">End of Hart 4 S-Mode Interrupt Enables</td></tr>
+</tbody></table>
+</div><div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
+<tr><td style="text-align: center">0C20_2000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 1 S-Mode Priority Threshold</td></tr>
+<tr><td style="text-align: center">0C20_2004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 1 S-Mode Claim / Complete</td></tr>
+<tr><td style="text-align: center">0C20_4000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 2 S-Mode Priority Threshold</td></tr>
+<tr><td style="text-align: center">0C20_4004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 2 S-Mode Claim / Complete</td></tr>
+<tr><td style="text-align: center">0C20_6000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 3 S-Mode Priority Threshold</td></tr>
+<tr><td style="text-align: center">0C20_6004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 3 S-Mode Claim / Complete</td></tr>
+<tr><td style="text-align: center">0C20_8000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 4 S-Mode Priority Threshold</td></tr>
+<tr><td style="text-align: center">0C20_8004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 4 S-Mode Claim / Complete</td></tr>
 </tbody></table>
 </div>
 <p>There are 5 Harts in JH7110…</p>
@@ -465,7 +493,12 @@ AAAAAD
 <p>Which are correct in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_memorymap.h#L30-L32">qemu_rv_memorymap.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define QEMU_RV_CLINT_BASE   0x02000000
 #define QEMU_RV_PLIC_BASE    0x0c000000
-</code></pre></div>
+</code></pre></div><h2 id="enable-plic-interrupts"><a href="#enable-plic-interrupts">6.2 Enable PLIC Interrupts</a></h2>
+<p>TODO: Priority</p>
+<h2 id="handle-plic-interrupts"><a href="#handle-plic-interrupts">6.3 Handle PLIC Interrupts</a></h2>
+<p>TODO</p>
+<h2 id="claim-plic-interrupts"><a href="#claim-plic-interrupts">6.4 Claim PLIC Interrupts</a></h2>
+<p>TODO</p>
 <p>Note that there’s a Core-Local Interruptor (CLINT) that handles Local Interrupts…</p>
 <p><img src="https://lupyuen.github.io/images/plic-hart.png" alt="PLIC in JH7110 (U74) SoC" /></p>
 <p>TODO: Do we need to handle CLINT?</p>
