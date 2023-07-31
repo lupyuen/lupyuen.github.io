@@ -93,7 +93,7 @@ Let's find out why...
 
 # Serial Output in NuttX QEMU
 
-_What happens in NuttX Serial I/O?_
+_What happens in NuttX Serial Output?_
 
 To understand how NuttX Apps print to the Serial Console (via __printf__), we add Debug Logs to __NuttX QEMU__ (pic below)...
 
@@ -196,13 +196,15 @@ When this happens, our [__UART Interrupt Handler__](https://github.com/lupyuen2/
 
 (Which loops back to steps above)
 
-Now we walk through Serial Input...
+Now we do Serial Input...
 
 ![Serial I/O in NuttX QEMU](https://lupyuen.github.io/images/plic-qemu.png)
 
 # Serial Input in NuttX QEMU
 
-TODO: Keyboard
+_What happens when we type something in NuttX QEMU?_
+
+Typing something in the Serial Console will trigger a __UART Interrupt__...
 
 ```text
 $%^&riscv_doirq: irq=35
@@ -213,17 +215,21 @@ $%^&riscv_doirq: irq=35
 #*ADEFa$%&riscv_doirq: irq=8
 ```
 
-When we type something, the UART Input will trigger an Interrupt...
+[(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#uart-output-in-nuttx-qemu)
 
-(Also for NuttX Apps calling a System Function in NuttX Kernel)
+That triggers a call to...
 
-- [`$`] [__exception_common__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_exception_common.S#L63-L189) calls...
+- [`$`] [__exception_common__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/arch/risc-v/src/common/riscv_exception_common.S#L63-L189) (RISC-V Exception Handler) which calls...
 
-- [`#`] [__u16550_interrupt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L918-L1021) which calls...
+- [`%^&`] [__riscv_dispatch_irq__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L51-L92) (Dispatch QEMU Interrupt), which calls...
 
-- [`%^&`] [__riscv_dispatch_irq__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L51-L92) which calls...
+- [__riscv_doirq__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_doirq.c#L58-L131) (Dispatch RISC-V Interrupt), which calls...
 
-- [__riscv_doirq__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_doirq.c#L58-L131)
+- [__irq_dispatch__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/sched/irq/irq_dispatch.c#L112-L191) (Dispatch NuttX Interrupt), which calls...
+
+- [`#`] [__u16550_interrupt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L918-L1021) (UART Interrupt Handler)
+
+TODO
 
 _What is `riscv_doirq: irq=35`?_
 
