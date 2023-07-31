@@ -190,15 +190,15 @@ $%&amp;riscv_doirq: irq=8
 FNFuFtFtFSFhFeFlFlF F(FNFSFHF)F FNFuFtFtFXF-F1F2F.F0F.F3F
 </code></pre></div>
 <p>This says that the NuttX Kernel calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> (print to Serial Console), which calls…</p>
-<p>[<code>A</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286"><strong>uart_putxmitchar</strong></a> (write to buffer), which calls…</p>
-<p>[<code>D</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> (print buffer), which calls…</p>
+<p>[<code>A</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286"><strong>uart_putxmitchar</strong></a> (write to Serial Buffer), which calls…</p>
+<p>[<code>D</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> (print the Serial Buffer), which calls…</p>
 <p>[<code>E</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68"><strong>uart_txready</strong></a> (check for UART ready) and…</p>
 <p>[<code>F</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587"><strong>u16550_send</strong></a> (write to UART output)</p>
 <p>And that’s what happens when a NuttX App prints to the Serial Console (via <strong>printf</strong>)…</p>
 <ol>
 <li>
 <p>NuttX App (in User Mode) makes a <strong>System Call</strong> to NuttX Kernel (in Supervisor Mode)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L52-L74">(<strong>RISCV_IRQ_ECALLU</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341">(<strong>uart_write</strong>)</a></p>
 </li>
 <li>
 <p>NuttX Kernel writes the output to the <strong>Serial Buffer</strong></p>
