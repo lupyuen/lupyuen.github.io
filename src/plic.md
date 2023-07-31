@@ -409,11 +409,11 @@ The RISC-V __Platform-Level Interrupt Controller (PLIC)__ inside Star64 handles 
 
   [(PLIC works like Arm's __Global Interrupt Controller__)](https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller)
 
-The pic above shows how we may configure Star64's PLIC to route Interrupts to each of the 5 RISC-V Cores.
+The pic above shows how we may configure Star64's PLIC to __route Interrupts__ to each of the 5 RISC-V Cores.
 
-_There are 5 RISC-V Cores in Star64?_
+_Wow there are 5 RISC-V Cores in Star64?_
 
-According to the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 96), these are the 5 RISC-V Cores in JH7110...
+According to the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 96), these are the RISC-V Cores in JH7110...
 
 - __Hart 0:__ S7 Monitor Core (RV64IMACB)
 
@@ -425,19 +425,17 @@ NuttX boots on the __First Application Core__, which is __Hart 1__.
 
 _So we'll route Interrupts to Hart 1?_
 
-Yep, later we might add __Harts 2 to 4__ after booting NuttX on the RISC-V Cores.
+Yep, later we might add __Harts 2 to 4__ when we boot NuttX on the other Application Cores.
 
 (But probably not Hart 0, since it's a special limited Monitor Core)
 
-TODO
-
-We update the [NuttX PLIC Code](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L45-L214) based on these docs...
+Let's check our NuttX PLIC Code...
 
 ## PLIC Memory Map
 
-TODO
+_How do we program the PLIC?_
 
-_How to configure PLIC to forward Interrupts to the Harts?_
+TODO
 
 The PLIC Memory Map is below...
 
@@ -450,6 +448,8 @@ From [SiFive U74-MC Core Complex Manual](https://starfivetech.com/uploads/u74mc_
 | 0C00_1000 | RO | Start of Pending Array
 | 0C00_1010 | RO | Last word of Pending Array
 
+TODO
+
 | Address | R/W | Description
 |:-------:|:---:|:-----------
 | 0C00_2100 | RW | Start of Hart 1 S-Mode Interrupt Enables
@@ -460,6 +460,8 @@ From [SiFive U74-MC Core Complex Manual](https://starfivetech.com/uploads/u74mc_
 | 0C00_2310 | RW | End of Hart 3 S-Mode Interrupt Enables
 | 0C00_2400 | RW | Start of Hart 4 S-Mode Interrupt Enables
 | 0C00_2410 | RW | End of Hart 4 S-Mode Interrupt Enables
+
+TODO
 
 | Address | R/W | Description
 |:-------:|:---:|:-----------
@@ -472,43 +474,30 @@ From [SiFive U74-MC Core Complex Manual](https://starfivetech.com/uploads/u74mc_
 | 0C20_8000 | RW | Hart 4 S-Mode Priority Threshold
 | 0C20_8004 | RW | Hart 4 S-Mode Claim / Complete
 
-There are 5 Harts in JH7110...
-- __Hart 0:__ S7 Core (the limited core, unused)
-- __Harts 1 to 4:__ U7 Cores (the full cores)
-
-According to OpenSBI, we are now running on Hart 1. (Sounds right)
-
-(We pass the Hart ID to NuttX as Hart 0, since NuttX expects Hart ID to start at 0)
-
 Based on the above PLIC Memory Map, we fix the PLIC Addresses in NuttX to use Hart 1: [qemu_rv_plic.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L59)
 
 ```c
-// | 0x0C00_0004 | 4B | RW | Source 1 priority
-#define QEMU_RV_PLIC_PRIORITY    (QEMU_RV_PLIC_BASE + 0x000000)
-
-// | 0x0C00_1000 | 4B | RO | Start of pending array
-#define QEMU_RV_PLIC_PENDING1    (QEMU_RV_PLIC_BASE + 0x001000)
-
-// Previously:
-// #define QEMU_RV_PLIC_PRIORITY    (QEMU_RV_PLIC_BASE + 0x000000)
-// #define QEMU_RV_PLIC_PENDING1    (QEMU_RV_PLIC_BASE + 0x001000)
+// PLIC Addresses for NuttX Star64:
+// | 0x0C00_0004 | RW | Source 1 priority
+// | 0x0C00_1000 | RO | Start of pending array
+#define QEMU_RV_PLIC_PRIORITY (QEMU_RV_PLIC_BASE + 0x000000)
+#define QEMU_RV_PLIC_PENDING1 (QEMU_RV_PLIC_BASE + 0x001000)
 
 #ifdef CONFIG_ARCH_USE_S_MODE
-// | 0x0C00_2100 | 4B | RW | Start Hart 1 S-Mode Interrupt Enables
-#  define QEMU_RV_PLIC_ENABLE1   (QEMU_RV_PLIC_BASE + 0x002100)
-#  define QEMU_RV_PLIC_ENABLE2   (QEMU_RV_PLIC_BASE + 0x002104)
+// | 0x0C00_2100 | RW | Start Hart 1 S-Mode Interrupt Enables
+#define QEMU_RV_PLIC_ENABLE1 (QEMU_RV_PLIC_BASE + 0x002100)
+#define QEMU_RV_PLIC_ENABLE2 (QEMU_RV_PLIC_BASE + 0x002104)
 
-// | 0x0C20_2000 | 4B | RW | Hart 1 S-Mode Priority Threshold
-#  define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x202000)
+// | 0x0C20_2000 | RW | Hart 1 S-Mode Priority Threshold
+// | 0x0C20_2004 | RW | Hart 1 S-Mode Claim / Complete 
+#define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x202000)
+#define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x202004)
 
-// | 0x0C20_2004 | 4B | RW | Hart 1 S-Mode Claim / Complete 
-#  define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x202004)
-
-// Previously:
-// #  define QEMU_RV_PLIC_ENABLE1   (QEMU_RV_PLIC_BASE + 0x002080)
-// #  define QEMU_RV_PLIC_ENABLE2   (QEMU_RV_PLIC_BASE + 0x002084)
-// #  define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x201000)
-// #  define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x201004)
+// Previously for NuttX QEMU:
+// #define QEMU_RV_PLIC_ENABLE1   (QEMU_RV_PLIC_BASE + 0x002080)
+// #define QEMU_RV_PLIC_ENABLE2   (QEMU_RV_PLIC_BASE + 0x002084)
+// #define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x201000)
+// #define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x201004)
 ```
 
 _What about the PLIC Base Address?_
@@ -528,6 +517,8 @@ Which are correct in NuttX: [qemu_rv_memorymap.h](https://github.com/lupyuen2/wi
 ```
 
 ## Enable PLIC Interrupts
+
+_How to configure PLIC to forward Interrupts to the Harts?_
 
 TODO: Priority
 
