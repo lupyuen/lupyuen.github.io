@@ -399,27 +399,27 @@ AAAAAD
 <p><em>How to configure PLIC to forward Interrupts to the Harts?</em></p>
 <p>The PLIC Memory Map is below…</p>
 <p>From <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">SiFive U74-MC Core Complex Manual</a> Page 193 (PLIC Memory Map)</p>
-<div><table><thead><tr><th>Address</th><th>Width</th><th>Attr</th><th>Description</th></tr></thead><tbody>
-<tr><td>0x0C00_0004</td><td>4B</td><td>RW</td><td>Source 1 priority</td></tr>
-<tr><td>0x0C00_0220</td><td>4B</td><td>RW</td><td>Source 136 priority</td></tr>
-<tr><td>0x0C00_1000</td><td>4B</td><td>RO</td><td>Start of pending array</td></tr>
-<tr><td>0x0C00_1010</td><td>4B</td><td>RO</td><td>Last word of pending array</td></tr>
-<tr><td>0x0C00_2100</td><td>4B</td><td>RW</td><td>Start Hart 1 S-Mode interrupt enables</td></tr>
-<tr><td>0x0C00_2110</td><td>4B</td><td>RW</td><td>End Hart 1 S-Mode interrupt enables</td></tr>
-<tr><td>0x0C00_2200</td><td>4B</td><td>RW</td><td>Start Hart 2 S-Mode interrupt enables</td></tr>
-<tr><td>0x0C00_2210</td><td>4B</td><td>RW</td><td>End Hart 2 S-Mode interrupt enables</td></tr>
-<tr><td>0x0C00_2300</td><td>4B</td><td>RW</td><td>Start Hart 3 S-Mode interrupt enables</td></tr>
-<tr><td>0x0C00_2310</td><td>4B</td><td>RW</td><td>End Hart 3 S-Mode interrupt enables</td></tr>
-<tr><td>0x0C00_2400</td><td>4B</td><td>RW</td><td>Start Hart 4 S-Mode interrupt enables</td></tr>
-<tr><td>0x0C00_2410</td><td>4B</td><td>RW</td><td>End Hart 4 S-Mode interrupt enables</td></tr>
-<tr><td>0x0C20_2000</td><td>4B</td><td>RW</td><td>Hart 1 S-Mode priority threshold</td></tr>
-<tr><td>0x0C20_2004</td><td>4B</td><td>RW</td><td>Hart 1 S-Mode claim/complete</td></tr>
-<tr><td>0x0C20_4000</td><td>4B</td><td>RW</td><td>Hart 2 S-Mode priority threshold</td></tr>
-<tr><td>0x0C20_4004</td><td>4B</td><td>RW</td><td>Hart 2 S-Mode claim/complete</td></tr>
-<tr><td>0x0C20_6000</td><td>4B</td><td>RW</td><td>Hart 3 S-Mode priority threshold</td></tr>
-<tr><td>0x0C20_6004</td><td>4B</td><td>RW</td><td>Hart 3 S-Mode claim/complete</td></tr>
-<tr><td>0x0C20_8000</td><td>4B</td><td>RW</td><td>Hart 4 S-Mode priority threshold</td></tr>
-<tr><td>0x0C20_8004</td><td>4B</td><td>RW</td><td>Hart 4 S-Mode claim/complete</td></tr>
+<div><table><thead><tr><th>Address</th><th style="text-align: center">Attr</th><th>Description</th></tr></thead><tbody>
+<tr><td>0x0C00_0004</td><td style="text-align: center">RW</td><td>Source 1 Priority</td></tr>
+<tr><td>0x0C00_0220</td><td style="text-align: center">RW</td><td>Source 136 Priority</td></tr>
+<tr><td>0x0C00_1000</td><td style="text-align: center">RO</td><td>Start of Pending Array</td></tr>
+<tr><td>0x0C00_1010</td><td style="text-align: center">RO</td><td>Last word of Pending Array</td></tr>
+<tr><td>0x0C00_2100</td><td style="text-align: center">RW</td><td>Start of Hart 1 S-Mode Interrupt Enables</td></tr>
+<tr><td>0x0C00_2110</td><td style="text-align: center">RW</td><td>End of Hart 1 S-Mode Interrupt Enables</td></tr>
+<tr><td>0x0C00_2200</td><td style="text-align: center">RW</td><td>Start of Hart 2 S-Mode Interrupt Enables</td></tr>
+<tr><td>0x0C00_2210</td><td style="text-align: center">RW</td><td>End of Hart 2 S-Mode Interrupt Enables</td></tr>
+<tr><td>0x0C00_2300</td><td style="text-align: center">RW</td><td>Start of Hart 3 S-Mode Interrupt Enables</td></tr>
+<tr><td>0x0C00_2310</td><td style="text-align: center">RW</td><td>End of Hart 3 S-Mode Interrupt Enables</td></tr>
+<tr><td>0x0C00_2400</td><td style="text-align: center">RW</td><td>Start of Hart 4 S-Mode Interrupt Enables</td></tr>
+<tr><td>0x0C00_2410</td><td style="text-align: center">RW</td><td>End of Hart 4 S-Mode Interrupt Enables</td></tr>
+<tr><td>0x0C20_2000</td><td style="text-align: center">RW</td><td>Hart 1 S-Mode Priority Threshold</td></tr>
+<tr><td>0x0C20_2004</td><td style="text-align: center">RW</td><td>Hart 1 S-Mode Claim / Complete</td></tr>
+<tr><td>0x0C20_4000</td><td style="text-align: center">RW</td><td>Hart 2 S-Mode Priority Threshold</td></tr>
+<tr><td>0x0C20_4004</td><td style="text-align: center">RW</td><td>Hart 2 S-Mode Claim / Complete</td></tr>
+<tr><td>0x0C20_6000</td><td style="text-align: center">RW</td><td>Hart 3 S-Mode Priority Threshold</td></tr>
+<tr><td>0x0C20_6004</td><td style="text-align: center">RW</td><td>Hart 3 S-Mode Claim / Complete</td></tr>
+<tr><td>0x0C20_8000</td><td style="text-align: center">RW</td><td>Hart 4 S-Mode Priority Threshold</td></tr>
+<tr><td>0x0C20_8004</td><td style="text-align: center">RW</td><td>Hart 4 S-Mode Claim / Complete</td></tr>
 </tbody></table>
 </div>
 <p>There are 5 Harts in JH7110…</p>
@@ -441,14 +441,14 @@ AAAAAD
 // #define QEMU_RV_PLIC_PENDING1    (QEMU_RV_PLIC_BASE + 0x001000)
 
 #ifdef CONFIG_ARCH_USE_S_MODE
-// | 0x0C00_2100 | 4B | RW | Start Hart 1 S-Mode interrupt enables
+// | 0x0C00_2100 | 4B | RW | Start Hart 1 S-Mode Interrupt Enables
 #  define QEMU_RV_PLIC_ENABLE1   (QEMU_RV_PLIC_BASE + 0x002100)
 #  define QEMU_RV_PLIC_ENABLE2   (QEMU_RV_PLIC_BASE + 0x002104)
 
-// | 0x0C20_2000 | 4B | RW | Hart 1 S-Mode priority threshold
+// | 0x0C20_2000 | 4B | RW | Hart 1 S-Mode Priority Threshold
 #  define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x202000)
 
-// | 0x0C20_2004 | 4B | RW | Hart 1 S-Mode claim/complete 
+// | 0x0C20_2004 | 4B | RW | Hart 1 S-Mode Claim / Complete 
 #  define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x202004)
 
 // Previously:
@@ -756,7 +756,7 @@ if ((status &amp; UART_IIR_INTSTATUS) != 0)
 <p><em>Maybe because OpenSBI is still handling UART Interrupts in Machine Mode?</em></p>
 <p>We tried to disable PLIC Interrupts for Machine Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L58-L63">qemu_rv_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Disable All Global Interrupts for Hart 1 Machine-Mode
-  // | 0x0C00_2080 | 4B | RW | Start Hart 1 M-Mode interrupt enables
+  // | 0x0C00_2080 | 4B | RW | Start Hart 1 M-Mode Interrupt Enables
   #define QEMU_RV_PLIC_ENABLE1_MMODE   (QEMU_RV_PLIC_BASE + 0x002080)
   #define QEMU_RV_PLIC_ENABLE2_MMODE   (QEMU_RV_PLIC_BASE + 0x002084)
   putreg32(0x0, QEMU_RV_PLIC_ENABLE1_MMODE);
