@@ -24,6 +24,8 @@ In this article, we find out...
 
 - Which leads to a new problem: 16550 UART Controller fires too many __Spurious Interrupts__!
 
+  [(Watch the Demo on YouTube)](https://youtu.be/TdSJdiQFsv8)
+
 ![Star64 RISC-V SBC](https://lupyuen.github.io/images/nuttx2-title.jpg)
 
 # No Console Output from NuttX Apps
