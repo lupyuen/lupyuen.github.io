@@ -70,7 +70,7 @@
 <li><a href="#no-console-output-from-nuttx-apps">1 No Console Output from NuttX Apps</a><ul></ul></li>
 <li><a href="#serial-output-in-nuttx-qemu">2 Serial Output in NuttX QEMU</a><ul></ul></li>
 <li><a href="#serial-input-in-nuttx-qemu">3 Serial Input in NuttX QEMU</a><ul></ul></li>
-<li><a href="#compare-serial-io-star64-vs-qemu">4 Compare Serial I/O: Star64 vs QEMU</a><ul></ul></li>
+<li><a href="#star64-vs-qemu-serial-io">4 Star64 vs QEMU Serial I/O</a><ul></ul></li>
 <li><a href="#platform-level-interrupt-controller-for-star64">5 Platform-Level Interrupt Controller for Star64</a><ul></ul></li>
 <li><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">6 Delegate Machine-Mode Interrupts to Supervisor-Mode</a><ul></ul></li>
 <li><a href="#nuttx-star64-handles-uart-interrupts">7 NuttX Star64 handles UART Interrupts</a><ul></ul></li>
@@ -250,16 +250,26 @@ $%^&amp;riscv_doirq: irq=35
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/sched/irq/irq_dispatch.c#L112-L191"><strong>irq_dispatch</strong></a> (Dispatch NuttX Interrupt), which calls…</p>
 </li>
 <li>
-<p>[<code>#</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L918-L1021"><strong>u16550_interrupt</strong></a> (UART Interrupt Handler)</p>
+<p>[<code>#</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L918-L1004"><strong>u16550_interrupt</strong></a> (UART Interrupt Handler), which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L109-L270"><strong>uart_recvchars</strong></a> (write to Serial Receive Buffer)</p>
 </li>
 </ul>
-<p>TODO</p>
-<p><em>What is <code>riscv_doirq: irq=35</code>?</em></p>
-<p>This is the Interrupt triggered by UART Input.</p>
-<p>QEMU UART is at <a href="https://github.com/lupyuen/nuttx-star64/blob/main/qemu-riscv64.dts#L225-L226">RISC-V IRQ 10</a>, which becomes NuttX IRQ 35 (10 + 25).</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L75-L86">(RISCV_IRQ_EXT = RISCV_IRQ_SEXT = 16 + 9 = 25)</a></p>
-<p>Now we compare the above with Star64…</p>
-<h1 id="compare-serial-io-star64-vs-qemu"><a href="#compare-serial-io-star64-vs-qemu">4 Compare Serial I/O: Star64 vs QEMU</a></h1>
+<p>Looks complicated, but that’s how Serial I/O works with Buffering and Interrupts in NuttX!</p>
+<p><em>Why 2 Interrupts? IRQ 35 and IRQ 8?</em></p>
+<ul>
+<li>
+<p><strong>NuttX IRQ 35</strong> (RISC-V IRQ 10) is the <strong>QEMU UART Interrupt</strong> that’s triggered when a character is received</p>
+<p>(That’s us typing something)</p>
+</li>
+<li>
+<p><strong>NuttX IRQ 8</strong> <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L52-L74">(<strong>RISCV_IRQ_ECALLU</strong>)</a> happens when a NuttX App makes a <strong>System Call</strong> to NuttX Kernel</p>
+<p>(NuttX Shell calls NuttX Kernel to echo the key pressed)</p>
+</li>
+</ul>
+<p>Now we compare the above QEMU Log with Star64…</p>
+<h1 id="star64-vs-qemu-serial-io"><a href="#star64-vs-qemu-serial-io">4 Star64 vs QEMU Serial I/O</a></h1>
 <p>TODO</p>
 <p>In the previous section we added logs to UART I/O in NuttX QEMU. We add the same logs to NuttX Star64 and compare…</p>
 <div class="example-wrap"><pre class="language-text"><code>123067BCnx_start: Entry
