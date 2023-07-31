@@ -84,6 +84,8 @@ mkdir $HOME/tftproot
 sudo tftpd -i 0.0.0.0 -p 69 -d "$HOME/tftproot"
 ```
 
+(Or use [__`xinetd`__](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot))
+
 ([__`tftp_server`__](https://crates.io/crates/tftp_server) won't work, it only supports localhost)
 
 We should see...
