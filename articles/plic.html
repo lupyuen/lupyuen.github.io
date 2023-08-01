@@ -706,13 +706,9 @@ Boot HART MEDELEG:
 </li>
 </ul>
 <p>Now we see UART Interrupts fired at <strong>NuttX IRQ 57</strong> (RISC-V IRQ 32) yay! </p>
-<div class="example-wrap"><pre class="language-text"><code>up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
-uart_register: Registering /dev/console
+<div class="example-wrap"><pre class="language-text"><code>uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
+up_enable_irq: irq=57, extirq=32, RISCV_IRQ_EXT=25
 $%^&amp;riscv_doirq: irq=57
 #*$%^&amp;riscv_doirq: irq=57
 #*$%^&amp;riscv_doirq: irq=57
@@ -735,7 +731,7 @@ $%^&amp;riscv_doirq: irq=57
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013"><strong>UART Transmit Ready</strong></a> (INTID_THRE)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L990-L1003"><strong>UART Input Received</strong></a> (INTID_THRE)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L990-L1003"><strong>UART Input Received</strong></a> (INTID_RDA)</p>
 </li>
 </ul>
 <p>But most of the UART Interrupts are for…</p>
@@ -764,19 +760,15 @@ static int u16550_attach(struct uart_dev_s *dev) {
     up_enable_irq(57); 
   }
 </code></pre></div>
-<p>Ater hacking, watch what happens when we enter <strong><code>ls</code></strong> at the NSH Shell…</p>
+<p>Ater hacking, watch what happens when we enter <strong><code>ls</code></strong> at the NuttX Shell…</p>
 <p><a href="https://youtu.be/TdSJdiQFsv8">(Watch the Demo on YouTube)</a></p>
-<div class="example-wrap"><pre class="language-text"><code>up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
-uart_register: Registering /dev/console
+<div class="example-wrap"><pre class="language-text"><code>uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 work_start_lowpri: Starting low-priority kernel worker thread(s)
 nx_start_application: Starting init task: /system/bin/init
 nx_start_application: ret=3
 up_exit: TCB=0x404088d0 exiting
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
+up_enable_irq: irq=57, extirq=32, RISCV_IRQ_EXT=25
 
 NuttShell (NSH) NuttX-12.0.3
 nsh&gt; ......++.+.
@@ -797,9 +789,10 @@ system.........
 /.............................................................
 nsh&gt; 
 </code></pre></div>
+<p>Yep NuttX Shell works OK on Star64!</p>
+<p>But it’s super slow. Each dot is 1 Million Calls to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>! </p>
 <p>TODO</p>
 <p>(So amazing that NuttX Apps and Context Switching are OK… Even though we haven’t implemented the RISC-V Timer!)</p>
-<p>But it’s super slow. Each dot is 1 Million Calls to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966">UART_IIR_INTSTATUS = 0</a>! </p>
 <p>TODO: Why is UART Interrupt triggered repeatedly with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966">UART_IIR_INTSTATUS = 0</a>?</p>
 <p><em>Maybe because OpenSBI is still handling UART Interrupts in Machine Mode?</em></p>
 <p>We tried to disable PLIC Interrupts for Machine Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L58-L63">qemu_rv_irq.c</a></p>
