@@ -16,7 +16,7 @@ In this article, we find out...
 
 - How UART I/O differs for __Star64 vs QEMU__
 
-- What's the RISC-V __Platform-Level Interrupt Controller__ (PLIC)
+- What's the RISC-V __Platform-Level Interrupt Controller__ (pic above)
 
 - Why we delegate RISC-V __Machine-Mode Interrupts to Supervisor-Mode__
 
@@ -26,7 +26,7 @@ In this article, we find out...
 
   [(Watch the __Demo Video__ on YouTube)](https://youtu.be/TdSJdiQFsv8)
 
-We'll see later that __NuttX Shell__ actually works fine! It's just very very slooow because of the Spurious Interrupts.
+We'll see later that __NuttX Star64__ actually works fine! It's just very very slooow because of the Spurious Interrupts.
 
 ![Star64 RISC-V SBC](https://lupyuen.github.io/images/nuttx2-title.jpg)
 
@@ -87,7 +87,7 @@ _So uart_write is a lot more sophisticated than up_putc?_
 
 Yep NuttX Apps will (indirectly) call [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341) to do Serial I/O with __Buffering and Interrupts__.
 
-Hence [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341) is somehow broken for all NuttX Apps on Star64.
+Somehow [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341) is broken for all NuttX Apps on Star64.
 
 Let's find out why...
 
@@ -108,12 +108,15 @@ up_enable_irq: irq=17, RISCV_IRQ_SOFT=17
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 up_enable_irq: irq=35, extirq=10, RISCV_IRQ_EXT=25
+
 work_start_lowpri: Starting low-priority kernel worker thread(s)
 nx_start_application: Starting init task: /system/bin/init
 up_exit: TCB=0x802088d0 exiting
 ```
 
-[(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#uart-output-in-nuttx-qemu)
+[(See the __Complete Log__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk2-0.0.1)
+
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk2-0.0.1)
 
 [(__up_enable_irq__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L204)
 
@@ -214,7 +217,7 @@ $%&
 riscv_doirq: irq=8
 ```
 
-[(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#uart-output-in-nuttx-qemu)
+[(See the __Complete Log__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk2-0.0.1)
 
 That triggers a call to...
 
@@ -240,7 +243,7 @@ _Why 2 Interrupts? IRQ 35 and IRQ 8?_
 
 - __NuttX IRQ 8__ [(__RISCV_IRQ_ECALLU__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L52-L74) happens when a NuttX App makes a __System Call__ to NuttX Kernel
 
-  (NuttX Shell calls NuttX Kernel to echo the key pressed)
+  (NuttX Shell calls NuttX Kernel to do something)
 
 Now we compare the above QEMU Log with Star64...
 
@@ -282,7 +285,7 @@ uart_write (0xc0015338):
 AAAAAD
 ```
 
-From the QEMU Log, we know that [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341) (print to Serial Console) calls...
+From the [__QEMU Log__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu), we know that [__uart_write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341) (print to Serial Console) calls...
 
 - [`A`] [__uart_putxmitchar__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286) (write to Serial Buffer), which calls...
 
@@ -298,13 +301,13 @@ Yeah these are missing from the Star64 Log...
 
 Which means that UART is __NOT ready to transmit__!
 
-(And we can't write to UART Output)
+(Hence we can't write to UART Output)
 
 _What happens next?_
 
 We said earlier that UART will trigger a [__Transmit Ready Interrupt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1628) when it's ready to transmit more data.
 
-(Which triggers our [__UART Interrupt Handler__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013) that calls [__uart_xmitchars__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107) to send more data)
+(Which triggers our [__UART Interrupt Handler__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013) that calls [__uart_xmitchars__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107) to send data)
 
 But NuttX IRQ 57 is __never triggered__ in the Star64 Log!
 
@@ -330,15 +333,15 @@ But everything looks OK!
 
 Maybe we got the wrong UART IRQ Number? Let's verify...
 
-![JH7110 Global Interrupts](https://lupyuen.github.io/images/plic-interrupts.jpg)
+![Global Interrupts for JH7110](https://lupyuen.github.io/images/plic-interrupts.jpg)
 
-[_JH7110 Global Interrupts_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html)
+[_Global Interrupts for JH7110_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html)
 
 # JH7110 UART Interrupt
 
 _Is the UART IRQ Number correct?_
 
-According to the [__JH7110 UART Doc__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html), the UART Interrupt is at __RISC-V IRQ 32__...
+From the [__JH7110 UART Doc__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html), the UART Interrupt is at __RISC-V IRQ 32__...
 
 Which becomes __NuttX IRQ 57__. (Offset by 25)
 
@@ -445,7 +448,7 @@ Yep, later we might add __Harts 2 to 4__ when we boot NuttX on the other Applica
 
 Let's check our PLIC Code in NuttX...
 
-## PLIC Memory Map
+## Memory Map
 
 _How do we program the PLIC?_
 
@@ -513,7 +516,7 @@ These are the PLIC Registers to __Claim and Complete Interrupts__ [(Page 201)](h
 | 0C20_8004 | RW | Hart 4 S-Mode Claim / Complete
 | &nbsp;
 
-Based on the above Memory Map, we set the PLIC Addresses in NuttX to use __Hart 1 in Supervisor Mode__: [qemu_rv_plic.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L59)
+Based on the above Memory Map, we set the PLIC Addresses in NuttX to use __Hart 1 in Supervisor Mode__: [qemu_rv_plic.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L54)
 
 ```c
 // PLIC Addresses for NuttX Star64
@@ -536,7 +539,7 @@ Based on the above Memory Map, we set the PLIC Addresses in NuttX to use __Hart 
 #define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x202004)
 ```
 
-FYI these are the earlier PLIC Settings for __NuttX QEMU__ (which runs in Machine Mode): [qemu_rv_plic.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L59)
+FYI these are the earlier PLIC Settings for __NuttX QEMU__ (which runs in Machine Mode): [qemu_rv_plic.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L54-L60)
 
 ```c
 // Previously for NuttX QEMU:
@@ -550,7 +553,7 @@ Let's figure out __QEMU_RV_PLIC_BASE__...
 
 _What's the PLIC Base Address?_
 
-According to [__JH7110 U74 Memory Map__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html), the Base Addresses are...
+From [__JH7110 U74 Memory Map__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html), the Base Addresses are...
 
 | Start Address	| End Address	| Device |
 |:-------------:|:-----------:|:-------|
@@ -632,22 +635,22 @@ To enable Interrupts, we configure PLIC to forward External Interrupts to __Hart
 void up_enable_irq(int irq) {
 
   // For Software Interrupt:
-  // Read sstatus & set software interrupt enable in sie 
+  // Read sstatus and set Software Interrupt Enable in sie 
   if (irq == RISCV_IRQ_SOFT) {
     SET_CSR(CSR_IE, IE_SIE);
 
   // For Timer Interrupt:
-  // Read sstatus & set timer interrupt enable in sie 
+  // Read sstatus and set Timer Interrupt Enable in sie 
   } else if (irq == RISCV_IRQ_TIMER) {
     SET_CSR(CSR_IE, IE_TIE);
 
   // For Machine Timer Interrupt:
-  // Read sstatus & set timer interrupt enable in sie 
+  // Read sstatus and set Timer Interrupt Enable in mie 
   } else if (irq == RISCV_IRQ_MTIMER) {
     SET_CSR(mie, MIE_MTIE);
 
   // For External Interrupts:
-  // Set enable bit for the irq 
+  // Set Enable bit for the IRQ 
   // TODO: Extend to PLIC Interrupt ID 136
   } else if (irq > RISCV_IRQ_EXT) {
     int extirq = irq - RISCV_IRQ_EXT;
@@ -661,6 +664,8 @@ void up_enable_irq(int irq) {
   }
 }
 ```
+
+[(__SET_CSR__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_internal.h#L151-L155)
 
 ## Claim and Complete Interrupts
 
@@ -774,7 +779,7 @@ We're finally ready to test the Fixed PLIC Code on Star64!
 
 # Spurious UART Interrupts
 
-_After fixing the PLIC Interrupts on Star64..._
+_After fixing the PLIC Code for Star64..._
 
 _Are UART Interrupts OK?_
 
@@ -829,7 +834,7 @@ _Maybe we should throttle the UART Interrupts?_
 
 This definitely needs to be fixed, but for now we made a Quick Hack: __Defer the Enabling of UART Interrupts__ till later.
 
-We comment out the interrupt in __u16550_attach__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L860-L871)
+We comment out the UART Interrupt in __u16550_attach__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L860-L871)
 
 ```c
 // When we attach to UART Interrupt...
@@ -842,7 +847,7 @@ static int u16550_attach(struct uart_dev_s *dev) {
     // up_enable_irq(priv->irq);
 ```
 
-And instead we enable the interrupt in __uart_write__: [serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1177-L1188)
+And instead we enable the UART Interrupt in __uart_write__: [serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1177-L1188)
 
 ```c
 static ssize_t uart_write(FAR struct file *filep, FAR const char *buffer, size_t buflen) {
@@ -913,6 +918,8 @@ Once again, so many questions...
 
 - Did we configure the [__16550 UART Interrupt Register__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L694-L812) correctly?
 
+  (Also [__u16550_txint__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1629) and [__u16550_rxint__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1251C1-L1283))
+
 - Is the [__NuttX 16550 UART Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c) any different from the [__Linux Driver__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html)?
 
   ([__8250_dw.c__](https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c) and [__8250_core.c__](https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_core.c))
@@ -920,6 +927,8 @@ Once again, so many questions...
 - [__Robert Lipe__](https://twitter.com/robertlipe/status/1685830584688340992?t=wTD98qn0WfhUCDho6px6gw) suggests that we check for floating inputs on the control signals
 
 - Is OpenSBI is still handling UART Interrupts in Machine Mode?
+
+- Do we need to manage the Core-Local Interruptor (CLINT)?
 
 We'll talk more in the next article!
 
@@ -929,7 +938,7 @@ _We seem to be rushing?_
 
 Well NuttX Star64 might get stale and out of sync with NuttX Mainline.
 
-We better chop chop hurry up and [__merge with NuttX Mainline__](https://lupyuen.github.io/articles/pr) soon! (Right after we fix the Spurious UART Interrupts)
+We better chop chop hurry up and [__merge with NuttX Mainline__](https://lupyuen.github.io/articles/pr) soon! (Right after we fix the Spurious and Furious UART Interrupts)
 
 # What's Next
 
