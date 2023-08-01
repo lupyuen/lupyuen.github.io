@@ -765,7 +765,7 @@ We're finally ready to test the Fixed PLIC Code on Star64!
 
 ![NSH on Star64](https://lupyuen.github.io/images/plic-nsh2.png)
 
-# NuttX Star64 handles UART Interrupts
+# Spurious UART Interrupts
 
 _After fixing the PLIC Interrupts on Star64..._
 
@@ -777,7 +777,7 @@ We fixed the __PLIC Memory Map__ in NuttX...
 
   (Route Interrupts to Hart 1 in Supervisor Mode)
 
-UART Interrupts at __NuttX IRQ 57__ (RISC-V IRQ 32) are now OK yay! 
+Now we see UART Interrupts fired at __NuttX IRQ 57__ (RISC-V IRQ 32) yay! 
 
 ```text
 up_irq_enable: 
@@ -802,25 +802,27 @@ $%^&riscv_doirq: irq=57
 
 [(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#nuttx-star64-handles-uart-interrupts)
 
-But we have the Opposite Problem: We are getting __too many UART Interrupts__!
+But we have the Opposite Problem: __Too many UART Interrupts__!
+
+NuttX gets too busy handling millions of spurious UART Interrupts, and can't do anything meaningful.
 
 _Are they valid UART Interrupts?_
 
 Well we see Valid UART Interrupts for...
 
-- [__UART Transmit Ready__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013) (UART_IIR_INTID_THRE)
+- [__UART Transmit Ready__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013) (INTID_THRE)
 
-- [__UART Input Received__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L990-L1003) (UART_IIR_INTID_THRE)
+- [__UART Input Received__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L990-L1003) (INTID_THRE)
 
 But most of the UART Interrupts are for...
 
-- [__UART Interrupt Status = 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L953-L967) (UART_IIR_INTSTATUS)
+- [__UART Interrupt Status = 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L953-L967) (INTSTATUS)
 
 Which means that we got interrupted... For no reason at all!
 
 _Maybe we should throttle the UART Interrupts?_
 
-This definitely needs to be fixed, but for now we hacked it to __delay the enabling of UART Interrupts__ till later.
+This definitely needs to be fixed, but for now we made a Quick Hack: __Defer the Enabling of UART Interrupts__ till later.
 
 We comment out the interrupt in __u16550_attach__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L860-L871)
 
@@ -847,43 +849,44 @@ static ssize_t uart_write(FAR struct file *filep, FAR const char *buffer, size_t
   }
 ```
 
-TODO
-
-Watch what happens when we enter __`ls`__ at the NSH Shell...
+Ater hacking, watch what happens when we enter __`ls`__ at the NSH Shell...
 
 [(Watch the Demo on YouTube)](https://youtu.be/TdSJdiQFsv8)
 
 ```text
-123067BCnx_start: Entry
 up_irq_enable: 
 up_enable_irq: irq=17
 up_enable_irq: RISCV_IRQ_SOFT=17
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 work_start_lowpri: Starting low-priority kernel worker thread(s)
-board_late_initialize: 
 nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
 nx_start_application: ret=3
 up_exit: TCB=0x404088d0 exiting
 up_enable_irq: irq=57
 up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
-..***main
 
 NuttShell (NSH) NuttX-12.0.3
-nsh> ......++.+.l......s......
-................................................p.o.s.i.x._.s.p.a.w.n..:. .p.i.d.=...0.x.c.0.2.0.2.9.7.8. .p.a.t.h.=..l.s. .f.i.l.e._.a.c.t.i.o.n.s.=...0.x.c.0.2.0.2.9.8.0. .a.t.t.r.=...0.x.c.0.2.0.2.9.8.8. .a.r.g.v.=...0.x.c.0.2.0.2.a.2.8.
-.........................................................e.x.e.c._.s.p.a.w.n.:. .E.R.R.O..R.:. .F.a.i.l.e.d. .t.o. .l.o.a.d. .p.r.o.g.r.a.m. .'..l.s.'.:. ..-.2.
-.......n.x.p.o.s.i.x._.s.p.a.w.n._.e.x.e.c.:. .E.R.R.O.R.:. .e.x.e.c. .f.a.i.l.e.d.:. ..2.
-............................................................................................................../:
-............................................................... dev......../
-.............. proc......../
-............... system........./
-.............................................................nsh> ...................n.x._.s.t.a.r.t.:. .C.P.U.0.:. .B.e.g.i.n.n.i.n.g. .I.d.l.e. .L.o.o.p.
-..........................
+nsh> ......++.+.
+l......s......
+................................................
+p.o.s.i.x._.s.p.a.w.n..:. .p.i.d.=...0.x.c.0.2.0.2.9.7.8. .p.a.t.h.=..l.s. .f.i.l.e._.a.c.t.i.o.n.s.=...0.x.c.0.2.0.2.9.8.0. .a.t.t.r.=...0.x.c.0.2.0.2.9.8.8. .a.r.g.v.=...0.x.c.0.2.0.2.a.2.8.
+.........................................................
+e.x.e.c._.s.p.a.w.n.:. .E.R.R.O..R.:. .F.a.i.l.e.d. .t.o. .l.o.a.d. .p.r.o.g.r.a.m. .'..l.s.'.:. ..-.2.
+.......
+n.x.p.o.s.i.x._.s.p.a.w.n._.e.x.e.c.:. .E.R.R.O.R.:. .e.x.e.c. .f.a.i.l.e.d.:. ..2.
+..............................................................................................................
+/:............................................................... 
+dev........
+/.............. 
+proc........
+/............... 
+system.........
+/.............................................................
+nsh> 
 ```
+
+TODO
 
 (So amazing that NuttX Apps and Context Switching are OK... Even though we haven't implemented the RISC-V Timer!)
 
