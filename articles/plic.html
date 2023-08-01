@@ -463,7 +463,7 @@ AAAAAD
 <p>Mark the Interrupt as <strong>Complete</strong></p>
 </li>
 </ol>
-<p><strong>Priority Threshold</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 201)</a></p>
+<p>These are the PLIC Registers to <strong>Claim and Complete Interrupts</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 201)</a>…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: center">0C20_2004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 1 S-Mode Claim / Complete</td></tr>
 <tr><td style="text-align: center">0C20_4004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 2 S-Mode Claim / Complete</td></tr>
@@ -471,8 +471,9 @@ AAAAAD
 <tr><td style="text-align: center">0C20_8004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 4 S-Mode Claim / Complete</td></tr>
 </tbody></table>
 </div>
-<p>Based on the above PLIC Memory Map, we fix the PLIC Addresses in NuttX to use Hart 1: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L59">qemu_rv_plic.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// PLIC Addresses for NuttX Star64:
+<p>Based on the above Memory Map, we set the PLIC Addresses in NuttX to use <strong>Hart 1 in Supervisor Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L59">qemu_rv_plic.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// PLIC Addresses for NuttX Star64
+// (Hart 1 in Supervisor Mode)
 // | 0x0C00_0004 | RW | Source 1 priority
 // | 0x0C00_1000 | RO | Start of pending array
 #define QEMU_RV_PLIC_PRIORITY (QEMU_RV_PLIC_BASE + 0x000000)
