@@ -796,7 +796,7 @@ nsh&gt;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#nuttx-star64-handles-uart-interrupts">(See the <strong>Complete Log</strong>)</a></p>
 <p>Yep NuttX Shell works OK on Star64!</p>
-<p>But it’s super slow. Each dot is 1 Million Calls to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>! </p>
+<p>But it’s super slow. Each dot is <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>One Million Calls</strong></a> to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>! </p>
 <p>TODO</p>
 <p>(So amazing that NuttX Apps and Context Switching are OK… Even though we haven’t implemented the RISC-V Timer!)</p>
 <p>TODO: Why is UART Interrupt triggered repeatedly with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966">UART_IIR_INTSTATUS = 0</a>?</p>
