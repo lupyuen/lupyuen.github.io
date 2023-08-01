@@ -862,6 +862,13 @@ NuttShell (NSH) NuttX-12.0.3
 nsh> ......++.+.
 l......s......
 ................................................
+```
+
+We see the [__exec_spawn__](https://lupyuen.github.io/articles/semihost#boot-nuttx-qemu-with-initial-ram-disk) warning...
+
+[(Which is OK to ignore)](https://lupyuen.github.io/articles/semihost#boot-nuttx-qemu-with-initial-ram-disk)
+
+```text
 p.o.s.i.x._.s.p.a.w.n..:. .p.i.d.=...0.x.c.0.2.0.2.9.7.8. .p.a.t.h.=..l.s. .f.i.l.e._.a.c.t.i.o.n.s.=...0.x.c.0.2.0.2.9.8.0. .a.t.t.r.=...0.x.c.0.2.0.2.9.8.8. .a.r.g.v.=...0.x.c.0.2.0.2.a.2.8.
 .........................................................
 e.x.e.c._.s.p.a.w.n.:. .E.R.R.O..R.:. .F.a.i.l.e.d. .t.o. .l.o.a.d. .p.r.o.g.r.a.m. .'..l.s.'.:. ..-.2.
@@ -869,8 +876,6 @@ e.x.e.c._.s.p.a.w.n.:. .E.R.R.O..R.:. .F.a.i.l.e.d. .t.o. .l.o.a.d. .p.r.o.g.r.a
 n.x.p.o.s.i.x._.s.p.a.w.n._.e.x.e.c.:. .E.R.R.O.R.:. .e.x.e.c. .f.a.i.l.e.d.:. ..2.
 ..............................................................................................................
 ```
-
-We see the [__exec_spawn__](https://lupyuen.github.io/articles/semihost#boot-nuttx-qemu-with-initial-ram-disk) warning. [(Which is OK to ignore)](https://lupyuen.github.io/articles/semihost#boot-nuttx-qemu-with-initial-ram-disk)
 
 Followed by the output of __`ls`__...
 
