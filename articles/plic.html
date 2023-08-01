@@ -75,8 +75,7 @@
 <li><a href="#platform-level-interrupt-controller-for-star64">6 Platform-Level Interrupt Controller for Star64</a><ul>
 <li><a href="#plic-memory-map">6.1 PLIC Memory Map</a><ul></ul></li>
 <li><a href="#enable-plic-interrupts">6.2 Enable PLIC Interrupts</a><ul></ul></li>
-<li><a href="#handle-plic-interrupts">6.3 Handle PLIC Interrupts</a><ul></ul></li>
-<li><a href="#claim-plic-interrupts">6.4 Claim PLIC Interrupts</a><ul></ul></li></ul></li>
+<li><a href="#claim-and-complete-plic-interrupts">6.3 Claim and Complete PLIC Interrupts</a><ul></ul></li></ul></li>
 <li><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">7 Delegate Machine-Mode Interrupts to Supervisor-Mode</a><ul></ul></li>
 <li><a href="#nuttx-star64-handles-uart-interrupts">8 NuttX Star64 handles UART Interrupts</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>8 Aug 2023</em></p>
@@ -270,6 +269,7 @@ riscv_doirq: irq=8
 </li>
 </ul>
 <p>Now we compare the above QEMU Log with Star64…</p>
+<p><img src="https://lupyuen.github.io/images/plic-star64.png" alt="NuttX Star64 Debug Log" /></p>
 <h1 id="star64-vs-qemu-serial-io"><a href="#star64-vs-qemu-serial-io">4 Star64 vs QEMU Serial I/O</a></h1>
 <p><em>Earlier we said that NuttX Star64 couldn’t print to Serial Console. Why?</em></p>
 <p>Let’s observe the <strong>Star64 Debug Log</strong> (and compare with QEMU Log)…</p>
@@ -371,7 +371,7 @@ AAAAAD
 <p><em>What about the Global Interrupt Number?</em></p>
 <p>According to the doc on <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html"><strong>JH7110 Interrupt Connections</strong></a>, <strong>u0_uart</strong>	is at <strong>global_interrupts[27]</strong></p>
 <p>Which is correct because the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a> (Page 198) says that…</p>
-<div class="example-wrap"><pre class="language-text"><code>RISC=V IRQ = Global Interrupt Number + 5
+<div class="example-wrap"><pre class="language-text"><code>RISC-V IRQ = Global Interrupt Number + 5
 </code></pre></div>
 <p><em>Maybe IRQ 32 is too high? (QEMU UART IRQ is only 10)</em></p>
 <p>The doc on <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html"><strong>JH7110 Interrupt Connections</strong></a> says that Global Interrupts are numbered <strong>0 to 126</strong>. (127 total interrupts) </p>
@@ -512,9 +512,7 @@ AAAAAD
 </code></pre></div><h2 id="enable-plic-interrupts"><a href="#enable-plic-interrupts">6.2 Enable PLIC Interrupts</a></h2>
 <p><em>How to configure PLIC to forward Interrupts to the Harts?</em></p>
 <p>TODO: Priority</p>
-<h2 id="handle-plic-interrupts"><a href="#handle-plic-interrupts">6.3 Handle PLIC Interrupts</a></h2>
-<p>TODO</p>
-<h2 id="claim-plic-interrupts"><a href="#claim-plic-interrupts">6.4 Claim PLIC Interrupts</a></h2>
+<h2 id="claim-and-complete-plic-interrupts"><a href="#claim-and-complete-plic-interrupts">6.3 Claim and Complete PLIC Interrupts</a></h2>
 <p>TODO</p>
 <p>Note that there’s a Core-Local Interruptor (CLINT) that handles Local Interrupts…</p>
 <p><img src="https://lupyuen.github.io/images/plic-hart.png" alt="PLIC in JH7110 (U74) SoC" /></p>
