@@ -549,15 +549,150 @@ Which are correct in NuttX: [qemu_rv_memorymap.h](https://github.com/lupyuen2/wi
 #define QEMU_RV_PLIC_BASE    0x0c000000
 ```
 
+## Initialise PLIC Interrupts
+
+TODO
+
+[qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L41-L106)
+
+```c
+// Initialise Interrupts for Star64
+void up_irqinitialize(void) {
+
+  /* Disable Machine interrupts */
+  up_irq_save();
+
+  /* Disable all global interrupts */
+  putreg32(0x0, QEMU_RV_PLIC_ENABLE1);
+  putreg32(0x0, QEMU_RV_PLIC_ENABLE2);
+
+  /* Set priority for all global interrupts to 1 (lowest) */
+  for (int id = 1; id <= NR_IRQS; id++) //// Changed 52 to NR_IRQS
+    {
+      putreg32(1, (uintptr_t)(QEMU_RV_PLIC_PRIORITY + 4 * id));
+    }
+
+  /* Set irq threshold to 0 (permits all global interrupts) */
+  putreg32(0, QEMU_RV_PLIC_THRESHOLD);
+
+  /* Attach the common interrupt handler */
+  riscv_exception_attach();
+
+  /* And finally, enable interrupts */
+  up_irq_enable();
+}
+```
+
+TODO
+
+[qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L205-L220)
+
+```c
+irqstate_t up_irq_enable(void) {
+
+  /* Enable external interrupts (mie/sie) */
+  SET_CSR(CSR_IE, IE_EIE);
+
+  /* Read and enable global interrupts (M/SIE) in m/sstatus */
+  irqstate_t oldstat = READ_AND_SET_CSR(CSR_STATUS, STATUS_IE);
+  return oldstat;
+}
+```
+
 ## Enable PLIC Interrupts
 
 _How to configure PLIC to forward Interrupts to the Harts?_
 
 TODO: Priority
 
+[qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L205)
+
+```c
+// Enable the IRQ specified by 'irq'
+void up_enable_irq(int irq) {
+  int extirq;
+
+  if (irq == RISCV_IRQ_SOFT)
+    {
+      _info("RISCV_IRQ_SOFT=%d\n", RISCV_IRQ_SOFT);////
+      /* Read m/sstatus & set machine software interrupt enable in m/sie */
+
+      SET_CSR(CSR_IE, IE_SIE);
+    }
+  else if (irq == RISCV_IRQ_TIMER)
+    {
+      _info("RISCV_IRQ_TIMER=%d\n", RISCV_IRQ_TIMER);////
+      /* Read m/sstatus & set timer interrupt enable in m/sie */
+
+      SET_CSR(CSR_IE, IE_TIE);
+    }
+  else if (irq == RISCV_IRQ_MTIMER)
+    {
+      _info("RISCV_IRQ_MTIMER=%d\n", RISCV_IRQ_MTIMER);////
+      /* Read m/sstatus & set timer interrupt enable in m/sie */
+
+      SET_CSR(mie, MIE_MTIE);
+    }
+  else if (irq > RISCV_IRQ_EXT)
+    {
+      extirq = irq - RISCV_IRQ_EXT;
+
+      /* Set enable bit for the irq */
+
+      if (0 <= extirq && extirq <= 63) ////TODO: Why 63?
+        {
+          modifyreg32(QEMU_RV_PLIC_ENABLE1 + (4 * (extirq / 32)),
+                      0, 1 << (extirq % 32));
+        }
+      else
+        {
+          PANIC();
+        }
+    }
+}
+```
+
 ## Claim and Complete PLIC Interrupts
 
 TODO
+
+[qemu_rv_irq_dispatch.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L91)
+
+```c
+void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
+{
+  int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
+
+  /* Firstly, check if the irq is machine external interrupt */
+
+  if (RISCV_IRQ_EXT == irq)
+    {
+      uintptr_t val = getreg32(QEMU_RV_PLIC_CLAIM);
+
+      /* Add the value to nuttx irq which is offset to the mext */
+
+      irq += val;
+    }
+
+  /* EXT means no interrupt */
+
+  if (RISCV_IRQ_EXT != irq)
+    {
+      /* Deliver the IRQ */
+
+      regs = riscv_doirq(irq, regs);
+    }
+
+  if (RISCV_IRQ_EXT <= irq)
+    {
+      putreg32(irq - RISCV_IRQ_EXT, QEMU_RV_PLIC_CLAIM);
+    }
+
+  return regs;
+}
+```
+
+TODO: CLINT
 
 Note that there's a Core-Local Interruptor (CLINT) that handles Local Interrupts...
 
