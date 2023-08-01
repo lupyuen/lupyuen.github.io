@@ -1112,6 +1112,8 @@ dtc \
   qemu-riscv64.dtb
 ```
 
+[(__dtc__ decompiles a Device Tree)](https://manpages.ubuntu.com/manpages/xenial/man1/dtc.1.html)
+
 This produces the Device Tree for RISC-V QEMU...
 
 - [__qemu-riscv64.dts: Device Tree for RISC-V QEMU__](https://github.com/lupyuen/nuttx-star64/blob/main/qemu-riscv64.dts)

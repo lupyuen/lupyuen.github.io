@@ -813,6 +813,8 @@ dtc \
   sun50i-a64-pinephone-1.2.dtb
 ```
 
+[(__dtc__ decompiles a Device Tree)](https://manpages.ubuntu.com/manpages/xenial/man1/dtc.1.html)
+
 __sun50i-a64-pinephone-1.2.dtb__ came from the [__Jumpdrive microSD__](https://lupyuen.github.io/articles/uboot#pinephone-jumpdrive)...
 
 -   [__PinePhone Jumpdrive Image: pine64-pinephone.img.xz__](https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz)

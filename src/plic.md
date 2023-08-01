@@ -346,6 +346,7 @@ _Is it the same UART IRQ as Linux?_
 We dumped the __Linux Device Tree__ for JH7110...
 
 ```text
+## Convert Device Tree to text format
 dtc \
   -o jh7110-visionfive-v2.dts \
   -O dts \
@@ -353,7 +354,9 @@ dtc \
   jh7110-visionfive-v2.dtb
 ```
 
-UART0 is indeed at RISC-V IRQ 32: [jh7110-visionfive-v2.dts](https://github.com/lupyuen/nuttx-star64/blob/main/jh7110-visionfive-v2.dts#L619-L631)
+[(__dtc__ decompiles a Device Tree)](https://manpages.ubuntu.com/manpages/xenial/man1/dtc.1.html)
+
+__Linux Port UART0__ is indeed at RISC-V IRQ 32: [jh7110-visionfive-v2.dts](https://github.com/lupyuen/nuttx-star64/blob/main/jh7110-visionfive-v2.dts#L619-L631)
 
 ```text
 serial@10000000 {
