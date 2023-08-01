@@ -896,44 +896,29 @@ Yep NuttX Shell works OK on Star64!
 
 But it's super slow. Each dot is [__One Million Calls__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966) to the UART Interrupt Handler, with UART Interrupt Status [__INTSTATUS = 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966)! 
 
-(So amazing that NuttX Apps and Context Switching are OK... Even though we haven't implemented the RISC-V Timer!)
+(So amazing that NuttX Apps and Context Switching are OK... Even though we haven't implemented the [__RISC-V Timer__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L200-L209)!)
 
-TODO: Why is UART Interrupt triggered repeatedly with [UART_IIR_INTSTATUS = 0](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966)?
+Once again, so many questions...
 
-_Maybe because OpenSBI is still handling UART Interrupts in Machine Mode?_
+- Why is UART Interrupt triggered repeatedly with [__INTSTATUS = 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966)?
 
-We tried to disable PLIC Interrupts for Machine Mode: [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L58-L63)
+  (We're quite sure it's not due to [__Rx Timeout__](https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L254-L274))
 
-```c
-  // Disable All Global Interrupts for Hart 1 Machine-Mode
-  // | 0x0C00_2080 | 4B | RW | Start Hart 1 M-Mode Interrupt Enables
-  #define QEMU_RV_PLIC_ENABLE1_MMODE   (QEMU_RV_PLIC_BASE + 0x002080)
-  #define QEMU_RV_PLIC_ENABLE2_MMODE   (QEMU_RV_PLIC_BASE + 0x002084)
-  putreg32(0x0, QEMU_RV_PLIC_ENABLE1_MMODE);
-  putreg32(0x0, QEMU_RV_PLIC_ENABLE2_MMODE);
-```
+- Did we configure the [__16550 UART Interrupt Register__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L694-L812) correctly?
 
-But we still see spurious UART interrupts.
+- Is the [__NuttX 16550 UART Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c) any different from the [__Linux Driver__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html)?
 
-TODO: How does OpenSBI handle UART I/O? Are the UART Interrupts still routed to OpenSBI? Can we remove them from OpenSBI?
+  ([__8250_dw.c__](https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c) and [__8250_core.c__](https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_core.c))
 
-TODO: [Robert Lipe](https://twitter.com/robertlipe/status/1685830584688340992?t=wTD98qn0WfhUCDho6px6gw) suggests that we check for floating inputs on the control signals
+- [__Robert Lipe__](https://twitter.com/robertlipe/status/1685830584688340992?t=wTD98qn0WfhUCDho6px6gw) suggests that we check for floating inputs on the control signals
 
-TODO: Throttle interrupts (for now) in [riscv_dispatch_irq](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L56-L91)
+- Is OpenSBI is still handling UART Interrupts in Machine Mode?
 
-TODO: Did we configure 16550 UART Interrupt Register correctly?
+We'll talk more in the next article!
 
-TODO: Is NuttX 16550 UART Driver any different from Linux?
+_We seem to be rushing?_
 
-TODO: Why are we rushing? Might get stale and out of sync with mainline
-
-TODO: Check [PolarFire Icicle](https://lupyuen.github.io/articles/privilege#other-risc-v-ports-of-nuttx)
-
-TODO: Check [Linux Boot Code](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S)
-
-TODO: [Linux SBI Interface](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/sbi.c)
-
-TODO: [Handle Machine Exception](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_exception_m.S#L64)
+Well NuttX Star64 might get stale and out of sync with NuttX Mainline.  We better chop chop hurry up and merge with NuttX Mainline soon!
 
 # What's Next
 
