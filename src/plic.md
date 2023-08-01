@@ -482,7 +482,7 @@ That's why we service Interrupts in 3 steps...
 
 1.  Mark the Interrupt as __Complete__
 
-__Priority Threshold__ [(Page 201)](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)
+These are the PLIC Registers to __Claim and Complete Interrupts__ [(Page 201)](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)...
 
 | Address | R/W | Description
 |:-------:|:---:|:-----------
@@ -491,10 +491,11 @@ __Priority Threshold__ [(Page 201)](https://starfivetech.com/uploads/u74mc_core_
 | 0C20_6004 | RW | Hart 3 S-Mode Claim / Complete 
 | 0C20_8004 | RW | Hart 4 S-Mode Claim / Complete
 
-Based on the above PLIC Memory Map, we fix the PLIC Addresses in NuttX to use Hart 1: [qemu_rv_plic.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L59)
+Based on the above Memory Map, we set the PLIC Addresses in NuttX to use __Hart 1 in Supervisor Mode__: [qemu_rv_plic.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L59)
 
 ```c
-// PLIC Addresses for NuttX Star64:
+// PLIC Addresses for NuttX Star64
+// (Hart 1 in Supervisor Mode)
 // | 0x0C00_0004 | RW | Source 1 priority
 // | 0x0C00_1000 | RO | Start of pending array
 #define QEMU_RV_PLIC_PRIORITY (QEMU_RV_PLIC_BASE + 0x000000)
