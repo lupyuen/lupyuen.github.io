@@ -74,9 +74,9 @@
 <li><a href="#star64-uart-interrupt">5 Star64 UART Interrupt</a><ul></ul></li>
 <li><a href="#platform-level-interrupt-controller-for-star64">6 Platform-Level Interrupt Controller for Star64</a><ul>
 <li><a href="#plic-memory-map">6.1 PLIC Memory Map</a><ul></ul></li>
-<li><a href="#initialise-plic-interrupts">6.2 Initialise PLIC Interrupts</a><ul></ul></li>
-<li><a href="#enable-plic-interrupts">6.3 Enable PLIC Interrupts</a><ul></ul></li>
-<li><a href="#claim-and-complete-plic-interrupts">6.4 Claim and Complete PLIC Interrupts</a><ul></ul></li></ul></li>
+<li><a href="#initialise-interrupts">6.2 Initialise Interrupts</a><ul></ul></li>
+<li><a href="#enable-interrupts">6.3 Enable Interrupts</a><ul></ul></li>
+<li><a href="#claim-and-complete-interrupts">6.4 Claim and Complete Interrupts</a><ul></ul></li></ul></li>
 <li><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">7 Delegate Machine-Mode Interrupts to Supervisor-Mode</a><ul></ul></li>
 <li><a href="#nuttx-star64-handles-uart-interrupts">8 NuttX Star64 handles UART Interrupts</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>8 Aug 2023</em></p>
@@ -394,7 +394,7 @@ dtc \
 <p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller in JH7110 (U74) SoC" /></p>
 <h1 id="platform-level-interrupt-controller-for-star64"><a href="#platform-level-interrupt-controller-for-star64">6 Platform-Level Interrupt Controller for Star64</a></h1>
 <p><em>What’s this PLIC?</em></p>
-<p>The RISC-V <strong>Platform-Level Interrupt Controller (PLIC)</strong> inside Star64 handles Global Interrupts triggered by Peripherals. (Like the UART Controller)</p>
+<p>The RISC-V <strong>Platform-Level Interrupt Controller (PLIC)</strong> inside Star64 handles <strong>Global Interrupts</strong> (External Interrupts) triggered by Peripherals. (Like the UART Controller)</p>
 <ul>
 <li>
 <p><a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74-MC Core Complex Manual</strong></a></p>
@@ -520,7 +520,7 @@ dtc \
 <div class="example-wrap"><pre class="language-c"><code>// Base Addresses of CLINT and PLIC
 #define QEMU_RV_CLINT_BASE   0x02000000
 #define QEMU_RV_PLIC_BASE    0x0c000000
-</code></pre></div><h2 id="initialise-plic-interrupts"><a href="#initialise-plic-interrupts">6.2 Initialise PLIC Interrupts</a></h2>
+</code></pre></div><h2 id="initialise-interrupts"><a href="#initialise-interrupts">6.2 Initialise Interrupts</a></h2>
 <p>In NuttX, this is how we <strong>initialise the PLIC</strong> Interrupt Controller: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L41-L106">qemu_rv_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialise Interrupts for Star64
 void up_irqinitialize(void) {
@@ -567,8 +567,8 @@ irqstate_t up_irq_enable(void) {
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_internal.h#L151-L155">(<strong>SET_CSR</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_internal.h#L139-L145">(<strong>READ_AND_SET_CSR</strong> is defined here)</a></p>
-<h2 id="enable-plic-interrupts"><a href="#enable-plic-interrupts">6.3 Enable PLIC Interrupts</a></h2>
-<p>This is how we configure PLIC to forward External Interrupts to <strong>Hart 1 in Supervisor Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L205">qemu_rv_irq.c</a></p>
+<h2 id="enable-interrupts"><a href="#enable-interrupts">6.3 Enable Interrupts</a></h2>
+<p>To enable Interrupts, we configure PLIC to forward External Interrupts to <strong>Hart 1 in Supervisor Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L205">qemu_rv_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the IRQ specified by &#39;irq&#39;
 void up_enable_irq(int irq) {
 
@@ -601,7 +601,7 @@ void up_enable_irq(int irq) {
     } else { PANIC(); }
   }
 }
-</code></pre></div><h2 id="claim-and-complete-plic-interrupts"><a href="#claim-and-complete-plic-interrupts">6.4 Claim and Complete PLIC Interrupts</a></h2>
+</code></pre></div><h2 id="claim-and-complete-interrupts"><a href="#claim-and-complete-interrupts">6.4 Claim and Complete Interrupts</a></h2>
 <p>Remember that we service Interrupts in 3 steps…</p>
 <ol>
 <li>
@@ -650,6 +650,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p>Let’s check that the RISC-V Interrupts are delegated correctly…</p>
 <p><img src="https://lupyuen.github.io/images/plic-hart.png" alt="PLIC in JH7110 (U74) SoC" /></p>
 <h1 id="delegate-machine-mode-interrupts-to-supervisor-mode"><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">7 Delegate Machine-Mode Interrupts to Supervisor-Mode</a></h1>
+<p><em>Why do we delegate Interrupts?</em></p>
 <p>TODO</p>
 <p><em>NuttX runs in RISC-V Supervisor Mode, which can’t handle Interrupts directly. (Needs Machine Mode) How can we be sure that the RISC-V Interrupts are correctly handled in Supervisor Mode?</em></p>
 <p>From <a href="https://sifive.cdn.prismic.io/sifive/0d163928-2128-42be-a75a-464df65e04e0_sifive-interrupt-cookbook.pdf">SiFive Interrupt Cookbook</a>, Page 15:</p>
