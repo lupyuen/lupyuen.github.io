@@ -648,7 +648,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p>There’s also a <strong>Core-Local Interruptor (CLINT)</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 185)</a> that handles Local Interrupts. But we won’t talk about it today. (Pic below)</p>
 <p><strong>TODO:</strong> Do we need to handle CLINT?</p>
 <p>Let’s check that the RISC-V Interrupts are delegated correctly…</p>
-<p><img src="https://lupyuen.github.io/images/plic-hart.png" alt="PLIC in JH7110 (U74) SoC" /></p>
+<p><img src="https://lupyuen.github.io/images/plic-clint.jpg" alt="PLIC and CLINT in JH7110 (U74) SoC" /></p>
 <h1 id="delegate-machine-mode-interrupts-to-supervisor-mode"><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">7 Delegate Machine-Mode Interrupts to Supervisor-Mode</a></h1>
 <p><em>Why do we delegate Interrupts?</em></p>
 <p>According to the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a> (Page 176)…</p>
