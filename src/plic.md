@@ -933,7 +933,23 @@ We better chop chop hurry up and [__merge with NuttX Mainline__](https://lupyuen
 
 # What's Next
 
-TODO
+NuttX on Star64 JH7110 RISC-V SBC is almost ready!
+
+- We fixed the __Console Output__ from NuttX Apps
+
+- By tracing through __Serial I/O__ in NuttX QEMU
+
+- And comparing UART I/O for __Star64 vs QEMU__
+
+- We also fixed the NuttX code for __Platform-Level Interrupt Controller__ (PLIC)
+
+- And verified the delegation of __Machine-Mode Interrupts to Supervisor-Mode__
+
+- NuttX Star64 now handles __UART Interrupts__ correctly
+
+- But there's a new problem: 16550 UART Controller fires too many __Spurious Interrupts__
+
+- Which we'll fix in the next article!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
