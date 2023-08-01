@@ -479,7 +479,9 @@ AAAAAD
 #define QEMU_RV_PLIC_PRIORITY (QEMU_RV_PLIC_BASE + 0x000000)
 #define QEMU_RV_PLIC_PENDING1 (QEMU_RV_PLIC_BASE + 0x001000)
 
+// NuttX Star64 runs in Supervisor Mode
 #ifdef CONFIG_ARCH_USE_S_MODE
+
 // | 0x0C00_2100 | RW | Start Hart 1 S-Mode Interrupt Enables
 #define QEMU_RV_PLIC_ENABLE1 (QEMU_RV_PLIC_BASE + 0x002100)
 #define QEMU_RV_PLIC_ENABLE2 (QEMU_RV_PLIC_BASE + 0x002104)
@@ -495,13 +497,17 @@ AAAAAD
 // #define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x201000)
 // #define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x201004)
 </code></pre></div>
-<p><em>What about the PLIC Base Address?</em></p>
-<p>According to <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html">U74 Memory Map</a>, the Base Addresses are:</p>
-<div class="example-wrap"><pre class="language-text"><code>0x00_0200_0000	0x00_0200_FFFF		RW A	CLINT
-0x00_0C00_0000	0x00_0FFF_FFFF		RW A	PLIC
-</code></pre></div>
+<p>Let’s figure out <strong>QEMU_RV_PLIC_BASE</strong>…</p>
+<p><em>What’s the PLIC Base Address?</em></p>
+<p>According to <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html"><strong>JH7110 U74 Memory Map</strong></a>, the Base Addresses are…</p>
+<div><table><thead><tr><th style="text-align: center">Start Address</th><th style="text-align: center">End Address</th><th style="text-align: left">Device</th></tr></thead><tbody>
+<tr><td style="text-align: center">0200_0000</td><td style="text-align: center">0200_FFFF</td><td style="text-align: left">CLINT</td></tr>
+<tr><td style="text-align: center">0C00_0000</td><td style="text-align: center">0FFF_FFFF</td><td style="text-align: left">PLIC</td></tr>
+</tbody></table>
+</div>
 <p>Which are correct in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_memorymap.h#L30-L32">qemu_rv_memorymap.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define QEMU_RV_CLINT_BASE   0x02000000
+<div class="example-wrap"><pre class="language-c"><code>// Base Addresses of CLINT and PLIC
+#define QEMU_RV_CLINT_BASE   0x02000000
 #define QEMU_RV_PLIC_BASE    0x0c000000
 </code></pre></div><h2 id="enable-plic-interrupts"><a href="#enable-plic-interrupts">6.2 Enable PLIC Interrupts</a></h2>
 <p><em>How to configure PLIC to forward Interrupts to the Harts?</em></p>
