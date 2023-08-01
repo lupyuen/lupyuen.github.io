@@ -429,26 +429,24 @@ Yep, later we might add __Harts 2 to 4__ when we boot NuttX on the other Applica
 
 (But probably not Hart 0, since it's a special limited Monitor Core)
 
-Let's check our NuttX PLIC Code...
+Let's check our PLIC Code in NuttX...
 
 ## PLIC Memory Map
 
 _How do we program the PLIC?_
 
-TODO
-
-The PLIC Memory Map is below...
-
-From [SiFive U74-MC Core Complex Manual](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) Page 193 (PLIC Memory Map)
+We write to the PLIC Registers defined in the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 193)...
 
 | Address | R/W | Description
 |:-------:|:---:|:-----------
 | 0C00_0004 | RW | Source 1 Priority
 | 0C00_0220 | RW | Source 136 Priority
 | 0C00_1000 | RO | Start of Pending Array
-| 0C00_1010 | RO | Last word of Pending Array
+| 0C00_1010 | RO | Last Word of Pending Array
 
-TODO
+Above are the PLIC Registers for __Interrupt Priorities__ [(Page 198)](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) and __Interrupt Pending Bits__ [(Page 198)](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf).
+
+To enable (or disable) Interrupts, we write to the __Interrupt Enable Registers__ [(Page 199)](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)...
 
 | Address | R/W | Description
 |:-------:|:---:|:-----------
@@ -461,17 +459,36 @@ TODO
 | 0C00_2400 | RW | Start of Hart 4 S-Mode Interrupt Enables
 | 0C00_2410 | RW | End of Hart 4 S-Mode Interrupt Enables
 
-TODO
+This says that each Hart (RISC-V Core) can be programmed individually to receive Interrupts.
+
+(We'll only do __Hart 1 in Supervisor Mode__)
+
+The __Priority Threshold__ [(Page 200)](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) works like an Interrupt Mask, it suppresses Low Priority Interrupts...
 
 | Address | R/W | Description
 |:-------:|:---:|:-----------
 | 0C20_2000 | RW | Hart 1 S-Mode Priority Threshold
-| 0C20_2004 | RW | Hart 1 S-Mode Claim / Complete 
 | 0C20_4000 | RW | Hart 2 S-Mode Priority Threshold
-| 0C20_4004 | RW | Hart 2 S-Mode Claim / Complete
 | 0C20_6000 | RW | Hart 3 S-Mode Priority Threshold
-| 0C20_6004 | RW | Hart 3 S-Mode Claim / Complete 
 | 0C20_8000 | RW | Hart 4 S-Mode Priority Threshold
+
+Things can get messy when __Multiple Harts__ service Interrupts at the same time.
+
+That's why we service Interrupts in 3 steps...
+
+1.  __Claim__ the Interrupt
+
+1.  __Handle__ the Interrupt
+
+1.  Mark the Interrupt as __Complete__
+
+__Priority Threshold__ [(Page 201)](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)
+
+| Address | R/W | Description
+|:-------:|:---:|:-----------
+| 0C20_2004 | RW | Hart 1 S-Mode Claim / Complete 
+| 0C20_4004 | RW | Hart 2 S-Mode Claim / Complete
+| 0C20_6004 | RW | Hart 3 S-Mode Claim / Complete 
 | 0C20_8004 | RW | Hart 4 S-Mode Claim / Complete
 
 Based on the above PLIC Memory Map, we fix the PLIC Addresses in NuttX to use Hart 1: [qemu_rv_plic.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L59)
