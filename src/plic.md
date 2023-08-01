@@ -729,60 +729,31 @@ Boot HART MEDELEG:
   0x0000b109
 ```
 
-_What does mideleg tell us?_
+_What does mideleg say?_
 
-TODO
+(Ring-ding-ding-ding-dingeringeding!)
 
-According to the [RISC-V Spec], MIDELEG needs to be configured orrectly to delegate Machine Mode Interrupts to Supervisor Mode.
-
-
-MIDELEG is defined by the following bits: [csr.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/csr.h#L343-L346):
+__mideleg__ is defined by the following bits: [csr.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/csr.h#L343-L346)
 
 ```c
-#define MIP_SSIP (0x1 << 1)
-#define MIP_STIP (0x1 << 5)
-#define MIP_MTIP (0x1 << 7)
-#define MIP_SEIP (0x1 << 9)
+// Bit Definition for mideleg
+#define MIP_SSIP (0x1 << 1)  // Delegate Software Interrupt
+#define MIP_STIP (0x1 << 5)  // Delegate Timer Interrupt
+#define MIP_MTIP (0x1 << 7)  // Delegate Machine Timer Interrupt
+#define MIP_SEIP (0x1 << 9)  // Delegate External Interrupts
 ```
 
-So `Boot HART MIDELEG: 0x0000000000000222` means...
-- SSIP: Delegate Supervisor Software Interrupt
-- STIP: Delegate Supervisor Timer Interrupt
-- SEIP: Delegate Supervisor External Interrupt
+So __`0000B109`__ means...
 
-(But not MTIP: Delegate Machine Timer Interrupt)
+- Delegate __Software Interrupt__ to Supervisor Mode (SSIP)
 
-Thus we're good, the interrupts should be correctly delegated from Machine Mode to Supervisor Mode for NuttX.
+- Delegate __Timer Interrupt__ to Supervisor Mode (STIP)
 
-FYI: This is same for NuttX SBI: [nuttsbi/sbi_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/nuttsbi/sbi_start.c#L91-L94)
+- Delegate __External Interrupts__ to Supervisor Mode (SEIP)
 
-```c
-  // Delegate interrupts 
+  (But not MTIP: Delegate Machine Timer Interrupt)
 
-  reg = (MIP_SSIP | MIP_STIP | MIP_SEIP);
-  WRITE_CSR(mideleg, reg);
-
-  // Delegate exceptions (all of them) 
-
-  reg = ((1 << RISCV_IRQ_IAMISALIGNED) |
-         (1 << RISCV_IRQ_INSTRUCTIONPF) |
-         (1 << RISCV_IRQ_LOADPF) |
-         (1 << RISCV_IRQ_STOREPF) |
-         (1 << RISCV_IRQ_ECALLU));
-  WRITE_CSR(medeleg, reg);
-```
-
-[SiFive Interrupt Cookbook](https://sifive.cdn.prismic.io/sifive/0d163928-2128-42be-a75a-464df65e04e0_sifive-interrupt-cookbook.pdf) states the Machine vs Supervisor Interrupt IDs:
-
-Machine Mode Interrupts:
-- Software Interrupt: Interrupt ID: 3
-- Timer Interrupt: Interrupt ID: 7
-- External Interrupt: Interrupt ID: 11
-
-Supervisor Mode Interrupts:
-- Software Interrupt: Interrupt ID: 1
-- Timer Interrupt: Interrupt ID: 5
-- External Interrupt: Interrupt ID: 9
+Thus we're good! OpenSBI has __correctly delegated External Interrupts__ from Machine Mode to Supervisor Mode. (For NuttX to handle)
 
 # NuttX Star64 handles UART Interrupts
 
