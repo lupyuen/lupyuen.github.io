@@ -651,15 +651,14 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p><img src="https://lupyuen.github.io/images/plic-hart.png" alt="PLIC in JH7110 (U74) SoC" /></p>
 <h1 id="delegate-machine-mode-interrupts-to-supervisor-mode"><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">7 Delegate Machine-Mode Interrupts to Supervisor-Mode</a></h1>
 <p><em>Why do we delegate Interrupts?</em></p>
-<p>TODO</p>
-<p><em>NuttX runs in RISC-V Supervisor Mode, which can’t handle Interrupts directly. (Needs Machine Mode) How can we be sure that the RISC-V Interrupts are correctly handled in Supervisor Mode?</em></p>
-<p>From <a href="https://sifive.cdn.prismic.io/sifive/0d163928-2128-42be-a75a-464df65e04e0_sifive-interrupt-cookbook.pdf">SiFive Interrupt Cookbook</a>, Page 15:</p>
+<p>According to the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a> (Page 176)…</p>
 <blockquote>
-<p>A CPU operating in Supervisor mode will trap to Machine mode upon the arrival of a Machine
-mode interrupt, unless the Machine mode interrupt has been delegated to Supervisor mode
-through the mideleg register. On the contrary, Supervisor interrupts will not immediately trigger
-if a CPU is in Machine mode. While operating in Supervisor mode, a CPU does not have visibility to configure Machine mode interrupts.</p>
+<p>“By default, all Traps are handled in <strong>Machine Mode</strong>”</p>
 </blockquote>
+<blockquote>
+<p>“Machine Mode software can selectively delegate Interrupts and Exceptions to <strong>Supervisor Mode</strong> by setting the corresponding bits in <strong>mideleg</strong> and <strong>medeleg</strong> CSRs”</p>
+</blockquote>
+<p>TODO</p>
 <p>According to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg">RISC-V Spec</a>, MIDELEG needs to be configured orrectly to delegate Machine Mode Interrupts to Supervisor Mode.</p>
 <p>From <a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64">OpenSBI Log</a>, we see the value of MIDELEG…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Boot HART MIDELEG: 0x0000000000000222
