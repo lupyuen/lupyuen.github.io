@@ -789,6 +789,8 @@ system.........
 /.............................................................
 nsh&gt; 
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-star64#nuttx-star64-handles-uart-interrupts">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/semihost#boot-nuttx-qemu-with-initial-ram-disk">(Ignore the <strong>exec_spawn</strong> warning)</a></p>
 <p>Yep NuttX Shell works OK on Star64!</p>
 <p>But it’s super slow. Each dot is 1 Million Calls to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>! </p>
 <p>TODO</p>
