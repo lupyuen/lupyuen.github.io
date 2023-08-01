@@ -780,13 +780,9 @@ We fixed the __PLIC Memory Map__ in NuttX...
 Now we see UART Interrupts fired at __NuttX IRQ 57__ (RISC-V IRQ 32) yay! 
 
 ```text
-up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
+up_enable_irq: irq=57, extirq=32, RISCV_IRQ_EXT=25
 $%^&riscv_doirq: irq=57
 #*$%^&riscv_doirq: irq=57
 #*$%^&riscv_doirq: irq=57
@@ -812,7 +808,7 @@ Well we see Valid UART Interrupts for...
 
 - [__UART Transmit Ready__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013) (INTID_THRE)
 
-- [__UART Input Received__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L990-L1003) (INTID_THRE)
+- [__UART Input Received__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L990-L1003) (INTID_RDA)
 
 But most of the UART Interrupts are for...
 
@@ -849,22 +845,18 @@ static ssize_t uart_write(FAR struct file *filep, FAR const char *buffer, size_t
   }
 ```
 
-Ater hacking, watch what happens when we enter __`ls`__ at the NSH Shell...
+Ater hacking, watch what happens when we enter __`ls`__ at the NuttX Shell...
 
 [(Watch the Demo on YouTube)](https://youtu.be/TdSJdiQFsv8)
 
 ```text
-up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 work_start_lowpri: Starting low-priority kernel worker thread(s)
 nx_start_application: Starting init task: /system/bin/init
 nx_start_application: ret=3
 up_exit: TCB=0x404088d0 exiting
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
+up_enable_irq: irq=57, extirq=32, RISCV_IRQ_EXT=25
 
 NuttShell (NSH) NuttX-12.0.3
 nsh> ......++.+.
@@ -886,11 +878,14 @@ system.........
 nsh> 
 ```
 
+Yep NuttX Shell works OK on Star64!
+
+But it's super slow. Each dot is 1 Million Calls to the UART Interrupt Handler, with UART Interrupt Status [__INTSTATUS = 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966)! 
+
 TODO
 
 (So amazing that NuttX Apps and Context Switching are OK... Even though we haven't implemented the RISC-V Timer!)
 
-But it's super slow. Each dot is 1 Million Calls to the UART Interrupt Handler, with UART Interrupt Status [UART_IIR_INTSTATUS = 0](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966)! 
 
 TODO: Why is UART Interrupt triggered repeatedly with [UART_IIR_INTSTATUS = 0](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966)?
 
