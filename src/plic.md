@@ -73,7 +73,7 @@ uart_write (0xc0015310):
 0000  1b 5b 4b                                         .[K             
 ```
 
-This says that NuttX Shell is actually started!
+This says that NuttX Shell is actually started, and trying to print something!
 
 Just that NuttX Shell __couldn't produce any Console Output__.
 
@@ -150,7 +150,8 @@ uart_write (0xc000a610):
 Then this Alphabet Soup appears...
 
 ```text
-FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEF
+FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ADEF
 FNFuFtFtFSFhFeFlFlF F(FNFSFHF)F FNFuFtFtFXF-F1F2F.F0F.F3F
 ```
 
@@ -297,6 +298,8 @@ Yeah these are missing from the Star64 Log...
 
 Which means that UART is __NOT ready to transmit__!
 
+(And we can't write to UART Output)
+
 _What happens next?_
 
 We said earlier that UART will trigger a [__Transmit Ready Interrupt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1628) when it's ready to transmit more data.
@@ -331,13 +334,13 @@ Maybe we got the wrong UART IRQ Number? Let's verify...
 
 [_JH7110 Global Interrupts_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html)
 
-# Star64 UART Interrupt
+# JH7110 UART Interrupt
 
 _Is the UART IRQ Number correct?_
 
 According to the [__JH7110 UART Doc__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html), the UART Interrupt is at __RISC-V IRQ 32__...
 
-Which becomes NuttX IRQ 57. (Offset by 25)
+Which becomes __NuttX IRQ 57__. (Offset by 25)
 
 [(See __RISCV_IRQ_SEXT__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L75-L86)
 
@@ -406,11 +409,11 @@ Let's talk about the Interrupt Controller...
 
 ![Platform-Level Interrupt Controller in JH7110 (U74) SoC](https://lupyuen.github.io/images/plic-title.jpg)
 
-# Platform-Level Interrupt Controller for Star64
+# Platform-Level Interrupt Controller
 
 _What's this PLIC?_
 
-The RISC-V __Platform-Level Interrupt Controller (PLIC)__ inside Star64 handles __Global Interrupts__ (External Interrupts) triggered by Peripherals. (Like the UART Controller)
+The __Platform-Level Interrupt Controller (PLIC)__ inside JH7110 handles __Global Interrupts__ (External Interrupts) triggered by Peripherals. (Like the UART Controller)
 
 - [__SiFive U74-MC Core Complex Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)
 
@@ -474,11 +477,11 @@ To enable (or disable) Interrupts, we write to the __Interrupt Enable Registers_
 | 0C00_2410 | RW | End of Hart 4 S-Mode Interrupt Enables
 | &nbsp;
 
-This says that each Hart (RISC-V Core) can be programmed individually to receive Interrupts.
+This says that each Hart (RISC-V Core) can be programmed individually to receive Interrupts, in Machine or Supervisor Modes.
 
 (We'll only do __Hart 1 in Supervisor Mode__)
 
-The __Priority Threshold__ [(Page 200)](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) works like an Interrupt Mask, it suppresses Low Priority Interrupts...
+The __Priority Threshold__ [(Page 200)](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) works like an Interrupt Mask, it suppresses Lower Priority Interrupts...
 
 | Address | R/W | Description
 |:-------:|:---:|:-----------
