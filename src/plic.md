@@ -696,7 +696,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
 [(__riscv_doirq__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_doirq.c#L58-L131) 
 
-There's also a __Core-Local Interruptor (CLINT)__ [(Page 185)](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) that handles Local Interrupts. But we won't talk about it today. (Pic below)
+There's also a __Core-Local Interruptor (CLINT)__ [(Page 185)](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) that handles Software Interrupt and Timer Interrupt. But we won't cover it today. (Pic below)
 
 __TODO:__ Do we need to handle CLINT?
 
