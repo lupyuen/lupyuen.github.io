@@ -408,7 +408,7 @@ Let's talk about the Interrupt Controller...
 
 _What's this PLIC?_
 
-The RISC-V __Platform-Level Interrupt Controller (PLIC)__ inside Star64 handles Global Interrupts triggered by Peripherals. (Like the UART Controller)
+The RISC-V __Platform-Level Interrupt Controller (PLIC)__ inside Star64 handles __Global Interrupts__ (External Interrupts) triggered by Peripherals. (Like the UART Controller)
 
 - [__SiFive U74-MC Core Complex Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)
 
@@ -555,7 +555,7 @@ Which are correct in NuttX: [qemu_rv_memorymap.h](https://github.com/lupyuen2/wi
 #define QEMU_RV_PLIC_BASE    0x0c000000
 ```
 
-## Initialise PLIC Interrupts
+## Initialise Interrupts
 
 In NuttX, this is how we __initialise the PLIC__ Interrupt Controller: [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L41-L106)
 
@@ -612,9 +612,9 @@ irqstate_t up_irq_enable(void) {
 
 [(__READ_AND_SET_CSR__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_internal.h#L139-L145)
 
-## Enable PLIC Interrupts
+## Enable Interrupts
 
-This is how we configure PLIC to forward External Interrupts to __Hart 1 in Supervisor Mode__: [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L205)
+To enable Interrupts, we configure PLIC to forward External Interrupts to __Hart 1 in Supervisor Mode__: [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L205)
 
 ```c
 // Enable the IRQ specified by 'irq'
@@ -651,7 +651,7 @@ void up_enable_irq(int irq) {
 }
 ```
 
-## Claim and Complete PLIC Interrupts
+## Claim and Complete Interrupts
 
 Remember that we service Interrupts in 3 steps...
 
@@ -705,6 +705,8 @@ Let's check that the RISC-V Interrupts are delegated correctly...
 ![PLIC in JH7110 (U74) SoC](https://lupyuen.github.io/images/plic-hart.png)
 
 # Delegate Machine-Mode Interrupts to Supervisor-Mode
+
+_Why do we delegate Interrupts?_
 
 TODO
 
