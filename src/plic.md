@@ -929,7 +929,7 @@ _We seem to be rushing?_
 
 Well NuttX Star64 might get stale and out of sync with NuttX Mainline.
 
-We better chop chop hurry up and merge with NuttX Mainline soon! (Right after we fix the Spurious UART Interrupts)
+We better chop chop hurry up and [__merge with NuttX Mainline__](https://lupyuen.github.io/articles/pr) soon! (Right after we fix the Spurious UART Interrupts)
 
 # What's Next
 
