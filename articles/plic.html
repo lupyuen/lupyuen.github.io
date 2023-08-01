@@ -105,7 +105,7 @@
 </li>
 <li>
 <p>Which leads to a new problem: 16550 UART Controller fires too many <strong>Spurious Interrupts</strong>!</p>
-<p><a href="https://youtu.be/TdSJdiQFsv8">(Watch the Demo on YouTube)</a></p>
+<p><a href="https://youtu.be/TdSJdiQFsv8">(Watch the <strong>Demo Video</strong> on YouTube)</a></p>
 </li>
 </ul>
 <p>We’ll see later that <strong>NuttX Shell</strong> actually works fine! It’s just very very slooow because of the Spurious Interrupts.</p>
@@ -703,6 +703,7 @@ Boot HART MEDELEG:
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-913f48beaba6a00b5a78f5965892235c858ecc51e75e3c5b1f5905b6c9830f53"><strong>qemu_rv_plic.h: Fix PLIC Memory Map</strong></a></p>
 <p>(Route Interrupts to Hart 1 in Supervisor Mode)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64d-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
 </ul>
 <p>Now we see UART Interrupts fired at <strong>NuttX IRQ 57</strong> (RISC-V IRQ 32) yay! </p>
@@ -761,7 +762,7 @@ static int u16550_attach(struct uart_dev_s *dev) {
   }
 </code></pre></div>
 <p>Ater hacking, watch what happens when we enter <strong><code>ls</code></strong> at the NuttX Shell…</p>
-<p><a href="https://youtu.be/TdSJdiQFsv8">(Watch the Demo on YouTube)</a></p>
+<p><a href="https://youtu.be/TdSJdiQFsv8">(Watch the <strong>Demo Video</strong> on YouTube)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 work_start_lowpri: Starting low-priority kernel worker thread(s)
@@ -794,7 +795,7 @@ system.........
 /.............................................................
 nsh&gt; 
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-star64#nuttx-star64-handles-uart-interrupts">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64d-0.0.1">(See the <strong>Complete Log</strong>)</a></p>
 <p>Yep NuttX Shell works OK on Star64!</p>
 <p>But it’s super slow. Each dot is <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>One Million Calls</strong></a> to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>! </p>
 <p>(So amazing that NuttX Apps and Context Switching are OK… Even though we haven’t implemented the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L200-L209"><strong>RISC-V Timer</strong></a>!)</p>
