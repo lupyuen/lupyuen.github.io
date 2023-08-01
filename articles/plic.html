@@ -416,20 +416,19 @@ AAAAAD
 <p><em>So we’ll route Interrupts to Hart 1?</em></p>
 <p>Yep, later we might add <strong>Harts 2 to 4</strong> when we boot NuttX on the other Application Cores.</p>
 <p>(But probably not Hart 0, since it’s a special limited Monitor Core)</p>
-<p>Let’s check our NuttX PLIC Code…</p>
+<p>Let’s check our PLIC Code in NuttX…</p>
 <h2 id="plic-memory-map"><a href="#plic-memory-map">6.1 PLIC Memory Map</a></h2>
 <p><em>How do we program the PLIC?</em></p>
-<p>TODO</p>
-<p>The PLIC Memory Map is below…</p>
-<p>From <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">SiFive U74-MC Core Complex Manual</a> Page 193 (PLIC Memory Map)</p>
+<p>We write to the PLIC Registers defined in the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a> (Page 193)…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: center">0C00_0004</td><td style="text-align: center">RW</td><td style="text-align: left">Source 1 Priority</td></tr>
 <tr><td style="text-align: center">0C00_0220</td><td style="text-align: center">RW</td><td style="text-align: left">Source 136 Priority</td></tr>
 <tr><td style="text-align: center">0C00_1000</td><td style="text-align: center">RO</td><td style="text-align: left">Start of Pending Array</td></tr>
-<tr><td style="text-align: center">0C00_1010</td><td style="text-align: center">RO</td><td style="text-align: left">Last word of Pending Array</td></tr>
+<tr><td style="text-align: center">0C00_1010</td><td style="text-align: center">RO</td><td style="text-align: left">Last Word of Pending Array</td></tr>
 </tbody></table>
 </div>
-<p>TODO</p>
+<p>Above are the PLIC Registers for <strong>Interrupt Priorities</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 198)</a> and <strong>Interrupt Pending Bits</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 198)</a>.</p>
+<p>To enable (or disable) Interrupts, we write to the <strong>Interrupt Enable Registers</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 199)</a>…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: center">0C00_2100</td><td style="text-align: center">RW</td><td style="text-align: left">Start of Hart 1 S-Mode Interrupt Enables</td></tr>
 <tr><td style="text-align: center">0C00_2110</td><td style="text-align: center">RW</td><td style="text-align: left">End of Hart 1 S-Mode Interrupt Enables</td></tr>
@@ -441,15 +440,34 @@ AAAAAD
 <tr><td style="text-align: center">0C00_2410</td><td style="text-align: center">RW</td><td style="text-align: left">End of Hart 4 S-Mode Interrupt Enables</td></tr>
 </tbody></table>
 </div>
-<p>TODO</p>
+<p>This says that each Hart (RISC-V Core) can be programmed individually to receive Interrupts.</p>
+<p>(We’ll only do <strong>Hart 1 in Supervisor Mode</strong>)</p>
+<p>The <strong>Priority Threshold</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 200)</a> works like an Interrupt Mask, it suppresses Low Priority Interrupts…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: center">0C20_2000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 1 S-Mode Priority Threshold</td></tr>
-<tr><td style="text-align: center">0C20_2004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 1 S-Mode Claim / Complete</td></tr>
 <tr><td style="text-align: center">0C20_4000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 2 S-Mode Priority Threshold</td></tr>
-<tr><td style="text-align: center">0C20_4004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 2 S-Mode Claim / Complete</td></tr>
 <tr><td style="text-align: center">0C20_6000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 3 S-Mode Priority Threshold</td></tr>
-<tr><td style="text-align: center">0C20_6004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 3 S-Mode Claim / Complete</td></tr>
 <tr><td style="text-align: center">0C20_8000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 4 S-Mode Priority Threshold</td></tr>
+</tbody></table>
+</div>
+<p>Things can get messy when <strong>Multiple Harts</strong> service Interrupts at the same time.</p>
+<p>That’s why we service Interrupts in 3 steps…</p>
+<ol>
+<li>
+<p><strong>Claim</strong> the Interrupt</p>
+</li>
+<li>
+<p><strong>Handle</strong> the Interrupt</p>
+</li>
+<li>
+<p>Mark the Interrupt as <strong>Complete</strong></p>
+</li>
+</ol>
+<p><strong>Priority Threshold</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 201)</a></p>
+<div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
+<tr><td style="text-align: center">0C20_2004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 1 S-Mode Claim / Complete</td></tr>
+<tr><td style="text-align: center">0C20_4004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 2 S-Mode Claim / Complete</td></tr>
+<tr><td style="text-align: center">0C20_6004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 3 S-Mode Claim / Complete</td></tr>
 <tr><td style="text-align: center">0C20_8004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 4 S-Mode Claim / Complete</td></tr>
 </tbody></table>
 </div>
