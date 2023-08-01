@@ -797,29 +797,30 @@ nsh&gt;
 <p><a href="https://github.com/lupyuen/nuttx-star64#nuttx-star64-handles-uart-interrupts">(See the <strong>Complete Log</strong>)</a></p>
 <p>Yep NuttX Shell works OK on Star64!</p>
 <p>But it’s super slow. Each dot is <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>One Million Calls</strong></a> to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>! </p>
-<p>TODO</p>
-<p>(So amazing that NuttX Apps and Context Switching are OK… Even though we haven’t implemented the RISC-V Timer!)</p>
-<p>TODO: Why is UART Interrupt triggered repeatedly with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966">UART_IIR_INTSTATUS = 0</a>?</p>
-<p><em>Maybe because OpenSBI is still handling UART Interrupts in Machine Mode?</em></p>
-<p>We tried to disable PLIC Interrupts for Machine Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L58-L63">qemu_rv_irq.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  // Disable All Global Interrupts for Hart 1 Machine-Mode
-  // | 0x0C00_2080 | 4B | RW | Start Hart 1 M-Mode Interrupt Enables
-  #define QEMU_RV_PLIC_ENABLE1_MMODE   (QEMU_RV_PLIC_BASE + 0x002080)
-  #define QEMU_RV_PLIC_ENABLE2_MMODE   (QEMU_RV_PLIC_BASE + 0x002084)
-  putreg32(0x0, QEMU_RV_PLIC_ENABLE1_MMODE);
-  putreg32(0x0, QEMU_RV_PLIC_ENABLE2_MMODE);
-</code></pre></div>
-<p>But we still see spurious UART interrupts.</p>
-<p>TODO: How does OpenSBI handle UART I/O? Are the UART Interrupts still routed to OpenSBI? Can we remove them from OpenSBI?</p>
-<p>TODO: <a href="https://twitter.com/robertlipe/status/1685830584688340992?t=wTD98qn0WfhUCDho6px6gw">Robert Lipe</a> suggests that we check for floating inputs on the control signals</p>
-<p>TODO: Throttle interrupts (for now) in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L56-L91">riscv_dispatch_irq</a></p>
-<p>TODO: Did we configure 16550 UART Interrupt Register correctly?</p>
-<p>TODO: Is NuttX 16550 UART Driver any different from Linux?</p>
-<p>TODO: Why are we rushing? Might get stale and out of sync with mainline</p>
-<p>TODO: Check <a href="https://lupyuen.github.io/articles/privilege#other-risc-v-ports-of-nuttx">PolarFire Icicle</a></p>
-<p>TODO: Check <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S">Linux Boot Code</a></p>
-<p>TODO: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/sbi.c">Linux SBI Interface</a></p>
-<p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_exception_m.S#L64">Handle Machine Exception</a></p>
+<p>(So amazing that NuttX Apps and Context Switching are OK… Even though we haven’t implemented the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L200-L209"><strong>RISC-V Timer</strong></a>!)</p>
+<p>Once again, so many questions…</p>
+<ul>
+<li>
+<p>Why is UART Interrupt triggered repeatedly with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>?</p>
+<p>(We’re quite sure it’s not due to <a href="https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L254-L274"><strong>Rx Timeout</strong></a>)</p>
+</li>
+<li>
+<p>Did we configure the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L694-L812"><strong>16550 UART Interrupt Register</strong></a> correctly?</p>
+</li>
+<li>
+<p>Is the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c"><strong>NuttX 16550 UART Driver</strong></a> any different from the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html"><strong>Linux Driver</strong></a>?</p>
+<p>(<a href="https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c"><strong>8250_dw.c</strong></a> and <a href="https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_core.c"><strong>8250_core.c</strong></a>)</p>
+</li>
+<li>
+<p><a href="https://twitter.com/robertlipe/status/1685830584688340992?t=wTD98qn0WfhUCDho6px6gw"><strong>Robert Lipe</strong></a> suggests that we check for floating inputs on the control signals</p>
+</li>
+<li>
+<p>Is OpenSBI is still handling UART Interrupts in Machine Mode?</p>
+</li>
+</ul>
+<p>We’ll talk more in the next article!</p>
+<p><em>We seem to be rushing?</em></p>
+<p>Well NuttX Star64 might get stale and out of sync with NuttX Mainline.  We better chop chop hurry up and merge with NuttX Mainline soon!</p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
