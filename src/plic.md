@@ -501,7 +501,9 @@ Based on the above Memory Map, we set the PLIC Addresses in NuttX to use __Hart 
 #define QEMU_RV_PLIC_PRIORITY (QEMU_RV_PLIC_BASE + 0x000000)
 #define QEMU_RV_PLIC_PENDING1 (QEMU_RV_PLIC_BASE + 0x001000)
 
+// NuttX Star64 runs in Supervisor Mode
 #ifdef CONFIG_ARCH_USE_S_MODE
+
 // | 0x0C00_2100 | RW | Start Hart 1 S-Mode Interrupt Enables
 #define QEMU_RV_PLIC_ENABLE1 (QEMU_RV_PLIC_BASE + 0x002100)
 #define QEMU_RV_PLIC_ENABLE2 (QEMU_RV_PLIC_BASE + 0x002104)
@@ -518,18 +520,22 @@ Based on the above Memory Map, we set the PLIC Addresses in NuttX to use __Hart 
 // #define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x201004)
 ```
 
-_What about the PLIC Base Address?_
+Let's figure out __QEMU_RV_PLIC_BASE__...
 
-According to [U74 Memory Map](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html), the Base Addresses are:
+_What's the PLIC Base Address?_
 
-```text
-0x00_0200_0000	0x00_0200_FFFF		RW A	CLINT
-0x00_0C00_0000	0x00_0FFF_FFFF		RW A	PLIC
-```
+According to [__JH7110 U74 Memory Map__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html), the Base Addresses are...
+
+
+| Start Address	| End Address	| Device |
+|:-------------:|:-----------:|:-------|
+| 0200_0000	| 0200_FFFF | CLINT
+| 0C00_0000	| 0FFF_FFFF | PLIC
 
 Which are correct in NuttX: [qemu_rv_memorymap.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_memorymap.h#L30-L32)
 
 ```c
+// Base Addresses of CLINT and PLIC
 #define QEMU_RV_CLINT_BASE   0x02000000
 #define QEMU_RV_PLIC_BASE    0x0c000000
 ```
