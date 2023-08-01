@@ -645,7 +645,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 }
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_doirq.c#L58-L131">(<strong>riscv_doirq</strong> is defined here)</a> </p>
-<p>There’s also a <strong>Core-Local Interruptor (CLINT)</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 185)</a> that handles Local Interrupts. But we won’t talk about it today. (Pic below)</p>
+<p>There’s also a <strong>Core-Local Interruptor (CLINT)</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 185)</a> that handles Software Interrupt and Timer Interrupt. But we won’t cover it today. (Pic below)</p>
 <p><strong>TODO:</strong> Do we need to handle CLINT?</p>
 <p>Let’s check that the RISC-V Interrupts are delegated correctly…</p>
 <p><img src="https://lupyuen.github.io/images/plic-clint.jpg" alt="PLIC and CLINT in JH7110 (U74) SoC" /></p>
