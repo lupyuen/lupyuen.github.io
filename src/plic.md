@@ -385,7 +385,7 @@ serial@10000000 {
 
 _What about the Global Interrupt Number?_
 
-According to the doc on [__JH7110 Interrupt Connections__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html), __u0_uart__	is at __global_interrupts[27]__ (pic above).
+According to [__JH7110 Interrupt Connections__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html), __u0_uart__	is at __global_interrupts[27]__ (pic above).
 
 Which is correct because the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 198) says that...
 
@@ -413,19 +413,19 @@ Let's talk about the Interrupt Controller...
 
 _What's this PLIC?_
 
-The __Platform-Level Interrupt Controller (PLIC)__ inside JH7110 handles __Global Interrupts__ (External Interrupts) triggered by Peripherals. (Like the UART Controller)
+Inside JH7110, the __Platform-Level Interrupt Controller (PLIC)__ handles __Global Interrupts__ (External Interrupts) that are triggered by Peripherals. (Like the UART Controller)
 
 - [__SiFive U74-MC Core Complex Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)
 
   "Platform-Level Interrupt Controller" (Page 192)
 
-- [__PLIC Specification__](https://github.com/riscv/riscv-plic-spec/blob/master/riscv-plic.adoc)
+- [__RISC-V PLIC Specification__](https://github.com/riscv/riscv-plic-spec/blob/master/riscv-plic.adoc)
 
   [(PLIC works like Arm's __Global Interrupt Controller__)](https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller)
 
-The pic above shows how we may configure Star64's PLIC to __route Interrupts__ to each of the 5 RISC-V Cores.
+The pic above shows how we may configure the PLIC to __Route Interrupts__ to each of the 5 RISC-V Cores.
 
-_Wow there are 5 RISC-V Cores in Star64?_
+_Wow there are 5 RISC-V Cores in JH7110?_
 
 According to the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 96), these are the RISC-V Cores in JH7110...
 
@@ -562,8 +562,8 @@ Which are correct in NuttX: [qemu_rv_memorymap.h](https://github.com/lupyuen2/wi
 
 ```c
 // Base Addresses of CLINT and PLIC
-#define QEMU_RV_CLINT_BASE   0x02000000
-#define QEMU_RV_PLIC_BASE    0x0c000000
+#define QEMU_RV_CLINT_BASE 0x02000000
+#define QEMU_RV_PLIC_BASE  0x0c000000
 ```
 
 ## Initialise Interrupts
@@ -694,7 +694,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   }
 
   // For External Interrupts:
-  // Mark the Interrupt as Completed
+  // Mark the Interrupt as Complete
   if (RISCV_IRQ_EXT <= irq) {
     putreg32(
       irq - RISCV_IRQ_EXT,  // Register Value
@@ -905,8 +905,6 @@ Yep NuttX Shell works OK on Star64!
 
 But it's super slow. Each dot is [__One Million Calls__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966) to the UART Interrupt Handler, with UART Interrupt Status [__INTSTATUS = 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966)! 
 
-(So amazing that NuttX Apps and Context Switching are OK... Even though we haven't implemented the [__RISC-V Timer__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L200-L209)!)
-
 Once again, so many questions...
 
 - Why is UART Interrupt triggered repeatedly with [__INTSTATUS = 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966)?
@@ -925,9 +923,13 @@ Once again, so many questions...
 
 We'll talk more in the next article!
 
+(So amazing that NuttX Apps and Context Switching are OK... Even though we haven't implemented the [__RISC-V Timer__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L200-L209)!)
+
 _We seem to be rushing?_
 
-Well NuttX Star64 might get stale and out of sync with NuttX Mainline.  We better chop chop hurry up and merge with NuttX Mainline soon!
+Well NuttX Star64 might get stale and out of sync with NuttX Mainline.
+
+We better chop chop hurry up and merge with NuttX Mainline soon!
 
 # What's Next
 
