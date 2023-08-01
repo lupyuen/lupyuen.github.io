@@ -712,18 +712,29 @@ According to the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_
 
 > "By default, all Traps are handled in __Machine Mode__"
 
-> "Machine Mode software can selectively delegate Interrupts and Exceptions to __Supervisor Mode__ by setting the corresponding bits in __mideleg__ and __medeleg__ CSRs"
+> "Machine Mode Software can selectively delegate Interrupts and Exceptions to __Supervisor Mode__ by setting the corresponding bits in __mideleg__ and __medeleg__ CSRs"
+
+NuttX runs in __Supervisor Mode__, so we need to be sure that the __Interrupts have been delegated__ correctly to Supervisor Mode.
+
+_What's this "Machine Mode Software"? Who controls the Delegation?_
+
+On Star64, [__OpenSBI (Supervisor Binary Interface)__](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface) boots in Machine Mode and controls the Delegation of Interrupts.
+
+From the [__OpenSBI Log__](https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64), we see the value of [__mideleg__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg) ("Delegate Machine Interrupt")...
+
+```bash
+Boot HART MIDELEG:
+  0x00000222
+Boot HART MEDELEG:
+  0x0000b109
+```
+
+_What does mideleg tell us?_
 
 TODO
 
-According to the [RISC-V Spec](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg), MIDELEG needs to be configured orrectly to delegate Machine Mode Interrupts to Supervisor Mode.
+According to the [RISC-V Spec], MIDELEG needs to be configured orrectly to delegate Machine Mode Interrupts to Supervisor Mode.
 
-From [OpenSBI Log](https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64), we see the value of MIDELEG...
-
-```bash
-Boot HART MIDELEG: 0x0000000000000222
-Boot HART MEDELEG: 0x000000000000b109
-```
 
 MIDELEG is defined by the following bits: [csr.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/csr.h#L343-L346):
 
