@@ -337,6 +337,8 @@ AAAAAD
 </ul>
 <p>But everything looks OK!</p>
 <p>Maybe we got the wrong UART IRQ Number? Let’s verify…</p>
+<p><img src="https://lupyuen.github.io/images/plic-interrupts.jpg" alt="JH7110 Global Interrupts" /></p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html"><em>JH7110 Global Interrupts</em></a></p>
 <h1 id="star64-uart-interrupt"><a href="#star64-uart-interrupt">5 Star64 UART Interrupt</a></h1>
 <p><em>Is the UART IRQ Number correct?</em></p>
 <p>According to the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html"><strong>JH7110 UART Doc</strong></a>, the UART Interrupt is at <strong>RISC-V IRQ 32</strong>…</p>
@@ -371,7 +373,7 @@ dtc \
 };
 </code></pre></div>
 <p><em>What about the Global Interrupt Number?</em></p>
-<p>According to the doc on <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html"><strong>JH7110 Interrupt Connections</strong></a>, <strong>u0_uart</strong>	is at <strong>global_interrupts[27]</strong></p>
+<p>According to the doc on <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html"><strong>JH7110 Interrupt Connections</strong></a>, <strong>u0_uart</strong>	is at <strong>global_interrupts[27]</strong> (pic above).</p>
 <p>Which is correct because the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a> (Page 198) says that…</p>
 <div class="example-wrap"><pre class="language-text"><code>RISC-V IRQ = Global Interrupt Number + 5
 </code></pre></div>
