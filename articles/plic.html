@@ -71,8 +71,8 @@
 <li><a href="#serial-output-in-nuttx-qemu">2 Serial Output in NuttX QEMU</a><ul></ul></li>
 <li><a href="#serial-input-in-nuttx-qemu">3 Serial Input in NuttX QEMU</a><ul></ul></li>
 <li><a href="#star64-vs-qemu-serial-io">4 Star64 vs QEMU Serial I/O</a><ul></ul></li>
-<li><a href="#star64-uart-interrupt">5 Star64 UART Interrupt</a><ul></ul></li>
-<li><a href="#platform-level-interrupt-controller-for-star64">6 Platform-Level Interrupt Controller for Star64</a><ul>
+<li><a href="#jh7110-uart-interrupt">5 JH7110 UART Interrupt</a><ul></ul></li>
+<li><a href="#platform-level-interrupt-controller">6 Platform-Level Interrupt Controller</a><ul>
 <li><a href="#plic-memory-map">6.1 PLIC Memory Map</a><ul></ul></li>
 <li><a href="#initialise-interrupts">6.2 Initialise Interrupts</a><ul></ul></li>
 <li><a href="#enable-interrupts">6.3 Enable Interrupts</a><ul></ul></li>
@@ -142,7 +142,7 @@ uart_write (0xc0015338):
 uart_write (0xc0015310):
 0000  1b 5b 4b                                         .[K             
 </code></pre></div>
-<p>This says that NuttX Shell is actually started!</p>
+<p>This says that NuttX Shell is actually started, and trying to print something!</p>
 <p>Just that NuttX Shell <strong>couldn’t produce any Console Output</strong>.</p>
 <p><em>But we see other messages from NuttX Kernel!</em></p>
 <p>That’s because NuttX Kernel doesn’t call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> to print messages.</p>
@@ -189,7 +189,8 @@ $%&amp;riscv_doirq: irq=8
 0010  20 4e 75 74 74 58 2d 31 32 2e 30 2e 33 0a         NuttX-12.0.3.  
 </code></pre></div>
 <p>Then this Alphabet Soup appears…</p>
-<div class="example-wrap"><pre class="language-text"><code>FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEF
+<div class="example-wrap"><pre class="language-text"><code>FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ADEF
 FNFuFtFtFSFhFeFlFlF F(FNFSFHF)F FNFuFtFtFXF-F1F2F.F0F.F3F
 </code></pre></div>
 <p>This says that the NuttX Kernel calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> (print to Serial Console), which calls…</p>
@@ -314,6 +315,7 @@ AAAAAD
 </li>
 </ul>
 <p>Which means that UART is <strong>NOT ready to transmit</strong>!</p>
+<p>(And we can’t write to UART Output)</p>
 <p><em>What happens next?</em></p>
 <p>We said earlier that UART will trigger a <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1628"><strong>Transmit Ready Interrupt</strong></a> when it’s ready to transmit more data.</p>
 <p>(Which triggers our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013"><strong>UART Interrupt Handler</strong></a> that calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> to send more data)</p>
@@ -341,10 +343,10 @@ AAAAAD
 <p>Maybe we got the wrong UART IRQ Number? Let’s verify…</p>
 <p><img src="https://lupyuen.github.io/images/plic-interrupts.jpg" alt="JH7110 Global Interrupts" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html"><em>JH7110 Global Interrupts</em></a></p>
-<h1 id="star64-uart-interrupt"><a href="#star64-uart-interrupt">5 Star64 UART Interrupt</a></h1>
+<h1 id="jh7110-uart-interrupt"><a href="#jh7110-uart-interrupt">5 JH7110 UART Interrupt</a></h1>
 <p><em>Is the UART IRQ Number correct?</em></p>
 <p>According to the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html"><strong>JH7110 UART Doc</strong></a>, the UART Interrupt is at <strong>RISC-V IRQ 32</strong>…</p>
-<p>Which becomes NuttX IRQ 57. (Offset by 25)</p>
+<p>Which becomes <strong>NuttX IRQ 57</strong>. (Offset by 25)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L75-L86">(See <strong>RISCV_IRQ_SEXT</strong>)</a></p>
 <p>That’s why we configure the <strong>NuttX UART IRQ</strong> like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L10-L17">knsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_IRQ=57
@@ -393,9 +395,9 @@ dtc \
 <p>Though some parts are <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-4d2def434fc283670f9b60826a12a9396787759b45aa156a4b6764c1a73fb0e4"><strong>hardcoded to 64 IRQs</strong></a>. (Needs more fixing)</p>
 <p>Let’s talk about the Interrupt Controller…</p>
 <p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller in JH7110 (U74) SoC" /></p>
-<h1 id="platform-level-interrupt-controller-for-star64"><a href="#platform-level-interrupt-controller-for-star64">6 Platform-Level Interrupt Controller for Star64</a></h1>
+<h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">6 Platform-Level Interrupt Controller</a></h1>
 <p><em>What’s this PLIC?</em></p>
-<p>The RISC-V <strong>Platform-Level Interrupt Controller (PLIC)</strong> inside Star64 handles <strong>Global Interrupts</strong> (External Interrupts) triggered by Peripherals. (Like the UART Controller)</p>
+<p>The <strong>Platform-Level Interrupt Controller (PLIC)</strong> inside JH7110 handles <strong>Global Interrupts</strong> (External Interrupts) triggered by Peripherals. (Like the UART Controller)</p>
 <ul>
 <li>
 <p><a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74-MC Core Complex Manual</strong></a></p>
@@ -449,9 +451,9 @@ dtc \
 <tr><td style="text-align: center"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
-<p>This says that each Hart (RISC-V Core) can be programmed individually to receive Interrupts.</p>
+<p>This says that each Hart (RISC-V Core) can be programmed individually to receive Interrupts, in Machine or Supervisor Modes.</p>
 <p>(We’ll only do <strong>Hart 1 in Supervisor Mode</strong>)</p>
-<p>The <strong>Priority Threshold</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 200)</a> works like an Interrupt Mask, it suppresses Low Priority Interrupts…</p>
+<p>The <strong>Priority Threshold</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 200)</a> works like an Interrupt Mask, it suppresses Lower Priority Interrupts…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: center">0C20_2000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 1 S-Mode Priority Threshold</td></tr>
 <tr><td style="text-align: center">0C20_4000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 2 S-Mode Priority Threshold</td></tr>
