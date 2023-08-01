@@ -567,10 +567,10 @@ void up_irqinitialize(void) {
   putreg32(0x0, QEMU_RV_PLIC_ENABLE2);
 
   /* Set priority for all global interrupts to 1 (lowest) */
-  for (int id = 1; id <= NR_IRQS; id++) //// Changed 52 to NR_IRQS
-    {
-      putreg32(1, (uintptr_t)(QEMU_RV_PLIC_PRIORITY + 4 * id));
-    }
+  //// Changed 52 to NR_IRQS
+  for (int id = 1; id <= NR_IRQS; id++) {
+    putreg32(1, (uintptr_t)(QEMU_RV_PLIC_PRIORITY + 4 * id));
+  }
 
   /* Set irq threshold to 0 (permits all global interrupts) */
   putreg32(0, QEMU_RV_PLIC_THRESHOLD);
@@ -610,45 +610,34 @@ TODO: Priority
 ```c
 // Enable the IRQ specified by 'irq'
 void up_enable_irq(int irq) {
-  int extirq;
 
-  if (irq == RISCV_IRQ_SOFT)
-    {
-      _info("RISCV_IRQ_SOFT=%d\n", RISCV_IRQ_SOFT);////
-      /* Read m/sstatus & set machine software interrupt enable in m/sie */
+  if (irq == RISCV_IRQ_SOFT) {
+    /* Read sstatus & set software interrupt enable in sie */
+    SET_CSR(CSR_IE, IE_SIE);
 
-      SET_CSR(CSR_IE, IE_SIE);
+  } else if (irq == RISCV_IRQ_TIMER) {
+    /* Read sstatus & set timer interrupt enable in sie */
+    SET_CSR(CSR_IE, IE_TIE);
+
+  } else if (irq == RISCV_IRQ_MTIMER) {
+    /* Read sstatus & set timer interrupt enable in sie */
+    SET_CSR(mie, MIE_MTIE);
+
+  } else if (irq > RISCV_IRQ_EXT) {
+
+    /* Set enable bit for the irq */
+    int extirq = irq - RISCV_IRQ_EXT;
+    ////TODO: Why 63?
+    if (0 <= extirq && extirq <= 63) {
+      modifyreg32(
+        QEMU_RV_PLIC_ENABLE1 + (4 * (extirq / 32)),  // Address
+        0,  // Clear Bits
+        1 << (extirq % 32)  // Set Bits
+      );
+    } else {
+      PANIC();
     }
-  else if (irq == RISCV_IRQ_TIMER)
-    {
-      _info("RISCV_IRQ_TIMER=%d\n", RISCV_IRQ_TIMER);////
-      /* Read m/sstatus & set timer interrupt enable in m/sie */
-
-      SET_CSR(CSR_IE, IE_TIE);
-    }
-  else if (irq == RISCV_IRQ_MTIMER)
-    {
-      _info("RISCV_IRQ_MTIMER=%d\n", RISCV_IRQ_MTIMER);////
-      /* Read m/sstatus & set timer interrupt enable in m/sie */
-
-      SET_CSR(mie, MIE_MTIE);
-    }
-  else if (irq > RISCV_IRQ_EXT)
-    {
-      extirq = irq - RISCV_IRQ_EXT;
-
-      /* Set enable bit for the irq */
-
-      if (0 <= extirq && extirq <= 63) ////TODO: Why 63?
-        {
-          modifyreg32(QEMU_RV_PLIC_ENABLE1 + (4 * (extirq / 32)),
-                      0, 1 << (extirq % 32));
-        }
-      else
-        {
-          PANIC();
-        }
-    }
+  }
 }
 ```
 
@@ -659,34 +648,28 @@ TODO
 [qemu_rv_irq_dispatch.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L91)
 
 ```c
-void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
-{
-  int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
+void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
   /* Firstly, check if the irq is machine external interrupt */
-
-  if (RISCV_IRQ_EXT == irq)
-    {
-      uintptr_t val = getreg32(QEMU_RV_PLIC_CLAIM);
-
-      /* Add the value to nuttx irq which is offset to the mext */
-
-      irq += val;
-    }
+  int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
+  if (RISCV_IRQ_EXT == irq) {
+    /* Add the value to nuttx irq which is offset to the mext */
+    uintptr_t val = getreg32(QEMU_RV_PLIC_CLAIM);
+    irq += val;
+  }
 
   /* EXT means no interrupt */
+  if (RISCV_IRQ_EXT != irq) {
+    /* Deliver the IRQ */
+    regs = riscv_doirq(irq, regs);
+  }
 
-  if (RISCV_IRQ_EXT != irq)
-    {
-      /* Deliver the IRQ */
-
-      regs = riscv_doirq(irq, regs);
-    }
-
-  if (RISCV_IRQ_EXT <= irq)
-    {
-      putreg32(irq - RISCV_IRQ_EXT, QEMU_RV_PLIC_CLAIM);
-    }
+  if (RISCV_IRQ_EXT <= irq) {
+    putreg32(
+      irq - RISCV_IRQ_EXT,  // Value
+      QEMU_RV_PLIC_CLAIM    // Address
+    );
+  }
 
   return regs;
 }
