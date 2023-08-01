@@ -950,9 +950,9 @@ NuttX on Star64 JH7110 RISC-V SBC is almost ready!
 
 - And comparing UART I/O for __Star64 vs QEMU__
 
-- We also fixed the NuttX code for __Platform-Level Interrupt Controller__ (PLIC)
+- We fixed the NuttX code for __Platform-Level Interrupt Controller__ (PLIC)
 
-- And verified the delegation of __Machine-Mode Interrupts to Supervisor-Mode__
+- And verified that OpenSBI delegate __Machine-Mode Interrupts to Supervisor-Mode__
 
 - NuttX Star64 now handles __UART Interrupts__ correctly
 
