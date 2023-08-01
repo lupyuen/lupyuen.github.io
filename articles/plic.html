@@ -347,13 +347,15 @@ AAAAAD
 </code></pre></div>
 <p><em>Is it the same UART IRQ as Linux?</em></p>
 <p>We dumped the <strong>Linux Device Tree</strong> for JH7110…</p>
-<div class="example-wrap"><pre class="language-text"><code>dtc \
+<div class="example-wrap"><pre class="language-text"><code>## Convert Device Tree to text format
+dtc \
   -o jh7110-visionfive-v2.dts \
   -O dts \
   -I dtb \
   jh7110-visionfive-v2.dtb
 </code></pre></div>
-<p>UART0 is indeed at RISC-V IRQ 32: <a href="https://github.com/lupyuen/nuttx-star64/blob/main/jh7110-visionfive-v2.dts#L619-L631">jh7110-visionfive-v2.dts</a></p>
+<p><a href="https://manpages.ubuntu.com/manpages/xenial/man1/dtc.1.html">(<strong>dtc</strong> decompiles a Device Tree)</a></p>
+<p><strong>Linux Port UART0</strong> is indeed at RISC-V IRQ 32: <a href="https://github.com/lupyuen/nuttx-star64/blob/main/jh7110-visionfive-v2.dts#L619-L631">jh7110-visionfive-v2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>serial@10000000 {
   compatible = &quot;snps,dw-apb-uart&quot;;
   reg = &lt;0x00 0x10000000 0x00 0x10000&gt;;
