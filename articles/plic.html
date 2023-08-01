@@ -430,9 +430,11 @@ dtc \
 <tr><td style="text-align: center">0C00_0220</td><td style="text-align: center">RW</td><td style="text-align: left">Source 136 Priority</td></tr>
 <tr><td style="text-align: center">0C00_1000</td><td style="text-align: center">RO</td><td style="text-align: left">Start of Pending Array</td></tr>
 <tr><td style="text-align: center">0C00_1010</td><td style="text-align: center">RO</td><td style="text-align: left">Last Word of Pending Array</td></tr>
+<tr><td style="text-align: center"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p>Above are the PLIC Registers for <strong>Interrupt Priorities</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 198)</a> and <strong>Interrupt Pending Bits</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 198)</a>.</p>
+<p>(Yep PLIC supports 136 Interrupts)</p>
 <p>To enable (or disable) Interrupts, we write to the <strong>Interrupt Enable Registers</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 199)</a>…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: center">0C00_2100</td><td style="text-align: center">RW</td><td style="text-align: left">Start of Hart 1 S-Mode Interrupt Enables</td></tr>
@@ -443,6 +445,7 @@ dtc \
 <tr><td style="text-align: center">0C00_2310</td><td style="text-align: center">RW</td><td style="text-align: left">End of Hart 3 S-Mode Interrupt Enables</td></tr>
 <tr><td style="text-align: center">0C00_2400</td><td style="text-align: center">RW</td><td style="text-align: left">Start of Hart 4 S-Mode Interrupt Enables</td></tr>
 <tr><td style="text-align: center">0C00_2410</td><td style="text-align: center">RW</td><td style="text-align: left">End of Hart 4 S-Mode Interrupt Enables</td></tr>
+<tr><td style="text-align: center"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p>This says that each Hart (RISC-V Core) can be programmed individually to receive Interrupts.</p>
@@ -453,6 +456,7 @@ dtc \
 <tr><td style="text-align: center">0C20_4000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 2 S-Mode Priority Threshold</td></tr>
 <tr><td style="text-align: center">0C20_6000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 3 S-Mode Priority Threshold</td></tr>
 <tr><td style="text-align: center">0C20_8000</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 4 S-Mode Priority Threshold</td></tr>
+<tr><td style="text-align: center"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p>Things can get messy when <strong>Multiple Harts</strong> service Interrupts at the same time.</p>
@@ -474,6 +478,7 @@ dtc \
 <tr><td style="text-align: center">0C20_4004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 2 S-Mode Claim / Complete</td></tr>
 <tr><td style="text-align: center">0C20_6004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 3 S-Mode Claim / Complete</td></tr>
 <tr><td style="text-align: center">0C20_8004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 4 S-Mode Claim / Complete</td></tr>
+<tr><td style="text-align: center"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p>Based on the above Memory Map, we set the PLIC Addresses in NuttX to use <strong>Hart 1 in Supervisor Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L59">qemu_rv_plic.h</a></p>
@@ -508,6 +513,7 @@ dtc \
 <div><table><thead><tr><th style="text-align: center">Start Address</th><th style="text-align: center">End Address</th><th style="text-align: left">Device</th></tr></thead><tbody>
 <tr><td style="text-align: center">0200_0000</td><td style="text-align: center">0200_FFFF</td><td style="text-align: left">CLINT</td></tr>
 <tr><td style="text-align: center">0C00_0000</td><td style="text-align: center">0FFF_FFFF</td><td style="text-align: left">PLIC</td></tr>
+<tr><td style="text-align: center"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p>Which are correct in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_memorymap.h#L30-L32">qemu_rv_memorymap.h</a></p>
@@ -515,114 +521,134 @@ dtc \
 #define QEMU_RV_CLINT_BASE   0x02000000
 #define QEMU_RV_PLIC_BASE    0x0c000000
 </code></pre></div><h2 id="initialise-plic-interrupts"><a href="#initialise-plic-interrupts">6.2 Initialise PLIC Interrupts</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L41-L106">qemu_rv_irq.c</a></p>
+<p>In NuttX, this is how we <strong>initialise the PLIC</strong> Interrupt Controller: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L41-L106">qemu_rv_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialise Interrupts for Star64
 void up_irqinitialize(void) {
 
-  /* Disable Machine interrupts */
+  // Disable Machine interrupts 
   up_irq_save();
 
-  /* Disable all global interrupts */
+  // Disable all global interrupts 
+  // TODO: Extend to PLIC Interrupt ID 136
   putreg32(0x0, QEMU_RV_PLIC_ENABLE1);
   putreg32(0x0, QEMU_RV_PLIC_ENABLE2);
 
-  /* Set priority for all global interrupts to 1 (lowest) */
-  //// Changed 52 to NR_IRQS
+  // Set priority for all global interrupts to 1 (lowest) 
+  // TODO: Extend to PLIC Interrupt ID 136
   for (int id = 1; id &lt;= NR_IRQS; id++) {
-    putreg32(1, (uintptr_t)(QEMU_RV_PLIC_PRIORITY + 4 * id));
+    putreg32(
+      1,  // Register Value
+      (uintptr_t)(QEMU_RV_PLIC_PRIORITY + 4 * id)  // Register Address
+    );
   }
 
-  /* Set irq threshold to 0 (permits all global interrupts) */
+  // Set irq threshold to 0 (permits all global interrupts) 
   putreg32(0, QEMU_RV_PLIC_THRESHOLD);
 
-  /* Attach the common interrupt handler */
+  // Attach the common interrupt handler 
   riscv_exception_attach();
 
-  /* And finally, enable interrupts */
+  // And finally, enable interrupts 
   up_irq_enable();
 }
 </code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L205-L220">qemu_rv_irq.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>irqstate_t up_irq_enable(void) {
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L660-L688">(<strong>up_irq_save</strong> is defined here)</a></p>
+<p>The code above calls <strong>up_irq_enable</strong> to enable RISC-V Interrupts: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L205-L220">qemu_rv_irq.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Enable Interrupts
+irqstate_t up_irq_enable(void) {
 
-  /* Enable external interrupts (mie/sie) */
+  // Enable external interrupts (sie) 
   SET_CSR(CSR_IE, IE_EIE);
 
-  /* Read and enable global interrupts (M/SIE) in m/sstatus */
+  // Read and enable global interrupts (sie) in sstatus 
   irqstate_t oldstat = READ_AND_SET_CSR(CSR_STATUS, STATUS_IE);
   return oldstat;
 }
-</code></pre></div><h2 id="enable-plic-interrupts"><a href="#enable-plic-interrupts">6.3 Enable PLIC Interrupts</a></h2>
-<p><em>How to configure PLIC to forward Interrupts to the Harts?</em></p>
-<p>TODO: Priority</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L205">qemu_rv_irq.c</a></p>
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_internal.h#L151-L155">(<strong>SET_CSR</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_internal.h#L139-L145">(<strong>READ_AND_SET_CSR</strong> is defined here)</a></p>
+<h2 id="enable-plic-interrupts"><a href="#enable-plic-interrupts">6.3 Enable PLIC Interrupts</a></h2>
+<p>This is how we configure PLIC to forward External Interrupts to <strong>Hart 1 in Supervisor Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L205">qemu_rv_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the IRQ specified by &#39;irq&#39;
 void up_enable_irq(int irq) {
 
+  // For Software Interrupt:
+  // Read sstatus &amp; set software interrupt enable in sie 
   if (irq == RISCV_IRQ_SOFT) {
-    /* Read sstatus &amp; set software interrupt enable in sie */
     SET_CSR(CSR_IE, IE_SIE);
 
+  // For Timer Interrupt:
+  // Read sstatus &amp; set timer interrupt enable in sie 
   } else if (irq == RISCV_IRQ_TIMER) {
-    /* Read sstatus &amp; set timer interrupt enable in sie */
     SET_CSR(CSR_IE, IE_TIE);
 
+  // For Machine Timer Interrupt:
+  // Read sstatus &amp; set timer interrupt enable in sie 
   } else if (irq == RISCV_IRQ_MTIMER) {
-    /* Read sstatus &amp; set timer interrupt enable in sie */
     SET_CSR(mie, MIE_MTIE);
 
+  // For External Interrupts:
+  // Set enable bit for the irq 
+  // TODO: Extend to PLIC Interrupt ID 136
   } else if (irq &gt; RISCV_IRQ_EXT) {
-
-    /* Set enable bit for the irq */
     int extirq = irq - RISCV_IRQ_EXT;
-    ////TODO: Why 63?
     if (0 &lt;= extirq &amp;&amp; extirq &lt;= 63) {
       modifyreg32(
         QEMU_RV_PLIC_ENABLE1 + (4 * (extirq / 32)),  // Address
         0,  // Clear Bits
         1 &lt;&lt; (extirq % 32)  // Set Bits
       );
-    } else {
-      PANIC();
-    }
+    } else { PANIC(); }
   }
 }
 </code></pre></div><h2 id="claim-and-complete-plic-interrupts"><a href="#claim-and-complete-plic-interrupts">6.4 Claim and Complete PLIC Interrupts</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L91">qemu_rv_irq_dispatch.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
+<p>Remember that we service Interrupts in 3 steps…</p>
+<ol>
+<li>
+<p><strong>Claim</strong> the Interrupt</p>
+</li>
+<li>
+<p><strong>Handle</strong> the Interrupt</p>
+</li>
+<li>
+<p>Mark the Interrupt as <strong>Complete</strong></p>
+</li>
+</ol>
+<p>This is how we do it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L91">qemu_rv_irq_dispatch.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Dispatch the RISC-V Interrupt
+void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
-  /* Firstly, check if the irq is machine external interrupt */
+  // For External Interrupts:
+  // Claim the Interrupt
   int irq = (vector &gt;&gt; RV_IRQ_MASK) | (vector &amp; 0xf);
   if (RISCV_IRQ_EXT == irq) {
-    /* Add the value to nuttx irq which is offset to the mext */
+    // Add the value to NuttX IRQ which is offset to the mext 
     uintptr_t val = getreg32(QEMU_RV_PLIC_CLAIM);
     irq += val;
   }
 
-  /* EXT means no interrupt */
+  // For External Interrupts:
+  // Call the Interrupt Handler
   if (RISCV_IRQ_EXT != irq) {
-    /* Deliver the IRQ */
     regs = riscv_doirq(irq, regs);
   }
 
+  // For External Interrupts:
+  // Mark the Interrupt as Completed
   if (RISCV_IRQ_EXT &lt;= irq) {
     putreg32(
-      irq - RISCV_IRQ_EXT,  // Value
-      QEMU_RV_PLIC_CLAIM    // Address
+      irq - RISCV_IRQ_EXT,  // Register Value
+      QEMU_RV_PLIC_CLAIM    // Register Address
     );
   }
-
   return regs;
 }
 </code></pre></div>
-<p>TODO: CLINT</p>
-<p>Note that there’s a Core-Local Interruptor (CLINT) that handles Local Interrupts…</p>
-<p><img src="https://lupyuen.github.io/images/plic-hart.png" alt="PLIC in JH7110 (U74) SoC" /></p>
-<p>TODO: Do we need to handle CLINT?</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_doirq.c#L58-L131">(<strong>riscv_doirq</strong> is defined here)</a> </p>
+<p>There’s also a <strong>Core-Local Interruptor (CLINT)</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 185)</a> that handles Local Interrupts. But we won’t talk about it today. (Pic below)</p>
+<p><strong>TODO:</strong> Do we need to handle CLINT?</p>
 <p>Let’s check that the RISC-V Interrupts are delegated correctly…</p>
+<p><img src="https://lupyuen.github.io/images/plic-hart.png" alt="PLIC in JH7110 (U74) SoC" /></p>
 <h1 id="delegate-machine-mode-interrupts-to-supervisor-mode"><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">7 Delegate Machine-Mode Interrupts to Supervisor-Mode</a></h1>
 <p>TODO</p>
 <p><em>NuttX runs in RISC-V Supervisor Mode, which can’t handle Interrupts directly. (Needs Machine Mode) How can we be sure that the RISC-V Interrupts are correctly handled in Supervisor Mode?</em></p>
@@ -653,12 +679,12 @@ Boot HART MEDELEG: 0x000000000000b109
 <p>(But not MTIP: Delegate Machine Timer Interrupt)</p>
 <p>Thus we’re good, the interrupts should be correctly delegated from Machine Mode to Supervisor Mode for NuttX.</p>
 <p>FYI: This is same for NuttX SBI: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/nuttsbi/sbi_start.c#L91-L94">nuttsbi/sbi_start.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  /* Delegate interrupts */
+<div class="example-wrap"><pre class="language-c"><code>  // Delegate interrupts 
 
   reg = (MIP_SSIP | MIP_STIP | MIP_SEIP);
   WRITE_CSR(mideleg, reg);
 
-  /* Delegate exceptions (all of them) */
+  // Delegate exceptions (all of them) 
 
   reg = ((1 &lt;&lt; RISCV_IRQ_IAMISALIGNED) |
          (1 &lt;&lt; RISCV_IRQ_INSTRUCTIONPF) |
@@ -724,7 +750,7 @@ u16550_rxint: enable=1
 <p>Claiming an Interrupt happens here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L81-L88">qemu_rv_irq_dispatch.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>if (RISCV_IRQ_EXT &lt;= irq)
   {
-    /* Then write PLIC_CLAIM to clear pending in PLIC */
+    // Then write PLIC_CLAIM to clear pending in PLIC 
     putreg32(irq - RISCV_IRQ_EXT, QEMU_RV_PLIC_CLAIM);
   }
 </code></pre></div>
@@ -775,7 +801,7 @@ nx_start: CPU0: Beginning Idle Loop
 <div class="example-wrap"><pre class="language-c"><code>if (RISCV_IRQ_EXT &lt;= irq)
   {
     _info(&quot;irq=%d, RISCV_IRQ_EXT=%d\n&quot;, irq, RISCV_IRQ_EXT);////
-    /* Then write PLIC_CLAIM to clear pending in PLIC */
+    // Then write PLIC_CLAIM to clear pending in PLIC 
     putreg32(irq - RISCV_IRQ_EXT, QEMU_RV_PLIC_CLAIM);
   }
 </code></pre></div>
@@ -812,13 +838,13 @@ nx_start: CPU0: Beginning Idle Loop
 <p>We comment out the Enable IRQ in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L860-L871">uart_16550.c</a>:</p>
 <div class="example-wrap"><pre class="language-c"><code>static int u16550_attach(struct uart_dev_s *dev) {
   ...
-  /* Attach and enable the IRQ */
+  // Attach and enable the IRQ 
   ret = irq_attach(priv-&gt;irq, u16550_interrupt, dev);
 #ifndef CONFIG_ARCH_NOINTC
   if (ret == OK)
     {
-      /* Enable the interrupt (RX and TX interrupts are still disabled
-       * in the UART */
+      // Enable the interrupt (RX and TX interrupts are still disabled
+       * in the UART 
       ////Enable Interrupt later:
       ////up_enable_irq(priv-&gt;irq);
 </code></pre></div>
@@ -889,17 +915,14 @@ nsh&gt; ......++.+.l......s......
 <p>(So amazing that NuttX Apps and Context Switching are OK… Even though we haven’t implemented the RISC-V Timer!)</p>
 <p>But it’s super slow. Each dot is 1 Million Calls to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966">UART_IIR_INTSTATUS = 0</a>! </p>
 <p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L948-L967">uart_16550.c</a>:</p>
-<div class="example-wrap"><pre class="language-c"><code>/* Get the current UART status and check for loop
-  * termination conditions */
+<div class="example-wrap"><pre class="language-c"><code>// Get the current UART status and check for loop termination conditions 
 status = u16550_serialin(priv, UART_IIR_OFFSET);
 
-/* The UART_IIR_INTSTATUS bit should be zero if there are pending
-  * interrupts */
+// The UART_IIR_INTSTATUS bit should be zero if there are pending interrupts 
 if ((status &amp; UART_IIR_INTSTATUS) != 0)
   {
-    /* Break out of the loop when there is no longer a
-      * pending interrupt
-      */
+    // Break out of the loop when there is no longer a pending interrupt
+      
     //// Print after every 1 million interrupts:
     static int i = 0;
     if (i++ % 1000000 == 1) {
