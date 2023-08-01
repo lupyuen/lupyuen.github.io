@@ -98,7 +98,7 @@
 <p>What’s the RISC-V <strong>Platform-Level Interrupt Controller</strong> (PLIC)</p>
 </li>
 <li>
-<p>How we delegate RISC-V <strong>Machine-Mode Interrupts to Supervisor-Mode</strong></p>
+<p>Why we delegate RISC-V <strong>Machine-Mode Interrupts to Supervisor-Mode</strong></p>
 </li>
 <li>
 <p>How NuttX Star64 handles <strong>UART Interrupts</strong></p>
@@ -108,6 +108,7 @@
 <p><a href="https://youtu.be/TdSJdiQFsv8">(Watch the Demo on YouTube)</a></p>
 </li>
 </ul>
+<p>We’ll see later that <strong>NuttX Shell</strong> actually works fine! It’s just very very slooow because of the Spurious Interrupts.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-title.jpg" alt="Star64 RISC-V SBC" /></p>
 <h1 id="no-console-output-from-nuttx-apps"><a href="#no-console-output-from-nuttx-apps">1 No Console Output from NuttX Apps</a></h1>
 <p>At the end of <a href="https://lupyuen.github.io/articles/semihost"><strong>our previous article</strong></a>, NuttX seems to boot fine on Star64 (pic below)…</p>
@@ -704,7 +705,29 @@ Boot HART MEDELEG:
 <p>(Route Interrupts to Hart 1 in Supervisor Mode)</p>
 </li>
 </ul>
-<p>TODO</p>
+<p>UART Interrupts at <strong>NuttX IRQ 57</strong> (RISC-V IRQ 32) are now OK yay! </p>
+<div class="example-wrap"><pre class="language-text"><code>up_irq_enable: 
+up_enable_irq: irq=17
+up_enable_irq: RISCV_IRQ_SOFT=17
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+up_enable_irq: irq=57
+up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
+$%^&amp;riscv_doirq: irq=57
+#*$%^&amp;riscv_doirq: irq=57
+#*$%^&amp;riscv_doirq: irq=57
+#*$%^&amp;riscv_doirq: irq=57
+#*$%^&amp;riscv_doirq: irq=57
+...
+#*$%^&amp;riscv_doirq: irq=57
+#*$%^&amp;riscv_doirq: irq=57
+#*$%^&amp;riscv_doirq: irq=57
+#*$%^&amp;riscv_doirq: irq=57
+#*$%^&amp;nx_start: CPU0: Beginning Idle Loop
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-star64#nuttx-star64-handles-uart-interrupts">(See the <strong>Complete Log</strong>)</a></p>
+<p>But we have a new problem: We are getting <strong>too many UART Interrupts</strong>!</p>
+<p>TODO: Are they valid UART Interrupts?</p>
 <p><em>Are we Completing the Interrupt too soon? Maybe we should slow down?</em></p>
 <p>Let’s slow down the Interrupt Completion with a Logging Delay: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L81-L88">qemu_rv_irq_dispatch.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>if (RISCV_IRQ_EXT &lt;= irq)
