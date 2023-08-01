@@ -708,16 +708,13 @@ Let's check that the RISC-V Interrupts are delegated correctly...
 
 _Why do we delegate Interrupts?_
 
+According to the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 176)...
+
+> "By default, all Traps are handled in __Machine Mode__"
+
+> "Machine Mode software can selectively delegate Interrupts and Exceptions to __Supervisor Mode__ by setting the corresponding bits in __mideleg__ and __medeleg__ CSRs"
+
 TODO
-
-_NuttX runs in RISC-V Supervisor Mode, which can't handle Interrupts directly. (Needs Machine Mode) How can we be sure that the RISC-V Interrupts are correctly handled in Supervisor Mode?_
-
-From [SiFive Interrupt Cookbook](https://sifive.cdn.prismic.io/sifive/0d163928-2128-42be-a75a-464df65e04e0_sifive-interrupt-cookbook.pdf), Page 15:
-
-> A CPU operating in Supervisor mode will trap to Machine mode upon the arrival of a Machine
-mode interrupt, unless the Machine mode interrupt has been delegated to Supervisor mode
-through the mideleg register. On the contrary, Supervisor interrupts will not immediately trigger
-if a CPU is in Machine mode. While operating in Supervisor mode, a CPU does not have visibility to configure Machine mode interrupts.
 
 According to the [RISC-V Spec](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg), MIDELEG needs to be configured orrectly to delegate Machine Mode Interrupts to Supervisor Mode.
 
