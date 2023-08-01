@@ -757,9 +757,17 @@ Thus we're good! OpenSBI has __correctly delegated External Interrupts__ from Ma
 
 # NuttX Star64 handles UART Interrupts
 
-TODO
+_After fixing the PLIC Interrupts on Star64..._
 
-_After fixing PLIC Interrupts on Star64... Are UART Interrupts OK?_
+_Are UART Interrupts OK?_
+
+We fixed the __PLIC Memory Map__ in NuttX...
+
+- [__qemu_rv_plic.h: Fix PLIC Memory Map__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-913f48beaba6a00b5a78f5965892235c858ecc51e75e3c5b1f5905b6c9830f53)
+
+  (Route Interrupts to Hart 1 in Supervisor Mode)
+
+TODO
 
 UART Interrupts at RISC-V IRQ 32 (NuttX IRQ 57) are now OK yay! But still no UART Output though...
 
