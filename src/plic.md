@@ -531,7 +531,11 @@ Based on the above Memory Map, we set the PLIC Addresses in NuttX to use __Hart 
 // | 0x0C20_2004 | RW | Hart 1 S-Mode Claim / Complete 
 #define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x202000)
 #define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x202004)
+```
 
+FYI these are the earlier PLIC Settings for __NuttX QEMU__ (which runs in Machine Mode): [qemu_rv_plic.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L59)
+
+```c
 // Previously for NuttX QEMU:
 // #define QEMU_RV_PLIC_ENABLE1   (QEMU_RV_PLIC_BASE + 0x002080)
 // #define QEMU_RV_PLIC_ENABLE2   (QEMU_RV_PLIC_BASE + 0x002084)
@@ -904,7 +908,7 @@ Once again, so many questions...
 
 - Why is UART Interrupt triggered repeatedly with [__INTSTATUS = 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966)?
 
-  (We're quite sure it's not due to [__Rx Timeout__](https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L254-L274))
+  (Quite sure it's not due to [__Rx Timeout__](https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L254-L274))
 
 - Did we configure the [__16550 UART Interrupt Register__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L694-L812) correctly?
 
