@@ -18,13 +18,15 @@ In this article, we find out...
 
 - What's the RISC-V __Platform-Level Interrupt Controller__ (PLIC)
 
-- How we delegate RISC-V __Machine-Mode Interrupts to Supervisor-Mode__
+- Why we delegate RISC-V __Machine-Mode Interrupts to Supervisor-Mode__
 
 - How NuttX Star64 handles __UART Interrupts__
 
 - Which leads to a new problem: 16550 UART Controller fires too many __Spurious Interrupts__!
 
   [(Watch the Demo on YouTube)](https://youtu.be/TdSJdiQFsv8)
+
+We'll see later that __NuttX Shell__ actually works fine! It's just very very slooow because of the Spurious Interrupts.
 
 ![Star64 RISC-V SBC](https://lupyuen.github.io/images/nuttx2-title.jpg)
 
@@ -775,7 +777,34 @@ We fixed the __PLIC Memory Map__ in NuttX...
 
   (Route Interrupts to Hart 1 in Supervisor Mode)
 
-TODO
+UART Interrupts at __NuttX IRQ 57__ (RISC-V IRQ 32) are now OK yay! 
+
+```text
+up_irq_enable: 
+up_enable_irq: irq=17
+up_enable_irq: RISCV_IRQ_SOFT=17
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+up_enable_irq: irq=57
+up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
+$%^&riscv_doirq: irq=57
+#*$%^&riscv_doirq: irq=57
+#*$%^&riscv_doirq: irq=57
+#*$%^&riscv_doirq: irq=57
+#*$%^&riscv_doirq: irq=57
+...
+#*$%^&riscv_doirq: irq=57
+#*$%^&riscv_doirq: irq=57
+#*$%^&riscv_doirq: irq=57
+#*$%^&riscv_doirq: irq=57
+#*$%^&nx_start: CPU0: Beginning Idle Loop
+```
+
+[(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#nuttx-star64-handles-uart-interrupts)
+
+But we have a new problem: We are getting __too many UART Interrupts__!
+
+TODO: Are they valid UART Interrupts?
 
 _Are we Completing the Interrupt too soon? Maybe we should slow down?_
 
