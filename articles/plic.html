@@ -502,8 +502,9 @@ dtc \
 // | 0x0C20_2004 | RW | Hart 1 S-Mode Claim / Complete 
 #define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x202000)
 #define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x202004)
-
-// Previously for NuttX QEMU:
+</code></pre></div>
+<p>FYI these are the earlier PLIC Settings for <strong>NuttX QEMU</strong> (which runs in Machine Mode): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L59">qemu_rv_plic.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Previously for NuttX QEMU:
 // #define QEMU_RV_PLIC_ENABLE1   (QEMU_RV_PLIC_BASE + 0x002080)
 // #define QEMU_RV_PLIC_ENABLE2   (QEMU_RV_PLIC_BASE + 0x002084)
 // #define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x201000)
@@ -803,7 +804,7 @@ nsh&gt;
 <ul>
 <li>
 <p>Why is UART Interrupt triggered repeatedly with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>?</p>
-<p>(We’re quite sure it’s not due to <a href="https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L254-L274"><strong>Rx Timeout</strong></a>)</p>
+<p>(Quite sure it’s not due to <a href="https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L254-L274"><strong>Rx Timeout</strong></a>)</p>
 </li>
 <li>
 <p>Did we configure the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L694-L812"><strong>16550 UART Interrupt Register</strong></a> correctly?</p>
