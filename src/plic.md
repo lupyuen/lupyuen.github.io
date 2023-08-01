@@ -325,6 +325,10 @@ But everything looks OK!
 
 Maybe we got the wrong UART IRQ Number? Let's verify...
 
+![JH7110 Global Interrupts](https://lupyuen.github.io/images/plic-interrupts.jpg)
+
+[_JH7110 Global Interrupts_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html)
+
 # Star64 UART Interrupt
 
 _Is the UART IRQ Number correct?_
@@ -376,7 +380,7 @@ serial@10000000 {
 
 _What about the Global Interrupt Number?_
 
-According to the doc on [__JH7110 Interrupt Connections__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html), __u0_uart__	is at __global_interrupts[27]__
+According to the doc on [__JH7110 Interrupt Connections__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html), __u0_uart__	is at __global_interrupts[27]__ (pic above).
 
 Which is correct because the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 198) says that...
 
