@@ -702,7 +702,7 @@ __TODO:__ Do we need to handle CLINT?
 
 Let's check that the RISC-V Interrupts are delegated correctly...
 
-![PLIC in JH7110 (U74) SoC](https://lupyuen.github.io/images/plic-hart.png)
+![PLIC and CLINT in JH7110 (U74) SoC](https://lupyuen.github.io/images/plic-clint.jpg)
 
 # Delegate Machine-Mode Interrupts to Supervisor-Mode
 
