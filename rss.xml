@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Star64 JH7110 + NuttX RTOS: RISC-V PLIC Interrupts and Serial I/O</title>
+            <link>https://lupyuen.github.io/articles/plic</link>
+            <description><![CDATA[Apache NuttX RTOS on Pine64's Star64 JH7110 RISC-V SBC has a problem with Serial I/O Interrupts and the RISC-V Platform-Level Interrupt Controller (PLIC)... Let's fix this!]]></description>
+            <guid>https://lupyuen.github.io/articles/plic</guid>
+            <pubDate>Wed, 02 Aug 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Star64 JH7110 + NuttX RTOS: RISC-V Semihosting and Initial RAM Disk</title>
             <link>https://lupyuen.github.io/articles/semihost</link>
             <description><![CDATA[Apache NuttX RTOS crashes on Pine64's Star64 JH7110 RISC-V SBC because there's no Semihosting. But no worries! We modified NuttX to boot with an Initial RAM Disk instead (initrd).]]></description>

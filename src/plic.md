@@ -1,6 +1,6 @@
 # Star64 JH7110 + NuttX RTOS: RISC-V PLIC Interrupts and Serial I/O
 
-📝 _8 Aug 2023_
+📝 _2 Aug 2023_
 
 ![Platform-Level Interrupt Controller in JH7110 (U74) SoC](https://lupyuen.github.io/images/plic-title.jpg)
 
@@ -628,7 +628,7 @@ irqstate_t up_irq_enable(void) {
 
 ## Enable Interrupts
 
-To enable Interrupts, we configure PLIC to forward External Interrupts to __Hart 1 in Supervisor Mode__: [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L205)
+To enable a specific External Interrupt (like for UART), we configure PLIC to forward the External Interrupt to __Hart 1 in Supervisor Mode__: [qemu_rv_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L205)
 
 ```c
 // Enable the IRQ specified by 'irq'
@@ -669,7 +669,7 @@ void up_enable_irq(int irq) {
 
 ## Claim and Complete Interrupts
 
-Remember that we service Interrupts in 3 steps...
+Remember that we service External Interrupts in 3 steps...
 
 1.  __Claim__ the Interrupt
 
@@ -828,9 +828,11 @@ But most of the UART Interrupts are for...
 
 - [__UART Interrupt Status = 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L953-L967) (INTSTATUS)
 
-Which means that we got interrupted... For no reason at all!
+Which means that we got interrupted...
 
-_Maybe we should throttle the UART Interrupts?_
+__FOR NO REASON AT ALL!!!__
+
+_Why? Maybe we should throttle the UART Interrupts?_
 
 This definitely needs to be fixed, but for now we made a Quick Hack: __Defer the Enabling of UART Interrupts__ till later.
 
@@ -958,7 +960,7 @@ NuttX on Star64 JH7110 RISC-V SBC is almost ready!
 
 - But there's a new problem: 16550 UART Controller fires too many __Spurious Interrupts__
 
-- Which we'll fix in the next article!
+- Which we'll fix (hopefully) in the next article!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
