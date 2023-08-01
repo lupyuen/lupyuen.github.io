@@ -472,6 +472,7 @@ dtc \
 <p>Mark the Interrupt as <strong>Complete</strong></p>
 </li>
 </ol>
+<p>(If we don’t mark the Interrupt as Complete, we won’t receive any subsequent Interrupts)</p>
 <p>These are the PLIC Registers to <strong>Claim and Complete Interrupts</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 201)</a>…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: center">0C20_2004</td><td style="text-align: center">RW</td><td style="text-align: left">Hart 1 S-Mode Claim / Complete</td></tr>
@@ -658,14 +659,15 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <blockquote>
 <p>“Machine Mode Software can selectively delegate Interrupts and Exceptions to <strong>Supervisor Mode</strong> by setting the corresponding bits in <strong>mideleg</strong> and <strong>medeleg</strong> CSRs”</p>
 </blockquote>
-<p>NuttX runs in <strong>Supervisor Mode</strong>, so we need to be sure that the <strong>Interrupts have been delegated</strong> correctly to Supervisor Mode.</p>
+<p>NuttX runs in <strong>Supervisor Mode</strong>, so we need to be sure that the <strong>Interrupts have been delegated</strong> correctly to Supervisor Mode…</p>
+<p>Or our UART Interrupt Handler will never be called!</p>
 <p><em>What’s this “Machine Mode Software”? Who controls the Delegation?</em></p>
 <p>On Star64, <a href="https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface"><strong>OpenSBI (Supervisor Binary Interface)</strong></a> boots in Machine Mode and controls the Delegation of Interrupts.</p>
 <p>From the <a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64"><strong>OpenSBI Log</strong></a>, we see the value of <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg"><strong>mideleg</strong></a> (“Delegate Machine Interrupt”)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Boot HART MIDELEG:
-  0x00000222
+  0x0222
 Boot HART MEDELEG:
-  0x0000b109
+  0xb109
 </code></pre></div>
 <p><em>What does mideleg say?</em></p>
 <p>(Ring-ding-ding-ding-dingeringeding!)</p>
@@ -676,7 +678,7 @@ Boot HART MEDELEG:
 #define MIP_MTIP (0x1 &lt;&lt; 7)  // Delegate Machine Timer Interrupt
 #define MIP_SEIP (0x1 &lt;&lt; 9)  // Delegate External Interrupts
 </code></pre></div>
-<p>So <strong><code>0000B109</code></strong> means…</p>
+<p>So <strong>mideleg <code>0x0222</code></strong> means…</p>
 <ul>
 <li>
 <p>Delegate <strong>Software Interrupt</strong> to Supervisor Mode (SSIP)</p>
@@ -690,6 +692,8 @@ Boot HART MEDELEG:
 </li>
 </ul>
 <p>Thus we’re good! OpenSBI has <strong>correctly delegated External Interrupts</strong> from Machine Mode to Supervisor Mode. (For NuttX to handle)</p>
+<p>We’re finally ready to test the Fixed PLIC Code on Star64!</p>
+<p><img src="https://lupyuen.github.io/images/plic-nsh2.png" alt="NSH on Star64" /></p>
 <h1 id="nuttx-star64-handles-uart-interrupts"><a href="#nuttx-star64-handles-uart-interrupts">8 NuttX Star64 handles UART Interrupts</a></h1>
 <p><em>After fixing the PLIC Interrupts on Star64…</em></p>
 <p><em>Are UART Interrupts OK?</em></p>
@@ -701,95 +705,8 @@ Boot HART MEDELEG:
 </li>
 </ul>
 <p>TODO</p>
-<p>UART Interrupts at RISC-V IRQ 32 (NuttX IRQ 57) are now OK yay! But still no UART Output though…</p>
-<div class="example-wrap"><pre class="language-text"><code>123067BCnx_start: Entry
-up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
-$%^&amp;riscv_doirq: irq=57
-#*$%^&amp;riscv_doirq: irq=57
-#*$%^&amp;riscv_doirq: irq=57
-#*$%^&amp;riscv_doirq: irq=57
-#*$%^&amp;riscv_doirq: irq=57
-...
-#*$%^&amp;riscv_doirq: irq=57
-#*$%^&amp;riscv_doirq: irq=57
-#*$%^&amp;riscv_doirq: irq=57
-#*$%^&amp;riscv_doirq: irq=57
-#*$%^&amp;nx_start: CPU0: Beginning Idle Loop
-</code></pre></div>
-<p>And NuttX detects the UART Input Interrupts when we type yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>123067BCnx_start: Entry
-up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
-u16550_rxint: enable=1
-056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789w056789o056789r056789k056789_056789s056789t056789a056789r056789t056789_056789l056789o056789w056789p056789r056789i056789:056789 056789S056789t056789a056789r056789056789t056789i056789n056789g056789 056789l056789o056789w056789-056789p056789r056789i056789o056789r056789i056789t056789y056789 056789k056789e056789r056789n056789e056789l056789 056789w056789o056789r056789k056789e056789r056789 056789t056789h056789r056789e+056789a
-+++056789d++++056789(+++056789s+056789)056789
-</code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L965-L978">(<code>+</code> means UART Input Interrupt)</a></p>
-<p>But why is UART Interrupt triggered repeatedly with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966">UART_IIR_INTSTATUS = 0</a>?</p>
-<p>Is it because we didn’t Claim a RISC-V Interrupt correctly?</p>
-<p><em>What happens if we don’t Claim an Interrupt?</em></p>
-<p>Claiming an Interrupt happens here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L81-L88">qemu_rv_irq_dispatch.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>if (RISCV_IRQ_EXT &lt;= irq)
-  {
-    // Then write PLIC_CLAIM to clear pending in PLIC 
-    putreg32(irq - RISCV_IRQ_EXT, QEMU_RV_PLIC_CLAIM);
-  }
-</code></pre></div>
-<p>If we don’t Claim an Interrupt, we won’t receive any subsequent Interrupts (like UART Input)…</p>
-<div class="example-wrap"><pre class="language-text"><code>123067BCnx_start: Entry
-up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
-u16550_rxint: enable=1
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-board_late_initialize: 
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-nx_start_application: ret=3
-up_exit: TCB=0x404088d0 exiting
-uart_write (0xc0200428):
-0000  2a 2a 2a 6d 61 69 6e 0a                          ***main.        
-u16550_txint: enable=0
-AAAAAAAAAu16550_txint: enable=1
-Duart_write (0xc000a610):
-0000  0a 4e 75 74 74 53 68 65 6c 6c 20 28 4e 53 48 29  .NuttShell (NSH)
-0010  20 4e 75 74 74 58 2d 31 32 2e 30 2e 33 0a         NuttX-12.0.3.  
-u16550_txint: enable=0
-AAAAAAAAAAAAAAAu16550_txint: enable=1
-Duart_write (0xc0015338):
-0000  6e 73 68 3e 20                                   nsh&gt;            
-u16550_txint: enable=0
-AAAAAu16550_txint: enable=1
-Duart_write (0xc0015310):
-0000  1b 5b 4b                                         .[K             
-u16550_txint: enable=0
-AAAu16550_txint: enable=1
-Du16550_rxint: enable=0
-u16550_rxint: enable=1
-nx_start: CPU0: Beginning Idle Loop
-</code></pre></div>
-<p>(No response to UART Input)</p>
-<p>So it seems we are Claiming Interrupts correctly.</p>
-<p>We checked the other RISC-V NuttX Ports, they Claim Interrupts the exact same way.</p>
-<p><em>Are we Claiming the Interrupt too soon? Maybe we should slow down?</em></p>
-<p>Let’s slow down the Interrupt Claiming with a Logging Delay: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L81-L88">qemu_rv_irq_dispatch.c</a></p>
+<p><em>Are we Completing the Interrupt too soon? Maybe we should slow down?</em></p>
+<p>Let’s slow down the Interrupt Completion with a Logging Delay: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L81-L88">qemu_rv_irq_dispatch.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>if (RISCV_IRQ_EXT &lt;= irq)
   {
     _info(&quot;irq=%d, RISCV_IRQ_EXT=%d\n&quot;, irq, RISCV_IRQ_EXT);////
@@ -873,7 +790,6 @@ up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
 <p>After removing the logs, NSH works OK yay!</p>
 <p>Watch what happens when we enter <code>ls</code> at the NSH Shell…</p>
 <p><a href="https://youtu.be/TdSJdiQFsv8">(Watch the Demo on YouTube)</a></p>
-<p><img src="https://lupyuen.github.io/images/plic-nsh2.png" alt="NSH on Star64" /></p>
 <div class="example-wrap"><pre class="language-text"><code>123067BCnx_start: Entry
 up_irq_enable: 
 up_enable_irq: irq=17
