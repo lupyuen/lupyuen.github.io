@@ -868,6 +868,13 @@ e.x.e.c._.s.p.a.w.n.:. .E.R.R.O..R.:. .F.a.i.l.e.d. .t.o. .l.o.a.d. .p.r.o.g.r.a
 .......
 n.x.p.o.s.i.x._.s.p.a.w.n._.e.x.e.c.:. .E.R.R.O.R.:. .e.x.e.c. .f.a.i.l.e.d.:. ..2.
 ..............................................................................................................
+```
+
+We see the [__exec_spawn__](https://lupyuen.github.io/articles/semihost#boot-nuttx-qemu-with-initial-ram-disk) warning. [(Which is OK to ignore)](https://lupyuen.github.io/articles/semihost#boot-nuttx-qemu-with-initial-ram-disk)
+
+Followed by the output of __`ls`__...
+
+```text
 /:............................................................... 
 dev........
 /.............. 
@@ -879,8 +886,6 @@ nsh>
 ```
 
 [(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#nuttx-star64-handles-uart-interrupts)
-
-[(Ignore the __exec_spawn__ warning)](https://lupyuen.github.io/articles/semihost#boot-nuttx-qemu-with-initial-ram-disk)
 
 Yep NuttX Shell works OK on Star64!
 
