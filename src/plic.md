@@ -496,6 +496,8 @@ That's why we service Interrupts in 3 steps...
 
 1.  Mark the Interrupt as __Complete__
 
+(If we don't mark the Interrupt as Complete, we won't receive any subsequent Interrupts)
+
 These are the PLIC Registers to __Claim and Complete Interrupts__ [(Page 201)](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)...
 
 | Address | R/W | Description
@@ -714,7 +716,9 @@ According to the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_
 
 > "Machine Mode Software can selectively delegate Interrupts and Exceptions to __Supervisor Mode__ by setting the corresponding bits in __mideleg__ and __medeleg__ CSRs"
 
-NuttX runs in __Supervisor Mode__, so we need to be sure that the __Interrupts have been delegated__ correctly to Supervisor Mode.
+NuttX runs in __Supervisor Mode__, so we need to be sure that the __Interrupts have been delegated__ correctly to Supervisor Mode...
+
+Or our UART Interrupt Handler will never be called!
 
 _What's this "Machine Mode Software"? Who controls the Delegation?_
 
@@ -724,9 +728,9 @@ From the [__OpenSBI Log__](https://lupyuen.github.io/articles/linux#appendix-ope
 
 ```bash
 Boot HART MIDELEG:
-  0x00000222
+  0x0222
 Boot HART MEDELEG:
-  0x0000b109
+  0xb109
 ```
 
 _What does mideleg say?_
@@ -743,7 +747,7 @@ __mideleg__ is defined by the following bits: [csr.h](https://github.com/lupyuen
 #define MIP_SEIP (0x1 << 9)  // Delegate External Interrupts
 ```
 
-So __`0000B109`__ means...
+So __mideleg `0x0222`__ means...
 
 - Delegate __Software Interrupt__ to Supervisor Mode (SSIP)
 
@@ -754,6 +758,10 @@ So __`0000B109`__ means...
   (But not MTIP: Delegate Machine Timer Interrupt)
 
 Thus we're good! OpenSBI has __correctly delegated External Interrupts__ from Machine Mode to Supervisor Mode. (For NuttX to handle)
+
+We're finally ready to test the Fixed PLIC Code on Star64!
+
+![NSH on Star64](https://lupyuen.github.io/images/plic-nsh2.png)
 
 # NuttX Star64 handles UART Interrupts
 
@@ -769,115 +777,9 @@ We fixed the __PLIC Memory Map__ in NuttX...
 
 TODO
 
-UART Interrupts at RISC-V IRQ 32 (NuttX IRQ 57) are now OK yay! But still no UART Output though...
+_Are we Completing the Interrupt too soon? Maybe we should slow down?_
 
-```text
-123067BCnx_start: Entry
-up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
-$%^&riscv_doirq: irq=57
-#*$%^&riscv_doirq: irq=57
-#*$%^&riscv_doirq: irq=57
-#*$%^&riscv_doirq: irq=57
-#*$%^&riscv_doirq: irq=57
-...
-#*$%^&riscv_doirq: irq=57
-#*$%^&riscv_doirq: irq=57
-#*$%^&riscv_doirq: irq=57
-#*$%^&riscv_doirq: irq=57
-#*$%^&nx_start: CPU0: Beginning Idle Loop
-```
-
-And NuttX detects the UART Input Interrupts when we type yay!
-
-```text
-123067BCnx_start: Entry
-up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
-u16550_rxint: enable=1
-056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789056789w056789o056789r056789k056789_056789s056789t056789a056789r056789t056789_056789l056789o056789w056789p056789r056789i056789:056789 056789S056789t056789a056789r056789056789t056789i056789n056789g056789 056789l056789o056789w056789-056789p056789r056789i056789o056789r056789i056789t056789y056789 056789k056789e056789r056789n056789e056789l056789 056789w056789o056789r056789k056789e056789r056789 056789t056789h056789r056789e+056789a
-+++056789d++++056789(+++056789s+056789)056789
-```
-
-[(`+` means UART Input Interrupt)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L965-L978)
-
-But why is UART Interrupt triggered repeatedly with [UART_IIR_INTSTATUS = 0](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966)?
-
-Is it because we didn't Claim a RISC-V Interrupt correctly?
-
-_What happens if we don't Claim an Interrupt?_
-
-Claiming an Interrupt happens here: [qemu_rv_irq_dispatch.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L81-L88)
-
-```c
-if (RISCV_IRQ_EXT <= irq)
-  {
-    // Then write PLIC_CLAIM to clear pending in PLIC 
-    putreg32(irq - RISCV_IRQ_EXT, QEMU_RV_PLIC_CLAIM);
-  }
-```
-
-If we don't Claim an Interrupt, we won't receive any subsequent Interrupts (like UART Input)...
-
-```text
-123067BCnx_start: Entry
-up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
-u16550_rxint: enable=1
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-board_late_initialize: 
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-nx_start_application: ret=3
-up_exit: TCB=0x404088d0 exiting
-uart_write (0xc0200428):
-0000  2a 2a 2a 6d 61 69 6e 0a                          ***main.        
-u16550_txint: enable=0
-AAAAAAAAAu16550_txint: enable=1
-Duart_write (0xc000a610):
-0000  0a 4e 75 74 74 53 68 65 6c 6c 20 28 4e 53 48 29  .NuttShell (NSH)
-0010  20 4e 75 74 74 58 2d 31 32 2e 30 2e 33 0a         NuttX-12.0.3.  
-u16550_txint: enable=0
-AAAAAAAAAAAAAAAu16550_txint: enable=1
-Duart_write (0xc0015338):
-0000  6e 73 68 3e 20                                   nsh>            
-u16550_txint: enable=0
-AAAAAu16550_txint: enable=1
-Duart_write (0xc0015310):
-0000  1b 5b 4b                                         .[K             
-u16550_txint: enable=0
-AAAu16550_txint: enable=1
-Du16550_rxint: enable=0
-u16550_rxint: enable=1
-nx_start: CPU0: Beginning Idle Loop
-```
-
-(No response to UART Input)
-
-So it seems we are Claiming Interrupts correctly.
-
-We checked the other RISC-V NuttX Ports, they Claim Interrupts the exact same way.
-
-_Are we Claiming the Interrupt too soon? Maybe we should slow down?_
-
-Let's slow down the Interrupt Claiming with a Logging Delay: [qemu_rv_irq_dispatch.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L81-L88)
+Let's slow down the Interrupt Completion with a Logging Delay: [qemu_rv_irq_dispatch.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L81-L88)
 
 ```c
 if (RISCV_IRQ_EXT <= irq)
@@ -983,8 +885,6 @@ After removing the logs, NSH works OK yay!
 Watch what happens when we enter `ls` at the NSH Shell...
 
 [(Watch the Demo on YouTube)](https://youtu.be/TdSJdiQFsv8)
-
-![NSH on Star64](https://lupyuen.github.io/images/plic-nsh2.png)
 
 ```text
 123067BCnx_start: Entry
