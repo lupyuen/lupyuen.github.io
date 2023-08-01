@@ -24,7 +24,7 @@ In this article, we find out...
 
 - Which leads to a new problem: 16550 UART Controller fires too many __Spurious Interrupts__!
 
-  [(Watch the Demo on YouTube)](https://youtu.be/TdSJdiQFsv8)
+  [(Watch the __Demo Video__ on YouTube)](https://youtu.be/TdSJdiQFsv8)
 
 We'll see later that __NuttX Shell__ actually works fine! It's just very very slooow because of the Spurious Interrupts.
 
@@ -777,6 +777,8 @@ We fixed the __PLIC Memory Map__ in NuttX...
 
   (Route Interrupts to Hart 1 in Supervisor Mode)
 
+  [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64d-0.0.1)
+
 Now we see UART Interrupts fired at __NuttX IRQ 57__ (RISC-V IRQ 32) yay! 
 
 ```text
@@ -847,7 +849,7 @@ static ssize_t uart_write(FAR struct file *filep, FAR const char *buffer, size_t
 
 Ater hacking, watch what happens when we enter __`ls`__ at the NuttX Shell...
 
-[(Watch the Demo on YouTube)](https://youtu.be/TdSJdiQFsv8)
+[(Watch the __Demo Video__ on YouTube)](https://youtu.be/TdSJdiQFsv8)
 
 ```text
 uart_register: Registering /dev/console
@@ -890,7 +892,7 @@ system.........
 nsh> 
 ```
 
-[(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#nuttx-star64-handles-uart-interrupts)
+[(See the __Complete Log__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64d-0.0.1)
 
 Yep NuttX Shell works OK on Star64!
 
