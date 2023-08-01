@@ -241,6 +241,8 @@ _Why 2 Interrupts? IRQ 35 and IRQ 8?_
 
 Now we compare the above QEMU Log with Star64...
 
+![NuttX Star64 Debug Log](https://lupyuen.github.io/images/plic-star64.png)
+
 # Star64 vs QEMU Serial I/O
 
 _Earlier we said that NuttX Star64 couldn't print to Serial Console. Why?_
@@ -376,7 +378,7 @@ According to the doc on [__JH7110 Interrupt Connections__](https://doc-en.rvspac
 Which is correct because the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 198) says that...
 
 ```text
-RISC=V IRQ = Global Interrupt Number + 5
+RISC-V IRQ = Global Interrupt Number + 5
 ```
 
 _Maybe IRQ 32 is too high? (QEMU UART IRQ is only 10)_
@@ -546,11 +548,7 @@ _How to configure PLIC to forward Interrupts to the Harts?_
 
 TODO: Priority
 
-## Handle PLIC Interrupts
-
-TODO
-
-## Claim PLIC Interrupts
+## Claim and Complete PLIC Interrupts
 
 TODO
 
