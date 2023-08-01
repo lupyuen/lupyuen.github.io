@@ -726,92 +726,45 @@ $%^&amp;riscv_doirq: irq=57
 #*$%^&amp;nx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#nuttx-star64-handles-uart-interrupts">(See the <strong>Complete Log</strong>)</a></p>
-<p>But we have a new problem: We are getting <strong>too many UART Interrupts</strong>!</p>
-<p>TODO: Are they valid UART Interrupts?</p>
-<p><em>Are we Completing the Interrupt too soon? Maybe we should slow down?</em></p>
-<p>Let’s slow down the Interrupt Completion with a Logging Delay: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L81-L88">qemu_rv_irq_dispatch.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>if (RISCV_IRQ_EXT &lt;= irq)
-  {
-    _info(&quot;irq=%d, RISCV_IRQ_EXT=%d\n&quot;, irq, RISCV_IRQ_EXT);////
-    // Then write PLIC_CLAIM to clear pending in PLIC 
-    putreg32(irq - RISCV_IRQ_EXT, QEMU_RV_PLIC_CLAIM);
+<p>But we have the Opposite Problem: We are getting <strong>too many UART Interrupts</strong>!</p>
+<p><em>Are they valid UART Interrupts?</em></p>
+<p>Well we see Valid UART Interrupts for…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013"><strong>UART Transmit Ready</strong></a> (UART_IIR_INTID_THRE)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L990-L1003"><strong>UART Input Received</strong></a> (UART_IIR_INTID_THRE)</p>
+</li>
+</ul>
+<p>But most of the UART Interrupts are for…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L953-L967"><strong>UART Interrupt Status = 0</strong></a> (UART_IIR_INTSTATUS)</li>
+</ul>
+<p>Which means that we got interrupted… For no reason at all!</p>
+<p><em>Maybe we should throttle the UART Interrupts?</em></p>
+<p>This definitely needs to be fixed, but for now we hacked it to <strong>delay the enabling of UART Interrupts</strong> till later.</p>
+<p>We comment out the interrupt in <strong>u16550_attach</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L860-L871">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// When we attach to UART Interrupt...
+static int u16550_attach(struct uart_dev_s *dev) {
+  ...
+  // Attach to UART Interrupt
+  ret = irq_attach(priv-&gt;irq, u16550_interrupt, dev);
+  if (ret == OK) {
+    // Changed this: Don&#39;t enable UART Interrupt yet
+    // up_enable_irq(priv-&gt;irq);
+</code></pre></div>
+<p>And instead we enable the interrupt in <strong>uart_write</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1177-L1188">serial.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static ssize_t uart_write(FAR struct file *filep, FAR const char *buffer, size_t buflen) {
+  // Added this: Enable UART Interrupt
+  // on the 4th print
+  static int count = 0;
+  if (count++ == 3) {
+    up_enable_irq(57); 
   }
 </code></pre></div>
-<p>Seems to work better…</p>
-<div class="example-wrap"><pre class="language-text"><code>123067BCnx_start: Entry
-up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
-u16550_rxint: enable=1
-riscv_dispatch_irq: irq=57, RISCV_IRQ_EXT=25
-056789riscv_dispatch_irq: irq=57, RISCV_IRQ_EXT=25
-riscv_dispatch_irq: irq=57, RISCV_IRQ_EXT=25
-riscv_dispatch_irq: irq=57, RISCV_IRQ_EXT=25
-riscv_dispatch_irq: irq=57, RISCV_IRQ_EXT=25
-...
-riscv_dispatch_irq: irq=57, RISCV_IRQ_EXT=25
-riscv_dispatch_irq: irq=57, RISCV_IRQ_EXT=25
-riscv_dispatch_irq: irq=57, RISCV_IRQ_EXT=25
-nx_start: CPU0: Beginning Idle Loop
-</code></pre></div>
-<p>Also we increase the System Delay (to match PinePhone):</p>
-<ul>
-<li>System Type &gt; Delay loops per millisecond = 116524</li>
-</ul>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_BOARD_LOOPSPERMSEC=116524
-</code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L47">(Source)</a></p>
-<p><em>UART might need some time to warm up? Maybe we enable the IRQ later?</em></p>
-<p>Let’s delay the enabling of IRQ to later…</p>
-<p>We comment out the Enable IRQ in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L860-L871">uart_16550.c</a>:</p>
-<div class="example-wrap"><pre class="language-c"><code>static int u16550_attach(struct uart_dev_s *dev) {
-  ...
-  // Attach and enable the IRQ 
-  ret = irq_attach(priv-&gt;irq, u16550_interrupt, dev);
-#ifndef CONFIG_ARCH_NOINTC
-  if (ret == OK)
-    {
-      // Enable the interrupt (RX and TX interrupts are still disabled
-       * in the UART 
-      ////Enable Interrupt later:
-      ////up_enable_irq(priv-&gt;irq);
-</code></pre></div>
-<p>And add it to <code>uart_write</code>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1177-L1188">serial.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static ssize_t uart_write(FAR struct file *filep, FAR const char *buffer,
-                          size_t buflen) {
-  static int count = 0;
-  if (count++ == 3) { up_enable_irq(57); }////
-</code></pre></div>
-<p>Seems better…</p>
-<div class="example-wrap"><pre class="language-text"><code>123067BCnx_start: Entry
-up_irq_enable: 
-up_enable_irq: irq=17
-up_enable_irq: RISCV_IRQ_SOFT=17
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-u16550_rxint: enable=1
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-board_late_initialize: 
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-nx_start_application: ret=3
-up_exit: TCB=0x404088d0 exiting
-uart_write (0xc0200428):
-0000  2a 2a 2a 6d 61 69 6e 0a                          ***main.        
-up_enable_irq: irq=57
-up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
-056789056789056789056789056789056789u05678910567896056789505678950567890056789_056789t056789x056789i056789n056789t056789:056789 056789e056789n056789a056789b056789l056789e056789=0567890056789
-056789056789056789A056789056789056789056789056789056789056789056789056789056789056789056789056789AAAAA056789AAA056789u05678910567896056789505678950567890056789_056789t056789x056789i056789n056789t056789:056789 056789e056789n056789a056789b056789l056789e056789=0567891056789
-056789D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-D-
-</code></pre></div>
-<p>After removing the logs, NSH works OK yay!</p>
-<p>Watch what happens when we enter <code>ls</code> at the NSH Shell…</p>
+<p>TODO</p>
+<p>Watch what happens when we enter <strong><code>ls</code></strong> at the NSH Shell…</p>
 <p><a href="https://youtu.be/TdSJdiQFsv8">(Watch the Demo on YouTube)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>123067BCnx_start: Entry
 up_irq_enable: 
@@ -845,20 +798,6 @@ nsh&gt; ......++.+.l......s......
 </code></pre></div>
 <p>(So amazing that NuttX Apps and Context Switching are OK… Even though we haven’t implemented the RISC-V Timer!)</p>
 <p>But it’s super slow. Each dot is 1 Million Calls to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966">UART_IIR_INTSTATUS = 0</a>! </p>
-<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L948-L967">uart_16550.c</a>:</p>
-<div class="example-wrap"><pre class="language-c"><code>// Get the current UART status and check for loop termination conditions 
-status = u16550_serialin(priv, UART_IIR_OFFSET);
-
-// The UART_IIR_INTSTATUS bit should be zero if there are pending interrupts 
-if ((status &amp; UART_IIR_INTSTATUS) != 0)
-  {
-    // Break out of the loop when there is no longer a pending interrupt
-      
-    //// Print after every 1 million interrupts:
-    static int i = 0;
-    if (i++ % 1000000 == 1) {
-      *(volatile uint8_t *)0x10000000 = &#39;.&#39;;
-</code></pre></div>
 <p>TODO: Why is UART Interrupt triggered repeatedly with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966">UART_IIR_INTSTATUS = 0</a>?</p>
 <p><em>Maybe because OpenSBI is still handling UART Interrupts in Machine Mode?</em></p>
 <p>We tried to disable PLIC Interrupts for Machine Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L58-L63">qemu_rv_irq.c</a></p>
