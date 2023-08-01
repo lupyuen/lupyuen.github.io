@@ -656,14 +656,20 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p>“By default, all Traps are handled in <strong>Machine Mode</strong>”</p>
 </blockquote>
 <blockquote>
-<p>“Machine Mode software can selectively delegate Interrupts and Exceptions to <strong>Supervisor Mode</strong> by setting the corresponding bits in <strong>mideleg</strong> and <strong>medeleg</strong> CSRs”</p>
+<p>“Machine Mode Software can selectively delegate Interrupts and Exceptions to <strong>Supervisor Mode</strong> by setting the corresponding bits in <strong>mideleg</strong> and <strong>medeleg</strong> CSRs”</p>
 </blockquote>
-<p>TODO</p>
-<p>According to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg">RISC-V Spec</a>, MIDELEG needs to be configured orrectly to delegate Machine Mode Interrupts to Supervisor Mode.</p>
-<p>From <a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64">OpenSBI Log</a>, we see the value of MIDELEG…</p>
-<div class="example-wrap"><pre class="language-bash"><code>Boot HART MIDELEG: 0x0000000000000222
-Boot HART MEDELEG: 0x000000000000b109
+<p>NuttX runs in <strong>Supervisor Mode</strong>, so we need to be sure that the <strong>Interrupts have been delegated</strong> correctly to Supervisor Mode.</p>
+<p><em>What’s this “Machine Mode Software”? Who controls the Delegation?</em></p>
+<p>On Star64, <a href="https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface"><strong>OpenSBI (Supervisor Binary Interface)</strong></a> boots in Machine Mode and controls the Delegation of Interrupts.</p>
+<p>From the <a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64"><strong>OpenSBI Log</strong></a>, we see the value of <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg"><strong>mideleg</strong></a> (“Delegate Machine Interrupt”)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Boot HART MIDELEG:
+  0x00000222
+Boot HART MEDELEG:
+  0x0000b109
 </code></pre></div>
+<p><em>What does mideleg tell us?</em></p>
+<p>TODO</p>
+<p>According to the [RISC-V Spec], MIDELEG needs to be configured orrectly to delegate Machine Mode Interrupts to Supervisor Mode.</p>
 <p>MIDELEG is defined by the following bits: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/csr.h#L343-L346">csr.h</a>:</p>
 <div class="example-wrap"><pre class="language-c"><code>#define MIP_SSIP (0x1 &lt;&lt; 1)
 #define MIP_STIP (0x1 &lt;&lt; 5)
