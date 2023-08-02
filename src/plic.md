@@ -924,6 +924,8 @@ Once again, so many questions...
 
   "See e.g. the [__Linux DesignWare UART driver__](https://elixir.bootlin.com/linux/latest/source/drivers/tty/serial/8250/8250_dw.c) for a workaround."
 
+  [(Also on __Hacker News__)](https://news.ycombinator.com/item?id=36964561)
+
 - Did we configure the [__16550 UART Interrupt Register__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L694-L812) correctly?
 
   (Also [__u16550_txint__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1629) and [__u16550_rxint__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1251C1-L1283))
