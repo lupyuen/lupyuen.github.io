@@ -990,7 +990,7 @@ Earlier we said that NuttX on JH7110 fires too many __Spurious UART Interrupts__
 
 This section explains how we fixed the problem.
 
-Based on the [__JH7110 UART Developing Guide__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html), the StarFive JH7110 SoC uses a __Synopsys DesignWare 8250 UART__.
+Based on the [__JH7110 UART Developing Guide__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html), the StarFive JH7110 SoC uses a [__Synopsys DesignWare 8250 UART__](https://linux-sunxi.org/images/d/d2/Dw_apb_uart_db.pdf).
 
 (Because that page mentions [__8250_dw.c__](https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c), which is the DesignWare 8250 Driver for Linux)
 
