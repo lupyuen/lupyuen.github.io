@@ -779,6 +779,8 @@ So many questions (pic below)...
 
 We'll find out in the next article!
 
+- [__"Star64 JH7110 + NuttX RTOS: RISC-V PLIC Interrupts and Serial I/O"__](https://lupyuen.github.io/articles/plic)
+
 (__TODO:__ Test Initial RAM Disk with MicroSD Card)
 
 ![NuttX Star64 with Initial RAM Disk](https://lupyuen.github.io/images/semihost-runstar64.png)
@@ -807,10 +809,10 @@ No more __Semihosting Problems__ with NuttX on Star64 JH7110 SBC!
 
   (Which we also tested on __QEMU Emulator__)
 
-- Now we need to figure out why __NuttX Shell__ won't appear
+- Now we need to figure out why __NuttX Shell__ won't appear...
 
-  (Please join me next time!)
-
+  [__"Star64 JH7110 + NuttX RTOS: RISC-V PLIC Interrupts and Serial I/O"__](https://lupyuen.github.io/articles/plic)
+  
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)

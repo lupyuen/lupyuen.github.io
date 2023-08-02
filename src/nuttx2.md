@@ -633,15 +633,9 @@ Now we're smokin' hot...
 
 - But NuttX hangs in the C Function [__qemu_rv_start__](https://lupyuen.github.io/articles/riscv#jump-to-start)
 
-Why? Stay tuned for more tantalising treats in the next article! Sneak peek...
+Why? Stay tuned for more tantalising treats in the next article! 
 
-- [__"Boot from Network with U-Boot and TFTP"__](https://lupyuen.github.io/articles/tftp)
-
-- [__"Hang in Enter Critical Section"__](https://github.com/lupyuen/nuttx-star64#hang-in-enter-critical-section)
-
-- [__"Hang in UART Transmit"__](https://github.com/lupyuen/nuttx-star64#hang-in-uart-transmit)
-
-- [__"Enable Scheduler Logging"__](https://github.com/lupyuen/nuttx-star64#enable-scheduler-logging)
+-   [__"Star64 JH7110 + NuttX RTOS: RISC-V Privilege Levels and UART Registers"__](https://lupyuen.github.io/articles/privilege)
 
 ![Pine64 Star64 64-bit RISC-V SBC](https://lupyuen.github.io/images/nuttx2-star64.jpg)
 
@@ -661,7 +655,7 @@ I hope this has been an Educational Experience on booting a fresh new OS for a 6
 
 This is the first in a series of (yummy) articles on porting NuttX to Star64, please join me next time...
 
-- [__"Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
+-   [__"Star64 JH7110 + NuttX RTOS: RISC-V Privilege Levels and UART Registers"__](https://lupyuen.github.io/articles/privilege)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -736,9 +730,11 @@ Yep looks correct! But we'll subtract 1 from Register A0 because NuttX expects H
 
 We'll see this implementation in our modified NuttX Boot Code. (Next section)
 
+![Platform-Level Interrupt Controller in JH7110 (U74) SoC](https://lupyuen.github.io/images/plic-title.jpg)
+
 _Why does OpenSBI return Hart ID 1? (Instead of 0)_
 
-According to the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 96), there are 5 RISC-V Cores in JH7110...
+According to the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf) (Page 96), there are 5 RISC-V Cores in JH7110 (pic above)...
 
 - __Hart 0:__ S7 Monitor Core (RV64IMACB)
 

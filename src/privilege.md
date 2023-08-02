@@ -628,6 +628,8 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 
 We'll find out why in the next article!
 
+-   [__"Star64 JH7110 + NuttX RTOS: RISC-V Semihosting and Initial RAM Disk"__](https://lupyuen.github.io/articles/semihost)
+
 __TODO:__ Port [__up_mtimer_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210) to Star64
 
 [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/32/files)
@@ -697,7 +699,9 @@ I hope we learnt a bit more about __RISC-V and Star64 JH7110 SBC__ today...
 
     (Thankfully we have the LiteX Arty-A7 and PolarFire Icicle ports)
 
-Please join me in the next article as we solve the [__RISC-V Semihosting Problem__](https://github.com/lupyuen/nuttx-star64#qemu-semihosting-in-nuttx). (We might use an [__Initial RAM Disk__](https://github.com/apache/nuttx/issues/9501) with ROMFS)
+Please join me in the next article as we solve the [__RISC-V Semihosting Problem__](https://github.com/lupyuen/nuttx-star64#qemu-semihosting-in-nuttx). (We'll use an [__Initial RAM Disk__](https://github.com/apache/nuttx/issues/9501) with ROMFS)
+
+-   [__"Star64 JH7110 + NuttX RTOS: RISC-V Semihosting and Initial RAM Disk"__](https://lupyuen.github.io/articles/semihost)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
