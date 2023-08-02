@@ -109,6 +109,7 @@
 </li>
 </ul>
 <p>We’ll see later that <strong>NuttX Star64</strong> actually works fine! It’s just very very slooow because of the Spurious Interrupts.</p>
+<p><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg10275.html">(<strong>UPDATE:</strong> We fixed the <strong>Spurious UART Interrupts</strong>!)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-title.jpg" alt="Star64 RISC-V SBC" /></p>
 <h1 id="no-console-output-from-nuttx-apps"><a href="#no-console-output-from-nuttx-apps">1 No Console Output from NuttX Apps</a></h1>
 <p>At the end of <a href="https://lupyuen.github.io/articles/semihost"><strong>our previous article</strong></a>, NuttX seems to boot fine on Star64 (pic below)…</p>
@@ -748,6 +749,7 @@ $%^&amp;riscv_doirq: irq=57
 </ul>
 <p>Which means that we got interrupted…</p>
 <p><strong>FOR NO REASON AT ALL!!!</strong></p>
+<p><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg10275.html">(<strong>UPDATE:</strong> We fixed the <strong>Spurious UART Interrupts</strong>!)</a></p>
 <p><em>Why? Maybe we should throttle the UART Interrupts?</em></p>
 <p>This definitely needs to be fixed, but for now we made a Quick Hack: <strong>Defer the Enabling of UART Interrupts</strong> till later.</p>
 <p>We comment out the UART Interrupt in <strong>u16550_attach</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L860-L871">uart_16550.c</a></p>
@@ -806,6 +808,7 @@ nsh&gt;
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64d-0.0.1">(See the <strong>Complete Log</strong>)</a></p>
 <p>Yep NuttX Shell works OK on Star64!</p>
 <p>But it’s super slow. Each dot is <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>One Million Calls</strong></a> to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>! </p>
+<p><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg10275.html">(<strong>UPDATE:</strong> We fixed the <strong>Spurious UART Interrupts</strong>!)</a></p>
 <p>Once again, so many questions…</p>
 <ul>
 <li>
@@ -821,6 +824,7 @@ nsh&gt;
 <p><strong>UPDATE:</strong> Thanks to the suggestion by <a href="https://github.com/lupyuen/lupyuen.github.io/issues/18"><strong>michaelengel</strong></a>, we have fixed the Spurious UART Interrupts yay!</p>
 <p>We must wait till <strong>UART is not busy</strong> before setting the Line Control Register (LCR), here’s how…</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/36/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1"><strong>uart_16550.c</strong>: Wait till UART is not busy before setting LCR</a></p>
+<p><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg10275.html">(More about this)</a></p>
 </li>
 <li>
 <p>Did we configure the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L694-L812"><strong>16550 UART Interrupt Register</strong></a> correctly?</p>
@@ -845,11 +849,7 @@ nsh&gt;
 <p><em>We seem to be rushing?</em></p>
 <p>Well NuttX Star64 might get stale and out of sync with NuttX Mainline.</p>
 <p>We better chop chop hurry up and <a href="https://lupyuen.github.io/articles/pr"><strong>merge with NuttX Mainline</strong></a> soon! (Right after we fix the Spurious and Furious UART Interrupts)</p>
-<p><strong>UPDATE:</strong> Thanks to the suggestion by <a href="https://github.com/lupyuen/lupyuen.github.io/issues/18"><strong>michaelengel</strong></a>, we have fixed the Spurious UART Interrupts yay!</p>
-<p>We must wait till <strong>UART is not busy</strong> before setting the Line Control Register (LCR), here’s how…</p>
-<ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/36/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1"><strong>uart_16550.c</strong>: Wait till UART is not busy before setting LCR</a></li>
-</ul>
+<p><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg10275.html">(<strong>UPDATE:</strong> We fixed the <strong>Spurious UART Interrupts</strong>!)</a></p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>NuttX on Star64 JH7110 RISC-V SBC is almost ready!</p>
 <ul>
