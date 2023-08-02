@@ -79,7 +79,8 @@
 <li><a href="#claim-and-complete-interrupts">6.4 Claim and Complete Interrupts</a><ul></ul></li></ul></li>
 <li><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">7 Delegate Machine-Mode Interrupts to Supervisor-Mode</a><ul></ul></li>
 <li><a href="#spurious-uart-interrupts">8 Spurious UART Interrupts</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>2 Aug 2023</em></p>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-fix-the-spurious-uart-interrupts">10 Appendix: Fix the Spurious UART Interrupts</a><ul></ul></li></ul></nav><p>📝 <em>2 Aug 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller in JH7110 (U74) SoC" /></p>
 <p>We’re almost ready with our barebones port of <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) to <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer! (Pic below)</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
@@ -904,6 +905,192 @@ nsh&gt;
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic.md"><strong>lupyuen.github.io/src/plic.md</strong></a></p>
+<h1 id="appendix-fix-the-spurious-uart-interrupts"><a href="#appendix-fix-the-spurious-uart-interrupts">10 Appendix: Fix the Spurious UART Interrupts</a></h1>
+<p>Earlier we said that NuttX on JH7110 fires too many <strong>Spurious UART Interrupts</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/plic#spurious-uart-interrupts"><strong>“Spurious UART Interrupts”</strong></a></li>
+</ul>
+<p>This section explains how we fixed the problem.</p>
+<p>Based on the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html"><strong>JH7110 UART Developing Guide</strong></a>, the StarFive JH7110 SoC uses a <strong>Synopsys DesignWare 8250 UART</strong>.</p>
+<p>(Because that page mentions <a href="https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c"><strong>8250_dw.c</strong></a>, which is the DesignWare 8250 Driver for Linux)</p>
+<p>As documented in the <a href="https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L8-L10"><strong>Linux Driver for DesignWare 8250</strong></a>…</p>
+<blockquote>
+<p>“The Synopsys DesignWare 8250 has an extra feature whereby it <strong>detects if the LCR is written whilst busy</strong>”</p>
+</blockquote>
+<blockquote>
+<p>“If it is, then a <strong>busy detect interrupt is raised</strong>, the LCR needs to be rewritten and the uart status register read”</p>
+</blockquote>
+<p>Which is also mentioned by <a href="https://github.com/lupyuen/lupyuen.github.io/issues/18"><strong>Michael Engel</strong></a>.</p>
+<p>This means that before we set the <strong>Line Control Register (LCR)</strong>, we must <strong>wait until the UART is not busy</strong>.</p>
+<p>Thus our fix for JH7110 is to wait for UART before setting LCR. This is how we <strong>wait for the UART</strong> until it’s not busy: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64e/drivers/serial/uart_16550.c#L633-L668">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_16550_WAIT_LCR
+/***************************************************************************
+ * Name: u16550_wait
+ *
+ * Description:
+ *   Wait until UART is not busy. This is needed before writing to LCR.
+ *   Otherwise we will get spurious interrupts on Synopsys DesignWare 8250.
+ *
+ * Input Parameters:
+ *   priv: UART Struct
+ *
+ * Returned Value:
+ *   Zero (OK) on success; ERROR if timeout.
+ *
+ ***************************************************************************/
+
+static int u16550_wait(FAR struct u16550_s *priv)
+{
+  int i;
+
+  for (i = 0; i &lt; UART_TIMEOUT_MS; i++)
+    {
+      uint32_t status = u16550_serialin(priv, UART_USR_OFFSET);
+
+      if ((status &amp; UART_USR_BUSY) == 0)
+        {
+          return OK;
+        }
+
+      up_mdelay(1);
+    }
+
+  _err(&quot;UART timeout\n&quot;);
+  return ERROR;
+}
+#endif /* CONFIG_16550_WAIT_LCR */
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64e/include/nuttx/serial/uart_16550.h#L172-L305">(<strong>UART_USR_OFFSET</strong> and <strong>UART_USR_BUSY</strong> have been added to <strong>uart_16550.h</strong>)</a></p>
+<p>We wait up to <strong>100 milliseconds</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64e/drivers/serial/uart_16550.c#L59-L61">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Timeout for UART Busy Wait, in milliseconds */
+#define UART_TIMEOUT_MS 100
+</code></pre></div>
+<p>Here’s how we wait for UART before setting the <strong>Baud Rate in LCR</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64e/drivers/serial/uart_16550.c#L817-L851">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static int u16550_setup(FAR struct uart_dev_s *dev)
+{
+  ...
+#ifdef CONFIG_16550_WAIT_LCR
+  /* Wait till UART is not busy before setting LCR */
+
+  if (u16550_wait(priv) &lt; 0)
+    {
+      _err(&quot;UART wait failed\n&quot;);
+      return ERROR;
+    }
+#endif /* CONFIG_16550_WAIT_LCR */
+
+  /* Enter DLAB=1 */
+
+  u16550_serialout(priv, UART_LCR_OFFSET, (lcr | UART_LCR_DLAB));
+
+  /* Set the BAUD divisor */
+
+  div = u16550_divisor(priv);
+  u16550_serialout(priv, UART_DLM_OFFSET, div &gt;&gt; 8);
+  u16550_serialout(priv, UART_DLL_OFFSET, div &amp; 0xff);
+
+#ifdef CONFIG_16550_WAIT_LCR
+  /* Wait till UART is not busy before setting LCR */
+
+  if (u16550_wait(priv) &lt; 0)
+    {
+      _err(&quot;UART wait failed\n&quot;);
+      return ERROR;
+    }
+#endif /* CONFIG_16550_WAIT_LCR */
+
+  /* Clear DLAB */
+
+  u16550_serialout(priv, UART_LCR_OFFSET, lcr);
+</code></pre></div>
+<p>We also wait for UART before setting the <strong>Break Control in LCR</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64e/drivers/serial/uart_16550.c#L701-L725">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static inline void u16550_enablebreaks(FAR struct u16550_s *priv,
+                                       bool enable)
+{
+  uint32_t lcr = u16550_serialin(priv, UART_LCR_OFFSET);
+
+  if (enable)
+    {
+      lcr |= UART_LCR_BRK;
+    }
+  else
+    {
+      lcr &amp;= ~UART_LCR_BRK;
+    }
+
+#ifdef CONFIG_16550_WAIT_LCR
+  /* Wait till UART is not busy before setting LCR */
+
+  if (u16550_wait(priv) &lt; 0)
+    {
+      _err(&quot;UART wait failed\n&quot;);
+    }
+#endif /* CONFIG_16550_WAIT_LCR */
+
+  u16550_serialout(priv, UART_LCR_OFFSET, lcr);
+}
+</code></pre></div>
+<p>By default, <strong>16550_WAIT_LCR</strong> is Disabled. (Don’t wait for UART)</p>
+<p>When <strong>16550_WAIT_LCR</strong> is Disabled (default), JH7110 will fire Spurious UART Interrupts and fail to start NuttX Shell (because it’s too busy servicing interrupts)…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/6b5803e2b3697e96233267f6cd89c593"><strong>NuttX Log for UART Wait LCR Disabled</strong></a></li>
+</ul>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>Starting kernel ...
+clk u5_dw_i2c_clk_core already disabled
+clk u5_dw_i2c_clk_apb already disabled
+BCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0</code></pre></div>
+<p>When <strong>16550_WAIT_LCR</strong> is Enabled, JH7110 will start NuttX Shell correctly…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/9325fee202d38a671cd0eb3cfd35a1db"><strong>NuttX Log for UART Wait LCR Enabled</strong></a></li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+clk u5_dw_i2c_clk_core already disabled
+clk u5_dw_i2c_clk_apb already disabled
+123067BCnx_start: Entry
+up_irq_enable: 
+up_enable_irq: irq=17
+up_enable_irq: RISCV_IRQ_SOFT=17
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+up_enable_irq: irq=57
+up_enable_irq: extirq=32, RISCV_IRQ_EXT=25
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+board_late_initialize: 
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nx_start_application: ret=3
+up_exit: TCB=0x404088d0 exiting
+nx_start: CPU0: Beginning Idle Loop
+***main
+
+NuttShell (NSH) NuttX-12.0.3
+nsh&gt; uname -a
+posix_spawn: pid=0xc0202978 path=uname file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
+exec_spawn: ERROR: Failed to load program &#39;uname&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+NuttX 12.0.3 2ff7d88 Jul 28 2023 12:35:31 risc-v rv-virt
+nsh&gt; ls -l
+posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
+exec_spawn: ERROR: Failed to load program &#39;ls&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+/:
+ dr--r--r--       0 dev/
+ dr--r--r--       0 proc/
+ dr--r--r--       0 system/
+nsh&gt; 
+</code></pre></div>
+<p>TODO: Regression Test with NuttX QEMU</p>
+<p>Also mentioned in the <a href="https://linux-sunxi.org/images/d/d2/Dw_apb_uart_db.pdf"><strong>Synopsys DesignWare DW_apb_uart Databook</strong></a> (Line Control Register, Page 100)…</p>
+<blockquote>
+<p>“DLAB: Divisor Latch Access Bit. Writeable only when UART is not busy (USR[0] is zero)”</p>
+</blockquote>
+<p>So rightfully we should wait for UART whenever we set LCR. Otherwise the LCR Settings might not take effect.</p>
+<p>We already do this in <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L529-L549"><strong>NuttX for PinePhone: a64_serial.c</strong></a></p>
 
     
 </body>
