@@ -888,7 +888,7 @@ nsh&gt;
 <li><a href="https://lupyuen.github.io/articles/plic#spurious-uart-interrupts"><strong>“Spurious UART Interrupts”</strong></a></li>
 </ul>
 <p>This section explains how we fixed the problem.</p>
-<p>Based on the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html"><strong>JH7110 UART Developing Guide</strong></a>, the StarFive JH7110 SoC uses a <strong>Synopsys DesignWare 8250 UART</strong>.</p>
+<p>Based on the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html"><strong>JH7110 UART Developing Guide</strong></a>, the StarFive JH7110 SoC uses a <a href="https://linux-sunxi.org/images/d/d2/Dw_apb_uart_db.pdf"><strong>Synopsys DesignWare 8250 UART</strong></a>.</p>
 <p>(Because that page mentions <a href="https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c"><strong>8250_dw.c</strong></a>, which is the DesignWare 8250 Driver for Linux)</p>
 <p>As documented in the <a href="https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L8-L10"><strong>Linux Driver for DesignWare 8250</strong></a>…</p>
 <blockquote>
