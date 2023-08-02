@@ -28,6 +28,8 @@ In this article, we find out...
 
 We'll see later that __NuttX Star64__ actually works fine! It's just very very slooow because of the Spurious Interrupts.
 
+[(__UPDATE:__ We fixed the __Spurious UART Interrupts__!)](https://www.mail-archive.com/dev@nuttx.apache.org/msg10275.html)
+
 ![Star64 RISC-V SBC](https://lupyuen.github.io/images/nuttx2-title.jpg)
 
 # No Console Output from NuttX Apps
@@ -832,6 +834,8 @@ Which means that we got interrupted...
 
 __FOR NO REASON AT ALL!!!__
 
+[(__UPDATE:__ We fixed the __Spurious UART Interrupts__!)](https://www.mail-archive.com/dev@nuttx.apache.org/msg10275.html)
+
 _Why? Maybe we should throttle the UART Interrupts?_
 
 This definitely needs to be fixed, but for now we made a Quick Hack: __Defer the Enabling of UART Interrupts__ till later.
@@ -912,6 +916,8 @@ Yep NuttX Shell works OK on Star64!
 
 But it's super slow. Each dot is [__One Million Calls__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966) to the UART Interrupt Handler, with UART Interrupt Status [__INTSTATUS = 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966)! 
 
+[(__UPDATE:__ We fixed the __Spurious UART Interrupts__!)](https://www.mail-archive.com/dev@nuttx.apache.org/msg10275.html)
+
 Once again, so many questions...
 
 - Why is UART Interrupt triggered repeatedly with [__INTSTATUS = 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966)?
@@ -929,6 +935,8 @@ Once again, so many questions...
   We must wait till __UART is not busy__ before setting the Line Control Register (LCR), here's how...
 
   [__uart_16550.c__: Wait till UART is not busy before setting LCR](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/36/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1)
+
+  [(More about this)](https://www.mail-archive.com/dev@nuttx.apache.org/msg10275.html)
 
 - Did we configure the [__16550 UART Interrupt Register__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L694-L812) correctly?
 
@@ -954,11 +962,7 @@ Well NuttX Star64 might get stale and out of sync with NuttX Mainline.
 
 We better chop chop hurry up and [__merge with NuttX Mainline__](https://lupyuen.github.io/articles/pr) soon! (Right after we fix the Spurious and Furious UART Interrupts)
 
-__UPDATE:__ Thanks to the suggestion by [__michaelengel__](https://github.com/lupyuen/lupyuen.github.io/issues/18), we have fixed the Spurious UART Interrupts yay!
-
-We must wait till __UART is not busy__ before setting the Line Control Register (LCR), here's how...
-
-- [__uart_16550.c__: Wait till UART is not busy before setting LCR](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/36/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1)
+[(__UPDATE:__ We fixed the __Spurious UART Interrupts__!)](https://www.mail-archive.com/dev@nuttx.apache.org/msg10275.html)
 
 # What's Next
 
