@@ -368,7 +368,7 @@ csrrc a5, mstatus, a5
 csrrc a5, mstatus, a5
 </code></pre></div>
 <p>We saw the above RISC-V Assembly emitted by <a href="https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return"><strong>up_putc</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a>, let’s track it down.</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a> calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/irq.h#L660-L689"><strong>up_irq_save</strong></a>, which is defined as…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a> calls <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L674-L703"><strong>up_irq_save</strong></a>, which is defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Disable interrupts
 static inline irqstate_t up_irq_save(void) {
   ...
@@ -383,7 +383,7 @@ static inline irqstate_t up_irq_save(void) {
   );
 </code></pre></div>
 <p><em>Ah so CSR_STATUS maps to <code>mstatus</code>?</em></p>
-<p>Yes indeed, <strong>CSR_STATUS</strong> becomes <strong><code>mstatus</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/mode.h#L35-L103">mode.h</a></p>
+<p>Yes indeed, <strong>CSR_STATUS</strong> becomes <strong><code>mstatus</code></strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/mode.h#L35-L103">mode.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// If NuttX runs in Supervisor Mode...
 #ifdef CONFIG_ARCH_USE_S_MODE
   // Use Global Status Register 
@@ -452,32 +452,32 @@ make
 <p>NuttX accesses the RISC-V Machine-Mode Registers during <strong>NuttX Startup</strong>…</p>
 <ol>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L183-L187"><strong>NuttX Boot Code</strong></a> calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235"><strong>qemu_rv_start</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L134-L149"><strong>NuttX Boot Code</strong></a> calls <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L129-L159"><strong>jh7110_start</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode">(As explained here)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235"><strong>qemu_rv_start</strong></a> assumes it’s in <strong>Machine Mode</strong></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L129-L159"><strong>jh7110_start</strong></a> (previously) assumes it’s in <strong>Machine Mode</strong></p>
 <p><a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels">(Because QEMU boots NuttX in Machine Mode)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235"><strong>qemu_rv_start</strong></a> initialises the <strong>Machine-Mode Registers</strong></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L129-L159"><strong>jh7110_start</strong></a>  (previously) initialises the <strong>Machine-Mode Registers</strong></p>
 <p>(And some Supervisor-Mode Registers)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235"><strong>qemu_rv_start</strong></a> jumps to <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159"><strong>qemu_rv_start_s</strong></a> in <strong>Supervisor Mode</strong></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L129-L159"><strong>jh7110_start</strong></a>  jumps to <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129"><strong>jh7110_start_s</strong></a> in <strong>Supervisor Mode</strong></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159"><strong>qemu_rv_start_s</strong></a> initialises the <strong>Supervisor-Mode Registers</strong></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129"><strong>jh7110_start_s</strong></a> initialises the <strong>Supervisor-Mode Registers</strong></p>
 <p>(And starts NuttX)</p>
 </li>
 </ol>
-<p><em>So we need to remove the Machine-Mode Registers from qemu_rv_start?</em></p>
+<p><em>So we need to remove the Machine-Mode Registers from jh7110_start?</em></p>
 <p>Yep, because NuttX boots in <a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels"><strong>Supervisor Mode</strong></a> on Star64.</p>
 <p>(And can’t access the Machine-Mode Registers)</p>
-<p>This is how we patched <strong>qemu_rv_start</strong> to remove the Machine-Mode Registers: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235">qemu_rv_start.c</a>:</p>
+<p>This is how we patched <strong>jh7110_start</strong> to remove the Machine-Mode Registers: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L129-L159">jh7110_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Called by NuttX Boot Code
 // to init System Registers
-void qemu_rv_start(int mhartid) {
+void jh7110_start(int mhartid) {
 
   // For the First CPU Core...
   if (0 == mhartid) {
@@ -507,17 +507,17 @@ void qemu_rv_start(int mhartid) {
   // Removed: mtvec
 
   // TODO: Call up_mtimer_initialize
-  // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210
+  // https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210
 
   // Set mepc to the entry
   // Set a0 to mhartid explicitly and enter to S-mode
   // Removed: mepc
 
   // Added: Jump to S-Mode Init ourselves
-  qemu_rv_start_s(mhartid);
+  jh7110_start_s(mhartid);
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159">(<strong>qemu_rv_start_s</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129">(<strong>jh7110_start_s</strong> is defined here)</a></p>
 <p>We’re not sure if this is entirely correct… But it’s a good start!</p>
 <p>(Yeah we’re naively copying code again sigh)</p>
 <p>Now NuttX boots further!</p>
@@ -567,8 +567,8 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/litex/arty_a7">litex/arty_a7</a></td><td style="text-align: left">RISC-V Board</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_shead.S#L56">litex_shead.S</a></td><td style="text-align: left">Boot Code</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_start.c#L50">litex_start.c</a></td><td style="text-align: left">Startup Code</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/litex/litex_shead.S#L56">litex_shead.S</a></td><td style="text-align: left">Boot Code</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/litex/litex_start.c#L50">litex_start.c</a></td><td style="text-align: left">Startup Code</td></tr>
 <tr><td style="text-align: left"> </td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
@@ -577,11 +577,11 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle">mpfs/icicle</a></td><td style="text-align: left">RISC-V Board</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_shead.S#L62">mpfs_shead.S</a></td><td style="text-align: left">Boot Code</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_start.c#L52">mpfs_start.c</a></td><td style="text-align: left">Startup Code</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602">mpfs_opensbi.c</a></td><td style="text-align: left">OpenSBI in NuttX</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi_utils.S#L62-L107">mpfs_opensbi_utils.S</a></td><td style="text-align: left">OpenSBI Helper</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_ihc_sbi.c#L570">mpfs_ihc_sbi.c</a></td><td style="text-align: left">OpenSBI Inter-Hart Comms</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_shead.S#L62">mpfs_shead.S</a></td><td style="text-align: left">Boot Code</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_start.c#L52">mpfs_start.c</a></td><td style="text-align: left">Startup Code</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602">mpfs_opensbi.c</a></td><td style="text-align: left">OpenSBI in NuttX</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_opensbi_utils.S#L62-L107">mpfs_opensbi_utils.S</a></td><td style="text-align: left">OpenSBI Helper</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_ihc_sbi.c#L570">mpfs_ihc_sbi.c</a></td><td style="text-align: left">OpenSBI Inter-Hart Comms</td></tr>
 <tr><td style="text-align: left"> </td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
