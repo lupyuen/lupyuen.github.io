@@ -757,7 +757,7 @@ So many questions (pic below)...
 
   Was it started correctly?
 
-  ([__nx_start_application__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/sched/init/nx_bringup.c#L297-L299) returned Process ID 3, seems OK)
+  ([__nx_start_application__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/sched/init/nx_bringup.c#L297-L299) returned Process ID 3, seems OK)
 
 - Is __Console Output__ working in NuttX Shell?
 
