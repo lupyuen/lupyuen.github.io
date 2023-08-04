@@ -220,7 +220,7 @@ We fix the NuttX Configuration in "`make` `menuconfig`"...
 
 - Device Drivers > Serial Driver Support > 16550 UART Chip support > Address Increment Between 16550 Registers
 
-And change it from 1 to 4: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L11)
+And change it from 1 to 4: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18)
 
 ```bash
 CONFIG_16550_REGINCR=4
@@ -657,7 +657,7 @@ We found the following NuttX Ports that run in __RISC-V Supervisor Mode with Ope
 | | |
 |:---|:---|
 | [litex/arty_a7](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/litex/arty_a7) | RISC-V Board
-| [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34) | Build Configuration
+| [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34) | Build Configuration
 | [litex_shead.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/litex/litex_shead.S#L56) | Boot Code
 | [litex_start.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/litex/litex_start.c#L50) | Startup Code
 | &nbsp;
@@ -669,7 +669,7 @@ We found the following NuttX Ports that run in __RISC-V Supervisor Mode with Ope
 | | |
 |:---|:---|
 | [mpfs/icicle](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle) | RISC-V Board
-| [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39) | Build Configuration
+| [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39) | Build Configuration
 | [mpfs_shead.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_shead.S#L62) | Boot Code
 | [mpfs_start.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_start.c#L52) | Startup Code
 | [mpfs_opensbi.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602) | OpenSBI in NuttX
