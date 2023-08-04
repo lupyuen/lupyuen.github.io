@@ -16,6 +16,8 @@ Today we'll configure TFTP Network Boot on [__Pine64 Star64__](https://wiki.pine
 
 (Powered by [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
 
+[(Watch the __Demo Video__ on YouTube)](https://youtu.be/TdSJdiQFsv8)
+
 ![Boot from Network with U-Boot and TFTP](https://lupyuen.github.io/images/tftp-flow.jpg)
 
 # Boot From Network
@@ -408,7 +410,7 @@ saveenv
 
 Now Star64 will __Auto-Boot from the Network__, every time we power up! (Pic above)
 
-[(Watch the Demo on YouTube)](https://youtu.be/TdSJdiQFsv8)
+[(Watch the __Demo Video__ on YouTube)](https://youtu.be/TdSJdiQFsv8)
 
 [(It will try to boot from __MicroSD before Network__)](https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader)
 
