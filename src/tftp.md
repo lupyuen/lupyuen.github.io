@@ -42,7 +42,11 @@ The pic above shows our __Grand Plan__ for today...
 
     (At RAM Address `0x4600` `0000`)
 
-0.  Star64 will __boot the Kernel__ and Device Tree from RAM
+0.  Our SBC will also fetch and load the __Initial RAM Disk__
+
+    (At RAM Address `0x4610` `0000`)
+
+0.  Star64 will __boot the Kernel__ from RAM, with the Device Tree and Initial RAM Disk
 
     (NuttX or Linux)
 
@@ -173,12 +177,15 @@ _What about the Linux Device Tree?_
 
 (NuttX won't need it, but let's do it anyway)
 
-__For NuttX:__ Copy the Device Tree from the [__Armbian MicroSD__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64) to our TFTP Folder...
+__For NuttX:__ Copy the Device Tree [__jh7110-visionfive-v2.dtb__](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb) from the [__StarFive VisionFive2 Software Releases__](https://github.com/starfive-tech/VisionFive2/releases) to our TFTP Folder...
 
 ```bash
-## Copy the Device Tree from Armbian microSD
+## Download the Device Tree for VisionFive2
+wget https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb
+
+## Rename the Device Tree to Star64
 cp \
-  /run/media/$USER/armbi_root/boot/dtb/starfive/jh7110-visionfive-v2.dtb \
+  jh7110-visionfive-v2.dtb \
   jh7110-star64-pine64.dtb
 
 ## Copy to TFTP Folder
@@ -193,6 +200,20 @@ curl -v tftp://192.168.x.x/jh7110-star64-pine64.dtb
 ```
 
 __For Linux:__ Just copy the Linux Device Tree __jh7110-star64-pine64.dtb__ to our TFTP Folder.
+
+Finally we copy the __Initial RAM Disk (initrd)__ (NuttX or Linux) to our TFTP Folder...
+
+```bash
+## Copy Initial RAM Disk to TFTP Folder
+cp initrd $HOME/tftproot
+
+## Test the Initial RAM Disk over TFTP
+## TODO: Change `192.168.x.x` to our Computer's IP Address
+curl -v tftp://192.168.x.x/initrd
+
+## We should see:
+## `Warning: Binary output can mess up your terminal`
+```
 
 ![Boot from Network with U-Boot and TFTP](https://lupyuen.github.io/images/tftp-flow.jpg)
 
@@ -234,6 +255,9 @@ Since we have a [__Dedicated TFTP Server__](https://lupyuen.github.io/articles/t
 ## TODO: Change `192.168.x.x` to our Computer's IP Address
 setenv tftp_server 192.168.x.x
 
+## Assume Initial RAM Disk is max 16 MB
+setenv ramdisk_size 0x1000000
+
 ## Load the NuttX Image from TFTP Server
 ## kernel_addr_r=0x40200000
 ## tftp_server=192.168.x.x
@@ -248,10 +272,17 @@ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 ## fdt_addr_r=0x46000000
 fdt addr ${fdt_addr_r}
 
-## Boot the NuttX Image with the Device Tree
+## Load Initial RAM Disk over TFTP
+## ramdisk_addr_r=0x46100000
+## tftp_server=192.168.x.x
+tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
+
+## Boot the NuttX Image with the Initial RAM Disk and Device Tree
 ## kernel_addr_r=0x40200000
+## ramdisk_addr_r=0x46100000
+## ramdisk_size=0x1000000
 ## fdt_addr_r=0x46000000
-booti ${kernel_addr_r} - ${fdt_addr_r}
+booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 ```
 
 [(__tftpboot__ explained here)](https://lupyuen.github.io/articles/tftp#tftpboot-command)
@@ -272,12 +303,16 @@ Our Star64 SBC shall (pic above)...
 
 1.  __Load the Device Tree__ into RAM
 
+1.  __Load the Initial RAM Disk__ into RAM
+
 1.  __Boot the Kernel__
 
 Like so...
 
 ```text
 $ setenv tftp_server 192.168.x.x
+
+$ setenv ramdisk_size 0x1000000
 
 $ tftpboot ${kernel_addr_r} ${tftp_server}:Image
 Filename 'Image'.
@@ -293,13 +328,19 @@ Bytes transferred = 50235 (c43b hex)
 
 $ fdt addr ${fdt_addr_r}
 
-$ booti ${kernel_addr_r} - ${fdt_addr_r}
+$ tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
+Filename 'initrd'.
+Load address: 0x46100000
+Loading: 189.5 KiB/s done
+Bytes transferred = 8020992 (7a6400 hex)
+
+$ booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 Flattened Device Tree blob at 46000000
 Booting using the fdt blob at 0x46000000
 Using Device Tree in place at 0000000046000000, end 000000004600f43a
 ```
 
-[(Source)](https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp)
+[(Source)](https://gist.github.com/lupyuen/9325fee202d38a671cd0eb3cfd35a1db)
 
 (It might load quicker if we connect our Computer to the __Ethernet Wired Network__, instead of WiFi)
 
@@ -311,12 +352,6 @@ clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
 123067DFAGHBC
 ```
-
-The latest version of NuttX on Star64 needs an __Initial RAM Disk__...
-
-- [__"Boot NuttX over TFTP with Initial RAM Disk"__](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk)
-
-  (Same for Linux)
 
 ![Auto-Boot from Network, every time we power on](https://lupyuen.github.io/images/privilege-run1.png)
 
@@ -335,8 +370,15 @@ printenv tftp_server
 ## Save it for future reboots
 saveenv
 
+## Assume Initial RAM Disk is max 16 MB
+setenv ramdisk_size 0x1000000
+## Check that it's correct
+printenv ramdisk_size
+## Save it for future reboots
+saveenv
+
 ## Add the Boot Command for TFTP
-setenv bootcmd_tftp 'if tftpboot ${kernel_addr_r} ${tftp_server}:Image ; then if tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; then if fdt addr ${fdt_addr_r} ; then booti ${kernel_addr_r} - ${fdt_addr_r} ; fi ; fi ; fi'
+setenv bootcmd_tftp 'if tftpboot ${kernel_addr_r} ${tftp_server}:Image ; then if tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; then if fdt addr ${fdt_addr_r} ; then if tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd ; then booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r} ; fi ; fi ; fi ; fi'
 ## Check that it's correct
 printenv bootcmd_tftp
 ## Save it for future reboots
@@ -425,10 +467,18 @@ then
     if fdt addr ${fdt_addr_r};
     then
 
-      ## Boot the NuttX Image with the Device Tree
-      ## kernel_addr_r=0x40200000
-      ## fdt_addr_r=0x46000000
-      booti ${kernel_addr_r} - ${fdt_addr_r};
+      ## Load the Intial RAM Disk from TFTP Server
+      ## ramdisk_addr_r=0x46100000
+      if tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd;
+      then
+
+        ## Boot the NuttX Image with the Initial RAM Disk and Device Tree
+        ## kernel_addr_r=0x40200000
+        ## ramdisk_addr_r=0x46100000
+        ## ramdisk_size=0x1000000
+        ## fdt_addr_r=0x46000000
+        booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r};
+      fi;
     fi;
   fi;
 fi
