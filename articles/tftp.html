@@ -89,6 +89,7 @@
 <p>Thankfully there’s a better way: Booting NuttX (or Linux) over the <strong>Local Network</strong>, with <strong>U-Boot Bootloader</strong> and <strong>TFTP</strong>!</p>
 <p>Today we’ll configure TFTP Network Boot on <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a>, the new 64-bit RISC-V Single-Board Computer (SBC).</p>
 <p>(Powered by <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
+<p><a href="https://youtu.be/TdSJdiQFsv8">(Watch the <strong>Demo Video</strong> on YouTube)</a></p>
 <p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="Boot from Network with U-Boot and TFTP" /></p>
 <h1 id="boot-from-network"><a href="#boot-from-network">1 Boot From Network</a></h1>
 <p>The pic above shows our <strong>Grand Plan</strong> for today…</p>
@@ -405,7 +406,7 @@ saveenv
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(See the <strong>U-Boot Settings</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-auto-network-boot">(See the <strong>Network Boot Log</strong>)</a></p>
 <p>Now Star64 will <strong>Auto-Boot from the Network</strong>, every time we power up! (Pic above)</p>
-<p><a href="https://youtu.be/TdSJdiQFsv8">(Watch the Demo on YouTube)</a></p>
+<p><a href="https://youtu.be/TdSJdiQFsv8">(Watch the <strong>Demo Video</strong> on YouTube)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader">(It will try to boot from <strong>MicroSD before Network</strong>)</a></p>
 <p><em>What if we change our mind?</em></p>
 <p>We can switch back to the <strong>Original Boot Targets</strong>…</p>
