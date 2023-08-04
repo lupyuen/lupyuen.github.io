@@ -172,7 +172,7 @@ up_exit: TCB=0x802088d0 exiting
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk2-0.0.1">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk2-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L204">(<strong>up_enable_irq</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_irq.c#L138-L180">(<strong>up_enable_irq</strong> is defined here)</a></p>
 <p>In the log above, NuttX QEMU enables UART Interrupts at <strong>NuttX IRQ 35</strong>. </p>
 <p>(Equivalent to <strong>RISC-V IRQ 10</strong>, with IRQ Offset of 25)</p>
 <p>Then <strong>NuttX Shell</strong> runs in QEMU…</p>
@@ -184,8 +184,8 @@ $%&amp;riscv_doirq: irq=8
 $%&amp;riscv_doirq: irq=8
 $%&amp;riscv_doirq: irq=8
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_doirq.c#L58-L131">(<strong>riscv_doirq</strong> is defined here)</a></p>
-<p><strong>NuttX IRQ 8</strong> appears frequently in our log. That’s for <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L52-L74"><strong>RISCV_IRQ_ECALLU</strong></a>: ECALL from RISC-V User Mode to Supervisor Mode.</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_doirq.c#L58-L131">(<strong>riscv_doirq</strong> is defined here)</a></p>
+<p><strong>NuttX IRQ 8</strong> appears frequently in our log. That’s for <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L52-L74"><strong>RISCV_IRQ_ECALLU</strong></a>: ECALL from RISC-V User Mode to Supervisor Mode.</p>
 <p>This happens when our NuttX App (in User Mode) makes a <strong>System Call</strong> to NuttX Kernel (in Supervisor Mode).</p>
 <p>Like for printing to the <strong>Serial Console</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>uart_write (0xc000a610):
@@ -251,7 +251,7 @@ riscv_doirq: irq=8
 <p>[<code>%^&amp;</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L51-L92"><strong>riscv_dispatch_irq</strong></a> (Dispatch QEMU Interrupt), which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_doirq.c#L58-L131"><strong>riscv_doirq</strong></a> (Dispatch RISC-V Interrupt), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_doirq.c#L58-L131"><strong>riscv_doirq</strong></a> (Dispatch RISC-V Interrupt), which calls…</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/sched/irq/irq_dispatch.c#L112-L191"><strong>irq_dispatch</strong></a> (Dispatch NuttX Interrupt), which calls…</p>
@@ -271,7 +271,7 @@ riscv_doirq: irq=8
 <p>(That’s us typing something)</p>
 </li>
 <li>
-<p><strong>NuttX IRQ 8</strong> <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L52-L74">(<strong>RISCV_IRQ_ECALLU</strong>)</a> happens when a NuttX App makes a <strong>System Call</strong> to NuttX Kernel</p>
+<p><strong>NuttX IRQ 8</strong> <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L52-L74">(<strong>RISCV_IRQ_ECALLU</strong>)</a> happens when a NuttX App makes a <strong>System Call</strong> to NuttX Kernel</p>
 <p>(NuttX Shell calls NuttX Kernel to do something)</p>
 </li>
 </ul>
@@ -351,7 +351,7 @@ AAAAAD
 <p><em>Is the UART IRQ Number correct?</em></p>
 <p>From the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html"><strong>JH7110 UART Doc</strong></a>, the UART Interrupt is at <strong>RISC-V IRQ 32</strong>…</p>
 <p>Which becomes <strong>NuttX IRQ 57</strong>. (Offset by 25)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L75-L86">(See <strong>RISCV_IRQ_SEXT</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L75-L86">(See <strong>RISCV_IRQ_SEXT</strong>)</a></p>
 <p>That’s why we configure the <strong>NuttX UART IRQ</strong> like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L10-L17">knsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_IRQ=57
 </code></pre></div>
@@ -424,7 +424,7 @@ dtc \
 </li>
 </ul>
 <p>NuttX boots on the <strong>First Application Core</strong>, which is <strong>Hart 1</strong>.</p>
-<p>(Though we pass the Hart ID to NuttX as Hart 0, since NuttX expects <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L104-L110"><strong>Hart ID to start at 0</strong></a>)</p>
+<p>(Though we pass the Hart ID to NuttX as Hart 0, since NuttX expects <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L76-L83"><strong>Hart ID to start at 0</strong></a>)</p>
 <p><em>So we’ll route Interrupts to Hart 1?</em></p>
 <p>Yep, later we might add <strong>Harts 2 to 4</strong> when we boot NuttX on the other Application Cores.</p>
 <p>(But probably not Hart 0, since it’s a special limited Monitor Core)</p>
@@ -489,7 +489,7 @@ dtc \
 <tr><td style="text-align: center"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
-<p>Based on the above Memory Map, we set the PLIC Addresses in NuttX to use <strong>Hart 1 in Supervisor Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L33-L54">qemu_rv_plic.h</a></p>
+<p>Based on the above Memory Map, we set the PLIC Addresses in NuttX to use <strong>Hart 1 in Supervisor Mode</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L33-L54">jh7110_plic.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PLIC Addresses for NuttX Star64
 // (Hart 1 in Supervisor Mode)
 // | 0x0C00_0004 | RW | Source 1 priority
@@ -525,12 +525,11 @@ dtc \
 <tr><td style="text-align: center"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
-<p>Which are correct in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_memorymap.h#L30-L32">qemu_rv_memorymap.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Base Addresses of CLINT and PLIC
-#define QEMU_RV_CLINT_BASE 0x02000000
+<p>Which are correct in NuttX: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30-L32">jh7110_memorymap.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Base Address of PLIC
 #define QEMU_RV_PLIC_BASE  0x0c000000
 </code></pre></div><h2 id="initialise-interrupts"><a href="#initialise-interrupts">6.2 Initialise Interrupts</a></h2>
-<p>In NuttX, this is how we <strong>initialise the PLIC</strong> Interrupt Controller: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L41-L106">qemu_rv_irq.c</a></p>
+<p>In NuttX, this is how we <strong>initialise the PLIC</strong> Interrupt Controller: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_irq.c#L41-L106">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialise Interrupts for Star64
 void up_irqinitialize(void) {
 
@@ -561,8 +560,8 @@ void up_irqinitialize(void) {
   up_irq_enable();
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/irq.h#L660-L688">(<strong>up_irq_save</strong> is defined here)</a></p>
-<p>The code above calls <strong>up_irq_enable</strong> to enable RISC-V Interrupts: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L205-L220">qemu_rv_irq.c</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L674-L703">(<strong>up_irq_save</strong> is defined here)</a></p>
+<p>The code above calls <strong>up_irq_enable</strong> to enable RISC-V Interrupts: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_irq.c#L180-L194">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable Interrupts
 irqstate_t up_irq_enable(void) {
 
@@ -574,10 +573,10 @@ irqstate_t up_irq_enable(void) {
   return oldstat;
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_internal.h#L151-L155">(<strong>SET_CSR</strong> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_internal.h#L139-L145">(<strong>READ_AND_SET_CSR</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L152-L157">(<strong>SET_CSR</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L140-L147">(<strong>READ_AND_SET_CSR</strong> is defined here)</a></p>
 <h2 id="enable-interrupts"><a href="#enable-interrupts">6.3 Enable Interrupts</a></h2>
-<p>To enable a specific External Interrupt (like for UART), we configure PLIC to forward the External Interrupt to <strong>Hart 1 in Supervisor Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L149-L205">qemu_rv_irq.c</a></p>
+<p>To enable a specific External Interrupt (like for UART), we configure PLIC to forward the External Interrupt to <strong>Hart 1 in Supervisor Mode</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_irq.c#L138-L180">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the IRQ specified by &#39;irq&#39;
 void up_enable_irq(int irq) {
 
@@ -590,11 +589,6 @@ void up_enable_irq(int irq) {
   // Read sstatus and set Timer Interrupt Enable in sie 
   } else if (irq == RISCV_IRQ_TIMER) {
     SET_CSR(CSR_IE, IE_TIE);
-
-  // For Machine Timer Interrupt:
-  // Read sstatus and set Timer Interrupt Enable in mie 
-  } else if (irq == RISCV_IRQ_MTIMER) {
-    SET_CSR(mie, MIE_MTIE);
 
   // For External Interrupts:
   // Set Enable bit for the IRQ 
@@ -611,7 +605,7 @@ void up_enable_irq(int irq) {
   }
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_internal.h#L151-L155">(<strong>SET_CSR</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L152-L157">(<strong>SET_CSR</strong> is defined here)</a></p>
 <h2 id="claim-and-complete-interrupts"><a href="#claim-and-complete-interrupts">6.4 Claim and Complete Interrupts</a></h2>
 <p>Remember that we service External Interrupts in 3 steps…</p>
 <ol>
@@ -625,7 +619,7 @@ void up_enable_irq(int irq) {
 <p>Mark the Interrupt as <strong>Complete</strong></p>
 </li>
 </ol>
-<p>This is how we do it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L52-L91">qemu_rv_irq_dispatch.c</a></p>
+<p>This is how we do it: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L47-L84">jh7110_irq_dispatch.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Dispatch the RISC-V Interrupt
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
@@ -655,7 +649,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   return regs;
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/common/riscv_doirq.c#L58-L131">(<strong>riscv_doirq</strong> is defined here)</a> </p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_doirq.c#L58-L131">(<strong>riscv_doirq</strong> is defined here)</a> </p>
 <p>There’s also a <strong>Core-Local Interruptor (CLINT)</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 185)</a> that handles Software Interrupt and Timer Interrupt. But we won’t cover it today. (Pic below)</p>
 <p><strong>TODO:</strong> Do we need to handle CLINT?</p>
 <p>Let’s check that the RISC-V Interrupts are delegated correctly…</p>
@@ -681,7 +675,7 @@ Boot HART MEDELEG:
 </code></pre></div>
 <p><em>What does mideleg say?</em></p>
 <p>(Ring-ding-ding-ding-dingeringeding!)</p>
-<p><strong>mideleg</strong> is defined by the following bits: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/include/csr.h#L343-L346">csr.h</a></p>
+<p><strong>mideleg</strong> is defined by the following bits: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/csr.h#L340-L347">csr.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Bit Definition for mideleg
 #define MIP_SSIP (0x1 &lt;&lt; 1)  // Delegate Software Interrupt
 #define MIP_STIP (0x1 &lt;&lt; 5)  // Delegate Timer Interrupt
