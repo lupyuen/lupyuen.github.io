@@ -118,7 +118,7 @@ smh_call():
   40200438: 40705013  srai zero, zero, 0x7
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_semihost.S#L38)
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_semihost.S#L38)
 
 The code above has a special RISC-V Instruction...
 
@@ -165,7 +165,7 @@ Let's talk about Semihosting...
 
 _Who calls ebreak? And why?_
 
-__`ebreak`__ is called by [__smh_call__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_semihost.S#L20-L40), which is called by [__host_call__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75)...
+__`ebreak`__ is called by [__smh_call__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_semihost.S#L20-L40), which is called by [__host_call__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_hostfs.c#L52-L71)...
 
 ```c
 // NuttX calls Semihosting to
@@ -182,11 +182,11 @@ static long host_call(
   );
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75)
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_hostfs.c#L52-L71)
 
 _What's this operation number?_
 
-The __Semihosting Operation Numbers__ are defined here: [riscv_hostfs.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L41-L49)
+The __Semihosting Operation Numbers__ are defined here: [riscv_hostfs.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_hostfs.c#L38-L48)
 
 ```c
 // Semihosting Operation Numbers
@@ -204,7 +204,7 @@ The __Semihosting Operation Numbers__ are defined here: [riscv_hostfs.c](https:/
 
 _Aha! NuttX is calling Semihosting to access the File System!_
 
-Indeed! When we log [__host_call__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75), we see...
+Indeed! When we log [__host_call__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_hostfs.c#L52-L71), we see...
 
 ```text
 host_call:
@@ -307,7 +307,7 @@ CONFIG_NSH_ARCHINIT=y
 
 [(Source)](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
 
-We see that NuttX will mount the __/apps__ filesystem as __/system__, via the [__Semihosting Host Filesystem__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c).
+We see that NuttX will mount the __/apps__ filesystem as __/system__, via the [__Semihosting Host Filesystem__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_hostfs.c).
 
 That's why it appears as __/system/bin/init__!
 
@@ -647,7 +647,7 @@ We modify NuttX Star64 with the exact same steps as [__NuttX QEMU with Initial R
 
   [(How we configured NuttX for RAM Disk)](https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-for-initial-ram-disk)
 
-Note that we copy the Initial RAM Disk from __`0x4610` `0000`__ (instead of QEMU's `0x8400` `0000`): [qemu_rv_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280)
+Note that we copy the Initial RAM Disk from __`0x4610` `0000`__ (instead of QEMU's `0x8400` `0000`): [jh7110_mm_init.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L268-L275)
 
 ```c
 // Copy RAM Disk from 0x4610 0000 to
@@ -763,7 +763,7 @@ So many questions (pic below)...
 
   (Highly sus!)
 
-- Is our [__Interrupt Controller__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/hardware/qemu_rv_memorymap.h#L27-L33) OK?
+- Is our [__Interrupt Controller__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L27-L33) OK?
 
   [(See __CONFIG_16550_UART0_IRQ__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L15)
 
@@ -771,9 +771,9 @@ So many questions (pic below)...
 
 - Are we using the right [__User Address Space__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/include/board_memorymap.h#L33-L38)?
 
-  And the right [__I/O Address Space__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L42-L47)?
+  And the right [__I/O Address Space__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51)?
 
-- How to handle [__RISC-V Timers in Supervisor Mode__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210)?
+- How to handle [__RISC-V Timers in Supervisor Mode__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210)?
 
   Do we need [__OpenSBI Timers__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.adoc#timer-extension-eid-0x54494d45-time)?
 
