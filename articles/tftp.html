@@ -114,7 +114,11 @@
 <p>(At RAM Address <code>0x4600</code> <code>0000</code>)</p>
 </li>
 <li>
-<p>Star64 will <strong>boot the Kernel</strong> and Device Tree from RAM</p>
+<p>Our SBC will also fetch and load the <strong>Initial RAM Disk</strong></p>
+<p>(At RAM Address <code>0x4610</code> <code>0000</code>)</p>
+</li>
+<li>
+<p>Star64 will <strong>boot the Kernel</strong> from RAM, with the Device Tree and Initial RAM Disk</p>
 <p>(NuttX or Linux)</p>
 </li>
 <li>
@@ -204,10 +208,13 @@ curl -v tftp://192.168.x.x/Image
 <p><strong>For Linux:</strong> Copy the Linux Kernel File <strong><code>Image</code></strong> to our TFTP Folder.</p>
 <p><em>What about the Linux Device Tree?</em></p>
 <p>(NuttX won’t need it, but let’s do it anyway)</p>
-<p><strong>For NuttX:</strong> Copy the Device Tree from the <a href="https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64"><strong>Armbian MicroSD</strong></a> to our TFTP Folder…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Copy the Device Tree from Armbian microSD
+<p><strong>For NuttX:</strong> Copy the Device Tree <a href="https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb"><strong>jh7110-visionfive-v2.dtb</strong></a> from the <a href="https://github.com/starfive-tech/VisionFive2/releases"><strong>StarFive VisionFive2 Software Releases</strong></a> to our TFTP Folder…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the Device Tree for VisionFive2
+wget https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb
+
+## Rename the Device Tree to Star64
 cp \
-  /run/media/$USER/armbi_root/boot/dtb/starfive/jh7110-visionfive-v2.dtb \
+  jh7110-visionfive-v2.dtb \
   jh7110-star64-pine64.dtb
 
 ## Copy to TFTP Folder
@@ -221,6 +228,17 @@ curl -v tftp://192.168.x.x/jh7110-star64-pine64.dtb
 ## `Warning: Binary output can mess up your terminal`
 </code></pre></div>
 <p><strong>For Linux:</strong> Just copy the Linux Device Tree <strong>jh7110-star64-pine64.dtb</strong> to our TFTP Folder.</p>
+<p>Finally we copy the <strong>Initial RAM Disk (initrd)</strong> (NuttX or Linux) to our TFTP Folder…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy Initial RAM Disk to TFTP Folder
+cp initrd $HOME/tftproot
+
+## Test the Initial RAM Disk over TFTP
+## TODO: Change `192.168.x.x` to our Computer&#39;s IP Address
+curl -v tftp://192.168.x.x/initrd
+
+## We should see:
+## `Warning: Binary output can mess up your terminal`
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="Boot from Network with U-Boot and TFTP" /></p>
 <h1 id="test-u-boot-with-tftp"><a href="#test-u-boot-with-tftp">4 Test U-Boot with TFTP</a></h1>
 <p>We’re ready to test U-Boot Bootloader with TFTP!</p>
@@ -249,6 +267,9 @@ StarFive #
 ## TODO: Change `192.168.x.x` to our Computer&#39;s IP Address
 setenv tftp_server 192.168.x.x
 
+## Assume Initial RAM Disk is max 16 MB
+setenv ramdisk_size 0x1000000
+
 ## Load the NuttX Image from TFTP Server
 ## kernel_addr_r=0x40200000
 ## tftp_server=192.168.x.x
@@ -263,10 +284,17 @@ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 ## fdt_addr_r=0x46000000
 fdt addr ${fdt_addr_r}
 
-## Boot the NuttX Image with the Device Tree
+## Load Initial RAM Disk over TFTP
+## ramdisk_addr_r=0x46100000
+## tftp_server=192.168.x.x
+tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
+
+## Boot the NuttX Image with the Initial RAM Disk and Device Tree
 ## kernel_addr_r=0x40200000
+## ramdisk_addr_r=0x46100000
+## ramdisk_size=0x1000000
 ## fdt_addr_r=0x46000000
-booti ${kernel_addr_r} - ${fdt_addr_r}
+booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/tftp#tftpboot-command">(<strong>tftpboot</strong> explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp#fdt-command">(<strong>fdt</strong> explained here)</a></p>
@@ -287,11 +315,16 @@ booti ${kernel_addr_r} - ${fdt_addr_r}
 <p><strong>Load the Device Tree</strong> into RAM</p>
 </li>
 <li>
+<p><strong>Load the Initial RAM Disk</strong> into RAM</p>
+</li>
+<li>
 <p><strong>Boot the Kernel</strong></p>
 </li>
 </ol>
 <p>Like so…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ setenv tftp_server 192.168.x.x
+
+$ setenv ramdisk_size 0x1000000
 
 $ tftpboot ${kernel_addr_r} ${tftp_server}:Image
 Filename &#39;Image&#39;.
@@ -307,12 +340,18 @@ Bytes transferred = 50235 (c43b hex)
 
 $ fdt addr ${fdt_addr_r}
 
-$ booti ${kernel_addr_r} - ${fdt_addr_r}
+$ tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
+Filename &#39;initrd&#39;.
+Load address: 0x46100000
+Loading: 189.5 KiB/s done
+Bytes transferred = 8020992 (7a6400 hex)
+
+$ booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 Flattened Device Tree blob at 46000000
 Booting using the fdt blob at 0x46000000
 Using Device Tree in place at 0000000046000000, end 000000004600f43a
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/9325fee202d38a671cd0eb3cfd35a1db">(Source)</a></p>
 <p>(It might load quicker if we connect our Computer to the <strong>Ethernet Wired Network</strong>, instead of WiFi)</p>
 <p>And NuttX (or Linux) boots magically over the Network, no more MicroSD yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
@@ -320,13 +359,6 @@ clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
 123067DFAGHBC
 </code></pre></div>
-<p>The latest version of NuttX on Star64 needs an <strong>Initial RAM Disk</strong>…</p>
-<ul>
-<li>
-<p><a href="https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk"><strong>“Boot NuttX over TFTP with Initial RAM Disk”</strong></a></p>
-<p>(Same for Linux)</p>
-</li>
-</ul>
 <p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="Auto-Boot from Network, every time we power on" /></p>
 <h1 id="configure-u-boot-for-tftp"><a href="#configure-u-boot-for-tftp">5 Configure U-Boot for TFTP</a></h1>
 <p><em>But can we Auto-Boot from Network, every time we power on?</em></p>
@@ -339,8 +371,15 @@ printenv tftp_server
 ## Save it for future reboots
 saveenv
 
+## Assume Initial RAM Disk is max 16 MB
+setenv ramdisk_size 0x1000000
+## Check that it&#39;s correct
+printenv ramdisk_size
+## Save it for future reboots
+saveenv
+
 ## Add the Boot Command for TFTP
-setenv bootcmd_tftp &#39;if tftpboot ${kernel_addr_r} ${tftp_server}:Image ; then if tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; then if fdt addr ${fdt_addr_r} ; then booti ${kernel_addr_r} - ${fdt_addr_r} ; fi ; fi ; fi&#39;
+setenv bootcmd_tftp &#39;if tftpboot ${kernel_addr_r} ${tftp_server}:Image ; then if tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; then if fdt addr ${fdt_addr_r} ; then if tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd ; then booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r} ; fi ; fi ; fi ; fi&#39;
 ## Check that it&#39;s correct
 printenv bootcmd_tftp
 ## Save it for future reboots
@@ -407,10 +446,18 @@ then
     if fdt addr ${fdt_addr_r};
     then
 
-      ## Boot the NuttX Image with the Device Tree
-      ## kernel_addr_r=0x40200000
-      ## fdt_addr_r=0x46000000
-      booti ${kernel_addr_r} - ${fdt_addr_r};
+      ## Load the Intial RAM Disk from TFTP Server
+      ## ramdisk_addr_r=0x46100000
+      if tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd;
+      then
+
+        ## Boot the NuttX Image with the Initial RAM Disk and Device Tree
+        ## kernel_addr_r=0x40200000
+        ## ramdisk_addr_r=0x46100000
+        ## ramdisk_size=0x1000000
+        ## fdt_addr_r=0x46000000
+        booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r};
+      fi;
     fi;
   fi;
 fi
