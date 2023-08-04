@@ -489,6 +489,8 @@ _What happens next?_
 
 [__qemu_rv_start__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151) is the very first C Function that NuttX runs when it boots on QEMU.
 
+(And [__jh7110_start__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L129-L159) for Star64 JH7110)
+
 The function will...
 
 1.  Configure the [__Floating-Point Unit__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L105-L108)
@@ -675,7 +677,7 @@ __For All Hart IDs:__
 
 - Disable Interrupts
 - Load the Trap Vector Table
-- Jump to [__qemu_rv_start__](https://lupyuen.github.io/articles/riscv#jump-to-start)
+- Jump to [__qemu_rv_start__](https://lupyuen.github.io/articles/riscv#jump-to-start) (Or [__jh7110_start__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L129-L159) for Star64 JH7110)
 
 ```text
 2:
