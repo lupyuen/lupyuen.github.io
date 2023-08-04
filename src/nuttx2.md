@@ -223,17 +223,15 @@ But we need to embed the __RISC-V Linux Kernel Header__ (and pretend we're Linux
 
 -   [__"Decode the RISC-V Linux Header"__](https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header)
 
-Thus we cooked up this Assembly Code for our __RISC-V Linux Header__: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75)
+Thus we cooked up this Assembly Code for our __RISC-V Linux Header__: [jh7110_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L42-L75)
 
 ```text
 c.li    s4, -13              /* Magic Signature "MZ" (2 bytes) */
-j       real_start           /* Jump to Kernel Start (2 bytes) */
 .long   0                    /* Executable Code padded to 8 bytes */
 .quad   0x200000             /* Image load offset from start of RAM */
-/* TODO: Change this to `_e_initstack - __start` */
-.quad   171644               /* Effective size of kernel image, little-endian */
-.quad   0x0                  /* Kernel flags, little-endian */
-.long   0x2                  /* Version of this header */
+.quad   _ebss - __start      /* Effective size of kernel image */
+.quad   0                    /* Kernel flags, little-endian */
+.long   2                    /* Version of this header */
 .long   0                    /* Reserved */
 .quad   0                    /* Reserved */
 .ascii  "RISCV\x00\x00\x00"  /* Magic number, "RISCV" (8 bytes) */
@@ -527,17 +525,12 @@ So this (overly-powerful) line in our [__NuttX Boot Code__](https://github.com/l
 csrr a0, mhartid
 ```
 
-Gets demoted to this: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104)
+Gets demoted to this: [jh7110_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L68-L76)
 
 ```text
 /* We assume that OpenSBI has passed Hart ID (value 1) in Register A0. */
 /* But NuttX expects Hart ID to start at 0, so we subtract 1. */
 addi a0, a0, -1
-
-/* Print the Hart ID */
-addi t1, a0, 0x30
-/* Store byte from Register t1 to UART Base Address, Offset 0 */
-sb   t1, 0(t0)
 ```
 
 [(OpenSBI passes __Hart ID as 1__, instead of 0)](https://lupyuen.github.io/articles/nuttx2#appendix-hart-id-from-opensbi)
@@ -556,7 +549,7 @@ Easy! We change the Machine-Mode __`m`__ Registers to Supervisor-Mode __`s`__ Re
   /* Previously `mie` */
   ```
 
-  [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L169-L174)
+  [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L125-L131)
 
 - __To Load Trap Vector Table:__ Change [__`mtvec`__](https://lupyuen.github.io/articles/riscv#load-interrupt-vector) to [__`stvec`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec)
 
@@ -566,7 +559,7 @@ Easy! We change the Machine-Mode __`m`__ Registers to Supervisor-Mode __`s`__ Re
   /* Previously `mtvec` */
   ```
 
-  [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L174-L179)
+  [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L131-L134)
 
 Time to taste this...
 
@@ -622,16 +615,23 @@ Now we're smokin' hot...
   li  t0, 0x10000000
   li  t1, 0x37
   sb  t1, 0(t0)
-
-  /* Jump to qemu_rv_start */
-  jal  x1, qemu_rv_start
   ```
 
-  [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L163-L199)
+  [(Previously here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L163-L199)
+
+  Before jumping to the Start Code...
+
+  ```text
+  /* Jump to jh7110_start */
+  jal  x1, jh7110_start
+  ```
+
+  [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L134-L138)
+
 
 - Which means that our __NuttX Boot Code has completed__ execution yay!
 
-- But NuttX hangs in the C Function [__qemu_rv_start__](https://lupyuen.github.io/articles/riscv#jump-to-start)
+- But NuttX hangs in the C Function [__jh7110_start__](https://lupyuen.github.io/articles/riscv#jump-to-start)
 
 Why? Stay tuned for more tantalising treats in the next article! 
 
@@ -744,7 +744,7 @@ OpenSBI boots on the __First Application Core__...
 
 Which is why OpenSBI returns __Hart ID 1__. (Instead of 0)
 
-(Though we pass the Hart ID to NuttX as Hart 0, since NuttX expects [__Hart ID to start at 0__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L104-L110))
+(Though we pass the Hart ID to NuttX as Hart 0, since NuttX expects [__Hart ID to start at 0__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L76-L83))
 
 _The Linux Boot Code looks confusing. What are CSR_IE and CSR_IP?_
 
@@ -790,7 +790,7 @@ Earlier we identified these fixes for the [__NuttX Boot Code__](https://lupyuen.
 
 1.  To Load Trap Vector Table: Change [__`mtvec`__](https://lupyuen.github.io/articles/riscv#load-interrupt-vector) to [__`stvec`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec)
 
-Below is the updated __NuttX Boot Code for Supervisor Mode__, and our analysis: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S)
+Below is the updated __NuttX Boot Code for Supervisor Mode__, and our analysis: [jh7110_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S)
 
 __For All Hart IDs:__
 
@@ -805,14 +805,9 @@ real_start:
   /* We assume that OpenSBI has passed Hart ID (value 1) in Register a0. */
   /* But NuttX expects Hart ID to start at 0, so we subtract 1. */
   addi a0, a0, -1
-
-  /* Print the Hart ID */
-  addi t1, a0, 0x30
-  /* Store byte from Register t1 to UART Base Address, Offset 0 */
-  sb   t1, 0(t0)
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104)
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L68-L76)
 
 [(__RISC-V Instructions__ explained)](https://lupyuen.github.io/articles/riscv#risc-v-boot-code-in-nuttx)
 
@@ -827,7 +822,7 @@ Set Stack Pointer to the Idle Thread Stack...
   j    2f
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L104-L110)
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L76-L83)
 
 __If Hart ID is 1, 2, 3, ...__
 
@@ -875,13 +870,13 @@ __If Hart ID is 1, 2, 3, ...__
   add  sp, sp, t0
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L110-L164)
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L83-L127)
 
 __For All Hart IDs:__
 
 - Disable Interrupts
 - Load the Trap Vector Table
-- Jump to [__qemu_rv_start__](https://lupyuen.github.io/articles/riscv#jump-to-start)
+- Jump to [__Start Code jh7110_start__](https://lupyuen.github.io/articles/riscv#jump-to-start)
 
 ```text
 2:
@@ -889,18 +884,18 @@ __For All Hart IDs:__
   csrw	sie, zero
   /* Previously: csrw	mie, zero */
 
-  /* Don't load the Trap Vector Table, use OpenSBI for crash logging */
-  /* la   t0, __trap_vec */
-  /* csrw stvec, t0 */
+  /* Load the Trap Vector Table */
+  la   t0, __trap_vec
+  csrw stvec, t0
   /* Previously: csrw mtvec, t0 */
 
-  /* Jump to qemu_rv_start */
-  jal  x1, qemu_rv_start
+  /* Jump to jh7110_start */
+  jal  x1, jh7110_start
 
   /* We shouldn't return from _start */
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L163-L199)
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L127-L149)
 
 Note that we don't load the Trap Vector Table, because we'll use OpenSBI for Crash Logging.
 
