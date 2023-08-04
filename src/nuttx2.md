@@ -66,7 +66,7 @@ _We're printing to the Serial Console on QEMU Emulator..._
 
 _What's the UART Controller in QEMU?_
 
-We check the __NuttX Build Configuration__ for QEMU: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
+We check the __NuttX Build Configuration__ for QEMU: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
 
 ```text
 CONFIG_16550_ADDRWIDTH=0
@@ -193,7 +193,7 @@ UART0 Base Address is at __`0x1000` `0000`__, according to...
 
 _Isn't that the same UART Base Address as QEMU?_
 
-Yep! Earlier we saw the __UART Base Address__ for NuttX QEMU: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
+Yep! Earlier we saw the __UART Base Address__ for NuttX QEMU: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
 
 ```text
 CONFIG_16550_UART0_BASE=0x10000000
