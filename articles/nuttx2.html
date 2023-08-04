@@ -176,7 +176,7 @@ static void u16550_send(struct uart_dev_s *dev, int ch) {
 *(volatile uint8_t *) 0x10000000 = &#39;1&#39;;
 </code></pre></div>
 <p><em>What about RISC-V Assembly?</em></p>
-<p>This is how we print to QEMU Console in <strong>RISC-V Assembly</strong> (to debug our NuttX Boot Code): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93">qemu_rv_head.S</a></p>
+<p>This is how we print to QEMU Console in <strong>RISC-V Assembly</strong> (to debug our NuttX Boot Code)…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load UART Base Address to Register t0 */
 li  t0, 0x10000000
 
@@ -195,6 +195,7 @@ li  t1, 0x33
 /* Store byte from Register t1 to UART Base Address, Offset 0 */
 sb  t1, 0(t0)
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93">(Previously here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address)</a></p>
 <p>When we start QEMU Emulator, our RISC-V Assembly prints “<strong><code>123</code></strong>” to the QEMU Console (pic below)…</p>
