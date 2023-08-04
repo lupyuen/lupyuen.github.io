@@ -662,7 +662,7 @@ memcpy(                     // Copy the RAM Disk...
 
 [(U-Boot Bootloader loads the RAM Disk at __`0x4610` `0000`__)](https://lupyuen.github.io/articles/semihost#appendix-ram-disk-address-for-risc-v-qemu)
 
-And the __RAM Disk Memory__ is now located at __`0x40A0` `0000`__ (the next available RAM Address): [ld-kernel64.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L20-L56)
+And the __RAM Disk Memory__ is now located at __`0x40A0` `0000`__ (the next available RAM Address): [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L56)
 
 ```text
 MEMORY
@@ -765,11 +765,11 @@ So many questions (pic below)...
 
 - Is our [__Interrupt Controller__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L27-L33) OK?
 
-  [(See __CONFIG_16550_UART0_IRQ__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L15)
+  [(See __CONFIG_16550_UART0_IRQ__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18)
 
   [(See the __JH7110 U74 Memory Map__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html)
 
-- Are we using the right [__User Address Space__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/include/board_memorymap.h#L33-L38)?
+- Are we using the right [__User Address Space__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/include/board_memorymap.h#L33-L38)?
 
   And the right [__I/O Address Space__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51)?
 
@@ -1026,7 +1026,7 @@ Here are the steps for updating the NuttX Build Configuration in `make menuconfi
 
 1.  Disable: File Systems > Host File System   
 
-1.  Manually delete from [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)...
+1.  Manually delete from [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig)...
 
     ```text
     CONFIG_HOST_MACOS=y
@@ -1039,7 +1039,7 @@ The steps above will produce the updated Build Configuration Files...
 
 - __NuttX for QEMU:__ [__knsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
 
-- __NuttX for Star64:__ [__knsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
+- __NuttX for Star64:__ [__nsh/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig)
 
 # Appendix: RAM Disk Address for RISC-V QEMU
 
@@ -1159,7 +1159,7 @@ genromfs \
 "opensbi.bin": "0x40f00000"
 ```
 
-This is the __LiteX Build Configuration__ for mounting the RAM Disk: [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig)
+This is the __LiteX Build Configuration__ for mounting the RAM Disk: [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/litex/arty_a7/configs/knsh/defconfig)
 
 ```bash
 CONFIG_BOARDCTL_ROMDISK=y
@@ -1240,7 +1240,7 @@ int litex_mount_ramdisk(void)
 }
 ```
 
-__ramdisk_start__ and __ramdisk_size__ are defined in the __LiteX Memory Map__: [board_memorymap.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91)
+__ramdisk_start__ and __ramdisk_size__ are defined in the __LiteX Memory Map__: [board_memorymap.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91)
 
 ```c
 /* RAMDisk */
@@ -1252,7 +1252,7 @@ extern uint8_t          __ramdisk_start[];
 extern uint8_t          __ramdisk_size[];
 ```
 
-And also in the __LiteX Linker Script__: [ld-kernel.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49)
+And also in the __LiteX Linker Script__: [ld-kernel.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49)
 
 ```text
 MEMORY
