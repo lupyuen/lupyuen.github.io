@@ -124,7 +124,7 @@ static void u16550_putc(
   u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L1622-L1638">(Source)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/uart_16550.c#L1696-L1712">(Source)</a></p>
 <p><em>Is the UART Base Address correct?</em></p>
 <p>It’s correct, actually. Previously we validated the <strong>16550 UART Base Address</strong> for JH7110…</p>
 <ul>
@@ -140,7 +140,7 @@ static void u16550_putc(
 // Base Address 0x1000 0000
 *(volatile uint8_t *) 0x10000000 = &#39;A&#39;;
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159">(Source)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159">(Previously here)</a></p>
 <p>But strangely it loops forever waiting for the UART Port to be ready!</p>
 <p><em>What’s inside u16550_serialin?</em></p>
 <p>Remember we call <strong>u16550_serialin</strong> like this…</p>
@@ -149,13 +149,13 @@ static void u16550_putc(
   UART_LSR_OFFSET  // At offset of Line Status Register
 )
 </code></pre></div>
-<p>Inside <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611"><strong>u16550_serialin</strong></a>, we read a UART Register at the Offset…</p>
+<p>Inside <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/uart_16550.c#L604-L618"><strong>u16550_serialin</strong></a>, we read a UART Register at the Offset…</p>
 <div class="example-wrap"><pre class="language-c"><code>*((FAR volatile uart_datawidth_t *)
   priv-&gt;uartbase +  // UART Base Address
   offset);          // Offset of UART Register
 </code></pre></div>
 <p><em>What’s the UART Register Offset?</em></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L172-L200"><strong>UART_LSR_OFFSET</strong></a> (Offset of Line Status Register) is…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/include/nuttx/serial/uart_16550.h#L172-L200"><strong>UART_LSR_OFFSET</strong></a> (Offset of Line Status Register) is…</p>
 <div class="example-wrap"><pre class="language-c"><code>// UART Line Status Register
 // is Register #5
 #define UART_LSR_INCR 5
@@ -165,7 +165,7 @@ static void u16550_putc(
 #define UART_LSR_OFFSET \
   (CONFIG_16550_REGINCR * UART_LSR_INCR)
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520"><strong>16550_REGINCR</strong></a> defaults to 1…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/Kconfig-16550#L501-L520"><strong>16550_REGINCR</strong></a> defaults to 1…</p>
 <div class="example-wrap"><pre class="language-text"><code>config 16550_REGINCR
   int &quot;Address increment between 16550 registers&quot;
   default 1
@@ -183,7 +183,7 @@ static void u16550_putc(
   int &quot;Address increment between 16550 registers&quot;
   default 1
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520">(Source)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/Kconfig-16550#L501-L520">(Source)</a></p>
 <p>Which means that the 16550 UART Registers are spaced <strong>1 byte apart</strong>…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: left">Register</th></tr></thead><tbody>
 <tr><td style="text-align: center"><code>0x1000</code> <code>0000</code></td><td style="text-align: left">Transmit Holding Register</td></tr>
@@ -268,7 +268,7 @@ nx_start: Entry
 <p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="UART Transmit works perfectly yay" /></p>
 <h1 id="critical-section-doesnt-return"><a href="#critical-section-doesnt-return">3 Critical Section Doesn’t Return</a></h1>
 <p>We ran into another problem when printing to the UART Port…</p>
-<p>NuttX on Star64 gets stuck when we enter a <strong>Critical Section</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1712C1-L1748">uart_16550.c</a></p>
+<p>NuttX on Star64 gets stuck when we enter a <strong>Critical Section</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/uart_16550.c#L1769-L1806">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print a character to the UART Port
 int up_putc(int ch) {
   ...
@@ -367,7 +367,7 @@ csrrc a5, mstatus, a5
 // in `mstatus` Register
 csrrc a5, mstatus, a5
 </code></pre></div>
-<p>We saw the above RISC-V Assembly emitted by <a href="https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return"><strong>up_putc</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a>, let’s track it down.</p>
+<p>We saw the above RISC-V Assembly emitted by <a href="https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return"><strong>up_putc</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a>, let’s track it down.</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a> calls <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L674-L703"><strong>up_irq_save</strong></a>, which is defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Disable interrupts
 static inline irqstate_t up_irq_save(void) {
@@ -417,7 +417,7 @@ static inline irqstate_t up_irq_save(void) {
 #endif
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels">(Because Star64 boots NuttX in Supervisor Mode)</a></p>
-<p>Searching NuttX for <strong>ARCH_USE_S_MODE</strong> gives us this Build Configuration for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43">knsh64/defconfig</a></p>
+<p>Searching NuttX for <strong>ARCH_USE_S_MODE</strong> gives us this Build Configuration for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43">knsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_ARCH_USE_S_MODE=y
 </code></pre></div>
 <p><em>Perfect! Exactly what we need!</em></p>
@@ -552,7 +552,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <ul>
 <li><a href="https://lupyuen.github.io/articles/semihost"><strong>“Star64 JH7110 + NuttX RTOS: RISC-V Semihosting and Initial RAM Disk”</strong></a></li>
 </ul>
-<p><strong>TODO:</strong> Port <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210"><strong>up_mtimer_initialize</strong></a> to Star64</p>
+<p><strong>TODO:</strong> Port <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210"><strong>up_mtimer_initialize</strong></a> to Star64</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/32/files">(See the <strong>Modified Files</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
