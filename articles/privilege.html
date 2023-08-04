@@ -248,7 +248,7 @@ static void dw8250_serial_out(struct uart_port *p, int offset, int value) {
 <ul>
 <li>Device Drivers &gt; Serial Driver Support &gt; 16550 UART Chip support &gt; Address Increment Between 16550 Registers</li>
 </ul>
-<p>And change it from 1 to 4: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L11">knsh64/defconfig</a></p>
+<p>And change it from 1 to 4: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_REGINCR=4
 </code></pre></div>
 <p>Now UART Transmit works perfectly yay! (Pic below)</p>
@@ -566,7 +566,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/index.html"><strong>LiteX Arty-A7</strong></a> boots from OpenSBI to NuttX (but doesn’t call back to OpenSBI)…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/litex/arty_a7">litex/arty_a7</a></td><td style="text-align: left">RISC-V Board</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/litex/litex_shead.S#L56">litex_shead.S</a></td><td style="text-align: left">Boot Code</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/litex/litex_start.c#L50">litex_start.c</a></td><td style="text-align: left">Startup Code</td></tr>
 <tr><td style="text-align: left"> </td><td style="text-align: left"></td></tr>
@@ -576,7 +576,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/mpfs/boards/icicle/index.html"><strong>PolarFire Icicle</strong></a> (based on <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/mpfs/index.html"><strong>PolarFire MPFS</strong></a>) runs a copy of OpenSBI inside NuttX (so it boots in Machine Mode before Supervisor Mode)…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle">mpfs/icicle</a></td><td style="text-align: left">RISC-V Board</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_shead.S#L62">mpfs_shead.S</a></td><td style="text-align: left">Boot Code</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_start.c#L52">mpfs_start.c</a></td><td style="text-align: left">Startup Code</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602">mpfs_opensbi.c</a></td><td style="text-align: left">OpenSBI in NuttX</td></tr>
