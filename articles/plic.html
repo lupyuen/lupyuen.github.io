@@ -352,7 +352,7 @@ AAAAAD
 <p>From the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html"><strong>JH7110 UART Doc</strong></a>, the UART Interrupt is at <strong>RISC-V IRQ 32</strong>…</p>
 <p>Which becomes <strong>NuttX IRQ 57</strong>. (Offset by 25)</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L75-L86">(See <strong>RISCV_IRQ_SEXT</strong>)</a></p>
-<p>That’s why we configure the <strong>NuttX UART IRQ</strong> like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L10-L17">knsh64/defconfig</a></p>
+<p>That’s why we configure the <strong>NuttX UART IRQ</strong> like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L17">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_IRQ=57
 </code></pre></div>
 <p><em>Is it the same UART IRQ as Linux?</em></p>
