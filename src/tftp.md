@@ -203,7 +203,7 @@ curl -v tftp://192.168.x.x/jh7110-star64-pine64.dtb
 
 __For Linux:__ Just copy the Linux Device Tree __jh7110-star64-pine64.dtb__ to our TFTP Folder.
 
-Finally we copy the __Initial RAM Disk (initrd)__ (NuttX or Linux) to our TFTP Folder...
+Finally we copy the __Initial RAM Disk "initrd"__ (NuttX or Linux) to our TFTP Folder...
 
 ```bash
 ## Copy Initial RAM Disk to TFTP Folder
@@ -216,6 +216,8 @@ curl -v tftp://192.168.x.x/initrd
 ## We should see:
 ## `Warning: Binary output can mess up your terminal`
 ```
+
+Let's test this...
 
 ![Boot from Network with U-Boot and TFTP](https://lupyuen.github.io/images/tftp-flow.jpg)
 
