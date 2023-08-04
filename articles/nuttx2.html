@@ -138,7 +138,7 @@
 <h1 id="print-to-qemu-console"><a href="#print-to-qemu-console">2 Print to QEMU Console</a></h1>
 <p><em>We’re printing to the Serial Console on QEMU Emulator…</em></p>
 <p><em>What’s the UART Controller in QEMU?</em></p>
-<p>We check the <strong>NuttX Build Configuration</strong> for QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
+<p>We check the <strong>NuttX Build Configuration</strong> for QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_16550_ADDRWIDTH=0
 CONFIG_16550_UART0=y
 CONFIG_16550_UART0_BASE=0x10000000
@@ -235,7 +235,7 @@ nsh&gt;
 </li>
 </ul>
 <p><em>Isn’t that the same UART Base Address as QEMU?</em></p>
-<p>Yep! Earlier we saw the <strong>UART Base Address</strong> for NuttX QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
+<p>Yep! Earlier we saw the <strong>UART Base Address</strong> for NuttX QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_16550_UART0_BASE=0x10000000
 </code></pre></div>
 <p><strong><code>0x1000</code> <code>0000</code></strong> is the exact same UART Base Address for QEMU AND Star64…</p>
