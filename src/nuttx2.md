@@ -122,7 +122,7 @@ Which means that we can print to QEMU Console by writing to __`0x1000` `0000`__.
 
 _What about RISC-V Assembly?_
 
-This is how we print to QEMU Console in __RISC-V Assembly__ (to debug our NuttX Boot Code): [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93)
+This is how we print to QEMU Console in __RISC-V Assembly__ (to debug our NuttX Boot Code)...
 
 ```text
 /* Load UART Base Address to Register t0 */
@@ -143,6 +143,8 @@ li  t1, 0x33
 /* Store byte from Register t1 to UART Base Address, Offset 0 */
 sb  t1, 0(t0)
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93)
 
 [(__`li`__ loads a Value into a Register)](https://lupyuen.github.io/articles/riscv#other-instructions)
 
