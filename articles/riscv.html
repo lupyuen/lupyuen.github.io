@@ -475,6 +475,7 @@ csrw  mtvec, t0
 <p><em>Our Boot Code jumps to qemu_rv_start…</em></p>
 <p><em>What happens next?</em></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151"><strong>qemu_rv_start</strong></a> is the very first C Function that NuttX runs when it boots on QEMU.</p>
+<p>(And <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L129-L159"><strong>jh7110_start</strong></a> for Star64 JH7110)</p>
 <p>The function will…</p>
 <ol>
 <li>
@@ -661,7 +662,7 @@ csrw  mtvec, t0
 <ul>
 <li>Disable Interrupts</li>
 <li>Load the Trap Vector Table</li>
-<li>Jump to <a href="https://lupyuen.github.io/articles/riscv#jump-to-start"><strong>qemu_rv_start</strong></a></li>
+<li>Jump to <a href="https://lupyuen.github.io/articles/riscv#jump-to-start"><strong>qemu_rv_start</strong></a> (Or <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L129-L159"><strong>jh7110_start</strong></a> for Star64 JH7110)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>2:
   /* Disable all interrupts (i.e. timer, external) in mie */
