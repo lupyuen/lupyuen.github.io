@@ -2,7 +2,7 @@
 
 📝 _12 Aug 2023_
 
-![TODO](https://lupyuen.github.io/images/nuttx3-title.png)
+![TODO](https://lupyuen.github.io/images/release-title.png)
 
 TODO
 
@@ -32,4 +32,4 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
-[__lupyuen.github.io/src/nuttx3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nuttx3.md)
+[__lupyuen.github.io/src/release.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/release.md)
