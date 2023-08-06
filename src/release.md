@@ -28,6 +28,8 @@ Which is probably helpful for folks who wish to...
 
 - Or simply understand how we __boot a Modern SBC__ from scratch!
 
+[(Watch the __Demo Video__ on YouTube)](https://youtu.be/6vQ-TXXojbQ)
+
 ![Star64 RISC-V SBC](https://lupyuen.github.io/images/nuttx2-star64.jpg)
 
 # Build NuttX for Star64
@@ -306,11 +308,17 @@ More about Flat Image Tree...
 
 - [Multiple kernels, ramdisks and FDT blobs](https://u-boot.readthedocs.io/en/latest/usage/fit/multi.html)
 
+TODO: Why use sdcard.img
+
+![Apache NuttX RTOS boots OK on Star64 JH7110 SBC](https://lupyuen.github.io/images/release-title.png)
+
 # Boot NuttX on Star64
 
 TODO
 
-Check that Star64 is connected to our computer via a USB Serial Adapter.
+Connect Star64 to our computer with a __USB Serial Adapter__...
+
+- [__"Serial Console on Star64"__](https://lupyuen.github.io/articles/linux#serial-console-on-star64)
 
 Insert the microSD Card into Star64 and power up Star64.
 NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.
@@ -321,45 +329,73 @@ To see the available commands in NuttShell:
 $ help
 ```
 
-[Booting NuttX over TFTP](https://lupyuen.github.io/articles/tftp) is also supported on Star64.
+[(Watch the __Demo Video__ on YouTube)](https://youtu.be/6vQ-TXXojbQ)
 
-[(See the Build Outputs)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110b-0.0.1)
-
-[(See the Build Steps)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110b-0.0.1)
-
-[(See the Build Log)](https://gist.github.com/lupyuen/c6dc9aeec74d399029ebaf46ac16ef79)
-
-TODO: Why use sdcard.img
+[__Booting NuttX over TFTP__](https://lupyuen.github.io/articles/tftp) is also supported on Star64.
 
 _What happens at startup?_
 
-1.  OpenSBI is the first thing that boots on our SBC (in Machine Mode)
+1.  __OpenSBI (Supervisor Binary Interface)__ is the first thing that boots on our SBC...
 
-1.  U-Boot Bootloader is next (in Supervisor Mode)...
+    [__"OpenSBI Supervisor Binary Interface"__](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface)
+
+    (In [__RISC-V Machine Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels))
+
+1.  __U-Boot Bootloader__ is next (in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels))...
+
+    [__"U-Boot Bootloader for Star64"__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
 
     Which loads the...
 
-1.  NuttX Kernel (also in Supervisor Mode), which starts the...
-
-1.  NuttX Boot Code (in RISC-V Assembly)...
-
-    Which calls the...
-
-1.  NuttX Start Code (in C)...
+1.  __NuttX Kernel__ (also in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels))
 
     Which starts the...
 
-1.  NuttX Shell (NSH) in User Mode
+1.  __NuttX Boot Code__ (in RISC-V Assembly)...
 
-1.  NuttX Apps (in User Mode)
+    [__"NuttX in Supervisor Mode (Boot Code)"__](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode)
 
-1.  System Calls from User Mode to Supervisor Mode
+    Which calls the...
 
-1.  Serial I/O
+1.  __NuttX Start Code__ (in C)...
 
-1.  Interrupts
+    [__"Initialise RISC-V Supervisor Mode: jh7110_start"__](https://lupyuen.github.io/articles/privilege#initialise-risc-v-supervisor-mode)
 
-Memory Mgmt
+    Which calls [__jh7110_start_s__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129) and...
+
+1.  [__jh7110_mm_init__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284) to initialise the Memory Mangement Unit and...
+
+    [__nx_start__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine) to start the NuttX Drivers and [__Initial RAM Disk__](https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk)...
+
+    And starts...
+
+1.  __NuttX Shell__ (NSH) for the Command-Line Interface...
+
+    [__"NuttX Apps Filesystem: init / nsh"__](https://lupyuen.github.io/articles/semihost#nuttx-apps-filesystem)
+
+    (Phew!)
+
+__NuttX Shell__ (NSH) and __NuttX Apps__ will run in __RISC-V User Mode__ and make...
+
+1.  __System Calls__ to NuttX Kernel, jumping from User Mode to Supervisor Mode...
+
+    [__"ECALL from RISC-V User Mode to Supervisor Mode"__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu)
+
+    Like when doing...
+
+1.  __Serial I/O__ for Console Input and Output...
+
+    [__"Serial Output in NuttX"__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu)
+
+    [__"Serial Input in NuttX"__](https://lupyuen.github.io/articles/plic#serial-input-in-nuttx-qemu)
+
+    Which will trigger...
+
+1.  __RISC-V Interrupts__ for the 16550 UART Controller...
+
+    [__Platform-Level Interrupt Controller__](https://lupyuen.github.io/articles/plic#platform-level-interrupt-controller)
+
+And that's what happens when NuttX boots on Star64!
 
 # Add the NuttX Arch and Board
 
