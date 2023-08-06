@@ -14,7 +14,7 @@ In this article we explain how we __created the First Release__ of NuttX for Sta
 
 - Creating a __Bootable microSD__ with NuttX Kernel and Initial RAM Disk
 
-- __Booting NuttX__ on Star64
+- What happens during __NuttX Startup__
 
 - Adding the __NuttX Arch__ (JH7110) and __NuttX Board__ (Star64)
 
