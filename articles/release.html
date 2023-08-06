@@ -455,27 +455,58 @@ NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx/pull/10069"><strong>“arch/risc-v: Add support for StarFive JH7110 SoC”</strong></a></li>
 </ul>
-<p>We add JH7110 to the Kconfig for the RISC-V SoCs: <a href="https://github.com/apache/nuttx/pull/10069/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb">arch/risc-v/Kconfig</a></p>
-<p>And we create a Kconfig for JH7110: <a href="https://github.com/apache/nuttx/pull/10069/files#diff-36a3009882ced77a24e9a7fd7ce3cf481ded4655f1adc366e7722a87ceab293b">arch/risc-v/src/jh7110/Kconfig</a></p>
-<p>Then we add the source files for JH7110 at…</p>
-<p><a href="https://github.com/apache/nuttx/tree/master/arch/risc-v/src/jh7110">arch/risc-v/src/jh7110</a></p>
+<p>We insert JH7110 into the <strong>Kconfig for the RISC-V SoCs</strong>: <a href="https://github.com/apache/nuttx/pull/10069/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb">arch/risc-v/Kconfig</a></p>
+<div class="example-wrap"><pre class="language-text"><code>config ARCH_CHIP_JH7110
+	bool &quot;StarFive JH7110&quot;
+	select ARCH_RV64
+	select ARCH_RV_ISA_M
+	select ARCH_RV_ISA_A
+	select ARCH_RV_ISA_C
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_DPFPU
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_MMU
+	select ARCH_MMU_TYPE_SV39
+	select ARCH_HAVE_ADDRENV
+	select ARCH_NEED_ADDRENV_MAPPING
+	select ARCH_HAVE_S_MODE
+	select ONESHOT
+	select ALARM_ARCH
+	---help---
+		StarFive JH7110 SoC.
+</code></pre></div>
+<p>And we create a <strong>Kconfig for JH7110</strong>: <a href="https://github.com/apache/nuttx/pull/10069/files#diff-36a3009882ced77a24e9a7fd7ce3cf481ded4655f1adc366e7722a87ceab293b">arch/risc-v/src/jh7110/Kconfig</a></p>
+<p>Then we add the <strong>NuttX Arch Source Files</strong> for JH7110 at…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/tree/master/arch/risc-v/src/jh7110"><strong>arch/risc-v/src/jh7110</strong></a></li>
+</ul>
 <h2 id="add-the-nuttx-board"><a href="#add-the-nuttx-board">4.3 Add the NuttX Board</a></h2>
 <p>TODO</p>
 <p>Finally we submit the Pull Request that implements Star64 SBC as a <strong>NuttX Board</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40"><strong>“boards/risc-v: Add support for PINE64 Star64 JH7110 SBC”</strong></a></li>
 </ul>
-<p>We add Star64 to the Kconfig for the NuttX Boards: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64">nuttx/boards/Kconfig</a></p>
-<p>We create a Kconfig for Star64: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c">nuttx/boards/risc-v/jh7110/star64/Kconfig</a></p>
-<p>And we add the source files for Star64 at…</p>
-<p><a href="https://github.com/apache/nuttx/tree/master/boards/risc-v/jh7110/star64">boards/risc-v/jh7110/star64</a></p>
+<p>We insert Star64 into the <strong>Kconfig for NuttX Boards</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64">nuttx/boards/Kconfig</a></p>
+<div class="example-wrap"><pre class="language-text"><code>config ARCH_BOARD_JH7110_STAR64
+	bool &quot;PINE64 Star64&quot;
+	depends on ARCH_CHIP_JH7110
+	---help---
+		This options selects support for NuttX on PINE64 Star64 based
+		on StarFive JH7110 SoC.
+</code></pre></div>
+<p>We create a <strong>Kconfig for Star64</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c">nuttx/boards/risc-v/jh7110/star64/Kconfig</a></p>
+<p>And we add the <strong>NuttX Board Source Files</strong> for Star64 at…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/tree/master/boards/risc-v/jh7110/star64"><strong>boards/risc-v/jh7110/star64</strong></a></li>
+</ul>
 <p>We’ll talk about the Documentation in the next section.</p>
 <p><em>Seems we need to copy a bunch of source files across branches?</em></p>
-<p>No sweat! Suppose we created a staging PR in our own repo…</p>
+<p>No sweat! Suppose we created a staging Pull Request in our own repo…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40">github.com/lupyuen2/wip-pinephone-nuttx/pull/40</a></li>
 </ul>
-<p>This command produces a list of changed files…</p>
+<p>This command produces a list of <strong>Modified Files in our Pull Request</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## TODO: Change this to your PR
 pr=https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40
 curl -L $pr.diff \
@@ -490,7 +521,7 @@ boards/risc-v/jh7110/star64/include/board_memorymap.h
 boards/risc-v/jh7110/star64/scripts/Make.defs
 boards/risc-v/jh7110/star64/scripts/ld.script
 </code></pre></div>
-<p>That we can copy to another branch in a (barebones) script…</p>
+<p>That we can <strong>copy to another branch</strong> in a (barebones) script…</p>
 <div class="example-wrap"><pre class="language-bash"><code>b=$HOME/new_branch
 mkdir -p $b/boards/risc-v/jh7110/star64/include
 mkdir -p $b/boards/risc-v/jh7110/star64/scripts
@@ -505,15 +536,17 @@ cp $a $b/$a
 </code></pre></div>
 <p><em>How did we generate the NuttX Build Configuration?</em></p>
 <p>The NuttX Build Configuration for Star64 is at…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40/files#diff-cdbd91013d0074f15d469491b707d1d6576752bd7b7b9ec6ed311edba8ab4b53">boards/risc-v/jh7110/star64/ configs/nsh/defconfig</a></p>
-<p>We generated the <code>defconfig</code> with this command…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40/files#diff-cdbd91013d0074f15d469491b707d1d6576752bd7b7b9ec6ed311edba8ab4b53"><strong>boards/risc-v/jh7110/star64/ configs/nsh/defconfig</strong></a></li>
+</ul>
+<p>We generated the <strong>defconfig</strong> with this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig \
   &amp;&amp; make savedefconfig \
   &amp;&amp; grep -v CONFIG_HOST defconfig \
   &gt;boards/risc-v/jh7110/star64/configs/nsh/defconfig
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110">(How we computed the <strong>UART Clock</strong>)</a></p>
-<p>During development, we should enable additional debug options…</p>
+<p>During development, we should enable additional <strong>Debug Options</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_DEBUG_ASSERTIONS=y
 CONFIG_DEBUG_ASSERTIONS_EXPRESSION=y
 CONFIG_DEBUG_BINFMT=y
@@ -536,21 +569,22 @@ CONFIG_DEBUG_SCHED_WARN=y
 CONFIG_DEBUG_SYMBOLS=y
 CONFIG_DEBUG_WARN=y
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L49-L69">(Source)</a></p>
 <ul>
 <li>
-<p>BINFMT is the Binary Loader, good for troubleshooting NuttX App ELF loading issues</p>
+<p><strong>BINFMT</strong> is the Binary Loader, good for troubleshooting NuttX App ELF loading issues</p>
 </li>
 <li>
-<p>SCHED is for Task Scheduler, which will show the spawning of NuttX App Tasks</p>
+<p><strong>SCHED</strong> is for Task Scheduler, which will show the spawning of NuttX App Tasks</p>
 </li>
 <li>
-<p>MM is for Memory Management, for troubleshooting Memory Mapping issues</p>
+<p><strong>MM</strong> is for Memory Management, for troubleshooting Memory Mapping issues</p>
 </li>
 <li>
-<p>FS is for File System</p>
+<p><strong>FS</strong> is for File System</p>
 </li>
 </ul>
-<p>Before merging with NuttX Mainline, remove the BINFMT, FS, MM and SCHED debug options.</p>
+<p>Before merging with NuttX Mainline, remember to remove the Debug Options for BINFMT, FS, MM and SCHED.</p>
 <p><img src="https://lupyuen.github.io/images/release-doc3.png" alt="NuttX Supported Platforms" /></p>
 <h1 id="update-the-nuttx-docs"><a href="#update-the-nuttx-docs">5 Update the NuttX Docs</a></h1>
 <p>Earlier we created a Pull Request to <a href="https://lupyuen.github.io/articles/release#add-the-nuttx-board"><strong>add a new NuttX Board</strong></a>.</p>
