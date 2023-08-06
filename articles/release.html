@@ -71,7 +71,10 @@
 <li><a href="#nuttx-in-a-bootable-microsd">2 NuttX in a Bootable microSD</a><ul></ul></li>
 <li><a href="#boot-nuttx-on-star64">3 Boot NuttX on Star64</a><ul></ul></li>
 <li><a href="#nuttx-startup-on-star64">4 NuttX Startup on Star64</a><ul></ul></li>
-<li><a href="#add-the-nuttx-arch-and-board">5 Add the NuttX Arch and Board</a><ul></ul></li>
+<li><a href="#add-the-nuttx-arch-and-board">5 Add the NuttX Arch and Board</a><ul>
+<li><a href="#patch-the-nuttx-dependencies">5.1 Patch the NuttX Dependencies</a><ul></ul></li>
+<li><a href="#add-the-nuttx-arch">5.2 Add the NuttX Arch</a><ul></ul></li>
+<li><a href="#add-the-nuttx-board">5.3 Add the NuttX Board</a><ul></ul></li></ul></li>
 <li><a href="#update-the-nuttx-docs">6 Update the NuttX Docs</a><ul></ul></li>
 <li><a href="#upcoming-features">7 Upcoming Features</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
@@ -388,7 +391,7 @@ NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.</p>
 <p>When we add a new board to NuttX, we do it in 4 steps…</p>
 <ol>
 <li>
-<p>Patch the <strong>Dependencies</strong></p>
+<p>Patch the <strong>NuttX Dependencies</strong></p>
 <p><a href="https://github.com/apache/nuttx/pull/10019">(Like this)</a></p>
 </li>
 <li>
@@ -404,31 +407,29 @@ NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40">(Also here)</a></p>
 </li>
 </ol>
-<p>This is how we did it for Star64 SBC with JH7110 SoC…</p>
+<p>This is how we did it for Star64 SBC (with JH7110 SoC) in <strong>3 Pull Requests</strong>…</p>
+<h2 id="patch-the-nuttx-dependencies"><a href="#patch-the-nuttx-dependencies">5.1 Patch the NuttX Dependencies</a></h2>
 <p>TODO</p>
-<p>We added Star64 JH7110 to NuttX with 3 Pull Requests…</p>
-<ol>
-<li>
-<p>First we fix any dependencies needed by Star64 JH7110. This PR fixes the 16550 UART Driver used by JH7110…</p>
+<p>First we patch any dependencies needed by Star64 JH7110. This PR fixes the 16550 UART Driver used by JH7110…</p>
 <p><a href="https://github.com/apache/nuttx/pull/10019">Fix 16550 UART</a></p>
-</li>
-<li>
+<p>TODO: How to submit a Pull Request for NuttX</p>
+<h2 id="add-the-nuttx-arch"><a href="#add-the-nuttx-arch">5.2 Add the NuttX Arch</a></h2>
+<p>TODO</p>
 <p>Next we submit the PR that implements the JH7110 SoC as a <strong>NuttX Arch</strong>…</p>
 <p><a href="https://github.com/apache/nuttx/pull/10069">Add support for JH7110 SoC</a></p>
 <p>We add JH7110 to the Kconfig for the RISC-V SoCs: <a href="https://github.com/apache/nuttx/pull/10069/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb">arch/risc-v/Kconfig</a></p>
 <p>And we create a Kconfig for JH7110: <a href="https://github.com/apache/nuttx/pull/10069/files#diff-36a3009882ced77a24e9a7fd7ce3cf481ded4655f1adc366e7722a87ceab293b">arch/risc-v/src/jh7110/Kconfig</a></p>
 <p>Then we add the source files for JH7110 at…</p>
 <p><a href="https://github.com/apache/nuttx/tree/master/arch/risc-v/src/jh7110">arch/risc-v/src/jh7110</a></p>
-</li>
-<li>
+<h2 id="add-the-nuttx-board"><a href="#add-the-nuttx-board">5.3 Add the NuttX Board</a></h2>
+<p>TODO</p>
 <p>Finally we submit the PR that implements Star64 SBC as a <strong>NuttX Board</strong>…</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40">Add support for Star64 SBC</a></p>
 <p>We add Star64 to the Kconfig for the NuttX Boards: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64">nuttx/boards/Kconfig</a></p>
 <p>We create a Kconfig for Star64: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c">nuttx/boards/risc-v/jh7110/star64/Kconfig</a></p>
 <p>And we add the source files for Star64 at…</p>
 <p><a href="https://github.com/apache/nuttx/tree/master/boards/risc-v/jh7110/star64">boards/risc-v/jh7110/star64</a></p>
-</li>
-</ol>
+<p>We’ll talk about the Documentation in the next section.</p>
 <p><em>Seems we need to copy a bunch of source files across branches?</em></p>
 <p>No sweat! Suppose we created a staging PR in our own repo…</p>
 <ul>
@@ -510,7 +511,6 @@ CONFIG_DEBUG_WARN=y
 </li>
 </ul>
 <p>Before merging with NuttX Mainline, remove the BINFMT, FS, MM and SCHED debug options.</p>
-<p>TODO: How to submit a Pull Request for NuttX</p>
 <h1 id="update-the-nuttx-docs"><a href="#update-the-nuttx-docs">6 Update the NuttX Docs</a></h1>
 <p>TODO</p>
 <p>In the same PR, update the <strong>NuttX Docs</strong>…</p>
