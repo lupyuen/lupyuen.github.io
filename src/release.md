@@ -2,11 +2,9 @@
 
 📝 _12 Aug 2023_
 
-![TODO](https://lupyuen.github.io/images/release-title.png)
+![Apache NuttX RTOS boots OK on Star64 JH7110 SBC](https://lupyuen.github.io/images/release-title.png)
 
-TODO
-
-We're almost ready with our barebones port of [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/nuttx2) (RTOS) to [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer! (Pic below)
+[__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/nuttx2) (RTOS) is now officially supported on [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer! (Pic below)
 
 (Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
 
@@ -478,6 +476,8 @@ CONFIG_DEBUG_WARN=y
 - FS is for File System
 
 Before merging with NuttX Mainline, remove the BINFMT, FS, MM and SCHED debug options.
+
+TODO: How to submit a Pull Request for NuttX
 
 # Upcoming Features
 
