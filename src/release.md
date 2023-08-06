@@ -363,9 +363,9 @@ _What happens at startup?_
 
     Which calls [__jh7110_start_s__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129) and...
 
-1.  [__jh7110_mm_init__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284) to initialise the Memory Mangement Unit and...
+1.  [__jh7110_mm_init__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284) to initialise the __Memory Mangement Unit__ (for Kernel Memory Protection) and...
 
-    [__nx_start__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine) to start the NuttX Drivers and [__Initial RAM Disk__](https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk)...
+    [__nx_start__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine) to start the __NuttX Drivers__ and [__Initial RAM Disk__](https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk) (containing the __NuttX Apps__)...
 
     And starts...
 
@@ -393,9 +393,9 @@ __NuttX Shell__ (NSH) and __NuttX Apps__ will run in __RISC-V User Mode__ and ma
 
 1.  __RISC-V Interrupts__ for the 16550 UART Controller...
 
-    [__Platform-Level Interrupt Controller__](https://lupyuen.github.io/articles/plic#platform-level-interrupt-controller)
+    [__"Platform-Level Interrupt Controller"__](https://lupyuen.github.io/articles/plic#platform-level-interrupt-controller)
 
-And that's what happens when NuttX boots on Star64!
+And that's everything that happens when NuttX boots on Star64!
 
 # Add the NuttX Arch and Board
 
@@ -425,7 +425,19 @@ This is how we did it for Star64 SBC (with JH7110 SoC) in __3 Pull Requests__...
 
 TODO
 
-First we patch any dependencies needed by Star64 JH7110. This PR fixes the 16550 UART Driver used by JH7110...
+First we patch any dependencies needed by Star64 JH7110. 
+
+JH7110 triggers too many spurious UART interrupts...
+
+- ["Spurious UART Interrupts"](https://lupyuen.github.io/articles/plic#spurious-uart-interrupts)
+
+JH7110 uses a Synopsys DesignWare 8250 UART that has a peculiar problem with the Line Control Register (LCR)... If we write to LCR while the UART is busy, it will trigger spurious UART Interrupts.
+
+The fix is to wait for the UART to be not busy before writing to LCR. Here's my proposed patch for the NuttX 16550 UART Driver...
+
+- ["Fix the Spurious UART Interrupts"](https://lupyuen.github.io/articles/plic#appendix-fix-the-spurious-uart-interrupts)
+
+This PR fixes the 16550 UART Driver used by JH7110...
 
 [Fix 16550 UART](https://github.com/apache/nuttx/pull/10019)
 
@@ -492,13 +504,12 @@ boards/risc-v/jh7110/star64/scripts/Make.defs
 boards/risc-v/jh7110/star64/scripts/ld.script
 ```
 
-That we can copy to another branch in a script...
+That we can copy to another branch in a (barebones) script...
 
 ```bash
 b=$HOME/new_branch
 mkdir -p $b/boards/risc-v/jh7110/star64/include
 mkdir -p $b/boards/risc-v/jh7110/star64/scripts
-
 a=boards/risc-v/jh7110/star64/include/board.h
 cp $a $b/$a
 a=boards/risc-v/jh7110/star64/include/board_memorymap.h
@@ -513,7 +524,7 @@ _How did we generate the NuttX Build Configuration?_
 
 The NuttX Build Configuration for Star64 is at...
 
-[boards/risc-v/jh7110/star64/configs/nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40/files#diff-cdbd91013d0074f15d469491b707d1d6576752bd7b7b9ec6ed311edba8ab4b53)
+[boards/risc-v/jh7110/star64/ configs/nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40/files#diff-cdbd91013d0074f15d469491b707d1d6576752bd7b7b9ec6ed311edba8ab4b53)
 
 We generated the `defconfig` with this command...
 
