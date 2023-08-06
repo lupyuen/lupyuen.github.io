@@ -421,7 +421,7 @@ This is how we did it for Star64 SBC (with JH7110 SoC) in __3 Pull Requests__...
 
 First we patch any __NuttX Dependencies__ needed by Star64 JH7110. 
 
-JH7110 triggers too many __spurious UART interrupts__...
+We discovered that JH7110 triggers too many __spurious UART interrupts__...
 
 - [__"Spurious UART Interrupts"__](https://lupyuen.github.io/articles/plic#spurious-uart-interrupts)
 
@@ -433,13 +433,15 @@ The fix is to __wait for the UART__ to be not busy before writing to LCR. We sub
 
   [(How to submit a __Pull Request__ for NuttX)](https://lupyuen.github.io/articles/pr)
 
+Wait for the Pull Request to be merged. Then we add the NuttX Arch...
+
 ## Add the NuttX Arch
 
 TODO
 
-Next we submit the PR that implements the JH7110 SoC as a __NuttX Arch__...
+Next we submit the Pull Request that implements the JH7110 SoC as a __NuttX Arch__...
 
-[Add support for JH7110 SoC](https://github.com/apache/nuttx/pull/10069)
+- [__"arch/risc-v: Add support for StarFive JH7110 SoC"__](https://github.com/apache/nuttx/pull/10069)
 
 We add JH7110 to the Kconfig for the RISC-V SoCs: [arch/risc-v/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
 
@@ -453,9 +455,9 @@ Then we add the source files for JH7110 at...
 
 TODO
 
-Finally we submit the PR that implements Star64 SBC as a __NuttX Board__...
+Finally we submit the Pull Request that implements Star64 SBC as a __NuttX Board__...
 
-[Add support for Star64 SBC](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
+- [__"boards/risc-v: Add support for PINE64 Star64 JH7110 SBC"__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
 
 We add Star64 to the Kconfig for the NuttX Boards: [nuttx/boards/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64)
 
@@ -567,9 +569,9 @@ Before merging with NuttX Mainline, remove the BINFMT, FS, MM and SCHED debug op
 
 # Update the NuttX Docs
 
-TODO
+Earlier we created a Pull Request to [__add a new NuttX Board__](https://lupyuen.github.io/articles/release#add-the-nuttx-board).
 
-In the same PR, update the __NuttX Docs__...
+In the same Pull Request, we update the __NuttX Docs__ like so...
 
 Add JH7110 and Star64 to the list of __Supported Platforms__ (pic above)...
 
