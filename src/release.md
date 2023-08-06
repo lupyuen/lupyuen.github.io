@@ -520,7 +520,7 @@ And we add the __NuttX Board Source Files__ for Star64 SBC at...
 
   [(About the files)](https://github.com/apache/nuttx/pull/10094)
 
-We'll talk about NuttX Documentation in the next section.
+But don't submit the Pull Request yet! We'll add the __NuttX Documentation__ in the next section.
 
 _Seems we need to copy a bunch of source files across branches?_
 
