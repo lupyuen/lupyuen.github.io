@@ -91,17 +91,17 @@ Let's walk through the steps to __build NuttX for Star64__...
 
     ```bash
     ## Copy the config
-    cp .config nuttx.config
+    $ cp .config nuttx.config
 
-    ## Dump the disassembly to nuttx.S
-    riscv64-unknown-elf-objdump \
+    ## Dump the Kernel disassembly to `nuttx.S`
+    $ riscv64-unknown-elf-objdump \
       -t -S --demangle --line-numbers --wide \
       nuttx \
       >nuttx.S \
       2>&1
 
-    ## Dump the init disassembly to init.S
-    riscv64-unknown-elf-objdump \
+    ## Dump the NSH `init` disassembly to `init.S`
+    $ riscv64-unknown-elf-objdump \
       -t -S --demangle --line-numbers --wide \
       ../
     ```
@@ -116,8 +116,6 @@ Now we create a Bootable microSD...
 
 # NuttX in a Bootable microSD
 
-TODO
-
 _How do we create a Bootable microSD for NuttX?_
 
 From the previous section, we have...
@@ -128,9 +126,9 @@ From the previous section, we have...
 
 1.  Device Tree: [__jh7110-visionfive-v2.dtb__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/jh7110-visionfive-v2.dtb)
 
-We pack all 3 files into a Flat Image Tree (FIT).
+We pack all 3 files into a __Flat Image Tree (FIT)__...
 
-Inside the ``nuttx`` folder, create a Text File named ``nuttx.its``
+Inside the __nuttx__ folder, create a Text File named __nuttx.its__
 with the following content: [nuttx.its](https://github.com/lupyuen/nuttx-star64/blob/main/nuttx.its)
 
 ```text
@@ -190,20 +188,28 @@ with the following content: [nuttx.its](https://github.com/lupyuen/nuttx-star64/
 };
 ```
 
-[(Based on visionfive2-fit-image.its)](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/visionfive2-fit-image.its)
+Or do this...
+
+```bash
+$ wget https://raw.githubusercontent.com/lupyuen/nuttx-star64/main/nuttx.its
+```
+
+[(Derived from visionfive2-fit-image.its)](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/visionfive2-fit-image.its)
 
 Package the NuttX Kernel, Initial RAM Disk and Device Tree into a
-Flat Image Tree:
+Flat Image Tree...
 
 ```bash
 ## For macOS:
-brew install u-boot-tools
+$ brew install u-boot-tools
 ## For Linux:
-sudo apt install u-boot-tools
+$ sudo apt install u-boot-tools
 
-## Generate FIT Image from `nuttx.bin`, `initrd` and `jh7110-visionfive-v2.dtb`.
-## `nuttx.its` must be in the same directory as the NuttX binaries!
-mkimage \
+## Generate FIT Image from `nuttx.bin`, 
+## `initrd` and `jh7110-visionfive-v2.dtb`.
+## `nuttx.its` must be in the same 
+## directory as the NuttX binaries!
+$ mkimage \
   -f nuttx.its \
   -A riscv \
   -O linux \
@@ -211,10 +217,10 @@ mkimage \
   starfiveu.fit
 
 ## To check FIT image
-mkimage -l starfiveu.fit
+$ mkimage -l starfiveu.fit
 ```
 
-We will see...
+We'll see the __NuttX Kernel__...
 
 ```text
 → mkimage -f nuttx.its -A riscv -O linux -T flat_dt starfiveu.fit
@@ -230,6 +236,11 @@ Created:         Fri Aug  4 23:20:52 2023
   OS:           Linux
   Load Address: 0x40200000
   Entry Point:  0x40200000
+```
+
+Followed by the __Initial RAM Disk__ (containing __NuttX Apps__)...
+
+```text
  Image 1 (ramdisk)
   Description:  buildroot initramfs
   Created:      Fri Aug  4 23:20:52 2023
@@ -242,6 +253,11 @@ Created:         Fri Aug  4 23:20:52 2023
   Entry Point:  unavailable
   Hash algo:    sha256
   Hash value:   44b3603e6e611ade7361a936aab09def23651399d4a0a3c284f47082d788e877
+```
+
+Finally the __Device Tree__ (not used by NuttX)...
+
+```text
  Image 2 (fdt)
   Description:  unavailable
   Created:      Fri Aug  4 23:20:52 2023
@@ -252,29 +268,28 @@ Created:         Fri Aug  4 23:20:52 2023
   Load Address: 0x46000000
   Hash algo:    sha256
   Hash value:   42767c996f0544f513280805b41f996446df8b3956c656bdbb782125ae8ffeec
- Default Configuration: 'nuttx220569'
- Configuration 0 (nuttx220569)
+ Default Configuration: 'nuttx'
+ Configuration 0 (nuttx)
   Description:  NuttX
   Kernel:       vmlinux
   FDT:          fdt
   Loadables:    ramdisk
 ```
 
-The Flat Image Tree ``starfiveu.fit`` will be copied to a microSD Card
-in the next step.
+This produces the Flat Image Tree __starfiveu.fit__, which we'll copy later to a microSD Card.
 
-To prepare the microSD Card, download the [microSD Image sdcard.img](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img) from [StarFive VisionFive2 Software Releases](https://github.com/starfive-tech/VisionFive2/releases)
+To prepare the microSD Card, download the microSD Image [__sdcard.img__](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img) from [__StarFive VisionFive2 Software Releases__](https://github.com/starfive-tech/VisionFive2/releases).
 
-Write the downloaded image to a microSD Card with [Balena Etcher](https://www.balena.io/etcher/) or [GNOME Disks](https://wiki.gnome.org/Apps/Disks).
+Write the downloaded image to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
-Copy the file ``starfiveu.fit`` from the previous section and overwrite the file on the microSD Card.
+Copy the file __starfiveu.fit__ from above and overwrite the file on the microSD Card...
 
 ```bash
-## Copy to microSD
+## For macOS: Copy to microSD
 cp starfiveu.fit "/Volumes/NO NAME"
 ls -l "/Volumes/NO NAME/starfiveu.fit"
 
-## Unmount microSD
+## For macOS: Unmount the microSD
 ## TODO: Verify that /dev/disk2 is microSD
 diskutil unmountDisk /dev/disk2
 ```
