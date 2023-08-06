@@ -744,23 +744,24 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/release.md"><strong>lupyuen.github.io/src/release.md</strong></a></p>
 <h1 id="appendix-starfive-visionfive2-software-release"><a href="#appendix-starfive-visionfive2-software-release">8 Appendix: StarFive VisionFive2 Software Release</a></h1>
-<p>TODO</p>
-<p>StarFive VisionFive2 Software Releases seem to boot OK on Star64…</p>
+<p>The <strong>StarFive VisionFive2 Software Release</strong> was helpful for creating the Bootable microSD for NuttX.</p>
+<p>The Software Release includes an <strong>SD Card Image</strong> that boots OK on Star64…</p>
 <ul>
 <li>
-<p><a href="https://github.com/starfive-tech/VisionFive2/releases">VisionFive2 Software Releases</a></p>
+<p><a href="https://github.com/starfive-tech/VisionFive2/releases"><strong>VisionFive2 Software Releases</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img">SD Card Image</a></p>
-</li>
-</ul>
-<p><a href="https://gist.github.com/lupyuen/030e4feb2fa95319290f3027032c24a8">(See the Boot Log for Star64)</a></p>
+<p><a href="https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img"><strong>SD Card Image</strong></a></p>
 <p>Login with…</p>
 <div class="example-wrap"><pre class="language-text"><code>buildroot login: root
 Password: starfive
 </code></pre></div>
-<p>Based on the files above, we figured out how to generate the Flat Image Tree for NuttX: <a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/Makefile#L279-L283">Makefile</a></p>
-<p>Also we see the script that generates the SD Card Image: <a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/genimage.sh">genimage.sh</a></p>
+<p><a href="https://gist.github.com/lupyuen/030e4feb2fa95319290f3027032c24a8">(See the Boot Log for Star64)</a></p>
+</li>
+</ul>
+<p>Based on the files above, we figured out how to generate the <strong>Flat Image Tree</strong> for NuttX.</p>
+<p><a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/Makefile#L279-L283">(See the <strong>Makefile</strong>)</a></p>
+<p>Also we see the script that generates the <strong>SD Card Image</strong>: <a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/genimage.sh">genimage.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>genimage \
   --rootpath &quot;${ROOTPATH_TMP}&quot;     \
   --tmppath &quot;${GENIMAGE_TMP}&quot;    \
@@ -768,7 +769,7 @@ Password: starfive
   --outputpath &quot;${OUTPUT_DIR}&quot; \
   --config genimage-vf2.cfg
 </code></pre></div>
-<p>The SD Card Partitions are defined in <a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/genimage-vf2.cfg">genimage-vf2.cfg</a>:</p>
+<p>The <strong>SD Card Partitions</strong> are defined here: <a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/genimage-vf2.cfg">genimage-vf2.cfg</a></p>
 <div class="example-wrap"><pre class="language-text"><code>image sdcard.img {
   hdimage {
     gpt = true
@@ -806,9 +807,8 @@ Password: starfive
 }
 </code></pre></div>
 <p>Useful for creating our own SD Card Partitions!</p>
-<p>(We won’t need the <code>spl</code>, <code>uboot</code> and <code>root</code> partitions for NuttX)</p>
+<p>(We won’t need the <strong>spl</strong>, <strong>uboot</strong> and <strong>root</strong> partitions for NuttX)</p>
 <h1 id="appendix-uart-clock-for-jh7110"><a href="#appendix-uart-clock-for-jh7110">9 Appendix: UART Clock for JH7110</a></h1>
-<p>TODO</p>
 <p><em>How did we figure out the UART Clock for JH7110?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_CLOCK=23040000
 </code></pre></div>
