@@ -174,12 +174,13 @@ $ riscv64-unknown-elf-objdump \
 $ riscv64-unknown-elf-objdump \
   -t -S --demangle --line-numbers --wide \
   ../
-</code></pre></div></li>
-</ol>
-<p>Now we create a Bootable microSD…</p>
+</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110b-0.0.1">(See the Build Outputs)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110b-0.0.1">(See the Build Steps)</a></p>
 <p><a href="https://gist.github.com/lupyuen/c6dc9aeec74d399029ebaf46ac16ef79">(See the Build Log)</a></p>
+</li>
+</ol>
+<p>Now we create a Bootable microSD…</p>
 <p>TODO</p>
 <p><em>NuttX goes into the partition that has NO NAME</em></p>
 <h1 id="nuttx-in-a-bootable-microsd"><a href="#nuttx-in-a-bootable-microsd">2 NuttX in a Bootable microSD</a></h1>
@@ -338,19 +339,9 @@ ls -l &quot;/Volumes/NO NAME/starfiveu.fit&quot;
 ## TODO: Verify that /dev/disk2 is microSD
 diskutil unmountDisk /dev/disk2
 </code></pre></div>
-<p>More about Flat Image Tree…</p>
-<ul>
-<li>
-<p><a href="https://u-boot.readthedocs.io/en/latest/usage/fit/source_file_format.html">Flattened Image Tree (FIT) Format</a></p>
-</li>
-<li>
-<p><a href="https://u-boot.readthedocs.io/en/latest/usage/fit/kernel_fdt.html">Single kernel and FDT blob</a></p>
-</li>
-<li>
-<p><a href="https://u-boot.readthedocs.io/en/latest/usage/fit/multi.html">Multiple kernels, ramdisks and FDT blobs</a></p>
-</li>
-</ul>
+<p>We’re ready to boot NuttX on Star64!</p>
 <p>TODO: Why use sdcard.img</p>
+<p><a href="https://u-boot.readthedocs.io/en/latest/usage/fit/source_file_format.html">(More about <strong>Flat Image Tree</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/release-title.png" alt="Apache NuttX RTOS boots OK on Star64 JH7110 SBC" /></p>
 <h1 id="boot-nuttx-on-star64"><a href="#boot-nuttx-on-star64">3 Boot NuttX on Star64</a></h1>
 <p>TODO</p>
@@ -564,11 +555,26 @@ CONFIG_DEBUG_WARN=y
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-79d8d013e3cbf7600551f1ac23beb5db8bd234a0067576bfe0997b16e5d5c148">Documentation/platforms/risc-v/ jh7110/index.rst</a></p>
 <p>Under JH7110, create a page for the Star64 NuttX Board:</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-a57fa454397c544c8a717c35212a88d3e3e0c77c9c6e402f5bb52dfeb62e1349">Documentation/platforms/risc-v/ jh7110/boards/star64/index.rst</a></p>
+<p>To update and preview the NuttX Docs, follow the instructions here…</p>
+<ul>
+<li>
+<p><a href="https://nuttx.apache.org/docs/latest/contributing/documentation.html"><strong>“NuttX Documentation”</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/c061ac688f430ef11a1c60e0b284a1fe">(See the Log)</a></p>
+</li>
+</ul>
 <h1 id="upcoming-features"><a href="#upcoming-features">6 Upcoming Features</a></h1>
 <p><em>How will we create the missing drivers?</em></p>
-<p>We welcome your contribution to NuttX!</p>
-<p>TODO</p>
-<p><strong>GPIO</strong></p>
+<p>We welcome <a href="https://lupyuen.github.io/articles/pr"><strong>your contribution to NuttX</strong></a>!</p>
+<p>Here are the relevant docs from…</p>
+<ul>
+<li>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/"><strong>J7110 Technical Reference Manual</strong></a></p>
+</li>
+<li>
+<p><a href="https://doc-en.rvspace.org/Doc_Center/sdk_developer_guide.html"><strong>VisionFive 2 Developing and Porting Guide</strong></a></p>
+</li>
+</ul>
+<p><strong>GPIO:</strong></p>
 <ul>
 <li>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_DS/gpio_program_ref.html">GPIO Programming Reference</a></p>
@@ -577,14 +583,72 @@ CONFIG_DEBUG_WARN=y
 <p><a href="https://doc-en.rvspace.org/VisionFive2/DG_GPIO/JH7110_SDK/code_structure_gpio.html">GPIO Source Code Structure</a></p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c">(pinctrl-starfive-jh7110.c)</a></p>
 </li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_GPIO/">SDK for GPIO</a></p>
+</li>
 </ul>
-<p><strong>ISP</strong></p>
+<p><strong>RTC, SPI, UART, DMA, I2C, I2S, PWM:</strong></p>
 <ul>
-<li><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/isp_rgb.html">ISP</a></li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_RTC/">RTC Developing Guide</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_SPI/">SPI Developing Guide</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_UART/">UART Developing Guide</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_DMA/">DMA Developing Guide</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_I2C/">SDK for I2C</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_I2S/">SDK for I2S</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_PWM/">PWM Developing Guide</a></p>
+</li>
 </ul>
-<p><strong>Display</strong></p>
+<p><strong>USB, Ethernet:</strong></p>
 <ul>
-<li><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/display_subsystem.html">Display Subsystem</a></li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_USB/">USB Developing Guide</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/PG_Ethernet/">Ethernet Developing and Porting Guide</a></p>
+</li>
+</ul>
+<p><strong>Display:</strong></p>
+<ul>
+<li>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/display_subsystem.html">Display Subsystem</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_HDMI/">SDK for HDMI</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_Display/">Display Controller Developing Guide</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_GPU/">GPU Developing and Porting Guide</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_Multimedia/">Multimedia Developing Guide</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_LCD/">LCD Developing and Porting Guide</a></p>
+</li>
+</ul>
+<p><strong>Image Sensor Processor:</strong></p>
+<ul>
+<li>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/isp_rgb.html">ISP Reference</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_ISP/">ISP Developing and Porting Guide</a></p>
+</li>
 </ul>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
