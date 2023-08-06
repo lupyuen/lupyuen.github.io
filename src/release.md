@@ -116,9 +116,9 @@ Let's walk through the steps to __build NuttX for Star64__...
 
 Now we create a Bootable microSD...
 
-TODO: Pic
+![NuttX goes into the FAT Partition that has no name](https://lupyuen.github.io/images/release-microsd.png)
 
-_NuttX goes into the partition that has NO NAME_
+_NuttX goes into the FAT Partition that has no name_
 
 # NuttX in a Bootable microSD
 
