@@ -302,9 +302,9 @@ diskutil unmountDisk /dev/disk2
 
 We're ready to boot NuttX on Star64!
 
-TODO: Why use sdcard.img
-
 [(More about __Flat Image Tree__)](https://u-boot.readthedocs.io/en/latest/usage/fit/source_file_format.html)
+
+[(How __sdcard.img__ was created)](https://lupyuen.github.io/articles/release#appendix-starfive-visionfive2-software-release)
 
 ![Apache NuttX RTOS boots OK on Star64 JH7110 SBC](https://lupyuen.github.io/images/release-title.png)
 
@@ -531,6 +531,8 @@ make menuconfig \
   >boards/risc-v/jh7110/star64/configs/nsh/defconfig
 ```
 
+[(How we computed the __UART Clock__)](https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110)
+
 During development, we should enable additional debug options...
 
 ```text
@@ -567,21 +569,27 @@ CONFIG_DEBUG_WARN=y
 
 Before merging with NuttX Mainline, remove the BINFMT, FS, MM and SCHED debug options.
 
+![TODO](https://lupyuen.github.io/images/release-doc3.png)
+
 # Update the NuttX Docs
 
 TODO
 
 In the same PR, update the __NuttX Docs__...
 
-Add JH7110 and Star64 to the list of supported platforms:
+Add JH7110 and Star64 to the list of supported platforms: (pic above)
 
 [Documentation/introduction/ detailed_support.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-d8a0e68fcb8fcb7e919c4b01226b6a25f888ed297145b82c719875cf8e6f5ae4)
 
-Create a page for the JH7110 NuttX Arch:
+![TODO](https://lupyuen.github.io/images/release-doc2.png)
+
+Create a page for the JH7110 NuttX Arch: (pic above)
 
 [Documentation/platforms/risc-v/ jh7110/index.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-79d8d013e3cbf7600551f1ac23beb5db8bd234a0067576bfe0997b16e5d5c148)
 
-Under JH7110, create a page for the Star64 NuttX Board:
+![TODO](https://lupyuen.github.io/images/release-doc1.png)
+
+Under JH7110, create a page for the Star64 NuttX Board: (pic above)
 
 [Documentation/platforms/risc-v/ jh7110/boards/star64/index.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-a57fa454397c544c8a717c35212a88d3e3e0c77c9c6e402f5bb52dfeb62e1349)
 
@@ -590,6 +598,8 @@ To update and preview the NuttX Docs, follow the instructions here...
 -   [__"NuttX Documentation"__](https://nuttx.apache.org/docs/latest/contributing/documentation.html)
 
     [(See the Log)](https://gist.github.com/lupyuen/c061ac688f430ef11a1c60e0b284a1fe)
+
+![Testing Apache NuttX RTOS on Star64 JH7110 SBC](https://lupyuen.github.io/images/release-star64.jpg)
 
 # Upcoming Features
 
