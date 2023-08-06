@@ -411,11 +411,11 @@ When we add a new board to NuttX, we do it in 4 steps...
 
 1.  Add the __NuttX Board__ (Star64 SBC)
 
-    [(Like this)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
+    [(Like this)](https://github.com/apache/nuttx/pull/10094)
 
 1.  Update the __NuttX Documentation__
 
-    [(Also here)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
+    [(Also here)](https://github.com/apache/nuttx/pull/10094)
 
 This is how we did it for Star64 SBC (with JH7110 SoC) in __3 Pull Requests__...
 
@@ -489,9 +489,9 @@ Then we add the __NuttX Arch Source Files__ for JH7110 SoC at...
 
 Finally we submit the Pull Request that implements Star64 SBC as a __NuttX Board__...
 
-- [__"boards/risc-v: Add support for PINE64 Star64 JH7110 SBC"__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
+- [__"boards/risc-v: Add support for PINE64 Star64 JH7110 SBC"__](https://github.com/apache/nuttx/pull/10094)
 
-We insert Star64 SBC into the __Kconfig for NuttX Boards__: [nuttx/boards/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64)
+We insert Star64 SBC into the __Kconfig for NuttX Boards__: [nuttx/boards/Kconfig](https://github.com/apache/nuttx/pull/10094/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64)
 
 ```text
 config ARCH_BOARD_JH7110_STAR64
@@ -512,13 +512,13 @@ endif
 
 (Remember to indent with Tabs, not Spaces!)
 
-We create a __Kconfig for Star64 SBC__: [nuttx/boards/risc-v/jh7110/star64/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c)
+We create a __Kconfig for Star64 SBC__: [nuttx/boards/risc-v/jh7110/star64/Kconfig](https://github.com/apache/nuttx/pull/10094/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c)
 
 And we add the __NuttX Board Source Files__ for Star64 SBC at...
 
 - [__boards/risc-v/jh7110/star64__](https://github.com/apache/nuttx/tree/master/boards/risc-v/jh7110/star64)
 
-  [(About the files)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
+  [(About the files)](https://github.com/apache/nuttx/pull/10094)
 
 We'll talk about NuttX Documentation in the next section.
 
@@ -569,7 +569,7 @@ _How did we generate the NuttX Build Configuration?_
 
 The NuttX Build Configuration for Star64 is at...
 
-- [__boards/risc-v/jh7110/star64/ configs/nsh/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40/files#diff-cdbd91013d0074f15d469491b707d1d6576752bd7b7b9ec6ed311edba8ab4b53)
+- [__boards/risc-v/jh7110/star64/ configs/nsh/defconfig__](https://github.com/apache/nuttx/pull/10094/files#diff-cdbd91013d0074f15d469491b707d1d6576752bd7b7b9ec6ed311edba8ab4b53)
 
 We generated the __defconfig__ with this command...
 
@@ -630,7 +630,7 @@ In the same Pull Request, we update the __NuttX Docs__ like so...
 
 Add JH7110 and Star64 to the list of __Supported Platforms__ (pic above)...
 
-[Documentation/introduction/ detailed_support.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-d8a0e68fcb8fcb7e919c4b01226b6a25f888ed297145b82c719875cf8e6f5ae4)
+[Documentation/introduction/ detailed_support.rst](https://github.com/apache/nuttx/pull/10094/files#diff-d8a0e68fcb8fcb7e919c4b01226b6a25f888ed297145b82c719875cf8e6f5ae4)
 
 ```text
 StarFive JH7110
@@ -647,7 +647,7 @@ The basic port has been completed for the following StarFive JH7110 board:
 
 Create a page for the __JH7110 NuttX Arch__ (pic above)...
 
-[Documentation/platforms/risc-v/ jh7110/index.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-79d8d013e3cbf7600551f1ac23beb5db8bd234a0067576bfe0997b16e5d5c148)
+[Documentation/platforms/risc-v/ jh7110/index.rst](https://github.com/apache/nuttx/pull/10094/files#diff-79d8d013e3cbf7600551f1ac23beb5db8bd234a0067576bfe0997b16e5d5c148)
 
 ```text
 ===============
@@ -666,7 +666,7 @@ StarFive JH7110
 
 Under JH7110, create a page for the __Star64 NuttX Board__ (pic above)...
 
-[Documentation/platforms/risc-v/ jh7110/boards/star64/index.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-a57fa454397c544c8a717c35212a88d3e3e0c77c9c6e402f5bb52dfeb62e1349)
+[Documentation/platforms/risc-v/ jh7110/boards/star64/index.rst](https://github.com/apache/nuttx/pull/10094/files#diff-a57fa454397c544c8a717c35212a88d3e3e0c77c9c6e402f5bb52dfeb62e1349)
 
 ```text
 =============
