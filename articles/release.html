@@ -362,27 +362,31 @@ NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.</p>
 <p>TODO: Why use sdcard.img</p>
 <h1 id="nuttx-startup-on-star64"><a href="#nuttx-startup-on-star64">4 NuttX Startup on Star64</a></h1>
 <p>TODO</p>
+<p><em>What happens at startup?</em></p>
 <ol>
 <li>
-<p>OpenSBI</p>
+<p>OpenSBI is the first thing that boots on our SBC (in Machine Mode)</p>
 </li>
 <li>
-<p>U-Boot Bootloader</p>
+<p>U-Boot Bootloader is next (in Supervisor Mode), which loads the…</p>
 </li>
 <li>
-<p>NuttX Kernel</p>
+<p>NuttX Kernel (also in Supervisor Mode), which starts the…</p>
 </li>
 <li>
-<p>NuttX Shell (NSH)</p>
+<p>NuttX Shell (NSH) in User Mode</p>
 </li>
 <li>
-<p>NuttX Apps</p>
+<p>NuttX Apps (in User Mode)</p>
 </li>
 <li>
-<p>System Calls</p>
+<p>System Calls from User Mode to Supervisor Mode</p>
 </li>
 <li>
 <p>Serial I/O</p>
+</li>
+<li>
+<p>Interrupts</p>
 </li>
 </ol>
 <p>Memory Mgmt</p>
