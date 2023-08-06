@@ -438,7 +438,7 @@ Next we submit the Pull Request that implements the JH7110 SoC as a __NuttX Arch
 
 - [__"arch/risc-v: Add support for StarFive JH7110 SoC"__](https://github.com/apache/nuttx/pull/10069)
 
-We insert JH7110 into the __Kconfig for the RISC-V SoCs__: [arch/risc-v/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
+We insert JH7110 SoC into the __Kconfig for the RISC-V SoCs__: [arch/risc-v/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
 
 ```text
 config ARCH_CHIP_JH7110
@@ -462,11 +462,13 @@ config ARCH_CHIP_JH7110
 		StarFive JH7110 SoC.
 ```
 
-And we create a __Kconfig for JH7110__: [arch/risc-v/src/jh7110/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-36a3009882ced77a24e9a7fd7ce3cf481ded4655f1adc366e7722a87ceab293b)
+And we create a __Kconfig for JH7110 SoC__: [arch/risc-v/src/jh7110/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-36a3009882ced77a24e9a7fd7ce3cf481ded4655f1adc366e7722a87ceab293b)
 
-Then we add the __NuttX Arch Source Files__ for JH7110 at...
+Then we add the __NuttX Arch Source Files__ for JH7110 SoC at...
 
 - [__arch/risc-v/src/jh7110__](https://github.com/apache/nuttx/tree/master/arch/risc-v/src/jh7110)
+
+  [(About the files)](https://github.com/apache/nuttx/pull/10069)
 
 ## Add the NuttX Board
 
@@ -474,7 +476,7 @@ Finally we submit the Pull Request that implements Star64 SBC as a __NuttX Board
 
 - [__"boards/risc-v: Add support for PINE64 Star64 JH7110 SBC"__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
 
-We insert Star64 into the __Kconfig for NuttX Boards__: [nuttx/boards/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64)
+We insert Star64 SBC into the __Kconfig for NuttX Boards__: [nuttx/boards/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64)
 
 ```text
 config ARCH_BOARD_JH7110_STAR64
@@ -485,13 +487,15 @@ config ARCH_BOARD_JH7110_STAR64
 		on StarFive JH7110 SoC.
 ```
 
-We create a __Kconfig for Star64__: [nuttx/boards/risc-v/jh7110/star64/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c)
+We create a __Kconfig for Star64 SBC__: [nuttx/boards/risc-v/jh7110/star64/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c)
 
-And we add the __NuttX Board Source Files__ for Star64 at...
+And we add the __NuttX Board Source Files__ for Star64 SBC at...
 
 - [__boards/risc-v/jh7110/star64__](https://github.com/apache/nuttx/tree/master/boards/risc-v/jh7110/star64)
 
-We'll talk about the Documentation in the next section.
+  [(About the files)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
+
+We'll talk about NuttX Documentation in the next section.
 
 _Seems we need to copy a bunch of source files across branches?_
 
