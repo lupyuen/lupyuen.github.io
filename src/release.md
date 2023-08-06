@@ -443,13 +443,35 @@ Next we submit the Pull Request that implements the JH7110 SoC as a __NuttX Arch
 
 - [__"arch/risc-v: Add support for StarFive JH7110 SoC"__](https://github.com/apache/nuttx/pull/10069)
 
-We add JH7110 to the Kconfig for the RISC-V SoCs: [arch/risc-v/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
+We insert JH7110 into the __Kconfig for the RISC-V SoCs__: [arch/risc-v/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
 
-And we create a Kconfig for JH7110: [arch/risc-v/src/jh7110/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-36a3009882ced77a24e9a7fd7ce3cf481ded4655f1adc366e7722a87ceab293b)
+```text
+config ARCH_CHIP_JH7110
+	bool "StarFive JH7110"
+	select ARCH_RV64
+	select ARCH_RV_ISA_M
+	select ARCH_RV_ISA_A
+	select ARCH_RV_ISA_C
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_DPFPU
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_MMU
+	select ARCH_MMU_TYPE_SV39
+	select ARCH_HAVE_ADDRENV
+	select ARCH_NEED_ADDRENV_MAPPING
+	select ARCH_HAVE_S_MODE
+	select ONESHOT
+	select ALARM_ARCH
+	---help---
+		StarFive JH7110 SoC.
+```
 
-Then we add the source files for JH7110 at...
+And we create a __Kconfig for JH7110__: [arch/risc-v/src/jh7110/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-36a3009882ced77a24e9a7fd7ce3cf481ded4655f1adc366e7722a87ceab293b)
 
-[arch/risc-v/src/jh7110](https://github.com/apache/nuttx/tree/master/arch/risc-v/src/jh7110)
+Then we add the __NuttX Arch Source Files__ for JH7110 at...
+
+- [__arch/risc-v/src/jh7110__](https://github.com/apache/nuttx/tree/master/arch/risc-v/src/jh7110)
 
 ## Add the NuttX Board
 
@@ -459,23 +481,32 @@ Finally we submit the Pull Request that implements Star64 SBC as a __NuttX Board
 
 - [__"boards/risc-v: Add support for PINE64 Star64 JH7110 SBC"__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
 
-We add Star64 to the Kconfig for the NuttX Boards: [nuttx/boards/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64)
+We insert Star64 into the __Kconfig for NuttX Boards__: [nuttx/boards/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64)
 
-We create a Kconfig for Star64: [nuttx/boards/risc-v/jh7110/star64/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c)
+```text
+config ARCH_BOARD_JH7110_STAR64
+	bool "PINE64 Star64"
+	depends on ARCH_CHIP_JH7110
+	---help---
+		This options selects support for NuttX on PINE64 Star64 based
+		on StarFive JH7110 SoC.
+```
 
-And we add the source files for Star64 at...
+We create a __Kconfig for Star64__: [nuttx/boards/risc-v/jh7110/star64/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c)
 
-[boards/risc-v/jh7110/star64](https://github.com/apache/nuttx/tree/master/boards/risc-v/jh7110/star64)
+And we add the __NuttX Board Source Files__ for Star64 at...
+
+- [__boards/risc-v/jh7110/star64__](https://github.com/apache/nuttx/tree/master/boards/risc-v/jh7110/star64)
 
 We'll talk about the Documentation in the next section.
 
 _Seems we need to copy a bunch of source files across branches?_
 
-No sweat! Suppose we created a staging PR in our own repo...
+No sweat! Suppose we created a staging Pull Request in our own repo...
 
 - [github.com/lupyuen2/wip-pinephone-nuttx/pull/40](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
 
-This command produces a list of changed files...
+This command produces a list of __Modified Files in our Pull Request__...
 
 ```bash
 ## TODO: Change this to your PR
@@ -496,7 +527,7 @@ boards/risc-v/jh7110/star64/scripts/Make.defs
 boards/risc-v/jh7110/star64/scripts/ld.script
 ```
 
-That we can copy to another branch in a (barebones) script...
+That we can __copy to another branch__ in a (barebones) script...
 
 ```bash
 b=$HOME/new_branch
@@ -516,9 +547,9 @@ _How did we generate the NuttX Build Configuration?_
 
 The NuttX Build Configuration for Star64 is at...
 
-[boards/risc-v/jh7110/star64/ configs/nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40/files#diff-cdbd91013d0074f15d469491b707d1d6576752bd7b7b9ec6ed311edba8ab4b53)
+- [__boards/risc-v/jh7110/star64/ configs/nsh/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40/files#diff-cdbd91013d0074f15d469491b707d1d6576752bd7b7b9ec6ed311edba8ab4b53)
 
-We generated the `defconfig` with this command...
+We generated the __defconfig__ with this command...
 
 ```bash
 make menuconfig \
@@ -529,7 +560,7 @@ make menuconfig \
 
 [(How we computed the __UART Clock__)](https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110)
 
-During development, we should enable additional debug options...
+During development, we should enable additional __Debug Options__...
 
 ```text
 CONFIG_DEBUG_ASSERTIONS=y
@@ -555,15 +586,17 @@ CONFIG_DEBUG_SYMBOLS=y
 CONFIG_DEBUG_WARN=y
 ```
 
-- BINFMT is the Binary Loader, good for troubleshooting NuttX App ELF loading issues
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L49-L69)
 
-- SCHED is for Task Scheduler, which will show the spawning of NuttX App Tasks
+- __BINFMT__ is the Binary Loader, good for troubleshooting NuttX App ELF loading issues
 
-- MM is for Memory Management, for troubleshooting Memory Mapping issues
+- __SCHED__ is for Task Scheduler, which will show the spawning of NuttX App Tasks
 
-- FS is for File System
+- __MM__ is for Memory Management, for troubleshooting Memory Mapping issues
 
-Before merging with NuttX Mainline, remove the BINFMT, FS, MM and SCHED debug options.
+- __FS__ is for File System
+
+Before merging with NuttX Mainline, remember to remove the Debug Options for BINFMT, FS, MM and SCHED.
 
 ![NuttX Supported Platforms](https://lupyuen.github.io/images/release-doc3.png)
 
