@@ -337,11 +337,11 @@ _What happens at startup?_
 
     [__"U-Boot Bootloader for Star64"__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
 
-    Which loads the...
+    Which loads into RAM the...
 
-1.  __NuttX Kernel__ (also in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels))
+1.  __NuttX Kernel__, together with the __Initial RAM Disk__ (containing NuttX Apps) and __Device Tree__...
 
-    Which starts the...
+    And starts (in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels)) the...
 
 1.  __NuttX Boot Code__ (in RISC-V Assembly)...
 
@@ -388,6 +388,12 @@ __NuttX Shell__ (NSH) and __NuttX Apps__ will run in __RISC-V User Mode__ and ma
     [__"Platform-Level Interrupt Controller"__](https://lupyuen.github.io/articles/plic#platform-level-interrupt-controller)
 
 And that's everything that happens when NuttX boots on Star64!
+
+_But NuttX doesn't actually need a Device Tree!_
+
+Yeah but because the Flat Image Tree needs a Device Tree, we play along anyway.
+
+![Pull Request for NuttX Arch](https://lupyuen.github.io/images/release-pr.jpg)
 
 # Add the NuttX Arch and Board
 
@@ -459,7 +465,17 @@ config ARCH_CHIP_JH7110
 	select ALARM_ARCH
 	---help---
 		StarFive JH7110 SoC.
+...
+config ARCH_CHIP
+	...
+	default "jh7110"	if ARCH_CHIP_JH7110
+...
+if ARCH_CHIP_JH7110
+source "arch/risc-v/src/jh7110/Kconfig"
+endif
 ```
+
+(Remember to indent with Tabs, not Spaces!)
 
 And we create a __Kconfig for JH7110 SoC__: [arch/risc-v/src/jh7110/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-36a3009882ced77a24e9a7fd7ce3cf481ded4655f1adc366e7722a87ceab293b)
 
@@ -484,7 +500,17 @@ config ARCH_BOARD_JH7110_STAR64
 	---help---
 		This options selects support for NuttX on PINE64 Star64 based
 		on StarFive JH7110 SoC.
+...
+config ARCH_BOARD
+	...
+	default "star64"                    if ARCH_BOARD_JH7110_STAR64
+...
+if ARCH_BOARD_JH7110_STAR64
+source "boards/risc-v/jh7110/star64/Kconfig"
+endif
 ```
+
+(Remember to indent with Tabs, not Spaces!)
 
 We create a __Kconfig for Star64 SBC__: [nuttx/boards/risc-v/jh7110/star64/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c)
 
@@ -671,7 +697,7 @@ We welcome [__your contribution to NuttX__](https://lupyuen.github.io/articles/p
 
 Here are the relevant docs from...
 
-- [__J7110 Technical Reference Manual__](https://doc-en.rvspace.org/JH7110/TRM/)
+- [__JH7110 Technical Reference Manual__](https://doc-en.rvspace.org/JH7110/TRM/)
 
 - [__VisionFive 2 Developing and Porting Guide__](https://doc-en.rvspace.org/Doc_Center/sdk_developer_guide.html)
 
@@ -727,9 +753,13 @@ __Image Sensor Processor:__
 
 - [ISP Developing and Porting Guide](http://doc-en.rvspace.org/VisionFive2/DG_ISP/)
 
+Stay tuned for new features!
+
 # What's Next
 
 TODO
+
+If you have a VisionFive2, please try booting NuttX and lemme know if it works!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
