@@ -32,97 +32,81 @@ Which is probably helpful for folks who wish to...
 
 # Build NuttX for Star64
 
-TODO
+Let's walk through the steps to __build NuttX for Star64__...
 
-From the previous section we saw that JH7110 triggers too many spurious UART interrupts...
+1.  Install the [__NuttX Build Tools__](https://nuttx.apache.org/docs/latest/quickstart/install.html)
 
-- ["Spurious UART Interrupts"](https://lupyuen.github.io/articles/plic#spurious-uart-interrupts)
+1.  Download the __NuttX Repositories__...
 
-JH7110 uses a Synopsys DesignWare 8250 UART that has a peculiar problem with the Line Control Register (LCR)... If we write to LCR while the UART is busy, it will trigger spurious UART Interrupts.
+    ```bash
+    $ git clone https://github.com/apache/nuttx.git nuttx
+    $ git clone https://github.com/apache/nuttx-apps apps
+    ```
 
-The fix is to wait for the UART to be not busy before writing to LCR. Here's my proposed patch for the NuttX 16550 UART Driver...
+1.  Download the __RISC-V Toolchain riscv64-unknown-elf__ from [__SiFive RISC-V Tools__](https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0).
 
-- ["Fix the Spurious UART Interrupts"](https://lupyuen.github.io/articles/plic#appendix-fix-the-spurious-uart-interrupts)
+    Add the downloaded toolchain "__riscv64-unknown-elf-toolchain-.../bin__" to the __PATH__ Environment Variable.
 
-After fixing the spurious UART interrupts, now NuttX boots OK on Star64 yay!
+    Check the RISC-V Toolchain:
 
-![NuttX boots OK on Star64 JH7110](https://lupyuen.github.io/images/star64-bootok.png)
+    ```bash
+    $ riscv64-unknown-elf-gcc -v
+    ```
 
-```text
-Starting kernel ...
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-BCnx_start: Entry
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-up_exit: TCB=0x40409890 exiting
-nx_start: CPU0: Beginning Idle Loop
+1.  Configure and __build the NuttX Project__...
 
-NuttShell (NSH) NuttX-12.0.3
-nsh> uname -a
-posix_spawn: pid=0xc0202978 path=uname file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
-exec_spawn: ERROR: Failed to load program 'uname': -2
-nxposix_spawn_exec: ERROR: exec failed: 2
-NuttX 12.0.3 7a92743-dirty Aug  3 2023 18:06:04 risc-v star64
-nsh> ls -l
-posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
-exec_spawn: ERROR: Failed to load program 'ls': -2
-nxposix_spawn_exec: ERROR: exec failed: 2
-/:
- dr--r--r--       0 dev/
- dr--r--r--       0 proc/
- dr--r--r--       0 system/
-nsh> 
-```
+    ```bash
+    $ cd nuttx
+    $ tools/configure.sh star64:nsh
+    $ make
+    $ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
+    ```
 
-[(Watch the Demo Video on YouTube)](https://youtu.be/6vQ-TXXojbQ)
+    This produces the NuttX Kernel __nuttx.bin__
+    
+1.  Build the __NuttX Apps Filesystem__...
 
-[(See the Complete Log)](https://gist.github.com/lupyuen/eef8de0817ceed2072b2bacc925cdd96)
+    ```bash
+    $ make export
+    $ pushd ../apps
+    $ tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+    $ make import
+    $ popd
+    $ genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+    ```
 
-_How did we build NuttX for Star64?_
+    This generates the Initial RAM Disk __initrd__
 
-To build NuttX for Star64, [install the prerequisites](https://nuttx.apache.org/docs/latest/quickstart/install.html) and [clone the git repositories](https://nuttx.apache.org/docs/latest/quickstart/install.html) for ``nuttx`` and ``apps``.
+1.  Download the Device Tree [__jh7110-visionfive-v2.dtb__](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb) from [__StarFive VisionFive2 Software Releases__](https://github.com/starfive-tech/VisionFive2/releases).
 
-Before building NuttX for Star64, download the __RISC-V Toolchain riscv64-unknown-elf__ from [SiFive RISC-V Tools](https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0).
+    Save it into the __nuttx__ folder. Or do this...
 
-Add the downloaded toolchain `riscv64-unknown-elf-toolchain-.../bin` to the `PATH` Environment Variable.
+    ```bash
+    $ wget https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb
+    ```
 
-Check the RISC-V Toolchain:
+    (NuttX doesn't need a Device Tree, but it's needed by U-Boot)
 
-```bash
-$ riscv64-unknown-elf-gcc -v
-```
+1.  (Optional) For easier debugging, we might create the following...
 
-Configure the NuttX project and build the project:
+    ```bash
+    ## Copy the config
+    cp .config nuttx.config
 
-```bash
-$ cd nuttx
-$ tools/configure.sh star64:nsh
-$ make
-$ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
-```
+    ## Dump the disassembly to nuttx.S
+    riscv64-unknown-elf-objdump \
+      -t -S --demangle --line-numbers --wide \
+      nuttx \
+      >nuttx.S \
+      2>&1
 
-This produces the NuttX Kernel ``nuttx.bin``.  Next, build the NuttX Apps Filesystem:
+    ## Dump the init disassembly to init.S
+    riscv64-unknown-elf-objdump \
+      -t -S --demangle --line-numbers --wide \
+      ../
+    ```
 
-```bash
-$ make export
-$ pushd ../apps
-$ tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
-$ make import
-$ popd
-$ genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
-```
-
-This generates the Initial RAM Disk ``initrd``.
-
-Download the [Device Tree jh7110-visionfive-v2.dtb](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb) from [StarFive VisionFive2 Software Releases](https://github.com/starfive-tech/VisionFive2/releases) into the ``nuttx`` folder.
-
-Now we create a Bootable MicroSD...
+Now we create a Bootable microSD...
 
 [(See the Build Outputs)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110b-0.0.1)
 
@@ -134,11 +118,17 @@ Now we create a Bootable MicroSD...
 
 TODO
 
-_How do we create a Bootable MicroSD for NuttX?_
+_How do we create a Bootable microSD for NuttX?_
 
-From the previous section, we have the NuttX Kernel ``nuttx.bin``, Initial RAM Disk ``initrd`` and Device Tree `jh7110-visionfive-v2.dtb`.
+From the previous section, we have...
 
-We'll pack all 3 files into a Flat Image Tree (FIT).
+1.  NuttX Kernel: [__nuttx.bin__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/nuttx.bin)
+
+1.  Initial RAM Disk: [__initrd__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/initrd)
+
+1.  Device Tree: [__jh7110-visionfive-v2.dtb__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/jh7110-visionfive-v2.dtb)
+
+We pack all 3 files into a Flat Image Tree (FIT).
 
 Inside the ``nuttx`` folder, create a Text File named ``nuttx.its``
 with the following content: [nuttx.its](https://github.com/lupyuen/nuttx-star64/blob/main/nuttx.its)
