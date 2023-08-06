@@ -419,25 +419,19 @@ This is how we did it for Star64 SBC (with JH7110 SoC) in __3 Pull Requests__...
 
 ## Patch the NuttX Dependencies
 
-TODO
+First we patch any __NuttX Dependencies__ needed by Star64 JH7110. 
 
-First we patch any dependencies needed by Star64 JH7110. 
+JH7110 triggers too many __spurious UART interrupts__...
 
-JH7110 triggers too many spurious UART interrupts...
+- [__"Spurious UART Interrupts"__](https://lupyuen.github.io/articles/plic#spurious-uart-interrupts)
 
-- ["Spurious UART Interrupts"](https://lupyuen.github.io/articles/plic#spurious-uart-interrupts)
+JH7110 uses a __Synopsys DesignWare 8250 UART__ that has a peculiar problem with the __Line Control Register (LCR)__... If we write to LCR while the UART is busy, it will trigger spurious UART Interrupts.
 
-JH7110 uses a Synopsys DesignWare 8250 UART that has a peculiar problem with the Line Control Register (LCR)... If we write to LCR while the UART is busy, it will trigger spurious UART Interrupts.
+The fix is to __wait for the UART__ to be not busy before writing to LCR. We submitted this Pull Request to fix the __NuttX 16550 UART Driver__...
 
-The fix is to wait for the UART to be not busy before writing to LCR. Here's my proposed patch for the NuttX 16550 UART Driver...
+- [__"serial/uart_16550: Wait before setting Line Control Register"__](https://github.com/apache/nuttx/pull/10019)
 
-- ["Fix the Spurious UART Interrupts"](https://lupyuen.github.io/articles/plic#appendix-fix-the-spurious-uart-interrupts)
-
-This PR fixes the 16550 UART Driver used by JH7110...
-
-[Fix 16550 UART](https://github.com/apache/nuttx/pull/10019)
-
-TODO: How to submit a Pull Request for NuttX
+  [(How to submit a __Pull Request__ for NuttX)](https://lupyuen.github.io/articles/pr)
 
 ## Add the NuttX Arch
 
