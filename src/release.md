@@ -753,26 +753,28 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: StarFive VisionFive2 Software Release
 
-TODO
+The __StarFive VisionFive2 Software Release__ was helpful for creating the Bootable microSD for NuttX.
 
-StarFive VisionFive2 Software Releases seem to boot OK on Star64...
+The Software Release includes an __SD Card Image__ that boots OK on Star64...
 
-- [VisionFive2 Software Releases](https://github.com/starfive-tech/VisionFive2/releases)
+- [__VisionFive2 Software Releases__](https://github.com/starfive-tech/VisionFive2/releases)
 
-- [SD Card Image](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img)
+- [__SD Card Image__](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img)
 
-[(See the Boot Log for Star64)](https://gist.github.com/lupyuen/030e4feb2fa95319290f3027032c24a8)
+  Login with...
 
-Login with...
+  ```text
+  buildroot login: root
+  Password: starfive
+  ```
 
-```text
-buildroot login: root
-Password: starfive
-```
+  [(See the Boot Log for Star64)](https://gist.github.com/lupyuen/030e4feb2fa95319290f3027032c24a8)
 
-Based on the files above, we figured out how to generate the Flat Image Tree for NuttX: [Makefile](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/Makefile#L279-L283)
+Based on the files above, we figured out how to generate the __Flat Image Tree__ for NuttX.
 
-Also we see the script that generates the SD Card Image: [genimage.sh](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/genimage.sh)
+[(See the __Makefile__)](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/Makefile#L279-L283)
+
+Also we see the script that generates the __SD Card Image__: [genimage.sh](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/genimage.sh)
 
 ```bash
 genimage \
@@ -783,7 +785,7 @@ genimage \
   --config genimage-vf2.cfg
 ```
 
-The SD Card Partitions are defined in [genimage-vf2.cfg](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/genimage-vf2.cfg):
+The __SD Card Partitions__ are defined here: [genimage-vf2.cfg](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/genimage-vf2.cfg)
 
 ```text
 image sdcard.img {
@@ -825,11 +827,9 @@ image sdcard.img {
 
 Useful for creating our own SD Card Partitions!
 
-(We won't need the `spl`, `uboot` and `root` partitions for NuttX)
+(We won't need the __spl__, __uboot__ and __root__ partitions for NuttX)
 
 # Appendix: UART Clock for JH7110
-
-TODO
 
 _How did we figure out the UART Clock for JH7110?_
 
@@ -873,4 +873,3 @@ CONFIG_16550_UART0_CLOCK=23040000
 ```
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/57d5bba4723b58c7bb947f9fa206be377c80c8d0/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18)
-
