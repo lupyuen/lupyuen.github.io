@@ -308,6 +308,7 @@ lrwxrwxrwx       17 fitImage -&gt; fitImage-5.15.107
 <p><em>Will NuttX boot with Armbian or Yocto settings?</em></p>
 <p>Armbian looks simpler than Yocto, since it uses a plain Kernel Image File <strong>/boot/Image</strong>. </p>
 <p>(Instead of Yocto’s complicated Flat Image Tree)</p>
+<p><a href="https://lupyuen.github.io/articles/release#nuttx-in-a-bootable-microsd">(<strong>UPDATE:</strong> We switched to <strong>Flat Image Tree</strong> for NuttX)</a></p>
 <p>Hence for NuttX we’ll adopt the Armbian Boot Settings, overwriting <strong>/boot/Image</strong> by our <a href="https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu"><strong>NuttX Kernel Image</strong></a>. </p>
 <p>And hopefully U-Boot Bootloader will <strong>boot NuttX on Star64</strong>! Assuming that we fix these…</p>
 <ul>
