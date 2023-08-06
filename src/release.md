@@ -1,4 +1,4 @@
-# Star64 JH7110 + NuttX RTOS: Creating the First Release
+# Star64 JH7110 + NuttX RTOS: Creating the First Release for the RISC-V SBC
 
 📝 _12 Aug 2023_
 
