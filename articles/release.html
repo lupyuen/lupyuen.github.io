@@ -426,11 +426,11 @@ NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.</p>
 </li>
 <li>
 <p>Add the <strong>NuttX Board</strong> (Star64 SBC)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40">(Like this)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/10094">(Like this)</a></p>
 </li>
 <li>
 <p>Update the <strong>NuttX Documentation</strong></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40">(Also here)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/10094">(Also here)</a></p>
 </li>
 </ol>
 <p>This is how we did it for Star64 SBC (with JH7110 SoC) in <strong>3 Pull Requests</strong>…</p>
@@ -495,9 +495,9 @@ endif
 <h2 id="add-the-nuttx-board"><a href="#add-the-nuttx-board">4.3 Add the NuttX Board</a></h2>
 <p>Finally we submit the Pull Request that implements Star64 SBC as a <strong>NuttX Board</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40"><strong>“boards/risc-v: Add support for PINE64 Star64 JH7110 SBC”</strong></a></li>
+<li><a href="https://github.com/apache/nuttx/pull/10094"><strong>“boards/risc-v: Add support for PINE64 Star64 JH7110 SBC”</strong></a></li>
 </ul>
-<p>We insert Star64 SBC into the <strong>Kconfig for NuttX Boards</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64">nuttx/boards/Kconfig</a></p>
+<p>We insert Star64 SBC into the <strong>Kconfig for NuttX Boards</strong>: <a href="https://github.com/apache/nuttx/pull/10094/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64">nuttx/boards/Kconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>config ARCH_BOARD_JH7110_STAR64
 	bool &quot;PINE64 Star64&quot;
 	depends on ARCH_CHIP_JH7110
@@ -514,12 +514,12 @@ source &quot;boards/risc-v/jh7110/star64/Kconfig&quot;
 endif
 </code></pre></div>
 <p>(Remember to indent with Tabs, not Spaces!)</p>
-<p>We create a <strong>Kconfig for Star64 SBC</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c">nuttx/boards/risc-v/jh7110/star64/Kconfig</a></p>
+<p>We create a <strong>Kconfig for Star64 SBC</strong>: <a href="https://github.com/apache/nuttx/pull/10094/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c">nuttx/boards/risc-v/jh7110/star64/Kconfig</a></p>
 <p>And we add the <strong>NuttX Board Source Files</strong> for Star64 SBC at…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx/tree/master/boards/risc-v/jh7110/star64"><strong>boards/risc-v/jh7110/star64</strong></a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40">(About the files)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/10094">(About the files)</a></p>
 </li>
 </ul>
 <p>We’ll talk about NuttX Documentation in the next section.</p>
@@ -559,7 +559,7 @@ cp $a $b/$a
 <p><em>How did we generate the NuttX Build Configuration?</em></p>
 <p>The NuttX Build Configuration for Star64 is at…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40/files#diff-cdbd91013d0074f15d469491b707d1d6576752bd7b7b9ec6ed311edba8ab4b53"><strong>boards/risc-v/jh7110/star64/ configs/nsh/defconfig</strong></a></li>
+<li><a href="https://github.com/apache/nuttx/pull/10094/files#diff-cdbd91013d0074f15d469491b707d1d6576752bd7b7b9ec6ed311edba8ab4b53"><strong>boards/risc-v/jh7110/star64/ configs/nsh/defconfig</strong></a></li>
 </ul>
 <p>We generated the <strong>defconfig</strong> with this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig \
@@ -612,7 +612,7 @@ CONFIG_DEBUG_WARN=y
 <p>Earlier we created a Pull Request to <a href="https://lupyuen.github.io/articles/release#add-the-nuttx-board"><strong>add a new NuttX Board</strong></a>.</p>
 <p>In the same Pull Request, we update the <strong>NuttX Docs</strong> like so…</p>
 <p>Add JH7110 and Star64 to the list of <strong>Supported Platforms</strong> (pic above)…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-d8a0e68fcb8fcb7e919c4b01226b6a25f888ed297145b82c719875cf8e6f5ae4">Documentation/introduction/ detailed_support.rst</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/10094/files#diff-d8a0e68fcb8fcb7e919c4b01226b6a25f888ed297145b82c719875cf8e6f5ae4">Documentation/introduction/ detailed_support.rst</a></p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive JH7110
 ---------------
 
@@ -623,7 +623,7 @@ The basic port has been completed for the following StarFive JH7110 board:
 <p><a href="https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html">(Tips for <strong>Restructured Text</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/release-doc2.png" alt="JH7110 NuttX Arch" /></p>
 <p>Create a page for the <strong>JH7110 NuttX Arch</strong> (pic above)…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-79d8d013e3cbf7600551f1ac23beb5db8bd234a0067576bfe0997b16e5d5c148">Documentation/platforms/risc-v/ jh7110/index.rst</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/10094/files#diff-79d8d013e3cbf7600551f1ac23beb5db8bd234a0067576bfe0997b16e5d5c148">Documentation/platforms/risc-v/ jh7110/index.rst</a></p>
 <div class="example-wrap"><pre class="language-text"><code>===============
 StarFive JH7110
 ===============
@@ -636,7 +636,7 @@ StarFive JH7110
 <p>(Which goes under “RISC-V” because it’s a RISC-V SoC)</p>
 <p><img src="https://lupyuen.github.io/images/release-doc1.png" alt="Star64 NuttX Board" /></p>
 <p>Under JH7110, create a page for the <strong>Star64 NuttX Board</strong> (pic above)…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-a57fa454397c544c8a717c35212a88d3e3e0c77c9c6e402f5bb52dfeb62e1349">Documentation/platforms/risc-v/ jh7110/boards/star64/index.rst</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/10094/files#diff-a57fa454397c544c8a717c35212a88d3e3e0c77c9c6e402f5bb52dfeb62e1349">Documentation/platforms/risc-v/ jh7110/boards/star64/index.rst</a></p>
 <div class="example-wrap"><pre class="language-text"><code>=============
 PINE64 Star64
 =============
