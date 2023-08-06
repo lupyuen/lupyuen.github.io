@@ -6,7 +6,7 @@
 
 [_Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter_](https://wiki.pine64.org/wiki/STAR64)
 
-Previously we talked about the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer. (Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
+Previously we talked about the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer. (Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html), the same SoC in VisionFive2)
 
 And we inspected the Linux Images for Star64...
 

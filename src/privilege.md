@@ -6,7 +6,7 @@
 
 We're in the super-early stage of porting [__Apache NuttX Real-Time Operating System (RTOS)__](https://lupyuen.github.io/articles/nuttx2) to the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer.
 
-(Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
+(Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html), the same SoC in VisionFive2)
 
 In this article we'll talk about the interesting things that we learnt about __RISC-V and Star64 JH7110__...
 

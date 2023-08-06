@@ -16,7 +16,7 @@ Yep [__this really happened!__](https://liliputing.com/you-can-flash-firmware-on
 
 Three years later we're still having __Semihosting Problems__, but on a different gadget: the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer. (Pic below)
 
-(Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
+(Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html), the same SoC in VisionFive2)
 
 In this article, we find out...
 
