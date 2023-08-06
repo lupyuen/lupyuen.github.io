@@ -202,8 +202,7 @@ $ wget https://raw.githubusercontent.com/lupyuen/nuttx-star64/main/nuttx.its
 
 [(Based on visionfive2-fit-image.its)](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/visionfive2-fit-image.its)
 
-Package the NuttX Kernel, Initial RAM Disk and Device Tree into a
-Flat Image Tree...
+Package the NuttX Kernel, Initial RAM Disk and Device Tree into a Flat Image Tree...
 
 ```bash
 ## For macOS:
@@ -767,9 +766,9 @@ The Software Release includes an __SD Card Image__ that boots OK on Star64...
 
   [(See the Boot Log for Star64)](https://gist.github.com/lupyuen/030e4feb2fa95319290f3027032c24a8)
 
-Based on the files above, we figured out how to generate the __Flat Image Tree__ for NuttX.
+(We reused the SD Card Image for NuttX)
 
-[(See the __Makefile__)](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/Makefile#L279-L283)
+Based on the files above, we figured out how to generate the __Flat Image Tree__ for NuttX. [(See the __Makefile__)](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/Makefile#L279-L283)
 
 Also we see the script that generates the __SD Card Image__: [genimage.sh](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/genimage.sh)
 
