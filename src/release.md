@@ -347,11 +347,31 @@ TODO
 
 Memory Mgmt
 
-# Add NuttX Arch and Board for Star64 JH7110
+# Add the NuttX Arch and Board
+
+_How did we add Star64 JH7110 to NuttX?_
+
+When we add a new board to NuttX, we do it in 4 steps...
+
+1.  Patch the __Dependencies__
+
+    [(Like this)](https://github.com/apache/nuttx/pull/10019)
+
+1.  Add the __NuttX Arch__ (JH7110 SoC)
+
+    [(Like this)](https://github.com/apache/nuttx/pull/10069)
+
+1.  Add the __NuttX Board__ (Star64 SBC)
+
+    [(Like this)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
+
+1.  Update the __NuttX Documentation__
+
+    [(Also here)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
+
+This is how we did it for Star64 SBC with JH7110 SoC...
 
 TODO
-
-_How did we add Star64 JH7110 to NuttX as a new Arch and Board?_
 
 We added Star64 JH7110 to NuttX with 3 Pull Requests...
 
@@ -382,20 +402,6 @@ We added Star64 JH7110 to NuttX with 3 Pull Requests...
     And we add the source files for Star64 at...
 
     [boards/risc-v/jh7110/star64](https://github.com/apache/nuttx/tree/master/boards/risc-v/jh7110/star64)
-
-1.  In the same PR, update the __NuttX Docs__...
-
-    Add JH7110 and Star64 to the list of supported platforms:
-    
-    [nuttx/Documentation/introduction/detailed_support.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-d8a0e68fcb8fcb7e919c4b01226b6a25f888ed297145b82c719875cf8e6f5ae4)
-
-    Create a page for the JH7110 NuttX Arch:
-
-    [nuttx/Documentation/platforms/risc-v/jh7110/index.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-79d8d013e3cbf7600551f1ac23beb5db8bd234a0067576bfe0997b16e5d5c148)
-
-    Under JH7110, create a page for the Star64 NuttX Board:
-    
-    [nuttx/Documentation/platforms/risc-v/jh7110/boards/star64/index.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-a57fa454397c544c8a717c35212a88d3e3e0c77c9c6e402f5bb52dfeb62e1349)
 
 _Seems we need to copy a bunch of source files across branches?_
 
@@ -493,6 +499,24 @@ CONFIG_DEBUG_WARN=y
 Before merging with NuttX Mainline, remove the BINFMT, FS, MM and SCHED debug options.
 
 TODO: How to submit a Pull Request for NuttX
+
+# Update the NuttX Docs
+
+TODO
+
+In the same PR, update the __NuttX Docs__...
+
+Add JH7110 and Star64 to the list of supported platforms:
+
+[nuttx/Documentation/introduction/detailed_support.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-d8a0e68fcb8fcb7e919c4b01226b6a25f888ed297145b82c719875cf8e6f5ae4)
+
+Create a page for the JH7110 NuttX Arch:
+
+[nuttx/Documentation/platforms/risc-v/jh7110/index.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-79d8d013e3cbf7600551f1ac23beb5db8bd234a0067576bfe0997b16e5d5c148)
+
+Under JH7110, create a page for the Star64 NuttX Board:
+
+[nuttx/Documentation/platforms/risc-v/jh7110/boards/star64/index.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-a57fa454397c544c8a717c35212a88d3e3e0c77c9c6e402f5bb52dfeb62e1349)
 
 # Upcoming Features
 
