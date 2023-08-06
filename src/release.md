@@ -116,7 +116,7 @@ Let's walk through the steps to __build NuttX for Star64__...
 
 Now we create a Bootable microSD...
 
-TODO
+TODO: Pic
 
 _NuttX goes into the partition that has NO NAME_
 
@@ -293,7 +293,6 @@ Copy the file [__starfiveu.fit__](https://github.com/lupyuen2/wip-pinephone-nutt
 ```bash
 ## For macOS: Copy to microSD
 cp starfiveu.fit "/Volumes/NO NAME"
-ls -l "/Volumes/NO NAME/starfiveu.fit"
 
 ## For macOS: Unmount the microSD
 ## TODO: Verify that /dev/disk2 is microSD
@@ -309,8 +308,6 @@ We're ready to boot NuttX on Star64!
 ![Apache NuttX RTOS boots OK on Star64 JH7110 SBC](https://lupyuen.github.io/images/release-title.png)
 
 # Boot NuttX on Star64
-
-TODO
 
 Connect Star64 to our computer with a __USB Serial Adapter__...
 
@@ -437,8 +434,6 @@ Wait for the Pull Request to be merged. Then we add the NuttX Arch...
 
 ## Add the NuttX Arch
 
-TODO
-
 Next we submit the Pull Request that implements the JH7110 SoC as a __NuttX Arch__...
 
 - [__"arch/risc-v: Add support for StarFive JH7110 SoC"__](https://github.com/apache/nuttx/pull/10069)
@@ -474,8 +469,6 @@ Then we add the __NuttX Arch Source Files__ for JH7110 at...
 - [__arch/risc-v/src/jh7110__](https://github.com/apache/nuttx/tree/master/arch/risc-v/src/jh7110)
 
 ## Add the NuttX Board
-
-TODO
 
 Finally we submit the Pull Request that implements Star64 SBC as a __NuttX Board__...
 
