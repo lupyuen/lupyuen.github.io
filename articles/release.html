@@ -435,20 +435,19 @@ NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.</p>
 </ol>
 <p>This is how we did it for Star64 SBC (with JH7110 SoC) in <strong>3 Pull Requests</strong>…</p>
 <h2 id="patch-the-nuttx-dependencies"><a href="#patch-the-nuttx-dependencies">4.1 Patch the NuttX Dependencies</a></h2>
-<p>TODO</p>
-<p>First we patch any dependencies needed by Star64 JH7110. </p>
-<p>JH7110 triggers too many spurious UART interrupts…</p>
+<p>First we patch any <strong>NuttX Dependencies</strong> needed by Star64 JH7110. </p>
+<p>JH7110 triggers too many <strong>spurious UART interrupts</strong>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/plic#spurious-uart-interrupts">“Spurious UART Interrupts”</a></li>
+<li><a href="https://lupyuen.github.io/articles/plic#spurious-uart-interrupts"><strong>“Spurious UART Interrupts”</strong></a></li>
 </ul>
-<p>JH7110 uses a Synopsys DesignWare 8250 UART that has a peculiar problem with the Line Control Register (LCR)… If we write to LCR while the UART is busy, it will trigger spurious UART Interrupts.</p>
-<p>The fix is to wait for the UART to be not busy before writing to LCR. Here’s my proposed patch for the NuttX 16550 UART Driver…</p>
+<p>JH7110 uses a <strong>Synopsys DesignWare 8250 UART</strong> that has a peculiar problem with the <strong>Line Control Register (LCR)</strong>… If we write to LCR while the UART is busy, it will trigger spurious UART Interrupts.</p>
+<p>The fix is to <strong>wait for the UART</strong> to be not busy before writing to LCR. We submitted this Pull Request to fix the <strong>NuttX 16550 UART Driver</strong>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/plic#appendix-fix-the-spurious-uart-interrupts">“Fix the Spurious UART Interrupts”</a></li>
+<li>
+<p><a href="https://github.com/apache/nuttx/pull/10019"><strong>“serial/uart_16550: Wait before setting Line Control Register”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/pr">(How to submit a <strong>Pull Request</strong> for NuttX)</a></p>
+</li>
 </ul>
-<p>This PR fixes the 16550 UART Driver used by JH7110…</p>
-<p><a href="https://github.com/apache/nuttx/pull/10019">Fix 16550 UART</a></p>
-<p>TODO: How to submit a Pull Request for NuttX</p>
 <h2 id="add-the-nuttx-arch"><a href="#add-the-nuttx-arch">4.2 Add the NuttX Arch</a></h2>
 <p>TODO</p>
 <p>Next we submit the PR that implements the JH7110 SoC as a <strong>NuttX Arch</strong>…</p>
