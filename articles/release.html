@@ -392,8 +392,8 @@ NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.</p>
 <p>Which calls <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129"><strong>jh7110_start_s</strong></a> and…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284"><strong>jh7110_mm_init</strong></a> to initialise the Memory Mangement Unit and…</p>
-<p><a href="https://lupyuen.github.io/articles/unicorn2#after-primary-routine"><strong>nx_start</strong></a> to start the NuttX Drivers and <a href="https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk"><strong>Initial RAM Disk</strong></a>…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284"><strong>jh7110_mm_init</strong></a> to initialise the <strong>Memory Mangement Unit</strong> (for Kernel Memory Protection) and…</p>
+<p><a href="https://lupyuen.github.io/articles/unicorn2#after-primary-routine"><strong>nx_start</strong></a> to start the <strong>NuttX Drivers</strong> and <a href="https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk"><strong>Initial RAM Disk</strong></a> (containing the <strong>NuttX Apps</strong>)…</p>
 <p>And starts…</p>
 </li>
 <li>
@@ -417,10 +417,10 @@ NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.</p>
 </li>
 <li>
 <p><strong>RISC-V Interrupts</strong> for the 16550 UART Controller…</p>
-<p><a href="https://lupyuen.github.io/articles/plic#platform-level-interrupt-controller"><strong>Platform-Level Interrupt Controller</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/plic#platform-level-interrupt-controller"><strong>“Platform-Level Interrupt Controller”</strong></a></p>
 </li>
 </ol>
-<p>And that’s what happens when NuttX boots on Star64!</p>
+<p>And that’s everything that happens when NuttX boots on Star64!</p>
 <h1 id="add-the-nuttx-arch-and-board"><a href="#add-the-nuttx-arch-and-board">4 Add the NuttX Arch and Board</a></h1>
 <p><em>How did we add Star64 JH7110 to NuttX?</em></p>
 <p>When we add a new board to NuttX, we do it in 4 steps…</p>
@@ -445,7 +445,17 @@ NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.</p>
 <p>This is how we did it for Star64 SBC (with JH7110 SoC) in <strong>3 Pull Requests</strong>…</p>
 <h2 id="patch-the-nuttx-dependencies"><a href="#patch-the-nuttx-dependencies">4.1 Patch the NuttX Dependencies</a></h2>
 <p>TODO</p>
-<p>First we patch any dependencies needed by Star64 JH7110. This PR fixes the 16550 UART Driver used by JH7110…</p>
+<p>First we patch any dependencies needed by Star64 JH7110. </p>
+<p>JH7110 triggers too many spurious UART interrupts…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/plic#spurious-uart-interrupts">“Spurious UART Interrupts”</a></li>
+</ul>
+<p>JH7110 uses a Synopsys DesignWare 8250 UART that has a peculiar problem with the Line Control Register (LCR)… If we write to LCR while the UART is busy, it will trigger spurious UART Interrupts.</p>
+<p>The fix is to wait for the UART to be not busy before writing to LCR. Here’s my proposed patch for the NuttX 16550 UART Driver…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/plic#appendix-fix-the-spurious-uart-interrupts">“Fix the Spurious UART Interrupts”</a></li>
+</ul>
+<p>This PR fixes the 16550 UART Driver used by JH7110…</p>
 <p><a href="https://github.com/apache/nuttx/pull/10019">Fix 16550 UART</a></p>
 <p>TODO: How to submit a Pull Request for NuttX</p>
 <h2 id="add-the-nuttx-arch"><a href="#add-the-nuttx-arch">4.2 Add the NuttX Arch</a></h2>
@@ -485,11 +495,10 @@ boards/risc-v/jh7110/star64/include/board_memorymap.h
 boards/risc-v/jh7110/star64/scripts/Make.defs
 boards/risc-v/jh7110/star64/scripts/ld.script
 </code></pre></div>
-<p>That we can copy to another branch in a script…</p>
+<p>That we can copy to another branch in a (barebones) script…</p>
 <div class="example-wrap"><pre class="language-bash"><code>b=$HOME/new_branch
 mkdir -p $b/boards/risc-v/jh7110/star64/include
 mkdir -p $b/boards/risc-v/jh7110/star64/scripts
-
 a=boards/risc-v/jh7110/star64/include/board.h
 cp $a $b/$a
 a=boards/risc-v/jh7110/star64/include/board_memorymap.h
@@ -501,7 +510,7 @@ cp $a $b/$a
 </code></pre></div>
 <p><em>How did we generate the NuttX Build Configuration?</em></p>
 <p>The NuttX Build Configuration for Star64 is at…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40/files#diff-cdbd91013d0074f15d469491b707d1d6576752bd7b7b9ec6ed311edba8ab4b53">boards/risc-v/jh7110/star64/configs/nsh/defconfig</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40/files#diff-cdbd91013d0074f15d469491b707d1d6576752bd7b7b9ec6ed311edba8ab4b53">boards/risc-v/jh7110/star64/ configs/nsh/defconfig</a></p>
 <p>We generated the <code>defconfig</code> with this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig \
   &amp;&amp; make savedefconfig \
