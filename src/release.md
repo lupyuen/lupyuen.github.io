@@ -331,19 +331,23 @@ TODO: Why use sdcard.img
 
 TODO
 
-1.  OpenSBI
+_What happens at startup?_
 
-1.  U-Boot Bootloader
+1.  OpenSBI is the first thing that boots on our SBC (in Machine Mode)
 
-1.  NuttX Kernel
+1.  U-Boot Bootloader is next (in Supervisor Mode), which loads the...
 
-1.  NuttX Shell (NSH)
+1.  NuttX Kernel (also in Supervisor Mode), which starts the...
 
-1.  NuttX Apps
+1.  NuttX Shell (NSH) in User Mode
 
-1.  System Calls
+1.  NuttX Apps (in User Mode)
+
+1.  System Calls from User Mode to Supervisor Mode
 
 1.  Serial I/O
+
+1.  Interrupts
 
 Memory Mgmt
 
