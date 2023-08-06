@@ -309,6 +309,8 @@ Armbian looks simpler than Yocto, since it uses a plain Kernel Image File __/boo
 
 (Instead of Yocto's complicated Flat Image Tree)
 
+[(__UPDATE:__ We switched to __Flat Image Tree__ for NuttX)](https://lupyuen.github.io/articles/release#nuttx-in-a-bootable-microsd)
+
 Hence for NuttX we'll adopt the Armbian Boot Settings, overwriting __/boot/Image__ by our [__NuttX Kernel Image__](https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu). 
 
 And hopefully U-Boot Bootloader will __boot NuttX on Star64__! Assuming that we fix these...
