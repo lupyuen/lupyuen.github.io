@@ -591,11 +591,27 @@ Under JH7110, create a page for the Star64 NuttX Board:
 
 # Upcoming Features
 
-TODO: GPIO
-
 _How will we create the missing drivers?_
 
 We welcome your contribution to NuttX!
+
+TODO
+
+__GPIO__
+
+- [GPIO Programming Reference](https://doc-en.rvspace.org/JH7110/TRM/JH7110_DS/gpio_program_ref.html)
+
+- [GPIO Source Code Structure](https://doc-en.rvspace.org/VisionFive2/DG_GPIO/JH7110_SDK/code_structure_gpio.html)
+
+  [(pinctrl-starfive-jh7110.c)](https://github.com/torvalds/linux/blob/master/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c)
+
+__ISP__
+
+- [ISP](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/isp_rgb.html)
+
+__Display__
+
+- [Display Subsystem](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/display_subsystem.html)
 
 # What's Next
 
