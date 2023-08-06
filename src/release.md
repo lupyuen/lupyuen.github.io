@@ -8,13 +8,23 @@
 
 (Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
 
-TODO
+In this article we explain how we __created the First Release__ of NuttX for Star64 JH7110...
 
-This article is probably helpful for folks who wish to...
+- __Building NuttX__ for Star64
+
+- Creating a __Bootable microSD__ with NuttX Kernel and Initial RAM Disk
+
+- __Booting NuttX__ on Star64
+
+- Adding the __NuttX Arch__ (JH7110) and __NuttX Board__ (Star64)
+
+- __Upcoming Features__ for NuttX on Star64
+
+Which is probably helpful for folks who wish to...
 
 - Add a new __NuttX Arch__ (SoC) or __NuttX Board__
 
-- Create __NuttX Drivers__ (or __NuttX Apps__) for Star64 (or JH7110)
+- Create __NuttX Drivers__ (or __NuttX Apps__) for Star64 (or VisionFive2)
 
 - Or simply understand how we __boot a Modern SBC__ from scratch!
 
