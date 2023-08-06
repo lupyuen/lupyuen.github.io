@@ -546,18 +546,45 @@ CONFIG_DEBUG_WARN=y
 </li>
 </ul>
 <p>Before merging with NuttX Mainline, remove the BINFMT, FS, MM and SCHED debug options.</p>
-<p><img src="https://lupyuen.github.io/images/release-doc3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/release-doc3.png" alt="NuttX Supported Platforms" /></p>
 <h1 id="update-the-nuttx-docs"><a href="#update-the-nuttx-docs">5 Update the NuttX Docs</a></h1>
 <p>TODO</p>
 <p>In the same PR, update the <strong>NuttX Docs</strong>…</p>
-<p>Add JH7110 and Star64 to the list of supported platforms: (pic above)</p>
+<p>Add JH7110 and Star64 to the list of <strong>Supported Platforms</strong> (pic above)…</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-d8a0e68fcb8fcb7e919c4b01226b6a25f888ed297145b82c719875cf8e6f5ae4">Documentation/introduction/ detailed_support.rst</a></p>
-<p><img src="https://lupyuen.github.io/images/release-doc2.png" alt="TODO" /></p>
-<p>Create a page for the JH7110 NuttX Arch: (pic above)</p>
+<div class="example-wrap"><pre class="language-text"><code>StarFive JH7110
+---------------
+
+The basic port has been completed for the following StarFive JH7110 board:
+
+-  **PINE64 Star64**: Refer to :doc:`PINE64 Star64 &lt;/platforms/risc-v/jh7110/boards/star64/index&gt;` for further information.
+</code></pre></div>
+<p><a href="https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html">(Tips for <strong>Restructured Text</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/release-doc2.png" alt="JH7110 NuttX Arch" /></p>
+<p>Create a page for the <strong>JH7110 NuttX Arch</strong> (pic above)…</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-79d8d013e3cbf7600551f1ac23beb5db8bd234a0067576bfe0997b16e5d5c148">Documentation/platforms/risc-v/ jh7110/index.rst</a></p>
-<p><img src="https://lupyuen.github.io/images/release-doc1.png" alt="TODO" /></p>
-<p>Under JH7110, create a page for the Star64 NuttX Board: (pic above)</p>
+<div class="example-wrap"><pre class="language-text"><code>===============
+StarFive JH7110
+===============
+
+`StarFive JH7110 &lt;https://doc-en.rvspace.org/Doc_Center/jh7110.html&gt;`_ is a 64-bit RISC-V SoC that features:
+
+- **CPU:** SiFive RISC-V U74 Application Cores (4 cores, RV64GCB) and SiFive RISC-V S7 Monitor Core (single core, RV64IMACB)
+...
+</code></pre></div>
+<p>(Which goes under “RISC-V” because it’s a RISC-V SoC)</p>
+<p><img src="https://lupyuen.github.io/images/release-doc1.png" alt="Star64 NuttX Board" /></p>
+<p>Under JH7110, create a page for the <strong>Star64 NuttX Board</strong> (pic above)…</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-a57fa454397c544c8a717c35212a88d3e3e0c77c9c6e402f5bb52dfeb62e1349">Documentation/platforms/risc-v/ jh7110/boards/star64/index.rst</a></p>
+<div class="example-wrap"><pre class="language-text"><code>=============
+PINE64 Star64
+=============
+
+`Star64 &lt;https://wiki.pine64.org/wiki/STAR64&gt;`_ is a 64-bit RISC-V based
+Single Board Computer powered by StarFive JH7110 Quad-Core SiFive U74 64-Bit CPU,
+Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
+...
+</code></pre></div>
 <p>To update and preview the NuttX Docs, follow the instructions here…</p>
 <ul>
 <li>
@@ -565,6 +592,7 @@ CONFIG_DEBUG_WARN=y
 <p><a href="https://gist.github.com/lupyuen/c061ac688f430ef11a1c60e0b284a1fe">(See the Log)</a></p>
 </li>
 </ul>
+<p>And that’s how we add a NuttX Arch and NuttX Board!</p>
 <p><img src="https://lupyuen.github.io/images/release-star64.jpg" alt="Testing Apache NuttX RTOS on Star64 JH7110 SBC" /></p>
 <h1 id="upcoming-features"><a href="#upcoming-features">6 Upcoming Features</a></h1>
 <p><em>How will we create the missing drivers?</em></p>
