@@ -157,17 +157,17 @@ $ genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
 <li>
 <p>(Optional) For easier debugging, we might create the following…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy the config
-cp .config nuttx.config
+$ cp .config nuttx.config
 
-## Dump the disassembly to nuttx.S
-riscv64-unknown-elf-objdump \
+## Dump the Kernel disassembly to `nuttx.S`
+$ riscv64-unknown-elf-objdump \
   -t -S --demangle --line-numbers --wide \
   nuttx \
   &gt;nuttx.S \
   2&gt;&amp;1
 
-## Dump the init disassembly to init.S
-riscv64-unknown-elf-objdump \
+## Dump the NSH `init` disassembly to `init.S`
+$ riscv64-unknown-elf-objdump \
   -t -S --demangle --line-numbers --wide \
   ../
 </code></pre></div></li>
@@ -177,7 +177,6 @@ riscv64-unknown-elf-objdump \
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110b-0.0.1">(See the Build Steps)</a></p>
 <p><a href="https://gist.github.com/lupyuen/c6dc9aeec74d399029ebaf46ac16ef79">(See the Build Log)</a></p>
 <h1 id="nuttx-in-a-bootable-microsd"><a href="#nuttx-in-a-bootable-microsd">2 NuttX in a Bootable microSD</a></h1>
-<p>TODO</p>
 <p><em>How do we create a Bootable microSD for NuttX?</em></p>
 <p>From the previous section, we have…</p>
 <ol>
@@ -191,8 +190,8 @@ riscv64-unknown-elf-objdump \
 <p>Device Tree: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/jh7110-visionfive-v2.dtb"><strong>jh7110-visionfive-v2.dtb</strong></a></p>
 </li>
 </ol>
-<p>We pack all 3 files into a Flat Image Tree (FIT).</p>
-<p>Inside the <code>nuttx</code> folder, create a Text File named <code>nuttx.its</code>
+<p>We pack all 3 files into a <strong>Flat Image Tree (FIT)</strong>…</p>
+<p>Inside the <strong>nuttx</strong> folder, create a Text File named <strong>nuttx.its</strong>
 with the following content: <a href="https://github.com/lupyuen/nuttx-star64/blob/main/nuttx.its">nuttx.its</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/dts-v1/;
 
@@ -249,17 +248,22 @@ with the following content: <a href="https://github.com/lupyuen/nuttx-star64/blo
   };
 };
 </code></pre></div>
-<p><a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/visionfive2-fit-image.its">(Based on visionfive2-fit-image.its)</a></p>
+<p>Or do this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ wget https://raw.githubusercontent.com/lupyuen/nuttx-star64/main/nuttx.its
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/visionfive2-fit-image.its">(Derived from visionfive2-fit-image.its)</a></p>
 <p>Package the NuttX Kernel, Initial RAM Disk and Device Tree into a
-Flat Image Tree:</p>
+Flat Image Tree…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS:
-brew install u-boot-tools
+$ brew install u-boot-tools
 ## For Linux:
-sudo apt install u-boot-tools
+$ sudo apt install u-boot-tools
 
-## Generate FIT Image from `nuttx.bin`, `initrd` and `jh7110-visionfive-v2.dtb`.
-## `nuttx.its` must be in the same directory as the NuttX binaries!
-mkimage \
+## Generate FIT Image from `nuttx.bin`, 
+## `initrd` and `jh7110-visionfive-v2.dtb`.
+## `nuttx.its` must be in the same 
+## directory as the NuttX binaries!
+$ mkimage \
   -f nuttx.its \
   -A riscv \
   -O linux \
@@ -267,9 +271,9 @@ mkimage \
   starfiveu.fit
 
 ## To check FIT image
-mkimage -l starfiveu.fit
+$ mkimage -l starfiveu.fit
 </code></pre></div>
-<p>We will see…</p>
+<p>We’ll see the <strong>NuttX Kernel</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>→ mkimage -f nuttx.its -A riscv -O linux -T flat_dt starfiveu.fit
 FIT description: NuttX FIT image
 Created:         Fri Aug  4 23:20:52 2023
@@ -283,7 +287,9 @@ Created:         Fri Aug  4 23:20:52 2023
   OS:           Linux
   Load Address: 0x40200000
   Entry Point:  0x40200000
- Image 1 (ramdisk)
+</code></pre></div>
+<p>Followed by the <strong>Initial RAM Disk</strong> (containing <strong>NuttX Apps</strong>)…</p>
+<div class="example-wrap"><pre class="language-text"><code> Image 1 (ramdisk)
   Description:  buildroot initramfs
   Created:      Fri Aug  4 23:20:52 2023
   Type:         RAMDisk Image
@@ -295,7 +301,9 @@ Created:         Fri Aug  4 23:20:52 2023
   Entry Point:  unavailable
   Hash algo:    sha256
   Hash value:   44b3603e6e611ade7361a936aab09def23651399d4a0a3c284f47082d788e877
- Image 2 (fdt)
+</code></pre></div>
+<p>Finally the <strong>Device Tree</strong> (not used by NuttX)…</p>
+<div class="example-wrap"><pre class="language-text"><code> Image 2 (fdt)
   Description:  unavailable
   Created:      Fri Aug  4 23:20:52 2023
   Type:         Flat Device Tree
@@ -305,23 +313,22 @@ Created:         Fri Aug  4 23:20:52 2023
   Load Address: 0x46000000
   Hash algo:    sha256
   Hash value:   42767c996f0544f513280805b41f996446df8b3956c656bdbb782125ae8ffeec
- Default Configuration: &#39;nuttx220569&#39;
- Configuration 0 (nuttx220569)
+ Default Configuration: &#39;nuttx&#39;
+ Configuration 0 (nuttx)
   Description:  NuttX
   Kernel:       vmlinux
   FDT:          fdt
   Loadables:    ramdisk
 </code></pre></div>
-<p>The Flat Image Tree <code>starfiveu.fit</code> will be copied to a microSD Card
-in the next step.</p>
-<p>To prepare the microSD Card, download the <a href="https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img">microSD Image sdcard.img</a> from <a href="https://github.com/starfive-tech/VisionFive2/releases">StarFive VisionFive2 Software Releases</a></p>
-<p>Write the downloaded image to a microSD Card with <a href="https://www.balena.io/etcher/">Balena Etcher</a> or <a href="https://wiki.gnome.org/Apps/Disks">GNOME Disks</a>.</p>
-<p>Copy the file <code>starfiveu.fit</code> from the previous section and overwrite the file on the microSD Card.</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Copy to microSD
+<p>This produces the Flat Image Tree <strong>starfiveu.fit</strong>, which we’ll copy later to a microSD Card.</p>
+<p>To prepare the microSD Card, download the microSD Image <a href="https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img"><strong>sdcard.img</strong></a> from <a href="https://github.com/starfive-tech/VisionFive2/releases"><strong>StarFive VisionFive2 Software Releases</strong></a>.</p>
+<p>Write the downloaded image to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
+<p>Copy the file <strong>starfiveu.fit</strong> from above and overwrite the file on the microSD Card…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## For macOS: Copy to microSD
 cp starfiveu.fit &quot;/Volumes/NO NAME&quot;
 ls -l &quot;/Volumes/NO NAME/starfiveu.fit&quot;
 
-## Unmount microSD
+## For macOS: Unmount the microSD
 ## TODO: Verify that /dev/disk2 is microSD
 diskutil unmountDisk /dev/disk2
 </code></pre></div><h1 id="boot-nuttx-on-star64"><a href="#boot-nuttx-on-star64">3 Boot NuttX on Star64</a></h1>
