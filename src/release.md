@@ -353,7 +353,7 @@ _How did we add Star64 JH7110 to NuttX?_
 
 When we add a new board to NuttX, we do it in 4 steps...
 
-1.  Patch the __Dependencies__
+1.  Patch the __NuttX Dependencies__
 
     [(Like this)](https://github.com/apache/nuttx/pull/10019)
 
@@ -369,39 +369,51 @@ When we add a new board to NuttX, we do it in 4 steps...
 
     [(Also here)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
 
-This is how we did it for Star64 SBC with JH7110 SoC...
+This is how we did it for Star64 SBC (with JH7110 SoC) in __3 Pull Requests__...
+
+## Patch the NuttX Dependencies
 
 TODO
 
-We added Star64 JH7110 to NuttX with 3 Pull Requests...
+First we patch any dependencies needed by Star64 JH7110. This PR fixes the 16550 UART Driver used by JH7110...
 
-1.  First we fix any dependencies needed by Star64 JH7110. This PR fixes the 16550 UART Driver used by JH7110...
+[Fix 16550 UART](https://github.com/apache/nuttx/pull/10019)
 
-    [Fix 16550 UART](https://github.com/apache/nuttx/pull/10019)
+TODO: How to submit a Pull Request for NuttX
 
-1.  Next we submit the PR that implements the JH7110 SoC as a __NuttX Arch__...
+## Add the NuttX Arch
 
-    [Add support for JH7110 SoC](https://github.com/apache/nuttx/pull/10069)
+TODO
 
-    We add JH7110 to the Kconfig for the RISC-V SoCs: [arch/risc-v/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
+Next we submit the PR that implements the JH7110 SoC as a __NuttX Arch__...
 
-    And we create a Kconfig for JH7110: [arch/risc-v/src/jh7110/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-36a3009882ced77a24e9a7fd7ce3cf481ded4655f1adc366e7722a87ceab293b)
+[Add support for JH7110 SoC](https://github.com/apache/nuttx/pull/10069)
 
-    Then we add the source files for JH7110 at...
+We add JH7110 to the Kconfig for the RISC-V SoCs: [arch/risc-v/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
 
-    [arch/risc-v/src/jh7110](https://github.com/apache/nuttx/tree/master/arch/risc-v/src/jh7110)
+And we create a Kconfig for JH7110: [arch/risc-v/src/jh7110/Kconfig](https://github.com/apache/nuttx/pull/10069/files#diff-36a3009882ced77a24e9a7fd7ce3cf481ded4655f1adc366e7722a87ceab293b)
 
-1.  Finally we submit the PR that implements Star64 SBC as a __NuttX Board__...
+Then we add the source files for JH7110 at...
 
-    [Add support for Star64 SBC](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
+[arch/risc-v/src/jh7110](https://github.com/apache/nuttx/tree/master/arch/risc-v/src/jh7110)
 
-    We add Star64 to the Kconfig for the NuttX Boards: [nuttx/boards/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64)
+## Add the NuttX Board
 
-    We create a Kconfig for Star64: [nuttx/boards/risc-v/jh7110/star64/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c)
+TODO
 
-    And we add the source files for Star64 at...
+Finally we submit the PR that implements Star64 SBC as a __NuttX Board__...
 
-    [boards/risc-v/jh7110/star64](https://github.com/apache/nuttx/tree/master/boards/risc-v/jh7110/star64)
+[Add support for Star64 SBC](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
+
+We add Star64 to the Kconfig for the NuttX Boards: [nuttx/boards/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64)
+
+We create a Kconfig for Star64: [nuttx/boards/risc-v/jh7110/star64/Kconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c)
+
+And we add the source files for Star64 at...
+
+[boards/risc-v/jh7110/star64](https://github.com/apache/nuttx/tree/master/boards/risc-v/jh7110/star64)
+
+We'll talk about the Documentation in the next section.
 
 _Seems we need to copy a bunch of source files across branches?_
 
@@ -497,8 +509,6 @@ CONFIG_DEBUG_WARN=y
 - FS is for File System
 
 Before merging with NuttX Mainline, remove the BINFMT, FS, MM and SCHED debug options.
-
-TODO: How to submit a Pull Request for NuttX
 
 # Update the NuttX Docs
 
