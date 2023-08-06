@@ -259,8 +259,7 @@ with the following content: <a href="https://github.com/lupyuen/nuttx-star64/blo
 <div class="example-wrap"><pre class="language-bash"><code>$ wget https://raw.githubusercontent.com/lupyuen/nuttx-star64/main/nuttx.its
 </code></pre></div>
 <p><a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/visionfive2-fit-image.its">(Based on visionfive2-fit-image.its)</a></p>
-<p>Package the NuttX Kernel, Initial RAM Disk and Device Tree into a
-Flat Image Tree…</p>
+<p>Package the NuttX Kernel, Initial RAM Disk and Device Tree into a Flat Image Tree…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS:
 $ brew install u-boot-tools
 ## For Linux:
@@ -761,8 +760,8 @@ Password: starfive
 <p><a href="https://gist.github.com/lupyuen/030e4feb2fa95319290f3027032c24a8">(See the Boot Log for Star64)</a></p>
 </li>
 </ul>
-<p>Based on the files above, we figured out how to generate the <strong>Flat Image Tree</strong> for NuttX.</p>
-<p><a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/Makefile#L279-L283">(See the <strong>Makefile</strong>)</a></p>
+<p>(We reused the SD Card Image for NuttX)</p>
+<p>Based on the files above, we figured out how to generate the <strong>Flat Image Tree</strong> for NuttX. <a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/Makefile#L279-L283">(See the <strong>Makefile</strong>)</a></p>
 <p>Also we see the script that generates the <strong>SD Card Image</strong>: <a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/genimage.sh">genimage.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>genimage \
   --rootpath &quot;${ROOTPATH_TMP}&quot;     \
