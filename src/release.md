@@ -568,15 +568,15 @@ In the same PR, update the __NuttX Docs__...
 
 Add JH7110 and Star64 to the list of supported platforms:
 
-[nuttx/Documentation/introduction/detailed_support.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-d8a0e68fcb8fcb7e919c4b01226b6a25f888ed297145b82c719875cf8e6f5ae4)
+[Documentation/introduction/ detailed_support.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-d8a0e68fcb8fcb7e919c4b01226b6a25f888ed297145b82c719875cf8e6f5ae4)
 
 Create a page for the JH7110 NuttX Arch:
 
-[nuttx/Documentation/platforms/risc-v/jh7110/index.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-79d8d013e3cbf7600551f1ac23beb5db8bd234a0067576bfe0997b16e5d5c148)
+[Documentation/platforms/risc-v/ jh7110/index.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-79d8d013e3cbf7600551f1ac23beb5db8bd234a0067576bfe0997b16e5d5c148)
 
 Under JH7110, create a page for the Star64 NuttX Board:
 
-[nuttx/Documentation/platforms/risc-v/jh7110/boards/star64/index.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-a57fa454397c544c8a717c35212a88d3e3e0c77c9c6e402f5bb52dfeb62e1349)
+[Documentation/platforms/risc-v/ jh7110/boards/star64/index.rst](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/38/files#diff-a57fa454397c544c8a717c35212a88d3e3e0c77c9c6e402f5bb52dfeb62e1349)
 
 # Upcoming Features
 
