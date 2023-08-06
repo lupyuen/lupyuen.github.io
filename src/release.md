@@ -62,7 +62,7 @@ Let's walk through the steps to __build NuttX for Star64__...
     $ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
     ```
 
-    This produces the NuttX Kernel __nuttx.bin__
+    This produces the NuttX Kernel [__nuttx.bin__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/nuttx.bin)
     
 1.  Build the __NuttX Apps Filesystem__...
 
@@ -75,7 +75,7 @@ Let's walk through the steps to __build NuttX for Star64__...
     $ genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
     ```
 
-    This generates the Initial RAM Disk __initrd__
+    This generates the Initial RAM Disk [__initrd__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/initrd)
 
 1.  Download the Device Tree [__jh7110-visionfive-v2.dtb__](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb) from [__StarFive VisionFive2 Software Releases__](https://github.com/starfive-tech/VisionFive2/releases).
 
@@ -113,6 +113,10 @@ Now we create a Bootable microSD...
 [(See the Build Steps)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110b-0.0.1)
 
 [(See the Build Log)](https://gist.github.com/lupyuen/c6dc9aeec74d399029ebaf46ac16ef79)
+
+TODO
+
+_NuttX goes into the partition that has NO NAME_
 
 # NuttX in a Bootable microSD
 
@@ -194,7 +198,7 @@ Or do this...
 $ wget https://raw.githubusercontent.com/lupyuen/nuttx-star64/main/nuttx.its
 ```
 
-[(Derived from visionfive2-fit-image.its)](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/visionfive2-fit-image.its)
+[(Based on visionfive2-fit-image.its)](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/visionfive2-fit-image.its)
 
 Package the NuttX Kernel, Initial RAM Disk and Device Tree into a
 Flat Image Tree...
@@ -276,13 +280,13 @@ Finally the __Device Tree__ (not used by NuttX)...
   Loadables:    ramdisk
 ```
 
-This produces the Flat Image Tree __starfiveu.fit__, which we'll copy later to a microSD Card.
+This produces the Flat Image Tree [__starfiveu.fit__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/starfiveu.fit), which we'll copy later to a microSD Card.
 
 To prepare the microSD Card, download the microSD Image [__sdcard.img__](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img) from [__StarFive VisionFive2 Software Releases__](https://github.com/starfive-tech/VisionFive2/releases).
 
 Write the downloaded image to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
-Copy the file __starfiveu.fit__ from above and overwrite the file on the microSD Card...
+Copy the file [__starfiveu.fit__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/starfiveu.fit) from above and overwrite the file on the microSD Card...
 
 ```bash
 ## For macOS: Copy to microSD
@@ -293,6 +297,14 @@ ls -l "/Volumes/NO NAME/starfiveu.fit"
 ## TODO: Verify that /dev/disk2 is microSD
 diskutil unmountDisk /dev/disk2
 ```
+
+More about Flat Image Tree...
+
+- [Flattened Image Tree (FIT) Format](https://u-boot.readthedocs.io/en/latest/usage/fit/source_file_format.html)
+
+- [Single kernel and FDT blob](https://u-boot.readthedocs.io/en/latest/usage/fit/kernel_fdt.html)
+
+- [Multiple kernels, ramdisks and FDT blobs](https://u-boot.readthedocs.io/en/latest/usage/fit/multi.html)
 
 # Boot NuttX on Star64
 
@@ -317,27 +329,25 @@ $ help
 
 [(See the Build Log)](https://gist.github.com/lupyuen/c6dc9aeec74d399029ebaf46ac16ef79)
 
-More about Flat Image Tree...
-
-- [Flattened Image Tree (FIT) Format](https://u-boot.readthedocs.io/en/latest/usage/fit/source_file_format.html)
-
-- [Single kernel and FDT blob](https://u-boot.readthedocs.io/en/latest/usage/fit/kernel_fdt.html)
-
-- [Multiple kernels, ramdisks and FDT blobs](https://u-boot.readthedocs.io/en/latest/usage/fit/multi.html)
-
 TODO: Why use sdcard.img
-
-# NuttX Startup on Star64
-
-TODO
 
 _What happens at startup?_
 
 1.  OpenSBI is the first thing that boots on our SBC (in Machine Mode)
 
-1.  U-Boot Bootloader is next (in Supervisor Mode), which loads the...
+1.  U-Boot Bootloader is next (in Supervisor Mode)...
+
+    Which loads the...
 
 1.  NuttX Kernel (also in Supervisor Mode), which starts the...
+
+1.  NuttX Boot Code (in RISC-V Assembly)...
+
+    Which calls the...
+
+1.  NuttX Start Code (in C)...
+
+    Which starts the...
 
 1.  NuttX Shell (NSH) in User Mode
 
@@ -536,6 +546,10 @@ Under JH7110, create a page for the Star64 NuttX Board:
 
 TODO: GPIO
 
+_How will we create the missing drivers?_
+
+We welcome your contribution to NuttX!
+
 # What's Next
 
 TODO
@@ -581,50 +595,50 @@ Also we see the script that generates the SD Card Image: [genimage.sh](https://g
 
 ```bash
 genimage \
-	--rootpath "${ROOTPATH_TMP}"     \
-	--tmppath "${GENIMAGE_TMP}"    \
-	--inputpath "${INPUT_DIR}"  \
-	--outputpath "${OUTPUT_DIR}" \
-	--config genimage-vf2.cfg
+  --rootpath "${ROOTPATH_TMP}"     \
+  --tmppath "${GENIMAGE_TMP}"    \
+  --inputpath "${INPUT_DIR}"  \
+  --outputpath "${OUTPUT_DIR}" \
+  --config genimage-vf2.cfg
 ```
 
 The SD Card Partitions are defined in [genimage-vf2.cfg](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/genimage-vf2.cfg):
 
 ```text
 image sdcard.img {
-	hdimage {
-		gpt = true
-	}
+  hdimage {
+    gpt = true
+  }
 
-	partition spl {
-		image = "work/u-boot-spl.bin.normal.out"
-		partition-type-uuid = 2E54B353-1271-4842-806F-E436D6AF6985
-		offset = 2M
-		size = 2M
-	}
+  partition spl {
+    image = "work/u-boot-spl.bin.normal.out"
+    partition-type-uuid = 2E54B353-1271-4842-806F-E436D6AF6985
+    offset = 2M
+    size = 2M
+  }
 
-	partition uboot {
-		image = "work/visionfive2_fw_payload.img"
-		partition-type-uuid = 5B193300-FC78-40CD-8002-E86C45580B47
-		offset = 4M
-		size = 4M
-	}
+  partition uboot {
+    image = "work/visionfive2_fw_payload.img"
+    partition-type-uuid = 5B193300-FC78-40CD-8002-E86C45580B47
+    offset = 4M
+    size = 4M
+  }
 
-	partition image {
-		# partition-type = 0xC
-		partition-type-uuid = EBD0A0A2-B9E5-4433-87C0-68B6B72699C7
-		image = "work/starfive-visionfive2-vfat.part"
-		offset = 8M
-		size = 292M
-	}
+  partition image {
+    # partition-type = 0xC
+    partition-type-uuid = EBD0A0A2-B9E5-4433-87C0-68B6B72699C7
+    image = "work/starfive-visionfive2-vfat.part"
+    offset = 8M
+    size = 292M
+  }
 
-	partition root {
-		# partition-type = 0x83
-		partition-type-uuid = 0FC63DAF-8483-4772-8E79-3D69D8477DE4
-		image = "work/buildroot_rootfs/images/rootfs.ext4"
-		offset = 300M
-		bootable = true
-	}
+  partition root {
+    # partition-type = 0x83
+    partition-type-uuid = 0FC63DAF-8483-4772-8E79-3D69D8477DE4
+    image = "work/buildroot_rootfs/images/rootfs.ext4"
+    offset = 300M
+    bootable = true
+  }
 }
 ```
 
