@@ -639,7 +639,9 @@ I hope this article will be helpful for folks contributing code to NuttX for the
 
 In the next article we'll explain this complex Pull Request that adds a __new SoC and new Board__ to NuttX. Stay Tuned!
 
--   [__"arch/arm64: Add support for PINE64 PinePhone"__](https://github.com/apache/nuttx/pull/7692)
+- [__"Add the NuttX Arch and Board"__](https://lupyuen.github.io/articles/release#add-the-nuttx-arch-and-board)
+
+- [__"Update the NuttX Docs"__](https://lupyuen.github.io/articles/release#update-the-nuttx-docs)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
