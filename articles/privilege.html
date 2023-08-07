@@ -124,7 +124,7 @@ static void u16550_putc(
   u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/uart_16550.c#L1696-L1712">(Source)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1696-L1712">(Source)</a></p>
 <p><em>Is the UART Base Address correct?</em></p>
 <p>It’s correct, actually. Previously we validated the <strong>16550 UART Base Address</strong> for JH7110…</p>
 <ul>
@@ -149,13 +149,13 @@ static void u16550_putc(
   UART_LSR_OFFSET  // At offset of Line Status Register
 )
 </code></pre></div>
-<p>Inside <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/uart_16550.c#L604-L618"><strong>u16550_serialin</strong></a>, we read a UART Register at the Offset…</p>
+<p>Inside <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L604-L618"><strong>u16550_serialin</strong></a>, we read a UART Register at the Offset…</p>
 <div class="example-wrap"><pre class="language-c"><code>*((FAR volatile uart_datawidth_t *)
   priv-&gt;uartbase +  // UART Base Address
   offset);          // Offset of UART Register
 </code></pre></div>
 <p><em>What’s the UART Register Offset?</em></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/include/nuttx/serial/uart_16550.h#L172-L200"><strong>UART_LSR_OFFSET</strong></a> (Offset of Line Status Register) is…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/serial/uart_16550.h#L172-L200"><strong>UART_LSR_OFFSET</strong></a> (Offset of Line Status Register) is…</p>
 <div class="example-wrap"><pre class="language-c"><code>// UART Line Status Register
 // is Register #5
 #define UART_LSR_INCR 5
@@ -165,7 +165,7 @@ static void u16550_putc(
 #define UART_LSR_OFFSET \
   (CONFIG_16550_REGINCR * UART_LSR_INCR)
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/Kconfig-16550#L501-L520"><strong>16550_REGINCR</strong></a> defaults to 1…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/Kconfig-16550#L501-L520"><strong>16550_REGINCR</strong></a> defaults to 1…</p>
 <div class="example-wrap"><pre class="language-text"><code>config 16550_REGINCR
   int &quot;Address increment between 16550 registers&quot;
   default 1
@@ -183,7 +183,7 @@ static void u16550_putc(
   int &quot;Address increment between 16550 registers&quot;
   default 1
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/Kconfig-16550#L501-L520">(Source)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/Kconfig-16550#L501-L520">(Source)</a></p>
 <p>Which means that the 16550 UART Registers are spaced <strong>1 byte apart</strong>…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: left">Register</th></tr></thead><tbody>
 <tr><td style="text-align: center"><code>0x1000</code> <code>0000</code></td><td style="text-align: left">Transmit Holding Register</td></tr>
@@ -248,7 +248,7 @@ static void dw8250_serial_out(struct uart_port *p, int offset, int value) {
 <ul>
 <li>Device Drivers &gt; Serial Driver Support &gt; 16550 UART Chip support &gt; Address Increment Between 16550 Registers</li>
 </ul>
-<p>And change it from 1 to 4: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18">nsh/defconfig</a></p>
+<p>And change it from 1 to 4: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_REGINCR=4
 </code></pre></div>
 <p>Now UART Transmit works perfectly yay! (Pic below)</p>
@@ -268,7 +268,7 @@ nx_start: Entry
 <p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="UART Transmit works perfectly yay" /></p>
 <h1 id="critical-section-doesnt-return"><a href="#critical-section-doesnt-return">3 Critical Section Doesn’t Return</a></h1>
 <p>We ran into another problem when printing to the UART Port…</p>
-<p>NuttX on Star64 gets stuck when we enter a <strong>Critical Section</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/uart_16550.c#L1769-L1806">uart_16550.c</a></p>
+<p>NuttX on Star64 gets stuck when we enter a <strong>Critical Section</strong>: <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1769-L1806">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print a character to the UART Port
 int up_putc(int ch) {
   ...
@@ -367,7 +367,7 @@ csrrc a5, mstatus, a5
 // in `mstatus` Register
 csrrc a5, mstatus, a5
 </code></pre></div>
-<p>We saw the above RISC-V Assembly emitted by <a href="https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return"><strong>up_putc</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a>, let’s track it down.</p>
+<p>We saw the above RISC-V Assembly emitted by <a href="https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return"><strong>up_putc</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a>, let’s track it down.</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a> calls <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L674-L703"><strong>up_irq_save</strong></a>, which is defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Disable interrupts
 static inline irqstate_t up_irq_save(void) {
@@ -417,7 +417,7 @@ static inline irqstate_t up_irq_save(void) {
 #endif
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels">(Because Star64 boots NuttX in Supervisor Mode)</a></p>
-<p>Searching NuttX for <strong>ARCH_USE_S_MODE</strong> gives us this Build Configuration for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43">knsh64/defconfig</a></p>
+<p>Searching NuttX for <strong>ARCH_USE_S_MODE</strong> gives us this Build Configuration for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43">knsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_ARCH_USE_S_MODE=y
 </code></pre></div>
 <p><em>Perfect! Exactly what we need!</em></p>
@@ -552,7 +552,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <ul>
 <li><a href="https://lupyuen.github.io/articles/semihost"><strong>“Star64 JH7110 + NuttX RTOS: RISC-V Semihosting and Initial RAM Disk”</strong></a></li>
 </ul>
-<p><strong>TODO:</strong> Port <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210"><strong>up_mtimer_initialize</strong></a> to Star64</p>
+<p><strong>TODO:</strong> Port <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210"><strong>up_mtimer_initialize</strong></a> to Star64</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/32/files">(See the <strong>Modified Files</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
@@ -566,7 +566,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/index.html"><strong>LiteX Arty-A7</strong></a> boots from OpenSBI to NuttX (but doesn’t call back to OpenSBI)…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/litex/arty_a7">litex/arty_a7</a></td><td style="text-align: left">RISC-V Board</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/litex/litex_shead.S#L56">litex_shead.S</a></td><td style="text-align: left">Boot Code</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/litex/litex_start.c#L50">litex_start.c</a></td><td style="text-align: left">Startup Code</td></tr>
 <tr><td style="text-align: left"> </td><td style="text-align: left"></td></tr>
@@ -576,7 +576,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/mpfs/boards/icicle/index.html"><strong>PolarFire Icicle</strong></a> (based on <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/mpfs/index.html"><strong>PolarFire MPFS</strong></a>) runs a copy of OpenSBI inside NuttX (so it boots in Machine Mode before Supervisor Mode)…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle">mpfs/icicle</a></td><td style="text-align: left">RISC-V Board</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_shead.S#L62">mpfs_shead.S</a></td><td style="text-align: left">Boot Code</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_start.c#L52">mpfs_start.c</a></td><td style="text-align: left">Startup Code</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602">mpfs_opensbi.c</a></td><td style="text-align: left">OpenSBI in NuttX</td></tr>

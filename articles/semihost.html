@@ -588,7 +588,7 @@ memcpy(                     // Copy the RAM Disk...
 );
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/semihost#appendix-ram-disk-address-for-risc-v-qemu">(U-Boot Bootloader loads the RAM Disk at <strong><code>0x4610</code> <code>0000</code></strong>)</a></p>
-<p>And the <strong>RAM Disk Memory</strong> is now located at <strong><code>0x40A0</code> <code>0000</code></strong> (the next available RAM Address): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L56">ld.script</a></p>
+<p>And the <strong>RAM Disk Memory</strong> is now located at <strong><code>0x40A0</code> <code>0000</code></strong> (the next available RAM Address): <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L56">ld.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>MEMORY
 {
   ...
@@ -662,7 +662,7 @@ nx_start: CPU0: Beginning Idle Loop
 <li>
 <p>Why no <strong>NuttX Shell</strong>?</p>
 <p>Was it started correctly?</p>
-<p>(<a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/sched/init/nx_bringup.c#L297-L299"><strong>nx_start_application</strong></a> returned Process ID 3, seems OK)</p>
+<p>(<a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L297-L299"><strong>nx_start_application</strong></a> returned Process ID 3, seems OK)</p>
 </li>
 <li>
 <p>Is <strong>Console Output</strong> working in NuttX Shell?</p>
@@ -670,11 +670,11 @@ nx_start: CPU0: Beginning Idle Loop
 </li>
 <li>
 <p>Is our <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L27-L33"><strong>Interrupt Controller</strong></a> OK?</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18">(See <strong>CONFIG_16550_UART0_IRQ</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18">(See <strong>CONFIG_16550_UART0_IRQ</strong>)</a></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html">(See the <strong>JH7110 U74 Memory Map</strong>)</a></p>
 </li>
 <li>
-<p>Are we using the right <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/include/board_memorymap.h#L33-L38"><strong>User Address Space</strong></a>?</p>
+<p>Are we using the right <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/include/board_memorymap.h#L33-L38"><strong>User Address Space</strong></a>?</p>
 <p>And the right <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Address Space</strong></a>?</p>
 </li>
 <li>
@@ -909,7 +909,7 @@ $ booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
 <p>Disable: File Systems &gt; Host File System</p>
 </li>
 <li>
-<p>Manually delete from <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig">nsh/defconfig</a>…</p>
+<p>Manually delete from <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig">nsh/defconfig</a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_HOST_MACOS=y
 CONFIG_INIT_MOUNT_DATA=&quot;fs=../apps&quot;
 CONFIG_INIT_MOUNT_FSTYPE=&quot;hostfs&quot;
@@ -922,7 +922,7 @@ CONFIG_INIT_MOUNT_SOURCE=&quot;&quot;
 <p><strong>NuttX for QEMU:</strong> <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig"><strong>knsh64/defconfig</strong></a></p>
 </li>
 <li>
-<p><strong>NuttX for Star64:</strong> <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig"><strong>nsh/defconfig</strong></a></p>
+<p><strong>NuttX for Star64:</strong> <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig"><strong>nsh/defconfig</strong></a></p>
 </li>
 </ul>
 <h1 id="appendix-ram-disk-address-for-risc-v-qemu"><a href="#appendix-ram-disk-address-for-risc-v-qemu">12 Appendix: RAM Disk Address for RISC-V QEMU</a></h1>
@@ -1016,7 +1016,7 @@ genromfs \
 &quot;nuttx.bin&quot;:   &quot;0x40000000&quot;,
 &quot;opensbi.bin&quot;: &quot;0x40f00000&quot;
 </code></pre></div>
-<p>This is the <strong>LiteX Build Configuration</strong> for mounting the RAM Disk: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/litex/arty_a7/configs/knsh/defconfig">knsh/defconfig</a></p>
+<p>This is the <strong>LiteX Build Configuration</strong> for mounting the RAM Disk: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/configs/knsh/defconfig">knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_BOARDCTL_ROMDISK=y
 CONFIG_BOARD_LATE_INITIALIZE=y
 CONFIG_BUILD_KERNEL=y
@@ -1085,7 +1085,7 @@ int litex_mount_ramdisk(void)
   return ret;
 }
 </code></pre></div>
-<p><strong>ramdisk_start</strong> and <strong>ramdisk_size</strong> are defined in the <strong>LiteX Memory Map</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91">board_memorymap.h</a></p>
+<p><strong>ramdisk_start</strong> and <strong>ramdisk_size</strong> are defined in the <strong>LiteX Memory Map</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91">board_memorymap.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* RAMDisk */
 #define RAMDISK_START     (uintptr_t)__ramdisk_start
 #define RAMDISK_SIZE      (uintptr_t)__ramdisk_size
@@ -1094,7 +1094,7 @@ int litex_mount_ramdisk(void)
 extern uint8_t          __ramdisk_start[];
 extern uint8_t          __ramdisk_size[];
 </code></pre></div>
-<p>And also in the <strong>LiteX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49">ld-kernel.script</a></p>
+<p>And also in the <strong>LiteX Linker Script</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49">ld-kernel.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>MEMORY
 {
   kflash (rx)   : ORIGIN = 0x40000000, LENGTH = 4096K   /* w/ cache */

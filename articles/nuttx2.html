@@ -138,7 +138,7 @@
 <h1 id="print-to-qemu-console"><a href="#print-to-qemu-console">2 Print to QEMU Console</a></h1>
 <p><em>We’re printing to the Serial Console on QEMU Emulator…</em></p>
 <p><em>What’s the UART Controller in QEMU?</em></p>
-<p>We check the <strong>NuttX Build Configuration</strong> for QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
+<p>We check the <strong>NuttX Build Configuration</strong> for QEMU: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_16550_ADDRWIDTH=0
 CONFIG_16550_UART0=y
 CONFIG_16550_UART0_BASE=0x10000000
@@ -236,7 +236,7 @@ nsh&gt;
 </li>
 </ul>
 <p><em>Isn’t that the same UART Base Address as QEMU?</em></p>
-<p>Yep! Earlier we saw the <strong>UART Base Address</strong> for NuttX QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
+<p>Yep! Earlier we saw the <strong>UART Base Address</strong> for NuttX QEMU: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_16550_UART0_BASE=0x10000000
 </code></pre></div>
 <p><strong><code>0x1000</code> <code>0000</code></strong> is the exact same UART Base Address for QEMU AND Star64…</p>
@@ -290,12 +290,12 @@ real_start:
 </li>
 </ul>
 <p>Thus we do the same for NuttX on Star64.</p>
-<p>This is how we set the Start Address to <strong><code>0x4020</code> <code>0000</code></strong> in our <strong>NuttX Build Configuration</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L92-L93">nsh64/defconfig</a></p>
+<p>This is how we set the Start Address to <strong><code>0x4020</code> <code>0000</code></strong> in our <strong>NuttX Build Configuration</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L79-L80">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>// TODO: Fix CONFIG_RAM_SIZE
 CONFIG_RAM_SIZE=33554432
 CONFIG_RAM_START=0x40200000
 </code></pre></div>
-<p>And our <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53">ld.script</a></p>
+<p>And our <strong>NuttX Linker Script</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53">ld.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>MEMORY
 {
   /* Previously 0x80000000 */
@@ -836,11 +836,11 @@ csrw CSR_IP, zero
 <p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log">(Like when we hit Exceptions with <strong>Machine-Mode Instructions</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/riscv-build.png" alt="Building Apache NuttX RTOS in 4 minutes" /></p>
 <h1 id="appendix-nuttx-start-address"><a href="#appendix-nuttx-start-address">14 Appendix: NuttX Start Address</a></h1>
-<p>Previously we changed the NuttX Start Address in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L92-L93"><strong>nsh/defconfig</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53"><strong>ld.script</strong></a>…</p>
+<p>Previously we changed the NuttX Start Address in <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L79-L80"><strong>nsh/defconfig</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53"><strong>ld.script</strong></a>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx2#start-address-of-nuttx-kernel"><strong>“Start Address of NuttX Kernel”</strong></a></li>
 </ul>
-<p>Remember to change this Linker Script if building for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53">ld.script</a></p>
+<p>Remember to change this Linker Script since we’re building for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53">ld.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>MEMORY
 {
   /* Previously 0x80000000 */
@@ -857,7 +857,7 @@ SECTIONS
   . = 0x40200000;
   .text :
 </code></pre></div>
-<p>Which should match the <strong>NuttX Build Configuration</strong> for Kernel Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig">nsh/defconfig</a></p>
+<p>Which should match the <strong>NuttX Build Configuration</strong> for Kernel Mode: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_ARCH_PGPOOL_PBASE=0x40600000
 CONFIG_ARCH_PGPOOL_VBASE=0x40600000
 // TODO: Fix CONFIG_RAM_SIZE
