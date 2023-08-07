@@ -679,13 +679,23 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
 ...
 ```
 
+On that page, remember to document the steps to __Build and Boot NuttX__...
+
+- [__"Build NuttX for Star64"__](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
+
+- [__"NuttX in a Bootable microSD"__](https://lupyuen.github.io/articles/release#nuttx-in-a-bootable-microsd)
+
+- [__"Boot NuttX on Star64"__](https://lupyuen.github.io/articles/release#boot-nuttx-on-star64)
+
+(But skip the __NuttX Startup Sequence__, since it might change)
+
 To update and preview the NuttX Docs, follow the instructions here...
 
 -   [__"NuttX Documentation"__](https://nuttx.apache.org/docs/latest/contributing/documentation.html)
 
     [(See the Log)](https://gist.github.com/lupyuen/c061ac688f430ef11a1c60e0b284a1fe)
 
-And that's how we add a NuttX Arch and NuttX Board!
+And now we're ready to submit the Pull Request. That's how we add a NuttX Arch and NuttX Board!
 
 ![Testing Apache NuttX RTOS on Star64 JH7110 SBC](https://lupyuen.github.io/images/release-star64.jpg)
 
