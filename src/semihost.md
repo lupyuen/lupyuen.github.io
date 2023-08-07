@@ -398,6 +398,12 @@ _NuttX QEMU will load an Initial RAM Disk..._
 
 _Instead of using Semihosting. How?_
 
+In the previous section, we said that...
+
+- [__Initial RAM Disk (initrd)__](https://en.wikipedia.org/wiki/Initial_ramdisk) is a __RAM Disk__, located in RAM (pic above)
+
+- But it's an __Initial__ RAM Disk. Which means there's a Filesystem inside, preloaded with Files and Directories.
+
 To modify NuttX QEMU to load an __Initial RAM Disk__, we define the address of the __RAM Disk Memory__ in the Linker Script: [ld-kernel64.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L20-L54)
 
 ```text
