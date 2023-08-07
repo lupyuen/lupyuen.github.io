@@ -773,9 +773,21 @@ We hope to test NuttX soon on the [__PineTab-V RISC-V Tablet__](https://wiki.pin
 
 # What's Next
 
-TODO
+Today we finally have NuttX running on a __Single-Board Computer__: Star64 JH7110 SBC!
 
-If you have a VisionFive2, please try booting NuttX and lemme know if it works!
+- We talked about __building NuttX__ for Star64
+
+- Booting NuttX Kernel (and Initial RAM Disk) with a __Bootable microSD__
+
+- We stepped through everything that happens during __NuttX Startup__
+
+- Hopefully this article will be helpful if you're adding a __NuttX Arch__ or __NuttX Board__
+
+- Stay tuned for __Upcoming Features__ on Star64 and VisionFive2 
+
+  (Maybe PineTab-V too!)
+
+If you have a __StarFive VisionFive2 SBC__, please try booting NuttX and lemme know if it works!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
