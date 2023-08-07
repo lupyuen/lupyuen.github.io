@@ -429,7 +429,7 @@ make
 ## Previously: Configure NuttX for Flat Mode
 ## tools/configure.sh rv-virt:nsh64
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64a/boards/risc-v/qemu-rv/rv-virt">(Complete Steps for <strong>Kernel Mode</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt">(Complete Steps for <strong>Kernel Mode</strong>)</a></p>
 <p><em>What’s this Kernel Mode?</em></p>
 <p>According to the <a href="https://cwiki.apache.org/confluence/display/NUTTX/Memory+Configurations"><strong>NuttX Docs on Kernel Mode</strong></a>…</p>
 <blockquote>
@@ -565,7 +565,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <p>(They might be good references for Star64 JH7110)</p>
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/index.html"><strong>LiteX Arty-A7</strong></a> boots from OpenSBI to NuttX (but doesn’t call back to OpenSBI)…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/litex/arty_a7">litex/arty_a7</a></td><td style="text-align: left">RISC-V Board</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/tree/master/boards/risc-v/litex/arty_a7">litex/arty_a7</a></td><td style="text-align: left">RISC-V Board</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/litex/litex_shead.S#L56">litex_shead.S</a></td><td style="text-align: left">Boot Code</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/litex/litex_start.c#L50">litex_start.c</a></td><td style="text-align: left">Startup Code</td></tr>
@@ -575,7 +575,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html">(<strong>VexRISCV SMP</strong> uses a RAM Disk for NuttX Apps)</a></p>
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/mpfs/boards/icicle/index.html"><strong>PolarFire Icicle</strong></a> (based on <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/mpfs/index.html"><strong>PolarFire MPFS</strong></a>) runs a copy of OpenSBI inside NuttX (so it boots in Machine Mode before Supervisor Mode)…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle">mpfs/icicle</a></td><td style="text-align: left">RISC-V Board</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/tree/master/boards/risc-v/mpfs/icicle">mpfs/icicle</a></td><td style="text-align: left">RISC-V Board</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_shead.S#L62">mpfs_shead.S</a></td><td style="text-align: left">Boot Code</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_start.c#L52">mpfs_start.c</a></td><td style="text-align: left">Startup Code</td></tr>
