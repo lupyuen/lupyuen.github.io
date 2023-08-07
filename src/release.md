@@ -64,7 +64,7 @@ Let's walk through the steps to __build NuttX for Star64__...
     $ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
     ```
 
-    This produces the NuttX Kernel [__nuttx.bin__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/nuttx.bin)
+    This produces the NuttX Kernel [__nuttx.bin__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/nuttx.bin)
     
 1.  Build the __NuttX Apps Filesystem__...
 
@@ -77,7 +77,7 @@ Let's walk through the steps to __build NuttX for Star64__...
     $ genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
     ```
 
-    This generates the Initial RAM Disk [__initrd__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/initrd)
+    This generates the Initial RAM Disk [__initrd__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/initrd)
 
 1.  Download the Device Tree [__jh7110-visionfive-v2.dtb__](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb) from [__StarFive VisionFive2 Software Releases__](https://github.com/starfive-tech/VisionFive2/releases).
 
@@ -108,9 +108,9 @@ Let's walk through the steps to __build NuttX for Star64__...
       ../
     ```
 
-    [(See the Build Outputs)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110b-0.0.1)
+    [(See the Build Outputs)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110c-1.0.0)
 
-    [(See the Build Steps)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110b-0.0.1)
+    [(See the Build Steps)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110c-1.0.0)
 
     [(See the Build Log)](https://gist.github.com/lupyuen/c6dc9aeec74d399029ebaf46ac16ef79)
 
@@ -126,11 +126,11 @@ _How do we create a Bootable microSD for NuttX?_
 
 From the previous section, we have...
 
-- NuttX Kernel: [__nuttx.bin__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/nuttx.bin)
+- NuttX Kernel: [__nuttx.bin__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/nuttx.bin)
 
-- Initial RAM Disk: [__initrd__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/initrd)
+- Initial RAM Disk: [__initrd__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/initrd)
 
-- Device Tree: [__jh7110-visionfive-v2.dtb__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/jh7110-visionfive-v2.dtb)
+- Device Tree: [__jh7110-visionfive-v2.dtb__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/jh7110-visionfive-v2.dtb)
 
 Now we pack all 3 files into a __Flat Image Tree (FIT)__...
 
@@ -279,13 +279,13 @@ Finally the __Device Tree__ (not used by NuttX)...
   Loadables:    ramdisk
 ```
 
-This produces the Flat Image Tree [__starfiveu.fit__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/starfiveu.fit), which we'll copy later to a microSD Card.
+This produces the Flat Image Tree [__starfiveu.fit__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/starfiveu.fit), which we'll copy later to a microSD Card.
 
 To prepare the microSD Card, download the microSD Image [__sdcard.img__](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img) from [__StarFive VisionFive2 Software Releases__](https://github.com/starfive-tech/VisionFive2/releases).
 
 Write the downloaded image to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
-Copy the file [__starfiveu.fit__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/starfiveu.fit) from above and overwrite the file on the microSD Card...
+Copy the file [__starfiveu.fit__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/starfiveu.fit) from above and overwrite the file on the microSD Card...
 
 ```bash
 ## For macOS: Copy to microSD
@@ -339,7 +339,7 @@ _What happens at startup?_
 
     Which loads into RAM the...
 
-1.  __NuttX Kernel__, together with the...
+1.  [__NuttX Kernel__](https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header), together with the...
 
     [__Initial RAM Disk__](https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk) (NuttX Shell and NuttX Apps inside) and __Device Tree__...
 
