@@ -380,6 +380,15 @@ qemu-system-riscv64 \
 <h1 id="modify-nuttx-qemu-for-initial-ram-disk"><a href="#modify-nuttx-qemu-for-initial-ram-disk">6 Modify NuttX QEMU for Initial RAM Disk</a></h1>
 <p><em>NuttX QEMU will load an Initial RAM Disk…</em></p>
 <p><em>Instead of using Semihosting. How?</em></p>
+<p>In the previous section, we said that…</p>
+<ul>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/Initial_ramdisk"><strong>Initial RAM Disk (initrd)</strong></a> is a <strong>RAM Disk</strong>, located in RAM (pic above)</p>
+</li>
+<li>
+<p>But it’s an <strong>Initial</strong> RAM Disk. Which means there’s a Filesystem inside, preloaded with Files and Directories.</p>
+</li>
+</ul>
 <p>To modify NuttX QEMU to load an <strong>Initial RAM Disk</strong>, we define the address of the <strong>RAM Disk Memory</strong> in the Linker Script: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L20-L54">ld-kernel64.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>MEMORY
 {
