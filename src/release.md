@@ -393,6 +393,12 @@ _But NuttX doesn't actually need a Device Tree!_
 
 Yeah but because the Flat Image Tree needs a Device Tree, we play along anyway.
 
+_Did we create all this code from scratch?_
+
+Actually most of the code came from [__NuttX for QEMU RISC-V__](https://lupyuen.github.io/articles/riscv)! (In Kernel Mode)
+
+It's amazing that we could reuse so much code from NuttX QEMU. And port everything over to Star64 within 2 months!
+
 ![Pull Request for NuttX Arch](https://lupyuen.github.io/images/release-pr.jpg)
 
 # Add the NuttX Arch and Board
