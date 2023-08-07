@@ -87,7 +87,7 @@ Let's walk through the steps to __build NuttX for Star64__...
     $ wget https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb
     ```
 
-    (NuttX doesn't need a Device Tree, but it's needed by U-Boot)
+    (NuttX doesn't need a Device Tree, but U-Boot Bootloader needs it)
 
 1.  (Optional) For easier debugging, we might create the following...
 
@@ -116,9 +116,9 @@ Let's walk through the steps to __build NuttX for Star64__...
 
 Now we create a Bootable microSD...
 
-![NuttX goes into the FAT Partition that has no name](https://lupyuen.github.io/images/release-microsd.png)
+![NuttX goes into the FAT Partition on the microSD](https://lupyuen.github.io/images/release-microsd.png)
 
-_NuttX goes into the FAT Partition that has no name_
+_NuttX goes into the FAT Partition on the microSD_
 
 # NuttX in a Bootable microSD
 
@@ -126,13 +126,13 @@ _How do we create a Bootable microSD for NuttX?_
 
 From the previous section, we have...
 
-1.  NuttX Kernel: [__nuttx.bin__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/nuttx.bin)
+- NuttX Kernel: [__nuttx.bin__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/nuttx.bin)
 
-1.  Initial RAM Disk: [__initrd__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/initrd)
+- Initial RAM Disk: [__initrd__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/initrd)
 
-1.  Device Tree: [__jh7110-visionfive-v2.dtb__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/jh7110-visionfive-v2.dtb)
+- Device Tree: [__jh7110-visionfive-v2.dtb__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/jh7110-visionfive-v2.dtb)
 
-We pack all 3 files into a __Flat Image Tree (FIT)__...
+Now we pack all 3 files into a __Flat Image Tree (FIT)__...
 
 Inside the __nuttx__ folder, create a Text File named __nuttx.its__
 with the following content: [nuttx.its](https://github.com/lupyuen/nuttx-star64/blob/main/nuttx.its)
@@ -199,8 +199,6 @@ Or do this...
 ```bash
 $ wget https://raw.githubusercontent.com/lupyuen/nuttx-star64/main/nuttx.its
 ```
-
-[(Based on visionfive2-fit-image.its)](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/visionfive2-fit-image.its)
 
 Package the NuttX Kernel, Initial RAM Disk and Device Tree into a Flat Image Tree...
 
@@ -814,7 +812,11 @@ The Software Release includes an __SD Card Image__ that boots OK on Star64...
 
 (We reused the SD Card Image for NuttX)
 
-Based on the files above, we figured out how to generate the __Flat Image Tree__ for NuttX. [(See the __Makefile__)](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/Makefile#L279-L283)
+Based on the files above, we figured out how to generate the __Flat Image Tree__ for NuttX...
+
+- [__Makefile__](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/Makefile#L279-L283)
+
+- [__visionfive2-fit-image.its__](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/visionfive2-fit-image.its)
 
 Also we see the script that generates the __SD Card Image__: [genimage.sh](https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/genimage.sh)
 
