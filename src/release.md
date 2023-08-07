@@ -624,7 +624,7 @@ CONFIG_DEBUG_WARN=y
 
 - __MM__ is for Memory Management, for troubleshooting Memory Mapping issues
 
-- __FS__ is for File System
+- __FS__ is for File System, like the Initial RAM Disk
 
 Before merging with NuttX Mainline, remember to remove the Debug Options for BINFMT, FS, MM and SCHED.
 

@@ -60,7 +60,7 @@ static void u16550_putc(
 }
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/uart_16550.c#L1696-L1712)
+[(Source)](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1696-L1712)
 
 _Is the UART Base Address correct?_
 
@@ -93,7 +93,7 @@ u16550_serialin(   // Read UART Register...
 )
 ```
 
-Inside [__u16550_serialin__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/uart_16550.c#L604-L618), we read a UART Register at the Offset...
+Inside [__u16550_serialin__](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L604-L618), we read a UART Register at the Offset...
 
 ```c
 *((FAR volatile uart_datawidth_t *)
@@ -103,7 +103,7 @@ Inside [__u16550_serialin__](https://github.com/lupyuen2/wip-pinephone-nuttx/blo
 
 _What's the UART Register Offset?_
 
-[__UART_LSR_OFFSET__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/include/nuttx/serial/uart_16550.h#L172-L200) (Offset of Line Status Register) is...
+[__UART_LSR_OFFSET__](https://github.com/apache/nuttx/blob/master/include/nuttx/serial/uart_16550.h#L172-L200) (Offset of Line Status Register) is...
 
 ```c
 // UART Line Status Register
@@ -116,7 +116,7 @@ _What's the UART Register Offset?_
   (CONFIG_16550_REGINCR * UART_LSR_INCR)
 ```
 
-[__16550_REGINCR__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/Kconfig-16550#L501-L520) defaults to 1...
+[__16550_REGINCR__](https://github.com/apache/nuttx/blob/master/drivers/serial/Kconfig-16550#L501-L520) defaults to 1...
 
 ```text
 config 16550_REGINCR
@@ -144,7 +144,7 @@ config 16550_REGINCR
   default 1
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/Kconfig-16550#L501-L520)
+[(Source)](https://github.com/apache/nuttx/blob/master/drivers/serial/Kconfig-16550#L501-L520)
 
 Which means that the 16550 UART Registers are spaced __1 byte apart__...
 
@@ -220,7 +220,7 @@ We fix the NuttX Configuration in "`make` `menuconfig`"...
 
 - Device Drivers > Serial Driver Support > 16550 UART Chip support > Address Increment Between 16550 Registers
 
-And change it from 1 to 4: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18)
+And change it from 1 to 4: [nsh/defconfig](https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18)
 
 ```bash
 CONFIG_16550_REGINCR=4
@@ -252,7 +252,7 @@ We move on to the tougher topic: Machine Mode vs Supervisor Mode...
 
 We ran into another problem when printing to the UART Port...
 
-NuttX on Star64 gets stuck when we enter a __Critical Section__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/drivers/serial/uart_16550.c#L1769-L1806)
+NuttX on Star64 gets stuck when we enter a __Critical Section__: [uart_16550.c](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1769-L1806)
 
 ```c
 // Print a character to the UART Port
@@ -392,7 +392,7 @@ _From whence it came?_
 csrrc a5, mstatus, a5
 ```
 
-We saw the above RISC-V Assembly emitted by [__up_putc__](https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return) and [__enter_critical_section__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/include/nuttx/irq.h#L156-L191), let's track it down.
+We saw the above RISC-V Assembly emitted by [__up_putc__](https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return) and [__enter_critical_section__](https://github.com/apache/nuttx/blob/master/include/nuttx/irq.h#L156-L191), let's track it down.
 
 [__enter_critical_section__](https://github.com/apache/nuttx/blob/master/include/nuttx/irq.h#L156-L191) calls [__up_irq_save__](https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L674-L703), which is defined as...
 
@@ -461,7 +461,7 @@ In the previous section we discovered that we should enable __ARCH_USE_S_MODE__,
 
 [(Because Star64 boots NuttX in Supervisor Mode)](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels)
 
-Searching NuttX for __ARCH_USE_S_MODE__ gives us this Build Configuration for __NuttX Kernel Mode__: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43)
+Searching NuttX for __ARCH_USE_S_MODE__ gives us this Build Configuration for __NuttX Kernel Mode__: [knsh64/defconfig](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43)
 
 ```bash
 CONFIG_ARCH_USE_S_MODE=y
@@ -630,7 +630,7 @@ We'll find out why in the next article!
 
 -   [__"Star64 JH7110 + NuttX RTOS: RISC-V Semihosting and Initial RAM Disk"__](https://lupyuen.github.io/articles/semihost)
 
-__TODO:__ Port [__up_mtimer_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210) to Star64
+__TODO:__ Port [__up_mtimer_initialize__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210) to Star64
 
 [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/32/files)
 
@@ -657,7 +657,7 @@ We found the following NuttX Ports that run in __RISC-V Supervisor Mode with Ope
 | | |
 |:---|:---|
 | [litex/arty_a7](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/litex/arty_a7) | RISC-V Board
-| [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34) | Build Configuration
+| [knsh/defconfig](https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34) | Build Configuration
 | [litex_shead.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/litex/litex_shead.S#L56) | Boot Code
 | [litex_start.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/litex/litex_start.c#L50) | Startup Code
 | &nbsp;
@@ -669,7 +669,7 @@ We found the following NuttX Ports that run in __RISC-V Supervisor Mode with Ope
 | | |
 |:---|:---|
 | [mpfs/icicle](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle) | RISC-V Board
-| [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39) | Build Configuration
+| [knsh/defconfig](https://github.com/apache/nuttx/blob/master/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39) | Build Configuration
 | [mpfs_shead.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_shead.S#L62) | Boot Code
 | [mpfs_start.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_start.c#L52) | Startup Code
 | [mpfs_opensbi.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602) | OpenSBI in NuttX

@@ -349,7 +349,7 @@ Which becomes __NuttX IRQ 57__. (Offset by 25)
 
 [(See __RISCV_IRQ_SEXT__)](https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L75-L86)
 
-That's why we configure the __NuttX UART IRQ__ like so: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L17)
+That's why we configure the __NuttX UART IRQ__ like so: [nsh/defconfig](https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L17)
 
 ```bash
 CONFIG_16550_UART0_IRQ=57

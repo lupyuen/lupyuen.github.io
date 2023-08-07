@@ -66,7 +66,7 @@ _We're printing to the Serial Console on QEMU Emulator..._
 
 _What's the UART Controller in QEMU?_
 
-We check the __NuttX Build Configuration__ for QEMU: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
+We check the __NuttX Build Configuration__ for QEMU: [nsh64/defconfig](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
 
 ```text
 CONFIG_16550_ADDRWIDTH=0
@@ -195,7 +195,7 @@ UART0 Base Address is at __`0x1000` `0000`__, according to...
 
 _Isn't that the same UART Base Address as QEMU?_
 
-Yep! Earlier we saw the __UART Base Address__ for NuttX QEMU: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
+Yep! Earlier we saw the __UART Base Address__ for NuttX QEMU: [nsh64/defconfig](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
 
 ```text
 CONFIG_16550_UART0_BASE=0x10000000
@@ -266,7 +266,7 @@ From previous articles, we saw that Star64's U-Boot Bootloader will load Linux K
 
 Thus we do the same for NuttX on Star64.
 
-This is how we set the Start Address to __`0x4020` `0000`__ in our __NuttX Build Configuration__: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L92-L93)
+This is how we set the Start Address to __`0x4020` `0000`__ in our __NuttX Build Configuration__: [nsh/defconfig](https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L79-L80)
 
 ```text
 // TODO: Fix CONFIG_RAM_SIZE
@@ -274,7 +274,7 @@ CONFIG_RAM_SIZE=33554432
 CONFIG_RAM_START=0x40200000
 ```
 
-And our __NuttX Linker Script__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53)
+And our __NuttX Linker Script__: [ld.script](https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53)
 
 ```text
 MEMORY
@@ -913,11 +913,11 @@ Note that we don't load the Trap Vector Table, because we'll use OpenSBI for Cra
 
 # Appendix: NuttX Start Address
 
-Previously we changed the NuttX Start Address in [__nsh/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L92-L93) and [__ld.script__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53)...
+Previously we changed the NuttX Start Address in [__nsh/defconfig__](https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L79-L80) and [__ld.script__](https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53)...
 
 - [__"Start Address of NuttX Kernel"__](https://lupyuen.github.io/articles/nuttx2#start-address-of-nuttx-kernel)
 
-Remember to change this Linker Script if building for __NuttX Kernel Mode__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53)
+Remember to change this Linker Script since we're building for __NuttX Kernel Mode__: [ld.script](https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53)
 
 ```text
 MEMORY
@@ -937,7 +937,7 @@ SECTIONS
   .text :
 ```
 
-Which should match the __NuttX Build Configuration__ for Kernel Mode: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/jh7110b/boards/risc-v/jh7110/star64/configs/nsh/defconfig)
+Which should match the __NuttX Build Configuration__ for Kernel Mode: [nsh/defconfig](https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig)
 
 ```text
 CONFIG_ARCH_PGPOOL_PBASE=0x40600000
