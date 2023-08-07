@@ -321,6 +321,8 @@ $ help
 
 [(Watch the __Demo Video__ on YouTube)](https://youtu.be/6vQ-TXXojbQ)
 
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/eef8de0817ceed2072b2bacc925cdd96)
+
 [__Booting NuttX over TFTP__](https://lupyuen.github.io/articles/tftp) is also supported on Star64.
 
 _What happens at startup?_
