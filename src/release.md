@@ -681,13 +681,11 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
 
 On that page, remember to document the steps to __Build and Boot NuttX__...
 
-- [__"Build NuttX for Star64"__](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
+- [__Toolchain__](https://github.com/apache/nuttx/blob/52527d9915ea0ba1d7e75bb9f2f81356bb2b8ba9/Documentation/platforms/risc-v/jh7110/boards/star64/index.rst#risc-v-toolchain) and [__Building__](https://github.com/apache/nuttx/blob/52527d9915ea0ba1d7e75bb9f2f81356bb2b8ba9/Documentation/platforms/risc-v/jh7110/boards/star64/index.rst#building)
 
-- [__"NuttX in a Bootable microSD"__](https://lupyuen.github.io/articles/release#nuttx-in-a-bootable-microsd)
+- [__Serial Console__](https://github.com/apache/nuttx/blob/52527d9915ea0ba1d7e75bb9f2f81356bb2b8ba9/Documentation/platforms/risc-v/jh7110/boards/star64/index.rst#serial-console) and [__Booting__](https://github.com/apache/nuttx/blob/52527d9915ea0ba1d7e75bb9f2f81356bb2b8ba9/Documentation/platforms/risc-v/jh7110/boards/star64/index.rst#booting) 
 
-- [__"Boot NuttX on Star64"__](https://lupyuen.github.io/articles/release#boot-nuttx-on-star64)
-
-(But skip the __NuttX Startup Sequence__, since it might change)
+- [__Configurations__](https://github.com/apache/nuttx/blob/52527d9915ea0ba1d7e75bb9f2f81356bb2b8ba9/Documentation/platforms/risc-v/jh7110/boards/star64/index.rst#configurations) and [__Peripheral Support__](https://github.com/apache/nuttx/blob/52527d9915ea0ba1d7e75bb9f2f81356bb2b8ba9/Documentation/platforms/risc-v/jh7110/boards/star64/index.rst#peripheral-support)
 
 To update and preview the NuttX Docs, follow the instructions here...
 
