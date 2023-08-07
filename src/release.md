@@ -311,7 +311,7 @@ Connect Star64 to our computer with a __USB Serial Adapter__...
 - [__"Serial Console on Star64"__](https://lupyuen.github.io/articles/linux#serial-console-on-star64)
 
 Insert the microSD Card into Star64 and power up Star64.
-NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.
+NuttX boots on Star64 and __NuttShell (nsh)__ appears in the Serial Console.
 
 To see the available commands in NuttShell:
 
