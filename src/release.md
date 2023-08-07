@@ -391,13 +391,13 @@ And that's everything that happens when NuttX boots on Star64!
 
 _But NuttX doesn't actually need a Device Tree!_
 
-Yeah but because the Flat Image Tree needs a Device Tree, we play along anyway.
+Yeah but because the Flat Image Tree needs a Device Tree, we do it anyway.
 
-_Did we create all this code from scratch?_
+_We created all this code from scratch?_
 
 Actually most of the code came from [__NuttX for QEMU RISC-V__](https://lupyuen.github.io/articles/riscv)! (In Kernel Mode)
 
-It's amazing that we reused so much code from NuttX QEMU. And port everything over to Star64 within 2 months!
+It's amazing that we reused so much code from NuttX QEMU. And ported everything to Star64 within 2 months!
 
 ![Pull Request for NuttX Arch](https://lupyuen.github.io/images/release-pr.jpg)
 
@@ -439,13 +439,13 @@ The fix is to __wait for the UART__ to be not busy before writing to LCR. We sub
 
 - [__"serial/uart_16550: Wait before setting Line Control Register"__](https://github.com/apache/nuttx/pull/10019)
 
-  [(How to submit a __Pull Request__ for NuttX)](https://lupyuen.github.io/articles/pr)
-
 Wait for the Pull Request to be merged. Then we add the NuttX Arch...
+
+[(How to submit a __Pull Request__ for NuttX)](https://lupyuen.github.io/articles/pr)
 
 ## Add the NuttX Arch
 
-Next we submit the Pull Request that implements the JH7110 SoC as a __NuttX Arch__...
+Next we submit the Pull Request that implements the support for JH7110 SoC as a __NuttX Arch__...
 
 - [__"arch/risc-v: Add support for StarFive JH7110 SoC"__](https://github.com/apache/nuttx/pull/10069)
 
@@ -489,11 +489,11 @@ Then we add the __NuttX Arch Source Files__ for JH7110 SoC at...
 
 - [__arch/risc-v/src/jh7110__](https://github.com/apache/nuttx/tree/master/arch/risc-v/src/jh7110)
 
-  [(About the files)](https://github.com/apache/nuttx/pull/10069)
+  [(Description of each file)](https://github.com/apache/nuttx/pull/10069)
 
 ## Add the NuttX Board
 
-Finally we submit the Pull Request that implements Star64 SBC as a __NuttX Board__...
+Finally we create the Pull Request that implements the support for Star64 SBC as a __NuttX Board__...
 
 - [__"boards/risc-v: Add support for PINE64 Star64 JH7110 SBC"__](https://github.com/apache/nuttx/pull/10094)
 
@@ -524,7 +524,7 @@ And we add the __NuttX Board Source Files__ for Star64 SBC at...
 
 - [__boards/risc-v/jh7110/star64__](https://github.com/apache/nuttx/tree/master/boards/risc-v/jh7110/star64)
 
-  [(About the files)](https://github.com/apache/nuttx/pull/10094)
+  [(Description of each file)](https://github.com/apache/nuttx/pull/10094)
 
 But don't submit the Pull Request yet! We'll add the __NuttX Documentation__ in the next section.
 
@@ -555,7 +555,7 @@ boards/risc-v/jh7110/star64/scripts/Make.defs
 boards/risc-v/jh7110/star64/scripts/ld.script
 ```
 
-That we can __copy to another branch__ in a (barebones) script...
+That we can __copy to another branch__ in a simple script...
 
 ```bash
 b=$HOME/new_branch
@@ -705,11 +705,11 @@ And now we're ready to submit the Pull Request. That's how we add a NuttX Arch a
 
 # Upcoming Features
 
-_How will we create the missing drivers?_
+_How will we create the missing drivers for Star64 JH7110?_
 
 We welcome [__your contribution to NuttX__](https://lupyuen.github.io/articles/pr)!
 
-Here are the relevant docs from...
+Below are the relevant docs from...
 
 - [__JH7110 Technical Reference Manual__](https://doc-en.rvspace.org/JH7110/TRM/)
 
@@ -759,7 +759,7 @@ __Display:__
 
 - [Multimedia Developing Guide](http://doc-en.rvspace.org/VisionFive2/DG_Multimedia/)
 
-- [LCD Developing and Porting Guide](http://doc-en.rvspace.org/VisionFive2/DG_LCD/)
+- [MIPI LCD Developing and Porting Guide](http://doc-en.rvspace.org/VisionFive2/DG_LCD/)
 
 __Image Sensor Processor:__
 
@@ -767,7 +767,7 @@ __Image Sensor Processor:__
 
 - [ISP Developing and Porting Guide](http://doc-en.rvspace.org/VisionFive2/DG_ISP/)
 
-Stay tuned for new features!
+We hope to test NuttX soon on the [__PineTab-V RISC-V Tablet__](https://wiki.pine64.org/wiki/PineTab-V). Stay tuned for updates!
 
 # What's Next
 
@@ -881,7 +881,7 @@ _How did we figure out the UART Clock for JH7110?_
 CONFIG_16550_UART0_CLOCK=23040000
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/57d5bba4723b58c7bb947f9fa206be377c80c8d0/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18)
+[(Source)](https://github.com/apache/nuttx/blob/52527d9915ea0ba1d7e75bb9f2f81356bb2b8ba9/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18)
 
 We logged the values of DLM and DLL in the UART Driver during startup...
 
@@ -916,4 +916,4 @@ Thus `uartclk=23040000`. And that's why we set...
 CONFIG_16550_UART0_CLOCK=23040000
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/57d5bba4723b58c7bb947f9fa206be377c80c8d0/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18)
+[(Source)](https://github.com/apache/nuttx/blob/52527d9915ea0ba1d7e75bb9f2f81356bb2b8ba9/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18)
