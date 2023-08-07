@@ -366,7 +366,8 @@ NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.</p>
 <p>Which loads into RAM the…</p>
 </li>
 <li>
-<p><strong>NuttX Kernel</strong>, together with the <strong>Initial RAM Disk</strong> (containing NuttX Apps) and <strong>Device Tree</strong>…</p>
+<p><strong>NuttX Kernel</strong>, together with the…</p>
+<p><a href="https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk"><strong>Initial RAM Disk</strong></a> (containing NuttX Shell and NuttX Apps) and <strong>Device Tree</strong>…</p>
 <p>And starts (in <a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels"><strong>RISC-V Supervisor Mode</strong></a>) the…</p>
 </li>
 <li>
@@ -380,7 +381,7 @@ NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.</p>
 <p>Which calls <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129"><strong>jh7110_start_s</strong></a> and…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284"><strong>jh7110_mm_init</strong></a> to initialise the <strong>Memory Mangement Unit</strong> (for Kernel Memory Protection) and…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284"><strong>jh7110_mm_init</strong></a> to prepare the <strong>Memory Mangement Unit</strong> (for Kernel and I/O Memory Protection) and…</p>
 <p><a href="https://lupyuen.github.io/articles/unicorn2#after-primary-routine"><strong>nx_start</strong></a> to start the <strong>NuttX Drivers</strong> and <a href="https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk"><strong>Initial RAM Disk</strong></a> (containing the <strong>NuttX Apps</strong>)…</p>
 <p>And starts…</p>
 </li>
@@ -413,7 +414,7 @@ NuttX boots on Star64 and NuttShell (nsh) appears in the Serial Console.</p>
 <p>Yeah but because the Flat Image Tree needs a Device Tree, we play along anyway.</p>
 <p><em>Did we create all this code from scratch?</em></p>
 <p>Actually most of the code came from <a href="https://lupyuen.github.io/articles/riscv"><strong>NuttX for QEMU RISC-V</strong></a>! (In Kernel Mode)</p>
-<p>It’s amazing that we could reuse so much code from NuttX QEMU. And port everything over to Star64 within 2 months!</p>
+<p>It’s amazing that we reused so much code from NuttX QEMU. And port everything over to Star64 within 2 months!</p>
 <p><img src="https://lupyuen.github.io/images/release-pr.jpg" alt="Pull Request for NuttX Arch" /></p>
 <h1 id="add-the-nuttx-arch-and-board"><a href="#add-the-nuttx-arch-and-board">4 Add the NuttX Arch and Board</a></h1>
 <p><em>How did we add Star64 JH7110 to NuttX?</em></p>
