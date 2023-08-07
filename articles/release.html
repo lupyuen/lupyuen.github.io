@@ -156,7 +156,7 @@ $ genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
 <p>Save it into the <strong>nuttx</strong> folder. Or do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ wget https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb
 </code></pre></div>
-<p>(NuttX doesn’t need a Device Tree, but it’s needed by U-Boot)</p>
+<p>(NuttX doesn’t need a Device Tree, but U-Boot Bootloader needs it)</p>
 </li>
 <li>
 <p>(Optional) For easier debugging, we might create the following…</p>
@@ -181,12 +181,12 @@ $ riscv64-unknown-elf-objdump \
 </li>
 </ol>
 <p>Now we create a Bootable microSD…</p>
-<p><img src="https://lupyuen.github.io/images/release-microsd.png" alt="NuttX goes into the FAT Partition that has no name" /></p>
-<p><em>NuttX goes into the FAT Partition that has no name</em></p>
+<p><img src="https://lupyuen.github.io/images/release-microsd.png" alt="NuttX goes into the FAT Partition on the microSD" /></p>
+<p><em>NuttX goes into the FAT Partition on the microSD</em></p>
 <h1 id="nuttx-in-a-bootable-microsd"><a href="#nuttx-in-a-bootable-microsd">2 NuttX in a Bootable microSD</a></h1>
 <p><em>How do we create a Bootable microSD for NuttX?</em></p>
 <p>From the previous section, we have…</p>
-<ol>
+<ul>
 <li>
 <p>NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/nuttx.bin"><strong>nuttx.bin</strong></a></p>
 </li>
@@ -196,8 +196,8 @@ $ riscv64-unknown-elf-objdump \
 <li>
 <p>Device Tree: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/jh7110-visionfive-v2.dtb"><strong>jh7110-visionfive-v2.dtb</strong></a></p>
 </li>
-</ol>
-<p>We pack all 3 files into a <strong>Flat Image Tree (FIT)</strong>…</p>
+</ul>
+<p>Now we pack all 3 files into a <strong>Flat Image Tree (FIT)</strong>…</p>
 <p>Inside the <strong>nuttx</strong> folder, create a Text File named <strong>nuttx.its</strong>
 with the following content: <a href="https://github.com/lupyuen/nuttx-star64/blob/main/nuttx.its">nuttx.its</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/dts-v1/;
@@ -258,7 +258,6 @@ with the following content: <a href="https://github.com/lupyuen/nuttx-star64/blo
 <p>Or do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ wget https://raw.githubusercontent.com/lupyuen/nuttx-star64/main/nuttx.its
 </code></pre></div>
-<p><a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/visionfive2-fit-image.its">(Based on visionfive2-fit-image.its)</a></p>
 <p>Package the NuttX Kernel, Initial RAM Disk and Device Tree into a Flat Image Tree…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS:
 $ brew install u-boot-tools
@@ -800,7 +799,15 @@ Password: starfive
 </li>
 </ul>
 <p>(We reused the SD Card Image for NuttX)</p>
-<p>Based on the files above, we figured out how to generate the <strong>Flat Image Tree</strong> for NuttX. <a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/Makefile#L279-L283">(See the <strong>Makefile</strong>)</a></p>
+<p>Based on the files above, we figured out how to generate the <strong>Flat Image Tree</strong> for NuttX…</p>
+<ul>
+<li>
+<p><a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/Makefile#L279-L283"><strong>Makefile</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/visionfive2-fit-image.its"><strong>visionfive2-fit-image.its</strong></a></p>
+</li>
+</ul>
 <p>Also we see the script that generates the <strong>SD Card Image</strong>: <a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/genimage.sh">genimage.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>genimage \
   --rootpath &quot;${ROOTPATH_TMP}&quot;     \
