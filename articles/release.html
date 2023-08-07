@@ -138,7 +138,7 @@ $ tools/configure.sh star64:nsh
 $ make
 $ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
 </code></pre></div>
-<p>This produces the NuttX Kernel <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/nuttx.bin"><strong>nuttx.bin</strong></a></p>
+<p>This produces the NuttX Kernel <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/nuttx.bin"><strong>nuttx.bin</strong></a></p>
 </li>
 <li>
 <p>Build the <strong>NuttX Apps Filesystem</strong>…</p>
@@ -149,7 +149,7 @@ $ make import
 $ popd
 $ genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
 </code></pre></div>
-<p>This generates the Initial RAM Disk <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/initrd"><strong>initrd</strong></a></p>
+<p>This generates the Initial RAM Disk <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/initrd"><strong>initrd</strong></a></p>
 </li>
 <li>
 <p>Download the Device Tree <a href="https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb"><strong>jh7110-visionfive-v2.dtb</strong></a> from <a href="https://github.com/starfive-tech/VisionFive2/releases"><strong>StarFive VisionFive2 Software Releases</strong></a>.</p>
@@ -175,8 +175,8 @@ $ riscv64-unknown-elf-objdump \
   -t -S --demangle --line-numbers --wide \
   ../
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110b-0.0.1">(See the Build Outputs)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110b-0.0.1">(See the Build Steps)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110c-1.0.0">(See the Build Outputs)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110c-1.0.0">(See the Build Steps)</a></p>
 <p><a href="https://gist.github.com/lupyuen/c6dc9aeec74d399029ebaf46ac16ef79">(See the Build Log)</a></p>
 </li>
 </ol>
@@ -188,13 +188,13 @@ $ riscv64-unknown-elf-objdump \
 <p>From the previous section, we have…</p>
 <ul>
 <li>
-<p>NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/nuttx.bin"><strong>nuttx.bin</strong></a></p>
+<p>NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/nuttx.bin"><strong>nuttx.bin</strong></a></p>
 </li>
 <li>
-<p>Initial RAM Disk: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/initrd"><strong>initrd</strong></a></p>
+<p>Initial RAM Disk: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/initrd"><strong>initrd</strong></a></p>
 </li>
 <li>
-<p>Device Tree: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/jh7110-visionfive-v2.dtb"><strong>jh7110-visionfive-v2.dtb</strong></a></p>
+<p>Device Tree: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/jh7110-visionfive-v2.dtb"><strong>jh7110-visionfive-v2.dtb</strong></a></p>
 </li>
 </ul>
 <p>Now we pack all 3 files into a <strong>Flat Image Tree (FIT)</strong>…</p>
@@ -325,10 +325,10 @@ Created:         Fri Aug  4 23:20:52 2023
   FDT:          fdt
   Loadables:    ramdisk
 </code></pre></div>
-<p>This produces the Flat Image Tree <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/starfiveu.fit"><strong>starfiveu.fit</strong></a>, which we’ll copy later to a microSD Card.</p>
+<p>This produces the Flat Image Tree <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/starfiveu.fit"><strong>starfiveu.fit</strong></a>, which we’ll copy later to a microSD Card.</p>
 <p>To prepare the microSD Card, download the microSD Image <a href="https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img"><strong>sdcard.img</strong></a> from <a href="https://github.com/starfive-tech/VisionFive2/releases"><strong>StarFive VisionFive2 Software Releases</strong></a>.</p>
 <p>Write the downloaded image to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
-<p>Copy the file <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110b-0.0.1/starfiveu.fit"><strong>starfiveu.fit</strong></a> from above and overwrite the file on the microSD Card…</p>
+<p>Copy the file <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/starfiveu.fit"><strong>starfiveu.fit</strong></a> from above and overwrite the file on the microSD Card…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS: Copy to microSD
 cp starfiveu.fit &quot;/Volumes/NO NAME&quot;
 
@@ -366,7 +366,7 @@ NuttX boots on Star64 and <strong>NuttShell (nsh)</strong> appears in the Serial
 <p>Which loads into RAM the…</p>
 </li>
 <li>
-<p><strong>NuttX Kernel</strong>, together with the…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header"><strong>NuttX Kernel</strong></a>, together with the…</p>
 <p><a href="https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk"><strong>Initial RAM Disk</strong></a> (NuttX Shell and NuttX Apps inside) and <strong>Device Tree</strong>…</p>
 <p>And starts (in <a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels"><strong>RISC-V Supervisor Mode</strong></a>) the…</p>
 </li>
