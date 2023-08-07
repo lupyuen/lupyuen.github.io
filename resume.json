@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Star64 JH7110 + NuttX RTOS: Creating the First Release for the RISC-V SBC",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-08-07",
+      "website": "https://lupyuen.github.io/articles/release",
+      "summary": "Pine64's Star64 JH7110 RISC-V SBC is now supported in Apache NuttX RTOS Mainline! Let's review how we created the first release of NuttX for Star64"
+    },
+    {
       "name": "Star64 JH7110 + NuttX RTOS: RISC-V PLIC Interrupts and Serial I/O",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-08-02",

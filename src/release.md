@@ -1,6 +1,6 @@
 # Star64 JH7110 + NuttX RTOS: Creating the First Release for the RISC-V SBC
 
-📝 _12 Aug 2023_
+📝 _7 Aug 2023_
 
 ![Apache NuttX RTOS boots OK on Star64 JH7110 SBC](https://lupyuen.github.io/images/release-title.png)
 
