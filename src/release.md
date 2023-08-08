@@ -333,6 +333,8 @@ $ help
 
 Step by step, here's everything that happens when NuttX boots on our SBC...
 
+![OpenSBI and U-Boot Bootloader](https://lupyuen.github.io/images/star64-opensbi.jpg)
+
 1.  [__OpenSBI (Supervisor Binary Interface)__](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface) is the first thing that boots on our RISC-V SBC.
 
     OpenSBI provides Secure Access to the [__Low-Level System Functions__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.pdf) (controlling CPUs, Timers, Interrupts) for the JH7110 SoC.
@@ -405,7 +407,7 @@ Actually most of the code came from [__NuttX for QEMU RISC-V__](https://lupyuen.
 
 It's amazing that we reused so much code from NuttX QEMU. And ported everything to Star64 within 2 months!
 
-![Pull Request for NuttX Arch](https://lupyuen.github.io/images/release-pr.jpg)
+![Pull Request for NuttX Board](https://lupyuen.github.io/images/release-pr2.jpg)
 
 # Add the NuttX Arch and Board
 
