@@ -325,69 +325,71 @@ $ help
 
 [__Booting NuttX over TFTP__](https://lupyuen.github.io/articles/tftp) is also supported on Star64.
 
-_What happens at startup?_
+![Booting NuttX over the Network with TFTP](https://lupyuen.github.io/images/tftp-flow.jpg)
 
-1.  __OpenSBI (Supervisor Binary Interface)__ is the first thing that boots on our SBC...
+# NuttX Startup Explained
+
+Step by step, here's everything that happens when NuttX boots on our SBC...
+
+1.  [__OpenSBI (Supervisor Binary Interface)__](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface) is the first thing that boots on our RISC-V SBC.
+
+    OpenSBI provides Secure Access to the [__Low-Level System Functions__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.pdf) (controlling CPUs, Timers, Interrupts) for the JH7110 SoC.
+    
+    OpenSBI boots in [__RISC-V Machine Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels), the most powerful mode in a RISC-V system.
 
     [__"OpenSBI Supervisor Binary Interface"__](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface)
 
-    (In [__RISC-V Machine Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels))
+    ![OpenSBI starts U-Boot Bootloader](https://lupyuen.github.io/images/privilege-title.jpg)
 
-1.  __U-Boot Bootloader__ is next (in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels))...
+1.  [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) starts after OpenSBI, in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels).
+
+    (Which is less powerful than Machine Mode)
 
     [__"U-Boot Bootloader for Star64"__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
 
-    Which loads into RAM the...
+    ![Star64 boots with NuttX Kernel, Device Tree and Initial RAM Disk](https://lupyuen.github.io/images/semihost-title.jpg)
 
-1.  [__NuttX Kernel__](https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header), together with the...
+1.  U-Boot Bootloader loads into RAM the [__NuttX Kernel__](https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header), __Device Tree__ and [__Initial RAM Disk__](https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk).
 
-    [__Initial RAM Disk__](https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk) (NuttX Shell and NuttX Apps inside) and __Device Tree__...
+    Inside the Initial RAM Disk: __NuttX Shell__ and __NuttX Apps__.
 
-    And starts (in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels)) the...
-
-1.  __NuttX Boot Code__ (in RISC-V Assembly)...
+1.  __NuttX Kernel__ starts in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels) and executes the __NuttX Boot Code__ (in RISC-V Assembly).
 
     [__"NuttX in Supervisor Mode (Boot Code)"__](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode)
 
-    Which calls the...
+1.  [__NuttX Start Code__](https://lupyuen.github.io/articles/privilege#initialise-risc-v-supervisor-mode) (in C) runs next.
 
-1.  __NuttX Start Code__ (in C)...
+    It prepares the [__RISC-V Memory Management Unit__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284), to protect the Kernel Memory and I/O Memory.
 
-    [__"Initialise RISC-V Supervisor Mode: jh7110_start"__](https://lupyuen.github.io/articles/privilege#initialise-risc-v-supervisor-mode)
+    [__"Initialise RISC-V Supervisor Mode: jh7110_start"__](https://lupyuen.github.io/articles/privilege#initialise-risc-v-supervisor-mode) and [__jh7110_start_s__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129)
 
-    Which calls [__jh7110_start_s__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129) and...
+1.  [__NuttX Kernel (nx_start)__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine) starts the __NuttX Drivers__ and mounts the [__Initial RAM Disk__](https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk) (containing the NuttX Shell and Apps)
 
-1.  [__jh7110_mm_init__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284) to prepare the __Memory Mangement Unit__ (for Kernel and I/O Memory Protection) and...
-
-    [__nx_start__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine) to start the __NuttX Drivers__ and [__Initial RAM Disk__](https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk) (containing the __NuttX Apps__)...
-
-    And starts...
-
-1.  __NuttX Shell__ (NSH) for the Command-Line Interface...
+1.  Followed by the [__NuttX Shell (NSH)__](https://lupyuen.github.io/articles/semihost#nuttx-apps-filesystem), for the Command-Line Interface
 
     [__"NuttX Apps Filesystem: init / nsh"__](https://lupyuen.github.io/articles/semihost#nuttx-apps-filesystem)
 
-    (Phew!)
+Finally we talk about the __NuttX Shell and Apps__...
 
-__NuttX Shell__ (NSH) and __NuttX Apps__ will run in __RISC-V User Mode__ and make...
+1.  __NuttX Shell__ (NSH) and __NuttX Apps__ (like "hello") will run in __RISC-V User Mode__.
 
-1.  __System Calls__ to NuttX Kernel, jumping from User Mode to Supervisor Mode...
+    (Which is the least powerful mode)
+
+1.  They will make [__System Calls__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu) to NuttX Kernel, jumping from __User Mode__ to __Supervisor Mode__. (And back)
 
     [__"ECALL from RISC-V User Mode to Supervisor Mode"__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu)
 
-    Like when doing...
-
-1.  __Serial I/O__ for Console Input and Output...
+1.  System Calls will happen when NuttX Shell and Apps do [__Console Output__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu) and [__Console Input__](https://lupyuen.github.io/articles/plic#serial-input-in-nuttx-qemu).
 
     [__"Serial Output in NuttX"__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu)
 
     [__"Serial Input in NuttX"__](https://lupyuen.github.io/articles/plic#serial-input-in-nuttx-qemu)
 
-    Which will trigger...
-
-1.  __RISC-V Interrupts__ for the 16550 UART Controller...
+1.  Which will trigger __RISC-V Interrupts__ in the 16550 UART Controller.
 
     [__"Platform-Level Interrupt Controller"__](https://lupyuen.github.io/articles/plic#platform-level-interrupt-controller)
+
+    ![UART Interrupts are handled by the RISC-V Platform-Level Interrupt Controller (PLIC)](https://lupyuen.github.io/images/plic-title.jpg)
 
 And that's everything that happens when NuttX boots on Star64!
 
