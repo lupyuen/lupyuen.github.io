@@ -358,6 +358,7 @@ NuttX boots on Star64 and <strong>NuttShell (nsh)</strong> appears in the Serial
 <p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="Booting NuttX over the Network with TFTP" /></p>
 <h1 id="nuttx-startup-explained"><a href="#nuttx-startup-explained">4 NuttX Startup Explained</a></h1>
 <p>Step by step, here’s everything that happens when NuttX boots on our SBC…</p>
+<p><img src="https://lupyuen.github.io/images/star64-opensbi.jpg" alt="OpenSBI and U-Boot Bootloader" /></p>
 <ol>
 <li>
 <p><a href="https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface"><strong>OpenSBI (Supervisor Binary Interface)</strong></a> is the first thing that boots on our RISC-V SBC.</p>
@@ -420,7 +421,7 @@ NuttX boots on Star64 and <strong>NuttShell (nsh)</strong> appears in the Serial
 <p><em>We created all this code from scratch?</em></p>
 <p>Actually most of the code came from <a href="https://lupyuen.github.io/articles/riscv"><strong>NuttX for QEMU RISC-V</strong></a>! (In Kernel Mode)</p>
 <p>It’s amazing that we reused so much code from NuttX QEMU. And ported everything to Star64 within 2 months!</p>
-<p><img src="https://lupyuen.github.io/images/release-pr.jpg" alt="Pull Request for NuttX Arch" /></p>
+<p><img src="https://lupyuen.github.io/images/release-pr2.jpg" alt="Pull Request for NuttX Board" /></p>
 <h1 id="add-the-nuttx-arch-and-board"><a href="#add-the-nuttx-arch-and-board">5 Add the NuttX Arch and Board</a></h1>
 <p><em>How did we add Star64 JH7110 to NuttX?</em></p>
 <p>When we add a new board to NuttX, we do it in 4 steps…</p>
