@@ -1,6 +1,6 @@
 # Lup's Presentation Slides for (ApacheCon) Community Over Code - ASF Conference Asia 2023
 
-[__Video Presentation__](https://drive.google.com/file/d/1WL-6HVjhtqktHRmZiDbPCOs6934fQlEQ/view?usp=drive_link)
+[__Video Presentation__](https://youtu.be/Wnrq9BlNP9o)
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/1xB0uzIUlzbd5-Lkh9QGaJe5ZPlbgXTTDvDV5EWn3G0E/edit?usp=sharing)
 
