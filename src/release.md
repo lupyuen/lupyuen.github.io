@@ -536,6 +536,14 @@ And we add the __NuttX Board Source Files__ for Star64 SBC at...
 
 But don't submit the Pull Request yet! We'll add the __NuttX Documentation__ in the next section.
 
+_We're good for RISC-V. What about Arm?_
+
+This is how we add a __NuttX Arch and Board for Arm64__...
+
+-   [__"arch/arm64: Add support for PINE64 PinePhone"__](https://github.com/apache/nuttx/pull/7692)
+
+Though we probably should have split it into multiple Pull Requests like for RISC-V.
+
 _Seems we need to copy a bunch of source files across branches?_
 
 No sweat! Suppose we created a staging Pull Request in our own repo...
