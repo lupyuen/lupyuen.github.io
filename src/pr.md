@@ -91,6 +91,10 @@ We're ready to code!
 
     [__"arch/arm64: Add support for PINE64 PinePhone"__](https://github.com/apache/nuttx/pull/7692)
 
+    Adding a NuttX Arch (SoC) and Board might need 3 Pull Requests (or more)...
+
+    [__"Add the NuttX Arch and Board"__](https://lupyuen.github.io/articles/release#add-the-nuttx-arch-and-board)
+
 1.  __Modify the code__ in __`nuttx`__ and __`apps`__ to implement our awesome new feature.
 
 1.  __Build and test__ the modified code.
@@ -99,7 +103,7 @@ We're ready to code!
 
 1.  Capture the __Output Log__ and save it as a [__GitHub Gist__](https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1)...
 
-    -   [__"NuttX QEMU Log for Generic Interrupt Controller"__](https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1)
+    [__"NuttX QEMU Log for Generic Interrupt Controller"__](https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1)
 
     We'll add this to our Pull Request. __Test Logs are super helpful__ for NuttX Maintainers!
 
