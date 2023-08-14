@@ -725,6 +725,16 @@ _How will we create the missing drivers for Star64 JH7110?_
 
 We welcome [__your contribution to NuttX__](https://lupyuen.github.io/articles/pr)!
 
+We're doing some analysis of the __HDMI Support for NuttX__ on Star64 JH7110...
+
+- [__HDMI Display for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#hdmi-display-for-star64-jh7110)
+
+- [__DC8200 Display Controller for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#dc8200-display-controller-for-star64-jh7110)
+
+- [__HDMI Controller for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#hdmi-controller-for-star64-jh7110)
+
+- [__LCD Panel for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#lcd-panel-for-star64-jh7110)
+
 Below are the relevant docs from...
 
 - [__JH7110 Technical Reference Manual__](https://doc-en.rvspace.org/JH7110/TRM/)
@@ -763,6 +773,12 @@ __USB, Ethernet:__
 
 - [Ethernet Developing and Porting Guide](http://doc-en.rvspace.org/VisionFive2/PG_Ethernet/)
 
+__Image Sensor Processor:__
+
+- [ISP Reference](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/isp_rgb.html)
+
+- [ISP Developing and Porting Guide](http://doc-en.rvspace.org/VisionFive2/DG_ISP/)
+
 __Display:__
 
 - [Display Subsystem](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/display_subsystem.html)
@@ -776,12 +792,6 @@ __Display:__
 - [Multimedia Developing Guide](http://doc-en.rvspace.org/VisionFive2/DG_Multimedia/)
 
 - [MIPI LCD Developing and Porting Guide](http://doc-en.rvspace.org/VisionFive2/DG_LCD/)
-
-__Image Sensor Processor:__
-
-- [ISP Reference](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/isp_rgb.html)
-
-- [ISP Developing and Porting Guide](http://doc-en.rvspace.org/VisionFive2/DG_ISP/)
 
 We hope to test NuttX soon on the [__PineTab-V RISC-V Tablet__](https://wiki.pine64.org/wiki/PineTab-V). Stay tuned for updates!
 
