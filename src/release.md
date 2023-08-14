@@ -725,7 +725,7 @@ _How will we create the missing drivers for Star64 JH7110?_
 
 We welcome [__your contribution to NuttX__](https://lupyuen.github.io/articles/pr)!
 
-We're doing some analysis of the __HDMI Support for NuttX__ on Star64 JH7110...
+We have started analysing the __HDMI Support for NuttX__ on Star64 JH7110...
 
 - [__HDMI Display for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#hdmi-display-for-star64-jh7110)
 
@@ -735,7 +735,9 @@ We're doing some analysis of the __HDMI Support for NuttX__ on Star64 JH7110...
 
 - [__Test HDMI for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#test-hdmi-for-star64-jh7110)
 
-- [__LCD Panel for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#lcd-panel-for-star64-jh7110)
+- [__Call Flow for DC8200 Display Controller Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-dc8200-display-controller-driver)
+
+- [__Call Flow for HDMI Controller Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-hdmi-controller-driver)
 
 Below are the relevant docs from...
 
