@@ -644,9 +644,14 @@ cp initrd $HOME/tftproot
 -rw-r--r--  1 7930880 initrd
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
-<p>And we boot NuttX on Star64 over TFTP…</p>
+<p>And we boot NuttX on Star64 over TFTP or a microSD Card…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk"><strong>“Boot NuttX over TFTP with Initial RAM Disk”</strong></a></li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk"><strong>“Boot NuttX over TFTP with Initial RAM Disk”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/release#nuttx-in-a-bootable-microsd"><strong>“NuttX in a Bootable microSD”</strong></a></p>
+</li>
 </ul>
 <p><em>Does it work?</em></p>
 <p>Now Star64 JH7110 boots OK with the Initial RAM Disk yay! (Not completely though)</p>
@@ -695,7 +700,6 @@ nx_start: CPU0: Beginning Idle Loop
 <ul>
 <li><a href="https://lupyuen.github.io/articles/plic"><strong>“Star64 JH7110 + NuttX RTOS: RISC-V PLIC Interrupts and Serial I/O”</strong></a></li>
 </ul>
-<p>(<strong>TODO:</strong> Test Initial RAM Disk with MicroSD Card)</p>
 <p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="NuttX Star64 with Initial RAM Disk" /></p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>No more <strong>Semihosting Problems</strong> with NuttX on Star64 JH7110 SBC!</p>
