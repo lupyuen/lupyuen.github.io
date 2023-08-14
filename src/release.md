@@ -733,6 +733,8 @@ We're doing some analysis of the __HDMI Support for NuttX__ on Star64 JH7110...
 
 - [__HDMI Controller for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#hdmi-controller-for-star64-jh7110)
 
+- [__Test HDMI for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#test-hdmi-for-star64-jh7110)
+
 - [__LCD Panel for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#lcd-panel-for-star64-jh7110)
 
 Below are the relevant docs from...
