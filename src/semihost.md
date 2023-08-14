@@ -730,9 +730,11 @@ $ ls -l initrd
 
 [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
 
-And we boot NuttX on Star64 over TFTP...
+And we boot NuttX on Star64 over TFTP or a microSD Card...
 
 - [__"Boot NuttX over TFTP with Initial RAM Disk"__](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk)
+
+- [__"NuttX in a Bootable microSD"__](https://lupyuen.github.io/articles/release#nuttx-in-a-bootable-microsd)
 
 _Does it work?_
 
@@ -786,8 +788,6 @@ So many questions (pic below)...
 We'll find out in the next article!
 
 - [__"Star64 JH7110 + NuttX RTOS: RISC-V PLIC Interrupts and Serial I/O"__](https://lupyuen.github.io/articles/plic)
-
-(__TODO:__ Test Initial RAM Disk with MicroSD Card)
 
 ![NuttX Star64 with Initial RAM Disk](https://lupyuen.github.io/images/semihost-runstar64.png)
 
