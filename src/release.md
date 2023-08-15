@@ -739,13 +739,19 @@ We have started analysing the __HDMI Support for NuttX__ on Star64 JH7110...
 
 - [__Call Flow for DC8200 Display Hardware Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-dc8200-display-hardware-driver)
 
+- [__Call Flow for DC8200 Virtual Display Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-dc8200-virtual-display-driver)
+
 - [__Call Flow for HDMI Controller Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-hdmi-controller-driver)
 
-For the other __JH7110 Peripherals__: Below are the relevant docs from...
+_What about the other JH7110 Peripherals?_
+
+Based on the official docs...
 
 - [__JH7110 Technical Reference Manual__](https://doc-en.rvspace.org/JH7110/TRM/)
 
 - [__VisionFive 2 Developing and Porting Guide__](https://doc-en.rvspace.org/Doc_Center/sdk_developer_guide.html)
+
+Here are the relevant docs for the other JH7110 Peripherals...
 
 __GPIO:__
 
