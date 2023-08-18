@@ -94,7 +94,7 @@ From the pic above, we see that JH7110 uses a __VeriSilicon DC8200 Dual Display 
 
 - __MIPI DPHY / DSI__: Display Serial Interface
 
-  (For LCD Panels, like in the PineTab-V)
+  (For most LCD Panels, like in PineTab-V)
 
 - __DPI__: Display Parallel Interface
 
@@ -102,13 +102,13 @@ From the pic above, we see that JH7110 uses a __VeriSilicon DC8200 Dual Display 
 
 - __HDMI Video Output__
 
-  [(NoC means __Network-on-Chip__)](https://en.wikipedia.org/wiki/Network_on_a_chip)
-
-  [(AXI is the __Advanced eXtensible Interface__)](https://en.wikipedia.org/wiki/Advanced_eXtensible_Interface)
-
 The Display Output Ports are named __DPI0 and DPI1__.
 
-Here are the __Clock and Reset Signals__ for the Display Controller...
+[(NoC means __Network-on-Chip__)](https://en.wikipedia.org/wiki/Network_on_a_chip)
+
+[(AXI is the __Advanced eXtensible Interface__)](https://en.wikipedia.org/wiki/Advanced_eXtensible_Interface)
+
+These are the __Clock and Reset Signals__ for the Display Controller...
 
 ![JH7110 Display Subsystem Clock and Reset](https://lupyuen.github.io/images/display2-vout_clkrst18.png)
 
@@ -177,12 +177,11 @@ Let's walk through the code in the Linux Driver for DC8200 Display Controller, t
 The DRM Driver is named "starfive"...
 
 ```c
-// name = "starfive"
+// DRM Driver for DC8200 Display Controller
 static struct platform_driver vs_drm_platform_driver = {
   .probe  = vs_drm_platform_probe,
   .remove = vs_drm_platform_remove,
-  ...
-};
+  .name   = "starfive"
 ```
 
 [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L448-L457)
