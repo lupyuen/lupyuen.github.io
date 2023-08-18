@@ -263,6 +263,7 @@ static struct drm_driver vs_drm_driver = {
 <p>(We’ll come back to <strong>fops</strong>)</p>
 <p>TODO: vs_gem_prime_import, vs_gem_prime_import_sg_table, vs_gem_prime_mmap, vs_gem_dumb_create</p>
 <p>TODO: DRV_MAJOR, DRV_MINOR</p>
+<p>TODO: Pic of Sub-Drivers</p>
 <p>Remember our DRM Driver is only a façade. Most of the work is done by the <strong>Sub-Drivers for DC8200</strong>: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315">vs_drv.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Sub-Drivers for DC8200 Display Controller
 static struct platform_driver *drm_sub_drivers[] = {
@@ -271,7 +272,8 @@ static struct platform_driver *drm_sub_drivers[] = {
   &amp;dc_platform_driver,
 
 #ifdef CONFIG_STARFIVE_INNO_HDMI
-  // HDMI Connector Driver (Inno HDMI 2.0 Transmitter for TSMC28HPC+)
+  // HDMI Controller Driver:
+  // Inno HDMI 2.0 Transmitter for TSMC28HPC+
   &amp;inno_hdmi_driver,
 #endif
 
