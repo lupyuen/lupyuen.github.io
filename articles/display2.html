@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>RISC-V Star64 JH7110: Inside the Display Controller</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="RISC-V Star64 JH7110: Inside the Display Controller" 
+    data-rh="true">
+<meta property="og:description" 
+    content="Let's take a walk inside the Display Controller for Pine64's Star64 JH7110 RISC-V SBC... And find out how we'll create the Display Driver for Apache NuttX RTOS"
+    data-rh="true">
+<meta name="description" 
+    content="Let's take a walk inside the Display Controller for Pine64's Star64 JH7110 RISC-V SBC... And find out how we'll create the Display Driver for Apache NuttX RTOS">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/display2-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">RISC-V Star64 JH7110: Inside the Display Controller</h1>
+    <nav id="TOC"><ul>
+<li><a href="#hdmi-display-for-star64-jh7110">1 HDMI Display for Star64 JH7110</a><ul></ul></li>
+<li><a href="#dc8200-display-controller-for-star64-jh7110">2 DC8200 Display Controller for Star64 JH7110</a><ul></ul></li>
+<li><a href="#hdmi-controller-for-star64-jh7110">3 HDMI Controller for Star64 JH7110</a><ul></ul></li>
+<li><a href="#test-hdmi-for-star64-jh7110">4 Test HDMI for Star64 JH7110</a><ul></ul></li>
+<li><a href="#direct-rendering-manager-driver-for-dc8200">5 Direct Rendering Manager Driver for DC8200</a><ul></ul></li>
+<li><a href="#call-flow-for-dc8200-display-controller-driver">6 Call Flow for DC8200 Display Controller Driver</a><ul></ul></li>
+<li><a href="#call-flow-for-dc8200-display-hardware-driver">7 Call Flow for DC8200 Display Hardware Driver</a><ul></ul></li>
+<li><a href="#call-flow-for-dc8200-framebuffer-driver">8 Call Flow for DC8200 Framebuffer Driver</a><ul></ul></li>
+<li><a href="#call-flow-for-dc8200-virtual-display-driver">9 Call Flow for DC8200 Virtual Display Driver</a><ul></ul></li>
+<li><a href="#call-flow-for-hdmi-controller-driver">10 Call Flow for HDMI Controller Driver</a><ul></ul></li>
+<li><a href="#lcd-panel-for-star64-jh7110">11 LCD Panel for Star64 JH7110</a><ul></ul></li>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2023</em></p>
+<p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="TODO" /></p>
+<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) now officially supports <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer! (Pic below)</p>
+<p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a>, the same SoC in VisionFive2)</p>
+<h1 id="hdmi-display-for-star64-jh7110"><a href="#hdmi-display-for-star64-jh7110">1 HDMI Display for Star64 JH7110</a></h1>
+<p>TODO</p>
+<p><em>Will NuttX work with the HDMI Display on Star64?</em></p>
+<p>Let’s find out! Maybe our HDMI code will be reused for PineTab-V’s MIPI DSI Display Panel. Here are the official docs…</p>
+<ul>
+<li>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/display_subsystem.html">Display Subsystem</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_HDMI/">SDK for HDMI</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_Display/">Display Controller Developing Guide</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_GPU/">GPU Developing and Porting Guide</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_Multimedia/">Multimedia Developing Guide</a></p>
+</li>
+<li>
+<p><a href="http://doc-en.rvspace.org/VisionFive2/DG_LCD/">MIPI LCD Developing and Porting Guide</a></p>
+</li>
+</ul>
+<p>From the docs above we have the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html">Display Subsystem Block Diagram</a>…</p>
+<p><img src="https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/vout_block_diagram18.png" alt="Display Subsystem Block Diagram" /></p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html">(Source)</a></p>
+<p>Which says that JH7110 uses a <strong>DC8200 Dual Display Controller</strong> to drive the MIPI DSI and HDMI Displays.</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html">(But the DC8200 docs are confidential sigh)</a></p>
+<p>And we have the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html">Display Subsystem Clock and Reset</a>…</p>
+<p><img src="https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/vout_clkrst18.png" alt="Display Subsystem Clock and Reset" /></p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html">(Source)</a></p>
+<p>So to make HDMI work on JH7110, we need a create a NuttX Driver for the DC8200 Display Controller…</p>
+<h1 id="dc8200-display-controller-for-star64-jh7110"><a href="#dc8200-display-controller-for-star64-jh7110">2 DC8200 Display Controller for Star64 JH7110</a></h1>
+<p>TODO</p>
+<p>Let’s talk about the <strong>DC8200 Dual Display Controller</strong>.</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html">(But the DC8200 docs are confidential sigh)</a></p>
+<p>Here’s the <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html">Block Diagram of DC8200 Display Controller</a>…</p>
+<p><img src="https://doc-en.rvspace.org/VisionFive2/DG_Display/Image/JH7110_SDK/Display_Block_Diagram.png" alt="Block Diagram of DC8200 Display Controller" /></p>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html">(Source)</a></p>
+<p>(Display Devices refer to MIPI DPHY and HDMI, interchangeable)</p>
+<p>Here are the <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/source_code_structure_display.html">Linux Drivers for DC8200 Display Controller</a>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c">vs_dc.c</a>: Display Controller</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c">vs_dc_hw.c</a>: Framebuffer and Overlay (similar to A64 Display Engine)</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c">vs_drv.c</a>: Device for Direct Rendering Manager</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c">vs_crtc.c</a>: Display Pipeline (Colour / Gamma / LUT)</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c">vs_plane.c</a>: Display Plane</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c">vs_simple_enc.c</a>: <a href="https://software-dl.ti.com/processor-sdk-linux/esd/docs/06_03_00_106/linux/Foundational_Components/Kernel/Kernel_Drivers/Display/DSS.html">Display Subsystem (DSS)</a> Encoder</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c">vs_gem.c</a>: <a href="https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Graphics_Execution_Manager">Graphics Execution Manager</a> (Memory Management Framework)</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c">vs_virtual.c</a>: Virtual Display</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_dec.c">vs_dc_dec.c</a>: Bitmap Decompression</p>
+</li>
+</ul>
+<p><a href="https://github.com/starfive-tech/linux/tree/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon">(See the Notes here)</a></p>
+<p>We’ll see the Call Flow in a while.</p>
+<p>Are these used?</p>
+<ul>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_mmu.c">vs_dc_mmu.c</a>: Memory Mapping</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c">vs_fb.c</a>: GEM Memory Mapping for Framebuffer</p>
+</li>
+</ul>
+<p>Here’s the (partial) <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/device_tree_config_display.html">Linux Device Tree for DC8200</a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>&amp;dc8200 {
+  status = &quot;okay&quot;;
+
+  dc_out: port {
+    #address-cells = &lt;1&gt;;
+    #size-cells = &lt;0&gt;;
+    dc_out_dpi0: endpoint@0 {
+      reg = &lt;0&gt;;
+      remote-endpoint = &lt;&amp;hdmi_input0&gt;;
+    };
+    dc_out_dpi1: endpoint@1 {
+      reg = &lt;1&gt;;
+      remote-endpoint = &lt;&amp;hdmi_in_lcdc&gt;;
+    };
+
+    dc_out_dpi2: endpoint@2 {
+      reg = &lt;2&gt;;
+      remote-endpoint = &lt;&amp;mipi_in&gt;;
+    };
+  };
+};
+</code></pre></div>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/device_tree_config_display.html">(Source)</a></p>
+<p>HDMI I2C Encoder in JH7110 is the <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/kernel_menu_config_diplay.html">NXP Semiconductors TDA998X HDMI Encoder</a></p>
+<p>Next we need to create a NuttX Driver for the HDMI Controller…</p>
+<h1 id="hdmi-controller-for-star64-jh7110"><a href="#hdmi-controller-for-star64-jh7110">3 HDMI Controller for Star64 JH7110</a></h1>
+<p>TODO</p>
+<p>The HDMI Controller for JH7110 is <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html">Inno HDMI 2.0 Transmitter For TSMC28HPC+</a>.</p>
+<p>Based on <a href="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/source_code_structure_hdmi.html">JH7110 HDMI Developing Guide</a>, the Linux Drivers for JH7110 HDMI (VeriSilicon Inno HDMI) are…</p>
+<ul>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c">inno_hdmi.c</a></p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.h">inno_hdmi.h</a></p>
+</li>
+</ul>
+<p>The <a href="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/device_tree_hdmi.html">Linux Device Tree</a> looks like…</p>
+<div class="example-wrap"><pre class="language-text"><code>hdmi: hdmi@29590000 {
+    compatible = &quot;starfive,jh7100-hdmi&quot;,&quot;inno,hdmi&quot;;
+      reg = &lt;0x0 0x29590000 0x0 0x4000&gt;;
+      interrupts = &lt;99&gt;;
+      status = &quot;disabled&quot;;
+      clocks = &lt;&amp;clkvout JH7110_U0_HDMI_TX_CLK_SYS&gt;,
+        &lt;&amp;clkvout JH7110_U0_HDMI_TX_CLK_MCLK&gt;,
+        &lt;&amp;clkvout JH7110_U0_HDMI_TX_CLK_BCLK&gt;,
+        &lt;&amp;hdmitx0_pixelclk&gt;;
+      clock-names = &quot;sysclk&quot;, &quot;mclk&quot;,&quot;bclk&quot;,&quot;pclk&quot;;
+      resets = &lt;&amp;rstgen RSTN_U0_HDMI_TX_HDMI&gt;;
+      reset-names = &quot;hdmi_tx&quot;;
+    };
+...
+&amp;hdmi {
+  status = &quot;okay&quot;;
+  pinctrl-names = &quot;default&quot;;
+  pinctrl-0 = &lt;&amp;inno_hdmi_pins&gt;;
+
+  hdmi_in: port {
+    #address-cells = &lt;1&gt;;
+    #size-cells = &lt;0&gt;;
+    hdmi_in_lcdc: endpoint@0 {
+      reg = &lt;0&gt;;
+      remote-endpoint = &lt;&amp;dc_out_dpi1&gt;;
+    };
+  };
+};
+</code></pre></div>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/device_tree_hdmi.html">(Source)</a></p>
+<p>We see the <a href="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/initialization_process.html">HDMI Initialization Process</a>…</p>
+<p><img src="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/Image/JH7110_SDK/HDMI_Init.svg" alt="HDMI Initialization Process" /></p>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/initialization_process.html">(Source)</a></p>
+<p>And the <a href="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/plug_n_unplug_process.html">HDMI Plug and Unplug Process</a>…</p>
+<p><img src="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/Image/JH7110_SDK/HDMI_Pug_Unplug.svg" alt="HDMI Plug and Unplug Process" /></p>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/plug_n_unplug_process.html">(Source)</a></p>
+<h1 id="test-hdmi-for-star64-jh7110"><a href="#test-hdmi-for-star64-jh7110">4 Test HDMI for Star64 JH7110</a></h1>
+<p>TODO</p>
+<p><em>How will we test the HDMI Display for Star64 JH7110?</em></p>
+<p>We run the <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/test_example_display.html"><code>modetest</code> command to test HDMI</a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>modetest \
+  -M starfive \
+  -D 0 \
+  -a \
+  -s 116@31:1920x1080 \
+  -P 39@31:1920x1080@RG16 \
+  -Ftiles 
+</code></pre></div>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/test_example_display.html">(Source)</a></p>
+<p><code>116@31:1920x1080</code> means <code>&lt;Connector ID&gt;@&lt;CRTC ID&gt;: &lt;Resolution&gt;</code></p>
+<p><code>39@31:1920x1080@RG16</code> means <code>&lt;Plane ID&gt;@&lt;CRTC ID&gt;: &lt;Resolution&gt;@&lt;Format&gt;</code></p>
+<p><a href="https://en.wikipedia.org/wiki/Direct_Rendering_Manager#KMS_device_model">(CRTC “CRT Controller” refers to the Display Pipeline)</a></p>
+<p>See also…</p>
+<ul>
+<li>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/before_debug.html">Before Debug</a></p>
+</li>
+<li>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/debug_hdmi.html">Debug Display</a></p>
+</li>
+</ul>
+<p>TODO: What’s inside the modetest app? <a href="https://gitlab.freedesktop.org/mesa/drm/-/blob/main/tests/modetest/modetest.c">modetest.c</a></p>
+<p>TODO: What parameters does modetest pass to the DC8200 Driver?</p>
+<p>TODO: Can we create a simpler modetest for our own testing on NuttX?</p>
+<h1 id="direct-rendering-manager-driver-for-dc8200"><a href="#direct-rendering-manager-driver-for-dc8200">5 Direct Rendering Manager Driver for DC8200</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/jh7110-display.jpg" alt="JH7110 Linux Display Driver" /></p>
+<p>Let’s walk through the code in the Linux Driver for DC8200 Display Controller, to understand how we’ll implement it in NuttX.</p>
+<p>The DRM Driver is named “starfive”…</p>
+<div class="example-wrap"><pre class="language-c"><code>// name = &quot;starfive&quot;
+static struct platform_driver vs_drm_platform_driver = {
+  .probe  = vs_drm_platform_probe,
+  .remove = vs_drm_platform_remove,
+  ...
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L448-L457">(Source)</a></p>
+<p>Here are the DRM Operations supported by the driver…</p>
+<div class="example-wrap"><pre class="language-c"><code>static struct drm_driver vs_drm_driver = {
+  .driver_features    = DRIVER_MODESET | DRIVER_ATOMIC | DRIVER_GEM,
+  .lastclose          = drm_fb_helper_lastclose,
+  .prime_handle_to_fd = drm_gem_prime_handle_to_fd,
+  .prime_fd_to_handle = drm_gem_prime_fd_to_handle,
+  .gem_prime_import   = vs_gem_prime_import,
+  .gem_prime_import_sg_table = vs_gem_prime_import_sg_table,
+  .gem_prime_mmap     = vs_gem_prime_mmap,
+  .dumb_create        = vs_gem_dumb_create,
+#ifdef CONFIG_DEBUG_FS
+  .debugfs_init       = vs_debugfs_init,
+#endif
+  .fops  = &amp;fops,
+  .name  = &quot;starfive&quot;,
+  .desc  = &quot;VeriSilicon DRM driver&quot;,
+  .date  = &quot;20191101&quot;,
+  .major = DRV_MAJOR,
+  .minor = DRV_MINOR,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L125-L143">(Source)</a></p>
+<p>The DRM Driver includes these Sub Drivers…</p>
+<div class="example-wrap"><pre class="language-c"><code>static struct platform_driver *drm_sub_drivers[] = {
+  /* put display control driver at start */
+  &amp;dc_platform_driver,
+
+  /* connector */
+#ifdef CONFIG_STARFIVE_INNO_HDMI
+  &amp;inno_hdmi_driver,
+#endif
+
+  &amp;simple_encoder_driver,
+
+#ifdef CONFIG_VERISILICON_VIRTUAL_DISPLAY
+  &amp;virtual_display_platform_driver,
+#endif
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315">(Source)</a></p>
+<p>(More about <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1642-L1649">dc_platform_driver</a> in the next section)</p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L459-L472">vs_drm_init</a> registers <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315">drm_sub_drivers</a> and <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L448-L457">vs_drm_platform_driver</a>
+at startup.</p>
+<p>Here are the File Operations supported by the DRM Driver…</p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct file_operations fops = {
+  .owner     = THIS_MODULE,
+  .open      = drm_open,
+  .release   = drm_release,
+  .unlocked_ioctl = drm_ioctl,
+  .compat_ioctl   = drm_compat_ioctl,
+  .poll      = drm_poll,
+  .read      = drm_read,
+  .mmap      = vs_gem_mmap,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L54-L63">(Source)</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Direct_Rendering_Manager">(More about Direct Rendering Manager)</a></p>
+<h1 id="call-flow-for-dc8200-display-controller-driver"><a href="#call-flow-for-dc8200-display-controller-driver">6 Call Flow for DC8200 Display Controller Driver</a></h1>
+<p>TODO</p>
+<p>The DC8200 Controller Driver is named “vs-dc” (for VeriSilicon)…</p>
+<div class="example-wrap"><pre class="language-c"><code>// name = &quot;vs-dc&quot;
+struct platform_driver dc_platform_driver = {
+  .probe  = dc_probe,
+  .remove = dc_remove,
+  ...
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1642-L1649">(Source)</a></p>
+<p>Probe for Display Controller is implemented here: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1595-L1629">dc_probe</a></p>
+<p>We see the Component Functions exposed by the driver…</p>
+<div class="example-wrap"><pre class="language-c"><code>const struct component_ops dc_component_ops = {
+  .bind   = dc_bind,
+  .unbind = dc_unbind,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1584-L1587">(Source)</a></p>
+<p>Bind to Display Controller is here…</p>
+<ul>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573">dc_bind</a>, which calls..</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722">dc_init</a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">dc_hw_init</a></p>
+</li>
+</ul>
+<p>Here are the Display Pipeline <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-kms.html">(CRTC)</a> functions exposed by the driver…</p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct vs_crtc_funcs dc_crtc_funcs = {
+  .enable        = vs_dc_enable,
+  .disable       = vs_dc_disable,
+  .mode_fixup    = vs_dc_mode_fixup,
+  .set_gamma     = vs_dc_set_gamma,
+  .enable_gamma  = vs_dc_enable_gamma,
+  .enable_vblank = vs_dc_enable_vblank,
+  .commit        = vs_dc_commit,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1400-L1408">(Source)</a></p>
+<p>Enable Display Pipeline is implemented here…</p>
+<ul>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826">vs_dc_enable</a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487">dc_hw_setup_display</a></p>
+</li>
+</ul>
+<p>Enable Display Pipeline <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826">vs_dc_enable</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276">vs_crtc_atomic_enable</a></p>
+<p>Which is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L1323-L1408">drm_atomic_helper</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
+  .mode_fixup     = vs_crtc_mode_fixup,
+  .atomic_enable  = vs_crtc_atomic_enable,
+  .atomic_disable = vs_crtc_atomic_disable,
+  .atomic_begin   = vs_crtc_atomic_begin,
+  .atomic_flush   = vs_crtc_atomic_flush,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L338-L344">(Source)</a></p>
+<p>Commit Display Pipeline is here…</p>
+<ul>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1381-L1398">vs_dc_commit</a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076">dc_hw_commit</a></p>
+</li>
+</ul>
+<p>Commit Display Pipeline <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1381-L1398">vs_dc_commit</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L320-L336">vs_crtc_atomic_flush</a></p>
+<p>Which is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570">drm_atomic_helper</a></p>
+<p>These are the exposed functions for the Display Plane…</p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct vs_plane_funcs dc_plane_funcs = {
+  .update  = vs_dc_update_plane,
+  .disable = vs_dc_disable_plane,
+  .check   = vs_dc_check_plane,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1410-L1414">(Source)</a></p>
+<p>Update Display Plane is here…</p>
+<ul>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280">vs_dc_update_plane</a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196">update_plane</a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399">dc_hw_update_plane</a></p>
+</li>
+</ul>
+<p>Update Display Plane <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280">vs_dc_update_plane</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L268-L301">vs_plane_atomic_update</a></p>
+<p>Which is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570">drm_atomic_helper</a></p>
+<div class="example-wrap"><pre class="language-c"><code>const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
+  .atomic_check   = vs_plane_atomic_check,
+  .atomic_update  = vs_plane_atomic_update,
+  .atomic_disable = vs_plane_atomic_disable,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L314-L318">(Source)</a></p>
+<p>Refer to <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-internals.html">Linux DRM Internals</a></p>
+<h1 id="call-flow-for-dc8200-display-hardware-driver"><a href="#call-flow-for-dc8200-display-hardware-driver">7 Call Flow for DC8200 Display Hardware Driver</a></h1>
+<p>TODO</p>
+<p>Display Planes Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L1084">dc_hw_planes</a></p>
+<p>Display Controller Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1086-L1150">dc_info</a></p>
+<p>Initialise Display Hardware: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">dc_hw_init</a></p>
+<ul>
+<li>Read the Hardware Revision and Chip ID</li>
+<li>Initialise every Layer / Display Plane</li>
+<li>Initialise every Panel (Cursor)</li>
+</ul>
+<p>Commit Display Hardware: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076">dc_hw_commit</a></p>
+<ul>
+<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574">gamma_ex_commit</a></li>
+<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863">plane_ex_commit</a></li>
+<li>Update Cursor</li>
+<li>Update QoS</li>
+</ul>
+<p>Update Display Plane: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399">dc_hw_update_plane</a></p>
+<ul>
+<li>Copy Framebuffer</li>
+<li>Copy Scale</li>
+<li>Copy Position</li>
+<li>Copy Blend</li>
+</ul>
+<p>Display Hardware Functions:</p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct dc_hw_funcs hw_func = {
+  .gamma   = &amp;gamma_ex_commit,
+  .plane   = &amp;plane_ex_commit,
+  .display = setup_display_ex,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2032-L2036">(Source)</a></p>
+<p>Setup Display (Upper Level): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487">dc_hw_setup_display</a></p>
+<ul>
+<li>Copy Display Struct</li>
+<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1971-L2030">setup_display_ex</a></li>
+</ul>
+<p>Setup Display (Extended): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1971-L2030">setup_display_ex</a></p>
+<ul>
+<li>Set Colour Format</li>
+<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1865-L1969">setup_display</a></li>
+</ul>
+<p>Setup Display (Lower Level): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1865-L1969">setup_display</a></p>
+<ul>
+<li>Set DPI Config</li>
+<li>Disable Display Panel</li>
+<li>Set Display Horizontal Resolution</li>
+<li>Set Display Horizontal Sync</li>
+<li>Set Display Vertical Resolution</li>
+<li>Set Display Vertical Resolution Sync</li>
+<li>Configure Framebuffer Sync Mode</li>
+<li>Set Framebuffer Background Colour</li>
+<li>Set Display Dither</li>
+<li>Enable Display Panel</li>
+<li>Set Overlay Config</li>
+<li>Set Cursor Config</li>
+</ul>
+<p>Commit Display Plane (Extended): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863">plane_ex_commit</a></p>
+<ul>
+<li>Set Colour Space</li>
+<li>Set Gamma</li>
+<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1576-L1766">plane_commit</a></li>
+</ul>
+<p>Commit Display Plane: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1576-L1766">plane_commit</a></p>
+<ul>
+<li>For every Layer / Display Plane:</li>
+<li>Set Framebuffer YUV Address</li>
+<li>Set Framebuffer YUV Stride</li>
+<li>Set Framebuffer Width and Height</li>
+<li>Clear Framebuffer</li>
+<li>Set Primary Framebuffer Config</li>
+<li>Set Non-Primary Framebuffer Config</li>
+<li>Enable Framebuffer Scaling (X and Y)</li>
+<li>Set Framebuffer Offset (X and Y)</li>
+<li>Set Framebuffer Blending</li>
+<li>Set Colour Key / Transparency</li>
+<li>Set ROI</li>
+</ul>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863">plane_ex_commit</a> and <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574">gamma_ex_commit</a> are called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076">dc_hw_commit</a></p>
+<h1 id="call-flow-for-dc8200-framebuffer-driver"><a href="#call-flow-for-dc8200-framebuffer-driver">8 Call Flow for DC8200 Framebuffer Driver</a></h1>
+<p>TODO</p>
+<p>At startup, <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271">vs_drm_bind</a> calls <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191">vs_mode_config_init</a> to register the Framebuffer Driver: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172">vs_mode_config_funcs</a>.</p>
+<p>Which is defined as…</p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct drm_mode_config_funcs vs_mode_config_funcs = {
+  .fb_create       = vs_fb_create,
+  .get_format_info = vs_get_format_info,
+  .output_poll_changed = drm_fb_helper_output_poll_changed,
+  .atomic_check    = drm_atomic_helper_check,
+  .atomic_commit   = drm_atomic_helper_commit,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172">(Source)</a></p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L60-L123">vs_fb_create</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_framebuffer.c#L286-L329">drm_framebuffer</a></p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L155-L164">vs_get_format_info</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_fourcc.c#L302-L325">drm_fourcc</a></p>
+<p>Framebuffer Formats: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L134-L139">vs_formats</a></p>
+<h1 id="call-flow-for-dc8200-virtual-display-driver"><a href="#call-flow-for-dc8200-virtual-display-driver">9 Call Flow for DC8200 Virtual Display Driver</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct drm_connector_helper_funcs vd_connector_helper_funcs = {
+  .get_modes    = vd_get_modes,
+  .mode_valid   = vd_mode_valid,
+  .best_encoder = vd_best_encoder,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L197-L201">(Source)</a></p>
+<p>Display Resolutions: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L153-L181">vd_get_modes</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct drm_connector_funcs vd_connector_funcs = {
+  .fill_modes = drm_helper_probe_single_connector_modes,
+  .destroy    = vd_connector_destroy,
+  .detect     = vd_connector_detect,
+  .atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
+  .atomic_destroy_state   = drm_atomic_helper_connector_destroy_state,
+  .reset = drm_atomic_helper_connector_reset,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L215-L222">(Source)</a></p>
+<div class="example-wrap"><pre class="language-c"><code>const struct component_ops vd_component_ops = {
+  .bind   = vd_bind,
+  .unbind = vd_unbind,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L311-L314">(Source)</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// name = &quot;vs-virtual-display&quot;
+struct platform_driver virtual_display_platform_driver = {
+  .probe  = vd_probe,
+  .remove = vd_remove,
+  ...
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L353-L360">(Source)</a></p>
+<p>Display Pipelines:</p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct drm_crtc_funcs vs_crtc_funcs = {
+  .set_config = drm_atomic_helper_set_config,
+  .destroy    = vs_crtc_destroy,
+  .page_flip  = drm_atomic_helper_page_flip,
+  .reset      = vs_crtc_reset,
+  .atomic_duplicate_state = vs_crtc_atomic_duplicate_state,
+  .atomic_destroy_state   = vs_crtc_atomic_destroy_state,
+  .atomic_set_property    = vs_crtc_atomic_set_property,
+  .atomic_get_property    = vs_crtc_atomic_get_property,
+  //.gamma_set    = drm_atomic_helper_legacy_gamma_set,
+  .late_register  = vs_crtc_late_register,
+  .enable_vblank  = vs_crtc_enable_vblank,
+  .disable_vblank = vs_crtc_disable_vblank,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L207-L220">(Source)</a></p>
+<p>Simple Encoder Driver:</p>
+<div class="example-wrap"><pre class="language-c"><code>// name = &quot;vs-simple-encoder&quot;
+struct platform_driver simple_encoder_driver = {
+  .probe  = encoder_probe,
+  .remove = encoder_remove,
+  ...
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c#L300-L307">(Source)</a></p>
+<h1 id="call-flow-for-hdmi-controller-driver"><a href="#call-flow-for-hdmi-controller-driver">10 Call Flow for HDMI Controller Driver</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>// name = &quot;innohdmi-starfive&quot;
+struct platform_driver inno_hdmi_driver = {
+  .probe  = inno_hdmi_probe,
+  .remove = inno_hdmi_remove,
+  ...
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c#L1155-L1163">(Source)</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct drm_encoder_helper_funcs inno_hdmi_encoder_helper_funcs = {
+  .enable     = inno_hdmi_encoder_enable,
+  .disable    = inno_hdmi_encoder_disable,
+  .mode_fixup = inno_hdmi_encoder_mode_fixup,
+  .mode_set   = inno_hdmi_encoder_mode_set,
+  .atomic_check = inno_hdmi_encoder_atomic_check,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c#L651-L657">(Source)</a></p>
+<p>MIPI DSI:</p>
+<div class="example-wrap"><pre class="language-c"><code>// name = &quot;dw-mipi-dsi&quot;
+struct platform_driver dw_mipi_dsi_driver = {
+  .probe  = dsi_probe,
+  .remove = dsi_remove,
+  ...
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L1066-L1073">(Source)</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// name = &quot;cdns-dsi&quot;
+static struct platform_driver cdns_dsi_platform_driver = {
+  .probe  = cdns_dsi_drm_probe,
+  .remove = cdns_dsi_drm_remove,
+  ...
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/starfive_drm_dsi.c#L1679-L1687">(Source)</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct component_ops dsi_component_ops = {
+  .bind   = dsi_bind,
+  .unbind = dsi_unbind,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L998-L1001">(Source)</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct drm_bridge_funcs dw_mipi_dsi_bridge_funcs = {
+  .mode_set  = bridge_mode_set,
+  .enable    = bridge_enable,
+  .post_disable = bridge_post_disable,
+  .attach     = bridge_attach,
+  .mode_fixup = bridge_mode_fixup,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L869-L875">(Source)</a></p>
+<h1 id="lcd-panel-for-star64-jh7110"><a href="#lcd-panel-for-star64-jh7110">11 LCD Panel for Star64 JH7110</a></h1>
+<p>TODO</p>
+<p>Also in the JH7110 Display Docs: How to connect an LCD Panel to JH7110.</p>
+<p>JH7110’s MIPI DSI Controller is <a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html">Cadence MIPI DSI v1.3.1 TX Controller IP (DSITX)</a>…</p>
+<p><img src="https://doc-en.rvspace.org/VisionFive2/DG_LCD/Image/JH7110_SDK/ic_spec.png" alt="Cadence MIPI DSI v1.3.1 TX Controller IP (DSITX)" /></p>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html">(Source)</a></p>
+<p>JH7110’s MIPI DPHY Controller is <a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html">MIPI DPHY M31 (M31DPHYRX611TL028D_00151501)</a>…</p>
+<p><img src="https://doc-en.rvspace.org/VisionFive2/DG_LCD/Image/JH7110_SDK/MIPI_DPHY_M31.png" alt="MIPI DPHY M31 (M31DPHYRX611TL028D_00151501)" /></p>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html">(Source)</a></p>
+<p>Refer to the…</p>
+<ul>
+<li>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/display_driver_locations_lcd.html">Linux Display Driver</a></p>
+</li>
+<li>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/device_tree_configuration_lcd.html">Linux Device Tree</a></p>
+</li>
+</ul>
+<p>See also the Sample LCD Panel Code for Seeed LCD Panel…</p>
+<ul>
+<li>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/enable_lcd.html">Enable LCD</a></p>
+</li>
+<li>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/disable_lcd.html">Disable LCD</a></p>
+</li>
+<li>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/obtain_lcd_information.html">Obtain LCD Information</a></p>
+</li>
+</ul>
+<p>Here’s the <a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/initalization_lcd.html">LCD Initialisation Process</a></p>
+<p><img src="https://doc-en.rvspace.org/VisionFive2/DG_LCD/Image/JH7110_SDK/LCD_Init.svg" alt="LCD Initialisation Process" /></p>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/initalization_lcd.html">(Source)</a></p>
+<p>And the <a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/mipi_configuration.html">MIPI Parameter Configuration</a> for 1C2L (2-lane MIPI DSI) and 1C4L (4-lane MIPI DSI).</p>
+<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
+<p>TODO</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>My Current Project: “Apache NuttX RTOS for Star64 JH7110”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>My Other Project: “NuttX for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display2.md"><strong>lupyuen.github.io/src/display2.md</strong></a></p>
+
+    
+</body>
+</html>
