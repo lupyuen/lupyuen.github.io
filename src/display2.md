@@ -16,27 +16,25 @@ _Sounds a little disturbing?_
 
 Yeah goodbye olden days of [__Documented Display Registers__](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine)! (Like for [__Allwinner A64__](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine))
 
-But no worries! We're here to decipher the Driver Source Code and document everything ourselves.
+But no worries! We're here to decipher the __Driver Source Code__ and document everything ourselves...
+
+- What's inside the __Direct Rendering Manager (DRM) Driver__ for JH7110
+
+- How it controls the __Display Registers__
+
+- To handle the __Display Pipeline__, __Display Planes__ and __Framebuffers__
+
+- And how it talks to __HDMI and MIPI DSI__ (Display Serial Interface)
+
+- Also how we might __implement the driver__ ourselves (without Linux)
 
 _Why are we doing this?_
 
-TODO
+We're building a __HDMI Display Driver__ for [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS) on the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) SBC. (Based on JH7110, just like VisionFive2)
 
-[__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS)
+Our analysis today will be super useful for creating our __HDMI Driver for NuttX__ on Star64.
 
-[__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer
-
-Hopefully this article will be helpful for __porting other Operating Systems__ to JH7110!
-
-Nope not that DRM, which is also video-related
-
-Prototype new driver in Zig
-
-Slightly annoying that New Zig won't run on my Old Mac
-
-[Fishwaldo suggests uboot](https://fosstodon.org/@Fishwaldo/110902984442385966)
-
-[the panel is not a Jadard panel, whoever wrote the factory image just hacked a existing driver. The panel in PtV (and PT2) is a BOE TH101MB31IG002-28A](https://fosstodon.org/@Fishwaldo/110902984462760802)
+And hopefully this article will be helpful for __porting other Operating Systems__ to JH7110!
 
 # JH7110 Docs and Source Code
 
@@ -62,23 +60,23 @@ _What about the Driver Source Code?_
 
 Here are the official [__Linux Drivers__](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/source_code_structure_display.html) for the Display Controller...
 
-- [vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c): Display Controller
+- [__vs_dc.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c): Display Controller
 
-- [vs_dc_hw.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c): Framebuffer and Overlay (similar to A64 Display Engine)
+- [__vs_dc_hw.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c): Framebuffer and Overlay (similar to A64 Display Engine)
 
-- [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c): Device for Direct Rendering Manager
+- [__vs_drv.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c): Device for Direct Rendering Manager
 
-- [vs_crtc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c): Display Pipeline (Colour / Gamma / LUT)
+- [__vs_crtc.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c): Display Pipeline (Colour / Gamma / LUT)
 
-- [vs_plane.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c): Display Plane
+- [__vs_plane.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c): Display Plane
 
-- [vs_simple_enc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c): [Display Subsystem (DSS)](https://software-dl.ti.com/processor-sdk-linux/esd/docs/06_03_00_106/linux/Foundational_Components/Kernel/Kernel_Drivers/Display/DSS.html) Encoder
+- [__vs_simple_enc.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c): [Display Subsystem (DSS)](https://software-dl.ti.com/processor-sdk-linux/esd/docs/06_03_00_106/linux/Foundational_Components/Kernel/Kernel_Drivers/Display/DSS.html) Encoder
 
-- [vs_gem.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c): [Graphics Execution Manager](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Graphics_Execution_Manager) (Memory Management Framework)
+- [__vs_gem.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c): [Graphics Execution Manager](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Graphics_Execution_Manager) (Memory Management Framework)
 
-- [vs_virtual.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c): Virtual Display
+- [__vs_virtual.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c): Virtual Display
 
-- [vs_dc_dec.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_dec.c): Bitmap Decompression
+- [__vs_dc_dec.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_dec.c): Bitmap Decompression
 
 [(See the Notes here)](https://github.com/starfive-tech/linux/tree/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon)
 
@@ -263,6 +261,16 @@ TODO: Can we create a simpler modetest for our own testing on NuttX?
 # Direct Rendering Manager Driver for DC8200
 
 TODO
+
+Nope not that DRM, which is also video-related
+
+Prototype new driver in Zig
+
+Slightly annoying that New Zig won't run on my Old Mac
+
+[Fishwaldo suggests uboot](https://fosstodon.org/@Fishwaldo/110902984442385966)
+
+[the panel is not a Jadard panel, whoever wrote the factory image just hacked a existing driver. The panel in PtV (and PT2) is a BOE TH101MB31IG002-28A](https://fosstodon.org/@Fishwaldo/110902984462760802)
 
 ![JH7110 Linux Display Driver](https://lupyuen.github.io/images/jh7110-display.jpg)
 
