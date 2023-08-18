@@ -2,7 +2,7 @@
 
 📝 _16 Aug 2023_
 
-![TODO](https://lupyuen.github.io/images/display2-title.jpg)
+![Display Driver for StarFive JH7110 SoC](https://lupyuen.github.io/images/display2-title.jpg)
 
 Today we look inside the __Display Controller__ of the [__RISC-V StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) and figure out how it works.
 
