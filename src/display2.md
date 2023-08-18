@@ -32,9 +32,11 @@ _Why are we doing this?_
 
 We're building a __HDMI Display Driver__ for [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS) on the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) SBC. (Based on JH7110, just like VisionFive2)
 
-Our analysis today will be super useful for creating our __HDMI Driver for NuttX__ on Star64.
+Our analysis today will be super useful for creating our __HDMI Driver for NuttX__ on Star64. (Pic below)
 
 And hopefully this article will be helpful for __porting other Operating Systems__ to JH7110!
+
+![Pine64 Star64 RISC-V SBC](https://lupyuen.github.io/images/linux-title.jpg)
 
 # JH7110 Docs and Source Code
 
@@ -78,26 +80,33 @@ Here are the official [__Linux Drivers__](https://doc-en.rvspace.org/VisionFive2
 
 - [__vs_dc_dec.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_dec.c): Bitmap Decompression
 
-In a while we'll decipher the Driver Source Code, to understand how the Display Controller works.
+Later we'll decipher the Driver Source Code, to understand how the Display Controller works.
 
 [(See the Notes here)](https://github.com/starfive-tech/linux/tree/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon)
 
-# HDMI Display for Star64 JH7110
+![JH7110 Display Subsystem Block Diagram](https://lupyuen.github.io/images/display2-vout_block_diagram18.png)
+
+[_JH7110 Display Subsystem Block Diagram_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html)
+
+# DC8200 Display Controller
+
+From the pic above, we see that JH7110 uses a __VeriSilicon DC8200 Dual Display Controller__ to drive these displays...
+
+- __MIPI DPHY / DSI__: Display Serial Interface
+
+  (For LCD Panels, like in the PineTab-V)
+
+- __DPI__: Display Parallel Interface
+
+  (For LCD Panels with Parallel RGB Interface)
+
+- __HDMI Video Output__
+
+  [(NoC means __Network-on-Chip__)](https://en.wikipedia.org/wiki/Network_on_a_chip)
+
+  [(AXI is the __Advanced eXtensible Interface__)](https://en.wikipedia.org/wiki/Advanced_eXtensible_Interface)
 
 TODO
-
-_Will NuttX work with the HDMI Display on Star64?_
-
-Let's find out! Maybe our HDMI code will be reused for PineTab-V's MIPI DSI Display Panel. Here are the official docs...
-
-
-From the docs above we have the [Display Subsystem Block Diagram](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html)...
-
-![Display Subsystem Block Diagram](https://lupyuen.github.io/images/display2-vout_block_diagram18.png)
-
-[(Source)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html)
-
-Which says that JH7110 uses a __DC8200 Dual Display Controller__ to drive the MIPI DSI and HDMI Displays.
 
 And we have the [Display Subsystem Clock and Reset](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html)...
 
@@ -106,8 +115,6 @@ And we have the [Display Subsystem Clock and Reset](https://doc-en.rvspace.org/J
 [(Source)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html)
 
 So to make HDMI work on JH7110, we need a create a NuttX Driver for the DC8200 Display Controller...
-
-# DC8200 Display Controller for Star64 JH7110
 
 TODO
 
