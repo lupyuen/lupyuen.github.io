@@ -32,7 +32,7 @@ Let's find out! Maybe our HDMI code will be reused for PineTab-V's MIPI DSI Disp
 
 From the docs above we have the [Display Subsystem Block Diagram](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html)...
 
-![Display Subsystem Block Diagram](https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/vout_block_diagram18.png)
+![Display Subsystem Block Diagram](https://lupyuen.github.io/images/display2-vout_block_diagram18.png)
 
 [(Source)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html)
 
@@ -42,7 +42,7 @@ Which says that JH7110 uses a __DC8200 Dual Display Controller__ to drive the MI
 
 And we have the [Display Subsystem Clock and Reset](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html)...
 
-![Display Subsystem Clock and Reset](https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/vout_clkrst18.png)
+![Display Subsystem Clock and Reset](https://lupyuen.github.io/images/display2-vout_clkrst18.png)
 
 [(Source)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html)
 
@@ -58,7 +58,7 @@ Let's talk about the __DC8200 Dual Display Controller__.
 
 Here's the [Block Diagram of DC8200 Display Controller](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html)...
 
-![Block Diagram of DC8200 Display Controller](https://doc-en.rvspace.org/VisionFive2/DG_Display/Image/JH7110_SDK/Display_Block_Diagram.png)
+![Block Diagram of DC8200 Display Controller](https://lupyuen.github.io/images/display2-Display_Block_Diagram.png)
 
 [(Source)](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html)
 
@@ -708,13 +708,13 @@ Also in the JH7110 Display Docs: How to connect an LCD Panel to JH7110.
 
 JH7110's MIPI DSI Controller is [Cadence MIPI DSI v1.3.1 TX Controller IP (DSITX)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html)...
 
-![Cadence MIPI DSI v1.3.1 TX Controller IP (DSITX)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/Image/JH7110_SDK/ic_spec.png)
+![Cadence MIPI DSI v1.3.1 TX Controller IP (DSITX)](https://lupyuen.github.io/images/display2-ic_spec.png)
 
 [(Source)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html)
 
 JH7110's MIPI DPHY Controller is [MIPI DPHY M31 (M31DPHYRX611TL028D_00151501)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html)...
 
-![MIPI DPHY M31 (M31DPHYRX611TL028D_00151501)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/Image/JH7110_SDK/MIPI_DPHY_M31.png)
+![MIPI DPHY M31 (M31DPHYRX611TL028D_00151501)](https://lupyuen.github.io/images/display2-MIPI_DPHY_M31.png)
 
 [(Source)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html)
 
