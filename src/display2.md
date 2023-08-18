@@ -38,27 +38,58 @@ Slightly annoying that New Zig won't run on my Old Mac
 
 [the panel is not a Jadard panel, whoever wrote the factory image just hacked a existing driver. The panel in PtV (and PT2) is a BOE TH101MB31IG002-28A](https://fosstodon.org/@Fishwaldo/110902984462760802)
 
+# JH7110 Docs and Source Code
+
+_What exactly is documented for JH7110 Display Controller?_
+
+Officially these are the __JH7110 Display Controller__ docs...
+
+- [__Display Subsystem__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/display_subsystem.html)
+
+- [__Display Controller Developing Guide__](http://doc-en.rvspace.org/VisionFive2/DG_Display/)
+
+- [__SDK for HDMI__](http://doc-en.rvspace.org/VisionFive2/DG_HDMI/)
+
+- [__MIPI LCD Developing and Porting Guide__](http://doc-en.rvspace.org/VisionFive2/DG_LCD/)
+
+- [__GPU Developing and Porting Guide__](http://doc-en.rvspace.org/VisionFive2/DG_GPU/)
+
+- [__Multimedia Developing Guide__](http://doc-en.rvspace.org/VisionFive2/DG_Multimedia/)
+
+But the [__crucial docs are confidential__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html). (Sigh)
+
+_What about the Driver Source Code?_
+
+Here are the official [__Linux Drivers__](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/source_code_structure_display.html) for the Display Controller...
+
+- [vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c): Display Controller
+
+- [vs_dc_hw.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c): Framebuffer and Overlay (similar to A64 Display Engine)
+
+- [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c): Device for Direct Rendering Manager
+
+- [vs_crtc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c): Display Pipeline (Colour / Gamma / LUT)
+
+- [vs_plane.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c): Display Plane
+
+- [vs_simple_enc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c): [Display Subsystem (DSS)](https://software-dl.ti.com/processor-sdk-linux/esd/docs/06_03_00_106/linux/Foundational_Components/Kernel/Kernel_Drivers/Display/DSS.html) Encoder
+
+- [vs_gem.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c): [Graphics Execution Manager](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Graphics_Execution_Manager) (Memory Management Framework)
+
+- [vs_virtual.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c): Virtual Display
+
+- [vs_dc_dec.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_dec.c): Bitmap Decompression
+
+[(See the Notes here)](https://github.com/starfive-tech/linux/tree/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon)
+
 # HDMI Display for Star64 JH7110
 
 TODO
-
-_What exactly is documented for JH7110 Display Controller?_
 
 _Will NuttX work with the HDMI Display on Star64?_
 
 Let's find out! Maybe our HDMI code will be reused for PineTab-V's MIPI DSI Display Panel. Here are the official docs...
 
-- [Display Subsystem](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/display_subsystem.html)
-
-- [SDK for HDMI](http://doc-en.rvspace.org/VisionFive2/DG_HDMI/)
-
-- [Display Controller Developing Guide](http://doc-en.rvspace.org/VisionFive2/DG_Display/)
-
-- [GPU Developing and Porting Guide](http://doc-en.rvspace.org/VisionFive2/DG_GPU/)
-
-- [Multimedia Developing Guide](http://doc-en.rvspace.org/VisionFive2/DG_Multimedia/)
-
-- [MIPI LCD Developing and Porting Guide](http://doc-en.rvspace.org/VisionFive2/DG_LCD/)
 
 From the docs above we have the [Display Subsystem Block Diagram](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html)...
 
@@ -67,8 +98,6 @@ From the docs above we have the [Display Subsystem Block Diagram](https://doc-en
 [(Source)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html)
 
 Which says that JH7110 uses a __DC8200 Dual Display Controller__ to drive the MIPI DSI and HDMI Displays.
-
-[(But the crucial DC8200 docs are confidential sigh)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html)
 
 And we have the [Display Subsystem Clock and Reset](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html)...
 
@@ -93,28 +122,6 @@ Here's the [Block Diagram of DC8200 Display Controller](https://doc-en.rvspace.o
 [(Source)](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html)
 
 (Display Devices refer to MIPI DPHY and HDMI, interchangeable)
-
-Here are the [Linux Drivers for DC8200 Display Controller](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/source_code_structure_display.html)...
-
-- [vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c): Display Controller
-
-- [vs_dc_hw.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c): Framebuffer and Overlay (similar to A64 Display Engine)
-
-- [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c): Device for Direct Rendering Manager
-
-- [vs_crtc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c): Display Pipeline (Colour / Gamma / LUT)
-
-- [vs_plane.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c): Display Plane
-
-- [vs_simple_enc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c): [Display Subsystem (DSS)](https://software-dl.ti.com/processor-sdk-linux/esd/docs/06_03_00_106/linux/Foundational_Components/Kernel/Kernel_Drivers/Display/DSS.html) Encoder
-
-- [vs_gem.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c): [Graphics Execution Manager](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Graphics_Execution_Manager) (Memory Management Framework)
-
-- [vs_virtual.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c): Virtual Display
-
-- [vs_dc_dec.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_dec.c): Bitmap Decompression
-
-[(See the Notes here)](https://github.com/starfive-tech/linux/tree/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon)
 
 We'll see the Call Flow in a while.
 
