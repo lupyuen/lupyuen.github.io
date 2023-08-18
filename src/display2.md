@@ -78,6 +78,8 @@ Here are the official [__Linux Drivers__](https://doc-en.rvspace.org/VisionFive2
 
 - [__vs_dc_dec.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_dec.c): Bitmap Decompression
 
+In a while we'll decipher the Driver Source Code, to understand how the Display Controller works.
+
 [(See the Notes here)](https://github.com/starfive-tech/linux/tree/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon)
 
 # HDMI Display for Star64 JH7110
