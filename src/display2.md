@@ -176,6 +176,8 @@ The pic above shows the __DC8200 Driver for DRM__ (top left). It works like a fa
 
 (Not to be confused with [__the other DRM__](https://en.wikipedia.org/wiki/Digital_rights_management), which is also video-related)
 
+## DRM Operations
+
 The DRM Driver for DC8200 is named __"starfive"__. These are the __DRM Operations__ supported by the driver: [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L125-L143)
 
 ```c
@@ -211,6 +213,8 @@ TODO: DRV_MAJOR, DRV_MINOR
 
 TODO: Pic of Sub-Drivers
 
+## DRM Sub-Drivers
+
 Remember our DRM Driver is only a façade. Most of the work is done by the __Sub-Drivers for DC8200__: [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315)
 
 ```c
@@ -238,11 +242,18 @@ static struct platform_driver *drm_sub_drivers[] = {
 
 We'll see the __Display Controller Driver__ in a while.
 
+_How do the Sub-Drivers get registered at startup?_
+
+TODO: At startup, [vs_drm_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L459-L472) registers [drm_sub_drivers](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315) and [vs_drm_platform_driver](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L448-L457).
+
+## File Operations
+
 _What's inside fops?_
 
 __fops__ defines the __File Operations__ supported by our DRM Driver: [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L54-L63)
 
 ```c
+// File Operations for DC8200 Display Controller
 static const struct file_operations fops = {
   .owner     = THIS_MODULE,
   .open      = drm_open,
@@ -255,7 +266,7 @@ static const struct file_operations fops = {
 };
 ```
 
-(Looks fairly standard)
+(Looks fairly standard for a DRM Driver)
 
 TODO: vs_gem_mmap
 
@@ -270,8 +281,6 @@ static struct platform_driver vs_drm_platform_driver = {
 ```
 
 [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L448-L457)
-
-TODO: [vs_drm_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L459-L472) registers [drm_sub_drivers](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315) and [vs_drm_platform_driver](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L448-L457) at startup.
 
 # Call Flow for DC8200 Display Controller Driver
 
