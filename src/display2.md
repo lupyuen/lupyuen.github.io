@@ -168,27 +168,18 @@ Let's dive into the Display Driver Code!
 
 # DC8200 Driver for Direct Rendering Manager
 
-TODO
+_What's this DRM?_
 
-Nope not that DRM, which is also video-related
+[__Direct Rendering Manager (DRM)__](https://en.wikipedia.org/wiki/Direct_Rendering_Manager) is the Linux Subsystem that talks to Display Controllers. (Like the DC8200 Display Controller in JH7110)
 
-Let's walk through the code in the Linux Driver for DC8200 Display Controller, to understand how we'll implement it in NuttX.
+The pic above shows the __DC8200 Driver for DRM__ (top left). It works like a façade for the other DC8200 Driver Modules. (Rest of the pic)
 
-The DRM Driver is named "starfive"...
+(Not to be confused with [__the other DRM__](https://en.wikipedia.org/wiki/Digital_rights_management), which is also video-related)
+
+The DRM Driver for DC8200 is named __"starfive"__. These are the __DRM Operations__ supported by the driver: [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L125-L143)
 
 ```c
 // DRM Driver for DC8200 Display Controller
-static struct platform_driver vs_drm_platform_driver = {
-  .probe  = vs_drm_platform_probe,
-  .remove = vs_drm_platform_remove,
-  .name   = "starfive"
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L448-L457)
-
-Here are the DRM Operations supported by the driver...
-
-```c
 static struct drm_driver vs_drm_driver = {
   .driver_features    = DRIVER_MODESET | DRIVER_ATOMIC | DRIVER_GEM,
   .lastclose          = drm_fb_helper_lastclose,
@@ -210,36 +201,43 @@ static struct drm_driver vs_drm_driver = {
 };
 ```
 
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L125-L143)
+[(__Graphics Execution Manager "GEM"__ handles Memory Buffers)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Graphics_Execution_Manager)
 
-The DRM Driver includes these Sub Drivers...
+(We'll come back to __fops__)
+
+TODO: vs_gem_prime_import, vs_gem_prime_import_sg_table, vs_gem_prime_mmap, vs_gem_dumb_create
+
+TODO: DRV_MAJOR, DRV_MINOR
+
+Remember our DRM Driver is only a façade. Most of the work is done by the __Sub-Drivers for DC8200__: [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315)
 
 ```c
+// Sub-Drivers for DC8200 Display Controller
 static struct platform_driver *drm_sub_drivers[] = {
-  /* put display control driver at start */
+
+  // Display Controller Driver
   &dc_platform_driver,
 
-  /* connector */
 #ifdef CONFIG_STARFIVE_INNO_HDMI
+  // HDMI Connector Driver (Inno HDMI 2.0 Transmitter for TSMC28HPC+)
   &inno_hdmi_driver,
 #endif
 
+  // Simple Encoder Driver
   &simple_encoder_driver,
 
 #ifdef CONFIG_VERISILICON_VIRTUAL_DISPLAY
+  // Virtual Display Driver
   &virtual_display_platform_driver,
 #endif
 };
 ```
 
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315)
+We'll see the __Display Controller Driver__ in a while.
 
-(More about [dc_platform_driver](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1642-L1649) in the next section)
+_What's inside fops?_
 
-[vs_drm_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L459-L472) registers [drm_sub_drivers](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315) and [vs_drm_platform_driver](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L448-L457)
- at startup.
-
-Here are the File Operations supported by the DRM Driver...
+__fops__ defines the __File Operations__ supported by our DRM Driver: [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L54-L63)
 
 ```c
 static const struct file_operations fops = {
@@ -254,9 +252,23 @@ static const struct file_operations fops = {
 };
 ```
 
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L54-L63)
+(Looks fairly standard)
 
-[(More about Direct Rendering Manager)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager)
+TODO: vs_gem_mmap
+
+TODO: Probe
+
+```c
+// DRM Driver for DC8200 Display Controller
+static struct platform_driver vs_drm_platform_driver = {
+  .probe  = vs_drm_platform_probe,
+  .remove = vs_drm_platform_remove,
+  .name   = "starfive"
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L448-L457)
+
+TODO: [vs_drm_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L459-L472) registers [drm_sub_drivers](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315) and [vs_drm_platform_driver](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L448-L457) at startup.
 
 # Call Flow for DC8200 Display Controller Driver
 
