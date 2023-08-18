@@ -26,6 +26,8 @@ TODO
 
 [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer
 
+Hopefully this article will be helpful for __porting other Operating Systems__ to JH7110!
+
 Nope not that DRM, which is also video-related
 
 Prototype new driver in Zig
@@ -39,6 +41,8 @@ Slightly annoying that New Zig won't run on my Old Mac
 # HDMI Display for Star64 JH7110
 
 TODO
+
+_What exactly is documented for JH7110 Display Controller?_
 
 _Will NuttX work with the HDMI Display on Star64?_
 
@@ -64,7 +68,7 @@ From the docs above we have the [Display Subsystem Block Diagram](https://doc-en
 
 Which says that JH7110 uses a __DC8200 Dual Display Controller__ to drive the MIPI DSI and HDMI Displays.
 
-[(But the DC8200 docs are confidential sigh)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html)
+[(But the crucial DC8200 docs are confidential sigh)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html)
 
 And we have the [Display Subsystem Clock and Reset](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html)...
 
