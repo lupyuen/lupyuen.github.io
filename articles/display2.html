@@ -173,7 +173,7 @@
 <ul>
 <li>
 <p><strong>MIPI DPHY / DSI</strong>: Display Serial Interface</p>
-<p>(For LCD Panels, like in the PineTab-V)</p>
+<p>(For most LCD Panels, like in PineTab-V)</p>
 </li>
 <li>
 <p><strong>DPI</strong>: Display Parallel Interface</p>
@@ -181,12 +181,12 @@
 </li>
 <li>
 <p><strong>HDMI Video Output</strong></p>
-<p><a href="https://en.wikipedia.org/wiki/Network_on_a_chip">(NoC means <strong>Network-on-Chip</strong>)</a></p>
-<p><a href="https://en.wikipedia.org/wiki/Advanced_eXtensible_Interface">(AXI is the <strong>Advanced eXtensible Interface</strong>)</a></p>
 </li>
 </ul>
 <p>The Display Output Ports are named <strong>DPI0 and DPI1</strong>.</p>
-<p>Here are the <strong>Clock and Reset Signals</strong> for the Display Controller…</p>
+<p><a href="https://en.wikipedia.org/wiki/Network_on_a_chip">(NoC means <strong>Network-on-Chip</strong>)</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Advanced_eXtensible_Interface">(AXI is the <strong>Advanced eXtensible Interface</strong>)</a></p>
+<p>These are the <strong>Clock and Reset Signals</strong> for the Display Controller…</p>
 <p><img src="https://lupyuen.github.io/images/display2-vout_clkrst18.png" alt="JH7110 Display Subsystem Clock and Reset" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html"><em>JH7110 Display Subsystem Clock and Reset</em></a></p>
 <p>(Remember to enable the Clocks and deassert the Resets!)</p>
@@ -237,12 +237,11 @@
 <p>Nope not that DRM, which is also video-related</p>
 <p>Let’s walk through the code in the Linux Driver for DC8200 Display Controller, to understand how we’ll implement it in NuttX.</p>
 <p>The DRM Driver is named “starfive”…</p>
-<div class="example-wrap"><pre class="language-c"><code>// name = &quot;starfive&quot;
+<div class="example-wrap"><pre class="language-c"><code>// DRM Driver for DC8200 Display Controller
 static struct platform_driver vs_drm_platform_driver = {
   .probe  = vs_drm_platform_probe,
   .remove = vs_drm_platform_remove,
-  ...
-};
+  .name   = &quot;starfive&quot;
 </code></pre></div>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L448-L457">(Source)</a></p>
 <p>Here are the DRM Operations supported by the driver…</p>
