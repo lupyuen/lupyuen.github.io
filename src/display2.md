@@ -60,7 +60,7 @@ But the [__crucial docs are confidential__](https://doc-en.rvspace.org/JH7110/TR
 
 _What about the Driver Source Code?_
 
-Here are the official [__Linux Drivers__](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/source_code_structure_display.html) for the Display Controller...
+We have the official [__Linux Drivers__](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/source_code_structure_display.html) for the Display Controller...
 
 - [__vs_dc.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c): Display Controller
 
@@ -80,9 +80,9 @@ Here are the official [__Linux Drivers__](https://doc-en.rvspace.org/VisionFive2
 
 - [__vs_dc_dec.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_dec.c): Bitmap Decompression
 
-Later we'll decipher the Driver Source Code, to understand how the Display Controller works.
+  [(Build Instructions)](https://github.com/starfive-tech/linux/tree/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon)
 
-[(See the Notes here)](https://github.com/starfive-tech/linux/tree/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon)
+That's why we'll decipher the Driver Source Code to understand how the Display Controller works.
 
 ![JH7110 Display Subsystem Block Diagram](https://lupyuen.github.io/images/display2-vout_block_diagram18.png)
 
@@ -162,21 +162,15 @@ The [__Linux Device Tree__](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH
 
 [(Source)](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/device_tree_config_display.html)
 
-# Direct Rendering Manager Driver for DC8200
+Let's dive into the Display Driver Code!
+
+![JH7110 Linux Display Driver](https://lupyuen.github.io/images/jh7110-display.jpg)
+
+# DC8200 Driver for Direct Rendering Manager
 
 TODO
 
 Nope not that DRM, which is also video-related
-
-Prototype new driver in Zig
-
-Slightly annoying that New Zig won't run on my Old Mac
-
-[Fishwaldo suggests uboot](https://fosstodon.org/@Fishwaldo/110902984442385966)
-
-[the panel is not a Jadard panel, whoever wrote the factory image just hacked a existing driver. The panel in PtV (and PT2) is a BOE TH101MB31IG002-28A](https://fosstodon.org/@Fishwaldo/110902984462760802)
-
-![JH7110 Linux Display Driver](https://lupyuen.github.io/images/jh7110-display.jpg)
 
 Let's walk through the code in the Linux Driver for DC8200 Display Controller, to understand how we'll implement it in NuttX.
 
@@ -654,6 +648,14 @@ static const struct drm_bridge_funcs dw_mipi_dsi_bridge_funcs = {
 # What's Next
 
 TODO
+
+Prototype new driver in Zig
+
+Slightly annoying that New Zig won't run on my Old Mac
+
+[Fishwaldo suggests uboot](https://fosstodon.org/@Fishwaldo/110902984442385966)
+
+[the panel is not a Jadard panel, whoever wrote the factory image just hacked a existing driver. The panel in PtV (and PT2) is a BOE TH101MB31IG002-28A](https://fosstodon.org/@Fishwaldo/110902984462760802)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
