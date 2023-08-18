@@ -108,12 +108,12 @@
 </li>
 </ul>
 <p>From the docs above we have the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html">Display Subsystem Block Diagram</a>…</p>
-<p><img src="https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/vout_block_diagram18.png" alt="Display Subsystem Block Diagram" /></p>
+<p><img src="https://lupyuen.github.io/images/display2-vout_block_diagram18.png" alt="Display Subsystem Block Diagram" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html">(Source)</a></p>
 <p>Which says that JH7110 uses a <strong>DC8200 Dual Display Controller</strong> to drive the MIPI DSI and HDMI Displays.</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html">(But the DC8200 docs are confidential sigh)</a></p>
 <p>And we have the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html">Display Subsystem Clock and Reset</a>…</p>
-<p><img src="https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/vout_clkrst18.png" alt="Display Subsystem Clock and Reset" /></p>
+<p><img src="https://lupyuen.github.io/images/display2-vout_clkrst18.png" alt="Display Subsystem Clock and Reset" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html">(Source)</a></p>
 <p>So to make HDMI work on JH7110, we need a create a NuttX Driver for the DC8200 Display Controller…</p>
 <h1 id="dc8200-display-controller-for-star64-jh7110"><a href="#dc8200-display-controller-for-star64-jh7110">2 DC8200 Display Controller for Star64 JH7110</a></h1>
@@ -121,7 +121,7 @@
 <p>Let’s talk about the <strong>DC8200 Dual Display Controller</strong>.</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html">(But the DC8200 docs are confidential sigh)</a></p>
 <p>Here’s the <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html">Block Diagram of DC8200 Display Controller</a>…</p>
-<p><img src="https://doc-en.rvspace.org/VisionFive2/DG_Display/Image/JH7110_SDK/Display_Block_Diagram.png" alt="Block Diagram of DC8200 Display Controller" /></p>
+<p><img src="https://lupyuen.github.io/images/display2-Display_Block_Diagram.png" alt="Block Diagram of DC8200 Display Controller" /></p>
 <p><a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html">(Source)</a></p>
 <p>(Display Devices refer to MIPI DPHY and HDMI, interchangeable)</p>
 <p>Here are the <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/source_code_structure_display.html">Linux Drivers for DC8200 Display Controller</a>…</p>
@@ -652,10 +652,10 @@ static struct platform_driver cdns_dsi_platform_driver = {
 <p>TODO</p>
 <p>Also in the JH7110 Display Docs: How to connect an LCD Panel to JH7110.</p>
 <p>JH7110’s MIPI DSI Controller is <a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html">Cadence MIPI DSI v1.3.1 TX Controller IP (DSITX)</a>…</p>
-<p><img src="https://doc-en.rvspace.org/VisionFive2/DG_LCD/Image/JH7110_SDK/ic_spec.png" alt="Cadence MIPI DSI v1.3.1 TX Controller IP (DSITX)" /></p>
+<p><img src="https://lupyuen.github.io/images/display2-ic_spec.png" alt="Cadence MIPI DSI v1.3.1 TX Controller IP (DSITX)" /></p>
 <p><a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html">(Source)</a></p>
 <p>JH7110’s MIPI DPHY Controller is <a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html">MIPI DPHY M31 (M31DPHYRX611TL028D_00151501)</a>…</p>
-<p><img src="https://doc-en.rvspace.org/VisionFive2/DG_LCD/Image/JH7110_SDK/MIPI_DPHY_M31.png" alt="MIPI DPHY M31 (M31DPHYRX611TL028D_00151501)" /></p>
+<p><img src="https://lupyuen.github.io/images/display2-MIPI_DPHY_M31.png" alt="MIPI DPHY M31 (M31DPHYRX611TL028D_00151501)" /></p>
 <p><a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html">(Source)</a></p>
 <p>Refer to the…</p>
 <ul>
