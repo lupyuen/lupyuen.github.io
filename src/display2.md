@@ -106,166 +106,59 @@ From the pic above, we see that JH7110 uses a __VeriSilicon DC8200 Dual Display 
 
   [(AXI is the __Advanced eXtensible Interface__)](https://en.wikipedia.org/wiki/Advanced_eXtensible_Interface)
 
-TODO
+The Display Output Ports are named __DPI0 and DPI1__.
 
-And we have the [Display Subsystem Clock and Reset](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html)...
+Here are the __Clock and Reset Signals__ for the Display Controller...
 
-![Display Subsystem Clock and Reset](https://lupyuen.github.io/images/display2-vout_clkrst18.png)
+![JH7110 Display Subsystem Clock and Reset](https://lupyuen.github.io/images/display2-vout_clkrst18.png)
 
-[(Source)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html)
+[_JH7110 Display Subsystem Clock and Reset_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html)
 
-So to make HDMI work on JH7110, we need a create a NuttX Driver for the DC8200 Display Controller...
+(Remember to enable the Clocks and deassert the Resets!)
 
-TODO
-
-Let's talk about the __DC8200 Dual Display Controller__.
-
-[(But the DC8200 docs are confidential sigh)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html)
-
-Here's the [Block Diagram of DC8200 Display Controller](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html)...
+The DC8200 Display Controller outputs to __2 displays simultaneously__ (like MIPI DSI + HDMI)...
 
 ![Block Diagram of DC8200 Display Controller](https://lupyuen.github.io/images/display2-Display_Block_Diagram.png)
 
-[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html)
+[_Block Diagram of DC8200 Display Controller_](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html)
 
-(Display Devices refer to MIPI DPHY and HDMI, interchangeable)
+[(AXI is the __Advanced eXtensible Interface__)](https://en.wikipedia.org/wiki/Advanced_eXtensible_Interface)
 
-We'll see the Call Flow in a while.
+With support for...
 
-Are these used?
+- __Display Layers__: Overlays for Cursor, Video, Graphics
 
-- [vs_dc_mmu.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_mmu.c): Memory Mapping
+- __Output Control__: Blending, Gamma, 3D LUT, RGB-to-YUV, Dithering
 
-- [vs_fb.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c): GEM Memory Mapping for Framebuffer
-
-Here's the (partial) [Linux Device Tree for DC8200](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/device_tree_config_display.html)...
+The [__Linux Device Tree__](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/device_tree_config_display.html) configures the mapping of Display Outputs to the Display Devices...
 
 ```text
+## Configure DC8200 Display Controller
 &dc8200 {
-  status = "okay";
 
+  ## Display Outputs are mapped to...
   dc_out: port {
-    #address-cells = <1>;
-    #size-cells = <0>;
+
+    ## DPI0: HDMI
     dc_out_dpi0: endpoint@0 {
       reg = <0>;
       remote-endpoint = <&hdmi_input0>;
     };
+
+    ## DPI1: HDMI LCDC
     dc_out_dpi1: endpoint@1 {
       reg = <1>;
       remote-endpoint = <&hdmi_in_lcdc>;
     };
 
+    ## DPI2: MIPI DSI
     dc_out_dpi2: endpoint@2 {
       reg = <2>;
       remote-endpoint = <&mipi_in>;
     };
-  };
-};
 ```
 
 [(Source)](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/device_tree_config_display.html)
-
-HDMI I2C Encoder in JH7110 is the [NXP Semiconductors TDA998X HDMI Encoder](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/kernel_menu_config_diplay.html)
-
-Next we need to create a NuttX Driver for the HDMI Controller...
-
-# HDMI Controller for Star64 JH7110
-
-TODO
-
-The HDMI Controller for JH7110 is [Inno HDMI 2.0 Transmitter For TSMC28HPC+](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html).
-
-Based on [JH7110 HDMI Developing Guide](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/source_code_structure_hdmi.html), the Linux Drivers for JH7110 HDMI (VeriSilicon Inno HDMI) are...
-
-- [inno_hdmi.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c)
-
-- [inno_hdmi.h](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.h)
-
-The [Linux Device Tree](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/device_tree_hdmi.html) looks like...
-
-```text
-hdmi: hdmi@29590000 {
-    compatible = "starfive,jh7100-hdmi","inno,hdmi";
-      reg = <0x0 0x29590000 0x0 0x4000>;
-      interrupts = <99>;
-      status = "disabled";
-      clocks = <&clkvout JH7110_U0_HDMI_TX_CLK_SYS>,
-        <&clkvout JH7110_U0_HDMI_TX_CLK_MCLK>,
-        <&clkvout JH7110_U0_HDMI_TX_CLK_BCLK>,
-        <&hdmitx0_pixelclk>;
-      clock-names = "sysclk", "mclk","bclk","pclk";
-      resets = <&rstgen RSTN_U0_HDMI_TX_HDMI>;
-      reset-names = "hdmi_tx";
-    };
-...
-&hdmi {
-  status = "okay";
-  pinctrl-names = "default";
-  pinctrl-0 = <&inno_hdmi_pins>;
-
-  hdmi_in: port {
-    #address-cells = <1>;
-    #size-cells = <0>;
-    hdmi_in_lcdc: endpoint@0 {
-      reg = <0>;
-      remote-endpoint = <&dc_out_dpi1>;
-    };
-  };
-};
-```
-
-[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/device_tree_hdmi.html)
-
-We see the [HDMI Initialization Process](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/initialization_process.html)...
-
-![HDMI Initialization Process](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/Image/JH7110_SDK/HDMI_Init.svg)
-
-[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/initialization_process.html)
-
-And the [HDMI Plug and Unplug Process](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/plug_n_unplug_process.html)...
-
-![HDMI Plug and Unplug Process](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/Image/JH7110_SDK/HDMI_Pug_Unplug.svg)
-
-[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/plug_n_unplug_process.html)
-
-# Test HDMI for Star64 JH7110
-
-TODO
-
-_How will we test the HDMI Display for Star64 JH7110?_
-
-We run the [`modetest` command to test HDMI](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/test_example_display.html)...
-
-```bash
-modetest \
-  -M starfive \
-  -D 0 \
-  -a \
-  -s 116@31:1920x1080 \
-  -P 39@31:1920x1080@RG16 \
-  -Ftiles 
-```
-
-[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/test_example_display.html)
-
-`116@31:1920x1080` means `<Connector ID>@<CRTC ID>: <Resolution>`
-
-`39@31:1920x1080@RG16` means `<Plane ID>@<CRTC ID>: <Resolution>@<Format>`
-
-[(CRTC "CRT Controller" refers to the Display Pipeline)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#KMS_device_model)
-
-See also...
-
-- [Before Debug](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/before_debug.html)
-
-- [Debug Display](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/debug_hdmi.html)
-
-TODO: What's inside the modetest app? [modetest.c](https://gitlab.freedesktop.org/mesa/drm/-/blob/main/tests/modetest/modetest.c)
-
-TODO: What parameters does modetest pass to the DC8200 Driver?
-
-TODO: Can we create a simpler modetest for our own testing on NuttX?
 
 # Direct Rendering Manager Driver for DC8200
 
@@ -754,7 +647,128 @@ static const struct drm_bridge_funcs dw_mipi_dsi_bridge_funcs = {
 
 [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L869-L875)
 
-# LCD Panel for Star64 JH7110
+
+
+# What's Next
+
+TODO
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
+
+-   [__My Other Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/display2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display2.md)
+
+# Appendix: JH7110 HDMI Controller
+
+TODO
+
+The HDMI Controller for JH7110 is [Inno HDMI 2.0 Transmitter For TSMC28HPC+](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html).
+
+HDMI I2C Encoder in JH7110 is the [NXP Semiconductors TDA998X HDMI Encoder](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/kernel_menu_config_diplay.html)
+
+Based on [JH7110 HDMI Developing Guide](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/source_code_structure_hdmi.html), the Linux Drivers for JH7110 HDMI (VeriSilicon Inno HDMI) are...
+
+- [inno_hdmi.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c)
+
+- [inno_hdmi.h](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.h)
+
+The [Linux Device Tree](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/device_tree_hdmi.html) looks like...
+
+```text
+hdmi: hdmi@29590000 {
+    compatible = "starfive,jh7100-hdmi","inno,hdmi";
+      reg = <0x0 0x29590000 0x0 0x4000>;
+      interrupts = <99>;
+      status = "disabled";
+      clocks = <&clkvout JH7110_U0_HDMI_TX_CLK_SYS>,
+        <&clkvout JH7110_U0_HDMI_TX_CLK_MCLK>,
+        <&clkvout JH7110_U0_HDMI_TX_CLK_BCLK>,
+        <&hdmitx0_pixelclk>;
+      clock-names = "sysclk", "mclk","bclk","pclk";
+      resets = <&rstgen RSTN_U0_HDMI_TX_HDMI>;
+      reset-names = "hdmi_tx";
+    };
+...
+&hdmi {
+  status = "okay";
+  pinctrl-names = "default";
+  pinctrl-0 = <&inno_hdmi_pins>;
+
+  hdmi_in: port {
+    #address-cells = <1>;
+    #size-cells = <0>;
+    hdmi_in_lcdc: endpoint@0 {
+      reg = <0>;
+      remote-endpoint = <&dc_out_dpi1>;
+    };
+  };
+};
+```
+
+[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/device_tree_hdmi.html)
+
+We see the [HDMI Initialization Process](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/initialization_process.html)...
+
+![HDMI Initialization Process](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/Image/JH7110_SDK/HDMI_Init.svg)
+
+[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/initialization_process.html)
+
+And the [HDMI Plug and Unplug Process](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/plug_n_unplug_process.html)...
+
+![HDMI Plug and Unplug Process](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/Image/JH7110_SDK/HDMI_Pug_Unplug.svg)
+
+[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/plug_n_unplug_process.html)
+
+# Appendix: JH7110 HDMI Testing
+
+TODO
+
+_How will we test the HDMI Display for Star64 JH7110?_
+
+We run the [`modetest` command to test HDMI](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/test_example_display.html)...
+
+```bash
+modetest \
+  -M starfive \
+  -D 0 \
+  -a \
+  -s 116@31:1920x1080 \
+  -P 39@31:1920x1080@RG16 \
+  -Ftiles 
+```
+
+[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/test_example_display.html)
+
+`116@31:1920x1080` means `<Connector ID>@<CRTC ID>: <Resolution>`
+
+`39@31:1920x1080@RG16` means `<Plane ID>@<CRTC ID>: <Resolution>@<Format>`
+
+[(CRTC "CRT Controller" refers to the Display Pipeline)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#KMS_device_model)
+
+See also...
+
+- [Before Debug](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/before_debug.html)
+
+- [Debug Display](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/debug_hdmi.html)
+
+TODO: What's inside the modetest app? [modetest.c](https://gitlab.freedesktop.org/mesa/drm/-/blob/main/tests/modetest/modetest.c)
+
+TODO: What parameters does modetest pass to the DC8200 Driver?
+
+TODO: Can we create a simpler modetest for our own testing on NuttX?
+
+# Appendix: JH7110 LCD Panel Configuration
 
 TODO
 
@@ -793,23 +807,3 @@ Here's the [LCD Initialisation Process](https://doc-en.rvspace.org/VisionFive2/D
 [(Source)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/initalization_lcd.html)
 
 And the [MIPI Parameter Configuration](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/mipi_configuration.html) for 1C2L (2-lane MIPI DSI) and 1C4L (4-lane MIPI DSI).
-
-# What's Next
-
-TODO
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
-
--   [__My Other Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/display2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display2.md)
