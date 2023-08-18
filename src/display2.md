@@ -209,6 +209,8 @@ TODO: vs_gem_prime_import, vs_gem_prime_import_sg_table, vs_gem_prime_mmap, vs_g
 
 TODO: DRV_MAJOR, DRV_MINOR
 
+TODO: Pic of Sub-Drivers
+
 Remember our DRM Driver is only a façade. Most of the work is done by the __Sub-Drivers for DC8200__: [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315)
 
 ```c
@@ -219,7 +221,8 @@ static struct platform_driver *drm_sub_drivers[] = {
   &dc_platform_driver,
 
 #ifdef CONFIG_STARFIVE_INNO_HDMI
-  // HDMI Connector Driver (Inno HDMI 2.0 Transmitter for TSMC28HPC+)
+  // HDMI Controller Driver:
+  // Inno HDMI 2.0 Transmitter for TSMC28HPC+
   &inno_hdmi_driver,
 #endif
 
