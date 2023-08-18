@@ -80,9 +80,22 @@
 <li><a href="#lcd-panel-for-star64-jh7110">11 LCD Panel for Star64 JH7110</a><ul></ul></li>
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="TODO" /></p>
+<p>Today we look inside the <strong>Display Controller</strong> of the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>RISC-V StarFive JH7110 SoC</strong></a> and figure out how it works.</p>
+<p><em>But the JH7110 Display Controller is NOT documented!</em></p>
+<p>Indeed! The <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/source_code_structure_display.html"><strong>Official JH7110 Doc</strong></a> only points to the <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/source_code_structure_display.html"><strong>Linux Driver Source Code</strong></a>.</p>
+<p>(Plus a smattering of <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_syscon.html"><strong>Display Registers</strong></a>)</p>
+<p><em>Sounds a little disturbing?</em></p>
+<p>Yeah goodbye olden days of <a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine"><strong>Documented Display Registers</strong></a>! (Like for <a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine"><strong>Allwinner A64</strong></a>)</p>
+<p>But no worries! We’re here to decipher the Driver Source Code and document everything ourselves.</p>
+<p><em>Why are we doing this?</em></p>
 <p>TODO</p>
-<p><a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) now officially supports <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer! (Pic below)</p>
-<p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a>, the same SoC in VisionFive2)</p>
+<p><a href="https://lupyuen.github.io/articles/release"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS)</p>
+<p><a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer</p>
+<p>Nope not that DRM, which is also video-related</p>
+<p>Prototype new driver in Zig</p>
+<p>Slightly annoying that New Zig won’t run on my Old Mac</p>
+<p><a href="https://fosstodon.org/@Fishwaldo/110902984442385966">Fishwaldo suggests uboot</a></p>
+<p><a href="https://fosstodon.org/@Fishwaldo/110902984462760802">the panel is not a Jadard panel, whoever wrote the factory image just hacked a existing driver. The panel in PtV (and PT2) is a BOE TH101MB31IG002-28A</a></p>
 <h1 id="hdmi-display-for-star64-jh7110"><a href="#hdmi-display-for-star64-jh7110">1 HDMI Display for Star64 JH7110</a></h1>
 <p>TODO</p>
 <p><em>Will NuttX work with the HDMI Display on Star64?</em></p>
