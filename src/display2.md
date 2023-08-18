@@ -130,6 +130,8 @@ With support for...
 
 - __Output Control__: Blending, Gamma, 3D LUT, RGB-to-YUV, Dithering
 
+_How are the Display Outputs mapped to MIPI DSI and HDMI?_
+
 The [__Linux Device Tree__](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/device_tree_config_display.html) configures the mapping of Display Outputs to the Display Devices...
 
 ```text
