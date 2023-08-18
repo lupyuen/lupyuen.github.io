@@ -4,11 +4,37 @@
 
 ![TODO](https://lupyuen.github.io/images/display2-title.jpg)
 
+Today we look inside the __Display Controller__ of the [__RISC-V StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) and figure out how it works.
+
+_But the JH7110 Display Controller is NOT documented!_
+
+Indeed! The [__Official JH7110 Doc__](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/source_code_structure_display.html) only points to the [__Linux Driver Source Code__](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/source_code_structure_display.html).
+
+(Plus a smattering of [__Display Registers__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_syscon.html))
+
+_Sounds a little disturbing?_
+
+Yeah goodbye olden days of [__Documented Display Registers__](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine)! (Like for [__Allwinner A64__](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine))
+
+But no worries! We're here to decipher the Driver Source Code and document everything ourselves.
+
+_Why are we doing this?_
+
 TODO
 
-[__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/nuttx2) (RTOS) now officially supports [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer! (Pic below)
+[__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS)
 
-(Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html), the same SoC in VisionFive2)
+[__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer
+
+Nope not that DRM, which is also video-related
+
+Prototype new driver in Zig
+
+Slightly annoying that New Zig won't run on my Old Mac
+
+[Fishwaldo suggests uboot](https://fosstodon.org/@Fishwaldo/110902984442385966)
+
+[the panel is not a Jadard panel, whoever wrote the factory image just hacked a existing driver. The panel in PtV (and PT2) is a BOE TH101MB31IG002-28A](https://fosstodon.org/@Fishwaldo/110902984462760802)
 
 # HDMI Display for Star64 JH7110
 
