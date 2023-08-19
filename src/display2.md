@@ -288,6 +288,8 @@ static const struct file_operations fops = {
 
 TODO: vs_gem_mmap
 
+![TODO](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
 # Inside the Display Driver
 
 _What's inside a typical Display Driver?_
@@ -296,11 +298,17 @@ _How does it talk to the Display Hardware?_
 
 Before we dive too deep into our Driver Code, let's talk about __Display Drivers__ and how they control the __Display Hardware__.
 
+The pic shows how a typical Display Driver will __render graphics__ to a Display Device...
+
+- Our Apps will write the pixels into a __RAM Framebuffer__
+
+- Inside the SoC is a __Display Engine__ that reads the Framebuffer (over DMA)
+
+- And pushes a continuous stream of pixels to a __Display Device__
+
+  (Over HDMI or MIPI Display Serial Interface)
+
 TODO: Overlays, Commit, Framebuffer
-
-TODO: Steps
-
-![TODO](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
 TODO: FB
 
