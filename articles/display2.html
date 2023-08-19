@@ -76,13 +76,16 @@
 <li><a href="#inside-the-display-driver">4 Inside the Display Driver</a><ul></ul></li>
 <li><a href="#dc8200-display-controller-driver">5 DC8200 Display Controller Driver</a><ul></ul></li>
 <li><a href="#dc8200-display-hardware-driver">6 DC8200 Display Hardware Driver</a><ul></ul></li>
-<li><a href="#dc8200-framebuffer-driver">7 DC8200 Framebuffer Driver</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-jh7110-hdmi-controller">9 Appendix: JH7110 HDMI Controller</a><ul></ul></li>
-<li><a href="#appendix-jh7110-hdmi-testing">10 Appendix: JH7110 HDMI Testing</a><ul></ul></li>
-<li><a href="#appendix-jh7110-lcd-panel-configuration">11 Appendix: JH7110 LCD Panel Configuration</a><ul></ul></li>
-<li><a href="#appendix-dc8200-virtual-display-driver">12 Appendix: DC8200 Virtual Display Driver</a><ul></ul></li>
-<li><a href="#appendix-inno-hdmi-controller-driver">13 Appendix: Inno HDMI Controller Driver</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2023</em></p>
+<li><a href="#setup-display">7 Setup Display</a><ul></ul></li>
+<li><a href="#commit-configuration">8 Commit Configuration</a><ul></ul></li>
+<li><a href="#update-display-plane">9 Update Display Plane</a><ul></ul></li>
+<li><a href="#dc8200-framebuffer-driver">10 DC8200 Framebuffer Driver</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-jh7110-hdmi-controller">12 Appendix: JH7110 HDMI Controller</a><ul></ul></li>
+<li><a href="#appendix-jh7110-hdmi-testing">13 Appendix: JH7110 HDMI Testing</a><ul></ul></li>
+<li><a href="#appendix-jh7110-lcd-panel-configuration">14 Appendix: JH7110 LCD Panel Configuration</a><ul></ul></li>
+<li><a href="#appendix-dc8200-virtual-display-driver">15 Appendix: DC8200 Virtual Display Driver</a><ul></ul></li>
+<li><a href="#appendix-inno-hdmi-controller-driver">16 Appendix: Inno HDMI Controller Driver</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Display Driver for StarFive JH7110 SoC" /></p>
 <p>Today we look inside the <strong>Display Controller</strong> of the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>RISC-V StarFive JH7110 SoC</strong></a> and figure out how it works.</p>
 <p><em>But the JH7110 Display Controller is NOT documented!</em></p>
@@ -371,8 +374,8 @@ static const struct file_operations fops = {
 <p><a href="https://lupyuen.github.io/articles/de3">(Like for <strong>Allwinner A64</strong>)</a></p>
 <p>Heading back to our scheduled programming…</p>
 <h1 id="dc8200-display-controller-driver"><a href="#dc8200-display-controller-driver">5 DC8200 Display Controller Driver</a></h1>
-<p>TODO</p>
-<p>The DC8200 Controller Driver is named “vs-dc” (for VeriSilicon)…</p>
+<p>TODO: Init</p>
+<p>The DC8200 Controller Driver is named “vs-dc” (for VeriSilicon Display Controller)…</p>
 <div class="example-wrap"><pre class="language-c"><code>struct platform_driver dc_platform_driver = {
   .probe  = dc_probe,
   .remove = dc_remove,
@@ -473,7 +476,7 @@ static const struct file_operations fops = {
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L314-L318">(Source)</a></p>
 <p>Refer to <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-internals.html">Linux DRM Internals</a></p>
 <h1 id="dc8200-display-hardware-driver"><a href="#dc8200-display-hardware-driver">6 DC8200 Display Hardware Driver</a></h1>
-<p>TODO</p>
+<p>TODO: Init</p>
 <p>Display Planes Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L1084">dc_hw_planes</a></p>
 <p>Display Controller Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1086-L1150">dc_info</a></p>
 <p>Initialise Display Hardware: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">dc_hw_init</a></p>
@@ -551,7 +554,13 @@ static const struct file_operations fops = {
 <li>Set ROI</li>
 </ul>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863">plane_ex_commit</a> and <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574">gamma_ex_commit</a> are called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076">dc_hw_commit</a></p>
-<h1 id="dc8200-framebuffer-driver"><a href="#dc8200-framebuffer-driver">7 DC8200 Framebuffer Driver</a></h1>
+<h1 id="setup-display"><a href="#setup-display">7 Setup Display</a></h1>
+<p>TODO</p>
+<h1 id="commit-configuration"><a href="#commit-configuration">8 Commit Configuration</a></h1>
+<p>TODO</p>
+<h1 id="update-display-plane"><a href="#update-display-plane">9 Update Display Plane</a></h1>
+<p>TODO</p>
+<h1 id="dc8200-framebuffer-driver"><a href="#dc8200-framebuffer-driver">10 DC8200 Framebuffer Driver</a></h1>
 <p>TODO</p>
 <p>At startup, <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271">vs_drm_bind</a> calls <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191">vs_mode_config_init</a> to register the Framebuffer Driver: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172">vs_mode_config_funcs</a>.</p>
 <p>Which is defined as…</p>
@@ -567,7 +576,7 @@ static const struct file_operations fops = {
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L60-L123">vs_fb_create</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_framebuffer.c#L286-L329">drm_framebuffer</a></p>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L155-L164">vs_get_format_info</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_fourcc.c#L302-L325">drm_fourcc</a></p>
 <p>Framebuffer Formats: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L134-L139">vs_formats</a></p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Prototype new driver in Zig</p>
 <p>Slightly annoying that New Zig won’t run on my Old Mac</p>
@@ -593,7 +602,7 @@ static const struct file_operations fops = {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display2.md"><strong>lupyuen.github.io/src/display2.md</strong></a></p>
-<h1 id="appendix-jh7110-hdmi-controller"><a href="#appendix-jh7110-hdmi-controller">9 Appendix: JH7110 HDMI Controller</a></h1>
+<h1 id="appendix-jh7110-hdmi-controller"><a href="#appendix-jh7110-hdmi-controller">12 Appendix: JH7110 HDMI Controller</a></h1>
 <p>TODO</p>
 <p>The HDMI Controller for JH7110 is <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html">Inno HDMI 2.0 Transmitter For TSMC28HPC+</a>.</p>
 <p>HDMI I2C Encoder in JH7110 is the <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/kernel_menu_config_diplay.html">NXP Semiconductors TDA998X HDMI Encoder</a></p>
@@ -643,7 +652,7 @@ static const struct file_operations fops = {
 <p>And the <a href="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/plug_n_unplug_process.html">HDMI Plug and Unplug Process</a>…</p>
 <p><img src="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/Image/JH7110_SDK/HDMI_Pug_Unplug.svg" alt="HDMI Plug and Unplug Process" /></p>
 <p><a href="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/plug_n_unplug_process.html">(Source)</a></p>
-<h1 id="appendix-jh7110-hdmi-testing"><a href="#appendix-jh7110-hdmi-testing">10 Appendix: JH7110 HDMI Testing</a></h1>
+<h1 id="appendix-jh7110-hdmi-testing"><a href="#appendix-jh7110-hdmi-testing">13 Appendix: JH7110 HDMI Testing</a></h1>
 <p>TODO</p>
 <p><em>How will we test the HDMI Display for Star64 JH7110?</em></p>
 <p>We run the <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/test_example_display.html"><code>modetest</code> command to test HDMI</a>…</p>
@@ -671,7 +680,7 @@ static const struct file_operations fops = {
 <p>TODO: What’s inside the modetest app? <a href="https://gitlab.freedesktop.org/mesa/drm/-/blob/main/tests/modetest/modetest.c">modetest.c</a></p>
 <p>TODO: What parameters does modetest pass to the DC8200 Driver?</p>
 <p>TODO: Can we create a simpler modetest for our own testing on NuttX?</p>
-<h1 id="appendix-jh7110-lcd-panel-configuration"><a href="#appendix-jh7110-lcd-panel-configuration">11 Appendix: JH7110 LCD Panel Configuration</a></h1>
+<h1 id="appendix-jh7110-lcd-panel-configuration"><a href="#appendix-jh7110-lcd-panel-configuration">14 Appendix: JH7110 LCD Panel Configuration</a></h1>
 <p>TODO</p>
 <p>Also in the JH7110 Display Docs: How to connect an LCD Panel to JH7110.</p>
 <p>JH7110’s MIPI DSI Controller is <a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html">Cadence MIPI DSI v1.3.1 TX Controller IP (DSITX)</a>…</p>
@@ -705,7 +714,7 @@ static const struct file_operations fops = {
 <p><img src="https://doc-en.rvspace.org/VisionFive2/DG_LCD/Image/JH7110_SDK/LCD_Init.svg" alt="LCD Initialisation Process" /></p>
 <p><a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/initalization_lcd.html">(Source)</a></p>
 <p>And the <a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/mipi_configuration.html">MIPI Parameter Configuration</a> for 1C2L (2-lane MIPI DSI) and 1C4L (4-lane MIPI DSI).</p>
-<h1 id="appendix-dc8200-virtual-display-driver"><a href="#appendix-dc8200-virtual-display-driver">12 Appendix: DC8200 Virtual Display Driver</a></h1>
+<h1 id="appendix-dc8200-virtual-display-driver"><a href="#appendix-dc8200-virtual-display-driver">15 Appendix: DC8200 Virtual Display Driver</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct drm_connector_helper_funcs vd_connector_helper_funcs = {
   .get_modes    = vd_get_modes,
@@ -765,7 +774,7 @@ struct platform_driver simple_encoder_driver = {
 };
 </code></pre></div>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c#L300-L307">(Source)</a></p>
-<h1 id="appendix-inno-hdmi-controller-driver"><a href="#appendix-inno-hdmi-controller-driver">13 Appendix: Inno HDMI Controller Driver</a></h1>
+<h1 id="appendix-inno-hdmi-controller-driver"><a href="#appendix-inno-hdmi-controller-driver">16 Appendix: Inno HDMI Controller Driver</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>// name = &quot;innohdmi-starfive&quot;
 struct platform_driver inno_hdmi_driver = {
