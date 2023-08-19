@@ -338,11 +338,19 @@ And that's how a typical Display Driver works in a Modern SoC!
 
 Heading back to our scheduled programming...
 
+TODO: Pic of Display Controller
+
 # DC8200 Display Controller Driver
 
-TODO: Init
+The __DC8200 Display Controller Driver__ is called by the the DC8200 DRM Driver. The driver exposes the Display Functions for...
 
-The __DC8200 Display Controller Driver__ is named __"vs-dc"__ (for VeriSilicon Display Controller)...
+- Initialisation of __Display Controller__
+
+- Setup and Configuration of __Display Pipeline__
+
+- Update of __Display Plane__
+
+The Display Controller Driver is named __"vs-dc"__ (for VeriSilicon Display Controller): [vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1642-L1649)
 
 ```c
 struct platform_driver dc_platform_driver = {
@@ -351,11 +359,11 @@ struct platform_driver dc_platform_driver = {
   .name   = "vs-dc"
 ```
 
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1642-L1649)
+[(__dc_probe__ is defined here)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1595-L1629)
 
-Probe for Display Controller is implemented here: [dc_probe](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1595-L1629)
+TODO: dc_remove
 
-We see the Component Functions exposed by the driver...
+These are the __Component Functions__ exposed by the Display Controller Driver: [vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1584-L1587)
 
 ```c
 const struct component_ops dc_component_ops = {
@@ -364,19 +372,19 @@ const struct component_ops dc_component_ops = {
 };
 ```
 
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1584-L1587)
+_What happens at startup?_
 
-TODO: What happens at startup?
+At startup, the DRM Driver calls our Display Controller Driver at...
 
-Bind to Display Controller is here...
+- [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573) (to ???), which calls..
 
-- [dc_bind](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573), which calls..
+- [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) (to ???), which calls...
 
-- [dc_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722), which calls...
+- [__dc_hw_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361) (from the Display Hardware Driver) to update the Display Registers
 
-- [dc_hw_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361)
+  (Explained in the next section)
 
-TODO: Setup Display / Commit Display / Update Display Plane
+TODO: Setup Display Pipeline / Commit Display Pipeline / Update Display Plane
 
 Refer to [Linux DRM Internals](https://www.kernel.org/doc/html/v4.15/gpu/drm-internals.html)
 
@@ -395,7 +403,7 @@ Initialise Display Hardware: [dc_hw_init](https://github.com/starfive-tech/linux
 
 TODO: Why read the Hardware Revision?
 
-TODO: Setup Display / Commit Display / Update Display Plane
+TODO: Setup Display Pipeline / Commit Display Pipeline / Update Display Plane
 
 # Setup Display Pipeline
 
