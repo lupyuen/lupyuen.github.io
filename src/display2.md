@@ -640,24 +640,62 @@ TODO
 TODO
 
 - dc_init
-- vs_drm_iommu_attach_device: Attach I/O MMU Device
-- For Each Panel: vs_crtc_create: Create Display Pipeline
-- For Each Plane: vs_plane_create: Create Display Plane
-- vs_drm_update_pitch_alignment: Update Pitch Alignment
-- clk_disable_unprepare(vout_top_lcd): Disable Clock vout_top_lcd
-- dc8200 asrt: vs_dc8200_reset_assert: Assert DC8200 Reset
-- dc8200 clk disable: vs_dc_dc8200_clock_disable: Disable DC8200 Clock
-- vouttop clk disable: vs_dc_vouttop_clock_disable: Disable Clock vouttop
-- vout clk disable: vs_dc_clock_disable: Disable DC Clock vout
+- vs_drm_iommu_attach_device: 
+
+  Attach I/O MMU Device
+
+- For Each Panel: vs_crtc_create: 
+
+  Create Display Pipeline
+
+- For Each Plane: vs_plane_create: 
+
+  Create Display Plane
+
+- vs_drm_update_pitch_alignment: 
+
+  Update Pitch Alignment
+
+- clk_disable_unprepare(vout_top_lcd): 
+
+  Disable Clock vout_top_lcd (clk_dom_vout_top_lcd_clk?)
+
+- dc8200 asrt: vs_dc8200_reset_assert: 
+
+  Assert DC8200 Reset
+
+- dc8200 clk disable: vs_dc_dc8200_clock_disable: 
+
+  Disable DC8200 Clock
+
+- vouttop clk disable: vs_dc_vouttop_clock_disable: 
+
+  Disable Clock vouttop
+
+- vout clk disable: vs_dc_clock_disable: 
+
+  Disable DC Clock vout
 
 ## dc_init
 
 TODO
 
-- dc_vout_clk_enable: Enable Clock dc_vout_clk
-- vs_dc8200_reset_deassert: Deassert DC8200 Reset
-- clk_prepare_enable(vout_top_lcd): Enable Clock vout_top_lcd
-- vs_vout_reset_deassert: Deassert vout_reset
+- dc_vout_clk_enable: 
+
+  Enable Clock dc_vout_clk
+
+- vs_dc8200_reset_deassert: 
+
+  Deassert DC8200 Reset
+
+- clk_prepare_enable(vout_top_lcd): 
+
+  Enable Clock vout_top_lcd
+
+- vs_vout_reset_deassert: 
+
+  Deassert vout_reset
+
 - mystery code:
 
   ```c
