@@ -631,31 +631,64 @@ static const struct file_operations fops = {
 <h2 id="dc_bind"><a href="#dc_bind">12.1 dc_bind</a></h2>
 <p>TODO</p>
 <ul>
-<li>dc_init</li>
-<li>vs_drm_iommu_attach_device: Attach I/O MMU Device</li>
-<li>For Each Panel: vs_crtc_create: Create Display Pipeline</li>
-<li>For Each Plane: vs_plane_create: Create Display Plane</li>
-<li>vs_drm_update_pitch_alignment: Update Pitch Alignment</li>
-<li>clk_disable_unprepare(vout_top_lcd): Disable Clock vout_top_lcd</li>
-<li>dc8200 asrt: vs_dc8200_reset_assert: Assert DC8200 Reset</li>
-<li>dc8200 clk disable: vs_dc_dc8200_clock_disable: Disable DC8200 Clock</li>
-<li>vouttop clk disable: vs_dc_vouttop_clock_disable: Disable Clock vouttop</li>
-<li>vout clk disable: vs_dc_clock_disable: Disable DC Clock vout</li>
+<li>
+<p>dc_init</p>
+</li>
+<li>
+<p>vs_drm_iommu_attach_device: </p>
+<p>Attach I/O MMU Device</p>
+</li>
+<li>
+<p>For Each Panel: vs_crtc_create: </p>
+<p>Create Display Pipeline</p>
+</li>
+<li>
+<p>For Each Plane: vs_plane_create: </p>
+<p>Create Display Plane</p>
+</li>
+<li>
+<p>vs_drm_update_pitch_alignment: </p>
+<p>Update Pitch Alignment</p>
+</li>
+<li>
+<p>clk_disable_unprepare(vout_top_lcd): </p>
+<p>Disable Clock vout_top_lcd (clk_dom_vout_top_lcd_clk?)</p>
+</li>
+<li>
+<p>dc8200 asrt: vs_dc8200_reset_assert: </p>
+<p>Assert DC8200 Reset</p>
+</li>
+<li>
+<p>dc8200 clk disable: vs_dc_dc8200_clock_disable: </p>
+<p>Disable DC8200 Clock</p>
+</li>
+<li>
+<p>vouttop clk disable: vs_dc_vouttop_clock_disable: </p>
+<p>Disable Clock vouttop</p>
+</li>
+<li>
+<p>vout clk disable: vs_dc_clock_disable: </p>
+<p>Disable DC Clock vout</p>
+</li>
 </ul>
 <h2 id="dc_init"><a href="#dc_init">12.2 dc_init</a></h2>
 <p>TODO</p>
 <ul>
 <li>
-<p>dc_vout_clk_enable: Enable Clock dc_vout_clk</p>
+<p>dc_vout_clk_enable: </p>
+<p>Enable Clock dc_vout_clk</p>
 </li>
 <li>
-<p>vs_dc8200_reset_deassert: Deassert DC8200 Reset</p>
+<p>vs_dc8200_reset_deassert: </p>
+<p>Deassert DC8200 Reset</p>
 </li>
 <li>
-<p>clk_prepare_enable(vout_top_lcd): Enable Clock vout_top_lcd</p>
+<p>clk_prepare_enable(vout_top_lcd): </p>
+<p>Enable Clock vout_top_lcd</p>
 </li>
 <li>
-<p>vs_vout_reset_deassert: Deassert vout_reset</p>
+<p>vs_vout_reset_deassert: </p>
+<p>Deassert vout_reset</p>
 </li>
 <li>
 <p>mystery code:</p>
