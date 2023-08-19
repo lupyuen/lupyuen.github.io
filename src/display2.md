@@ -922,3 +922,42 @@ static const struct drm_bridge_funcs dw_mipi_dsi_bridge_funcs = {
 
 [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L869-L875)
 
+# Appendix: dc_bind
+
+TODO
+
+- dc_init
+- vs_drm_iommu_attach_device
+- For each Panel: vs_crtc_create
+- For each Plane: vs_plane_create
+- vs_drm_update_pitch_alignment
+- clk_disable_unprepare(vout_top_lcd)
+- dc8200 asrt:
+	vs_dc8200_reset_assert
+- dc8200 clk disable:
+	vs_dc_dc8200_clock_disable
+- vouttop clk disable:
+	vs_dc_vouttop_clock_disable
+- vout clk disable:
+	vs_dc_clock_disable
+
+# Appendix: dc_init
+
+TODO
+
+- dc_vout_clk_enable
+- vs_dc8200_reset_deassert
+- clk_prepare_enable(vout_top_lcd)
+- vs_vout_reset_deassert
+
+```c
+#ifdef CONFIG_DRM_I2C_NXP_TDA998X//tda998x-rgb2hdmi
+	regmap_update_bits(dc->dss_regmap, 0x4, BIT(20), 1<<20);
+#endif
+
+#ifdef CONFIG_STARFIVE_DSI
+	regmap_update_bits(dc->dss_regmap, 0x8, BIT(3), 1<<3);
+#endif
+```
+
+- dc_hw_init
