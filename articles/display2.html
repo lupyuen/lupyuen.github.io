@@ -402,6 +402,19 @@ static const struct file_operations fops = {
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">dc_hw_init</a></p>
 </li>
 </ul>
+<p>Refer to <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-internals.html">Linux DRM Internals</a></p>
+<h1 id="dc8200-display-hardware-driver"><a href="#dc8200-display-hardware-driver">6 DC8200 Display Hardware Driver</a></h1>
+<p>TODO: Init</p>
+<p>Display Planes Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L1084">dc_hw_planes</a></p>
+<p>Display Controller Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1086-L1150">dc_info</a></p>
+<p>Initialise Display Hardware: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">dc_hw_init</a></p>
+<ul>
+<li>Read the Hardware Revision and Chip ID</li>
+<li>Initialise every Layer / Display Plane</li>
+<li>Initialise every Panel (Cursor)</li>
+</ul>
+<h1 id="setup-display"><a href="#setup-display">7 Setup Display</a></h1>
+<p>TODO: Display Controller</p>
 <p>Here are the Display Pipeline <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-kms.html">(CRTC)</a> functions exposed by the driver…</p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct vs_crtc_funcs dc_crtc_funcs = {
   .enable        = vs_dc_enable,
@@ -434,71 +447,7 @@ static const struct file_operations fops = {
 };
 </code></pre></div>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L338-L344">(Source)</a></p>
-<p>Commit Display Pipeline is here…</p>
-<ul>
-<li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1381-L1398">vs_dc_commit</a>, which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076">dc_hw_commit</a></p>
-</li>
-</ul>
-<p>Commit Display Pipeline <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1381-L1398">vs_dc_commit</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L320-L336">vs_crtc_atomic_flush</a></p>
-<p>Which is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570">drm_atomic_helper</a></p>
-<p>These are the exposed functions for the Display Plane…</p>
-<div class="example-wrap"><pre class="language-c"><code>static const struct vs_plane_funcs dc_plane_funcs = {
-  .update  = vs_dc_update_plane,
-  .disable = vs_dc_disable_plane,
-  .check   = vs_dc_check_plane,
-};
-</code></pre></div>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1410-L1414">(Source)</a></p>
-<p>Update Display Plane is here…</p>
-<ul>
-<li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280">vs_dc_update_plane</a>, which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196">update_plane</a>, which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399">dc_hw_update_plane</a></p>
-</li>
-</ul>
-<p>Update Display Plane <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280">vs_dc_update_plane</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L268-L301">vs_plane_atomic_update</a></p>
-<p>Which is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570">drm_atomic_helper</a></p>
-<div class="example-wrap"><pre class="language-c"><code>const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
-  .atomic_check   = vs_plane_atomic_check,
-  .atomic_update  = vs_plane_atomic_update,
-  .atomic_disable = vs_plane_atomic_disable,
-};
-</code></pre></div>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L314-L318">(Source)</a></p>
-<p>Refer to <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-internals.html">Linux DRM Internals</a></p>
-<h1 id="dc8200-display-hardware-driver"><a href="#dc8200-display-hardware-driver">6 DC8200 Display Hardware Driver</a></h1>
-<p>TODO: Init</p>
-<p>Display Planes Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L1084">dc_hw_planes</a></p>
-<p>Display Controller Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1086-L1150">dc_info</a></p>
-<p>Initialise Display Hardware: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">dc_hw_init</a></p>
-<ul>
-<li>Read the Hardware Revision and Chip ID</li>
-<li>Initialise every Layer / Display Plane</li>
-<li>Initialise every Panel (Cursor)</li>
-</ul>
-<p>Commit Display Hardware: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076">dc_hw_commit</a></p>
-<ul>
-<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574">gamma_ex_commit</a></li>
-<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863">plane_ex_commit</a></li>
-<li>Update Cursor</li>
-<li>Update QoS</li>
-</ul>
-<p>Update Display Plane: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399">dc_hw_update_plane</a></p>
-<ul>
-<li>Copy Framebuffer</li>
-<li>Copy Scale</li>
-<li>Copy Position</li>
-<li>Copy Blend</li>
-</ul>
+<p>TODO: Display Hardware</p>
 <p>Display Hardware Functions:</p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct dc_hw_funcs hw_func = {
   .gamma   = &amp;gamma_ex_commit,
@@ -532,6 +481,27 @@ static const struct file_operations fops = {
 <li>Set Overlay Config</li>
 <li>Set Cursor Config</li>
 </ul>
+<h1 id="commit-display"><a href="#commit-display">8 Commit Display</a></h1>
+<p>TODO: Display Controller</p>
+<p>Commit Display Pipeline is here…</p>
+<ul>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1381-L1398">vs_dc_commit</a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076">dc_hw_commit</a></p>
+</li>
+</ul>
+<p>Commit Display Pipeline <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1381-L1398">vs_dc_commit</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L320-L336">vs_crtc_atomic_flush</a></p>
+<p>Which is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570">drm_atomic_helper</a></p>
+<p>TODO: Display Hardware</p>
+<p>Commit Display Hardware: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076">dc_hw_commit</a></p>
+<ul>
+<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574">gamma_ex_commit</a></li>
+<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863">plane_ex_commit</a></li>
+<li>Update Cursor</li>
+<li>Update QoS</li>
+</ul>
 <p>Commit Display Plane (Extended): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863">plane_ex_commit</a></p>
 <ul>
 <li>Set Colour Space</li>
@@ -554,12 +524,45 @@ static const struct file_operations fops = {
 <li>Set ROI</li>
 </ul>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863">plane_ex_commit</a> and <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574">gamma_ex_commit</a> are called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076">dc_hw_commit</a></p>
-<h1 id="setup-display"><a href="#setup-display">7 Setup Display</a></h1>
-<p>TODO</p>
-<h1 id="commit-display"><a href="#commit-display">8 Commit Display</a></h1>
-<p>TODO</p>
 <h1 id="update-display-plane"><a href="#update-display-plane">9 Update Display Plane</a></h1>
-<p>TODO</p>
+<p>TODO: Display Controller</p>
+<p>These are the exposed functions for the Display Plane…</p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct vs_plane_funcs dc_plane_funcs = {
+  .update  = vs_dc_update_plane,
+  .disable = vs_dc_disable_plane,
+  .check   = vs_dc_check_plane,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1410-L1414">(Source)</a></p>
+<p>Update Display Plane is here…</p>
+<ul>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280">vs_dc_update_plane</a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196">update_plane</a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399">dc_hw_update_plane</a></p>
+</li>
+</ul>
+<p>Update Display Plane <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280">vs_dc_update_plane</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L268-L301">vs_plane_atomic_update</a></p>
+<p>Which is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570">drm_atomic_helper</a></p>
+<div class="example-wrap"><pre class="language-c"><code>const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
+  .atomic_check   = vs_plane_atomic_check,
+  .atomic_update  = vs_plane_atomic_update,
+  .atomic_disable = vs_plane_atomic_disable,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L314-L318">(Source)</a></p>
+<p>TODO: Display Hardware</p>
+<p>Update Display Plane: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399">dc_hw_update_plane</a></p>
+<ul>
+<li>Copy Framebuffer</li>
+<li>Copy Scale</li>
+<li>Copy Position</li>
+<li>Copy Blend</li>
+</ul>
 <h1 id="dc8200-framebuffer-driver"><a href="#dc8200-framebuffer-driver">10 DC8200 Framebuffer Driver</a></h1>
 <p>TODO</p>
 <p>At startup, <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271">vs_drm_bind</a> calls <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191">vs_mode_config_init</a> to register the Framebuffer Driver: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172">vs_mode_config_funcs</a>.</p>
