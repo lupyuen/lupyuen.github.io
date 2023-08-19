@@ -288,7 +288,7 @@ static const struct file_operations fops = {
 
 TODO: vs_gem_mmap
 
-![TODO](https://lupyuen.github.io/images/dsi3-steps.jpg)
+![Display Driver renders graphics to a Display Device](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
 # Inside the Display Driver
 
@@ -298,7 +298,7 @@ _How does it talk to the Display Hardware?_
 
 Before we dive too deep into our Driver Code, let's talk about __Display Drivers__ and how they control the __Display Hardware__.
 
-The pic shows how a typical Display Driver will __render graphics__ to a Display Device...
+The pic above shows how a typical Display Driver will __render graphics__ to a Display Device...
 
 - Our Apps will write the pixels into a __RAM Framebuffer__
 
