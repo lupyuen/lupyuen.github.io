@@ -290,7 +290,13 @@ TODO: vs_gem_mmap
 
 # Inside the Display Driver
 
-TODO: Overlays, Commit
+_What's inside a typical Display Driver?_
+
+_How does it talk to the Display Hardware?_
+
+Before we dive too deep into our Driver Code, let's talk about __Display Drivers__ and how they control the __Display Hardware__.
+
+TODO: Overlays, Commit, Framebuffer
 
 # DC8200 Display Controller Driver
 
