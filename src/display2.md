@@ -927,37 +927,34 @@ static const struct drm_bridge_funcs dw_mipi_dsi_bridge_funcs = {
 TODO
 
 - dc_init
-- vs_drm_iommu_attach_device
-- For each Panel: vs_crtc_create
-- For each Plane: vs_plane_create
-- vs_drm_update_pitch_alignment
-- clk_disable_unprepare(vout_top_lcd)
-- dc8200 asrt:
-	vs_dc8200_reset_assert
-- dc8200 clk disable:
-	vs_dc_dc8200_clock_disable
-- vouttop clk disable:
-	vs_dc_vouttop_clock_disable
-- vout clk disable:
-	vs_dc_clock_disable
+- vs_drm_iommu_attach_device: Attach I/O MMU Device
+- For Each Panel: vs_crtc_create: Create Display Pipeline
+- For Each Plane: vs_plane_create: Create Display Plane
+- vs_drm_update_pitch_alignment: Update Pitch Alignment
+- clk_disable_unprepare(vout_top_lcd): Disable Clock vout_top_lcd
+- dc8200 asrt: vs_dc8200_reset_assert: Assert DC8200 Reset
+- dc8200 clk disable: vs_dc_dc8200_clock_disable: Disable DC8200 Clock
+- vouttop clk disable: vs_dc_vouttop_clock_disable: Disable Clock vouttop
+- vout clk disable: vs_dc_clock_disable: Disable DC Clock vout
 
 # Appendix: dc_init
 
 TODO
 
-- dc_vout_clk_enable
-- vs_dc8200_reset_deassert
-- clk_prepare_enable(vout_top_lcd)
-- vs_vout_reset_deassert
+- dc_vout_clk_enable: Enable Clock dc_vout_clk
+- vs_dc8200_reset_deassert: Deassert DC8200 Reset
+- clk_prepare_enable(vout_top_lcd): Enable Clock vout_top_lcd
+- vs_vout_reset_deassert: Deassert vout_reset
+- mystery code:
 
-```c
-#ifdef CONFIG_DRM_I2C_NXP_TDA998X//tda998x-rgb2hdmi
-	regmap_update_bits(dc->dss_regmap, 0x4, BIT(20), 1<<20);
-#endif
+  ```c
+  #ifdef CONFIG_DRM_I2C_NXP_TDA998X//tda998x-rgb2hdmi
+    regmap_update_bits(dc->dss_regmap, 0x4, BIT(20), 1<<20);
+  #endif
 
-#ifdef CONFIG_STARFIVE_DSI
-	regmap_update_bits(dc->dss_regmap, 0x8, BIT(3), 1<<3);
-#endif
-```
+  #ifdef CONFIG_STARFIVE_DSI
+    regmap_update_bits(dc->dss_regmap, 0x8, BIT(3), 1<<3);
+  #endif
+  ```
 
 - dc_hw_init
