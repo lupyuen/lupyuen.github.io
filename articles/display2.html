@@ -373,37 +373,49 @@ static const struct file_operations fops = {
 <p>And that’s how a typical Display Driver works in a Modern SoC!</p>
 <p><a href="https://lupyuen.github.io/articles/de3">(Like for <strong>Allwinner A64</strong>)</a></p>
 <p>Heading back to our scheduled programming…</p>
+<p>TODO: Pic of Display Controller</p>
 <h1 id="dc8200-display-controller-driver"><a href="#dc8200-display-controller-driver">5 DC8200 Display Controller Driver</a></h1>
-<p>TODO: Init</p>
-<p>The <strong>DC8200 Display Controller Driver</strong> is named <strong>“vs-dc”</strong> (for VeriSilicon Display Controller)…</p>
+<p>The <strong>DC8200 Display Controller Driver</strong> is called by the the DC8200 DRM Driver. The driver exposes the Display Functions for…</p>
+<ul>
+<li>
+<p>Initialisation of <strong>Display Controller</strong></p>
+</li>
+<li>
+<p>Setup and Configuration of <strong>Display Pipeline</strong></p>
+</li>
+<li>
+<p>Update of <strong>Display Plane</strong></p>
+</li>
+</ul>
+<p>The Display Controller Driver is named <strong>“vs-dc”</strong> (for VeriSilicon Display Controller): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1642-L1649">vs_dc.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>struct platform_driver dc_platform_driver = {
   .probe  = dc_probe,
   .remove = dc_remove,
   .name   = &quot;vs-dc&quot;
 </code></pre></div>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1642-L1649">(Source)</a></p>
-<p>Probe for Display Controller is implemented here: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1595-L1629">dc_probe</a></p>
-<p>We see the Component Functions exposed by the driver…</p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1595-L1629">(<strong>dc_probe</strong> is defined here)</a></p>
+<p>TODO: dc_remove</p>
+<p>These are the <strong>Component Functions</strong> exposed by the Display Controller Driver: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1584-L1587">vs_dc.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>const struct component_ops dc_component_ops = {
   .bind   = dc_bind,
   .unbind = dc_unbind,
 };
 </code></pre></div>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1584-L1587">(Source)</a></p>
-<p>TODO: What happens at startup?</p>
-<p>Bind to Display Controller is here…</p>
+<p><em>What happens at startup?</em></p>
+<p>At startup, the DRM Driver calls our Display Controller Driver at…</p>
 <ul>
 <li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573">dc_bind</a>, which calls..</p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a> (to ???), which calls..</p>
 </li>
 <li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722">dc_init</a>, which calls…</p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722"><strong>dc_init</strong></a> (to ???), which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">dc_hw_init</a></p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361"><strong>dc_hw_init</strong></a> (from the Display Hardware Driver) to update the Display Registers</p>
+<p>(Explained in the next section)</p>
 </li>
 </ul>
-<p>TODO: Setup Display / Commit Display / Update Display Plane</p>
+<p>TODO: Setup Display Pipeline / Commit Display Pipeline / Update Display Plane</p>
 <p>Refer to <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-internals.html">Linux DRM Internals</a></p>
 <h1 id="dc8200-display-hardware-driver"><a href="#dc8200-display-hardware-driver">6 DC8200 Display Hardware Driver</a></h1>
 <p>TODO: Init, Display Registers, where the magic really happens, should port to NuttX</p>
@@ -416,7 +428,7 @@ static const struct file_operations fops = {
 <li>Initialise every Panel (Cursor)</li>
 </ul>
 <p>TODO: Why read the Hardware Revision?</p>
-<p>TODO: Setup Display / Commit Display / Update Display Plane</p>
+<p>TODO: Setup Display Pipeline / Commit Display Pipeline / Update Display Plane</p>
 <h1 id="setup-display-pipeline"><a href="#setup-display-pipeline">7 Setup Display Pipeline</a></h1>
 <p>TODO: Display Controller</p>
 <p>Here are the Display Pipeline <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-kms.html">(CRTC)</a> functions exposed by the driver…</p>
