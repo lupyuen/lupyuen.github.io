@@ -298,6 +298,22 @@ Before we dive too deep into our Driver Code, let's talk about __Display Drivers
 
 TODO: Overlays, Commit, Framebuffer
 
+TODO: Steps
+
+![TODO](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
+TODO: FB
+
+![TODO](https://lupyuen.github.io/images/de2-fb.jpg)
+
+TODO: Overlay
+
+![TODO](https://lupyuen.github.io/images/de2-overlay.jpg)
+
+TODO: Blender
+
+![TODO](https://lupyuen.github.io/images/de2-blender.jpg)
+
 # DC8200 Display Controller Driver
 
 TODO
