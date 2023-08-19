@@ -76,8 +76,8 @@
 <li><a href="#inside-the-display-driver">4 Inside the Display Driver</a><ul></ul></li>
 <li><a href="#dc8200-display-controller-driver">5 DC8200 Display Controller Driver</a><ul></ul></li>
 <li><a href="#dc8200-display-hardware-driver">6 DC8200 Display Hardware Driver</a><ul></ul></li>
-<li><a href="#setup-display">7 Setup Display</a><ul></ul></li>
-<li><a href="#commit-display">8 Commit Display</a><ul></ul></li>
+<li><a href="#setup-display-pipeline">7 Setup Display Pipeline</a><ul></ul></li>
+<li><a href="#commit-display-pipeline">8 Commit Display Pipeline</a><ul></ul></li>
 <li><a href="#update-display-plane">9 Update Display Plane</a><ul></ul></li>
 <li><a href="#dc8200-framebuffer-driver">10 DC8200 Framebuffer Driver</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
@@ -417,7 +417,7 @@ static const struct file_operations fops = {
 </ul>
 <p>TODO: Why read the Hardware Revision?</p>
 <p>TODO: Setup Display / Commit Display / Update Display Plane</p>
-<h1 id="setup-display"><a href="#setup-display">7 Setup Display</a></h1>
+<h1 id="setup-display-pipeline"><a href="#setup-display-pipeline">7 Setup Display Pipeline</a></h1>
 <p>TODO: Display Controller</p>
 <p>Here are the Display Pipeline <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-kms.html">(CRTC)</a> functions exposed by the driver…</p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct vs_crtc_funcs dc_crtc_funcs = {
@@ -485,7 +485,7 @@ static const struct file_operations fops = {
 <li>Set Overlay Config</li>
 <li>Set Cursor Config</li>
 </ul>
-<h1 id="commit-display"><a href="#commit-display">8 Commit Display</a></h1>
+<h1 id="commit-display-pipeline"><a href="#commit-display-pipeline">8 Commit Display Pipeline</a></h1>
 <p>TODO: Display Controller</p>
 <p>Commit Display Pipeline is here…</p>
 <ul>
