@@ -330,7 +330,7 @@ Internally, the Display Driver will manipulate the __Display Registers__ to...
 
 1.  Configure the __Display Output__ (for the Display Device)
 
-1.  __Commit the Configuration__ (to the Display Controller)
+1.  __Commit the Display Configuration__ (to the Display Controller)
 
 And that's how a typical Display Driver works in a Modern SoC!
 
@@ -542,7 +542,7 @@ Commit Display Plane: [plane_commit](https://github.com/starfive-tech/linux/blob
 
 TODO
 
-# Commit Configuration
+# Commit Display
 
 TODO
 
