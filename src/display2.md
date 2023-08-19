@@ -366,6 +366,8 @@ const struct component_ops dc_component_ops = {
 
 [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1584-L1587)
 
+TODO: What happens at startup?
+
 Bind to Display Controller is here...
 
 - [dc_bind](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573), which calls..
@@ -374,6 +376,7 @@ Bind to Display Controller is here...
 
 - [dc_hw_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361)
 
+TODO: Setup Display / Commit Display / Update Display Plane
 
 Refer to [Linux DRM Internals](https://www.kernel.org/doc/html/v4.15/gpu/drm-internals.html)
 
@@ -389,6 +392,10 @@ Initialise Display Hardware: [dc_hw_init](https://github.com/starfive-tech/linux
 - Read the Hardware Revision and Chip ID
 - Initialise every Layer / Display Plane
 - Initialise every Panel (Cursor)
+
+TODO: Why read the Hardware Revision?
+
+TODO: Setup Display / Commit Display / Update Display Plane
 
 # Setup Display
 
