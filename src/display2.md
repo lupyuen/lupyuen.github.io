@@ -136,6 +136,8 @@ With support for...
 
 - __Output Control__: Blending, Gamma, 3D LUT, RGB-to-YUV, Dithering
 
+We'll explain the Display Layers (Overlays) in a while.
+
 _How are the Display Outputs mapped to MIPI DSI and HDMI?_
 
 The [__Linux Device Tree__](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/device_tree_config_display.html) configures the mapping of Display Outputs to the Display Devices...
@@ -223,6 +225,8 @@ TODO: Pic of Sub-Drivers
 
 ## DRM Sub-Drivers
 
+_Where are the fun bits of our Display Driver?_
+
 Remember our DRM Driver is only a façade. Most of the work is done by the __Sub-Drivers for DC8200__: [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315)
 
 ```c
@@ -286,9 +290,9 @@ TODO: vs_gem_mmap
 
 # Inside the Display Driver
 
-TODO: Overlays
+TODO: Overlays, Commit
 
-# Call Flow for DC8200 Display Controller Driver
+# DC8200 Display Controller Driver
 
 TODO
 
@@ -410,7 +414,7 @@ const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
 
 Refer to [Linux DRM Internals](https://www.kernel.org/doc/html/v4.15/gpu/drm-internals.html)
 
-# Call Flow for DC8200 Display Hardware Driver
+# DC8200 Display Hardware Driver
 
 TODO
 
@@ -490,7 +494,7 @@ Commit Display Plane: [plane_commit](https://github.com/starfive-tech/linux/blob
 
 [plane_ex_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863) and [gamma_ex_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574) are called by [dc_hw_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076)
 
-# Call Flow for DC8200 Framebuffer Driver
+# DC8200 Framebuffer Driver
 
 TODO
 
@@ -515,164 +519,6 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 [vs_get_format_info](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L155-L164) is called by [drm_fourcc](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_fourcc.c#L302-L325)
 
 Framebuffer Formats: [vs_formats](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L134-L139)
-
-# Call Flow for DC8200 Virtual Display Driver
-
-TODO
-
-```c
-static const struct drm_connector_helper_funcs vd_connector_helper_funcs = {
-  .get_modes    = vd_get_modes,
-  .mode_valid   = vd_mode_valid,
-  .best_encoder = vd_best_encoder,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L197-L201)
-
-Display Resolutions: [vd_get_modes](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L153-L181)
-
-```c
-static const struct drm_connector_funcs vd_connector_funcs = {
-  .fill_modes = drm_helper_probe_single_connector_modes,
-  .destroy    = vd_connector_destroy,
-  .detect     = vd_connector_detect,
-  .atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
-  .atomic_destroy_state   = drm_atomic_helper_connector_destroy_state,
-  .reset = drm_atomic_helper_connector_reset,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L215-L222)
-
-```c
-const struct component_ops vd_component_ops = {
-  .bind   = vd_bind,
-  .unbind = vd_unbind,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L311-L314)
-
-```c
-// name = "vs-virtual-display"
-struct platform_driver virtual_display_platform_driver = {
-  .probe  = vd_probe,
-  .remove = vd_remove,
-  ...
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L353-L360)
-
-Display Pipelines:
-
-```c
-static const struct drm_crtc_funcs vs_crtc_funcs = {
-  .set_config = drm_atomic_helper_set_config,
-  .destroy    = vs_crtc_destroy,
-  .page_flip  = drm_atomic_helper_page_flip,
-  .reset      = vs_crtc_reset,
-  .atomic_duplicate_state = vs_crtc_atomic_duplicate_state,
-  .atomic_destroy_state   = vs_crtc_atomic_destroy_state,
-  .atomic_set_property    = vs_crtc_atomic_set_property,
-  .atomic_get_property    = vs_crtc_atomic_get_property,
-  //.gamma_set    = drm_atomic_helper_legacy_gamma_set,
-  .late_register  = vs_crtc_late_register,
-  .enable_vblank  = vs_crtc_enable_vblank,
-  .disable_vblank = vs_crtc_disable_vblank,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L207-L220)
-
-Simple Encoder Driver:
-
-```c
-// name = "vs-simple-encoder"
-struct platform_driver simple_encoder_driver = {
-  .probe  = encoder_probe,
-  .remove = encoder_remove,
-  ...
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c#L300-L307)
-
-# Call Flow for HDMI Controller Driver
-
-TODO
-
-
-```c
-// name = "innohdmi-starfive"
-struct platform_driver inno_hdmi_driver = {
-  .probe  = inno_hdmi_probe,
-  .remove = inno_hdmi_remove,
-  ...
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c#L1155-L1163)
-
-```c
-static const struct drm_encoder_helper_funcs inno_hdmi_encoder_helper_funcs = {
-  .enable     = inno_hdmi_encoder_enable,
-  .disable    = inno_hdmi_encoder_disable,
-  .mode_fixup = inno_hdmi_encoder_mode_fixup,
-  .mode_set   = inno_hdmi_encoder_mode_set,
-  .atomic_check = inno_hdmi_encoder_atomic_check,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c#L651-L657)
-
-MIPI DSI:
-
-```c
-// name = "dw-mipi-dsi"
-struct platform_driver dw_mipi_dsi_driver = {
-  .probe  = dsi_probe,
-  .remove = dsi_remove,
-  ...
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L1066-L1073)
-
-```c
-// name = "cdns-dsi"
-static struct platform_driver cdns_dsi_platform_driver = {
-  .probe  = cdns_dsi_drm_probe,
-  .remove = cdns_dsi_drm_remove,
-  ...
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/starfive_drm_dsi.c#L1679-L1687)
-
-```c
-static const struct component_ops dsi_component_ops = {
-  .bind   = dsi_bind,
-  .unbind = dsi_unbind,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L998-L1001)
-
-```c
-static const struct drm_bridge_funcs dw_mipi_dsi_bridge_funcs = {
-  .mode_set  = bridge_mode_set,
-  .enable    = bridge_enable,
-  .post_disable = bridge_post_disable,
-  .attach     = bridge_attach,
-  .mode_fixup = bridge_mode_fixup,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L869-L875)
-
-
 
 # What's Next
 
@@ -840,3 +686,160 @@ Here's the [LCD Initialisation Process](https://doc-en.rvspace.org/VisionFive2/D
 [(Source)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/initalization_lcd.html)
 
 And the [MIPI Parameter Configuration](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/mipi_configuration.html) for 1C2L (2-lane MIPI DSI) and 1C4L (4-lane MIPI DSI).
+
+# Appendix: DC8200 Virtual Display Driver
+
+TODO
+
+```c
+static const struct drm_connector_helper_funcs vd_connector_helper_funcs = {
+  .get_modes    = vd_get_modes,
+  .mode_valid   = vd_mode_valid,
+  .best_encoder = vd_best_encoder,
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L197-L201)
+
+Display Resolutions: [vd_get_modes](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L153-L181)
+
+```c
+static const struct drm_connector_funcs vd_connector_funcs = {
+  .fill_modes = drm_helper_probe_single_connector_modes,
+  .destroy    = vd_connector_destroy,
+  .detect     = vd_connector_detect,
+  .atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
+  .atomic_destroy_state   = drm_atomic_helper_connector_destroy_state,
+  .reset = drm_atomic_helper_connector_reset,
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L215-L222)
+
+```c
+const struct component_ops vd_component_ops = {
+  .bind   = vd_bind,
+  .unbind = vd_unbind,
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L311-L314)
+
+```c
+// name = "vs-virtual-display"
+struct platform_driver virtual_display_platform_driver = {
+  .probe  = vd_probe,
+  .remove = vd_remove,
+  ...
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L353-L360)
+
+Display Pipelines:
+
+```c
+static const struct drm_crtc_funcs vs_crtc_funcs = {
+  .set_config = drm_atomic_helper_set_config,
+  .destroy    = vs_crtc_destroy,
+  .page_flip  = drm_atomic_helper_page_flip,
+  .reset      = vs_crtc_reset,
+  .atomic_duplicate_state = vs_crtc_atomic_duplicate_state,
+  .atomic_destroy_state   = vs_crtc_atomic_destroy_state,
+  .atomic_set_property    = vs_crtc_atomic_set_property,
+  .atomic_get_property    = vs_crtc_atomic_get_property,
+  //.gamma_set    = drm_atomic_helper_legacy_gamma_set,
+  .late_register  = vs_crtc_late_register,
+  .enable_vblank  = vs_crtc_enable_vblank,
+  .disable_vblank = vs_crtc_disable_vblank,
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L207-L220)
+
+Simple Encoder Driver:
+
+```c
+// name = "vs-simple-encoder"
+struct platform_driver simple_encoder_driver = {
+  .probe  = encoder_probe,
+  .remove = encoder_remove,
+  ...
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c#L300-L307)
+
+# Appendix: Inno HDMI Controller Driver
+
+TODO
+
+
+```c
+// name = "innohdmi-starfive"
+struct platform_driver inno_hdmi_driver = {
+  .probe  = inno_hdmi_probe,
+  .remove = inno_hdmi_remove,
+  ...
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c#L1155-L1163)
+
+```c
+static const struct drm_encoder_helper_funcs inno_hdmi_encoder_helper_funcs = {
+  .enable     = inno_hdmi_encoder_enable,
+  .disable    = inno_hdmi_encoder_disable,
+  .mode_fixup = inno_hdmi_encoder_mode_fixup,
+  .mode_set   = inno_hdmi_encoder_mode_set,
+  .atomic_check = inno_hdmi_encoder_atomic_check,
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c#L651-L657)
+
+MIPI DSI:
+
+```c
+// name = "dw-mipi-dsi"
+struct platform_driver dw_mipi_dsi_driver = {
+  .probe  = dsi_probe,
+  .remove = dsi_remove,
+  ...
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L1066-L1073)
+
+```c
+// name = "cdns-dsi"
+static struct platform_driver cdns_dsi_platform_driver = {
+  .probe  = cdns_dsi_drm_probe,
+  .remove = cdns_dsi_drm_remove,
+  ...
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/starfive_drm_dsi.c#L1679-L1687)
+
+```c
+static const struct component_ops dsi_component_ops = {
+  .bind   = dsi_bind,
+  .unbind = dsi_unbind,
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L998-L1001)
+
+```c
+static const struct drm_bridge_funcs dw_mipi_dsi_bridge_funcs = {
+  .mode_set  = bridge_mode_set,
+  .enable    = bridge_enable,
+  .post_disable = bridge_post_disable,
+  .attach     = bridge_attach,
+  .mode_fixup = bridge_mode_fixup,
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L869-L875)
+
