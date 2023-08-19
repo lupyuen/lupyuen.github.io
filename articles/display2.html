@@ -345,13 +345,31 @@ static const struct file_operations fops = {
 <p>(Over HDMI or MIPI Display Serial Interface)</p>
 </li>
 </ul>
-<p>TODO: Overlays, Commit, Framebuffer</p>
-<p>TODO: FB</p>
-<p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="TODO" /></p>
-<p>TODO: Overlay</p>
-<p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="TODO" /></p>
-<p>TODO: Blender</p>
-<p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="TODO" /></p>
+<p><em>What’s a Framebuffer?</em></p>
+<p>A <strong>Framebuffer</strong> is just a region of RAM that stores pixels in a Colour Format. (Like ARGB 8888)</p>
+<p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="Framebuffer" /></p>
+<p><strong>Multiple Framebuffers</strong> are supported. Framebuffers can be rendered as <strong>Opaque or Semi-Transparent Overlays</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="Overlays" /></p>
+<p>To do this, we configure the <strong>Display Pipeline</strong> to blend the Framebuffers…</p>
+<p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Blender" /></p>
+<p>Internally, the Display Driver will manipulate the <strong>Display Registers</strong> to…</p>
+<ol>
+<li>
+<p>Configure the <strong>Framebuffers</strong> (and their RAM Addresses)</p>
+</li>
+<li>
+<p>Configure the <strong>Display Pipelines</strong> (for Overlay Blending)</p>
+</li>
+<li>
+<p>Configure the <strong>Display Output</strong> (for the Display Device)</p>
+</li>
+<li>
+<p><strong>Commit the Configuration</strong> (to the Display Controller)</p>
+</li>
+</ol>
+<p>And that’s how a typical Display Driver works in a Modern SoC!</p>
+<p><a href="https://lupyuen.github.io/articles/de3">(Like for <strong>Allwinner A64</strong>)</a></p>
+<p>Heading back to our scheduled programming…</p>
 <h1 id="dc8200-display-controller-driver"><a href="#dc8200-display-controller-driver">5 DC8200 Display Controller Driver</a></h1>
 <p>TODO</p>
 <p>The DC8200 Controller Driver is named “vs-dc” (for VeriSilicon)…</p>
