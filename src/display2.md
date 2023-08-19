@@ -308,19 +308,35 @@ The pic above shows how a typical Display Driver will __render graphics__ to a D
 
   (Over HDMI or MIPI Display Serial Interface)
 
-TODO: Overlays, Commit, Framebuffer
+_What's a Framebuffer?_
 
-TODO: FB
+A __Framebuffer__ is just a region of RAM that stores pixels in a Colour Format. (Like ARGB 8888)
 
-![TODO](https://lupyuen.github.io/images/de2-fb.jpg)
+![Framebuffer](https://lupyuen.github.io/images/de2-fb.jpg)
 
-TODO: Overlay
+__Multiple Framebuffers__ are supported. Framebuffers can be rendered as __Opaque or Semi-Transparent Overlays__...
 
-![TODO](https://lupyuen.github.io/images/de2-overlay.jpg)
+![Overlays](https://lupyuen.github.io/images/de2-overlay.jpg)
 
-TODO: Blender
+To do this, we configure the __Display Pipeline__ to blend the Framebuffers...
 
-![TODO](https://lupyuen.github.io/images/de2-blender.jpg)
+![Blender](https://lupyuen.github.io/images/de2-blender.jpg)
+
+Internally, the Display Driver will manipulate the __Display Registers__ to...
+
+1.  Configure the __Framebuffers__ (and their RAM Addresses)
+
+1.  Configure the __Display Pipelines__ (for Overlay Blending)
+
+1.  Configure the __Display Output__ (for the Display Device)
+
+1.  __Commit the Configuration__ (to the Display Controller)
+
+And that's how a typical Display Driver works in a Modern SoC!
+
+[(Like for __Allwinner A64__)](https://lupyuen.github.io/articles/de3)
+
+Heading back to our scheduled programming...
 
 # DC8200 Display Controller Driver
 
