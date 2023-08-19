@@ -397,7 +397,7 @@ TODO: Why read the Hardware Revision?
 
 TODO: Setup Display / Commit Display / Update Display Plane
 
-# Setup Display
+# Setup Display Pipeline
 
 TODO: Display Controller
 
@@ -476,7 +476,7 @@ Setup Display (Lower Level): [setup_display](https://github.com/starfive-tech/li
 - Set Overlay Config
 - Set Cursor Config
 
-# Commit Display
+# Commit Display Pipeline
 
 TODO: Display Controller
 
