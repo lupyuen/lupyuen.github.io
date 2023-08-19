@@ -379,7 +379,7 @@ Refer to [Linux DRM Internals](https://www.kernel.org/doc/html/v4.15/gpu/drm-int
 
 # DC8200 Display Hardware Driver
 
-TODO: Init
+TODO: Init, Display Registers, where the magic really happens, should port to NuttX
 
 Display Planes Info: [dc_hw_planes](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L1084)
 
