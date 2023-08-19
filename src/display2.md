@@ -340,9 +340,9 @@ Heading back to our scheduled programming...
 
 # DC8200 Display Controller Driver
 
-TODO
+TODO: Init
 
-The DC8200 Controller Driver is named "vs-dc" (for VeriSilicon)...
+The DC8200 Controller Driver is named "vs-dc" (for VeriSilicon Display Controller)...
 
 ```c
 struct platform_driver dc_platform_driver = {
@@ -460,7 +460,7 @@ Refer to [Linux DRM Internals](https://www.kernel.org/doc/html/v4.15/gpu/drm-int
 
 # DC8200 Display Hardware Driver
 
-TODO
+TODO: Init
 
 Display Planes Info: [dc_hw_planes](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L1084)
 
@@ -537,6 +537,18 @@ Commit Display Plane: [plane_commit](https://github.com/starfive-tech/linux/blob
 - Set ROI
 
 [plane_ex_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863) and [gamma_ex_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574) are called by [dc_hw_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076)
+
+# Setup Display
+
+TODO
+
+# Commit Configuration
+
+TODO
+
+# Update Display Plane
+
+TODO
 
 # DC8200 Framebuffer Driver
 
