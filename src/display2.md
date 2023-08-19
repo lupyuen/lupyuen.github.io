@@ -318,7 +318,7 @@ __Multiple Framebuffers__ are supported. Framebuffers can be rendered as __Opaqu
 
 ![Overlays](https://lupyuen.github.io/images/de2-overlay.jpg)
 
-To do this, we configure the __Display Pipeline__ to blend the Framebuffers...
+To do this, we configure the __Display Pipeline__ to Blend the Framebuffers...
 
 ![Blender](https://lupyuen.github.io/images/de2-blender.jpg)
 
