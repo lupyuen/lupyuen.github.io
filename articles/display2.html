@@ -390,6 +390,7 @@ static const struct file_operations fops = {
 };
 </code></pre></div>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1584-L1587">(Source)</a></p>
+<p>TODO: What happens at startup?</p>
 <p>Bind to Display Controller is here…</p>
 <ul>
 <li>
@@ -402,6 +403,7 @@ static const struct file_operations fops = {
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">dc_hw_init</a></p>
 </li>
 </ul>
+<p>TODO: Setup Display / Commit Display / Update Display Plane</p>
 <p>Refer to <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-internals.html">Linux DRM Internals</a></p>
 <h1 id="dc8200-display-hardware-driver"><a href="#dc8200-display-hardware-driver">6 DC8200 Display Hardware Driver</a></h1>
 <p>TODO: Init, Display Registers, where the magic really happens, should port to NuttX</p>
@@ -413,6 +415,8 @@ static const struct file_operations fops = {
 <li>Initialise every Layer / Display Plane</li>
 <li>Initialise every Panel (Cursor)</li>
 </ul>
+<p>TODO: Why read the Hardware Revision?</p>
+<p>TODO: Setup Display / Commit Display / Update Display Plane</p>
 <h1 id="setup-display"><a href="#setup-display">7 Setup Display</a></h1>
 <p>TODO: Display Controller</p>
 <p>Here are the Display Pipeline <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-kms.html">(CRTC)</a> functions exposed by the driver…</p>
