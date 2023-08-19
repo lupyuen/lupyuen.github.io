@@ -345,12 +345,10 @@ TODO
 The DC8200 Controller Driver is named "vs-dc" (for VeriSilicon)...
 
 ```c
-// name = "vs-dc"
 struct platform_driver dc_platform_driver = {
   .probe  = dc_probe,
   .remove = dc_remove,
-  ...
-};
+  .name   = "vs-dc"
 ```
 
 [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1642-L1649)
