@@ -85,7 +85,9 @@
 <li><a href="#appendix-jh7110-hdmi-testing">13 Appendix: JH7110 HDMI Testing</a><ul></ul></li>
 <li><a href="#appendix-jh7110-lcd-panel-configuration">14 Appendix: JH7110 LCD Panel Configuration</a><ul></ul></li>
 <li><a href="#appendix-dc8200-virtual-display-driver">15 Appendix: DC8200 Virtual Display Driver</a><ul></ul></li>
-<li><a href="#appendix-inno-hdmi-controller-driver">16 Appendix: Inno HDMI Controller Driver</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2023</em></p>
+<li><a href="#appendix-inno-hdmi-controller-driver">16 Appendix: Inno HDMI Controller Driver</a><ul></ul></li>
+<li><a href="#appendix-dc_bind">17 Appendix: dc_bind</a><ul></ul></li>
+<li><a href="#appendix-dc_init">18 Appendix: dc_init</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Display Driver for StarFive JH7110 SoC" /></p>
 <p>Today we look inside the <strong>Display Controller</strong> of the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>RISC-V StarFive JH7110 SoC</strong></a> and figure out how it works.</p>
 <p><em>But the JH7110 Display Controller is NOT documented!</em></p>
@@ -844,6 +846,43 @@ static struct platform_driver cdns_dsi_platform_driver = {
 };
 </code></pre></div>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L869-L875">(Source)</a></p>
+<h1 id="appendix-dc_bind"><a href="#appendix-dc_bind">17 Appendix: dc_bind</a></h1>
+<p>TODO</p>
+<ul>
+<li>dc_init</li>
+<li>vs_drm_iommu_attach_device</li>
+<li>For each Panel: vs_crtc_create</li>
+<li>For each Plane: vs_plane_create</li>
+<li>vs_drm_update_pitch_alignment</li>
+<li>clk_disable_unprepare(vout_top_lcd)</li>
+<li>dc8200 asrt:
+vs_dc8200_reset_assert</li>
+<li>dc8200 clk disable:
+vs_dc_dc8200_clock_disable</li>
+<li>vouttop clk disable:
+vs_dc_vouttop_clock_disable</li>
+<li>vout clk disable:
+vs_dc_clock_disable</li>
+</ul>
+<h1 id="appendix-dc_init"><a href="#appendix-dc_init">18 Appendix: dc_init</a></h1>
+<p>TODO</p>
+<ul>
+<li>dc_vout_clk_enable</li>
+<li>vs_dc8200_reset_deassert</li>
+<li>clk_prepare_enable(vout_top_lcd)</li>
+<li>vs_vout_reset_deassert</li>
+</ul>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_DRM_I2C_NXP_TDA998X//tda998x-rgb2hdmi
+	regmap_update_bits(dc-&gt;dss_regmap, 0x4, BIT(20), 1&lt;&lt;20);
+#endif
+
+#ifdef CONFIG_STARFIVE_DSI
+	regmap_update_bits(dc-&gt;dss_regmap, 0x8, BIT(3), 1&lt;&lt;3);
+#endif
+</code></pre></div>
+<ul>
+<li>dc_hw_init</li>
+</ul>
 
     
 </body>
