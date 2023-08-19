@@ -81,13 +81,14 @@
 <li><a href="#update-display-plane">9 Update Display Plane</a><ul></ul></li>
 <li><a href="#dc8200-framebuffer-driver">10 DC8200 Framebuffer Driver</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-jh7110-hdmi-controller">12 Appendix: JH7110 HDMI Controller</a><ul></ul></li>
-<li><a href="#appendix-jh7110-hdmi-testing">13 Appendix: JH7110 HDMI Testing</a><ul></ul></li>
-<li><a href="#appendix-jh7110-lcd-panel-configuration">14 Appendix: JH7110 LCD Panel Configuration</a><ul></ul></li>
-<li><a href="#appendix-dc8200-virtual-display-driver">15 Appendix: DC8200 Virtual Display Driver</a><ul></ul></li>
-<li><a href="#appendix-inno-hdmi-controller-driver">16 Appendix: Inno HDMI Controller Driver</a><ul></ul></li>
-<li><a href="#appendix-dc_bind">17 Appendix: dc_bind</a><ul></ul></li>
-<li><a href="#appendix-dc_init">18 Appendix: dc_init</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2023</em></p>
+<li><a href="#appendix-jh7110-display-clock-and-reset">12 Appendix: JH7110 Display Clock and Reset</a><ul>
+<li><a href="#dc_bind">12.1 dc_bind</a><ul></ul></li>
+<li><a href="#dc_init">12.2 dc_init</a><ul></ul></li></ul></li>
+<li><a href="#appendix-jh7110-hdmi-controller">13 Appendix: JH7110 HDMI Controller</a><ul></ul></li>
+<li><a href="#appendix-jh7110-hdmi-testing">14 Appendix: JH7110 HDMI Testing</a><ul></ul></li>
+<li><a href="#appendix-jh7110-lcd-panel-configuration">15 Appendix: JH7110 LCD Panel Configuration</a><ul></ul></li>
+<li><a href="#appendix-dc8200-virtual-display-driver">16 Appendix: DC8200 Virtual Display Driver</a><ul></ul></li>
+<li><a href="#appendix-inno-hdmi-controller-driver">17 Appendix: Inno HDMI Controller Driver</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Display Driver for StarFive JH7110 SoC" /></p>
 <p>Today we look inside the <strong>Display Controller</strong> of the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>RISC-V StarFive JH7110 SoC</strong></a> and figure out how it works.</p>
 <p><em>But the JH7110 Display Controller is NOT documented!</em></p>
@@ -623,7 +624,54 @@ static const struct file_operations fops = {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display2.md"><strong>lupyuen.github.io/src/display2.md</strong></a></p>
-<h1 id="appendix-jh7110-hdmi-controller"><a href="#appendix-jh7110-hdmi-controller">12 Appendix: JH7110 HDMI Controller</a></h1>
+<p><img src="https://lupyuen.github.io/images/display2-vout_clkrst18.png" alt="JH7110 Display Subsystem Clock and Reset" /></p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html"><em>JH7110 Display Subsystem Clock and Reset</em></a></p>
+<h1 id="appendix-jh7110-display-clock-and-reset"><a href="#appendix-jh7110-display-clock-and-reset">12 Appendix: JH7110 Display Clock and Reset</a></h1>
+<p>TODO</p>
+<h2 id="dc_bind"><a href="#dc_bind">12.1 dc_bind</a></h2>
+<p>TODO</p>
+<ul>
+<li>dc_init</li>
+<li>vs_drm_iommu_attach_device: Attach I/O MMU Device</li>
+<li>For Each Panel: vs_crtc_create: Create Display Pipeline</li>
+<li>For Each Plane: vs_plane_create: Create Display Plane</li>
+<li>vs_drm_update_pitch_alignment: Update Pitch Alignment</li>
+<li>clk_disable_unprepare(vout_top_lcd): Disable Clock vout_top_lcd</li>
+<li>dc8200 asrt: vs_dc8200_reset_assert: Assert DC8200 Reset</li>
+<li>dc8200 clk disable: vs_dc_dc8200_clock_disable: Disable DC8200 Clock</li>
+<li>vouttop clk disable: vs_dc_vouttop_clock_disable: Disable Clock vouttop</li>
+<li>vout clk disable: vs_dc_clock_disable: Disable DC Clock vout</li>
+</ul>
+<h2 id="dc_init"><a href="#dc_init">12.2 dc_init</a></h2>
+<p>TODO</p>
+<ul>
+<li>
+<p>dc_vout_clk_enable: Enable Clock dc_vout_clk</p>
+</li>
+<li>
+<p>vs_dc8200_reset_deassert: Deassert DC8200 Reset</p>
+</li>
+<li>
+<p>clk_prepare_enable(vout_top_lcd): Enable Clock vout_top_lcd</p>
+</li>
+<li>
+<p>vs_vout_reset_deassert: Deassert vout_reset</p>
+</li>
+<li>
+<p>mystery code:</p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_DRM_I2C_NXP_TDA998X//tda998x-rgb2hdmi
+  regmap_update_bits(dc-&gt;dss_regmap, 0x4, BIT(20), 1&lt;&lt;20);
+#endif
+
+#ifdef CONFIG_STARFIVE_DSI
+  regmap_update_bits(dc-&gt;dss_regmap, 0x8, BIT(3), 1&lt;&lt;3);
+#endif
+</code></pre></div></li>
+<li>
+<p>dc_hw_init</p>
+</li>
+</ul>
+<h1 id="appendix-jh7110-hdmi-controller"><a href="#appendix-jh7110-hdmi-controller">13 Appendix: JH7110 HDMI Controller</a></h1>
 <p>TODO</p>
 <p>The HDMI Controller for JH7110 is <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html">Inno HDMI 2.0 Transmitter For TSMC28HPC+</a>.</p>
 <p>HDMI I2C Encoder in JH7110 is the <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/kernel_menu_config_diplay.html">NXP Semiconductors TDA998X HDMI Encoder</a></p>
@@ -673,7 +721,7 @@ static const struct file_operations fops = {
 <p>And the <a href="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/plug_n_unplug_process.html">HDMI Plug and Unplug Process</a>…</p>
 <p><img src="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/Image/JH7110_SDK/HDMI_Pug_Unplug.svg" alt="HDMI Plug and Unplug Process" /></p>
 <p><a href="https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/plug_n_unplug_process.html">(Source)</a></p>
-<h1 id="appendix-jh7110-hdmi-testing"><a href="#appendix-jh7110-hdmi-testing">13 Appendix: JH7110 HDMI Testing</a></h1>
+<h1 id="appendix-jh7110-hdmi-testing"><a href="#appendix-jh7110-hdmi-testing">14 Appendix: JH7110 HDMI Testing</a></h1>
 <p>TODO</p>
 <p><em>How will we test the HDMI Display for Star64 JH7110?</em></p>
 <p>We run the <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/test_example_display.html"><code>modetest</code> command to test HDMI</a>…</p>
@@ -701,7 +749,7 @@ static const struct file_operations fops = {
 <p>TODO: What’s inside the modetest app? <a href="https://gitlab.freedesktop.org/mesa/drm/-/blob/main/tests/modetest/modetest.c">modetest.c</a></p>
 <p>TODO: What parameters does modetest pass to the DC8200 Driver?</p>
 <p>TODO: Can we create a simpler modetest for our own testing on NuttX?</p>
-<h1 id="appendix-jh7110-lcd-panel-configuration"><a href="#appendix-jh7110-lcd-panel-configuration">14 Appendix: JH7110 LCD Panel Configuration</a></h1>
+<h1 id="appendix-jh7110-lcd-panel-configuration"><a href="#appendix-jh7110-lcd-panel-configuration">15 Appendix: JH7110 LCD Panel Configuration</a></h1>
 <p>TODO</p>
 <p>Also in the JH7110 Display Docs: How to connect an LCD Panel to JH7110.</p>
 <p>JH7110’s MIPI DSI Controller is <a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html">Cadence MIPI DSI v1.3.1 TX Controller IP (DSITX)</a>…</p>
@@ -735,7 +783,7 @@ static const struct file_operations fops = {
 <p><img src="https://doc-en.rvspace.org/VisionFive2/DG_LCD/Image/JH7110_SDK/LCD_Init.svg" alt="LCD Initialisation Process" /></p>
 <p><a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/initalization_lcd.html">(Source)</a></p>
 <p>And the <a href="https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/mipi_configuration.html">MIPI Parameter Configuration</a> for 1C2L (2-lane MIPI DSI) and 1C4L (4-lane MIPI DSI).</p>
-<h1 id="appendix-dc8200-virtual-display-driver"><a href="#appendix-dc8200-virtual-display-driver">15 Appendix: DC8200 Virtual Display Driver</a></h1>
+<h1 id="appendix-dc8200-virtual-display-driver"><a href="#appendix-dc8200-virtual-display-driver">16 Appendix: DC8200 Virtual Display Driver</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct drm_connector_helper_funcs vd_connector_helper_funcs = {
   .get_modes    = vd_get_modes,
@@ -795,7 +843,7 @@ struct platform_driver simple_encoder_driver = {
 };
 </code></pre></div>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c#L300-L307">(Source)</a></p>
-<h1 id="appendix-inno-hdmi-controller-driver"><a href="#appendix-inno-hdmi-controller-driver">16 Appendix: Inno HDMI Controller Driver</a></h1>
+<h1 id="appendix-inno-hdmi-controller-driver"><a href="#appendix-inno-hdmi-controller-driver">17 Appendix: Inno HDMI Controller Driver</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>// name = &quot;innohdmi-starfive&quot;
 struct platform_driver inno_hdmi_driver = {
@@ -846,49 +894,6 @@ static struct platform_driver cdns_dsi_platform_driver = {
 };
 </code></pre></div>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L869-L875">(Source)</a></p>
-<h1 id="appendix-dc_bind"><a href="#appendix-dc_bind">17 Appendix: dc_bind</a></h1>
-<p>TODO</p>
-<ul>
-<li>dc_init</li>
-<li>vs_drm_iommu_attach_device: Attach I/O MMU Device</li>
-<li>For Each Panel: vs_crtc_create: Create Display Pipeline</li>
-<li>For Each Plane: vs_plane_create: Create Display Plane</li>
-<li>vs_drm_update_pitch_alignment: Update Pitch Alignment</li>
-<li>clk_disable_unprepare(vout_top_lcd): Disable Clock vout_top_lcd</li>
-<li>dc8200 asrt: vs_dc8200_reset_assert: Assert DC8200 Reset</li>
-<li>dc8200 clk disable: vs_dc_dc8200_clock_disable: Disable DC8200 Clock</li>
-<li>vouttop clk disable: vs_dc_vouttop_clock_disable: Disable Clock vouttop</li>
-<li>vout clk disable: vs_dc_clock_disable: Disable DC Clock vout</li>
-</ul>
-<h1 id="appendix-dc_init"><a href="#appendix-dc_init">18 Appendix: dc_init</a></h1>
-<p>TODO</p>
-<ul>
-<li>
-<p>dc_vout_clk_enable: Enable Clock dc_vout_clk</p>
-</li>
-<li>
-<p>vs_dc8200_reset_deassert: Deassert DC8200 Reset</p>
-</li>
-<li>
-<p>clk_prepare_enable(vout_top_lcd): Enable Clock vout_top_lcd</p>
-</li>
-<li>
-<p>vs_vout_reset_deassert: Deassert vout_reset</p>
-</li>
-<li>
-<p>mystery code:</p>
-<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_DRM_I2C_NXP_TDA998X//tda998x-rgb2hdmi
-  regmap_update_bits(dc-&gt;dss_regmap, 0x4, BIT(20), 1&lt;&lt;20);
-#endif
-
-#ifdef CONFIG_STARFIVE_DSI
-  regmap_update_bits(dc-&gt;dss_regmap, 0x8, BIT(3), 1&lt;&lt;3);
-#endif
-</code></pre></div></li>
-<li>
-<p>dc_hw_init</p>
-</li>
-</ul>
 
     
 </body>
