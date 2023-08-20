@@ -516,7 +516,7 @@ static const struct vs_dc_info dc_info[] = {
 <p><strong>Read pixels</strong> from one or more Framebuffers over DMA</p>
 </li>
 <li>
-<p><strong>Blend the Framebuffers</strong> / Display Planes (Layers) into a single image</p>
+<p><strong>Blend the Framebuffers</strong> / Display Planes / Layers into a single image</p>
 </li>
 <li>
 <p><strong>Apply bitmap effects</strong> like Gamma Correction</p>
@@ -525,10 +525,9 @@ static const struct vs_dc_info dc_info[] = {
 <p><strong>Push the image pixels</strong> to the Display Device (HDMI or MIPI DSI)</p>
 </li>
 </ul>
-<p>TODO: Display Controller</p>
-<p>(Remember that Display Pipelines will also handle the <strong>Blending of Display Planes</strong> / Layers)</p>
-<p>Here are the Display Pipeline <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-kms.html">(CRTC)</a> functions exposed by the driver…</p>
-<div class="example-wrap"><pre class="language-c"><code>static const struct vs_crtc_funcs dc_crtc_funcs = {
+<p>In Linux Direct Rendering Manager (DRM), the Display Pipeline is implemented as <a href="https://en.wikipedia.org/wiki/Direct_Rendering_Manager#KMS_device_model"><strong>CRTC Functions</strong></a>: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1400-L1408">vs_dc.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Display Pipeline Functions for DC8200 Display Controller
+static const struct vs_crtc_funcs dc_crtc_funcs = {
   .enable        = vs_dc_enable,
   .disable       = vs_dc_disable,
   .mode_fixup    = vs_dc_mode_fixup,
@@ -538,14 +537,15 @@ static const struct vs_dc_info dc_info[] = {
   .commit        = vs_dc_commit,
 };
 </code></pre></div>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1400-L1408">(Source)</a></p>
-<p>Enable Display Pipeline is implemented here…</p>
+<p><em>How do we create a Display Pipeline?</em></p>
+<p>TODO</p>
+<p>Setup Display Pipeline is implemented here…</p>
 <ul>
 <li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826">vs_dc_enable</a>, which calls…</p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826">vs_dc_enable</a> (from Display Controller Driver), which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487">dc_hw_setup_display</a></p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487">dc_hw_setup_display</a> (from Display Hardware Driver)</p>
 </li>
 </ul>
 <p>Enable Display Pipeline <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826">vs_dc_enable</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276">vs_crtc_atomic_enable</a></p>
