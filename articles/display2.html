@@ -434,6 +434,7 @@ static const struct file_operations fops = {
 <p>Update the <strong>Display Plane</strong></p>
 </li>
 </ul>
+<p>(This is the driver that we’ll reimplement in NuttX!)</p>
 <p>Earlier we saw <a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller-driver"><strong>dc_init</strong></a> (from Display Controller Driver) calling the Display Hardware Driver at startup.</p>
 <p>Here’s what happens inside <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361"><strong>dc_hw_init</strong></a>…</p>
 <ol>
@@ -447,10 +448,260 @@ static const struct file_operations fops = {
 <p>Initialise every <strong>Display Panel</strong> (Cursor)</p>
 </li>
 </ol>
-<p>TODO: Init, Display Registers, where the magic really happens, should port to NuttX</p>
-<p>Display Planes Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L1084">dc_hw_planes</a></p>
-<p>Display Controller Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1086-L1150">dc_info</a></p>
-<p>TODO: Why read the Hardware Revision?</p>
+<p><em>Why read the Hardware Revision?</em></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>DC_REV_2,/* For HW_REV_5721_310 */
+</code></pre></div>
+<p>Display Controller Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1129-L1149">dc_info</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct vs_dc_info dc_info[] = {
+  ...
+  {
+    /* DC_REV_2 */
+    .name			= &quot;DC8200&quot;,
+    .panel_num		= 2,
+    .plane_num		= 8,
+    .planes			= dc_hw_planes[DC_REV_2],
+    .layer_num		= 6,
+    .max_bpc		= 10,
+    .color_formats	= DRM_COLOR_FORMAT_RGB444 |
+              DRM_COLOR_FORMAT_YCRCB444 |
+              DRM_COLOR_FORMAT_YCRCB422 |
+              DRM_COLOR_FORMAT_YCRCB420,
+    .gamma_size		= GAMMA_EX_SIZE,
+    .gamma_bits		= 12,
+    .pitch_alignment	= 128,
+    .pipe_sync		= false,
+    .mmu_prefetch	= false,
+    .background		= true,
+    .panel_sync		= true,
+    .cap_dec		= false,
+  },
+</code></pre></div>
+<p>Display Planes Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L863-L1083">dc_hw_planes</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct vs_plane_info dc_hw_planes[][PLANE_NUM] = {
+  ...
+	{
+    /* DC_REV_2 */
+    {
+    .name		 = &quot;Primary&quot;,
+    .id				= PRIMARY_PLANE_0,
+    .type		 = DRM_PLANE_TYPE_PRIMARY,
+    .num_formats = ARRAY_SIZE(primary_overlay_format1),
+    .formats	 = primary_overlay_format1,
+    .num_modifiers = ARRAY_SIZE(format_modifier1),
+    .modifiers	 = format_modifier1,
+    .min_width	 = 0,
+    .min_height  = 0,
+    .max_width	 = 4096,
+    .max_height  = 4096,
+    .rotation	 = DRM_MODE_ROTATE_0 |
+             DRM_MODE_ROTATE_90 |
+             DRM_MODE_ROTATE_180 |
+             DRM_MODE_ROTATE_270 |
+             DRM_MODE_REFLECT_X |
+             DRM_MODE_REFLECT_Y,
+    .blend_mode  = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
+             BIT(DRM_MODE_BLEND_PREMULTI) |
+             BIT(DRM_MODE_BLEND_COVERAGE),
+    .color_encoding = BIT(DRM_COLOR_YCBCR_BT709) |
+              BIT(DRM_COLOR_YCBCR_BT2020),
+    .degamma_size	= DEGAMMA_SIZE,
+    .min_scale	 = FRAC_16_16(1, 3),
+    .max_scale	 = FRAC_16_16(10, 1),
+    .zpos		 = 0,
+    .watermark	 = true,
+    .color_mgmt  = true,
+    .roi		 = true,
+    },
+    {
+    .name		 = &quot;Overlay&quot;,
+    .id				= OVERLAY_PLANE_0,
+    .type		 = DRM_PLANE_TYPE_OVERLAY,
+    .num_formats = ARRAY_SIZE(primary_overlay_format1),
+    .formats	 = primary_overlay_format1,
+    .num_modifiers = ARRAY_SIZE(format_modifier1),
+    .modifiers	 = format_modifier1,
+    .min_width	 = 0,
+    .min_height  = 0,
+    .max_width	 = 4096,
+    .max_height  = 4096,
+    .rotation	 = DRM_MODE_ROTATE_0 |
+             DRM_MODE_ROTATE_90 |
+             DRM_MODE_ROTATE_180 |
+             DRM_MODE_ROTATE_270 |
+             DRM_MODE_REFLECT_X |
+             DRM_MODE_REFLECT_Y,
+    .blend_mode  = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
+             BIT(DRM_MODE_BLEND_PREMULTI) |
+             BIT(DRM_MODE_BLEND_COVERAGE),
+    .color_encoding = BIT(DRM_COLOR_YCBCR_BT709) |
+              BIT(DRM_COLOR_YCBCR_BT2020),
+    .degamma_size	= DEGAMMA_SIZE,
+    .min_scale	 = FRAC_16_16(1, 3),
+    .max_scale	 = FRAC_16_16(10, 1),
+    .zpos		 = 1,
+    .watermark	 = true,
+    .color_mgmt  = true,
+    .roi		 = true,
+    },
+    {
+    .name		 = &quot;Overlay_1&quot;,
+    .id				= OVERLAY_PLANE_1,
+    .type		 = DRM_PLANE_TYPE_OVERLAY,
+    .num_formats = ARRAY_SIZE(primary_overlay_format1),
+    .formats	 = primary_overlay_format1,
+    .num_modifiers = ARRAY_SIZE(secondary_format_modifiers),
+    .modifiers	 = secondary_format_modifiers,
+    .min_width	 = 0,
+    .min_height  = 0,
+    .max_width	 = 4096,
+    .max_height  = 4096,
+    .rotation	 = 0,
+    .blend_mode  = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
+             BIT(DRM_MODE_BLEND_PREMULTI) |
+             BIT(DRM_MODE_BLEND_COVERAGE),
+    .color_encoding = BIT(DRM_COLOR_YCBCR_BT709) |
+              BIT(DRM_COLOR_YCBCR_BT2020),
+    .degamma_size	= DEGAMMA_SIZE,
+    .min_scale	 = DRM_PLANE_HELPER_NO_SCALING,
+    .max_scale	 = DRM_PLANE_HELPER_NO_SCALING,
+    .zpos		 = 2,
+    .watermark	 = true,
+    .color_mgmt  = true,
+    .roi		 = true,
+    },
+    {
+    .name		 = &quot;Primary_1&quot;,
+    .id				= PRIMARY_PLANE_1,
+    .type		 = DRM_PLANE_TYPE_PRIMARY,
+    .num_formats = ARRAY_SIZE(primary_overlay_format1),
+    .formats	 = primary_overlay_format1,
+    .num_modifiers = ARRAY_SIZE(format_modifier1),
+    .modifiers	 = format_modifier1,
+    .min_width	 = 0,
+    .min_height  = 0,
+    .max_width	 = 4096,
+    .max_height  = 4096,
+    .rotation	 = DRM_MODE_ROTATE_0 |
+             DRM_MODE_ROTATE_90 |
+             DRM_MODE_ROTATE_180 |
+             DRM_MODE_ROTATE_270 |
+             DRM_MODE_REFLECT_X |
+             DRM_MODE_REFLECT_Y,
+    .blend_mode  = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
+             BIT(DRM_MODE_BLEND_PREMULTI) |
+             BIT(DRM_MODE_BLEND_COVERAGE),
+    .color_encoding = BIT(DRM_COLOR_YCBCR_BT709) |
+              BIT(DRM_COLOR_YCBCR_BT2020),
+    .degamma_size	= DEGAMMA_SIZE,
+    .min_scale	 = FRAC_16_16(1, 3),
+    .max_scale	 = FRAC_16_16(10, 1),
+    .zpos		 = 3,
+    .watermark	 = true,
+    .color_mgmt  = true,
+    .roi		 = true,
+    },
+    {
+    .name		 = &quot;Overlay_2&quot;,
+    .id				= OVERLAY_PLANE_2,
+    .type		 = DRM_PLANE_TYPE_OVERLAY,
+    .num_formats = ARRAY_SIZE(primary_overlay_format1),
+    .formats	 = primary_overlay_format1,
+    .num_modifiers = ARRAY_SIZE(format_modifier1),
+    .modifiers	 = format_modifier1,
+    .min_width	 = 0,
+    .min_height  = 0,
+    .max_width	 = 4096,
+    .max_height  = 4096,
+    .rotation	 = DRM_MODE_ROTATE_0 |
+             DRM_MODE_ROTATE_90 |
+             DRM_MODE_ROTATE_180 |
+             DRM_MODE_ROTATE_270 |
+             DRM_MODE_REFLECT_X |
+             DRM_MODE_REFLECT_Y,
+    .blend_mode  = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
+             BIT(DRM_MODE_BLEND_PREMULTI) |
+             BIT(DRM_MODE_BLEND_COVERAGE),
+    .color_encoding = BIT(DRM_COLOR_YCBCR_BT709) |
+              BIT(DRM_COLOR_YCBCR_BT2020),
+    .degamma_size	= DEGAMMA_SIZE,
+    .min_scale	 = FRAC_16_16(1, 3),
+    .max_scale	 = FRAC_16_16(10, 1),
+    .zpos		 = 4,
+    .watermark	 = true,
+    .color_mgmt  = true,
+    .roi		 = true,
+    },
+    {
+    .name		 = &quot;Overlay_3&quot;,
+    .id				= OVERLAY_PLANE_3,
+    .type		 = DRM_PLANE_TYPE_OVERLAY,
+    .num_formats = ARRAY_SIZE(primary_overlay_format1),
+    .formats	 = primary_overlay_format1,
+    .num_modifiers = ARRAY_SIZE(secondary_format_modifiers),
+    .modifiers	 = secondary_format_modifiers,
+    .min_width	 = 0,
+    .min_height  = 0,
+    .max_width	 = 4096,
+    .max_height  = 4096,
+    .rotation	 = 0,
+    .blend_mode  = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
+             BIT(DRM_MODE_BLEND_PREMULTI) |
+             BIT(DRM_MODE_BLEND_COVERAGE),
+    .color_encoding = BIT(DRM_COLOR_YCBCR_BT709) |
+              BIT(DRM_COLOR_YCBCR_BT2020),
+    .degamma_size	= DEGAMMA_SIZE,
+    .min_scale	 = DRM_PLANE_HELPER_NO_SCALING,
+    .max_scale	 = DRM_PLANE_HELPER_NO_SCALING,
+    .zpos		 = 5,
+    .watermark	 = true,
+    .color_mgmt  = true,
+    .roi		 = true,
+    },
+    {
+    .name		 = &quot;Cursor&quot;,
+    .id				= CURSOR_PLANE_0,
+    .type		 = DRM_PLANE_TYPE_CURSOR,
+    .num_formats = ARRAY_SIZE(cursor_formats),
+    .formats	 = cursor_formats,
+    .num_modifiers = 0,
+    .modifiers	 = NULL,
+    .min_width	 = 32,
+    .min_height  = 32,
+    .max_width	 = 64,
+    .max_height  = 64,
+    .rotation	 = 0,
+    .degamma_size = 0,
+    .min_scale	 = DRM_PLANE_HELPER_NO_SCALING,
+    .max_scale	 = DRM_PLANE_HELPER_NO_SCALING,
+    .zpos		 = 255,
+    .watermark	 = false,
+    .color_mgmt  = false,
+    .roi		 = false,
+    },
+    {
+    .name		 = &quot;Cursor_1&quot;,
+    .id				= CURSOR_PLANE_1,
+    .type		 = DRM_PLANE_TYPE_CURSOR,
+    .num_formats = ARRAY_SIZE(cursor_formats),
+    .formats	 = cursor_formats,
+    .num_modifiers = 0,
+    .modifiers	 = NULL,
+    .min_width	 = 32,
+    .min_height  = 32,
+    .max_width	 = 64,
+    .max_height  = 64,
+    .rotation	 = 0,
+    .degamma_size = 0,
+    .min_scale	 = DRM_PLANE_HELPER_NO_SCALING,
+    .max_scale	 = DRM_PLANE_HELPER_NO_SCALING,
+    .zpos		 = 255,
+    .watermark	 = false,
+    .color_mgmt  = false,
+    .roi		 = false,
+    },
+  },
+</code></pre></div>
 <p>TODO: Setup Display Pipeline / Commit Display Pipeline / Update Display Plane</p>
 <h1 id="setup-display-pipeline"><a href="#setup-display-pipeline">7 Setup Display Pipeline</a></h1>
 <p>TODO: Display Controller</p>
