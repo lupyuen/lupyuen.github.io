@@ -394,6 +394,10 @@ TODO: Pic of dc_hw_init
 
 # DC8200 Display Hardware Driver
 
+_Now we do the exciting bit?_
+
+TODO: Yep! The __Display Hardware Driver__ manipulates the Display Hardware Registers to
+
 TODO: Init, Display Registers, where the magic really happens, should port to NuttX
 
 Display Planes Info: [dc_hw_planes](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L1084)
