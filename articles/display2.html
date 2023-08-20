@@ -376,7 +376,7 @@ static const struct file_operations fops = {
 <p>And that’s how a typical Display Driver works in a Modern SoC!</p>
 <p><a href="https://lupyuen.github.io/articles/de3">(Like for <strong>Allwinner A64</strong>)</a></p>
 <p>Heading back to our scheduled programming…</p>
-<p>TODO: Pic of Display Controller</p>
+<p>TODO: Pic of Display Controller dc_bind</p>
 <h1 id="dc8200-display-controller-driver"><a href="#dc8200-display-controller-driver">5 DC8200 Display Controller Driver</a></h1>
 <p>The <strong>DC8200 Display Controller Driver</strong> is called by the the DC8200 DRM Driver. The driver exposes the Display Functions for…</p>
 <ul>
@@ -414,13 +414,12 @@ static const struct file_operations fops = {
 </ul>
 <p>Which calls our <strong>Display Hardware Driver</strong> at…</p>
 <ul>
-<li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361"><strong>dc_hw_init</strong></a> to update the <strong>Display Registers</strong></p>
-<p>(Explained in the next section)</p>
-</li>
+<li><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361"><strong>dc_hw_init</strong></a> to update the <strong>Display Registers</strong></li>
 </ul>
-<p>TODO: Setup Display Pipeline / Commit Display Pipeline / Update Display Plane</p>
-<p>Refer to <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-internals.html">Linux DRM Internals</a></p>
+<p>As we’ll see in the next section.</p>
+<p><em>That’s all for our Display Controller Driver?</em></p>
+<p>There’s more! We’ll come back to our Display Controller Driver for handling the Display Pipeline and Display Plane.</p>
+<p>TODO: Pic of dc_hw_init</p>
 <h1 id="dc8200-display-hardware-driver"><a href="#dc8200-display-hardware-driver">6 DC8200 Display Hardware Driver</a></h1>
 <p>TODO: Init, Display Registers, where the magic really happens, should port to NuttX</p>
 <p>Display Planes Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L1084">dc_hw_planes</a></p>
