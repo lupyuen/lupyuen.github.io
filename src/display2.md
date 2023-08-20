@@ -492,6 +492,8 @@ TODO: Display Controller
 
 We talked earlier about [__Display Pipelines__](https://lupyuen.github.io/articles/display2#inside-the-display-driver), how they render and push pixels from Framebuffers (Display Planes) to the Device Device.
 
+(Remember that Display Pipelines will also handle the __Blending of Display Planes__ / Layers)
+
 Here are the Display Pipeline [(CRTC)](https://www.kernel.org/doc/html/v4.15/gpu/drm-kms.html) functions exposed by the driver...
 
 ```c
