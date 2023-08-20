@@ -418,269 +418,73 @@ Here's what happens inside [__dc_hw_init__](https://github.com/starfive-tech/lin
 
 _Why read the Hardware Revision?_
 
-TODO
+Depending on the __Hardware Revision__, the DC8200 Display Controller works a little differently.
 
-```c
-DC_REV_2,/* For HW_REV_5721_310 */
-```
+Assuming that our Display Controller is [__DC_REV_2__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.h#L237-L241) (HW_REV_5721_310)...
 
-Display Controller Info: [dc_info](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1129-L1149)
+- __[dc_info](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1129-L1149) (Display Controller Info)__ says that 2 Display Panels and 8 Display Planes (Layers) are supported...
 
-```c
-static const struct vs_dc_info dc_info[] = {
-  ...
-  {
-    /* DC_REV_2 */
-    .name			= "DC8200",
-    .panel_num		= 2,
-    .plane_num		= 8,
-    .planes			= dc_hw_planes[DC_REV_2],
-    .layer_num		= 6,
-    .max_bpc		= 10,
-    .color_formats	= DRM_COLOR_FORMAT_RGB444 |
-              DRM_COLOR_FORMAT_YCRCB444 |
-              DRM_COLOR_FORMAT_YCRCB422 |
-              DRM_COLOR_FORMAT_YCRCB420,
-    .gamma_size		= GAMMA_EX_SIZE,
-    .gamma_bits		= 12,
-    .pitch_alignment	= 128,
-    .pipe_sync		= false,
-    .mmu_prefetch	= false,
-    .background		= true,
-    .panel_sync		= true,
-    .cap_dec		= false,
-  },
-```
+  ```c
+  // Display Controller Info
+  static const struct vs_dc_info dc_info[] = {
+    ...
+    {
+      // For DC_REV_2:
+      .name      = "DC8200",
+      .panel_num = 2,
+      .plane_num = 8,
+      .planes    = dc_hw_planes[DC_REV_2],
+      .layer_num = 6,
+      .max_bpc   = 10,
+      .color_formats =
+        DRM_COLOR_FORMAT_RGB444 |
+        DRM_COLOR_FORMAT_YCRCB444 |
+        DRM_COLOR_FORMAT_YCRCB422 |
+        DRM_COLOR_FORMAT_YCRCB420,
+      .gamma_size   = GAMMA_EX_SIZE,
+      .gamma_bits   = 12,
+      .pitch_alignment = 128,
+      .pipe_sync    = false,
+      .mmu_prefetch = false,
+      .background   = true,
+      .panel_sync   = true,
+      .cap_dec      = false,
+    }
+  ```
 
-Display Planes Info: [dc_hw_planes](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L863-L1083)
+- __[dc_hw_planes](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L863-L1083) (Display Planes Info)__ defines the 8 Display Planes (Layers)...
 
-```c
-static const struct vs_plane_info dc_hw_planes[][PLANE_NUM] = {
-  ...
-	{
-    /* DC_REV_2 */
-    {
-    .name		 = "Primary",
-    .id				= PRIMARY_PLANE_0,
-    .type		 = DRM_PLANE_TYPE_PRIMARY,
-    .num_formats = ARRAY_SIZE(primary_overlay_format1),
-    .formats	 = primary_overlay_format1,
-    .num_modifiers = ARRAY_SIZE(format_modifier1),
-    .modifiers	 = format_modifier1,
-    .min_width	 = 0,
-    .min_height  = 0,
-    .max_width	 = 4096,
-    .max_height  = 4096,
-    .rotation	 = DRM_MODE_ROTATE_0 |
-             DRM_MODE_ROTATE_90 |
-             DRM_MODE_ROTATE_180 |
-             DRM_MODE_ROTATE_270 |
-             DRM_MODE_REFLECT_X |
-             DRM_MODE_REFLECT_Y,
-    .blend_mode  = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
-             BIT(DRM_MODE_BLEND_PREMULTI) |
-             BIT(DRM_MODE_BLEND_COVERAGE),
-    .color_encoding = BIT(DRM_COLOR_YCBCR_BT709) |
-              BIT(DRM_COLOR_YCBCR_BT2020),
-    .degamma_size	= DEGAMMA_SIZE,
-    .min_scale	 = FRAC_16_16(1, 3),
-    .max_scale	 = FRAC_16_16(10, 1),
-    .zpos		 = 0,
-    .watermark	 = true,
-    .color_mgmt  = true,
-    .roi		 = true,
-    },
-    {
-    .name		 = "Overlay",
-    .id				= OVERLAY_PLANE_0,
-    .type		 = DRM_PLANE_TYPE_OVERLAY,
-    .num_formats = ARRAY_SIZE(primary_overlay_format1),
-    .formats	 = primary_overlay_format1,
-    .num_modifiers = ARRAY_SIZE(format_modifier1),
-    .modifiers	 = format_modifier1,
-    .min_width	 = 0,
-    .min_height  = 0,
-    .max_width	 = 4096,
-    .max_height  = 4096,
-    .rotation	 = DRM_MODE_ROTATE_0 |
-             DRM_MODE_ROTATE_90 |
-             DRM_MODE_ROTATE_180 |
-             DRM_MODE_ROTATE_270 |
-             DRM_MODE_REFLECT_X |
-             DRM_MODE_REFLECT_Y,
-    .blend_mode  = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
-             BIT(DRM_MODE_BLEND_PREMULTI) |
-             BIT(DRM_MODE_BLEND_COVERAGE),
-    .color_encoding = BIT(DRM_COLOR_YCBCR_BT709) |
-              BIT(DRM_COLOR_YCBCR_BT2020),
-    .degamma_size	= DEGAMMA_SIZE,
-    .min_scale	 = FRAC_16_16(1, 3),
-    .max_scale	 = FRAC_16_16(10, 1),
-    .zpos		 = 1,
-    .watermark	 = true,
-    .color_mgmt  = true,
-    .roi		 = true,
-    },
-    {
-    .name		 = "Overlay_1",
-    .id				= OVERLAY_PLANE_1,
-    .type		 = DRM_PLANE_TYPE_OVERLAY,
-    .num_formats = ARRAY_SIZE(primary_overlay_format1),
-    .formats	 = primary_overlay_format1,
-    .num_modifiers = ARRAY_SIZE(secondary_format_modifiers),
-    .modifiers	 = secondary_format_modifiers,
-    .min_width	 = 0,
-    .min_height  = 0,
-    .max_width	 = 4096,
-    .max_height  = 4096,
-    .rotation	 = 0,
-    .blend_mode  = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
-             BIT(DRM_MODE_BLEND_PREMULTI) |
-             BIT(DRM_MODE_BLEND_COVERAGE),
-    .color_encoding = BIT(DRM_COLOR_YCBCR_BT709) |
-              BIT(DRM_COLOR_YCBCR_BT2020),
-    .degamma_size	= DEGAMMA_SIZE,
-    .min_scale	 = DRM_PLANE_HELPER_NO_SCALING,
-    .max_scale	 = DRM_PLANE_HELPER_NO_SCALING,
-    .zpos		 = 2,
-    .watermark	 = true,
-    .color_mgmt  = true,
-    .roi		 = true,
-    },
-    {
-    .name		 = "Primary_1",
-    .id				= PRIMARY_PLANE_1,
-    .type		 = DRM_PLANE_TYPE_PRIMARY,
-    .num_formats = ARRAY_SIZE(primary_overlay_format1),
-    .formats	 = primary_overlay_format1,
-    .num_modifiers = ARRAY_SIZE(format_modifier1),
-    .modifiers	 = format_modifier1,
-    .min_width	 = 0,
-    .min_height  = 0,
-    .max_width	 = 4096,
-    .max_height  = 4096,
-    .rotation	 = DRM_MODE_ROTATE_0 |
-             DRM_MODE_ROTATE_90 |
-             DRM_MODE_ROTATE_180 |
-             DRM_MODE_ROTATE_270 |
-             DRM_MODE_REFLECT_X |
-             DRM_MODE_REFLECT_Y,
-    .blend_mode  = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
-             BIT(DRM_MODE_BLEND_PREMULTI) |
-             BIT(DRM_MODE_BLEND_COVERAGE),
-    .color_encoding = BIT(DRM_COLOR_YCBCR_BT709) |
-              BIT(DRM_COLOR_YCBCR_BT2020),
-    .degamma_size	= DEGAMMA_SIZE,
-    .min_scale	 = FRAC_16_16(1, 3),
-    .max_scale	 = FRAC_16_16(10, 1),
-    .zpos		 = 3,
-    .watermark	 = true,
-    .color_mgmt  = true,
-    .roi		 = true,
-    },
-    {
-    .name		 = "Overlay_2",
-    .id				= OVERLAY_PLANE_2,
-    .type		 = DRM_PLANE_TYPE_OVERLAY,
-    .num_formats = ARRAY_SIZE(primary_overlay_format1),
-    .formats	 = primary_overlay_format1,
-    .num_modifiers = ARRAY_SIZE(format_modifier1),
-    .modifiers	 = format_modifier1,
-    .min_width	 = 0,
-    .min_height  = 0,
-    .max_width	 = 4096,
-    .max_height  = 4096,
-    .rotation	 = DRM_MODE_ROTATE_0 |
-             DRM_MODE_ROTATE_90 |
-             DRM_MODE_ROTATE_180 |
-             DRM_MODE_ROTATE_270 |
-             DRM_MODE_REFLECT_X |
-             DRM_MODE_REFLECT_Y,
-    .blend_mode  = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
-             BIT(DRM_MODE_BLEND_PREMULTI) |
-             BIT(DRM_MODE_BLEND_COVERAGE),
-    .color_encoding = BIT(DRM_COLOR_YCBCR_BT709) |
-              BIT(DRM_COLOR_YCBCR_BT2020),
-    .degamma_size	= DEGAMMA_SIZE,
-    .min_scale	 = FRAC_16_16(1, 3),
-    .max_scale	 = FRAC_16_16(10, 1),
-    .zpos		 = 4,
-    .watermark	 = true,
-    .color_mgmt  = true,
-    .roi		 = true,
-    },
-    {
-    .name		 = "Overlay_3",
-    .id				= OVERLAY_PLANE_3,
-    .type		 = DRM_PLANE_TYPE_OVERLAY,
-    .num_formats = ARRAY_SIZE(primary_overlay_format1),
-    .formats	 = primary_overlay_format1,
-    .num_modifiers = ARRAY_SIZE(secondary_format_modifiers),
-    .modifiers	 = secondary_format_modifiers,
-    .min_width	 = 0,
-    .min_height  = 0,
-    .max_width	 = 4096,
-    .max_height  = 4096,
-    .rotation	 = 0,
-    .blend_mode  = BIT(DRM_MODE_BLEND_PIXEL_NONE) |
-             BIT(DRM_MODE_BLEND_PREMULTI) |
-             BIT(DRM_MODE_BLEND_COVERAGE),
-    .color_encoding = BIT(DRM_COLOR_YCBCR_BT709) |
-              BIT(DRM_COLOR_YCBCR_BT2020),
-    .degamma_size	= DEGAMMA_SIZE,
-    .min_scale	 = DRM_PLANE_HELPER_NO_SCALING,
-    .max_scale	 = DRM_PLANE_HELPER_NO_SCALING,
-    .zpos		 = 5,
-    .watermark	 = true,
-    .color_mgmt  = true,
-    .roi		 = true,
-    },
-    {
-    .name		 = "Cursor",
-    .id				= CURSOR_PLANE_0,
-    .type		 = DRM_PLANE_TYPE_CURSOR,
-    .num_formats = ARRAY_SIZE(cursor_formats),
-    .formats	 = cursor_formats,
-    .num_modifiers = 0,
-    .modifiers	 = NULL,
-    .min_width	 = 32,
-    .min_height  = 32,
-    .max_width	 = 64,
-    .max_height  = 64,
-    .rotation	 = 0,
-    .degamma_size = 0,
-    .min_scale	 = DRM_PLANE_HELPER_NO_SCALING,
-    .max_scale	 = DRM_PLANE_HELPER_NO_SCALING,
-    .zpos		 = 255,
-    .watermark	 = false,
-    .color_mgmt  = false,
-    .roi		 = false,
-    },
-    {
-    .name		 = "Cursor_1",
-    .id				= CURSOR_PLANE_1,
-    .type		 = DRM_PLANE_TYPE_CURSOR,
-    .num_formats = ARRAY_SIZE(cursor_formats),
-    .formats	 = cursor_formats,
-    .num_modifiers = 0,
-    .modifiers	 = NULL,
-    .min_width	 = 32,
-    .min_height  = 32,
-    .max_width	 = 64,
-    .max_height  = 64,
-    .rotation	 = 0,
-    .degamma_size = 0,
-    .min_scale	 = DRM_PLANE_HELPER_NO_SCALING,
-    .max_scale	 = DRM_PLANE_HELPER_NO_SCALING,
-    .zpos		 = 255,
-    .watermark	 = false,
-    .color_mgmt  = false,
-    .roi		 = false,
-    },
-  },
-```
+  | Z Pos | Layer | Min Size | Max Size |
+  |:-----:|:------|:--------:|:--------:|
+  | 0 | Primary | 0 x 0 | 4096 x 4096
+  | 1 | Overlay | 0 x 0 | 4096 x 4096
+  | 2 | Overlay_1 | 0 x 0 | 4096 x 4096
+  | 3 | Primary_1 | 0 x 0 | 4096 x 4096
+  | 4 | Overlay_2 | 0 x 0 | 4096 x 4096
+  | 5 | Overlay_3 | 0 x 0 | 4096 x 4096
+  | 255 | Cursor | 32 x 32 | 64 x 64
+  | 255 | Cursor_1 | 32 x 32 | 64 x 64
 
-TODO: Setup Display Pipeline / Commit Display Pipeline / Update Display Plane
+  [(Plus a bunch of __Other Properties__)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L863-L1083)
+
+_Why are the layers interleaved?_
+
+That's because the Display Planes (Layers) will be rendered to __2 separate displays__ (HDMI + MIPI DSI)...
+
+| Display 1 | Display 2 |
+|:----------|:----------|
+| Primary | Primary_1 |
+| Overlay | Overlay_2 |
+| Overlay_1 | Overlay_3 |
+| Cursor | Cursor_1 |
+
+![Block Diagram of DC8200 Display Controller](https://lupyuen.github.io/images/display2-Display_Block_Diagram.png)
+
+[_Block Diagram of DC8200 Display Controller_](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html)
+
+Our Display Hardware Driver will do other fun things, let's talk about the Display Pipelines and Display Planes...
+
+TODO: Pic of Setup Display Pipeline
 
 # Setup Display Pipeline
 
