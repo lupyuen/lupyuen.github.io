@@ -120,7 +120,7 @@ These are the __Clock and Reset Signals__ for the Display Controller...
 
 [_JH7110 Display Subsystem Clock and Reset_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html)
 
-(Remember to enable the Clocks and deassert the Resets!)
+[(Remember to __Enable the Clocks__ and __Deassert the Resets__!)](https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset)
 
 The DC8200 Display Controller outputs to __2 displays simultaneously__ (like MIPI DSI + HDMI)...
 
