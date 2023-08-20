@@ -635,9 +635,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
+[DOM VOUT CRG](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html)
+
 ## dc_bind
 
 TODO
+
+[__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573)
 
 - dc_init
 - vs_drm_iommu_attach_device: 
@@ -679,6 +683,8 @@ TODO
 ## dc_init
 
 TODO
+
+[__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722)
 
 - dc_vout_clk_enable: 
 
