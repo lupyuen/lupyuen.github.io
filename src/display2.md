@@ -338,7 +338,7 @@ And that's how a typical Display Driver works in a Modern SoC!
 
 Heading back to our scheduled programming...
 
-TODO: Pic of Display Controller
+TODO: Pic of Display Controller dc_bind
 
 # DC8200 Display Controller Driver
 
@@ -384,11 +384,13 @@ Which calls our __Display Hardware Driver__ at...
 
 - [__dc_hw_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361) to update the __Display Registers__
 
-  (Explained in the next section)
+As we'll see in the next section.
 
-TODO: Setup Display Pipeline / Commit Display Pipeline / Update Display Plane
+_That's all for our Display Controller Driver?_
 
-Refer to [Linux DRM Internals](https://www.kernel.org/doc/html/v4.15/gpu/drm-internals.html)
+There's more! We'll come back to our Display Controller Driver for handling the Display Pipeline and Display Plane.
+
+TODO: Pic of dc_hw_init
 
 # DC8200 Display Hardware Driver
 
