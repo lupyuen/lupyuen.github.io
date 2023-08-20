@@ -471,7 +471,7 @@ _Why are the layers interleaved?_
 
 That's because the Display Planes (Layers) will be rendered to __2 separate displays__ (HDMI + MIPI DSI)...
 
-| Display 1 | Display 2 |
+| Display 0 | Display 1 |
 |:----------|:----------|
 | Primary | Primary_1 |
 | Overlay | Overlay_2 |
