@@ -488,9 +488,17 @@ TODO: Pic of Setup Display Pipeline
 
 # Setup Display Pipeline
 
-TODO: Display Controller
+Earlier we talked about [__Display Pipelines__](https://lupyuen.github.io/articles/display2#inside-the-display-driver) and how they...
 
-We talked earlier about [__Display Pipelines__](https://lupyuen.github.io/articles/display2#inside-the-display-driver), how they render and push pixels from Framebuffers (Display Planes) to the Device Device.
+- __Read pixels__ from one or more Framebuffers over DMA
+
+- __Blend the Framebuffers__ / Display Planes (Layers) into a single image
+
+- __Apply bitmap effects__ like Gamma Correction
+
+- __Push the image pixels__ to the Display Device (HDMI or MIPI DSI)
+
+TODO: Display Controller
 
 (Remember that Display Pipelines will also handle the __Blending of Display Planes__ / Layers)
 
