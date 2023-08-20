@@ -512,6 +512,7 @@ static const struct vs_dc_info dc_info[] = {
 <h1 id="setup-display-pipeline"><a href="#setup-display-pipeline">7 Setup Display Pipeline</a></h1>
 <p>TODO: Display Controller</p>
 <p>We talked earlier about <a href="https://lupyuen.github.io/articles/display2#inside-the-display-driver"><strong>Display Pipelines</strong></a>, how they render and push pixels from Framebuffers (Display Planes) to the Device Device.</p>
+<p>(Remember that Display Pipelines will also handle the <strong>Blending of Display Planes</strong> / Layers)</p>
 <p>Here are the Display Pipeline <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-kms.html">(CRTC)</a> functions exposed by the driver…</p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct vs_crtc_funcs dc_crtc_funcs = {
   .enable        = vs_dc_enable,
