@@ -396,18 +396,29 @@ TODO: Pic of dc_hw_init
 
 _Now we do the exciting bit?_
 
-TODO: Yep! The __Display Hardware Driver__ manipulates the Display Hardware Registers to
+Finally! The __Display Hardware Driver__ is called by the Display Controller Driver (previous section) to manipulate the Display Hardware Registers and...
+
+- Initialise the __Display Controller__
+
+- Setup and Configure the __Display Pipeline__
+
+- Update the __Display Plane__
+
+Earlier we saw [__dc_init__](https://lupyuen.github.io/articles/display2#dc8200-display-controller-driver) (from Display Controller Driver) calling the Display Hardware Driver at startup.
+
+Here's what happens inside [__dc_hw_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361)...
+
+1.  Read the __Hardware Revision and Chip ID__
+
+1.  Initialise every __Display Plane__ (Layer)
+
+1.  Initialise every __Display Panel__ (Cursor)
 
 TODO: Init, Display Registers, where the magic really happens, should port to NuttX
 
 Display Planes Info: [dc_hw_planes](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L1084)
 
 Display Controller Info: [dc_info](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1086-L1150)
-
-Initialise Display Hardware: [dc_hw_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361)
-- Read the Hardware Revision and Chip ID
-- Initialise every Layer / Display Plane
-- Initialise every Panel (Cursor)
 
 TODO: Why read the Hardware Revision?
 
