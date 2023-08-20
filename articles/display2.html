@@ -405,16 +405,17 @@ static const struct file_operations fops = {
 };
 </code></pre></div>
 <p><em>What happens at startup?</em></p>
-<p>At startup, the DRM Driver calls our Display Controller Driver at…</p>
+<p>At startup, the DRM Driver calls our <strong>Display Controller Driver</strong> at…</p>
 <ul>
 <li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a> (to ???), which calls..</p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a> and <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722"><strong>dc_init</strong></a> to setup the <a href="https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset"><strong>Clock and Reset Signals</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset">(More about <strong>dc_bind</strong> and <strong>dc_init</strong>)</a></p>
 </li>
+</ul>
+<p>Which calls our <strong>Display Hardware Driver</strong> at…</p>
+<ul>
 <li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722"><strong>dc_init</strong></a> (to ???), which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361"><strong>dc_hw_init</strong></a> (from the Display Hardware Driver) to update the Display Registers</p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361"><strong>dc_hw_init</strong></a> to update the <strong>Display Registers</strong></p>
 <p>(Explained in the next section)</p>
 </li>
 </ul>
