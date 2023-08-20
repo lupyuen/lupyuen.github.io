@@ -374,13 +374,15 @@ const struct component_ops dc_component_ops = {
 
 _What happens at startup?_
 
-At startup, the DRM Driver calls our Display Controller Driver at...
+At startup, the DRM Driver calls our __Display Controller Driver__ at...
 
-- [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573) (to ???), which calls..
+- [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573) and [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) to setup the [__Clock and Reset Signals__](https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset)
 
-- [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) (to ???), which calls...
+  [(More about __dc_bind__ and __dc_init__)](https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset)
 
-- [__dc_hw_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361) (from the Display Hardware Driver) to update the Display Registers
+Which calls our __Display Hardware Driver__ at...
+
+- [__dc_hw_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361) to update the __Display Registers__
 
   (Explained in the next section)
 
