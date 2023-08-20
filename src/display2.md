@@ -482,13 +482,15 @@ That's because the Display Planes (Layers) will be rendered to __2 separate disp
 
 [_Block Diagram of DC8200 Display Controller_](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html)
 
-Our Display Hardware Driver will do other fun things, let's talk about the Display Pipelines and Display Planes...
+Our Display Hardware Driver will do other fun things! Let's talk about the Display Pipelines and Display Planes...
 
 TODO: Pic of Setup Display Pipeline
 
 # Setup Display Pipeline
 
 TODO: Display Controller
+
+We talked earlier about [__Display Pipelines__](https://lupyuen.github.io/articles/display2#inside-the-display-driver), how they render and push pixels from Framebuffers (Display Planes) to the Device Device.
 
 Here are the Display Pipeline [(CRTC)](https://www.kernel.org/doc/html/v4.15/gpu/drm-kms.html) functions exposed by the driver...
 
