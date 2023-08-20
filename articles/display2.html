@@ -507,10 +507,11 @@ static const struct vs_dc_info dc_info[] = {
 </div>
 <p><img src="https://lupyuen.github.io/images/display2-Display_Block_Diagram.png" alt="Block Diagram of DC8200 Display Controller" /></p>
 <p><a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html"><em>Block Diagram of DC8200 Display Controller</em></a></p>
-<p>Our Display Hardware Driver will do other fun things, let’s talk about the Display Pipelines and Display Planes…</p>
+<p>Our Display Hardware Driver will do other fun things! Let’s talk about the Display Pipelines and Display Planes…</p>
 <p>TODO: Pic of Setup Display Pipeline</p>
 <h1 id="setup-display-pipeline"><a href="#setup-display-pipeline">7 Setup Display Pipeline</a></h1>
 <p>TODO: Display Controller</p>
+<p>We talked earlier about <a href="https://lupyuen.github.io/articles/display2#inside-the-display-driver"><strong>Display Pipelines</strong></a>, how they render and push pixels from Framebuffers (Display Planes) to the Device Device.</p>
 <p>Here are the Display Pipeline <a href="https://www.kernel.org/doc/html/v4.15/gpu/drm-kms.html">(CRTC)</a> functions exposed by the driver…</p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct vs_crtc_funcs dc_crtc_funcs = {
   .enable        = vs_dc_enable,
