@@ -422,16 +422,34 @@ static const struct file_operations fops = {
 <p>TODO: Pic of dc_hw_init</p>
 <h1 id="dc8200-display-hardware-driver"><a href="#dc8200-display-hardware-driver">6 DC8200 Display Hardware Driver</a></h1>
 <p><em>Now we do the exciting bit?</em></p>
-<p>TODO: Yep! The <strong>Display Hardware Driver</strong> manipulates the Display Hardware Registers to</p>
+<p>Finally! The <strong>Display Hardware Driver</strong> is called by the Display Controller Driver (previous section) to manipulate the Display Hardware Registers and…</p>
+<ul>
+<li>
+<p>Initialise the <strong>Display Controller</strong></p>
+</li>
+<li>
+<p>Setup and Configure the <strong>Display Pipeline</strong></p>
+</li>
+<li>
+<p>Update the <strong>Display Plane</strong></p>
+</li>
+</ul>
+<p>Earlier we saw <a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller-driver"><strong>dc_init</strong></a> (from Display Controller Driver) calling the Display Hardware Driver at startup.</p>
+<p>Here’s what happens inside <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361"><strong>dc_hw_init</strong></a>…</p>
+<ol>
+<li>
+<p>Read the <strong>Hardware Revision and Chip ID</strong></p>
+</li>
+<li>
+<p>Initialise every <strong>Display Plane</strong> (Layer)</p>
+</li>
+<li>
+<p>Initialise every <strong>Display Panel</strong> (Cursor)</p>
+</li>
+</ol>
 <p>TODO: Init, Display Registers, where the magic really happens, should port to NuttX</p>
 <p>Display Planes Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L1084">dc_hw_planes</a></p>
 <p>Display Controller Info: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1086-L1150">dc_info</a></p>
-<p>Initialise Display Hardware: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">dc_hw_init</a></p>
-<ul>
-<li>Read the Hardware Revision and Chip ID</li>
-<li>Initialise every Layer / Display Plane</li>
-<li>Initialise every Panel (Cursor)</li>
-</ul>
 <p>TODO: Why read the Hardware Revision?</p>
 <p>TODO: Setup Display Pipeline / Commit Display Pipeline / Update Display Plane</p>
 <h1 id="setup-display-pipeline"><a href="#setup-display-pipeline">7 Setup Display Pipeline</a></h1>
