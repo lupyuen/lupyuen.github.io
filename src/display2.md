@@ -525,7 +525,7 @@ Which calls...
 
 _What's inside dc_hw_setup_display?_
 
-Inside our Display Hardware Driver, [__dc_hw_setup_display__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487) will...
+In our Display Hardware Driver, [__dc_hw_setup_display__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487) will...
 1.  Copy the __Display Struct__
 1.  Call [__setup_display_ex__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1971-L2030)
 
@@ -574,46 +574,47 @@ _Why will we Commit a Display Pipeline?_
 
 A Display Pipeline won't render any pixels... Until we __Commit the Display Pipeline__!
 
-TODO: Display Controller
+To Commit the Display Pipeline, the Linux Direct Rendering Manager (DRM) calls our Display Controller Driver at...
 
-Commit Display Pipeline is here...
+- [__vs_dc_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1381-L1398), which calls...
 
-- [vs_dc_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1381-L1398), which calls...
+- [__dc_hw_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076), from our Display Hardware Driver
 
-- [dc_hw_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076)
+_What's inside dc_hw_commit?_
+
+In our Display Hardware Driver, [__dc_hw_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076) will...
+
+1.  Call [__gamma_ex_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574) to commit the Gamma Correction
+1.  Call [__plane_ex_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863) commit the Display Plane
+1.  Update the __Cursor and QoS__
+
+_What happens in plane_ex_commit?_
+
+[__plane_ex_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863) will...
+1.  Set the __Colour Space__
+1.  Set the __Gamma Correction__
+1.  Call [__plane_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1576-L1766)
+
+Then [__plane_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1576-L1766) will do this for every __Display Plane__ (Layer)...
+1.  Set the __Framebuffer YUV Address and Stride__
+1.  Set the __Framebuffer Width and Height__
+1.  __Clear the Framebuffer__
+1.  Configure the __Primary and Non-Primary Framebuffers__
+1.  Enable __Framebuffer Scaling__ (X and Y)
+1.  Set the __Framebuffer Offset__ (X and Y)
+1.  Set the __Framebuffer Blending__
+1.  Set the __Colour Key__ (Transparency)
+1.  Set the __ROI__
+
+_Who Commits the Display Pipeline?_
+
+TODO
+
+[plane_ex_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863) and [gamma_ex_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574) are called by [dc_hw_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076)
 
 Commit Display Pipeline [vs_dc_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1381-L1398) is called by [vs_crtc_atomic_flush](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L320-L336)
 
 Which is called by [drm_atomic_helper](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570)
-
-TODO: Display Hardware
-
-Commit Display Hardware: [dc_hw_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076)
-- Call [gamma_ex_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574)
-- Call [plane_ex_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863)
-- Update Cursor
-- Update QoS
-
-Commit Display Plane (Extended): [plane_ex_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863)
-- Set Colour Space
-- Set Gamma
-- Call [plane_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1576-L1766)
-
-Commit Display Plane: [plane_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1576-L1766)
-- For every Layer / Display Plane:
-- Set Framebuffer YUV Address
-- Set Framebuffer YUV Stride
-- Set Framebuffer Width and Height
-- Clear Framebuffer
-- Set Primary Framebuffer Config
-- Set Non-Primary Framebuffer Config
-- Enable Framebuffer Scaling (X and Y)
-- Set Framebuffer Offset (X and Y)
-- Set Framebuffer Blending
-- Set Colour Key / Transparency
-- Set ROI
-
-[plane_ex_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863) and [gamma_ex_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574) are called by [dc_hw_commit](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076)
 
 # Update Display Plane
 
