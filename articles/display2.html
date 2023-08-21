@@ -572,7 +572,7 @@ static const struct vs_crtc_funcs dc_crtc_funcs = {
 <li>Set the <strong>Cursor Configuration</strong></li>
 </ol>
 <p><em>Who creates the Display Pipeline?</em></p>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826"><strong>vs_dc_enable</strong></a> (from above) is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276"><strong>vs_crtc_atomic_enable</strong></a>…</p>
+<p>To create the Display Pipeline, <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826"><strong>vs_dc_enable</strong></a> (from above) is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276"><strong>vs_crtc_atomic_enable</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// DC8200 Display Pipeline Helper Functions
 static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
   .mode_fixup     = vs_crtc_mode_fixup,
@@ -584,6 +584,7 @@ static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
 </code></pre></div>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L338-L344">(Source)</a></p>
 <p>Which is called by the Linux <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L1323-L1408"><strong>DRM Atomic Helper</strong></a>.</p>
+<p>(We’ll see <strong>vs_crtc_atomic_flush</strong> in the next section)</p>
 <p><a href="https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display">(More about <strong>Atomic Display</strong>)</a></p>
 <p>And that’s how we create a Display Pipeline! Now we commit the Display Pipeline…</p>
 <h1 id="commit-display-pipeline"><a href="#commit-display-pipeline">8 Commit Display Pipeline</a></h1>
