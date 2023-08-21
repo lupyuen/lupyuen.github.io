@@ -4,7 +4,7 @@
 
 ![Display Driver for StarFive JH7110 SoC](https://lupyuen.github.io/images/display2-title.jpg)
 
-Today we look inside the __Display Controller__ of the [__RISC-V StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) and figure out how it works.
+Today we look deep inside the __Display Controller__ of the [__RISC-V StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) and figure out how it works.
 
 _But the JH7110 Display Controller is NOT documented!_
 
@@ -714,6 +714,34 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/display2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display2.md)
 
+TODO: Pic of Framebuffer Driver
+
+# Appendix: DC8200 Framebuffer Driver
+
+TODO
+
+At startup, [vs_drm_bind](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271) calls [vs_mode_config_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191) to register the Framebuffer Driver: [vs_mode_config_funcs](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172).
+
+Which is defined as...
+
+```c
+static const struct drm_mode_config_funcs vs_mode_config_funcs = {
+  .fb_create       = vs_fb_create,
+  .get_format_info = vs_get_format_info,
+  .output_poll_changed = drm_fb_helper_output_poll_changed,
+  .atomic_check    = drm_atomic_helper_check,
+  .atomic_commit   = drm_atomic_helper_commit,
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172)
+
+[vs_fb_create](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L60-L123) is called by [drm_framebuffer](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_framebuffer.c#L286-L329)
+
+[vs_get_format_info](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L155-L164) is called by [drm_fourcc](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_fourcc.c#L302-L325)
+
+Framebuffer Formats: [vs_formats](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L134-L139)
+
 ![JH7110 Display Subsystem Clock and Reset](https://lupyuen.github.io/images/display2-vout_clkrst18.png)
 
 [_JH7110 Display Subsystem Clock and Reset_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html)
@@ -723,6 +751,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 TODO
 
 [DOM VOUT CRG](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html)
+
+TODO: Pic of dc_bind
 
 ## dc_bind
 
@@ -749,6 +779,8 @@ TODO
 1.  Disable Clock v_out_top
 
 1.  Disable Clock DC vout
+
+TODO: Pic of dc_init
 
 ## dc_init
 
@@ -780,6 +812,8 @@ TODO
 
 1.  Call dc_hw_init
 
+TODO: Pic of vs_dc_enable
+
 ## vs_dc_enable
 
 TODO
@@ -810,29 +844,3 @@ TODO
 1.  If Display is HDMI: Set the Clock hdmitx0_pixelclk
 
 1.  Call dc_hw_setup_display
-
-# Appendix: DC8200 Framebuffer Driver
-
-TODO
-
-At startup, [vs_drm_bind](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271) calls [vs_mode_config_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191) to register the Framebuffer Driver: [vs_mode_config_funcs](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172).
-
-Which is defined as...
-
-```c
-static const struct drm_mode_config_funcs vs_mode_config_funcs = {
-  .fb_create       = vs_fb_create,
-  .get_format_info = vs_get_format_info,
-  .output_poll_changed = drm_fb_helper_output_poll_changed,
-  .atomic_check    = drm_atomic_helper_check,
-  .atomic_commit   = drm_atomic_helper_commit,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172)
-
-[vs_fb_create](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L60-L123) is called by [drm_framebuffer](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_framebuffer.c#L286-L329)
-
-[vs_get_format_info](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L155-L164) is called by [drm_fourcc](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_fourcc.c#L302-L325)
-
-Framebuffer Formats: [vs_formats](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L134-L139)
