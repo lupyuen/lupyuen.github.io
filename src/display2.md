@@ -624,7 +624,7 @@ TODO: Pic of Update Display Plane
 
 One last thing for today: How to __Update the Display Plane__.
 
-(Remember a Display Plane is a __Layer of Pixels__ that will be blended into the final image by a Display Pipeline)
+(A Display Plane is a __Layer of Pixels__ / Framebuffer that will be blended into the final image by a Display Pipeline)
 
 Our Display Controller Driver exposes these __Display Plane Functions__: 
 [vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1410-L1414)
@@ -641,29 +641,26 @@ To update the Display Plane, the Linux Direct Rendering Manager (DRM) calls our 
 
 - [__vs_dc_update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280), which calls...
 
-- [__update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196), which calls...
+- [__update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196), [__update_qos__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1198-L1220) and [__update_cursor_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1241-L1260)
 
-- [__dc_hw_update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399)
+_What's inside update_plane?_
 
-TODO: __vs_dc_update_plane__ calls update_qos and update_cursor_plane
+[__update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196) (from our Display Controller Driver) will...
 
-TODO: update_plane calls update_fb, update_roi, update_scale, update_degamma
+1.  Call [__update_fb__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L973-L1014) to set the __Framebuffer Addresses__
+1.  Call [__update_roi__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1097-L1127) to set the __ROI__
+1.  Call [__update_scale__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L936-L971) to set the __Scaling__
+1.  Call [__update_degamma__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1090-L1095) to set the __Degamma Correction__
+1.  Set the __Start and End Position__ (X and Y)
+1.  Set the __Blending Alpha and Mode__
+1.  Set the __Colour Management__
+1.  Call [__dc_hw_update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399) 
 
-Set Start and End Position
-
-Set Blending Alpha and Mode
-
-update_color_mgmt
-
-dc_hw_update_plane
-
-TODO: Display Hardware
-
-Update Display Plane: [dc_hw_update_plane](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399)
-- Copy Framebuffer
-- Copy Scale
-- Copy Position
-- Copy Blend
+Then [__dc_hw_update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399) (from our Display Hardware Driver) will...
+1.  Copy the __Framebuffer__
+1.  Copy the __Scaling__
+1.  Copy the __Position__
+1.  Copy the __Blending__
 
 _Who calls our driver to update the Display Plane?_
 
