@@ -539,16 +539,16 @@ static const struct vs_crtc_funcs dc_crtc_funcs = {
 };
 </code></pre></div>
 <p><em>How do we create a Display Pipeline?</em></p>
-<p>TODO</p>
-<p>Setup Display Pipeline is implemented here…</p>
+<p>From above, we see that the Display Pipeline is created in…</p>
 <ul>
 <li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826">vs_dc_enable</a> (from Display Controller Driver), which calls…</p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826"><strong>vs_dc_enable</strong></a> from our Display Controller Driver, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487">dc_hw_setup_display</a> (from Display Hardware Driver)</p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487"><strong>dc_hw_setup_display</strong></a> from our Display Hardware Driver</p>
 </li>
 </ul>
+<p><a href="https://lupyuen.github.io/articles/display2#vs_dc_enable">(<strong>vs_dc_enable</strong> also prepares the Clock and Reset Signals)</a></p>
 <p>TODO: Display Hardware</p>
 <p>Display Hardware Functions:</p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct dc_hw_funcs hw_func = {
