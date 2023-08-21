@@ -572,7 +572,7 @@ And that's how we create a Display Pipeline! Now we commit the Display Pipeline.
 
 _Why will we Commit a Display Pipeline?_
 
-A Display Pipeline won't do anything... Until we __Commit the Display Pipeline__!
+A Display Pipeline won't render any pixels... Until we __Commit the Display Pipeline__!
 
 TODO: Display Controller
 
