@@ -587,6 +587,12 @@ Sometimes we need to __Rebase To The Latest Master__ due to updates in the GitHu
 
     [(See the official docs)](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/keeping-your-local-repository-in-sync-with-github/syncing-your-branch#rebasing-your-project-branch-onto-another-branch)
 
+_Is it really OK to Rebase To The Latest Master?_
+
+Normally when the GitHub Actions build fails (not due to our code), I take a [__peek at other recent Pull Requests__](https://github.com/apache/nuttx/pulls).
+
+If they didn't fail the build, then it's probably OK to Rebase with Master to force the Rebuild.
+
 ![Pull Updates from NuttX Mainline](https://lupyuen.github.io/images/pr-update.png)
 
 # Update Our Repositories
