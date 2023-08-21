@@ -523,24 +523,7 @@ Setup Display Pipeline is implemented here...
 
 - [dc_hw_setup_display](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487) (from Display Hardware Driver)
 
-Enable Display Pipeline [vs_dc_enable](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826) is called by [vs_crtc_atomic_enable](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276)
-
-Which is called by [drm_atomic_helper](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L1323-L1408)
-
-```c
-static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
-  .mode_fixup     = vs_crtc_mode_fixup,
-  .atomic_enable  = vs_crtc_atomic_enable,
-  .atomic_disable = vs_crtc_atomic_disable,
-  .atomic_begin   = vs_crtc_atomic_begin,
-  .atomic_flush   = vs_crtc_atomic_flush,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L338-L344)
-
 TODO: Display Hardware
-
 
 Display Hardware Functions:
 
@@ -575,6 +558,24 @@ Setup Display (Lower Level): [setup_display](https://github.com/starfive-tech/li
 - Enable Display Panel
 - Set Overlay Config
 - Set Cursor Config
+
+TODO
+
+Enable Display Pipeline [vs_dc_enable](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826) is called by [vs_crtc_atomic_enable](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276)
+
+Which is called by [drm_atomic_helper](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L1323-L1408)
+
+```c
+static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
+  .mode_fixup     = vs_crtc_mode_fixup,
+  .atomic_enable  = vs_crtc_atomic_enable,
+  .atomic_disable = vs_crtc_atomic_disable,
+  .atomic_begin   = vs_crtc_atomic_begin,
+  .atomic_flush   = vs_crtc_atomic_flush,
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L338-L344)
 
 # Commit Display Pipeline
 
@@ -807,6 +808,74 @@ TODO
   ```
 
 - dc_hw_init
+
+## vs_dc_enable
+
+TODO
+
+[vs_dc_enable](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826) (from Display Controller Driver)
+
+- dc_vout_clk_enable
+
+- vs_dc8200_reset_deassert
+
+- clk_prepare_enable(dc->vout_top_lcd);
+
+- regmap_update_bits(dc->dss_regmap, 0x4, BIT(20), 1<<20);
+
+- regmap_update_bits(dc->dss_regmap, 0x8, BIT(3), 1<<3);
+
+- dc_hw_init
+
+```c
+	display.bus_format = crtc_state->output_fmt;
+	display.h_active = mode->hdisplay;
+	display.h_total = mode->htotal;
+	display.h_sync_start = mode->hsync_start;
+	display.h_sync_end = mode->hsync_end;
+	if (mode->flags & DRM_MODE_FLAG_PHSYNC)
+		display.h_sync_polarity = true;
+	else
+		display.h_sync_polarity = false;
+
+	display.v_active = mode->vdisplay;
+	display.v_total = mode->vtotal;
+
+	if (crtc_state->encoder_type == DRM_MODE_ENCODER_DSI){
+		display.v_sync_start = mode->vsync_start + 1;
+		display.v_sync_end = mode->vsync_end - 1;
+	}else{
+		display.v_sync_start = mode->vsync_start;
+		display.v_sync_end = mode->vsync_end;
+	}
+
+	if (mode->flags & DRM_MODE_FLAG_PVSYNC)
+		display.v_sync_polarity = true;
+	else
+		display.v_sync_polarity = false;
+
+	display.sync_mode = crtc_state->sync_mode;
+	display.bg_color = crtc_state->bg_color;
+
+	display.id = to_vs_display_id(dc, crtc);
+	display.sync_enable = crtc_state->sync_enable;
+	display.dither_enable = crtc_state->dither_enable;
+```
+
+```c
+	if(display.id == 1)
+	{
+    // MIPI DSI
+		clk_set_rate(dc->dc8200_pix0, mode->clock * 1000);
+		clk_set_parent(dc->dc8200_clk_pix1, dc->dc8200_pix0);
+		clk_set_parent(dc->vout_top_lcd, dc->dc8200_clk_pix1_out);
+	}else{
+    // HDMI
+		clk_set_parent(dc->dc8200_clk_pix0, dc->hdmitx0_pixelclk);
+	}
+```
+
+- dc_hw_setup_display
 
 # Appendix: JH7110 HDMI Controller
 
