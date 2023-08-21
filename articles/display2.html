@@ -83,7 +83,8 @@
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-jh7110-display-clock-and-reset">12 Appendix: JH7110 Display Clock and Reset</a><ul>
 <li><a href="#dc_bind">12.1 dc_bind</a><ul></ul></li>
-<li><a href="#dc_init">12.2 dc_init</a><ul></ul></li></ul></li>
+<li><a href="#dc_init">12.2 dc_init</a><ul></ul></li>
+<li><a href="#vs_dc_enable">12.3 vs_dc_enable</a><ul></ul></li></ul></li>
 <li><a href="#appendix-jh7110-hdmi-controller">13 Appendix: JH7110 HDMI Controller</a><ul></ul></li>
 <li><a href="#appendix-jh7110-hdmi-testing">14 Appendix: JH7110 HDMI Testing</a><ul></ul></li>
 <li><a href="#appendix-jh7110-lcd-panel-configuration">15 Appendix: JH7110 LCD Panel Configuration</a><ul></ul></li>
@@ -548,17 +549,6 @@ static const struct vs_crtc_funcs dc_crtc_funcs = {
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487">dc_hw_setup_display</a> (from Display Hardware Driver)</p>
 </li>
 </ul>
-<p>Enable Display Pipeline <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826">vs_dc_enable</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276">vs_crtc_atomic_enable</a></p>
-<p>Which is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L1323-L1408">drm_atomic_helper</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
-  .mode_fixup     = vs_crtc_mode_fixup,
-  .atomic_enable  = vs_crtc_atomic_enable,
-  .atomic_disable = vs_crtc_atomic_disable,
-  .atomic_begin   = vs_crtc_atomic_begin,
-  .atomic_flush   = vs_crtc_atomic_flush,
-};
-</code></pre></div>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L338-L344">(Source)</a></p>
 <p>TODO: Display Hardware</p>
 <p>Display Hardware Functions:</p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct dc_hw_funcs hw_func = {
@@ -593,6 +583,18 @@ static const struct vs_crtc_funcs dc_crtc_funcs = {
 <li>Set Overlay Config</li>
 <li>Set Cursor Config</li>
 </ul>
+<p>TODO</p>
+<p>Enable Display Pipeline <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826">vs_dc_enable</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276">vs_crtc_atomic_enable</a></p>
+<p>Which is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L1323-L1408">drm_atomic_helper</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
+  .mode_fixup     = vs_crtc_mode_fixup,
+  .atomic_enable  = vs_crtc_atomic_enable,
+  .atomic_disable = vs_crtc_atomic_disable,
+  .atomic_begin   = vs_crtc_atomic_begin,
+  .atomic_flush   = vs_crtc_atomic_flush,
+};
+</code></pre></div>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L338-L344">(Source)</a></p>
 <h1 id="commit-display-pipeline"><a href="#commit-display-pipeline">8 Commit Display Pipeline</a></h1>
 <p>TODO: Display Controller</p>
 <p>Commit Display Pipeline is here…</p>
@@ -799,6 +801,75 @@ static const struct vs_crtc_funcs dc_crtc_funcs = {
 <li>
 <p>dc_hw_init</p>
 </li>
+</ul>
+<h2 id="vs_dc_enable"><a href="#vs_dc_enable">12.3 vs_dc_enable</a></h2>
+<p>TODO</p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826">vs_dc_enable</a> (from Display Controller Driver)</p>
+<ul>
+<li>
+<p>dc_vout_clk_enable</p>
+</li>
+<li>
+<p>vs_dc8200_reset_deassert</p>
+</li>
+<li>
+<p>clk_prepare_enable(dc-&gt;vout_top_lcd);</p>
+</li>
+<li>
+<p>regmap_update_bits(dc-&gt;dss_regmap, 0x4, BIT(20), 1&lt;&lt;20);</p>
+</li>
+<li>
+<p>regmap_update_bits(dc-&gt;dss_regmap, 0x8, BIT(3), 1&lt;&lt;3);</p>
+</li>
+<li>
+<p>dc_hw_init</p>
+</li>
+</ul>
+<div class="example-wrap"><pre class="language-c"><code>	display.bus_format = crtc_state-&gt;output_fmt;
+	display.h_active = mode-&gt;hdisplay;
+	display.h_total = mode-&gt;htotal;
+	display.h_sync_start = mode-&gt;hsync_start;
+	display.h_sync_end = mode-&gt;hsync_end;
+	if (mode-&gt;flags &amp; DRM_MODE_FLAG_PHSYNC)
+		display.h_sync_polarity = true;
+	else
+		display.h_sync_polarity = false;
+
+	display.v_active = mode-&gt;vdisplay;
+	display.v_total = mode-&gt;vtotal;
+
+	if (crtc_state-&gt;encoder_type == DRM_MODE_ENCODER_DSI){
+		display.v_sync_start = mode-&gt;vsync_start + 1;
+		display.v_sync_end = mode-&gt;vsync_end - 1;
+	}else{
+		display.v_sync_start = mode-&gt;vsync_start;
+		display.v_sync_end = mode-&gt;vsync_end;
+	}
+
+	if (mode-&gt;flags &amp; DRM_MODE_FLAG_PVSYNC)
+		display.v_sync_polarity = true;
+	else
+		display.v_sync_polarity = false;
+
+	display.sync_mode = crtc_state-&gt;sync_mode;
+	display.bg_color = crtc_state-&gt;bg_color;
+
+	display.id = to_vs_display_id(dc, crtc);
+	display.sync_enable = crtc_state-&gt;sync_enable;
+	display.dither_enable = crtc_state-&gt;dither_enable;
+</code></pre></div><div class="example-wrap"><pre class="language-c"><code>	if(display.id == 1)
+	{
+    // MIPI DSI
+		clk_set_rate(dc-&gt;dc8200_pix0, mode-&gt;clock * 1000);
+		clk_set_parent(dc-&gt;dc8200_clk_pix1, dc-&gt;dc8200_pix0);
+		clk_set_parent(dc-&gt;vout_top_lcd, dc-&gt;dc8200_clk_pix1_out);
+	}else{
+    // HDMI
+		clk_set_parent(dc-&gt;dc8200_clk_pix0, dc-&gt;hdmitx0_pixelclk);
+	}
+</code></pre></div>
+<ul>
+<li>dc_hw_setup_display</li>
 </ul>
 <h1 id="appendix-jh7110-hdmi-controller"><a href="#appendix-jh7110-hdmi-controller">13 Appendix: JH7110 HDMI Controller</a></h1>
 <p>TODO</p>
