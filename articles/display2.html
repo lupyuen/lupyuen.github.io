@@ -539,54 +539,42 @@ static const struct vs_crtc_funcs dc_crtc_funcs = {
 };
 </code></pre></div>
 <p><em>How do we create a Display Pipeline?</em></p>
-<p>From above, we see that the Display Pipeline is created in…</p>
+<p>From above, we see that DRM <strong>creates the Display Pipeline</strong> by calling our Display Controller Driver at…</p>
 <ul>
-<li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826"><strong>vs_dc_enable</strong></a> from our Display Controller Driver, which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487"><strong>dc_hw_setup_display</strong></a> from our Display Hardware Driver</p>
-</li>
+<li><a href="https://lupyuen.github.io/articles/display2#vs_dc_enable"><strong>vs_dc_enable</strong></a>, to prepare the Clock and Reset Signals</li>
 </ul>
-<p><a href="https://lupyuen.github.io/articles/display2#vs_dc_enable">(<strong>vs_dc_enable</strong> also prepares the Clock and Reset Signals)</a></p>
-<p>TODO: Display Hardware</p>
-<p>Display Hardware Functions:</p>
-<div class="example-wrap"><pre class="language-c"><code>static const struct dc_hw_funcs hw_func = {
-  .gamma   = &amp;gamma_ex_commit,
-  .plane   = &amp;plane_ex_commit,
-  .display = setup_display_ex,
-};
-</code></pre></div>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2032-L2036">(Source)</a></p>
-<p>Setup Display (Upper Level): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487">dc_hw_setup_display</a></p>
+<p>Which calls…</p>
 <ul>
-<li>Copy Display Struct</li>
-<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1971-L2030">setup_display_ex</a></li>
+<li><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487"><strong>dc_hw_setup_display</strong></a>, from our Display Hardware Driver</li>
 </ul>
-<p>Setup Display (Extended): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1971-L2030">setup_display_ex</a></p>
-<ul>
-<li>Set Colour Format</li>
-<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1865-L1969">setup_display</a></li>
-</ul>
-<p>Setup Display (Lower Level): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1865-L1969">setup_display</a></p>
-<ul>
-<li>Set DPI Config</li>
-<li>Disable Display Panel</li>
-<li>Set Display Horizontal Resolution</li>
-<li>Set Display Horizontal Sync</li>
-<li>Set Display Vertical Resolution</li>
-<li>Set Display Vertical Resolution Sync</li>
-<li>Configure Framebuffer Sync Mode</li>
-<li>Set Framebuffer Background Colour</li>
-<li>Set Display Dither</li>
-<li>Enable Display Panel</li>
-<li>Set Overlay Config</li>
-<li>Set Cursor Config</li>
-</ul>
-<p>TODO</p>
-<p>Enable Display Pipeline <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826">vs_dc_enable</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276">vs_crtc_atomic_enable</a></p>
-<p>Which is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L1323-L1408">drm_atomic_helper</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
+<p><em>What’s inside dc_hw_setup_display?</em></p>
+<p>Inside our Display Hardware Driver, <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487"><strong>dc_hw_setup_display</strong></a> will…</p>
+<ol>
+<li>Copy the <strong>Display Struct</strong></li>
+<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1971-L2030"><strong>setup_display_ex</strong></a></li>
+</ol>
+<p>Then <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1971-L2030"><strong>setup_display_ex</strong></a> will…</p>
+<ol>
+<li>Set the <strong>Colour Format</strong></li>
+<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1865-L1969"><strong>setup_display</strong></a></li>
+</ol>
+<p>Finally <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1865-L1969"><strong>setup_display</strong></a> will do most of the work…</p>
+<ol>
+<li>Set the <strong>DPI Config</strong></li>
+<li>Disable the <strong>Display Panel</strong></li>
+<li>Set the <strong>Horizontal Resolution and Sync</strong></li>
+<li>Set the <strong>Vertical Resolution and Sync</strong></li>
+<li>Configure the <strong>Framebuffer Sync Mode</strong></li>
+<li>Set the <strong>Framebuffer Background Colour</strong></li>
+<li>Set the <strong>Display Dither</strong></li>
+<li>Enable the <strong>Display Panel</strong></li>
+<li>Set the <strong>Overlay Configuration</strong></li>
+<li>Set the <strong>Cursor Configuration</strong></li>
+</ol>
+<p><em>Who creates the Display Pipeline?</em></p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826"><strong>vs_dc_enable</strong></a> (from above) is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276"><strong>vs_crtc_atomic_enable</strong></a>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// DC8200 Display Pipeline Helper Functions
+static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
   .mode_fixup     = vs_crtc_mode_fixup,
   .atomic_enable  = vs_crtc_atomic_enable,
   .atomic_disable = vs_crtc_atomic_disable,
@@ -595,7 +583,12 @@ static const struct vs_crtc_funcs dc_crtc_funcs = {
 };
 </code></pre></div>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L338-L344">(Source)</a></p>
+<p>Which is called by the Linux <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L1323-L1408"><strong>DRM Atomic Helper</strong></a>.</p>
+<p><a href="https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display">(More about <strong>Atomic Display</strong>)</a></p>
+<p>And that’s how we create a Display Pipeline! Now we commit the Display Pipeline…</p>
 <h1 id="commit-display-pipeline"><a href="#commit-display-pipeline">8 Commit Display Pipeline</a></h1>
+<p><em>Why will we Commit a Display Pipeline?</em></p>
+<p>A Display Pipeline won’t do anything… Until we <strong>Commit the Display Pipeline</strong>!</p>
 <p>TODO: Display Controller</p>
 <p>Commit Display Pipeline is here…</p>
 <ul>
