@@ -625,10 +625,9 @@ static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
 <li>Set the <strong>ROI</strong></li>
 </ol>
 <p><em>Who Commits the Display Pipeline?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863">plane_ex_commit</a> and <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574">gamma_ex_commit</a> are called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076">dc_hw_commit</a></p>
-<p>Commit Display Pipeline <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1381-L1398">vs_dc_commit</a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L320-L336">vs_crtc_atomic_flush</a></p>
-<p>Which is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570">drm_atomic_helper</a></p>
+<p>To Commit the Display Pipeline, <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1381-L1398"><strong>vs_dc_commit</strong></a> is called by <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L320-L336"><strong>vs_crtc_atomic_flush</strong></a>…</p>
+<p>Which is called by the Linux <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570"><strong>DRM Atomic Helper</strong></a>.</p>
+<p><a href="https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display">(More about <strong>Atomic Display</strong>)</a></p>
 <h1 id="update-display-plane"><a href="#update-display-plane">9 Update Display Plane</a></h1>
 <p>TODO: Display Controller</p>
 <p>These are the exposed functions for the Display Plane…</p>
