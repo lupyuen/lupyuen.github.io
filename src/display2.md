@@ -644,11 +644,9 @@ To update the Display Plane, the Linux Direct Rendering Manager (DRM) calls our 
 
 Which calls...
 
-- [__update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196) (Update Plane)
-
-- [__update_qos__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1198-L1220) (Update QoS) 
-  
-- [__update_cursor_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1241-L1260) (Update Cursor Plane)
+1.  [__update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196) (Update Plane)
+1.  [__update_qos__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1198-L1220) (Update QoS) 
+1.  [__update_cursor_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1241-L1260) (Update Cursor Plane)
 
 _What's inside update_plane?_
 
@@ -684,7 +682,7 @@ const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
 
 [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L314-L318)
 
-Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570)
+Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570).
 
 [(More about __DRM Atomic Display__)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display)
 
@@ -732,42 +730,25 @@ TODO
 
 [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573)
 
-- dc_init
-- vs_drm_iommu_attach_device: 
+1.  Call dc_init
 
-  Attach I/O MMU Device
+1.  Attach I/O MMU Device
 
-- For Each Panel: vs_crtc_create: 
+1.  For Each Panel: Create Display Pipeline
 
-  Create Display Pipeline
+1.  For Each Plane: Create Display Plane
 
-- For Each Plane: vs_plane_create: 
+1.  Update Pitch Alignment
 
-  Create Display Plane
+1.  Disable Clock vout_top_lcd
 
-- vs_drm_update_pitch_alignment: 
+1.  Assert DC8200 Reset
 
-  Update Pitch Alignment
+1.  Disable DC8200 Clock
 
-- clk_disable_unprepare(vout_top_lcd): 
+1.  Disable Clock v_out_top
 
-  Disable Clock vout_top_lcd (clk_dom_vout_top_lcd_clk?)
-
-- dc8200 asrt: vs_dc8200_reset_assert: 
-
-  Assert DC8200 Reset
-
-- dc8200 clk disable: vs_dc_dc8200_clock_disable: 
-
-  Disable DC8200 Clock
-
-- vouttop clk disable: vs_dc_vouttop_clock_disable: 
-
-  Disable Clock vouttop
-
-- vout clk disable: vs_dc_clock_disable: 
-
-  Disable DC Clock vout
+1.  Disable Clock DC vout
 
 ## dc_init
 
@@ -775,242 +756,60 @@ TODO
 
 [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722)
 
-- dc_vout_clk_enable: 
+1.  Enable Clock dc_vout_clk
 
-  Enable Clock dc_vout_clk
+1.  Deassert DC8200 Reset
 
-- vs_dc8200_reset_deassert: 
+1.  Enable Clock vout_top_lcd
 
-  Deassert DC8200 Reset
+1.  Deassert vout_reset
 
-- clk_prepare_enable(vout_top_lcd): 
+1.  Update the DSS Registers with this Mystery Code:
 
-  Enable Clock vout_top_lcd
+    ```c
+    #ifdef CONFIG_DRM_I2C_NXP_TDA998X
+      // tda998x-rgb2hdmi. For HDMI only?
+      regmap_update_bits(dc->dss_regmap, 0x4, BIT(20), 1<<20);
+    #endif
 
-- vs_vout_reset_deassert: 
+    #ifdef CONFIG_STARFIVE_DSI
+      // For DSI only?
+      regmap_update_bits(dc->dss_regmap, 0x8, BIT(3), 1<<3);
+    #endif
+    ```
 
-  Deassert vout_reset
-
-- mystery code:
-
-  ```c
-  #ifdef CONFIG_DRM_I2C_NXP_TDA998X//tda998x-rgb2hdmi
-    regmap_update_bits(dc->dss_regmap, 0x4, BIT(20), 1<<20);
-  #endif
-
-  #ifdef CONFIG_STARFIVE_DSI
-    regmap_update_bits(dc->dss_regmap, 0x8, BIT(3), 1<<3);
-  #endif
-  ```
-
-- dc_hw_init
+1.  Call dc_hw_init
 
 ## vs_dc_enable
 
 TODO
 
-[vs_dc_enable](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826) (from Display Controller Driver)
+[vs_dc_enable](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827) (from Display Controller Driver)
 
-- dc_vout_clk_enable
+1.  Enable Clock dc_vout_clk
 
-- vs_dc8200_reset_deassert
+1.  Deassert DC8200 Reset
 
-- clk_prepare_enable(dc->vout_top_lcd);
+1.  Enable Clock vout_top_lcd
 
-- regmap_update_bits(dc->dss_regmap, 0x4, BIT(20), 1<<20);
+1.  Update the DSS Registers with this Mystery Code:
 
-- regmap_update_bits(dc->dss_regmap, 0x8, BIT(3), 1<<3);
+    ```c
+    regmap_update_bits(dc->dss_regmap, 0x4, BIT(20), 1<<20);
+    regmap_update_bits(dc->dss_regmap, 0x8, BIT(3), 1<<3);
+    ```
 
-- dc_hw_init
+    (Similar to dc_init)
 
-```c
-	display.bus_format = crtc_state->output_fmt;
-	display.h_active = mode->hdisplay;
-	display.h_total = mode->htotal;
-	display.h_sync_start = mode->hsync_start;
-	display.h_sync_end = mode->hsync_end;
-	if (mode->flags & DRM_MODE_FLAG_PHSYNC)
-		display.h_sync_polarity = true;
-	else
-		display.h_sync_polarity = false;
+1.  Call dc_hw_init
 
-	display.v_active = mode->vdisplay;
-	display.v_total = mode->vtotal;
+1.  Set the Display Struct: Bus Format, Horz Sync, Vert Sync, Sync Mode, Background Colour, Sync Enable and Dither Enable
 
-	if (crtc_state->encoder_type == DRM_MODE_ENCODER_DSI){
-		display.v_sync_start = mode->vsync_start + 1;
-		display.v_sync_end = mode->vsync_end - 1;
-	}else{
-		display.v_sync_start = mode->vsync_start;
-		display.v_sync_end = mode->vsync_end;
-	}
+1.  If Display is MIPI DSI: Set the Clock Rate for dc8200_pix0, dc8200_clk_pix1 and vout_top_lcd
 
-	if (mode->flags & DRM_MODE_FLAG_PVSYNC)
-		display.v_sync_polarity = true;
-	else
-		display.v_sync_polarity = false;
+1.  If Display is HDMI: Set the Clock hdmitx0_pixelclk
 
-	display.sync_mode = crtc_state->sync_mode;
-	display.bg_color = crtc_state->bg_color;
-
-	display.id = to_vs_display_id(dc, crtc);
-	display.sync_enable = crtc_state->sync_enable;
-	display.dither_enable = crtc_state->dither_enable;
-```
-
-```c
-	if(display.id == 1)
-	{
-    // MIPI DSI
-		clk_set_rate(dc->dc8200_pix0, mode->clock * 1000);
-		clk_set_parent(dc->dc8200_clk_pix1, dc->dc8200_pix0);
-		clk_set_parent(dc->vout_top_lcd, dc->dc8200_clk_pix1_out);
-	}else{
-    // HDMI
-		clk_set_parent(dc->dc8200_clk_pix0, dc->hdmitx0_pixelclk);
-	}
-```
-
-- dc_hw_setup_display
-
-# Appendix: JH7110 HDMI Controller
-
-TODO
-
-The HDMI Controller for JH7110 is [Inno HDMI 2.0 Transmitter For TSMC28HPC+](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/detail_info_display.html).
-
-HDMI I2C Encoder in JH7110 is the [NXP Semiconductors TDA998X HDMI Encoder](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/kernel_menu_config_diplay.html)
-
-Based on [JH7110 HDMI Developing Guide](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/source_code_structure_hdmi.html), the Linux Drivers for JH7110 HDMI (VeriSilicon Inno HDMI) are...
-
-- [inno_hdmi.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c)
-
-- [inno_hdmi.h](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.h)
-
-The [Linux Device Tree](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/device_tree_hdmi.html) looks like...
-
-```text
-hdmi: hdmi@29590000 {
-    compatible = "starfive,jh7100-hdmi","inno,hdmi";
-      reg = <0x0 0x29590000 0x0 0x4000>;
-      interrupts = <99>;
-      status = "disabled";
-      clocks = <&clkvout JH7110_U0_HDMI_TX_CLK_SYS>,
-        <&clkvout JH7110_U0_HDMI_TX_CLK_MCLK>,
-        <&clkvout JH7110_U0_HDMI_TX_CLK_BCLK>,
-        <&hdmitx0_pixelclk>;
-      clock-names = "sysclk", "mclk","bclk","pclk";
-      resets = <&rstgen RSTN_U0_HDMI_TX_HDMI>;
-      reset-names = "hdmi_tx";
-    };
-...
-&hdmi {
-  status = "okay";
-  pinctrl-names = "default";
-  pinctrl-0 = <&inno_hdmi_pins>;
-
-  hdmi_in: port {
-    #address-cells = <1>;
-    #size-cells = <0>;
-    hdmi_in_lcdc: endpoint@0 {
-      reg = <0>;
-      remote-endpoint = <&dc_out_dpi1>;
-    };
-  };
-};
-```
-
-[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/device_tree_hdmi.html)
-
-We see the [HDMI Initialization Process](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/initialization_process.html)...
-
-![HDMI Initialization Process](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/Image/JH7110_SDK/HDMI_Init.svg)
-
-[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/initialization_process.html)
-
-And the [HDMI Plug and Unplug Process](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/plug_n_unplug_process.html)...
-
-![HDMI Plug and Unplug Process](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/Image/JH7110_SDK/HDMI_Pug_Unplug.svg)
-
-[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_HDMI/JH7110_SDK/plug_n_unplug_process.html)
-
-# Appendix: JH7110 HDMI Testing
-
-TODO
-
-_How will we test the HDMI Display for Star64 JH7110?_
-
-We run the [`modetest` command to test HDMI](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/test_example_display.html)...
-
-```bash
-modetest \
-  -M starfive \
-  -D 0 \
-  -a \
-  -s 116@31:1920x1080 \
-  -P 39@31:1920x1080@RG16 \
-  -Ftiles 
-```
-
-[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/test_example_display.html)
-
-`116@31:1920x1080` means `<Connector ID>@<CRTC ID>: <Resolution>`
-
-`39@31:1920x1080@RG16` means `<Plane ID>@<CRTC ID>: <Resolution>@<Format>`
-
-[(CRTC "CRT Controller" refers to the Display Pipeline)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#KMS_device_model)
-
-See also...
-
-- [Before Debug](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/before_debug.html)
-
-- [Debug Display](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/debug_hdmi.html)
-
-TODO: What's inside the modetest app? [modetest.c](https://gitlab.freedesktop.org/mesa/drm/-/blob/main/tests/modetest/modetest.c)
-
-TODO: What parameters does modetest pass to the DC8200 Driver?
-
-TODO: Can we create a simpler modetest for our own testing on NuttX?
-
-# Appendix: JH7110 LCD Panel Configuration
-
-TODO
-
-Also in the JH7110 Display Docs: How to connect an LCD Panel to JH7110.
-
-JH7110's MIPI DSI Controller is [Cadence MIPI DSI v1.3.1 TX Controller IP (DSITX)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html)...
-
-![Cadence MIPI DSI v1.3.1 TX Controller IP (DSITX)](https://lupyuen.github.io/images/display2-ic_spec.png)
-
-[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html)
-
-JH7110's MIPI DPHY Controller is [MIPI DPHY M31 (M31DPHYRX611TL028D_00151501)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html)...
-
-![MIPI DPHY M31 (M31DPHYRX611TL028D_00151501)](https://lupyuen.github.io/images/display2-MIPI_DPHY_M31.png)
-
-[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/ic_specification_lcd.html)
-
-Refer to the...
-
-- [Linux Display Driver](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/display_driver_locations_lcd.html)
-
-- [Linux Device Tree](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/device_tree_configuration_lcd.html)
-
-See also the Sample LCD Panel Code for Seeed LCD Panel...
-
-- [Enable LCD](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/enable_lcd.html)
-
-- [Disable LCD](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/disable_lcd.html)
-
-- [Obtain LCD Information](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/obtain_lcd_information.html)
-
-Here's the [LCD Initialisation Process](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/initalization_lcd.html)
-
-![LCD Initialisation Process](https://doc-en.rvspace.org/VisionFive2/DG_LCD/Image/JH7110_SDK/LCD_Init.svg)
-
-[(Source)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/initalization_lcd.html)
-
-And the [MIPI Parameter Configuration](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/mipi_configuration.html) for 1C2L (2-lane MIPI DSI) and 1C4L (4-lane MIPI DSI).
+1.  Call dc_hw_setup_display
 
 # Appendix: DC8200 Framebuffer Driver
 
@@ -1037,160 +836,3 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 [vs_get_format_info](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L155-L164) is called by [drm_fourcc](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_fourcc.c#L302-L325)
 
 Framebuffer Formats: [vs_formats](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L134-L139)
-
-# Appendix: DC8200 Virtual Display Driver
-
-TODO
-
-```c
-static const struct drm_connector_helper_funcs vd_connector_helper_funcs = {
-  .get_modes    = vd_get_modes,
-  .mode_valid   = vd_mode_valid,
-  .best_encoder = vd_best_encoder,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L197-L201)
-
-Display Resolutions: [vd_get_modes](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L153-L181)
-
-```c
-static const struct drm_connector_funcs vd_connector_funcs = {
-  .fill_modes = drm_helper_probe_single_connector_modes,
-  .destroy    = vd_connector_destroy,
-  .detect     = vd_connector_detect,
-  .atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
-  .atomic_destroy_state   = drm_atomic_helper_connector_destroy_state,
-  .reset = drm_atomic_helper_connector_reset,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L215-L222)
-
-```c
-const struct component_ops vd_component_ops = {
-  .bind   = vd_bind,
-  .unbind = vd_unbind,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L311-L314)
-
-```c
-// name = "vs-virtual-display"
-struct platform_driver virtual_display_platform_driver = {
-  .probe  = vd_probe,
-  .remove = vd_remove,
-  ...
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c#L353-L360)
-
-Display Pipelines:
-
-```c
-static const struct drm_crtc_funcs vs_crtc_funcs = {
-  .set_config = drm_atomic_helper_set_config,
-  .destroy    = vs_crtc_destroy,
-  .page_flip  = drm_atomic_helper_page_flip,
-  .reset      = vs_crtc_reset,
-  .atomic_duplicate_state = vs_crtc_atomic_duplicate_state,
-  .atomic_destroy_state   = vs_crtc_atomic_destroy_state,
-  .atomic_set_property    = vs_crtc_atomic_set_property,
-  .atomic_get_property    = vs_crtc_atomic_get_property,
-  //.gamma_set    = drm_atomic_helper_legacy_gamma_set,
-  .late_register  = vs_crtc_late_register,
-  .enable_vblank  = vs_crtc_enable_vblank,
-  .disable_vblank = vs_crtc_disable_vblank,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L207-L220)
-
-Simple Encoder Driver:
-
-```c
-// name = "vs-simple-encoder"
-struct platform_driver simple_encoder_driver = {
-  .probe  = encoder_probe,
-  .remove = encoder_remove,
-  ...
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c#L300-L307)
-
-# Appendix: Inno HDMI Controller Driver
-
-TODO
-
-
-```c
-// name = "innohdmi-starfive"
-struct platform_driver inno_hdmi_driver = {
-  .probe  = inno_hdmi_probe,
-  .remove = inno_hdmi_remove,
-  ...
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c#L1155-L1163)
-
-```c
-static const struct drm_encoder_helper_funcs inno_hdmi_encoder_helper_funcs = {
-  .enable     = inno_hdmi_encoder_enable,
-  .disable    = inno_hdmi_encoder_disable,
-  .mode_fixup = inno_hdmi_encoder_mode_fixup,
-  .mode_set   = inno_hdmi_encoder_mode_set,
-  .atomic_check = inno_hdmi_encoder_atomic_check,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c#L651-L657)
-
-MIPI DSI:
-
-```c
-// name = "dw-mipi-dsi"
-struct platform_driver dw_mipi_dsi_driver = {
-  .probe  = dsi_probe,
-  .remove = dsi_remove,
-  ...
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L1066-L1073)
-
-```c
-// name = "cdns-dsi"
-static struct platform_driver cdns_dsi_platform_driver = {
-  .probe  = cdns_dsi_drm_probe,
-  .remove = cdns_dsi_drm_remove,
-  ...
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/starfive_drm_dsi.c#L1679-L1687)
-
-```c
-static const struct component_ops dsi_component_ops = {
-  .bind   = dsi_bind,
-  .unbind = dsi_unbind,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L998-L1001)
-
-```c
-static const struct drm_bridge_funcs dw_mipi_dsi_bridge_funcs = {
-  .mode_set  = bridge_mode_set,
-  .enable    = bridge_enable,
-  .post_disable = bridge_post_disable,
-  .attach     = bridge_attach,
-  .mode_fixup = bridge_mode_fixup,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/dw_mipi_dsi.c#L869-L875)
-
