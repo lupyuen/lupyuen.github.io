@@ -566,7 +566,7 @@ Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive
 
 (We'll see __vs_crtc_atomic_flush__ in the next section)
 
-[(More about __Atomic Display__)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display)
+[(More about __DRM Atomic Display__)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display)
 
 And that's how we create a Display Pipeline! Now we commit the Display Pipeline...
 
@@ -616,7 +616,7 @@ To Commit the Display Pipeline, [__vs_dc_commit__](https://github.com/starfive-t
 
 Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570).
 
-[(More about __Atomic Display__)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display)
+[(More about __DRM Atomic Display__)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display)
 
 TODO: Pic of Update Display Plane
 
@@ -630,6 +630,7 @@ Our Display Controller Driver exposes these __Display Plane Functions__:
 [vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1410-L1414)
 
 ```c
+// Display Plane Functions for DC8200
 static const struct vs_plane_funcs dc_plane_funcs = {
   .update  = vs_dc_update_plane,
   .disable = vs_dc_disable_plane,
@@ -639,13 +640,19 @@ static const struct vs_plane_funcs dc_plane_funcs = {
 
 To update the Display Plane, the Linux Direct Rendering Manager (DRM) calls our Display Controller Driver at...
 
-- [__vs_dc_update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280), which calls...
+- [__vs_dc_update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280)
 
-- [__update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196), [__update_qos__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1198-L1220) and [__update_cursor_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1241-L1260)
+Which calls...
+
+- [__update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196) (Update Plane)
+
+- [__update_qos__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1198-L1220) (Update QoS) 
+  
+- [__update_cursor_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1241-L1260) (Update Cursor Plane)
 
 _What's inside update_plane?_
 
-[__update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196) (from our Display Controller Driver) will...
+[__update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196) (from our Display Controller Driver) will update the Display Plane...
 
 1.  Call [__update_fb__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L973-L1014) to set the __Framebuffer Addresses__
 1.  Call [__update_roi__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1097-L1127) to set the __ROI__
@@ -664,13 +671,10 @@ Then [__dc_hw_update_plane__](https://github.com/starfive-tech/linux/blob/JH7110
 
 _Who calls our driver to update the Display Plane?_
 
-TODO
-
-Update Display Plane [vs_dc_update_plane](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280) is called by [vs_plane_atomic_update](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L268-L301)
-
-Which is called by [drm_atomic_helper](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570)
+To update the Display Plane, [__vs_dc_update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280) is called by [__vs_plane_atomic_update__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L268-L301)...
 
 ```c
+// DC8200 Display Plane Helper Functions
 const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
   .atomic_check   = vs_plane_atomic_check,
   .atomic_update  = vs_plane_atomic_update,
@@ -680,31 +684,9 @@ const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
 
 [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L314-L318)
 
-# DC8200 Framebuffer Driver
+Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570)
 
-TODO
-
-At startup, [vs_drm_bind](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271) calls [vs_mode_config_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191) to register the Framebuffer Driver: [vs_mode_config_funcs](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172).
-
-Which is defined as...
-
-```c
-static const struct drm_mode_config_funcs vs_mode_config_funcs = {
-  .fb_create       = vs_fb_create,
-  .get_format_info = vs_get_format_info,
-  .output_poll_changed = drm_fb_helper_output_poll_changed,
-  .atomic_check    = drm_atomic_helper_check,
-  .atomic_commit   = drm_atomic_helper_commit,
-};
-```
-
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172)
-
-[vs_fb_create](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L60-L123) is called by [drm_framebuffer](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_framebuffer.c#L286-L329)
-
-[vs_get_format_info](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L155-L164) is called by [drm_fourcc](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_fourcc.c#L302-L325)
-
-Framebuffer Formats: [vs_formats](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L134-L139)
+[(More about __DRM Atomic Display__)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display)
 
 # What's Next
 
@@ -1029,6 +1011,32 @@ Here's the [LCD Initialisation Process](https://doc-en.rvspace.org/VisionFive2/D
 [(Source)](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/initalization_lcd.html)
 
 And the [MIPI Parameter Configuration](https://doc-en.rvspace.org/VisionFive2/DG_LCD/JH7110_SDK/mipi_configuration.html) for 1C2L (2-lane MIPI DSI) and 1C4L (4-lane MIPI DSI).
+
+# Appendix: DC8200 Framebuffer Driver
+
+TODO
+
+At startup, [vs_drm_bind](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271) calls [vs_mode_config_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191) to register the Framebuffer Driver: [vs_mode_config_funcs](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172).
+
+Which is defined as...
+
+```c
+static const struct drm_mode_config_funcs vs_mode_config_funcs = {
+  .fb_create       = vs_fb_create,
+  .get_format_info = vs_get_format_info,
+  .output_poll_changed = drm_fb_helper_output_poll_changed,
+  .atomic_check    = drm_atomic_helper_check,
+  .atomic_commit   = drm_atomic_helper_commit,
+};
+```
+
+[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172)
+
+[vs_fb_create](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L60-L123) is called by [drm_framebuffer](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_framebuffer.c#L286-L329)
+
+[vs_get_format_info](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L155-L164) is called by [drm_fourcc](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_fourcc.c#L302-L325)
+
+Framebuffer Formats: [vs_formats](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L134-L139)
 
 # Appendix: DC8200 Virtual Display Driver
 
