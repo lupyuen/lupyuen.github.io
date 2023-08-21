@@ -570,6 +570,8 @@ Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive
 
 And that's how we create a Display Pipeline! Now we commit the Display Pipeline...
 
+TODO: Pic of Commit Display Pipeline
+
 # Commit Display Pipeline
 
 _Why will we Commit a Display Pipeline?_
@@ -616,11 +618,16 @@ Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive
 
 [(More about __Atomic Display__)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display)
 
+TODO: Pic of Update Display Plane
+
 # Update Display Plane
 
-TODO: Display Controller
+One last thing for today: How to __Update the Display Plane__.
 
-These are the exposed functions for the Display Plane...
+(Remember a Display Plane is a __Layer of Pixels__ that will be blended into the final image by a Display Pipeline)
+
+Our Display Controller Driver exposes these __Display Plane Functions__: 
+[vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1410-L1414)
 
 ```c
 static const struct vs_plane_funcs dc_plane_funcs = {
@@ -630,15 +637,37 @@ static const struct vs_plane_funcs dc_plane_funcs = {
 };
 ```
 
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1410-L1414)
+To update the Display Plane, the Linux Direct Rendering Manager (DRM) calls our Display Controller Driver at...
 
-Update Display Plane is here...
+- [__vs_dc_update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280), which calls...
 
-- [vs_dc_update_plane](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280), which calls...
+- [__update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196), which calls...
 
-- [update_plane](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196), which calls...
+- [__dc_hw_update_plane__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399)
 
-- [dc_hw_update_plane](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399)
+TODO: __vs_dc_update_plane__ calls update_qos and update_cursor_plane
+
+TODO: update_plane calls update_fb, update_roi, update_scale, update_degamma
+
+Set Start and End Position
+
+Set Blending Alpha and Mode
+
+update_color_mgmt
+
+dc_hw_update_plane
+
+TODO: Display Hardware
+
+Update Display Plane: [dc_hw_update_plane](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399)
+- Copy Framebuffer
+- Copy Scale
+- Copy Position
+- Copy Blend
+
+_Who calls our driver to update the Display Plane?_
+
+TODO
 
 Update Display Plane [vs_dc_update_plane](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1262-L1280) is called by [vs_plane_atomic_update](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L268-L301)
 
@@ -653,14 +682,6 @@ const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
 ```
 
 [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c#L314-L318)
-
-TODO: Display Hardware
-
-Update Display Plane: [dc_hw_update_plane](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399)
-- Copy Framebuffer
-- Copy Scale
-- Copy Position
-- Copy Blend
 
 # DC8200 Framebuffer Driver
 
