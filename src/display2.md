@@ -748,7 +748,7 @@ Framebuffer Formats: [vs_formats](https://github.com/starfive-tech/linux/blob/JH
 
 # Appendix: JH7110 Display Clock and Reset
 
-TODO
+TODO: Reconcile the Clock and Reset Names
 
 [DOM VOUT CRG](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html)
 
