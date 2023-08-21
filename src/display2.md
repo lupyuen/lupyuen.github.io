@@ -547,7 +547,7 @@ Finally [__setup_display__](https://github.com/starfive-tech/linux/blob/JH7110_V
 
 _Who creates the Display Pipeline?_
 
-[__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826) (from above) is called by [__vs_crtc_atomic_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276)...
+To create the Display Pipeline, [__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826) (from above) is called by [__vs_crtc_atomic_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276)...
 
 ```c
 // DC8200 Display Pipeline Helper Functions
@@ -563,6 +563,8 @@ static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
 [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L338-L344)
 
 Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L1323-L1408).
+
+(We'll see __vs_crtc_atomic_flush__ in the next section)
 
 [(More about __Atomic Display__)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display)
 
