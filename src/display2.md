@@ -515,57 +515,42 @@ static const struct vs_crtc_funcs dc_crtc_funcs = {
 
 _How do we create a Display Pipeline?_
 
-From above, we see that the Display Pipeline is created in...
+From above, we see that DRM __creates the Display Pipeline__ by calling our Display Controller Driver at...
 
-- [__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826) from our Display Controller Driver, which calls...
+- [__vs_dc_enable__](https://lupyuen.github.io/articles/display2#vs_dc_enable), to prepare the Clock and Reset Signals
 
-- [__dc_hw_setup_display__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487) from our Display Hardware Driver
+Which calls...
 
-[(__vs_dc_enable__ also prepares the Clock and Reset Signals)](https://lupyuen.github.io/articles/display2#vs_dc_enable)
+- [__dc_hw_setup_display__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487), from our Display Hardware Driver
 
-TODO: Display Hardware
+_What's inside dc_hw_setup_display?_
 
-Display Hardware Functions:
+Inside our Display Hardware Driver, [__dc_hw_setup_display__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487) will...
+1.  Copy the __Display Struct__
+1.  Call [__setup_display_ex__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1971-L2030)
 
-```c
-static const struct dc_hw_funcs hw_func = {
-  .gamma   = &gamma_ex_commit,
-  .plane   = &plane_ex_commit,
-  .display = setup_display_ex,
-};
-```
+Then [__setup_display_ex__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1971-L2030) will...
+1.  Set the __Colour Format__
+1.  Call [__setup_display__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1865-L1969)
 
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2032-L2036)
+Finally [__setup_display__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1865-L1969) will do most of the work...
+1.  Set the __DPI Config__
+1.  Disable the __Display Panel__
+1.  Set the __Horizontal Resolution and Sync__
+1.  Set the __Vertical Resolution and Sync__
+1.  Configure the __Framebuffer Sync Mode__
+1.  Set the __Framebuffer Background Colour__
+1.  Set the __Display Dither__
+1.  Enable the __Display Panel__
+1.  Set the __Overlay Configuration__
+1.  Set the __Cursor Configuration__
 
-Setup Display (Upper Level): [dc_hw_setup_display](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487)
-- Copy Display Struct
-- Call [setup_display_ex](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1971-L2030)
+_Who creates the Display Pipeline?_
 
-Setup Display (Extended): [setup_display_ex](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1971-L2030)
-- Set Colour Format
-- Call [setup_display](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1865-L1969)
-
-Setup Display (Lower Level): [setup_display](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1865-L1969)
-- Set DPI Config
-- Disable Display Panel
-- Set Display Horizontal Resolution
-- Set Display Horizontal Sync
-- Set Display Vertical Resolution
-- Set Display Vertical Resolution Sync
-- Configure Framebuffer Sync Mode
-- Set Framebuffer Background Colour
-- Set Display Dither
-- Enable Display Panel
-- Set Overlay Config
-- Set Cursor Config
-
-TODO
-
-Enable Display Pipeline [vs_dc_enable](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826) is called by [vs_crtc_atomic_enable](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276)
-
-Which is called by [drm_atomic_helper](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L1323-L1408)
+[__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L826) (from above) is called by [__vs_crtc_atomic_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L265-L276)...
 
 ```c
+// DC8200 Display Pipeline Helper Functions
 static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
   .mode_fixup     = vs_crtc_mode_fixup,
   .atomic_enable  = vs_crtc_atomic_enable,
@@ -577,7 +562,17 @@ static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
 
 [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c#L338-L344)
 
+Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L1323-L1408).
+
+[(More about __Atomic Display__)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display)
+
+And that's how we create a Display Pipeline! Now we commit the Display Pipeline...
+
 # Commit Display Pipeline
+
+_Why will we Commit a Display Pipeline?_
+
+A Display Pipeline won't do anything... Until we __Commit the Display Pipeline__!
 
 TODO: Display Controller
 
