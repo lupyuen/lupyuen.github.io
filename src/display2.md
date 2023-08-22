@@ -1,6 +1,6 @@
 # RISC-V Star64 JH7110: Inside the Display Controller
 
-📝 _16 Aug 2023_
+📝 _26 Aug 2023_
 
 ![Display Driver for StarFive JH7110 SoC](https://lupyuen.github.io/images/display2-title.jpg)
 
@@ -515,7 +515,7 @@ static const struct vs_crtc_funcs dc_crtc_funcs = {
 
 _How do we create a Display Pipeline?_
 
-From above, we see that DRM __creates the Display Pipeline__ by calling our Display Controller Driver at (pic above)...
+From above, we see that DRM __creates the Display Pipeline__ (pic above) by calling our Display Controller Driver at...
 
 - [__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827), to prepare the Clock and Reset Signals
 
@@ -748,7 +748,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/display2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display2.md)
 
-![DC8200 Framebuffer Driver](https://lupyuen.github.io/images/jh7110-display7.jpg)
+> ![DC8200 Framebuffer Driver](https://lupyuen.github.io/images/jh7110-display7.jpg)
 
 # Appendix: DC8200 Framebuffer Driver
 
