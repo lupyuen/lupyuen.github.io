@@ -85,7 +85,7 @@
 <li><a href="#appendix-jh7110-display-clock-and-reset">13 Appendix: JH7110 Display Clock and Reset</a><ul>
 <li><a href="#dc_bind">13.1 dc_bind</a><ul></ul></li>
 <li><a href="#dc_init">13.2 dc_init</a><ul></ul></li>
-<li><a href="#vs_dc_enable">13.3 vs_dc_enable</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Aug 2023</em></p>
+<li><a href="#vs_dc_enable">13.3 vs_dc_enable</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>26 Aug 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Display Driver for StarFive JH7110 SoC" /></p>
 <p>Today we look deep inside the <strong>Display Controller</strong> of the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>RISC-V StarFive JH7110 SoC</strong></a> and figure out how it works.</p>
 <p><em>But the JH7110 Display Controller is NOT documented!</em></p>
@@ -535,7 +535,7 @@ static const struct vs_crtc_funcs dc_crtc_funcs = {
 };
 </code></pre></div>
 <p><em>How do we create a Display Pipeline?</em></p>
-<p>From above, we see that DRM <strong>creates the Display Pipeline</strong> by calling our Display Controller Driver at (pic above)…</p>
+<p>From above, we see that DRM <strong>creates the Display Pipeline</strong> (pic above) by calling our Display Controller Driver at…</p>
 <ul>
 <li>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827"><strong>vs_dc_enable</strong></a>, to prepare the Clock and Reset Signals</p>
@@ -747,7 +747,9 @@ const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display2.md"><strong>lupyuen.github.io/src/display2.md</strong></a></p>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/jh7110-display7.jpg" alt="DC8200 Framebuffer Driver" /></p>
+</blockquote>
 <h1 id="appendix-dc8200-framebuffer-driver"><a href="#appendix-dc8200-framebuffer-driver">12 Appendix: DC8200 Framebuffer Driver</a></h1>
 <p>TODO: Pic above</p>
 <p>At startup, <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271">vs_drm_bind</a> calls <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191">vs_mode_config_init</a> to register the Framebuffer Driver: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172">vs_mode_config_funcs</a>.</p>
