@@ -290,7 +290,7 @@ static const struct file_operations fops = {
 
 Let's talk about Display Drivers...
 
-![Display Driver renders graphics to a Display Device](https://lupyuen.github.io/images/dsi3-steps.jpg)
+![Display Driver renders graphics to a Display Device](https://lupyuen.github.io/images/display2-steps.jpg)
 
 # Inside the Display Driver
 
@@ -314,7 +314,7 @@ _What's a Framebuffer?_
 
 A __Framebuffer__ is just a region of RAM that stores pixels in a Colour Format. (Like ARGB 8888)
 
-![Framebuffer](https://lupyuen.github.io/images/de2-fb.jpg)
+![Framebuffer](https://lupyuen.github.io/images/display2-fb.jpg)
 
 __Multiple Framebuffers__ are supported. Framebuffers can be rendered as __Opaque or Semi-Transparent Overlays__...
 
