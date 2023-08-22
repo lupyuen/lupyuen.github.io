@@ -333,7 +333,7 @@ static const struct file_operations fops = {
 <p>(Looks fairly standard for a DRM Driver)</p>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c#L546-L561">(<strong>vs_gem_mmap</strong> is defined here)</a></p>
 <p>Let’s talk about Display Drivers…</p>
-<p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Display Driver renders graphics to a Display Device" /></p>
+<p><img src="https://lupyuen.github.io/images/display2-steps.jpg" alt="Display Driver renders graphics to a Display Device" /></p>
 <h1 id="inside-the-display-driver"><a href="#inside-the-display-driver">4 Inside the Display Driver</a></h1>
 <p><em>What’s inside a typical Display Driver?</em></p>
 <p><em>How does it talk to the Display Hardware?</em></p>
@@ -353,7 +353,7 @@ static const struct file_operations fops = {
 </ul>
 <p><em>What’s a Framebuffer?</em></p>
 <p>A <strong>Framebuffer</strong> is just a region of RAM that stores pixels in a Colour Format. (Like ARGB 8888)</p>
-<p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="Framebuffer" /></p>
+<p><img src="https://lupyuen.github.io/images/display2-fb.jpg" alt="Framebuffer" /></p>
 <p><strong>Multiple Framebuffers</strong> are supported. Framebuffers can be rendered as <strong>Opaque or Semi-Transparent Overlays</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="Overlays" /></p>
 <p>To do this, we configure the <strong>Display Pipeline</strong> to Blend the Framebuffers…</p>
