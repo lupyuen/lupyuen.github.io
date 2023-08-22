@@ -752,13 +752,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: DC8200 Framebuffer Driver
 
-TODO: Pic above
+At startup, [__vs_drm_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271) (from DRM Driver) calls [__vs_mode_config_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191) to register the Framebuffer Driver. (Pic above)
 
-At startup, [vs_drm_bind](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271) calls [vs_mode_config_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191) to register the Framebuffer Driver: [vs_mode_config_funcs](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172).
-
-Which is defined as...
+The Framebuffer Driver exposes the following functions: [vs_fb.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172)
 
 ```c
+// DC8200 Framebuffer Functions
 static const struct drm_mode_config_funcs vs_mode_config_funcs = {
   .fb_create       = vs_fb_create,
   .get_format_info = vs_get_format_info,
@@ -768,13 +767,13 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 };
 ```
 
-[(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172)
+_Who creates the Framebuffer?_
 
-[vs_fb_create](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L60-L123) is called by [drm_framebuffer](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_framebuffer.c#L286-L329)
+To create the Framebuffer, [__vs_fb_create__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L60-L123) is called by [__drm_framebuffer__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_framebuffer.c#L286-L329) (from Linux DRM).
 
-[vs_get_format_info](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L155-L164) is called by [drm_fourcc](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_fourcc.c#L302-L325)
+To get the Framebuffer Formats, [__vs_get_format_info__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L155-L164) is called by [__drm_fourcc__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_fourcc.c#L302-L325) (from Linux DRM).
 
-Framebuffer Formats: [vs_formats](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L134-L139)
+Framebuffer Formats are defined in [__vs_formats__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L134-L139).
 
 ![JH7110 Display Subsystem Clock and Reset](https://lupyuen.github.io/images/display2-vout_clkrst18.png)
 
@@ -790,47 +789,49 @@ TODO: Reconcile the Clock and Reset Names
 
 ## dc_bind
 
-TODO: Pic above
+At startup, the DRM Driver calls our __Display Controller Driver__ at [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573) to setup the [__Clock and Reset Signals__](https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset). (Pic above)
 
-[__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573)
+[__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573) will do the following...
 
-1.  Call dc_init
+1.  Call [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722)
 
-1.  Attach I/O MMU Device
+    [(Explained here)](https://lupyuen.github.io/articles/display2#dc_init)
 
-1.  For Each Panel: Create Display Pipeline
+1.  Attach __I/O MMU Device__
 
-1.  For Each Plane: Create Display Plane
+1.  For Each Panel: Create __Display Pipeline__
 
-1.  Update Pitch Alignment
+1.  For Each Plane: Create __Display Plane__
 
-1.  Disable Clock vout_top_lcd
+1.  Update __Pitch Alignment__
 
-1.  Assert DC8200 Reset
+1.  Disable Clock __vout_top_lcd__
 
-1.  Disable DC8200 Clock
+1.  Assert __DC8200 Reset__
 
-1.  Disable Clock v_out_top
+1.  Disable __DC8200 Clock__
 
-1.  Disable Clock DC vout
+1.  Disable Clock __v_out_top__
+
+1.  Disable Clock __DC vout__
 
 ![DC8200 Display Controller Driver](https://lupyuen.github.io/images/jh7110-display3.jpg)
 
 ## dc_init
 
-TODO: Pic above
+At startup, the DRM Driver calls our __Display Controller Driver__ at [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573), which calls [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) to setup the [__Clock and Reset Signals__](https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset). (Pic above)
 
-[__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722)
+[__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) will do the following...
 
-1.  Enable Clock dc_vout_clk
+1.  Enable Clock __dc_vout_clk__
 
-1.  Deassert DC8200 Reset
+1.  Deassert __DC8200 Reset__
 
-1.  Enable Clock vout_top_lcd
+1.  Enable Clock __vout_top_lcd__
 
-1.  Deassert vout_reset
+1.  Deassert __vout_reset__
 
-1.  Update the DSS Registers with this Mystery Code:
+1.  Update the [__DSS Registers__](https://software-dl.ti.com/processor-sdk-linux/esd/docs/06_03_00_106/linux/Foundational_Components/Kernel/Kernel_Drivers/Display/DSS.html) with this Mystery Code:
 
     ```c
     #ifdef CONFIG_DRM_I2C_NXP_TDA998X
@@ -844,37 +845,47 @@ TODO: Pic above
     #endif
     ```
 
-1.  Call dc_hw_init
+1.  Call [__dc_hw_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361)
+
+    [(Explained here)](https://lupyuen.github.io/articles/display2#dc8200-display-hardware-driver)
 
 ![Setup Display Pipeline](https://lupyuen.github.io/images/jh7110-display5a.jpg)
 
 ## vs_dc_enable
 
-TODO: Pic above
+From above, we see that DRM __creates the Display Pipeline__ (pic above) by calling our Display Controller Driver at [__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827), to prepare the Clock and Reset Signals.
 
-[vs_dc_enable](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827) (from Display Controller Driver)
+[__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827) will do the following...
 
-1.  Enable Clock dc_vout_clk
+1.  Enable Clock __dc_vout_clk__
 
-1.  Deassert DC8200 Reset
+1.  Deassert __DC8200 Reset__
 
-1.  Enable Clock vout_top_lcd
+1.  Enable Clock __vout_top_lcd__
 
-1.  Update the DSS Registers with this Mystery Code:
+1.  Update the [__DSS Registers__](https://software-dl.ti.com/processor-sdk-linux/esd/docs/06_03_00_106/linux/Foundational_Components/Kernel/Kernel_Drivers/Display/DSS.html) with this Mystery Code:
 
     ```c
     regmap_update_bits(dc->dss_regmap, 0x4, BIT(20), 1<<20);
     regmap_update_bits(dc->dss_regmap, 0x8, BIT(3), 1<<3);
     ```
 
-    (Similar to dc_init)
+    [(Similar to the Mystery Code in __dc_init__)](https://lupyuen.github.io/articles/display2#dc_init)
 
-1.  Call dc_hw_init
+1.  Call [__dc_hw_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361)
 
-1.  Set the Display Struct: Bus Format, Horz Sync, Vert Sync, Sync Mode, Background Colour, Sync Enable and Dither Enable
+    [(Explained here)](https://lupyuen.github.io/articles/display2#dc8200-display-hardware-driver)
 
-1.  If Display is MIPI DSI: Set the Clock Rate for dc8200_pix0, dc8200_clk_pix1 and vout_top_lcd
+1.  Set the __Display Struct__: Bus Format, Horz Sync, Vert Sync, Sync Mode, Background Colour, Sync Enable and Dither Enable
 
-1.  If Display is HDMI: Set the Clock hdmitx0_pixelclk
+1.  If Display is __MIPI DSI__:
 
-1.  Call dc_hw_setup_display
+    Set the Clock Rate for __dc8200_pix0__, __dc8200_clk_pix1__ and __vout_top_lcd__
+
+1.  If Display is __HDMI__:
+
+    Set the Clock __hdmitx0_pixelclk__
+
+1.  Call [__dc_hw_setup_display__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1480-L1487)
+
+    [(Explained here)](https://lupyuen.github.io/articles/display2#setup-display-pipeline)
