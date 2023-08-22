@@ -832,10 +832,10 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 <p>Disable the <strong>DC8200 Clock</strong></p>
 </li>
 <li>
-<p>Disable Clock <strong>v_out_top</strong></p>
+<p>Disable Clock <strong>vout_top</strong></p>
 </li>
 <li>
-<p>Disable Clock <strong>DC vout</strong></p>
+<p>Disable Clock <strong>vout_clk</strong></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/jh7110-display3.jpg" alt="DC8200 Display Controller Driver" /></p>
@@ -847,7 +847,7 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722"><strong>dc_init</strong></a> will do the following…</p>
 <ol>
 <li>
-<p>Enable Clock <strong>dc_vout_clk</strong></p>
+<p>Enable Clock <strong>vout_clk</strong></p>
 </li>
 <li>
 <p>Deassert the <strong>DC8200 Reset</strong></p>
@@ -884,7 +884,7 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827"><strong>vs_dc_enable</strong></a> will do the following…</p>
 <ol>
 <li>
-<p>Enable Clock <strong>dc_vout_clk</strong></p>
+<p>Enable Clock <strong>vout_clk</strong></p>
 </li>
 <li>
 <p>Deassert the <strong>DC8200 Reset</strong></p>
