@@ -172,7 +172,7 @@ The [__Linux Device Tree__](https://doc-en.rvspace.org/VisionFive2/DG_Display/JH
 
 Let's dive into the Display Driver Code!
 
-![JH7110 Linux Display Driver](https://lupyuen.github.io/images/jh7110-display.jpg)
+![Display Driver for StarFive JH7110 SoC](https://lupyuen.github.io/images/display2-title.jpg)
 
 # DC8200 Driver for Direct Rendering Manager
 
