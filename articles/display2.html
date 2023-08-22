@@ -782,7 +782,7 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 <ul>
 <li><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html"><strong>JH7110: DOM VOUT CRG</strong></a></li>
 </ul>
-<p>Let’s walk through <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a>,  <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722"><strong>dc_init</strong></a> and <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827"><strong>vs_dc_enable</strong></a>, to understand how theyr prepare the Clock and Reset Signals.</p>
+<p>Let’s walk through <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a>,  <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722"><strong>dc_init</strong></a> and <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827"><strong>vs_dc_enable</strong></a>, to understand how they prepare the Clock and Reset Signals.</p>
 <p>(The Clock and Reset Names below don’t quite match the pic above and DOM VOUT CRG. We need to reconcile the names)</p>
 <p><img src="https://lupyuen.github.io/images/jh7110-display3.jpg" alt="DC8200 Display Controller Driver" /></p>
 <h2 id="dc_bind"><a href="#dc_bind">13.1 dc_bind</a></h2>
