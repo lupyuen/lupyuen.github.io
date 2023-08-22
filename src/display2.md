@@ -206,8 +206,8 @@ static struct drm_driver vs_drm_driver = {
   .name  = "starfive",
   .desc  = "VeriSilicon DRM driver",
   .date  = "20191101",
-  .major = DRV_MAJOR,
-  .minor = DRV_MINOR,
+  .major = 1,
+  .minor = 0,
 };
 ```
 
@@ -217,9 +217,7 @@ static struct drm_driver vs_drm_driver = {
 
 [(__Graphics Execution Manager "GEM"__ handles Memory Buffers)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Graphics_Execution_Manager)
 
-TODO: vs_gem_prime_import, vs_gem_prime_import_sg_table, vs_gem_prime_mmap, vs_gem_dumb_create
-
-TODO: DRV_MAJOR, DRV_MINOR
+[(__vs_gem__ functions are here)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c)
 
 TODO: Pic of Sub-Drivers
 
@@ -286,7 +284,7 @@ static const struct file_operations fops = {
 
 (Looks fairly standard for a DRM Driver)
 
-TODO: vs_gem_mmap
+[(__vs_gem_mmap__ is defined here)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c#L546-L561)
 
 ![Display Driver renders graphics to a Display Device](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
@@ -361,7 +359,7 @@ struct platform_driver dc_platform_driver = {
 
 [(__dc_probe__ is defined here)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1595-L1629)
 
-TODO: dc_remove
+[(__dc_remove__ is defined here)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1631-L1640)
 
 These are the __Component Functions__ exposed by the Display Controller Driver: [vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1584-L1587)
 
@@ -378,7 +376,9 @@ At startup, the DRM Driver calls our __Display Controller Driver__ at...
 
 - [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573) and [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) to setup the [__Clock and Reset Signals__](https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset)
 
-  [(More about __dc_bind__ and __dc_init__)](https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset)
+  [(More about __dc_bind__)](https://lupyuen.github.io/articles/display2#dc_bind)
+
+  [(And __dc_init__)](https://lupyuen.github.io/articles/display2#dc_init)
 
 Which calls our __Display Hardware Driver__ at...
 
@@ -414,7 +414,7 @@ Here's what happens inside [__dc_hw_init__](https://github.com/starfive-tech/lin
 
 1.  Initialise every __Display Plane__ (Layer)
 
-1.  Initialise every __Display Panel__ (Cursor)
+1.  Initialise every __Display Panel__ (and Cursor)
 
 _Why read the Hardware Revision?_
 
@@ -517,7 +517,9 @@ _How do we create a Display Pipeline?_
 
 From above, we see that DRM __creates the Display Pipeline__ by calling our Display Controller Driver at...
 
-- [__vs_dc_enable__](https://lupyuen.github.io/articles/display2#vs_dc_enable), to prepare the Clock and Reset Signals
+- [__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827), to prepare the Clock and Reset Signals
+
+  [(More about __vs_dc_enable__)](https://lupyuen.github.io/articles/display2#vs_dc_enable)
 
 Which calls...
 
@@ -624,7 +626,7 @@ TODO: Pic of Update Display Plane
 
 One last thing for today: How to __Update the Display Plane__.
 
-(A Display Plane is a __Layer of Pixels__ / Framebuffer that will be blended into the final image by a Display Pipeline)
+(A Display Plane is a Layer of Pixels / Framebuffer that will be blended into the final image by a Display Pipeline)
 
 Our Display Controller Driver exposes these __Display Plane Functions__: 
 [vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1410-L1414)
@@ -686,7 +688,7 @@ Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive
 
 [(More about __DRM Atomic Display__)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display)
 
-# What's Next
+# Unsolved Mysteries
 
 TODO
 
@@ -697,6 +699,10 @@ Slightly annoying that New Zig won't run on my Old Mac
 [Fishwaldo suggests uboot](https://fosstodon.org/@Fishwaldo/110902984442385966)
 
 [the panel is not a Jadard panel, whoever wrote the factory image just hacked a existing driver. The panel in PtV (and PT2) is a BOE TH101MB31IG002-28A](https://fosstodon.org/@Fishwaldo/110902984462760802)
+
+# What's Next
+
+TODO
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
