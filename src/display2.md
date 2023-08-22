@@ -688,6 +688,10 @@ Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive
 
 [(More about __DRM Atomic Display__)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display)
 
+![Yocto Linux with KDE Plasma on Star64 HDMI](https://lupyuen.github.io/images/star64-plasma.jpg)
+
+[_Yocto Linux with KDE Plasma on Star64 HDMI_](https://lupyuen.github.io/articles/linux)
+
 # Unsolved Mysteries
 
 _We're ready to build our NuttX Display Driver for JH7110?_
