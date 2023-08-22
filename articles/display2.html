@@ -278,7 +278,7 @@ static struct drm_driver vs_drm_driver = {
 <p>TODO: Pic of Sub-Drivers</p>
 <h2 id="drm-sub-drivers"><a href="#drm-sub-drivers">3.2 DRM Sub-Drivers</a></h2>
 <p><em>Where are the fun bits of our Display Driver?</em></p>
-<p>Remember our DRM Driver is only a façade. Most of the work is done by the <strong>Sub-Drivers for DC8200</strong>: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315">vs_drv.c</a></p>
+<p>Remember our DRM Driver is only a façade. Most of the work is done by the <strong>Sub-Drivers for DC8200</strong> (pic above): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315">vs_drv.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Sub-Drivers for DC8200 Display Controller
 static struct platform_driver *drm_sub_drivers[] = {
 
