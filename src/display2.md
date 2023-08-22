@@ -734,6 +734,8 @@ Yeah we'll probably [__prototype our new driver in Zig__](https://lupyuen.github
 
 [(Slightly annoying that New Zig won't run on my Old Mac)](https://github.com/lupyuen/pinephone-lvgl-zig#zig-version)
 
+> ![Sketch of Display Driver for StarFive JH7110 SoC](https://lupyuen.github.io/images/display2-sketch.jpg)
+
 # What's Next
 
 TODO
