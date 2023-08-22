@@ -702,7 +702,7 @@ Not quite. We have a bit more to explore, like the __HDMI Controller for JH7110_
 
 - [__Test HDMI for JH7110__](https://github.com/lupyuen/nuttx-star64#test-hdmi-for-star64-jh7110)
 
-  [(__Justin / Fishwaldo__ suggests that we check the HDMI Driver in U-Boot)](https://fosstodon.org/@Fishwaldo/110902984442385966)
+  [(__Justin / Fishwaldo__ suggests that we check the simpler HDMI Driver in U-Boot)](https://fosstodon.org/@Fishwaldo/110902984442385966)
 
 When we port NuttX to the __PineTab-V Tablet__, we'll need drivers for MIPI DSI and LCD Panel...
 
@@ -712,13 +712,13 @@ When we port NuttX to the __PineTab-V Tablet__, we'll need drivers for MIPI DSI 
 
 - [__DC8200 Virtual Display Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-dc8200-virtual-display-driver)
 
-  [(LCD Panel in PineTab-V is BOE TH101MB31IG002-28A)](https://fosstodon.org/@Fishwaldo/110902984462760802)
+  [(__LCD Panel in PineTab-V__ is BOE TH101MB31IG002-28A)](https://fosstodon.org/@Fishwaldo/110902984462760802)
 
-TODO
+_Sounds like a lot of work!_
 
-Prototype new driver in Zig
+Yeah we'll probably [__prototype our new driver in Zig__](https://lupyuen.github.io/articles/dsi2) before converting to C. Stay tuned for updates!
 
-Slightly annoying that New Zig won't run on my Old Mac
+[(Slightly annoying that New Zig won't run on my Old Mac)](https://github.com/lupyuen/pinephone-lvgl-zig#zig-version)
 
 # What's Next
 
