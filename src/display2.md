@@ -597,7 +597,7 @@ _What's inside dc_hw_commit?_
 In our Display Hardware Driver, [__dc_hw_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076) will...
 
 1.  Call [__gamma_ex_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574) to commit the Gamma Correction
-1.  Call [__plane_ex_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863) commit the Display Plane
+1.  Call [__plane_ex_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863) to commit the Display Plane
 1.  Update the __Cursor and QoS__
 
 _What happens in plane_ex_commit?_
@@ -607,7 +607,7 @@ _What happens in plane_ex_commit?_
 1.  Set the __Gamma Correction__
 1.  Call [__plane_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1576-L1766)
 
-Then [__plane_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1576-L1766) will do this for every __Display Plane__ (Layer)...
+Then [__plane_commit__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1576-L1766) will do these for every __Display Plane__ (Layer)...
 1.  Set the __Framebuffer YUV Address and Stride__
 1.  Set the __Framebuffer Width and Height__
 1.  __Clear the Framebuffer__
