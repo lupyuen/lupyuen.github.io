@@ -690,15 +690,35 @@ Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive
 
 # Unsolved Mysteries
 
+_We're ready to build our NuttX Display Driver for JH7110?_
+
+Not quite. We have a bit more to explore, like the __HDMI Controller for JH7110__...
+
+- [__HDMI Display for JH7110__](https://github.com/lupyuen/nuttx-star64#hdmi-display-for-star64-jh7110)
+
+- [__HDMI Controller for JH7110__](https://github.com/lupyuen/nuttx-star64#hdmi-controller-for-star64-jh7110)
+
+- [__HDMI Controller Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-hdmi-controller-driver)
+
+- [__Test HDMI for JH7110__](https://github.com/lupyuen/nuttx-star64#test-hdmi-for-star64-jh7110)
+
+  [(__Justin / Fishwaldo__ suggests that we check the HDMI Driver in U-Boot)](https://fosstodon.org/@Fishwaldo/110902984442385966)
+
+When we port NuttX to the __PineTab-V Tablet__, we'll need drivers for MIPI DSI and LCD Panel...
+
+- [__LCD Panel for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#lcd-panel-for-star64-jh7110)
+
+- [__PineTab-V Factory Test Code__](https://github.com/lupyuen/nuttx-star64#pinetab-v-factory-test-code)
+
+- [__DC8200 Virtual Display Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-dc8200-virtual-display-driver)
+
+  [(LCD Panel in PineTab-V is BOE TH101MB31IG002-28A)](https://fosstodon.org/@Fishwaldo/110902984462760802)
+
 TODO
 
 Prototype new driver in Zig
 
 Slightly annoying that New Zig won't run on my Old Mac
-
-[Fishwaldo suggests uboot](https://fosstodon.org/@Fishwaldo/110902984442385966)
-
-[the panel is not a Jadard panel, whoever wrote the factory image just hacked a existing driver. The panel in PtV (and PT2) is a BOE TH101MB31IG002-28A](https://fosstodon.org/@Fishwaldo/110902984462760802)
 
 # What's Next
 
