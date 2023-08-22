@@ -74,13 +74,13 @@ We have the official [__Linux Drivers__](https://doc-en.rvspace.org/VisionFive2/
 
 - [__vs_simple_enc.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c) - Display Subsystem (DSS) Encoder
 
-- [__vs_gem.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c) - Graphics Execution Manager (Memory Management)
+- [__vs_gem.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c) - Graphics Execution Manager (Memory Buffers)
 
 - [__vs_virtual.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c) - Virtual Display
 
 - [__vs_dc_dec.c__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_dec.c) - Bitmap Decompression
 
-  [(Build Instructions)](https://github.com/starfive-tech/linux/tree/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon)
+  [(__Build Instructions__)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/README)
 
 _Phew so many Source Files!_
 
@@ -134,9 +134,11 @@ With support for...
 
 - __Display Layers__: Overlays for Cursor, Video, Graphics
 
-- __Output Control__: Blending, Gamma, 3D LUT, RGB-to-YUV, Dithering
+- __Display Pipelines__: Blending, Gamma, 3D LUT, RGB-to-YUV, Dithering
 
-We'll explain the Display Layers (Overlays) in a while.
+- __Display Output__: HDMI, MIPI Display Serial Interface
+
+We'll explain the Display Layers (Overlays) and Display Pipelines in a while.
 
 _How are the Display Outputs mapped to MIPI DSI and HDMI?_
 
@@ -240,7 +242,7 @@ static struct platform_driver *drm_sub_drivers[] = {
   &inno_hdmi_driver,
 #endif
 
-  // Simple Encoder Driver
+  // Display Subsystem (DSS) Encoder Driver
   &simple_encoder_driver,
 
 #ifdef CONFIG_VERISILICON_VIRTUAL_DISPLAY
@@ -286,6 +288,8 @@ static const struct file_operations fops = {
 
 [(__vs_gem_mmap__ is defined here)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c#L546-L561)
 
+Let's talk about Display Drivers...
+
 ![Display Driver renders graphics to a Display Device](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
 # Inside the Display Driver
@@ -300,7 +304,7 @@ The pic above shows how a typical Display Driver will __render graphics__ to a D
 
 - Our Apps will write the pixels into a __RAM Framebuffer__
 
-- Inside the SoC is a __Display Engine__ that reads the Framebuffer (over DMA)
+- Inside the SoC is a __Display Pipeline__ (or Display Engine) that reads the Framebuffer (over DMA)
 
 - And pushes a continuous stream of pixels to a __Display Device__
 
@@ -320,7 +324,7 @@ To do this, we configure the __Display Pipeline__ to Blend the Framebuffers...
 
 ![Blender](https://lupyuen.github.io/images/de2-blender.jpg)
 
-Internally, the Display Driver will manipulate the __Display Registers__ to...
+Internally, the Display Driver will manipulate the __Display Hardware Registers__ to...
 
 1.  Configure the __Framebuffers__ (and their RAM Addresses)
 
@@ -781,7 +785,7 @@ Framebuffer Formats are defined in [__vs_formats__](https://github.com/starfive-
 
 # Appendix: JH7110 Display Clock and Reset
 
-Earlier we talked about our __Display Controller Driver__ preparing the Clock and Reset Signals...
+Earlier we talked about our Display Controller Driver preparing the __Clock and Reset Signals__...
 
 - [__"DC8200 Display Controller Driver"__](https://lupyuen.github.io/articles/display2#dc8200-display-controller-driver)
 
