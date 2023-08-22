@@ -355,6 +355,7 @@ The __DC8200 Display Controller Driver__ (pic above) is called by the the DC8200
 The Display Controller Driver is named __"vs-dc"__ (for VeriSilicon Display Controller): [vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1642-L1649)
 
 ```c
+// DC8200 Display Controller Driver
 struct platform_driver dc_platform_driver = {
   .probe  = dc_probe,
   .remove = dc_remove,
@@ -365,9 +366,10 @@ struct platform_driver dc_platform_driver = {
 
 [(__dc_remove__ is defined here)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1631-L1640)
 
-These are the __Component Functions__ exposed by the Display Controller Driver: [vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1584-L1587)
+These are the __Component Functions__ exposed by the Display Controller Driver to start the driver: [vs_dc.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1584-L1587)
 
 ```c
+// DC8200 Display Component Functions
 const struct component_ops dc_component_ops = {
   .bind   = dc_bind,
   .unbind = dc_unbind,
