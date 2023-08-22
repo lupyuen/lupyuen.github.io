@@ -225,7 +225,7 @@ TODO: Pic of Sub-Drivers
 
 _Where are the fun bits of our Display Driver?_
 
-Remember our DRM Driver is only a façade. Most of the work is done by the __Sub-Drivers for DC8200__: [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315)
+Remember our DRM Driver is only a façade. Most of the work is done by the __Sub-Drivers for DC8200__ (pic above): [vs_drv.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315)
 
 ```c
 // Sub-Drivers for DC8200 Display Controller
