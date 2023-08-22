@@ -85,7 +85,7 @@
 <li><a href="#appendix-jh7110-display-clock-and-reset">13 Appendix: JH7110 Display Clock and Reset</a><ul>
 <li><a href="#dc_bind">13.1 dc_bind</a><ul></ul></li>
 <li><a href="#dc_init">13.2 dc_init</a><ul></ul></li>
-<li><a href="#vs_dc_enable">13.3 vs_dc_enable</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>26 Aug 2023</em></p>
+<li><a href="#vs_dc_enable">13.3 vs_dc_enable</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>23 Aug 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Display Driver for StarFive JH7110 SoC" /></p>
 <p>Today we look deep inside the <strong>Display Controller</strong> of the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>RISC-V StarFive JH7110 SoC</strong></a> and figure out how it works.</p>
 <p><em>But the JH7110 Display Controller is NOT documented!</em></p>
@@ -706,7 +706,15 @@ const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-star64#test-hdmi-for-star64-jh7110"><strong>Test HDMI for JH7110</strong></a></p>
-<p><a href="https://fosstodon.org/@Fishwaldo/110902984442385966">(<strong>Justin / Fishwaldo</strong> suggests that we check out the simpler HDMI Driver in U-Boot)</a></p>
+</li>
+</ul>
+<p><a href="https://fosstodon.org/@Fishwaldo/110902984442385966"><strong>Justin (Fishwaldo)</strong></a> suggests that we check out the simpler HDMI Driver in <strong>U-Boot Bootloader</strong>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/starfive-tech/u-boot/tree/JH7110_VisionFive2_devel/drivers/video/starfive"><strong>U-Boot Display Driver for JH7110</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L237-L248"><strong>dc_hw_init</strong> looks awfully familiar</a></p>
 </li>
 </ul>
 <p>When we port NuttX to the <strong>PineTab-V Tablet</strong>, we’ll need drivers for <strong>MIPI DSI and LCD Panel</strong>…</p>
