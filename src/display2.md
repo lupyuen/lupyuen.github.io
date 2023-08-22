@@ -738,7 +738,21 @@ Yeah we'll probably [__prototype our new driver in Zig__](https://lupyuen.github
 
 # What's Next
 
-TODO
+Today we created a Detailed Doc that explains the Inner Workings of the __JH7110 Display Controller__...
+
+- We deciphered the __JH7110 Linux Driver Source Code__
+
+- To figure out what's inside the __Direct Rendering Manager (DRM) Driver__ for JH7110
+
+- How it controls the __Display Registers__
+
+- To handle the __Display Pipeline__, __Display Planes__ and __Framebuffers__
+
+- And how it talks to __HDMI and MIPI DSI__ (Display Serial Interface)
+
+- So that someday we'll __implement the driver__ ourselves (without Linux)
+
+I hope you'll find this doc helpful too!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
