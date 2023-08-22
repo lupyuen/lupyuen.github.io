@@ -702,17 +702,21 @@ Not quite. We have a bit more to explore, like the __HDMI Controller for JH7110_
 
 - [__Test HDMI for JH7110__](https://github.com/lupyuen/nuttx-star64#test-hdmi-for-star64-jh7110)
 
-  [(__Justin / Fishwaldo__ suggests that we check the simpler HDMI Driver in U-Boot)](https://fosstodon.org/@Fishwaldo/110902984442385966)
+  [(__Justin / Fishwaldo__ suggests that we check out the simpler HDMI Driver in U-Boot)](https://fosstodon.org/@Fishwaldo/110902984442385966)
 
-When we port NuttX to the __PineTab-V Tablet__, we'll need drivers for MIPI DSI and LCD Panel...
+When we port NuttX to the __PineTab-V Tablet__, we'll need drivers for __MIPI DSI and LCD Panel__...
 
 - [__LCD Panel for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#lcd-panel-for-star64-jh7110)
 
 - [__PineTab-V Factory Test Code__](https://github.com/lupyuen/nuttx-star64#pinetab-v-factory-test-code)
 
-- [__DC8200 Virtual Display Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-dc8200-virtual-display-driver)
-
   [(__LCD Panel in PineTab-V__ is BOE TH101MB31IG002-28A)](https://fosstodon.org/@Fishwaldo/110902984462760802)
+
+We might also need the __Framebuffer Driver__ and __Virtual Display Driver__....
+
+- [__DC8200 Framebuffer Driver__](https://lupyuen.github.io/articles/display2#appendix-dc8200-framebuffer-driver)
+
+- [__DC8200 Virtual Display Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-dc8200-virtual-display-driver)
 
 _Sounds like a lot of work!_
 
