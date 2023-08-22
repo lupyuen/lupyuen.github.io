@@ -769,11 +769,27 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 <p><img src="https://lupyuen.github.io/images/display2-vout_clkrst18.png" alt="JH7110 Display Subsystem Clock and Reset" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html"><em>JH7110 Display Subsystem Clock and Reset</em></a></p>
 <h1 id="appendix-jh7110-display-clock-and-reset"><a href="#appendix-jh7110-display-clock-and-reset">13 Appendix: JH7110 Display Clock and Reset</a></h1>
-<p>TODO: Reconcile the Clock and Reset Names</p>
-<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html">DOM VOUT CRG</a></p>
+<p>Earlier we talked about our <strong>Display Controller Driver</strong> preparing the Clock and Reset Signals…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller-driver"><strong>“DC8200 Display Controller Driver”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/display2#setup-display-pipeline"><strong>“Setup Display Pipeline”</strong></a></p>
+</li>
+</ul>
+<p>The pic above shows the <strong>Clock Signals</strong> for the JH7110 / DC8200 Display Controller. The <strong>Reset Registers</strong> are defined here…</p>
+<ul>
+<li><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html"><strong>JH7110: DOM VOUT CRG</strong></a></li>
+</ul>
+<p>Let’s walk through <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a>,  <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722"><strong>dc_init</strong></a> and <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827"><strong>vs_dc_enable</strong></a>, to understand how theyr prepare the Clock and Reset Signals.</p>
+<p>(The Clock and Reset Names below don’t quite match the pic above and DOM VOUT CRG. We need to reconcile the names)</p>
 <p><img src="https://lupyuen.github.io/images/jh7110-display3.jpg" alt="DC8200 Display Controller Driver" /></p>
 <h2 id="dc_bind"><a href="#dc_bind">13.1 dc_bind</a></h2>
 <p>At startup, the DRM Driver calls our <strong>Display Controller Driver</strong> at <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a> to setup the <a href="https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset"><strong>Clock and Reset Signals</strong></a>. (Pic above)</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller-driver"><strong>“DC8200 Display Controller Driver”</strong></a></li>
+</ul>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a> will do the following…</p>
 <ol>
 <li>
@@ -811,6 +827,9 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 <p><img src="https://lupyuen.github.io/images/jh7110-display3.jpg" alt="DC8200 Display Controller Driver" /></p>
 <h2 id="dc_init"><a href="#dc_init">13.2 dc_init</a></h2>
 <p>At startup, the DRM Driver calls our <strong>Display Controller Driver</strong> at <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a>, which calls <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722"><strong>dc_init</strong></a> to setup the <a href="https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset"><strong>Clock and Reset Signals</strong></a>. (Pic above)</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller-driver"><strong>“DC8200 Display Controller Driver”</strong></a></li>
+</ul>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722"><strong>dc_init</strong></a> will do the following…</p>
 <ol>
 <li>
@@ -844,7 +863,10 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 </ol>
 <p><img src="https://lupyuen.github.io/images/jh7110-display5a.jpg" alt="Setup Display Pipeline" /></p>
 <h2 id="vs_dc_enable"><a href="#vs_dc_enable">13.3 vs_dc_enable</a></h2>
-<p>From above, we see that DRM <strong>creates the Display Pipeline</strong> (pic above) by calling our Display Controller Driver at <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827"><strong>vs_dc_enable</strong></a>, to prepare the Clock and Reset Signals.</p>
+<p>DRM <strong>creates the Display Pipeline</strong> (pic above) by calling our Display Controller Driver at <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827"><strong>vs_dc_enable</strong></a>, to prepare the Clock and Reset Signals…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/display2#setup-display-pipeline"><strong>“Setup Display Pipeline”</strong></a></li>
+</ul>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827"><strong>vs_dc_enable</strong></a> will do the following…</p>
 <ol>
 <li>
