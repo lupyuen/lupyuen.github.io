@@ -760,7 +760,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: DC8200 Framebuffer Driver
 
-At startup, [__vs_drm_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271) (from DRM Driver) calls [__vs_mode_config_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191) to register the Framebuffer Driver. (Pic above)
+At startup, [__vs_drm_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271) (from our DRM Driver) calls [__vs_mode_config_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191) to register the Framebuffer Driver. (Pic above)
 
 The Framebuffer Driver exposes the following functions: [vs_fb.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172)
 
@@ -795,19 +795,21 @@ Earlier we talked about our Display Controller Driver preparing the __Clock and 
 
 - [__"Setup Display Pipeline"__](https://lupyuen.github.io/articles/display2#setup-display-pipeline)
 
-The pic above shows the __Clock Signals__ for the JH7110 / DC8200 Display Controller. The __Reset Registers__ are defined here...
+The pic above shows the __Clock Signals__ for the JH7110 / DC8200 Display Controller. The __Clock Signals__ and __Reset Registers__ are defined here...
+
+- [__JH7110: Display Subsystem Clock and Reset Specification__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html#clock_n_reset_display__section_kyw_vqj_jsb)
 
 - [__JH7110: DOM VOUT CRG__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html)
 
 Let's walk through [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573),  [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) and [__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827), to understand how they prepare the Clock and Reset Signals.
 
-(The Clock and Reset Names below don't quite match the pic above and DOM VOUT CRG. We need to reconcile the names)
+(The Clock and Reset Names below don't quite match the Official Docs above. We need to reconcile the names)
 
 ![DC8200 Display Controller Driver](https://lupyuen.github.io/images/jh7110-display3.jpg)
 
 ## dc_bind
 
-At startup, the DRM Driver calls our __Display Controller Driver__ at [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573) to setup the [__Clock and Reset Signals__](https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset). (Pic above)
+At startup, our DRM Driver calls our Display Controller Driver at [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573) to setup the __Clock and Reset Signals__. (Pic above)
 
 - [__"DC8200 Display Controller Driver"__](https://lupyuen.github.io/articles/display2#dc8200-display-controller-driver)
 
@@ -817,19 +819,19 @@ At startup, the DRM Driver calls our __Display Controller Driver__ at [__dc_bind
 
     [(Explained here)](https://lupyuen.github.io/articles/display2#dc_init)
 
-1.  Attach __I/O MMU Device__
+1.  Attach the __I/O MMU Device__
 
-1.  For Each Panel: Create __Display Pipeline__
+1.  For Each Panel: Create the __Display Pipeline__
 
-1.  For Each Plane: Create __Display Plane__
+1.  For Each Plane: Create the __Display Plane__
 
-1.  Update __Pitch Alignment__
+1.  Update the __Pitch Alignment__
 
 1.  Disable Clock __vout_top_lcd__
 
-1.  Assert __DC8200 Reset__
+1.  Assert the __DC8200 Reset__
 
-1.  Disable __DC8200 Clock__
+1.  Disable the __DC8200 Clock__
 
 1.  Disable Clock __v_out_top__
 
@@ -839,7 +841,7 @@ At startup, the DRM Driver calls our __Display Controller Driver__ at [__dc_bind
 
 ## dc_init
 
-At startup, the DRM Driver calls our __Display Controller Driver__ at [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573), which calls [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) to setup the [__Clock and Reset Signals__](https://lupyuen.github.io/articles/display2#appendix-jh7110-display-clock-and-reset). (Pic above)
+At startup, our DRM Driver calls our Display Controller Driver at [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573), which calls [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) to setup the __Clock and Reset Signals__. (Pic above)
 
 - [__"DC8200 Display Controller Driver"__](https://lupyuen.github.io/articles/display2#dc8200-display-controller-driver)
 
@@ -847,13 +849,13 @@ At startup, the DRM Driver calls our __Display Controller Driver__ at [__dc_bind
 
 1.  Enable Clock __dc_vout_clk__
 
-1.  Deassert __DC8200 Reset__
+1.  Deassert the __DC8200 Reset__
 
 1.  Enable Clock __vout_top_lcd__
 
 1.  Deassert __vout_reset__
 
-1.  Update the [__DSS Registers__](https://software-dl.ti.com/processor-sdk-linux/esd/docs/06_03_00_106/linux/Foundational_Components/Kernel/Kernel_Drivers/Display/DSS.html) with this Mystery Code:
+1.  Update the [__DSS Registers__](https://software-dl.ti.com/processor-sdk-linux/esd/docs/06_03_00_106/linux/Foundational_Components/Kernel/Kernel_Drivers/Display/DSS.html) with this Mystery Code...
 
     ```c
     #ifdef CONFIG_DRM_I2C_NXP_TDA998X
@@ -883,11 +885,11 @@ DRM __creates the Display Pipeline__ (pic above) by calling our Display Controll
 
 1.  Enable Clock __dc_vout_clk__
 
-1.  Deassert __DC8200 Reset__
+1.  Deassert the __DC8200 Reset__
 
 1.  Enable Clock __vout_top_lcd__
 
-1.  Update the [__DSS Registers__](https://software-dl.ti.com/processor-sdk-linux/esd/docs/06_03_00_106/linux/Foundational_Components/Kernel/Kernel_Drivers/Display/DSS.html) with this Mystery Code:
+1.  Update the [__DSS Registers__](https://software-dl.ti.com/processor-sdk-linux/esd/docs/06_03_00_106/linux/Foundational_Components/Kernel/Kernel_Drivers/Display/DSS.html) with this Mystery Code...
 
     ```c
     regmap_update_bits(dc->dss_regmap, 0x4, BIT(20), 1<<20);
@@ -900,7 +902,7 @@ DRM __creates the Display Pipeline__ (pic above) by calling our Display Controll
 
     [(Explained here)](https://lupyuen.github.io/articles/display2#dc8200-display-hardware-driver)
 
-1.  Set the __Display Struct__: Bus Format, Horz Sync, Vert Sync, Sync Mode, Background Colour, Sync Enable and Dither Enable
+1.  Set the __Display Struct__: Bus Format, Horizontal Sync, Vertical Sync, Sync Mode, Background Colour, Sync Enable and Dither Enable
 
 1.  If Display is __MIPI DSI__:
 
