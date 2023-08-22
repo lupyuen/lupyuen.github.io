@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "RISC-V Star64 JH7110: Inside the Display Controller",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-08-23",
+      "website": "https://lupyuen.github.io/articles/display2",
+      "summary": "Let's take a walk inside the Display Controller for Pine64's Star64 JH7110 RISC-V SBC... And find out how we'll create the Display Driver for Apache NuttX RTOS"
+    },
+    {
       "name": "RTOS on a RISC-V SBC: Star64 JH7110 + Apache NuttX",
       "publisher": "hackster.io",
       "releaseDate": "2023-08-08",

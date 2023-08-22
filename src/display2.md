@@ -1,6 +1,6 @@
 # RISC-V Star64 JH7110: Inside the Display Controller
 
-📝 _26 Aug 2023_
+📝 _23 Aug 2023_
 
 ![Display Driver for StarFive JH7110 SoC](https://lupyuen.github.io/images/display2-title.jpg)
 
@@ -712,7 +712,11 @@ Not quite. We have a bit more to explore, like the __HDMI Controller for JH7110_
 
 - [__Test HDMI for JH7110__](https://github.com/lupyuen/nuttx-star64#test-hdmi-for-star64-jh7110)
 
-  [(__Justin / Fishwaldo__ suggests that we check out the simpler HDMI Driver in U-Boot)](https://fosstodon.org/@Fishwaldo/110902984442385966)
+[__Justin (Fishwaldo)__](https://fosstodon.org/@Fishwaldo/110902984442385966) suggests that we check out the simpler HDMI Driver in __U-Boot Bootloader__...
+
+- [__U-Boot Display Driver for JH7110__](https://github.com/starfive-tech/u-boot/tree/JH7110_VisionFive2_devel/drivers/video/starfive)
+
+- [__dc_hw_init__ looks awfully familiar](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L237-L248)
 
 When we port NuttX to the __PineTab-V Tablet__, we'll need drivers for __MIPI DSI and LCD Panel__...
 
