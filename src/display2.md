@@ -791,7 +791,7 @@ The pic above shows the __Clock Signals__ for the JH7110 / DC8200 Display Contro
 
 - [__JH7110: DOM VOUT CRG__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html)
 
-Let's walk through [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573),  [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) and [__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827), to understand how theyr prepare the Clock and Reset Signals.
+Let's walk through [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573),  [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) and [__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827), to understand how they prepare the Clock and Reset Signals.
 
 (The Clock and Reset Names below don't quite match the pic above and DOM VOUT CRG. We need to reconcile the names)
 
