@@ -219,7 +219,7 @@ static struct drm_driver vs_drm_driver = {
 
 [(__vs_gem__ functions are here)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c)
 
-TODO: Pic of Sub-Drivers
+![DRM Sub-Drivers](https://lupyuen.github.io/images/jh7110-display2.jpg)
 
 ## DRM Sub-Drivers
 
@@ -336,11 +336,11 @@ And that's how a typical Display Driver works in a Modern SoC!
 
 Heading back to our scheduled programming...
 
-TODO: Pic of Display Controller dc_bind
+![DC8200 Display Controller Driver](https://lupyuen.github.io/images/jh7110-display3.jpg)
 
 # DC8200 Display Controller Driver
 
-The __DC8200 Display Controller Driver__ is called by the the DC8200 DRM Driver. The driver exposes the Display Functions for...
+The __DC8200 Display Controller Driver__ (pic above) is called by the the DC8200 DRM Driver. The driver exposes the Display Functions for...
 
 - Initialisation of __Display Controller__
 
@@ -390,13 +390,13 @@ _That's all for our Display Controller Driver?_
 
 There's more! We'll come back to our Display Controller Driver for handling the Display Pipeline and Display Plane.
 
-TODO: Pic of dc_hw_init
+![DC8200 Display Hardware Driver](https://lupyuen.github.io/images/jh7110-display4.jpg)
 
 # DC8200 Display Hardware Driver
 
 _Now we do the exciting bit?_
 
-Finally! The __Display Hardware Driver__ is called by the Display Controller Driver (previous section) to manipulate the Display Hardware Registers and...
+Finally! The __Display Hardware Driver__ (pic above) is called by the Display Controller Driver (previous section) to manipulate the Display Hardware Registers and...
 
 - Initialise the __Display Controller__
 
@@ -484,7 +484,7 @@ That's because the Display Planes (Layers) will be rendered to __2 separate disp
 
 Our Display Hardware Driver will do other fun things! Let's talk about the Display Pipelines and Display Planes...
 
-TODO: Pic of Setup Display Pipeline
+![Setup Display Pipeline](https://lupyuen.github.io/images/jh7110-display5a.jpg)
 
 # Setup Display Pipeline
 
@@ -515,7 +515,7 @@ static const struct vs_crtc_funcs dc_crtc_funcs = {
 
 _How do we create a Display Pipeline?_
 
-From above, we see that DRM __creates the Display Pipeline__ by calling our Display Controller Driver at...
+From above, we see that DRM __creates the Display Pipeline__ by calling our Display Controller Driver at (pic above)...
 
 - [__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827), to prepare the Clock and Reset Signals
 
@@ -572,13 +572,13 @@ Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive
 
 And that's how we create a Display Pipeline! Now we commit the Display Pipeline...
 
-TODO: Pic of Commit Display Pipeline
+![Commit Display Pipeline](https://lupyuen.github.io/images/jh7110-display5b.jpg)
 
 # Commit Display Pipeline
 
 _Why will we Commit a Display Pipeline?_
 
-A Display Pipeline won't render any pixels... Until we __Commit the Display Pipeline__!
+A Display Pipeline won't render any pixels... Until we __Commit the Display Pipeline__! (Pic above)
 
 To Commit the Display Pipeline, the Linux Direct Rendering Manager (DRM) calls our Display Controller Driver at...
 
@@ -620,11 +620,11 @@ Which is called by the Linux [__DRM Atomic Helper__](https://github.com/starfive
 
 [(More about __DRM Atomic Display__)](https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display)
 
-TODO: Pic of Update Display Plane
+![Update Display Plane](https://lupyuen.github.io/images/jh7110-display6.jpg)
 
 # Update Display Plane
 
-One last thing for today: How to __Update the Display Plane__.
+One last thing for today: How to __Update the Display Plane__. (Pic above)
 
 (A Display Plane is a Layer of Pixels / Framebuffer that will be blended into the final image by a Display Pipeline)
 
@@ -748,11 +748,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/display2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display2.md)
 
-TODO: Pic of Framebuffer Driver
+![DC8200 Framebuffer Driver](https://lupyuen.github.io/images/jh7110-display7.jpg)
 
 # Appendix: DC8200 Framebuffer Driver
 
-TODO
+TODO: Pic above
 
 At startup, [vs_drm_bind](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271) calls [vs_mode_config_init](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191) to register the Framebuffer Driver: [vs_mode_config_funcs](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172).
 
@@ -786,11 +786,11 @@ TODO: Reconcile the Clock and Reset Names
 
 [DOM VOUT CRG](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html)
 
-TODO: Pic of dc_bind
+![DC8200 Display Controller Driver](https://lupyuen.github.io/images/jh7110-display3.jpg)
 
 ## dc_bind
 
-TODO
+TODO: Pic above
 
 [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573)
 
@@ -814,11 +814,11 @@ TODO
 
 1.  Disable Clock DC vout
 
-TODO: Pic of dc_init
+![DC8200 Display Controller Driver](https://lupyuen.github.io/images/jh7110-display3.jpg)
 
 ## dc_init
 
-TODO
+TODO: Pic above
 
 [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722)
 
@@ -846,11 +846,11 @@ TODO
 
 1.  Call dc_hw_init
 
-TODO: Pic of vs_dc_enable
+![Setup Display Pipeline](https://lupyuen.github.io/images/jh7110-display5a.jpg)
 
 ## vs_dc_enable
 
-TODO
+TODO: Pic above
 
 [vs_dc_enable](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827) (from Display Controller Driver)
 
