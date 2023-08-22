@@ -391,15 +391,17 @@ static const struct file_operations fops = {
 </li>
 </ul>
 <p>The Display Controller Driver is named <strong>“vs-dc”</strong> (for VeriSilicon Display Controller): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1642-L1649">vs_dc.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>struct platform_driver dc_platform_driver = {
+<div class="example-wrap"><pre class="language-c"><code>// DC8200 Display Controller Driver
+struct platform_driver dc_platform_driver = {
   .probe  = dc_probe,
   .remove = dc_remove,
   .name   = &quot;vs-dc&quot;
 </code></pre></div>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1595-L1629">(<strong>dc_probe</strong> is defined here)</a></p>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1631-L1640">(<strong>dc_remove</strong> is defined here)</a></p>
-<p>These are the <strong>Component Functions</strong> exposed by the Display Controller Driver: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1584-L1587">vs_dc.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>const struct component_ops dc_component_ops = {
+<p>These are the <strong>Component Functions</strong> exposed by the Display Controller Driver to start the driver: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1584-L1587">vs_dc.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// DC8200 Display Component Functions
+const struct component_ops dc_component_ops = {
   .bind   = dc_bind,
   .unbind = dc_unbind,
 };
