@@ -609,7 +609,7 @@ static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
 <p>In our Display Hardware Driver, <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L2038-L2076"><strong>dc_hw_commit</strong></a> will…</p>
 <ol>
 <li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1548-L1574"><strong>gamma_ex_commit</strong></a> to commit the Gamma Correction</li>
-<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863"><strong>plane_ex_commit</strong></a> commit the Display Plane</li>
+<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1768-L1863"><strong>plane_ex_commit</strong></a> to commit the Display Plane</li>
 <li>Update the <strong>Cursor and QoS</strong></li>
 </ol>
 <p><em>What happens in plane_ex_commit?</em></p>
@@ -619,7 +619,7 @@ static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
 <li>Set the <strong>Gamma Correction</strong></li>
 <li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1576-L1766"><strong>plane_commit</strong></a></li>
 </ol>
-<p>Then <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1576-L1766"><strong>plane_commit</strong></a> will do this for every <strong>Display Plane</strong> (Layer)…</p>
+<p>Then <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1576-L1766"><strong>plane_commit</strong></a> will do these for every <strong>Display Plane</strong> (Layer)…</p>
 <ol>
 <li>Set the <strong>Framebuffer YUV Address and Stride</strong></li>
 <li>Set the <strong>Framebuffer Width and Height</strong></li>
