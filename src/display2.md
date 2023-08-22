@@ -833,9 +833,9 @@ At startup, our DRM Driver calls our Display Controller Driver at [__dc_bind__](
 
 1.  Disable the __DC8200 Clock__
 
-1.  Disable Clock __v_out_top__
+1.  Disable Clock __vout_top__
 
-1.  Disable Clock __DC vout__
+1.  Disable Clock __vout_clk__
 
 ![DC8200 Display Controller Driver](https://lupyuen.github.io/images/jh7110-display3.jpg)
 
@@ -847,7 +847,7 @@ At startup, our DRM Driver calls our Display Controller Driver at [__dc_bind__](
 
 [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) will do the following...
 
-1.  Enable Clock __dc_vout_clk__
+1.  Enable Clock __vout_clk__
 
 1.  Deassert the __DC8200 Reset__
 
@@ -883,7 +883,7 @@ DRM __creates the Display Pipeline__ (pic above) by calling our Display Controll
 
 [__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827) will do the following...
 
-1.  Enable Clock __dc_vout_clk__
+1.  Enable Clock __vout_clk__
 
 1.  Deassert the __DC8200 Reset__
 
