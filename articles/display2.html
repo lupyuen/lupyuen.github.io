@@ -162,14 +162,14 @@
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_simple_enc.c"><strong>vs_simple_enc.c</strong></a> - Display Subsystem (DSS) Encoder</p>
 </li>
 <li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c"><strong>vs_gem.c</strong></a> - Graphics Execution Manager (Memory Management)</p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c"><strong>vs_gem.c</strong></a> - Graphics Execution Manager (Memory Buffers)</p>
 </li>
 <li>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_virtual.c"><strong>vs_virtual.c</strong></a> - Virtual Display</p>
 </li>
 <li>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_dec.c"><strong>vs_dc_dec.c</strong></a> - Bitmap Decompression</p>
-<p><a href="https://github.com/starfive-tech/linux/tree/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon">(Build Instructions)</a></p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/README">(<strong>Build Instructions</strong>)</a></p>
 </li>
 </ul>
 <p><em>Phew so many Source Files!</em></p>
@@ -210,10 +210,13 @@
 <p><strong>Display Layers</strong>: Overlays for Cursor, Video, Graphics</p>
 </li>
 <li>
-<p><strong>Output Control</strong>: Blending, Gamma, 3D LUT, RGB-to-YUV, Dithering</p>
+<p><strong>Display Pipelines</strong>: Blending, Gamma, 3D LUT, RGB-to-YUV, Dithering</p>
+</li>
+<li>
+<p><strong>Display Output</strong>: HDMI, MIPI Display Serial Interface</p>
 </li>
 </ul>
-<p>We’ll explain the Display Layers (Overlays) in a while.</p>
+<p>We’ll explain the Display Layers (Overlays) and Display Pipelines in a while.</p>
 <p><em>How are the Display Outputs mapped to MIPI DSI and HDMI?</em></p>
 <p>The <a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/device_tree_config_display.html"><strong>Linux Device Tree</strong></a> configures the mapping of Display Outputs to the Display Devices…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Configure DC8200 Display Controller
@@ -291,7 +294,7 @@ static struct platform_driver *drm_sub_drivers[] = {
   &amp;inno_hdmi_driver,
 #endif
 
-  // Simple Encoder Driver
+  // Display Subsystem (DSS) Encoder Driver
   &amp;simple_encoder_driver,
 
 #ifdef CONFIG_VERISILICON_VIRTUAL_DISPLAY
@@ -329,6 +332,7 @@ static const struct file_operations fops = {
 </code></pre></div>
 <p>(Looks fairly standard for a DRM Driver)</p>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c#L546-L561">(<strong>vs_gem_mmap</strong> is defined here)</a></p>
+<p>Let’s talk about Display Drivers…</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Display Driver renders graphics to a Display Device" /></p>
 <h1 id="inside-the-display-driver"><a href="#inside-the-display-driver">4 Inside the Display Driver</a></h1>
 <p><em>What’s inside a typical Display Driver?</em></p>
@@ -340,7 +344,7 @@ static const struct file_operations fops = {
 <p>Our Apps will write the pixels into a <strong>RAM Framebuffer</strong></p>
 </li>
 <li>
-<p>Inside the SoC is a <strong>Display Engine</strong> that reads the Framebuffer (over DMA)</p>
+<p>Inside the SoC is a <strong>Display Pipeline</strong> (or Display Engine) that reads the Framebuffer (over DMA)</p>
 </li>
 <li>
 <p>And pushes a continuous stream of pixels to a <strong>Display Device</strong></p>
@@ -354,7 +358,7 @@ static const struct file_operations fops = {
 <p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="Overlays" /></p>
 <p>To do this, we configure the <strong>Display Pipeline</strong> to Blend the Framebuffers…</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Blender" /></p>
-<p>Internally, the Display Driver will manipulate the <strong>Display Registers</strong> to…</p>
+<p>Internally, the Display Driver will manipulate the <strong>Display Hardware Registers</strong> to…</p>
 <ol>
 <li>
 <p>Configure the <strong>Framebuffers</strong> (and their RAM Addresses)</p>
@@ -769,7 +773,7 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 <p><img src="https://lupyuen.github.io/images/display2-vout_clkrst18.png" alt="JH7110 Display Subsystem Clock and Reset" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html"><em>JH7110 Display Subsystem Clock and Reset</em></a></p>
 <h1 id="appendix-jh7110-display-clock-and-reset"><a href="#appendix-jh7110-display-clock-and-reset">13 Appendix: JH7110 Display Clock and Reset</a></h1>
-<p>Earlier we talked about our <strong>Display Controller Driver</strong> preparing the Clock and Reset Signals…</p>
+<p>Earlier we talked about our Display Controller Driver preparing the <strong>Clock and Reset Signals</strong>…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller-driver"><strong>“DC8200 Display Controller Driver”</strong></a></p>
