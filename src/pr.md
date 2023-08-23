@@ -350,6 +350,8 @@ For __Code Provenance__ it's good to state __how we created the code__...
 
 >   [(Source)](https://github.com/apache/nuttx/pull/7630)
 
+(Adding __GPL Code__? Please check with the NuttX Maintainers)
+
 ## Impact
 
 Under "Impact", we write __which parts of NuttX are affected__ by the Pull Request. 
