@@ -729,33 +729,15 @@ _How will we create the missing drivers for Star64 JH7110?_
 
 We welcome [__your contribution to NuttX__](https://lupyuen.github.io/articles/pr)!
 
-We have started analysing the __HDMI Support for NuttX__ on Star64 JH7110...
-
-- [__HDMI Display for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#hdmi-display-for-star64-jh7110)
-
-- [__DC8200 Display Controller for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#dc8200-display-controller-for-star64-jh7110)
-
-- [__HDMI Controller for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#hdmi-controller-for-star64-jh7110)
-
-- [__Test HDMI for Star64 JH7110__](https://github.com/lupyuen/nuttx-star64#test-hdmi-for-star64-jh7110)
-
-- [__Direct Rendering Manager Driver for DC8200__](https://github.com/lupyuen/nuttx-star64#direct-rendering-manager-driver-for-dc8200)
-
-- [__Call Flow for DC8200 Display Controller Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-dc8200-display-controller-driver)
-
-- [__Call Flow for DC8200 Display Hardware Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-dc8200-display-hardware-driver)
-
-- [__Call Flow for DC8200 Virtual Display Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-dc8200-virtual-display-driver)
-
-- [__Call Flow for HDMI Controller Driver__](https://github.com/lupyuen/nuttx-star64#call-flow-for-hdmi-controller-driver)
-
-_What about the other JH7110 Peripherals?_
-
 Based on the official docs...
 
 - [__JH7110 Technical Reference Manual__](https://doc-en.rvspace.org/JH7110/TRM/)
 
 - [__VisionFive 2 Developing and Porting Guide__](https://doc-en.rvspace.org/Doc_Center/sdk_developer_guide.html)
+
+We have started working on the __HDMI Support for NuttX__ on Star64 JH7110...
+
+- [__"RISC-V Star64 JH7110: Inside the Display Controller"__](https://lupyuen.github.io/articles/display2)
 
 Here are the relevant docs for the other JH7110 Peripherals...
 
