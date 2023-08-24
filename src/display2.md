@@ -716,6 +716,8 @@ Not quite. We have a bit more to explore, like the __HDMI Controller for JH7110_
 
 - [__U-Boot Display Driver for JH7110__](https://github.com/starfive-tech/u-boot/tree/JH7110_VisionFive2_devel/drivers/video/starfive)
 
+- [__Analysis of HDMI Driver for U-Boot Bootloader__](https://github.com/lupyuen/nuttx-star64#hdmi-driver-for-u-boot-bootloader)
+
 - [__dc_hw_init__ looks awfully familiar](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L237-L248)
 
 When we port NuttX to the __PineTab-V Tablet__, we'll need drivers for __MIPI DSI and LCD Panel__...
