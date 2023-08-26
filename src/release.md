@@ -120,6 +120,8 @@ Let's walk through the steps to __build NuttX for Star64__...
 
     [(Automated Daily Builds)](https://github.com/lupyuen/nuttx-star64/releases)
 
+    [(Shell Script to Build and Run)](https://gist.github.com/lupyuen/62392f5644f903232f5fcde2d5b9a03d)
+
 Now we create a Bootable microSD...
 
 ![NuttX goes into the FAT Partition on the microSD](https://lupyuen.github.io/images/release-microsd.png)
