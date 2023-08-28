@@ -758,6 +758,10 @@ run display_on
   mount(NULL, &quot;/proc&quot;, &quot;procfs&quot;, 0, NULL);
 #endif
 
+  // Verfy that Display Controller is down
+  uint32_t val = getreg32(0x295C0000);
+  DEBUGASSERT(val == 0);
+
   // Power up the Display Controller
   // TODO: Switch to constants
   putreg32(0x10, 0x1703000c);
@@ -774,14 +778,17 @@ run display_on
   putreg32(0x80000000, 0x130200f8);
   putreg32(0x80000000, 0x130200fc);
 
-  // TODO: Modify register with modifyreg32(addr, clearbits, setbits)
-  // mw 130202fc 0x7e7f600 1
+  // Software RESET 1 Address Selector: Offset 0x2fc
+  // Clear Bit 11: rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src
+  modifyreg32(0x130202fc, 1 &lt;&lt; 11, 0);  // Addr, Clear Bits, Set Bits
 
-  // TODO: Modify register with modifyreg32(addr, clearbits, setbits)
-  // mw 13020308 0xfb9fffff 1
+  // SYSCRG RESET Status 0: Offset 0x308
+  // Clear Bit 26: rstn_u0_sft7110_noc_bus_reset_disp_axi_n
+  modifyreg32(0x13020308, 1 &lt;&lt; 26, 0);  // Addr, Clear Bits, Set Bits
 
-  // TODO: Verfy that Display Controller is up with getreg32
-  // md 295C0000 0x20
+  // Verfy that Display Controller is up
+  val = getreg32(0x295C0000);
+  DEBUGASSERT(val == 4);
 
   // Test HDMI
   int test_hdmi(void);
