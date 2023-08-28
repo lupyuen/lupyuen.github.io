@@ -4,21 +4,21 @@
 
 ![Star64 JH7110 Display Controller is alive!](https://lupyuen.github.io/images/display3-title.png)
 
-TODO
+In the olden days we would __`peek`__ and __`poke`__ the __Display Controller__, to see weird and wonderful displays.
 
-In the olden days we would `peek` and `poke` the Display Controller, to see weird and wonderful displays.
-
-Today (46 years later), we poke around the Display Controller of Star64 JH7110 SBC with a modern tool (not BASIC): U-Boot Bootloader!
+Today (46 years later), we poke around the Display Controller of [__Star64 JH7110 SBC__](https://wiki.pine64.org/wiki/STAR64) with a modern tool (not BASIC): __U-Boot Bootloader__!
 
 (Spoiler: No weird and wonderful displays for today!)
 
-[__RISC-V StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html)
+TODO
 
 _Why are we doing this?_
 
 We're building a __HDMI Display Driver__ for [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS) on the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) SBC. (Based on JH7110, just like VisionFive2)
 
 Our analysis today will be super useful for creating our __HDMI Driver for NuttX__ on Star64. (Pic below)
+
+[__RISC-V StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html)
 
 And hopefully this article will be helpful for __porting other Operating Systems__ to JH7110!
 
