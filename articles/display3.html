@@ -67,7 +67,7 @@
 
     <h1 class="title">RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader</h1>
     <nav id="TOC"><ul>
-<li><a href="#poking-the-star64-jh7110-display-controller-with-u-boot-bootloader">1 Poking the Star64 JH7110 Display Controller with U-Boot Bootloader</a><ul></ul></li>
+<li><a href="#dumping-and-writing-memory-with-u-boot-bootloader">1 Dumping and Writing Memory with U-Boot Bootloader</a><ul></ul></li>
 <li><a href="#power-management-registers-for-star64-jh7110-display-controller">2 Power Management Registers for Star64 JH7110 Display Controller</a><ul></ul></li>
 <li><a href="#clock-and-reset-registers-for-star64-jh7110-display-controller">3 Clock and Reset Registers for Star64 JH7110 Display Controller</a><ul></ul></li>
 <li><a href="#automate-u-boot-to-power-up-display-controller">4 Automate U-Boot to Power Up Display Controller</a><ul></ul></li>
@@ -102,15 +102,17 @@
 <p>Our analysis today will be super useful for creating our <strong>HDMI Driver for NuttX</strong> on Star64. (Pic below)</p>
 <p>And hopefully this article will be helpful for <strong>porting other Operating Systems</strong> to JH7110!</p>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Pine64 Star64 RISC-V SBC" /></p>
-<h1 id="poking-the-star64-jh7110-display-controller-with-u-boot-bootloader"><a href="#poking-the-star64-jh7110-display-controller-with-u-boot-bootloader">1 Poking the Star64 JH7110 Display Controller with U-Boot Bootloader</a></h1>
-<p>TODO</p>
-<p>Boot Star64 SBC without a microSD Card. Shut down our TFTP Server. We should see the U-Boot Prompt.</p>
-<p>The <code>md</code> command dumps the JH7110 Memory: RAM, ROM, even I/O Registers!</p>
+<h1 id="dumping-and-writing-memory-with-u-boot-bootloader"><a href="#dumping-and-writing-memory-with-u-boot-bootloader">1 Dumping and Writing Memory with U-Boot Bootloader</a></h1>
+<p><em>A Bootloader that will Read and Write Memory?</em></p>
+<p>Yep it’s surprising (maybe risky) that <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> will read and write JH7110 Memory: <strong>RAM, ROM, even I/O Registers</strong>! (ROM is read-only of course)</p>
+<p>Boot Star64 SBC <strong>without a microSD Card</strong> and shut down our <a href="https://lupyuen.github.io/articles/tftp"><strong>TFTP Server</strong></a>. We should see the <strong>U-Boot Prompt</strong>.</p>
+<p>The <strong><code>md</code></strong> command will dump JH7110 Memory (RAM, ROM, I/O Registers)…</p>
 <div class="example-wrap"><pre class="language-text"><code># md
 md - memory display
 Usage: md [.b, .w, .l, .q] address [# of objects]
 </code></pre></div>
-<p>We can dump the Boot ROM at <code>0x2A00</code> <code>0000</code>…</p>
+<p>TODO</p>
+<p>Let’s dump the Boot ROM at <code>0x2A00</code> <code>0000</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 2A000000
 2a000000: 00000297 12628293 30529073 30005073  ......b.s.R0sP.0
 2a000010: 30405073 41014081 42014181 43014281  sP@0.@.A.A.B.B.C
