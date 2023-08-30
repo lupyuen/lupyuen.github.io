@@ -243,7 +243,7 @@ TODO: Pic of JH7110 Clock Structure
 
 [_JH7110 Clock Structure_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html)
 
-# Clocks and Reset for Display Subsystem
+# Clocks and Resets for Display Subsystem
 
 _Display Subsystem (VOUT) is already powered up via the Power Management Unit (PMU)..._
 
@@ -424,11 +424,19 @@ So much easier to power up the Display Subsystem!
 
 Let's talk about the Display Controller...
 
-# Power Up the JH7110 Display Controller
+# Clocks and Resets for Display Controller
 
 _JH7110 Display Subsystem is now powered up..._
 
 _What about the Display Controller?_
+
+Nope our __DC2800 Display Controller__ (DC2800 AHB0) is stil invisible...
+
+```text
+# md 29400000 0x20
+29400000: 00000000 00000000 00000000 00000000  ................
+29400010: 00000000 00000000 00000000 00000000  ................
+```
 
 TODO
 
@@ -786,15 +794,24 @@ void board_late_initialize(void) {
 // https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html
 #define CRG_BASE_ADDRESS     (DISPLAY_BASE_ADDRESS + 0x1C0000)
 
-// Enable Clock
+// DOM VOUT Control Registers
 // https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html
+
+#define clk_u0_dc8200_clk_axi   (CRG_BASE_ADDRESS + 0x10)
+#define clk_u0_dc8200_clk_core  (CRG_BASE_ADDRESS + 0x14)
+#define clk_u0_dc8200_clk_ahb   (CRG_BASE_ADDRESS + 0x18)
+#define clk_u0_dc8200_clk_pix0  (CRG_BASE_ADDRESS + 0x1c)
+#define clk_u0_dc8200_clk_pix1  (CRG_BASE_ADDRESS + 0x20)
+#define clk_u0_hdmi_tx_clk_mclk (CRG_BASE_ADDRESS + 0x3c)
+#define clk_u0_hdmi_tx_clk_bclk (CRG_BASE_ADDRESS + 0x40)
+#define clk_u0_hdmi_tx_clk_sys  (CRG_BASE_ADDRESS + 0x44)
 #define CLK_ICG (1 << 31)
 
-// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html
-#define clk_u0_dc8200_clk_pix0 (CRG_BASE_ADDRESS + 0x1c)
-
-// Test HDMI
-int test_hdmi(void) { ... }
+#define Software_RESET_assert0_addr_assert_sel (CRG_BASE_ADDRESS + 0x38)
+#define rstn_u0_dc8200_rstn_axi   (1 << 0)
+#define rstn_u0_dc8200_rstn_ahb   (1 << 1)
+#define rstn_u0_dc8200_rstn_core  (1 << 2)
+#define rstn_u0_hdmi_tx_rstn_hdmi (1 << 9)
 ```
 
 # JH7110 System Configuration Registers
