@@ -159,13 +159,13 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 </ul>
 <p>The registers for <strong>JH7110 Display Subsystem</strong> are at…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: left">Display Registers</th></tr></thead><tbody>
-<tr><td style="text-align: center"><strong><code>0x2940 0000</code></strong></td><td style="text-align: left"><strong>DC8200 AHB0</strong> <em>(Display Bus 0)</em></td></tr>
-<tr><td style="text-align: center"><strong><code>0x2948 0000</code></strong></td><td style="text-align: left"><strong>DC8200 AHB1</strong> <em>(Display Bus 1)</em></td></tr>
-<tr><td style="text-align: center"><strong><code>0x2959 0000</code></strong></td><td style="text-align: left"><strong>U0_HDMITX</strong> <em>(HDMI)</em></td></tr>
-<tr><td style="text-align: center"><strong><code>0x295B 0000</code></strong></td><td style="text-align: left"><strong>VOUT_SYSCON</strong> <em>(System Config)</em></td></tr>
-<tr><td style="text-align: center"><strong><code>0x295C 0000</code></strong></td><td style="text-align: left"><strong>VOUT_CRG</strong> <em>(Clock and Reset)</em></td></tr>
-<tr><td style="text-align: center"><strong><code>0x295D 0000</code></strong></td><td style="text-align: left"><strong>DSI TX</strong> <em>(MIPI Display Serial Interface)</em></td></tr>
-<tr><td style="text-align: center"><strong><code>0x295E 0000</code></strong></td><td style="text-align: left"><strong>MIPITX DPHY</strong> <em>(MIPI Display Physical Layer)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x2940 0000</code></strong></td><td style="text-align: left"><strong>DC8200 AHB0</strong> <br><em>(Display Bus 0)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x2948 0000</code></strong></td><td style="text-align: left"><strong>DC8200 AHB1</strong> <br><em>(Display Bus 1)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x2959 0000</code></strong></td><td style="text-align: left"><strong>U0_HDMITX</strong> <br><em>(HDMI)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x295B 0000</code></strong></td><td style="text-align: left"><strong>VOUT_SYSCON</strong> <br><em>(System Config)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x295C 0000</code></strong></td><td style="text-align: left"><strong>VOUT_CRG</strong> <br><em>(Clock and Reset)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x295D 0000</code></strong></td><td style="text-align: left"><strong>DSI TX</strong> <br><em>(MIPI Display Serial Interface)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x295E 0000</code></strong></td><td style="text-align: left"><strong>MIPITX DPHY</strong> <br><em>(MIPI Display Physical Layer)</em></td></tr>
 </tbody></table>
 </div>
 <p><a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller">(<strong>DC8200</strong> is the <strong>VeriSilicon Dual Display Controller</strong>)</a></p>
@@ -563,7 +563,7 @@ StarFive # md 29400030 1
 29400030: 0000030e                             ....
 StarFive # 
 </code></pre></div>
-<p>Based on [vs_dc_hw.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361…</p>
+<p>Based on <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">vs_dc_hw.c</a>…</p>
 <ul>
 <li>
 <p>revision = 0x5720</p>
