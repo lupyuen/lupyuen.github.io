@@ -323,7 +323,8 @@ Boot HART MEDELEG         : 0x000000000000b109
 <p>Let’s jump to U-Boot…</p>
 <h1 id="u-boot-bootloader-for-star64"><a href="#u-boot-bootloader-for-star64">6 U-Boot Bootloader for Star64</a></h1>
 <p><em>What happens when U-Boot Bootloader starts on Star64?</em></p>
-<p>Star64 loads <strong>U-Boot Bootloader</strong> from Internal Flash Memory into RAM Address <a href="https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19"><strong><code>0x4020</code> <code>0000</code></strong></a> and runs it…</p>
+<p><a href="https://u-boot.readthedocs.io/en/latest/index.html"><strong>U-Boot Bootloader</strong></a> will boot our Operating System (Linux or NuttX) on the Star64 SBC.</p>
+<p>At startup, <a href="https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface"><strong>OpenSBI on Star64</strong></a> loads U-Boot Bootloader from Internal Flash Memory (into RAM Address <a href="https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19"><strong><code>0x4020</code> <code>0000</code></strong></a>) and runs it…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
 CPU:   rv64imacu
 Model: StarFive VisionFive V2
@@ -335,8 +336,8 @@ SF: Detected gd25lq128 with page size 256 Bytes, erase size 4 KiB, total 16 MiB
 Hit any key to stop autoboot
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#appendix-u-boot-bootloader-log-for-star64">(Source)</a></p>
-<p>Suppose there’s <strong>no microSD Card inserted</strong>.</p>
-<p>U-Boot tries to <strong>load the Linux Image</strong> from the microSD Card, but fails…</p>
+<p>Normally U-Boot will boot our Operating System from microSD Card. (Or over the Network)</p>
+<p>Suppose there’s <strong>no microSD Card inserted</strong>. U-Boot tries to <strong>load the Linux Image</strong> from the microSD Card, but fails…</p>
 <div class="example-wrap"><pre class="language-text"><code>Card did not respond to voltage select! : -110
 Couldn&#39;t find partition mmc 0:3
 Can&#39;t set block device
