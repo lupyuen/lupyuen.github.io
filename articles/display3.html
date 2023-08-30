@@ -70,9 +70,9 @@
 <li><a href="#dump-and-write-memory-with-u-boot-bootloader">1 Dump and Write Memory with U-Boot Bootloader</a><ul></ul></li>
 <li><a href="#dump-the-jh7110-display-controller">2 Dump the JH7110 Display Controller</a><ul></ul></li>
 <li><a href="#jh7110-power-management-unit">3 JH7110 Power Management Unit</a><ul></ul></li>
-<li><a href="#clocks-and-reset-for-display-subsystem">4 Clocks and Reset for Display Subsystem</a><ul></ul></li>
+<li><a href="#clocks-and-resets-for-display-subsystem">4 Clocks and Resets for Display Subsystem</a><ul></ul></li>
 <li><a href="#u-boot-script-to-power-up-the-display-subsystem">5 U-Boot Script to Power Up the Display Subsystem</a><ul></ul></li>
-<li><a href="#power-up-the-jh7110-display-controller">6 Power Up the JH7110 Display Controller</a><ul></ul></li>
+<li><a href="#clocks-and-resets-for-display-controller">6 Clocks and Resets for Display Controller</a><ul></ul></li>
 <li><a href="#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader">7 Read the Star64 JH7110 Display Controller Registers with U-Boot Bootloader</a><ul></ul></li>
 <li><a href="#nuttx-display-driver-for-jh7110">8 NuttX Display Driver for JH7110</a><ul></ul></li>
 <li><a href="#jh7110-system-configuration-registers">9 JH7110 System Configuration Registers</a><ul></ul></li>
@@ -256,7 +256,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p>We need more tweaks, for the Clock and Reset Signals…</p>
 <p>TODO: Pic of JH7110 Clock Structure</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html"><em>JH7110 Clock Structure</em></a></p>
-<h1 id="clocks-and-reset-for-display-subsystem"><a href="#clocks-and-reset-for-display-subsystem">4 Clocks and Reset for Display Subsystem</a></h1>
+<h1 id="clocks-and-resets-for-display-subsystem"><a href="#clocks-and-resets-for-display-subsystem">4 Clocks and Resets for Display Subsystem</a></h1>
 <p><em>Display Subsystem (VOUT) is already powered up via the Power Management Unit (PMU)…</em></p>
 <p><em>Anything else we need to make it work?</em></p>
 <p>Always remember to enable the <strong>Clocks</strong> and deassert the <strong>Resets</strong>!</p>
@@ -393,9 +393,14 @@ run video_on
 </code></pre></div>
 <p>So much easier to power up the Display Subsystem!</p>
 <p>Let’s talk about the Display Controller…</p>
-<h1 id="power-up-the-jh7110-display-controller"><a href="#power-up-the-jh7110-display-controller">6 Power Up the JH7110 Display Controller</a></h1>
+<h1 id="clocks-and-resets-for-display-controller"><a href="#clocks-and-resets-for-display-controller">6 Clocks and Resets for Display Controller</a></h1>
 <p><em>JH7110 Display Subsystem is now powered up…</em></p>
 <p><em>What about the Display Controller?</em></p>
+<p>Nope our <strong>DC2800 Display Controller</strong> (DC2800 AHB0) is stil invisible…</p>
+<div class="example-wrap"><pre class="language-text"><code># md 29400000 0x20
+29400000: 00000000 00000000 00000000 00000000  ................
+29400010: 00000000 00000000 00000000 00000000  ................
+</code></pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L154-L215">jh7110_appinit.c</a>:</p>
 <div class="example-wrap"><pre class="language-c"><code>// Display Subsystem Base Address
@@ -713,15 +718,24 @@ StarFive # run display_on
 // https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html
 #define CRG_BASE_ADDRESS     (DISPLAY_BASE_ADDRESS + 0x1C0000)
 
-// Enable Clock
+// DOM VOUT Control Registers
 // https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html
+
+#define clk_u0_dc8200_clk_axi   (CRG_BASE_ADDRESS + 0x10)
+#define clk_u0_dc8200_clk_core  (CRG_BASE_ADDRESS + 0x14)
+#define clk_u0_dc8200_clk_ahb   (CRG_BASE_ADDRESS + 0x18)
+#define clk_u0_dc8200_clk_pix0  (CRG_BASE_ADDRESS + 0x1c)
+#define clk_u0_dc8200_clk_pix1  (CRG_BASE_ADDRESS + 0x20)
+#define clk_u0_hdmi_tx_clk_mclk (CRG_BASE_ADDRESS + 0x3c)
+#define clk_u0_hdmi_tx_clk_bclk (CRG_BASE_ADDRESS + 0x40)
+#define clk_u0_hdmi_tx_clk_sys  (CRG_BASE_ADDRESS + 0x44)
 #define CLK_ICG (1 &lt;&lt; 31)
 
-// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html
-#define clk_u0_dc8200_clk_pix0 (CRG_BASE_ADDRESS + 0x1c)
-
-// Test HDMI
-int test_hdmi(void) { ... }
+#define Software_RESET_assert0_addr_assert_sel (CRG_BASE_ADDRESS + 0x38)
+#define rstn_u0_dc8200_rstn_axi   (1 &lt;&lt; 0)
+#define rstn_u0_dc8200_rstn_ahb   (1 &lt;&lt; 1)
+#define rstn_u0_dc8200_rstn_core  (1 &lt;&lt; 2)
+#define rstn_u0_hdmi_tx_rstn_hdmi (1 &lt;&lt; 9)
 </code></pre></div><h1 id="jh7110-system-configuration-registers"><a href="#jh7110-system-configuration-registers">9 JH7110 System Configuration Registers</a></h1>
 <p>TODO</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_syscon.html">SYS SYSCON: System Configuration Registers</a></p>
