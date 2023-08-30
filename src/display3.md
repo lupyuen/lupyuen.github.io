@@ -292,6 +292,7 @@ To enable the Clock Registers above, we set __Bit 31 (clk_icg)__ to 1.
 Here are the U-Boot Commands to enable the Clocks...
 
 ```text
+## Enable the Clocks for Video Output / Display Subsystem
 mw 13020028 0x80000000 1
 mw 1302004c 0x80000000 1
 mw 13020098 0x80000000 1
@@ -373,10 +374,13 @@ TODO: The Default Values seem to match [DOM VOUT CRG](https://doc-en.rvspace.org
 _Phew that's a long list of U-Boot Commands. Can we automate this?_
 
 ```text
+## Power Up the PMU for Video Output / Display Subsystem
 mw 1703000c 0x10 1
 mw 17030044 0xff 1
 mw 17030044 0x05 1
 mw 17030044 0x50 1
+
+## Enable the Clocks for Video Output / Display Subsystem
 mw 13020028 0x80000000 1
 mw 1302004c 0x80000000 1
 mw 13020098 0x80000000 1
@@ -386,6 +390,8 @@ mw 130200f0 0x80000000 1
 mw 130200f4 0x80000000 1
 mw 130200f8 0x80000000 1
 mw 130200fc 0x80000000 1
+
+## Deassert the Resets for Video Output / Display Subsystem
 mw 130202fc 0x07e7f600 1
 mw 13020308 0xfb9fffff 1
 md 295C0000 0x20
