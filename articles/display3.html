@@ -349,8 +349,7 @@ mw 130200fc 0x80000000 1
 <p>TODO: The Default Values seem to match <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html">DOM VOUT CRG</a>. (<code>clk_tx_esc</code> should have default <code>24'hc</code>, there is a typo in the doc: <code>24'h12</code>)</p>
 <p><img src="https://lupyuen.github.io/images/display3-typo.png" alt="clk_tx_esc should have default 24'hc, there is a typo in the doc: 24'h12" /></p>
 <h1 id="u-boot-script-to-power-up-display-subsystem"><a href="#u-boot-script-to-power-up-display-subsystem">5 U-Boot Script to Power Up Display Subsystem</a></h1>
-<p>TODO</p>
-<p><em>That’s a long list of U-Boot Commands. Can we automate this?</em></p>
+<p><em>Phew that’s a long list of U-Boot Commands. Can we automate this?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>mw 1703000c 0x10 1
 mw 17030044 0xff 1
 mw 17030044 0x05 1
@@ -364,13 +363,13 @@ mw 130200f0 0x80000000 1
 mw 130200f4 0x80000000 1
 mw 130200f8 0x80000000 1
 mw 130200fc 0x80000000 1
-mw 130202fc 0x7e7f600 1
+mw 130202fc 0x07e7f600 1
 mw 13020308 0xfb9fffff 1
 md 295C0000 0x20
 </code></pre></div>
-<p>Sure can! Run this in U-Boot…</p>
-<div class="example-wrap"><pre class="language-text"><code>## Create the command to power up the Video Output
-setenv video_on &#39;mw 1703000c 0x10 1 ; mw 17030044 0xff 1 ; mw 17030044 0x05 1 ; mw 17030044 0x50 1 ; mw 13020028 0x80000000 1 ; mw 1302004c 0x80000000 1 ; mw 13020098 0x80000000 1 ; mw 1302009c 0x80000000 1 ; mw 130200e8 0x80000000 1 ; mw 130200f0 0x80000000 1 ; mw 130200f4 0x80000000 1 ; mw 130200f8 0x80000000 1 ; mw 130200fc 0x80000000 1 ; mw 130202fc 0x7e7f600 1 ; mw 13020308 0xfb9fffff 1 ; md 295C0000 0x20 ; &#39;
+<p>Sure can! Run this to create a <strong>U-Boot Script</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>## Create the U-Boot Script to power up the Video Output
+setenv video_on &#39;mw 1703000c 0x10 1 ; mw 17030044 0xff 1 ; mw 17030044 0x05 1 ; mw 17030044 0x50 1 ; mw 13020028 0x80000000 1 ; mw 1302004c 0x80000000 1 ; mw 13020098 0x80000000 1 ; mw 1302009c 0x80000000 1 ; mw 130200e8 0x80000000 1 ; mw 130200f0 0x80000000 1 ; mw 130200f4 0x80000000 1 ; mw 130200f8 0x80000000 1 ; mw 130200fc 0x80000000 1 ; mw 130202fc 0x07e7f600 1 ; mw 13020308 0xfb9fffff 1 ; md 295C0000 0x20 ; &#39;
 
 ## Check that it&#39;s correct
 printenv video_on
@@ -378,22 +377,20 @@ printenv video_on
 ## Save it for future reboots
 saveenv
 
-## Run the command to power up the Video Output
+## Run the U-Boot Script to power up the Video Output
 run video_on
 </code></pre></div>
-<p>(The <code>run</code> feels a bit like BASIC)</p>
-<p>We should see…</p>
-<div class="example-wrap"><pre class="language-text"><code>StarFive # run video_on
+<p>The U-Boot Script <strong><code>video_on</code></strong> is now saved into our SBC’s Internal Flash Memory. </p>
+<p>We can power on our SBC and run the script anytime…</p>
+<div class="example-wrap"><pre class="language-text"><code># run video_on
 295c0000: 00000004 00000004 00000004 0000000c  ................
 295c0010: 00000000 00000000 00000000 00000000  ................
 295c0020: 00000000 00000000 00000000 00000000  ................
 295c0030: 00000000 00000000 00000000 00000000  ................
 295c0040: 00000000 00000000 00000fff 00000000  ................
-295c0050: 00000000 00000000 00000000 00000000  ................
-295c0060: 00000000 00000000 00000000 00000000  ................
-295c0070: 00000000 00000000 00000000 00000000  ................
 </code></pre></div>
 <p>So much easier!</p>
+<p>TODO</p>
 <p>Maybe we could use this to render something to the HDMI Display!</p>
 <p>(Before converting to C for NuttX)</p>
 <p><em>How will we test this in NuttX?</em></p>
@@ -680,7 +677,7 @@ StarFive # md 295C0000 0x20
 StarFive # 
 </code></pre></div>
 <p>U-Boot Script:</p>
-<div class="example-wrap"><pre class="language-text"><code>## Create the command to power up the Display Controller
+<div class="example-wrap"><pre class="language-text"><code>## Create the U-Boot Script to power up the Display Controller
 setenv display_on &#39;mw 295C0010 0x80000000 1 ; mw 295C0014 0x80000000 1 ; mw 295C0018 0x80000000 1 ; mw 295C001c 0x80000000 1 ; mw 295C0020 0x80000000 1 ; mw 295C003c 0x80000000 1 ; mw 295C0040 0x80000000 1 ; mw 295C0044 0x80000000 1 ; mw 295C0048 0 1 ; md 29400000 0x20 ; &#39;
 
 ## Check that it&#39;s correct
@@ -689,10 +686,10 @@ printenv display_on
 ## Save it for future reboots
 saveenv
 
-## Run the command to power up the Video Output
+## Run the U-Boot Script to power up the Video Output
 run video_on
 
-## Run the command to power up the Display Controller
+## Run the U-Boot Script to power up the Display Controller
 run display_on
 </code></pre></div>
 <p>We should see…</p>
