@@ -113,13 +113,13 @@ The registers for __JH7110 Display Subsystem__ are at...
 
 | Address | Display Registers |
 |:-------:|:------------------|
-| __`0x2940 0000`__ | __DC8200 AHB0__ _(Display Bus 0)_
-| __`0x2948 0000`__ | __DC8200 AHB1__ _(Display Bus 1)_
-| __`0x2959 0000`__ | __U0_HDMITX__ _(HDMI)_
-| __`0x295B 0000`__ | __VOUT_SYSCON__ _(System Config)_
-| __`0x295C 0000`__ | __VOUT_CRG__ _(Clock and Reset)_
-| __`0x295D 0000`__ | __DSI TX__ _(MIPI Display Serial Interface)_
-| __`0x295E 0000`__ | __MIPITX DPHY__ _(MIPI Display Physical Layer)_
+| __`0x2940 0000`__ | __DC8200 AHB0__ <br>_(Display Bus 0)_
+| __`0x2948 0000`__ | __DC8200 AHB1__ <br>_(Display Bus 1)_
+| __`0x2959 0000`__ | __U0_HDMITX__ <br>_(HDMI)_
+| __`0x295B 0000`__ | __VOUT_SYSCON__ <br>_(System Config)_
+| __`0x295C 0000`__ | __VOUT_CRG__ <br>_(Clock and Reset)_
+| __`0x295D 0000`__ | __DSI TX__ <br>_(MIPI Display Serial Interface)_
+| __`0x295E 0000`__ | __MIPITX DPHY__ <br>_(MIPI Display Physical Layer)_
 
 [(__DC8200__ is the __VeriSilicon Dual Display Controller__)](https://lupyuen.github.io/articles/display2#dc8200-display-controller)
 
@@ -620,7 +620,7 @@ StarFive # md 29400030 1
 StarFive # 
 ```
 
-Based on [vs_dc_hw.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361...
+Based on [vs_dc_hw.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361)...
 
 - revision = 0x5720
 	
