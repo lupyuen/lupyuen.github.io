@@ -1,4 +1,4 @@
-# RISC-V Star64 JH7110: Poking the Display Controller with U-Boot Bootloader
+# RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader
 
 📝 _7 Sep 2023_
 
