@@ -368,7 +368,7 @@ TODO: The Default Values seem to match [DOM VOUT CRG](https://doc-en.rvspace.org
 
 ![`clk_tx_esc` should have default `24'hc`, there is a typo in the doc: `24'h12`](https://lupyuen.github.io/images/display3-typo.png)
 
-# U-Boot Script to Power Up Display Subsystem
+# U-Boot Script to Power Up the Display Subsystem
 
 _Phew that's a long list of U-Boot Commands. Can we automate this?_
 
@@ -391,7 +391,7 @@ mw 13020308 0xfb9fffff 1
 md 295C0000 0x20
 ```
 
-Sure can! Run this to create a __U-Boot Script__...
+Sure can! Run this to create a __U-Boot Script__ that powers up the Display Subsystem...
 
 ```text
 ## Create the U-Boot Script to power up the Video Output
@@ -409,7 +409,7 @@ run video_on
 
 The U-Boot Script __`video_on`__ is now saved into our SBC's Internal Flash Memory. 
 
-We can power on our SBC and run the script anytime...
+Now we can switch on our SBC and run the script anytime...
 
 ```text
 # run video_on
@@ -420,86 +420,15 @@ We can power on our SBC and run the script anytime...
 295c0040: 00000000 00000000 00000fff 00000000  ................
 ```
 
-So much easier!
+So much easier to power up the Display Subsystem!
 
-TODO
+Let's talk about the Display Controller...
 
-Maybe we could use this to render something to the HDMI Display!
+# Power Up the JH7110 Display Controller
 
-(Before converting to C for NuttX)
+_JH7110 Display Subsystem is now powered up..._
 
-_How will we test this in NuttX?_
-
-Probably inside `board_late_initialize` like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L154-L215)
-
-```c
-void board_late_initialize(void) {
-  /* Mount the RAM Disk */
-  mount_ramdisk();
-
-  /* Perform board-specific initialization */
-#ifdef CONFIG_NSH_ARCHINIT
-  mount(NULL, "/proc", "procfs", 0, NULL);
-#endif
-
-  // Verfy that Display Controller is down
-  uint32_t val = getreg32(0x295C0000);
-  DEBUGASSERT(val == 0);
-
-  // Power up the Display Controller
-  // TODO: Switch to constants
-  putreg32(0x10, 0x1703000c);
-  putreg32(0xff, 0x17030044);
-  putreg32(0x05, 0x17030044);
-  putreg32(0x50, 0x17030044);
-  putreg32(0x80000000, 0x13020028);
-  putreg32(0x80000000, 0x1302004c);
-  putreg32(0x80000000, 0x13020098);
-  putreg32(0x80000000, 0x1302009c);
-  putreg32(0x80000000, 0x130200e8);
-  putreg32(0x80000000, 0x130200f0);
-  putreg32(0x80000000, 0x130200f4);
-  putreg32(0x80000000, 0x130200f8);
-  putreg32(0x80000000, 0x130200fc);
-
-  // Software RESET 1 Address Selector: Offset 0x2fc
-  // Clear Bit 11: rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src
-  modifyreg32(0x130202fc, 1 << 11, 0);  // Addr, Clear Bits, Set Bits
-
-  // SYSCRG RESET Status 0: Offset 0x308
-  // Clear Bit 26: rstn_u0_sft7110_noc_bus_reset_disp_axi_n
-  modifyreg32(0x13020308, 1 << 26, 0);  // Addr, Clear Bits, Set Bits
-
-  // Verfy that Display Controller is up
-  val = getreg32(0x295C0000);
-  DEBUGASSERT(val == 4);
-
-  // Test HDMI
-  int test_hdmi(void);
-  int ret = test_hdmi();
-  DEBUGASSERT(ret == 0);
-}
-
-// Display Subsystem Base Address
-// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html
-#define DISPLAY_BASE_ADDRESS (0x29400000)
-
-// DOM VOUT Control Registers
-// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html
-#define CRG_BASE_ADDRESS     (DISPLAY_BASE_ADDRESS + 0x1C0000)
-
-// Enable Clock
-// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html
-#define CLK_ICG (1 << 31)
-
-// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html
-#define clk_u0_dc8200_clk_pix0 (CRG_BASE_ADDRESS + 0x1c)
-
-// Test HDMI
-int test_hdmi(void) { ... }
-```
-
-# Read the Star64 JH7110 Display Controller Registers with U-Boot Bootloader
+_What about the Display Controller?_
 
 TODO
 
@@ -660,6 +589,10 @@ TODO: Why is Reset at 295C0048?
 
 TODO: Did we overwrite any default values for Clock Mux and Multiplier?
 
+# Read the Star64 JH7110 Display Controller Registers with U-Boot Bootloader
+
+TODO
+
 [Revision and Chip ID](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361) are at...
 
 ```c
@@ -781,6 +714,87 @@ StarFive # run display_on
 29400050: 00000000 00000000 00000000 00000000  ................
 29400060: 00000000 00000000 00000000 00000000  ................
 29400070: 00000000 08050000 00000002 00000000  ................
+```
+
+TODO
+
+Maybe we could use this to render something to the HDMI Display!
+
+(Before converting to C for NuttX)
+
+# NuttX Display Driver for JH7110
+
+TODO
+
+_How will we test this in NuttX?_
+
+Probably inside `board_late_initialize` like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L154-L215)
+
+```c
+void board_late_initialize(void) {
+  /* Mount the RAM Disk */
+  mount_ramdisk();
+
+  /* Perform board-specific initialization */
+#ifdef CONFIG_NSH_ARCHINIT
+  mount(NULL, "/proc", "procfs", 0, NULL);
+#endif
+
+  // Verfy that Display Controller is down
+  uint32_t val = getreg32(0x295C0000);
+  DEBUGASSERT(val == 0);
+
+  // Power up the Display Controller
+  // TODO: Switch to constants
+  putreg32(0x10, 0x1703000c);
+  putreg32(0xff, 0x17030044);
+  putreg32(0x05, 0x17030044);
+  putreg32(0x50, 0x17030044);
+  putreg32(0x80000000, 0x13020028);
+  putreg32(0x80000000, 0x1302004c);
+  putreg32(0x80000000, 0x13020098);
+  putreg32(0x80000000, 0x1302009c);
+  putreg32(0x80000000, 0x130200e8);
+  putreg32(0x80000000, 0x130200f0);
+  putreg32(0x80000000, 0x130200f4);
+  putreg32(0x80000000, 0x130200f8);
+  putreg32(0x80000000, 0x130200fc);
+
+  // Software RESET 1 Address Selector: Offset 0x2fc
+  // Clear Bit 11: rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src
+  modifyreg32(0x130202fc, 1 << 11, 0);  // Addr, Clear Bits, Set Bits
+
+  // SYSCRG RESET Status 0: Offset 0x308
+  // Clear Bit 26: rstn_u0_sft7110_noc_bus_reset_disp_axi_n
+  modifyreg32(0x13020308, 1 << 26, 0);  // Addr, Clear Bits, Set Bits
+
+  // Verfy that Display Controller is up
+  val = getreg32(0x295C0000);
+  DEBUGASSERT(val == 4);
+
+  // Test HDMI
+  int test_hdmi(void);
+  int ret = test_hdmi();
+  DEBUGASSERT(ret == 0);
+}
+
+// Display Subsystem Base Address
+// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html
+#define DISPLAY_BASE_ADDRESS (0x29400000)
+
+// DOM VOUT Control Registers
+// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html
+#define CRG_BASE_ADDRESS     (DISPLAY_BASE_ADDRESS + 0x1C0000)
+
+// Enable Clock
+// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html
+#define CLK_ICG (1 << 31)
+
+// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html
+#define clk_u0_dc8200_clk_pix0 (CRG_BASE_ADDRESS + 0x1c)
+
+// Test HDMI
+int test_hdmi(void) { ... }
 ```
 
 # JH7110 System Configuration Registers
