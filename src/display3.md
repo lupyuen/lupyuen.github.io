@@ -107,15 +107,17 @@ Let's find out! From the [__JH7110 System Memory Map__](https://doc-en.rvspace.o
 
 | Address | Display Registers |
 |:-------:|:------------------|
-| __`0x2940 0000`__ | DC8200 AHB0
-| __`0x2948 0000`__ | DC8200 AHB1
-| __`0x2959 0000`__ | U0_HDMITX
-| __`0x295B 0000`__ | VOUT_SYSCON
-| __`0x295C 0000`__ | VOUT_CRG
-| __`0x295D 0000`__ | DSI TX
-| __`0x295E 0000`__ | MIPITX DPHY
+| __`0x2940 0000`__ | __DC8200 AHB0__ _(Display Bus 0)_
+| __`0x2948 0000`__ | __DC8200 AHB1__ _(Display Bus 1)_
+| __`0x2959 0000`__ | __U0_HDMITX__ _(HDMI)_
+| __`0x295B 0000`__ | __VOUT_SYSCON__ _(System Config)_
+| __`0x295C 0000`__ | __VOUT_CRG__ _(Clock and Reset)_
+| __`0x295D 0000`__ | __DSI TX__ _(MIPI Display Serial Interface)_
+| __`0x295E 0000`__ | __MIPITX DPHY__ _(MIPI Display Physical Layer)_
 
-Let's dump them...
+[(__DC8200__ is the VeriSilicon Dual Display Controller)](https://lupyuen.github.io/articles/display2#dc8200-display-controller)
+
+Let's dump the above __Display Controller Registers__...
 
 ```text
 # md 29400000
@@ -145,7 +147,9 @@ That's because the Display Controller is __not powered up__.
 
 Let's tweak some registers and power up the Display Controller...
 
-# Power Management Registers for Star64 JH7110 Display Controller
+# JH7110 Power Management Unit
+
+_How will we power up the Display Controller?_
 
 TODO
 
