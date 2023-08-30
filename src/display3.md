@@ -424,13 +424,17 @@ So much easier to power up the Display Subsystem!
 
 Let's talk about the Display Controller...
 
+![JH7110 Display Subsystem Clock and Reset](https://lupyuen.github.io/images/display2-vout_clkrst18.png)
+
+[_JH7110 Display Subsystem Clock and Reset_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html)
+
 # Clocks and Resets for Display Controller
 
 _JH7110 Display Subsystem is now powered up..._
 
 _What about the Display Controller?_
 
-Nope our __DC2800 Display Controller__ (DC2800 AHB0) is stil invisible...
+Nope our __DC8200 Display Controller__ (DC8200 AHB0) is stil invisible...
 
 ```text
 # md 29400000 0x20
@@ -438,43 +442,48 @@ Nope our __DC2800 Display Controller__ (DC2800 AHB0) is stil invisible...
 29400010: 00000000 00000000 00000000 00000000  ................
 ```
 
-TODO
+_What about the Clocks and Resets for the Display Controller?_
 
-From [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L154-L215):
+The pic above shows the [__Display Controller Clocks and Resets__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html).
 
-```c
-// Display Subsystem Base Address
-// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html
-#define DISPLAY_BASE_ADDRESS (0x29400000)
+According to the [__VOUT CRG__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html) (Video Output Clock and Reset Registers), these are the __VOUT Clock Registers__ for HDMI...
 
-// DOM VOUT Control Registers
-// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html
-#define CRG_BASE_ADDRESS     (DISPLAY_BASE_ADDRESS + 0x1C0000)
+| VOUT CRG<br>Offset | Clock |
+|:------------------:|:------|
+| __`0x10`__ | clk_u0_dc8200_clk_axi   
+| __`0x14`__ | clk_u0_dc8200_clk_core  
+| __`0x18`__ | clk_u0_dc8200_clk_ahb   
+| __`0x1C`__ | clk_u0_dc8200_clk_pix0  
+| __`0x20`__ | clk_u0_dc8200_clk_pix1  
+| __`0x3C`__ | clk_u0_hdmi_tx_clk_mclk 
+| __`0x40`__ | clk_u0_hdmi_tx_clk_bclk 
+| __`0x44`__ | clk_u0_hdmi_tx_clk_sys  
 
-// DOM VOUT Control Registers
-// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html
+[(__VOUT CRG__ Base Address is __`0x295C` `0000`__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html)
 
-#define clk_u0_dc8200_clk_axi   (CRG_BASE_ADDRESS + 0x10)
-#define clk_u0_dc8200_clk_core  (CRG_BASE_ADDRESS + 0x14)
-#define clk_u0_dc8200_clk_ahb   (CRG_BASE_ADDRESS + 0x18)
-#define clk_u0_dc8200_clk_pix0  (CRG_BASE_ADDRESS + 0x1c)
-#define clk_u0_dc8200_clk_pix1  (CRG_BASE_ADDRESS + 0x20)
-#define clk_u0_hdmi_tx_clk_mclk (CRG_BASE_ADDRESS + 0x3c)
-#define clk_u0_hdmi_tx_clk_bclk (CRG_BASE_ADDRESS + 0x40)
-#define clk_u0_hdmi_tx_clk_sys  (CRG_BASE_ADDRESS + 0x44)
-#define CLK_ICG (1 << 31)
+To enable the Clock Registers above, we set __Bit 31 (clk_icg)__ to 1.
 
-#define Software_RESET_assert0_addr_assert_sel (CRG_BASE_ADDRESS + 0x38)
-#define rstn_u0_dc8200_rstn_axi   (1 << 0)
-#define rstn_u0_dc8200_rstn_ahb   (1 << 1)
-#define rstn_u0_dc8200_rstn_core  (1 << 2)
-#define rstn_u0_hdmi_tx_rstn_hdmi (1 << 9)
-```
+__VOUT Resets__ for HDMI are at _Software_RESET_assert0_addr_assert_sel_ (VOUT CRG Offset __`0x48`__)...
 
-U-Boot Commands:
+- __Bit 0:__ rstn_u0_dc8200_rstn_axi
+
+- __Bit 1:__ rstn_u0_dc8200_rstn_ahb
+
+- __Bit 2:__ rstn_u0_dc8200_rstn_core
+
+- __Bit 9:__ rstn_u0_hdmi_tx_rstn_hdmi
+
+We set the above bits to 0 to deassert the Resets.
+
+TODO: Offset is 0x48 instead of 0x38
+
+Here are the U-Boot Commands to set the __VOUT Clocks and Resets__ for HDMI...
 
 ```text
+## Power up the Video Output / Display Subsystem
 run video_on
+
+## Enable the VOUT HDMI Clocks
 mw 295C0010 0x80000000 1
 mw 295C0014 0x80000000 1
 mw 295C0018 0x80000000 1
@@ -484,120 +493,30 @@ mw 295C003c 0x80000000 1
 mw 295C0040 0x80000000 1
 mw 295C0044 0x80000000 1
 
-md 295C0038 1
-mw 295C0038 0 1
-md 295C0038 1
-
-md 295C004c 1
-mw 295C004c 0 1
-md 295C004c 1
-
-## TODO: Why is Reset at 295C0048?
-md 295C0048 1
+## Deassert the VOUT HDMI Resets.
+## We deassert all Resets for now.
 mw 295C0048 0 1
-md 295C0048 1
-
-md 29400000 0x20
-md 29480000 0x20
-md 295C0000 0x20
 ```
 
-U-Boot Log:
+_Does it work?_
+
+We run the above U-Boot Commands and dump our __DC8200 Display Controller__ (DC8200 AHB0)...
 
 ```text
-StarFive # run video_on
-295c0000: 00000004 00000004 00000004 0000000c  ................
-295c0010: 00000000 00000000 00000000 00000000  ................
-295c0020: 00000000 00000000 00000000 00000000  ................
-295c0030: 00000000 00000000 00000000 00000000  ................
-295c0040: 00000000 00000000 00000fff 00000000  ................
-295c0050: 00000000 00000000 00000000 00000000  ................
-295c0060: 00000000 00000000 00000000 00000000  ................
-295c0070: 00000000 00000000 00000000 00000000  ................
-StarFive # mw 295C0010 0x80000000 1
-StarFive # 
-StarFive # mw 295C0014 0x80000000 1
-StarFive # 
-StarFive # mw 295C0018 0x80000000 1
-StarFive # 
-StarFive # mw 295C001c 0x80000000 1
-StarFive # 
-StarFive # mw 295C0020 0x80000000 1
-StarFive # 
-StarFive # mw 295C003c 0x80000000 1
-StarFive # 
-StarFive # mw 295C0040 0x80000000 1
-StarFive # 
-StarFive # mw 295C0044 0x80000000 1
-StarFive # 
-StarFive # md 29400000 0x20
-29400000: 00000000 00000000 00000000 00000000  ................
-29400010: 00000000 00000000 00000000 00000000  ................
-29400020: 00000000 00000000 00000000 00000000  ................
-29400030: 00000000 00000000 00000000 00000000  ................
-29400040: 00000000 00000000 00000000 00000000  ................
-29400050: 00000000 00000000 00000000 00000000  ................
-29400060: 00000000 00000000 00000000 00000000  ................
-29400070: 00000000 00000000 00000000 00000000  ................
-StarFive # mw 295C0038 0 1
-StarFive # 
-StarFive # md 29400000 0x20
-29400000: 00000000 00000000 00000000 00000000  ................
-29400010: 00000000 00000000 00000000 00000000  ................
-29400020: 00000000 00000000 00000000 00000000  ................
-29400030: 00000000 00000000 00000000 00000000  ................
-29400040: 00000000 00000000 00000000 00000000  ................
-29400050: 00000000 00000000 00000000 00000000  ................
-29400060: 00000000 00000000 00000000 00000000  ................
-29400070: 00000000 00000000 00000000 00000000  ................
-StarFive # mw 295C004c 0 1
-StarFive # 
-StarFive # md 29400000 0x20
-29400000: 00000000 00000000 00000000 00000000  ................
-29400010: 00000000 00000000 00000000 00000000  ................
-29400020: 00000000 00000000 00000000 00000000  ................
-29400030: 00000000 00000000 00000000 00000000  ................
-29400040: 00000000 00000000 00000000 00000000  ................
-29400050: 00000000 00000000 00000000 00000000  ................
-29400060: 00000000 00000000 00000000 00000000  ................
-29400070: 00000000 00000000 00000000 00000000  ................
-StarFive # mw 295C0048 0 1
-StarFive # 
-StarFive # md 29400000 0x20
+# md 29400000 0x20
 29400000: 00000900 80010000 00222200 00000000  ........."".....
 29400010: 00000000 00000004 14010000 000b4b41  ............AK..
 29400020: 00008200 00005720 20210316 16015600  .... W....! .V..
 29400030: 0000030e a0600084 00000000 00000000  ......`.........
-29400040: 00000000 00000000 00000000 00000000  ................
-29400050: 00000000 00000000 00000000 00000000  ................
-29400060: 00000000 00000000 00000000 00000000  ................
-29400070: 00000000 08050000 00000002 00000000  ................
-StarFive # md 29480000 0x20
-29480000: 00000000 00000000 00000000 00000000  ................
-29480010: 00000000 00000000 00000000 00000000  ................
-29480020: 00000000 00000000 00000000 00000000  ................
-29480030: 00000000 00000000 00000000 00000000  ................
-29480040: 00000000 00000000 00000000 00000000  ................
-29480050: 00000000 00000000 00000000 00000000  ................
-29480060: 00000000 00000000 00000000 00000000  ................
-29480070: 00000000 00000000 00000000 00000000  ................
-StarFive # md 295C0000 0x20
-295c0000: 00000004 00000004 00000004 0000000c  ................
-295c0010: 80000000 80000000 80000000 80000000  ................
-295c0020: 80000000 00000000 00000000 00000000  ................
-295c0030: 00000000 00000000 00000000 80000000  ................
-295c0040: 80000000 80000000 00000000 00000777  ............w...
-295c0050: 00000000 00000000 00000000 00000000  ................
-295c0060: 00000000 00000000 00000000 00000000  ................
-295c0070: 00000000 00000000 00000000 00000000  ................
-StarFive # 
 ```
 
-TODO: Why is Reset at 295C0048?
+Yep our DC8200 Display Controller is finally alive yay!
 
-TODO: Did we overwrite any default values for Clock Mux and Multiplier?
+Let's verify the values...
 
-# Read the Star64 JH7110 Display Controller Registers with U-Boot Bootloader
+TODO: Screenshot of DC8200
+
+# Read the Hardware Revision and Chip ID
 
 TODO
 
