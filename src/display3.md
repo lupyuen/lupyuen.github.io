@@ -273,7 +273,7 @@ We'll set the [__System Control Registers (SYS CRG)__](https://doc-en.rvspace.or
 
 When we match the above Clocks to the [__System Control Registers (SYS CRG)__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html), we get...
 
-| SYS CRG Offset | Clock |
+| SYS CRG<br>Offset | Clock |
 |:--------------:|:------|
 | __`0x28`__ | Clock AHB 1
 | __`0x4C`__ | MCLK Out  
