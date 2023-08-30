@@ -370,9 +370,7 @@ TODO: The Default Values seem to match [DOM VOUT CRG](https://doc-en.rvspace.org
 
 # U-Boot Script to Power Up Display Subsystem
 
-TODO
-
-_That's a long list of U-Boot Commands. Can we automate this?_
+_Phew that's a long list of U-Boot Commands. Can we automate this?_
 
 ```text
 mw 1703000c 0x10 1
@@ -388,16 +386,16 @@ mw 130200f0 0x80000000 1
 mw 130200f4 0x80000000 1
 mw 130200f8 0x80000000 1
 mw 130200fc 0x80000000 1
-mw 130202fc 0x7e7f600 1
+mw 130202fc 0x07e7f600 1
 mw 13020308 0xfb9fffff 1
 md 295C0000 0x20
 ```
 
-Sure can! Run this in U-Boot...
+Sure can! Run this to create a __U-Boot Script__...
 
 ```text
-## Create the command to power up the Video Output
-setenv video_on 'mw 1703000c 0x10 1 ; mw 17030044 0xff 1 ; mw 17030044 0x05 1 ; mw 17030044 0x50 1 ; mw 13020028 0x80000000 1 ; mw 1302004c 0x80000000 1 ; mw 13020098 0x80000000 1 ; mw 1302009c 0x80000000 1 ; mw 130200e8 0x80000000 1 ; mw 130200f0 0x80000000 1 ; mw 130200f4 0x80000000 1 ; mw 130200f8 0x80000000 1 ; mw 130200fc 0x80000000 1 ; mw 130202fc 0x7e7f600 1 ; mw 13020308 0xfb9fffff 1 ; md 295C0000 0x20 ; '
+## Create the U-Boot Script to power up the Video Output
+setenv video_on 'mw 1703000c 0x10 1 ; mw 17030044 0xff 1 ; mw 17030044 0x05 1 ; mw 17030044 0x50 1 ; mw 13020028 0x80000000 1 ; mw 1302004c 0x80000000 1 ; mw 13020098 0x80000000 1 ; mw 1302009c 0x80000000 1 ; mw 130200e8 0x80000000 1 ; mw 130200f0 0x80000000 1 ; mw 130200f4 0x80000000 1 ; mw 130200f8 0x80000000 1 ; mw 130200fc 0x80000000 1 ; mw 130202fc 0x07e7f600 1 ; mw 13020308 0xfb9fffff 1 ; md 295C0000 0x20 ; '
 
 ## Check that it's correct
 printenv video_on
@@ -405,27 +403,26 @@ printenv video_on
 ## Save it for future reboots
 saveenv
 
-## Run the command to power up the Video Output
+## Run the U-Boot Script to power up the Video Output
 run video_on
 ```
 
-(The `run` feels a bit like BASIC)
+The U-Boot Script __`video_on`__ is now saved into our SBC's Internal Flash Memory. 
 
-We should see...
+We can power on our SBC and run the script anytime...
 
 ```text
-StarFive # run video_on
+# run video_on
 295c0000: 00000004 00000004 00000004 0000000c  ................
 295c0010: 00000000 00000000 00000000 00000000  ................
 295c0020: 00000000 00000000 00000000 00000000  ................
 295c0030: 00000000 00000000 00000000 00000000  ................
 295c0040: 00000000 00000000 00000fff 00000000  ................
-295c0050: 00000000 00000000 00000000 00000000  ................
-295c0060: 00000000 00000000 00000000 00000000  ................
-295c0070: 00000000 00000000 00000000 00000000  ................
 ```
 
 So much easier!
+
+TODO
 
 Maybe we could use this to render something to the HDMI Display!
 
@@ -746,7 +743,7 @@ StarFive #
 U-Boot Script:
 
 ```text
-## Create the command to power up the Display Controller
+## Create the U-Boot Script to power up the Display Controller
 setenv display_on 'mw 295C0010 0x80000000 1 ; mw 295C0014 0x80000000 1 ; mw 295C0018 0x80000000 1 ; mw 295C001c 0x80000000 1 ; mw 295C0020 0x80000000 1 ; mw 295C003c 0x80000000 1 ; mw 295C0040 0x80000000 1 ; mw 295C0044 0x80000000 1 ; mw 295C0048 0 1 ; md 29400000 0x20 ; '
 
 ## Check that it's correct
@@ -755,10 +752,10 @@ printenv display_on
 ## Save it for future reboots
 saveenv
 
-## Run the command to power up the Video Output
+## Run the U-Boot Script to power up the Video Output
 run video_on
 
-## Run the command to power up the Display Controller
+## Run the U-Boot Script to power up the Display Controller
 run display_on
 ```
 
