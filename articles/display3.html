@@ -75,9 +75,7 @@
 <li><a href="#clocks-and-resets-for-display-controller">6 Clocks and Resets for Display Controller</a><ul></ul></li>
 <li><a href="#read-the-hardware-revision-and-chip-id">7 Read the Hardware Revision and Chip ID</a><ul></ul></li>
 <li><a href="#nuttx-display-driver-for-jh7110">8 NuttX Display Driver for JH7110</a><ul></ul></li>
-<li><a href="#jh7110-system-configuration-registers">9 JH7110 System Configuration Registers</a><ul></ul></li>
-<li><a href="#jh7110-bus-connection">10 JH7110 Bus Connection</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Sep 2023</em></p>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Sep 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/display3-title.png" alt="Star64 JH7110 Display Controller is alive!" /></p>
 <p>In the olden days we would <strong><code>peek</code></strong> and <strong><code>poke</code></strong> the <strong>Display Controller</strong>, to see weird and wonderful displays.</p>
 <p>Today (46 years later), we poke around the Display Controller of <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Star64 JH7110 RISC-V SBC</strong></a> with a modern tool (not BASIC): <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>!</p>
@@ -531,7 +529,8 @@ md 29400030 1
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">(Source)</a></p>
 </li>
 </ul>
-<p>Which looks correct yay!</p>
+<p>Our DC8200 Display Controller returns the correct Register Values yay!</p>
+<p>(Do we have a Date at <strong><code>0x2940</code> <code>0024</code></strong>? It reads “20210316”)</p>
 <h1 id="nuttx-display-driver-for-jh7110"><a href="#nuttx-display-driver-for-jh7110">8 NuttX Display Driver for JH7110</a></h1>
 <p>TODO</p>
 <p><em>How will we test this in NuttX?</em></p>
@@ -609,35 +608,7 @@ md 29400030 1
 #define rstn_u0_dc8200_rstn_ahb   (1 &lt;&lt; 1)
 #define rstn_u0_dc8200_rstn_core  (1 &lt;&lt; 2)
 #define rstn_u0_hdmi_tx_rstn_hdmi (1 &lt;&lt; 9)
-</code></pre></div><h1 id="jh7110-system-configuration-registers"><a href="#jh7110-system-configuration-registers">9 JH7110 System Configuration Registers</a></h1>
-<p>TODO</p>
-<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_syscon.html">SYS SYSCON: System Configuration Registers</a></p>
-<p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html">System Memory Map</a>, System SYSCON is at 0x1303_0000</p>
-<div class="example-wrap"><pre class="language-text"><code># md 13030000
-13030000: 00000000 00000000 00000000 00000000  ................
-13030010: 00000000 00d54d54 034fea80 0000007d  ....TM....O.}...
-13030020: 45555555 042ba603 45e00000 00c7a60c  UUUE..+....E....
-13030030: 45333333 00000002 00000000 00000000  333E............
-13030040: 00000000 00000000 00000000 00000000  ................
-13030050: 00000000 00000000 00000000 00000000  ................
-13030060: 00000002 00000000 2a000000 00000000  ...........*....
-13030070: 2a000000 00000000 2a000000 00000000  ...*.......*....
-13030080: 2a000000 01aa8000 00000d54 6aa00000  ...*....T......j
-13030090: 00000004 00000000 00000000 00042600  .............&amp;..
-130300a0: 00000000 00000000 00000000 00000000  ................
-130300b0: 00000000 00000000 00000000 00000000  ................
-130300c0: 00000000 00000000 00000000 00000000  ................
-130300d0: 00000000 00000000 00000000 00000000  ................
-130300e0: 00000000 00000000 00000000 00000000  ................
-130300f0: 00000000 00000000 00000000 00000000  ................
-</code></pre></div>
-<p>TODO: Which SYSCON Registers are already configured?</p>
-<h1 id="jh7110-bus-connection"><a href="#jh7110-bus-connection">10 JH7110 Bus Connection</a></h1>
-<p>TODO</p>
-<p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/bus_connection.html">Bus Connection</a>:</p>
-<p><img src="https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/stg_mtrx_connection17.png" alt="Bus Connection" /></p>
-<p>TODO: Do we need to bother with Bus Connections?</p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+</code></pre></div><h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
