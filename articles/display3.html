@@ -103,16 +103,16 @@
 <p>And hopefully this article will be helpful for <strong>porting other Operating Systems</strong> to JH7110!</p>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Pine64 Star64 RISC-V SBC" /></p>
 <h1 id="dumping-and-writing-memory-with-u-boot-bootloader"><a href="#dumping-and-writing-memory-with-u-boot-bootloader">1 Dumping and Writing Memory with U-Boot Bootloader</a></h1>
-<p><em>A Bootloader that will Read and Write Memory?</em></p>
-<p>Yep it’s surprising (maybe risky) that <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> will read and write JH7110 Memory: <strong>RAM, ROM, even I/O Registers</strong>! (ROM is read-only of course)</p>
-<p>Boot Star64 SBC <strong>without a microSD Card</strong> and shut down our <a href="https://lupyuen.github.io/articles/tftp"><strong>TFTP Server</strong></a>. We should see the <strong>U-Boot Prompt</strong>.</p>
+<p><em>Our Bootloader will Read AND Write any Memory?</em></p>
+<p>Yep! Inside our Star64 SBC is the powerful (maybe risky) <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> that will read and write JH7110 SoC’s Memory: <strong>RAM, ROM, even I/O Registers</strong>!</p>
+<p>(ROM is read-only of course)</p>
+<p>Boot Star64 <strong>without a microSD Card</strong> and shut down our <a href="https://lupyuen.github.io/articles/tftp"><strong>TFTP Server</strong></a>. We should see the <strong>U-Boot Prompt</strong>.</p>
 <p>The <strong><code>md</code></strong> command will dump JH7110 Memory (RAM, ROM, I/O Registers)…</p>
 <div class="example-wrap"><pre class="language-text"><code># md
 md - memory display
 Usage: md [.b, .w, .l, .q] address [# of objects]
 </code></pre></div>
-<p>TODO</p>
-<p>Let’s dump the Boot ROM at <code>0x2A00</code> <code>0000</code>…</p>
+<p>Let’s dump the <strong>JH7110 Boot ROM</strong> at <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong><code>0x2A00</code> <code>0000</code></strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 2A000000
 2a000000: 00000297 12628293 30529073 30005073  ......b.s.R0sP.0
 2a000010: 30405073 41014081 42014181 43014281  sP@0.@.A.A.B.B.C
@@ -120,48 +120,29 @@ Usage: md [.b, .w, .l, .q] address [# of objects]
 2a000030: 48014781 49014881 4a014981 4b014a81  .G.H.H.I.I.J.J.K
 2a000040: 4c014b81 4d014c81 4e014d81 4f014e81  .K.L.L.M.M.N.N.O
 2a000050: 01974f81 8193d710 02970ae1 82930000  .O..............
-2a000060: 907305a2 02933052 85630010 50730402  ..s.R0....c...sP
-2a000070: 22f37c14 02b2f140 d7102117 b8810113  .|.&quot;@....!......
-2a000080: 40510133 25734581 1d63f140 033704b5  3.Q@.Es%@.c...7.
-2a000090: 23b70110 30230110 03210003 fe734de3  ...#..#0..!..Ms.
-2a0000a0: f0018293 f0018313 00628e63 f2018393  ........c.b.....
-2a0000b0: 00737a63 0002be03 01c33023 032102a1  czs.....#0....!.
-2a0000c0: fe736ae3 f2018313 d7101397 a9838393  .js.............
-2a0000d0: 00737763 00033023 4de30321 00effe73  cws.#0..!..Ms...
-2a0000e0: a81d61d0 10734621 00733046 26731050  .a..!Fs.F0s.P.s&amp;
-2a0000f0: 8a213440 04b7da7d 25730200 1913f140  @4!.}.....s%@...
 </code></pre></div>
-<p>(Where is the Source Code for JH7110 Boot ROM?)</p>
-<p>We can dump the UART Registers at <code>0x1000</code> <code>0000</code>…</p>
+<p>(Cute Alphabet Soup. Wonder where’s the Source Code?)</p>
+<p><em>This works for I/O Registers?</em></p>
+<p>We can dump the <strong>JH7110 UART Registers</strong> at <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong><code>0x1000</code> <code>0000</code></strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 10000000
 10000000: 0000006d 00000000 000000c1 00000003  m...............
 10000010: 00000003 00000000 00000000 00000000  ................
 10000020: 00000000 00000000 00000000 00000000  ................
 10000030: 00000064 00000064 00000064 00000064  d...d...d...d...
-10000040: 00000064 00000064 00000064 00000064  d...d...d...d...
-10000050: 00000064 00000064 00000064 00000064  d...d...d...d...
-10000060: 00000064 00000064 00000064 00000064  d...d...d...d...
-10000070: 00000000 00000000 00000000 00000003  ................
-10000080: 00000001 00000000 00000000 00000001  ................
-10000090: 00000000 00000000 00000001 00000000  ................
-100000a0: 00000000 00000000 00000000 00000000  ................
-100000b0: 00000000 00000000 00000000 00000000  ................
-100000c0: 00000000 00000000 00000000 00000000  ................
-100000d0: 00000000 00000000 00000000 00000000  ................
-100000e0: 00000000 00000000 00000000 00000000  ................
-100000f0: 00000000 00000000 3331342a 44570110  ........*413..WD
 </code></pre></div>
-<p>Let’s write to UART. The <code>mw</code> command writes to JH7110 Memory…</p>
+<p><em>What about writing to I/O Registers?</em></p>
+<p>Let’s <strong>write to UART Registers</strong>. The <strong><code>mw</code></strong> command writes to JH7110 Memory…</p>
 <div class="example-wrap"><pre class="language-text"><code># mw
 mw - memory write (fill)
 Usage: mw [.b, .w, .l, .q] address value [count]
 </code></pre></div>
 <p>(Hmmm sounds like a Security Risk)</p>
-<p>Let’s poke the UART Transmit Register at <code>0x1000</code> <code>0000</code>…</p>
+<p>To transmit on UART Output, we poke <code>0x2A</code> into the <strong>UART Transmit Register</strong> at <a href="https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64"><strong><code>0x1000</code> <code>0000</code></strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code># mw 10000000 2a 1
 *
 </code></pre></div>
-<p>Yep it prints “<code>*</code>”, which is ASCII Code 2A!</p>
+<p>Yep it prints “<strong><code>*</code></strong>”, which is ASCII Code 2A!</p>
+<p>TODO</p>
 <p>Based on the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html">JH7110 System Memory Map</a>, the Display Controller Registers are at…</p>
 <ul>
 <li>DC8200 AHB0: 0x2940_0000</li>
