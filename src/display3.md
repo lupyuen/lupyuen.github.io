@@ -591,7 +591,9 @@ Which means...
 
   [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361)
 
-Which looks correct yay!
+Our DC8200 Display Controller returns the correct Register Values yay!
+
+(Do we have a Date at __`0x2940` `0024`__? It reads "20210316")
 
 # NuttX Display Driver for JH7110
 
@@ -676,46 +678,6 @@ void board_late_initialize(void) {
 #define rstn_u0_dc8200_rstn_core  (1 << 2)
 #define rstn_u0_hdmi_tx_rstn_hdmi (1 << 9)
 ```
-
-# JH7110 System Configuration Registers
-
-TODO
-
-[SYS SYSCON: System Configuration Registers](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_syscon.html)
-
-From [System Memory Map](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html), System SYSCON is at 0x1303_0000
-
-```text
-# md 13030000
-13030000: 00000000 00000000 00000000 00000000  ................
-13030010: 00000000 00d54d54 034fea80 0000007d  ....TM....O.}...
-13030020: 45555555 042ba603 45e00000 00c7a60c  UUUE..+....E....
-13030030: 45333333 00000002 00000000 00000000  333E............
-13030040: 00000000 00000000 00000000 00000000  ................
-13030050: 00000000 00000000 00000000 00000000  ................
-13030060: 00000002 00000000 2a000000 00000000  ...........*....
-13030070: 2a000000 00000000 2a000000 00000000  ...*.......*....
-13030080: 2a000000 01aa8000 00000d54 6aa00000  ...*....T......j
-13030090: 00000004 00000000 00000000 00042600  .............&..
-130300a0: 00000000 00000000 00000000 00000000  ................
-130300b0: 00000000 00000000 00000000 00000000  ................
-130300c0: 00000000 00000000 00000000 00000000  ................
-130300d0: 00000000 00000000 00000000 00000000  ................
-130300e0: 00000000 00000000 00000000 00000000  ................
-130300f0: 00000000 00000000 00000000 00000000  ................
-```
-
-TODO: Which SYSCON Registers are already configured?
-
-# JH7110 Bus Connection
-
-TODO
-
-From [Bus Connection](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/bus_connection.html):
-
-![Bus Connection](https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/stg_mtrx_connection17.png)
-
-TODO: Do we need to bother with Bus Connections?
 
 # What's Next
 
