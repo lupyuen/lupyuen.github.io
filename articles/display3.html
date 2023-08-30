@@ -67,14 +67,15 @@
 
     <h1 class="title">RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader</h1>
     <nav id="TOC"><ul>
-<li><a href="#dumping-and-writing-memory-with-u-boot-bootloader">1 Dumping and Writing Memory with U-Boot Bootloader</a><ul></ul></li>
-<li><a href="#power-management-registers-for-star64-jh7110-display-controller">2 Power Management Registers for Star64 JH7110 Display Controller</a><ul></ul></li>
-<li><a href="#clock-and-reset-registers-for-star64-jh7110-display-controller">3 Clock and Reset Registers for Star64 JH7110 Display Controller</a><ul></ul></li>
-<li><a href="#automate-u-boot-to-power-up-display-controller">4 Automate U-Boot to Power Up Display Controller</a><ul></ul></li>
-<li><a href="#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader">5 Read the Star64 JH7110 Display Controller Registers with U-Boot Bootloader</a><ul></ul></li>
-<li><a href="#jh7110-system-configuration-registers">6 JH7110 System Configuration Registers</a><ul></ul></li>
-<li><a href="#jh7110-bus-connection">7 JH7110 Bus Connection</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Sep 2023</em></p>
+<li><a href="#dump-and-write-memory-with-u-boot-bootloader">1 Dump and Write Memory with U-Boot Bootloader</a><ul></ul></li>
+<li><a href="#dump-the-jh7110-display-controller">2 Dump the JH7110 Display Controller</a><ul></ul></li>
+<li><a href="#power-management-registers-for-star64-jh7110-display-controller">3 Power Management Registers for Star64 JH7110 Display Controller</a><ul></ul></li>
+<li><a href="#clock-and-reset-registers-for-star64-jh7110-display-controller">4 Clock and Reset Registers for Star64 JH7110 Display Controller</a><ul></ul></li>
+<li><a href="#automate-u-boot-to-power-up-display-controller">5 Automate U-Boot to Power Up Display Controller</a><ul></ul></li>
+<li><a href="#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader">6 Read the Star64 JH7110 Display Controller Registers with U-Boot Bootloader</a><ul></ul></li>
+<li><a href="#jh7110-system-configuration-registers">7 JH7110 System Configuration Registers</a><ul></ul></li>
+<li><a href="#jh7110-bus-connection">8 JH7110 Bus Connection</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Sep 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/display3-title.png" alt="Star64 JH7110 Display Controller is alive!" /></p>
 <p>In the olden days we would <strong><code>peek</code></strong> and <strong><code>poke</code></strong> the <strong>Display Controller</strong>, to see weird and wonderful displays.</p>
 <p>Today (46 years later), we poke around the Display Controller of <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Star64 JH7110 RISC-V SBC</strong></a> with a modern tool (not BASIC): <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>!</p>
@@ -102,7 +103,7 @@
 <p>Our analysis today will be super useful for creating our <strong>HDMI Driver for NuttX</strong> on Star64. (Pic below)</p>
 <p>And hopefully this article will be helpful for <strong>porting other Operating Systems</strong> to JH7110!</p>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Pine64 Star64 RISC-V SBC" /></p>
-<h1 id="dumping-and-writing-memory-with-u-boot-bootloader"><a href="#dumping-and-writing-memory-with-u-boot-bootloader">1 Dumping and Writing Memory with U-Boot Bootloader</a></h1>
+<h1 id="dump-and-write-memory-with-u-boot-bootloader"><a href="#dump-and-write-memory-with-u-boot-bootloader">1 Dump and Write Memory with U-Boot Bootloader</a></h1>
 <p><em>Our Bootloader will Read AND Write any Memory?</em></p>
 <p>Yep! Inside our Star64 SBC is the powerful (maybe risky) <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> that will read and write JH7110 SoC’s Memory: <strong>RAM, ROM, even I/O Registers</strong>!</p>
 <p>(ROM is read-only of course)</p>
@@ -137,23 +138,26 @@ mw - memory write (fill)
 Usage: mw [.b, .w, .l, .q] address value [count]
 </code></pre></div>
 <p>(Hmmm sounds like a Security Risk)</p>
-<p>To transmit on UART Output, we poke <code>0x2A</code> into the <strong>UART Transmit Register</strong> at <a href="https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64"><strong><code>0x1000</code> <code>0000</code></strong></a>…</p>
+<p>To transmit some UART Output, we poke <code>0x2A</code> into the <strong>UART Transmit Register</strong> at <a href="https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64"><strong><code>0x1000</code> <code>0000</code></strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code># mw 10000000 2a 1
 *
 </code></pre></div>
 <p>Yep it prints “<strong><code>*</code></strong>”, which is ASCII Code 2A!</p>
-<p>TODO</p>
-<p>Based on the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html">JH7110 System Memory Map</a>, the Display Controller Registers are at…</p>
-<ul>
-<li>DC8200 AHB0: 0x2940_0000</li>
-<li>DC8200 AHB1: 0x2948_0000</li>
-<li>U0_HDMITX: 0x2959_0000</li>
-<li>VOUT_SYSCON: 0x295B_0000</li>
-<li>VOUT_CRG: 0x295C_0000</li>
-<li>DSI TX: 0x295D_0000</li>
-<li>MIPITX DPHY: 0x295E_0000</li>
-</ul>
-<p>But the values are all zero!</p>
+<p>Let’s do something more sophisticated: JH7110 Display Controller…</p>
+<h1 id="dump-the-jh7110-display-controller"><a href="#dump-the-jh7110-display-controller">2 Dump the JH7110 Display Controller</a></h1>
+<p><em>Dumping the JH7110 Display Controller should work right?</em></p>
+<p>Let’s find out! From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong>JH7110 System Memory Map</strong></a>, the registers for <strong>JH7110 Display Controller</strong> are at…</p>
+<div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: left">Display Registers</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>0x2940 0000</code></strong></td><td style="text-align: left">DC8200 AHB0</td></tr>
+<tr><td style="text-align: center"><strong><code>0x2948 0000</code></strong></td><td style="text-align: left">DC8200 AHB1</td></tr>
+<tr><td style="text-align: center"><strong><code>0x2959 0000</code></strong></td><td style="text-align: left">U0_HDMITX</td></tr>
+<tr><td style="text-align: center"><strong><code>0x295B 0000</code></strong></td><td style="text-align: left">VOUT_SYSCON</td></tr>
+<tr><td style="text-align: center"><strong><code>0x295C 0000</code></strong></td><td style="text-align: left">VOUT_CRG</td></tr>
+<tr><td style="text-align: center"><strong><code>0x295D 0000</code></strong></td><td style="text-align: left">DSI TX</td></tr>
+<tr><td style="text-align: center"><strong><code>0x295E 0000</code></strong></td><td style="text-align: left">MIPITX DPHY</td></tr>
+</tbody></table>
+</div>
+<p>Let’s dump them…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 29400000
 29400000: 00000000 00000000 00000000 00000000  ................
 29400010: 00000000 00000000 00000000 00000000  ................
@@ -174,10 +178,10 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 295c0000: 00000000 00000000 00000000 00000000  ................
 295c0010: 00000000 00000000 00000000 00000000  ................
 </code></pre></div>
-<p>Maybe because the Display Controller is not powered up?</p>
-<p>Can we poke the PMU Registers and Clock and Reset Registers to power it up?</p>
-<p>Let’s find out…</p>
-<h1 id="power-management-registers-for-star64-jh7110-display-controller"><a href="#power-management-registers-for-star64-jh7110-display-controller">2 Power Management Registers for Star64 JH7110 Display Controller</a></h1>
+<p><em>But the values are all zero!</em></p>
+<p>That’s because the Display Controller is <strong>not powered up</strong>.</p>
+<p>Let’s tweak some registers and power up the Display Controller…</p>
+<h1 id="power-management-registers-for-star64-jh7110-display-controller"><a href="#power-management-registers-for-star64-jh7110-display-controller">3 Power Management Registers for Star64 JH7110 Display Controller</a></h1>
 <p>TODO</p>
 <p><em>Can we poke the Power Management Registers to power up the Display Controller?</em></p>
 <p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html">JH7110 Power Management</a>…</p>
@@ -365,7 +369,7 @@ StarFive # md 295C0000 0x40
 StarFive # 
 </code></pre></div>
 <p>Let’s poke the Clock and Reset Registers…</p>
-<h1 id="clock-and-reset-registers-for-star64-jh7110-display-controller"><a href="#clock-and-reset-registers-for-star64-jh7110-display-controller">3 Clock and Reset Registers for Star64 JH7110 Display Controller</a></h1>
+<h1 id="clock-and-reset-registers-for-star64-jh7110-display-controller"><a href="#clock-and-reset-registers-for-star64-jh7110-display-controller">4 Clock and Reset Registers for Star64 JH7110 Display Controller</a></h1>
 <p>TODO</p>
 <p><em>VOUT Power is already enabled via PMU. How do we poke the Clock and Reset Registers to power up the Display Controller?</em></p>
 <p>Based on the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html">JH7110 Clock Structure</a>…</p>
@@ -699,7 +703,7 @@ StarFive # md 29480000 0x40
 294800e0: 00000000 00000000 00000000 00000000  ................
 294800f0: 00000000 00000000 00000000 00000000  ................
 StarFive # md 29590000 0x40
-</code></pre></div><h1 id="automate-u-boot-to-power-up-display-controller"><a href="#automate-u-boot-to-power-up-display-controller">4 Automate U-Boot to Power Up Display Controller</a></h1>
+</code></pre></div><h1 id="automate-u-boot-to-power-up-display-controller"><a href="#automate-u-boot-to-power-up-display-controller">5 Automate U-Boot to Power Up Display Controller</a></h1>
 <p>TODO</p>
 <p><em>That’s a long list of U-Boot Commands. Can we automate this?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>mw 1703000c 0x10 1
@@ -813,7 +817,7 @@ run video_on
 
 // Test HDMI
 int test_hdmi(void) { ... }
-</code></pre></div><h1 id="read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader"><a href="#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader">5 Read the Star64 JH7110 Display Controller Registers with U-Boot Bootloader</a></h1>
+</code></pre></div><h1 id="read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader"><a href="#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader">6 Read the Star64 JH7110 Display Controller Registers with U-Boot Bootloader</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L154-L215">jh7110_appinit.c</a>:</p>
 <div class="example-wrap"><pre class="language-c"><code>// Display Subsystem Base Address
@@ -1066,7 +1070,7 @@ StarFive # run display_on
 29400050: 00000000 00000000 00000000 00000000  ................
 29400060: 00000000 00000000 00000000 00000000  ................
 29400070: 00000000 08050000 00000002 00000000  ................
-</code></pre></div><h1 id="jh7110-system-configuration-registers"><a href="#jh7110-system-configuration-registers">6 JH7110 System Configuration Registers</a></h1>
+</code></pre></div><h1 id="jh7110-system-configuration-registers"><a href="#jh7110-system-configuration-registers">7 JH7110 System Configuration Registers</a></h1>
 <p>TODO</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_syscon.html">SYS SYSCON: System Configuration Registers</a></p>
 <p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html">System Memory Map</a>, System SYSCON is at 0x1303_0000</p>
@@ -1089,12 +1093,12 @@ StarFive # run display_on
 130300f0: 00000000 00000000 00000000 00000000  ................
 </code></pre></div>
 <p>TODO: Which SYSCON Registers are already configured?</p>
-<h1 id="jh7110-bus-connection"><a href="#jh7110-bus-connection">7 JH7110 Bus Connection</a></h1>
+<h1 id="jh7110-bus-connection"><a href="#jh7110-bus-connection">8 JH7110 Bus Connection</a></h1>
 <p>TODO</p>
 <p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/bus_connection.html">Bus Connection</a>:</p>
 <p><img src="https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/stg_mtrx_connection17.png" alt="Bus Connection" /></p>
 <p>TODO: Do we need to bother with Bus Connections?</p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
