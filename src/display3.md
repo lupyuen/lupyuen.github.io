@@ -167,6 +167,8 @@ Which is powered by the JH7110 [__Power Management Unit__](https://doc-en.rvspac
 
 ![Power Management Unit](https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/power_stratey.png)
 
+[(Source)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html)
+
 _Is the power turned on for Video Output DOM_VOUT?_
 
 Let's dump the status of the Power Domains...
@@ -237,210 +239,98 @@ Sadly nope, the __Display Subsystem Registers__ are still empty...
 
 We need more tweaks, for the Clock and Reset Signals...
 
+TODO: Pic of JH7110 Clock Structure
+
+[_JH7110 Clock Structure_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html)
+
 # Clocks and Reset for Display Subsystem
 
-TODO
+_Display Subsystem (VOUT) is already powered up via the Power Management Unit (PMU)..._
 
-_Video Output Power VOUT is already enabled via the Power Management Unit..._
+_Anything else we need to make it work?_
 
-_How do we poke the Clock and Reset Registers to power up the Display Controller?_
+Always remember to enable the __Clocks__ and deassert the __Resets__!
 
-Based on the [JH7110 Clock Structure](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html)...
+According to the [__JH7110 Clock Structure__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html) (pic above), the __Display Subsystem (VOUT)__ is Clocked by...
 
-![Clock Structure](https://doc-en.rvspace.org/JH7110/TRM/Image/Drawing/Clock_Structure.svg)
+- __clk_vout_root__
+- __mipiphy ref clk__
+- __hdmiphy ref clk__
+- __clk_vout_src__ (1228.8 MHz)
+- __clk_vout_axi__ (614.4 MHz)
+- __clk_vout_ahb__ (204.8 MHz) / __clk_ahb1__
+- __clk_mclk__ (51.2 MHz)
 
-Display Controller (vout_crg, top left) is clocked and reset by...
-- clk_vout_root
-- mipiphy ref clk
-- hdmiphy ref clk
-- clk_vout_src (1228.8M)
-- clk_vout_axi (614.4M)
-- clk_vout_ahb (204.8M)（clk_ahb1）
-- clk_mclk (51.2M)
-- rstn_vout
+Plus one Reset...
 
-_How to enable the above clocks and deassert the above reset?_
+- __rstn_vout__
 
-We refer to the [System Clock and Reset (SYS CRG) Registers](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html).
+_How to enable the Clocks and deassert the Resets?_
 
-From [System Memory Map](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html), System CRG is at 0x1302_0000...
+We'll set the [__System Control Registers (SYS CRG)__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html) at Base Address __`0x1302` `0000`__
 
-```text
-# md 13020000
-13020000: 01000000 00000001 00000002 00000000  ................
-13020010: 01000002 01000000 00000003 00000003  ................
-13020020: 00000002 80000000 80000000 00000004  ................
-13020030: 80000000 00000002 00000002 00000002  ................
-13020040: 00000002 0000000c 00000000 00000000  ................
-13020050: 00000002 00000002 80000014 80000010  ................
-13020060: 8000000c 80000000 80000000 80000000  ................
-13020070: 80000000 80000000 80000000 00000006  ................
-13020080: 80000000 80000000 80000000 80000000  ................
-13020090: 80000000 80000000 80000000 80000000  ................
-130200a0: 00000002 00000002 00000002 01000000  ................
-130200b0: 80000000 00000003 00000000 00000000  ................
-130200c0: 00000000 0000000c 00000000 00000000  ................
-130200d0: 00000000 80000000 00000003 00000002  ................
-130200e0: 80000000 80000000 00000000 00000002  ................
-130200f0: 00000000 00000000 00000000 00000000  ................
-```
+[(From the __System Memory Map__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html)
 
-TODO: Which Clocks and Registers are already enabled / deasserted?
+When we match the above Clocks to the [__System Control Registers (SYS CRG)__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html), we get...
 
-Based on the [System Control Registers](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html), we need to enable these clocks...
-- Clock AHB 1: Offset  0x28
-- MCLK Out: Offset  0x4c
-- clk_u0_sft7110_noc_bus_clk_cpu_axi: Offset  0x98
-- clk_u0_sft7110_noc_bus_clk_axicfg0_axi: Offset  0x9c
-- clk_u0_dom_vout_top_clk_dom_vout_top_clk_vout_src: Offset  0xe8
-- Clock NOC Display AXI: Offset  0xf0
-- Clock Video Output AHB: Offset  0xf4
-- Clock Video Output AXI: Offset  0xf8
-- Clock Video Output HDMI TX0 MCLK: Offset  0xfc
+| SYS CRG Offset | Clock |
+|:--------------:|:------|
+| __`0x28`__ | Clock AHB 1
+| __`0x4C`__ | MCLK Out  
+| __`0x98`__ | clk_u0_sft7110_noc_bus_clk_cpu_axi  
+| __`0x9C`__ | clk_u0_sft7110_noc_bus_clk_axicfg0_axi  
+| __`0xE8`__ | clk_u0_dom_vout_top_clk_dom_vout_top_clk_vout_src  
+| __`0xF0`__ | Clock NOC Display AXI  
+| __`0xF4`__ | Clock Video Output AHB  
+| __`0xF8`__ | Clock Video Output AXI  
+| __`0xFC`__ | Clock Video Output HDMI TX0 MCLK  
 
-(OK looks excessive, but better to enable more clocks than too few!)
+(Looks excessive, but better to enable more Clocks than too few!)
 
-For the Clock Registers above, we should set Bit 31 (clk_icg) to 1...
-- 1: Clock enable
-- 0: Clock disable
+To enable the Clock Registers above, we set __Bit 31 (clk_icg)__ to 1.
 
 Here are the U-Boot Commands to enable the clocks...
 
 ```text
-md 13020028 1
 mw 13020028 0x80000000 1
-md 13020028 1
-
-md 1302004c 1
 mw 1302004c 0x80000000 1
-md 1302004c 1
-
-md 13020098 1
 mw 13020098 0x80000000 1
-md 13020098 1
-
-md 1302009c 1
 mw 1302009c 0x80000000 1
-md 1302009c 1
-
-md 130200e8 1
 mw 130200e8 0x80000000 1
-md 130200e8 1
-
-md 130200f0 1
 mw 130200f0 0x80000000 1
-md 130200f0 1
-
-md 130200f4 1
 mw 130200f4 0x80000000 1
-md 130200f4 1
-
-md 130200f8 1
 mw 130200f8 0x80000000 1
-md 130200f8 1
-
-md 130200fc 1
 mw 130200fc 0x80000000 1
-md 130200fc 1
-```
-
-Here's the U-Boot Log...
-
-```text
-StarFive # md 13020028 1
-13020028: 80000000                             ....
-StarFive # mw 13020028 0x80000000 1
-StarFive # 
-StarFive # md 13020028 1
-13020028: 80000000                             ....
-StarFive # md 1302004c 1
-1302004c: 00000000                             ....
-StarFive # mw 1302004c 0x80000000 1
-StarFive # 
-StarFive # md 1302004c 1
-1302004c: 80000000                             ....
-StarFive # md 13020098 1
-13020098: 80000000                             ....
-StarFive # mw 13020098 0x80000000 1
-StarFive # 
-StarFive # md 13020098 1
-13020098: 80000000                             ....
-StarFive # md 1302009c 1
-1302009c: 80000000                             ....
-StarFive # mw 1302009c 0x80000000 1
-StarFive # 
-StarFive # md 1302009c 1
-1302009c: 80000000                             ....
-StarFive # md 130200e8 1
-130200e8: 00000000                             ....
-StarFive # mw 130200e8 0x80000000 1
-StarFive # 
-StarFive # md 130200e8 1
-130200e8: 80000000                             ....
-StarFive # md 130200f0 1
-130200f0: 00000000                             ....
-StarFive # mw 130200f0 0x80000000 1
-StarFive # 
-StarFive # md 130200f0 1
-130200f0: 80000000                             ....
-StarFive # md 130200f4 1
-130200f4: 00000000                             ....
-StarFive # mw 130200f4 0x80000000 1
-StarFive # 
-StarFive # md 130200f4 1
-130200f4: 80000000                             ....
-StarFive # md 130200f8 1
-130200f8: 00000000                             ....
-StarFive # mw 130200f8 0x80000000 1
-StarFive # 
-StarFive # md 130200f8 1
-130200f8: 80000000                             ....
-StarFive # md 130200fc 1
-130200fc: 00000000                             ....
-StarFive # mw 130200fc 0x80000000 1
-StarFive # 
-StarFive # md 130200fc 1
-130200fc: 80000000                             ....
-StarFive # 
 ```
 
 _What about the Resets?_
 
-Based on the [System Control Registers](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html), we need to deassert these resets...
+Looking up the [__System Control Registers (SYS CRG)__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html), we need to __deassert these Resets__...
 
-- Software RESET 1 Address Selector: Offset 0x2fc
+- __Software RESET 1 Address Selector__ (SYS CRG Offset __`0x2FC`__)
 
-  Bit 11: rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src
-  - 1: Assert reset
-  - 0: De-assert reset
+  __Bit 11:__ rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src
 
-- SYSCRG RESET Status 0: Offset 0x308
+- __SYSCRG RESET Status 0__ (SYS CRG Offset __`0x308`__)
 
-  Bit 26: rstn_u0_sft7110_noc_bus_reset_disp_axi_n
-  - 1: Assert reset
-  - 0: De-assert reset
+  __Bit 26:__ rstn_u0_sft7110_noc_bus_reset_disp_axi_n
 
-- SYSCRG RESET Status 1: Offset 0x30c
+- __SYSCRG RESET Status 1__ (SYS CRG Offset __`0x30C`__)
 
-  Bit 11: rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src
-  - 1: Assert reset
-  - 0: De-assert reset
+  __Bit 11:__ rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src
 
-These are the U-Boot Commands to Deassert the above Resets...
+We set the above bits to 0 to deassert the Resets.
+
+TODO
+
+These are the U-Boot Commands to deassert the above Resets...
 
 ```text
-md 130202fc 1
-mw 130202fc 0x7e7f600 1
-md 130202fc 1
-
-md 13020308 1
+mw 130202fc 0x07e7f600 1
 mw 13020308 0xfb9fffff 1
-md 13020308 1
-
-md 1302030c 1
 ```
 
-(The last one is already deasserted, no need to change it)
+(The last Reset is already deasserted, no need to change it)
 
 Then we check the Display Registers...
 
