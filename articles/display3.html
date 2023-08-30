@@ -146,7 +146,16 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p>Let’s do something more sophisticated: JH7110 Display Controller…</p>
 <h1 id="dump-the-jh7110-display-controller"><a href="#dump-the-jh7110-display-controller">2 Dump the JH7110 Display Controller</a></h1>
 <p><em>Dumping the JH7110 Display Controller should work right?</em></p>
-<p>Let’s find out! From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong>JH7110 System Memory Map</strong></a>, the registers for <strong>JH7110 Display Controller</strong> are at…</p>
+<p>Let’s find out! Based on…</p>
+<ul>
+<li>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html"><strong>JH7110 Display Subsystem Memory Map</strong></a></p>
+</li>
+<li>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong>JH7110 System Memory Map</strong></a></p>
+</li>
+</ul>
+<p>The registers for <strong>JH7110 Display Subsystem</strong> are at…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: left">Display Registers</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>0x2940 0000</code></strong></td><td style="text-align: left"><strong>DC8200 AHB0</strong> <em>(Display Bus 0)</em></td></tr>
 <tr><td style="text-align: center"><strong><code>0x2948 0000</code></strong></td><td style="text-align: left"><strong>DC8200 AHB1</strong> <em>(Display Bus 1)</em></td></tr>
@@ -157,8 +166,8 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <tr><td style="text-align: center"><strong><code>0x295E 0000</code></strong></td><td style="text-align: left"><strong>MIPITX DPHY</strong> <em>(MIPI Display Physical Layer)</em></td></tr>
 </tbody></table>
 </div>
-<p><a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller">(<strong>DC8200</strong> is the VeriSilicon Dual Display Controller)</a></p>
-<p>Let’s dump the above <strong>Display Controller Registers</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller">(<strong>DC8200</strong> is the <strong>VeriSilicon Dual Display Controller</strong>)</a></p>
+<p>Let’s dump the above <strong>Display Subsystem Registers</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 29400000
 29400000: 00000000 00000000 00000000 00000000  ................
 29400010: 00000000 00000000 00000000 00000000  ................
@@ -180,72 +189,62 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 295c0010: 00000000 00000000 00000000 00000000  ................
 </code></pre></div>
 <p><em>But the values are all zero!</em></p>
-<p>That’s because the Display Controller is <strong>not powered up</strong>.</p>
-<p>Let’s tweak some registers and power up the Display Controller…</p>
+<p>That’s because the Display Subsystem is <strong>not powered up</strong>.</p>
+<p>Let’s tweak some registers and power up the Display Subsystem…</p>
+<p><img src="https://lupyuen.github.io/images/display2-vout_block_diagram18.png" alt="JH7110 Display Subsystem Block Diagram" /></p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html"><em>JH7110 Display Subsystem Block Diagram</em></a></p>
 <h1 id="jh7110-power-management-unit"><a href="#jh7110-power-management-unit">3 JH7110 Power Management Unit</a></h1>
-<p><em>How will we power up the Display Controller?</em></p>
-<p>TODO</p>
-<p><em>Can we poke the Power Management Registers to power up the Display Controller?</em></p>
-<p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html">JH7110 Power Management</a>…</p>
-<p><img src="https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/power_stratey.png" alt="Power Management" /></p>
-<p>Display Controller (vout) is powered by the Power Domains…</p>
+<p><em>How will we power up the Display Subsystem?</em></p>
+<p>From the pic above, the Display Subsystem is powered in the <strong>Video Output Power Domain (DOM_VOUT)</strong>.</p>
+<p>Which is powered by the JH7110 <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html"><strong>Power Management Unit</strong></a> (PMU or PMIC)…</p>
+<p><img src="https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/power_stratey.png" alt="Power Management Unit" /></p>
+<p><em>Is the power turned on for Video Output DOM_VOUT?</em></p>
+<p>Let’s dump the status of the Power Domains…</p>
 <ul>
-<li>dom_dig</li>
-<li>dom_vout</li>
+<li>
+<p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong>System Memory Map</strong></a>: Base Address of PMU is <strong><code>0x1703</code> <code>0000</code></strong></p>
+</li>
+<li>
+<p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb"><strong>PMU Registers</strong></a>: Current Power Mode is at Offset <strong><code>0x80</code></strong></p>
+</li>
 </ul>
-<p><em>How to enable these Power Domains?</em></p>
-<p>We refer to the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html">Power Management Unit (PMU) Registers</a></p>
-<p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html">System Memory Map</a>, PMU is at 0x1703_0000…</p>
-<div class="example-wrap"><pre class="language-text"><code># md 17030000
-17030000: 00000000 00000000 000000ff 00000003  ................
-17030010: 00000000 0000ffff 04008402 04010040  ............@...
-17030020: 00010040 00000000 00000000 00000000  @...............
-17030030: 00000000 00000000 00000000 00000000  ................
-17030040: 00000000 00000000 000007ff 00000012  ................
-17030050: 0000001f ffffffff 00000001 00000003  ................
-17030060: 00000000 00000000 00000080 00000000  ................
-17030070: 00000000 00000000 00000000 00000000  ................
-17030080: 00000003 00000000 00000203 00000000  ................
-17030090: 00000020 00000003 000001c3 00000000   ...............
-170300a0: 00000000 00000000 00000000 00000000  ................
-170300b0: 00000000 00000000 00000000 00000000  ................
-170300c0: 00000000 00000000 00000000 00000000  ................
-170300d0: 00000000 00000000 00000000 00000000  ................
-170300e0: 00000000 00000000 00000000 00000000  ................
-170300f0: 00000000 00000000 00000000 00000000  ................
+<p>Which means the <strong>Current Power Mode</strong> is at <strong><code>0x1703</code> <code>0080</code></strong>. Let’s dump the register…</p>
+<div class="example-wrap"><pre class="language-text"><code># md 17030080 1
+17030080: 00000003
 </code></pre></div>
-<p><em>Which Power Domains are already enabled?</em></p>
-<p>The <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html">Current Power Mode Register</a> is at Offset Address 0x80. (Address 0x17030080)</p>
-<p>From U-Boot Log above, Current Power Mode is 3, which means…</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb"><strong>Current Power Mode</strong></a> is 3, which says that…</p>
 <ul>
-<li>Bit 0 (systop_power_mode): SYSTOP Power is Enabled</li>
-<li>Bit 1 (cpu_power_mode): CPU Power is Enabled</li>
-<li>But Bit 4 (vout_power_mode): VOUT Power is Disabled!</li>
+<li><strong>SYSTOP Power</strong> (Bit 0) is On</li>
+<li><strong>CPU Power</strong> (Bit 1) is On</li>
+<li>But <strong>VOUT Power</strong> (Bit 4) is Off!</li>
 </ul>
-<p><em>How to enable VOUT Power?</em></p>
-<p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html">PMU Function Description</a>…</p>
+<p><em>So how to power up VOUT?</em></p>
+<p>From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><strong>PMU Function Description</strong></a>…</p>
 <blockquote>
-<p>SW encourage Turn-on sequence:</p>
+<p><strong>SW Encourage Turn-on Sequence</strong></p>
 </blockquote>
 <blockquote>
-<p>(1) Configure the register SW turn-on power mode (offset 0x0c), write the bit 1 which power domain will be turn-on, write the others 0;</p>
+<p>(1) Configure the register <strong>SW Turn-On Power Mode</strong> (offset <strong><code>0x0C</code></strong>), write the bit 1 which Power Domain will be turn-on, write the others 0;</p>
 </blockquote>
 <blockquote>
-<p>(2) Write the SW Turn-on command sequence. Write the register Software encourage (offset 0x44) 0xff –&gt; 0x05 –&gt; 0x50</p>
+<p>(2) Write the <strong>SW Turn-On Command Sequence</strong>. Write the register Software Encourage (offset <strong><code>0x44</code></strong>) <strong><code>0xFF</code></strong> → <strong><code>0x05</code></strong> → <strong><code>0x50</code></strong></p>
 </blockquote>
-<p>Which is implemented in the Linux Driver (with no delays in the Command Sequence): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/soc/starfive/jh7110_pmu.c#L132-L147">jh7110_pmu.c</a></p>
 <p><em>What’s a “Software Encourage”?</em></p>
 <p>Something got Lost in Translation. Let’s assume it means “Software Trigger”.</p>
-<p>We do it in U-Boot like this…</p>
-<div class="example-wrap"><pre class="language-text"><code>md 1703000c 1
-mw 1703000c 0x10 1
-md 1703000c 1
-
-mw 17030044 0xff 1
-mw 17030044 0x05 1
-mw 17030044 0x50 1
+<p>Which means we set the <strong>Power Mode</strong> (Offset <strong><code>0x0C</code></strong>) to <strong><code>0x10</code></strong> (Bit 4 for VOUT)…</p>
+<div class="example-wrap"><pre class="language-text"><code># mw 1703000c 0x10 1
 </code></pre></div>
+<p>Then we write the <strong>Command Sequence</strong> at Offset <strong><code>0x44</code></strong> (no delays needed)…</p>
+<div class="example-wrap"><pre class="language-text"><code># mw 17030044 0xff 1
+# mw 17030044 0x05 1
+# mw 17030044 0x50 1
+</code></pre></div>
+<p>TODO</p>
 <p>Then we check status if VOUT Power is on…</p>
+<div class="example-wrap"><pre class="language-text"><code># md 17030080 1
+17030080: 00000013
+</code></pre></div>
+<p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>md 17030080 1
 md 29400000 0x40
 md 29480000 0x40
