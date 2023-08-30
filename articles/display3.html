@@ -198,6 +198,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p>From the pic above, the Display Subsystem is powered in the <strong>Video Output Power Domain (DOM_VOUT)</strong>.</p>
 <p>Which is powered by the JH7110 <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html"><strong>Power Management Unit</strong></a> (PMU or PMIC)…</p>
 <p><img src="https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/power_stratey.png" alt="Power Management Unit" /></p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html">(Source)</a></p>
 <p><em>Is the power turned on for Video Output DOM_VOUT?</em></p>
 <p>Let’s dump the status of the Power Domains…</p>
 <ul>
@@ -251,197 +252,78 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 295c0010: 00000000 00000000 00000000 00000000  ................
 </code></pre></div>
 <p>We need more tweaks, for the Clock and Reset Signals…</p>
+<p>TODO: Pic of JH7110 Clock Structure</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html"><em>JH7110 Clock Structure</em></a></p>
 <h1 id="clocks-and-reset-for-display-subsystem"><a href="#clocks-and-reset-for-display-subsystem">4 Clocks and Reset for Display Subsystem</a></h1>
-<p>TODO</p>
-<p><em>Video Output Power VOUT is already enabled via the Power Management Unit…</em></p>
-<p><em>How do we poke the Clock and Reset Registers to power up the Display Controller?</em></p>
-<p>Based on the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html">JH7110 Clock Structure</a>…</p>
-<p><img src="https://doc-en.rvspace.org/JH7110/TRM/Image/Drawing/Clock_Structure.svg" alt="Clock Structure" /></p>
-<p>Display Controller (vout_crg, top left) is clocked and reset by…</p>
+<p><em>Display Subsystem (VOUT) is already powered up via the Power Management Unit (PMU)…</em></p>
+<p><em>Anything else we need to make it work?</em></p>
+<p>Always remember to enable the <strong>Clocks</strong> and deassert the <strong>Resets</strong>!</p>
+<p>According to the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html"><strong>JH7110 Clock Structure</strong></a> (pic above), the <strong>Display Subsystem (VOUT)</strong> is Clocked by…</p>
 <ul>
-<li>clk_vout_root</li>
-<li>mipiphy ref clk</li>
-<li>hdmiphy ref clk</li>
-<li>clk_vout_src (1228.8M)</li>
-<li>clk_vout_axi (614.4M)</li>
-<li>clk_vout_ahb (204.8M)（clk_ahb1）</li>
-<li>clk_mclk (51.2M)</li>
-<li>rstn_vout</li>
+<li><strong>clk_vout_root</strong></li>
+<li><strong>mipiphy ref clk</strong></li>
+<li><strong>hdmiphy ref clk</strong></li>
+<li><strong>clk_vout_src</strong> (1228.8 MHz)</li>
+<li><strong>clk_vout_axi</strong> (614.4 MHz)</li>
+<li><strong>clk_vout_ahb</strong> (204.8 MHz) / <strong>clk_ahb1</strong></li>
+<li><strong>clk_mclk</strong> (51.2 MHz)</li>
 </ul>
-<p><em>How to enable the above clocks and deassert the above reset?</em></p>
-<p>We refer to the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html">System Clock and Reset (SYS CRG) Registers</a>.</p>
-<p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html">System Memory Map</a>, System CRG is at 0x1302_0000…</p>
-<div class="example-wrap"><pre class="language-text"><code># md 13020000
-13020000: 01000000 00000001 00000002 00000000  ................
-13020010: 01000002 01000000 00000003 00000003  ................
-13020020: 00000002 80000000 80000000 00000004  ................
-13020030: 80000000 00000002 00000002 00000002  ................
-13020040: 00000002 0000000c 00000000 00000000  ................
-13020050: 00000002 00000002 80000014 80000010  ................
-13020060: 8000000c 80000000 80000000 80000000  ................
-13020070: 80000000 80000000 80000000 00000006  ................
-13020080: 80000000 80000000 80000000 80000000  ................
-13020090: 80000000 80000000 80000000 80000000  ................
-130200a0: 00000002 00000002 00000002 01000000  ................
-130200b0: 80000000 00000003 00000000 00000000  ................
-130200c0: 00000000 0000000c 00000000 00000000  ................
-130200d0: 00000000 80000000 00000003 00000002  ................
-130200e0: 80000000 80000000 00000000 00000002  ................
-130200f0: 00000000 00000000 00000000 00000000  ................
-</code></pre></div>
-<p>TODO: Which Clocks and Registers are already enabled / deasserted?</p>
-<p>Based on the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html">System Control Registers</a>, we need to enable these clocks…</p>
+<p>Plus one Reset…</p>
 <ul>
-<li>Clock AHB 1: Offset  0x28</li>
-<li>MCLK Out: Offset  0x4c</li>
-<li>clk_u0_sft7110_noc_bus_clk_cpu_axi: Offset  0x98</li>
-<li>clk_u0_sft7110_noc_bus_clk_axicfg0_axi: Offset  0x9c</li>
-<li>clk_u0_dom_vout_top_clk_dom_vout_top_clk_vout_src: Offset  0xe8</li>
-<li>Clock NOC Display AXI: Offset  0xf0</li>
-<li>Clock Video Output AHB: Offset  0xf4</li>
-<li>Clock Video Output AXI: Offset  0xf8</li>
-<li>Clock Video Output HDMI TX0 MCLK: Offset  0xfc</li>
+<li><strong>rstn_vout</strong></li>
 </ul>
-<p>(OK looks excessive, but better to enable more clocks than too few!)</p>
-<p>For the Clock Registers above, we should set Bit 31 (clk_icg) to 1…</p>
-<ul>
-<li>1: Clock enable</li>
-<li>0: Clock disable</li>
-</ul>
+<p><em>How to enable the Clocks and deassert the Resets?</em></p>
+<p>We’ll set the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html"><strong>System Control Registers (SYS CRG)</strong></a> at Base Address <strong><code>0x1302</code> <code>0000</code></strong></p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html">(From the <strong>System Memory Map</strong>)</a></p>
+<p>When we match the above Clocks to the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html"><strong>System Control Registers (SYS CRG)</strong></a>, we get…</p>
+<div><table><thead><tr><th style="text-align: center">SYS CRG Offset</th><th style="text-align: left">Clock</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>0x28</code></strong></td><td style="text-align: left">Clock AHB 1</td></tr>
+<tr><td style="text-align: center"><strong><code>0x4C</code></strong></td><td style="text-align: left">MCLK Out</td></tr>
+<tr><td style="text-align: center"><strong><code>0x98</code></strong></td><td style="text-align: left">clk_u0_sft7110_noc_bus_clk_cpu_axi</td></tr>
+<tr><td style="text-align: center"><strong><code>0x9C</code></strong></td><td style="text-align: left">clk_u0_sft7110_noc_bus_clk_axicfg0_axi</td></tr>
+<tr><td style="text-align: center"><strong><code>0xE8</code></strong></td><td style="text-align: left">clk_u0_dom_vout_top_clk_dom_vout_top_clk_vout_src</td></tr>
+<tr><td style="text-align: center"><strong><code>0xF0</code></strong></td><td style="text-align: left">Clock NOC Display AXI</td></tr>
+<tr><td style="text-align: center"><strong><code>0xF4</code></strong></td><td style="text-align: left">Clock Video Output AHB</td></tr>
+<tr><td style="text-align: center"><strong><code>0xF8</code></strong></td><td style="text-align: left">Clock Video Output AXI</td></tr>
+<tr><td style="text-align: center"><strong><code>0xFC</code></strong></td><td style="text-align: left">Clock Video Output HDMI TX0 MCLK</td></tr>
+</tbody></table>
+</div>
+<p>(Looks excessive, but better to enable more Clocks than too few!)</p>
+<p>To enable the Clock Registers above, we set <strong>Bit 31 (clk_icg)</strong> to 1.</p>
 <p>Here are the U-Boot Commands to enable the clocks…</p>
-<div class="example-wrap"><pre class="language-text"><code>md 13020028 1
-mw 13020028 0x80000000 1
-md 13020028 1
-
-md 1302004c 1
+<div class="example-wrap"><pre class="language-text"><code>mw 13020028 0x80000000 1
 mw 1302004c 0x80000000 1
-md 1302004c 1
-
-md 13020098 1
 mw 13020098 0x80000000 1
-md 13020098 1
-
-md 1302009c 1
 mw 1302009c 0x80000000 1
-md 1302009c 1
-
-md 130200e8 1
 mw 130200e8 0x80000000 1
-md 130200e8 1
-
-md 130200f0 1
 mw 130200f0 0x80000000 1
-md 130200f0 1
-
-md 130200f4 1
 mw 130200f4 0x80000000 1
-md 130200f4 1
-
-md 130200f8 1
 mw 130200f8 0x80000000 1
-md 130200f8 1
-
-md 130200fc 1
 mw 130200fc 0x80000000 1
-md 130200fc 1
-</code></pre></div>
-<p>Here’s the U-Boot Log…</p>
-<div class="example-wrap"><pre class="language-text"><code>StarFive # md 13020028 1
-13020028: 80000000                             ....
-StarFive # mw 13020028 0x80000000 1
-StarFive # 
-StarFive # md 13020028 1
-13020028: 80000000                             ....
-StarFive # md 1302004c 1
-1302004c: 00000000                             ....
-StarFive # mw 1302004c 0x80000000 1
-StarFive # 
-StarFive # md 1302004c 1
-1302004c: 80000000                             ....
-StarFive # md 13020098 1
-13020098: 80000000                             ....
-StarFive # mw 13020098 0x80000000 1
-StarFive # 
-StarFive # md 13020098 1
-13020098: 80000000                             ....
-StarFive # md 1302009c 1
-1302009c: 80000000                             ....
-StarFive # mw 1302009c 0x80000000 1
-StarFive # 
-StarFive # md 1302009c 1
-1302009c: 80000000                             ....
-StarFive # md 130200e8 1
-130200e8: 00000000                             ....
-StarFive # mw 130200e8 0x80000000 1
-StarFive # 
-StarFive # md 130200e8 1
-130200e8: 80000000                             ....
-StarFive # md 130200f0 1
-130200f0: 00000000                             ....
-StarFive # mw 130200f0 0x80000000 1
-StarFive # 
-StarFive # md 130200f0 1
-130200f0: 80000000                             ....
-StarFive # md 130200f4 1
-130200f4: 00000000                             ....
-StarFive # mw 130200f4 0x80000000 1
-StarFive # 
-StarFive # md 130200f4 1
-130200f4: 80000000                             ....
-StarFive # md 130200f8 1
-130200f8: 00000000                             ....
-StarFive # mw 130200f8 0x80000000 1
-StarFive # 
-StarFive # md 130200f8 1
-130200f8: 80000000                             ....
-StarFive # md 130200fc 1
-130200fc: 00000000                             ....
-StarFive # mw 130200fc 0x80000000 1
-StarFive # 
-StarFive # md 130200fc 1
-130200fc: 80000000                             ....
-StarFive # 
 </code></pre></div>
 <p><em>What about the Resets?</em></p>
-<p>Based on the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html">System Control Registers</a>, we need to deassert these resets…</p>
+<p>Looking up the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html"><strong>System Control Registers (SYS CRG)</strong></a>, we need to <strong>deassert these Resets</strong>…</p>
 <ul>
 <li>
-<p>Software RESET 1 Address Selector: Offset 0x2fc</p>
-<p>Bit 11: rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src</p>
-<ul>
-<li>1: Assert reset</li>
-<li>0: De-assert reset</li>
-</ul>
+<p><strong>Software RESET 1 Address Selector</strong> (SYS CRG Offset <strong><code>0x2FC</code></strong>)</p>
+<p><strong>Bit 11:</strong> rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src</p>
 </li>
 <li>
-<p>SYSCRG RESET Status 0: Offset 0x308</p>
-<p>Bit 26: rstn_u0_sft7110_noc_bus_reset_disp_axi_n</p>
-<ul>
-<li>1: Assert reset</li>
-<li>0: De-assert reset</li>
-</ul>
+<p><strong>SYSCRG RESET Status 0</strong> (SYS CRG Offset <strong><code>0x308</code></strong>)</p>
+<p><strong>Bit 26:</strong> rstn_u0_sft7110_noc_bus_reset_disp_axi_n</p>
 </li>
 <li>
-<p>SYSCRG RESET Status 1: Offset 0x30c</p>
-<p>Bit 11: rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src</p>
-<ul>
-<li>1: Assert reset</li>
-<li>0: De-assert reset</li>
-</ul>
+<p><strong>SYSCRG RESET Status 1</strong> (SYS CRG Offset <strong><code>0x30C</code></strong>)</p>
+<p><strong>Bit 11:</strong> rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src</p>
 </li>
 </ul>
-<p>These are the U-Boot Commands to Deassert the above Resets…</p>
-<div class="example-wrap"><pre class="language-text"><code>md 130202fc 1
-mw 130202fc 0x7e7f600 1
-md 130202fc 1
-
-md 13020308 1
+<p>We set the above bits to 0 to deassert the Resets.</p>
+<p>TODO</p>
+<p>These are the U-Boot Commands to deassert the above Resets…</p>
+<div class="example-wrap"><pre class="language-text"><code>mw 130202fc 0x07e7f600 1
 mw 13020308 0xfb9fffff 1
-md 13020308 1
-
-md 1302030c 1
 </code></pre></div>
-<p>(The last one is already deasserted, no need to change it)</p>
+<p>(The last Reset is already deasserted, no need to change it)</p>
 <p>Then we check the Display Registers…</p>
 <div class="example-wrap"><pre class="language-text"><code>md 29400000 0x20
 md 29480000 0x20
