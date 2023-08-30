@@ -338,7 +338,9 @@ Let's jump to U-Boot...
 
 _What happens when U-Boot Bootloader starts on Star64?_
 
-Star64 loads __U-Boot Bootloader__ from Internal Flash Memory into RAM Address [__`0x4020` `0000`__](https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19) and runs it...
+[__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/index.html) will boot our Operating System (Linux or NuttX) on the Star64 SBC.
+
+At startup, [__OpenSBI on Star64__](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface) loads U-Boot Bootloader from Internal Flash Memory (into RAM Address [__`0x4020` `0000`__](https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19)) and runs it...
 
 ```text
 U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
@@ -354,9 +356,9 @@ Hit any key to stop autoboot
 
 [(Source)](https://lupyuen.github.io/articles/linux#appendix-u-boot-bootloader-log-for-star64)
 
-Suppose there's __no microSD Card inserted__.
+Normally U-Boot will boot our Operating System from microSD Card. (Or over the Network)
 
-U-Boot tries to __load the Linux Image__ from the microSD Card, but fails...
+Suppose there's __no microSD Card inserted__. U-Boot tries to __load the Linux Image__ from the microSD Card, but fails...
 
 ```text
 Card did not respond to voltage select! : -110
