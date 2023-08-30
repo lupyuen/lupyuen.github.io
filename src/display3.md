@@ -465,9 +465,9 @@ According to the [__VOUT CRG__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM
 | __`0x40`__ | clk_u0_hdmi_tx_clk_bclk 
 | __`0x44`__ | clk_u0_hdmi_tx_clk_sys  
 
-[(__VOUT CRG__ Base Address is __`0x295C` `0000`__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html)
-
 To enable the Clock Registers above, we set __Bit 31 (clk_icg)__ to 1.
+
+[(__VOUT CRG__ Base Address is __`0x295C` `0000`__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html)
 
 __VOUT Resets__ for HDMI are at _Software_RESET_assert0_addr_assert_sel_ (VOUT CRG Offset __`0x48`__)...
 
@@ -545,18 +545,27 @@ TODO: Screenshot of DC8200
 
 # Read the Hardware Revision and Chip ID
 
-TODO
+_Are the DC8200 Register Values correct?_
 
-[Revision and Chip ID](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361) are at...
+According to the [__DC8200 Display Driver__](https://lupyuen.github.io/articles/display2#dc8200-display-hardware-driver), we can read these Register Values from the DC8200 Display Controller...
 
-```c
-#define DC_HW_REVISION          0x0024
-#define DC_HW_CHIP_CID          0x0030
-```
+- __Hardware Revision__: DC8200 AHB0 Offset __`0x24`__
 
-U-Boot Commands...
+- __Chip ID__: DC8200 AHB0 Offset __`0x30`__
+
+  [(__DC8200 AHB0__ Base Address is __`0x2940` `0000`__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html)
+
+  [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361) 
+
+Let's dump the __Hardware Revision__ and __Chip ID__ in U-Boot...
 
 ```text
+## Power up the Video Output
+run video_on
+
+## Power up the Display Controller
+run display_on
+
 ## Dump the Hardware Revision
 md 29400024 1
 
@@ -564,55 +573,25 @@ md 29400024 1
 md 29400030 1
 ```
 
-We see...
-
-```text
-StarFive # md 29400024 1
-29400024: 00005720                              W..
-StarFive # md 29400030 1
-29400030: 0000030e                             ....
-StarFive # 
-```
-
-Based on [vs_dc_hw.c](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361)...
-
-- revision = 0x5720
-	
-  Which means hw.rev = DC_REV_0
-
-- chip id = 0x30e
-
-Which looks correct yay!
-
 We should see...
 
 ```text
-StarFive # run video_on
-295c0000: 00000004 00000004 00000004 0000000c  ................
-295c0010: 00000000 00000000 00000000 00000000  ................
-295c0020: 00000000 00000000 00000000 00000000  ................
-295c0030: 00000000 00000000 00000000 00000000  ................
-295c0040: 00000000 00000000 00000fff 00000000  ................
-295c0050: 00000000 00000000 00000000 00000000  ................
-295c0060: 00000000 00000000 00000000 00000000  ................
-295c0070: 00000000 00000000 00000000 00000000  ................
+# md 29400024 1
+29400024: 00005720
 
-StarFive # run display_on
-29400000: 00000900 80010000 00222200 00000000  ........."".....
-29400010: 00000000 00000004 14010000 000b4b41  ............AK..
-29400020: 00008200 00005720 20210316 16015600  .... W....! .V..
-29400030: 0000030e a0600084 00000000 00000000  ......`.........
-29400040: 00000000 00000000 00000000 00000000  ................
-29400050: 00000000 00000000 00000000 00000000  ................
-29400060: 00000000 00000000 00000000 00000000  ................
-29400070: 00000000 08050000 00000002 00000000  ................
+# md 29400030 1
+29400030: 0000030e
 ```
 
-TODO
+Which means...
 
-Maybe we could use this to render something to the HDMI Display!
+- __Hardware Revision__ is __`0x5720`__ (DC_REV_0)
+	
+- __Chip ID__ is __`0x30E`__
 
-(Before converting to C for NuttX)
+  [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361)
+
+Which looks correct yay!
 
 # NuttX Display Driver for JH7110
 
