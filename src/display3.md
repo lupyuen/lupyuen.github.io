@@ -32,7 +32,7 @@ And hopefully this article will be helpful for __porting other Operating Systems
 
 ![Pine64 Star64 RISC-V SBC](https://lupyuen.github.io/images/linux-title.jpg)
 
-# Dumping and Writing Memory with U-Boot Bootloader
+# Dump and Write Memory with U-Boot Bootloader
 
 _Our Bootloader will Read AND Write any Memory?_
 
@@ -88,7 +88,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 
 (Hmmm sounds like a Security Risk)
 
-To transmit on UART Output, we poke `0x2A` into the __UART Transmit Register__ at [__`0x1000` `0000`__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64)...
+To transmit some UART Output, we poke `0x2A` into the __UART Transmit Register__ at [__`0x1000` `0000`__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64)...
 
 ```text
 # mw 10000000 2a 1
@@ -97,19 +97,25 @@ To transmit on UART Output, we poke `0x2A` into the __UART Transmit Register__ a
 
 Yep it prints "__`*`__", which is ASCII Code 2A!
 
-TODO
+Let's do something more sophisticated: JH7110 Display Controller...
 
-Based on the [JH7110 System Memory Map](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html), the Display Controller Registers are at...
+# Dump the JH7110 Display Controller
 
-- DC8200 AHB0: 0x2940_0000
-- DC8200 AHB1: 0x2948_0000
-- U0_HDMITX: 0x2959_0000
-- VOUT_SYSCON: 0x295B_0000
-- VOUT_CRG: 0x295C_0000
-- DSI TX: 0x295D_0000
-- MIPITX DPHY: 0x295E_0000
+_Dumping the JH7110 Display Controller should work right?_
 
-But the values are all zero!
+Let's find out! From the [__JH7110 System Memory Map__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html), the registers for __JH7110 Display Controller__ are at...
+
+| Address | Display Registers |
+|:-------:|:------------------|
+| __`0x2940 0000`__ | DC8200 AHB0
+| __`0x2948 0000`__ | DC8200 AHB1
+| __`0x2959 0000`__ | U0_HDMITX
+| __`0x295B 0000`__ | VOUT_SYSCON
+| __`0x295C 0000`__ | VOUT_CRG
+| __`0x295D 0000`__ | DSI TX
+| __`0x295E 0000`__ | MIPITX DPHY
+
+Let's dump them...
 
 ```text
 # md 29400000
@@ -133,11 +139,11 @@ But the values are all zero!
 295c0010: 00000000 00000000 00000000 00000000  ................
 ```
 
-Maybe because the Display Controller is not powered up?
+_But the values are all zero!_
 
-Can we poke the PMU Registers and Clock and Reset Registers to power it up?
+That's because the Display Controller is __not powered up__.
 
-Let's find out...
+Let's tweak some registers and power up the Display Controller...
 
 # Power Management Registers for Star64 JH7110 Display Controller
 
