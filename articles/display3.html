@@ -69,7 +69,7 @@
     <nav id="TOC"><ul>
 <li><a href="#dump-and-write-memory-with-u-boot-bootloader">1 Dump and Write Memory with U-Boot Bootloader</a><ul></ul></li>
 <li><a href="#dump-the-jh7110-display-controller">2 Dump the JH7110 Display Controller</a><ul></ul></li>
-<li><a href="#power-management-registers-for-star64-jh7110-display-controller">3 Power Management Registers for Star64 JH7110 Display Controller</a><ul></ul></li>
+<li><a href="#jh7110-power-management-unit">3 JH7110 Power Management Unit</a><ul></ul></li>
 <li><a href="#clock-and-reset-registers-for-star64-jh7110-display-controller">4 Clock and Reset Registers for Star64 JH7110 Display Controller</a><ul></ul></li>
 <li><a href="#automate-u-boot-to-power-up-display-controller">5 Automate U-Boot to Power Up Display Controller</a><ul></ul></li>
 <li><a href="#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader">6 Read the Star64 JH7110 Display Controller Registers with U-Boot Bootloader</a><ul></ul></li>
@@ -148,16 +148,17 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p><em>Dumping the JH7110 Display Controller should work right?</em></p>
 <p>Let’s find out! From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong>JH7110 System Memory Map</strong></a>, the registers for <strong>JH7110 Display Controller</strong> are at…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: left">Display Registers</th></tr></thead><tbody>
-<tr><td style="text-align: center"><strong><code>0x2940 0000</code></strong></td><td style="text-align: left">DC8200 AHB0</td></tr>
-<tr><td style="text-align: center"><strong><code>0x2948 0000</code></strong></td><td style="text-align: left">DC8200 AHB1</td></tr>
-<tr><td style="text-align: center"><strong><code>0x2959 0000</code></strong></td><td style="text-align: left">U0_HDMITX</td></tr>
-<tr><td style="text-align: center"><strong><code>0x295B 0000</code></strong></td><td style="text-align: left">VOUT_SYSCON</td></tr>
-<tr><td style="text-align: center"><strong><code>0x295C 0000</code></strong></td><td style="text-align: left">VOUT_CRG</td></tr>
-<tr><td style="text-align: center"><strong><code>0x295D 0000</code></strong></td><td style="text-align: left">DSI TX</td></tr>
-<tr><td style="text-align: center"><strong><code>0x295E 0000</code></strong></td><td style="text-align: left">MIPITX DPHY</td></tr>
+<tr><td style="text-align: center"><strong><code>0x2940 0000</code></strong></td><td style="text-align: left"><strong>DC8200 AHB0</strong> <em>(Display Bus 0)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x2948 0000</code></strong></td><td style="text-align: left"><strong>DC8200 AHB1</strong> <em>(Display Bus 1)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x2959 0000</code></strong></td><td style="text-align: left"><strong>U0_HDMITX</strong> <em>(HDMI)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x295B 0000</code></strong></td><td style="text-align: left"><strong>VOUT_SYSCON</strong> <em>(System Config)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x295C 0000</code></strong></td><td style="text-align: left"><strong>VOUT_CRG</strong> <em>(Clock and Reset)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x295D 0000</code></strong></td><td style="text-align: left"><strong>DSI TX</strong> <em>(MIPI Display Serial Interface)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x295E 0000</code></strong></td><td style="text-align: left"><strong>MIPITX DPHY</strong> <em>(MIPI Display Physical Layer)</em></td></tr>
 </tbody></table>
 </div>
-<p>Let’s dump them…</p>
+<p><a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller">(<strong>DC8200</strong> is the VeriSilicon Dual Display Controller)</a></p>
+<p>Let’s dump the above <strong>Display Controller Registers</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 29400000
 29400000: 00000000 00000000 00000000 00000000  ................
 29400010: 00000000 00000000 00000000 00000000  ................
@@ -181,7 +182,8 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p><em>But the values are all zero!</em></p>
 <p>That’s because the Display Controller is <strong>not powered up</strong>.</p>
 <p>Let’s tweak some registers and power up the Display Controller…</p>
-<h1 id="power-management-registers-for-star64-jh7110-display-controller"><a href="#power-management-registers-for-star64-jh7110-display-controller">3 Power Management Registers for Star64 JH7110 Display Controller</a></h1>
+<h1 id="jh7110-power-management-unit"><a href="#jh7110-power-management-unit">3 JH7110 Power Management Unit</a></h1>
+<p><em>How will we power up the Display Controller?</em></p>
 <p>TODO</p>
 <p><em>Can we poke the Power Management Registers to power up the Display Controller?</em></p>
 <p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html">JH7110 Power Management</a>…</p>
