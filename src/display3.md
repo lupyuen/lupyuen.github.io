@@ -277,9 +277,9 @@ When we match the above Clocks to the [__System Control Registers (SYS CRG)__](h
 |:--------------:|:------|
 | __`0x28`__ | Clock AHB 1
 | __`0x4C`__ | MCLK Out  
-| __`0x98`__ | clk_u0_sft7110_noc_bus_clk_cpu_axi  
-| __`0x9C`__ | clk_u0_sft7110_noc_bus_clk_axicfg0_axi  
-| __`0xE8`__ | clk_u0_dom_vout_top_clk_dom_vout_top_clk_vout_src  
+| __`0x98`__ | clk_u0_sft7110_noc_bus _clk_cpu_axi  
+| __`0x9C`__ | clk_u0_sft7110_noc_bus _clk_axicfg0_axi  
+| __`0xE8`__ | clk_u0_dom_vout_top _clk_dom_vout_top_clk_vout_src  
 | __`0xF0`__ | Clock NOC Display AXI  
 | __`0xF4`__ | Clock Video Output AHB  
 | __`0xF8`__ | Clock Video Output AXI  
@@ -309,15 +309,15 @@ Looking up the [__System Control Registers (SYS CRG)__](https://doc-en.rvspace.o
 
 - __Software RESET 1 Address Selector__ (SYS CRG Offset __`0x2FC`__)
 
-  __Bit 11:__ rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src
+  __Bit 11:__ rstn_u0_dom_vout_top _rstn_dom_vout_top_rstn_vout_src
 
 - __SYSCRG RESET Status 0__ (SYS CRG Offset __`0x308`__)
 
-  __Bit 26:__ rstn_u0_sft7110_noc_bus_reset_disp_axi_n
+  __Bit 26:__ rstn_u0_sft7110_noc_bus _reset_disp_axi_n
 
 - __SYSCRG RESET Status 1__ (SYS CRG Offset __`0x30C`__)
 
-  __Bit 11:__ rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src
+  __Bit 11:__ rstn_u0_dom_vout_top _rstn_dom_vout_top_rstn_vout_src
 
 We set the above bits to 0 to deassert the Resets.
 
