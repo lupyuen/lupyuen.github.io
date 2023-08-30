@@ -32,13 +32,15 @@ And hopefully this article will be helpful for __porting other Operating Systems
 
 ![Pine64 Star64 RISC-V SBC](https://lupyuen.github.io/images/linux-title.jpg)
 
-# Poking the Star64 JH7110 Display Controller with U-Boot Bootloader
+# Dumping and Writing Memory with U-Boot Bootloader
 
-TODO
+_A Bootloader that will Read and Write Memory?_
 
-Boot Star64 SBC without a microSD Card. Shut down our TFTP Server. We should see the U-Boot Prompt.
+Yep it's surprising (maybe risky) that [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) will read and write JH7110 Memory: __RAM, ROM, even I/O Registers__! (ROM is read-only of course)
 
-The `md` command dumps the JH7110 Memory: RAM, ROM, even I/O Registers!
+Boot Star64 SBC __without a microSD Card__ and shut down our [__TFTP Server__](https://lupyuen.github.io/articles/tftp). We should see the __U-Boot Prompt__.
+
+The __`md`__ command will dump JH7110 Memory (RAM, ROM, I/O Registers)...
 
 ```text
 # md
@@ -46,7 +48,9 @@ md - memory display
 Usage: md [.b, .w, .l, .q] address [# of objects]
 ```
 
-We can dump the Boot ROM at `0x2A00` `0000`...
+TODO
+
+Let's dump the Boot ROM at `0x2A00` `0000`...
 
 ```text
 # md 2A000000
