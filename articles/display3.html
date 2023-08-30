@@ -281,9 +281,9 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <div><table><thead><tr><th style="text-align: center">SYS CRG<br>Offset</th><th style="text-align: left">Clock</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>0x28</code></strong></td><td style="text-align: left">Clock AHB 1</td></tr>
 <tr><td style="text-align: center"><strong><code>0x4C</code></strong></td><td style="text-align: left">MCLK Out</td></tr>
-<tr><td style="text-align: center"><strong><code>0x98</code></strong></td><td style="text-align: left">clk_u0_sft7110_noc_bus_clk_cpu_axi</td></tr>
-<tr><td style="text-align: center"><strong><code>0x9C</code></strong></td><td style="text-align: left">clk_u0_sft7110_noc_bus_clk_axicfg0_axi</td></tr>
-<tr><td style="text-align: center"><strong><code>0xE8</code></strong></td><td style="text-align: left">clk_u0_dom_vout_top_clk_dom_vout_top_clk_vout_src</td></tr>
+<tr><td style="text-align: center"><strong><code>0x98</code></strong></td><td style="text-align: left">clk_u0_sft7110_noc_bus _clk_cpu_axi</td></tr>
+<tr><td style="text-align: center"><strong><code>0x9C</code></strong></td><td style="text-align: left">clk_u0_sft7110_noc_bus _clk_axicfg0_axi</td></tr>
+<tr><td style="text-align: center"><strong><code>0xE8</code></strong></td><td style="text-align: left">clk_u0_dom_vout_top _clk_dom_vout_top_clk_vout_src</td></tr>
 <tr><td style="text-align: center"><strong><code>0xF0</code></strong></td><td style="text-align: left">Clock NOC Display AXI</td></tr>
 <tr><td style="text-align: center"><strong><code>0xF4</code></strong></td><td style="text-align: left">Clock Video Output AHB</td></tr>
 <tr><td style="text-align: center"><strong><code>0xF8</code></strong></td><td style="text-align: left">Clock Video Output AXI</td></tr>
@@ -308,15 +308,15 @@ mw 130200fc 0x80000000 1
 <ul>
 <li>
 <p><strong>Software RESET 1 Address Selector</strong> (SYS CRG Offset <strong><code>0x2FC</code></strong>)</p>
-<p><strong>Bit 11:</strong> rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src</p>
+<p><strong>Bit 11:</strong> rstn_u0_dom_vout_top _rstn_dom_vout_top_rstn_vout_src</p>
 </li>
 <li>
 <p><strong>SYSCRG RESET Status 0</strong> (SYS CRG Offset <strong><code>0x308</code></strong>)</p>
-<p><strong>Bit 26:</strong> rstn_u0_sft7110_noc_bus_reset_disp_axi_n</p>
+<p><strong>Bit 26:</strong> rstn_u0_sft7110_noc_bus _reset_disp_axi_n</p>
 </li>
 <li>
 <p><strong>SYSCRG RESET Status 1</strong> (SYS CRG Offset <strong><code>0x30C</code></strong>)</p>
-<p><strong>Bit 11:</strong> rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src</p>
+<p><strong>Bit 11:</strong> rstn_u0_dom_vout_top _rstn_dom_vout_top_rstn_vout_src</p>
 </li>
 </ul>
 <p>We set the above bits to 0 to deassert the Resets.</p>
