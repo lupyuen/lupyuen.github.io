@@ -4,7 +4,7 @@
 
 ![Star64 JH7110 Display Controller is alive!](https://lupyuen.github.io/images/display3-title.png)
 
-In the olden days we would __`peek`__ and __`poke`__ the __Display Controller__, to see weird and wonderful displays.
+In the olden days we would [__`peek`__](https://en.wikipedia.org/wiki/PEEK_and_POKE) and [__`poke`__](https://en.wikipedia.org/wiki/PEEK_and_POKE) the [__Display Controller__](https://en.wikipedia.org/wiki/Apple_II_graphics), to see weird and wonderful displays.
 
 Today (46 years later), we poke around the Display Controller of [__Star64 JH7110 RISC-V SBC__](https://wiki.pine64.org/wiki/STAR64) with a modern tool (not BASIC): [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)!
 
@@ -608,7 +608,7 @@ Earlier we talked about the steps to power up the __Display Subsystem__ and __Di
 
 - [__"Clocks and Resets for Display Controller"__](https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller)
 
-This is how we will implement the steps in our __NuttX Display Driver__ (before cleanup): [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273)
+This is how we will implement the steps in our __NuttX Display Driver__: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273)
 
 ```c
 // Power Up the Power Management Unit for Video Output / Display Subsystem
@@ -620,6 +620,8 @@ putreg32(0x50, 0x17030044);
 ```
 
 That's how we power up via the __Power Management Unit__.
+
+(Yeah needs cleanup)
 
 Next we enable the Clocks and deassert the Resets for the __Display Subsystem__...
 
