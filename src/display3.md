@@ -749,6 +749,8 @@ TODO: U-Boot
 
 Partial Implementation: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
 
+[__Justin (Fishwaldo)__](https://fosstodon.org/@Fishwaldo/110902984442385966) suggests that we check out the simpler HDMI Driver in __U-Boot Bootloader__
+
 # Appendix: JH7110 Display Controller Mysteries
 
 TODO: In this section we talk about the __mysterious undocumented things__ in the JH7110 Display Controller. (And some typos)
