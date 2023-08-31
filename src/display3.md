@@ -801,7 +801,7 @@ We talked about our JH7110 Display Driver and a Bunch of Mystery Writes...
 
 - [__"JH7110 Display Driver"__](https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver)
 
-According to the __U-Boot Display Driver__ (officially contributed by StarFive), there's a long list of __Mystery Writes to Undocumented Registers__ in the DC8200 Display Controller: [sf_vop.c](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540)
+Inside the __U-Boot Display Driver__ (officially contributed by StarFive), there's a long list of __Mystery Writes to Undocumented Registers__ in the DC8200 Display Controller: [sf_vop.c](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540)
 
 ```c
 writel(0xc0001fff, priv->regs_hi+0x00000014);
@@ -826,15 +826,19 @@ What's happening here?
 
 Shall we match the Mystery Writes with the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)?
 
+TODO: Pic of Software_RESET_assert0_addr_assert_sel
+
+[_Software_RESET_assert0_addr_assert_sel_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb)
+
 ## VOUT Reset
 
-TODO: Reset is actually at 295C0048, not 295C0038!
+VOUT Reset [_Software_RESET_assert0_addr_assert_sel_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb) is actually at __Offset `0x48`__: __`0x295C` `0048`__.
 
-```c
-#define Software_RESET_assert0_addr_assert_sel (VOUT_CRG_BASE_ADDRESS + 0x48)
-```
+(Instead of Offset `0x38`, pic above)
 
-TODO: __`0xFFF`__
+_How did we figure out it's at Offset `0x48`?_
+
+Writing to Offset `0x38` has no effect, [__according to our testing__](https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader). Thanks to U-Boot we have this dump...
 
 ```text
 # md 295C0000 0x20
@@ -845,40 +849,53 @@ TODO: __`0xFFF`__
 295c0040: 00000000 00000000 00000fff 00000000  ................
 ```
 
-Thankfully we have U-Boot!
+Offset `0x38` is 0, which doesn't look right for a Reset Register that should be filled with 1 Bits (by default).
+
+Then we noticed that __Offset `0x48`__ is filled with 1 Bits: __`0xFFF`__. So we tested Offset `0x48`, and it works!
+
+TODO: Pic of clk_u0_dc8200_clk_pix0
+
+[_clk_u0_dc8200_clk_pix0_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb)
 
 ## Clock Multiplexing
 
-TODO: How to set the Clock Source of __u0_dc8200.clk_pix0__ to __clk_dc8200_pix0__?
+How to set the Clock Source of __u0_dc8200.clk_pix0__ to __clk_dc8200_pix0__?
 
-clk_u0_dc8200_clk_pix0: Offset 0x1c
+[__clk_u0_dc8200_clk_pix0__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb) is at __Offset `0x1C`__ (Pic above)
 
-- Bits [24:29]:	clk_mux_sel	(Default 0)
+- Bits 24 to 29:	__clk_mux_sel__	(Default 0)
 
   Clock multiplexing selector:
   - clk_dc8200_pix0
   - clk_hdmitx0_pixelclk
 
-  What are the values for clk_mux_sel?
+But what are the valid values for __clk_mux_sel__?
 
 TODO: Can we read another Clock Mux to figure this out?
 
+TODO: Pic of clk_dc8200_pix0
+
+[_clk_dc8200_pix0_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb)
+
 ## Clock Rate
 
-TODO: How to set the Clock Rate of __dc8200_pix0__ to __148.5 MHz__? (HDMI Clock)
+How to set the Clock Rate of __dc8200_pix0__ to __148.5 MHz__? (HDMI Clock)
 
-clk_dc8200_pix0: Offset 0x04
+[__clk_dc8200_pix0__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb) is at __Offset `0x04`__ (Pic above)
 
-Bits [0:23]: clk_divcfg (Default 0x04)
+- Bits 0 to 23: __clk_divcfg__ (Default 4)
 
-Clock divider coefficient:
-- Max: 63 (307.2 MHz?), Default: 4, Min: 4, Typical: 4
+  Clock divider coefficient:
+
+  Max: 63 (307.2 MHz?), Default: 4, Min: 4, Typical: 4
+
+TODO: What is the Clock Multiplier?
+
+![`clk_tx_esc` should have default `24'hc`, there is a typo in the doc: `24'h12`](https://lupyuen.github.io/images/display3-typo.png)
 
 ## Clock Default
 
 TODO: The Default Values seem to match [DOM VOUT CRG](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html). (`clk_tx_esc` should have default `24'hc`, there is a typo in the doc: `24'h12`)
-
-![`clk_tx_esc` should have default `24'hc`, there is a typo in the doc: `24'h12`](https://lupyuen.github.io/images/display3-typo.png)
 
 ## PMU Software Encourage
 
