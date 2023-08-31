@@ -905,7 +905,7 @@ How to set the Clock Source of __u0_dc8200.clk_pix0__ to __clk_dc8200_pix0__?
 
 But what are the valid values for __clk_mux_sel__?
 
-TODO: Can we read another Clock Mux to figure this out?
+Can we read another Multiplexed Clock to figure out the valid values?
 
 ![Clock clk_dc8200_pix0](https://lupyuen.github.io/images/display3-clock3.png)
 
@@ -923,7 +923,9 @@ How to set the Clock Rate of __dc8200_pix0__ to __148.5 MHz__? (HDMI Clock)
 
   Max: 63 (307.2 MHz?), Default: 4, Min: 4, Typical: 4
 
-TODO: What is the Clock Multiplier?
+What is the Clock Divider value we should set?
+
+What is the Input Frequency to the Clock? 307.2 MHz?
 
 ![Clock clk_tx_esc](https://lupyuen.github.io/images/display3-typo.png)
 
