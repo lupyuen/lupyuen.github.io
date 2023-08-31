@@ -79,11 +79,12 @@
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-jh7110-display-driver">11 Appendix: JH7110 Display Driver</a><ul></ul></li>
 <li><a href="#appendix-jh7110-display-controller-mysteries">12 Appendix: JH7110 Display Controller Mysteries</a><ul>
-<li><a href="#vout-reset">12.1 VOUT Reset</a><ul></ul></li>
-<li><a href="#clock-multiplexing">12.2 Clock Multiplexing</a><ul></ul></li>
-<li><a href="#clock-rate">12.3 Clock Rate</a><ul></ul></li>
-<li><a href="#clock-default">12.4 Clock Default</a><ul></ul></li>
-<li><a href="#pmu-software-encourage">12.5 PMU Software Encourage</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Sep 2023</em></p>
+<li><a href="#hdmi-write">12.1 HDMI Write</a><ul></ul></li>
+<li><a href="#vout-reset">12.2 VOUT Reset</a><ul></ul></li>
+<li><a href="#clock-multiplexing">12.3 Clock Multiplexing</a><ul></ul></li>
+<li><a href="#clock-rate">12.4 Clock Rate</a><ul></ul></li>
+<li><a href="#clock-default">12.5 Clock Default</a><ul></ul></li>
+<li><a href="#pmu-software-encourage">12.6 PMU Software Encourage</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Sep 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/display3-title.png" alt="Star64 JH7110 Display Controller is alive!" /></p>
 <p>In the olden days we would <strong><code>peek</code></strong> and <strong><code>poke</code></strong> the <strong>Display Controller</strong>, to see weird and wonderful displays.</p>
 <p>Today (46 years later), we poke around the Display Controller of <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Star64 JH7110 RISC-V SBC</strong></a> with a modern tool (not BASIC): <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>!</p>
@@ -705,12 +706,15 @@ writel(uc_plat-&gt;base, priv-&gt;regs_hi+0x00001400);
 </ol>
 <h1 id="appendix-jh7110-display-controller-mysteries"><a href="#appendix-jh7110-display-controller-mysteries">12 Appendix: JH7110 Display Controller Mysteries</a></h1>
 <p>TODO</p>
-<h2 id="vout-reset"><a href="#vout-reset">12.1 VOUT Reset</a></h2>
+<h2 id="hdmi-write"><a href="#hdmi-write">12.1 HDMI Write</a></h2>
+<p>TODO</p>
+<p><a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L369-L655">(See <strong>sf_display_init</strong>)</a></p>
+<h2 id="vout-reset"><a href="#vout-reset">12.2 VOUT Reset</a></h2>
 <p>TODO: Reset is actually at 295C0048, not 295C0038!</p>
 <div class="example-wrap"><pre class="language-c"><code>#define Software_RESET_assert0_addr_assert_sel (VOUT_CRG_BASE_ADDRESS + 0x48)
 </code></pre></div>
 <p>TODO: <strong><code>0xFFF</code></strong></p>
-<h2 id="clock-multiplexing"><a href="#clock-multiplexing">12.2 Clock Multiplexing</a></h2>
+<h2 id="clock-multiplexing"><a href="#clock-multiplexing">12.3 Clock Multiplexing</a></h2>
 <p>TODO: clk_u0_dc8200_clk_pix0: Offset 0x1c</p>
 <ul>
 <li>
@@ -724,7 +728,7 @@ writel(uc_plat-&gt;base, priv-&gt;regs_hi+0x00001400);
 </li>
 </ul>
 <p>TODO: Can we read another Clock Mux to figure this out?</p>
-<h2 id="clock-rate"><a href="#clock-rate">12.3 Clock Rate</a></h2>
+<h2 id="clock-rate"><a href="#clock-rate">12.4 Clock Rate</a></h2>
 <p>TODO: Set clock rate of dc8200_pix0 to 148.5 MHz (HDMI Clock)</p>
 <p>clk_dc8200_pix0: Offset 0x04</p>
 <p>Bits [0:23]: clk_divcfg (Default 0x04)</p>
@@ -732,10 +736,10 @@ writel(uc_plat-&gt;base, priv-&gt;regs_hi+0x00001400);
 <ul>
 <li>Max: 63 (307.2 MHz?), Default: 4, Min: 4, Typical: 4</li>
 </ul>
-<h2 id="clock-default"><a href="#clock-default">12.4 Clock Default</a></h2>
+<h2 id="clock-default"><a href="#clock-default">12.5 Clock Default</a></h2>
 <p>TODO: The Default Values seem to match <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html">DOM VOUT CRG</a>. (<code>clk_tx_esc</code> should have default <code>24'hc</code>, there is a typo in the doc: <code>24'h12</code>)</p>
 <p><img src="https://lupyuen.github.io/images/display3-typo.png" alt="clk_tx_esc should have default 24'hc, there is a typo in the doc: 24'h12" /></p>
-<h2 id="pmu-software-encourage"><a href="#pmu-software-encourage">12.5 PMU Software Encourage</a></h2>
+<h2 id="pmu-software-encourage"><a href="#pmu-software-encourage">12.6 PMU Software Encourage</a></h2>
 <p>TODO</p>
 <p>From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><strong>PMU Function Description</strong></a>…</p>
 <blockquote>
