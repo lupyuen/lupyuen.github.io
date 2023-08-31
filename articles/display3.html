@@ -821,7 +821,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 </li>
 </ul>
 <p>But what are the valid values for <strong>clk_mux_sel</strong>?</p>
-<p>TODO: Can we read another Clock Mux to figure this out?</p>
+<p>Can we read another Multiplexed Clock to figure out the valid values?</p>
 <p><img src="https://lupyuen.github.io/images/display3-clock3.png" alt="Clock clk_dc8200_pix0" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb"><em>Clock clk_dc8200_pix0</em></a></p>
 <h2 id="clock-rate"><a href="#clock-rate">12.4 Clock Rate</a></h2>
@@ -834,7 +834,8 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p>Max: 63 (307.2 MHz?), Default: 4, Min: 4, Typical: 4</p>
 </li>
 </ul>
-<p>TODO: What is the Clock Multiplier?</p>
+<p>What is the Clock Divider value we should set?</p>
+<p>What is the Input Frequency to the Clock? 307.2 MHz?</p>
 <p><img src="https://lupyuen.github.io/images/display3-typo.png" alt="Clock clk_tx_esc" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><em>Clock clk_tx_esc</em></a></p>
 <h2 id="clock-default"><a href="#clock-default">12.5 Clock Default</a></h2>
