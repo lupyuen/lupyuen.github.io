@@ -760,7 +760,7 @@ TODO: U-Boot
 
 TODO
 
-## HDMI Write
+## HDMI Output
 
 TODO
 
