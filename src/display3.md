@@ -599,9 +599,9 @@ Our DC8200 Display Controller returns the correct Register Values yay!
 
 # NuttX Display Driver for JH7110
 
-TODO
+_How will we build the NuttX Display Driver for JH7110?_
 
-_How will we test this in NuttX?_
+TODO
 
 Probably inside `board_late_initialize` like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
 
@@ -670,27 +670,6 @@ TODO: Why `board_late_initialize`
 
 TODO
 
-Typo default 
-Reset
-Mux
-Coefficient 
-Encourage 
-
-From [sf_vop.c](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540)
-
-```c
-writel(0xc0001fff, priv->regs_hi+0x00000014);
-writel(0x00002000, priv->regs_hi+0x00001cc0);
-//writel(uc_plat->base+0x1fa400, priv->regs_hi+0x00001530);
-writel(0x00000000, priv->regs_hi+0x00001800);
-writel(0x00000000, priv->regs_hi+0x000024d8);
-writel(0x021c0780, priv->regs_hi+0x000024e0);
-writel(0x021c0780, priv->regs_hi+0x00001810);
-writel(uc_plat->base, priv->regs_hi+0x00001400);
-```
-
-regs_hi is DC8200_AHB0_BASE_ADDRESS: 0x29400000
-
 # What's Next
 
 TODO
@@ -758,13 +737,30 @@ TODO: U-Boot
 
 # Appendix: JH7110 Display Controller Mysteries
 
-TODO
+TODO: In this section we talk about the __mysterious undocumented things__ in the JH7110 Display Controller. (And some typos)
 
 ## HDMI Output
 
 TODO
 
+From [sf_vop.c](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540)
+
+```c
+writel(0xc0001fff, priv->regs_hi+0x00000014);
+writel(0x00002000, priv->regs_hi+0x00001cc0);
+//writel(uc_plat->base+0x1fa400, priv->regs_hi+0x00001530);
+writel(0x00000000, priv->regs_hi+0x00001800);
+writel(0x00000000, priv->regs_hi+0x000024d8);
+writel(0x021c0780, priv->regs_hi+0x000024e0);
+writel(0x021c0780, priv->regs_hi+0x00001810);
+writel(uc_plat->base, priv->regs_hi+0x00001400);
+```
+
+regs_hi is DC8200_AHB0_BASE_ADDRESS: 0x29400000
+
 [(See __sf_display_init__)](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L369-L655)
+
+TODO: Match with Linux Driver
 
 ## VOUT Reset
 
