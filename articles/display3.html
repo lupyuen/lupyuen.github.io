@@ -248,6 +248,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 17030080: 00000013
 </code></pre></div>
 <p><strong>Video Output Power VOUT</strong> (Bit 4) is now on!</p>
+<p>(Actually we should wait <strong>50 milliseconds</strong> to Power Up)</p>
 <p><em>So we can dump the Display Subsystem now?</em></p>
 <p>Sadly nope, the <strong>Display Subsystem Registers</strong> are still empty…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 295C0000 0x20
@@ -637,6 +638,9 @@ writel(uc_plat-&gt;base, priv-&gt;regs_hi+0x00001400);
 <p>Power Up the Power Management Unit for Video Output / Display Subsystem</p>
 </li>
 <li>
+<p>Wait 50 milliseconds to Power Up</p>
+</li>
+<li>
 <p>Enable the Clocks for Video Output / Display Subsystem</p>
 </li>
 <li>
@@ -653,6 +657,45 @@ writel(uc_plat-&gt;base, priv-&gt;regs_hi+0x00001400);
 </li>
 <li>
 <p>Verify that Hardware Revision and Chip ID are non-zero</p>
+</li>
+<li>
+<p>Read the HDMI Status, check for Hot Plug</p>
+</li>
+<li>
+<p>Enable HDMI</p>
+<ul>
+<li>
+<p>Detect HDMI</p>
+</li>
+<li>
+<p>Disable HDMI Transmit PHY</p>
+</li>
+<li>
+<p>Configure HDMI Transmit PHY for 1080p 60 Hz</p>
+</li>
+<li>
+<p>Enable HDMI Transmit PHY</p>
+</li>
+<li>
+<p>Enable HDMI TMDS</p>
+</li>
+<li>
+<p>Enable HDMI Data Sync</p>
+<p><a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_hdmi.c#L444-L457">(See <strong>inno_hdmi_enable</strong>)</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Set the Source of u0_dc8200.clk_pix0 to clk_dc8200_pix0</p>
+<p>See Appendix</p>
+</li>
+<li>
+<p>Set Clock Rate of dc8200_pix0 to 148.5 MHz (HDMI Clock)</p>
+<p>See Appendix</p>
+</li>
+<li>
+<p>Bunch of mystery writes, see Appendix</p>
+<p><a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L369-L655">(See <strong>sf_display_init</strong>)</a></p>
 </li>
 </ol>
 <h1 id="appendix-jh7110-display-controller-mysteries"><a href="#appendix-jh7110-display-controller-mysteries">12 Appendix: JH7110 Display Controller Mysteries</a></h1>
