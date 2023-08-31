@@ -738,10 +738,9 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 <p>Partial Implementation: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270">jh7110_appinit.c</a></p>
 <p><a href="https://fosstodon.org/@Fishwaldo/110902984442385966"><strong>Justin (Fishwaldo)</strong></a> suggests that we check out the simpler HDMI Driver in <strong>U-Boot Bootloader</strong></p>
 <h1 id="appendix-jh7110-display-controller-mysteries"><a href="#appendix-jh7110-display-controller-mysteries">12 Appendix: JH7110 Display Controller Mysteries</a></h1>
-<p>TODO: In this section we talk about the <strong>Mysterious, Missing and Mistaken</strong> things in the JH7110 Display Controller.</p>
+<p>TODO: In this section we talk about the <strong>Missing, Mistaken and Mysterious</strong> things in the JH7110 Display Controller.</p>
 <h2 id="hdmi-output"><a href="#hdmi-output">12.1 HDMI Output</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540">sf_vop.c</a></p>
+<p>According to the <strong>U-Boot Display Driver</strong> (officially contributed by StarFive), there’s a long list of <strong>Mystery Writes to Undocumented Registers</strong> in the DC8200 Display Controller: <a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540">sf_vop.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>writel(0xc0001fff, priv-&gt;regs_hi+0x00000014);
 writel(0x00002000, priv-&gt;regs_hi+0x00001cc0);
 //writel(uc_plat-&gt;base+0x1fa400, priv-&gt;regs_hi+0x00001530);
@@ -749,11 +748,14 @@ writel(0x00000000, priv-&gt;regs_hi+0x00001800);
 writel(0x00000000, priv-&gt;regs_hi+0x000024d8);
 writel(0x021c0780, priv-&gt;regs_hi+0x000024e0);
 writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
-writel(uc_plat-&gt;base, priv-&gt;regs_hi+0x00001400);
+...
 </code></pre></div>
-<p>regs_hi is DC8200_AHB0_BASE_ADDRESS: 0x29400000</p>
-<p><a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L369-L655">(See <strong>sf_display_init</strong>)</a></p>
-<p>TODO: Match with Linux Driver</p>
+<p>(<strong>regs_hi</strong> is DC8200 AHB0 Base Address <strong><code>0x2940</code> <code>0000</code></strong>)</p>
+<p>Plus this super baffling one…</p>
+<div class="example-wrap"><pre class="language-c"><code>writel(uc_plat-&gt;base, priv-&gt;regs_hi+0x00001400);
+</code></pre></div>
+<p>What’s happening here?</p>
+<p>Shall we match the Mystery Writes with the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>?</p>
 <h2 id="vout-reset"><a href="#vout-reset">12.2 VOUT Reset</a></h2>
 <p>TODO: Reset is actually at 295C0048, not 295C0038!</p>
 <div class="example-wrap"><pre class="language-c"><code>#define Software_RESET_assert0_addr_assert_sel (VOUT_CRG_BASE_ADDRESS + 0x48)
