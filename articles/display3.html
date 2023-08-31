@@ -206,7 +206,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p><em>How will we power up the Display Subsystem?</em></p>
 <p>From the pic above, the Display Subsystem is powered in the <strong>Video Output Power Domain (DOM_VOUT)</strong>.</p>
 <p>Which is powered by the JH7110 <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html"><strong>Power Management Unit</strong></a> (PMU or PMIC)…</p>
-<p><img src="https://doc-en.rvspace.org/JH7110/TRM/Image/RD/JH7110/power_stratey.png" alt="Power Management Unit" /></p>
+<p><img src="https://lupyuen.github.io/images/display3-power.png" alt="Power Management Unit" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html">(Source)</a></p>
 <p><em>Is the power turned on for Video Output DOM_VOUT?</em></p>
 <p>Let’s dump the status of the Power Domains…</p>
@@ -262,7 +262,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 295c0010: 00000000 00000000 00000000 00000000  ................
 </code></pre></div>
 <p>We need more tweaks, for the Clock and Reset Signals…</p>
-<p>TODO: Pic of JH7110 Clock Structure</p>
+<p><img src="https://lupyuen.github.io/images/display3-clock.png" alt="JH7110 Clock Structure" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html"><em>JH7110 Clock Structure</em></a></p>
 <h1 id="clocks-and-resets-for-display-subsystem"><a href="#clocks-and-resets-for-display-subsystem">4 Clocks and Resets for Display Subsystem</a></h1>
 <p><em>Display Subsystem (VOUT) is already powered up via the Power Management Unit (PMU)…</em></p>
@@ -356,9 +356,8 @@ mw 130200fc 0x80000000 1
 </code></pre></div>
 <p>The Display Systems Registers are now visible at VOUT CRG <strong><code>0x295C</code> <code>0000</code></strong>…</p>
 <p>Which means the Display Subsystem is alive yay!</p>
+<p><a href="https://lupyuen.github.io/articles/display3#clock-default">(<strong><code>0x295C</code> <code>0000</code></strong> defaults to <strong><code>0x0C</code></strong>, there’s a typo in the doc)</a></p>
 <p><img src="https://lupyuen.github.io/images/display3-title.png" alt="Star64 JH7110 Display Subsystem is alive!" /></p>
-<p>TODO: The Default Values seem to match <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html">DOM VOUT CRG</a>. (<code>clk_tx_esc</code> should have default <code>24'hc</code>, there is a typo in the doc: <code>24'h12</code>)</p>
-<p><img src="https://lupyuen.github.io/images/display3-typo.png" alt="clk_tx_esc should have default 24'hc, there is a typo in the doc: 24'h12" /></p>
 <h1 id="u-boot-script-to-power-up-the-display-subsystem"><a href="#u-boot-script-to-power-up-the-display-subsystem">5 U-Boot Script to Power Up the Display Subsystem</a></h1>
 <p><em>Phew that’s a long list of U-Boot Commands. Can we automate this?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>## Power Up the PMU for Video Output / Display Subsystem
@@ -449,7 +448,7 @@ run video_on
 </li>
 </ul>
 <p>We set the above bits to 0 to deassert the Resets.</p>
-<p>TODO: Offset is 0x48 instead of 0x38</p>
+<p><a href="https://lupyuen.github.io/articles/display3#vout-reset">(<strong>VOUT Reset Register</strong> is incorrect in the docs)</a></p>
 <p>Here are the U-Boot Commands to set the <strong>VOUT Clocks and Resets</strong> for HDMI…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Power up the Video Output / Display Subsystem
 run video_on
@@ -476,7 +475,7 @@ mw 295C0048 0 1
 29400020: 00008200 00005720 20210316 16015600  .... W....! .V..
 29400030: 0000030e a0600084 00000000 00000000  ......`.........
 </code></pre></div>
-<p>Yep our DC8200 Display Controller is finally alive yay!</p>
+<p>Yep our DC8200 Display Controller is finally alive yay! (Pic below)</p>
 <p>Based on the above commands, we write the <strong>U-Boot Script</strong> to start the Display Controller…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Create the U-Boot Script to power up the Display Controller
 setenv display_on &#39;mw 295C0010 0x80000000 1 ; mw 295C0014 0x80000000 1 ; mw 295C0018 0x80000000 1 ; mw 295C001c 0x80000000 1 ; mw 295C0020 0x80000000 1 ; mw 295C003c 0x80000000 1 ; mw 295C0040 0x80000000 1 ; mw 295C0044 0x80000000 1 ; mw 295C0048 0 1 ; md 29400000 0x20 ; &#39;
@@ -495,7 +494,7 @@ run display_on
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader">(See the <strong>Output Log</strong>)</a></p>
 <p>Let’s verify the DC8200 Register Values…</p>
-<p>TODO: Screenshot of DC8200</p>
+<p><img src="https://lupyuen.github.io/images/display3-run.png" alt="DC8200 Display Controller is finally alive yay!" /></p>
 <h1 id="read-the-hardware-revision-and-chip-id"><a href="#read-the-hardware-revision-and-chip-id">7 Read the Hardware Revision and Chip ID</a></h1>
 <p><em>Are the DC8200 Register Values correct?</em></p>
 <p>According to the <a href="https://lupyuen.github.io/articles/display2#dc8200-display-hardware-driver"><strong>DC8200 Display Driver</strong></a>, we can read these Register Values from the DC8200 Display Controller…</p>
@@ -788,7 +787,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 </code></pre></div>
 <p>What’s happening here?</p>
 <p>Shall we match the Mystery Writes with the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>? (Pic above)</p>
-<p>TODO: Pic of Software_RESET_assert0_addr_assert_sel</p>
+<p><img src="https://lupyuen.github.io/images/display3-reset.png" alt="Software_RESET_assert0_addr_assert_sel" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb"><em>Software_RESET_assert0_addr_assert_sel</em></a></p>
 <h2 id="vout-reset"><a href="#vout-reset">12.2 VOUT Reset</a></h2>
 <p>VOUT Reset <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb"><em>Software_RESET_assert0_addr_assert_sel</em></a> is actually at <strong>Offset <code>0x48</code></strong>: <strong><code>0x295C</code> <code>0048</code></strong>.</p>
@@ -804,7 +803,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 </code></pre></div>
 <p>Offset <code>0x38</code> is 0, which doesn’t look right for a Reset Register that should be filled with 1 Bits (by default).</p>
 <p>Then we noticed that <strong>Offset <code>0x48</code></strong> is filled with 1 Bits: <strong><code>0xFFF</code></strong>. So we tested Offset <code>0x48</code>, and it works!</p>
-<p>TODO: Pic of clk_u0_dc8200_clk_pix0</p>
+<p><img src="https://lupyuen.github.io/images/display3-clock2.png" alt="Clock clk_u0_dc8200_clk_pix0" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb"><em>Clock clk_u0_dc8200_clk_pix0</em></a></p>
 <h2 id="clock-multiplexing"><a href="#clock-multiplexing">12.3 Clock Multiplexing</a></h2>
 <p>How to set the Clock Source of <strong>u0_dc8200.clk_pix0</strong> to <strong>clk_dc8200_pix0</strong>?</p>
@@ -821,7 +820,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 </ul>
 <p>But what are the valid values for <strong>clk_mux_sel</strong>?</p>
 <p>TODO: Can we read another Clock Mux to figure this out?</p>
-<p>TODO: Pic of clk_dc8200_pix0</p>
+<p><img src="https://lupyuen.github.io/images/display3-clock3.png" alt="Clock clk_dc8200_pix0" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb"><em>Clock clk_dc8200_pix0</em></a></p>
 <h2 id="clock-rate"><a href="#clock-rate">12.4 Clock Rate</a></h2>
 <p>How to set the Clock Rate of <strong>dc8200_pix0</strong> to <strong>148.5 MHz</strong>? (HDMI Clock)</p>
@@ -834,16 +833,14 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 </li>
 </ul>
 <p>TODO: What is the Clock Multiplier?</p>
-<p><img src="https://lupyuen.github.io/images/display3-typo.png" alt="clk_tx_esc should have default 24'hc, there is a typo in the doc: 24'h12" /></p>
+<p><img src="https://lupyuen.github.io/images/display3-typo.png" alt="Clock clk_tx_esc" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><em>Clock clk_tx_esc</em></a></p>
 <h2 id="clock-default"><a href="#clock-default">12.5 Clock Default</a></h2>
-<p>TODO</p>
-<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><strong>clk_tx_esc</strong></a> should have default <strong><code>24'hc</code></strong>, equivalent to <strong><code>0x0C</code></strong>.</p>
-<p>There’s a typo in the doc: <code>24'h12</code> (Pic above)</p>
-<p>TODO: Pic of PMU Function Description</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><strong>clk_tx_esc</strong></a> at <strong>Offset <code>0x0C</code></strong> (Address <strong><code>0x295C</code> <code>0000</code></strong>) should have default <strong><code>24'hc</code></strong>. (Equivalent to <strong><code>0x0C</code></strong>)</p>
+<p>There’s a typo in the doc: <strong><code>24'h12</code></strong> (Pic above)</p>
+<p><img src="https://lupyuen.github.io/images/display3-pmu.png" alt="PMU Function Description" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><em>PMU Function Description</em></a></p>
 <h2 id="pmu-software-encourage"><a href="#pmu-software-encourage">12.6 PMU Software Encourage</a></h2>
-<p>TODO</p>
 <p>From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><strong>Power Management Unit (PMU) Function Description</strong></a> (pic above)…</p>
 <blockquote>
 <p><strong>SW Encourage Turn-on Sequence</strong></p>
