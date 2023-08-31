@@ -785,7 +785,7 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
 1.  TODO: How to write to Framebuffer?
 
-    Shall we check with the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)?
+    Shall we check the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)?
 
 Our JH7110 Display Driver is partially implemented here: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
 
@@ -796,6 +796,10 @@ Our JH7110 Display Driver is partially implemented here: [jh7110_appinit.c](http
 In this section we talk about the __Missing, Mistaken and Mysterious__ things in the JH7110 Display Controller.
 
 ## HDMI Output
+
+We talked about our JH7110 Display Driver and a Bunch of Mystery Writes...
+
+- [__"JH7110 Display Driver"__](https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver)
 
 According to the __U-Boot Display Driver__ (officially contributed by StarFive), there's a long list of __Mystery Writes to Undocumented Registers__ in the DC8200 Display Controller: [sf_vop.c](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540)
 
@@ -845,7 +849,7 @@ Thankfully we have U-Boot!
 
 ## Clock Multiplexing
 
-TODO: Set the Source of __u0_dc8200.clk_pix0__ to __clk_dc8200_pix0__
+TODO: How to set the Source of __u0_dc8200.clk_pix0__ to __clk_dc8200_pix0__?
 
 clk_u0_dc8200_clk_pix0: Offset 0x1c
 
@@ -861,7 +865,7 @@ TODO: Can we read another Clock Mux to figure this out?
 
 ## Clock Rate
 
-TODO: Set Clock Rate of __dc8200_pix0__ to __148.5 MHz__ (HDMI Clock)
+TODO: How to set the Clock Rate of __dc8200_pix0__ to __148.5 MHz__? (HDMI Clock)
 
 clk_dc8200_pix0: Offset 0x04
 
