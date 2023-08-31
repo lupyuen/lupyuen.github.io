@@ -682,6 +682,8 @@ _Who starts our Display Driver?_
 
 At Startup, our NuttX Driver will be called from [__board_late_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273).
 
+![Display Driver for StarFive JH7110 SoC](https://lupyuen.github.io/images/display2-title.jpg)
+
 # Unsolved Mysteries
 
 _Are we done with our NuttX Display Driver?_
@@ -734,6 +736,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/display3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display3.md)
 
+![Display Driver for StarFive JH7110 SoC](https://lupyuen.github.io/images/display2-title.jpg)
+
 # Appendix: JH7110 Display Driver
 
 Based on everything we've deciphered in this article and the previous one...
@@ -785,7 +789,7 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
 1.  TODO: How to write to Framebuffer?
 
-    Shall we check the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)?
+    Shall we check the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)? (Pic above)
 
 Our JH7110 Display Driver is partially implemented here: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
 
