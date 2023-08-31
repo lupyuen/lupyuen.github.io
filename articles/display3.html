@@ -613,7 +613,8 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 <p>But we have a problem with <strong>Incomplete and Incorrect Docs</strong>, see the next section.</p>
 <p><em>Who starts our Display Driver?</em></p>
 <p>At Startup, our NuttX Driver will be called from <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273"><strong>board_late_initialize</strong></a>.</p>
-<p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Display Driver for StarFive JH7110 SoC" /></p>
+<p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Official Display Driver for JH7110" /></p>
+<p><a href="https://lupyuen.github.io/articles/display2"><em>Official Display Driver for JH7110</em></a></p>
 <h1 id="unsolved-mysteries"><a href="#unsolved-mysteries">9 Unsolved Mysteries</a></h1>
 <p><em>Are we done with our NuttX Display Driver?</em></p>
 <p>Not quite! We have a couple of challenges with <strong>Incomplete and Incorrect Docs</strong>…</p>
@@ -666,7 +667,6 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display3.md"><strong>lupyuen.github.io/src/display3.md</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Display Driver for StarFive JH7110 SoC" /></p>
 <h1 id="appendix-jh7110-display-driver"><a href="#appendix-jh7110-display-driver">11 Appendix: JH7110 Display Driver</a></h1>
 <p>Based on everything we’ve deciphered in this article and the previous one…</p>
 <ul>
@@ -739,11 +739,13 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 </li>
 <li>
 <p>TODO: How to write to Framebuffer?</p>
-<p>Shall we check the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>? (Pic above)</p>
+<p>Shall we check the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>? (Pic below)</p>
 </li>
 </ol>
 <p>Our JH7110 Display Driver is partially implemented here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270">jh7110_appinit.c</a></p>
 <p>(Many Thanks to <a href="https://fosstodon.org/@Fishwaldo/110902984442385966"><strong>Justin / Fishwaldo</strong></a> for suggesting that we check out the HDMI Driver in U-Boot Bootloader)</p>
+<p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Official Display Driver for JH7110" /></p>
+<p><a href="https://lupyuen.github.io/articles/display2"><em>Official Display Driver for JH7110</em></a></p>
 <h1 id="appendix-jh7110-display-controller-mysteries"><a href="#appendix-jh7110-display-controller-mysteries">12 Appendix: JH7110 Display Controller Mysteries</a></h1>
 <p>In this section we talk about the <strong>Missing, Mistaken and Mysterious</strong> things in the JH7110 Display Controller.</p>
 <h2 id="hdmi-output"><a href="#hdmi-output">12.1 HDMI Output</a></h2>
@@ -766,7 +768,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <div class="example-wrap"><pre class="language-c"><code>writel(uc_plat-&gt;base, priv-&gt;regs_hi+0x00001400);
 </code></pre></div>
 <p>What’s happening here?</p>
-<p>Shall we match the Mystery Writes with the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>?</p>
+<p>Shall we match the Mystery Writes with the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>? (Pic above)</p>
 <p>TODO: Pic of Software_RESET_assert0_addr_assert_sel</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb"><em>Software_RESET_assert0_addr_assert_sel</em></a></p>
 <h2 id="vout-reset"><a href="#vout-reset">12.2 VOUT Reset</a></h2>
