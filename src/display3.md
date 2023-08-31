@@ -679,6 +679,16 @@ void board_late_initialize(void) {
 #define rstn_u0_hdmi_tx_rstn_hdmi (1 << 9)
 ```
 
+# Unsolved Mysteries
+
+TODO
+
+Typo default 
+Reset
+Mux
+Coefficient 
+Encourage 
+
 # What's Next
 
 TODO
@@ -698,3 +708,13 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/display3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display3.md)
+
+# Appendix: JH7110 Display Controller Mysteries
+
+TODO
+
+Typo default 
+Reset
+Mux
+Coefficient 
+Encourage 
