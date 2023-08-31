@@ -749,7 +749,7 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 <ul>
 <li><a href="https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver"><strong>“JH7110 Display Driver”</strong></a></li>
 </ul>
-<p>According to the <strong>U-Boot Display Driver</strong> (officially contributed by StarFive), there’s a long list of <strong>Mystery Writes to Undocumented Registers</strong> in the DC8200 Display Controller: <a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540">sf_vop.c</a></p>
+<p>Inside the <strong>U-Boot Display Driver</strong> (officially contributed by StarFive), there’s a long list of <strong>Mystery Writes to Undocumented Registers</strong> in the DC8200 Display Controller: <a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540">sf_vop.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>writel(0xc0001fff, priv-&gt;regs_hi+0x00000014);
 writel(0x00002000, priv-&gt;regs_hi+0x00001cc0);
 //writel(uc_plat-&gt;base+0x1fa400, priv-&gt;regs_hi+0x00001530);
@@ -765,11 +765,13 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 </code></pre></div>
 <p>What’s happening here?</p>
 <p>Shall we match the Mystery Writes with the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>?</p>
+<p>TODO: Pic of Software_RESET_assert0_addr_assert_sel</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb"><em>Software_RESET_assert0_addr_assert_sel</em></a></p>
 <h2 id="vout-reset"><a href="#vout-reset">12.2 VOUT Reset</a></h2>
-<p>TODO: Reset is actually at 295C0048, not 295C0038!</p>
-<div class="example-wrap"><pre class="language-c"><code>#define Software_RESET_assert0_addr_assert_sel (VOUT_CRG_BASE_ADDRESS + 0x48)
-</code></pre></div>
-<p>TODO: <strong><code>0xFFF</code></strong></p>
+<p>VOUT Reset <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb"><em>Software_RESET_assert0_addr_assert_sel</em></a> is actually at <strong>Offset <code>0x48</code></strong>: <strong><code>0x295C</code> <code>0048</code></strong>.</p>
+<p>(Instead of Offset <code>0x38</code>, pic above)</p>
+<p><em>How did we figure out it’s at Offset <code>0x48</code>?</em></p>
+<p>Writing to Offset <code>0x38</code> has no effect, <a href="https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader"><strong>according to our testing</strong></a>. Thanks to U-Boot we have this dump…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 295C0000 0x20
 295c0000: 00000004 00000004 00000004 0000000c  ................
 295c0010: 00000000 00000000 00000000 00000000  ................
@@ -777,33 +779,41 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 295c0030: 00000000 00000000 00000000 00000000  ................
 295c0040: 00000000 00000000 00000fff 00000000  ................
 </code></pre></div>
-<p>Thankfully we have U-Boot!</p>
+<p>Offset <code>0x38</code> is 0, which doesn’t look right for a Reset Register that should be filled with 1 Bits (by default).</p>
+<p>Then we noticed that <strong>Offset <code>0x48</code></strong> is filled with 1 Bits: <strong><code>0xFFF</code></strong>. So we tested Offset <code>0x48</code>, and it works!</p>
+<p>TODO: Pic of clk_u0_dc8200_clk_pix0</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb"><em>clk_u0_dc8200_clk_pix0</em></a></p>
 <h2 id="clock-multiplexing"><a href="#clock-multiplexing">12.3 Clock Multiplexing</a></h2>
-<p>TODO: How to set the Clock Source of <strong>u0_dc8200.clk_pix0</strong> to <strong>clk_dc8200_pix0</strong>?</p>
-<p>clk_u0_dc8200_clk_pix0: Offset 0x1c</p>
+<p>How to set the Clock Source of <strong>u0_dc8200.clk_pix0</strong> to <strong>clk_dc8200_pix0</strong>?</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb"><strong>clk_u0_dc8200_clk_pix0</strong></a> is at <strong>Offset <code>0x1C</code></strong> (Pic above)</p>
 <ul>
 <li>
-<p>Bits [24:29]:	clk_mux_sel	(Default 0)</p>
+<p>Bits 24 to 29:	<strong>clk_mux_sel</strong>	(Default 0)</p>
 <p>Clock multiplexing selector:</p>
 <ul>
 <li>clk_dc8200_pix0</li>
 <li>clk_hdmitx0_pixelclk</li>
 </ul>
-<p>What are the values for clk_mux_sel?</p>
 </li>
 </ul>
+<p>But what are the valid values for <strong>clk_mux_sel</strong>?</p>
 <p>TODO: Can we read another Clock Mux to figure this out?</p>
+<p>TODO: Pic of clk_dc8200_pix0</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb"><em>clk_dc8200_pix0</em></a></p>
 <h2 id="clock-rate"><a href="#clock-rate">12.4 Clock Rate</a></h2>
-<p>TODO: How to set the Clock Rate of <strong>dc8200_pix0</strong> to <strong>148.5 MHz</strong>? (HDMI Clock)</p>
-<p>clk_dc8200_pix0: Offset 0x04</p>
-<p>Bits [0:23]: clk_divcfg (Default 0x04)</p>
-<p>Clock divider coefficient:</p>
+<p>How to set the Clock Rate of <strong>dc8200_pix0</strong> to <strong>148.5 MHz</strong>? (HDMI Clock)</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb"><strong>clk_dc8200_pix0</strong></a> is at <strong>Offset <code>0x04</code></strong> (Pic above)</p>
 <ul>
-<li>Max: 63 (307.2 MHz?), Default: 4, Min: 4, Typical: 4</li>
+<li>
+<p>Bits 0 to 23: <strong>clk_divcfg</strong> (Default 4)</p>
+<p>Clock divider coefficient:</p>
+<p>Max: 63 (307.2 MHz?), Default: 4, Min: 4, Typical: 4</p>
+</li>
 </ul>
+<p>TODO: What is the Clock Multiplier?</p>
+<p><img src="https://lupyuen.github.io/images/display3-typo.png" alt="clk_tx_esc should have default 24'hc, there is a typo in the doc: 24'h12" /></p>
 <h2 id="clock-default"><a href="#clock-default">12.5 Clock Default</a></h2>
 <p>TODO: The Default Values seem to match <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html">DOM VOUT CRG</a>. (<code>clk_tx_esc</code> should have default <code>24'hc</code>, there is a typo in the doc: <code>24'h12</code>)</p>
-<p><img src="https://lupyuen.github.io/images/display3-typo.png" alt="clk_tx_esc should have default 24'hc, there is a typo in the doc: 24'h12" /></p>
 <h2 id="pmu-software-encourage"><a href="#pmu-software-encourage">12.6 PMU Software Encourage</a></h2>
 <p>TODO</p>
 <p>From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><strong>PMU Function Description</strong></a>…</p>
