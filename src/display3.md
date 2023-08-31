@@ -760,8 +760,59 @@ TODO: U-Boot
 
 TODO
 
-Typo default 
-Reset
-Mux
-Coefficient 
-Encourage 
+## VOUT Reset
+
+TODO: Reset is actually at 295C0048, not 295C0038!
+
+```c
+#define Software_RESET_assert0_addr_assert_sel (VOUT_CRG_BASE_ADDRESS + 0x48)
+```
+
+TODO: __`0xFFF`__
+
+## Clock Multiplexing
+
+TODO: clk_u0_dc8200_clk_pix0: Offset 0x1c
+
+- Bits [24:29]:	clk_mux_sel	(Default 0)
+
+  Clock multiplexing selector:
+  - clk_dc8200_pix0
+  - clk_hdmitx0_pixelclk
+
+  What are the values for clk_mux_sel?
+
+TODO: Can we read another Clock Mux to figure this out?
+
+## Clock Rate
+
+TODO: Set clock rate of dc8200_pix0 to 148.5 MHz (HDMI Clock)
+
+clk_dc8200_pix0: Offset 0x04
+
+Bits [0:23]: clk_divcfg (Default 0x04)
+
+Clock divider coefficient:
+- Max: 63 (307.2 MHz?), Default: 4, Min: 4, Typical: 4
+
+## Clock Default
+
+TODO: The Default Values seem to match [DOM VOUT CRG](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html). (`clk_tx_esc` should have default `24'hc`, there is a typo in the doc: `24'h12`)
+
+![`clk_tx_esc` should have default `24'hc`, there is a typo in the doc: `24'h12`](https://lupyuen.github.io/images/display3-typo.png)
+
+## PMU Software Encourage
+
+TODO
+
+From the [__PMU Function Description__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html)...
+
+> __SW Encourage Turn-on Sequence__
+
+> (1) Configure the register __SW Turn-On Power Mode__ (offset __`0x0C`__), write the bit 1 which Power Domain will be turn-on, write the others 0;
+
+> (2) Write the __SW Turn-On Command Sequence__. Write the register Software Encourage (offset __`0x44`__) __`0xFF`__ → __`0x05`__ → __`0x50`__
+
+_What's a "Software Encourage"?_
+
+Something got Lost in Translation. Let's assume it means "Software Trigger".
