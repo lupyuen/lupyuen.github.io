@@ -612,7 +612,8 @@ uint32_t chip_id = getreg32(0x29400030);
 _info(&quot;revision=0x%x, chip_id=0x%x&quot;, revision, chip_id);
 DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 </code></pre></div>
-<p>NuttX will start our Display Driver and print this…</p>
+<p><em>Does it work with NuttX?</em></p>
+<p>Yep NuttX will start our Display Driver and print the <strong>Hardware Revision and Chip ID</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel...
 board_late_initialize:
   revision=0x5720,
