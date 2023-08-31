@@ -779,7 +779,7 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
     [(See this)](https://lupyuen.github.io/articles/display3#clock-rate)
 
-1.  Bunch of Mystery Writes
+1.  Bunch of __Mystery Writes__ to DC8200 AHB0
 
     [(See this)](https://lupyuen.github.io/articles/display3#hdmi-output)
 
@@ -793,7 +793,7 @@ Our JH7110 Display Driver is partially implemented here: [jh7110_appinit.c](http
 
 # Appendix: JH7110 Display Controller Mysteries
 
-TODO: In this section we talk about the __Missing, Mistaken and Mysterious__ things in the JH7110 Display Controller.
+In this section we talk about the __Missing, Mistaken and Mysterious__ things in the JH7110 Display Controller.
 
 ## HDMI Output
 
@@ -845,7 +845,9 @@ Thankfully we have U-Boot!
 
 ## Clock Multiplexing
 
-TODO: clk_u0_dc8200_clk_pix0: Offset 0x1c
+TODO: Set the Source of __u0_dc8200.clk_pix0__ to __clk_dc8200_pix0__
+
+clk_u0_dc8200_clk_pix0: Offset 0x1c
 
 - Bits [24:29]:	clk_mux_sel	(Default 0)
 
@@ -859,7 +861,7 @@ TODO: Can we read another Clock Mux to figure this out?
 
 ## Clock Rate
 
-TODO: Set clock rate of dc8200_pix0 to 148.5 MHz (HDMI Clock)
+TODO: Set Clock Rate of __dc8200_pix0__ to __148.5 MHz__ (HDMI Clock)
 
 clk_dc8200_pix0: Offset 0x04
 
