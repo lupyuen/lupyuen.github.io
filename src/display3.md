@@ -682,7 +682,9 @@ _Who starts our Display Driver?_
 
 At Startup, our NuttX Driver will be called from [__board_late_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273).
 
-![Display Driver for StarFive JH7110 SoC](https://lupyuen.github.io/images/display2-title.jpg)
+![Official Display Driver for JH7110](https://lupyuen.github.io/images/display2-title.jpg)
+
+[_Official Display Driver for JH7110_](https://lupyuen.github.io/articles/display2)
 
 # Unsolved Mysteries
 
@@ -736,8 +738,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/display3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display3.md)
 
-![Display Driver for StarFive JH7110 SoC](https://lupyuen.github.io/images/display2-title.jpg)
-
 # Appendix: JH7110 Display Driver
 
 Based on everything we've deciphered in this article and the previous one...
@@ -789,11 +789,15 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
 1.  TODO: How to write to Framebuffer?
 
-    Shall we check the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)? (Pic above)
+    Shall we check the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)? (Pic below)
 
 Our JH7110 Display Driver is partially implemented here: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
 
 (Many Thanks to [__Justin / Fishwaldo__](https://fosstodon.org/@Fishwaldo/110902984442385966) for suggesting that we check out the HDMI Driver in U-Boot Bootloader)
+
+![Official Display Driver for JH7110](https://lupyuen.github.io/images/display2-title.jpg)
+
+[_Official Display Driver for JH7110_](https://lupyuen.github.io/articles/display2)
 
 # Appendix: JH7110 Display Controller Mysteries
 
@@ -828,7 +832,7 @@ writel(uc_plat->base, priv->regs_hi+0x00001400);
 
 What's happening here?
 
-Shall we match the Mystery Writes with the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)?
+Shall we match the Mystery Writes with the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)? (Pic above)
 
 TODO: Pic of Software_RESET_assert0_addr_assert_sel
 
