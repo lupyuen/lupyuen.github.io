@@ -690,27 +690,29 @@ Not quite! We have a couple of challenges with __Incomplete and Incorrect Docs__
 
 1.  What are these __Mystery Writes to Undocumented Registers__ in the DC8200 Display Controller?
 
-    TODO: HDMI Output
+    [__"HDMI Output"__](https://lupyuen.github.io/articles/display3#hdmi-output)
 
 1.  __Reset Register for Video Output (VOUT)__ seems to be misplaced...
 
-    TODO: VOUT Reset
+    [__"VOUT Reset"__](https://lupyuen.github.io/articles/display3#vout-reset)
 
 1.  How to __Multiplex a VOUT Clock__?
 
-    TODO: Clock Multiplexing
+    [__"Clock Multiplexing"__](https://lupyuen.github.io/articles/display3#clock-multiplexing)
 
 1.  How to set the __VOUT Clock Rate__?
 
-    TODO: Clock Rate
+    [__"Clock Rate"__](https://lupyuen.github.io/articles/display3#clock-rate)
 
 1.  Typo in the __VOUT Clock Default Rate__...
 
-    TODO: Clock Default
+    [__"Clock Default"__](https://lupyuen.github.io/articles/display3#clock-default)
 
 1.  Indeed __Software is Encouraging__, but we'll make our own interpretation...
 
-    TODO: PMU Software Encourage
+    [__"PMU Software Encourage"__](https://lupyuen.github.io/articles/display3#pmu-software-encourage)
+
+Hopefully we'll overcome these issues and complete our NuttX Display Driver!
 
 # What's Next
 
