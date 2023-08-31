@@ -737,7 +737,7 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 </li>
 <li>
 <p>TODO: How to write to Framebuffer?</p>
-<p>Shall we check with the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>?</p>
+<p>Shall we check the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>?</p>
 </li>
 </ol>
 <p>Our JH7110 Display Driver is partially implemented here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270">jh7110_appinit.c</a></p>
@@ -745,6 +745,10 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 <h1 id="appendix-jh7110-display-controller-mysteries"><a href="#appendix-jh7110-display-controller-mysteries">12 Appendix: JH7110 Display Controller Mysteries</a></h1>
 <p>In this section we talk about the <strong>Missing, Mistaken and Mysterious</strong> things in the JH7110 Display Controller.</p>
 <h2 id="hdmi-output"><a href="#hdmi-output">12.1 HDMI Output</a></h2>
+<p>We talked about our JH7110 Display Driver and a Bunch of Mystery Writes…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver"><strong>“JH7110 Display Driver”</strong></a></li>
+</ul>
 <p>According to the <strong>U-Boot Display Driver</strong> (officially contributed by StarFive), there’s a long list of <strong>Mystery Writes to Undocumented Registers</strong> in the DC8200 Display Controller: <a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540">sf_vop.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>writel(0xc0001fff, priv-&gt;regs_hi+0x00000014);
 writel(0x00002000, priv-&gt;regs_hi+0x00001cc0);
@@ -775,7 +779,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 </code></pre></div>
 <p>Thankfully we have U-Boot!</p>
 <h2 id="clock-multiplexing"><a href="#clock-multiplexing">12.3 Clock Multiplexing</a></h2>
-<p>TODO: Set the Source of <strong>u0_dc8200.clk_pix0</strong> to <strong>clk_dc8200_pix0</strong></p>
+<p>TODO: How to set the Source of <strong>u0_dc8200.clk_pix0</strong> to <strong>clk_dc8200_pix0</strong>?</p>
 <p>clk_u0_dc8200_clk_pix0: Offset 0x1c</p>
 <ul>
 <li>
@@ -790,7 +794,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 </ul>
 <p>TODO: Can we read another Clock Mux to figure this out?</p>
 <h2 id="clock-rate"><a href="#clock-rate">12.4 Clock Rate</a></h2>
-<p>TODO: Set Clock Rate of <strong>dc8200_pix0</strong> to <strong>148.5 MHz</strong> (HDMI Clock)</p>
+<p>TODO: How to set the Clock Rate of <strong>dc8200_pix0</strong> to <strong>148.5 MHz</strong>? (HDMI Clock)</p>
 <p>clk_dc8200_pix0: Offset 0x04</p>
 <p>Bits [0:23]: clk_divcfg (Default 0x04)</p>
 <p>Clock divider coefficient:</p>
