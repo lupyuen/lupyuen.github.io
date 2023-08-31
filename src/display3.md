@@ -674,6 +674,21 @@ Mux
 Coefficient 
 Encourage 
 
+From [sf_vop.c](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540)
+
+```c
+writel(0xc0001fff, priv->regs_hi+0x00000014);
+writel(0x00002000, priv->regs_hi+0x00001cc0);
+//writel(uc_plat->base+0x1fa400, priv->regs_hi+0x00001530);
+writel(0x00000000, priv->regs_hi+0x00001800);
+writel(0x00000000, priv->regs_hi+0x000024d8);
+writel(0x021c0780, priv->regs_hi+0x000024e0);
+writel(0x021c0780, priv->regs_hi+0x00001810);
+writel(uc_plat->base, priv->regs_hi+0x00001400);
+```
+
+regs_hi is DC8200_AHB0_BASE_ADDRESS: 0x29400000
+
 # What's Next
 
 TODO
@@ -693,6 +708,10 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/display3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display3.md)
+
+# Appendix: JH7110 Display Driver
+
+TODO
 
 # Appendix: JH7110 Display Controller Mysteries
 
