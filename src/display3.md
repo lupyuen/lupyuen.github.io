@@ -711,7 +711,21 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: JH7110 Display Driver
 
-TODO
+TODO: U-Boot
+
+1. Power Up the Power Management Unit for Video Output / Display Subsystem
+
+1. Enable the Clocks for Video Output / Display Subsystem
+
+1. Deassert the Resets for Video Output / Display Subsystem
+
+1. Verify that Video Output / Display Subsystem is up
+
+1. Enable the Clocks for DC8200 Display Controller (HDMI)
+
+1. Deassert the Resets for DC8200 Display Controller (HDMI)
+
+1. Verify that Hardware Revision and Chip ID are non-zero
 
 # Appendix: JH7110 Display Controller Mysteries
 
