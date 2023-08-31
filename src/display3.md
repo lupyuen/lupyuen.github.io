@@ -736,27 +736,31 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: JH7110 Display Driver
 
-TODO: U-Boot
+Based on everything we've deciphered in this article and the previous one...
 
-1.  Power Up the Power Management Unit for Video Output / Display Subsystem
+- [__"RISC-V Star64 JH7110: Inside the Display Controller"__](https://lupyuen.github.io/articles/display2)
 
-1.  Wait 50 milliseconds to Power Up
+The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operating Systems) shall do the following...
 
-1.  Enable the Clocks for Video Output / Display Subsystem
+1.  Power Up the [__Power Management Unit__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output / Display Subsystem
 
-1.  Deassert the Resets for Video Output / Display Subsystem
+1.  Wait __50 milliseconds__ to Power Up
 
-1.  Verify that Video Output / Display Subsystem is up
+1.  [__Enable the Clocks__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output / Display Subsystem
 
-1.  Enable the Clocks for DC8200 Display Controller (HDMI)
+1.  [__Deassert the Resets__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output / Display Subsystem
 
-1.  Deassert the Resets for DC8200 Display Controller (HDMI)
+1.  Verify that [__Video Output / Display Subsystem is up__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem)
 
-1.  Verify that Hardware Revision and Chip ID are non-zero
+1.  [__Enable the Clocks__](https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller) for DC8200 Display Controller (HDMI)
 
-1.  Read the HDMI Status, check for Hot Plug
+1.  [__Deassert the Resets__](https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller) for DC8200 Display Controller (HDMI)
 
-1.  Enable HDMI
+1.  Verify that [__Hardware Revision and Chip ID__](https://lupyuen.github.io/articles/display3#read-the-hardware-revision-and-chip-id) are non-zero
+
+1.  Read the [__HDMI Status__](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_hdmi.c#L527-L531), check for Hot Plug
+
+1.  [__Enable HDMI__](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_hdmi.c#L444-L457)
 
     - Detect HDMI
     - Disable HDMI Transmit PHY
@@ -767,23 +771,25 @@ TODO: U-Boot
 
       [(See __inno_hdmi_enable__)](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_hdmi.c#L444-L457)
       
-1.  Set the Source of u0_dc8200.clk_pix0 to clk_dc8200_pix0
+1.  Set the Source of __u0_dc8200.clk_pix0__ to __clk_dc8200_pix0__
 
-    See Appendix
+    [(See this)](https://lupyuen.github.io/articles/display3#clock-multiplexing)
 
-1.  Set Clock Rate of dc8200_pix0 to 148.5 MHz (HDMI Clock)
+1.  Set Clock Rate of __dc8200_pix0__ to __148.5 MHz__ (HDMI Clock)
 
-    See Appendix
+    [(See this)](https://lupyuen.github.io/articles/display3#clock-rate)
 
-1.  Bunch of mystery writes, see Appendix
+1.  Bunch of Mystery Writes
 
-    [(See __sf_display_init__)](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L369-L655)
+    [(See this)](https://lupyuen.github.io/articles/display3#hdmi-output)
 
-1.  How to write to Framebuffer? Check Linux Driver?
+1.  TODO: How to write to Framebuffer?
 
-Partial Implementation: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
+    Shall we check with the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)?
 
-[__Justin (Fishwaldo)__](https://fosstodon.org/@Fishwaldo/110902984442385966) suggests that we check out the simpler HDMI Driver in __U-Boot Bootloader__
+Our JH7110 Display Driver is partially implemented here: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
+
+(Many Thanks to [__Justin / Fishwaldo__](https://fosstodon.org/@Fishwaldo/110902984442385966) for suggesting that we check out the HDMI Driver in U-Boot Bootloader)
 
 # Appendix: JH7110 Display Controller Mysteries
 
