@@ -786,7 +786,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p>Offset <code>0x38</code> is 0, which doesn’t look right for a Reset Register that should be filled with 1 Bits (by default).</p>
 <p>Then we noticed that <strong>Offset <code>0x48</code></strong> is filled with 1 Bits: <strong><code>0xFFF</code></strong>. So we tested Offset <code>0x48</code>, and it works!</p>
 <p>TODO: Pic of clk_u0_dc8200_clk_pix0</p>
-<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb"><em>clk_u0_dc8200_clk_pix0</em></a></p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb"><em>Clock clk_u0_dc8200_clk_pix0</em></a></p>
 <h2 id="clock-multiplexing"><a href="#clock-multiplexing">12.3 Clock Multiplexing</a></h2>
 <p>How to set the Clock Source of <strong>u0_dc8200.clk_pix0</strong> to <strong>clk_dc8200_pix0</strong>?</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb"><strong>clk_u0_dc8200_clk_pix0</strong></a> is at <strong>Offset <code>0x1C</code></strong> (Pic above)</p>
@@ -803,7 +803,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p>But what are the valid values for <strong>clk_mux_sel</strong>?</p>
 <p>TODO: Can we read another Clock Mux to figure this out?</p>
 <p>TODO: Pic of clk_dc8200_pix0</p>
-<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb"><em>clk_dc8200_pix0</em></a></p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb"><em>Clock clk_dc8200_pix0</em></a></p>
 <h2 id="clock-rate"><a href="#clock-rate">12.4 Clock Rate</a></h2>
 <p>How to set the Clock Rate of <strong>dc8200_pix0</strong> to <strong>148.5 MHz</strong>? (HDMI Clock)</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb"><strong>clk_dc8200_pix0</strong></a> is at <strong>Offset <code>0x04</code></strong> (Pic above)</p>
@@ -816,13 +816,16 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 </ul>
 <p>TODO: What is the Clock Multiplier?</p>
 <p><img src="https://lupyuen.github.io/images/display3-typo.png" alt="clk_tx_esc should have default 24'hc, there is a typo in the doc: 24'h12" /></p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><em>Clock clk_tx_esc</em></a></p>
 <h2 id="clock-default"><a href="#clock-default">12.5 Clock Default</a></h2>
-<p>TODO: The Default Values seem to match <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html">DOM VOUT CRG</a>. (<code>clk_tx_esc</code> should have default <code>24'hc</code>, there is a typo in the doc: <code>24'h12</code>)</p>
+<p>TODO</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><strong>clk_tx_esc</strong></a> should have default <strong><code>24'hc</code></strong>, equivalent to <strong><code>0x0C</code></strong>.</p>
+<p>There’s a typo in the doc: <code>24'h12</code> (Pic above)</p>
 <p>TODO: Pic of PMU Function Description</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><em>PMU Function Description</em></a></p>
 <h2 id="pmu-software-encourage"><a href="#pmu-software-encourage">12.6 PMU Software Encourage</a></h2>
 <p>TODO</p>
-<p>From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><strong>PMU Function Description</strong></a> (pic above)…</p>
+<p>From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><strong>Power Management Unit (PMU) Function Description</strong></a> (pic above)…</p>
 <blockquote>
 <p><strong>SW Encourage Turn-on Sequence</strong></p>
 </blockquote>
