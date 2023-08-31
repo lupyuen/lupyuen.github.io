@@ -240,7 +240,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p>(2) Write the <strong>SW Turn-On Command Sequence</strong>. Write the register Software Encourage (offset <strong><code>0x44</code></strong>) <strong><code>0xFF</code></strong> → <strong><code>0x05</code></strong> → <strong><code>0x50</code></strong></p>
 </blockquote>
 <p><em>What’s a “Software Encourage”?</em></p>
-<p>Something got Lost in Translation. Let’s assume it means “Software Trigger”.</p>
+<p>Something got Lost in Translation. Let’s assume it means <a href="https://lupyuen.github.io/articles/display3#pmu-software-encourage"><strong>“Software Triggered”</strong></a>.</p>
 <p>Which means we set the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_nhb_slz_msb"><strong>Power Mode</strong></a> (Offset <strong><code>0x0C</code></strong>) to <strong><code>0x10</code></strong> (Bit 4 for VOUT)…</p>
 <div class="example-wrap"><pre class="language-text"><code># mw 1703000c 0x10 1
 </code></pre></div>
@@ -743,7 +743,7 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 </li>
 </ol>
 <p>Our JH7110 Display Driver is partially implemented here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270">jh7110_appinit.c</a></p>
-<p>(Many Thanks to <a href="https://fosstodon.org/@Fishwaldo/110902984442385966"><strong>Justin / Fishwaldo</strong></a> for suggesting that we check out the HDMI Driver in U-Boot Bootloader)</p>
+<p>(Many Thanks to <a href="https://fosstodon.org/@Fishwaldo/110902984442385966"><strong>Justin / Fishwaldo</strong></a> for recommending the HDMI Driver from U-Boot Bootloader)</p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Official Display Driver for JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/display2"><em>Official Display Driver for JH7110</em></a></p>
 <h1 id="appendix-jh7110-display-controller-mysteries"><a href="#appendix-jh7110-display-controller-mysteries">12 Appendix: JH7110 Display Controller Mysteries</a></h1>
@@ -818,9 +818,11 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p><img src="https://lupyuen.github.io/images/display3-typo.png" alt="clk_tx_esc should have default 24'hc, there is a typo in the doc: 24'h12" /></p>
 <h2 id="clock-default"><a href="#clock-default">12.5 Clock Default</a></h2>
 <p>TODO: The Default Values seem to match <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html">DOM VOUT CRG</a>. (<code>clk_tx_esc</code> should have default <code>24'hc</code>, there is a typo in the doc: <code>24'h12</code>)</p>
+<p>TODO: Pic of PMU Function Description</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><em>PMU Function Description</em></a></p>
 <h2 id="pmu-software-encourage"><a href="#pmu-software-encourage">12.6 PMU Software Encourage</a></h2>
 <p>TODO</p>
-<p>From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><strong>PMU Function Description</strong></a>…</p>
+<p>From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><strong>PMU Function Description</strong></a> (pic above)…</p>
 <blockquote>
 <p><strong>SW Encourage Turn-on Sequence</strong></p>
 </blockquote>
@@ -831,7 +833,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p>(2) Write the <strong>SW Turn-On Command Sequence</strong>. Write the register Software Encourage (offset <strong><code>0x44</code></strong>) <strong><code>0xFF</code></strong> → <strong><code>0x05</code></strong> → <strong><code>0x50</code></strong></p>
 </blockquote>
 <p><em>What’s a “Software Encourage”?</em></p>
-<p>Something got Lost in Translation. Let’s assume it means “Software Trigger”.</p>
+<p>Something got Lost in Translation. Let’s assume it means <strong>“Software Triggered”</strong>.</p>
 
     
 </body>
