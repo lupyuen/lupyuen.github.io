@@ -764,6 +764,8 @@ TODO
 
 TODO
 
+[(See __sf_display_init__)](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L369-L655)
+
 ## VOUT Reset
 
 TODO: Reset is actually at 295C0048, not 295C0038!
