@@ -863,7 +863,7 @@ Then we noticed that __Offset `0x48`__ is filled with 1 Bits: __`0xFFF`__. So we
 
 TODO: Pic of clk_u0_dc8200_clk_pix0
 
-[_clk_u0_dc8200_clk_pix0_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb)
+[_Clock clk_u0_dc8200_clk_pix0_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb)
 
 ## Clock Multiplexing
 
@@ -883,7 +883,7 @@ TODO: Can we read another Clock Mux to figure this out?
 
 TODO: Pic of clk_dc8200_pix0
 
-[_clk_dc8200_pix0_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb)
+[_Clock clk_dc8200_pix0_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb)
 
 ## Clock Rate
 
@@ -901,9 +901,15 @@ TODO: What is the Clock Multiplier?
 
 ![`clk_tx_esc` should have default `24'hc`, there is a typo in the doc: `24'h12`](https://lupyuen.github.io/images/display3-typo.png)
 
+[_Clock clk_tx_esc_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb)
+
 ## Clock Default
 
-TODO: The Default Values seem to match [DOM VOUT CRG](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html). (`clk_tx_esc` should have default `24'hc`, there is a typo in the doc: `24'h12`)
+TODO
+
+[__clk_tx_esc__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb) should have default __`24'hc`__, equivalent to __`0x0C`__.
+
+There's a typo in the doc: `24'h12` (Pic above)
 
 TODO: Pic of PMU Function Description
 
@@ -913,7 +919,7 @@ TODO: Pic of PMU Function Description
 
 TODO
 
-From the [__PMU Function Description__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html) (pic above)...
+From the [__Power Management Unit (PMU) Function Description__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html) (pic above)...
 
 > __SW Encourage Turn-on Sequence__
 
