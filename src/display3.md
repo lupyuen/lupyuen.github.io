@@ -227,6 +227,8 @@ Finally we dump the [__Current Power Mode__](https://doc-en.rvspace.org/JH7110/T
 
 __Video Output Power VOUT__ (Bit 4) is now on!
 
+(Actually we should wait __50 milliseconds__ to Power Up)
+
 _So we can dump the Display Subsystem now?_
 
 Sadly nope, the __Display Subsystem Registers__ are still empty...
@@ -713,19 +715,46 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO: U-Boot
 
-1. Power Up the Power Management Unit for Video Output / Display Subsystem
+1.  Power Up the Power Management Unit for Video Output / Display Subsystem
 
-1. Enable the Clocks for Video Output / Display Subsystem
+1.  Wait 50 milliseconds to Power Up
 
-1. Deassert the Resets for Video Output / Display Subsystem
+1.  Enable the Clocks for Video Output / Display Subsystem
 
-1. Verify that Video Output / Display Subsystem is up
+1.  Deassert the Resets for Video Output / Display Subsystem
 
-1. Enable the Clocks for DC8200 Display Controller (HDMI)
+1.  Verify that Video Output / Display Subsystem is up
 
-1. Deassert the Resets for DC8200 Display Controller (HDMI)
+1.  Enable the Clocks for DC8200 Display Controller (HDMI)
 
-1. Verify that Hardware Revision and Chip ID are non-zero
+1.  Deassert the Resets for DC8200 Display Controller (HDMI)
+
+1.  Verify that Hardware Revision and Chip ID are non-zero
+
+1.  Read the HDMI Status, check for Hot Plug
+
+1.  Enable HDMI
+
+    - Detect HDMI
+    - Disable HDMI Transmit PHY
+    - Configure HDMI Transmit PHY for 1080p 60 Hz
+    - Enable HDMI Transmit PHY
+    - Enable HDMI TMDS
+    - Enable HDMI Data Sync
+
+      [(See __inno_hdmi_enable__)](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_hdmi.c#L444-L457)
+      
+1.  Set the Source of u0_dc8200.clk_pix0 to clk_dc8200_pix0
+
+    See Appendix
+
+1.  Set Clock Rate of dc8200_pix0 to 148.5 MHz (HDMI Clock)
+
+    See Appendix
+
+1.  Bunch of mystery writes, see Appendix
+
+    [(See __sf_display_init__)](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L369-L655)
 
 # Appendix: JH7110 Display Controller Mysteries
 
