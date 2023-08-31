@@ -86,7 +86,7 @@
 <li><a href="#clock-default">12.5 Clock Default</a><ul></ul></li>
 <li><a href="#pmu-software-encourage">12.6 PMU Software Encourage</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Sep 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/display3-title.png" alt="Star64 JH7110 Display Controller is alive!" /></p>
-<p>In the olden days we would <strong><code>peek</code></strong> and <strong><code>poke</code></strong> the <strong>Display Controller</strong>, to see weird and wonderful displays.</p>
+<p>In the olden days we would <a href="https://en.wikipedia.org/wiki/PEEK_and_POKE"><strong><code>peek</code></strong></a> and <a href="https://en.wikipedia.org/wiki/PEEK_and_POKE"><strong><code>poke</code></strong></a> the <a href="https://en.wikipedia.org/wiki/Apple_II_graphics"><strong>Display Controller</strong></a>, to see weird and wonderful displays.</p>
 <p>Today (46 years later), we poke around the Display Controller of <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Star64 JH7110 RISC-V SBC</strong></a> with a modern tool (not BASIC): <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>!</p>
 <p>(Spoiler: No weird and wonderful displays for today!)</p>
 <p>In this article we discover…</p>
@@ -554,7 +554,7 @@ md 29400030 1
 <p><a href="https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller"><strong>“Clocks and Resets for Display Controller”</strong></a></p>
 </li>
 </ul>
-<p>This is how we will implement the steps in our <strong>NuttX Display Driver</strong> (before cleanup): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273">jh7110_appinit.c</a></p>
+<p>This is how we will implement the steps in our <strong>NuttX Display Driver</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Power Up the Power Management Unit for Video Output / Display Subsystem
 // TODO: Switch to constants
 putreg32(0x10, 0x1703000c);
@@ -563,6 +563,7 @@ putreg32(0x05, 0x17030044);
 putreg32(0x50, 0x17030044);
 </code></pre></div>
 <p>That’s how we power up via the <strong>Power Management Unit</strong>.</p>
+<p>(Yeah needs cleanup)</p>
 <p>Next we enable the Clocks and deassert the Resets for the <strong>Display Subsystem</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the Clocks for Video Output / Display Subsystem
 modifyreg32(0x13020028, 0, 1 &lt;&lt; 31);  // Addr, Clear Bits, Set Bits
