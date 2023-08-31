@@ -626,7 +626,7 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 <p><a href="https://lupyuen.github.io/articles/display3#vout-reset"><strong>“VOUT Reset”</strong></a></p>
 </li>
 <li>
-<p>How to <strong>Multiplex a VOUT Clock</strong>?</p>
+<p>How to set the <strong>VOUT Clock Source</strong>?</p>
 <p><a href="https://lupyuen.github.io/articles/display3#clock-multiplexing"><strong>“Clock Multiplexing”</strong></a></p>
 </li>
 <li>
@@ -724,11 +724,11 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 </ul>
 </li>
 <li>
-<p>Set the Source of <strong>u0_dc8200.clk_pix0</strong> to <strong>clk_dc8200_pix0</strong></p>
+<p>Set the Clock Source of <strong>u0_dc8200.clk_pix0</strong> to <strong>clk_dc8200_pix0</strong></p>
 <p><a href="https://lupyuen.github.io/articles/display3#clock-multiplexing">(See this)</a></p>
 </li>
 <li>
-<p>Set Clock Rate of <strong>dc8200_pix0</strong> to <strong>148.5 MHz</strong> (HDMI Clock)</p>
+<p>Set the Clock Rate of <strong>dc8200_pix0</strong> to <strong>148.5 MHz</strong> (HDMI Clock)</p>
 <p><a href="https://lupyuen.github.io/articles/display3#clock-rate">(See this)</a></p>
 </li>
 <li>
@@ -779,7 +779,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 </code></pre></div>
 <p>Thankfully we have U-Boot!</p>
 <h2 id="clock-multiplexing"><a href="#clock-multiplexing">12.3 Clock Multiplexing</a></h2>
-<p>TODO: How to set the Source of <strong>u0_dc8200.clk_pix0</strong> to <strong>clk_dc8200_pix0</strong>?</p>
+<p>TODO: How to set the Clock Source of <strong>u0_dc8200.clk_pix0</strong> to <strong>clk_dc8200_pix0</strong>?</p>
 <p>clk_u0_dc8200_clk_pix0: Offset 0x1c</p>
 <ul>
 <li>
