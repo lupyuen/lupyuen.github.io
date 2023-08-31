@@ -790,6 +790,8 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
 1.  Read the [__HDMI Status__](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_hdmi.c#L527-L531), check for Hot Plug
 
+    [(HDMI Base Address is __`0x2959` `0000`__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html)
+
 1.  [__Enable HDMI__](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_hdmi.c#L444-L457)
 
     - Detect HDMI
