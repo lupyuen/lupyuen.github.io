@@ -601,83 +601,68 @@ TODO
 
 _How will we test this in NuttX?_
 
-Probably inside `board_late_initialize` like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L154-L215)
+Probably inside `board_late_initialize` like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
 
 ```c
-void board_late_initialize(void) {
-  /* Mount the RAM Disk */
-  mount_ramdisk();
-
-  /* Perform board-specific initialization */
-#ifdef CONFIG_NSH_ARCHINIT
-  mount(NULL, "/proc", "procfs", 0, NULL);
-#endif
-
-  // Verify that Video Output / Display Subsystem is down
-  uint32_t val = getreg32(0x295C0000);
-  DEBUGASSERT(val == 0);
-
-  // Power up the Video Output / Display Subsystem
-  // TODO: Switch to constants
-  putreg32(0x10, 0x1703000c);
-  putreg32(0xff, 0x17030044);
-  putreg32(0x05, 0x17030044);
-  putreg32(0x50, 0x17030044);
-  putreg32(0x80000000, 0x13020028);
-  putreg32(0x80000000, 0x1302004c);
-  putreg32(0x80000000, 0x13020098);
-  putreg32(0x80000000, 0x1302009c);
-  putreg32(0x80000000, 0x130200e8);
-  putreg32(0x80000000, 0x130200f0);
-  putreg32(0x80000000, 0x130200f4);
-  putreg32(0x80000000, 0x130200f8);
-  putreg32(0x80000000, 0x130200fc);
-
-  // Software RESET 1 Address Selector: Offset 0x2fc
-  // Clear Bit 11: rstn_u0_dom_vout_top_rstn_dom_vout_top_rstn_vout_src
-  modifyreg32(0x130202fc, 1 << 11, 0);  // Addr, Clear Bits, Set Bits
-
-  // SYSCRG RESET Status 0: Offset 0x308
-  // Clear Bit 26: rstn_u0_sft7110_noc_bus_reset_disp_axi_n
-  modifyreg32(0x13020308, 1 << 26, 0);  // Addr, Clear Bits, Set Bits
-
-  // Verify that Video Output / Display Subsystem is up
-  val = getreg32(0x295C0000);
-  DEBUGASSERT(val == 4);
-
-  // Test HDMI
-  int test_hdmi(void);
-  int ret = test_hdmi();
-  DEBUGASSERT(ret == 0);
-}
-
-// Display Subsystem Base Address
-// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html
-#define DISPLAY_BASE_ADDRESS (0x29400000)
-
-// DOM VOUT Control Registers
-// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html
-#define CRG_BASE_ADDRESS     (DISPLAY_BASE_ADDRESS + 0x1C0000)
-
-// DOM VOUT Control Registers
-// https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html
-
-#define clk_u0_dc8200_clk_axi   (CRG_BASE_ADDRESS + 0x10)
-#define clk_u0_dc8200_clk_core  (CRG_BASE_ADDRESS + 0x14)
-#define clk_u0_dc8200_clk_ahb   (CRG_BASE_ADDRESS + 0x18)
-#define clk_u0_dc8200_clk_pix0  (CRG_BASE_ADDRESS + 0x1c)
-#define clk_u0_dc8200_clk_pix1  (CRG_BASE_ADDRESS + 0x20)
-#define clk_u0_hdmi_tx_clk_mclk (CRG_BASE_ADDRESS + 0x3c)
-#define clk_u0_hdmi_tx_clk_bclk (CRG_BASE_ADDRESS + 0x40)
-#define clk_u0_hdmi_tx_clk_sys  (CRG_BASE_ADDRESS + 0x44)
-#define CLK_ICG (1 << 31)
-
-#define Software_RESET_assert0_addr_assert_sel (CRG_BASE_ADDRESS + 0x38)
-#define rstn_u0_dc8200_rstn_axi   (1 << 0)
-#define rstn_u0_dc8200_rstn_ahb   (1 << 1)
-#define rstn_u0_dc8200_rstn_core  (1 << 2)
-#define rstn_u0_hdmi_tx_rstn_hdmi (1 << 9)
+// Power Up the Power Management Unit for Video Output / Display Subsystem
+// TODO: Switch to constants
+putreg32(0x10, 0x1703000c);
+putreg32(0xff, 0x17030044);
+putreg32(0x05, 0x17030044);
+putreg32(0x50, 0x17030044);
 ```
+
+TODO
+
+```c
+// Enable the Clocks for Video Output / Display Subsystem
+modifyreg32(0x13020028, 0, 1 << 31);  // Addr, Clear Bits, Set Bits
+modifyreg32(0x1302004c, 0, 1 << 31);
+modifyreg32(0x13020098, 0, 1 << 31);
+modifyreg32(0x1302009c, 0, 1 << 31);
+modifyreg32(0x130200e8, 0, 1 << 31);
+modifyreg32(0x130200f0, 0, 1 << 31);
+modifyreg32(0x130200f4, 0, 1 << 31);
+modifyreg32(0x130200f8, 0, 1 << 31);
+modifyreg32(0x130200fc, 0, 1 << 31);
+
+// Deassert the Resets for Video Output / Display Subsystem
+modifyreg32(0x130202fc, 1 << 11, 0);  // Addr, Clear Bits, Set Bits
+modifyreg32(0x13020308, 1 << 26, 0);
+
+// Verify that Video Output / Display Subsystem is up
+val = getreg32(0x295C0000);
+DEBUGASSERT(val == 4);
+```
+
+TODO
+
+```c
+// Enable the Clocks for DC8200 Display Controller (HDMI)
+modifyreg32(0x295C0010, 0, 1 << 31);  // Addr, Clear Bits, Set Bits
+modifyreg32(0x295C0014, 0, 1 << 31);
+modifyreg32(0x295C0018, 0, 1 << 31);
+modifyreg32(0x295C001c, 0, 1 << 31);
+modifyreg32(0x295C0020, 0, 1 << 31);
+modifyreg32(0x295C003c, 0, 1 << 31);
+modifyreg32(0x295C0040, 0, 1 << 31);
+modifyreg32(0x295C0044, 0, 1 << 31);
+
+// Deassert the Resets for DC8200 Display Controller (HDMI)
+modifyreg32(
+  0x295C0048,  // Addr
+  (1 << 0) | (1 << 1) | (1 << 2) | (1 << 9),  // Clear Bits
+  0  // Set Bits
+);
+
+// Verify that Hardware Revision and Chip ID are non-zero
+uint32_t revision = getreg32(0x29400024);
+uint32_t chip_id = getreg32(0x29400030);
+_info("revision=0x%x, chip_id=0x%x", revision, chip_id);
+DEBUGASSERT(revision != 0 && chip_id != 0);
+```
+
+TODO: Why `board_late_initialize`
 
 # Unsolved Mysteries
 
