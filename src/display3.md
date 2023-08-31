@@ -520,7 +520,7 @@ We run the above U-Boot Commands and dump our __DC8200 Display Controller__ (DC8
 
 Yep our DC8200 Display Controller is finally alive yay!
 
-Based on the above commands, we write the __U-Boot Script__ to power up the Display Controller...
+Based on the above commands, we write the __U-Boot Script__ to start the Display Controller...
 
 ```text
 ## Create the U-Boot Script to power up the Display Controller
@@ -539,7 +539,7 @@ run video_on
 run display_on
 ```
 
-TODO: See the Output Log
+[(See the __Output Log__)](https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader)
 
 Let's verify the DC8200 Register Values...
 
@@ -670,6 +670,18 @@ TODO: Why `board_late_initialize`
 
 TODO
 
+HDMI Output
+
+VOUT Reset
+
+Clock Multiplexing
+
+Clock Rate
+
+Clock Default
+
+PMU Software Encourage
+
 # What's Next
 
 TODO
@@ -734,6 +746,8 @@ TODO: U-Boot
 1.  Bunch of mystery writes, see Appendix
 
     [(See __sf_display_init__)](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L369-L655)
+
+Partial Implementation: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
 
 # Appendix: JH7110 Display Controller Mysteries
 
