@@ -613,6 +613,7 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 <p>But we have a problem with <strong>Incomplete and Incorrect Docs</strong>, see the next section.</p>
 <p><em>Who starts our Display Driver?</em></p>
 <p>At Startup, our NuttX Driver will be called from <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273"><strong>board_late_initialize</strong></a>.</p>
+<p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Display Driver for StarFive JH7110 SoC" /></p>
 <h1 id="unsolved-mysteries"><a href="#unsolved-mysteries">9 Unsolved Mysteries</a></h1>
 <p><em>Are we done with our NuttX Display Driver?</em></p>
 <p>Not quite! We have a couple of challenges with <strong>Incomplete and Incorrect Docs</strong>…</p>
@@ -665,6 +666,7 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display3.md"><strong>lupyuen.github.io/src/display3.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Display Driver for StarFive JH7110 SoC" /></p>
 <h1 id="appendix-jh7110-display-driver"><a href="#appendix-jh7110-display-driver">11 Appendix: JH7110 Display Driver</a></h1>
 <p>Based on everything we’ve deciphered in this article and the previous one…</p>
 <ul>
@@ -737,7 +739,7 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 </li>
 <li>
 <p>TODO: How to write to Framebuffer?</p>
-<p>Shall we check the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>?</p>
+<p>Shall we check the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>? (Pic above)</p>
 </li>
 </ol>
 <p>Our JH7110 Display Driver is partially implemented here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270">jh7110_appinit.c</a></p>
