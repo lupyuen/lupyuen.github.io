@@ -543,8 +543,16 @@ md 29400030 1
 <p>(Do we have a Date at <strong><code>0x2940</code> <code>0024</code></strong>? It reads “20210316”)</p>
 <h1 id="nuttx-display-driver-for-jh7110"><a href="#nuttx-display-driver-for-jh7110">8 NuttX Display Driver for JH7110</a></h1>
 <p><em>How will we build the NuttX Display Driver for JH7110?</em></p>
-<p>TODO</p>
-<p>Probably inside <code>board_late_initialize</code> like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270">jh7110_appinit.c</a></p>
+<p>Earlier we talked about the steps to power up the <strong>Display Subsystem</strong> and <strong>Display Controller</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem"><strong>“Power Up the Display Subsystem”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller"><strong>“Clocks and Resets for Display Controller”</strong></a></p>
+</li>
+</ul>
+<p>This is how we will implement the steps in our <strong>NuttX Display Driver</strong> (before cleanup): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Power Up the Power Management Unit for Video Output / Display Subsystem
 // TODO: Switch to constants
 putreg32(0x10, 0x1703000c);
@@ -552,7 +560,8 @@ putreg32(0xff, 0x17030044);
 putreg32(0x05, 0x17030044);
 putreg32(0x50, 0x17030044);
 </code></pre></div>
-<p>TODO</p>
+<p>That’s how we power up via the <strong>Power Management Unit</strong>.</p>
+<p>Next we enable the Clocks and deassert the Resets for the <strong>Display Subsystem</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the Clocks for Video Output / Display Subsystem
 modifyreg32(0x13020028, 0, 1 &lt;&lt; 31);  // Addr, Clear Bits, Set Bits
 modifyreg32(0x1302004c, 0, 1 &lt;&lt; 31);
@@ -572,7 +581,7 @@ modifyreg32(0x13020308, 1 &lt;&lt; 26, 0);
 val = getreg32(0x295C0000);
 DEBUGASSERT(val == 4);
 </code></pre></div>
-<p>TODO</p>
+<p>Then we do the same for the <strong>Display Controller</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the Clocks for DC8200 Display Controller (HDMI)
 modifyreg32(0x295C0010, 0, 1 &lt;&lt; 31);  // Addr, Clear Bits, Set Bits
 modifyreg32(0x295C0014, 0, 1 &lt;&lt; 31);
@@ -596,8 +605,17 @@ uint32_t chip_id = getreg32(0x29400030);
 _info(&quot;revision=0x%x, chip_id=0x%x&quot;, revision, chip_id);
 DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 </code></pre></div>
-<p>TODO: Why <code>board_late_initialize</code></p>
+<p><em>What about the rest of the Display Driver?</em></p>
+<p>The remaining steps are described here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver"><strong>“JH7110 Display Driver”</strong></a></li>
+</ul>
+<p>But we have a problem with <strong>Incomplete and Incorrect Docs</strong>, see the next section.</p>
+<p><em>Who starts our Display Driver?</em></p>
+<p>At Startup, our NuttX Driver will be called from <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273"><strong>board_late_initialize</strong></a>.</p>
 <h1 id="unsolved-mysteries"><a href="#unsolved-mysteries">9 Unsolved Mysteries</a></h1>
+<p><em>Are we done with our NuttX Display Driver?</em></p>
+<p>Not quite! We have a couple of challenges with <strong>Incomplete and Incorrect Docs</strong>…</p>
 <p>TODO</p>
 <p>HDMI Output</p>
 <p>VOUT Reset</p>
@@ -693,11 +711,14 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 <p>Bunch of mystery writes, see Appendix</p>
 <p><a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L369-L655">(See <strong>sf_display_init</strong>)</a></p>
 </li>
+<li>
+<p>How to write to Framebuffer? Check Linux Driver?</p>
+</li>
 </ol>
 <p>Partial Implementation: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270">jh7110_appinit.c</a></p>
 <p><a href="https://fosstodon.org/@Fishwaldo/110902984442385966"><strong>Justin (Fishwaldo)</strong></a> suggests that we check out the simpler HDMI Driver in <strong>U-Boot Bootloader</strong></p>
 <h1 id="appendix-jh7110-display-controller-mysteries"><a href="#appendix-jh7110-display-controller-mysteries">12 Appendix: JH7110 Display Controller Mysteries</a></h1>
-<p>TODO: In this section we talk about the <strong>mysterious undocumented things</strong> in the JH7110 Display Controller. (And some typos)</p>
+<p>TODO: In this section we talk about the <strong>mysterious / missing / mistaken things</strong> in the JH7110 Display Controller. (And some typos)</p>
 <h2 id="hdmi-output"><a href="#hdmi-output">12.1 HDMI Output</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540">sf_vop.c</a></p>
