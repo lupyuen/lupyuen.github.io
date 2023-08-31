@@ -516,6 +516,9 @@ run video_on
 ## Power up the Display Controller
 run display_on
 
+## Actually we should wait here
+## for 50 milliseconds to Power Up
+
 ## Dump the Hardware Revision
 md 29400024 1
 
@@ -598,12 +601,25 @@ modifyreg32(
   (1 &lt;&lt; 0) | (1 &lt;&lt; 1) | (1 &lt;&lt; 2) | (1 &lt;&lt; 9),  // Clear Bits
   0  // Set Bits
 );
+</code></pre></div>
+<p>Finally we check the <strong>Hardware Revision and Chip ID</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Wait 50 milliseconds for Power Up
+up_mdelay(50);
 
 // Verify that Hardware Revision and Chip ID are non-zero
 uint32_t revision = getreg32(0x29400024);
 uint32_t chip_id = getreg32(0x29400030);
 _info(&quot;revision=0x%x, chip_id=0x%x&quot;, revision, chip_id);
 DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
+</code></pre></div>
+<p>NuttX will start our Display Driver and print this…</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel...
+board_late_initialize:
+  revision=0x5720,
+  chip_id=0x30e
+
+NuttShell (NSH) NuttX-12.0.3
+nsh&gt; 
 </code></pre></div>
 <p><em>What about the rest of the Display Driver?</em></p>
 <p>The remaining steps are described here…</p>
@@ -694,6 +710,9 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller"><strong>Deassert the Resets</strong></a> for DC8200 Display Controller (HDMI)</p>
+</li>
+<li>
+<p>Wait <strong>50 milliseconds</strong> to Power Up</p>
 </li>
 <li>
 <p>Verify that <a href="https://lupyuen.github.io/articles/display3#read-the-hardware-revision-and-chip-id"><strong>Hardware Revision and Chip ID</strong></a> are non-zero</p>
