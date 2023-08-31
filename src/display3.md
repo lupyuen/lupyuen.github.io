@@ -680,7 +680,9 @@ _info("revision=0x%x, chip_id=0x%x", revision, chip_id);
 DEBUGASSERT(revision != 0 && chip_id != 0);
 ```
 
-NuttX will start our Display Driver and print this...
+_Does it work with NuttX?_
+
+Yep NuttX will start our Display Driver and print the __Hardware Revision and Chip ID__...
 
 ```text
 Starting kernel...
