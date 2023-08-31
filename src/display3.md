@@ -696,7 +696,7 @@ Not quite! We have a couple of challenges with __Incomplete and Incorrect Docs__
 
     [__"VOUT Reset"__](https://lupyuen.github.io/articles/display3#vout-reset)
 
-1.  How to __Multiplex a VOUT Clock__?
+1.  How to set the __VOUT Clock Source__?
 
     [__"Clock Multiplexing"__](https://lupyuen.github.io/articles/display3#clock-multiplexing)
 
@@ -771,11 +771,11 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
       [(See __inno_hdmi_enable__)](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_hdmi.c#L444-L457)
       
-1.  Set the Source of __u0_dc8200.clk_pix0__ to __clk_dc8200_pix0__
+1.  Set the Clock Source of __u0_dc8200.clk_pix0__ to __clk_dc8200_pix0__
 
     [(See this)](https://lupyuen.github.io/articles/display3#clock-multiplexing)
 
-1.  Set Clock Rate of __dc8200_pix0__ to __148.5 MHz__ (HDMI Clock)
+1.  Set the Clock Rate of __dc8200_pix0__ to __148.5 MHz__ (HDMI Clock)
 
     [(See this)](https://lupyuen.github.io/articles/display3#clock-rate)
 
@@ -849,7 +849,7 @@ Thankfully we have U-Boot!
 
 ## Clock Multiplexing
 
-TODO: How to set the Source of __u0_dc8200.clk_pix0__ to __clk_dc8200_pix0__?
+TODO: How to set the Clock Source of __u0_dc8200.clk_pix0__ to __clk_dc8200_pix0__?
 
 clk_u0_dc8200_clk_pix0: Offset 0x1c
 
