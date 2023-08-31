@@ -616,13 +616,32 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 <h1 id="unsolved-mysteries"><a href="#unsolved-mysteries">9 Unsolved Mysteries</a></h1>
 <p><em>Are we done with our NuttX Display Driver?</em></p>
 <p>Not quite! We have a couple of challenges with <strong>Incomplete and Incorrect Docs</strong>…</p>
-<p>TODO</p>
-<p>HDMI Output</p>
-<p>VOUT Reset</p>
-<p>Clock Multiplexing</p>
-<p>Clock Rate</p>
-<p>Clock Default</p>
-<p>PMU Software Encourage</p>
+<ol>
+<li>
+<p>What are these <strong>Mystery Writes to Undocumented Registers</strong> in the DC8200 Display Controller?</p>
+<p>TODO: HDMI Output</p>
+</li>
+<li>
+<p><strong>Reset Register for Video Output (VOUT)</strong> seems to be misplaced…</p>
+<p>TODO: VOUT Reset</p>
+</li>
+<li>
+<p>How to <strong>Multiplex a VOUT Clock</strong>?</p>
+<p>TODO: Clock Multiplexing</p>
+</li>
+<li>
+<p>How to set the <strong>VOUT Clock Rate</strong>?</p>
+<p>TODO: Clock Rate</p>
+</li>
+<li>
+<p>Typo in the <strong>VOUT Clock Default Rate</strong>…</p>
+<p>TODO: Clock Default</p>
+</li>
+<li>
+<p>Indeed <strong>Software is Encouraging</strong>, but we’ll make our own interpretation…</p>
+<p>TODO: PMU Software Encourage</p>
+</li>
+</ol>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -718,7 +737,7 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 <p>Partial Implementation: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270">jh7110_appinit.c</a></p>
 <p><a href="https://fosstodon.org/@Fishwaldo/110902984442385966"><strong>Justin (Fishwaldo)</strong></a> suggests that we check out the simpler HDMI Driver in <strong>U-Boot Bootloader</strong></p>
 <h1 id="appendix-jh7110-display-controller-mysteries"><a href="#appendix-jh7110-display-controller-mysteries">12 Appendix: JH7110 Display Controller Mysteries</a></h1>
-<p>TODO: In this section we talk about the <strong>mysterious / missing / mistaken things</strong> in the JH7110 Display Controller. (And some typos)</p>
+<p>TODO: In this section we talk about the <strong>Mysterious, Missing and Mistaken</strong> things in the JH7110 Display Controller.</p>
 <h2 id="hdmi-output"><a href="#hdmi-output">12.1 HDMI Output</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540">sf_vop.c</a></p>
