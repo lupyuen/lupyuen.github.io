@@ -787,13 +787,11 @@ Partial Implementation: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinep
 
 # Appendix: JH7110 Display Controller Mysteries
 
-TODO: In this section we talk about the __Mysterious, Missing and Mistaken__ things in the JH7110 Display Controller.
+TODO: In this section we talk about the __Missing, Mistaken and Mysterious__ things in the JH7110 Display Controller.
 
 ## HDMI Output
 
-TODO
-
-From [sf_vop.c](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540)
+According to the __U-Boot Display Driver__ (officially contributed by StarFive), there's a long list of __Mystery Writes to Undocumented Registers__ in the DC8200 Display Controller: [sf_vop.c](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L493-L540)
 
 ```c
 writel(0xc0001fff, priv->regs_hi+0x00000014);
@@ -803,14 +801,20 @@ writel(0x00000000, priv->regs_hi+0x00001800);
 writel(0x00000000, priv->regs_hi+0x000024d8);
 writel(0x021c0780, priv->regs_hi+0x000024e0);
 writel(0x021c0780, priv->regs_hi+0x00001810);
+...
+```
+
+(__regs_hi__ is DC8200 AHB0 Base Address __`0x2940` `0000`__)
+
+Plus this super baffling one...
+
+```c
 writel(uc_plat->base, priv->regs_hi+0x00001400);
 ```
 
-regs_hi is DC8200_AHB0_BASE_ADDRESS: 0x29400000
+What's happening here?
 
-[(See __sf_display_init__)](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L369-L655)
-
-TODO: Match with Linux Driver
+Shall we match the Mystery Writes with the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)?
 
 ## VOUT Reset
 
