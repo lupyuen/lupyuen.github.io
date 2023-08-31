@@ -688,19 +688,29 @@ _Are we done with our NuttX Display Driver?_
 
 Not quite! We have a couple of challenges with __Incomplete and Incorrect Docs__...
 
-TODO
+1.  What are these __Mystery Writes to Undocumented Registers__ in the DC8200 Display Controller?
 
-HDMI Output
+    TODO: HDMI Output
 
-VOUT Reset
+1.  __Reset Register for Video Output (VOUT)__ seems to be misplaced...
 
-Clock Multiplexing
+    TODO: VOUT Reset
 
-Clock Rate
+1.  How to __Multiplex a VOUT Clock__?
 
-Clock Default
+    TODO: Clock Multiplexing
 
-PMU Software Encourage
+1.  How to set the __VOUT Clock Rate__?
+
+    TODO: Clock Rate
+
+1.  Typo in the __VOUT Clock Default Rate__...
+
+    TODO: Clock Default
+
+1.  Indeed __Software is Encouraging__, but we'll make our own interpretation...
+
+    TODO: PMU Software Encourage
 
 # What's Next
 
@@ -775,7 +785,7 @@ Partial Implementation: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinep
 
 # Appendix: JH7110 Display Controller Mysteries
 
-TODO: In this section we talk about the __mysterious / missing / mistaken things__ in the JH7110 Display Controller. (And some typos)
+TODO: In this section we talk about the __Mysterious, Missing and Mistaken__ things in the JH7110 Display Controller.
 
 ## HDMI Output
 
