@@ -202,7 +202,7 @@ From the [__PMU Function Description__](https://doc-en.rvspace.org/JH7110/TRM/JH
 
 _What's a "Software Encourage"?_
 
-Something got Lost in Translation. Let's assume it means "Software Trigger".
+Something got Lost in Translation. Let's assume it means [__"Software Triggered"__](https://lupyuen.github.io/articles/display3#pmu-software-encourage).
 
 Which means we set the [__Power Mode__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_nhb_slz_msb) (Offset __`0x0C`__) to __`0x10`__ (Bit 4 for VOUT)...
 
@@ -793,7 +793,7 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
 Our JH7110 Display Driver is partially implemented here: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
 
-(Many Thanks to [__Justin / Fishwaldo__](https://fosstodon.org/@Fishwaldo/110902984442385966) for suggesting that we check out the HDMI Driver in U-Boot Bootloader)
+(Many Thanks to [__Justin / Fishwaldo__](https://fosstodon.org/@Fishwaldo/110902984442385966) for recommending the HDMI Driver from U-Boot Bootloader)
 
 ![Official Display Driver for JH7110](https://lupyuen.github.io/images/display2-title.jpg)
 
@@ -905,11 +905,15 @@ TODO: What is the Clock Multiplier?
 
 TODO: The Default Values seem to match [DOM VOUT CRG](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html). (`clk_tx_esc` should have default `24'hc`, there is a typo in the doc: `24'h12`)
 
+TODO: Pic of PMU Function Description
+
+[_PMU Function Description_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html)
+
 ## PMU Software Encourage
 
 TODO
 
-From the [__PMU Function Description__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html)...
+From the [__PMU Function Description__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html) (pic above)...
 
 > __SW Encourage Turn-on Sequence__
 
@@ -919,4 +923,4 @@ From the [__PMU Function Description__](https://doc-en.rvspace.org/JH7110/TRM/JH
 
 _What's a "Software Encourage"?_
 
-Something got Lost in Translation. Let's assume it means "Software Trigger".
+Something got Lost in Translation. Let's assume it means __"Software Triggered"__.
