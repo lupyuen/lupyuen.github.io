@@ -796,6 +796,8 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
     [(__X-Powers AXP15060__ PMIC over I2C)](https://files.pine64.org/doc/datasheet/star64/AXP15060%20datasheet%20V0.1.pdf)
 
+    [(I2C SCL on __GPIO 19__, SDA on __GPIO 20__, Page 17)](https://files.pine64.org/doc/star64/Star64_Schematic_V1.1_20230504.pdf)
+
 1.  Wait [__500 milliseconds__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c#L658-L676) to Power Up PMIC
 
 1.  Verify that [__Hardware Revision and Chip ID__](https://lupyuen.github.io/articles/display3#read-the-hardware-revision-and-chip-id) are non-zero
