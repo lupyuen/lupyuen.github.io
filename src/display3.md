@@ -4,7 +4,7 @@
 
 ![Star64 JH7110 Display Controller is alive!](https://lupyuen.github.io/images/display3-title.png)
 
-In the olden days we would [__`peek`__](https://en.wikipedia.org/wiki/PEEK_and_POKE) and [__`poke`__](https://en.wikipedia.org/wiki/PEEK_and_POKE) the [__Display Controller__](https://en.wikipedia.org/wiki/Apple_II_graphics), to see weird and wonderful displays.
+In olden days we'd [__`peek`__](https://en.wikipedia.org/wiki/PEEK_and_POKE) and [__`poke`__](https://en.wikipedia.org/wiki/PEEK_and_POKE) the [__Display Controller__](https://en.wikipedia.org/wiki/Apple_II_graphics), to see weird and wonderful displays.
 
 Today (46 years later), we poke around the Display Controller of [__Star64 JH7110 RISC-V SBC__](https://wiki.pine64.org/wiki/STAR64) with a modern tool (not BASIC): [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)!
 
@@ -14,11 +14,11 @@ In this article we discover...
 
 - U-Boot Commands __`md`__ and __`mw`__  for Dumping and Writing Memory (Pic above)
 
-- Which we use to power up the __Video Output__ and __Display Controller__ on the [__RISC-V StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html)
+- Which we use to power up the __Video Output__ and __Display Controller__ on the [__StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html)
 
 - By tweaking the JH7110 Registers for __Power Management Unit__, __Clock and Reset__
 
-- And how we'll create our own __Display Driver__ for JH7110
+- Also how we'll create our own __Display Driver__ for JH7110
 
 - In spite of the __Missing and Incorrect Docs__
 
@@ -670,8 +670,11 @@ modifyreg32(
 Finally we check the __Hardware Revision and Chip ID__...
 
 ```c
-// Wait 50 milliseconds for Power Up
-up_mdelay(50);
+// TODO: Power up ALDO3 and ALDO5 on the External Power Management IC
+// (X-Powers AXP15060 PMIC over I2C)
+
+// Wait 500 milliseconds to Power Up PMIC
+up_mdelay(500);
 
 // Verify that Hardware Revision and Chip ID are non-zero
 uint32_t revision = getreg32(0x29400024);
@@ -687,8 +690,8 @@ Yep NuttX will start our Display Driver and print the __Hardware Revision and Ch
 ```text
 Starting kernel...
 board_late_initialize:
-  revision=0x5720,
-  chip_id=0x30e,
+  revision=0x5720
+  chip_id=0x30e
   hdmi_status=0x30
 
 NuttShell (NSH) NuttX-12.0.3
@@ -777,13 +780,13 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
 1.  Power Up the [__Power Management Unit__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output / Display Subsystem
 
-1.  Wait __50 milliseconds__ to Power Up
+1.  Wait [__50 milliseconds__](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L656-L667) to Power Up
 
 1.  [__Enable the Clocks__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output / Display Subsystem
 
 1.  [__Deassert the Resets__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output / Display Subsystem
 
-1.  Verify that [__Video Output / Display Subsystem is up__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem)
+1.  Verify that [__Video Output / Display Subsystem is up__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L203-L207)
 
 1.  [__Enable the Clocks__](https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller) for DC8200 Display Controller (HDMI)
 
