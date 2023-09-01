@@ -720,7 +720,7 @@ nsh&gt;
 <p><a href="https://files.pine64.org/doc/datasheet/star64/AXP15060%20datasheet%20V0.1.pdf">(<strong>X-Powers AXP15060</strong> PMIC over I2C)</a></p>
 </li>
 <li>
-<p>Wait <strong>50 milliseconds</strong> to Power Up</p>
+<p>Wait <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c#L658-L676"><strong>500 milliseconds</strong></a> to Power Up PMIC</p>
 </li>
 <li>
 <p>Verify that <a href="https://lupyuen.github.io/articles/display3#read-the-hardware-revision-and-chip-id"><strong>Hardware Revision and Chip ID</strong></a> are non-zero</p>
@@ -768,6 +768,7 @@ nsh&gt;
 <li>
 <p>TODO: How to write to Framebuffer?</p>
 <p>Shall we check the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>? (Pic below)</p>
+<p>Why is the <a href="https://github.com/starfive-tech/u-boot/commit/26a31fa6bc9debeb71df0a0f9a715ac8e46cff1c"><strong>HDMI Display Unstable</strong></a>?</p>
 </li>
 </ol>
 <p>Our JH7110 Display Driver is partially implemented here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270">jh7110_appinit.c</a></p>
