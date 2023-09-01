@@ -791,7 +791,7 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
 1.  Power up [__ALDO3 and ALDO5__](https://github.com/lupyuen/nuttx-star64/blob/main/jh7110-visionfive-v2.dts#L1487-L1502) on the External Power Management IC
 
-    [(X-Powers __AXP15060__ PMIC)](https://files.pine64.org/doc/datasheet/star64/AXP15060%20datasheet%20V0.1.pdf)
+    [(__X-Powers AXP15060__ PMIC over I2C)](https://files.pine64.org/doc/datasheet/star64/AXP15060%20datasheet%20V0.1.pdf)
 
 1.  Wait __50 milliseconds__ to Power Up
 
