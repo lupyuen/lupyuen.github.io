@@ -554,7 +554,7 @@ md 29400030 1
 <p><a href="https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller"><strong>“Clocks and Resets for Display Controller”</strong></a></p>
 </li>
 </ul>
-<p>This is how we will implement the steps in our <strong>NuttX Display Driver</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273">jh7110_appinit.c</a></p>
+<p>This is how we implement the steps in our <strong>NuttX Display Driver</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Power Up the Power Management Unit for Video Output / Display Subsystem
 // TODO: Switch to constants
 putreg32(0x10, 0x1703000c);
@@ -617,11 +617,14 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel...
 board_late_initialize:
   revision=0x5720,
-  chip_id=0x30e
+  chip_id=0x30e,
+  hdmi_status=0x30
 
 NuttShell (NSH) NuttX-12.0.3
 nsh&gt; 
 </code></pre></div>
+<p>But our <a href="https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver"><strong>HDMI Status</strong></a> says that <a href="https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver"><strong>Hot Plug is Disconnected</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver">(Probably because our <strong>ALDOs</strong> are missing)</a></p>
 <p><em>What about the rest of the Display Driver?</em></p>
 <p>The remaining steps are described here…</p>
 <ul>
