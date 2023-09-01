@@ -86,7 +86,7 @@
 <li><a href="#clock-default">12.5 Clock Default</a><ul></ul></li>
 <li><a href="#pmu-software-encourage">12.6 PMU Software Encourage</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Sep 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/display3-title.png" alt="Star64 JH7110 Display Controller is alive!" /></p>
-<p>In the olden days we would <a href="https://en.wikipedia.org/wiki/PEEK_and_POKE"><strong><code>peek</code></strong></a> and <a href="https://en.wikipedia.org/wiki/PEEK_and_POKE"><strong><code>poke</code></strong></a> the <a href="https://en.wikipedia.org/wiki/Apple_II_graphics"><strong>Display Controller</strong></a>, to see weird and wonderful displays.</p>
+<p>In olden days we’d <a href="https://en.wikipedia.org/wiki/PEEK_and_POKE"><strong><code>peek</code></strong></a> and <a href="https://en.wikipedia.org/wiki/PEEK_and_POKE"><strong><code>poke</code></strong></a> the <a href="https://en.wikipedia.org/wiki/Apple_II_graphics"><strong>Display Controller</strong></a>, to see weird and wonderful displays.</p>
 <p>Today (46 years later), we poke around the Display Controller of <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Star64 JH7110 RISC-V SBC</strong></a> with a modern tool (not BASIC): <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>!</p>
 <p>(Spoiler: No weird and wonderful displays for today!)</p>
 <p>In this article we discover…</p>
@@ -95,13 +95,13 @@
 <p>U-Boot Commands <strong><code>md</code></strong> and <strong><code>mw</code></strong>  for Dumping and Writing Memory (Pic above)</p>
 </li>
 <li>
-<p>Which we use to power up the <strong>Video Output</strong> and <strong>Display Controller</strong> on the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>RISC-V StarFive JH7110 SoC</strong></a></p>
+<p>Which we use to power up the <strong>Video Output</strong> and <strong>Display Controller</strong> on the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110 SoC</strong></a></p>
 </li>
 <li>
 <p>By tweaking the JH7110 Registers for <strong>Power Management Unit</strong>, <strong>Clock and Reset</strong></p>
 </li>
 <li>
-<p>And how we’ll create our own <strong>Display Driver</strong> for JH7110</p>
+<p>Also how we’ll create our own <strong>Display Driver</strong> for JH7110</p>
 </li>
 <li>
 <p>In spite of the <strong>Missing and Incorrect Docs</strong></p>
@@ -603,8 +603,11 @@ modifyreg32(
 );
 </code></pre></div>
 <p>Finally we check the <strong>Hardware Revision and Chip ID</strong>…</p>
-<div class="example-wrap"><pre class="language-c"><code>// Wait 50 milliseconds for Power Up
-up_mdelay(50);
+<div class="example-wrap"><pre class="language-c"><code>// TODO: Power up ALDO3 and ALDO5 on the External Power Management IC
+// (X-Powers AXP15060 PMIC over I2C)
+
+// Wait 500 milliseconds to Power Up PMIC
+up_mdelay(500);
 
 // Verify that Hardware Revision and Chip ID are non-zero
 uint32_t revision = getreg32(0x29400024);
@@ -616,8 +619,8 @@ DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 <p>Yep NuttX will start our Display Driver and print the <strong>Hardware Revision and Chip ID</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel...
 board_late_initialize:
-  revision=0x5720,
-  chip_id=0x30e,
+  revision=0x5720
+  chip_id=0x30e
   hdmi_status=0x30
 
 NuttShell (NSH) NuttX-12.0.3
@@ -698,7 +701,7 @@ nsh&gt;
 <p>Power Up the <a href="https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem"><strong>Power Management Unit</strong></a> for Video Output / Display Subsystem</p>
 </li>
 <li>
-<p>Wait <strong>50 milliseconds</strong> to Power Up</p>
+<p>Wait <a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L656-L667"><strong>50 milliseconds</strong></a> to Power Up</p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem"><strong>Enable the Clocks</strong></a> for Video Output / Display Subsystem</p>
@@ -707,7 +710,7 @@ nsh&gt;
 <p><a href="https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem"><strong>Deassert the Resets</strong></a> for Video Output / Display Subsystem</p>
 </li>
 <li>
-<p>Verify that <a href="https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem"><strong>Video Output / Display Subsystem is up</strong></a></p>
+<p>Verify that <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L203-L207"><strong>Video Output / Display Subsystem is up</strong></a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller"><strong>Enable the Clocks</strong></a> for DC8200 Display Controller (HDMI)</p>
