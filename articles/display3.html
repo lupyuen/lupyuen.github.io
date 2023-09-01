@@ -203,11 +203,12 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p><img src="https://lupyuen.github.io/images/display2-vout_block_diagram18.png" alt="JH7110 Display Subsystem Block Diagram" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html"><em>JH7110 Display Subsystem Block Diagram</em></a></p>
 <h1 id="jh7110-power-management-unit"><a href="#jh7110-power-management-unit">3 JH7110 Power Management Unit</a></h1>
-<p><em>How will we power up the Display Subsystem?</em></p>
+<p><em>How to power up the Display Subsystem?</em></p>
 <p>From the pic above, the Display Subsystem is powered in the <strong>Video Output Power Domain (DOM_VOUT)</strong>.</p>
-<p>Which is powered by the JH7110 <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html"><strong>Power Management Unit</strong></a> (PMU or PMIC)…</p>
+<p>Which is powered by the JH7110 <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html"><strong>Power Management Unit (PMU)</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/display3-power.png" alt="Power Management Unit" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html">(Source)</a></p>
+<p>(Not to be confused with the <strong>External PMIC</strong>: X-Powers AXP15060)</p>
 <p><em>Is the power turned on for Video Output DOM_VOUT?</em></p>
 <p>Let’s dump the status of the Power Domains…</p>
 <ul>
@@ -605,6 +606,7 @@ modifyreg32(
 <p>Finally we check the <strong>Hardware Revision and Chip ID</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// TODO: Power up ALDO3 and ALDO5 on the External Power Management IC
 // (X-Powers AXP15060 PMIC over I2C)
+// (I2C SCL on GPIO 19, SDA on GPIO 20)
 
 // Wait 500 milliseconds to Power Up PMIC
 up_mdelay(500);
