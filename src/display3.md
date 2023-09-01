@@ -816,7 +816,9 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
     - Enable HDMI Data Sync
 
       [(See __inno_hdmi_enable__)](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_hdmi.c#L444-L457)
-      
+
+      [(HDMI Base Address is __`0x2959` `0000`__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html)
+
 1.  Set the Clock Source of __u0_dc8200.clk_pix0__ to __clk_dc8200_pix0__
 
     [(See this)](https://lupyuen.github.io/articles/display3#clock-multiplexing)
