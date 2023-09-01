@@ -159,15 +159,17 @@ Let's tweak some registers and power up the Display Subsystem...
 
 # JH7110 Power Management Unit
 
-_How will we power up the Display Subsystem?_
+_How to power up the Display Subsystem?_
 
 From the pic above, the Display Subsystem is powered in the __Video Output Power Domain (DOM_VOUT)__.
 
-Which is powered by the JH7110 [__Power Management Unit__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html) (PMU or PMIC)...
+Which is powered by the JH7110 [__Power Management Unit (PMU)__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html)...
 
 ![Power Management Unit](https://lupyuen.github.io/images/display3-power.png)
 
 [(Source)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html)
+
+(Not to be confused with the __External PMIC__: X-Powers AXP15060)
 
 _Is the power turned on for Video Output DOM_VOUT?_
 
@@ -672,6 +674,7 @@ Finally we check the __Hardware Revision and Chip ID__...
 ```c
 // TODO: Power up ALDO3 and ALDO5 on the External Power Management IC
 // (X-Powers AXP15060 PMIC over I2C)
+// (I2C SCL on GPIO 19, SDA on GPIO 20)
 
 // Wait 500 milliseconds to Power Up PMIC
 up_mdelay(500);
