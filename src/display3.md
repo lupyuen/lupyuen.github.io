@@ -567,7 +567,7 @@ run video_on
 run display_on
 
 ## Actually we should wait here
-## for 50 milliseconds to Power Up
+## for 500 milliseconds to Power Up
 
 ## Dump the Hardware Revision
 md 29400024 1
