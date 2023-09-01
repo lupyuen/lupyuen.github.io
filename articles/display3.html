@@ -779,7 +779,7 @@ nsh&gt;
 </li>
 </ol>
 <p>Our JH7110 Display Driver is partially implemented here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270">jh7110_appinit.c</a></p>
-<p>TODO: Implement the <a href="https://doc-en.rvspace.org/VisionFive2/DG_I2C/JH7110_SDK/source_code_structure_i2c.html"><strong>JH7110 I2C Driver</strong></a> so we can control the PMIC</p>
+<p><strong>TODO</strong>: Implement the <a href="https://doc-en.rvspace.org/VisionFive2/DG_I2C/JH7110_SDK/source_code_structure_i2c.html"><strong>JH7110 I2C Driver</strong></a> (based on <a href="https://github.com/torvalds/linux/blob/master/drivers/i2c/busses/i2c-designware-core.h"><strong>DesignWare I2C</strong></a>) so we can control the PMIC. This NuttX I2C Driver might work: <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/cxd56xx/cxd56_i2c.c"><strong>cxd56_i2c.c</strong></a></p>
 <p>(Many Thanks to <a href="https://fosstodon.org/@Fishwaldo/110902984442385966"><strong>Justin / Fishwaldo</strong></a> for recommending the HDMI Driver from U-Boot Bootloader)</p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Official Display Driver for JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/display2"><em>Official Display Driver for JH7110</em></a></p>
