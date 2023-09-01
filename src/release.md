@@ -753,7 +753,15 @@ __GPIO:__
 
 - [SDK for GPIO](http://doc-en.rvspace.org/VisionFive2/DG_GPIO/)
 
-__RTC, SPI, UART, DMA, I2C, I2S, PWM:__
+__I2C:__
+
+- [SDK for I2C](http://doc-en.rvspace.org/VisionFive2/DG_I2C/)
+
+  (Based on [DesignWare I2C](https://github.com/torvalds/linux/blob/master/drivers/i2c/busses/i2c-designware-core.h))
+  
+  This NuttX I2C Driver might work: [cxd56_i2c.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/cxd56xx/cxd56_i2c.c)
+
+__RTC, SPI, UART, DMA, I2S, PWM:__
 
 - [RTC Developing Guide](http://doc-en.rvspace.org/VisionFive2/DG_RTC/)
 
@@ -762,8 +770,6 @@ __RTC, SPI, UART, DMA, I2C, I2S, PWM:__
 - [UART Developing Guide](http://doc-en.rvspace.org/VisionFive2/DG_UART/)
 
 - [DMA Developing Guide](http://doc-en.rvspace.org/VisionFive2/DG_DMA/)
-
-- [SDK for I2C](http://doc-en.rvspace.org/VisionFive2/DG_I2C/)
 
 - [SDK for I2S](http://doc-en.rvspace.org/VisionFive2/DG_I2S/)
 
