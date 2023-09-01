@@ -792,7 +792,7 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
 1.  [__Deassert the Resets__](https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller) for DC8200 Display Controller (HDMI)
 
-1.  Power up [__ALDO3 and ALDO5__](https://github.com/lupyuen/nuttx-star64/blob/main/jh7110-visionfive-v2.dts#L1487-L1502) on the External Power Management IC
+1.  Power up [__ALDO3 (1.8V) and ALDO5 (0.9V)__](https://github.com/lupyuen/nuttx-star64/blob/main/jh7110-visionfive-v2.dts#L1487-L1502) on the External Power Management IC
 
     [(__X-Powers AXP15060__ PMIC over I2C)](https://files.pine64.org/doc/datasheet/star64/AXP15060%20datasheet%20V0.1.pdf)
 
