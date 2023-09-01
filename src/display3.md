@@ -608,7 +608,7 @@ Earlier we talked about the steps to power up the __Display Subsystem__ and __Di
 
 - [__"Clocks and Resets for Display Controller"__](https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller)
 
-This is how we will implement the steps in our __NuttX Display Driver__: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273)
+This is how we implement the steps in our __NuttX Display Driver__: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273)
 
 ```c
 // Power Up the Power Management Unit for Video Output / Display Subsystem
@@ -688,11 +688,16 @@ Yep NuttX will start our Display Driver and print the __Hardware Revision and Ch
 Starting kernel...
 board_late_initialize:
   revision=0x5720,
-  chip_id=0x30e
+  chip_id=0x30e,
+  hdmi_status=0x30
 
 NuttShell (NSH) NuttX-12.0.3
 nsh> 
 ```
+
+But our [__HDMI Status__](https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver) says that [__Hot Plug is Disconnected__](https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver).
+
+[(Probably because our __ALDOs__ are missing)](https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver)
 
 _What about the rest of the Display Driver?_
 
