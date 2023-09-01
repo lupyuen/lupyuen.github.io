@@ -842,6 +842,8 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
 Our JH7110 Display Driver is partially implemented here: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
 
+TODO: Implement the [__JH7110 I2C Driver__](https://doc-en.rvspace.org/VisionFive2/DG_I2C/JH7110_SDK/source_code_structure_i2c.html) so we can control the PMIC
+
 (Many Thanks to [__Justin / Fishwaldo__](https://fosstodon.org/@Fishwaldo/110902984442385966) for recommending the HDMI Driver from U-Boot Bootloader)
 
 ![Official Display Driver for JH7110](https://lupyuen.github.io/images/display2-title.jpg)
