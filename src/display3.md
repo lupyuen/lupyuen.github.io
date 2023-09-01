@@ -793,7 +793,7 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
     [(__X-Powers AXP15060__ PMIC over I2C)](https://files.pine64.org/doc/datasheet/star64/AXP15060%20datasheet%20V0.1.pdf)
 
-1.  Wait __50 milliseconds__ to Power Up
+1.  Wait [__500 milliseconds__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/inno_hdmi.c#L658-L676) to Power Up PMIC
 
 1.  Verify that [__Hardware Revision and Chip ID__](https://lupyuen.github.io/articles/display3#read-the-hardware-revision-and-chip-id) are non-zero
 
@@ -827,6 +827,8 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 1.  TODO: How to write to Framebuffer?
 
     Shall we check the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)? (Pic below)
+
+    Why is the [__HDMI Display Unstable__](https://github.com/starfive-tech/u-boot/commit/26a31fa6bc9debeb71df0a0f9a715ac8e46cff1c)?
 
 Our JH7110 Display Driver is partially implemented here: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
 
