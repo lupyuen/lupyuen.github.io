@@ -423,7 +423,7 @@ saveenv
 run video_on
 ```
 
-The U-Boot Script __`video_on`__ is saved into our SBC's Internal Flash Memory. 
+The U-Boot Script __`video_on`__ is saved into our SBC's __Internal Flash Memory__. 
 
 Which means we can switch on our SBC and run the script anytime...
 
