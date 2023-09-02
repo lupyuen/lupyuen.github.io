@@ -777,7 +777,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: JH7110 Display Driver
 
-Based on everything we've deciphered in this article and the previous one...
+Based on everything we deciphered in this article and the previous one...
 
 - [__"RISC-V Star64 JH7110: Inside the Display Controller"__](https://lupyuen.github.io/articles/display2)
 
@@ -901,7 +901,7 @@ VOUT Reset [_Software_RESET_assert0_addr_assert_sel_](https://doc-en.rvspace.org
 
 _How did we figure out it's at Offset `0x48`?_
 
-Writing to Offset `0x38` has no effect, [__according to our testing__](https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader). Thanks to U-Boot we have this dump...
+Clearing the Reset Bits at Offset `0x38` [(and Offset `0x4C`)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xgs_jd4_2tb) has no effect, [__according to our testing__](https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader). Thanks to U-Boot we have this dump...
 
 ```text
 # md 295C0000 0x20
@@ -914,7 +914,7 @@ Writing to Offset `0x38` has no effect, [__according to our testing__](https://g
 
 Offset `0x38` is 0, which doesn't look right for a Reset Register that should be filled with 1 Bits (by default).
 
-Then we noticed that __Offset `0x48`__ is filled with 1 Bits: __`0xFFF`__. So we tested Offset `0x48`, and it works!
+Then we noticed that __Offset `0x48`__ is filled with 1 Bits: __`0xFFF`__. Thus we cleared the Reset Bits at Offset `0x48`, and it works!
 
 ![Clock clk_u0_dc8200_clk_pix0](https://lupyuen.github.io/images/display3-clock2.png)
 
@@ -964,7 +964,7 @@ What is the Input Frequency to the Clock? 307.2 MHz?
 
 [__clk_tx_esc__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb) at __Offset `0x0C`__ (Address __`0x295C` `0000`__) should have default __`24'hc`__. (Equivalent to __`0x0C`__)
 
-There's a typo in the doc: __`24'h12`__ (Pic above)
+There's a typo in the doc, it shows default __`24'h12`__ (Pic above)
 
 ![PMU Function Description](https://lupyuen.github.io/images/display3-pmu.png)
 
@@ -976,9 +976,9 @@ From the [__Power Management Unit (PMU) Function Description__](https://doc-en.r
 
 > __SW Encourage Turn-on Sequence__
 
-> (1) Configure the register __SW Turn-On Power Mode__ (offset __`0x0C`__), write the bit 1 which Power Domain will be turn-on, write the others 0;
+> (1) Configure the register __SW Turn-On Power Mode__ (Offset __`0x0C`__), write the bit 1 which Power Domain will be turn-on, write the others 0;
 
-> (2) Write the __SW Turn-On Command Sequence__. Write the register Software Encourage (offset __`0x44`__) __`0xFF`__ → __`0x05`__ → __`0x50`__
+> (2) Write the __SW Turn-On Command Sequence__. Write the register Software Encourage (Offset __`0x44`__) __`0xFF`__ → __`0x05`__ → __`0x50`__
 
 _What's a "Software Encourage"?_
 
