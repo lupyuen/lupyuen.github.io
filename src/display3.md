@@ -911,7 +911,9 @@ VOUT Reset [_Software_RESET_assert0_addr_assert_sel_](https://doc-en.rvspace.org
 
 _How did we figure out it's at Offset `0x48`?_
 
-Clearing the Reset Bits at Offset `0x38` [(and Offset `0x4C`)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xgs_jd4_2tb) has no effect, [__according to our testing__](https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader). Thanks to U-Boot we have this dump...
+Clearing the Reset Bits at Offset `0x38` [(and Offset `0x4C`)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xgs_jd4_2tb) has no effect, [__according to our testing__](https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader).
+
+Thanks to U-Boot, we have this dump of the [__VOUT Clock and Reset Registers (CRG)__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html)...
 
 ```text
 # md 295C0000 0x20
@@ -922,9 +924,9 @@ Clearing the Reset Bits at Offset `0x38` [(and Offset `0x4C`)](https://doc-en.rv
 295c0040: 00000000 00000000 00000fff 00000000  ................
 ```
 
-Offset `0x38` is 0, which doesn't look right for a Reset Register that should be filled with 1 Bits (by default).
+Offset `0x38` is 0, which doesn't look right for a Reset Register that should be filled with "1" Bits (by default).
 
-Then we noticed that __Offset `0x48`__ is filled with 1 Bits: __`0xFFF`__. Thus we cleared the Reset Bits at Offset `0x48`, and it works!
+Then we noticed that __Offset `0x48`__ is filled with "1" Bits: __`0xFFF`__. Thus we cleared the Reset Bits at Offset `0x48`, and it works!
 
 ![Clock clk_u0_dc8200_clk_pix0](https://lupyuen.github.io/images/display3-clock2.png)
 
