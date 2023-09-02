@@ -694,7 +694,7 @@ nsh&gt;
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display3.md"><strong>lupyuen.github.io/src/display3.md</strong></a></p>
 <h1 id="appendix-jh7110-display-driver"><a href="#appendix-jh7110-display-driver">11 Appendix: JH7110 Display Driver</a></h1>
-<p>Based on everything we’ve deciphered in this article and the previous one…</p>
+<p>Based on everything we deciphered in this article and the previous one…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/display2"><strong>“RISC-V Star64 JH7110: Inside the Display Controller”</strong></a></li>
 </ul>
@@ -814,7 +814,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p>VOUT Reset <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb"><em>Software_RESET_assert0_addr_assert_sel</em></a> is actually at <strong>Offset <code>0x48</code></strong>: <strong><code>0x295C</code> <code>0048</code></strong>.</p>
 <p>(Instead of Offset <code>0x38</code>, pic above)</p>
 <p><em>How did we figure out it’s at Offset <code>0x48</code>?</em></p>
-<p>Writing to Offset <code>0x38</code> has no effect, <a href="https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader"><strong>according to our testing</strong></a>. Thanks to U-Boot we have this dump…</p>
+<p>Clearing the Reset Bits at Offset <code>0x38</code> <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xgs_jd4_2tb">(and Offset <code>0x4C</code>)</a> has no effect, <a href="https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader"><strong>according to our testing</strong></a>. Thanks to U-Boot we have this dump…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 295C0000 0x20
 295c0000: 00000004 00000004 00000004 0000000c  ................
 295c0010: 00000000 00000000 00000000 00000000  ................
@@ -823,7 +823,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 295c0040: 00000000 00000000 00000fff 00000000  ................
 </code></pre></div>
 <p>Offset <code>0x38</code> is 0, which doesn’t look right for a Reset Register that should be filled with 1 Bits (by default).</p>
-<p>Then we noticed that <strong>Offset <code>0x48</code></strong> is filled with 1 Bits: <strong><code>0xFFF</code></strong>. So we tested Offset <code>0x48</code>, and it works!</p>
+<p>Then we noticed that <strong>Offset <code>0x48</code></strong> is filled with 1 Bits: <strong><code>0xFFF</code></strong>. Thus we cleared the Reset Bits at Offset <code>0x48</code>, and it works!</p>
 <p><img src="https://lupyuen.github.io/images/display3-clock2.png" alt="Clock clk_u0_dc8200_clk_pix0" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb"><em>Clock clk_u0_dc8200_clk_pix0</em></a></p>
 <h2 id="clock-multiplexing"><a href="#clock-multiplexing">12.3 Clock Multiplexing</a></h2>
@@ -859,7 +859,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><em>Clock clk_tx_esc</em></a></p>
 <h2 id="clock-default"><a href="#clock-default">12.5 Clock Default</a></h2>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><strong>clk_tx_esc</strong></a> at <strong>Offset <code>0x0C</code></strong> (Address <strong><code>0x295C</code> <code>0000</code></strong>) should have default <strong><code>24'hc</code></strong>. (Equivalent to <strong><code>0x0C</code></strong>)</p>
-<p>There’s a typo in the doc: <strong><code>24'h12</code></strong> (Pic above)</p>
+<p>There’s a typo in the doc, it shows default <strong><code>24'h12</code></strong> (Pic above)</p>
 <p><img src="https://lupyuen.github.io/images/display3-pmu.png" alt="PMU Function Description" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><em>PMU Function Description</em></a></p>
 <h2 id="pmu-software-encourage"><a href="#pmu-software-encourage">12.6 PMU Software Encourage</a></h2>
@@ -868,10 +868,10 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p><strong>SW Encourage Turn-on Sequence</strong></p>
 </blockquote>
 <blockquote>
-<p>(1) Configure the register <strong>SW Turn-On Power Mode</strong> (offset <strong><code>0x0C</code></strong>), write the bit 1 which Power Domain will be turn-on, write the others 0;</p>
+<p>(1) Configure the register <strong>SW Turn-On Power Mode</strong> (Offset <strong><code>0x0C</code></strong>), write the bit 1 which Power Domain will be turn-on, write the others 0;</p>
 </blockquote>
 <blockquote>
-<p>(2) Write the <strong>SW Turn-On Command Sequence</strong>. Write the register Software Encourage (offset <strong><code>0x44</code></strong>) <strong><code>0xFF</code></strong> → <strong><code>0x05</code></strong> → <strong><code>0x50</code></strong></p>
+<p>(2) Write the <strong>SW Turn-On Command Sequence</strong>. Write the register Software Encourage (Offset <strong><code>0x44</code></strong>) <strong><code>0xFF</code></strong> → <strong><code>0x05</code></strong> → <strong><code>0x50</code></strong></p>
 </blockquote>
 <p><em>What’s a “Software Encourage”?</em></p>
 <p>Something got Lost in Translation. We assume it means <strong>“Software Triggered”</strong>.</p>
