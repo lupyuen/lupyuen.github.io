@@ -816,7 +816,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p><img src="https://lupyuen.github.io/images/display3-reset.png" alt="Software_RESET_assert0_addr_assert_sel" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb"><em>Software_RESET_assert0_addr_assert_sel</em></a></p>
 <h2 id="vout-reset"><a href="#vout-reset">12.2 VOUT Reset</a></h2>
-<p>VOUT Reset <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb"><em>Software_RESET_assert0_addr_assert_sel</em></a> is actually at <strong>Offset <code>0x48</code></strong>: <strong><code>0x295C</code> <code>0048</code></strong>.</p>
+<p>VOUT Reset <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb"><em>Software_RESET_assert0_addr_assert_sel</em></a> is actually at <strong>Offset <code>0x48</code></strong>, Address <strong><code>0x295C</code> <code>0048</code></strong>.</p>
 <p>(Instead of Offset <code>0x38</code>, pic above)</p>
 <p><em>How did we figure out it’s at Offset <code>0x48</code>?</em></p>
 <p>Clearing the Reset Bits at Offset <code>0x38</code> <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xgs_jd4_2tb">(and Offset <code>0x4C</code>)</a> has no effect, <a href="https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader"><strong>according to our testing</strong></a>. Thanks to U-Boot we have this dump…</p>
