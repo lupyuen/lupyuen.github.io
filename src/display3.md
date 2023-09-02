@@ -177,7 +177,7 @@ Which is powered by the JH7110 [__Power Management Unit (PMU)__](https://doc-en.
 
 _Are the lights on for Video Output DOM_VOUT?_
 
-We dump the status of the Power Domains...
+To find out, we dump the status of the Power Domains...
 
 - From [__System Memory Map__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html): Base Address of PMU is __`0x1703` `0000`__
 
