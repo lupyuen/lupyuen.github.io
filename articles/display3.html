@@ -98,7 +98,7 @@
 <p>That we use to power up the <strong>Video Output</strong> and <strong>Display Controller</strong> on the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110 SoC</strong></a></p>
 </li>
 <li>
-<p>By tweaking the JH7110 Registers for <strong>Power Management Unit</strong>, <strong>Clock and Reset</strong></p>
+<p>By modding the JH7110 Registers for <strong>Power Management Unit</strong>, <strong>Clock and Reset</strong></p>
 </li>
 <li>
 <p>Also how we’ll create our own <strong>Display Driver</strong> for JH7110</p>
@@ -151,7 +151,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <div class="example-wrap"><pre class="language-text"><code># mw 10000000 2a 1
 *
 </code></pre></div>
-<p>Yep it prints “<strong><code>*</code></strong>”, equivalent to ASCII Code <strong><code>0x2A</code></strong>!</p>
+<p>It prints “<strong><code>*</code></strong>”, equivalent to ASCII Code <strong><code>0x2A</code></strong>!</p>
 <p>Moving to something more sophisticated: JH7110 Display Controller…</p>
 <h1 id="dump-the-jh7110-display-controller"><a href="#dump-the-jh7110-display-controller">2 Dump the JH7110 Display Controller</a></h1>
 <p><em>Dumping the JH7110 Display Controller should work right?</em></p>
@@ -209,7 +209,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p><img src="https://lupyuen.github.io/images/display3-power.png" alt="Power Management Unit" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html">(Source)</a></p>
 <p>(Not to be confused with the <strong>External PMIC</strong>: X-Powers AXP15060)</p>
-<p><em>Is the power turned on for Video Output DOM_VOUT?</em></p>
+<p><em>Are the lights on for Video Output DOM_VOUT?</em></p>
 <p>We dump the status of the Power Domains…</p>
 <ul>
 <li>
@@ -219,26 +219,26 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb"><strong>PMU Registers</strong></a>: Current Power Mode is at Offset <strong><code>0x80</code></strong></p>
 </li>
 </ul>
-<p>Which means the <strong>Current Power Mode</strong> is at <strong><code>0x1703</code> <code>0080</code></strong>. When we dump the register…</p>
+<p>Hence the <strong>Current Power Mode</strong> is at <strong><code>0x1703</code> <code>0080</code></strong>. When we dump the register…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 17030080 1
 17030080: 00000003
 </code></pre></div>
-<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb"><strong>Current Power Mode</strong></a> is 3, telling us that…</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb"><strong>Current Power Mode</strong></a> is 3, saying that…</p>
 <ul>
-<li><strong>SYSTOP Power</strong> (Bit 0) is On</li>
-<li><strong>CPU Power</strong> (Bit 1) is On</li>
-<li>But <strong>VOUT Power</strong> (Bit 4) is Off!</li>
+<li><strong>System Power</strong> is On (Bit 0)</li>
+<li><strong>CPU Power</strong> is On (Bit 1)</li>
+<li>But <strong>Video Output Power</strong> is Off! (Bit 4)</li>
 </ul>
-<p><em>So how to power up VOUT?</em></p>
-<p>From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><strong>PMU Function Description</strong></a>…</p>
+<p><em>How to power up VOUT?</em></p>
+<p>We read the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><strong>PMU Function Description</strong></a>…</p>
 <blockquote>
 <p><strong>SW Encourage Turn-on Sequence</strong></p>
 </blockquote>
 <blockquote>
-<p>(1) Configure the register <strong>SW Turn-On Power Mode</strong> (offset <strong><code>0x0C</code></strong>), write the bit 1 which Power Domain will be turn-on, write the others 0;</p>
+<p>(1) Configure the register <strong>SW Turn-On Power Mode</strong> (Offset <strong><code>0x0C</code></strong>), write the bit 1 which Power Domain will be turn-on, write the others 0;</p>
 </blockquote>
 <blockquote>
-<p>(2) Write the <strong>SW Turn-On Command Sequence</strong>. Write the register Software Encourage (offset <strong><code>0x44</code></strong>) <strong><code>0xFF</code></strong> → <strong><code>0x05</code></strong> → <strong><code>0x50</code></strong></p>
+<p>(2) Write the <strong>SW Turn-On Command Sequence</strong>. Write the register Software Encourage (Offset <strong><code>0x44</code></strong>) <strong><code>0xFF</code></strong> → <strong><code>0x05</code></strong> → <strong><code>0x50</code></strong></p>
 </blockquote>
 <p><em>What’s a “Software Encourage”?</em></p>
 <p>Something got Lost in Translation. We assume it means <a href="https://lupyuen.github.io/articles/display3#pmu-software-encourage"><strong>“Software Triggered”</strong></a>.</p>
@@ -255,14 +255,14 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 17030080: 00000013
 </code></pre></div>
 <p><strong>Video Output Power VOUT</strong> (Bit 4) is On!</p>
-<p>(Actually we should wait <strong>50 milliseconds</strong> to Power Up)</p>
-<p><em>So we’re ready to dump the Display Subsystem?</em></p>
+<p>(Actually we should wait <a href="https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver"><strong>50 milliseconds</strong></a> to Power Up)</p>
+<p><em>We’re ready to dump the Display Subsystem?</em></p>
 <p>Sadly nope, the <strong>Display Subsystem Registers</strong> are still empty…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 295C0000 0x20
 295c0000: 00000000 00000000 00000000 00000000  ................
 295c0010: 00000000 00000000 00000000 00000000  ................
 </code></pre></div>
-<p>We need more tweaks, for the Clock and Reset Signals…</p>
+<p>We need more mods, for the Clock and Reset Signals…</p>
 <p><img src="https://lupyuen.github.io/images/display3-clock.png" alt="JH7110 Clock Structure" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html"><em>JH7110 Clock Structure</em></a></p>
 <h1 id="clocks-and-resets-for-display-subsystem"><a href="#clocks-and-resets-for-display-subsystem">4 Clocks and Resets for Display Subsystem</a></h1>
