@@ -567,7 +567,7 @@ putreg32(0xff, 0x17030044);
 putreg32(0x05, 0x17030044);
 putreg32(0x50, 0x17030044);
 </code></pre></div>
-<p>That’s how we power up via the <strong>Power Management Unit</strong>.</p>
+<p>This code will power up the Display Subsystem via the <strong>Power Management Unit</strong>.</p>
 <p>(Yeah needs cleanup)</p>
 <p>Next we enable the Clocks and deassert the Resets for the <strong>Display Subsystem</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the Clocks for Video Output / Display Subsystem
