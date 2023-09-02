@@ -173,7 +173,7 @@ Which is powered by the JH7110 [__Power Management Unit (PMU)__](https://doc-en.
 
 [(Source)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html)
 
-(Not to be confused with the __External PMIC__: X-Powers AXP15060)
+[(Not to be confused with the __External PMIC__: X-Powers AXP15060)](https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver)
 
 _Are the lights on for Video Output DOM_VOUT?_
 
