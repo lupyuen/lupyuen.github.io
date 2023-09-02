@@ -304,7 +304,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p><a href="https://en.wikipedia.org/wiki/Network_on_a_chip">(NoC means <strong>Network-on-Chip</strong>)</a></p>
 <p><a href="https://en.wikipedia.org/wiki/Advanced_eXtensible_Interface">(AXI is the <strong>Advanced eXtensible Interface</strong>)</a></p>
 <p>To enable the Clocks above, we set <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_cvr_2qm_wsb"><strong>Bit 31 (clk_icg)</strong></a> to 1.</p>
-<p>Here are the U-Boot Commands to <strong>enable the Clocks</strong>…</p>
+<p>Here are the U-Boot Commands to <strong>enable the VOUT Clocks</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Enable the Clocks for Video Output / Display Subsystem
 mw 13020028 0x80000000 1
 mw 1302004c 0x80000000 1
@@ -333,7 +333,7 @@ mw 130200fc 0x80000000 1
 </li>
 </ul>
 <p>We set the above bits to 0 to deassert the Resets.</p>
-<p>First we dump the above <strong>Reset Registers</strong>…</p>
+<p>First we dump the above <strong>VOUT Reset Registers</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 130202fc 1
 130202fc: 07e7fe00
 
@@ -343,14 +343,14 @@ mw 130200fc 0x80000000 1
 # md 1302030c 1
 1302030c: f80001ff
 </code></pre></div>
-<p>Then we flip the <strong>Reset Bits</strong> to 0…</p>
+<p>Then we flip the <strong>VOUT Reset Bits</strong> to 0…</p>
 <div class="example-wrap"><pre class="language-text"><code># mw 130202fc 0x07e7f600 1
 # mw 13020308 0xfb9fffff 1
 </code></pre></div>
 <p>(The last Reset is already deasserted, no need to flip it)</p>
 <p><em>What happens when we enable the Clocks and deassert the Resets?</em></p>
 <p>We run the above commands to set the Clocks and Resets.</p>
-<p>And again we dump the <strong>Display Subsystem Registers</strong>…</p>
+<p>And again we dump the <strong>Display Subsystem (VOUT) Registers</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 295C0000 0x20
 295c0000: 00000004 00000004 00000004 0000000c  ................
 295c0010: 00000000 00000000 00000000 00000000  ................
