@@ -629,7 +629,7 @@ putreg32(0x05, 0x17030044);
 putreg32(0x50, 0x17030044);
 ```
 
-That's how we power up via the __Power Management Unit__.
+This code will power up the Display Subsystem via the __Power Management Unit__.
 
 (Yeah needs cleanup)
 
