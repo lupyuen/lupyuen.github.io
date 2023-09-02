@@ -761,6 +761,8 @@ __I2C:__
   
   This NuttX I2C Driver might work: [cxd56_i2c.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/cxd56xx/cxd56_i2c.c)
 
+  [(Search for "DesignWare DW_apb_i2c Databook")](https://www.google.com/search?q=%22DesignWare+DW_apb_i2c+Databook%22)
+
 __RTC, SPI, UART, DMA, I2S, PWM:__
 
 - [RTC Developing Guide](http://doc-en.rvspace.org/VisionFive2/DG_RTC/)
