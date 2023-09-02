@@ -257,7 +257,7 @@ _Display Subsystem (VOUT) is already powered up via the Power Management Unit (P
 
 _Anything else we need to make it work?_
 
-Always remember to enable the __Clocks__ and deassert the __Resets__!
+Always remember to enable the __VOUT Clocks__ and deassert the __VOUT Resets__!
 
 According to the [__JH7110 Clock Structure__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html) (pic above), the __Display Subsystem (VOUT)__ is Clocked by...
 
