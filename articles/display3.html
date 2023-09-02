@@ -548,7 +548,7 @@ md 29400030 1
 <p>Our DC8200 Display Controller returns the correct Register Values yay!</p>
 <p>(Do we have a Date at <strong><code>0x2940</code> <code>0028</code></strong>? It reads “20210316”)</p>
 <h1 id="nuttx-display-driver-for-jh7110"><a href="#nuttx-display-driver-for-jh7110">8 NuttX Display Driver for JH7110</a></h1>
-<p><em>How will we build the NuttX Display Driver for JH7110?</em></p>
+<p><em>How will we create the NuttX Display Driver for JH7110?</em></p>
 <p>Earlier we talked about the steps to power up the <strong>Display Subsystem</strong> and <strong>Display Controller</strong>…</p>
 <ul>
 <li>
@@ -569,7 +569,7 @@ putreg32(0x50, 0x17030044);
 </code></pre></div>
 <p>This code will power up the Display Subsystem via the <strong>Power Management Unit</strong>.</p>
 <p>(Yeah needs cleanup)</p>
-<p>Next we enable the Clocks and deassert the Resets for the <strong>Display Subsystem</strong>…</p>
+<p>Next we enable the VOUT Clocks and deassert the VOUT Resets for the <strong>Display Subsystem</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the Clocks for Video Output / Display Subsystem
 modifyreg32(0x13020028, 0, 1 &lt;&lt; 31);  // Addr, Clear Bits, Set Bits
 modifyreg32(0x1302004c, 0, 1 &lt;&lt; 31);
