@@ -757,7 +757,7 @@ Hopefully we'll overcome these issues and complete our NuttX Display Driver!
 
 TODO: One step closer, but first we need I2C for PMIC
 
-TODO: Other interesting operating systems for JH7110: FreeBSD, BeOS, [Multiplix](https://github.com/zyedidia/multiplix), ...
+TODO: Other interesting operating systems for JH7110: [__FreeBSD__](https://adventurist.me/posts/00315), [__Haiku__](https://discuss.haiku-os.org/t/progress-on-running-haiku-on-visionfive-2/13369), [__Multiplix__](https://github.com/zyedidia/multiplix), ...
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
