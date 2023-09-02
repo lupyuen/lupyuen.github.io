@@ -114,7 +114,13 @@ The Display Output Ports are named __DPI0 and DPI1__.
 
 [(AXI is the __Advanced eXtensible Interface__)](https://en.wikipedia.org/wiki/Advanced_eXtensible_Interface)
 
-These are the __Clock and Reset Signals__ for the Display Controller...
+These are the __Clock and Reset Signals__ for the Display Subsystem (VOUT)...
+
+![JH7110 Clock Structure](https://lupyuen.github.io/images/display3-clock.png)
+
+[_JH7110 Clock Structure_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html)
+
+And for the Display Controller (DC8200)...
 
 ![JH7110 Display Subsystem Clock and Reset](https://lupyuen.github.io/images/display2-vout_clkrst18.png)
 
