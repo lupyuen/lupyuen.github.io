@@ -16,7 +16,7 @@ In this article we discover...
 
 - That we use to power up the __Video Output__ and __Display Controller__ on the [__StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html)
 
-- By tweaking the JH7110 Registers for __Power Management Unit__, __Clock and Reset__
+- By modding the JH7110 Registers for __Power Management Unit__, __Clock and Reset__
 
 - Also how we'll create our own __Display Driver__ for JH7110
 
@@ -95,7 +95,7 @@ To print something on UART, we poke `0x2A` into the __UART Transmit Register__ a
 *
 ```
 
-Yep it prints "__`*`__", equivalent to ASCII Code __`0x2A`__!
+It prints "__`*`__", equivalent to ASCII Code __`0x2A`__!
 
 Moving to something more sophisticated: JH7110 Display Controller...
 
@@ -171,7 +171,7 @@ Which is powered by the JH7110 [__Power Management Unit (PMU)__](https://doc-en.
 
 (Not to be confused with the __External PMIC__: X-Powers AXP15060)
 
-_Is the power turned on for Video Output DOM_VOUT?_
+_Are the lights on for Video Output DOM_VOUT?_
 
 We dump the status of the Power Domains...
 
@@ -179,28 +179,28 @@ We dump the status of the Power Domains...
 
 - From [__PMU Registers__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb): Current Power Mode is at Offset __`0x80`__
 
-Which means the __Current Power Mode__ is at __`0x1703` `0080`__. When we dump the register...
+Hence the __Current Power Mode__ is at __`0x1703` `0080`__. When we dump the register...
 
 ```text
 # md 17030080 1
 17030080: 00000003
 ```
 
-[__Current Power Mode__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb) is 3, telling us that...
+[__Current Power Mode__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb) is 3, saying that...
 
-- __SYSTOP Power__ (Bit 0) is On
-- __CPU Power__ (Bit 1) is On
-- But __VOUT Power__ (Bit 4) is Off!
+- __System Power__ is On (Bit 0)
+- __CPU Power__ is On (Bit 1)
+- But __Video Output Power__ is Off! (Bit 4)
 
-_So how to power up VOUT?_
+_How to power up VOUT?_
 
-From the [__PMU Function Description__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html)...
+We read the [__PMU Function Description__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html)...
 
 > __SW Encourage Turn-on Sequence__
 
-> (1) Configure the register __SW Turn-On Power Mode__ (offset __`0x0C`__), write the bit 1 which Power Domain will be turn-on, write the others 0;
+> (1) Configure the register __SW Turn-On Power Mode__ (Offset __`0x0C`__), write the bit 1 which Power Domain will be turn-on, write the others 0;
 
-> (2) Write the __SW Turn-On Command Sequence__. Write the register Software Encourage (offset __`0x44`__) __`0xFF`__ → __`0x05`__ → __`0x50`__
+> (2) Write the __SW Turn-On Command Sequence__. Write the register Software Encourage (Offset __`0x44`__) __`0xFF`__ → __`0x05`__ → __`0x50`__
 
 _What's a "Software Encourage"?_
 
@@ -229,9 +229,9 @@ Finally we dump the [__Current Power Mode__](https://doc-en.rvspace.org/JH7110/T
 
 __Video Output Power VOUT__ (Bit 4) is On!
 
-(Actually we should wait __50 milliseconds__ to Power Up)
+(Actually we should wait [__50 milliseconds__](https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver) to Power Up)
 
-_So we're ready to dump the Display Subsystem?_
+_We're ready to dump the Display Subsystem?_
 
 Sadly nope, the __Display Subsystem Registers__ are still empty...
 
@@ -241,7 +241,7 @@ Sadly nope, the __Display Subsystem Registers__ are still empty...
 295c0010: 00000000 00000000 00000000 00000000  ................
 ```
 
-We need more tweaks, for the Clock and Reset Signals...
+We need more mods, for the Clock and Reset Signals...
 
 ![JH7110 Clock Structure](https://lupyuen.github.io/images/display3-clock.png)
 
