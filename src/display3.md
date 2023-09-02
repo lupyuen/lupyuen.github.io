@@ -905,7 +905,7 @@ Shall we match the Mystery Writes with the [__Official Linux Driver__](https://l
 
 ## VOUT Reset
 
-VOUT Reset [_Software_RESET_assert0_addr_assert_sel_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb) is actually at __Offset `0x48`__: __`0x295C` `0048`__.
+VOUT Reset [_Software_RESET_assert0_addr_assert_sel_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb) is actually at __Offset `0x48`__, Address __`0x295C` `0048`__.
 
 (Instead of Offset `0x38`, pic above)
 
