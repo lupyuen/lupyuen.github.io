@@ -62,7 +62,7 @@ This is how we dump the __JH7110 Boot ROM__ at [__`0x2A00` `0000`__](https://doc
 2a000050: 01974f81 8193d710 02970ae1 82930000  .O..............
 ```
 
-(Cute Alphabet Soup. Where's the Source Code?)
+(Cute Alphabet Soup. Where's the Source, Luke?)
 
 _This works for I/O Registers?_
 
