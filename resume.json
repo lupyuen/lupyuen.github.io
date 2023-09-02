@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-09-02",
+      "website": "https://lupyuen.github.io/articles/display3",
+      "summary": "Let's power up the DC8200 Display Controller inside Star64 JH7110 RISC-V Single-Board Computer... By running simple commands in the U-Boot Bootloader"
+    },
+    {
       "name": "RISC-V Star64 JH7110: Inside the Display Controller",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-08-23",

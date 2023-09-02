@@ -1,6 +1,6 @@
 # RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader
 
-📝 _7 Sep 2023_
+📝 _2 Sep 2023_
 
 ![Star64 JH7110 Display Controller is alive!](https://lupyuen.github.io/images/display3-title.png)
 
@@ -28,7 +28,7 @@ We're building a __HDMI Display Driver__ for [__Apache NuttX Real-Time Operating
 
 The analysis in this article will be super useful for creating our __HDMI Driver for NuttX__ on Star64. (Pic below)
 
-And hopefully this article will be helpful for __porting other Operating Systems__ to JH7110!
+And hopefully this article will be helpful for __porting other Operating Systems__ to JH7110! [__FreeBSD__](https://adventurist.me/posts/00315), [__Haiku__](https://discuss.haiku-os.org/t/progress-on-running-haiku-on-visionfive-2/13369), [__Multiplix__](https://github.com/zyedidia/multiplix), ...
 
 ![Pine64 Star64 RISC-V SBC](https://lupyuen.github.io/images/nuttx2-title.jpg)
 
@@ -765,19 +765,19 @@ Hopefully we'll overcome these issues and complete our NuttX Display Driver!
 
 # What's Next
 
-TODO: One step closer, but first we need I2C for PMIC
+Today we did some cool things with U-Boot Bootloader on JH7110 SoC...
 
-TODO: Other interesting operating systems for JH7110: [__FreeBSD__](https://adventurist.me/posts/00315), [__Haiku__](https://discuss.haiku-os.org/t/progress-on-running-haiku-on-visionfive-2/13369), [__Multiplix__](https://github.com/zyedidia/multiplix), ...
+- We ran the U-Boot Commands __`md`__ and __`mw`__  for reading and writing JH7110 Memory
 
-- U-Boot Commands __`md`__ and __`mw`__  for Dumping and Writing Memory (Pic above)
-
-- That we use to power up the __Video Output__ and __Display Controller__ on the [__StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html)
+- We powered up the __Video Output__ and __Display Controller__ on the JH7110 SoC
 
 - By modding the JH7110 Registers for __Power Management Unit__, __Clock and Reset__
 
-- Also how we'll create our own __Display Driver__ for JH7110
+- We're one step closer to creating our __NuttX Display Driver__ for JH7110
 
-- In spite of the __Missing and Incorrect Docs__
+- Hopefully we'll see many other Display Drivers for JH7110: [__FreeBSD__](https://adventurist.me/posts/00315), [__Haiku__](https://discuss.haiku-os.org/t/progress-on-running-haiku-on-visionfive-2/13369), [__Multiplix__](https://github.com/zyedidia/multiplix), ...
+
+Now we need an __I2C Driver for JH7110__, to power up the External Power Management IC. Which we'll cover in the next article!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 

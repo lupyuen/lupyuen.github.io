@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader</title>
+            <link>https://lupyuen.github.io/articles/display3</link>
+            <description><![CDATA[Let's power up the DC8200 Display Controller inside Star64 JH7110 RISC-V Single-Board Computer... By running simple commands in the U-Boot Bootloader]]></description>
+            <guid>https://lupyuen.github.io/articles/display3</guid>
+            <pubDate>Sat, 02 Sep 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>RISC-V Star64 JH7110: Inside the Display Controller</title>
             <link>https://lupyuen.github.io/articles/display2</link>
             <description><![CDATA[Let's take a walk inside the Display Controller for Pine64's Star64 JH7110 RISC-V SBC... And find out how we'll create the Display Driver for Apache NuttX RTOS]]></description>
