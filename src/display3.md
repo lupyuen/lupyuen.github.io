@@ -302,7 +302,7 @@ To enable the Clocks above, we set [__Bit 31 (clk_icg)__](https://doc-en.rvspace
 Here are the U-Boot Commands to __enable the VOUT Clocks__...
 
 ```text
-## Enable the Clocks for Video Output / Display Subsystem
+## Enable the Clocks for Video Output (Display Subsystem)
 mw 13020028 0x80000000 1
 mw 1302004c 0x80000000 1
 mw 13020098 0x80000000 1
@@ -382,13 +382,13 @@ Which means the Display Subsystem is alive yay!
 _Phew that's a long list of U-Boot Commands. Can we automate this?_
 
 ```text
-## Power Up the PMU for Video Output / Display Subsystem
+## Power Up the PMU for Video Output (Display Subsystem)
 mw 1703000c 0x10 1
 mw 17030044 0xff 1
 mw 17030044 0x05 1
 mw 17030044 0x50 1
 
-## Enable the Clocks for Video Output / Display Subsystem
+## Enable the Clocks for Video Output (Display Subsystem)
 mw 13020028 0x80000000 1
 mw 1302004c 0x80000000 1
 mw 13020098 0x80000000 1
@@ -399,7 +399,7 @@ mw 130200f4 0x80000000 1
 mw 130200f8 0x80000000 1
 mw 130200fc 0x80000000 1
 
-## Deassert the Resets for Video Output / Display Subsystem
+## Deassert the Resets for Video Output (Display Subsystem)
 mw 130202fc 0x07e7f600 1
 mw 13020308 0xfb9fffff 1
 md 295C0000 0x20
@@ -462,7 +462,7 @@ _What about the Clocks and Resets for the Display Controller?_
 
 The pic above shows the [__Display Controller Clocks and Resets__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html).
 
-According to the [__VOUT CRG__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html) (Video Output Clock and Reset Registers), these are the __VOUT Clock Registers__ for HDMI...
+According to the [__VOUT CRG__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html) (Video Output Clock and Reset Registers), these are the __DC8200 Clock Registers__ for HDMI...
 
 | VOUT CRG<br>Offset | Clock |
 |:------------------:|:------|
@@ -479,7 +479,7 @@ To enable the Clocks above, we set [__Bit 31 (clk_icg)__](https://doc-en.rvspace
 
 [(__VOUT CRG__ Base Address is __`0x295C` `0000`__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html)
 
-__VOUT Resets__ for HDMI are at _Software_RESET_assert0_addr_assert_sel_ [(VOUT CRG Offset __`0x48`__)](https://lupyuen.github.io/articles/display3#vout-reset)...
+__DC8200 Resets__ for HDMI are at _Software_RESET_assert0_addr_assert_sel_ [(VOUT CRG Offset __`0x48`__)](https://lupyuen.github.io/articles/display3#vout-reset)...
 
 - __Bit 0:__ rstn_u0_dc8200_rstn_axi
 
@@ -491,15 +491,15 @@ __VOUT Resets__ for HDMI are at _Software_RESET_assert0_addr_assert_sel_ [(VOUT 
 
 We set the above bits to 0 to deassert the Resets.
 
-[(__VOUT Reset Register__ is mislocated in the docs)](https://lupyuen.github.io/articles/display3#vout-reset)
+[(__DC8200 Reset Register__ is mislocated in the docs)](https://lupyuen.github.io/articles/display3#vout-reset)
 
-These are the U-Boot Commands to set the __VOUT Clocks and Resets__ for HDMI...
+These are the U-Boot Commands to set the __DC8200 Clocks and Resets__ for HDMI...
 
 ```text
-## Power up the Video Output / Display Subsystem
+## Power up the Video Output (Display Subsystem)
 run video_on
 
-## Enable the VOUT HDMI Clocks
+## Enable the DC8200 HDMI Clocks
 mw 295C0010 0x80000000 1
 mw 295C0014 0x80000000 1
 mw 295C0018 0x80000000 1
@@ -509,7 +509,7 @@ mw 295C003c 0x80000000 1
 mw 295C0040 0x80000000 1
 mw 295C0044 0x80000000 1
 
-## Deassert the VOUT HDMI Resets.
+## Deassert the DC8200 HDMI Resets.
 ## We deassert all Resets for today.
 mw 295C0048 0 1
 ```
@@ -769,6 +769,16 @@ TODO: One step closer, but first we need I2C for PMIC
 
 TODO: Other interesting operating systems for JH7110: [__FreeBSD__](https://adventurist.me/posts/00315), [__Haiku__](https://discuss.haiku-os.org/t/progress-on-running-haiku-on-visionfive-2/13369), [__Multiplix__](https://github.com/zyedidia/multiplix), ...
 
+- U-Boot Commands __`md`__ and __`mw`__  for Dumping and Writing Memory (Pic above)
+
+- That we use to power up the __Video Output__ and __Display Controller__ on the [__StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html)
+
+- By modding the JH7110 Registers for __Power Management Unit__, __Clock and Reset__
+
+- Also how we'll create our own __Display Driver__ for JH7110
+
+- In spite of the __Missing and Incorrect Docs__
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
@@ -793,15 +803,15 @@ Based on everything we deciphered in this article and the previous one...
 
 The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operating Systems) shall do the following...
 
-1.  Power Up the [__Power Management Unit__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output / Display Subsystem
+1.  Power Up the [__Power Management Unit__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output (Display Subsystem)
 
 1.  Wait [__50 milliseconds__](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L656-L667) to Power Up
 
-1.  [__Enable the Clocks__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output / Display Subsystem
+1.  [__Enable the Clocks__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output (Display Subsystem)
 
-1.  [__Deassert the Resets__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output / Display Subsystem
+1.  [__Deassert the Resets__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output (Display Subsystem)
 
-1.  Verify that [__Video Output / Display Subsystem is up__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L203-L207)
+1.  Verify that [__Video Output (Display Subsystem) is up__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L203-L207)
 
 1.  [__Enable the Clocks__](https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller) for DC8200 Display Controller (HDMI)
 
@@ -905,7 +915,7 @@ Shall we match the Mystery Writes with the [__Official Linux Driver__](https://l
 
 ## VOUT Reset
 
-VOUT Reset [_Software_RESET_assert0_addr_assert_sel_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb) is actually at __Offset `0x48`__, Address __`0x295C` `0048`__.
+DC8200 Reset Register [_Software_RESET_assert0_addr_assert_sel_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb) is actually at __Offset `0x48`__, Address __`0x295C` `0048`__.
 
 (Instead of Offset `0x38`, pic above)
 
