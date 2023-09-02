@@ -30,7 +30,7 @@ The analysis in this article will be super useful for creating our __HDMI Driver
 
 And hopefully this article will be helpful for __porting other Operating Systems__ to JH7110!
 
-![Pine64 Star64 RISC-V SBC](https://lupyuen.github.io/images/linux-title.jpg)
+![Pine64 Star64 RISC-V SBC](https://lupyuen.github.io/images/nuttx2-title.jpg)
 
 # Dump and Write Memory with U-Boot Bootloader
 
