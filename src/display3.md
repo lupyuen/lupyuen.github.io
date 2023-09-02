@@ -299,7 +299,7 @@ When we match the above Clocks to the [__System Control Registers (SYS CRG)__](h
 
 To enable the Clocks above, we set [__Bit 31 (clk_icg)__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_cvr_2qm_wsb) to 1.
 
-Here are the U-Boot Commands to __enable the Clocks__...
+Here are the U-Boot Commands to __enable the VOUT Clocks__...
 
 ```text
 ## Enable the Clocks for Video Output / Display Subsystem
@@ -332,7 +332,7 @@ Digging through the [__System Control Registers (SYS CRG)__](https://doc-en.rvsp
 
 We set the above bits to 0 to deassert the Resets.
 
-First we dump the above __Reset Registers__...
+First we dump the above __VOUT Reset Registers__...
 
 ```text
 # md 130202fc 1
@@ -345,7 +345,7 @@ First we dump the above __Reset Registers__...
 1302030c: f80001ff
 ```
 
-Then we flip the __Reset Bits__ to 0...
+Then we flip the __VOUT Reset Bits__ to 0...
 
 ```text
 # mw 130202fc 0x07e7f600 1
@@ -358,7 +358,7 @@ _What happens when we enable the Clocks and deassert the Resets?_
 
 We run the above commands to set the Clocks and Resets.
 
-And again we dump the __Display Subsystem Registers__...
+And again we dump the __Display Subsystem (VOUT) Registers__...
 
 ```text
 # md 295C0000 0x20
