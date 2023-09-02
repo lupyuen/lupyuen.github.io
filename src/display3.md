@@ -870,7 +870,7 @@ In this section we talk about the __Missing, Mistaken and Mysterious__ things in
 
 ## HDMI Output
 
-We talked about our JH7110 Display Driver and a Bunch of Mystery Writes...
+We spoke about our JH7110 Display Driver and a Bunch of Mystery Writes...
 
 - [__"JH7110 Display Driver"__](https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver)
 
