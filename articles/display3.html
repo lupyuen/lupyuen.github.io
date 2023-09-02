@@ -274,7 +274,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <li><strong>clk_vout_root</strong></li>
 <li><strong>mipiphy ref clk</strong></li>
 <li><strong>hdmiphy ref clk</strong></li>
-<li><strong>clk_vout_src</strong> (1228.8 MHz)</li>
+<li><strong>clk_vout_src</strong> (1,228.8 MHz)</li>
 <li><strong>clk_vout_axi</strong> (614.4 MHz)</li>
 <li><strong>clk_vout_ahb</strong> (204.8 MHz) / <strong>clk_ahb1</strong></li>
 <li><strong>clk_mclk</strong> (51.2 MHz)</li>
@@ -284,24 +284,23 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <li><strong>rstn_vout</strong></li>
 </ul>
 <p><em>How to enable the Clocks and deassert the Resets?</em></p>
-<p>We’ll set the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html"><strong>System Control Registers (SYS CRG)</strong></a> at Base Address <strong><code>0x1302</code> <code>0000</code></strong></p>
-<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html">(From the <strong>System Memory Map</strong>)</a></p>
+<p>We set the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html"><strong>System Control Registers (SYS CRG)</strong></a> at Base Address <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong><code>0x1302</code> <code>0000</code></strong></a></p>
 <p>When we match the above Clocks to the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html"><strong>System Control Registers (SYS CRG)</strong></a>, we get…</p>
 <div><table><thead><tr><th style="text-align: center">SYS CRG<br>Offset</th><th style="text-align: left">Clock</th></tr></thead><tbody>
-<tr><td style="text-align: center"><strong><code>0x28</code></strong></td><td style="text-align: left">Clock AHB 1</td></tr>
-<tr><td style="text-align: center"><strong><code>0x4C</code></strong></td><td style="text-align: left">MCLK Out</td></tr>
-<tr><td style="text-align: center"><strong><code>0x98</code></strong></td><td style="text-align: left">clk_u0_sft7110_noc_bus _clk_cpu_axi</td></tr>
-<tr><td style="text-align: center"><strong><code>0x9C</code></strong></td><td style="text-align: left">clk_u0_sft7110_noc_bus _clk_axicfg0_axi</td></tr>
-<tr><td style="text-align: center"><strong><code>0xE8</code></strong></td><td style="text-align: left">clk_u0_dom_vout_top _clk_dom_vout_top_clk_vout_src</td></tr>
-<tr><td style="text-align: center"><strong><code>0xF0</code></strong></td><td style="text-align: left">Clock NOC Display AXI</td></tr>
-<tr><td style="text-align: center"><strong><code>0xF4</code></strong></td><td style="text-align: left">Clock Video Output AHB</td></tr>
-<tr><td style="text-align: center"><strong><code>0xF8</code></strong></td><td style="text-align: left">Clock Video Output AXI</td></tr>
-<tr><td style="text-align: center"><strong><code>0xFC</code></strong></td><td style="text-align: left">Clock Video Output HDMI TX0 MCLK</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_cvr_2qm_wsb"><strong><code>0x28</code></strong></a></td><td style="text-align: left">Clock AHB 1</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_wmd_xrm_wsb"><strong><code>0x4C</code></strong></a></td><td style="text-align: left">MCLK Out</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_jbf_mtm_wsb"><strong><code>0x98</code></strong></a></td><td style="text-align: left">clk_u0_sft7110_noc_bus _clk_cpu_axi</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_ctf_mtm_wsb"><strong><code>0x9C</code></strong></a></td><td style="text-align: left">clk_u0_sft7110_noc_bus _clk_axicfg0_axi</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_pd3_dvm_wsb"><strong><code>0xE8</code></strong></a></td><td style="text-align: left">clk_u0_dom_vout_top _clk_dom_vout_top_clk_vout_src</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_vkj_dvm_wsb"><strong><code>0xF0</code></strong></a></td><td style="text-align: left">Clock NOC Display AXI</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_htj_dvm_wsb"><strong><code>0xF4</code></strong></a></td><td style="text-align: left">Clock Video Output AHB</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_zdk_dvm_wsb"><strong><code>0xF8</code></strong></a></td><td style="text-align: left">Clock Video Output AXI</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_hlk_dvm_wsb"><strong><code>0xFC</code></strong></a></td><td style="text-align: left">Clock Video Output HDMI TX0 MCLK</td></tr>
 </tbody></table>
 </div>
-<p>(Looks excessive, but better to enable more Clocks than too few!)</p>
-<p>To enable the Clock Registers above, we set <strong>Bit 31 (clk_icg)</strong> to 1.</p>
-<p>Here are the U-Boot Commands to enable the Clocks…</p>
+<p>(Looks excessive, but better to enable too many Clocks than too few!)</p>
+<p>To enable the Clocks above, we set <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_cvr_2qm_wsb"><strong>Bit 31 (clk_icg)</strong></a> to 1.</p>
+<p>Here are the U-Boot Commands to <strong>enable the Clocks</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Enable the Clocks for Video Output / Display Subsystem
 mw 13020028 0x80000000 1
 mw 1302004c 0x80000000 1
@@ -317,15 +316,15 @@ mw 130200fc 0x80000000 1
 <p>Looking up the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html"><strong>System Control Registers (SYS CRG)</strong></a>, we need to <strong>deassert these Resets</strong>…</p>
 <ul>
 <li>
-<p><strong>Software RESET 1 Address Selector</strong> (SYS CRG Offset <strong><code>0x2FC</code></strong>)</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_ph5_pfn_wsb"><strong>Software RESET 1 Address Selector</strong></a> (SYS CRG Offset <strong><code>0x2FC</code></strong>)</p>
 <p><strong>Bit 11:</strong> rstn_u0_dom_vout_top _rstn_dom_vout_top_rstn_vout_src</p>
 </li>
 <li>
-<p><strong>SYSCRG RESET Status 0</strong> (SYS CRG Offset <strong><code>0x308</code></strong>)</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_psk_ks3_2tb"><strong>SYSCRG RESET Status 0</strong></a> (SYS CRG Offset <strong><code>0x308</code></strong>)</p>
 <p><strong>Bit 26:</strong> rstn_u0_sft7110_noc_bus _reset_disp_axi_n</p>
 </li>
 <li>
-<p><strong>SYSCRG RESET Status 1</strong> (SYS CRG Offset <strong><code>0x30C</code></strong>)</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_ffb_xt3_2tb"><strong>SYSCRG RESET Status 1</strong></a> (SYS CRG Offset <strong><code>0x30C</code></strong>)</p>
 <p><strong>Bit 11:</strong> rstn_u0_dom_vout_top _rstn_dom_vout_top_rstn_vout_src</p>
 </li>
 </ul>
@@ -344,7 +343,7 @@ mw 130200fc 0x80000000 1
 <div class="example-wrap"><pre class="language-text"><code># mw 130202fc 0x07e7f600 1
 # mw 13020308 0xfb9fffff 1
 </code></pre></div>
-<p>(The last Reset is already deasserted, no need to change it)</p>
+<p>(The last Reset is already deasserted, no need to flip it)</p>
 <p><em>What happens when we enable the Clocks and deassert the Resets?</em></p>
 <p>We run the above commands to set the Clocks and Resets.</p>
 <p>And again we dump the <strong>Display Subsystem Registers</strong>…</p>
@@ -421,19 +420,19 @@ run video_on
 <p>The pic above shows the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html"><strong>Display Controller Clocks and Resets</strong></a>.</p>
 <p>According to the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html"><strong>VOUT CRG</strong></a> (Video Output Clock and Reset Registers), these are the <strong>VOUT Clock Registers</strong> for HDMI…</p>
 <div><table><thead><tr><th style="text-align: center">VOUT CRG<br>Offset</th><th style="text-align: left">Clock</th></tr></thead><tbody>
-<tr><td style="text-align: center"><strong><code>0x10</code></strong></td><td style="text-align: left">clk_u0_dc8200_clk_axi</td></tr>
-<tr><td style="text-align: center"><strong><code>0x14</code></strong></td><td style="text-align: left">clk_u0_dc8200_clk_core</td></tr>
-<tr><td style="text-align: center"><strong><code>0x18</code></strong></td><td style="text-align: left">clk_u0_dc8200_clk_ahb</td></tr>
-<tr><td style="text-align: center"><strong><code>0x1C</code></strong></td><td style="text-align: left">clk_u0_dc8200_clk_pix0</td></tr>
-<tr><td style="text-align: center"><strong><code>0x20</code></strong></td><td style="text-align: left">clk_u0_dc8200_clk_pix1</td></tr>
-<tr><td style="text-align: center"><strong><code>0x3C</code></strong></td><td style="text-align: left">clk_u0_hdmi_tx_clk_mclk</td></tr>
-<tr><td style="text-align: center"><strong><code>0x40</code></strong></td><td style="text-align: left">clk_u0_hdmi_tx_clk_bclk</td></tr>
-<tr><td style="text-align: center"><strong><code>0x44</code></strong></td><td style="text-align: left">clk_u0_hdmi_tx_clk_sys</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_jtl_fht_3sb"><strong><code>0x10</code></strong></a></td><td style="text-align: left">clk_u0_dc8200_clk_axi</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_w1m_x1p_jsb"><strong><code>0x14</code></strong></a></td><td style="text-align: left">clk_u0_dc8200_clk_core</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_lyy_z1p_jsb"><strong><code>0x18</code></strong></a></td><td style="text-align: left">clk_u0_dc8200_clk_ahb</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb"><strong><code>0x1C</code></strong></a></td><td style="text-align: left">clk_u0_dc8200_clk_pix0</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_c2y_jbp_jsb"><strong><code>0x20</code></strong></a></td><td style="text-align: left">clk_u0_dc8200_clk_pix1</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_hpl_ncp_jsb"><strong><code>0x3C</code></strong></a></td><td style="text-align: left">clk_u0_hdmi_tx_clk_mclk</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_edw_qcp_jsb"><strong><code>0x40</code></strong></a></td><td style="text-align: left">clk_u0_hdmi_tx_clk_bclk</td></tr>
+<tr><td style="text-align: center"><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_olm_5cp_jsb"><strong><code>0x44</code></strong></a></td><td style="text-align: left">clk_u0_hdmi_tx_clk_sys</td></tr>
 </tbody></table>
 </div>
-<p>To enable the Clock Registers above, we set <strong>Bit 31 (clk_icg)</strong> to 1.</p>
+<p>To enable the Clocks above, we set <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_jtl_fht_3sb"><strong>Bit 31 (clk_icg)</strong></a> to 1.</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html">(<strong>VOUT CRG</strong> Base Address is <strong><code>0x295C</code> <code>0000</code></strong>)</a></p>
-<p><strong>VOUT Resets</strong> for HDMI are at <em>Software_RESET_assert0_addr_assert_sel</em> (VOUT CRG Offset <strong><code>0x48</code></strong>)…</p>
+<p><strong>VOUT Resets</strong> for HDMI are at <em>Software_RESET_assert0_addr_assert_sel</em> <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb">(VOUT CRG Offset <strong><code>0x48</code></strong>)</a>…</p>
 <ul>
 <li>
 <p><strong>Bit 0:</strong> rstn_u0_dc8200_rstn_axi</p>
@@ -449,8 +448,8 @@ run video_on
 </li>
 </ul>
 <p>We set the above bits to 0 to deassert the Resets.</p>
-<p><a href="https://lupyuen.github.io/articles/display3#vout-reset">(<strong>VOUT Reset Register</strong> is incorrect in the docs)</a></p>
-<p>Here are the U-Boot Commands to set the <strong>VOUT Clocks and Resets</strong> for HDMI…</p>
+<p><a href="https://lupyuen.github.io/articles/display3#vout-reset">(<strong>VOUT Reset Register</strong> is mislocated in the docs)</a></p>
+<p>These are the U-Boot Commands to set the <strong>VOUT Clocks and Resets</strong> for HDMI…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Power up the Video Output / Display Subsystem
 run video_on
 
@@ -476,8 +475,8 @@ mw 295C0048 0 1
 29400020: 00008200 00005720 20210316 16015600  .... W....! .V..
 29400030: 0000030e a0600084 00000000 00000000  ......`.........
 </code></pre></div>
-<p>Yep our DC8200 Display Controller is finally alive yay! (Pic below)</p>
-<p>Based on the above commands, we write the <strong>U-Boot Script</strong> to start the Display Controller…</p>
+<p>Yep our DC8200 Display Controller is finally alive yay!</p>
+<p>Based on the above commands, we write the <strong>U-Boot Script</strong> to start the Display Controller (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Create the U-Boot Script to power up the Display Controller
 setenv display_on &#39;mw 295C0010 0x80000000 1 ; mw 295C0014 0x80000000 1 ; mw 295C0018 0x80000000 1 ; mw 295C001c 0x80000000 1 ; mw 295C0020 0x80000000 1 ; mw 295C003c 0x80000000 1 ; mw 295C0040 0x80000000 1 ; mw 295C0044 0x80000000 1 ; mw 295C0048 0 1 ; md 29400000 0x20 ; &#39;
 
@@ -494,11 +493,11 @@ run video_on
 run display_on
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader">(See the <strong>Output Log</strong>)</a></p>
-<p>Next we verify the DC8200 Register Values…</p>
+<p>One last thing: We verify the DC8200 Register Values…</p>
 <p><img src="https://lupyuen.github.io/images/display3-run.png" alt="DC8200 Display Controller is finally alive yay!" /></p>
 <h1 id="read-the-hardware-revision-and-chip-id"><a href="#read-the-hardware-revision-and-chip-id">7 Read the Hardware Revision and Chip ID</a></h1>
 <p><em>Are the DC8200 Register Values correct?</em></p>
-<p>According to the <a href="https://lupyuen.github.io/articles/display2#dc8200-display-hardware-driver"><strong>DC8200 Display Driver</strong></a>, we can read these Register Values from the DC8200 Display Controller…</p>
+<p>According to the <a href="https://lupyuen.github.io/articles/display2#dc8200-display-hardware-driver"><strong>DC8200 Display Driver</strong></a>, we can sniff these Register Values from the DC8200 Display Controller…</p>
 <ul>
 <li>
 <p><strong>Hardware Revision</strong>: DC8200 AHB0 Offset <strong><code>0x24</code></strong></p>
@@ -516,8 +515,7 @@ run video_on
 ## Power up the Display Controller
 run display_on
 
-## Actually we should wait here
-## for 500 milliseconds to Power Up
+## TODO: Wait 500 milliseconds to Power Up
 
 ## Dump the Hardware Revision
 md 29400024 1
@@ -532,7 +530,7 @@ md 29400030 1
 # md 29400030 1
 29400030: 0000030e
 </code></pre></div>
-<p>Which means…</p>
+<p>That means…</p>
 <ul>
 <li>
 <p><strong>Hardware Revision</strong> is <strong><code>0x5720</code></strong> (DC_REV_0)</p>
@@ -555,8 +553,9 @@ md 29400030 1
 <p><a href="https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller"><strong>“Clocks and Resets for Display Controller”</strong></a></p>
 </li>
 </ul>
-<p>This is how we implement the steps in our <strong>NuttX Display Driver</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273">jh7110_appinit.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Power Up the Power Management Unit for Video Output / Display Subsystem
+<p>This is how we implement the steps in our <strong>NuttX Display Driver</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L290">jh7110_appinit.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Power Up the Power Management Unit
+// for Video Output / Display Subsystem
 // TODO: Switch to constants
 putreg32(0x10, 0x1703000c);
 putreg32(0xff, 0x17030044);
@@ -613,7 +612,7 @@ up_mdelay(500);
 
 // Verify that Hardware Revision and Chip ID are non-zero
 uint32_t revision = getreg32(0x29400024);
-uint32_t chip_id = getreg32(0x29400030);
+uint32_t chip_id  = getreg32(0x29400030);
 _info(&quot;revision=0x%x, chip_id=0x%x&quot;, revision, chip_id);
 DEBUGASSERT(revision != 0 &amp;&amp; chip_id != 0);
 </code></pre></div>
@@ -637,7 +636,8 @@ nsh&gt;
 </ul>
 <p>But we have a problem with <strong>Incomplete and Incorrect Docs</strong>, see the next section.</p>
 <p><em>Who starts our Display Driver?</em></p>
-<p>At Startup, our NuttX Driver will be called from <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L273"><strong>board_late_initialize</strong></a>.</p>
+<p>At Startup, our NuttX Driver will be called from <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L290"><strong>board_late_initialize</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/release#nuttx-startup-explained">(See the <strong>NuttX Boot Sequence</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Official Display Driver for JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/display2"><em>Official Display Driver for JH7110</em></a></p>
 <h1 id="unsolved-mysteries"><a href="#unsolved-mysteries">9 Unsolved Mysteries</a></h1>
@@ -781,6 +781,7 @@ nsh&gt;
 </ol>
 <p>Our JH7110 Display Driver is partially implemented here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270">jh7110_appinit.c</a></p>
 <p><strong>TODO</strong>: Implement the <a href="https://doc-en.rvspace.org/VisionFive2/DG_I2C/JH7110_SDK/source_code_structure_i2c.html"><strong>JH7110 I2C Driver</strong></a> (based on <a href="https://github.com/torvalds/linux/blob/master/drivers/i2c/busses/i2c-designware-core.h"><strong>DesignWare I2C</strong></a>) so we can control the PMIC. This NuttX I2C Driver might work: <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/cxd56xx/cxd56_i2c.c"><strong>cxd56_i2c.c</strong></a></p>
+<p><a href="https://www.google.com/search?q=%22DesignWare+DW_apb_i2c+Databook%22">(Search for <strong>“DesignWare DW_apb_i2c Databook”</strong>)</a></p>
 <p>(Many Thanks to <a href="https://fosstodon.org/@Fishwaldo/110902984442385966"><strong>Justin / Fishwaldo</strong></a> for recommending the HDMI Driver from U-Boot Bootloader)</p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Official Display Driver for JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/display2"><em>Official Display Driver for JH7110</em></a></p>
