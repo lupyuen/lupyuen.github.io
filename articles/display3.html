@@ -12,10 +12,10 @@
     content="RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader" 
     data-rh="true">
 <meta property="og:description" 
-    content="Let's power up the DC8200 Display Controller inside Star64 JH7110 RISC-V Single-Board Computer... By running MD and MW Commands in U-Boot Bootloader"
+    content="Let's power up the DC8200 Display Controller inside Star64 JH7110 RISC-V Single-Board Computer... By running simple commands in the U-Boot Bootloader"
     data-rh="true">
 <meta name="description" 
-    content="Let's power up the DC8200 Display Controller inside Star64 JH7110 RISC-V Single-Board Computer... By running MD and MW Commands in U-Boot Bootloader">
+    content="Let's power up the DC8200 Display Controller inside Star64 JH7110 RISC-V Single-Board Computer... By running simple commands in the U-Boot Bootloader">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/display3-title.png">
 <meta property="og:type" 
@@ -84,7 +84,7 @@
 <li><a href="#clock-multiplexing">12.3 Clock Multiplexing</a><ul></ul></li>
 <li><a href="#clock-rate">12.4 Clock Rate</a><ul></ul></li>
 <li><a href="#clock-default">12.5 Clock Default</a><ul></ul></li>
-<li><a href="#pmu-software-encourage">12.6 PMU Software Encourage</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Sep 2023</em></p>
+<li><a href="#pmu-software-encourage">12.6 PMU Software Encourage</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>2 Sep 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/display3-title.png" alt="Star64 JH7110 Display Controller is alive!" /></p>
 <p>In olden days we’d <a href="https://en.wikipedia.org/wiki/PEEK_and_POKE"><strong><code>peek</code></strong></a> and <a href="https://en.wikipedia.org/wiki/PEEK_and_POKE"><strong><code>poke</code></strong></a> the <a href="https://en.wikipedia.org/wiki/Apple_II_graphics"><strong>Display Controller</strong></a>, to see weird and wonderful displays.</p>
 <p>Today (46 years later), we poke around the Display Controller of <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Star64 JH7110 RISC-V SBC</strong></a> with a modern tool (not BASIC): <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>!</p>
@@ -110,7 +110,7 @@
 <p><em>Why are we doing this?</em></p>
 <p>We’re building a <strong>HDMI Display Driver</strong> for <a href="https://lupyuen.github.io/articles/release"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) on the Star64 SBC. (And probably for VisionFive2 too)</p>
 <p>The analysis in this article will be super useful for creating our <strong>HDMI Driver for NuttX</strong> on Star64. (Pic below)</p>
-<p>And hopefully this article will be helpful for <strong>porting other Operating Systems</strong> to JH7110!</p>
+<p>And hopefully this article will be helpful for <strong>porting other Operating Systems</strong> to JH7110! <a href="https://adventurist.me/posts/00315"><strong>FreeBSD</strong></a>, <a href="https://discuss.haiku-os.org/t/progress-on-running-haiku-on-visionfive-2/13369"><strong>Haiku</strong></a>, <a href="https://github.com/zyedidia/multiplix"><strong>Multiplix</strong></a>, …</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-title.jpg" alt="Pine64 Star64 RISC-V SBC" /></p>
 <h1 id="dump-and-write-memory-with-u-boot-bootloader"><a href="#dump-and-write-memory-with-u-boot-bootloader">1 Dump and Write Memory with U-Boot Bootloader</a></h1>
 <p><em>Our Bootloader will Read AND Write any Memory?</em></p>
@@ -676,25 +676,25 @@ nsh&gt;
 </ol>
 <p>Hopefully we’ll overcome these issues and complete our NuttX Display Driver!</p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
-<p>TODO: One step closer, but first we need I2C for PMIC</p>
-<p>TODO: Other interesting operating systems for JH7110: <a href="https://adventurist.me/posts/00315"><strong>FreeBSD</strong></a>, <a href="https://discuss.haiku-os.org/t/progress-on-running-haiku-on-visionfive-2/13369"><strong>Haiku</strong></a>, <a href="https://github.com/zyedidia/multiplix"><strong>Multiplix</strong></a>, …</p>
+<p>Today we did some cool things with U-Boot Bootloader on JH7110 SoC…</p>
 <ul>
 <li>
-<p>U-Boot Commands <strong><code>md</code></strong> and <strong><code>mw</code></strong>  for Dumping and Writing Memory (Pic above)</p>
+<p>We ran the U-Boot Commands <strong><code>md</code></strong> and <strong><code>mw</code></strong>  for reading and writing JH7110 Memory</p>
 </li>
 <li>
-<p>That we use to power up the <strong>Video Output</strong> and <strong>Display Controller</strong> on the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110 SoC</strong></a></p>
+<p>We powered up the <strong>Video Output</strong> and <strong>Display Controller</strong> on the JH7110 SoC</p>
 </li>
 <li>
 <p>By modding the JH7110 Registers for <strong>Power Management Unit</strong>, <strong>Clock and Reset</strong></p>
 </li>
 <li>
-<p>Also how we’ll create our own <strong>Display Driver</strong> for JH7110</p>
+<p>We’re one step closer to creating our <strong>NuttX Display Driver</strong> for JH7110</p>
 </li>
 <li>
-<p>In spite of the <strong>Missing and Incorrect Docs</strong></p>
+<p>Hopefully we’ll see many other Display Drivers for JH7110: <a href="https://adventurist.me/posts/00315"><strong>FreeBSD</strong></a>, <a href="https://discuss.haiku-os.org/t/progress-on-running-haiku-on-visionfive-2/13369"><strong>Haiku</strong></a>, <a href="https://github.com/zyedidia/multiplix"><strong>Multiplix</strong></a>, …</p>
 </li>
 </ul>
+<p>Now we need an <strong>I2C Driver for JH7110</strong>, to power up the External Power Management IC. Which we’ll cover in the next article!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
