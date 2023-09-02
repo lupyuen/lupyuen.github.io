@@ -95,7 +95,7 @@
 <p>U-Boot Commands <strong><code>md</code></strong> and <strong><code>mw</code></strong>  for Dumping and Writing Memory (Pic above)</p>
 </li>
 <li>
-<p>Which we use to power up the <strong>Video Output</strong> and <strong>Display Controller</strong> on the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110 SoC</strong></a></p>
+<p>That we use to power up the <strong>Video Output</strong> and <strong>Display Controller</strong> on the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110 SoC</strong></a></p>
 </li>
 <li>
 <p>By tweaking the JH7110 Registers for <strong>Power Management Unit</strong>, <strong>Clock and Reset</strong></p>
@@ -109,20 +109,20 @@
 </ul>
 <p><em>Why are we doing this?</em></p>
 <p>We’re building a <strong>HDMI Display Driver</strong> for <a href="https://lupyuen.github.io/articles/release"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) on the Star64 SBC. (And probably for VisionFive2 too)</p>
-<p>Our analysis today will be super useful for creating our <strong>HDMI Driver for NuttX</strong> on Star64. (Pic below)</p>
+<p>The analysis in this article will be super useful for creating our <strong>HDMI Driver for NuttX</strong> on Star64. (Pic below)</p>
 <p>And hopefully this article will be helpful for <strong>porting other Operating Systems</strong> to JH7110!</p>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Pine64 Star64 RISC-V SBC" /></p>
 <h1 id="dump-and-write-memory-with-u-boot-bootloader"><a href="#dump-and-write-memory-with-u-boot-bootloader">1 Dump and Write Memory with U-Boot Bootloader</a></h1>
 <p><em>Our Bootloader will Read AND Write any Memory?</em></p>
-<p>Yep! Inside our Star64 SBC is the powerful (maybe risky) <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> that will read and write JH7110 SoC’s Memory: <strong>RAM, ROM, even I/O Registers</strong>!</p>
+<p>Yep! Inside our Star64 SBC is the powerful (maybe risky) <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> that will read and write JH7110 SoC Memory: <strong>RAM, ROM, even I/O Registers</strong>!</p>
 <p>(ROM is read-only of course)</p>
-<p>Boot Star64 <strong>without a microSD Card</strong> and shut down our <a href="https://lupyuen.github.io/articles/tftp"><strong>TFTP Server</strong></a>. We should see the <strong>U-Boot Prompt</strong>.</p>
+<p>Boot Star64 <strong>without a microSD Card</strong> and shut down our <a href="https://lupyuen.github.io/articles/tftp"><strong>TFTP Server</strong></a>. We should see the <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Prompt</strong></a>.</p>
 <p>The <strong><code>md</code></strong> command will dump JH7110 Memory (RAM, ROM, I/O Registers)…</p>
 <div class="example-wrap"><pre class="language-text"><code># md
 md - memory display
 Usage: md [.b, .w, .l, .q] address [# of objects]
 </code></pre></div>
-<p>Let’s dump the <strong>JH7110 Boot ROM</strong> at <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong><code>0x2A00</code> <code>0000</code></strong></a>…</p>
+<p>This is how we dump the <strong>JH7110 Boot ROM</strong> at <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong><code>0x2A00</code> <code>0000</code></strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 2A000000 0x20
 2a000000: 00000297 12628293 30529073 30005073  ......b.s.R0sP.0
 2a000010: 30405073 41014081 42014181 43014281  sP@0.@.A.A.B.B.C
@@ -131,9 +131,9 @@ Usage: md [.b, .w, .l, .q] address [# of objects]
 2a000040: 4c014b81 4d014c81 4e014d81 4f014e81  .K.L.L.M.M.N.N.O
 2a000050: 01974f81 8193d710 02970ae1 82930000  .O..............
 </code></pre></div>
-<p>(Cute Alphabet Soup. Wonder where’s the Source Code?)</p>
+<p>(Cute Alphabet Soup. Where’s the Source Code?)</p>
 <p><em>This works for I/O Registers?</em></p>
-<p>We can dump the <strong>JH7110 UART Registers</strong> at <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong><code>0x1000</code> <code>0000</code></strong></a>…</p>
+<p>Indeed! We can dump the <strong>JH7110 UART Registers</strong> at <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong><code>0x1000</code> <code>0000</code></strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 10000000 0x20
 10000000: 0000006d 00000000 000000c1 00000003  m...............
 10000010: 00000003 00000000 00000000 00000000  ................
@@ -141,21 +141,21 @@ Usage: md [.b, .w, .l, .q] address [# of objects]
 10000030: 00000064 00000064 00000064 00000064  d...d...d...d...
 </code></pre></div>
 <p><em>What about writing to I/O Registers?</em></p>
-<p>Let’s <strong>write to UART Registers</strong>. The <strong><code>mw</code></strong> command writes to JH7110 Memory…</p>
+<p>Yep we can write to a <strong>UART Register</strong>. The <strong><code>mw</code></strong> command writes to JH7110 Memory…</p>
 <div class="example-wrap"><pre class="language-text"><code># mw
 mw - memory write (fill)
 Usage: mw [.b, .w, .l, .q] address value [count]
 </code></pre></div>
-<p>(Hmmm sounds like a Security Risk)</p>
-<p>To transmit some UART Output, we poke <code>0x2A</code> into the <strong>UART Transmit Register</strong> at <a href="https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64"><strong><code>0x1000</code> <code>0000</code></strong></a>…</p>
+<p>(Hmmm sounds like a scary Security Risk)</p>
+<p>To print something on UART, we poke <code>0x2A</code> into the <strong>UART Transmit Register</strong> at <a href="https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64"><strong><code>0x1000</code> <code>0000</code></strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code># mw 10000000 2a 1
 *
 </code></pre></div>
-<p>Yep it prints “<strong><code>*</code></strong>”, which is ASCII Code 2A!</p>
-<p>Let’s do something more sophisticated: JH7110 Display Controller…</p>
+<p>Yep it prints “<strong><code>*</code></strong>”, equivalent to ASCII Code <strong><code>0x2A</code></strong>!</p>
+<p>Moving to something more sophisticated: JH7110 Display Controller…</p>
 <h1 id="dump-the-jh7110-display-controller"><a href="#dump-the-jh7110-display-controller">2 Dump the JH7110 Display Controller</a></h1>
 <p><em>Dumping the JH7110 Display Controller should work right?</em></p>
-<p>Let’s find out! Based on…</p>
+<p>We’ll find out! Based on…</p>
 <ul>
 <li>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html"><strong>JH7110 Display Subsystem Memory Map</strong></a></p>
@@ -176,7 +176,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 </tbody></table>
 </div>
 <p><a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller">(<strong>DC8200</strong> is the <strong>VeriSilicon Dual Display Controller</strong>)</a></p>
-<p>Let’s dump the above <strong>Display Subsystem Registers</strong>…</p>
+<p>We dump the above <strong>Display Subsystem Registers</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 29400000 0x20
 29400000: 00000000 00000000 00000000 00000000  ................
 29400010: 00000000 00000000 00000000 00000000  ................
@@ -199,7 +199,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 </code></pre></div>
 <p><em>But the values are all zero!</em></p>
 <p>That’s because the Display Subsystem is <strong>not powered up</strong>.</p>
-<p>Let’s tweak some registers and power up the Display Subsystem…</p>
+<p>To fix this, we tweak some registers and power up the Display Subsystem…</p>
 <p><img src="https://lupyuen.github.io/images/display2-vout_block_diagram18.png" alt="JH7110 Display Subsystem Block Diagram" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html"><em>JH7110 Display Subsystem Block Diagram</em></a></p>
 <h1 id="jh7110-power-management-unit"><a href="#jh7110-power-management-unit">3 JH7110 Power Management Unit</a></h1>
@@ -210,7 +210,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html">(Source)</a></p>
 <p>(Not to be confused with the <strong>External PMIC</strong>: X-Powers AXP15060)</p>
 <p><em>Is the power turned on for Video Output DOM_VOUT?</em></p>
-<p>Let’s dump the status of the Power Domains…</p>
+<p>We dump the status of the Power Domains…</p>
 <ul>
 <li>
 <p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong>System Memory Map</strong></a>: Base Address of PMU is <strong><code>0x1703</code> <code>0000</code></strong></p>
@@ -219,11 +219,11 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p>From <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb"><strong>PMU Registers</strong></a>: Current Power Mode is at Offset <strong><code>0x80</code></strong></p>
 </li>
 </ul>
-<p>Which means the <strong>Current Power Mode</strong> is at <strong><code>0x1703</code> <code>0080</code></strong>. Let’s dump the register…</p>
+<p>Which means the <strong>Current Power Mode</strong> is at <strong><code>0x1703</code> <code>0080</code></strong>. When we dump the register…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 17030080 1
 17030080: 00000003
 </code></pre></div>
-<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb"><strong>Current Power Mode</strong></a> is 3, which says that…</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb"><strong>Current Power Mode</strong></a> is 3, telling us that…</p>
 <ul>
 <li><strong>SYSTOP Power</strong> (Bit 0) is On</li>
 <li><strong>CPU Power</strong> (Bit 1) is On</li>
@@ -241,8 +241,8 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p>(2) Write the <strong>SW Turn-On Command Sequence</strong>. Write the register Software Encourage (offset <strong><code>0x44</code></strong>) <strong><code>0xFF</code></strong> → <strong><code>0x05</code></strong> → <strong><code>0x50</code></strong></p>
 </blockquote>
 <p><em>What’s a “Software Encourage”?</em></p>
-<p>Something got Lost in Translation. Let’s assume it means <a href="https://lupyuen.github.io/articles/display3#pmu-software-encourage"><strong>“Software Triggered”</strong></a>.</p>
-<p>Which means we set the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_nhb_slz_msb"><strong>Power Mode</strong></a> (Offset <strong><code>0x0C</code></strong>) to <strong><code>0x10</code></strong> (Bit 4 for VOUT)…</p>
+<p>Something got Lost in Translation. We assume it means <a href="https://lupyuen.github.io/articles/display3#pmu-software-encourage"><strong>“Software Triggered”</strong></a>.</p>
+<p>Thus we set the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_nhb_slz_msb"><strong>Power Mode</strong></a> (Offset <strong><code>0x0C</code></strong>) to <strong><code>0x10</code></strong> (Bit 4 for VOUT)…</p>
 <div class="example-wrap"><pre class="language-text"><code># mw 1703000c 0x10 1
 </code></pre></div>
 <p>Then we write the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_jdh_x4z_msb"><strong>Command Sequence</strong></a> at Offset <strong><code>0x44</code></strong> (no delays needed)…</p>
@@ -254,9 +254,9 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <div class="example-wrap"><pre class="language-text"><code># md 17030080 1
 17030080: 00000013
 </code></pre></div>
-<p><strong>Video Output Power VOUT</strong> (Bit 4) is now on!</p>
+<p><strong>Video Output Power VOUT</strong> (Bit 4) is On!</p>
 <p>(Actually we should wait <strong>50 milliseconds</strong> to Power Up)</p>
-<p><em>So we can dump the Display Subsystem now?</em></p>
+<p><em>So we’re ready to dump the Display Subsystem?</em></p>
 <p>Sadly nope, the <strong>Display Subsystem Registers</strong> are still empty…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 295C0000 0x20
 295c0000: 00000000 00000000 00000000 00000000  ................
@@ -355,7 +355,7 @@ mw 130200fc 0x80000000 1
 295c0030: 00000000 00000000 00000000 00000000  ................
 295c0040: 00000000 00000000 00000fff 00000000  ................
 </code></pre></div>
-<p>The Display Systems Registers are now visible at VOUT CRG <strong><code>0x295C</code> <code>0000</code></strong>…</p>
+<p>The Display Subsystem Registers are finally visible at VOUT CRG <strong><code>0x295C</code> <code>0000</code></strong>…</p>
 <p>Which means the Display Subsystem is alive yay!</p>
 <p><a href="https://lupyuen.github.io/articles/display3#clock-default">(<strong><code>0x295C</code> <code>0000</code></strong> defaults to <strong><code>0x0C</code></strong>, there’s a typo in the doc)</a></p>
 <p><img src="https://lupyuen.github.io/images/display3-title.png" alt="Star64 JH7110 Display Subsystem is alive!" /></p>
@@ -396,8 +396,8 @@ saveenv
 ## Run the U-Boot Script to power up the Video Output
 run video_on
 </code></pre></div>
-<p>The U-Boot Script <strong><code>video_on</code></strong> is now saved into our SBC’s Internal Flash Memory. </p>
-<p>Now we can switch on our SBC and run the script anytime…</p>
+<p>The U-Boot Script <strong><code>video_on</code></strong> is saved into our SBC’s Internal Flash Memory. </p>
+<p>Which means we can switch on our SBC and run the script anytime…</p>
 <div class="example-wrap"><pre class="language-text"><code># run video_on
 295c0000: 00000004 00000004 00000004 0000000c  ................
 295c0010: 00000000 00000000 00000000 00000000  ................
@@ -406,11 +406,11 @@ run video_on
 295c0040: 00000000 00000000 00000fff 00000000  ................
 </code></pre></div>
 <p>So much easier to power up the Display Subsystem!</p>
-<p>Let’s talk about the Display Controller…</p>
+<p>Next we do the Display Controller…</p>
 <p><img src="https://lupyuen.github.io/images/display2-vout_clkrst18.png" alt="JH7110 Display Subsystem Clock and Reset" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html"><em>JH7110 Display Subsystem Clock and Reset</em></a></p>
 <h1 id="clocks-and-resets-for-display-controller"><a href="#clocks-and-resets-for-display-controller">6 Clocks and Resets for Display Controller</a></h1>
-<p><em>JH7110 Display Subsystem is now powered up…</em></p>
+<p><em>JH7110 Display Subsystem is already powered up…</em></p>
 <p><em>What about the Display Controller?</em></p>
 <p>Nope our <strong>DC8200 Display Controller</strong> (DC8200 AHB0) is stil invisible…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 29400000 0x20
@@ -465,7 +465,7 @@ mw 295C0040 0x80000000 1
 mw 295C0044 0x80000000 1
 
 ## Deassert the VOUT HDMI Resets.
-## We deassert all Resets for now.
+## We deassert all Resets for today.
 mw 295C0048 0 1
 </code></pre></div>
 <p><em>Does it work?</em></p>
@@ -494,7 +494,7 @@ run video_on
 run display_on
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader">(See the <strong>Output Log</strong>)</a></p>
-<p>Let’s verify the DC8200 Register Values…</p>
+<p>Next we verify the DC8200 Register Values…</p>
 <p><img src="https://lupyuen.github.io/images/display3-run.png" alt="DC8200 Display Controller is finally alive yay!" /></p>
 <h1 id="read-the-hardware-revision-and-chip-id"><a href="#read-the-hardware-revision-and-chip-id">7 Read the Hardware Revision and Chip ID</a></h1>
 <p><em>Are the DC8200 Register Values correct?</em></p>
@@ -509,7 +509,7 @@ run display_on
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">(Source)</a> </p>
 </li>
 </ul>
-<p>Let’s dump the <strong>Hardware Revision</strong> and <strong>Chip ID</strong> in U-Boot…</p>
+<p>This is how we dump the <strong>Hardware Revision</strong> and <strong>Chip ID</strong> in U-Boot…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Power up the Video Output
 run video_on
 
@@ -671,7 +671,8 @@ nsh&gt;
 </ol>
 <p>Hopefully we’ll overcome these issues and complete our NuttX Display Driver!</p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
-<p>TODO</p>
+<p>TODO: One step closer, but first we need I2C for PMIC</p>
+<p>TODO: Other interesting operating systems for JH7110: FreeBSD, BeOS, <a href="https://github.com/zyedidia/multiplix">Multiplix</a>, …</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -773,7 +774,7 @@ nsh&gt;
 <p><a href="https://lupyuen.github.io/articles/display3#hdmi-output">(See this)</a></p>
 </li>
 <li>
-<p>TODO: How to write to Framebuffer?</p>
+<p><strong>TODO:</strong> How to write to Framebuffer?</p>
 <p>Shall we check the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>? (Pic below)</p>
 <p>Why is the <a href="https://github.com/starfive-tech/u-boot/commit/26a31fa6bc9debeb71df0a0f9a715ac8e46cff1c"><strong>HDMI Display Unstable</strong></a>?</p>
 </li>
@@ -872,7 +873,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p>(2) Write the <strong>SW Turn-On Command Sequence</strong>. Write the register Software Encourage (offset <strong><code>0x44</code></strong>) <strong><code>0xFF</code></strong> → <strong><code>0x05</code></strong> → <strong><code>0x50</code></strong></p>
 </blockquote>
 <p><em>What’s a “Software Encourage”?</em></p>
-<p>Something got Lost in Translation. Let’s assume it means <strong>“Software Triggered”</strong>.</p>
+<p>Something got Lost in Translation. We assume it means <strong>“Software Triggered”</strong>.</p>
 
     
 </body>
