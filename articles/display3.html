@@ -153,6 +153,8 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 </code></pre></div>
 <p>It prints “<strong><code>*</code></strong>”, equivalent to ASCII Code <strong><code>0x2A</code></strong>!</p>
 <p>Moving to something more sophisticated: JH7110 Display Controller…</p>
+<p><img src="https://lupyuen.github.io/images/display3-memory.png" alt="JH7110 System Memory Map" /></p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><em>JH7110 System Memory Map</em></a></p>
 <h1 id="dump-the-jh7110-display-controller"><a href="#dump-the-jh7110-display-controller">2 Dump the JH7110 Display Controller</a></h1>
 <p><em>Dumping the JH7110 Display Controller should work right?</em></p>
 <p>We’ll find out! Based on…</p>
@@ -164,7 +166,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong>JH7110 System Memory Map</strong></a></p>
 </li>
 </ul>
-<p>The registers for <strong>JH7110 Display Subsystem</strong> are at…</p>
+<p>The registers for <strong>JH7110 Display Subsystem</strong> (pic above) are at…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: left">Display Registers</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>0x2940 0000</code></strong></td><td style="text-align: left"><strong>DC8200 AHB0</strong> <br><em>(Display Bus 0)</em></td></tr>
 <tr><td style="text-align: center"><strong><code>0x2948 0000</code></strong></td><td style="text-align: left"><strong>DC8200 AHB1</strong> <br><em>(Display Bus 1)</em></td></tr>
