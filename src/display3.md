@@ -609,7 +609,7 @@ Our DC8200 Display Controller returns the correct Register Values yay!
 
 # NuttX Display Driver for JH7110
 
-_How will we build the NuttX Display Driver for JH7110?_
+_How will we create the NuttX Display Driver for JH7110?_
 
 Earlier we talked about the steps to power up the __Display Subsystem__ and __Display Controller__...
 
@@ -633,7 +633,7 @@ This code will power up the Display Subsystem via the __Power Management Unit__.
 
 (Yeah needs cleanup)
 
-Next we enable the Clocks and deassert the Resets for the __Display Subsystem__...
+Next we enable the VOUT Clocks and deassert the VOUT Resets for the __Display Subsystem__...
 
 ```c
 // Enable the Clocks for Video Output / Display Subsystem
