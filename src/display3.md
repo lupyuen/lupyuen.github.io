@@ -14,7 +14,7 @@ In this article we discover...
 
 - U-Boot Commands __`md`__ and __`mw`__  for Dumping and Writing Memory (Pic above)
 
-- Which we use to power up the __Video Output__ and __Display Controller__ on the [__StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html)
+- That we use to power up the __Video Output__ and __Display Controller__ on the [__StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html)
 
 - By tweaking the JH7110 Registers for __Power Management Unit__, __Clock and Reset__
 
@@ -26,7 +26,7 @@ _Why are we doing this?_
 
 We're building a __HDMI Display Driver__ for [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS) on the Star64 SBC. (And probably for VisionFive2 too)
 
-Our analysis today will be super useful for creating our __HDMI Driver for NuttX__ on Star64. (Pic below)
+The analysis in this article will be super useful for creating our __HDMI Driver for NuttX__ on Star64. (Pic below)
 
 And hopefully this article will be helpful for __porting other Operating Systems__ to JH7110!
 
@@ -36,11 +36,11 @@ And hopefully this article will be helpful for __porting other Operating Systems
 
 _Our Bootloader will Read AND Write any Memory?_
 
-Yep! Inside our Star64 SBC is the powerful (maybe risky) [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) that will read and write JH7110 SoC's Memory: __RAM, ROM, even I/O Registers__!
+Yep! Inside our Star64 SBC is the powerful (maybe risky) [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) that will read and write JH7110 SoC Memory: __RAM, ROM, even I/O Registers__!
 
 (ROM is read-only of course)
 
-Boot Star64 __without a microSD Card__ and shut down our [__TFTP Server__](https://lupyuen.github.io/articles/tftp). We should see the __U-Boot Prompt__.
+Boot Star64 __without a microSD Card__ and shut down our [__TFTP Server__](https://lupyuen.github.io/articles/tftp). We should see the [__U-Boot Prompt__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64).
 
 The __`md`__ command will dump JH7110 Memory (RAM, ROM, I/O Registers)...
 
@@ -50,7 +50,7 @@ md - memory display
 Usage: md [.b, .w, .l, .q] address [# of objects]
 ```
 
-Let's dump the __JH7110 Boot ROM__ at [__`0x2A00` `0000`__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html)...
+This is how we dump the __JH7110 Boot ROM__ at [__`0x2A00` `0000`__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html)...
 
 ```text
 # md 2A000000 0x20
@@ -62,11 +62,11 @@ Let's dump the __JH7110 Boot ROM__ at [__`0x2A00` `0000`__](https://doc-en.rvspa
 2a000050: 01974f81 8193d710 02970ae1 82930000  .O..............
 ```
 
-(Cute Alphabet Soup. Wonder where's the Source Code?)
+(Cute Alphabet Soup. Where's the Source Code?)
 
 _This works for I/O Registers?_
 
-We can dump the __JH7110 UART Registers__ at [__`0x1000` `0000`__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html)...
+Indeed! We can dump the __JH7110 UART Registers__ at [__`0x1000` `0000`__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html)...
 
 ```text
 # md 10000000 0x20
@@ -78,7 +78,7 @@ We can dump the __JH7110 UART Registers__ at [__`0x1000` `0000`__](https://doc-e
 
 _What about writing to I/O Registers?_
 
-Let's __write to UART Registers__. The __`mw`__ command writes to JH7110 Memory...
+Yep we can write to a __UART Register__. The __`mw`__ command writes to JH7110 Memory...
 
 ```text
 # mw
@@ -86,24 +86,24 @@ mw - memory write (fill)
 Usage: mw [.b, .w, .l, .q] address value [count]
 ```
 
-(Hmmm sounds like a Security Risk)
+(Hmmm sounds like a scary Security Risk)
 
-To transmit some UART Output, we poke `0x2A` into the __UART Transmit Register__ at [__`0x1000` `0000`__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64)...
+To print something on UART, we poke `0x2A` into the __UART Transmit Register__ at [__`0x1000` `0000`__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64)...
 
 ```text
 # mw 10000000 2a 1
 *
 ```
 
-Yep it prints "__`*`__", which is ASCII Code 2A!
+Yep it prints "__`*`__", equivalent to ASCII Code __`0x2A`__!
 
-Let's do something more sophisticated: JH7110 Display Controller...
+Moving to something more sophisticated: JH7110 Display Controller...
 
 # Dump the JH7110 Display Controller
 
 _Dumping the JH7110 Display Controller should work right?_
 
-Let's find out! Based on...
+We'll find out! Based on...
 
 - [__JH7110 Display Subsystem Memory Map__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html)
 
@@ -123,7 +123,7 @@ The registers for __JH7110 Display Subsystem__ are at...
 
 [(__DC8200__ is the __VeriSilicon Dual Display Controller__)](https://lupyuen.github.io/articles/display2#dc8200-display-controller)
 
-Let's dump the above __Display Subsystem Registers__...
+We dump the above __Display Subsystem Registers__...
 
 ```text
 # md 29400000 0x20
@@ -151,7 +151,7 @@ _But the values are all zero!_
 
 That's because the Display Subsystem is __not powered up__.
 
-Let's tweak some registers and power up the Display Subsystem...
+To fix this, we tweak some registers and power up the Display Subsystem...
 
 ![JH7110 Display Subsystem Block Diagram](https://lupyuen.github.io/images/display2-vout_block_diagram18.png)
 
@@ -173,20 +173,20 @@ Which is powered by the JH7110 [__Power Management Unit (PMU)__](https://doc-en.
 
 _Is the power turned on for Video Output DOM_VOUT?_
 
-Let's dump the status of the Power Domains...
+We dump the status of the Power Domains...
 
 - From [__System Memory Map__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html): Base Address of PMU is __`0x1703` `0000`__
 
 - From [__PMU Registers__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb): Current Power Mode is at Offset __`0x80`__
 
-Which means the __Current Power Mode__ is at __`0x1703` `0080`__. Let's dump the register...
+Which means the __Current Power Mode__ is at __`0x1703` `0080`__. When we dump the register...
 
 ```text
 # md 17030080 1
 17030080: 00000003
 ```
 
-[__Current Power Mode__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb) is 3, which says that...
+[__Current Power Mode__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_rcx_pqz_msb) is 3, telling us that...
 
 - __SYSTOP Power__ (Bit 0) is On
 - __CPU Power__ (Bit 1) is On
@@ -204,9 +204,9 @@ From the [__PMU Function Description__](https://doc-en.rvspace.org/JH7110/TRM/JH
 
 _What's a "Software Encourage"?_
 
-Something got Lost in Translation. Let's assume it means [__"Software Triggered"__](https://lupyuen.github.io/articles/display3#pmu-software-encourage).
+Something got Lost in Translation. We assume it means [__"Software Triggered"__](https://lupyuen.github.io/articles/display3#pmu-software-encourage).
 
-Which means we set the [__Power Mode__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_nhb_slz_msb) (Offset __`0x0C`__) to __`0x10`__ (Bit 4 for VOUT)...
+Thus we set the [__Power Mode__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/register_info_pmu.html#register_info_pmu__section_nhb_slz_msb) (Offset __`0x0C`__) to __`0x10`__ (Bit 4 for VOUT)...
 
 ```text
 # mw 1703000c 0x10 1
@@ -227,11 +227,11 @@ Finally we dump the [__Current Power Mode__](https://doc-en.rvspace.org/JH7110/T
 17030080: 00000013
 ```
 
-__Video Output Power VOUT__ (Bit 4) is now on!
+__Video Output Power VOUT__ (Bit 4) is On!
 
 (Actually we should wait __50 milliseconds__ to Power Up)
 
-_So we can dump the Display Subsystem now?_
+_So we're ready to dump the Display Subsystem?_
 
 Sadly nope, the __Display Subsystem Registers__ are still empty...
 
@@ -363,7 +363,7 @@ And again we dump the __Display Subsystem Registers__...
 295c0040: 00000000 00000000 00000fff 00000000  ................
 ```
 
-The Display Systems Registers are now visible at VOUT CRG __`0x295C` `0000`__...
+The Display Subsystem Registers are finally visible at VOUT CRG __`0x295C` `0000`__...
 
 Which means the Display Subsystem is alive yay!
 
@@ -415,9 +415,9 @@ saveenv
 run video_on
 ```
 
-The U-Boot Script __`video_on`__ is now saved into our SBC's Internal Flash Memory. 
+The U-Boot Script __`video_on`__ is saved into our SBC's Internal Flash Memory. 
 
-Now we can switch on our SBC and run the script anytime...
+Which means we can switch on our SBC and run the script anytime...
 
 ```text
 # run video_on
@@ -430,7 +430,7 @@ Now we can switch on our SBC and run the script anytime...
 
 So much easier to power up the Display Subsystem!
 
-Let's talk about the Display Controller...
+Next we do the Display Controller...
 
 ![JH7110 Display Subsystem Clock and Reset](https://lupyuen.github.io/images/display2-vout_clkrst18.png)
 
@@ -438,7 +438,7 @@ Let's talk about the Display Controller...
 
 # Clocks and Resets for Display Controller
 
-_JH7110 Display Subsystem is now powered up..._
+_JH7110 Display Subsystem is already powered up..._
 
 _What about the Display Controller?_
 
@@ -502,7 +502,7 @@ mw 295C0040 0x80000000 1
 mw 295C0044 0x80000000 1
 
 ## Deassert the VOUT HDMI Resets.
-## We deassert all Resets for now.
+## We deassert all Resets for today.
 mw 295C0048 0 1
 ```
 
@@ -541,7 +541,7 @@ run display_on
 
 [(See the __Output Log__)](https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader)
 
-Let's verify the DC8200 Register Values...
+Next we verify the DC8200 Register Values...
 
 ![DC8200 Display Controller is finally alive yay!](https://lupyuen.github.io/images/display3-run.png)
 
@@ -559,7 +559,7 @@ According to the [__DC8200 Display Driver__](https://lupyuen.github.io/articles/
 
   [(Source)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361) 
 
-Let's dump the __Hardware Revision__ and __Chip ID__ in U-Boot...
+This is how we dump the __Hardware Revision__ and __Chip ID__ in U-Boot...
 
 ```text
 ## Power up the Video Output
@@ -755,7 +755,9 @@ Hopefully we'll overcome these issues and complete our NuttX Display Driver!
 
 # What's Next
 
-TODO
+TODO: One step closer, but first we need I2C for PMIC
+
+TODO: Other interesting operating systems for JH7110: FreeBSD, BeOS, [Multiplix](https://github.com/zyedidia/multiplix), ...
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -834,7 +836,7 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
     [(See this)](https://lupyuen.github.io/articles/display3#hdmi-output)
 
-1.  TODO: How to write to Framebuffer?
+1.  __TODO:__ How to write to Framebuffer?
 
     Shall we check the [__Official Linux Driver__](https://lupyuen.github.io/articles/display2)? (Pic below)
 
@@ -978,4 +980,4 @@ From the [__Power Management Unit (PMU) Function Description__](https://doc-en.r
 
 _What's a "Software Encourage"?_
 
-Something got Lost in Translation. Let's assume it means __"Software Triggered"__.
+Something got Lost in Translation. We assume it means __"Software Triggered"__.
