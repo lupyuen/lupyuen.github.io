@@ -516,7 +516,7 @@ mw 295C0048 0 1
 
 _Does it work?_
 
-We run the above U-Boot Commands and dump our __DC8200 Display Controller__ (DC8200 AHB0)...
+We run the above U-Boot Commands for VOUT HDMI. Then we dump our __DC8200 Display Controller__ (DC8200 AHB0)...
 
 ```text
 # md 29400000 0x20
