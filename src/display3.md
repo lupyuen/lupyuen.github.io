@@ -231,7 +231,7 @@ Finally we dump the [__Current Power Mode__](https://doc-en.rvspace.org/JH7110/T
 17030080: 00000013
 ```
 
-__Video Output Power VOUT__ (Bit 4) is On!
+Lights on folks, __Video Output Power VOUT__ (Bit 4) is On!
 
 (Actually we should wait [__50 milliseconds__](https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver) to Power Up)
 
@@ -293,6 +293,10 @@ When we match the above Clocks to the [__System Control Registers (SYS CRG)__](h
 
 (Looks excessive, but better to enable too many Clocks than too few!)
 
+[(NoC means __Network-on-Chip__)](https://en.wikipedia.org/wiki/Network_on_a_chip)
+
+[(AXI is the __Advanced eXtensible Interface__)](https://en.wikipedia.org/wiki/Advanced_eXtensible_Interface)
+
 To enable the Clocks above, we set [__Bit 31 (clk_icg)__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_cvr_2qm_wsb) to 1.
 
 Here are the U-Boot Commands to __enable the Clocks__...
@@ -312,7 +316,7 @@ mw 130200fc 0x80000000 1
 
 _What about the Resets?_
 
-Looking up the [__System Control Registers (SYS CRG)__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html), we need to __deassert these Resets__...
+Digging through the [__System Control Registers (SYS CRG)__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html), we need to __deassert these Resets__...
 
 - [__Software RESET 1 Address Selector__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_ph5_pfn_wsb) (SYS CRG Offset __`0x2FC`__)
 
@@ -341,7 +345,7 @@ First we dump the above __Reset Registers__...
 1302030c: f80001ff
 ```
 
-Then we flip the __Reset Bits__...
+Then we flip the __Reset Bits__ to 0...
 
 ```text
 # mw 130202fc 0x07e7f600 1
@@ -365,11 +369,11 @@ And again we dump the __Display Subsystem Registers__...
 295c0040: 00000000 00000000 00000fff 00000000  ................
 ```
 
-The Display Subsystem Registers are finally visible at VOUT CRG __`0x295C` `0000`__...
+The Display Subsystem Registers are finally visible at VOUT CRG __`0x295C` `0000`__
 
 Which means the Display Subsystem is alive yay!
 
-[(__`0x295C` `0000`__ defaults to __`0x0C`__, there's a typo in the doc)](https://lupyuen.github.io/articles/display3#clock-default)
+[(__`0x295C` `000C`__ defaults to __`0x0C`__, there's a typo in the doc)](https://lupyuen.github.io/articles/display3#clock-default)
 
 ![Star64 JH7110 Display Subsystem is alive!](https://lupyuen.github.io/images/display3-title.png)
 
@@ -401,7 +405,9 @@ mw 13020308 0xfb9fffff 1
 md 295C0000 0x20
 ```
 
-Sure can! Run this to create a __U-Boot Script__ that powers up the Display Subsystem...
+Sure can!
+
+Run this to create a __U-Boot Script__ that powers up the Display Subsystem...
 
 ```text
 ## Create the U-Boot Script to power up the Video Output
@@ -473,7 +479,7 @@ To enable the Clocks above, we set [__Bit 31 (clk_icg)__](https://doc-en.rvspace
 
 [(__VOUT CRG__ Base Address is __`0x295C` `0000`__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html)
 
-__VOUT Resets__ for HDMI are at _Software_RESET_assert0_addr_assert_sel_ [(VOUT CRG Offset __`0x48`__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb)...
+__VOUT Resets__ for HDMI are at _Software_RESET_assert0_addr_assert_sel_ [(VOUT CRG Offset __`0x48`__)](https://lupyuen.github.io/articles/display3#vout-reset)...
 
 - __Bit 0:__ rstn_u0_dc8200_rstn_axi
 
@@ -599,7 +605,7 @@ That means...
 
 Our DC8200 Display Controller returns the correct Register Values yay!
 
-(Do we have a Date at __`0x2940` `0024`__? It reads "20210316")
+(Do we have a Date at __`0x2940` `0028`__? It reads "20210316")
 
 # NuttX Display Driver for JH7110
 
@@ -966,7 +972,7 @@ What is the Input Frequency to the Clock? 307.2 MHz?
 
 ## Clock Default
 
-[__clk_tx_esc__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb) at __Offset `0x0C`__ (Address __`0x295C` `0000`__) should have default __`24'hc`__. (Equivalent to __`0x0C`__)
+[__clk_tx_esc__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb) at __Offset `0x0C`__ (Address __`0x295C` `000C`__) should have default __`24'hc`__. (Equivalent to __`0x0C`__)
 
 There's a typo in the doc, it shows default __`24'h12`__ (Pic above)
 
