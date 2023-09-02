@@ -99,6 +99,10 @@ It prints "__`*`__", equivalent to ASCII Code __`0x2A`__!
 
 Moving to something more sophisticated: JH7110 Display Controller...
 
+![JH7110 System Memory Map](https://lupyuen.github.io/images/display3-memory.png)
+
+[_JH7110 System Memory Map_](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html)
+
 # Dump the JH7110 Display Controller
 
 _Dumping the JH7110 Display Controller should work right?_
@@ -109,7 +113,7 @@ We'll find out! Based on...
 
 - [__JH7110 System Memory Map__](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html)
 
-The registers for __JH7110 Display Subsystem__ are at...
+The registers for __JH7110 Display Subsystem__ (pic above) are at...
 
 | Address | Display Registers |
 |:-------:|:------------------|
