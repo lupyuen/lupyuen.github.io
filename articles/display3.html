@@ -819,7 +819,8 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p>VOUT Reset <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb"><em>Software_RESET_assert0_addr_assert_sel</em></a> is actually at <strong>Offset <code>0x48</code></strong>, Address <strong><code>0x295C</code> <code>0048</code></strong>.</p>
 <p>(Instead of Offset <code>0x38</code>, pic above)</p>
 <p><em>How did we figure out it’s at Offset <code>0x48</code>?</em></p>
-<p>Clearing the Reset Bits at Offset <code>0x38</code> <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xgs_jd4_2tb">(and Offset <code>0x4C</code>)</a> has no effect, <a href="https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader"><strong>according to our testing</strong></a>. Thanks to U-Boot we have this dump…</p>
+<p>Clearing the Reset Bits at Offset <code>0x38</code> <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xgs_jd4_2tb">(and Offset <code>0x4C</code>)</a> has no effect, <a href="https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader"><strong>according to our testing</strong></a>.</p>
+<p>Thanks to U-Boot, we have this dump of the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html"><strong>VOUT Clock and Reset Registers (CRG)</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code># md 295C0000 0x20
 295c0000: 00000004 00000004 00000004 0000000c  ................
 295c0010: 00000000 00000000 00000000 00000000  ................
@@ -827,8 +828,8 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 295c0030: 00000000 00000000 00000000 00000000  ................
 295c0040: 00000000 00000000 00000fff 00000000  ................
 </code></pre></div>
-<p>Offset <code>0x38</code> is 0, which doesn’t look right for a Reset Register that should be filled with 1 Bits (by default).</p>
-<p>Then we noticed that <strong>Offset <code>0x48</code></strong> is filled with 1 Bits: <strong><code>0xFFF</code></strong>. Thus we cleared the Reset Bits at Offset <code>0x48</code>, and it works!</p>
+<p>Offset <code>0x38</code> is 0, which doesn’t look right for a Reset Register that should be filled with “1” Bits (by default).</p>
+<p>Then we noticed that <strong>Offset <code>0x48</code></strong> is filled with “1” Bits: <strong><code>0xFFF</code></strong>. Thus we cleared the Reset Bits at Offset <code>0x48</code>, and it works!</p>
 <p><img src="https://lupyuen.github.io/images/display3-clock2.png" alt="Clock clk_u0_dc8200_clk_pix0" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb"><em>Clock clk_u0_dc8200_clk_pix0</em></a></p>
 <h2 id="clock-multiplexing"><a href="#clock-multiplexing">12.3 Clock Multiplexing</a></h2>
