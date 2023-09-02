@@ -256,7 +256,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <div class="example-wrap"><pre class="language-text"><code># md 17030080 1
 17030080: 00000013
 </code></pre></div>
-<p><strong>Video Output Power VOUT</strong> (Bit 4) is On!</p>
+<p>Lights on folks, <strong>Video Output Power VOUT</strong> (Bit 4) is On!</p>
 <p>(Actually we should wait <a href="https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver"><strong>50 milliseconds</strong></a> to Power Up)</p>
 <p><em>We’re ready to dump the Display Subsystem?</em></p>
 <p>Sadly nope, the <strong>Display Subsystem Registers</strong> are still empty…</p>
@@ -301,6 +301,8 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 </tbody></table>
 </div>
 <p>(Looks excessive, but better to enable too many Clocks than too few!)</p>
+<p><a href="https://en.wikipedia.org/wiki/Network_on_a_chip">(NoC means <strong>Network-on-Chip</strong>)</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Advanced_eXtensible_Interface">(AXI is the <strong>Advanced eXtensible Interface</strong>)</a></p>
 <p>To enable the Clocks above, we set <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_cvr_2qm_wsb"><strong>Bit 31 (clk_icg)</strong></a> to 1.</p>
 <p>Here are the U-Boot Commands to <strong>enable the Clocks</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Enable the Clocks for Video Output / Display Subsystem
@@ -315,7 +317,7 @@ mw 130200f8 0x80000000 1
 mw 130200fc 0x80000000 1
 </code></pre></div>
 <p><em>What about the Resets?</em></p>
-<p>Looking up the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html"><strong>System Control Registers (SYS CRG)</strong></a>, we need to <strong>deassert these Resets</strong>…</p>
+<p>Digging through the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html"><strong>System Control Registers (SYS CRG)</strong></a>, we need to <strong>deassert these Resets</strong>…</p>
 <ul>
 <li>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/sys_crg.html#sys_crg__section_ph5_pfn_wsb"><strong>Software RESET 1 Address Selector</strong></a> (SYS CRG Offset <strong><code>0x2FC</code></strong>)</p>
@@ -341,7 +343,7 @@ mw 130200fc 0x80000000 1
 # md 1302030c 1
 1302030c: f80001ff
 </code></pre></div>
-<p>Then we flip the <strong>Reset Bits</strong>…</p>
+<p>Then we flip the <strong>Reset Bits</strong> to 0…</p>
 <div class="example-wrap"><pre class="language-text"><code># mw 130202fc 0x07e7f600 1
 # mw 13020308 0xfb9fffff 1
 </code></pre></div>
@@ -356,9 +358,9 @@ mw 130200fc 0x80000000 1
 295c0030: 00000000 00000000 00000000 00000000  ................
 295c0040: 00000000 00000000 00000fff 00000000  ................
 </code></pre></div>
-<p>The Display Subsystem Registers are finally visible at VOUT CRG <strong><code>0x295C</code> <code>0000</code></strong>…</p>
+<p>The Display Subsystem Registers are finally visible at VOUT CRG <strong><code>0x295C</code> <code>0000</code></strong></p>
 <p>Which means the Display Subsystem is alive yay!</p>
-<p><a href="https://lupyuen.github.io/articles/display3#clock-default">(<strong><code>0x295C</code> <code>0000</code></strong> defaults to <strong><code>0x0C</code></strong>, there’s a typo in the doc)</a></p>
+<p><a href="https://lupyuen.github.io/articles/display3#clock-default">(<strong><code>0x295C</code> <code>000C</code></strong> defaults to <strong><code>0x0C</code></strong>, there’s a typo in the doc)</a></p>
 <p><img src="https://lupyuen.github.io/images/display3-title.png" alt="Star64 JH7110 Display Subsystem is alive!" /></p>
 <h1 id="u-boot-script-to-power-up-the-display-subsystem"><a href="#u-boot-script-to-power-up-the-display-subsystem">5 U-Boot Script to Power Up the Display Subsystem</a></h1>
 <p><em>Phew that’s a long list of U-Boot Commands. Can we automate this?</em></p>
@@ -384,7 +386,8 @@ mw 130202fc 0x07e7f600 1
 mw 13020308 0xfb9fffff 1
 md 295C0000 0x20
 </code></pre></div>
-<p>Sure can! Run this to create a <strong>U-Boot Script</strong> that powers up the Display Subsystem…</p>
+<p>Sure can!</p>
+<p>Run this to create a <strong>U-Boot Script</strong> that powers up the Display Subsystem…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Create the U-Boot Script to power up the Video Output
 setenv video_on &#39;mw 1703000c 0x10 1 ; mw 17030044 0xff 1 ; mw 17030044 0x05 1 ; mw 17030044 0x50 1 ; mw 13020028 0x80000000 1 ; mw 1302004c 0x80000000 1 ; mw 13020098 0x80000000 1 ; mw 1302009c 0x80000000 1 ; mw 130200e8 0x80000000 1 ; mw 130200f0 0x80000000 1 ; mw 130200f4 0x80000000 1 ; mw 130200f8 0x80000000 1 ; mw 130200fc 0x80000000 1 ; mw 130202fc 0x07e7f600 1 ; mw 13020308 0xfb9fffff 1 ; md 295C0000 0x20 ; &#39;
 
@@ -434,7 +437,7 @@ run video_on
 </div>
 <p>To enable the Clocks above, we set <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_jtl_fht_3sb"><strong>Bit 31 (clk_icg)</strong></a> to 1.</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html">(<strong>VOUT CRG</strong> Base Address is <strong><code>0x295C</code> <code>0000</code></strong>)</a></p>
-<p><strong>VOUT Resets</strong> for HDMI are at <em>Software_RESET_assert0_addr_assert_sel</em> <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb">(VOUT CRG Offset <strong><code>0x48</code></strong>)</a>…</p>
+<p><strong>VOUT Resets</strong> for HDMI are at <em>Software_RESET_assert0_addr_assert_sel</em> <a href="https://lupyuen.github.io/articles/display3#vout-reset">(VOUT CRG Offset <strong><code>0x48</code></strong>)</a>…</p>
 <ul>
 <li>
 <p><strong>Bit 0:</strong> rstn_u0_dc8200_rstn_axi</p>
@@ -543,7 +546,7 @@ md 29400030 1
 </li>
 </ul>
 <p>Our DC8200 Display Controller returns the correct Register Values yay!</p>
-<p>(Do we have a Date at <strong><code>0x2940</code> <code>0024</code></strong>? It reads “20210316”)</p>
+<p>(Do we have a Date at <strong><code>0x2940</code> <code>0028</code></strong>? It reads “20210316”)</p>
 <h1 id="nuttx-display-driver-for-jh7110"><a href="#nuttx-display-driver-for-jh7110">8 NuttX Display Driver for JH7110</a></h1>
 <p><em>How will we build the NuttX Display Driver for JH7110?</em></p>
 <p>Earlier we talked about the steps to power up the <strong>Display Subsystem</strong> and <strong>Display Controller</strong>…</p>
@@ -860,7 +863,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p><img src="https://lupyuen.github.io/images/display3-typo.png" alt="Clock clk_tx_esc" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><em>Clock clk_tx_esc</em></a></p>
 <h2 id="clock-default"><a href="#clock-default">12.5 Clock Default</a></h2>
-<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><strong>clk_tx_esc</strong></a> at <strong>Offset <code>0x0C</code></strong> (Address <strong><code>0x295C</code> <code>0000</code></strong>) should have default <strong><code>24'hc</code></strong>. (Equivalent to <strong><code>0x0C</code></strong>)</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><strong>clk_tx_esc</strong></a> at <strong>Offset <code>0x0C</code></strong> (Address <strong><code>0x295C</code> <code>000C</code></strong>) should have default <strong><code>24'hc</code></strong>. (Equivalent to <strong><code>0x0C</code></strong>)</p>
 <p>There’s a typo in the doc, it shows default <strong><code>24'h12</code></strong> (Pic above)</p>
 <p><img src="https://lupyuen.github.io/images/display3-pmu.png" alt="PMU Function Description" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><em>PMU Function Description</em></a></p>
