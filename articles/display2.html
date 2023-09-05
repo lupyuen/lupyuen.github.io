@@ -713,15 +713,7 @@ const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
 </ul>
 <p><a href="https://fosstodon.org/@Fishwaldo/110902984442385966"><strong>Justin (Fishwaldo)</strong></a> suggests that we check out the simpler HDMI Driver in <strong>U-Boot Bootloader</strong>…</p>
 <ul>
-<li>
-<p><a href="https://github.com/starfive-tech/u-boot/tree/JH7110_VisionFive2_devel/drivers/video/starfive"><strong>U-Boot Display Driver for JH7110</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-star64#hdmi-driver-for-u-boot-bootloader"><strong>Analysis of HDMI Driver for U-Boot Bootloader</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L237-L248"><strong>dc_hw_init</strong> looks awfully familiar</a></p>
-</li>
+<li><a href="https://lupyuen.github.io/articles/display3"><strong>“RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader”</strong></a></li>
 </ul>
 <p>When we port NuttX to the <strong>PineTab-V Tablet</strong>, we’ll need drivers for <strong>MIPI DSI and LCD Panel</strong>…</p>
 <ul>
@@ -743,7 +735,10 @@ const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
 </li>
 </ul>
 <p><em>Sounds like a lot of work!</em></p>
-<p>Yeah we’ll probably <a href="https://lupyuen.github.io/articles/dsi2"><strong>prototype our new driver in Zig</strong></a> before converting to C. Stay tuned for updates!</p>
+<p>Yeah we’ll probably <a href="https://lupyuen.github.io/articles/dsi2"><strong>prototype our new driver in Zig</strong></a> before converting to C. Stay tuned for updates…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/display3"><strong>“RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader”</strong></a></li>
+</ul>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig#zig-version">(Slightly annoying that New Zig won’t run on my Old Mac)</a></p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/display2-sketch.jpg" alt="Sketch of Display Driver for StarFive JH7110 SoC" /></p>
@@ -770,7 +765,10 @@ const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
 <p>So that someday we’ll <strong>implement the driver</strong> ourselves (without Linux)</p>
 </li>
 </ul>
-<p>I hope you’ll find this doc helpful too!</p>
+<p>I hope you’ll find this doc helpful too! Check out the next article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/display3"><strong>“RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader”</strong></a></li>
+</ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -838,7 +836,10 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 </li>
 </ul>
 <p>Let’s walk through <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a>,  <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722"><strong>dc_init</strong></a> and <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827"><strong>vs_dc_enable</strong></a>, to understand how they prepare the Clock and Reset Signals.</p>
-<p>(The Clock and Reset Names below don’t quite match the Official Docs above. We need to reconcile the names)</p>
+<p>The Clock and Reset Names below don’t quite match the Official Docs above. Here’s what we tested…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/display3"><strong>“RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/jh7110-display3.jpg" alt="DC8200 Display Controller Driver" /></p>
 <h2 id="dc_bind"><a href="#dc_bind">13.1 dc_bind</a></h2>
 <p>At startup, our DRM Driver calls our Display Controller Driver at <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a> to setup the <strong>Clock and Reset Signals</strong>. (Pic above)</p>
