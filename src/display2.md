@@ -720,11 +720,7 @@ Not quite. We have a bit more to explore, like the __HDMI Controller for JH7110_
 
 [__Justin (Fishwaldo)__](https://fosstodon.org/@Fishwaldo/110902984442385966) suggests that we check out the simpler HDMI Driver in __U-Boot Bootloader__...
 
-- [__U-Boot Display Driver for JH7110__](https://github.com/starfive-tech/u-boot/tree/JH7110_VisionFive2_devel/drivers/video/starfive)
-
-- [__Analysis of HDMI Driver for U-Boot Bootloader__](https://github.com/lupyuen/nuttx-star64#hdmi-driver-for-u-boot-bootloader)
-
-- [__dc_hw_init__ looks awfully familiar](https://github.com/starfive-tech/u-boot/blob/JH7110_VisionFive2_devel/drivers/video/starfive/sf_vop.c#L237-L248)
+-   [__"RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader"__](https://lupyuen.github.io/articles/display3)
 
 When we port NuttX to the __PineTab-V Tablet__, we'll need drivers for __MIPI DSI and LCD Panel__...
 
@@ -742,7 +738,9 @@ We might also need the __Framebuffer Driver__ and __Virtual Display Driver__....
 
 _Sounds like a lot of work!_
 
-Yeah we'll probably [__prototype our new driver in Zig__](https://lupyuen.github.io/articles/dsi2) before converting to C. Stay tuned for updates!
+Yeah we'll probably [__prototype our new driver in Zig__](https://lupyuen.github.io/articles/dsi2) before converting to C. Stay tuned for updates...
+
+-   [__"RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader"__](https://lupyuen.github.io/articles/display3)
 
 [(Slightly annoying that New Zig won't run on my Old Mac)](https://github.com/lupyuen/pinephone-lvgl-zig#zig-version)
 
@@ -764,7 +762,9 @@ Today we created a Detailed Doc that explains the Inner Workings of the __JH7110
 
 - So that someday we'll __implement the driver__ ourselves (without Linux)
 
-I hope you'll find this doc helpful too!
+I hope you'll find this doc helpful too! Check out the next article...
+
+-   [__"RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader"__](https://lupyuen.github.io/articles/display3)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -833,7 +833,9 @@ The pic above shows the __Clock Signals__ for the JH7110 / DC8200 Display Contro
 
 Let's walk through [__dc_bind__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573),  [__dc_init__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722) and [__vs_dc_enable__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827), to understand how they prepare the Clock and Reset Signals.
 
-(The Clock and Reset Names below don't quite match the Official Docs above. We need to reconcile the names)
+The Clock and Reset Names below don't quite match the Official Docs above. Here's what we tested...
+
+-   [__"RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader"__](https://lupyuen.github.io/articles/display3)
 
 ![DC8200 Display Controller Driver](https://lupyuen.github.io/images/jh7110-display3.jpg)
 
