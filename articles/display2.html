@@ -455,20 +455,28 @@ const struct component_ops dc_component_ops = {
 </li>
 </ol>
 <p><em>Why read the Hardware Revision?</em></p>
-<p>Depending on the <strong>Hardware Revision</strong>, the DC8200 Display Controller works a little differently.</p>
-<p>Assuming that our Display Controller is <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.h#L237-L241"><strong>DC_REV_2</strong></a> (HW_REV_5721_310)…</p>
+<p>Depending on the <strong>Hardware Revision</strong>, the DC8200 Display Controller works a little differently. For Star64 SBC…</p>
 <ul>
 <li>
-<p><strong><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1129-L1149">dc_info</a> (Display Controller Info)</strong> says that 2 Display Panels and 8 Display Planes (Layers) are supported…</p>
+<p><strong>Hardware Revision</strong> is <strong><code>0x5720</code></strong> (DC_REV_0)</p>
+</li>
+<li>
+<p><strong>Chip ID</strong> is <strong><code>0x30E</code></strong></p>
+<p><a href="https://lupyuen.github.io/articles/display3#read-the-hardware-revision-and-chip-id">(Source)</a></p>
+</li>
+</ul>
+<p>When we match the Hardware Revision with the Driver Code…</p>
+<ul>
+<li>
+<p><strong><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1086-L1107">dc_info</a> (Display Controller Info)</strong> says that 2 Display Panels and 8 Display Planes (Layers) are supported…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Display Controller Info
 static const struct vs_dc_info dc_info[] = {
-  ...
   {
-    // For DC_REV_2:
+    // For DC_REV_0:
     .name      = &quot;DC8200&quot;,
     .panel_num = 2,
     .plane_num = 8,
-    .planes    = dc_hw_planes[DC_REV_2],
+    .planes    = dc_hw_planes[DC_REV_0],
     .layer_num = 6,
     .max_bpc   = 10,
     .color_formats =
@@ -483,11 +491,11 @@ static const struct vs_dc_info dc_info[] = {
     .mmu_prefetch = false,
     .background   = true,
     .panel_sync   = true,
-    .cap_dec      = false,
+    .cap_dec      = true,  // This differs across Hardware Revisions
   }
 </code></pre></div></li>
 <li>
-<p><strong><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L863-L1083">dc_hw_planes</a> (Display Planes Info)</strong> defines the 8 Display Planes (Layers)…</p>
+<p><strong><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L693">dc_hw_planes</a> (Display Planes Info)</strong> defines the 8 Display Planes (Layers)…</p>
 <div><table><thead><tr><th style="text-align: center">Z Pos</th><th style="text-align: left">Layer</th><th style="text-align: center">Min Size</th><th style="text-align: center">Max Size</th></tr></thead><tbody>
 <tr><td style="text-align: center">0</td><td style="text-align: left">Primary</td><td style="text-align: center">0 x 0</td><td style="text-align: center">4096 x 4096</td></tr>
 <tr><td style="text-align: center">1</td><td style="text-align: left">Overlay</td><td style="text-align: center">0 x 0</td><td style="text-align: center">4096 x 4096</td></tr>
@@ -499,7 +507,7 @@ static const struct vs_dc_info dc_info[] = {
 <tr><td style="text-align: center">255</td><td style="text-align: left">Cursor_1</td><td style="text-align: center">32 x 32</td><td style="text-align: center">64 x 64</td></tr>
 </tbody></table>
 </div>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L863-L1083">(Plus a bunch of <strong>Other Properties</strong>)</a></p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L693s">(Plus a bunch of <strong>Other Properties</strong>)</a></p>
 </li>
 </ul>
 <p><em>Why are the layers interleaved?</em></p>
