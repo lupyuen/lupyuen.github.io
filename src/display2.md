@@ -430,22 +430,27 @@ Here's what happens inside [__dc_hw_init__](https://github.com/starfive-tech/lin
 
 _Why read the Hardware Revision?_
 
-Depending on the __Hardware Revision__, the DC8200 Display Controller works a little differently.
+Depending on the __Hardware Revision__, the DC8200 Display Controller works a little differently. For Star64 SBC...
 
-Assuming that our Display Controller is [__DC_REV_2__](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.h#L237-L241) (HW_REV_5721_310)...
+- __Hardware Revision__ is __`0x5720`__ (DC_REV_0)
+	
+- __Chip ID__ is __`0x30E`__
 
-- __[dc_info](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1129-L1149) (Display Controller Info)__ says that 2 Display Panels and 8 Display Planes (Layers) are supported...
+  [(Source)](https://lupyuen.github.io/articles/display3#read-the-hardware-revision-and-chip-id)
+
+When we match the Hardware Revision with the Driver Code...
+
+- __[dc_info](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1086-L1107) (Display Controller Info)__ says that 2 Display Panels and 8 Display Planes (Layers) are supported...
 
   ```c
   // Display Controller Info
   static const struct vs_dc_info dc_info[] = {
-    ...
     {
-      // For DC_REV_2:
+      // For DC_REV_0:
       .name      = "DC8200",
       .panel_num = 2,
       .plane_num = 8,
-      .planes    = dc_hw_planes[DC_REV_2],
+      .planes    = dc_hw_planes[DC_REV_0],
       .layer_num = 6,
       .max_bpc   = 10,
       .color_formats =
@@ -460,11 +465,11 @@ Assuming that our Display Controller is [__DC_REV_2__](https://github.com/starfi
       .mmu_prefetch = false,
       .background   = true,
       .panel_sync   = true,
-      .cap_dec      = false,
+      .cap_dec      = true,  // This differs across Hardware Revisions
     }
   ```
 
-- __[dc_hw_planes](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L863-L1083) (Display Planes Info)__ defines the 8 Display Planes (Layers)...
+- __[dc_hw_planes](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L693) (Display Planes Info)__ defines the 8 Display Planes (Layers)...
 
   | Z Pos | Layer | Min Size | Max Size |
   |:-----:|:------|:--------:|:--------:|
@@ -477,7 +482,7 @@ Assuming that our Display Controller is [__DC_REV_2__](https://github.com/starfi
   | 255 | Cursor | 32 x 32 | 64 x 64
   | 255 | Cursor_1 | 32 x 32 | 64 x 64
 
-  [(Plus a bunch of __Other Properties__)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L863-L1083)
+  [(Plus a bunch of __Other Properties__)](https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L472-L693s)
 
 _Why are the layers interleaved?_
 
