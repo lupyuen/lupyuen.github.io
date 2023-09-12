@@ -291,7 +291,7 @@ This produces the Flat Image Tree [__starfiveu.fit__](https://github.com/lupyuen
 
 To prepare the microSD Card, download the microSD Image [__sdcard.img__](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img) from [__StarFive VisionFive2 Software Releases__](https://github.com/starfive-tech/VisionFive2/releases).
 
-Write the downloaded image to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
+Write the downloaded image to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks). [(Or use __`dd`__)](https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6)
 
 Copy the file [__starfiveu.fit__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/starfiveu.fit) from above and overwrite the file on the microSD Card...
 
