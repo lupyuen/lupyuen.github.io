@@ -332,7 +332,7 @@ Created:         Fri Aug  4 23:20:52 2023
 </code></pre></div>
 <p>This produces the Flat Image Tree <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/starfiveu.fit"><strong>starfiveu.fit</strong></a>, which we’ll copy later to a microSD Card.</p>
 <p>To prepare the microSD Card, download the microSD Image <a href="https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img"><strong>sdcard.img</strong></a> from <a href="https://github.com/starfive-tech/VisionFive2/releases"><strong>StarFive VisionFive2 Software Releases</strong></a>.</p>
-<p>Write the downloaded image to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
+<p>Write the downloaded image to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>. <a href="https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6">(Or use <strong><code>dd</code></strong>)</a></p>
 <p>Copy the file <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/starfiveu.fit"><strong>starfiveu.fit</strong></a> from above and overwrite the file on the microSD Card…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS: Copy to microSD
 cp starfiveu.fit &quot;/Volumes/NO NAME&quot;
