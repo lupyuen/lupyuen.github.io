@@ -809,7 +809,7 @@ We hope to test NuttX soon on the [__PineTab-V RISC-V Tablet__](https://wiki.pin
 
 # What's Next
 
-Today we finally have NuttX running on a __Single-Board Computer__: Star64 JH7110 SBC!
+Today we finally have NuttX running on a __Single-Board Computer__: Star64 JH7110 SBC! (And StarFive VisionFive2)
 
 - We talked about __building NuttX__ for Star64
 
