@@ -8,7 +8,7 @@
 
 [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/nuttx2) (RTOS) now officially supports [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer! (Pic below)
 
-(Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html), the same SoC in VisionFive2)
+(Works on [__StarFive VisionFive2 SBC__](https://github.com/lupyuen/lupyuen.github.io/issues/19#issuecomment-1715054007) too, since both SBCs are based on [__StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html))
 
 In this article we explain how we __created the First Release__ of NuttX for Star64 JH7110...
 
@@ -805,6 +805,8 @@ __Display:__
 
 We hope to test NuttX soon on the [__PineTab-V RISC-V Tablet__](https://wiki.pine64.org/wiki/PineTab-V). Stay tuned for updates!
 
+![Apache NuttX RTOS boots OK on StarFive VisionFive2 SBC](https://lupyuen.github.io/images/release-visionfive.jpg)
+
 # What's Next
 
 Today we finally have NuttX running on a __Single-Board Computer__: Star64 JH7110 SBC!
@@ -820,8 +822,6 @@ Today we finally have NuttX running on a __Single-Board Computer__: Star64 JH711
 - Stay tuned for __Upcoming Features__ on Star64 and VisionFive2 
 
   (Maybe PineTab-V too!)
-
-If you have a __StarFive VisionFive2 SBC__, please try booting NuttX and lemme know if it works!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
