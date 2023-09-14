@@ -834,12 +834,13 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/release.md"><strong>lupyuen.github.io/src/release.md</strong></a></p>
 <h1 id="appendix-missing-mathh"><a href="#appendix-missing-mathh">9 Appendix: Missing Math.h</a></h1>
-<p>If the build fails due to missing <strong><code>math.h</code></strong>, edit the file <strong><code>nuttx/.config</code></strong> and add…</p>
+<p>If the NuttX Build fails due to missing <strong><code>math.h</code></strong>, edit the file <strong><code>nuttx/.config</code></strong> and add…</p>
 <div class="example-wrap"><pre class="language-text"><code>NEED_MATH_H=y
 CONFIG_LIBM=y
 </code></pre></div>
 <p>This fixes the NuttX Build to use the NuttX Version of  <strong><code>math.h</code></strong>. (Instead of the System Version)</p>
-<p><strong>TODO:</strong> Why is <strong><code>math.h</code></strong> missing when building on Raspberry Pi 4?</p>
+<p><strong>TODO:</strong> Why is <strong><code>math.h</code></strong> missing when building NuttX on Raspberry Pi 4? (Rasbian)</p>
+<p><a href="https://github.com/KenDickey">(Thanks to <strong>Ken Dickey</strong> for the tip!)</a></p>
 <h1 id="appendix-starfive-visionfive2-software-release"><a href="#appendix-starfive-visionfive2-software-release">10 Appendix: StarFive VisionFive2 Software Release</a></h1>
 <p>The <strong>StarFive VisionFive2 Software Release</strong> was helpful for creating the Bootable microSD for NuttX.</p>
 <p>The Software Release includes an <strong>SD Card Image</strong> that boots OK on Star64…</p>
