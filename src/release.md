@@ -847,7 +847,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Missing Math.h
 
-If the build fails due to missing __`math.h`__, edit the file __`nuttx/.config`__ and add...
+If the NuttX Build fails due to missing __`math.h`__, edit the file __`nuttx/.config`__ and add...
 
 ```text
 NEED_MATH_H=y
@@ -856,7 +856,9 @@ CONFIG_LIBM=y
 
 This fixes the NuttX Build to use the NuttX Version of  __`math.h`__. (Instead of the System Version)
 
-__TODO:__ Why is __`math.h`__ missing when building on Raspberry Pi 4?
+__TODO:__ Why is __`math.h`__ missing when building NuttX on Raspberry Pi 4? (Rasbian)
+
+[(Thanks to __Ken Dickey__ for the tip!)](https://github.com/KenDickey)
 
 # Appendix: StarFive VisionFive2 Software Release
 
