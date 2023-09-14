@@ -78,8 +78,9 @@
 <li><a href="#update-the-nuttx-docs">6 Update the NuttX Docs</a><ul></ul></li>
 <li><a href="#upcoming-features">7 Upcoming Features</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-starfive-visionfive2-software-release">9 Appendix: StarFive VisionFive2 Software Release</a><ul></ul></li>
-<li><a href="#appendix-uart-clock-for-jh7110">10 Appendix: UART Clock for JH7110</a><ul></ul></li></ul></nav><p>📝 <em>7 Aug 2023</em></p>
+<li><a href="#appendix-missing-mathh">9 Appendix: Missing Math.h</a><ul></ul></li>
+<li><a href="#appendix-starfive-visionfive2-software-release">10 Appendix: StarFive VisionFive2 Software Release</a><ul></ul></li>
+<li><a href="#appendix-uart-clock-for-jh7110">11 Appendix: UART Clock for JH7110</a><ul></ul></li></ul></nav><p>📝 <em>7 Aug 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/release-title.png" alt="Apache NuttX RTOS boots OK on Star64 JH7110 SBC" /></p>
 <p><a href="https://www.hackster.io/lupyuen/rtos-on-a-risc-v-sbc-star64-jh7110-apache-nuttx-2a7429"><em>(Also on <strong>Hackster.io</strong>)</em></a></p>
 <p><a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) now officially supports <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer! (Pic below)</p>
@@ -831,7 +832,13 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/release.md"><strong>lupyuen.github.io/src/release.md</strong></a></p>
-<h1 id="appendix-starfive-visionfive2-software-release"><a href="#appendix-starfive-visionfive2-software-release">9 Appendix: StarFive VisionFive2 Software Release</a></h1>
+<h1 id="appendix-missing-mathh"><a href="#appendix-missing-mathh">9 Appendix: Missing Math.h</a></h1>
+<p>If the build fails due to missing <strong><code>math.h</code></strong>, edit the file <strong><code>nuttx/.config</code></strong> and add…</p>
+<div class="example-wrap"><pre class="language-text"><code>NEED_MATH_H=y
+CONFIG_LIBM=y
+</code></pre></div>
+<p>This fixes the NuttX Build to use the NuttX Version of  <strong><code>math.h</code></strong>. (Instead of the System Version)</p>
+<h1 id="appendix-starfive-visionfive2-software-release"><a href="#appendix-starfive-visionfive2-software-release">10 Appendix: StarFive VisionFive2 Software Release</a></h1>
 <p>The <strong>StarFive VisionFive2 Software Release</strong> was helpful for creating the Bootable microSD for NuttX.</p>
 <p>The Software Release includes an <strong>SD Card Image</strong> that boots OK on Star64…</p>
 <ul>
@@ -904,7 +911,7 @@ Password: starfive
 </code></pre></div>
 <p>Useful for creating our own SD Card Partitions!</p>
 <p>(We won’t need the <strong>spl</strong>, <strong>uboot</strong> and <strong>root</strong> partitions for NuttX)</p>
-<h1 id="appendix-uart-clock-for-jh7110"><a href="#appendix-uart-clock-for-jh7110">10 Appendix: UART Clock for JH7110</a></h1>
+<h1 id="appendix-uart-clock-for-jh7110"><a href="#appendix-uart-clock-for-jh7110">11 Appendix: UART Clock for JH7110</a></h1>
 <p><em>How did we figure out the UART Clock for JH7110?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_CLOCK=23040000
 </code></pre></div>
