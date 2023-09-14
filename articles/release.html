@@ -142,6 +142,7 @@ $ make
 $ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
 </code></pre></div>
 <p>This produces the NuttX Kernel <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/nuttx.bin"><strong>nuttx.bin</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/release#appendix-missing-mathh">(Missing <strong><code>math.h</code></strong>? See this)</a></p>
 </li>
 <li>
 <p>Build the <strong>NuttX Apps Filesystem</strong>…</p>
@@ -838,6 +839,7 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
 CONFIG_LIBM=y
 </code></pre></div>
 <p>This fixes the NuttX Build to use the NuttX Version of  <strong><code>math.h</code></strong>. (Instead of the System Version)</p>
+<p><strong>TODO:</strong> Why is <strong><code>math.h</code></strong> missing when building on Raspberry Pi 4?</p>
 <h1 id="appendix-starfive-visionfive2-software-release"><a href="#appendix-starfive-visionfive2-software-release">10 Appendix: StarFive VisionFive2 Software Release</a></h1>
 <p>The <strong>StarFive VisionFive2 Software Release</strong> was helpful for creating the Bootable microSD for NuttX.</p>
 <p>The Software Release includes an <strong>SD Card Image</strong> that boots OK on Star64…</p>
