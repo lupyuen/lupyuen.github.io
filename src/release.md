@@ -67,7 +67,9 @@ Let's walk through the steps to __build NuttX for Star64__...
     ```
 
     This produces the NuttX Kernel [__nuttx.bin__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/nuttx.bin)
-    
+
+    [(Missing __`math.h`__? See this)](https://lupyuen.github.io/articles/release#appendix-missing-mathh)
+
 1.  Build the __NuttX Apps Filesystem__...
 
     ```bash
@@ -853,6 +855,8 @@ CONFIG_LIBM=y
 ```
 
 This fixes the NuttX Build to use the NuttX Version of  __`math.h`__. (Instead of the System Version)
+
+__TODO:__ Why is __`math.h`__ missing when building on Raspberry Pi 4?
 
 # Appendix: StarFive VisionFive2 Software Release
 
