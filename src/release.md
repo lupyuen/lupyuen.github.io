@@ -843,6 +843,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/release.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/release.md)
 
+# Appendix: Missing Math.h
+
+If the build fails due to missing __`math.h`__, edit the file __`nuttx/.config`__ and add...
+
+```text
+NEED_MATH_H=y
+CONFIG_LIBM=y
+```
+
+This fixes the NuttX Build to use the NuttX Version of  __`math.h`__. (Instead of the System Version)
+
 # Appendix: StarFive VisionFive2 Software Release
 
 The __StarFive VisionFive2 Software Release__ was helpful for creating the Bootable microSD for NuttX.
