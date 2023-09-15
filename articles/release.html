@@ -125,19 +125,15 @@
 <p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
 </li>
 <li>
-<p>Download the RISC-V Toolchain for <strong>riscv64-unknown-elf</strong>…</p>
-<p><a href="https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></p>
-</li>
-<li>
-<p>Download the <strong>NuttX Repositories</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ git clone https://github.com/apache/nuttx.git nuttx
-$ git clone https://github.com/apache/nuttx-apps apps
-</code></pre></div></li>
-<li>
 <p>Download the <strong>RISC-V Toolchain riscv64-unknown-elf</strong> from <a href="https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0"><strong>SiFive RISC-V Tools</strong></a>.</p>
 <p>Add the downloaded toolchain “<strong>riscv64-unknown-elf-toolchain-…/bin</strong>” to the <strong>PATH</strong> Environment Variable.</p>
 <p>Check the RISC-V Toolchain:</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ riscv64-unknown-elf-gcc -v
+</code></pre></div></li>
+<li>
+<p>Download the <strong>NuttX Repositories</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ git clone https://github.com/apache/nuttx.git nuttx
+$ git clone https://github.com/apache/nuttx-apps apps
 </code></pre></div></li>
 <li>
 <p>Configure and <strong>build the NuttX Project</strong>…</p>
