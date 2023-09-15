@@ -42,17 +42,6 @@ Let's walk through the steps to __build NuttX for Star64__...
 
     [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
-1.  Download the RISC-V Toolchain for __riscv64-unknown-elf__...
-    
-    [__"Download Toolchain for 64-bit RISC-V"__](https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v)
-
-1.  Download the __NuttX Repositories__...
-
-    ```bash
-    $ git clone https://github.com/apache/nuttx.git nuttx
-    $ git clone https://github.com/apache/nuttx-apps apps
-    ```
-
 1.  Download the __RISC-V Toolchain riscv64-unknown-elf__ from [__SiFive RISC-V Tools__](https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0).
 
     Add the downloaded toolchain "__riscv64-unknown-elf-toolchain-.../bin__" to the __PATH__ Environment Variable.
@@ -61,6 +50,13 @@ Let's walk through the steps to __build NuttX for Star64__...
 
     ```bash
     $ riscv64-unknown-elf-gcc -v
+    ```
+
+1.  Download the __NuttX Repositories__...
+
+    ```bash
+    $ git clone https://github.com/apache/nuttx.git nuttx
+    $ git clone https://github.com/apache/nuttx-apps apps
     ```
 
 1.  Configure and __build the NuttX Project__...
