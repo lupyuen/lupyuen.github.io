@@ -510,6 +510,8 @@ But if we're keen to __build NuttX ourselves__, here are the steps...
 
     [(See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
+    [(Missing __`math.h`__? See this)](https://lupyuen.github.io/articles/release#appendix-missing-mathh)
+
 1.  With the default settings, the __LVGL Widget Demo__ isn't quite so Touch-Friendly. [(See this)](https://lupyuen.github.io/articles/lvgl2#touch-friendly-lvgl)
 
     To fix this, look for this LVGL Source File...
