@@ -121,18 +121,21 @@
 <p>Let’s walk through the steps to <strong>build NuttX for Star64</strong>…</p>
 <ol>
 <li>
-<p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
+<p>Install the <strong>NuttX Build Prerequisites</strong>, skip the RISC-V Toolchain…</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
 </li>
 <li>
-<p>Download the <strong>RISC-V Toolchain riscv64-unknown-elf</strong> from <a href="https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0"><strong>SiFive RISC-V Tools</strong></a>.</p>
-<p>Add the downloaded toolchain “<strong>riscv64-unknown-elf-toolchain-…/bin</strong>” to the <strong>PATH</strong> Environment Variable.</p>
+<p>Download the <strong>RISC-V Toolchain riscv64-unknown-elf</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></p>
+<p>Add the downloaded toolchain to the <strong>PATH</strong> Environment Variable.</p>
 <p>Check the RISC-V Toolchain:</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ riscv64-unknown-elf-gcc -v
 </code></pre></div></li>
 <li>
 <p>Download the <strong>NuttX Repositories</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ git clone https://github.com/apache/nuttx.git nuttx
+<div class="example-wrap"><pre class="language-bash"><code>$ mkdir nuttx
+$ cd nuttx
+$ git clone https://github.com/apache/nuttx.git nuttx
 $ git clone https://github.com/apache/nuttx-apps apps
 </code></pre></div></li>
 <li>
@@ -789,7 +792,7 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
 <p>We hope to test NuttX soon on the <a href="https://wiki.pine64.org/wiki/PineTab-V"><strong>PineTab-V RISC-V Tablet</strong></a>. Stay tuned for updates!</p>
 <p><img src="https://lupyuen.github.io/images/release-visionfive.jpg" alt="Apache NuttX RTOS boots OK on StarFive VisionFive2 SBC" /></p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
-<p>Today we finally have NuttX running on a <strong>Single-Board Computer</strong>: Star64 JH7110 SBC! (And StarFive VisionFive2)</p>
+<p>Today we finally have NuttX running on a <strong>Single-Board Computer</strong>: Star64 JH7110 SBC! (And StarFive VisionFive2, pic above)</p>
 <ul>
 <li>
 <p>We talked about <strong>building NuttX</strong> for Star64</p>
@@ -835,12 +838,26 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/release.md"><strong>lupyuen.github.io/src/release.md</strong></a></p>
 <h1 id="appendix-missing-mathh"><a href="#appendix-missing-mathh">9 Appendix: Missing Math.h</a></h1>
-<p>If the NuttX Build fails due to missing <strong><code>math.h</code></strong>, edit the file <strong><code>nuttx/.config</code></strong> and add…</p>
+<p><em>Why did the NuttX Build fail with missing <code>math.h</code>?</em></p>
+<div class="example-wrap"><pre class="language-text"><code>$ sudo apt install \
+  gcc-riscv64-unknown-elf \
+  picolibc-riscv64-unknown-elf
+
+$ make
+./stdio/lib_dtoa_engine.c:40:10: fatal error: math.h: No such file or directory
+ #include &lt;math.h&gt;
+</code></pre></div>
+<p>If the NuttX Build fails due to missing <strong><code>math.h</code></strong>, install the <strong>xPack GNU RISC-V Embedded GCC Toolchain</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v"><strong>“xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V”</strong></a></li>
+</ul>
+<p><em>Is there another solution?</em></p>
+<p>Here’s a quick hack: Edit the file <strong><code>nuttx/.config</code></strong> and add…</p>
 <div class="example-wrap"><pre class="language-text"><code>NEED_MATH_H=y
 CONFIG_LIBM=y
 </code></pre></div>
 <p>This fixes the NuttX Build to use the NuttX Version of  <strong><code>math.h</code></strong>. (Instead of the System Version)</p>
-<p><strong>TODO:</strong> Why is <strong><code>math.h</code></strong> missing when building NuttX on Raspberry Pi 4? (Rasbian)</p>
+<p>NuttX Kernel will boot OK if we don’t actually use any Math Functions. But NuttX Apps will fail to load if they call Math Functions. (Like <strong><code>floor</code></strong>)</p>
 <p><a href="https://github.com/KenDickey">(Thanks to <strong>Ken Dickey</strong> for the tip!)</a></p>
 <h1 id="appendix-starfive-visionfive2-software-release"><a href="#appendix-starfive-visionfive2-software-release">10 Appendix: StarFive VisionFive2 Software Release</a></h1>
 <p>The <strong>StarFive VisionFive2 Software Release</strong> was helpful for creating the Bootable microSD for NuttX.</p>
