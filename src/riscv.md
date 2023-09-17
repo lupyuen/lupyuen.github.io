@@ -931,11 +931,13 @@ CP: nuttx.hex
 
 [(See the __Complete Steps__)](https://gist.github.com/lupyuen/8ba3de9ebba0881678b6ecab977443f5)
 
-Remember to add the xPack GNU RISC-V Embedded GCC Toolchain to the __`PATH`__ Environment Variable...
+Remember to add the xPack Toolchain to the __`PATH`__ Environment Variable...
 
 ```text
 xpack-riscv-none-elf-gcc-12.3.0-1/bin
 ```
+
+__TODO:__ Does it work with NuttX Apps that call [__Math Functions__](https://lupyuen.github.io/articles/release#appendix-missing-mathh)? (Like __`floor`__)
 
 _What about the standard toolchain: gcc-riscv64-unknown-elf?_
 
@@ -954,7 +956,7 @@ $ make
   #include <math.h>
 ```
 
-How do we point the NuttX Include and Lib Paths to picolibc for the NuttX Build?
+How do we point the __NuttX Include and Lib Paths__ to picolibc for the NuttX Build?
 
 (So that the NuttX Build will use the RISC-V "math.h" that's bundled with picolibc)
 
