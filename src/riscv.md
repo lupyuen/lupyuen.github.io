@@ -956,4 +956,6 @@ $ make
 
 How do we point the NuttX Include and Lib Paths to picolibc for the NuttX Build?
 
+(So that the NuttX Build will use the RISC-V "math.h" that's bundled with picolibc)
+
 __TODO:__ Point the NuttX Include and Lib Paths to picolibc
