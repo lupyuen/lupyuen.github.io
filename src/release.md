@@ -38,14 +38,16 @@ Which is probably helpful for folks who wish to...
 
 Let's walk through the steps to __build NuttX for Star64__...
 
-1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
+1.  Install the __NuttX Build Prerequisites__, skip the RISC-V Toolchain...
 
     [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
-1.  Download the __RISC-V Toolchain riscv64-unknown-elf__ from [__SiFive RISC-V Tools__](https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0).
+1.  Download the __RISC-V Toolchain riscv64-unknown-elf__...
 
-    Add the downloaded toolchain "__riscv64-unknown-elf-toolchain-.../bin__" to the __PATH__ Environment Variable.
+    [__"Download Toolchain for 64-bit RISC-V"__](https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v)
 
+    Add the downloaded toolchain to the __PATH__ Environment Variable.
+    
     Check the RISC-V Toolchain:
 
     ```bash
@@ -55,6 +57,8 @@ Let's walk through the steps to __build NuttX for Star64__...
 1.  Download the __NuttX Repositories__...
 
     ```bash
+    $ mkdir nuttx
+    $ cd nuttx
     $ git clone https://github.com/apache/nuttx.git nuttx
     $ git clone https://github.com/apache/nuttx-apps apps
     ```
@@ -813,7 +817,7 @@ We hope to test NuttX soon on the [__PineTab-V RISC-V Tablet__](https://wiki.pin
 
 # What's Next
 
-Today we finally have NuttX running on a __Single-Board Computer__: Star64 JH7110 SBC! (And StarFive VisionFive2)
+Today we finally have NuttX running on a __Single-Board Computer__: Star64 JH7110 SBC! (And StarFive VisionFive2, pic above)
 
 - We talked about __building NuttX__ for Star64
 
@@ -849,7 +853,25 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Missing Math.h
 
-If the NuttX Build fails due to missing __`math.h`__, edit the file __`nuttx/.config`__ and add...
+_Why did the NuttX Build fail with missing `math.h`?_
+
+```text
+$ sudo apt install \
+  gcc-riscv64-unknown-elf \
+  picolibc-riscv64-unknown-elf
+
+$ make
+./stdio/lib_dtoa_engine.c:40:10: fatal error: math.h: No such file or directory
+ #include <math.h>
+```
+
+If the NuttX Build fails due to missing __`math.h`__, install the __xPack GNU RISC-V Embedded GCC Toolchain__...
+
+- [__"xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V"__](https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v)
+
+_Is there another solution?_
+
+Here's a quick hack: Edit the file __`nuttx/.config`__ and add...
 
 ```text
 NEED_MATH_H=y
@@ -858,7 +880,7 @@ CONFIG_LIBM=y
 
 This fixes the NuttX Build to use the NuttX Version of  __`math.h`__. (Instead of the System Version)
 
-__TODO:__ Why is __`math.h`__ missing when building NuttX on Raspberry Pi 4? (Rasbian)
+NuttX Kernel will boot OK if we don't actually use any Math Functions. But NuttX Apps will fail to load if they call Math Functions. (Like __`floor`__)
 
 [(Thanks to __Ken Dickey__ for the tip!)](https://github.com/KenDickey)
 

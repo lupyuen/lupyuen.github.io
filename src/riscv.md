@@ -850,7 +850,7 @@ Follow these steps to download the __64-bit RISC-V Toolchain__ (SiFive Freedom T
 
     -   [__Windows MinGW__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip)
 
-    [(Building on __Arm64 Linux__? See the next section)](aaaa)
+    -   [__Arm64 Linux__](https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v) (Raspberry Pi, Pinebook Pro)
 
 1.  Extract the Downloaded Toolchain
 
@@ -930,6 +930,12 @@ CP: nuttx.hex
 ```
 
 [(See the __Complete Steps__)](https://gist.github.com/lupyuen/8ba3de9ebba0881678b6ecab977443f5)
+
+Remember to add the xPack GNU RISC-V Embedded GCC Toolchain to the __`PATH`__ Environment Variable...
+
+```text
+xpack-riscv-none-elf-gcc-12.3.0-1/bin
+```
 
 _What about the standard toolchain: gcc-riscv64-unknown-elf?_
 
