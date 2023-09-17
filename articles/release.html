@@ -844,8 +844,9 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
   picolibc-riscv64-unknown-elf
 
 $ make
-./stdio/lib_dtoa_engine.c:40:10: fatal error: math.h: No such file or directory
- #include &lt;math.h&gt;
+./stdio/lib_dtoa_engine.c:40:10:
+  fatal error: math.h: No such file or directory
+  #include &lt;math.h&gt;
 </code></pre></div>
 <p>If the NuttX Build fails due to missing <strong><code>math.h</code></strong>, install the <strong>xPack GNU RISC-V Embedded GCC Toolchain</strong>…</p>
 <ul>
