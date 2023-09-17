@@ -941,7 +941,7 @@ _What about the standard toolchain: gcc-riscv64-unknown-elf?_
 
 [__According to this post__](https://github.com/sifive/freedom-tools/issues/54), we might use __gcc-riscv64-unknown-elf__ and __picolibc-riscv64-unknown-elf__.
 
-But when we build NuttX with __gcc-riscv64-unknown-elf__, it fails with missing "math.h"...
+But when we build NuttX with __gcc-riscv64-unknown-elf__, it fails with [__missing "math.h"__](https://lupyuen.github.io/articles/release#appendix-missing-mathh)...
 
 ```text
 $ sudo apt install \
@@ -949,8 +949,9 @@ $ sudo apt install \
   picolibc-riscv64-unknown-elf
 
 $ make
-./stdio/lib_dtoa_engine.c:40:10: fatal error: math.h: No such file or directory
- #include <math.h>
+./stdio/lib_dtoa_engine.c:40:10:
+  fatal error: math.h: No such file or directory
+  #include <math.h>
 ```
 
 How do we point the NuttX Include and Lib Paths to picolibc for the NuttX Build?

@@ -861,8 +861,9 @@ $ sudo apt install \
   picolibc-riscv64-unknown-elf
 
 $ make
-./stdio/lib_dtoa_engine.c:40:10: fatal error: math.h: No such file or directory
- #include <math.h>
+./stdio/lib_dtoa_engine.c:40:10:
+  fatal error: math.h: No such file or directory
+  #include <math.h>
 ```
 
 If the NuttX Build fails due to missing __`math.h`__, install the __xPack GNU RISC-V Embedded GCC Toolchain__...
