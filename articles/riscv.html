@@ -83,7 +83,8 @@
 <li><a href="#appendix-analysis-of-nuttx-boot-code">8 Appendix: Analysis of NuttX Boot Code</a><ul></ul></li>
 <li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">9 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
 <li><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">10 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
-<li><a href="#appendix-download-toolchain-for-64-bit-risc-v">11 Appendix: Download Toolchain for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>25 Jun 2023</em></p>
+<li><a href="#appendix-download-toolchain-for-64-bit-risc-v">11 Appendix: Download Toolchain for 64-bit RISC-V</a><ul></ul></li>
+<li><a href="#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v">12 Appendix: xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>25 Jun 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
 <p>(Think Linux, but a lot smaller and simpler)</p>
@@ -798,16 +799,16 @@ riscv64-unknown-elf-objdump \
 </li>
 </ul>
 <h1 id="appendix-download-toolchain-for-64-bit-risc-v"><a href="#appendix-download-toolchain-for-64-bit-risc-v">11 Appendix: Download Toolchain for 64-bit RISC-V</a></h1>
-<p>Follow these steps to download the <strong>64-bit RISC-V Toolchain</strong> for building Apache NuttX RTOS on Linux, macOS or Windows…</p>
+<p>Follow these steps to download the <strong>64-bit RISC-V Toolchain</strong> (SiFive Freedom Tools) for building Apache NuttX RTOS on Linux, macOS or Windows…</p>
 <ol>
 <li>
 <p>Download the <a href="https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0"><strong>riscv64-unknown-elf RISC-V Toolchain</strong></a> for Linux, macOS or Windows…</p>
 <ul>
 <li>
-<p><a href="https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz"><strong>Ubuntu Linux</strong></a></p>
+<p><a href="https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz"><strong>Ubuntu x64 Linux</strong></a></p>
 </li>
 <li>
-<p><a href="https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz"><strong>CentOS Linux</strong></a></p>
+<p><a href="https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz"><strong>CentOS x64 Linux</strong></a></p>
 </li>
 <li>
 <p><a href="https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz"><strong>macOS</strong></a></p>
@@ -816,6 +817,7 @@ riscv64-unknown-elf-objdump \
 <p><a href="https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip"><strong>Windows MinGW</strong></a></p>
 </li>
 </ul>
+<p><a href="aaaa">(Building on <strong>Arm64 Linux</strong>? See the next section)</a></p>
 </li>
 <li>
 <p>Extract the Downloaded Toolchain</p>
@@ -829,6 +831,77 @@ riscv64-unknown-elf-objdump \
 <div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-gcc -v
 </code></pre></div></li>
 </ol>
+<p><strong>For Arm64 Linux</strong> (Raspberry Pi, Pinebook Pro): See the next section…</p>
+<h1 id="appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v"><a href="#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v">12 Appendix: xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V</a></h1>
+<p>In the previous section we use the <strong>64-bit RISC-V Toolchain</strong> from SiFive Freedom Tools. But the toolchain won’t work on <strong>Arm64 Linux</strong>. (Like Raspberry Pi and Pinebook Pro)</p>
+<p>For Arm64 Linux we use a different toolchain: <a href="https://xpack.github.io/dev-tools/riscv-none-elf-gcc/install/"><strong>xPack GNU RISC-V Embedded GCC</strong></a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Install Toolchain for RISC-V Target: xPack GNU RISC-V Embedded GCC
+## Based on https://xpack.github.io/dev-tools/riscv-none-elf-gcc/install/
+## For Arm64 Target (PinePhone): https://xpack.github.io/dev-tools/aarch64-none-elf-gcc/
+
+~ $ sudo apt -y remove \
+  gcc-riscv64-unknown-elf \
+  binutils-riscv64-unknown-elf \
+  picolibc-riscv64-unknown-elf
+
+~ $ ls /usr/bin/riscv*
+ls: cannot access &#39;/usr/bin/riscv*&#39;: No such file or directory
+
+~ $ wget https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v12.3.0-1/xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
+~ $ tar xf xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
+~ $ export PATH=$PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin:$PATH
+
+## xPack Toolchain names the binaries as &quot;riscv&quot; instead of &quot;riscv64&quot;. 
+## So we symlink the Toolchain Binaries from &quot;riscv&quot; to &quot;riscv64&quot;.
+## TODO: Symlink the rest of the Toolchain Binaries
+
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-ar  $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-ar
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-gcc $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-gcc
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-ld  $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-ld
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-nm  $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-nm
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-objcopy $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-objcopy
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-objdump $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-objdump
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-size    $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-size
+
+~ $ which riscv64-unknown-elf-gcc
+/home/pi/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-gcc
+
+~ $ riscv64-unknown-elf-gcc -v
+gcc version 12.3.0 (xPack GNU RISC-V Embedded GCC aarch64)
+
+## Build NuttX, based on...
+## https://lupyuen.github.io/articles/release#build-nuttx-for-star64
+## https://github.com/lupyuen/nuttx-star64/blob/main/.github/workflows/star64.yml
+
+~ $ mkdir nuttx
+~ $ cd nuttx
+~/nuttx $ git clone https://github.com/apache/nuttx.git nuttx
+~/nuttx $ git clone https://github.com/apache/nuttx-apps apps
+~/nuttx $ cd nuttx
+
+## Build NuttX for Star64 JH7110 SBC (or VisionFive2 SBC)
+## To build NuttX for QEMU: Change &quot;star64:nsh&quot; to &quot;rv-virt:nsh64&quot;
+
+~/nuttx/nuttx $ make distclean
+~/nuttx/nuttx $ tools/configure.sh star64:nsh
+~/nuttx/nuttx $ make
+LD: nuttx
+CP: nuttx.hex
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/8ba3de9ebba0881678b6ecab977443f5">(See the <strong>Complete Steps</strong>)</a></p>
+<p><em>What about the standard toolchain: gcc-riscv64-unknown-elf?</em></p>
+<p><a href="https://github.com/sifive/freedom-tools/issues/54"><strong>According to this post</strong></a>, we might use <strong>gcc-riscv64-unknown-elf</strong> and <strong>picolibc-riscv64-unknown-elf</strong>.</p>
+<p>But when we build NuttX with <strong>gcc-riscv64-unknown-elf</strong>, it fails with missing “math.h”…</p>
+<div class="example-wrap"><pre class="language-text"><code>$ sudo apt install \
+  gcc-riscv64-unknown-elf \
+  picolibc-riscv64-unknown-elf
+
+$ make
+./stdio/lib_dtoa_engine.c:40:10: fatal error: math.h: No such file or directory
+ #include &lt;math.h&gt;
+</code></pre></div>
+<p>How do we point the NuttX Include and Lib Paths to picolibc for the NuttX Build?</p>
+<p><strong>TODO:</strong> Point the NuttX Include and Lib Paths to picolibc</p>
 
     
 </body>
