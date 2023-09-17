@@ -838,17 +838,19 @@ The __RISC-V Options__ are...
 
 # Appendix: Download Toolchain for 64-bit RISC-V
 
-Follow these steps to download the __64-bit RISC-V Toolchain__ for building Apache NuttX RTOS on Linux, macOS or Windows...
+Follow these steps to download the __64-bit RISC-V Toolchain__ (SiFive Freedom Tools) for building Apache NuttX RTOS on Linux, macOS or Windows...
 
 1.  Download the [__riscv64-unknown-elf RISC-V Toolchain__](https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0) for Linux, macOS or Windows...
 
-    -   [__Ubuntu Linux__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz)
+    -   [__Ubuntu x64 Linux__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz)
 
-    -   [__CentOS Linux__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz)
+    -   [__CentOS x64 Linux__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz)
 
     -   [__macOS__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz)
 
     -   [__Windows MinGW__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip)
+
+    [(Building on __Arm64 Linux__? See the next section)](aaaa)
 
 1.  Extract the Downloaded Toolchain
 
@@ -863,3 +865,88 @@ Follow these steps to download the __64-bit RISC-V Toolchain__ for building Apac
     ```bash
     riscv64-unknown-elf-gcc -v
     ```
+
+__For Arm64 Linux__ (Raspberry Pi, Pinebook Pro): See the next section...
+
+# Appendix: xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V
+
+In the previous section we use the __64-bit RISC-V Toolchain__ from SiFive Freedom Tools. But the toolchain won't work on __Arm64 Linux__. (Like Raspberry Pi and Pinebook Pro)
+
+For Arm64 Linux we use a different toolchain: [__xPack GNU RISC-V Embedded GCC__](https://xpack.github.io/dev-tools/riscv-none-elf-gcc/install/)
+
+```bash
+## Install Toolchain for RISC-V Target: xPack GNU RISC-V Embedded GCC
+## Based on https://xpack.github.io/dev-tools/riscv-none-elf-gcc/install/
+## For Arm64 Target (PinePhone): https://xpack.github.io/dev-tools/aarch64-none-elf-gcc/
+
+~ $ sudo apt -y remove \
+  gcc-riscv64-unknown-elf \
+  binutils-riscv64-unknown-elf \
+  picolibc-riscv64-unknown-elf
+
+~ $ ls /usr/bin/riscv*
+ls: cannot access '/usr/bin/riscv*': No such file or directory
+
+~ $ wget https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v12.3.0-1/xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
+~ $ tar xf xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
+~ $ export PATH=$PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin:$PATH
+
+## xPack Toolchain names the binaries as "riscv" instead of "riscv64". 
+## So we symlink the Toolchain Binaries from "riscv" to "riscv64".
+## TODO: Symlink the rest of the Toolchain Binaries
+
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-ar  $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-ar
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-gcc $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-gcc
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-ld  $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-ld
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-nm  $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-nm
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-objcopy $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-objcopy
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-objdump $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-objdump
+~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-size    $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-size
+
+~ $ which riscv64-unknown-elf-gcc
+/home/pi/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-gcc
+
+~ $ riscv64-unknown-elf-gcc -v
+gcc version 12.3.0 (xPack GNU RISC-V Embedded GCC aarch64)
+
+## Build NuttX, based on...
+## https://lupyuen.github.io/articles/release#build-nuttx-for-star64
+## https://github.com/lupyuen/nuttx-star64/blob/main/.github/workflows/star64.yml
+
+~ $ mkdir nuttx
+~ $ cd nuttx
+~/nuttx $ git clone https://github.com/apache/nuttx.git nuttx
+~/nuttx $ git clone https://github.com/apache/nuttx-apps apps
+~/nuttx $ cd nuttx
+
+## Build NuttX for Star64 JH7110 SBC (or VisionFive2 SBC)
+## To build NuttX for QEMU: Change "star64:nsh" to "rv-virt:nsh64"
+
+~/nuttx/nuttx $ make distclean
+~/nuttx/nuttx $ tools/configure.sh star64:nsh
+~/nuttx/nuttx $ make
+LD: nuttx
+CP: nuttx.hex
+```
+
+[(See the __Complete Steps__)](https://gist.github.com/lupyuen/8ba3de9ebba0881678b6ecab977443f5)
+
+_What about the standard toolchain: gcc-riscv64-unknown-elf?_
+
+[__According to this post__](https://github.com/sifive/freedom-tools/issues/54), we might use __gcc-riscv64-unknown-elf__ and __picolibc-riscv64-unknown-elf__.
+
+But when we build NuttX with __gcc-riscv64-unknown-elf__, it fails with missing "math.h"...
+
+```text
+$ sudo apt install \
+  gcc-riscv64-unknown-elf \
+  picolibc-riscv64-unknown-elf
+
+$ make
+./stdio/lib_dtoa_engine.c:40:10: fatal error: math.h: No such file or directory
+ #include <math.h>
+```
+
+How do we point the NuttX Include and Lib Paths to picolibc for the NuttX Build?
+
+__TODO:__ Point the NuttX Include and Lib Paths to picolibc
