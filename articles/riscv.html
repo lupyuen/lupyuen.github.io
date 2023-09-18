@@ -894,11 +894,11 @@ CP: nuttx.hex
 <p>Remember to add the xPack Toolchain to the <strong><code>PATH</code></strong> Environment Variable…</p>
 <div class="example-wrap"><pre class="language-text"><code>xpack-riscv-none-elf-gcc-12.3.0-1/bin
 </code></pre></div>
+<p>xPack Toolchain works OK with <strong>Math Functions</strong> on JH7110: <a href="https://gist.github.com/lupyuen/63bd510d7e45ceebe7443c78ed31c6c8"><strong>Source Code</strong></a> / <a href="https://gist.github.com/lupyuen/9bdb1f5478318631d0480f03f6041d83"><strong>Output Log</strong></a> / <a href="https://gist.github.com/lupyuen/24f440e14349b2ed56d1784867156378"><strong>ELF Symbols</strong></a></p>
 <p><em>Does the xPack Toolchain support <code>-mcmodel=medany</code>?</em></p>
 <p>Yes the xPack Libraries are compiled with <strong><code>-mcmodel=medany</code></strong>.</p>
 <p>xPack Toolchain requires applications to be compiled with <strong><code>-mcmodel=medany</code></strong>, otherwise the link might fail.</p>
 <p><a href="https://xpack.github.io/blog/2023/08/25/riscv-none-elf-gcc-v12-3-0-1-released/#-mcmodelmedany">(Source)</a></p>
-<p><strong>TODO:</strong> Does it work with NuttX Apps that call <a href="https://lupyuen.github.io/articles/release#appendix-missing-mathh"><strong>Math Functions</strong></a> (like <strong><code>floor</code></strong>) in NuttX Kernel Mode? <a href="https://lists.apache.org/thread/1lzjphvlhr0b6b4tdq6k1l4rhy900h0z">(See this)</a></p>
 <p><em>What about the standard toolchain: gcc-riscv64-unknown-elf?</em></p>
 <p><a href="https://github.com/sifive/freedom-tools/issues/54"><strong>According to this post</strong></a>, we might use <strong>gcc-riscv64-unknown-elf</strong> and <strong>picolibc-riscv64-unknown-elf</strong>.</p>
 <p>But when we build NuttX with <strong>gcc-riscv64-unknown-elf</strong>, it fails with <a href="https://lupyuen.github.io/articles/release#appendix-missing-mathh"><strong>missing “math.h”</strong></a>…</p>
