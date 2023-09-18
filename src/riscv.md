@@ -937,6 +937,8 @@ Remember to add the xPack Toolchain to the __`PATH`__ Environment Variable...
 xpack-riscv-none-elf-gcc-12.3.0-1/bin
 ```
 
+xPack Toolchain works OK with __Math Functions__ on JH7110: [__Source Code__](https://gist.github.com/lupyuen/63bd510d7e45ceebe7443c78ed31c6c8) / [__Output Log__](https://gist.github.com/lupyuen/9bdb1f5478318631d0480f03f6041d83) / [__ELF Symbols__](https://gist.github.com/lupyuen/24f440e14349b2ed56d1784867156378)
+
 _Does the xPack Toolchain support `-mcmodel=medany`?_
 
 Yes the xPack Libraries are compiled with __`-mcmodel=medany`__.
@@ -944,8 +946,6 @@ Yes the xPack Libraries are compiled with __`-mcmodel=medany`__.
 xPack Toolchain requires applications to be compiled with __`-mcmodel=medany`__, otherwise the link might fail.
 
 [(Source)](https://xpack.github.io/blog/2023/08/25/riscv-none-elf-gcc-v12-3-0-1-released/#-mcmodelmedany)
-
-__TODO:__ Does it work with NuttX Apps that call [__Math Functions__](https://lupyuen.github.io/articles/release#appendix-missing-mathh) (like __`floor`__) in NuttX Kernel Mode? [(See this)](https://lists.apache.org/thread/1lzjphvlhr0b6b4tdq6k1l4rhy900h0z)
 
 _What about the standard toolchain: gcc-riscv64-unknown-elf?_
 
