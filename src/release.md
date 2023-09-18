@@ -883,6 +883,8 @@ This fixes the NuttX Build to use the NuttX Version of  __`math.h`__. (Instead o
 
 NuttX Kernel will boot OK if we don't actually use any Math Functions. But NuttX Apps will fail to load if they call Math Functions. (Like __`floor`__)
 
+[(See this)](https://lists.apache.org/thread/1lzjphvlhr0b6b4tdq6k1l4rhy900h0z)
+
 [(Thanks to __Ken Dickey__ for the tip!)](https://github.com/KenDickey)
 
 # Appendix: StarFive VisionFive2 Software Release
