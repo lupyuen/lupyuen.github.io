@@ -498,6 +498,16 @@ Which does the same thing as the previous section: Boot NuttX (or Linux) over th
 
 __TODO:__ Why does TFTP time out so often on our SBC? Is it because our TFTP Server sends packets too quickly to our SBC? Can we [__throttle our TFTP Server__](https://github.com/altugbakan/rs-tftpd/blob/main/src/worker.rs#L128) to send packets slower?
 
+Frequent TFTP Timeouts ("T" below) are affecting our NuttX Testing on Star64 JH7110 SBC.  Effective transfer rate is only 430 kbps!
+
+```text
+Loading: . ##############T ###################################################
+. ####################T #########T ####################################
+. 53.7 KiB/s
+```
+
+[(Source)](https://gist.github.com/lupyuen/9bdb1f5478318631d0480f03f6041d83#file-jh7110-nuttx-math-log-L140-L173)
+
 ![Home Assistant controls Google Home (and potentially Smart Plugs)](https://lupyuen.github.io/images/tftp-home.png)
 
 [_Home Assistant controls Google Home (and potentially Smart Plugs)_](https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d)
