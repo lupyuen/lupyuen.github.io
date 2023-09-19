@@ -496,6 +496,8 @@ Which does the same thing as the previous section: Boot NuttX (or Linux) over th
 
 [(Thanks to this article)](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot)
 
+__TODO:__ Why does TFTP time out so often on our SBC? Is it because our TFTP Server sends packets too quickly to our SBC? Can we [__throttle our TFTP Server__](https://github.com/altugbakan/rs-tftpd/blob/main/src/worker.rs#L128) to send packets slower?
+
 ![Home Assistant controls Google Home (and potentially Smart Plugs)](https://lupyuen.github.io/images/tftp-home.png)
 
 [_Home Assistant controls Google Home (and potentially Smart Plugs)_](https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d)
