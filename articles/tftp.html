@@ -468,6 +468,7 @@ fi
 <p>Which does the same thing as the previous section: Boot NuttX (or Linux) over the Network at startup.</p>
 <p><a href="https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader">(As explained here)</a></p>
 <p><a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot">(Thanks to this article)</a></p>
+<p><strong>TODO:</strong> Why does TFTP time out so often on our SBC? Is it because our TFTP Server sends packets too quickly to our SBC? Can we <a href="https://github.com/altugbakan/rs-tftpd/blob/main/src/worker.rs#L128"><strong>throttle our TFTP Server</strong></a> to send packets slower?</p>
 <p><img src="https://lupyuen.github.io/images/tftp-home.png" alt="Home Assistant controls Google Home (and potentially Smart Plugs)" /></p>
 <p><a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d"><em>Home Assistant controls Google Home (and potentially Smart Plugs)</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
