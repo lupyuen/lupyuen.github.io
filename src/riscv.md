@@ -969,3 +969,5 @@ How do we point the __NuttX Include and Lib Paths__ to picolibc for the NuttX Bu
 (So that the NuttX Build will use the RISC-V "math.h" that's bundled with picolibc)
 
 __TODO:__ Point the NuttX Include and Lib Paths to picolibc, [__like this__](https://github.com/apache/nuttx/issues/10594#issuecomment-1722716562)
+
+[(We might need to add __libm.a__ to __LDLIBS__)](https://www.mail-archive.com/dev@nuttx.apache.org/msg10533.html)
