@@ -458,6 +458,8 @@ We'll use [__GitHub Desktop__](https://desktop.github.com/) (because I'm terribl
     arch/arm64: Add support for Generic Interrupt Controller Version 2
     ```
 
+    In the __Description Box__, erase the old Commit Messages.
+
     Copy the __Summary__ of our Pull Request and paste into the __Description Box__...
 
     ```text
