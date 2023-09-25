@@ -1,3 +1,42 @@
+# Lup's Presentation Slides for NuttX International Workshop 2023
+
+Join me at [__NuttX International Workshop 2023__](https://events.nuttx.apache.org/)! (29-30 Sep 2023)
+
+## Apache NuttX RTOS for PINE64 PinePhone
+
+[__Presentation Slides__](https://docs.google.com/presentation/d/15qIBW4hoCwGCX5KGwjjV2Zo_G1M4At64UqztYBf8j08/edit?usp=sharing)
+
+Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS on our phone?
+
+Over the past year, we have ported NuttX to PINE64 PinePhone as an Educational Experiment. Today we can run NuttX Touchscreen Apps on PinePhone, based on Allwinner A64 SoC with Arm64 CPUs.
+
+NuttX on PinePhone will soon support Phone Calls and Text Messages on the 4G LTE Network. We hope NuttX will become a valuable tool for teaching the inner workings of modern smartphones.
+
+## PinePhone Touchscreen on NuttX: Handling MIPI DSI, Display Engine and I2C Touch Input
+
+[__Presentation Slides__](https://docs.google.com/presentation/d/1FXHqfzEKwaI9ufcZ8x8rJwCfso2N9XoZeDtERRhqeNs/edit?usp=sharing)
+
+This presentation explains how we built the NuttX Drivers to support Touchscreen Apps on PINE64 PinePhone:
+
+1.  MIPI DSI on Allwinner A64 SoC
+1.  Allwinner Display Engine
+1.  Goodix I2C Touch Panel
+1.  Integration with LVGL Graphics Library
+
+To derisk the development, we prototyped the NuttX Drivers in the Zig Programming Language, before rewriting to C.
+
+## LVGL in WebAssembly: Building NuttX Touchscreen Apps with Zig and testing them in the Web Browser
+
+[__Presentation Slides__](https://docs.google.com/presentation/d/1aXM5JeuoXdGCkumZQL0Oe7ROBkVTgXhGZD7JfIzQGUI/edit?usp=sharing)
+
+What if we could prototype and test Touchscreen Apps in the Web Browser, before running on a real device?
+
+In this presentation we explain how we compiled the LVGL Graphics Library to WebAssembly with Zig Compiler. We created a NuttX App in the Zig Programming Language that runs in the Web Browser, calling the LVGL Library in WebAssembly.
+
+We hope that this will someday enable NuttX Apps to be created and tested easily in the Web Browser.
+
+<hr>
+
 # Lup's Presentation Slides for (ApacheCon) Community Over Code - ASF Conference Asia 2023
 
 [__Video Presentation__](https://youtu.be/Wnrq9BlNP9o)
