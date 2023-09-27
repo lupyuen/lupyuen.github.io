@@ -6,6 +6,8 @@ Join me at [__NuttX International Workshop 2023__](https://events.nuttx.apache.o
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/15qIBW4hoCwGCX5KGwjjV2Zo_G1M4At64UqztYBf8j08/edit?usp=sharing)
 
+[__Presentation Video__](https://drive.google.com/file/d/1aNK_V2iPaPhtqeQj7TSVENNVDqwV3khZ/view?usp=drive_link)
+
 Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS on our phone?
 
 Over the past year, we have ported NuttX to PINE64 PinePhone as an Educational Experiment. Today we can run NuttX Touchscreen Apps on PinePhone, based on Allwinner A64 SoC with Arm64 CPUs.
@@ -15,6 +17,8 @@ NuttX on PinePhone will soon support Phone Calls and Text Messages on the 4G LTE
 ## PinePhone Touchscreen on NuttX: Handling MIPI DSI, Display Engine and I2C Touch Input
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/1FXHqfzEKwaI9ufcZ8x8rJwCfso2N9XoZeDtERRhqeNs/edit?usp=sharing)
+
+[__Presentation Video__](https://drive.google.com/file/d/1QjEYLT7G9Erx5UoH0vRSW-0FMvo9tZDP/view?usp=drive_link)
 
 This presentation explains how we built the NuttX Drivers to support Touchscreen Apps on PINE64 PinePhone:
 
@@ -28,6 +32,8 @@ To derisk the development, we prototyped the NuttX Drivers in the Zig Programmin
 ## LVGL in WebAssembly: Building NuttX Touchscreen Apps with Zig and testing them in the Web Browser
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/1aXM5JeuoXdGCkumZQL0Oe7ROBkVTgXhGZD7JfIzQGUI/edit?usp=sharing)
+
+[__Presentation Video__](https://drive.google.com/file/d/1I_t2KWl8xM3Q1NsMC5-1NPIa0dEyhTqM/view?usp=drive_link)
 
 What if we could prototype and test Touchscreen Apps in the Web Browser, before running on a real device?
 
