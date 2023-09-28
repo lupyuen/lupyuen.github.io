@@ -157,6 +157,48 @@
   ],
   "publications": [
     {
+      "name": "(Slides) Apache NuttX RTOS for PINE64 PinePhone",
+      "publisher": "NuttX International Workshop 2023",
+      "releaseDate": "2023-09-29",
+      "website": "https://docs.google.com/presentation/d/15qIBW4hoCwGCX5KGwjjV2Zo_G1M4At64UqztYBf8j08/edit?usp=sharing",
+      "summary": "Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS on our phone? Over the past year, we have ported NuttX to PINE64 PinePhone as an Educational Experiment. Today we can run NuttX Touchscreen Apps on PinePhone, based on Allwinner A64 SoC with Arm64 CPUs. NuttX on PinePhone will soon support Phone Calls and Text Messages on the 4G LTE Network. We hope NuttX will become a valuable tool for teaching the inner workings of modern smartphones."
+    },
+    {
+      "name": "(Video) Apache NuttX RTOS for PINE64 PinePhone",
+      "publisher": "NuttX International Workshop 2023",
+      "releaseDate": "2023-09-29",
+      "website": "https://youtu.be/Eiact17m_g8?si=RuBjdPGJdfZ4tGie",
+      "summary": "Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS on our phone? Over the past year, we have ported NuttX to PINE64 PinePhone as an Educational Experiment. Today we can run NuttX Touchscreen Apps on PinePhone, based on Allwinner A64 SoC with Arm64 CPUs. NuttX on PinePhone will soon support Phone Calls and Text Messages on the 4G LTE Network. We hope NuttX will become a valuable tool for teaching the inner workings of modern smartphones."
+    },
+    {
+      "name": "(Slides) PinePhone Touchscreen on NuttX: Handling MIPI DSI, Display Engine and I2C Touch Input",
+      "publisher": "NuttX International Workshop 2023",
+      "releaseDate": "2023-09-29",
+      "website": "https://docs.google.com/presentation/d/1FXHqfzEKwaI9ufcZ8x8rJwCfso2N9XoZeDtERRhqeNs/edit?usp=sharing",
+      "summary": "This presentation explains how we built the NuttX Drivers to support Touchscreen Apps on PINE64 PinePhone: (1) MIPI DSI on Allwinner A64 SoC (2) Allwinner Display Engine (3) Goodix I2C Touch Panel (4) Integration with LVGL Graphics Library. To derisk the development, we prototyped the NuttX Drivers in the Zig Programming Language, before rewriting to C."
+    },
+    {
+      "name": "(Video) PinePhone Touchscreen on NuttX: Handling MIPI DSI, Display Engine and I2C Touch Input",
+      "publisher": "NuttX International Workshop 2023",
+      "releaseDate": "2023-09-29",
+      "website": "https://youtu.be/xpBzokOyvM0?si=MxnxyZK2t7vcLP3V",
+      "summary": "This presentation explains how we built the NuttX Drivers to support Touchscreen Apps on PINE64 PinePhone: (1) MIPI DSI on Allwinner A64 SoC (2) Allwinner Display Engine (3) Goodix I2C Touch Panel (4) Integration with LVGL Graphics Library. To derisk the development, we prototyped the NuttX Drivers in the Zig Programming Language, before rewriting to C."
+    },
+    {
+      "name": "(Slides) LVGL in WebAssembly: Building NuttX Touchscreen Apps with Zig and testing them in the Web Browser",
+      "publisher": "NuttX International Workshop 2023",
+      "releaseDate": "2023-09-29",
+      "website": "https://docs.google.com/presentation/d/1aXM5JeuoXdGCkumZQL0Oe7ROBkVTgXhGZD7JfIzQGUI/edit?usp=sharing",
+      "summary": "What if we could prototype and test Touchscreen Apps in the Web Browser, before running on a real device? In this presentation we explain how we compiled the LVGL Graphics Library to WebAssembly with Zig Compiler. We created a NuttX App in the Zig Programming Language that runs in the Web Browser, calling the LVGL Library in WebAssembly. We hope that this will someday enable NuttX Apps to be created and tested easily in the Web Browser."
+    },
+    {
+      "name": "(Video) LVGL in WebAssembly: Building NuttX Touchscreen Apps with Zig and testing them in the Web Browser",
+      "publisher": "NuttX International Workshop 2023",
+      "releaseDate": "2023-09-29",
+      "website": "https://youtu.be/8gnD8pW7Bw8?si=cYf_7MYykx8AUTlf",
+      "summary": "What if we could prototype and test Touchscreen Apps in the Web Browser, before running on a real device? In this presentation we explain how we compiled the LVGL Graphics Library to WebAssembly with Zig Compiler. We created a NuttX App in the Zig Programming Language that runs in the Web Browser, calling the LVGL Library in WebAssembly. We hope that this will someday enable NuttX Apps to be created and tested easily in the Web Browser."
+    },
+    {
       "name": "RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-09-02",
@@ -169,6 +211,20 @@
       "releaseDate": "2023-08-23",
       "website": "https://lupyuen.github.io/articles/display2",
       "summary": "Let's take a walk inside the Display Controller for Pine64's Star64 JH7110 RISC-V SBC... And find out how we'll create the Display Driver for Apache NuttX RTOS"
+    },
+    {
+      "name": "(Slides) Apache NuttX RTOS for PINE64 PinePhone",
+      "publisher": "Apache Conference Asia 2023",
+      "releaseDate": "2023-08-19",
+      "website": "https://docs.google.com/presentation/d/1xB0uzIUlzbd5-Lkh9QGaJe5ZPlbgXTTDvDV5EWn3G0E/edit?usp=sharing",
+      "summary": "Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS (Real-Time Operating System) on our phone? Over the past year, we have written a series of 24 articles explaining the inner workings of PINE64 PinePhone, and how we implemented the smartphone features with Apache NuttX RTOS. The articles cover the essential (and esoteric) topics on smartphone technology: MIPI DSI LCD Display, I2C Touch Panel, USB Controller, LTE Modem, Accelerometer / Gyroscope, Arm64 Interrupts and many more. We are also experimenting with newer, easier ways to create Smartphone Apps, with LVGL Graphics Library, Zig Programming Language, WebAssembly Simulation and Arm64 Emulation."
+    },
+    {
+      "name": "(Video) Apache NuttX RTOS for PINE64 PinePhone",
+      "publisher": "Apache Conference Asia 2023",
+      "releaseDate": "2023-08-19",
+      "website": "https://youtu.be/Wnrq9BlNP9o",
+      "summary": "Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS (Real-Time Operating System) on our phone? Over the past year, we have written a series of 24 articles explaining the inner workings of PINE64 PinePhone, and how we implemented the smartphone features with Apache NuttX RTOS. The articles cover the essential (and esoteric) topics on smartphone technology: MIPI DSI LCD Display, I2C Touch Panel, USB Controller, LTE Modem, Accelerometer / Gyroscope, Arm64 Interrupts and many more. We are also experimenting with newer, easier ways to create Smartphone Apps, with LVGL Graphics Library, Zig Programming Language, WebAssembly Simulation and Arm64 Emulation."
     },
     {
       "name": "RTOS on a RISC-V SBC: Star64 JH7110 + Apache NuttX",
