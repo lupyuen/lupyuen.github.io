@@ -60,14 +60,14 @@
             <pubDate>Wed, 23 Aug 2023 00:00:00 +0000</pubDate>
         </item>
         <item>
-            <title>(Slides) Apache NuttX RTOS for PINE64 PinePhone</title>
+            <title>(Slides) What&apos;s inside a Smartphone? Exploring the internals with Apache NuttX Real-Time Operating System</title>
             <link>https://docs.google.com/presentation/d/1xB0uzIUlzbd5-Lkh9QGaJe5ZPlbgXTTDvDV5EWn3G0E/edit?usp=sharing</link>
             <description><![CDATA[Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS (Real-Time Operating System) on our phone? Over the past year, we have written a series of 24 articles explaining the inner workings of PINE64 PinePhone, and how we implemented the smartphone features with Apache NuttX RTOS. The articles cover the essential (and esoteric) topics on smartphone technology: MIPI DSI LCD Display, I2C Touch Panel, USB Controller, LTE Modem, Accelerometer / Gyroscope, Arm64 Interrupts and many more. We are also experimenting with newer, easier ways to create Smartphone Apps, with LVGL Graphics Library, Zig Programming Language, WebAssembly Simulation and Arm64 Emulation.]]></description>
             <guid>https://docs.google.com/presentation/d/1xB0uzIUlzbd5-Lkh9QGaJe5ZPlbgXTTDvDV5EWn3G0E/edit?usp=sharing</guid>
             <pubDate>Sat, 19 Aug 2023 00:00:00 +0000</pubDate>
         </item>
         <item>
-            <title>(Video) Apache NuttX RTOS for PINE64 PinePhone</title>
+            <title>(Video) What&apos;s inside a Smartphone? Exploring the internals with Apache NuttX Real-Time Operating System</title>
             <link>https://youtu.be/Wnrq9BlNP9o</link>
             <description><![CDATA[Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS (Real-Time Operating System) on our phone? Over the past year, we have written a series of 24 articles explaining the inner workings of PINE64 PinePhone, and how we implemented the smartphone features with Apache NuttX RTOS. The articles cover the essential (and esoteric) topics on smartphone technology: MIPI DSI LCD Display, I2C Touch Panel, USB Controller, LTE Modem, Accelerometer / Gyroscope, Arm64 Interrupts and many more. We are also experimenting with newer, easier ways to create Smartphone Apps, with LVGL Graphics Library, Zig Programming Language, WebAssembly Simulation and Arm64 Emulation.]]></description>
             <guid>https://youtu.be/Wnrq9BlNP9o</guid>
