@@ -4,7 +4,7 @@ Join me at [__NuttX International Workshop 2023__](https://events.nuttx.apache.o
 
 ## Apache NuttX RTOS for PINE64 PinePhone
 
-[__Presentation Video (33 mins)__](https://drive.google.com/file/d/1aNK_V2iPaPhtqeQj7TSVENNVDqwV3khZ/view?usp=drive_link)
+[__Presentation Video (33 mins)__](https://youtu.be/Eiact17m_g8?si=RuBjdPGJdfZ4tGie)
 
 [__PDF Slides__](https://drive.google.com/file/d/1VHruba1RL8f3yUHjk7PPolz7-2Ew32EW/view?usp=drive_link)
 
@@ -20,7 +20,7 @@ NuttX on PinePhone will soon support Phone Calls and Text Messages on the 4G LTE
 
 ## PinePhone Touchscreen on NuttX: Handling MIPI DSI, Display Engine and I2C Touch Input
 
-[__Presentation Video (39 mins)__](https://drive.google.com/file/d/1QjEYLT7G9Erx5UoH0vRSW-0FMvo9tZDP/view?usp=drive_link)
+[__Presentation Video (39 mins)__](https://youtu.be/xpBzokOyvM0?si=MxnxyZK2t7vcLP3V)
 
 [__PDF Slides__](https://drive.google.com/file/d/18e3XJvUGCAzkrjqfuBU7sQARac3LKWlo/view?usp=drive_link)
 
@@ -39,7 +39,7 @@ To derisk the development, we prototyped the NuttX Drivers in the Zig Programmin
 
 ## LVGL in WebAssembly: Building NuttX Touchscreen Apps with Zig and testing them in the Web Browser
 
-[__Presentation Video (28 mins)__](https://drive.google.com/file/d/1I_t2KWl8xM3Q1NsMC5-1NPIa0dEyhTqM/view?usp=drive_link)
+[__Presentation Video (28 mins)__](https://youtu.be/8gnD8pW7Bw8?si=cYf_7MYykx8AUTlf)
 
 [__PDF Slides__](https://drive.google.com/file/d/1YWBn3wOvaQ0tyY9AAWjaHMAXMqswWF06/view?usp=drive_link)
 
