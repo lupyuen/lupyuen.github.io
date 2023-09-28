@@ -12,6 +12,7 @@
 *.jpeg binary
 *.kvdat binary
 *.pdf binary
+*.pptx binary
 *.png binary
 *.psd binary
 *.mp4 binary
