@@ -22,7 +22,13 @@ Loading:
 
 [(Source)](https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e)
 
+This makes our NuttX Testing super slow... Star64 takes __4 minutes to boot__ over the Network!
+
+[(Watch the Demo on YouTube)](https://youtu.be/MPBc2Qec6jo)
+
 _How are we booting the SBC over the Network?_
+
+We're booting our Star64 SBC with [__U-Boot Bootloader and TFTP__](https://lupyuen.github.io/articles/tftp). (Trivial File Transfer Protocol)
 
 TODO
 
