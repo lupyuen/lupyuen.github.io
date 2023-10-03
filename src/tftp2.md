@@ -2,15 +2,29 @@
 
 📝 _10 Oct 2023_
 
-![TODO](https://lupyuen.github.io/images/tftp2-title.jpg)
+![Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC](https://lupyuen.github.io/images/tftp2-title.jpg)
+
+We're porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/release) to the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) Single-Board Computer.
+
+(Powered by [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC, same as the VisionFive2 SBC)
+
+But we're hitting frequent __TFTP Timeouts__ ("T" below) while booting NuttX on Star64 over the Network.  Effective transfer rate is only __390 kbps__! (Pic above)
+
+```text
+Loading: 
+. ################################T #################################
+. #####################################T ############################
+. ###################################T ##############################
+. ####################################################T #############
+. #################################################T T ################
+. 48.8 KiB/s
+```
+
+[(Source)](https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e)
+
+_How are we booting the SBC over the Network?_
 
 TODO
-
-[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/release) (or Linux) can get _painfully tedious_ on a Single-Board Computer...
-
-[__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64)
-
-(Powered by [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
 
 # Strange Workaround for TFTP Timeout in U-Boot Bootloader
 
