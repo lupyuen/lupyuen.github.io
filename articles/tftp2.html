@@ -69,11 +69,21 @@
     <nav id="TOC"><ul>
 <li><a href="#strange-workaround-for-tftp-timeout-in-u-boot-bootloader">1 Strange Workaround for TFTP Timeout in U-Boot Bootloader</a><ul></ul></li>
 <li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Oct 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/tftp2-title.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/tftp2-title.jpg" alt="Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC" /></p>
+<p>We’re porting <a href="https://lupyuen.github.io/articles/release"><strong>Apache NuttX RTOS</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> Single-Board Computer.</p>
+<p>(Powered by <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC, same as the VisionFive2 SBC)</p>
+<p>But we’re hitting frequent <strong>TFTP Timeouts</strong> (“T” below) while booting NuttX on Star64 over the Network.  Effective transfer rate is only <strong>390 kbps</strong>! (Pic above)</p>
+<div class="example-wrap"><pre class="language-text"><code>Loading: 
+. ################################T #################################
+. #####################################T ############################
+. ###################################T ##############################
+. ####################################################T #############
+. #################################################T T ################
+. 48.8 KiB/s
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e">(Source)</a></p>
+<p><em>How are we booting the SBC over the Network?</em></p>
 <p>TODO</p>
-<p><a href="https://lupyuen.github.io/articles/release"><strong>Apache NuttX RTOS</strong></a> (or Linux) can get <em>painfully tedious</em> on a Single-Board Computer…</p>
-<p><a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a></p>
-<p>(Powered by <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
 <h1 id="strange-workaround-for-tftp-timeout-in-u-boot-bootloader"><a href="#strange-workaround-for-tftp-timeout-in-u-boot-bootloader">1 Strange Workaround for TFTP Timeout in U-Boot Bootloader</a></h1>
 <p>TODO</p>
 <p><a href="https://serverfault.com/questions/669340/downloading-with-u-boots-tftp-randomly-times-out">“Downloading with U-Boot’s tftp randomly times out”</a></p>
