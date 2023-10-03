@@ -16,6 +16,8 @@ TODO
 
 TODO
 
+["Downloading with U-Boot's tftp randomly times out"](https://serverfault.com/questions/669340/downloading-with-u-boots-tftp-randomly-times-out)
+
 Why does TFTP time out so often on our SBC? Is it because our TFTP Server sends packets too quickly to our SBC?
 
 Frequent TFTP Timeouts ("T" below) are affecting our NuttX Testing on Star64 JH7110 SBC.  Effective transfer rate is only 430 kbps!
