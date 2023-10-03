@@ -2,7 +2,7 @@
 
 📝 _10 Oct 2023_
 
-![TODO](https://lupyuen.github.io/images/tftp-title2.jpg)
+![TODO](https://lupyuen.github.io/images/tftp2-title.jpg)
 
 TODO
 
