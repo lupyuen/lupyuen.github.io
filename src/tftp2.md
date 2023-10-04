@@ -134,14 +134,17 @@ sudo --preserve-env \
 
 ## Test our TFTP Server
 ## TODO: Change `192.168.x.x` to your TFTP Server Address
-curl -v --output initrd tftp://192.168.x.x/initrd
+## TODO: Change `initrd` to a file in your TFTP Folder
+curl -v \
+  --output initrd \
+  tftp://192.168.x.x/initrd
 ```
 
 _Won't the extra Data Packet confuse the TFTP Client?_
 
 That's perfectly OK because the __TFTP Block Number__ (sequence number) is encoded inside the Data Packet.
 
-The TFTP Client (like __`curl`__) will do the right thing and drop the duplicate Data Packets...
+The TFTP Client (like __`curl`__) will do the right thing and drop the __Duplicate Data Packets__...
 
 ```text
 $ curl -v --output initrd tftp://192.168.31.10/initrd
