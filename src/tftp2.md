@@ -62,9 +62,7 @@ _We hacked our TFTP Server to send every packet twice?_
 
 Indeed! Because we can't configure any TFTP Server to send Data Packets twice.
 
-TODO
-
-From [rs-tftpd-timeout/src/worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/main/src/worker.rs#L232-L255)
+Let's modify the [__`rs-tftpd`__](https://crates.io/crates/tftpd) TFTP Server. Here's the code that sends TFTP Data Packets: [rs-tftpd-timeout/src/worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/main/src/worker.rs#L232-L255)
 
 ```rust
 // Transmit every Data Frame in the Data Window
@@ -80,14 +78,14 @@ fn send_window<T: Socket>(
     
     // Send the TFTP Data Packet
     socket.send(&Packet::Data {
-      block_num,
-      data: frame.to_vec(),
+      block_num,             // Current Block Number
+      data: frame.to_vec(),  // Data Frame for the Packet
     })?;
 
     // Omitted: Increment the Block Number
 ```
 
-Then we inserted this: [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/main/src/worker.rs#L232-L255)
+To send every __TFTP Data Packet twice__, we inserted this: [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/main/src/worker.rs#L232-L255)
 
 ```rust
     // Right after sending the TFTP Data Packet...
@@ -98,14 +96,72 @@ Then we inserted this: [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/b
     // Send the same TFTP Data Packet again.
     // Why does this work?
     socket.send(&Packet::Data {
-      block_num,
-      data: frame.to_vec(),
+      block_num,             // Current Block Number
+      data: frame.to_vec(),  // Data Frame for the Packet
     })?;
 
     // Omitted: Increment the Block Number
 ```
 
-Let's test this...
+It's a simple mod, but it solves our TFTP Timeout!
+
+_How do we run this?_
+
+Follow these steps to start our __Modified TFTP Server__ on Linux and macOS...
+
+```bash
+## Download our Modified TFTP Server
+git clone https://github.com/lupyuen/rs-tftpd-timeout
+cd rs-tftpd-timeout
+
+## Stop the xinetd + tftpd server
+sudo service xinetd stop
+
+## Might need this to set the Rust Toolchain for `sudo`
+sudo $HOME/.cargo/bin/rustup default stable
+
+## Start our Modified TFTP Server.
+## Requires `sudo` because Port 69 is privileged.
+## TODO: Change `/tftpboot` to your TFTP Folder
+sudo --preserve-env \
+  $HOME/.cargo/bin/cargo run -- \
+  -i 0.0.0.0 \
+  -p 69 \
+  -d /tftpboot
+
+## Or use `nohup` to keep it running continuously
+## nohup sudo --preserve-env $HOME/.cargo/bin/cargo run -- -i 0.0.0.0 -p 69 -d /tftpboot
+
+## Test our TFTP Server
+## TODO: Change `192.168.x.x` to your TFTP Server Address
+curl -v --output initrd tftp://192.168.x.x/initrd
+```
+
+_Won't the extra Data Packet confuse the TFTP Client?_
+
+That's perfectly OK because the __TFTP Block Number__ (sequence number) is encoded inside the Data Packet.
+
+The TFTP Client (like __`curl`__) will do the right thing and drop the duplicate Data Packets...
+
+```text
+$ curl -v --output initrd tftp://192.168.31.10/initrd
+
+* Connected to 192.168.31.10 () port 69 (#0)
+* set timeouts for state 0; Total 300, retry 6 maxtry 50
+* got option=(tsize) value=(9231360)
+* tsize parsed from OACK (9231360)
+* got option=(blksize) value=(512)
+* blksize parsed from OACK (512) requested (512)
+* got option=(timeout) value=(6)
+* Connected for receive
+* set timeouts for state 1; Total 3600, retry 72 maxtry 50
+* Received last DATA packet block 1 again.
+* Received last DATA packet block 2 again.
+* Received last DATA packet block 3 again.
+* Received last DATA packet block 4 again.
+```
+
+Let's test this with Star64 U-Boot...
 
 ![Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC](https://lupyuen.github.io/images/tftp2-title.jpg)
 
@@ -113,17 +169,39 @@ Let's test this...
 
 TODO
 
-__Before Fixing:__ TFTP Transfer Rate is 48.8 KiB/s (with 6 timeouts)
+__Before Fixing:__ TFTP Transfer Rate is __390 kbps__ (with 6 timeouts)
 
-[(See the log: xinetd + tftpd on Raspberry Pi 4 32-bit)](https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e)
+```text
+Filename 'initrd'. Loading: 
+. ##T #################################
+. #######T ############################
+. #####T ##############################
+. ######################T #############
+. ###################T T ##############
+. 48.8 KiB/s
+Bytes transferred = 9,231,360
+```
+
+[(Source)](https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e)
 
 [(Watch the Demo on YouTube)](https://youtu.be/MPBc2Qec6jo)
 
 [(Based on this configuration)](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot)
 
-__After Fixing:__ TFTP Transfer Rate is 1.1 MiB/s (with NO timeouts)
+__After Fixing:__ TFTP Transfer Rate is __8 Mbps__ (with NO timeouts)
 
-[(See the log: rs-tftpd-timeout on Raspberry Pi 4 32-bit)](https://gist.github.com/lupyuen/19ab2e16c0c2bb46175bcd8fba7116f2)
+```text
+Filename 'initrd'. Loading: 
+. #####################################
+. #####################################
+. #####################################
+. #####################################
+. #####################################
+. 1.1 MiB/s
+Bytes transferred = 9,231,360
+```
+
+[(Source)](https://gist.github.com/lupyuen/19ab2e16c0c2bb46175bcd8fba7116f2)
 
 [(Watch the Demo on YouTube)](https://youtu.be/ABpi2ABln5o)
 
