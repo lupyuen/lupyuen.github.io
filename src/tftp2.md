@@ -4,11 +4,11 @@
 
 ![Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC](https://lupyuen.github.io/images/tftp2-title.jpg)
 
-We're porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/release) to the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) Single-Board Computer.
+We're porting [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) to the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) Single-Board Computer. (Pic below)
 
 (Powered by [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC, same as the VisionFive2 SBC)
 
-But we're hitting frequent __TFTP Timeouts__ ("T" below) while booting NuttX on Star64 over the Network.  Effective transfer rate is only __390 kbps__! (Pic above)
+But we're hitting frequent __TFTP Timeouts__ ("T" below) while booting NuttX over the Local Network.  Effective Transfer Rate is only __390 kbps__! (Pic above)
 
 ```text
 Loading: 
@@ -22,13 +22,41 @@ Loading:
 
 [(Source)](https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e)
 
-This makes our NuttX Testing super slow... Star64 takes __4 minutes to boot__ over the Network!
+This makes NuttX Testing super slow... Our SBC takes __4 minutes to boot__ over the Local Network!
 
 [(Watch the Demo on YouTube)](https://youtu.be/MPBc2Qec6jo)
 
 _How are we booting the SBC over the Network?_
 
-We're booting our Star64 SBC with [__U-Boot Bootloader and TFTP__](https://lupyuen.github.io/articles/tftp). (Trivial File Transfer Protocol)
+We're booting our Star64 SBC over a Wired Ethernet Local Network with [__U-Boot Bootloader and TFTP__](https://lupyuen.github.io/articles/tftp).
+
+(That's the Trivial File Transfer Protocol)
+
+_Can we fix the TFTP Timeouts?_
+
+In this article we talk about the __Strange Workaround__ for the TFTP Timeouts...
+
+- We __throttled our TFTP Server__ to send packets slower
+
+  (Nope it doesn't help)
+
+- We __reduced the TFTP Timeout__ in our server
+
+  (Doesn't help either)
+
+- But when we send every __TFTP Data Packet twice__...
+
+  The problem mysteriously disappears!
+
+So yes we have a (curiously unsatisfactory) solution.
+
+Here's what we tested with Star64 SBC and U-Boot Bootloader...
+
+![Testing Apache NuttX RTOS on Star64 JH7110 SBC](https://lupyuen.github.io/images/release-star64.jpg)
+
+[_Testing Apache NuttX RTOS on Star64 JH7110 SBC_](https://lupyuen.github.io/articles/release)
+
+# Anyone Else Seeing This?
 
 TODO
 
