@@ -103,6 +103,8 @@ To send every __TFTP Data Packet twice__, we inserted this: [worker.rs](https://
     // Omitted: Increment the Block Number
 ```
 
+(We inserted a __1 millisecond delay__ between packets)
+
 It's a simple mod, but it solves our TFTP Timeout!
 
 _How do we run this?_
@@ -216,11 +218,7 @@ Bytes transferred = 9,231,360
 
 [(Watch the Demo on YouTube)](https://youtu.be/ABpi2ABln5o)
 
-Yep it works: No more TFTP Timeouts! And it's a lot faster!
-
-TODO
-
-(Tested on 32-bit Raspberry Pi 4 and on macOS x64)
+Yep it works: No more TFTP Timeouts! And it's so much faster!
 
 TODO: Why does it work? Dropped UDP Packets? We should check with Wireshark
 
@@ -291,6 +289,8 @@ Nope this TFTP Timeout seems specific to Star64 JH7110. We downloaded a 9 MB fil
 The fixed TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice.
 
 So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the TFTP Packets?
+
+TODO: Tested on 32-bit Raspberry Pi 4 and on macOS x64
 
 # What's Next
 
