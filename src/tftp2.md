@@ -220,9 +220,17 @@ TODO: Why does it work? Dropped UDP Packets? We should check with Wireshark
 
 TODO
 
-["Downloading with U-Boot's tftp randomly times out"](https://serverfault.com/questions/669340/downloading-with-u-boots-tftp-randomly-times-out)
+_Surely someone else might have the same problem?_
 
-According to [__martin-zs__](https://github.com/lupyuen/nuttx-star64/issues/2)...
+Our TFTP Timeout looks similar to this...
+
+- [__"Downloading with U-Boot's tftp randomly times out"__](https://serverfault.com/questions/669340/downloading-with-u-boots-tftp-randomly-times-out)
+
+I have a hunch that it's something specific to __U-Boot on JH7110 SoC__. And we probably can't reproduce it with Linux on JH7110.
+
+_Sending Duplicate TFTP Packets doesn't feel right..._
+
+Yeah but we might have a precedent! According to [__martin-zs__](https://github.com/lupyuen/nuttx-star64/issues/2)...
 
 > "Years ago I used to work in a mixed environment (Windows/Solaris/HP-US/Linux servers) and I noticed that __most windows machines send an insane amount of packets in triplicate__. UNIX would send everything once. This would make me wonder if the JH7110 SoC (or the licensed IP used) was only tested using windows machines."
 
@@ -230,7 +238,9 @@ According to [__martin-zs__](https://github.com/lupyuen/nuttx-star64/issues/2)..
 
 [(Source)](https://github.com/lupyuen/nuttx-star64/issues/2)
 
-Apparently Windows will send every TFTP Packet 3 times. Maybe that's why Star64 JH7110 U-Boot won't work well with Linux TFTP Servers?
+Apparently Windows will send __every TFTP Packet 3 times__.
+
+Maybe that's why Star64 JH7110 U-Boot won't work so well with Linux TFTP Servers?
 
 # Throttle TFTP Server
 
