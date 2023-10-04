@@ -275,29 +275,38 @@ Bytes transferred = 9,231,360
 <h1 id="reduce-tftp-timeout"><a href="#reduce-tftp-timeout">5 Reduce TFTP Timeout</a></h1>
 <p><em>What if we reduce the TFTP Timeout in our server?</em></p>
 <p>TODO: Doesn’t work</p>
+<p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="TODO" /></p>
 <h1 id="all-things-considered"><a href="#all-things-considered">6 All Things Considered</a></h1>
 <p><em>We sure this isn’t a Hardware Problem at our TFTP Server?</em></p>
 <p><em>Or a Network Problem?</em></p>
-<p>TODO</p>
-<p><em>Does this problem happen for devices other than Star64 JH7110?</em></p>
-<p>Nope this TFTP Timeout seems specific to Star64 JH7110. We downloaded a 9 MB file from Pi to macOS over TFTP on Wired Ethernet…</p>
-<div class="example-wrap"><pre class="language-text"><code># Before Fixing TFTP Server: 19 Mbps
-→ curl --output initrd tftp://192.168.31.10/initrd
+<p>We tested 2 TFTP Servers: <strong>Raspberry Pi 4</strong> (32-bit Linux) and <strong>MacBook Pro</strong> (x64 macOS)…</p>
+<div><table><thead><tr><th style="text-align: left">TFTP Server</th><th style="text-align: center">xinetd + <br> tftpd</th><th style="text-align: center">Original <br> rs-tftpd</th><th style="text-align: center">Modified <br> rs-tftpd</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Linux</strong></td><td style="text-align: center"><em>Some Timeouts</em></td><td style="text-align: center"></td><td style="text-align: center"><strong>NO Timeouts</strong></td></tr>
+<tr><td style="text-align: left"><strong>macOS</strong></td><td style="text-align: center"></td><td style="text-align: center"><em>Some Timeouts</em></td><td style="text-align: center"><strong>NO Timeouts</strong></td></tr>
+</tbody></table>
+</div>
+<p>Thus we’re sure that it’s not a Hardware or OS Problem at the TFTP Server.</p>
+<p>Then we downloaded a 9 MB file from Raspberry Pi to macOS over TFTP on Wired Ethernet…</p>
+<div class="example-wrap"><pre class="language-text"><code># Before Fixing TFTP Server: 19 Mbps (xinetd + tftpd)
+$ curl --output initrd tftp://192.168.31.10/initrd
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100 9015k    0 9015k    0     0  2374k      0 --:--:--  0:00:03 --:--:-- 2374k
 
-# After Fixing TFTP Server: 3.3 Mbps
-→ curl --output initrd tftp://192.168.31.10/initrd
+# After Fixing TFTP Server: 3.3 Mbps (Modified rs-tftpd)
+$ curl --output initrd tftp://192.168.31.10/initrd
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100 9015k  100 9015k    0     0   411k      0  0:00:21  0:00:21 --:--:--  411k
 </code></pre></div>
-<p>The fixed TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice.</p>
+<p>The Wired Ethernet Network looks hunky dory, no problems here.</p>
+<p>(The Modified TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice)</p>
+<p>TODO</p>
+<p><em>Does this problem happen for devices other than Star64 JH7110?</em></p>
+<p>Nope this TFTP Timeout seems specific to Star64 JH7110. </p>
 <p>So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the TFTP Packets?</p>
-<p>TODO: Tested on 32-bit Raspberry Pi 4 and on macOS x64</p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Porting NuttX to Star64 JH7110 becomes so much faster. Stay tuned for updates!</p>
