@@ -94,7 +94,7 @@
 <p>(That’s the Trivial File Transfer Protocol)</p>
 <p><img src="https://lupyuen.github.io/images/release-star64.jpg" alt="Testing Apache NuttX RTOS on Star64 JH7110 SBC" /></p>
 <p><em>Can we fix the TFTP Timeouts?</em></p>
-<p>In this article we talk about the <strong>Strange Workaround</strong> for the TFTP Timeouts…</p>
+<p>Yep! In this article we talk about the <strong>Strange Workaround</strong> for the TFTP Timeouts…</p>
 <ul>
 <li>
 <p>We <strong>throttled our TFTP Server</strong> to send packets slower</p>
@@ -204,8 +204,19 @@ curl -v \
 <p>Let’s test this with Star64 U-Boot…</p>
 <p><img src="https://lupyuen.github.io/images/tftp2-title.jpg" alt="Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC" /></p>
 <h1 id="no-more-timeouts"><a href="#no-more-timeouts">2 No More Timeouts!</a></h1>
-<p>TODO</p>
-<p><strong>Before Fixing:</strong> TFTP Transfer Rate is <strong>390 kbps</strong> (with 6 timeouts)</p>
+<p><em>Does it work on Star64 with U-Boot Bootloader?</em></p>
+<p>Let’s use <strong>Raspberry Pi 4</strong> (32-bit Debian) as our TFTP Server…</p>
+<ol>
+<li>
+<p>We run the standard <strong><code>xinetd + tftpd</code></strong> on our Pi</p>
+<p><a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot">(With this configuration)</a></p>
+</li>
+<li>
+<p>Then we switch to our <strong>Modified TFTP Server</strong></p>
+<p>(From the previous section)</p>
+</li>
+</ol>
+<p><strong>Before Fixing:</strong> TFTP Transfer Rate (for <code>xinetd + tftpd</code>) is <strong>390 kbps</strong> (with 6 timeouts)</p>
 <div class="example-wrap"><pre class="language-text"><code>Filename &#39;initrd&#39;. Loading: 
 . ##T #################################
 . #######T ############################
@@ -217,8 +228,7 @@ Bytes transferred = 9,231,360
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e">(Source)</a></p>
 <p><a href="https://youtu.be/MPBc2Qec6jo">(Watch the Demo on YouTube)</a></p>
-<p><a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot">(Based on this configuration)</a></p>
-<p><strong>After Fixing:</strong> TFTP Transfer Rate is <strong>8 Mbps</strong> (with NO timeouts)</p>
+<p><strong>After Fixing:</strong> TFTP Transfer Rate (for our Modified TFTP Server) is <strong>8 Mbps</strong> (with NO timeouts)</p>
 <div class="example-wrap"><pre class="language-text"><code>Filename &#39;initrd&#39;. Loading: 
 . #####################################
 . #####################################
@@ -230,8 +240,8 @@ Bytes transferred = 9,231,360
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/19ab2e16c0c2bb46175bcd8fba7116f2">(Source)</a></p>
 <p><a href="https://youtu.be/ABpi2ABln5o">(Watch the Demo on YouTube)</a></p>
-<p><a href="https://github.com/lupyuen/rs-tftpd-timeout/blob/main/src/worker.rs#L232-L255">(Based on rs-tftpd-timeout)</a></p>
-<p>Yep it works! No more TFTP Timeouts!</p>
+<p>Yep it works: No more TFTP Timeouts! And it’s a lot faster!</p>
+<p>TODO</p>
 <p>(Tested on 32-bit Raspberry Pi 4 and on macOS x64)</p>
 <p>TODO: Why does it work? Dropped UDP Packets? We should check with Wireshark</p>
 <h1 id="anyone-else-seeing-this"><a href="#anyone-else-seeing-this">3 Anyone Else Seeing This?</a></h1>
