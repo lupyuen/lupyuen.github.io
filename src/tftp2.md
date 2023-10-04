@@ -141,19 +141,27 @@ TODO
 
 ["Downloading with U-Boot's tftp randomly times out"](https://serverfault.com/questions/669340/downloading-with-u-boots-tftp-randomly-times-out)
 
+According to [__martin-zs__](https://github.com/lupyuen/nuttx-star64/issues/2)...
+
+> "Years ago I used to work in a mixed environment (Windows/Solaris/HP-US/Linux servers) and I noticed that most windows machines send an insane amount of packets in triplicate. UNIX would send everything once. This would make me wonder if the JH7110 SoC (or the licensed IP used) was only tested using windows machines."
+
+> "My guess would be that if you setup a windows machine to be the tftp server, it would work - just because of the triple packets (mostly for UDP)."
+
+[(Source)](https://github.com/lupyuen/nuttx-star64/issues/2)
+
 # Throttle TFTP Server
 
 _What if we throttle our TFTP Server to send packets slower?_
 
-TODO
+TODO: Doesn't work
 
 # Reduce TFTP Timeout
 
 _What if we reduce the TFTP Timeout in our server?_
 
-TODO
+TODO: Doesn't work
 
-# Strange Workaround for TFTP Timeout in U-Boot Bootloader
+# TODO
 
 TODO
 
