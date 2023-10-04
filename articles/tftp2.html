@@ -235,14 +235,13 @@ Bytes transferred = 9,231,360
 <p>(Tested on 32-bit Raspberry Pi 4 and on macOS x64)</p>
 <p>TODO: Why does it work? Dropped UDP Packets? We should check with Wireshark</p>
 <h1 id="anyone-else-seeing-this"><a href="#anyone-else-seeing-this">3 Anyone Else Seeing This?</a></h1>
-<p>TODO</p>
 <p><em>Surely someone else might have the same problem?</em></p>
 <p>Our TFTP Timeout looks similar to this…</p>
 <ul>
 <li><a href="https://serverfault.com/questions/669340/downloading-with-u-boots-tftp-randomly-times-out"><strong>“Downloading with U-Boot’s tftp randomly times out”</strong></a></li>
 </ul>
 <p>I have a hunch that it’s something specific to <strong>U-Boot on JH7110 SoC</strong>. And we probably can’t reproduce it with Linux on JH7110.</p>
-<p><em>Sending Duplicate TFTP Packets doesn’t feel right…</em></p>
+<p><em>Sending Duplicate TFTP Packets… Feels terribly wrong!</em></p>
 <p>Yeah but we might have a precedent! According to <a href="https://github.com/lupyuen/nuttx-star64/issues/2"><strong>martin-zs</strong></a>…</p>
 <blockquote>
 <p>“Years ago I used to work in a mixed environment (Windows/Solaris/HP-US/Linux servers) and I noticed that <strong>most windows machines send an insane amount of packets in triplicate</strong>. UNIX would send everything once. This would make me wonder if the JH7110 SoC (or the licensed IP used) was only tested using windows machines.”</p>
