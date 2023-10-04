@@ -90,23 +90,26 @@
 <p>This makes NuttX Testing super slow… Our SBC takes <strong>4 minutes to boot</strong> over the Local Network!</p>
 <p><a href="https://youtu.be/MPBc2Qec6jo">(Watch the Demo on YouTube)</a></p>
 <p><em>How are we booting the SBC over the Network?</em></p>
-<p>We’re booting our Star64 SBC over a Wired Ethernet Local Network with <a href="https://lupyuen.github.io/articles/tftp"><strong>U-Boot Bootloader and TFTP</strong></a>.</p>
+<p>We’re booting our Star64 SBC (pic below) over a Wired Ethernet Local Network with <a href="https://lupyuen.github.io/articles/tftp"><strong>U-Boot Bootloader and TFTP</strong></a>.</p>
 <p>(That’s the Trivial File Transfer Protocol)</p>
 <p><img src="https://lupyuen.github.io/images/release-star64.jpg" alt="Testing Apache NuttX RTOS on Star64 JH7110 SBC" /></p>
 <p><em>Can we fix the TFTP Timeouts?</em></p>
 <p>Yep! In this article we talk about the <strong>Strange Workaround</strong> for the TFTP Timeouts…</p>
 <ul>
 <li>
-<p>We <strong>throttled our TFTP Server</strong> to send packets slower</p>
-<p>(Nope it doesn’t help)</p>
+<p>First we <strong>throttled our TFTP Server</strong> to send packets slower</p>
+<p>(Which made it worse)</p>
 </li>
 <li>
-<p>We <strong>reduced the TFTP Timeout</strong> in our server</p>
-<p>(Doesn’t help either)</p>
+<p>Next we <strong>reduced the TFTP Timeout</strong> in our server</p>
+<p>(Nope doesn’t work)</p>
 </li>
 <li>
 <p>But when we send every <strong>TFTP Data Packet twice</strong>…</p>
 <p>The problem mysteriously disappears!</p>
+</li>
+<li>
+<p>We verified this with 2 TFTP Servers: <strong>Linux and macOS</strong></p>
 </li>
 </ul>
 <p>So yes we have a (curiously unsatisfactory) solution.</p>
@@ -241,8 +244,9 @@ Bytes transferred = 9,231,360
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/19ab2e16c0c2bb46175bcd8fba7116f2">(Source)</a></p>
 <p><a href="https://youtu.be/ABpi2ABln5o">(Watch the Demo on YouTube)</a></p>
-<p>Yep it works: No more TFTP Timeouts! And it’s so much faster!</p>
-<p>TODO: Why does it work? Dropped UDP Packets? We should check with Wireshark</p>
+<p>Yep it works: No more TFTP Timeouts!</p>
+<p>And it’s so much faster: NuttX boots in 20 seconds!</p>
+<p>But why? We do a little research…</p>
 <h1 id="anyone-else-seeing-this"><a href="#anyone-else-seeing-this">3 Anyone Else Seeing This?</a></h1>
 <p><em>Surely someone else might have the same problem?</em></p>
 <p>Our TFTP Timeout looks similar to this…</p>
@@ -261,6 +265,10 @@ Bytes transferred = 9,231,360
 <p><a href="https://github.com/lupyuen/nuttx-star64/issues/2">(Source)</a></p>
 <p>Apparently Windows will send <strong>every TFTP Packet 3 times</strong>.</p>
 <p>Maybe that’s why Star64 JH7110 U-Boot won’t work so well with Linux TFTP Servers?</p>
+<p><em>How will we track down the root cause?</em></p>
+<p>We might need <strong>Wireshark</strong> to sniff the TFTP Packets.</p>
+<p>And a <strong>Windows TFTP Server</strong> to verify if it really sends every packet 3 times.</p>
+<p>Meanwhile we can try to isolate the root cause…</p>
 <h1 id="throttle-tftp-server"><a href="#throttle-tftp-server">4 Throttle TFTP Server</a></h1>
 <p><em>What if we throttle our TFTP Server to send packets slower?</em></p>
 <p>TODO: Doesn’t work</p>
@@ -269,7 +277,7 @@ Bytes transferred = 9,231,360
 <p>TODO: Doesn’t work</p>
 <h1 id="all-things-considered"><a href="#all-things-considered">6 All Things Considered</a></h1>
 <p><em>We sure this isn’t a Hardware Problem at our TFTP Server?</em></p>
-<p><em>Or Network Problem?</em></p>
+<p><em>Or a Network Problem?</em></p>
 <p>TODO</p>
 <p><em>Does this problem happen for devices other than Star64 JH7110?</em></p>
 <p>Nope this TFTP Timeout seems specific to Star64 JH7110. We downloaded a 9 MB file from Pi to macOS over TFTP on Wired Ethernet…</p>
