@@ -287,7 +287,7 @@ We tested 2 TFTP Servers: __Raspberry Pi 4__ (32-bit Linux) and __MacBook Pro__ 
 
 Thus we're sure that it's not a Hardware or OS Problem at the TFTP Server.
 
-Then we downloaded a 9 MB file from Raspberry Pi to macOS over TFTP on Wired Ethernet...
+Then we __downloaded a 9 MB file__ from Raspberry Pi to macOS over TFTP on Wired Ethernet...
 
 ```text
 # Before Fixing TFTP Server: 19 Mbps (xinetd + tftpd)
