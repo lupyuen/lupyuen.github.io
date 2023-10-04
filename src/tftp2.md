@@ -36,7 +36,7 @@ We're booting our Star64 SBC over a Wired Ethernet Local Network with [__U-Boot 
 
 _Can we fix the TFTP Timeouts?_
 
-In this article we talk about the __Strange Workaround__ for the TFTP Timeouts...
+Yep! In this article we talk about the __Strange Workaround__ for the TFTP Timeouts...
 
 - We __throttled our TFTP Server__ to send packets slower
 
@@ -170,9 +170,19 @@ Let's test this with Star64 U-Boot...
 
 # No More Timeouts!
 
-TODO
+_Does it work on Star64 with U-Boot Bootloader?_
 
-__Before Fixing:__ TFTP Transfer Rate is __390 kbps__ (with 6 timeouts)
+Let's use __Raspberry Pi 4__ (32-bit Debian) as our TFTP Server...
+
+1.  We run the standard __`xinetd + tftpd`__ on our Pi
+
+    [(With this configuration)](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot)
+
+1.  Then we switch to our __Modified TFTP Server__
+
+    (From the previous section)
+
+__Before Fixing:__ TFTP Transfer Rate (for `xinetd + tftpd`) is __390 kbps__ (with 6 timeouts)
 
 ```text
 Filename 'initrd'. Loading: 
@@ -189,9 +199,7 @@ Bytes transferred = 9,231,360
 
 [(Watch the Demo on YouTube)](https://youtu.be/MPBc2Qec6jo)
 
-[(Based on this configuration)](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot)
-
-__After Fixing:__ TFTP Transfer Rate is __8 Mbps__ (with NO timeouts)
+__After Fixing:__ TFTP Transfer Rate (for our Modified TFTP Server) is __8 Mbps__ (with NO timeouts)
 
 ```text
 Filename 'initrd'. Loading: 
@@ -208,9 +216,9 @@ Bytes transferred = 9,231,360
 
 [(Watch the Demo on YouTube)](https://youtu.be/ABpi2ABln5o)
 
-[(Based on rs-tftpd-timeout)](https://github.com/lupyuen/rs-tftpd-timeout/blob/main/src/worker.rs#L232-L255)
+Yep it works: No more TFTP Timeouts! And it's a lot faster!
 
-Yep it works! No more TFTP Timeouts!
+TODO
 
 (Tested on 32-bit Raspberry Pi 4 and on macOS x64)
 
