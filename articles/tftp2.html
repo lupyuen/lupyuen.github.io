@@ -92,6 +92,7 @@
 <p><em>How are we booting the SBC over the Network?</em></p>
 <p>We’re booting our Star64 SBC over a Wired Ethernet Local Network with <a href="https://lupyuen.github.io/articles/tftp"><strong>U-Boot Bootloader and TFTP</strong></a>.</p>
 <p>(That’s the Trivial File Transfer Protocol)</p>
+<p><img src="https://lupyuen.github.io/images/release-star64.jpg" alt="Testing Apache NuttX RTOS on Star64 JH7110 SBC" /></p>
 <p><em>Can we fix the TFTP Timeouts?</em></p>
 <p>In this article we talk about the <strong>Strange Workaround</strong> for the TFTP Timeouts…</p>
 <ul>
@@ -122,7 +123,7 @@
 </span><span class="kw">fn </span>send_window&lt;T: Socket&gt;(
   socket: <span class="kw-2">&amp;</span>T,          <span class="comment">// UDP Socket
   </span>window: <span class="kw-2">&amp;</span>Window,     <span class="comment">// Data Window to be sent
-  </span><span class="kw-2">mut </span>block_num: u16,  <span class="comment">// Block Number
+  </span><span class="kw-2">mut </span>block_num: u16,  <span class="comment">// Current Block Number
 </span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>Error&gt;&gt; {
 
   <span class="comment">// For every Data Frame in the Data Window...
@@ -153,6 +154,7 @@
 <p>Let’s test this…</p>
 <p><img src="https://lupyuen.github.io/images/tftp2-title.jpg" alt="Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC" /></p>
 <h1 id="no-more-timeouts"><a href="#no-more-timeouts">2 No More Timeouts!</a></h1>
+<p>TODO</p>
 <p><strong>Before Fixing:</strong> TFTP Transfer Rate is 48.8 KiB/s (with 6 timeouts)</p>
 <p><a href="https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e">(See the log: xinetd + tftpd on Raspberry Pi 4 32-bit)</a></p>
 <p><a href="https://youtu.be/MPBc2Qec6jo">(Watch the Demo on YouTube)</a></p>
@@ -193,8 +195,6 @@
 </code></pre></div>
 <p>The fixed TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice.</p>
 <p>So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the TFTP Packets?</p>
-<p><img src="https://lupyuen.github.io/images/release-star64.jpg" alt="Testing Apache NuttX RTOS on Star64 JH7110 SBC" /></p>
-<p><a href="https://lupyuen.github.io/articles/release"><em>Testing Apache NuttX RTOS on Star64 JH7110 SBC</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Porting NuttX to Star64 JH7110 becomes so much faster. Stay tuned for updates!</p>
