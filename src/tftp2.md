@@ -270,39 +270,52 @@ _What if we reduce the TFTP Timeout in our server?_
 
 TODO: Doesn't work
 
+![TODO](https://lupyuen.github.io/images/tftp-flow.jpg)
+
 # All Things Considered
 
 _We sure this isn't a Hardware Problem at our TFTP Server?_
 
 _Or a Network Problem?_
 
-TODO
+We tested 2 TFTP Servers: __Raspberry Pi 4__ (32-bit Linux) and __MacBook Pro__ (x64 macOS)...
 
-_Does this problem happen for devices other than Star64 JH7110?_
+| TFTP Server | xinetd + <br> tftpd | Original <br> rs-tftpd | Modified <br> rs-tftpd |
+|:------------|:--------------:|:-----------------:|:-----------------:|
+| __Linux__ | _Some Timeouts_ | | __NO Timeouts__ |
+| __macOS__ | | _Some Timeouts_ | __NO Timeouts__ |
 
-Nope this TFTP Timeout seems specific to Star64 JH7110. We downloaded a 9 MB file from Pi to macOS over TFTP on Wired Ethernet...
+Thus we're sure that it's not a Hardware or OS Problem at the TFTP Server.
+
+Then we downloaded a 9 MB file from Raspberry Pi to macOS over TFTP on Wired Ethernet...
 
 ```text
-# Before Fixing TFTP Server: 19 Mbps
-→ curl --output initrd tftp://192.168.31.10/initrd
+# Before Fixing TFTP Server: 19 Mbps (xinetd + tftpd)
+$ curl --output initrd tftp://192.168.31.10/initrd
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100 9015k    0 9015k    0     0  2374k      0 --:--:--  0:00:03 --:--:-- 2374k
 
-# After Fixing TFTP Server: 3.3 Mbps
-→ curl --output initrd tftp://192.168.31.10/initrd
+# After Fixing TFTP Server: 3.3 Mbps (Modified rs-tftpd)
+$ curl --output initrd tftp://192.168.31.10/initrd
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100 9015k  100 9015k    0     0   411k      0  0:00:21  0:00:21 --:--:--  411k
 ```
 
-The fixed TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice.
+The Wired Ethernet Network looks hunky dory, no problems here.
+
+(The Modified TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice)
+
+TODO
+
+_Does this problem happen for devices other than Star64 JH7110?_
+
+Nope this TFTP Timeout seems specific to Star64 JH7110. 
 
 So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the TFTP Packets?
-
-TODO: Tested on 32-bit Raspberry Pi 4 and on macOS x64
 
 # What's Next
 
