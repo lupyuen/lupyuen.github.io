@@ -128,23 +128,28 @@
   <span class="comment">// For every Data Frame in the Data Window...
   </span><span class="kw">for </span>frame <span class="kw">in </span>window.get_elements() {
     
-    <span class="comment">// Send the TFTP Packet
+    <span class="comment">// Send the TFTP Data Packet
     </span>socket.send(<span class="kw-2">&amp;</span>Packet::Data {
       block_num,
       data: frame.to_vec(),
     })<span class="question-mark">?</span>;
 
-    <span class="comment">// Wait 1 millisecond
-    </span><span class="kw">static </span><span class="kw-2">mut </span>DELAY_MS: u64 = <span class="number">1</span>;
-    <span class="kw">let </span>millis = std::time::Duration::from_millis(DELAY_MS);
+    <span class="comment">// Omitted: Increment the Block Number</span></code></pre></div>
+<p>Then we inserted this: <a href="https://github.com/lupyuen/rs-tftpd-timeout/blob/main/src/worker.rs#L232-L255">worker.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Right after sending the TFTP Data Packet...
+    // Wait 1 millisecond
+    </span><span class="kw">let </span>millis = std::time::Duration::from_millis(<span class="number">1</span>);
     std::thread::sleep(millis);
 
-    <span class="comment">// Send the same TFTP Packet again
+    <span class="comment">// Send the same TFTP Data Packet again.
     // Why does this work?
     </span>socket.send(<span class="kw-2">&amp;</span>Packet::Data {
       block_num,
       data: frame.to_vec(),
-    })<span class="question-mark">?</span>;</code></pre></div>
+    })<span class="question-mark">?</span>;
+
+    <span class="comment">// Omitted: Increment the Block Number</span></code></pre></div>
 <p>Let’s test this…</p>
 <p><strong>Before Fixing:</strong> TFTP Transfer Rate is 48.8 KiB/s (with 6 timeouts)</p>
 <p><a href="https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e">(See the log: xinetd + tftpd on Raspberry Pi 4 32-bit)</a></p>
