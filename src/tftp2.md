@@ -256,7 +256,7 @@ We might need __Wireshark__ to sniff the TFTP Packets.
 
 And a __Windows TFTP Server__ to verify if it really sends every packet 3 times.
 
-Meanwhile we can try to isolate the root cause...
+Before the sniffing, we do some sleuthing...
 
 # Throttle TFTP Server
 
@@ -264,13 +264,73 @@ _What if we throttle our TFTP Server to send packets slower?_
 
 TODO: Doesn't work
 
+From [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L243-L267)
+
+```rust
+// Wait a while before sending next block
+// println!("send_window loop: block_num={}", block_num);////
+static mut DELAY_MS: u64 = 1;
+let millis = std::time::Duration::from_millis(DELAY_MS);
+std::thread::sleep(millis);
+
+// Check whether this is a resend
+static mut LAST_BLOCK_NUM: u16 = 0;            
+if block_num > 1 && block_num <= LAST_BLOCK_NUM {
+  println!("*** send_window RESEND: block_num={}", block_num);
+  DELAY_MS = DELAY_MS * 2;
+}
+
+// Check whether this is a delayed send
+static mut LAST_TIMESTAMP: ... = ... std::time::Instant::now();
+let diff_time = std::time::Instant::now() - *LAST_TIMESTAMP;
+if block_num > 1 && diff_time > Duration::from_millis(1000) {
+  println!("+++ send_window DELAY: block_num={}", block_num);
+  DELAY_MS = DELAY_MS * 2;
+}
+LAST_BLOCK_NUM = block_num;
+*LAST_TIMESTAMP = std::time::Instant::now();
+```
+
+From [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L275-L295)
+
+```text
+Sending Image to 192.168.31.141:3900
++++ send_window DELAY: block_num=676
+Sent Image to 192.168.31.141:3900
+Sending jh7110-star64-pine64.dtb to 192.168.31.141:2434
+Sent jh7110-star64-pine64.dtb to 192.168.31.141:2434
+Sending initrd to 192.168.31.141:2539
++++ send_window DELAY: block_num=15
++++ send_window DELAY: block_num=2366
++++ send_window DELAY: block_num=2755
++++ send_window DELAY: block_num=5012
+Sent initrd to 192.168.31.141:2539
+Sending Image to 192.168.31.141:4069
++++ send_window DELAY: block_num=795
+Sending jh7110-star64-pine64.dtb to 192.168.31.141:2647
+Sent Image to 192.168.31.141:4069
+Sent jh7110-star64-pine64.dtb to 192.168.31.141:2647
+Sending initrd to 192.168.31.141:1859
++++ send_window DELAY: block_num=61
++++ send_window DELAY: block_num=1711
+```
+
 # Reduce TFTP Timeout
 
 _What if we reduce the TFTP Timeout in our server?_
 
 TODO: Doesn't work
 
-![TODO](https://lupyuen.github.io/images/tftp-flow.jpg)
+From [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/80730178595ad550871fec72148d4f3e723b650a/src/worker.rs#L132-L141)
+
+```rust
+fn send_file(self, file: File) -> Result<(), Box<dyn Error>> {
+  ...
+  // println!("timeout={} ms", self.timeout.as_millis());//// 5000 ms
+  let mut time = Instant::now() - (self.timeout + TIMEOUT_BUFFER);
+```
+
+![Booting Star64 JH7110 SBC over TFTP](https://lupyuen.github.io/images/tftp2-flow.jpg)
 
 # All Things Considered
 
@@ -287,7 +347,7 @@ We tested 2 TFTP Servers: __Raspberry Pi 4__ (32-bit Linux) and __MacBook Pro__ 
 
 Thus we're sure that it's not a Hardware or OS Problem at the TFTP Server.
 
-Then we __downloaded a 9 MB file__ from Raspberry Pi to macOS over TFTP on Wired Ethernet...
+Then we __downloaded a 9 MB file__ from Raspberry Pi to MacBook over TFTP on Wired Ethernet...
 
 ```text
 # Before Fixing TFTP Server: 19 Mbps (xinetd + tftpd)
@@ -305,17 +365,13 @@ $ curl --output initrd tftp://192.168.31.10/initrd
 100 9015k  100 9015k    0     0   411k      0  0:00:21  0:00:21 --:--:--  411k
 ```
 
-The Wired Ethernet Network looks hunky dory, no problems here.
+Our Wired Ethernet Network looks hunky dory, no problems here.
 
-(The Modified TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice)
+(Our Modified TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice)
 
-TODO
+_So this TFTP Timeout seems specific to Star64 U-Boot?_
 
-_Does this problem happen for devices other than Star64 JH7110?_
-
-Nope this TFTP Timeout seems specific to Star64 JH7110. 
-
-So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the TFTP Packets?
+Yeah. So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the Incoming TFTP Packets?
 
 # What's Next
 
