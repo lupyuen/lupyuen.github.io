@@ -28,7 +28,7 @@ This makes NuttX Testing super slow... Our SBC takes __4 minutes to boot__ over 
 
 _How are we booting the SBC over the Network?_
 
-We're booting our Star64 SBC over a Wired Ethernet Local Network with [__U-Boot Bootloader and TFTP__](https://lupyuen.github.io/articles/tftp).
+We're booting our Star64 SBC (pic below) over a Wired Ethernet Local Network with [__U-Boot Bootloader and TFTP__](https://lupyuen.github.io/articles/tftp).
 
 (That's the Trivial File Transfer Protocol)
 
@@ -38,17 +38,19 @@ _Can we fix the TFTP Timeouts?_
 
 Yep! In this article we talk about the __Strange Workaround__ for the TFTP Timeouts...
 
-- We __throttled our TFTP Server__ to send packets slower
+- First we __throttled our TFTP Server__ to send packets slower
 
-  (Nope it doesn't help)
+  (Which made it worse)
 
-- We __reduced the TFTP Timeout__ in our server
+- Next we __reduced the TFTP Timeout__ in our server
 
-  (Doesn't help either)
+  (Nope doesn't work)
 
 - But when we send every __TFTP Data Packet twice__...
 
   The problem mysteriously disappears!
+
+- We verified this with 2 TFTP Servers: __Linux and macOS__
 
 So yes we have a (curiously unsatisfactory) solution.
 
@@ -218,9 +220,11 @@ Bytes transferred = 9,231,360
 
 [(Watch the Demo on YouTube)](https://youtu.be/ABpi2ABln5o)
 
-Yep it works: No more TFTP Timeouts! And it's so much faster!
+Yep it works: No more TFTP Timeouts!
 
-TODO: Why does it work? Dropped UDP Packets? We should check with Wireshark
+And it's so much faster: NuttX boots in 20 seconds!
+
+But why? We do a little research...
 
 # Anyone Else Seeing This?
 
@@ -246,6 +250,14 @@ Apparently Windows will send __every TFTP Packet 3 times__.
 
 Maybe that's why Star64 JH7110 U-Boot won't work so well with Linux TFTP Servers?
 
+_How will we track down the root cause?_
+
+We might need __Wireshark__ to sniff the TFTP Packets.
+
+And a __Windows TFTP Server__ to verify if it really sends every packet 3 times.
+
+Meanwhile we can try to isolate the root cause...
+
 # Throttle TFTP Server
 
 _What if we throttle our TFTP Server to send packets slower?_
@@ -262,7 +274,7 @@ TODO: Doesn't work
 
 _We sure this isn't a Hardware Problem at our TFTP Server?_
 
-_Or Network Problem?_
+_Or a Network Problem?_
 
 TODO
 
