@@ -60,55 +60,22 @@ Here's what we tested with Star64 SBC and U-Boot Bootloader...
 
 _We hacked our TFTP Server to send every packet twice?_
 
-Indeed!
+Indeed! Because we can't configure any TFTP Server to send Data Packets twice.
 
 TODO
 
-# Anyone Else Seeing This?
-
-TODO
-
-# Throttle TFTP Server
-
-_What if we throttle our TFTP Server to send packets slower?_
-
-TODO
-
-# Reduce TFTP Timeout
-
-_What if we reduce the TFTP Timeout in our server?_
-
-TODO
-
-# Strange Workaround for TFTP Timeout in U-Boot Bootloader
-
-TODO
-
-["Downloading with U-Boot's tftp randomly times out"](https://serverfault.com/questions/669340/downloading-with-u-boots-tftp-randomly-times-out)
-
-Why does TFTP time out so often on our SBC? Is it because our TFTP Server sends packets too quickly to our SBC?
-
-Frequent TFTP Timeouts ("T" below) are affecting our NuttX Testing on Star64 JH7110 SBC.  Effective transfer rate is only 430 kbps!
-
-```text
-Loading: . ##############T ###################################################
-. ####################T #########T ####################################
-. 53.7 KiB/s
-```
-
-[(Source)](https://gist.github.com/lupyuen/9bdb1f5478318631d0480f03f6041d83#file-jh7110-nuttx-math-log-L140-L173)
-
-Let's try something: We send every TFTP Packet twice.
-
-From https://github.com/lupyuen/rs-tftpd-timeout/blob/main/src/worker.rs#L232-L255
+From [rs-tftpd-timeout/src/worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/main/src/worker.rs#L232-L255)
 
 ```rust
+// Transmit every Data Frame in the Data Window
+// to the TFTP Client
 fn send_window<T: Socket>(
-  socket: &T,
-  window: &Window,
-  mut block_num: u16,
+  socket: &T,          // UDP Socket
+  window: &Window,     // Data Window to be sent
+  mut block_num: u16,  // Block Number
 ) -> Result<(), Box<dyn Error>> {
-  // For Every Frame...
+
+  // For every Data Frame in the Data Window...
   for frame in window.get_elements() {
     
     // Send the TFTP Packet
@@ -153,6 +120,43 @@ Yep it works! No more TFTP Timeouts!
 (Tested on 32-bit Raspberry Pi 4 and on macOS x64)
 
 TODO: Why does it work? Dropped UDP Packets? We should check with Wireshark
+
+# Anyone Else Seeing This?
+
+TODO
+
+# Throttle TFTP Server
+
+_What if we throttle our TFTP Server to send packets slower?_
+
+TODO
+
+# Reduce TFTP Timeout
+
+_What if we reduce the TFTP Timeout in our server?_
+
+TODO
+
+# Strange Workaround for TFTP Timeout in U-Boot Bootloader
+
+TODO
+
+["Downloading with U-Boot's tftp randomly times out"](https://serverfault.com/questions/669340/downloading-with-u-boots-tftp-randomly-times-out)
+
+Why does TFTP time out so often on our SBC? Is it because our TFTP Server sends packets too quickly to our SBC?
+
+Frequent TFTP Timeouts ("T" below) are affecting our NuttX Testing on Star64 JH7110 SBC.  Effective transfer rate is only 430 kbps!
+
+```text
+Loading: . ##############T ###################################################
+. ####################T #########T ####################################
+. 53.7 KiB/s
+```
+
+[(Source)](https://gist.github.com/lupyuen/9bdb1f5478318631d0480f03f6041d83#file-jh7110-nuttx-math-log-L140-L173)
+
+Let's try something: We send every TFTP Packet twice.
+
 
 TODO: What if we throttle our TFTP Server to send packets slower? Nope doesn't help
 
