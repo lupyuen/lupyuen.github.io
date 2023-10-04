@@ -254,7 +254,11 @@ _What if we reduce the TFTP Timeout in our server?_
 
 TODO: Doesn't work
 
-# TODO
+# All Things Considered
+
+_We sure this isn't a Hardware Problem at our TFTP Server?_
+
+_Or Network Problem?_
 
 TODO
 
