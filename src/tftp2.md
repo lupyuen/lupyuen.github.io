@@ -8,15 +8,15 @@ We're porting [__Apache NuttX Real-Time Operating System__](https://lupyuen.gith
 
 (Powered by [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC, same as the VisionFive2 SBC)
 
-But we're hitting frequent __TFTP Timeouts__ ("T" below) while booting NuttX over the Local Network.  Effective Transfer Rate is only __390 kbps__! (Pic above)
+But we're hitting frequent __TFTP Timeouts__ ("T" below) while booting NuttX over the Local Network.  Effective Transfer Rate is only __390 kbps__!
 
 ```text
 Loading: 
-. ################################T #################################
-. #####################################T ############################
-. ###################################T ##############################
-. ####################################################T #############
-. #################################################T T ################
+. ##T #################################
+. #######T ############################
+. #####T ##############################
+. ######################T #############
+. ###################T T ##############
 . 48.8 KiB/s
 ```
 
@@ -52,11 +52,9 @@ So yes we have a (curiously unsatisfactory) solution.
 
 Here's what we tested with Star64 SBC and U-Boot Bootloader...
 
-![Testing Apache NuttX RTOS on Star64 JH7110 SBC](https://lupyuen.github.io/images/release-star64.jpg)
+![Send every TFTP Data Packet twice](https://lupyuen.github.io/images/tftp2-code.png)
 
-[_Testing Apache NuttX RTOS on Star64 JH7110 SBC_](https://lupyuen.github.io/articles/release)
-
-# Send Every Packet Twice
+# Send Everything Twice
 
 _We hacked our TFTP Server to send every packet twice?_
 
@@ -107,6 +105,10 @@ Then we inserted this: [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/b
 
 Let's test this...
 
+![Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC](https://lupyuen.github.io/images/tftp2-title.jpg)
+
+# No More Timeouts!
+
 __Before Fixing:__ TFTP Transfer Rate is 48.8 KiB/s (with 6 timeouts)
 
 [(See the log: xinetd + tftpd on Raspberry Pi 4 32-bit)](https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e)
@@ -133,6 +135,8 @@ TODO: Why does it work? Dropped UDP Packets? We should check with Wireshark
 
 TODO
 
+["Downloading with U-Boot's tftp randomly times out"](https://serverfault.com/questions/669340/downloading-with-u-boots-tftp-randomly-times-out)
+
 # Throttle TFTP Server
 
 _What if we throttle our TFTP Server to send packets slower?_
@@ -148,27 +152,6 @@ TODO
 # Strange Workaround for TFTP Timeout in U-Boot Bootloader
 
 TODO
-
-["Downloading with U-Boot's tftp randomly times out"](https://serverfault.com/questions/669340/downloading-with-u-boots-tftp-randomly-times-out)
-
-Why does TFTP time out so often on our SBC? Is it because our TFTP Server sends packets too quickly to our SBC?
-
-Frequent TFTP Timeouts ("T" below) are affecting our NuttX Testing on Star64 JH7110 SBC.  Effective transfer rate is only 430 kbps!
-
-```text
-Loading: . ##############T ###################################################
-. ####################T #########T ####################################
-. 53.7 KiB/s
-```
-
-[(Source)](https://gist.github.com/lupyuen/9bdb1f5478318631d0480f03f6041d83#file-jh7110-nuttx-math-log-L140-L173)
-
-Let's try something: We send every TFTP Packet twice.
-
-
-TODO: What if we throttle our TFTP Server to send packets slower? Nope doesn't help
-
-TODO: What if we we reduce the timeout? Nope doesn't work
 
 _Does this problem happen for devices other than Star64 JH7110?_
 
@@ -193,6 +176,10 @@ Nope this TFTP Timeout seems specific to Star64 JH7110. We downloaded a 9 MB fil
 The fixed TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice.
 
 So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the TFTP Packets?
+
+![Testing Apache NuttX RTOS on Star64 JH7110 SBC](https://lupyuen.github.io/images/release-star64.jpg)
+
+[_Testing Apache NuttX RTOS on Star64 JH7110 SBC_](https://lupyuen.github.io/articles/release)
 
 # What's Next
 
