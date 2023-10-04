@@ -218,8 +218,6 @@ TODO: Why does it work? Dropped UDP Packets? We should check with Wireshark
 
 # Anyone Else Seeing This?
 
-TODO
-
 _Surely someone else might have the same problem?_
 
 Our TFTP Timeout looks similar to this...
@@ -228,7 +226,7 @@ Our TFTP Timeout looks similar to this...
 
 I have a hunch that it's something specific to __U-Boot on JH7110 SoC__. And we probably can't reproduce it with Linux on JH7110.
 
-_Sending Duplicate TFTP Packets doesn't feel right..._
+_Sending Duplicate TFTP Packets... Feels terribly wrong!_
 
 Yeah but we might have a precedent! According to [__martin-zs__](https://github.com/lupyuen/nuttx-star64/issues/2)...
 
