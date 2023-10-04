@@ -67,12 +67,13 @@
 
     <h1 class="title">Strange Workaround for TFTP Timeout in U-Boot Bootloader (Star64 JH7110 SBC)</h1>
     <nav id="TOC"><ul>
-<li><a href="#strange-workaround-for-tftp-timeout-in-u-boot-bootloader">1 Strange Workaround for TFTP Timeout in U-Boot Bootloader</a><ul></ul></li>
-<li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Oct 2023</em></p>
+<li><a href="#anyone-else-seeing-this">1 Anyone Else Seeing This?</a><ul></ul></li>
+<li><a href="#strange-workaround-for-tftp-timeout-in-u-boot-bootloader">2 Strange Workaround for TFTP Timeout in U-Boot Bootloader</a><ul></ul></li>
+<li><a href="#whats-next">3 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Oct 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/tftp2-title.jpg" alt="Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC" /></p>
-<p>We’re porting <a href="https://lupyuen.github.io/articles/release"><strong>Apache NuttX RTOS</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> Single-Board Computer.</p>
+<p>We’re porting <a href="https://lupyuen.github.io/articles/release"><strong>Apache NuttX Real-Time Operating System</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> Single-Board Computer. (Pic below)</p>
 <p>(Powered by <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC, same as the VisionFive2 SBC)</p>
-<p>But we’re hitting frequent <strong>TFTP Timeouts</strong> (“T” below) while booting NuttX on Star64 over the Network.  Effective transfer rate is only <strong>390 kbps</strong>! (Pic above)</p>
+<p>But we’re hitting frequent <strong>TFTP Timeouts</strong> (“T” below) while booting NuttX over the Local Network.  Effective Transfer Rate is only <strong>390 kbps</strong>! (Pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>Loading: 
 . ################################T #################################
 . #####################################T ############################
@@ -82,12 +83,34 @@
 . 48.8 KiB/s
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e">(Source)</a></p>
-<p>This makes our NuttX Testing super slow… Star64 takes <strong>4 minutes to boot</strong> over the Network!</p>
+<p>This makes NuttX Testing super slow… Our SBC takes <strong>4 minutes to boot</strong> over the Local Network!</p>
 <p><a href="https://youtu.be/MPBc2Qec6jo">(Watch the Demo on YouTube)</a></p>
 <p><em>How are we booting the SBC over the Network?</em></p>
-<p>We’re booting our Star64 SBC with <a href="https://lupyuen.github.io/articles/tftp"><strong>U-Boot Bootloader and TFTP</strong></a>. (Trivial File Transfer Protocol)</p>
+<p>We’re booting our Star64 SBC over a Wired Ethernet Local Network with <a href="https://lupyuen.github.io/articles/tftp"><strong>U-Boot Bootloader and TFTP</strong></a>.</p>
+<p>(That’s the Trivial File Transfer Protocol)</p>
+<p><em>Can we fix the TFTP Timeouts?</em></p>
+<p>In this article we talk about the <strong>Strange Workaround</strong> for the TFTP Timeouts…</p>
+<ul>
+<li>
+<p>We <strong>throttled our TFTP Server</strong> to send packets slower</p>
+<p>(Nope it doesn’t help)</p>
+</li>
+<li>
+<p>We <strong>reduced the TFTP Timeout</strong> in our server</p>
+<p>(Doesn’t help either)</p>
+</li>
+<li>
+<p>But when we send every <strong>TFTP Data Packet twice</strong>…</p>
+<p>The problem mysteriously disappears!</p>
+</li>
+</ul>
+<p>So yes we have a (curiously unsatisfactory) solution.</p>
+<p>Here’s what we tested with Star64 SBC and U-Boot Bootloader…</p>
+<p><img src="https://lupyuen.github.io/images/release-star64.jpg" alt="Testing Apache NuttX RTOS on Star64 JH7110 SBC" /></p>
+<p><a href="https://lupyuen.github.io/articles/release"><em>Testing Apache NuttX RTOS on Star64 JH7110 SBC</em></a></p>
+<h1 id="anyone-else-seeing-this"><a href="#anyone-else-seeing-this">1 Anyone Else Seeing This?</a></h1>
 <p>TODO</p>
-<h1 id="strange-workaround-for-tftp-timeout-in-u-boot-bootloader"><a href="#strange-workaround-for-tftp-timeout-in-u-boot-bootloader">1 Strange Workaround for TFTP Timeout in U-Boot Bootloader</a></h1>
+<h1 id="strange-workaround-for-tftp-timeout-in-u-boot-bootloader"><a href="#strange-workaround-for-tftp-timeout-in-u-boot-bootloader">2 Strange Workaround for TFTP Timeout in U-Boot Bootloader</a></h1>
 <p>TODO</p>
 <p><a href="https://serverfault.com/questions/669340/downloading-with-u-boots-tftp-randomly-times-out">“Downloading with U-Boot’s tftp randomly times out”</a></p>
 <p>Why does TFTP time out so often on our SBC? Is it because our TFTP Server sends packets too quickly to our SBC?</p>
@@ -157,7 +180,7 @@
 </code></pre></div>
 <p>The fixed TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice.</p>
 <p>So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the TFTP Packets?</p>
-<h1 id="whats-next"><a href="#whats-next">2 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">3 What’s Next</a></h1>
 <p>TODO</p>
 <p>Porting NuttX to Star64 JH7110 becomes so much faster. Stay tuned for updates!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
