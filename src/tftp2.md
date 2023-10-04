@@ -56,7 +56,27 @@ Here's what we tested with Star64 SBC and U-Boot Bootloader...
 
 [_Testing Apache NuttX RTOS on Star64 JH7110 SBC_](https://lupyuen.github.io/articles/release)
 
+# Send Every Packet Twice
+
+_We hacked our TFTP Server to send every packet twice?_
+
+Indeed!
+
+TODO
+
 # Anyone Else Seeing This?
+
+TODO
+
+# Throttle TFTP Server
+
+_What if we throttle our TFTP Server to send packets slower?_
+
+TODO
+
+# Reduce TFTP Timeout
+
+_What if we reduce the TFTP Timeout in our server?_
 
 TODO
 
