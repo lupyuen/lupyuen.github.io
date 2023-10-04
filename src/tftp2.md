@@ -32,6 +32,8 @@ We're booting our Star64 SBC over a Wired Ethernet Local Network with [__U-Boot 
 
 (That's the Trivial File Transfer Protocol)
 
+![Testing Apache NuttX RTOS on Star64 JH7110 SBC](https://lupyuen.github.io/images/release-star64.jpg)
+
 _Can we fix the TFTP Timeouts?_
 
 In this article we talk about the __Strange Workaround__ for the TFTP Timeouts...
@@ -70,7 +72,7 @@ From [rs-tftpd-timeout/src/worker.rs](https://github.com/lupyuen/rs-tftpd-timeou
 fn send_window<T: Socket>(
   socket: &T,          // UDP Socket
   window: &Window,     // Data Window to be sent
-  mut block_num: u16,  // Block Number
+  mut block_num: u16,  // Current Block Number
 ) -> Result<(), Box<dyn Error>> {
 
   // For every Data Frame in the Data Window...
@@ -108,6 +110,8 @@ Let's test this...
 ![Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC](https://lupyuen.github.io/images/tftp2-title.jpg)
 
 # No More Timeouts!
+
+TODO
 
 __Before Fixing:__ TFTP Transfer Rate is 48.8 KiB/s (with 6 timeouts)
 
@@ -176,10 +180,6 @@ Nope this TFTP Timeout seems specific to Star64 JH7110. We downloaded a 9 MB fil
 The fixed TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice.
 
 So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the TFTP Packets?
-
-![Testing Apache NuttX RTOS on Star64 JH7110 SBC](https://lupyuen.github.io/images/release-star64.jpg)
-
-[_Testing Apache NuttX RTOS on Star64 JH7110 SBC_](https://lupyuen.github.io/articles/release)
 
 # What's Next
 
