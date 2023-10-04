@@ -92,8 +92,8 @@ To send every __TFTP Data Packet twice__, we inserted this: [worker.rs](https://
 ```rust
     // Right after sending the TFTP Data Packet...
     // Wait 1 millisecond
-    let millis = std::time::Duration::from_millis(1);
-    std::thread::sleep(millis);
+    let millis = Duration::from_millis(1);
+    thread::sleep(millis);
 
     // Send the same TFTP Data Packet again.
     // Why does this work?
@@ -258,63 +258,6 @@ And a __Windows TFTP Server__ to verify if it really sends every packet 3 times.
 
 Before the sniffing, we do some sleuthing...
 
-# Throttle TFTP Server
-
-_What if we throttle our TFTP Server to send packets slower?_
-
-TODO: Doesn't work
-
-From [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L243-L267)
-
-```rust
-// Wait a while before sending next block
-// println!("send_window loop: block_num={}", block_num);////
-static mut DELAY_MS: u64 = 1;
-let millis = std::time::Duration::from_millis(DELAY_MS);
-std::thread::sleep(millis);
-
-// Check whether this is a resend
-static mut LAST_BLOCK_NUM: u16 = 0;            
-if block_num > 1 && block_num <= LAST_BLOCK_NUM {
-  println!("*** send_window RESEND: block_num={}", block_num);
-  DELAY_MS = DELAY_MS * 2;
-}
-
-// Check whether this is a delayed send
-static mut LAST_TIMESTAMP: ... = ... std::time::Instant::now();
-let diff_time = std::time::Instant::now() - *LAST_TIMESTAMP;
-if block_num > 1 && diff_time > Duration::from_millis(1000) {
-  println!("+++ send_window DELAY: block_num={}", block_num);
-  DELAY_MS = DELAY_MS * 2;
-}
-LAST_BLOCK_NUM = block_num;
-*LAST_TIMESTAMP = std::time::Instant::now();
-```
-
-From [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L275-L295)
-
-```text
-Sending Image to 192.168.31.141:3900
-+++ send_window DELAY: block_num=676
-Sent Image to 192.168.31.141:3900
-Sending jh7110-star64-pine64.dtb to 192.168.31.141:2434
-Sent jh7110-star64-pine64.dtb to 192.168.31.141:2434
-Sending initrd to 192.168.31.141:2539
-+++ send_window DELAY: block_num=15
-+++ send_window DELAY: block_num=2366
-+++ send_window DELAY: block_num=2755
-+++ send_window DELAY: block_num=5012
-Sent initrd to 192.168.31.141:2539
-Sending Image to 192.168.31.141:4069
-+++ send_window DELAY: block_num=795
-Sending jh7110-star64-pine64.dtb to 192.168.31.141:2647
-Sent Image to 192.168.31.141:4069
-Sent jh7110-star64-pine64.dtb to 192.168.31.141:2647
-Sending initrd to 192.168.31.141:1859
-+++ send_window DELAY: block_num=61
-+++ send_window DELAY: block_num=1711
-```
-
 # Reduce TFTP Timeout
 
 _What if we reduce the TFTP Timeout in our server?_
@@ -328,6 +271,69 @@ fn send_file(self, file: File) -> Result<(), Box<dyn Error>> {
   ...
   // println!("timeout={} ms", self.timeout.as_millis());//// 5000 ms
   let mut time = Instant::now() - (self.timeout + TIMEOUT_BUFFER);
+```
+
+# Throttle TFTP Server
+
+_What if we throttle our TFTP Server to send packets slower?_
+
+TODO: Doesn't work
+
+From [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L243-L267)
+
+```rust
+// Omitted: Send the TFTP Data Packet
+
+// Wait a while before sending next packet
+static mut DELAY_MS: u64 = 1;
+let millis = Duration::from_millis(DELAY_MS);
+thread::sleep(millis);
+```
+
+TODO
+
+```rust
+// Is this is a resend?
+// Compare with the last Block Number
+static mut LAST_BLOCK_NUM: u16 = 0;            
+if block_num > 1 && block_num <= LAST_BLOCK_NUM {
+
+  // If it's a resend: Increase the delay
+  println!("*** send_window RESEND: block_num={}", block_num);
+  DELAY_MS = DELAY_MS * 2;
+}
+
+// Remember the last Block Number
+LAST_BLOCK_NUM  = block_num;
+```
+
+TODO
+
+```rust
+// Is this is a delayed send?
+// Compare with the last Timestamp
+static mut LAST_TIMESTAMP: ... = ... Instant::now();
+let diff_time = Instant::now() - *LAST_TIMESTAMP;
+if block_num > 1 && diff_time > Duration::from_millis(1000) {
+
+  // If it's delayed: Increase the delay
+  println!("+++ send_window DELAY: block_num={}", block_num);
+  DELAY_MS = DELAY_MS * 2;
+}
+
+// Remember the last Timestamp
+*LAST_TIMESTAMP = Instant::now();
+```
+
+From [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L275-L295)
+
+```text
+Sending initrd
++++ send_window DELAY: block_num=15
++++ send_window DELAY: block_num=2366
++++ send_window DELAY: block_num=2755
++++ send_window DELAY: block_num=5012
+Sent initrd
 ```
 
 ![Booting Star64 JH7110 SBC over TFTP](https://lupyuen.github.io/images/tftp2-flow.jpg)
