@@ -70,8 +70,8 @@
 <li><a href="#send-everything-twice">1 Send Everything Twice</a><ul></ul></li>
 <li><a href="#no-more-timeouts">2 No More Timeouts!</a><ul></ul></li>
 <li><a href="#anyone-else-seeing-this">3 Anyone Else Seeing This?</a><ul></ul></li>
-<li><a href="#throttle-tftp-server">4 Throttle TFTP Server</a><ul></ul></li>
-<li><a href="#reduce-tftp-timeout">5 Reduce TFTP Timeout</a><ul></ul></li>
+<li><a href="#reduce-tftp-timeout">4 Reduce TFTP Timeout</a><ul></ul></li>
+<li><a href="#throttle-tftp-server">5 Throttle TFTP Server</a><ul></ul></li>
 <li><a href="#all-things-considered">6 All Things Considered</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Oct 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/tftp2-title.jpg" alt="Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC" /></p>
@@ -142,8 +142,8 @@
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Right after sending the TFTP Data Packet...
     // Wait 1 millisecond
-    </span><span class="kw">let </span>millis = std::time::Duration::from_millis(<span class="number">1</span>);
-    std::thread::sleep(millis);
+    </span><span class="kw">let </span>millis = Duration::from_millis(<span class="number">1</span>);
+    thread::sleep(millis);
 
     <span class="comment">// Send the same TFTP Data Packet again.
     // Why does this work?
@@ -269,54 +269,7 @@ Bytes transferred = 9,231,360
 <p>We might need <strong>Wireshark</strong> to sniff the TFTP Packets.</p>
 <p>And a <strong>Windows TFTP Server</strong> to verify if it really sends every packet 3 times.</p>
 <p>Before the sniffing, we do some sleuthing…</p>
-<h1 id="throttle-tftp-server"><a href="#throttle-tftp-server">4 Throttle TFTP Server</a></h1>
-<p><em>What if we throttle our TFTP Server to send packets slower?</em></p>
-<p>TODO: Doesn’t work</p>
-<p>From <a href="https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L243-L267">worker.rs</a></p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Wait a while before sending next block
-// println!(&quot;send_window loop: block_num={}&quot;, block_num);////
-</span><span class="kw">static </span><span class="kw-2">mut </span>DELAY_MS: u64 = <span class="number">1</span>;
-<span class="kw">let </span>millis = std::time::Duration::from_millis(DELAY_MS);
-std::thread::sleep(millis);
-
-<span class="comment">// Check whether this is a resend
-</span><span class="kw">static </span><span class="kw-2">mut </span>LAST_BLOCK_NUM: u16 = <span class="number">0</span>;            
-<span class="kw">if </span>block_num &gt; <span class="number">1 </span>&amp;&amp; block_num &lt;= LAST_BLOCK_NUM {
-  <span class="macro">println!</span>(<span class="string">&quot;*** send_window RESEND: block_num={}&quot;</span>, block_num);
-  DELAY_MS = DELAY_MS * <span class="number">2</span>;
-}
-
-<span class="comment">// Check whether this is a delayed send
-</span><span class="kw">static </span><span class="kw-2">mut </span>LAST_TIMESTAMP: ... = ... std::time::Instant::now();
-<span class="kw">let </span>diff_time = std::time::Instant::now() - <span class="kw-2">*</span>LAST_TIMESTAMP;
-<span class="kw">if </span>block_num &gt; <span class="number">1 </span>&amp;&amp; diff_time &gt; Duration::from_millis(<span class="number">1000</span>) {
-  <span class="macro">println!</span>(<span class="string">&quot;+++ send_window DELAY: block_num={}&quot;</span>, block_num);
-  DELAY_MS = DELAY_MS * <span class="number">2</span>;
-}
-LAST_BLOCK_NUM = block_num;
-<span class="kw-2">*</span>LAST_TIMESTAMP = std::time::Instant::now();</code></pre></div>
-<p>From <a href="https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L275-L295">worker.rs</a></p>
-<div class="example-wrap"><pre class="language-text"><code>Sending Image to 192.168.31.141:3900
-+++ send_window DELAY: block_num=676
-Sent Image to 192.168.31.141:3900
-Sending jh7110-star64-pine64.dtb to 192.168.31.141:2434
-Sent jh7110-star64-pine64.dtb to 192.168.31.141:2434
-Sending initrd to 192.168.31.141:2539
-+++ send_window DELAY: block_num=15
-+++ send_window DELAY: block_num=2366
-+++ send_window DELAY: block_num=2755
-+++ send_window DELAY: block_num=5012
-Sent initrd to 192.168.31.141:2539
-Sending Image to 192.168.31.141:4069
-+++ send_window DELAY: block_num=795
-Sending jh7110-star64-pine64.dtb to 192.168.31.141:2647
-Sent Image to 192.168.31.141:4069
-Sent jh7110-star64-pine64.dtb to 192.168.31.141:2647
-Sending initrd to 192.168.31.141:1859
-+++ send_window DELAY: block_num=61
-+++ send_window DELAY: block_num=1711
-</code></pre></div><h1 id="reduce-tftp-timeout"><a href="#reduce-tftp-timeout">5 Reduce TFTP Timeout</a></h1>
+<h1 id="reduce-tftp-timeout"><a href="#reduce-tftp-timeout">4 Reduce TFTP Timeout</a></h1>
 <p><em>What if we reduce the TFTP Timeout in our server?</em></p>
 <p>TODO: Doesn’t work</p>
 <p>From <a href="https://github.com/lupyuen/rs-tftpd-timeout/blob/80730178595ad550871fec72148d4f3e723b650a/src/worker.rs#L132-L141">worker.rs</a></p>
@@ -325,6 +278,54 @@ Sending initrd to 192.168.31.141:1859
   ...
   <span class="comment">// println!(&quot;timeout={} ms&quot;, self.timeout.as_millis());//// 5000 ms
   </span><span class="kw">let </span><span class="kw-2">mut </span>time = Instant::now() - (<span class="self">self</span>.timeout + TIMEOUT_BUFFER);</code></pre></div>
+<h1 id="throttle-tftp-server"><a href="#throttle-tftp-server">5 Throttle TFTP Server</a></h1>
+<p><em>What if we throttle our TFTP Server to send packets slower?</em></p>
+<p>TODO: Doesn’t work</p>
+<p>From <a href="https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L243-L267">worker.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Omitted: Send the TFTP Data Packet
+
+// Wait a while before sending next packet
+</span><span class="kw">static </span><span class="kw-2">mut </span>DELAY_MS: u64 = <span class="number">1</span>;
+<span class="kw">let </span>millis = Duration::from_millis(DELAY_MS);
+thread::sleep(millis);</code></pre></div>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Is this is a resend?
+// Compare with the last Block Number
+</span><span class="kw">static </span><span class="kw-2">mut </span>LAST_BLOCK_NUM: u16 = <span class="number">0</span>;            
+<span class="kw">if </span>block_num &gt; <span class="number">1 </span>&amp;&amp; block_num &lt;= LAST_BLOCK_NUM {
+
+  <span class="comment">// If it&#39;s a resend: Increase the delay
+  </span><span class="macro">println!</span>(<span class="string">&quot;*** send_window RESEND: block_num={}&quot;</span>, block_num);
+  DELAY_MS = DELAY_MS * <span class="number">2</span>;
+}
+
+<span class="comment">// Remember the last Block Number
+</span>LAST_BLOCK_NUM  = block_num;</code></pre></div>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Is this is a delayed send?
+// Compare with the last Timestamp
+</span><span class="kw">static </span><span class="kw-2">mut </span>LAST_TIMESTAMP: ... = ... Instant::now();
+<span class="kw">let </span>diff_time = Instant::now() - <span class="kw-2">*</span>LAST_TIMESTAMP;
+<span class="kw">if </span>block_num &gt; <span class="number">1 </span>&amp;&amp; diff_time &gt; Duration::from_millis(<span class="number">1000</span>) {
+
+  <span class="comment">// If it&#39;s delayed: Increase the delay
+  </span><span class="macro">println!</span>(<span class="string">&quot;+++ send_window DELAY: block_num={}&quot;</span>, block_num);
+  DELAY_MS = DELAY_MS * <span class="number">2</span>;
+}
+
+<span class="comment">// Remember the last Timestamp
+</span><span class="kw-2">*</span>LAST_TIMESTAMP = Instant::now();</code></pre></div>
+<p>From <a href="https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L275-L295">worker.rs</a></p>
+<div class="example-wrap"><pre class="language-text"><code>Sending initrd
++++ send_window DELAY: block_num=15
++++ send_window DELAY: block_num=2366
++++ send_window DELAY: block_num=2755
++++ send_window DELAY: block_num=5012
+Sent initrd
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/tftp2-flow.jpg" alt="Booting Star64 JH7110 SBC over TFTP" /></p>
 <h1 id="all-things-considered"><a href="#all-things-considered">6 All Things Considered</a></h1>
 <p><em>We sure this isn’t a Hardware Problem at our TFTP Server?</em></p>
