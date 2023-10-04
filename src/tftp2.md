@@ -78,23 +78,31 @@ fn send_window<T: Socket>(
   // For every Data Frame in the Data Window...
   for frame in window.get_elements() {
     
-    // Send the TFTP Packet
+    // Send the TFTP Data Packet
     socket.send(&Packet::Data {
       block_num,
       data: frame.to_vec(),
     })?;
 
+    // Omitted: Increment the Block Number
+```
+
+Then we inserted this: [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/main/src/worker.rs#L232-L255)
+
+```rust
+    // Right after sending the TFTP Data Packet...
     // Wait 1 millisecond
-    static mut DELAY_MS: u64 = 1;
-    let millis = std::time::Duration::from_millis(DELAY_MS);
+    let millis = std::time::Duration::from_millis(1);
     std::thread::sleep(millis);
 
-    // Send the same TFTP Packet again
+    // Send the same TFTP Data Packet again.
     // Why does this work?
     socket.send(&Packet::Data {
       block_num,
       data: frame.to_vec(),
     })?;
+
+    // Omitted: Increment the Block Number
 ```
 
 Let's test this...
