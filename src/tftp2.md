@@ -236,7 +236,7 @@ Our TFTP Timeout looks similar to this...
 
 I have a hunch that it's something specific to __U-Boot on JH7110 SoC__. And we probably can't reproduce it with Linux on JH7110.
 
-_Sending Duplicate TFTP Packets... Feels terribly wrong!_
+_Sending Duplicate TFTP Packets... Feels horribly wrong!_
 
 Yeah but we might have a precedent! According to [__martin-zs__](https://github.com/lupyuen/nuttx-star64/issues/2)...
 
@@ -246,7 +246,7 @@ Yeah but we might have a precedent! According to [__martin-zs__](https://github.
 
 [(Source)](https://github.com/lupyuen/nuttx-star64/issues/2)
 
-Apparently Windows will send __every TFTP Packet 3 times__.
+Apparently Windows might send __every TFTP Packet 3 times__.
 
 Maybe that's why Star64 JH7110 U-Boot won't work so well with Linux TFTP Servers?
 
