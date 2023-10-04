@@ -143,11 +143,13 @@ TODO
 
 According to [__martin-zs__](https://github.com/lupyuen/nuttx-star64/issues/2)...
 
-> "Years ago I used to work in a mixed environment (Windows/Solaris/HP-US/Linux servers) and I noticed that most windows machines send an insane amount of packets in triplicate. UNIX would send everything once. This would make me wonder if the JH7110 SoC (or the licensed IP used) was only tested using windows machines."
+> "Years ago I used to work in a mixed environment (Windows/Solaris/HP-US/Linux servers) and I noticed that __most windows machines send an insane amount of packets in triplicate__. UNIX would send everything once. This would make me wonder if the JH7110 SoC (or the licensed IP used) was only tested using windows machines."
 
 > "My guess would be that if you setup a windows machine to be the tftp server, it would work - just because of the triple packets (mostly for UDP)."
 
 [(Source)](https://github.com/lupyuen/nuttx-star64/issues/2)
+
+Apparently Windows will send every TFTP Packet 3 times. Maybe that's why Star64 JH7110 U-Boot won't work well with Linux TFTP Servers?
 
 # Throttle TFTP Server
 
