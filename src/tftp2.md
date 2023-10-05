@@ -244,11 +244,11 @@ Yeah but we might have a precedent! According to [__martin-zs__](https://github.
 
 > "My guess would be that if you setup a windows machine to be the tftp server, it would work - just because of the triple packets (mostly for UDP)."
 
-[(Source)](https://github.com/lupyuen/nuttx-star64/issues/2)
+> [(Source)](https://github.com/lupyuen/nuttx-star64/issues/2)
 
 Apparently Windows might send __every TFTP Packet 3 times__.
 
-Maybe that's why Star64 JH7110 U-Boot won't work so well with Linux TFTP Servers?
+Maybe that's why JH7110 U-Boot won't work so well with Linux TFTP Servers?
 
 _How will we track down the root cause?_
 
