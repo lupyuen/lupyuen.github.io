@@ -42,7 +42,7 @@ Yep! In this article we talk about the __Strange Workaround__ for the TFTP Timeo
 
   (Which made it worse)
 
-- Next we __reduced the TFTP Timeout__ in our server
+- Next we __reduced the TFTP Timeout Duration__ in our server
 
   (Nope doesn't work)
 
@@ -262,7 +262,7 @@ And a __Windows TFTP Server__ to verify if it really sends every packet 3 times.
 
 Before the sniffing, we do some sleuthing...
 
-# Reduce TFTP Timeout
+# Reduce TFTP Timeout Duration
 
 _Why does every TFTP Timeout pause for 5 seconds?_
 
