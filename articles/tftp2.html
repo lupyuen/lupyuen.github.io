@@ -70,7 +70,7 @@
 <li><a href="#send-everything-twice">1 Send Everything Twice</a><ul></ul></li>
 <li><a href="#no-more-timeouts">2 No More Timeouts!</a><ul></ul></li>
 <li><a href="#anyone-else-seeing-this">3 Anyone Else Seeing This?</a><ul></ul></li>
-<li><a href="#reduce-tftp-timeout">4 Reduce TFTP Timeout</a><ul></ul></li>
+<li><a href="#reduce-tftp-timeout-duration">4 Reduce TFTP Timeout Duration</a><ul></ul></li>
 <li><a href="#throttle-tftp-server">5 Throttle TFTP Server</a><ul></ul></li>
 <li><a href="#all-things-considered">6 All Things Considered</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2023</em></p>
@@ -101,7 +101,7 @@
 <p>(Which made it worse)</p>
 </li>
 <li>
-<p>Next we <strong>reduced the TFTP Timeout</strong> in our server</p>
+<p>Next we <strong>reduced the TFTP Timeout Duration</strong> in our server</p>
 <p>(Nope doesn’t work)</p>
 </li>
 <li>
@@ -275,7 +275,7 @@ Bytes transferred = 9,231,360
 <p>We might need <strong>Wireshark</strong> to sniff the TFTP Packets.</p>
 <p>And a <strong>Windows TFTP Server</strong> to verify if it really sends every packet 3 times.</p>
 <p>Before the sniffing, we do some sleuthing…</p>
-<h1 id="reduce-tftp-timeout"><a href="#reduce-tftp-timeout">4 Reduce TFTP Timeout</a></h1>
+<h1 id="reduce-tftp-timeout-duration"><a href="#reduce-tftp-timeout-duration">4 Reduce TFTP Timeout Duration</a></h1>
 <p><em>Why does every TFTP Timeout pause for 5 seconds?</em></p>
 <p><a href="https://youtu.be/MPBc2Qec6jo">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>The 5-second Timeout Duration is computed here: <a href="https://github.com/lupyuen/rs-tftpd-timeout/blob/80730178595ad550871fec72148d4f3e723b650a/src/worker.rs#L132-L141">worker.rs</a></p>
