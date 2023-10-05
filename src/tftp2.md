@@ -50,6 +50,10 @@ Yep! In this article we talk about the __Strange Workaround__ for the TFTP Timeo
 
   The problem mysteriously disappears!
 
+- NuttX now boots over the network in __20 seconds__
+
+  (Previously 4 minutes!)
+
 - We verified this with 2 TFTP Servers: __Linux and macOS__
 
 So yes we have a (curiously unsatisfactory) solution.
