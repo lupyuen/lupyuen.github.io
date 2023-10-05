@@ -262,9 +262,11 @@ Bytes transferred = 9,231,360
 <blockquote>
 <p>“My guess would be that if you setup a windows machine to be the tftp server, it would work - just because of the triple packets (mostly for UDP).”</p>
 </blockquote>
+<blockquote>
 <p><a href="https://github.com/lupyuen/nuttx-star64/issues/2">(Source)</a></p>
+</blockquote>
 <p>Apparently Windows might send <strong>every TFTP Packet 3 times</strong>.</p>
-<p>Maybe that’s why Star64 JH7110 U-Boot won’t work so well with Linux TFTP Servers?</p>
+<p>Maybe that’s why JH7110 U-Boot won’t work so well with Linux TFTP Servers?</p>
 <p><em>How will we track down the root cause?</em></p>
 <p>We might need <strong>Wireshark</strong> to sniff the TFTP Packets.</p>
 <p>And a <strong>Windows TFTP Server</strong> to verify if it really sends every packet 3 times.</p>
