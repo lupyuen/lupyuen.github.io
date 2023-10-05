@@ -199,9 +199,9 @@ Filename 'initrd'. Loading:
 Bytes transferred = 9,231,360
 ```
 
-[(Source)](https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e)
 
-[(Watch the Demo on YouTube)](https://youtu.be/MPBc2Qec6jo)
+[(Watch the __Demo on YouTube__)](https://youtu.be/MPBc2Qec6jo)
 
 __After Fixing:__ TFTP Transfer Rate (for our Modified TFTP Server) is __8 Mbps__ (with NO timeouts)
 
@@ -216,9 +216,9 @@ Filename 'initrd'. Loading:
 Bytes transferred = 9,231,360
 ```
 
-[(Source)](https://gist.github.com/lupyuen/19ab2e16c0c2bb46175bcd8fba7116f2)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/19ab2e16c0c2bb46175bcd8fba7116f2)
 
-[(Watch the Demo on YouTube)](https://youtu.be/ABpi2ABln5o)
+[(Watch the __Demo on YouTube__)](https://youtu.be/ABpi2ABln5o)
 
 Yep it works: No more TFTP Timeouts!
 
@@ -260,37 +260,47 @@ Before the sniffing, we do some sleuthing...
 
 # Reduce TFTP Timeout
 
-_What if we reduce the TFTP Timeout in our server?_
+_Why does every TFTP Timeout pause for 5 seconds?_
 
-TODO: Doesn't work
+[(Watch the __Demo on YouTube__)](https://youtu.be/MPBc2Qec6jo)
 
-From [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/80730178595ad550871fec72148d4f3e723b650a/src/worker.rs#L132-L141)
+The 5-second Timeout Duration is computed here: [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/80730178595ad550871fec72148d4f3e723b650a/src/worker.rs#L132-L141)
 
 ```rust
+// Send the file to TFTP Client
 fn send_file(self, file: File) -> Result<(), Box<dyn Error>> {
   ...
-  // println!("timeout={} ms", self.timeout.as_millis());//// 5000 ms
-  let mut time = Instant::now() - (self.timeout + TIMEOUT_BUFFER);
+  // Compute the TFTP Timeout
+  let mut time = Instant::now() - (
+    self.timeout +  // 5 seconds
+    TIMEOUT_BUFFER  // 1 second
+  );
 ```
+
+_What if we reduce the Timeout Duration in our server?_
+
+When we change the code above to reduce the Timeout Duration, TFTP Stops working altogether. The TFTP Client (U-Boot) keeps timing out without transferring any data.
+
+Let's try something else...
 
 # Throttle TFTP Server
 
 _What if we throttle our TFTP Server to send packets slower?_
 
-TODO: Doesn't work
+We tried to slow down the TFTP Server: When we hit any Resends and Timeouts, we __increase the delay__ between packets.
 
-From [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L243-L267)
+Here's the code that waits a bit (1 millisecond initially) between packets: [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L243-L267)
 
 ```rust
 // Omitted: Send the TFTP Data Packet
 
-// Wait a while before sending next packet
+// Wait a while before sending the next packet
 static mut DELAY_MS: u64 = 1;
 let millis = Duration::from_millis(DELAY_MS);
 thread::sleep(millis);
 ```
 
-TODO
+Then we inserted the logic to check if we are __resending the same packet__: [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L243-L267)
 
 ```rust
 // Is this is a resend?
@@ -298,7 +308,7 @@ TODO
 static mut LAST_BLOCK_NUM: u16 = 0;            
 if block_num > 1 && block_num <= LAST_BLOCK_NUM {
 
-  // If it's a resend: Increase the delay
+  // If it's a resend: Double the delay
   println!("*** send_window RESEND: block_num={}", block_num);
   DELAY_MS = DELAY_MS * 2;
 }
@@ -307,7 +317,9 @@ if block_num > 1 && block_num <= LAST_BLOCK_NUM {
 LAST_BLOCK_NUM  = block_num;
 ```
 
-TODO
+If this is a Resend, we __double the delay__ between packets.
+
+Also we __check for Timeout__ by comparing Timestamps: [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L243-L267)
 
 ```rust
 // Is this is a delayed send?
@@ -316,7 +328,7 @@ static mut LAST_TIMESTAMP: ... = ... Instant::now();
 let diff_time = Instant::now() - *LAST_TIMESTAMP;
 if block_num > 1 && diff_time > Duration::from_millis(1000) {
 
-  // If it's delayed: Increase the delay
+  // If it's delayed by 1 sec: Double the delay
   println!("+++ send_window DELAY: block_num={}", block_num);
   DELAY_MS = DELAY_MS * 2;
 }
@@ -325,7 +337,13 @@ if block_num > 1 && diff_time > Duration::from_millis(1000) {
 *LAST_TIMESTAMP = Instant::now();
 ```
 
-From [worker.rs](https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L275-L295)
+If this is a Timeout, we __double the delay__ between packets.
+
+_Does it work?_
+
+Nope, it got worse. We still see Timeouts in spite of the extra delay between packets.
+
+And the Data Transfer became terribly slow (because of the longer and longer delays)...
 
 ```text
 Sending initrd
@@ -335,6 +353,12 @@ Sending initrd
 +++ send_window DELAY: block_num=5012
 Sent initrd
 ```
+
+[(See the __Complete Log__)](https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L275-L295)
+
+[(See the __Resend Log__)](https://github.com/lupyuen/rs-tftpd-timeout/blob/52ee5a9b3ddcb4972578141c0479ee172c46e6c0/src/worker.rs#L302-L308)
+
+Thus throttling our TFTP Server doesn't help.
 
 ![Booting Star64 JH7110 SBC over TFTP](https://lupyuen.github.io/images/tftp2-flow.jpg)
 
