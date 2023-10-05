@@ -496,9 +496,9 @@ Which does the same thing as the previous section: Boot NuttX (or Linux) over th
 
 [(Thanks to this article)](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot)
 
-__TODO:__ Why does TFTP time out so often on our SBC? Is it because our TFTP Server sends packets too quickly to our SBC? Can we [__throttle our TFTP Server__](https://github.com/altugbakan/rs-tftpd/blob/main/src/worker.rs#L128) to send packets slower?
+_Hmmm why do we see TFTP Timeouts?_
 
-Frequent TFTP Timeouts ("T" below) are affecting our NuttX Testing on Star64 JH7110 SBC.  Effective transfer rate is only 430 kbps!
+Yeah __frequent TFTP Timeouts__ ("T" below) are affecting our NuttX Testing on Star64 JH7110 SBC.  Effective Transfer Rate is only 430 kbps!
 
 ```text
 Loading: . ##############T ###################################################
@@ -507,6 +507,10 @@ Loading: . ##############T ###################################################
 ```
 
 [(Source)](https://gist.github.com/lupyuen/9bdb1f5478318631d0480f03f6041d83#file-jh7110-nuttx-math-log-L140-L173)
+
+Check out the solution here...
+
+-   [__"Strange Workaround for TFTP Timeout in U-Boot Bootloader (Star64 JH7110 RISC-V SBC)"__](https://lupyuen.github.io/articles/tftp2)
 
 ![Home Assistant controls Google Home (and potentially Smart Plugs)](https://lupyuen.github.io/images/tftp-home.png)
 
