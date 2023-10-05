@@ -1,10 +1,10 @@
-# Strange Workaround for TFTP Timeout in U-Boot Bootloader (Star64 JH7110 SBC)
+# Strange Workaround for TFTP Timeout in U-Boot Bootloader (Star64 JH7110 RISC-V SBC)
 
-📝 _10 Oct 2023_
+📝 _6 Oct 2023_
 
 ![Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC](https://lupyuen.github.io/images/tftp2-title.jpg)
 
-We're porting [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) to the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) Single-Board Computer. (Pic below)
+We're porting [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) to the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) RISC-V Single-Board Computer. (Pic below)
 
 (Powered by [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC, same as the VisionFive2 SBC)
 
