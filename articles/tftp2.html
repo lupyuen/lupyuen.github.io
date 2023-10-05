@@ -353,14 +353,14 @@ Sent initrd
 </div>
 <p>Thus we’re sure that it’s not a Hardware or OS Problem at the TFTP Server.</p>
 <p>Then we <strong>downloaded a 9 MB file</strong> from Raspberry Pi to MacBook over TFTP on Wired Ethernet…</p>
-<div class="example-wrap"><pre class="language-text"><code># Before Fixing TFTP Server: 19 Mbps (xinetd + tftpd)
+<div class="example-wrap"><pre class="language-text"><code>## Before Fixing TFTP Server: 19 Mbps (xinetd + tftpd)
 $ curl --output initrd tftp://192.168.31.10/initrd
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100 9015k    0 9015k    0     0  2374k      0 --:--:--  0:00:03 --:--:-- 2374k
 
-# After Fixing TFTP Server: 3.3 Mbps (Modified rs-tftpd)
+## After Fixing TFTP Server: 3.3 Mbps (Modified rs-tftpd)
 $ curl --output initrd tftp://192.168.31.10/initrd
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -369,8 +369,8 @@ $ curl --output initrd tftp://192.168.31.10/initrd
 </code></pre></div>
 <p>Our Wired Ethernet Network looks hunky dory, no problems here.</p>
 <p>(Our Modified TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice)</p>
-<p><em>So this TFTP Timeout seems specific to Star64 U-Boot?</em></p>
-<p>Yeah. So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the Incoming UDP Packets?</p>
+<p><em>So this TFTP Timeout seems specific to JH7110 U-Boot?</em></p>
+<p>Yeah. Maybe U-Boot Bootloader on Star64 JH7110 missed some Incoming UDP Packets?</p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Porting NuttX to Star64 JH7110 becomes so much faster. Stay tuned for updates!</p>
