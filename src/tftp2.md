@@ -146,7 +146,7 @@ curl -v \
 
 _Won't the extra Data Packet confuse the TFTP Client?_
 
-That's perfectly OK because the __TFTP Block Number__ (sequence number) is encoded inside the Data Packet.
+That's perfectly OK because the __TFTP Block Number__ (sequence number) is encoded inside the UDP Data Packet.
 
 The TFTP Client (like __`curl`__) will do the right thing and drop the __Duplicate Data Packets__...
 
@@ -277,11 +277,13 @@ fn send_file(self, file: File) -> Result<(), Box<dyn Error>> {
   );
 ```
 
-_What if we reduce the Timeout Duration in our server?_
+_What if we reduce the Timeout Duration?_
 
-When we change the code above to reduce the Timeout Duration, TFTP Stops working altogether. The TFTP Client (U-Boot) keeps timing out without transferring any data.
+When we change the code above to reduce the Timeout Duration, __TFTP stops working__ altogether...
 
-Let's try something else...
+The TFTP Client (U-Boot) keeps timing out without transferring any data.
+
+We try something else...
 
 # Throttle TFTP Server
 
@@ -343,7 +345,7 @@ _Does it work?_
 
 Nope, it got worse. We still see Timeouts in spite of the extra delay between packets.
 
-And the Data Transfer became terribly slow (because of the longer and longer delays)...
+And the Data Transfer becomes terribly slow (because of the longer and longer delays)...
 
 ```text
 Sending initrd
@@ -401,7 +403,7 @@ Our Wired Ethernet Network looks hunky dory, no problems here.
 
 _So this TFTP Timeout seems specific to Star64 U-Boot?_
 
-Yeah. So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the Incoming TFTP Packets?
+Yeah. So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the Incoming UDP Packets?
 
 # What's Next
 
