@@ -187,7 +187,7 @@ curl -v \
   tftp://192.168.x.x/initrd
 </code></pre></div>
 <p><em>Won’t the extra Data Packet confuse the TFTP Client?</em></p>
-<p>That’s perfectly OK because the <strong>TFTP Block Number</strong> (sequence number) is encoded inside the Data Packet.</p>
+<p>That’s perfectly OK because the <strong>TFTP Block Number</strong> (sequence number) is encoded inside the UDP Data Packet.</p>
 <p>The TFTP Client (like <strong><code>curl</code></strong>) will do the right thing and drop the <strong>Duplicate Data Packets</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ curl -v --output initrd tftp://192.168.31.10/initrd
 
@@ -282,9 +282,10 @@ Bytes transferred = 9,231,360
     <span class="self">self</span>.timeout +  <span class="comment">// 5 seconds
     </span>TIMEOUT_BUFFER  <span class="comment">// 1 second
   </span>);</code></pre></div>
-<p><em>What if we reduce the Timeout Duration in our server?</em></p>
-<p>When we change the code above to reduce the Timeout Duration, TFTP Stops working altogether. The TFTP Client (U-Boot) keeps timing out without transferring any data.</p>
-<p>Let’s try something else…</p>
+<p><em>What if we reduce the Timeout Duration?</em></p>
+<p>When we change the code above to reduce the Timeout Duration, <strong>TFTP stops working</strong> altogether…</p>
+<p>The TFTP Client (U-Boot) keeps timing out without transferring any data.</p>
+<p>We try something else…</p>
 <h1 id="throttle-tftp-server"><a href="#throttle-tftp-server">5 Throttle TFTP Server</a></h1>
 <p><em>What if we throttle our TFTP Server to send packets slower?</em></p>
 <p>We tried to slow down the TFTP Server: When we hit any Resends and Timeouts, we <strong>increase the delay</strong> between packets.</p>
@@ -329,7 +330,7 @@ thread::sleep(millis);</code></pre></div>
 <p>If this is a Timeout, we <strong>double the delay</strong> between packets.</p>
 <p><em>Does it work?</em></p>
 <p>Nope, it got worse. We still see Timeouts in spite of the extra delay between packets.</p>
-<p>And the Data Transfer became terribly slow (because of the longer and longer delays)…</p>
+<p>And the Data Transfer becomes terribly slow (because of the longer and longer delays)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Sending initrd
 +++ send_window DELAY: block_num=15
 +++ send_window DELAY: block_num=2366
@@ -369,7 +370,7 @@ $ curl --output initrd tftp://192.168.31.10/initrd
 <p>Our Wired Ethernet Network looks hunky dory, no problems here.</p>
 <p>(Our Modified TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice)</p>
 <p><em>So this TFTP Timeout seems specific to Star64 U-Boot?</em></p>
-<p>Yeah. So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the Incoming TFTP Packets?</p>
+<p>Yeah. So maybe U-Boot Bootloader on Star64 JH7110 is too slow to catch all the Incoming UDP Packets?</p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Porting NuttX to Star64 JH7110 becomes so much faster. Stay tuned for updates!</p>
