@@ -22,7 +22,7 @@ Loading:
 
 [(Source)](https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e)
 
-This makes NuttX Testing super slow... Our SBC takes __4 minutes to boot__ over the Local Network!
+This makes NuttX Testing super slow... Our SBC takes __4 minutes to boot__ over the Wired Local Network!
 
 [(Watch the Demo on YouTube)](https://youtu.be/MPBc2Qec6jo)
 
