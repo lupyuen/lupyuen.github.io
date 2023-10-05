@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Strange Workaround for TFTP Timeout in U-Boot Bootloader (Star64 JH7110 RISC-V SBC)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-10-06",
+      "website": "https://lupyuen.github.io/articles/tftp2",
+      "summary": "Here's how we fixed TFTP Timeouts in the Star64 JH7110 U-Boot Bootloader... By sending every TFTP Data Packet twice"
+    },
+    {
       "name": "(Slides) Apache NuttX RTOS for PINE64 PinePhone",
       "publisher": "NuttX International Workshop 2023",
       "releaseDate": "2023-09-29",

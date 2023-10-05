@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Strange Workaround for TFTP Timeout in U-Boot Bootloader (Star64 JH7110 RISC-V SBC)</title>
+            <link>https://lupyuen.github.io/articles/tftp2</link>
+            <description><![CDATA[Here's how we fixed TFTP Timeouts in the Star64 JH7110 U-Boot Bootloader... By sending every TFTP Data Packet twice]]></description>
+            <guid>https://lupyuen.github.io/articles/tftp2</guid>
+            <pubDate>Fri, 06 Oct 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>(Slides) Apache NuttX RTOS for PINE64 PinePhone</title>
             <link>https://docs.google.com/presentation/d/15qIBW4hoCwGCX5KGwjjV2Zo_G1M4At64UqztYBf8j08/edit?usp=sharing</link>
             <description><![CDATA[Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS on our phone? Over the past year, we have ported NuttX to PINE64 PinePhone as an Educational Experiment. Today we can run NuttX Touchscreen Apps on PinePhone, based on Allwinner A64 SoC with Arm64 CPUs. NuttX on PinePhone will soon support Phone Calls and Text Messages on the 4G LTE Network. We hope NuttX will become a valuable tool for teaching the inner workings of modern smartphones.]]></description>
