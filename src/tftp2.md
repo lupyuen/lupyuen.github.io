@@ -407,7 +407,7 @@ Yeah. Maybe U-Boot Bootloader on Star64 JH7110 missed some Incoming UDP Packets?
 
 # What's Next
 
-Porting NuttX to Star64 JH7110 becomes so much faster now. Stay tuned for updates!
+Porting NuttX to Star64 JH7110 becomes so much faster now. Stay tuned for quicker updates!
 
 [(Like the upcoming __NuttX I2C Driver for JH7110__)](https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver)
 
