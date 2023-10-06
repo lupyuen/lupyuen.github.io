@@ -113,6 +113,8 @@ To send every __TFTP Data Packet twice__, we inserted this: [worker.rs](https://
 
 It's a simple mod, but it solves our TFTP Timeout!
 
+[__UPDATE:__ __`rs-tftpd`__ might support sending __Duplicate Packets__](https://github.com/altugbakan/rs-tftpd/issues/5)
+
 _How do we run this?_
 
 Follow these steps to start our __Modified TFTP Server__ on Linux and macOS...
