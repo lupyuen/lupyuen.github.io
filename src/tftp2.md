@@ -421,6 +421,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=37786105)
 
+-   [__Discuss this article on Pine64 Forum__](https://forum.pine64.org/showthread.php?tid=18779)
+
 -   [__Discuss this article on RVspace Forum__](https://forum.rvspace.org/t/article-strange-workaround-for-tftp-timeout-in-u-boot-bootloader/3639)
 
 -   [__My Current Project: "Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
