@@ -690,6 +690,10 @@ __ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
 
 The [__other modified files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files) are the same as for NuttX QEMU with Initial RAM Disk.
 
+[(How to increase the __RAM Disk Limit__)](https://github.com/lupyuen/nuttx-star64#increase-ram-disk-limit)
+
+[(How to increase the __Page Heap Size__)](https://github.com/lupyuen/nuttx-star64#increase-page-heap-size)
+
 _How do we run this on Star64?_
 
 We build NuttX Star64, generate the Initial RAM Disk __initrd__ and copy to our TFTP Folder [(for __Network Booting__)](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk)...
