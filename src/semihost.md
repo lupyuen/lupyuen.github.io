@@ -692,6 +692,8 @@ The [__other modified files__](https://github.com/lupyuen2/wip-pinephone-nuttx/p
 
 [(How to increase the __RAM Disk Limit__)](https://github.com/lupyuen/nuttx-star64#increase-ram-disk-limit)
 
+[(NuttX Apps are limited to __4 MB RAM__)](https://github.com/lupyuen/nuttx-star64#memory-map-for-ram-disk)
+
 [(How to increase the __Page Heap Size__)](https://github.com/lupyuen/nuttx-star64#increase-page-heap-size)
 
 _How do we run this on Star64?_
