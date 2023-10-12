@@ -616,6 +616,7 @@ __ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
 </code></pre></div>
 <p>The <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files"><strong>other modified files</strong></a> are the same as for NuttX QEMU with Initial RAM Disk.</p>
 <p><a href="https://github.com/lupyuen/nuttx-star64#increase-ram-disk-limit">(How to increase the <strong>RAM Disk Limit</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-star64#memory-map-for-ram-disk">(NuttX Apps are limited to <strong>4 MB RAM</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-star64#increase-page-heap-size">(How to increase the <strong>Page Heap Size</strong>)</a></p>
 <p><em>How do we run this on Star64?</em></p>
 <p>We build NuttX Star64, generate the Initial RAM Disk <strong>initrd</strong> and copy to our TFTP Folder <a href="https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk">(for <strong>Network Booting</strong>)</a>…</p>
