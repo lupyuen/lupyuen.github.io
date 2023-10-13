@@ -431,7 +431,7 @@ NuttX boots on Star64 and <strong>NuttShell (nsh)</strong> appears in the Serial
 <p>Actually most of the code came from <a href="https://lupyuen.github.io/articles/riscv"><strong>NuttX for QEMU RISC-V</strong></a>! (In Kernel Mode)</p>
 <p>It’s amazing that we reused so much code from NuttX QEMU. And ported everything to Star64 within 2 months!</p>
 <p><em>What’s the catch?</em></p>
-<p>We have some <strong>Size Limitations</strong> on the Initial RAM Disk and NuttX Apps. Here are the workarounds…</p>
+<p>We have some <strong>Size Limitations</strong> on the Initial RAM Disk, NuttX Apps and NuttX Stacks. Here are the workarounds…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-star64#increase-ram-disk-limit"><strong>“Increase RAM Disk Limit”</strong></a></p>
@@ -444,6 +444,9 @@ NuttX boots on Star64 and <strong>NuttShell (nsh)</strong> appears in the Serial
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-star64#test-the-page-heap"><strong>“Test the Page Heap”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64#increase-stack-size"><strong>“Increase Stack Size”</strong></a></p>
 </li>
 </ul>
 <p>Porting <strong>Linux / Unix / POSIX Apps</strong> to NuttX might need extra work, check out this example…</p>
