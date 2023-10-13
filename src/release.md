@@ -439,7 +439,9 @@ Porting __Linux / Unix / POSIX Apps__ to NuttX might need extra work, check out 
 
 - [__"Scheme Interpreter crashes on NuttX"__](https://github.com/lupyuen/nuttx-star64#scheme-interpreter-crashes-on-nuttx)
 
-- [__"Analyse the Stack Dump"__](https://github.com/lupyuen/nuttx-star64#analyse-the-stack-dump)
+- [__"Increase Stack Size for Scheme Interpreter"__](https://github.com/lupyuen/nuttx-star64#increase-stack-size-for-scheme-interpreter)
+
+- [__"Analyse the Stack Dump for Scheme Interpreter"__](https://github.com/lupyuen/nuttx-star64#analyse-the-stack-dump-for-scheme-interpreter)
 
 ![Pull Request for NuttX Board](https://lupyuen.github.io/images/release-pr2.jpg)
 
