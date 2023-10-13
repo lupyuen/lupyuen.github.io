@@ -430,6 +430,31 @@ NuttX boots on Star64 and <strong>NuttShell (nsh)</strong> appears in the Serial
 <p><em>We created all this code from scratch?</em></p>
 <p>Actually most of the code came from <a href="https://lupyuen.github.io/articles/riscv"><strong>NuttX for QEMU RISC-V</strong></a>! (In Kernel Mode)</p>
 <p>It’s amazing that we reused so much code from NuttX QEMU. And ported everything to Star64 within 2 months!</p>
+<p><em>What’s the catch?</em></p>
+<p>We have some <strong>Size Limitations</strong> on the Initial RAM Disk and NuttX Apps. Here are the workarounds…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64#increase-ram-disk-limit"><strong>“Increase RAM Disk Limit”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64#memory-map-for-ram-disk"><strong>“Memory Map for RAM Disk”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64#increase-page-heap-size"><strong>“Increase Page Heap Size”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64#test-the-page-heap"><strong>“Test the Page Heap”</strong></a></p>
+</li>
+</ul>
+<p>Porting <strong>Linux / Unix / POSIX Apps</strong> to NuttX might need extra work, check out this example…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64#scheme-interpreter-crashes-on-nuttx"><strong>“Scheme Interpreter crashes on NuttX”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64#analyse-the-stack-dump"><strong>“Analyse the Stack Dump”</strong></a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/release-pr2.jpg" alt="Pull Request for NuttX Board" /></p>
 <h1 id="add-the-nuttx-arch-and-board"><a href="#add-the-nuttx-arch-and-board">5 Add the NuttX Arch and Board</a></h1>
 <p><em>How did we add Star64 JH7110 to NuttX?</em></p>
