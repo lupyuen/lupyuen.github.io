@@ -421,6 +421,24 @@ Actually most of the code came from [__NuttX for QEMU RISC-V__](https://lupyuen.
 
 It's amazing that we reused so much code from NuttX QEMU. And ported everything to Star64 within 2 months!
 
+_What's the catch?_
+
+We have some __Size Limitations__ on the Initial RAM Disk and NuttX Apps. Here are the workarounds...
+
+- [__"Increase RAM Disk Limit"__](https://github.com/lupyuen/nuttx-star64#increase-ram-disk-limit)
+
+- [__"Memory Map for RAM Disk"__](https://github.com/lupyuen/nuttx-star64#memory-map-for-ram-disk)
+
+- [__"Increase Page Heap Size"__](https://github.com/lupyuen/nuttx-star64#increase-page-heap-size)
+
+- [__"Test the Page Heap"__](https://github.com/lupyuen/nuttx-star64#test-the-page-heap)
+
+Porting __Linux / Unix / POSIX Apps__ to NuttX might need extra work, check out this example...
+
+- [__"Scheme Interpreter crashes on NuttX"__](https://github.com/lupyuen/nuttx-star64#scheme-interpreter-crashes-on-nuttx)
+
+- [__"Analyse the Stack Dump"__](https://github.com/lupyuen/nuttx-star64#analyse-the-stack-dump)
+
 ![Pull Request for NuttX Board](https://lupyuen.github.io/images/release-pr2.jpg)
 
 # Add the NuttX Arch and Board
