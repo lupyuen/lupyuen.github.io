@@ -423,7 +423,7 @@ It's amazing that we reused so much code from NuttX QEMU. And ported everything 
 
 _What's the catch?_
 
-We have some __Size Limitations__ on the Initial RAM Disk and NuttX Apps. Here are the workarounds...
+We have some __Size Limitations__ on the Initial RAM Disk, NuttX Apps and NuttX Stacks. Here are the workarounds...
 
 - [__"Increase RAM Disk Limit"__](https://github.com/lupyuen/nuttx-star64#increase-ram-disk-limit)
 
@@ -432,6 +432,8 @@ We have some __Size Limitations__ on the Initial RAM Disk and NuttX Apps. Here a
 - [__"Increase Page Heap Size"__](https://github.com/lupyuen/nuttx-star64#increase-page-heap-size)
 
 - [__"Test the Page Heap"__](https://github.com/lupyuen/nuttx-star64#test-the-page-heap)
+
+- [__"Increase Stack Size"__](https://github.com/lupyuen/nuttx-star64#increase-stack-size)
 
 Porting __Linux / Unix / POSIX Apps__ to NuttX might need extra work, check out this example...
 
