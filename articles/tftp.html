@@ -146,9 +146,16 @@ mkdir $HOME/tftproot
 
 ## Start the TFTP Server. Needs `sudo` because
 ## Port 69 is a privileged low port.
-sudo tftpd -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot;
+## Send Duplicate Packets to prevent TFTP Timeouts.
+## https://lupyuen.github.io/articles/tftp2#send-everything-twice
+sudo tftpd \
+  --duplicate-packets 1 \
+  -i 0.0.0.0 \
+  -p 69 \
+  -d &quot;$HOME/tftproot&quot;
 </code></pre></div>
-<p>(Or use <a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot"><strong><code>xinetd</code></strong></a>)</p>
+<p><a href="https://lupyuen.github.io/articles/tftp2#send-everything-twice">(<strong><code>duplicate-packets</code></strong> is needed to prevent TFTP Timeouts)</a></p>
+<p><a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot">(<strong><code>xinetd</code> + <code>tftpd</code></strong> might cause TFTP Timeouts)</a></p>
 <p>(<a href="https://crates.io/crates/tftp_server"><strong><code>tftp_server</code></strong></a> won’t work, it only supports localhost)</p>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>Running TFTP Server on 0.0.0.0:69 in $HOME/tftproot

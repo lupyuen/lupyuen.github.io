@@ -159,8 +159,7 @@
     <span class="comment">// Omitted: Increment the Block Number</span></code></pre></div>
 <p>(We inserted a <strong>1 millisecond delay</strong> between packets)</p>
 <p>It’s a simple mod, but it solves our TFTP Timeout!</p>
-<p><a href="https://github.com/altugbakan/rs-tftpd/issues/5"><strong>UPDATE:</strong> <strong><code>rs-tftpd</code></strong> might support sending <strong>Duplicate Packets</strong></a></p>
-<p><a href="https://github.com/altugbakan/rs-tftpd/pull/7">(See the <strong>Pull Request</strong>)</a></p>
+<p><strong>UPDATE:</strong> <strong><code>rs-tftpd</code></strong> now supports sending <a href="https://github.com/altugbakan/rs-tftpd/issues/5"><strong>Duplicate Packets</strong>!</a></p>
 <p><em>How do we run this?</em></p>
 <p>Follow these steps to start our <strong>Modified TFTP Server</strong> on Linux and macOS…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download our Modified TFTP Server
@@ -212,6 +211,23 @@ curl -v \
 * Received last DATA packet block 4 again.
 </code></pre></div>
 <p>Let’s test this with Star64 U-Boot…</p>
+<p><strong>UPDATE:</strong> <strong><code>rs-tftpd</code></strong> now supports sending <a href="https://github.com/altugbakan/rs-tftpd/issues/5"><strong>Duplicate Packets</strong>!</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Install `tftpd` in Rust
+cargo install tftpd
+
+## Create a folder for the TFTP Files
+mkdir $HOME/tftproot
+
+## Start the TFTP Server. Needs `sudo` because
+## Port 69 is a privileged low port.
+## Send Duplicate Packets to prevent TFTP Timeouts.
+sudo tftpd \
+  --duplicate-packets 1 \
+  -i 0.0.0.0 \
+  -p 69 \
+  -d &quot;$HOME/tftproot&quot;
+</code></pre></div>
+<p><a href="https://github.com/altugbakan/rs-tftpd/pull/7">(See the <strong>Pull Request</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tftp2-title.jpg" alt="Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC" /></p>
 <h1 id="no-more-timeouts"><a href="#no-more-timeouts">2 No More Timeouts!</a></h1>
 <p><em>Does it work on Star64 with U-Boot Bootloader?</em></p>
