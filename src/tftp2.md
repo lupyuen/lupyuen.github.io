@@ -113,9 +113,7 @@ To send every __TFTP Data Packet twice__, we inserted this: [worker.rs](https://
 
 It's a simple mod, but it solves our TFTP Timeout!
 
-[__UPDATE:__ __`rs-tftpd`__ might support sending __Duplicate Packets__](https://github.com/altugbakan/rs-tftpd/issues/5)
-
-[(See the __Pull Request__)](https://github.com/altugbakan/rs-tftpd/pull/7)
+__UPDATE:__ __`rs-tftpd`__ now supports sending [__Duplicate Packets__!](https://github.com/altugbakan/rs-tftpd/issues/5)
 
 _How do we run this?_
 
@@ -177,6 +175,27 @@ $ curl -v --output initrd tftp://192.168.31.10/initrd
 ```
 
 Let's test this with Star64 U-Boot...
+
+__UPDATE:__ __`rs-tftpd`__ now supports sending [__Duplicate Packets__!](https://github.com/altugbakan/rs-tftpd/issues/5)
+
+```bash
+## Install `tftpd` in Rust
+cargo install tftpd
+
+## Create a folder for the TFTP Files
+mkdir $HOME/tftproot
+
+## Start the TFTP Server. Needs `sudo` because
+## Port 69 is a privileged low port.
+## Send Duplicate Packets to prevent TFTP Timeouts.
+sudo tftpd \
+  --duplicate-packets 1 \
+  -i 0.0.0.0 \
+  -p 69 \
+  -d "$HOME/tftproot"
+```
+
+[(See the __Pull Request__)](https://github.com/altugbakan/rs-tftpd/pull/7)
 
 ![Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC](https://lupyuen.github.io/images/tftp2-title.jpg)
 
