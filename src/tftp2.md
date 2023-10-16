@@ -188,11 +188,14 @@ mkdir $HOME/tftproot
 ## Start the TFTP Server. Needs `sudo` because
 ## Port 69 is a privileged low port.
 ## Send Duplicate Packets to prevent TFTP Timeouts.
-sudo tftpd \
+sudo $HOME/.cargo/bin/tftpd \
   --duplicate-packets 1 \
   -i 0.0.0.0 \
   -p 69 \
   -d "$HOME/tftproot"
+
+## Or use `nohup` to keep it running continuously
+nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d "$HOME/tftproot"
 ```
 
 [(See the __Pull Request__)](https://github.com/altugbakan/rs-tftpd/pull/7)
