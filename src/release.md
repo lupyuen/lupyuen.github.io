@@ -791,7 +791,11 @@ __I2C:__
   
   This NuttX I2C Driver might work: [cxd56_i2c.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/cxd56xx/cxd56_i2c.c)
 
-  [(Search for "DesignWare DW_apb_i2c Databook")](https://www.google.com/search?q=%22DesignWare+DW_apb_i2c+Databook%22)
+- ["Power Up the I2C Controller for Star64 JH7110"](https://github.com/lupyuen/nuttx-star64#power-up-the-i2c-controller-for-star64-jh7110)
+
+- ["Explore the I2C Controller for Star64 JH7110"](https://github.com/lupyuen/nuttx-star64#explore-the-i2c-controller-for-star64-jh7110)
+
+- [Search for "DesignWare DW_apb_i2c Databook"](https://www.google.com/search?q=%22DesignWare+DW_apb_i2c+Databook%22)
 
 __RTC, SPI, UART, DMA, I2S, PWM:__
 
