@@ -872,7 +872,11 @@ Our JH7110 Display Driver is partially implemented here: [jh7110_appinit.c](http
 
 __TODO__: Implement the [__JH7110 I2C Driver__](https://doc-en.rvspace.org/VisionFive2/DG_I2C/JH7110_SDK/source_code_structure_i2c.html) (based on [__DesignWare I2C__](https://github.com/torvalds/linux/blob/master/drivers/i2c/busses/i2c-designware-core.h)) so we can control the PMIC. This NuttX I2C Driver might work: [__cxd56_i2c.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/cxd56xx/cxd56_i2c.c)
 
-[(Search for __"DesignWare DW_apb_i2c Databook"__)](https://www.google.com/search?q=%22DesignWare+DW_apb_i2c+Databook%22)
+- [__"Power Up the I2C Controller for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64#power-up-the-i2c-controller-for-star64-jh7110)
+
+- [__"Explore the I2C Controller for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64#explore-the-i2c-controller-for-star64-jh7110)
+
+- [Search for __"DesignWare DW_apb_i2c Databook"__](https://www.google.com/search?q=%22DesignWare+DW_apb_i2c+Databook%22)
 
 (Many Thanks to [__Justin / Fishwaldo__](https://fosstodon.org/@Fishwaldo/110902984442385966) for recommending the HDMI Driver from U-Boot Bootloader)
 
