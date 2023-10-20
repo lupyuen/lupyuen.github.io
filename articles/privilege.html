@@ -586,6 +586,15 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 </tbody></table>
 </div>
 <p><a href="https://www.qemu.org/docs/master/system/riscv/microchip-icicle-kit.html">(QEMU has an <strong>Emulator for PolarFire Icicle</strong>)</a></p>
+<p><em>How to call OpenSBI in NuttX?</em></p>
+<p>We run this <strong><code>ecall</code></strong> to jump from NuttX (in RISC-V Supervisor Mode) to OpenSBI (in RISC-V Machine Mode)…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L52-L77"><strong>riscv_sbi.c: Calling OpenSBI in NuttX</strong></a></p>
+<p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/">(How <strong><code>ecall</code></strong> works in OpenSBI)</a></p>
+<p><a href="https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/">(More about OpenSBI)</a></p>
+</li>
+</ul>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>I hope we learnt a bit more about <strong>RISC-V and Star64 JH7110 SBC</strong> today…</p>
 <ul>
