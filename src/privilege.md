@@ -679,6 +679,16 @@ We found the following NuttX Ports that run in __RISC-V Supervisor Mode with Ope
 
 [(QEMU has an __Emulator for PolarFire Icicle__)](https://www.qemu.org/docs/master/system/riscv/microchip-icicle-kit.html)
 
+_How to call OpenSBI in NuttX?_
+
+We run this __`ecall`__ to jump from NuttX (in RISC-V Supervisor Mode) to OpenSBI (in RISC-V Machine Mode)...
+
+- [__riscv_sbi.c: Calling OpenSBI in NuttX__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L52-L77)
+
+  [(How __`ecall`__ works in OpenSBI)](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/)
+
+  [(More about OpenSBI)](https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/)
+
 # What's Next
 
 I hope we learnt a bit more about __RISC-V and Star64 JH7110 SBC__ today...
