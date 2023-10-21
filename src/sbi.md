@@ -109,6 +109,10 @@ nsh>
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310)
 
+# Run NuttX with OpenSBI
+
+TODO
+
 # OpenSBI Debug Console
 
 TODO
