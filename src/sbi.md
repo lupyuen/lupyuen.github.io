@@ -6,6 +6,8 @@
 
 TODO
 
+Bare Metal? Not quite, but close to the Metal!
+
 [__Star64 JH7110 RISC-V SBC__](https://wiki.pine64.org/wiki/STAR64) 
 
 [__StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html)
@@ -15,6 +17,10 @@ TODO
 (And probably for VisionFive2 too)
 
 ![Pine64 Star64 RISC-V SBC](https://lupyuen.github.io/images/release-star64.jpg)
+
+# OpenSBI: Supervisor Binary Interface
+
+TODO
 
 # Call OpenSBI from NuttX
 
@@ -102,6 +108,10 @@ nsh>
 ```
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310)
+
+# OpenSBI Debug Console
+
+TODO
 
 _But that's calling the Legacy Console Putchar Function. What about the newer Debug Console Functions?_
 
@@ -205,6 +215,10 @@ Our JH7110 Firmware seems to be built in [Jan 2023](https://gist.github.com/lupy
 FYI: Upstream OpenSBI now supports [SBI 2.0](https://github.com/riscv-software-src/opensbi/commit/cbdd86973901b6be2a1a2d3d6b54f3184fdf9a44)
 
 TODO: Call sbi_get_spec_version, sbi_get_impl_id, sbi_get_impl_version, sbi_probe_extension, sbi_get_mvendorid, sbi_get_marchid, sbi_get_mimpid
+
+# Integrate OpenSBI with NuttX
+
+TODO
 
 # What's Next
 
