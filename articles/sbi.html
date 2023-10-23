@@ -185,8 +185,8 @@ int test_opensbi(void) {
 <p><strong>Function ID:</strong> 0</p>
 </li>
 </ul>
-<p><em>What’s sbi_ecall?</em></p>
-<p>Remember that OpenSBI runs in the (super-privileged) <strong>RISC-V Machine Mode</strong>. And our code runs in the (less-privileged) <strong>RISC-V Supervisor Mode</strong>.</p>
+<p><em>What’s this ecall to SBI?</em></p>
+<p>Remember that OpenSBI runs in (super-privileged) <strong>RISC-V Machine Mode</strong>. And our code runs in (less-privileged) <strong>RISC-V Supervisor Mode</strong>.</p>
 <p>To jump from Supervisor Mode to Machine Mode, we execute the <strong><code>ecall</code> RISC-V Instruction</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L268-L299">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Make an `ecall` to OpenSBI. Based on
 // https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L52-L77
