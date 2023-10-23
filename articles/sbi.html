@@ -135,13 +135,17 @@ Runtime SBI Version       : 1.0
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64">(Source)</a></p>
 <p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on our SBC.</p>
-<p>OpenSBI provides Secure Access to the <strong>Low-Level System Functions</strong> (controlling CPUs, Timers, Interrupts) for the JH7110 SoC…</p>
+<p>OpenSBI provides Secure Access to the <strong>Low-Level System Functions</strong> (controlling CPUs, Timers, Interrupts) for the JH7110 SoC, as described in the SPI Spec…</p>
 <ul>
 <li>
-<p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc"><strong>RISC-V Supervisor Binary Interface</strong></a></p>
+<p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc"><strong>RISC-V Supervisor Binary Interface Spec</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64">(More about <strong>OpenSBI for Star64</strong>)</a></p>
 </li>
 </ul>
+<p><em>Can’t we access the Low-Level System Functions without OpenSBI?</em></p>
+<p>Our code runs in <strong>RISC-V Supervisor Mode</strong>, which doesn’t allow direct access to Low-Level System Functions, like for starting a CPU.</p>
+<p>(NuttX, Linux and U-Boot Bootloader all run in Supervisor Mode)</p>
+<p>OpenSBI runs in <strong>RISC-V Machine Mode</strong>, which has complete access to Low-Level System Functions. That’s why we call OpenSBI from our code.</p>
 <p>TODO</p>
 <h1 id="call-opensbi-from-nuttx"><a href="#call-opensbi-from-nuttx">2 Call OpenSBI from NuttX</a></h1>
 <p>TODO</p>
