@@ -142,11 +142,11 @@ Runtime SBI Version       : 1.0
 <p><a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64">(More about <strong>OpenSBI for Star64</strong>)</a></p>
 </li>
 </ul>
-<p><em>Can’t we access the Low-Level System Functions without OpenSBI?</em></p>
-<p>Our code runs in <strong>RISC-V Supervisor Mode</strong>, which doesn’t allow direct access to Low-Level System Functions, like for starting a CPU.</p>
-<p>(NuttX, Linux and U-Boot Bootloader all run in Supervisor Mode)</p>
-<p>OpenSBI runs in <strong>RISC-V Machine Mode</strong>, which has complete access to Low-Level System Functions. That’s why we call OpenSBI from our code.</p>
-<p>TODO</p>
+<p><em>Can’t we access the Low-Level System Features without OpenSBI?</em></p>
+<p>Our code runs in <a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels"><strong>RISC-V Supervisor Mode</strong></a>, which doesn’t allow direct access to Low-Level System Features, like for starting a CPU. (Pic below)</p>
+<p>(NuttX Kernel, Linux Kernel and U-Boot Bootloader all run in Supervisor Mode)</p>
+<p>OpenSBI runs in <a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels"><strong>RISC-V Machine Mode</strong></a>, which has complete access to Low-Level System Features. That’s why we call OpenSBI from our code.</p>
+<p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="OpenSBI runs in RISC-V Machine Mode" /></p>
 <h1 id="call-opensbi-from-nuttx"><a href="#call-opensbi-from-nuttx">2 Call OpenSBI from NuttX</a></h1>
 <p>TODO</p>
 <p><em>How to call OpenSBI in NuttX?</em></p>
