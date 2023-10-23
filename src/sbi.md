@@ -315,6 +315,18 @@ FYI: Upstream OpenSBI now supports [SBI 2.0](https://github.com/riscv-software-s
 
 TODO: Call sbi_get_spec_version, sbi_get_impl_id, sbi_get_impl_version, sbi_probe_extension, sbi_get_mvendorid, sbi_get_marchid, sbi_get_mimpid
 
+# Set a System Timer
+
+TODO
+
+# Query the RISC-V CPUs
+
+TODO
+
+# Fetch the System Info
+
+TODO
+
 # Integrate OpenSBI with NuttX
 
 TODO
