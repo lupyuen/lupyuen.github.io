@@ -24,16 +24,13 @@ _We're running Bare Metal Code on our SBC?_
 
 Not quite, but close to the Metal!
 
-We're running our code with [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS). NuttX lets us inject our code into the tiny Kernel and boot it easily on our SBC.
+We're running our code with [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS). NuttX lets us inject our code into its tiny Kernel and boot it easily on our SBC.
 
 (Without messing around with the Linux Kernel)
 
-TODO
-
-
 _Why are we doing this?_
 
-TODO
+Right now we're __porting NuttX RTOS__ to the Star64 SBC. The experiments that we run today will be super helpful as we __integrate NuttX with OpenSBI__ for System Timers, CPU Scheduling and other System Functions.
 
 ![Pine64 Star64 RISC-V SBC](https://lupyuen.github.io/images/release-star64.jpg)
 
