@@ -150,7 +150,7 @@ Runtime SBI Version       : 1.0
 <h1 id="call-opensbi-from-nuttx"><a href="#call-opensbi-from-nuttx">2 Call OpenSBI from NuttX</a></h1>
 <p><em>How to call OpenSBI from our code?</em></p>
 <p>Suppose we’re calling OpenSBI to print something to the <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Console</strong></a>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L155-L237">jh7110_appinit.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// After NuttX boots on JH7110...
+<div class="example-wrap"><pre class="language-c"><code>// After NuttX Kernel boots on JH7110...
 void board_late_initialize(void) {
   ...
   // Call OpenSBI to print something
@@ -162,7 +162,7 @@ void board_late_initialize(void) {
 // https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/
 int test_opensbi(void) {
 
-  // Print `123` to Serial Console with (Legacy) Console Putchar.
+  // Print `123` with (Legacy) Console Putchar.
   // Call sbi_console_putchar: Extension ID 1, Function ID 0
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-legacy.adoc
   sbi_ecall(
@@ -185,6 +185,7 @@ int test_opensbi(void) {
 <p><strong>Function ID:</strong> 0</p>
 </li>
 </ul>
+<p>(There’s a newer version of this, we’ll soon see)</p>
 <p><em>What’s this ecall to SBI?</em></p>
 <p>Remember that OpenSBI runs in (super-privileged) <strong>RISC-V Machine Mode</strong>. And our code runs in (less-privileged) <strong>RISC-V Supervisor Mode</strong>.</p>
 <p>To jump from Supervisor Mode to Machine Mode, we execute the <strong><code>ecall</code> RISC-V Instruction</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L268-L299">jh7110_appinit.c</a></p>
