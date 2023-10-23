@@ -351,7 +351,7 @@ Step by step, here's everything that happens when NuttX boots on our SBC...
 
 1.  [__OpenSBI (Supervisor Binary Interface)__](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface) is the first thing that boots on our RISC-V SBC.
 
-    OpenSBI provides Secure Access to the [__Low-Level System Functions__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.pdf) (controlling CPUs, Timers, Interrupts) for the JH7110 SoC.
+    OpenSBI provides Secure Access to the [__Low-Level System Functions__](https://github.com/riscv-non-isa/riscv-sbi-doc) (controlling CPUs, Timers, Interrupts) for the JH7110 SoC.
     
     OpenSBI boots in [__RISC-V Machine Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels), the most powerful mode in a RISC-V system.
 

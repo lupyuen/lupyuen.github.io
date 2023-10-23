@@ -36,11 +36,9 @@ Right now we're __porting NuttX RTOS__ to the Star64 SBC. The experiments that w
 
 # OpenSBI Supervisor Binary Interface
 
-TODO
+_What's this OpenSBI?_
 
-_Earlier we saw OpenSBI when booting Star64..._
-
-_What's OpenSBI?_
+When we power up our RISC-V SBC, we'll see OpenSBI...
 
 ```text
 U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
@@ -72,50 +70,15 @@ Runtime SBI Version       : 1.0
 
 [(Source)](https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64)
 
-[__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on Star64.
+[__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on our SBC.
 
 OpenSBI provides Secure Access to the __Low-Level System Functions__ (controlling CPUs, Timers, Interrupts) for the JH7110 SoC...
 
-- [__RISC-V Supervisor Binary Interface__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.pdf)
+- [__RISC-V Supervisor Binary Interface__](https://github.com/riscv-non-isa/riscv-sbi-doc)
 
-This says that [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing) will be started next (at Address [__`0x4020` `0000`__](https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19))...
+  [(More about __OpenSBI for Star64__)](https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64)
 
-```text
-Domain0 Name              : root
-Domain0 Boot HART         : 1
-Domain0 HARTs             : 0*,1*,2*,3*,4*
-Domain0 Region00          : 0x0000000002000000-0x000000000200ffff (I)
-Domain0 Region01          : 0x0000000040000000-0x000000004007ffff ()
-Domain0 Region02          : 0x0000000000000000-0xffffffffffffffff (R,W,X)
-Domain0 Next Address      : 0x0000000040200000
-Domain0 Next Arg1         : 0x0000000042200000
-Domain0 Next Mode         : S-mode
-Domain0 SysReset          : yes
-```
-
-[("S-mode" refers to __Supervisor Mode__)](https://lupyuen.github.io/articles/nuttx2#risc-v-privilege-levels)
-
-(What's `0x4220` `0000`?)
-
-And the __RISC-V Hardware Thread__ (HART) will support ["__rv64imafdcbx__"](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)...
-
-```text
-Boot HART ID              : 1
-Boot HART Domain          : root
-Boot HART Priv Version    : v1.11
-Boot HART Base ISA        : rv64imafdcbx
-Boot HART ISA Extensions  : none
-Boot HART PMP Count       : 8
-Boot HART PMP Granularity : 4096
-Boot HART PMP Address Bits: 34
-Boot HART MHPM Count      : 2
-Boot HART MIDELEG         : 0x0000000000000222
-Boot HART MEDELEG         : 0x000000000000b109
-```
-
-[(A __RISC-V HART__ is equivalent to a Single CPU Core)](https://lupyuen.github.io/articles/riscv#get-cpu-id)
-
-[(More about __OpenSBI for Star64__)](https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64)
+TODO
 
 # Call OpenSBI from NuttX
 
