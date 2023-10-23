@@ -76,18 +76,30 @@
 <li><a href="#integrate-opensbi-with-nuttx">5 Integrate OpenSBI with NuttX</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Oct 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/sbi-title.png" alt="OpenSBI on Star64 JH7110 RISC-V SBC" /></p>
-<p>Bare Metal Programming on a <strong>RISC-V SBC</strong> (Single-Board Computer) sounds difficult… Thankfully we can get help from <strong>OpenSBI</strong>! (Supervisor Binary Inteface)</p>
+<p>Bare Metal Programming on a <strong>RISC-V SBC</strong> (Single-Board Computer) sounds difficult… Thankfully we can get help from <strong>OpenSBI</strong>! (Supervisor Binary Interface)</p>
 <p>In this article, we call OpenSBI to…</p>
 <ul>
-<li>???</li>
+<li>
+<p>Print to the <strong>Debug Console</strong></p>
+</li>
+<li>
+<p>Set a <strong>System Timer</strong></p>
+</li>
+<li>
+<p>Query the <strong>RISC-V CPUs</strong></p>
+</li>
+<li>
+<p>Fetch the <strong>System Information</strong></p>
+</li>
 </ul>
+<p>We’ll do this on the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Star64 JH7110 RISC-V SBC</strong></a>. (Pic below)</p>
+<p>(The same steps will work OK on <strong>StarFive VisionFive2</strong>, <strong>Milk-V Mars</strong> and other SBCs based on the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110 SoC</strong></a>)</p>
+<p><em>We’re running Bare Metal Code on our SBC?</em></p>
+<p>Not quite, but close to the Metal!</p>
 <p>TODO</p>
-<p>Bare Metal? Not quite, but close to the Metal!</p>
-<p><em>Why are we doing this?</em></p>
-<p><a href="https://wiki.pine64.org/wiki/STAR64"><strong>Star64 JH7110 RISC-V SBC</strong></a> </p>
-<p><a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110 SoC</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/release"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS)</p>
-<p>(And probably for VisionFive2 too)</p>
+<p><em>Why are we doing this?</em></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/release-star64.jpg" alt="Pine64 Star64 RISC-V SBC" /></p>
 <h1 id="opensbi-supervisor-binary-interface"><a href="#opensbi-supervisor-binary-interface">1 OpenSBI Supervisor Binary Interface</a></h1>
 <p>TODO</p>
