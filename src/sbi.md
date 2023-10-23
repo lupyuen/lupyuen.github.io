@@ -92,7 +92,7 @@ OpenSBI runs in [__RISC-V Machine Mode__](https://lupyuen.github.io/articles/pri
 
 _How to call OpenSBI from our code?_
 
-Suppose we're calling OpenSBI to print something to the [__Serial Console__](https://lupyuen.github.io/articles/linux#serial-console-on-star64): [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L155-L237)
+Suppose we're calling OpenSBI to print something to the [__Serial Console__](https://lupyuen.github.io/articles/linux#serial-console-on-star64) like so: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L155-L237)
 
 ```c
 // After NuttX Kernel boots on JH7110...
@@ -128,13 +128,15 @@ This calls the (Legacy) [__Console Putchar Function__](https://github.com/riscv-
 
 - __Function ID:__ 0
 
+- __Parameter:__ Character to be printed
+
 (There's a newer version of this, we'll soon see)
 
 _What's this ecall to SBI?_
 
 Remember that OpenSBI runs in (super-privileged) __RISC-V Machine Mode__. And our code runs in (less-privileged) __RISC-V Supervisor Mode__.
 
-To jump from Supervisor Mode to Machine Mode, we execute the __`ecall` RISC-V Instruction__: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L268-L299)
+To jump from Supervisor Mode to Machine Mode, we execute the [__`ecall` RISC-V Instruction__](https://five-embeddev.com/quickref/instructions.html#-rv32--rv32) like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L268-L299)
 
 ```c
 // Make an `ecall` to OpenSBI. Based on
@@ -158,8 +160,10 @@ static struct sbiret sbi_ecall(
   register long r6 asm("a6") = (long)(fid);
   register long r7 asm("a7") = (long)(extid);
 
-  // Execute the `ecall` instruction,
-  // passing Registers A0 to A7
+  // Execute the `ecall` RISC-V Instruction.
+  // Output Registers: A0 and A1
+  // Input Registers: A2 to A7
+  // Clobbers the Memory
   asm volatile (
     "ecall"
     : "+r"(r0), "+r"(r1)
