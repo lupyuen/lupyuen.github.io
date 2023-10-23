@@ -149,7 +149,7 @@ Runtime SBI Version       : 1.0
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="OpenSBI runs in RISC-V Machine Mode" /></p>
 <h1 id="call-opensbi-from-nuttx"><a href="#call-opensbi-from-nuttx">2 Call OpenSBI from NuttX</a></h1>
 <p><em>How to call OpenSBI from our code?</em></p>
-<p>Suppose we’re calling OpenSBI to print something to the <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Console</strong></a>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L155-L237">jh7110_appinit.c</a></p>
+<p>Suppose we’re calling OpenSBI to print something to the <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Console</strong></a> like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L155-L237">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// After NuttX Kernel boots on JH7110...
 void board_late_initialize(void) {
   ...
@@ -184,11 +184,14 @@ int test_opensbi(void) {
 <li>
 <p><strong>Function ID:</strong> 0</p>
 </li>
+<li>
+<p><strong>Parameter:</strong> Character to be printed</p>
+</li>
 </ul>
 <p>(There’s a newer version of this, we’ll soon see)</p>
 <p><em>What’s this ecall to SBI?</em></p>
 <p>Remember that OpenSBI runs in (super-privileged) <strong>RISC-V Machine Mode</strong>. And our code runs in (less-privileged) <strong>RISC-V Supervisor Mode</strong>.</p>
-<p>To jump from Supervisor Mode to Machine Mode, we execute the <strong><code>ecall</code> RISC-V Instruction</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L268-L299">jh7110_appinit.c</a></p>
+<p>To jump from Supervisor Mode to Machine Mode, we execute the <a href="https://five-embeddev.com/quickref/instructions.html#-rv32--rv32"><strong><code>ecall</code> RISC-V Instruction</strong></a> like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L268-L299">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Make an `ecall` to OpenSBI. Based on
 // https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L52-L77
 // https://github.com/riscv-software-src/opensbi/blob/master/firmware/payloads/test_main.c
@@ -210,8 +213,10 @@ static struct sbiret sbi_ecall(
   register long r6 asm(&quot;a6&quot;) = (long)(fid);
   register long r7 asm(&quot;a7&quot;) = (long)(extid);
 
-  // Execute the `ecall` instruction,
-  // passing Registers A0 to A7
+  // Execute the `ecall` RISC-V Instruction.
+  // Output Registers: A0 and A1
+  // Input Registers: A2 to A7
+  // Clobbers the Memory
   asm volatile (
     &quot;ecall&quot;
     : &quot;+r&quot;(r0), &quot;+r&quot;(r1)
