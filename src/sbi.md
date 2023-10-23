@@ -95,7 +95,7 @@ _How to call OpenSBI from our code?_
 Suppose we're calling OpenSBI to print something to the [__Serial Console__](https://lupyuen.github.io/articles/linux#serial-console-on-star64): [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L155-L237)
 
 ```c
-// After NuttX boots on JH7110...
+// After NuttX Kernel boots on JH7110...
 void board_late_initialize(void) {
   ...
   // Call OpenSBI to print something
@@ -107,7 +107,7 @@ void board_late_initialize(void) {
 // https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/
 int test_opensbi(void) {
 
-  // Print `123` to Serial Console with (Legacy) Console Putchar.
+  // Print `123` with (Legacy) Console Putchar.
   // Call sbi_console_putchar: Extension ID 1, Function ID 0
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-legacy.adoc
   sbi_ecall(
@@ -127,6 +127,8 @@ This calls the (Legacy) [__Console Putchar Function__](https://github.com/riscv-
 - __Extension ID:__ 1 (CONSOLE_PUTCHAR)
 
 - __Function ID:__ 0
+
+(There's a newer version of this, we'll soon see)
 
 _What's this ecall to SBI?_
 
