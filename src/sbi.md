@@ -146,7 +146,7 @@ static struct sbiret sbi_ecall(
   uintptr_t parm4, uintptr_t parm5   // Parameters 4 and 5
 ) {
   // Pass the Extension ID, Function ID and Parameters
-  // as RISC-V Registers A0 to A7
+  // in RISC-V Registers A0 to A7
   register long r0 asm("a0") = (long)(parm0);
   register long r1 asm("a1") = (long)(parm1);
   register long r2 asm("a2") = (long)(parm2);
@@ -165,13 +165,15 @@ static struct sbiret sbi_ecall(
     : "memory"
   );
 
-  //  Return the SBI Error and Value
+  //  Return the OpenSBI Error and Value
   struct sbiret ret;
   ret.error = r0;
   ret.value = r1;
   return ret;
 }
 ```
+
+[(See the __RISC-V Disassembly__)](https://gist.github.com/lupyuen/4cd98a4075d5b528940095b39fd5b445)
 
 TODO
 
