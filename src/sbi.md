@@ -24,7 +24,7 @@ _We're running Bare Metal Code on our SBC?_
 
 Not quite, but close to the Metal!
 
-We're running our code with [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS). NuttX lets us inject our code into its tiny Kernel and boot it easily on our SBC.
+We're running our code with [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS). NuttX lets us inject our Test Code into its tiny Kernel and boot it easily on our SBC.
 
 (Without messing around with the Linux Kernel)
 
@@ -181,23 +181,29 @@ static struct sbiret sbi_ecall(
 
 [(See the __RISC-V Disassembly__)](https://gist.github.com/lupyuen/4cd98a4075d5b528940095b39fd5b445)
 
-TODO
+Let's run this on our SBC...
 
-We run this __`ecall`__ to jump from NuttX (in RISC-V Supervisor Mode) to OpenSBI (in RISC-V Machine Mode)...
+[(How __`ecall`__ works in OpenSBI)](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/)
 
-- [__riscv_sbi.c: Calling OpenSBI in NuttX__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L52-L77)
+[(More about OpenSBI)](https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/)
 
-  [(How __`ecall`__ works in OpenSBI)](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/)
-
-  [(More about OpenSBI)](https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/)
+TODO: Pic of NuttX  
 
 # Run NuttX with OpenSBI
 
 _Will our code print correctly to the Serial Console?_
 
+Follow these steps to download __Apache NuttX RTOS__, insert our Test Code and compile the NuttX Kernel...
+
 TODO
 
-When we run our Modified NuttX Kernel on Star64 JH7110, we see `123` printed on the Debug Console. Yay!
+Copy the NuttX Kernel and NuttX Apps to a MicroSD Card.
+
+Insert the MicroSD Card into our SBC and power up.
+
+(Or boot our SBC over the Network with TFTP)
+
+When we run our Modified NuttX Kernel on Star64 JH7110, we see `123` printed on the Serial Console. Yay!
 
 ```text
 Starting kernel ...
@@ -207,10 +213,6 @@ nsh>
 ```
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310)
-
-# Run NuttX with OpenSBI
-
-TODO
 
 # OpenSBI Debug Console
 
