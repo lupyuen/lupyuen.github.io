@@ -69,13 +69,15 @@
 
     <h1 class="title">Star64 JH7110 RISC-V SBC: Experiments with OpenSBI (Supervisor Binary Interface)</h1>
     <nav id="TOC"><ul>
-<li><a href="#opensbi-supervisor-binary-interface">1 OpenSBI: Supervisor Binary Interface</a><ul></ul></li>
+<li><a href="#opensbi-supervisor-binary-interface">1 OpenSBI Supervisor Binary Interface</a><ul></ul></li>
 <li><a href="#call-opensbi-from-nuttx">2 Call OpenSBI from NuttX</a><ul></ul></li>
 <li><a href="#run-nuttx-with-opensbi">3 Run NuttX with OpenSBI</a><ul></ul></li>
 <li><a href="#opensbi-debug-console">4 OpenSBI Debug Console</a><ul></ul></li>
 <li><a href="#integrate-opensbi-with-nuttx">5 Integrate OpenSBI with NuttX</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Oct 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/sbi-title.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/sbi-title.png" alt="OpenSBI on Star64 JH7110 RISC-V SBC" /></p>
+<p>Bare Metal Programming on a <strong>RISC-V SBC</strong> (Single-Board Computer) sounds difficult… Thankfully we can get help from <strong>OpenSBI</strong>! (Supervisor Binary Inteface)</p>
+<p>In this article, we will call OpenSBI to ???</p>
 <p>TODO</p>
 <p>Bare Metal? Not quite, but close to the Metal!</p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64"><strong>Star64 JH7110 RISC-V SBC</strong></a> </p>
@@ -83,8 +85,71 @@
 <p><a href="https://lupyuen.github.io/articles/release"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS)</p>
 <p>(And probably for VisionFive2 too)</p>
 <p><img src="https://lupyuen.github.io/images/release-star64.jpg" alt="Pine64 Star64 RISC-V SBC" /></p>
-<h1 id="opensbi-supervisor-binary-interface"><a href="#opensbi-supervisor-binary-interface">1 OpenSBI: Supervisor Binary Interface</a></h1>
+<h1 id="opensbi-supervisor-binary-interface"><a href="#opensbi-supervisor-binary-interface">1 OpenSBI Supervisor Binary Interface</a></h1>
 <p>TODO</p>
+<p><em>Earlier we saw OpenSBI when booting Star64…</em></p>
+<p><em>What’s OpenSBI?</em></p>
+<div class="example-wrap"><pre class="language-text"><code>U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
+DDR version: dc2e84f0.
+Trying to boot from SPI
+OpenSBI v1.2
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | &#39;_ \ / _ \ &#39;_ \ \___ \|  _ &lt; | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+Platform Name             : StarFive VisionFive V2
+Platform Features         : medeleg
+Platform HART Count       : 5
+Platform IPI Device       : aclint-mswi
+Platform Timer Device     : aclint-mtimer @ 4000000Hz
+Platform Console Device   : uart8250
+Platform HSM Device       : jh7110-hsm
+Platform PMU Device       : ---
+Platform Reboot Device    : pm-reset
+Platform Shutdown Device  : pm-reset
+Firmware Base             : 0x40000000
+Firmware Size             : 288 KB
+Runtime SBI Version       : 1.0
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64">(Source)</a></p>
+<p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
+<p>OpenSBI provides Secure Access to the <strong>Low-Level System Functions</strong> (controlling CPUs, Timers, Interrupts) for the JH7110 SoC…</p>
+<ul>
+<li><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.pdf"><strong>RISC-V Supervisor Binary Interface</strong></a></li>
+</ul>
+<p>This says that <a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing"><strong>U-Boot Bootloader</strong></a> will be started next (at Address <a href="https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19"><strong><code>0x4020</code> <code>0000</code></strong></a>)…</p>
+<div class="example-wrap"><pre class="language-text"><code>Domain0 Name              : root
+Domain0 Boot HART         : 1
+Domain0 HARTs             : 0*,1*,2*,3*,4*
+Domain0 Region00          : 0x0000000002000000-0x000000000200ffff (I)
+Domain0 Region01          : 0x0000000040000000-0x000000004007ffff ()
+Domain0 Region02          : 0x0000000000000000-0xffffffffffffffff (R,W,X)
+Domain0 Next Address      : 0x0000000040200000
+Domain0 Next Arg1         : 0x0000000042200000
+Domain0 Next Mode         : S-mode
+Domain0 SysReset          : yes
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#risc-v-privilege-levels">(“S-mode” refers to <strong>Supervisor Mode</strong>)</a></p>
+<p>(What’s <code>0x4220</code> <code>0000</code>?)</p>
+<p>And the <strong>RISC-V Hardware Thread</strong> (HART) will support <a href="https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v">“<strong>rv64imafdcbx</strong>”</a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>Boot HART ID              : 1
+Boot HART Domain          : root
+Boot HART Priv Version    : v1.11
+Boot HART Base ISA        : rv64imafdcbx
+Boot HART ISA Extensions  : none
+Boot HART PMP Count       : 8
+Boot HART PMP Granularity : 4096
+Boot HART PMP Address Bits: 34
+Boot HART MHPM Count      : 2
+Boot HART MIDELEG         : 0x0000000000000222
+Boot HART MEDELEG         : 0x000000000000b109
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/riscv#get-cpu-id">(A <strong>RISC-V HART</strong> is equivalent to a Single CPU Core)</a></p>
+<p><a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64">(More about <strong>OpenSBI for Star64</strong>)</a></p>
 <h1 id="call-opensbi-from-nuttx"><a href="#call-opensbi-from-nuttx">2 Call OpenSBI from NuttX</a></h1>
 <p>TODO</p>
 <p><em>How to call OpenSBI in NuttX?</em></p>
