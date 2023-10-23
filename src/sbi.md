@@ -24,9 +24,12 @@ _We're running Bare Metal Code on our SBC?_
 
 Not quite, but close to the Metal!
 
+We're running our code with [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS). NuttX lets us inject our code into the tiny Kernel and boot it easily on our SBC.
+
+(Without messing around with the Linux Kernel)
+
 TODO
 
-[__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS)
 
 _Why are we doing this?_
 
