@@ -1,6 +1,6 @@
 # Star64 JH7110 RISC-V SBC: Experiments with OpenSBI (Supervisor Binary Interface)
 
-📝 _28 Oct 2023_
+📝 _31 Oct 2023_
 
 ![OpenSBI on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-title.png)
 
@@ -30,7 +30,9 @@ We're running our code with [__Apache NuttX Real-Time Operating System__](https:
 
 _Why are we doing this?_
 
-Right now we're __porting NuttX RTOS__ to the Star64 SBC. The experiments that we run today will be super helpful as we __integrate NuttX with OpenSBI__ for System Timers, CPU Scheduling and other System Functions.
+Right now we're __porting NuttX RTOS__ to the Star64 SBC.
+
+The experiments that we run today will be super helpful as we __integrate NuttX with OpenSBI__ for System Timers, CPU Scheduling and other System Functions.
 
 ![Pine64 Star64 RISC-V SBC](https://lupyuen.github.io/images/release-star64.jpg)
 
@@ -191,7 +193,7 @@ TODO: Pic of NuttX
 
 # Run NuttX with OpenSBI
 
-_Will our code print correctly to the Serial Console?_
+_Will our Test Code print correctly to the Serial Console?_
 
 Follow these steps to download __Apache NuttX RTOS__, insert our Test Code and compile the NuttX Kernel...
 
@@ -207,7 +209,7 @@ Insert the microSD Card into our SBC and power up...
 
   [(Or boot our SBC over the __Network with TFTP__)](https://lupyuen.github.io/articles/tftp)
 
-When we run our Modified NuttX Kernel on Star64 JH7110, we see "__`123`__" printed on the Serial Console. Yay!
+When we run the Modified NuttX Kernel on our SBC, we see "__`123`__" printed on the Serial Console. Yay!
 
 ```text
 Starting kernel ...
@@ -243,8 +245,6 @@ From [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi
     0, 0, 0              // Unused
   );
   _info("sret.value=%d, sret.error=%d\n", sret.value, sret.error);
-  // DEBUGASSERT(sret.error == SBI_SUCCESS);
-  // DEBUGASSERT(sret.value == strlen(str));
 
   // TODO: Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
   // Print `789` to Debug Console.
@@ -254,8 +254,6 @@ From [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi
   sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, '8', 0, 0, 0, 0, 0);
   sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, '9', 0, 0, 0, 0, 0);
   _info("sret.value=%d, sret.error=%d\n", sret.value, sret.error);
-  // DEBUGASSERT(sret.error == SBI_SUCCESS);
-  // DEBUGASSERT(sret.value == strlen(str));
 ```
 
 But it fails with `SBI_ERR_NOT_SUPPORTED`...
@@ -267,6 +265,10 @@ test_opensbi: sret.value=0, sret.error=-2
 ```
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310)
+
+# Read the SBI Version
+
+TODO
 
 _Why is the Debug Console not supported on JH7110 OpenSBI?_
 
@@ -360,3 +362,9 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/sbi.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/sbi.md)
+
+# Build NuttX for Star64
+
+TODO
+
+- [__"Build NuttX for Star64"__](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
