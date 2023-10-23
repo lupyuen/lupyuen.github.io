@@ -239,11 +239,21 @@ static struct sbiret sbi_ecall(
 <h1 id="run-nuttx-with-opensbi"><a href="#run-nuttx-with-opensbi">3 Run NuttX with OpenSBI</a></h1>
 <p><em>Will our code print correctly to the Serial Console?</em></p>
 <p>Follow these steps to download <strong>Apache NuttX RTOS</strong>, insert our Test Code and compile the NuttX Kernel…</p>
-<p>TODO</p>
-<p>Copy the NuttX Kernel and NuttX Apps to a MicroSD Card.</p>
-<p>Insert the MicroSD Card into our SBC and power up.</p>
-<p>(Or boot our SBC over the Network with TFTP)</p>
-<p>When we run our Modified NuttX Kernel on Star64 JH7110, we see <code>123</code> printed on the Serial Console. Yay!</p>
+<ul>
+<li>TODO: <a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64"><strong>“Build NuttX for Star64”</strong></a></li>
+</ul>
+<p>Copy the NuttX Kernel and NuttX Apps to a microSD Card…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/release#nuttx-in-a-bootable-microsd"><strong>“NuttX in a Bootable microSD”</strong></a></li>
+</ul>
+<p>Insert the microSD Card into our SBC and power up…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/release#boot-nuttx-on-star64"><strong>“Boot NuttX on Star64”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/tftp">(Or boot our SBC over the <strong>Network with TFTP</strong>)</a></p>
+</li>
+</ul>
+<p>When we run our Modified NuttX Kernel on Star64 JH7110, we see “<strong><code>123</code></strong>” printed on the Serial Console. Yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 123
 NuttShell (NSH) NuttX-12.0.3
