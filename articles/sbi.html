@@ -73,8 +73,11 @@
 <li><a href="#call-opensbi-from-nuttx">2 Call OpenSBI from NuttX</a><ul></ul></li>
 <li><a href="#run-nuttx-with-opensbi">3 Run NuttX with OpenSBI</a><ul></ul></li>
 <li><a href="#opensbi-debug-console">4 OpenSBI Debug Console</a><ul></ul></li>
-<li><a href="#integrate-opensbi-with-nuttx">5 Integrate OpenSBI with NuttX</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Oct 2023</em></p>
+<li><a href="#set-a-system-timer">5 Set a System Timer</a><ul></ul></li>
+<li><a href="#query-the-risc-v-cpus">6 Query the RISC-V CPUs</a><ul></ul></li>
+<li><a href="#fetch-the-system-info">7 Fetch the System Info</a><ul></ul></li>
+<li><a href="#integrate-opensbi-with-nuttx">8 Integrate OpenSBI with NuttX</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Oct 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/sbi-title.png" alt="OpenSBI on Star64 JH7110 RISC-V SBC" /></p>
 <p>Bare Metal Programming on a <strong>RISC-V SBC</strong> (Single-Board Computer) sounds difficult… Thankfully we can get help from <strong>OpenSBI</strong>! (Supervisor Binary Interface)</p>
 <p>In this article, we call OpenSBI to…</p>
@@ -322,9 +325,15 @@ test_opensbi: sret.value=0, sret.error=-2
 <p>Our JH7110 Firmware seems to be built in <a href="https://gist.github.com/lupyuen/1e009a3343da70257d6f24400339053f#file-nuttx-scheme-star64-log-L4">Jan 2023</a>. But Debug Console was only implemented in <a href="https://github.com/starfive-tech/opensbi/commits/c6a092cd80112529cb2e92e180767ff5341b22a3/lib/sbi/sbi_ecall_dbcn.c">Feb 2023</a>! Maybe that’s why we can’t call the Debug Console on JH7110 OpenSBI.</p>
 <p>FYI: Upstream OpenSBI now supports <a href="https://github.com/riscv-software-src/opensbi/commit/cbdd86973901b6be2a1a2d3d6b54f3184fdf9a44">SBI 2.0</a></p>
 <p>TODO: Call sbi_get_spec_version, sbi_get_impl_id, sbi_get_impl_version, sbi_probe_extension, sbi_get_mvendorid, sbi_get_marchid, sbi_get_mimpid</p>
-<h1 id="integrate-opensbi-with-nuttx"><a href="#integrate-opensbi-with-nuttx">5 Integrate OpenSBI with NuttX</a></h1>
+<h1 id="set-a-system-timer"><a href="#set-a-system-timer">5 Set a System Timer</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="query-the-risc-v-cpus"><a href="#query-the-risc-v-cpus">6 Query the RISC-V CPUs</a></h1>
+<p>TODO</p>
+<h1 id="fetch-the-system-info"><a href="#fetch-the-system-info">7 Fetch the System Info</a></h1>
+<p>TODO</p>
+<h1 id="integrate-opensbi-with-nuttx"><a href="#integrate-opensbi-with-nuttx">8 Integrate OpenSBI with NuttX</a></h1>
+<p>TODO</p>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
