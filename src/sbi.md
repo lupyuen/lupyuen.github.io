@@ -78,15 +78,15 @@ OpenSBI provides Secure Access to the __Low-Level System Functions__ (controllin
 
   [(More about __OpenSBI for Star64__)](https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64)
 
-_Can't we access the Low-Level System Functions without OpenSBI?_
+_Can't we access the Low-Level System Features without OpenSBI?_
 
-Our code runs in __RISC-V Supervisor Mode__, which doesn't allow direct access to Low-Level System Functions, like for starting a CPU.
+Our code runs in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels), which doesn't allow direct access to Low-Level System Features, like for starting a CPU. (Pic below)
 
-(NuttX, Linux and U-Boot Bootloader all run in Supervisor Mode)
+(NuttX Kernel, Linux Kernel and U-Boot Bootloader all run in Supervisor Mode)
 
-OpenSBI runs in __RISC-V Machine Mode__, which has complete access to Low-Level System Functions. That's why we call OpenSBI from our code.
+OpenSBI runs in [__RISC-V Machine Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels), which has complete access to Low-Level System Features. That's why we call OpenSBI from our code.
 
-TODO
+![OpenSBI runs in RISC-V Machine Mode](https://lupyuen.github.io/images/privilege-title.jpg)
 
 # Call OpenSBI from NuttX
 
