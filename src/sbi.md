@@ -2,7 +2,11 @@
 
 📝 _28 Oct 2023_
 
-![TODO](https://lupyuen.github.io/images/sbi-title.png)
+![OpenSBI on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-title.png)
+
+Bare Metal Programming on a __RISC-V SBC__ (Single-Board Computer) sounds difficult... Thankfully we can get help from __OpenSBI__! (Supervisor Binary Inteface)
+
+In this article, we will call OpenSBI to ???
 
 TODO
 
@@ -18,9 +22,88 @@ Bare Metal? Not quite, but close to the Metal!
 
 ![Pine64 Star64 RISC-V SBC](https://lupyuen.github.io/images/release-star64.jpg)
 
-# OpenSBI: Supervisor Binary Interface
+# OpenSBI Supervisor Binary Interface
 
 TODO
+
+_Earlier we saw OpenSBI when booting Star64..._
+
+_What's OpenSBI?_
+
+```text
+U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
+DDR version: dc2e84f0.
+Trying to boot from SPI
+OpenSBI v1.2
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+Platform Name             : StarFive VisionFive V2
+Platform Features         : medeleg
+Platform HART Count       : 5
+Platform IPI Device       : aclint-mswi
+Platform Timer Device     : aclint-mtimer @ 4000000Hz
+Platform Console Device   : uart8250
+Platform HSM Device       : jh7110-hsm
+Platform PMU Device       : ---
+Platform Reboot Device    : pm-reset
+Platform Shutdown Device  : pm-reset
+Firmware Base             : 0x40000000
+Firmware Size             : 288 KB
+Runtime SBI Version       : 1.0
+```
+
+[(Source)](https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64)
+
+[__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on Star64.
+
+OpenSBI provides Secure Access to the __Low-Level System Functions__ (controlling CPUs, Timers, Interrupts) for the JH7110 SoC...
+
+- [__RISC-V Supervisor Binary Interface__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.pdf)
+
+This says that [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing) will be started next (at Address [__`0x4020` `0000`__](https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19))...
+
+```text
+Domain0 Name              : root
+Domain0 Boot HART         : 1
+Domain0 HARTs             : 0*,1*,2*,3*,4*
+Domain0 Region00          : 0x0000000002000000-0x000000000200ffff (I)
+Domain0 Region01          : 0x0000000040000000-0x000000004007ffff ()
+Domain0 Region02          : 0x0000000000000000-0xffffffffffffffff (R,W,X)
+Domain0 Next Address      : 0x0000000040200000
+Domain0 Next Arg1         : 0x0000000042200000
+Domain0 Next Mode         : S-mode
+Domain0 SysReset          : yes
+```
+
+[("S-mode" refers to __Supervisor Mode__)](https://lupyuen.github.io/articles/nuttx2#risc-v-privilege-levels)
+
+(What's `0x4220` `0000`?)
+
+And the __RISC-V Hardware Thread__ (HART) will support ["__rv64imafdcbx__"](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)...
+
+```text
+Boot HART ID              : 1
+Boot HART Domain          : root
+Boot HART Priv Version    : v1.11
+Boot HART Base ISA        : rv64imafdcbx
+Boot HART ISA Extensions  : none
+Boot HART PMP Count       : 8
+Boot HART PMP Granularity : 4096
+Boot HART PMP Address Bits: 34
+Boot HART MHPM Count      : 2
+Boot HART MIDELEG         : 0x0000000000000222
+Boot HART MEDELEG         : 0x000000000000b109
+```
+
+[(A __RISC-V HART__ is equivalent to a Single CPU Core)](https://lupyuen.github.io/articles/riscv#get-cpu-id)
+
+[(More about __OpenSBI for Star64__)](https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64)
 
 # Call OpenSBI from NuttX
 
