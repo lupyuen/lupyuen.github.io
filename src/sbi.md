@@ -72,11 +72,19 @@ Runtime SBI Version       : 1.0
 
 [__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on our SBC.
 
-OpenSBI provides Secure Access to the __Low-Level System Functions__ (controlling CPUs, Timers, Interrupts) for the JH7110 SoC...
+OpenSBI provides Secure Access to the __Low-Level System Functions__ (controlling CPUs, Timers, Interrupts) for the JH7110 SoC, as described in the SPI Spec...
 
-- [__RISC-V Supervisor Binary Interface__](https://github.com/riscv-non-isa/riscv-sbi-doc)
+- [__RISC-V Supervisor Binary Interface Spec__](https://github.com/riscv-non-isa/riscv-sbi-doc)
 
   [(More about __OpenSBI for Star64__)](https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64)
+
+_Can't we access the Low-Level System Functions without OpenSBI?_
+
+Our code runs in __RISC-V Supervisor Mode__, which doesn't allow direct access to Low-Level System Functions, like for starting a CPU.
+
+(NuttX, Linux and U-Boot Bootloader all run in Supervisor Mode)
+
+OpenSBI runs in __RISC-V Machine Mode__, which has complete access to Low-Level System Functions. That's why we call OpenSBI from our code.
 
 TODO
 
