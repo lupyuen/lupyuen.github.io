@@ -4,25 +4,33 @@
 
 ![OpenSBI on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-title.png)
 
-Bare Metal Programming on a __RISC-V SBC__ (Single-Board Computer) sounds difficult... Thankfully we can get help from __OpenSBI__! (Supervisor Binary Inteface)
+Bare Metal Programming on a __RISC-V SBC__ (Single-Board Computer) sounds difficult... Thankfully we can get help from __OpenSBI__! (Supervisor Binary Interface)
 
 In this article, we call OpenSBI to...
 
-- ???
+- Print to the __Debug Console__
+
+- Set a __System Timer__
+
+- Query the __RISC-V CPUs__
+
+- Fetch the __System Information__
+
+We'll do this on the [__Star64 JH7110 RISC-V SBC__](https://wiki.pine64.org/wiki/STAR64). (Pic below)
+
+(The same steps will work OK on __StarFive VisionFive2__, __Milk-V Mars__ and other SBCs based on the [__StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html))
+
+_We're running Bare Metal Code on our SBC?_
+
+Not quite, but close to the Metal!
 
 TODO
 
-Bare Metal? Not quite, but close to the Metal!
+[__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS)
 
 _Why are we doing this?_
 
-[__Star64 JH7110 RISC-V SBC__](https://wiki.pine64.org/wiki/STAR64) 
-
-[__StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html)
-
-[__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/release) (RTOS)
-
-(And probably for VisionFive2 too)
+TODO
 
 ![Pine64 Star64 RISC-V SBC](https://lupyuen.github.io/images/release-star64.jpg)
 
