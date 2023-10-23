@@ -8,7 +8,7 @@ Bare Metal Programming on a __RISC-V SBC__ (Single-Board Computer) sounds diffic
 
 In this article, we call OpenSBI to...
 
-- Print to the __Debug Console__
+- Print to the __Serial Console__
 
 - Set a __System Timer__
 
@@ -38,7 +38,7 @@ Right now we're __porting NuttX RTOS__ to the Star64 SBC. The experiments that w
 
 _What's this OpenSBI?_
 
-When we power up our RISC-V SBC, we'll see OpenSBI...
+When we power up our RISC-V SBC, we'll see OpenSBI in the [__Serial Console__](https://lupyuen.github.io/articles/linux#serial-console-on-star64)...
 
 ```text
 U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
@@ -90,9 +90,11 @@ OpenSBI runs in [__RISC-V Machine Mode__](https://lupyuen.github.io/articles/pri
 
 # Call OpenSBI from NuttX
 
-TODO
+_How to call OpenSBI from our code?_
 
-_How to call OpenSBI in NuttX?_
+Suppose we're calling OpenSBI to print something to the [__Serial Console__](https://lupyuen.github.io/articles/linux#serial-console-on-star64).
+
+TODO
 
 We run this __`ecall`__ to jump from NuttX (in RISC-V Supervisor Mode) to OpenSBI (in RISC-V Machine Mode)...
 
