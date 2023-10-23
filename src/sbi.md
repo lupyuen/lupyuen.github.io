@@ -171,7 +171,7 @@ static struct sbiret sbi_ecall(
     : "memory"
   );
 
-  //  Return the OpenSBI Error and Value
+  // Return the OpenSBI Error and Value
   struct sbiret ret;
   ret.error = r0;
   ret.value = r1;
@@ -190,6 +190,12 @@ We run this __`ecall`__ to jump from NuttX (in RISC-V Supervisor Mode) to OpenSB
   [(How __`ecall`__ works in OpenSBI)](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/)
 
   [(More about OpenSBI)](https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/)
+
+# Run NuttX with OpenSBI
+
+_Will our code print correctly to the Serial Console?_
+
+TODO
 
 When we run our Modified NuttX Kernel on Star64 JH7110, we see `123` printed on the Debug Console. Yay!
 
