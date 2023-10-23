@@ -6,11 +6,15 @@
 
 Bare Metal Programming on a __RISC-V SBC__ (Single-Board Computer) sounds difficult... Thankfully we can get help from __OpenSBI__! (Supervisor Binary Inteface)
 
-In this article, we will call OpenSBI to ???
+In this article, we call OpenSBI to...
+
+- ???
 
 TODO
 
 Bare Metal? Not quite, but close to the Metal!
+
+_Why are we doing this?_
 
 [__Star64 JH7110 RISC-V SBC__](https://wiki.pine64.org/wiki/STAR64) 
 
