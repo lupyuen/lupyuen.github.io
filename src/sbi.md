@@ -195,15 +195,19 @@ _Will our code print correctly to the Serial Console?_
 
 Follow these steps to download __Apache NuttX RTOS__, insert our Test Code and compile the NuttX Kernel...
 
-TODO
+- TODO: [__"Build NuttX for Star64"__](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
 
-Copy the NuttX Kernel and NuttX Apps to a MicroSD Card.
+Copy the NuttX Kernel and NuttX Apps to a microSD Card...
 
-Insert the MicroSD Card into our SBC and power up.
+- [__"NuttX in a Bootable microSD"__](https://lupyuen.github.io/articles/release#nuttx-in-a-bootable-microsd)
 
-(Or boot our SBC over the Network with TFTP)
+Insert the microSD Card into our SBC and power up...
 
-When we run our Modified NuttX Kernel on Star64 JH7110, we see `123` printed on the Serial Console. Yay!
+- [__"Boot NuttX on Star64"__](https://lupyuen.github.io/articles/release#boot-nuttx-on-star64)
+
+  [(Or boot our SBC over the __Network with TFTP__)](https://lupyuen.github.io/articles/tftp)
+
+When we run our Modified NuttX Kernel on Star64 JH7110, we see "__`123`__" printed on the Serial Console. Yay!
 
 ```text
 Starting kernel ...
