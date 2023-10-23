@@ -83,7 +83,7 @@
 <p>In this article, we call OpenSBI to…</p>
 <ul>
 <li>
-<p>Print to the <strong>Debug Console</strong></p>
+<p>Print to the <strong>Serial Console</strong></p>
 </li>
 <li>
 <p>Set a <strong>System Timer</strong></p>
@@ -106,7 +106,7 @@
 <p><img src="https://lupyuen.github.io/images/release-star64.jpg" alt="Pine64 Star64 RISC-V SBC" /></p>
 <h1 id="opensbi-supervisor-binary-interface"><a href="#opensbi-supervisor-binary-interface">1 OpenSBI Supervisor Binary Interface</a></h1>
 <p><em>What’s this OpenSBI?</em></p>
-<p>When we power up our RISC-V SBC, we’ll see OpenSBI…</p>
+<p>When we power up our RISC-V SBC, we’ll see OpenSBI in the <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Console</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
 DDR version: dc2e84f0.
 Trying to boot from SPI
@@ -148,8 +148,9 @@ Runtime SBI Version       : 1.0
 <p>OpenSBI runs in <a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels"><strong>RISC-V Machine Mode</strong></a>, which has complete access to Low-Level System Features. That’s why we call OpenSBI from our code.</p>
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="OpenSBI runs in RISC-V Machine Mode" /></p>
 <h1 id="call-opensbi-from-nuttx"><a href="#call-opensbi-from-nuttx">2 Call OpenSBI from NuttX</a></h1>
+<p><em>How to call OpenSBI from our code?</em></p>
+<p>Suppose we’re calling OpenSBI to print something to the <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Console</strong></a>.</p>
 <p>TODO</p>
-<p><em>How to call OpenSBI in NuttX?</em></p>
 <p>We run this <strong><code>ecall</code></strong> to jump from NuttX (in RISC-V Supervisor Mode) to OpenSBI (in RISC-V Machine Mode)…</p>
 <ul>
 <li>
