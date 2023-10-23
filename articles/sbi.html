@@ -199,7 +199,7 @@ static struct sbiret sbi_ecall(
   uintptr_t parm4, uintptr_t parm5   // Parameters 4 and 5
 ) {
   // Pass the Extension ID, Function ID and Parameters
-  // as RISC-V Registers A0 to A7
+  // in RISC-V Registers A0 to A7
   register long r0 asm(&quot;a0&quot;) = (long)(parm0);
   register long r1 asm(&quot;a1&quot;) = (long)(parm1);
   register long r2 asm(&quot;a2&quot;) = (long)(parm2);
@@ -218,13 +218,14 @@ static struct sbiret sbi_ecall(
     : &quot;memory&quot;
   );
 
-  //  Return the SBI Error and Value
+  //  Return the OpenSBI Error and Value
   struct sbiret ret;
   ret.error = r0;
   ret.value = r1;
   return ret;
 }
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/4cd98a4075d5b528940095b39fd5b445">(See the <strong>RISC-V Disassembly</strong>)</a></p>
 <p>TODO</p>
 <p>We run this <strong><code>ecall</code></strong> to jump from NuttX (in RISC-V Supervisor Mode) to OpenSBI (in RISC-V Machine Mode)…</p>
 <ul>
