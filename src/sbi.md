@@ -128,9 +128,9 @@ This calls the (Legacy) [__Console Putchar Function__](https://github.com/riscv-
 
 - __Function ID:__ 0
 
-_What's sbi_ecall?_
+_What's this ecall to SBI?_
 
-Remember that OpenSBI runs in the (super-privileged) __RISC-V Machine Mode__. And our code runs in the (less-privileged) __RISC-V Supervisor Mode__.
+Remember that OpenSBI runs in (super-privileged) __RISC-V Machine Mode__. And our code runs in (less-privileged) __RISC-V Supervisor Mode__.
 
 To jump from Supervisor Mode to Machine Mode, we execute the __`ecall` RISC-V Instruction__: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L268-L299)
 
