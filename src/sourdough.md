@@ -2,9 +2,9 @@
 
 📝 _17 Jul 2023_
 
-![Okinawa Black Sugar Sourdough with Dark Chocolate Couverture](https://lupyuen.github.io/images/sourdough.jpg)
+![Honey & Milk Sourdough](https://lupyuen.github.io/images/sourdough25.jpg)
 
-_Okinawa Black Sugar Sourdough with Dark Chocolate Couverture_
+_Honey & Milk Sourdough_
 
 # Wholemeal Sourdough Starter
 
@@ -76,7 +76,7 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Ov
 
     (This is the quickest way to knead)
 
-1.  Sprinkle Bread Flour until dough becomes a smooth and creamy ball (pic above)
+1.  Sprinkle Bread Flour until dough becomes a smooth and creamy ball. [(Like this)](https://lupyuen.github.io/images/sourdough25.jpg)
 
 1.  After the kneading step has completed, power off the Bread Machine
 
@@ -84,7 +84,7 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Ov
 
     Here's how: Tilt the Bread Bucket to one side, scrape the dough off the Paddle with a wooden chopstick, remove the Paddle.
 
-1.  Place Bread Bucket in Warm Oven, cover with damp towel. (To prevent drying up, pic above)
+1.  Place Bread Bucket in Warm Oven, cover with damp towel, to prevent drying up. [(Like this)](https://lupyuen.github.io/images/sourdough25.jpg)
 
     Allow dough to rise for 5 hours. Or until the dough reaches the brim of the Bread Bucket.
 
@@ -150,44 +150,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 <hr>
 
-![Dark Chocolate Raisin Wholemeal Sourdough with Carrot and Sunflower Seed](https://lupyuen.github.io/images/sourdough19.jpg)
+![Okinawa Black Sugar Sourdough with Dark Chocolate Couverture](https://lupyuen.github.io/images/sourdough.jpg)
 
-_Dark Chocolate Raisin Wholemeal Sourdough with Carrot and Sunflower Seed_
-
-<hr>
-
-![Dark Chocolate Raisin Wholemeal Sourdough with Sunflower Seed](https://lupyuen.github.io/images/sourdough17.jpg)
-
-_Dark Chocolate Raisin Wholemeal Sourdough with Sunflower Seed_
-
-_(1/3 cup [Dark Chocolate Couverture](https://www.redmanshop.com/shop-by-category/baking-ingredients/chocolate-and-cocoa/chocolate-couvertures/000000000000012582.html), 1/3 cup Raisins, 1/2 cup Toasted Sunflower Seeds)_
-
-<hr>
-
-![Prune Wholemeal Sourdough with Currants](https://lupyuen.github.io/images/sourdough10.jpg)
-
-_Prune Wholemeal Sourdough with Currants_
-
-<hr>
-
-![Raisin Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough7.jpg)
-
-_Raisin Wholemeal Sourdough_
-
-<hr>
-
-![Wholemeal Sourdough Sandwich](https://lupyuen.github.io/images/sourdough6.jpg)
-
-_Wholemeal Sourdough Sandwich_
-
-<hr>
-
-![Smooth Ball of Wholemeal Sourdough kneading in Bread Machine](https://lupyuen.github.io/images/sourdough3.jpg)
-
-_Smooth Ball of Wholemeal Sourdough kneading in Bread Machine_
-
-<hr>
-
-![Rising of Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough4.jpg)
-
-_Rising of Wholemeal Sourdough_
+_Okinawa Black Sugar Sourdough with Dark Chocolate Couverture_
