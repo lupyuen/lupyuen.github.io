@@ -100,11 +100,11 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Ov
 
     [(French Bread Mode is explained on Page 17)](https://www.zojirushi.com/servicesupport/manuals/manual_pdf/bb_hac10.pdf)
 
-To remind myself, I set 3 Timers whenever I place the Bread Bucket in the Warm Oven...
+To remind myself, I set 3 Timers on my phone whenever I place the Bread Bucket in the Warm Oven...
 
--   Start Timer "StopBread" for 7.5 hours 
--   Start Timer "LoadBread" for 5 hours 
 -   Start Timer "StartBread" for 2.5 hours 
+-   Start Timer "LoadBread" for 5 hours 
+-   Start Timer "StopBread" for 7.5 hours 
 
 How warm is the oven? For breakfast I toast my bread in the oven at 250 deg C for 5 minutes. I wait for the oven to cool a bit, then I move the Bread Bucket inside.
 
