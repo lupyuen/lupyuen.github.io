@@ -16,47 +16,53 @@ Daily routine for Sourdough Starter, assuming that we bake every other day...
     
 -   Feed 2 times daily:
 
-    -   1/2 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
+    -   1/4 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
     
-    -   1/4 cup Boiled Water at Room Temperature
+    -   1/8 cup Boiled Water at Room Temperature
 
     Except for the night before baking, increase to:
 
-    -   1 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
+    -   1/2 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
     
-    -   1/2 cup Boiled Water at Room Temperature
+    -   1/4 cup Boiled Water at Room Temperature
 
     After each feeding, consistency should be like thick oatmeal. If it's too watery, skip the water.
 
 -   Stir the Sourdough Starter with a chopstick (the blunt end)
 
--   Every Other Morning: Sourdough Starter should double in size by morning, ready for baking.
+-   Every Other Morning: Sourdough Starter should rise 2 cm by morning, ready for baking.
 
     [(See pic below)](https://lupyuen.github.io/images/sourdough2.jpg)
 
 -   Wipe clean the inside of the Sourdough Jar whenever we discard Sourdough Starter in the morning.
 
+-   If Sourdough Starter has exceeded 4 cups in volume, throw away half of the Sourdough Starter
+
 ![Wholemeal Sourdough Starter](https://lupyuen.github.io/images/sourdough2.jpg)
 
 # Baking the Wholemeal Sourdough
 
-Every other morning we bake a One-Pound Loaf of Sourdough Bread.
+Every other morning we bake a One-Pound Loaf of Honey & Milk Sourdough Bread.
 
 Add in this sequence to Bread Machine...
 
 -   1 tablespoon (14g) Cold Unsalted Butter (from fridge)
 
--   2 teaspoons Granulated Sugar
+-   1 tablespoon of Honey
 
-    (Or 3 cubes [Okinawa Black Sugar](https://lupyuen.github.io/images/sourdough23.jpg))
+-   1 tablespoon of Full Cream Milk Powder 
 
--   4 tablespoons Boiling Water
+-   10 tablespoons Boiling Water (100 deg C)
 
-    (100 deg C, to melt the butter and sugar)
+    Stir the Boiling Water to melt the butter and blend the honey and milk.
 
--   2 ladles (2/3 cups) Wholemeal Sourdough Starter, ripe (fed) from above
+-   1 cup Wholemeal Sourdough Starter, ripe (fed) from above
 
--   1 cup (120g) Bread Flour
+    (I mark out 1.5 cm of the above container with 13 cm diameter)
+
+    (Too much starter will make bread gummy)
+
+-   2 cups (240g) Bread Flour
 
 -   1/2 teaspoon (2.8g) Salt
 
@@ -64,41 +70,45 @@ Add in this sequence to Bread Machine...
 
     Too much Baking Soda will taste soapy!
 
--   NO MILK because the loaf will look burnt
+We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Oven to rise the dough (5 hours), then move the Bread Bucket back to the Bread Machine for baking. Here are the steps...
 
-Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "French Bread" Mode.
+1.  To knead the dough, start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "Quick Baking" Mode.
 
-"French Bread" Mode will run this cycle...
+    (This is the quickest way to knead)
 
-- Rest: 20 mins
-- Knead: 14 to 19 mins
-- First Rising: 61 mins
-- Stir Down + Second Rising: 25 mins
-- Stir Down + Third Rising: 90 to 95 mins
-- Bake: 80 to 90 mins
-- Total: 5 hours
+1.  Sprinkle Bread Flour until dough becomes a smooth and creamy ball (pic above)
 
-[(Page 17)](https://www.zojirushi.com/servicesupport/manuals/manual_pdf/bb_hac10.pdf)
+1.  After the kneading step has completed, power off the Bread Machine
+
+1.  Remove the Paddle from the Bread Bucket. (Because otherwise the dough will rise, dislodge the Paddle, and Paddle gets stuck inside the bread)
+
+    Here's how: Tilt the Bread Bucket to one side, scrape the dough off the Paddle with a wooden chopstick, remove the Paddle.
+
+1.  Place Bread Bucket in Warm Oven, cover with damp towel. (To prevent drying up, pic above)
+
+    Allow dough to rise for 5 hours. Or until the dough reaches the brim of the Bread Bucket.
+
+1.  2.5 hours after kneading: Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "French Bread" Mode. (5 hour cycle)
+
+    Bread Machine will try to knead without the Bread Bucket. And that's OK.
+
+1.  2.5 hours after starting "French Bread" Mode: Move Baking Bucket to Bread Machine.
+
+    "French Bread" Mode will warm up and rise the dough for 1 hour.
+
+    Then bake for 1.5 hours.
+
+    [(French Bread Mode is explained on Page 17)](https://www.zojirushi.com/servicesupport/manuals/manual_pdf/bb_hac10.pdf)
+
+To remind myself, I set 3 Timers whenever I place the Bread Bucket in the Warm Oven...
+
+-   Start Timer "StopBread" for 7.5 hours 
+-   Start Timer "LoadBread" for 5 hours 
+-   Start Timer "StartBread" for 2.5 hours 
+
+How warm is the oven? For breakfast I toast my bread in the oven at 250 deg C for 5 minutes. I wait for the oven to cool a bit, then I move the Bread Bucket inside.
 
 [(Watch the Video on YouTube)](https://www.youtube.com/shorts/R7GI71rqUc8)
-
-During Kneading:
-
--   Sprinkle a few teaspoons of [Superfine Wholegrain Flour](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html) until dough becomes a Smooth Ball
-
--   But not too much flour. Dough Ball should look like a Fresh Egg Yolk: Skin is shiny, slightly wet, inside is foamy liquid.
-
--   Tap a chopstick on the Dough Ball. The dough shouldn't stick to the chopstick.
-
-    [(See pic below)](https://lupyuen.github.io/images/sourdough3.jpg)
-
--   (Optional) At 4 hours 30 mins remaining, add 1/2 cup of Raisins (separated) or Prunes (quartered) or [Dark Chocolate Couverture](https://www.redmanshop.com/shop-by-category/baking-ingredients/chocolate-and-cocoa/chocolate-couvertures/000000000000012582.html). 
-
-    This will sweeten the sourdough. Sourdough will uplift any Dried Fruit, amazing!
-    
-    [(See Raisin Sourdough below)](https://lupyuen.github.io/images/sourdough17.jpg)
-    
-    [(And Prune Sourdough)](https://lupyuen.github.io/images/sourdough9.jpg)
 
 Adapted from [King Arthur Bread Machine Sourdough Recipe](https://www.kingarthurbaking.com/recipes/bread-machine-sourdough-bread-recipe) (Non-Wholemeal)
 
