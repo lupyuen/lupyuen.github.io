@@ -291,6 +291,10 @@ test_opensbi: sret.value=0, sret.error=-2
 
 TODO
 
+Get SBI specification version (FID #0)
+
+[sbi_get_spec_version](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#41-function-get-sbi-specification-version-fid-0)
+
 _Why is the Debug Console not supported on JH7110 OpenSBI?_
 
 If we trace the StarFive JH7110 Source Code...
@@ -352,9 +356,17 @@ TODO: Call sbi_get_spec_version, sbi_get_impl_id, sbi_get_impl_version, sbi_prob
 
 TODO
 
+Set Timer (FID #0)
+
+[sbi_set_timer](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0)
+
 # Query the RISC-V CPUs
 
 TODO
+
+HART get status (FID #2)
+
+[sbi_hart_get_status](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#93-function-hart-get-status-fid-2)
 
 # Fetch the System Info
 
