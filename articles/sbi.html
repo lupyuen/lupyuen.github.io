@@ -283,7 +283,7 @@ nsh&gt;
 <p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L237-L265">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // TODO: Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
   // Print `456` to Debug Console.
-  // Call sbi_debug_console_write: EID 0x4442434E, FID 0
+  // Call sbi_debug_console_write: EID 0x4442434E &quot;DBCN&quot;, FID 0
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-fid-0
   const char *str = &quot;456&quot;;
 	struct sbiret sret = sbi_ecall(
@@ -298,7 +298,7 @@ nsh&gt;
 
   // TODO: Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
   // Print `789` to Debug Console.
-  // Call sbi_debug_console_write_byte: EID 0x4442434E, FID 2
+  // Call sbi_debug_console_write_byte: EID 0x4442434E &quot;DBCN&quot;, FID 2
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-byte-fid-2
   sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;7&#39;, 0, 0, 0, 0, 0);
   sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;8&#39;, 0, 0, 0, 0, 0);
@@ -366,6 +366,7 @@ test_opensbi: sret.value=0, sret.error=-2
 <p>TODO</p>
 <p>HART get status (FID #2)</p>
 <p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#93-function-hart-get-status-fid-2">sbi_hart_get_status</a></p>
+<p>HSM = Hart State Management (Not Hardware Security Module)</p>
 <h1 id="fetch-the-system-info"><a href="#fetch-the-system-info">8 Fetch the System Info</a></h1>
 <p>TODO</p>
 <h1 id="integrate-opensbi-with-nuttx"><a href="#integrate-opensbi-with-nuttx">9 Integrate OpenSBI with NuttX</a></h1>
