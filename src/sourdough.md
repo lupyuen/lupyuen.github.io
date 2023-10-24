@@ -48,9 +48,9 @@ Add in this sequence to Bread Machine...
 
 -   1 tablespoon (14g) Cold Unsalted Butter (from fridge)
 
--   1 tablespoon of Honey
+-   1 tablespoon Honey
 
--   1 tablespoon of Full Cream Milk Powder 
+-   1 tablespoon Full Cream Milk Powder 
 
 -   10 tablespoons Boiling Water (100 deg C)
 
@@ -60,7 +60,7 @@ Add in this sequence to Bread Machine...
 
     (I mark out 1.5 cm of the above container with 13 cm diameter)
 
-    (Too much starter will make bread gummy)
+    (Too much starter will make the bread gummy)
 
 -   2 cups (240g) Bread Flour
 
@@ -108,7 +108,7 @@ To remind myself, I set 3 Timers on my phone whenever I place the Bread Bucket i
 -   Start Timer "LoadBread" for 5 hours 
 -   Start Timer "StopBread" for 7.5 hours 
 
-Yep it's 7.5 hours in total, instead of the normal 5-hour "French Bread" Mode! This gives the sourdough more time to rise, for the extra bubbly floofiness.
+Yep it's 7.5 hours in total, instead of the normal 5-hour "French Bread" Mode! This gives the sourdough more time to rise (5 hours), for the extra bubbly floofiness.
 
 How warm is the oven? For breakfast I toast my bread in the oven at 250 deg C for 5 minutes. I wait for the oven to cool a bit, then I move the Bread Bucket inside.
 
