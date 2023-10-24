@@ -1,6 +1,6 @@
 # Recipe for Wholemeal Sourdough with Bread Machine
 
-📝 _17 Jul 2023_
+📝 _24 Oct 2023_
 
 ![Honey & Milk Sourdough](https://lupyuen.github.io/images/sourdough25.jpg)
 
