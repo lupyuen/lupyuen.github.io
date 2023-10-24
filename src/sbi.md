@@ -254,7 +254,7 @@ From [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi
 ```c
   // TODO: Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
   // Print `456` to Debug Console.
-  // Call sbi_debug_console_write: EID 0x4442434E, FID 0
+  // Call sbi_debug_console_write: EID 0x4442434E "DBCN", FID 0
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-fid-0
   const char *str = "456";
 	struct sbiret sret = sbi_ecall(
@@ -269,7 +269,7 @@ From [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi
 
   // TODO: Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
   // Print `789` to Debug Console.
-  // Call sbi_debug_console_write_byte: EID 0x4442434E, FID 2
+  // Call sbi_debug_console_write_byte: EID 0x4442434E "DBCN", FID 2
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-byte-fid-2
   sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, '7', 0, 0, 0, 0, 0);
   sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, '8', 0, 0, 0, 0, 0);
@@ -367,6 +367,8 @@ TODO
 HART get status (FID #2)
 
 [sbi_hart_get_status](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#93-function-hart-get-status-fid-2)
+
+HSM = Hart State Management (Not Hardware Security Module)
 
 # Fetch the System Info
 
