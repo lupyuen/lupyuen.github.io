@@ -70,13 +70,15 @@ Add in this sequence to Bread Machine...
 
     Too much Baking Soda will taste soapy!
 
+![Honey & Milk Sourdough](https://lupyuen.github.io/images/sourdough25.jpg)
+
 We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Oven to rise the dough (5 hours), then move the Bread Bucket back to the Bread Machine for baking. Here are the steps...
 
 1.  To knead the dough, start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "Quick Baking" Mode.
 
     (This is the quickest way to knead)
 
-1.  Sprinkle Bread Flour until dough becomes a smooth and creamy ball. [(Like this)](https://lupyuen.github.io/images/sourdough25.jpg)
+1.  Sprinkle Bread Flour until dough becomes a Smooth and Creamy Ball. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
 
 1.  After the kneading step has completed, power off the Bread Machine
 
@@ -84,7 +86,7 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Ov
 
     Here's how: Tilt the Bread Bucket to one side, scrape the dough off the Paddle with a wooden chopstick, remove the Paddle.
 
-1.  Place Bread Bucket in Warm Oven, cover with damp towel, to prevent drying up. [(Like this)](https://lupyuen.github.io/images/sourdough25.jpg)
+1.  Place Bread Bucket in Warm Oven, cover with damp towel, to prevent drying up. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
 
     Allow dough to rise for 5 hours. Or until the dough reaches the brim of the Bread Bucket.
 
@@ -105,6 +107,8 @@ To remind myself, I set 3 Timers on my phone whenever I place the Bread Bucket i
 -   Start Timer "StartBread" for 2.5 hours 
 -   Start Timer "LoadBread" for 5 hours 
 -   Start Timer "StopBread" for 7.5 hours 
+
+Yep it's 7.5 hours in total, instead of the normal 5-hour "French Bread" Mode! This gives the sourdough more time to rise, for the extra bubbly floofiness.
 
 How warm is the oven? For breakfast I toast my bread in the oven at 250 deg C for 5 minutes. I wait for the oven to cool a bit, then I move the Bread Bucket inside.
 
