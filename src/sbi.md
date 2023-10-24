@@ -183,7 +183,7 @@ static struct sbiret sbi_ecall(
 
 [(See the __RISC-V Disassembly__)](https://gist.github.com/lupyuen/4cd98a4075d5b528940095b39fd5b445)
 
-Let's run this on our SBC...
+Now we run this on our SBC...
 
 [(How __`ecall`__ works in OpenSBI)](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/)
 
@@ -195,21 +195,40 @@ TODO: Pic of NuttX
 
 _Will our Test Code print correctly to the Serial Console?_
 
-Follow these steps to download __Apache NuttX RTOS__, insert our Test Code and compile the NuttX Kernel...
+Let's find out!
 
-- TODO: [__"Build NuttX for Star64"__](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
+1.  Follow these steps to download __Apache NuttX RTOS__ and compile the NuttX Kernel and Apps...
 
-Copy the NuttX Kernel and NuttX Apps to a microSD Card...
+    [__"Build NuttX for Star64"__](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
 
-- [__"NuttX in a Bootable microSD"__](https://lupyuen.github.io/articles/release#nuttx-in-a-bootable-microsd)
+1.  Locate this __NuttX Source File__...
 
-Insert the microSD Card into our SBC and power up...
+    ```text
+    nuttx/boards/risc-v/jh7110/star64/src/jh7110_appinit.c
+    ```
 
-- [__"Boot NuttX on Star64"__](https://lupyuen.github.io/articles/release#boot-nuttx-on-star64)
+    Replace the contents of that file by this __Test Code__...
 
-  [(Or boot our SBC over the __Network with TFTP__)](https://lupyuen.github.io/articles/tftp)
+    [__jh7110_appinit.c: OpenSBI Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c)
 
-When we run the Modified NuttX Kernel on our SBC, we see "__`123`__" printed on the Serial Console. Yay!
+1.  Rebuild the __NuttX Kernel__...
+
+    ```text
+    $ make
+    $ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
+    ```
+
+1.  Copy the NuttX Kernel and NuttX Apps to a __microSD Card__...
+
+    [__"NuttX in a Bootable microSD"__](https://lupyuen.github.io/articles/release#nuttx-in-a-bootable-microsd)
+
+1.  Insert the microSD Card into our SBC and power up...
+
+    [__"Boot NuttX on Star64"__](https://lupyuen.github.io/articles/release#boot-nuttx-on-star64)
+
+    [(Or boot our SBC over the __Network with TFTP__)](https://lupyuen.github.io/articles/tftp)
+
+When we boot the Modified NuttX Kernel on our SBC, we see "__`123`__" printed on the Serial Console...
 
 ```text
 Starting kernel ...
@@ -219,6 +238,8 @@ nsh>
 ```
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310)
+
+Yep our OpenSBI Experiment works yay!
 
 # OpenSBI Debug Console
 
@@ -362,9 +383,3 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/sbi.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/sbi.md)
-
-# Build NuttX for Star64
-
-TODO
-
-- [__"Build NuttX for Star64"__](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
