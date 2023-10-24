@@ -78,8 +78,7 @@
 <li><a href="#query-the-risc-v-cpus">7 Query the RISC-V CPUs</a><ul></ul></li>
 <li><a href="#fetch-the-system-info">8 Fetch the System Info</a><ul></ul></li>
 <li><a href="#integrate-opensbi-with-nuttx">9 Integrate OpenSBI with NuttX</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#build-nuttx-for-star64">11 Build NuttX for Star64</a><ul></ul></li></ul></nav><p>📝 <em>31 Oct 2023</em></p>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Oct 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/sbi-title.png" alt="OpenSBI on Star64 JH7110 RISC-V SBC" /></p>
 <p>Bare Metal Programming on a <strong>RISC-V SBC</strong> (Single-Board Computer) sounds difficult… Thankfully we can get help from <strong>OpenSBI</strong>! (Supervisor Binary Interface)</p>
 <p>In this article, we call OpenSBI to…</p>
@@ -235,34 +234,48 @@ static struct sbiret sbi_ecall(
 }
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4cd98a4075d5b528940095b39fd5b445">(See the <strong>RISC-V Disassembly</strong>)</a></p>
-<p>Let’s run this on our SBC…</p>
+<p>Now we run this on our SBC…</p>
 <p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/">(How <strong><code>ecall</code></strong> works in OpenSBI)</a></p>
 <p><a href="https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/">(More about OpenSBI)</a></p>
 <p>TODO: Pic of NuttX</p>
 <h1 id="run-nuttx-with-opensbi"><a href="#run-nuttx-with-opensbi">3 Run NuttX with OpenSBI</a></h1>
 <p><em>Will our Test Code print correctly to the Serial Console?</em></p>
-<p>Follow these steps to download <strong>Apache NuttX RTOS</strong>, insert our Test Code and compile the NuttX Kernel…</p>
-<ul>
-<li>TODO: <a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64"><strong>“Build NuttX for Star64”</strong></a></li>
-</ul>
-<p>Copy the NuttX Kernel and NuttX Apps to a microSD Card…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/release#nuttx-in-a-bootable-microsd"><strong>“NuttX in a Bootable microSD”</strong></a></li>
-</ul>
-<p>Insert the microSD Card into our SBC and power up…</p>
-<ul>
+<p>Let’s find out!</p>
+<ol>
 <li>
+<p>Follow these steps to download <strong>Apache NuttX RTOS</strong> and compile the NuttX Kernel and Apps…</p>
+<p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64"><strong>“Build NuttX for Star64”</strong></a></p>
+</li>
+<li>
+<p>Locate this <strong>NuttX Source File</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/boards/risc-v/jh7110/star64/src/jh7110_appinit.c
+</code></pre></div>
+<p>Replace the contents of that file by this <strong>Test Code</strong>…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c"><strong>jh7110_appinit.c: OpenSBI Test Code</strong></a></p>
+</li>
+<li>
+<p>Rebuild the <strong>NuttX Kernel</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>$ make
+$ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
+</code></pre></div></li>
+<li>
+<p>Copy the NuttX Kernel and NuttX Apps to a <strong>microSD Card</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/release#nuttx-in-a-bootable-microsd"><strong>“NuttX in a Bootable microSD”</strong></a></p>
+</li>
+<li>
+<p>Insert the microSD Card into our SBC and power up…</p>
 <p><a href="https://lupyuen.github.io/articles/release#boot-nuttx-on-star64"><strong>“Boot NuttX on Star64”</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp">(Or boot our SBC over the <strong>Network with TFTP</strong>)</a></p>
 </li>
-</ul>
-<p>When we run the Modified NuttX Kernel on our SBC, we see “<strong><code>123</code></strong>” printed on the Serial Console. Yay!</p>
+</ol>
+<p>When we boot the Modified NuttX Kernel on our SBC, we see “<strong><code>123</code></strong>” printed on the Serial Console…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 123
 NuttShell (NSH) NuttX-12.0.3
 nsh&gt; 
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310">(Source)</a></p>
+<p>Yep our OpenSBI Experiment works yay!</p>
 <h1 id="opensbi-debug-console"><a href="#opensbi-debug-console">4 OpenSBI Debug Console</a></h1>
 <p>TODO</p>
 <p><em>But that’s calling the Legacy Console Putchar Function. What about the newer Debug Console Functions?</em></p>
@@ -373,11 +386,6 @@ test_opensbi: sret.value=0, sret.error=-2
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/sbi.md"><strong>lupyuen.github.io/src/sbi.md</strong></a></p>
-<h1 id="build-nuttx-for-star64"><a href="#build-nuttx-for-star64">11 Build NuttX for Star64</a></h1>
-<p>TODO</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64"><strong>“Build NuttX for Star64”</strong></a></li>
-</ul>
 
     
 </body>
