@@ -16,7 +16,7 @@ In this article, we call OpenSBI to...
 
 - Fetch the __System Information__
 
-- And __Shutdown our SBC__
+- And __Shutdown / Reboot our SBC__
 
 We'll do this on the [__Star64 JH7110 RISC-V SBC__](https://wiki.pine64.org/wiki/STAR64). (Pic below)
 
@@ -378,7 +378,7 @@ Set Timer (FID #0)
 
 [sbi_set_timer](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0)
 
-https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L384-L388
+[jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L384-L388)
 
 ```c
   // Set Timer
@@ -398,7 +398,7 @@ HART get status (FID #2)
 
 HSM = Hart State Management (Not Hardware Security Module)
 
-https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L376-L382
+[jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L376-L382)
 
 ```c
   // HART Get Status
@@ -414,7 +414,7 @@ https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/st
 
 TODO
 
-https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L336-L374
+[jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L336-L374)
 
 ```c
   // Get SBI Implementation ID
@@ -458,13 +458,11 @@ https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/st
   _info("sbi_probe_extension[0x4442434E]: value=0x%x, error=%d\n", sret.value, sret.error);
 ```
 
-# Shutdown the SBC
+# Shutdown and Reboot the SBC
 
 TODO
 
-[Shutdown Log](https://gist.github.com/lupyuen/5748e125df2f6b6fd4902f80ab3e9ed1)
-
-https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L390-L402
+[jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L390-L402)
 
 ```c
   // System Reset: Shutdown
@@ -481,6 +479,8 @@ https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/st
   sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_WARM_REBOOT, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
   _info("sbi_system_reset[warm_reboot]: value=0x%x, error=%d\n", sret.value, sret.error);
 ```
+
+[Shutdown Log](https://gist.github.com/lupyuen/5748e125df2f6b6fd4902f80ab3e9ed1)
 
 # Integrate OpenSBI with NuttX
 
