@@ -660,6 +660,29 @@ get_mimpid: 0x4210427
 <p><em>Phew that’s plenty of OpenSBI Functions!</em></p>
 <p><em>How will we call them in NuttX?</em></p>
 <p>TODO</p>
+<ul>
+<li>
+<p>In future we’ll call these SBI Functions to start NuttX on Multiple CPUs.</p>
+</li>
+<li>
+<p>Someday NuttX will call this function to <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108"><strong>set the System Timer</strong></a>.</p>
+</li>
+<li>
+<p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#7-ipi-extension-eid-0x735049-spi-s-mode-ipi">Inter-Processor Interrupts</a></p>
+</li>
+<li>
+<p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#8-rfence-extension-eid-0x52464e43-rfnc">RFENCE</a></p>
+</li>
+<li>
+<p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#11-performance-monitoring-unit-extension-eid-0x504d55-pmu">Performance and Monitoring</a></p>
+</li>
+<li>
+<p>Shutdown and Reboot</p>
+</li>
+<li>
+<p>Probe SBI Extensions</p>
+</li>
+</ul>
 <h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
