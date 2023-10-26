@@ -597,7 +597,7 @@ sret = sbi_ecall(
   0, 0, 0, 0, 0);
 ```
 
-TODO
+It doesn't seem to do anything...
 
 ```text
 set_timer:
@@ -607,9 +607,9 @@ set_timer:
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464)
 
-[send an interrupt after a certain amount of time has elapsed](https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/)
+But that's because our SBC will [__trigger an interrupt__](https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/) when the System Timer expires.
 
-[NuttX set timer](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108)
+Someday NuttX will call this function to [__set the System Timer__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108).
 
 # Fetch the System Info
 
