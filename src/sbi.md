@@ -285,7 +285,6 @@ struct sbiret sret = sbi_ecall(
   0, 0, 0              // Unused
 );
 _info("debug_console_write: value=%d, error=%d\n", sret.value, sret.error);
-// Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
 
 // Print `789` to Debug Console, byte by byte.
 // Call sbi_debug_console_write_byte: EID 0x4442434E "DBCN", FID 2
@@ -301,7 +300,6 @@ sret = sbi_ecall(
 sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, '8', 0, 0, 0, 0, 0);
 sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, '9', 0, 0, 0, 0, 0);
 _info("debug_console_write_byte: value=%d, error=%d\n", sret.value, sret.error);
-// Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
 ```
 
 But our Test Code fails with error [__NOT_SUPPORTED__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277)...
@@ -318,6 +316,10 @@ debug_console_write_byte:
 Why? Let's find out...
 
 # Read the SBI Version
+
+_We tried printing to Debug Console but failed..._
+
+_Maybe the OpenSBI in our SBC doesn't support Debug Console?_
 
 TODO
 
