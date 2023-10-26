@@ -16,6 +16,8 @@ In this article, we call OpenSBI to...
 
 - Fetch the __System Information__
 
+- And __Shutdown our SBC__
+
 We'll do this on the [__Star64 JH7110 RISC-V SBC__](https://wiki.pine64.org/wiki/STAR64). (Pic below)
 
 (The same steps will work OK on __StarFive VisionFive2__, __Milk-V Mars__ and other SBCs based on the [__StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html))
@@ -376,6 +378,16 @@ Set Timer (FID #0)
 
 [sbi_set_timer](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0)
 
+https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L384-L388
+
+```c
+  // Set Timer
+  // Call sbi_set_timer: EID 0x54494D45 "TIME", FID 0
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0
+  sret = sbi_ecall(SBI_EXT_TIME, SBI_EXT_TIME_SET_TIMER, 0, 0, 0, 0, 0, 0);
+  _info("set_timer: value=0x%x, error=%d\n", sret.value, sret.error);
+```
+
 # Query the RISC-V CPUs
 
 TODO
@@ -386,9 +398,89 @@ HART get status (FID #2)
 
 HSM = Hart State Management (Not Hardware Security Module)
 
+https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L376-L382
+
+```c
+  // HART Get Status
+  // Call sbi_hart_get_status: EID 0x48534D "HSM", FID 2
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#93-function-hart-get-status-fid-2
+  for (uintptr_t hart = 0; hart < 6; hart++) {
+    sret = sbi_ecall(SBI_EXT_HSM, SBI_EXT_HSM_HART_GET_STATUS, hart, 0, 0, 0, 0, 0);
+    _info("hart_get_status[%d]: value=0x%x, error=%d\n", hart, sret.value, sret.error);
+  }
+```
+
 # Fetch the System Info
 
 TODO
+
+https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L336-L374
+
+```c
+  // Get SBI Implementation ID
+  // Call sbi_get_impl_id: EID 0x10, FID 1
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#42-function-get-sbi-implementation-id-fid-1
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_IMP_ID, 0, 0, 0, 0, 0, 0);
+  _info("sbi_get_impl_id: value=0x%x, error=%d\n", sret.value, sret.error);
+
+  // Get SBI Implementation Version
+  // Call sbi_get_impl_version: EID 0x10, FID 2
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#43-function-get-sbi-implementation-version-fid-2
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_IMP_VERSION, 0, 0, 0, 0, 0, 0);
+  _info("sbi_get_impl_version: value=0x%x, error=%d\n", sret.value, sret.error);
+
+  // Get Machine Vendor ID
+  // Call sbi_get_mvendorid: EID 0x10, FID 4
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#45-function-get-machine-vendor-id-fid-4
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MVENDORID, 0, 0, 0, 0, 0, 0);
+  _info("sbi_get_mvendorid: value=0x%x, error=%d\n", sret.value, sret.error);
+
+  // Get Machine Architecture ID
+  // Call sbi_get_marchid: EID 0x10, FID 5
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#46-function-get-machine-architecture-id-fid-5
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MARCHID, 0, 0, 0, 0, 0, 0);
+  _info("sbi_get_marchid: value=0x%x, error=%d\n", sret.value, sret.error);
+
+  // Get Machine Implementation ID
+  // Call sbi_get_mimpid: EID 0x10, FID 6
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#47-function-get-machine-implementation-id-fid-6
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MIMPID, 0, 0, 0, 0, 0, 0);
+  _info("sbi_get_mimpid: value=0x%x, error=%d\n", sret.value, sret.error);
+
+  // Probe SBI Extension: Base Extension
+  // Call sbi_probe_extension: EID 0x10, FID 3
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#44-function-probe-sbi-extension-fid-3
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_PROBE_EXT, SBI_EXT_BASE, 0, 0, 0, 0, 0);
+  _info("sbi_probe_extension[0x10]: value=0x%x, error=%d\n", sret.value, sret.error);
+
+  // Probe SBI Extension: Debug Console Extension
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_PROBE_EXT, SBI_EXT_DBCN, 0, 0, 0, 0, 0);
+  _info("sbi_probe_extension[0x4442434E]: value=0x%x, error=%d\n", sret.value, sret.error);
+```
+
+# Shutdown the SBC
+
+TODO
+
+[Shutdown Log](https://gist.github.com/lupyuen/5748e125df2f6b6fd4902f80ab3e9ed1)
+
+https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L390-L402
+
+```c
+  // System Reset: Shutdown
+  // Call sbi_system_reset: EID 0x53525354 "SRST", FID 0
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#101-function-system-reset-fid-0
+  // sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_SHUTDOWN, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
+  // _info("sbi_system_reset[shutdown]: value=0x%x, error=%d\n", sret.value, sret.error);
+
+  // System Reset: Cold Reboot
+  // sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_COLD_REBOOT, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
+  // _info("sbi_system_reset[cold_reboot]: value=0x%x, error=%d\n", sret.value, sret.error);
+
+  // System Reset: Warm Reboot
+  sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_WARM_REBOOT, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
+  _info("sbi_system_reset[warm_reboot]: value=0x%x, error=%d\n", sret.value, sret.error);
+```
 
 # Integrate OpenSBI with NuttX
 
