@@ -185,7 +185,7 @@ int test_opensbi(void) {
 <p>This calls the (Legacy) <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#52-extension-console-putchar-eid-0x01"><strong>Console Putchar Function</strong></a> from the SBI Spec…</p>
 <ul>
 <li>
-<p><strong>Extension ID:</strong> 1 (CONSOLE_PUTCHAR)</p>
+<p><strong>Extension ID:</strong> 1 (Console Putchar)</p>
 </li>
 <li>
 <p><strong>Function ID:</strong> 0</p>
@@ -275,62 +275,78 @@ $ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
 <p>When we boot the Modified NuttX Kernel on our SBC, we see “<strong><code>123</code></strong>” printed on the Serial Console…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 123
-test_opensbi: debug_console_write: value=0x0, error=-2
-test_opensbi: debug_console_write_byte: value=0x0, error=-2
-test_opensbi: get_spec_version: value=0x1000000, error=0
-test_opensbi: sbi_get_impl_id: value=0x1, error=0
-test_opensbi: sbi_get_impl_version: value=0x10002, error=0
-test_opensbi: sbi_get_mvendorid: value=0x489, error=0
-test_opensbi: sbi_get_marchid: value=0x7, error=0
-test_opensbi: sbi_get_mimpid: value=0x4210427, error=0
-test_opensbi: hart_get_status[0]: value=0x1, error=0
-test_opensbi: hart_get_status[1]: value=0x0, error=0
-test_opensbi: hart_get_status[2]: value=0x1, error=0
-test_opensbi: hart_get_status[3]: value=0x1, error=0
-test_opensbi: hart_get_status[4]: value=0x1, error=0
-test_opensbi: hart_get_status[5]: value=0x0, error=-3
-test_opensbi: set_timer: value=0x0, error=0
-
 NuttShell (NSH) NuttX-12.0.3
 nsh&gt; 
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310">(Source)</a></p>
 <p>Yep our OpenSBI Experiment works yay!</p>
 <h1 id="opensbi-debug-console"><a href="#opensbi-debug-console">4 OpenSBI Debug Console</a></h1>
-<p>TODO</p>
 <p><em>But that’s calling the Legacy Console Putchar Function. What about the newer Debug Console Functions?</em></p>
-<p>Let’s call the newer <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc">Debug Console Functions</a> in OpenSBI…</p>
-<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L237-L265">jh7110_appinit.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  // TODO: Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
-  // Print `456` to Debug Console.
-  // Call sbi_debug_console_write: EID 0x4442434E &quot;DBCN&quot;, FID 0
-  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-fid-0
-  const char *str = &quot;456&quot;;
-	struct sbiret sret = sbi_ecall(
-    SBI_EXT_DBCN,  // Extension ID
-    SBI_EXT_DBCN_CONSOLE_WRITE,  // Function ID
-		strlen(str),         // Number of bytes
-    (unsigned long)str,  // Address Low
-    0,                   // Address High
-    0, 0, 0              // Unused
-  );
-  _info(&quot;sret.value=%d, sret.error=%d\n&quot;, sret.value, sret.error);
+<p>Yeah we called the Legacy Console Putchar Function, which is <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#5-legacy-extensions-eids-0x00---0x0f"><strong>expected to be deprecated</strong></a>.</p>
+<p>Let’s call the newer <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc"><strong>Debug Console Functions</strong></a> in OpenSBI. This function <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-fid-0"><strong>prints a string</strong></a> to the Debug Console…</p>
+<ul>
+<li>
+<p><strong>Extension ID:</strong> <code>0x4442</code> <code>434E</code> “DBCN”</p>
+</li>
+<li>
+<p><strong>Function ID:</strong> 0 (Console Write)</p>
+</li>
+<li>
+<p><strong>Parameter 0:</strong> String Length</p>
+</li>
+<li>
+<p><strong>Parameter 1:</strong> Low Address of String</p>
+</li>
+<li>
+<p><strong>Parameter 2:</strong> High Address of String</p>
+</li>
+</ul>
+<p>And this function <a href="nction-console-write-byte-fid-2"><strong>prints a single character</strong></a>…</p>
+<ul>
+<li>
+<p><strong>Extension ID:</strong> <code>0x4442</code> <code>434E</code> “DBCN”</p>
+</li>
+<li>
+<p><strong>Function ID:</strong> 2 (Console Write Byte)</p>
+</li>
+<li>
+<p><strong>Parameter 0:</strong> Character to be printed</p>
+</li>
+</ul>
+<p>This is how we print to the <strong>Debug Console</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L237-L265">jh7110_appinit.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Print `456` to Debug Console as a String.
+// Call sbi_debug_console_write: EID 0x4442434E &quot;DBCN&quot;, FID 0
+// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-fid-0
+const char *str = &quot;456&quot;;
+struct sbiret sret = sbi_ecall(
+  SBI_EXT_DBCN,  // Extension ID
+  SBI_EXT_DBCN_CONSOLE_WRITE,  // Function ID
+  strlen(str),         // Number of bytes
+  (unsigned long)str,  // Address Low
+  0,                   // Address High
+  0, 0, 0              // Unused
+);
+_info(&quot;debug_console_write: value=%d, error=%d\n&quot;, sret.value, sret.error);
+// Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
 
-  // TODO: Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
-  // Print `789` to Debug Console.
-  // Call sbi_debug_console_write_byte: EID 0x4442434E &quot;DBCN&quot;, FID 2
-  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-byte-fid-2
-  sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;7&#39;, 0, 0, 0, 0, 0);
-  sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;8&#39;, 0, 0, 0, 0, 0);
-  sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;9&#39;, 0, 0, 0, 0, 0);
-  _info(&quot;sret.value=%d, sret.error=%d\n&quot;, sret.value, sret.error);
+// Print `789` to Debug Console, byte by byte.
+// Call sbi_debug_console_write_byte: EID 0x4442434E &quot;DBCN&quot;, FID 2
+// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-byte-fid-2
+sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;7&#39;, 0, 0, 0, 0, 0);
+sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;8&#39;, 0, 0, 0, 0, 0);
+sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;9&#39;, 0, 0, 0, 0, 0);
+_info(&quot;debug_console_write_byte: value=%d, error=%d\n&quot;, sret.value, sret.error);
+// Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
 </code></pre></div>
-<p>But it fails with <code>SBI_ERR_NOT_SUPPORTED</code>…</p>
+<p>But our Test Code fails with error <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277"><strong>NOT_SUPPORTED</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-test_opensbi: sret.value=0, sret.error=-2
-test_opensbi: sret.value=0, sret.error=-2
+debug_console_write:
+  value=0, error=-2
+debug_console_write_byte:
+  value=0, error=-2
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310">(Source)</a></p>
+<p>Let’s find out why…</p>
 <h1 id="read-the-sbi-version"><a href="#read-the-sbi-version">5 Read the SBI Version</a></h1>
 <p>TODO</p>
 <p>Get SBI specification version (FID #0)</p>
@@ -408,41 +424,41 @@ test_opensbi: sret.value=0, sret.error=-2
   // Call sbi_get_impl_id: EID 0x10, FID 1
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#42-function-get-sbi-implementation-id-fid-1
   sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_IMP_ID, 0, 0, 0, 0, 0, 0);
-  _info(&quot;sbi_get_impl_id: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+  _info(&quot;get_impl_id: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
 
   // Get SBI Implementation Version
   // Call sbi_get_impl_version: EID 0x10, FID 2
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#43-function-get-sbi-implementation-version-fid-2
   sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_IMP_VERSION, 0, 0, 0, 0, 0, 0);
-  _info(&quot;sbi_get_impl_version: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+  _info(&quot;get_impl_version: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
 
   // Get Machine Vendor ID
   // Call sbi_get_mvendorid: EID 0x10, FID 4
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#45-function-get-machine-vendor-id-fid-4
   sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MVENDORID, 0, 0, 0, 0, 0, 0);
-  _info(&quot;sbi_get_mvendorid: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+  _info(&quot;get_mvendorid: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
 
   // Get Machine Architecture ID
   // Call sbi_get_marchid: EID 0x10, FID 5
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#46-function-get-machine-architecture-id-fid-5
   sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MARCHID, 0, 0, 0, 0, 0, 0);
-  _info(&quot;sbi_get_marchid: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+  _info(&quot;get_marchid: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
 
   // Get Machine Implementation ID
   // Call sbi_get_mimpid: EID 0x10, FID 6
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#47-function-get-machine-implementation-id-fid-6
   sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MIMPID, 0, 0, 0, 0, 0, 0);
-  _info(&quot;sbi_get_mimpid: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+  _info(&quot;get_mimpid: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
 
   // Probe SBI Extension: Base Extension
   // Call sbi_probe_extension: EID 0x10, FID 3
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#44-function-probe-sbi-extension-fid-3
   sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_PROBE_EXT, SBI_EXT_BASE, 0, 0, 0, 0, 0);
-  _info(&quot;sbi_probe_extension[0x10]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+  _info(&quot;probe_extension[0x10]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
 
   // Probe SBI Extension: Debug Console Extension
   sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_PROBE_EXT, SBI_EXT_DBCN, 0, 0, 0, 0, 0);
-  _info(&quot;sbi_probe_extension[0x4442434E]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+  _info(&quot;probe_extension[0x4442434E]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
 </code></pre></div><h1 id="shutdown-and-reboot-the-sbc"><a href="#shutdown-and-reboot-the-sbc">9 Shutdown and Reboot the SBC</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L390-L402">jh7110_appinit.c</a></p>
@@ -450,15 +466,15 @@ test_opensbi: sret.value=0, sret.error=-2
   // Call sbi_system_reset: EID 0x53525354 &quot;SRST&quot;, FID 0
   // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#101-function-system-reset-fid-0
   // sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_SHUTDOWN, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
-  // _info(&quot;sbi_system_reset[shutdown]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+  // _info(&quot;system_reset[shutdown]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
 
   // System Reset: Cold Reboot
   // sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_COLD_REBOOT, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
-  // _info(&quot;sbi_system_reset[cold_reboot]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+  // _info(&quot;system_reset[cold_reboot]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
 
   // System Reset: Warm Reboot
   sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_WARM_REBOOT, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
-  _info(&quot;sbi_system_reset[warm_reboot]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+  _info(&quot;system_reset[warm_reboot]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/5748e125df2f6b6fd4902f80ab3e9ed1">Shutdown Log</a></p>
 <h1 id="integrate-opensbi-with-nuttx"><a href="#integrate-opensbi-with-nuttx">10 Integrate OpenSBI with NuttX</a></h1>
