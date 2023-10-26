@@ -602,14 +602,14 @@ sret = sbi_ecall(
   0,  // TODO: Absolute Time
   0, 0, 0, 0, 0);
 </code></pre></div>
-<p>TODO</p>
+<p>It doesn’t seem to do anything…</p>
 <div class="example-wrap"><pre class="language-text"><code>set_timer:
   value=0x0
   error=0
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464">(Source)</a></p>
-<p><a href="https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/">send an interrupt after a certain amount of time has elapsed</a></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108">NuttX set timer</a></p>
+<p>But that’s because our SBC will <a href="https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/"><strong>trigger an interrupt</strong></a> when the System Timer expires.</p>
+<p>Someday NuttX will call this function to <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108"><strong>set the System Timer</strong></a>.</p>
 <h1 id="fetch-the-system-info"><a href="#fetch-the-system-info">10 Fetch the System Info</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L336-L374">jh7110_appinit.c</a></p>
