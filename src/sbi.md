@@ -277,8 +277,8 @@ This is how we print to the __Debug Console__: [jh7110_appinit.c](https://github
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-fid-0
 const char *str = "456";
 struct sbiret sret = sbi_ecall(
-  SBI_EXT_DBCN,  // Extension ID
-  SBI_EXT_DBCN_CONSOLE_WRITE,  // Function ID
+  SBI_EXT_DBCN,  // Extension ID: 0x4442434E "DBCN"
+  SBI_EXT_DBCN_CONSOLE_WRITE,  // Function ID: 0
   strlen(str),         // Number of bytes
   (unsigned long)str,  // Address Low
   0,                   // Address High
@@ -290,7 +290,14 @@ _info("debug_console_write: value=%d, error=%d\n", sret.value, sret.error);
 // Print `789` to Debug Console, byte by byte.
 // Call sbi_debug_console_write_byte: EID 0x4442434E "DBCN", FID 2
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-byte-fid-2
-sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, '7', 0, 0, 0, 0, 0);
+sret = sbi_ecall(
+  SBI_EXT_DBCN,  // Extension ID: 0x4442434E "DBCN"
+  SBI_EXT_DBCN_CONSOLE_WRITE_BYTE,  // Function ID: 2
+  '7',           // Character to be printed
+  0, 0, 0, 0, 0  // Other Parameters (unused)
+);
+
+// Do the same, but print `8` and `9`
 sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, '8', 0, 0, 0, 0, 0);
 sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, '9', 0, 0, 0, 0, 0);
 _info("debug_console_write_byte: value=%d, error=%d\n", sret.value, sret.error);
@@ -300,7 +307,6 @@ _info("debug_console_write_byte: value=%d, error=%d\n", sret.value, sret.error);
 But our Test Code fails with error [__NOT_SUPPORTED__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277)...
 
 ```text
-Starting kernel ...
 debug_console_write:
   value=0, error=-2
 debug_console_write_byte:
@@ -309,7 +315,7 @@ debug_console_write_byte:
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310)
 
-Let's find out why...
+Why? Let's find out...
 
 # Read the SBI Version
 
