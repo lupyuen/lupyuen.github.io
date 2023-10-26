@@ -77,8 +77,9 @@
 <li><a href="#set-a-system-timer">6 Set a System Timer</a><ul></ul></li>
 <li><a href="#query-the-risc-v-cpus">7 Query the RISC-V CPUs</a><ul></ul></li>
 <li><a href="#fetch-the-system-info">8 Fetch the System Info</a><ul></ul></li>
-<li><a href="#integrate-opensbi-with-nuttx">9 Integrate OpenSBI with NuttX</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Oct 2023</em></p>
+<li><a href="#shutdown-the-sbc">9 Shutdown the SBC</a><ul></ul></li>
+<li><a href="#integrate-opensbi-with-nuttx">10 Integrate OpenSBI with NuttX</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Oct 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/sbi-title.png" alt="OpenSBI on Star64 JH7110 RISC-V SBC" /></p>
 <p>Bare Metal Programming on a <strong>RISC-V SBC</strong> (Single-Board Computer) sounds difficult… Thankfully we can get help from <strong>OpenSBI</strong>! (Supervisor Binary Interface)</p>
 <p>In this article, we call OpenSBI to…</p>
@@ -94,6 +95,9 @@
 </li>
 <li>
 <p>Fetch the <strong>System Information</strong></p>
+</li>
+<li>
+<p>And <strong>Shutdown our SBC</strong></p>
 </li>
 </ul>
 <p>We’ll do this on the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Star64 JH7110 RISC-V SBC</strong></a>. (Pic below)</p>
@@ -378,16 +382,87 @@ test_opensbi: sret.value=0, sret.error=-2
 <p>TODO</p>
 <p>Set Timer (FID #0)</p>
 <p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0">sbi_set_timer</a></p>
-<h1 id="query-the-risc-v-cpus"><a href="#query-the-risc-v-cpus">7 Query the RISC-V CPUs</a></h1>
+<p>https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L384-L388</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Set Timer
+  // Call sbi_set_timer: EID 0x54494D45 &quot;TIME&quot;, FID 0
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0
+  sret = sbi_ecall(SBI_EXT_TIME, SBI_EXT_TIME_SET_TIMER, 0, 0, 0, 0, 0, 0);
+  _info(&quot;set_timer: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+</code></pre></div><h1 id="query-the-risc-v-cpus"><a href="#query-the-risc-v-cpus">7 Query the RISC-V CPUs</a></h1>
 <p>TODO</p>
 <p>HART get status (FID #2)</p>
 <p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#93-function-hart-get-status-fid-2">sbi_hart_get_status</a></p>
 <p>HSM = Hart State Management (Not Hardware Security Module)</p>
-<h1 id="fetch-the-system-info"><a href="#fetch-the-system-info">8 Fetch the System Info</a></h1>
+<p>https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L376-L382</p>
+<div class="example-wrap"><pre class="language-c"><code>  // HART Get Status
+  // Call sbi_hart_get_status: EID 0x48534D &quot;HSM&quot;, FID 2
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#93-function-hart-get-status-fid-2
+  for (uintptr_t hart = 0; hart &lt; 6; hart++) {
+    sret = sbi_ecall(SBI_EXT_HSM, SBI_EXT_HSM_HART_GET_STATUS, hart, 0, 0, 0, 0, 0);
+    _info(&quot;hart_get_status[%d]: value=0x%x, error=%d\n&quot;, hart, sret.value, sret.error);
+  }
+</code></pre></div><h1 id="fetch-the-system-info"><a href="#fetch-the-system-info">8 Fetch the System Info</a></h1>
 <p>TODO</p>
-<h1 id="integrate-opensbi-with-nuttx"><a href="#integrate-opensbi-with-nuttx">9 Integrate OpenSBI with NuttX</a></h1>
+<p>https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L336-L374</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Get SBI Implementation ID
+  // Call sbi_get_impl_id: EID 0x10, FID 1
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#42-function-get-sbi-implementation-id-fid-1
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_IMP_ID, 0, 0, 0, 0, 0, 0);
+  _info(&quot;sbi_get_impl_id: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+
+  // Get SBI Implementation Version
+  // Call sbi_get_impl_version: EID 0x10, FID 2
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#43-function-get-sbi-implementation-version-fid-2
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_IMP_VERSION, 0, 0, 0, 0, 0, 0);
+  _info(&quot;sbi_get_impl_version: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+
+  // Get Machine Vendor ID
+  // Call sbi_get_mvendorid: EID 0x10, FID 4
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#45-function-get-machine-vendor-id-fid-4
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MVENDORID, 0, 0, 0, 0, 0, 0);
+  _info(&quot;sbi_get_mvendorid: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+
+  // Get Machine Architecture ID
+  // Call sbi_get_marchid: EID 0x10, FID 5
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#46-function-get-machine-architecture-id-fid-5
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MARCHID, 0, 0, 0, 0, 0, 0);
+  _info(&quot;sbi_get_marchid: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+
+  // Get Machine Implementation ID
+  // Call sbi_get_mimpid: EID 0x10, FID 6
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#47-function-get-machine-implementation-id-fid-6
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MIMPID, 0, 0, 0, 0, 0, 0);
+  _info(&quot;sbi_get_mimpid: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+
+  // Probe SBI Extension: Base Extension
+  // Call sbi_probe_extension: EID 0x10, FID 3
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#44-function-probe-sbi-extension-fid-3
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_PROBE_EXT, SBI_EXT_BASE, 0, 0, 0, 0, 0);
+  _info(&quot;sbi_probe_extension[0x10]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+
+  // Probe SBI Extension: Debug Console Extension
+  sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_PROBE_EXT, SBI_EXT_DBCN, 0, 0, 0, 0, 0);
+  _info(&quot;sbi_probe_extension[0x4442434E]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+</code></pre></div><h1 id="shutdown-the-sbc"><a href="#shutdown-the-sbc">9 Shutdown the SBC</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<p><a href="https://gist.github.com/lupyuen/5748e125df2f6b6fd4902f80ab3e9ed1">Shutdown Log</a></p>
+<p>https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L390-L402</p>
+<div class="example-wrap"><pre class="language-c"><code>  // System Reset: Shutdown
+  // Call sbi_system_reset: EID 0x53525354 &quot;SRST&quot;, FID 0
+  // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#101-function-system-reset-fid-0
+  // sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_SHUTDOWN, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
+  // _info(&quot;sbi_system_reset[shutdown]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+
+  // System Reset: Cold Reboot
+  // sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_COLD_REBOOT, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
+  // _info(&quot;sbi_system_reset[cold_reboot]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+
+  // System Reset: Warm Reboot
+  sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_WARM_REBOOT, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
+  _info(&quot;sbi_system_reset[warm_reboot]: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+</code></pre></div><h1 id="integrate-opensbi-with-nuttx"><a href="#integrate-opensbi-with-nuttx">10 Integrate OpenSBI with NuttX</a></h1>
+<p>TODO</p>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
