@@ -589,10 +589,9 @@ cannot read pmic power register
 </li>
 </ul>
 <h1 id="set-a-system-timer"><a href="#set-a-system-timer">9 Set a System Timer</a></h1>
-<p>TODO</p>
-<p>Set Timer (FID #0)</p>
-<p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0">sbi_set_timer</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L384-L388">jh7110_appinit.c</a></p>
+<p><em>NuttX / Linux Kernel runs in RISC-V Supervisor Mode (not Machine Mode)…</em></p>
+<p><em>How will it control the System Timer?</em></p>
+<p>That’s why OpenSBI provides the <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0"><strong>Set Timer</strong></a> function: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L384-L388">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set Timer
 // Call sbi_set_timer: EID 0x54494D45 &quot;TIME&quot;, FID 0
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0
@@ -611,62 +610,55 @@ sret = sbi_ecall(
 <p>But that’s because our SBC will <a href="https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/"><strong>trigger an interrupt</strong></a> when the System Timer expires.</p>
 <p>Someday NuttX will call this function to <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108"><strong>set the System Timer</strong></a>.</p>
 <h1 id="fetch-the-system-info"><a href="#fetch-the-system-info">10 Fetch the System Info</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L336-L374">jh7110_appinit.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Get SBI Implementation ID
-// Call sbi_get_impl_id: EID 0x10, FID 1
+<p><em>Earlier we called OpenSBI to fetch the SBI Spec Version…</em></p>
+<p><em>What else can we fetch from OpenSBI?</em></p>
+<p>We can fetch a while bunch of <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#4-base-extension-eid-0x10"><strong>System Info</strong></a> like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L336-L374">jh7110_appinit.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Get SBI Implementation ID: EID 0x10, FID 1
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#42-function-get-sbi-implementation-id-fid-1
-struct sbiret sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_IMP_ID, 0, 0, 0, 0, 0, 0);
-_info(&quot;get_impl_id: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+struct sbiret sret = sbi_ecall(
+  SBI_EXT_BASE, SBI_EXT_BASE_GET_IMP_ID, 0, 0, 0, 0, 0, 0);
 
-// Get SBI Implementation Version
-// Call sbi_get_impl_version: EID 0x10, FID 2
+// Get SBI Implementation Version: EID 0x10, FID 2
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#43-function-get-sbi-implementation-version-fid-2
 struct sbiret sret = sbi_ecall(
-  SBI_EXT_BASE,  // Extension ID: 0x10
-  SBI_EXT_BASE_GET_IMP_VERSION,  // Function ID: 2
-  0, 0, 0, 0, 0, 0  // Parameters (unused)
-);
-_info(&quot;get_impl_version: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+  SBI_EXT_BASE, SBI_EXT_BASE_GET_IMP_VERSION, 0, 0, 0, 0, 0, 0);
 
-// Get Machine Vendor ID
-// Call sbi_get_mvendorid: EID 0x10, FID 4
+// Get Machine Vendor ID: EID 0x10, FID 4
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#45-function-get-machine-vendor-id-fid-4
-sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MVENDORID, 0, 0, 0, 0, 0, 0);
-_info(&quot;get_mvendorid: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+sret = sbi_ecall(
+  SBI_EXT_BASE, SBI_EXT_BASE_GET_MVENDORID, 0, 0, 0, 0, 0, 0);
 
-// Get Machine Architecture ID
-// Call sbi_get_marchid: EID 0x10, FID 5
+// Get Machine Architecture ID: EID 0x10, FID 5
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#46-function-get-machine-architecture-id-fid-5
-sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MARCHID, 0, 0, 0, 0, 0, 0);
-_info(&quot;get_marchid: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+sret = sbi_ecall(
+  SBI_EXT_BASE, SBI_EXT_BASE_GET_MARCHID, 0, 0, 0, 0, 0, 0);
 
-// Get Machine Implementation ID
-// Call sbi_get_mimpid: EID 0x10, FID 6
+// Get Machine Implementation ID: EID 0x10, FID 6
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#47-function-get-machine-implementation-id-fid-6
-sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_GET_MIMPID, 0, 0, 0, 0, 0, 0);
-_info(&quot;get_mimpid: value=0x%x, error=%d\n&quot;, sret.value, sret.error);
+sret = sbi_ecall(
+  SBI_EXT_BASE, SBI_EXT_BASE_GET_MIMPID, 0, 0, 0, 0, 0, 0);
 </code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>test_opensbi: get_spec_version: value=0x1000000, error=0
-test_opensbi: get_impl_id: value=0x1, error=0
-test_opensbi: get_impl_version: value=0x10002, error=0
-test_opensbi: get_mvendorid: value=0x489, error=0
-test_opensbi: get_marchid: value=0x7, error=0
-test_opensbi: get_mimpid: value=0x4210427, error=0
-test_opensbi: probe_extension[0x10]: value=0x1, error=0
-test_opensbi: probe_extension[0x4442434E]: value=0x0, error=0
-test_opensbi: hart_get_status[0]: value=0x1, error=0
-test_opensbi: hart_get_status[1]: value=0x0, error=0
-test_opensbi: hart_get_status[2]: value=0x1, error=0
-test_opensbi: hart_get_status[3]: value=0x1, error=0
-test_opensbi: hart_get_status[4]: value=0x1, error=0
-test_opensbi: hart_get_status[5]: value=0x0, error=-3
-test_opensbi: set_timer: value=0x0, error=0
-test_opensbi: system_reset[warm_reboot]: value=0x0, error=-2
+<p>Our SBC will print…</p>
+<div class="example-wrap"><pre class="language-c"><code>// OpenSBI Implementation ID is 1
+get_impl_id: 0x1
+
+// OpenSBI Version is 1.2
+get_impl_version: 0x10002
+
+// RISC-V Vendor is SiFive
+get_mvendorid: 0x489
+
+// RISC-V Machine Architecture is SiFive U7 Series
+get_marchid: 0x7
+
+// RISC-V Machine Implementation is 0x4210427 (?)
+get_mimpid: 0x4210427
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464">(Source)</a></p>
+<p>The last 3 values are documented in the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a>. (Pages 136 to 137)</p>
 <h1 id="integrate-opensbi-with-nuttx"><a href="#integrate-opensbi-with-nuttx">11 Integrate OpenSBI with NuttX</a></h1>
+<p><em>Phew that’s plenty of OpenSBI Functions!</em></p>
+<p><em>How will we call them in NuttX?</em></p>
 <p>TODO</p>
 <h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
