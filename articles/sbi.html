@@ -319,8 +319,8 @@ nsh&gt;
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-fid-0
 const char *str = &quot;456&quot;;
 struct sbiret sret = sbi_ecall(
-  SBI_EXT_DBCN,  // Extension ID
-  SBI_EXT_DBCN_CONSOLE_WRITE,  // Function ID
+  SBI_EXT_DBCN,  // Extension ID: 0x4442434E &quot;DBCN&quot;
+  SBI_EXT_DBCN_CONSOLE_WRITE,  // Function ID: 0
   strlen(str),         // Number of bytes
   (unsigned long)str,  // Address Low
   0,                   // Address High
@@ -332,21 +332,27 @@ _info(&quot;debug_console_write: value=%d, error=%d\n&quot;, sret.value, sret.er
 // Print `789` to Debug Console, byte by byte.
 // Call sbi_debug_console_write_byte: EID 0x4442434E &quot;DBCN&quot;, FID 2
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-byte-fid-2
-sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;7&#39;, 0, 0, 0, 0, 0);
+sret = sbi_ecall(
+  SBI_EXT_DBCN,  // Extension ID: 0x4442434E &quot;DBCN&quot;
+  SBI_EXT_DBCN_CONSOLE_WRITE_BYTE,  // Function ID: 2
+  &#39;7&#39;,           // Character to be printed
+  0, 0, 0, 0, 0  // Other Parameters (unused)
+);
+
+// Do the same, but print `8` and `9`
 sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;8&#39;, 0, 0, 0, 0, 0);
 sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;9&#39;, 0, 0, 0, 0, 0);
 _info(&quot;debug_console_write_byte: value=%d, error=%d\n&quot;, sret.value, sret.error);
 // Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
 </code></pre></div>
 <p>But our Test Code fails with error <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277"><strong>NOT_SUPPORTED</strong></a>…</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-debug_console_write:
+<div class="example-wrap"><pre class="language-text"><code>debug_console_write:
   value=0, error=-2
 debug_console_write_byte:
   value=0, error=-2
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310">(Source)</a></p>
-<p>Let’s find out why…</p>
+<p>Why? Let’s find out…</p>
 <h1 id="read-the-sbi-version"><a href="#read-the-sbi-version">5 Read the SBI Version</a></h1>
 <p>TODO</p>
 <p>Get SBI specification version (FID #0)</p>
