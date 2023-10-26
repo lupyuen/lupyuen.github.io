@@ -683,6 +683,8 @@ TODO
 
 - [RFENCE](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#8-rfence-extension-eid-0x52464e43-rfnc)
 
+  for flushing [__Device I/O and Memory Accesses__](https://five-embeddev.com/quickref/instructions.html#-rv32--secfence)
+
 - [Performance and Monitoring](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#11-performance-monitoring-unit-extension-eid-0x504d55-pmu)
 
 - Shutdown and Reboot
