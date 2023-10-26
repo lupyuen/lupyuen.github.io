@@ -327,7 +327,6 @@ struct sbiret sret = sbi_ecall(
   0, 0, 0              // Unused
 );
 _info(&quot;debug_console_write: value=%d, error=%d\n&quot;, sret.value, sret.error);
-// Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
 
 // Print `789` to Debug Console, byte by byte.
 // Call sbi_debug_console_write_byte: EID 0x4442434E &quot;DBCN&quot;, FID 2
@@ -343,7 +342,6 @@ sret = sbi_ecall(
 sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;8&#39;, 0, 0, 0, 0, 0);
 sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;9&#39;, 0, 0, 0, 0, 0);
 _info(&quot;debug_console_write_byte: value=%d, error=%d\n&quot;, sret.value, sret.error);
-// Not supported by SBI v1.0, this will return SBI_ERR_NOT_SUPPORTED
 </code></pre></div>
 <p>But our Test Code fails with error <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277"><strong>NOT_SUPPORTED</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>debug_console_write:
@@ -354,6 +352,8 @@ debug_console_write_byte:
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310">(Source)</a></p>
 <p>Why? Let’s find out…</p>
 <h1 id="read-the-sbi-version"><a href="#read-the-sbi-version">5 Read the SBI Version</a></h1>
+<p><em>We tried printing to Debug Console but failed…</em></p>
+<p><em>Maybe the OpenSBI in our SBC doesn’t support Debug Console?</em></p>
 <p>TODO</p>
 <p>Get SBI specification version (FID #0)</p>
 <p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#41-function-get-sbi-specification-version-fid-0">sbi_get_spec_version</a></p>
