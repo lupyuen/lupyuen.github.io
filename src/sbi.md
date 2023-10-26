@@ -675,6 +675,20 @@ _How will we call them in NuttX?_
 
 TODO
 
+- In future we'll call these SBI Functions to start NuttX on Multiple CPUs.
+
+- Someday NuttX will call this function to [__set the System Timer__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108).
+
+- [Inter-Processor Interrupts](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#7-ipi-extension-eid-0x735049-spi-s-mode-ipi)
+
+- [RFENCE](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#8-rfence-extension-eid-0x52464e43-rfnc)
+
+- [Performance and Monitoring](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#11-performance-monitoring-unit-extension-eid-0x504d55-pmu)
+
+- Shutdown and Reboot
+
+- Probe SBI Extensions
+
 # What's Next
 
 TODO
