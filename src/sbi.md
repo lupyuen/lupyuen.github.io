@@ -431,7 +431,7 @@ Thus we always __Probe the Extensions__ before calling them!
 
 # Query the RISC-V CPUs
 
-_OK so SBI can do trivial things..._
+_OK so OpenSBI can do trivial things..._
 
 _What about controlling the CPUs?_
 
@@ -517,50 +517,64 @@ In future we'll call these SBI Functions to start NuttX on Multiple CPUs.
 
 # Shutdown and Reboot the SBC
 
-TODO
+_OpenSBI looks mighty powerful. Can it control our ENTIRE SBC?_
 
-[jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L390-L402)
+Yep! OpenSBI supports [__System Reset__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#101-function-system-reset-fid-0) for...
+
+- __Shutdown__: "physical power down of the entire system"
+
+- __Cold Reboot__: "physical power cycle of the entire system"
+
+- __Warm Reboot__: "power cycle of main processor and parts of the system but not the entire system"
+
+Which we call like so: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L390-L402)
 
 ```c
 // System Reset: Shutdown
 // Call sbi_system_reset: EID 0x53525354 "SRST", FID 0
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#101-function-system-reset-fid-0
-struct sbiret sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_SHUTDOWN, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
-_info("system_reset[shutdown]: value=0x%x, error=%d\n", sret.value, sret.error);
+struct sbiret sret = sbi_ecall(
+  SBI_EXT_SRST, SBI_EXT_SRST_RESET,  // System Reset
+  SBI_SRST_RESET_TYPE_SHUTDOWN,      // Shutdown
+  SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
 
 // System Reset: Cold Reboot
-sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_COLD_REBOOT, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
-_info("system_reset[cold_reboot]: value=0x%x, error=%d\n", sret.value, sret.error);
+sret = sbi_ecall(
+  SBI_EXT_SRST, SBI_EXT_SRST_RESET,  // System Reset
+  SBI_SRST_RESET_TYPE_COLD_REBOOT,   // Cold Reboot
+  SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
 
 // System Reset: Warm Reboot
-sret = sbi_ecall(SBI_EXT_SRST, SBI_EXT_SRST_RESET, SBI_SRST_RESET_TYPE_WARM_REBOOT, SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
-_info("system_reset[warm_reboot]: value=0x%x, error=%d\n", sret.value, sret.error);
+sret = sbi_ecall(
+  SBI_EXT_SRST, SBI_EXT_SRST_RESET,  // System Reset
+  SBI_SRST_RESET_TYPE_WARM_REBOOT,   // Warm Reboot
+  SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
 ```
 
-[Shutdown Log](https://gist.github.com/lupyuen/5748e125df2f6b6fd4902f80ab3e9ed1)
+_What happens when we this on our SBC?_
 
-TODO
+- __Shutdown__: Our SBC prints this and halts (without catching fire)...
 
-```text
-test_opensbi: get_spec_version: value=0x1000000, error=0
-test_opensbi: get_impl_id: value=0x1, error=0
-test_opensbi: get_impl_version: value=0x10002, error=0
-test_opensbi: get_mvendorid: value=0x489, error=0
-test_opensbi: get_marchid: value=0x7, error=0
-test_opensbi: get_mimpid: value=0x4210427, error=0
-test_opensbi: probe_extension[0x10]: value=0x1, error=0
-test_opensbi: probe_extension[0x4442434E]: value=0x0, error=0
-test_opensbi: hart_get_status[0]: value=0x1, error=0
-test_opensbi: hart_get_status[1]: value=0x0, error=0
-test_opensbi: hart_get_status[2]: value=0x1, error=0
-test_opensbi: hart_get_status[3]: value=0x1, error=0
-test_opensbi: hart_get_status[4]: value=0x1, error=0
-test_opensbi: hart_get_status[5]: value=0x0, error=-3
-test_opensbi: set_timer: value=0x0, error=0
-test_opensbi: system_reset[warm_reboot]: value=0x0, error=-2
-```
+  ```text
+  i2c read: write daddr 36 to
+  cannot read pmic power register
+  ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464)
+  [(Source)](https://gist.github.com/lupyuen/5748e125df2f6b6fd4902f80ab3e9ed1#file-star64-opensbi-shutdown-log-L173-L183)
+
+- __Cold Reboot__: Same behaviour as Shutdown.
+
+  (Not yet implemented on JH7110?)
+
+- __Warm Reboot__: Not supported on our SBC...
+
+  ```text
+  system_reset[warm_reboot]:
+    value=0x0
+    error=-2
+  ```
+
+  [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464)
 
 # Set a System Timer
 
@@ -576,32 +590,26 @@ Set Timer (FID #0)
 // Set Timer
 // Call sbi_set_timer: EID 0x54494D45 "TIME", FID 0
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0
-sret = sbi_ecall(SBI_EXT_TIME, SBI_EXT_TIME_SET_TIMER, 0, 0, 0, 0, 0, 0);
-_info("set_timer: value=0x%x, error=%d\n", sret.value, sret.error);
+sret = sbi_ecall(
+  SBI_EXT_TIME,  // Extension ID: 0x54494D45 "TIME"
+  SBI_EXT_TIME_SET_TIMER,  // Function ID: 0
+  0,  // TODO: Absolute Time
+  0, 0, 0, 0, 0);
 ```
 
 TODO
 
 ```text
-test_opensbi: get_spec_version: value=0x1000000, error=0
-test_opensbi: get_impl_id: value=0x1, error=0
-test_opensbi: get_impl_version: value=0x10002, error=0
-test_opensbi: get_mvendorid: value=0x489, error=0
-test_opensbi: get_marchid: value=0x7, error=0
-test_opensbi: get_mimpid: value=0x4210427, error=0
-test_opensbi: probe_extension[0x10]: value=0x1, error=0
-test_opensbi: probe_extension[0x4442434E]: value=0x0, error=0
-test_opensbi: hart_get_status[0]: value=0x1, error=0
-test_opensbi: hart_get_status[1]: value=0x0, error=0
-test_opensbi: hart_get_status[2]: value=0x1, error=0
-test_opensbi: hart_get_status[3]: value=0x1, error=0
-test_opensbi: hart_get_status[4]: value=0x1, error=0
-test_opensbi: hart_get_status[5]: value=0x0, error=-3
-test_opensbi: set_timer: value=0x0, error=0
-test_opensbi: system_reset[warm_reboot]: value=0x0, error=-2
+set_timer:
+  value=0x0
+  error=0
 ```
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464)
+
+[send an interrupt after a certain amount of time has elapsed](https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/)
+
+[NuttX set timer](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108)
 
 # Fetch the System Info
 
