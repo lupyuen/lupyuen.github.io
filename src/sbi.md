@@ -6,6 +6,8 @@
 
 Bare Metal Programming on a __RISC-V SBC__ (Single-Board Computer) sounds difficult... Thankfully we can get help from the [__OpenSBI Supervisor Binary Interface__](https://github.com/riscv-software-src/opensbi)!
 
+(A little like [__BIOS__](https://en.wikipedia.org/wiki/BIOS), but for RISC-V)
+
 In this article, we call OpenSBI to...
 
 - Print to the __Serial Console__
@@ -162,9 +164,9 @@ static struct sbiret sbi_ecall(
   register long r6 asm("a6") = (long)(fid);
   register long r7 asm("a7") = (long)(extid);
 
-  // Execute the `ecall` RISC-V Instruction.
-  // Output Registers: A0 and A1
-  // Input Registers: A2 to A7
+  // Execute the `ecall` RISC-V Instruction
+  // Input+Output Registers: A0 and A1
+  // Input-Only Registers: A2 to A7
   // Clobbers the Memory
   asm volatile (
     "ecall"
@@ -243,7 +245,9 @@ Our OpenSBI Experiment works OK yay!
 
 # OpenSBI Debug Console
 
-_But that's calling the Legacy Console Putchar Function. What about the newer Debug Console Functions?_
+_But that's calling the Legacy Console Putchar Function..._
+
+_What about the newer Debug Console Functions?_
 
 Yeah we called the Legacy Console Putchar Function, which is [__expected to be deprecated__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#5-legacy-extensions-eids-0x00---0x0f).
 
@@ -259,7 +263,7 @@ Let's call the newer [__Debug Console Functions__](https://github.com/riscv-non-
 
 - __Parameter 2:__ High Address of String
 
-And this function [__prints a single character__](nction-console-write-byte-fid-2)...
+And this function [__prints a single character__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-byte-fid-2)...
 
 - __Extension ID:__ `0x4442` `434E` "DBCN"
 
@@ -293,8 +297,8 @@ sret = sbi_ecall(
   '7',           // Character to be printed
   0, 0, 0, 0, 0  // Other Parameters (unused)
 );
-// Omitted: Do the same, but print `8` and `9`
 _info("debug_console_write_byte: value=%d, error=%d\n", sret.value, sret.error);
+// Omitted: Do the same, but print `8` and `9`
 ```
 
 But our Test Code fails with error [__NOT_SUPPORTED__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277) (pic above)...
@@ -319,7 +323,7 @@ _Maybe OpenSBI in our SBC doesn't support Debug Console?_
 
 Debug Console was introduced in [__SBI Spec Version 2.0__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc).
 
-To get the [__SBI Version__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#41-function-get-sbi-specification-version-fid-0) supported by our SBC, we call this SBI Function...
+To get the [__SBI Spec Version__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#41-function-get-sbi-specification-version-fid-0) supported by our SBC, we call this SBI Function...
 
 - __Extension ID:__ `0x10` (Base Extension)
 
@@ -367,11 +371,20 @@ Runtime SBI Version: 1.0
 
 [(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L27)
 
+_Is our SBC stuck forever with SBI Version 1.0?_
+
+Actually we can upgrade OpenSBI by reflashing the [__Onboard SPI Flash__](https://github.com/starfive-tech/VisionFive2#appendix-iii-updating-spl-and-u-boot-binaries-under-u-boot).
+
+But let's stick with SBI Version 1.0 for now.
+
+[(Mainline OpenSBI now supports __SBI 2.0 and Debug Console__)](https://github.com/riscv-software-src/opensbi/commit/cbdd86973901b6be2a1a2d3d6b54f3184fdf9a44)
+
+
 ![SBI v1.0 appears in the JH7110 OpenSBI Log](https://lupyuen.github.io/images/sbi-title.png)
 
 # Probe the SBI Extensions
 
-_Previously we checked if our SBC supports Debug Console..._
+_Bummer our SBC doesn't support Debug Console..._
 
 _How to check if our SBC supports ANY specific feature?_
 
@@ -398,7 +411,8 @@ struct sbiret sret = sbi_ecall(
 _info("probe_extension[0x10]: value=0x%x, error=%d\n", sret.value, sret.error);
 
 // Probe SBI Extension: Debug Console Extension.
-// Same as above, but we change the parameter to "Debug Console" 0x4442434E.
+// Same as above, but we change the parameter to
+// "Debug Console" 0x4442434E.
 sret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_PROBE_EXT, SBI_EXT_DBCN, 0, 0, 0, 0, 0);
 _info("probe_extension[0x4442434E]: value=0x%x, error=%d\n", sret.value, sret.error);
 ```
@@ -413,7 +427,7 @@ probe_extension[0x4442434E]:
   value=0x0, error=0
 ```
 
-[(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L16-L165)
+[(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L164-L165)
 
 Hence we learn that...
 
@@ -423,8 +437,6 @@ Hence we learn that...
 
 Thus we always __Probe the Extensions__ before calling them!
 
-[(Mainline OpenSBI now supports __SBI 2.0 and Debug Console__)](https://github.com/riscv-software-src/opensbi/commit/cbdd86973901b6be2a1a2d3d6b54f3184fdf9a44)
-
 ![NuttX calls OpenSBI Hart State Management on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-run4.png)
 
 # Query the RISC-V CPUs
@@ -433,7 +445,7 @@ _OK so OpenSBI can do trivial things..._
 
 _What about controlling the CPUs?_
 
-Now we experiment with the __RISC-V CPU Cores__ ("Hart" Hardware Thread) in our SBC.
+Now we experiment with the __RISC-V CPU Cores__ ("Hart" / Hardware Thread) in our SBC.
 
 We call [__Hart State Management (HSM)__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#9-hart-state-management-extension-eid-0x48534d-hsm) to query the [__Hart Status__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#93-function-hart-get-status-fid-2)...
 
