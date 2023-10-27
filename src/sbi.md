@@ -191,7 +191,7 @@ Now we run this on our SBC...
 
 [(More about OpenSBI)](https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/)
 
-![NuttX calls OpenSBI on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-run.png)
+![NuttX calls OpenSBI on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-run2.png)
 
 # Run NuttX with OpenSBI
 
@@ -242,6 +242,8 @@ nsh>
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310)
 
 Yep our OpenSBI Experiment works yay!
+
+![NuttX calls OpenSBI Debug Console on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-run3.png)
 
 # OpenSBI Debug Console
 
@@ -302,7 +304,7 @@ sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, '9', 0, 0, 0, 0,
 _info("debug_console_write_byte: value=%d, error=%d\n", sret.value, sret.error);
 ```
 
-But our Test Code fails with error [__NOT_SUPPORTED__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277)...
+But our Test Code fails with error [__NOT_SUPPORTED__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277) (pic above)...
 
 ```text
 debug_console_write:
@@ -430,6 +432,8 @@ Thus we always __Probe the Extensions__ before calling them!
 
 [(Mainline OpenSBI now supports __SBI 2.0 and Debug Console__)](https://github.com/riscv-software-src/opensbi/commit/cbdd86973901b6be2a1a2d3d6b54f3184fdf9a44)
 
+![NuttX calls OpenSBI Hart State Management on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-run4.png)
+
 # Query the RISC-V CPUs
 
 _OK so OpenSBI can do trivial things..._
@@ -467,7 +471,7 @@ for (uintptr_t hart = 0; hart < 6; hart++) {
 }
 ```
 
-Our SBC says...
+Our SBC says (pic above)...
 
 ```text
 hart_get_status[0]: value=0x1, error=0
@@ -611,6 +615,8 @@ set_timer:
 But that's because our SBC will [__trigger an interrupt__](https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/) when the System Timer expires.
 
 Someday NuttX will call this function to [__set the System Timer__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108).
+
+![NuttX fetches OpenSBI System Info on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-run5.png)
 
 # Fetch the System Info
 
