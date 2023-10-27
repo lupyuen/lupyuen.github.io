@@ -273,7 +273,7 @@ $ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
 <p><a href="https://lupyuen.github.io/articles/tftp">(Or boot our SBC over the <strong>Network with TFTP</strong>)</a></p>
 </li>
 </ol>
-<p>When we boot the Modified NuttX Kernel on our SBC, we see “<strong><code>123</code></strong>” printed on the Serial Console…</p>
+<p>When we boot the Modified NuttX Kernel on our SBC, we see “<strong><code>123</code></strong>” printed on the Serial Console (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 123
 NuttShell (NSH) NuttX-12.0.3
@@ -643,7 +643,7 @@ sret = sbi_ecall(
 sret = sbi_ecall(
   SBI_EXT_BASE, SBI_EXT_BASE_GET_MIMPID, 0, 0, 0, 0, 0, 0);
 </code></pre></div>
-<p>Our SBC will print…</p>
+<p>Our SBC will print (pic above)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// OpenSBI Implementation ID is 1
 get_impl_id: 0x1
 
