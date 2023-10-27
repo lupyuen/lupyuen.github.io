@@ -669,27 +669,33 @@ The last 3 values are documented in the [__SiFive U74 Manual__](https://starfive
 
 # Integrate OpenSBI with NuttX
 
-_Phew that's plenty of OpenSBI Functions!_
+_Phew that's plenty of OpenSBI Functions..._
 
 _How will we call them in NuttX?_
 
-TODO
+As we port __Apache NuttX RTOS__ to Star64 JH7110 SBC, we shall call...
 
-- In future we'll call these SBI Functions to start NuttX on Multiple CPUs.
+- [__SBI Hart State Management__](https://lupyuen.github.io/articles/sbi#query-the-risc-v-cpus) to start NuttX on Multiple CPUs
 
-- Someday NuttX will call this function to [__set the System Timer__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108).
+- [__SBI Inter-Processor Interrupts__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#7-ipi-extension-eid-0x735049-spi-s-mode-ipi) to communicate across CPUs
 
-- [Inter-Processor Interrupts](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#7-ipi-extension-eid-0x735049-spi-s-mode-ipi)
+- [__SBI Timer__](https://lupyuen.github.io/articles/sbi#set-a-system-timer) to set the [__System Timer__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108)
 
-- [RFENCE](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#8-rfence-extension-eid-0x52464e43-rfnc)
+- [__SBI RFENCE__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#8-rfence-extension-eid-0x52464e43-rfnc) to flush [__Device I/O and Memory Accesses__](https://five-embeddev.com/quickref/instructions.html#-rv32--secfence)
 
-  for flushing [__Device I/O and Memory Accesses__](https://five-embeddev.com/quickref/instructions.html#-rv32--secfence)
+- [__Performance and Monitoring__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#11-performance-monitoring-unit-extension-eid-0x504d55-pmu) might be helpful for NuttX
 
-- [Performance and Monitoring](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#11-performance-monitoring-unit-extension-eid-0x504d55-pmu)
+- [__Shutdown and Reboot__](https://lupyuen.github.io/articles/sbi#shutdown-and-reboot-the-sbc) because what goes up, must come down
 
-- Shutdown and Reboot
+And we'll [__Probe the SBI Extensions__](https://lupyuen.github.io/articles/sbi#probe-the-sbi-extensions) before calling them.
 
-- Probe SBI Extensions
+_Can NuttX Apps call OpenSBI?_
+
+Nope, only the __NuttX Kernel__ is allowed to call OpenSBI.
+
+That's because NuttX Apps run in [__RISC-V User Mode__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu). When NuttX Apps execute the __`ecall` Instruction__, they will jump from User Mode to Supervisor Mode to execute [__NuttX Kernel Functions__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu). (Not OpenSBI Functions)
+
+Thus NuttX Apps are prevented from calling OpenSBI to meddle with CPUs, Timers and Interrupts. (Which should be meddled by the NuttX Kernel anyway)
 
 # What's Next
 
