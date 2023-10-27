@@ -395,7 +395,7 @@ _info(&quot;get_spec_version: value=0x%x, error=%d\n&quot;, sret.value, sret.err
 </ul>
 <p>Thus our SBC supports <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc"><strong>SBI Spec Version 1.0</strong></a>.</p>
 <p>Aha! Our SBC doesn’t support Debug Console, because this feature was introduced in <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc"><strong>Version 2.0</strong></a>!</p>
-<p>Mystery solved! Actually if we’re super observant, SBI Version 1.0 also appears when our <strong>SBC boots OpenSBI</strong>…</p>
+<p>Mystery solved! Actually if we’re super observant, SBI Version 1.0 also appears when our <strong>SBC boots OpenSBI</strong> (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Runtime SBI Version: 1.0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L27">(Source)</a></p>
