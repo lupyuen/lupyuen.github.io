@@ -307,6 +307,7 @@ But our Test Code fails with error [__NOT_SUPPORTED__](https://github.com/lupyue
 ```text
 debug_console_write:
   value=0, error=-2
+
 debug_console_write_byte:
   value=0, error=-2
 ```
@@ -551,7 +552,7 @@ sret = sbi_ecall(
   SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
 ```
 
-_What happens when we this on our SBC?_
+_What happens when we run this?_
 
 - __Shutdown__: Our SBC prints this and halts (without catching fire, pic below)...
 
