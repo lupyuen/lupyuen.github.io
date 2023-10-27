@@ -366,7 +366,7 @@ Thus our SBC supports [__SBI Spec Version 1.0__](https://github.com/riscv-non-is
 
 Aha! Our SBC doesn't support Debug Console, because this feature was introduced in [__Version 2.0__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc)!
 
-Mystery solved! Actually if we're super observant, SBI Version 1.0 also appears when our __SBC boots OpenSBI__...
+Mystery solved! Actually if we're super observant, SBI Version 1.0 also appears when our __SBC boots OpenSBI__ (pic below)...
 
 ```text
 Runtime SBI Version: 1.0
