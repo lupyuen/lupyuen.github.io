@@ -686,6 +686,8 @@ As we port __Apache NuttX RTOS__ to Star64 JH7110 SBC, we shall call...
 
 - [__SBI Hart State Management__](https://lupyuen.github.io/articles/sbi#query-the-risc-v-cpus) to start NuttX on Multiple CPUs
 
+  (Including the [__RV64IMACB Monitor Core__](https://lupyuen.github.io/articles/sbi#query-the-risc-v-cpus))
+
 - [__SBI Inter-Processor Interrupts__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#7-ipi-extension-eid-0x735049-spi-s-mode-ipi) to communicate across CPUs
 
 - [__SBI Timer__](https://lupyuen.github.io/articles/sbi#set-a-system-timer) to set the [__System Timer__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108)
