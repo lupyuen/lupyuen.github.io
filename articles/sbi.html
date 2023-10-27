@@ -113,7 +113,7 @@
 <p><img src="https://lupyuen.github.io/images/release-star64.jpg" alt="Pine64 Star64 RISC-V SBC" /></p>
 <h1 id="opensbi-supervisor-binary-interface"><a href="#opensbi-supervisor-binary-interface">1 OpenSBI Supervisor Binary Interface</a></h1>
 <p><em>What’s this OpenSBI?</em></p>
-<p><a href="https://github.com/riscv-software-src/opensbi"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on our SBC…</p>
+<p><a href="https://github.com/riscv-software-src/opensbi"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on our JH7110 RISC-V SBC…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
 DDR version: dc2e84f0.
 Trying to boot from SPI
@@ -155,7 +155,7 @@ Runtime SBI Version       : 1.0
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="OpenSBI runs in RISC-V Machine Mode" /></p>
 <h1 id="call-opensbi-from-nuttx"><a href="#call-opensbi-from-nuttx">2 Call OpenSBI from NuttX</a></h1>
 <p><em>How to call OpenSBI from our code?</em></p>
-<p>Suppose we’re calling OpenSBI to print something to the <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Console</strong></a> like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c?#L155-L237">jh7110_appinit.c</a></p>
+<p>Suppose we’re calling OpenSBI to print something to the <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Console</strong></a> like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L154-L301">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// After NuttX Kernel boots on JH7110...
 void board_late_initialize(void) {
   ...
@@ -197,7 +197,7 @@ int test_opensbi(void) {
 <p>(There’s a newer version of this, we’ll soon see)</p>
 <p><em>What’s this ecall to SBI?</em></p>
 <p>Remember that OpenSBI runs in (super-privileged) <strong>RISC-V Machine Mode</strong>. And our code runs in (less-privileged) <strong>RISC-V Supervisor Mode</strong>.</p>
-<p>To jump from Supervisor Mode to Machine Mode, we execute the <a href="https://five-embeddev.com/quickref/instructions.html#-rv32--rv32"><strong><code>ecall</code> RISC-V Instruction</strong></a> like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c?#L268-L299">jh7110_appinit.c</a></p>
+<p>To jump from Supervisor Mode to Machine Mode, we execute the <a href="https://five-embeddev.com/quickref/instructions.html#-rv32--rv32"><strong><code>ecall</code> RISC-V Instruction</strong></a> like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L406-L437">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Make an `ecall` to OpenSBI. Based on
 // https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L52-L77
 // https://github.com/riscv-software-src/opensbi/blob/master/firmware/payloads/test_main.c
@@ -237,10 +237,9 @@ static struct sbiret sbi_ecall(
   return ret;
 }
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L277-L284">(<strong>sbiret</strong> is defined here)</a></p>
 <p><a href="https://gist.github.com/lupyuen/4cd98a4075d5b528940095b39fd5b445">(See the <strong>RISC-V Disassembly</strong>)</a></p>
 <p>Now we run this on our SBC…</p>
-<p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/">(How <strong><code>ecall</code></strong> works in OpenSBI)</a></p>
-<p><a href="https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/">(More about OpenSBI)</a></p>
 <p><img src="https://lupyuen.github.io/images/sbi-run2.png" alt="NuttX calls OpenSBI on Star64 JH7110 RISC-V SBC" /></p>
 <h1 id="run-nuttx-with-opensbi"><a href="#run-nuttx-with-opensbi">3 Run NuttX with OpenSBI</a></h1>
 <p><em>Will our Test Code print correctly to the Serial Console?</em></p>
@@ -272,14 +271,14 @@ $ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
 <p><a href="https://lupyuen.github.io/articles/tftp">(Or boot our SBC over the <strong>Network with TFTP</strong>)</a></p>
 </li>
 </ol>
-<p>When we boot the Modified NuttX Kernel on our SBC, we see “<strong><code>123</code></strong>” printed on the Serial Console (pic above)…</p>
+<p>When we boot the Modified NuttX Kernel on our SBC, we see “<strong><code>123</code></strong>” printed on the <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Console</strong></a> (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 123
 NuttShell (NSH) NuttX-12.0.3
 nsh&gt; 
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L151-L157">(Source)</a></p>
-<p>Yep our OpenSBI Experiment works yay!</p>
+<p>Our OpenSBI Experiment works OK yay!</p>
 <p><img src="https://lupyuen.github.io/images/sbi-run3.png" alt="NuttX calls OpenSBI Debug Console on Star64 JH7110 RISC-V SBC" /></p>
 <h1 id="opensbi-debug-console"><a href="#opensbi-debug-console">4 OpenSBI Debug Console</a></h1>
 <p><em>But that’s calling the Legacy Console Putchar Function. What about the newer Debug Console Functions?</em></p>
@@ -314,7 +313,7 @@ nsh&gt;
 <p><strong>Parameter 0:</strong> Character to be printed</p>
 </li>
 </ul>
-<p>This is how we print to the <strong>Debug Console</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c?#L237-L265">jh7110_appinit.c</a></p>
+<p>This is how we print to the <strong>Debug Console</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L301-L329">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print `456` to Debug Console as a String.
 // Call sbi_debug_console_write: EID 0x4442434E &quot;DBCN&quot;, FID 0
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc#function-console-write-fid-0
@@ -338,13 +337,10 @@ sret = sbi_ecall(
   &#39;7&#39;,           // Character to be printed
   0, 0, 0, 0, 0  // Other Parameters (unused)
 );
-
-// Do the same, but print `8` and `9`
-sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;8&#39;, 0, 0, 0, 0, 0);
-sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;9&#39;, 0, 0, 0, 0, 0);
+// Omitted: Do the same, but print `8` and `9`
 _info(&quot;debug_console_write_byte: value=%d, error=%d\n&quot;, sret.value, sret.error);
 </code></pre></div>
-<p>But our Test Code fails with error <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c?#L266-L277"><strong>NOT_SUPPORTED</strong></a> (pic above)…</p>
+<p>But our Test Code fails with error <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277"><strong>NOT_SUPPORTED</strong></a> (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>debug_console_write:
   value=0, error=-2
 
@@ -366,7 +362,7 @@ debug_console_write_byte:
 <p><strong>Function ID:</strong> 0 (SBI Spec Version)</p>
 </li>
 </ul>
-<p>Like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c?#L336-L374">jh7110_appinit.c</a></p>
+<p>Like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L329-L335">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get SBI Spec Version
 // Call sbi_get_spec_version: EID 0x10, FID 0
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#41-function-get-sbi-specification-version-fid-0
@@ -414,7 +410,7 @@ _info(&quot;get_spec_version: value=0x%x, error=%d\n&quot;, sret.value, sret.err
 <p><strong>Parameter 0:</strong> Extension ID to be probed</p>
 </li>
 </ul>
-<p>Like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c?#L336-L374">jh7110_appinit.c</a></p>
+<p>Like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L365-L375">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Probe SBI Extension: Base Extension
 // Call sbi_probe_extension: EID 0x10, FID 3
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#44-function-probe-sbi-extension-fid-3
@@ -468,7 +464,7 @@ probe_extension[0x4442434E]:
 </li>
 </ul>
 <p><a href="https://en.wikipedia.org/wiki/Hardware_security_module">(Not to be confused with Hardware Security Module)</a></p>
-<p>Here’s how: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c?#L376-L382">jh7110_appinit.c</a></p>
+<p>Here’s how: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L375-L383">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// For each Hart ID from 0 to 5...
 for (uintptr_t hart = 0; hart &lt; 6; hart++) {
 
@@ -547,7 +543,7 @@ hart_get_status[5]: value=0x0, error=-3
 <p><strong>Warm Reboot</strong>: “power cycle of main processor and parts of the system but not the entire system”</p>
 </li>
 </ul>
-<p>Which we call like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c?#L390-L402">jh7110_appinit.c</a></p>
+<p>Which we call like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L389-L403">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// System Reset: Shutdown
 // Call sbi_system_reset: EID 0x53525354 &quot;SRST&quot;, FID 0
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#101-function-system-reset-fid-0
@@ -594,7 +590,7 @@ cannot read pmic power register
 <h1 id="set-a-system-timer"><a href="#set-a-system-timer">9 Set a System Timer</a></h1>
 <p><em>NuttX / Linux Kernel runs in RISC-V Supervisor Mode (not Machine Mode)…</em></p>
 <p><em>How will it control the System Timer?</em></p>
-<p>That’s why OpenSBI provides the <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0"><strong>Set Timer</strong></a> function: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c?#L384-L388">jh7110_appinit.c</a></p>
+<p>That’s why OpenSBI provides the <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0"><strong>Set Timer</strong></a> function: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L383-L389">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set Timer
 // Call sbi_set_timer: EID 0x54494D45 &quot;TIME&quot;, FID 0
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0
@@ -616,7 +612,7 @@ sret = sbi_ecall(
 <h1 id="fetch-the-system-info"><a href="#fetch-the-system-info">10 Fetch the System Info</a></h1>
 <p><em>Earlier we called OpenSBI to fetch the SBI Spec Version…</em></p>
 <p><em>What else can we fetch from OpenSBI?</em></p>
-<p>We can fetch a while bunch of <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#4-base-extension-eid-0x10"><strong>System Info</strong></a> like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c?#L336-L374">jh7110_appinit.c</a></p>
+<p>We can fetch a while bunch of <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#4-base-extension-eid-0x10"><strong>System Info</strong></a> like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L335-L365">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get SBI Implementation ID: EID 0x10, FID 1
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#42-function-get-sbi-implementation-id-fid-1
 struct sbiret sret = sbi_ecall(
