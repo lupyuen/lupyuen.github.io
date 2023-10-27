@@ -230,7 +230,7 @@ Let's find out!
 
     [(Or boot our SBC over the __Network with TFTP__)](https://lupyuen.github.io/articles/tftp)
 
-When we boot the Modified NuttX Kernel on our SBC, we see "__`123`__" printed on the Serial Console...
+When we boot the Modified NuttX Kernel on our SBC, we see "__`123`__" printed on the Serial Console (pic above)...
 
 ```text
 Starting kernel ...
@@ -653,7 +653,7 @@ sret = sbi_ecall(
   SBI_EXT_BASE, SBI_EXT_BASE_GET_MIMPID, 0, 0, 0, 0, 0, 0);
 ```
 
-Our SBC will print...
+Our SBC will print (pic above)...
 
 ```c
 // OpenSBI Implementation ID is 1
