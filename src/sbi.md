@@ -72,7 +72,7 @@ Firmware Size             : 288 KB
 Runtime SBI Version       : 1.0
 ```
 
-[(Source)](https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64)
+[(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d)
 
 [__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on our SBC.
 
@@ -239,7 +239,7 @@ NuttShell (NSH) NuttX-12.0.3
 nsh> 
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310)
+[(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L151-L157)
 
 Yep our OpenSBI Experiment works yay!
 
@@ -314,7 +314,7 @@ debug_console_write_byte:
   value=0, error=-2
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310)
+[(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L156-L157)
 
 Why? Let's find out...
 
@@ -354,7 +354,7 @@ get_spec_version:
   error=0
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464)
+[(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L158)
 
 __`0x100` `0000`__ says that the SBI Spec Version is...
 
@@ -372,7 +372,7 @@ Mystery solved! Actually if we're super observant, SBI Version 1.0 also appears 
 Runtime SBI Version: 1.0
 ```
 
-[(Source)](https://gist.github.com/lupyuen/1e009a3343da70257d6f24400339053f#file-nuttx-scheme-star64-log-L30)
+[(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L27)
 
 ![SBI v1.0 appears in the JH7110 OpenSBI Log](https://lupyuen.github.io/images/sbi-title.png)
 
@@ -420,7 +420,7 @@ probe_extension[0x4442434E]:
   value=0x0, error=0
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464)
+[(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L16-L165)
 
 Hence we learn that...
 
@@ -482,7 +482,7 @@ hart_get_status[4]: value=0x1, error=0
 hart_get_status[5]: value=0x0, error=-3
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464)
+[(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L166-L171)
 
 When we [__decode the values__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#table_hsm_states), we learn that...
 
@@ -579,7 +579,7 @@ _What happens when we run this?_
     error=-2
   ```
 
-  [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464)
+  [(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L173)
 
 ![OpenSBI Shutdown on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-shutdown.png)
 
@@ -610,7 +610,7 @@ set_timer:
   error=0
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464)
+[(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L172)
 
 But that's because our SBC will [__trigger an interrupt__](https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/) when the System Timer expires.
 
@@ -672,7 +672,7 @@ get_marchid: 0x7
 get_mimpid: 0x4210427
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464)
+[(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L159-L163)
 
 The last 3 values are documented in the [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf). (Pages 136 to 137)
 
