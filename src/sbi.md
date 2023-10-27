@@ -671,7 +671,7 @@ The last 3 values are documented in the [__SiFive U74 Manual__](https://starfive
 
 _Phew that's plenty of OpenSBI Functions..._
 
-_How will we call them in NuttX?_
+_How will NuttX use them?_
 
 As we port __Apache NuttX RTOS__ to Star64 JH7110 SBC, we shall call...
 
