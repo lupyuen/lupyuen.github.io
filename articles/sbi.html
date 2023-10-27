@@ -603,7 +603,7 @@ cannot read pmic power register
 sret = sbi_ecall(
   SBI_EXT_TIME,  // Extension ID: 0x54494D45 &quot;TIME&quot;
   SBI_EXT_TIME_SET_TIMER,  // Function ID: 0
-  0,  // TODO: Absolute Time
+  0,  // TODO: Absolute Time for Timer Expiry
   0, 0, 0, 0, 0);
 </code></pre></div>
 <p>It doesn’t seem to do anything…</p>
@@ -618,7 +618,7 @@ sret = sbi_ecall(
 <h1 id="fetch-the-system-info"><a href="#fetch-the-system-info">10 Fetch the System Info</a></h1>
 <p><em>Earlier we called OpenSBI to fetch the SBI Spec Version…</em></p>
 <p><em>What else can we fetch from OpenSBI?</em></p>
-<p>We can fetch a while bunch of <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#4-base-extension-eid-0x10"><strong>System Info</strong></a> like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L335-L365">jh7110_appinit.c</a></p>
+<p>We can snoop a whole bunch of <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#4-base-extension-eid-0x10"><strong>System Info</strong></a> like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L335-L365">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get SBI Implementation ID: EID 0x10, FID 1
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#42-function-get-sbi-implementation-id-fid-1
 struct sbiret sret = sbi_ecall(
@@ -643,6 +643,8 @@ sret = sbi_ecall(
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#47-function-get-machine-implementation-id-fid-6
 sret = sbi_ecall(
   SBI_EXT_BASE, SBI_EXT_BASE_GET_MIMPID, 0, 0, 0, 0, 0, 0);
+
+// Omitted: Print `sret.value` and `sret.error`
 </code></pre></div>
 <p>Our SBC will print (pic above)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// OpenSBI Implementation ID is 1
@@ -681,7 +683,7 @@ get_mimpid: 0x4210427
 <p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#8-rfence-extension-eid-0x52464e43-rfnc"><strong>SBI RFENCE</strong></a> to flush <a href="https://five-embeddev.com/quickref/instructions.html#-rv32--secfence"><strong>Device I/O and Memory Accesses</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#11-performance-monitoring-unit-extension-eid-0x504d55-pmu"><strong>Performance and Monitoring</strong></a> might be helpful for NuttX</p>
+<p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#11-performance-monitoring-unit-extension-eid-0x504d55-pmu"><strong>Performance Monitoring</strong></a> might be helpful for NuttX</p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/sbi#shutdown-and-reboot-the-sbc"><strong>Shutdown and Reboot</strong></a> because what goes up, must come down</p>
