@@ -242,7 +242,7 @@ static struct sbiret sbi_ecall(
 <p>Now we run this on our SBC…</p>
 <p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/">(How <strong><code>ecall</code></strong> works in OpenSBI)</a></p>
 <p><a href="https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/">(More about OpenSBI)</a></p>
-<p><img src="https://lupyuen.github.io/images/sbi-run.png" alt="NuttX calls OpenSBI on Star64 JH7110 RISC-V SBC" /></p>
+<p><img src="https://lupyuen.github.io/images/sbi-run2.png" alt="NuttX calls OpenSBI on Star64 JH7110 RISC-V SBC" /></p>
 <h1 id="run-nuttx-with-opensbi"><a href="#run-nuttx-with-opensbi">3 Run NuttX with OpenSBI</a></h1>
 <p><em>Will our Test Code print correctly to the Serial Console?</em></p>
 <p>Let’s find out!</p>
@@ -281,6 +281,7 @@ nsh&gt;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310">(Source)</a></p>
 <p>Yep our OpenSBI Experiment works yay!</p>
+<p><img src="https://lupyuen.github.io/images/sbi-run3.png" alt="NuttX calls OpenSBI Debug Console on Star64 JH7110 RISC-V SBC" /></p>
 <h1 id="opensbi-debug-console"><a href="#opensbi-debug-console">4 OpenSBI Debug Console</a></h1>
 <p><em>But that’s calling the Legacy Console Putchar Function. What about the newer Debug Console Functions?</em></p>
 <p>Yeah we called the Legacy Console Putchar Function, which is <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#5-legacy-extensions-eids-0x00---0x0f"><strong>expected to be deprecated</strong></a>.</p>
@@ -344,7 +345,7 @@ sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;8&#39;, 0, 
 sret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE_BYTE, &#39;9&#39;, 0, 0, 0, 0, 0);
 _info(&quot;debug_console_write_byte: value=%d, error=%d\n&quot;, sret.value, sret.error);
 </code></pre></div>
-<p>But our Test Code fails with error <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277"><strong>NOT_SUPPORTED</strong></a>…</p>
+<p>But our Test Code fails with error <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277"><strong>NOT_SUPPORTED</strong></a> (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>debug_console_write:
   value=0, error=-2
 
@@ -450,6 +451,7 @@ probe_extension[0x4442434E]:
 </ul>
 <p>Thus we always <strong>Probe the Extensions</strong> before calling them!</p>
 <p><a href="https://github.com/riscv-software-src/opensbi/commit/cbdd86973901b6be2a1a2d3d6b54f3184fdf9a44">(Mainline OpenSBI now supports <strong>SBI 2.0 and Debug Console</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/sbi-run4.png" alt="NuttX calls OpenSBI Hart State Management on Star64 JH7110 RISC-V SBC" /></p>
 <h1 id="query-the-risc-v-cpus"><a href="#query-the-risc-v-cpus">7 Query the RISC-V CPUs</a></h1>
 <p><em>OK so OpenSBI can do trivial things…</em></p>
 <p><em>What about controlling the CPUs?</em></p>
@@ -483,7 +485,7 @@ for (uintptr_t hart = 0; hart &lt; 6; hart++) {
   _info(&quot;hart_get_status[%d]: value=0x%x, error=%d\n&quot;, hart, sret.value, sret.error);
 }
 </code></pre></div>
-<p>Our SBC says…</p>
+<p>Our SBC says (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>hart_get_status[0]: value=0x1, error=0
 hart_get_status[1]: value=0x0, error=0
 hart_get_status[2]: value=0x1, error=0
@@ -611,6 +613,7 @@ sret = sbi_ecall(
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464">(Source)</a></p>
 <p>But that’s because our SBC will <a href="https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/"><strong>trigger an interrupt</strong></a> when the System Timer expires.</p>
 <p>Someday NuttX will call this function to <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108"><strong>set the System Timer</strong></a>.</p>
+<p><img src="https://lupyuen.github.io/images/sbi-run5.png" alt="NuttX fetches OpenSBI System Info on Star64 JH7110 RISC-V SBC" /></p>
 <h1 id="fetch-the-system-info"><a href="#fetch-the-system-info">10 Fetch the System Info</a></h1>
 <p><em>Earlier we called OpenSBI to fetch the SBI Spec Version…</em></p>
 <p><em>What else can we fetch from OpenSBI?</em></p>
