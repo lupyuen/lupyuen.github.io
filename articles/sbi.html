@@ -140,7 +140,7 @@ Firmware Base             : 0x40000000
 Firmware Size             : 288 KB
 Runtime SBI Version       : 1.0
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d">(Source)</a></p>
 <p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on our SBC.</p>
 <p>OpenSBI provides Secure Access to the <strong>Low-Level System Functions</strong> (controlling CPUs, Timers, Interrupts) for the JH7110 SoC, as described in the SPI Spec…</p>
 <ul>
@@ -279,7 +279,7 @@ $ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
 NuttShell (NSH) NuttX-12.0.3
 nsh&gt; 
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L151-L157">(Source)</a></p>
 <p>Yep our OpenSBI Experiment works yay!</p>
 <p><img src="https://lupyuen.github.io/images/sbi-run3.png" alt="NuttX calls OpenSBI Debug Console on Star64 JH7110 RISC-V SBC" /></p>
 <h1 id="opensbi-debug-console"><a href="#opensbi-debug-console">4 OpenSBI Debug Console</a></h1>
@@ -352,7 +352,7 @@ _info(&quot;debug_console_write_byte: value=%d, error=%d\n&quot;, sret.value, sr
 debug_console_write_byte:
   value=0, error=-2
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L300-L310">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L156-L157">(Source)</a></p>
 <p>Why? Let’s find out…</p>
 <h1 id="read-the-sbi-version"><a href="#read-the-sbi-version">5 Read the SBI Version</a></h1>
 <p><em>We tried printing to Debug Console but failed…</em></p>
@@ -383,7 +383,7 @@ _info(&quot;get_spec_version: value=0x%x, error=%d\n&quot;, sret.value, sret.err
   value=0x1000000
   error=0
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L158">(Source)</a></p>
 <p><strong><code>0x100</code> <code>0000</code></strong> says that the SBI Spec Version is…</p>
 <ul>
 <li>
@@ -398,7 +398,7 @@ _info(&quot;get_spec_version: value=0x%x, error=%d\n&quot;, sret.value, sret.err
 <p>Mystery solved! Actually if we’re super observant, SBI Version 1.0 also appears when our <strong>SBC boots OpenSBI</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Runtime SBI Version: 1.0
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/1e009a3343da70257d6f24400339053f#file-nuttx-scheme-star64-log-L30">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L27">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/sbi-title.png" alt="SBI v1.0 appears in the JH7110 OpenSBI Log" /></p>
 <h1 id="probe-the-sbi-extensions"><a href="#probe-the-sbi-extensions">6 Probe the SBI Extensions</a></h1>
 <p><em>Previously we checked if our SBC supports Debug Console…</em></p>
@@ -439,7 +439,7 @@ _info(&quot;probe_extension[0x4442434E]: value=0x%x, error=%d\n&quot;, sret.valu
 probe_extension[0x4442434E]:
   value=0x0, error=0
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L16-L165">(Source)</a></p>
 <p>Hence we learn that…</p>
 <ul>
 <li>
@@ -493,7 +493,7 @@ hart_get_status[3]: value=0x1, error=0
 hart_get_status[4]: value=0x1, error=0
 hart_get_status[5]: value=0x0, error=-3
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L166-L171">(Source)</a></p>
 <p>When we <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#table_hsm_states"><strong>decode the values</strong></a>, we learn that…</p>
 <ul>
 <li>
@@ -588,7 +588,7 @@ cannot read pmic power register
   value=0x0
   error=-2
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L173">(Source)</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/sbi-shutdown.png" alt="OpenSBI Shutdown on Star64 JH7110 RISC-V SBC" /></p>
@@ -610,7 +610,7 @@ sret = sbi_ecall(
   value=0x0
   error=0
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L172">(Source)</a></p>
 <p>But that’s because our SBC will <a href="https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/"><strong>trigger an interrupt</strong></a> when the System Timer expires.</p>
 <p>Someday NuttX will call this function to <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108"><strong>set the System Timer</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/sbi-run5.png" alt="NuttX fetches OpenSBI System Info on Star64 JH7110 RISC-V SBC" /></p>
@@ -659,7 +659,7 @@ get_marchid: 0x7
 // RISC-V Machine Implementation is 0x4210427 (?)
 get_mimpid: 0x4210427
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L159-L163">(Source)</a></p>
 <p>The last 3 values are documented in the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a>. (Pages 136 to 137)</p>
 <h1 id="integrate-opensbi-with-nuttx"><a href="#integrate-opensbi-with-nuttx">11 Integrate OpenSBI with NuttX</a></h1>
 <p><em>Phew that’s plenty of OpenSBI Functions…</em></p>
