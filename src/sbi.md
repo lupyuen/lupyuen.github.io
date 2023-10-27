@@ -191,7 +191,7 @@ Now we run this on our SBC...
 
 [(More about OpenSBI)](https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/)
 
-TODO: Pic of NuttX  
+![NuttX calls OpenSBI on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-run.png)
 
 # Run NuttX with OpenSBI
 
@@ -553,7 +553,7 @@ sret = sbi_ecall(
 
 _What happens when we this on our SBC?_
 
-- __Shutdown__: Our SBC prints this and halts (without catching fire)...
+- __Shutdown__: Our SBC prints this and halts (without catching fire, pic below)...
 
   ```text
   i2c read: write daddr 36 to
@@ -562,7 +562,7 @@ _What happens when we this on our SBC?_
 
   [(Source)](https://gist.github.com/lupyuen/5748e125df2f6b6fd4902f80ab3e9ed1#file-star64-opensbi-shutdown-log-L173-L183)
 
-- __Cold Reboot__: Same behaviour as Shutdown.
+- __Cold Reboot__: Same behaviour as Shutdown. (Pic below)
 
   (Not yet implemented on JH7110?)
 
@@ -575,6 +575,8 @@ _What happens when we this on our SBC?_
   ```
 
   [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464)
+
+![OpenSBI Shutdown on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-shutdown.png)
 
 # Set a System Timer
 
