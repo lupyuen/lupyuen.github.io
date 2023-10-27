@@ -603,7 +603,7 @@ That's why OpenSBI provides the [__Set Timer__](https://github.com/riscv-non-isa
 sret = sbi_ecall(
   SBI_EXT_TIME,  // Extension ID: 0x54494D45 "TIME"
   SBI_EXT_TIME_SET_TIMER,  // Function ID: 0
-  0,  // TODO: Absolute Time
+  0,  // TODO: Absolute Time for Timer Expiry
   0, 0, 0, 0, 0);
 ```
 
@@ -629,7 +629,7 @@ _Earlier we called OpenSBI to fetch the SBI Spec Version..._
 
 _What else can we fetch from OpenSBI?_
 
-We can fetch a while bunch of [__System Info__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#4-base-extension-eid-0x10) like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L335-L365)
+We can snoop a whole bunch of [__System Info__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#4-base-extension-eid-0x10) like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L335-L365)
 
 ```c
 // Get SBI Implementation ID: EID 0x10, FID 1
@@ -656,6 +656,8 @@ sret = sbi_ecall(
 // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#47-function-get-machine-implementation-id-fid-6
 sret = sbi_ecall(
   SBI_EXT_BASE, SBI_EXT_BASE_GET_MIMPID, 0, 0, 0, 0, 0, 0);
+
+// Omitted: Print `sret.value` and `sret.error`
 ```
 
 Our SBC will print (pic above)...
@@ -699,7 +701,7 @@ As we port __Apache NuttX RTOS__ to Star64 JH7110 SBC, we shall call...
 
 - [__SBI RFENCE__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#8-rfence-extension-eid-0x52464e43-rfnc) to flush [__Device I/O and Memory Accesses__](https://five-embeddev.com/quickref/instructions.html#-rv32--secfence)
 
-- [__Performance and Monitoring__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#11-performance-monitoring-unit-extension-eid-0x504d55-pmu) might be helpful for NuttX
+- [__Performance Monitoring__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#11-performance-monitoring-unit-extension-eid-0x504d55-pmu) might be helpful for NuttX
 
 - [__Shutdown and Reboot__](https://lupyuen.github.io/articles/sbi#shutdown-and-reboot-the-sbc) because what goes up, must come down
 
