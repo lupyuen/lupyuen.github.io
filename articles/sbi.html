@@ -242,7 +242,7 @@ static struct sbiret sbi_ecall(
 <p>Now we run this on our SBC…</p>
 <p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/">(How <strong><code>ecall</code></strong> works in OpenSBI)</a></p>
 <p><a href="https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/">(More about OpenSBI)</a></p>
-<p>TODO: Pic of NuttX</p>
+<p><img src="https://lupyuen.github.io/images/sbi-run.png" alt="NuttX calls OpenSBI on Star64 JH7110 RISC-V SBC" /></p>
 <h1 id="run-nuttx-with-opensbi"><a href="#run-nuttx-with-opensbi">3 Run NuttX with OpenSBI</a></h1>
 <p><em>Will our Test Code print correctly to the Serial Console?</em></p>
 <p>Let’s find out!</p>
@@ -570,14 +570,14 @@ sret = sbi_ecall(
 <p><em>What happens when we run this?</em></p>
 <ul>
 <li>
-<p><strong>Shutdown</strong>: Our SBC prints this and halts (without catching fire)…</p>
+<p><strong>Shutdown</strong>: Our SBC prints this and halts (without catching fire, pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>i2c read: write daddr 36 to
 cannot read pmic power register
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/5748e125df2f6b6fd4902f80ab3e9ed1#file-star64-opensbi-shutdown-log-L173-L183">(Source)</a></p>
 </li>
 <li>
-<p><strong>Cold Reboot</strong>: Same behaviour as Shutdown.</p>
+<p><strong>Cold Reboot</strong>: Same behaviour as Shutdown. (Pic below)</p>
 <p>(Not yet implemented on JH7110?)</p>
 </li>
 <li>
@@ -589,6 +589,7 @@ cannot read pmic power register
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L437-L464">(Source)</a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/sbi-shutdown.png" alt="OpenSBI Shutdown on Star64 JH7110 RISC-V SBC" /></p>
 <h1 id="set-a-system-timer"><a href="#set-a-system-timer">9 Set a System Timer</a></h1>
 <p><em>NuttX / Linux Kernel runs in RISC-V Supervisor Mode (not Machine Mode)…</em></p>
 <p><em>How will it control the System Timer?</em></p>
