@@ -347,6 +347,7 @@ _info(&quot;debug_console_write_byte: value=%d, error=%d\n&quot;, sret.value, sr
 <p>But our Test Code fails with error <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277"><strong>NOT_SUPPORTED</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>debug_console_write:
   value=0, error=-2
+
 debug_console_write_byte:
   value=0, error=-2
 </code></pre></div>
@@ -566,7 +567,7 @@ sret = sbi_ecall(
   SBI_SRST_RESET_TYPE_WARM_REBOOT,   // Warm Reboot
   SBI_SRST_RESET_REASON_NONE, 0, 0, 0, 0);
 </code></pre></div>
-<p><em>What happens when we this on our SBC?</em></p>
+<p><em>What happens when we run this?</em></p>
 <ul>
 <li>
 <p><strong>Shutdown</strong>: Our SBC prints this and halts (without catching fire)…</p>
