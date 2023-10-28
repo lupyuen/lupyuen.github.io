@@ -52,11 +52,11 @@ Add in this sequence to Bread Machine...
 
 -   1 tablespoon Full Cream Milk Powder 
 
--   10 tablespoons Boiling Water (100 deg C)
+-   3/4 cup Boiling Water (100 deg C)
 
     Stir the Boiling Water to melt the butter and blend the honey and milk.
 
--   1 cup Wholemeal Sourdough Starter, ripe (fed) from above
+-   1/2 cup Wholemeal Sourdough Starter, ripe (fed) from above
 
     (I mark out 1.5 cm of the above container with 13 cm diameter)
 
