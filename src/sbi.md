@@ -1,6 +1,6 @@
 # Star64 JH7110 RISC-V SBC: Experiments with OpenSBI (Supervisor Binary Interface)
 
-📝 _31 Oct 2023_
+📝 _29 Oct 2023_
 
 ![OpenSBI on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-title.png)
 
@@ -725,7 +725,19 @@ Thus NuttX Apps are prevented from calling OpenSBI to meddle with CPUs, Timers a
 
 # What's Next
 
-TODO
+I hope this article has been helpful for learning about OpenSBI and how it works with Apache NuttX RTOS (and Linux)...
+
+1.  We printed to the __Serial Console__
+
+1.  Set a __System Timer__
+
+1.  Queried the __RISC-V CPUs__
+
+1.  Fetched the __System Information__
+
+1.  And __Shutdown / Rebooted our SBC__ (somewhat)
+
+Stay tuned for more integration with NuttX and OpenSBI!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
