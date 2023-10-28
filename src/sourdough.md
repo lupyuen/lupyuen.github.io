@@ -78,7 +78,7 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Ov
 
     (This is the quickest way to knead)
 
-1.  Sprinkle Bread Flour until dough becomes a Smooth and Creamy Ball. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
+1.  Sprinkle Bread Flour or Water until dough becomes a Smooth and Creamy Ball. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
 
 1.  After the kneading step has completed, power off the Bread Machine
 
