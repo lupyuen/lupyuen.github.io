@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Star64 JH7110 RISC-V SBC: Experiments with OpenSBI (Supervisor Binary Interface)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-10-29",
+      "website": "https://lupyuen.github.io/articles/sbi",
+      "summary": "Let's boot Apache NuttX RTOS on the Star64 JH7110 RISC-V SBC (VisionFive5 too)... And experiment with the OpenSBI Supervisor Binary Interface"
+    },
+    {
       "name": "Strange Workaround for TFTP Timeout in U-Boot Bootloader (Star64 JH7110 RISC-V SBC)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-10-06",
