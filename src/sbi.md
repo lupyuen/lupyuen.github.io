@@ -707,6 +707,14 @@ As we port __Apache NuttX RTOS__ to Star64 JH7110 SBC, we shall call...
 
 And we'll [__Probe the SBI Extensions__](https://lupyuen.github.io/articles/sbi#probe-the-sbi-extensions) before calling them.
 
+_We're not calling the SBI Debug Console?_
+
+We've already implemented the [__NuttX UART Driver__](https://lupyuen.github.io/articles/plic) for JH7110. So we won't call OpenSBI for Console Input / Output.
+
+But when we port NuttX to a new SBC, we should consider SBI Debug Console for simple debug logging.
+
+[(Like for __Ox64 BL808__)](https://openbouffalo.org/index.php/BL808)
+
 _Can NuttX Apps call OpenSBI?_
 
 Nope, only the __NuttX Kernel__ is allowed to call OpenSBI.
