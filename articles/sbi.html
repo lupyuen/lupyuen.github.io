@@ -690,6 +690,10 @@ get_mimpid: 0x4210427
 </li>
 </ul>
 <p>And we’ll <a href="https://lupyuen.github.io/articles/sbi#probe-the-sbi-extensions"><strong>Probe the SBI Extensions</strong></a> before calling them.</p>
+<p><em>We’re not calling the SBI Debug Console?</em></p>
+<p>We’ve already implemented the <a href="https://lupyuen.github.io/articles/plic"><strong>NuttX UART Driver</strong></a> for JH7110. So we won’t call OpenSBI for Console Input / Output.</p>
+<p>But when we port NuttX to a new SBC, we should consider SBI Debug Console for simple debug logging.</p>
+<p><a href="https://openbouffalo.org/index.php/BL808">(Like for <strong>Ox64 BL808</strong>)</a></p>
 <p><em>Can NuttX Apps call OpenSBI?</em></p>
 <p>Nope, only the <strong>NuttX Kernel</strong> is allowed to call OpenSBI.</p>
 <p>That’s because NuttX Apps run in <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>RISC-V User Mode</strong></a>. When NuttX Apps execute the <strong><code>ecall</code> Instruction</strong>, they will jump from User Mode to Supervisor Mode to execute <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>NuttX Kernel Functions</strong></a>. (Not OpenSBI Functions)</p>
