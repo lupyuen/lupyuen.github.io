@@ -80,7 +80,7 @@
 <li><a href="#set-a-system-timer">9 Set a System Timer</a><ul></ul></li>
 <li><a href="#fetch-the-system-info">10 Fetch the System Info</a><ul></ul></li>
 <li><a href="#integrate-opensbi-with-nuttx">11 Integrate OpenSBI with NuttX</a><ul></ul></li>
-<li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Oct 2023</em></p>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Oct 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/sbi-title.png" alt="OpenSBI on Star64 JH7110 RISC-V SBC" /></p>
 <p>Bare Metal Programming on a <strong>RISC-V SBC</strong> (Single-Board Computer) sounds difficult… Thankfully we can get help from the <a href="https://github.com/riscv-software-src/opensbi"><strong>OpenSBI Supervisor Binary Interface</strong></a>!</p>
 <p>(A little like <a href="https://en.wikipedia.org/wiki/BIOS"><strong>BIOS</strong></a>, but for RISC-V)</p>
@@ -699,7 +699,25 @@ get_mimpid: 0x4210427
 <p>That’s because NuttX Apps run in <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>RISC-V User Mode</strong></a>. When NuttX Apps execute the <strong><code>ecall</code> Instruction</strong>, they will jump from User Mode to Supervisor Mode to execute <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>NuttX Kernel Functions</strong></a>. (Not OpenSBI Functions)</p>
 <p>Thus NuttX Apps are prevented from calling OpenSBI to meddle with CPUs, Timers and Interrupts. (Which should be meddled by the NuttX Kernel anyway)</p>
 <h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
-<p>TODO</p>
+<p>I hope this article has been helpful for learning about OpenSBI and how it works with Apache NuttX RTOS (and Linux)…</p>
+<ol>
+<li>
+<p>We printed to the <strong>Serial Console</strong></p>
+</li>
+<li>
+<p>Set a <strong>System Timer</strong></p>
+</li>
+<li>
+<p>Queried the <strong>RISC-V CPUs</strong></p>
+</li>
+<li>
+<p>Fetched the <strong>System Information</strong></p>
+</li>
+<li>
+<p>And <strong>Shutdown / Rebooted our SBC</strong> (somewhat)</p>
+</li>
+</ol>
+<p>Stay tuned for more integration with NuttX and OpenSBI!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
