@@ -576,7 +576,7 @@ _What happens when we run this?_
 
   (Not yet implemented on JH7110?)
 
-- __Warm Reboot__: Not supported on our SBC...
+- __Warm Reboot__: Not supported on our Star64 SBC...
 
   ```text
   system_reset[warm_reboot]:
@@ -585,6 +585,8 @@ _What happens when we run this?_
   ```
 
   [(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L173)
+
+  [(Warm Reboot works OK on __VisionFive2 SBC__)](https://forum.rvspace.org/t/article-experiments-with-opensbi-supervisor-binary-interface/3749/5)
 
 ![OpenSBI Shutdown on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-shutdown.png)
 
