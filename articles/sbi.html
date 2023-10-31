@@ -584,12 +584,13 @@ cannot read pmic power register
 <p>(Not yet implemented on JH7110?)</p>
 </li>
 <li>
-<p><strong>Warm Reboot</strong>: Not supported on our SBC…</p>
+<p><strong>Warm Reboot</strong>: Not supported on our Star64 SBC…</p>
 <div class="example-wrap"><pre class="language-text"><code>system_reset[warm_reboot]:
   value=0x0
   error=-2
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L173">(Source)</a></p>
+<p><a href="https://forum.rvspace.org/t/article-experiments-with-opensbi-supervisor-binary-interface/3749/5">(Warm Reboot works OK on <strong>VisionFive2 SBC</strong>)</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/sbi-shutdown.png" alt="OpenSBI Shutdown on Star64 JH7110 RISC-V SBC" /></p>
