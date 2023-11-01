@@ -598,13 +598,15 @@ U-Boot SPL 2021.10 (Jan 19 2023)
 
 [(Source)](https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L1)
 
-Which says that Star64 ships with a Secondary Program Loader + OpenSBI + U-Bootloader that's dated __19 Jan 2023__.
+Which says that Star64 ships with a Secondary Program Loader + OpenSBI + U-Bootloader that was built on __19 Jan 2023__.
 
-On VisionFive2, we see a newer date: __21 Jun 2023__. Thus VisionFive2 ships with a newer build of OpenSBI.
+On VisionFive2, we see a newer date: __21 Jun 2023__...
 
 ```text
 U-Boot SPL 2021.10 (Jun 21 2023)
 ```
+
+Thus VisionFive2 ships with a newer build of OpenSBI.
 
 ![OpenSBI Shutdown on Star64 JH7110 RISC-V SBC](https://lupyuen.github.io/images/sbi-shutdown.png)
 
