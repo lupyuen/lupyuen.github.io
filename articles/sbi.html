@@ -590,9 +590,18 @@ cannot read pmic power register
   error=-2
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L173">(Source)</a></p>
-<p><a href="https://forum.rvspace.org/t/article-experiments-with-opensbi-supervisor-binary-interface/3749/5">(Warm Reboot works OK on <strong>VisionFive2 SBC</strong>)</a></p>
+<p>Warm Reboot works OK on <a href="https://forum.rvspace.org/t/article-experiments-with-opensbi-supervisor-binary-interface/3749/5"><strong>VisionFive2 SBC</strong></a> because it has a newer build of OpenSBI.</p>
 </li>
 </ul>
+<p><em>How do we know that VisionFive2 has a newer build of OpenSBI?</em></p>
+<p>When Star64 boots, this is the first thing that we see…</p>
+<div class="example-wrap"><pre class="language-text"><code>U-Boot SPL 2021.10 (Jan 19 2023)
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L1">(Source)</a></p>
+<p>Which says that Star64 ships with a Secondary Program Loader + OpenSBI + U-Bootloader that’s dated <strong>19 Jan 2023</strong>.</p>
+<p>On VisionFive2, we see a newer date: <strong>21 Jun 2023</strong>. Thus VisionFive2 ships with a newer build of OpenSBI.</p>
+<div class="example-wrap"><pre class="language-text"><code>U-Boot SPL 2021.10 (Jun 21 2023)
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/sbi-shutdown.png" alt="OpenSBI Shutdown on Star64 JH7110 RISC-V SBC" /></p>
 <h1 id="set-a-system-timer"><a href="#set-a-system-timer">9 Set a System Timer</a></h1>
 <p><em>NuttX / Linux Kernel runs in RISC-V Supervisor Mode (not Machine Mode)…</em></p>
