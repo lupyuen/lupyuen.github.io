@@ -69,13 +69,746 @@
 
     <h1 class="title">Ox64 BL808 RISC-V SBC: Booting Linux and (maybe) Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>14 Nov 2023</em></p>
+<li><a href="#ox64-bl808-risc-v-sbc">1 Ox64 BL808 RISC-V SBC</a><ul></ul></li>
+<li><a href="#flashing-uart-vs-serial-console">2 Flashing UART vs Serial Console</a><ul></ul></li>
+<li><a href="#flash-opensbi-and-u-boot-bootloader-to-ox64-bl808">3 Flash OpenSBI and U-Boot Bootloader to Ox64 BL808</a><ul></ul></li>
+<li><a href="#boot-linux-on-ox64-bl808">4 Boot Linux on Ox64 BL808</a><ul></ul></li>
+<li><a href="#forward-peripheral-interrupts">5 Forward Peripheral Interrupts</a><ul></ul></li>
+<li><a href="#inspect-the-linux-image-for-ox64-bl808">6 Inspect the Linux Image for Ox64 BL808</a><ul></ul></li>
+<li><a href="#linux-device-tree-for-ox64-bl808">7 Linux Device Tree for Ox64 BL808</a><ul></ul></li>
+<li><a href="#documentation-for-ox64-bl808">8 Documentation for Ox64 BL808</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>14 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/ox64-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p><em>Why are we doing this?</em></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/ox64-sbc.jpg" alt="TODO" /></p>
-<h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
+<p><img src="https://lupyuen.github.io/images/ox64-sbc.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
+<h1 id="ox64-bl808-risc-v-sbc"><a href="#ox64-bl808-risc-v-sbc">1 Ox64 BL808 RISC-V SBC</a></h1>
+<p><em>What’s this BL808?</em> <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_DS/en/BL808_DS_1.2_en.pdf">(Datasheet)</a> <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(Reference Manual)</a></p>
+<p>BL808 is a complex creature with 3 (Asymmetric) RISC-V Cores (linked via IPC)…</p>
+<ol>
+<li>
+<p>D0 Core: <a href="https://www.t-head.cn/product/c906?lang=en">T-Head C906 64-bit RV64IMAFCV</a> (480 MHz)</p>
+<p>(Multimedia Core with MIPI CSI / DSI, Neural Proc Unit)</p>
+<p>(Memory Mgmt Unit is Sv39, 128/256/512 TLB table entry. Same as Star64?)</p>
+</li>
+<li>
+<p>M0 Core: <a href="https://www.t-head.cn/product/e907?lang=en">T-Head E907 32-bit RV32IMAFCP</a> (320 MHz)</p>
+<p>(Wireless + Peripherals Core with WiFi, BLE, BT, Zigbee, Audio)</p>
+</li>
+<li>
+<p>LP Core: <a href="https://www.t-head.cn/product/e902?lang=en">T-Head E902 32-bit RV32E[M]C</a> (150 MHz)</p>
+<p>(Low Power Core)</p>
+</li>
+</ol>
+<p><a href="https://wiki.pine64.org/wiki/Ox64">Pine64 Ox64</a> is the dev board for BL808C.</p>
+<p>(BL808C supports MIPI CSI Cameras but not MIPI DSI Displays. Maybe someday we’ll see BL808D for MIPI DSI Displays)</p>
+<p><em>Is Ox64 BL808 an SBC? Or an MCU Board?</em></p>
+<p>Technically Ox64 BL808 boots 64-bit RISC-V Linux (via MicroSD), so it feels like an SBC…</p>
+<ul>
+<li>
+<p><a href="https://adventurist.me/posts/00317">“Booting Linux on the Pine64 Ox64 SBC”</a></p>
+</li>
+<li>
+<p><a href="https://openbouffalo.org/index.php/Main_Page">OpenBouffalo Wiki</a></p>
+</li>
+<li>
+<p><a href="https://github.com/openbouffalo/buildroot_bouffalo">Linux Image + OpenSBI + U-Boot Bootloader for BL808</a></p>
+<p><a href="https://github.com/bouffalolab/buildroot_bouffalo">(Newer version?)</a></p>
+<p><a href="https://lupyuen.github.io/articles/sbi">(OpenSBI is the BIOS for RISC-V SBCs)</a></p>
+</li>
+<li>
+<p>USB-C Port for Camera Module (Dual-Lane MIPI CSI)</p>
+<p>(USB-C is not for Flashing!)</p>
+</li>
+<li>
+<p>USB 2.0 support for USB OTG</p>
+<p>(On-The-Go = USB Host + USB Device)</p>
+</li>
+</ul>
+<p>But Ox64 BL808 also feels like an MCU Board…</p>
+<ul>
+<li>
+<p>Form Factor is similar to MCU Board</p>
+</li>
+<li>
+<p>Limited Memory: 64 MB of RAM, <a href="https://pine64.com/product/128mb-ox64-sbc-available-on-december-2-2022/">128 Megabits</a> (16 MB) of Flash Memory</p>
+</li>
+<li>
+<p>M0 Wireless Core is 32-bit RISC-V MCU</p>
+</li>
+<li>
+<p>UART Pins need a USB Serial Adapter for Flashing and Console I/O</p>
+</li>
+<li>
+<p>Powered by Micro USB Port</p>
+<p>(Micro USB is not for Flashing either!)</p>
+</li>
+<li>
+<p>Super Affordable: <a href="https://pine64.com/product/128mb-ox64-sbc-available-on-december-2-2022/">$8 for a 64-bit RISC-V Board!</a></p>
+</li>
+</ul>
+<p><em>Ox64 BL808 sounds a little tiny for 64-bit Linux?</em></p>
+<p>Yeah 64-bit Linux runs with Limited RAM on the D0 Multimedia Core. But most Peripherals are hosted on the M0 Wireless Core: WiFi, BLE, BT, Zigbee, Audio, …</p>
+<p>So we flash M0 with a simple 32-bit RISC-V Firmware, to forward the Peripheral Interrupts from M0 to D0 Linux.</p>
+<p>Here are the binaries loaded into D0 Multimedia Core and M0 Wireless Core, from <a href="https://github.com/openbouffalo/buildroot_bouffalo">buildroot_bouffalo</a>…</p>
+<ul>
+<li>
+<p><strong>d0_lowload_bl808_d0.bin</strong>: This is a very basic bootloader that loads opensbi, the kernel and dts files into ram</p>
+</li>
+<li>
+<p><strong>m0_lowload_bl808_m0.bin</strong>: This firmware runs on M0 and forwards interupts to the D0 for several peripherals</p>
+</li>
+<li>
+<p><strong>bl808-firmware.bin</strong>: An image containing OpenSBI, Uboot and uboot dtb files. </p>
+</li>
+<li>
+<p><strong>sdcard-*.tar.xz</strong>: A tarball containing the rootfs for the image to be flashed to the SD card</p>
+</li>
+</ul>
+<p>Perhaps Ox64 BL808 might run more efficiently with a tiny 64-bit RTOS.</p>
+<p><em>Why Apache NuttX RTOS?</em></p>
+<p>It might be interesting to run Apache NuttX RTOS on both the D0 Multimedia Core and the M0 Wireless Core. Then D0 and M0 can talk over OpenAMP (Asymmetric Multi-Processing).</p>
+<p>Let’s explore…</p>
+<h1 id="flashing-uart-vs-serial-console"><a href="#flashing-uart-vs-serial-console">2 Flashing UART vs Serial Console</a></h1>
+<p><img src="https://lupyuen.github.io/images/ox64-pinout.jpg" alt="Flashing UART vs Serial Console" /></p>
+<p><em>We need to handle TWO UART Ports on Ox64?</em></p>
+<p>Yeah don’t confuse the 2 UART Ports on Ox64! Let’s give the UART Ports distinctive names <a href="https://en.wikipedia.org/wiki/Migi_%26_Dali">(like Migi &amp; Dali)</a>…</p>
+<ol>
+<li>
+<p><strong>Ox64 Flashing UART</strong>: Used for Flashing Ox64</p>
+<ul>
+<li>Flashing UART TX is <strong>GPIO 14</strong> (Physical Pin 1)</li>
+<li>Flashing UART RX is <strong>GPIO 15</strong> (Physical Pin 2)</li>
+<li>Remember to connect GND</li>
+<li>Baud Rate for Normal Mode: 2,000,000 (2 Mbps)</li>
+<li>Baud Rate for Flashing Mode: 230,400 (230.4 kbps)</li>
+<li>BL808 UART0 is controlled by the M0 Wireless Core (OpenBouffalo Firmware)</li>
+</ul>
+</li>
+<li>
+<p><strong>Ox64 Serial Console</strong>: Used for Linux Serial Console (plus OpenSBI and U-Boot Bootloader)</p>
+<ul>
+<li>Serial Console TX is <strong>GPIO 16</strong> (Physical Pin 32)</li>
+<li>Serial Console RX is <strong>GPIO 17</strong> (Physical Pin 31)</li>
+<li>Remember to connect GND</li>
+<li>Baud Rate: 2,000,000 (2 Mbps)</li>
+<li>BL808 UART3 is controlled by the D0 Multimedia Core (Linux + OpenSBI + U-Boot)</li>
+<li>Output is totally blank if OpenBouffalo Firmware <a href="https://github.com/openbouffalo/buildroot_bouffalo/issues/60">wasn’t flashed correctly</a>, or if OpenSBI / U-Boot / Linux couldn’t boot</li>
+</ul>
+</li>
+</ol>
+<p>NEITHER UART Port is accessible over USB-C or Micro USB. So yeah it’s totally counterintuitive.</p>
+<p>(Maybe someone can create a Stackable HAT or Breadboard, that will expose the 2 UART Ports as USB Dongles? Or a UART Switcher?)</p>
+<p><a href="https://lupyuen.github.io/images/ox64-sd.jpg">(<strong>For Pre-Production Ox64:</strong> Physical Pins are different, but GPIOs above are correct)</a></p>
+<p><em>Why 2 Baud Rates for Flashing UART?</em></p>
+<p>When we power up Ox64 in <strong>Normal Mode</strong>: (Boot Button NOT pressed)</p>
+<ul>
+<li>
+<p>Flashing UART Port will show us the OpenBouffalo Firmware running on M0 Wireless Core</p>
+</li>
+<li>
+<p>This M0 Firmware will forward Peripheral Interrupts to D0 Multimedia Core</p>
+</li>
+<li>
+<p>M0 Firmware is hardcoded for 2 Mbps</p>
+</li>
+<li>
+<p>Not really fun to watch. But we use this for testing our 2 Mbps USB Serial Adapter.</p>
+</li>
+</ul>
+<p>When we power up Ox64 in <strong>Flashing Mode</strong>: (Boot Button pressed)</p>
+<ul>
+<li>
+<p>Ox64 is ready for Firmware Flashing by the BL DevCube GUI Tool</p>
+</li>
+<li>
+<p>Firmware Flashing supports various Baud Rates: 230.4 kbps, 2 Mbps, …</p>
+</li>
+<li>
+<p>But 2 Mbps will fail on macOS. That’s why we Flash Firmware at 230.4 kbps.</p>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Same problem when flashing BL602)</a></p>
+</li>
+</ul>
+<p><em>Serial Console is always 2 Mbps?</em></p>
+<p>Yeah 2 Mbps is hardcoded in Ox64 Linux. Switching to other Baud Rates will show garbled text.</p>
+<p>Thus our USB Serial Adapter must connect reliably to Ox64 at 2 Mbps.</p>
+<p>Now we flash Ox64 and boot Linux…</p>
+<h1 id="flash-opensbi-and-u-boot-bootloader-to-ox64-bl808"><a href="#flash-opensbi-and-u-boot-bootloader-to-ox64-bl808">3 Flash OpenSBI and U-Boot Bootloader to Ox64 BL808</a></h1>
+<p>Before booting Linux on Ox64, we flash OpenSBI + U-Boot Bootloader to D0 Multimedia Core, and the Peripheral Interrupt Firmware to M0 Wireless Core. From <a href="https://github.com/openbouffalo/buildroot_bouffalo">buildroot_bouffalo</a>:</p>
+<ul>
+<li>
+<p><strong>d0_lowload_bl808_d0.bin</strong>: This is a very basic bootloader that loads opensbi, the kernel and dts files into ram</p>
+</li>
+<li>
+<p><strong>m0_lowload_bl808_m0.bin</strong>: This firmware runs on M0 and forwards interupts to the D0 for several peripherals</p>
+</li>
+<li>
+<p><strong>bl808-firmware.bin</strong>: An image containing OpenSBI, Uboot and uboot dtb files. </p>
+</li>
+</ul>
+<p>Here are the steps, based on the <a href="https://github.com/openbouffalo/buildroot_bouffalo#flashing-instructions">Official Flashing Instructions</a>…</p>
+<ol>
+<li>
+<p>We tested with <a href="https://pine64.com/product/serial-console-woodpecker-edition/">Pine64 Woodpecker CH340G USB Serial Adapter</a> on macOS x64.</p>
+<p>Warning: Some USB Serial Adapters <a href="https://wiki.pine64.org/wiki/Ox64#Compatible_UARTs_when_in_bootloader_mode">WON’T WORK!</a></p>
+<p>Probably because we are connecting at 2 Mbps, which might be too fast for some USB Serial Adapters.</p>
+<p><a href="https://www.lazada.sg/products/i2037772272-s11135131253.html">(Like this CP2102, which shows garbled text at 2 Mbps)</a></p>
+<p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
+</li>
+<li>
+<p>To Test our USB Serial Adapter: Connect the USB Serial Adapter to <strong>Ox64 Flashing UART</strong> (pic above)…</p>
+<ul>
+<li>Flashing UART TX is <strong>GPIO 14</strong> (Physical Pin 1)</li>
+<li>Flashing UART RX is <strong>GPIO 15</strong> (Physical Pin 2)</li>
+<li>Remember to connect GND</li>
+<li>Baud 2,000,000 (2 Mbps)</li>
+</ul>
+<p>Start the USB Serial Terminal (Flashing UART).</p>
+<p>Power up Ox64 via the Micro USB Port. Ox64 Green LED should light up.</p>
+<p>This Clickety Micro USB Cable is very handy for rebooting Ox64…</p>
+<p><img src="https://lupyuen.github.io/images/ox64-usb.jpg" alt="Clickety Micro USB Cable" /></p>
+</li>
+<li>
+<p>In the USB Serial Terminal (Flashing UART), we should see the Ox64 Factory Test Firmware…</p>
+<div class="example-wrap"><pre class="language-text"><code>Build:19:50:39,Nov 20 2022
+Copyright (c) 2022 Bouffalolab team
+dynamic memory init success,heap size = 93 Kbyte 
+sig1:ffff32ff
+sig2:0000ffff
+Pong!
+Ping!
+</code></pre></div>
+<p><a href="https://adventurist.me/posts/00317">(Source)</a></p>
+<p>If the text appears garbled: Try a different USB Serial Adapter. (See above)</p>
+<p>My prototype version shows this instead…</p>
+<div class="example-wrap"><pre class="language-text"><code>Init CLI with event Driven
+start aos loop... 
+CLI RAW Data, c906
+/romfs/c906.bin not found!
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/43676407bbced733e65566879e18732b">(Source)</a></p>
+</li>
+<li>
+<p>Pre-Flash Check: Set BL808 board to programming mode</p>
+<ul>
+<li>Remove the microSD Card</li>
+<li>Press and Hold BOOT Button</li>
+<li>Unplug and replug the Micro USB Port</li>
+<li>Release BOOT button</li>
+<li>Ox64 Green LED should turn on</li>
+</ul>
+<p>In the USB Serial Terminal (Flashing UART), we should see this…</p>
+<div class="example-wrap"><pre class="language-text"><code>.
+</code></pre></div>
+<p>Yep Ox64 is ready for flashing!</p>
+</li>
+<li>
+<p>Now we prepare to flash:</p>
+<p>Disconnect the USB Serial Terminal (to release the Flashing UART)</p>
+<p>Set BL808 board to programming mode</p>
+<ul>
+<li>Remove the microSD Card</li>
+<li>Press and Hold BOOT Button</li>
+<li>Unplug and replug the Micro USB Port</li>
+<li>Release BOOT button</li>
+<li>Ox64 Green LED should turn on</li>
+</ul>
+</li>
+<li>
+<p>We download the Ox64 Binaries…</p>
+<ul>
+<li><a href="https://github.com/openbouffalo/buildroot_bouffalo/releases/download/v1.0.1/bl808-linux-pine64_ox64_full_defconfig.tar.gz">bl808-linux-pine64_ox64_full_defconfig.tar.gz</a> </li>
+</ul>
+<p>From the latest Ox64 Linux Release…</p>
+<ul>
+<li><a href="https://github.com/openbouffalo/buildroot_bouffalo/releases/tag/v1.0.1">openbouffalo/buildroot_bouffalo (Release v1.0.1)</a></li>
+</ul>
+<p>Unzip the download and we should see this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>→ ls -l firmware
+   7340032  bl808-firmware.bin
+     31360  d0_lowload_bl808_d0.bin
+     65760  m0_lowload_bl808_m0.bin
+  43859444  sdcard-pine64_ox64_full_defconfig.img.xz    
+</code></pre></div></li>
+<li>
+<p>We’ll run Bouffalo Lab DevCube for Flashing BL808.</p>
+<p>Only Ubuntu x64, macOS and Windows are supported.</p>
+<p>TODO: How to flash BL808 on Arm64 SBCs and Pinebook Pro? Sigh. See <a href="https://wiki.pine64.org/wiki/Ox64#Alternative:_Open-Source_Flashing">bflb-iot-tool / bflb-mcu-tool</a></p>
+</li>
+<li>
+<p>Download Bouffalo Lab DevCube 1.8.3 from…</p>
+<p><a href="https://openbouffalo.org/static-assets/bldevcube/BouffaloLabDevCube-v1.8.3.zip">openbouffalo.org/static-assets/bldevcube/BouffaloLabDevCube-v1.8.3.zip</a></p>
+<p><a href="https://github.com/openbouffalo/buildroot_bouffalo/issues/60">(1.8.4 and later won’t work)</a></p>
+<p>May need to Grant Execute Permission…</p>
+<div class="example-wrap"><pre class="language-bash"><code>cd BouffaloLabDevCube-v1.8.3
+chmod +x BLDevCube-macos-x86_64
+./BLDevCube-macos-x86_64
+</code></pre></div></li>
+<li>
+<p>Run DevCube, select “BL808”, and switch to “MCU” page</p>
+</li>
+<li>
+<p>M0 Group: Group0</p>
+<p>Image Addr: 0x58000000</p>
+<p>PATH: Select “m0_lowload_bl808_m0.bin”</p>
+</li>
+<li>
+<p>D0 Group: Group0</p>
+<p>Image Addr: 0x58100000</p>
+<p>PATH: Select “d0_lowload_bl808_d0.bin”</p>
+</li>
+<li>
+<p>Set UART Rate to 230400.</p>
+<p>Don’t set to 2000000, it will fail on macOS!</p>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Same problem when flashing BL602)</a></p>
+</li>
+<li>
+<p>Click “Create &amp; Download” and wait until it’s done</p>
+<p><a href="https://gist.github.com/lupyuen/125e15be5ed1e034bed33d16ed496d87">(See the log)</a></p>
+</li>
+<li>
+<p>Switch to “IOT” page</p>
+</li>
+<li>
+<p>Enable ‘Single Download’</p>
+<p>Set Address to 0x800000</p>
+<p>Select “bl808-firmware.bin”</p>
+</li>
+<li>
+<p>Set UART Rate to 230400.</p>
+<p>Don’t set to 2000000, it will fail on macOS!</p>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Same problem when flashing BL602)</a></p>
+</li>
+<li>
+<p>Click “Create &amp; Download” again and wait until it’s done</p>
+<p><a href="https://gist.github.com/lupyuen/e8c0aca0ebd0f1eae034b0996a5b3ec3">(See the log)</a></p>
+</li>
+<li>
+<p>Start the USB Serial Terminal (Flashing UART at 2 Mbps).</p>
+<p>Unplug and replug the Micro USB Port.</p>
+<p>(Don’t press the Boot Button!)</p>
+</li>
+<li>
+<p>On the USB Serial Terminal (Flashing UART) we should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>[I][] Powered by BouffaloLab
+[I][] Build:11:52:22,Mar  6 2023
+[I][] Copyright (c) 2023 OpenBouffalo team
+[I][] Copyright (c) 2022 Bouffalolab team
+[I][] =========== flash cfg ==============
+[I][] jedec id   0xEF6018
+[I][] mid            0xEF
+[I][] iomode         0x04
+[I][] clk delay      0x01
+[I][] clk invert     0x01
+[I][] read reg cmd0  0x05
+[I][] read reg cmd1  0x35
+[I][] write reg cmd0 0x01
+[I][] write reg cmd1 0x31
+[I][] qe write len   0x01
+[I][] cread support  0x00
+[I][] cread code     0xFF
+[I][] burst wrap cmd 0x77
+[I][] sector size:   0x04
+[I][] =====================================
+[I][] dynamic memory init success,heap size = 156 Kbyte 
+[I][MAIN] Starting Mailbox Handlers
+[I][MBOX] Forwarding Interupt SDH (33) to D0 (0x58008bbc)
+[I][MBOX] Forwarding Interupt GPIO (60) to D0 (0x58008d0e)
+[I][MAIN] Running...
+[I][MBOX] Mailbox IRQ Stats:
+[I][MBOX] .Peripheral SDH (33): 0
+[I][MBOX] .Peripheral GPIO (60): 0
+[I][MBOX] Unhandled Interupts: 0 Unhandled Signals 0
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/52ccdf076ae294db26e837e6ffc4bafb">(Source)</a></p>
+<p>Yep we have flashed the OpenBouffalo Firmware successfully!</p>
+<p><img src="https://lupyuen.github.io/images/ox64-pinout3.jpg" alt="Serial Console" /></p>
+</li>
+<li>
+<p>Connect our USB Serial Adapter to <strong>Ox64 Serial Console</strong>: (pic above)</p>
+<ul>
+<li>Serial Console TX is <strong>GPIO 16</strong> (Physical Pin 32)</li>
+<li>Serial Console RX is <strong>GPIO 17</strong> (Physical Pin 31)</li>
+<li>Remember to connect GND</li>
+<li>Baud 2,000,000 (2 Mbps)</li>
+</ul>
+<p>Start the USB Serial Terminal (Serial Console).</p>
+<p>Unplug and replug the Micro USB Port.</p>
+<p>(Don’t press the Boot Button!)</p>
+</li>
+<li>
+<p>On the USB Serial Terminal (Serial Console) we should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>U-Boot 2023.04-rc2 (Mar 06 2023 - 11:48:40 +0000)
+Card did not respond to voltage select! : -110
+BOOTP broadcast
+Retry time exceeded; starting again
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/0b1a98781e86ba11c5538eb1e3058718">(Source)</a></p>
+<p>Which is OK because U-Boot Bootloader is waiting for a microSD Card. </p>
+</li>
+<li>
+<p>If nothing appears…</p>
+<p>Check that we are using <a href="https://openbouffalo.org/static-assets/bldevcube/BouffaloLabDevCube-v1.8.3.zip">Bouffalo Lab DevCube 1.8.3</a></p>
+<p><a href="https://github.com/openbouffalo/buildroot_bouffalo/issues/60">(1.8.4 and later won’t work)</a></p>
+<p>In BL Dev Cube, UART Rate (for MCU and IoT) should be 230400.</p>
+<p>Don’t set to 2000000, it will fail on macOS!</p>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Same problem when flashing BL602)</a></p>
+</li>
+</ol>
+<p>Let’s load Ox64 Linux into a microSD Card…</p>
+<h1 id="boot-linux-on-ox64-bl808"><a href="#boot-linux-on-ox64-bl808">4 Boot Linux on Ox64 BL808</a></h1>
+<p><img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Ox64 Linux in a microSD Card" /></p>
+<p>Now that D0 Multimedia Core is flashed with OpenSBI and U-Boot Bootloader, we’re ready to boot Linux on microSD!</p>
+<p>Based on the <a href="https://github.com/openbouffalo/buildroot_bouffalo#flashing-instructions">Official Flashing Instructions</a>…</p>
+<ol>
+<li>
+<p>Look for the microSD Image that we downloaded earlier…</p>
+<div class="example-wrap"><pre class="language-text"><code>sdcard-pine64_ox64_full_defconfig.img.xz
+</code></pre></div>
+<p>Uncompress the file to get…</p>
+<div class="example-wrap"><pre class="language-text"><code>sdcard-pine64_ox64_full_defconfig.img
+</code></pre></div></li>
+<li>
+<p>Flash the uncompressed image to your microSD card.</p>
+<p>You can use <a href="https://github.com/balena-io/etcher">Balena Etcher</a>, GNOME Disks or <code>dd</code>.</p>
+</li>
+<li>
+<p>Insert the microSD Card into Ox64. (Pic above)</p>
+<p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
+</li>
+<li>
+<p>Connect our USB Serial Adapter to <strong>Ox64 Flashing UART</strong>: (pic above)</p>
+<ul>
+<li>Flashing UART TX is <strong>GPIO 14</strong> (Physical Pin 1)</li>
+<li>Flashing UART RX is <strong>GPIO 15</strong> (Physical Pin 2)</li>
+<li>Remember to connect GND</li>
+<li>Baud 2,000,000 (2 Mbps)</li>
+</ul>
+<p>Start the USB Serial Terminal (Flashing UART).</p>
+<p>Unplug and replug the Micro USB Port.</p>
+<p>(Don’t press the Boot Button!)</p>
+</li>
+<li>
+<p>On the USB Serial Terminal (Flashing UART) we should see the same thing as earlier…</p>
+<div class="example-wrap"><pre class="language-text"><code>[I][MAIN] Starting Mailbox Handlers
+[I][MBOX] Forwarding Interupt SDH (33) to D0 (0x58008bbc)
+[I][MBOX] Forwarding Interupt GPIO (60) to D0 (0x58008d0e)
+[I][MAIN] Running...
+[I][MBOX] Mailbox IRQ Stats:
+[I][MBOX] .Peripheral SDH (33): 0
+[I][MBOX] .Peripheral GPIO (60): 0
+[I][MBOX] Unhandled Interupts: 0 Unhandled Signals 0
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/52ccdf076ae294db26e837e6ffc4bafb">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/ox64-pinout3.jpg" alt="Serial Console" /></p>
+</li>
+<li>
+<p>Connect our USB Serial Adapter to <strong>Ox64 Serial Console</strong>: (pic above)</p>
+<ul>
+<li>Serial Console TX is <strong>GPIO 16</strong> (Physical Pin 32)</li>
+<li>Serial Console RX is <strong>GPIO 17</strong> (Physical Pin 31)</li>
+<li>Remember to connect GND</li>
+<li>Baud 2,000,000 (2 Mbps)</li>
+</ul>
+<p>Start the USB Serial Terminal (Serial Console).</p>
+<p>Unplug and replug the Micro USB Port.</p>
+<p>(Don’t press the Boot Button!)</p>
+</li>
+<li>
+<p>On the USB Serial Terminal (Serial Console) we should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>[I][] Powered by BouffaloLab
+[I][] Build:11:52:04,Mar  6 2023
+[I][] Copyright (c) 2023 OpenBouffalo team
+[I][] Copyright (c) 2022 Bouffalolab team
+[I][] dynamic memory init success,heap s[I][LowLoad] D0 start...
+[I][LowLoad] low_load start... 
+[I][LowLoad] Header at 0x5d5ff000
+[I][LowLoad] Section dtb(1) - Start 0x5d5ff100, Size 14314
+[I][LowLoad] Copying DTB to 0x51ff8000...0x51ffb7ea
+[I][LowLoad] Done!
+[I][LowLoad] Section OpenSBI(2) - Start 0x5d60f100, Size 109864
+[I][LowLoad] Copying OpenSBI to 0x3ef80000...0x3ef9ad28
+[I][LowLoad] Done!
+[I][LowLoad] Section Kernel(3) - Start 0x5d62f100, Size 315597
+[I][LowLoad] Uncompressing Kernel to 0x50000000...
+[I][LowLoad] Done!
+[I][LowLoad] CRC: 00000000
+[I][LowLoad] load time: 61306 us 
+[I][LowLoad] ing PMP
+[I][LowLoad] Booting OpenSBI at 0x000000003ef80000 with DTB at 0x51ff8000
+...
+OpenSBI v1.2
+Platform Name             : Pine64 Ox64 (D0)
+Platform Features          medeleg
+Platform HART Count       : 1
+Platform IPI Device       : aclint-mswi
+Platform Timer Device     : aclint-mtimer @ 1000000Hz
+Platform Console Device   : bflb_uart
+Platform HSM Device       : ---
+Platform PMU Device       : ---
+Platform Reboot Device    : ---
+Platform Shutdown Device  : ---
+Firmware Base             : 0x3ef80000
+Firmware Size             : 200 KB
+Runtime SBI Version       : 1.0
+...
+
+U-Boot 2023.04-rc2 (Mar 06 2023 - 11:48:40 +0000)
+DRAM:  64 MiB
+Core:  36 devices, 17 uclasses, devicetree: board
+MMC:   mmc@20060000: 0
+Loading Environment from FAT... Unable to read &quot;uboot.env&quot; from mmc0:2... 
+...
+Starting kernel ...
+Linux version 6.2.0 (runner@fv-az587-938) (riscv64-unknown-linux-gnu-gcc (Xuantie-900 linux-5.10.4 glibc gcc Toolchain V2.6.1 B-20220906) 10.2.0, GNU ld (GNU Binutils) 2.35) #1 Mon Mar  6 11:17:27 UTC 2023
+...
+Welcome to Buildroot
+ox64 login: 
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/3035a70d52d2d1d529e96f5292f54210">(See the Complete Log)</a></p>
+<p><a href="https://youtu.be/UJ_7DyHnfDA">(Watch the Video on YouTube)</a></p>
+<p>Yep Linux is running on Ox64 yay! (Pic below)</p>
+</li>
+<li>
+<p>If nothing appears…</p>
+<p>Check that we are using <a href="https://openbouffalo.org/static-assets/bldevcube/BouffaloLabDevCube-v1.8.3.zip">Bouffalo Lab DevCube 1.8.3</a></p>
+<p><a href="https://github.com/openbouffalo/buildroot_bouffalo/issues/60">(1.8.4 and later won’t work)</a></p>
+<p>In BL Dev Cube, UART Rate (for MCU and IoT) should be 230400.</p>
+<p>Don’t set to 2000000, it will fail on macOS!</p>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Same problem when flashing BL602)</a></p>
+</li>
+<li>
+<p>If we see…</p>
+<div class="example-wrap"><pre class="language-text"><code>U-Boot 2023.04-rc2 (Mar 06 2023 - 11:48:40 +0000)
+Card did not respond to voltage select! : -110
+BOOTP broadcast
+Retry time exceeded; starting again
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/0b1a98781e86ba11c5538eb1e3058718">(Source)</a></p>
+<p>Check that the microSD Card is inserted correctly. (Pic above)</p>
+</li>
+<li>
+<p>TODO: TFTP Boot over Ethernet</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/ox64-title.jpg" alt="Boot Linux on Ox64 BL808" /></p>
+<p>Comment by <a href="https://x.com/gamelaster/status/1719073156281798755?s=20">@gamelaster</a>…</p>
+<blockquote>
+<p>“This is not hardware specific, but flasher specific. With blisp, I was able to get faster flashing working, but this is Apple’s quirk. Or maybe not? Because FreeBSD need same quirks and exact buffer sizes as Apple.”</p>
+</blockquote>
+<p>Comment by <a href="https://x.com/madushan1000/status/1719069431580524720?s=20">@madushan1000</a>…</p>
+<blockquote>
+<p>“You can also use u-boot. https://github.com/openbouffalo/u-boot/releases/tag/bl808-2023-02-19 
+You can also get rid of mailbox, but you will have to build the kernel yourself https://github.com/openbouffalo/linux/tree/bl808/all”</p>
+</blockquote>
+<h1 id="forward-peripheral-interrupts"><a href="#forward-peripheral-interrupts">5 Forward Peripheral Interrupts</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>[I][MAIN] Starting Mailbox Handlers
+[I][MBOX] Forwarding Interupt SDH (33) to D0 (0x58008bbc)
+[I][MBOX] Forwarding Interupt GPIO (60) to D0 (0x58008d0e)
+[I][MAIN] Running...
+[I][MBOX] Mailbox IRQ Stats:
+[I][MBOX] .Peripheral SDH (33): 0
+[I][MBOX] .Peripheral GPIO (60): 0
+[I][MBOX] Unhandled Interupts: 0 Unhandled Signals 0
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/52ccdf076ae294db26e837e6ffc4bafb">(Source)</a></p>
+<p>SDH: SD Card (SDIO) Host Controller (BL808 RM Page 561)</p>
+<p>IRQ 60: GPIO_INT0 (IRQ_NUM_BASE+44) GPIO Interrupt (BL808 RM Page 44)</p>
+<p><a href="https://github.com/bouffalolab/bl808_linux/blob/main/bl_mcu_sdk_bl808/drivers/bl808_driver/regs/bl808.h#L123">GPIO_INT0_IRQn</a></p>
+<p><a href="https://github.com/bouffalolab/bl808_linux/blob/main/bl_mcu_sdk_bl808/drivers/bl808_driver/regs/bl808.h#L96">SDH is IRQ 33: SDH_IRQn</a></p>
+<p>IRQ_NUM_BASE is 16 (BL808 RM Page 45)</p>
+<p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/m0_lowload">m0_lowload</a></p>
+<p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/d0_lowload">d0_lowload</a></p>
+<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L127-L135">Forward GPIO Interrupt</a></p>
+<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L95-L103">Forward SDH Interrupt</a></p>
+<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L238C1-L257">Setup SDH Interrupt</a></p>
+<p>Other Interrupts (unused)</p>
+<ul>
+<li><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L103-L111">UART2</a></li>
+<li><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L111-L119">USB</a></li>
+<li><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L119-L127">EMAC</a></li>
+</ul>
+<h1 id="inspect-the-linux-image-for-ox64-bl808"><a href="#inspect-the-linux-image-for-ox64-bl808">6 Inspect the Linux Image for Ox64 BL808</a></h1>
+<p><em>Will Apache NuttX RTOS boot on Ox64 BL808?</em></p>
+<p>Let’s examine the Linux Kernel Image for Ox64, and we replicate the same format for NuttX. (Which is how we ported NuttX to 64-bit RISC-V Star64 JH7110 SBC)</p>
+<p>We download the Ox64 Binaries…</p>
+<ul>
+<li><a href="https://github.com/openbouffalo/buildroot_bouffalo/releases/download/v1.0.1/bl808-linux-pine64_ox64_full_defconfig.tar.gz">bl808-linux-pine64_ox64_full_defconfig.tar.gz</a> </li>
+</ul>
+<p>From the latest Ox64 Linux Release…</p>
+<ul>
+<li><a href="https://github.com/openbouffalo/buildroot_bouffalo/releases/tag/v1.0.1">openbouffalo/buildroot_bouffalo (Release v1.0.1)</a></li>
+</ul>
+<p>Unzip it and mount the SD Card Image…</p>
+<div class="example-wrap"><pre class="language-bash"><code>→ ls -l sdcard-pine64_ox64_full_defconfig     
+-  13,154,816  Image
+-       4,012  bl808-pine64-ox64.dtb
+-       4,106  bl808-sipeed-m1s.dtb
+-         350  boot-m1s.scr
+-         352  boot-pine64.scr
+-         352  boot.scr
+d          96  extlinux
+</code></pre></div>
+<p>Dump the <code>Image</code> as hex…</p>
+<div class="example-wrap"><pre class="language-bash"><code>→ hexdump sdcard-pine64_ox64_full_defconfig/Image
+0000000 4d 5a 6f 10 20 08 01 00 00 00 20 00 00 00 00 00
+0000010 00 80 cd 00 00 00 00 00 00 00 00 00 00 00 00 00
+0000020 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0000030 52 49 53 43 56 00 00 00 52 53 43 05 40 00 00 00
+</code></pre></div>
+<p>The Linux Kernel Image begins with this <strong>RISC-V Linux Image Header</strong>…</p>
+<ul>
+<li><a href="https://www.kernel.org/doc/html/latest/riscv/boot-image-header.html"><strong>“Boot Image Header in RISC-V Linux”</strong></a></li>
+</ul>
+<p>Here are the decoded bytes…</p>
+<ol>
+<li>
+<p><strong>code0</strong>: Executable code</p>
+<p>(4 bytes, offset <code>0x00</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>4d 5a 6f 10 
+</code></pre></div></li>
+<li>
+<p><strong>code1</strong>: Executable code </p>
+<p>(4 bytes, offset <code>0x04</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>20 08 01 00 
+</code></pre></div></li>
+<li>
+<p><strong>text_offset</strong>: Image load offset, little endian</p>
+<p>(8 bytes, offset <code>0x08</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>00 00 20 00 00 00 00 00
+</code></pre></div></li>
+<li>
+<p><strong>image_size</strong>: Effective Image size, little endian </p>
+<p>(8 bytes, offset <code>0x10</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>00 80 cd 00 00 00 00 00
+</code></pre></div></li>
+<li>
+<p><strong>flags</strong>: Kernel flags, little endian </p>
+<p>(8 bytes, offset <code>0x18</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>00 00 00 00 00 00 00 00
+</code></pre></div></li>
+<li>
+<p><strong>version</strong>: Version of this header (<em>MinL</em> <em>MinM</em> <code>.</code> <em>MajL</em> <em>MajM</em>)</p>
+<p>(4 bytes, offset <code>0x20</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>02 00 00 00
+</code></pre></div></li>
+<li>
+<p><strong>res1</strong>: Reserved</p>
+<p>(4 bytes, offset <code>0x24</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>00 00 00 00
+</code></pre></div></li>
+<li>
+<p><strong>res2</strong>: Reserved</p>
+<p>(8 bytes, offset <code>0x28</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>00 00 00 00 00 00 00 00
+</code></pre></div></li>
+<li>
+<p><strong>magic</strong>: Magic number, little endian, “RISCV\x00\x00\x00” </p>
+<p>(8 bytes, offset <code>0x30</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>52 49 53 43 56 00 00 00
+</code></pre></div></li>
+<li>
+<p><strong>magic2</strong>: Magic number 2, little endian, “RSC\x05” </p>
+<p>(4 bytes, offset <code>0x38</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>52 53 43 05
+</code></pre></div></li>
+<li>
+<p><strong>res3</strong>: Reserved for PE COFF offset</p>
+<p>(4 bytes, offset <code>0x3C</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>40 00 00 00
+</code></pre></div></li>
+</ol>
+<p>Our NuttX Kernel shall <strong>recreate this RISC-V Linux Image Header</strong>. (Total <code>0x40</code> bytes)</p>
+<p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
+<p>Header Values are exactly the same as Star64. (Except the Image Size and Executable Code, since the Jump Address is different)</p>
+<p>Thus we simply reuse the code from NuttX Star64!</p>
+<h1 id="linux-device-tree-for-ox64-bl808"><a href="#linux-device-tree-for-ox64-bl808">7 Linux Device Tree for Ox64 BL808</a></h1>
+<p>TODO: Dump the Device Tree</p>
+<div class="example-wrap"><pre class="language-text"><code>dtc \
+  -o bl808-pine64-ox64.dts \
+  -O dts \
+  -I dtb \
+  bl808-pine64-ox64.dtb
+</code></pre></div>
+<p>Here’s the Decompiled Device Tree: <a href="bl808-pine64-ox64.dts">bl808-pine64-ox64.dts</a></p>
+<p>TODO: Transmit to UART3 at 0x30002000. Reuse the BL602 UART Driver for NuttX.</p>
+<div class="example-wrap"><pre class="language-text"><code>serial@30002000 {
+  compatible = &quot;bflb,bl808-uart&quot;;
+  reg = &lt;0x30002000 0x1000&gt;;
+  interrupts = &lt;0x14 0x04&gt;;
+  clocks = &lt;0x04&gt;;
+  status = &quot;okay&quot;;
+  phandle = &lt;0x0a&gt;;
+};
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L89-L96">(Source)</a></p>
+<p>TODO: Forward the Interrupts from M0 Wireless Core to D0 Multimedia Core via Mailbox / IPC (Where are the addresses documented?)</p>
+<div class="example-wrap"><pre class="language-text"><code>mailbox@30005000 {
+  compatible = &quot;bflb,bl808-ipc&quot;;
+  reg = &lt;
+    0x30005000 0x20 
+    0x30005020 0x20 
+    0x2000a800 0x20 
+    0x2000a820 0x20
+  &gt;;
+  interrupts = &lt;0x36 0x04&gt;;
+  interrupt-controller;
+  #interrupt-cells = &lt;0x03&gt;;
+  #mbox-cells = &lt;0x02&gt;;
+  status = &quot;okay&quot;;
+  phandle = &lt;0x03&gt;;
+};
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L118-L127">(Source)</a></p>
+<p>TODO: Print Debug Logs with OpenSBI</p>
+<h1 id="documentation-for-ox64-bl808"><a href="#documentation-for-ox64-bl808">8 Documentation for Ox64 BL808</a></h1>
+<ul>
+<li>
+<p><a href="https://adventurist.me/posts/00317">“Booting Linux on the Pine64 Ox64 SBC”</a></p>
+</li>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/Ox64">Pine64 Ox64 Wiki</a></p>
+</li>
+<li>
+<p><a href="https://files.pine64.org/doc/ox64/PINE64_Ox64-Schematic-202221018.pdf">Pine64 Ox64 Schematic</a></p>
+</li>
+<li>
+<p><a href="https://openbouffalo.org/index.php/Main_Page">OpenBouffalo Wiki</a></p>
+</li>
+<li>
+<p><a href="https://github.com/openbouffalo/buildroot_bouffalo">Linux Image + OpenSBI + U-Boot for BL808</a></p>
+<p><a href="https://github.com/bouffalolab/buildroot_bouffalo">(Newer version?)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_DS/en/BL808_DS_1.2_en.pdf">BL808 Datasheet</a></p>
+</li>
+<li>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">BL808 Reference Manual</a></p>
+</li>
+<li>
+<p><a href="https://www.t-head.cn/product/c906?lang=en">BL808 D0 Core: T-Head C906 480MHz 64-bit RISC-V CPU</a></p>
+<p>(Multimedia Core: MIPI CSI / DSI, Neural Proc Unit)</p>
+<p>Memory Mgmt Unit is Sv39, 128/256/512 TLB table entry. (Same as Star64?)</p>
+</li>
+<li>
+<p><a href="https://www.t-head.cn/product/e907?lang=en">BL808 M0 Core: T-Head E907 320MHz 32-bit RISC-V CPU</a></p>
+<p>(Wireless + Peripherals Core: WiFi, BLE, BT, Zigbee, Audio)</p>
+</li>
+<li>
+<p><a href="https://www.t-head.cn/product/e902?lang=en">BL808 LP Core: T-Head E902 150MHz 32-bit RISC-V CPU</a></p>
+<p>(Low Power Core)</p>
+</li>
+</ul>
+<p>From <a href="https://github.com/openbouffalo/buildroot_bouffalo">buildroot_bouffalo</a>:</p>
+<ul>
+<li>m0_lowload_bl808_m0.bin - This firmware runs on M0 and forwards interupts to the D0 for several peripherals</li>
+<li>d0_lowload_bl808_d0.bin - This is a very basic bootloader that loads opensbi, the kernel and dts files into ram</li>
+<li>bl808-firmware.bin - An image containing OpenSBI, Uboot and uboot dtb files. </li>
+<li>sdcard-*.tar.xz - A tarball containing the rootfs for the image to be flashed to the SD card</li>
+</ul>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
