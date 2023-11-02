@@ -172,25 +172,32 @@
 <ol>
 <li>
 <p><strong>Ox64 Flashing UART</strong>: Used for Flashing Ox64</p>
-<ul>
-<li>Flashing UART TX is <strong>GPIO 14</strong> (Physical Pin 1)</li>
-<li>Flashing UART RX is <strong>GPIO 15</strong> (Physical Pin 2)</li>
-<li>Remember to connect GND</li>
-<li>Baud Rate for Normal Mode: 2,000,000 (2 Mbps)</li>
-<li>Baud Rate for Flashing Mode: 230,400 (230.4 kbps)</li>
-<li>BL808 UART0 is controlled by the M0 Wireless Core (OpenBouffalo Firmware)</li>
-</ul>
+<div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 14</strong></td><td style="text-align: left">Physical Pin 1</td></tr>
+<tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 15</strong></td><td style="text-align: left">Physical Pin 2</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong>GND</strong></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
+<p><strong>Baud Rates</strong> are…</p>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left">Normal Mode</td><td style="text-align: left">2,000,000 (2 Mbps)</td></tr>
+<tr><td style="text-align: left">Flashing Mode</td><td style="text-align: left">230,400 (230.4 kbps)</td></tr>
+</tbody></table>
+</div>
+<p><strong>BL808 UART0</strong> is controlled by the M0 Wireless Core (OpenBouffalo Firmware)</p>
 </li>
 <li>
 <p><strong>Ox64 Serial Console</strong>: Used for Linux Serial Console (plus OpenSBI and U-Boot Bootloader)</p>
-<ul>
-<li>Serial Console TX is <strong>GPIO 16</strong> (Physical Pin 32)</li>
-<li>Serial Console RX is <strong>GPIO 17</strong> (Physical Pin 31)</li>
-<li>Remember to connect GND</li>
-<li>Baud Rate: 2,000,000 (2 Mbps)</li>
-<li>BL808 UART3 is controlled by the D0 Multimedia Core (Linux + OpenSBI + U-Boot)</li>
-<li>Output is totally blank if OpenBouffalo Firmware <a href="https://github.com/openbouffalo/buildroot_bouffalo/issues/60">wasn’t flashed correctly</a>, or if OpenSBI / U-Boot / Linux couldn’t boot</li>
-</ul>
+<div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 16</strong></td><td style="text-align: left">Physical Pin 32</td></tr>
+<tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 17</strong></td><td style="text-align: left">Physical Pin 31</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong>GND</strong></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
+<p>(Remember to connect GND)</p>
+<p><strong>Baud Rate:</strong> 2,000,000 (2 Mbps)</p>
+<p><strong>BL808 UART3</strong> is controlled by the D0 Multimedia Core. (Linux + OpenSBI + U-Boot)</p>
+<p>Output is <strong>totally blank</strong> if OpenBouffalo Firmware <a href="https://github.com/openbouffalo/buildroot_bouffalo/issues/60"><strong>wasn’t flashed correctly</strong></a>, or if OpenSBI / U-Boot couldn’t boot.</p>
 </li>
 </ol>
 <p>NEITHER UART Port is accessible over USB-C or Micro USB. So yeah it’s totally counterintuitive.</p>
@@ -240,9 +247,9 @@
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 14</strong></td><td style="text-align: left">Physical Pin 1</td></tr>
 <tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 15</strong></td><td style="text-align: left">Physical Pin 2</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong>GND</strong></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
-<p>(Remember to connect GND)</p>
 <p>Start the USB Serial Terminal (for Flashing UART) at 2,000,000 bps (2 Mbps).</p>
 <p>Power up Ox64 via the Micro USB Port. Ox64 Green LED should light up.</p>
 <p>This Clickety Micro USB Cable is very handy for rebooting Ox64…</p>
@@ -443,9 +450,9 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 16</strong></td><td style="text-align: left">Physical Pin 32</td></tr>
 <tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 17</strong></td><td style="text-align: left">Physical Pin 31</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong>GND</strong></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
-<p>(Remember to connect GND)</p>
 <p>Start the USB Serial Terminal (for Serial Console) at 2,000,000 bps (2 Mbps).</p>
 <p>Unplug and replug the Micro USB Port.</p>
 <p>(Don’t press the Boot Button!)</p>
@@ -493,13 +500,13 @@ Retry time exceeded; starting again
 </li>
 <li>
 <p>Connect our USB Serial Adapter to <strong>Ox64 Flashing UART</strong>: (pic above)</p>
-<ul>
-<li>Flashing UART TX is <strong>GPIO 14</strong> (Physical Pin 1)</li>
-<li>Flashing UART RX is <strong>GPIO 15</strong> (Physical Pin 2)</li>
-<li>Remember to connect GND</li>
-<li>Baud 2,000,000 (2 Mbps)</li>
-</ul>
-<p>Start the USB Serial Terminal (Flashing UART).</p>
+<div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 14</strong></td><td style="text-align: left">Physical Pin 1</td></tr>
+<tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 15</strong></td><td style="text-align: left">Physical Pin 2</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong>GND</strong></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
+<p>Start the USB Serial Terminal (Flashing UART) at 2,000,000 bps (2 Mbps).</p>
 <p>Unplug and replug the Micro USB Port.</p>
 <p>(Don’t press the Boot Button!)</p>
 </li>
@@ -519,13 +526,13 @@ Unhandled Interupts: 0 Unhandled Signals 0
 </li>
 <li>
 <p>Connect our USB Serial Adapter to <strong>Ox64 Serial Console</strong>: (pic above)</p>
-<ul>
-<li>Serial Console TX is <strong>GPIO 16</strong> (Physical Pin 32)</li>
-<li>Serial Console RX is <strong>GPIO 17</strong> (Physical Pin 31)</li>
-<li>Remember to connect GND</li>
-<li>Baud 2,000,000 (2 Mbps)</li>
-</ul>
-<p>Start the USB Serial Terminal (Serial Console).</p>
+<div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 16</strong></td><td style="text-align: left">Physical Pin 32</td></tr>
+<tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 17</strong></td><td style="text-align: left">Physical Pin 31</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong>GND</strong></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
+<p>Start the USB Serial Terminal (for Serial Console) at 2,000,000 bps (2 Mbps).</p>
 <p>Unplug and replug the Micro USB Port.</p>
 <p>(Don’t press the Boot Button!)</p>
 </li>
