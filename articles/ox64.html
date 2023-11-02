@@ -629,11 +629,27 @@ Retry time exceeded; starting again
 You can also get rid of mailbox, but you will have to build the kernel yourself https://github.com/openbouffalo/linux/tree/bl808/all”</p>
 </blockquote>
 <h1 id="apache-nuttx-rtos-for-ox64"><a href="#apache-nuttx-rtos-for-ox64">6 Apache NuttX RTOS for Ox64</a></h1>
-<p>TODO</p>
-<p>Linux Image Header</p>
-<p>TFTP</p>
-<p>“Pretending to be Linux” has worked remarkably well for booting NuttX on PinePhone, PinePhone Pro, NanoPi M4 SBC and Star64 RISC-V SBC!</p>
+<p><em>Why Apache NuttX RTOS?</em></p>
+<p>Ox64 BL808 sounds a little tiny for 64-bit Linux.</p>
+<p>Perhaps Ox64 BL808 might run more efficiently with a tiny 64-bit RTOS like Apache NuttX?</p>
+<p>Let’s explore…</p>
 <ol>
+<li>
+<p><em>How will we boot Apache NuttX RTOS on Ox64?</em></p>
+<p>Ox64 boots Linux like a typical RISC-V SBC with…</p>
+<ul>
+<li>
+<p>TODO: OpenSBI</p>
+</li>
+<li>
+<p>TODO: U-Boot Bootloader</p>
+</li>
+</ul>
+<p>So let’s <strong>pretend to be Linux</strong> and trick Ox64 into booting NuttX!</p>
+<p>“Pretending to be Linux” has worked remarkably well for booting NuttX on PinePhone, PinePhone Pro, NanoPi M4 SBC and Star64 RISC-V SBC!</p>
+<p>TODO: Linux Image Header</p>
+<p>TODO: TFTP</p>
+</li>
 <li>
 <p><em>How will we print to the Serial Console?</em></p>
 <p>We’ll borrow the NuttX UART Driver for BL602 (which will probably work with BL808)…</p>
