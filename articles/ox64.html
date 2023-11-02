@@ -630,8 +630,8 @@ You can also get rid of mailbox, but you will have to build the kernel yourself 
 </blockquote>
 <h1 id="apache-nuttx-rtos-for-ox64"><a href="#apache-nuttx-rtos-for-ox64">6 Apache NuttX RTOS for Ox64</a></h1>
 <p><em>Why Apache NuttX RTOS?</em></p>
-<p>Ox64 BL808 sounds a little tiny for 64-bit Linux.</p>
-<p>Perhaps Ox64 BL808 might run more efficiently with a tiny 64-bit RTOS like Apache NuttX?</p>
+<p>Ox64 sounds a little tiny for 64-bit Linux.</p>
+<p>Perhaps Ox64 might run more efficiently with a tiny 64-bit RTOS like Apache NuttX?</p>
 <p>Let’s explore…</p>
 <ol>
 <li>
@@ -646,7 +646,7 @@ You can also get rid of mailbox, but you will have to build the kernel yourself 
 </li>
 </ul>
 <p>So let’s <strong>pretend to be Linux</strong> and trick Ox64 into booting NuttX!</p>
-<p>“Pretending to be Linux” has worked remarkably well for booting NuttX on PinePhone, PinePhone Pro, NanoPi M4 SBC and Star64 RISC-V SBC!</p>
+<p>“Pretending to be Linux” has worked remarkably well for booting NuttX on PinePhone, PinePhone Pro, NanoPi M4 SBC and Star64 RISC-V SBC. We’ll do it again for Ox64!</p>
 <p>TODO: Linux Image Header</p>
 <p>TODO: To speed up the porting, we might boot NuttX over TFTP.</p>
 </li>
@@ -666,9 +666,11 @@ You can also get rid of mailbox, but you will have to build the kernel yourself 
 <p>TODO: OpenAMP</p>
 </li>
 <li>
-<p><em>OpenSBI will control the 32-bit RISC-V Core right?</em></p>
-<p>Sadly nope.</p>
+<p><em>OpenSBI will boot NuttX on the 32-bit RISC-V Core right?</em></p>
+<p>Sadly nope. The 32-bit M0 Wireless Core isn’t controlled by OpenSBI, according to the OpenSBI…</p>
 <p>TODO</p>
+<p>So booting 32-bit NuttX with OpenSBI HSM simply won’t work.</p>
+<p>We’ll have to flash 32-bit NuttX to Ox64 with BL Dev Cube. (Ouch!)</p>
 </li>
 <li>
 <p><em>Are you sorry that NuttX Fans had to put up with this entire article?</em></p>
