@@ -72,13 +72,14 @@
 <li><a href="#flashing-uart-vs-serial-console">1 Flashing UART vs Serial Console</a><ul></ul></li>
 <li><a href="#test-the-usb-serial-adapter">2 Test the USB Serial Adapter</a><ul></ul></li>
 <li><a href="#flash-opensbi-and-u-boot-bootloader">3 Flash OpenSBI and U-Boot Bootloader</a><ul></ul></li>
-<li><a href="#boot-linux-on-ox64">4 Boot Linux on Ox64</a><ul></ul></li>
-<li><a href="#ox64-peripheral-interrupts">5 Ox64 Peripheral Interrupts</a><ul></ul></li>
-<li><a href="#apache-nuttx-rtos-for-ox64">6 Apache NuttX RTOS for Ox64</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-linux-image-header-for-ox64">8 Appendix: Linux Image Header for Ox64</a><ul></ul></li>
-<li><a href="#appendix-linux-device-tree-for-ox64">9 Appendix: Linux Device Tree for Ox64</a><ul></ul></li>
-<li><a href="#appendix-ox64-documentation">10 Appendix: Ox64 Documentation</a><ul></ul></li></ul></nav><p>📝 <em>14 Nov 2023</em></p>
+<li><a href="#verify-opensbi-and-u-boot-bootloader">4 Verify OpenSBI and U-Boot Bootloader</a><ul></ul></li>
+<li><a href="#boot-linux-on-ox64">5 Boot Linux on Ox64</a><ul></ul></li>
+<li><a href="#ox64-peripheral-interrupts">6 Ox64 Peripheral Interrupts</a><ul></ul></li>
+<li><a href="#apache-nuttx-rtos-for-ox64">7 Apache NuttX RTOS for Ox64</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-linux-image-header-for-ox64">9 Appendix: Linux Image Header for Ox64</a><ul></ul></li>
+<li><a href="#appendix-linux-device-tree-for-ox64">10 Appendix: Linux Device Tree for Ox64</a><ul></ul></li>
+<li><a href="#appendix-ox64-documentation">11 Appendix: Ox64 Documentation</a><ul></ul></li></ul></nav><p>📝 <em>14 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/ox64-title.jpg" alt="Booting Linux on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <p><em>What’s this BL808?</em> <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_DS/en/BL808_DS_1.2_en.pdf">(Datasheet)</a> <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(Reference Manual)</a></p>
 <p>Bouffalo Lab BL808 SoC is a complex creature with 3 (Asymmetric) RISC-V Cores (linked via IPC, pic below)…</p>
@@ -386,47 +387,56 @@ chmod +x BLDevCube-macos-x86_64
 <p><img src="https://lupyuen.github.io/images/ox64-flash5.png" alt="TODO" /></p>
 <p><a href="https://gist.github.com/lupyuen/e8c0aca0ebd0f1eae034b0996a5b3ec3">(See the log)</a></p>
 </li>
+</ol>
+<h1 id="verify-opensbi-and-u-boot-bootloader"><a href="#verify-opensbi-and-u-boot-bootloader">4 Verify OpenSBI and U-Boot Bootloader</a></h1>
+<p>TODO</p>
+<p>Let’s verify if the flashing was OK…</p>
+<p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
+<ol>
 <li>
-<p>Start the USB Serial Terminal (Flashing UART at 2 Mbps).</p>
+<p>Start the USB Serial Terminal (Flashing UART at 2 Mbps, pic above).</p>
 <p>Unplug and replug the Micro USB Port.</p>
 <p>(Don’t press the Boot Button!)</p>
 </li>
 <li>
 <p>On the USB Serial Terminal (Flashing UART) we should see…</p>
-<div class="example-wrap"><pre class="language-text"><code>[I][] Powered by BouffaloLab
-[I][] Build:11:52:22,Mar  6 2023
-[I][] Copyright (c) 2023 OpenBouffalo team
-[I][] Copyright (c) 2022 Bouffalolab team
-[I][] =========== flash cfg ==============
-[I][] jedec id   0xEF6018
-[I][] mid            0xEF
-[I][] iomode         0x04
-[I][] clk delay      0x01
-[I][] clk invert     0x01
-[I][] read reg cmd0  0x05
-[I][] read reg cmd1  0x35
-[I][] write reg cmd0 0x01
-[I][] write reg cmd1 0x31
-[I][] qe write len   0x01
-[I][] cread support  0x00
-[I][] cread code     0xFF
-[I][] burst wrap cmd 0x77
-[I][] sector size:   0x04
-[I][] =====================================
-[I][] dynamic memory init success,heap size = 156 Kbyte 
-[I][MAIN] Starting Mailbox Handlers
-[I][MBOX] Forwarding Interupt SDH (33) to D0 (0x58008bbc)
-[I][MBOX] Forwarding Interupt GPIO (60) to D0 (0x58008d0e)
-[I][MAIN] Running...
-[I][MBOX] Mailbox IRQ Stats:
-[I][MBOX] .Peripheral SDH (33): 0
-[I][MBOX] .Peripheral GPIO (60): 0
-[I][MBOX] Unhandled Interupts: 0 Unhandled Signals 0
+<div class="example-wrap"><pre class="language-text"><code>Powered by BouffaloLab
+Build:11:52:22,Mar  6 2023
+Copyright (c) 2023 OpenBouffalo team
+Copyright (c) 2022 Bouffalolab team
+=========== flash cfg ==============
+jedec id   0xEF6018
+mid            0xEF
+iomode         0x04
+clk delay      0x01
+clk invert     0x01
+read reg cmd0  0x05
+read reg cmd1  0x35
+write reg cmd0 0x01
+write reg cmd1 0x31
+qe write len   0x01
+cread support  0x00
+cread code     0xFF
+burst wrap cmd 0x77
+sector size:   0x04
+=====================================
+dynamic memory init success,heap size = 156 Kbyte 
+Starting Mailbox Handlers
+Forwarding Interupt SDH (33) to D0 (0x58008bbc)
+Forwarding Interupt GPIO (60) to D0 (0x58008d0e)
+Running...
+Mailbox IRQ Stats:
+.Peripheral SDH (33): 0
+.Peripheral GPIO (60): 0
+Unhandled Interupts: 0 Unhandled Signals 0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/52ccdf076ae294db26e837e6ffc4bafb">(Source)</a></p>
 <p>Yep we have flashed the OpenBouffalo Firmware successfully!</p>
-<p><img src="https://lupyuen.github.io/images/ox64-pinout3.jpg" alt="Serial Console" /></p>
 </li>
+</ol>
+<p>Now we check the Serial Console…</p>
+<p><img src="https://lupyuen.github.io/images/ox64-pinout3.jpg" alt="Serial Console" /></p>
+<ol>
 <li>
 <p>Connect our USB Serial Adapter to <strong>Ox64 Serial Console</strong>: (pic above)</p>
 <ul>
@@ -460,7 +470,7 @@ Retry time exceeded; starting again
 </ol>
 <p>Let’s load Ox64 Linux into a microSD Card…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Ox64 Linux in a microSD Card" /></p>
-<h1 id="boot-linux-on-ox64"><a href="#boot-linux-on-ox64">4 Boot Linux on Ox64</a></h1>
+<h1 id="boot-linux-on-ox64"><a href="#boot-linux-on-ox64">5 Boot Linux on Ox64</a></h1>
 <p>TODO</p>
 <p>Now that D0 Multimedia Core is flashed with OpenSBI and U-Boot Bootloader, we’re ready to boot Linux on microSD!</p>
 <p>Based on the <a href="https://github.com/openbouffalo/buildroot_bouffalo#flashing-instructions">Official Flashing Instructions</a>…</p>
@@ -494,14 +504,14 @@ Retry time exceeded; starting again
 </li>
 <li>
 <p>On the USB Serial Terminal (Flashing UART) we should see the same thing as earlier…</p>
-<div class="example-wrap"><pre class="language-text"><code>[I][MAIN] Starting Mailbox Handlers
-[I][MBOX] Forwarding Interupt SDH (33) to D0 (0x58008bbc)
-[I][MBOX] Forwarding Interupt GPIO (60) to D0 (0x58008d0e)
-[I][MAIN] Running...
-[I][MBOX] Mailbox IRQ Stats:
-[I][MBOX] .Peripheral SDH (33): 0
-[I][MBOX] .Peripheral GPIO (60): 0
-[I][MBOX] Unhandled Interupts: 0 Unhandled Signals 0
+<div class="example-wrap"><pre class="language-text"><code>Starting Mailbox Handlers
+Forwarding Interupt SDH (33) to D0 (0x58008bbc)
+Forwarding Interupt GPIO (60) to D0 (0x58008d0e)
+Running...
+Mailbox IRQ Stats:
+.Peripheral SDH (33): 0
+.Peripheral GPIO (60): 0
+Unhandled Interupts: 0 Unhandled Signals 0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/52ccdf076ae294db26e837e6ffc4bafb">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout3.jpg" alt="Serial Console" /></p>
@@ -520,26 +530,27 @@ Retry time exceeded; starting again
 </li>
 <li>
 <p>On the USB Serial Terminal (Serial Console) we should see…</p>
-<div class="example-wrap"><pre class="language-text"><code>[I][] Powered by BouffaloLab
-[I][] Build:11:52:04,Mar  6 2023
-[I][] Copyright (c) 2023 OpenBouffalo team
-[I][] Copyright (c) 2022 Bouffalolab team
-[I][] dynamic memory init success,heap s[I][LowLoad] D0 start...
-[I][LowLoad] low_load start... 
-[I][LowLoad] Header at 0x5d5ff000
-[I][LowLoad] Section dtb(1) - Start 0x5d5ff100, Size 14314
-[I][LowLoad] Copying DTB to 0x51ff8000...0x51ffb7ea
-[I][LowLoad] Done!
-[I][LowLoad] Section OpenSBI(2) - Start 0x5d60f100, Size 109864
-[I][LowLoad] Copying OpenSBI to 0x3ef80000...0x3ef9ad28
-[I][LowLoad] Done!
-[I][LowLoad] Section Kernel(3) - Start 0x5d62f100, Size 315597
-[I][LowLoad] Uncompressing Kernel to 0x50000000...
-[I][LowLoad] Done!
-[I][LowLoad] CRC: 00000000
-[I][LowLoad] load time: 61306 us 
-[I][LowLoad] ing PMP
-[I][LowLoad] Booting OpenSBI at 0x000000003ef80000 with DTB at 0x51ff8000
+<div class="example-wrap"><pre class="language-text"><code>Powered by BouffaloLab
+Build:11:52:04,Mar  6 2023
+Copyright (c) 2023 OpenBouffalo team
+Copyright (c) 2022 Bouffalolab team
+dynamic memory init success,heap
+D0 start...
+low_load start... 
+Header at 0x5d5ff000
+Section dtb(1) - Start 0x5d5ff100, Size 14314
+Copying DTB to 0x51ff8000...0x51ffb7ea
+Done!
+Section OpenSBI(2) - Start 0x5d60f100, Size 109864
+Copying OpenSBI to 0x3ef80000...0x3ef9ad28
+Done!
+Section Kernel(3) - Start 0x5d62f100, Size 315597
+Uncompressing Kernel to 0x50000000...
+Done!
+CRC: 00000000
+load time: 61306 us 
+ing PMP
+Booting OpenSBI at 0x000000003ef80000 with DTB at 0x51ff8000
 ...
 OpenSBI v1.2
 Platform Name             : Pine64 Ox64 (D0)
@@ -601,16 +612,16 @@ Retry time exceeded; starting again
 <p>“This is not hardware specific, but flasher specific. With blisp, I was able to get faster flashing working, but this is Apple’s quirk. Or maybe not? Because FreeBSD need same quirks and exact buffer sizes as Apple.”</p>
 </blockquote>
 <p><img src="https://lupyuen.github.io/images/ox64-cores.jpg" alt="Bouffalo Lab BL808 is a complex creature with 3 (Asymmetric) RISC-V Cores" /></p>
-<h1 id="ox64-peripheral-interrupts"><a href="#ox64-peripheral-interrupts">5 Ox64 Peripheral Interrupts</a></h1>
+<h1 id="ox64-peripheral-interrupts"><a href="#ox64-peripheral-interrupts">6 Ox64 Peripheral Interrupts</a></h1>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>[I][MAIN] Starting Mailbox Handlers
-[I][MBOX] Forwarding Interupt SDH (33) to D0 (0x58008bbc)
-[I][MBOX] Forwarding Interupt GPIO (60) to D0 (0x58008d0e)
-[I][MAIN] Running...
-[I][MBOX] Mailbox IRQ Stats:
-[I][MBOX] .Peripheral SDH (33): 0
-[I][MBOX] .Peripheral GPIO (60): 0
-[I][MBOX] Unhandled Interupts: 0 Unhandled Signals 0
+<div class="example-wrap"><pre class="language-text"><code>Starting Mailbox Handlers
+Forwarding Interupt SDH (33) to D0 (0x58008bbc)
+Forwarding Interupt GPIO (60) to D0 (0x58008d0e)
+Running...
+Mailbox IRQ Stats:
+.Peripheral SDH (33): 0
+.Peripheral GPIO (60): 0
+Unhandled Interupts: 0 Unhandled Signals 0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/52ccdf076ae294db26e837e6ffc4bafb">(Source)</a></p>
 <p>SDH: SD Card (SDIO) Host Controller (BL808 RM Page 561)</p>
@@ -634,10 +645,10 @@ Retry time exceeded; starting again
 <p>“You can also use u-boot. https://github.com/openbouffalo/u-boot/releases/tag/bl808-2023-02-19 
 You can also get rid of mailbox, but you will have to build the kernel yourself https://github.com/openbouffalo/linux/tree/bl808/all”</p>
 </blockquote>
-<h1 id="apache-nuttx-rtos-for-ox64"><a href="#apache-nuttx-rtos-for-ox64">6 Apache NuttX RTOS for Ox64</a></h1>
+<h1 id="apache-nuttx-rtos-for-ox64"><a href="#apache-nuttx-rtos-for-ox64">7 Apache NuttX RTOS for Ox64</a></h1>
 <p><em>Why Apache NuttX RTOS?</em></p>
-<p>Ox64 sounds a little tiny for 64-bit Linux.</p>
-<p>Perhaps Ox64 might run more efficiently with a tiny 64-bit RTOS like Apache NuttX?</p>
+<p>Ox64 seems a little tiny for <strong>64-bit Linux</strong>.</p>
+<p>Perhaps Ox64 might run more efficiently with a tiny <strong>64-bit RTOS</strong> like Apache NuttX?</p>
 <p>Let’s explore…</p>
 <ol>
 <li>
@@ -682,7 +693,7 @@ You can also get rid of mailbox, but you will have to build the kernel yourself 
 <p>Thankfully it’s a <strong>One-Time Thing</strong>. To upgrade the NuttX Kernel, we only need to <strong>update the microSD Card</strong>. (No more flashing!)</p>
 </li>
 </ol>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -704,7 +715,7 @@ You can also get rid of mailbox, but you will have to build the kernel yourself 
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ox64.md"><strong>lupyuen.github.io/src/ox64.md</strong></a></p>
-<h1 id="appendix-linux-image-header-for-ox64"><a href="#appendix-linux-image-header-for-ox64">8 Appendix: Linux Image Header for Ox64</a></h1>
+<h1 id="appendix-linux-image-header-for-ox64"><a href="#appendix-linux-image-header-for-ox64">9 Appendix: Linux Image Header for Ox64</a></h1>
 <p>TODO</p>
 <p><em>Will Apache NuttX RTOS boot on Ox64 BL808?</em></p>
 <p>Let’s examine the Linux Kernel Image for Ox64, and we replicate the same format for NuttX. (Which is how we ported NuttX to 64-bit RISC-V Star64 JH7110 SBC)</p>
@@ -799,7 +810,7 @@ d          96  extlinux
 <p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
 <p>Header Values are exactly the same as Star64. (Except the Image Size and Executable Code, since the Jump Address is different)</p>
 <p>Thus we simply reuse the code from NuttX Star64!</p>
-<h1 id="appendix-linux-device-tree-for-ox64"><a href="#appendix-linux-device-tree-for-ox64">9 Appendix: Linux Device Tree for Ox64</a></h1>
+<h1 id="appendix-linux-device-tree-for-ox64"><a href="#appendix-linux-device-tree-for-ox64">10 Appendix: Linux Device Tree for Ox64</a></h1>
 <p>TODO: Dump the Device Tree</p>
 <div class="example-wrap"><pre class="language-text"><code>dtc \
   -o bl808-pine64-ox64.dts \
@@ -838,7 +849,7 @@ d          96  extlinux
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L118-L127">(Source)</a></p>
 <p>TODO: Print Debug Logs with OpenSBI</p>
-<h1 id="appendix-ox64-documentation"><a href="#appendix-ox64-documentation">10 Appendix: Ox64 Documentation</a></h1>
+<h1 id="appendix-ox64-documentation"><a href="#appendix-ox64-documentation">11 Appendix: Ox64 Documentation</a></h1>
 <p>TODO</p>
 <ul>
 <li>
