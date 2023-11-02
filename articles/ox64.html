@@ -166,9 +166,9 @@
 <p>Let’s explore…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout.jpg" alt="Flashing UART vs Serial Console" /></p>
 <h1 id="flashing-uart-vs-serial-console"><a href="#flashing-uart-vs-serial-console">1 Flashing UART vs Serial Console</a></h1>
-<p>TODO</p>
-<p><em>We need to handle TWO UART Ports on Ox64?</em></p>
-<p>Yeah don’t confuse the 2 UART Ports on Ox64! Let’s give the UART Ports distinctive names <a href="https://en.wikipedia.org/wiki/Migi_%26_Dali">(like Migi &amp; Dali)</a>…</p>
+<p><em>We need to connect TWO UART Ports on Ox64?</em></p>
+<p>Yeah don’t confuse the <strong>2 UART Ports</strong> that we’ll connect on Ox64!</p>
+<p>Let’s give the 2 UART Ports distinctive names <a href="https://en.wikipedia.org/wiki/Migi_%26_Dali">(like Migi &amp; Dali)</a>…</p>
 <ol>
 <li>
 <p><strong>Ox64 Flashing UART</strong>: Used for Flashing Ox64</p>
@@ -239,10 +239,9 @@
 <p>Thus our USB Serial Adapter must connect reliably to Ox64 at 2 Mbps. Let’s test it…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
 <h1 id="test-the-usb-serial-adapter"><a href="#test-the-usb-serial-adapter">2 Test the USB Serial Adapter</a></h1>
-<p>TODO</p>
 <p><strong>Warning:</strong> Some USB Serial Adapters <a href="https://wiki.pine64.org/wiki/Ox64#Compatible_UARTs_when_in_bootloader_mode"><strong>WON’T WORK!</strong></a></p>
-<p>We tested with the <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>Pine64 Woodpecker CH340G</strong></a> USB Serial Adapter on macOS x64.</p>
-<p>We are connecting at 2 Mbps, which might be too fast for some USB Serial Adapters. (Like this <a href="https://www.lazada.sg/products/i2037772272-s11135131253.html"><strong>CP2102 Dongle</strong></a>, which shows garbled text at 2 Mbps)</p>
+<p>We tested Ox64 with the <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>Pine64 Woodpecker CH340G</strong></a> USB Serial Adapter on macOS x64.</p>
+<p>Ox64 mandates 2 Mbps, which might be too fast for some USB Serial Adapters. (Like this <a href="https://www.lazada.sg/products/i2037772272-s11135131253.html"><strong>CP2102 Dongle</strong></a>, which shows garbled text at 2 Mbps)</p>
 <ol>
 <li>
 <p>To Test our USB Serial Adapter: Connect the USB Serial Adapter to <strong>Ox64 Flashing UART</strong> (pic above)…</p>
@@ -252,9 +251,12 @@
 <tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong>GND</strong></td><td style="text-align: left">Ground</td></tr>
 <tr><td style="text-align: center"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
 </tbody></table>
-</div>
-<p>Start the USB Serial Terminal (for Flashing UART) at 2,000,000 bps (2 Mbps).</p>
-<p>TODO: screen </p>
+</div></li>
+<li>
+<p>Start the <strong>USB Serial Terminal</strong> (for Flashing UART) at <strong>2,000,000 bps</strong> (2 Mbps).</p>
+<p><strong>For macOS:</strong> The “<a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos"><strong>screen</strong></a>” command might not support 2 Mbps. Use <a href="https://freeware.the-meiers.org/"><strong>CoolTerm</strong></a> instead.</p>
+</li>
+<li>
 <p>Power up Ox64 via the Micro USB Port. Ox64 Green LED should light up.</p>
 <p>This Clickety Micro USB Cable is very handy for rebooting Ox64…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-usb.jpg" alt="Clickety Micro USB Cable" /></p>
