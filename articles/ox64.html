@@ -631,10 +631,16 @@ You can also get rid of mailbox, but you will have to build the kernel yourself 
 <h1 id="apache-nuttx-rtos-for-ox64"><a href="#apache-nuttx-rtos-for-ox64">6 Apache NuttX RTOS for Ox64</a></h1>
 <p>TODO</p>
 <p>Linux Image Header</p>
-<p>BL602 UART Driver</p>
 <p>TFTP</p>
 <p>“Pretending to be Linux” has worked remarkably well for booting NuttX on PinePhone, PinePhone Pro, NanoPi M4 SBC and Star64 RISC-V SBC!</p>
 <ol>
+<li>
+<p><em>How will we print to the Serial Console?</em></p>
+<p>We’ll borrow the NuttX UART Driver for BL602 (which will probably work with BL808)…</p>
+<p>TODO</p>
+<p>Or we’ll call OpenSBI Debug Console…</p>
+<p>TODO</p>
+</li>
 <li>
 <p>OpenSBI Cores</p>
 </li>
