@@ -81,12 +81,12 @@
 <li><a href="#appendix-peripheral-interrupts-for-ox64">10 Appendix: Peripheral Interrupts for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>14 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/ox64-title.jpg" alt="Booting Linux on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <p><em>What’s this BL808?</em> <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_DS/en/BL808_DS_1.2_en.pdf">(Datasheet)</a> <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(Reference Manual)</a></p>
-<p>Bouffalo Lab BL808 SoC is a curiously complex creature with 3 (Asymmetric) RISC-V Cores (linked via IPC, pic below)…</p>
+<p>Bouffalo Lab BL808 SoC is a curiously complex creature with 3 (Asymmetric) RISC-V Cores (pic below)…</p>
 <ol>
 <li>
 <p><strong>D0 Core:</strong> <a href="https://www.t-head.cn/product/c906?lang=en"><strong>64-bit T-Head C906</strong></a> (RV64IMAFCV, 480 MHz)</p>
 <p><strong>Multimedia Core</strong> with MIPI CSI / DSI, Neural Processing Unit</p>
-<p><strong>Memory Management Unit</strong> is Sv39 with 128 / 256 / 512 TLB table entry. (Like Star64?)</p>
+<p><strong>Memory Management Unit</strong> is Sv39 with 128 / 256 / 512 TLB table entries. (Like Star64?)</p>
 </li>
 <li>
 <p><strong>M0 Core:</strong> <a href="https://www.t-head.cn/product/e907?lang=en"><strong>32-bit T-Head E907</strong></a> (RV32IMAFCP, 320 MHz)</p>
@@ -99,11 +99,11 @@
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/ox64-cores.jpg" alt="Bouffalo Lab BL808 is a complex creature with 3 (Asymmetric) RISC-V Cores" /></p>
-<p><a href="https://wiki.pine64.org/wiki/Ox64">Pine64 Ox64</a> is the dev board for BL808C. (Pic below)</p>
-<p>BL808C supports MIPI CSI Cameras but not MIPI DSI Displays.</p>
+<p><a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64</strong></a> is the development board for BL808C. (Pic below)</p>
+<p><strong>BL808C</strong> supports MIPI CSI Cameras but not MIPI DSI Displays.</p>
 <p>(Maybe someday we’ll see BL808D for MIPI DSI Displays)</p>
-<p><em>Is Ox64 BL808 an SBC? Or an MCU Board?</em></p>
-<p>Technically Ox64 BL808 boots 64-bit RISC-V Linux (via MicroSD), so it feels like an SBC…</p>
+<p><em>Is Ox64 an SBC? Or an MCU Board?</em></p>
+<p>Technically Ox64 boots 64-bit RISC-V Linux (via MicroSD), so it feels like an SBC…</p>
 <ul>
 <li>
 <p><a href="https://github.com/openbouffalo/buildroot_bouffalo">Linux Image + OpenSBI + U-Boot Bootloader for BL808</a></p>
@@ -119,7 +119,7 @@
 <p>(On-The-Go = USB Host + USB Device)</p>
 </li>
 </ul>
-<p>But Ox64 BL808 also feels like an MCU Board…</p>
+<p>But Ox64 also feels like an MCU Board…</p>
 <ul>
 <li>
 <p>Form Factor is similar to MCU Board (pic below)</p>
