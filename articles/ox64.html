@@ -850,23 +850,48 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <li>
 <p>The Forwarded Peripheral Interrupts are for: SD Card Host Controller (SDH) and GPIO </p>
 </li>
+<li>
+<p>Which makes sense because U-Boot Bootloader (on D0 Multimedia Core) needs to access the SD Card (for booting Linux)</p>
+</li>
 </ul>
 <p>TODO</p>
 <p>SDH: SD Card (SDIO) Host Controller (BL808 RM Page 561)</p>
-<p>IRQ 60: GPIO_INT0 (IRQ_NUM_BASE+44) GPIO Interrupt (BL808 RM Page 44)</p>
-<p><a href="https://github.com/bouffalolab/bl808_linux/blob/main/bl_mcu_sdk_bl808/drivers/bl808_driver/regs/bl808.h#L123">GPIO_INT0_IRQn</a></p>
-<p><a href="https://github.com/bouffalolab/bl808_linux/blob/main/bl_mcu_sdk_bl808/drivers/bl808_driver/regs/bl808.h#L96">SDH is IRQ 33: SDH_IRQn</a></p>
-<p>IRQ_NUM_BASE is 16 (BL808 RM Page 45)</p>
-<p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/m0_lowload">m0_lowload</a></p>
-<p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/d0_lowload">d0_lowload</a></p>
-<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L127-L135">Forward GPIO Interrupt</a></p>
-<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L95-L103">Forward SDH Interrupt</a></p>
-<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L238C1-L257">Setup SDH Interrupt</a></p>
-<p>Other Interrupts (unused)</p>
 <ul>
-<li><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L103-L111">UART2</a></li>
-<li><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L111-L119">USB</a></li>
-<li><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L119-L127">EMAC</a></li>
+<li>
+<p>GPIO Interrupt is IRQ 60</p>
+<p>Because GPIO_INT0 = IRQ_NUM_BASE + 44</p>
+<p>(BL808 Reference Manual, Page 44)</p>
+<p>And IRQ_NUM_BASE is 16</p>
+<p>(BL808 Reference Manual, Page 45)</p>
+<p><a href="https://github.com/bouffalolab/bl808_linux/blob/main/bl_mcu_sdk_bl808/drivers/bl808_driver/regs/bl808.h#L123">(Defined as GPIO_INT0_IRQn)</a></p>
+</li>
+<li>
+<p>SD Card Interrupt is IRQ 33</p>
+<p><a href="https://github.com/bouffalolab/bl808_linux/blob/main/bl_mcu_sdk_bl808/drivers/bl808_driver/regs/bl808.h#L96">(Defined as SDH_IRQn)</a></p>
+</li>
+<li>
+<p>How we <a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L238C1-L257">Setup SDH Interrupt</a></p>
+<p>And <a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L95-L103">Forward SDH Interrupt</a></p>
+</li>
+<li>
+<p>How we <a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L127-L135">Forward GPIO Interrupt</a></p>
+</li>
+<li>
+<p>Refer to <a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/m0_lowload">OpenBouffalo Firmware for m0_lowload</a></p>
+<p>And <a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/d0_lowload">OpenBouffalo Firmware for d0_lowload</a></p>
+</li>
+</ul>
+<p>Other Peripheral Interrupts that we might forward in future (disabled for now)…</p>
+<ul>
+<li>
+<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L103-L111">UART2</a></p>
+</li>
+<li>
+<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L111-L119">USB</a></p>
+</li>
+<li>
+<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L119-L127">EMAC</a></p>
+</li>
 </ul>
 <p>Comment by <a href="https://x.com/madushan1000/status/1719069431580524720?s=20">@madushan1000</a>…</p>
 <blockquote>
