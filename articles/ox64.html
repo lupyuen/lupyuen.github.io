@@ -237,13 +237,13 @@
 <ol>
 <li>
 <p>To Test our USB Serial Adapter: Connect the USB Serial Adapter to <strong>Ox64 Flashing UART</strong> (pic above)…</p>
-<ul>
-<li>Flashing UART TX is <strong>GPIO 14</strong> (Physical Pin 1)</li>
-<li>Flashing UART RX is <strong>GPIO 15</strong> (Physical Pin 2)</li>
-<li>Remember to connect GND</li>
-<li>Baud 2,000,000 (2 Mbps)</li>
-</ul>
-<p>Start the USB Serial Terminal (Flashing UART).</p>
+<div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 14</strong></td><td style="text-align: left">Physical Pin 1</td></tr>
+<tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 15</strong></td><td style="text-align: left">Physical Pin 2</td></tr>
+</tbody></table>
+</div>
+<p>(Remember to connect GND)</p>
+<p>Start the USB Serial Terminal (for Flashing UART) at 2,000,000 bps (2 Mbps).</p>
 <p>Power up Ox64 via the Micro USB Port. Ox64 Green LED should light up.</p>
 <p>This Clickety Micro USB Cable is very handy for rebooting Ox64…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-usb.jpg" alt="Clickety Micro USB Cable" /></p>
@@ -298,10 +298,11 @@ CLI RAW Data, c906
 <p><strong>bl808-firmware</strong>: An image containing OpenSBI, Uboot and uboot dtb files. </p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
 <p>Here are the steps, based on the <a href="https://github.com/openbouffalo/buildroot_bouffalo#flashing-instructions">Official Flashing Instructions</a>…</p>
 <ol>
 <li>
-<p>Now we prepare to flash:</p>
+<p>Check that our USB Serial Adapter is connected to the Flashing UART. (Pic above)</p>
 <p>Disconnect the USB Serial Terminal (to release the Flashing UART)</p>
 <p>Set BL808 board to programming mode</p>
 <ul>
@@ -359,8 +360,8 @@ chmod +x BLDevCube-macos-x86_64
 <p>PATH: Select “d0_lowload_bl808_d0.bin”</p>
 </li>
 <li>
-<p>Set UART Rate to 230400.</p>
-<p>Don’t set to 2000000, it will fail on macOS!</p>
+<p>Set UART Rate to 230400 (230.4 kbps)</p>
+<p>Don’t set to 2000000 (2 Mbps), it will fail on macOS!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Same problem when flashing BL602)</a></p>
 </li>
 <li>
@@ -378,8 +379,8 @@ chmod +x BLDevCube-macos-x86_64
 <p>Select “bl808-firmware.bin”</p>
 </li>
 <li>
-<p>Set UART Rate to 230400.</p>
-<p>Don’t set to 2000000, it will fail on macOS!</p>
+<p>Set UART Rate to 230400 (230.4 kbps)</p>
+<p>Don’t set to 2000000 (2 Mbps), it will fail on macOS!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Same problem when flashing BL602)</a></p>
 </li>
 <li>
@@ -439,13 +440,13 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <ol>
 <li>
 <p>Connect our USB Serial Adapter to <strong>Ox64 Serial Console</strong>: (pic above)</p>
-<ul>
-<li>Serial Console TX is <strong>GPIO 16</strong> (Physical Pin 32)</li>
-<li>Serial Console RX is <strong>GPIO 17</strong> (Physical Pin 31)</li>
-<li>Remember to connect GND</li>
-<li>Baud 2,000,000 (2 Mbps)</li>
-</ul>
-<p>Start the USB Serial Terminal (Serial Console).</p>
+<div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 16</strong></td><td style="text-align: left">Physical Pin 32</td></tr>
+<tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 17</strong></td><td style="text-align: left">Physical Pin 31</td></tr>
+</tbody></table>
+</div>
+<p>(Remember to connect GND)</p>
+<p>Start the USB Serial Terminal (for Serial Console) at 2,000,000 bps (2 Mbps).</p>
 <p>Unplug and replug the Micro USB Port.</p>
 <p>(Don’t press the Boot Button!)</p>
 </li>
