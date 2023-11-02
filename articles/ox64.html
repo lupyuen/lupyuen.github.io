@@ -74,11 +74,11 @@
 <li><a href="#flash-opensbi-and-u-boot-bootloader">3 Flash OpenSBI and U-Boot Bootloader</a><ul></ul></li>
 <li><a href="#boot-linux-on-ox64">4 Boot Linux on Ox64</a><ul></ul></li>
 <li><a href="#ox64-peripheral-interrupts">5 Ox64 Peripheral Interrupts</a><ul></ul></li>
-<li><a href="#inspect-the-linux-image-for-ox64-bl808">6 Inspect the Linux Image for Ox64 BL808</a><ul></ul></li>
-<li><a href="#documentation-for-ox64-bl808">7 Documentation for Ox64 BL808</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-linux-image-header-for-ox64-bl808">9 Appendix: Linux Image Header for Ox64 BL808</a><ul></ul></li>
-<li><a href="#appendix-linux-device-tree-for-ox64-bl808">10 Appendix: Linux Device Tree for Ox64 BL808</a><ul></ul></li></ul></nav><p>📝 <em>14 Nov 2023</em></p>
+<li><a href="#apache-nuttx-rtos-for-ox64">6 Apache NuttX RTOS for Ox64</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-linux-image-header-for-ox64">8 Appendix: Linux Image Header for Ox64</a><ul></ul></li>
+<li><a href="#appendix-linux-device-tree-for-ox64">9 Appendix: Linux Device Tree for Ox64</a><ul></ul></li>
+<li><a href="#appendix-ox64-documentation">10 Appendix: Ox64 Documentation</a><ul></ul></li></ul></nav><p>📝 <em>14 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/ox64-title.jpg" alt="Booting Linux on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <p><em>What’s this BL808?</em> <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_DS/en/BL808_DS_1.2_en.pdf">(Datasheet)</a> <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(Reference Manual)</a></p>
 <p>Bouffalo Lab BL808 SoC is a complex creature with 3 (Asymmetric) RISC-V Cores (linked via IPC, pic below)…</p>
@@ -594,11 +594,7 @@ Retry time exceeded; starting again
 <blockquote>
 <p>“This is not hardware specific, but flasher specific. With blisp, I was able to get faster flashing working, but this is Apple’s quirk. Or maybe not? Because FreeBSD need same quirks and exact buffer sizes as Apple.”</p>
 </blockquote>
-<p>Comment by <a href="https://x.com/madushan1000/status/1719069431580524720?s=20">@madushan1000</a>…</p>
-<blockquote>
-<p>“You can also use u-boot. https://github.com/openbouffalo/u-boot/releases/tag/bl808-2023-02-19 
-You can also get rid of mailbox, but you will have to build the kernel yourself https://github.com/openbouffalo/linux/tree/bl808/all”</p>
-</blockquote>
+<p><img src="https://lupyuen.github.io/images/ox64-cores.jpg" alt="Bouffalo Lab BL808 is a complex creature with 3 (Asymmetric) RISC-V Cores" /></p>
 <h1 id="ox64-peripheral-interrupts"><a href="#ox64-peripheral-interrupts">5 Ox64 Peripheral Interrupts</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>[I][MAIN] Starting Mailbox Handlers
@@ -627,48 +623,14 @@ You can also get rid of mailbox, but you will have to build the kernel yourself 
 <li><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L111-L119">USB</a></li>
 <li><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L119-L127">EMAC</a></li>
 </ul>
-<h1 id="inspect-the-linux-image-for-ox64-bl808"><a href="#inspect-the-linux-image-for-ox64-bl808">6 Inspect the Linux Image for Ox64 BL808</a></h1>
+<p>Comment by <a href="https://x.com/madushan1000/status/1719069431580524720?s=20">@madushan1000</a>…</p>
+<blockquote>
+<p>“You can also use u-boot. https://github.com/openbouffalo/u-boot/releases/tag/bl808-2023-02-19 
+You can also get rid of mailbox, but you will have to build the kernel yourself https://github.com/openbouffalo/linux/tree/bl808/all”</p>
+</blockquote>
+<h1 id="apache-nuttx-rtos-for-ox64"><a href="#apache-nuttx-rtos-for-ox64">6 Apache NuttX RTOS for Ox64</a></h1>
 <p>TODO</p>
-<h1 id="documentation-for-ox64-bl808"><a href="#documentation-for-ox64-bl808">7 Documentation for Ox64 BL808</a></h1>
-<p>TODO</p>
-<ul>
-<li>
-<p><a href="https://adventurist.me/posts/00317">“Booting Linux on the Pine64 Ox64 SBC”</a></p>
-</li>
-<li>
-<p><a href="https://wiki.pine64.org/wiki/Ox64">Pine64 Ox64 Wiki</a></p>
-</li>
-<li>
-<p><a href="https://files.pine64.org/doc/ox64/PINE64_Ox64-Schematic-202221018.pdf">Pine64 Ox64 Schematic</a></p>
-</li>
-<li>
-<p><a href="https://openbouffalo.org/index.php/Main_Page">OpenBouffalo Wiki</a></p>
-</li>
-<li>
-<p><a href="https://github.com/openbouffalo/buildroot_bouffalo">Linux Image + OpenSBI + U-Boot for BL808</a></p>
-<p><a href="https://github.com/bouffalolab/buildroot_bouffalo">(Newer version?)</a></p>
-</li>
-<li>
-<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_DS/en/BL808_DS_1.2_en.pdf">BL808 Datasheet</a></p>
-</li>
-<li>
-<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">BL808 Reference Manual</a></p>
-</li>
-<li>
-<p><a href="https://www.t-head.cn/product/c906?lang=en">BL808 D0 Core: T-Head C906 480MHz 64-bit RISC-V CPU</a></p>
-<p>(Multimedia Core: MIPI CSI / DSI, Neural Proc Unit)</p>
-<p>Memory Mgmt Unit is Sv39, 128/256/512 TLB table entry. (Same as Star64?)</p>
-</li>
-<li>
-<p><a href="https://www.t-head.cn/product/e907?lang=en">BL808 M0 Core: T-Head E907 320MHz 32-bit RISC-V CPU</a></p>
-<p>(Wireless + Peripherals Core: WiFi, BLE, BT, Zigbee, Audio)</p>
-</li>
-<li>
-<p><a href="https://www.t-head.cn/product/e902?lang=en">BL808 LP Core: T-Head E902 150MHz 32-bit RISC-V CPU</a></p>
-<p>(Low Power Core)</p>
-</li>
-</ul>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -690,7 +652,7 @@ You can also get rid of mailbox, but you will have to build the kernel yourself 
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ox64.md"><strong>lupyuen.github.io/src/ox64.md</strong></a></p>
-<h1 id="appendix-linux-image-header-for-ox64-bl808"><a href="#appendix-linux-image-header-for-ox64-bl808">9 Appendix: Linux Image Header for Ox64 BL808</a></h1>
+<h1 id="appendix-linux-image-header-for-ox64"><a href="#appendix-linux-image-header-for-ox64">8 Appendix: Linux Image Header for Ox64</a></h1>
 <p>TODO</p>
 <p><em>Will Apache NuttX RTOS boot on Ox64 BL808?</em></p>
 <p>Let’s examine the Linux Kernel Image for Ox64, and we replicate the same format for NuttX. (Which is how we ported NuttX to 64-bit RISC-V Star64 JH7110 SBC)</p>
@@ -785,7 +747,7 @@ d          96  extlinux
 <p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
 <p>Header Values are exactly the same as Star64. (Except the Image Size and Executable Code, since the Jump Address is different)</p>
 <p>Thus we simply reuse the code from NuttX Star64!</p>
-<h1 id="appendix-linux-device-tree-for-ox64-bl808"><a href="#appendix-linux-device-tree-for-ox64-bl808">10 Appendix: Linux Device Tree for Ox64 BL808</a></h1>
+<h1 id="appendix-linux-device-tree-for-ox64"><a href="#appendix-linux-device-tree-for-ox64">9 Appendix: Linux Device Tree for Ox64</a></h1>
 <p>TODO: Dump the Device Tree</p>
 <div class="example-wrap"><pre class="language-text"><code>dtc \
   -o bl808-pine64-ox64.dts \
@@ -824,6 +786,45 @@ d          96  extlinux
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L118-L127">(Source)</a></p>
 <p>TODO: Print Debug Logs with OpenSBI</p>
+<h1 id="appendix-ox64-documentation"><a href="#appendix-ox64-documentation">10 Appendix: Ox64 Documentation</a></h1>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://adventurist.me/posts/00317">“Booting Linux on the Pine64 Ox64 SBC”</a></p>
+</li>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/Ox64">Pine64 Ox64 Wiki</a></p>
+</li>
+<li>
+<p><a href="https://files.pine64.org/doc/ox64/PINE64_Ox64-Schematic-202221018.pdf">Pine64 Ox64 Schematic</a></p>
+</li>
+<li>
+<p><a href="https://openbouffalo.org/index.php/Main_Page">OpenBouffalo Wiki</a></p>
+</li>
+<li>
+<p><a href="https://github.com/openbouffalo/buildroot_bouffalo">Linux Image + OpenSBI + U-Boot for BL808</a></p>
+<p><a href="https://github.com/bouffalolab/buildroot_bouffalo">(Newer version?)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_DS/en/BL808_DS_1.2_en.pdf">BL808 Datasheet</a></p>
+</li>
+<li>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">BL808 Reference Manual</a></p>
+</li>
+<li>
+<p><a href="https://www.t-head.cn/product/c906?lang=en">BL808 D0 Core: T-Head C906 480MHz 64-bit RISC-V CPU</a></p>
+<p>(Multimedia Core: MIPI CSI / DSI, Neural Proc Unit)</p>
+<p>Memory Mgmt Unit is Sv39, 128/256/512 TLB table entry. (Same as Star64?)</p>
+</li>
+<li>
+<p><a href="https://www.t-head.cn/product/e907?lang=en">BL808 M0 Core: T-Head E907 320MHz 32-bit RISC-V CPU</a></p>
+<p>(Wireless + Peripherals Core: WiFi, BLE, BT, Zigbee, Audio)</p>
+</li>
+<li>
+<p><a href="https://www.t-head.cn/product/e902?lang=en">BL808 LP Core: T-Head E902 150MHz 32-bit RISC-V CPU</a></p>
+<p>(Low Power Core)</p>
+</li>
+</ul>
 
     
 </body>
