@@ -107,8 +107,7 @@
 <ul>
 <li>
 <p><a href="https://github.com/openbouffalo/buildroot_bouffalo">Linux Image + OpenSBI + U-Boot Bootloader for BL808</a></p>
-<p><a href="https://github.com/bouffalolab/buildroot_bouffalo">(Newer version?)</a></p>
-<p><a href="https://lupyuen.github.io/articles/sbi">(OpenSBI is the BIOS for RISC-V SBCs)</a></p>
+<p><a href="https://lupyuen.github.io/articles/sbi">(<strong>OpenSBI</strong> is the “BIOS” for RISC-V SBCs)</a></p>
 </li>
 <li>
 <p>USB-C Port for Camera Module (Dual-Lane MIPI CSI)</p>
@@ -291,26 +290,30 @@ Ping!
 </li>
 </ol>
 <h1 id="flash-opensbi-and-u-boot-bootloader"><a href="#flash-opensbi-and-u-boot-bootloader">3 Flash OpenSBI and U-Boot Bootloader</a></h1>
-<p>TODO</p>
-<p>Before booting Linux on Ox64, we flash OpenSBI + U-Boot Bootloader to D0 Multimedia Core, and the Peripheral Interrupt Firmware to M0 Wireless Core. From <a href="https://github.com/openbouffalo/buildroot_bouffalo">buildroot_bouffalo</a>:</p>
+<p><em>Our USB Serial Adapter works great at 2 Mbps. What next?</em></p>
+<p>Before booting Linux on Ox64, we flash…</p>
 <ul>
 <li>
-<p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/d0_lowload"><strong>d0_lowload</strong></a>
-: This is a very basic bootloader that loads opensbi, the kernel and dts files into ram</p>
+<p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/m0_lowload"><strong>m0_lowload</strong></a> for M0 Wireless Core:</p>
+<p>Firmware that forwards <strong>Peripheral Interupts</strong> to the D0 Multimedia Core.</p>
+<p><a href="https://lupyuen.codeberg.page/articles/ox64.html#appendix-peripheral-interrupts-for-ox64">(Like <strong>SD Card</strong> and <strong>GPIO Interrupts</strong>)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/m0_lowload"><strong>m0_lowload</strong></a>: This firmware runs on M0 and forwards interupts to the D0 for several peripherals</p>
+<p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/d0_lowload"><strong>d0_lowload</strong></a> for D0 Wireless Core:</p>
+<p>Basic Bootloader that loads <strong>OpenSBI, U-Boot Bootloader</strong> and Device Tree into RAM.</p>
 </li>
 <li>
-<p><strong>bl808-firmware</strong>: An image containing OpenSBI, Uboot and uboot dtb files. </p>
+<p><a href="https://github.com/openbouffalo/buildroot_bouffalo"><strong>bl808-firmware</strong></a> for D0 Wireless Core:</p>
+<p>OpenSBI, U-Boot Bootloader and Device Tree.</p>
+<p><a href="https://lupyuen.github.io/articles/sbi">(<strong>OpenSBI</strong> is the “BIOS” for RISC-V SBCs)</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
-<p>Here are the steps, based on the <a href="https://github.com/openbouffalo/buildroot_bouffalo#flashing-instructions">Official Flashing Instructions</a>…</p>
+<p>Here are the steps, based on the <a href="https://github.com/openbouffalo/buildroot_bouffalo#flashing-instructions"><strong>Official Flashing Instructions</strong></a>…</p>
 <ol>
 <li>
 <p>Check that our USB Serial Adapter is connected to the Flashing UART. (Pic above)</p>
-<p>Disconnect the USB Serial Terminal (to release the Flashing UART)</p>
+<p>Close the USB Serial Terminal. (To release the Flashing UART)</p>
 <p>Set BL808 board to programming mode</p>
 <ul>
 <li>Remove the microSD Card</li>
@@ -339,7 +342,7 @@ Ping!
 <li>
 <p>We’ll run Bouffalo Lab DevCube for Flashing BL808.</p>
 <p>Only Ubuntu x64, macOS and Windows are supported.</p>
-<p>TODO: How to flash BL808 on Arm64 SBCs and Pinebook Pro? Sigh. See <a href="https://wiki.pine64.org/wiki/Ox64#Alternative:_Open-Source_Flashing">bflb-iot-tool / bflb-mcu-tool</a></p>
+<p><strong>TODO:</strong> How to flash BL808 on Arm64 SBCs and Pinebook Pro? Sigh. See <a href="https://wiki.pine64.org/wiki/Ox64#Alternative:_Open-Source_Flashing"><strong>bflb-iot-tool</strong> / <strong>bflb-mcu-tool</strong></a></p>
 </li>
 <li>
 <p>Download Bouffalo Lab DevCube 1.8.3 from…</p>
@@ -350,11 +353,11 @@ Ping!
 chmod +x BLDevCube-macos-x86_64
 ./BLDevCube-macos-x86_64
 </code></pre></div>
-<p><img src="https://lupyuen.github.io/images/ox64-flash1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ox64-flash1.png" alt="Select BL808 in BL Dev Cube" /></p>
 </li>
 <li>
 <p>Run DevCube, select “BL808”, and switch to “MCU” page</p>
-<p><img src="https://lupyuen.github.io/images/ox64-flash2.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ox64-flash2.jpg" alt="Flash MCU in BL Dev Cude" /></p>
 </li>
 <li>
 <p>M0 Group: Group0</p>
@@ -373,12 +376,12 @@ chmod +x BLDevCube-macos-x86_64
 </li>
 <li>
 <p>Click “Create &amp; Download” and wait until it’s done</p>
-<p><img src="https://lupyuen.github.io/images/ox64-flash3.png" alt="TODO" /></p>
-<p><a href="https://gist.github.com/lupyuen/125e15be5ed1e034bed33d16ed496d87">(See the log)</a></p>
+<p><img src="https://lupyuen.github.io/images/ox64-flash3.png" alt="Flash MCU Log" /></p>
+<p><a href="https://gist.github.com/lupyuen/125e15be5ed1e034bed33d16ed496d87">(See the <strong>MCU Flash Log</strong>)</a></p>
 </li>
 <li>
 <p>Switch to “IOT” page</p>
-<p><img src="https://lupyuen.github.io/images/ox64-flash4.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ox64-flash4.jpg" alt="Flash IoT in BL Dev Cube" /></p>
 </li>
 <li>
 <p>Enable ‘Single Download’</p>
@@ -392,12 +395,12 @@ chmod +x BLDevCube-macos-x86_64
 </li>
 <li>
 <p>Click “Create &amp; Download” again and wait until it’s done</p>
-<p><img src="https://lupyuen.github.io/images/ox64-flash5.png" alt="TODO" /></p>
-<p><a href="https://gist.github.com/lupyuen/e8c0aca0ebd0f1eae034b0996a5b3ec3">(See the log)</a></p>
+<p><img src="https://lupyuen.github.io/images/ox64-flash5.png" alt="IoT Flash Log" /></p>
+<p><a href="https://gist.github.com/lupyuen/e8c0aca0ebd0f1eae034b0996a5b3ec3">(See the <strong>IoT Flash Log</strong>)</a></p>
 </li>
 </ol>
 <h1 id="verify-opensbi-and-u-boot-bootloader"><a href="#verify-opensbi-and-u-boot-bootloader">4 Verify OpenSBI and U-Boot Bootloader</a></h1>
-<p>TODO</p>
+<p><em>But did we flash OpenSBI and U-Boot successfully?</em></p>
 <p>Let’s verify if the flashing was OK…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
 <ol>
@@ -480,9 +483,8 @@ Retry time exceeded; starting again
 <p>Let’s load Ox64 Linux into a microSD Card…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Ox64 Linux in a microSD Card" /></p>
 <h1 id="boot-linux-on-ox64"><a href="#boot-linux-on-ox64">5 Boot Linux on Ox64</a></h1>
-<p>TODO</p>
-<p>Now that D0 Multimedia Core is flashed with OpenSBI and U-Boot Bootloader, we’re ready to boot Linux on microSD!</p>
-<p>Based on the <a href="https://github.com/openbouffalo/buildroot_bouffalo#flashing-instructions">Official Flashing Instructions</a>…</p>
+<p>D0 Multimedia Core has been flashed with OpenSBI and U-Boot Bootloader. We’re ready to boot <strong>Linux on microSD</strong>!</p>
+<p>Based on the <a href="https://github.com/openbouffalo/buildroot_bouffalo#flashing-instructions"><strong>Official Flashing Instructions</strong></a>…</p>
 <ol>
 <li>
 <p>Look for the microSD Image that we downloaded earlier…</p>
