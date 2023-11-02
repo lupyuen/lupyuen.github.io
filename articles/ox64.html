@@ -269,13 +269,7 @@ Ping!
 </code></pre></div>
 <p><a href="https://adventurist.me/posts/00317">(Source)</a></p>
 <p>If the text appears garbled: Try a different USB Serial Adapter. (See above)</p>
-<p>My prototype version shows this instead…</p>
-<div class="example-wrap"><pre class="language-text"><code>Init CLI with event Driven
-start aos loop... 
-CLI RAW Data, c906
-/romfs/c906.bin not found!
-</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/43676407bbced733e65566879e18732b">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/43676407bbced733e65566879e18732b">(<strong>Pre-Production Ox64</strong> looks different)</a></p>
 </li>
 <li>
 <p>Pre-Flash Check: Set BL808 board to programming mode</p>
@@ -653,9 +647,10 @@ Retry time exceeded; starting again
 <p>TODO: (<strong>Linux Device Tree</strong> has helpful hints)</p>
 <p>Or we’ll call <strong>OpenSBI Debug Console</strong>…</p>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/ox64-cores.jpg" alt="Bouffalo Lab BL808 is a complex creature with 3 (Asymmetric) RISC-V Cores" /></p>
 </li>
 <li>
-<p><em>Will we boot NuttX on both 32-bit and 64-bit RISC-V Cores?</em></p>
+<p><em>Will we boot NuttX on both 32-bit and 64-bit RISC-V Cores? (Pic above)</em></p>
 <p>Initially we’ll boot NuttX on the 64-bit D0 Multimedia Core. NuttX will talk to the <strong>Existing OpenBouffalo Firmware</strong> on the 32-bit M0 Wireless Core over Mailbox.</p>
 <p>TODO: (<strong>Linux Device Tree</strong> tells us how)</p>
 <p>Later we might boot NuttX on the 32-bit M0 Wireless Core. And let the 64-bit and 32-bit Cores talk over <strong>OpenAMP (Asymmetric Multi-Processing)</strong>.</p>
@@ -791,7 +786,9 @@ d          96  extlinux
 <p>Header Values are exactly the same as Star64. (Except the Image Size and Executable Code, since the Jump Address is different)</p>
 <p>Thus we simply reuse the code from NuttX Star64!</p>
 <h1 id="appendix-linux-device-tree-for-ox64"><a href="#appendix-linux-device-tree-for-ox64">9 Appendix: Linux Device Tree for Ox64</a></h1>
-<p>TODO: Dump the Device Tree</p>
+<p><em>What’s inside the Linux Device Tree for Ox64?</em></p>
+<p><em>Anything that might help NuttX for Ox64?</em></p>
+<p>Let’s dump the Linux Device Tree for Ox64, based on the files that we have downloaded earlier…</p>
 <div class="example-wrap"><pre class="language-text"><code>dtc \
   -o bl808-pine64-ox64.dts \
   -O dts \
@@ -799,7 +796,7 @@ d          96  extlinux
   bl808-pine64-ox64.dtb
 </code></pre></div>
 <p>Here’s the Decompiled Device Tree: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts">bl808-pine64-ox64.dts</a></p>
-<p>TODO: Transmit to UART3 at 0x30002000. Reuse the BL602 UART Driver for NuttX.</p>
+<p>This says the Ox64 Linux will transmit to UART3 at Base Address 0x30002000…</p>
 <div class="example-wrap"><pre class="language-text"><code>serial@30002000 {
   compatible = &quot;bflb,bl808-uart&quot;;
   reg = &lt;0x30002000 0x1000&gt;;
@@ -810,7 +807,8 @@ d          96  extlinux
 };
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L89-L96">(Source)</a></p>
-<p>TODO: Forward the Interrupts from M0 Wireless Core to D0 Multimedia Core via Mailbox / IPC (Where are the addresses documented?)</p>
+<p>(We’ll reuse the BL602 UART Driver for NuttX)</p>
+<p>This specifies the Mailbox that will forward the Interrupts from M0 Wireless Core to D0 Multimedia Core…</p>
 <div class="example-wrap"><pre class="language-text"><code>mailbox@30005000 {
   compatible = &quot;bflb,bl808-ipc&quot;;
   reg = &lt;
@@ -828,11 +826,12 @@ d          96  extlinux
 };
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L118-L127">(Source)</a></p>
-<p>TODO: Print Debug Logs with OpenSBI</p>
+<p>NuttX will receive the Forwarded Peripheral Interrupts the same way, via the Mailbox.</p>
+<p>Let’s talk about the Forwarding of Peripheral Interrupts…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-cores.jpg" alt="Bouffalo Lab BL808 is a complex creature with 3 (Asymmetric) RISC-V Cores" /></p>
 <h1 id="appendix-peripheral-interrupts-for-ox64"><a href="#appendix-peripheral-interrupts-for-ox64">10 Appendix: Peripheral Interrupts for Ox64</a></h1>
-<p>TODO</p>
 <p><em>What’s this forwarding of Peripheral Interrupts?</em></p>
+<p>From the M0 Wireless Core, we see this log by the OpenBouffalo Firmware…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting Mailbox Handlers
 Forwarding Interupt SDH (33) to D0 (0x58008bbc)
 Forwarding Interupt GPIO (60) to D0 (0x58008d0e)
@@ -843,6 +842,8 @@ Mailbox IRQ Stats:
 Unhandled Interupts: 0 Unhandled Signals 0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/52ccdf076ae294db26e837e6ffc4bafb">(Source)</a></p>
+<p>The log above says that…</p>
+<p>TODO</p>
 <p>SDH: SD Card (SDIO) Host Controller (BL808 RM Page 561)</p>
 <p>IRQ 60: GPIO_INT0 (IRQ_NUM_BASE+44) GPIO Interrupt (BL808 RM Page 44)</p>
 <p><a href="https://github.com/bouffalolab/bl808_linux/blob/main/bl_mcu_sdk_bl808/drivers/bl808_driver/regs/bl808.h#L123">GPIO_INT0_IRQn</a></p>
