@@ -843,6 +843,14 @@ Unhandled Interupts: 0 Unhandled Signals 0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/52ccdf076ae294db26e837e6ffc4bafb">(Source)</a></p>
 <p>The log above says that…</p>
+<ul>
+<li>
+<p>M0 Wireless Core (OpenBouffalo Firmware) will forward the Peripheral Interrupts to D0 Multimedia Core (Linux)</p>
+</li>
+<li>
+<p>The Forwarded Peripheral Interrupts are for: SD Card Host Controller (SDH) and GPIO </p>
+</li>
+</ul>
 <p>TODO</p>
 <p>SDH: SD Card (SDIO) Host Controller (BL808 RM Page 561)</p>
 <p>IRQ 60: GPIO_INT0 (IRQ_NUM_BASE+44) GPIO Interrupt (BL808 RM Page 44)</p>
