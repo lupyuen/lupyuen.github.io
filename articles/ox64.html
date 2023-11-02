@@ -648,20 +648,27 @@ You can also get rid of mailbox, but you will have to build the kernel yourself 
 <p>So let’s <strong>pretend to be Linux</strong> and trick Ox64 into booting NuttX!</p>
 <p>“Pretending to be Linux” has worked remarkably well for booting NuttX on PinePhone, PinePhone Pro, NanoPi M4 SBC and Star64 RISC-V SBC!</p>
 <p>TODO: Linux Image Header</p>
-<p>TODO: TFTP</p>
+<p>TODO: To speed up the porting, we might boot NuttX over TFTP.</p>
 </li>
 <li>
 <p><em>How will we print to the Serial Console?</em></p>
 <p>We’ll borrow the NuttX UART Driver for BL602 (which will probably work with BL808)…</p>
 <p>TODO</p>
+<p>(Linux Device Tree has helpful pointers)</p>
 <p>Or we’ll call OpenSBI Debug Console…</p>
 <p>TODO</p>
 </li>
 <li>
-<p>OpenSBI Cores</p>
-<p>OpenAMP</p>
-<p>32-bit NuttX</p>
-<p>Mailbox</p>
+<p><em>Will we boot NuttX on both 32-bit and 64-bit RISC-V Cores?</em></p>
+<p>Initially we’ll boot NuttX on the 64-bit D0 Multimedia Core. NuttX will talk to the existing OpenBouffalo Firmware on the 32-bit M0 Wireless Core.</p>
+<p>TODOL (Linux Device Tree tells us how)</p>
+<p>Later we might boot NuttX on the 32-bit M0 Wireless Core.</p>
+<p>TODO: OpenAMP</p>
+</li>
+<li>
+<p><em>OpenSBI will control the 32-bit RISC-V Core right?</em></p>
+<p>Sadly nope.</p>
+<p>TODO</p>
 </li>
 <li>
 <p><em>Are you sorry that NuttX Fans had to put up with this entire article?</em></p>
