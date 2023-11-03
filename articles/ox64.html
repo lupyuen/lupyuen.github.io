@@ -103,10 +103,10 @@
 <p><strong>BL808C</strong> supports MIPI CSI Cameras but not MIPI DSI Displays.</p>
 <p>(Maybe someday we’ll see BL808D for MIPI DSI Displays)</p>
 <p><em>Is Ox64 an SBC? Or an MCU Board?</em></p>
-<p>Technically Ox64 boots <strong>64-bit RISC-V Linux</strong> (via microSD), so Ox64 feels like a <strong>RISC-V SBC</strong>…</p>
+<p>Technically Ox64 boots <strong>64-bit RISC-V Linux</strong> (via microSD). Thus Ox64 feels like a <strong>RISC-V SBC</strong>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/openbouffalo/buildroot_bouffalo"><strong>Linux Image + OpenSBI + U-Boot Bootloader</strong> for BL808</a></p>
+<p><a href="https://github.com/openbouffalo/buildroot_bouffalo"><strong>Linux Image + OpenSBI + U-Boot Bootloader</strong></a> for BL808</p>
 <p><a href="https://lupyuen.github.io/articles/sbi">(<strong>OpenSBI</strong> is the “BIOS” for RISC-V SBCs)</a></p>
 </li>
 <li>
@@ -116,6 +116,9 @@
 <li>
 <p>And USB 2.0 support for <strong>USB OTG</strong></p>
 <p>(OTG “On-The-Go” means USB Host + USB Device)</p>
+</li>
+<li>
+<p>UART Pins need a <strong>USB Serial Adapter</strong> for Flashing and Console I/O</p>
 </li>
 </ul>
 <p>But Ox64 also feels like an <strong>MCU Board</strong>…</p>
@@ -128,9 +131,6 @@
 </li>
 <li>
 <p>M0 Wireless Core is <strong>32-bit RISC-V MCU</strong></p>
-</li>
-<li>
-<p>UART Pins need a <strong>USB Serial Adapter</strong> for Flashing and Console I/O</p>
 </li>
 <li>
 <p>Powered by <strong>Micro USB Port</strong></p>
