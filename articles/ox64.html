@@ -184,7 +184,7 @@
 </div>
 <p><strong>Baud Rate:</strong> 2,000,000 (2 Mbps)</p>
 <p><strong>BL808 UART3</strong> is controlled by the D0 Multimedia Core. (Linux + OpenSBI + U-Boot)</p>
-<p>Output is <strong>totally blank</strong> if OpenBouffalo Firmware <a href="https://github.com/openbouffalo/buildroot_bouffalo/issues/60"><strong>wasn’t flashed correctly</strong></a>, or if OpenSBI / U-Boot couldn’t boot.</p>
+<p><strong>Output is totally blank</strong> if OpenBouffalo Firmware <a href="https://github.com/openbouffalo/buildroot_bouffalo/issues/60"><strong>wasn’t flashed correctly</strong></a>. Or if OpenSBI / U-Boot couldn’t boot.</p>
 </li>
 </ol>
 <p><strong>NEITHER UART Port</strong> is accessible over USB-C or Micro USB. So yeah it’s totally counterintuitive.</p>
@@ -250,7 +250,7 @@
 </li>
 <li>
 <p>We should see the <strong>Ox64 Factory Test Firmware</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>dynamic memory init success,heap size = 93 Kbyte 
+<div class="example-wrap"><pre class="language-text"><code>dynamic memory init success
 sig1:ffff32ff
 sig2:0000ffff
 Pong!
@@ -269,7 +269,7 @@ Ping!
 <li>Release the Boot Button</li>
 <li>Ox64 Green LED should turn on</li>
 </ul>
-<p>In the USB Serial Terminal, we should see…</p>
+<p>In the USB Serial Terminal, we should see something totally different…</p>
 <div class="example-wrap"><pre class="language-text"><code>.
 </code></pre></div></li>
 </ol>
