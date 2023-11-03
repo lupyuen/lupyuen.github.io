@@ -151,7 +151,7 @@
 <p>In this article we begin with Linux, then explore NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout.jpg" alt="Flashing UART vs Serial Console" /></p>
 <h1 id="flashing-uart-vs-serial-console"><a href="#flashing-uart-vs-serial-console">1 Flashing UART vs Serial Console</a></h1>
-<p><em>We need to connect TWO UART Ports on Ox64?</em></p>
+<p><em>We need to connect TWO UART Ports on Ox64? (Pic above)</em></p>
 <p>Yeah don’t confuse the <strong>2 UART Ports</strong> that we’ll connect on Ox64!</p>
 <p>Let’s give the 2 UART Ports distinctive names <a href="https://en.wikipedia.org/wiki/Migi_%26_Dali">(like Migi &amp; Dali)</a>…</p>
 <ol>
@@ -174,7 +174,7 @@
 <p><strong>BL808 UART0</strong> is controlled by the M0 Wireless Core. (OpenBouffalo Firmware)</p>
 </li>
 <li>
-<p><strong>Ox64 Serial Console</strong>: Used for Linux Serial Console (plus OpenSBI and U-Boot Bootloader)</p>
+<p><strong>Ox64 Serial Console</strong>: Used for Linux Serial Console. (Plus OpenSBI and U-Boot Bootloader)</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 16</strong></td><td style="text-align: left">Physical Pin 32</td></tr>
 <tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 17</strong></td><td style="text-align: left">Physical Pin 31</td></tr>
@@ -188,13 +188,13 @@
 </li>
 </ol>
 <p><strong>NEITHER UART Port</strong> is accessible over USB-C or Micro USB. So yeah it’s totally counterintuitive.</p>
-<p>(Maybe someone can create a Stackable HAT or Breadboard, that will <strong>expose the 2 UART Ports</strong> as USB Dongles? Or a UART Switcher?)</p>
+<p>(Maybe someone can create a Stackable Shield or Breadboard, that will <strong>expose the 2 UART Ports</strong> as USB Dongles? Or a UART Switcher?)</p>
 <p><a href="https://lupyuen.github.io/images/ox64-sd.jpg">(<strong>For Pre-Production Ox64:</strong> Physical Pins are different, but GPIOs above are correct)</a></p>
 <p><em>Why 2 Baud Rates for Flashing UART?</em></p>
 <p>When we power up Ox64 in <strong>Normal Mode</strong>: (Boot Button NOT pressed)</p>
 <ul>
 <li>
-<p>Flashing UART Port will show us the <strong>OpenBouffalo Firmware</strong> running on M0 Wireless Core</p>
+<p>The port for Flashing UART will show us the <strong>OpenBouffalo Firmware</strong> running on M0 Wireless Core</p>
 </li>
 <li>
 <p>This M0 Firmware will forward <strong>Peripheral Interrupts</strong> to D0 Multimedia Core</p>
@@ -230,7 +230,7 @@
 <p>To test our USB Serial Adapter…</p>
 <ol>
 <li>
-<p>Connect the <strong>USB Serial Adapter</strong> to <strong>Ox64 Flashing UART</strong> (pic above)…</p>
+<p>Connect the <strong>USB Serial Adapter</strong> to the port for <strong>Ox64 Flashing UART</strong> (pic above)…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 14</strong></td><td style="text-align: left">Physical Pin 1</td></tr>
 <tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 15</strong></td><td style="text-align: left">Physical Pin 2</td></tr>
@@ -298,7 +298,7 @@ Ping!
 <p>Here are the steps, based on the <a href="https://github.com/openbouffalo/buildroot_bouffalo#flashing-instructions"><strong>Official Flashing Instructions</strong></a>…</p>
 <ol>
 <li>
-<p>Check that our <strong>USB Serial Adapter</strong> is connected to the <strong>Flashing UART</strong>. (Pic above)</p>
+<p>Check that our <strong>USB Serial Adapter</strong> is connected to the port for <strong>Flashing UART</strong>. (Pic above)</p>
 <p>Close the <strong>USB Serial Terminal</strong>. (To release the Flashing UART)</p>
 </li>
 <li>
@@ -437,7 +437,7 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <p>Next we check the <strong>Serial Console</strong>…</p>
 <ol>
 <li>
-<p>Connect our USB Serial Adapter to the <strong>Ox64 Serial Console</strong> (pic above)…</p>
+<p>Connect our <strong>USB Serial Adapter</strong> to the port for <strong>Ox64 Serial Console</strong> (pic above)…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 16</strong></td><td style="text-align: left">Physical Pin 32</td></tr>
 <tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 17</strong></td><td style="text-align: left">Physical Pin 31</td></tr>
@@ -493,7 +493,7 @@ Retry time exceeded; starting again
 <p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
 </li>
 <li>
-<p>Connect our <strong>USB Serial Adapter</strong> to the <strong>Ox64 Flashing UART</strong> (pic above)…</p>
+<p>Connect our <strong>USB Serial Adapter</strong> to the port for <strong>Ox64 Flashing UART</strong> (pic above)…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 14</strong></td><td style="text-align: left">Physical Pin 1</td></tr>
 <tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 15</strong></td><td style="text-align: left">Physical Pin 2</td></tr>
@@ -521,7 +521,7 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <p><img src="https://lupyuen.github.io/images/ox64-pinout3.jpg" alt="Serial Console" /></p>
 </li>
 <li>
-<p>Connect our <strong>USB Serial Adapter</strong> to the <strong>Ox64 Serial Console</strong> (pic above)…</p>
+<p>Connect our <strong>USB Serial Adapter</strong> to the port for <strong>Ox64 Serial Console</strong> (pic above)…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 16</strong></td><td style="text-align: left">Physical Pin 32</td></tr>
 <tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 17</strong></td><td style="text-align: left">Physical Pin 31</td></tr>
