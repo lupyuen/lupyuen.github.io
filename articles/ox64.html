@@ -187,8 +187,8 @@
 <p>Output is <strong>totally blank</strong> if OpenBouffalo Firmware <a href="https://github.com/openbouffalo/buildroot_bouffalo/issues/60"><strong>wasn’t flashed correctly</strong></a>, or if OpenSBI / U-Boot couldn’t boot.</p>
 </li>
 </ol>
-<p>NEITHER UART Port is accessible over USB-C or Micro USB. So yeah it’s totally counterintuitive.</p>
-<p>(Maybe someone can create a Stackable HAT or Breadboard, that will expose the 2 UART Ports as USB Dongles? Or a UART Switcher?)</p>
+<p><strong>NEITHER UART Port</strong> is accessible over USB-C or Micro USB. So yeah it’s totally counterintuitive.</p>
+<p>(Maybe someone can create a Stackable HAT or Breadboard, that will <strong>expose the 2 UART Ports</strong> as USB Dongles? Or a UART Switcher?)</p>
 <p><a href="https://lupyuen.github.io/images/ox64-sd.jpg">(<strong>For Pre-Production Ox64:</strong> Physical Pins are different, but GPIOs above are correct)</a></p>
 <p><em>Why 2 Baud Rates for Flashing UART?</em></p>
 <p>When we power up Ox64 in <strong>Normal Mode</strong>: (Boot Button NOT pressed)</p>
@@ -227,7 +227,7 @@
 <p><strong>Warning:</strong> Some USB Serial Adapters <a href="https://wiki.pine64.org/wiki/Ox64#Compatible_UARTs_when_in_bootloader_mode"><strong>WON’T WORK!</strong></a></p>
 <p>Ox64 was tested OK with the <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>Pine64 Woodpecker CH340G</strong></a> USB Serial Adapter on macOS x64.</p>
 <p>Ox64 mandates 2 Mbps, which might be too fast for some USB Serial Adapters. (Like this <a href="https://www.lazada.sg/products/i2037772272-s11135131253.html"><strong>CP2102 Dongle</strong></a>, which shows garbled text at 2 Mbps)</p>
-<p>To Test our USB Serial Adapter…</p>
+<p>To test our USB Serial Adapter…</p>
 <ol>
 <li>
 <p>Connect the <strong>USB Serial Adapter</strong> to <strong>Ox64 Flashing UART</strong> (pic above)…</p>
