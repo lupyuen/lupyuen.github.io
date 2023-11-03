@@ -281,7 +281,7 @@ Ping!
 <li>
 <p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/m0_lowload"><strong>m0_lowload</strong></a> for M0 Wireless Core:</p>
 <p>Firmware that forwards <strong>Peripheral Interupts</strong> to the D0 Multimedia Core.</p>
-<p><a href="https://lupyuen.codeberg.page/articles/ox64.html#appendix-peripheral-interrupts-for-ox64">(Like <strong>SD Card</strong> and <strong>GPIO Interrupts</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ox64#appendix-peripheral-interrupts-for-ox64">(Like <strong>SD Card</strong> and <strong>GPIO Interrupts</strong>)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/d0_lowload"><strong>d0_lowload</strong></a> for D0 Wireless Core:</p>
@@ -620,7 +620,7 @@ Retry time exceeded; starting again
 </ul>
 <p>So let’s <strong>pretend to be Linux</strong> and trick Ox64 into booting NuttX!</p>
 <ul>
-<li><a href="https://lupyuen.codeberg.page/articles/ox64.html#appendix-linux-image-header-for-ox64"><strong>“Linux Image Header for Ox64”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/ox64#appendix-linux-image-header-for-ox64"><strong>“Linux Image Header for Ox64”</strong></a></li>
 </ul>
 <p>“Pretending to be Linux” has worked remarkably well for booting NuttX on <a href="https://lupyuen.github.io/articles/what"><strong>PinePhone</strong></a>, <a href="https://github.com/apache/nuttx/pull/10193"><strong>PinePhone Pro</strong></a>, <a href="https://github.com/apache/nuttx/pull/10645"><strong>NanoPi M4 SBC</strong></a> and <a href="https://lupyuen.github.io/articles/release"><strong>Star64 RISC-V SBC</strong></a>…</p>
 <p>We’ll do it again for Ox64!</p>
@@ -631,7 +631,7 @@ Retry time exceeded; starting again
 <p>We’ll borrow the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX UART Driver for BL602</strong></a>. (Which will probably work with BL808).</p>
 <p>The <strong>Linux Device Tree</strong> has helpful hints…</p>
 <ul>
-<li><a href="https://lupyuen.codeberg.page/articles/ox64.html#appendix-linux-device-tree-for-ox64"><strong>“Linux Device Tree for Ox64”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/ox64#appendix-linux-device-tree-for-ox64"><strong>“Linux Device Tree for Ox64”</strong></a></li>
 </ul>
 <p>Or we’ll call the <strong>OpenSBI Legacy Console</strong>…</p>
 <ul>
@@ -651,7 +651,7 @@ Retry time exceeded; starting again
 <p><em>Will we boot NuttX on both 32-bit and 64-bit RISC-V Cores? (Pic above)</em></p>
 <p>Initially we’ll boot NuttX on the 64-bit <strong>D0 Multimedia Core</strong>.</p>
 <p>NuttX will talk to the <strong>Existing OpenBouffalo Firmware</strong> on the 32-bit M0 Wireless Core over Mailbox.</p>
-<p><a href="https://lupyuen.codeberg.page/articles/ox64.html#appendix-linux-device-tree-for-ox64">(<strong>Linux Device Tree</strong> tells us how)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ox64#appendix-linux-device-tree-for-ox64">(<strong>Linux Device Tree</strong> tells us how)</a></p>
 <p>Later we might boot NuttX on the 32-bit M0 Wireless Core. And let the 64-bit and 32-bit Cores talk over <a href="https://www.openampproject.org/"><strong>OpenAMP (Asymmetric Multi-Processing)</strong></a>.</p>
 </li>
 <li>
@@ -661,7 +661,7 @@ Retry time exceeded; starting again
 </code></pre></div>
 <p>(That’s for the D0 Multimedia Core)</p>
 <p>So booting 32-bit NuttX with <a href="https://lupyuen.github.io/articles/sbi#query-the-risc-v-cpus"><strong>OpenSBI HSM</strong></a> simply won’t work.</p>
-<p>We’ll have to flash 32-bit NuttX to Ox64 with <a href="https://lupyuen.codeberg.page/articles/ox64.html#flash-opensbi-and-u-boot-bootloader"><strong>BL DevCube</strong></a>. (Ouch!)</p>
+<p>We’ll have to flash 32-bit NuttX to Ox64 with <a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot-bootloader"><strong>BL DevCube</strong></a>. (Ouch!)</p>
 </li>
 <li>
 <p><em>Are you sorry that NuttX Fans had to put up with this entire article?</em></p>
