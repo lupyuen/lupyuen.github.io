@@ -71,14 +71,14 @@
     <nav id="TOC"><ul>
 <li><a href="#flashing-uart-vs-serial-console">1 Flashing UART vs Serial Console</a><ul></ul></li>
 <li><a href="#test-the-usb-serial-adapter">2 Test the USB Serial Adapter</a><ul></ul></li>
-<li><a href="#flash-opensbi-and-u-boot-bootloader">3 Flash OpenSBI and U-Boot Bootloader</a><ul></ul></li>
-<li><a href="#verify-opensbi-and-u-boot-bootloader">4 Verify OpenSBI and U-Boot Bootloader</a><ul></ul></li>
+<li><a href="#flash-opensbi-and-u-boot">3 Flash OpenSBI and U-Boot</a><ul></ul></li>
+<li><a href="#verify-opensbi-and-u-boot">4 Verify OpenSBI and U-Boot</a><ul></ul></li>
 <li><a href="#boot-linux-on-ox64">5 Boot Linux on Ox64</a><ul></ul></li>
 <li><a href="#apache-nuttx-rtos-for-ox64">6 Apache NuttX RTOS for Ox64</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-linux-image-header-for-ox64">8 Appendix: Linux Image Header for Ox64</a><ul></ul></li>
-<li><a href="#appendix-linux-device-tree-for-ox64">9 Appendix: Linux Device Tree for Ox64</a><ul></ul></li>
-<li><a href="#appendix-peripheral-interrupts-for-ox64">10 Appendix: Peripheral Interrupts for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>14 Nov 2023</em></p>
+<li><a href="#appendix-linux-image-header">8 Appendix: Linux Image Header</a><ul></ul></li>
+<li><a href="#appendix-linux-device-tree">9 Appendix: Linux Device Tree</a><ul></ul></li>
+<li><a href="#appendix-peripheral-interrupts">10 Appendix: Peripheral Interrupts</a><ul></ul></li></ul></nav><p>📝 <em>14 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/ox64-title.jpg" alt="Booting Linux on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <p><a href="https://youtu.be/UJ_7DyHnfDA">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><em>What’s this BL808?</em> <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_DS/en/BL808_DS_1.2_en.pdf">(Datasheet)</a> <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(Reference Manual)</a></p>
@@ -275,7 +275,7 @@ Ping!
 </ol>
 <p>Ox64 is ready for flashing!</p>
 <p><a href="https://www.linkedin.com/feed/update/urn:li:activity:7125857280952037376?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7125857280952037376%2C7125884844219281408%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287125884844219281408%2Curn%3Ali%3Aactivity%3A7125857280952037376%29">(<strong>Paul S</strong> explains why some USB Serial Adapters won’t work)</a></p>
-<h1 id="flash-opensbi-and-u-boot-bootloader"><a href="#flash-opensbi-and-u-boot-bootloader">3 Flash OpenSBI and U-Boot Bootloader</a></h1>
+<h1 id="flash-opensbi-and-u-boot"><a href="#flash-opensbi-and-u-boot">3 Flash OpenSBI and U-Boot</a></h1>
 <p><em>Our USB Serial Adapter works great at 2 Mbps. What next?</em></p>
 <p>Before booting Linux on Ox64, we flash…</p>
 <ul>
@@ -401,7 +401,7 @@ chmod +x BLDevCube-macos-x86_64
 </li>
 </ol>
 <p>Now we check our work…</p>
-<h1 id="verify-opensbi-and-u-boot-bootloader"><a href="#verify-opensbi-and-u-boot-bootloader">4 Verify OpenSBI and U-Boot Bootloader</a></h1>
+<h1 id="verify-opensbi-and-u-boot"><a href="#verify-opensbi-and-u-boot">4 Verify OpenSBI and U-Boot</a></h1>
 <p><em>Did we flash OpenSBI and U-Boot successfully?</em></p>
 <p>Let’s verify if the flashing was OK…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
@@ -702,7 +702,7 @@ Retry time exceeded; starting again
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ox64.md"><strong>lupyuen.github.io/src/ox64.md</strong></a></p>
-<h1 id="appendix-linux-image-header-for-ox64"><a href="#appendix-linux-image-header-for-ox64">8 Appendix: Linux Image Header for Ox64</a></h1>
+<h1 id="appendix-linux-image-header"><a href="#appendix-linux-image-header">8 Appendix: Linux Image Header</a></h1>
 <p><em>Will Apache NuttX RTOS boot on Ox64 BL808?</em></p>
 <p>Let’s examine the <strong>Linux Kernel Image for Ox64</strong>, and we replicate the same format for NuttX. (Which is how we ported NuttX to 64-bit RISC-V Star64 JH7110 SBC)</p>
 <p>We download the <strong>Ox64 Binaries</strong>…</p>
@@ -796,7 +796,7 @@ d          96  extlinux
 <p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
 <p>The above Header Values are <strong>exactly the same as Star64</strong>. (Except the Image Size and Executable Code, since the Jump Address is different)</p>
 <p>Thus we simply <a href="https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header"><strong>reuse the code</strong></a> from NuttX Star64!</p>
-<h1 id="appendix-linux-device-tree-for-ox64"><a href="#appendix-linux-device-tree-for-ox64">9 Appendix: Linux Device Tree for Ox64</a></h1>
+<h1 id="appendix-linux-device-tree"><a href="#appendix-linux-device-tree">9 Appendix: Linux Device Tree</a></h1>
 <p><em>What’s inside the Linux Device Tree for Ox64?</em></p>
 <p><em>Anything that might help NuttX for Ox64?</em></p>
 <p>Let’s dump the <strong>Linux Device Tree for Ox64</strong>, based on the files that we have downloaded earlier…</p>
@@ -841,7 +841,7 @@ d          96  extlinux
 <p>NuttX will receive the <strong>Forwarded Peripheral Interrupts</strong> the same way, via the Mailbox.</p>
 <p>Let’s talk about the Forwarding of Peripheral Interrupts…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-cores.jpg" alt="Bouffalo Lab BL808 is a complex creature with 3 (Asymmetric) RISC-V Cores" /></p>
-<h1 id="appendix-peripheral-interrupts-for-ox64"><a href="#appendix-peripheral-interrupts-for-ox64">10 Appendix: Peripheral Interrupts for Ox64</a></h1>
+<h1 id="appendix-peripheral-interrupts"><a href="#appendix-peripheral-interrupts">10 Appendix: Peripheral Interrupts</a></h1>
 <p><em>What’s this forwarding of Peripheral Interrupts? (Pic above)</em></p>
 <p>From the <strong>M0 Wireless Core</strong>, we see this log by the OpenBouffalo Firmware <a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/m0_lowload"><strong>m0_lowload</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting Mailbox Handlers
