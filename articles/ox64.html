@@ -80,6 +80,7 @@
 <li><a href="#appendix-linux-device-tree-for-ox64">9 Appendix: Linux Device Tree for Ox64</a><ul></ul></li>
 <li><a href="#appendix-peripheral-interrupts-for-ox64">10 Appendix: Peripheral Interrupts for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>14 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/ox64-title.jpg" alt="Booting Linux on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
+<p><a href="https://youtu.be/UJ_7DyHnfDA">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><em>What’s this BL808?</em> <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_DS/en/BL808_DS_1.2_en.pdf">(Datasheet)</a> <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(Reference Manual)</a></p>
 <p>Bouffalo Lab BL808 SoC is a curiously complex creature with 3 (Asymmetric) RISC-V Cores (pic below)…</p>
 <ol>
@@ -411,28 +412,7 @@ chmod +x BLDevCube-macos-x86_64
 </li>
 <li>
 <p>On the USB Serial Terminal (Flashing UART) we should see…</p>
-<div class="example-wrap"><pre class="language-text"><code>Powered by BouffaloLab
-Build:11:52:22,Mar  6 2023
-Copyright (c) 2023 OpenBouffalo team
-Copyright (c) 2022 Bouffalolab team
-=========== flash cfg ==============
-jedec id   0xEF6018
-mid            0xEF
-iomode         0x04
-clk delay      0x01
-clk invert     0x01
-read reg cmd0  0x05
-read reg cmd1  0x35
-write reg cmd0 0x01
-write reg cmd1 0x31
-qe write len   0x01
-cread support  0x00
-cread code     0xFF
-burst wrap cmd 0x77
-sector size:   0x04
-=====================================
-dynamic memory init success,heap size = 156 Kbyte 
-Starting Mailbox Handlers
+<div class="example-wrap"><pre class="language-text"><code>Starting Mailbox Handlers
 Forwarding Interupt SDH (33) to D0 (0x58008bbc)
 Forwarding Interupt GPIO (60) to D0 (0x58008d0e)
 Running...
@@ -593,8 +573,8 @@ Linux version 6.2.0 (runner@fv-az587-938) (riscv64-unknown-linux-gnu-gcc (Xuanti
 Welcome to Buildroot
 ox64 login: 
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/3035a70d52d2d1d529e96f5292f54210">(See the Complete Log)</a></p>
-<p><a href="https://youtu.be/UJ_7DyHnfDA">(Watch the Video on YouTube)</a></p>
+<p><a href="https://gist.github.com/lupyuen/3035a70d52d2d1d529e96f5292f54210">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://youtu.be/UJ_7DyHnfDA">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>Yep Linux is running on Ox64 yay! (Pic below)</p>
 </li>
 <li>
@@ -615,9 +595,6 @@ Retry time exceeded; starting again
 <p><a href="https://gist.github.com/lupyuen/0b1a98781e86ba11c5538eb1e3058718">(Source)</a></p>
 <p>Check that the microSD Card is inserted correctly. (Pic above)</p>
 </li>
-<li>
-<p>TODO: TFTP Boot over Ethernet</p>
-</li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/ox64-title.jpg" alt="Boot Linux on Ox64 BL808" /></p>
 <p><em>Flashing BL808 sounds a little wonky?</em></p>
@@ -634,26 +611,36 @@ Retry time exceeded; starting again
 <ol>
 <li>
 <p><em>How to boot Apache NuttX RTOS on Ox64?</em></p>
-<p>Ox64 boots Linux like a typical RISC-V SBC with…</p>
+<p>Ox64 boots Linux like a <strong>typical RISC-V SBC</strong> with…</p>
 <ul>
 <li>
-<p>TODO: OpenSBI</p>
+<p><a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI Supervisor Binary Interface</strong></a></p>
 </li>
 <li>
-<p>TODO: U-Boot Bootloader</p>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a></p>
 </li>
 </ul>
 <p>So let’s <strong>pretend to be Linux</strong> and trick Ox64 into booting NuttX!</p>
+<ul>
+<li><a href="https://lupyuen.codeberg.page/articles/ox64.html#appendix-linux-image-header-for-ox64"><strong>“Linux Image Header for Ox64”</strong></a></li>
+</ul>
 <p>“Pretending to be Linux” has worked remarkably well for booting NuttX on <strong>PinePhone</strong>, <strong>PinePhone Pro</strong>, <strong>NanoPi M4 SBC</strong> and <strong>Star64 RISC-V SBC</strong>. We’ll do it again for Ox64!</p>
-<p>TODO: (<strong>Ox64 Linux Image Header</strong> looks exactly like Star64)</p>
-<p>TODO: To speed up the porting, we might boot <strong>NuttX over TFTP</strong>.</p>
+<p><a href="https://wiki.pine64.org/wiki/File:Ox64_ethphy.png">(<strong>TFTP Booting over Ethernet</strong> might work on Ox64 U-Boot)</a></p>
 </li>
 <li>
 <p><em>How will we print to the Serial Console?</em></p>
 <p>We’ll borrow the <strong>NuttX UART Driver for BL602</strong>. (Which will probably work with BL808).</p>
-<p>TODO: (<strong>Linux Device Tree</strong> has helpful hints)</p>
-<p>Or we’ll call <strong>OpenSBI Debug Console</strong>…</p>
-<p>TODO</p>
+<p>The <strong>Linux Device Tree</strong> has helpful hints…</p>
+<ul>
+<li><a href="https://lupyuen.codeberg.page/articles/ox64.html#appendix-linux-device-tree-for-ox64"><strong>“Linux Device Tree for Ox64”</strong></a></li>
+</ul>
+<p>Or we’ll call <strong>OpenSBI Legacy Console</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sbi#call-opensbi-from-nuttx"><strong>“Call OpenSBI from NuttX”</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/3035a70d52d2d1d529e96f5292f54210#file-ox64-linux-boot-log-L54">(Ox64 implements <strong>SBI Spec v1.0</strong>)</a></p>
+</li>
+</ul>
 </li>
 <li>
 <p><em>What about other BL808 Drivers?</em></p>
@@ -664,20 +651,32 @@ Retry time exceeded; starting again
 <li>
 <p><em>Will we boot NuttX on both 32-bit and 64-bit RISC-V Cores? (Pic above)</em></p>
 <p>Initially we’ll boot NuttX on the 64-bit D0 Multimedia Core. NuttX will talk to the <strong>Existing OpenBouffalo Firmware</strong> on the 32-bit M0 Wireless Core over Mailbox.</p>
-<p>TODO: (<strong>Linux Device Tree</strong> tells us how)</p>
-<p>Later we might boot NuttX on the 32-bit M0 Wireless Core. And let the 64-bit and 32-bit Cores talk over <strong>OpenAMP (Asymmetric Multi-Processing)</strong>.</p>
+<p><a href="https://lupyuen.codeberg.page/articles/ox64.html#appendix-linux-device-tree-for-ox64">(<strong>Linux Device Tree</strong> tells us how)</a></p>
+<p>Later we might boot NuttX on the 32-bit M0 Wireless Core. And let the 64-bit and 32-bit Cores talk over <a href="https://www.openampproject.org/"><strong>OpenAMP (Asymmetric Multi-Processing)</strong></a>.</p>
 </li>
 <li>
 <p><em>OpenSBI will boot NuttX on the 32-bit RISC-V Core right?</em></p>
-<p>Sadly nope. The 32-bit M0 Wireless Core isn’t controlled by OpenSBI, according to the OpenSBI Log…</p>
-<p>TODO</p>
-<p>So booting 32-bit NuttX with <strong>OpenSBI HSM</strong> simply won’t work.</p>
-<p>We’ll have to flash 32-bit NuttX to Ox64 with BL Dev Cube. (Ouch!)</p>
+<p>Sadly nope. The 32-bit M0 Wireless Core <strong>isn’t controlled by OpenSBI</strong>, according to the <a href="https://gist.github.com/lupyuen/3035a70d52d2d1d529e96f5292f54210#file-ox64-linux-boot-log-L44"><strong>OpenSBI Log</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>Platform HART Count: 1
+</code></pre></div>
+<p>(That’s for the D0 Multimedia Core)</p>
+<p>So booting 32-bit NuttX with <a href="https://lupyuen.github.io/articles/sbi#query-the-risc-v-cpus"><strong>OpenSBI HSM</strong></a> simply won’t work.</p>
+<p>We’ll have to flash 32-bit NuttX to Ox64 with <a href="https://lupyuen.codeberg.page/articles/ox64.html#flash-opensbi-and-u-boot-bootloader"><strong>BL Dev Cube</strong></a>. (Ouch!)</p>
 </li>
 <li>
 <p><em>Are you sorry that NuttX Fans had to put up with this entire article?</em></p>
-<p>Yes I’m truly sorry! But that’s exactly how we’ll run NuttX on Ox64: <strong>Flash OpenSBI and U-Boot Bootloader</strong> to Ox64, so that it will load a NuttX Kernel Image. (That pretends to be Linux)</p>
-<p>Thankfully it’s a <strong>One-Time Thing</strong>. To upgrade the NuttX Kernel, we only need to <strong>update the microSD Card</strong>. (No more flashing!)</p>
+<p>Yes I’m truly sorry! But that’s exactly how we’ll run NuttX on Ox64…</p>
+<ul>
+<li>
+<p><strong>Flash OpenSBI and U-Boot Bootloader</strong> to Ox64…</p>
+</li>
+<li>
+<p>So that it will load our <strong>NuttX Kernel Image</strong></p>
+<p>(That pretends to be Linux)</p>
+</li>
+</ul>
+<p>Thankfully it’s a <strong>One-Time Thing</strong>. To upgrade the NuttX Kernel, we only need to <strong>update the microSD Card</strong>.</p>
+<p>(No more flashing!)</p>
 </li>
 </ol>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
