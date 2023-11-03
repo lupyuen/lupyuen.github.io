@@ -275,6 +275,7 @@ Ping!
 </code></pre></div></li>
 </ol>
 <p>Ox64 is ready for flashing!</p>
+<p><a href="https://www.linkedin.com/feed/update/urn:li:activity:7125857280952037376?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7125857280952037376%2C7125884844219281408%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287125884844219281408%2Curn%3Ali%3Aactivity%3A7125857280952037376%29">(<strong>Paul S</strong> explains why some USB Serial Adapters won’t work)</a></p>
 <h1 id="flash-opensbi-and-u-boot-bootloader"><a href="#flash-opensbi-and-u-boot-bootloader">3 Flash OpenSBI and U-Boot Bootloader</a></h1>
 <p><em>Our USB Serial Adapter works great at 2 Mbps. What next?</em></p>
 <p>Before booting Linux on Ox64, we flash…</p>
@@ -795,7 +796,7 @@ d          96  extlinux
 <p>Our NuttX Kernel shall <strong>recreate this RISC-V Linux Image Header</strong>. (Total <code>0x40</code> bytes)</p>
 <p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
 <p>The above Header Values are <strong>exactly the same as Star64</strong>. (Except the Image Size and Executable Code, since the Jump Address is different)</p>
-<p>Thus we simply <strong>reuse the code</strong> from NuttX Star64!</p>
+<p>Thus we simply <a href="https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header"><strong>reuse the code</strong></a> from NuttX Star64!</p>
 <h1 id="appendix-linux-device-tree-for-ox64"><a href="#appendix-linux-device-tree-for-ox64">9 Appendix: Linux Device Tree for Ox64</a></h1>
 <p><em>What’s inside the Linux Device Tree for Ox64?</em></p>
 <p><em>Anything that might help NuttX for Ox64?</em></p>
