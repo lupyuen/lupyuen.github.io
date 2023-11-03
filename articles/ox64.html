@@ -143,27 +143,12 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/ox64-sbc.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <p><em>Ox64 BL808 sounds a little tiny for 64-bit Linux?</em></p>
-<p>Yeah 64-bit Linux runs with Limited RAM on the D0 Multimedia Core. But most Peripherals are hosted on the M0 Wireless Core: WiFi, BLE, BT, Zigbee, Audio, …</p>
-<p>So we flash M0 with a simple 32-bit RISC-V Firmware, to forward the Peripheral Interrupts from M0 to D0 Linux.</p>
-<p>Here are the binaries loaded into D0 Multimedia Core and M0 Wireless Core, from <a href="https://github.com/openbouffalo/buildroot_bouffalo">buildroot_bouffalo</a>…</p>
-<ul>
-<li>
-<p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/d0_lowload"><strong>d0_lowload</strong></a>: This is a very basic bootloader that loads opensbi, the kernel and dts files into ram</p>
-</li>
-<li>
-<p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/m0_lowload"><strong>m0_lowload</strong></a>: This firmware runs on M0 and forwards interupts to the D0 for several peripherals</p>
-</li>
-<li>
-<p><strong>bl808-firmware</strong>: An image containing OpenSBI, Uboot and uboot dtb files. </p>
-</li>
-<li>
-<p><strong>sdcard-*.tar.xz</strong>: A tarball containing the rootfs for the image to be flashed to the SD card</p>
-</li>
-</ul>
-<p>Perhaps Ox64 BL808 might run more efficiently with a <strong>tiny 64-bit RTOS</strong>. (Real-Time Operating System)</p>
+<p>Yeah 64-bit Linux runs with <strong>Limited RAM</strong> on the D0 Multimedia Core. But most Peripherals are hosted on the M0 Wireless Core: <strong>WiFi, BLE, BT, Zigbee, Ethernet, USB, Audio, …</strong></p>
+<p>So we flash M0 Wireless Core with a simple 32-bit RISC-V Firmware, to <strong>forward the Peripheral Interrupts</strong> from M0 to D0 Linux.</p>
+<p>Perhaps Ox64 might run more efficiently with a <strong>tiny 64-bit RTOS</strong>?  (Real-Time Operating System)</p>
 <p><em>Why Apache NuttX RTOS?</em></p>
-<p>It might be interesting to run Apache NuttX RTOS on both the D0 Multimedia Core and the M0 Wireless Core. Then D0 and M0 can talk over OpenAMP (Asymmetric Multi-Processing).</p>
-<p>Let’s explore…</p>
+<p>It might be interesting to run <strong>Apache NuttX RTOS</strong> on both the D0 Multimedia Core and the M0 Wireless Core.</p>
+<p>Then D0 and M0 can talk over <a href="https://www.openampproject.org/"><strong>OpenAMP (Asymmetric Multi-Processing)</strong></a>. Let’s explore…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout.jpg" alt="Flashing UART vs Serial Console" /></p>
 <h1 id="flashing-uart-vs-serial-console"><a href="#flashing-uart-vs-serial-console">1 Flashing UART vs Serial Console</a></h1>
 <p><em>We need to connect TWO UART Ports on Ox64?</em></p>
@@ -209,13 +194,13 @@
 <p>When we power up Ox64 in <strong>Normal Mode</strong>: (Boot Button NOT pressed)</p>
 <ul>
 <li>
-<p>Flashing UART Port will show us the OpenBouffalo Firmware running on M0 Wireless Core</p>
+<p>Flashing UART Port will show us the <strong>OpenBouffalo Firmware</strong> running on M0 Wireless Core</p>
 </li>
 <li>
-<p>This M0 Firmware will forward Peripheral Interrupts to D0 Multimedia Core</p>
+<p>This M0 Firmware will forward <strong>Peripheral Interrupts</strong> to D0 Multimedia Core</p>
 </li>
 <li>
-<p>M0 Firmware is hardcoded for 2 Mbps</p>
+<p>M0 Firmware is hardcoded for <strong>2 Mbps</strong></p>
 </li>
 <li>
 <p>Not really fun to watch. But we use this for testing our 2 Mbps USB Serial Adapter.</p>
@@ -224,27 +209,28 @@
 <p>When we power up Ox64 in <strong>Flashing Mode</strong>: (Boot Button pressed)</p>
 <ul>
 <li>
-<p>Ox64 is ready for Firmware Flashing by the BL DevCube GUI Tool</p>
+<p>Ox64 is ready for <strong>Firmware Flashing</strong> by the BL DevCube GUI Tool</p>
 </li>
 <li>
-<p>Firmware Flashing supports various Baud Rates: 230.4 kbps, 2 Mbps, …</p>
+<p>Firmware Flashing supports <strong>various Baud Rates</strong>: 230.4 kbps, 2 Mbps, …</p>
 </li>
 <li>
-<p>But 2 Mbps will fail on macOS. That’s why we Flash Firmware at 230.4 kbps.</p>
+<p>But 2 Mbps will fail on macOS. That’s why we Flash Firmware at <strong>230.4 kbps</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Same problem when flashing BL602)</a></p>
 </li>
 </ul>
 <p><em>Serial Console is always 2 Mbps?</em></p>
-<p>Yeah 2 Mbps is hardcoded in Ox64 Linux. Switching to other Baud Rates will show garbled text.</p>
-<p>Thus our USB Serial Adapter must connect reliably to Ox64 at 2 Mbps. Let’s test it…</p>
+<p>Yeah <strong>2 Mbps is hardcoded</strong> in Ox64 Linux. Switching to other Baud Rates will show garbled text.</p>
+<p>Thus our USB Serial Adapter must <strong>connect reliably to Ox64</strong> at 2 Mbps. Let’s test it…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
 <h1 id="test-the-usb-serial-adapter"><a href="#test-the-usb-serial-adapter">2 Test the USB Serial Adapter</a></h1>
 <p><strong>Warning:</strong> Some USB Serial Adapters <a href="https://wiki.pine64.org/wiki/Ox64#Compatible_UARTs_when_in_bootloader_mode"><strong>WON’T WORK!</strong></a></p>
-<p>We tested Ox64 with the <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>Pine64 Woodpecker CH340G</strong></a> USB Serial Adapter on macOS x64.</p>
+<p>Ox64 was tested OK with the <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>Pine64 Woodpecker CH340G</strong></a> USB Serial Adapter on macOS x64.</p>
 <p>Ox64 mandates 2 Mbps, which might be too fast for some USB Serial Adapters. (Like this <a href="https://www.lazada.sg/products/i2037772272-s11135131253.html"><strong>CP2102 Dongle</strong></a>, which shows garbled text at 2 Mbps)</p>
+<p>To Test our USB Serial Adapter…</p>
 <ol>
 <li>
-<p>To Test our USB Serial Adapter: Connect the USB Serial Adapter to <strong>Ox64 Flashing UART</strong> (pic above)…</p>
+<p>Connect the <strong>USB Serial Adapter</strong> to <strong>Ox64 Flashing UART</strong> (pic above)…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong>GPIO 14</strong></td><td style="text-align: left">Physical Pin 1</td></tr>
 <tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong>GPIO 15</strong></td><td style="text-align: left">Physical Pin 2</td></tr>
@@ -258,22 +244,20 @@
 <p><strong>For macOS:</strong> The “<a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos"><strong>screen</strong></a>” command might not support 2 Mbps. Use <a href="https://freeware.the-meiers.org/"><strong>CoolTerm</strong></a> instead.</p>
 </li>
 <li>
-<p>Power up Ox64 via the Micro USB Port. Ox64 Green LED should light up.</p>
+<p>Power up Ox64 via the <strong>Micro USB Port</strong>. Ox64 Green LED should light up.</p>
 <p>This Clickety Micro USB Cable is very handy for rebooting Ox64…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-usb.jpg" alt="Clickety Micro USB Cable" /></p>
 </li>
 <li>
-<p>In the USB Serial Terminal (Flashing UART), we should see the Ox64 Factory Test Firmware…</p>
-<div class="example-wrap"><pre class="language-text"><code>Build:19:50:39,Nov 20 2022
-Copyright (c) 2022 Bouffalolab team
-dynamic memory init success,heap size = 93 Kbyte 
+<p>We should see the <strong>Ox64 Factory Test Firmware</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>dynamic memory init success,heap size = 93 Kbyte 
 sig1:ffff32ff
 sig2:0000ffff
 Pong!
 Ping!
 </code></pre></div>
 <p><a href="https://adventurist.me/posts/00317">(Source)</a></p>
-<p>If the text appears garbled: Try a different USB Serial Adapter. (See above)</p>
+<p><strong>If the text appears garbled:</strong> Try a different USB Serial Adapter. <a href="https://wiki.pine64.org/wiki/Ox64#Compatible_UARTs_when_in_bootloader_mode">(Like these)</a></p>
 <p><a href="https://gist.github.com/lupyuen/43676407bbced733e65566879e18732b">(<strong>Pre-Production Ox64</strong> looks different)</a></p>
 </li>
 <li>
@@ -285,12 +269,11 @@ Ping!
 <li>Release the Boot Button</li>
 <li>Ox64 Green LED should turn on</li>
 </ul>
-<p>In the USB Serial Terminal (Flashing UART), we should see this…</p>
+<p>In the USB Serial Terminal, we should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>.
-</code></pre></div>
-<p>Yep Ox64 is ready for flashing!</p>
-</li>
+</code></pre></div></li>
 </ol>
+<p>Ox64 is ready for flashing!</p>
 <h1 id="flash-opensbi-and-u-boot-bootloader"><a href="#flash-opensbi-and-u-boot-bootloader">3 Flash OpenSBI and U-Boot Bootloader</a></h1>
 <p><em>Our USB Serial Adapter works great at 2 Mbps. What next?</em></p>
 <p>Before booting Linux on Ox64, we flash…</p>
@@ -306,7 +289,7 @@ Ping!
 </li>
 <li>
 <p><a href="https://github.com/openbouffalo/buildroot_bouffalo"><strong>bl808-firmware</strong></a> for D0 Wireless Core:</p>
-<p>OpenSBI, U-Boot Bootloader and Device Tree.</p>
+<p>Binary Image for <strong>OpenSBI, U-Boot Bootloader</strong> and Device Tree.</p>
 <p><a href="https://lupyuen.github.io/articles/sbi">(<strong>OpenSBI</strong> is the “BIOS” for RISC-V SBCs)</a></p>
 </li>
 </ul>
@@ -346,12 +329,12 @@ Ping!
 <li>
 <p>We’ll run <strong>Bouffalo Lab DevCube</strong> for Flashing Ox64.</p>
 <p>Which supports <strong>Ubuntu x64, macOS and Windows</strong> only.</p>
-<p><strong>TODO:</strong> How to flash BL808 on Arm64 SBCs and Pinebook Pro? Sigh. See <a href="https://wiki.pine64.org/wiki/Ox64#Alternative:_Open-Source_Flashing"><strong>bflb-iot-tool</strong> / <strong>bflb-mcu-tool</strong></a></p>
+<p>(How to flash BL808 on Arm64 SBCs and Pinebook Pro? Sigh. See <a href="https://wiki.pine64.org/wiki/Ox64#Alternative:_Open-Source_Flashing"><strong>bflb-iot-tool</strong> / <strong>bflb-mcu-tool</strong></a>)</p>
 </li>
 <li>
 <p>Download <strong>BL DevCube 1.8.3</strong> from…</p>
 <p><a href="https://openbouffalo.org/static-assets/bldevcube/BouffaloLabDevCube-v1.8.3.zip">openbouffalo.org/static-assets/bldevcube/BouffaloLabDevCube-v1.8.3.zip</a></p>
-<p><a href="https://github.com/openbouffalo/buildroot_bouffalo/issues/60">(<strong>1.8.4 and later</strong> won’t work!)</a></p>
+<p>(Because <a href="https://github.com/openbouffalo/buildroot_bouffalo/issues/60"><strong>1.8.4 and later</strong></a> won’t work!)</p>
 </li>
 <li>
 <p>Start BL DevCube, select “<strong>BL808</strong>”</p>
@@ -435,7 +418,7 @@ chmod +x BLDevCube-macos-x86_64
 <p>(Don’t press the Boot Button!)</p>
 </li>
 <li>
-<p>On the USB Serial Terminal (Flashing UART) we should see…</p>
+<p>In the USB Serial Terminal (Flashing UART), we should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting Mailbox Handlers
 Forwarding Interupt SDH (33) to D0 (0x58008bbc)
 Forwarding Interupt GPIO (60) to D0 (0x58008d0e)
@@ -450,7 +433,7 @@ Unhandled Interupts: 0 Unhandled Signals 0
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout3.jpg" alt="Serial Console" /></p>
-<p>Now we check the Serial Console…</p>
+<p>Next we check the <strong>Serial Console</strong>…</p>
 <ol>
 <li>
 <p>Connect our USB Serial Adapter to the <strong>Ox64 Serial Console</strong> (pic above)…</p>
@@ -470,14 +453,14 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <p>(Don’t press the Boot Button!)</p>
 </li>
 <li>
-<p>On the USB Serial Terminal (Serial Console) we should see…</p>
+<p>In the USB Serial Terminal (Serial Console), we should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2023.04-rc2 (Mar 06 2023 - 11:48:40 +0000)
 Card did not respond to voltage select! : -110
 BOOTP broadcast
 Retry time exceeded; starting again
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0b1a98781e86ba11c5538eb1e3058718">(Source)</a></p>
-<p>Which is OK because U-Boot Bootloader is waiting for a microSD Card. </p>
+<p>Which is OK because U-Boot Bootloader is waiting for our microSD Card. </p>
 </li>
 <li>
 <p><strong>If nothing appears:</strong> Check that we are using <a href="https://openbouffalo.org/static-assets/bldevcube/BouffaloLabDevCube-v1.8.3.zip"><strong>BL DevCube 1.8.3</strong></a></p>
@@ -517,7 +500,7 @@ Retry time exceeded; starting again
 <tr><td style="text-align: center"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
-<p>Start the <strong>USB Serial Terminal</strong> for <strong>Flashing UART</strong></p>
+<p>Start the <strong>USB Serial Terminal</strong> for <strong>Flashing UART</strong>.</p>
 <p>Connect at <strong>2,000,000 bps</strong>. (2 Mbps)</p>
 <p>Unplug and replug the <strong>Micro USB Port</strong>.</p>
 <p>(Don’t press the Boot Button!)</p>
@@ -620,8 +603,8 @@ Retry time exceeded; starting again
 <p>Hopefully we can use <a href="https://github.com/pine64/blisp"><strong>blisp</strong></a> for flashing BL808 more reliably!</p>
 <h1 id="apache-nuttx-rtos-for-ox64"><a href="#apache-nuttx-rtos-for-ox64">6 Apache NuttX RTOS for Ox64</a></h1>
 <p><em>Why Apache NuttX RTOS?</em></p>
-<p>Ox64 seems a little tiny for <strong>64-bit Linux</strong>.</p>
-<p>Perhaps Ox64 might run more efficiently with a tiny <strong>64-bit RTOS</strong> (Real-Time Operating System) like Apache NuttX?</p>
+<p>Ox64 (with 64 MB RAM) seems a little tiny for <strong>64-bit Linux</strong>.</p>
+<p>Perhaps Ox64 might run more efficiently with a tiny <strong>64-bit RTOS</strong> (Real-Time Operating System)? Like <strong>Apache NuttX RTOS</strong>?</p>
 <p>Let’s explore…</p>
 <ol>
 <li>
