@@ -375,7 +375,7 @@ chmod +x BLDevCube-macos-x86_64
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Same problem when flashing BL602)</a></p>
 </li>
 <li>
-<p>Click “<strong>Create &amp; Download</strong>” and for it to complete</p>
+<p>Click “<strong>Create &amp; Download</strong>” and wait for it to complete</p>
 <p><img src="https://lupyuen.github.io/images/ox64-flash3.png" alt="Flash MCU Log" /></p>
 <p><a href="https://gist.github.com/lupyuen/125e15be5ed1e034bed33d16ed496d87">(See the <strong>MCU Flash Log</strong>)</a></p>
 </li>
@@ -395,7 +395,7 @@ chmod +x BLDevCube-macos-x86_64
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Same problem when flashing BL602)</a></p>
 </li>
 <li>
-<p>Click “<strong>Create &amp; Download</strong>” and for it to complete</p>
+<p>Click “<strong>Create &amp; Download</strong>” and wait for it to complete</p>
 <p><img src="https://lupyuen.github.io/images/ox64-flash5.png" alt="IoT Flash Log" /></p>
 <p><a href="https://gist.github.com/lupyuen/e8c0aca0ebd0f1eae034b0996a5b3ec3">(See the <strong>IoT Flash Log</strong>)</a></p>
 </li>
@@ -407,7 +407,7 @@ chmod +x BLDevCube-macos-x86_64
 <p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
 <ol>
 <li>
-<p>Check that our <strong>USB Serial Adapter</strong> is connected to the <strong>Flashing UART</strong>. (Pic above)</p>
+<p>Check that our <strong>USB Serial Adapter</strong> is connected to the port for <strong>Flashing UART</strong>. (Pic above)</p>
 </li>
 <li>
 <p>Start the <strong>USB Serial Terminal</strong> for <strong>Flashing UART</strong>.</p>
@@ -486,7 +486,7 @@ Retry time exceeded; starting again
 </code></pre></div></li>
 <li>
 <p>Flash the <strong>Uncompressed Image</strong> to our microSD card.</p>
-<p>Use <a href="https://github.com/balena-io/etcher"><strong>Balena Etcher</strong></a>, <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a> or <a href="https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6"><strong><code>dd</code></strong></a>.</p>
+<p>Use <a href="https://etcher.balena.io"><strong>Balena Etcher</strong></a>, <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a> or <a href="https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6"><strong><code>dd</code></strong></a>.</p>
 </li>
 <li>
 <p>Insert the <strong>microSD Card</strong> into Ox64. (Pic above)</p>
@@ -714,7 +714,7 @@ Retry time exceeded; starting again
 <li><a href="https://github.com/openbouffalo/buildroot_bouffalo/releases/tag/v1.0.1">openbouffalo/buildroot_bouffalo (Release v1.0.1)</a></li>
 </ul>
 <p>Unzip it and mount the <strong>SD Card Image</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>→ ls -l sdcard-pine64_ox64_full_defconfig     
+<div class="example-wrap"><pre class="language-bash"><code>$ ls -l sdcard-pine64_ox64_full_defconfig     
 -  13,154,816  Image
 -       4,012  bl808-pine64-ox64.dtb
 -       4,106  bl808-sipeed-m1s.dtb
@@ -724,7 +724,7 @@ Retry time exceeded; starting again
 d          96  extlinux
 </code></pre></div>
 <p>Dump the <strong><code>Image</code></strong> as hex…</p>
-<div class="example-wrap"><pre class="language-bash"><code>→ hexdump sdcard-pine64_ox64_full_defconfig/Image
+<div class="example-wrap"><pre class="language-bash"><code>$ hexdump sdcard-pine64_ox64_full_defconfig/Image
 0000000 4d 5a 6f 10 20 08 01 00 00 00 20 00 00 00 00 00
 0000010 00 80 cd 00 00 00 00 00 00 00 00 00 00 00 00 00
 0000020 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -819,7 +819,7 @@ d          96  extlinux
 };
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L89-L96">(Source)</a></p>
-<p>(We’ll reuse the <strong>BL602 UART Driver</strong> for NuttX)</p>
+<p>We’ll do the same for NuttX and reuse the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX UART Driver for BL602</strong></a>.</p>
 <p>And this specifies the <strong>Mailbox</strong> that will forward the <strong>Peripheral Interrupts</strong> from M0 Wireless Core to D0 Multimedia Core…</p>
 <div class="example-wrap"><pre class="language-text"><code>mailbox@30005000 {
   compatible = &quot;bflb,bl808-ipc&quot;;
@@ -860,7 +860,7 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <p><strong>M0 Wireless Core</strong> (OpenBouffalo Firmware) will forward the <strong>Peripheral Interrupts</strong> to D0 Multimedia Core (Linux)</p>
 </li>
 <li>
-<p>The Forwarded Peripheral Interrupts are for: <strong>SD Card Host Controller</strong> (SDH) and <strong>GPIO</strong> </p>
+<p>The Forwarded Peripheral Interrupts are for <strong>SD Card Host Controller</strong> (SDH) and <strong>GPIO</strong> </p>
 </li>
 <li>
 <p>Which makes sense because the <strong>U-Boot Bootloader</strong> (on D0 Multimedia Core) needs to access the <strong>SD Card</strong> (for booting Linux)</p>
@@ -871,18 +871,18 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <li>
 <p><strong>GPIO Interrupt</strong> is IRQ 60</p>
 <p>Because <strong>GPIO_INT0</strong> = IRQ_NUM_BASE + 44</p>
-<p>(BL808 Reference Manual, Page 44)</p>
-<p>And IRQ_NUM_BASE is 16</p>
-<p>(BL808 Reference Manual, Page 45)</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(<strong>BL808 Reference Manual</strong>, Page 44)</a></p>
+<p>And <strong>IRQ_NUM_BASE</strong> is 16</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(<strong>BL808 Reference Manual</strong>, Page 45)</a></p>
 <p><a href="https://github.com/bouffalolab/bl808_linux/blob/main/bl_mcu_sdk_bl808/drivers/bl808_driver/regs/bl808.h#L123">(Defined as <strong>GPIO_INT0_IRQn</strong>)</a></p>
 </li>
 <li>
 <p><strong>SD Card Interrupt</strong> is IRQ 33</p>
-<p>(BL808 Reference Manual, Page 561)</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(<strong>BL808 Reference Manual</strong>, Page 561)</a></p>
 <p><a href="https://github.com/bouffalolab/bl808_linux/blob/main/bl_mcu_sdk_bl808/drivers/bl808_driver/regs/bl808.h#L96">(Defined as <strong>SDH_IRQn</strong>)</a></p>
 </li>
 </ul>
-<p><em>How do we forward the Peripheral Interrupts?</em></p>
+<p><em>How does the OpenBouffalo Firmware forward the Peripheral Interrupts?</em></p>
 <p>Check out…</p>
 <ul>
 <li>
@@ -901,13 +901,13 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <p><a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/m0_lowload"><strong>OpenBouffalo Firmware for m0_lowload</strong></a> seems to support other Peripheral Interrupts (but disabled for now)…</p>
 <ul>
 <li>
-<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L103-L111"><strong>Forward UART2 Interrupts</strong></a></p>
+<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L103-L111"><strong>Forward UART2 Interrupt</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L111-L119"><strong>Forward USB Interrupts</strong></a></p>
+<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L111-L119"><strong>Forward USB Interrupt</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L119-L127"><strong>Forward Ethernet Interrupts</strong></a></p>
+<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/components/mailbox/src/oblfr_mailbox.c#L119-L127"><strong>Forward Ethernet Interrupt</strong></a></p>
 </li>
 </ul>
 <p><em>Are there other ways to boot Linux on Ox64?</em></p>
