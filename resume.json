@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Ox64 BL808 RISC-V SBC: Booting Linux and (maybe) Apache NuttX RTOS",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-11-05",
+      "website": "https://lupyuen.github.io/articles/ox64",
+      "summary": "Let's boot Linux on Pine64 Ox64 BL808 RISC-V SBC... As we figure out how Apache NuttX RTOS might run on Ox64"
+    },
+    {
       "name": "Star64 JH7110 RISC-V SBC: Experiments with OpenSBI (Supervisor Binary Interface)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-10-29",
