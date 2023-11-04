@@ -631,7 +631,10 @@ Retry time exceeded; starting again
 </li>
 <li>
 <p><em>How will we print to the Serial Console?</em></p>
-<p>We’ll borrow the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX UART Driver for BL602</strong></a>. (Which will probably work with BL808).</p>
+<p>We’ll borrow the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX UART Driver for BL602</strong></a>. (Which will probably work with BL808)</p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-ox64#print-to-ox64-serial-console-in-nuttx-boot-code"><strong>“Print to Ox64 Serial Console in NuttX Boot Code”</strong></a></li>
+</ul>
 <p>The <strong>Linux Device Tree</strong> has helpful hints…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ox64#appendix-linux-device-tree"><strong>“Linux Device Tree for Ox64”</strong></a></li>
@@ -803,7 +806,10 @@ d          96  extlinux
 <p>Our NuttX Kernel shall <strong>recreate this RISC-V Linux Image Header</strong>. (Total <code>0x40</code> bytes)</p>
 <p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
 <p>The above Header Values are <strong>exactly the same as Star64</strong>. (Except the Image Size and Executable Code, since the Jump Address is different)</p>
-<p>Thus we simply <a href="https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header"><strong>reuse the code</strong></a> from NuttX Star64!</p>
+<p>Thus we simply <a href="https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header"><strong>reuse the code</strong></a> from NuttX Star64…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-ox64#boot-apache-nuttx-rtos-on-ox64-bl808"><strong>“Boot Apache NuttX RTOS on Ox64 BL808”</strong></a></li>
+</ul>
 <h1 id="appendix-linux-device-tree"><a href="#appendix-linux-device-tree">9 Appendix: Linux Device Tree</a></h1>
 <p><em>What’s inside the Linux Device Tree for Ox64?</em></p>
 <p><em>Anything that might help NuttX for Ox64?</em></p>
@@ -827,7 +833,10 @@ d          96  extlinux
 };
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L89-L96">(Source)</a></p>
-<p>We’ll do the same for NuttX and reuse the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX UART Driver for BL602</strong></a>.</p>
+<p>We’ll do the same for NuttX and reuse the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX UART Driver for BL602</strong></a>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-ox64#print-to-ox64-serial-console-in-nuttx-boot-code"><strong>“Print to Ox64 Serial Console in NuttX Boot Code”</strong></a></li>
+</ul>
 <p>And this specifies the <strong>Mailbox</strong> that will forward the <strong>Peripheral Interrupts</strong> from M0 Wireless Core to D0 Multimedia Core…</p>
 <div class="example-wrap"><pre class="language-text"><code>mailbox@30005000 {
   compatible = &quot;bflb,bl808-ipc&quot;;
