@@ -1116,9 +1116,11 @@ Special Thanks to [__TL Lim__](https://news.apache.org/foundation/entry/the-apac
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=35275904)
 
--   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+-   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 
--   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
+-   [__My Other Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
+
+-   [__Older Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
 -   [__My Sourdough Recipe__](https://lupyuen.github.io/articles/sourdough)
 
