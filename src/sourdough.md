@@ -1,6 +1,6 @@
 # Recipe for Wholemeal Sourdough with Bread Machine
 
-📝 _24 Oct 2023_
+📝 _6 Nov 2023_
 
 ![Honey & Milk Sourdough](https://lupyuen.github.io/images/sourdough25.jpg)
 
@@ -52,7 +52,7 @@ Add in this sequence to Bread Machine...
 
 -   1 tablespoon Full Cream Milk Powder 
 
--   3/4 cup Boiling Water (100 deg C)
+-   2 cups Boiling Water (100 deg C)
 
     Stir the Boiling Water to melt the butter and blend the honey and milk.
 
@@ -72,43 +72,45 @@ Add in this sequence to Bread Machine...
 
 ![Honey & Milk Sourdough](https://lupyuen.github.io/images/sourdough25.jpg)
 
-We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Oven to rise the dough (5 hours), then move the Bread Bucket back to the Bread Machine for baking. Here are the steps...
+We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Oven to rise the dough (4 hours), then move the Bread Bucket back to the Bread Machine for more rising and baking. Here are the steps...
 
-1.  To knead the dough, start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "Quick Baking" Mode.
+1.  To knead the dough, start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "Quick Baking" Cycle.
 
     (This is the quickest way to knead)
 
 1.  Sprinkle Bread Flour or Water until dough becomes a Smooth and Creamy Ball. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
 
-1.  After the kneading step has completed, power off the Bread Machine
+1.  After the Kneading Step has completed, power off the Bread Machine
 
 1.  Remove the Paddle from the Bread Bucket. (Because otherwise the dough will rise, dislodge the Paddle, and Paddle gets stuck inside the bread)
 
     Here's how: Tilt the Bread Bucket to one side, scrape the dough off the Paddle with a wooden chopstick, remove the Paddle.
 
-1.  Place Bread Bucket in Warm Oven, cover with damp towel, to prevent drying up. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
+1.  Place the Bread Bucket in a Warm Oven, and cover with a Dry Towel. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
 
-    Allow dough to rise for 5 hours. Or until the dough reaches the brim of the Bread Bucket.
+    Allow the dough to rise for 4 hours. Or until the dough reaches the brim of the Bread Bucket.
 
-1.  2.5 hours after kneading: Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "French Bread" Mode. (5 hour cycle)
+1.  Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "French Bread" Cycle (5 hour cycle) WITHOUT the Bread Bucket.
 
     Bread Machine will try to knead without the Bread Bucket. And that's OK.
 
-1.  2.5 hours after starting "French Bread" Mode: Move Baking Bucket to Bread Machine.
+1.  35 mins after starting "French Bread" Cycle: Bread Machine will stop kneading.
 
-    "French Bread" Mode will warm up and rise the dough for 1 hour.
+    Move the Bread Bucket into the Bread Machine.
+
+1.  "French Bread" Cycle will warm up and rise the dough for 3 hours.
 
     Then bake for 1.5 hours.
 
     [(French Bread Mode is explained on Page 17)](https://www.zojirushi.com/servicesupport/manuals/manual_pdf/bb_hac10.pdf)
 
-To remind myself, I set 3 Timers on my phone whenever I place the Bread Bucket in the Warm Oven...
+1.  After baking, our loaf might get stuck to the Spindle in the Bread Bucket.
 
--   Start Timer "StartBread" for 2.5 hours 
--   Start Timer "LoadBread" for 5 hours 
--   Start Timer "StopBread" for 7.5 hours 
+    Turn the Spindle a few rounds, via the Bottom Exterior of Bread Bucket. (Very hot!)
 
-Yep it's 7.5 hours in total, instead of the normal 5-hour "French Bread" Mode! This gives the sourdough more time to rise (5 hours), for the extra bubbly floofiness.
+    Our loaf will plop out from the Bread Bucket. Don't shake the Bread Bucket too hard, because the loaf will tear with a circular hole.
+
+Yep it's 9 hours in total, instead of the normal 5-hour "French Bread" Mode! This gives the sourdough plenty of time to rise (7.5 hours), for the extra bubbly floofiness.
 
 How warm is the oven? For breakfast I toast my bread in the oven at 250 deg C for 5 minutes. I wait for the oven to cool a bit, then I move the Bread Bucket inside.
 
