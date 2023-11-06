@@ -398,6 +398,10 @@ $ curl --output initrd tftp://192.168.31.10/initrd
 <p>(Our Modified TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice)</p>
 <p><em>So this TFTP Timeout seems specific to JH7110 U-Boot?</em></p>
 <p>Yeah. Maybe U-Boot Bootloader on Star64 JH7110 missed some Incoming UDP Packets?</p>
+<p><em>But we haven’t actually fixed the TFTP Timeout?</em></p>
+<p>Yeah we have a bad hack, a strange workaround for the TFTP Timeout problem.</p>
+<p>To actually fix the problem, we’d have to dive into the U-Boot Source Code. And figure out what’s happening inside the JH7110 Network Driver and TFTP Client.</p>
+<p>(And maybe this problem has been fixed in the latest U-Boot!)</p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>Porting NuttX to Star64 JH7110 becomes so much faster now. Stay tuned for quicker updates!</p>
 <p><a href="https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver">(Like the upcoming <strong>NuttX I2C Driver for JH7110</strong>)</a></p>
