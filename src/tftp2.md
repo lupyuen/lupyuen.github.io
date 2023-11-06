@@ -435,6 +435,14 @@ _So this TFTP Timeout seems specific to JH7110 U-Boot?_
 
 Yeah. Maybe U-Boot Bootloader on Star64 JH7110 missed some Incoming UDP Packets?
 
+_But we haven't actually fixed the TFTP Timeout?_
+
+Yeah we have a bad hack, a strange workaround for the TFTP Timeout problem.
+
+To actually fix the problem, we'd have to dive into the U-Boot Source Code. And figure out what's happening inside the JH7110 Network Driver and TFTP Client.
+
+(And maybe this problem has been fixed in the latest U-Boot!)
+
 # What's Next
 
 Porting NuttX to Star64 JH7110 becomes so much faster now. Stay tuned for quicker updates!
