@@ -36,7 +36,7 @@ _We're booting Star64 NuttX on Ox64? Unmodified?!_
 
 Yeah we have a hunch that NuttX might boot well __across RISC-V SoCs__.
 
-(Porting NuttX from __RISC-V QEMU to Star64__ took only a few weeks!)
+[(We ported __NuttX QEMU to Star64__ in only a few weeks!)](https://lupyuen.github.io/articles/nuttx2)
 
 _But Star64 runs on SiFive Cores. Ox64 uses T-Head Cores!_
 
@@ -246,6 +246,8 @@ Starting kernel ...
 
 Let's fix the NuttX UART Driver...
 
+![NuttX prints our very first Stack Dump on Ox64 yay!](https://lupyuen.github.io/images/ox64-stack.png)
+
 # Fix the UART Driver
 
 TODO
@@ -331,9 +333,13 @@ MTVAL:  000000000c002104
 
 And the offending Data Address 0xc002104. (Which looks very familiar!)
 
-![NuttX prints our very first Stack Dump on Ox64 yay!](https://lupyuen.github.io/images/ox64-stack.png)
+![Platform-Level Interrupt Controller for Star64 JH7110](https://lupyuen.github.io/images/plic-title.jpg)
+
+[_Platform-Level Interrupt Controller for Star64 JH7110_](https://lupyuen.github.io/articles/plic)
 
 # Platform-Level Interrupt Controller
+
+_What's this Platform-Level Interrupt Controller?_
 
 TODO
 
