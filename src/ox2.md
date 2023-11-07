@@ -159,9 +159,7 @@ So for BL808, we simply write the character to...
 
   [(From above __FIFO_WDATA_OFFSET__)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/hardware/bl602_uart.h#L38-L58)
 
-TODO
-
-[Based on Star64 Debug Code](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console), we code this in RISC-V Assembly...
+Based on our [__Star64 Debug Code__](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console), we write this in __RISC-V Assembly__...
 
 ```text
 /* Load UART3 Base Address to Register t0 */
@@ -183,7 +181,13 @@ li  t1, 0x33
 sb  t1, 0x88(t0)
 ```
 
-We insert the above code into the NuttX Boot Code: [jh7110_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L69-L87)
+[(__`li`__ loads a Value into a Register)](https://lupyuen.github.io/articles/riscv#other-instructions)
+
+[(__`sb`__ stores a byte from a Register into an Address Offset)](https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions)
+
+We insert the code above into the [__NuttX Boot Code:__ jh7110_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L69-L87)
+
+TODO
 
 Now NuttX prints to the Serial Console yay! (Pic below)
 
