@@ -253,6 +253,8 @@ And the __NuttX Memory Map__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip
 #define MMU_IO_SIZE (0x50000000)
 ```
 
+TODO: MMU
+
 Now we fix the NuttX UART Driver...
 
 ![NuttX prints our very first Stack Dump on Ox64 yay!](https://lupyuen.github.io/images/ox64-stack.png)
@@ -581,7 +583,7 @@ Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the __Memo
 #define MMU_IO_SIZE (0xf0000000)
 ```
 
-(Doesn't look right, we'll come back to this)
+[(__Memory Map__ doesn't look right)](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64)
 
 NuttX boots even further! And tries to register IRQ 57 for the Star64 UART Interrupt...
 
@@ -610,7 +612,7 @@ But it crashes while accessing the PLIC at another address: __`0xE000` `2104`__.
 
 _Ack! Enough with the PLIC already..._
 
-Yeah let's fix PLIC later. The entire UART Driver will be revamped anyway, including the UART Interrupt.
+Yeah let's fix PLIC later. The entire [__UART Driver will be revamped__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64) anyway, including the UART Interrupt.
 
 We __disable the UART Interrupt__ for now: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958)
 
@@ -678,9 +680,13 @@ We'll modify [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildr
 
 [(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
 
-TODO: Memory Map
+TODO
 
-TODO: UART Driver
+- [__"Initial RAM Disk"__](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk)
+
+- [__"UART Driver for Ox64"__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64)
+
+- [__"Memory Map for Ox64"__](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64)
 
 # What's Next
 
