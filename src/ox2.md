@@ -117,11 +117,11 @@ Let's print something in the __NuttX Boot Code__. Which is in __RISC-V Assembly_
 
 When we compare these UARTs...
 
-- __BL808 UART Hardware__
+- __BL808 UART Controller__
 
   [(__BL808 Reference Manual__, Page 402)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
-- __BL602 UART Hardware__
+- __BL602 UART Controller__
 
   [(__BL602 Reference Manual__, Page 126)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
 
@@ -418,7 +418,7 @@ The __PLIC Base Address__ is different for Ox64, let's change it.
 
 _What's the PLIC Base Address for Ox64?_
 
-__Ox64 PLIC Base Address__ is __`0xE000` `0000`__, according to the Linux Device Tree: [bl808-pine64-ox64.dts](https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L129-L138)
+Ox64 PLIC Base Address is __`0xE000` `0000`__, according to the Linux Device Tree: [bl808-pine64-ox64.dts](https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L129-L138)
 
 ```text
 interrupt-controller@e0000000 {
@@ -433,24 +433,17 @@ interrupt-controller@e0000000 {
 };
 ```
 
-TODO: Why isn't this documented in [XuanTie OpenC906 User Manual](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)?
-
-So we change the PLIC Base Address for Ox64: [jh7110_memorymap.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30)
+So we change the __PLIC Base Address__ for Ox64: [jh7110_memorymap.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30)
 
 ```c
-#define JH7110_PLIC_BASE    0xe0000000
+#define JH7110_PLIC_BASE 0xe0000000
 ```
 
-TODO: Enable Scheduler Debug
-
-# Handle RISC-V Exceptions
-
-TODO
-
-Now NuttX crashes at a different place, with IRQ 15...
+NuttX now crashes at a different place, with IRQ 15...
 
 ```text
-123ABC
+123
+ABC
 nx_start: Entry
 up_irqinitialize: a
 up_irqinitialize: b
@@ -461,15 +454,31 @@ _assert: Current Version: NuttX  12.0.3 910bfca-dirty Nov  6 2023 15:23:11 risc-
 _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_Task process: Kernel 0x50200e50
 ```
 
-[(Source)](https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c)
+
+Let's chat about IRQ 15 and why it shouldn't appear...
+
+TODO: Enable Scheduler Debug
+
+# Handle RISC-V Exceptions
 
 _What's IRQ 15?_
 
-From [XuanTie OpenC906 User Manual](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf) (Page 21):
+From the [__XuanTie OpenC906 User Manual__](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf) (Page 21)...
 
-> "Exception Vector ID 15: A store/atomic instruction page error exception."
+> "__Exception Vector ID 15:__ A Store / Atomic Instruction page error exception"
 
-This RISC-V Exception says that we tried to write to an invalid Data Address. And failed.
+This says that NuttX tried to write to an __Invalid Data Address__.
+
+And it failed due to an "Unexpected Interrupt". (ISR)
+
+_Is there something special about IRQ 15?_
+
+IRQ 15 is actually a __RISC-V Exception__!
+
+Rightfully, NuttX should print a __RISC-V Exception Crash Dump__. [(Like this)](https://lupyuen.github.io/articles/ox2#fix-the-uart-driver)
+
+TODO
 
 _Where did it crash?_
 
