@@ -130,29 +130,36 @@ Thus we may seek guidance from the [__NuttX Driver for BL602 UART__](https://git
 
 _So how do we print to BL808 UART?_
 
-TODO
-
-This is how the BL602 UART Driver prints to the Serial Console: [bl602_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725)
+This is how the __BL602 UART Driver__ prints to the Serial Console: [bl602_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725)
 
 ```c
+// Output FIFO Offset is 0x88
 #define BL602_UART_FIFO_WDATA_OFFSET 0x000088  /* uart_fifo_wdata */
 #define BL602_UART_FIFO_WDATA(n) (BL602_UART_BASE(n) + BL602_UART_FIFO_WDATA_OFFSET)
 
+// Write a character to UART
 static void bl602_send(struct uart_dev_s *dev, int ch) {
   ...
   // Wait for FIFO to be empty
   while ((getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) & \
     UART_FIFO_CONFIG_1_TX_CNT_MASK) == 0);
-  // Write output to FIFO
+
+  // Write character to Output FIFO
   putreg32(ch, BL602_UART_FIFO_WDATA(uart_idx));
 }
 ```
 
 So for BL808, we simply write the character to...
 
-- UART3 Base Address: 0x30002000 (from the Linux Device Tree earlier)
+- UART3 Base Address: __`0x3000` `2000`__
 
-- Offset: 0x88
+  [(From the __Linux Device Tree__)](https://lupyuen.github.io/articles/ox64#appendix-linux-device-tree)
+
+- Output FIFO Offset: __`0x88`__
+
+  [(From above __FIFO_WDATA_OFFSET__)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/hardware/bl602_uart.h#L38-L58)
+
+TODO
 
 [Based on Star64 Debug Code](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console), we code this in RISC-V Assembly...
 
