@@ -454,7 +454,7 @@ _assert: Current Version: NuttX  12.0.3 910bfca-dirty Nov  6 2023 15:23:11 risc-
 _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_Task process: Kernel 0x50200e50
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121)
 
 Let's chat about IRQ 15 and why it shouldn't appear...
 
@@ -472,44 +472,36 @@ This says that NuttX tried to write to an __Invalid Data Address__.
 
 And it failed due to an "Unexpected Interrupt". (ISR)
 
-_Is there something special about IRQ 15?_
+_Something special about IRQ 15?_
 
 IRQ 15 is actually a __RISC-V Exception__!
 
-Rightfully, NuttX should print a __RISC-V Exception Crash Dump__. [(Like this)](https://lupyuen.github.io/articles/ox2#fix-the-uart-driver)
+Rightfully, NuttX should print a helpful __RISC-V Exception Crash Dump__ with the offending Data Address. [(Like this)](https://lupyuen.github.io/articles/ox2#fix-the-uart-driver)
 
-TODO
+Let's figure out why NuttX wasn't terribly helpful for this RISC-V Exception.
 
 _Where did it crash?_
 
-Based on our log, NuttX crashes before setting the PLIC!
-
-From [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85)
+Based on our [__Debug Log__](https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121), NuttX crashes right before setting the PLIC: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85)
 
 ```c
-// Init the IRQs
+// Init the Interrupts
 void up_irqinitialize(void) {
-  _info("a\n");////
+  ...
 
-  /* Disable S-Mode interrupts */
-  _info("b\n");////
+  // Disable S-Mode interrupts
+  _info("b\n");
   up_irq_save();
 
-  /* Disable all global interrupts */
-  _info("c\n");////
+  // Disable all global interrupts
+  _info("c\n");
   // Crashes here!
   putreg32(0x0, JH7110_PLIC_ENABLE1);
   putreg32(0x0, JH7110_PLIC_ENABLE2);
-
-  /* Colorize the interrupt stack for debug purposes */
   ...
 
-  /* Set irq threshold to 0 (permits all global interrupts) */
-  _info("e\n");////
-  putreg32(0, JH7110_PLIC_THRESHOLD);
-
-  /* Attach the common interrupt handler */
-  _info("f\n");////
+  // Attach the RISC-V Exception Handlers
+  _info("f\n");
   riscv_exception_attach();
 ```
 
