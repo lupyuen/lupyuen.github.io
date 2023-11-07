@@ -70,7 +70,7 @@
     <h1 class="title">Ox64 BL808 RISC-V SBC: Starting Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
 <li><a href="#begin-with-star64-nuttx">1 Begin with Star64 NuttX</a><ul></ul></li>
-<li><a href="#print-to-ox64-serial-console">2 Print to Ox64 Serial Console</a><ul></ul></li>
+<li><a href="#print-to-serial-console">2 Print to Serial Console</a><ul></ul></li>
 <li><a href="#update-the-nuttx-boot-address">3 Update the NuttX Boot Address</a><ul></ul></li>
 <li><a href="#fix-the-uart-driver">4 Fix the UART Driver</a><ul></ul></li>
 <li><a href="#platform-level-interrupt-controller">5 Platform-Level Interrupt Controller</a><ul></ul></li>
@@ -116,10 +116,11 @@
 <p>(Porting NuttX from <strong>RISC-V QEMU to Star64</strong> took only a few weeks!)</p>
 <p><em>But Star64 runs on SiFive Cores. Ox64 uses T-Head Cores!</em></p>
 <p>We’ll find out if it really matters! This is how we download and build <strong>NuttX for Star64 JH7110</strong> RISC-V SBC…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download NuttX Sourc Code
+<div class="example-wrap"><pre class="language-bash"><code>## Download WIP NuttX Source Code
 git clone \
   --branch ox64 \
-  https://github.com/lupyuen2/wip-pinephone-nuttx nuttx
+  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  nuttx
 git clone \
   --branch ox64 \
   https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
@@ -132,7 +133,7 @@ make
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prequisites and Toolchain</strong>)</a></p>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
-<p>Then we do the <a href="https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64"><strong>“Linux-To-NuttX Switcheroo”</strong></a> and overwrite the microSD Linux Image by the <strong>NuttX Kernel</strong>…</p>
+<p>Then we do the <a href="https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64"><strong>Linux-To-NuttX Switcheroo</strong></a>: Overwrite the microSD Linux Image by the <strong>NuttX Kernel</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Export the Binary Image to nuttx.bin
 riscv64-unknown-elf-objcopy \
   -O binary \
@@ -167,8 +168,8 @@ Starting kernel ...
 <p>NuttX was probably stuck in a loop <strong>waiting for Star64 UART</strong></p>
 </li>
 </ul>
-<p>Let’s print something to the Ox64 Serial Console…</p>
-<h1 id="print-to-ox64-serial-console"><a href="#print-to-ox64-serial-console">2 Print to Ox64 Serial Console</a></h1>
+<p>Let’s print something to the Serial Console…</p>
+<h1 id="print-to-serial-console"><a href="#print-to-serial-console">2 Print to Serial Console</a></h1>
 <p>TODO</p>
 <p><em>How to print to the Ox64 Serial Console in the NuttX Boot Code? (RISC-V Assembly)</em></p>
 <p>When we compare the BL808 and BL602 Reference Manuals, we discover that BL808 UART works the same way as BL602.</p>
