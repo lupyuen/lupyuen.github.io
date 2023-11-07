@@ -80,7 +80,7 @@ diskutil unmountDisk /dev/disk2
 
 Insert the __microSD into Ox64__ and power up Ox64.
 
-And we'll see... Absolutely Nothing!
+And we see... Absolutely Nothing!
 
 ```text
 Retrieving file: /extlinux/../Image
