@@ -331,18 +331,7 @@ up_dump_register: A4: ffffffffffffffff A5: 8000000200046000 A6: 0000000000000000
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/36b8c47abc2632063ca5cdebb958e3e8)
 
-TODO
-
-Let's look up the RISC-V Exception Code Address 0x50208086 in our RISC-V Disassembly...
-
-```text
-EXCEPTION: Load access fault
-MCAUSE: 5
-EPC:    50208086
-MTVAL:  0c002104
-```
-
-And the offending Data Address 0xc002104. (Which looks very familiar!)
+Next we figure out why Data Address __`0x0C00` `2104`__ is causing problems for NuttX...
 
 ![Platform-Level Interrupt Controller for Star64 JH7110](https://lupyuen.github.io/images/plic-title.jpg)
 
@@ -357,10 +346,10 @@ TODO
 _Why did NuttX crash with this RISC-V Exception?_
 
 ```text
-EXCEPTION: Load access fault 
-MCAUSE: 0000000000000005 
-EPC:    0000000050208086 
-MTVAL:  000000000c002104
+EXCEPTION: Load access fault
+MCAUSE: 5
+EPC:    50208086
+MTVAL:  0c002104
 ```
 
 NuttX crashed when it tried to access invalid Data Address 0xc002104 from Code Address 0x50208086.
