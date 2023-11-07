@@ -214,8 +214,7 @@ static void bl602_send(struct uart_dev_s *dev, int ch) {
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/hardware/bl602_uart.h#L38-L58">(From above <strong>FIFO_WDATA_OFFSET</strong>)</a></p>
 </li>
 </ul>
-<p>TODO</p>
-<p><a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console">Based on Star64 Debug Code</a>, we code this in RISC-V Assembly…</p>
+<p>Based on our <a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console"><strong>Star64 Debug Code</strong></a>, we write this in <strong>RISC-V Assembly</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load UART3 Base Address to Register t0 */
 li  t0, 0x30002000
 
@@ -234,7 +233,10 @@ li  t1, 0x33
 /* Store byte from Register t1 to UART3 Base Address, Offset 0x88 */
 sb  t1, 0x88(t0)
 </code></pre></div>
-<p>We insert the above code into the NuttX Boot Code: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L69-L87">jh7110_head.S</a></p>
+<p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address Offset)</a></p>
+<p>We insert the code above into the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L69-L87"><strong>NuttX Boot Code:</strong> jh7110_head.S</a></p>
+<p>TODO</p>
 <p>Now NuttX prints to the Serial Console yay! (Pic below)</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 123
