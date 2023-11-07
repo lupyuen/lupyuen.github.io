@@ -30,7 +30,17 @@ Let's make it happen! In this article we...
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sbc.jpg)
 
-# Begin with Star64 JH7110 NuttX
+# Begin with NuttX for Star64 JH7110
+
+_We're booting Star64 NuttX on Ox64? Unmodified?!_
+
+Yeah we have a hunch that NuttX might boot well __across RISC-V SoCs__.
+
+(Porting NuttX from __RISC-V QEMU to Star64__ took only a few weeks!)
+
+_But Star64 runs on SiFive Cores. Ox64 uses T-Head Cores!_
+
+We'll find out if it really matters!
 
 TODO
 
