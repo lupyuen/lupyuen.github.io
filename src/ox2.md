@@ -636,7 +636,7 @@ static int u16550_attach(struct uart_dev_s *dev) {
 
 # Initial RAM Disk is Missing
 
-_What happens now?_
+_We disabled the UART Interrupts. What happens now?_
 
 NuttX boots much further, but crashes in the __NuttX Bringup__...
 
@@ -718,9 +718,33 @@ _My soldering of Ox64 BL808 looks horrigible... But it works for now_ 😬
 
 TODO
 
+_Why is the Initial RAM Disk missing?_
+
+That's because we __haven't loaded the Initial RAM Disk__ into RAM!
+
+We'll modify [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
+
+[(Or maybe the U-Boot Script __boot-pine64.scr__)](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd)
+
+[(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
+
 # Appendix: UART Driver for Ox64
 
 TODO
+
+When we compare these UARTs...
+
+- __BL808 UART Controller__
+
+  [(__BL808 Reference Manual__, Page 402)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+
+- __BL602 UART Controller__
+
+  [(__BL602 Reference Manual__, Page 126)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+
+We discover that BL808 UART works the __same way as BL602__!
+
+Thus we may seek guidance from the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725).
 
 # Appendix: Memory Map for Ox64
 
