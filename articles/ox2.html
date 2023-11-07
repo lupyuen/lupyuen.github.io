@@ -79,31 +79,33 @@
 <li><a href="#fail-to-load-initial-ram-disk">8 Fail to Load Initial RAM Disk</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>12 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/ox2-title.png" alt="Booting Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
-<p>Last article we booted Linux on the <strong>Pine64 Ox64 64-bit RISC-V SBC</strong> (powered by <strong>Bouffalo Lab BL808 SoC</strong>)…</p>
-<p>TODO</p>
-<p>And we wondered whether a 64-bit RTOS (Real-Time Operating System) like <strong>Apache NuttX RTOS</strong> might run more efficiently on Ox64.</p>
-<p>Let’s make it happen! In this article…</p>
+<p>Last week we booted Linux on the <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 64-bit RISC-V SBC</strong></a> (pic below), powered by <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>Bouffalo Lab BL808 SoC</strong></a>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/ox64"><strong>“Ox64 BL808 RISC-V SBC: Booting Linux and (maybe) Apache NuttX RTOS”</strong></a></li>
+</ul>
+<p>And we wondered whether a 64-bit RTOS (Real-Time Operating System) like <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> might run more efficiently on Ox64.</p>
+<p>Let’s make it happen! In this article we…</p>
 <ul>
 <li>
-<p>We begin with NuttX for Star64 JH7110 RISC-V SBC</p>
+<p>Begin with <strong>NuttX for Star64 JH7110</strong> RISC-V SBC</p>
 </li>
 <li>
-<p>Try to boot it on our Ox64 BL808 RISC-V SBC</p>
+<p>Boot it (!) on our <strong>Ox64 BL808</strong> RISC-V SBC</p>
 </li>
 <li>
-<p>Add Debug Logs in RISC-V Assembly</p>
+<p>Add Debug Logs in <strong>RISC-V Assembly</strong></p>
 </li>
 <li>
-<p>Tweak the NuttX UART Driver to print on Ox64</p>
+<p>Tweak the <strong>NuttX UART Driver</strong> to print on Ox64</p>
 </li>
 <li>
-<p>Fix the Platform-Level Interrupt Controller</p>
+<p>Fix the <strong>Platform-Level Interrupt Controller</strong></p>
 </li>
 <li>
-<p>Clean up the RISC-V Exceptions</p>
+<p>Figure out why <strong>RISC-V Exceptions</strong> aren’t dumped correctly</p>
 </li>
 <li>
-<p>Eventually hitting an issue with Initial RAM Disk</p>
+<p>And plan for the upcoming <strong>Initial RAM Disk</strong></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ox64-sbc.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
