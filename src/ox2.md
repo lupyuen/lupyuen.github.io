@@ -245,7 +245,7 @@ CONFIG_ARCH_PGPOOL_VBASE=0x50600000
 CONFIG_ARCH_PGPOOL_SIZE=4194304
 ```
 
-And the __NuttX Memory Map__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
+And we update the __NuttX Memory Map__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
 
 ```c
 /* Map the whole I/O memory with vaddr = paddr mappings */
@@ -253,7 +253,17 @@ And the __NuttX Memory Map__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip
 #define MMU_IO_SIZE (0x50000000)
 ```
 
-TODO: MMU
+_What's this Memory Map?_
+
+Inside the BL808 SoC is the [__Sv39 Memory Management Unit (MMU)__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39). (Same for to Star64 JH7110)
+
+The MMU maps __Virtual Memory Addresses__ to __Physical Memory Addresses__. And stops the NuttX Kernel from accessing Invalid Addresses.
+
+At startup, NuttX configures the MMU with the __Memory Map__, the Range of Memory Addresses that the NuttX Kernel is allowed to access.
+
+The code above says that NuttX is allowed to access any address from __`0x0000` `0000`__ to __`0x5000` `0000`__. (Because of Memory-Mapped I/O)
+
+[(More about __Memory Map__)](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64)
 
 Now we fix the NuttX UART Driver...
 
@@ -361,23 +371,6 @@ This says that NuttX crashed when it tried to access Invalid Data Address __`0x0
 We look up Code Address __`0x5020` `8086`__ in our __NuttX Disassembly__...
 
 ```text
-000000005020807a <modifyreg32>:
-up_irq_save():
-nuttx/include/arch/irq.h:689
-    5020807a:	4789                	li	a5,2
-    5020807c:	1007b7f3          	csrrc	a5,sstatus,a5
-modifyreg32():
-nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
-{
-  irqstate_t flags;
-  uint32_t   regval;
-
-  flags   = spin_lock_irqsave(NULL);
-  regval  = getreg32(addr);
-    50208080:	4118                	lw	a4,0(a0)
-nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:53
-  regval &= ~clearbits;
-    50208082:	fff5c593          	not	a1,a1
 nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
   regval  = getreg32(addr);
     50208086:	2701                	sext.w	a4,a4
@@ -409,11 +402,13 @@ _But what Memory-Mapped Register?_
 The offending Data Address __`0x0C00` `2104`__ actually comes from the __Star64 PLIC__! (Platform-Level Interrupt Controller)
 
 ```c
-// Star64 PLIC Base Address. From https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30
-#define JH7110_PLIC_BASE    0x0c000000
+// Star64 PLIC Base Address
+// From https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30
+#define JH7110_PLIC_BASE 0x0c000000
 
-// Start64 S-Mode Interrupt Enable. From https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L34-L49
-#define JH7110_PLIC_ENABLE2   (JH7110_PLIC_BASE + 0x002104)
+// Star64 S-Mode Interrupt Enable
+// From https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L34-L49
+#define JH7110_PLIC_ENABLE2 (JH7110_PLIC_BASE + 0x002104)
 ```
 
 The __PLIC Base Address__ is different for Ox64, let's change it.
@@ -444,12 +439,9 @@ So we change the __PLIC Base Address__ for Ox64: [jh7110_memorymap.h](https://gi
 NuttX now crashes at a different place, with IRQ 15...
 
 ```text
-123
-ABC
+123ABC
 nx_start: Entry
-up_irqinitialize: a
-up_irqinitialize: b
-up_irqinitialize: c
+up_irqinitialize: a, b, c
 riscv_dispatch_irq: irq=15
 irq_unexpected_isr: ERROR irq: 15
 _assert: Current Version: NuttX  12.0.3 910bfca-dirty Nov  6 2023 15:23:11 risc-v
@@ -588,10 +580,7 @@ Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the __Memo
 NuttX boots even further! And tries to register IRQ 57 for the Star64 UART Interrupt...
 
 ```text
-up_irqinitialize: c
-up_irqinitialize: d
-up_irqinitialize: e
-up_irqinitialize: g
+up_irqinitialize: c, d, e, g
 irq_attach: irq=17, isr=0x50207eee
 up_enable_irq: irq=17
 uart_register: Registering /dev/console
@@ -684,13 +673,16 @@ TODO
 
 - [__"Initial RAM Disk"__](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk)
 
-- [__"UART Driver for Ox64"__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64)
-
-- [__"Memory Map for Ox64"__](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64)
-
 # What's Next
 
 TODO
+
+- [__"Memory Map for Ox64"__](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64)
+
+- [__"UART Driver for Ox64"__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64)
+
+- [__"Initial RAM Disk"__](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk)
+
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -714,19 +706,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _My soldering of Ox64 BL808 looks horrigible... But it works for now_ 😬
 
-# Appendix: Initial RAM Disk
+# Appendix: Memory Map for Ox64
 
 TODO
 
-_Why is the Initial RAM Disk missing?_
+_What's this Memory Map?_
 
-That's because we __haven't loaded the Initial RAM Disk__ into RAM!
+Inside the BL808 SoC is the [__Sv39 Memory Management Unit (MMU)__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39). (Same for to Star64 JH7110)
 
-We'll modify [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
+The MMU maps __Virtual Memory Addresses__ to __Physical Memory Addresses__. And stops the NuttX Kernel from accessing Invalid Addresses.
 
-[(Or maybe the U-Boot Script __boot-pine64.scr__)](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd)
+At startup, NuttX configures the MMU with the __Memory Map__, the Range of Memory Addresses that the NuttX Kernel is allowed to access.
 
-[(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
+The code above says that NuttX is allowed to access any address from __`0x0000` `0000`__ to __`0x5000` `0000`__. (Because of Memory-Mapped I/O)
+
+__Memory Management Unit__ is Sv39 with 128 / 256 / 512 TLB table entries. (Like Star64?)
+
+TODO: OpenSBI Clues
 
 # Appendix: UART Driver for Ox64
 
@@ -746,6 +742,20 @@ We discover that BL808 UART works the __same way as BL602__!
 
 Thus we may seek guidance from the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725).
 
-# Appendix: Memory Map for Ox64
+# Appendix: Initial RAM Disk
 
 TODO
+
+_Why is the Initial RAM Disk missing?_
+
+That's because we __haven't loaded the Initial RAM Disk__ into RAM!
+
+We'll modify [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
+
+[(Or maybe the U-Boot Script __boot-pine64.scr__)](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd)
+
+[(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
+
+TODO: Append to Kernel
+
+TODO: Separate File
