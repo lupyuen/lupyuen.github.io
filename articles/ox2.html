@@ -351,11 +351,11 @@ MTVAL:  0c002104
 <p>We look up Code Address <strong><code>0x5020</code> <code>8086</code></strong> in our <strong>NuttX Disassembly</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>000000005020807a &lt;modifyreg32&gt;:
 up_irq_save():
-/Users/Luppy/ox64/nuttx/include/arch/irq.h:689
+nuttx/include/arch/irq.h:689
     5020807a:	4789                	li	a5,2
     5020807c:	1007b7f3          	csrrc	a5,sstatus,a5
 modifyreg32():
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
+nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
 {
   irqstate_t flags;
   uint32_t   regval;
@@ -363,10 +363,10 @@ modifyreg32():
   flags   = spin_lock_irqsave(NULL);
   regval  = getreg32(addr);
     50208080:	4118                	lw	a4,0(a0)
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:53
+nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:53
   regval &amp;= ~clearbits;
     50208082:	fff5c593          	not	a1,a1
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
+nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
   regval  = getreg32(addr);
     50208086:	2701                	sext.w	a4,a4
 </code></pre></div>
@@ -463,7 +463,7 @@ void up_irqinitialize(void) {
 <p><em>Something doesn’t look right…</em></p>
 <p>Yeah we attach the RISC-V Exception Handlers (<strong>riscv_exception_attach</strong>)…</p>
 <p>After the code has crashed! (<strong>putreg32</strong>)</p>
-<p>Let’s <strong>attach the Exception Handlers</strong> earlier: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
+<p>Let’s <strong>attach the Exception Handlers</strong> earlier: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Interrupts
 void up_irqinitialize(void) {
   ...
@@ -482,39 +482,39 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE1);
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 </code></pre></div>
-<p>TODO</p>
-<p><code>riscv_exception_attach()</code> will handle all RISC-V Exceptions, including Store/AMO Page Fault (IRQ 15): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142">riscv_exception.c</a></p>
+<p>So that <strong>riscv_exception_attach</strong> will handle all RISC-V Exceptions correctly, including IRQ 15: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142">riscv_exception.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Attach standard exception with suitable handler
 void riscv_exception_attach(void) {
+  ...
   // Handle Store/AMO Page Fault (IRQ 15)
   irq_attach(RISCV_IRQ_STOREPF, riscv_exception, NULL);
 </code></pre></div>
 <p><em>Does it work?</em></p>
-<p>Now we see the Store/AMO Page Fault Exception!</p>
+<p>Yep we see the <strong>Store / AMO Page Fault Exception</strong>!</p>
 <div class="example-wrap"><pre class="language-text"><code>up_irqinitialize: c
 riscv_dispatch_irq: irq=15
 riscv_exception: 
 EXCEPTION: Store/AMO page fault
-MCAUSE: 000000000000000f
-EPC:    0000000050207e6a
-MTVAL:  00000000e0002100
+MCAUSE: f
+EPC:    0x50207e6a
+MTVAL:  0xe0002100
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/85db0510712ba8c660e10f922d4564c9">(Source)</a></p>
-<p>Code Address is 0x50207e6a, from our PLIC Code…</p>
-<div class="example-wrap"><pre class="language-text"><code>/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
+<p><a href="https://gist.github.com/lupyuen/85db0510712ba8c660e10f922d4564c9">(See the <strong>Complete Log</strong>)</a></p>
+<p>When we look up the NuttX Disassembly, the Exception Code Address <strong><code>0x5020</code> <code>7E6A</code></strong> comes from our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L58-L64"><strong>PLIC Code</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
   putreg32(0x0, JH7110_PLIC_ENABLE1);
     50207e64:	700017b7          	lui	a5,0x70001
     50207e68:	0786                	slli	a5,a5,0x1
     50207e6a:	1007a023          	sw	zero,256(a5) # 70001100 &lt;__ramdisk_end+0x1e601100&gt;
 </code></pre></div>
-<p>The offending Data Address is 0xe0002100. Which is our BL808 PLIC!</p>
+<p>The offending Data Address is <strong><code>0xE000</code> <code>2100</code></strong>. Which is our BL808 PLIC!</p>
 <h1 id="add-plic-to-memory-map"><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a></h1>
 <p>TODO</p>
-<p><em>But is 0xe0002100 accessible?</em></p>
+<p><em>But is 0xE000 2100 accessible?</em></p>
 <p>Ah we forgot to add it to the I/O Memory Map! Let’s fix it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Map the whole I/O memory with vaddr = paddr mappings */
-#define MMU_IO_BASE     (0x00000000)
-#define MMU_IO_SIZE     (0xf0000000)
+#define MMU_IO_BASE (0x00000000)
+#define MMU_IO_SIZE (0xf0000000)
 </code></pre></div>
 <p>(Doesn’t look right, but we’ll fix later)</p>
 <p>Now NuttX boots further! And tries to register IRQ 57 for the Star64 UART Interrupt…</p>
