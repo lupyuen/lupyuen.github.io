@@ -69,13 +69,13 @@
 
     <h1 class="title">Ox64 BL808 RISC-V SBC: Starting Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#begin-with-nuttx-for-star64-jh7110">1 Begin with NuttX for Star64 JH7110</a><ul></ul></li>
-<li><a href="#print-to-ox64-serial-console-in-nuttx-boot-code">2 Print to Ox64 Serial Console in NuttX Boot Code</a><ul></ul></li>
-<li><a href="#update-the-nuttx-boot-address-for-ox64-bl808">3 Update the NuttX Boot Address for Ox64 BL808</a><ul></ul></li>
-<li><a href="#fix-the-nuttx-uart-driver-for-ox64-bl808">4 Fix the NuttX UART Driver for Ox64 BL808</a><ul></ul></li>
-<li><a href="#platform-level-interrupt-controller-for-ox64-bl808">5 Platform-Level Interrupt Controller for Ox64 BL808</a><ul></ul></li>
-<li><a href="#handle-risc-v-exceptions-in-nuttx">6 Handle RISC-V Exceptions in NuttX</a><ul></ul></li>
-<li><a href="#add-plic-to-io-memory-map">7 Add PLIC to I/O Memory Map</a><ul></ul></li>
+<li><a href="#begin-with-star64-nuttx">1 Begin with Star64 NuttX</a><ul></ul></li>
+<li><a href="#print-to-ox64-serial-console">2 Print to Ox64 Serial Console</a><ul></ul></li>
+<li><a href="#update-the-nuttx-boot-address">3 Update the NuttX Boot Address</a><ul></ul></li>
+<li><a href="#fix-the-uart-driver">4 Fix the UART Driver</a><ul></ul></li>
+<li><a href="#platform-level-interrupt-controller">5 Platform-Level Interrupt Controller</a><ul></ul></li>
+<li><a href="#handle-risc-v-exceptions">6 Handle RISC-V Exceptions</a><ul></ul></li>
+<li><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a><ul></ul></li>
 <li><a href="#fail-to-load-initial-ram-disk">8 Fail to Load Initial RAM Disk</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>12 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/ox2-title.png" alt="Booting Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
@@ -110,7 +110,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ox64-sbc.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
-<h1 id="begin-with-nuttx-for-star64-jh7110"><a href="#begin-with-nuttx-for-star64-jh7110">1 Begin with NuttX for Star64 JH7110</a></h1>
+<h1 id="begin-with-star64-nuttx"><a href="#begin-with-star64-nuttx">1 Begin with Star64 NuttX</a></h1>
 <p><em>We’re booting Star64 NuttX on Ox64? Unmodified?!</em></p>
 <p>Yeah we have a hunch that NuttX might boot well <strong>across RISC-V SoCs</strong>.</p>
 <p>(Porting NuttX from <strong>RISC-V QEMU to Star64</strong> took only a few weeks!)</p>
@@ -157,10 +157,18 @@ Working FDT set to 53f22000
 Starting kernel ...
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8134f17502db733ce87d6fa8b00eab55">(See the <strong>Complete Log</strong>)</a></p>
-<p>TODO</p>
-<p>We’re hoping that NuttX could crash and OpenSBI could print a meaningful Stack Trace. But nope! NuttX was probably stuck in a loop waiting for Star64 UART.</p>
-<p>Let’s print to the Ox64 Serial Console in the NuttX Boot Code (in RISC-V Assembly)…</p>
-<h1 id="print-to-ox64-serial-console-in-nuttx-boot-code"><a href="#print-to-ox64-serial-console-in-nuttx-boot-code">2 Print to Ox64 Serial Console in NuttX Boot Code</a></h1>
+<p><em>Shouldn’t we see a Crash Dump?</em></p>
+<p>Yeah we’re hoping that NuttX would crash and <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI (Supervisor Binary Interface)</strong></a> could dump a meaningful Stack Trace. But nope!</p>
+<ul>
+<li>
+<p>We <strong>haven’t configured NuttX</strong> for Ox64 UART</p>
+</li>
+<li>
+<p>NuttX was probably stuck in a loop <strong>waiting for Star64 UART</strong></p>
+</li>
+</ul>
+<p>Let’s print something to the Ox64 Serial Console…</p>
+<h1 id="print-to-ox64-serial-console"><a href="#print-to-ox64-serial-console">2 Print to Ox64 Serial Console</a></h1>
 <p>TODO</p>
 <p><em>How to print to the Ox64 Serial Console in the NuttX Boot Code? (RISC-V Assembly)</em></p>
 <p>When we compare the BL808 and BL602 Reference Manuals, we discover that BL808 UART works the same way as BL602.</p>
@@ -219,7 +227,7 @@ sb  t1, 0x88(t0)
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/ox64-nuttx.png" alt="Booting Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
-<h1 id="update-the-nuttx-boot-address-for-ox64-bl808"><a href="#update-the-nuttx-boot-address-for-ox64-bl808">3 Update the NuttX Boot Address for Ox64 BL808</a></h1>
+<h1 id="update-the-nuttx-boot-address"><a href="#update-the-nuttx-boot-address">3 Update the NuttX Boot Address</a></h1>
 <p>TODO</p>
 <p><em>What is the Linux Boot Address for Ox64 BL808?</em></p>
 <p>From the <a href="https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7">U-Boot Settings</a>…</p>
@@ -258,7 +266,7 @@ CONFIG_ARCH_PGPOOL_SIZE=4194304
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb">(Source)</a></p>
 <p>Let’s fix the NuttX UART Driver…</p>
-<h1 id="fix-the-nuttx-uart-driver-for-ox64-bl808"><a href="#fix-the-nuttx-uart-driver-for-ox64-bl808">4 Fix the NuttX UART Driver for Ox64 BL808</a></h1>
+<h1 id="fix-the-uart-driver"><a href="#fix-the-uart-driver">4 Fix the UART Driver</a></h1>
 <p>TODO</p>
 <p><em>NuttX on Ox64 has been awfully quiet. How to fix the UART Driver so that NuttX can print things?</em></p>
 <p>Ox64 is still running on the JH7110 UART Driver (16550). Let’s make a quick patch so that we will see something on the Ox64 Serial Console…</p>
@@ -322,7 +330,7 @@ MTVAL:  000000000c002104
 </code></pre></div>
 <p>And the offending Data Address 0xc002104. (Which looks very familiar!)</p>
 <p><img src="https://lupyuen.github.io/images/ox64-stack.png" alt="NuttX prints our very first Stack Dump on Ox64 yay!" /></p>
-<h1 id="platform-level-interrupt-controller-for-ox64-bl808"><a href="#platform-level-interrupt-controller-for-ox64-bl808">5 Platform-Level Interrupt Controller for Ox64 BL808</a></h1>
+<h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">5 Platform-Level Interrupt Controller</a></h1>
 <p>TODO</p>
 <p><em>Why did NuttX crash with this RISC-V Exception?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>EXCEPTION: Load access fault 
@@ -407,7 +415,7 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
 <div class="example-wrap"><pre class="language-c"><code>#define JH7110_PLIC_BASE    0xe0000000
 </code></pre></div>
 <p>TODO: Enable Scheduler Debug</p>
-<h1 id="handle-risc-v-exceptions-in-nuttx"><a href="#handle-risc-v-exceptions-in-nuttx">6 Handle RISC-V Exceptions in NuttX</a></h1>
+<h1 id="handle-risc-v-exceptions"><a href="#handle-risc-v-exceptions">6 Handle RISC-V Exceptions</a></h1>
 <p>TODO</p>
 <p>Now NuttX crashes at a different place, with IRQ 15…</p>
 <div class="example-wrap"><pre class="language-text"><code>123ABC
@@ -501,7 +509,7 @@ MTVAL:  00000000e0002100
     50207e6a:	1007a023          	sw	zero,256(a5) # 70001100 &lt;__ramdisk_end+0x1e601100&gt;
 </code></pre></div>
 <p>The offending Data Address is 0xe0002100. Which is our BL808 PLIC!</p>
-<h1 id="add-plic-to-io-memory-map"><a href="#add-plic-to-io-memory-map">7 Add PLIC to I/O Memory Map</a></h1>
+<h1 id="add-plic-to-memory-map"><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a></h1>
 <p>TODO</p>
 <p><em>But is 0xe0002100 accessible?</em></p>
 <p>Ah we forgot to add it to the I/O Memory Map! Let’s fix it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
