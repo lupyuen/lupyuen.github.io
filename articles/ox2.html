@@ -187,29 +187,34 @@ Starting kernel ...
 <p>We discover that BL808 UART works the <strong>same way as BL602</strong>!</p>
 <p>Thus we may seek guidance from the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725"><strong>NuttX Driver for BL602 UART</strong></a>.</p>
 <p><em>So how do we print to BL808 UART?</em></p>
-<p>TODO</p>
-<p>This is how the BL602 UART Driver prints to the Serial Console: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725">bl602_serial.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define BL602_UART_FIFO_WDATA_OFFSET 0x000088  /* uart_fifo_wdata */
+<p>This is how the <strong>BL602 UART Driver</strong> prints to the Serial Console: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725">bl602_serial.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Output FIFO Offset is 0x88
+#define BL602_UART_FIFO_WDATA_OFFSET 0x000088  /* uart_fifo_wdata */
 #define BL602_UART_FIFO_WDATA(n) (BL602_UART_BASE(n) + BL602_UART_FIFO_WDATA_OFFSET)
 
+// Write a character to UART
 static void bl602_send(struct uart_dev_s *dev, int ch) {
   ...
   // Wait for FIFO to be empty
   while ((getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) &amp; \
     UART_FIFO_CONFIG_1_TX_CNT_MASK) == 0);
-  // Write output to FIFO
+
+  // Write character to Output FIFO
   putreg32(ch, BL602_UART_FIFO_WDATA(uart_idx));
 }
 </code></pre></div>
 <p>So for BL808, we simply write the character to…</p>
 <ul>
 <li>
-<p>UART3 Base Address: 0x30002000 (from the Linux Device Tree earlier)</p>
+<p>UART3 Base Address: <strong><code>0x3000</code> <code>2000</code></strong></p>
+<p><a href="https://lupyuen.github.io/articles/ox64#appendix-linux-device-tree">(From the <strong>Linux Device Tree</strong>)</a></p>
 </li>
 <li>
-<p>Offset: 0x88</p>
+<p>Output FIFO Offset: <strong><code>0x88</code></strong></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/hardware/bl602_uart.h#L38-L58">(From above <strong>FIFO_WDATA_OFFSET</strong>)</a></p>
 </li>
 </ul>
+<p>TODO</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console">Based on Star64 Debug Code</a>, we code this in RISC-V Assembly…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load UART3 Base Address to Register t0 */
 li  t0, 0x30002000
