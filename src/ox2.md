@@ -43,10 +43,11 @@ _But Star64 runs on SiFive Cores. Ox64 uses T-Head Cores!_
 We'll find out if it really matters! This is how we download and build __NuttX for Star64 JH7110__ RISC-V SBC...
 
 ```bash
-## Download NuttX Sourc Code
+## Download WIP NuttX Source Code
 git clone \
   --branch ox64 \
-  https://github.com/lupyuen2/wip-pinephone-nuttx nuttx
+  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  nuttx
 git clone \
   --branch ox64 \
   https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
@@ -62,7 +63,7 @@ make
 
 Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
 
-Then we do the [__"Linux-To-NuttX Switcheroo"__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64) and overwrite the microSD Linux Image by the __NuttX Kernel__...
+Then we do the [__Linux-To-NuttX Switcheroo__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64): Overwrite the microSD Linux Image by the __NuttX Kernel__...
 
 ```bash
 ## Export the Binary Image to nuttx.bin
@@ -103,9 +104,9 @@ Yeah we're hoping that NuttX would crash and [__OpenSBI (Supervisor Binary Inter
 
 - NuttX was probably stuck in a loop __waiting for Star64 UART__
 
-Let's print something to the Ox64 Serial Console...
+Let's print something to the Serial Console...
 
-# Print to Ox64 Serial Console
+# Print to Serial Console
 
 TODO
 
