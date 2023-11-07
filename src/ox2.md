@@ -489,11 +489,11 @@ Based on our [__Debug Log__](https://gist.github.com/lupyuen/11b8d4221a150f10afa
 void up_irqinitialize(void) {
   ...
 
-  // Disable S-Mode interrupts
+  // Disable S-Mode Interrupts
   _info("b\n");
   up_irq_save();
 
-  // Disable all global interrupts
+  // Disable all Global Interrupts
   _info("c\n");
   // Crashes here!
   putreg32(0x0, JH7110_PLIC_ENABLE1);
@@ -505,6 +505,8 @@ void up_irqinitialize(void) {
   riscv_exception_attach();
 ```
 
+TODO
+
 _But it's a RISC-V Exception! Shouldn't NuttX dump this as a proper exception?_
 
 See the `riscv_exception_attach()` above? It happens AFTER the crash! This means NuttX hasn't properly initialised the Exception Handlers, when the crash happened.
@@ -512,21 +514,20 @@ See the `riscv_exception_attach()` above? It happens AFTER the crash! This means
 Let's init the Exception Handlers earlier: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85)
 
 ```c
-// Init the IRQs
+// Init the Interrupts
 void up_irqinitialize(void) {
-  _info("a\n");////
+  ...
 
-  /* Disable S-Mode interrupts */
-  _info("b\n");////
+  // Disable S-Mode Interrupts
+  _info("b\n");
   up_irq_save();
 
-  /* Attach the common interrupt handler */
-  _info("f\n");////
-  // Init the Exception Handlers here
+  // Moved Here: Attach the RISC-V Exception Handlers
+  _info("f\n");
   riscv_exception_attach();
 
-  /* Disable all global interrupts */
-  _info("c\n");////
+  // Disable all Global Interrupts
+  _info("c\n");
   // Crashes here!
   putreg32(0x0, JH7110_PLIC_ENABLE1);
   putreg32(0x0, JH7110_PLIC_ENABLE2);
