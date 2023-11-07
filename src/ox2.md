@@ -10,11 +10,13 @@ Last week we booted Linux on the [__Pine64 Ox64 64-bit RISC-V SBC__](https://wik
 
 And we wondered whether a tiny 64-bit RTOS (Real-Time Operating System) like [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) might run more efficiently on Ox64.
 
+(With only __64 MB of RAM__!)
+
 Let's make it happen! In this article we...
 
 - Begin with __NuttX for Star64 JH7110__ RISC-V SBC
 
-- Boot it (!) on our __Ox64 BL808__ RISC-V SBC
+- Boot it unmodified (!) on our __Ox64 BL808__ RISC-V SBC
 
 - Add Debug Logs in __RISC-V Assembly__
 
@@ -22,11 +24,15 @@ Let's make it happen! In this article we...
 
 - Fix the __Platform-Level Interrupt Controller__
 
-- Figure out why __RISC-V Exceptions__ aren't dumped correctly
+- Track down why __RISC-V Exceptions__ aren't dumped correctly
 
 - And plan for the upcoming __Initial RAM Disk__
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sbc.jpg)
+
+# Begin with Star64 JH7110 NuttX
+
+TODO
 
 # Boot Apache NuttX RTOS on Ox64 BL808
 
