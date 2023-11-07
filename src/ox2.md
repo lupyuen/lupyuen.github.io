@@ -112,11 +112,25 @@ Let's print something to the Serial Console...
 
 _We have a strong hunch that NuttX is actually booting on Ox64... How to prove it?_
 
+Let's print something in the __NuttX Boot Code__. Which is in __RISC-V Assembly__!
+
+When we compare these UARTs...
+
+- __BL808 UART Hardware__
+
+  [(__BL808 Reference Manual__, Page 402)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+
+- __BL602 UART Hardware__
+
+  [(__BL602 Reference Manual__, Page 126)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+
+We discover that BL808 UART works the __same way as BL602__!
+
+Thus we may seek guidance from the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725).
+
+_So how do we print to BL808 UART?_
+
 TODO
-
-_How to print to the Ox64 Serial Console in the NuttX Boot Code? (RISC-V Assembly)_
-
-When we compare the BL808 and BL602 Reference Manuals, we discover that BL808 UART works the same way as BL602.
 
 This is how the BL602 UART Driver prints to the Serial Console: [bl602_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725)
 
