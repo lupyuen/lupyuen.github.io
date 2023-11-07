@@ -334,24 +334,17 @@ up_dump_register: A0: 000000000c002104 A1: ffffffffffffffff A2: 0000000000000001
 up_dump_register: A4: ffffffffffffffff A5: 8000000200046000 A6: 0000000000000000 A7: fffffffffffffff8
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/36b8c47abc2632063ca5cdebb958e3e8">(See the <strong>Complete Log</strong>)</a></p>
-<p>TODO</p>
-<p>Let’s look up the RISC-V Exception Code Address 0x50208086 in our RISC-V Disassembly…</p>
-<div class="example-wrap"><pre class="language-text"><code>EXCEPTION: Load access fault
-MCAUSE: 5
-EPC:    50208086
-MTVAL:  0c002104
-</code></pre></div>
-<p>And the offending Data Address 0xc002104. (Which looks very familiar!)</p>
+<p>Next we figure out why Data Address <strong><code>0x0C00</code> <code>2104</code></strong> is causing problems for NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller for Star64 JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/plic"><em>Platform-Level Interrupt Controller for Star64 JH7110</em></a></p>
 <h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">5 Platform-Level Interrupt Controller</a></h1>
 <p><em>What’s this Platform-Level Interrupt Controller?</em></p>
 <p>TODO</p>
 <p><em>Why did NuttX crash with this RISC-V Exception?</em></p>
-<div class="example-wrap"><pre class="language-text"><code>EXCEPTION: Load access fault 
-MCAUSE: 0000000000000005 
-EPC:    0000000050208086 
-MTVAL:  000000000c002104
+<div class="example-wrap"><pre class="language-text"><code>EXCEPTION: Load access fault
+MCAUSE: 5
+EPC:    50208086
+MTVAL:  0c002104
 </code></pre></div>
 <p>NuttX crashed when it tried to access invalid Data Address 0xc002104 from Code Address 0x50208086.</p>
 <p>We look up Code Address 0x50208086 in our NuttX Disassembly…</p>
