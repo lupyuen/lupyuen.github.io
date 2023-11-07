@@ -74,7 +74,8 @@ riscv64-unknown-elf-objcopy \
 
 ## Copy and overwrite the `Image` file
 ## on the microSD for Ox64 Linux
-cp nuttx.bin "/Volumes/NO NAME/Image"
+cp nuttx.bin \
+  "/Volumes/NO NAME/Image"
 diskutil unmountDisk /dev/disk2
 ```
 
@@ -200,7 +201,7 @@ Indeed __NuttX is booting on Ox64__ yay!
 
 _Anything else we changed in the NuttX Boot Code?_
 
-OpenSBI boots on Ox64 with __Hart ID 0__ (instead of 1), so we remove this code...
+OpenSBI boots on Ox64 with __Hart ID 0__ (instead of 1), so we remove this code: [jh7110_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93)
 
 ```text
 /* We assume that OpenSBI has passed Hart ID (value 1) in Register a0.
@@ -208,9 +209,11 @@ OpenSBI boots on Ox64 with __Hart ID 0__ (instead of 1), so we remove this code.
  * Previously: addi a0, a0, -1 */
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93)
+# Update the Boot Address
 
-# Update the NuttX Boot Address
+_Surely Ox64 boots at a different RAM Address from Star64?_
+
+Yep let's fix the __NuttX Boot Address__ for Ox64.
 
 TODO
 
