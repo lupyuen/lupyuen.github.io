@@ -676,6 +676,10 @@ We'll modify __extlinux/extlinux.conf__ on the microSD Card, so that U-Boot Boot
 
 [(Or maybe the U-Boot Script __boot-pine64.cmd__)](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd)
 
+TODO: Memory Map
+
+TODO: UART Driver
+
 # What's Next
 
 TODO
