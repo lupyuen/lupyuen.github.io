@@ -177,11 +177,11 @@ Starting kernel...
 <p>When we compare these UARTs…</p>
 <ul>
 <li>
-<p><strong>BL808 UART Hardware</strong></p>
+<p><strong>BL808 UART Controller</strong></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(<strong>BL808 Reference Manual</strong>, Page 402)</a></p>
 </li>
 <li>
-<p><strong>BL602 UART Hardware</strong></p>
+<p><strong>BL602 UART Controller</strong></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">(<strong>BL602 Reference Manual</strong>, Page 126)</a></p>
 </li>
 </ul>
@@ -397,7 +397,7 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
 </code></pre></div>
 <p>The <strong>PLIC Base Address</strong> is different for Ox64, let’s change it.</p>
 <p><em>What’s the PLIC Base Address for Ox64?</em></p>
-<p><strong>Ox64 PLIC Base Address</strong> is <strong><code>0xE000</code> <code>0000</code></strong>, according to the Linux Device Tree: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L129-L138">bl808-pine64-ox64.dts</a></p>
+<p>Ox64 PLIC Base Address is <strong><code>0xE000</code> <code>0000</code></strong>, according to the Linux Device Tree: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L129-L138">bl808-pine64-ox64.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>interrupt-controller@e0000000 {
   compatible = &quot;thead,c900-plic&quot;;
   reg = &lt;0xe0000000 0x4000000&gt;;
@@ -409,15 +409,12 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
   phandle = &lt;0x01&gt;;
 };
 </code></pre></div>
-<p>TODO: Why isn’t this documented in <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">XuanTie OpenC906 User Manual</a>?</p>
-<p>So we change the PLIC Base Address for Ox64: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30">jh7110_memorymap.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define JH7110_PLIC_BASE    0xe0000000
+<p>So we change the <strong>PLIC Base Address</strong> for Ox64: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30">jh7110_memorymap.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define JH7110_PLIC_BASE 0xe0000000
 </code></pre></div>
-<p>TODO: Enable Scheduler Debug</p>
-<h1 id="handle-risc-v-exceptions"><a href="#handle-risc-v-exceptions">6 Handle RISC-V Exceptions</a></h1>
-<p>TODO</p>
-<p>Now NuttX crashes at a different place, with IRQ 15…</p>
-<div class="example-wrap"><pre class="language-text"><code>123ABC
+<p>NuttX now crashes at a different place, with IRQ 15…</p>
+<div class="example-wrap"><pre class="language-text"><code>123
+ABC
 nx_start: Entry
 up_irqinitialize: a
 up_irqinitialize: b
@@ -427,13 +424,21 @@ irq_unexpected_isr: ERROR irq: 15
 _assert: Current Version: NuttX  12.0.3 910bfca-dirty Nov  6 2023 15:23:11 risc-v
 _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_Task process: Kernel 0x50200e50
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c">(See the <strong>Complete Log</strong>)</a></p>
+<p>Let’s chat about IRQ 15 and why it shouldn’t appear…</p>
+<p>TODO: Enable Scheduler Debug</p>
+<h1 id="handle-risc-v-exceptions"><a href="#handle-risc-v-exceptions">6 Handle RISC-V Exceptions</a></h1>
 <p><em>What’s IRQ 15?</em></p>
-<p>From <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">XuanTie OpenC906 User Manual</a> (Page 21):</p>
+<p>From the <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf"><strong>XuanTie OpenC906 User Manual</strong></a> (Page 21)…</p>
 <blockquote>
-<p>“Exception Vector ID 15: A store/atomic instruction page error exception.”</p>
+<p>“<strong>Exception Vector ID 15:</strong> A Store / Atomic Instruction page error exception”</p>
 </blockquote>
-<p>This RISC-V Exception says that we tried to write to an invalid Data Address. And failed.</p>
+<p>This says that NuttX tried to write to an <strong>Invalid Data Address</strong>.</p>
+<p>And it failed due to an “Unexpected Interrupt”. (ISR)</p>
+<p><em>Is there something special about IRQ 15?</em></p>
+<p>IRQ 15 is actually a <strong>RISC-V Exception</strong>!</p>
+<p>Rightfully, NuttX should print a <strong>RISC-V Exception Crash Dump</strong>. <a href="https://lupyuen.github.io/articles/ox2#fix-the-uart-driver">(Like this)</a></p>
+<p>TODO</p>
 <p><em>Where did it crash?</em></p>
 <p>Based on our log, NuttX crashes before setting the PLIC!</p>
 <p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
