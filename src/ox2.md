@@ -10,7 +10,7 @@ Last week we booted Linux on the [__Pine64 Ox64 64-bit RISC-V SBC__](https://wik
 
 And we wondered whether a tiny 64-bit RTOS (Real-Time Operating System) like [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) might run more efficiently on Ox64.
 
-(With only __64 MB of RAM__!)
+(With only __64 MB of RAM__)
 
 Let's make it happen! In this article we...
 
@@ -40,42 +40,46 @@ Yeah we have a hunch that NuttX might boot well __across RISC-V SoCs__.
 
 _But Star64 runs on SiFive Cores. Ox64 uses T-Head Cores!_
 
-We'll find out if it really matters!
-
-TODO
-
-# Boot Apache NuttX RTOS on Ox64 BL808
-
-TODO
-
-_What happens if we boot Star64 NuttX on Ox64 BL808?_
-
-Let's find out!
+We'll find out if it really matters! This is how we download and build __NuttX for Star64 JH7110__ RISC-V SBC...
 
 ```bash
-## Download and build NuttX for Star64
-git clone --branch ox64 https://github.com/lupyuen2/wip-pinephone-nuttx nuttx
-git clone --branch ox64 https://github.com/lupyuen2/wip-pinephone-nuttx-apps apps
+## Download NuttX Sourc Code
+git clone \
+  --branch ox64 \
+  https://github.com/lupyuen2/wip-pinephone-nuttx nuttx
+git clone \
+  --branch ox64 \
+  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  apps
+
+## Build NuttX for Star64
 cd nuttx
 tools/configure.sh star64:nsh
 make
+```
 
+[(Remember to install the __Build Prequisites and Toolchain__)](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
+
+Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
+
+Then we do the [__"Linux-To-NuttX Switcheroo"__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64) and overwrite the microSD Linux Image by the __NuttX Kernel__...
+
+```bash
 ## Export the Binary Image to nuttx.bin
 riscv64-unknown-elf-objcopy \
   -O binary \
   nuttx \
   nuttx.bin
 
-## TODO: Prepare the microSD for Ox64 Linux
-## https://lupyuen.github.io/articles/ox64#boot-linux-on-ox64
-
-## Copy and overwrite the `Image` file on the microSD for Ox64 Linux
-cp nuttx.bin Image
-cp Image "/Volumes/NO NAME"
+## Copy and overwrite the `Image` file
+## on the microSD for Ox64 Linux
+cp nuttx.bin "/Volumes/NO NAME/Image"
 diskutil unmountDisk /dev/disk2
 ```
 
-We boot Nuttx on Ox64 via microSD... But Ox64 shows absolutely nothing!
+Insert the __microSD into Ox64__ and power up Ox64.
+
+And we'll see... Absolutely Nothing!
 
 ```text
 Retrieving file: /extlinux/../Image
@@ -89,7 +93,9 @@ Working FDT set to 53f22000
 Starting kernel ...
 ```
 
-[(Source)](https://gist.github.com/lupyuen/8134f17502db733ce87d6fa8b00eab55)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/8134f17502db733ce87d6fa8b00eab55)
+
+TODO
 
 We're hoping that NuttX could crash and OpenSBI could print a meaningful Stack Trace. But nope! NuttX was probably stuck in a loop waiting for Star64 UART.
 
