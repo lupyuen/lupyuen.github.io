@@ -71,7 +71,7 @@
     <nav id="TOC"><ul>
 <li><a href="#begin-with-star64-nuttx">1 Begin with Star64 NuttX</a><ul></ul></li>
 <li><a href="#print-to-serial-console">2 Print to Serial Console</a><ul></ul></li>
-<li><a href="#update-the-nuttx-boot-address">3 Update the NuttX Boot Address</a><ul></ul></li>
+<li><a href="#update-the-boot-address">3 Update the Boot Address</a><ul></ul></li>
 <li><a href="#fix-the-uart-driver">4 Fix the UART Driver</a><ul></ul></li>
 <li><a href="#platform-level-interrupt-controller">5 Platform-Level Interrupt Controller</a><ul></ul></li>
 <li><a href="#handle-risc-v-exceptions">6 Handle RISC-V Exceptions</a><ul></ul></li>
@@ -142,7 +142,8 @@ riscv64-unknown-elf-objcopy \
 
 ## Copy and overwrite the `Image` file
 ## on the microSD for Ox64 Linux
-cp nuttx.bin &quot;/Volumes/NO NAME/Image&quot;
+cp nuttx.bin \
+  &quot;/Volumes/NO NAME/Image&quot;
 diskutil unmountDisk /dev/disk2
 </code></pre></div>
 <p>Insert the <strong>microSD into Ox64</strong> and power up Ox64.</p>
@@ -243,13 +244,13 @@ sb  t1, 0x88(t0)
 <p><a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb">(Source)</a></p>
 <p>Indeed <strong>NuttX is booting on Ox64</strong> yay!</p>
 <p><em>Anything else we changed in the NuttX Boot Code?</em></p>
-<p>OpenSBI boots on Ox64 with <strong>Hart ID 0</strong> (instead of 1), so we remove this code…</p>
+<p>OpenSBI boots on Ox64 with <strong>Hart ID 0</strong> (instead of 1), so we remove this code: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93">jh7110_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* We assume that OpenSBI has passed Hart ID (value 1) in Register a0.
  * But NuttX expects Hart ID to start at 0, so we subtract 1.
  * Previously: addi a0, a0, -1 */
-</code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93">(Source)</a></p>
-<h1 id="update-the-nuttx-boot-address"><a href="#update-the-nuttx-boot-address">3 Update the NuttX Boot Address</a></h1>
+</code></pre></div><h1 id="update-the-boot-address"><a href="#update-the-boot-address">3 Update the Boot Address</a></h1>
+<p><em>Surely Ox64 boots at a different RAM Address from Star64?</em></p>
+<p>Yep let’s fix the <strong>NuttX Boot Address</strong> for Ox64.</p>
 <p>TODO</p>
 <p><em>What is the Linux Boot Address for Ox64 BL808?</em></p>
 <p>From the <a href="https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7">U-Boot Settings</a>…</p>
