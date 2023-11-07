@@ -172,9 +172,22 @@ Starting kernel ...
 <p><img src="https://lupyuen.github.io/images/ox64-nuttx.png" alt="Apache NuttX RTOS boots a tiny bit on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <h1 id="print-to-serial-console"><a href="#print-to-serial-console">2 Print to Serial Console</a></h1>
 <p><em>We have a strong hunch that NuttX is actually booting on Ox64… How to prove it?</em></p>
+<p>Let’s print something in the <strong>NuttX Boot Code</strong>. Which is in <strong>RISC-V Assembly</strong>!</p>
+<p>When we compare these UARTs…</p>
+<ul>
+<li>
+<p><strong>BL808 UART Hardware</strong></p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(<strong>BL808 Reference Manual</strong>, Page 402)</a></p>
+</li>
+<li>
+<p><strong>BL602 UART Hardware</strong></p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">(<strong>BL602 Reference Manual</strong>, Page 126)</a></p>
+</li>
+</ul>
+<p>We discover that BL808 UART works the <strong>same way as BL602</strong>!</p>
+<p>Thus we may seek guidance from the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725"><strong>NuttX Driver for BL602 UART</strong></a>.</p>
+<p><em>So how do we print to BL808 UART?</em></p>
 <p>TODO</p>
-<p><em>How to print to the Ox64 Serial Console in the NuttX Boot Code? (RISC-V Assembly)</em></p>
-<p>When we compare the BL808 and BL602 Reference Manuals, we discover that BL808 UART works the same way as BL602.</p>
 <p>This is how the BL602 UART Driver prints to the Serial Console: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725">bl602_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define BL602_UART_FIFO_WDATA_OFFSET 0x000088  /* uart_fifo_wdata */
 #define BL602_UART_FIFO_WDATA(n) (BL602_UART_BASE(n) + BL602_UART_FIFO_WDATA_OFFSET)
