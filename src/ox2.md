@@ -488,7 +488,6 @@ Based on our [__Debug Log__](https://gist.github.com/lupyuen/11b8d4221a150f10afa
 // Init the Interrupts
 void up_irqinitialize(void) {
   ...
-
   // Disable S-Mode Interrupts
   _info("b\n");
   up_irq_save();
@@ -517,7 +516,6 @@ Let's __attach the Exception Handlers__ earlier: [jh7110_irq.c](https://github.c
 // Init the Interrupts
 void up_irqinitialize(void) {
   ...
-
   // Disable S-Mode Interrupts
   _info("b\n");
   up_irq_save();
@@ -575,7 +573,7 @@ The offending Data Address is __`0xE000` `2100`__. Which is our BL808 PLIC!
 
 _But is 0xE000 2100 accessible?_
 
-Ah we forgot to add it to the __Memory Map__! Let's fix it: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
+Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the __Memory Map__! Let's fix it: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
 
 ```c
 /* Map the whole I/O memory with vaddr = paddr mappings */
@@ -628,11 +626,13 @@ static int u16550_attach(struct uart_dev_s *dev) {
   // up_enable_irq(priv->irq);
 ```
 
+[(Check the PLIC Offsets in __XuanTie OpenC906 User Manual__, Page 77)](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)
+
 # Fail to Load Initial RAM Disk
 
-TODO
+_What happens now?_
 
-Now NuttX boots even further yay! But crashes in the NuttX Bringup...
+NuttX boots much further, but crashes in the __NuttX Bringup__...
 
 ```text
 up_irqinitialize: c
@@ -648,9 +648,9 @@ _assert: Current Version: NuttX  12.0.3 b244f85-dirty Nov  6 2023 17:35:34 risc-
 _assert: Assertion failed ret >= 0: at file: init/nx_bringup.c:283 task: AppBringUp process: Kernel 0x5020107e
 ```
 
-[(Source)](https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf)
 
-Because it couldn't map the Initial RAM Disk: [nx_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L276-L284)
+That's because NuttX couldn't mount the __Initial RAM Disk__: [nx_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L276-L284)
 
 ```c
 /* Mount the file system containing the init program. */
@@ -660,7 +660,15 @@ ret = nx_mount(CONFIG_INIT_MOUNT_SOURCE, CONFIG_INIT_MOUNT_TARGET,
 DEBUGASSERT(ret >= 0);
 ```
 
-That's because we haven't loaded the Initial RAM Disk! Let's fix this later.
+Which contains __NuttX Shell__ (NSH) and the NuttX Apps. Hence we stop here for today!
+
+[(More about __Initial RAM Disk__)](https://lupyuen.github.io/articles/semihost)
+
+_Why is the Initial RAM Disk missing?_
+
+That's because we __haven't loaded the Initial RAM Disk__ into RAM!
+
+We'll modify __extlinux/extlinux.conf__ on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk.
 
 # What's Next
 
@@ -684,6 +692,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/ox2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ox2.md)
 
-![My horrigible soldering of Ox64 BL808 😬](https://lupyuen.github.io/images/ox64-solder.jpg)
+![My soldering of Ox64 BL808 looks horrigible... But it works! 😬](https://lupyuen.github.io/images/ox64-solder.jpg)
 
-_My horrigible soldering of Ox64 BL808_ 😬
+_My soldering of Ox64 BL808 looks horrigible... But it works!_ 😬
