@@ -505,13 +505,13 @@ void up_irqinitialize(void) {
   riscv_exception_attach();
 ```
 
-TODO
+_Something doesn't look right..._
 
-_But it's a RISC-V Exception! Shouldn't NuttX dump this as a proper exception?_
+Yeah we attach the RISC-V Exception Handlers (__riscv_exception_attach__)...
 
-See the `riscv_exception_attach()` above? It happens AFTER the crash! This means NuttX hasn't properly initialised the Exception Handlers, when the crash happened.
+After the code has crashed! (__putreg32__)
 
-Let's init the Exception Handlers earlier: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85)
+Let's __attach the Exception Handlers__ earlier: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85)
 
 ```c
 // Init the Interrupts
@@ -533,6 +533,8 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 ```
 
+TODO
+
 `riscv_exception_attach()` will handle all RISC-V Exceptions, including Store/AMO Page Fault (IRQ 15): [riscv_exception.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142)
 
 ```c
@@ -541,6 +543,8 @@ void riscv_exception_attach(void) {
   // Handle Store/AMO Page Fault (IRQ 15)
   irq_attach(RISCV_IRQ_STOREPF, riscv_exception, NULL);
 ```
+
+_Does it work?_
 
 Now we see the Store/AMO Page Fault Exception!
 
