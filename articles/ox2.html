@@ -251,44 +251,33 @@ sb  t1, 0x88(t0)
 </code></pre></div><h1 id="update-the-boot-address"><a href="#update-the-boot-address">3 Update the Boot Address</a></h1>
 <p><em>Surely Ox64 boots at a different RAM Address from Star64?</em></p>
 <p>Yep let’s fix the <strong>NuttX Boot Address</strong> for Ox64.</p>
-<p>TODO</p>
-<p><em>What is the Linux Boot Address for Ox64 BL808?</em></p>
-<p>From the <a href="https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7">U-Boot Settings</a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>kernel_addr_r=0x50200000
+<p>From the <a href="https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7"><strong>U-Boot Bootloader</strong></a> we see that Ox64 boots Linux at this address…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ printenv
+kernel_addr_r=0x50200000
 </code></pre></div>
-<p>Let’s update the Boot Address in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27">ld.script</a></p>
-<div class="example-wrap"><pre class="language-text"><code>MEMORY
+<p>We update the Boot Address in the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27">ld.script</a></p>
+<div class="example-wrap"><pre class="language-c"><code>MEMORY
 {
-  kflash (rx) : ORIGIN = 0x50200000, LENGTH = 2048K   /* w/ cache */
-  ksram (rwx) : ORIGIN = 0x50400000, LENGTH = 2048K   /* w/ cache */
-  pgram (rwx) : ORIGIN = 0x50600000, LENGTH = 4096K   /* w/ cache */
-  ramdisk (rwx) : ORIGIN = 0x50A00000, LENGTH = 6M   /* w/ cache */
+  kflash (rx) :   ORIGIN = 0x50200000, LENGTH = 2048K   /* w/ cache */
+  ksram (rwx) :   ORIGIN = 0x50400000, LENGTH = 2048K   /* w/ cache */
+  pgram (rwx) :   ORIGIN = 0x50600000, LENGTH = 4096K   /* w/ cache */
+  ramdisk (rwx) : ORIGIN = 0x50A00000, LENGTH = 16M     /* w/ cache */
 }
+/* TODO: Use up the entire 64 MB RAM */
 </code></pre></div>
-<p>TODO: Use up to 64 MB, the total RAM Size on Ox64</p>
-<p>We make the same changes to the NuttX Config: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig">nsh/defconfig</a></p>
+<p>We make the same changes to the <strong>NuttX Build Configuration</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_RAM_START=0x50200000
 CONFIG_RAM_SIZE=1048576
 CONFIG_ARCH_PGPOOL_PBASE=0x50600000
 CONFIG_ARCH_PGPOOL_VBASE=0x50600000
 CONFIG_ARCH_PGPOOL_SIZE=4194304
 </code></pre></div>
-<p>And the Memory Mapping: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
+<p>And the <strong>NuttX Memory Map</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Map the whole I/O memory with vaddr = paddr mappings */
-#define MMU_IO_BASE     (0x00000000)
-#define MMU_IO_SIZE     (0x50000000)
+#define MMU_IO_BASE (0x00000000)
+#define MMU_IO_SIZE (0x50000000)
 </code></pre></div>
-<p>TODO: What’s the RAM Disk Address? It’s missing from <a href="https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7">U-Boot Settings</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/* Ramdisk Load Address from U-Boot */
-#define RAMDISK_ADDR_R  (0x46100000)
-</code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L43-L45">(Source)</a></p>
-<p>NuttX shows the same output as earlier, no change…</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-123
-</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb">(Source)</a></p>
-<p>Let’s fix the NuttX UART Driver…</p>
+<p>Now we fix the NuttX UART Driver…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-stack.png" alt="NuttX prints our very first Stack Dump on Ox64 yay!" /></p>
 <h1 id="fix-the-uart-driver"><a href="#fix-the-uart-driver">4 Fix the UART Driver</a></h1>
 <p>TODO</p>
