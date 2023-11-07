@@ -69,7 +69,7 @@
 
     <h1 class="title">Ox64 BL808 RISC-V SBC: Starting Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#begin-with-star64-jh7110-nuttx">1 Begin with Star64 JH7110 NuttX</a><ul></ul></li>
+<li><a href="#begin-with-nuttx-for-star64-jh7110">1 Begin with NuttX for Star64 JH7110</a><ul></ul></li>
 <li><a href="#boot-apache-nuttx-rtos-on-ox64-bl808">2 Boot Apache NuttX RTOS on Ox64 BL808</a><ul></ul></li>
 <li><a href="#print-to-ox64-serial-console-in-nuttx-boot-code">3 Print to Ox64 Serial Console in NuttX Boot Code</a><ul></ul></li>
 <li><a href="#update-the-nuttx-boot-address-for-ox64-bl808">4 Update the NuttX Boot Address for Ox64 BL808</a><ul></ul></li>
@@ -111,7 +111,12 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ox64-sbc.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
-<h1 id="begin-with-star64-jh7110-nuttx"><a href="#begin-with-star64-jh7110-nuttx">1 Begin with Star64 JH7110 NuttX</a></h1>
+<h1 id="begin-with-nuttx-for-star64-jh7110"><a href="#begin-with-nuttx-for-star64-jh7110">1 Begin with NuttX for Star64 JH7110</a></h1>
+<p><em>We’re booting Star64 NuttX on Ox64? Unmodified?!</em></p>
+<p>Yeah we have a hunch that NuttX might boot well <strong>across RISC-V SoCs</strong>.</p>
+<p>(Porting NuttX from <strong>RISC-V QEMU to Star64</strong> took only a few weeks!)</p>
+<p><em>But Star64 runs on SiFive Cores. Ox64 uses T-Head Cores!</em></p>
+<p>We’ll find out if it really matters!</p>
 <p>TODO</p>
 <h1 id="boot-apache-nuttx-rtos-on-ox64-bl808"><a href="#boot-apache-nuttx-rtos-on-ox64-bl808">2 Boot Apache NuttX RTOS on Ox64 BL808</a></h1>
 <p>TODO</p>
