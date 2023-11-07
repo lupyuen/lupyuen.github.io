@@ -444,7 +444,6 @@ _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_
 <div class="example-wrap"><pre class="language-c"><code>// Init the Interrupts
 void up_irqinitialize(void) {
   ...
-
   // Disable S-Mode Interrupts
   _info(&quot;b\n&quot;);
   up_irq_save();
@@ -467,7 +466,6 @@ void up_irqinitialize(void) {
 <div class="example-wrap"><pre class="language-c"><code>// Init the Interrupts
 void up_irqinitialize(void) {
   ...
-
   // Disable S-Mode Interrupts
   _info(&quot;b\n&quot;);
   up_irq_save();
@@ -510,7 +508,7 @@ MTVAL:  0xe0002100
 <p>The offending Data Address is <strong><code>0xE000</code> <code>2100</code></strong>. Which is our BL808 PLIC!</p>
 <h1 id="add-plic-to-memory-map"><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a></h1>
 <p><em>But is 0xE000 2100 accessible?</em></p>
-<p>Ah we forgot to add it to the <strong>Memory Map</strong>! Let’s fix it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
+<p>Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the <strong>Memory Map</strong>! Let’s fix it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Map the whole I/O memory with vaddr = paddr mappings */
 #define MMU_IO_BASE (0x00000000)
 #define MMU_IO_SIZE (0xf0000000)
@@ -548,9 +546,11 @@ static int u16550_attach(struct uart_dev_s *dev) {
   // Don&#39;t enable the interrupt
   // Previously:
   // up_enable_irq(priv-&gt;irq);
-</code></pre></div><h1 id="fail-to-load-initial-ram-disk"><a href="#fail-to-load-initial-ram-disk">8 Fail to Load Initial RAM Disk</a></h1>
-<p>TODO</p>
-<p>Now NuttX boots even further yay! But crashes in the NuttX Bringup…</p>
+</code></pre></div>
+<p><a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">(Check the PLIC Offsets in <strong>XuanTie OpenC906 User Manual</strong>, Page 77)</a></p>
+<h1 id="fail-to-load-initial-ram-disk"><a href="#fail-to-load-initial-ram-disk">8 Fail to Load Initial RAM Disk</a></h1>
+<p><em>What happens now?</em></p>
+<p>NuttX boots much further, but crashes in the <strong>NuttX Bringup</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>up_irqinitialize: c
 up_irqinitialize: d
 up_irqinitialize: e
@@ -563,15 +563,19 @@ work_start_lowpri: Starting low-priority kernel worker thread(s)
 _assert: Current Version: NuttX  12.0.3 b244f85-dirty Nov  6 2023 17:35:34 risc-v
 _assert: Assertion failed ret &gt;= 0: at file: init/nx_bringup.c:283 task: AppBringUp process: Kernel 0x5020107e
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf">(Source)</a></p>
-<p>Because it couldn’t map the Initial RAM Disk: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L276-L284">nx_bringup.c</a></p>
+<p><a href="https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf">(See the <strong>Complete Log</strong>)</a></p>
+<p>That’s because NuttX couldn’t mount the <strong>Initial RAM Disk</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L276-L284">nx_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Mount the file system containing the init program. */
 ret = nx_mount(CONFIG_INIT_MOUNT_SOURCE, CONFIG_INIT_MOUNT_TARGET,
   CONFIG_INIT_MOUNT_FSTYPE, CONFIG_INIT_MOUNT_FLAGS,
   CONFIG_INIT_MOUNT_DATA);
 DEBUGASSERT(ret &gt;= 0);
 </code></pre></div>
-<p>That’s because we haven’t loaded the Initial RAM Disk! Let’s fix this later.</p>
+<p>Which contains <strong>NuttX Shell</strong> (NSH) and the NuttX Apps. Hence we stop here for today!</p>
+<p><a href="https://lupyuen.github.io/articles/semihost">(More about <strong>Initial RAM Disk</strong>)</a></p>
+<p><em>Why is the Initial RAM Disk missing?</em></p>
+<p>That’s because we <strong>haven’t loaded the Initial RAM Disk</strong> into RAM!</p>
+<p>We’ll modify <strong>extlinux/extlinux.conf</strong> on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk.</p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -597,8 +601,8 @@ DEBUGASSERT(ret &gt;= 0);
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ox2.md"><strong>lupyuen.github.io/src/ox2.md</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="My horrigible soldering of Ox64 BL808 😬" /></p>
-<p><em>My horrigible soldering of Ox64 BL808</em> 😬</p>
+<p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="My soldering of Ox64 BL808 looks horrigible… But it works! 😬" /></p>
+<p><em>My soldering of Ox64 BL808 looks horrigible… But it works!</em> 😬</p>
 
     
 </body>
