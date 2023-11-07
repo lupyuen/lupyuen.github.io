@@ -708,7 +708,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _My soldering of Ox64 BL808 looks horrigible... But it works for now_ 😬
 
-# Appendix: Load the Initial RAM Disk
+# Appendix: Initial RAM Disk
 
 TODO
 
