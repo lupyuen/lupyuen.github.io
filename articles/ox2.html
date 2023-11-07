@@ -155,7 +155,7 @@ Retrieving file: /extlinux/../bl808-pine64-ox64.dtb
   Working FDT set to 51ff8000
   Loading Device Tree to 0000000053f22000, end 0000000053f25fab ... OK
   Working FDT set to 53f22000
-Starting kernel ...
+Starting kernel...
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8134f17502db733ce87d6fa8b00eab55">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>Shouldn’t we see a Crash Dump?</em></p>
@@ -236,17 +236,17 @@ sb  t1, 0x88(t0)
 <p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address Offset)</a></p>
 <p>We insert the code above into the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L69-L87"><strong>NuttX Boot Code:</strong> jh7110_head.S</a></p>
-<p>TODO</p>
-<p>Now NuttX prints to the Serial Console yay! (Pic below)</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+<p>And we see (pic above)…</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel...
 123
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb">(Source)</a></p>
-<p>OpenSBI boots on Ox64 with Hart ID 0 (instead of 1), so we remove this code…</p>
-<div class="example-wrap"><pre class="language-text"><code> /* We assume that OpenSBI has passed Hart ID (value 1) in Register a0.
-   * But NuttX expects Hart ID to start at 0, so we subtract 1.
-   */
-  /* Previously: addi a0, a0, -1 */
+<p>Indeed <strong>NuttX is booting on Ox64</strong> yay!</p>
+<p><em>Anything else we changed in the NuttX Boot Code?</em></p>
+<p>OpenSBI boots on Ox64 with <strong>Hart ID 0</strong> (instead of 1), so we remove this code…</p>
+<div class="example-wrap"><pre class="language-text"><code>/* We assume that OpenSBI has passed Hart ID (value 1) in Register a0.
+ * But NuttX expects Hart ID to start at 0, so we subtract 1.
+ * Previously: addi a0, a0, -1 */
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93">(Source)</a></p>
 <h1 id="update-the-nuttx-boot-address"><a href="#update-the-nuttx-boot-address">3 Update the NuttX Boot Address</a></h1>
