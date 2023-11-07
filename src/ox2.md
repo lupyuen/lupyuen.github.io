@@ -91,7 +91,7 @@ Retrieving file: /extlinux/../bl808-pine64-ox64.dtb
   Working FDT set to 51ff8000
   Loading Device Tree to 0000000053f22000, end 0000000053f25fab ... OK
   Working FDT set to 53f22000
-Starting kernel ...
+Starting kernel...
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/8134f17502db733ce87d6fa8b00eab55)
@@ -187,24 +187,25 @@ sb  t1, 0x88(t0)
 
 We insert the code above into the [__NuttX Boot Code:__ jh7110_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L69-L87)
 
-TODO
-
-Now NuttX prints to the Serial Console yay! (Pic below)
+And we see (pic above)...
 
 ```text
-Starting kernel ...
+Starting kernel...
 123
 ```
 
 [(Source)](https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb)
 
-OpenSBI boots on Ox64 with Hart ID 0 (instead of 1), so we remove this code...
+Indeed __NuttX is booting on Ox64__ yay!
+
+_Anything else we changed in the NuttX Boot Code?_
+
+OpenSBI boots on Ox64 with __Hart ID 0__ (instead of 1), so we remove this code...
 
 ```text
- /* We assume that OpenSBI has passed Hart ID (value 1) in Register a0.
-   * But NuttX expects Hart ID to start at 0, so we subtract 1.
-   */
-  /* Previously: addi a0, a0, -1 */
+/* We assume that OpenSBI has passed Hart ID (value 1) in Register a0.
+ * But NuttX expects Hart ID to start at 0, so we subtract 1.
+ * Previously: addi a0, a0, -1 */
 ```
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93)
