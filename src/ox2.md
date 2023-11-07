@@ -215,31 +215,27 @@ _Surely Ox64 boots at a different RAM Address from Star64?_
 
 Yep let's fix the __NuttX Boot Address__ for Ox64.
 
-TODO
-
-_What is the Linux Boot Address for Ox64 BL808?_
-
-From the [U-Boot Settings](https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7)...
+From the [__U-Boot Bootloader__](https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7) we see that Ox64 boots Linux at this address...
 
 ```bash
+$ printenv
 kernel_addr_r=0x50200000
 ```
 
-Let's update the Boot Address in NuttX: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27)
+We update the Boot Address in the __NuttX Linker Script__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27)
 
-```text
+```c
 MEMORY
 {
-  kflash (rx) : ORIGIN = 0x50200000, LENGTH = 2048K   /* w/ cache */
-  ksram (rwx) : ORIGIN = 0x50400000, LENGTH = 2048K   /* w/ cache */
-  pgram (rwx) : ORIGIN = 0x50600000, LENGTH = 4096K   /* w/ cache */
-  ramdisk (rwx) : ORIGIN = 0x50A00000, LENGTH = 6M   /* w/ cache */
+  kflash (rx) :   ORIGIN = 0x50200000, LENGTH = 2048K   /* w/ cache */
+  ksram (rwx) :   ORIGIN = 0x50400000, LENGTH = 2048K   /* w/ cache */
+  pgram (rwx) :   ORIGIN = 0x50600000, LENGTH = 4096K   /* w/ cache */
+  ramdisk (rwx) : ORIGIN = 0x50A00000, LENGTH = 16M     /* w/ cache */
 }
+/* TODO: Use up the entire 64 MB RAM */
 ```
 
-TODO: Use up to 64 MB, the total RAM Size on Ox64
-
-We make the same changes to the NuttX Config: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig)
+We make the same changes to the __NuttX Build Configuration__: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig)
 
 ```text
 CONFIG_RAM_START=0x50200000
@@ -249,33 +245,15 @@ CONFIG_ARCH_PGPOOL_VBASE=0x50600000
 CONFIG_ARCH_PGPOOL_SIZE=4194304
 ```
 
-And the Memory Mapping: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
+And the __NuttX Memory Map__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
 
 ```c
 /* Map the whole I/O memory with vaddr = paddr mappings */
-#define MMU_IO_BASE     (0x00000000)
-#define MMU_IO_SIZE     (0x50000000)
+#define MMU_IO_BASE (0x00000000)
+#define MMU_IO_SIZE (0x50000000)
 ```
 
-TODO: What's the RAM Disk Address? It's missing from [U-Boot Settings](https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7)
-
-```c
-/* Ramdisk Load Address from U-Boot */
-#define RAMDISK_ADDR_R  (0x46100000)
-```
-
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L43-L45)
-
-NuttX shows the same output as earlier, no change...
-
-```text
-Starting kernel ...
-123
-```
-
-[(Source)](https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb)
-
-Let's fix the NuttX UART Driver...
+Now we fix the NuttX UART Driver...
 
 ![NuttX prints our very first Stack Dump on Ox64 yay!](https://lupyuen.github.io/images/ox64-stack.png)
 
