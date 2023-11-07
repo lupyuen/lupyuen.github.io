@@ -339,15 +339,16 @@ up_dump_register: A4: ffffffffffffffff A5: 8000000200046000 A6: 0000000000000000
 <p><a href="https://lupyuen.github.io/articles/plic"><em>Platform-Level Interrupt Controller for Star64 JH7110</em></a></p>
 <h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">5 Platform-Level Interrupt Controller</a></h1>
 <p><em>What’s this Platform-Level Interrupt Controller?</em></p>
-<p>TODO</p>
-<p><em>Why did NuttX crash with this RISC-V Exception?</em></p>
+<p>Inside our BL808 SoC, the <a href="https://lupyuen.github.io/articles/plic"><strong>Platform-Level Interrupt Controller (PLIC)</strong></a> is the hardware that receives <strong>External Interrupts</strong> and forwards them to our RISC-V CPU.</p>
+<p>(Like for <strong>UART Interrupts</strong>, pic above)</p>
+<p>Earlier we saw NuttX crashing with this <strong>RISC-V Exception</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>EXCEPTION: Load access fault
 MCAUSE: 5
 EPC:    50208086
 MTVAL:  0c002104
 </code></pre></div>
-<p>NuttX crashed when it tried to access invalid Data Address 0xc002104 from Code Address 0x50208086.</p>
-<p>We look up Code Address 0x50208086 in our NuttX Disassembly…</p>
+<p>This says that NuttX crashed when it tried to access Invalid Data Address <strong><code>0x0C00</code> <code>2104</code></strong> from Code Address <strong><code>0x5020</code> <code>8086</code></strong>.</p>
+<p>We look up Code Address <strong><code>0x5020</code> <code>8086</code></strong> in our <strong>NuttX Disassembly</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>000000005020807a &lt;modifyreg32&gt;:
 up_irq_save():
 /Users/Luppy/ox64/nuttx/include/arch/irq.h:689
@@ -369,8 +370,9 @@ modifyreg32():
   regval  = getreg32(addr);
     50208086:	2701                	sext.w	a4,a4
 </code></pre></div>
-<p>Which comes from here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_modifyreg32.c#L38-L57">riscv_modifyreg32.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code> // Atomically modify the specified bits in a memory mapped register
+<p>Which points to this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_modifyreg32.c#L38-L57">riscv_modifyreg32.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code> // Atomically modify the specified bits
+ // in a Memory-Mapped Register
 void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
   irqstate_t flags;
   uint32_t   regval;
@@ -384,29 +386,18 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
   spin_unlock_irqrestore(NULL, flags);
 }
 </code></pre></div>
-<p>It’s trying to modify a Memory-Mapped Register, and crashed.</p>
+<p>Hence NuttX tried to modify a <strong>Memory-Mapped Register</strong>, and crashed.</p>
 <p><em>But what Memory-Mapped Register?</em></p>
-<p>The offending Data Address 0xc002104 actually comes from Star64 PLIC! (Platform-Level Interrupt Controller)</p>
-<div class="example-wrap"><pre class="language-c"><code>// From https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30
+<p>The offending Data Address <strong><code>0x0C00</code> <code>2104</code></strong> actually comes from the <strong>Star64 PLIC</strong>! (Platform-Level Interrupt Controller)</p>
+<div class="example-wrap"><pre class="language-c"><code>// Star64 PLIC Base Address. From https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30
 #define JH7110_PLIC_BASE    0x0c000000
 
-// From https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L34-L49
-/* Interrupt Priority */
-#define JH7110_PLIC_PRIORITY  (JH7110_PLIC_BASE + 0x000000)
-
-/* Hart 1 S-Mode Interrupt Enable */
-#define JH7110_PLIC_ENABLE1   (JH7110_PLIC_BASE + 0x002100)
+// Start64 S-Mode Interrupt Enable. From https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L34-L49
 #define JH7110_PLIC_ENABLE2   (JH7110_PLIC_BASE + 0x002104)
-
-/* Hart 1 S-Mode Priority Threshold */
-#define JH7110_PLIC_THRESHOLD (JH7110_PLIC_BASE + 0x202000)
-
-/* Hart 1 S-Mode Claim / Complete */
-#define JH7110_PLIC_CLAIM     (JH7110_PLIC_BASE + 0x202004)
 </code></pre></div>
-<p>The PLIC Base Address is different for BL808, let’s change it.</p>
-<p><em>What’s the PLIC Base Address in Ox64 BL808?</em></p>
-<p>PLIC Base Address is 0xe0000000, according to the Linux Device Tree: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L129-L138">bl808-pine64-ox64.dts</a></p>
+<p>The <strong>PLIC Base Address</strong> is different for Ox64, let’s change it.</p>
+<p><em>What’s the PLIC Base Address for Ox64?</em></p>
+<p><strong>Ox64 PLIC Base Address</strong> is <strong><code>0xE000</code> <code>0000</code></strong>, according to the Linux Device Tree: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L129-L138">bl808-pine64-ox64.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>interrupt-controller@e0000000 {
   compatible = &quot;thead,c900-plic&quot;;
   reg = &lt;0xe0000000 0x4000000&gt;;
