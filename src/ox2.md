@@ -10,7 +10,21 @@ TODO
 
 And we wondered whether a 64-bit RTOS (Real-Time Operating System) like __Apache NuttX RTOS__ might run more efficiently on Ox64.
 
-Let's make it happen!
+Let's make it happen! In this article...
+
+- We begin with NuttX for Star64 JH7110 RISC-V SBC
+
+- Try to boot it on our Ox64 BL808 RISC-V SBC
+
+- Add Debug Logs in RISC-V Assembly
+
+- Tweak the NuttX UART Driver to print on Ox64
+
+- Fix the Platform-Level Interrupt Controller
+
+- Clean up the RISC-V Exceptions
+
+- Eventually hitting an issue with Initial RAM Disk
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sbc.jpg)
 
