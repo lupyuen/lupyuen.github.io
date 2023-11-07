@@ -509,14 +509,14 @@ MTVAL:  0xe0002100
 </code></pre></div>
 <p>The offending Data Address is <strong><code>0xE000</code> <code>2100</code></strong>. Which is our BL808 PLIC!</p>
 <h1 id="add-plic-to-memory-map"><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a></h1>
-<p>TODO</p>
 <p><em>But is 0xE000 2100 accessible?</em></p>
-<p>Ah we forgot to add it to the I/O Memory Map! Let’s fix it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
+<p>Ah we forgot to add it to the <strong>Memory Map</strong>! Let’s fix it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Map the whole I/O memory with vaddr = paddr mappings */
 #define MMU_IO_BASE (0x00000000)
 #define MMU_IO_SIZE (0xf0000000)
 </code></pre></div>
-<p>(Doesn’t look right, but we’ll fix later)</p>
+<p>(Doesn’t look right, we’ll come back to this)</p>
+<p>TODO</p>
 <p>Now NuttX boots further! And tries to register IRQ 57 for the Star64 UART Interrupt…</p>
 <div class="example-wrap"><pre class="language-text"><code>up_irqinitialize: c
 up_irqinitialize: d
