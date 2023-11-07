@@ -630,7 +630,7 @@ static int u16550_attach(struct uart_dev_s *dev) {
 
 ![Initial RAM Disk for Star64 JH7110](https://lupyuen.github.io/images/semihost-title.jpg)
 
-_Initial RAM Disk for Star64 JH7110_
+[_Initial RAM Disk for Star64 JH7110_)](https://lupyuen.github.io/articles/semihost)
 
 # Initial RAM Disk is Missing
 
