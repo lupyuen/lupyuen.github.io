@@ -4,27 +4,27 @@
 
 ![Booting Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox2-title.png)
 
-Last article we booted Linux on the __Pine64 Ox64 64-bit RISC-V SBC__ (powered by __Bouffalo Lab BL808 SoC__)...
+Last week we booted Linux on the [__Pine64 Ox64 64-bit RISC-V SBC__](https://wiki.pine64.org/wiki/Ox64) (pic below), powered by [__Bouffalo Lab BL808 SoC__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)...
 
-TODO
+- [__"Ox64 BL808 RISC-V SBC: Booting Linux and (maybe) Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ox64)
 
-And we wondered whether a 64-bit RTOS (Real-Time Operating System) like __Apache NuttX RTOS__ might run more efficiently on Ox64.
+And we wondered whether a 64-bit RTOS (Real-Time Operating System) like [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) might run more efficiently on Ox64.
 
-Let's make it happen! In this article...
+Let's make it happen! In this article we...
 
-- We begin with NuttX for Star64 JH7110 RISC-V SBC
+- Begin with __NuttX for Star64 JH7110__ RISC-V SBC
 
-- Try to boot it on our Ox64 BL808 RISC-V SBC
+- Boot it (!) on our __Ox64 BL808__ RISC-V SBC
 
-- Add Debug Logs in RISC-V Assembly
+- Add Debug Logs in __RISC-V Assembly__
 
-- Tweak the NuttX UART Driver to print on Ox64
+- Tweak the __NuttX UART Driver__ to print on Ox64
 
-- Fix the Platform-Level Interrupt Controller
+- Fix the __Platform-Level Interrupt Controller__
 
-- Clean up the RISC-V Exceptions
+- Figure out why __RISC-V Exceptions__ aren't dumped correctly
 
-- Eventually hitting an issue with Initial RAM Disk
+- And plan for the upcoming __Initial RAM Disk__
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sbc.jpg)
 
