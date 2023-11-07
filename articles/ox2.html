@@ -424,7 +424,7 @@ irq_unexpected_isr: ERROR irq: 15
 _assert: Current Version: NuttX  12.0.3 910bfca-dirty Nov  6 2023 15:23:11 risc-v
 _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_Task process: Kernel 0x50200e50
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121">(See the <strong>Complete Log</strong>)</a></p>
 <p>Let’s chat about IRQ 15 and why it shouldn’t appear…</p>
 <p>TODO: Enable Scheduler Debug</p>
 <h1 id="handle-risc-v-exceptions"><a href="#handle-risc-v-exceptions">6 Handle RISC-V Exceptions</a></h1>
@@ -435,36 +435,29 @@ _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_
 </blockquote>
 <p>This says that NuttX tried to write to an <strong>Invalid Data Address</strong>.</p>
 <p>And it failed due to an “Unexpected Interrupt”. (ISR)</p>
-<p><em>Is there something special about IRQ 15?</em></p>
+<p><em>Something special about IRQ 15?</em></p>
 <p>IRQ 15 is actually a <strong>RISC-V Exception</strong>!</p>
-<p>Rightfully, NuttX should print a <strong>RISC-V Exception Crash Dump</strong>. <a href="https://lupyuen.github.io/articles/ox2#fix-the-uart-driver">(Like this)</a></p>
-<p>TODO</p>
+<p>Rightfully, NuttX should print a helpful <strong>RISC-V Exception Crash Dump</strong> with the offending Data Address. <a href="https://lupyuen.github.io/articles/ox2#fix-the-uart-driver">(Like this)</a></p>
+<p>Let’s figure out why NuttX wasn’t terribly helpful for this RISC-V Exception.</p>
 <p><em>Where did it crash?</em></p>
-<p>Based on our log, NuttX crashes before setting the PLIC!</p>
-<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Init the IRQs
+<p>Based on our <a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121"><strong>Debug Log</strong></a>, NuttX crashes right before setting the PLIC: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Init the Interrupts
 void up_irqinitialize(void) {
-  _info(&quot;a\n&quot;);////
+  ...
 
-  /* Disable S-Mode interrupts */
-  _info(&quot;b\n&quot;);////
+  // Disable S-Mode interrupts
+  _info(&quot;b\n&quot;);
   up_irq_save();
 
-  /* Disable all global interrupts */
-  _info(&quot;c\n&quot;);////
+  // Disable all global interrupts
+  _info(&quot;c\n&quot;);
   // Crashes here!
   putreg32(0x0, JH7110_PLIC_ENABLE1);
   putreg32(0x0, JH7110_PLIC_ENABLE2);
-
-  /* Colorize the interrupt stack for debug purposes */
   ...
 
-  /* Set irq threshold to 0 (permits all global interrupts) */
-  _info(&quot;e\n&quot;);////
-  putreg32(0, JH7110_PLIC_THRESHOLD);
-
-  /* Attach the common interrupt handler */
-  _info(&quot;f\n&quot;);////
+  // Attach the RISC-V Exception Handlers
+  _info(&quot;f\n&quot;);
   riscv_exception_attach();
 </code></pre></div>
 <p><em>But it’s a RISC-V Exception! Shouldn’t NuttX dump this as a proper exception?</em></p>
