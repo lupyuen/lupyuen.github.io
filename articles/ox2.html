@@ -460,10 +460,10 @@ void up_irqinitialize(void) {
   _info(&quot;f\n&quot;);
   riscv_exception_attach();
 </code></pre></div>
-<p>TODO</p>
-<p><em>But it’s a RISC-V Exception! Shouldn’t NuttX dump this as a proper exception?</em></p>
-<p>See the <code>riscv_exception_attach()</code> above? It happens AFTER the crash! This means NuttX hasn’t properly initialised the Exception Handlers, when the crash happened.</p>
-<p>Let’s init the Exception Handlers earlier: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
+<p><em>Something doesn’t look right…</em></p>
+<p>Yeah we attach the RISC-V Exception Handlers (<strong>riscv_exception_attach</strong>)…</p>
+<p>After the code has crashed! (<strong>putreg32</strong>)</p>
+<p>Let’s <strong>attach the Exception Handlers</strong> earlier: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Interrupts
 void up_irqinitialize(void) {
   ...
@@ -482,12 +482,14 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE1);
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 </code></pre></div>
+<p>TODO</p>
 <p><code>riscv_exception_attach()</code> will handle all RISC-V Exceptions, including Store/AMO Page Fault (IRQ 15): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142">riscv_exception.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Attach standard exception with suitable handler
 void riscv_exception_attach(void) {
   // Handle Store/AMO Page Fault (IRQ 15)
   irq_attach(RISCV_IRQ_STOREPF, riscv_exception, NULL);
 </code></pre></div>
+<p><em>Does it work?</em></p>
 <p>Now we see the Store/AMO Page Fault Exception!</p>
 <div class="example-wrap"><pre class="language-text"><code>up_irqinitialize: c
 riscv_dispatch_irq: irq=15
