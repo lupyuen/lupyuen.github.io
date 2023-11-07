@@ -704,6 +704,18 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/ox2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ox2.md)
 
-![My soldering of Ox64 BL808 looks horrigible... But it works! 😬](https://lupyuen.github.io/images/ox64-solder.jpg)
+![My soldering of Ox64 BL808 looks horrigible... But it works for now 😬](https://lupyuen.github.io/images/ox64-solder.jpg)
 
-_My soldering of Ox64 BL808 looks horrigible... But it works!_ 😬
+_My soldering of Ox64 BL808 looks horrigible... But it works for now_ 😬
+
+# Appendix: Load the Initial RAM Disk
+
+TODO
+
+# Appendix: UART Driver for Ox64
+
+TODO
+
+# Appendix: Memory Map for Ox64
+
+TODO
