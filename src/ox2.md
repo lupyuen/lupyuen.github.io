@@ -573,11 +573,9 @@ The offending Data Address is __`0xE000` `2100`__. Which is our BL808 PLIC!
 
 # Add PLIC to Memory Map
 
-TODO
-
 _But is 0xE000 2100 accessible?_
 
-Ah we forgot to add it to the I/O Memory Map! Let's fix it: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
+Ah we forgot to add it to the __Memory Map__! Let's fix it: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
 
 ```c
 /* Map the whole I/O memory with vaddr = paddr mappings */
@@ -585,7 +583,9 @@ Ah we forgot to add it to the I/O Memory Map! Let's fix it: [jh7110_mm_init.c](h
 #define MMU_IO_SIZE (0xf0000000)
 ```
 
-(Doesn't look right, but we'll fix later)
+(Doesn't look right, we'll come back to this)
+
+TODO
 
 Now NuttX boots further! And tries to register IRQ 57 for the Star64 UART Interrupt...
 
