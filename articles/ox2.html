@@ -516,8 +516,7 @@ MTVAL:  0xe0002100
 #define MMU_IO_SIZE (0xf0000000)
 </code></pre></div>
 <p>(Doesn’t look right, we’ll come back to this)</p>
-<p>TODO</p>
-<p>Now NuttX boots further! And tries to register IRQ 57 for the Star64 UART Interrupt…</p>
+<p>NuttX boots even further! And tries to register IRQ 57 for the Star64 UART Interrupt…</p>
 <div class="example-wrap"><pre class="language-text"><code>up_irqinitialize: c
 up_irqinitialize: d
 up_irqinitialize: e
@@ -536,17 +535,19 @@ EPC:    0000000050208342
 MTVAL:  00000000e0002104
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ade5ff1433812fb675ff06f805f7339f">(Source)</a></p>
-<p>But it crashes while accessing the PLIC at another address: 0xe0002104.</p>
-<p><em>Are we tired of PLIC yet?</em></p>
+<p>But it crashes while accessing the PLIC at another address: <strong><code>0xE000</code> <code>2104</code></strong>.</p>
+<p><em>Ack! Enough with the PLIC already…</em></p>
 <p>Yeah let’s fix PLIC later. The entire UART Driver will be revamped anyway, including the UART Interrupt.</p>
-<p>Let’s disable the UART Interrupt for now: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958">uart_16550.c</a></p>
+<p>We <strong>disable the UART Interrupt</strong> for now: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Attach the UART Interrupt for Star64
 static int u16550_attach(struct uart_dev_s *dev) {
   // Don&#39;t attach the interrupt
-  // Previously: ret = irq_attach(priv-&gt;irq, u16550_interrupt, dev);
+  // Previously:
+  // ret = irq_attach(priv-&gt;irq, u16550_interrupt, dev);
 
   // Don&#39;t enable the interrupt
-  // Previously: up_enable_irq(priv-&gt;irq);
+  // Previously:
+  // up_enable_irq(priv-&gt;irq);
 </code></pre></div><h1 id="fail-to-load-initial-ram-disk"><a href="#fail-to-load-initial-ram-disk">8 Fail to Load Initial RAM Disk</a></h1>
 <p>TODO</p>
 <p>Now NuttX boots even further yay! But crashes in the NuttX Bringup…</p>
