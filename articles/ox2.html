@@ -280,15 +280,16 @@ CONFIG_ARCH_PGPOOL_SIZE=4194304
 <p>Now we fix the NuttX UART Driver…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-stack.png" alt="NuttX prints our very first Stack Dump on Ox64 yay!" /></p>
 <h1 id="fix-the-uart-driver"><a href="#fix-the-uart-driver">4 Fix the UART Driver</a></h1>
-<p>TODO</p>
-<p><em>NuttX on Ox64 has been awfully quiet. How to fix the UART Driver so that NuttX can print things?</em></p>
-<p>Ox64 is still running on the JH7110 UART Driver (16550). Let’s make a quick patch so that we will see something on the Ox64 Serial Console…</p>
-<p>We hardcode the UART3 Base Address (from above) and FIFO Offset for now: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716">uart_16550.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Write one character to the UART (polled)
+<p><em>NuttX on Ox64 has been awfully quiet…</em></p>
+<p><em>How to fix the UART Driver so that NuttX can print things?</em></p>
+<p>Ox64 is still running on the JH7110 UART Driver (16550).</p>
+<p>Let’s make a quick patch so that the <strong>NuttX UART Driver</strong> will print to the Ox64 Serial Console.</p>
+<p>We hardcode the <strong>UART3 Base Address</strong> (from above) and Output FIFO Offset for now: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Write one character to the UART
 static void u16550_putc(FAR struct u16550_s *priv, int ch) {
 
-  // Hardcode the UART3 Base Address and FIFO Offset
-  *(volatile uint8_t *) 0x30002088 = ch; ////
+  // Hardcode the UART3 Base Address and Output FIFO Offset
+  *(volatile uint8_t *) 0x30002088 = ch;
 
   // Previously:
   // while ((u16550_serialin(priv, UART_LSR_OFFSET) &amp; UART_LSR_THRE) == 0);
@@ -296,50 +297,49 @@ static void u16550_putc(FAR struct u16550_s *priv, int ch) {
 }
 </code></pre></div>
 <p>(Yeah the UART Buffer might overflow, we’ll fix later)</p>
-<p>We skip the reading and writing of other UART Registers, because we’ll patch them later: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L604-L632">uart_16550.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Read UART Register
+<p>We skip the reading and writing of <strong>other UART Registers</strong>, because we’ll patch them later: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L604-L632">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Read from UART Register
 static inline uart_datawidth_t u16550_serialin(FAR struct u16550_s *priv, int offset) {
-  return 0; ////
+  return 0;
   // Commented out the rest
 }
 
-// Write UART Register
+// Write to UART Register
 static inline void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_datawidth_t value) {
   // Commented out the rest
 }
 </code></pre></div>
-<p>And we won’t wait for UART Ready, since we’re not accessing the Line Control Register: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L633-L670">uart_16550.c</a></p>
+<p>And we won’t wait for <strong>UART Ready</strong>, since we’re not accessing the Line Control Register: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L633-L670">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Wait until UART is not busy. This is needed before writing to Line Control Register.
 // Otherwise we will get spurious interrupts on Synopsys DesignWare 8250.
 static int u16550_wait(FAR struct u16550_s *priv) {
   // Nopez! No waiting for now
-  return OK; ////
+  return OK;
 }
 </code></pre></div>
-<p>Now NuttX prints our very first Stack Dump on Ox64 yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+<p>Now NuttX prints our very first <strong>Crash Dump</strong> on Ox64 yay! (Pic above)</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel...
 123
 ABC
-riscv_exception: EXCEPTION: Load access fault. MCAUSE: 0000000000000005, EPC: 0000000050208086, MTVAL: 000000000c002104
+riscv_exception: 
+  EXCEPTION: Load access fault
+  MCAUSE: 5
+  EPC:    50208086
+  MTVAL:  0c002104
 riscv_exception: PANIC!!! Exception = 0000000000000005
 _assert: Current Version: NuttX  12.0.3 93a92a7-dirty Nov  5 2023 11:27:46 risc-v
 _assert: Assertion failed panic: at file: common/riscv_exception.c:85 task: Idle_Task process: Kernel 0x50200e28
 up_dump_register: EPC: 0000000050208086
 up_dump_register: A0: 000000000c002104 A1: ffffffffffffffff A2: 0000000000000001 A3: 0000000000000003
 up_dump_register: A4: ffffffffffffffff A5: 8000000200046000 A6: 0000000000000000 A7: fffffffffffffff8
-up_dump_register: T0: 00000000502000a8 T1: 0000000000000007 T2: 656d616e2d64746d T3: 0000000050407b10
-up_dump_register: T4: 0000000050407b08 T5: 0000000053f23fff T6: 0000000053f33870
-up_dump_register: S0: 0000000000000000 S1: 0000000050400140 S2: 0000000000000001 S3: 8000000200046002
-up_dump_register: S4: 0000000050400070 S5: 00000000000001b6 S6: 0000000000000000 S7: 0000000000000000
-up_dump_register: S8: 0000000053f7a15c S9: 0000000053fcf2e0 S10: 0000000000000001 S11: 0000000000000003
-up_dump_register: SP: 0000000050407a00 FP: 0000000000000000 TP: 0000000000000000 RA: 0000000050204064
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/36b8c47abc2632063ca5cdebb958e3e8">(Source)</a></p>
+<p><a href="https://gist.github.com/lupyuen/36b8c47abc2632063ca5cdebb958e3e8">(See the <strong>Complete Log</strong>)</a></p>
+<p>TODO</p>
 <p>Let’s look up the RISC-V Exception Code Address 0x50208086 in our RISC-V Disassembly…</p>
-<div class="example-wrap"><pre class="language-text"><code>EXCEPTION: Load access fault 
-MCAUSE: 0000000000000005 
-EPC:    0000000050208086 
-MTVAL:  000000000c002104
+<div class="example-wrap"><pre class="language-text"><code>EXCEPTION: Load access fault
+MCAUSE: 5
+EPC:    50208086
+MTVAL:  0c002104
 </code></pre></div>
 <p>And the offending Data Address 0xc002104. (Which looks very familiar!)</p>
 <p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller for Star64 JH7110" /></p>
