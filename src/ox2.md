@@ -8,7 +8,7 @@ Last week we booted Linux on the [__Pine64 Ox64 64-bit RISC-V SBC__](https://wik
 
 - [__"Ox64 BL808 RISC-V SBC: Booting Linux and (maybe) Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ox64)
 
-And we wondered whether a 64-bit RTOS (Real-Time Operating System) like [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) might run more efficiently on Ox64.
+And we wondered whether a tiny 64-bit RTOS (Real-Time Operating System) like [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) might run more efficiently on Ox64.
 
 Let's make it happen! In this article we...
 
