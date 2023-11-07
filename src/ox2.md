@@ -361,11 +361,11 @@ We look up Code Address __`0x5020` `8086`__ in our __NuttX Disassembly__...
 ```text
 000000005020807a <modifyreg32>:
 up_irq_save():
-/Users/Luppy/ox64/nuttx/include/arch/irq.h:689
+nuttx/include/arch/irq.h:689
     5020807a:	4789                	li	a5,2
     5020807c:	1007b7f3          	csrrc	a5,sstatus,a5
 modifyreg32():
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
+nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
 {
   irqstate_t flags;
   uint32_t   regval;
@@ -373,10 +373,10 @@ modifyreg32():
   flags   = spin_lock_irqsave(NULL);
   regval  = getreg32(addr);
     50208080:	4118                	lw	a4,0(a0)
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:53
+nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:53
   regval &= ~clearbits;
     50208082:	fff5c593          	not	a1,a1
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
+nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
   regval  = getreg32(addr);
     50208086:	2701                	sext.w	a4,a4
 ```
@@ -511,7 +511,7 @@ Yeah we attach the RISC-V Exception Handlers (__riscv_exception_attach__)...
 
 After the code has crashed! (__putreg32__)
 
-Let's __attach the Exception Handlers__ earlier: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85)
+Let's __attach the Exception Handlers__ earlier: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85)
 
 ```c
 // Init the Interrupts
@@ -533,57 +533,56 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 ```
 
-TODO
-
-`riscv_exception_attach()` will handle all RISC-V Exceptions, including Store/AMO Page Fault (IRQ 15): [riscv_exception.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142)
+So that __riscv_exception_attach__ will handle all RISC-V Exceptions correctly, including IRQ 15: [riscv_exception.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142)
 
 ```c
 // Attach standard exception with suitable handler
 void riscv_exception_attach(void) {
+  ...
   // Handle Store/AMO Page Fault (IRQ 15)
   irq_attach(RISCV_IRQ_STOREPF, riscv_exception, NULL);
 ```
 
 _Does it work?_
 
-Now we see the Store/AMO Page Fault Exception!
+Yep we see the __Store / AMO Page Fault Exception__!
 
 ```text
 up_irqinitialize: c
 riscv_dispatch_irq: irq=15
 riscv_exception: 
 EXCEPTION: Store/AMO page fault
-MCAUSE: 000000000000000f
-EPC:    0000000050207e6a
-MTVAL:  00000000e0002100
+MCAUSE: f
+EPC:    0x50207e6a
+MTVAL:  0xe0002100
 ```
 
-[(Source)](https://gist.github.com/lupyuen/85db0510712ba8c660e10f922d4564c9)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/85db0510712ba8c660e10f922d4564c9)
 
-Code Address is 0x50207e6a, from our PLIC Code...
+When we look up the NuttX Disassembly, the Exception Code Address __`0x5020` `7E6A`__ comes from our [__PLIC Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L58-L64)...
 
 ```text
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
+nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
   putreg32(0x0, JH7110_PLIC_ENABLE1);
     50207e64:	700017b7          	lui	a5,0x70001
     50207e68:	0786                	slli	a5,a5,0x1
     50207e6a:	1007a023          	sw	zero,256(a5) # 70001100 <__ramdisk_end+0x1e601100>
 ```
 
-The offending Data Address is 0xe0002100. Which is our BL808 PLIC!
+The offending Data Address is __`0xE000` `2100`__. Which is our BL808 PLIC!
 
 # Add PLIC to Memory Map
 
 TODO
 
-_But is 0xe0002100 accessible?_
+_But is 0xE000 2100 accessible?_
 
 Ah we forgot to add it to the I/O Memory Map! Let's fix it: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
 
 ```c
 /* Map the whole I/O memory with vaddr = paddr mappings */
-#define MMU_IO_BASE     (0x00000000)
-#define MMU_IO_SIZE     (0xf0000000)
+#define MMU_IO_BASE (0x00000000)
+#define MMU_IO_SIZE (0xf0000000)
 ```
 
 (Doesn't look right, but we'll fix later)
