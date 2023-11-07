@@ -280,6 +280,7 @@ CONFIG_ARCH_PGPOOL_SIZE=4194304
 #define MMU_IO_BASE (0x00000000)
 #define MMU_IO_SIZE (0x50000000)
 </code></pre></div>
+<p>TODO: MMU</p>
 <p>Now we fix the NuttX UART Driver…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-stack.png" alt="NuttX prints our very first Stack Dump on Ox64 yay!" /></p>
 <h1 id="fix-the-uart-driver"><a href="#fix-the-uart-driver">4 Fix the UART Driver</a></h1>
@@ -516,7 +517,7 @@ MTVAL:  0xe0002100
 #define MMU_IO_BASE (0x00000000)
 #define MMU_IO_SIZE (0xf0000000)
 </code></pre></div>
-<p>(Doesn’t look right, we’ll come back to this)</p>
+<p><a href="https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64">(<strong>Memory Map</strong> doesn’t look right)</a></p>
 <p>NuttX boots even further! And tries to register IRQ 57 for the Star64 UART Interrupt…</p>
 <div class="example-wrap"><pre class="language-text"><code>up_irqinitialize: c
 up_irqinitialize: d
@@ -538,7 +539,7 @@ MTVAL:  00000000e0002104
 <p><a href="https://gist.github.com/lupyuen/ade5ff1433812fb675ff06f805f7339f">(Source)</a></p>
 <p>But it crashes while accessing the PLIC at another address: <strong><code>0xE000</code> <code>2104</code></strong>.</p>
 <p><em>Ack! Enough with the PLIC already…</em></p>
-<p>Yeah let’s fix PLIC later. The entire UART Driver will be revamped anyway, including the UART Interrupt.</p>
+<p>Yeah let’s fix PLIC later. The entire <a href="https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64"><strong>UART Driver will be revamped</strong></a> anyway, including the UART Interrupt.</p>
 <p>We <strong>disable the UART Interrupt</strong> for now: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Attach the UART Interrupt for Star64
 static int u16550_attach(struct uart_dev_s *dev) {
@@ -583,8 +584,18 @@ DEBUGASSERT(ret &gt;= 0);
 <p>We’ll modify <a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf"><strong>extlinux/extlinux.conf</strong></a> on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.</p>
 <p><a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd">(Or maybe the U-Boot Script <strong>boot-pine64.scr</strong>)</a></p>
 <p><a href="https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow">(See the <strong>U-Boot Boot Flow</strong>)</a></p>
-<p>TODO: Memory Map</p>
-<p>TODO: UART Driver</p>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk"><strong>“Initial RAM Disk”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64"><strong>“UART Driver for Ox64”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64"><strong>“Memory Map for Ox64”</strong></a></p>
+</li>
+</ul>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
