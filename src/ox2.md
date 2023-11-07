@@ -110,6 +110,8 @@ Let's print something to the Serial Console...
 
 # Print to Serial Console
 
+_We have a strong hunch that NuttX is actually booting on Ox64... How to prove it?_
+
 TODO
 
 _How to print to the Ox64 Serial Console in the NuttX Boot Code? (RISC-V Assembly)_
