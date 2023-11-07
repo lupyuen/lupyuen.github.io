@@ -670,6 +670,8 @@ That's because we __haven't loaded the Initial RAM Disk__ into RAM!
 
 We'll modify __extlinux/extlinux.conf__ on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
 
+[(Or maybe the U-Boot Script __boot-pine64.cmd__)](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd)
+
 # What's Next
 
 TODO
