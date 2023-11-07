@@ -628,7 +628,7 @@ static int u16550_attach(struct uart_dev_s *dev) {
 
 [(Check the PLIC Offsets in __XuanTie OpenC906 User Manual__, Page 77)](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)
 
-# Fail to Load Initial RAM Disk
+# Initial RAM Disk is Missing
 
 _What happens now?_
 
@@ -668,7 +668,7 @@ _Why is the Initial RAM Disk missing?_
 
 That's because we __haven't loaded the Initial RAM Disk__ into RAM!
 
-We'll modify __extlinux/extlinux.conf__ on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk.
+We'll modify __extlinux/extlinux.conf__ on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
 
 # What's Next
 
