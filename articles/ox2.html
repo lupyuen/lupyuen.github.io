@@ -148,13 +148,13 @@ diskutil unmountDisk /dev/disk2
 <p>Insert the <strong>microSD into Ox64</strong> and power up Ox64.</p>
 <p>And we see… Absolutely Nothing!</p>
 <div class="example-wrap"><pre class="language-text"><code>Retrieving file: /extlinux/../Image
-append: root=PARTLABEL=rootfs rootwait rw rootfstype=ext4 console=ttyS0,2000000 loglevel=8 earlycon=sbi
+  append: root=PARTLABEL=rootfs rootwait rw rootfstype=ext4 console=ttyS0,2000000 loglevel=8 earlycon=sbi
 Retrieving file: /extlinux/../bl808-pine64-ox64.dtb
-## Flattened Device Tree blob at 51ff8000
-   Booting using the fdt blob at 0x51ff8000
-Working FDT set to 51ff8000
-   Loading Device Tree to 0000000053f22000, end 0000000053f25fab ... OK
-Working FDT set to 53f22000
+  Flattened Device Tree blob at 51ff8000
+  Booting using the fdt blob at 0x51ff8000
+  Working FDT set to 51ff8000
+  Loading Device Tree to 0000000053f22000, end 0000000053f25fab ... OK
+  Working FDT set to 53f22000
 Starting kernel ...
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8134f17502db733ce87d6fa8b00eab55">(See the <strong>Complete Log</strong>)</a></p>
@@ -169,6 +169,7 @@ Starting kernel ...
 </li>
 </ul>
 <p>Let’s print something to the Serial Console…</p>
+<p><img src="https://lupyuen.github.io/images/ox64-nuttx.png" alt="Apache NuttX RTOS boots a tiny bit on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <h1 id="print-to-serial-console"><a href="#print-to-serial-console">2 Print to Serial Console</a></h1>
 <p>TODO</p>
 <p><em>How to print to the Ox64 Serial Console in the NuttX Boot Code? (RISC-V Assembly)</em></p>
@@ -227,7 +228,6 @@ sb  t1, 0x88(t0)
   /* Previously: addi a0, a0, -1 */
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/ox64-nuttx.png" alt="Booting Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <h1 id="update-the-nuttx-boot-address"><a href="#update-the-nuttx-boot-address">3 Update the NuttX Boot Address</a></h1>
 <p>TODO</p>
 <p><em>What is the Linux Boot Address for Ox64 BL808?</em></p>
