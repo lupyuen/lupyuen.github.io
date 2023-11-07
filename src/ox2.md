@@ -585,9 +585,7 @@ Ah we forgot to add it to the __Memory Map__! Let's fix it: [jh7110_mm_init.c](h
 
 (Doesn't look right, we'll come back to this)
 
-TODO
-
-Now NuttX boots further! And tries to register IRQ 57 for the Star64 UART Interrupt...
+NuttX boots even further! And tries to register IRQ 57 for the Star64 UART Interrupt...
 
 ```text
 up_irqinitialize: c
@@ -610,22 +608,24 @@ MTVAL:  00000000e0002104
 
 [(Source)](https://gist.github.com/lupyuen/ade5ff1433812fb675ff06f805f7339f)
 
-But it crashes while accessing the PLIC at another address: 0xe0002104.
+But it crashes while accessing the PLIC at another address: __`0xE000` `2104`__.
 
-_Are we tired of PLIC yet?_
+_Ack! Enough with the PLIC already..._
 
 Yeah let's fix PLIC later. The entire UART Driver will be revamped anyway, including the UART Interrupt.
 
-Let's disable the UART Interrupt for now: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958)
+We __disable the UART Interrupt__ for now: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958)
 
 ```c
 // Attach the UART Interrupt for Star64
 static int u16550_attach(struct uart_dev_s *dev) {
   // Don't attach the interrupt
-  // Previously: ret = irq_attach(priv->irq, u16550_interrupt, dev);
+  // Previously:
+  // ret = irq_attach(priv->irq, u16550_interrupt, dev);
 
   // Don't enable the interrupt
-  // Previously: up_enable_irq(priv->irq);
+  // Previously:
+  // up_enable_irq(priv->irq);
 ```
 
 # Fail to Load Initial RAM Disk
