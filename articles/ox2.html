@@ -113,7 +113,7 @@
 <h1 id="begin-with-star64-nuttx"><a href="#begin-with-star64-nuttx">1 Begin with Star64 NuttX</a></h1>
 <p><em>We’re booting Star64 NuttX on Ox64? Unmodified?!</em></p>
 <p>Yeah we have a hunch that NuttX might boot well <strong>across RISC-V SoCs</strong>.</p>
-<p>(Porting NuttX from <strong>RISC-V QEMU to Star64</strong> took only a few weeks!)</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2">(We ported <strong>NuttX QEMU to Star64</strong> in only a few weeks!)</a></p>
 <p><em>But Star64 runs on SiFive Cores. Ox64 uses T-Head Cores!</em></p>
 <p>We’ll find out if it really matters! This is how we download and build <strong>NuttX for Star64 JH7110</strong> RISC-V SBC…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download WIP NuttX Source Code
@@ -267,6 +267,7 @@ CONFIG_ARCH_PGPOOL_SIZE=4194304
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb">(Source)</a></p>
 <p>Let’s fix the NuttX UART Driver…</p>
+<p><img src="https://lupyuen.github.io/images/ox64-stack.png" alt="NuttX prints our very first Stack Dump on Ox64 yay!" /></p>
 <h1 id="fix-the-uart-driver"><a href="#fix-the-uart-driver">4 Fix the UART Driver</a></h1>
 <p>TODO</p>
 <p><em>NuttX on Ox64 has been awfully quiet. How to fix the UART Driver so that NuttX can print things?</em></p>
@@ -330,8 +331,10 @@ EPC:    0000000050208086
 MTVAL:  000000000c002104
 </code></pre></div>
 <p>And the offending Data Address 0xc002104. (Which looks very familiar!)</p>
-<p><img src="https://lupyuen.github.io/images/ox64-stack.png" alt="NuttX prints our very first Stack Dump on Ox64 yay!" /></p>
+<p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller for Star64 JH7110" /></p>
+<p><a href="https://lupyuen.github.io/articles/plic"><em>Platform-Level Interrupt Controller for Star64 JH7110</em></a></p>
 <h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">5 Platform-Level Interrupt Controller</a></h1>
+<p><em>What’s this Platform-Level Interrupt Controller?</em></p>
 <p>TODO</p>
 <p><em>Why did NuttX crash with this RISC-V Exception?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>EXCEPTION: Load access fault 
