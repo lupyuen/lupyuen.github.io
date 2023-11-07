@@ -672,9 +672,11 @@ _Why is the Initial RAM Disk missing?_
 
 That's because we __haven't loaded the Initial RAM Disk__ into RAM!
 
-We'll modify __extlinux/extlinux.conf__ on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
+We'll modify [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
 
 [(Or maybe the U-Boot Script __boot-pine64.scr__)](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd)
+
+[(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
 
 TODO: Memory Map
 
