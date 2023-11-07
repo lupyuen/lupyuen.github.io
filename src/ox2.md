@@ -30,7 +30,7 @@ Let's make it happen! In this article we...
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sbc.jpg)
 
-# Begin with NuttX for Star64 JH7110
+# Begin with Star64 NuttX
 
 _We're booting Star64 NuttX on Ox64? Unmodified?!_
 
@@ -95,13 +95,17 @@ Starting kernel ...
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/8134f17502db733ce87d6fa8b00eab55)
 
-TODO
+_Shouldn't we see a Crash Dump?_
 
-We're hoping that NuttX could crash and OpenSBI could print a meaningful Stack Trace. But nope! NuttX was probably stuck in a loop waiting for Star64 UART.
+Yeah we're hoping that NuttX would crash and [__OpenSBI (Supervisor Binary Interface)__](https://lupyuen.github.io/articles/sbi) could dump a meaningful Stack Trace. But nope!
 
-Let's print to the Ox64 Serial Console in the NuttX Boot Code (in RISC-V Assembly)...
+- We __haven't configured NuttX__ for Ox64 UART
 
-# Print to Ox64 Serial Console in NuttX Boot Code
+- NuttX was probably stuck in a loop __waiting for Star64 UART__
+
+Let's print something to the Ox64 Serial Console...
+
+# Print to Ox64 Serial Console
 
 TODO
 
@@ -177,7 +181,7 @@ OpenSBI boots on Ox64 with Hart ID 0 (instead of 1), so we remove this code...
 
 ![Booting Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-nuttx.png)
 
-# Update the NuttX Boot Address for Ox64 BL808
+# Update the NuttX Boot Address
 
 TODO
 
@@ -241,7 +245,7 @@ Starting kernel ...
 
 Let's fix the NuttX UART Driver...
 
-# Fix the NuttX UART Driver for Ox64 BL808
+# Fix the UART Driver
 
 TODO
 
@@ -328,7 +332,7 @@ And the offending Data Address 0xc002104. (Which looks very familiar!)
 
 ![NuttX prints our very first Stack Dump on Ox64 yay!](https://lupyuen.github.io/images/ox64-stack.png)
 
-# Platform-Level Interrupt Controller for Ox64 BL808
+# Platform-Level Interrupt Controller
 
 TODO
 
@@ -440,7 +444,7 @@ So we change the PLIC Base Address for Ox64: [jh7110_memorymap.h](https://github
 
 TODO: Enable Scheduler Debug
 
-# Handle RISC-V Exceptions in NuttX
+# Handle RISC-V Exceptions
 
 TODO
 
@@ -563,7 +567,7 @@ Code Address is 0x50207e6a, from our PLIC Code...
 
 The offending Data Address is 0xe0002100. Which is our BL808 PLIC!
 
-# Add PLIC to I/O Memory Map
+# Add PLIC to Memory Map
 
 TODO
 
