@@ -84,13 +84,13 @@ And we see... Absolutely Nothing!
 
 ```text
 Retrieving file: /extlinux/../Image
-append: root=PARTLABEL=rootfs rootwait rw rootfstype=ext4 console=ttyS0,2000000 loglevel=8 earlycon=sbi
+  append: root=PARTLABEL=rootfs rootwait rw rootfstype=ext4 console=ttyS0,2000000 loglevel=8 earlycon=sbi
 Retrieving file: /extlinux/../bl808-pine64-ox64.dtb
-## Flattened Device Tree blob at 51ff8000
-   Booting using the fdt blob at 0x51ff8000
-Working FDT set to 51ff8000
-   Loading Device Tree to 0000000053f22000, end 0000000053f25fab ... OK
-Working FDT set to 53f22000
+  Flattened Device Tree blob at 51ff8000
+  Booting using the fdt blob at 0x51ff8000
+  Working FDT set to 51ff8000
+  Loading Device Tree to 0000000053f22000, end 0000000053f25fab ... OK
+  Working FDT set to 53f22000
 Starting kernel ...
 ```
 
@@ -105,6 +105,8 @@ Yeah we're hoping that NuttX would crash and [__OpenSBI (Supervisor Binary Inter
 - NuttX was probably stuck in a loop __waiting for Star64 UART__
 
 Let's print something to the Serial Console...
+
+![Apache NuttX RTOS boots a tiny bit on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-nuttx.png)
 
 # Print to Serial Console
 
@@ -179,8 +181,6 @@ OpenSBI boots on Ox64 with Hart ID 0 (instead of 1), so we remove this code...
 ```
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93)
-
-![Booting Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-nuttx.png)
 
 # Update the NuttX Boot Address
 
