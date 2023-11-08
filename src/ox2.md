@@ -399,12 +399,9 @@ Which points to this: [riscv_modifyreg32.c](https://github.com/lupyuen2/wip-pine
  // Atomically modify the specified bits
  // in a Memory-Mapped Register
 void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
-  irqstate_t flags;
-  uint32_t   regval;
-
-  flags   = spin_lock_irqsave(NULL);
+  irqstate_t flags = spin_lock_irqsave(NULL);
   // Crashes here because `addr` is invalid...
-  regval  = getreg32(addr);
+  uint32_t regval = getreg32(addr);
   regval &= ~clearbits;
   regval |= setbits;
   putreg32(regval, addr);
