@@ -609,13 +609,17 @@ DEBUGASSERT(ret &gt;= 0);
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="My soldering of Ox64 BL808 looks horrigible… But it works for now 😬" /></p>
 <p><em>My soldering of Ox64 BL808 looks horrigible… But it works for now</em> 😬</p>
 <h1 id="appendix-memory-map-for-ox64"><a href="#appendix-memory-map-for-ox64">10 Appendix: Memory Map for Ox64</a></h1>
-<p>TODO</p>
 <p><em>What’s this Memory Map?</em></p>
-<p>Inside the BL808 SoC is the <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39"><strong>Sv39 Memory Management Unit (MMU)</strong></a>. (Same for to Star64 JH7110)</p>
+<div class="example-wrap"><pre class="language-c"><code>/* Map the whole I/O memory with vaddr = paddr mappings */
+#define MMU_IO_BASE (0x00000000)
+#define MMU_IO_SIZE (0x50000000)
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">(Source)</a></p>
+<p>Inside the BL808 SoC is the <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39"><strong>Sv39 Memory Management Unit (MMU)</strong></a> with 128 / 256 / 512 TLB table entries. (Same for Star64 JH7110)</p>
 <p>The MMU maps <strong>Virtual Memory Addresses</strong> to <strong>Physical Memory Addresses</strong>. And stops the NuttX Kernel from accessing Invalid Addresses.</p>
 <p>At startup, NuttX configures the MMU with the <strong>Memory Map</strong>, the Range of Memory Addresses that the NuttX Kernel is allowed to access.</p>
 <p>The code above says that NuttX is allowed to access any address from <strong><code>0x0000</code> <code>0000</code></strong> to <strong><code>0x5000</code> <code>0000</code></strong>. (Because of Memory-Mapped I/O)</p>
-<p><strong>Memory Management Unit</strong> is Sv39 with 128 / 256 / 512 TLB table entries. (Like Star64?)</p>
+<p>TODO: C906 Page 50</p>
 <p>TODO: OpenSBI Clues</p>
 <div class="example-wrap"><pre class="language-text"><code>Firmware Base       : 0x3ef80000
 Firmware Size       : 200 KB
