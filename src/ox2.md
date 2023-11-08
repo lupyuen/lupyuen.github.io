@@ -145,7 +145,7 @@ We discover that BL808 UART works the __same way as BL602__!
 
 Thus we may seek guidance from the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725).
 
-_Great! How do we print to BL808 UART?_
+_Thanks! How do we print to BL808 UART?_
 
 This is how the __BL602 UART Driver__ prints to the Serial Console: [bl602_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725)
 
@@ -166,7 +166,7 @@ static void bl602_send(struct uart_dev_s *dev, int ch) {
 }
 ```
 
-So for BL808, we simply write the character to...
+We do the same for BL808, and we simply write the character to...
 
 - UART3 Base Address: __`0x3000` `2000`__
 
@@ -217,7 +217,7 @@ Indeed __NuttX is booting on Ox64__ yay!
 
 _Anything else we changed in the NuttX Boot Code?_
 
-OpenSBI boots on Ox64 with __Hart ID 0__ (instead of 1), so we remove this code: [jh7110_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93)
+OpenSBI boots on Ox64 with [__Hart ID 0__](https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L57) (instead of 1). Which means we remove this code: [jh7110_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93)
 
 ```text
 /* We assume that OpenSBI has passed Hart ID (value 1) in Register a0.
@@ -238,7 +238,7 @@ $ printenv
 kernel_addr_r=0x50200000
 ```
 
-So we define these __Memory Regions__ for NuttX...
+Based on the Boot Address, we define these __Memory Regions__ for NuttX...
 
 | Memory Region | Start Address | Size
 |:--------------|:-------------:|:----
@@ -307,7 +307,7 @@ _How to fix the UART Driver so that NuttX can print things?_
 
 Ox64 is still running on the JH7110 UART Driver (16550).
 
-We make a quick patch so that the __NuttX UART Driver__ will print to the Ox64 Serial Console.
+To print to the Ox64 Serial Console, we make a quick patch for the __NuttX UART Driver__.
 
 For now, we hardcode the __UART3 Base Address__ (from above) and Output FIFO Offset: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716)
 
@@ -457,7 +457,7 @@ interrupt-controller@e0000000 {
 };
 ```
 
-So we change the __PLIC Base Address__ for Ox64: [jh7110_memorymap.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30)
+Based on the above, we change the __PLIC Base Address__ for Ox64: [jh7110_memorymap.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30)
 
 ```c
 #define JH7110_PLIC_BASE 0xe0000000
@@ -519,7 +519,6 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE1);
   putreg32(0x0, JH7110_PLIC_ENABLE2);
   ...
-
   // Attach the RISC-V Exception Handlers
   _info("f\n");
   riscv_exception_attach();
@@ -552,7 +551,7 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 ```
 
-So that __riscv_exception_attach__ will handle all RISC-V Exceptions correctly, including IRQ 15: [riscv_exception.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142)
+Then __riscv_exception_attach__ will handle all RISC-V Exceptions correctly, including IRQ 15: [riscv_exception.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142)
 
 ```c
 // Attach standard exception with suitable handler
@@ -765,10 +764,10 @@ Let's add the PLIC to the Memory Map: [jh7110_mm_init.c](https://github.com/lupy
 
 _This doesn't look right..._
 
-Yeah when we substitute the above __MMU_IO_BASE__ and __MMU_IO_SIZE__ into the __Kernel MMU Mapping__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259)
+Yeah when we substitute the above __MMU_IO_BASE__ and __MMU_IO_SIZE__ into the __Kernel MMU Map__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259)
 
 ```c
-// Set up the Kernel MMU mappings
+// Set up the Kernel MMU Map
 void jh7110_kernel_mappings(void) {
   ...
   // Map I/O Region, use enough large page tables for the I/O region
@@ -799,7 +798,7 @@ void jh7110_kernel_mappings(void) {
 }
 ```
 
-We see a problem with the __Memory Mapping__...
+We see a problem with the __Memory Map__...
 
 | Memory Region | Start Address | Size
 |:--------------|:-------------:|:----
