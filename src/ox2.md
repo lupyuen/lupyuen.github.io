@@ -854,7 +854,7 @@ _What's this Initial RAM Disk?_
 
 The __Initial RAM Disk__ contains the __NuttX Shell__ (NSH) and the NuttX Apps.
 
-At startup, NuttX loads the Initial RAM Disk into RAM, so that the NuttX Shell (and NuttX Apps) can be executed.
+At startup, NuttX loads the Initial RAM Disk into RAM and mounts the File System, so that the NuttX Shell (and NuttX Apps) can be executed later.
 
 [(More about __Initial RAM Disk__)](https://lupyuen.github.io/articles/semihost)
 
@@ -878,7 +878,7 @@ Two ways we can load the Initial RAM Disk...
 
     (Which might be more efficient for our Limited RAM)
 
-    __TODO:__ Can we map the File System directly from RAM? Without copying to the RAM Disk Memory Region?
+    __TODO:__ Can we mount the File System directly from RAM? Without copying to the RAM Disk Memory Region?
 
 We'll probably adopt the second method, since we are low on RAM.
 
