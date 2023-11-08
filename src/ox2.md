@@ -687,12 +687,13 @@ We'll modify the NuttX Kernel Image (or U-Boot Script) on the microSD Card, so t
 
 TODO
 
+We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
+
 - [__"Memory Map for Ox64"__](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64)
 
 - [__"UART Driver for Ox64"__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64)
 
 - [__"Initial RAM Disk"__](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk)
-
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
