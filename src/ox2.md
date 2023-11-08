@@ -475,7 +475,7 @@ _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121)
 
-But there's something special about IRQ 15...
+But there's something exceptional about IRQ 15...
 
 TODO: Pic of IRQ 15
 
