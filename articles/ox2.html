@@ -119,7 +119,8 @@
 <p>But we’re starting with <a href="https://lupyuen.github.io/articles/nuttx2"><strong>NuttX for Star64 JH7110</strong></a> anyway! That’s because we have a very strong hunch (or just plainly stubborn) that NuttX will boot well <strong>across RISC-V SoCs</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx2">(We ported <strong>NuttX QEMU to Star64</strong> in only a few weeks!)</a></p>
 <p><em>But Star64 runs on SiFive Cores. Ox64 uses T-Head Cores!</em></p>
-<p>We’ll find out if it really matters! This is how we download and build <a href="https://lupyuen.github.io/articles/nuttx2"><strong>NuttX for Star64 JH7110</strong></a> RISC-V SBC…</p>
+<p>If RISC-V isn’t really RISC-V on SiFive vs T-Head: We’ll find out!</p>
+<p>This is how we download and build <a href="https://lupyuen.github.io/articles/nuttx2"><strong>NuttX for Star64 JH7110</strong></a> RISC-V SBC…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download WIP NuttX Source Code
 git clone \
   --branch ox64 \
@@ -585,7 +586,8 @@ DEBUGASSERT(ret &gt;= 0);
 <p>We’ll modify the NuttX Kernel Image (or U-Boot Script) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk">(Our plans for <strong>Initial RAM Disk</strong>)</a></p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
-<p>TODO: Today we made plenty of progress starting Apache NuttX RTOS on Ox64 BL808 RISC-V SBC…</p>
+<p>TODO: Today we made plenty of progress starting <strong>Apache NuttX RTOS</strong> on Ox64 BL808 RISC-V SBC…</p>
+<p>We booted NuttX on Ox64 BL808 RISC-V SBC through sheer tenacity or desperation or lots of luck</p>
 <p>We’ll do much more for <strong>NuttX on Ox64 BL808</strong>, stay tuned for updates!</p>
 <ul>
 <li>
