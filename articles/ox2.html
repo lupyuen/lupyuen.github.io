@@ -315,7 +315,7 @@ CONFIG_ARCH_PGPOOL_SIZE=4194304
 <p><em>How to fix the UART Driver so that NuttX can print things?</em></p>
 <p>Ox64 is still running on the JH7110 UART Driver (16550).</p>
 <p>Let’s make a quick patch so that the <strong>NuttX UART Driver</strong> will print to the Ox64 Serial Console.</p>
-<p>We hardcode the <strong>UART3 Base Address</strong> (from above) and Output FIFO Offset for now: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716">uart_16550.c</a></p>
+<p>For now, we hardcode the <strong>UART3 Base Address</strong> (from above) and Output FIFO Offset: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Write one character to the UART
 static void u16550_putc(FAR struct u16550_s *priv, int ch) {
 
