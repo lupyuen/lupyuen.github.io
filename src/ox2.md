@@ -439,7 +439,7 @@ So we change the __PLIC Base Address__ for Ox64: [jh7110_memorymap.h](https://gi
 #define JH7110_PLIC_BASE 0xe0000000
 ```
 
-NuttX now crashes at a different place, with IRQ 15...
+NuttX now crashes at a different place, with IRQ 15 (pic below)...
 
 ```text
 123ABC
@@ -455,9 +455,11 @@ _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_
 
 But there's something special about IRQ 15...
 
+TODO: Pic of IRQ 15
+
 # Handle RISC-V Exceptions
 
-_What's IRQ 15?_
+_What's IRQ 15? How is NuttX causing it? (Pic above)_
 
 From the [__XuanTie OpenC906 User Manual__](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf) (Page 21)...
 
@@ -538,7 +540,7 @@ void riscv_exception_attach(void) {
 
 _Does it work?_
 
-Yep we see the __Store / AMO Page Fault Exception__!
+Yep we see the __Store / AMO Page Fault Exception__! (Pic below)
 
 ```text
 up_irqinitialize: c
@@ -563,6 +565,8 @@ nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
 ```
 
 The offending Data Address is __`0xE000` `2100`__. Which is our BL808 PLIC!
+
+TODO: Pic of Store / AMO Page Fault Exception
 
 # Add PLIC to Memory Map
 
@@ -736,6 +740,10 @@ When we compare these UARTs...
 We discover that BL808 UART works the __same way as BL602__!
 
 Thus we may seek guidance from the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725).
+
+![Initial RAM Disk for Star64 JH7110](https://lupyuen.github.io/images/semihost-title.jpg)
+
+[_Initial RAM Disk for Star64 JH7110_)](https://lupyuen.github.io/articles/semihost)
 
 # Appendix: Initial RAM Disk
 
