@@ -707,11 +707,17 @@ _My soldering of Ox64 BL808 looks horrigible... But it works for now_ 😬
 
 # Appendix: Memory Map for Ox64
 
-TODO
-
 _What's this Memory Map?_
 
-Inside the BL808 SoC is the [__Sv39 Memory Management Unit (MMU)__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39). (Same for to Star64 JH7110)
+```c
+/* Map the whole I/O memory with vaddr = paddr mappings */
+#define MMU_IO_BASE (0x00000000)
+#define MMU_IO_SIZE (0x50000000)
+```
+
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
+
+Inside the BL808 SoC is the [__Sv39 Memory Management Unit (MMU)__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39) with 128 / 256 / 512 TLB table entries. (Same for Star64 JH7110)
 
 The MMU maps __Virtual Memory Addresses__ to __Physical Memory Addresses__. And stops the NuttX Kernel from accessing Invalid Addresses.
 
@@ -719,7 +725,7 @@ At startup, NuttX configures the MMU with the __Memory Map__, the Range of Memor
 
 The code above says that NuttX is allowed to access any address from __`0x0000` `0000`__ to __`0x5000` `0000`__. (Because of Memory-Mapped I/O)
 
-__Memory Management Unit__ is Sv39 with 128 / 256 / 512 TLB table entries. (Like Star64?)
+TODO: C906 Page 50
 
 TODO: OpenSBI Clues
 
