@@ -34,13 +34,13 @@ Let's make it happen! In this article we...
 
 _We're booting Star64 NuttX on Ox64? Unmodified?!_
 
-Yeah we have a hunch that NuttX might boot well __across RISC-V SoCs__.
+Yeah we're starting with [__NuttX for Star64 JH7110__](https://lupyuen.github.io/articles/nuttx2), because we have a hunch that NuttX might boot well __across RISC-V SoCs__.
 
 [(We ported __NuttX QEMU to Star64__ in only a few weeks!)](https://lupyuen.github.io/articles/nuttx2)
 
 _But Star64 runs on SiFive Cores. Ox64 uses T-Head Cores!_
 
-We'll find out if it really matters! This is how we download and build __NuttX for Star64 JH7110__ RISC-V SBC...
+We'll find out if it really matters! This is how we download and build [__NuttX for Star64 JH7110__](https://lupyuen.github.io/articles/nuttx2) RISC-V SBC...
 
 ```bash
 ## Download WIP NuttX Source Code
@@ -68,14 +68,15 @@ Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous art
 Then we do the [__Linux-To-NuttX Switcheroo__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64): Overwrite the microSD Linux Image by the __NuttX Kernel__...
 
 ```bash
-## Export the Binary Image to nuttx.bin
+## Export the NuttX Binary Image
+## to `nuttx.bin`
 riscv64-unknown-elf-objcopy \
   -O binary \
   nuttx \
   nuttx.bin
 
-## Copy and overwrite the `Image` file
-## on the microSD for Ox64 Linux
+## Overwrite the Linux Image
+## on Ox64 microSD
 cp nuttx.bin \
   "/Volumes/NO NAME/Image"
 diskutil unmountDisk /dev/disk2
