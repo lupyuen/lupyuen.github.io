@@ -133,6 +133,13 @@ git clone \
 cd nuttx
 tools/configure.sh star64:nsh
 make
+
+## Dump the RISC-V Disassembly for NuttX Kernel
+riscv64-unknown-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prequisites and Toolchain</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">(And enable <strong>Scheduler Info Output</strong>)</a></p>
@@ -370,7 +377,7 @@ EPC:    50208086
 MTVAL:  0c002104
 </code></pre></div>
 <p>This says that NuttX crashed when it tried to access Invalid Data Address <strong><code>0x0C00</code> <code>2104</code></strong> from Code Address <strong><code>0x5020</code> <code>8086</code></strong>.</p>
-<p>We look up Code Address <strong><code>0x5020</code> <code>8086</code></strong> in our <strong>NuttX Disassembly</strong>…</p>
+<p>We look up Code Address <strong><code>0x5020</code> <code>8086</code></strong> in our <strong>RISC-V Disassembly for NuttX Kernel</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
   regval  = getreg32(addr);
     50208086:	2701                	sext.w	a4,a4
@@ -499,7 +506,7 @@ EPC:    0x50207e6a
 MTVAL:  0xe0002100
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/85db0510712ba8c660e10f922d4564c9">(See the <strong>Complete Log</strong>)</a></p>
-<p>When we look up the NuttX Disassembly, the Exception Code Address <strong><code>0x5020</code> <code>7E6A</code></strong> comes from our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L58-L64"><strong>PLIC Code</strong></a>…</p>
+<p>When we look up the NuttX Kernel Disassembly, the Exception Code Address <strong><code>0x5020</code> <code>7E6A</code></strong> comes from our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L58-L64"><strong>PLIC Code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
   putreg32(0x0, JH7110_PLIC_ENABLE1);
     50207e64:	700017b7          	lui	a5,0x70001
