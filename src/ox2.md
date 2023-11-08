@@ -679,7 +679,7 @@ _Why is the Initial RAM Disk missing?_
 
 That's because we __haven't loaded the Initial RAM Disk__ into RAM!
 
-We'll modify [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
+We'll modify the NuttX Kernel Image (or U-Boot Script) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
 
 [(Our plans for __Initial RAM Disk__)](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk)
 
@@ -864,7 +864,7 @@ That's because we __haven't loaded the Initial RAM Disk__ into RAM!
 
 Two ways we can load the Initial RAM Disk...
 
-1.  Load the Initial RAM Disk as a __Separate File: initrd__ (similar to Star64)
+1.  Load the Initial RAM Disk from a __Separate File: initrd__ (similar to Star64)
 
     This means we need to modify the [__U-Boot Script: boot-pine64.scr__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd)
 
@@ -874,7 +874,7 @@ Two ways we can load the Initial RAM Disk...
 
 1.  Append the Initial RAM Disk to the __NuttX Kernel Image__
 
-    So the U-Boot Bootloader will load the NuttX Kernel + Initial RAM Disk. And reuse the existing [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf) on the microSD Card.
+    So the U-Boot Bootloader will load the NuttX Kernel + Initial RAM Disk. And reuse the existing U-Boot Config on the microSD Card: [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf) 
 
     (Which might be more efficient for our Limited RAM)
 
