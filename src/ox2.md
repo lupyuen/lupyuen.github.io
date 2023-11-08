@@ -42,7 +42,7 @@ But we're starting with [__NuttX for Star64 JH7110__](https://lupyuen.github.io/
 
 _But Star64 runs on SiFive Cores. Ox64 uses T-Head Cores!_
 
-If RISC-V isn't really RISC-V on SiFive vs T-Head: We'll find out!
+If RISC-V ain't RISC-V on SiFive vs T-Head: We'll find out!
 
 This is how we download and build [__NuttX for Star64 JH7110__](https://lupyuen.github.io/articles/nuttx2) RISC-V SBC...
 
