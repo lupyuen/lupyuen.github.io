@@ -635,11 +635,8 @@ _We disabled the UART Interrupts. What happens now?_
 NuttX boots much further, but crashes in the __NuttX Bringup__...
 
 ```text
-up_irqinitialize: c
-up_irqinitialize: d
-up_irqinitialize: e
-up_irqinitialize: g
-irq_attach: irq=17, isr=0x50207e64
+up_irqinitialize: c, d, e, g
+irq_attach: irq=17
 up_enable_irq: irq=17
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
