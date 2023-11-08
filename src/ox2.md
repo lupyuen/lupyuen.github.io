@@ -883,8 +883,8 @@ Two ways we can load the Initial RAM Disk...
 
     (Which might be more efficient for our Limited RAM)
 
-    __TODO:__ Can we mount the File System directly from RAM? Without copying to the RAM Disk Memory Region?
+    __TODO:__ Can we mount the File System directly from the __NuttX Kernel Image in RAM__? Without copying to the [__RAM Disk Memory Region__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L26)?
 
-We'll probably adopt the second method, since we are low on RAM.
+We'll probably adopt the Second Method, since we are low on RAM.
 
 [(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
