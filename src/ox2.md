@@ -835,6 +835,8 @@ __TODO:__ What is "__`(I)`__" for Domain Permission?
 
 _How will we create the NuttX UART Driver for Ox64 BL808?_
 
+Today NuttX supports the 32-bit predecessor of BL808: [__Bouffalo Lab BL602__](https://github.com/apache/nuttx/tree/master/arch/risc-v/src/bl602).
+
 When we compare these UARTs...
 
 - __BL808 UART Controller__
@@ -848,6 +850,27 @@ When we compare these UARTs...
 We discover that BL808 UART works the __same way as BL602__!
 
 Thus we'll simply copy the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c) to Ox64.
+
+_What about other drivers: BL808 vs BL602?_
+
+These controllers look highly similar on BL808 vs BL602. Thus we have plenty of NuttX Drivers to __copy from BL602 to BL808!__
+
+| Controller | BL808 RM | BL602 RM |
+|:-----------|:--------:|:--------:|
+| __I2C__ | [__Page 430__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 142__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+| __SPI__ | [__Page 387__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 115__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+| __ADC__ | [__Page 169__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 45__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+| __DAC__ | [__Page 180__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 66__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+| __DMA__ | [__Page 187__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 70__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+| __Infrared__ | [__Page 372__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 100__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+| __PWM__ | [__Page 447__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 157__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+| __Timer__ | [__Page 474__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 174__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+
+_What about the drivers missing from BL602 NuttX?_
+
+We'll port the missing BL808 Drivers from Bouffalo Lab's [__BouffaloSDK__](https://github.com/bouffalolab/bouffalo_sdk) to NuttX.
+
+[(BouffaloSDK is __Apache 2.0 Licensed__)](https://github.com/bouffalolab/bouffalo_sdk/blob/master/LICENSE)
 
 ![Initial RAM Disk for Star64 JH7110](https://lupyuen.github.io/images/semihost-title.jpg)
 
