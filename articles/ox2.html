@@ -617,6 +617,18 @@ DEBUGASSERT(ret &gt;= 0);
 <p>The code above says that NuttX is allowed to access any address from <strong><code>0x0000</code> <code>0000</code></strong> to <strong><code>0x5000</code> <code>0000</code></strong>. (Because of Memory-Mapped I/O)</p>
 <p><strong>Memory Management Unit</strong> is Sv39 with 128 / 256 / 512 TLB table entries. (Like Star64?)</p>
 <p>TODO: OpenSBI Clues</p>
+<div class="example-wrap"><pre class="language-text"><code>Firmware Base       : 0x3ef80000
+Firmware Size       : 200 KB
+Domain0 Region00    : 0xe4008000-0xe400bfff (I)
+Domain0 Region01    : 0xe4000000-0xe4007fff (I)
+Domain0 Region02    : 0x3ef80000-0x3efbffff ()
+Domain0 Region03    : 0x00000000-0xffffffffffffffff (R,W,X)
+Domain0 Next Address: 0x50000000
+Domain0 Next Arg1   : 0x51ff8000
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://github.com/riscv-software-src/opensbi/blob/master/docs/domain_support.md">OpenSBI Domains</a></p>
+<p>TODO: What is “<strong><code>(I)</code></strong>” for Domain Permission?</p>
 <h1 id="appendix-uart-driver-for-ox64"><a href="#appendix-uart-driver-for-ox64">11 Appendix: UART Driver for Ox64</a></h1>
 <p>TODO</p>
 <p>When we compare these UARTs…</p>
