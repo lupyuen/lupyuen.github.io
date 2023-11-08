@@ -237,6 +237,8 @@ So we define these __Memory Regions__ for NuttX...
 
 (__Page Pool__ will be used by NuttX Apps)
 
+(__RAM Disk__ will contain the NuttX Shell and Apps)
+
 We update the Memory Regions in the __NuttX Linker Script__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27)
 
 ```c
@@ -826,7 +828,7 @@ __TODO:__ What is "__`(I)`__" for Domain Permission?
 
 # Appendix: UART Driver for Ox64
 
-TODO
+_How will we create the NuttX UART Driver for Ox64 BL808?_
 
 When we compare these UARTs...
 
@@ -840,7 +842,7 @@ When we compare these UARTs...
 
 We discover that BL808 UART works the __same way as BL602__!
 
-Thus we may seek guidance from the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725).
+Thus we'll simply copy the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c) to Ox64.
 
 ![Initial RAM Disk for Star64 JH7110](https://lupyuen.github.io/images/semihost-title.jpg)
 
@@ -848,11 +850,25 @@ Thus we may seek guidance from the [__NuttX Driver for BL602 UART__](https://git
 
 # Appendix: Initial RAM Disk
 
+_What's this Initial RAM Disk?_
+
+The __Initial RAM Disk__ contains the __NuttX Shell__ (NSH) and the NuttX Apps. 
+
 TODO
+
+[(More about __Initial RAM Disk__)](https://lupyuen.github.io/articles/semihost)
 
 _Why is the Initial RAM Disk missing?_
 
 That's because we __haven't loaded the Initial RAM Disk__ into RAM!
+
+TODO
+
+- Load the Initial RAM Disk as a __Separate File: initrd__
+
+- Append the Initial RAM Disk to the __NuttX Kernel Image__
+
+TODO: RAM Size
 
 We'll modify [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
 
