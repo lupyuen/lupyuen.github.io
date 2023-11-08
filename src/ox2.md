@@ -257,7 +257,7 @@ And we update the __NuttX Memory Map__: [jh7110_mm_init.c](https://github.com/lu
 
 _What's this Memory Map?_
 
-Inside the BL808 SoC is the [__Sv39 Memory Management Unit (MMU)__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39). (Same for to Star64 JH7110)
+Inside the BL808 SoC is the [__Sv39 Memory Management Unit (MMU)__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39). (Same for Star64 JH7110)
 
 The MMU maps __Virtual Memory Addresses__ to __Physical Memory Addresses__. And stops the NuttX Kernel from accessing Invalid Addresses.
 
