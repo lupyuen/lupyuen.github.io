@@ -723,6 +723,23 @@ __Memory Management Unit__ is Sv39 with 128 / 256 / 512 TLB table entries. (Like
 
 TODO: OpenSBI Clues
 
+```text
+Firmware Base       : 0x3ef80000
+Firmware Size       : 200 KB
+Domain0 Region00    : 0xe4008000-0xe400bfff (I)
+Domain0 Region01    : 0xe4000000-0xe4007fff (I)
+Domain0 Region02    : 0x3ef80000-0x3efbffff ()
+Domain0 Region03    : 0x00000000-0xffffffffffffffff (R,W,X)
+Domain0 Next Address: 0x50000000
+Domain0 Next Arg1   : 0x51ff8000
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf)
+
+[OpenSBI Domains](https://github.com/riscv-software-src/opensbi/blob/master/docs/domain_support.md)
+
+TODO: What is "__`(I)`__" for Domain Permission?
+
 # Appendix: UART Driver for Ox64
 
 TODO
