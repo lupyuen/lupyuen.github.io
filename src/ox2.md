@@ -1,4 +1,4 @@
-# Ox64 BL808 RISC-V SBC: Starting Apache NuttX RTOS
+# Ox64 BL808 RISC-V SBC: Starting Apache NuttX Real-Time Operating System
 
 📝 _12 Nov 2023_
 
@@ -8,7 +8,7 @@ Last week we booted Linux on the [__Pine64 Ox64 64-bit RISC-V SBC__](https://wik
 
 - [__"Ox64 BL808 RISC-V SBC: Booting Linux and (maybe) Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ox64)
 
-And we wondered whether a tiny 64-bit RTOS (Real-Time Operating System) like [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) might run more efficiently on Ox64.
+And we wondered if a tiny 64-bit RTOS (Real-Time Operating System) like [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) might run more efficiently on Ox64.
 
 (With only __64 MB of RAM__)
 
@@ -60,6 +60,8 @@ make
 ```
 
 [(Remember to install the __Build Prequisites and Toolchain__)](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
+
+[(And enable __Scheduler Info Output__)](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu)
 
 Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
 
@@ -450,9 +452,7 @@ _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121)
 
-Let's chat about IRQ 15 and why it shouldn't appear...
-
-TODO: Enable Scheduler Debug
+But there's something special about IRQ 15...
 
 # Handle RISC-V Exceptions
 
@@ -665,13 +665,7 @@ That's because we __haven't loaded the Initial RAM Disk__ into RAM!
 
 We'll modify [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
 
-[(Or maybe the U-Boot Script __boot-pine64.scr__)](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd)
-
-[(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
-
-TODO
-
-- [__"Initial RAM Disk"__](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk)
+[(Our plans for __Initial RAM Disk__)](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk)
 
 # What's Next
 
