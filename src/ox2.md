@@ -42,7 +42,9 @@ But we're starting with [__NuttX for Star64 JH7110__](https://lupyuen.github.io/
 
 _But Star64 runs on SiFive Cores. Ox64 uses T-Head Cores!_
 
-We'll find out if it really matters! This is how we download and build [__NuttX for Star64 JH7110__](https://lupyuen.github.io/articles/nuttx2) RISC-V SBC...
+If RISC-V isn't really RISC-V on SiFive vs T-Head: We'll find out!
+
+This is how we download and build [__NuttX for Star64 JH7110__](https://lupyuen.github.io/articles/nuttx2) RISC-V SBC...
 
 ```bash
 ## Download WIP NuttX Source Code
@@ -693,7 +695,9 @@ We'll modify the NuttX Kernel Image (or U-Boot Script) on the microSD Card, so t
 
 # What's Next
 
-TODO: Today we made plenty of progress starting Apache NuttX RTOS on Ox64 BL808 RISC-V SBC...
+TODO: Today we made plenty of progress starting __Apache NuttX RTOS__ on Ox64 BL808 RISC-V SBC...
+
+We booted NuttX on Ox64 BL808 RISC-V SBC through sheer tenacity or desperation or lots of luck
 
 We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
 
