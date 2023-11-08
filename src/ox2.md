@@ -882,7 +882,7 @@ _What's this Initial RAM Disk?_
 
 The __Initial RAM Disk__ contains the __NuttX Shell__ (NSH) and the NuttX Apps.
 
-At startup, NuttX loads the Initial RAM Disk into RAM and mounts the File System, so that the NuttX Shell (and NuttX Apps) can be executed later.
+At startup, NuttX loads the Initial RAM Disk into RAM and mounts the File System, so that the NuttX Shell (and NuttX Apps) can be started later.
 
 [(More about __Initial RAM Disk__)](https://lupyuen.github.io/articles/semihost)
 
