@@ -861,14 +861,16 @@ These controllers look highly similar on BL808 vs BL602. Thus we have plenty of 
 
 | Controller | BL808 RM | BL602 RM |
 |:-----------|:--------:|:--------:|
-| __I2C__ | [__Page 430__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 142__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
-| __SPI__ | [__Page 387__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 115__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+| [__I2C__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_i2c.c) | [__Page 430__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 142__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+| [__SPI__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c) | [__Page 387__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 115__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
 | __ADC__ | [__Page 169__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 45__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
 | __DAC__ | [__Page 180__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 66__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
-| __DMA__ | [__Page 187__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 70__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+| [__DMA__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_dma.c) | [__Page 187__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 70__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
 | __Infrared__ | [__Page 372__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 100__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
-| __PWM__ | [__Page 447__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 157__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
-| __Timer__ | [__Page 474__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 174__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+| [__PWM__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_pwm_lowerhalf.c) | [__Page 447__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 157__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+| [__Timer__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_tim.c) | [__Page 474__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) | [__Page 174__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+
+Our [__earlier experiments with BL602 NuttX__](https://lupyuen.github.io/articles/book) proved that the drivers above work well. So we're all set for BL808!
 
 _What about the drivers missing from BL602 NuttX?_
 
