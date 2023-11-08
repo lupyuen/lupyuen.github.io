@@ -625,7 +625,7 @@ MTVAL:  e0002104
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/ade5ff1433812fb675ff06f805f7339f)
 
-But it crashes while accessing the PLIC at another __Invalid Data Address: `0xE000` `2104`__.
+But it crashes while accessing the PLIC at another __Invalid Data Address: `0xE000` `2104`__. (Sigh)
 
 _Ack! Enough with the PLIC already..._
 
