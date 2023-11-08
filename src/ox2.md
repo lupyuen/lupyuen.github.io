@@ -34,7 +34,9 @@ Let's make it happen! In this article we...
 
 _We're booting Star64 NuttX on Ox64? Unmodified?!_
 
-Yeah we're starting with [__NuttX for Star64 JH7110__](https://lupyuen.github.io/articles/nuttx2), because we have a hunch that NuttX might boot well __across RISC-V SoCs__.
+Yeah it feels like we're Shredding a Toaster inside a Blender (with plenty of Smoke and Noise)...
+
+But we're starting with [__NuttX for Star64 JH7110__](https://lupyuen.github.io/articles/nuttx2) anyway! That's because we have a very strong hunch (or just plainly stubborn) that NuttX will boot well __across RISC-V SoCs__.
 
 [(We ported __NuttX QEMU to Star64__ in only a few weeks!)](https://lupyuen.github.io/articles/nuttx2)
 
@@ -71,6 +73,8 @@ riscv64-unknown-elf-objdump \
 [(And enable __Scheduler Info Output__)](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu)
 
 Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
+
+[(Remember to flash __OpenSBI and U-Boot Bootloader__)](https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot)
 
 Then we do the [__Linux-To-NuttX Switcheroo__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64): Overwrite the microSD Linux Image by the __NuttX Kernel__...
 
@@ -111,9 +115,9 @@ _Shouldn't we see a Crash Dump?_
 
 Yeah we're hoping that NuttX would crash and [__OpenSBI (Supervisor Binary Interface)__](https://lupyuen.github.io/articles/sbi) could dump a meaningful Stack Trace. But nope!
 
-- We __haven't configured NuttX__ for Ox64 UART
+- We [__haven't configured NuttX__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64) for Ox64 UART and...
 
-- NuttX was probably stuck in a loop __waiting for Star64 UART__
+- NuttX was probably stuck in a loop [__waiting for Star64 UART__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu)
 
 Let's print something to the Serial Console...
 
