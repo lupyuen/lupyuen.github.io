@@ -307,7 +307,7 @@ Ox64 is still running on the JH7110 UART Driver (16550).
 
 Let's make a quick patch so that the __NuttX UART Driver__ will print to the Ox64 Serial Console.
 
-We hardcode the __UART3 Base Address__ (from above) and Output FIFO Offset for now: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716)
+For now, we hardcode the __UART3 Base Address__ (from above) and Output FIFO Offset: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716)
 
 ```c
 // Write one character to the UART
