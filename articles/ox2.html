@@ -115,7 +115,8 @@
 <p><img src="https://lupyuen.github.io/images/ox64-sbc.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <h1 id="begin-with-star64-nuttx"><a href="#begin-with-star64-nuttx">1 Begin with Star64 NuttX</a></h1>
 <p><em>We’re booting Star64 NuttX on Ox64? Unmodified?!</em></p>
-<p>Yeah we’re starting with <a href="https://lupyuen.github.io/articles/nuttx2"><strong>NuttX for Star64 JH7110</strong></a>, because we have a hunch that NuttX might boot well <strong>across RISC-V SoCs</strong>.</p>
+<p>Yeah it feels like we’re Shredding a Toaster inside a Blender (with plenty of Smoke and Noise)…</p>
+<p>But we’re starting with <a href="https://lupyuen.github.io/articles/nuttx2"><strong>NuttX for Star64 JH7110</strong></a> anyway! That’s because we have a very strong hunch (or just plainly stubborn) that NuttX will boot well <strong>across RISC-V SoCs</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx2">(We ported <strong>NuttX QEMU to Star64</strong> in only a few weeks!)</a></p>
 <p><em>But Star64 runs on SiFive Cores. Ox64 uses T-Head Cores!</em></p>
 <p>We’ll find out if it really matters! This is how we download and build <a href="https://lupyuen.github.io/articles/nuttx2"><strong>NuttX for Star64 JH7110</strong></a> RISC-V SBC…</p>
@@ -144,6 +145,7 @@ riscv64-unknown-elf-objdump \
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prequisites and Toolchain</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">(And enable <strong>Scheduler Info Output</strong>)</a></p>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
 <p>Then we do the <a href="https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64"><strong>Linux-To-NuttX Switcheroo</strong></a>: Overwrite the microSD Linux Image by the <strong>NuttX Kernel</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Export the NuttX Binary Image
 ## to `nuttx.bin`
@@ -175,10 +177,10 @@ Starting kernel...
 <p>Yeah we’re hoping that NuttX would crash and <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI (Supervisor Binary Interface)</strong></a> could dump a meaningful Stack Trace. But nope!</p>
 <ul>
 <li>
-<p>We <strong>haven’t configured NuttX</strong> for Ox64 UART</p>
+<p>We <a href="https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64"><strong>haven’t configured NuttX</strong></a> for Ox64 UART and…</p>
 </li>
 <li>
-<p>NuttX was probably stuck in a loop <strong>waiting for Star64 UART</strong></p>
+<p>NuttX was probably stuck in a loop <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>waiting for Star64 UART</strong></a></p>
 </li>
 </ul>
 <p>Let’s print something to the Serial Console…</p>
