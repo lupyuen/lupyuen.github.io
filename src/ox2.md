@@ -57,6 +57,13 @@ git clone \
 cd nuttx
 tools/configure.sh star64:nsh
 make
+
+## Dump the RISC-V Disassembly for NuttX Kernel
+riscv64-unknown-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  nuttx \
+  >nuttx.S \
+  2>&1
 ```
 
 [(Remember to install the __Build Prequisites and Toolchain__)](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
@@ -385,7 +392,7 @@ MTVAL:  0c002104
 
 This says that NuttX crashed when it tried to access Invalid Data Address __`0x0C00` `2104`__ from Code Address __`0x5020` `8086`__.
 
-We look up Code Address __`0x5020` `8086`__ in our __NuttX Disassembly__...
+We look up Code Address __`0x5020` `8086`__ in our __RISC-V Disassembly for NuttX Kernel__...
 
 ```text
 nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
@@ -565,7 +572,7 @@ MTVAL:  0xe0002100
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/85db0510712ba8c660e10f922d4564c9)
 
-When we look up the NuttX Disassembly, the Exception Code Address __`0x5020` `7E6A`__ comes from our [__PLIC Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L58-L64)...
+When we look up the NuttX Kernel Disassembly, the Exception Code Address __`0x5020` `7E6A`__ comes from our [__PLIC Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L58-L64)...
 
 ```text
 nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
