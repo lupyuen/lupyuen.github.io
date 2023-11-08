@@ -806,9 +806,11 @@ Domain0 Next Address: 0x50000000
 Domain0 Next Arg1   : 0x51ff8000
 ```
 
+(__`0x3EF8` `0000`__ is probably protected because it contains the OpenSBI Firmware)
+
 [(More about __OpenSBI Domains__)](https://github.com/riscv-software-src/opensbi/blob/master/docs/domain_support.md)
 
-TODO: What is "__`(I)`__" for Domain Permission?
+__TODO:__ What is "__`(I)`__" for Domain Permission?
 
 # Appendix: UART Driver for Ox64
 
