@@ -625,7 +625,7 @@ DEBUGASSERT(ret &gt;= 0);
 #define MMU_IO_SIZE (0xf0000000)
 </code></pre></div>
 <p><em>This doesn’t look right…</em></p>
-<p>Yeah when we substitute the above <strong>MMU_IO_BASE</strong> and <strong>MMU_IO_SIZE</strong> into the <strong>Kernel MMU Mapping</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259">jh7110_mm_init.c</a></p>
+<p>Yeah when we substitute the above <strong>MMU_IO_BASE</strong> and <strong>MMU_IO_SIZE</strong> into the <strong>Kernel MMU Mapping</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set up the Kernel MMU mappings
 void jh7110_kernel_mappings(void) {
   ...
@@ -658,10 +658,10 @@ void jh7110_kernel_mappings(void) {
 </code></pre></div>
 <p>We see a problem with the <strong>Memory Mapping</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left">I/O Region</td><td style="text-align: center"><strong><code>0x0000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0xF000</code> <code>0000</code></strong></td></tr>
-<tr><td style="text-align: left">Kernel Code</td><td style="text-align: center"><strong><code>0x5020</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
-<tr><td style="text-align: left">Kernel Data</td><td style="text-align: center"><strong><code>0x5040</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
-<tr><td style="text-align: left">Page Pool</td><td style="text-align: center"><strong><code>0x5060</code> <code>0000</code></strong></td><td style="text-align: left">20 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Region</strong></a></td><td style="text-align: center"><strong><code>0x0000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0xF000</code> <code>0000</code></strong></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a></td><td style="text-align: center"><strong><code>0x5020</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a></td><td style="text-align: center"><strong><code>0x5040</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a></td><td style="text-align: center"><strong><code>0x5060</code> <code>0000</code></strong></td><td style="text-align: left">20 MB</td></tr>
 </tbody></table>
 </div>
 <p>The <strong>I/O Region overlaps</strong> with the Kernel Code, Data and Page Pool!</p>
