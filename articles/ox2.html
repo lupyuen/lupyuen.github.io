@@ -544,11 +544,8 @@ static int u16550_attach(struct uart_dev_s *dev) {
 <h1 id="initial-ram-disk-is-missing"><a href="#initial-ram-disk-is-missing">8 Initial RAM Disk is Missing</a></h1>
 <p><em>We disabled the UART Interrupts. What happens now?</em></p>
 <p>NuttX boots much further, but crashes in the <strong>NuttX Bringup</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>up_irqinitialize: c
-up_irqinitialize: d
-up_irqinitialize: e
-up_irqinitialize: g
-irq_attach: irq=17, isr=0x50207e64
+<div class="example-wrap"><pre class="language-text"><code>up_irqinitialize: c, d, e, g
+irq_attach: irq=17
 up_enable_irq: irq=17
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
