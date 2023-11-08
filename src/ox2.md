@@ -738,7 +738,7 @@ Let's add the PLIC to the Memory Map: [jh7110_mm_init.c](https://github.com/lupy
 
 _This doesn't look right..._
 
-Yeah when we substitute the above __MMU_IO_BASE__ and __MMU_IO_SIZE__ into the __Kernel MMU Mapping__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259)
+Yeah when we substitute the above __MMU_IO_BASE__ and __MMU_IO_SIZE__ into the __Kernel MMU Mapping__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259)
 
 ```c
 // Set up the Kernel MMU mappings
@@ -776,10 +776,10 @@ We see a problem with the __Memory Mapping__...
 
 | Memory Region | Start Address | Size
 |:--------------|:-------------:|:----
-| I/O Region | __`0x0000` `0000`__ | __`0xF000` `0000`__
-| Kernel Code | __`0x5020` `0000`__ | 2 MB
-| Kernel Data | __`0x5040` `0000`__ | 2 MB
-| Page Pool | __`0x5060` `0000`__ | 20 MB
+| [__I/O Region__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51) | __`0x0000` `0000`__ | __`0xF000` `0000`__
+| [__Kernel Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L23) | __`0x5020` `0000`__ | 2 MB
+| [__Kernel Data__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L24) | __`0x5040` `0000`__ | 2 MB
+| [__Page Pool__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26) | __`0x5060` `0000`__ | 20 MB
 
 The __I/O Region overlaps__ with the Kernel Code, Data and Page Pool!
 
