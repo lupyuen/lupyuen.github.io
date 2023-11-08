@@ -4,18 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Ox64 BL808 RISC-V SBC: Starting Apache NuttX RTOS</title>
+    <title>Ox64 BL808 RISC-V SBC: Starting Apache NuttX Real-Time Operating System</title>
 
     
     <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
 <meta property="og:title" 
-    content="Ox64 BL808 RISC-V SBC: Starting Apache NuttX RTOS" 
+    content="Ox64 BL808 RISC-V SBC: Starting Apache NuttX Real-Time Operating System" 
     data-rh="true">
 <meta property="og:description" 
-    content="Let's boot a tiny bit of Apache NuttX RTOS... On Pine64 Ox64 BL808 RISC-V SBC"
+    content="Let's boot a tiny bit of Apache NuttX Real-Time Operating System... On Pine64 Ox64 BL808 RISC-V SBC"
     data-rh="true">
 <meta name="description" 
-    content="Let's boot a tiny bit of Apache NuttX RTOS... On Pine64 Ox64 BL808 RISC-V SBC">
+    content="Let's boot a tiny bit of Apache NuttX Real-Time Operating System... On Pine64 Ox64 BL808 RISC-V SBC">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/ox2-title.png">
 <meta property="og:type" 
@@ -67,7 +67,7 @@
     <!-- End scripts/rustdoc-before.html -->
     
 
-    <h1 class="title">Ox64 BL808 RISC-V SBC: Starting Apache NuttX RTOS</h1>
+    <h1 class="title">Ox64 BL808 RISC-V SBC: Starting Apache NuttX Real-Time Operating System</h1>
     <nav id="TOC"><ul>
 <li><a href="#begin-with-star64-nuttx">1 Begin with Star64 NuttX</a><ul></ul></li>
 <li><a href="#print-to-serial-console">2 Print to Serial Console</a><ul></ul></li>
@@ -86,7 +86,7 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ox64"><strong>“Ox64 BL808 RISC-V SBC: Booting Linux and (maybe) Apache NuttX RTOS”</strong></a></li>
 </ul>
-<p>And we wondered whether a tiny 64-bit RTOS (Real-Time Operating System) like <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> might run more efficiently on Ox64.</p>
+<p>And we wondered if a tiny 64-bit RTOS (Real-Time Operating System) like <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> might run more efficiently on Ox64.</p>
 <p>(With only <strong>64 MB of RAM</strong>)</p>
 <p>Let’s make it happen! In this article we…</p>
 <ul>
@@ -135,6 +135,7 @@ tools/configure.sh star64:nsh
 make
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prequisites and Toolchain</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">(And enable <strong>Scheduler Info Output</strong>)</a></p>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
 <p>Then we do the <a href="https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64"><strong>Linux-To-NuttX Switcheroo</strong></a>: Overwrite the microSD Linux Image by the <strong>NuttX Kernel</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Export the Binary Image to nuttx.bin
@@ -416,8 +417,7 @@ _assert: Current Version: NuttX  12.0.3 910bfca-dirty Nov  6 2023 15:23:11 risc-
 _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_Task process: Kernel 0x50200e50
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121">(See the <strong>Complete Log</strong>)</a></p>
-<p>Let’s chat about IRQ 15 and why it shouldn’t appear…</p>
-<p>TODO: Enable Scheduler Debug</p>
+<p>But there’s something special about IRQ 15…</p>
 <h1 id="handle-risc-v-exceptions"><a href="#handle-risc-v-exceptions">6 Handle RISC-V Exceptions</a></h1>
 <p><em>What’s IRQ 15?</em></p>
 <p>From the <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf"><strong>XuanTie OpenC906 User Manual</strong></a> (Page 21)…</p>
@@ -566,12 +566,7 @@ DEBUGASSERT(ret &gt;= 0);
 <p><em>Why is the Initial RAM Disk missing?</em></p>
 <p>That’s because we <strong>haven’t loaded the Initial RAM Disk</strong> into RAM!</p>
 <p>We’ll modify <a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf"><strong>extlinux/extlinux.conf</strong></a> on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.</p>
-<p><a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd">(Or maybe the U-Boot Script <strong>boot-pine64.scr</strong>)</a></p>
-<p><a href="https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow">(See the <strong>U-Boot Boot Flow</strong>)</a></p>
-<p>TODO</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk"><strong>“Initial RAM Disk”</strong></a></li>
-</ul>
+<p><a href="https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk">(Our plans for <strong>Initial RAM Disk</strong>)</a></p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
