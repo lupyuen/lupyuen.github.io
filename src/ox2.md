@@ -121,7 +121,7 @@ Yeah we're hoping that NuttX would crash and [__OpenSBI (Supervisor Binary Inter
 
 - NuttX was probably stuck in a loop [__waiting for Star64 UART__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu)
 
-Let's print something to the Serial Console...
+To understand what's happening, we print something...
 
 ![Apache NuttX RTOS boots a tiny bit on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-nuttx.png)
 
@@ -131,7 +131,7 @@ _We have a strong hunch that NuttX is actually booting on Ox64... How to prove i
 
 We'll print something in the __NuttX Boot Code__. Which is in __RISC-V Assembly__!
 
-When we compare these UARTs...
+BL808 UART looks super familiar. When we compare these UARTs...
 
 - __BL808 UART Controller__
 
@@ -145,13 +145,13 @@ We discover that BL808 UART works the __same way as BL602__!
 
 Thus we may seek guidance from the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725).
 
-_Thanks! How do we print to BL808 UART?_
+_Thanks! But how do we print to BL808 UART?_
 
 This is how the __BL602 UART Driver__ prints to the Serial Console: [bl602_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725)
 
 ```c
 // Output FIFO Offset is 0x88
-#define BL602_UART_FIFO_WDATA_OFFSET 0x000088  /* uart_fifo_wdata */
+#define BL602_UART_FIFO_WDATA_OFFSET 0x000088
 #define BL602_UART_FIFO_WDATA(n) (BL602_UART_BASE(n) + BL602_UART_FIFO_WDATA_OFFSET)
 
 // Write a character to UART
@@ -166,13 +166,13 @@ static void bl602_send(struct uart_dev_s *dev, int ch) {
 }
 ```
 
-We do the same for BL808, and we simply write the character to...
+We do the same for BL808. We simply write the character to...
 
-- UART3 Base Address: __`0x3000` `2000`__
+- __UART3 Base Address: `0x3000` `2000`__
 
   [(From the __Linux Device Tree__)](https://lupyuen.github.io/articles/ox64#appendix-linux-device-tree)
 
-- Output FIFO Offset: __`0x88`__
+- __Output FIFO Offset: `0x88`__
 
   [(From above __FIFO_WDATA_OFFSET__)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/hardware/bl602_uart.h#L38-L58)
 
@@ -211,9 +211,9 @@ Starting kernel...
 123
 ```
 
-[(Source)](https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb)
 
-Indeed __NuttX is booting on Ox64__ yay!
+Our hunch is correct, indeed __NuttX is booting on Ox64__ yay!
 
 _Anything else we changed in the NuttX Boot Code?_
 
@@ -278,7 +278,8 @@ CONFIG_ARCH_PGPOOL_SIZE=4194304
 And we update the __NuttX Memory Map__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
 
 ```c
-/* Map the whole I/O memory with vaddr = paddr mappings */
+// Map the whole I/O Memory
+// with Virtual Address = Physical Address
 #define MMU_IO_BASE (0x00000000)
 #define MMU_IO_SIZE (0x50000000)
 ```
@@ -293,7 +294,7 @@ At startup, NuttX configures the MMU with the __Memory Map__, the Range of Memor
 
 The code above says that NuttX is allowed to access any address from __`0x0000` `0000`__ to __`0x5000` `0000`__. (Because of Memory-Mapped I/O)
 
-Now we fix the NuttX UART Driver...
+Time to make NuttX talk...
 
 [(More about __Memory Map__)](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64)
 
@@ -305,9 +306,9 @@ _NuttX on Ox64 has been awfully quiet..._
 
 _How to fix the UART Driver so that NuttX can print things?_
 
-Ox64 is still running on the JH7110 UART Driver (16550).
+NuttX is still running the JH7110 UART Driver (16550).
 
-To print to the Ox64 Serial Console, we make a quick patch for the __NuttX UART Driver__.
+To print to the Ox64 Serial Console, we make a quick patch to the __NuttX UART Driver__.
 
 For now, we hardcode the __UART3 Base Address__ (from above) and Output FIFO Offset: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716)
 
@@ -341,7 +342,7 @@ static inline void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_
 }
 ```
 
-And we won't wait for __UART Ready__, since we're not accessing the Line Control Register: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L633-L670)
+And we won't wait for __UART Ready__, since we don't access the Line Control Register: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L633-L670)
 
 ```c
 // Wait until UART is not busy. This is needed before writing to Line Control Register.
@@ -352,12 +353,11 @@ static int u16550_wait(FAR struct u16550_s *priv) {
 }
 ```
 
-Now NuttX prints our very first __Crash Dump__ on Ox64 yay! (Pic above)
+After these fixes, NuttX prints our very first __Crash Dump__ on Ox64 yay! (Pic above)
 
 ```text
 Starting kernel...
-123
-ABC
+123ABC
 riscv_exception: 
   EXCEPTION: Load access fault
   MCAUSE: 5
@@ -368,12 +368,13 @@ _assert: Current Version: NuttX  12.0.3 93a92a7-dirty Nov  5 2023 11:27:46 risc-
 _assert: Assertion failed panic: at file: common/riscv_exception.c:85 task: Idle_Task process: Kernel 0x50200e28
 up_dump_register: EPC: 0000000050208086
 up_dump_register: A0: 000000000c002104 A1: ffffffffffffffff A2: 0000000000000001 A3: 0000000000000003
-up_dump_register: A4: ffffffffffffffff A5: 8000000200046000 A6: 0000000000000000 A7: fffffffffffffff8
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/36b8c47abc2632063ca5cdebb958e3e8)
 
-Next we figure out why Data Address __`0x0C00` `2104`__ is causing problems for NuttX...
+__MTVAL__ says that NuttX has crashed while reading the __Invalid Data Address `0x0C00` `2104`__. (Hence the "Load Access Fault")
+
+Why is Data Address __`0x0C00` `2104`__ causing problems? First we learn about RISC-V Interrupts...
 
 ![Platform-Level Interrupt Controller for Star64 JH7110](https://lupyuen.github.io/images/plic-title.jpg)
 
@@ -483,7 +484,7 @@ TODO: Pic of IRQ 15
 
 # Handle RISC-V Exceptions
 
-_What's IRQ 15? How is NuttX causing it? (Pic above)_
+_What is IRQ 15? Who's causing it? (Pic above)_
 
 From the [__XuanTie OpenC906 User Manual__](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf) (Page 21)...
 
@@ -491,7 +492,7 @@ From the [__XuanTie OpenC906 User Manual__](https://occ-intl-prod.oss-ap-southea
 
 This says that NuttX tried to write to an __Invalid Data Address__.
 
-And it failed due to an "Unexpected Interrupt". (ISR)
+And it failed due to an "Unexpected Interrupt".
 
 _Something special about IRQ 15?_
 
@@ -571,13 +572,13 @@ riscv_dispatch_irq: irq=15
 riscv_exception: 
 EXCEPTION: Store/AMO page fault
 MCAUSE: f
-EPC:    0x50207e6a
-MTVAL:  0xe0002100
+EPC:    50207e6a
+MTVAL:  e0002100
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/85db0510712ba8c660e10f922d4564c9)
 
-When we look up the NuttX Kernel Disassembly, the Exception Code Address __`0x5020` `7E6A`__ comes from our [__PLIC Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L58-L64)...
+When we look up the NuttX Kernel Disassembly, the Exception Code Address __`0x5020` `7E6A`__ (EPC) comes from our [__PLIC Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L58-L64)...
 
 ```text
 nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
@@ -595,43 +596,42 @@ TODO: Pic of Store / AMO Page Fault Exception
 
 _But is 0xE000 2100 accessible?_
 
-Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the __Memory Map__! This is how we fix it: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
+Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the __Memory Map__. This is how we fix it: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
 
 ```c
-/* Map the whole I/O memory with vaddr = paddr mappings */
+// Map the whole I/O Memory
+// with Virtual Address = Physical Address
+// (Includes PLIC)
 #define MMU_IO_BASE (0x00000000)
 #define MMU_IO_SIZE (0xf0000000)
 ```
 
 [(__Memory Map__ doesn't look right)](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64)
 
-NuttX boots even further! And tries to register IRQ 57 for the Star64 UART Interrupt...
+NuttX boots even further. And tries to register IRQ 57 for the __Star64 UART Interrupt__...
 
 ```text
 up_irqinitialize: c, d, e, g
-irq_attach: irq=17, isr=0x50207eee
-up_enable_irq: irq=17
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
-irq_attach: irq=57, isr=0x502041fe
+irq_attach: irq=57
 up_enable_irq: irq=57
-riscv_dispatch_irq: irq=5
 riscv_exception: 
 EXCEPTION: Load access fault
-MCAUSE: 0000000000000005
-EPC:    0000000050208342
-MTVAL:  00000000e0002104
+MCAUSE: 5
+EPC:    50208342
+MTVAL:  e0002104
 ```
 
-[(Source)](https://gist.github.com/lupyuen/ade5ff1433812fb675ff06f805f7339f)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/ade5ff1433812fb675ff06f805f7339f)
 
-But it crashes while accessing the PLIC at another address: __`0xE000` `2104`__.
+But it crashes while accessing the PLIC at another __Invalid Data Address: `0xE000` `2104`__.
 
 _Ack! Enough with the PLIC already..._
 
 Yeah we'll fix PLIC later. The entire [__UART Driver will be revamped__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64) anyway, including the UART Interrupt.
 
-We __disable the UART Interrupt__ for now: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958)
+For now, we __disable the UART Interrupt__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958)
 
 ```c
 // Attach the UART Interrupt for Star64
@@ -644,6 +644,8 @@ static int u16550_attach(struct uart_dev_s *dev) {
   // Previously:
   // up_enable_irq(priv->irq);
 ```
+
+NuttX hits another roadblock...
 
 [(Check the PLIC Offsets in __XuanTie OpenC906 User Manual__, Page 77)](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)
 
@@ -659,8 +661,6 @@ NuttX boots much further, but crashes in the __NuttX Bringup__...
 
 ```text
 up_irqinitialize: c, d, e, g
-irq_attach: irq=17
-up_enable_irq: irq=17
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 work_start_lowpri: Starting low-priority kernel worker thread(s)
@@ -673,14 +673,17 @@ _assert: Assertion failed ret >= 0: at file: init/nx_bringup.c:283 task: AppBrin
 That's because NuttX couldn't mount the __Initial RAM Disk__: [nx_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L276-L284)
 
 ```c
-/* Mount the file system containing the init program. */
+// Mount the File System containing
+// the NuttX Shell (NSH)
 ret = nx_mount(CONFIG_INIT_MOUNT_SOURCE, CONFIG_INIT_MOUNT_TARGET,
   CONFIG_INIT_MOUNT_FSTYPE, CONFIG_INIT_MOUNT_FLAGS,
   CONFIG_INIT_MOUNT_DATA);
+
+// Fails here
 DEBUGASSERT(ret >= 0);
 ```
 
-Which contains __NuttX Shell__ (NSH) and the NuttX Apps. Hence we stop here for today!
+Which contains __NuttX Shell__ (NSH) and the NuttX Apps.
 
 [(More about __Initial RAM Disk__)](https://lupyuen.github.io/articles/semihost)
 
@@ -733,7 +736,8 @@ _My soldering of Ox64 BL808 looks horrigible... But it works for now_ 😬
 _What's this Memory Map?_
 
 ```c
-/* Map the whole I/O memory with vaddr = paddr mappings */
+// Map the whole I/O Memory
+// with Virtual Address = Physical Address
 #define MMU_IO_BASE (0x00000000)
 #define MMU_IO_SIZE (0x50000000)
 ```
@@ -757,7 +761,9 @@ The [__Platform-Level Interrupt Controller (PLIC)__](https://lupyuen.github.io/a
 Let's add the PLIC to the Memory Map: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
 
 ```c
-/* Map the whole I/O memory with vaddr = paddr mappings */
+// Map the whole I/O Memory
+// with Virtual Address = Physical Address
+// (Includes PLIC)
 #define MMU_IO_BASE (0x00000000)
 #define MMU_IO_SIZE (0xf0000000)
 ```
@@ -860,7 +866,7 @@ Thus we'll simply copy the [__NuttX Driver for BL602 UART__](https://github.com/
 
 _What about other drivers: BL808 vs BL602?_
 
-These controllers look highly similar on BL808 vs BL602. Thus we have plenty of NuttX Drivers to __copy from BL602 to BL808!__
+These controllers look highly similar on BL808 vs BL602. Which means we have plenty of NuttX Drivers to __copy from BL602 to BL808!__
 
 | Controller | BL808 RM | BL602 RM |
 |:-----------|:--------:|:--------:|
