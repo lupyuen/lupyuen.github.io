@@ -716,26 +716,28 @@ Domain0 Next Arg1   : 0x51ff8000
 <p><a href="https://lupyuen.github.io/articles/semihost"><em>Initial RAM Disk for Star64 JH7110</em>)</a></p>
 <h1 id="appendix-initial-ram-disk"><a href="#appendix-initial-ram-disk">12 Appendix: Initial RAM Disk</a></h1>
 <p><em>What’s this Initial RAM Disk?</em></p>
-<p>The <strong>Initial RAM Disk</strong> contains the <strong>NuttX Shell</strong> (NSH) and the NuttX Apps. </p>
-<p>TODO</p>
+<p>The <strong>Initial RAM Disk</strong> contains the <strong>NuttX Shell</strong> (NSH) and the NuttX Apps.</p>
+<p>At startup, NuttX loads the Initial RAM Disk into RAM, so that the NuttX Shell (and NuttX Apps) can be executed.</p>
 <p><a href="https://lupyuen.github.io/articles/semihost">(More about <strong>Initial RAM Disk</strong>)</a></p>
-<p><em>Why is the Initial RAM Disk missing?</em></p>
+<p><em>Why is the Initial RAM Disk missing from Ox64?</em></p>
 <p>That’s because we <strong>haven’t loaded the Initial RAM Disk</strong> into RAM!</p>
-<p>TODO</p>
-<ul>
+<p>Two ways we can load the Initial RAM Disk…</p>
+<ol>
 <li>
-<p>Load the Initial RAM Disk as a <strong>Separate File: initrd</strong></p>
+<p>Load the Initial RAM Disk as a <strong>Separate File: initrd</strong> (similar to Star64)</p>
+<p>This means we need to modify the <a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd"><strong>U-Boot Script: boot-pine64.scr</strong></a></p>
+<p>(Which is good for separating the NuttX Kernel and NuttX Apps)</p>
+<p>OR…</p>
 </li>
 <li>
 <p>Append the Initial RAM Disk to the <strong>NuttX Kernel Image</strong></p>
+<p>So the U-Boot Bootloader will load the NuttX Kernel + Initial RAM Disk. And reuse the existing <a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf"><strong>extlinux/extlinux.conf</strong></a> on the microSD Card.</p>
+<p>(Which might be more efficient for our Limited RAM)</p>
+<p><strong>TODO:</strong> Can we map the File System directly from RAM? Without copying to the RAM Disk Memory Region?</p>
 </li>
-</ul>
-<p>TODO: RAM Size</p>
-<p>We’ll modify <a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf"><strong>extlinux/extlinux.conf</strong></a> on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.</p>
-<p><a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd">(Or maybe the U-Boot Script <strong>boot-pine64.scr</strong>)</a></p>
+</ol>
+<p>We’ll probably adopt the second method, since we are low on RAM.</p>
 <p><a href="https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow">(See the <strong>U-Boot Boot Flow</strong>)</a></p>
-<p>TODO: Append to Kernel</p>
-<p>TODO: Separate File</p>
 
     
 </body>
