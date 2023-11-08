@@ -202,7 +202,7 @@ Starting kernel...
 </ul>
 <p>We discover that BL808 UART works the <strong>same way as BL602</strong>!</p>
 <p>Thus we may seek guidance from the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725"><strong>NuttX Driver for BL602 UART</strong></a>.</p>
-<p><em>Great! How do we print to BL808 UART?</em></p>
+<p><em>Thanks! How do we print to BL808 UART?</em></p>
 <p>This is how the <strong>BL602 UART Driver</strong> prints to the Serial Console: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725">bl602_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Output FIFO Offset is 0x88
 #define BL602_UART_FIFO_WDATA_OFFSET 0x000088  /* uart_fifo_wdata */
@@ -219,7 +219,7 @@ static void bl602_send(struct uart_dev_s *dev, int ch) {
   putreg32(ch, BL602_UART_FIFO_WDATA(uart_idx));
 }
 </code></pre></div>
-<p>So for BL808, we simply write the character to…</p>
+<p>We do the same for BL808, and we simply write the character to…</p>
 <ul>
 <li>
 <p>UART3 Base Address: <strong><code>0x3000</code> <code>2000</code></strong></p>
@@ -259,7 +259,7 @@ sb  t1, 0x88(t0)
 <p><a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb">(Source)</a></p>
 <p>Indeed <strong>NuttX is booting on Ox64</strong> yay!</p>
 <p><em>Anything else we changed in the NuttX Boot Code?</em></p>
-<p>OpenSBI boots on Ox64 with <strong>Hart ID 0</strong> (instead of 1), so we remove this code: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93">jh7110_head.S</a></p>
+<p>OpenSBI boots on Ox64 with <a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L57"><strong>Hart ID 0</strong></a> (instead of 1). Which means we remove this code: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93">jh7110_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* We assume that OpenSBI has passed Hart ID (value 1) in Register a0.
  * But NuttX expects Hart ID to start at 0, so we subtract 1.
  * Previously: addi a0, a0, -1 */
@@ -270,7 +270,7 @@ sb  t1, 0x88(t0)
 <div class="example-wrap"><pre class="language-bash"><code>$ printenv
 kernel_addr_r=0x50200000
 </code></pre></div>
-<p>So we define these <strong>Memory Regions</strong> for NuttX…</p>
+<p>Based on the Boot Address, we define these <strong>Memory Regions</strong> for NuttX…</p>
 <div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Region</strong></a></td><td style="text-align: center"><strong><code>0x0000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0x5000</code> <code>0000</code></strong></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a></td><td style="text-align: center"><strong><code>0x5020</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
@@ -315,7 +315,7 @@ CONFIG_ARCH_PGPOOL_SIZE=4194304
 <p><em>NuttX on Ox64 has been awfully quiet…</em></p>
 <p><em>How to fix the UART Driver so that NuttX can print things?</em></p>
 <p>Ox64 is still running on the JH7110 UART Driver (16550).</p>
-<p>We make a quick patch so that the <strong>NuttX UART Driver</strong> will print to the Ox64 Serial Console.</p>
+<p>To print to the Ox64 Serial Console, we make a quick patch for the <strong>NuttX UART Driver</strong>.</p>
 <p>For now, we hardcode the <strong>UART3 Base Address</strong> (from above) and Output FIFO Offset: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Write one character to the UART
 static void u16550_putc(FAR struct u16550_s *priv, int ch) {
@@ -423,7 +423,7 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
   phandle = &lt;0x01&gt;;
 };
 </code></pre></div>
-<p>So we change the <strong>PLIC Base Address</strong> for Ox64: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30">jh7110_memorymap.h</a></p>
+<p>Based on the above, we change the <strong>PLIC Base Address</strong> for Ox64: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30">jh7110_memorymap.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define JH7110_PLIC_BASE 0xe0000000
 </code></pre></div>
 <p>NuttX now crashes at a different place, with IRQ 15 (pic below)…</p>
@@ -465,7 +465,6 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE1);
   putreg32(0x0, JH7110_PLIC_ENABLE2);
   ...
-
   // Attach the RISC-V Exception Handlers
   _info(&quot;f\n&quot;);
   riscv_exception_attach();
@@ -491,7 +490,7 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE1);
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 </code></pre></div>
-<p>So that <strong>riscv_exception_attach</strong> will handle all RISC-V Exceptions correctly, including IRQ 15: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142">riscv_exception.c</a></p>
+<p>Then <strong>riscv_exception_attach</strong> will handle all RISC-V Exceptions correctly, including IRQ 15: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142">riscv_exception.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Attach standard exception with suitable handler
 void riscv_exception_attach(void) {
   ...
@@ -645,8 +644,8 @@ DEBUGASSERT(ret &gt;= 0);
 #define MMU_IO_SIZE (0xf0000000)
 </code></pre></div>
 <p><em>This doesn’t look right…</em></p>
-<p>Yeah when we substitute the above <strong>MMU_IO_BASE</strong> and <strong>MMU_IO_SIZE</strong> into the <strong>Kernel MMU Mapping</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259">jh7110_mm_init.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Set up the Kernel MMU mappings
+<p>Yeah when we substitute the above <strong>MMU_IO_BASE</strong> and <strong>MMU_IO_SIZE</strong> into the <strong>Kernel MMU Map</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Set up the Kernel MMU Map
 void jh7110_kernel_mappings(void) {
   ...
   // Map I/O Region, use enough large page tables for the I/O region
@@ -676,7 +675,7 @@ void jh7110_kernel_mappings(void) {
   mmu_ln_map_region(2, PGT_L2_VBASE, PGPOOL_START, PGPOOL_START, PGPOOL_SIZE, MMU_KDATA_FLAGS);
 }
 </code></pre></div>
-<p>We see a problem with the <strong>Memory Mapping</strong>…</p>
+<p>We see a problem with the <strong>Memory Map</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Region</strong></a></td><td style="text-align: center"><strong><code>0x0000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0xF000</code> <code>0000</code></strong></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a></td><td style="text-align: center"><strong><code>0x5020</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
