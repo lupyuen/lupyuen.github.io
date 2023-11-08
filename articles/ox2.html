@@ -408,7 +408,7 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
 <p>So we change the <strong>PLIC Base Address</strong> for Ox64: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30">jh7110_memorymap.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define JH7110_PLIC_BASE 0xe0000000
 </code></pre></div>
-<p>NuttX now crashes at a different place, with IRQ 15…</p>
+<p>NuttX now crashes at a different place, with IRQ 15 (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>123ABC
 nx_start: Entry
 up_irqinitialize: a, b, c
@@ -419,8 +419,9 @@ _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121">(See the <strong>Complete Log</strong>)</a></p>
 <p>But there’s something special about IRQ 15…</p>
+<p>TODO: Pic of IRQ 15</p>
 <h1 id="handle-risc-v-exceptions"><a href="#handle-risc-v-exceptions">6 Handle RISC-V Exceptions</a></h1>
-<p><em>What’s IRQ 15?</em></p>
+<p><em>What’s IRQ 15? How is NuttX causing it? (Pic above)</em></p>
 <p>From the <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf"><strong>XuanTie OpenC906 User Manual</strong></a> (Page 21)…</p>
 <blockquote>
 <p>“<strong>Exception Vector ID 15:</strong> A Store / Atomic Instruction page error exception”</p>
@@ -480,7 +481,7 @@ void riscv_exception_attach(void) {
   irq_attach(RISCV_IRQ_STOREPF, riscv_exception, NULL);
 </code></pre></div>
 <p><em>Does it work?</em></p>
-<p>Yep we see the <strong>Store / AMO Page Fault Exception</strong>!</p>
+<p>Yep we see the <strong>Store / AMO Page Fault Exception</strong>! (Pic below)</p>
 <div class="example-wrap"><pre class="language-text"><code>up_irqinitialize: c
 riscv_dispatch_irq: irq=15
 riscv_exception: 
@@ -498,6 +499,7 @@ MTVAL:  0xe0002100
     50207e6a:	1007a023          	sw	zero,256(a5) # 70001100 &lt;__ramdisk_end+0x1e601100&gt;
 </code></pre></div>
 <p>The offending Data Address is <strong><code>0xE000</code> <code>2100</code></strong>. Which is our BL808 PLIC!</p>
+<p>TODO: Pic of Store / AMO Page Fault Exception</p>
 <h1 id="add-plic-to-memory-map"><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a></h1>
 <p><em>But is 0xE000 2100 accessible?</em></p>
 <p>Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the <strong>Memory Map</strong>! Let’s fix it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
@@ -630,6 +632,8 @@ DEBUGASSERT(ret &gt;= 0);
 </ul>
 <p>We discover that BL808 UART works the <strong>same way as BL602</strong>!</p>
 <p>Thus we may seek guidance from the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725"><strong>NuttX Driver for BL602 UART</strong></a>.</p>
+<p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="Initial RAM Disk for Star64 JH7110" /></p>
+<p><a href="https://lupyuen.github.io/articles/semihost"><em>Initial RAM Disk for Star64 JH7110</em>)</a></p>
 <h1 id="appendix-initial-ram-disk"><a href="#appendix-initial-ram-disk">12 Appendix: Initial RAM Disk</a></h1>
 <p>TODO</p>
 <p><em>Why is the Initial RAM Disk missing?</em></p>
