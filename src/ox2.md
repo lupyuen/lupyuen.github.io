@@ -129,7 +129,7 @@ Let's print something to the Serial Console...
 
 _We have a strong hunch that NuttX is actually booting on Ox64... How to prove it?_
 
-Let's print something in the __NuttX Boot Code__. Which is in __RISC-V Assembly__!
+We'll print something in the __NuttX Boot Code__. Which is in __RISC-V Assembly__!
 
 When we compare these UARTs...
 
@@ -145,7 +145,7 @@ We discover that BL808 UART works the __same way as BL602__!
 
 Thus we may seek guidance from the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725).
 
-_So how do we print to BL808 UART?_
+_Great! How do we print to BL808 UART?_
 
 This is how the __BL602 UART Driver__ prints to the Serial Console: [bl602_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725)
 
@@ -229,7 +229,7 @@ OpenSBI boots on Ox64 with __Hart ID 0__ (instead of 1), so we remove this code:
 
 _Surely Ox64 boots at a different RAM Address from Star64?_
 
-Yep let's fix the __NuttX Boot Address__ for Ox64.
+Yep we fix the __NuttX Boot Address__ for Ox64.
 
 From the [__U-Boot Bootloader__](https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7) we see that Ox64 boots Linux at this address...
 
@@ -307,7 +307,7 @@ _How to fix the UART Driver so that NuttX can print things?_
 
 Ox64 is still running on the JH7110 UART Driver (16550).
 
-Let's make a quick patch so that the __NuttX UART Driver__ will print to the Ox64 Serial Console.
+We make a quick patch so that the __NuttX UART Driver__ will print to the Ox64 Serial Console.
 
 For now, we hardcode the __UART3 Base Address__ (from above) and Output FIFO Offset: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716)
 
@@ -499,7 +499,7 @@ IRQ 15 is actually a __RISC-V Exception__!
 
 Rightfully, NuttX should print a helpful __RISC-V Exception Crash Dump__ with the offending Data Address. [(Like this)](https://lupyuen.github.io/articles/ox2#fix-the-uart-driver)
 
-Let's figure out why NuttX wasn't terribly helpful for this RISC-V Exception.
+But NuttX wasn't terribly helpful for this RISC-V Exception. Very odd!
 
 _Where did it crash?_
 
@@ -531,7 +531,7 @@ Yeah we attach the RISC-V Exception Handlers (__riscv_exception_attach__)...
 
 After the code has crashed! (__putreg32__)
 
-Let's __attach the Exception Handlers__ earlier: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85)
+Hence we __attach the Exception Handlers__ earlier: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85)
 
 ```c
 // Init the Interrupts
@@ -596,7 +596,7 @@ TODO: Pic of Store / AMO Page Fault Exception
 
 _But is 0xE000 2100 accessible?_
 
-Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the __Memory Map__! Let's fix it: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
+Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the __Memory Map__! This is how we fix it: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
 
 ```c
 /* Map the whole I/O memory with vaddr = paddr mappings */
@@ -630,7 +630,7 @@ But it crashes while accessing the PLIC at another address: __`0xE000` `2104`__.
 
 _Ack! Enough with the PLIC already..._
 
-Yeah let's fix PLIC later. The entire [__UART Driver will be revamped__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64) anyway, including the UART Interrupt.
+Yeah we'll fix PLIC later. The entire [__UART Driver will be revamped__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64) anyway, including the UART Interrupt.
 
 We __disable the UART Interrupt__ for now: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958)
 
