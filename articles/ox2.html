@@ -540,7 +540,7 @@ EPC:    50208342
 MTVAL:  e0002104
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ade5ff1433812fb675ff06f805f7339f">(See the <strong>Complete Log</strong>)</a></p>
-<p>But it crashes while accessing the PLIC at another <strong>Invalid Data Address: <code>0xE000</code> <code>2104</code></strong>.</p>
+<p>But it crashes while accessing the PLIC at another <strong>Invalid Data Address: <code>0xE000</code> <code>2104</code></strong>. (Sigh)</p>
 <p><em>Ack! Enough with the PLIC already…</em></p>
 <p>Yeah we’ll fix PLIC later. The entire <a href="https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64"><strong>UART Driver will be revamped</strong></a> anyway, including the UART Interrupt.</p>
 <p>For now, we <strong>disable the UART Interrupt</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958">uart_16550.c</a></p>
