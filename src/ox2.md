@@ -693,7 +693,7 @@ We'll modify the NuttX Kernel Image (or U-Boot Script) on the microSD Card, so t
 
 # What's Next
 
-TODO
+TODO: Today we made plenty of progress starting Apache NuttX RTOS on Ox64 BL808 RISC-V SBC...
 
 We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
 
