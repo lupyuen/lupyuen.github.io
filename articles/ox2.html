@@ -260,7 +260,17 @@ sb  t1, 0x88(t0)
 <div class="example-wrap"><pre class="language-bash"><code>$ printenv
 kernel_addr_r=0x50200000
 </code></pre></div>
-<p>We update the Boot Address in the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27">ld.script</a></p>
+<p>So we define these <strong>Memory Regions</strong> for NuttX…</p>
+<div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Region</strong></a></td><td style="text-align: center"><strong><code>0x0000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0x5000</code> <code>0000</code></strong></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a></td><td style="text-align: center"><strong><code>0x5020</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a></td><td style="text-align: center"><strong><code>0x5040</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L25"><strong>Page Pool</strong></a></td><td style="text-align: center"><strong><code>0x5060</code> <code>0000</code></strong></td><td style="text-align: left">4 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L26"><strong>RAM Disk</strong></a></td><td style="text-align: center"><strong><code>0x5060</code> <code>0000</code></strong></td><td style="text-align: left">16 MB</td></tr>
+</tbody></table>
+</div>
+<p>(<strong>Page Pool</strong> will be used by NuttX Apps)</p>
+<p>We update the Memory Regions in the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27">ld.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>MEMORY
 {
   kflash (rx) :   ORIGIN = 0x50200000, LENGTH = 2048K   /* w/ cache */
@@ -287,8 +297,8 @@ CONFIG_ARCH_PGPOOL_SIZE=4194304
 <p>The MMU maps <strong>Virtual Memory Addresses</strong> to <strong>Physical Memory Addresses</strong>. And stops the NuttX Kernel from accessing Invalid Addresses.</p>
 <p>At startup, NuttX configures the MMU with the <strong>Memory Map</strong>, the Range of Memory Addresses that the NuttX Kernel is allowed to access.</p>
 <p>The code above says that NuttX is allowed to access any address from <strong><code>0x0000</code> <code>0000</code></strong> to <strong><code>0x5000</code> <code>0000</code></strong>. (Because of Memory-Mapped I/O)</p>
-<p><a href="https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64">(More about <strong>Memory Map</strong>)</a></p>
 <p>Now we fix the NuttX UART Driver…</p>
+<p><a href="https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64">(More about <strong>Memory Map</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/ox64-stack.png" alt="NuttX prints our very first Stack Dump on Ox64 yay!" /></p>
 <h1 id="fix-the-uart-driver"><a href="#fix-the-uart-driver">4 Fix the UART Driver</a></h1>
 <p><em>NuttX on Ox64 has been awfully quiet…</em></p>
