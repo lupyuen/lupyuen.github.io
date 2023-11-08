@@ -722,9 +722,78 @@ At startup, NuttX configures the MMU with the __Memory Map__, the Range of Memor
 
 The code above says that NuttX is allowed to access any address from __`0x0000` `0000`__ to __`0x5000` `0000`__. (Because of Memory-Mapped I/O)
 
-TODO: C906 Page 50
+[(MMU appears in __OpenC906 User Manual__, Page 50)](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)
 
-TODO: OpenSBI Clues
+_But we forgot to add the PLIC to the Memory Map!_
+
+The [__Platform-Level Interrupt Controller (PLIC)__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) is at [__`0xE000` `0000`__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller).
+
+Let's add the PLIC to the Memory Map: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
+
+```c
+/* Map the whole I/O memory with vaddr = paddr mappings */
+#define MMU_IO_BASE (0x00000000)
+#define MMU_IO_SIZE (0xf0000000)
+```
+
+_This doesn't look right..._
+
+Yeah when we substitute the above __MMU_IO_BASE__ and __MMU_IO_SIZE__ into the __Kernel MMU Mapping__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259)
+
+```c
+// Set up the Kernel MMU mappings
+void jh7110_kernel_mappings(void) {
+  ...
+  // Map I/O Region, use enough large page tables for the I/O region
+  // MMU_IO_BASE is 0x00000000
+  // MMU_IO_SIZE is 0xf0000000
+  mmu_ln_map_region(1, PGT_L1_VBASE, MMU_IO_BASE, MMU_IO_BASE, MMU_IO_SIZE, MMU_IO_FLAGS);
+
+  // Map the Kernel Code for L2/L3
+  // From https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27
+  // KFLASH_START is 0x50200000
+  // KFLASH_SIZE  is 2 MB
+  map_region(KFLASH_START, KFLASH_START, KFLASH_SIZE, MMU_KTEXT_FLAGS);
+
+  // Map the Kernel Data for L2/L3
+  // From https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27
+  // KSRAM_START is 0x50400000
+  // KSRAM_SIZE  is 2 MB
+  map_region(KSRAM_START, KSRAM_START, KSRAM_SIZE, MMU_KDATA_FLAGS);
+
+  // Connect the L1 and L2 page tables for the kernel text and data
+  mmu_ln_setentry(1, PGT_L1_VBASE, PGT_L2_PBASE, KFLASH_START, PTE_G);
+
+  // Map the Page Pool for NuttX Apps
+  // From https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27
+  // PGPOOL_START is 0x50600000
+  // PGPOOL_SIZE  is 4 MB + 16 MB (including RAM Disk)
+  mmu_ln_map_region(2, PGT_L2_VBASE, PGPOOL_START, PGPOOL_START, PGPOOL_SIZE, MMU_KDATA_FLAGS);
+}
+```
+
+We see a problem with the __Memory Mapping__...
+
+| Memory Region | Start Address | Size
+|:--------------|:-------------:|:----
+| I/O Region | __`0x0000` `0000`__ | __`0xF000` `0000`__
+| Kernel Code | __`0x5020` `0000`__ | 2 MB
+| Kernel Data | __`0x5040` `0000`__ | 2 MB
+| Page Pool | __`0x5060` `0000`__ | 20 MB
+
+The __I/O Region overlaps__ with the Kernel Code, Data and Page Pool!
+
+This happens because the PLIC is located at [__`0xE000` `0000`__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller). Which is __AFTER the RAM Region__...
+
+| Memory Region | Start Address | Size
+|:--------------|:-------------:|:----
+| I/O Region | __`0x0000` `0000`__ | __`0x5000` `0000`__
+| RAM | __`0x5000` `0000`__ | 64 MB
+| PLIC | __`0xE000` `0000`__ | ???
+
+Thus we might introduce another Memory Region, just to __map the PLIC__.
+
+The [__OpenSBI Log__](https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf) might offer some hints on the Memory Mapping...
 
 ```text
 Firmware Base       : 0x3ef80000
@@ -737,9 +806,7 @@ Domain0 Next Address: 0x50000000
 Domain0 Next Arg1   : 0x51ff8000
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf)
-
-[OpenSBI Domains](https://github.com/riscv-software-src/opensbi/blob/master/docs/domain_support.md)
+[(More about __OpenSBI Domains__)](https://github.com/riscv-software-src/opensbi/blob/master/docs/domain_support.md)
 
 TODO: What is "__`(I)`__" for Domain Permission?
 
