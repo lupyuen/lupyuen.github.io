@@ -188,7 +188,7 @@ Starting kernel...
 <p><img src="https://lupyuen.github.io/images/ox64-nuttx.png" alt="Apache NuttX RTOS boots a tiny bit on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <h1 id="print-to-serial-console"><a href="#print-to-serial-console">2 Print to Serial Console</a></h1>
 <p><em>We have a strong hunch that NuttX is actually booting on Ox64… How to prove it?</em></p>
-<p>Let’s print something in the <strong>NuttX Boot Code</strong>. Which is in <strong>RISC-V Assembly</strong>!</p>
+<p>We’ll print something in the <strong>NuttX Boot Code</strong>. Which is in <strong>RISC-V Assembly</strong>!</p>
 <p>When we compare these UARTs…</p>
 <ul>
 <li>
@@ -202,7 +202,7 @@ Starting kernel...
 </ul>
 <p>We discover that BL808 UART works the <strong>same way as BL602</strong>!</p>
 <p>Thus we may seek guidance from the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725"><strong>NuttX Driver for BL602 UART</strong></a>.</p>
-<p><em>So how do we print to BL808 UART?</em></p>
+<p><em>Great! How do we print to BL808 UART?</em></p>
 <p>This is how the <strong>BL602 UART Driver</strong> prints to the Serial Console: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725">bl602_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Output FIFO Offset is 0x88
 #define BL602_UART_FIFO_WDATA_OFFSET 0x000088  /* uart_fifo_wdata */
@@ -265,7 +265,7 @@ sb  t1, 0x88(t0)
  * Previously: addi a0, a0, -1 */
 </code></pre></div><h1 id="update-the-boot-address"><a href="#update-the-boot-address">3 Update the Boot Address</a></h1>
 <p><em>Surely Ox64 boots at a different RAM Address from Star64?</em></p>
-<p>Yep let’s fix the <strong>NuttX Boot Address</strong> for Ox64.</p>
+<p>Yep we fix the <strong>NuttX Boot Address</strong> for Ox64.</p>
 <p>From the <a href="https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7"><strong>U-Boot Bootloader</strong></a> we see that Ox64 boots Linux at this address…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ printenv
 kernel_addr_r=0x50200000
@@ -315,7 +315,7 @@ CONFIG_ARCH_PGPOOL_SIZE=4194304
 <p><em>NuttX on Ox64 has been awfully quiet…</em></p>
 <p><em>How to fix the UART Driver so that NuttX can print things?</em></p>
 <p>Ox64 is still running on the JH7110 UART Driver (16550).</p>
-<p>Let’s make a quick patch so that the <strong>NuttX UART Driver</strong> will print to the Ox64 Serial Console.</p>
+<p>We make a quick patch so that the <strong>NuttX UART Driver</strong> will print to the Ox64 Serial Console.</p>
 <p>For now, we hardcode the <strong>UART3 Base Address</strong> (from above) and Output FIFO Offset: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Write one character to the UART
 static void u16550_putc(FAR struct u16550_s *priv, int ch) {
@@ -449,7 +449,7 @@ _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_
 <p><em>Something special about IRQ 15?</em></p>
 <p>IRQ 15 is actually a <strong>RISC-V Exception</strong>!</p>
 <p>Rightfully, NuttX should print a helpful <strong>RISC-V Exception Crash Dump</strong> with the offending Data Address. <a href="https://lupyuen.github.io/articles/ox2#fix-the-uart-driver">(Like this)</a></p>
-<p>Let’s figure out why NuttX wasn’t terribly helpful for this RISC-V Exception.</p>
+<p>But NuttX wasn’t terribly helpful for this RISC-V Exception. Very odd!</p>
 <p><em>Where did it crash?</em></p>
 <p>Based on our <a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121"><strong>Debug Log</strong></a>, NuttX crashes right before setting the PLIC: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Interrupts
@@ -473,7 +473,7 @@ void up_irqinitialize(void) {
 <p><em>Something doesn’t look right…</em></p>
 <p>Yeah we attach the RISC-V Exception Handlers (<strong>riscv_exception_attach</strong>)…</p>
 <p>After the code has crashed! (<strong>putreg32</strong>)</p>
-<p>Let’s <strong>attach the Exception Handlers</strong> earlier: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
+<p>Hence we <strong>attach the Exception Handlers</strong> earlier: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Interrupts
 void up_irqinitialize(void) {
   ...
@@ -520,7 +520,7 @@ MTVAL:  0xe0002100
 <p>TODO: Pic of Store / AMO Page Fault Exception</p>
 <h1 id="add-plic-to-memory-map"><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a></h1>
 <p><em>But is 0xE000 2100 accessible?</em></p>
-<p>Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the <strong>Memory Map</strong>! Let’s fix it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
+<p>Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the <strong>Memory Map</strong>! This is how we fix it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Map the whole I/O memory with vaddr = paddr mappings */
 #define MMU_IO_BASE (0x00000000)
 #define MMU_IO_SIZE (0xf0000000)
@@ -544,7 +544,7 @@ MTVAL:  00000000e0002104
 <p><a href="https://gist.github.com/lupyuen/ade5ff1433812fb675ff06f805f7339f">(Source)</a></p>
 <p>But it crashes while accessing the PLIC at another address: <strong><code>0xE000</code> <code>2104</code></strong>.</p>
 <p><em>Ack! Enough with the PLIC already…</em></p>
-<p>Yeah let’s fix PLIC later. The entire <a href="https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64"><strong>UART Driver will be revamped</strong></a> anyway, including the UART Interrupt.</p>
+<p>Yeah we’ll fix PLIC later. The entire <a href="https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64"><strong>UART Driver will be revamped</strong></a> anyway, including the UART Interrupt.</p>
 <p>We <strong>disable the UART Interrupt</strong> for now: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Attach the UART Interrupt for Star64
 static int u16550_attach(struct uart_dev_s *dev) {
