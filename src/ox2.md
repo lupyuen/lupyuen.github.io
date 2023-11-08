@@ -852,30 +852,34 @@ Thus we'll simply copy the [__NuttX Driver for BL602 UART__](https://github.com/
 
 _What's this Initial RAM Disk?_
 
-The __Initial RAM Disk__ contains the __NuttX Shell__ (NSH) and the NuttX Apps. 
+The __Initial RAM Disk__ contains the __NuttX Shell__ (NSH) and the NuttX Apps.
 
-TODO
+At startup, NuttX loads the Initial RAM Disk into RAM, so that the NuttX Shell (and NuttX Apps) can be executed.
 
 [(More about __Initial RAM Disk__)](https://lupyuen.github.io/articles/semihost)
 
-_Why is the Initial RAM Disk missing?_
+_Why is the Initial RAM Disk missing from Ox64?_
 
 That's because we __haven't loaded the Initial RAM Disk__ into RAM!
 
-TODO
+Two ways we can load the Initial RAM Disk...
 
-- Load the Initial RAM Disk as a __Separate File: initrd__
+1.  Load the Initial RAM Disk as a __Separate File: initrd__ (similar to Star64)
 
-- Append the Initial RAM Disk to the __NuttX Kernel Image__
+    This means we need to modify the [__U-Boot Script: boot-pine64.scr__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd)
 
-TODO: RAM Size
+    (Which is good for separating the NuttX Kernel and NuttX Apps)
 
-We'll modify [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
+    OR...
 
-[(Or maybe the U-Boot Script __boot-pine64.scr__)](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd)
+1.  Append the Initial RAM Disk to the __NuttX Kernel Image__
+
+    So the U-Boot Bootloader will load the NuttX Kernel + Initial RAM Disk. And reuse the existing [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf) on the microSD Card.
+
+    (Which might be more efficient for our Limited RAM)
+
+    __TODO:__ Can we map the File System directly from RAM? Without copying to the RAM Disk Memory Region?
+
+We'll probably adopt the second method, since we are low on RAM.
 
 [(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
-
-TODO: Append to Kernel
-
-TODO: Separate File
