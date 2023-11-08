@@ -379,12 +379,9 @@ MTVAL:  0c002104
 <div class="example-wrap"><pre class="language-c"><code> // Atomically modify the specified bits
  // in a Memory-Mapped Register
 void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
-  irqstate_t flags;
-  uint32_t   regval;
-
-  flags   = spin_lock_irqsave(NULL);
+  irqstate_t flags = spin_lock_irqsave(NULL);
   // Crashes here because `addr` is invalid...
-  regval  = getreg32(addr);
+  uint32_t regval = getreg32(addr);
   regval &amp;= ~clearbits;
   regval |= setbits;
   putreg32(regval, addr);
