@@ -480,7 +480,7 @@ _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_
 
 But there's something exceptional about IRQ 15...
 
-TODO: Pic of IRQ 15
+![NuttX crashes with IRQ 15](https://lupyuen.github.io/images/ox2-irq.png)
 
 # Handle RISC-V Exceptions
 
@@ -590,7 +590,7 @@ nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
 
 The offending Data Address is __`0xE000` `2100`__. Which is our BL808 PLIC!
 
-TODO: Pic of Store / AMO Page Fault Exception
+![Store / AMO Page Fault Exception](https://lupyuen.github.io/images/ox2-exception.png)
 
 # Add PLIC to Memory Map
 
