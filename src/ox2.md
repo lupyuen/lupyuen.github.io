@@ -693,7 +693,13 @@ That's because we __haven't loaded the Initial RAM Disk__ into RAM!
 
 We'll modify the NuttX Kernel Image (or U-Boot Script) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
 
-[(Our plans for __Initial RAM Disk__)](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk)
+[(Upcoming work for __Initial RAM Disk__)](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk)
+
+_Are we done yet?_
+
+That's all for today! NuttX has booted so much code on Ox64. Here's the flow of the __NuttX Code that boots on Ox64__...
+
+- [__"NuttX Boot Flow"__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
 
 # What's Next
 
@@ -733,7 +739,9 @@ _My soldering of Ox64 BL808 looks horrigible... But it works for now_ 😬
 
 # Appendix: NuttX Boot Flow
 
-TODO
+_What happens exactly when NuttX boots on Ox64?_
+
+In this article, NuttX has booted plenty of code on Ox64. Here's the flow of the __NuttX Code that boots on Ox64__...
 
 [__NuttX Boot Code: jh7110_head__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L41-L156) prints "123" and calls...
 
@@ -753,7 +761,7 @@ TODO
 
   (To setup the UART)
 
-[__Start NuttX: nx_start__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_start.c#L298-L713) calls...
+[__Start NuttX: nx_start__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_start.c#L298-L713) does [__many things__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine) and calls...
 
 - [__IRQ Init: up_irqinitialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L41C1-L103) (see below) and...
 
@@ -782,6 +790,16 @@ TODO
 - [__Mount RAM Disk: nx_mount__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/fs/mount/fs_mount.c#L260-L514)
 
   (Which fails because our Initial RAM Disk is missing)
+
+  (Which prevents NuttX Shell from starting)
+
+Therefore we expect NuttX to __boot completely on Ox64__ when we've implemented...
+
+- [__Initial RAM Disk__](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk) for Ox64
+
+- [__UART Driver and UART Interrupts__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64) for Ox64
+
+- [__Memory Map__](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64) might clean fixing too
 
 # Appendix: Memory Map for Ox64
 
@@ -915,6 +933,8 @@ When we compare these UARTs...
 We discover that BL808 UART works the __same way as BL602__!
 
 Thus we'll simply copy the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c) to Ox64.
+
+__UART Interrupts__ are mandatory: If UART Interrupts aren't implemented, NuttX Shell (NSH) and NuttX Apps [__won't print anything__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu).
 
 _What about other drivers: BL808 vs BL602?_
 
