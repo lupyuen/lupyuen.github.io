@@ -404,7 +404,7 @@ We look up Code Address __`0x5020` `8086`__ in our __RISC-V Disassembly for Nutt
 ```text
 nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
   regval  = getreg32(addr);
-    50208086:	2701                	sext.w	a4,a4
+    50208086: 2701  sext.w a4,a4
 ```
 
 Which points to this: [riscv_modifyreg32.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_modifyreg32.c#L38-L57)
@@ -583,9 +583,9 @@ When we look up the NuttX Kernel Disassembly, the Exception Code Address __`0x50
 ```text
 nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
   putreg32(0x0, JH7110_PLIC_ENABLE1);
-    50207e64:	700017b7          	lui	a5,0x70001
-    50207e68:	0786                	slli	a5,a5,0x1
-    50207e6a:	1007a023          	sw	zero,256(a5) # 70001100 <__ramdisk_end+0x1e601100>
+    50207e64: 700017b7  lui  a5,0x70001
+    50207e68: 0786      slli a5,a5,0x1
+    50207e6a: 1007a023  sw   zero,256(a5) # 70001100 <__ramdisk_end+0x1e601100>
 ```
 
 The offending Data Address is __`0xE000` `2100`__. Which is our BL808 PLIC!
