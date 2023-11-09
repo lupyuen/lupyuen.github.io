@@ -215,7 +215,7 @@ Starting kernel...
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb)
 
-Our hunch is correct, indeed __NuttX is booting on Ox64__ yay!
+Our hunch is correct, __NuttX is ALIVE on Ox64__ yay!
 
 _Anything else we changed in the NuttX Boot Code?_
 
