@@ -95,7 +95,7 @@ cp nuttx.bin \
 diskutil unmountDisk /dev/disk2
 ```
 
-Insert the __microSD into Ox64__ and power up Ox64.
+Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg) and power up Ox64.
 
 Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__.
 
