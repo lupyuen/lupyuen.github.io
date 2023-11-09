@@ -697,13 +697,15 @@ We'll modify the NuttX Kernel Image (or U-Boot Script) on the microSD Card, so t
 
 _Are we done yet?_
 
-That's all for today! NuttX has booted so much code on Ox64. Here's the flow of the __NuttX Code that boots on Ox64__...
+That's all for today! NuttX has booted so much code on Ox64. Here's the flow of the __NuttX Code that boots on Ox64__ (pic below)...
 
 - [__"NuttX Boot Flow"__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
 
-![My soldering of Ox64 BL808 looks horrigible... But it boots NuttX!](https://lupyuen.github.io/images/ox64-solder.jpg)
+  [(See the __Clickable Diagram__)](https://github.com/lupyuen/nuttx-ox64#nuttx-boot-flow-for-ox64-bl808)
 
-_My soldering of Ox64 BL808 looks horrigible... But it boots NuttX!_
+![NuttX Boot Flow for Ox64 BL808](https://lupyuen.github.io/images/ox2-flow.jpg)
+
+[_Clickable Version of NuttX Boot Flow_](https://github.com/lupyuen/nuttx-ox64#nuttx-boot-flow-for-ox64-bl808)
 
 # What's Next
 
@@ -737,11 +739,19 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/ox2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ox2.md)
 
+![My soldering of Ox64 BL808 looks horrigible... But it boots NuttX!](https://lupyuen.github.io/images/ox64-solder.jpg)
+
+_My soldering of Ox64 BL808 looks horrigible... But it boots NuttX!_
+
 # Appendix: NuttX Boot Flow
 
 _What happens exactly when NuttX boots on Ox64?_
 
 In this article, NuttX has booted plenty of code on Ox64. Here's the flow of the __NuttX Code that boots on Ox64__...
+
+![NuttX Boot Flow for Ox64 BL808](https://lupyuen.github.io/images/ox2-flow.jpg)
+
+[_Clickable Version of NuttX Boot Flow_](https://github.com/lupyuen/nuttx-ox64#nuttx-boot-flow-for-ox64-bl808)
 
 [__NuttX Boot Code: jh7110_head__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L41-L156) prints "123" and calls...
 
