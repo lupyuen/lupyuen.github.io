@@ -123,7 +123,7 @@ Yeah we're hoping that NuttX would crash and [__OpenSBI (Supervisor Binary Inter
 
 - NuttX was probably stuck in a loop [__waiting for Star64 UART__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu)
 
-We have another way to check if NuttX is alive...
+Is NuttX alive? We can check...
 
 ![Apache NuttX RTOS boots a tiny bit on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-nuttx.png)
 
