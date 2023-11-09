@@ -701,6 +701,10 @@ That's all for today! NuttX has booted so much code on Ox64. Here's the flow of 
 
 - [__"NuttX Boot Flow"__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
 
+![My soldering of Ox64 BL808 looks horrigible... But it works for now 😬](https://lupyuen.github.io/images/ox64-solder.jpg)
+
+_My soldering of Ox64 BL808 looks horrigible... But it works for now_ 😬
+
 # What's Next
 
 TODO: This week we made plenty of progress starting __Apache NuttX RTOS__ on the tiny __Ox64 BL808 RISC-V SBC__...
@@ -732,10 +736,6 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/ox2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ox2.md)
-
-![My soldering of Ox64 BL808 looks horrigible... But it works for now 😬](https://lupyuen.github.io/images/ox64-solder.jpg)
-
-_My soldering of Ox64 BL808 looks horrigible... But it works for now_ 😬
 
 # Appendix: NuttX Boot Flow
 
