@@ -259,7 +259,7 @@ sb  t1, 0x88(t0)
 123
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb">(See the <strong>Complete Log</strong>)</a></p>
-<p>Our hunch is correct, indeed <strong>NuttX is booting on Ox64</strong> yay!</p>
+<p>Our hunch is correct, <strong>NuttX is ALIVE on Ox64</strong> yay!</p>
 <p><em>Anything else we changed in the NuttX Boot Code?</em></p>
 <p>OpenSBI boots on Ox64 with <a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L57"><strong>Hart ID 0</strong></a> (instead of 1). Which means we remove this code: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93">jh7110_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* We assume that OpenSBI has passed Hart ID (value 1) in Register a0.
