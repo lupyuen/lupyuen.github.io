@@ -155,7 +155,7 @@ This is how the __BL602 UART Driver__ prints to the Serial Console: [bl602_seria
 #define BL602_UART_FIFO_WDATA(n) (BL602_UART_BASE(n) + BL602_UART_FIFO_WDATA_OFFSET)
 
 // Write a character to UART
-static void bl602_send(struct uart_dev_s *dev, int ch) {
+void bl602_send(struct uart_dev_s *dev, int ch) {
   ...
   // Wait for FIFO to be empty
   while ((getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) & \
@@ -314,7 +314,7 @@ For now, we hardcode the __UART3 Base Address__ (from above) and Output FIFO Off
 
 ```c
 // Write one character to the UART
-static void u16550_putc(FAR struct u16550_s *priv, int ch) {
+void u16550_putc(FAR struct u16550_s *priv, int ch) {
 
   // Hardcode the UART3 Base Address and Output FIFO Offset
   *(volatile uint8_t *) 0x30002088 = ch;
@@ -331,13 +331,13 @@ We skip the reading and writing of __other UART Registers__, because we'll patch
 
 ```c
 // Read from UART Register
-static inline uart_datawidth_t u16550_serialin(FAR struct u16550_s *priv, int offset) {
+uart_datawidth_t u16550_serialin(FAR struct u16550_s *priv, int offset) {
   return 0;
   // Commented out the rest
 }
 
 // Write to UART Register
-static inline void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_datawidth_t value) {
+void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_datawidth_t value) {
   // Commented out the rest
 }
 ```
@@ -347,7 +347,7 @@ And we won't wait for __UART Ready__, since we don't access the Line Control Reg
 ```c
 // Wait until UART is not busy. This is needed before writing to Line Control Register.
 // Otherwise we will get spurious interrupts on Synopsys DesignWare 8250.
-static int u16550_wait(FAR struct u16550_s *priv) {
+int u16550_wait(FAR struct u16550_s *priv) {
   // Nopez! No waiting for now
   return OK;
 }
@@ -635,7 +635,7 @@ For now, we __disable the UART Interrupt__: [uart_16550.c](https://github.com/lu
 
 ```c
 // Attach the UART Interrupt for Star64
-static int u16550_attach(struct uart_dev_s *dev) {
+int u16550_attach(struct uart_dev_s *dev) {
   // Don't attach the interrupt
   // Previously:
   // ret = irq_attach(priv->irq, u16550_interrupt, dev);
