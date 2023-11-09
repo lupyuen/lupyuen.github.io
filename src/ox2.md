@@ -121,7 +121,7 @@ Yeah we're hoping that NuttX would crash and [__OpenSBI (Supervisor Binary Inter
 
 - We [__haven't configured NuttX__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64) for Ox64 UART and...
 
-- NuttX was probably stuck in a loop [__waiting for Star64 UART__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu)
+- NuttX is probably stuck in a loop [__waiting for Star64 UART__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu)
 
 Is NuttX alive? We can check...
 
