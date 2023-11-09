@@ -931,6 +931,10 @@ These controllers look highly similar on BL808 vs BL602. Which means we have ple
 
 Our [__earlier experiments with BL602 NuttX__](https://lupyuen.github.io/articles/book) proved that the drivers above work well. So we're all set for BL808!
 
+[(BL602 NuttX is tested on __Real Hardware__ every day)](https://lupyuen.github.io/articles/auto)
+
+[(Still __going strong__!)](https://github.com/lupyuen/nuttx/releases)
+
 _What about the drivers missing from BL602 NuttX?_
 
 We'll port the missing BL808 Drivers from Bouffalo Lab's [__BouffaloSDK__](https://github.com/bouffalolab/bouffalo_sdk) to NuttX.
