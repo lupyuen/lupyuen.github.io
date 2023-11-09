@@ -410,8 +410,8 @@ nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
 Which points to this: [riscv_modifyreg32.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_modifyreg32.c#L38-L57)
 
 ```c
- // Atomically modify the specified bits
- // in a Memory-Mapped Register
+// Atomically modify the specified bits
+// in a Memory-Mapped Register
 void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
   irqstate_t flags = spin_lock_irqsave(NULL);
   // Crashes here because `addr` is invalid...
