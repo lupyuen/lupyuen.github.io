@@ -701,9 +701,9 @@ That's all for today! NuttX has booted so much code on Ox64. Here's the flow of 
 
 - [__"NuttX Boot Flow"__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
 
-![My soldering of Ox64 BL808 looks horrigible... But it works for now 😬](https://lupyuen.github.io/images/ox64-solder.jpg)
+![My soldering of Ox64 BL808 looks horrigible... But it boots NuttX!](https://lupyuen.github.io/images/ox64-solder.jpg)
 
-_My soldering of Ox64 BL808 looks horrigible... But it works for now_ 😬
+_My soldering of Ox64 BL808 looks horrigible... But it boots NuttX!_
 
 # What's Next
 
