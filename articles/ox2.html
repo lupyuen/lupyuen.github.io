@@ -634,16 +634,24 @@ DEBUGASSERT(ret &gt;= 0);
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L129-L159"><strong>NuttX Start Code: jh7110_start</strong></a> which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129"><strong>jh7110_start_s</strong></a> which prints “ABC” and calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129"><strong>Start Supervisor Mode: jh7110_start_s</strong></a> which prints “ABC” and calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L159-L164"><strong>Early Serial Init: riscv_earlyserialinit</strong></a> (see below) and…</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284"><strong>Memory Mgmt Init: jh7110_mm_init</strong></a> (to map the Memory Mgmt Unit) and…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/sched/init/nx_start.c#L298-L713"><strong>Start NuttX: nx_start</strong></a> (see below)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_start.c#L298-L713"><strong>Start NuttX: nx_start</strong></a> (see below)</p>
 </li>
 </ul>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/sched/init/nx_start.c#L298-L713"><strong>Start NuttX: nx_start</strong></a> calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L159-L164"><strong>Early Serial Init: riscv_earlyserialinit</strong></a> calls…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1722-L1747"><strong>UART Early Init: u16550_earlyserialinit</strong></a></p>
+<p>(To setup the UART)</p>
+</li>
+</ul>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_start.c#L298-L713"><strong>Start NuttX: nx_start</strong></a> calls…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L41C1-L103"><strong>IRQ Init: up_irqinitialize</strong></a> (see below) and…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/sched/init/nx_bringup.c#L373-L462"><strong>Bringup NuttX: nx_bringup</strong></a> (see below)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L373-L462"><strong>Bringup NuttX: nx_bringup</strong></a> (see below)</p>
 </li>
 </ul>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L41C1-L103"><strong>IRQ Init: up_irqinitialize</strong></a> calls…</p>
@@ -656,27 +664,26 @@ DEBUGASSERT(ret &gt;= 0);
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_initialize.c#L70-L132"><strong>Init NuttX: up_initialize</strong></a> calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L164-L168"><strong>RISC-V Serial Init: riscv_serialinit</strong></a> which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L164-L168"><strong>Serial Init: riscv_serialinit</strong></a> which calls…</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1747-L1775"><strong>UART Init: u16550_serialinit</strong></a></p>
-<p>(to register “/dev/console” and “/dev/ttyS0”)</p>
+<p>(To register “/dev/console” and “/dev/ttyS0”)</p>
 </li>
 </ul>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/sched/init/nx_bringup.c#L373-L462"><strong>Bringup NuttX: nx_bringup</strong></a> calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L373-L462"><strong>Bringup NuttX: nx_bringup</strong></a> calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/sched/init/nx_bringup.c#L330-L369"><strong>Create Init Thread: nx_create_initthread</strong></a> (to create “AppBringUp” thread) which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L330-L369"><strong>Create Init Thread: nx_create_initthread</strong></a> (to create “AppBringUp” thread) which calls…</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L212-L304"><strong>Start Application: nx_start_application</strong></a> which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/fs/mount/fs_mount.c#L260-L514"><strong>Mount RAM Disk: nx_mount</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/fs/mount/fs_mount.c#L260-L514"><strong>Mount RAM Disk: nx_mount</strong></a></p>
 <p>(Which fails because our Initial RAM Disk is missing)</p>
 </li>
 </ul>
-<p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1722-L1747">u16550_earlyserialinit</a></p>
 <h1 id="appendix-memory-map-for-ox64"><a href="#appendix-memory-map-for-ox64">11 Appendix: Memory Map for Ox64</a></h1>
 <p><em>What’s this Memory Map?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the whole I/O Memory
