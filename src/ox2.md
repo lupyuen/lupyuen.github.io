@@ -749,7 +749,7 @@ In this article, NuttX has booted plenty of code on Ox64. Here's the flow of the
 
 - [__Start Supervisor Mode: jh7110_start_s__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129) which prints "ABC" and calls...
 
-  [__Early Serial Init: riscv_earlyserialinit__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L159-L164) (see below) and...
+- [__Early Serial Init: riscv_earlyserialinit__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L159-L164) (see below) and...
 
   [__Memory Mgmt Init: jh7110_mm_init__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284) (to map the Memory Mgmt Unit) and...
 
@@ -797,9 +797,9 @@ Therefore we expect NuttX to __boot completely on Ox64__ when we've implemented.
 
 - [__Initial RAM Disk__](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk) for Ox64
 
-- [__UART Driver and UART Interrupts__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64) for Ox64
+- [__UART Driver and UART Interrupts__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64)
 
-- [__Memory Map__](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64) might clean fixing too
+- [__Memory Map__](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64) might need fixing too
 
 # Appendix: Memory Map for Ox64
 
