@@ -78,9 +78,10 @@
 <li><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a><ul></ul></li>
 <li><a href="#initial-ram-disk-is-missing">8 Initial RAM Disk is Missing</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-memory-map-for-ox64">10 Appendix: Memory Map for Ox64</a><ul></ul></li>
-<li><a href="#appendix-uart-driver-for-ox64">11 Appendix: UART Driver for Ox64</a><ul></ul></li>
-<li><a href="#appendix-initial-ram-disk">12 Appendix: Initial RAM Disk</a><ul></ul></li></ul></nav><p>📝 <em>12 Nov 2023</em></p>
+<li><a href="#appendix-nuttx-boot-flow">10 Appendix: NuttX Boot Flow</a><ul></ul></li>
+<li><a href="#appendix-memory-map-for-ox64">11 Appendix: Memory Map for Ox64</a><ul></ul></li>
+<li><a href="#appendix-uart-driver-for-ox64">12 Appendix: UART Driver for Ox64</a><ul></ul></li>
+<li><a href="#appendix-initial-ram-disk">13 Appendix: Initial RAM Disk</a><ul></ul></li></ul></nav><p>📝 <em>12 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/ox2-title.png" alt="Booting Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <p>Last week we booted Linux on the <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 64-bit RISC-V SBC</strong></a> (pic below), powered by <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>Bouffalo Lab BL808 SoC</strong></a>…</p>
 <ul>
@@ -625,7 +626,58 @@ DEBUGASSERT(ret &gt;= 0);
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ox2.md"><strong>lupyuen.github.io/src/ox2.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="My soldering of Ox64 BL808 looks horrigible… But it works for now 😬" /></p>
 <p><em>My soldering of Ox64 BL808 looks horrigible… But it works for now</em> 😬</p>
-<h1 id="appendix-memory-map-for-ox64"><a href="#appendix-memory-map-for-ox64">10 Appendix: Memory Map for Ox64</a></h1>
+<h1 id="appendix-nuttx-boot-flow"><a href="#appendix-nuttx-boot-flow">10 Appendix: NuttX Boot Flow</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L41-L156"><strong>NuttX Boot Code: jh7110_head</strong></a> prints “123” and calls…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L129-L159"><strong>NuttX Start Code: jh7110_start</strong></a> which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129"><strong>jh7110_start_s</strong></a> which prints “ABC” and calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284"><strong>Memory Mgmt Init: jh7110_mm_init</strong></a> (to map the Memory Mgmt Unit) and…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/sched/init/nx_start.c#L298-L713"><strong>Start NuttX: nx_start</strong></a> (see below)</p>
+</li>
+</ul>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/sched/init/nx_start.c#L298-L713"><strong>Start NuttX: nx_start</strong></a> calls…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L41C1-L103"><strong>IRQ Init: up_irqinitialize</strong></a> (see below) and…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/sched/init/nx_bringup.c#L373-L462"><strong>Bringup NuttX: nx_bringup</strong></a> (see below)</p>
+</li>
+</ul>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L41C1-L103"><strong>IRQ Init: up_irqinitialize</strong></a> calls…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142"><strong>Attach RISC-V Exceptions: riscv_exception_attach</strong></a> (to attach the RISC-V Exception Handlers) and…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_initialize.c#L70-L132"><strong>Init NuttX: up_initialize</strong></a> (see below)</p>
+</li>
+</ul>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_initialize.c#L70-L132"><strong>Init NuttX: up_initialize</strong></a> calls…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L164-L168"><strong>RISC-V Serial Init: riscv_serialinit</strong></a> which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1747-L1775"><strong>UART Init: u16550_serialinit</strong></a></p>
+<p>(to register “/dev/console” and “/dev/ttyS0”)</p>
+</li>
+</ul>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/sched/init/nx_bringup.c#L373-L462"><strong>Bringup NuttX: nx_bringup</strong></a> calls…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/sched/init/nx_bringup.c#L330-L369"><strong>Create Init Thread: nx_create_initthread</strong></a> (to create “AppBringUp” thread) which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L212-L304"><strong>Start Application: nx_start_application</strong></a> which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/fs/mount/fs_mount.c#L260-L514"><strong>Mount RAM Disk: nx_mount</strong></a></p>
+<p>(Which fails because our Initial RAM Disk is missing)</p>
+</li>
+</ul>
+<p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1722-L1747">u16550_earlyserialinit</a></p>
+<h1 id="appendix-memory-map-for-ox64"><a href="#appendix-memory-map-for-ox64">11 Appendix: Memory Map for Ox64</a></h1>
 <p><em>What’s this Memory Map?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the whole I/O Memory
 // with Virtual Address = Physical Address
@@ -709,7 +761,7 @@ Domain0 Next Arg1   : 0x51ff8000
 <p>(<strong><code>0x3EF8</code> <code>0000</code></strong> is probably protected because it contains the OpenSBI Firmware)</p>
 <p><a href="https://github.com/riscv-software-src/opensbi/blob/master/docs/domain_support.md">(More about <strong>OpenSBI Domains</strong>)</a></p>
 <p><strong>TODO:</strong> What is “<strong><code>(I)</code></strong>” for Domain Permission?</p>
-<h1 id="appendix-uart-driver-for-ox64"><a href="#appendix-uart-driver-for-ox64">11 Appendix: UART Driver for Ox64</a></h1>
+<h1 id="appendix-uart-driver-for-ox64"><a href="#appendix-uart-driver-for-ox64">12 Appendix: UART Driver for Ox64</a></h1>
 <p><em>How will we create the NuttX UART Driver for Ox64 BL808?</em></p>
 <p>Today NuttX supports the 32-bit predecessor of BL808: <a href="https://github.com/apache/nuttx/tree/master/arch/risc-v/src/bl602"><strong>Bouffalo Lab BL602</strong></a>.</p>
 <p>When we compare these UARTs…</p>
@@ -744,7 +796,7 @@ Domain0 Next Arg1   : 0x51ff8000
 <p><a href="https://github.com/bouffalolab/bouffalo_sdk/blob/master/LICENSE">(BouffaloSDK is <strong>Apache 2.0 Licensed</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="Initial RAM Disk for Star64 JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/semihost"><em>Initial RAM Disk for Star64 JH7110</em></a></p>
-<h1 id="appendix-initial-ram-disk"><a href="#appendix-initial-ram-disk">12 Appendix: Initial RAM Disk</a></h1>
+<h1 id="appendix-initial-ram-disk"><a href="#appendix-initial-ram-disk">13 Appendix: Initial RAM Disk</a></h1>
 <p><em>What’s this Initial RAM Disk?</em></p>
 <p>The <strong>Initial RAM Disk</strong> contains the <strong>NuttX Shell</strong> (NSH) and the NuttX Apps.</p>
 <p>At startup, NuttX loads the Initial RAM Disk into RAM and mounts the File System, so that the NuttX Shell (and NuttX Apps) can be started later.</p>
