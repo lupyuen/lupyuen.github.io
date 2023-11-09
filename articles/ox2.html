@@ -210,7 +210,7 @@ Starting kernel...
 #define BL602_UART_FIFO_WDATA(n) (BL602_UART_BASE(n) + BL602_UART_FIFO_WDATA_OFFSET)
 
 // Write a character to UART
-static void bl602_send(struct uart_dev_s *dev, int ch) {
+void bl602_send(struct uart_dev_s *dev, int ch) {
   ...
   // Wait for FIFO to be empty
   while ((getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) &amp; \
@@ -320,7 +320,7 @@ CONFIG_ARCH_PGPOOL_SIZE=4194304
 <p>To print to the Ox64 Serial Console, we make a quick patch to the <strong>NuttX UART Driver</strong>.</p>
 <p>For now, we hardcode the <strong>UART3 Base Address</strong> (from above) and Output FIFO Offset: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Write one character to the UART
-static void u16550_putc(FAR struct u16550_s *priv, int ch) {
+void u16550_putc(FAR struct u16550_s *priv, int ch) {
 
   // Hardcode the UART3 Base Address and Output FIFO Offset
   *(volatile uint8_t *) 0x30002088 = ch;
@@ -333,20 +333,20 @@ static void u16550_putc(FAR struct u16550_s *priv, int ch) {
 <p>(Yeah the UART Buffer might overflow, we’ll fix later)</p>
 <p>We skip the reading and writing of <strong>other UART Registers</strong>, because we’ll patch them later: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L604-L632">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Read from UART Register
-static inline uart_datawidth_t u16550_serialin(FAR struct u16550_s *priv, int offset) {
+uart_datawidth_t u16550_serialin(FAR struct u16550_s *priv, int offset) {
   return 0;
   // Commented out the rest
 }
 
 // Write to UART Register
-static inline void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_datawidth_t value) {
+void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_datawidth_t value) {
   // Commented out the rest
 }
 </code></pre></div>
 <p>And we won’t wait for <strong>UART Ready</strong>, since we don’t access the Line Control Register: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L633-L670">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Wait until UART is not busy. This is needed before writing to Line Control Register.
 // Otherwise we will get spurious interrupts on Synopsys DesignWare 8250.
-static int u16550_wait(FAR struct u16550_s *priv) {
+int u16550_wait(FAR struct u16550_s *priv) {
   // Nopez! No waiting for now
   return OK;
 }
@@ -546,7 +546,7 @@ MTVAL:  e0002104
 <p>Yeah we’ll fix PLIC later. The entire <a href="https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64"><strong>UART Driver will be revamped</strong></a> anyway, including the UART Interrupt.</p>
 <p>For now, we <strong>disable the UART Interrupt</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Attach the UART Interrupt for Star64
-static int u16550_attach(struct uart_dev_s *dev) {
+int u16550_attach(struct uart_dev_s *dev) {
   // Don&#39;t attach the interrupt
   // Previously:
   // ret = irq_attach(priv-&gt;irq, u16550_interrupt, dev);
