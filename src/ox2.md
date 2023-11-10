@@ -1020,6 +1020,21 @@ Two ways we can load the Initial RAM Disk...
 
     __TODO:__ Can we mount the File System directly from the __NuttX Kernel Image in RAM__? Without copying to the [__RAM Disk Memory Region__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L26)?
 
-We'll probably adopt the Second Method, since we are low on RAM.
+We'll probably adopt the Second Method, since we are low on RAM. Like this...
+
+```bash
+## Export the NuttX Binary Image to `nuttx.bin`
+riscv64-unknown-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
+
+## Append the Initial RAM Disk to the NuttX Binary Image
+cat nuttx.bin initrd \
+  >Image
+
+## Overwrite the Linux Image on Ox64 microSD
+cp Image "/Volumes/NO NAME"
+```
 
 [(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
