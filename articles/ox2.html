@@ -427,6 +427,7 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
 <p>Based on the above, we change the <strong>PLIC Base Address</strong> for Ox64: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30">jh7110_memorymap.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define JH7110_PLIC_BASE 0xe0000000
 </code></pre></div>
+<p><a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">(PLIC Offsets are in <strong>XuanTie OpenC906 User Manual</strong>, Page 77)</a></p>
 <p>NuttX now crashes at a different place, with IRQ 15 (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>123ABC
 nx_start: Entry
@@ -517,7 +518,7 @@ MTVAL:  e0002100
     50207e6a: 1007a023  sw   zero,256(a5) # 70001100 &lt;__ramdisk_end+0x1e601100&gt;
 </code></pre></div>
 <p>The offending Data Address (MTVAL) is <strong><code>0xE000</code> <code>2100</code></strong>.</p>
-<p>Which is our Ox64 PLIC! We scrutinise PLIC again…</p>
+<p>Which is our <strong>Ox64 PLIC</strong>! We scrutinise PLIC again…</p>
 <p><img src="https://lupyuen.github.io/images/ox2-exception.png" alt="Store / AMO Page Fault Exception" /></p>
 <h1 id="add-plic-to-memory-map"><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a></h1>
 <p><em>But is 0xE000 2100 accessible?</em></p>
@@ -541,7 +542,7 @@ MCAUSE: 5
 EPC:    50208342
 MTVAL:  e0002104
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/ade5ff1433812fb675ff06f805f7339f">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/ade5ff1433812fb675ff06f805f7339f#file-ox64-nuttx6-log-L135-L181">(See the <strong>Complete Log</strong>)</a></p>
 <p>But it crashes while accessing the PLIC at another <strong>Invalid Data Address: <code>0xE000</code> <code>2104</code></strong>. (Sigh)</p>
 <p><em>Ack! Enough with the PLIC already…</em></p>
 <p>Yeah we’ll fix PLIC later. The entire <a href="https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64"><strong>UART Driver will be revamped</strong></a> anyway, including the UART Interrupt.</p>
@@ -557,7 +558,6 @@ int u16550_attach(struct uart_dev_s *dev) {
   // up_enable_irq(priv-&gt;irq);
 </code></pre></div>
 <p>NuttX hits another roadblock…</p>
-<p><a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">(Check the PLIC Offsets in <strong>XuanTie OpenC906 User Manual</strong>, Page 77)</a></p>
 <p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="Initial RAM Disk for Star64 JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/semihost"><em>Initial RAM Disk for Star64 JH7110</em></a></p>
 <h1 id="initial-ram-disk-is-missing"><a href="#initial-ram-disk-is-missing">8 Initial RAM Disk is Missing</a></h1>
@@ -570,7 +570,7 @@ work_start_lowpri: Starting low-priority kernel worker thread(s)
 _assert: Current Version: NuttX  12.0.3 b244f85-dirty Nov  6 2023 17:35:34 risc-v
 _assert: Assertion failed ret &gt;= 0: at file: init/nx_bringup.c:283 task: AppBringUp process: Kernel 0x5020107e
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf#file-ox64-nuttx7-log-L136-L177">(See the <strong>Complete Log</strong>)</a></p>
 <p>That’s because NuttX couldn’t mount the <strong>Initial RAM Disk</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L276-L284">nx_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Mount the File System containing
 // the NuttX Shell (NSH)
@@ -581,7 +581,7 @@ ret = nx_mount(CONFIG_INIT_MOUNT_SOURCE, CONFIG_INIT_MOUNT_TARGET,
 // Fails here
 DEBUGASSERT(ret &gt;= 0);
 </code></pre></div>
-<p>Which contains <strong>NuttX Shell</strong> (NSH) and the NuttX Apps.</p>
+<p>That contains the Executable Binaries for <strong>NuttX Shell</strong> (NSH) and the NuttX Apps.</p>
 <p><a href="https://lupyuen.github.io/articles/semihost">(More about <strong>Initial RAM Disk</strong>)</a></p>
 <p><em>Why is the Initial RAM Disk missing?</em></p>
 <p>That’s because we <strong>haven’t loaded the Initial RAM Disk</strong> into RAM!</p>
@@ -736,8 +736,8 @@ DEBUGASSERT(ret &gt;= 0);
 #define MMU_IO_SIZE (0xf0000000)
 </code></pre></div>
 <p><em>This doesn’t look right…</em></p>
-<p>Yeah when we substitute the above <strong>MMU_IO_BASE</strong> and <strong>MMU_IO_SIZE</strong> into the <strong>Kernel MMU Map</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259">jh7110_mm_init.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Set up the Kernel MMU Map
+<p>Yeah when we substitute the above <strong>MMU_IO_BASE</strong> and <strong>MMU_IO_SIZE</strong> into the <strong>Memory Map</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Set up the Kernel MMU Memory Map
 void jh7110_kernel_mappings(void) {
   ...
   // Map I/O Region, use enough large page tables for the I/O region
@@ -775,6 +775,7 @@ void jh7110_kernel_mappings(void) {
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a></td><td style="text-align: center"><strong><code>0x5060</code> <code>0000</code></strong></td><td style="text-align: left">20 MB</td></tr>
 </tbody></table>
 </div>
+<p>(<strong>Page Pool</strong> includes RAM Disk)</p>
 <p>The <strong>I/O Region overlaps</strong> with the Kernel Code, Data and Page Pool!</p>
 <p>This happens because the PLIC is located at <a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong><code>0xE000</code> <code>0000</code></strong></a>. Which is <strong>AFTER the RAM Region</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
@@ -784,7 +785,7 @@ void jh7110_kernel_mappings(void) {
 </tbody></table>
 </div>
 <p>Thus we might introduce another Memory Region, just to <strong>map the PLIC</strong>.</p>
-<p>The <a href="https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf"><strong>OpenSBI Log</strong></a> might offer some hints on the Memory Mapping…</p>
+<p>The <a href="https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf#file-ox64-nuttx7-log-L52-L66"><strong>OpenSBI Log</strong></a> might offer some hints on the Memory Map…</p>
 <div class="example-wrap"><pre class="language-text"><code>Firmware Base       : 0x3ef80000
 Firmware Size       : 200 KB
 Domain0 Region00    : 0xe4008000-0xe400bfff (I)
@@ -815,7 +816,7 @@ Domain0 Next Arg1   : 0x51ff8000
 <p>Thus we’ll simply copy the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX Driver for BL602 UART</strong></a> to Ox64.</p>
 <p><strong>UART Interrupts</strong> are mandatory: If UART Interrupts aren’t implemented, NuttX Shell (NSH) and NuttX Apps <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>won’t print anything</strong></a>.</p>
 <p><em>What about other drivers: BL808 vs BL602?</em></p>
-<p>These controllers look highly similar on BL808 vs BL602. Which means we have plenty of NuttX Drivers to <strong>copy from BL602 to BL808!</strong></p>
+<p>The controllers below look highly similar on BL808 vs BL602. Which means we have plenty of NuttX Drivers to <strong>copy from BL602 to BL808!</strong></p>
 <div><table><thead><tr><th style="text-align: left">Controller</th><th style="text-align: center">BL808 RM</th><th style="text-align: center">BL602 RM</th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_i2c.c"><strong>I2C</strong></a></td><td style="text-align: center"><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>Page 430</strong></a></td><td style="text-align: center"><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf"><strong>Page 142</strong></a></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c"><strong>SPI</strong></a></td><td style="text-align: center"><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>Page 387</strong></a></td><td style="text-align: center"><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf"><strong>Page 115</strong></a></td></tr>
@@ -829,7 +830,7 @@ Domain0 Next Arg1   : 0x51ff8000
 </div>
 <p>Our <a href="https://lupyuen.github.io/articles/book"><strong>earlier experiments with BL602 NuttX</strong></a> proved that the drivers above work well. So we’re all set for BL808!</p>
 <p><a href="https://lupyuen.github.io/articles/auto">(BL602 NuttX is tested on <strong>Real Hardware</strong> every day)</a></p>
-<p><a href="https://github.com/lupyuen/nuttx/releases">(Still <strong>going strong</strong>!)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/tags">(Still <strong>going strong</strong>!)</a></p>
 <p><em>What about the drivers missing from BL602 NuttX?</em></p>
 <p>We’ll port the missing BL808 Drivers from Bouffalo Lab’s <a href="https://github.com/bouffalolab/bouffalo_sdk"><strong>BouffaloSDK</strong></a> to NuttX.</p>
 <p><a href="https://github.com/bouffalolab/bouffalo_sdk/blob/master/LICENSE">(BouffaloSDK is <strong>Apache 2.0 Licensed</strong>)</a></p>
@@ -837,7 +838,7 @@ Domain0 Next Arg1   : 0x51ff8000
 <p><a href="https://lupyuen.github.io/articles/semihost"><em>Initial RAM Disk for Star64 JH7110</em></a></p>
 <h1 id="appendix-initial-ram-disk"><a href="#appendix-initial-ram-disk">13 Appendix: Initial RAM Disk</a></h1>
 <p><em>What’s this Initial RAM Disk?</em></p>
-<p>The <strong>Initial RAM Disk</strong> contains the <strong>NuttX Shell</strong> (NSH) and the NuttX Apps.</p>
+<p>The <strong>Initial RAM Disk</strong> contains the Executable Binaries for <strong>NuttX Shell</strong> (NSH) and NuttX Apps.</p>
 <p>At startup, NuttX loads the Initial RAM Disk into RAM and mounts the File System, so that the NuttX Shell (and NuttX Apps) can be started later.</p>
 <p><a href="https://lupyuen.github.io/articles/semihost">(More about <strong>Initial RAM Disk</strong>)</a></p>
 <p><em>Why is the Initial RAM Disk missing from Ox64?</em></p>
@@ -847,12 +848,14 @@ Domain0 Next Arg1   : 0x51ff8000
 <li>
 <p>Load the Initial RAM Disk from a <strong>Separate File: initrd</strong> (similar to Star64)</p>
 <p>This means we need to modify the <a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd"><strong>U-Boot Script: boot-pine64.scr</strong></a></p>
+<p>And make it <a href="https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk"><strong>load the initrd</strong></a> file into RAM.</p>
 <p>(Which is good for separating the NuttX Kernel and NuttX Apps)</p>
 <p>OR…</p>
 </li>
 <li>
 <p>Append the Initial RAM Disk to the <strong>NuttX Kernel Image</strong></p>
-<p>So the U-Boot Bootloader will load the NuttX Kernel + Initial RAM Disk. And reuse the existing U-Boot Config on the microSD Card: <a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf"><strong>extlinux/extlinux.conf</strong></a> </p>
+<p>So the U-Boot Bootloader will load (one-shot into RAM) the NuttX Kernel + Initial RAM Disk.</p>
+<p>And we reuse the existing <strong>U-Boot Config</strong> on the microSD Card: <a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf"><strong>extlinux/extlinux.conf</strong></a></p>
 <p>(Which might be more efficient for our Limited RAM)</p>
 <p><strong>TODO:</strong> Can we mount the File System directly from the <strong>NuttX Kernel Image in RAM</strong>? Without copying to the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L26"><strong>RAM Disk Memory Region</strong></a>?</p>
 </li>
