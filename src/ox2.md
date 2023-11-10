@@ -1029,8 +1029,11 @@ riscv64-unknown-elf-objcopy \
   nuttx \
   nuttx.bin
 
+## Insert 32 KB of zeroes after NuttX Binary Image
+head -c 32768 /dev/zero >/tmp/nuttx.zero
+
 ## Append the Initial RAM Disk to the NuttX Binary Image
-cat nuttx.bin initrd \
+cat nuttx.bin /tmp/nuttx.zero initrd \
   >Image
 
 ## Overwrite the Linux Image on Ox64 microSD
