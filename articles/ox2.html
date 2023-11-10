@@ -331,7 +331,7 @@ void u16550_putc(FAR struct u16550_s *priv, int ch) {
 }
 </code></pre></div>
 <p>(Yeah the UART Buffer might overflow, we’ll fix later)</p>
-<p>We skip the reading and writing of <strong>other UART Registers</strong>, because we’ll patch them later: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L604-L632">uart_16550.c</a></p>
+<p><strong>For Other UART Registers</strong>: We skip the reading and writing of the registers, because we’ll patch them later: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L604-L632">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Read from UART Register
 uart_datawidth_t u16550_serialin(FAR struct u16550_s *priv, int offset) {
   return 0;
@@ -365,9 +365,9 @@ _assert: Assertion failed panic: at file: common/riscv_exception.c:85 task: Idle
 up_dump_register: EPC: 0000000050208086
 up_dump_register: A0: 000000000c002104 A1: ffffffffffffffff A2: 0000000000000001 A3: 0000000000000003
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/36b8c47abc2632063ca5cdebb958e3e8">(See the <strong>Complete Log</strong>)</a></p>
-<p><strong>MTVAL</strong> says that NuttX has crashed while reading the <strong>Invalid Data Address <code>0x0C00</code> <code>2104</code></strong>. (Hence the “Load Access Fault”)</p>
-<p>Why is Data Address <strong><code>0x0C00</code> <code>2104</code></strong> causing problems? First we learn about RISC-V Interrupts…</p>
+<p><a href="https://gist.github.com/lupyuen/36b8c47abc2632063ca5cdebb958e3e8#file-ox64-nuttx3-log-L111-L149">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-value-register-mtval"><strong>MTVAL (Machine Trap Value)</strong></a> says that NuttX has crashed while reading the <strong>Invalid Data Address <code>0x0C00</code> <code>2104</code></strong>. (Hence the “Load Access Fault”)</p>
+<p>Why is Data Address <strong><code>0x0C00</code> <code>2104</code></strong> causing unhappiness? First we learn about RISC-V Interrupts…</p>
 <p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller for Star64 JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/plic"><em>Platform-Level Interrupt Controller for Star64 JH7110</em></a></p>
 <h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">5 Platform-Level Interrupt Controller</a></h1>
@@ -399,7 +399,7 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
   spin_unlock_irqrestore(NULL, flags);
 }
 </code></pre></div>
-<p>Hence NuttX tried to modify a <strong>Memory-Mapped Register</strong>, and crashed.</p>
+<p>Hence NuttX tried to modify a <strong>Memory-Mapped Register</strong> that doesn’t exist, and crashed.</p>
 <p><em>But what Memory-Mapped Register?</em></p>
 <p>The offending Data Address <strong><code>0x0C00</code> <code>2104</code></strong> actually comes from the <strong>Star64 PLIC</strong>! (Platform-Level Interrupt Controller)</p>
 <div class="example-wrap"><pre class="language-c"><code>// Star64 PLIC Base Address
@@ -410,9 +410,9 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
 // From https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L34-L49
 #define JH7110_PLIC_ENABLE2 (JH7110_PLIC_BASE + 0x002104)
 </code></pre></div>
-<p>The <strong>PLIC Base Address</strong> is different for Ox64, let’s change it.</p>
+<p>PLIC for Ox64 is in a different place, let’s change it.</p>
 <p><em>What’s the PLIC Base Address for Ox64?</em></p>
-<p>Ox64 PLIC Base Address is <strong><code>0xE000</code> <code>0000</code></strong>, according to the Linux Device Tree: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L129-L138">bl808-pine64-ox64.dts</a></p>
+<p>For Ox64, PLIC Base Address is <strong><code>0xE000</code> <code>0000</code></strong>, according to the Linux Device Tree: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L129-L138">bl808-pine64-ox64.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>interrupt-controller@e0000000 {
   compatible = &quot;thead,c900-plic&quot;;
   reg = &lt;0xe0000000 0x4000000&gt;;
@@ -452,7 +452,7 @@ _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_
 <p>Rightfully, NuttX should print a helpful <strong>RISC-V Exception Crash Dump</strong> with the offending Data Address. <a href="https://lupyuen.github.io/articles/ox2#fix-the-uart-driver">(Like this)</a></p>
 <p>But NuttX wasn’t terribly helpful for this RISC-V Exception. Very odd!</p>
 <p><em>Where did it crash?</em></p>
-<p>Based on our <a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121"><strong>Debug Log</strong></a>, NuttX crashes right before setting the PLIC: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
+<p>Based on our <a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121"><strong>Debug Log</strong></a>, NuttX crashes right just setting the PLIC: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Interrupts
 void up_irqinitialize(void) {
   ...
@@ -471,7 +471,7 @@ void up_irqinitialize(void) {
   riscv_exception_attach();
 </code></pre></div>
 <p><em>Something doesn’t look right…</em></p>
-<p>Yeah we attach the RISC-V Exception Handlers (<strong>riscv_exception_attach</strong>)…</p>
+<p>Yeah in the code above, we attach the RISC-V Exception Handlers (<strong>riscv_exception_attach</strong>)…</p>
 <p>After the code has crashed! (<strong>putreg32</strong>)</p>
 <p>Hence we <strong>attach the Exception Handlers</strong> earlier: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Interrupts
@@ -492,10 +492,10 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 </code></pre></div>
 <p>Then <strong>riscv_exception_attach</strong> will handle all RISC-V Exceptions correctly, including IRQ 15: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142">riscv_exception.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Attach standard exception with suitable handler
+<div class="example-wrap"><pre class="language-c"><code>// Attach the RISC-V Exception Handlers
 void riscv_exception_attach(void) {
   ...
-  // Handle Store/AMO Page Fault (IRQ 15)
+  // IRQ 15: Store / AMO Page Fault
   irq_attach(RISCV_IRQ_STOREPF, riscv_exception, NULL);
 </code></pre></div>
 <p><em>Does it work?</em></p>
@@ -508,7 +508,7 @@ MCAUSE: f
 EPC:    50207e6a
 MTVAL:  e0002100
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/85db0510712ba8c660e10f922d4564c9">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/85db0510712ba8c660e10f922d4564c9#file-ox64-nuttx5-log-L136-L161">(See the <strong>Complete Log</strong>)</a></p>
 <p>When we look up the NuttX Kernel Disassembly, the Exception Code Address <strong><code>0x5020</code> <code>7E6A</code></strong> (EPC) comes from our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L58-L64"><strong>PLIC Code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
   putreg32(0x0, JH7110_PLIC_ENABLE1);
@@ -516,7 +516,8 @@ MTVAL:  e0002100
     50207e68: 0786      slli a5,a5,0x1
     50207e6a: 1007a023  sw   zero,256(a5) # 70001100 &lt;__ramdisk_end+0x1e601100&gt;
 </code></pre></div>
-<p>The offending Data Address is <strong><code>0xE000</code> <code>2100</code></strong>. Which is our BL808 PLIC!</p>
+<p>The offending Data Address (MTVAL) is <strong><code>0xE000</code> <code>2100</code></strong>.</p>
+<p>Which is our Ox64 PLIC!</p>
 <p><img src="https://lupyuen.github.io/images/ox2-exception.png" alt="Store / AMO Page Fault Exception" /></p>
 <h1 id="add-plic-to-memory-map"><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a></h1>
 <p><em>But is 0xE000 2100 accessible?</em></p>
