@@ -145,7 +145,7 @@ Ox64's BL808 UART looks super familiar. When we compare these UARTs...
 
 We discover that BL808 UART works the __same way as BL602__!
 
-Thus we may seek guidance from the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725).
+Thus we seek guidance from the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725).
 
 _Thanks! But how do we print to BL808 UART?_
 
