@@ -591,7 +591,7 @@ nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
 
 The offending Data Address (MTVAL) is __`0xE000` `2100`__.
 
-Which is our Ox64 PLIC!
+Which is our Ox64 PLIC! We scrutinise PLIC again...
 
 ![Store / AMO Page Fault Exception](https://lupyuen.github.io/images/ox2-exception.png)
 
