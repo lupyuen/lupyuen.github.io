@@ -951,6 +951,8 @@ Thus we'll simply copy the [__NuttX Driver for BL602 UART__](https://github.com/
 
 __UART Interrupts__ are mandatory: If UART Interrupts aren't implemented, NuttX Shell (NSH) and NuttX Apps [__won't print anything__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu).
 
+__Update:__ BL602 UART Driver has been [__ported to Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c)! But minus the UART Interrupts
+
 _What about other drivers: BL808 vs BL602?_
 
 The controllers below look highly similar on BL808 vs BL602. Which means we have plenty of NuttX Drivers to __copy from BL602 to BL808!__
