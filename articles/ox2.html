@@ -232,7 +232,7 @@ void bl602_send(struct uart_dev_s *dev, int ch) {
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/hardware/bl602_uart.h#L38-L58">(From above <strong>FIFO_WDATA_OFFSET</strong>)</a></p>
 </li>
 </ul>
-<p>Based on our <a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console"><strong>Star64 Debug Code</strong></a>, we write this in <strong>RISC-V Assembly</strong>…</p>
+<p>Based on our <a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console"><strong>Star64 Debug Code</strong></a>, we write this in <strong>RISC-V Assembly</strong> to print “<strong><code>123</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load UART3 Base Address to Register t0 */
 li  t0, 0x30002000
 
