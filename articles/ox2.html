@@ -517,7 +517,7 @@ MTVAL:  e0002100
     50207e6a: 1007a023  sw   zero,256(a5) # 70001100 &lt;__ramdisk_end+0x1e601100&gt;
 </code></pre></div>
 <p>The offending Data Address (MTVAL) is <strong><code>0xE000</code> <code>2100</code></strong>.</p>
-<p>Which is our Ox64 PLIC!</p>
+<p>Which is our Ox64 PLIC! We scrutinise PLIC again…</p>
 <p><img src="https://lupyuen.github.io/images/ox2-exception.png" alt="Store / AMO Page Fault Exception" /></p>
 <h1 id="add-plic-to-memory-map"><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a></h1>
 <p><em>But is 0xE000 2100 accessible?</em></p>
