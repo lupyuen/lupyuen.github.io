@@ -70,7 +70,7 @@ riscv64-unknown-elf-objdump \
   2>&1
 ```
 
-[(Remember to install the __Build Prequisites and Toolchain__)](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
+[(Remember to install the __Build Prerequisites and Toolchain__)](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
 
 [(And enable __Scheduler Info Output__)](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu)
 
@@ -113,7 +113,7 @@ Retrieving file: /extlinux/../bl808-pine64-ox64.dtb
 Starting kernel...
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/8134f17502db733ce87d6fa8b00eab55)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/8134f17502db733ce87d6fa8b00eab55#file-ox64-nuttx-log-L104-L114)
 
 _Shouldn't we see a Crash Dump?_
 
@@ -133,7 +133,7 @@ _We have a strong hunch that NuttX is actually booting on Ox64... How to prove i
 
 We'll print something in the __NuttX Boot Code__. Which is in __RISC-V Assembly__!
 
-BL808 UART looks super familiar. When we compare these UARTs...
+Ox64's BL808 UART looks super familiar. When we compare these UARTs...
 
 - __BL808 UART Controller__
 
@@ -149,7 +149,7 @@ Thus we may seek guidance from the [__NuttX Driver for BL602 UART__](https://git
 
 _Thanks! But how do we print to BL808 UART?_
 
-This is how the __BL602 UART Driver__ prints to the Serial Console: [bl602_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725)
+__BL602 UART Driver__ prints to the Serial Console like so: [bl602_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c#L704-L725)
 
 ```c
 // Output FIFO Offset is 0x88
@@ -168,7 +168,7 @@ void bl602_send(struct uart_dev_s *dev, int ch) {
 }
 ```
 
-We do the same for BL808. We simply write the character to...
+For BL808: We do the same. We simply write the character to...
 
 - __UART3 Base Address: `0x3000` `2000`__
 
@@ -204,7 +204,7 @@ sb  t1, 0x88(t0)
 
 [(__`sb`__ stores a byte from a Register into an Address Offset)](https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions)
 
-We insert the code above into the [__NuttX Boot Code:__ jh7110_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L69-L87)
+We insert the code above into our [__NuttX Boot Code:__ jh7110_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L69-L87)
 
 And we see (pic above)...
 
@@ -213,13 +213,13 @@ Starting kernel...
 123
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb)
+Our hunch is 100% correct, __NuttX is ALIVE on Ox64__ yay!
 
-Our hunch is correct, __NuttX is ALIVE on Ox64__ yay!
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L112-L115)
 
 _Anything else we changed in the NuttX Boot Code?_
 
-OpenSBI boots on Ox64 with [__Hart ID 0__](https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L57) (instead of 1). Which means we remove this code: [jh7110_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93)
+OpenSBI boots on Ox64 with [__Hart ID 0__](https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L57) (instead of 1). Which means we remove this adjustment for Hart ID: [jh7110_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93)
 
 ```text
 /* We assume that OpenSBI has passed Hart ID (value 1) in Register a0.
@@ -231,9 +231,9 @@ OpenSBI boots on Ox64 with [__Hart ID 0__](https://gist.github.com/lupyuen/1f895
 
 _Surely Ox64 boots at a different RAM Address from Star64?_
 
-Yep we fix the __NuttX Boot Address__ for Ox64.
+Yep! Next we fix the __NuttX Boot Address__ for Ox64.
 
-From the [__U-Boot Bootloader__](https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7) we see that Ox64 boots Linux at this address...
+From the [__U-Boot Bootloader__](https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7#file-ox64-uboot-log-L193-L220) we see that Ox64 boots Linux at this address...
 
 ```bash
 $ printenv
@@ -259,15 +259,14 @@ We update the Memory Regions in the __NuttX Linker Script__: [ld.script](https:/
 ```c
 MEMORY
 {
-  kflash (rx) :   ORIGIN = 0x50200000, LENGTH = 2048K   /* w/ cache */
-  ksram (rwx) :   ORIGIN = 0x50400000, LENGTH = 2048K   /* w/ cache */
-  pgram (rwx) :   ORIGIN = 0x50600000, LENGTH = 4096K   /* w/ cache */
-  ramdisk (rwx) : ORIGIN = 0x50A00000, LENGTH = 16M     /* w/ cache */
-}
-/* TODO: Use up the entire 64 MB RAM */
+  kflash (rx) :   ORIGIN = 0x50200000, LENGTH = 2048K /* w/ cache */
+  ksram (rwx) :   ORIGIN = 0x50400000, LENGTH = 2048K /* w/ cache */
+  pgram (rwx) :   ORIGIN = 0x50600000, LENGTH = 4096K /* w/ cache */
+  ramdisk (rwx) : ORIGIN = 0x50A00000, LENGTH = 16M   /* w/ cache */
+} /* TODO: Use up the entire 64 MB RAM */
 ```
 
-We make the same changes to the __NuttX Build Configuration__: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig)
+We make the same changes to the __NuttX Build Configuration__: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L31-L77)
 
 ```text
 CONFIG_RAM_START=0x50200000
