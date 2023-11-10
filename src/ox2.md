@@ -1029,7 +1029,7 @@ riscv64-unknown-elf-objcopy \
   nuttx \
   nuttx.bin
 
-## Insert 32 KB of zeroes after NuttX Binary Image
+## Insert 32 KB of zeroes after NuttX Binary Image for Kernel Stack
 head -c 32768 /dev/zero >/tmp/nuttx.zero
 
 ## Append the Initial RAM Disk to the NuttX Binary Image
