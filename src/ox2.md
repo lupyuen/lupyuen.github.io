@@ -744,6 +744,10 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=38235465)
 
+-   [__Discuss this article on Pine64 Forum__](https://forum.pine64.org/showthread.php?tid=18858)
+
+-   [__Discuss this article on Bouffalo Lab Forum__](https://bbs.bouffalolab.com/d/258-article-risc-v-ox64-bl808-sbc-starting-apache-nuttx-real-time-os)
+
 -   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 
 -   [__My Other Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
@@ -955,11 +959,13 @@ Domain0 Next Address: 0x50000000
 Domain0 Next Arg1   : 0x51ff8000
 ```
 
-(__`0x3EF8` `0000`__ is probably protected because it contains the OpenSBI Firmware)
+(__`0x3EF8` `0000`__ is probably protected because it contains the OpenSBI Firmware. What is "__`(I)`__"?)
 
-[(More about __OpenSBI Domains__)](https://github.com/riscv-software-src/opensbi/blob/master/docs/domain_support.md)
+Check out our progress here...
 
-__TODO:__ What is "__`(I)`__" for Domain Permission?
+- [__"NuttX Memory Map for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64#nuttx-memory-map-for-ox64-bl808)
+
+  [(More about __OpenSBI Domains__)](https://github.com/riscv-software-src/opensbi/blob/master/docs/domain_support.md)
 
 # Appendix: UART Driver for Ox64
 
