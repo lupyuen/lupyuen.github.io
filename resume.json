@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "RISC-V Ox64 BL808 SBC: Starting Apache NuttX Real-Time Operating System",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-11-12",
+      "website": "https://lupyuen.github.io/articles/ox2",
+      "summary": "Let's boot a tiny bit of Apache NuttX Real-Time Operating System... On Pine64 Ox64 BL808 RISC-V SBC"
+    },
+    {
       "name": "Ox64 BL808 RISC-V SBC: Booting Linux and (maybe) Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-11-05",

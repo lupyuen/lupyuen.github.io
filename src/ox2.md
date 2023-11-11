@@ -712,9 +712,21 @@ That's all for today! NuttX has booted so much code on Ox64. Here's the flow of 
 
 # What's Next
 
-TODO: This week we made plenty of progress starting __Apache NuttX RTOS__ on the tiny __Ox64 BL808 RISC-V SBC__...
+This week we made plenty of progress starting __Apache NuttX RTOS__ on the tiny __Ox64 BL808 RISC-V SBC__...
 
-We booted NuttX on Ox64 BL808 RISC-V SBC through sheer tenacity or desperation or lots of luck
+- Starting with __NuttX for Star64 JH7110__ RISC-V SBC...
+
+- We booted NuttX on __Ox64 BL808__ RISC-V SBC through sheer tenacity or desperation or lots of luck
+
+- Thanks to the Debug Logs we added in __RISC-V Assembly__
+
+- And our modified __NuttX UART Driver__ that prints on Ox64
+
+- We fixed the __Platform-Level Interrupt Controller__
+
+- Discovered why __RISC-V Exceptions__ weren't dumped correctly
+
+- As we planned for the upcoming __Initial RAM Disk__
 
 We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
 
