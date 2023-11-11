@@ -920,6 +920,7 @@ This happens because the PLIC is located at [__`0xE000` `0000`__](https://lupyue
 |:--------------|:-------------:|:----
 | I/O Region | __`0x0000` `0000`__ | __`0x5000` `0000`__
 | RAM | __`0x5000` `0000`__ | 64 MB
+| Apps | __`0xC000` `0000`__ | _(See below)_
 | PLIC | __`0xE000` `0000`__ | ???
 
 Also [__NuttX Apps will fail__](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89#file-ox64-nuttx13-log-L188-L189) because they run in the (Virtual) User Address Space at __`0xC000` `0000`__: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L26)
