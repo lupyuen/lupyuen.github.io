@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>RISC-V Ox64 BL808 SBC: Starting Apache NuttX Real-Time Operating System</title>
+            <link>https://lupyuen.github.io/articles/ox2</link>
+            <description><![CDATA[Let's boot a tiny bit of Apache NuttX Real-Time Operating System... On Pine64 Ox64 BL808 RISC-V SBC]]></description>
+            <guid>https://lupyuen.github.io/articles/ox2</guid>
+            <pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Ox64 BL808 RISC-V SBC: Booting Linux and (maybe) Apache NuttX RTOS</title>
             <link>https://lupyuen.github.io/articles/ox64</link>
             <description><![CDATA[Let's boot Linux on Pine64 Ox64 BL808 RISC-V SBC... As we figure out how Apache NuttX RTOS might run on Ox64]]></description>
