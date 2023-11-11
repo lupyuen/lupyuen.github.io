@@ -716,7 +716,7 @@ This week we made plenty of progress starting __Apache NuttX RTOS__ on the tiny 
 
 - We took __NuttX for Star64 JH7110__ RISC-V SBC
 
-- And booted it on __Ox64 BL808__ RISC-V SBC
+- And booted it (semi-successfully) on __Ox64 BL808__ RISC-V SBC
 
   (Through sheer tenacity or desperation or lots of luck)
 
