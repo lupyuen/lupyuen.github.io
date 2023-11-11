@@ -922,6 +922,19 @@ This happens because the PLIC is located at [__`0xE000` `0000`__](https://lupyue
 | RAM | __`0x5000` `0000`__ | 64 MB
 | PLIC | __`0xE000` `0000`__ | ???
 
+Also __NuttX Apps will fail__ because they run in the (Virtual) User Address Space at __`0xC000` `0000`__: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L26)
+
+```text
+CONFIG_ARCH_TEXT_VBASE=0xC0000000
+CONFIG_ARCH_TEXT_NPAGES=128
+CONFIG_ARCH_DATA_VBASE=0xC0100000
+CONFIG_ARCH_DATA_NPAGES=128
+CONFIG_ARCH_HEAP_VBASE=0xC0200000
+CONFIG_ARCH_HEAP_NPAGES=128
+```
+
+But our Kernel Memory Space already extends to __`0xF000` `0000`__!
+
 Thus we might introduce another Memory Region, just to __map the PLIC__.
 
 The [__OpenSBI Log__](https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf#file-ox64-nuttx7-log-L52-L66) might offer some hints on the Memory Map...
