@@ -951,7 +951,9 @@ Thus we'll simply copy the [__NuttX Driver for BL602 UART__](https://github.com/
 
 __UART Interrupts__ are mandatory: If UART Interrupts aren't implemented, NuttX Shell (NSH) and NuttX Apps [__won't print anything__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu).
 
-__Update:__ BL602 UART Driver has been [__ported to Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c)! But minus the UART Interrupts
+BL602 UART Driver has just been [__ported to Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c)! (Minus the UART Interrupts) Check the progress here...
+
+- [__"NuttX UART Driver for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64#nuttx-uart-driver-for-ox64-bl808)
 
 _What about other drivers: BL808 vs BL602?_
 
@@ -1018,6 +1020,8 @@ Two ways we can load the Initial RAM Disk...
 
     (Which might be more efficient for our Limited RAM)
 
+    [(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
+
     __TODO:__ Can we mount the File System directly from the __NuttX Kernel Image in RAM__? Without copying to the [__RAM Disk Memory Region__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L26)?
 
 We'll probably adopt the Second Method, since we are low on RAM. Like this...
@@ -1037,7 +1041,9 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
   >Image
 
 ## Overwrite the Linux Image on Ox64 microSD
-cp Image "/Volumes/NO NAME"
+cp Image "/Volumes/NO NAME/"
 ```
 
-[(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
+Check out the progress here...
+
+- [__"Initial RAM Disk for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64#initial-ram-disk-for-ox64-bl808)
