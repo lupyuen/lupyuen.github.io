@@ -951,7 +951,7 @@ Thus we'll simply copy the [__NuttX Driver for BL602 UART__](https://github.com/
 
 __UART Interrupts__ are mandatory: If UART Interrupts aren't implemented, NuttX Shell (NSH) and NuttX Apps [__won't print anything__](https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu).
 
-BL602 UART Driver has just been [__ported to Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c)! (Minus the UART Interrupts) Check the progress here...
+BL602 UART Driver has just been [__ported to Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c)! (Minus the UART Interrupts) Check our progress here...
 
 - [__"NuttX UART Driver for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64#nuttx-uart-driver-for-ox64-bl808)
 
@@ -1044,6 +1044,6 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
 cp Image "/Volumes/NO NAME/"
 ```
 
-Check out the progress here...
+Check out our progress here...
 
 - [__"Initial RAM Disk for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64#initial-ram-disk-for-ox64-bl808)
