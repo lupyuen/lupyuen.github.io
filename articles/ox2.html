@@ -815,7 +815,7 @@ Domain0 Next Arg1   : 0x51ff8000
 <p>We discover that BL808 UART works the <strong>same way as BL602</strong>!</p>
 <p>Thus we’ll simply copy the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX Driver for BL602 UART</strong></a> to Ox64.</p>
 <p><strong>UART Interrupts</strong> are mandatory: If UART Interrupts aren’t implemented, NuttX Shell (NSH) and NuttX Apps <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>won’t print anything</strong></a>.</p>
-<p>BL602 UART Driver has just been <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c"><strong>ported to Ox64</strong></a>! (Minus the UART Interrupts) Check the progress here…</p>
+<p>BL602 UART Driver has just been <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c"><strong>ported to Ox64</strong></a>! (Minus the UART Interrupts) Check our progress here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/nuttx-ox64#nuttx-uart-driver-for-ox64-bl808"><strong>“NuttX UART Driver for Ox64 BL808”</strong></a></li>
 </ul>
@@ -882,7 +882,7 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
 ## Overwrite the Linux Image on Ox64 microSD
 cp Image &quot;/Volumes/NO NAME/&quot;
 </code></pre></div>
-<p>Check out the progress here…</p>
+<p>Check out our progress here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/nuttx-ox64#initial-ram-disk-for-ox64-bl808"><strong>“Initial RAM Disk for Ox64 BL808”</strong></a></li>
 </ul>
