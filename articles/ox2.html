@@ -644,6 +644,12 @@ DEBUGASSERT(ret &gt;= 0);
 <p><a href="https://news.ycombinator.com/item?id=38235465"><strong>Discuss this article on Hacker News</strong></a></p>
 </li>
 <li>
+<p><a href="https://forum.pine64.org/showthread.php?tid=18858"><strong>Discuss this article on Pine64 Forum</strong></a></p>
+</li>
+<li>
+<p><a href="https://bbs.bouffalolab.com/d/258-article-risc-v-ox64-bl808-sbc-starting-apache-nuttx-real-time-os"><strong>Discuss this article on Bouffalo Lab Forum</strong></a></p>
+</li>
+<li>
 <p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Current Project: “Apache NuttX RTOS for Ox64 BL808”</strong></a></p>
 </li>
 <li>
@@ -832,9 +838,14 @@ Domain0 Region03    : 0x00000000-0xffffffffffffffff (R,W,X)
 Domain0 Next Address: 0x50000000
 Domain0 Next Arg1   : 0x51ff8000
 </code></pre></div>
-<p>(<strong><code>0x3EF8</code> <code>0000</code></strong> is probably protected because it contains the OpenSBI Firmware)</p>
+<p>(<strong><code>0x3EF8</code> <code>0000</code></strong> is probably protected because it contains the OpenSBI Firmware. What is “<strong><code>(I)</code></strong>”?)</p>
+<p>Check out our progress here…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#nuttx-memory-map-for-ox64-bl808"><strong>“NuttX Memory Map for Ox64 BL808”</strong></a></p>
 <p><a href="https://github.com/riscv-software-src/opensbi/blob/master/docs/domain_support.md">(More about <strong>OpenSBI Domains</strong>)</a></p>
-<p><strong>TODO:</strong> What is “<strong><code>(I)</code></strong>” for Domain Permission?</p>
+</li>
+</ul>
 <h1 id="appendix-uart-driver-for-ox64"><a href="#appendix-uart-driver-for-ox64">12 Appendix: UART Driver for Ox64</a></h1>
 <p><em>How will we create the NuttX UART Driver for Ox64 BL808?</em></p>
 <p>Today NuttX supports the 32-bit predecessor of BL808: <a href="https://github.com/apache/nuttx/tree/master/arch/risc-v/src/bl602"><strong>Bouffalo Lab BL602</strong></a>.</p>
