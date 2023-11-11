@@ -815,7 +815,10 @@ Domain0 Next Arg1   : 0x51ff8000
 <p>We discover that BL808 UART works the <strong>same way as BL602</strong>!</p>
 <p>Thus we’ll simply copy the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX Driver for BL602 UART</strong></a> to Ox64.</p>
 <p><strong>UART Interrupts</strong> are mandatory: If UART Interrupts aren’t implemented, NuttX Shell (NSH) and NuttX Apps <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>won’t print anything</strong></a>.</p>
-<p><strong>Update:</strong> BL602 UART Driver has been <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c"><strong>ported to Ox64</strong></a>! But minus the UART Interrupts</p>
+<p>BL602 UART Driver has just been <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c"><strong>ported to Ox64</strong></a>! (Minus the UART Interrupts) Check the progress here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-ox64#nuttx-uart-driver-for-ox64-bl808"><strong>“NuttX UART Driver for Ox64 BL808”</strong></a></li>
+</ul>
 <p><em>What about other drivers: BL808 vs BL602?</em></p>
 <p>The controllers below look highly similar on BL808 vs BL602. Which means we have plenty of NuttX Drivers to <strong>copy from BL602 to BL808!</strong></p>
 <div><table><thead><tr><th style="text-align: left">Controller</th><th style="text-align: center">BL808 RM</th><th style="text-align: center">BL602 RM</th></tr></thead><tbody>
@@ -858,6 +861,7 @@ Domain0 Next Arg1   : 0x51ff8000
 <p>So the U-Boot Bootloader will load (one-shot into RAM) the NuttX Kernel + Initial RAM Disk.</p>
 <p>And we reuse the existing <strong>U-Boot Config</strong> on the microSD Card: <a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf"><strong>extlinux/extlinux.conf</strong></a></p>
 <p>(Which might be more efficient for our Limited RAM)</p>
+<p><a href="https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow">(See the <strong>U-Boot Boot Flow</strong>)</a></p>
 <p><strong>TODO:</strong> Can we mount the File System directly from the <strong>NuttX Kernel Image in RAM</strong>? Without copying to the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L26"><strong>RAM Disk Memory Region</strong></a>?</p>
 </li>
 </ol>
@@ -876,9 +880,12 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
   &gt;Image
 
 ## Overwrite the Linux Image on Ox64 microSD
-cp Image &quot;/Volumes/NO NAME&quot;
+cp Image &quot;/Volumes/NO NAME/&quot;
 </code></pre></div>
-<p><a href="https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow">(See the <strong>U-Boot Boot Flow</strong>)</a></p>
+<p>Check out the progress here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-ox64#initial-ram-disk-for-ox64-bl808"><strong>“Initial RAM Disk for Ox64 BL808”</strong></a></li>
+</ul>
 
     
 </body>
