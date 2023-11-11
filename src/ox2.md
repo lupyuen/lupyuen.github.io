@@ -714,9 +714,11 @@ That's all for today! NuttX has booted so much code on Ox64. Here's the flow of 
 
 This week we made plenty of progress starting __Apache NuttX RTOS__ on the tiny __Ox64 BL808 RISC-V SBC__...
 
-- Starting with __NuttX for Star64 JH7110__ RISC-V SBC...
+- We took __NuttX for Star64 JH7110__ RISC-V SBC
 
-- We booted NuttX on __Ox64 BL808__ RISC-V SBC through sheer tenacity or desperation or lots of luck
+- And booted it on __Ox64 BL808__ RISC-V SBC
+
+  (Through sheer tenacity or desperation or lots of luck)
 
 - Thanks to the Debug Logs we added in __RISC-V Assembly__
 
