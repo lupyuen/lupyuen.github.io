@@ -1,4 +1,4 @@
-# Ox64 BL808 RISC-V SBC: Starting Apache NuttX Real-Time Operating System
+# RISC-V Ox64 BL808 SBC: Starting Apache NuttX Real-Time Operating System
 
 📝 _12 Nov 2023_
 
