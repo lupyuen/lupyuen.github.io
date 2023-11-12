@@ -453,7 +453,7 @@ _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_
 <p>Rightfully, NuttX should print a helpful <strong>RISC-V Exception Crash Dump</strong> with the offending Data Address. <a href="https://lupyuen.github.io/articles/ox2#fix-the-uart-driver">(Like this)</a></p>
 <p>But NuttX wasn’t terribly helpful for this RISC-V Exception. Very odd!</p>
 <p><em>Where did it crash?</em></p>
-<p>Based on our <a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121"><strong>Debug Log</strong></a>, NuttX crashes right just setting the PLIC: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
+<p>Based on our <a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121"><strong>Debug Log</strong></a>, NuttX crashes just before setting the PLIC: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Interrupts
 void up_irqinitialize(void) {
   ...
