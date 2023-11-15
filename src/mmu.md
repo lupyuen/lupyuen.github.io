@@ -216,7 +216,7 @@ _How did we get the Index of the Page Table Entry?_
 
 To compute the Index of the Level 2 __Page Table Entry (PTE)__ for Interrupt Controller `0xE000` `0000`...
 
-- __Virutal Address: vaddr__ = `0xE000` `0000`
+- __Virtual Address: vaddr__ = `0xE000` `0000`
 
   (Because Virtual Address = Actual Address, for now)
 
