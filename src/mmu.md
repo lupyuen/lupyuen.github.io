@@ -617,6 +617,8 @@ Yeah the SATP Register has changed! Let's investigate...
 
 [(See the __NuttX Virtual Memory Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3)
 
+TODO: SATP Screenshot 
+
 # Swap the SATP Register
 
 _SATP Register looks different from the earlier one in the Kernel..._
