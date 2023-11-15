@@ -121,7 +121,7 @@ But we have so many questions...
     #define PGT_L1_SIZE (512)  // Page Table Size is 4 KB
 
     // Allocate Level 1 Page Table from `.pgtables` section
-    size_t m_l1_pgtable[PGT_L1_SIZE]
+    static size_t m_l1_pgtable[PGT_L1_SIZE]
       locate_data(".pgtables");
     ```
 
@@ -230,7 +230,7 @@ To compute the Index of the Level 2 __Page Table Entry (PTE)__...
 
   (Extract Bits 9 to 17 to get Level 2 Index)
 
-  [(See __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
+  [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
 Do the same for __`0xEFFF_FFFF`__, and we'll get Index __`0x17F`__.
 
@@ -245,7 +245,7 @@ In NuttX we do this: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephon
 #define PGT_INT_L2_SIZE (512)  // Page Table Size is 4 KB
 
 // Allocate Level 2 Page Table from `.pgtables` section
-size_t m_int_l2_pgtable[PGT_INT_L2_SIZE]
+static size_t m_int_l2_pgtable[PGT_INT_L2_SIZE]
   locate_data(".pgtables");
 ```
 
@@ -301,7 +301,7 @@ Exactly! This is how we __connect our Level 2 Page Table__ back to Level 1...
 
   (Extract Bits 18 to 26 to get Level 1 Index)
 
-  [(See __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
+  [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
 _Why "NO RWX"?_
 
@@ -368,11 +368,23 @@ Suppose we're seeking address __`0x5020_1000`__. To compute the Index of the Lev
 
   (Extract Bits 0 to 18 to get Level 3 Index)
 
-  [(See __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
+  [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
 Thus address __`0x5020_1000`__ is configured by __Index 1__ of the Level 3 Page Table.
 
 TODO
+
+[jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L258-L268)
+
+```c
+#define PGT_L3_SIZE     (1024) /* Enough to map 4 MiB (2MiB x 2) */
+
+static size_t         m_l3_pgtable[PGT_L3_SIZE] locate_data(".pgtables");
+
+/* Map the kernel text and data for L2/L3 */
+map_region(KFLASH_START, KFLASH_START, KFLASH_SIZE, MMU_KTEXT_FLAGS);
+map_region(KSRAM_START, KSRAM_START, KSRAM_SIZE, MMU_KDATA_FLAGS);
+```
 
 # Connect Level 2 to Level 3
 
