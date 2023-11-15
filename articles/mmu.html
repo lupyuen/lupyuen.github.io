@@ -265,7 +265,7 @@ mmu_ln_map_region(
 <p>Do the same for <strong><code>0xEFFF_FFFF</code></strong>, and we’ll get Index <strong><code>0x17F</code></strong>.</p>
 <p>Thus our Page Table Index goes from <strong><code>0x100</code></strong> to <strong><code>0x17F</code></strong>.</p>
 <p><em>How to allocate the Level 2 Page Table?</em></p>
-<p>We do this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L58-L93">jh7110_mm_init.c</a></p>
+<p>In NuttX we do this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L58-L93">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Number of Page Table Entries (8 bytes per entry)
 #define PGT_INT_L2_SIZE (512)  // Page Table Size is 4 KB
 
@@ -276,7 +276,7 @@ size_t m_int_l2_pgtable[PGT_INT_L2_SIZE]
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L121-L127">(<strong><code>.pgtables</code></strong> comes from the Linker Script)</a></p>
 <p>Then GCC Linker respectfully allocates our Level 2 Page Table at RAM Address <strong><code>0x5040</code> <code>3000</code></strong>.</p>
 <p><em>How to populate the 128 Page Table Entries?</em></p>
-<p>Just do this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L249-L254">jh7110_mm_init.c</a></p>
+<p>Just do this in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L249-L254">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the Interrupt Controller in Level 2 Page Table
 mmu_ln_map_region(
   2,  // Level 2
@@ -293,6 +293,7 @@ mmu_ln_map_region(
 <p><em>We’re done with Level 2 Page Table…</em></p>
 <p><em>But Level 2 should talk back to Level 1 right?</em></p>
 <p>Exactly! This is how we <strong>connect the Level 2 Page Table</strong> back to Level 1…</p>
+<p><img src="https://lupyuen.github.io/images/mmu-l1kernel3.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <h1 id="smaller-chunks-level-3"><a href="#smaller-chunks-level-3">5 Smaller Chunks: Level 3</a></h1>
