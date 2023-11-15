@@ -312,11 +312,12 @@ mmu_ln_map_region(
 <li>
 <p><strong>L1 PTE Index</strong> <br> = <strong>vpn</strong> &gt;&gt; 18 <br> = 3</p>
 <p>(Extract Bits 18 to 26 to get Level 1 Index)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(See <strong>mmu_ln_setentry</strong>)</a></p>
 </li>
 </ul>
-<p><em>What’s “NO RWX”?</em></p>
+<p><em>Why “NO RWX”?</em></p>
 <p>When we set the <strong>Read, Write and Execute Bits</strong> to 0…</p>
-<p>The Sv39 MMU interprets the PPN (Physical Page Number) as a <strong>Pointer to the Level 2 Page Table</strong>.</p>
+<p>The Sv39 MMU interprets the PPN (Physical Page Number) as a <strong>Pointer to the Level 2 Page Table</strong>. That’s how we connect Level 1 to Level 2!</p>
 <p>(Remember: Actual Address = PPN * 4,096)</p>
 <p>In NuttX, we write this to <strong>connect L1 with L2</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L254-L258">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Connect the L1 and L2 Page Tables for Interrupt Controller
@@ -344,6 +345,24 @@ mmu_ln_setentry(
 </tbody></table>
 </div>
 <p><img src="https://lupyuen.github.io/images/mmu-l3kernel.jpg" alt="Level 3 Page Table for Kernel" /></p>
+<p><em>How do we compute a Level 3 Index?</em></p>
+<p>Suppose we’re seeking address <strong><code>0x5020_1000</code></strong>. To compute the Index of the Level 3 <strong>Page Table Entry (PTE)</strong>…</p>
+<ul>
+<li>
+<p><strong>Virtual Address: vaddr</strong> = <code>0x5020_1000</code></p>
+<p>(For Now: Virtual Address = Actual Address)</p>
+</li>
+<li>
+<p><strong>Virtual Page Number: vpn</strong> <br> =  <strong>vaddr</strong> &gt;&gt; 12 <br> = <code>0x50201</code></p>
+<p>(4,096 bytes per Memory Page)</p>
+</li>
+<li>
+<p><strong>L3 PTE Index</strong> <br> = <strong>vpn</strong> &amp; <code>0b111111111</code> <br> = 1</p>
+<p>(Extract Bits 0 to 18 to get Level 3 Index)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(See <strong>mmu_ln_setentry</strong>)</a></p>
+</li>
+</ul>
+<p>Thus address <strong><code>0x5020_1000</code></strong> is configured by <strong>Index 1</strong> of the Level 3 Page Table.</p>
 <p>TODO</p>
 <h1 id="connect-level-2-to-level-3"><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a></h1>
 <p>TODO</p>
