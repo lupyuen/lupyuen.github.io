@@ -301,11 +301,13 @@ Exactly! This is how we __connect our Level 2 Page Table__ back to Level 1...
 
   (Extract Bits 18 to 26 to get Level 1 Index)
 
-_What's "NO RWX"?_
+  [(See __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
+
+_Why "NO RWX"?_
 
 When we set the __Read, Write and Execute Bits__ to 0...
 
-The Sv39 MMU interprets the PPN (Physical Page Number) as a __Pointer to the Level 2 Page Table__.
+The Sv39 MMU interprets the PPN (Physical Page Number) as a __Pointer to the Level 2 Page Table__. That's how we connect Level 1 to Level 2!
 
 (Remember: Actual Address = PPN * 4,096)
 
@@ -349,6 +351,26 @@ Let's create a __Level 3 Page Table__ for the Kernel Code. And fill it with 4 KB
 | [__Kernel Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23) _(RAM)_ | __`0x5020_0000`__ | __`0x0020_0000`__ _(2 MB)_
 
 ![Level 3 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l3kernel.jpg)
+
+_How do we compute a Level 3 Index?_
+
+Suppose we're seeking address __`0x5020_1000`__. To compute the Index of the Level 3 __Page Table Entry (PTE)__...
+
+- __Virtual Address: vaddr__ = `0x5020_1000`
+
+  (For Now: Virtual Address = Actual Address)
+
+- __Virtual Page Number: vpn__ <br> =  __vaddr__ >> 12 <br> = `0x50201`
+
+  (4,096 bytes per Memory Page)
+
+- __L3 PTE Index__ <br> = __vpn__ & `0b111111111` <br> = 1
+
+  (Extract Bits 0 to 18 to get Level 3 Index)
+
+  [(See __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
+
+Thus address __`0x5020_1000`__ is configured by __Index 1__ of the Level 3 Page Table.
 
 TODO
 
