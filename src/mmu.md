@@ -167,7 +167,7 @@ But we have so many questions...
     To set the Level 1 __Page Table Entry__ for __`0x0`__ to __`0x3FFF` `FFFF`__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L227-L240)
 
     ```c
-    // Map the I/O Region in the MMU
+    // Map the I/O Region in Level 1 Page Table
     mmu_ln_map_region(
       1,             // Level 1
       PGT_L1_VBASE,  // 0x5040 7000 (Page Table Address)
@@ -236,11 +236,42 @@ Do the same for __`0xEFFF_FFFF`__, and we'll get Index __`0x17F`__.
 
 Thus our Page Table Index goes from __`0x100`__ to __`0x17F`__.
 
-TODO: PPN
+_How to allocate the Level 2 Page Table?_
 
-TODO: Allocate
+We do this: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L58-L93)
 
-TODO: Code
+```c
+// Number of Page Table Entries (8 bytes per entry)
+#define PGT_INT_L2_SIZE (512)  // Page Table Size is 4 KB
+
+// Allocate Level 2 Page Table from `.pgtables` section
+size_t m_int_l2_pgtable[PGT_INT_L2_SIZE]
+  locate_data(".pgtables");
+```
+
+[(__`.pgtables`__ comes from the Linker Script)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L121-L127)
+
+Then GCC Linker respectfully allocates our Level 2 Page Table at RAM Address __`0x5040` `3000`__.
+
+_How to populate the 128 Page Table Entries?_
+
+Just do this: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L249-L254)
+
+```c
+// Map the Interrupt Controller in Level 2 Page Table
+mmu_ln_map_region(
+  2,  // Level 2
+  PGT_INT_L2_PBASE,  // 0x5040 3000 (Page Table Address)
+  0xE0000000,   // Physical Address of Interrupt Controller
+  0xE0000000,   // Virtual Address of Interrupt Controller
+  0x10000000,   // Size
+  MMU_IO_FLAGS  // Read + Write + Global
+);
+```
+
+[(__mmu_ln_map_region__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L163)
+
+But we're not done yet! Next we connect the Levels...
 
 # Connect Level 1 to Level 2
 
