@@ -429,7 +429,7 @@ mmu_ln_map_region(
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156">(<strong>mmu_ln_map_region</strong> is defined here)</a> </p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-page-pool-level-2">(See the <strong>NuttX Page Pool Log</strong>)</a></p>
-<p><em>Have we forgotten something?</em></p>
+<p><em>Did we forget something?</em></p>
 <p>Oh yeah, remember to <strong>connect the Level 1 and 2</strong> Page Tables: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L268-L274">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Connect the L1 and L2 Page Tables
 // for Kernel Code, Data and Page Pool
@@ -562,7 +562,7 @@ mmu_enable(
 <p>Ah there’s a catch… Remember the <strong>“G” Global Permission</strong> from earlier?</p>
 <p>This means that the Page Table Entry will be effective across <strong>ALL Address Spaces</strong>! Even in our Applications!</p>
 <p><em>Huh? Our Applications can meddle with the I/O Memory?</em></p>
-<p>Nope they can’t, because the <strong>“U” User Permission</strong> is not granted. So we’re well protected!</p>
+<p>Nope they can’t, because the <strong>“U” User Permission</strong> is denied. So we’re well protected!</p>
 <p>TODO: SATP Log</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
