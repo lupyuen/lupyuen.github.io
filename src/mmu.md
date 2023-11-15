@@ -214,7 +214,9 @@ So we create a __Level 2 Page Table__ (also 4,096 bytes). And we populate __128 
 
 _How did we get the Index of the Page Table Entry?_
 
-To compute the Index of the Level 2 __Page Table Entry (PTE)__ for Interrupt Controller `0xE000_0000`...
+Our Interrupt Controller is at __`0xE000_0000`__.
+
+To compute the Index of the Level 2 __Page Table Entry (PTE)__...
 
 - __Virtual Address: vaddr__ = `0xE000_0000`
 
@@ -229,6 +231,10 @@ To compute the Index of the Level 2 __Page Table Entry (PTE)__ for Interrupt Con
   (Extract Bits 9 to 17 to get Level 2 Index)
 
   [(See __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
+
+Do the same for __`0xEFFF_FFFF`__, and we'll get Index __`0x17F`__.
+
+Thus our Page Table Index goes from __`0x100`__ to __`0x17F`__.
 
 TODO: PPN
 
