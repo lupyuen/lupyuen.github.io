@@ -54,9 +54,9 @@ Let's learn things a little differently! This article will read (and look) like 
 
 (Apologies to my fellow CS Teachers)
 
-![Pine64 Ox64 64-bit RISC-V SBC](https://lupyuen.github.io/images/ox64-solder.jpg)
+![Pine64 Ox64 64-bit RISC-V SBC. Sorry for my substandard soldering.](https://lupyuen.github.io/images/ox64-solder.jpg)
 
-[_Pine64 Ox64 64-bit RISC-V SBC_](https://wiki.pine64.org/wiki/Ox64)
+[_Pine64 Ox64 64-bit RISC-V SBC. Sorry for my substandard soldering._](https://wiki.pine64.org/wiki/Ox64)
 
 # Memory Protection
 
