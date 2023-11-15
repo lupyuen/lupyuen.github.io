@@ -221,7 +221,7 @@ mmu_ln_map_region(
   PGT_L1_VBASE,  // 0x5040 7000 (Page Table Address)
   MMU_IO_BASE,   // 0x0 (Physical Address)
   MMU_IO_BASE,   // 0x0 (Virtual Address)
-  MMU_IO_SIZE,   // 0x4000 0000 (Size)
+  MMU_IO_SIZE,   // 0x4000 0000 (Size is 1 GB)
   MMU_IO_FLAGS   // Read + Write + Global
 );
 </code></pre></div>
@@ -287,7 +287,7 @@ mmu_ln_map_region(
   PGT_INT_L2_PBASE,  // 0x5040 3000 (Page Table Address)
   0xE0000000,   // Physical Address of Interrupt Controller
   0xE0000000,   // Virtual Address of Interrupt Controller
-  0x10000000,   // Size
+  0x10000000,   // 256 MB (Size)
   MMU_IO_FLAGS  // Read + Write + Global
 );
 </code></pre></div>
@@ -344,12 +344,14 @@ mmu_ln_setentry(
 <p>Yep we have smaller <strong>Level 3 Chunks</strong> of <strong>4 KB</strong> each.</p>
 <p>Let’s create a <strong>Level 3 Page Table</strong> for the Kernel Code. And fill it with 4 KB Chunks!</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x20_0000</code></strong> <em>(2 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5040_0000</code></strong></td><td style="text-align: left"><strong><code>0x20_0000</code></strong> <em>(2 MB)</em></td></tr>
 </tbody></table>
 </div>
 <p><img src="https://lupyuen.github.io/images/mmu-l3kernel.jpg" alt="Level 3 Page Table for Kernel" /></p>
+<p>(<strong>Kernel Data</strong> has a similar Level 3 Page Table)</p>
 <p><em>How do we compute a Level 3 Index?</em></p>
-<p>Suppose we’re seeking address <strong><code>0x5020_1000</code></strong>. To compute the Index of the Level 3 <strong>Page Table Entry (PTE)</strong>…</p>
+<p>Suppose we’re configuring address <strong><code>0x5020_1000</code></strong>. To compute the Index of the Level 3 <strong>Page Table Entry (PTE)</strong>…</p>
 <ul>
 <li>
 <p><strong>Virtual Address: vaddr</strong> = <code>0x5020_1000</code></p>
@@ -366,21 +368,55 @@ mmu_ln_setentry(
 </li>
 </ul>
 <p>Thus address <strong><code>0x5020_1000</code></strong> is configured by <strong>Index 1</strong> of the Level 3 Page Table.</p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L258-L268">jh7110_mm_init.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define PGT_L3_SIZE     (1024) /* Enough to map 4 MiB (2MiB x 2) */
+<p>To populate the Level 3 Page Table, our code looks a little different: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L258-L268">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Number of Page Table Entries (8 bytes per entry)
+// for Kernel Code and Data
+#define PGT_L3_SIZE (1024)  // 2 Page Tables (4 KB each)
 
+// Allocate Level 3 Page Table from `.pgtables` section
+// for Kernel Code and Data
 static size_t m_l3_pgtable[PGT_L3_SIZE]
   locate_data(&quot;.pgtables&quot;);
 
-/* Map the kernel text and data for L2/L3 */
-map_region(KFLASH_START, KFLASH_START, KFLASH_SIZE, MMU_KTEXT_FLAGS);
-map_region(KSRAM_START, KSRAM_START, KSRAM_SIZE, MMU_KDATA_FLAGS);
+// Map the Kernel Code in L2 and L3 Page Tables
+map_region(
+  KFLASH_START,  // 0x5020 0000 (Physical Address)
+  KFLASH_START,  // 0x5020 0000 (Virtual Address)
+  KFLASH_SIZE,   // 0x20 0000 (Size is 2 MB)
+  MMU_KTEXT_FLAGS  // Read + Execute + Global
+);
+
+// Map the Kernel Data in L2 and L3 Page Tables
+map_region(
+  KSRAM_START,  // 0x5040 0000 (Physical Address)
+  KSRAM_START,  // 0x5040 0000 (Virtual Address)
+  KSRAM_SIZE,   // 0x20 0000 (Size is 2 MB)
+  MMU_KDATA_FLAGS  // Read + Write + Global
+);
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L150-L208">(<strong>map_region</strong> is defined here)</a></p>
+<p>That’s because <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L150-L208"><strong>map_region</strong></a> calls a <a href="https://en.wikipedia.org/wiki/Slab_allocation"><strong>Slab Allocator</strong></a> to manage the Level 3 Page Table Entries.</p>
+<p>But internally it calls the same old functions: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156"><strong>mmu_ln_map_region</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>mmu_ln_setentry</strong></a></p>
 <h1 id="connect-level-2-to-level-3"><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a></h1>
-<p>TODO</p>
+<p><em>Level 3 will talk back to Level 2 right?</em></p>
+<p>Correct! Finally we create a <strong>Level 2 Page Table</strong> for Kernel Code and Data…</p>
+<div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5040_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5060_0000</code></strong></td><td style="text-align: left"><strong><code>0x0140_0000</code></strong> <em>(20 MB)</em></td></tr>
+</tbody></table>
+</div>
+<p>(Not to be confused with the earlier Level 2 Page Table for Interrupt Controller)</p>
+<p>And we <strong>connect the Level 2 and 3</strong> Page Tables…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2kernel.jpg" alt="Level 2 Page Table for Kernel" /></p>
+<p><em>Page Pool goes into the same Level 2 Page Table?</em></p>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L274-L280">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Map the page pool */
+  mmu_ln_map_region(2, PGT_L2_VBASE, PGPOOL_START, PGPOOL_START, PGPOOL_SIZE,
+                    MMU_KDATA_FLAGS);
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156">(<strong>mmu_ln_map_region</strong> is defined here)</a> </p>
 <p>TODO</p>
 <p><em>Have we forgotten something?</em></p>
 <p>Oh yeah, remember to connect L1 to L2</p>
