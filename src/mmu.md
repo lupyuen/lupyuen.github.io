@@ -238,7 +238,7 @@ Thus our Page Table Index goes from __`0x100`__ to __`0x17F`__.
 
 _How to allocate the Level 2 Page Table?_
 
-We do this: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L58-L93)
+In NuttX we do this: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L58-L93)
 
 ```c
 // Number of Page Table Entries (8 bytes per entry)
@@ -255,7 +255,7 @@ Then GCC Linker respectfully allocates our Level 2 Page Table at RAM Address __`
 
 _How to populate the 128 Page Table Entries?_
 
-Just do this: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L249-L254)
+Just do this in NuttX: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L249-L254)
 
 ```c
 // Map the Interrupt Controller in Level 2 Page Table
@@ -280,6 +280,8 @@ _We're done with Level 2 Page Table..._
 _But Level 2 should talk back to Level 1 right?_
 
 Exactly! This is how we __connect the Level 2 Page Table__ back to Level 1...
+
+![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel3.jpg)
 
 TODO
 
