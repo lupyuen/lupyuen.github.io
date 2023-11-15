@@ -208,7 +208,7 @@ Yep that's why Sv39 MMU gives us (medium-size) __Level 2 Chunks of 2 MB__!
 
 For the Interrupt Controller, we need __128 Chunks__ of 2 MB.
 
-So we create a __Level 2 Page Table__ (also 4,096 bytes) and populate __128 Entries__ (Index `0x100` to `0x17F`)...
+So we create a __Level 2 Page Table__ (also 4,096 bytes). And we populate __128 Entries__ (Index `0x100` to `0x17F`)...
 
 ![Level 2 Page Table for Interrupt Controller](https://lupyuen.github.io/images/mmu-l2int.jpg)
 
