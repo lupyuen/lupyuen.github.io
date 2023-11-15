@@ -127,9 +127,11 @@
 <h1 id="level-1-huge-chunks-of-memory"><a href="#level-1-huge-chunks-of-memory">2 Level 1: Huge Chunks of Memory</a></h1>
 <p><em><strong>(1 GB per Huge Chunk)</strong></em></p>
 <p><em>How will we protect the Memory Mapped I/O?</em></p>
+<p>TODO: Table</p>
 <p>This is the simplest setup for Sv39 MMU that will protect the <strong>I/O Memory from <code>0x0</code> to <code>0x3FFF</code> <code>FFFF</code></strong>…</p>
-<p><img src="https://lupyuen.github.io/images/mmu-l1kernel2a.jpg" alt="Protect the Memory Mapped I/O" /></p>
-<p>All we need is a <strong>Level 1 Page Table</strong> (4,096 Bytes). The Page Table contains only one <strong>Page Table Entry</strong> (8 Bytes) that says…</p>
+<p><img src="https://lupyuen.github.io/images/mmu-l1kernel2a.jpg" alt="Level 1 Page Table for Kernel" /></p>
+<p>All we need is a <strong>Level 1 Page Table</strong> (4,096 Bytes).</p>
+<p>The Page Table contains only one <strong>Page Table Entry</strong> (8 Bytes) that says…</p>
 <ul>
 <li>
 <p><strong>V:</strong> This is a <strong>Valid</strong> Page Table Entry</p>
@@ -144,34 +146,78 @@
 <p><strong>W:</strong> Allow Writes for <strong><code>0x0</code></strong> to <strong><code>0x3FFF</code> <code>FFFF</code></strong></p>
 </li>
 <li>
-<p><strong>PPN:</strong> Physical Page Number is <strong><code>0x0</code></strong></p>
-<p>(Memory Address divided by 4,096)</p>
+<p><strong>PPN:</strong> Physical Page Number (44 Bits) is <strong><code>0x0</code></strong></p>
+<p>(PPN = Memory Address / 4,096)</p>
 </li>
 </ul>
 <p>But we have so many questions…</p>
 <ol>
 <li>
-<p>Allocate</p>
+<p><em>Why <code>0x3FFF</code> <code>FFFF</code>?</em></p>
+<p>This is a <strong>Level 1</strong> Page Table. Every Entry in the Page Table configures a (huge) <strong>1 GB Chunk of Memory</strong>.</p>
+<p>(Or <strong><code>0x4000 0000</code></strong> bytes)</p>
+<p>Our Page Table Entry is at <strong>Index 0</strong>. Hence it configures the Memory Range for <strong><code>0x0</code></strong> to <strong><code>0x3FFF</code> <code>FFFF</code></strong>. (Pic below)</p>
 </li>
 <li>
-<p>SATP</p>
+<p><em>How to allocate the Page Table?</em></p>
+<p>In NuttX, we write this to allocate the <strong>Level 1 Page Table</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L58-L93">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Number of Page Table Entries (8 bytes per entry)
+#define PGT_L1_SIZE (512)  // Page Table Size is 4 KB
+
+// Allocate Level 1 Page Table from `.pgtables` section
+size_t m_l1_pgtable[PGT_L1_SIZE]
+  locate_data(&quot;.pgtables&quot;);
+</code></pre></div>
+<p><strong><code>.pgtables</code></strong> comes from the NuttX Linker Script: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L121-L127">ld.script</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>/* Page Tables (aligned to 4 KB boundary) */
+.pgtables (NOLOAD) : ALIGN(0x1000) {
+    *(.pgtables)
+    . = ALIGN(4);
+} &gt; ksram
+</code></pre></div>
+<p>Then GCC Linker helpfully allocates our Level 1 Page Table at RAM Address <strong><code>0x5040</code> <code>7000</code></strong>.</p>
 </li>
 <li>
-<p>PPN</p>
+<p><em>What is SATP?</em></p>
+<p>SATP is the RISC-V System Register for <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp"><strong>Supervisor Address Translation and Protection</strong></a>.</p>
+<p>To enable the MMU, we set SATP Register to the <strong>Physical Page Number (PPN)</strong> of our Level 1 Page Table…</p>
+<div class="example-wrap"><pre class="language-c"><code>PPN = Address / 4096
+    = 0x50407000 / 4096
+    = 0x50407
+</code></pre></div>
+<p>This is how we set the SATP Register in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L302">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Set the SATP Register to the
+// Physical Page Number of Level 1 Page Table
+mmu_enable(
+  g_kernel_pgt_pbase,  // 0x5040 7000 (Page Table Address)
+  0  // Address Space ID
+);
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292">(<strong>mmu_enable</strong> is defined here)</a></p>
 </li>
 <li>
-<p>Why <code>0x3FFF</code> <code>FFFF</code>?</p>
+<p><em>How to set the Page Table Entry?</em></p>
+<p>To set the Level 1 <strong>Page Table Entry</strong> for <strong><code>0x0</code></strong> to <strong><code>0x3FFF</code> <code>FFFF</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L227-L240">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Map the I/O Region in the MMU
+mmu_ln_map_region(
+  1,             // Level 1
+  PGT_L1_VBASE,  // 0x5040 7000 (Page Table Address)
+  MMU_IO_BASE,   // 0x0 (Physical Address)
+  MMU_IO_BASE,   // 0x0 (Virtual Address)
+  MMU_IO_SIZE,   // 0x4000 0000 (Size)
+  MMU_IO_FLAGS   // Read + Write + Global
+);
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
 </li>
 <li>
-<p>How in NuttX</p>
+<p><em>Why is Virtual Address set to 0?</em></p>
+<p>Right now we’re doing <strong>Memory Protection</strong> for the Kernel, so we set…</p>
+<p>Virtual Address = Physical Address = Actual Addrress of System Memory</p>
+<p>Later when we configure <strong>Virtual Memory</strong> for the Applications, we’ll see interesting values.</p>
 </li>
 </ol>
-<div class="example-wrap"><pre class="language-c"><code>mmu_ln_map_region: ptlevel=1, lnvaddr=0x50407000, paddr=0, vaddr=0, size=0x40000000, mmuflags=0x26
-mmu_ln_setentry: ptlevel=1, lnvaddr=0x50407000, paddr=0, vaddr=0, mmuflags=0x26
-mmu_ln_setentry: index=0, paddr=0, mmuflags=0xe7, pte_addr=0x50407000, pte_val=0xe7
-</code></pre></div>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2int.jpg" alt="TODO" /></p>
 <p>TODO</p>
