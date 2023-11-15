@@ -475,19 +475,32 @@ CONFIG_ARCH_HEAP_NPAGES=128
 </code></pre></div>
 <p>Which says…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left">User Code</td><td style="text-align: center"><strong><code>0x8000_0000</code></strong></td><td style="text-align: left"><em>(Max 128 pages)</em></td></tr>
-<tr><td style="text-align: left">User Data</td><td style="text-align: center"><strong><code>0x8010_0000</code></strong></td><td style="text-align: left"><em>(Max 128 pages)</em></td></tr>
-<tr><td style="text-align: left">User Heap</td><td style="text-align: center"><strong><code>0x8020_0000</code></strong></td><td style="text-align: left"><em>(Max 128 pages)</em></td></tr>
+<tr><td style="text-align: left">User Code</td><td style="text-align: center"><strong><code>0x8000_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em></td></tr>
+<tr><td style="text-align: left">User Data</td><td style="text-align: center"><strong><code>0x8010_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em></td></tr>
+<tr><td style="text-align: left">User Heap</td><td style="text-align: center"><strong><code>0x8020_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em></td></tr>
 </tbody></table>
 </div>
-<p>(Each page is 4 KB)</p>
+<p>(Each Page is 4 KB)</p>
+<p>“User” refers to <strong>RISC-V User Mode</strong>, which is less privileged than our Kernel running in Supervisor Mode.</p>
+<p><em>And what are the boring old Physical Addresses?</em></p>
+<p>NuttX will map the Virtual Addresses above to the <strong>Physical Addresses</strong> from…</p>
+<p>The <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a> that we saw earlier! The Pooled Pages will be dished out dynamically to Applications as they run.</p>
+<p><em>Will Applications see the I/O Memory, Kernel RAM, Interrupt Controller?</em></p>
+<p>Nope! That’s the beauty of an MMU: We control <em>everything</em> that the Application can meddle with!</p>
 <p>Let’s watch NuttX do its magic…</p>
 <h1 id="user-level-3"><a href="#user-level-3">8 User Level 3</a></h1>
-<p>TODO</p>
+<p>Our Application (NuttX Shell) requires <strong>22 Pages of Virtual Memory</strong> for its User Code.</p>
+<p>This is how NuttX populates the <strong>Level 3 Page Table</strong> for the User Code…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Level 3 Page Table for User" /></p>
+<p><em>Something looks new… What’s this “U” Permission?</em></p>
+<p>The <strong>“U” Permission</strong> says that this Page Table Entry is accesible by our Application. (Which runs in <strong>RISC-V User Mode</strong>)</p>
+<p>Note that the <strong>Virtual Address</strong> (<code>0x8000_0000</code>) now maps to a different <strong>Physical Address</strong> (<code>0x5060_4000</code>). That’s the magic of Virtual Memory!</p>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3">(See the <strong>NuttX Virtual Memory Log</strong>)</a></p>
 <h1 id="user-level-2"><a href="#user-level-2">9 User Level 2</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2user.jpg" alt="Level 2 Page Table for User" /></p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3">(See the <strong>NuttX Virtual Memory Log</strong>)</a></p>
 <h1 id="user-level-1"><a href="#user-level-1">10 User Level 1</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1user.jpg" alt="Level 1 Page Table for User" /></p>
