@@ -553,7 +553,7 @@ This is how NuttX populates the __Level 3 Page Table__ for the User Code...
 
 _Something looks new... What's this "U" Permission?_
 
-The __"U" Permission__ says that this Page Table Entry is accesible by our Application. (Which runs in __RISC-V User Mode__)
+The __"U" User Permission__ says that this Page Table Entry is accesible by our Application. (Which runs in __RISC-V User Mode__)
 
 Note that the __Virtual Address__ `0x8000_0000` now maps to a different __Physical Address__ `0x5060_4000`. (Which comes from the __Kernel Page Pool__)
 
@@ -591,7 +591,13 @@ Which points PPN to the __User Level 2__ Page Table.
 
 And that's how User Levels 1, 2 and 3 are connected!
 
-(Each Application will have its __own set of User Page Tables__)
+Each Application will have its __own set of User Page Tables__ for...
+
+| Region | Start Address | Size
+|:--------------|:-------------:|:----
+| User Code | __`0x8000_0000`__ | _(Max 128 Pages)_
+| User Data | __`0x8010_0000`__ | _(Max 128 Pages)_
+| User Heap | __`0x8020_0000`__ | _(Max 128 Pages)_
 
 _Once again: Where is Virtual Address 0x8000_0000 defined?_
 
@@ -605,7 +611,7 @@ Since the Entry Index is 2, then the Virtual Address must be __`0x8000_0000`__. 
 
 _There's something odd about the SATP Register..._
 
-Yeah the SATP Register has changed! Let's talk about it...
+Yeah the SATP Register has changed! Let's investigate...
 
 [(See the __NuttX Virtual Memory Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3)
 
@@ -615,7 +621,7 @@ _SATP Register looks different from the earlier one in the Kernel..._
 
 _There must be multiple SATP Registers?_
 
-We've seen 2 different __SATP Registers__, each pointing to a different Level 1 Page Table...
+We've seen two different __SATP Registers__, each pointing to a different Level 1 Page Table...
 
 But actually there's only __one SATP Register__!
 
@@ -634,7 +640,7 @@ mmu_enable(
 
 [(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292)
 
-Whenever we switch the context from Kernel to Application... We __swap the value__ of the SATP Register!
+Whenever we __switch the context__ from Kernel to Application... We __swap the value__ of the SATP Register!
 
 The __Address Space ID__ (stored in SATP Register) will also change. This is a handy shortcut that tells us which Level 1 Page Table is in effect.
 
@@ -643,6 +649,16 @@ We see NuttX __swapping the SATP Register__ as it starts an Application (NuttX S
 ```text
 TODO
 ```
+
+_So indeed we can have "Multiple" SATP Registers yay!_
+
+Ah there's a catch... Remember the __"G" Global Permission__ from earlier?
+
+This means that the Page Table Entry will be effective across __ALL Address Spaces__! Even in our Applications!
+
+_Huh? Our Applications can meddle with the I/O Memory?_
+
+Nope they can't, because the __"U" User Permission__ is not granted. So we're well protected!
 
 TODO: SATP Log
 
@@ -667,3 +683,12 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/mmu.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mmu.md)
+
+# Appendix: Build and Run NuttX
+
+TODO
+
+Special version of NuttX with MMU Logging
+
+But Console Input is not yet supported
+
