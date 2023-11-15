@@ -77,8 +77,8 @@
 <li><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a><ul></ul></li>
 <li><a href="#virtual-memory">7 Virtual Memory</a><ul></ul></li>
 <li><a href="#user-level-3">8 User Level 3</a><ul></ul></li>
-<li><a href="#user-level-2">9 User Level 2</a><ul></ul></li>
-<li><a href="#user-level-1">10 User Level 1</a><ul></ul></li>
+<li><a href="#user-levels-1-and-2">9 User Levels 1 and 2</a><ul></ul></li>
+<li><a href="#swap-the-satp-register">10 Swap the SATP Register</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>21 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/mmu-title.jpg" alt="Sv39 Memory Management Unit" /></p>
 <p><em>What’s this MMU?</em></p>
@@ -455,6 +455,7 @@ mmu_ln_setentry(
 </tbody></table>
 </div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables">(See the <strong>NuttX L1 Log</strong>)</a></p>
+<p>TODO: Screenshot of NSH</p>
 <h1 id="virtual-memory"><a href="#virtual-memory">7 Virtual Memory</a></h1>
 <p>Earlier we talked about Sv39 MMU and <strong>Virtual Memory</strong>…</p>
 <blockquote>
@@ -484,9 +485,10 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p>“User” refers to <strong>RISC-V User Mode</strong>, which is less privileged than our Kernel running in Supervisor Mode.</p>
 <p><em>And what are the boring old Physical Addresses?</em></p>
 <p>NuttX will map the Virtual Addresses above to the <strong>Physical Addresses</strong> from…</p>
-<p>The <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a> that we saw earlier! The Pooled Pages will be dished out dynamically to Applications as they run.</p>
+<p>The <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Kernel Page Pool</strong></a> that we saw earlier! The Pooled Pages will be dished out dynamically to Applications as they run.</p>
 <p><em>Will Applications see the I/O Memory, Kernel RAM, Interrupt Controller?</em></p>
 <p>Nope! That’s the beauty of an MMU: We control <em>everything</em> that the Application can meddle with!</p>
+<p>Our Application will see only the assigned <strong>Virtual Addresses</strong>, not the actual Physical Addresses used by the Kernel.</p>
 <p>Let’s watch NuttX do its magic…</p>
 <h1 id="user-level-3"><a href="#user-level-3">8 User Level 3</a></h1>
 <p>Our Application (NuttX Shell) requires <strong>22 Pages of Virtual Memory</strong> for its User Code.</p>
@@ -494,17 +496,60 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Level 3 Page Table for User" /></p>
 <p><em>Something looks new… What’s this “U” Permission?</em></p>
 <p>The <strong>“U” Permission</strong> says that this Page Table Entry is accesible by our Application. (Which runs in <strong>RISC-V User Mode</strong>)</p>
-<p>Note that the <strong>Virtual Address</strong> (<code>0x8000_0000</code>) now maps to a different <strong>Physical Address</strong> (<code>0x5060_4000</code>). That’s the magic of Virtual Memory!</p>
-<p>TODO</p>
+<p>Note that the <strong>Virtual Address</strong> <code>0x8000_0000</code> now maps to a different <strong>Physical Address</strong> <code>0x5060_4000</code>. (Which comes from the <strong>Kernel Page Pool</strong>)</p>
+<p>That’s the magic of Virtual Memory!</p>
+<p><em>But where is Virtual Address 0x8000_0000 defined?</em></p>
+<p>Virtual Addresses are propagated from the Level 1 Page Table, as we’ll soon see.</p>
+<p><em>Anything else in the Level 3 Page Table?</em></p>
+<p>Page Table Entries for the <strong>User Data</strong> will appear in the same Level 3 Page Table.</p>
+<p>We move up to Level 2…</p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3">(See the <strong>NuttX Virtual Memory Log</strong>)</a></p>
-<h1 id="user-level-2"><a href="#user-level-2">9 User Level 2</a></h1>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2user.jpg" alt="Level 2 Page Table for User" /></p>
-<p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3">(See the <strong>NuttX Virtual Memory Log</strong>)</a></p>
-<h1 id="user-level-1"><a href="#user-level-1">10 User Level 1</a></h1>
-<p>TODO</p>
+<h1 id="user-levels-1-and-2"><a href="#user-levels-1-and-2">9 User Levels 1 and 2</a></h1>
+<p>NuttX populates the <strong>User Level 2</strong> Page Table (pic above) with the Physical Page Numbers (PPN) of the…</p>
+<ul>
+<li>
+<p>Level 3 Page Table for <strong>User Code and Data</strong></p>
+</li>
+<li>
+<p>Level 3 Page Table for <strong>User Heap</strong></p>
+<p>(So that <strong>malloc</strong> will work!)</p>
+</li>
+</ul>
+<p>And we’re finally up to <strong>User Level 1</strong> Page Table…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1user.jpg" alt="Level 1 Page Table for User" /></p>
+<p>Which points PPN to the <strong>User Level 2</strong> Page Table.</p>
+<p>And that’s how User Levels 1, 2 and 3 are connected!</p>
+<p>(Each Application will have its <strong>own set of User Page Tables</strong>)</p>
+<p><em>Once again: Where is Virtual Address 0x8000_0000 defined?</em></p>
+<p>From the pic above, we see that the <strong>Index</strong> of the Page Table Entry is <strong>2</strong>.</p>
+<p>And recall that each Entry in the Level 1 Page Table represents <strong>1 GB of Virtual Memory</strong>.</p>
+<p>(Which is <strong><code>0x4000_0000</code></strong> Bytes)</p>
+<p>Since the Entry Index is 2, then the Virtual Address must be <strong><code>0x8000_0000</code></strong>. Mystery solved!</p>
+<p><em>There’s something odd about the SATP Register…</em></p>
+<p>Yeah the SATP Register has changed! Let’s talk about it…</p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3">(See the <strong>NuttX Virtual Memory Log</strong>)</a></p>
+<h1 id="swap-the-satp-register"><a href="#swap-the-satp-register">10 Swap the SATP Register</a></h1>
+<p><em>SATP Register looks different from the earlier one in the Kernel…</em></p>
+<p><em>There must be multiple SATP Registers?</em></p>
+<p>We’ve seen 2 different <strong>SATP Registers</strong>, each pointing to a different Level 1 Page Table…</p>
+<p>But actually there’s only <strong>one SATP Register</strong>!</p>
+<p>Here’s the secret: NuttX uses this nifty trick to give the illusion of Multiple SATP Registers…</p>
+<p>Earlier we wrote this to set the <strong>SATP Register</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L302">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Set the SATP Register to the
+// Physical Page Number of Level 1 Page Table
+mmu_enable(
+  g_kernel_pgt_pbase,  // Page Table Address
+  0  // Address Space ID
+);
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292">(<strong>mmu_enable</strong> is defined here)</a></p>
+<p>Whenever we switch the context from Kernel to Application… We <strong>swap the value</strong> of the SATP Register!</p>
+<p>The <strong>Address Space ID</strong> (stored in SATP Register) will also change. This is a handy shortcut that tells us which Level 1 Page Table is in effect.</p>
+<p>We see NuttX <strong>swapping the SATP Register</strong> as it starts an Application (NuttX Shell)…</p>
+<div class="example-wrap"><pre class="language-text"><code>TODO
+</code></pre></div>
+<p>TODO: SATP Log</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
