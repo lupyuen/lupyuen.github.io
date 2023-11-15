@@ -220,13 +220,13 @@ To compute the Index of the Level 2 __Page Table Entry (PTE)__...
 
 - __Virtual Address: vaddr__ = `0xE000_0000`
 
-  (Because Virtual Address = Actual Address, for now)
+  (For Now: Virtual Address = Actual Address)
 
 - __Virtual Page Number: vpn__ <br> =  __vaddr__ >> 12 <br> = `0xE0000`
 
   (4,096 bytes per Memory Page)
 
-- __PTE Index__ <br> = (__vpn__ >> 9) & `0b111111111` <br> = `0x100`
+- __L2 PTE Index__ <br> = (__vpn__ >> 9) & `0b111111111` <br> = `0x100`
 
   (Extract Bits 9 to 17 to get Level 2 Index)
 
@@ -279,17 +279,75 @@ _We're done with Level 2 Page Table..._
 
 _But Level 2 should talk back to Level 1 right?_
 
-Exactly! This is how we __connect the Level 2 Page Table__ back to Level 1...
+| Region | Start Address | Size
+|:--------------|:-------------:|:----
+| [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ _(256 MB)_
+
+Exactly! This is how we __connect our Level 2 Page Table__ back to Level 1...
 
 ![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel3.jpg)
 
-TODO
+3 is the __Level 1 Index__ for Interrupt Controller __`0xE000_0000`__ because...
+
+- __Virtual Address: vaddr__ = `0xE000_0000`
+
+  (For Now: Virtual Address = Actual Address)
+
+- __Virtual Page Number: vpn__ <br> =  __vaddr__ >> 12 <br> = `0xE0000`
+
+  (4,096 bytes per Memory Page)
+
+- __L1 PTE Index__ <br> = __vpn__ >> 18 <br> = 3
+
+  (Extract Bits 18 to 26 to get Level 1 Index)
+
+_What's "NO RWX"?_
+
+When we set the __Read, Write and Execute Bits__ to 0...
+
+The Sv39 MMU interprets the PPN (Physical Page Number) as a __Pointer to the Level 2 Page Table__.
+
+(Remember: Actual Address = PPN * 4,096)
+
+In NuttX, we write this to __connect L1 with L2__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L254-L258)
+
+```c
+// Connect the L1 and L2 Page Tables for Interrupt Controller
+mmu_ln_setentry(
+  1,  // Level 1
+  PGT_L1_VBASE,     // 0x5040 7000 (L1 Page Table Address)
+  PGT_INT_L2_PBASE, // 0x5040 3000 (L2 Page Table Address)
+  0xE0000000,  // Virtual Address of Interrupt Controller
+  PTE_G        // Global Only
+);
+```
+
+[(__mmu_ln_setentry__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
+
+We're finally done protecting the Interrupt Controller with Level 1 AND Level 2 Page Tables!
+
+_Wait wasn't there something already in the Level 1 Page Table?_
+
+Oh yeah: __Memory-Mapped I/O__. When we combine everything, things will look a more complicated (and there's more!)...
 
 ![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel.jpg)
 
 # Smaller Chunks: Level 3
 
 ___(4 KB per Smaller Chunk)___
+
+_Level 2 Chunks (2 MB) are still mighty big..._
+
+_Is there anything smaller?_
+
+Yep we have smaller __Level 3 Chunks__ of __4 KB__ each.
+
+Let's create a __Level 3 Page Table__ for the Kernel Code. And fill it with 4 KB Chunks!
+
+| Region | Start Address | Size
+|:--------------|:-------------:|:----
+| [__Kernel Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23) _(RAM)_ | __`0x5020_0000`__ | __`0x0020_0000`__ _(2 MB)_
+
 
 TODO
 
