@@ -68,11 +68,15 @@ ___(1 GB per Huge Chunk)___
 
 _How will we protect the Memory Mapped I/O?_
 
+TODO: Table
+
 This is the simplest setup for Sv39 MMU that will protect the __I/O Memory from `0x0` to `0x3FFF` `FFFF`__...
 
-![Protect the Memory Mapped I/O](https://lupyuen.github.io/images/mmu-l1kernel2a.jpg)
+![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel2a.jpg)
 
-All we need is a __Level 1 Page Table__ (4,096 Bytes). The Page Table contains only one __Page Table Entry__ (8 Bytes) that says...
+All we need is a __Level 1 Page Table__ (4,096 Bytes).
+
+The Page Table contains only one __Page Table Entry__ (8 Bytes) that says...
 
 - __V:__ This is a __Valid__ Page Table Entry
 
@@ -82,31 +86,97 @@ All we need is a __Level 1 Page Table__ (4,096 Bytes). The Page Table contains o
 
 - __W:__ Allow Writes for __`0x0`__ to __`0x3FFF` `FFFF`__
 
-- __PPN:__ Physical Page Number is __`0x0`__
+- __PPN:__ Physical Page Number (44 Bits) is __`0x0`__
 
-  (Memory Address divided by 4,096)
+  (PPN = Memory Address / 4,096)
 
 But we have so many questions...
 
-1.  Allocate
+1.  _Why `0x3FFF` `FFFF`?_
 
-1.  SATP
+    This is a __Level 1__ Page Table. Every Entry in the Page Table configures a (huge) __1 GB Chunk of Memory__.
+    
+    (Or __`0x4000 0000`__ bytes)
 
-1.  PPN
+    Our Page Table Entry is at __Index 0__. Hence it configures the Memory Range for __`0x0`__ to __`0x3FFF` `FFFF`__. (Pic below)
 
-1.  Why `0x3FFF` `FFFF`?
+1.  _How to allocate the Page Table?_
 
-1.  How in NuttX
+    In NuttX, we write this to allocate the __Level 1 Page Table__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L58-L93)
 
-```c
-mmu_ln_map_region: ptlevel=1, lnvaddr=0x50407000, paddr=0, vaddr=0, size=0x40000000, mmuflags=0x26
-mmu_ln_setentry: ptlevel=1, lnvaddr=0x50407000, paddr=0, vaddr=0, mmuflags=0x26
-mmu_ln_setentry: index=0, paddr=0, mmuflags=0xe7, pte_addr=0x50407000, pte_val=0xe7
-```
+    ```c
+    // Number of Page Table Entries (8 bytes per entry)
+    #define PGT_L1_SIZE (512)  // Page Table Size is 4 KB
 
-TODO
+    // Allocate Level 1 Page Table from `.pgtables` section
+    size_t m_l1_pgtable[PGT_L1_SIZE]
+      locate_data(".pgtables");
+    ```
 
-![TODO](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
+    __`.pgtables`__ comes from the NuttX Linker Script: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L121-L127)
+
+    ```yaml
+    /* Page Tables (aligned to 4 KB boundary) */
+    .pgtables (NOLOAD) : ALIGN(0x1000) {
+        *(.pgtables)
+        . = ALIGN(4);
+    } > ksram
+    ```
+
+    Then GCC Linker helpfully allocates our Level 1 Page Table at RAM Address __`0x5040` `7000`__.
+
+1.  _What is SATP?_
+
+    SATP is the RISC-V System Register for [__Supervisor Address Translation and Protection__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp).
+
+    To enable the MMU, we set SATP Register to the __Physical Page Number (PPN)__ of our Level 1 Page Table...
+    
+    ```c
+    PPN = Address / 4096
+        = 0x50407000 / 4096
+        = 0x50407
+    ```
+
+    This is how we set the SATP Register in NuttX: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L302)
+
+    ```c
+    // Set the SATP Register to the
+    // Physical Page Number of Level 1 Page Table
+    mmu_enable(
+      g_kernel_pgt_pbase,  // 0x5040 7000 (Page Table Address)
+      0  // Address Space ID
+    );
+    ```
+
+    [(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292)
+
+1.  _How to set the Page Table Entry?_
+
+    To set the Level 1 __Page Table Entry__ for __`0x0`__ to __`0x3FFF` `FFFF`__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L227-L240)
+
+    ```c
+    // Map the I/O Region in the MMU
+    mmu_ln_map_region(
+      1,             // Level 1
+      PGT_L1_VBASE,  // 0x5040 7000 (Page Table Address)
+      MMU_IO_BASE,   // 0x0 (Physical Address)
+      MMU_IO_BASE,   // 0x0 (Virtual Address)
+      MMU_IO_SIZE,   // 0x4000 0000 (Size)
+      MMU_IO_FLAGS   // Read + Write + Global
+    );
+    ```
+
+    [(__mmu_ln_map_region__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156)
+
+1.  _Why is Virtual Address set to 0?_
+
+    Right now we're doing __Memory Protection__ for the Kernel, so we set...
+    
+    Virtual Address = Physical Address = Actual Addrress of System Memory
+
+    Later when we configure __Virtual Memory__ for the Applications, we'll see interesting values.
+
+![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
 
 TODO
 
