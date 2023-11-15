@@ -458,7 +458,7 @@ mmu_ln_map_region(
 
 [(See the __NuttX Page Pool Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-page-pool-level-2)
 
-_Have we forgotten something?_
+_Did we forget something?_
 
 Oh yeah, remember to __connect the Level 1 and 2__ Page Tables: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L268-L274)
 
@@ -662,7 +662,7 @@ This means that the Page Table Entry will be effective across __ALL Address Spac
 
 _Huh? Our Applications can meddle with the I/O Memory?_
 
-Nope they can't, because the __"U" User Permission__ is not granted. So we're well protected!
+Nope they can't, because the __"U" User Permission__ is denied. So we're well protected!
 
 TODO: SATP Log
 
