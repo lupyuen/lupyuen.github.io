@@ -211,7 +211,7 @@ mmu_enable(
 <li>
 <p><em>How to set the Page Table Entry?</em></p>
 <p>To set the Level 1 <strong>Page Table Entry</strong> for <strong><code>0x0</code></strong> to <strong><code>0x3FFF</code> <code>FFFF</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L227-L240">jh7110_mm_init.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Map the I/O Region in the MMU
+<div class="example-wrap"><pre class="language-c"><code>// Map the I/O Region in Level 1 Page Table
 mmu_ln_map_region(
   1,             // Level 1
   PGT_L1_VBASE,  // 0x5040 7000 (Page Table Address)
@@ -264,9 +264,31 @@ mmu_ln_map_region(
 </ul>
 <p>Do the same for <strong><code>0xEFFF_FFFF</code></strong>, and we’ll get Index <strong><code>0x17F</code></strong>.</p>
 <p>Thus our Page Table Index goes from <strong><code>0x100</code></strong> to <strong><code>0x17F</code></strong>.</p>
-<p>TODO: PPN</p>
-<p>TODO: Allocate</p>
-<p>TODO: Code</p>
+<p><em>How to allocate the Level 2 Page Table?</em></p>
+<p>We do this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L58-L93">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Number of Page Table Entries (8 bytes per entry)
+#define PGT_INT_L2_SIZE (512)  // Page Table Size is 4 KB
+
+// Allocate Level 2 Page Table from `.pgtables` section
+size_t m_int_l2_pgtable[PGT_INT_L2_SIZE]
+  locate_data(&quot;.pgtables&quot;);
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L121-L127">(<strong><code>.pgtables</code></strong> comes from the Linker Script)</a></p>
+<p>Then GCC Linker respectfully allocates our Level 2 Page Table at RAM Address <strong><code>0x5040</code> <code>3000</code></strong>.</p>
+<p><em>How to populate the 128 Page Table Entries?</em></p>
+<p>Just do this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L249-L254">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Map the Interrupt Controller in Level 2 Page Table
+mmu_ln_map_region(
+  2,  // Level 2
+  PGT_INT_L2_PBASE,  // 0x5040 3000 (Page Table Address)
+  0xE0000000,   // Physical Address of Interrupt Controller
+  0xE0000000,   // Virtual Address of Interrupt Controller
+  0x10000000,   // Size
+  MMU_IO_FLAGS  // Read + Write + Global
+);
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L163">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
+<p>But we’re not done yet! Next we connect the Levels…</p>
 <h1 id="connect-level-1-to-level-2"><a href="#connect-level-1-to-level-2">4 Connect Level 1 to Level 2</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel.jpg" alt="Level 1 Page Table for Kernel" /></p>
