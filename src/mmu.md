@@ -387,6 +387,8 @@ map_region(KFLASH_START, KFLASH_START, KFLASH_SIZE, MMU_KTEXT_FLAGS);
 map_region(KSRAM_START, KSRAM_START, KSRAM_SIZE, MMU_KDATA_FLAGS);
 ```
 
+[(__map_region__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L150-L208)
+
 # Connect Level 2 to Level 3
 
 TODO
