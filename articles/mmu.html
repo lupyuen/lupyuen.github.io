@@ -250,14 +250,14 @@ mmu_ln_map_region(
 <ul>
 <li>
 <p><strong>Virtual Address: vaddr</strong> = <code>0xE000_0000</code></p>
-<p>(Because Virtual Address = Actual Address, for now)</p>
+<p>(For Now: Virtual Address = Actual Address)</p>
 </li>
 <li>
 <p><strong>Virtual Page Number: vpn</strong> <br> =  <strong>vaddr</strong> &gt;&gt; 12 <br> = <code>0xE0000</code></p>
 <p>(4,096 bytes per Memory Page)</p>
 </li>
 <li>
-<p><strong>PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 9) &amp; <code>0b111111111</code> <br> = <code>0x100</code></p>
+<p><strong>L2 PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 9) &amp; <code>0b111111111</code> <br> = <code>0x100</code></p>
 <p>(Extract Bits 9 to 17 to get Level 2 Index)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(See <strong>mmu_ln_setentry</strong>)</a></p>
 </li>
@@ -292,12 +292,56 @@ mmu_ln_map_region(
 <h1 id="connect-level-1-to-level-2"><a href="#connect-level-1-to-level-2">4 Connect Level 1 to Level 2</a></h1>
 <p><em>We’re done with Level 2 Page Table…</em></p>
 <p><em>But Level 2 should talk back to Level 1 right?</em></p>
-<p>Exactly! This is how we <strong>connect the Level 2 Page Table</strong> back to Level 1…</p>
+<div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
+</tbody></table>
+</div>
+<p>Exactly! This is how we <strong>connect our Level 2 Page Table</strong> back to Level 1…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel3.jpg" alt="Level 1 Page Table for Kernel" /></p>
-<p>TODO</p>
+<p>3 is the <strong>Level 1 Index</strong> for Interrupt Controller <strong><code>0xE000_0000</code></strong> because…</p>
+<ul>
+<li>
+<p><strong>Virtual Address: vaddr</strong> = <code>0xE000_0000</code></p>
+<p>(For Now: Virtual Address = Actual Address)</p>
+</li>
+<li>
+<p><strong>Virtual Page Number: vpn</strong> <br> =  <strong>vaddr</strong> &gt;&gt; 12 <br> = <code>0xE0000</code></p>
+<p>(4,096 bytes per Memory Page)</p>
+</li>
+<li>
+<p><strong>L1 PTE Index</strong> <br> = <strong>vpn</strong> &gt;&gt; 18 <br> = 3</p>
+<p>(Extract Bits 18 to 26 to get Level 1 Index)</p>
+</li>
+</ul>
+<p><em>What’s “NO RWX”?</em></p>
+<p>When we set the <strong>Read, Write and Execute Bits</strong> to 0…</p>
+<p>The Sv39 MMU interprets the PPN (Physical Page Number) as a <strong>Pointer to the Level 2 Page Table</strong>.</p>
+<p>(Remember: Actual Address = PPN * 4,096)</p>
+<p>In NuttX, we write this to <strong>connect L1 with L2</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L254-L258">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Connect the L1 and L2 Page Tables for Interrupt Controller
+mmu_ln_setentry(
+  1,  // Level 1
+  PGT_L1_VBASE,     // 0x5040 7000 (L1 Page Table Address)
+  PGT_INT_L2_PBASE, // 0x5040 3000 (L2 Page Table Address)
+  0xE0000000,  // Virtual Address of Interrupt Controller
+  PTE_G        // Global Only
+);
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(<strong>mmu_ln_setentry</strong> is defined here)</a></p>
+<p>We’re finally done protecting the Interrupt Controller with Level 1 AND Level 2 Page Tables!</p>
+<p><em>Wait wasn’t there something already in the Level 1 Page Table?</em></p>
+<p>Oh yeah: <strong>Memory-Mapped I/O</strong>. When we combine everything, things will look a more complicated (and there’s more!)…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <h1 id="smaller-chunks-level-3"><a href="#smaller-chunks-level-3">5 Smaller Chunks: Level 3</a></h1>
 <p><em><strong>(4 KB per Smaller Chunk)</strong></em></p>
+<p><em>Level 2 Chunks (2 MB) are still mighty big…</em></p>
+<p><em>Is there anything smaller?</em></p>
+<p>Yep we have smaller <strong>Level 3 Chunks</strong> of <strong>4 KB</strong> each.</p>
+<p>Let’s create a <strong>Level 3 Page Table</strong> for the Kernel Code. And fill it with 4 KB Chunks!</p>
+<div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
+</tbody></table>
+</div>
 <p>TODO</p>
 <h1 id="connect-level-2-to-level-3"><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a></h1>
 <p>TODO</p>
