@@ -519,25 +519,51 @@ Which says...
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
-| User Code | __`0x8000_0000`__ | _(Max 128 pages)_
-| User Data | __`0x8010_0000`__ | _(Max 128 pages)_
-| User Heap | __`0x8020_0000`__ | _(Max 128 pages)_
+| User Code | __`0x8000_0000`__ | _(Max 128 Pages)_
+| User Data | __`0x8010_0000`__ | _(Max 128 Pages)_
+| User Heap | __`0x8020_0000`__ | _(Max 128 Pages)_
 
-(Each page is 4 KB)
+(Each Page is 4 KB)
+
+"User" refers to __RISC-V User Mode__, which is less privileged than our Kernel running in Supervisor Mode.
+
+_And what are the boring old Physical Addresses?_
+
+NuttX will map the Virtual Addresses above to the __Physical Addresses__ from...
+
+The [__Page Pool__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26) that we saw earlier! The Pooled Pages will be dished out dynamically to Applications as they run.
+
+_Will Applications see the I/O Memory, Kernel RAM, Interrupt Controller?_
+
+Nope! That's the beauty of an MMU: We control _everything_ that the Application can meddle with!
 
 Let's watch NuttX do its magic...
 
 # User Level 3
 
-TODO
+Our Application (NuttX Shell) requires __22 Pages of Virtual Memory__ for its User Code.
+
+This is how NuttX populates the __Level 3 Page Table__ for the User Code...
 
 ![Level 3 Page Table for User](https://lupyuen.github.io/images/mmu-l3user.jpg)
+
+_Something looks new... What's this "U" Permission?_
+
+The __"U" Permission__ says that this Page Table Entry is accesible by our Application. (Which runs in __RISC-V User Mode__)
+
+Note that the __Virtual Address__ (`0x8000_0000`) now maps to a different __Physical Address__ (`0x5060_4000`). That's the magic of Virtual Memory!
+
+TODO
+
+[(See the __NuttX Virtual Memory Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3)
 
 # User Level 2
 
 TODO
 
 ![Level 2 Page Table for User](https://lupyuen.github.io/images/mmu-l2user.jpg)
+
+[(See the __NuttX Virtual Memory Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3)
 
 # User Level 1
 
