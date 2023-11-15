@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit" 
+    data-rh="true">
+<meta property="og:description" 
+    content=""
+    data-rh="true">
+<meta name="description" 
+    content="">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/mmu-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<link rel="canonical"
+    href="https://lupyuen.codeberg.page/articles/mmu.html" />
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit</h1>
+    <nav id="TOC"><ul>
+<li><a href="#memory-protection">1 Memory Protection</a><ul></ul></li>
+<li><a href="#level-1-huge-chunks-of-memory">2 Level 1: Huge Chunks of Memory</a><ul></ul></li>
+<li><a href="#level-2-medium-chunks-of-memory">3 Level 2: Medium Chunks of Memory</a><ul></ul></li>
+<li><a href="#level-3-smaller-chunks-of-memory">4 Level 3: Smaller Chunks of Memory</a><ul></ul></li>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>21 Nov 2023</em></p>
+<p><img src="https://lupyuen.github.io/images/mmu-title.jpg" alt="Sv39 Memory Management Unit" /></p>
+<p><em>What’s this MMU?</em></p>
+<p><a href="https://en.wikipedia.org/wiki/Memory_management_unit"><strong>Memory Management Unit (MMU)</strong></a> is the hardware inside our 64-bit Single-Board Computer (SBC) for…</p>
+<ul>
+<li>
+<p><strong>Memory Protection</strong>: Prevent Applications (and Kernel) from meddling with things (in System Memory) that they’re not supposed to</p>
+</li>
+<li>
+<p><strong>Virtual Memory</strong>: Allow Applications to access chunks of “Imaginary Memory” at Exotic Addresses (<strong><code>0x8000</code> <code>0000</code></strong>!)…</p>
+<p>But they’re actually System RAM recycled from boring old addresses (like <strong><code>0x5060</code> <code>4000</code></strong>)</p>
+<p>(Kinda like “The Matrix”)</p>
+</li>
+</ul>
+<p><em>Sv39 sounds familiar… Any relation to SVR4?</em></p>
+<p>Actually <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39"><strong>Sv39</strong></a> is the MMU inside many RISC-V SBCs…</p>
+<ul>
+<li>
+<p>Pine64 Ox64, Sipeed M1s</p>
+<p>(Based on <strong>Bouffalo Lab BL808 SoC</strong>)</p>
+</li>
+<li>
+<p>Pine64 Star64, StarFive VisionFive 2, Milk-V Mars</p>
+<p>(Based on <strong>StarFive JH7110 SoC</strong>)</p>
+</li>
+</ul>
+<p>In this article, we walk through the steps to configure the Sv39 MMU on <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 64-bit RISC-V SBC</strong></a> (pic below), powered by <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>Bouffalo Lab BL808 SoC</strong></a>.</p>
+<p>We start with Memory Protection, then Virtual Memory. We’ll do this with <a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a>. (Real-Time Operating System)</p>
+<p><em>And “Sv39” means…</em></p>
+<ul>
+<li>
+<p><strong>“Sv”</strong> signifies it’s a RISC-V Extension for Supervisor-Mode Virtual Memory</p>
+</li>
+<li>
+<p><strong>“39”</strong> because it supports 39 Bits for Virtual Addresses</p>
+<p>(<strong><code>0x0</code></strong> to <strong><code>0x7F FFFF FFFF</code></strong>!)</p>
+</li>
+<li>
+<p>Coincidentally it’s also <strong>3 times 9</strong>: 9 Bits for Level 1, 9 Bits for Level 2, 9 Bits for Level 3!</p>
+</li>
+</ul>
+<p><em>Why NuttX?</em></p>
+<p><a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a> is tiny and simpler to teach for MMU Internals.</p>
+<p>And we’re documenting everything that happens when NuttX configures the Sv39 MMU for Ox64 SBC.</p>
+<p><em>All this is covered in Computer Science Textbooks, no?</em></p>
+<p>Let’s learn things a little differently! This article will read (and look) like a (yummy) tray of Chunky Chocolate Brownies.</p>
+<p>(Apologies to my fellow CS Teachers)</p>
+<p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC" /></p>
+<p><a href="https://wiki.pine64.org/wiki/Ox64"><em>Pine64 Ox64 64-bit RISC-V SBC</em></a></p>
+<h1 id="memory-protection"><a href="#memory-protection">1 Memory Protection</a></h1>
+<p>TODO</p>
+<h1 id="level-1-huge-chunks-of-memory"><a href="#level-1-huge-chunks-of-memory">2 Level 1: Huge Chunks of Memory</a></h1>
+<p><em><strong>(1 GB per Huge Chunk)</strong></em></p>
+<p><em>How will we protect the Memory Mapped I/O?</em></p>
+<p>This is the simplest setup for Sv39 MMU that will protect the <strong>I/O Memory from <code>0x0</code> to <code>0x3FFF</code> <code>FFFF</code></strong>…</p>
+<p><img src="https://lupyuen.github.io/images/mmu-l1kernel2a.jpg" alt="Protect the Memory Mapped I/O" /></p>
+<p>All we need is a <strong>Level 1 Page Table</strong> (4,096 Bytes). The Page Table contains only one <strong>Page Table Entry</strong> (8 Bytes) that says…</p>
+<ul>
+<li>
+<p><strong>V:</strong> This is a <strong>Valid</strong> Page Table Entry</p>
+</li>
+<li>
+<p><strong>G:</strong> This is a <strong>Global Mapping</strong> that is valid for all Address Spaces</p>
+</li>
+<li>
+<p><strong>R:</strong> Allow Reads for <strong><code>0x0</code></strong> to <strong><code>0x3FFF</code> <code>FFFF</code></strong></p>
+</li>
+<li>
+<p><strong>W:</strong> Allow Writes for <strong><code>0x0</code></strong> to <strong><code>0x3FFF</code> <code>FFFF</code></strong></p>
+</li>
+<li>
+<p><strong>PPN:</strong> Physical Page Number is <strong><code>0x0</code></strong></p>
+<p>(Memory Address divided by 4,096)</p>
+</li>
+</ul>
+<p>But we have so many questions…</p>
+<ol>
+<li>
+<p>Allocate</p>
+</li>
+<li>
+<p>SATP</p>
+</li>
+<li>
+<p>PPN</p>
+</li>
+<li>
+<p>Why <code>0x3FFF</code> <code>FFFF</code>?</p>
+</li>
+<li>
+<p>How in NuttX</p>
+</li>
+</ol>
+<div class="example-wrap"><pre class="language-c"><code>mmu_ln_map_region: ptlevel=1, lnvaddr=0x50407000, paddr=0, vaddr=0, size=0x40000000, mmuflags=0x26
+mmu_ln_setentry: ptlevel=1, lnvaddr=0x50407000, paddr=0, vaddr=0, mmuflags=0x26
+mmu_ln_setentry: index=0, paddr=0, mmuflags=0xe7, pte_addr=0x50407000, pte_val=0xe7
+</code></pre></div>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="TODO" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mmu-l2int.jpg" alt="TODO" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mmu-l1kernel.jpg" alt="TODO" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mmu-l1kernel2.jpg" alt="TODO" /></p>
+<p>TODO</p>
+<h1 id="level-2-medium-chunks-of-memory"><a href="#level-2-medium-chunks-of-memory">3 Level 2: Medium Chunks of Memory</a></h1>
+<p><em><strong>(2 MB per Medium Chunk)</strong></em></p>
+<p>TODO</p>
+<h1 id="level-3-smaller-chunks-of-memory"><a href="#level-3-smaller-chunks-of-memory">4 Level 3: Smaller Chunks of Memory</a></h1>
+<p><em><strong>(4 KB per Smaller Chunk)</strong></em></p>
+<p>TODO</p>
+<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
+<p>TODO</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Current Project: “Apache NuttX RTOS for Ox64 BL808”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>My Other Project: “NuttX for Star64 JH7110”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Older Project: “NuttX for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mmu.md"><strong>lupyuen.github.io/src/mmu.md</strong></a></p>
+
+    
+</body>
+</html>
