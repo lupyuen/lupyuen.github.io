@@ -242,7 +242,7 @@ mmu_ln_map_region(
 </div>
 <p>Yep that’s why Sv39 MMU gives us (medium-size) <strong>Level 2 Chunks of 2 MB</strong>!</p>
 <p>For the Interrupt Controller, we need <strong>128 Chunks</strong> of 2 MB.</p>
-<p>So we create a <strong>Level 2 Page Table</strong> (also 4,096 bytes) and populate <strong>128 Entries</strong> (Index <code>0x100</code> to <code>0x17F</code>)…</p>
+<p>So we create a <strong>Level 2 Page Table</strong> (also 4,096 bytes). And we populate <strong>128 Entries</strong> (Index <code>0x100</code> to <code>0x17F</code>)…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2int.jpg" alt="Level 2 Page Table for Interrupt Controller" /></p>
 <p><em>How did we get the Index of the Page Table Entry?</em></p>
 <p>To compute the Index of the Level 2 <strong>Page Table Entry (PTE)</strong> for Interrupt Controller <code>0xE000</code> <code>0000</code>…</p>
