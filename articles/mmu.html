@@ -290,6 +290,9 @@ mmu_ln_map_region(
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L163">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
 <p>But we’re not done yet! Next we connect the Levels…</p>
 <h1 id="connect-level-1-to-level-2"><a href="#connect-level-1-to-level-2">4 Connect Level 1 to Level 2</a></h1>
+<p><em>We’re done with Level 2 Page Table…</em></p>
+<p><em>But Level 2 should talk back to Level 1 right?</em></p>
+<p>Exactly! This is how we <strong>connect the Level 2 Page Table</strong> back to Level 1…</p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <h1 id="smaller-chunks-level-3"><a href="#smaller-chunks-level-3">5 Smaller Chunks: Level 3</a></h1>
