@@ -121,7 +121,7 @@
 <p><a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a> is tiny and simpler to teach, as we walk through the MMU Internals.</p>
 <p>And we’re documenting everything that happens when NuttX configures the Sv39 MMU for Ox64 SBC.</p>
 <p><em>All this is covered in Computer Science Textbooks. No?</em></p>
-<p>Let’s learn things a little differently! This article will read (and look) like a (yummy) tray of Chunky Chocolate Brownies.</p>
+<p>Let’s learn things a little differently! This article will read (and look) like a (yummy) tray of Chunky Chocolate Brownies… Because we love Food Analogies.</p>
 <p>(Apologies to my fellow CS Teachers)</p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <p><a href="https://wiki.pine64.org/wiki/Ox64"><em>Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)</em></a></p>
@@ -135,7 +135,7 @@
 <tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
 </tbody></table>
 </div><h1 id="huge-chunks-level-1"><a href="#huge-chunks-level-1">2 Huge Chunks: Level 1</a></h1>
-<p><em><strong>(1 GB per Huge Chunk)</strong></em></p>
+<p><strong>[1 GB per Huge Chunk]</strong></p>
 <p><em>How will we protect the Memory-Mapped I/O?</em></p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
@@ -234,7 +234,7 @@ mmu_ln_map_region(
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <p>Now we protect the Interrupt Controller…</p>
 <h1 id="medium-chunks-level-2"><a href="#medium-chunks-level-2">3 Medium Chunks: Level 2</a></h1>
-<p><em><strong>(2 MB per Medium Chunk)</strong></em></p>
+<p><strong>[2 MB per Medium Chunk]</strong></p>
 <p><em>Our Interrupt Controller needs 256 MB of protection…</em></p>
 <p><em>Surely a Level 1 Chunk (2 GB) is too wasteful?</em></p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
@@ -335,7 +335,7 @@ mmu_ln_setentry(
 <p>Oh yeah: <strong>Memory-Mapped I/O</strong>. When we combine everything, things will look more complicated (and there’s more!)…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <h1 id="smaller-chunks-level-3"><a href="#smaller-chunks-level-3">5 Smaller Chunks: Level 3</a></h1>
-<p><em><strong>(4 KB per Smaller Chunk)</strong></em></p>
+<p><strong>[4 KB per Smaller Chunk]</strong></p>
 <p><em>Level 2 Chunks (2 MB) are still mighty big…</em></p>
 <p><em>Is there anything smaller?</em></p>
 <p>Yep we have smaller <strong>Level 3 Chunks</strong> of <strong>4 KB</strong> each.</p>
@@ -378,8 +378,29 @@ map_region(KSRAM_START, KSRAM_START, KSRAM_SIZE, MMU_KDATA_FLAGS);
 <h1 id="connect-level-2-to-level-3"><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2kernel.jpg" alt="Level 2 Page Table for Kernel" /></p>
-<h1 id="virtual-memory"><a href="#virtual-memory">7 Virtual Memory</a></h1>
 <p>TODO</p>
+<p><em>Have we forgotten something?</em></p>
+<p>Oh yeah, remember to connect L1 to L2</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L268-L274">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Connect the L1 and L2 page tables for the kernel text and data */
+mmu_ln_setentry(1, PGT_L1_VBASE, PGT_L2_PBASE, KFLASH_START, PTE_G);
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(<strong>mmu_ln_setentry</strong> is defined here)</a></p>
+<h1 id="virtual-memory"><a href="#virtual-memory">7 Virtual Memory</a></h1>
+<p>Earlier we talked about <strong>Virtual Memory</strong>…</p>
+<blockquote>
+<p>Allow Applications to access chunks of “Imaginary Memory” at Exotic Addresses (<strong><code>0x8000</code> <code>0000</code></strong>!)…</p>
+</blockquote>
+<blockquote>
+<p>But they’re actually System RAM recycled from boring old addresses (like <strong><code>0x5060</code> <code>4000</code></strong>)</p>
+</blockquote>
+<p>Let’s make some magic!</p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mmu-l1user.jpg" alt="Level 1 Page Table for User" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mmu-l2user.jpg" alt="Level 2 Page Table for User" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Level 3 Page Table for User" /></p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
