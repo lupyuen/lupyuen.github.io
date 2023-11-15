@@ -245,18 +245,18 @@ mmu_ln_map_region(
 <p>So we create a <strong>Level 2 Page Table</strong> (also 4,096 bytes). And we populate <strong>128 Entries</strong> (Index <code>0x100</code> to <code>0x17F</code>)…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2int.jpg" alt="Level 2 Page Table for Interrupt Controller" /></p>
 <p><em>How did we get the Index of the Page Table Entry?</em></p>
-<p>To compute the Index of the Level 2 <strong>Page Table Entry (PTE)</strong> for Interrupt Controller <code>0xE000</code> <code>0000</code>…</p>
+<p>To compute the Index of the Level 2 <strong>Page Table Entry (PTE)</strong> for Interrupt Controller <code>0xE000_0000</code>…</p>
 <ul>
 <li>
-<p><strong>Virtual Address: vaddr</strong> = <code>0xE000</code> <code>0000</code></p>
+<p><strong>Virtual Address: vaddr</strong> = <code>0xE000_0000</code></p>
 <p>(Because Virtual Address = Actual Address, for now)</p>
 </li>
 <li>
-<p><strong>Virtual Page Number: vpn</strong> = <strong>vaddr</strong> &gt;&gt; 12 = <code>0xE0000</code></p>
+<p><strong>Virtual Page Number: vpn</strong> <br> =  <strong>vaddr</strong> &gt;&gt; 12 <br> = <code>0xE0000</code></p>
 <p>(4,096 bytes per Memory Page)</p>
 </li>
 <li>
-<p><strong>PTE Index</strong> = (<strong>vpn</strong> &gt;&gt; 9) &amp; <code>0b111111111</code> = <code>0x100</code></p>
+<p><strong>PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 9) &amp; <code>0b111111111</code> <br> = <code>0x100</code></p>
 <p>(Extract Bits 9 to 17 to get Level 2 Index)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(See <strong>mmu_ln_setentry</strong>)</a></p>
 </li>
