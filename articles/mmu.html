@@ -72,8 +72,9 @@
 <li><a href="#memory-protection">1 Memory Protection</a><ul></ul></li>
 <li><a href="#level-1-huge-chunks-of-memory">2 Level 1: Huge Chunks of Memory</a><ul></ul></li>
 <li><a href="#level-2-medium-chunks-of-memory">3 Level 2: Medium Chunks of Memory</a><ul></ul></li>
-<li><a href="#level-3-smaller-chunks-of-memory">4 Level 3: Smaller Chunks of Memory</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>21 Nov 2023</em></p>
+<li><a href="#connect-level-1-to-level-2">4 Connect Level 1 to Level 2</a><ul></ul></li>
+<li><a href="#level-3-smaller-chunks-of-memory">5 Level 3: Smaller Chunks of Memory</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>21 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/mmu-title.jpg" alt="Sv39 Memory Management Unit" /></p>
 <p><em>What’s this MMU?</em></p>
 <p><a href="https://en.wikipedia.org/wiki/Memory_management_unit"><strong>Memory Management Unit (MMU)</strong></a> is the hardware inside our 64-bit Single-Board Computer (SBC) for…</p>
@@ -124,11 +125,21 @@
 <p><a href="https://wiki.pine64.org/wiki/Ox64"><em>Pine64 Ox64 64-bit RISC-V SBC. Sorry for my substandard soldering.</em></a></p>
 <h1 id="memory-protection"><a href="#memory-protection">1 Memory Protection</a></h1>
 <p>TODO</p>
-<h1 id="level-1-huge-chunks-of-memory"><a href="#level-1-huge-chunks-of-memory">2 Level 1: Huge Chunks of Memory</a></h1>
+<div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0x4000</code> <code>0000</code></strong> (1 GB)</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0x20</code> <code>0000</code></strong> (2 MB)</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5040</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0x20</code> <code>0000</code></strong> (2 MB)</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5060</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0x140</code> <code>0000</code></strong> (20 MB)</td></tr>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0x1000</code> <code>0000</code></strong> (256 MB)</td></tr>
+</tbody></table>
+</div><h1 id="level-1-huge-chunks-of-memory"><a href="#level-1-huge-chunks-of-memory">2 Level 1: Huge Chunks of Memory</a></h1>
 <p><em><strong>(1 GB per Huge Chunk)</strong></em></p>
-<p><em>How will we protect the Memory Mapped I/O?</em></p>
-<p>TODO: Table</p>
-<p>This is the simplest setup for Sv39 MMU that will protect the <strong>I/O Memory from <code>0x0</code> to <code>0x3FFF</code> <code>FFFF</code></strong>…</p>
+<p><em>How will we protect the Memory-Mapped I/O?</em></p>
+<div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0x4000</code> <code>0000</code></strong> (1 GB)</td></tr>
+</tbody></table>
+</div>
+<p>Here’s the simplest setup for Sv39 MMU that will protect the <strong>I/O Memory from <code>0x0</code> to <code>0x3FFF</code> <code>FFFF</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2a.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <p>All we need is a <strong>Level 1 Page Table</strong> (4,096 Bytes).</p>
 <p>The Page Table contains only one <strong>Page Table Entry</strong> (8 Bytes) that says…</p>
@@ -144,6 +155,7 @@
 </li>
 <li>
 <p><strong>W:</strong> Allow Writes for <strong><code>0x0</code></strong> to <strong><code>0x3FFF</code> <code>FFFF</code></strong></p>
+<p>(We don’t allow Execute for Memory-Mapped I/O)</p>
 </li>
 <li>
 <p><strong>PPN:</strong> Physical Page Number (44 Bits) is <strong><code>0x0</code></strong></p>
@@ -218,20 +230,30 @@ mmu_ln_map_region(
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table for Kernel" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mmu-l2int.jpg" alt="TODO" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mmu-l1kernel.jpg" alt="TODO" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mmu-l1kernel2.jpg" alt="TODO" /></p>
-<p>TODO</p>
+<p>Now we move on to protect the Interrupt Controller…</p>
 <h1 id="level-2-medium-chunks-of-memory"><a href="#level-2-medium-chunks-of-memory">3 Level 2: Medium Chunks of Memory</a></h1>
 <p><em><strong>(2 MB per Medium Chunk)</strong></em></p>
+<p><em>Our Interrupt Controller needs 256 MB of protection…</em></p>
+<p><em>Surely a Level 1 Chunk (2 GB) is too wasteful?</em></p>
+<div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0x1000</code> <code>0000</code></strong> (256 MB)</td></tr>
+</tbody></table>
+</div>
+<p>Yep that’s why Sv39 MMU gives us (medium-size) <strong>Level 2 Chunks of 2 MB</strong>!</p>
+<p>For the Interrupt Controller, we need <strong>128 Chunks</strong> of 2 MB.</p>
+<p>So we create a <strong>Level 2 Page Table</strong> and populate <strong>128 Entries</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/mmu-l2int.jpg" alt="Level 2 Page Table for Interrupt Controller" /></p>
+<p>TODO: Index</p>
+<p>TODO: PPN</p>
+<p>TODO: Allocate</p>
+<p>TODO: Code</p>
+<h1 id="connect-level-1-to-level-2"><a href="#connect-level-1-to-level-2">4 Connect Level 1 to Level 2</a></h1>
 <p>TODO</p>
-<h1 id="level-3-smaller-chunks-of-memory"><a href="#level-3-smaller-chunks-of-memory">4 Level 3: Smaller Chunks of Memory</a></h1>
+<p><img src="https://lupyuen.github.io/images/mmu-l1kernel.jpg" alt="Level 1 Page Table for Kernel" /></p>
+<h1 id="level-3-smaller-chunks-of-memory"><a href="#level-3-smaller-chunks-of-memory">5 Level 3: Smaller Chunks of Memory</a></h1>
 <p><em><strong>(4 KB per Smaller Chunk)</strong></em></p>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
