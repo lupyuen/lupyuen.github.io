@@ -348,10 +348,17 @@ Let's create a __Level 3 Page Table__ for the Kernel Code. And fill it with 4 KB
 |:--------------|:-------------:|:----
 | [__Kernel Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23) _(RAM)_ | __`0x5020_0000`__ | __`0x0020_0000`__ _(2 MB)_
 
+![Level 3 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l3kernel.jpg)
 
 TODO
 
 # Connect Level 2 to Level 3
+
+TODO
+
+![Level 2 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l2kernel.jpg)
+
+# Virtual Memory
 
 TODO
 
