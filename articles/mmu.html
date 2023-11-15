@@ -179,7 +179,7 @@
 #define PGT_L1_SIZE (512)  // Page Table Size is 4 KB
 
 // Allocate Level 1 Page Table from `.pgtables` section
-size_t m_l1_pgtable[PGT_L1_SIZE]
+static size_t m_l1_pgtable[PGT_L1_SIZE]
   locate_data(&quot;.pgtables&quot;);
 </code></pre></div>
 <p><strong><code>.pgtables</code></strong> comes from the NuttX Linker Script: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L121-L127">ld.script</a></p>
@@ -260,7 +260,7 @@ mmu_ln_map_region(
 <li>
 <p><strong>L2 PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 9) &amp; <code>0b111111111</code> <br> = <code>0x100</code></p>
 <p>(Extract Bits 9 to 17 to get Level 2 Index)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(See <strong>mmu_ln_setentry</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
 </li>
 </ul>
 <p>Do the same for <strong><code>0xEFFF_FFFF</code></strong>, and we’ll get Index <strong><code>0x17F</code></strong>.</p>
@@ -271,7 +271,7 @@ mmu_ln_map_region(
 #define PGT_INT_L2_SIZE (512)  // Page Table Size is 4 KB
 
 // Allocate Level 2 Page Table from `.pgtables` section
-size_t m_int_l2_pgtable[PGT_INT_L2_SIZE]
+static size_t m_int_l2_pgtable[PGT_INT_L2_SIZE]
   locate_data(&quot;.pgtables&quot;);
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L121-L127">(<strong><code>.pgtables</code></strong> comes from the Linker Script)</a></p>
@@ -312,7 +312,7 @@ mmu_ln_map_region(
 <li>
 <p><strong>L1 PTE Index</strong> <br> = <strong>vpn</strong> &gt;&gt; 18 <br> = 3</p>
 <p>(Extract Bits 18 to 26 to get Level 1 Index)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(See <strong>mmu_ln_setentry</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
 </li>
 </ul>
 <p><em>Why “NO RWX”?</em></p>
@@ -359,12 +359,20 @@ mmu_ln_setentry(
 <li>
 <p><strong>L3 PTE Index</strong> <br> = <strong>vpn</strong> &amp; <code>0b111111111</code> <br> = 1</p>
 <p>(Extract Bits 0 to 18 to get Level 3 Index)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(See <strong>mmu_ln_setentry</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
 </li>
 </ul>
 <p>Thus address <strong><code>0x5020_1000</code></strong> is configured by <strong>Index 1</strong> of the Level 3 Page Table.</p>
 <p>TODO</p>
-<h1 id="connect-level-2-to-level-3"><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a></h1>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L258-L268">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define PGT_L3_SIZE     (1024) /* Enough to map 4 MiB (2MiB x 2) */
+
+static size_t         m_l3_pgtable[PGT_L3_SIZE] locate_data(&quot;.pgtables&quot;);
+
+/* Map the kernel text and data for L2/L3 */
+map_region(KFLASH_START, KFLASH_START, KFLASH_SIZE, MMU_KTEXT_FLAGS);
+map_region(KSRAM_START, KSRAM_START, KSRAM_SIZE, MMU_KDATA_FLAGS);
+</code></pre></div><h1 id="connect-level-2-to-level-3"><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2kernel.jpg" alt="Level 2 Page Table for Kernel" /></p>
 <h1 id="virtual-memory"><a href="#virtual-memory">7 Virtual Memory</a></h1>
