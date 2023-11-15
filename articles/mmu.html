@@ -136,7 +136,7 @@
 <p><em><strong>(1 GB per Huge Chunk)</strong></em></p>
 <p><em>How will we protect the Memory-Mapped I/O?</em></p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <br> (1 GB)</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
 </tbody></table>
 </div>
 <p>Here’s the simplest setup for Sv39 MMU that will protect the <strong>I/O Memory from <code>0x0</code> to <code>0x3FFF</code> <code>FFFF</code></strong>…</p>
@@ -230,13 +230,13 @@ mmu_ln_map_region(
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table for Kernel" /></p>
-<p>Now we move on to protect the Interrupt Controller…</p>
+<p>Now we protect the Interrupt Controller…</p>
 <h1 id="medium-chunks-level-2"><a href="#medium-chunks-level-2">3 Medium Chunks: Level 2</a></h1>
 <p><em><strong>(2 MB per Medium Chunk)</strong></em></p>
 <p><em>Our Interrupt Controller needs 256 MB of protection…</em></p>
 <p><em>Surely a Level 1 Chunk (2 GB) is too wasteful?</em></p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <br> (256 MB)</td></tr>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
 </tbody></table>
 </div>
 <p>Yep that’s why Sv39 MMU gives us (medium-size) <strong>Level 2 Chunks of 2 MB</strong>!</p>
