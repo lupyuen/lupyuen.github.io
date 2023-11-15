@@ -74,7 +74,8 @@
 <li><a href="#medium-chunks-level-2">3 Medium Chunks: Level 2</a><ul></ul></li>
 <li><a href="#connect-level-1-to-level-2">4 Connect Level 1 to Level 2</a><ul></ul></li>
 <li><a href="#smaller-chunks-level-3">5 Smaller Chunks: Level 3</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>21 Nov 2023</em></p>
+<li><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>21 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/mmu-title.jpg" alt="Sv39 Memory Management Unit" /></p>
 <p><em>What’s this MMU?</em></p>
 <p><a href="https://en.wikipedia.org/wiki/Memory_management_unit"><strong>Memory Management Unit (MMU)</strong></a> is the hardware inside our 64-bit Single-Board Computer (SBC) for…</p>
@@ -241,9 +242,25 @@ mmu_ln_map_region(
 </div>
 <p>Yep that’s why Sv39 MMU gives us (medium-size) <strong>Level 2 Chunks of 2 MB</strong>!</p>
 <p>For the Interrupt Controller, we need <strong>128 Chunks</strong> of 2 MB.</p>
-<p>So we create a <strong>Level 2 Page Table</strong> and populate <strong>128 Entries</strong>…</p>
+<p>So we create a <strong>Level 2 Page Table</strong> (also 4,096 bytes) and populate <strong>128 Entries</strong> (Index <code>0x100</code> to <code>0x17F</code>)…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2int.jpg" alt="Level 2 Page Table for Interrupt Controller" /></p>
-<p>TODO: Index</p>
+<p><em>How did we get the Index of the Page Table Entry?</em></p>
+<p>To compute the Index of the Level 2 <strong>Page Table Entry (PTE)</strong> for Interrupt Controller <code>0xE000</code> <code>0000</code>…</p>
+<ul>
+<li>
+<p><strong>Virutal Address: vaddr</strong> = <code>0xE000</code> <code>0000</code></p>
+<p>(Because Virtual Address = Actual Address, for now)</p>
+</li>
+<li>
+<p><strong>Virtual Page Number: vpn</strong> = <strong>vaddr</strong> &gt;&gt; 12 = <code>0xE0000</code></p>
+<p>(4,096 bytes per Memory Page)</p>
+</li>
+<li>
+<p><strong>PTE Index</strong> = (<strong>vpn</strong> &gt;&gt; 9) &amp; <code>0b111111111</code> = <code>0x100</code></p>
+<p>(Extract Bits 9 to 17 to get Level 2 Index)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(See <strong>mmu_ln_setentry</strong>)</a></p>
+</li>
+</ul>
 <p>TODO: PPN</p>
 <p>TODO: Allocate</p>
 <p>TODO: Code</p>
@@ -253,7 +270,9 @@ mmu_ln_map_region(
 <h1 id="smaller-chunks-level-3"><a href="#smaller-chunks-level-3">5 Smaller Chunks: Level 3</a></h1>
 <p><em><strong>(4 KB per Smaller Chunk)</strong></em></p>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="connect-level-2-to-level-3"><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a></h1>
+<p>TODO</p>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
