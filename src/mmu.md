@@ -62,15 +62,25 @@ Let's learn things a little differently! This article will read (and look) like 
 
 TODO
 
+| Memory Region | Start Address | Size
+|:--------------|:-------------:|:----
+| [__Memory-Mapped I/O__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51) | __`0x0000` `0000`__ | __`0x4000` `0000`__ (1 GB)
+| [__Kernel Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23) _(RAM)_ | __`0x5020` `0000`__ | __`0x20` `0000`__ (2 MB)
+| [__Kernel Data__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L24) _(RAM)_ | __`0x5040` `0000`__ | __`0x20` `0000`__ (2 MB)
+| [__Page Pool__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26) _(RAM)_ | __`0x5060` `0000`__ | __`0x140` `0000`__ (20 MB)
+| [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000` `0000`__ | __`0x1000` `0000`__ (256 MB)
+
 # Level 1: Huge Chunks of Memory
 
 ___(1 GB per Huge Chunk)___
 
-_How will we protect the Memory Mapped I/O?_
+_How will we protect the Memory-Mapped I/O?_
 
-TODO: Table
+| Memory Region | Start Address | Size
+|:--------------|:-------------:|:----
+| [__Memory-Mapped I/O__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51) | __`0x0000` `0000`__ | __`0x4000` `0000`__ (1 GB)
 
-This is the simplest setup for Sv39 MMU that will protect the __I/O Memory from `0x0` to `0x3FFF` `FFFF`__...
+Here's the simplest setup for Sv39 MMU that will protect the __I/O Memory from `0x0` to `0x3FFF` `FFFF`__...
 
 ![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel2a.jpg)
 
@@ -85,6 +95,8 @@ The Page Table contains only one __Page Table Entry__ (8 Bytes) that says...
 - __R:__ Allow Reads for __`0x0`__ to __`0x3FFF` `FFFF`__
 
 - __W:__ Allow Writes for __`0x0`__ to __`0x3FFF` `FFFF`__
+
+  (We don't allow Execute for Memory-Mapped I/O)
 
 - __PPN:__ Physical Page Number (44 Bits) is __`0x0`__
 
@@ -178,25 +190,41 @@ But we have so many questions...
 
 ![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
 
-TODO
-
-![TODO](https://lupyuen.github.io/images/mmu-l2int.jpg)
-
-TODO
-
-![TODO](https://lupyuen.github.io/images/mmu-l1kernel.jpg)
-
-TODO
-
-![TODO](https://lupyuen.github.io/images/mmu-l1kernel2.jpg)
-
-TODO
+Now we move on to protect the Interrupt Controller...
 
 # Level 2: Medium Chunks of Memory
 
 ___(2 MB per Medium Chunk)___
 
+_Our Interrupt Controller needs 256 MB of protection..._
+
+_Surely a Level 1 Chunk (2 GB) is too wasteful?_
+
+| Memory Region | Start Address | Size
+|:--------------|:-------------:|:----
+| [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000` `0000`__ | __`0x1000` `0000`__ (256 MB)
+
+Yep that's why Sv39 MMU gives us (medium-size) __Level 2 Chunks of 2 MB__!
+
+For the Interrupt Controller, we need __128 Chunks__ of 2 MB.
+
+So we create a __Level 2 Page Table__ and populate __128 Entries__...
+
+![Level 2 Page Table for Interrupt Controller](https://lupyuen.github.io/images/mmu-l2int.jpg)
+
+TODO: Index
+
+TODO: PPN
+
+TODO: Allocate
+
+TODO: Code
+
+# Connect Level 1 to Level 2
+
 TODO
+
+![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel.jpg)
 
 # Level 3: Smaller Chunks of Memory
 
