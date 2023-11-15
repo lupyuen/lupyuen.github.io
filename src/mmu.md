@@ -172,7 +172,7 @@ But we have so many questions...
 
     Right now we're doing __Memory Protection__ for the Kernel, so we set...
     
-    Virtual Address = Physical Address = Actual Addrress of System Memory
+    Virtual Address = Physical Address = Actual Address of System Memory
 
     Later when we configure __Virtual Memory__ for the Applications, we'll see interesting values.
 
