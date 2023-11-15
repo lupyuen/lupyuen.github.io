@@ -275,7 +275,7 @@ But we're not done yet! Next we connect the Levels...
 
 # Connect Level 1 to Level 2
 
-_We're done with Level 2 Page Table..._
+_We're done with the Level 2 Page Table for our Interrupt Controller..._
 
 _But Level 2 should talk back to Level 1 right?_
 
@@ -330,7 +330,7 @@ We're finally done protecting the Interrupt Controller with Level 1 AND Level 2 
 
 _Wait wasn't there something already in the Level 1 Page Table?_
 
-Oh yeah: __Memory-Mapped I/O__. When we combine everything, things will look a more complicated (and there's more!)...
+Oh yeah: __Memory-Mapped I/O__. When we combine everything, things will look more complicated (and there's more!)...
 
 ![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel.jpg)
 
@@ -379,7 +379,8 @@ TODO
 ```c
 #define PGT_L3_SIZE     (1024) /* Enough to map 4 MiB (2MiB x 2) */
 
-static size_t         m_l3_pgtable[PGT_L3_SIZE] locate_data(".pgtables");
+static size_t m_l3_pgtable[PGT_L3_SIZE]
+  locate_data(".pgtables");
 
 /* Map the kernel text and data for L2/L3 */
 map_region(KFLASH_START, KFLASH_START, KFLASH_SIZE, MMU_KTEXT_FLAGS);
