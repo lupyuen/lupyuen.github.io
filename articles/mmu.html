@@ -236,6 +236,7 @@ mmu_ln_map_region(
 </ol>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <p>Now we protect the Interrupt Controller…</p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-io-region-level-1">(See the <strong>NuttX L1 Log</strong>)</a></p>
 <h1 id="medium-chunks-level-2"><a href="#medium-chunks-level-2">3 Medium Chunks: Level 2</a></h1>
 <p><strong>[2 MB per Medium Chunk]</strong></p>
 <p><em>Our Interrupt Controller needs 256 MB of protection…</em></p>
@@ -397,6 +398,7 @@ map_region(
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L150-L208">(<strong>map_region</strong> is defined here)</a></p>
 <p>That’s because <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L150-L208"><strong>map_region</strong></a> calls a <a href="https://en.wikipedia.org/wiki/Slab_allocation"><strong>Slab Allocator</strong></a> to manage the Level 3 Page Table Entries.</p>
 <p>But internally it calls the same old functions: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156"><strong>mmu_ln_map_region</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>mmu_ln_setentry</strong></a></p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-kernel-text-levels-2--3">(See the <strong>NuttX L2 and L3 Log</strong>)</a></p>
 <h1 id="connect-level-2-to-level-3"><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a></h1>
 <p><em>Level 3 will talk back to Level 2 right?</em></p>
 <p>Correct! Finally we create a <strong>Level 2 Page Table</strong> for Kernel Code and Data…</p>
@@ -410,23 +412,51 @@ map_region(
 <p>And we <strong>connect the Level 2 and 3</strong> Page Tables…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2kernel.jpg" alt="Level 2 Page Table for Kernel" /></p>
 <p><em>Page Pool goes into the same Level 2 Page Table?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L274-L280">jh7110_mm_init.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  /* Map the page pool */
-  mmu_ln_map_region(2, PGT_L2_VBASE, PGPOOL_START, PGPOOL_START, PGPOOL_SIZE,
-                    MMU_KDATA_FLAGS);
+<p>Yep, that’s because the <strong>Page Pool</strong> contains Medium-Size Chunks (2 MB) of goodies anyway.</p>
+<p>(Page Pool will be <strong>allocated to Applications</strong> in a while)</p>
+<p>This is how we populate the Level 2 Entries for the <strong>Page Pool</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L274-L280">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Map the Page Pool in Level 2 Page Table
+mmu_ln_map_region(
+  2,               // Level 2
+  PGT_L2_VBASE,    // 0x5040 6000 (Level 2 Page Table)
+  PGPOOL_START,    // 0x5060 0000 (Physical Address of Page Pool)
+  PGPOOL_START,    // 0x5060 0000 (Virtual Address of Page Pool) 
+  PGPOOL_SIZE,     // 0x0140_0000 (Size is 20 MB)
+  MMU_KDATA_FLAGS  // Read + Write + Global
+);
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156">(<strong>mmu_ln_map_region</strong> is defined here)</a> </p>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-page-pool-level-2">(See the <strong>NuttX Page Pool Log</strong>)</a></p>
 <p><em>Have we forgotten something?</em></p>
-<p>Oh yeah, remember to connect L1 to L2</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L268-L274">jh7110_mm_init.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/* Connect the L1 and L2 page tables for the kernel text and data */
-mmu_ln_setentry(1, PGT_L1_VBASE, PGT_L2_PBASE, KFLASH_START, PTE_G);
+<p>Oh yeah, remember to <strong>connect the Level 1 and 2</strong> Page Tables: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L268-L274">jh7110_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Connect the L1 and L2 Page Tables
+// for Kernel Code, Data and Page Pool
+mmu_ln_setentry(
+  1,             // Level 1
+  PGT_L1_VBASE,  // 0x5040 7000 (Level 1 Page Table)
+  PGT_L2_PBASE,  // 0x5040 6000 (Level 2 Page Table)
+  KFLASH_START,  // 0x5020 0000 (Kernel Code Address)
+  PTE_G          // Global Only
+);
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(<strong>mmu_ln_setentry</strong> is defined here)</a></p>
+<p>Our <strong>Level 1 Page Table</strong> becomes even more complicated…</p>
+<div><table><thead><tr><th style="text-align: center">Index</th><th style="text-align: center">Permissions</th><th style="text-align: left">Physical Page Number</th></tr></thead><tbody>
+<tr><td style="text-align: center">0</td><td style="text-align: center">VGRW</td><td style="text-align: left"><strong><code>0x00000</code></strong> <em>(I/O Memory)</em></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">VG</td><td style="text-align: left"><strong><code>0x50406</code></strong> <em>(Kernel Code &amp; Data)</em></td></tr>
+<tr><td style="text-align: center">3</td><td style="text-align: center">VG</td><td style="text-align: left"><strong><code>0x50403</code></strong> <em>(Interrupt Controller)</em></td></tr>
+</tbody></table>
+</div>
+<p>But it looks very similar to our Kernel Memory Map!</p>
+<div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Memory</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23-L26"><strong>RAM</strong></a></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0180_0000</code></strong> <em>(24 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
+</tbody></table>
+</div>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables">(See the <strong>NuttX L1 Log</strong>)</a></p>
 <h1 id="virtual-memory"><a href="#virtual-memory">7 Virtual Memory</a></h1>
-<p>Earlier we talked about <strong>Virtual Memory</strong>…</p>
+<p>Earlier we talked about Sv39 MMU and <strong>Virtual Memory</strong>…</p>
 <blockquote>
 <p>Allow Applications to access chunks of “Imaginary Memory” at Exotic Addresses (<strong><code>0x8000</code> <code>0000</code></strong>!)…</p>
 </blockquote>
@@ -434,7 +464,24 @@ mmu_ln_setentry(1, PGT_L1_VBASE, PGT_L2_PBASE, KFLASH_START, PTE_G);
 <p>But they’re actually System RAM recycled from boring old addresses (like <strong><code>0x5060</code> <code>4000</code></strong>)</p>
 </blockquote>
 <p>Let’s make some magic!</p>
-<p>TODO</p>
+<p><em>What are the “Exotic Addresses” for our Application?</em></p>
+<p>NuttX will map the <strong>Application Code (Text), Data and Heap</strong> at these <strong>Virtual Addresses</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L26">nsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_ARCH_TEXT_VBASE=0x80000000
+CONFIG_ARCH_TEXT_NPAGES=128
+CONFIG_ARCH_DATA_VBASE=0x80100000
+CONFIG_ARCH_DATA_NPAGES=128
+CONFIG_ARCH_HEAP_VBASE=0x80200000
+CONFIG_ARCH_HEAP_NPAGES=128
+</code></pre></div>
+<p>Which says…</p>
+<div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left">User Code</td><td style="text-align: center"><strong><code>0x8000_0000</code></strong></td><td style="text-align: left"><em>(Max 128 pages)</em></td></tr>
+<tr><td style="text-align: left">User Data</td><td style="text-align: center"><strong><code>0x8010_0000</code></strong></td><td style="text-align: left"><em>(Max 128 pages)</em></td></tr>
+<tr><td style="text-align: left">User Heap</td><td style="text-align: center"><strong><code>0x8020_0000</code></strong></td><td style="text-align: left"><em>(Max 128 pages)</em></td></tr>
+</tbody></table>
+</div>
+<p>(Each page is 4 KB)</p>
+<p>Let’s watch NuttX do its magic…</p>
 <h1 id="user-level-3"><a href="#user-level-3">8 User Level 3</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Level 3 Page Table for User" /></p>
@@ -444,6 +491,7 @@ mmu_ln_setentry(1, PGT_L1_VBASE, PGT_L2_PBASE, KFLASH_START, PTE_G);
 <h1 id="user-level-1"><a href="#user-level-1">10 User Level 1</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1user.jpg" alt="Level 1 Page Table for User" /></p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3">(See the <strong>NuttX Virtual Memory Log</strong>)</a></p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
