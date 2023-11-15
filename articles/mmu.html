@@ -537,10 +537,10 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p><em>There’s something odd about the SATP Register…</em></p>
 <p>Yeah the SATP Register has changed! Let’s investigate…</p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3">(See the <strong>NuttX Virtual Memory Log</strong>)</a></p>
-<p>TODO: SATP Screenshot </p>
+<p><img src="https://lupyuen.github.io/images/mmu-satp.jpg" alt="Kernel SATP vs User SATP" /></p>
 <h1 id="swap-the-satp-register"><a href="#swap-the-satp-register">10 Swap the SATP Register</a></h1>
 <p><em>SATP Register looks different from the earlier one in the Kernel…</em></p>
-<p><em>There must be multiple SATP Registers?</em></p>
+<p><em>Are there Multiple SATP Registers?</em></p>
 <p>We’ve seen two different <strong>SATP Registers</strong>, each pointing to a different Level 1 Page Table…</p>
 <p>But actually there’s only <strong>one SATP Register</strong>!</p>
 <p>Here’s the secret: NuttX uses this nifty trick to give the illusion of Multiple SATP Registers…</p>
