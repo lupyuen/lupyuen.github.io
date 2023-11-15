@@ -50,7 +50,7 @@ And we're documenting everything that happens when NuttX configures the Sv39 MMU
 
 _All this is covered in Computer Science Textbooks. No?_
 
-Let's learn things a little differently! This article will read (and look) like a (yummy) tray of Chunky Chocolate Brownies.
+Let's learn things a little differently! This article will read (and look) like a (yummy) tray of Chunky Chocolate Brownies... Because we love Food Analogies.
 
 (Apologies to my fellow CS Teachers)
 
@@ -72,7 +72,7 @@ TODO
 
 # Huge Chunks: Level 1
 
-___(1 GB per Huge Chunk)___
+__[1 GB per Huge Chunk]__
 
 _How will we protect the Memory-Mapped I/O?_
 
@@ -194,7 +194,7 @@ Now we protect the Interrupt Controller...
 
 # Medium Chunks: Level 2
 
-___(2 MB per Medium Chunk)___
+__[2 MB per Medium Chunk]__
 
 _Our Interrupt Controller needs 256 MB of protection..._
 
@@ -336,7 +336,7 @@ Oh yeah: __Memory-Mapped I/O__. When we combine everything, things will look mor
 
 # Smaller Chunks: Level 3
 
-___(4 KB per Smaller Chunk)___
+__[4 KB per Smaller Chunk]__
 
 _Level 2 Chunks (2 MB) are still mighty big..._
 
@@ -395,9 +395,42 @@ TODO
 
 ![Level 2 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l2kernel.jpg)
 
+TODO
+
+_Have we forgotten something?_
+
+Oh yeah, remember to connect L1 to L2
+
+[jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L268-L274)
+
+```c
+/* Connect the L1 and L2 page tables for the kernel text and data */
+mmu_ln_setentry(1, PGT_L1_VBASE, PGT_L2_PBASE, KFLASH_START, PTE_G);
+```
+
+[(__mmu_ln_setentry__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
+
 # Virtual Memory
 
+Earlier we talked about __Virtual Memory__...
+
+> Allow Applications to access chunks of "Imaginary Memory" at Exotic Addresses (__`0x8000` `0000`__!)...
+
+> But they're actually System RAM recycled from boring old addresses (like __`0x5060` `4000`__)
+
+Let's make some magic!
+
 TODO
+
+![Level 1 Page Table for User](https://lupyuen.github.io/images/mmu-l1user.jpg)
+
+TODO
+
+![Level 2 Page Table for User](https://lupyuen.github.io/images/mmu-l2user.jpg)
+
+TODO
+
+![Level 3 Page Table for User](https://lupyuen.github.io/images/mmu-l3user.jpg)
 
 # What's Next
 
