@@ -44,11 +44,11 @@ _And "Sv39" means..._
 
 _Why NuttX?_
 
-[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) is tiny and simpler to teach for MMU Internals.
+[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) is tiny and simpler to teach, as we walk through the MMU Internals.
 
 And we're documenting everything that happens when NuttX configures the Sv39 MMU for Ox64 SBC.
 
-_All this is covered in Computer Science Textbooks, no?_
+_All this is covered in Computer Science Textbooks. No?_
 
 Let's learn things a little differently! This article will read (and look) like a (yummy) tray of Chunky Chocolate Brownies.
 
