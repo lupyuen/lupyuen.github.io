@@ -275,6 +275,12 @@ But we're not done yet! Next we connect the Levels...
 
 # Connect Level 1 to Level 2
 
+_We're done with Level 2 Page Table..._
+
+_But Level 2 should talk back to Level 1 right?_
+
+Exactly! This is how we __connect the Level 2 Page Table__ back to Level 1...
+
 TODO
 
 ![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel.jpg)
