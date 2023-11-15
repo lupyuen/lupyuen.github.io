@@ -78,7 +78,7 @@ _How will we protect the Memory-Mapped I/O?_
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
-| [__Memory-Mapped I/O__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51) | __`0x0000_0000`__ | __`0x4000_0000`__ <br> (1 GB)
+| [__Memory-Mapped I/O__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
 
 Here's the simplest setup for Sv39 MMU that will protect the __I/O Memory from `0x0` to `0x3FFF` `FFFF`__...
 
@@ -190,7 +190,7 @@ But we have so many questions...
 
 ![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
 
-Now we move on to protect the Interrupt Controller...
+Now we protect the Interrupt Controller...
 
 # Medium Chunks: Level 2
 
@@ -202,7 +202,7 @@ _Surely a Level 1 Chunk (2 GB) is too wasteful?_
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
-| [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ <br> (256 MB)
+| [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ _(256 MB)_
 
 Yep that's why Sv39 MMU gives us (medium-size) __Level 2 Chunks of 2 MB__!
 
