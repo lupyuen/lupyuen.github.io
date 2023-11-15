@@ -214,17 +214,17 @@ So we create a __Level 2 Page Table__ (also 4,096 bytes). And we populate __128 
 
 _How did we get the Index of the Page Table Entry?_
 
-To compute the Index of the Level 2 __Page Table Entry (PTE)__ for Interrupt Controller `0xE000` `0000`...
+To compute the Index of the Level 2 __Page Table Entry (PTE)__ for Interrupt Controller `0xE000_0000`...
 
-- __Virtual Address: vaddr__ = `0xE000` `0000`
+- __Virtual Address: vaddr__ = `0xE000_0000`
 
   (Because Virtual Address = Actual Address, for now)
 
-- __Virtual Page Number: vpn__ = __vaddr__ >> 12 = `0xE0000`
+- __Virtual Page Number: vpn__ <br> =  __vaddr__ >> 12 <br> = `0xE0000`
 
   (4,096 bytes per Memory Page)
 
-- __PTE Index__ = (__vpn__ >> 9) & `0b111111111` = `0x100`
+- __PTE Index__ <br> = (__vpn__ >> 9) & `0b111111111` <br> = `0x100`
 
   (Extract Bits 9 to 17 to get Level 2 Index)
 
