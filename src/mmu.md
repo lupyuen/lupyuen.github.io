@@ -208,11 +208,27 @@ Yep that's why Sv39 MMU gives us (medium-size) __Level 2 Chunks of 2 MB__!
 
 For the Interrupt Controller, we need __128 Chunks__ of 2 MB.
 
-So we create a __Level 2 Page Table__ and populate __128 Entries__...
+So we create a __Level 2 Page Table__ (also 4,096 bytes) and populate __128 Entries__ (Index `0x100` to `0x17F`)...
 
 ![Level 2 Page Table for Interrupt Controller](https://lupyuen.github.io/images/mmu-l2int.jpg)
 
-TODO: Index
+_How did we get the Index of the Page Table Entry?_
+
+To compute the Index of the Level 2 __Page Table Entry (PTE)__ for Interrupt Controller `0xE000` `0000`...
+
+- __Virutal Address: vaddr__ = `0xE000` `0000`
+
+  (Because Virtual Address = Actual Address, for now)
+
+- __Virtual Page Number: vpn__ = __vaddr__ >> 12 = `0xE0000`
+
+  (4,096 bytes per Memory Page)
+
+- __PTE Index__ = (__vpn__ >> 9) & `0b111111111` = `0x100`
+
+  (Extract Bits 9 to 17 to get Level 2 Index)
+
+  [(See __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
 TODO: PPN
 
@@ -229,6 +245,10 @@ TODO
 # Smaller Chunks: Level 3
 
 ___(4 KB per Smaller Chunk)___
+
+TODO
+
+# Connect Level 2 to Level 3
 
 TODO
 
