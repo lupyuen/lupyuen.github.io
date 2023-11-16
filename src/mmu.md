@@ -671,7 +671,7 @@ But actually there's only __one SATP Register__!
 
 [(SATP is for __Supervisor Address Translation and Protection__)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp)
 
-Here's the secret: NuttX uses this nifty recipe to give the illusion of Multiple SATP Registers...
+Here's the secret: NuttX uses this nifty recipe to cook up the illusion of Multiple SATP Registers...
 
 Earlier we wrote this to set the __SATP Register__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L302)
 
