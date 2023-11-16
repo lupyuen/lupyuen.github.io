@@ -595,7 +595,7 @@ Note that the __Virtual Address__ `0x8000_0000` now maps to a different __Physic
 
 (Which comes from the [__Kernel Page Pool__](https://lupyuen.github.io/articles/mmu#connect-level-2-to-level-3))
 
-That's the magic of Virtual Memory!
+That's the tasty goodness of Virtual Memory!
 
 _But where is Virtual Address 0x8000_0000 defined?_
 
