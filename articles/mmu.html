@@ -618,7 +618,7 @@ mmu_write_satp:
 </code></pre></div>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp">(<strong>SATP Register</strong> begins with <strong><code>0x8</code></strong> to enable Sv39)</a></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525">(See the <strong>NuttX SATP Log</strong>)</a></p>
-<p><em>So indeed we can have “Multiple” SATP Registers yay!</em></p>
+<p><em>So indeed we can have “Multiple” SATP Registers sweet!</em></p>
 <p>Ah there’s a catch… Remember the <strong>“G” Global Mapping Permission</strong> from earlier?</p>
 <p><img src="https://lupyuen.github.io/images/mmu-satp2.jpg" alt="“G” Global Mapping Permission" /></p>
 <p>This means that the Page Table Entry will be effective across <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv32"><strong>ALL Address Spaces</strong></a>! Even in our Applications!</p>
