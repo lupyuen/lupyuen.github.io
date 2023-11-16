@@ -12,10 +12,10 @@
     content="RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Let's boot Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC... And figure out how the Sv39 Memory Management Unit works"
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Let's boot Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC... And figure out how the Sv39 Memory Management Unit works">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/mmu-title.jpg">
 <meta property="og:type" 
@@ -80,7 +80,7 @@
 <li><a href="#user-levels-1-and-2">9 User Levels 1 and 2</a><ul></ul></li>
 <li><a href="#swap-the-satp-register">10 Swap the SATP Register</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-and-run-nuttx">12 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>21 Nov 2023</em></p>
+<li><a href="#appendix-build-and-run-nuttx">12 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>19 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/mmu-title.jpg" alt="Sv39 Memory Management Unit" /></p>
 <p><em>What’s this MMU?</em></p>
 <p><a href="https://en.wikipedia.org/wiki/Memory_management_unit"><strong>Memory Management Unit (MMU)</strong></a> is the hardware inside our 64-bit Single-Board Computer (SBC) that does…</p>
@@ -126,7 +126,7 @@
 <p><em>Why NuttX?</em></p>
 <p><a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a> is tiny and simpler to teach, as we walk through the MMU Internals.</p>
 <p>And we’re documenting <strong>everything that happens</strong> when NuttX configures the Sv39 MMU for Ox64 SBC.</p>
-<p><em>All this is covered in Computer Science Textbooks. No?</em></p>
+<p><em>This stuff is covered in Computer Science Textbooks. No?</em></p>
 <p>Let’s learn things a little differently! This article will read (and look) like a (yummy) tray of <strong>Chunky Chocolate Brownies</strong>… Because we love Food Analogies.</p>
 <p>(Apologies to my fellow CS Teachers)</p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
@@ -182,10 +182,10 @@
 <p>Our Page Table contains only one <strong>Page Table Entry</strong> (8 Bytes) that says…</p>
 <ul>
 <li>
-<p><strong>V:</strong> This is a <strong>Valid</strong> Page Table Entry</p>
+<p><strong>V:</strong> It’s a <strong>Valid</strong> Page Table Entry</p>
 </li>
 <li>
-<p><strong>G:</strong> This is a <a href="https://lupyuen.github.io/articles/mmu#swap-the-satp-register"><strong>Global Mapping</strong></a> that’s valid for all Address Spaces</p>
+<p><strong>G:</strong> It’s a <a href="https://lupyuen.github.io/articles/mmu#swap-the-satp-register"><strong>Global Mapping</strong></a> that’s valid for all Address Spaces</p>
 </li>
 <li>
 <p><strong>R:</strong> Allow Reads for <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong></p>
@@ -203,7 +203,7 @@
 <ol>
 <li>
 <p><em>Why 0x3FFF_FFFF?</em></p>
-<p>This is a <strong>Level 1</strong> Page Table. Every Entry in the Page Table configures a (huge) <strong>1 GB Chunk of Memory</strong>.</p>
+<p>We have a <strong>Level 1</strong> Page Table. Every Entry in the Page Table configures a (huge) <strong>1 GB Chunk of Memory</strong>.</p>
 <p>(Or <strong><code>0x4000_0000</code></strong> bytes)</p>
 <p>Our Page Table Entry is at <strong>Index 0</strong>. Hence it configures the Memory Range for <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong>. (Pic below)</p>
 </li>
@@ -243,9 +243,9 @@ mmu_enable(
   0  // Set Address Space ID to 0
 );
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L268-L292">(<strong>mmu_enable</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L270-L294">(<strong>mmu_enable</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L152-L176">(Which calls <strong>mmu_satp_reg</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L176-L201">(Remember to <strong>sfence</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L177-L203">(Remember to <strong>sfence</strong>)</a></p>
 </li>
 <li>
 <p><em>How to set the Page Table Entry?</em></p>
@@ -337,7 +337,7 @@ mmu_ln_map_region(
 <tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
 </tbody></table>
 </div>
-<p>Exactly! This is how we <strong>connect our Level 2 Page Table</strong> back to Level 1…</p>
+<p>Exactly! Watch how we <strong>connect our Level 2 Page Table</strong> back to Level 1…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel3.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <p>3 is the <strong>Level 1 Index</strong> for Interrupt Controller <strong><code>0xE000_0000</code></strong> because…</p>
 <ul>
@@ -370,6 +370,7 @@ mmu_ln_setentry(
 );
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(<strong>mmu_ln_setentry</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables-for-plic">(See the <strong>NuttX L1 and L2 Log</strong>)</a></p>
 <p>We’re done protecting the Interrupt Controller with Level 1 AND Level 2 Page Tables!</p>
 <p><em>Wait wasn’t there something already in the Level 1 Page Table?</em></p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
@@ -480,8 +481,8 @@ mmu_ln_setentry(
 );
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(<strong>mmu_ln_setentry</strong> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables">(See the <strong>NuttX L1 Log</strong>)</a></p>
-<p>Our <strong>Level 1 Page Table</strong> becomes even more complicated…</p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables">(See the <strong>NuttX L1 and L2 Log</strong>)</a></p>
+<p>Our <strong>Level 1 Page Table</strong> becomes chock full of toppings…</p>
 <div><table><thead><tr><th style="text-align: center">Index</th><th style="text-align: center">Permissions</th><th style="text-align: left">Physical Page Number</th></tr></thead><tbody>
 <tr><td style="text-align: center">0</td><td style="text-align: center">VGRW</td><td style="text-align: left"><strong><code>0x00000</code></strong> <em>(I/O Memory)</em></td></tr>
 <tr><td style="text-align: center">1</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50406</code></strong> <em>(Kernel Code &amp; Data)</em></td></tr>
@@ -532,7 +533,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p>We watch NuttX do its magic…</p>
 <h1 id="user-level-3"><a href="#user-level-3">8 User Level 3</a></h1>
 <p>Our Application (NuttX Shell) requires <strong>22 Pages of Virtual Memory</strong> for its User Code.</p>
-<p>This is how NuttX populates the <strong>Level 3 Page Table</strong> for the User Code…</p>
+<p>NuttX populates the <strong>Level 3 Page Table</strong> for the User Code like so…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Level 3 Page Table for User" /></p>
 <p><em>Something smells different… What’s this “U” Permission?</em></p>
 <p>The <strong>“U” User Permission</strong> says that this Page Table Entry is accesible by our Application. (Which runs in <strong>RISC-V User Mode</strong>)</p>
@@ -557,7 +558,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p>(To make <strong>malloc</strong> work)</p>
 </li>
 </ul>
-<p>And finally we track back to <strong>User Level 1</strong> Page Table…</p>
+<p>Ultimately we track back to <strong>User Level 1</strong> Page Table…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1user.jpg" alt="Level 1 Page Table for User" /></p>
 <p>Which points PPN to the <strong>User Level 2</strong> Page Table.</p>
 <p>And that’s how User Levels 1, 2 and 3 are connected!</p>
@@ -593,9 +594,9 @@ mmu_enable(
   0  // Set Address Space ID to 0
 );
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L268-L292">(<strong>mmu_enable</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L270-L294">(<strong>mmu_enable</strong> is defined here)</a></p>
 <p>Whenever we <strong>switch the context</strong> from Kernel to Application: We <strong>swap the value</strong> of the SATP Register… Which points to a <strong>Different Level 1</strong> Page Table!</p>
-<p>The <strong>Address Space ID</strong> (stored in SATP Register) will also change. This is a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.</p>
+<p>The <strong>Address Space ID</strong> (stored in SATP Register) will also change. It’s a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.</p>
 <p>(NuttX doesn’t seem to use Address Space ID)</p>
 <p>We see NuttX <strong>swapping the SATP Register</strong> as it starts an Application (NuttX Shell)…</p>
 <div class="example-wrap"><pre class="language-text"><code>// At Startup: NuttX points the SATP Register to
@@ -617,7 +618,7 @@ mmu_write_satp:
   reg=0x8000000000050600
 </code></pre></div>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp">(<strong>SATP Register</strong> begins with <strong><code>0x8</code></strong> to enable Sv39)</a></p>
-<p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525">(See the <strong>NuttX SATP Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L271-L304">(See the <strong>NuttX SATP Log</strong>)</a></p>
 <p><em>So indeed we can have “Multiple” SATP Registers sweet!</em></p>
 <p>Ah there’s a catch… Remember the <strong>“G” Global Mapping Permission</strong> from earlier?</p>
 <p><img src="https://lupyuen.github.io/images/mmu-satp2.jpg" alt="“G” Global Mapping Permission" /></p>
@@ -625,7 +626,7 @@ mmu_write_satp:
 <p><em>Huh? Our Applications can meddle with the I/O Memory?</em></p>
 <p>Nope they can’t, because the <strong>“U” User Permission</strong> is denied. Therefore we’re all safe and well protected!</p>
 <p><img src="https://lupyuen.github.io/images/mmu-boot2.jpg" alt="NuttX swaps the SATP Register" /></p>
-<p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525"><em>NuttX swaps the SATP Register</em></a></p>
+<p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L271-L304"><em>NuttX swaps the SATP Register</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
