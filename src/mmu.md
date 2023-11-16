@@ -28,7 +28,9 @@ Actually [__Sv39__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor
 
   (Based on __StarFive JH7110 SoC__)
 
-In this article, we walk through the steps to configure the Sv39 MMU on [__Pine64 Ox64 64-bit RISC-V SBC__](https://wiki.pine64.org/wiki/Ox64) (pic below), powered by [__Bouffalo Lab BL808 SoC__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf).
+In this article, we find out __how Sv39 MMU works__ on a simple SBC: [__Pine64 Ox64 64-bit RISC-V SBC__](https://wiki.pine64.org/wiki/Ox64). (Pic below)
+
+(Powered by [__Bouffalo Lab BL808 SoC__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf))
 
 We start with Memory Protection, then Virtual Memory. We'll do this with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
 
@@ -717,7 +719,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build and Run NuttX
 
-In this article, we ran a Work-In-Progress Version of __NuttX for Ox64__, with MMU Logging.
+In this article, we ran a Work-In-Progress Version of __Apache NuttX RTOS for Ox64__, with added __MMU Logging__.
 
 (Console Input is not yet supported)
 
@@ -774,4 +776,4 @@ diskutil unmountDisk /dev/disk2
 
 Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg) and power up Ox64.
 
-Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__.
+Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH).
