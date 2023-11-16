@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-11-19",
+      "website": "https://lupyuen.github.io/articles/mmu",
+      "summary": "Let's boot Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC... And figure out how the Sv39 Memory Management Unit works"
+    },
+    {
       "name": "RISC-V Ox64 BL808 SBC: Starting Apache NuttX Real-Time Operating System",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-11-12",

@@ -1,6 +1,6 @@
 # RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit
 
-📝 _21 Nov 2023_
+📝 _19 Nov 2023_
 
 ![Sv39 Memory Management Unit](https://lupyuen.github.io/images/mmu-title.jpg)
 
@@ -52,7 +52,7 @@ _Why NuttX?_
 
 And we're documenting __everything that happens__ when NuttX configures the Sv39 MMU for Ox64 SBC.
 
-_All this is covered in Computer Science Textbooks. No?_
+_This stuff is covered in Computer Science Textbooks. No?_
 
 Let's learn things a little differently! This article will read (and look) like a (yummy) tray of __Chunky Chocolate Brownies__... Because we love Food Analogies.
 
@@ -116,9 +116,9 @@ All we need is a __Level 1 Page Table__. (4,096 Bytes)
 
 Our Page Table contains only one __Page Table Entry__ (8 Bytes) that says...
 
-- __V:__ This is a __Valid__ Page Table Entry
+- __V:__ It's a __Valid__ Page Table Entry
 
-- __G:__ This is a [__Global Mapping__](https://lupyuen.github.io/articles/mmu#swap-the-satp-register) that's valid for all Address Spaces
+- __G:__ It's a [__Global Mapping__](https://lupyuen.github.io/articles/mmu#swap-the-satp-register) that's valid for all Address Spaces
 
 - __R:__ Allow Reads for __`0x0`__ to __`0x3FFF_FFFF`__
 
@@ -134,7 +134,7 @@ But we have so many questions...
 
 1.  _Why 0x3FFF_FFFF?_
 
-    This is a __Level 1__ Page Table. Every Entry in the Page Table configures a (huge) __1 GB Chunk of Memory__.
+    We have a __Level 1__ Page Table. Every Entry in the Page Table configures a (huge) __1 GB Chunk of Memory__.
     
     (Or __`0x4000_0000`__ bytes)
 
@@ -189,11 +189,11 @@ But we have so many questions...
     );
     ```
 
-    [(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L268-L292)
+    [(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L270-L294)
 
     [(Which calls __mmu_satp_reg__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L152-L176)
 
-    [(Remember to __sfence__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L176-L201)
+    [(Remember to __sfence__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L177-L203)
 
 1.  _How to set the Page Table Entry?_
 
@@ -320,7 +320,7 @@ _But Level 2 should talk back to Level 1 right?_
 |:--------------|:-------------:|:----
 | [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ _(256 MB)_
 
-Exactly! This is how we __connect our Level 2 Page Table__ back to Level 1...
+Exactly! Watch how we __connect our Level 2 Page Table__ back to Level 1...
 
 ![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel3.jpg)
 
@@ -362,6 +362,8 @@ mmu_ln_setentry(
 ```
 
 [(__mmu_ln_setentry__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
+
+[(See the __NuttX L1 and L2 Log__)](https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables-for-plic)
 
 We're done protecting the Interrupt Controller with Level 1 AND Level 2 Page Tables!
 
@@ -512,9 +514,9 @@ mmu_ln_setentry(
 
 [(__mmu_ln_setentry__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
-[(See the __NuttX L1 Log__)](https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables)
+[(See the __NuttX L1 and L2 Log__)](https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables)
 
-Our __Level 1 Page Table__ becomes even more complicated...
+Our __Level 1 Page Table__ becomes chock full of toppings...
 
 | Index | Permissions | Physical Page Number | 
 |:-----:|:-----------:|:----|
@@ -585,7 +587,7 @@ We watch NuttX do its magic...
 
 Our Application (NuttX Shell) requires __22 Pages of Virtual Memory__ for its User Code.
 
-This is how NuttX populates the __Level 3 Page Table__ for the User Code...
+NuttX populates the __Level 3 Page Table__ for the User Code like so...
 
 ![Level 3 Page Table for User](https://lupyuen.github.io/images/mmu-l3user.jpg)
 
@@ -623,7 +625,7 @@ NuttX populates the __User Level 2__ Page Table (pic above) with the __Physical 
 
   (To make __malloc__ work)
 
-And finally we track back to __User Level 1__ Page Table...
+Ultimately we track back to __User Level 1__ Page Table...
 
 ![Level 1 Page Table for User](https://lupyuen.github.io/images/mmu-l1user.jpg)
 
@@ -683,11 +685,11 @@ mmu_enable(
 );
 ```
 
-[(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L268-L292)
+[(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L270-L294)
 
 Whenever we __switch the context__ from Kernel to Application: We __swap the value__ of the SATP Register... Which points to a __Different Level 1__ Page Table!
 
-The __Address Space ID__ (stored in SATP Register) will also change. This is a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.
+The __Address Space ID__ (stored in SATP Register) will also change. It's a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.
 
 (NuttX doesn't seem to use Address Space ID)
 
@@ -715,7 +717,7 @@ mmu_write_satp:
 
 [(__SATP Register__ begins with __`0x8`__ to enable Sv39)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp)
 
-[(See the __NuttX SATP Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
+[(See the __NuttX SATP Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L271-L304)
 
 _So indeed we can have "Multiple" SATP Registers sweet!_
 
@@ -731,7 +733,7 @@ Nope they can't, because the __"U" User Permission__ is denied. Therefore we're 
 
 ![NuttX swaps the SATP Register](https://lupyuen.github.io/images/mmu-boot2.jpg)
 
-[_NuttX swaps the SATP Register_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
+[_NuttX swaps the SATP Register_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L271-L304)
 
 # What's Next
 
