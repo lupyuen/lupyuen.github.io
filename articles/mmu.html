@@ -582,7 +582,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p>We saw two different <strong>SATP Registers</strong>, each pointing to a different Level 1 Page Table…</p>
 <p>But actually there’s only <strong>one SATP Register</strong>!</p>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp">(SATP is for <strong>Supervisor Address Translation and Protection</strong>)</a></p>
-<p>Here’s the secret: NuttX uses this nifty trick to give the illusion of Multiple SATP Registers…</p>
+<p>Here’s the secret: NuttX uses this nifty recipe to give the illusion of Multiple SATP Registers…</p>
 <p>Earlier we wrote this to set the <strong>SATP Register</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L302">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set the SATP Register to the
 // Physical Page Number of Level 1 Page Table.
