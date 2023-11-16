@@ -115,7 +115,7 @@
 </li>
 <li>
 <p><strong>“39”</strong> because it supports 39 Bits for Virtual Addresses</p>
-<p>(<strong><code>0x0</code></strong> to <strong><code>0x7F FFFF FFFF</code></strong>!)</p>
+<p>(<strong><code>0x0</code></strong> to <strong><code>0x7F_FFFF_FFFF</code></strong>!)</p>
 </li>
 <li>
 <p>Coincidentally it’s also <strong>3 by 9</strong>…</p>
@@ -131,7 +131,8 @@
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <p><a href="https://wiki.pine64.org/wiki/Ox64"><em>Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)</em></a></p>
 <h1 id="memory-protection"><a href="#memory-protection">1 Memory Protection</a></h1>
-<p>TODO</p>
+<p><em>What memory shall we protect on Ox64?</em></p>
+<p>We configure the Sv39 MMU so that our Kernel can access these <strong>Memory Regions</strong> (and nothing else)…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
@@ -139,30 +140,52 @@
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5060_0000</code></strong></td><td style="text-align: left"><strong><code>0x0140_0000</code></strong> <em>(20 MB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
 </tbody></table>
-</div><h1 id="huge-chunks-level-1"><a href="#huge-chunks-level-1">2 Huge Chunks: Level 1</a></h1>
+</div>
+<ul>
+<li>
+<p><strong>Applications</strong> will NOT be allowed to touch these</p>
+</li>
+<li>
+<p><strong>Kernel Code</strong> will allow Read and Execute Access</p>
+</li>
+<li>
+<p><strong>Other Memory Regions</strong> will allow Read and Write Access</p>
+</li>
+<li>
+<p><strong>Page Pool</strong> will be allocated (on-the-fly) to Applications as Virtual Memory</p>
+</li>
+<li>
+<p><strong>Our Kernel</strong> runs in RISC-V Supervisor Mode</p>
+</li>
+<li>
+<p><strong>Applications</strong> run in RISC-V User Mode</p>
+</li>
+</ul>
+<p>We begin with the I/O Memory…</p>
+<h1 id="huge-chunks-level-1"><a href="#huge-chunks-level-1">2 Huge Chunks: Level 1</a></h1>
 <p><strong>[1 GB per Huge Chunk]</strong></p>
-<p><em>How will we protect the Memory-Mapped I/O?</em></p>
+<p><em>How will we protect the I/O Memory?</em></p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
 </tbody></table>
 </div>
-<p>Here’s the simplest setup for Sv39 MMU that will protect the <strong>I/O Memory from <code>0x0</code> to <code>0x3FFF</code> <code>FFFF</code></strong>…</p>
+<p>Here’s the simplest setup for Sv39 MMU that will protect the <strong>I/O Memory</strong> from <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2a.jpg" alt="Level 1 Page Table for Kernel" /></p>
-<p>All we need is a <strong>Level 1 Page Table</strong> (4,096 Bytes).</p>
+<p>All we need is a <strong>Level 1 Page Table</strong>. (4,096 Bytes)</p>
 <p>The Page Table contains only one <strong>Page Table Entry</strong> (8 Bytes) that says…</p>
 <ul>
 <li>
 <p><strong>V:</strong> This is a <strong>Valid</strong> Page Table Entry</p>
 </li>
 <li>
-<p><strong>G:</strong> This is a <strong>Global Mapping</strong> that is valid for all Address Spaces</p>
+<p><strong>G:</strong> This is a <a href="https://lupyuen.github.io/articles/mmu#swap-the-satp-register"><strong>Global Mapping</strong></a> that’s valid for all Address Spaces</p>
 </li>
 <li>
-<p><strong>R:</strong> Allow Reads for <strong><code>0x0</code></strong> to <strong><code>0x3FFF</code> <code>FFFF</code></strong></p>
+<p><strong>R:</strong> Allow Reads for <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong></p>
 </li>
 <li>
-<p><strong>W:</strong> Allow Writes for <strong><code>0x0</code></strong> to <strong><code>0x3FFF</code> <code>FFFF</code></strong></p>
-<p>(We don’t allow Execute for Memory-Mapped I/O)</p>
+<p><strong>W:</strong> Allow Writes for <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong></p>
+<p>(We don’t allow Execute for I/O Memory)</p>
 </li>
 <li>
 <p><strong>PPN:</strong> Physical Page Number (44 Bits) is <strong><code>0x0</code></strong></p>
@@ -172,10 +195,10 @@
 <p>But we have so many questions…</p>
 <ol>
 <li>
-<p><em>Why <code>0x3FFF</code> <code>FFFF</code>?</em></p>
+<p><em>Why <code>0x3FFF_FFFF</code>?</em></p>
 <p>This is a <strong>Level 1</strong> Page Table. Every Entry in the Page Table configures a (huge) <strong>1 GB Chunk of Memory</strong>.</p>
-<p>(Or <strong><code>0x4000 0000</code></strong> bytes)</p>
-<p>Our Page Table Entry is at <strong>Index 0</strong>. Hence it configures the Memory Range for <strong><code>0x0</code></strong> to <strong><code>0x3FFF</code> <code>FFFF</code></strong>. (Pic below)</p>
+<p>(Or <strong><code>0x4000_0000</code></strong> bytes)</p>
+<p>Our Page Table Entry is at <strong>Index 0</strong>. Hence it configures the Memory Range for <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong>. (Pic below)</p>
 </li>
 <li>
 <p><em>How to allocate the Page Table?</em></p>
@@ -194,7 +217,7 @@ static size_t m_l1_pgtable[PGT_L1_SIZE]
     . = ALIGN(4);
 } &gt; ksram
 </code></pre></div>
-<p>Then GCC Linker helpfully allocates our Level 1 Page Table at RAM Address <strong><code>0x5040</code> <code>7000</code></strong>.</p>
+<p>Then GCC Linker helpfully allocates our Level 1 Page Table at RAM Address <strong><code>0x5040_7000</code></strong>.</p>
 </li>
 <li>
 <p><em>What is SATP?</em></p>
@@ -216,7 +239,7 @@ mmu_enable(
 </li>
 <li>
 <p><em>How to set the Page Table Entry?</em></p>
-<p>To set the Level 1 <strong>Page Table Entry</strong> for <strong><code>0x0</code></strong> to <strong><code>0x3FFF</code> <code>FFFF</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L227-L240">jh7110_mm_init.c</a></p>
+<p>To set the Level 1 <strong>Page Table Entry</strong> for <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L227-L240">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the I/O Region in Level 1 Page Table
 mmu_ln_map_region(
   1,             // Level 1
@@ -342,8 +365,7 @@ mmu_ln_setentry(
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <h1 id="smaller-chunks-level-3"><a href="#smaller-chunks-level-3">5 Smaller Chunks: Level 3</a></h1>
 <p><strong>[4 KB per Smaller Chunk]</strong></p>
-<p><em>Level 2 Chunks (2 MB) are still mighty big…</em></p>
-<p><em>Is there anything smaller?</em></p>
+<p><em>Level 2 Chunks (2 MB) are still mighty big… Is there anything smaller?</em></p>
 <p>Yep we have smaller <strong>Level 3 Chunks</strong> of <strong>4 KB</strong> each.</p>
 <p>Let’s create a <strong>Level 3 Page Table</strong> for the Kernel Code. And fill it with 4 KB Chunks!</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
@@ -590,9 +612,51 @@ mmu_enable(
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mmu.md"><strong>lupyuen.github.io/src/mmu.md</strong></a></p>
 <h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">12 Appendix: Build and Run NuttX</a></h1>
-<p>TODO</p>
-<p>Special version of NuttX with MMU Logging</p>
-<p>But Console Input is not yet supported</p>
+<p>In this article, we ran a Work-In-Progress Version of <strong>NuttX for Ox64</strong>, with MMU Logging.</p>
+<p>(Console Input is not yet supported)</p>
+<p>This is how we download and build NuttX for Ox64 BL808 SBC…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
+git clone \
+  --branch ox64a \
+  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  nuttx
+git clone \
+  --branch ox64a \
+  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  apps
+
+## Build NuttX
+cd nuttx
+tools/configure.sh star64:nsh
+make
+
+## Dump the RISC-V Disassembly for NuttX Kernel
+riscv64-unknown-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">(And enable <strong>Scheduler Info Output</strong>)</a></p>
+<p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
+<p>Then we do the <a href="https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64"><strong>Linux-To-NuttX Switcheroo</strong></a>: Overwrite the microSD Linux Image by the <strong>NuttX Kernel</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Export the NuttX Binary Image
+## to `nuttx.bin`
+riscv64-unknown-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
+
+## Overwrite the Linux Image
+## on Ox64 microSD
+cp nuttx.bin \
+  &quot;/Volumes/NO NAME/Image&quot;
+diskutil unmountDisk /dev/disk2
+</code></pre></div>
+<p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
+<p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong>.</p>
 
     
 </body>
