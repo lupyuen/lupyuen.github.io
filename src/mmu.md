@@ -215,7 +215,7 @@ But we have so many questions...
 
 1.  _Why is Virtual Address set to 0?_
 
-    Right now we're doing __Memory Protection__ for the Kernel, so we set...
+    Right now we're doing __Memory Protection__ for the Kernel, hence we set...
     
     Virtual Address = Physical Address = Actual Address of System Memory
 
@@ -241,7 +241,7 @@ Yep that's why Sv39 MMU gives us (medium-size) __Level 2 Chunks of 2 MB__!
 
 For the Interrupt Controller, we need __128 Chunks__ of 2 MB.
 
-So we create a __Level 2 Page Table__ (also 4,096 bytes). And we populate __128 Entries__ (Index `0x100` to `0x17F`)...
+Hence we create a __Level 2 Page Table__ (also 4,096 bytes). And we populate __128 Entries__ (Index `0x100` to `0x17F`)...
 
 ![Level 2 Page Table for Interrupt Controller](https://lupyuen.github.io/images/mmu-l2int.jpg)
 
@@ -382,7 +382,7 @@ _Level 2 Chunks (2 MB) are still mighty big... Is there anything smaller?_
 
 Yep we have smaller __Level 3 Chunks__ of __4 KB__ each.
 
-Let's create a __Level 3 Page Table__ for the Kernel Code. And fill it (to the max) with __4 KB Chunks__...
+We create a __Level 3 Page Table__ for the Kernel Code. And fill it (to the max) with __4 KB Chunks__...
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
@@ -577,7 +577,7 @@ Nope! That's the beauty of an MMU: We control _everything_ that the Application 
 
 Our Application will see only the assigned __Virtual Addresses__, not the actual Physical Addresses used by the Kernel.
 
-Let's watch NuttX do its magic...
+We watch NuttX do its magic...
 
 # User Level 3
 
@@ -587,7 +587,7 @@ This is how NuttX populates the __Level 3 Page Table__ for the User Code...
 
 ![Level 3 Page Table for User](https://lupyuen.github.io/images/mmu-l3user.jpg)
 
-_Something looks new... What's this "U" Permission?_
+_Something smells different... What's this "U" Permission?_
 
 The __"U" User Permission__ says that this Page Table Entry is accesible by our Application. (Which runs in __RISC-V User Mode__)
 
@@ -619,7 +619,7 @@ NuttX populates the __User Level 2__ Page Table (pic above) with the __Physical 
 
 - Level 3 Page Table for __User Heap__
 
-  (So that __malloc__ will work)
+  (To make __malloc__ work)
 
 And finally we track back to __User Level 1__ Page Table...
 
@@ -647,7 +647,7 @@ Since the Entry Index is 2, then the Virtual Address must be __`0x8000_0000`__. 
 
 _There's something odd about the SATP Register..._
 
-Yeah the SATP Register has changed! Let's investigate...
+Yeah the SATP Register has changed! We investigate...
 
 __TODO:__ Who calls [__mmu_ln_setentry__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109) for User Page Tables?
 
@@ -727,7 +727,7 @@ This means that the Page Table Entry will be effective across [__ALL Address Spa
 
 _Huh? Our Applications can meddle with the I/O Memory?_
 
-Nope they can't, because the __"U" User Permission__ is denied. So we're safe and well protected!
+Nope they can't, because the __"U" User Permission__ is denied. Therefore we're all safe and well protected!
 
 ![NuttX swaps the SATP Register](https://lupyuen.github.io/images/mmu-boot2.jpg)
 
