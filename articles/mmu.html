@@ -179,7 +179,7 @@
 <p>Here’s the simplest setup for Sv39 MMU that will protect the <strong>I/O Memory</strong> from <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2a.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <p>All we need is a <strong>Level 1 Page Table</strong>. (4,096 Bytes)</p>
-<p>The Page Table contains only one <strong>Page Table Entry</strong> (8 Bytes) that says…</p>
+<p>Our Page Table contains only one <strong>Page Table Entry</strong> (8 Bytes) that says…</p>
 <ul>
 <li>
 <p><strong>V:</strong> This is a <strong>Valid</strong> Page Table Entry</p>
@@ -234,7 +234,7 @@ static size_t m_l1_pgtable[PGT_L1_SIZE]
     = 0x50407000 / 4096
     = 0x50407
 </code></pre></div>
-<p>This is how we set the SATP Register in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L302">jh7110_mm_init.c</a></p>
+<p>This is how we set the <strong>SATP Register</strong> in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L302">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set the SATP Register to the
 // Physical Page Number of Level 1 Page Table.
 // Set SATP Mode to Sv39.
@@ -435,9 +435,9 @@ map_region(
 );
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L150-L208">(<strong>map_region</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-kernel-text-levels-2--3">(See the <strong>NuttX L2 and L3 Log</strong>)</a></p>
 <p>That’s because <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L150-L208"><strong>map_region</strong></a> calls a <a href="https://en.wikipedia.org/wiki/Slab_allocation"><strong>Slab Allocator</strong></a> to manage the Level 3 Page Table Entries.</p>
 <p>But internally it calls the same old functions: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156"><strong>mmu_ln_map_region</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>mmu_ln_setentry</strong></a></p>
-<p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-kernel-text-levels-2--3">(See the <strong>NuttX L2 and L3 Log</strong>)</a></p>
 <h1 id="connect-level-2-to-level-3"><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a></h1>
 <p><em>Level 3 will talk back to Level 2 right?</em></p>
 <p>Correct! Finally we create a <strong>Level 2 Page Table</strong> for Kernel Code and Data…</p>
@@ -483,11 +483,11 @@ mmu_ln_setentry(
 <p>Our <strong>Level 1 Page Table</strong> becomes even more complicated…</p>
 <div><table><thead><tr><th style="text-align: center">Index</th><th style="text-align: center">Permissions</th><th style="text-align: left">Physical Page Number</th></tr></thead><tbody>
 <tr><td style="text-align: center">0</td><td style="text-align: center">VGRW</td><td style="text-align: left"><strong><code>0x00000</code></strong> <em>(I/O Memory)</em></td></tr>
-<tr><td style="text-align: center">1</td><td style="text-align: center">VG</td><td style="text-align: left"><strong><code>0x50406</code></strong> <em>(Kernel Code &amp; Data)</em></td></tr>
-<tr><td style="text-align: center">3</td><td style="text-align: center">VG</td><td style="text-align: left"><strong><code>0x50403</code></strong> <em>(Interrupt Controller)</em></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50406</code></strong> <em>(Kernel Code &amp; Data)</em></td></tr>
+<tr><td style="text-align: center">3</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50403</code></strong> <em>(Interrupt Controller)</em></td></tr>
 </tbody></table>
 </div>
-<p>But it looks very similar to our Kernel Memory Map!</p>
+<p>But it looks very similar to our <strong>Kernel Memory Map</strong>!</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Memory</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23-L26"><strong>RAM</strong></a></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0180_0000</code></strong> <em>(24 MB)</em></td></tr>
