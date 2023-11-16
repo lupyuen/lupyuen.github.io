@@ -189,9 +189,11 @@ But we have so many questions...
     );
     ```
 
-    [(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292)
+    [(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L268-L292)
 
-    [(Which calls __mmu_satp_reg__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L152-L176)
+    [(Which calls __mmu_satp_reg__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L152-L176)
+
+    [(Remember to __sfence__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L176-L201)
 
 1.  _How to set the Page Table Entry?_
 
@@ -681,9 +683,7 @@ mmu_enable(
 );
 ```
 
-[(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292)
-
-[(Which calls __mmu_satp_reg__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L152-L176)
+[(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L268-L292)
 
 Whenever we __switch the context__ from Kernel to Application: We __swap the value__ of the SATP Register... Which points to a __Different Level 1__ Page Table!
 
