@@ -113,6 +113,10 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
 Let's talk about QEMU...
 
+[(How to enable the __Hello App__)](https://github.com/lupyuen/lupyuen.github.io/issues/21#issuecomment-1809337352)
+
+[(__NuttX Kernel Mode__ works OK with QEMU)](https://github.com/lupyuen/lupyuen.github.io/issues/21#issuecomment-1814305271)
+
 ![Apache NuttX RTOS on RISC-V QEMU](https://lupyuen.github.io/images/riscv-title.png)
 
 [_Apache NuttX RTOS on RISC-V QEMU_](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
