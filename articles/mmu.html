@@ -95,7 +95,7 @@
 </li>
 </ul>
 <p><em>Sv39 sounds familiar… Any relation to SVR4?</em></p>
-<p>Actually <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39"><strong>Sv39</strong></a> is the MMU inside many RISC-V SBCs…</p>
+<p>Actually <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39"><strong>Sv39 Memory Management Unit</strong></a> is inside many RISC-V SBCs…</p>
 <ul>
 <li>
 <p>Pine64 Ox64, Sipeed M1s</p>
@@ -564,7 +564,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
 <tr><td style="text-align: left">User Code</td><td style="text-align: center"><strong><code>0x8000_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em></td></tr>
 <tr><td style="text-align: left">User Data</td><td style="text-align: center"><strong><code>0x8010_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em></td></tr>
-<tr><td style="text-align: left">User Heap</td><td style="text-align: center"><strong><code>0x8020_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em></td></tr>
+<tr><td style="text-align: left">User Heap</td><td style="text-align: center"><strong><code>0x8020_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em> <br> <em>(Each Page is 4 KB)</em></td></tr>
 </tbody></table>
 </div>
 <p><em>Once again: Where is Virtual Address 0x8000_0000 defined?</em></p>
@@ -596,6 +596,7 @@ mmu_enable(
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L152-L176">(Which calls <strong>mmu_satp_reg</strong>)</a></p>
 <p>Whenever we <strong>switch the context</strong> from Kernel to Application: We <strong>swap the value</strong> of the SATP Register… Which points to a <strong>Different Level 1</strong> Page Table!</p>
 <p>The <strong>Address Space ID</strong> (stored in SATP Register) will also change. This is a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.</p>
+<p>(NuttX doesn’t seem to use Address Space ID)</p>
 <p>We see NuttX <strong>swapping the SATP Register</strong> as it starts an Application (NuttX Shell)…</p>
 <div class="example-wrap"><pre class="language-text"><code>// At Startup: NuttX points the SATP Register to
 // Kernel Level 1 Page Table (0x5040 7000)
@@ -605,7 +606,7 @@ mmu_write_satp:
   reg=0x8000000000050407
 nx_start: Entry
 ...
-// Later: NuttX sets points the SATP Register to
+// Later: NuttX points the SATP Register to
 // User Level 1 Page Table (0x5060 0000)
 Starting init task: /system/bin/init
 mmu_satp_reg: 
@@ -615,6 +616,7 @@ up_addrenv_select:
 mmu_write_satp: 
   reg=0x8000000000050600
 </code></pre></div>
+<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp">(<strong>SATP Register</strong> begins with <strong><code>0x8</code></strong> to enable Sv39)</a></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525">(See the <strong>NuttX SATP Log</strong>)</a></p>
 <p><em>So indeed we can have “Multiple” SATP Registers yay!</em></p>
 <p>Ah there’s a catch… Remember the <strong>“G” Global Mapping Permission</strong> from earlier?</p>
@@ -649,6 +651,8 @@ mmu_write_satp:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mmu.md"><strong>lupyuen.github.io/src/mmu.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
+<p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525"><em>Ox64 boots to NuttX Shell</em></a></p>
 <h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">12 Appendix: Build and Run NuttX</a></h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong>, with added <strong>MMU Logging</strong>.</p>
 <p>(Console Input is not yet supported)</p>
@@ -694,7 +698,8 @@ cp nuttx.bin \
 diskutil unmountDisk /dev/disk2
 </code></pre></div>
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
-<p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH).</p>
+<p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH). (Pic above)</p>
+<p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525">(See the <strong>NuttX Log</strong>)</a></p>
 
     
 </body>
