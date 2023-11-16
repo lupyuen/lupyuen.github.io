@@ -28,7 +28,7 @@ Actually [__Sv39__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor
 
   (Based on __StarFive JH7110 SoC__)
 
-In this article, we find out __how Sv39 MMU works__ on a simple SBC: [__Pine64 Ox64 64-bit RISC-V SBC__](https://wiki.pine64.org/wiki/Ox64). (Pic below)
+In this article, we find out __how Sv39 MMU works__ on a simple barebones SBC: [__Pine64 Ox64 64-bit RISC-V SBC__](https://wiki.pine64.org/wiki/Ox64). (Pic below)
 
 (Powered by [__Bouffalo Lab BL808 SoC__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf))
 
