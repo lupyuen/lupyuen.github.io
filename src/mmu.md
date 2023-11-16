@@ -528,7 +528,9 @@ But it looks very similar to our __Kernel Memory Map__!
 | [__RAM__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23-L26) | __`0x5020_0000`__ | __`0x0180_0000`__ _(24 MB)_
 | [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ _(256 MB)_
 
-TODO: Screenshot of NSH
+![Ox64 boots to NuttX Shell](https://lupyuen.github.io/images/mmu-boot1.png)
+
+[_Ox64 boots to NuttX Shell_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
 
 # Virtual Memory
 
@@ -690,10 +692,26 @@ The __Address Space ID__ (stored in SATP Register) will also change. This is a h
 We see NuttX __swapping the SATP Register__ as it starts an Application (NuttX Shell)...
 
 ```text
-TODO
+// At Startup: NuttX points the SATP Register to
+// Kernel Level 1 Page Table (0x5040 7000)
+mmu_satp_reg: 
+  pgbase=0x50407000, asid=0x0, reg=0x8000000000050407
+mmu_write_satp: 
+  reg=0x8000000000050407
+nx_start: Entry
+...
+// Later: NuttX sets points the SATP Register to
+// User Level 1 Page Table (0x5060 0000)
+Starting init task: /system/bin/init
+mmu_satp_reg: 
+  pgbase=0x50600000, asid=0x0, reg=0x8000000000050600
+up_addrenv_select: 
+  addrenv=0x5040d560, satp=0x8000000000050600
+mmu_write_satp: 
+  reg=0x8000000000050600
 ```
 
-TODO: (See the NuttX SATP Log)
+[(See the __NuttX SATP Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
 
 _So indeed we can have "Multiple" SATP Registers yay!_
 
@@ -706,6 +724,10 @@ This means that the Page Table Entry will be effective across [__ALL Address Spa
 _Huh? Our Applications can meddle with the I/O Memory?_
 
 Nope they can't, because the __"U" User Permission__ is denied. So we're safe and well protected!
+
+![NuttX swaps the SATP Register](https://lupyuen.github.io/images/mmu-boot2.jpg)
+
+[_NuttX swaps the SATP Register_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
 
 # What's Next
 
