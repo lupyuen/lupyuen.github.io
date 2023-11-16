@@ -494,7 +494,8 @@ mmu_ln_setentry(
 <tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
 </tbody></table>
 </div>
-<p>TODO: Screenshot of NSH</p>
+<p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
+<p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525"><em>Ox64 boots to NuttX Shell</em></a></p>
 <h1 id="virtual-memory"><a href="#virtual-memory">7 Virtual Memory</a></h1>
 <p>Earlier we talked about Sv39 MMU and <strong>Virtual Memory</strong>…</p>
 <blockquote>
@@ -596,15 +597,33 @@ mmu_enable(
 <p>Whenever we <strong>switch the context</strong> from Kernel to Application: We <strong>swap the value</strong> of the SATP Register… Which points to a <strong>Different Level 1</strong> Page Table!</p>
 <p>The <strong>Address Space ID</strong> (stored in SATP Register) will also change. This is a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.</p>
 <p>We see NuttX <strong>swapping the SATP Register</strong> as it starts an Application (NuttX Shell)…</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO
+<div class="example-wrap"><pre class="language-text"><code>// At Startup: NuttX points the SATP Register to
+// Kernel Level 1 Page Table (0x5040 7000)
+mmu_satp_reg: 
+  pgbase=0x50407000, asid=0x0, reg=0x8000000000050407
+mmu_write_satp: 
+  reg=0x8000000000050407
+nx_start: Entry
+...
+// Later: NuttX sets points the SATP Register to
+// User Level 1 Page Table (0x5060 0000)
+Starting init task: /system/bin/init
+mmu_satp_reg: 
+  pgbase=0x50600000, asid=0x0, reg=0x8000000000050600
+up_addrenv_select: 
+  addrenv=0x5040d560, satp=0x8000000000050600
+mmu_write_satp: 
+  reg=0x8000000000050600
 </code></pre></div>
-<p>TODO: (See the NuttX SATP Log)</p>
+<p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525">(See the <strong>NuttX SATP Log</strong>)</a></p>
 <p><em>So indeed we can have “Multiple” SATP Registers yay!</em></p>
 <p>Ah there’s a catch… Remember the <strong>“G” Global Mapping Permission</strong> from earlier?</p>
 <p><img src="https://lupyuen.github.io/images/mmu-satp2.jpg" alt="“G” Global Mapping Permission" /></p>
 <p>This means that the Page Table Entry will be effective across <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv32"><strong>ALL Address Spaces</strong></a>! Even in our Applications!</p>
 <p><em>Huh? Our Applications can meddle with the I/O Memory?</em></p>
 <p>Nope they can’t, because the <strong>“U” User Permission</strong> is denied. So we’re safe and well protected!</p>
+<p><img src="https://lupyuen.github.io/images/mmu-boot2.jpg" alt="NuttX swaps the SATP Register" /></p>
+<p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525"><em>NuttX swaps the SATP Register</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
