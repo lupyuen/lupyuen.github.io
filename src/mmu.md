@@ -76,7 +76,9 @@ We configure the Sv39 MMU so that our Kernel can access these __Memory Regions__
 | [__Page Pool__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26) _(RAM)_ | __`0x5060_0000`__ | __`0x0140_0000`__ _(20 MB)_
 | [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ _(256 MB)_
 
-- __Applications__ will NOT be allowed to touch these
+Our (food) hygiene requirements...
+
+- __Applications__ shall NOT be allowed to touch these Memory Regions
 
 - __Kernel Code__ will allow Read and Execute Access
 
