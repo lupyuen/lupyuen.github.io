@@ -480,7 +480,7 @@ make
 ## tools/configure.sh rv-virt:nsh64
 ```
 
-[(Complete Steps for __Kernel Mode__)](https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
+[(Complete Steps for __Kernel Mode__)](https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html)
 
 _What's this Kernel Mode?_
 

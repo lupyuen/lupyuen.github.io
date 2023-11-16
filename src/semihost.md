@@ -270,7 +270,7 @@ riscv64-unknown-elf-objdump \
   2>&1
 ```
 
-[(Source)](https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
+[(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html)
 
 [(Why we use __Kernel Mode__)](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode)
 
