@@ -114,7 +114,7 @@ Here's the simplest setup for Sv39 MMU that will protect the __I/O Memory__ from
 
 All we need is a __Level 1 Page Table__. (4,096 Bytes)
 
-The Page Table contains only one __Page Table Entry__ (8 Bytes) that says...
+Our Page Table contains only one __Page Table Entry__ (8 Bytes) that says...
 
 - __V:__ This is a __Valid__ Page Table Entry
 
@@ -177,7 +177,7 @@ But we have so many questions...
         = 0x50407
     ```
 
-    This is how we set the SATP Register in NuttX: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L302)
+    This is how we set the __SATP Register__ in NuttX: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L302)
 
     ```c
     // Set the SATP Register to the
@@ -444,11 +444,11 @@ map_region(
 
 [(__map_region__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L150-L208)
 
+[(See the __NuttX L2 and L3 Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-kernel-text-levels-2--3)
+
 That's because [__map_region__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L150-L208) calls a [__Slab Allocator__](https://en.wikipedia.org/wiki/Slab_allocation) to manage the Level 3 Page Table Entries.
 
 But internally it calls the same old functions: [__mmu_ln_map_region__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156) and [__mmu_ln_setentry__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
-
-[(See the __NuttX L2 and L3 Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-kernel-text-levels-2--3)
 
 # Connect Level 2 to Level 3
 
@@ -517,10 +517,10 @@ Our __Level 1 Page Table__ becomes even more complicated...
 | Index | Permissions | Physical Page Number | 
 |:-----:|:-----------:|:----|
 | 0 | VGRW | __`0x00000`__ _(I/O Memory)_
-| 1 | VG | __`0x50406`__ _(Kernel Code & Data)_
-| 3 | VG | __`0x50403`__ _(Interrupt Controller)_
+| 1 | VG _(Pointer)_ | __`0x50406`__ _(Kernel Code & Data)_
+| 3 | VG _(Pointer)_ | __`0x50403`__ _(Interrupt Controller)_
 
-But it looks very similar to our Kernel Memory Map!
+But it looks very similar to our __Kernel Memory Map__!
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
