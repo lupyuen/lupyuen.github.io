@@ -264,7 +264,7 @@ mmu_ln_map_region(
 </li>
 <li>
 <p><em>Why is Virtual Address set to 0?</em></p>
-<p>Right now we’re doing <strong>Memory Protection</strong> for the Kernel, so we set…</p>
+<p>Right now we’re doing <strong>Memory Protection</strong> for the Kernel, hence we set…</p>
 <p>Virtual Address = Physical Address = Actual Address of System Memory</p>
 <p>Later when we configure <strong>Virtual Memory</strong> for the Applications, we’ll see interesting values.</p>
 </li>
@@ -281,7 +281,7 @@ mmu_ln_map_region(
 </div>
 <p>Yep that’s why Sv39 MMU gives us (medium-size) <strong>Level 2 Chunks of 2 MB</strong>!</p>
 <p>For the Interrupt Controller, we need <strong>128 Chunks</strong> of 2 MB.</p>
-<p>So we create a <strong>Level 2 Page Table</strong> (also 4,096 bytes). And we populate <strong>128 Entries</strong> (Index <code>0x100</code> to <code>0x17F</code>)…</p>
+<p>Hence we create a <strong>Level 2 Page Table</strong> (also 4,096 bytes). And we populate <strong>128 Entries</strong> (Index <code>0x100</code> to <code>0x17F</code>)…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2int.jpg" alt="Level 2 Page Table for Interrupt Controller" /></p>
 <p><em>How did we get the Index of the Page Table Entry?</em></p>
 <p>Our Interrupt Controller is at <strong><code>0xE000_0000</code></strong>.</p>
@@ -382,7 +382,7 @@ mmu_ln_setentry(
 <p><strong>[4 KB per Smaller Chunk]</strong></p>
 <p><em>Level 2 Chunks (2 MB) are still mighty big… Is there anything smaller?</em></p>
 <p>Yep we have smaller <strong>Level 3 Chunks</strong> of <strong>4 KB</strong> each.</p>
-<p>Let’s create a <strong>Level 3 Page Table</strong> for the Kernel Code. And fill it (to the max) with <strong>4 KB Chunks</strong>…</p>
+<p>We create a <strong>Level 3 Page Table</strong> for the Kernel Code. And fill it (to the max) with <strong>4 KB Chunks</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x20_0000</code></strong> <em>(2 MB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5040_0000</code></strong></td><td style="text-align: left"><strong><code>0x20_0000</code></strong> <em>(2 MB)</em></td></tr>
@@ -528,12 +528,12 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p><em>Will Applications see the I/O Memory, Kernel RAM, Interrupt Controller?</em></p>
 <p>Nope! That’s the beauty of an MMU: We control <em>everything</em> that the Application can meddle with!</p>
 <p>Our Application will see only the assigned <strong>Virtual Addresses</strong>, not the actual Physical Addresses used by the Kernel.</p>
-<p>Let’s watch NuttX do its magic…</p>
+<p>We watch NuttX do its magic…</p>
 <h1 id="user-level-3"><a href="#user-level-3">8 User Level 3</a></h1>
 <p>Our Application (NuttX Shell) requires <strong>22 Pages of Virtual Memory</strong> for its User Code.</p>
 <p>This is how NuttX populates the <strong>Level 3 Page Table</strong> for the User Code…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Level 3 Page Table for User" /></p>
-<p><em>Something looks new… What’s this “U” Permission?</em></p>
+<p><em>Something smells different… What’s this “U” Permission?</em></p>
 <p>The <strong>“U” User Permission</strong> says that this Page Table Entry is accesible by our Application. (Which runs in <strong>RISC-V User Mode</strong>)</p>
 <p>Note that the <strong>Virtual Address</strong> <code>0x8000_0000</code> now maps to a different <strong>Physical Address</strong> <code>0x5060_4000</code>.</p>
 <p>(Which comes from the <a href="https://lupyuen.github.io/articles/mmu#connect-level-2-to-level-3"><strong>Kernel Page Pool</strong></a>)</p>
@@ -553,7 +553,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 </li>
 <li>
 <p>Level 3 Page Table for <strong>User Heap</strong></p>
-<p>(So that <strong>malloc</strong> will work)</p>
+<p>(To make <strong>malloc</strong> work)</p>
 </li>
 </ul>
 <p>And finally we track back to <strong>User Level 1</strong> Page Table…</p>
@@ -572,7 +572,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p>Recall that each Entry in the Level 1 Page Table configures <strong>1 GB of Virtual Memory</strong>. (<strong><code>0x4000_0000</code></strong> Bytes)</p>
 <p>Since the Entry Index is 2, then the Virtual Address must be <strong><code>0x8000_0000</code></strong>. Mystery solved!</p>
 <p><em>There’s something odd about the SATP Register…</em></p>
-<p>Yeah the SATP Register has changed! Let’s investigate…</p>
+<p>Yeah the SATP Register has changed! We investigate…</p>
 <p><strong>TODO:</strong> Who calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>mmu_ln_setentry</strong></a> for User Page Tables?</p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3">(See the <strong>NuttX Virtual Memory Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-satp.jpg" alt="Kernel SATP vs User SATP" /></p>
@@ -623,7 +623,7 @@ mmu_write_satp:
 <p><img src="https://lupyuen.github.io/images/mmu-satp2.jpg" alt="“G” Global Mapping Permission" /></p>
 <p>This means that the Page Table Entry will be effective across <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv32"><strong>ALL Address Spaces</strong></a>! Even in our Applications!</p>
 <p><em>Huh? Our Applications can meddle with the I/O Memory?</em></p>
-<p>Nope they can’t, because the <strong>“U” User Permission</strong> is denied. So we’re safe and well protected!</p>
+<p>Nope they can’t, because the <strong>“U” User Permission</strong> is denied. Therefore we’re all safe and well protected!</p>
 <p><img src="https://lupyuen.github.io/images/mmu-boot2.jpg" alt="NuttX swaps the SATP Register" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525"><em>NuttX swaps the SATP Register</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
