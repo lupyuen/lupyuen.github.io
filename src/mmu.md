@@ -689,7 +689,7 @@ mmu_enable(
 
 Whenever we __switch the context__ from Kernel to Application: We __swap the value__ of the SATP Register... Which points to a __Different Level 1__ Page Table!
 
-The __Address Space ID__ (stored in SATP Register) will also change. It's a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.
+The __Address Space ID__ (stored in SATP Register) can also change. It's a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.
 
 (NuttX doesn't seem to use Address Space ID)
 
