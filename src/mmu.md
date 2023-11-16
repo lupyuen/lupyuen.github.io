@@ -370,7 +370,7 @@ _Wait wasn't there something already in the Level 1 Page Table?_
 | [__Memory-Mapped I/O__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
 | [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ _(256 MB)_
 
-Oh yeah: __I/O Memory__. When we combine everything, things will look more complicated (and there's more!)...
+Oh yeah: __I/O Memory__. When we bake everything together, things will look more complicated (and there's more!)...
 
 ![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel.jpg)
 
