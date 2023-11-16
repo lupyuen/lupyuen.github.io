@@ -80,13 +80,19 @@ We configure the Sv39 MMU so that our Kernel can access these __Memory Regions__
 
 - __Other Memory Regions__ will allow Read and Write Access
 
-- __Page Pool__ will be allocated (on-the-fly) to Applications as Virtual Memory
+- __Memory-Mapped I/O__ will be used for controlling the System Peripherals: UART, I2C, SPI, ...
+
+  (Same for __Interrupt Controller__)
+
+- __Page Pool__ will be allocated (on-the-fly) to Applications
+
+  (As __Virtual Memory__)
 
 - __Our Kernel__ runs in RISC-V Supervisor Mode
 
 - __Applications__ run in RISC-V User Mode
 
-We begin with the I/O Memory...
+We begin with I/O Memory...
 
 # Huge Chunks: Level 1
 
@@ -346,11 +352,16 @@ mmu_ln_setentry(
 
 [(__mmu_ln_setentry__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
-We're finally done protecting the Interrupt Controller with Level 1 AND Level 2 Page Tables!
+We're done protecting the Interrupt Controller with Level 1 AND Level 2 Page Tables!
 
 _Wait wasn't there something already in the Level 1 Page Table?_
 
-Oh yeah: __Memory-Mapped I/O__. When we combine everything, things will look more complicated (and there's more!)...
+| Region | Start Address | Size
+|:--------------|:-------------:|:----
+| [__Memory-Mapped I/O__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
+| [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ _(256 MB)_
+
+Oh yeah: __I/O Memory__. When we combine everything, things will look more complicated (and there's more!)...
 
 ![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel.jpg)
 
@@ -549,7 +560,7 @@ _And what are the boring old Physical Addresses?_
 
 NuttX will map the Virtual Addresses above to the __Physical Addresses__ from...
 
-The [__Kernel Page Pool__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26) that we saw earlier! The Pooled Pages will be dished out dynamically to Applications as they run.
+The [__Kernel Page Pool__](https://lupyuen.github.io/articles/mmu#connect-level-2-to-level-3) that we saw earlier! The Pooled Pages will be dished out dynamically to Applications as they run.
 
 _Will Applications see the I/O Memory, Kernel RAM, Interrupt Controller?_
 
@@ -571,7 +582,9 @@ _Something looks new... What's this "U" Permission?_
 
 The __"U" User Permission__ says that this Page Table Entry is accesible by our Application. (Which runs in __RISC-V User Mode__)
 
-Note that the __Virtual Address__ `0x8000_0000` now maps to a different __Physical Address__ `0x5060_4000`. (Which comes from the __Kernel Page Pool__)
+Note that the __Virtual Address__ `0x8000_0000` now maps to a different __Physical Address__ `0x5060_4000`.
+
+(Which comes from the [__Kernel Page Pool__](https://lupyuen.github.io/articles/mmu#connect-level-2-to-level-3))
 
 That's the magic of Virtual Memory!
 
