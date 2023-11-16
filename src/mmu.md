@@ -18,7 +18,7 @@ _What's this MMU?_
 
 _Sv39 sounds familiar... Any relation to SVR4?_
 
-Actually [__Sv39__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39) is the MMU inside many RISC-V SBCs...
+Actually [__Sv39 Memory Management Unit__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39) is inside many RISC-V SBCs...
 
 - Pine64 Ox64, Sipeed M1s
 
@@ -635,7 +635,7 @@ Each Application will have its __own set of User Page Tables__ for...
 |:--------------|:-------------:|:----
 | User Code | __`0x8000_0000`__ | _(Max 128 Pages)_
 | User Data | __`0x8010_0000`__ | _(Max 128 Pages)_
-| User Heap | __`0x8020_0000`__ | _(Max 128 Pages)_
+| User Heap | __`0x8020_0000`__ | _(Max 128 Pages)_ <br> _(Each Page is 4 KB)_
 
 _Once again: Where is Virtual Address 0x8000_0000 defined?_
 
@@ -689,6 +689,8 @@ Whenever we __switch the context__ from Kernel to Application: We __swap the val
 
 The __Address Space ID__ (stored in SATP Register) will also change. This is a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.
 
+(NuttX doesn't seem to use Address Space ID)
+
 We see NuttX __swapping the SATP Register__ as it starts an Application (NuttX Shell)...
 
 ```text
@@ -700,7 +702,7 @@ mmu_write_satp:
   reg=0x8000000000050407
 nx_start: Entry
 ...
-// Later: NuttX sets points the SATP Register to
+// Later: NuttX points the SATP Register to
 // User Level 1 Page Table (0x5060 0000)
 Starting init task: /system/bin/init
 mmu_satp_reg: 
@@ -710,6 +712,8 @@ up_addrenv_select:
 mmu_write_satp: 
   reg=0x8000000000050600
 ```
+
+[(__SATP Register__ begins with __`0x8`__ to enable Sv39)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp)
 
 [(See the __NuttX SATP Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
 
@@ -750,6 +754,10 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/mmu.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mmu.md)
+
+![Ox64 boots to NuttX Shell](https://lupyuen.github.io/images/mmu-boot1.png)
+
+[_Ox64 boots to NuttX Shell_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
 
 # Appendix: Build and Run NuttX
 
@@ -810,4 +818,6 @@ diskutil unmountDisk /dev/disk2
 
 Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg) and power up Ox64.
 
-Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH).
+Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH). (Pic above)
+
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
