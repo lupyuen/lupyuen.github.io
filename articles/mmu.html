@@ -135,7 +135,7 @@
 <p><em>What memory shall we protect on Ox64?</em></p>
 <p>We configure the Sv39 MMU so that our Kernel can access these <strong>Memory Regions</strong> (and nothing else)…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5040_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5060_0000</code></strong></td><td style="text-align: left"><strong><code>0x0140_0000</code></strong> <em>(20 MB)</em></td></tr>
@@ -173,7 +173,7 @@
 <p><strong>[1 GB per Huge Chunk]</strong></p>
 <p><em>How will we protect the I/O Memory?</em></p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
 </tbody></table>
 </div>
 <p>Here’s the simplest setup for Sv39 MMU that will protect the <strong>I/O Memory</strong> from <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong>…</p>
@@ -373,7 +373,7 @@ mmu_ln_setentry(
 <p>We’re done protecting the Interrupt Controller with Level 1 AND Level 2 Page Tables!</p>
 <p><em>Wait wasn’t there something already in the Level 1 Page Table?</em></p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
 </tbody></table>
 </div>
@@ -490,7 +490,7 @@ mmu_ln_setentry(
 </div>
 <p>But it looks very similar to our <strong>Kernel Memory Map</strong>!</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Memory</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47"><strong>I/O Memory</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23-L26"><strong>RAM</strong></a></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0180_0000</code></strong> <em>(24 MB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
 </tbody></table>
