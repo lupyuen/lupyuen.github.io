@@ -44,7 +44,7 @@ _And "Sv39" means..._
 
 - Coincidentally it's also __3 by 9__...
 
-  __3 Levels__ of Page Tables, each level has __9 Address Bits__!
+  __3 Levels__ of Page Tables, each level adding __9 Address Bits__!
 
 _Why NuttX?_
 
