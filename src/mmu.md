@@ -6,7 +6,7 @@
 
 _What's this MMU?_
 
-[__Memory Management Unit (MMU)__](https://en.wikipedia.org/wiki/Memory_management_unit) is the hardware inside our 64-bit Single-Board Computer (SBC) for...
+[__Memory Management Unit (MMU)__](https://en.wikipedia.org/wiki/Memory_management_unit) is the hardware inside our 64-bit Single-Board Computer (SBC) that does...
 
 - __Memory Protection__: Prevent Applications (and Kernel) from meddling with things (in System Memory) that they're not supposed to
 
@@ -32,7 +32,7 @@ In this article, we find out __how Sv39 MMU works__ on a simple barebones SBC: [
 
 (Powered by [__Bouffalo Lab BL808 SoC__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf))
 
-We start with Memory Protection, then Virtual Memory. We'll do this with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
+We start with __Memory Protection__, then __Virtual Memory__. We'll do this with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
 
 _And "Sv39" means..._
 
@@ -50,11 +50,11 @@ _Why NuttX?_
 
 [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) is tiny and simpler to teach, as we walk through the MMU Internals.
 
-And we're documenting everything that happens when NuttX configures the Sv39 MMU for Ox64 SBC.
+And we're documenting __everything that happens__ when NuttX configures the Sv39 MMU for Ox64 SBC.
 
 _All this is covered in Computer Science Textbooks. No?_
 
-Let's learn things a little differently! This article will read (and look) like a (yummy) tray of __Chunky__ Chocolate Brownies... Because we love Food Analogies.
+Let's learn things a little differently! This article will read (and look) like a (yummy) tray of __Chunky Chocolate Brownies__... Because we love Food Analogies.
 
 (Apologies to my fellow CS Teachers)
 
@@ -132,7 +132,7 @@ The Page Table contains only one __Page Table Entry__ (8 Bytes) that says...
 
 But we have so many questions...
 
-1.  _Why `0x3FFF_FFFF`?_
+1.  _Why 0x3FFF_FFFF?_
 
     This is a __Level 1__ Page Table. Every Entry in the Page Table configures a (huge) __1 GB Chunk of Memory__.
     
@@ -181,14 +181,17 @@ But we have so many questions...
 
     ```c
     // Set the SATP Register to the
-    // Physical Page Number of Level 1 Page Table
+    // Physical Page Number of Level 1 Page Table.
+    // Set SATP Mode to Sv39.
     mmu_enable(
       g_kernel_pgt_pbase,  // 0x5040 7000 (Page Table Address)
-      0  // Address Space ID
+      0  // Set Address Space ID to 0
     );
     ```
 
     [(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292)
+
+    [(Which calls __mmu_satp_reg__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L152-L176)
 
 1.  _How to set the Page Table Entry?_
 
@@ -208,6 +211,8 @@ But we have so many questions...
 
     [(__mmu_ln_map_region__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156)
 
+    [(See the __NuttX L1 Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-io-region-level-1)
+
 1.  _Why is Virtual Address set to 0?_
 
     Right now we're doing __Memory Protection__ for the Kernel, so we set...
@@ -218,9 +223,7 @@ But we have so many questions...
 
 ![Level 1 Page Table for Kernel](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
 
-Now we protect the Interrupt Controller...
-
-[(See the __NuttX L1 Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-io-region-level-1)
+Next we protect the Interrupt Controller...
 
 # Medium Chunks: Level 2
 
@@ -256,7 +259,7 @@ To compute the Index of the Level 2 __Page Table Entry (PTE)__...
 
   (4,096 bytes per Memory Page)
 
-- __L2 PTE Index__ <br> = (__vpn__ >> 9) & `0b111111111` <br> = `0x100`
+- __L2 PTE Index__ <br> = (__vpn__ >> 9) & `0b1_1111_1111` <br> = `0x100`
 
   (Extract Bits 9 to 17 to get Level 2 Index)
 
@@ -264,7 +267,7 @@ To compute the Index of the Level 2 __Page Table Entry (PTE)__...
 
 Do the same for __`0xEFFF_FFFF`__, and we'll get Index __`0x17F`__.
 
-Thus our Page Table Index goes from __`0x100`__ to __`0x17F`__.
+Thus our Page Table Index runs from __`0x100`__ to __`0x17F`__.
 
 _How to allocate the Level 2 Page Table?_
 
@@ -301,7 +304,9 @@ mmu_ln_map_region(
 
 [(__mmu_ln_map_region__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L163)
 
-But we're not done yet! Next we connect the Levels...
+[(See the __NuttX L2 Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-plic-level-2)
+
+We're not done yet! Next we connect the Levels...
 
 # Connect Level 1 to Level 2
 
@@ -327,7 +332,7 @@ Exactly! This is how we __connect our Level 2 Page Table__ back to Level 1...
 
   (4,096 bytes per Memory Page)
 
-- __L1 PTE Index__ <br> = __vpn__ >> 18 <br> = 3
+- __L1 PTE Index__ <br> = (__vpn__ >> 18) & `0b1_1111_1111` <br> = 3
 
   (Extract Bits 18 to 26 to get Level 1 Index)
 
@@ -337,7 +342,7 @@ _Why "NO RWX"?_
 
 When we set the __Read, Write and Execute Bits__ to 0...
 
-The Sv39 MMU interprets the PPN (Physical Page Number) as a __Pointer to the Level 2 Page Table__. That's how we connect Level 1 to Level 2!
+Sv39 MMU interprets the PPN (Physical Page Number) as a __Pointer to Level 2 Page Table__. That's how we connect Level 1 to Level 2!
 
 (Remember: Actual Address = PPN * 4,096)
 
@@ -377,7 +382,7 @@ _Level 2 Chunks (2 MB) are still mighty big... Is there anything smaller?_
 
 Yep we have smaller __Level 3 Chunks__ of __4 KB__ each.
 
-Let's create a __Level 3 Page Table__ for the Kernel Code. And fill it with 4 KB Chunks!
+Let's create a __Level 3 Page Table__ for the Kernel Code. And fill it (to the max) with __4 KB Chunks__...
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
@@ -400,15 +405,15 @@ Suppose we're configuring address __`0x5020_1000`__. To compute the Index of the
 
   (4,096 bytes per Memory Page)
 
-- __L3 PTE Index__ <br> = __vpn__ & `0b111111111` <br> = 1
+- __L3 PTE Index__ <br> = __vpn__ & `0b1_1111_1111` <br> = 1
 
-  (Extract Bits 0 to 18 to get Level 3 Index)
+  (Extract Bits 0 to 8 to get Level 3 Index)
 
   [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
 Thus address __`0x5020_1000`__ is configured by __Index 1__ of the Level 3 Page Table.
 
-To populate the Level 3 Page Table, our code looks a little different: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L258-L268)
+To populate the __Level 3 Page Table__, our code looks a little different: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L258-L268)
 
 ```c
 // Number of Page Table Entries (8 bytes per entry)
@@ -505,6 +510,8 @@ mmu_ln_setentry(
 
 [(__mmu_ln_setentry__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
+[(See the __NuttX L1 Log__)](https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables)
+
 Our __Level 1 Page Table__ becomes even more complicated...
 
 | Index | Permissions | Physical Page Number | 
@@ -520,8 +527,6 @@ But it looks very similar to our Kernel Memory Map!
 | [__I/O Memory__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
 | [__RAM__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23-L26) | __`0x5020_0000`__ | __`0x0180_0000`__ _(24 MB)_
 | [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ _(256 MB)_
-
-[(See the __NuttX L1 Log__)](https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables)
 
 TODO: Screenshot of NSH
 
@@ -554,9 +559,7 @@ Which says...
 |:--------------|:-------------:|:----
 | User Code | __`0x8000_0000`__ | _(Max 128 Pages)_
 | User Data | __`0x8010_0000`__ | _(Max 128 Pages)_
-| User Heap | __`0x8020_0000`__ | _(Max 128 Pages)_
-
-(Each Page is 4 KB)
+| User Heap | __`0x8020_0000`__ | _(Max 128 Pages)_ <br> _(Each Page is 4 KB)_
 
 "User" refers to __RISC-V User Mode__, which is less privileged than our Kernel running in Supervisor Mode.
 
@@ -608,15 +611,15 @@ We move up to Level 2...
 
 # User Levels 1 and 2
 
-NuttX populates the __User Level 2__ Page Table (pic above) with the Physical Page Numbers (PPN) of the...
+NuttX populates the __User Level 2__ Page Table (pic above) with the __Physical Page Numbers__ (PPN) of the...
 
 - Level 3 Page Table for __User Code and Data__
 
 - Level 3 Page Table for __User Heap__
 
-  (So that __malloc__ will work!)
+  (So that __malloc__ will work)
 
-And we're finally up to __User Level 1__ Page Table...
+And finally we track back to __User Level 1__ Page Table...
 
 ![Level 1 Page Table for User](https://lupyuen.github.io/images/mmu-l1user.jpg)
 
@@ -634,17 +637,17 @@ Each Application will have its __own set of User Page Tables__ for...
 
 _Once again: Where is Virtual Address 0x8000_0000 defined?_
 
-From the pic above, we see that the __Index__ of the Page Table Entry is __2__.
+From the pic above, we see that the Page Table Entry has __Index 2__.
 
-And recall that each Entry in the Level 1 Page Table represents __1 GB of Virtual Memory__.
-
-(Which is __`0x4000_0000`__ Bytes)
+Recall that each Entry in the Level 1 Page Table configures __1 GB of Virtual Memory__. (__`0x4000_0000`__ Bytes)
 
 Since the Entry Index is 2, then the Virtual Address must be __`0x8000_0000`__. Mystery solved!
 
 _There's something odd about the SATP Register..._
 
 Yeah the SATP Register has changed! Let's investigate...
+
+__TODO:__ Who calls [__mmu_ln_setentry__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109) for User Page Tables?
 
 [(See the __NuttX Virtual Memory Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3)
 
@@ -656,9 +659,11 @@ _SATP Register looks different from the earlier one in the Kernel..._
 
 _Are there Multiple SATP Registers?_
 
-We've seen two different __SATP Registers__, each pointing to a different Level 1 Page Table...
+We saw two different __SATP Registers__, each pointing to a different Level 1 Page Table...
 
 But actually there's only __one SATP Register__!
+
+[(SATP is for __Supervisor Address Translation and Protection__)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp)
 
 Here's the secret: NuttX uses this nifty trick to give the illusion of Multiple SATP Registers...
 
@@ -666,18 +671,21 @@ Earlier we wrote this to set the __SATP Register__: [jh7110_mm_init.c](https://g
 
 ```c
 // Set the SATP Register to the
-// Physical Page Number of Level 1 Page Table
+// Physical Page Number of Level 1 Page Table.
+// Set SATP Mode to Sv39.
 mmu_enable(
   g_kernel_pgt_pbase,  // Page Table Address
-  0  // Address Space ID
+  0  // Set Address Space ID to 0
 );
 ```
 
 [(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292)
 
-Whenever we __switch the context__ from Kernel to Application... We __swap the value__ of the SATP Register!
+[(Which calls __mmu_satp_reg__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L152-L176)
 
-The __Address Space ID__ (stored in SATP Register) will also change. This is a handy shortcut that tells us which Level 1 Page Table is in effect.
+Whenever we __switch the context__ from Kernel to Application: We __swap the value__ of the SATP Register... Which points to a __Different Level 1__ Page Table!
+
+The __Address Space ID__ (stored in SATP Register) will also change. This is a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.
 
 We see NuttX __swapping the SATP Register__ as it starts an Application (NuttX Shell)...
 
@@ -685,17 +693,19 @@ We see NuttX __swapping the SATP Register__ as it starts an Application (NuttX S
 TODO
 ```
 
+TODO: (See the NuttX SATP Log)
+
 _So indeed we can have "Multiple" SATP Registers yay!_
 
-Ah there's a catch... Remember the __"G" Global Permission__ from earlier?
+Ah there's a catch... Remember the __"G" Global Mapping Permission__ from earlier?
 
-This means that the Page Table Entry will be effective across __ALL Address Spaces__! Even in our Applications!
+!["G" Global Mapping Permission](https://lupyuen.github.io/images/mmu-satp2.jpg)
+
+This means that the Page Table Entry will be effective across [__ALL Address Spaces__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv32)! Even in our Applications!
 
 _Huh? Our Applications can meddle with the I/O Memory?_
 
-Nope they can't, because the __"U" User Permission__ is denied. So we're well protected!
-
-TODO: SATP Log
+Nope they can't, because the __"U" User Permission__ is denied. So we're safe and well protected!
 
 # What's Next
 
