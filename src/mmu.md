@@ -717,7 +717,7 @@ mmu_write_satp:
 
 [(See the __NuttX SATP Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
 
-_So indeed we can have "Multiple" SATP Registers yay!_
+_So indeed we can have "Multiple" SATP Registers sweet!_
 
 Ah there's a catch... Remember the __"G" Global Mapping Permission__ from earlier?
 
