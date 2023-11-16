@@ -52,7 +52,7 @@ And we're documenting everything that happens when NuttX configures the Sv39 MMU
 
 _All this is covered in Computer Science Textbooks. No?_
 
-Let's learn things a little differently! This article will read (and look) like a (yummy) tray of Chunky Chocolate Brownies... Because we love Food Analogies.
+Let's learn things a little differently! This article will read (and look) like a (yummy) tray of __Chunky__ Chocolate Brownies... Because we love Food Analogies.
 
 (Apologies to my fellow CS Teachers)
 
