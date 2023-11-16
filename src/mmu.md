@@ -393,7 +393,7 @@ We create a __Level 3 Page Table__ for the Kernel Code. And fill it (to the max)
 
 (__Kernel Data__ has a similar Level 3 Page Table)
 
-_How do we compute a Level 3 Index?_
+_How do we cook up a Level 3 Index?_
 
 Suppose we're configuring address __`0x5020_1000`__. To compute the Index of the Level 3 __Page Table Entry (PTE)__...
 
