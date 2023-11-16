@@ -70,7 +70,7 @@ We configure the Sv39 MMU so that our Kernel can access these __Memory Regions__
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
-| [__Memory-Mapped I/O__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
+| [__Memory-Mapped I/O__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
 | [__Kernel Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23) _(RAM)_ | __`0x5020_0000`__ | __`0x0020_0000`__ _(2 MB)_
 | [__Kernel Data__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L24) _(RAM)_ | __`0x5040_0000`__ | __`0x0020_0000`__ _(2 MB)_
 | [__Page Pool__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26) _(RAM)_ | __`0x5060_0000`__ | __`0x0140_0000`__ _(20 MB)_
@@ -106,7 +106,7 @@ _How will we protect the I/O Memory?_
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
-| [__Memory-Mapped I/O__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
+| [__Memory-Mapped I/O__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
 
 Here's the simplest setup for Sv39 MMU that will protect the __I/O Memory__ from __`0x0`__ to __`0x3FFF_FFFF`__...
 
@@ -369,7 +369,7 @@ _Wait wasn't there something already in the Level 1 Page Table?_
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
-| [__Memory-Mapped I/O__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
+| [__Memory-Mapped I/O__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
 | [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ _(256 MB)_
 
 Oh yeah: __I/O Memory__. When we bake everything together, things will look more complicated (and there's more!)...
@@ -526,7 +526,7 @@ But it looks very similar to our __Kernel Memory Map__!
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
-| [__I/O Memory__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
+| [__I/O Memory__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
 | [__RAM__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23-L26) | __`0x5020_0000`__ | __`0x0180_0000`__ _(24 MB)_
 | [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ _(256 MB)_
 
