@@ -152,7 +152,12 @@
 <p><strong>Other Memory Regions</strong> will allow Read and Write Access</p>
 </li>
 <li>
-<p><strong>Page Pool</strong> will be allocated (on-the-fly) to Applications as Virtual Memory</p>
+<p><strong>Memory-Mapped I/O</strong> will be used for controlling the System Peripherals: UART, I2C, SPI, …</p>
+<p>(Same for <strong>Interrupt Controller</strong>)</p>
+</li>
+<li>
+<p><strong>Page Pool</strong> will be allocated (on-the-fly) to Applications</p>
+<p>(As <strong>Virtual Memory</strong>)</p>
 </li>
 <li>
 <p><strong>Our Kernel</strong> runs in RISC-V Supervisor Mode</p>
@@ -161,7 +166,7 @@
 <p><strong>Applications</strong> run in RISC-V User Mode</p>
 </li>
 </ul>
-<p>We begin with the I/O Memory…</p>
+<p>We begin with I/O Memory…</p>
 <h1 id="huge-chunks-level-1"><a href="#huge-chunks-level-1">2 Huge Chunks: Level 1</a></h1>
 <p><strong>[1 GB per Huge Chunk]</strong></p>
 <p><em>How will we protect the I/O Memory?</em></p>
@@ -359,9 +364,14 @@ mmu_ln_setentry(
 );
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(<strong>mmu_ln_setentry</strong> is defined here)</a></p>
-<p>We’re finally done protecting the Interrupt Controller with Level 1 AND Level 2 Page Tables!</p>
+<p>We’re done protecting the Interrupt Controller with Level 1 AND Level 2 Page Tables!</p>
 <p><em>Wait wasn’t there something already in the Level 1 Page Table?</em></p>
-<p>Oh yeah: <strong>Memory-Mapped I/O</strong>. When we combine everything, things will look more complicated (and there’s more!)…</p>
+<div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
+</tbody></table>
+</div>
+<p>Oh yeah: <strong>I/O Memory</strong>. When we combine everything, things will look more complicated (and there’s more!)…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <h1 id="smaller-chunks-level-3"><a href="#smaller-chunks-level-3">5 Smaller Chunks: Level 3</a></h1>
 <p><strong>[4 KB per Smaller Chunk]</strong></p>
@@ -509,7 +519,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p>“User” refers to <strong>RISC-V User Mode</strong>, which is less privileged than our Kernel running in Supervisor Mode.</p>
 <p><em>And what are the boring old Physical Addresses?</em></p>
 <p>NuttX will map the Virtual Addresses above to the <strong>Physical Addresses</strong> from…</p>
-<p>The <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Kernel Page Pool</strong></a> that we saw earlier! The Pooled Pages will be dished out dynamically to Applications as they run.</p>
+<p>The <a href="https://lupyuen.github.io/articles/mmu#connect-level-2-to-level-3"><strong>Kernel Page Pool</strong></a> that we saw earlier! The Pooled Pages will be dished out dynamically to Applications as they run.</p>
 <p><em>Will Applications see the I/O Memory, Kernel RAM, Interrupt Controller?</em></p>
 <p>Nope! That’s the beauty of an MMU: We control <em>everything</em> that the Application can meddle with!</p>
 <p>Our Application will see only the assigned <strong>Virtual Addresses</strong>, not the actual Physical Addresses used by the Kernel.</p>
@@ -520,7 +530,8 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Level 3 Page Table for User" /></p>
 <p><em>Something looks new… What’s this “U” Permission?</em></p>
 <p>The <strong>“U” User Permission</strong> says that this Page Table Entry is accesible by our Application. (Which runs in <strong>RISC-V User Mode</strong>)</p>
-<p>Note that the <strong>Virtual Address</strong> <code>0x8000_0000</code> now maps to a different <strong>Physical Address</strong> <code>0x5060_4000</code>. (Which comes from the <strong>Kernel Page Pool</strong>)</p>
+<p>Note that the <strong>Virtual Address</strong> <code>0x8000_0000</code> now maps to a different <strong>Physical Address</strong> <code>0x5060_4000</code>.</p>
+<p>(Which comes from the <a href="https://lupyuen.github.io/articles/mmu#connect-level-2-to-level-3"><strong>Kernel Page Pool</strong></a>)</p>
 <p>That’s the magic of Virtual Memory!</p>
 <p><em>But where is Virtual Address 0x8000_0000 defined?</em></p>
 <p>Virtual Addresses are propagated from the Level 1 Page Table, as we’ll soon see.</p>
