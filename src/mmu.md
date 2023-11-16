@@ -10,7 +10,7 @@ _What's this MMU?_
 
 - __Memory Protection__: Prevent Applications (and Kernel) from meddling with things (in System Memory) that they're not supposed to
 
-- __Virtual Memory__: Allow Applications to access chunks of "Imaginary Memory" at Exotic Addresses (__`0x8000_0000`__!)...
+- __Virtual Memory__: Allow Applications to access chunks of "Imaginary Memory" at Exotic Addresses (__`0x8000_0000`__!)
 
   But they're actually System RAM recycled from boring old addresses (like __`0x5060_4000`__)
 
@@ -540,7 +540,7 @@ But it looks very similar to our __Kernel Memory Map__!
 
 Earlier we talked about Sv39 MMU and __Virtual Memory__...
 
-> Allow Applications to access chunks of "Imaginary Memory" at Exotic Addresses (__`0x8000` `0000`__!)...
+> Allow Applications to access chunks of "Imaginary Memory" at Exotic Addresses (__`0x8000` `0000`__!)
 
 > But they're actually System RAM recycled from boring old addresses (like __`0x5060` `4000`__)
 
