@@ -779,13 +779,14 @@ popd
 ## Generate the Initial RAM Disk
 genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
 
-## Insert 64 KB of zeroes after Binary Image for Kernel Stack
+## Pad with 64 KB of zeroes after Binary Image for Kernel Stack
 head -c 65536 /dev/zero &gt;/tmp/nuttx.zero
 
 ## Append Initial RAM Disk to the Binary Image
 cat nuttx.bin /tmp/nuttx.zero initrd \
   &gt;Image
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#initial-ram-disk-for-ox64-bl808">(Why the <strong>64 KB Padding</strong>)</a></p>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
 <p>Then we do the <a href="https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64"><strong>Linux-To-NuttX Switcheroo</strong></a>: Overwrite the microSD Linux Image by the <strong>NuttX Kernel</strong>…</p>
