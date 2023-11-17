@@ -171,7 +171,7 @@
 <p><strong>Applications</strong> run in RISC-V User Mode</p>
 </li>
 <li>
-<p>Any meddling of <strong>Forbidden Regions</strong> by Kernel and Applications shall immediately trigger a <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm"><strong>Page Fault</strong></a> (RISC-V Exception)</p>
+<p>Any meddling of <strong>Forbidden Regions</strong> by Kernel and Applications shall immediately trigger a <a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation"><strong>Page Fault</strong></a> (RISC-V Exception)</p>
 </li>
 </ol>
 <p>We begin with the biggest chunk: I/O Memory…</p>
@@ -212,7 +212,7 @@
 <p>We have a <strong>Level 1</strong> Page Table. Every Entry in the Page Table configures a (huge) <strong>1 GB Chunk of Memory</strong>.</p>
 <p>(Or <strong><code>0x4000_0000</code></strong> bytes)</p>
 <p>Our Page Table Entry is at <strong>Index 0</strong>. Hence it configures the Memory Range for <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong>. (Pic below)</p>
-<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm">(More about <strong>Address Translation</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
 </li>
 <li>
 <p><em>How to allocate the Page Table?</em></p>
@@ -307,7 +307,7 @@ mmu_ln_map_region(
 <p><strong>L2 PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 9) &amp; <code>0b1_1111_1111</code> <br> = <code>0x100</code></p>
 <p>(Extract Bits 9 to 17 to get Level 2 Index)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
-<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm">(More about <strong>Address Translation</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
 </li>
 </ul>
 <p>Do the same for <strong><code>0xEFFF_FFFF</code></strong>, and we’ll get Index <strong><code>0x17F</code></strong>.</p>
@@ -361,7 +361,7 @@ mmu_ln_map_region(
 <p><strong>L1 PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 18) &amp; <code>0b1_1111_1111</code> <br> = 3</p>
 <p>(Extract Bits 18 to 26 to get Level 1 Index)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
-<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm">(More about <strong>Address Translation</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
 </li>
 </ul>
 <p><em>Why “NO RWX”?</em></p>
@@ -416,7 +416,7 @@ mmu_ln_setentry(
 <p><strong>L3 PTE Index</strong> <br> = <strong>vpn</strong> &amp; <code>0b1_1111_1111</code> <br> = 1</p>
 <p>(Extract Bits 0 to 8 to get Level 3 Index)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
-<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm">(More about <strong>Address Translation</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
 </li>
 </ul>
 <p>Thus address <strong><code>0x5020_1000</code></strong> is configured by <strong>Index 1</strong> of the Level 3 Page Table.</p>
@@ -584,7 +584,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p>From the pic above, we see that the Page Table Entry has <strong>Index 2</strong>.</p>
 <p>Recall that each Entry in the Level 1 Page Table configures <strong>1 GB of Virtual Memory</strong>. (<strong><code>0x4000_0000</code></strong> Bytes)</p>
 <p>Since the Entry Index is 2, then the Virtual Address must be <strong><code>0x8000_0000</code></strong>. Mystery solved!</p>
-<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm">(More about <strong>Address Translation</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
 <p><em>There’s something odd about the SATP Register…</em></p>
 <p>Yeah the SATP Register has changed! We investigate…</p>
 <p><strong>TODO:</strong> Who calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>mmu_ln_setentry</strong></a> for User Page Tables?</p>
