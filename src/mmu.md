@@ -755,7 +755,13 @@ Nope they can't, because the __"U" User Permission__ is denied. Therefore we're 
 
 TODO
 
-I hope this article has been a tasty treat for understanding the internals of the __Sv39 Memory Management Unit__!
+I hope this article has been a tasty treat for understanding the internals of 
+
+memory protection
+
+virtual memory 
+
+and the __Sv39 Memory Management Unit__
 
 [Fixed the roadblock](https://github.com/lupyuen/nuttx-ox64#fix-the-nuttx-memory-map-for-plic)
 
