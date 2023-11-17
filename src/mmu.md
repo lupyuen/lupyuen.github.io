@@ -759,7 +759,11 @@ I hope this article has been a __tasty treat__ for understanding the inner worki
 
 - __Memory Protection__
 
+  (For our Kernel)
+
 - __Virtual Memory__ 
+
+  (For the Applications)
 
 - And the __Sv39 Memory Management Unit__
 
