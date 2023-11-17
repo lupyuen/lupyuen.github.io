@@ -763,7 +763,7 @@ I hope this article has been a __tasty treat__ for understanding the inner worki
 
 - And the __Sv39 Memory Management Unit__!
 
-(Actually we wrote this article fix a [__Troubling Roadblock__](https://lupyuen.github.io/articles/mmu#appendix-fix-the-interrupt-controller) for Ox64 NuttX)
+(Actually we wrote this article to fix a [__Troubling Roadblock__](https://lupyuen.github.io/articles/mmu#appendix-fix-the-interrupt-controller) for Ox64 NuttX)
 
 TODO
 
