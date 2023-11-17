@@ -66,7 +66,7 @@ Let's learn things a little differently! This article will read (and look) like 
 
 _What memory shall we protect on Ox64?_
 
-Ox64 SBC requires the __Memory Regions__ below to boot our Kernel.
+Ox64 SBC needs the __Memory Regions__ below to boot our Kernel.
 
 Today we __configure the Sv39 MMU__ so that our Kernel can access these regions (and nothing else)...
 
