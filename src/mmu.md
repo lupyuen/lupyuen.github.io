@@ -12,7 +12,7 @@ _What's this MMU?_
 
 - __Virtual Memory__: Allow Applications to access chunks of "Imaginary Memory" at Exotic Addresses (__`0x8000_0000`__!)
 
-  But in reality they're System RAM recycled from boring old addresses (like __`0x5060_4000`__)
+  But in reality: They're System RAM recycled from boring old addresses (like __`0x5060_4000`__)
 
   (Kinda like "The Matrix")
 
@@ -48,7 +48,7 @@ _And "Sv39" means..._
 
 _Why NuttX?_
 
-[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) is tiny and simpler to teach, as we walk through the MMU Internals.
+[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) is tiny and easier to teach, as we walk through the MMU Internals.
 
 And we're documenting __everything that happens__ when NuttX configures the Sv39 MMU for Ox64 SBC.
 
@@ -68,7 +68,7 @@ _What memory shall we protect on Ox64?_
 
 Ox64 SBC needs the __Memory Regions__ below to boot our Kernel.
 
-Today we __configure the Sv39 MMU__ so that our Kernel can access these regions (and nothing else)...
+Today we configure the Sv39 MMU so that our __Kernel can access these regions__ (and nothing else)...
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
@@ -104,7 +104,7 @@ We begin with the biggest chunk: I/O Memory...
 
 # Huge Chunks: Level 1
 
-__[1 GB per Huge Chunk]__
+__[ 1 GB per Huge Chunk ]__
 
 _How will we protect the I/O Memory?_
 
@@ -235,7 +235,7 @@ Next we protect the Interrupt Controller...
 
 # Medium Chunks: Level 2
 
-__[2 MB per Medium Chunk]__
+__[ 2 MB per Medium Chunk ]__
 
 _Our Interrupt Controller needs 256 MB of protection..._
 
@@ -390,13 +390,13 @@ Oh yeah: __I/O Memory__. When we bake everything together, things will look more
 
 # Smaller Chunks: Level 3
 
-__[4 KB per Smaller Chunk]__
+__[ 4 KB per Smaller Chunk ]__
 
 _Level 2 Chunks (2 MB) are still mighty big... Is there anything smaller?_
 
-Yep we have smaller __Level 3 Chunks__ of __4 KB__ each.
+Yep we have smaller (bite-size) __Level 3 Chunks__ of __4 KB__ each.
 
-We create a __Level 3 Page Table__ for the Kernel Code. And fill it (to the max) with __4 KB Chunks__...
+We create a __Level 3 Page Table__ for the Kernel Code. And fill it (to the brim) with __4 KB Chunks__...
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
@@ -536,7 +536,7 @@ Our __Level 1 Page Table__ becomes chock full of toppings...
 | 1 | VG _(Pointer)_ | __`0x50406`__ _(Kernel Code & Data)_
 | 3 | VG _(Pointer)_ | __`0x50403`__ _(Interrupt Controller)_
 
-But it looks very similar to our __Kernel Memory Map__!
+But it tastes very similar to our __Kernel Memory Map__!
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
@@ -554,7 +554,7 @@ Earlier we talked about Sv39 MMU and __Virtual Memory__...
 
 > Allow Applications to access chunks of "Imaginary Memory" at Exotic Addresses (__`0x8000_0000`__!)
 
-> But in reality they're System RAM recycled from boring old addresses (like __`0x5060_4000`__)
+> But in reality: They're System RAM recycled from boring old addresses (like __`0x5060_4000`__)
 
 Let's make some magic!
 
@@ -703,11 +703,11 @@ mmu_enable(
 
 [(__mmu_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L270-L294)
 
-Whenever we __switch the context__ from Kernel to Application: We __swap the value__ of the SATP Register... Which points to a __Different Level 1__ Page Table!
+When we __switch the context__ from Kernel to Application: We __swap the value__ of the SATP Register... Which points to a __Different Level 1__ Page Table!
 
 The __Address Space ID__ (stored in SATP Register) can also change. It's a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.
 
-(NuttX doesn't seem to use Address Space ID)
+(NuttX doesn't seem to use Address Space)
 
 We see NuttX __swapping the SATP Register__ as it starts an Application (NuttX Shell)...
 
@@ -812,6 +812,12 @@ __For Sv39 MMU:__ The parameters are...
 __`ppn[i]`__ and __`vpn[i]`__ refer to these __Virtual / Physical Address Fields__ (Page 85)...
 
 ![Virtual / Physical Address Fields (Page 85)](https://lupyuen.github.io/images/mmu-address2.png)
+
+_What if the Address Translation fails?_
+
+The algo above says that Sv39 MMU will trigger a [__Page Fault__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:scause). (RISC-V Exception)
+
+Which is super handy for implementing [__Memory Paging__](https://en.wikipedia.org/wiki/Memory_paging).
 
 _What about Physical Address to Virtual Address?_
 
