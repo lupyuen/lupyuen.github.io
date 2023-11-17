@@ -791,9 +791,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 __Address Translation__ for Sv39 MMU is described in...
 
-- [__RISC-V ISA: Privileged Architecture__](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf)
+- [__"RISC-V ISA: Privileged Architectures"__](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf) (Page 82)
 
-  "4.3.2: Virtual Address Translation Process" (Page 82)
+  Section 4.3.2: "Virtual Address Translation Process"
 
   (Pic above)
 
