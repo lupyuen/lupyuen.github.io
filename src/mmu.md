@@ -817,7 +817,7 @@ _What about Physical Address to Virtual Address?_
 
 Well that would need an Exhaustive Search of all Page Tables!
 
-TODO
+_OK how about Virtual Address to Page Table Entry (PTE)?_
 
 Given a __Virtual Address vaddr__...
 
