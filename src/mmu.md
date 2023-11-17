@@ -809,6 +809,10 @@ __For Sv39 MMU:__ The parameters are...
 
 - __PTESIZE__ = 8
 
+__`ppn[i]`__ and __`vpn[i]`__ refer to these __Virtual / Physical Address Fields__ (Page 85)...
+
+![Virtual / Physical Address Fields (Page 85)](https://lupyuen.github.io/images/mmu-address2.png)
+
 _What about Physical Address to Virtual Address?_
 
 Well that would need an Exhaustive Search of all Page Tables!
