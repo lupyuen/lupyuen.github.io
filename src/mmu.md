@@ -785,6 +785,24 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/mmu.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mmu.md)
 
+![Address Translation for Sv39 MMU](https://lupyuen.github.io/images/mmu-address.jpg)
+
+# Appendix: Address Translation
+
+__Address Translation__ for Sv39 MMU is described in...
+
+- [__RISC-V ISA: Privileged Architecture__](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf)
+
+  "4.3.2: Virtual Address Translation Process" (Page 82)
+
+  (Pic above)
+
+__For Sv39 MMU:__ The parameters are...
+
+- __LEVELS__ = 3 
+
+- __PTESIZE__ = 8
+
 ![Ox64 boots to NuttX Shell](https://lupyuen.github.io/images/mmu-boot1.png)
 
 [_Ox64 boots to NuttX Shell_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
