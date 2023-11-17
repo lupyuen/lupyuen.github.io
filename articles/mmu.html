@@ -655,7 +655,7 @@ mmu_write_satp:
 </ul>
 <p>…By documenting everything that happens as <strong>Apache NuttX RTOS</strong> boots on Ox64 SBC!</p>
 <p>(Actually we wrote this article to fix a <a href="https://lupyuen.github.io/articles/mmu#appendix-fix-the-interrupt-controller"><strong>Troubling Roadblock</strong></a> for Ox64 NuttX)</p>
-<p>TODO</p>
+<p>We’ll do much more for <strong>NuttX on Ox64 BL808</strong>, stay tuned for updates!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -683,7 +683,7 @@ mmu_write_satp:
 <p><a href="https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf"><em>Virtual Address Translation Process (Page 82)</em></a></p>
 <h1 id="appendix-address-translation"><a href="#appendix-address-translation">12 Appendix: Address Translation</a></h1>
 <p><em>How does Sv39 MMU translate a Virtual Address to Physical Address?</em></p>
-<p><strong>Address Translation</strong> for Sv39 MMU (Virtual Address to Physical Address) is described in…</p>
+<p>Sv39 MMU translates a <strong>Virtual Address to Physical Address</strong> by traversing the Page Tables as described in…</p>
 <ul>
 <li>
 <p><a href="https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf"><strong>“RISC-V ISA: Privileged Architectures”</strong></a> (Page 82)</p>
@@ -708,8 +708,8 @@ mmu_write_satp:
 <p><em>What if the Address Translation fails?</em></p>
 <p>The algo above says that Sv39 MMU will trigger a <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:scause"><strong>Page Fault</strong></a>. (RISC-V Exception)</p>
 <p>Which is super handy for implementing <a href="https://en.wikipedia.org/wiki/Memory_paging"><strong>Memory Paging</strong></a>.</p>
-<p><em>What about Physical Address to Virtual Address?</em></p>
-<p>Well that would need an Exhaustive Search of all Page Tables!</p>
+<p><em>What about mapping a Physical Address back to Virtual Address?</em></p>
+<p>Well that would require an Exhaustive Search of all Page Tables!</p>
 <p><em>OK how about Virtual / Physical Address to Page Table Entry (PTE)?</em></p>
 <p>Given a <strong>Virtual Address vaddr</strong>…</p>
 <p>(Or a <strong>Physical Address</strong>, assuming Virtual = Physical like our Kernel)</p>
