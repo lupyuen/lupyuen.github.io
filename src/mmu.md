@@ -785,9 +785,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/mmu.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mmu.md)
 
-![Address Translation for Sv39 MMU](https://lupyuen.github.io/images/mmu-address.jpg)
+![Virtual Address Translation Process (Page 82)](https://lupyuen.github.io/images/mmu-address.jpg)
+
+[_Virtual Address Translation Process (Page 82)_](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf)
 
 # Appendix: Address Translation
+
+_How does Sv39 MMU translate a Virtual Address to Physical Address?_
 
 __Address Translation__ for Sv39 MMU (Virtual Address to Physical Address) is described in...
 
