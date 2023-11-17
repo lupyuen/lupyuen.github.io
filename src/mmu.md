@@ -98,7 +98,7 @@ Our (foodie) hygiene requirements...
 
 1. __Applications__ run in RISC-V User Mode
 
-1. Any meddling of __Forbidden Regions__ by Kernel and Applications shall immediately trigger a [__Page Fault__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm) (RISC-V Exception)
+1. Any meddling of __Forbidden Regions__ by Kernel and Applications shall immediately trigger a [__Page Fault__](https://lupyuen.github.io/articles/mmu#appendix-address-translation) (RISC-V Exception)
 
 We begin with the biggest chunk: I/O Memory...
 
@@ -144,7 +144,7 @@ But we have so many questions...
 
     Our Page Table Entry is at __Index 0__. Hence it configures the Memory Range for __`0x0`__ to __`0x3FFF_FFFF`__. (Pic below)
 
-    [(More about __Address Translation__)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm)
+    [(More about __Address Translation__)](https://lupyuen.github.io/articles/mmu#appendix-address-translation)
 
 1.  _How to allocate the Page Table?_
 
@@ -273,7 +273,7 @@ To compute the Index of the Level 2 __Page Table Entry (PTE)__...
 
   [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
-  [(More about __Address Translation__)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm)
+  [(More about __Address Translation__)](https://lupyuen.github.io/articles/mmu#appendix-address-translation)
 
 Do the same for __`0xEFFF_FFFF`__, and we'll get Index __`0x17F`__.
 
@@ -348,7 +348,7 @@ Exactly! Watch how we __connect our Level 2 Page Table__ back to Level 1...
 
   [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
-  [(More about __Address Translation__)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm)
+  [(More about __Address Translation__)](https://lupyuen.github.io/articles/mmu#appendix-address-translation)
 
 _Why "NO RWX"?_
 
@@ -425,7 +425,7 @@ Suppose we're configuring address __`0x5020_1000`__. To compute the Index of the
 
   [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
-  [(More about __Address Translation__)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm)
+  [(More about __Address Translation__)](https://lupyuen.github.io/articles/mmu#appendix-address-translation)
 
 Thus address __`0x5020_1000`__ is configured by __Index 1__ of the Level 3 Page Table.
 
@@ -663,7 +663,7 @@ Recall that each Entry in the Level 1 Page Table configures __1 GB of Virtual Me
 
 Since the Entry Index is 2, then the Virtual Address must be __`0x8000_0000`__. Mystery solved!
 
-[(More about __Address Translation__)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm)
+[(More about __Address Translation__)](https://lupyuen.github.io/articles/mmu#appendix-address-translation)
 
 _There's something odd about the SATP Register..._
 
