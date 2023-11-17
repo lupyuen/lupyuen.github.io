@@ -789,7 +789,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Address Translation
 
-__Address Translation__ for Sv39 MMU is described in...
+__Address Translation__ for Sv39 MMU (Virtual Address to Physical Address) is described in...
 
 - [__"RISC-V ISA: Privileged Architectures"__](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf) (Page 82)
 
