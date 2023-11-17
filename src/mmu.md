@@ -767,7 +767,7 @@ I hope this article has been a __tasty treat__ for understanding the inner worki
 
 (Actually we wrote this article to fix a [__Troubling Roadblock__](https://lupyuen.github.io/articles/mmu#appendix-fix-the-interrupt-controller) for Ox64 NuttX)
 
-TODO
+We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -795,7 +795,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _How does Sv39 MMU translate a Virtual Address to Physical Address?_
 
-__Address Translation__ for Sv39 MMU (Virtual Address to Physical Address) is described in...
+Sv39 MMU translates a __Virtual Address to Physical Address__ by traversing the Page Tables as described in...
 
 - [__"RISC-V ISA: Privileged Architectures"__](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf) (Page 82)
 
@@ -821,9 +821,9 @@ The algo above says that Sv39 MMU will trigger a [__Page Fault__](https://five-e
 
 Which is super handy for implementing [__Memory Paging__](https://en.wikipedia.org/wiki/Memory_paging).
 
-_What about Physical Address to Virtual Address?_
+_What about mapping a Physical Address back to Virtual Address?_
 
-Well that would need an Exhaustive Search of all Page Tables!
+Well that would require an Exhaustive Search of all Page Tables!
 
 _OK how about Virtual / Physical Address to Page Table Entry (PTE)?_
 
