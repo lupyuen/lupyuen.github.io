@@ -761,7 +761,9 @@ I hope this article has been a __tasty treat__ for understanding the inner worki
 
 - __Virtual Memory__ 
 
-- And the __Sv39 Memory Management Unit__!
+- And the __Sv39 Memory Management Unit__
+
+...By documenting everything that happens as __Apache NuttX RTOS__ boots on Ox64 SBC!
 
 (Actually we wrote this article to fix a [__Troubling Roadblock__](https://lupyuen.github.io/articles/mmu#appendix-fix-the-interrupt-controller) for Ox64 NuttX)
 
