@@ -763,7 +763,9 @@ I hope this article has been a __tasty treat__ for understanding the inner worki
 
 - And the __Sv39 Memory Management Unit__!
 
-[Fixed the roadblock](https://lupyuen.github.io/articles/mmu#appendix-fix-the-interrupt-controller)
+(__Confession:__ We wrote this article fix a [__Troubling Roadblock__](https://lupyuen.github.io/articles/mmu#appendix-fix-the-interrupt-controller) for Ox64 NuttX)
+
+TODO
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -869,6 +871,8 @@ Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg)
 Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH). (Pic above)
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
+
+![Level 2 Page Table for Interrupt Controller](https://lupyuen.github.io/images/mmu-l2int.jpg)
 
 # Appendix: Fix the Interrupt Controller
 
