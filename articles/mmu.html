@@ -80,8 +80,9 @@
 <li><a href="#user-levels-1-and-2">9 User Levels 1 and 2</a><ul></ul></li>
 <li><a href="#swap-the-satp-register">10 Swap the SATP Register</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-and-run-nuttx">12 Appendix: Build and Run NuttX</a><ul></ul></li>
-<li><a href="#appendix-fix-the-interrupt-controller">13 Appendix: Fix the Interrupt Controller</a><ul></ul></li></ul></nav><p>📝 <em>19 Nov 2023</em></p>
+<li><a href="#appendix-address-translation">12 Appendix: Address Translation</a><ul></ul></li>
+<li><a href="#appendix-build-and-run-nuttx">13 Appendix: Build and Run NuttX</a><ul></ul></li>
+<li><a href="#appendix-fix-the-interrupt-controller">14 Appendix: Fix the Interrupt Controller</a><ul></ul></li></ul></nav><p>📝 <em>19 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/mmu-title.jpg" alt="Sv39 Memory Management Unit" /></p>
 <p><em>What’s this MMU?</em></p>
 <p><a href="https://en.wikipedia.org/wiki/Memory_management_unit"><strong>Memory Management Unit (MMU)</strong></a> is the hardware inside our Single-Board Computer (SBC) that does…</p>
@@ -677,9 +678,28 @@ mmu_write_satp:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mmu.md"><strong>lupyuen.github.io/src/mmu.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/mmu-address.jpg" alt="Address Translation for Sv39 MMU" /></p>
+<h1 id="appendix-address-translation"><a href="#appendix-address-translation">12 Appendix: Address Translation</a></h1>
+<p><strong>Address Translation</strong> for Sv39 MMU is described in…</p>
+<ul>
+<li>
+<p><a href="https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf"><strong>RISC-V ISA: Privileged Architecture</strong></a></p>
+<p>“4.3.2: Virtual Address Translation Process” (Page 82)</p>
+<p>(Pic above)</p>
+</li>
+</ul>
+<p><strong>For Sv39 MMU:</strong> The parameters are…</p>
+<ul>
+<li>
+<p><strong>LEVELS</strong> = 3 </p>
+</li>
+<li>
+<p><strong>PTESIZE</strong> = 8</p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525"><em>Ox64 boots to NuttX Shell</em></a></p>
-<h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">12 Appendix: Build and Run NuttX</a></h1>
+<h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">13 Appendix: Build and Run NuttX</a></h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong>, with added <strong>MMU Logging</strong>.</p>
 <p>(Console Input is not yet supported)</p>
 <p>This is how we download and build NuttX for Ox64 BL808 SBC…</p>
@@ -744,7 +764,7 @@ diskutil unmountDisk /dev/disk2
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH). (Pic above)</p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525">(See the <strong>NuttX Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2int.jpg" alt="Level 2 Page Table for Interrupt Controller" /></p>
-<h1 id="appendix-fix-the-interrupt-controller"><a href="#appendix-fix-the-interrupt-controller">13 Appendix: Fix the Interrupt Controller</a></h1>
+<h1 id="appendix-fix-the-interrupt-controller"><a href="#appendix-fix-the-interrupt-controller">14 Appendix: Fix the Interrupt Controller</a></h1>
 <p><em>What’s wrong with the Interrupt Controller?</em></p>
 <p>Earlier we had difficulty configuring the Sv39 MMU for the Interrupt Controller at <strong><code>0xE000_0000</code></strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
