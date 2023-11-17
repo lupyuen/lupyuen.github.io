@@ -517,7 +517,7 @@ mmu_ln_setentry(
 </blockquote>
 <p>Let’s make some magic!</p>
 <p><em>What are the “Exotic Addresses” for our Application?</em></p>
-<p>NuttX will map the <strong>Application Code (Text), Data and Heap</strong> at these <strong>Virtual Addresses</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L26">nsh/defconfig</a></p>
+<p>NuttX will map the <strong>Application Code (Text), Data and Heap</strong> at these <strong>Virtual Addresses</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L30">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_ARCH_TEXT_VBASE=0x80000000
 CONFIG_ARCH_TEXT_NPAGES=128
 CONFIG_ARCH_DATA_VBASE=0x80100000
@@ -640,11 +640,19 @@ mmu_write_satp:
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L271-L304"><em>NuttX swaps the SATP Register</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
-<p>I hope this article has been a tasty treat for understanding the internals of </p>
-<p>memory protection</p>
-<p>virtual memory </p>
-<p>and the <strong>Sv39 Memory Management Unit</strong></p>
-<p><a href="https://github.com/lupyuen/nuttx-ox64#fix-the-nuttx-memory-map-for-plic">Fixed the roadblock</a></p>
+<p>I hope this article has been a <strong>tasty treat</strong> for understanding the inner workings of…</p>
+<ul>
+<li>
+<p><strong>Memory Protection</strong></p>
+</li>
+<li>
+<p><strong>Virtual Memory</strong> </p>
+</li>
+<li>
+<p>And the <strong>Sv39 Memory Management Unit</strong>!</p>
+</li>
+</ul>
+<p><a href="https://lupyuen.github.io/articles/mmu#appendix-fix-the-interrupt-controller">Fixed the roadblock</a></p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -698,13 +706,36 @@ riscv64-unknown-elf-objcopy \
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">(And enable <strong>Scheduler Info Output</strong>)</a></p>
-<p>TODO: initrd</p>
+<p>Then we build the <strong>Initial RAM Disk</strong> that contains NuttX Shell and NuttX Apps…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Go to NuttX Folder
+pushd ../nuttx
+
+## Build the Apps Filesystem
+make -j 8 export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j 8 import
+popd
+
+## Return to previous folder
+popd
+
+## Generate the Initial RAM Disk
+genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
+
+## Insert 64 KB of zeroes after Binary Image for Kernel Stack
+head -c 65536 /dev/zero &gt;/tmp/nuttx.zero
+
+## Append Initial RAM Disk to the Binary Image
+cat nuttx.bin /tmp/nuttx.zero initrd \
+  &gt;Image
+</code></pre></div>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
 <p>Then we do the <a href="https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64"><strong>Linux-To-NuttX Switcheroo</strong></a>: Overwrite the microSD Linux Image by the <strong>NuttX Kernel</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Overwrite the Linux Image
 ## on Ox64 microSD
-cp nuttx.bin \
+cp Image \
   &quot;/Volumes/NO NAME/Image&quot;
 diskutil unmountDisk /dev/disk2
 </code></pre></div>
@@ -720,13 +751,46 @@ diskutil unmountDisk /dev/disk2
 <tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
 </tbody></table>
 </div>
-<p>TODO</p>
-<p>Level 1?</p>
-<p>Apps</p>
-<p>Move apps to 0x8000 0000</p>
-<p>Too wasteful</p>
-<p>Level 2</p>
-
+<p><em>Why not park the Interrupt Controller as a Level 1 Page Table Entry?</em></p>
+<div><table><thead><tr><th style="text-align: center">Index</th><th style="text-align: center">Permissions</th><th style="text-align: left">Physical Page Number</th></tr></thead><tbody>
+<tr><td style="text-align: center">0</td><td style="text-align: center">VGRW</td><td style="text-align: left"><strong><code>0x00000</code></strong> <em>(I/O Memory)</em></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50406</code></strong> <em>(Kernel Code &amp; Data)</em></td></tr>
+<tr><td style="text-align: center">3</td><td style="text-align: center">VGRW</td><td style="text-align: left"><strong><code>0xC0000</code></strong> <em>(Interrupt Controller)</em></td></tr>
+</tbody></table>
+</div>
+<p>Uh it’s super wasteful to reserve <strong>1 GB of Address Space</strong> (Level 1 at <strong><code>0xC000_0000</code></strong>) for our Interrupt Controller that requires only 256 MB.</p>
+<p>But there’s another problem: Our <strong>User Memory</strong> was originally assigned to <strong><code>0xC000_0000</code></strong>…</p>
+<div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left">User Code</td><td style="text-align: center"><strong><code>0xC000_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em></td></tr>
+<tr><td style="text-align: left">User Data</td><td style="text-align: center"><strong><code>0xC010_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em></td></tr>
+<tr><td style="text-align: left">User Heap</td><td style="text-align: center"><strong><code>0xC020_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em> <br> <em>(Each Page is 4 KB)</em></td></tr>
+</tbody></table>
+</div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L25-L38">(Source)</a></p>
+<p>Which would <strong>collide with our Interrupt Controller</strong>!</p>
+<p><em>OK so we move our User Memory elsewhere?</em></p>
+<p>Yep that’s why we moved the User Memory from <strong><code>0xC000_0000</code></strong> to <strong><code>0x8000_0000</code></strong>…</p>
+<div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left">User Code</td><td style="text-align: center"><strong><code>0x8000_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em></td></tr>
+<tr><td style="text-align: left">User Data</td><td style="text-align: center"><strong><code>0x8010_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em></td></tr>
+<tr><td style="text-align: left">User Heap</td><td style="text-align: center"><strong><code>0x8020_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em> <br> <em>(Each Page is 4 KB)</em></td></tr>
+</tbody></table>
+</div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L30">(Source)</a></p>
+<p>Which won’t conflict with our Interrupt Controller.</p>
+<p>(Or maybe we should have moved the User Memory to another Exotic Address: <strong><code>0x1_0000_0000</code></strong>)</p>
+<p><em>But we said that Level 1 is too wasteful for Interrupt Controller?</em></p>
+<p>Once again: It’s super wasteful to reserve <strong>1 GB of Address Space</strong> (Level 1 at <strong><code>0xC000_0000</code></strong>) for our Interrupt Controller that requires only 256 MB.</p>
+<p>Also we hope MMU will stop the Kernel from meddling with the memory at <strong><code>0xC000_0000</code></strong>. Because it’s not supposed to!</p>
+<p><em>Move the Interrupt Controller to Level 2 then!</em></p>
+<p>That’s why we wrote this article: To figure out how to move the Interrupt Controller to a <strong>Level 2 Page Table</strong>. (And connect Level 1 with Level 2)</p>
+<p>And that’s how we arrived at this final <strong>MMU Mapping</strong> that works hunky dory for Interrupt Controller and for User Memory…</p>
+<div><table><thead><tr><th style="text-align: center">Index</th><th style="text-align: center">Permissions</th><th style="text-align: left">Physical Page Number</th></tr></thead><tbody>
+<tr><td style="text-align: center">0</td><td style="text-align: center">VGRW</td><td style="text-align: left"><strong><code>0x00000</code></strong> <em>(I/O Memory)</em></td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50406</code></strong> <em>(Kernel Code &amp; Data)</em></td></tr>
+<tr><td style="text-align: center">3</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50403</code></strong> <em>(Interrupt Controller)</em></td></tr>
+</tbody></table>
+</div>
     
 </body>
 </html>
