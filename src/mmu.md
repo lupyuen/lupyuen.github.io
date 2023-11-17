@@ -811,17 +811,19 @@ cd nuttx
 tools/configure.sh star64:nsh
 make
 
-## Dump the RISC-V Disassembly for NuttX Kernel
-riscv64-unknown-elf-objdump \
-  -t -S --demangle --line-numbers --wide \
+## Export the NuttX Binary Image
+## to `nuttx.bin`
+riscv64-unknown-elf-objcopy \
+  -O binary \
   nuttx \
-  >nuttx.S \
-  2>&1
+  nuttx.bin
 ```
 
 [(Remember to install the __Build Prerequisites and Toolchain__)](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
 
 [(And enable __Scheduler Info Output__)](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu)
+
+TODO: initrd
 
 Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
 
@@ -830,21 +832,12 @@ Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous art
 Then we do the [__Linux-To-NuttX Switcheroo__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64): Overwrite the microSD Linux Image by the __NuttX Kernel__...
 
 ```bash
-## Export the NuttX Binary Image
-## to `nuttx.bin`
-riscv64-unknown-elf-objcopy \
-  -O binary \
-  nuttx \
-  nuttx.bin
-
 ## Overwrite the Linux Image
 ## on Ox64 microSD
 cp nuttx.bin \
   "/Volumes/NO NAME/Image"
 diskutil unmountDisk /dev/disk2
 ```
-
-TODO: initrd
 
 Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg) and power up Ox64.
 
@@ -854,4 +847,24 @@ Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [
 
 # Appendix: Fix the Interrupt Controller
 
+_What's wrong with the Interrupt Controller?_
+
+Earlier we had difficulty configuring the Sv39 MMU for the Interrupt Controller at __`0xE000_0000`__...
+
+| Region | Start Address | Size
+|:--------------|:-------------:|:----
+| [__I/O Memory__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47) | __`0x0000_0000`__ | __`0x4000_0000`__ _(1 GB)_
+| [__RAM__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23-L26) | __`0x5020_0000`__ | __`0x0180_0000`__ _(24 MB)_
+| [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ _(256 MB)_
+
 TODO
+
+Level 1?
+
+Apps
+
+Move apps to 0x8000 0000
+
+Too wasteful
+
+Level 2
