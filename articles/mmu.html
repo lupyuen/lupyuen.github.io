@@ -134,7 +134,8 @@
 <p><a href="https://wiki.pine64.org/wiki/Ox64"><em>Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)</em></a></p>
 <h1 id="memory-protection"><a href="#memory-protection">1 Memory Protection</a></h1>
 <p><em>What memory shall we protect on Ox64?</em></p>
-<p>Ox64 SBC requires the <strong>Memory Regions</strong> below to boot our Kernel. Today we <strong>configure the Sv39 MMU</strong> so that our Kernel can access these regions (and nothing else)…</p>
+<p>Ox64 SBC requires the <strong>Memory Regions</strong> below to boot our Kernel.</p>
+<p>Today we <strong>configure the Sv39 MMU</strong> so that our Kernel can access these regions (and nothing else)…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
