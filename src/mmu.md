@@ -560,7 +560,7 @@ Let's make some magic!
 
 _What are the "Exotic Addresses" for our Application?_
 
-NuttX will map the __Application Code (Text), Data and Heap__ at these __Virtual Addresses__: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L26)
+NuttX will map the __Application Code (Text), Data and Heap__ at these __Virtual Addresses__: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L30)
 
 ```text
 CONFIG_ARCH_TEXT_VBASE=0x80000000
@@ -755,15 +755,15 @@ Nope they can't, because the __"U" User Permission__ is denied. Therefore we're 
 
 TODO
 
-I hope this article has been a tasty treat for understanding the internals of 
+I hope this article has been a __tasty treat__ for understanding the inner workings of...
 
-memory protection
+- __Memory Protection__
 
-virtual memory 
+- __Virtual Memory__ 
 
-and the __Sv39 Memory Management Unit__
+- And the __Sv39 Memory Management Unit__!
 
-[Fixed the roadblock](https://github.com/lupyuen/nuttx-ox64#fix-the-nuttx-memory-map-for-plic)
+[Fixed the roadblock](https://lupyuen.github.io/articles/mmu#appendix-fix-the-interrupt-controller)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -823,7 +823,32 @@ riscv64-unknown-elf-objcopy \
 
 [(And enable __Scheduler Info Output__)](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu)
 
-TODO: initrd
+Then we build the __Initial RAM Disk__ that contains NuttX Shell and NuttX Apps...
+
+```bash
+## Go to NuttX Folder
+pushd ../nuttx
+
+## Build the Apps Filesystem
+make -j 8 export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j 8 import
+popd
+
+## Return to previous folder
+popd
+
+## Generate the Initial RAM Disk
+genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+
+## Insert 64 KB of zeroes after Binary Image for Kernel Stack
+head -c 65536 /dev/zero >/tmp/nuttx.zero
+
+## Append Initial RAM Disk to the Binary Image
+cat nuttx.bin /tmp/nuttx.zero initrd \
+  >Image
+```
 
 Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
 
@@ -834,7 +859,7 @@ Then we do the [__Linux-To-NuttX Switcheroo__](https://lupyuen.github.io/article
 ```bash
 ## Overwrite the Linux Image
 ## on Ox64 microSD
-cp nuttx.bin \
+cp Image \
   "/Volumes/NO NAME/Image"
 diskutil unmountDisk /dev/disk2
 ```
@@ -857,14 +882,58 @@ Earlier we had difficulty configuring the Sv39 MMU for the Interrupt Controller 
 | [__RAM__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23-L26) | __`0x5020_0000`__ | __`0x0180_0000`__ _(24 MB)_
 | [__Interrupt Controller__](https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller) | __`0xE000_0000`__ | __`0x1000_0000`__ _(256 MB)_
 
-TODO
+_Why not park the Interrupt Controller as a Level 1 Page Table Entry?_
 
-Level 1?
+| Index | Permissions | Physical Page Number | 
+|:-----:|:-----------:|:----|
+| 0 | VGRW | __`0x00000`__ _(I/O Memory)_
+| 1 | VG _(Pointer)_ | __`0x50406`__ _(Kernel Code & Data)_
+| 3 | VGRW | __`0xC0000`__ _(Interrupt Controller)_
 
-Apps
+Uh it's super wasteful to reserve __1 GB of Address Space__ (Level 1 at __`0xC000_0000`__) for our Interrupt Controller that requires only 256 MB.
 
-Move apps to 0x8000 0000
+But there's another problem: Our __User Memory__ was originally assigned to __`0xC000_0000`__...
 
-Too wasteful
+| Region | Start Address | Size
+|:--------------|:-------------:|:----
+| User Code | __`0xC000_0000`__ | _(Max 128 Pages)_
+| User Data | __`0xC010_0000`__ | _(Max 128 Pages)_
+| User Heap | __`0xC020_0000`__ | _(Max 128 Pages)_ <br> _(Each Page is 4 KB)_
 
-Level 2
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L25-L38)
+
+Which would __collide with our Interrupt Controller__!
+
+_OK so we move our User Memory elsewhere?_
+
+Yep that's why we moved the User Memory from __`0xC000_0000`__ to __`0x8000_0000`__...
+
+| Region | Start Address | Size
+|:--------------|:-------------:|:----
+| User Code | __`0x8000_0000`__ | _(Max 128 Pages)_
+| User Data | __`0x8010_0000`__ | _(Max 128 Pages)_
+| User Heap | __`0x8020_0000`__ | _(Max 128 Pages)_ <br> _(Each Page is 4 KB)_
+
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L30)
+
+Which won't conflict with our Interrupt Controller.
+
+(Or maybe we should have moved the User Memory to another Exotic Address: __`0x1_0000_0000`__)
+
+_But we said that Level 1 is too wasteful for Interrupt Controller?_
+
+Once again: It's super wasteful to reserve __1 GB of Address Space__ (Level 1 at __`0xC000_0000`__) for our Interrupt Controller that requires only 256 MB.
+
+Also we hope MMU will stop the Kernel from meddling with the memory at __`0xC000_0000`__. Because it's not supposed to!
+
+_Move the Interrupt Controller to Level 2 then!_
+
+That's why we wrote this article: To figure out how to move the Interrupt Controller to a __Level 2 Page Table__. (And connect Level 1 with Level 2)
+
+And that's how we arrived at this final __MMU Mapping__ that works hunky dory for Interrupt Controller and for User Memory...
+
+| Index | Permissions | Physical Page Number | 
+|:-----:|:-----------:|:----|
+| 0 | VGRW | __`0x00000`__ _(I/O Memory)_
+| 1 | VG _(Pointer)_ | __`0x50406`__ _(Kernel Code & Data)_
+| 3 | VG _(Pointer)_ | __`0x50403`__ _(Interrupt Controller)_
