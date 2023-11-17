@@ -12,7 +12,7 @@ _What's this MMU?_
 
 - __Virtual Memory__: Allow Applications to access chunks of "Imaginary Memory" at Exotic Addresses (__`0x8000_0000`__!)
 
-  But they're actually System RAM recycled from boring old addresses (like __`0x5060_4000`__)
+  But in reality they're System RAM recycled from boring old addresses (like __`0x5060_4000`__)
 
   (Kinda like "The Matrix")
 
@@ -267,7 +267,7 @@ To compute the Index of the Level 2 __Page Table Entry (PTE)__...
 
   (4,096 bytes per Memory Page)
 
-- __L2 PTE Index__ <br> = (__vpn__ >> 9) & `0b1_1111_1111` <br> = `0x100`
+- __Level 2 PTE Index__ <br> = (__vpn__ >> 9) & `0b1_1111_1111` <br> = `0x100`
 
   (Extract Bits 9 to 17 to get Level 2 Index)
 
@@ -342,7 +342,7 @@ Exactly! Watch how we __connect our Level 2 Page Table__ back to Level 1...
 
   (4,096 bytes per Memory Page)
 
-- __L1 PTE Index__ <br> = (__vpn__ >> 18) & `0b1_1111_1111` <br> = 3
+- __Level 1 PTE Index__ <br> = (__vpn__ >> 18) & `0b1_1111_1111` <br> = 3
 
   (Extract Bits 18 to 26 to get Level 1 Index)
 
@@ -419,7 +419,7 @@ Suppose we're configuring address __`0x5020_1000`__. To compute the Index of the
 
   (4,096 bytes per Memory Page)
 
-- __L3 PTE Index__ <br> = __vpn__ & `0b1_1111_1111` <br> = 1
+- __Level 3 PTE Index__ <br> = __vpn__ & `0b1_1111_1111` <br> = 1
 
   (Extract Bits 0 to 8 to get Level 3 Index)
 
@@ -554,7 +554,7 @@ Earlier we talked about Sv39 MMU and __Virtual Memory__...
 
 > Allow Applications to access chunks of "Imaginary Memory" at Exotic Addresses (__`0x8000_0000`__!)
 
-> But they're actually System RAM recycled from boring old addresses (like __`0x5060_4000`__)
+> But in reality they're System RAM recycled from boring old addresses (like __`0x5060_4000`__)
 
 Let's make some magic!
 
@@ -808,6 +808,32 @@ __For Sv39 MMU:__ The parameters are...
 - __LEVELS__ = 3 
 
 - __PTESIZE__ = 8
+
+_What about Physical Address to Virtual Address?_
+
+Well that would need an Exhaustive Search of all Page Tables!
+
+TODO
+
+Given a __Virtual Address vaddr__...
+
+- __Virtual Page Number: vpn__ <br> =  __vaddr__ >> 12
+
+  (4,096 bytes per Memory Page)
+
+- __Level 1 PTE Index__ <br> = (__vpn__ >> 18) & `0b1_1111_1111`
+
+  (Extract Bits 18 to 26 to get Level 1 Index)
+
+- __Level 2 PTE Index__ <br> = (__vpn__ >> 9) & `0b1_1111_1111`
+
+  (Extract Bits 9 to 17 to get Level 2 Index)
+
+- __Level 3 PTE Index__ <br> = __vpn__ & `0b1_1111_1111`
+
+  (Extract Bits 0 to 8 to get Level 3 Index)
+
+  [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
 ![Ox64 boots to NuttX Shell](https://lupyuen.github.io/images/mmu-boot1.png)
 
