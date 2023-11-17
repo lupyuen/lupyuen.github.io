@@ -799,6 +799,8 @@ __Address Translation__ for Sv39 MMU is described in...
 
 __For Sv39 MMU:__ The parameters are...
 
+- __PAGESIZE__ = 4,096
+
 - __LEVELS__ = 3 
 
 - __PTESIZE__ = 8
