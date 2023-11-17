@@ -6,7 +6,7 @@
 
 _What's this MMU?_
 
-[__Memory Management Unit (MMU)__](https://en.wikipedia.org/wiki/Memory_management_unit) is the hardware inside our 64-bit Single-Board Computer (SBC) that does...
+[__Memory Management Unit (MMU)__](https://en.wikipedia.org/wiki/Memory_management_unit) is the hardware inside our Single-Board Computer (SBC) that does...
 
 - __Memory Protection__: Prevent Applications (and Kernel) from meddling with things (in System Memory) that they're not supposed to
 
@@ -66,7 +66,7 @@ Let's learn things a little differently! This article will read (and look) like 
 
 _What memory shall we protect on Ox64?_
 
-We configure the Sv39 MMU so that our Kernel can access these __Memory Regions__ (and nothing else)...
+Ox64 SBC requires the __Memory Regions__ below to boot our Kernel. Today we __configure the Sv39 MMU__ so that our Kernel can access these regions (and nothing else)...
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
@@ -78,23 +78,25 @@ We configure the Sv39 MMU so that our Kernel can access these __Memory Regions__
 
 Our (foodie) hygiene requirements...
 
-- __Applications__ shall NOT be allowed to touch these Memory Regions
+1. __Applications__ shall NOT be allowed to touch these Memory Regions
 
-- __Kernel Code__ will allow Read and Execute Access
+1. __Kernel Code Region__ will allow Read and Execute Access
 
-- __Other Memory Regions__ will allow Read and Write Access
+1. __Other Memory Regions__ will allow Read and Write Access
 
-- __Memory-Mapped I/O__ will be used for controlling the System Peripherals: UART, I2C, SPI, ...
+1. __Memory-Mapped I/O__ will be used by Kernel for controlling the System Peripherals: UART, I2C, SPI, ...
 
-  (Same for __Interrupt Controller__)
+   (Same for __Interrupt Controller__)
 
-- __Page Pool__ will be allocated (on-the-fly) to Applications
+1. __Page Pool__ will be allocated (on-the-fly) by our Kernel to Applications
 
-  (As __Virtual Memory__)
+   (As __Virtual Memory__)
 
-- __Our Kernel__ runs in RISC-V Supervisor Mode
+1. __Our Kernel__ runs in RISC-V Supervisor Mode
 
-- __Applications__ run in RISC-V User Mode
+1. __Applications__ run in RISC-V User Mode
+
+1. Any meddling of __Forbidden Regions__ by Kernel and Applications shall immediately trigger a [__Page Fault__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm) (RISC-V Exception)
 
 We begin with I/O Memory...
 
@@ -139,6 +141,8 @@ But we have so many questions...
     (Or __`0x4000_0000`__ bytes)
 
     Our Page Table Entry is at __Index 0__. Hence it configures the Memory Range for __`0x0`__ to __`0x3FFF_FFFF`__. (Pic below)
+
+    [(More about __Address Translation__)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm)
 
 1.  _How to allocate the Page Table?_
 
@@ -267,6 +271,8 @@ To compute the Index of the Level 2 __Page Table Entry (PTE)__...
 
   [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
+  [(More about __Address Translation__)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm)
+
 Do the same for __`0xEFFF_FFFF`__, and we'll get Index __`0x17F`__.
 
 Thus our Page Table Index runs from __`0x100`__ to __`0x17F`__.
@@ -339,6 +345,8 @@ Exactly! Watch how we __connect our Level 2 Page Table__ back to Level 1...
   (Extract Bits 18 to 26 to get Level 1 Index)
 
   [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
+
+  [(More about __Address Translation__)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm)
 
 _Why "NO RWX"?_
 
@@ -414,6 +422,8 @@ Suppose we're configuring address __`0x5020_1000`__. To compute the Index of the
   (Extract Bits 0 to 8 to get Level 3 Index)
 
   [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
+
+  [(More about __Address Translation__)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm)
 
 Thus address __`0x5020_1000`__ is configured by __Index 1__ of the Level 3 Page Table.
 
@@ -621,6 +631,8 @@ NuttX populates the __User Level 2__ Page Table (pic above) with the __Physical 
 
 - Level 3 Page Table for __User Code and Data__
 
+  (From previous section)
+
 - Level 3 Page Table for __User Heap__
 
   (To make __malloc__ work)
@@ -648,6 +660,8 @@ From the pic above, we see that the Page Table Entry has __Index 2__.
 Recall that each Entry in the Level 1 Page Table configures __1 GB of Virtual Memory__. (__`0x4000_0000`__ Bytes)
 
 Since the Entry Index is 2, then the Virtual Address must be __`0x8000_0000`__. Mystery solved!
+
+[(More about __Address Translation__)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm)
 
 _There's something odd about the SATP Register..._
 
@@ -822,8 +836,14 @@ cp nuttx.bin \
 diskutil unmountDisk /dev/disk2
 ```
 
+TODO: initrd
+
 Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg) and power up Ox64.
 
 Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH). (Pic above)
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
+
+# Appendix: Fix the Interrupt Controller
+
+TODO
