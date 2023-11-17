@@ -817,9 +817,11 @@ _What about Physical Address to Virtual Address?_
 
 Well that would need an Exhaustive Search of all Page Tables!
 
-_OK how about Virtual Address to Page Table Entry (PTE)?_
+_OK how about Virtual / Physical Address to Page Table Entry (PTE)?_
 
 Given a __Virtual Address vaddr__...
+
+(Or a __Physical Address__, assuming Virtual = Physical like our Kernel)
 
 - __Virtual Page Number: vpn__ <br> =  __vaddr__ >> 12
 
