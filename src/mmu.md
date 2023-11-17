@@ -908,13 +908,15 @@ popd
 ## Generate the Initial RAM Disk
 genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
 
-## Insert 64 KB of zeroes after Binary Image for Kernel Stack
+## Pad with 64 KB of zeroes after Binary Image for Kernel Stack
 head -c 65536 /dev/zero >/tmp/nuttx.zero
 
 ## Append Initial RAM Disk to the Binary Image
 cat nuttx.bin /tmp/nuttx.zero initrd \
   >Image
 ```
+
+[(Why the __64 KB Padding__)](https://github.com/lupyuen/nuttx-ox64#initial-ram-disk-for-ox64-bl808)
 
 Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
 
