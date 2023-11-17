@@ -706,8 +706,9 @@ mmu_write_satp:
 <p><img src="https://lupyuen.github.io/images/mmu-address2.png" alt="Virtual / Physical Address Fields (Page 85)" /></p>
 <p><em>What about Physical Address to Virtual Address?</em></p>
 <p>Well that would need an Exhaustive Search of all Page Tables!</p>
-<p><em>OK how about Virtual Address to Page Table Entry (PTE)?</em></p>
+<p><em>OK how about Virtual / Physical Address to Page Table Entry (PTE)?</em></p>
 <p>Given a <strong>Virtual Address vaddr</strong>…</p>
+<p>(Or a <strong>Physical Address</strong>, assuming Virtual = Physical like our Kernel)</p>
 <ul>
 <li>
 <p><strong>Virtual Page Number: vpn</strong> <br> =  <strong>vaddr</strong> &gt;&gt; 12</p>
