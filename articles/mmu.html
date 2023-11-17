@@ -92,7 +92,7 @@
 </li>
 <li>
 <p><strong>Virtual Memory</strong>: Allow Applications to access chunks of “Imaginary Memory” at Exotic Addresses (<strong><code>0x8000_0000</code></strong>!)</p>
-<p>But they’re actually System RAM recycled from boring old addresses (like <strong><code>0x5060_4000</code></strong>)</p>
+<p>But in reality they’re System RAM recycled from boring old addresses (like <strong><code>0x5060_4000</code></strong>)</p>
 <p>(Kinda like “The Matrix”)</p>
 </li>
 </ul>
@@ -304,7 +304,7 @@ mmu_ln_map_region(
 <p>(4,096 bytes per Memory Page)</p>
 </li>
 <li>
-<p><strong>L2 PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 9) &amp; <code>0b1_1111_1111</code> <br> = <code>0x100</code></p>
+<p><strong>Level 2 PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 9) &amp; <code>0b1_1111_1111</code> <br> = <code>0x100</code></p>
 <p>(Extract Bits 9 to 17 to get Level 2 Index)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
@@ -358,7 +358,7 @@ mmu_ln_map_region(
 <p>(4,096 bytes per Memory Page)</p>
 </li>
 <li>
-<p><strong>L1 PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 18) &amp; <code>0b1_1111_1111</code> <br> = 3</p>
+<p><strong>Level 1 PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 18) &amp; <code>0b1_1111_1111</code> <br> = 3</p>
 <p>(Extract Bits 18 to 26 to get Level 1 Index)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
@@ -413,7 +413,7 @@ mmu_ln_setentry(
 <p>(4,096 bytes per Memory Page)</p>
 </li>
 <li>
-<p><strong>L3 PTE Index</strong> <br> = <strong>vpn</strong> &amp; <code>0b1_1111_1111</code> <br> = 1</p>
+<p><strong>Level 3 PTE Index</strong> <br> = <strong>vpn</strong> &amp; <code>0b1_1111_1111</code> <br> = 1</p>
 <p>(Extract Bits 0 to 8 to get Level 3 Index)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
@@ -514,7 +514,7 @@ mmu_ln_setentry(
 <p>Allow Applications to access chunks of “Imaginary Memory” at Exotic Addresses (<strong><code>0x8000_0000</code></strong>!)</p>
 </blockquote>
 <blockquote>
-<p>But they’re actually System RAM recycled from boring old addresses (like <strong><code>0x5060_4000</code></strong>)</p>
+<p>But in reality they’re System RAM recycled from boring old addresses (like <strong><code>0x5060_4000</code></strong>)</p>
 </blockquote>
 <p>Let’s make some magic!</p>
 <p><em>What are the “Exotic Addresses” for our Application?</em></p>
@@ -700,6 +700,29 @@ mmu_write_satp:
 </li>
 <li>
 <p><strong>PTESIZE</strong> = 8</p>
+</li>
+</ul>
+<p><em>What about Physical Address to Virtual Address?</em></p>
+<p>Well that would need an Exhaustive Search of all Page Tables!</p>
+<p>TODO</p>
+<p>Given a <strong>Virtual Address vaddr</strong>…</p>
+<ul>
+<li>
+<p><strong>Virtual Page Number: vpn</strong> <br> =  <strong>vaddr</strong> &gt;&gt; 12</p>
+<p>(4,096 bytes per Memory Page)</p>
+</li>
+<li>
+<p><strong>Level 1 PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 18) &amp; <code>0b1_1111_1111</code></p>
+<p>(Extract Bits 18 to 26 to get Level 1 Index)</p>
+</li>
+<li>
+<p><strong>Level 2 PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 9) &amp; <code>0b1_1111_1111</code></p>
+<p>(Extract Bits 9 to 17 to get Level 2 Index)</p>
+</li>
+<li>
+<p><strong>Level 3 PTE Index</strong> <br> = <strong>vpn</strong> &amp; <code>0b1_1111_1111</code></p>
+<p>(Extract Bits 0 to 8 to get Level 3 Index)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
