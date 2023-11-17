@@ -689,37 +689,43 @@ cd nuttx
 tools/configure.sh star64:nsh
 make
 
-## Dump the RISC-V Disassembly for NuttX Kernel
-riscv64-unknown-elf-objdump \
-  -t -S --demangle --line-numbers --wide \
-  nuttx \
-  &gt;nuttx.S \
-  2&gt;&amp;1
-</code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
-<p><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">(And enable <strong>Scheduler Info Output</strong>)</a></p>
-<p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
-<p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
-<p>Then we do the <a href="https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64"><strong>Linux-To-NuttX Switcheroo</strong></a>: Overwrite the microSD Linux Image by the <strong>NuttX Kernel</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Export the NuttX Binary Image
+## Export the NuttX Binary Image
 ## to `nuttx.bin`
 riscv64-unknown-elf-objcopy \
   -O binary \
   nuttx \
   nuttx.bin
-
-## Overwrite the Linux Image
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">(And enable <strong>Scheduler Info Output</strong>)</a></p>
+<p>TODO: initrd</p>
+<p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
+<p>Then we do the <a href="https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64"><strong>Linux-To-NuttX Switcheroo</strong></a>: Overwrite the microSD Linux Image by the <strong>NuttX Kernel</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Overwrite the Linux Image
 ## on Ox64 microSD
 cp nuttx.bin \
   &quot;/Volumes/NO NAME/Image&quot;
 diskutil unmountDisk /dev/disk2
 </code></pre></div>
-<p>TODO: initrd</p>
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH). (Pic above)</p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525">(See the <strong>NuttX Log</strong>)</a></p>
 <h1 id="appendix-fix-the-interrupt-controller"><a href="#appendix-fix-the-interrupt-controller">13 Appendix: Fix the Interrupt Controller</a></h1>
+<p><em>What’s wrong with the Interrupt Controller?</em></p>
+<p>Earlier we had difficulty configuring the Sv39 MMU for the Interrupt Controller at <strong><code>0xE000_0000</code></strong>…</p>
+<div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47"><strong>I/O Memory</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23-L26"><strong>RAM</strong></a></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0180_0000</code></strong> <em>(24 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
+</tbody></table>
+</div>
 <p>TODO</p>
+<p>Level 1?</p>
+<p>Apps</p>
+<p>Move apps to 0x8000 0000</p>
+<p>Too wasteful</p>
+<p>Level 2</p>
 
     
 </body>
