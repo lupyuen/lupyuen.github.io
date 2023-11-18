@@ -617,7 +617,7 @@ NuttX populates the __Level 3 Page Table__ for the User Code like so...
 
 ![Level 3 Page Table for User](https://lupyuen.github.io/images/mmu-l3user.jpg)
 
-_Something smells different... What's this "U" Permission?_
+_Something smells special... What's this "U" Permission?_
 
 The __"U" User Permission__ says that this Page Table Entry is accesible by our Application. (Which runs in __RISC-V User Mode__)
 
