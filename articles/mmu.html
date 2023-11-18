@@ -740,11 +740,12 @@ mmu_write_satp:
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="RISC-V Machine Mode vs Supervisor Mode" /></p>
 <p><em>Isn’t there another kind of Memory Protection in RISC-V?</em></p>
 <p>Yes RISC-V also supports <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:pmp"><strong>Physical Memory Protection</strong></a>.</p>
-<p>But it only works in <strong>RISC-V Machine Mode</strong>, the most powerful mode. <a href="https://lupyuen.github.io/articles/sbi">(Like for <strong>OpenSBI</strong>)</a></p>
+<p>But it only works in <strong>RISC-V Machine Mode</strong> (pic above), the most powerful mode. <a href="https://lupyuen.github.io/articles/sbi">(Like for <strong>OpenSBI</strong>)</a></p>
 <p>NuttX and Linux run in <strong>RISC-V Supervisor Mode</strong>, which is less poweful. And won’t have access to this Physical Memory Protection.</p>
-<p>That’s why NuttX and Linux use Sv39 MMU for Memory Protection instead.</p>
+<p>That’s why NuttX and Linux use Sv39 MMU instead for Memory Protection.</p>
 <p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525"><em>Ox64 boots to NuttX Shell</em></a></p>
 <h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">13 Appendix: Build and Run NuttX</a></h1>
