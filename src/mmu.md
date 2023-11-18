@@ -865,15 +865,17 @@ Given a __Virtual Address vaddr__...
 
   [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
+![RISC-V Machine Mode vs Supervisor Mode](https://lupyuen.github.io/images/privilege-title.jpg)
+
 _Isn't there another kind of Memory Protection in RISC-V?_
 
 Yes RISC-V also supports [__Physical Memory Protection__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:pmp).
 
-But it only works in __RISC-V Machine Mode__, the most powerful mode. [(Like for __OpenSBI__)](https://lupyuen.github.io/articles/sbi)
+But it only works in __RISC-V Machine Mode__ (pic above), the most powerful mode. [(Like for __OpenSBI__)](https://lupyuen.github.io/articles/sbi)
 
 NuttX and Linux run in __RISC-V Supervisor Mode__, which is less poweful. And won't have access to this Physical Memory Protection.
 
-That's why NuttX and Linux use Sv39 MMU for Memory Protection instead.
+That's why NuttX and Linux use Sv39 MMU instead for Memory Protection.
 
 ![Ox64 boots to NuttX Shell](https://lupyuen.github.io/images/mmu-boot1.png)
 
