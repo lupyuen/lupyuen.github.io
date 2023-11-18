@@ -1011,3 +1011,7 @@ And that's how we arrived at this final __MMU Mapping__ that works hunky dory fo
 | 0 | VGRW | __`0x00000`__ _(I/O Memory)_
 | 1 | VG _(Pointer)_ | __`0x50406`__ _(Kernel Code & Data)_
 | 3 | VG _(Pointer)_ | __`0x50403`__ _(Interrupt Controller)_
+
+![Table full of... RISC-V Page Tables!](https://lupyuen.github.io/images/mmu-table.jpg)
+
+_Table full of... RISC-V Page Tables!_
