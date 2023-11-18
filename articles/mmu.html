@@ -640,7 +640,6 @@ mmu_write_satp:
 <p><img src="https://lupyuen.github.io/images/mmu-boot2.jpg" alt="NuttX swaps the SATP Register" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L271-L304"><em>NuttX swaps the SATP Register</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
-<p>TODO</p>
 <p>I hope this article has been a <strong>tasty treat</strong> for understanding the inner workings of…</p>
 <ul>
 <li>
@@ -788,6 +787,7 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.zero
 cat nuttx.bin /tmp/nuttx.zero initrd \
   &gt;Image
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#initial-ram-disk-for-ox64-bl808">(Why the <strong>64 KB Padding</strong>)</a></p>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
@@ -801,6 +801,7 @@ diskutil unmountDisk /dev/disk2
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH). (Pic above)</p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525">(See the <strong>NuttX Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2int.jpg" alt="Level 2 Page Table for Interrupt Controller" /></p>
 <h1 id="appendix-fix-the-interrupt-controller"><a href="#appendix-fix-the-interrupt-controller">14 Appendix: Fix the Interrupt Controller</a></h1>
 <p><em>What’s wrong with the Interrupt Controller?</em></p>
@@ -844,13 +845,14 @@ diskutil unmountDisk /dev/disk2
 <p>Also we hope MMU will stop the Kernel from meddling with the memory at <strong><code>0xC000_0000</code></strong>. Because it’s not supposed to!</p>
 <p><em>Move the Interrupt Controller to Level 2 then!</em></p>
 <p>That’s why we wrote this article: To figure out how to move the Interrupt Controller to a <strong>Level 2 Page Table</strong>. (And connect Level 1 with Level 2)</p>
-<p>And that’s how we arrived at this final <strong>MMU Mapping</strong> that works hunky dory for Interrupt Controller and for User Memory…</p>
+<p>And that’s how we arrived at this final <strong>MMU Mapping</strong>…</p>
 <div><table><thead><tr><th style="text-align: center">Index</th><th style="text-align: center">Permissions</th><th style="text-align: left">Physical Page Number</th></tr></thead><tbody>
 <tr><td style="text-align: center">0</td><td style="text-align: center">VGRW</td><td style="text-align: left"><strong><code>0x00000</code></strong> <em>(I/O Memory)</em></td></tr>
 <tr><td style="text-align: center">1</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50406</code></strong> <em>(Kernel Code &amp; Data)</em></td></tr>
 <tr><td style="text-align: center">3</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50403</code></strong> <em>(Interrupt Controller)</em></td></tr>
 </tbody></table>
 </div>
+<p>That works hunky dory for Interrupt Controller and for User Memory!</p>
 <p><img src="https://lupyuen.github.io/images/mmu-table.jpg" alt="Table full of… RISC-V Page Tables!" /></p>
 <p><em>Table full of… RISC-V Page Tables!</em></p>
 
