@@ -794,11 +794,13 @@ In this article, NuttX has booted plenty of code on Ox64. Here's the flow of the
 
   (To setup the UART)
 
-[__Memory Mgmt Init: jh7110_mm_init__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284) inits the Memory Mgmt Unit by calling...
+[__Memory Mgmt Init: jh7110_mm_init__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284) inits the [__Memory Mgmt Unit__](https://lupyuen.github.io/articles/mmu) by calling...
 
 - [__MMU Map Region: mmu_ln_map_region__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_mmu.c#L137-L153) (to map a Memory Region) and...
 
   [__MMU Set Entry: mmu_ln_setentry__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_mmu.c#L61C1-L107) (to set a Page Table Entry)
+
+  [(More about the __Memory Mgmt Unit__)](https://lupyuen.github.io/articles/mmu)
 
 [__Start NuttX: nx_start__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_start.c#L298-L713) does [__many things__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine) and calls...
 
@@ -843,6 +845,10 @@ Therefore we expect NuttX to __boot completely on Ox64__ when we've implemented.
 - [__Memory Map__](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64) might need fixing too
 
 # Appendix: Memory Map for Ox64
+
+Read the article...
+
+-   [__"RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit"__](https://lupyuen.github.io/articles/mmu)
 
 _What's this Memory Map?_
 
@@ -969,9 +975,9 @@ Domain0 Next Arg1   : 0x51ff8000
 
 (__`0x3EF8` `0000`__ is probably protected because it contains the OpenSBI Firmware. What is "__`(I)`__"?)
 
-Check out our progress here...
+Here's how we __fixed the Memory Map__ for Ox64 NuttX...
 
-- [__"NuttX Memory Map for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64#nuttx-memory-map-for-ox64-bl808)
+- [__"RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit"__](https://lupyuen.github.io/articles/mmu)
 
   [(More about __OpenSBI Domains__)](https://github.com/riscv-software-src/opensbi/blob/master/docs/domain_support.md)
 
