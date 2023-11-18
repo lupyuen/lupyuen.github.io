@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit</title>
+            <link>https://lupyuen.github.io/articles/mmu</link>
+            <description><![CDATA[Let's boot Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC... And figure out how the Sv39 Memory Management Unit works]]></description>
+            <guid>https://lupyuen.github.io/articles/mmu</guid>
+            <pubDate>Sun, 19 Nov 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>RISC-V Ox64 BL808 SBC: Starting Apache NuttX Real-Time Operating System</title>
             <link>https://lupyuen.github.io/articles/ox2</link>
             <description><![CDATA[Let's boot a tiny bit of Apache NuttX Real-Time Operating System... On Pine64 Ox64 BL808 RISC-V SBC]]></description>

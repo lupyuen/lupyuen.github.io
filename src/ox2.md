@@ -832,6 +832,8 @@ In this article, NuttX has booted plenty of code on Ox64. Here's the flow of the
 
   (Which prevents NuttX Shell from starting)
 
+  [(How __NuttX Shell__ should be started)](https://github.com/lupyuen/nuttx-ox64#start-nuttx-apps-on-ox64-bl808)
+
 Therefore we expect NuttX to __boot completely on Ox64__ when we've implemented...
 
 - [__Initial RAM Disk__](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk) for Ox64
