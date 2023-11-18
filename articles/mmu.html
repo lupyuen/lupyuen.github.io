@@ -372,7 +372,7 @@ mmu_ln_map_region(
 <p>When we set the <strong>Read, Write and Execute Bits</strong> to 0…</p>
 <p>Sv39 MMU interprets the PPN (Physical Page Number) as a <strong>Pointer to Level 2 Page Table</strong>. That’s how we connect Level 1 to Level 2!</p>
 <p>(Remember: Actual Address = PPN * 4,096)</p>
-<p>In NuttX, we write this to <strong>connect L1 with L2</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L254-L258">jh7110_mm_init.c</a></p>
+<p>In NuttX, we write this to <strong>connect Level 1 with Level 2</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L254-L258">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Connect the L1 and L2 Page Tables for Interrupt Controller
 mmu_ln_setentry(
   1,  // Level 1
