@@ -594,7 +594,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
 <p><em>There’s something odd about the SATP Register…</em></p>
 <p>Yeah the SATP Register has changed! We investigate…</p>
-<p><strong>TODO:</strong> Who calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>mmu_ln_setentry</strong></a> for User Page Tables?</p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#start-nuttx-apps-on-ox64-bl808">(Who populates the <strong>User Page Tables</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3">(See the <strong>NuttX Virtual Memory Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-satp.jpg" alt="Kernel SATP vs User SATP" /></p>
 <h1 id="swap-the-satp-register"><a href="#swap-the-satp-register">10 Swap the SATP Register</a></h1>
