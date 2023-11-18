@@ -753,8 +753,6 @@ Nope they can't, because the __"U" User Permission__ is denied. Therefore we're 
 
 # What's Next
 
-TODO
-
 I hope this article has been a __tasty treat__ for understanding the inner workings of...
 
 - __Memory Protection__
@@ -920,6 +918,8 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
   >Image
 ```
 
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
+
 [(Why the __64 KB Padding__)](https://github.com/lupyuen/nuttx-ox64#initial-ram-disk-for-ox64-bl808)
 
 Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
@@ -941,6 +941,8 @@ Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg)
 Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH). (Pic above)
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
+
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
 
 ![Level 2 Page Table for Interrupt Controller](https://lupyuen.github.io/images/mmu-l2int.jpg)
 
@@ -1004,13 +1006,15 @@ _Move the Interrupt Controller to Level 2 then!_
 
 That's why we wrote this article: To figure out how to move the Interrupt Controller to a __Level 2 Page Table__. (And connect Level 1 with Level 2)
 
-And that's how we arrived at this final __MMU Mapping__ that works hunky dory for Interrupt Controller and for User Memory...
+And that's how we arrived at this final __MMU Mapping__...
 
 | Index | Permissions | Physical Page Number | 
 |:-----:|:-----------:|:----|
 | 0 | VGRW | __`0x00000`__ _(I/O Memory)_
 | 1 | VG _(Pointer)_ | __`0x50406`__ _(Kernel Code & Data)_
 | 3 | VG _(Pointer)_ | __`0x50403`__ _(Interrupt Controller)_
+
+That works hunky dory for Interrupt Controller and for User Memory!
 
 ![Table full of... RISC-V Page Tables!](https://lupyuen.github.io/images/mmu-table.jpg)
 
