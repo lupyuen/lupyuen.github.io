@@ -545,8 +545,8 @@ Our __Level 1 Page Table__ becomes chock full of toppings...
 | Index | Permissions | Physical Page Number | 
 |:-----:|:-----------:|:----|
 | 0 | VGRW | __`0x00000`__ _(I/O Memory)_
-| 1 | VG _(Pointer)_ | __`0x50406`__ _(Kernel Code & Data)_
-| 3 | VG _(Pointer)_ | __`0x50403`__ _(Interrupt Controller)_
+| 1 | VG _(Pointer)_ | __`0x50406`__ _(L2 Kernel Code & Data)_
+| 3 | VG _(Pointer)_ | __`0x50403`__ _(L2 Interrupt Controller)_
 
 But it tastes very similar to our __Kernel Memory Map__!
 
@@ -989,7 +989,7 @@ _Why not park the Interrupt Controller as a Level 1 Page Table Entry?_
 | Index | Permissions | Physical Page Number | 
 |:-----:|:-----------:|:----|
 | 0 | VGRW | __`0x00000`__ _(I/O Memory)_
-| 1 | VG _(Pointer)_ | __`0x50406`__ _(Kernel Code & Data)_
+| 1 | VG _(Pointer)_ | __`0x50406`__ _(L2 Kernel Code & Data)_
 | 3 | VGRW | __`0xC0000`__ _(Interrupt Controller)_
 
 Uh it's super wasteful to reserve __1 GB of Address Space__ (Level 1 at __`0xC000_0000`__) for our Interrupt Controller that requires only 256 MB.
@@ -1037,8 +1037,8 @@ And that's how we arrived at this final __MMU Mapping__...
 | Index | Permissions | Physical Page Number | 
 |:-----:|:-----------:|:----|
 | 0 | VGRW | __`0x00000`__ _(I/O Memory)_
-| 1 | VG _(Pointer)_ | __`0x50406`__ _(Kernel Code & Data)_
-| 3 | VG _(Pointer)_ | __`0x50403`__ _(Interrupt Controller)_
+| 1 | VG _(Pointer)_ | __`0x50406`__ _(L2 Kernel Code & Data)_
+| 3 | VG _(Pointer)_ | __`0x50403`__ _(L2 Interrupt Controller)_
 
 That works hunky dory for Interrupt Controller and for User Memory!
 
