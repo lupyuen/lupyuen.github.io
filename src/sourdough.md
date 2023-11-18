@@ -108,6 +108,8 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Ov
 
     Pop any large bubbles.
 
+    (Otherwise our dough will pop and deflate during baking)
+
 1.  After Baking: Our loaf might get stuck to the Spindle in the Bread Bucket.
 
     Turn the Spindle a few rounds, via the Bottom Exterior of Bread Bucket. (Very hot!)
