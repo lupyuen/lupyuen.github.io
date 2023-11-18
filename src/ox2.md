@@ -798,7 +798,7 @@ In this article, NuttX has booted plenty of code on Ox64. Here's the flow of the
 
 - [__MMU Map Region: mmu_ln_map_region__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_mmu.c#L137-L153) (to map a Memory Region) and...
 
-  [__MME Set Entry: mmu_ln_setentry__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_mmu.c#L61C1-L107) (to set a Page Table Entry)
+  [__MMU Set Entry: mmu_ln_setentry__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_mmu.c#L61C1-L107) (to set a Page Table Entry)
 
 [__Start NuttX: nx_start__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_start.c#L298-L713) does [__many things__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine) and calls...
 
