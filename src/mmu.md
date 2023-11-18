@@ -558,6 +558,8 @@ But it tastes very similar to our __Kernel Memory Map__!
 
 Now we switch course to Applications and Virtual Memory...
 
+[(Who calls __mmu_ln_map_region__ and __mmu_ln_setentry__ at startup)](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
+
 ![Ox64 boots to NuttX Shell](https://lupyuen.github.io/images/mmu-boot1.png)
 
 [_Ox64 boots to NuttX Shell_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
