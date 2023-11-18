@@ -294,6 +294,7 @@ mmu_ln_map_region(
 <p><em>How did we get the Index of the Page Table Entry?</em></p>
 <p>Our Interrupt Controller is at <strong><code>0xE000_0000</code></strong>.</p>
 <p>To compute the Index of the Level 2 <strong>Page Table Entry (PTE)</strong>…</p>
+<span style="font-size:90%">
 <ul>
 <li>
 <p><strong>Virtual Address: vaddr</strong> = <code>0xE000_0000</code></p>
@@ -310,6 +311,7 @@ mmu_ln_map_region(
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
 </li>
 </ul>
+</span>
 <p>Do the same for <strong><code>0xEFFF_FFFF</code></strong>, and we’ll get Index <strong><code>0x17F</code></strong>.</p>
 <p>Thus our Page Table Index runs from <strong><code>0x100</code></strong> to <strong><code>0x17F</code></strong>.</p>
 <p><em>How to allocate the Level 2 Page Table?</em></p>
@@ -348,6 +350,7 @@ mmu_ln_map_region(
 <p>Exactly! Watch how we <strong>connect our Level 2 Page Table</strong> back to Level 1…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel3.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <p>3 is the <strong>Level 1 Index</strong> for Interrupt Controller <strong><code>0xE000_0000</code></strong> because…</p>
+<span style="font-size:90%">
 <ul>
 <li>
 <p><strong>Virtual Address: vaddr</strong> = <code>0xE000_0000</code></p>
@@ -364,6 +367,7 @@ mmu_ln_map_region(
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
 </li>
 </ul>
+</span>
 <p><em>Why “NO RWX”?</em></p>
 <p>When we set the <strong>Read, Write and Execute Bits</strong> to 0…</p>
 <p>Sv39 MMU interprets the PPN (Physical Page Number) as a <strong>Pointer to Level 2 Page Table</strong>. That’s how we connect Level 1 to Level 2!</p>
@@ -403,6 +407,7 @@ mmu_ln_setentry(
 <p>(<strong>Kernel Data</strong> has a similar Level 3 Page Table)</p>
 <p><em>How do we cook up a Level 3 Index?</em></p>
 <p>Suppose we’re configuring address <strong><code>0x5020_1000</code></strong>. To compute the Index of the Level 3 <strong>Page Table Entry (PTE)</strong>…</p>
+<span style="font-size:90%">
 <ul>
 <li>
 <p><strong>Virtual Address: vaddr</strong> = <code>0x5020_1000</code></p>
@@ -419,6 +424,7 @@ mmu_ln_setentry(
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
 </li>
 </ul>
+</span>
 <p>Thus address <strong><code>0x5020_1000</code></strong> is configured by <strong>Index 1</strong> of the Level 3 Page Table.</p>
 <p>To populate the <strong>Level 3 Page Table</strong>, our code looks a little different: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L258-L268">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Number of Page Table Entries (8 bytes per entry)
