@@ -331,9 +331,9 @@ static size_t m_int_l2_pgtable[PGT_INT_L2_SIZE]
 mmu_ln_map_region(
   2,  // Level 2
   PGT_INT_L2_PBASE,  // 0x5040 3000 (Page Table Address)
-  0xE0000000,   // Physical Address of Interrupt Controller
-  0xE0000000,   // Virtual Address of Interrupt Controller
-  0x10000000,   // 256 MB (Size)
+  0xE0000000,  // Physical Address of Interrupt Controller
+  0xE0000000,  // Virtual Address of Interrupt Controller
+  0x10000000,  // 256 MB (Size)
   PTE_R | PTE_W | PTE_G  // Read + Write + Global
 );
 </code></pre></div>
@@ -376,8 +376,8 @@ mmu_ln_map_region(
 <div class="example-wrap"><pre class="language-c"><code>// Connect the L1 and L2 Page Tables for Interrupt Controller
 mmu_ln_setentry(
   1,  // Level 1
-  PGT_L1_VBASE,     // 0x5040 7000 (L1 Page Table Address)
-  PGT_INT_L2_PBASE, // 0x5040 3000 (L2 Page Table Address)
+  PGT_L1_VBASE,      // 0x5040 7000 (L1 Page Table Address)
+  PGT_INT_L2_PBASE,  // 0x5040 3000 (L2 Page Table Address)
   0xE0000000,  // Virtual Address of Interrupt Controller
   PTE_G        // Global Only
 );
@@ -474,11 +474,11 @@ map_region(
 <p>This is how we populate the Level 2 Entries for the <strong>Page Pool</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L274-L280">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the Page Pool in Level 2 Page Table
 mmu_ln_map_region(
-  2,               // Level 2
-  PGT_L2_VBASE,    // 0x5040 6000 (Level 2 Page Table)
-  PGPOOL_START,    // 0x5060 0000 (Physical Address of Page Pool)
-  PGPOOL_START,    // 0x5060 0000 (Virtual Address of Page Pool) 
-  PGPOOL_SIZE,     // 0x0140_0000 (Size is 20 MB)
+  2,             // Level 2
+  PGT_L2_VBASE,  // 0x5040 6000 (Level 2 Page Table)
+  PGPOOL_START,  // 0x5060 0000 (Physical Address of Page Pool)
+  PGPOOL_START,  // 0x5060 0000 (Virtual Address of Page Pool) 
+  PGPOOL_SIZE,   // 0x0140_0000 (Size is 20 MB)
   PTE_R | PTE_W | PTE_G  // Read + Write + Global
 );
 </code></pre></div>
