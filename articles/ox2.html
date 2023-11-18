@@ -695,11 +695,12 @@ DEBUGASSERT(ret &gt;= 0);
 <p>(To setup the UART)</p>
 </li>
 </ul>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284"><strong>Memory Mgmt Init: jh7110_mm_init</strong></a> inits the Memory Mgmt Unit by calling…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284"><strong>Memory Mgmt Init: jh7110_mm_init</strong></a> inits the <a href="https://lupyuen.github.io/articles/mmu"><strong>Memory Mgmt Unit</strong></a> by calling…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_mmu.c#L137-L153"><strong>MMU Map Region: mmu_ln_map_region</strong></a> (to map a Memory Region) and…</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_mmu.c#L61C1-L107"><strong>MMU Set Entry: mmu_ln_setentry</strong></a> (to set a Page Table Entry)</p>
+<p><a href="https://lupyuen.github.io/articles/mmu">(More about the <strong>Memory Mgmt Unit</strong>)</a></p>
 </li>
 </ul>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_start.c#L298-L713"><strong>Start NuttX: nx_start</strong></a> does <a href="https://lupyuen.github.io/articles/unicorn2#after-primary-routine"><strong>many things</strong></a> and calls…</p>
@@ -754,6 +755,10 @@ DEBUGASSERT(ret &gt;= 0);
 </li>
 </ul>
 <h1 id="appendix-memory-map-for-ox64"><a href="#appendix-memory-map-for-ox64">11 Appendix: Memory Map for Ox64</a></h1>
+<p>Read the article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/mmu"><strong>“RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit”</strong></a></li>
+</ul>
 <p><em>What’s this Memory Map?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the whole I/O Memory
 // with Virtual Address = Physical Address
@@ -847,10 +852,10 @@ Domain0 Next Address: 0x50000000
 Domain0 Next Arg1   : 0x51ff8000
 </code></pre></div>
 <p>(<strong><code>0x3EF8</code> <code>0000</code></strong> is probably protected because it contains the OpenSBI Firmware. What is “<strong><code>(I)</code></strong>”?)</p>
-<p>Check out our progress here…</p>
+<p>Here’s how we <strong>fixed the Memory Map</strong> for Ox64 NuttX…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-ox64#nuttx-memory-map-for-ox64-bl808"><strong>“NuttX Memory Map for Ox64 BL808”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/mmu"><strong>“RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit”</strong></a></p>
 <p><a href="https://github.com/riscv-software-src/opensbi/blob/master/docs/domain_support.md">(More about <strong>OpenSBI Domains</strong>)</a></p>
 </li>
 </ul>
