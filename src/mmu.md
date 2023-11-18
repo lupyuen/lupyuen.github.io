@@ -683,7 +683,7 @@ _There's something odd about the SATP Register..._
 
 Yeah the SATP Register has changed! We investigate...
 
-__TODO:__ Who calls [__mmu_ln_setentry__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109) for User Page Tables?
+[(Who populates the __User Page Tables__)](https://github.com/lupyuen/nuttx-ox64#start-nuttx-apps-on-ox64-bl808)
 
 [(See the __NuttX Virtual Memory Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3)
 
