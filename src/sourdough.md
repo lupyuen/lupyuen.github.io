@@ -1,6 +1,6 @@
 # Recipe for Wholemeal Sourdough with Bread Machine
 
-📝 _6 Nov 2023_
+📝 _18 Nov 2023_
 
 ![Honey & Milk Sourdough](https://lupyuen.github.io/images/sourdough25.jpg)
 
@@ -104,7 +104,11 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Ov
 
     [(French Bread Mode is explained on Page 17)](https://www.zojirushi.com/servicesupport/manuals/manual_pdf/bb_hac10.pdf)
 
-1.  After baking, our loaf might get stuck to the Spindle in the Bread Bucket.
+1.  Just Before Baking: Score our dough lengthwise with a wet sewing thread. (In a sawing motion)
+
+    Pop any large bubbles.
+
+1.  After Baking: Our loaf might get stuck to the Spindle in the Bread Bucket.
 
     Turn the Spindle a few rounds, via the Bottom Exterior of Bread Bucket. (Very hot!)
 
