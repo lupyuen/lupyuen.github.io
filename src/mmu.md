@@ -259,6 +259,8 @@ Our Interrupt Controller is at __`0xE000_0000`__.
 
 To compute the Index of the Level 2 __Page Table Entry (PTE)__...
 
+<span style="font-size:90%">
+
 - __Virtual Address: vaddr__ = `0xE000_0000`
 
   (For Now: Virtual Address = Actual Address)
@@ -274,6 +276,8 @@ To compute the Index of the Level 2 __Page Table Entry (PTE)__...
   [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
   [(More about __Address Translation__)](https://lupyuen.github.io/articles/mmu#appendix-address-translation)
+
+</span>
 
 Do the same for __`0xEFFF_FFFF`__, and we'll get Index __`0x17F`__.
 
@@ -334,6 +338,8 @@ Exactly! Watch how we __connect our Level 2 Page Table__ back to Level 1...
 
 3 is the __Level 1 Index__ for Interrupt Controller __`0xE000_0000`__ because...
 
+<span style="font-size:90%">
+
 - __Virtual Address: vaddr__ = `0xE000_0000`
 
   (For Now: Virtual Address = Actual Address)
@@ -349,6 +355,8 @@ Exactly! Watch how we __connect our Level 2 Page Table__ back to Level 1...
   [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
   [(More about __Address Translation__)](https://lupyuen.github.io/articles/mmu#appendix-address-translation)
+
+</span>
 
 _Why "NO RWX"?_
 
@@ -411,6 +419,8 @@ _How do we cook up a Level 3 Index?_
 
 Suppose we're configuring address __`0x5020_1000`__. To compute the Index of the Level 3 __Page Table Entry (PTE)__...
 
+<span style="font-size:90%">
+
 - __Virtual Address: vaddr__ = `0x5020_1000`
 
   (For Now: Virtual Address = Actual Address)
@@ -426,6 +436,8 @@ Suppose we're configuring address __`0x5020_1000`__. To compute the Index of the
   [(Implemented as __mmu_ln_setentry__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109)
 
   [(More about __Address Translation__)](https://lupyuen.github.io/articles/mmu#appendix-address-translation)
+
+</span>
 
 Thus address __`0x5020_1000`__ is configured by __Index 1__ of the Level 3 Page Table.
 
