@@ -711,7 +711,7 @@ mmu_write_satp:
 <p><strong>PTESIZE</strong> = 8</p>
 </li>
 </ul>
-<p><strong><code>ppn[i]</code></strong> and <strong><code>vpn[i]</code></strong> refer to these <strong>Virtual / Physical Address Fields</strong> (Page 85)…</p>
+<p><strong><code>vpn[i]</code></strong> and <strong><code>ppn[i]</code></strong> refer to these <strong>Virtual and Physical Address Fields</strong> (Page 85)…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-address2.png" alt="Virtual / Physical Address Fields (Page 85)" /></p>
 <p><em>What if the Address Translation fails?</em></p>
 <p>The algo above says that Sv39 MMU will trigger a <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:scause"><strong>Page Fault</strong></a>. (RISC-V Exception)</p>
