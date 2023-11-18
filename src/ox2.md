@@ -732,7 +732,7 @@ This week we made plenty of progress starting __Apache NuttX RTOS__ on the tiny 
 
 We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
 
-- [__"Memory Map for Ox64"__](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64)
+- [__"RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit"__](https://lupyuen.github.io/articles/mmu)
 
 - [__"UART Driver for Ox64"__](https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64)
 
