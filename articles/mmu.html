@@ -552,7 +552,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p>Our Application (NuttX Shell) requires <strong>22 Pages of Virtual Memory</strong> for its User Code.</p>
 <p>NuttX populates the <strong>Level 3 Page Table</strong> for the User Code like so…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Level 3 Page Table for User" /></p>
-<p><em>Something smells different… What’s this “U” Permission?</em></p>
+<p><em>Something smells special… What’s this “U” Permission?</em></p>
 <p>The <strong>“U” User Permission</strong> says that this Page Table Entry is accesible by our Application. (Which runs in <strong>RISC-V User Mode</strong>)</p>
 <p>Note that the <strong>Virtual Address</strong> <code>0x8000_0000</code> now maps to a different <strong>Physical Address</strong> <code>0x5060_4000</code>.</p>
 <p>(Which comes from the <a href="https://lupyuen.github.io/articles/mmu#connect-level-2-to-level-3"><strong>Kernel Page Pool</strong></a>)</p>
