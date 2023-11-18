@@ -264,7 +264,7 @@ mmu_ln_map_region(
   MMU_IO_BASE,   // 0x0 (Physical Address)
   MMU_IO_BASE,   // 0x0 (Virtual Address)
   MMU_IO_SIZE,   // 0x4000 0000 (Size is 1 GB)
-  MMU_IO_FLAGS   // Read + Write + Global
+  PTE_R | PTE_W | PTE_G  // Read + Write + Global
 );
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
@@ -334,7 +334,7 @@ mmu_ln_map_region(
   0xE0000000,   // Physical Address of Interrupt Controller
   0xE0000000,   // Virtual Address of Interrupt Controller
   0x10000000,   // 256 MB (Size)
-  MMU_IO_FLAGS  // Read + Write + Global
+  PTE_R | PTE_W | PTE_G  // Read + Write + Global
 );
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L163">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
@@ -441,7 +441,7 @@ map_region(
   KFLASH_START,  // 0x5020 0000 (Physical Address)
   KFLASH_START,  // 0x5020 0000 (Virtual Address)
   KFLASH_SIZE,   // 0x20 0000 (Size is 2 MB)
-  MMU_KTEXT_FLAGS  // Read + Execute + Global
+  PTE_R | PTE_X | PTE_G  // Read + Execute + Global
 );
 
 // Map the Kernel Data in L2 and L3 Page Tables
@@ -449,7 +449,7 @@ map_region(
   KSRAM_START,  // 0x5040 0000 (Physical Address)
   KSRAM_START,  // 0x5040 0000 (Virtual Address)
   KSRAM_SIZE,   // 0x20 0000 (Size is 2 MB)
-  MMU_KDATA_FLAGS  // Read + Write + Global
+  PTE_R | PTE_W | PTE_G  // Read + Write + Global
 );
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L150-L208">(<strong>map_region</strong> is defined here)</a></p>
@@ -479,7 +479,7 @@ mmu_ln_map_region(
   PGPOOL_START,    // 0x5060 0000 (Physical Address of Page Pool)
   PGPOOL_START,    // 0x5060 0000 (Virtual Address of Page Pool) 
   PGPOOL_SIZE,     // 0x0140_0000 (Size is 20 MB)
-  MMU_KDATA_FLAGS  // Read + Write + Global
+  PTE_R | PTE_W | PTE_G  // Read + Write + Global
 );
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156">(<strong>mmu_ln_map_region</strong> is defined here)</a> </p>
