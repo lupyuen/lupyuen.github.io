@@ -366,7 +366,7 @@ Sv39 MMU interprets the PPN (Physical Page Number) as a __Pointer to Level 2 Pag
 
 (Remember: Actual Address = PPN * 4,096)
 
-In NuttX, we write this to __connect L1 with L2__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L254-L258)
+In NuttX, we write this to __connect Level 1 with Level 2__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L254-L258)
 
 ```c
 // Connect the L1 and L2 Page Tables for Interrupt Controller
