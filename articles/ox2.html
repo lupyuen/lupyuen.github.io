@@ -695,6 +695,13 @@ DEBUGASSERT(ret &gt;= 0);
 <p>(To setup the UART)</p>
 </li>
 </ul>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284"><strong>Memory Mgmt Init: jh7110_mm_init</strong></a> maps the Memory Mgmt Unit by calling…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156"><strong>MMU Map Region: mmu_ln_map_region</strong></a> (to map a Memory Region) and…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>MME Set Entry: mmu_ln_setentry</strong></a> (to set a Page Table Entry)</p>
+</li>
+</ul>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_start.c#L298-L713"><strong>Start NuttX: nx_start</strong></a> does <a href="https://lupyuen.github.io/articles/unicorn2#after-primary-routine"><strong>many things</strong></a> and calls…</p>
 <ul>
 <li>
