@@ -409,6 +409,14 @@ Returns 0x1E = 30 chars, including [linefeeds before and after](https://github.c
 
 TODO
 
+Supervisor Mode may access memory in User Mode only if [SUM bit is set in sstatus](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation)
+
+[nx_start](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/sched/init/nx_start.c#L298-L713) calls...
+
+[up_initial_state](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_initialstate.c#L41-L140), which calls...
+
+[riscv_set_idleintctx](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_getnewintctx.c#L74-L81) to set the SUM bit in sstatus
+
 # Initial RAM Disk
 
 TODO
