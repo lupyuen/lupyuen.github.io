@@ -170,6 +170,8 @@ Then `printf` will appear in our disassembly.
 
 TODO
 
+[Syscall Layer](https://nuttx.apache.org/docs/latest/components/syscall.html)
+
 Our NuttX App calls `write`, which is a Proxy Version...
 
 From nuttx/syscall/proxies/PROXY_write.c
