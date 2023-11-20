@@ -344,7 +344,13 @@ uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3)
 </code></pre></div>
 <p>TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L114-L119">Attach RISCV_IRQ_ECALLU</a>, which calls…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537">riscv_swint</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537">riscv_swint</a>, which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100">dispatch_syscall</a>, which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_syscall.S#L49-L177">sys_call2</a>, which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_perform_syscall.c#L36-L78">riscv_perform_syscall</a>, which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537">riscv_swint</a> with IRQ 0, which calls…</p>
+<p>???</p>
+<p>TODO: Enable CONFIG_DEBUG_SYSCALL_INFO</p>
 <h1 id="kernel-accesses-user-memory"><a href="#kernel-accesses-user-memory">5 Kernel Accesses User Memory</a></h1>
 <p>TODO</p>
 <h1 id="initial-ram-disk"><a href="#initial-ram-disk">6 Initial RAM Disk</a></h1>
