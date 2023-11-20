@@ -321,7 +321,7 @@ TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)
 
 ???
 
-TODO: Enable CONFIG_DEBUG_SYSCALL_INFO
+TODO: Enable CONFIG_DEBUG_SYSCALL_INFO: Build Setup > Debug Options > Syscall Debug Features > Syscall Warning / Error / Info
 
 # Kernel Accesses User Memory
 
