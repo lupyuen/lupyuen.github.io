@@ -390,14 +390,15 @@ up_dump_register: S4: 0000000000000001 S5: 0000000000000000 S6: 0000000000000000
 up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
 up_dump_register: SP: 0000000080202b70 FP: 00000000802005c0 TP: 0000000000000000 RA: 0000000080001a6a
 riscv_swint: SWInt Return: 37
+STUB_write: nbr=440, parm1=1, parm2=8000ad00, parm3=1e
 
 NuttShell (NSH) NuttX-12.0.3
 riscv_swint: Entry: regs: 0x5040baa0 cmd: 3
 up_dump_register: EPC: 0000000080001a6a
 up_dump_register: A0: 0000000000000003 A1: 000000005040bbec A2: 000000000000001e A3: 0000000000000000
-up_dump_register: A4: 0000000000007fff A5: 0000000000000001 A6: 0000000000000000 A7: fffffffffffffff8
-up_dump_register: T0: 0000000050212ca8 T1: 0000000000000007 T2: 0000000000000000 T3: 0000000080200908
-up_dump_register: T4: 0000000080200900 T5: 0000000000000000 T6: 0000000000000000
+up_dump_register: A4: 0000000000007fff A5: 0000000000000001 A6: 0000000000000009 A7: fffffffffffffff8
+up_dump_register: T0: 000000000000002e T1: 000000000000006a T2: 00000000000001ff T3: 000000000000006c
+up_dump_register: T4: 0000000000000068 T5: 0000000000000009 T6: 000000000000002a
 up_dump_register: S0: 00000000802005c0 S1: 0000000080202010 S2: 0000000080202010 S3: 0000000000000000
 up_dump_register: S4: 0000000000000001 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
 up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
@@ -409,6 +410,7 @@ riscv_swint: SWInt Return: 1e
 <p>A1=1 (stdout)</p>
 <p>A2=0x8000ad00 (g_nshgreeting)</p>
 <p>A3=0x1e (length)</p>
+<p>nbr=440 (Offset for the stub lookup table, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall_stublookup.c#L80-L93">g_stublookup</a>)</p>
 <p>After Call:</p>
 <p>A0=3 <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h#L80-L87">(SYS_syscall_return)</a></p>
 <p>Returns 0x1E = 30 chars, including <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/nshlib/nsh_parse.c#L292-L302">linefeeds before and after</a></p>
