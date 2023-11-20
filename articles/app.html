@@ -343,6 +343,8 @@ uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3)
 }
 </code></pre></div>
 <p>TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L114-L119">Attach RISCV_IRQ_ECALLU</a>, which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537">riscv_swint</a></p>
 <h1 id="kernel-accesses-user-memory"><a href="#kernel-accesses-user-memory">5 Kernel Accesses User Memory</a></h1>
 <p>TODO</p>
 <h1 id="initial-ram-disk"><a href="#initial-ram-disk">6 Initial RAM Disk</a></h1>
