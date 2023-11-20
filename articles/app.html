@@ -228,6 +228,8 @@ apps/examples/hello/hello_main.c:40
 <h1 id="nuttx-app-calls-nuttx-kernel"><a href="#nuttx-app-calls-nuttx-kernel">3 NuttX App calls NuttX Kernel</a></h1>
 <p>TODO</p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">Syscall Layer</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210">syscall.csv</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
 <p>Our NuttX App calls <code>write</code>, which is a Proxy Version…</p>
 <p>From nuttx/syscall/proxies/PROXY_write.c</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Auto-generated write proxy file -- do not edit */
@@ -328,6 +330,19 @@ PROXY_unsetenv.c
 PROXY_waitpid.c
 </code></pre></div><h1 id="kernel-handles-app-call"><a href="#kernel-handles-app-call">4 Kernel Handles App Call</a></h1>
 <p>TODO</p>
+<p>nuttx/syscall/stubs/STUB_write.c</p>
+<div class="example-wrap"><pre class="language-c"><code>/* Auto-generated write stub file -- do not edit */
+
+#include &lt;nuttx/config.h&gt;
+#include &lt;stdint.h&gt;
+#include &lt;unistd.h&gt;
+
+uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3)
+{
+  return (uintptr_t)write((int)parm1, (FAR const void *)parm2, (size_t)parm3);
+}
+</code></pre></div>
+<p>TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)</p>
 <h1 id="kernel-accesses-user-memory"><a href="#kernel-accesses-user-memory">5 Kernel Accesses User Memory</a></h1>
 <p>TODO</p>
 <h1 id="initial-ram-disk"><a href="#initial-ram-disk">6 Initial RAM Disk</a></h1>
