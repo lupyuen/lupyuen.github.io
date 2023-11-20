@@ -280,6 +280,10 @@ PROXY_unsetenv.c
 PROXY_waitpid.c
 ```
 
+# Kernel Handles App Call
+
+TODO
+
 # Kernel Accesses User Memory
 
 TODO
