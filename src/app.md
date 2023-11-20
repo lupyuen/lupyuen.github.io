@@ -172,6 +172,10 @@ TODO
 
 [Syscall Layer](https://nuttx.apache.org/docs/latest/components/syscall.html)
 
+[syscall.csv](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210)
+
+[syscall_lookup.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202)
+
 Our NuttX App calls `write`, which is a Proxy Version...
 
 From nuttx/syscall/proxies/PROXY_write.c
@@ -285,6 +289,23 @@ PROXY_waitpid.c
 # Kernel Handles App Call
 
 TODO
+
+nuttx/syscall/stubs/STUB_write.c
+
+```c
+/* Auto-generated write stub file -- do not edit */
+
+#include <nuttx/config.h>
+#include <stdint.h>
+#include <unistd.h>
+
+uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3)
+{
+  return (uintptr_t)write((int)parm1, (FAR const void *)parm2, (size_t)parm3);
+}
+```
+
+TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)
 
 # Kernel Accesses User Memory
 
