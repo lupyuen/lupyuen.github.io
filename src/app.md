@@ -321,6 +321,34 @@ TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)
 
 ???
 
+From apps/import/include/sys/syscall_lookup.h
+
+```c
+SYSCALL_LOOKUP(write,                      3)
+```
+
+From hello.S
+
+```text
+ssize_t write(int parm1, FAR const void * parm2, size_t parm3)
+{
+ dcc:	872a                	mv	a4,a0
+
+0000000000000dce <.LVL1>:
+ dce:	87ae                	mv	a5,a1
+
+0000000000000dd0 <.LVL2>:
+ dd0:	86b2                	mv	a3,a2
+
+0000000000000dd2 <.LBB4>:
+sys_call3():
+/Users/Luppy/ox64/nuttx/include/arch/syscall.h:252
+  register long r0 asm("a0") = (long)(nbr);
+ dd2:	03f00513          	li	a0,63
+```
+
+Thus SYS_write = 63
+
 TODO: Enable CONFIG_DEBUG_SYSCALL_INFO: Build Setup > Debug Options > Syscall Debug Features > Syscall Warning / Error / Info
 
 # Kernel Accesses User Memory
