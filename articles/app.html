@@ -350,10 +350,11 @@ uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3)
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_perform_syscall.c#L36-L78">riscv_perform_syscall</a>, which calls…</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537">riscv_swint</a> with IRQ 0, which calls…</p>
 <p>???</p>
-<p>From apps/import/include/sys/syscall_lookup.h</p>
-<div class="example-wrap"><pre class="language-c"><code>SYSCALL_LOOKUP(write,                      3)
+<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>SYSCALL_LOOKUP(write, 3)
 </code></pre></div>
-<p>From hello.S</p>
+<p>Which defines SYS_write in the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall.h#L55-L66">Syscall Enum</a></p>
+<p>From hello.S:</p>
 <div class="example-wrap"><pre class="language-text"><code>ssize_t write(int parm1, FAR const void * parm2, size_t parm3)
 {
  dcc:	872a                	mv	a4,a0
@@ -371,6 +372,11 @@ sys_call3():
  dd2:	03f00513          	li	a0,63
 </code></pre></div>
 <p>Thus SYS_write = 63</p>
+<p>Also from hello.S:</p>
+<div class="example-wrap"><pre class="language-text"><code> &lt;2&gt;&lt;66e7&gt;: Abbrev Number: 6 (DW_TAG_enumerator)
+    &lt;66e8&gt;   DW_AT_name        : (indirect string, offset: 0x4b98): SYS_write
+    &lt;66ec&gt;   DW_AT_const_value : 63
+</code></pre></div>
 <p>TODO: Enable CONFIG_DEBUG_SYSCALL_INFO: Build Setup &gt; Debug Options &gt; Syscall Debug Features &gt; Syscall Warning / Error / Info</p>
 <h1 id="kernel-accesses-user-memory"><a href="#kernel-accesses-user-memory">5 Kernel Accesses User Memory</a></h1>
 <p>TODO</p>
