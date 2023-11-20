@@ -321,13 +321,15 @@ TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)
 
 ???
 
-From apps/import/include/sys/syscall_lookup.h
+From [syscall_lookup.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202)
 
 ```c
-SYSCALL_LOOKUP(write,                      3)
+SYSCALL_LOOKUP(write, 3)
 ```
 
-From hello.S
+Which defines SYS_write in the [Syscall Enum](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall.h#L55-L66)
+
+From hello.S:
 
 ```text
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3)
@@ -348,6 +350,14 @@ sys_call3():
 ```
 
 Thus SYS_write = 63
+
+Also from hello.S:
+
+```text
+ <2><66e7>: Abbrev Number: 6 (DW_TAG_enumerator)
+    <66e8>   DW_AT_name        : (indirect string, offset: 0x4b98): SYS_write
+    <66ec>   DW_AT_const_value : 63
+```
 
 TODO: Enable CONFIG_DEBUG_SYSCALL_INFO: Build Setup > Debug Options > Syscall Debug Features > Syscall Warning / Error / Info
 
