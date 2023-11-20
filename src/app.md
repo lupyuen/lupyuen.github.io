@@ -311,15 +311,13 @@ TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)
 
 [riscv_swint](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537), which calls...
 
-[dispatch_syscall](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100), which calls...
+[dispatch_syscall](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100), which calls Kernel Function Stub and... 
 
-[sys_call2](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_syscall.S#L49-L177), which calls...
+[sys_call2](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_syscall.S#L49-L177) with A0=SYS_syscall_return (3), which calls...
 
 [riscv_perform_syscall](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_perform_syscall.c#L36-L78), which calls...
 
-[riscv_swint](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537) with IRQ 0, which calls...
-
-???
+[riscv_swint](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537) with IRQ 0, to return from Syscall
 
 From [syscall_lookup.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202)
 
@@ -360,6 +358,52 @@ Also from hello.S:
 ```
 
 TODO: Enable CONFIG_DEBUG_SYSCALL_INFO: Build Setup > Debug Options > Syscall Debug Features > Syscall Warning / Error / Info
+
+From [ECALL Log](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17)
+
+```text
+riscv_dispatch_irq: irq=8
+riscv_swint: Entry: regs: 0x5040bcb0 cmd: 63
+up_dump_register: EPC: 00000000800019b2
+up_dump_register: A0: 000000000000003f A1: 0000000000000001 A2: 000000008000ad00 A3: 000000000000001e
+up_dump_register: A4: 0000000000000001 A5: 000000008000ad00 A6: 0000000000000000 A7: fffffffffffffff8
+up_dump_register: T0: 0000000050212a20 T1: 0000000000000007 T2: 0000000000000000 T3: 0000000080200908
+up_dump_register: T4: 0000000080200900 T5: 0000000000000000 T6: 0000000000000000
+up_dump_register: S0: 00000000802005c0 S1: 0000000080202010 S2: 0000000080202010 S3: 0000000000000000
+up_dump_register: S4: 0000000000000001 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
+up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
+up_dump_register: SP: 0000000080202b70 FP: 00000000802005c0 TP: 0000000000000000 RA: 0000000080001a6a
+riscv_swint: SWInt Return: 37
+
+NuttShell (NSH) NuttX-12.0.3
+riscv_swint: Entry: regs: 0x5040baa0 cmd: 3
+up_dump_register: EPC: 0000000080001a6a
+up_dump_register: A0: 0000000000000003 A1: 000000005040bbec A2: 000000000000001e A3: 0000000000000000
+up_dump_register: A4: 0000000000007fff A5: 0000000000000001 A6: 0000000000000000 A7: fffffffffffffff8
+up_dump_register: T0: 0000000050212ca8 T1: 0000000000000007 T2: 0000000000000000 T3: 0000000080200908
+up_dump_register: T4: 0000000080200900 T5: 0000000000000000 T6: 0000000000000000
+up_dump_register: S0: 00000000802005c0 S1: 0000000080202010 S2: 0000000080202010 S3: 0000000000000000
+up_dump_register: S4: 0000000000000001 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
+up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
+up_dump_register: SP: 000000005040bcb0 FP: 00000000802005c0 TP: 0000000000000000 RA: 0000000080001a6a
+riscv_swint: SWInt Return: 1e
+```
+
+Before Call:
+
+A0=0x3f (SYS_write) 
+
+A1=1 (stdout)
+
+A2=0x8000ad00 (g_nshgreeting)
+
+A3=0x1e (length)
+
+After Call:
+
+A0=3 [(SYS_syscall_return)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h#L80-L87)
+
+Returns 0x1E = 30 chars, including [linefeeds before and after](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/nshlib/nsh_parse.c#L292-L302)
 
 # Kernel Accesses User Memory
 
