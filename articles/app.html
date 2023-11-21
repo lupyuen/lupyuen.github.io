@@ -522,32 +522,32 @@ riscv_swint: SWInt Return: 1e
 <p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L83-L132"><strong>Load Absolute Module: load_absmodule</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/include/nuttx/binfmt/binfmt.h#L122-L148"><strong>Load Binary Format: binfmt_s.load</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/binfmt/binfmt.h#L122-L148"><strong>Load Binary Format: binfmt_s.load</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94"><strong>ELF Loader: g_elfbinfmt</strong></a> to load the ELF File (see below)</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/elf.c#L84-L94"><strong>ELF Loader: g_elfbinfmt</strong></a> to load the ELF File (see below)</p>
 </li>
 </ul>
-<p>To load the ELF File: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94"><strong>ELF Loader g_elfbinfmt</strong></a> calls…</p>
+<p>To load the ELF File: <a href="https://github.com/apache/nuttx/blob/master/binfmt/elf.c#L84-L94"><strong>ELF Loader g_elfbinfmt</strong></a> calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L225-L355"><strong>Load ELF Binary: elf_loadbinary</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/elf.c#L225-L355"><strong>Load ELF Binary: elf_loadbinary</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/libelf/libelf_load.c#L297-L445"><strong>Load ELF: elf_load</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/libelf/libelf_load.c#L297-L445"><strong>Load ELF: elf_load</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/libelf/libelf_addrenv.c#L56-L178"><strong>Allocate Address Env: elf_addrenv_alloc</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/libelf/libelf_addrenv.c#L56-L178"><strong>Allocate Address Env: elf_addrenv_alloc</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_addrenv.c#L339-L490"><strong>Create Address Env: up_addrenv_create</strong></a>, which calls…</p>
-<p>(Also calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_mmu.h#L152-L176"><strong>mmu_satp_reg</strong></a> to set SATP Register)</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_addrenv.c#L339-L490"><strong>Create Address Env: up_addrenv_create</strong></a>, which calls…</p>
+<p>(Also calls <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L152-L176"><strong>mmu_satp_reg</strong></a> to set SATP Register)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_addrenv.c#L213-L310"><strong>Create Region: create_region</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_addrenv.c#L213-L310"><strong>Create MMU Region: create_region</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>Set MMU: mmu_ln_setentry</strong></a> to populate the Page Table Entries</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>Set MMU Page Table Entry: mmu_ln_setentry</strong></a> to populate the Page Table Entries</p>
 </li>
 </ul>
 <h1 id="initial-ram-disk"><a href="#initial-ram-disk">7 Initial RAM Disk</a></h1>
