@@ -362,14 +362,18 @@ ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a> (in NuttX Kernel) will look up the System Call Number in the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall_stublookup.c#L80-L93"><strong>Stub Lookup Tables</strong></a>. And fetch the <strong>Stub Function</strong> to call.</p>
 <p><em>How did we figure out that 63 is the System Call Number for “write”?</em></p>
 <p>OK this part gets tricky. Below is the Enum that defines all <strong>System Call Numbers</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall.h#L55-L66">syscall.h</a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// System Call Enum auto-defines
-// all System Call Numbers
+<div class="example-wrap"><pre class="language-c"><code>// System Call Enum sequentially assigns
+// all System Call Numbers (8 to 147-ish)
 enum {
+  ...
+  SYSCALL_LOOKUP(close, 1)
+  SYSCALL_LOOKUP(ioctl, 3)
+  SYSCALL_LOOKUP(read,  3)
   SYSCALL_LOOKUP(write, 3)
   ...
 };
 </code></pre></div>
-<p>But it’s an Enum, we won’t actually see 63 in the NuttX Source Code.</p>
+<p>But it’s an Enum, <strong>numbered sequentially</strong> from 8 to 147-ish. We won’t actually see 63 in the NuttX Source Code.</p>
 <p>Then we lookup the <strong>Debug Info</strong> in our RISC-V Disassembly: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S">hello.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>&lt;2&gt;&lt;66e7&gt;: Abbrev Number: 6 (DW_TAG_enumerator)
    &lt;66e8&gt;  DW_AT_name        : SYS_write
