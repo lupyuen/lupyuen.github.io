@@ -183,7 +183,7 @@ This forwarding happens inside a __Proxy Function__ that's auto-generated during
 // Looks like the Kernel `write`, but it's actually a System Call
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
   return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
-    (unsigned int) SYS_write,  // Kernel Function Number (63 = `write`)
+    (unsigned int) SYS_write,  // System Call Number (63 = `write`)
     (uintptr_t) parm1,         // File Descriptor (1 = Standard Output)
     (uintptr_t) parm2,         // Buffer to be written
     (uintptr_t) parm3          // Number of bytes to write
@@ -211,7 +211,7 @@ It makes a __System Call__ (to NuttX Kernel) with __3 Parameters__: [sys_call3](
 ```c
 // Make a System Call with 3 parameters
 uintptr_t sys_call3(
-  unsigned int nbr,  // Kernel Function Number (63 = `write`)
+  unsigned int nbr,  // System Call Number (63 = `write`)
   uintptr_t parm1,   // First Parameter
   uintptr_t parm2,   // Second Parameter
   uintptr_t parm3    // Third Parameter
@@ -289,7 +289,7 @@ Remember the Proxy Function from earlier? Now we do the exact opposite in our __
 // Auto-Generated Stub File for `write`
 // This runs in NuttX Kernel triggered by `ecall`.
 // We make the actual call to `write`.
-// (Kernel Function Number `nbr` is unused)
+// (System Call Number `nbr` is unused)
 uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3) {
   return
     (uintptr_t) write(  // Call the Kernel version of `write`
@@ -323,7 +323,7 @@ STUB_chown.c
 
 _Who calls STUB_write?_
 
-When our NuttX App makes an __`ecall`__, it triggers __IRQ 8__ [__(RISCV_IRQ_ECALLU)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/include/irq.h#L52-L75) that's [__handled by__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L114-L119)...
+When our NuttX App makes an __`ecall`__, it triggers __IRQ 8__ [__(RISCV_IRQ_ECALLU)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/irq.h#L52-L75) that's [__handled by__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L114-L119)...
 
 - [__riscv_swint__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537), which calls...
 
@@ -337,58 +337,53 @@ When our NuttX App makes an __`ecall`__, it triggers __IRQ 8__ [__(RISCV_IRQ_ECA
 
 _How will dispatch_syscall know which Stub Function to call?_
 
-Remember that our Proxy Function (in NuttX App) will pass the __Kernel Function Number__ for "__write__"?
+Remember that our Proxy Function (in NuttX App) will pass the __System Call Number__ for "__write__"?
 
 ```c
 // From nuttx/syscall/proxies/PROXY_write.c
 // Auto-Generated Proxy for `write`, called by NuttX App
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
   return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
-    (unsigned int) SYS_write,  // Kernel Function Number (63 = `write`)
+    (unsigned int) SYS_write,  // System Call Number (63 = `write`)
     ...
 ```
 
-TODO: [__dispatch_syscall__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100) (in NuttX Kernel)
+[__dispatch_syscall__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100) (in NuttX Kernel) will look up the System Call Number in the [__Stub Lookup Tables__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall_stublookup.c#L80-L93). And fetch the __Stub Function__ to call.
 
-TODO
+_How did we figure out that 63 is the System Call Number for "write"?_
 
-From [syscall_lookup.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202)
+OK this part gets tricky. Below is the Enum that defines all __System Call Numbers__: [syscall.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall.h#L55-L66) and [syscall_lookup.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202)
 
 ```c
-SYSCALL_LOOKUP(write, 3)
+// System Call Enum auto-defines
+// all System Call Numbers
+enum {
+  SYSCALL_LOOKUP(write, 3)
+  ...
+};
 ```
 
-Which defines SYS_write in the [Syscall Enum](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall.h#L55-L66)
+But it's an Enum, we won't actually see 63 in the NuttX Source Code.
 
-From hello.S:
+Then we lookup the __Debug Info__ in our RISC-V Disassembly: [hello.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S)
 
 ```text
-ssize_t write(int parm1, FAR const void * parm2, size_t parm3)
-{
- dcc:  872a                  mv  a4,a0
-
-0000000000000dce <.LVL1>:
- dce:  87ae                  mv  a5,a1
-
-0000000000000dd0 <.LVL2>:
- dd0:  86b2                  mv  a3,a2
-
-0000000000000dd2 <.LBB4>:
-sys_call3():
-/Users/Luppy/ox64/nuttx/include/arch/syscall.h:252
-  register long r0 asm("a0") = (long)(nbr);
- dd2:  03f00513            li  a0,63
+<2><66e7>: Abbrev Number: 6 (DW_TAG_enumerator)
+   <66e8>  DW_AT_name        : SYS_write
+   <66ec>  DW_AT_const_value : 63
 ```
 
-Thus SYS_write = 63
+Whoomp there it is! This says that "__write__" is __System Call #63__.
 
-Also from hello.S:
+_That's an odd way to define System Call Numbers..._
 
-```text
- <2><66e7>: Abbrev Number: 6 (DW_TAG_enumerator)
-    <66e8>   DW_AT_name        : (indirect string, offset: 0x4b98): SYS_write
-    <66ec>   DW_AT_const_value : 63
-```
+Yeah it's __not strictly an ABI__ like Linux, because our System Call Numbers may change! It depends on the [__Build Options__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L90-L152) that we select.
+
+[(ABI means __Application Binary Interface__)](https://en.wikipedia.org/wiki/Application_binary_interface)
+
+But there's a good thing: It's a lot simpler to experiment with __new System Calls__!
+
+[(Just add to __NuttX System Calls__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210)
 
 TODO: Enable CONFIG_DEBUG_SYSCALL_INFO: Build Setup > Debug Options > Syscall Debug Features > Syscall Warning / Error / Info
 
@@ -441,11 +436,6 @@ A0=3 [(SYS_syscall_return)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob
 
 Returns 0x1E = 30 chars, including [linefeeds before and after](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/nshlib/nsh_parse.c#L292-L302)
 
-Not strictly an SBI like Linux, because the Kernel Function Numbers may change!
-
-But it's a lot simpler to experiment with new Kernel Functions.
-
-[syscall.csv](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210)
 
 [syscall_lookup.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202)
 
