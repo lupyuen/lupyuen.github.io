@@ -470,7 +470,7 @@ NuttX successfully makes a System Call on Ox64 SBC yay!
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17)
 
-# Kernel Accesses User Memory
+# Kernel Accesses App Memory
 
 _NuttX Kernel prints the buffer at `0x8000` `AD00`..._
 
@@ -488,7 +488,7 @@ TLDR? No worries...
 
 - And becomes __Virtual Memory__ at __`0x8000` `0000`__
 
-Thus our NuttX App has passed a chunk of __Virtual Memory__. And NuttX Kernel happily prints it!
+Thus our NuttX App has passed a chunk of its own __Virtual Memory__. And NuttX Kernel happily prints it!
 
 _Huh? NuttX Kernel can access Virtual Memory?_
 
