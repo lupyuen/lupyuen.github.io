@@ -370,9 +370,9 @@ But it's an Enum, __numbered sequentially__ from 8 to 147-ish. We won't actually
 Then we lookup the __Debug Info__ in our RISC-V Disassembly: [hello.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S)
 
 ```text
-<2><66e7>: Abbrev Number: 6 (DW_TAG_enumerator)
-   <66e8>  DW_AT_name        : SYS_write
-   <66ec>  DW_AT_const_value : 63
+Abbrev Number: 6 (DW_TAG_enumerator)
+  DW_AT_name        : SYS_write
+  DW_AT_const_value : 63
 ```
 
 Whoomp there it is! This says that "__write__" is __System Call #63__.
