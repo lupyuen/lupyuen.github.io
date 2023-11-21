@@ -139,6 +139,7 @@ The GCC Compiler has cleverly optimised away __printf__ to become __puts__.
 If we do this (and foil the GCC Compiler)...
 
 ```c
+// Nope, GCC Compiler won't change printf() to puts()
 printf("Hello, World %s!!\n", "Luppy");
 ```
 
