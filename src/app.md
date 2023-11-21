@@ -393,7 +393,7 @@ But there's a good thing: It's a lot simpler to experiment with __new System Cal
 
 _This looks complicated... But it works right?_
 
-Yep we have evidence, from NuttX on Ox64 BL808 SBC!
+Yep we have solid evidence, from NuttX on Ox64 BL808 SBC!
 
 TODO: Enable CONFIG_DEBUG_SYSCALL_INFO: Build Setup > Debug Options > Syscall Debug Features > Syscall Warning / Error / Info
 
