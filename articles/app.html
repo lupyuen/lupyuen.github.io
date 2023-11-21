@@ -220,7 +220,7 @@ printf(&quot;Hello, World %s!!\n&quot;, &quot;Luppy&quot;);
 // Auto-Generated Proxy for `write`
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
   return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
-    (unsigned int) SYS_write,  // Kernel Function Number for `write`
+    (unsigned int) SYS_write,  // Kernel Function Number (63 = `write`)
     (uintptr_t) parm1,         // File Descriptor (1 = Standard Output)
     (uintptr_t) parm2,         // Buffer to be written
     (uintptr_t) parm3          // Number of bytes to write
@@ -236,22 +236,27 @@ int ret = write(
 );
 </code></pre></div>
 <p>Which triggers a <strong>System Call</strong> to the Kernel.</p>
-<p><em>What’s inside sys_call3?</em></p>
-<p>It makes a <strong>System Call</strong> with <strong>3 Parameters</strong></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h">sys_call3</a>, which makes an <code>ecall</code> to NuttX Kernel…</p>
+<p><em>What’s sys_call3?</em></p>
+<p>It makes a <strong>System Call</strong> (to NuttX Kernel) with <strong>3 Parameters</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h">sys_call3</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Make a System Call with 3 parameters
 uintptr_t sys_call3(
-  unsigned int nbr,  // Kernel Function Number
+  unsigned int nbr,  // Kernel Function Number (63 = `write`)
   uintptr_t parm1,   // First Parameter
   uintptr_t parm2,   // Second Parameter
   uintptr_t parm3    // Third Parameter
 ) {
+  // Pass the Function Number and Parameters in
+  // Registers A0 to A3
   register long r0 asm(&quot;a0&quot;) = (long)(nbr);
   register long r1 asm(&quot;a1&quot;) = (long)(parm1);
   register long r2 asm(&quot;a2&quot;) = (long)(parm2);
   register long r3 asm(&quot;a3&quot;) = (long)(parm3);
 
+  // `ecall` will jump from RISC-V User Mode
+  // to RISC-V Supervisor Mode
+  // to execute the System Call.
+  // Input+Output Registers: A0 to A3
+  // Clobbers the Memory
   asm volatile
     (
      &quot;ecall&quot;
@@ -259,8 +264,10 @@ uintptr_t sys_call3(
      : &quot;memory&quot;
      );
 
+  // No-operation, does nothing
   asm volatile(&quot;nop&quot; : &quot;=r&quot;(r0));
 
+  // Return the result from Register A0
   return r0;
 }
 </code></pre></div>
