@@ -500,29 +500,29 @@ riscv_swint: SWInt Return: 1e
 <p>Right after that, <a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L373-L458"><strong>NuttX Bringup (nx_bringup)</strong></a> calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L330-L367"><strong>nx_create_initthread</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L330-L367"><strong>Create Init Thread: nx_create_initthread</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L212C1-L302"><strong>nx_start_application</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L212C1-L302"><strong>Start App: nx_start_application</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L183-L223"><strong>exec_spawn</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L183-L223"><strong>Exec Spawn: exec_spawn</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L42-L179"><strong>exec_internal</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L42-L179"><strong>Exec Internal: exec_internal</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225"><strong>load_module</strong></a> (to load the app, see below) and…</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450"><strong>exec_module</strong></a> (to execute the app)</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225"><strong>Load Module: load_module</strong></a> (to load the app, see below) and…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450"><strong>Exec Module: exec_module</strong></a> (to execute the app)</p>
 </li>
 </ul>
 <p>To load a NuttX App module: <a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225"><strong>load_module</strong></a> calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L83-L132"><strong>load_absmodule</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L83-L132"><strong>Load Absolute Module: load_absmodule</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/include/nuttx/binfmt/binfmt.h#L122-L148"><strong>binfmt_s.load</strong></a>, which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/include/nuttx/binfmt/binfmt.h#L122-L148"><strong>Load Binary Format: binfmt_s.load</strong></a>, which calls…</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94"><strong>ELF Loader: g_elfbinfmt</strong></a> to load the ELF File (see below)</p>
@@ -531,23 +531,23 @@ riscv_swint: SWInt Return: 1e
 <p>To load the ELF File: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94"><strong>ELF Loader g_elfbinfmt</strong></a> calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L225-L355"><strong>elf_loadbinary</strong></a>, which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L225-L355"><strong>Load ELF Binary: elf_loadbinary</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/libelf/libelf_load.c#L297-L445"><strong>elf_load</strong></a>, which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/libelf/libelf_load.c#L297-L445"><strong>Load ELF: elf_load</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/libelf/libelf_addrenv.c#L56-L178"><strong>elf_addrenv_alloc</strong></a>, which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/libelf/libelf_addrenv.c#L56-L178"><strong>Allocate Address Env: elf_addrenv_alloc</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_addrenv.c#L339-L490"><strong>up_addrenv_create</strong></a>, which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_addrenv.c#L339-L490"><strong>Create Address Env: up_addrenv_create</strong></a>, which calls…</p>
 <p>(Also calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_mmu.h#L152-L176"><strong>mmu_satp_reg</strong></a> to set SATP Register)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_addrenv.c#L213-L310"><strong>create_region</strong></a>, which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_addrenv.c#L213-L310"><strong>Create Region: create_region</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>mmu_ln_setentry</strong></a> to populate the Page Table Entries</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>Set MMU: mmu_ln_setentry</strong></a> to populate the Page Table Entries</p>
 </li>
 </ul>
 <h1 id="initial-ram-disk"><a href="#initial-ram-disk">7 Initial RAM Disk</a></h1>
