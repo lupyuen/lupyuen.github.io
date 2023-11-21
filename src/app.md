@@ -84,7 +84,7 @@ In the RISC-V Disassembly, we see that [__main__](https://github.com/lupyuen2/wi
 
 - [__write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149) to print "Hello World"
 
-How will [__write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149) call the NuttX Kernel? We'll find out soon!
+How will [__write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149) call the NuttX Kernel? We'll see soon!
 
 _This code doesn't look right..._
 
@@ -98,80 +98,53 @@ printf("Hello, World!!\n");
   4e: 000080e7  jalr   ra
 ```
 
-TODO
+We break it down...
 
-That's because this is __Relocatable Code__. The auipc offset will be fixed up by the NuttX ELF Loader when it loads this code into User Memory.
+- [__`auipc`__](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions) sets Register RA to...
 
-The Relocation Info shows that 0x0 will be replaced by the address of `puts`...
+  ```c
+  Program Counter + 0x0
+  ```
+
+- [__`jalr`__](https://five-embeddev.com/quickref/instructions.html#-rv32--unconditional-jumps) jumps to the Function pointed by Register RA...
+
+  Which we expect to be [__puts__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_puts.c#L34-L96)
+
+_Shouldn't `auipc` add the Offset of `puts`?_
+
+Ah that's because we're looking at [__Relocatable Code__](https://en.wikipedia.org/wiki/Relocation_(computing))!
+
+The __`auipc`__ Offset will be fixed up by the __NuttX ELF Loader__ when it loads our NuttX App for execution.
+
+The __Relocation Info__ shows that __`0x0`__ will be replaced by the Offset of [__puts__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_puts.c#L34-L96)...
 
 ```text
 printf("Hello, World!!\n");
-  4a: 00000097  auipc  ra, 0x0    4a: R_RISCV_CALL  puts
-  4e: 000080e7  jalr   ra       # 4a <.LVL1+0x2>  ## Call puts()
+
+  ## Load Register RA with Program Counter + 0x0...
+  ## But actually 0x0 will be changed to the Offset of puts()
+  4a: 00000097  auipc  ra, 0x0  4a: R_RISCV_CALL  puts
+
+  ## Call the function in Register RA: puts()
+  ## Which will work when ELF Loader fixes the Offset of puts()
+  4e: 000080e7  jalr   ra     # 4a <.LVL1+0x2>
 ```
+
+So we're all good!
 
 _Why `puts` instead of `printf`?_
 
-The GCC Compiler has cleverly optimised away `printf` to become `puts`.
+The GCC Compiler has cleverly optimised away __printf__ to become __puts__.
 
-If we do this...
+If we do this (and foil the GCC Compiler)...
 
 ```c
-  printf("Hello, World %s!!\n", "Luppy");
+printf("Hello, World %s!!\n", "Luppy");
 ```
 
-Then `printf` will appear in our disassembly.
+Then __printf__ will appear in our RISC-V Disassembly.
 
-# Start NuttX Apps
-
-TODO
-
-NuttX Kernel starts a NuttX App (in ELF Format) by calling...
-
-- [__ELF Loader: g_elfbinfmt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94), which calls...
-
-- [__elf_loadbinary__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L225-L355), which calls...
-
-- [__elf_load__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/libelf/libelf_load.c#L297-L445), which calls...
-
-- [__elf_addrenv_alloc__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/libelf/libelf_addrenv.c#L56-L178), which calls...
-
-- [__up_addrenv_create__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_addrenv.c#L339-L490), which calls...
-
-  (Also calls [__mmu_satp_reg__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_mmu.h#L152-L176) to set SATP Register)
-
-- [__create_region__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_addrenv.c#L213-L310), which calls...
-
-- [__mmu_ln_setentry__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_mmu.c#L62-L109) to populate the Page Table Entries
-
-_Who calls [ELF Loader g_elfbinfmt](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94) to start the NuttX App?_
-
-Earlier we stepped through the __Boot Sequence__ for NuttX...
-
-- [__"NuttX Boot Flow"__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
-
-Right after that, [__nx_bringup__](https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L373-L458) calls...
-
-- [__nx_create_initthread__](https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L330-L367), which calls...
-
-- [__nx_start_application__](https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L212C1-L302), which calls...
-
-- [__exec_spawn__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L183-L223), which calls...
-
-- [__exec_internal__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L42-L179), which calls...
-
-- [__load_module__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225) and...
-
-  [__exec_module__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450)
-
-[__load_module__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225) calls...
-
-- [__load_absmodule__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L83-L132), which calls...
-
-- [__binfmt_s.load__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/include/nuttx/binfmt/binfmt.h#L122-L148), which calls...
-
-- [__ELF Loader: g_elfbinfmt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94) to load the ELF File (explained above)
-
+Let's circle back to __write__...
 
 ![NuttX App calls NuttX Kernel](https://lupyuen.github.io/images/app-run.png)
 
@@ -432,6 +405,56 @@ Supervisor Mode may access memory in User Mode only if [SUM bit is set in sstatu
 [up_initial_state](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_initialstate.c#L41-L140), which calls...
 
 [riscv_set_idleintctx](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_getnewintctx.c#L74-L81) to set the SUM bit in sstatus
+
+# Start NuttX Apps
+
+TODO
+
+NuttX Kernel starts a NuttX App (in ELF Format) by calling...
+
+- [__ELF Loader: g_elfbinfmt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94), which calls...
+
+- [__elf_loadbinary__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L225-L355), which calls...
+
+- [__elf_load__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/libelf/libelf_load.c#L297-L445), which calls...
+
+- [__elf_addrenv_alloc__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/libelf/libelf_addrenv.c#L56-L178), which calls...
+
+- [__up_addrenv_create__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_addrenv.c#L339-L490), which calls...
+
+  (Also calls [__mmu_satp_reg__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_mmu.h#L152-L176) to set SATP Register)
+
+- [__create_region__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_addrenv.c#L213-L310), which calls...
+
+- [__mmu_ln_setentry__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_mmu.c#L62-L109) to populate the Page Table Entries
+
+_Who calls [ELF Loader g_elfbinfmt](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94) to start the NuttX App?_
+
+Earlier we stepped through the __Boot Sequence__ for NuttX...
+
+- [__"NuttX Boot Flow"__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
+
+Right after that, [__nx_bringup__](https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L373-L458) calls...
+
+- [__nx_create_initthread__](https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L330-L367), which calls...
+
+- [__nx_start_application__](https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L212C1-L302), which calls...
+
+- [__exec_spawn__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L183-L223), which calls...
+
+- [__exec_internal__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L42-L179), which calls...
+
+- [__load_module__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225) and...
+
+  [__exec_module__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450)
+
+[__load_module__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225) calls...
+
+- [__load_absmodule__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L83-L132), which calls...
+
+- [__binfmt_s.load__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/include/nuttx/binfmt/binfmt.h#L122-L148), which calls...
+
+- [__ELF Loader: g_elfbinfmt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94) to load the ELF File (explained above)
 
 # Initial RAM Disk
 
