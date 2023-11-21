@@ -218,6 +218,7 @@ printf(&quot;Hello, World %s!!\n&quot;, &quot;Luppy&quot;);
 <p>This forwarding happens inside a <strong>Proxy Function</strong> that’s auto-generated during NuttX Build…</p>
 <div class="example-wrap"><pre class="language-c"><code>// From nuttx/syscall/proxies/PROXY_write.c
 // Auto-Generated Proxy for `write`
+// Looks like the Kernel `write`, but it&#39;s actually a System Call
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
   return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
     (unsigned int) SYS_write,  // Kernel Function Number (63 = `write`)
@@ -295,19 +296,34 @@ PROXY_write.c
 </code></pre></div>
 <p>Now we figure out how System Calls will work…</p>
 <h1 id="nuttx-kernel-handles-system-call"><a href="#nuttx-kernel-handles-system-call">3 NuttX Kernel handles System Call</a></h1>
-<p>TODO</p>
-<p>From nuttx/syscall/stubs/STUB_write.c</p>
-<div class="example-wrap"><pre class="language-c"><code>/* Auto-generated write stub file -- do not edit */
-
-#include &lt;nuttx/config.h&gt;
-#include &lt;stdint.h&gt;
-#include &lt;unistd.h&gt;
-
-uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3)
-{
-  return (uintptr_t)write((int)parm1, (FAR const void *)parm2, (size_t)parm3);
+<p><em>Our App makes an ecall to jump to NuttX Kernel…</em></p>
+<p><em>What happens on the other side?</em></p>
+<p>Remember the Proxy Function from earlier? Now we do the exact opposite in our <strong>Stub Function</strong> (that runs in the Kernel)…</p>
+<div class="example-wrap"><pre class="language-c"><code>// From nuttx/syscall/stubs/STUB_write.c
+// Auto-Generated Stub File for `write`
+// This runs in NuttX Kernel triggered by `ecall`.
+// We make the actual call to `write`.
+uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3) {
+  return
+    (uintptr_t) write(           // Call the Kernel version of `write`
+      (int) parm1,               // File Descriptor (1 = Standard Output)
+      (FAR const void *) parm2,  // Buffer to be written
+      (size_t) parm3             // Number of bytes to write
+    );                           // Return the result to the App
 }
 </code></pre></div>
+<p>Thus our <strong>NuttX Build</strong> auto-generates 2 things…</p>
+<ul>
+<li>
+<p><strong>Proxy Function</strong> (runs in NuttX Apps)</p>
+</li>
+<li>
+<p><strong>Stub Function</strong> (runs in NuttX Kernel)</p>
+</li>
+</ul>
+<p>This happens for <strong>every System Call</strong> exposed by NuttX Kernel.</p>
+<p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">(More about <strong>Proxy and Stub Functions</strong>)</a></p>
+<p><em>Who calls STUB_write?</em></p>
 <p>TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L114-L119">Attach RISCV_IRQ_ECALLU</a>, which calls…</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537">riscv_swint</a>, which calls…</p>
@@ -382,7 +398,6 @@ riscv_swint: SWInt Return: 1e
 <p>Returns 0x1E = 30 chars, including <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/nshlib/nsh_parse.c#L292-L302">linefeeds before and after</a></p>
 <p>Not strictly an SBI like Linux, because the Kernel Function Numbers may change!</p>
 <p>But it’s a lot simpler to experiment with new Kernel Functions.</p>
-<p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">Syscall Layer</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210">syscall.csv</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
 <h1 id="kernel-accesses-user-memory"><a href="#kernel-accesses-user-memory">4 Kernel Accesses User Memory</a></h1>
