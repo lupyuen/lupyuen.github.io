@@ -142,7 +142,10 @@ return 0;
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L45-L200"><strong>lib_fwrite_unlocked</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149"><strong>write</strong></a> to print “Hello World”</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149"><strong>write</strong></a>, which calls…</p>
+</li>
+<li>
+<p><strong>NuttX Kernel</strong> to print “Hello World”</p>
 </li>
 </ul>
 <p>How will <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149"><strong>write</strong></a> call the NuttX Kernel? We’ll see soon!</p>
@@ -708,6 +711,8 @@ CONFIG_ARCH_HEAP_NPAGES=128
 </code></pre></div>
 <p><em>Let’s disable PLIC, and exclude PLIC from Memory Map. Will the NuttX Shell start?</em></p>
 <p>Yep it does! <a href="https://gist.github.com/lupyuen/9fc9b2de9938b48666cc5e5fa3f8278e">(See the log)</a></p>
+<p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
+<p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525"><em>Ox64 boots to NuttX Shell</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>We’ll do much more for <strong>NuttX on Ox64 BL808</strong>, stay tuned for updates!</p>
