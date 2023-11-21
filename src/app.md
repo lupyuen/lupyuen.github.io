@@ -28,7 +28,7 @@ int main(int argc, FAR char *argv[]) {
 
 Let's find out! We build [__NuttX for Ox64 BL808 SBC__](https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx).
 
-Which produces this __ELF Executable__ for NuttX App...
+Which produces this __ELF Executable__ for our NuttX App...
 
 ```bash
 ## ELF Executable for `hello` looks big...
@@ -49,7 +49,7 @@ $ riscv64-unknown-elf-objdump \
   2>&1
 ```
 
-Here's the __RISC-V Disassembly__: [hello.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S)
+Here's the __RISC-V Disassembly__ of our NuttX App: [hello.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S)
 
 ```text
 ## Omitted: _start() prepares for signals (sig_trampoline) and calls main()
@@ -92,7 +92,7 @@ _This code doesn't look right..._
 printf("Hello, World!!\n");
 
   ## Load Register RA with Program Counter + 0x0
-  4a: 00000097  auipc  ra,0x0
+  4a: 00000097  auipc  ra, 0x0
 
   ## Call the function in Register RA: puts()
   4e: 000080e7  jalr   ra
@@ -106,8 +106,8 @@ The Relocation Info shows that 0x0 will be replaced by the address of `puts`...
 
 ```text
 printf("Hello, World!!\n");
-  4a: 00000097  auipc  ra,0x0    4a: R_RISCV_CALL  puts
-  4e: 000080e7  jalr   ra      # 4a <.LVL1+0x2>  ## Call puts()
+  4a: 00000097  auipc  ra, 0x0    4a: R_RISCV_CALL  puts
+  4e: 000080e7  jalr   ra       # 4a <.LVL1+0x2>  ## Call puts()
 ```
 
 _Why `puts` instead of `printf`?_
