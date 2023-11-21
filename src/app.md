@@ -292,11 +292,11 @@ Remember the Proxy Function from earlier? Now we do the exact opposite in our __
 // (Kernel Function Number `nbr` is unused)
 uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3) {
   return
-    (uintptr_t) write(           // Call the Kernel version of `write`
-      (int) parm1,               // File Descriptor (1 = Standard Output)
+    (uintptr_t) write(  // Call the Kernel version of `write`
+      (int) parm1,      // File Descriptor (1 = Standard Output)
       (FAR const void *) parm2,  // Buffer to be written
-      (size_t) parm3             // Number of bytes to write
-    );                           // Return the result to the App
+      (size_t) parm3    // Number of bytes to write
+    );                  // Return the result to the App
 }
 ```
 
@@ -323,19 +323,34 @@ STUB_chown.c
 
 _Who calls STUB_write?_
 
-TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)
+When our NuttX App makes an __`ecall`__, it triggers __IRQ 8__ [__(RISCV_IRQ_ECALLU)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/include/irq.h#L52-L75) that's [__handled by__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L114-L119)...
 
-[Attach RISCV_IRQ_ECALLU](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L114-L119), which calls...
+- [__riscv_swint__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537), which calls...
 
-[riscv_swint](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537), which calls...
+- [__dispatch_syscall__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100), which calls the Kernel Stub Function (__STUB_write__) and... 
 
-[dispatch_syscall](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100), which calls Kernel Function Stub and... 
+  [__sys_call2__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_syscall.S#L49-L177) with A0 set to __SYS_syscall_return__ (3), which calls...
 
-[sys_call2](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_syscall.S#L49-L177) with A0=SYS_syscall_return (3), which calls...
+- [__riscv_perform_syscall__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_perform_syscall.c#L36-L78), which calls...
 
-[riscv_perform_syscall](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_perform_syscall.c#L36-L78), which calls...
+- [__riscv_swint__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537) with IRQ 0, to return from the __`ecall`__
 
-[riscv_swint](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537) with IRQ 0, to return from Syscall
+_How will dispatch_syscall know which Stub Function to call?_
+
+Remember that our Proxy Function (in NuttX App) will pass the __Kernel Function Number__ for "__write__"?
+
+```c
+// From nuttx/syscall/proxies/PROXY_write.c
+// Auto-Generated Proxy for `write`, called by NuttX App
+ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
+  return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
+    (unsigned int) SYS_write,  // Kernel Function Number (63 = `write`)
+    ...
+```
+
+TODO: [__dispatch_syscall__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100) (in NuttX Kernel)
+
+TODO
 
 From [syscall_lookup.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202)
 
