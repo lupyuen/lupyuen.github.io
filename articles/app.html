@@ -81,8 +81,7 @@
 <p><a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 64-bit RISC-V SBC</strong></a>. (Pic below)</p>
 <p>(Powered by <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>Bouffalo Lab BL808 SoC</strong></a>)</p>
 <p><a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a>. (Real-Time Operating System)</p>
-<p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
-<p><a href="https://wiki.pine64.org/wiki/Ox64"><em>Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)</em></a></p>
+<p><img src="https://lupyuen.github.io/images/ox64-sbc.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <h1 id="start-nuttx-apps"><a href="#start-nuttx-apps">1 Start NuttX Apps</a></h1>
 <p>TODO</p>
 <p>NuttX Kernel starts a NuttX App (in ELF Format) by calling…</p>
@@ -147,14 +146,33 @@
 </li>
 </ul>
 <h1 id="inside-a-nuttx-app"><a href="#inside-a-nuttx-app">2 Inside a NuttX App</a></h1>
-<p>TODO</p>
-<p><em>What’s inside the simplest app for NuttX?</em></p>
-<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/examples/hello/hello_main.c#L36-L40">hello_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[]) {
+<p><em>What happens inside the simplest NuttX App?</em></p>
+<div class="example-wrap"><pre class="language-c"><code>// From https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/examples/hello/hello_main.c#L36-L40
+int main(int argc, FAR char *argv[]) {
   printf(&quot;Hello, World!!\n&quot;);
   return 0;
 }
 </code></pre></div>
+<p>Let’s find out! We build <a href="https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx"><strong>NuttX for Ox64 BL808 SBC</strong></a>.</p>
+<p>Which produces this <strong>ELF Executable</strong> for NuttX App…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## ELF Executable for `hello` looks big...
+$ ls -l ../apps/bin/hello
+-rwxr-xr-x  518,192  ../apps/bin/hello
+
+## But not much inside, mostly Debug Info...
+$ riscv64-unknown-elf-size ../apps/bin/hello
+   text  data  bss   dec  hex  filename
+   3814     8    4  3826  ef2  ../apps/bin/hello
+
+## Dump the RISC-V Disassembly to `hello.S`
+$ riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/bin/hello \
+  &gt;hello.S \
+  2&gt;&amp;1
+</code></pre></div>
+<p>TODO</p>
 <p>Here’s the RISC-V Disassembly: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S">hello.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>000000000000003e &lt;main&gt;:
 main():
@@ -225,6 +243,7 @@ apps/examples/hello/hello_main.c:40
 <div class="example-wrap"><pre class="language-c"><code>  printf(&quot;Hello, World %s!!\n&quot;, &quot;Luppy&quot;);
 </code></pre></div>
 <p>Then <code>printf</code> will appear in our disassembly.</p>
+<p><img src="https://lupyuen.github.io/images/app-run.png" alt="NuttX App calls NuttX Kernel" /></p>
 <h1 id="nuttx-app-calls-nuttx-kernel"><a href="#nuttx-app-calls-nuttx-kernel">3 NuttX App calls NuttX Kernel</a></h1>
 <p>TODO</p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">Syscall Layer</a></p>
@@ -330,7 +349,7 @@ PROXY_unsetenv.c
 PROXY_waitpid.c
 </code></pre></div><h1 id="kernel-handles-app-call"><a href="#kernel-handles-app-call">4 Kernel Handles App Call</a></h1>
 <p>TODO</p>
-<p>nuttx/syscall/stubs/STUB_write.c</p>
+<p>From nuttx/syscall/stubs/STUB_write.c</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Auto-generated write stub file -- do not edit */
 
 #include &lt;nuttx/config.h&gt;
@@ -414,6 +433,8 @@ riscv_swint: SWInt Return: 1e
 <p>After Call:</p>
 <p>A0=3 <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h#L80-L87">(SYS_syscall_return)</a></p>
 <p>Returns 0x1E = 30 chars, including <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/nshlib/nsh_parse.c#L292-L302">linefeeds before and after</a></p>
+<p>Not strictly an SBI like Linux, because the Kernel Function Numbers may change!</p>
+<p>But it’s a lot simpler to experiment with new Kernel Functions.</p>
 <h1 id="kernel-accesses-user-memory"><a href="#kernel-accesses-user-memory">5 Kernel Accesses User Memory</a></h1>
 <p>TODO</p>
 <p>Supervisor Mode may access memory in User Mode only if <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation">SUM bit is set in sstatus</a></p>
