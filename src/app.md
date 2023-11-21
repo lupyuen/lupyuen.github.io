@@ -605,10 +605,10 @@ riscv64-unknown-elf-objcopy \
   nuttx \
   nuttx.bin
 
-## Insert 64 KB of zeroes after Binary Image for Kernel Stack
+## Prepare a Padding with 64 KB of zeroes
 head -c 65536 /dev/zero >/tmp/nuttx.zero
 
-## Append Initial RAM Disk to Binary Image
+## Append Padding and Initial RAM Disk to Binary Image
 cat nuttx.bin /tmp/nuttx.zero initrd \
   >Image
 
@@ -616,7 +616,7 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
 cp Image "/Volumes/NO NAME/"
 ```
 
-# TODO
+# Mount the Initial RAM Disk
 
 TODO
 
@@ -724,6 +724,10 @@ elf_read: Read 64 bytes from offset 0
 ```
 
 [(Source)](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89)
+
+# Pad the Initial RAM Disk
+
+TODO
 
 _Why did we insert 64 KB of zeroes after the NuttX Binary Image, before the initrd Initial RAM Disk?_
 
@@ -840,46 +844,6 @@ const uint32_t search_addr[] =
 7992714,
 };
 ```
-
-But NuttX fails to start our NuttX Shell (NSH) ELF Executable from "/system/bin/init"...
-
-```text
-elf_read: Read 3392 bytes from offset 3385080
-elf_addrenv_select: ERROR: up_addrenv_text_enable_write failed: -22
-elf_load: ERROR: elf_addrenv_select() failed: -22
-...
-elf_loadbinary: Failed to load ELF program binary: -22
-exec_internal: ERROR: Failed to load program '/system/bin/init': -22
-_assert: Current Version: NuttX  12.0.3 8017bd9-dirty Nov 10 2023 22:50:07 risc-v
-_assert: Assertion failed ret > 0: at file: init/nx_bringup.c:302 task: AppBringUp process: Kernel 0x502014ea
-```
-
-[(Source)](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89)
-
-Maybe because NuttX is trying to map the User Address Space 0xC000 0000: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L26)
-
-```text
-CONFIG_ARCH_TEXT_VBASE=0xC0000000
-CONFIG_ARCH_TEXT_NPAGES=128
-CONFIG_ARCH_DATA_VBASE=0xC0100000
-CONFIG_ARCH_DATA_NPAGES=128
-CONFIG_ARCH_HEAP_VBASE=0xC0200000
-CONFIG_ARCH_HEAP_NPAGES=128
-```
-
-But our Kernel Memory Space already extends to 0xF000 0000? (Because of the PLIC at 0xE000 0000)
-
-From [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L43-L46):
-
-```c
-/* Map the whole I/O memory with vaddr = paddr mappings */
-#define MMU_IO_BASE     (0x00000000)
-#define MMU_IO_SIZE     (0xf0000000)
-```
-
-_Let's disable PLIC, and exclude PLIC from Memory Map. Will the NuttX Shell start?_
-
-Yep it does! [(See the log)](https://gist.github.com/lupyuen/9fc9b2de9938b48666cc5e5fa3f8278e)
 
 ![Ox64 boots to NuttX Shell](https://lupyuen.github.io/images/mmu-boot1.png)
 
