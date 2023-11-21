@@ -215,28 +215,38 @@ printf(&quot;Hello, World %s!!\n&quot;, &quot;Luppy&quot;);
 </li>
 </ul>
 <p><em>What’s this “forwarding” to a System Call?</em></p>
-<p>TODO</p>
-<p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">Syscall Layer</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210">syscall.csv</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
-<p>Our NuttX App calls <code>write</code>, which is a Proxy Version…</p>
-<p>From nuttx/syscall/proxies/PROXY_write.c</p>
-<div class="example-wrap"><pre class="language-c"><code>/* Auto-generated write proxy file -- do not edit */
-
-#include &lt;nuttx/config.h&gt;
-#include &lt;unistd.h&gt;
-#include &lt;syscall.h&gt;
-
-ssize_t write(int parm1, FAR const void * parm2, size_t parm3)
-{
-  return (ssize_t)sys_call3((unsigned int)SYS_write, (uintptr_t)parm1, (uintptr_t)parm2, (uintptr_t)parm3);
+<p>This forwarding happens inside a <strong>Proxy Function</strong> that’s auto-generated during NuttX Build…</p>
+<div class="example-wrap"><pre class="language-c"><code>// From nuttx/syscall/proxies/PROXY_write.c
+// Auto-Generated Proxy for `write`
+ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
+  return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
+    (unsigned int) SYS_write,  // Kernel Function Number for `write`
+    (uintptr_t) parm1,         // File Descriptor (1 = Standard Output)
+    (uintptr_t) parm2,         // Buffer to be written
+    (uintptr_t) parm3          // Number of bytes to write
+  );
 }
 </code></pre></div>
-<p>Proxy for <code>write</code> calls…</p>
+<p>Our NuttX App calls this <strong>Proxy Version</strong> of “<strong>write</strong>” (that pretends to be the Kernel “<strong>write</strong>”)…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Our App calls the Proxy Function...
+int ret = write(
+  1,  // File Descriptor (1 = Standard Output)
+  &quot;Hello, World!!\n&quot;,  // Buffer to be written
+  15  // Number of bytes to write
+);
+</code></pre></div>
+<p>Which triggers a <strong>System Call</strong> to the Kernel.</p>
+<p><em>What’s inside sys_call3?</em></p>
+<p>It makes a <strong>System Call</strong> with <strong>3 Parameters</strong></p>
+<p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h">sys_call3</a>, which makes an <code>ecall</code> to NuttX Kernel…</p>
-<div class="example-wrap"><pre class="language-c"><code>static inline uintptr_t sys_call3(unsigned int nbr, uintptr_t parm1,
-                                  uintptr_t parm2, uintptr_t parm3)
-{
+<div class="example-wrap"><pre class="language-c"><code>// Make a System Call with 3 parameters
+uintptr_t sys_call3(
+  unsigned int nbr,  // Kernel Function Number
+  uintptr_t parm1,   // First Parameter
+  uintptr_t parm2,   // Second Parameter
+  uintptr_t parm3    // Third Parameter
+) {
   register long r0 asm(&quot;a0&quot;) = (long)(nbr);
   register long r1 asm(&quot;a1&quot;) = (long)(parm1);
   register long r2 asm(&quot;a2&quot;) = (long)(parm2);
@@ -255,6 +265,10 @@ ssize_t write(int parm1, FAR const void * parm2, size_t parm3)
 }
 </code></pre></div>
 <p>TODO: Why <code>nop</code>?</p>
+<p>TODO</p>
+<p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">Syscall Layer</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210">syscall.csv</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
 <p>List of proxies…</p>
 <div class="example-wrap"><pre class="language-bash"><code>→ grep PROXY hello.S
 PROXY__assert.c
