@@ -803,10 +803,10 @@ popd
 ## Generate the Initial RAM Disk
 genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
 
-## Pad with 64 KB of zeroes after Binary Image for Kernel Stack
+## Prepare a Padding with 64 KB of zeroes
 head -c 65536 /dev/zero &gt;/tmp/nuttx.zero
 
-## Append Initial RAM Disk to the Binary Image
+## Append Padding and Initial RAM Disk to Binary Image
 cat nuttx.bin /tmp/nuttx.zero initrd \
   &gt;Image
 </code></pre></div>

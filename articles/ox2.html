@@ -933,10 +933,10 @@ riscv64-unknown-elf-objcopy \
   nuttx \
   nuttx.bin
 
-## Insert 32 KB of zeroes after NuttX Binary Image for Kernel Stack
-head -c 32768 /dev/zero &gt;/tmp/nuttx.zero
+## Prepare a Padding with 64 KB of zeroes
+head -c 65536 /dev/zero &gt;/tmp/nuttx.zero
 
-## Append the Initial RAM Disk to the NuttX Binary Image
+## Append Padding and Initial RAM Disk to Binary Image
 cat nuttx.bin /tmp/nuttx.zero initrd \
   &gt;Image
 
