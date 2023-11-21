@@ -14,6 +14,114 @@ TODO
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sbc.jpg)
 
+# Inside a NuttX App
+
+_What happens inside the simplest NuttX App?_
+
+```c
+// From https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/examples/hello/hello_main.c#L36-L40
+int main(int argc, FAR char *argv[]) {
+  printf("Hello, World!!\n");
+  return 0;
+}
+```
+
+Let's find out! We build [__NuttX for Ox64 BL808 SBC__](https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx).
+
+Which produces this __ELF Executable__ for NuttX App...
+
+```bash
+## ELF Executable for `hello` looks big...
+$ ls -l ../apps/bin/hello
+-rwxr-xr-x  518,192  ../apps/bin/hello
+
+## But not much inside, mostly Debug Info...
+$ riscv64-unknown-elf-size ../apps/bin/hello
+   text  data  bss   dec  hex  filename
+   3814     8    4  3826  ef2  ../apps/bin/hello
+
+## Dump the RISC-V Disassembly to `hello.S`
+$ riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/bin/hello \
+  >hello.S \
+  2>&1
+```
+
+Here's the __RISC-V Disassembly__: [hello.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S)
+
+```text
+## Omitted: _start() prepares for signals (sig_trampoline) and calls main()
+
+003e <main>:
+int main(int argc, FAR char *argv[]) {
+  3e: 1141      addi   sp,sp,-16  ## Subtract 16 from Stack Pointer
+
+## Set Register A0 (Arg 0) to "Hello, World!!\n"
+  40: 00000517  auipc  a0,0x0    40: R_RISCV_PCREL_HI20    .LC0
+  44: 00050513  mv     a0,a0     44: R_RISCV_PCREL_LO12_I  .L0 
+
+printf("Hello, World!!\n");
+  48: e406      sd     ra,8(sp)  ## Save Return Address to Stack Pointer, Offset 8
+  4a: 00000097  auipc  ra,0x0    4a: R_RISCV_CALL  puts
+  4e: 000080e7  jalr   ra      # 4a <.LVL1+0x2>  ## Call puts()
+
+return 0;
+  52: 60a2      ld    ra,8(sp)  ## Load Return Address from Stack Pointer, Offset 8
+  54: 4501      li    a0,0      ## Set Return Value to 0
+  56: 0141      addi  sp,sp,16  ## Add 16 to Stack Pointer
+  58: 8082      ret             ## Return to caller: _start()
+
+## Followed by the code for puts(), lib_fwrite_unlocked(), write(), ...
+```
+
+In the RISC-V Disassembly, we see that [__main__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/examples/hello/hello_main.c#L36-L40) calls...
+
+- [__puts__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_puts.c#L34-L96), which calls...
+
+- [__lib_fwrite_unlocked__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L45-L200), which calls...
+
+- [__write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149) to print "Hello World"
+
+How will [__write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149) call the NuttX Kernel? We'll find out soon!
+
+_This code doesn't look right..._
+
+```text
+printf("Hello, World!!\n");
+
+  ## Load Register RA with Program Counter + 0x0
+  4a: 00000097  auipc  ra,0x0
+
+  ## Call the function in Register RA: puts()
+  4e: 000080e7  jalr   ra
+```
+
+TODO
+
+That's because this is __Relocatable Code__. The auipc offset will be fixed up by the NuttX ELF Loader when it loads this code into User Memory.
+
+The Relocation Info shows that 0x0 will be replaced by the address of `puts`...
+
+```text
+printf("Hello, World!!\n");
+  4a: 00000097  auipc  ra,0x0    4a: R_RISCV_CALL  puts
+  4e: 000080e7  jalr   ra      # 4a <.LVL1+0x2>  ## Call puts()
+```
+
+_Why `puts` instead of `printf`?_
+
+The GCC Compiler has cleverly optimised away `printf` to become `puts`.
+
+If we do this...
+
+```c
+  printf("Hello, World %s!!\n", "Luppy");
+```
+
+Then `printf` will appear in our disassembly.
+
 # Start NuttX Apps
 
 TODO
@@ -64,127 +172,6 @@ Right after that, [__nx_bringup__](https://github.com/apache/nuttx/blob/master/s
 
 - [__ELF Loader: g_elfbinfmt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94) to load the ELF File (explained above)
 
-# Inside a NuttX App
-
-_What happens inside the simplest NuttX App?_
-
-```c
-// From https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/examples/hello/hello_main.c#L36-L40
-int main(int argc, FAR char *argv[]) {
-  printf("Hello, World!!\n");
-  return 0;
-}
-```
-
-Let's find out! We build [__NuttX for Ox64 BL808 SBC__](https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx).
-
-Which produces this __ELF Executable__ for NuttX App...
-
-```bash
-## ELF Executable for `hello` looks big...
-$ ls -l ../apps/bin/hello
--rwxr-xr-x  518,192  ../apps/bin/hello
-
-## But not much inside, mostly Debug Info...
-$ riscv64-unknown-elf-size ../apps/bin/hello
-   text  data  bss   dec  hex  filename
-   3814     8    4  3826  ef2  ../apps/bin/hello
-
-## Dump the RISC-V Disassembly to `hello.S`
-$ riscv64-unknown-elf-objdump \
-  --syms --source --reloc --demangle --line-numbers --wide \
-  --debugging \
-  ../apps/bin/hello \
-  >hello.S \
-  2>&1
-```
-
-TODO
-
-Here's the RISC-V Disassembly: [hello.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S)
-
-```text
-000000000000003e <main>:
-main():
-apps/examples/hello/hello_main.c:37
-/****************************************************************************
- * hello_main
- ****************************************************************************/
-
-int main(int argc, FAR char *argv[])
-{
-  3e:	1141                	addi	sp,sp,-16
-apps/examples/hello/hello_main.c:38
-  printf("Hello, World!!\n");
-  40:	00000517          	auipc	a0,0x0	40: R_RISCV_PCREL_HI20	.LC0
-	40: R_RISCV_RELAX	*ABS*
-  44:	00050513          	mv	a0,a0	44: R_RISCV_PCREL_LO12_I	.L0 
-	44: R_RISCV_RELAX	*ABS*
-
-0000000000000048 <.LVL1>:
-apps/examples/hello/hello_main.c:37
-{
-  48:	e406                	sd	ra,8(sp)
-apps/examples/hello/hello_main.c:38
-  printf("Hello, World!!\n");
-  4a:	00000097          	auipc	ra,0x0	4a: R_RISCV_CALL	puts
-	4a: R_RISCV_RELAX	*ABS*
-  4e:	000080e7          	jalr	ra # 4a <.LVL1+0x2>
-
-0000000000000052 <.LVL2>:
-apps/examples/hello/hello_main.c:40
-  return 0;
-}
-  52:	60a2                	ld	ra,8(sp)
-  54:	4501                	li	a0,0
-  56:	0141                	addi	sp,sp,16
-  58:	8082                	ret
-```
-
-We see that [main](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/examples/hello/hello_main.c#L36-L40) calls...
-
-- [puts](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_puts.c#L34-L96), which calls...
-
-- [lib_fwrite_unlocked](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L45-L200), which calls...
-
-- [stream->fs_iofunc.write](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L145) OR...
-
-  [write](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149) (See below)
-
-TODO: Which one?
-
-TODO: _start prepares sig_trampoline and calls main
-
-_This code doesn't look right..._
-
-```text
-apps/examples/hello/hello_main.c:38
-  printf("Hello, World!!\n");
-  4a:	00000097          	auipc	ra,0x0
-  4e:	000080e7          	jalr	ra
-```
-
-That's because this is __Relocatable Code__. The auipc offset will be fixed up by the NuttX ELF Loader when it loads this code into User Memory.
-
-The Relocation Info shows that 0x0 will be replaced by the address of `puts`...
-
-```text
-  4a:	00000097          	auipc	ra,0x0
-  4a: R_RISCV_CALL	puts
-  4e:	000080e7          	jalr	ra
-```
-
-_Why `puts` instead of `printf`?_
-
-The GCC Compiler has cleverly optimised away `printf` to become `puts`.
-
-If we do this...
-
-```c
-  printf("Hello, World %s!!\n", "Luppy");
-```
-
-Then `printf` will appear in our disassembly.
 
 ![NuttX App calls NuttX Kernel](https://lupyuen.github.io/images/app-run.png)
 
@@ -354,19 +341,19 @@ From hello.S:
 ```text
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3)
 {
- dcc:	872a                	mv	a4,a0
+ dcc:  872a                  mv  a4,a0
 
 0000000000000dce <.LVL1>:
- dce:	87ae                	mv	a5,a1
+ dce:  87ae                  mv  a5,a1
 
 0000000000000dd0 <.LVL2>:
- dd0:	86b2                	mv	a3,a2
+ dd0:  86b2                  mv  a3,a2
 
 0000000000000dd2 <.LBB4>:
 sys_call3():
 /Users/Luppy/ox64/nuttx/include/arch/syscall.h:252
   register long r0 asm("a0") = (long)(nbr);
- dd2:	03f00513          	li	a0,63
+ dd2:  03f00513            li  a0,63
 ```
 
 Thus SYS_write = 63
