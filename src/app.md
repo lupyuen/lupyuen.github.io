@@ -180,6 +180,7 @@ This forwarding happens inside a __Proxy Function__ that's auto-generated during
 ```c
 // From nuttx/syscall/proxies/PROXY_write.c
 // Auto-Generated Proxy for `write`
+// Looks like the Kernel `write`, but it's actually a System Call
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
   return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
     (unsigned int) SYS_write,  // Kernel Function Number (63 = `write`)
@@ -277,22 +278,38 @@ Now we figure out how System Calls will work...
 
 # NuttX Kernel handles System Call
 
-TODO
+_Our App makes an ecall to jump to NuttX Kernel..._
 
-From nuttx/syscall/stubs/STUB_write.c
+_What happens on the other side?_
+
+Remember the Proxy Function from earlier? Now we do the exact opposite in our __Stub Function__ (that runs in the Kernel)...
 
 ```c
-/* Auto-generated write stub file -- do not edit */
-
-#include <nuttx/config.h>
-#include <stdint.h>
-#include <unistd.h>
-
-uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3)
-{
-  return (uintptr_t)write((int)parm1, (FAR const void *)parm2, (size_t)parm3);
+// From nuttx/syscall/stubs/STUB_write.c
+// Auto-Generated Stub File for `write`
+// This runs in NuttX Kernel triggered by `ecall`.
+// We make the actual call to `write`.
+uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3) {
+  return
+    (uintptr_t) write(           // Call the Kernel version of `write`
+      (int) parm1,               // File Descriptor (1 = Standard Output)
+      (FAR const void *) parm2,  // Buffer to be written
+      (size_t) parm3             // Number of bytes to write
+    );                           // Return the result to the App
 }
 ```
+
+Thus our __NuttX Build__ auto-generates 2 things...
+
+- __Proxy Function__ (runs in NuttX Apps)
+
+- __Stub Function__ (runs in NuttX Kernel)
+
+This happens for __every System Call__ exposed by NuttX Kernel.
+
+[(More about __Proxy and Stub Functions__)](https://nuttx.apache.org/docs/latest/components/syscall.html)
+
+_Who calls STUB_write?_
 
 TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)
 
@@ -400,8 +417,6 @@ Returns 0x1E = 30 chars, including [linefeeds before and after](https://github.c
 Not strictly an SBI like Linux, because the Kernel Function Numbers may change!
 
 But it's a lot simpler to experiment with new Kernel Functions.
-
-[Syscall Layer](https://nuttx.apache.org/docs/latest/components/syscall.html)
 
 [syscall.csv](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210)
 
