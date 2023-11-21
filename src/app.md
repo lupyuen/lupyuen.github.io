@@ -182,7 +182,7 @@ This forwarding happens inside a __Proxy Function__ that's auto-generated during
 // Auto-Generated Proxy for `write`
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
   return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
-    (unsigned int) SYS_write,  // Kernel Function Number for `write`
+    (unsigned int) SYS_write,  // Kernel Function Number (63 = `write`)
     (uintptr_t) parm1,         // File Descriptor (1 = Standard Output)
     (uintptr_t) parm2,         // Buffer to be written
     (uintptr_t) parm3          // Number of bytes to write
@@ -203,27 +203,30 @@ int ret = write(
 
 Which triggers a __System Call__ to the Kernel.
 
-_What's inside sys_call3?_
+_What's sys_call3?_
 
-It makes a __System Call__ with __3 Parameters__
-
-TODO
-
-[sys_call3](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h), which makes an `ecall` to NuttX Kernel...
+It makes a __System Call__ (to NuttX Kernel) with __3 Parameters__: [sys_call3](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h)
 
 ```c
 // Make a System Call with 3 parameters
 uintptr_t sys_call3(
-  unsigned int nbr,  // Kernel Function Number
+  unsigned int nbr,  // Kernel Function Number (63 = `write`)
   uintptr_t parm1,   // First Parameter
   uintptr_t parm2,   // Second Parameter
   uintptr_t parm3    // Third Parameter
 ) {
+  // Pass the Function Number and Parameters in
+  // Registers A0 to A3
   register long r0 asm("a0") = (long)(nbr);
   register long r1 asm("a1") = (long)(parm1);
   register long r2 asm("a2") = (long)(parm2);
   register long r3 asm("a3") = (long)(parm3);
 
+  // `ecall` will jump from RISC-V User Mode
+  // to RISC-V Supervisor Mode
+  // to execute the System Call.
+  // Input+Output Registers: A0 to A3
+  // Clobbers the Memory
   asm volatile
     (
      "ecall"
@@ -231,8 +234,10 @@ uintptr_t sys_call3(
      : "memory"
      );
 
+  // No-operation, does nothing
   asm volatile("nop" : "=r"(r0));
 
+  // Return the result from Register A0
   return r0;
 }
 ```
