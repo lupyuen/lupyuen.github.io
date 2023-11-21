@@ -323,6 +323,15 @@ uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3)
 </li>
 </ul>
 <p>This happens for <strong>every System Call</strong> exposed by NuttX Kernel.</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Stub Functions in NuttX Kernel
+$ grep STUB nuttx.S
+STUB__assert.c
+STUB__exit.c
+STUB_boardctl.c
+STUB_chmod.c
+STUB_chown.c
+...
+</code></pre></div>
 <p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">(More about <strong>Proxy and Stub Functions</strong>)</a></p>
 <p><em>Who calls STUB_write?</em></p>
 <p>TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)</p>
