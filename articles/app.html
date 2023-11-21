@@ -91,7 +91,7 @@ int main(int argc, FAR char *argv[]) {
 }
 </code></pre></div>
 <p>Let’s find out! We build <a href="https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx"><strong>NuttX for Ox64 BL808 SBC</strong></a>.</p>
-<p>Which produces this <strong>ELF Executable</strong> for NuttX App…</p>
+<p>Which produces this <strong>ELF Executable</strong> for our NuttX App…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## ELF Executable for `hello` looks big...
 $ ls -l ../apps/bin/hello
 -rwxr-xr-x  518,192  ../apps/bin/hello
@@ -109,7 +109,7 @@ $ riscv64-unknown-elf-objdump \
   &gt;hello.S \
   2&gt;&amp;1
 </code></pre></div>
-<p>Here’s the <strong>RISC-V Disassembly</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S">hello.S</a></p>
+<p>Here’s the <strong>RISC-V Disassembly</strong> of our NuttX App: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S">hello.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>## Omitted: _start() prepares for signals (sig_trampoline) and calls main()
 
 003e &lt;main&gt;:
@@ -150,7 +150,7 @@ return 0;
 <div class="example-wrap"><pre class="language-text"><code>printf(&quot;Hello, World!!\n&quot;);
 
   ## Load Register RA with Program Counter + 0x0
-  4a: 00000097  auipc  ra,0x0
+  4a: 00000097  auipc  ra, 0x0
 
   ## Call the function in Register RA: puts()
   4e: 000080e7  jalr   ra
@@ -159,8 +159,8 @@ return 0;
 <p>That’s because this is <strong>Relocatable Code</strong>. The auipc offset will be fixed up by the NuttX ELF Loader when it loads this code into User Memory.</p>
 <p>The Relocation Info shows that 0x0 will be replaced by the address of <code>puts</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>printf(&quot;Hello, World!!\n&quot;);
-  4a: 00000097  auipc  ra,0x0    4a: R_RISCV_CALL  puts
-  4e: 000080e7  jalr   ra      # 4a &lt;.LVL1+0x2&gt;  ## Call puts()
+  4a: 00000097  auipc  ra, 0x0    4a: R_RISCV_CALL  puts
+  4e: 000080e7  jalr   ra       # 4a &lt;.LVL1+0x2&gt;  ## Call puts()
 </code></pre></div>
 <p><em>Why <code>puts</code> instead of <code>printf</code>?</em></p>
 <p>The GCC Compiler has cleverly optimised away <code>printf</code> to become <code>puts</code>.</p>
