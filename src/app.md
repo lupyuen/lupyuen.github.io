@@ -228,11 +228,11 @@ uintptr_t sys_call3(
   // Input+Output Registers: A0 to A3
   // Clobbers the Memory
   asm volatile
-    (
-     "ecall"
-     :: "r"(r0), "r"(r1), "r"(r2), "r"(r3)
-     : "memory"
-     );
+  (
+    "ecall"
+    :: "r"(r0), "r"(r1), "r"(r2), "r"(r3)
+    : "memory"
+  );
 
   // No-operation, does nothing
   asm volatile("nop" : "=r"(r0));
@@ -242,7 +242,15 @@ uintptr_t sys_call3(
 }
 ```
 
-TODO: Why `nop`?
+[__`ecall`__](https://five-embeddev.com/quickref/instructions.html#-rv32--rv32) is the RISC-V Instruction that triggers a jump from RISC-V __User Mode to Supervisor Mode__. So that NuttX Kernel can execute the actual "__write__" function. (With the actual Serial Device)
+
+(We'll explain how)
+
+_Why the no-op after ecall?_
+
+We're guessing: It might be reserved for special calls to NuttX Kernel in future.
+
+[(Similar to __`ebreak`__ for Semihosting)](https://lupyuen.github.io/articles/semihost#decipher-the-risc-v-exception)
 
 TODO
 
