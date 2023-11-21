@@ -71,7 +71,7 @@
     <nav id="TOC"><ul>
 <li><a href="#inside-a-nuttx-app">1 Inside a NuttX App</a><ul></ul></li>
 <li><a href="#nuttx-app-calls-nuttx-kernel">2 NuttX App calls NuttX Kernel</a><ul></ul></li>
-<li><a href="#kernel-handles-app-call">3 Kernel Handles App Call</a><ul></ul></li>
+<li><a href="#nuttx-kernel-handles-system-call">3 NuttX Kernel handles System Call</a><ul></ul></li>
 <li><a href="#kernel-accesses-user-memory">4 Kernel Accesses User Memory</a><ul></ul></li>
 <li><a href="#start-nuttx-apps">5 Start NuttX Apps</a><ul></ul></li>
 <li><a href="#initial-ram-disk">6 Initial RAM Disk</a><ul></ul></li>
@@ -194,6 +194,27 @@ printf(&quot;Hello, World %s!!\n&quot;, &quot;Luppy&quot;);
 <p>Let’s circle back to <strong>write</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/app-run.png" alt="NuttX App calls NuttX Kernel" /></p>
 <h1 id="nuttx-app-calls-nuttx-kernel"><a href="#nuttx-app-calls-nuttx-kernel">2 NuttX App calls NuttX Kernel</a></h1>
+<p><em>Our app will print something to the Console Output…</em></p>
+<p><em>But NuttX Apps can’t write directly to the Serial Device right?</em></p>
+<p>Nope! NuttX Apps run in <strong>RISC-V User Mode</strong>. Which doesn’t have access to Serial Device and other resources controlled by NuttX Kernel. (Running in <strong>RISC-V Supervisor Mode</strong>)</p>
+<p>That’s why “<strong>write</strong>” will trigger a <strong>System Call</strong> to the NuttX Kernel, jumping from RISC-V <strong>User Mode to Supervisor Mode</strong>. And write to the Serial Device.</p>
+<p><em>Will NuttX Apps need Special Coding to make System Calls?</em></p>
+<p>Nope! The System Call is <strong>totally transparent</strong> to our app…</p>
+<ul>
+<li>
+<p>Our <strong>NuttX App</strong> will call a normal function named “<strong>write</strong>”…</p>
+</li>
+<li>
+<p>That pretends to be the actual “<strong>write</strong>” function in <strong>NuttX Kernel</strong>…</p>
+</li>
+<li>
+<p>By forwarding the “<strong>write</strong>” function call (and parameters)…</p>
+</li>
+<li>
+<p>Through a <strong>RISC-V System Call</strong></p>
+</li>
+</ul>
+<p><em>What’s this “forwarding” to a System Call?</em></p>
 <p>TODO</p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">Syscall Layer</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210">syscall.csv</a></p>
@@ -296,7 +317,7 @@ PROXY_umount2.c
 PROXY_unlink.c
 PROXY_unsetenv.c
 PROXY_waitpid.c
-</code></pre></div><h1 id="kernel-handles-app-call"><a href="#kernel-handles-app-call">3 Kernel Handles App Call</a></h1>
+</code></pre></div><h1 id="nuttx-kernel-handles-system-call"><a href="#nuttx-kernel-handles-system-call">3 NuttX Kernel handles System Call</a></h1>
 <p>TODO</p>
 <p>From nuttx/syscall/stubs/STUB_write.c</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Auto-generated write stub file -- do not edit */
