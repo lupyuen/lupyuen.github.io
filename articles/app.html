@@ -74,7 +74,7 @@
 <li><a href="#nuttx-kernel-handles-system-call">3 NuttX Kernel handles System Call</a><ul></ul></li>
 <li><a href="#system-call-in-action">4 System Call in Action</a><ul></ul></li>
 <li><a href="#kernel-accesses-app-memory">5 Kernel Accesses App Memory</a><ul></ul></li>
-<li><a href="#start-nuttx-apps">6 Start NuttX Apps</a><ul></ul></li>
+<li><a href="#kernel-starts-a-nuttx-app">6 Kernel Starts a NuttX App</a><ul></ul></li>
 <li><a href="#initial-ram-disk">7 Initial RAM Disk</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/app-title.png" alt="TODO" /></p>
@@ -469,18 +469,67 @@ riscv_swint: SWInt Return: 1e
 </ul>
 <p>Thus our NuttX App has passed a chunk of its own <strong>Virtual Memory</strong>. And NuttX Kernel happily prints it!</p>
 <p><em>Huh? NuttX Kernel can access Virtual Memory?</em></p>
-<p>TODO</p>
-<p>Supervisor Mode may access memory in User Mode only if <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation">SUM bit is set in sstatus</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/sched/init/nx_start.c#L298-L713">nx_start</a> calls…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_initialstate.c#L41-L140">up_initial_state</a>, which calls…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_getnewintctx.c#L74-L81">riscv_set_idleintctx</a> to set the SUM bit in sstatus</p>
-<h1 id="start-nuttx-apps"><a href="#start-nuttx-apps">6 Start NuttX Apps</a></h1>
-<p>TODO</p>
-<p>NuttX Kernel starts a NuttX App (in ELF Format) by calling…</p>
+<ol>
+<li>
+<p>We know that NuttX uses 2 sets of Page Tables: <strong>Kernel Page Table</strong> and <strong>User Page Table</strong> (for apps)</p>
+</li>
+<li>
+<p>According to the <a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17"><strong>NuttX Log</strong></a>, the Kernel swaps the <a href="https://lupyuen.github.io/articles/mmu#swap-the-satp-register"><strong>RISC-V SATP Register</strong></a> from Kernel Page Table to <strong>User Page Table</strong>. But doesn’t swap back!</p>
+</li>
+<li>
+<p>Which means the <strong>User Page Table</strong> is still in effect! Thus the User Addresses at <strong><code>0x8000</code> <code>0000</code></strong> perfectly accessible by the Kernel.</p>
+</li>
+<li>
+<p>But there’s a catch: <strong>RISC-V Supervisor Mode</strong> (NuttX Kernel) may access the Virtual Memory mapped to <strong>RISC-V User Mode</strong> (NuttX Apps)…</p>
+<p>Only if the <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation"><strong>SUM Bit is set in SSTATUS Register</strong></a>!</p>
+</li>
+<li>
+<p>And that’s absolutely hunky dory because at NuttX Startup, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/sched/init/nx_start.c#L298-L713"><strong>nx_start</strong></a> calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_initialstate.c#L41-L140"><strong>up_initial_state</strong></a>, which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_getnewintctx.c#L74-L81"><strong>riscv_set_idleintctx</strong></a> to set the <strong>SUM Bit</strong> in SSTATUS Register</p>
+</li>
+</ol>
+<p>That’s why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at <strong><code>0x8000</code> <code>0000</code></strong>!</p>
+<h1 id="kernel-starts-a-nuttx-app"><a href="#kernel-starts-a-nuttx-app">6 Kernel Starts a NuttX App</a></h1>
+<p><em>Phew so NuttX Apps can call NuttX Kernel…</em></p>
+<p><em>But how does NuttX Kernel start a NuttX App?</em></p>
+<p>Earlier we stepped through the <strong>Boot Sequence</strong> for NuttX…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow"><strong>“NuttX Boot Flow”</strong></a></li>
+</ul>
+<p>Right after that, <a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L373-L458"><strong>NuttX Bringup (nx_bringup)</strong></a> calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94"><strong>ELF Loader: g_elfbinfmt</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L330-L367"><strong>nx_create_initthread</strong></a>, which calls…</p>
 </li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L212C1-L302"><strong>nx_start_application</strong></a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L183-L223"><strong>exec_spawn</strong></a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L42-L179"><strong>exec_internal</strong></a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225"><strong>load_module</strong></a> (to load the app, see below) and…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450"><strong>exec_module</strong></a> (to execute the app)</p>
+</li>
+</ul>
+<p>To load a NuttX App module: <a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225"><strong>load_module</strong></a> calls…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L83-L132"><strong>load_absmodule</strong></a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/include/nuttx/binfmt/binfmt.h#L122-L148"><strong>binfmt_s.load</strong></a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94"><strong>ELF Loader: g_elfbinfmt</strong></a> to load the ELF File (see below)</p>
+</li>
+</ul>
+<p>To load the ELF File: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94"><strong>ELF Loader g_elfbinfmt</strong></a> calls…</p>
+<ul>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L225-L355"><strong>elf_loadbinary</strong></a>, which calls…</p>
 </li>
@@ -499,42 +548,6 @@ riscv_swint: SWInt Return: 1e
 </li>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>mmu_ln_setentry</strong></a> to populate the Page Table Entries</p>
-</li>
-</ul>
-<p><em>Who calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94">ELF Loader g_elfbinfmt</a> to start the NuttX App?</em></p>
-<p>Earlier we stepped through the <strong>Boot Sequence</strong> for NuttX…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow"><strong>“NuttX Boot Flow”</strong></a></li>
-</ul>
-<p>Right after that, <a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L373-L458"><strong>nx_bringup</strong></a> calls…</p>
-<ul>
-<li>
-<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L330-L367"><strong>nx_create_initthread</strong></a>, which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L212C1-L302"><strong>nx_start_application</strong></a>, which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L183-L223"><strong>exec_spawn</strong></a>, which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L42-L179"><strong>exec_internal</strong></a>, which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225"><strong>load_module</strong></a> and…</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450"><strong>exec_module</strong></a></p>
-</li>
-</ul>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225"><strong>load_module</strong></a> calls…</p>
-<ul>
-<li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L83-L132"><strong>load_absmodule</strong></a>, which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/include/nuttx/binfmt/binfmt.h#L122-L148"><strong>binfmt_s.load</strong></a>, which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/binfmt/elf.c#L84-L94"><strong>ELF Loader: g_elfbinfmt</strong></a> to load the ELF File (explained above)</p>
 </li>
 </ul>
 <h1 id="initial-ram-disk"><a href="#initial-ram-disk">7 Initial RAM Disk</a></h1>
