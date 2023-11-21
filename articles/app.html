@@ -184,7 +184,8 @@ return 0;
 <p><em>Why <code>puts</code> instead of <code>printf</code>?</em></p>
 <p>The GCC Compiler has cleverly optimised away <strong>printf</strong> to become <strong>puts</strong>.</p>
 <p>If we do this (and foil the GCC Compiler)…</p>
-<div class="example-wrap"><pre class="language-c"><code>printf(&quot;Hello, World %s!!\n&quot;, &quot;Luppy&quot;);
+<div class="example-wrap"><pre class="language-c"><code>// Nope, GCC Compiler won&#39;t change printf() to puts()
+printf(&quot;Hello, World %s!!\n&quot;, &quot;Luppy&quot;);
 </code></pre></div>
 <p>Then <strong>printf</strong> will appear in our RISC-V Disassembly.</p>
 <p>Let’s circle back to <strong>write</strong>…</p>
