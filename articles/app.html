@@ -303,7 +303,7 @@ PROXY_write.c
 // Auto-Generated Stub File for `write`
 // This runs in NuttX Kernel triggered by `ecall`.
 // We make the actual call to `write`.
-// (System Call Number `nbr` is unused)
+// (`nbr` is Offset in Stub Lookup Table, unused)
 uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3) {
   return
     (uintptr_t) write(  // Call the Kernel version of `write`
@@ -389,60 +389,87 @@ enum {
 <p><img src="https://lupyuen.github.io/images/app-run.png" alt="NuttX App calls NuttX Kernel" /></p>
 <h1 id="system-call-in-action"><a href="#system-call-in-action">4 System Call in Action</a></h1>
 <p><em>This looks complicated… But it works right?</em></p>
-<p>Yep we have solid evidence, from NuttX on Ox64 BL808 SBC!</p>
-<p>TODO: Enable CONFIG_DEBUG_SYSCALL_INFO: Build Setup &gt; Debug Options &gt; Syscall Debug Features &gt; Syscall Warning / Error / Info</p>
-<p>From <a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17">ECALL Log</a></p>
+<p>Yep we have solid evidence, from <a href="https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx"><strong>NuttX for Ox64 BL808 SBC</strong></a>!</p>
+<p>Remember to enable <strong>System Call Logging</strong> in “<code>make menuconfig</code>”…</p>
+<div class="example-wrap"><pre class="language-text"><code>Build Setup 
+  &gt; Debug Options 
+    &gt; Syscall Debug Features 
+      &gt; Syscall Warning / Error / Info
+</code></pre></div>
+<p>Our app (NuttX Shell) is printing something to the console. (Pic above)</p>
+<p>It makes an <strong><code>ecall</code></strong> for System Call #63 “<strong>write</strong>”, which triggers <strong>IRQ 8</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: irq=8
 riscv_swint: Entry: regs: 0x5040bcb0 cmd: 63
-up_dump_register: EPC: 00000000800019b2
-up_dump_register: A0: 000000000000003f A1: 0000000000000001 A2: 000000008000ad00 A3: 000000000000001e
-up_dump_register: A4: 0000000000000001 A5: 000000008000ad00 A6: 0000000000000000 A7: fffffffffffffff8
-up_dump_register: T0: 0000000050212a20 T1: 0000000000000007 T2: 0000000000000000 T3: 0000000080200908
-up_dump_register: T4: 0000000080200900 T5: 0000000000000000 T6: 0000000000000000
-up_dump_register: S0: 00000000802005c0 S1: 0000000080202010 S2: 0000000080202010 S3: 0000000000000000
-up_dump_register: S4: 0000000000000001 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
-up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
-up_dump_register: SP: 0000000080202b70 FP: 00000000802005c0 TP: 0000000000000000 RA: 0000000080001a6a
-riscv_swint: SWInt Return: 37
-STUB_write: nbr=440, parm1=1, parm2=8000ad00, parm3=1e
-
-NuttShell (NSH) NuttX-12.0.3
-riscv_swint: Entry: regs: 0x5040baa0 cmd: 3
-up_dump_register: EPC: 0000000080001a6a
-up_dump_register: A0: 0000000000000003 A1: 000000005040bbec A2: 000000000000001e A3: 0000000000000000
-up_dump_register: A4: 0000000000007fff A5: 0000000000000001 A6: 0000000000000009 A7: fffffffffffffff8
-up_dump_register: T0: 000000000000002e T1: 000000000000006a T2: 00000000000001ff T3: 000000000000006c
-up_dump_register: T4: 0000000000000068 T5: 0000000000000009 T6: 000000000000002a
-up_dump_register: S0: 00000000802005c0 S1: 0000000080202010 S2: 0000000080202010 S3: 0000000000000000
-up_dump_register: S4: 0000000000000001 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
-up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
-up_dump_register: SP: 000000005040bcb0 FP: 00000000802005c0 TP: 0000000000000000 RA: 0000000080001a6a
-riscv_swint: SWInt Return: 1e
+EPC: 800019b2
+A0: 003f A1: 0001 A2: 8000ad00 A3: 001e
 </code></pre></div>
-<p>Before Call:</p>
-<p>A0=0x3f (SYS_write) </p>
-<p>A1=1 (stdout)</p>
-<p>A2=0x8000ad00 (g_nshgreeting)</p>
-<p>A3=0x1e (length)</p>
-<p>nbr=440 (Offset for the stub lookup table, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall_stublookup.c#L80-L93">g_stublookup</a>)</p>
-<p>After Call:</p>
-<p>A0=3 <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h#L80-L87">(SYS_syscall_return)</a></p>
-<p>Returns 0x1E = 30 chars, including <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/nshlib/nsh_parse.c#L292-L302">linefeeds before and after</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
-<h1 id="kernel-accesses-user-memory"><a href="#kernel-accesses-user-memory">5 Kernel Accesses User Memory</a></h1>
-<p>TODO</p>
-<p>TLDR…</p>
+<p><a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17">(See the <strong>Complete Log</strong>)</a></p>
+<p>And jumps to NuttX Kernel. The <strong>RISC-V Registers</strong> look familiar…</p>
 <ul>
 <li>
-<p>NuttX Kernel RAM is at 0x5000 0000</p>
+<p>A0 is <strong><code>0x3F</code></strong></p>
+<p>(System Call #63 for “<strong>write</strong>”)</p>
 </li>
 <li>
-<p>Which gets dished out dynamically to NuttX Apps</p>
+<p>A1 is <strong><code>1</code></strong></p>
+<p>(File Descriptor #1 for Standard Output)</p>
 </li>
 <li>
-<p>And becomes Virtual Memory at 0x8000 0000</p>
+<p>A2 is <strong><code>0x8000</code> <code>AD00</code></strong></p>
+<p>(Buffer to be written)</p>
+</li>
+<li>
+<p>A3 is <strong><code>0x1E</code></strong></p>
+<p>(Number of bytes to write)</p>
 </li>
 </ul>
+<p>NuttX Kernel calls our Stub Function <strong>STUB_write</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>riscv_swint: SWInt Return: 37
+STUB_write: nbr=440, parm1=1, parm2=8000ad00, parm3=1e
+NuttShell (NSH) NuttX-12.0.3
+</code></pre></div>
+<p>Which calls Kernel “<strong>write</strong>” and <strong>prints the text</strong>: “NuttShell”</p>
+<p>Then NuttX Kernel completes the <strong><code>ecall</code></strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>riscv_swint: Entry: regs: 0x5040baa0 cmd: 3
+EPC: 80001a6a
+A0: 0003 A1: 5040bbec A2: 001e A3: 0000
+riscv_swint: SWInt Return: 1e
+</code></pre></div>
+<ul>
+<li>
+<p>A0 is <strong>3</strong></p>
+<p>(Return from System Call: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h#L80-L87"><strong>SYS_syscall_return</strong></a>)</p>
+</li>
+<li>
+<p>A2 is <strong><code>0x1E</code></strong></p>
+<p>(Number of bytes written)</p>
+</li>
+</ul>
+<p>And returns the result <strong><code>0x1E</code></strong> to our NuttX App.</p>
+<p>NuttX successfully makes a System Call on Ox64 SBC yay!</p>
+<p><a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17">(See the <strong>Complete Log</strong>)</a></p>
+<h1 id="kernel-accesses-user-memory"><a href="#kernel-accesses-user-memory">5 Kernel Accesses User Memory</a></h1>
+<p><em>NuttX Kernel prints the buffer at <code>0x8000</code> <code>AD00</code>…</em></p>
+<p><em>But it doesn’t look like a RAM Address?</em></p>
+<p>That’s actually a <strong>Virtual Memory Address</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/mmu"><strong>“RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit”</strong></a></li>
+</ul>
+<p>TLDR? No worries…</p>
+<ul>
+<li>
+<p><strong>Kernel RAM</strong> is at <strong><code>0x5000</code> <code>0000</code></strong></p>
+</li>
+<li>
+<p>Which gets dished out dynamically to <strong>NuttX Apps</strong></p>
+</li>
+<li>
+<p>And becomes <strong>Virtual Memory</strong> at <strong><code>0x8000</code> <code>0000</code></strong></p>
+</li>
+</ul>
+<p>Thus our NuttX App has passed a chunk of <strong>Virtual Memory</strong>. And NuttX Kernel happily prints it!</p>
+<p><em>Huh? NuttX Kernel can access Virtual Memory?</em></p>
+<p>TODO</p>
 <p>Supervisor Mode may access memory in User Mode only if <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation">SUM bit is set in sstatus</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/sched/init/nx_start.c#L298-L713">nx_start</a> calls…</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_initialstate.c#L41-L140">up_initial_state</a>, which calls…</p>
