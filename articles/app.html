@@ -73,7 +73,7 @@
 <li><a href="#nuttx-app-calls-nuttx-kernel">2 NuttX App calls NuttX Kernel</a><ul></ul></li>
 <li><a href="#nuttx-kernel-handles-system-call">3 NuttX Kernel handles System Call</a><ul></ul></li>
 <li><a href="#system-call-in-action">4 System Call in Action</a><ul></ul></li>
-<li><a href="#kernel-accesses-user-memory">5 Kernel Accesses User Memory</a><ul></ul></li>
+<li><a href="#kernel-accesses-app-memory">5 Kernel Accesses App Memory</a><ul></ul></li>
 <li><a href="#start-nuttx-apps">6 Start NuttX Apps</a><ul></ul></li>
 <li><a href="#initial-ram-disk">7 Initial RAM Disk</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Nov 2023</em></p>
@@ -448,7 +448,7 @@ riscv_swint: SWInt Return: 1e
 <p>And returns the result <strong><code>0x1E</code></strong> to our NuttX App.</p>
 <p>NuttX successfully makes a System Call on Ox64 SBC yay!</p>
 <p><a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17">(See the <strong>Complete Log</strong>)</a></p>
-<h1 id="kernel-accesses-user-memory"><a href="#kernel-accesses-user-memory">5 Kernel Accesses User Memory</a></h1>
+<h1 id="kernel-accesses-app-memory"><a href="#kernel-accesses-app-memory">5 Kernel Accesses App Memory</a></h1>
 <p><em>NuttX Kernel prints the buffer at <code>0x8000</code> <code>AD00</code>…</em></p>
 <p><em>But it doesn’t look like a RAM Address?</em></p>
 <p>That’s actually a <strong>Virtual Memory Address</strong>…</p>
@@ -467,7 +467,7 @@ riscv_swint: SWInt Return: 1e
 <p>And becomes <strong>Virtual Memory</strong> at <strong><code>0x8000</code> <code>0000</code></strong></p>
 </li>
 </ul>
-<p>Thus our NuttX App has passed a chunk of <strong>Virtual Memory</strong>. And NuttX Kernel happily prints it!</p>
+<p>Thus our NuttX App has passed a chunk of its own <strong>Virtual Memory</strong>. And NuttX Kernel happily prints it!</p>
 <p><em>Huh? NuttX Kernel can access Virtual Memory?</em></p>
 <p>TODO</p>
 <p>Supervisor Mode may access memory in User Mode only if <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation">SUM bit is set in sstatus</a></p>
