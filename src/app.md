@@ -449,6 +449,14 @@ Returns 0x1E = 30 chars, including [linefeeds before and after](https://github.c
 
 TODO
 
+TLDR...
+
+- NuttX Kernel RAM is at 0x5000 0000
+
+- Which gets dished out dynamically to NuttX Apps
+
+- And becomes Virtual Memory at 0x8000 0000
+
 Supervisor Mode may access memory in User Mode only if [SUM bit is set in sstatus](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation)
 
 [nx_start](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/sched/init/nx_start.c#L298-L713) calls...
