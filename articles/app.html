@@ -490,6 +490,7 @@ riscv_swint: SWInt Return: 1e
 </li>
 </ol>
 <p>That’s why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at <strong><code>0x8000</code> <code>0000</code></strong>!</p>
+<p>TODO: NuttX Flow</p>
 <h1 id="kernel-starts-a-nuttx-app"><a href="#kernel-starts-a-nuttx-app">6 Kernel Starts a NuttX App</a></h1>
 <p><em>Phew so NuttX Apps can call NuttX Kernel…</em></p>
 <p><em>But how does NuttX Kernel start a NuttX App?</em></p>
@@ -552,6 +553,9 @@ riscv_swint: SWInt Return: 1e
 </ul>
 <p>There’s plenty happening inside <a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450"><strong>Execute Module: exec_module</strong></a>. But we won’t explore today.</p>
 <h1 id="initial-ram-disk"><a href="#initial-ram-disk">7 Initial RAM Disk</a></h1>
+<p><em>Now we know how NuttX Kernel starts a NuttX App…</em></p>
+<p><em>But where are the NuttX Apps stored?</em></p>
+<p>Right now we’re working with the <strong>Early Port of NuttX</strong> to Ox64 BL808 SBC. We can’t access the File System in the microSD Card.</p>
 <p>TODO</p>
 <p>Two ways we can load the Initial RAM Disk…</p>
 <ol>
