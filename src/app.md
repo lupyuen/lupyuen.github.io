@@ -353,15 +353,19 @@ _How did we figure out that 63 is the System Call Number for "write"?_
 OK this part gets tricky. Below is the Enum that defines all __System Call Numbers__: [syscall.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall.h#L55-L66) and [syscall_lookup.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202)
 
 ```c
-// System Call Enum auto-defines
-// all System Call Numbers
+// System Call Enum sequentially assigns
+// all System Call Numbers (8 to 147-ish)
 enum {
+  ...
+  SYSCALL_LOOKUP(close, 1)
+  SYSCALL_LOOKUP(ioctl, 3)
+  SYSCALL_LOOKUP(read,  3)
   SYSCALL_LOOKUP(write, 3)
   ...
 };
 ```
 
-But it's an Enum, we won't actually see 63 in the NuttX Source Code.
+But it's an Enum, __numbered sequentially__ from 8 to 147-ish. We won't actually see 63 in the NuttX Source Code.
 
 Then we lookup the __Debug Info__ in our RISC-V Disassembly: [hello.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S)
 
