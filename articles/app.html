@@ -375,9 +375,9 @@ enum {
 </code></pre></div>
 <p>But it’s an Enum, <strong>numbered sequentially</strong> from 8 to 147-ish. We won’t actually see 63 in the NuttX Source Code.</p>
 <p>Then we lookup the <strong>Debug Info</strong> in our RISC-V Disassembly: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S">hello.S</a></p>
-<div class="example-wrap"><pre class="language-text"><code>&lt;2&gt;&lt;66e7&gt;: Abbrev Number: 6 (DW_TAG_enumerator)
-   &lt;66e8&gt;  DW_AT_name        : SYS_write
-   &lt;66ec&gt;  DW_AT_const_value : 63
+<div class="example-wrap"><pre class="language-text"><code>Abbrev Number: 6 (DW_TAG_enumerator)
+  DW_AT_name        : SYS_write
+  DW_AT_const_value : 63
 </code></pre></div>
 <p>Whoomp there it is! This says that “<strong>write</strong>” is <strong>System Call #63</strong>.</p>
 <p><em>That’s an odd way to define System Call Numbers…</em></p>
