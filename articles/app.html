@@ -306,11 +306,11 @@ PROXY_write.c
 // (Kernel Function Number `nbr` is unused)
 uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3) {
   return
-    (uintptr_t) write(           // Call the Kernel version of `write`
-      (int) parm1,               // File Descriptor (1 = Standard Output)
+    (uintptr_t) write(  // Call the Kernel version of `write`
+      (int) parm1,      // File Descriptor (1 = Standard Output)
       (FAR const void *) parm2,  // Buffer to be written
-      (size_t) parm3             // Number of bytes to write
-    );                           // Return the result to the App
+      (size_t) parm3    // Number of bytes to write
+    );                  // Return the result to the App
 }
 </code></pre></div>
 <p>Thus our <strong>NuttX Build</strong> auto-generates 2 things…</p>
@@ -334,13 +334,33 @@ STUB_chown.c
 </code></pre></div>
 <p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">(More about <strong>Proxy and Stub Functions</strong>)</a></p>
 <p><em>Who calls STUB_write?</em></p>
-<p>TODO: Handle IRQ 8 (RISCV_IRQ_ECALLU)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L114-L119">Attach RISCV_IRQ_ECALLU</a>, which calls…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537">riscv_swint</a>, which calls…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100">dispatch_syscall</a>, which calls Kernel Function Stub and… </p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_syscall.S#L49-L177">sys_call2</a> with A0=SYS_syscall_return (3), which calls…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_perform_syscall.c#L36-L78">riscv_perform_syscall</a>, which calls…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537">riscv_swint</a> with IRQ 0, to return from Syscall</p>
+<p>When our NuttX App makes an <strong><code>ecall</code></strong>, it triggers <strong>IRQ 8</strong> <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/risc-v/include/irq.h#L52-L75"><strong>(RISCV_IRQ_ECALLU)</strong></a> that’s <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L114-L119"><strong>handled by</strong></a>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537"><strong>riscv_swint</strong></a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a>, which calls the Kernel Stub Function (<strong>STUB_write</strong>) and… </p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_syscall.S#L49-L177"><strong>sys_call2</strong></a> with A0 set to <strong>SYS_syscall_return</strong> (3), which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_perform_syscall.c#L36-L78"><strong>riscv_perform_syscall</strong></a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537"><strong>riscv_swint</strong></a> with IRQ 0, to return from the <strong><code>ecall</code></strong></p>
+</li>
+</ul>
+<p><em>How will dispatch_syscall know which Stub Function to call?</em></p>
+<p>Remember that our Proxy Function (in NuttX App) will pass the <strong>Kernel Function Number</strong> for “<strong>write</strong>”?</p>
+<div class="example-wrap"><pre class="language-c"><code>// From nuttx/syscall/proxies/PROXY_write.c
+// Auto-Generated Proxy for `write`, called by NuttX App
+ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
+  return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
+    (unsigned int) SYS_write,  // Kernel Function Number (63 = `write`)
+    ...
+</code></pre></div>
+<p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a> (in NuttX Kernel)</p>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>SYSCALL_LOOKUP(write, 3)
 </code></pre></div>
