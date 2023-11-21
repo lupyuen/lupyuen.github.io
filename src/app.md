@@ -82,7 +82,9 @@ In the RISC-V Disassembly, we see that [__main__](https://github.com/lupyuen2/wi
 
 - [__lib_fwrite_unlocked__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L45-L200), which calls...
 
-- [__write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149) to print "Hello World"
+- [__write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149), which calls...
+
+- __NuttX Kernel__ to print "Hello World"
 
 How will [__write__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149) call the NuttX Kernel? We'll see soon!
 
@@ -765,6 +767,10 @@ From [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox6
 _Let's disable PLIC, and exclude PLIC from Memory Map. Will the NuttX Shell start?_
 
 Yep it does! [(See the log)](https://gist.github.com/lupyuen/9fc9b2de9938b48666cc5e5fa3f8278e)
+
+![Ox64 boots to NuttX Shell](https://lupyuen.github.io/images/mmu-boot1.png)
+
+[_Ox64 boots to NuttX Shell_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
 
 # What's Next
 
