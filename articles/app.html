@@ -426,6 +426,18 @@ riscv_swint: SWInt Return: 1e
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
 <h1 id="kernel-accesses-user-memory"><a href="#kernel-accesses-user-memory">5 Kernel Accesses User Memory</a></h1>
 <p>TODO</p>
+<p>TLDR…</p>
+<ul>
+<li>
+<p>NuttX Kernel RAM is at 0x5000 0000</p>
+</li>
+<li>
+<p>Which gets dished out dynamically to NuttX Apps</p>
+</li>
+<li>
+<p>And becomes Virtual Memory at 0x8000 0000</p>
+</li>
+</ul>
 <p>Supervisor Mode may access memory in User Mode only if <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation">SUM bit is set in sstatus</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/sched/init/nx_start.c#L298-L713">nx_start</a> calls…</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_initialstate.c#L41-L140">up_initial_state</a>, which calls…</p>
