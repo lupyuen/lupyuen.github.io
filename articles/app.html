@@ -377,7 +377,7 @@ enum {
 </code></pre></div>
 <p>Whoomp there it is! This says that “<strong>write</strong>” is <strong>System Call #63</strong>.</p>
 <p><em>That’s an odd way to define System Call Numbers…</em></p>
-<p>Yeah it’s <strong>not strictly an ABI</strong> like Linux, because our System Call Numbers may change! It depends on the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L90-L152"><strong>Build Options</strong></a> that we select.</p>
+<p>Yeah it’s <strong>not strictly an immutable ABI</strong> like Linux, because our System Call Numbers may change! It depends on the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L90-L152"><strong>Build Options</strong></a> that we select.</p>
 <p><a href="https://en.wikipedia.org/wiki/Application_binary_interface">(ABI means <strong>Application Binary Interface</strong>)</a></p>
 <p>But there’s a good thing: It’s a lot simpler to experiment with <strong>new System Calls</strong>!</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210">(Just add to <strong>NuttX System Calls</strong>)</a></p>
