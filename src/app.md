@@ -289,6 +289,7 @@ Remember the Proxy Function from earlier? Now we do the exact opposite in our __
 // Auto-Generated Stub File for `write`
 // This runs in NuttX Kernel triggered by `ecall`.
 // We make the actual call to `write`.
+// (Kernel Function Number `nbr` is unused)
 uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3) {
   return
     (uintptr_t) write(           // Call the Kernel version of `write`
