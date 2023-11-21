@@ -153,6 +153,28 @@ Let's circle back to __write__...
 
 # NuttX App calls NuttX Kernel
 
+_Our app will print something to the Console Output..._
+
+_But NuttX Apps can't write directly to the Serial Device right?_
+
+Nope! NuttX Apps run in __RISC-V User Mode__. Which doesn't have access to Serial Device and other resources controlled by NuttX Kernel. (Running in __RISC-V Supervisor Mode__)
+
+That's why "__write__" will trigger a __System Call__ to the NuttX Kernel, jumping from RISC-V __User Mode to Supervisor Mode__. And write to the Serial Device.
+
+_Will NuttX Apps need Special Coding to make System Calls?_
+
+Nope! The System Call is __totally transparent__ to our app...
+
+- Our __NuttX App__ will call a normal function named "__write__"...
+
+- That pretends to be the actual "__write__" function in __NuttX Kernel__...
+
+- By forwarding the "__write__" function call (and parameters)...
+
+- Through a __RISC-V System Call__
+
+_What's this "forwarding" to a System Call?_
+
 TODO
 
 [Syscall Layer](https://nuttx.apache.org/docs/latest/components/syscall.html)
@@ -271,7 +293,7 @@ PROXY_unsetenv.c
 PROXY_waitpid.c
 ```
 
-# Kernel Handles App Call
+# NuttX Kernel handles System Call
 
 TODO
 
