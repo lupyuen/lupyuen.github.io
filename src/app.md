@@ -12,9 +12,7 @@ TODO
 
 [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
 
-![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
-
-[_Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)_](https://wiki.pine64.org/wiki/Ox64)
+![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sbc.jpg)
 
 # Start NuttX Apps
 
@@ -68,18 +66,40 @@ Right after that, [__nx_bringup__](https://github.com/apache/nuttx/blob/master/s
 
 # Inside a NuttX App
 
-TODO
-
-_What's inside the simplest app for NuttX?_
-
-From [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/examples/hello/hello_main.c#L36-L40)
+_What happens inside the simplest NuttX App?_
 
 ```c
+// From https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/examples/hello/hello_main.c#L36-L40
 int main(int argc, FAR char *argv[]) {
   printf("Hello, World!!\n");
   return 0;
 }
 ```
+
+Let's find out! We build [__NuttX for Ox64 BL808 SBC__](https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx).
+
+Which produces this __ELF Executable__ for NuttX App...
+
+```bash
+## ELF Executable for `hello` looks big...
+$ ls -l ../apps/bin/hello
+-rwxr-xr-x  518,192  ../apps/bin/hello
+
+## But not much inside, mostly Debug Info...
+$ riscv64-unknown-elf-size ../apps/bin/hello
+   text  data  bss   dec  hex  filename
+   3814     8    4  3826  ef2  ../apps/bin/hello
+
+## Dump the RISC-V Disassembly to `hello.S`
+$ riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/bin/hello \
+  >hello.S \
+  2>&1
+```
+
+TODO
 
 Here's the RISC-V Disassembly: [hello.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S)
 
@@ -165,6 +185,8 @@ If we do this...
 ```
 
 Then `printf` will appear in our disassembly.
+
+![NuttX App calls NuttX Kernel](https://lupyuen.github.io/images/app-run.png)
 
 # NuttX App calls NuttX Kernel
 
@@ -290,7 +312,7 @@ PROXY_waitpid.c
 
 TODO
 
-nuttx/syscall/stubs/STUB_write.c
+From nuttx/syscall/stubs/STUB_write.c
 
 ```c
 /* Auto-generated write stub file -- do not edit */
@@ -407,6 +429,10 @@ After Call:
 A0=3 [(SYS_syscall_return)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h#L80-L87)
 
 Returns 0x1E = 30 chars, including [linefeeds before and after](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/nshlib/nsh_parse.c#L292-L302)
+
+Not strictly an SBI like Linux, because the Kernel Function Numbers may change!
+
+But it's a lot simpler to experiment with new Kernel Functions.
 
 # Kernel Accesses User Memory
 
