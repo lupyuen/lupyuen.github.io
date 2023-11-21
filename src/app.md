@@ -510,6 +510,8 @@ _Huh? NuttX Kernel can access Virtual Memory?_
 
 That's why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at __`0x8000` `0000`__!
 
+TODO: NuttX Flow
+
 # Kernel Starts a NuttX App
 
 _Phew so NuttX Apps can call NuttX Kernel..._
@@ -561,6 +563,12 @@ To load the ELF File: [__ELF Loader g_elfbinfmt__](https://github.com/apache/nut
 There's plenty happening inside [__Execute Module: exec_module__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450). But we won't explore today.
 
 # Initial RAM Disk
+
+_Now we know how NuttX Kernel starts a NuttX App..._
+
+_But where are the NuttX Apps stored?_
+
+Right now we're working with the __Early Port of NuttX__ to Ox64 BL808 SBC. We can't access the File System in the microSD Card.
 
 TODO
 
