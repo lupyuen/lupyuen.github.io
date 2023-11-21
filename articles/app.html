@@ -276,12 +276,10 @@ uintptr_t sys_call3(
 <p><em>Why the no-op after ecall?</em></p>
 <p>We’re guessing: It might be reserved for special calls to NuttX Kernel in future.</p>
 <p><a href="https://lupyuen.github.io/articles/semihost#decipher-the-risc-v-exception">(Similar to <strong><code>ebreak</code></strong> for Semihosting)</a></p>
-<p>TODO</p>
-<p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">Syscall Layer</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210">syscall.csv</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
-<p>List of proxies…</p>
-<div class="example-wrap"><pre class="language-bash"><code>→ grep PROXY hello.S
+<p><em>So every System Call to NuttX Kernel has its own Proxy Function?</em></p>
+<p>Yep we can see the list of Auto-Generated <strong>Proxy Functions</strong> for each System Call…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Proxy Functions called by `hello` app
+$ grep PROXY hello.S
 PROXY__assert.c
 PROXY__exit.c
 PROXY_clock_gettime.c
@@ -294,55 +292,9 @@ PROXY_sem_post.c
 PROXY_sem_trywait.c
 PROXY_task_setcancelstate.c
 PROXY_write.c
-
-→ grep PROXY init.S
-PROXY__assert.c
-PROXY__exit.c
-PROXY_clock_gettime.c
-PROXY_gettid.c
-PROXY_nxsem_wait.c
-PROXY_sched_getparam.c
-PROXY_sched_setparam.c
-PROXY_sem_clockwait.c
-PROXY_sem_destroy.c
-PROXY_sem_post.c
-PROXY_sem_trywait.c
-PROXY_task_setcancelstate.c
-PROXY_write.c
-PROXY_boardctl.c
-PROXY_clock_nanosleep.c
-PROXY_close.c
-PROXY_ftruncate.c
-PROXY_get_environ_ptr.c
-PROXY_getenv.c
-PROXY_gethostname.c
-PROXY_ioctl.c
-PROXY_kill.c
-PROXY_lseek.c
-PROXY_lstat.c
-PROXY_mkdir.c
-PROXY_mount.c
-PROXY_nx_pthread_create.c
-PROXY_nx_pthread_exit.c
-PROXY_nx_vsyslog.c
-PROXY_open.c
-PROXY_pgalloc.c
-PROXY_posix_spawn.c
-PROXY_pthread_detach.c
-PROXY_read.c
-PROXY_rename.c
-PROXY_rmdir.c
-PROXY_sched_getscheduler.c
-PROXY_sched_lock.c
-PROXY_sched_unlock.c
-PROXY_setenv.c
-PROXY_stat.c
-PROXY_sysinfo.c
-PROXY_umount2.c
-PROXY_unlink.c
-PROXY_unsetenv.c
-PROXY_waitpid.c
-</code></pre></div><h1 id="nuttx-kernel-handles-system-call"><a href="#nuttx-kernel-handles-system-call">3 NuttX Kernel handles System Call</a></h1>
+</code></pre></div>
+<p>Now we figure out how System Calls will work…</p>
+<h1 id="nuttx-kernel-handles-system-call"><a href="#nuttx-kernel-handles-system-call">3 NuttX Kernel handles System Call</a></h1>
 <p>TODO</p>
 <p>From nuttx/syscall/stubs/STUB_write.c</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Auto-generated write stub file -- do not edit */
@@ -430,6 +382,9 @@ riscv_swint: SWInt Return: 1e
 <p>Returns 0x1E = 30 chars, including <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/nshlib/nsh_parse.c#L292-L302">linefeeds before and after</a></p>
 <p>Not strictly an SBI like Linux, because the Kernel Function Numbers may change!</p>
 <p>But it’s a lot simpler to experiment with new Kernel Functions.</p>
+<p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">Syscall Layer</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210">syscall.csv</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
 <h1 id="kernel-accesses-user-memory"><a href="#kernel-accesses-user-memory">4 Kernel Accesses User Memory</a></h1>
 <p>TODO</p>
 <p>Supervisor Mode may access memory in User Mode only if <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation">SUM bit is set in sstatus</a></p>
