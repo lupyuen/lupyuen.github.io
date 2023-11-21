@@ -383,7 +383,7 @@ Yeah it's __not strictly an immutable ABI__ like Linux, because our System Call 
 
 [(ABI means __Application Binary Interface__)](https://en.wikipedia.org/wiki/Application_binary_interface)
 
-But there's a good thing: It's a lot simpler to experiment with __new System Calls__!
+But there's a jolly good thing: It's super simple to experiment with __new System Calls__!
 
 [(Just add to __NuttX System Calls__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210)
 
