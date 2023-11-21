@@ -375,7 +375,7 @@ Whoomp there it is! This says that "__write__" is __System Call #63__.
 
 _That's an odd way to define System Call Numbers..._
 
-Yeah it's __not strictly an ABI__ like Linux, because our System Call Numbers may change! It depends on the [__Build Options__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L90-L152) that we select.
+Yeah it's __not strictly an immutable ABI__ like Linux, because our System Call Numbers may change! It depends on the [__Build Options__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L90-L152) that we select.
 
 [(ABI means __Application Binary Interface__)](https://en.wikipedia.org/wiki/Application_binary_interface)
 
