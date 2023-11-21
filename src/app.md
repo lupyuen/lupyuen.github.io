@@ -308,6 +308,17 @@ Thus our __NuttX Build__ auto-generates 2 things...
 
 This happens for __every System Call__ exposed by NuttX Kernel.
 
+```bash
+## Stub Functions in NuttX Kernel
+$ grep STUB nuttx.S
+STUB__assert.c
+STUB__exit.c
+STUB_boardctl.c
+STUB_chmod.c
+STUB_chown.c
+...
+```
+
 [(More about __Proxy and Stub Functions__)](https://nuttx.apache.org/docs/latest/components/syscall.html)
 
 _Who calls STUB_write?_
