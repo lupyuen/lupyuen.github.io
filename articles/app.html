@@ -258,11 +258,11 @@ uintptr_t sys_call3(
   // Input+Output Registers: A0 to A3
   // Clobbers the Memory
   asm volatile
-    (
-     &quot;ecall&quot;
-     :: &quot;r&quot;(r0), &quot;r&quot;(r1), &quot;r&quot;(r2), &quot;r&quot;(r3)
-     : &quot;memory&quot;
-     );
+  (
+    &quot;ecall&quot;
+    :: &quot;r&quot;(r0), &quot;r&quot;(r1), &quot;r&quot;(r2), &quot;r&quot;(r3)
+    : &quot;memory&quot;
+  );
 
   // No-operation, does nothing
   asm volatile(&quot;nop&quot; : &quot;=r&quot;(r0));
@@ -271,7 +271,11 @@ uintptr_t sys_call3(
   return r0;
 }
 </code></pre></div>
-<p>TODO: Why <code>nop</code>?</p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--rv32"><strong><code>ecall</code></strong></a> is the RISC-V Instruction that triggers a jump from RISC-V <strong>User Mode to Supervisor Mode</strong>. So that NuttX Kernel can execute the actual “<strong>write</strong>” function. (With the actual Serial Device)</p>
+<p>(We’ll explain how)</p>
+<p><em>Why the no-op after ecall?</em></p>
+<p>We’re guessing: It might be reserved for special calls to NuttX Kernel in future.</p>
+<p><a href="https://lupyuen.github.io/articles/semihost#decipher-the-risc-v-exception">(Similar to <strong><code>ebreak</code></strong> for Semihosting)</a></p>
 <p>TODO</p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">Syscall Layer</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210">syscall.csv</a></p>
