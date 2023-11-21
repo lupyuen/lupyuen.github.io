@@ -175,38 +175,50 @@ Nope! The System Call is __totally transparent__ to our app...
 
 _What's this "forwarding" to a System Call?_
 
-TODO
-
-[Syscall Layer](https://nuttx.apache.org/docs/latest/components/syscall.html)
-
-[syscall.csv](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210)
-
-[syscall_lookup.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202)
-
-Our NuttX App calls `write`, which is a Proxy Version...
-
-From nuttx/syscall/proxies/PROXY_write.c
+This forwarding happens inside a __Proxy Function__ that's auto-generated during NuttX Build...
 
 ```c
-/* Auto-generated write proxy file -- do not edit */
-
-#include <nuttx/config.h>
-#include <unistd.h>
-#include <syscall.h>
-
-ssize_t write(int parm1, FAR const void * parm2, size_t parm3)
-{
-  return (ssize_t)sys_call3((unsigned int)SYS_write, (uintptr_t)parm1, (uintptr_t)parm2, (uintptr_t)parm3);
+// From nuttx/syscall/proxies/PROXY_write.c
+// Auto-Generated Proxy for `write`
+ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
+  return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
+    (unsigned int) SYS_write,  // Kernel Function Number for `write`
+    (uintptr_t) parm1,         // File Descriptor (1 = Standard Output)
+    (uintptr_t) parm2,         // Buffer to be written
+    (uintptr_t) parm3          // Number of bytes to write
+  );
 }
 ```
-Proxy for `write` calls...
+
+Our NuttX App calls this __Proxy Version__ of "__write__" (that pretends to be the Kernel "__write__")...
+
+```c
+// Our App calls the Proxy Function...
+int ret = write(
+  1,  // File Descriptor (1 = Standard Output)
+  "Hello, World!!\n",  // Buffer to be written
+  15  // Number of bytes to write
+);
+```
+
+Which triggers a __System Call__ to the Kernel.
+
+_What's inside sys_call3?_
+
+It makes a __System Call__ with __3 Parameters__
+
+TODO
 
 [sys_call3](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h), which makes an `ecall` to NuttX Kernel...
 
 ```c
-static inline uintptr_t sys_call3(unsigned int nbr, uintptr_t parm1,
-                                  uintptr_t parm2, uintptr_t parm3)
-{
+// Make a System Call with 3 parameters
+uintptr_t sys_call3(
+  unsigned int nbr,  // Kernel Function Number
+  uintptr_t parm1,   // First Parameter
+  uintptr_t parm2,   // Second Parameter
+  uintptr_t parm3    // Third Parameter
+) {
   register long r0 asm("a0") = (long)(nbr);
   register long r1 asm("a1") = (long)(parm1);
   register long r2 asm("a2") = (long)(parm2);
@@ -226,6 +238,15 @@ static inline uintptr_t sys_call3(unsigned int nbr, uintptr_t parm1,
 ```
 
 TODO: Why `nop`?
+
+TODO
+
+[Syscall Layer](https://nuttx.apache.org/docs/latest/components/syscall.html)
+
+[syscall.csv](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210)
+
+[syscall_lookup.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202)
+
 
 List of proxies...
 
