@@ -287,7 +287,7 @@ Remember the Proxy Function from earlier? Now we do the exact opposite in our __
 // Auto-Generated Stub File for `write`
 // This runs in NuttX Kernel triggered by `ecall`.
 // We make the actual call to `write`.
-// (System Call Number `nbr` is unused)
+// (`nbr` is Offset in Stub Lookup Table, unused)
 uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3) {
   return
     (uintptr_t) write(  // Call the Kernel version of `write`
@@ -395,73 +395,104 @@ But there's a jolly good thing: It's super simple to experiment with __new Syste
 
 _This looks complicated... But it works right?_
 
-Yep we have solid evidence, from NuttX on Ox64 BL808 SBC!
+Yep we have solid evidence, from [__NuttX for Ox64 BL808 SBC__](https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx)!
 
-TODO: Enable CONFIG_DEBUG_SYSCALL_INFO: Build Setup > Debug Options > Syscall Debug Features > Syscall Warning / Error / Info
+Remember to enable __System Call Logging__ in "`make menuconfig`"...
 
-From [ECALL Log](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17)
+```text
+Build Setup 
+  > Debug Options 
+    > Syscall Debug Features 
+      > Syscall Warning / Error / Info
+```
+
+Our app (NuttX Shell) is printing something to the console. (Pic above)
+
+It makes an __`ecall`__ for System Call #63 "__write__", which triggers __IRQ 8__...
 
 ```text
 riscv_dispatch_irq: irq=8
 riscv_swint: Entry: regs: 0x5040bcb0 cmd: 63
-up_dump_register: EPC: 00000000800019b2
-up_dump_register: A0: 000000000000003f A1: 0000000000000001 A2: 000000008000ad00 A3: 000000000000001e
-up_dump_register: A4: 0000000000000001 A5: 000000008000ad00 A6: 0000000000000000 A7: fffffffffffffff8
-up_dump_register: T0: 0000000050212a20 T1: 0000000000000007 T2: 0000000000000000 T3: 0000000080200908
-up_dump_register: T4: 0000000080200900 T5: 0000000000000000 T6: 0000000000000000
-up_dump_register: S0: 00000000802005c0 S1: 0000000080202010 S2: 0000000080202010 S3: 0000000000000000
-up_dump_register: S4: 0000000000000001 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
-up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
-up_dump_register: SP: 0000000080202b70 FP: 00000000802005c0 TP: 0000000000000000 RA: 0000000080001a6a
+EPC: 800019b2
+A0: 003f A1: 0001 A2: 8000ad00 A3: 001e
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17)
+
+And jumps to NuttX Kernel. The __RISC-V Registers__ look familiar...
+
+- A0 is __`0x3F`__
+
+  (System Call #63 for "__write__")
+
+- A1 is __`1`__
+
+  (File Descriptor #1 for Standard Output)
+
+- A2 is __`0x8000` `AD00`__
+
+  (Buffer to be written)
+
+- A3 is __`0x1E`__
+
+  (Number of bytes to write)
+
+NuttX Kernel calls our Stub Function __STUB_write__...
+
+```text
 riscv_swint: SWInt Return: 37
 STUB_write: nbr=440, parm1=1, parm2=8000ad00, parm3=1e
-
 NuttShell (NSH) NuttX-12.0.3
+```
+
+Which calls Kernel "__write__" and __prints the text__: "NuttShell"
+
+Then NuttX Kernel completes the __`ecall`__...
+
+```text
 riscv_swint: Entry: regs: 0x5040baa0 cmd: 3
-up_dump_register: EPC: 0000000080001a6a
-up_dump_register: A0: 0000000000000003 A1: 000000005040bbec A2: 000000000000001e A3: 0000000000000000
-up_dump_register: A4: 0000000000007fff A5: 0000000000000001 A6: 0000000000000009 A7: fffffffffffffff8
-up_dump_register: T0: 000000000000002e T1: 000000000000006a T2: 00000000000001ff T3: 000000000000006c
-up_dump_register: T4: 0000000000000068 T5: 0000000000000009 T6: 000000000000002a
-up_dump_register: S0: 00000000802005c0 S1: 0000000080202010 S2: 0000000080202010 S3: 0000000000000000
-up_dump_register: S4: 0000000000000001 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
-up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
-up_dump_register: SP: 000000005040bcb0 FP: 00000000802005c0 TP: 0000000000000000 RA: 0000000080001a6a
+EPC: 80001a6a
+A0: 0003 A1: 5040bbec A2: 001e A3: 0000
 riscv_swint: SWInt Return: 1e
 ```
 
-Before Call:
+- A0 is __3__
 
-A0=0x3f (SYS_write) 
+  (Return from System Call: [__SYS_syscall_return__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h#L80-L87))
 
-A1=1 (stdout)
+- A2 is __`0x1E`__
 
-A2=0x8000ad00 (g_nshgreeting)
+  (Number of bytes written)
 
-A3=0x1e (length)
+And returns the result __`0x1E`__ to our NuttX App.
 
-nbr=440 (Offset for the stub lookup table, [g_stublookup](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall_stublookup.c#L80-L93))
+NuttX successfully makes a System Call on Ox64 SBC yay!
 
-After Call:
-
-A0=3 [(SYS_syscall_return)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h#L80-L87)
-
-Returns 0x1E = 30 chars, including [linefeeds before and after](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/nshlib/nsh_parse.c#L292-L302)
-
-
-[syscall_lookup.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17)
 
 # Kernel Accesses User Memory
 
+_NuttX Kernel prints the buffer at `0x8000` `AD00`..._
+
+_But it doesn't look like a RAM Address?_
+
+That's actually a __Virtual Memory Address__...
+
+- [__"RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit"__](https://lupyuen.github.io/articles/mmu)
+
+TLDR? No worries...
+
+- __Kernel RAM__ is at __`0x5000` `0000`__
+
+- Which gets dished out dynamically to __NuttX Apps__
+
+- And becomes __Virtual Memory__ at __`0x8000` `0000`__
+
+Thus our NuttX App has passed a chunk of __Virtual Memory__. And NuttX Kernel happily prints it!
+
+_Huh? NuttX Kernel can access Virtual Memory?_
+
 TODO
-
-TLDR...
-
-- NuttX Kernel RAM is at 0x5000 0000
-
-- Which gets dished out dynamically to NuttX Apps
-
-- And becomes Virtual Memory at 0x8000 0000
 
 Supervisor Mode may access memory in User Mode only if [SUM bit is set in sstatus](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation)
 
