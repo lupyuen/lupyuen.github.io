@@ -149,8 +149,6 @@ Then __printf__ will appear in our RISC-V Disassembly.
 
 Let's circle back to __write__...
 
-![NuttX App calls NuttX Kernel](https://lupyuen.github.io/images/app-run.png)
-
 # NuttX App calls NuttX Kernel
 
 _Our app will print something to the Console Output..._
@@ -384,6 +382,14 @@ Yeah it's __not strictly an ABI__ like Linux, because our System Call Numbers ma
 But there's a good thing: It's a lot simpler to experiment with __new System Calls__!
 
 [(Just add to __NuttX System Calls__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210)
+
+![NuttX App calls NuttX Kernel](https://lupyuen.github.io/images/app-run.png)
+
+# System Call in Action
+
+_This looks complicated... But it works right?_
+
+Yep we have evidence, from NuttX on Ox64 BL808 SBC!
 
 TODO: Enable CONFIG_DEBUG_SYSCALL_INFO: Build Setup > Debug Options > Syscall Debug Features > Syscall Warning / Error / Info
 
