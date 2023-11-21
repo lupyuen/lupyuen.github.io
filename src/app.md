@@ -570,9 +570,11 @@ _But where are the NuttX Apps stored?_
 
 Right now we're working with the __Early Port of NuttX__ to Ox64 BL808 SBC. We can't access the File System in the microSD Card.
 
-TODO
+All we have: A File System that __lives in RAM__ and contains our NuttX Apps. That's our __Initial RAM Disk: initrd__.
 
-Two ways we can load the Initial RAM Disk...
+_How to load the Initial RAM Disk from microSD to RAM?_
+
+[__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) will do it for us! Two ways we can load the Initial RAM Disk...
 
 1.  Load the Initial RAM Disk from a __Separate File: initrd__ (similar to Star64)
 
@@ -594,8 +596,6 @@ Two ways we can load the Initial RAM Disk...
 
     [(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
 
-    __TODO:__ Can we mount the File System directly from the __NuttX Kernel Image in RAM__? Without copying to the [__RAM Disk Memory Region__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L26)?
-
 We'll do the Second Method, since we are low on RAM. Like this...
 
 ```bash
@@ -615,6 +615,10 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
 ## Overwrite the Linux Image on Ox64 microSD
 cp Image "/Volumes/NO NAME/"
 ```
+
+# TODO
+
+TODO
 
 This is how we copy the initrd in RAM to the Memory Region for the RAM Disk: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245)
 
