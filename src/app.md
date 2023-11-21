@@ -346,7 +346,7 @@ ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
     ...
 ```
 
-[__dispatch_syscall__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100) (in NuttX Kernel) will look up the System Call Number in the [__Stub Lookup Tables__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall_stublookup.c#L80-L93). And fetch the __Stub Function__ to call.
+[__dispatch_syscall__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100) (in NuttX Kernel) will look up the System Call Number in the [__Stub Lookup Table__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall_stublookup.c#L80-L93). And fetch the __Stub Function__ to call.
 
 _How did we figure out that 63 is the System Call Number for "write"?_
 
@@ -386,6 +386,8 @@ Yeah it's __not strictly an immutable ABI__ like Linux, because our System Call 
 But there's a good thing: It's a lot simpler to experiment with __new System Calls__!
 
 [(Just add to __NuttX System Calls__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210)
+
+[(As explained here)](https://nuttx.apache.org/docs/latest/components/syscall.html)
 
 ![NuttX App calls NuttX Kernel](https://lupyuen.github.io/images/app-run.png)
 
