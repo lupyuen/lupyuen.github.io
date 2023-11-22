@@ -437,7 +437,7 @@ And jumps to NuttX Kernel. The __RISC-V Registers__ look familiar...
 
   (File Descriptor #1 for Standard Output)
 
-- A2 is __`0x8000` `AD00`__
+- A2 is __`0x8000_AD00`__
 
   (Buffer to be written)
 
@@ -484,7 +484,7 @@ NuttX successfully makes a System Call on Ox64 SBC yay! (Pic above)
 
 # Kernel Accesses App Memory
 
-_NuttX Kernel prints the buffer at `0x8000` `AD00`..._
+_NuttX Kernel prints the buffer at `0x8000_AD00`..._
 
 _But it doesn't look like a RAM Address?_
 
@@ -494,11 +494,11 @@ That's actually a __Virtual Memory Address__...
 
 TLDR? No worries...
 
-- __Kernel RAM__ is at __`0x5000` `0000`__
+- __Kernel RAM__ is at __`0x5000_0000`__
 
 - Which gets dished out dynamically to __NuttX Apps__
 
-- And becomes __Virtual Memory__ at __`0x8000` `0000`__ (pic above)
+- And becomes __Virtual Memory__ at __`0x8000_0000`__ (pic above)
 
 Thus our NuttX App has passed a chunk of its own __Virtual Memory__. And NuttX Kernel happily prints it!
 
@@ -508,7 +508,7 @@ _Huh? NuttX Kernel can access Virtual Memory?_
 
 1.  According to the [__NuttX Log__](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17), the Kernel swaps the [__RISC-V SATP Register__](https://lupyuen.github.io/articles/mmu#swap-the-satp-register) from Kernel Page Table to __User Page Table__. But doesn't swap back!
 
-1.  Which means the __User Page Table__ is still in effect! Thus the User Addresses at __`0x8000` `0000`__ perfectly accessible by the Kernel.
+1.  Which means the __User Page Table__ is still in effect! Thus the User Addresses at __`0x8000_0000`__ perfectly accessible by the Kernel.
 
 1.  But there's a catch: __RISC-V Supervisor Mode__ (NuttX Kernel) may access the Virtual Memory mapped to __RISC-V User Mode__ (NuttX Apps)...
 
@@ -520,7 +520,7 @@ _Huh? NuttX Kernel can access Virtual Memory?_
 
     [__riscv_set_idleintctx__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_getnewintctx.c#L74-L81) to set the __SUM Bit__ in SSTATUS Register
 
-That's why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at __`0x8000` `0000`__!
+That's why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at __`0x8000_0000`__!
 
 TODO: NuttX Flow
 
@@ -667,7 +667,7 @@ We __search our RAM__ for the ROM File System, then copy it into the designated 
 
 ```c
 // Locate the Initial RAM Disk and copy to the designated Memory Region
-static void jh7110_copy_ramdisk(void) {
+void jh7110_copy_ramdisk(void) {
 
   // After _edata, search for "-rom1fs-". This is the RAM Disk Address.
   // Limit search to 256 KB after Idle Stack Top.
@@ -827,11 +827,11 @@ Or graphically...
 
 | Memory Region | Start | End |
 |:--------------|:-----:|:---:|
-| __Data Section__ | | `0x5040` `0258`
-| __BSS Section__ | `0x5040` `0290` | `0x5040` `7000`
-| __Kernel Idle Stack__ | | `0x5040` `7000`
-| __Initial RAM Disk__ | `0x5040` `8288` | `0x50BD` `8297`
-| __RAM Disk Region__ | `0x50A0` `0000` | `0x519F` `FFFF`
+| __Data Section__ | | `0x5040_0257`
+| __BSS Section__ | `0x5040_0290` | `0x5040_6FFF`
+| __Kernel Idle Stack__ | | `0x5040_7BFF`
+| __Initial RAM Disk__ | `0x5040_8288` | `0x50BD_8297`
+| __RAM Disk Region__ | `0x50A0_0000` | `0x519F_FFFF`
 
 (NuttX will mount the RAM Disk from __RAM Disk Region__)
 
@@ -892,7 +892,7 @@ __`memcpy`__ won't work with __Overlapping Memory Regions__. Thus we added this:
 // Copy a chunk of memory from `src` to `dest`.
 // `dest` overlaps with the end of `src`.
 // From libs/libc/string/lib_memmove.c
-static void *local_memmove(void *dest, const void *src, size_t count) {
+void *local_memmove(void *dest, const void *src, size_t count) {
   DEBUGASSERT(dest > src);
   char *d = (char *) dest + count;
   char *s = (char *) src + count;
