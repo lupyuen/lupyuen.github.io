@@ -198,7 +198,7 @@ printf(&quot;Hello, World %s!!\n&quot;, &quot;Luppy&quot;);
 </code></pre></div>
 <p>Then <strong>printf</strong> will appear in our RISC-V Disassembly.</p>
 <p>Let’s circle back to <strong>write</strong>…</p>
-<p>TODO: Diagram</p>
+<p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX App calls NuttX Kernel" /></p>
 <h1 id="nuttx-app-calls-nuttx-kernel"><a href="#nuttx-app-calls-nuttx-kernel">2 NuttX App calls NuttX Kernel</a></h1>
 <p><em>Our app will print something to the Console Output…</em></p>
 <p><em>But NuttX Apps can’t write directly to the Serial Device right?</em></p>
@@ -301,7 +301,7 @@ PROXY_task_setcancelstate.c
 PROXY_write.c
 </code></pre></div>
 <p>Now we figure out how System Calls will work…</p>
-<p>TODO: Diagram</p>
+<p><img src="https://lupyuen.github.io/images/app-syscall2.jpg" alt="NuttX Kernel handles System Call" /></p>
 <h1 id="nuttx-kernel-handles-system-call"><a href="#nuttx-kernel-handles-system-call">3 NuttX Kernel handles System Call</a></h1>
 <p><em>Our App makes an ecall to jump to NuttX Kernel…</em></p>
 <p><em>What happens on the other side?</em></p>
@@ -624,7 +624,7 @@ cp Image &quot;/Volumes/NO NAME/&quot;
 ## Initial RAM Disk into RAM
 </code></pre></div>
 <p>Let’s make this work…</p>
-<p>TODO: Pic of initrd</p>
+<p><img src="https://lupyuen.github.io/images/app-initrd.jpg" alt="Initial RAM Disk for Ox64" /></p>
 <h1 id="mount-the-initial-ram-disk"><a href="#mount-the-initial-ram-disk">8 Mount the Initial RAM Disk</a></h1>
 <p><em>How will NuttX Kernel locate the Initial RAM Disk in RAM?</em></p>
 <p>Our Initial RAM Disk is in <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM File System Format</strong></a>.</p>
