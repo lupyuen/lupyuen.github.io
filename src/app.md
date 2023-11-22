@@ -706,7 +706,7 @@ static void jh7110_copy_ramdisk(void) {
 }
 ```
 
-_What's ramdisk_start?_
+_Why did we copy Initial RAM Disk to ramdisk_start?_
 
 __ramdisk_start__ points to the Memory Region that we reserved for mounting our RAM Disk. It's defined in the __NuttX Linker Script__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L21-L48)
 
