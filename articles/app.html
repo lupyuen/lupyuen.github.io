@@ -195,6 +195,7 @@ printf(&quot;Hello, World %s!!\n&quot;, &quot;Luppy&quot;);
 </code></pre></div>
 <p>Then <strong>printf</strong> will appear in our RISC-V Disassembly.</p>
 <p>Let’s circle back to <strong>write</strong>…</p>
+<p>TODO: Diagram</p>
 <h1 id="nuttx-app-calls-nuttx-kernel"><a href="#nuttx-app-calls-nuttx-kernel">2 NuttX App calls NuttX Kernel</a></h1>
 <p><em>Our app will print something to the Console Output…</em></p>
 <p><em>But NuttX Apps can’t write directly to the Serial Device right?</em></p>
@@ -297,6 +298,7 @@ PROXY_task_setcancelstate.c
 PROXY_write.c
 </code></pre></div>
 <p>Now we figure out how System Calls will work…</p>
+<p>TODO: Diagram</p>
 <h1 id="nuttx-kernel-handles-system-call"><a href="#nuttx-kernel-handles-system-call">3 NuttX Kernel handles System Call</a></h1>
 <p><em>Our App makes an ecall to jump to NuttX Kernel…</em></p>
 <p><em>What happens on the other side?</em></p>
@@ -382,6 +384,7 @@ enum {
   DW_AT_const_value : 63
 </code></pre></div>
 <p>Whoomp there it is! This says that “<strong>write</strong>” is <strong>System Call #63</strong>.</p>
+<p>TODO: Change hello.S to nuttx.S</p>
 <p><em>That’s an odd way to define System Call Numbers…</em></p>
 <p>Yeah it’s <strong>not strictly an immutable ABI</strong> like Linux, because our System Call Numbers may change! It depends on the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L90-L152"><strong>Build Options</strong></a> that we select.</p>
 <p><a href="https://en.wikipedia.org/wiki/Application_binary_interface">(ABI means <strong>Application Binary Interface</strong>)</a></p>
@@ -448,8 +451,10 @@ riscv_swint: SWInt Return: 1e
 </li>
 </ul>
 <p>And returns the result <strong><code>0x1E</code></strong> to our NuttX App.</p>
-<p>NuttX successfully makes a System Call on Ox64 SBC yay!</p>
+<p>NuttX successfully makes a System Call on Ox64 SBC yay! (Pic above)</p>
 <p><a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17">(See the <strong>Complete Log</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Virtual Memory for NuttX App" /></p>
+<p><a href="https://lupyuen.github.io/articles/mmu#virtual-memory"><em>Virtual Memory for NuttX App</em></a></p>
 <h1 id="kernel-accesses-app-memory"><a href="#kernel-accesses-app-memory">5 Kernel Accesses App Memory</a></h1>
 <p><em>NuttX Kernel prints the buffer at <code>0x8000</code> <code>AD00</code>…</em></p>
 <p><em>But it doesn’t look like a RAM Address?</em></p>
@@ -466,7 +471,7 @@ riscv_swint: SWInt Return: 1e
 <p>Which gets dished out dynamically to <strong>NuttX Apps</strong></p>
 </li>
 <li>
-<p>And becomes <strong>Virtual Memory</strong> at <strong><code>0x8000</code> <code>0000</code></strong></p>
+<p>And becomes <strong>Virtual Memory</strong> at <strong><code>0x8000</code> <code>0000</code></strong> (pic above)</p>
 </li>
 </ul>
 <p>Thus our NuttX App has passed a chunk of its own <strong>Virtual Memory</strong>. And NuttX Kernel happily prints it!</p>
@@ -554,26 +559,34 @@ riscv_swint: SWInt Return: 1e
 </li>
 </ul>
 <p>There’s plenty happening inside <a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450"><strong>Execute Module: exec_module</strong></a>. But we won’t explore today.</p>
+<p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="Initial RAM Disk for Star64 JH7110" /></p>
+<p><a href="https://lupyuen.github.io/articles/semihost"><em>Initial RAM Disk for Star64 JH7110</em></a></p>
 <h1 id="initial-ram-disk"><a href="#initial-ram-disk">7 Initial RAM Disk</a></h1>
 <p><em>Now we know how NuttX Kernel starts a NuttX App…</em></p>
 <p><em>But where are the NuttX Apps stored?</em></p>
 <p>Right now we’re working with the <strong>Early Port of NuttX</strong> to Ox64 BL808 SBC. We can’t access the File System in the microSD Card.</p>
 <p>All we have: A File System that <strong>lives in RAM</strong> and contains our NuttX Shell + NuttX Apps. That’s our <strong>Initial RAM Disk: initrd</strong>.</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Build the Apps File System
+<div class="example-wrap"><pre class="language-bash"><code>## Build the Apps Filesystem
 make -j 8 export
 pushd ../apps
 ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
 make -j 8 import
 popd
 
-## Generate the Initial RAM Disk
-genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
+## Generate the Initial RAM Disk `initrd`
+## in ROMFS Filesystem Format
+## from the Apps Filesystem `../apps/bin`
+## and label it `NuttXBootVol`
+genromfs \
+  -f initrd \
+  -d ../apps/bin \
+  -V &quot;NuttXBootVol&quot;
 </code></pre></div>
 <p><em>How to load the Initial RAM Disk from microSD to RAM?</em></p>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> will do it for us! Two ways we can load the Initial RAM Disk from microSD…</p>
 <ol>
 <li>
-<p>Load the Initial RAM Disk from a <strong>Separate File: initrd</strong> (similar to Star64)</p>
+<p>Load the Initial RAM Disk from a <strong>Separate File: initrd</strong> (similar to Star64, pic above)</p>
 <p>This means we need to modify the <a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd"><strong>U-Boot Script: boot-pine64.scr</strong></a></p>
 <p>And make it <a href="https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk"><strong>load the initrd</strong></a> file into RAM.</p>
 <p>(Which is good for separating the NuttX Kernel and NuttX Apps)</p>
@@ -608,6 +621,7 @@ cp Image &quot;/Volumes/NO NAME/&quot;
 ## Initial RAM Disk into RAM
 </code></pre></div>
 <p>Let’s make this work…</p>
+<p>TODO: Pic of initrd</p>
 <h1 id="mount-the-initial-ram-disk"><a href="#mount-the-initial-ram-disk">8 Mount the Initial RAM Disk</a></h1>
 <p><em>How will NuttX Kernel locate the Initial RAM Disk in RAM?</em></p>
 <p>Our Initial RAM Disk is in <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM File System Format</strong></a>.</p>
@@ -652,8 +666,8 @@ static void jh7110_copy_ramdisk(void) {
 }
 </code></pre></div>
 <p><em>What’s ramdisk_start?</em></p>
-<p><strong>ramdisk_start</strong> points to the Memory Region that we reserved for mounting our RAM Disk. It’s defined in the NuttX Linker Script: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L21-L48">ld.script</a></p>
-<div class="example-wrap"><pre class="language-yaml"><code>/* Memory Region for RAM Disk */
+<p><strong>ramdisk_start</strong> points to the Memory Region that we reserved for mounting our RAM Disk. It’s defined in the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L21-L48">ld.script</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/* Memory Region for RAM Disk */
 ramdisk (rwx) : ORIGIN = 0x50A00000, LENGTH = 16M
 ...
 __ramdisk_start = ORIGIN(ramdisk);
@@ -661,8 +675,8 @@ __ramdisk_size = LENGTH(ramdisk);
 __ramdisk_end  = ORIGIN(ramdisk) + LENGTH(ramdisk);
 </code></pre></div>
 <p><em>Who calls the code above?</em></p>
-<p>We search and copy the Initial RAM Disk at the very top of our <strong>NuttX Start Code</strong>. </p>
-<p>This happens before erasing the BSS, in case it corrupts our RAM Disk (but actually it shouldn’t): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L144-L156">jh7110_start.c</a></p>
+<p>We locate and copy the Initial RAM Disk at the very top of our <strong>NuttX Start Code</strong>. </p>
+<p>This happens before erasing the BSS, in case it corrupts our RAM Disk: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L144-L156">jh7110_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX Start Code
 void jh7110_start(int mhartid) {
 
@@ -672,6 +686,7 @@ void jh7110_start(int mhartid) {
   // Clear the BSS
   jh7110_clear_bss();
 </code></pre></div>
+<p>(But actually BSS shouldn’t matter, as explained below)</p>
 <p>Later during startup, we <strong>mount the RAM Disk</strong> from the Memory Region : <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L51-L87">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// After NuttX has booted...
 void board_late_initialize(void) {
@@ -704,6 +719,7 @@ elf_init: filename: /system/bin/init loadinfo: 0x5040c618
 elf_read: Read 64 bytes from offset 0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89">(Source)</a></p>
+<p>TODO: Padding pic</p>
 <h1 id="pad-the-initial-ram-disk"><a href="#pad-the-initial-ram-disk">9 Pad the Initial RAM Disk</a></h1>
 <p><em>Why did we pad 64 KB of zeroes between NuttX Kernel and Initial RAM Disk?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Prepare a Padding with 64 KB of zeroes
@@ -792,18 +808,16 @@ DEBUGASSERT(size &lt;= (size_t)__ramdisk_size);
 <p><em>Why call local_memmove to copy initrd to RAM Disk Region? Why not memcpy?</em></p>
 <p>That’s because <strong><code>initrd</code></strong> overlaps with <strong>RAM Disk Region</strong>! (See above)</p>
 <p><strong><code>memcpy</code></strong> won’t work with <strong>Overlapping Memory Regions</strong>. Thus we added this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487">jh7110_start.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// From libs/libc/string/lib_memmove.c
-static FAR void *local_memmove(FAR void *dest, FAR const void *src, size_t count) {
-  FAR char *d;
-  FAR char *s;
+<div class="example-wrap"><pre class="language-c"><code>// Copy a chunk of memory from `src` to `dest`.
+// `dest` overlaps with the end of `src`.
+// From libs/libc/string/lib_memmove.c
+static void *local_memmove(void *dest, const void *src, size_t count) {
   DEBUGASSERT(dest &gt; src);
-  d = (FAR char *) dest + count;
-  s = (FAR char *) src + count;
-
+  char *d = (char *) dest + count;
+  char *s = (char *) src + count;
+  // TODO: This needs to be `volatile` or GCC Compiler will replace this by memcpy. Very strange. 
   while (count--) {
-    d -= 1;
-    s -= 1;
-    // TODO: Very strange. This needs to be volatile or C Compiler will replace this by memcpy.
+    d -= 1; s -= 1;
     volatile char c = *s;
     *d = c;
   }
@@ -825,7 +839,7 @@ local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
 verify_image(__ramdisk_start);
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L248-L455">(<strong><code>verify_image</code></strong> does a simple Integrity Check)</a></p>
-<p>That’s how we discovered that <strong><code>memcpy</code></strong> doesn’t work. And our <strong><code>local_memmove</code></strong> works great!</p>
+<p>That’s how we discovered that <strong><code>memcpy</code></strong> doesn’t work. And our <strong><code>local_memmove</code></strong> works great! (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525"><em>Ox64 boots to NuttX Shell</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
