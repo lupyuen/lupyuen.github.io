@@ -151,7 +151,7 @@ Then __printf__ will appear in our RISC-V Disassembly.
 
 Let's circle back to __write__...
 
-TODO: Diagram
+![NuttX App calls NuttX Kernel](https://lupyuen.github.io/images/app-syscall.jpg)
 
 # NuttX App calls NuttX Kernel
 
@@ -278,7 +278,7 @@ PROXY_write.c
 
 Now we figure out how System Calls will work...
 
-TODO: Diagram
+![NuttX Kernel handles System Call](https://lupyuen.github.io/images/app-syscall2.jpg)
 
 # NuttX Kernel handles System Call
 
@@ -655,7 +655,7 @@ cp Image "/Volumes/NO NAME/"
 
 Let's make this work...
 
-TODO: Pic of initrd
+![Initial RAM Disk for Ox64](https://lupyuen.github.io/images/app-initrd.jpg)
 
 # Mount the Initial RAM Disk
 
