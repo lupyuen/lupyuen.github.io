@@ -781,7 +781,9 @@ TODO: Padding pic
 
 # Pad the Initial RAM Disk
 
-_Why did we pad 64 KB of zeroes between NuttX Kernel and Initial RAM Disk?_
+_Between NuttX Kernel and Initial RAM Disk..._
+
+_Why did we pad 64 KB of zeroes?_
 
 ```bash
 ## Prepare a Padding with 64 KB of zeroes
