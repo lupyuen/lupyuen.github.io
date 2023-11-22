@@ -913,7 +913,7 @@ cd nuttx
 tools/configure.sh star64:nsh
 make
 
-## Export the NuttX Binary Image
+## Export the NuttX Kernel
 ## to `nuttx.bin`
 riscv64-unknown-elf-objcopy \
   -O binary \
@@ -928,17 +928,11 @@ riscv64-unknown-elf-objcopy \
 Then we build the __Initial RAM Disk__ that contains NuttX Shell and NuttX Apps...
 
 ```bash
-## Go to NuttX Folder
-pushd ../nuttx
-
 ## Build the Apps Filesystem
 make -j 8 export
 pushd ../apps
 ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
 make -j 8 import
-popd
-
-## Return to previous folder
 popd
 
 ## Generate the Initial RAM Disk
@@ -947,7 +941,7 @@ genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
 ## Prepare a Padding with 64 KB of zeroes
 head -c 65536 /dev/zero >/tmp/nuttx.zero
 
-## Append Padding and Initial RAM Disk to Binary Image
+## Append Padding and Initial RAM Disk to NuttX Kernel
 cat nuttx.bin /tmp/nuttx.zero initrd \
   >Image
 ```

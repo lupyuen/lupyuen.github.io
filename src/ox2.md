@@ -81,7 +81,7 @@ Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous art
 Then we do the [__Linux-To-NuttX Switcheroo__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64): Overwrite the microSD Linux Image by the __NuttX Kernel__...
 
 ```bash
-## Export the NuttX Binary Image
+## Export the NuttX Kernel
 ## to `nuttx.bin`
 riscv64-unknown-elf-objcopy \
   -O binary \
@@ -1079,7 +1079,7 @@ Two ways we can load the Initial RAM Disk...
 We'll probably adopt the Second Method, since we are low on RAM. Like this...
 
 ```bash
-## Export the NuttX Binary Image to `nuttx.bin`
+## Export the NuttX Kernel to `nuttx.bin`
 riscv64-unknown-elf-objcopy \
   -O binary \
   nuttx \
@@ -1088,12 +1088,15 @@ riscv64-unknown-elf-objcopy \
 ## Prepare a Padding with 64 KB of zeroes
 head -c 65536 /dev/zero >/tmp/nuttx.zero
 
-## Append Padding and Initial RAM Disk to Binary Image
+## Append Padding and Initial RAM Disk to NuttX Kernel
 cat nuttx.bin /tmp/nuttx.zero initrd \
   >Image
 
 ## Overwrite the Linux Image on Ox64 microSD
 cp Image "/Volumes/NO NAME/"
+
+## U-Boot Bootloader will load NuttX Kernel and
+## Initial RAM Disk into RAM
 ```
 
 Check out our progress here...
