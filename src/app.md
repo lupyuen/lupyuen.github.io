@@ -752,9 +752,7 @@ elf_read: Read 64 bytes from offset 0
 
 # Pad the Initial RAM Disk
 
-TODO
-
-_Why did we insert 64 KB of zeroes after the NuttX NuttX Kernel, before the initrd Initial RAM Disk?_
+_Why did we pad 64 KB of zeroes between NuttX Kernel and Initial RAM Disk?_
 
 ```bash
 ## Prepare a Padding with 64 KB of zeroes
@@ -763,9 +761,16 @@ head -c 65536 /dev/zero >/tmp/nuttx.zero
 ## Append Padding and Initial RAM Disk to NuttX Kernel
 cat nuttx.bin /tmp/nuttx.zero initrd \
   >Image
+
+## U-Boot Bootloader will load NuttX Kernel and
+## Initial RAM Disk into RAM
 ```
 
-When we refer to the [NuttX Log](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89) and the [NuttX Linker Script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script)...
+U-Boot Bootloader will load our Initial RAM Disk into RAM, dangerously close to __BSS Memory__ (Global and Static Variables) and __Kernel Stack__.
+
+There's a risk that our Initial RAM Disk will be __contaminated by BSS and Stack__. This is how we found a safe space for our Initial RAM Disk...
+
+When we refer to the [__NuttX Log__](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89) and the [__NuttX Linker Script__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script)...
 
 ```text
 // End of Data Section
@@ -787,19 +792,23 @@ ramdisk_addr=0x50408288, size=8192016
 __ramdisk_start=0x50a00000
 ```
 
+Or graphically...
+
+TODO
+
 Which says...
 
-1.  The NuttX Kernel `nuttx.bin` terminates at `_edata`. (End of Data Section)
+1.  The NuttX Kernel __`nuttx.bin`__ terminates at __`_edata`__. (End of Data Section)
 
-1.  If we append `initrd` directly to the end of `nuttx.bin`, it will collide with the [BSS Section](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L74-L92) and the [Idle Stack](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_head.S#L94-L101). And `initrd` will get overwritten by NuttX.
+1.  If we append __`initrd`__ directly to the end of __`nuttx.bin`__, it will collide with the [__BSS Section__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L74-L92) and the [__Kernel Idle Stack__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_head.S#L94-L101). And __`initrd`__ will get overwritten by NuttX.
 
-1.  Best place to append `initrd` is after the Top of Idle Stack. Which is located 32 KB after `_edata`. (End of Data Section)
+1.  Best place to append __`initrd`__ is after the Top of Idle Stack. Which is located 32 KB after __`_edata`__. (End of Data Section)
 
-1.  That's why we inserted a padding of 64 KB between `nuttx.bin` and `initrd`. So it won't collide with BSS and Idle Stack.
+1.  That's why we inserted a padding of 64 KB between __`nuttx.bin`__ and __`initrd`__. So it won't collide with BSS and Idle Stack.
 
-1.  Our code locates `initrd` (searching by Magic Number "-rom1fs-"). And copies `initrd` to `__ramdisk_start`. (Memory Region for the RAM Disk)
+1.  Our code locates __`initrd`__ (searching by Magic Number "-rom1fs-"). And copies __`initrd`__ to __`ramdisk_start`__. (Memory Region for the RAM Disk)
 
-1.  NuttX mounts the RAM Disk from `__ramdisk_start`. (Memory Region for the RAM Disk)
+1.  NuttX mounts the RAM Disk from __`ramdisk_start`__. (Memory Region for the RAM Disk)
 
 _But 64 KB sounds so arbitrary. What if the parameters change?_
 
@@ -811,9 +820,9 @@ That's why we have a Runtime Check: [jh7110_start.c](https://github.com/lupyuen2
   DEBUGASSERT(ramdisk_addr > (uint8_t *)JH7110_IDLESTACK_TOP);
 ```
 
-_Why did we call local_memmove to copy `initrd` to `__ramdisk_start`? Why not memcpy?_
+_Why did we call local_memmove to copy initrd to ramdisk_start? Why not memcpy?_
 
-That's because `initrd` overlaps with `__ramdisk_start`!
+That's because __`initrd`__ overlaps with __`ramdisk_start`__!
 
 ```
 ramdisk_addr = 0x50408288, size = 8192016
@@ -821,7 +830,7 @@ ramdisk_addr + size = 0x50bd8298
 Which is AFTER __ramdisk_start (0x50a00000)
 ```
 
-`memcpy` won't work with Overlapping Memory Regions. So we wrote our own: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487)
+__`memcpy`__ won't work with __Overlapping Memory Regions__. Thus we wrote our own: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487)
 
 ```c
 // From libs/libc/string/lib_memmove.c
