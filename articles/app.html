@@ -704,16 +704,20 @@ elf_read: Read 64 bytes from offset 0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89">(Source)</a></p>
 <h1 id="pad-the-initial-ram-disk"><a href="#pad-the-initial-ram-disk">9 Pad the Initial RAM Disk</a></h1>
-<p>TODO</p>
-<p><em>Why did we insert 64 KB of zeroes after the NuttX NuttX Kernel, before the initrd Initial RAM Disk?</em></p>
+<p><em>Why did we pad 64 KB of zeroes between NuttX Kernel and Initial RAM Disk?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Prepare a Padding with 64 KB of zeroes
 head -c 65536 /dev/zero &gt;/tmp/nuttx.zero
 
 ## Append Padding and Initial RAM Disk to NuttX Kernel
 cat nuttx.bin /tmp/nuttx.zero initrd \
   &gt;Image
+
+## U-Boot Bootloader will load NuttX Kernel and
+## Initial RAM Disk into RAM
 </code></pre></div>
-<p>When we refer to the <a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89">NuttX Log</a> and the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script">NuttX Linker Script</a>…</p>
+<p>U-Boot Bootloader will load our Initial RAM Disk into RAM, dangerously close to <strong>BSS Memory</strong> (Global and Static Variables) and <strong>Kernel Stack</strong>.</p>
+<p>There’s a risk that our Initial RAM Disk will be <strong>contaminated by BSS and Stack</strong>. This is how we found a safe space for our Initial RAM Disk…</p>
+<p>When we refer to the <a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89"><strong>NuttX Log</strong></a> and the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script"><strong>NuttX Linker Script</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>// End of Data Section
 _edata=0x50400258
 
@@ -732,25 +736,27 @@ ramdisk_addr=0x50408288, size=8192016
 // And we copied initrd to the Memory Region for the RAM Disk
 __ramdisk_start=0x50a00000
 </code></pre></div>
+<p>Or graphically…</p>
+<p>TODO</p>
 <p>Which says…</p>
 <ol>
 <li>
-<p>The NuttX Kernel <code>nuttx.bin</code> terminates at <code>_edata</code>. (End of Data Section)</p>
+<p>The NuttX Kernel <strong><code>nuttx.bin</code></strong> terminates at <strong><code>_edata</code></strong>. (End of Data Section)</p>
 </li>
 <li>
-<p>If we append <code>initrd</code> directly to the end of <code>nuttx.bin</code>, it will collide with the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L74-L92">BSS Section</a> and the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_head.S#L94-L101">Idle Stack</a>. And <code>initrd</code> will get overwritten by NuttX.</p>
+<p>If we append <strong><code>initrd</code></strong> directly to the end of <strong><code>nuttx.bin</code></strong>, it will collide with the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L74-L92"><strong>BSS Section</strong></a> and the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_head.S#L94-L101"><strong>Kernel Idle Stack</strong></a>. And <strong><code>initrd</code></strong> will get overwritten by NuttX.</p>
 </li>
 <li>
-<p>Best place to append <code>initrd</code> is after the Top of Idle Stack. Which is located 32 KB after <code>_edata</code>. (End of Data Section)</p>
+<p>Best place to append <strong><code>initrd</code></strong> is after the Top of Idle Stack. Which is located 32 KB after <strong><code>_edata</code></strong>. (End of Data Section)</p>
 </li>
 <li>
-<p>That’s why we inserted a padding of 64 KB between <code>nuttx.bin</code> and <code>initrd</code>. So it won’t collide with BSS and Idle Stack.</p>
+<p>That’s why we inserted a padding of 64 KB between <strong><code>nuttx.bin</code></strong> and <strong><code>initrd</code></strong>. So it won’t collide with BSS and Idle Stack.</p>
 </li>
 <li>
-<p>Our code locates <code>initrd</code> (searching by Magic Number “-rom1fs-”). And copies <code>initrd</code> to <code>__ramdisk_start</code>. (Memory Region for the RAM Disk)</p>
+<p>Our code locates <strong><code>initrd</code></strong> (searching by Magic Number “-rom1fs-”). And copies <strong><code>initrd</code></strong> to <strong><code>ramdisk_start</code></strong>. (Memory Region for the RAM Disk)</p>
 </li>
 <li>
-<p>NuttX mounts the RAM Disk from <code>__ramdisk_start</code>. (Memory Region for the RAM Disk)</p>
+<p>NuttX mounts the RAM Disk from <strong><code>ramdisk_start</code></strong>. (Memory Region for the RAM Disk)</p>
 </li>
 </ol>
 <p><em>But 64 KB sounds so arbitrary. What if the parameters change?</em></p>
@@ -759,13 +765,13 @@ __ramdisk_start=0x50a00000
   if (ramdisk_addr &lt;= (uint8_t *)JH7110_IDLESTACK_TOP) { _info(&quot;RAM Disk must be after Idle Stack&quot;); }
   DEBUGASSERT(ramdisk_addr &gt; (uint8_t *)JH7110_IDLESTACK_TOP);
 </code></pre></div>
-<p><em>Why did we call local_memmove to copy <code>initrd</code> to <code>__ramdisk_start</code>? Why not memcpy?</em></p>
-<p>That’s because <code>initrd</code> overlaps with <code>__ramdisk_start</code>!</p>
+<p><em>Why did we call local_memmove to copy initrd to ramdisk_start? Why not memcpy?</em></p>
+<p>That’s because <strong><code>initrd</code></strong> overlaps with <strong><code>ramdisk_start</code></strong>!</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>ramdisk_addr = <span class="number">0x50408288</span>, size = <span class="number">8192016
 </span>ramdisk_addr + size = <span class="number">0x50bd8298
 </span>Which is AFTER __ramdisk_start (<span class="number">0x50a00000</span>)</code></pre></div>
-<p><code>memcpy</code> won’t work with Overlapping Memory Regions. So we wrote our own: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487">jh7110_start.c</a></p>
+<p><strong><code>memcpy</code></strong> won’t work with <strong>Overlapping Memory Regions</strong>. Thus we wrote our own: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487">jh7110_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// From libs/libc/string/lib_memmove.c
 static FAR void *local_memmove(FAR void *dest, FAR const void *src, size_t count) {
   FAR char *d;
