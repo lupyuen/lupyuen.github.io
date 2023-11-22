@@ -676,7 +676,8 @@ static void jh7110_copy_ramdisk(void) {
 
   // Copy the Filesystem bytes to RAM Disk Start
   // Warning: __ramdisk_start overlaps with ramdisk_addr + size
-  // memmove is aliased to memcpy, so we implement memmove ourselves
+  // Which doesn't work with memcpy.
+  // But memmove is aliased to memcpy, so we implement memmove ourselves
   local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
 }
 ```
@@ -768,7 +769,7 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
 
 U-Boot Bootloader will load our Initial RAM Disk into RAM, dangerously close to __BSS Memory__ (Global and Static Variables) and __Kernel Stack__.
 
-There's a risk that our Initial RAM Disk will be __contaminated by BSS and Stack__. This is how we found a safe space for our Initial RAM Disk...
+There's a risk that our Initial RAM Disk will be __contaminated by BSS and Stack__. This is how we found a clean, safe space for our Initial RAM Disk...
 
 When we refer to the [__NuttX Log__](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89) and the [__NuttX Linker Script__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script)...
 
@@ -782,10 +783,10 @@ _sbss=0x50400290
 // End of BSS Section
 _ebss=0x50407000
 
-// Top of Idle Stack
+// Top of Kernel Idle Stack
 JH7110_IDLESTACK_TOP=0x50407c00
 
-// We located the initd after the Top of Idle Stack
+// We located the initrd after the Top of Idle Stack
 ramdisk_addr=0x50408288, size=8192016
 
 // And we copied initrd to the Memory Region for the RAM Disk
@@ -794,43 +795,68 @@ __ramdisk_start=0x50a00000
 
 Or graphically...
 
-TODO
+| Memory Region | Start | End |
+|:--------------|:-----:|:---:|
+| __Data Section__ | | `0x5040` `0258`
+| __BSS Section__ | `0x5040` `0290` | `0x5040` `7000`
+| __Kernel Idle Stack__ | | `0x5040` `7000`
+| __Initial RAM Disk__ | `0x5040` `8288` | `0x50BD` `8297`
+| __RAM Disk Region__ | `0x50A0` `0000` | `0x519F` `FFFF`
+
+(NuttX will mount the RAM Disk from __RAM Disk Region__)
+
+(Which overlaps with __Initial RAM Disk__!)
 
 Which says...
 
-1.  The NuttX Kernel __`nuttx.bin`__ terminates at __`_edata`__. (End of Data Section)
+1.  NuttX Kernel __`nuttx.bin`__ terminates at __`edata`__.
 
-1.  If we append __`initrd`__ directly to the end of __`nuttx.bin`__, it will collide with the [__BSS Section__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L74-L92) and the [__Kernel Idle Stack__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_head.S#L94-L101). And __`initrd`__ will get overwritten by NuttX.
+    (End of Data Section)
 
-1.  Best place to append __`initrd`__ is after the Top of Idle Stack. Which is located 32 KB after __`_edata`__. (End of Data Section)
+1.  If we append Initial RAM Disk __`initrd`__ directly to the end of __`nuttx.bin`__...
 
-1.  That's why we inserted a padding of 64 KB between __`nuttx.bin`__ and __`initrd`__. So it won't collide with BSS and Idle Stack.
+    It will collide with the [__BSS Section__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L74-L92) and the [__Kernel Idle Stack__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_head.S#L94-L101).
 
-1.  Our code locates __`initrd`__ (searching by Magic Number "-rom1fs-"). And copies __`initrd`__ to __`ramdisk_start`__. (Memory Region for the RAM Disk)
+    And __`initrd`__ will get overwritten by the Boot Code and Start Code.
 
-1.  NuttX mounts the RAM Disk from __`ramdisk_start`__. (Memory Region for the RAM Disk)
+1.  Best place to append __`initrd`__ is after the __Kernel Idle Stack__.
+
+    Which is located 32 KB after __`edata`__.
+    
+1.  That's why we inserted a padding of 64 KB between __`nuttx.bin`__ and __`initrd`__.
+
+    (So it won't collide with BSS and Kernel Idle Stack)
+
+1.  Our code locates __`initrd`__. (Searching for ROM FS Magic Number "-rom1fs-")
+
+    And copies __`initrd`__ to __RAM Disk Region__.
+    
+1.  Finally NuttX mounts the RAM Disk from __RAM Disk Region__.
+
+Yep our 64 KB Padding looks legit!
 
 _But 64 KB sounds so arbitrary. What if the parameters change?_
 
-That's why we have a Runtime Check: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245)
+That's why we have __Runtime Checks__: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245)
 
 ```c
-  // RAM Disk must be after Idle Stack
-  if (ramdisk_addr <= (uint8_t *)JH7110_IDLESTACK_TOP) { _info("RAM Disk must be after Idle Stack"); }
-  DEBUGASSERT(ramdisk_addr > (uint8_t *)JH7110_IDLESTACK_TOP);
+// Stop if RAM Disk is missing
+if (ramdisk_addr == NULL) { _info("Missing RAM Disk. Check the initrd padding."); }
+DEBUGASSERT(ramdisk_addr != NULL);
+
+// RAM Disk must be after Idle Stack, to prevent overwriting
+if (ramdisk_addr <= (uint8_t *)JH7110_IDLESTACK_TOP) { _info("RAM Disk must be after Idle Stack. Increase the initrd padding by %ul bytes.", (size_t)JH7110_IDLESTACK_TOP - (size_t)ramdisk_addr); }
+DEBUGASSERT(ramdisk_addr > (uint8_t *)JH7110_IDLESTACK_TOP);
+
+// Filesystem Size must be less than RAM Disk Memory Region
+DEBUGASSERT(size <= (size_t)__ramdisk_size);
 ```
 
-_Why did we call local_memmove to copy initrd to ramdisk_start? Why not memcpy?_
+_Why call local_memmove to copy initrd to RAM Disk Region? Why not memcpy?_
 
-That's because __`initrd`__ overlaps with __`ramdisk_start`__!
+That's because __`initrd`__ overlaps with __RAM Disk Region__! (See above)
 
-```
-ramdisk_addr = 0x50408288, size = 8192016
-ramdisk_addr + size = 0x50bd8298
-Which is AFTER __ramdisk_start (0x50a00000)
-```
-
-__`memcpy`__ won't work with __Overlapping Memory Regions__. Thus we wrote our own: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487)
+__`memcpy`__ won't work with __Overlapping Memory Regions__. Thus we added this: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487)
 
 ```c
 // From libs/libc/string/lib_memmove.c
@@ -854,41 +880,25 @@ static FAR void *local_memmove(FAR void *dest, FAR const void *src, size_t count
 
 _We're sure that it works?_
 
-That's why we called `verify_image` to do a simple integrity check on `initrd`, before and after copying. And that's how we discovered that `memcpy` doesn't work. From [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487)
+We called __`verify_image`__ to do a simple integrity check on __`initrd`__, before and after copying: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487)
 
 ```c
-  // Before Copy: Verify the RAM Disk Image to be copied
-  verify_image(ramdisk_addr);
+// Before Copy: Verify the RAM Disk Image to be copied
+verify_image(ramdisk_addr);
 
-  // Copy the Filesystem Size to RAM Disk Start
-  // Warning: __ramdisk_start overlaps with ramdisk_addr + size
-  // memmove is aliased to memcpy, so we implement memmove ourselves
-  local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
+// Copy the Filesystem Size to RAM Disk Start
+// Warning: __ramdisk_start overlaps with ramdisk_addr + size
+// Which doesn't work with memcpy.
+// But memmove is aliased to memcpy, so we implement memmove ourselves
+local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
 
-  // Before Copy: Verify the copied RAM Disk Image
-  verify_image(__ramdisk_start);
-...
-// Verify that image is correct
-static void verify_image(uint8_t *addr) {
-  // Verify that the Byte Positions below (offset by 1) contain 0x0A
-  for (int i = 0; i < sizeof(search_addr) / sizeof(search_addr[0]); i++) {
-    const uint8_t *p = addr + search_addr[i] - 1;
-    if (*p != 0x0A) { _info("No Match: %p\n", p); }
-  }
-}
-
-// Byte Positions (offset by 1) of 0x0A in initrd. Extracted from:
-// grep --binary-files=text -b -o A initrd
-const uint32_t search_addr[] =
-{
-76654,
-78005,
-79250,
-...
-7988897,
-7992714,
-};
+// After Copy: Verify the copied RAM Disk Image
+verify_image(__ramdisk_start);
 ```
+
+[(__`verify_image`__ does a simple Integrity Check)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L248-L455)
+
+That's how we discovered that __`memcpy`__ doesn't work. And our __`local_memmove`__ works great!
 
 ![Ox64 boots to NuttX Shell](https://lupyuen.github.io/images/mmu-boot1.png)
 
