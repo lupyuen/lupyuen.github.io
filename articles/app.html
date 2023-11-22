@@ -668,7 +668,7 @@ static void jh7110_copy_ramdisk(void) {
   local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
 }
 </code></pre></div>
-<p><em>What’s ramdisk_start?</em></p>
+<p><em>Why did we copy Initial RAM Disk to ramdisk_start?</em></p>
 <p><strong>ramdisk_start</strong> points to the Memory Region that we reserved for mounting our RAM Disk. It’s defined in the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L21-L48">ld.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Memory Region for RAM Disk */
 ramdisk (rwx) : ORIGIN = 0x50A00000, LENGTH = 16M
