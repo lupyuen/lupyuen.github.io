@@ -935,8 +935,14 @@ pushd ../apps
 make -j 8 import
 popd
 
-## Generate the Initial RAM Disk
-genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+## Generate the Initial RAM Disk `initrd`
+## in ROMFS Filesystem Format
+## from the Apps Filesystem `../apps/bin`
+## and label it `NuttXBootVol`
+genromfs \
+  -f initrd \
+  -d ../apps/bin \
+  -V "NuttXBootVol"
 
 ## Prepare a Padding with 64 KB of zeroes
 head -c 65536 /dev/zero >/tmp/nuttx.zero
