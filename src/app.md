@@ -12,6 +12,8 @@ TODO
 
 [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
 
+- How we found the __right spot to park__ our Initial RAM Disk
+
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sbc.jpg)
 
 # Inside a NuttX App
