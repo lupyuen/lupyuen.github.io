@@ -423,7 +423,7 @@ A0: 003f A1: 0001 A2: 8000ad00 A3: 001e
 <p>(File Descriptor #1 for Standard Output)</p>
 </li>
 <li>
-<p>A2 is <strong><code>0x8000</code> <code>AD00</code></strong></p>
+<p>A2 is <strong><code>0x8000_AD00</code></strong></p>
 <p>(Buffer to be written)</p>
 </li>
 <li>
@@ -459,7 +459,7 @@ riscv_swint: SWInt Return: 1e
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Virtual Memory for NuttX App" /></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#virtual-memory"><em>Virtual Memory for NuttX App</em></a></p>
 <h1 id="kernel-accesses-app-memory"><a href="#kernel-accesses-app-memory">5 Kernel Accesses App Memory</a></h1>
-<p><em>NuttX Kernel prints the buffer at <code>0x8000</code> <code>AD00</code>…</em></p>
+<p><em>NuttX Kernel prints the buffer at <code>0x8000_AD00</code>…</em></p>
 <p><em>But it doesn’t look like a RAM Address?</em></p>
 <p>That’s actually a <strong>Virtual Memory Address</strong>…</p>
 <ul>
@@ -468,13 +468,13 @@ riscv_swint: SWInt Return: 1e
 <p>TLDR? No worries…</p>
 <ul>
 <li>
-<p><strong>Kernel RAM</strong> is at <strong><code>0x5000</code> <code>0000</code></strong></p>
+<p><strong>Kernel RAM</strong> is at <strong><code>0x5000_0000</code></strong></p>
 </li>
 <li>
 <p>Which gets dished out dynamically to <strong>NuttX Apps</strong></p>
 </li>
 <li>
-<p>And becomes <strong>Virtual Memory</strong> at <strong><code>0x8000</code> <code>0000</code></strong> (pic above)</p>
+<p>And becomes <strong>Virtual Memory</strong> at <strong><code>0x8000_0000</code></strong> (pic above)</p>
 </li>
 </ul>
 <p>Thus our NuttX App has passed a chunk of its own <strong>Virtual Memory</strong>. And NuttX Kernel happily prints it!</p>
@@ -487,7 +487,7 @@ riscv_swint: SWInt Return: 1e
 <p>According to the <a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17"><strong>NuttX Log</strong></a>, the Kernel swaps the <a href="https://lupyuen.github.io/articles/mmu#swap-the-satp-register"><strong>RISC-V SATP Register</strong></a> from Kernel Page Table to <strong>User Page Table</strong>. But doesn’t swap back!</p>
 </li>
 <li>
-<p>Which means the <strong>User Page Table</strong> is still in effect! Thus the User Addresses at <strong><code>0x8000</code> <code>0000</code></strong> perfectly accessible by the Kernel.</p>
+<p>Which means the <strong>User Page Table</strong> is still in effect! Thus the User Addresses at <strong><code>0x8000_0000</code></strong> perfectly accessible by the Kernel.</p>
 </li>
 <li>
 <p>But there’s a catch: <strong>RISC-V Supervisor Mode</strong> (NuttX Kernel) may access the Virtual Memory mapped to <strong>RISC-V User Mode</strong> (NuttX Apps)…</p>
@@ -499,7 +499,7 @@ riscv_swint: SWInt Return: 1e
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_getnewintctx.c#L74-L81"><strong>riscv_set_idleintctx</strong></a> to set the <strong>SUM Bit</strong> in SSTATUS Register</p>
 </li>
 </ol>
-<p>That’s why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at <strong><code>0x8000</code> <code>0000</code></strong>!</p>
+<p>That’s why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at <strong><code>0x8000_0000</code></strong>!</p>
 <p>TODO: NuttX Flow</p>
 <h1 id="kernel-starts-a-nuttx-app"><a href="#kernel-starts-a-nuttx-app">6 Kernel Starts a NuttX App</a></h1>
 <p><em>Phew so NuttX Apps can call NuttX Kernel…</em></p>
@@ -630,7 +630,7 @@ cp Image &quot;/Volumes/NO NAME/&quot;
 <p>Our Initial RAM Disk is in <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM File System Format</strong></a>.</p>
 <p>We <strong>search our RAM</strong> for the ROM File System, then copy it into the designated <strong>Memory Region</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245">jh7110_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Locate the Initial RAM Disk and copy to the designated Memory Region
-static void jh7110_copy_ramdisk(void) {
+void jh7110_copy_ramdisk(void) {
 
   // After _edata, search for &quot;-rom1fs-&quot;. This is the RAM Disk Address.
   // Limit search to 256 KB after Idle Stack Top.
@@ -759,11 +759,11 @@ __ramdisk_start=0x50a00000
 </code></pre></div>
 <p>Or graphically…</p>
 <div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start</th><th style="text-align: center">End</th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>Data Section</strong></td><td style="text-align: center"></td><td style="text-align: center"><code>0x5040</code> <code>0258</code></td></tr>
-<tr><td style="text-align: left"><strong>BSS Section</strong></td><td style="text-align: center"><code>0x5040</code> <code>0290</code></td><td style="text-align: center"><code>0x5040</code> <code>7000</code></td></tr>
-<tr><td style="text-align: left"><strong>Kernel Idle Stack</strong></td><td style="text-align: center"></td><td style="text-align: center"><code>0x5040</code> <code>7000</code></td></tr>
-<tr><td style="text-align: left"><strong>Initial RAM Disk</strong></td><td style="text-align: center"><code>0x5040</code> <code>8288</code></td><td style="text-align: center"><code>0x50BD</code> <code>8297</code></td></tr>
-<tr><td style="text-align: left"><strong>RAM Disk Region</strong></td><td style="text-align: center"><code>0x50A0</code> <code>0000</code></td><td style="text-align: center"><code>0x519F</code> <code>FFFF</code></td></tr>
+<tr><td style="text-align: left"><strong>Data Section</strong></td><td style="text-align: center"></td><td style="text-align: center"><code>0x5040_0257</code></td></tr>
+<tr><td style="text-align: left"><strong>BSS Section</strong></td><td style="text-align: center"><code>0x5040_0290</code></td><td style="text-align: center"><code>0x5040_6FFF</code></td></tr>
+<tr><td style="text-align: left"><strong>Kernel Idle Stack</strong></td><td style="text-align: center"></td><td style="text-align: center"><code>0x5040_7BFF</code></td></tr>
+<tr><td style="text-align: left"><strong>Initial RAM Disk</strong></td><td style="text-align: center"><code>0x5040_8288</code></td><td style="text-align: center"><code>0x50BD_8297</code></td></tr>
+<tr><td style="text-align: left"><strong>RAM Disk Region</strong></td><td style="text-align: center"><code>0x50A0_0000</code></td><td style="text-align: center"><code>0x519F_FFFF</code></td></tr>
 </tbody></table>
 </div>
 <p>(NuttX will mount the RAM Disk from <strong>RAM Disk Region</strong>)</p>
@@ -815,7 +815,7 @@ DEBUGASSERT(size &lt;= (size_t)__ramdisk_size);
 <div class="example-wrap"><pre class="language-c"><code>// Copy a chunk of memory from `src` to `dest`.
 // `dest` overlaps with the end of `src`.
 // From libs/libc/string/lib_memmove.c
-static void *local_memmove(void *dest, const void *src, size_t count) {
+void *local_memmove(void *dest, const void *src, size_t count) {
   DEBUGASSERT(dest &gt; src);
   char *d = (char *) dest + count;
   char *s = (char *) src + count;
