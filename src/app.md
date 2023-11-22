@@ -574,7 +574,7 @@ All we have: A File System that __lives in RAM__ and contains our NuttX Apps. Th
 
 _How to load the Initial RAM Disk from microSD to RAM?_
 
-[__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) will do it for us! Two ways we can load the Initial RAM Disk...
+[__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) will do it for us! Two ways we can load the Initial RAM Disk from microSD...
 
 1.  Load the Initial RAM Disk from a __Separate File: initrd__ (similar to Star64)
 
@@ -594,7 +594,7 @@ _How to load the Initial RAM Disk from microSD to RAM?_
 
     (Which might be more efficient for our Limited RAM)
 
-    [(See the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
+    [(More about the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
 
 We'll do the Second Method, since we are low on RAM. Like this...
 
@@ -616,6 +616,8 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
 cp Image "/Volumes/NO NAME/"
 ```
 
+Let's make this work...
+
 # Mount the Initial RAM Disk
 
 TODO
@@ -626,24 +628,20 @@ This is how we copy the initrd in RAM to the Memory Region for the RAM Disk: [jh
 static void jh7110_copy_ramdisk(void) {
   // Based on ROM FS Format: https://docs.kernel.org/filesystems/romfs.html
   // After _edata, search for "-rom1fs-". This is the RAM Disk Address.
-  // Stop searching after 64 KB.
-  extern uint8_t _edata[];
-  extern uint8_t _sbss[];
-  extern uint8_t _ebss[];
+  // Limit search to 256 KB after Idle Stack Top.
   const char *header = "-rom1fs-";
   uint8_t *ramdisk_addr = NULL;
-  for (uint8_t *addr = _edata; addr < (uint8_t *)JH7110_IDLESTACK_TOP + (65 * 1024); addr++) {
+  for (uint8_t *addr = _edata; addr < (uint8_t *)JH7110_IDLESTACK_TOP + (256 * 1024); addr++) {
     if (memcmp(addr, header, strlen(header)) == 0) {
       ramdisk_addr = addr;
       break;
     }
   }
-  // Check for Missing RAM Disk
-  if (ramdisk_addr == NULL) { _info("Missing RAM Disk"); }
-  DEBUGASSERT(ramdisk_addr != NULL); 
 
-  // RAM Disk must be after Idle Stack
-  if (ramdisk_addr <= (uint8_t *)JH7110_IDLESTACK_TOP) { _info("RAM Disk must be after Idle Stack"); }
+  // Stop if RAM Disk is missing
+  DEBUGASSERT(ramdisk_addr != NULL);
+
+  // RAM Disk must be after Idle Stack, to prevent overwriting
   DEBUGASSERT(ramdisk_addr > (uint8_t *)JH7110_IDLESTACK_TOP);
 
   // Read the Filesystem Size from the next 4 bytes, in Big Endian
@@ -654,21 +652,14 @@ static void jh7110_copy_ramdisk(void) {
     (ramdisk_addr[10] << 8) + 
     ramdisk_addr[11] + 
     0x1F0;
-  _info("size=%d\n", size);
 
   // Filesystem Size must be less than RAM Disk Memory Region
   DEBUGASSERT(size <= (size_t)__ramdisk_size);
-
-  // Before Copy: Verify the RAM Disk Image to be copied
-  verify_image(ramdisk_addr);
 
   // Copy the Filesystem Size to RAM Disk Start
   // Warning: __ramdisk_start overlaps with ramdisk_addr + size
   // memmove is aliased to memcpy, so we implement memmove ourselves
   local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
-
-  // Before Copy: Verify the copied RAM Disk Image
-  verify_image(__ramdisk_start);
 }
 ```
 
@@ -732,10 +723,10 @@ TODO
 _Why did we insert 64 KB of zeroes after the NuttX Binary Image, before the initrd Initial RAM Disk?_
 
 ```bash
-## Insert 64 KB of zeroes after Binary Image for Kernel Stack
+## Prepare a Padding with 64 KB of zeroes
 head -c 65536 /dev/zero >/tmp/nuttx.zero
 
-## Append Initial RAM Disk to Binary Image
+## Append Padding and Initial RAM Disk to Binary Image
 cat nuttx.bin /tmp/nuttx.zero initrd \
   >Image
 ```
@@ -823,6 +814,17 @@ _We're sure that it works?_
 That's why we called `verify_image` to do a simple integrity check on `initrd`, before and after copying. And that's how we discovered that `memcpy` doesn't work. From [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487)
 
 ```c
+  // Before Copy: Verify the RAM Disk Image to be copied
+  verify_image(ramdisk_addr);
+
+  // Copy the Filesystem Size to RAM Disk Start
+  // Warning: __ramdisk_start overlaps with ramdisk_addr + size
+  // memmove is aliased to memcpy, so we implement memmove ourselves
+  local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
+
+  // Before Copy: Verify the copied RAM Disk Image
+  verify_image(__ramdisk_start);
+...
 // Verify that image is correct
 static void verify_image(uint8_t *addr) {
   // Verify that the Byte Positions below (offset by 1) contain 0x0A
