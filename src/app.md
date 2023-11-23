@@ -436,12 +436,16 @@ Remember to enable __System Call Logging__ in "`make menuconfig`"...
 Build Setup 
   > Debug Options 
     > Syscall Debug Features 
-      > Syscall Warning / Error / Info
+      > Enable "Syscall Warning, Error and Info"
 ```
 
-Our app (NuttX Shell) is printing something to the console. (Pic above)
+Watch what happens when we __boot NuttX on Ox64__ (pic above)...
 
-It makes an __`ecall`__ for System Call #63 "__write__", which triggers __IRQ 8__...
+Our app (NuttX Shell) begins by printing something to the console.
+
+It makes an __`ecall`__ for System Call #63 "__write__".
+
+Which triggers __IRQ 8__ and jumps to __NuttX Kernel__...
 
 ```text
 riscv_dispatch_irq: irq=8
@@ -452,7 +456,7 @@ A0: 003f A1: 0001 A2: 8000ad00 A3: 001e
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17)
 
-And jumps to NuttX Kernel. The __RISC-V Registers__ look familiar...
+The __RISC-V Registers__ look familiar...
 
 - A0 is __`0x3F`__
 
@@ -497,9 +501,9 @@ riscv_swint: SWInt Return: 1e
 
   (Number of bytes written)
 
-And returns the result __`0x1E`__ to our NuttX App.
+And returns the result __`0x1E`__ to our NuttX App. [(Via __`sret`__)](https://five-embeddev.com/quickref/instructions.html#-supervisor--sstatus)
 
-NuttX successfully makes a System Call on Ox64 SBC yay! (Pic above)
+Our NuttX App has successfully made a System Call on Ox64 yay!
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17)
 
@@ -565,7 +569,7 @@ _Alrighty NuttX Apps can call NuttX Kernel..._
 
 _But how does NuttX Kernel start a NuttX App?_
 
-Earlier we stepped through the __Boot Sequence__ for NuttX...
+Previously we walked through the __Boot Sequence__ for NuttX...
 
 - [__"NuttX Boot Flow"__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
 
