@@ -228,8 +228,10 @@ printf(&quot;Hello, World %s!!\n&quot;, &quot;Luppy&quot;);
 <h1 id="nuttx-app-calls-nuttx-kernel"><a href="#nuttx-app-calls-nuttx-kernel">2 NuttX App calls NuttX Kernel</a></h1>
 <p><em>Our app will print something to the Console Output…</em></p>
 <p><em>But NuttX Apps can’t write directly to the Serial Device right?</em></p>
-<p>Nope! NuttX Apps run in <strong>RISC-V User Mode</strong>. Which doesn’t have access to Serial Device and other resources controlled by NuttX Kernel. (Running in <strong>RISC-V Supervisor Mode</strong>)</p>
-<p>That’s why “<strong>write</strong>” will trigger a <strong>System Call</strong> to the NuttX Kernel, jumping from RISC-V <strong>User Mode to Supervisor Mode</strong>. And write to the Serial Device.</p>
+<p>Nope! NuttX Apps run in <strong>RISC-V User Mode</strong>…</p>
+<p>Which doesn’t have access to Serial Device and other resources controlled by NuttX Kernel. (Running in <strong>RISC-V Supervisor Mode</strong>)</p>
+<p>That’s why “<strong>write</strong>” will trigger a <strong>System Call</strong> to the NuttX Kernel, jumping from RISC-V <strong>User Mode to Supervisor Mode</strong>.</p>
+<p>(And write to the Serial Device)</p>
 <p><em>Will NuttX Apps need Special Coding to make System Calls?</em></p>
 <p>Nope! The System Call is <strong>totally transparent</strong> to our app…</p>
 <ul>
@@ -507,13 +509,16 @@ riscv_swint: SWInt Return: 1e
 <p><em>Huh? NuttX Kernel can access Virtual Memory?</em></p>
 <ol>
 <li>
-<p>We know that NuttX uses 2 sets of Page Tables: <strong>Kernel Page Table</strong> and <strong>User Page Table</strong> (for apps)</p>
+<p>NuttX uses 2 sets of Page Tables: <strong>Kernel Page Table</strong> and <strong>User Page Table</strong>.</p>
+<p>(User Page Table defines the <strong>Virtual Memory</strong> for NuttX Apps)</p>
 </li>
 <li>
-<p>According to the <a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17"><strong>NuttX Log</strong></a>, the Kernel swaps the <a href="https://lupyuen.github.io/articles/mmu#swap-the-satp-register"><strong>RISC-V SATP Register</strong></a> from Kernel Page Table to <strong>User Page Table</strong>. But doesn’t swap back!</p>
+<p>According to the <a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17"><strong>NuttX Log</strong></a>, the Kernel swaps the <a href="https://lupyuen.github.io/articles/mmu#swap-the-satp-register"><strong>RISC-V SATP Register</strong></a> from Kernel Page Table to <strong>User Page Table</strong>…</p>
+<p>But doesn’t swap back!</p>
 </li>
 <li>
-<p>Which means the <strong>User Page Table</strong> is still in effect! Thus the User Addresses at <strong><code>0x8000_0000</code></strong> perfectly accessible by the Kernel.</p>
+<p>Which means the <strong>User Page Table</strong> is still in effect!</p>
+<p>Thus the <strong>Virtual Memory</strong> at <strong><code>0x8000_0000</code></strong> is perfectly accessible by the Kernel.</p>
 </li>
 <li>
 <p>But there’s a catch: <strong>RISC-V Supervisor Mode</strong> (NuttX Kernel) may access the Virtual Memory mapped to <strong>RISC-V User Mode</strong> (NuttX Apps)…</p>
