@@ -709,7 +709,7 @@ This is how we made it work...
 
 # Mount the Initial RAM Disk
 
-_We appended the Initial RAM Disk to NuttX Kernel..._
+_We appended the Initial RAM Disk to NuttX Kernel (pic above)..._
 
 _How in RAM will NuttX Kernel locate the Initial RAM Disk?_
 
@@ -918,7 +918,7 @@ This says...
     
 1.  That's why we inserted a padding of __64 KB__ between __`nuttx.bin`__ and __`initrd`__.
 
-    (To be sure it won't collide with BSS and Kernel Idle Stack)
+    (Surely __`initrd`__ won't collide with BSS and Kernel Idle Stack)
 
 1.  From the previous section, our code locates __`initrd`__.
 
@@ -928,15 +928,15 @@ This says...
     
 1.  Finally NuttX mounts the RAM Disk from __RAM Disk Region__.
 
-    (Everything goes well, nothing gets contaminated)
-    
     NuttX Kernel starts the __NuttX Shell__ correctly from the Mounted RAM Disk.
 
+    (Everything goes well, nothing gets contaminated)
+    
 Yep our 64 KB Padding looks legit!
 
 _64 KB sounds arbitrary. What if the parameters change?_
 
-That's why we have __Runtime Checks__: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245)
+We have __Runtime Checks__ to catch problems: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245)
 
 ```c
 // Stop if RAM Disk is missing
