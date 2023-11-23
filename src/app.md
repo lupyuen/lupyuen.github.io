@@ -51,7 +51,7 @@ Which produces this __ELF Executable__ for our NuttX App...
 $ ls -l ../apps/bin/hello
 -rwxr-xr-x  518,192  ../apps/bin/hello
 
-## But not much inside, mostly Debug Info...
+## Though not much inside, mostly Debug Info...
 $ riscv64-unknown-elf-size ../apps/bin/hello
    text  data  bss   dec  hex  filename
    3814     8    4  3826  ef2  ../apps/bin/hello
@@ -140,7 +140,7 @@ In our RISC-V Disassembly, the __Relocation Info__ shows that __`0x0`__ will be 
 printf("Hello, World!!\n");
 
   ## Load Register RA with Program Counter + 0x0...
-  ## But actually 0x0 will be changed to the Offset of puts()
+  ## Actually 0x0 will be changed to the Offset of puts()
   4a: 00000097  auipc  ra, 0x0  
   4a: R_RISCV_CALL     puts
 
@@ -149,7 +149,7 @@ printf("Hello, World!!\n");
   4e: 000080e7  jalr   ra     # 4a <.LVL1+0x2>
 ```
 
-So we're all good!
+Therefore we're all good!
 
 _Why `puts` instead of `printf`?_
 
@@ -167,7 +167,7 @@ printf(
 
 Then __printf__ will appear in our RISC-V Disassembly.
 
-Let's circle back to __write__...
+We circle back to __write__...
 
 ![NuttX App calls NuttX Kernel](https://lupyuen.github.io/images/app-syscall.jpg)
 
@@ -204,7 +204,7 @@ This forwarding happens inside a __Proxy Function__ that's auto-generated during
 ```c
 // From nuttx/syscall/proxies/PROXY_write.c
 // Auto-Generated Proxy for `write`
-// Looks like the Kernel `write`, but it's actually a System Call
+// Looks like the Kernel `write`, though it's actually a System Call
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
   return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
     (unsigned int) SYS_write,  // System Call Number (63 = `write`)
@@ -267,7 +267,9 @@ uintptr_t sys_call3(
 }
 ```
 
-[__`ecall`__](https://five-embeddev.com/quickref/instructions.html#-rv32--rv32) is the RISC-V Instruction that triggers a jump from RISC-V __User Mode to Supervisor Mode__. So that NuttX Kernel can execute the actual "__write__" function. (With the actual Serial Device)
+[__`ecall`__](https://five-embeddev.com/quickref/instructions.html#-rv32--rv32) is the RISC-V Instruction that triggers a jump from RISC-V __User Mode to Supervisor Mode__...
+
+Such that NuttX Kernel can execute the actual "__write__" function, with the real Serial Device.
 
 (We'll explain how)
 
@@ -277,7 +279,7 @@ We're guessing: It might be reserved for special calls to NuttX Kernel in future
 
 [(Similar to __`ebreak`__ for Semihosting)](https://lupyuen.github.io/articles/semihost#decipher-the-risc-v-exception)
 
-_So every System Call to NuttX Kernel has its own Proxy Function?_
+_Every System Call to NuttX Kernel has its own Proxy Function?_
 
 Yep we can see the list of Auto-Generated __Proxy Functions__ for each System Call...
 
@@ -298,7 +300,7 @@ PROXY_task_setcancelstate.c
 PROXY_write.c
 ```
 
-Now we figure out how System Calls will work...
+Next we figure out how System Calls will work...
 
 ![NuttX Kernel handles System Call](https://lupyuen.github.io/images/app-syscall2.jpg)
 
@@ -393,7 +395,7 @@ enum {
 };
 ```
 
-But it's an Enum, __numbered sequentially__ from 8 to 147-ish. We won't actually see 63 in the NuttX Source Code.
+However it's an Enum, __numbered sequentially__ from 8 to 147-ish. We won't literally see 63 in the NuttX Source Code.
 
 Then we lookup the __Debug Info__ in our RISC-V Disassembly: [hello.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S)
 
@@ -413,7 +415,7 @@ Yeah it's __not strictly an immutable ABI__ like Linux, because our System Call 
 
 [(ABI means __Application Binary Interface__)](https://en.wikipedia.org/wiki/Application_binary_interface)
 
-But there's a jolly good thing: It's super simple to experiment with __new System Calls__!
+Though there's a jolly good thing: It's super simple to experiment with __new System Calls__!
 
 [(Just add to __NuttX System Calls__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210)
 
@@ -423,7 +425,7 @@ But there's a jolly good thing: It's super simple to experiment with __new Syste
 
 # System Call in Action
 
-_This looks complicated... But it works right?_
+_This looks complicated... It works right?_
 
 Yep we have solid evidence, from [__NuttX for Ox64 BL808 SBC__](https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx)!
 
@@ -508,9 +510,9 @@ NuttX successfully makes a System Call on Ox64 SBC yay! (Pic above)
 
 _NuttX Kernel prints the buffer at `0x8000_AD00`..._
 
-_But it doesn't look like a RAM Address?_
+_It doesn't look like a RAM Address?_
 
-That's actually a __Virtual Memory Address__...
+That's a __Virtual Memory Address__...
 
 - [__"RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit"__](https://lupyuen.github.io/articles/mmu)
 
@@ -532,13 +534,13 @@ _Huh? NuttX Kernel can access Virtual Memory?_
 
 1.  According to the [__NuttX Log__](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17), the Kernel swaps the [__RISC-V SATP Register__](https://lupyuen.github.io/articles/mmu#swap-the-satp-register) from Kernel Page Table to __User Page Table__...
 
-    But doesn't swap back!
+    And doesn't swap back!
 
 1.  Which means the __User Page Table__ is still in effect!
 
     Thus the __Virtual Memory__ at __`0x8000_0000`__ is perfectly accessible by the Kernel.
 
-1.  But there's a catch: __RISC-V Supervisor Mode__ (NuttX Kernel) may access the Virtual Memory mapped to __RISC-V User Mode__ (NuttX Apps)...
+1.  There's a catch: __RISC-V Supervisor Mode__ (NuttX Kernel) may access the Virtual Memory mapped to __RISC-V User Mode__ (NuttX Apps)...
 
     Only if the [__SUM Bit is set in SSTATUS Register__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation)!
 
@@ -556,7 +558,7 @@ That's why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at __`0
 
 # Kernel Starts a NuttX App
 
-_Phew so NuttX Apps can call NuttX Kernel..._
+_Alrighty NuttX Apps can call NuttX Kernel..._
 
 _But how does NuttX Kernel start a NuttX App?_
 
@@ -602,7 +604,7 @@ To load the ELF File: [__ELF Loader g_elfbinfmt__](https://github.com/apache/nut
 
 - [__Set MMU Page Table Entry: mmu_ln_setentry__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L62-L109) (to populate the Page Table Entries)
 
-There's plenty happening inside [__Execute Module: exec_module__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450). But we won't explore today.
+There's plenty happening inside [__Execute Module: exec_module__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450). Too bad we won't explore today.
 
 [(__Clickable Version__ of NuttX Flow)](https://github.com/lupyuen/nuttx-ox64#kernel-starts-a-nuttx-app)
 
@@ -612,7 +614,7 @@ There's plenty happening inside [__Execute Module: exec_module__](https://github
 
 # Initial RAM Disk
 
-_Now we know how NuttX Kernel starts a NuttX App..._
+_OK we know how NuttX Kernel starts a NuttX App..._
 
 _But where are the NuttX Apps stored?_
 
@@ -654,7 +656,7 @@ _How to load the Initial RAM Disk from microSD to RAM?_
 
 1.  Append the Initial RAM Disk to the __NuttX Kernel Image__
 
-    So the U-Boot Bootloader will load (one-shot into RAM) the NuttX Kernel + Initial RAM Disk.
+    U-Boot Bootloader will load (one-shot into RAM) the NuttX Kernel + Initial RAM Disk.
     
     And we reuse the existing __U-Boot Config__ on the microSD Card: [__extlinux/extlinux.conf__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf)
 
@@ -733,7 +735,7 @@ void jh7110_copy_ramdisk(void) {
   // Copy the Filesystem bytes to RAM Disk Start
   // Warning: __ramdisk_start overlaps with ramdisk_addr + size
   // Which doesn't work with memcpy.
-  // But memmove is aliased to memcpy, so we implement memmove ourselves
+  // Sadly memmove is aliased to memcpy, so we implement memmove ourselves
   local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
 }
 ```
@@ -768,7 +770,7 @@ void jh7110_start(int mhartid) {
   jh7110_clear_bss();
 ```
 
-(But actually BSS shouldn't matter, as explained below)
+(BSS shouldn't matter, as explained below)
 
 Later during startup, we __mount the RAM Disk__ from the Memory Region : [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L51-L87)
 
@@ -889,7 +891,7 @@ Which says...
     
 1.  That's why we inserted a padding of 64 KB between __`nuttx.bin`__ and __`initrd`__.
 
-    (So it won't collide with BSS and Kernel Idle Stack)
+    (To be sure it won't collide with BSS and Kernel Idle Stack)
 
 1.  Our code locates __`initrd`__. (Searching for ROM FS Magic Number "-rom1fs-")
 
@@ -899,7 +901,7 @@ Which says...
 
 Yep our 64 KB Padding looks legit!
 
-_But 64 KB sounds so arbitrary. What if the parameters change?_
+_64 KB sounds arbitrary. What if the parameters change?_
 
 That's why we have __Runtime Checks__: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245)
 
@@ -951,7 +953,7 @@ verify_image(ramdisk_addr);
 // Copy the Filesystem Size to RAM Disk Start
 // Warning: __ramdisk_start overlaps with ramdisk_addr + size
 // Which doesn't work with memcpy.
-// But memmove is aliased to memcpy, so we implement memmove ourselves
+// Sadly memmove is aliased to memcpy, so we implement memmove ourselves
 local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
 
 // After Copy: Verify the copied RAM Disk Image
