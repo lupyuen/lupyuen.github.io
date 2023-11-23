@@ -233,7 +233,7 @@ Which triggers a __System Call__ to the Kernel.
 
 _What's sys_call3?_
 
-It makes a __System Call__ (to NuttX Kernel) with __3 Parameters__: [sys_call3](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h)
+It makes a __System Call__ (to NuttX Kernel) with __3 Parameters__: [syscall.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h)
 
 ```c
 // Make a System Call with 3 parameters
