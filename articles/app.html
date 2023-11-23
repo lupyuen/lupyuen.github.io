@@ -112,7 +112,7 @@
 <p><img src="https://lupyuen.github.io/images/ox64-sbc.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <h1 id="inside-a-nuttx-app"><a href="#inside-a-nuttx-app">1 Inside a NuttX App</a></h1>
 <p><em>What happens inside the simplest NuttX App?</em></p>
-<div class="example-wrap"><pre class="language-c"><code>// From https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/examples/hello/hello_main.c#L36-L40
+<div class="example-wrap"><pre class="language-c"><code>// From https://github.com/apache/nuttx-apps/blob/master/examples/hello/hello_main.c#L36-L40
 int main(int argc, FAR char *argv[]) {
   printf(&quot;Hello, World!!\n&quot;);
   return 0;
@@ -162,22 +162,22 @@ return 0;
 
 ## Followed by the code for puts(), lib_fwrite_unlocked(), write(), ...
 </code></pre></div>
-<p>In the RISC-V Disassembly, we see that <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/ox64b/examples/hello/hello_main.c#L36-L40"><strong>main</strong></a> calls…</p>
+<p>In the RISC-V Disassembly, we see that <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello/hello_main.c#L36-L40"><strong>main</strong></a> calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_puts.c#L34-L96"><strong>puts</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_puts.c#L34-L96"><strong>puts</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L45-L200"><strong>lib_fwrite_unlocked</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_libfwrite.c#L45-L200"><strong>lib_fwrite_unlocked</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149"><strong>write</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_libfwrite.c#L149"><strong>write</strong></a>, which calls…</p>
 </li>
 <li>
 <p><strong>NuttX Kernel</strong> to print “Hello World”</p>
 </li>
 </ul>
-<p>How will <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_libfwrite.c#L149"><strong>write</strong></a> call the NuttX Kernel? We’ll see soon!</p>
+<p>How will <a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_libfwrite.c#L149"><strong>write</strong></a> call the NuttX Kernel? We’ll see soon!</p>
 <p><em>This code doesn’t look right…</em></p>
 <div class="example-wrap"><pre class="language-text"><code>printf(&quot;Hello, World!!\n&quot;);
 
@@ -195,13 +195,13 @@ return 0;
 </code></pre></div></li>
 <li>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--unconditional-jumps"><strong><code>jalr</code></strong></a> jumps to the Function pointed by Register RA…</p>
-<p>Which we expect to be <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_puts.c#L34-L96"><strong>puts</strong></a></p>
+<p>Which we expect to be <a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_puts.c#L34-L96"><strong>puts</strong></a></p>
 </li>
 </ul>
 <p><em>Shouldn’t <code>auipc</code> add the Offset of <code>puts</code>?</em></p>
 <p>Ah that’s because we’re looking at <a href="https://en.wikipedia.org/wiki/Relocation_(computing)"><strong>Relocatable Code</strong></a>!</p>
 <p>The <strong><code>auipc</code></strong> Offset will be fixed up by the <strong>NuttX ELF Loader</strong> when it loads our NuttX App for execution.</p>
-<p>In our RISC-V Disassembly, the <strong>Relocation Info</strong> shows that <strong><code>0x0</code></strong> will be replaced by the Offset of <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_puts.c#L34-L96"><strong>puts</strong></a>…</p>
+<p>In our RISC-V Disassembly, the <strong>Relocation Info</strong> shows that <strong><code>0x0</code></strong> will be replaced by the Offset of <a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_puts.c#L34-L96"><strong>puts</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>printf(&quot;Hello, World!!\n&quot;);
 
   ## Load Register RA with Program Counter + 0x0...
@@ -273,7 +273,7 @@ int ret = write(
 </code></pre></div>
 <p>Which triggers a <strong>System Call</strong> to the Kernel.</p>
 <p><em>What’s sys_call3?</em></p>
-<p>It makes a <strong>System Call</strong> (to NuttX Kernel) with <strong>3 Parameters</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h">syscall.h</a></p>
+<p>It makes a <strong>System Call</strong> (to NuttX Kernel) with <strong>3 Parameters</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/syscall.h">syscall.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Make a System Call with 3 parameters
 uintptr_t sys_call3(
   unsigned int nbr,  // System Call Number (63 = `write`)
@@ -371,20 +371,20 @@ STUB_chown.c
 </code></pre></div>
 <p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">(More about <strong>Proxy and Stub Functions</strong>)</a></p>
 <p><em>Who calls STUB_write?</em></p>
-<p>When our NuttX App makes an <strong><code>ecall</code></strong>, it triggers <strong>IRQ 8</strong> <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/irq.h#L52-L75"><strong>(RISCV_IRQ_ECALLU)</strong></a> that’s <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L114-L119"><strong>handled by</strong></a>…</p>
+<p>When our NuttX App makes an <strong><code>ecall</code></strong>, it triggers <strong>IRQ 8</strong> <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L52-L75"><strong>(RISCV_IRQ_ECALLU)</strong></a> that’s <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_exception.c#L114-L119"><strong>handled by</strong></a>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537"><strong>riscv_swint</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L105-L537"><strong>riscv_swint</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a>, which calls the Kernel Stub Function (<strong>STUB_write</strong>) and… </p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_syscall.S#L49-L177"><strong>sys_call2</strong></a> with A0 set to <strong>SYS_syscall_return</strong> (3), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a>, which calls the Kernel Stub Function (<strong>STUB_write</strong>) and… </p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_syscall.S#L49-L177"><strong>sys_call2</strong></a> with A0 set to <strong>SYS_syscall_return</strong> (3), which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/supervisor/riscv_perform_syscall.c#L36-L78"><strong>riscv_perform_syscall</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_perform_syscall.c#L36-L78"><strong>riscv_perform_syscall</strong></a>, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L105-L537"><strong>riscv_swint</strong></a> with IRQ 0, to return from the <strong><code>ecall</code></strong></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L105-L537"><strong>riscv_swint</strong></a> with IRQ 0, to return from the <strong><code>ecall</code></strong></p>
 </li>
 </ul>
 <p><em>How will dispatch_syscall know which Stub Function to call?</em></p>
@@ -396,9 +396,9 @@ ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
     (unsigned int) SYS_write,  // System Call Number (63 = `write`)
     ...
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a> (in NuttX Kernel) will look up the System Call Number in the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall_stublookup.c#L80-L93"><strong>Stub Lookup Table</strong></a>. And fetch the <strong>Stub Function</strong> to call.</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a> (in NuttX Kernel) will look up the System Call Number in the <a href="https://github.com/apache/nuttx/blob/master/syscall/syscall_stublookup.c#L80-L93"><strong>Stub Lookup Table</strong></a>. And fetch the <strong>Stub Function</strong> to call.</p>
 <p><em>How did we figure out that 63 is the System Call Number for “write”?</em></p>
-<p>OK this part gets tricky. Below is the Enum that defines all <strong>System Call Numbers</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall.h#L55-L66">syscall.h</a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
+<p>OK this part gets tricky. Below is the Enum that defines all <strong>System Call Numbers</strong>: <a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall.h#L55-L66">syscall.h</a> and <a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// System Call Enum sequentially assigns
 // all System Call Numbers (8 to 147-ish)
 enum {
@@ -418,10 +418,10 @@ enum {
 </code></pre></div>
 <p>Whoomp there it is! This says that “<strong>write</strong>” is <strong>System Call #63</strong>.</p>
 <p><em>That’s an odd way to define System Call Numbers…</em></p>
-<p>Yeah it’s <strong>not strictly an immutable ABI</strong> like Linux, because our System Call Numbers may change! It depends on the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L90-L152"><strong>Build Options</strong></a> that we select.</p>
+<p>Yeah it’s <strong>not strictly an immutable ABI</strong> like Linux, because our System Call Numbers may change! It depends on the <a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h#L90-L152"><strong>Build Options</strong></a> that we select.</p>
 <p><a href="https://en.wikipedia.org/wiki/Application_binary_interface">(ABI means <strong>Application Binary Interface</strong>)</a></p>
 <p>Though there’s a jolly good thing: It’s super simple to experiment with <strong>new System Calls</strong>!</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210">(Just add to <strong>NuttX System Calls</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/syscall/syscall.csv#L209-L210">(Just add to <strong>NuttX System Calls</strong>)</a></p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">(As explained here)</a></p>
 <p><img src="https://lupyuen.github.io/images/app-run.png" alt="NuttX App calls NuttX Kernel" /></p>
 <h1 id="system-call-in-action"><a href="#system-call-in-action">4 System Call in Action</a></h1>
@@ -475,7 +475,7 @@ riscv_swint: SWInt Return: 1e
 <ul>
 <li>
 <p>A0 is <strong>3</strong></p>
-<p>(Return from System Call: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h#L80-L87"><strong>SYS_syscall_return</strong></a>)</p>
+<p>(Return from System Call: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/syscall.h#L80-L87"><strong>SYS_syscall_return</strong></a>)</p>
 </li>
 <li>
 <p>A2 is <strong><code>0x1E</code></strong></p>
@@ -526,9 +526,10 @@ riscv_swint: SWInt Return: 1e
 <p>Only if the <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation"><strong>SUM Bit is set in SSTATUS Register</strong></a>!</p>
 </li>
 <li>
-<p>And that’s absolutely hunky dory because at NuttX Startup, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/sched/init/nx_start.c#L298-L713"><strong>nx_start</strong></a> calls…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_initialstate.c#L41-L140"><strong>up_initial_state</strong></a>, which calls…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_getnewintctx.c#L74-L81"><strong>riscv_set_idleintctx</strong></a> to set the <strong>SUM Bit</strong> in SSTATUS Register</p>
+<p>And that’s absolutely hunky dory because at NuttX Startup, <a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L298-L713"><strong>nx_start</strong></a> calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_initialstate.c#L41-L140"><strong>up_initial_state</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_getnewintctx.c#L74-L81"><strong>riscv_set_idleintctx</strong></a> to set the <strong>SUM Bit</strong> in SSTATUS Register</p>
+<p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow">(Who calls <strong>nx_start</strong>)</a></p>
 </li>
 </ol>
 <p>That’s why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at <strong><code>0x8000_0000</code></strong>!</p>
