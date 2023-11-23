@@ -227,7 +227,7 @@ printf(
 <p>We circle back to <strong>write</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX App calls NuttX Kernel" /></p>
 <h1 id="nuttx-app-calls-nuttx-kernel"><a href="#nuttx-app-calls-nuttx-kernel">2 NuttX App calls NuttX Kernel</a></h1>
-<p><em>Our app will print something to the Console Output…</em></p>
+<p><em>Our app will print something to the console…</em></p>
 <p><em>But NuttX Apps can’t write directly to the Serial Device right?</em></p>
 <p>Nope! NuttX Apps run in <strong>RISC-V User Mode</strong>…</p>
 <p>Which doesn’t have access to Serial Device and other resources controlled by NuttX Kernel. (Running in <strong>RISC-V Supervisor Mode</strong>)</p>
@@ -274,6 +274,7 @@ int ret = write(
 );
 </code></pre></div>
 <p>Which triggers a <strong>System Call</strong> to the Kernel.</p>
+<p>(Indeed “More than meets the eye!”)</p>
 <p><em>What’s sys_call3?</em></p>
 <p>It makes a <strong>System Call</strong> (to NuttX Kernel) with <strong>3 Parameters</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/syscall.h">syscall.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Make a System Call with 3 parameters
@@ -309,7 +310,7 @@ uintptr_t sys_call3(
   return r0;
 }
 </code></pre></div>
-<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--rv32"><strong><code>ecall</code></strong></a> is the RISC-V Instruction that triggers a jump from RISC-V <strong>User Mode to Supervisor Mode</strong>…</p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--rv32"><strong><code>ecall</code></strong></a> is the RISC-V Instruction that jumps from RISC-V <strong>User Mode to Supervisor Mode</strong>…</p>
 <p>Such that NuttX Kernel can execute the actual “<strong>write</strong>” function, with the real Serial Device.</p>
 <p>(We’ll explain how)</p>
 <p><em>Why the no-op after ecall?</em></p>
