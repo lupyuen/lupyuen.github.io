@@ -531,7 +531,7 @@ That's why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at __`0
 
 ![Kernel Starts a NuttX App](https://lupyuen.github.io/images/app-flow.jpg)
 
-[_Clickable Version_](https://github.com/lupyuen/nuttx-ox64#kernel-starts-a-nuttx-app)
+[_Clickable Version of NuttX Flow_](https://github.com/lupyuen/nuttx-ox64#kernel-starts-a-nuttx-app)
 
 # Kernel Starts a NuttX App
 
@@ -583,7 +583,7 @@ To load the ELF File: [__ELF Loader g_elfbinfmt__](https://github.com/apache/nut
 
 There's plenty happening inside [__Execute Module: exec_module__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450). But we won't explore today.
 
-[(__Clickable Version__ of the NuttX Flow)](https://github.com/lupyuen/nuttx-ox64#kernel-starts-a-nuttx-app)
+[(__Clickable Version__ of NuttX Flow)](https://github.com/lupyuen/nuttx-ox64#kernel-starts-a-nuttx-app)
 
 ![Initial RAM Disk for Star64 JH7110](https://lupyuen.github.io/images/semihost-title.jpg)
 
