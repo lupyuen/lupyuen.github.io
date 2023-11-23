@@ -107,7 +107,7 @@ In the RISC-V Disassembly, we see that [__main__](https://github.com/apache/nutt
 
 How will [__write__](https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_libfwrite.c#L149) call the NuttX Kernel? We'll see soon!
 
-_This code doesn't look right..._
+_This code looks broken..._
 
 ```text
 printf("Hello, World!!\n");
