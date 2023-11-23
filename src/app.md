@@ -142,8 +142,8 @@ In our RISC-V Disassembly, the __Relocation Info__ shows that __`0x0`__ will be 
 ```text
 printf("Hello, World!!\n");
 
-  ## Load Register RA with Program Counter + 0x0...
-  ## Actually 0x0 will be changed to the Offset of puts()
+  ## Why load Register RA with Program Counter + 0x0?
+  ## Gotcha! 0x0 will be changed to the Offset of puts()
   4a: 00000097  auipc  ra, 0x0  
   4a: R_RISCV_CALL     puts
 
