@@ -4,7 +4,6 @@
 
 ![NuttX App makes a System Call to NuttX Kernel](https://lupyuen.github.io/images/app-title.png)
 
-
 In Asia the wise folks say...
 
 > _"One can hide on a certain day but cannot hide for a long time"_
@@ -176,7 +175,7 @@ We circle back to __write__...
 
 # NuttX App calls NuttX Kernel
 
-_Our app will print something to the Console Output..._
+_Our app will print something to the console..._
 
 _But NuttX Apps can't write directly to the Serial Device right?_
 
@@ -233,6 +232,8 @@ int ret = write(
 
 Which triggers a __System Call__ to the Kernel.
 
+(Indeed "More than meets the eye!")
+
 _What's sys_call3?_
 
 It makes a __System Call__ (to NuttX Kernel) with __3 Parameters__: [syscall.h](https://github.com/apache/nuttx/blob/master/arch/risc-v/include/syscall.h)
@@ -272,7 +273,7 @@ uintptr_t sys_call3(
 }
 ```
 
-[__`ecall`__](https://five-embeddev.com/quickref/instructions.html#-rv32--rv32) is the RISC-V Instruction that triggers a jump from RISC-V __User Mode to Supervisor Mode__...
+[__`ecall`__](https://five-embeddev.com/quickref/instructions.html#-rv32--rv32) is the RISC-V Instruction that jumps from RISC-V __User Mode to Supervisor Mode__...
 
 Such that NuttX Kernel can execute the actual "__write__" function, with the real Serial Device.
 
