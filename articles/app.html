@@ -127,7 +127,7 @@ int main(int argc, FAR char *argv[]) {
 $ ls -l ../apps/bin/hello
 -rwxr-xr-x  518,192  ../apps/bin/hello
 
-## But not much inside, mostly Debug Info...
+## Though not much inside, mostly Debug Info...
 $ riscv64-unknown-elf-size ../apps/bin/hello
    text  data  bss   dec  hex  filename
    3814     8    4  3826  ef2  ../apps/bin/hello
@@ -207,7 +207,7 @@ return 0;
 <div class="example-wrap"><pre class="language-text"><code>printf(&quot;Hello, World!!\n&quot;);
 
   ## Load Register RA with Program Counter + 0x0...
-  ## But actually 0x0 will be changed to the Offset of puts()
+  ## Actually 0x0 will be changed to the Offset of puts()
   4a: 00000097  auipc  ra, 0x0  
   4a: R_RISCV_CALL     puts
 
@@ -215,7 +215,7 @@ return 0;
   ## Which will work when ELF Loader fixes the Offset of puts()
   4e: 000080e7  jalr   ra     # 4a &lt;.LVL1+0x2&gt;
 </code></pre></div>
-<p>So we’re all good!</p>
+<p>Therefore we’re all good!</p>
 <p><em>Why <code>puts</code> instead of <code>printf</code>?</em></p>
 <p>The GCC Compiler has cleverly optimised away <strong>printf</strong> to become <strong>puts</strong>.</p>
 <p>If we do this (and foil the GCC Compiler)…</p>
@@ -226,7 +226,7 @@ printf(
 );
 </code></pre></div>
 <p>Then <strong>printf</strong> will appear in our RISC-V Disassembly.</p>
-<p>Let’s circle back to <strong>write</strong>…</p>
+<p>We circle back to <strong>write</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX App calls NuttX Kernel" /></p>
 <h1 id="nuttx-app-calls-nuttx-kernel"><a href="#nuttx-app-calls-nuttx-kernel">2 NuttX App calls NuttX Kernel</a></h1>
 <p><em>Our app will print something to the Console Output…</em></p>
@@ -255,7 +255,7 @@ printf(
 <p>This forwarding happens inside a <strong>Proxy Function</strong> that’s auto-generated during NuttX Build…</p>
 <div class="example-wrap"><pre class="language-c"><code>// From nuttx/syscall/proxies/PROXY_write.c
 // Auto-Generated Proxy for `write`
-// Looks like the Kernel `write`, but it&#39;s actually a System Call
+// Looks like the Kernel `write`, though it&#39;s actually a System Call
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
   return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
     (unsigned int) SYS_write,  // System Call Number (63 = `write`)
@@ -309,12 +309,13 @@ uintptr_t sys_call3(
   return r0;
 }
 </code></pre></div>
-<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--rv32"><strong><code>ecall</code></strong></a> is the RISC-V Instruction that triggers a jump from RISC-V <strong>User Mode to Supervisor Mode</strong>. So that NuttX Kernel can execute the actual “<strong>write</strong>” function. (With the actual Serial Device)</p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--rv32"><strong><code>ecall</code></strong></a> is the RISC-V Instruction that triggers a jump from RISC-V <strong>User Mode to Supervisor Mode</strong>…</p>
+<p>Such that NuttX Kernel can execute the actual “<strong>write</strong>” function, with the real Serial Device.</p>
 <p>(We’ll explain how)</p>
 <p><em>Why the no-op after ecall?</em></p>
 <p>We’re guessing: It might be reserved for special calls to NuttX Kernel in future.</p>
 <p><a href="https://lupyuen.github.io/articles/semihost#decipher-the-risc-v-exception">(Similar to <strong><code>ebreak</code></strong> for Semihosting)</a></p>
-<p><em>So every System Call to NuttX Kernel has its own Proxy Function?</em></p>
+<p><em>Every System Call to NuttX Kernel has its own Proxy Function?</em></p>
 <p>Yep we can see the list of Auto-Generated <strong>Proxy Functions</strong> for each System Call…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Proxy Functions called by `hello` app
 $ grep PROXY hello.S
@@ -331,7 +332,7 @@ PROXY_sem_trywait.c
 PROXY_task_setcancelstate.c
 PROXY_write.c
 </code></pre></div>
-<p>Now we figure out how System Calls will work…</p>
+<p>Next we figure out how System Calls will work…</p>
 <p><img src="https://lupyuen.github.io/images/app-syscall2.jpg" alt="NuttX Kernel handles System Call" /></p>
 <h1 id="nuttx-kernel-handles-system-call"><a href="#nuttx-kernel-handles-system-call">3 NuttX Kernel handles System Call</a></h1>
 <p><em>Our App makes an ecall to jump to NuttX Kernel…</em></p>
@@ -411,7 +412,7 @@ enum {
   ...
 };
 </code></pre></div>
-<p>But it’s an Enum, <strong>numbered sequentially</strong> from 8 to 147-ish. We won’t actually see 63 in the NuttX Source Code.</p>
+<p>However it’s an Enum, <strong>numbered sequentially</strong> from 8 to 147-ish. We won’t literally see 63 in the NuttX Source Code.</p>
 <p>Then we lookup the <strong>Debug Info</strong> in our RISC-V Disassembly: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S">hello.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>Abbrev Number: 6 (DW_TAG_enumerator)
   DW_AT_name        : SYS_write
@@ -422,12 +423,12 @@ enum {
 <p><em>That’s an odd way to define System Call Numbers…</em></p>
 <p>Yeah it’s <strong>not strictly an immutable ABI</strong> like Linux, because our System Call Numbers may change! It depends on the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L90-L152"><strong>Build Options</strong></a> that we select.</p>
 <p><a href="https://en.wikipedia.org/wiki/Application_binary_interface">(ABI means <strong>Application Binary Interface</strong>)</a></p>
-<p>But there’s a jolly good thing: It’s super simple to experiment with <strong>new System Calls</strong>!</p>
+<p>Though there’s a jolly good thing: It’s super simple to experiment with <strong>new System Calls</strong>!</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/syscall/syscall.csv#L209-L210">(Just add to <strong>NuttX System Calls</strong>)</a></p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">(As explained here)</a></p>
 <p><img src="https://lupyuen.github.io/images/app-run.png" alt="NuttX App calls NuttX Kernel" /></p>
 <h1 id="system-call-in-action"><a href="#system-call-in-action">4 System Call in Action</a></h1>
-<p><em>This looks complicated… But it works right?</em></p>
+<p><em>This looks complicated… It works right?</em></p>
 <p>Yep we have solid evidence, from <a href="https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx"><strong>NuttX for Ox64 BL808 SBC</strong></a>!</p>
 <p>Remember to enable <strong>System Call Logging</strong> in “<code>make menuconfig</code>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>Build Setup 
@@ -491,8 +492,8 @@ riscv_swint: SWInt Return: 1e
 <p><a href="https://lupyuen.github.io/articles/mmu#virtual-memory"><em>Virtual Memory for NuttX App</em></a></p>
 <h1 id="kernel-accesses-app-memory"><a href="#kernel-accesses-app-memory">5 Kernel Accesses App Memory</a></h1>
 <p><em>NuttX Kernel prints the buffer at <code>0x8000_AD00</code>…</em></p>
-<p><em>But it doesn’t look like a RAM Address?</em></p>
-<p>That’s actually a <strong>Virtual Memory Address</strong>…</p>
+<p><em>It doesn’t look like a RAM Address?</em></p>
+<p>That’s a <strong>Virtual Memory Address</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/mmu"><strong>“RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit”</strong></a></li>
 </ul>
@@ -517,14 +518,14 @@ riscv_swint: SWInt Return: 1e
 </li>
 <li>
 <p>According to the <a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17"><strong>NuttX Log</strong></a>, the Kernel swaps the <a href="https://lupyuen.github.io/articles/mmu#swap-the-satp-register"><strong>RISC-V SATP Register</strong></a> from Kernel Page Table to <strong>User Page Table</strong>…</p>
-<p>But doesn’t swap back!</p>
+<p>And doesn’t swap back!</p>
 </li>
 <li>
 <p>Which means the <strong>User Page Table</strong> is still in effect!</p>
 <p>Thus the <strong>Virtual Memory</strong> at <strong><code>0x8000_0000</code></strong> is perfectly accessible by the Kernel.</p>
 </li>
 <li>
-<p>But there’s a catch: <strong>RISC-V Supervisor Mode</strong> (NuttX Kernel) may access the Virtual Memory mapped to <strong>RISC-V User Mode</strong> (NuttX Apps)…</p>
+<p>There’s a catch: <strong>RISC-V Supervisor Mode</strong> (NuttX Kernel) may access the Virtual Memory mapped to <strong>RISC-V User Mode</strong> (NuttX Apps)…</p>
 <p>Only if the <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation"><strong>SUM Bit is set in SSTATUS Register</strong></a>!</p>
 </li>
 <li>
@@ -537,7 +538,7 @@ riscv_swint: SWInt Return: 1e
 <p><img src="https://lupyuen.github.io/images/app-flow.jpg" alt="Kernel Starts a NuttX App" /></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#kernel-starts-a-nuttx-app"><em>Clickable Version of NuttX Flow</em></a></p>
 <h1 id="kernel-starts-a-nuttx-app"><a href="#kernel-starts-a-nuttx-app">6 Kernel Starts a NuttX App</a></h1>
-<p><em>Phew so NuttX Apps can call NuttX Kernel…</em></p>
+<p><em>Alrighty NuttX Apps can call NuttX Kernel…</em></p>
 <p><em>But how does NuttX Kernel start a NuttX App?</em></p>
 <p>Earlier we stepped through the <strong>Boot Sequence</strong> for NuttX…</p>
 <ul>
@@ -596,12 +597,12 @@ riscv_swint: SWInt Return: 1e
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>Set MMU Page Table Entry: mmu_ln_setentry</strong></a> (to populate the Page Table Entries)</p>
 </li>
 </ul>
-<p>There’s plenty happening inside <a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450"><strong>Execute Module: exec_module</strong></a>. But we won’t explore today.</p>
+<p>There’s plenty happening inside <a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450"><strong>Execute Module: exec_module</strong></a>. Too bad we won’t explore today.</p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#kernel-starts-a-nuttx-app">(<strong>Clickable Version</strong> of NuttX Flow)</a></p>
 <p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="Initial RAM Disk for Star64 JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/semihost"><em>Initial RAM Disk for Star64 JH7110</em></a></p>
 <h1 id="initial-ram-disk"><a href="#initial-ram-disk">7 Initial RAM Disk</a></h1>
-<p><em>Now we know how NuttX Kernel starts a NuttX App…</em></p>
+<p><em>OK we know how NuttX Kernel starts a NuttX App…</em></p>
 <p><em>But where are the NuttX Apps stored?</em></p>
 <p>Right now we’re working with the <strong>Early Port of NuttX</strong> to Ox64 BL808 SBC. We can’t access the File System in the microSD Card.</p>
 <p>All we have: A File System that <strong>lives in RAM</strong> and contains our NuttX Shell + NuttX Apps. That’s our <strong>Initial RAM Disk: initrd</strong>.</p>
@@ -633,7 +634,7 @@ genromfs \
 </li>
 <li>
 <p>Append the Initial RAM Disk to the <strong>NuttX Kernel Image</strong></p>
-<p>So the U-Boot Bootloader will load (one-shot into RAM) the NuttX Kernel + Initial RAM Disk.</p>
+<p>U-Boot Bootloader will load (one-shot into RAM) the NuttX Kernel + Initial RAM Disk.</p>
 <p>And we reuse the existing <strong>U-Boot Config</strong> on the microSD Card: <a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf"><strong>extlinux/extlinux.conf</strong></a></p>
 <p>(Which might be more efficient for our Limited RAM)</p>
 <p><a href="https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow">(More about the <strong>U-Boot Boot Flow</strong>)</a></p>
@@ -700,7 +701,7 @@ void jh7110_copy_ramdisk(void) {
   // Copy the Filesystem bytes to RAM Disk Start
   // Warning: __ramdisk_start overlaps with ramdisk_addr + size
   // Which doesn&#39;t work with memcpy.
-  // But memmove is aliased to memcpy, so we implement memmove ourselves
+  // Sadly memmove is aliased to memcpy, so we implement memmove ourselves
   local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
 }
 </code></pre></div>
@@ -725,7 +726,7 @@ void jh7110_start(int mhartid) {
   // Clear the BSS
   jh7110_clear_bss();
 </code></pre></div>
-<p>(But actually BSS shouldn’t matter, as explained below)</p>
+<p>(BSS shouldn’t matter, as explained below)</p>
 <p>Later during startup, we <strong>mount the RAM Disk</strong> from the Memory Region : <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L51-L87">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// After NuttX has booted...
 void board_late_initialize(void) {
@@ -822,7 +823,7 @@ __ramdisk_start=0x50a00000
 </li>
 <li>
 <p>That’s why we inserted a padding of 64 KB between <strong><code>nuttx.bin</code></strong> and <strong><code>initrd</code></strong>.</p>
-<p>(So it won’t collide with BSS and Kernel Idle Stack)</p>
+<p>(To be sure it won’t collide with BSS and Kernel Idle Stack)</p>
 </li>
 <li>
 <p>Our code locates <strong><code>initrd</code></strong>. (Searching for ROM FS Magic Number “-rom1fs-”)</p>
@@ -833,7 +834,7 @@ __ramdisk_start=0x50a00000
 </li>
 </ol>
 <p>Yep our 64 KB Padding looks legit!</p>
-<p><em>But 64 KB sounds so arbitrary. What if the parameters change?</em></p>
+<p><em>64 KB sounds arbitrary. What if the parameters change?</em></p>
 <p>That’s why we have <strong>Runtime Checks</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245">jh7110_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Stop if RAM Disk is missing
 if (ramdisk_addr == NULL) { _info(&quot;Missing RAM Disk. Check the initrd padding.&quot;); }
@@ -873,7 +874,7 @@ verify_image(ramdisk_addr);
 // Copy the Filesystem Size to RAM Disk Start
 // Warning: __ramdisk_start overlaps with ramdisk_addr + size
 // Which doesn&#39;t work with memcpy.
-// But memmove is aliased to memcpy, so we implement memmove ourselves
+// Sadly memmove is aliased to memcpy, so we implement memmove ourselves
 local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
 
 // After Copy: Verify the copied RAM Disk Image
