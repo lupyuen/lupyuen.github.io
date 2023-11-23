@@ -806,6 +806,8 @@ elf_read: Read 64 bytes from offset 0
 
 [(Source)](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89)
 
+Last thing for today: The mysterious 64 KB padding...
+
 ![Initial RAM Disk for Ox64](https://lupyuen.github.io/images/app-initrd2.jpg)
 
 # Pad the Initial RAM Disk
