@@ -255,7 +255,9 @@ printf(
 // Auto-Generated Proxy for `write`
 // Looks like the Kernel `write`, though it&#39;s actually a System Call
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
-  return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
+
+  // Make a System Call with 3 parameters...
+  return (ssize_t) sys_call3(
     (unsigned int) SYS_write,  // System Call Number (63 = `write`)
     (uintptr_t) parm1,         // File Descriptor (1 = Standard Output)
     (uintptr_t) parm2,         // Buffer to be written
@@ -342,12 +344,13 @@ PROXY_write.c
 // We make the actual call to `write`.
 // (`nbr` is Offset in Stub Lookup Table, unused)
 uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3) {
-  return
-    (uintptr_t) write(  // Call the Kernel version of `write`
-      (int) parm1,      // File Descriptor (1 = Standard Output)
-      (FAR const void *) parm2,  // Buffer to be written
-      (size_t) parm3    // Number of bytes to write
-    );                  // Return the result to the App
+
+  // Call the Kernel version of `write`
+  return (uintptr_t) write(  
+    (int) parm1,    // File Descriptor (1 = Standard Output)
+    (FAR const void *) parm2,  // Buffer to be written
+    (size_t) parm3  // Number of bytes to write
+  );                // Return the result to the App
 }
 </code></pre></div>
 <p>Thus our <strong>NuttX Build</strong> auto-generates 2 things…</p>
@@ -388,17 +391,19 @@ STUB_chown.c
 </li>
 </ul>
 <p><em>How will dispatch_syscall know which Stub Function to call?</em></p>
-<p>Remember that our Proxy Function (in NuttX App) will pass the <strong>System Call Number</strong> for “<strong>write</strong>”?</p>
+<p>Remember that our Proxy Function (in NuttX App) passes the <strong>System Call Number</strong> for “<strong>write</strong>”?</p>
 <div class="example-wrap"><pre class="language-c"><code>// From nuttx/syscall/proxies/PROXY_write.c
 // Auto-Generated Proxy for `write`, called by NuttX App
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
-  return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
+
+  // Make a System Call with 3 parameters...
+  return (ssize_t) sys_call3(
     (unsigned int) SYS_write,  // System Call Number (63 = `write`)
     ...
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a> (in NuttX Kernel) will look up the System Call Number in the <a href="https://github.com/apache/nuttx/blob/master/syscall/syscall_stublookup.c#L80-L93"><strong>Stub Lookup Table</strong></a>. And fetch the <strong>Stub Function</strong> to call.</p>
 <p><em>How did we figure out that 63 is the System Call Number for “write”?</em></p>
-<p>OK this part gets tricky. Below is the Enum that defines all <strong>System Call Numbers</strong>: <a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall.h#L55-L66">syscall.h</a> and <a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
+<p>OK this gets tricky. Below is the Enum that defines all <strong>System Call Numbers</strong>: <a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall.h#L55-L66">syscall.h</a> and <a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// System Call Enum sequentially assigns
 // all System Call Numbers (8 to 147-ish)
 enum {
