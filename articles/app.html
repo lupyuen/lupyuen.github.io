@@ -273,7 +273,7 @@ int ret = write(
 </code></pre></div>
 <p>Which triggers a <strong>System Call</strong> to the Kernel.</p>
 <p><em>What’s sys_call3?</em></p>
-<p>It makes a <strong>System Call</strong> (to NuttX Kernel) with <strong>3 Parameters</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h">sys_call3</a></p>
+<p>It makes a <strong>System Call</strong> (to NuttX Kernel) with <strong>3 Parameters</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/syscall.h">syscall.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Make a System Call with 3 parameters
 uintptr_t sys_call3(
   unsigned int nbr,  // System Call Number (63 = `write`)
