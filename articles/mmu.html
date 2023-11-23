@@ -780,6 +780,14 @@ riscv64-unknown-elf-objcopy \
   -O binary \
   nuttx \
   nuttx.bin
+
+## Dump the disassembly to nuttx.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">(And enable <strong>Scheduler Info Output</strong>)</a></p>

@@ -137,6 +137,7 @@ $ riscv64-unknown-elf-objdump \
   &gt;hello.S \
   2&gt;&amp;1
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>Here’s the <strong>RISC-V Disassembly</strong> of our NuttX App: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S">hello.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>## Omitted: _start() prepares for signals (sig_trampoline) and calls main()
 
@@ -410,13 +411,12 @@ enum {
 };
 </code></pre></div>
 <p>However it’s an Enum, <strong>numbered sequentially</strong> from 8 to 147-ish. We won’t literally see 63 in the NuttX Source Code.</p>
-<p>Then we lookup the <strong>Debug Info</strong> in our RISC-V Disassembly: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S">hello.S</a></p>
+<p>Then we lookup the <strong>Debug Info</strong> in the RISC-V Disassembly for NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/nuttx.S">nuttx.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>Abbrev Number: 6 (DW_TAG_enumerator)
   DW_AT_name        : SYS_write
   DW_AT_const_value : 63
 </code></pre></div>
 <p>Whoomp there it is! This says that “<strong>write</strong>” is <strong>System Call #63</strong>.</p>
-<p>TODO: Change hello.S to nuttx.S</p>
 <p><em>That’s an odd way to define System Call Numbers…</em></p>
 <p>Yeah it’s <strong>not strictly an immutable ABI</strong> like Linux, because our System Call Numbers may change! It depends on the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/include/sys/syscall_lookup.h#L90-L152"><strong>Build Options</strong></a> that we select.</p>
 <p><a href="https://en.wikipedia.org/wiki/Application_binary_interface">(ABI means <strong>Application Binary Interface</strong>)</a></p>
