@@ -670,7 +670,7 @@ cp Image &quot;/Volumes/NO NAME/&quot;
 <p>This is how we made it work…</p>
 <p><img src="https://lupyuen.github.io/images/app-initrd.jpg" alt="Initial RAM Disk for Ox64" /></p>
 <h1 id="mount-the-initial-ram-disk"><a href="#mount-the-initial-ram-disk">8 Mount the Initial RAM Disk</a></h1>
-<p><em>We appended the Initial RAM Disk to NuttX Kernel…</em></p>
+<p><em>We appended the Initial RAM Disk to NuttX Kernel (pic above)…</em></p>
 <p><em>How in RAM will NuttX Kernel locate the Initial RAM Disk?</em></p>
 <p>Our Initial RAM Disk follows the <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM File System Format</strong></a> (ROM FS). We <strong>search our RAM</strong> for the ROM File System by its Magic Number.</p>
 <p>Then we copy it into the designated <strong>Memory Region</strong> for mounting: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245">jh7110_start.c</a></p>
@@ -836,7 +836,7 @@ __ramdisk_start=0x50a00000
 </li>
 <li>
 <p>That’s why we inserted a padding of <strong>64 KB</strong> between <strong><code>nuttx.bin</code></strong> and <strong><code>initrd</code></strong>.</p>
-<p>(To be sure it won’t collide with BSS and Kernel Idle Stack)</p>
+<p>(Surely <strong><code>initrd</code></strong> won’t collide with BSS and Kernel Idle Stack)</p>
 </li>
 <li>
 <p>From the previous section, our code locates <strong><code>initrd</code></strong>.</p>
@@ -845,13 +845,13 @@ __ramdisk_start=0x50a00000
 </li>
 <li>
 <p>Finally NuttX mounts the RAM Disk from <strong>RAM Disk Region</strong>.</p>
-<p>(Everything goes well, nothing gets contaminated)</p>
 <p>NuttX Kernel starts the <strong>NuttX Shell</strong> correctly from the Mounted RAM Disk.</p>
+<p>(Everything goes well, nothing gets contaminated)</p>
 </li>
 </ol>
 <p>Yep our 64 KB Padding looks legit!</p>
 <p><em>64 KB sounds arbitrary. What if the parameters change?</em></p>
-<p>That’s why we have <strong>Runtime Checks</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245">jh7110_start.c</a></p>
+<p>We have <strong>Runtime Checks</strong> to catch problems: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245">jh7110_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Stop if RAM Disk is missing
 if (ramdisk_addr == NULL) { _info(&quot;Missing RAM Disk. Check the initrd padding.&quot;); }
 DEBUGASSERT(ramdisk_addr != NULL);
