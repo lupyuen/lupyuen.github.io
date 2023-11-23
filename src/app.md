@@ -529,7 +529,7 @@ _Huh? NuttX Kernel can access Virtual Memory?_
 
 That's why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at __`0x8000_0000`__!
 
-TODO: NuttX Flow
+![Kernel Starts a NuttX App](https://lupyuen.github.io/images/app-flow.jpg)
 
 [_Clickable Version_](https://github.com/lupyuen/nuttx-ox64#kernel-starts-a-nuttx-app)
 
