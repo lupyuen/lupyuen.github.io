@@ -133,7 +133,8 @@ printf("Hello, World!!\n");
 
   ## Load Register RA with Program Counter + 0x0...
   ## But actually 0x0 will be changed to the Offset of puts()
-  4a: 00000097  auipc  ra, 0x0  4a: R_RISCV_CALL  puts
+  4a: 00000097  auipc  ra, 0x0  
+  4a: R_RISCV_CALL     puts
 
   ## Call the function in Register RA: puts()
   ## Which will work when ELF Loader fixes the Offset of puts()
