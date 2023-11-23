@@ -174,9 +174,13 @@ _Our app will print something to the Console Output..._
 
 _But NuttX Apps can't write directly to the Serial Device right?_
 
-Nope! NuttX Apps run in __RISC-V User Mode__. Which doesn't have access to Serial Device and other resources controlled by NuttX Kernel. (Running in __RISC-V Supervisor Mode__)
+Nope! NuttX Apps run in __RISC-V User Mode__...
 
-That's why "__write__" will trigger a __System Call__ to the NuttX Kernel, jumping from RISC-V __User Mode to Supervisor Mode__. And write to the Serial Device.
+Which doesn't have access to Serial Device and other resources controlled by NuttX Kernel. (Running in __RISC-V Supervisor Mode__)
+
+That's why "__write__" will trigger a __System Call__ to the NuttX Kernel, jumping from RISC-V __User Mode to Supervisor Mode__.
+
+(And write to the Serial Device)
 
 _Will NuttX Apps need Special Coding to make System Calls?_
 
@@ -519,11 +523,17 @@ Thus our NuttX App has passed a chunk of its own __Virtual Memory__. And NuttX K
 
 _Huh? NuttX Kernel can access Virtual Memory?_
 
-1.  We know that NuttX uses 2 sets of Page Tables: __Kernel Page Table__ and __User Page Table__ (for apps)
+1.  NuttX uses 2 sets of Page Tables: __Kernel Page Table__ and __User Page Table__.
 
-1.  According to the [__NuttX Log__](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17), the Kernel swaps the [__RISC-V SATP Register__](https://lupyuen.github.io/articles/mmu#swap-the-satp-register) from Kernel Page Table to __User Page Table__. But doesn't swap back!
+    (User Page Table defines the __Virtual Memory__ for NuttX Apps)
 
-1.  Which means the __User Page Table__ is still in effect! Thus the User Addresses at __`0x8000_0000`__ perfectly accessible by the Kernel.
+1.  According to the [__NuttX Log__](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17), the Kernel swaps the [__RISC-V SATP Register__](https://lupyuen.github.io/articles/mmu#swap-the-satp-register) from Kernel Page Table to __User Page Table__...
+
+    But doesn't swap back!
+
+1.  Which means the __User Page Table__ is still in effect!
+
+    Thus the __Virtual Memory__ at __`0x8000_0000`__ is perfectly accessible by the Kernel.
 
 1.  But there's a catch: __RISC-V Supervisor Mode__ (NuttX Kernel) may access the Virtual Memory mapped to __RISC-V User Mode__ (NuttX Apps)...
 
