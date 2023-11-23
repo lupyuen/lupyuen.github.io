@@ -209,7 +209,9 @@ This forwarding happens inside a __Proxy Function__ that's auto-generated during
 // Auto-Generated Proxy for `write`
 // Looks like the Kernel `write`, though it's actually a System Call
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
-  return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
+
+  // Make a System Call with 3 parameters...
+  return (ssize_t) sys_call3(
     (unsigned int) SYS_write,  // System Call Number (63 = `write`)
     (uintptr_t) parm1,         // File Descriptor (1 = Standard Output)
     (uintptr_t) parm2,         // Buffer to be written
@@ -322,12 +324,13 @@ Remember the Proxy Function from earlier? Now we do the exact opposite in our __
 // We make the actual call to `write`.
 // (`nbr` is Offset in Stub Lookup Table, unused)
 uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3) {
-  return
-    (uintptr_t) write(  // Call the Kernel version of `write`
-      (int) parm1,      // File Descriptor (1 = Standard Output)
-      (FAR const void *) parm2,  // Buffer to be written
-      (size_t) parm3    // Number of bytes to write
-    );                  // Return the result to the App
+
+  // Call the Kernel version of `write`
+  return (uintptr_t) write(  
+    (int) parm1,    // File Descriptor (1 = Standard Output)
+    (FAR const void *) parm2,  // Buffer to be written
+    (size_t) parm3  // Number of bytes to write
+  );                // Return the result to the App
 }
 ```
 
@@ -368,13 +371,15 @@ When our NuttX App makes an __`ecall`__, it triggers __IRQ 8__ [__(RISCV_IRQ_ECA
 
 _How will dispatch_syscall know which Stub Function to call?_
 
-Remember that our Proxy Function (in NuttX App) will pass the __System Call Number__ for "__write__"?
+Remember that our Proxy Function (in NuttX App) passes the __System Call Number__ for "__write__"?
 
 ```c
 // From nuttx/syscall/proxies/PROXY_write.c
 // Auto-Generated Proxy for `write`, called by NuttX App
 ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
-  return (ssize_t) sys_call3(  // Make a System Call with 3 parameters...
+
+  // Make a System Call with 3 parameters...
+  return (ssize_t) sys_call3(
     (unsigned int) SYS_write,  // System Call Number (63 = `write`)
     ...
 ```
@@ -383,7 +388,7 @@ ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
 
 _How did we figure out that 63 is the System Call Number for "write"?_
 
-OK this part gets tricky. Below is the Enum that defines all __System Call Numbers__: [syscall.h](https://github.com/apache/nuttx/blob/master/include/sys/syscall.h#L55-L66) and [syscall_lookup.h](https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h#L202)
+OK this gets tricky. Below is the Enum that defines all __System Call Numbers__: [syscall.h](https://github.com/apache/nuttx/blob/master/include/sys/syscall.h#L55-L66) and [syscall_lookup.h](https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h#L202)
 
 ```c
 // System Call Enum sequentially assigns
