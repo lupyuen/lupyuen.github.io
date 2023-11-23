@@ -826,9 +826,13 @@ In this article, NuttX has booted plenty of code on Ox64. Here's the flow of the
 
 - [__Create Init Thread: nx_create_initthread__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L330-L369) (to create "AppBringUp" thread) which calls...
 
+- [__Start NuttX Task: nx_start_task__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L304-L330) (to start NuttX Task) which calls...
+
 - [__Start Application: nx_start_application__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L212-L304) which calls...
 
-- [__Mount RAM Disk: nx_mount__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/fs/mount/fs_mount.c#L260-L514)
+- [__Board Late Init: board_late_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L134-L167) (to mount Initial RAM Disk) and...
+
+  [__Mount RAM Disk: nx_mount__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/fs/mount/fs_mount.c#L260-L514) (to mount ROM File System from Initial RAM Disk)
 
   (Which fails because our Initial RAM Disk is missing)
 
