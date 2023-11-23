@@ -42,7 +42,7 @@ int main(int argc, FAR char *argv[]) {
 }
 ```
 
-Let's find out! We build [__NuttX for Ox64 BL808 SBC__](https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx).
+Let's find out! First we build [__NuttX for Ox64 BL808 SBC__](https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx).
 
 Which produces this __ELF Executable__ for our NuttX App...
 
@@ -134,7 +134,7 @@ Ah that's because we're looking at [__Relocatable Code__](https://en.wikipedia.o
 
 The __`auipc`__ Offset will be fixed up by the __NuttX ELF Loader__ when it loads our NuttX App for execution.
 
-The __Relocation Info__ shows that __`0x0`__ will be replaced by the Offset of [__puts__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_puts.c#L34-L96)...
+In our RISC-V Disassembly, the __Relocation Info__ shows that __`0x0`__ will be replaced by the Offset of [__puts__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_puts.c#L34-L96)...
 
 ```text
 printf("Hello, World!!\n");
@@ -159,7 +159,10 @@ If we do this (and foil the GCC Compiler)...
 
 ```c
 // Nope, GCC Compiler won't change printf() to puts()
-printf("Hello, World %s!!\n", "Luppy");
+printf(
+  "Hello, World %s!!\n",  // Meaningful Format String
+  "Luppy"                 // Makes it complicated
+);
 ```
 
 Then __printf__ will appear in our RISC-V Disassembly.
@@ -180,7 +183,7 @@ Which doesn't have access to Serial Device and other resources controlled by Nut
 
 That's why "__write__" will trigger a __System Call__ to the NuttX Kernel, jumping from RISC-V __User Mode to Supervisor Mode__.
 
-(And write to the Serial Device)
+(And write to the Serial Device, pic above)
 
 _Will NuttX Apps need Special Coding to make System Calls?_
 
