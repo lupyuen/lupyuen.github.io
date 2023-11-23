@@ -431,17 +431,19 @@ enum {
 <div class="example-wrap"><pre class="language-text"><code>Build Setup 
   &gt; Debug Options 
     &gt; Syscall Debug Features 
-      &gt; Syscall Warning / Error / Info
+      &gt; Enable &quot;Syscall Warning, Error and Info&quot;
 </code></pre></div>
-<p>Our app (NuttX Shell) is printing something to the console. (Pic above)</p>
-<p>It makes an <strong><code>ecall</code></strong> for System Call #63 “<strong>write</strong>”, which triggers <strong>IRQ 8</strong>…</p>
+<p>Watch what happens when we <strong>boot NuttX on Ox64</strong> (pic above)…</p>
+<p>Our app (NuttX Shell) begins by printing something to the console.</p>
+<p>It makes an <strong><code>ecall</code></strong> for System Call #63 “<strong>write</strong>”.</p>
+<p>Which triggers <strong>IRQ 8</strong> and jumps to <strong>NuttX Kernel</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: irq=8
 riscv_swint: Entry: regs: 0x5040bcb0 cmd: 63
 EPC: 800019b2
 A0: 003f A1: 0001 A2: 8000ad00 A3: 001e
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17">(See the <strong>Complete Log</strong>)</a></p>
-<p>And jumps to NuttX Kernel. The <strong>RISC-V Registers</strong> look familiar…</p>
+<p>The <strong>RISC-V Registers</strong> look familiar…</p>
 <ul>
 <li>
 <p>A0 is <strong><code>0x3F</code></strong></p>
@@ -482,8 +484,8 @@ riscv_swint: SWInt Return: 1e
 <p>(Number of bytes written)</p>
 </li>
 </ul>
-<p>And returns the result <strong><code>0x1E</code></strong> to our NuttX App.</p>
-<p>NuttX successfully makes a System Call on Ox64 SBC yay! (Pic above)</p>
+<p>And returns the result <strong><code>0x1E</code></strong> to our NuttX App. <a href="https://five-embeddev.com/quickref/instructions.html#-supervisor--sstatus">(Via <strong><code>sret</code></strong>)</a></p>
+<p>Our NuttX App has successfully made a System Call on Ox64 yay!</p>
 <p><a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Virtual Memory for NuttX App" /></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#virtual-memory"><em>Virtual Memory for NuttX App</em></a></p>
@@ -538,7 +540,7 @@ riscv_swint: SWInt Return: 1e
 <h1 id="kernel-starts-a-nuttx-app"><a href="#kernel-starts-a-nuttx-app">6 Kernel Starts a NuttX App</a></h1>
 <p><em>Alrighty NuttX Apps can call NuttX Kernel…</em></p>
 <p><em>But how does NuttX Kernel start a NuttX App?</em></p>
-<p>Earlier we stepped through the <strong>Boot Sequence</strong> for NuttX…</p>
+<p>Previously we walked through the <strong>Boot Sequence</strong> for NuttX…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow"><strong>“NuttX Boot Flow”</strong></a></li>
 </ul>
