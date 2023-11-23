@@ -4,6 +4,7 @@
 
 ![NuttX App makes a System Call to NuttX Kernel](https://lupyuen.github.io/images/app-title.png)
 
+
 In Asia the wise folks say...
 
 > _"One can hide on a certain day but cannot hide for a long time"_
@@ -64,6 +65,8 @@ $ riscv64-unknown-elf-objdump \
   >hello.S \
   2>&1
 ```
+
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
 
 Here's the __RISC-V Disassembly__ of our NuttX App: [hello.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S)
 
@@ -397,7 +400,7 @@ enum {
 
 However it's an Enum, __numbered sequentially__ from 8 to 147-ish. We won't literally see 63 in the NuttX Source Code.
 
-Then we lookup the __Debug Info__ in our RISC-V Disassembly: [hello.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S)
+Then we lookup the __Debug Info__ in the RISC-V Disassembly for NuttX Kernel: [nuttx.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/nuttx.S)
 
 ```text
 Abbrev Number: 6 (DW_TAG_enumerator)
@@ -406,8 +409,6 @@ Abbrev Number: 6 (DW_TAG_enumerator)
 ```
 
 Whoomp there it is! This says that "__write__" is __System Call #63__.
-
-TODO: Change hello.S to nuttx.S
 
 _That's an odd way to define System Call Numbers..._
 
