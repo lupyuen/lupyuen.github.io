@@ -121,7 +121,7 @@ int main(int argc, FAR char *argv[]) {
   return 0;
 }
 </code></pre></div>
-<p>Let’s find out! We build <a href="https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx"><strong>NuttX for Ox64 BL808 SBC</strong></a>.</p>
+<p>Let’s find out! First we build <a href="https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx"><strong>NuttX for Ox64 BL808 SBC</strong></a>.</p>
 <p>Which produces this <strong>ELF Executable</strong> for our NuttX App…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## ELF Executable for `hello` looks big...
 $ ls -l ../apps/bin/hello
@@ -203,7 +203,7 @@ return 0;
 <p><em>Shouldn’t <code>auipc</code> add the Offset of <code>puts</code>?</em></p>
 <p>Ah that’s because we’re looking at <a href="https://en.wikipedia.org/wiki/Relocation_(computing)"><strong>Relocatable Code</strong></a>!</p>
 <p>The <strong><code>auipc</code></strong> Offset will be fixed up by the <strong>NuttX ELF Loader</strong> when it loads our NuttX App for execution.</p>
-<p>The <strong>Relocation Info</strong> shows that <strong><code>0x0</code></strong> will be replaced by the Offset of <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_puts.c#L34-L96"><strong>puts</strong></a>…</p>
+<p>In our RISC-V Disassembly, the <strong>Relocation Info</strong> shows that <strong><code>0x0</code></strong> will be replaced by the Offset of <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/libs/libc/stdio/lib_puts.c#L34-L96"><strong>puts</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>printf(&quot;Hello, World!!\n&quot;);
 
   ## Load Register RA with Program Counter + 0x0...
@@ -220,7 +220,10 @@ return 0;
 <p>The GCC Compiler has cleverly optimised away <strong>printf</strong> to become <strong>puts</strong>.</p>
 <p>If we do this (and foil the GCC Compiler)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Nope, GCC Compiler won&#39;t change printf() to puts()
-printf(&quot;Hello, World %s!!\n&quot;, &quot;Luppy&quot;);
+printf(
+  &quot;Hello, World %s!!\n&quot;,  // Meaningful Format String
+  &quot;Luppy&quot;                 // Makes it complicated
+);
 </code></pre></div>
 <p>Then <strong>printf</strong> will appear in our RISC-V Disassembly.</p>
 <p>Let’s circle back to <strong>write</strong>…</p>
@@ -231,7 +234,7 @@ printf(&quot;Hello, World %s!!\n&quot;, &quot;Luppy&quot;);
 <p>Nope! NuttX Apps run in <strong>RISC-V User Mode</strong>…</p>
 <p>Which doesn’t have access to Serial Device and other resources controlled by NuttX Kernel. (Running in <strong>RISC-V Supervisor Mode</strong>)</p>
 <p>That’s why “<strong>write</strong>” will trigger a <strong>System Call</strong> to the NuttX Kernel, jumping from RISC-V <strong>User Mode to Supervisor Mode</strong>.</p>
-<p>(And write to the Serial Device)</p>
+<p>(And write to the Serial Device, pic above)</p>
 <p><em>Will NuttX Apps need Special Coding to make System Calls?</em></p>
 <p>Nope! The System Call is <strong>totally transparent</strong> to our app…</p>
 <ul>
