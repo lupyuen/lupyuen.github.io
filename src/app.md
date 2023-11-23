@@ -583,6 +583,8 @@ To load the ELF File: [__ELF Loader g_elfbinfmt__](https://github.com/apache/nut
 
 There's plenty happening inside [__Execute Module: exec_module__](https://github.com/apache/nuttx/blob/master/binfmt/binfmt_execmodule.c#L190-L450). But we won't explore today.
 
+[(__Clickable Version__ of the NuttX Flow)](https://github.com/lupyuen/nuttx-ox64#kernel-starts-a-nuttx-app)
+
 ![Initial RAM Disk for Star64 JH7110](https://lupyuen.github.io/images/semihost-title.jpg)
 
 [_Initial RAM Disk for Star64 JH7110_](https://lupyuen.github.io/articles/semihost)
@@ -947,7 +949,7 @@ TODO
 
 Like we said at the top of the article...
 
-> "One can hide on the First... But can't hide on the Fifteenth!"
+> _"One can hide on the First... But can't hide on the Fifteenth!"_
 
 Today we unravelled the inner workings of __NuttX Applications__ for __Ox64 BL808 RISC-V SBC__...
 
