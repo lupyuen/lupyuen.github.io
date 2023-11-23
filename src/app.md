@@ -623,7 +623,9 @@ _But where are the NuttX Apps stored?_
 
 Right now we're working with the __Early Port of NuttX__ to Ox64 BL808 SBC. We can't access the File System in the microSD Card.
 
-All we have: A File System that __lives in RAM__ and contains our NuttX Shell + NuttX Apps. That's our __Initial RAM Disk: initrd__.
+All we have: A File System that __lives in RAM__ and contains our __NuttX Shell + NuttX Apps__.
+
+That's our __Initial RAM Disk: initrd__
 
 ```bash
 ## Build the Apps Filesystem
@@ -645,7 +647,9 @@ genromfs \
 
 _How to load the Initial RAM Disk from microSD to RAM?_
 
-[__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) will do it for us! Two ways we can load the Initial RAM Disk from microSD...
+[__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) will do it for us!
+
+Two ways that U-Boot can load the Initial RAM Disk from microSD...
 
 1.  Load the Initial RAM Disk from a __Separate File: initrd__ (similar to Star64, pic above)
 
@@ -667,7 +671,7 @@ _How to load the Initial RAM Disk from microSD to RAM?_
 
     [(More about the __U-Boot Boot Flow__)](https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow)
 
-We'll do the Second Method, since we are low on RAM. Like this...
+Since Ox64 is low on RAM, we'll do the __Second Method__ (Append to Kernel). Like this...
 
 ```bash
 ## Export the NuttX Kernel to `nuttx.bin`
@@ -696,11 +700,13 @@ Let's make this work...
 
 # Mount the Initial RAM Disk
 
-_How will NuttX Kernel locate the Initial RAM Disk in RAM?_
+_We appended the Initial RAM Disk to NuttX Kernel..._
 
-Our Initial RAM Disk is in [__ROM File System Format__](https://docs.kernel.org/filesystems/romfs.html).
+_How in RAM will NuttX Kernel locate the Initial RAM Disk?_
 
-We __search our RAM__ for the ROM File System, then copy it into the designated __Memory Region__: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245)
+Our Initial RAM Disk is in [__ROM File System Format__](https://docs.kernel.org/filesystems/romfs.html). We __search our RAM__ for the ROM File System by its Magic Number.
+
+Then we copy it into the designated __Memory Region__ for mounting: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245)
 
 ```c
 // Locate the Initial RAM Disk and copy to the designated Memory Region
@@ -743,9 +749,13 @@ void jh7110_copy_ramdisk(void) {
 }
 ```
 
+(More about __edata__ and __Idle Stack__ in the next section)
+
 _Why did we copy Initial RAM Disk to ramdisk_start?_
 
-__ramdisk_start__ points to the Memory Region that we reserved for mounting our RAM Disk. It's defined in the __NuttX Linker Script__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L21-L48)
+__ramdisk_start__ points to the Memory Region that we reserved for mounting our RAM Disk.
+
+It's defined in the __NuttX Linker Script__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L21-L48)
 
 ```text
 /* Memory Region for RAM Disk */
@@ -760,7 +770,7 @@ _Who calls the code above?_
 
 We locate and copy the Initial RAM Disk at the very top of our __NuttX Start Code__. 
 
-This happens before erasing the BSS, in case it corrupts our RAM Disk: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L144-L156)
+This happens before __erasing the BSS__ (Global and Static Variables), in case it corrupts our RAM Disk: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L144-L156)
 
 ```c
 // NuttX Start Code
@@ -769,7 +779,7 @@ void jh7110_start(int mhartid) {
   // Copy the RAM Disk
   jh7110_copy_ramdisk();
 
-  // Clear the BSS
+  // Clear the BSS for Global and Static Variables
   jh7110_clear_bss();
 ```
 
@@ -793,15 +803,16 @@ int mount_ramdisk(void) {
   ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&desc);
 ```
 
-And NuttX mounts our RAM Disk successfully!
+All this works great: NuttX mounts our RAM Disk successfully, and starts the ELF Executable for NuttX Shell!
 
 ```text
-jh7110_copy_ramdisk: _edata=0x50400258, _sbss=0x50400290, _ebss=0x50407000, JH7110_IDLESTACK_TOP=0x50407c00
-jh7110_copy_ramdisk: ramdisk_addr=0x50408288
-jh7110_copy_ramdisk: size=8192016
-jh7110_copy_ramdisk: Before Copy: ramdisk_addr=0x50408288
-jh7110_copy_ramdisk: After Copy: __ramdisk_start=0x50a00000
-...
+jh7110_copy_ramdisk:
+  _edata=0x50400258, _sbss=0x50400290, _ebss=0x50407000, JH7110_IDLESTACK_TOP=0x50407c00
+  ramdisk_addr=0x50408288
+  size=8192016
+  Before Copy: ramdisk_addr=0x50408288
+  After Copy: __ramdisk_start=0x50a00000
+  ...
 elf_initialize: Registering ELF
 uart_register: Registering /dev/console
 work_start_lowpri: Starting low-priority kernel worker thread(s)
@@ -812,7 +823,9 @@ elf_init: filename: /system/bin/init loadinfo: 0x5040c618
 elf_read: Read 64 bytes from offset 0
 ```
 
-[(Source)](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89)
+("__system/bin/init__" is the NuttX Shell)
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89)
 
 Last thing for today: The mysterious 64 KB padding...
 
@@ -836,11 +849,11 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
 ## Initial RAM Disk into RAM
 ```
 
-U-Boot Bootloader will load our Initial RAM Disk into RAM, dangerously close to __BSS Memory__ (Global and Static Variables) and __Kernel Stack__.
+U-Boot Bootloader will load our Initial RAM Disk into RAM. However it's dangerously close to __BSS Memory__ (Global and Static Variables) and __Kernel Stack__.
 
 There's a risk that our Initial RAM Disk will be __contaminated by BSS and Stack__. This is how we found a clean, safe space for our Initial RAM Disk...
 
-When we refer to the [__NuttX Log__](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89) and the [__NuttX Linker Script__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script)...
+We inspect the [__NuttX Log__](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89) and the [__NuttX Linker Script__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script)...
 
 ```text
 // End of Data Section
@@ -876,7 +889,7 @@ Or graphically...
 
 (Which overlaps with __Initial RAM Disk__!)
 
-Which says...
+This says...
 
 1.  NuttX Kernel __`nuttx.bin`__ terminates at __`edata`__.
 
@@ -886,7 +899,7 @@ Which says...
 
     It will collide with the [__BSS Section__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L74-L92) and the [__Kernel Idle Stack__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_head.S#L94-L101).
 
-    And __`initrd`__ will get overwritten by the Boot Code and Start Code.
+    And __`initrd`__ will get overwritten when NuttX runs the Boot Code and Start Code.
 
 1.  Best place to append __`initrd`__ is after the __Kernel Idle Stack__.
 
@@ -896,9 +909,11 @@ Which says...
 
     (To be sure it won't collide with BSS and Kernel Idle Stack)
 
-1.  Our code locates __`initrd`__. (Searching for ROM FS Magic Number "-rom1fs-")
+1.  From the previous section, our code locates __`initrd`__.
 
-    And copies __`initrd`__ to __RAM Disk Region__.
+    (Searching for the ROM FS Magic Number "-rom1fs-")
+
+    And copies __`initrd`__ to the __RAM Disk Region__.
     
 1.  Finally NuttX mounts the RAM Disk from __RAM Disk Region__.
 
@@ -947,7 +962,7 @@ void *local_memmove(void *dest, const void *src, size_t count) {
 
 _We're sure that it works?_
 
-We called __`verify_image`__ to do a simple integrity check on __`initrd`__, before and after copying: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487)
+We called __`verify_image`__ to do a simple Integrity Check on __`initrd`__, before and after copying: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487)
 
 ```c
 // Before Copy: Verify the RAM Disk Image to be copied
