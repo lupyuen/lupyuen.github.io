@@ -662,7 +662,7 @@ Two ways that U-Boot can load the Initial RAM Disk from microSD...
 
 1.  Load the Initial RAM Disk from a __Separate File: initrd__ (similar to Star64, pic above)
 
-    This means we need to modify the [__U-Boot Script: boot-pine64.scr__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd)
+    This means we modify the [__U-Boot Script: boot-pine64.scr__](https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/boot-pine64.cmd)
 
     And make it [__load the initrd__](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk) file into RAM.
 
@@ -703,7 +703,7 @@ cp Image "/Volumes/NO NAME/"
 ## Initial RAM Disk into RAM
 ```
 
-Let's make this work...
+This is how we made it work...
 
 ![Initial RAM Disk for Ox64](https://lupyuen.github.io/images/app-initrd.jpg)
 
@@ -713,7 +713,7 @@ _We appended the Initial RAM Disk to NuttX Kernel..._
 
 _How in RAM will NuttX Kernel locate the Initial RAM Disk?_
 
-Our Initial RAM Disk is in [__ROM File System Format__](https://docs.kernel.org/filesystems/romfs.html). We __search our RAM__ for the ROM File System by its Magic Number.
+Our Initial RAM Disk follows the [__ROM File System Format__](https://docs.kernel.org/filesystems/romfs.html) (ROM FS). We __search our RAM__ for the ROM File System by its Magic Number.
 
 Then we copy it into the designated __Memory Region__ for mounting: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245)
 
@@ -758,7 +758,7 @@ void jh7110_copy_ramdisk(void) {
 }
 ```
 
-(More about __edata__ and __Idle Stack__ in the next section)
+(More about __edata__, __Idle Stack__ and __local_memmove__ in the next section)
 
 _Why did we copy Initial RAM Disk to ramdisk_start?_
 
@@ -860,7 +860,7 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
 
 U-Boot Bootloader will load our Initial RAM Disk into RAM. However it's dangerously close to __BSS Memory__ (Global and Static Variables) and __Kernel Stack__.
 
-There's a risk that our Initial RAM Disk will be __contaminated by BSS and Stack__. This is how we found a clean, safe space for our Initial RAM Disk...
+There's a risk that our Initial RAM Disk will be __contaminated by BSS and Stack__. This is how we found a clean, safe space for our Initial RAM Disk (pic above)...
 
 We inspect the [__NuttX Log__](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89) and the [__NuttX Linker Script__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script)...
 
@@ -908,23 +908,29 @@ This says...
 
     It will collide with the [__BSS Section__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L74-L92) and the [__Kernel Idle Stack__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_head.S#L94-L101).
 
-    And __`initrd`__ will get overwritten when NuttX runs the Boot Code and Start Code.
+    And __`initrd`__ will get overwritten when NuttX runs the __Boot Code__ and __Start Code__.
+
+    (Boot Code uses the Kernel Idle Stack. Start Code erases the BSS)
 
 1.  Best place to append __`initrd`__ is after the __Kernel Idle Stack__.
 
-    Which is located 32 KB after __`edata`__.
+    Which is roughly __32 KB__ after __`edata`__.
     
-1.  That's why we inserted a padding of 64 KB between __`nuttx.bin`__ and __`initrd`__.
+1.  That's why we inserted a padding of __64 KB__ between __`nuttx.bin`__ and __`initrd`__.
 
     (To be sure it won't collide with BSS and Kernel Idle Stack)
 
 1.  From the previous section, our code locates __`initrd`__.
 
-    (Searching for the ROM FS Magic Number "-rom1fs-")
+    (Searching for the ROM FS Magic Number)
 
     And copies __`initrd`__ to the __RAM Disk Region__.
     
 1.  Finally NuttX mounts the RAM Disk from __RAM Disk Region__.
+
+    (Everything goes well, nothing gets contaminated)
+    
+    NuttX Kernel starts the __NuttX Shell__ correctly from the Mounted RAM Disk.
 
 Yep our 64 KB Padding looks legit!
 
