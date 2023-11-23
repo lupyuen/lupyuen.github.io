@@ -18,7 +18,11 @@ In this article, we go behind the shadow puppetry _(wayang kulit)_ and deceptive
 
 - What's inside the __simplest NuttX App__
 
-- TODO
+- How NuttX Apps make __RISC-V System Calls__ to NuttX Kernel
+
+- __Virtual Memory__ for NuttX Apps
+
+- Loading of __ELF Executables__ by NuttX Kernel
 
 - Bundling of NuttX Apps into the __Initial RAM Disk__
 
