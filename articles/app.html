@@ -165,13 +165,13 @@ return 0;
 <p>In the RISC-V Disassembly, we see that <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello/hello_main.c#L36-L40"><strong>main</strong></a> calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_puts.c#L34-L96"><strong>puts</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_puts.c#L34-L96"><strong>puts</strong></a> which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_libfwrite.c#L45-L200"><strong>lib_fwrite_unlocked</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_libfwrite.c#L45-L200"><strong>lib_fwrite_unlocked</strong></a> which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_libfwrite.c#L149"><strong>write</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_libfwrite.c#L149"><strong>write</strong></a> which calls…</p>
 </li>
 <li>
 <p><strong>NuttX Kernel</strong> to print “Hello World”</p>
@@ -378,14 +378,14 @@ STUB_chown.c
 <p>When our NuttX App makes an <strong><code>ecall</code></strong>, it triggers <strong>IRQ 8</strong> <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L52-L75"><strong>(RISCV_IRQ_ECALLU)</strong></a> that’s <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_exception.c#L114-L119"><strong>handled by</strong></a>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L105-L537"><strong>riscv_swint</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L105-L537"><strong>riscv_swint</strong></a> which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a>, which calls the Kernel Stub Function (<strong>STUB_write</strong>) and… </p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_syscall.S#L49-L177"><strong>sys_call2</strong></a> with A0 set to <strong>SYS_syscall_return</strong> (3), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a> which calls the Kernel Stub Function (<strong>STUB_write</strong>) and… </p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_syscall.S#L49-L177"><strong>sys_call2</strong></a> with A0 set to <strong>SYS_syscall_return</strong> (3) which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_perform_syscall.c#L36-L78"><strong>riscv_perform_syscall</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_perform_syscall.c#L36-L78"><strong>riscv_perform_syscall</strong></a> which calls…</p>
 </li>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L105-L537"><strong>riscv_swint</strong></a> with IRQ 0, to return from the <strong><code>ecall</code></strong></p>
@@ -535,9 +535,9 @@ riscv_swint: SWInt Return: 1e
 </li>
 <li>
 <p>And that’s absolutely hunky dory because at NuttX Startup, <a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L298-L713"><strong>nx_start</strong></a> calls…</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_initialstate.c#L41-L140"><strong>up_initial_state</strong></a>, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_initialstate.c#L41-L140"><strong>up_initial_state</strong></a> which calls…</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_getnewintctx.c#L74-L81"><strong>riscv_set_idleintctx</strong></a> to set the <strong>SUM Bit</strong> in SSTATUS Register</p>
-<p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow">(Who calls <strong>nx_start</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow">(How NuttX calls <strong>nx_start</strong>)</a></p>
 </li>
 </ol>
 <p>That’s why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at <strong><code>0x8000_0000</code></strong>!</p>
@@ -553,16 +553,16 @@ riscv_swint: SWInt Return: 1e
 <p>Right after that, <a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L373-L458"><strong>NuttX Bringup (nx_bringup)</strong></a> calls (pic above)…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L330-L367"><strong>Create Init Thread: nx_create_initthread</strong></a> (to create the Init Thread), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L330-L367"><strong>Create Init Thread: nx_create_initthread</strong></a> (to create the Init Thread) which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L212C1-L302"><strong>Start App: nx_start_application</strong></a> (to start NuttX Shell), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L212C1-L302"><strong>Start App: nx_start_application</strong></a> (to start NuttX Shell) which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L183-L223"><strong>Exec Spawn: exec_spawn</strong></a> (to start the app), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L183-L223"><strong>Exec Spawn: exec_spawn</strong></a> (to start the app) which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L42-L179"><strong>Exec Internal: exec_internal</strong></a> (to start the app), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_exec.c#L42-L179"><strong>Exec Internal: exec_internal</strong></a> (to start the app) which calls…</p>
 </li>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225"><strong>Load Module: load_module</strong></a> (to load the app, see below) and…</p>
@@ -572,10 +572,10 @@ riscv_swint: SWInt Return: 1e
 <p>To load a NuttX App module: <a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L136-L225"><strong>load_module</strong></a> calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L83-L132"><strong>Load Absolute Module: load_absmodule</strong></a> (to load an absolute path), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/binfmt_loadmodule.c#L83-L132"><strong>Load Absolute Module: load_absmodule</strong></a> (to load an absolute path) which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/binfmt/binfmt.h#L122-L148"><strong>Load Binary Format: binfmt_s.load</strong></a> (to load a binary module), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/binfmt/binfmt.h#L122-L148"><strong>Load Binary Format: binfmt_s.load</strong></a> (to load a binary module) which calls…</p>
 </li>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/binfmt/elf.c#L84-L94"><strong>ELF Loader: g_elfbinfmt</strong></a> (to load the ELF File, see below)</p>
@@ -584,20 +584,20 @@ riscv_swint: SWInt Return: 1e
 <p>To load the ELF File: <a href="https://github.com/apache/nuttx/blob/master/binfmt/elf.c#L84-L94"><strong>ELF Loader g_elfbinfmt</strong></a> calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/elf.c#L225-L355"><strong>Load ELF Binary: elf_loadbinary</strong></a> (to load the ELF Binary), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/elf.c#L225-L355"><strong>Load ELF Binary: elf_loadbinary</strong></a> (to load the ELF Binary) which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/libelf/libelf_load.c#L297-L445"><strong>Load ELF: elf_load</strong></a> (to load the ELF Binary), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/libelf/libelf_load.c#L297-L445"><strong>Load ELF: elf_load</strong></a> (to load the ELF Binary) which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/libelf/libelf_addrenv.c#L56-L178"><strong>Allocate Address Env: elf_addrenv_alloc</strong></a> (to allocate the Address Env), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/binfmt/libelf/libelf_addrenv.c#L56-L178"><strong>Allocate Address Env: elf_addrenv_alloc</strong></a> (to allocate the Address Env) which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_addrenv.c#L339-L490"><strong>Create Address Env: up_addrenv_create</strong></a> (to create the Address Env), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_addrenv.c#L339-L490"><strong>Create Address Env: up_addrenv_create</strong></a> (to create the Address Env) which calls…</p>
 <p>(Also calls <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L152-L176"><strong>mmu_satp_reg</strong></a> to set SATP Register)</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_addrenv.c#L213-L310"><strong>Create MMU Region: create_region</strong></a> (to create the MMU Region), which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_addrenv.c#L213-L310"><strong>Create MMU Region: create_region</strong></a> (to create the MMU Region) which calls…</p>
 </li>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>Set MMU Page Table Entry: mmu_ln_setentry</strong></a> (to populate the Page Table Entries)</p>
@@ -753,6 +753,7 @@ int mount_ramdisk(void) {
   desc.image    = __ramdisk_start;
   ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&amp;desc);
 </code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow">(How NuttX calls <strong>board_late_initialize</strong>)</a></p>
 <p>All this works great: NuttX mounts our RAM Disk successfully, and starts the ELF Executable for NuttX Shell!</p>
 <div class="example-wrap"><pre class="language-text"><code>jh7110_copy_ramdisk:
   _edata=0x50400258, _sbss=0x50400290, _ebss=0x50407000, JH7110_IDLESTACK_TOP=0x50407c00

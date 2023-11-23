@@ -730,10 +730,14 @@ DEBUGASSERT(ret &gt;= 0);
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L330-L369"><strong>Create Init Thread: nx_create_initthread</strong></a> (to create “AppBringUp” thread) which calls…</p>
 </li>
 <li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L304-L330"><strong>Start NuttX Task: nx_start_task</strong></a> (to start NuttX Task) which calls…</p>
+</li>
+<li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L212-L304"><strong>Start Application: nx_start_application</strong></a> which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/fs/mount/fs_mount.c#L260-L514"><strong>Mount RAM Disk: nx_mount</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L134-L167"><strong>Board Late Init: board_late_initialize</strong></a> (to mount Initial RAM Disk) and…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/fs/mount/fs_mount.c#L260-L514"><strong>Mount RAM Disk: nx_mount</strong></a> (to mount ROM File System from Initial RAM Disk)</p>
 <p>(Which fails because our Initial RAM Disk is missing)</p>
 <p>(Which prevents NuttX Shell from starting)</p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#start-nuttx-apps-on-ox64-bl808">(How <strong>NuttX Shell</strong> should be started)</a></p>
