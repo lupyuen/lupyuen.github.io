@@ -16,7 +16,11 @@ In other words...
 
 In this article, we go behind the shadow puppetry _(wayang kulit)_ and deceptive simplicity of __NuttX Applications__ inside [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) (Real-Time Operating System) for [__Pine64 Ox64 BL808 64-bit RISC-V SBC__](https://wiki.pine64.org/wiki/Ox64) (pic below)...
 
+- What's inside the __simplest NuttX App__
+
 - TODO
+
+- Bundling of NuttX Apps into the __Initial RAM Disk__
 
 - How we found the __right spot to park__ our Initial RAM Disk
 
