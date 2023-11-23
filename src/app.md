@@ -2,15 +2,21 @@
 
 📝 _30 Nov 2023_
 
-![TODO](https://lupyuen.github.io/images/app-title.png)
+![NuttX App makes a System Call to NuttX Kernel](https://lupyuen.github.io/images/app-title.png)
 
-TODO
+In Asia the wise folks say...
 
-[__Pine64 Ox64 64-bit RISC-V SBC__](https://wiki.pine64.org/wiki/Ox64). (Pic below)
+> _"One can hide on a certain day but cannot hide for a long time"_
 
-(Powered by [__Bouffalo Lab BL808 SoC__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf))
+> "躲过初一，躲不过十五"
 
-[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
+In other words...
+
+> _"Transformers? More than meets the eye!"_
+
+In this article, we go behind the shadow puppetry _(wayang kulit)_ and deceptive simplicity of __NuttX Applications__ inside [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) (Real-Time Operating System) for [__Pine64 Ox64 BL808 64-bit RISC-V SBC__](https://wiki.pine64.org/wiki/Ox64) (pic below)...
+
+- TODO
 
 - How we found the __right spot to park__ our Initial RAM Disk
 
@@ -933,6 +939,14 @@ That's how we discovered that __`memcpy`__ doesn't work. And our __`local_memmov
 [_Ox64 boots to NuttX Shell_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
 
 # What's Next
+
+TODO
+
+Like we said at the top of the article...
+
+> "One can hide on the First... But can't hide on the Fifteenth!"
+
+Today we unravelled the inner workings of __NuttX Applications__ for __Ox64 BL808 RISC-V SBC__...
 
 TODO
 
