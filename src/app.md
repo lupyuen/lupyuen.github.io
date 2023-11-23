@@ -1001,7 +1001,7 @@ TODO
 
 Like we said at the top of the article...
 
-> _"One can hide on the First... But can't hide on the Fifteenth!"_
+> _"One can hide on the First... But not on the Fifteenth!"_
 
 Today we unravelled the inner workings of __NuttX Applications__ for __Ox64 BL808 RISC-V SBC__...
 
