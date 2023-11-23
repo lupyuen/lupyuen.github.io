@@ -531,6 +531,8 @@ That's why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at __`0
 
 TODO: NuttX Flow
 
+[_Clickable Version_](https://github.com/lupyuen/nuttx-ox64#kernel-starts-a-nuttx-app)
+
 # Kernel Starts a NuttX App
 
 _Phew so NuttX Apps can call NuttX Kernel..._
