@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-11-26",
+      "website": "https://lupyuen.github.io/articles/app",
+      "summary": "(1) What's inside an Application for Apache NuttX RTOS (2) How it calls the NuttX Kernel (3) How NuttX Apps are bundled into the Initial RAM Disk for Pine64 Ox64 BL808 RISC-V SBC"
+    },
+    {
       "name": "RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-11-19",

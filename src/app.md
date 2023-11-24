@@ -1,6 +1,6 @@
 # RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk
 
-📝 _30 Nov 2023_
+📝 _26 Nov 2023_
 
 ![NuttX App makes a System Call to NuttX Kernel](https://lupyuen.github.io/images/app-title.png)
 
@@ -151,7 +151,7 @@ printf("Hello, World!!\n");
   4e: 000080e7  jalr   ra     # 4a <.LVL1+0x2>
 ```
 
-Therefore we're all good!
+Therefore we're all good! (Eventually)
 
 _Why `puts` instead of `printf`?_
 
@@ -181,9 +181,9 @@ _But NuttX Apps can't write directly to the Serial Device right?_
 
 Nope! NuttX Apps run in __RISC-V User Mode__...
 
-Which doesn't have access to Serial Device and other resources controlled by NuttX Kernel. (Running in __RISC-V Supervisor Mode__)
+Which __can't access__ the Serial Device and other resources controlled by NuttX Kernel. (Running in __RISC-V Supervisor Mode__)
 
-That's why "__write__" will trigger a __System Call__ to the NuttX Kernel, jumping from RISC-V __User Mode to Supervisor Mode__.
+That's why "__write__" should trigger a __System Call__ to the NuttX Kernel, jumping from RISC-V __User Mode to Supervisor Mode__.
 
 (And write to the Serial Device, pic above)
 
@@ -224,9 +224,9 @@ Our NuttX App calls this __Proxy Version__ of "__write__" (that pretends to be t
 ```c
 // Our App calls the Proxy Function...
 int ret = write(
-  1,  // File Descriptor (1 = Standard Output)
+  1,                   // File Descriptor (1 = Standard Output)
   "Hello, World!!\n",  // Buffer to be written
-  15  // Number of bytes to write
+  15                   // Number of bytes to write
 );
 ```
 
@@ -236,7 +236,7 @@ Which triggers a __System Call__ to the Kernel.
 
 _What's sys_call3?_
 
-It makes a __System Call__ (to NuttX Kernel) with __3 Parameters__: [syscall.h](https://github.com/apache/nuttx/blob/master/arch/risc-v/include/syscall.h)
+It makes a __System Call__ (to NuttX Kernel) with __3 Parameters__: [syscall.h](https://github.com/apache/nuttx/blob/master/arch/risc-v/include/syscall.h#L240-L268)
 
 ```c
 // Make a System Call with 3 parameters
@@ -275,7 +275,7 @@ uintptr_t sys_call3(
 
 [__`ecall`__](https://five-embeddev.com/quickref/instructions.html#-rv32--rv32) is the RISC-V Instruction that jumps from RISC-V __User Mode to Supervisor Mode__...
 
-Such that NuttX Kernel can execute the actual "__write__" function, with the real Serial Device.
+That allows NuttX Kernel to execute the actual "__write__" function, with the real Serial Device.
 
 (We'll explain how)
 
@@ -287,7 +287,7 @@ We're guessing: It might be reserved for special calls to NuttX Kernel in future
 
 _Every System Call to NuttX Kernel has its own Proxy Function?_
 
-Yep we can see the list of Auto-Generated __Proxy Functions__ for each System Call...
+Yep! We can see the Auto-Generated __Proxy Functions__ for each System Call...
 
 ```bash
 ## Proxy Functions called by `hello` app
@@ -312,7 +312,7 @@ Next we figure out how System Calls will work...
 
 # NuttX Kernel handles System Call
 
-_Our App makes an ecall to jump to NuttX Kernel..._
+_Our App makes an ecall to jump to NuttX Kernel (pic above)..._
 
 _What happens on the other side?_
 
@@ -341,7 +341,7 @@ Thus our __NuttX Build__ auto-generates 2 things...
 
 - __Stub Function__ (runs in NuttX Kernel)
 
-This happens for __every System Call__ exposed by NuttX Kernel.
+This happens for __every System Call__ exposed by NuttX Kernel...
 
 ```bash
 ## Stub Functions in NuttX Kernel
@@ -396,10 +396,10 @@ OK this gets tricky. Below is the Enum that defines all __System Call Numbers__:
 // all System Call Numbers (8 to 147-ish)
 enum {
   ...
-  SYSCALL_LOOKUP(close, 1)
-  SYSCALL_LOOKUP(ioctl, 3)
-  SYSCALL_LOOKUP(read,  3)
-  SYSCALL_LOOKUP(write, 3)
+  SYSCALL_LOOKUP(close, 1)  // 1 Parameter
+  SYSCALL_LOOKUP(ioctl, 3)  // 3 Parameters
+  SYSCALL_LOOKUP(read,  3)  // 3 Parameters
+  SYSCALL_LOOKUP(write, 3)  // 3 Parameters
   ...
 };
 ```
@@ -428,7 +428,7 @@ Though there's a jolly good thing: It's super simple to experiment with __new Sy
 
 [(As explained here)](https://nuttx.apache.org/docs/latest/components/syscall.html)
 
-![NuttX App calls NuttX Kernel](https://lupyuen.github.io/images/app-run.png)
+![NuttX App calls NuttX Kernel](https://lupyuen.github.io/images/app-title.png)
 
 # System Call in Action
 
@@ -460,7 +460,7 @@ EPC: 800019b2
 A0: 003f A1: 0001 A2: 8000ad00 A3: 001e
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17#file-ox64-nuttx-ecall-log-L563-L588)
 
 The __RISC-V Registers__ look familiar...
 
@@ -511,7 +511,7 @@ And returns the result __`0x1E`__ to our NuttX App. [(Via __`sret`__)](https://f
 
 Our NuttX App has successfully made a System Call on Ox64 yay!
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17#file-ox64-nuttx-ecall-log-L563-L588)
 
 ![Virtual Memory for NuttX App](https://lupyuen.github.io/images/mmu-l3user.jpg)
 
@@ -543,7 +543,7 @@ _Huh? NuttX Kernel can access Virtual Memory?_
 
     (User Page Table defines the __Virtual Memory__ for NuttX Apps)
 
-1.  According to the [__NuttX Log__](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17), the Kernel swaps the [__RISC-V SATP Register__](https://lupyuen.github.io/articles/mmu#swap-the-satp-register) from Kernel Page Table to __User Page Table__...
+1.  According to the [__NuttX Log__](https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17#file-ox64-nuttx-ecall-log-L321-L323), the Kernel swaps the [__RISC-V SATP Register__](https://lupyuen.github.io/articles/mmu#swap-the-satp-register) from Kernel Page Table to __User Page Table__...
 
     And doesn't swap back!
 
@@ -768,7 +768,7 @@ __ramdisk_start__ points to the Memory Region that we reserved for mounting our 
 It's defined in the __NuttX Linker Script__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L21-L48)
 
 ```text
-/* Memory Region for RAM Disk */
+/* Memory Region for Mounting RAM Disk */
 ramdisk (rwx) : ORIGIN = 0x50A00000, LENGTH = 16M
 ...
 __ramdisk_start = ORIGIN(ramdisk);
@@ -793,9 +793,9 @@ void jh7110_start(int mhartid) {
   jh7110_clear_bss();
 ```
 
-(BSS shouldn't matter, as explained below)
+(Though BSS shouldn't matter, as explained below)
 
-Later during startup, we __mount the RAM Disk__ from the Memory Region : [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L51-L87)
+Later during startup, we __mount the RAM Disk__ from the Memory Region: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L51-L87)
 
 ```c
 // After NuttX has booted...
@@ -837,7 +837,7 @@ elf_read: Read 64 bytes from offset 0
 
 ("__system/bin/init__" is the NuttX Shell)
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89#file-ox64-nuttx13-log-L114-L159)
 
 Last thing for today: The mysterious 64 KB padding...
 
@@ -847,7 +847,7 @@ Last thing for today: The mysterious 64 KB padding...
 
 _Between NuttX Kernel and Initial RAM Disk..._
 
-_Why did we pad 64 KB of zeroes?_
+_Why did we pad 64 KB of zeroes? (Pic above)_
 
 ```bash
 ## Prepare a Padding with 64 KB of zeroes
@@ -865,7 +865,7 @@ U-Boot Bootloader will load our Initial RAM Disk into RAM. However it's dangerou
 
 There's a risk that our Initial RAM Disk will be __contaminated by BSS and Stack__. This is how we found a clean, safe space for our Initial RAM Disk (pic above)...
 
-We inspect the [__NuttX Log__](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89) and the [__NuttX Linker Script__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script)...
+We inspect the [__NuttX Log__](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89#file-ox64-nuttx13-log-L114-L118) and the [__NuttX Linker Script__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L28)...
 
 ```text
 // End of Data Section
@@ -917,7 +917,7 @@ This says...
 
 1.  Best place to append __`initrd`__ is after the __Kernel Idle Stack__.
 
-    Which is roughly __32 KB__ after __`edata`__.
+    (Roughly __32 KB__ after __`edata`__)
     
 1.  That's why we inserted a padding of __64 KB__ between __`nuttx.bin`__ and __`initrd`__.
 
@@ -939,7 +939,7 @@ Yep our 64 KB Padding looks legit!
 
 _64 KB sounds arbitrary. What if the parameters change?_
 
-We have __Runtime Checks__ to catch problems: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245)
+We have __Runtime Checks__ to catch problems: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L214-L236)
 
 ```c
 // Stop if RAM Disk is missing
@@ -958,7 +958,7 @@ _Why call local_memmove to copy initrd to RAM Disk Region? Why not memcpy?_
 
 That's because __`initrd`__ overlaps with __RAM Disk Region__! (See above)
 
-__`memcpy`__ won't work with __Overlapping Memory Regions__. Thus we added this: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487)
+__`memcpy`__ won't work with __Overlapping Memory Regions__. Thus we added this: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L455-L489)
 
 ```c
 // Copy a chunk of memory from `src` to `dest`.
@@ -980,7 +980,7 @@ void *local_memmove(void *dest, const void *src, size_t count) {
 
 _We're sure that it works?_
 
-We called __`verify_image`__ to do a simple Integrity Check on __`initrd`__, before and after copying: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L246-L487)
+We called __`verify_image`__ to do a simple Integrity Check on __`initrd`__, before and after copying: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L236-L248)
 
 ```c
 // Before Copy: Verify the RAM Disk Image to be copied
@@ -1002,7 +1002,7 @@ That's how we discovered that __`memcpy`__ doesn't work. And our __`local_memmov
 
 ![Ox64 boots to NuttX Shell](https://lupyuen.github.io/images/mmu-boot1.png)
 
-[_Ox64 boots to NuttX Shell_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
+[_Ox64 boots to NuttX Shell_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L115-L323)
 
 # What's Next
 
@@ -1010,7 +1010,7 @@ TODO
 
 Like we said at the top of the article...
 
-> _"One can hide on the First... But not on the Fifteenth!"_
+> _"One can hide on the First of the Month... But not on the Fifteenth!"_
 
 Today we unravelled the inner workings of __NuttX Applications__ for __Ox64 BL808 RISC-V SBC__...
 
