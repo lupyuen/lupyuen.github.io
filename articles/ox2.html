@@ -879,7 +879,12 @@ Domain0 Next Arg1   : 0x51ff8000
 <p><strong>UART Interrupts</strong> are mandatory: If UART Interrupts aren’t implemented, NuttX Shell (NSH) and NuttX Apps <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>won’t print anything</strong></a>.</p>
 <p>BL602 UART Driver has just been <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c"><strong>ported to Ox64</strong></a>! (Minus the UART Interrupts) Check our progress here…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/nuttx-ox64#nuttx-uart-driver-for-ox64-bl808"><strong>“NuttX UART Driver for Ox64 BL808”</strong></a></li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#nuttx-uart-driver-for-ox64-bl808"><strong>“NuttX UART Driver for Ox64 BL808”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#uart-interrupt-for-ox64-bl808"><strong>“UART Interrupt for Ox64 BL808”</strong></a></p>
+</li>
 </ul>
 <p><em>What about other drivers: BL808 vs BL602?</em></p>
 <p>The controllers below look highly similar on BL808 vs BL602. Which means we have plenty of NuttX Drivers to <strong>copy from BL602 to BL808!</strong></p>
