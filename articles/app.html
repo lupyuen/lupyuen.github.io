@@ -88,7 +88,7 @@
 <blockquote>
 <p><em>“Transformers? More than meets the eye!”</em></p>
 </blockquote>
-<p>In this article, we go behind the shadow puppetry <em>(wayang kulit)</em> and deceptive simplicity of <strong>NuttX Applications</strong> inside <a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) for <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808 64-bit RISC-V SBC</strong></a> (pic below)…</p>
+<p>In this article, we go behind the shadow puppetry <em>(wayang kulit)</em> and deceptive simplicity of <strong>NuttX Applications</strong> inside <a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) for <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> 64-bit RISC-V SBC (pic below)…</p>
 <ul>
 <li>
 <p>What’s inside the <strong>simplest NuttX App</strong></p>
@@ -229,12 +229,22 @@ printf(
 <h1 id="nuttx-app-calls-nuttx-kernel"><a href="#nuttx-app-calls-nuttx-kernel">2 NuttX App calls NuttX Kernel</a></h1>
 <p><em>Our app will print something to the console…</em></p>
 <p><em>But NuttX Apps can’t write directly to the Serial Device right?</em></p>
-<p>Nope! NuttX Apps run in <strong>RISC-V User Mode</strong>…</p>
-<p>Which <strong>can’t access</strong> the Serial Device and other resources controlled by NuttX Kernel. (Running in <strong>RISC-V Supervisor Mode</strong>)</p>
+<p>Nope! </p>
+<ul>
+<li>
+<p>NuttX Apps run in <strong>RISC-V User Mode</strong>…</p>
+</li>
+<li>
+<p>Which <strong>can’t access</strong> the Serial Device (and other resources) controlled by NuttX Kernel…</p>
+</li>
+<li>
+<p>Which runs in <strong>RISC-V Supervisor Mode</strong></p>
+</li>
+</ul>
 <p>That’s why “<strong>write</strong>” should trigger a <strong>System Call</strong> to the NuttX Kernel, jumping from RISC-V <strong>User Mode to Supervisor Mode</strong>.</p>
 <p>(And write to the Serial Device, pic above)</p>
 <p><em>Will NuttX Apps need Special Coding to make System Calls?</em></p>
-<p>Nope! The System Call is <strong>totally transparent</strong> to our app…</p>
+<p>Not at all! The System Call is <strong>totally transparent</strong> to our app…</p>
 <ul>
 <li>
 <p>Our <strong>NuttX App</strong> will call a normal function named “<strong>write</strong>”…</p>
@@ -265,7 +275,7 @@ ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
   );
 }
 </code></pre></div>
-<p>Our NuttX App calls this <strong>Proxy Version</strong> of “<strong>write</strong>” (that pretends to be the Kernel “<strong>write</strong>”)…</p>
+<p>Our NuttX App (implicitly) calls this <strong>Proxy Version</strong> of “<strong>write</strong>” (that pretends to be the Kernel “<strong>write</strong>”)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Our App calls the Proxy Function...
 int ret = write(
   1,                   // File Descriptor (1 = Standard Output)
@@ -294,7 +304,7 @@ uintptr_t sys_call3(
   // `ecall` will jump from RISC-V User Mode
   // to RISC-V Supervisor Mode
   // to execute the System Call.
-  // Input+Output Registers: A0 to A3
+  // Input + Output Registers: A0 to A3
   // Clobbers the Memory
   asm volatile
   (
@@ -422,7 +432,7 @@ enum {
   DW_AT_name        : SYS_write
   DW_AT_const_value : 63
 </code></pre></div>
-<p>Whoomp there it is! This says that “<strong>write</strong>” is <strong>System Call #63</strong>.</p>
+<p>Whoomp there it is! Says here that “<strong>write</strong>” is <strong>System Call #63</strong>.</p>
 <p><em>That’s an odd way to define System Call Numbers…</em></p>
 <p>Yeah it’s <strong>not strictly an immutable ABI</strong> like Linux, because our System Call Numbers may change! It depends on the <a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h#L90-L152"><strong>Build Options</strong></a> that we select.</p>
 <p><a href="https://en.wikipedia.org/wiki/Application_binary_interface">(ABI means <strong>Application Binary Interface</strong>)</a></p>
@@ -440,9 +450,17 @@ enum {
       &gt; Enable &quot;Syscall Warning, Error and Info&quot;
 </code></pre></div>
 <p>Watch what happens when we <strong>boot NuttX on Ox64</strong> (pic above)…</p>
-<p>Our app (NuttX Shell) begins by printing something to the console.</p>
+<ul>
+<li>
+<p>Our app (NuttX Shell) begins by <strong>printing something</strong> to the console.</p>
+</li>
+<li>
 <p>It makes an <strong><code>ecall</code></strong> for System Call #63 “<strong>write</strong>”.</p>
-<p>Which triggers <strong>IRQ 8</strong> and jumps to <strong>NuttX Kernel</strong>…</p>
+</li>
+<li>
+<p>Which triggers <strong>IRQ 8</strong> and jumps to <strong>NuttX Kernel</strong></p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: irq=8
 riscv_swint: Entry: regs: 0x5040bcb0 cmd: 63
 EPC: 800019b2
@@ -514,7 +532,7 @@ riscv_swint: SWInt Return: 1e
 <p>And becomes <strong>Virtual Memory</strong> at <strong><code>0x8000_0000</code></strong> (pic above)</p>
 </li>
 </ul>
-<p>Thus our NuttX App has passed a chunk of its own <strong>Virtual Memory</strong>. And NuttX Kernel happily prints it!</p>
+<p>Hence our NuttX App has passed a chunk of its own <strong>Virtual Memory</strong>. And NuttX Kernel happily prints it!</p>
 <p><em>Huh? NuttX Kernel can access Virtual Memory?</em></p>
 <ol>
 <li>
@@ -527,11 +545,12 @@ riscv_swint: SWInt Return: 1e
 </li>
 <li>
 <p>Which means the <strong>User Page Table</strong> is still in effect!</p>
-<p>Thus the <strong>Virtual Memory</strong> at <strong><code>0x8000_0000</code></strong> is perfectly accessible by the Kernel.</p>
+<p>And the <strong>Virtual Memory</strong> at <strong><code>0x8000_0000</code></strong> is perfectly accessible by the Kernel.</p>
 </li>
 <li>
 <p>There’s a catch: <strong>RISC-V Supervisor Mode</strong> (NuttX Kernel) may access the Virtual Memory mapped to <strong>RISC-V User Mode</strong> (NuttX Apps)…</p>
 <p>Only if the <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation"><strong>SUM Bit is set in SSTATUS Register</strong></a>!</p>
+<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sstatus">(SUM Bit will permit <strong>Supervisor User Memory</strong> access)</a></p>
 </li>
 <li>
 <p>And that’s absolutely hunky dory because at NuttX Startup, <a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L298-L713"><strong>nx_start</strong></a> calls…</p>
@@ -672,6 +691,7 @@ cp Image &quot;/Volumes/NO NAME/&quot;
 <p><img src="https://lupyuen.github.io/images/app-initrd.jpg" alt="Initial RAM Disk for Ox64" /></p>
 <h1 id="mount-the-initial-ram-disk"><a href="#mount-the-initial-ram-disk">8 Mount the Initial RAM Disk</a></h1>
 <p><em>We appended the Initial RAM Disk to NuttX Kernel (pic above)…</em></p>
+<p><em>U-Boot Bootloader loads the NuttX Kernel + Initial RAM Disk into RAM…</em></p>
 <p><em>How in RAM will NuttX Kernel locate the Initial RAM Disk?</em></p>
 <p>Our Initial RAM Disk follows the <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM File System Format</strong></a> (ROM FS). We <strong>search our RAM</strong> for the ROM File System by its Magic Number.</p>
 <p>Then we copy it into the designated <strong>Memory Region</strong> for mounting: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245">jh7110_start.c</a></p>
@@ -707,7 +727,7 @@ void jh7110_copy_ramdisk(void) {
   // Filesystem Size must be less than RAM Disk Memory Region
   DEBUGASSERT(size &lt;= (size_t)__ramdisk_size);
 
-  // Copy the Filesystem bytes to RAM Disk Start
+  // Copy the Filesystem bytes to RAM Disk Memory Region
   // Warning: __ramdisk_start overlaps with ramdisk_addr + size
   // Which doesn&#39;t work with memcpy.
   // Sadly memmove is aliased to memcpy, so we implement memmove ourselves
@@ -889,7 +909,7 @@ void *local_memmove(void *dest, const void *src, size_t count) {
 <div class="example-wrap"><pre class="language-c"><code>// Before Copy: Verify the RAM Disk Image to be copied
 verify_image(ramdisk_addr);
 
-// Copy the Filesystem Size to RAM Disk Start
+// Copy the Filesystem bytes to RAM Disk Memory Region
 // Warning: __ramdisk_start overlaps with ramdisk_addr + size
 // Which doesn&#39;t work with memcpy.
 // Sadly memmove is aliased to memcpy, so we implement memmove ourselves
@@ -898,8 +918,8 @@ local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
 // After Copy: Verify the copied RAM Disk Image
 verify_image(__ramdisk_start);
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L248-L455">(<strong><code>verify_image</code></strong> does a simple Integrity Check)</a></p>
-<p>That’s how we discovered that <strong><code>memcpy</code></strong> doesn’t work. And our <strong><code>local_memmove</code></strong> works great! (Pic below)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L248-L455">(<strong><code>verify_image</code></strong> searches for a specific byte)</a></p>
+<p>That’s how we discovered that <strong><code>memcpy</code></strong> doesn’t work. And our <strong><code>local_memmove</code></strong> works great for the Initial RAM Disk and NuttX Shell! (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L115-L323"><em>Ox64 boots to NuttX Shell</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
