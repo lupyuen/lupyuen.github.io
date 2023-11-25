@@ -1014,15 +1014,23 @@ That's how we discovered that __`memcpy`__ doesn't work. And our __`local_memmov
 
 # What's Next
 
-TODO
-
 Like we said at the top of the article...
 
 > _"One can hide on the First of the Month... But not on the Fifteenth!"_
 
 Today we unravelled the inner workings of __NuttX Applications__ for __Ox64 BL808 RISC-V SBC__...
 
-TODO
+- We studied the internals of the __simplest NuttX App__
+
+- How NuttX Apps make System Calls with __`ecall`__, __Proxy Functions__ and __Stub Functions__
+
+- Why NuttX Kernel can access the __Virtual Memory__ of NuttX Apps
+
+- How NuttX Kernel loads __ELF Executables__
+
+- Bundling of NuttX Apps into the __Initial RAM Disk__ in ROM FS Format
+
+- And making sure our RAM Disk is __safe and sound__ after loading by U-Boot Bootloader
 
 We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
 

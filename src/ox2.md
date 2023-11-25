@@ -1011,6 +1011,8 @@ BL602 UART Driver has just been [__ported to Ox64__](https://github.com/lupyuen2
 
 - [__"NuttX UART Driver for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64#nuttx-uart-driver-for-ox64-bl808)
 
+- [__"UART Interrupt for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64#uart-interrupt-for-ox64-bl808)
+
 _What about other drivers: BL808 vs BL602?_
 
 The controllers below look highly similar on BL808 vs BL602. Which means we have plenty of NuttX Drivers to __copy from BL602 to BL808!__
