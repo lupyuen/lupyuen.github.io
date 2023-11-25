@@ -14,7 +14,7 @@ In other words...
 
 > _"Transformers? More than meets the eye!"_
 
-In this article, we go behind the shadow puppetry _(wayang kulit)_ and deceptive simplicity of __NuttX Applications__ inside [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) (Real-Time Operating System) for [__Pine64 Ox64 BL808 64-bit RISC-V SBC__](https://wiki.pine64.org/wiki/Ox64) (pic below)...
+In this article, we go behind the shadow puppetry _(wayang kulit)_ and deceptive simplicity of __NuttX Applications__ inside [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) (Real-Time Operating System) for [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit RISC-V SBC (pic below)...
 
 - What's inside the __simplest NuttX App__
 
@@ -179,9 +179,13 @@ _Our app will print something to the console..._
 
 _But NuttX Apps can't write directly to the Serial Device right?_
 
-Nope! NuttX Apps run in __RISC-V User Mode__...
+Nope! 
 
-Which __can't access__ the Serial Device and other resources controlled by NuttX Kernel. (Running in __RISC-V Supervisor Mode__)
+- NuttX Apps run in __RISC-V User Mode__...
+
+- Which __can't access__ the Serial Device (and other resources) controlled by NuttX Kernel...
+
+- Which runs in __RISC-V Supervisor Mode__
 
 That's why "__write__" should trigger a __System Call__ to the NuttX Kernel, jumping from RISC-V __User Mode to Supervisor Mode__.
 
@@ -189,7 +193,7 @@ That's why "__write__" should trigger a __System Call__ to the NuttX Kernel, jum
 
 _Will NuttX Apps need Special Coding to make System Calls?_
 
-Nope! The System Call is __totally transparent__ to our app...
+Not at all! The System Call is __totally transparent__ to our app...
 
 - Our __NuttX App__ will call a normal function named "__write__"...
 
@@ -219,7 +223,7 @@ ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
 }
 ```
 
-Our NuttX App calls this __Proxy Version__ of "__write__" (that pretends to be the Kernel "__write__")...
+Our NuttX App (implicitly) calls this __Proxy Version__ of "__write__" (that pretends to be the Kernel "__write__")...
 
 ```c
 // Our App calls the Proxy Function...
@@ -256,7 +260,7 @@ uintptr_t sys_call3(
   // `ecall` will jump from RISC-V User Mode
   // to RISC-V Supervisor Mode
   // to execute the System Call.
-  // Input+Output Registers: A0 to A3
+  // Input + Output Registers: A0 to A3
   // Clobbers the Memory
   asm volatile
   (
@@ -414,7 +418,7 @@ Abbrev Number: 6 (DW_TAG_enumerator)
   DW_AT_const_value : 63
 ```
 
-Whoomp there it is! This says that "__write__" is __System Call #63__.
+Whoomp there it is! Says here that "__write__" is __System Call #63__.
 
 _That's an odd way to define System Call Numbers..._
 
@@ -447,11 +451,11 @@ Build Setup
 
 Watch what happens when we __boot NuttX on Ox64__ (pic above)...
 
-Our app (NuttX Shell) begins by printing something to the console.
+- Our app (NuttX Shell) begins by __printing something__ to the console.
 
-It makes an __`ecall`__ for System Call #63 "__write__".
+- It makes an __`ecall`__ for System Call #63 "__write__".
 
-Which triggers __IRQ 8__ and jumps to __NuttX Kernel__...
+- Which triggers __IRQ 8__ and jumps to __NuttX Kernel__
 
 ```text
 riscv_dispatch_irq: irq=8
@@ -535,7 +539,7 @@ TLDR? No worries...
 
 - And becomes __Virtual Memory__ at __`0x8000_0000`__ (pic above)
 
-Thus our NuttX App has passed a chunk of its own __Virtual Memory__. And NuttX Kernel happily prints it!
+Hence our NuttX App has passed a chunk of its own __Virtual Memory__. And NuttX Kernel happily prints it!
 
 _Huh? NuttX Kernel can access Virtual Memory?_
 
@@ -549,11 +553,13 @@ _Huh? NuttX Kernel can access Virtual Memory?_
 
 1.  Which means the __User Page Table__ is still in effect!
 
-    Thus the __Virtual Memory__ at __`0x8000_0000`__ is perfectly accessible by the Kernel.
+    And the __Virtual Memory__ at __`0x8000_0000`__ is perfectly accessible by the Kernel.
 
 1.  There's a catch: __RISC-V Supervisor Mode__ (NuttX Kernel) may access the Virtual Memory mapped to __RISC-V User Mode__ (NuttX Apps)...
 
     Only if the [__SUM Bit is set in SSTATUS Register__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:translation)!
+
+    [(SUM Bit will permit __Supervisor User Memory__ access)](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sstatus)
 
 1.  And that's absolutely hunky dory because at NuttX Startup, [__nx_start__](https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L298-L713) calls...
 
@@ -712,6 +718,8 @@ This is how we made it work...
 
 _We appended the Initial RAM Disk to NuttX Kernel (pic above)..._
 
+_U-Boot Bootloader loads the NuttX Kernel + Initial RAM Disk into RAM..._
+
 _How in RAM will NuttX Kernel locate the Initial RAM Disk?_
 
 Our Initial RAM Disk follows the [__ROM File System Format__](https://docs.kernel.org/filesystems/romfs.html) (ROM FS). We __search our RAM__ for the ROM File System by its Magic Number.
@@ -751,7 +759,7 @@ void jh7110_copy_ramdisk(void) {
   // Filesystem Size must be less than RAM Disk Memory Region
   DEBUGASSERT(size <= (size_t)__ramdisk_size);
 
-  // Copy the Filesystem bytes to RAM Disk Start
+  // Copy the Filesystem bytes to RAM Disk Memory Region
   // Warning: __ramdisk_start overlaps with ramdisk_addr + size
   // Which doesn't work with memcpy.
   // Sadly memmove is aliased to memcpy, so we implement memmove ourselves
@@ -986,7 +994,7 @@ We called __`verify_image`__ to do a simple Integrity Check on __`initrd`__, bef
 // Before Copy: Verify the RAM Disk Image to be copied
 verify_image(ramdisk_addr);
 
-// Copy the Filesystem Size to RAM Disk Start
+// Copy the Filesystem bytes to RAM Disk Memory Region
 // Warning: __ramdisk_start overlaps with ramdisk_addr + size
 // Which doesn't work with memcpy.
 // Sadly memmove is aliased to memcpy, so we implement memmove ourselves
@@ -996,9 +1004,9 @@ local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
 verify_image(__ramdisk_start);
 ```
 
-[(__`verify_image`__ does a simple Integrity Check)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L248-L455)
+[(__`verify_image`__ searches for a specific byte)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L248-L455)
 
-That's how we discovered that __`memcpy`__ doesn't work. And our __`local_memmove`__ works great! (Pic below)
+That's how we discovered that __`memcpy`__ doesn't work. And our __`local_memmove`__ works great for the Initial RAM Disk and NuttX Shell! (Pic below)
 
 ![Ox64 boots to NuttX Shell](https://lupyuen.github.io/images/mmu-boot1.png)
 
