@@ -1042,6 +1042,10 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=38417824)
 
+-   [__Discuss this article on Pine64 Forum__](https://forum.pine64.org/showthread.php?tid=18904)
+
+-   [__Discuss this article on Bouffalo Lab Forum__](https://bbs.bouffalolab.com/d/262-article-risc-v-ox64-bl808-sbc-nuttx-apps-and-initial-ram-disk)
+
 -   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 
 -   [__My Other Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
