@@ -582,8 +582,10 @@ DEBUGASSERT(ret &gt;= 0);
 <p><a href="https://lupyuen.github.io/articles/semihost">(More about <strong>Initial RAM Disk</strong>)</a></p>
 <p><em>Why is the Initial RAM Disk missing?</em></p>
 <p>That’s because we <strong>haven’t loaded the Initial RAM Disk</strong> into RAM!</p>
-<p>We’ll modify the NuttX Kernel Image (or U-Boot Script) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.</p>
-<p><a href="https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk">(Upcoming work for <strong>Initial RAM Disk</strong>)</a></p>
+<p>We’ll modify the NuttX Kernel Image (or U-Boot Script) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/app"><strong>“RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk”</strong></a></li>
+</ul>
 <p><em>Are we done yet?</em></p>
 <p>That’s all for today! NuttX has booted so much code on Ox64. Here’s the flow of the <strong>NuttX Code that boots on Ox64</strong> (pic below)…</p>
 <ul>
@@ -741,6 +743,7 @@ DEBUGASSERT(ret &gt;= 0);
 <p>(Which fails because our Initial RAM Disk is missing)</p>
 <p>(Which prevents NuttX Shell from starting)</p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#start-nuttx-apps-on-ox64-bl808">(How <strong>NuttX Shell</strong> should be started)</a></p>
+<p><a href="https://lupyuen.github.io/articles/app">(How <strong>NuttX Apps</strong> are started)</a></p>
 </li>
 </ul>
 <p>Therefore we expect NuttX to <strong>boot completely on Ox64</strong> when we’ve implemented…</p>
@@ -908,6 +911,10 @@ Domain0 Next Arg1   : 0x51ff8000
 <p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="Initial RAM Disk for Star64 JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/semihost"><em>Initial RAM Disk for Star64 JH7110</em></a></p>
 <h1 id="appendix-initial-ram-disk"><a href="#appendix-initial-ram-disk">13 Appendix: Initial RAM Disk</a></h1>
+<p>Read the article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/app"><strong>“RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk”</strong></a></li>
+</ul>
 <p><em>What’s this Initial RAM Disk?</em></p>
 <p>The <strong>Initial RAM Disk</strong> contains the Executable Binaries for <strong>NuttX Shell</strong> (NSH) and NuttX Apps.</p>
 <p>At startup, NuttX loads the Initial RAM Disk into RAM and mounts the File System, so that the NuttX Shell (and NuttX Apps) can be started later.</p>
@@ -952,9 +959,9 @@ cp Image &quot;/Volumes/NO NAME/&quot;
 ## U-Boot Bootloader will load NuttX Kernel and
 ## Initial RAM Disk into RAM
 </code></pre></div>
-<p>Check out our progress here…</p>
+<p>Here’s how we implemented the Initial RAM Disk…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/nuttx-ox64#initial-ram-disk-for-ox64-bl808"><strong>“Initial RAM Disk for Ox64 BL808”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/app"><strong>“RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk”</strong></a></li>
 </ul>
 
     
