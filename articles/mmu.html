@@ -758,6 +758,7 @@ mmu_write_satp:
 <p>But it only works in <strong>RISC-V Machine Mode</strong> (pic above), the most powerful mode. <a href="https://lupyuen.github.io/articles/sbi">(Like for <strong>OpenSBI</strong>)</a></p>
 <p>NuttX and Linux run in <strong>RISC-V Supervisor Mode</strong>, which is less poweful. And won’t have access to this Physical Memory Protection.</p>
 <p>That’s why NuttX and Linux use Sv39 MMU instead for Memory Protection.</p>
+<p><a href="https://github.com/openbouffalo/OBLFR/blob/master/apps/d0_lowload/src/main.c#L44-L98">(See the Ox64 settings for <strong>Physical Memory Protection</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525"><em>Ox64 boots to NuttX Shell</em></a></p>
 <h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">13 Appendix: Build and Run NuttX</a></h1>
