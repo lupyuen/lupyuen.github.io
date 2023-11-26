@@ -891,6 +891,8 @@ NuttX and Linux run in __RISC-V Supervisor Mode__, which is less poweful. And wo
 
 That's why NuttX and Linux use Sv39 MMU instead for Memory Protection.
 
+[(See the Ox64 settings for __Physical Memory Protection__)](https://github.com/openbouffalo/OBLFR/blob/master/apps/d0_lowload/src/main.c#L44-L98)
+
 ![Ox64 boots to NuttX Shell](https://lupyuen.github.io/images/mmu-boot1.png)
 
 [_Ox64 boots to NuttX Shell_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
