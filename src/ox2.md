@@ -694,9 +694,9 @@ _Why is the Initial RAM Disk missing?_
 
 That's because we __haven't loaded the Initial RAM Disk__ into RAM!
 
-We'll modify the NuttX Kernel Image (or U-Boot Script) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX.
+We'll modify the NuttX Kernel Image (or U-Boot Script) on the microSD Card, so that U-Boot Bootloader will load our Initial RAM Disk before starting NuttX...
 
-[(Upcoming work for __Initial RAM Disk__)](https://lupyuen.github.io/articles/ox2#appendix-initial-ram-disk)
+-   [__"RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk"__](https://lupyuen.github.io/articles/app)
 
 _Are we done yet?_
 
@@ -839,6 +839,8 @@ In this article, NuttX has booted plenty of code on Ox64. Here's the flow of the
   (Which prevents NuttX Shell from starting)
 
   [(How __NuttX Shell__ should be started)](https://github.com/lupyuen/nuttx-ox64#start-nuttx-apps-on-ox64-bl808)
+
+  [(How __NuttX Apps__ are started)](https://lupyuen.github.io/articles/app)
 
 Therefore we expect NuttX to __boot completely on Ox64__ when we've implemented...
 
@@ -1046,6 +1048,10 @@ We'll port the missing BL808 Drivers from Bouffalo Lab's [__BouffaloSDK__](https
 
 # Appendix: Initial RAM Disk
 
+Read the article...
+
+-   [__"RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk"__](https://lupyuen.github.io/articles/app)
+
 _What's this Initial RAM Disk?_
 
 The __Initial RAM Disk__ contains the Executable Binaries for __NuttX Shell__ (NSH) and NuttX Apps.
@@ -1105,6 +1111,6 @@ cp Image "/Volumes/NO NAME/"
 ## Initial RAM Disk into RAM
 ```
 
-Check out our progress here...
+Here's how we implemented the Initial RAM Disk...
 
-- [__"Initial RAM Disk for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64#initial-ram-disk-for-ox64-bl808)
+-   [__"RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk"__](https://lupyuen.github.io/articles/app)

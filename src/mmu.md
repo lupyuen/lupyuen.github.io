@@ -763,6 +763,12 @@ _Huh? Our Applications can meddle with the I/O Memory?_
 
 Nope they can't, because the __"U" User Permission__ is denied. Therefore we're all safe and well protected!
 
+_Can NuttX Kernel access the Virtual Memory of NuttX Apps?_
+
+Yep! Here's how...
+
+- [__"Kernel Accesses App Memory"__](https://lupyuen.github.io/articles/app#kernel-accesses-app-memory)
+
 ![NuttX swaps the SATP Register](https://lupyuen.github.io/images/mmu-boot2.jpg)
 
 [_NuttX swaps the SATP Register_](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L271-L304)
