@@ -134,7 +134,7 @@ TODO
 // Dispatch the RISC-V Interrupt
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
-  // Compute the NuttX IRQ Number
+  // Compute the interim NuttX IRQ Number
   int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
 
   // If this is an External Interrupt...
@@ -142,7 +142,9 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
     // Read the RISC-V IRQ Number
     // and Claim the Interrupt.
-    uintptr_t val = getreg32(JH7110_PLIC_CLAIM);
+    uintptr_t val = getreg32(
+      JH7110_PLIC_CLAIM  // From PLIC Claim Register
+    );
 
     ////Begin
     if (val == 0) {
@@ -158,6 +160,9 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
     irq += val;
   }
+
+  // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
+  // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
 
   // If the RISC-V IRQ Number is valid (non-zero)...
   if (RISCV_IRQ_EXT != irq) {
