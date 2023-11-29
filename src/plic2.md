@@ -10,17 +10,17 @@ TODO
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
 
-# Initialise Interrupts
+# Initialise the Interrupts
 
 TODO
 
 ![Disable Interrupts](https://lupyuen.github.io/images/plic2-registers3a.jpg)
 
-## Disable Interrupts
+## Disable all Interrupts
 
 TODO
 
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L49-L60)
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L41-L61)
 
 ```c
 // Init the Platform-Level Interrupt Controller
@@ -34,30 +34,34 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 ```
 
+TODO
+
 ![Clear Interrupts](https://lupyuen.github.io/images/plic2-registers5a.jpg)
 
-## Clear Interrupts
+## Clear the Interrupts
 
 TODO
 
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L63-L66)
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L61-L68)
 
 ```c
-  // Claim and Complete the Current Interrupts
+  // Claim and Complete the Outstanding Interrupts
   uintptr_t val = getreg32(JH7110_PLIC_CLAIM);
   putreg32(val, JH7110_PLIC_CLAIM);
 ```
 
+TODO
+
 ![Set Interrupt Priority](https://lupyuen.github.io/images/plic2-registers1.jpg)
 
-## Set Interrupt Priority
+## Set the Interrupt Priority
 
 TODO
 
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L76-L85)
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90)
 
 ```c
-  // Set Priority for all External Interrupts to 1 (lowest)
+  // Set Priority for all External Interrupts to 1 (Lowest)
   for (int id = 1; id <= NR_IRQS; id++) {
     putreg32(
       1,  // Value
@@ -66,13 +70,15 @@ TODO
   }
 ```
 
+TODO
+
 ![Set Interrupt Threshold](https://lupyuen.github.io/images/plic2-registers2.jpg)
 
-## Set Interrupt Threshold
+## Set the Interrupt Threshold
 
 TODO
 
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L87-L108)
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L90-L114)
 
 ```c
   // Set Interrupt Threshold to 0
@@ -88,13 +94,15 @@ TODO
 }
 ```
 
+TODO
+
 ![Enable Interrupt](https://lupyuen.github.io/images/plic2-registers3.jpg)
 
-# Enable Interrupt
+# Enable the Interrupt
 
 TODO
 
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L155-L199)
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L158-L208)
 
 ```c
 // Enable the NuttX IRQ specified by `irq`
@@ -122,19 +130,21 @@ void up_enable_irq(int irq) {
 }
 ```
 
+TODO
+
 ![Handle Interrupt](https://lupyuen.github.io/images/plic2-registers4.jpg)
 
-# Handle Interrupt
+# Handle the Interrupt
 
 TODO
 
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L52-L134)
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
-// Dispatch the RISC-V Interrupt
+// Handle the RISC-V Interrupt
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
-  // Compute the interim NuttX IRQ Number
+  // Compute the (Interim) NuttX IRQ Number
   int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
 
   // If this is an External Interrupt...
@@ -147,16 +157,16 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     );
 
     ////Begin
-    if (val == 0) {
+    if (val == 0) {  // If Interrupt Claimed is 0...
       // Check Pending Interrupts
       uintptr_t ip0 = getreg32(0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
       uintptr_t ip1 = getreg32(0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
       // if (ip1 & (1 << 20)) { val = 52; }  // EMAC
-      if (ip0 & (1 << 20)) { val = 20; }  // UART
+      if (ip0 & (1 << 20)) { val = 20; }  // UART3 Interrupt was fired
     }
     ////End
 
-    // Compute the actual NuttX IRQ Number:
+    // Compute the Actual NuttX IRQ Number:
     // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
     irq += val;
   }
@@ -193,19 +203,163 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 }
 ```
 
+TODO
+
 ![Claim Interrupt](https://lupyuen.github.io/images/plic2-registers5.jpg)
 
-## Claim Interrupt
+## Claim the Interrupt
 
 TODO
 
-## Complete Interrupt
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+
+```c
+// Dispatch the RISC-V Interrupt
+void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
+
+  // Compute the (Interim) NuttX IRQ Number
+  int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
+
+  // If this is an External Interrupt...
+  if (RISCV_IRQ_EXT == irq) {
+
+    // Read the RISC-V IRQ Number
+    // and Claim the Interrupt.
+    uintptr_t val = getreg32(
+      JH7110_PLIC_CLAIM  // From PLIC Claim Register
+    );
+
+    // Compute the Actual NuttX IRQ Number:
+    // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+    irq += val;
+  }
+  // Up Next: Dispatch and Complete the Interrupt
+```
+
+## Dispatch the Interrupt
+
+TODO
+
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+
+```c
+  // Omitted: Claim the Interrupt
+  ...
+  // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
+  // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+
+  // If the RISC-V IRQ Number is valid (non-zero)...
+  if (RISCV_IRQ_EXT != irq) {
+
+    // Call the Interrupt Handler
+    regs = riscv_doirq(irq, regs);
+  }
+  // Up Next: Complete the Interrupt
+```
+
+## Complete the Interrupt
+
+TODO
+
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+
+```c
+  // Omitted: Claim and Dispatch the Interrupt
+  ...
+  // If this is an External Interrupt...
+  if (RISCV_IRQ_EXT <= irq) {
+
+    // Compute the RISC-V IRQ Number
+    // and Complete the Interrupt.
+    putreg32(
+      irq - RISCV_IRQ_EXT,  // RISC-V IRQ Number (RISCV_IRQ_EXT = 25)
+      JH7110_PLIC_CLAIM     // PLIC Claim (Complete) Register
+    );
+
+    ////Begin
+    // Clear Pending Interrupts
+    putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+    putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+    ////End
+  }
+
+  // Return the Registers to the Caller
+  return regs;
+}
+```
 
 TODO
 
 ![Pending Interrupts](https://lupyuen.github.io/images/plic2-registers6.jpg)
 
 ## Pending Interrupts
+
+TODO
+
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+
+```c
+// Dispatch the RISC-V Interrupt
+void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
+
+  // Compute the (Interim) NuttX IRQ Number
+  int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
+
+  // If this is an External Interrupt...
+  if (RISCV_IRQ_EXT == irq) {
+
+    // Read the RISC-V IRQ Number
+    // and Claim the Interrupt.
+    uintptr_t val = getreg32(
+      JH7110_PLIC_CLAIM  // From PLIC Claim Register
+    );
+
+    ////Begin
+    if (val == 0) {  // If Interrupt Claimed is 0...
+      // Check Pending Interrupts
+      uintptr_t ip0 = getreg32(0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+      uintptr_t ip1 = getreg32(0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+      // if (ip1 & (1 << 20)) { val = 52; }  // EMAC
+      if (ip0 & (1 << 20)) { val = 20; }  // UART3 Interrupt was fired
+    }
+    ////End
+
+    // Compute the Actual NuttX IRQ Number:
+    // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+    irq += val;
+  }
+
+  // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
+  // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+
+  // If the RISC-V IRQ Number is valid (non-zero)...
+  if (RISCV_IRQ_EXT != irq) {
+
+    // Call the Interrupt Handler
+    regs = riscv_doirq(irq, regs);
+  }
+
+  // If this is an External Interrupt...
+  if (RISCV_IRQ_EXT <= irq) {
+
+    // Compute the RISC-V IRQ Number
+    // and Complete the Interrupt.
+    putreg32(
+      irq - RISCV_IRQ_EXT,  // RISC-V IRQ Number (RISCV_IRQ_EXT = 25)
+      JH7110_PLIC_CLAIM     // PLIC Claim (Complete) Register
+    );
+
+    ////Begin
+    // Clear Pending Interrupts
+    putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+    putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+    ////End
+  }
+
+  // Return the Registers to the Caller
+  return regs;
+}
+```
 
 TODO
 
@@ -251,11 +405,15 @@ TODO: Enable UART Interrupts
 
 TODO
 
-![BL808 vs JH7110](https://lupyuen.github.io/images/plic2-bl808.jpg)
-
 ![BL808](https://lupyuen.github.io/images/plic2-bl808a.jpg)
 
+TODO
+
 ![JH7110](https://lupyuen.github.io/images/plic2-bl808b.jpg)
+
+TODO
+
+![BL808 vs JH7110](https://lupyuen.github.io/images/plic2-bl808.jpg)
 
 Let's fix the UART Interrupts for NuttX on Ox64 BL808!
 
