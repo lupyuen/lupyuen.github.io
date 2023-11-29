@@ -23,17 +23,13 @@ TODO
 [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L49-L60)
 
 ```c
+// Init the Platform-Level Interrupt Controller
 void up_irqinitialize(void) {
-  /* Disable S-Mode interrupts */
 
+  // Disable Supervisor-Mode Interrupts (SIE Register)
   up_irq_save();
 
-  /* Attach the common interrupt handler */
-
-  //// TODO: riscv_exception_attach();
-
-  /* Disable all global interrupts */
-
+  // Disable all External Interrupts
   putreg32(0x0, JH7110_PLIC_ENABLE1);
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 ```
@@ -47,8 +43,7 @@ TODO
 [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L63-L66)
 
 ```c
-  /* Clear pendings in PLIC */
-
+  // Claim and Complete the Current Interrupts
   uintptr_t val = getreg32(JH7110_PLIC_CLAIM);
   putreg32(val, JH7110_PLIC_CLAIM);
 ```
@@ -62,16 +57,13 @@ TODO
 [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L76-L85)
 
 ```c
-  /* Set priority for all global interrupts to 1 (lowest) */
-
-  int id;
-
-  infodumpbuffer("PLIC Interrupt Priority: Before", 0xe0000004, 0x50 * 4); ////
-  for (id = 1; id <= NR_IRQS; id++)
-    {
-      putreg32(1, (uintptr_t)(JH7110_PLIC_PRIORITY + 4 * id));
-    }
-  infodumpbuffer("PLIC Interrupt Priority: After", 0xe0000004, 0x50 * 4); ////
+  // Set Priority for all External Interrupts to 1 (lowest)
+  for (int id = 1; id <= NR_IRQS; id++) {
+    putreg32(
+      1,  // Value
+      (uintptr_t)(JH7110_PLIC_PRIORITY + 4 * id)  // Address
+    );
+  }
 ```
 
 ![Set Interrupt Threshold](https://lupyuen.github.io/images/plic2-registers2.jpg)
@@ -83,17 +75,17 @@ TODO
 [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L87-L108)
 
 ```c
-  /* Set irq threshold to 0 (permits all global interrupts) */
-
+  // Set Interrupt Threshold to 0
+  // (Permits all External Interrupts)
   putreg32(0, JH7110_PLIC_THRESHOLD);
 
-  /* Attach the common interrupt handler */
+  // Attach the Common Interrupt Handlers
+  // TODO: Show do this earlier
+  riscv_exception_attach();
 
-  riscv_exception_attach(); //// TODO: Should move earlier
-
-  /* And finally, enable interrupts */
-
+  // Enable Supervisor-Mode Interrupts (SIE Register)
   up_irq_enable();
+}
 ```
 
 ![Enable Interrupt](https://lupyuen.github.io/images/plic2-registers3.jpg)
@@ -105,18 +97,8 @@ TODO
 [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L155-L199)
 
 ```c
-/****************************************************************************
- * Name: up_enable_irq
- *
- * Description:
- *   Enable the IRQ specified by 'irq'
- *
- ****************************************************************************/
-
-void up_enable_irq(int irq)
-{
-  _info("irq=%d\n", irq); ////
-  int extirq;
+// Enable the NuttX IRQ specified by `irq`
+void up_enable_irq(int irq) {
 
   if (irq == RISCV_IRQ_SOFT)
     {
@@ -132,22 +114,16 @@ void up_enable_irq(int irq)
     }
   else if (irq > RISCV_IRQ_EXT)
     {
-      extirq = irq - RISCV_IRQ_EXT;
+      int extirq = irq - RISCV_IRQ_EXT;
 
       /* Set enable bit for the irq */
 
       if (0 <= extirq && extirq <= 63)
         {
-          infodumpbuffer("PLIC Hart 0 S-Mode Interrupt Enable: Before", 0xe0002080, 2 * 4);////
-          _info("extirq=%d, addr=%p, val=0x%d\n", extirq, (uintptr_t)JH7110_PLIC_ENABLE1 + (4 * (extirq / 32)), 1 << (extirq % 32)); ////
           modifyreg32(JH7110_PLIC_ENABLE1 + (4 * (extirq / 32)),
                       0, 1 << (extirq % 32));
-          infodumpbuffer("PLIC Hart 0 S-Mode Interrupt Enable: After", 0xe0002080, 2 * 4);////
         }
-      else
-        {
-          PANIC();
-        }
+      else { PANIC(); }  // IRQ not supported (for now)
     }
 }
 ```
