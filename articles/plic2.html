@@ -68,7 +68,7 @@
     <nav id="TOC"><ul>
 <li><a href="#initialise-interrupts">1 Initialise Interrupts</a><ul>
 <li><a href="#disable-interrupts">1.1 Disable Interrupts</a><ul></ul></li>
-<li><a href="#clear-pending-interrupts">1.2 Clear Pending Interrupts</a><ul></ul></li>
+<li><a href="#clear-interrupts">1.2 Clear Interrupts</a><ul></ul></li>
 <li><a href="#set-interrupt-priority">1.3 Set Interrupt Priority</a><ul></ul></li>
 <li><a href="#set-interrupt-threshold">1.4 Set Interrupt Threshold</a><ul></ul></li></ul></li>
 <li><a href="#enable-interrupt">2 Enable Interrupt</a><ul></ul></li>
@@ -87,6 +87,7 @@
 <p><img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <h1 id="initialise-interrupts"><a href="#initialise-interrupts">1 Initialise Interrupts</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/plic2-registers3a.jpg" alt="Disable Interrupts" /></p>
 <h2 id="disable-interrupts"><a href="#disable-interrupts">1.1 Disable Interrupts</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L49-L60">jh7110_irq.c</a></p>
@@ -103,7 +104,9 @@
 
   putreg32(0x0, JH7110_PLIC_ENABLE1);
   putreg32(0x0, JH7110_PLIC_ENABLE2);
-</code></pre></div><h2 id="clear-pending-interrupts"><a href="#clear-pending-interrupts">1.2 Clear Pending Interrupts</a></h2>
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/plic2-registers5a.jpg" alt="Clear Interrupts" /></p>
+<h2 id="clear-interrupts"><a href="#clear-interrupts">1.2 Clear Interrupts</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L63-L66">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Clear pendings in PLIC */
@@ -208,29 +211,6 @@ void up_enable_irq(int irq)
 
       ////Begin
       if (val == 0) {
-        // Dump Interrupts
-        // _info(&quot;irq=%d, claim=%p\n&quot;, irq, val);////
-        // _info(&quot;*0xe0201004=%p\n&quot;, (uintptr_t)getreg32((uintptr_t)0xe0201004));////
-        // infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);////
-        // infodumpbuffer(&quot;PLIC Hart 0 S-Mode Interrupt Enable&quot;, 0xe0002080, 2 * 4);
-        // infodumpbuffer(&quot;PLIC Hart 0 S-Mode Priority Threshold&quot;, 0xe0201000, 2 * 4);
-        // infodumpbuffer(&quot;PLIC Hart 0 S-Mode Claim / Complete&quot;, 0xe0201004, 1 * 4);
-        // infodumpbuffer(&quot;PLIC Hart 0 M-Mode Interrupt Enable&quot;, 0xe0002000, 2 * 4);
-        // infodumpbuffer(&quot;PLIC Hart 0 M-Mode Priority Threshold&quot;, 0xe0200000, 2 * 4);
-        // infodumpbuffer(&quot;PLIC Hart 0 M-Mode Claim / Complete&quot;, 0xe0200004, 1 * 4);
-
-        // Claim Interrupt
-        // uintptr_t val2 = getreg32(JH7110_PLIC_CLAIM);
-        // putreg32(val2, JH7110_PLIC_CLAIM);
-        // _info(&quot;Claim Interrupt\n&quot;);
-        // infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);////
-        // infodumpbuffer(&quot;PLIC Hart 0 S-Mode Interrupt Enable&quot;, 0xe0002080, 2 * 4);
-        // infodumpbuffer(&quot;PLIC Hart 0 S-Mode Priority Threshold&quot;, 0xe0201000, 2 * 4);
-        // infodumpbuffer(&quot;PLIC Hart 0 S-Mode Claim / Complete&quot;, 0xe0201004, 1 * 4);
-        // infodumpbuffer(&quot;PLIC Hart 0 M-Mode Interrupt Enable&quot;, 0xe0002000, 2 * 4);
-        // infodumpbuffer(&quot;PLIC Hart 0 M-Mode Priority Threshold&quot;, 0xe0200000, 2 * 4);
-        // infodumpbuffer(&quot;PLIC Hart 0 M-Mode Claim / Complete&quot;, 0xe0200004, 1 * 4);
-
         // Check Pending Interrupts
         uintptr_t ip0 = getreg32(0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
         uintptr_t ip1 = getreg32(0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
@@ -261,18 +241,9 @@ void up_enable_irq(int irq)
 
       putreg32(irq - RISCV_IRQ_EXT, JH7110_PLIC_CLAIM);
       ////Begin
-      // infodumpbuffer(&quot;After Claim&quot;, 0xe0001000, 2 * 4);////
       // Clear Pending Interrupts
       putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
       putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-      _info(&quot;Clear Pending Interrupts, irq=%d, claim=%p\n&quot;, irq, claim);
-      infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);////
-      // infodumpbuffer(&quot;PLIC Hart 0 S-Mode Interrupt Enable&quot;, 0xe0002080, 2 * 4);
-      // infodumpbuffer(&quot;PLIC Hart 0 S-Mode Priority Threshold&quot;, 0xe0201000, 2 * 4);
-      // infodumpbuffer(&quot;PLIC Hart 0 S-Mode Claim / Complete&quot;, 0xe0201004, 1 * 4);
-      // infodumpbuffer(&quot;PLIC Hart 0 M-Mode Interrupt Enable&quot;, 0xe0002000, 2 * 4);
-      // infodumpbuffer(&quot;PLIC Hart 0 M-Mode Priority Threshold&quot;, 0xe0200000, 2 * 4);
-      // infodumpbuffer(&quot;PLIC Hart 0 M-Mode Claim / Complete&quot;, 0xe0200004, 1 * 4);
       ////End
     }
 
@@ -287,7 +258,7 @@ void up_enable_irq(int irq)
 <p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Pending Interrupts" /></p>
 <h2 id="pending-interrupts"><a href="#pending-interrupts">3.3 Pending Interrupts</a></h2>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Registers for Platform-Level Interrupt Controller" /></p>
 <h1 id="nuttx-uart-driver-for-ox64"><a href="#nuttx-uart-driver-for-ox64">4 NuttX UART Driver for Ox64</a></h1>
 <p>TODO</p>
 <p>BL808 UART is mostly identical to BL602 UART, so we ported the NuttX BL602 UART Driver to BL808.</p>
