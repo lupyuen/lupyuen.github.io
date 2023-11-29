@@ -100,31 +100,25 @@ TODO
 // Enable the NuttX IRQ specified by `irq`
 void up_enable_irq(int irq) {
 
-  if (irq == RISCV_IRQ_SOFT)
-    {
-      /* Read sstatus & set software interrupt enable in sie */
+  // Omitted: Enable Inter-CPU Interrupts (SIE Register)
+  // Omitted: Enable Timer Interrupts (TIE Register)
 
-      SET_CSR(CSR_IE, IE_SIE);
+  // If this is an External Interrupt...
+  if (irq > RISCV_IRQ_EXT) {
+
+    // Subtract 25 from NuttX IRQ to get the RISC-V IRQ
+    int extirq = irq - RISCV_IRQ_EXT;
+
+    // Set the Interrupt Enable Bit for `extirq` in PLIC
+    if (0 <= extirq && extirq <= 63) {
+      modifyreg32(
+        JH7110_PLIC_ENABLE1 + (4 * (extirq / 32)),  // Address
+        0,  // Clear Bits
+        1 << (extirq % 32)  // Set Bits
+      );
     }
-  else if (irq == RISCV_IRQ_TIMER)
-    {
-      /* Read sstatus & set timer interrupt enable in sie */
-
-      SET_CSR(CSR_IE, IE_TIE);
-    }
-  else if (irq > RISCV_IRQ_EXT)
-    {
-      int extirq = irq - RISCV_IRQ_EXT;
-
-      /* Set enable bit for the irq */
-
-      if (0 <= extirq && extirq <= 63)
-        {
-          modifyreg32(JH7110_PLIC_ENABLE1 + (4 * (extirq / 32)),
-                      0, 1 << (extirq % 32));
-        }
-      else { PANIC(); }  // IRQ not supported (for now)
-    }
+    else { PANIC(); }  // IRQ not supported (for now)
+  }
 }
 ```
 
@@ -137,54 +131,59 @@ TODO
 [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L52-L134)
 
 ```c
-void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
-{
+// Dispatch the RISC-V Interrupt
+void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
+
+  // Compute the NuttX IRQ Number
   int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
 
-  /* Firstly, check if the irq is machine external interrupt */
+  // If this is an External Interrupt...
+  if (RISCV_IRQ_EXT == irq) {
 
-  if (RISCV_IRQ_EXT == irq)
-    {
-      uintptr_t val = getreg32(JH7110_PLIC_CLAIM);
+    // Read the RISC-V IRQ Number
+    // and Claim the Interrupt.
+    uintptr_t val = getreg32(JH7110_PLIC_CLAIM);
 
-      ////Begin
-      if (val == 0) {
-        // Check Pending Interrupts
-        uintptr_t ip0 = getreg32(0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-        uintptr_t ip1 = getreg32(0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-        // if (ip1 & (1 << 20)) { val = 52; }  // EMAC
-        if (ip0 & (1 << 20)) { val = 20; }  // UART
-      }
-      ////End
-
-      /* Add the value to nuttx irq which is offset to the mext */
-
-      irq += val;
+    ////Begin
+    if (val == 0) {
+      // Check Pending Interrupts
+      uintptr_t ip0 = getreg32(0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+      uintptr_t ip1 = getreg32(0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+      // if (ip1 & (1 << 20)) { val = 52; }  // EMAC
+      if (ip0 & (1 << 20)) { val = 20; }  // UART
     }
+    ////End
 
-  /* EXT means no interrupt */
+    // Compute the actual NuttX IRQ Number:
+    // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+    irq += val;
+  }
 
-  if (RISCV_IRQ_EXT != irq)
-    {
-      /* Deliver the IRQ */
+  // If the RISC-V IRQ Number is valid (non-zero)...
+  if (RISCV_IRQ_EXT != irq) {
 
-      // _info("Do irq=%d\n", irq);////
-      regs = riscv_doirq(irq, regs);
-    }
+    // Call the Interrupt Handler
+    regs = riscv_doirq(irq, regs);
+  }
 
-  if (RISCV_IRQ_EXT <= irq)
-    {
-      uintptr_t claim = getreg32(JH7110_PLIC_CLAIM);////
-      /* Then write PLIC_CLAIM to clear pending in PLIC */
+  // If this is an External Interrupt...
+  if (RISCV_IRQ_EXT <= irq) {
 
-      putreg32(irq - RISCV_IRQ_EXT, JH7110_PLIC_CLAIM);
-      ////Begin
-      // Clear Pending Interrupts
-      putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-      putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-      ////End
-    }
+    // Compute the RISC-V IRQ Number
+    // and Complete the Interrupt.
+    putreg32(
+      irq - RISCV_IRQ_EXT,  // RISC-V IRQ Number (RISCV_IRQ_EXT = 25)
+      JH7110_PLIC_CLAIM     // PLIC Claim (Complete) Register
+    );
 
+    ////Begin
+    // Clear Pending Interrupts
+    putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+    putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+    ////End
+  }
+
+  // Return the Registers to the Caller
   return regs;
 }
 ```
