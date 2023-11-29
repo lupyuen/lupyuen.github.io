@@ -14,6 +14,8 @@ TODO
 
 TODO
 
+![Disable Interrupts](https://lupyuen.github.io/images/plic2-registers3a.jpg)
+
 ## Disable Interrupts
 
 TODO
@@ -36,7 +38,9 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 ```
 
-## Clear Pending Interrupts
+![Clear Interrupts](https://lupyuen.github.io/images/plic2-registers5a.jpg)
+
+## Clear Interrupts
 
 TODO
 
@@ -169,29 +173,6 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
 
       ////Begin
       if (val == 0) {
-        // Dump Interrupts
-        // _info("irq=%d, claim=%p\n", irq, val);////
-        // _info("*0xe0201004=%p\n", (uintptr_t)getreg32((uintptr_t)0xe0201004));////
-        // infodumpbuffer("PLIC Interrupt Pending", 0xe0001000, 2 * 4);////
-        // infodumpbuffer("PLIC Hart 0 S-Mode Interrupt Enable", 0xe0002080, 2 * 4);
-        // infodumpbuffer("PLIC Hart 0 S-Mode Priority Threshold", 0xe0201000, 2 * 4);
-        // infodumpbuffer("PLIC Hart 0 S-Mode Claim / Complete", 0xe0201004, 1 * 4);
-        // infodumpbuffer("PLIC Hart 0 M-Mode Interrupt Enable", 0xe0002000, 2 * 4);
-        // infodumpbuffer("PLIC Hart 0 M-Mode Priority Threshold", 0xe0200000, 2 * 4);
-        // infodumpbuffer("PLIC Hart 0 M-Mode Claim / Complete", 0xe0200004, 1 * 4);
-
-        // Claim Interrupt
-        // uintptr_t val2 = getreg32(JH7110_PLIC_CLAIM);
-        // putreg32(val2, JH7110_PLIC_CLAIM);
-        // _info("Claim Interrupt\n");
-        // infodumpbuffer("PLIC Interrupt Pending", 0xe0001000, 2 * 4);////
-        // infodumpbuffer("PLIC Hart 0 S-Mode Interrupt Enable", 0xe0002080, 2 * 4);
-        // infodumpbuffer("PLIC Hart 0 S-Mode Priority Threshold", 0xe0201000, 2 * 4);
-        // infodumpbuffer("PLIC Hart 0 S-Mode Claim / Complete", 0xe0201004, 1 * 4);
-        // infodumpbuffer("PLIC Hart 0 M-Mode Interrupt Enable", 0xe0002000, 2 * 4);
-        // infodumpbuffer("PLIC Hart 0 M-Mode Priority Threshold", 0xe0200000, 2 * 4);
-        // infodumpbuffer("PLIC Hart 0 M-Mode Claim / Complete", 0xe0200004, 1 * 4);
-
         // Check Pending Interrupts
         uintptr_t ip0 = getreg32(0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
         uintptr_t ip1 = getreg32(0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
@@ -222,18 +203,9 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
 
       putreg32(irq - RISCV_IRQ_EXT, JH7110_PLIC_CLAIM);
       ////Begin
-      // infodumpbuffer("After Claim", 0xe0001000, 2 * 4);////
       // Clear Pending Interrupts
       putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
       putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-      _info("Clear Pending Interrupts, irq=%d, claim=%p\n", irq, claim);
-      infodumpbuffer("PLIC Interrupt Pending", 0xe0001000, 2 * 4);////
-      // infodumpbuffer("PLIC Hart 0 S-Mode Interrupt Enable", 0xe0002080, 2 * 4);
-      // infodumpbuffer("PLIC Hart 0 S-Mode Priority Threshold", 0xe0201000, 2 * 4);
-      // infodumpbuffer("PLIC Hart 0 S-Mode Claim / Complete", 0xe0201004, 1 * 4);
-      // infodumpbuffer("PLIC Hart 0 M-Mode Interrupt Enable", 0xe0002000, 2 * 4);
-      // infodumpbuffer("PLIC Hart 0 M-Mode Priority Threshold", 0xe0200000, 2 * 4);
-      // infodumpbuffer("PLIC Hart 0 M-Mode Claim / Complete", 0xe0200004, 1 * 4);
       ////End
     }
 
@@ -257,7 +229,7 @@ TODO
 
 TODO
 
-![TODO](https://lupyuen.github.io/images/plic2-registers.jpg)
+![Registers for Platform-Level Interrupt Controller](https://lupyuen.github.io/images/plic2-registers.jpg)
 
 # NuttX UART Driver for Ox64
 
