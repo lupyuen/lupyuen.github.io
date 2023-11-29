@@ -10,6 +10,213 @@ TODO
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
 
+# Initialise Interrupts
+
+TODO
+
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L49-L60)
+
+```c
+void up_irqinitialize(void) {
+  /* Disable S-Mode interrupts */
+
+  up_irq_save();
+
+  /* Attach the common interrupt handler */
+
+  //// TODO: riscv_exception_attach();
+
+  /* Disable all global interrupts */
+
+  putreg32(0x0, JH7110_PLIC_ENABLE1);
+  putreg32(0x0, JH7110_PLIC_ENABLE2);
+```
+
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L63-L66)
+
+```c
+  /* Clear pendings in PLIC */
+
+  uintptr_t val = getreg32(JH7110_PLIC_CLAIM);
+  putreg32(val, JH7110_PLIC_CLAIM);
+```
+
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L76-L85)
+
+```c
+  /* Set priority for all global interrupts to 1 (lowest) */
+
+  int id;
+
+  infodumpbuffer("PLIC Interrupt Priority: Before", 0xe0000004, 0x50 * 4); ////
+  for (id = 1; id <= NR_IRQS; id++)
+    {
+      putreg32(1, (uintptr_t)(JH7110_PLIC_PRIORITY + 4 * id));
+    }
+  infodumpbuffer("PLIC Interrupt Priority: After", 0xe0000004, 0x50 * 4); ////
+```
+
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L87-L108)
+
+```c
+  /* Set irq threshold to 0 (permits all global interrupts) */
+
+  putreg32(0, JH7110_PLIC_THRESHOLD);
+
+  /* Attach the common interrupt handler */
+
+  riscv_exception_attach(); //// TODO: Should move earlier
+
+  /* And finally, enable interrupts */
+
+  up_irq_enable();
+```
+
+# Enable Interrupt
+
+TODO
+
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L155-L199)
+
+```c
+/****************************************************************************
+ * Name: up_enable_irq
+ *
+ * Description:
+ *   Enable the IRQ specified by 'irq'
+ *
+ ****************************************************************************/
+
+void up_enable_irq(int irq)
+{
+  _info("irq=%d\n", irq); ////
+  int extirq;
+
+  if (irq == RISCV_IRQ_SOFT)
+    {
+      /* Read sstatus & set software interrupt enable in sie */
+
+      SET_CSR(CSR_IE, IE_SIE);
+    }
+  else if (irq == RISCV_IRQ_TIMER)
+    {
+      /* Read sstatus & set timer interrupt enable in sie */
+
+      SET_CSR(CSR_IE, IE_TIE);
+    }
+  else if (irq > RISCV_IRQ_EXT)
+    {
+      extirq = irq - RISCV_IRQ_EXT;
+
+      /* Set enable bit for the irq */
+
+      if (0 <= extirq && extirq <= 63)
+        {
+          infodumpbuffer("PLIC Hart 0 S-Mode Interrupt Enable: Before", 0xe0002080, 2 * 4);////
+          _info("extirq=%d, addr=%p, val=0x%d\n", extirq, (uintptr_t)JH7110_PLIC_ENABLE1 + (4 * (extirq / 32)), 1 << (extirq % 32)); ////
+          modifyreg32(JH7110_PLIC_ENABLE1 + (4 * (extirq / 32)),
+                      0, 1 << (extirq % 32));
+          infodumpbuffer("PLIC Hart 0 S-Mode Interrupt Enable: After", 0xe0002080, 2 * 4);////
+        }
+      else
+        {
+          PANIC();
+        }
+    }
+}
+```
+
+# Handle Interrupt
+
+TODO
+
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L52-L134)
+
+```c
+void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
+{
+  int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
+
+  /* Firstly, check if the irq is machine external interrupt */
+
+  if (RISCV_IRQ_EXT == irq)
+    {
+      uintptr_t val = getreg32(JH7110_PLIC_CLAIM);
+
+      ////Begin
+      if (val == 0) {
+        // Dump Interrupts
+        // _info("irq=%d, claim=%p\n", irq, val);////
+        // _info("*0xe0201004=%p\n", (uintptr_t)getreg32((uintptr_t)0xe0201004));////
+        // infodumpbuffer("PLIC Interrupt Pending", 0xe0001000, 2 * 4);////
+        // infodumpbuffer("PLIC Hart 0 S-Mode Interrupt Enable", 0xe0002080, 2 * 4);
+        // infodumpbuffer("PLIC Hart 0 S-Mode Priority Threshold", 0xe0201000, 2 * 4);
+        // infodumpbuffer("PLIC Hart 0 S-Mode Claim / Complete", 0xe0201004, 1 * 4);
+        // infodumpbuffer("PLIC Hart 0 M-Mode Interrupt Enable", 0xe0002000, 2 * 4);
+        // infodumpbuffer("PLIC Hart 0 M-Mode Priority Threshold", 0xe0200000, 2 * 4);
+        // infodumpbuffer("PLIC Hart 0 M-Mode Claim / Complete", 0xe0200004, 1 * 4);
+
+        // Claim Interrupt
+        // uintptr_t val2 = getreg32(JH7110_PLIC_CLAIM);
+        // putreg32(val2, JH7110_PLIC_CLAIM);
+        // _info("Claim Interrupt\n");
+        // infodumpbuffer("PLIC Interrupt Pending", 0xe0001000, 2 * 4);////
+        // infodumpbuffer("PLIC Hart 0 S-Mode Interrupt Enable", 0xe0002080, 2 * 4);
+        // infodumpbuffer("PLIC Hart 0 S-Mode Priority Threshold", 0xe0201000, 2 * 4);
+        // infodumpbuffer("PLIC Hart 0 S-Mode Claim / Complete", 0xe0201004, 1 * 4);
+        // infodumpbuffer("PLIC Hart 0 M-Mode Interrupt Enable", 0xe0002000, 2 * 4);
+        // infodumpbuffer("PLIC Hart 0 M-Mode Priority Threshold", 0xe0200000, 2 * 4);
+        // infodumpbuffer("PLIC Hart 0 M-Mode Claim / Complete", 0xe0200004, 1 * 4);
+
+        // Check Pending Interrupts
+        uintptr_t ip0 = getreg32(0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+        uintptr_t ip1 = getreg32(0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+        // if (ip1 & (1 << 20)) { val = 52; }  // EMAC
+        if (ip0 & (1 << 20)) { val = 20; }  // UART
+      }
+      ////End
+
+      /* Add the value to nuttx irq which is offset to the mext */
+
+      irq += val;
+    }
+
+  /* EXT means no interrupt */
+
+  if (RISCV_IRQ_EXT != irq)
+    {
+      /* Deliver the IRQ */
+
+      // _info("Do irq=%d\n", irq);////
+      regs = riscv_doirq(irq, regs);
+    }
+
+  if (RISCV_IRQ_EXT <= irq)
+    {
+      uintptr_t claim = getreg32(JH7110_PLIC_CLAIM);////
+      /* Then write PLIC_CLAIM to clear pending in PLIC */
+
+      putreg32(irq - RISCV_IRQ_EXT, JH7110_PLIC_CLAIM);
+      ////Begin
+      // infodumpbuffer("After Claim", 0xe0001000, 2 * 4);////
+      // Clear Pending Interrupts
+      putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+      putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+      _info("Clear Pending Interrupts, irq=%d, claim=%p\n", irq, claim);
+      infodumpbuffer("PLIC Interrupt Pending", 0xe0001000, 2 * 4);////
+      // infodumpbuffer("PLIC Hart 0 S-Mode Interrupt Enable", 0xe0002080, 2 * 4);
+      // infodumpbuffer("PLIC Hart 0 S-Mode Priority Threshold", 0xe0201000, 2 * 4);
+      // infodumpbuffer("PLIC Hart 0 S-Mode Claim / Complete", 0xe0201004, 1 * 4);
+      // infodumpbuffer("PLIC Hart 0 M-Mode Interrupt Enable", 0xe0002000, 2 * 4);
+      // infodumpbuffer("PLIC Hart 0 M-Mode Priority Threshold", 0xe0200000, 2 * 4);
+      // infodumpbuffer("PLIC Hart 0 M-Mode Claim / Complete", 0xe0200004, 1 * 4);
+      ////End
+    }
+
+  return regs;
+}
+```
+
 # NuttX UART Driver for Ox64
 
 TODO
