@@ -24,9 +24,9 @@ We'll walk through the steps with a simple barebones operating system: [__Apache
 
 Though we'll hit a bumpy journey with our work-in-progress __NuttX on Ox64__...
 
-- __Leaky Writes__ seem to be affecting adjacent PLIC Registers
+- __Leaky Writes__ seem to affect adjacent PLIC Registers
 
-- __Interrupt Claim__ doesn't seem to be working right
+- __Interrupt Claim__ doesn't seem to work right
 
 We begin our story...
 
