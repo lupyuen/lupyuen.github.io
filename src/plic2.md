@@ -289,7 +289,7 @@ _How will PLIC handle the UART Interrupt?_
 
 TODO
 
-![Claim Interrupt](https://lupyuen.github.io/images/plic2-registers5.jpg)
+![Interrupt Claim Register](https://lupyuen.github.io/images/plic2-registers5.jpg)
 
 ## Claim the Interrupt
 
@@ -313,6 +313,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     // Read the RISC-V IRQ Number
     // From PLIC Claim Register
     // Which also Claims the Interrupt
+    // PLIC_CLAIM is 0xE020_1004
     uintptr_t val = getreg32(PLIC_CLAIM);
 
     // Compute the Actual NuttX IRQ Number:
@@ -330,15 +331,11 @@ We're telling the PLIC: "Yes we acknowledge the Interrupt, but we're not done ye
 
 In a while we shall Complete the Interrupt. (To tell PLIC we're done)
 
-_Who calls the code above?_
-
-TODO: How NuttX calls __riscv_dispatch_irq__
+[(__riscv_dispatch_irq__ is called by the RISC-V Common Exception Handler)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception_common.S#L63-L177)
 
 ## Dispatch the Interrupt
 
-TODO
-
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+We have Claimed the Interrupt. It's time to do some work: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
   // Omitted: Claim the Interrupt
@@ -355,13 +352,19 @@ TODO
   // Up Next: Complete the Interrupt
 ```
 
-TODO: riscv_doirq
+For UART Interrupts: [__riscv_doirq__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_doirq.c#L58-L134) will call [__uart_interrupt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L285-L343) to handle the keypress.
+
+(That's because at startup, [__bl602_attach__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L383-L442) has registered [__uart_interrupt__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L285-L343) as the UART Interrupt Handler)
+
+![Interrupt Claim Register](https://lupyuen.github.io/images/plic2-registers5.jpg)
 
 ## Complete the Interrupt
 
-TODO
+To tell PLIC we're done, we write the RISC-V IRQ Number back to the __Interrupt Claim__ Register.
 
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+(Yep the same one we read earlier! Pic above)
+
+This will __Complete the Interrupt__ (so PLIC can fire the next one): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
   // Omitted: Claim and Dispatch the Interrupt
@@ -371,9 +374,10 @@ TODO
 
     // Compute the RISC-V IRQ Number
     // and Complete the Interrupt.
-    putreg32(
+    // PLIC_CLAIM is 0xE020_1004
+    putreg32(               // We write the...
       irq - RISCV_IRQ_EXT,  // RISC-V IRQ Number (RISCV_IRQ_EXT = 25)
-      PLIC_CLAIM            // PLIC Claim (Complete) Register
+      PLIC_CLAIM            // To PLIC Claim (Complete) Register
     );
   }
 
@@ -382,17 +386,17 @@ TODO
 }
 ```
 
-TODO
+And that's how we handle PLIC Interrupts!
 
-![Pending Interrupts](https://lupyuen.github.io/images/plic2-registers6.jpg)
+![Interrupt Pending Register](https://lupyuen.github.io/images/plic2-registers6.jpg)
 
 ## Pending Interrupts
 
 _What's with the Pending Interrupts? (Pic above)_
 
-TODO: Normally the Claim / Complete is perfectly adequate for handling interrupts 
+Normally the Interrupt Claim Register is perfectly adequate for handling Interrupts.
 
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+But if we're really curious: PLIC has an __Interrupt Pending__ Register (pic above) that will tell us which Interrupts are pending Claiming or Completion: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
 // Check the Pending Interrupts...
@@ -406,7 +410,7 @@ if (ip0 & (1 << 20)) {
 }
 ```
 
-TODO: Backup Plan
+To tell PLIC we're done: We clear the Individual Bits in the Interrupt Pending Register...
 
 ```c
 // Clear the Pending Interrupts...
@@ -416,11 +420,15 @@ putreg32(0, 0xe0001000);
 // TODO: Clear the Individual Bits instead of wiping out the Entire Register
 ```
 
+One again, we don't need really need this. We'll stash this as our Backup Plan in case things go wrong.
+
+(Oh yes, things will go wrong in a while)
+
 ![Set Interrupt Priority](https://lupyuen.github.io/images/plic2-registers1.jpg)
 
 # Trouble with Interrupt Priority
 
-TODO
+_There's a twist in our story?_
 
 Earlier we said that we initialise the __Interrupt Priorities to 1__ at startup: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90)
 
@@ -511,9 +519,11 @@ PLIC Hart 0 S-Mode Interrupt Enable: After (0xe0002080):
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L194-L198)
 
+Interrupt Enable has leaked over from __`0xE000` `2080`__ to __`0xE000` `2084`__!
+
 Thus we have an unexplained problem of __Leaky Writes__, affecting the Interrupt Priority and Interrupt Enable Registers.
 
-Up next, we have more worries...
+Up Next: More worries...
 
 ![TODO](https://lupyuen.github.io/images/plic2-title.jpg)
 
