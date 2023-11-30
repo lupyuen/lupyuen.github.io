@@ -392,7 +392,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p>And that’s how we handle PLIC Interrupts!</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Interrupt Pending Register" /></p>
 <h2 id="pending-interrupts"><a href="#pending-interrupts">6.4 Pending Interrupts</a></h2>
-<p><em>What’s with the Pending Interrupts? (Pic above)</em></p>
+<p><em>What’s with the Pending Interrupts?</em></p>
 <p>Normally the Interrupt Claim Register is perfectly adequate for handling Interrupts.</p>
 <p>But if we’re really curious: PLIC has an <strong>Interrupt Pending</strong> Register (pic above) that will tell us which Interrupts are pending Claiming or Completion: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Check the Pending Interrupts...
