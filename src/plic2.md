@@ -166,6 +166,10 @@ And we're done initing the PLIC at startup!
 
 # Enable the Interrupt
 
+_Our Platform-Level Interrupt Controller (PLIC) is all ready for action..._
+
+_How will we enable Interrupts in PLIC?_
+
 TODO
 
 [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L158-L208)
@@ -195,6 +199,8 @@ void up_enable_irq(int irq) {
   }
 }
 ```
+
+_Who calls up_enable_irq?_
 
 TODO: We're halfway through our Grand Plan of __PLIC Interrupts__! (Steps 1, 2 and 3, pic below)
 
