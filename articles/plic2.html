@@ -308,8 +308,9 @@ static int bl602_attach(struct uart_dev_s *dev) {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Claim Interrupt" /></p>
 <h2 id="claim-the-interrupt"><a href="#claim-the-interrupt">6.1 Claim the Interrupt</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
+<p><em>How will we know which RISC-V Interrupt has been fired?</em></p>
+<p>That’s why we have the <strong>Interrupt Claim</strong> Register! (Pic above)</p>
+<p>We read the Interrupt Claim Register to get the <strong>RISC-V IRQ Number</strong> that has been fired: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Dispatch the RISC-V Interrupt
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
@@ -331,6 +332,10 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   }
   // Up Next: Dispatch and Complete the Interrupt
 </code></pre></div>
+<p><em>What exactly are we “claiming”?</em></p>
+<p>When we <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#interrupt-claims"><strong>Claim an Interrupt</strong></a> (by reading the Interrupt Claim Register)…</p>
+<p>We’re telling the PLIC: “Yes we acknowledge the Interrupt, but we’re not done yet!”</p>
+<p>In a while we shall Complete the Interrupt.</p>
 <p>TODO: How NuttX calls <strong>riscv_dispatch_irq</strong></p>
 <p>TODO: Why claim? Multiple CPUs</p>
 <h2 id="dispatch-the-interrupt"><a href="#dispatch-the-interrupt">6.2 Dispatch the Interrupt</a></h2>
