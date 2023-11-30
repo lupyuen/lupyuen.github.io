@@ -253,6 +253,8 @@ void up_enable_irq(int irq) {
     int extirq = irq - RISCV_IRQ_EXT;
 
     // Set the Interrupt Enable Bit for `extirq` in PLIC
+    // PLIC_ENABLE1 is 0xE000_2080
+    // PLIC_ENABLE2 is 0xE000_2084
     if (0 &lt;= extirq &amp;&amp; extirq &lt;= 63) {
       modifyreg32(
         PLIC_ENABLE1 + (4 * (extirq / 32)),  // Address
@@ -415,7 +417,7 @@ putreg32(0, 0xe0001000);
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
 <h1 id="trouble-with-interrupt-priority"><a href="#trouble-with-interrupt-priority">7 Trouble with Interrupt Priority</a></h1>
 <p><em>I sense a twist in our story…</em></p>
-<p>Earlier we initialised the <strong>Interrupt Priorities to 1</strong> at startup: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
+<p>Earlier we initialised the <strong>Interrupt Priorities to 1</strong> at startup (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Platform-Level Interrupt Controller
 void up_irqinitialize(void) {
   ...
@@ -451,7 +453,7 @@ void test_interrupt_priority(void) {
   uint32_t before54 = *(volatile uint32_t *) 0xe0000054UL;  // RISC-V IRQ 21
 
   // Set the Interrupt Priority
-  // for 0x50 but NOT 0x54
+  // for 0x50 (IRQ 20) but NOT 0x54 (IRQ 21)
   *(volatile uint32_t *) 0xe0000050UL = 1;
 
   // Read the values after setting Interrupt Priority
@@ -463,12 +465,13 @@ void test_interrupt_priority(void) {
     before50, before54, after50, after54);
 }
 </code></pre></div>
-<p>Again we get odd results…</p>
+<p>Again we get odd results (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>before50=0, before54=0
 after50=1,  after54=1
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L257">(See the <strong>Complete Log</strong>)</a></p>
-<p>IRQ 20 is set correctly. But <strong>IRQ 21 is also set</strong>! (Pic below)</p>
+<p>IRQ 20 is set correctly: <em>“after50=1”</em></p>
+<p>But <strong>IRQ 21 is also set</strong>! <em>“after54=1”</em></p>
 <p><em>Hmmm… Our writing seems to have leaked over to the next 32-bit word?</em></p>
 <p>Yeah we see the <strong>Leaky Write</strong> again when we set the <strong>Interrupt Enable</strong> Register…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Before setting Interrupt Enable: Everything is 0
@@ -545,7 +548,7 @@ nsh&gt;
   // Omitted: Call the Interrupt Handler
   // and Complete the Interrupt
 </code></pre></div>
-<p>Which tells us the correct <strong>RISC-V IRQ Number</strong> yay!</p>
+<p>Which tells us the correct <strong>RISC-V IRQ Number</strong> for UART3 yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq:
   irq=45
 </code></pre></div>
@@ -568,10 +571,11 @@ nsh&gt;
 bl602_receive: rxdata=0x0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308">(See the <strong>Complete Log</strong>)</a></p>
+<p>(Pic below)</p>
 <p>TODO: Screenshot</p>
 <h1 id="all-things-considered"><a href="#all-things-considered">10 All Things Considered</a></h1>
 <p><em>Feels like we’re wading into murky greyish territory… Like Jaws meets Twilight Zone on the Beach?</em></p>
-<p>Yeah we said this <a href="https://lupyuen.github.io/articles/ox2#begin-with-star64-nuttx"><strong>last time</strong></a> and it’s happening now…</p>
+<p>Yeah we said this <a href="https://lupyuen.github.io/articles/ox2#begin-with-star64-nuttx"><strong>last time</strong></a>, and it’s happening now…</p>
 <blockquote>
 <p>“If RISC-V ain’t RISC-V on SiFive vs T-Head: We’ll find out!”</p>
 </blockquote>
@@ -601,7 +605,7 @@ bl602_receive: rxdata=0x0
 <p>(Instead of the RISC-V External Interrupt Number)</p>
 </li>
 </ul>
-<p>So many questions…</p>
+<p>Which shouldn’t happen because PLIC is in the <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic"><strong>Official RISC-V Spec</strong></a>! So many questions…</p>
 <ol>
 <li>
 <p><em>Any clue what’s causing this?</em></p>
@@ -653,6 +657,7 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 <p>Hmmm… Perhaps!</p>
 </li>
 </ol>
+<p>Can we end this sad story with a happier conclusion? Please lemme know! 🙏</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>We’ll do much more for <strong>NuttX on Ox64 BL808</strong>, stay tuned for updates!</p>
