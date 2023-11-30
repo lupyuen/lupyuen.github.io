@@ -444,13 +444,15 @@ One again, we don't need really need this. We'll stash this as our Backup Plan i
 
 _I sense a twist in our story..._
 
-Earlier we said that we initialise the __Interrupt Priorities to 1__ at startup: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90)
+Earlier we initialised the __Interrupt Priorities to 1__ at startup: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90)
 
 ```c
 // Init the Platform-Level Interrupt Controller
 void up_irqinitialize(void) {
   ...
   // Set Priority for all External Interrupts to 1 (Lowest)
+  // NR_IRQS is 83 (TODO: BL808 only supports 82 Peripheral Interrupts)
+  // PLIC_PRIORITY is 0xE000_0000
   for (int id = 1; id <= NR_IRQS; id++) {
     putreg32(
       1,  // Value
