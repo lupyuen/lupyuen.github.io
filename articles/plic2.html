@@ -447,11 +447,11 @@ bl602_receive: rxdata=0x0
 <p>The PLIC Code in this article was <strong>originally tested OK</strong> with…</p>
 <ul>
 <li>
-<p><strong>Star64 JH7110</strong> in RISC-V Supervisor Mode</p>
+<p><a href="https://lupyuen.github.io/articles/plic"><strong>Star64 JH7110</strong></a> in RISC-V Supervisor Mode</p>
 <p>(Based on SiFive U74 Core)</p>
 </li>
 <li>
-<p><strong>T-Head C906</strong> in RISC-V Machine Mode</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/c906/c906_irq.c"><strong>T-Head C906</strong></a> in RISC-V Machine Mode</p>
 <p>(Ox64 BL808 runs on the C906 Core)</p>
 </li>
 <li>
@@ -459,17 +459,18 @@ bl602_receive: rxdata=0x0
 <p>(Which might explain our troubles)</p>
 </li>
 </ul>
-<p>And we’re hitting 2 strange issues on <strong>Ox64 BL808 PLIC</strong>…</p>
-<ol>
+<p>Today we’re hitting 2 strange issues on <strong>Ox64 BL808 PLIC</strong>…</p>
+<ul>
 <li>
 <p><strong>Leaky Writes</strong> to PLIC Registers</p>
 <p>(Writing to one register will affect the next)</p>
 </li>
 <li>
 <p><strong>PLIC Claim Register</strong> always reads as 0</p>
-<p>(TODO)</p>
+<p>(Instead of the RISC-V External Interrupt Number)</p>
 </li>
-</ol>
+</ul>
+<p>So many questions…</p>
 <p>TODO</p>
 <p>Sv39 and PLIC are officially speced</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
