@@ -119,8 +119,8 @@ void up_irqinitialize(void) {
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L61-L68">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Claim and Complete the Outstanding Interrupts
-  uintptr_t val = getreg32(JH7110_PLIC_CLAIM);
-  putreg32(val, JH7110_PLIC_CLAIM);
+  uintptr_t val = getreg32(PLIC_CLAIM);
+  putreg32(val, PLIC_CLAIM);
 </code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
@@ -131,7 +131,7 @@ void up_irqinitialize(void) {
   for (int id = 1; id &lt;= NR_IRQS; id++) {
     putreg32(
       1,  // Value
-      (uintptr_t)(JH7110_PLIC_PRIORITY + 4 * id)  // Address
+      (uintptr_t)(PLIC_PRIORITY + 4 * id)  // Address
     );
   }
 </code></pre></div>
@@ -211,17 +211,18 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   if (RISCV_IRQ_EXT == irq) {
 
     // Read the RISC-V IRQ Number
-    // and Claim the Interrupt.
-    uintptr_t val = getreg32(
-      JH7110_PLIC_CLAIM  // From PLIC Claim Register
-    );
+    // From PLIC Claim Register
+    // Which also Claims the Interrupt
+    uintptr_t val = getreg32(PLIC_CLAIM);
 
     // Compute the Actual NuttX IRQ Number:
     // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
     irq += val;
   }
   // Up Next: Dispatch and Complete the Interrupt
-</code></pre></div><h2 id="dispatch-the-interrupt"><a href="#dispatch-the-interrupt">6.2 Dispatch the Interrupt</a></h2>
+</code></pre></div>
+<p>TODO: Why claim? Multiple CPUs</p>
+<h2 id="dispatch-the-interrupt"><a href="#dispatch-the-interrupt">6.2 Dispatch the Interrupt</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Omitted: Claim the Interrupt
@@ -248,7 +249,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     // and Complete the Interrupt.
     putreg32(
       irq - RISCV_IRQ_EXT,  // RISC-V IRQ Number (RISCV_IRQ_EXT = 25)
-      JH7110_PLIC_CLAIM     // PLIC Claim (Complete) Register
+      PLIC_CLAIM            // PLIC Claim (Complete) Register
     );
   }
 
@@ -263,28 +264,21 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p>TODO: Normally the Claim / Complete is perfectly adequate for handling interrupts </p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Check the Pending Interrupts...
-
 // Read PLIC_IP0: Interrupt Pending for interrupts 1 to 31
 uintptr_t ip0 = getreg32(0xe0001000);
 
-// Read PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-uintptr_t ip1 = getreg32(0xe0001004);
-
-// If Bit 20 of `ip0` is set...
+// If Bit 20 is set...
 if (ip0 &amp; (1 &lt;&lt; 20)) {
   // Then UART3 Interrupt was fired (RISC-V IRQ 20)
   val = 20;
 }
 </code></pre></div>
-<p>TODO</p>
+<p>TODO: Backup Plan</p>
 <div class="example-wrap"><pre class="language-c"><code>// Clear the Pending Interrupts...
-// TODO: Clear the Individual Bits instead of wiping out the Entire Register
-
-// Clear PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+// Set PLIC_IP0: Interrupt Pending for interrupts 1 to 31
 putreg32(0, 0xe0001000);
 
-// Clear PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-putreg32(0, 0xe0001004);
+// TODO: Clear the Individual Bits instead of wiping out the Entire Register
 </code></pre></div>
 <p>TODO: All this tested with</p>
 <ul>
@@ -299,19 +293,22 @@ putreg32(0, 0xe0001004);
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
 <h1 id="trouble-with-interrupt-priority"><a href="#trouble-with-interrupt-priority">7 Trouble with Interrupt Priority</a></h1>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  // Set Priority for all External Interrupts to 1 (Lowest)
+<p>Earlier we said that we initialise the <strong>Interrupt Priorities to 1</strong> at startup: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Init the Platform-Level Interrupt Controller
+void up_irqinitialize(void) {
+  ...
+  // Set Priority for all External Interrupts to 1 (Lowest)
   for (int id = 1; id &lt;= NR_IRQS; id++) {
     putreg32(
       1,  // Value
-      (uintptr_t)(JH7110_PLIC_PRIORITY + 4 * id)  // Address
+      (uintptr_t)(PLIC_PRIORITY + 4 * id)  // Address
     );
   }
 
   // Dump the Interrupt Priorities
   infodumpbuffer(&quot;PLIC Interrupt Priority: After&quot;, 0xe0000004, 0x50 * 4);
 </code></pre></div>
-<p>TODO</p>
+<p>When we run this on Ox64, something strange happens…</p>
 <div class="example-wrap"><pre class="language-text"><code>PLIC Interrupt Priority: After (0xe0000004):
 0000  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
 0010  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
@@ -319,44 +316,58 @@ putreg32(0, 0xe0001004);
 0030  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L150-L170">(See the <strong>Complete Log</strong>)</a></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L444-L465">bl602_serial.c</a></p>
+<p><em>Everything becomes zero! Why???</em></p>
+<p>Yeah this is totally baffling! And no Interrupts get fired, because <strong>Interrupt Priority 0 is invalid</strong>.</p>
+<p>Let’s set the Interrupt Priority specifically for <strong>RISC-V IRQ 20</strong> (UART3 Interrupt): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L444-L465">bl602_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Test the setting of PLIC Interrupt Priority
+// For RISC-V IRQ 20 only
 void test_interrupt_priority(void) {
   // Read the values before setting Interrupt Priority
-  uint32_t before50 = *(volatile uint32_t *) 0xe0000050UL;
-  uint32_t before54 = *(volatile uint32_t *) 0xe0000054UL;
+  uint32_t before50 = *(volatile uint32_t *) 0xe0000050UL;  // RISC-V IRQ 20
+  uint32_t before54 = *(volatile uint32_t *) 0xe0000054UL;  // RISC-V IRQ 21
 
   // Set the Interrupt Priority
-  // for 50 but NOT 54
+  // for 0x50 but NOT 0x54
   *(volatile uint32_t *) 0xe0000050UL = 1;
 
   // Read the values after setting Interrupt Priority
-  uint32_t after50 = *(volatile uint32_t *) 0xe0000050UL;
-  uint32_t after54 = *(volatile uint32_t *) 0xe0000054UL;
+  uint32_t after50 = *(volatile uint32_t *) 0xe0000050UL;  // RISC-V IRQ 20
+  uint32_t after54 = *(volatile uint32_t *) 0xe0000054UL;  // RISC-V IRQ 21
 
   // Dump before and after values:
   _info(&quot;before50=%u, before54=%u, after50=%u, after54=%u\n&quot;,
     before50, before54, after50, after54);
 }
 </code></pre></div>
-<p>TODO</p>
+<p>Again we get odd results…</p>
 <div class="example-wrap"><pre class="language-text"><code>before50=0, before54=0
 after50=1,  after54=1
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L257">(See the <strong>Complete Log</strong>)</a></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>PLIC Hart 0 S-Mode Interrupt Enable: Before (0xe0002080):
+<p>IRQ 20 is set correctly. But <strong>IRQ 21 is also set</strong>! (Pic below)</p>
+<p><em>Hmmm… Our writing seems to have leaked over to the next 32-bit word?</em></p>
+<p>Yeah we see the <strong>Leaky Write</strong> again when we set the <strong>Interrupt Enable</strong> Register…</p>
+<div class="example-wrap"><pre class="language-text"><code>// Before setting Interrupt Enable: Everything is 0
+PLIC Hart 0 S-Mode Interrupt Enable: Before (0xe0002080):
 0000  00 00 00 00 00 00 00 00                          ........        
+
+// Set Interrupt Enable for RISC-V IRQ 20 (Bit 20)
 up_enable_irq: extirq=20, addr=0xe0002080, val=0x1048576
+
+// After setting Interrupt Enable:
+// Bit 20 is also set in the next word!
 PLIC Hart 0 S-Mode Interrupt Enable: After (0xe0002080):
 0000  00 00 10 00 00 00 10 00                          ........  
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L194-L198">(See the <strong>Complete Log</strong>)</a></p>
+<p>Thus we have an unexplained problem of <strong>Leaky Writes</strong>, affecting the Interrupt Priority and Interrupt Enable Registers.</p>
+<p>Up next, we have more worries…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-title.jpg" alt="TODO" /></p>
 <h1 id="more-trouble-with-interrupt-claim"><a href="#more-trouble-with-interrupt-claim">8 More Trouble with Interrupt Claim</a></h1>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
+<p>We talked earlier about <strong>Handling Interrupts</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Claim Interrupt" /></p>
+<p>And how we fetch the <strong>RISC-V IRQ Number</strong> from the <strong>Interrupt Claim</strong> Register: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Dispatch the RISC-V Interrupt
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
@@ -367,20 +378,38 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   if (RISCV_IRQ_EXT == irq) {
 
     // Read the RISC-V IRQ Number
-    // and Claim the Interrupt.
-    uintptr_t val = getreg32(
-      JH7110_PLIC_CLAIM  // From PLIC Claim Register
-    );
+    // From PLIC Claim Register
+    // Which also Claims the Interrupt
+    uintptr_t val = getreg32(PLIC_CLAIM);
 </code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>    ////Begin
-    if (val == 0) {  // If Interrupt Claimed is 0...
-      // Check Pending Interrupts
-      uintptr_t ip0 = getreg32(0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-      uintptr_t ip1 = getreg32(0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-      if (ip0 &amp; (1 &lt;&lt; 20)) { val = 20; }  // UART3 Interrupt was fired
+<p><em>What happens when we run this?</em></p>
+<p>On Ox64 we see NuttX booting normally to the <strong>NuttX Shell</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
+nsh&gt;
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308">(See the <strong>Complete Log</strong>)</a></p>
+<p>When we <strong>press a key</strong> on the Serial Console (to trigger a UART Interrupt)…</p>
+<div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq:
+  claim=0
+</code></pre></div>
+<p>Our Interrupt Handler says that the <strong>Interrupt Claim Register is 0</strong>…</p>
+<p>Which means we can’t read the <strong>RISC-V IRQ Number</strong>!</p>
+<p><em>We have a Backup Plan right?</em></p>
+<p>Our Backup Plan is to figure out the IRQ Number by reading the <strong>Interrupt Pending</strong> Register…</p>
+<p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Pending Interrupts" /></p>
+<p>Like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>    // If Interrupt Claimed is 0...
+    if (val == 0) {
+      // Check the Pending Interrupts...
+      // Read PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+      uintptr_t ip0 = getreg32(0xe0001000);
+
+      // If Bit 20 is set...
+      if (ip0 &amp; (1 &lt;&lt; 20)) {
+        // Then UART3 Interrupt was fired (RISC-V IRQ 20)
+        val = 20;
+      }
     }
-    ////End
 
     // Compute the Actual NuttX IRQ Number:
     // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
@@ -390,14 +419,26 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   // Omitted: Call the Interrupt Handler
   // and Complete the Interrupt
 </code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>    // TODO: Can&#39;t Complete the Interrupt
-    // Clear the Pending Interrupts
+<p>Which tells the us the <strong>RISC-V IRQ Number</strong> yay!</p>
+<div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq:
+  irq=45
+</code></pre></div>
+<p>(<strong>NuttX IRQ 45</strong> means <strong>RISC-V IRQ 20</strong>)</p>
+<p>Don’t forget the <strong>clear the Pending Interrupts</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>    // Clear the Pending Interrupts
     putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
     putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
 
     // Dump the Pending Interrupts
     infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);
+
+    // Yep works great:
+    // PLIC Interrupt Pending (0xe0001000):
+    // 0000  00 00 00 00 00 00 00 00                          ........        
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>bl602_receive: rxdata=-1
+bl602_receive: rxdata=0x0
 </code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
@@ -684,8 +725,8 @@ After Claim (0xe0001000):
 <p><em>What if we copy this code into Ox64 PLIC?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// From arch/risc-v/src/c906/c906_irq.c
 /* Clear pendings in PLIC */
-uintptr_t val = getreg32(JH7110_PLIC_CLAIM);
-putreg32(val, JH7110_PLIC_CLAIM);
+uintptr_t val = getreg32(PLIC_CLAIM);
+putreg32(val, PLIC_CLAIM);
 </code></pre></div>
 <p>Still the same, Claim = 0…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: irq=25, claim=0
