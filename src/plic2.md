@@ -614,31 +614,30 @@ We activate our Backup Plan...
 
 # Backup Plan
 
-_We have a Backup Plan for Handling Interrupts?_
+_What's our Backup Plan for Handling Interrupts?_
 
 We can figure out the RISC-V IRQ Number by reading the __Interrupt Pending__ Register (pic above): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
-    // If Interrupt Claimed is 0...
-    if (val == 0) {
-      // Check the Pending Interrupts...
-      // Read PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-      uintptr_t ip0 = getreg32(0xe0001000);
+// If Interrupt Claimed is 0...
+if (val == 0) {
+  // Check the Pending Interrupts...
+  // Read PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+  uintptr_t ip0 = getreg32(0xe0001000);
 
-      // If Bit 20 is set...
-      if (ip0 & (1 << 20)) {
-        // Then UART3 Interrupt was fired (RISC-V IRQ 20)
-        val = 20;
-      }
-    }
-
-    // Compute the Actual NuttX IRQ Number:
-    // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
-    irq += val;
+  // If Bit 20 is set...
+  if (ip0 & (1 << 20)) {
+    // Then UART3 Interrupt was fired (RISC-V IRQ 20)
+    val = 20;
   }
+}
 
-  // Omitted: Call the Interrupt Handler
-  // and Complete the Interrupt
+// Compute the Actual NuttX IRQ Number:
+// RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+irq += val;
+
+// Omitted: Call the Interrupt Handler
+// and Complete the Interrupt
 ```
 
 Which tells us the correct __RISC-V IRQ Number__ for UART3 yay!
@@ -653,17 +652,17 @@ riscv_dispatch_irq:
 Don't forget to __clear the Pending Interrupts__: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
-  // Clear the Pending Interrupts
-  // TODO: Clear the Individual Bits instead of wiping out the Entire Register
-  putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-  putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+// Clear the Pending Interrupts
+// TODO: Clear the Individual Bits instead of wiping out the Entire Register
+putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
 
-  // Dump the Pending Interrupts
-  infodumpbuffer("PLIC Interrupt Pending", 0xe0001000, 2 * 4);
+// Dump the Pending Interrupts
+infodumpbuffer("PLIC Interrupt Pending", 0xe0001000, 2 * 4);
 
-  // Yep works great, Pending Interrupts have been cleared...
-  // PLIC Interrupt Pending (0xe0001000):
-  // 0000  00 00 00 00 00 00 00 00                          ........        
+// Yep works great, Pending Interrupts have been cleared...
+// PLIC Interrupt Pending (0xe0001000):
+// 0000  00 00 00 00 00 00 00 00                          ........        
 ```
 
 TODO
@@ -804,7 +803,7 @@ TODO
 
 BL808 UART is mostly identical to BL602 UART, so we ported the NuttX BL602 UART Driver to BL808.
 
-Here's the UART Driver ported to BL808: [bl602_serial.c] (https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c)
+Here's the UART Driver ported to BL808: [bl602_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c)
 
 We hardcoded the UART3 Base Address: [bl602_uart.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/hardware/bl602_uart.h#L30-L41)
 
