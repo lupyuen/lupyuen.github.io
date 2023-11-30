@@ -103,8 +103,8 @@
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers3a.jpg" alt="Disable Interrupts" /></p>
 <h2 id="disable-all-interrupts"><a href="#disable-all-interrupts">3.1 Disable all Interrupts</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L41-L61">jh7110_irq.c</a></p>
+<p>We begin by <strong>disabling all Interrupts</strong> in PLIC.</p>
+<p>Writing 0 to the <strong>Interrupt Enable</strong> Register (pic above) will disable all PLIC Interrupts: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L41-L61">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Platform-Level Interrupt Controller
 void up_irqinitialize(void) {
 
@@ -112,24 +112,32 @@ void up_irqinitialize(void) {
   up_irq_save();
 
   // Disable all External Interrupts
-  putreg32(0x0, JH7110_PLIC_ENABLE1);
-  putreg32(0x0, JH7110_PLIC_ENABLE2);
+  // PLIC_ENABLE1 is 0xE000_2080
+  // PLIC_ENABLE2 is 0xE000_2084
+  // putreg32(V, A) writes 32-bit value V to address A
+  putreg32(0x0, PLIC_ENABLE1);  // RISC-V IRQ 1  to 31
+  putreg32(0x0, PLIC_ENABLE2);  // RISC-V IRQ 32 to 63
 </code></pre></div>
-<p>TODO: How NuttX calls <strong>up_irqinitialize</strong></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_internal.h#L124-L132">(<strong>putreg32</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L34-L49">(<strong>PLIC_ENABLE</strong> and other PLIC Offsets are defined here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow">(NuttX calls <strong>up_irqinitialize</strong> at startup)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5a.jpg" alt="Clear Interrupts" /></p>
 <h2 id="clear-the-interrupts"><a href="#clear-the-interrupts">3.2 Clear the Interrupts</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L61-L68">jh7110_irq.c</a></p>
+<p>Next we <strong>Claim and Complete</strong> the Outstanding Interrupts (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L61-L68">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Claim and Complete the Outstanding Interrupts
+  // PLIC_CLAIM is 0xE020_1004
+  // getreg32(A) reads a 32-bit value from address A
   uintptr_t val = getreg32(PLIC_CLAIM);
   putreg32(val, PLIC_CLAIM);
 </code></pre></div>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_internal.h#L124-L132">(<strong>getreg32</strong> is defined here)</a></p>
+<p>(More about <strong>Claim and Complete</strong> in a while)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
 <h2 id="set-the-interrupt-priority"><a href="#set-the-interrupt-priority">3.3 Set the Interrupt Priority</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
+<p>We initialise the <strong>Interrupt Priority</strong> of all Interrupts to 1 (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set Priority for all External Interrupts to 1 (Lowest)
+  // NR_IRQS is 83
+  // PLIC_PRIORITY is 0xE000_0000
   for (int id = 1; id &lt;= NR_IRQS; id++) {
     putreg32(
       1,  // Value
@@ -137,6 +145,7 @@ void up_irqinitialize(void) {
     );
   }
 </code></pre></div>
+<p><em>Why set Interrupt Priority to 1?</em></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers2.jpg" alt="Set Interrupt Threshold" /></p>
 <h2 id="set-the-interrupt-threshold"><a href="#set-the-interrupt-threshold">3.4 Set the Interrupt Threshold</a></h2>
@@ -144,7 +153,7 @@ void up_irqinitialize(void) {
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L90-L114">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set Interrupt Threshold to 0
   // (Permits all External Interrupts)
-  putreg32(0, JH7110_PLIC_THRESHOLD);
+  putreg32(0, PLIC_THRESHOLD);
 
   // Attach the Common Interrupt Handlers
   // TODO: Show do this earlier
@@ -174,7 +183,7 @@ void up_enable_irq(int irq) {
     // Set the Interrupt Enable Bit for `extirq` in PLIC
     if (0 &lt;= extirq &amp;&amp; extirq &lt;= 63) {
       modifyreg32(
-        JH7110_PLIC_ENABLE1 + (4 * (extirq / 32)),  // Address
+        PLIC_ENABLE1 + (4 * (extirq / 32)),  // Address
         0,  // Clear Bits
         1 &lt;&lt; (extirq % 32)  // Set Bits
       );
