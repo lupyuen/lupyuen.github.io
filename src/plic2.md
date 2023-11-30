@@ -46,7 +46,7 @@ Each Interrupt is identified by a __RISC-V IRQ Number__.
 
 NuttX uses its own __NuttX IRQ Number__...
 
-- NuttX IRQ Number = 25 + RISC-V IRQ Number
+- NuttX IRQ = 25 + RISC-V IRQ
 
 That's because NuttX reserves a bunch of IRQ Numbers for Internal Use.
 
@@ -66,11 +66,15 @@ _What's the RISC-V Interrupt Number for Ox64 UART?_
 
 - Connected to the D0 Multimedia Core is the __UART3 Controller__ for Serial Console. (Pic below)
 
-TODO
+- According to the table below: RISC-V IRQ Number for UART3 is __IRQ_NUM_BASE + 4__
+
+- Also in the table: __IRQ_NUM_BASE__ is 16
+
+Therefore the __RISC-V IRQ Number__ for UART3 is __20__.
 
 Remember that NuttX uses its own __NuttX IRQ Number__...
 
-- NuttX IRQ Number = 25 + RISC-V IRQ Number
+- NuttX IRQ = 25 + RISC-V IRQ
 
 Thus later we'll see __NuttX IRQ Number 45__.
 
