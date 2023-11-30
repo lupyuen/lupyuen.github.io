@@ -784,7 +784,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/plic2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic2.md)
 
-# Appendix: NuttX UART Driver for Ox64
+# Appendix: NuttX UART Driver
 
 TODO
 
