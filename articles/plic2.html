@@ -447,11 +447,11 @@ bl602_receive: rxdata=0x0
 <p>The PLIC Code in this article was <strong>originally tested OK</strong> with…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/plic"><strong>Star64 JH7110</strong></a> in RISC-V Supervisor Mode</p>
+<p><a href="https://lupyuen.github.io/articles/plic"><strong>StarFive JH7110 SoC</strong></a> in RISC-V Supervisor Mode</p>
 <p>(Based on SiFive U74 Core)</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/c906/c906_irq.c"><strong>T-Head C906</strong></a> in RISC-V Machine Mode</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/c906/c906_irq.c"><strong>T-Head C906 Core</strong></a> in RISC-V Machine Mode</p>
 <p>(Ox64 BL808 runs on the C906 Core)</p>
 </li>
 <li>
@@ -514,7 +514,7 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 </li>
 <li>
 <p><em>Maybe the GCC Compiler didn’t generate the right code?</em></p>
-<p>We tested <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L487-L531"><strong>RISC-V Assembly</strong></a> with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L531-L608"><strong>DCACHE / ICACHE</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e76886a665fb9b8fe4f52c25e2f80877a62f415c/arch/risc-v/src/jh7110/bl602_serial.c#L446-L489"><strong>SFENCE</strong></a>.</p>
+<p>We wrote <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L487-L531"><strong>RISC-V Assembly</strong></a> with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L531-L608"><strong>DCACHE / ICACHE</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e76886a665fb9b8fe4f52c25e2f80877a62f415c/arch/risc-v/src/jh7110/bl602_serial.c#L446-L489"><strong>SFENCE</strong></a>.</p>
 <p>Still the same.</p>
 </li>
 <li>
