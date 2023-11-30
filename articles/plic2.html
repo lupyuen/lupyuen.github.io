@@ -415,11 +415,13 @@ putreg32(0, 0xe0001000);
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
 <h1 id="trouble-with-interrupt-priority"><a href="#trouble-with-interrupt-priority">7 Trouble with Interrupt Priority</a></h1>
 <p><em>I sense a twist in our story…</em></p>
-<p>Earlier we said that we initialise the <strong>Interrupt Priorities to 1</strong> at startup: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
+<p>Earlier we initialised the <strong>Interrupt Priorities to 1</strong> at startup: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Platform-Level Interrupt Controller
 void up_irqinitialize(void) {
   ...
   // Set Priority for all External Interrupts to 1 (Lowest)
+  // NR_IRQS is 83 (TODO: BL808 only supports 82 Peripheral Interrupts)
+  // PLIC_PRIORITY is 0xE000_0000
   for (int id = 1; id &lt;= NR_IRQS; id++) {
     putreg32(
       1,  // Value
