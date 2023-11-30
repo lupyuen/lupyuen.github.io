@@ -36,13 +36,25 @@ We begin our story...
 
 _What's this PLIC?_
 
-TODO: PLIC doc
+__Platform-Level Interrupt Controller__ (PLIC) is the hardware inside our BL808 SoC that controls the forwarding of __Peripheral Interrupts__ to our 64-bit RISC-V CPU. (Pic below)
+
+(Like Interrupts for UART, I2C, SPI, ...)
+
+Each Interrupt is identified by a __RISC-V IRQ Number__.
 
 (__IRQ__ means Interrupt Request Number)
 
-NuttX IRQ Number = 25 + RISC-V IRQ Number
+NuttX uses its own __NuttX IRQ Number__...
 
-NuttX reserves a bunch of IRQ Numbers for Internal Use. Hence the Offset of 25.
+- NuttX IRQ Number = 25 + RISC-V IRQ Number
+
+That's because NuttX reserves a bunch of IRQ Numbers for Internal Use.
+
+(Hence the Offset of 25)
+
+Let's find out the NuttX IRQ Number for UART Input / Output...
+
+TODO: PLIC doc
 
 ![BL808 Platform-Level Interrupt Controller](https://lupyuen.github.io/images/plic2-bl808a.jpg)
 
@@ -584,7 +596,7 @@ We activate our Backup Plan...
 
 _We have a Backup Plan for Handling Interrupts?_
 
-Our Backup Plan is to figure out the RISC-V IRQ Number by reading the __Interrupt Pending__ Register (pic above): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+We can figure out the RISC-V IRQ Number by reading the __Interrupt Pending__ Register (pic above): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
     // If Interrupt Claimed is 0...
@@ -667,7 +679,7 @@ The PLIC Code in this article was __originally tested OK__ with...
 
   (Which might explain our troubles)
 
-Today we're hitting 2 strange issues in the __BL808 (C906) PLIC__...
+Today we're hitting 2 Strange Issues in the __BL808 (C906) PLIC__...
 
 - __Leaky Writes__ to PLIC Registers
 
