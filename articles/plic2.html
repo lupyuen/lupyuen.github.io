@@ -540,28 +540,27 @@ nsh&gt;
 <p>We activate our Backup Plan…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Pending Interrupts" /></p>
 <h1 id="backup-plan"><a href="#backup-plan">9 Backup Plan</a></h1>
-<p><em>We have a Backup Plan for Handling Interrupts?</em></p>
+<p><em>What’s our Backup Plan for Handling Interrupts?</em></p>
 <p>We can figure out the RISC-V IRQ Number by reading the <strong>Interrupt Pending</strong> Register (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>    // If Interrupt Claimed is 0...
-    if (val == 0) {
-      // Check the Pending Interrupts...
-      // Read PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-      uintptr_t ip0 = getreg32(0xe0001000);
+<div class="example-wrap"><pre class="language-c"><code>// If Interrupt Claimed is 0...
+if (val == 0) {
+  // Check the Pending Interrupts...
+  // Read PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+  uintptr_t ip0 = getreg32(0xe0001000);
 
-      // If Bit 20 is set...
-      if (ip0 &amp; (1 &lt;&lt; 20)) {
-        // Then UART3 Interrupt was fired (RISC-V IRQ 20)
-        val = 20;
-      }
-    }
-
-    // Compute the Actual NuttX IRQ Number:
-    // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
-    irq += val;
+  // If Bit 20 is set...
+  if (ip0 &amp; (1 &lt;&lt; 20)) {
+    // Then UART3 Interrupt was fired (RISC-V IRQ 20)
+    val = 20;
   }
+}
 
-  // Omitted: Call the Interrupt Handler
-  // and Complete the Interrupt
+// Compute the Actual NuttX IRQ Number:
+// RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+irq += val;
+
+// Omitted: Call the Interrupt Handler
+// and Complete the Interrupt
 </code></pre></div>
 <p>Which tells us the correct <strong>RISC-V IRQ Number</strong> for UART3 yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq:
@@ -569,17 +568,17 @@ nsh&gt;
 </code></pre></div>
 <p>(<strong>NuttX IRQ 45</strong> means <strong>RISC-V IRQ 20</strong>)</p>
 <p>Don’t forget to <strong>clear the Pending Interrupts</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  // Clear the Pending Interrupts
-  // TODO: Clear the Individual Bits instead of wiping out the Entire Register
-  putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-  putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+<div class="example-wrap"><pre class="language-c"><code>// Clear the Pending Interrupts
+// TODO: Clear the Individual Bits instead of wiping out the Entire Register
+putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
 
-  // Dump the Pending Interrupts
-  infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);
+// Dump the Pending Interrupts
+infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);
 
-  // Yep works great, Pending Interrupts have been cleared...
-  // PLIC Interrupt Pending (0xe0001000):
-  // 0000  00 00 00 00 00 00 00 00                          ........        
+// Yep works great, Pending Interrupts have been cleared...
+// PLIC Interrupt Pending (0xe0001000):
+// 0000  00 00 00 00 00 00 00 00                          ........        
 </code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_receive: rxdata=-1
@@ -702,7 +701,7 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 <h1 id="appendix-nuttx-uart-driver"><a href="#appendix-nuttx-uart-driver">12 Appendix: NuttX UART Driver</a></h1>
 <p>TODO</p>
 <p>BL808 UART is mostly identical to BL602 UART, so we ported the NuttX BL602 UART Driver to BL808.</p>
-<p>Here’s the UART Driver ported to BL808: [bl602_serial.c] (https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c)</p>
+<p>Here’s the UART Driver ported to BL808: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c">bl602_serial.c</a></p>
 <p>We hardcoded the UART3 Base Address: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/hardware/bl602_uart.h#L30-L41">bl602_uart.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define BL602_UART0_BASE 0x30002000
 #define BL602_UART_BASE(n) (BL602_UART0_BASE)
