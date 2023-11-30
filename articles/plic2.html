@@ -114,7 +114,7 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE1);
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 </code></pre></div>
-<p>TODO</p>
+<p>TODO: How NuttX calls <strong>up_irqinitialize</strong></p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5a.jpg" alt="Clear Interrupts" /></p>
 <h2 id="clear-the-interrupts"><a href="#clear-the-interrupts">3.2 Clear the Interrupts</a></h2>
 <p>TODO</p>
@@ -222,6 +222,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   }
   // Up Next: Dispatch and Complete the Interrupt
 </code></pre></div>
+<p>TODO: How NuttX calls <strong>riscv_dispatch_irq</strong></p>
 <p>TODO: Why claim? Multiple CPUs</p>
 <h2 id="dispatch-the-interrupt"><a href="#dispatch-the-interrupt">6.2 Dispatch the Interrupt</a></h2>
 <p>TODO</p>
@@ -238,7 +239,9 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     regs = riscv_doirq(irq, regs);
   }
   // Up Next: Complete the Interrupt
-</code></pre></div><h2 id="complete-the-interrupt"><a href="#complete-the-interrupt">6.3 Complete the Interrupt</a></h2>
+</code></pre></div>
+<p>TODO: riscv_doirq</p>
+<h2 id="complete-the-interrupt"><a href="#complete-the-interrupt">6.3 Complete the Interrupt</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Omitted: Claim and Dispatch the Interrupt
@@ -281,16 +284,6 @@ putreg32(0, 0xe0001000);
 
 // TODO: Clear the Individual Bits instead of wiping out the Entire Register
 </code></pre></div>
-<p>TODO: All this tested with</p>
-<ul>
-<li>
-<p>Star64 JH7110 RISC-V Supervisor Mode (SiFive U74)</p>
-</li>
-<li>
-<p>C906 RISC-V Machine Mode</p>
-</li>
-</ul>
-<p>But not C906 RISC-V Supervisor Mode (BL808)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
 <h1 id="trouble-with-interrupt-priority"><a href="#trouble-with-interrupt-priority">7 Trouble with Interrupt Priority</a></h1>
 <p>TODO</p>
@@ -396,11 +389,10 @@ nsh&gt;
 <p>Our Interrupt Handler says that the <strong>Interrupt Claim Register is 0</strong>…</p>
 <p>Which means we can’t read the <strong>RISC-V IRQ Number</strong>!</p>
 <p>We activate our Backup Plan…</p>
+<p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Pending Interrupts" /></p>
 <h1 id="backup-plan"><a href="#backup-plan">9 Backup Plan</a></h1>
 <p><em>We have a Backup Plan for Handling Interrupts?</em></p>
-<p>Our Backup Plan is to figure out the IRQ Number by reading the <strong>Interrupt Pending</strong> Register…</p>
-<p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Pending Interrupts" /></p>
-<p>Like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
+<p>Our Backup Plan is to figure out the IRQ Number by reading the <strong>Interrupt Pending</strong> Register (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    // If Interrupt Claimed is 0...
     if (val == 0) {
       // Check the Pending Interrupts...
@@ -422,39 +414,25 @@ nsh&gt;
   // Omitted: Call the Interrupt Handler
   // and Complete the Interrupt
 </code></pre></div>
-<p>Which tells the us the <strong>RISC-V IRQ Number</strong> yay!</p>
+<p>Which tells us the <strong>RISC-V IRQ Number</strong> yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq:
   irq=45
 </code></pre></div>
 <p>(<strong>NuttX IRQ 45</strong> means <strong>RISC-V IRQ 20</strong>)</p>
 <p>Don’t forget the <strong>clear the Pending Interrupts</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>    // Clear the Pending Interrupts
-    putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-    putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+<div class="example-wrap"><pre class="language-c"><code>  // Clear the Pending Interrupts
+  putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+  putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
 
-    // Dump the Pending Interrupts
-    infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);
+  // Dump the Pending Interrupts
+  infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);
 
-    // Yep works great:
-    // PLIC Interrupt Pending (0xe0001000):
-    // 0000  00 00 00 00 00 00 00 00                          ........        
+  // Yep works great, Pending Interrupts have been cleared...
+  // PLIC Interrupt Pending (0xe0001000):
+  // 0000  00 00 00 00 00 00 00 00                          ........        
 </code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_receive: rxdata=-1
-bl602_receive: rxdata=0x0
-</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
-nsh&gt;
-
-riscv_dispatch_irq: claim=0
-
-riscv_dispatch_irq: irq=45, claim=0
-
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-
-bl602_receive: rxdata=-1
 bl602_receive: rxdata=0x0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308">(See the <strong>Complete Log</strong>)</a></p>
@@ -463,6 +441,16 @@ bl602_receive: rxdata=0x0
 <p><em>Feels like we’re wading into murky greyish brackish territory… Like Jaws meets Twilight Zone on the Beach…</em></p>
 <p>Yeah we said last time</p>
 <p>Sv39 and PLIC are officially speced</p>
+<p>TODO: All this tested with</p>
+<ul>
+<li>
+<p>Star64 JH7110 RISC-V Supervisor Mode (SiFive U74)</p>
+</li>
+<li>
+<p>C906 RISC-V Machine Mode</p>
+</li>
+</ul>
+<p>But not C906 RISC-V Supervisor Mode (BL808)</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>We’ll do much more for <strong>NuttX on Ox64 BL808</strong>, stay tuned for updates!</p>
