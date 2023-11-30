@@ -474,7 +474,7 @@ bl602_receive: rxdata=0x0
 <p>So many questions…</p>
 <ol>
 <li>
-<p><em>Any clues what’s causing this?</em></p>
+<p><em>Any clue what’s causing this?</em></p>
 <p>The <strong>Leaky Writes</strong> don’t seem to happen <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L298"><strong>before enabling the MMU</strong></a> (Memory Management Unit)…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Before enabling Memory Mgmt Unit...
 jh7110_mm_init: Test Interrupt Priority
@@ -489,7 +489,8 @@ jh7110_kernel_mppings: map I/O regions
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L116-L118">(See the <strong>Complete Log</strong>)</a></p>
 <p>So it might be a problem with our MMU Settings.</p>
-<p><a href="https://lupyuen.github.io/articles/mmu">(More about the <strong>Memory Management Unit</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mmu">(More about <strong>Memory Management Unit</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic">(<strong>U-Boot Bootloader</strong> doesn’t have Leaky Writes)</a></p>
 </li>
 <li>
 <p>TODO: C906 MMU</p>
@@ -499,16 +500,22 @@ jh7110_kernel_mppings: map I/O regions
 <p>TODO: Level 1?</p>
 </li>
 <li>
-<p><em>Something special about T-Head C906 PLIC?</em></p>
-<p>From this <a href="https://lore.kernel.org/lkml/CAJF2gTS8Z+6Ewy0D5+0X_h2Jz4BqsJp7wEC5F0iNaDsSpiE2aw@mail.gmail.com/">Linux Patch</a></p>
+<p>TODO: GCC Assembly?</p>
+<p>SFENCE</p>
+</li>
+<li>
+<p><em>Something special about C906 PLIC?</em></p>
+<p>According to the <a href="https://lore.kernel.org/lkml/CAJF2gTS8Z+6Ewy0D5+0X_h2Jz4BqsJp7wEC5F0iNaDsSpiE2aw@mail.gmail.com/"><strong>Linux PLIC Driver</strong></a>…</p>
 <blockquote>
 <p>“The T-HEAD C9xx SoC implements a modified/custom T-HEAD PLIC
 specification which will mask current IRQ upon read to CLAIM register
-and will unmask the IRQ upon write to CLAIM register. The
-thead,c900-plic compatible string represents the custom T-HEAD PLIC
-specification.”</p>
+and will unmask the IRQ upon write to CLAIM register”</p>
 </blockquote>
-<p>“thead,c900-plic” is implemented in Linux here: <a href="https://github.com/torvalds/linux/blob/master/drivers/irqchip/irq-sifive-plic.c#L574-L582">irq-sifive-plic.c</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic">(More about <strong>C906 PLIC</strong>)</a></p>
+</li>
+<li>
+<p><em>Maybe our problem is Leaky Reads? Not Leaky Writes?</em></p>
+<p>Hmmm… Possibly!</p>
 </li>
 </ol>
 <p>TODO</p>
