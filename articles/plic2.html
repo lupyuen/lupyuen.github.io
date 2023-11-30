@@ -83,7 +83,7 @@
 <li><a href="#trouble-with-interrupt-priority">7 Trouble with Interrupt Priority</a><ul></ul></li>
 <li><a href="#more-trouble-with-interrupt-claim">8 More Trouble with Interrupt Claim</a><ul></ul></li>
 <li><a href="#backup-plan">9 Backup Plan</a><ul></ul></li>
-<li><a href="#t-head-vs-sifive">10 T-Head vs SiFive</a><ul></ul></li>
+<li><a href="#all-things-considered">10 All Things Considered</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-nuttx-uart-driver-for-ox64">12 Appendix: NuttX UART Driver for Ox64</a><ul></ul></li>
 <li><a href="#appendix-uart-interrupt-for-ox64">13 Appendix: UART Interrupt for Ox64</a><ul></ul></li>
@@ -184,8 +184,8 @@ void up_enable_irq(int irq) {
   }
 }
 </code></pre></div>
-<p>TODO: We’re halfway through! Steps 1, 2 and 3</p>
-<p>Before the complete the rest, let’s talk about Harts…</p>
+<p>TODO: We’re halfway through our Grand Plan of <strong>PLIC Interrupts</strong>! (Steps 1, 2 and 3, pic below)</p>
+<p>We pause a moment to talk about Harts…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Registers for Platform-Level Interrupt Controller" /></p>
 <h1 id="hart-0-supervisor-mode"><a href="#hart-0-supervisor-mode">5 Hart 0, Supervisor Mode</a></h1>
 <p><em>The pic above: Why does it say “Hart 0, Supervisor Mode”?</em></p>
@@ -438,21 +438,29 @@ nsh&gt;
 bl602_receive: rxdata=0x0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308">(See the <strong>Complete Log</strong>)</a></p>
-<h1 id="t-head-vs-sifive"><a href="#t-head-vs-sifive">10 T-Head vs SiFive</a></h1>
-<p>TODO</p>
-<p><em>Feels like we’re wading into murky greyish brackish territory… Like Jaws meets Twilight Zone on the Beach…</em></p>
-<p>Yeah we said last time</p>
-<p>Sv39 and PLIC are officially speced</p>
-<p>TODO: All this tested with</p>
+<h1 id="all-things-considered"><a href="#all-things-considered">10 All Things Considered</a></h1>
+<p><em>Feels like we’re wading into murky greyish territory… Like Jaws meets Twilight Zone on the Beach?</em></p>
+<p>Yeah we said this <a href="https://lupyuen.github.io/articles/ox2#begin-with-star64-nuttx"><strong>last time</strong></a> and it’s happening now…</p>
+<blockquote>
+<p>“If RISC-V ain’t RISC-V on SiFive vs T-Head: We’ll find out!”</p>
+</blockquote>
+<p>The PLIC Code in this article was <strong>originally tested OK</strong> with…</p>
 <ul>
 <li>
-<p>Star64 JH7110 RISC-V Supervisor Mode (SiFive U74)</p>
+<p><strong>Star64 JH7110</strong> in RISC-V Supervisor Mode</p>
+<p>(Based on SiFive U74 Core)</p>
 </li>
 <li>
-<p>C906 RISC-V Machine Mode</p>
+<p><strong>T-Head C906</strong> in RISC-V Machine Mode</p>
+<p>(Ox64 BL808 runs on the C906 Core)</p>
+</li>
+<li>
+<p>But NOT <strong>T-Head C906</strong> in <strong>RISC-V Supervisor Mode</strong></p>
+<p>(Which might explain our troubles)</p>
 </li>
 </ul>
-<p>But not C906 RISC-V Supervisor Mode (BL808)</p>
+<p>TODO</p>
+<p>Sv39 and PLIC are officially speced</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>We’ll do much more for <strong>NuttX on Ox64 BL808</strong>, stay tuned for updates!</p>
