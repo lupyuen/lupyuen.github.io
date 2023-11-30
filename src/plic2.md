@@ -293,9 +293,11 @@ TODO
 
 ## Claim the Interrupt
 
-TODO
+_How will we know which RISC-V Interrupt has been fired?_
 
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+That's why we have the __Interrupt Claim__ Register! (Pic above)
+
+We read the Interrupt Claim Register to get the __RISC-V IRQ Number__ that has been fired: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
 // Dispatch the RISC-V Interrupt
@@ -319,6 +321,14 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   }
   // Up Next: Dispatch and Complete the Interrupt
 ```
+
+_What exactly are we "claiming"?_
+
+When we [__Claim an Interrupt__](https://five-embeddev.com/riscv-isa-manual/latest/plic.html#interrupt-claims) (by reading the Interrupt Claim Register)...
+
+We're telling the PLIC: "Yes we acknowledge the Interrupt, but we're not done yet!"
+
+In a while we shall Complete the Interrupt.
 
 TODO: How NuttX calls __riscv_dispatch_irq__
 
