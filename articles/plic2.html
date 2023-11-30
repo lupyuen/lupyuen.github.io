@@ -335,9 +335,9 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p><em>What exactly are we “claiming”?</em></p>
 <p>When we <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#interrupt-claims"><strong>Claim an Interrupt</strong></a> (by reading the Interrupt Claim Register)…</p>
 <p>We’re telling the PLIC: “Yes we acknowledge the Interrupt, but we’re not done yet!”</p>
-<p>In a while we shall Complete the Interrupt.</p>
+<p>In a while we shall Complete the Interrupt. (To tell PLIC we’re done)</p>
+<p><em>Who calls the code above?</em></p>
 <p>TODO: How NuttX calls <strong>riscv_dispatch_irq</strong></p>
-<p>TODO: Why claim? Multiple CPUs</p>
 <h2 id="dispatch-the-interrupt"><a href="#dispatch-the-interrupt">6.2 Dispatch the Interrupt</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
