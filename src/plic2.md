@@ -521,11 +521,11 @@ Yeah we said this [__last time__](https://lupyuen.github.io/articles/ox2#begin-w
 
 The PLIC Code in this article was __originally tested OK__ with...
 
-- [__Star64 JH7110__](https://lupyuen.github.io/articles/plic) in RISC-V Supervisor Mode
+- [__StarFive JH7110 SoC__](https://lupyuen.github.io/articles/plic) in RISC-V Supervisor Mode
 
   (Based on SiFive U74 Core)
 
-- [__T-Head C906__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/c906/c906_irq.c) in RISC-V Machine Mode
+- [__T-Head C906 Core__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/c906/c906_irq.c) in RISC-V Machine Mode
 
   (Ox64 BL808 runs on the C906 Core)
 
@@ -596,7 +596,7 @@ So many questions...
 
 1.  _Maybe the GCC Compiler didn't generate the right code?_
 
-    We tested [__RISC-V Assembly__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L487-L531) with [__DCACHE / ICACHE__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L531-L608) and [__SFENCE__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e76886a665fb9b8fe4f52c25e2f80877a62f415c/arch/risc-v/src/jh7110/bl602_serial.c#L446-L489).
+    We wrote [__RISC-V Assembly__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L487-L531) with [__DCACHE / ICACHE__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L531-L608) and [__SFENCE__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e76886a665fb9b8fe4f52c25e2f80877a62f415c/arch/risc-v/src/jh7110/bl602_serial.c#L446-L489).
 
     Still the same.
 
