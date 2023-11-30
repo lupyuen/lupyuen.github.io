@@ -4,11 +4,29 @@
 
 ![TODO](https://lupyuen.github.io/images/plic2-title.jpg)
 
-[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) (Real-Time Operating System) for [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit RISC-V SBC (pic below)...
+> _"It’s time for the little red chicken’s bedtime story - and a reminder from Papa to try not to interrupt. But the chicken can’t help herself!"_
 
-TODO
+> — ["Interrupting Chicken"](https://share.libbyapp.com/title/4190211)
 
-Use NuttX to explain how we handle Interrupts on a 64-bit RISC-V SoC
+Our Story today is all about __RISC-V Interrupts__ on the tiny [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) Single-Board Computer (pic below)...
+
+- What's inside the __Platform-Level Interrupt Controller__ (PLIC)
+
+- __Setting up the PLIC__ at startup
+
+- __Enabling the PLIC Interrupt__ for UART Input
+
+- __Handling PLIC Interrupts__ for UART
+
+We'll walk through the steps with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
+
+Though we'll hit a bumpy ride with __NuttX on Ox64__...
+
+- __Leaky Writes__ seem to be affecting adjacent PLIC Registers
+
+- __Interrupt Claim__ doesn't seem to be working right
+
+We begin our story...
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
 
@@ -16,7 +34,7 @@ Use NuttX to explain how we handle Interrupts on a 64-bit RISC-V SoC
 
 _What's this PLIC?_
 
-TODO
+TODO: PLIC doc
 
 ![BL808 Platform-Level Interrupt Controller](https://lupyuen.github.io/images/plic2-bl808a.jpg)
 
@@ -111,9 +129,7 @@ _Why set Interrupt Priority to 1?_
 
 ## Set the Interrupt Threshold
 
-TODO
-
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L90-L114)
+Finally we set the PLIC __Interrupt Threshold__ to 0 (pic above): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L90-L114)
 
 ```c
   // Set Interrupt Threshold to 0
@@ -130,11 +146,21 @@ TODO
 }
 ```
 
-[(__riscv_exception_attach__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L89-L142)
+[(__riscv_exception_attach__ is here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L89-L142)
 
-[(__up_irq_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L208-L223)
+[(__up_irq_enable__ is here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L208-L223)
 
-TODO
+_Why set Interrupt Threshold to 0?_
+
+- Earlier we set the __Interrupt Priority to 1__ for All Interrupts
+
+- Since __Interrupt Priority > Interrupt Threshold__ (0)...
+
+  All Interrupts will be __allowed to fire__
+
+- Remember: Interrupts won't actually fire until we __enable them later__ (in PLIC)
+
+And we're done initing the PLIC at startup!
 
 ![Enable Interrupt](https://lupyuen.github.io/images/plic2-registers3.jpg)
 
