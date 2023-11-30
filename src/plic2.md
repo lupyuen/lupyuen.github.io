@@ -8,6 +8,8 @@
 
 TODO
 
+Use NuttX to explain how we handle Interrupts on a 64-bit RISC-V SoC
+
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
 
 # Platform Level Interrupt Controller
@@ -171,66 +173,32 @@ TODO
 [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
-// Handle the RISC-V Interrupt
-void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
+// Check the Pending Interrupts...
 
-  // Compute the (Interim) NuttX IRQ Number
-  int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
+// Read PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+uintptr_t ip0 = getreg32(0xe0001000);
 
-  // If this is an External Interrupt...
-  if (RISCV_IRQ_EXT == irq) {
+// Read PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+uintptr_t ip1 = getreg32(0xe0001004);
 
-    // Read the RISC-V IRQ Number
-    // and Claim the Interrupt.
-    uintptr_t val = getreg32(
-      JH7110_PLIC_CLAIM  // From PLIC Claim Register
-    );
-
-    ////Begin
-    if (val == 0) {  // If Interrupt Claimed is 0...
-      // Check Pending Interrupts
-      uintptr_t ip0 = getreg32(0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-      uintptr_t ip1 = getreg32(0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-      // if (ip1 & (1 << 20)) { val = 52; }  // EMAC
-      if (ip0 & (1 << 20)) { val = 20; }  // UART3 Interrupt was fired
-    }
-    ////End
-
-    // Compute the Actual NuttX IRQ Number:
-    // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
-    irq += val;
-  }
-
-  // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
-  // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
-
-  // If the RISC-V IRQ Number is valid (non-zero)...
-  if (RISCV_IRQ_EXT != irq) {
-
-    // Call the Interrupt Handler
-    regs = riscv_doirq(irq, regs);
-  }
-
-  // If this is an External Interrupt...
-  if (RISCV_IRQ_EXT <= irq) {
-
-    // Compute the RISC-V IRQ Number
-    // and Complete the Interrupt.
-    putreg32(
-      irq - RISCV_IRQ_EXT,  // RISC-V IRQ Number (RISCV_IRQ_EXT = 25)
-      JH7110_PLIC_CLAIM     // PLIC Claim (Complete) Register
-    );
-
-    ////Begin
-    // Clear Pending Interrupts
-    putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-    putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-    ////End
-  }
-
-  // Return the Registers to the Caller
-  return regs;
+// If Bit 20 of `ip0` is set...
+if (ip0 & (1 << 20)) {
+  // Then UART3 Interrupt was fired (RISC-V IRQ 20)
+  val = 20;
 }
+```
+
+TODO
+
+```c
+// Clear the Pending Interrupts...
+// TODO: Clear the Individual Bits instead of wiping out the Entire Register
+
+// Clear PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+putreg32(0, 0xe0001000);
+
+// Clear PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+putreg32(0, 0xe0001004);
 ```
 
 TODO
@@ -489,13 +457,16 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     uintptr_t val = getreg32(
       JH7110_PLIC_CLAIM  // From PLIC Claim Register
     );
+```
 
+TODO
+
+```c
     ////Begin
     if (val == 0) {  // If Interrupt Claimed is 0...
       // Check Pending Interrupts
       uintptr_t ip0 = getreg32(0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
       uintptr_t ip1 = getreg32(0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-      // if (ip1 & (1 << 20)) { val = 52; }  // EMAC
       if (ip0 & (1 << 20)) { val = 20; }  // UART3 Interrupt was fired
     }
     ////End
@@ -505,57 +476,37 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     irq += val;
   }
 
-  // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
-  // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+  // Omitted: Call the Interrupt Handler
+  // and Complete the Interrupt
+```
 
-  // If the RISC-V IRQ Number is valid (non-zero)...
-  if (RISCV_IRQ_EXT != irq) {
+TODO
 
-    // Call the Interrupt Handler
-    regs = riscv_doirq(irq, regs);
-  }
-
-  // If this is an External Interrupt...
-  if (RISCV_IRQ_EXT <= irq) {
-
-    // Compute the RISC-V IRQ Number
-    // and Complete the Interrupt.
-    putreg32(
-      irq - RISCV_IRQ_EXT,  // RISC-V IRQ Number (RISCV_IRQ_EXT = 25)
-      JH7110_PLIC_CLAIM     // PLIC Claim (Complete) Register
-    );
-
-    ////Begin
-    // Clear Pending Interrupts
+```c
+    // TODO: Can't Complete the Interrupt
+    // Clear the Pending Interrupts
     putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
     putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-    ////End
-  }
 
-  // Return the Registers to the Caller
-  return regs;
-}
+    // Dump the Pending Interrupts
+    infodumpbuffer("PLIC Interrupt Pending", 0xe0001000, 2 * 4);
 ```
 
 TODO
 
 ```text
 NuttShell (NSH) NuttX-12.0.3
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
+nsh>
+
+riscv_dispatch_irq: claim=0
+
+riscv_dispatch_irq: irq=45, claim=0
+
 PLIC Interrupt Pending (0xe0001000):
 0000  00 00 00 00 00 00 00 00                          ........        
-nsh> riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-nx_start: CPU0: Beginning Idle Loop
+
 bl602_receive: rxdata=-1
 bl602_receive: rxdata=0x0
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........  
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308)
