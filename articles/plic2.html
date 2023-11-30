@@ -222,6 +222,8 @@ void up_irqinitialize(void) {
 <p>And we’re done initing the PLIC at startup!</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers3.jpg" alt="Enable Interrupt" /></p>
 <h1 id="enable-the-interrupt"><a href="#enable-the-interrupt">4 Enable the Interrupt</a></h1>
+<p><em>Our Platform-Level Interrupt Controller (PLIC) is all ready for action…</em></p>
+<p><em>How will we enable Interrupts in PLIC?</em></p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L158-L208">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the NuttX IRQ specified by `irq`
@@ -248,6 +250,7 @@ void up_enable_irq(int irq) {
   }
 }
 </code></pre></div>
+<p><em>Who calls up_enable_irq?</em></p>
 <p>TODO: We’re halfway through our Grand Plan of <strong>PLIC Interrupts</strong>! (Steps 1, 2 and 3, pic below)</p>
 <p>We pause a moment to talk about Harts…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Registers for Platform-Level Interrupt Controller" /></p>
