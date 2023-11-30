@@ -10,6 +10,16 @@ TODO
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
 
+# Platform Level Interrupt Controller
+
+_What's this PLIC?_
+
+TODO
+
+# UART Interrupt
+
+TODO
+
 # Initialise the Interrupts
 
 TODO
@@ -129,6 +139,26 @@ void up_enable_irq(int irq) {
   }
 }
 ```
+
+TODO: We're halfway through!
+
+![Registers for Platform-Level Interrupt Controller](https://lupyuen.github.io/images/plic2-registers.jpg)
+
+# Hart 0, Supervisor Mode
+
+_The pic above: Why does it say "Hart 0, Supervisor Mode"?_
+
+TODO
+
+![BL808](https://lupyuen.github.io/images/plic2-bl808a.jpg)
+
+TODO
+
+![JH7110](https://lupyuen.github.io/images/plic2-bl808b.jpg)
+
+TODO
+
+![BL808 vs JH7110](https://lupyuen.github.io/images/plic2-bl808.jpg)
 
 TODO
 
@@ -363,9 +393,208 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
 TODO
 
-![Registers for Platform-Level Interrupt Controller](https://lupyuen.github.io/images/plic2-registers.jpg)
+![Set Interrupt Priority](https://lupyuen.github.io/images/plic2-registers1.jpg)
 
-# NuttX UART Driver for Ox64
+# Trouble with Interrupt Priority
+
+TODO
+
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90)
+
+```c
+  // Set Priority for all External Interrupts to 1 (Lowest)
+  for (int id = 1; id <= NR_IRQS; id++) {
+    putreg32(
+      1,  // Value
+      (uintptr_t)(JH7110_PLIC_PRIORITY + 4 * id)  // Address
+    );
+  }
+
+  // Dump the Interrupt Priorities
+  infodumpbuffer("PLIC Interrupt Priority: After", 0xe0000004, 0x50 * 4);
+```
+
+TODO
+
+```text
+PLIC Interrupt Priority: After (0xe0000004):
+0000  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0010  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0020  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0030  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L150-L170)
+
+TODO
+
+[bl602_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L444-L465)
+
+```c
+// Test the setting of PLIC Interrupt Priority
+void test_interrupt_priority(void) {
+  // Read the values before setting Interrupt Priority
+  uint32_t before50 = *(volatile uint32_t *) 0xe0000050UL;
+  uint32_t before54 = *(volatile uint32_t *) 0xe0000054UL;
+
+  // Set the Interrupt Priority
+  // for 50 but NOT 54
+  *(volatile uint32_t *) 0xe0000050UL = 1;
+
+  // Read the values after setting Interrupt Priority
+  uint32_t after50 = *(volatile uint32_t *) 0xe0000050UL;
+  uint32_t after54 = *(volatile uint32_t *) 0xe0000054UL;
+
+  // Dump before and after values:
+  // before50=0 before54=0
+  // after50=1  after54=1
+  // Why after54=1 ???
+  _info("before50=%u, before54=%u, after50=%u, after54=%u\n",
+    before50, before54, after50, after54);
+}
+```
+
+TODO
+
+```text
+PLIC Hart 0 S-Mode Interrupt Enable: Before (0xe0002080):
+0000  00 00 00 00 00 00 00 00                          ........        
+up_enable_irq: extirq=20, addr=0xe0002080, val=0x1048576
+PLIC Hart 0 S-Mode Interrupt Enable: After (0xe0002080):
+0000  00 00 10 00 00 00 10 00                          ........  
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L194-L198)
+
+![TODO](https://lupyuen.github.io/images/plic2-title.jpg)
+
+# More Trouble with Interrupt Claim
+
+TODO
+
+[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+
+```c
+// Dispatch the RISC-V Interrupt
+void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
+
+  // Compute the (Interim) NuttX IRQ Number
+  int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
+
+  // If this is an External Interrupt...
+  if (RISCV_IRQ_EXT == irq) {
+
+    // Read the RISC-V IRQ Number
+    // and Claim the Interrupt.
+    uintptr_t val = getreg32(
+      JH7110_PLIC_CLAIM  // From PLIC Claim Register
+    );
+
+    ////Begin
+    if (val == 0) {  // If Interrupt Claimed is 0...
+      // Check Pending Interrupts
+      uintptr_t ip0 = getreg32(0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+      uintptr_t ip1 = getreg32(0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+      // if (ip1 & (1 << 20)) { val = 52; }  // EMAC
+      if (ip0 & (1 << 20)) { val = 20; }  // UART3 Interrupt was fired
+    }
+    ////End
+
+    // Compute the Actual NuttX IRQ Number:
+    // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+    irq += val;
+  }
+
+  // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
+  // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+
+  // If the RISC-V IRQ Number is valid (non-zero)...
+  if (RISCV_IRQ_EXT != irq) {
+
+    // Call the Interrupt Handler
+    regs = riscv_doirq(irq, regs);
+  }
+
+  // If this is an External Interrupt...
+  if (RISCV_IRQ_EXT <= irq) {
+
+    // Compute the RISC-V IRQ Number
+    // and Complete the Interrupt.
+    putreg32(
+      irq - RISCV_IRQ_EXT,  // RISC-V IRQ Number (RISCV_IRQ_EXT = 25)
+      JH7110_PLIC_CLAIM     // PLIC Claim (Complete) Register
+    );
+
+    ////Begin
+    // Clear Pending Interrupts
+    putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+    putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+    ////End
+  }
+
+  // Return the Registers to the Caller
+  return regs;
+}
+```
+
+TODO
+
+```text
+NuttShell (NSH) NuttX-12.0.3
+riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
+PLIC Interrupt Pending (0xe0001000):
+0000  00 00 00 00 00 00 00 00                          ........        
+nsh> riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
+PLIC Interrupt Pending (0xe0001000):
+0000  00 00 00 00 00 00 00 00                          ........        
+riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
+PLIC Interrupt Pending (0xe0001000):
+0000  00 00 00 00 00 00 00 00                          ........        
+nx_start: CPU0: Beginning Idle Loop
+bl602_receive: rxdata=-1
+bl602_receive: rxdata=0x0
+riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
+PLIC Interrupt Pending (0xe0001000):
+0000  00 00 00 00 00 00 00 00                          ........  
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308)
+
+# T-Head vs SiFive
+
+TODO
+
+_Feels like we're wading into murky greyish brackish territory... Like Jaws meets Twilight Zone on the Beach..._
+
+Yeah we said last time
+
+Sv39 and PLIC are officially speced
+
+# What's Next
+
+TODO
+
+We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
+
+-   [__My Other Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
+
+-   [__Older Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/plic2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic2.md)
+
+# Appendix: NuttX UART Driver for Ox64
 
 TODO
 
@@ -401,19 +630,9 @@ TODO: /dev/ttyS0 is missing
 
 TODO: Enable UART Interrupts
 
-# UART Interrupt for Ox64
+# Appendix: UART Interrupt for Ox64
 
 TODO
-
-![BL808](https://lupyuen.github.io/images/plic2-bl808a.jpg)
-
-TODO
-
-![JH7110](https://lupyuen.github.io/images/plic2-bl808b.jpg)
-
-TODO
-
-![BL808 vs JH7110](https://lupyuen.github.io/images/plic2-bl808.jpg)
 
 Let's fix the UART Interrupts for NuttX on Ox64 BL808!
 
@@ -752,7 +971,7 @@ TODO: Key press not read correctly
 
 TODO: Why is up_irqinitialize not setting Interrupt Priority properly? Signed arithmetic? Or delay?
 
-# Strangeness in Ox64 PLIC
+# Appendix: Strangeness in Ox64 PLIC
 
 TODO
 
@@ -995,39 +1214,5 @@ jh7110_mm_init: Test Interrupt Priority
 test_interrupt_priority: before1=0, before2=0, after1=1, after2=0
 jh7110_mm_init: Enable MMU
 ```
-
-# T-Head vs SiFive
-
-TODO
-
-_Feels like we're wading into murky greyish brackish territory... Like Jaws meets Twilight Zone on the Beach..._
-
-Yeah we said last time
-
-Sv39 and PLIC are officially speced
-
-# What's Next
-
-TODO
-
-We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
-
--   [__My Other Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
-
--   [__Older Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/plic2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic2.md)
 
 ![TODO](https://lupyuen.github.io/images/plic2-draw.jpg)
