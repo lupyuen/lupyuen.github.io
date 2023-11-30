@@ -438,6 +438,7 @@ nsh&gt;
 bl602_receive: rxdata=0x0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308">(See the <strong>Complete Log</strong>)</a></p>
+<p>TODO: Screenshot</p>
 <h1 id="all-things-considered"><a href="#all-things-considered">10 All Things Considered</a></h1>
 <p><em>Feels like we’re wading into murky greyish territory… Like Jaws meets Twilight Zone on the Beach?</em></p>
 <p>Yeah we said this <a href="https://lupyuen.github.io/articles/ox2#begin-with-star64-nuttx"><strong>last time</strong></a> and it’s happening now…</p>
@@ -459,7 +460,7 @@ bl602_receive: rxdata=0x0
 <p>(Which might explain our troubles)</p>
 </li>
 </ul>
-<p>Today we’re hitting 2 strange issues on <strong>Ox64 BL808 PLIC</strong>…</p>
+<p>Today we’re hitting 2 strange issues in the <strong>BL808 (C906) PLIC</strong>…</p>
 <ul>
 <li>
 <p><strong>Leaky Writes</strong> to PLIC Registers</p>
@@ -471,6 +472,32 @@ bl602_receive: rxdata=0x0
 </li>
 </ul>
 <p>So many questions…</p>
+<ol>
+<li>
+<p><em>Any clues what’s causing this?</em></p>
+<p>The <strong>Leaky Writes</strong> don’t seem to happen <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L298"><strong>before enabling the MMU</strong></a> (Memory Management Unit)…</p>
+<div class="example-wrap"><pre class="language-text"><code>// Before enabling Memory Mgmt Unit...
+jh7110_mm_init: Test Interrupt Priority
+
+// No Leaky Writes!
+test_interrupt_priority:
+  before50=0, before54=0
+  after50=1,  after54=0
+
+// Leaky Writes after enabling Memory Mgmt Unit
+jh7110_kernel_mppings: map I/O regions
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L116-L118">(See the <strong>Complete Log</strong>)</a></p>
+<p>So it might be a problem with our MMU Settings.</p>
+<p><a href="https://lupyuen.github.io/articles/mmu">(More about the <strong>Memory Management Unit</strong>)</a></p>
+</li>
+<li>
+<p>TODO: C906 MMU</p>
+</li>
+<li>
+<p>TODO: Level 1?</p>
+</li>
+</ol>
 <p>TODO</p>
 <p>Sv39 and PLIC are officially speced</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
