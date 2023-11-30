@@ -2,7 +2,7 @@
 
 📝 _7 Dec 2023_
 
-![TODO](https://lupyuen.github.io/images/plic2-registers.jpg)
+![Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/plic2-registers.jpg)
 
 > _"It’s time for the little red chicken’s bedtime story - and a reminder from Papa to try not to interrupt. But the chicken can’t help herself!"_
 
@@ -18,7 +18,9 @@ Our Story today is all about __RISC-V Interrupts__ on the tiny [__Pine64 Ox64 BL
 
 - __Handling PLIC Interrupts__ for UART
 
-We'll walk through the steps with a simpler operating system: [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
+  [(Based on __Bouffalo Lab BL808 SoC__)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+
+We'll walk through the steps with a simple barebones operating system: [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
 
 Though we'll hit a bumpy journey with our work-in-progress __NuttX on Ox64__...
 
@@ -428,7 +430,7 @@ One again, we don't need really need this. We'll stash this as our Backup Plan i
 
 # Trouble with Interrupt Priority
 
-_There's a twist in our story?_
+_I sense a twist in our story..._
 
 Earlier we said that we initialise the __Interrupt Priorities to 1__ at startup: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90)
 
@@ -525,11 +527,9 @@ Thus we have an unexplained problem of __Leaky Writes__, affecting the Interrupt
 
 Up Next: More worries...
 
-![TODO](https://lupyuen.github.io/images/plic2-title.jpg)
+![Leaky Write for PLIC Interrupt Priority](https://lupyuen.github.io/images/plic2-title.jpg)
 
 # More Trouble with Interrupt Claim
-
-TODO
 
 We talked earlier about __Handling Interrupts__...
 
@@ -550,6 +550,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     // Read the RISC-V IRQ Number
     // From PLIC Claim Register
     // Which also Claims the Interrupt
+    // PLIC_CLAIM is 0xE020_1004
     uintptr_t val = getreg32(PLIC_CLAIM);
 ```
 
@@ -583,7 +584,7 @@ We activate our Backup Plan...
 
 _We have a Backup Plan for Handling Interrupts?_
 
-Our Backup Plan is to figure out the IRQ Number by reading the __Interrupt Pending__ Register (pic above): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+Our Backup Plan is to figure out the RISC-V IRQ Number by reading the __Interrupt Pending__ Register (pic above): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
     // If Interrupt Claimed is 0...
@@ -608,7 +609,7 @@ Our Backup Plan is to figure out the IRQ Number by reading the __Interrupt Pendi
   // and Complete the Interrupt
 ```
 
-Which tells us the __RISC-V IRQ Number__ yay!
+Which tells us the correct __RISC-V IRQ Number__ yay!
 
 ```text
 riscv_dispatch_irq:
@@ -617,10 +618,11 @@ riscv_dispatch_irq:
 
 (__NuttX IRQ 45__ means __RISC-V IRQ 20__)
 
-Don't forget the __clear the Pending Interrupts__: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+Don't forget to __clear the Pending Interrupts__: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
   // Clear the Pending Interrupts
+  // TODO: Clear the Individual Bits instead of wiping out the Entire Register
   putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
   putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
 
