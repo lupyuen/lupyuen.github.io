@@ -306,7 +306,7 @@ static int bl602_attach(struct uart_dev_s *dev) {
 <p><em>What happens when we press a key on the Serial Console? (Pic above)</em></p>
 <p><em>How will PLIC handle the UART Interrupt?</em></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Claim Interrupt" /></p>
+<p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Interrupt Claim Register" /></p>
 <h2 id="claim-the-interrupt"><a href="#claim-the-interrupt">6.1 Claim the Interrupt</a></h2>
 <p><em>How will we know which RISC-V Interrupt has been fired?</em></p>
 <p>That’s why we have the <strong>Interrupt Claim</strong> Register! (Pic above)</p>
@@ -324,6 +324,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     // Read the RISC-V IRQ Number
     // From PLIC Claim Register
     // Which also Claims the Interrupt
+    // PLIC_CLAIM is 0xE020_1004
     uintptr_t val = getreg32(PLIC_CLAIM);
 
     // Compute the Actual NuttX IRQ Number:
@@ -336,11 +337,9 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p>When we <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#interrupt-claims"><strong>Claim an Interrupt</strong></a> (by reading the Interrupt Claim Register)…</p>
 <p>We’re telling the PLIC: “Yes we acknowledge the Interrupt, but we’re not done yet!”</p>
 <p>In a while we shall Complete the Interrupt. (To tell PLIC we’re done)</p>
-<p><em>Who calls the code above?</em></p>
-<p>TODO: How NuttX calls <strong>riscv_dispatch_irq</strong></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception_common.S#L63-L177">(<strong>riscv_dispatch_irq</strong> is called by the RISC-V Common Exception Handler)</a></p>
 <h2 id="dispatch-the-interrupt"><a href="#dispatch-the-interrupt">6.2 Dispatch the Interrupt</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
+<p>We have Claimed the Interrupt. It’s time to do some work: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Omitted: Claim the Interrupt
   ...
   // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
@@ -354,10 +353,13 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   }
   // Up Next: Complete the Interrupt
 </code></pre></div>
-<p>TODO: riscv_doirq</p>
+<p>For UART Interrupts: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_doirq.c#L58-L134"><strong>riscv_doirq</strong></a> will call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L285-L343"><strong>uart_interrupt</strong></a> to handle the keypress.</p>
+<p>(That’s because at startup, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L383-L442"><strong>bl602_attach</strong></a> has registered <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L285-L343"><strong>uart_interrupt</strong></a> as the UART Interrupt Handler)</p>
+<p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Interrupt Claim Register" /></p>
 <h2 id="complete-the-interrupt"><a href="#complete-the-interrupt">6.3 Complete the Interrupt</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
+<p>To tell PLIC we’re done, we write the RISC-V IRQ Number back to the <strong>Interrupt Claim</strong> Register.</p>
+<p>(Yep the same one we read earlier! Pic above)</p>
+<p>This will <strong>Complete the Interrupt</strong> (so PLIC can fire the next one): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Omitted: Claim and Dispatch the Interrupt
   ...
   // If this is an External Interrupt...
@@ -365,9 +367,10 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
     // Compute the RISC-V IRQ Number
     // and Complete the Interrupt.
-    putreg32(
+    // PLIC_CLAIM is 0xE020_1004
+    putreg32(               // We write the...
       irq - RISCV_IRQ_EXT,  // RISC-V IRQ Number (RISCV_IRQ_EXT = 25)
-      PLIC_CLAIM            // PLIC Claim (Complete) Register
+      PLIC_CLAIM            // To PLIC Claim (Complete) Register
     );
   }
 
@@ -375,12 +378,12 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   return regs;
 }
 </code></pre></div>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Pending Interrupts" /></p>
+<p>And that’s how we handle PLIC Interrupts!</p>
+<p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Interrupt Pending Register" /></p>
 <h2 id="pending-interrupts"><a href="#pending-interrupts">6.4 Pending Interrupts</a></h2>
 <p><em>What’s with the Pending Interrupts? (Pic above)</em></p>
-<p>TODO: Normally the Claim / Complete is perfectly adequate for handling interrupts </p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
+<p>Normally the Interrupt Claim Register is perfectly adequate for handling Interrupts.</p>
+<p>But if we’re really curious: PLIC has an <strong>Interrupt Pending</strong> Register (pic above) that will tell us which Interrupts are pending Claiming or Completion: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Check the Pending Interrupts...
 // Read PLIC_IP0: Interrupt Pending for interrupts 1 to 31
 uintptr_t ip0 = getreg32(0xe0001000);
@@ -391,16 +394,18 @@ if (ip0 &amp; (1 &lt;&lt; 20)) {
   val = 20;
 }
 </code></pre></div>
-<p>TODO: Backup Plan</p>
+<p>To tell PLIC we’re done: We clear the Individual Bits in the Interrupt Pending Register…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Clear the Pending Interrupts...
 // Set PLIC_IP0: Interrupt Pending for interrupts 1 to 31
 putreg32(0, 0xe0001000);
 
 // TODO: Clear the Individual Bits instead of wiping out the Entire Register
 </code></pre></div>
+<p>One again, we don’t need really need this. We’ll stash this as our Backup Plan in case things go wrong.</p>
+<p>(Oh yes, things will go wrong in a while)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
 <h1 id="trouble-with-interrupt-priority"><a href="#trouble-with-interrupt-priority">7 Trouble with Interrupt Priority</a></h1>
-<p>TODO</p>
+<p><em>There’s a twist in our story?</em></p>
 <p>Earlier we said that we initialise the <strong>Interrupt Priorities to 1</strong> at startup: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Platform-Level Interrupt Controller
 void up_irqinitialize(void) {
@@ -468,8 +473,9 @@ PLIC Hart 0 S-Mode Interrupt Enable: After (0xe0002080):
 0000  00 00 10 00 00 00 10 00                          ........  
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L194-L198">(See the <strong>Complete Log</strong>)</a></p>
+<p>Interrupt Enable has leaked over from <strong><code>0xE000</code> <code>2080</code></strong> to <strong><code>0xE000</code> <code>2084</code></strong>!</p>
 <p>Thus we have an unexplained problem of <strong>Leaky Writes</strong>, affecting the Interrupt Priority and Interrupt Enable Registers.</p>
-<p>Up next, we have more worries…</p>
+<p>Up Next: More worries…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-title.jpg" alt="TODO" /></p>
 <h1 id="more-trouble-with-interrupt-claim"><a href="#more-trouble-with-interrupt-claim">8 More Trouble with Interrupt Claim</a></h1>
 <p>TODO</p>
