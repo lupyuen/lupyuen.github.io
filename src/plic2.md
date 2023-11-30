@@ -509,6 +509,8 @@ bl602_receive: rxdata=0x0
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308)
 
+TODO: Screenshot
+
 # All Things Considered
 
 _Feels like we're wading into murky greyish territory... Like Jaws meets Twilight Zone on the Beach?_
@@ -531,7 +533,7 @@ The PLIC Code in this article was __originally tested OK__ with...
 
   (Which might explain our troubles)
 
-Today we're hitting 2 strange issues on __Ox64 BL808 PLIC__...
+Today we're hitting 2 strange issues in the __BL808 (C906) PLIC__...
 
 - __Leaky Writes__ to PLIC Registers
 
@@ -542,6 +544,33 @@ Today we're hitting 2 strange issues on __Ox64 BL808 PLIC__...
   (Instead of the RISC-V External Interrupt Number)
 
 So many questions...
+
+1.  _Any clues what's causing this?_
+
+    The __Leaky Writes__ don't seem to happen [__before enabling the MMU__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L298) (Memory Management Unit)...
+
+    ```text
+    // Before enabling Memory Mgmt Unit...
+    jh7110_mm_init: Test Interrupt Priority
+
+    // No Leaky Writes!
+    test_interrupt_priority:
+      before50=0, before54=0
+      after50=1,  after54=0
+
+    // Leaky Writes after enabling Memory Mgmt Unit
+    jh7110_kernel_mppings: map I/O regions
+    ```
+
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L116-L118)
+
+    So it might be a problem with our MMU Settings.
+
+    [(More about the __Memory Management Unit__)](https://lupyuen.github.io/articles/mmu)
+
+1.  TODO: C906 MMU
+
+1.  TODO: Level 1?
 
 TODO
 
