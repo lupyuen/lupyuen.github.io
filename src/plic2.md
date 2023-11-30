@@ -36,6 +36,12 @@ _What's this PLIC?_
 
 TODO: PLIC doc
 
+(__IRQ__ means Interrupt Request Number)
+
+NuttX IRQ Number = 25 + RISC-V IRQ Number
+
+NuttX reserves a bunch of IRQ Numbers for Internal Use. Hence the Offset of 25.
+
 ![BL808 Platform-Level Interrupt Controller](https://lupyuen.github.io/images/plic2-bl808a.jpg)
 
 # UART Interrupt
@@ -296,6 +302,7 @@ TODO
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
   // Compute the (Interim) NuttX IRQ Number
+  // Based on the Interrupt Vector Number
   int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
 
   // If this is an External Interrupt...
