@@ -227,6 +227,8 @@ void up_irqinitialize(void) {
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L158-L208">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the NuttX IRQ specified by `irq`
+// UART3 Interrupt is RISC-V IRQ 20
+// Which is NuttX IRQ 45 (Offset by 25)
 void up_enable_irq(int irq) {
 
   // Omitted: Enable Inter-CPU Interrupts (SIE Register)
