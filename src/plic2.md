@@ -12,15 +12,19 @@ Use NuttX to explain how we handle Interrupts on a 64-bit RISC-V SoC
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
 
-# Platform Level Interrupt Controller
+# Platform-Level Interrupt Controller
 
 _What's this PLIC?_
 
 TODO
 
+![BL808 Platform-Level Interrupt Controller](https://lupyuen.github.io/images/plic2-bl808a.jpg)
+
 # UART Interrupt
 
 TODO
+
+![BL808 UART3 Interrupt](https://lupyuen.github.io/images/plic2-irq.jpg)
 
 # Initialise the Interrupts
 
