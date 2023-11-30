@@ -519,11 +519,11 @@ Yeah we said this [__last time__](https://lupyuen.github.io/articles/ox2#begin-w
 
 The PLIC Code in this article was __originally tested OK__ with...
 
-- __Star64 JH7110__ in RISC-V Supervisor Mode
+- [__Star64 JH7110__](https://lupyuen.github.io/articles/plic) in RISC-V Supervisor Mode
 
   (Based on SiFive U74 Core)
 
-- __T-Head C906__ in RISC-V Machine Mode
+- [__T-Head C906__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/c906/c906_irq.c) in RISC-V Machine Mode
 
   (Ox64 BL808 runs on the C906 Core)
 
@@ -531,15 +531,17 @@ The PLIC Code in this article was __originally tested OK__ with...
 
   (Which might explain our troubles)
 
-And we're hitting 2 strange issues on __Ox64 BL808 PLIC__...
+Today we're hitting 2 strange issues on __Ox64 BL808 PLIC__...
 
-1.  __Leaky Writes__ to PLIC Registers
+- __Leaky Writes__ to PLIC Registers
 
-    (Writing to one register will affect the next)
+  (Writing to one register will affect the next)
 
-1.  __PLIC Claim Register__ always reads as 0
+- __PLIC Claim Register__ always reads as 0
 
-    (TODO)
+  (Instead of the RISC-V External Interrupt Number)
+
+So many questions...
 
 TODO
 
