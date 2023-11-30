@@ -46,7 +46,7 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 ```
 
-TODO
+TODO: How NuttX calls __up_irqinitialize__
 
 ![Clear Interrupts](https://lupyuen.github.io/images/plic2-registers5a.jpg)
 
@@ -204,6 +204,8 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   // Up Next: Dispatch and Complete the Interrupt
 ```
 
+TODO: How NuttX calls __riscv_dispatch_irq__
+
 TODO: Why claim? Multiple CPUs
 
 ## Dispatch the Interrupt
@@ -226,6 +228,8 @@ TODO
   }
   // Up Next: Complete the Interrupt
 ```
+
+TODO: riscv_doirq
 
 ## Complete the Interrupt
 
@@ -285,14 +289,6 @@ putreg32(0, 0xe0001000);
 
 // TODO: Clear the Individual Bits instead of wiping out the Entire Register
 ```
-
-TODO: All this tested with
-
-- Star64 JH7110 RISC-V Supervisor Mode (SiFive U74)
-
-- C906 RISC-V Machine Mode
-
-But not C906 RISC-V Supervisor Mode (BL808)
 
 ![Set Interrupt Priority](https://lupyuen.github.io/images/plic2-registers1.jpg)
 
@@ -445,15 +441,13 @@ Which means we can't read the __RISC-V IRQ Number__!
 
 We activate our Backup Plan...
 
+![Pending Interrupts](https://lupyuen.github.io/images/plic2-registers6.jpg)
+
 # Backup Plan
 
 _We have a Backup Plan for Handling Interrupts?_
 
-Our Backup Plan is to figure out the IRQ Number by reading the __Interrupt Pending__ Register...
-
-![Pending Interrupts](https://lupyuen.github.io/images/plic2-registers6.jpg)
-
-Like so: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
+Our Backup Plan is to figure out the IRQ Number by reading the __Interrupt Pending__ Register (pic above): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
     // If Interrupt Claimed is 0...
@@ -478,7 +472,7 @@ Like so: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox6
   // and Complete the Interrupt
 ```
 
-Which tells the us the __RISC-V IRQ Number__ yay!
+Which tells us the __RISC-V IRQ Number__ yay!
 
 ```text
 riscv_dispatch_irq:
@@ -490,38 +484,21 @@ riscv_dispatch_irq:
 Don't forget the __clear the Pending Interrupts__: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
-    // Clear the Pending Interrupts
-    putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-    putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+  // Clear the Pending Interrupts
+  putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+  putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
 
-    // Dump the Pending Interrupts
-    infodumpbuffer("PLIC Interrupt Pending", 0xe0001000, 2 * 4);
+  // Dump the Pending Interrupts
+  infodumpbuffer("PLIC Interrupt Pending", 0xe0001000, 2 * 4);
 
-    // Yep works great:
-    // PLIC Interrupt Pending (0xe0001000):
-    // 0000  00 00 00 00 00 00 00 00                          ........        
+  // Yep works great, Pending Interrupts have been cleared...
+  // PLIC Interrupt Pending (0xe0001000):
+  // 0000  00 00 00 00 00 00 00 00                          ........        
 ```
 
 TODO
 
 ```text
-bl602_receive: rxdata=-1
-bl602_receive: rxdata=0x0
-```
-
-TODO
-
-```text
-NuttShell (NSH) NuttX-12.0.3
-nsh>
-
-riscv_dispatch_irq: claim=0
-
-riscv_dispatch_irq: irq=45, claim=0
-
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-
 bl602_receive: rxdata=-1
 bl602_receive: rxdata=0x0
 ```
@@ -537,6 +514,14 @@ _Feels like we're wading into murky greyish brackish territory... Like Jaws meet
 Yeah we said last time
 
 Sv39 and PLIC are officially speced
+
+TODO: All this tested with
+
+- Star64 JH7110 RISC-V Supervisor Mode (SiFive U74)
+
+- C906 RISC-V Machine Mode
+
+But not C906 RISC-V Supervisor Mode (BL808)
 
 # What's Next
 
