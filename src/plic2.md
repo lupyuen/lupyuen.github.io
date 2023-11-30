@@ -443,7 +443,11 @@ Our Interrupt Handler says that the __Interrupt Claim Register is 0__...
 
 Which means we can't read the __RISC-V IRQ Number__!
 
-_We have a Backup Plan right?_
+We activate our Backup Plan...
+
+# Backup Plan
+
+_We have a Backup Plan for Handling Interrupts?_
 
 Our Backup Plan is to figure out the IRQ Number by reading the __Interrupt Pending__ Register...
 
