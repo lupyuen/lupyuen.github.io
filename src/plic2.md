@@ -8,7 +8,7 @@
 
 > — ["Interrupting Chicken"](https://share.libbyapp.com/title/4190211)
 
-Our Story today is all about __RISC-V Interrupts__ on the tiny [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) Single-Board Computer (pic below)...
+Our Story today is all about __RISC-V Interrupts__ on the tiny [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit Single-Board Computer (pic below)...
 
 - What's inside the __Platform-Level Interrupt Controller__ (PLIC)
 
@@ -20,7 +20,7 @@ Our Story today is all about __RISC-V Interrupts__ on the tiny [__Pine64 Ox64 BL
 
 We'll walk through the steps with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
 
-Though we'll hit a bumpy ride with __NuttX on Ox64__...
+Though we'll hit a bumpy ride with our work-in-progress __NuttX on Ox64__...
 
 - __Leaky Writes__ seem to be affecting adjacent PLIC Registers
 
