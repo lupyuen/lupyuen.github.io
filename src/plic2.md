@@ -18,7 +18,7 @@ Our Story today is all about __RISC-V Interrupts__ on the tiny [__Pine64 Ox64 BL
 
 - __Handling PLIC Interrupts__ for UART
 
-We'll walk through the steps with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
+We'll walk through the steps with a simpler operating system: [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
 
 Though we'll hit a bumpy journey with our work-in-progress __NuttX on Ox64__...
 
@@ -258,10 +258,14 @@ _Why "Supervisor Mode"?_
 1.  __RISC-V Supervisor Mode__ is less powerful than Machine Mode.
 
     __NuttX Kernel__ runs in Supervisor Mode.
+    
+    (Linux too!)
 
 1.  __RISC-V User Mode__ is the least powerful mode.
 
     __NuttX Apps__ run in User Mode.
+
+    (Same for Linux Apps)
 
 PLIC has a different set of registers for Machine Mode vs Supervisor Mode.
 
@@ -272,6 +276,10 @@ Now we head back to our (interrupted) story...
 ![Handle Interrupt](https://lupyuen.github.io/images/plic2-registers4.jpg)
 
 # Handle the Interrupt
+
+_What happens when we press a key on the Serial Console? (Pic above)_
+
+_How will PLIC handle the UART Interrupt?_
 
 TODO
 
