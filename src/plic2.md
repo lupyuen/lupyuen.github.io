@@ -146,9 +146,9 @@ void up_enable_irq(int irq) {
 }
 ```
 
-TODO: We're halfway through! Steps 1, 2 and 3
+TODO: We're halfway through our Grand Plan of __PLIC Interrupts__! (Steps 1, 2 and 3, pic below)
 
-Before the complete the rest, let's talk about Harts...
+We pause a moment to talk about Harts...
 
 ![Registers for Platform-Level Interrupt Controller](https://lupyuen.github.io/images/plic2-registers.jpg)
 
@@ -509,23 +509,31 @@ bl602_receive: rxdata=0x0
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308)
 
-# T-Head vs SiFive
+# All Things Considered
+
+_Feels like we're wading into murky greyish territory... Like Jaws meets Twilight Zone on the Beach?_
+
+Yeah we said this [__last time__](https://lupyuen.github.io/articles/ox2#begin-with-star64-nuttx) and it's happening now...
+
+> "If RISC-V ain't RISC-V on SiFive vs T-Head: We'll find out!"
+
+The PLIC Code in this article was __originally tested OK__ with...
+
+- __Star64 JH7110__ in RISC-V Supervisor Mode
+
+  (Based on SiFive U74 Core)
+
+- __T-Head C906__ in RISC-V Machine Mode
+
+  (Ox64 BL808 runs on the C906 Core)
+
+- But NOT __T-Head C906__ in __RISC-V Supervisor Mode__
+
+  (Which might explain our troubles)
 
 TODO
 
-_Feels like we're wading into murky greyish brackish territory... Like Jaws meets Twilight Zone on the Beach..._
-
-Yeah we said last time
-
 Sv39 and PLIC are officially speced
-
-TODO: All this tested with
-
-- Star64 JH7110 RISC-V Supervisor Mode (SiFive U74)
-
-- C906 RISC-V Machine Mode
-
-But not C906 RISC-V Supervisor Mode (BL808)
 
 # What's Next
 
