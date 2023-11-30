@@ -88,13 +88,42 @@
 <li><a href="#appendix-nuttx-uart-driver-for-ox64">12 Appendix: NuttX UART Driver for Ox64</a><ul></ul></li>
 <li><a href="#appendix-uart-interrupt-for-ox64">13 Appendix: UART Interrupt for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>7 Dec 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/plic2-title.jpg" alt="TODO" /></p>
-<p><a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) for <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> 64-bit RISC-V SBC (pic below)…</p>
-<p>TODO</p>
-<p>Use NuttX to explain how we handle Interrupts on a 64-bit RISC-V SoC</p>
+<blockquote>
+<p><em>“It’s time for the little red chicken’s bedtime story - and a reminder from Papa to try not to interrupt. But the chicken can’t help herself!”</em></p>
+</blockquote>
+<blockquote>
+<p>— <a href="https://share.libbyapp.com/title/4190211">“Interrupting Chicken”</a></p>
+</blockquote>
+<p>Our Story today is all about <strong>RISC-V Interrupts</strong> on the tiny <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> Single-Board Computer (pic below)…</p>
+<ul>
+<li>
+<p>What’s inside the <strong>Platform-Level Interrupt Controller</strong> (PLIC)</p>
+</li>
+<li>
+<p><strong>Setting up the PLIC</strong> at startup</p>
+</li>
+<li>
+<p><strong>Enabling the PLIC Interrupt</strong> for UART Input</p>
+</li>
+<li>
+<p><strong>Handling PLIC Interrupts</strong> for UART</p>
+</li>
+</ul>
+<p>We’ll walk through the steps with <a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a>. (Real-Time Operating System)</p>
+<p>Though we’ll hit a bumpy ride with <strong>NuttX on Ox64</strong>…</p>
+<ul>
+<li>
+<p><strong>Leaky Writes</strong> seem to be affecting adjacent PLIC Registers</p>
+</li>
+<li>
+<p><strong>Interrupt Claim</strong> doesn’t seem to be working right</p>
+</li>
+</ul>
+<p>We begin our story…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">1 Platform-Level Interrupt Controller</a></h1>
 <p><em>What’s this PLIC?</em></p>
-<p>TODO</p>
+<p>TODO: PLIC doc</p>
 <p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="BL808 Platform-Level Interrupt Controller" /></p>
 <h1 id="uart-interrupt"><a href="#uart-interrupt">2 UART Interrupt</a></h1>
 <p>TODO</p>
@@ -161,8 +190,7 @@ void up_irqinitialize(void) {
 </ul>
 <p><img src="https://lupyuen.github.io/images/plic2-registers2.jpg" alt="Set Interrupt Threshold" /></p>
 <h2 id="set-the-interrupt-threshold"><a href="#set-the-interrupt-threshold">3.4 Set the Interrupt Threshold</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L90-L114">jh7110_irq.c</a></p>
+<p>Finally we set the PLIC <strong>Interrupt Threshold</strong> to 0 (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L90-L114">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set Interrupt Threshold to 0
   // (Permits all External Interrupts)
   // PLIC_THRESHOLD is 0xE020_1000
@@ -176,9 +204,22 @@ void up_irqinitialize(void) {
   up_irq_enable();
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L89-L142">(<strong>riscv_exception_attach</strong> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L208-L223">(<strong>up_irq_enable</strong> is defined here)</a></p>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L89-L142">(<strong>riscv_exception_attach</strong> is here)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L208-L223">(<strong>up_irq_enable</strong> is here)</a></p>
+<p><em>Why set Interrupt Threshold to 0?</em></p>
+<ul>
+<li>
+<p>Earlier we set the <strong>Interrupt Priority to 1</strong> for All Interrupts</p>
+</li>
+<li>
+<p>Since <strong>Interrupt Priority &gt; Interrupt Threshold</strong> (0)…</p>
+<p>All Interrupts will be <strong>allowed to fire</strong></p>
+</li>
+<li>
+<p>Remember: Interrupts won’t actually fire until we <strong>enable them later</strong> (in PLIC)</p>
+</li>
+</ul>
+<p>And we’re done initing the PLIC at startup!</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers3.jpg" alt="Enable Interrupt" /></p>
 <h1 id="enable-the-interrupt"><a href="#enable-the-interrupt">4 Enable the Interrupt</a></h1>
 <p>TODO</p>
