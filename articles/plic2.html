@@ -268,14 +268,34 @@ static int bl602_attach(struct uart_dev_s *dev) {
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Registers for Platform-Level Interrupt Controller" /></p>
 <h1 id="hart-0-supervisor-mode"><a href="#hart-0-supervisor-mode">5 Hart 0, Supervisor Mode</a></h1>
 <p><em>The pic above: Why does it say “Hart 0, Supervisor Mode”?</em></p>
-<p>TODO</p>
-<p>“Hart” refers to</p>
-<p>“Hart 0” refers to</p>
-<p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="BL808" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/plic2-bl808b.jpg" alt="JH7110" /></p>
+<p><strong>“Hart”</strong> is a RISC-V CPU Core. (“Hardware Thread”)</p>
+<p><strong>“Hart 0”</strong> refers to the (one and only) <strong>64-bit RISC-V Core</strong> inside the BL808 SoC…</p>
+<p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="Inside the BL808 SoC" /></p>
+<p>That runs our NuttX RTOS.</p>
+<p><em>Does the Hart Number matter?</em></p>
+<p>Most certainly! Inside the <strong>StarFive JH7110 SoC</strong> (for Star64 SBC), there are <strong>5 Harts</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/plic2-bl808b.jpg" alt="Inside the StarFive JH7110" /></p>
+<p>NuttX boots on <strong>Hart 1</strong>. So the PLIC Settings will use Hart 1. (Not Hart 0)</p>
+<p>And the <strong>PLIC Register Offsets</strong> are different for Hart 0 vs Hart 1. Thus the Hart Number really matters!</p>
 <p><em>Why “Supervisor Mode”?</em></p>
-<p>TODO</p>
+<ol>
+<li>
+<p><strong>RISC-V Machine Mode</strong> is the most powerful mode in our RISC-V SBC.</p>
+<p><a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI Supervisor Binary Interface</strong></a> runs in Machine Mode.</p>
+<p>(It’s like BIOS for RISC-V)</p>
+</li>
+<li>
+<p><strong>RISC-V Supervisor Mode</strong> is less powerful than Machine Mode.</p>
+<p><strong>NuttX Kernel</strong> runs in Supervisor Mode.</p>
+</li>
+<li>
+<p><strong>RISC-V User Mode</strong> is the least powerful mode.</p>
+<p><strong>NuttX Apps</strong> run in User Mode.</p>
+</li>
+</ol>
+<p>PLIC has a different set of registers for Machine Mode vs Supervisor Mode.</p>
+<p>That’s why we specify <strong>Supervisor Mode</strong> for the PLIC Registers.</p>
+<p>Now we head back to our (interrupted) story…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers4.jpg" alt="Handle Interrupt" /></p>
 <h1 id="handle-the-interrupt"><a href="#handle-the-interrupt">6 Handle the Interrupt</a></h1>
 <p>TODO</p>
