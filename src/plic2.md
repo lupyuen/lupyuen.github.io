@@ -229,21 +229,45 @@ We pause a moment to talk about Harts...
 
 _The pic above: Why does it say "Hart 0, Supervisor Mode"?_
 
-TODO
+__"Hart"__ is a RISC-V CPU Core. ("Hardware Thread")
 
-"Hart" refers to
+__"Hart 0"__ refers to the (one and only) __64-bit RISC-V Core__ inside the BL808 SoC...
 
-"Hart 0" refers to
+![Inside the BL808 SoC](https://lupyuen.github.io/images/plic2-bl808a.jpg)
 
-![BL808](https://lupyuen.github.io/images/plic2-bl808a.jpg)
+That runs our NuttX RTOS.
 
-TODO
+_Does the Hart Number matter?_
 
-![JH7110](https://lupyuen.github.io/images/plic2-bl808b.jpg)
+Most certainly! Inside the __StarFive JH7110 SoC__ (for Star64 SBC), there are __5 Harts__...
+
+![Inside the StarFive JH7110](https://lupyuen.github.io/images/plic2-bl808b.jpg)
+
+NuttX boots on __Hart 1__. So the PLIC Settings will use Hart 1. (Not Hart 0)
+
+And the __PLIC Register Offsets__ are different for Hart 0 vs Hart 1. Thus the Hart Number really matters!
 
 _Why "Supervisor Mode"?_
 
-TODO
+1.  __RISC-V Machine Mode__ is the most powerful mode in our RISC-V SBC.
+
+    [__OpenSBI Supervisor Binary Interface__](https://lupyuen.github.io/articles/sbi) runs in Machine Mode.
+
+    (It's like BIOS for RISC-V)
+
+1.  __RISC-V Supervisor Mode__ is less powerful than Machine Mode.
+
+    __NuttX Kernel__ runs in Supervisor Mode.
+
+1.  __RISC-V User Mode__ is the least powerful mode.
+
+    __NuttX Apps__ run in User Mode.
+
+PLIC has a different set of registers for Machine Mode vs Supervisor Mode.
+
+That's why we specify __Supervisor Mode__ for the PLIC Registers.
+
+Now we head back to our (interrupted) story...
 
 ![Handle Interrupt](https://lupyuen.github.io/images/plic2-registers4.jpg)
 
