@@ -531,6 +531,16 @@ The PLIC Code in this article was __originally tested OK__ with...
 
   (Which might explain our troubles)
 
+And we're hitting 2 strange issues on __Ox64 BL808 PLIC__...
+
+1.  __Leaky Writes__ to PLIC Registers
+
+    (Writing to one register will affect the next)
+
+1.  __PLIC Claim Register__ always reads as 0
+
+    (TODO)
+
 TODO
 
 Sv39 and PLIC are officially speced
