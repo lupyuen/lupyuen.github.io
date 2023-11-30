@@ -2,7 +2,7 @@
 
 📝 _7 Dec 2023_
 
-![TODO](https://lupyuen.github.io/images/plic2-title.jpg)
+![TODO](https://lupyuen.github.io/images/plic2-registers.jpg)
 
 > _"It’s time for the little red chicken’s bedtime story - and a reminder from Papa to try not to interrupt. But the chicken can’t help herself!"_
 
