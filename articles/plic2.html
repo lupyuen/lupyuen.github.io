@@ -86,8 +86,7 @@
 <li><a href="#all-things-considered">10 All Things Considered</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-nuttx-uart-driver-for-ox64">12 Appendix: NuttX UART Driver for Ox64</a><ul></ul></li>
-<li><a href="#appendix-uart-interrupt-for-ox64">13 Appendix: UART Interrupt for Ox64</a><ul></ul></li>
-<li><a href="#appendix-strangeness-in-ox64-plic">14 Appendix: Strangeness in Ox64 PLIC</a><ul></ul></li></ul></nav><p>📝 <em>7 Dec 2023</em></p>
+<li><a href="#appendix-uart-interrupt-for-ox64">13 Appendix: UART Interrupt for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>7 Dec 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/plic2-title.jpg" alt="TODO" /></p>
 <p><a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) for <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> 64-bit RISC-V SBC (pic below)…</p>
 <p>TODO</p>
@@ -493,33 +492,36 @@ jh7110_kernel_mppings: map I/O regions
 <p><a href="https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic">(<strong>U-Boot Bootloader</strong> doesn’t have Leaky Writes)</a></p>
 </li>
 <li>
-<p>TODO: C906 MMU</p>
-<p>DCACHE / ICACHE</p>
+<p><em>What if we configure the MMU differently?</em></p>
+<p>We moved the PLIC from <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L249-L258"><strong>Level 2 Page Tables</strong></a> up to <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L240-L245"><strong>Level 1</strong></a>…</p>
+<p>Same problem.</p>
 </li>
 <li>
-<p>TODO: Level 1?</p>
+<p><em>Something special about the C906 MMU?</em></p>
+<p>According to the <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf"><strong>C906 User Manual</strong></a>  (Page 53), the C906 MMU supports <strong>Extended Page Attributes</strong>. Which might affect us?</p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic">(More about <strong>C906 Extended Page Attributes</strong>)</a></p>
 </li>
 <li>
-<p>TODO: GCC Assembly?</p>
-<p>SFENCE</p>
-</li>
-<li>
-<p><em>Something special about C906 PLIC?</em></p>
+<p><em>What about the C906 PLIC?</em></p>
 <p>According to the <a href="https://lore.kernel.org/lkml/CAJF2gTS8Z+6Ewy0D5+0X_h2Jz4BqsJp7wEC5F0iNaDsSpiE2aw@mail.gmail.com/"><strong>Linux PLIC Driver</strong></a>…</p>
 <blockquote>
 <p>“The T-HEAD C9xx SoC implements a modified/custom T-HEAD PLIC
 specification which will mask current IRQ upon read to CLAIM register
 and will unmask the IRQ upon write to CLAIM register”</p>
 </blockquote>
+<p>Will this affect our Interrupt Claim?</p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic">(More about <strong>C906 PLIC</strong>)</a></p>
 </li>
 <li>
-<p><em>Maybe our problem is Leaky Reads? Not Leaky Writes?</em></p>
-<p>Hmmm… Possibly!</p>
+<p><em>Maybe the GCC Compiler didn’t generate the right code?</em></p>
+<p>We tested <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L487-L531"><strong>RISC-V Assembly</strong></a> with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L531-L608"><strong>DCACHE / ICACHE</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e76886a665fb9b8fe4f52c25e2f80877a62f415c/arch/risc-v/src/jh7110/bl602_serial.c#L446-L489"><strong>SFENCE</strong></a>.</p>
+<p>Still the same.</p>
+</li>
+<li>
+<p><em>Perhaps our problem is Leaky Reads? Not Leaky Writes?</em></p>
+<p>Hmmm… Perhaps!</p>
 </li>
 </ol>
-<p>TODO</p>
-<p>Sv39 and PLIC are officially speced</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>We’ll do much more for <strong>NuttX on Ox64 BL808</strong>, stay tuned for updates!</p>
@@ -601,370 +603,6 @@ void riscv_serialinit(void) {
 <p>RISCV_IRQ_EXT = 25</p>
 </li>
 </ul>
-<p>We show the UART Interrupt Status…</p>
-<div class="example-wrap"><pre class="language-text"><code>bl602_attach: BL602_UART_INT_STS=0x84
-bl602_attach: BL602_UART_INT_MASK=0xfff
-bl602_attach: BL602_UART_INT_CLEAR=0x0
-bl602_attach: BL602_UART_INT_EN=0xfff
-</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/c3f187af9f5c81594ddf8f854de2ed0a">(Source)</a></p>
-<p>“urx_fer_int = 1” means “UART RX FIFO error interrupt, auto-cleared when FIFO overflow/underflow error flag is cleared”</p>
-<p>We clear the RX FIFO Underflow, but still no UART Interrupts…</p>
-<div class="example-wrap"><pre class="language-text"><code>bl602_attach: BL602_UART_FIFO_CONFIG_0=0x80
-bl602_attach: BL602_UART_FIFO_CONFIG_0=0x8
-</code></pre></div>
-<p>We dump the PLIC and UART Registers in U-Boot…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## UART Registers
-=&gt; md 0x30002000 0x36
-30002000: 00001705 00000701 00130013 00000000  ................
-30002010: 009f0070 0000006f 0000000f 00000000  p...o..........
-30002020: 00000012 00000fff 00000000 00000fff  ................
-30002030: 00000001 00000000 00000000 00000000  ................
-30002040: 00000000 00000000 00000003 00000000  ................
-30002050: 0026ffff 00000002 00000000 00000000  ..&amp;.............
-30002060: 00000000 00000000 00000000 00000000  ................
-30002070: 00000000 00000000 00000000 00000000  ................
-30002080: 00000000 07070000 0000000a 00000078  ............x...
-30002090: 00000000 00000000 00000000 00000000  ................
-300020a0: 00000000 00000000 00000000 00000000  ................
-300020b0: 00000000 00000000 00000000 00000000  ................
-300020c0: 00000000 00000000 00000000 00000000  ................
-300020d0: 00000000 00000000                    ........
-
-## PLIC Interrupt Priority
-=&gt; md 0xe0000004 0x50
-e0000004: 00000000 00000000 00000000 00000000  ................
-e0000014: 00000000 00000000 00000000 00000000  ................
-e0000024: 00000000 00000000 00000000 00000000  ................
-e0000034: 00000000 00000000 00000000 00000000  ................
-e0000044: 00000000 00000000 00000000 00000000  ................
-e0000054: 00000000 00000000 00000000 00000000  ................
-e0000064: 00000000 00000000 00000000 00000000  ................
-e0000074: 00000000 00000000 00000000 00000000  ................
-e0000084: 00000000 00000000 00000000 00000000  ................
-e0000094: 00000000 00000000 00000000 00000000  ................
-e00000a4: 00000000 00000000 00000000 00000000  ................
-e00000b4: 00000000 00000000 00000000 00000000  ................
-e00000c4: 00000000 00000000 00000000 00000000  ................
-e00000d4: 00000000 00000000 00000000 00000000  ................
-e00000e4: 00000000 00000000 00000000 00000000  ................
-e00000f4: 00000000 00000000 00000000 00000000  ................
-e0000104: 00000000 00000000 00000000 00000000  ................
-e0000114: 00000000 00000000 00000000 00000000  ................
-e0000124: 00000000 00000000 00000000 00000000  ................
-e0000134: 00000000 00000000 00000000 00000000  ................
-
-## PLIC Hart 0 S-Mode Interrupt Enable
-=&gt; md 0xe0002080 2
-e0002080: 00000000 00000000                    ........
-
-## PLIC Hart 0 S-Mode Priority Threshold
-=&gt; md 0xe0201000 2
-e0201000: 00000007 00000000                    ........
-
-## PLIC Hart 0 S-Mode Claim / Complete
-=&gt; md 0xe0201004 1
-e0201004: 00000000                             ....
-
-## Interrupt Pending
-=&gt; md 0xe0001000 2
-e0001000: 00000000 00000000                    ........
-
-## PLIC Hart 0 M-Mode Interrupt Enable
-=&gt; md 0xe0002000 2
-e0002000: 00000000 00000000                    ........
-
-## PLIC Hart 0 M-Mode Priority Threshold
-=&gt; md 0xe0200000 2
-e0200000: 00000007 00000000                    ........
-
-## PLIC Hart 0 M-Mode Claim / Complete
-=&gt; md 0xe0200004 1
-e0200004: 00000000                             ....
-
-## Doesn&#39;t work: PLIC permission control register
-## md 0xe01ffffc 1
-</code></pre></div>
-<p>TODO: Why UART Interrupt not enabled? U-Boot and OpenSBI don’t use UART Interrupts?</p>
-<p>TODO: What is Priority Threshold 7?</p>
-<p>But after enabling UART IRQ, PLIC Interrupt Priority is 0 and Invalid!</p>
-<div class="example-wrap"><pre class="language-text"><code>PLIC Interrupt Priority (0xe0000004):
-0000  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0010  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0020  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0030  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0040  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-</code></pre></div>
-<p>We set PLIC Interrupt Priority to 1 ourselves…</p>
-<div class="example-wrap"><pre class="language-text"><code>bl602_attach: Set PLIC Interrupt Priority to 1
-PLIC Interrupt Priority (0xe0000004):
-0000  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0010  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0020  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0030  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0040  00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00  ................
-0050  01 00 00 00 01 00 00 00 01 00 00 00 00 00 00 00  ................
-0060  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0070  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0080  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0090  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-00a0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-00b0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-00c0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-00d0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ...............
-00e0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-00f0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0100  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0110  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0120  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0130  00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00  ................
-</code></pre></div>
-<p>Then <a href="https://gist.github.com/lupyuen/af6112c80db6907e5e5dec3519af53ff">IRQ 25 is OK yay!</a></p>
-<div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: irq=8
-riscv_dispatch_irq: irq=8
-
-NuttShell (NSH) NuttX-12.0.3
-riscv_dispatch_irq: irq=25
-riscv_dispatch_irq: irq=25
-riscv_dispatch_irq: irq=25
-</code></pre></div>
-<p>But UART Interrupt can’t be handled because <a href="https://gist.github.com/lupyuen/e1e6bf670ee4eefa0f968f1901407419">PLIC Claim is 0</a>…</p>
-<div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: Do irq=8
-NuttShell (NSH) NuttX-12.0.3
-riscv_dispatch_irq: irq=25, claim=0
-riscv_dispatch_irq: *0xe0201004=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 10 00 00 00 10 00                          ........        
-</code></pre></div>
-<p><em>Why is PLIC Claim = 0?</em></p>
-<p>This means that there are no External Interrupts triggered. So NuttX does nothing, again and again, till it becomes too busy to respond.</p>
-<p>But Interrupt Pending is actually set for 2 External Interrupts!</p>
-<p><em>What are the 2 Interrupts Pending?</em></p>
-<div class="example-wrap"><pre class="language-text"><code>PLIC Interrupt Pending (0xe0001000):
-0000  00 00 10 00 00 00 10 00                          ........        
-</code></pre></div>
-<ul>
-<li>
-<p>(0xe0001000) PLIC_IP0: Interrupt Pending for interrupts 1 to 31</p>
-<p>0x100000 = (1 &lt;&lt; 20) = IRQ 20 (UART3)</p>
-</li>
-<li>
-<p>(0xe0001004) PLIC_IP1: Interrupt Pending for interrupts 32 to 63</p>
-<p>0x100000 = (1 &lt;&lt; 20) = IRQ 52 (EMAC2)</p>
-<p>TODO: Why EMAC2? We didn’t enable the interrupt</p>
-</li>
-</ul>
-<p>We <a href="https://gist.github.com/lupyuen/84959d9ba79498a13a759b5b86c6fa29">handle Interrupt Pending</a> ourselves…</p>
-<div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: irq=25, claim=0
-riscv_dispatch_irq: *0xe0201004=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 10 00 00 00 10 00                          ........        
-riscv_dispatch_irq: Do irq=45
-After Claim (0xe0001000):
-0000  00 00 10 00 00 00 10 00                          ........        
-
-riscv_dispatch_irq: irq=25, claim=0
-riscv_dispatch_irq: *0xe0201004=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 10 00 00 00 10 00                          ........        
-riscv_dispatch_irq: Do irq=45
-After Claim (0xe0001000):
-0000  00 00 10 00 00 00 10 00                          ........
-</code></pre></div>
-<p>“Do IRQ” now works! But Interrupt Pending is not cleared, after we Claimed the interrupt.</p>
-<p><em>Doesn’t NuttX already implement C906 PLIC?</em></p>
-<p>Yep but for Machine Mode only…</p>
-<ul>
-<li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/c906/c906_irq.c">c906_irq.c</a></p>
-</li>
-<li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/c906/c906_irq_dispatch.c">c906_irq_dispatch.c</a></p>
-</li>
-</ul>
-<p><em>What if we copy this code into Ox64 PLIC?</em></p>
-<div class="example-wrap"><pre class="language-c"><code>// From arch/risc-v/src/c906/c906_irq.c
-/* Clear pendings in PLIC */
-uintptr_t val = getreg32(PLIC_CLAIM);
-putreg32(val, PLIC_CLAIM);
-</code></pre></div>
-<p>Still the same, Claim = 0…</p>
-<div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: irq=25, claim=0
-riscv_dispatch_irq: *0xe0201004=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 10 00 00 00 10 00                          ........        
-</code></pre></div><h1 id="appendix-strangeness-in-ox64-plic"><a href="#appendix-strangeness-in-ox64-plic">14 Appendix: Strangeness in Ox64 PLIC</a></h1>
-<p>TODO</p>
-<p><em>PLIC in Ox64 BL808 is acting really strange…</em></p>
-<p><em>Why is Interrupt Priority set for 4 Interrupts, when we only set 1 (for UART)?</em></p>
-<div class="example-wrap"><pre class="language-text"><code>bl602_attach: Set PLIC Interrupt Priority to 1
-PLIC Interrupt Priority (0xe0000004):
-...
-0040  00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00  ................
-0050  01 00 00 00 01 00 00 00 01 00 00 00 00 00 00 00  ................
-</code></pre></div>
-<p><em>Maybe it’s a problem with the RISC-V Code generated by GCC?</em></p>
-<p>Let’s do a simple test: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L447-L473">bl602_serial.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Test the setting of PLIC Interrupt Priority
-void test_interrupt_priority(void) {
-  static uint32_t before1 = 0xFF;
-  static uint32_t before2 = 0xFF;
-  static uint32_t after1 = 0xFF;
-  static uint32_t after2 = 0xFF;
-
-  // Read the values before setting Interrupt Priority
-  before1 = *(volatile uint32_t *) 0xe0000050UL;
-  before2 = *(volatile uint32_t *) 0xe0000054UL;
-
-  // Set the Interrupt Priority
-  *(volatile uint32_t *) 0xe0000050UL = 1;
-
-  // Read the values after setting Interrupt Priority
-  after1 = *(volatile uint32_t *) 0xe0000050UL;
-  after2 = *(volatile uint32_t *) 0xe0000054UL;
-  _info(&quot;before1=%u, before2=%u, after1=%u, after2=%u\n&quot;, before1, before2, after1, after2);
-}
-</code></pre></div>
-<p>The Interrupt Priority <a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5">wasn’t be set correctly</a>. Why did 0xe0000054 change from 0 to 1?</p>
-<div class="example-wrap"><pre class="language-text"><code>bl602_attach: Test Interrupt Priority
-test_interrupt_priority: before1=0, before2=0, after1=1, after2=1
-</code></pre></div>
-<p>Here’s the Disassembly, which looks OK…</p>
-<div class="example-wrap"><pre class="language-text"><code>0000000050200daa &lt;test_interrupt_priority&gt;:
-test_interrupt_priority():
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:451
-  uint32_t before1 = *(volatile uint32_t *) 0xe0000050;
-    50200daa:	461d                	li	a2,7
-    50200dac:	0676                	slli	a2,a2,0x1d
-
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:454
-  *(volatile uint32_t *) 0xe0000050 = 1;
-    50200dae:	4785                	li	a5,1
-
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:451
-  uint32_t before1 = *(volatile uint32_t *) 0xe0000050;
-    50200db0:	4a34                	lw	a3,80(a2)
-
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:452
-  uint32_t before2 = *(volatile uint32_t *) 0xe0000054;
-    50200db2:	4a78                	lw	a4,84(a2)
-
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:454
-  *(volatile uint32_t *) 0xe0000050 = 1;
-    50200db4:	ca3c                	sw	a5,80(a2)
-
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:457
-  uint32_t after1 = *(volatile uint32_t *) 0xe0000050;
-    50200db6:	4a3c                	lw	a5,80(a2)
-
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:458
-  uint32_t after2 = *(volatile uint32_t *) 0xe0000054;
-    50200db8:	05462803          	lw	a6,84(a2)
-</code></pre></div>
-<p><em>Maybe we need to flush the CPU Cache?</em></p>
-<p>Nope <code>sfence</code> doesn’t help…</p>
-<div class="example-wrap"><pre class="language-text"><code>0000000050200daa &lt;test_interrupt_priority&gt;:
-test_interrupt_priority():
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:451
-  uint32_t before1 = *(volatile uint32_t *) 0xe0000050;
-    50200daa:	461d                	li	a2,7
-    50200dac:	0676                	slli	a2,a2,0x1d
-    50200dae:	4a34                	lw	a3,80(a2)
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:452
-  uint32_t before2 = *(volatile uint32_t *) 0xe0000054;
-    50200db0:	4a78                	lw	a4,84(a2)
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:455
-  *(volatile uint32_t *) 0xe0000050 = 1;
-    50200db2:	4785                	li	a5,1
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:451
-  uint32_t before1 = *(volatile uint32_t *) 0xe0000050;
-    50200db4:	2681                	sext.w	a3,a3
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:452
-  uint32_t before2 = *(volatile uint32_t *) 0xe0000054;
-    50200db6:	2701                	sext.w	a4,a4
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:455
-  *(volatile uint32_t *) 0xe0000050 = 1;
-    50200db8:	ca3c                	sw	a5,80(a2)
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:458
-  __asm__ __volatile__
-    50200dba:	12000073          	sfence.vma
-    50200dbe:	0330000f          	fence	rw,rw
-    50200dc2:	0000100f          	fence.i
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:467
-  uint32_t after1 = *(volatile uint32_t *) 0xe0000050;
-    50200dc6:	4a3c                	lw	a5,80(a2)
-    50200dc8:	2781                	sext.w	a5,a5
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:469
-  __asm__ __volatile__
-    50200dca:	12000073          	sfence.vma
-    50200dce:	0330000f          	fence	rw,rw
-    50200dd2:	0000100f          	fence.i
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:477
-  uint32_t after2 = *(volatile uint32_t *) 0xe0000054;
-    50200dd6:	05462803          	lw	a6,84(a2)
-    50200dda:	2801                	sext.w	a6,a6
-/Users/Luppy/ox64/nuttx/arch/risc-v/src/chip/bl602_serial.c:479
-  __asm__ __volatile__
-    50200ddc:	12000073          	sfence.vma
-    50200de0:	0330000f          	fence	rw,rw
-    50200de4:	0000100f          	fence.i
-</code></pre></div>
-<p>Let’s do the same with U-Boot Bootloader. It looks OK, doesn’t have the same problem…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Read the values before setting Interrupt Priority
-=&gt; md 0xe0000050 1
-e0000050: 00000000                             ....
-=&gt; md 0xe0000054 1
-e0000054: 00000000                             ....
-
-## Set the Interrupt Priority
-=&gt; mw 0xe0000050 0x01 1
-
-## Read the values after setting Interrupt Priority
-=&gt; md 0xe0000050 1
-e0000050: 00000001                             ....
-=&gt; md 0xe0000054 1
-e0000054: 00000000                             ....
-</code></pre></div>
-<p>And U-Boot doesn’t use MMU.</p>
-<p><em>Why is MMU messing up our updates to Ox64 BL808 PLIC?</em></p>
-<p>We might have missed something specific to C906 MMU. Here are the Extended Page Attributes, from <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">C906 User Manual (Page 53)</a></p>
-<ul>
-<li>
-<p><strong>SO – Strong order</strong> (Bit 63)</p>
-<p>Indicates the access order required by memory.</p>
-<p>0: no strong order (Normal-memory)</p>
-<p>1: strong order (Device)</p>
-<p>The default value is no strong order.</p>
-</li>
-<li>
-<p><strong>C – Cacheable</strong> (Bit 62)</p>
-<p>0: Non-cacheable</p>
-<p>1: Cacheable</p>
-<p>The default value is Non-cacheable.</p>
-</li>
-<li>
-<p><strong>B – Buffer</strong> (Bit 61)</p>
-<p>0: Non-bufferable</p>
-<p>1: Bufferable</p>
-<p>The default value is Non-bufferable</p>
-</li>
-</ul>
-<p>Also…</p>
-<blockquote>
-<p>“C906 extended page attributes exist only when the MAEE bit in the MXSTATUS register is 1.”</p>
-</blockquote>
-<p>TODO: Set MAEE Bit in MXSTATUS Register</p>
-<p>TODO: <a href="https://github.com/openbouffalo/OBLFR/blob/master/apps/d0_lowload/src/rv32i_xtheade_lz4.S">d0_lowload Boot Code</a> doesn’t set MXSTATUS</p>
-<p>TODO: Set Strong Order (Bit 63) in MMU Page Table Entries. Retest the setting of PLIC Interrupt Priority</p>
-<p><em>What if we disable and re-enable MMU, while setting PLIC Interrupt Priority?</em></p>
-<p>Yep seems to work…</p>
-<div class="example-wrap"><pre class="language-text"><code>jh7110_mm_init: Disable MMU
-mmu_write_satp: reg=0
-jh7110_mm_init: Test Interrupt Priority
-test_interrupt_priority: before1=0, before2=0, after1=1, after2=0
-jh7110_mm_init: Enable MMU
-</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/plic2-draw.jpg" alt="TODO" /></p>
 
     
 </body>
