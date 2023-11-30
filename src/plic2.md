@@ -328,11 +328,11 @@ When we [__Claim an Interrupt__](https://five-embeddev.com/riscv-isa-manual/late
 
 We're telling the PLIC: "Yes we acknowledge the Interrupt, but we're not done yet!"
 
-In a while we shall Complete the Interrupt.
+In a while we shall Complete the Interrupt. (To tell PLIC we're done)
+
+_Who calls the code above?_
 
 TODO: How NuttX calls __riscv_dispatch_irq__
-
-TODO: Why claim? Multiple CPUs
 
 ## Dispatch the Interrupt
 
