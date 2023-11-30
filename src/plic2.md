@@ -176,6 +176,8 @@ TODO
 
 ```c
 // Enable the NuttX IRQ specified by `irq`
+// UART3 Interrupt is RISC-V IRQ 20
+// Which is NuttX IRQ 45 (Offset by 25)
 void up_enable_irq(int irq) {
 
   // Omitted: Enable Inter-CPU Interrupts (SIE Register)
