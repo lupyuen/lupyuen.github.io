@@ -570,7 +570,21 @@ So many questions...
 
 1.  TODO: C906 MMU
 
+    DCACHE / ICACHE
+
 1.  TODO: Level 1?
+
+1.  _Something special about T-Head C906 PLIC?_
+
+    From this [Linux Patch](https://lore.kernel.org/lkml/CAJF2gTS8Z+6Ewy0D5+0X_h2Jz4BqsJp7wEC5F0iNaDsSpiE2aw@mail.gmail.com/)
+
+    > "The T-HEAD C9xx SoC implements a modified/custom T-HEAD PLIC
+    specification which will mask current IRQ upon read to CLAIM register
+    and will unmask the IRQ upon write to CLAIM register. The
+    thead,c900-plic compatible string represents the custom T-HEAD PLIC
+    specification."
+
+    "thead,c900-plic" is implemented in Linux here: [irq-sifive-plic.c](https://github.com/torvalds/linux/blob/master/drivers/irqchip/irq-sifive-plic.c#L574-L582)
 
 TODO
 
@@ -902,81 +916,6 @@ PLIC Interrupt Pending (0xe0001000):
 0000  00 00 10 00 00 00 10 00                          ........        
 ```
 
-_Something special about T-Head C906 PLIC?_
-
-According to the Linux Device Tree, Ox64 uses this PLIC Driver: "thead,c900-plic"
-
-```text
-interrupt-controller@e0000000 {
-  compatible = "thead,c900-plic";
-```
-
-Then from this [Linux Patch](https://lore.kernel.org/lkml/CAJF2gTS8Z+6Ewy0D5+0X_h2Jz4BqsJp7wEC5F0iNaDsSpiE2aw@mail.gmail.com/)
-
-> "The T-HEAD C9xx SoC implements a modified/custom T-HEAD PLIC
-specification which will mask current IRQ upon read to CLAIM register
-and will unmask the IRQ upon write to CLAIM register. The
-thead,c900-plic compatible string represents the custom T-HEAD PLIC
-specification."
-
-"thead,c900-plic" is implemented in Linux here: [irq-sifive-plic.c](https://github.com/torvalds/linux/blob/master/drivers/irqchip/irq-sifive-plic.c#L574-L582)
-
-Which sets [PLIC_QUIRK_EDGE_INTERRUPT](https://github.com/torvalds/linux/blob/master/drivers/irqchip/irq-sifive-plic.c#L64), which is used by...
-
-- [plic_irq_set_type](https://github.com/torvalds/linux/blob/master/drivers/irqchip/irq-sifive-plic.c#L212-L235)
-
-- [plic_irq_domain_translate](https://github.com/torvalds/linux/blob/master/drivers/irqchip/irq-sifive-plic.c#L312-L325)
-
-  Which calls [irq_domain_translate_twocell](https://github.com/torvalds/linux/blob/master/kernel/irq/irqdomain.c#L1060-L1081)
-
-  (Instead of the normal [irq_domain_translate_onecell](https://github.com/torvalds/linux/blob/master/kernel/irq/irqdomain.c#L1043-L1060))
-
-_What does it do?_
-
-From another [Linux Patch](https://lore.kernel.org/all/20220630100241.35233-3-samuel@sholland.org/)
-
-> The Renesas RZ/Five SoC has a RISC-V AX45MP AndesCore with NCEPLIC100. The
-NCEPLIC100 supports both edge-triggered and level-triggered interrupts. In
-case of edge-triggered interrupts NCEPLIC100 ignores the next interrupt
-edge until the previous completion message has been received and
-NCEPLIC100 doesn't support pending interrupt counter, hence losing the
-interrupts if not acknowledged in time.
-
-> So the workaround for edge-triggered interrupts to be handled correctly
-and without losing is that it needs to be acknowledged first and then
-handler must be run so that we don't miss on the next edge-triggered
-interrupt.
-
-TODO: Fix this for Ox64 NuttX
-
-After Clearing the Pending Interrupts, [NuttX responds to Key Presses yay!](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5)
-
-```text
-NuttShell (NSH) NuttX-12.0.3
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-nsh> riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-nx_start: CPU0: Beginning Idle Loop
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-ˇriscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........ 
-```
-
-But Claim is still 0 though.
-
-TODO: Key press not read correctly
-
-TODO: Why is up_irqinitialize not setting Interrupt Priority properly? Signed arithmetic? Or delay?
-
 # Appendix: Strangeness in Ox64 PLIC
 
 TODO
@@ -1133,41 +1072,6 @@ e0000054: 00000000                             ....
 ```
 
 And U-Boot doesn't use MMU.
-
-_Could it be caused by MMU?_
-
-Let's try setting Interrupt Priority before MMU Init. It works OK!
-
-```text
-123jh7110_copy_ramdisk: _edata=0x50400258, _sbss=0x504002a0, _ebss=0x50408000, JH7110_IDLESTACK_TOP=0x50408c00
-jh7110_copy_ramdisk: ramdisk_addr=0x50410291
-jh7110_copy_ramdisk: size=8192000
-ABCjh7110_mm_init: Test Interrupt Priority
-test_interrupt_priority: before1=0, before2=0, after1=1, after2=0
-jh7110_kernel_mappings: map I/O regions
-```
-
-When we set Interrupt Priority after MMU Init, it looks incorrect...
-
-```text
-123jh7110_copy_ramdisk: _edata=0x50400258, _sbss=0x504002a0, _ebss=0x50408000, JH7110_IDLESTACK_TOP=0x50408c00
-jh7110_copy_ramdisk: ramdisk_addr=0x50410291
-jh7110_copy_ramdisk: size=8192000
-ABCjh7110_kernel_mappings: map I/O regions
-jh7110_kernel_mappings: map PLIC as Interrupt L2
-jh7110_kernel_mappings: connect the L1 and Interrupt L2 page tables for PLIC
-jh7110_kernel_mappings: map kernel text
-jh7110_kernel_mappings: map kernel data
-jh7110_kernel_mappings: connect the L1 and L2 page tables
-jh7110_kernel_mappings: map the page pool
-mmu_satp_reg: pgbase=0x50407000, asid=0x0, reg=0x8000000000050407
-mmu_write_satp: reg=0x8000000000050407
-jh7110_mm_init: Test Interrupt Priority
-test_interrupt_priority: before1=0, before2=0, after1=0, after2=0
-nx_start: Entry
-```
-
-So it's an MMU problem!
 
 _Why is MMU messing up our updates to Ox64 BL808 PLIC?_
 
