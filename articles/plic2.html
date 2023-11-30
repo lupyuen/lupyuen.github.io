@@ -82,11 +82,12 @@
 <li><a href="#pending-interrupts">6.4 Pending Interrupts</a><ul></ul></li></ul></li>
 <li><a href="#trouble-with-interrupt-priority">7 Trouble with Interrupt Priority</a><ul></ul></li>
 <li><a href="#more-trouble-with-interrupt-claim">8 More Trouble with Interrupt Claim</a><ul></ul></li>
-<li><a href="#t-head-vs-sifive">9 T-Head vs SiFive</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-nuttx-uart-driver-for-ox64">11 Appendix: NuttX UART Driver for Ox64</a><ul></ul></li>
-<li><a href="#appendix-uart-interrupt-for-ox64">12 Appendix: UART Interrupt for Ox64</a><ul></ul></li>
-<li><a href="#appendix-strangeness-in-ox64-plic">13 Appendix: Strangeness in Ox64 PLIC</a><ul></ul></li></ul></nav><p>📝 <em>7 Dec 2023</em></p>
+<li><a href="#backup-plan">9 Backup Plan</a><ul></ul></li>
+<li><a href="#t-head-vs-sifive">10 T-Head vs SiFive</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-nuttx-uart-driver-for-ox64">12 Appendix: NuttX UART Driver for Ox64</a><ul></ul></li>
+<li><a href="#appendix-uart-interrupt-for-ox64">13 Appendix: UART Interrupt for Ox64</a><ul></ul></li>
+<li><a href="#appendix-strangeness-in-ox64-plic">14 Appendix: Strangeness in Ox64 PLIC</a><ul></ul></li></ul></nav><p>📝 <em>7 Dec 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/plic2-title.jpg" alt="TODO" /></p>
 <p><a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) for <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> 64-bit RISC-V SBC (pic below)…</p>
 <p>TODO</p>
@@ -394,7 +395,9 @@ nsh&gt;
 </code></pre></div>
 <p>Our Interrupt Handler says that the <strong>Interrupt Claim Register is 0</strong>…</p>
 <p>Which means we can’t read the <strong>RISC-V IRQ Number</strong>!</p>
-<p><em>We have a Backup Plan right?</em></p>
+<p>We activate our Backup Plan…</p>
+<h1 id="backup-plan"><a href="#backup-plan">9 Backup Plan</a></h1>
+<p><em>We have a Backup Plan for Handling Interrupts?</em></p>
 <p>Our Backup Plan is to figure out the IRQ Number by reading the <strong>Interrupt Pending</strong> Register…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Pending Interrupts" /></p>
 <p>Like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
@@ -455,12 +458,12 @@ bl602_receive: rxdata=-1
 bl602_receive: rxdata=0x0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308">(See the <strong>Complete Log</strong>)</a></p>
-<h1 id="t-head-vs-sifive"><a href="#t-head-vs-sifive">9 T-Head vs SiFive</a></h1>
+<h1 id="t-head-vs-sifive"><a href="#t-head-vs-sifive">10 T-Head vs SiFive</a></h1>
 <p>TODO</p>
 <p><em>Feels like we’re wading into murky greyish brackish territory… Like Jaws meets Twilight Zone on the Beach…</em></p>
 <p>Yeah we said last time</p>
 <p>Sv39 and PLIC are officially speced</p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>We’ll do much more for <strong>NuttX on Ox64 BL808</strong>, stay tuned for updates!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -486,7 +489,7 @@ bl602_receive: rxdata=0x0
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic2.md"><strong>lupyuen.github.io/src/plic2.md</strong></a></p>
-<h1 id="appendix-nuttx-uart-driver-for-ox64"><a href="#appendix-nuttx-uart-driver-for-ox64">11 Appendix: NuttX UART Driver for Ox64</a></h1>
+<h1 id="appendix-nuttx-uart-driver-for-ox64"><a href="#appendix-nuttx-uart-driver-for-ox64">12 Appendix: NuttX UART Driver for Ox64</a></h1>
 <p>TODO</p>
 <p>BL808 UART is mostly identical to BL602 UART, so we ported the NuttX BL602 UART Driver to BL808.</p>
 <p>Here’s the UART Driver ported to BL808: [bl602_serial.c] (https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c)</p>
@@ -508,7 +511,7 @@ void riscv_serialinit(void) {
 <p>And the UART Driver works! <a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89">(See the log)</a></p>
 <p>TODO: /dev/ttyS0 is missing</p>
 <p>TODO: Enable UART Interrupts</p>
-<h1 id="appendix-uart-interrupt-for-ox64"><a href="#appendix-uart-interrupt-for-ox64">12 Appendix: UART Interrupt for Ox64</a></h1>
+<h1 id="appendix-uart-interrupt-for-ox64"><a href="#appendix-uart-interrupt-for-ox64">13 Appendix: UART Interrupt for Ox64</a></h1>
 <p>TODO</p>
 <p>Let’s fix the UART Interrupts for NuttX on Ox64 BL808!</p>
 <p>We fix the PLIC Offsets according to <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">C906 User Manual (Page 77)</a></p>
@@ -798,7 +801,7 @@ PLIC Interrupt Pending (0xe0001000):
 <p>But Claim is still 0 though.</p>
 <p>TODO: Key press not read correctly</p>
 <p>TODO: Why is up_irqinitialize not setting Interrupt Priority properly? Signed arithmetic? Or delay?</p>
-<h1 id="appendix-strangeness-in-ox64-plic"><a href="#appendix-strangeness-in-ox64-plic">13 Appendix: Strangeness in Ox64 PLIC</a></h1>
+<h1 id="appendix-strangeness-in-ox64-plic"><a href="#appendix-strangeness-in-ox64-plic">14 Appendix: Strangeness in Ox64 PLIC</a></h1>
 <p>TODO</p>
 <p><em>PLIC in Ox64 BL808 is acting really strange…</em></p>
 <p><em>Why is Interrupt Priority set for 4 Interrupts, when we only set 1 (for UART)?</em></p>
