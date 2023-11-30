@@ -408,7 +408,7 @@ And that's how we handle PLIC Interrupts!
 
 ## Pending Interrupts
 
-_What's with the Pending Interrupts? (Pic above)_
+_What's with the Pending Interrupts?_
 
 Normally the Interrupt Claim Register is perfectly adequate for handling Interrupts.
 
