@@ -72,7 +72,9 @@ Remember that NuttX uses its own __NuttX IRQ Number__...
 
 - NuttX IRQ Number = 25 + RISC-V IRQ Number
 
-Thus we'll mention __NuttX IRQ Number 45__.
+Thus later we'll see __NuttX IRQ Number 45__.
+
+TODO: NuttX UART Driver
 
 ![BL808 Reference Manual (Page 44)](https://lupyuen.github.io/images/plic2-irq.jpg)
 
