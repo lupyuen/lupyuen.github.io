@@ -110,7 +110,7 @@
 </li>
 </ul>
 <p>We’ll walk through the steps with <a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a>. (Real-Time Operating System)</p>
-<p>Though we’ll hit a bumpy ride with our work-in-progress <strong>NuttX on Ox64</strong>…</p>
+<p>Though we’ll hit a bumpy journey with our work-in-progress <strong>NuttX on Ox64</strong>…</p>
 <ul>
 <li>
 <p><strong>Leaky Writes</strong> seem to be affecting adjacent PLIC Registers</p>
@@ -224,8 +224,8 @@ void up_irqinitialize(void) {
 <h1 id="enable-the-interrupt"><a href="#enable-the-interrupt">4 Enable the Interrupt</a></h1>
 <p><em>Our Platform-Level Interrupt Controller (PLIC) is all ready for action…</em></p>
 <p><em>How will we enable Interrupts in PLIC?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L158-L208">jh7110_irq.c</a></p>
+<p>Suppose we’re enabling <strong>RISC-V IRQ 20</strong> for UART3 Interrupts.</p>
+<p>All we need to do is to flip <strong>Bit 20</strong> to 1 in the <strong>Interrupt Enable</strong> Register (pic above). Like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L158-L208">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the NuttX IRQ specified by `irq`
 // UART3 Interrupt is RISC-V IRQ 20
 // Which is NuttX IRQ 45 (Offset by 25)
@@ -252,8 +252,18 @@ void up_enable_irq(int irq) {
   }
 }
 </code></pre></div>
+<p>And PLIC will happily accept RISC-V IRQ 20 whenever we press a key! (On the Serial Console, pic above)</p>
 <p><em>Who calls up_enable_irq?</em></p>
-<p>TODO: We’re halfway through our Grand Plan of <strong>PLIC Interrupts</strong>! (Steps 1, 2 and 3, pic below)</p>
+<p>At startup, NuttX calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L383-L442"><strong>bl602_attach</strong></a> to attach the UART Interrupt Handler…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Attach UART Interrupt Handler
+static int bl602_attach(struct uart_dev_s *dev) {
+  ...
+  // Enable Interrupt for UART3.
+  // `irq` is NuttX IRQ 45
+  up_enable_irq(priv-&gt;irq);
+</code></pre></div>
+<p>Which will call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L158-L208"><strong>up_enable_irq</strong></a> to enable the UART3 Interrupt.</p>
+<p>We’re halfway through our Grand Plan of <strong>PLIC Interrupts</strong>! (Steps 1, 2 and 3, pic below)</p>
 <p>We pause a moment to talk about Harts…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Registers for Platform-Level Interrupt Controller" /></p>
 <h1 id="hart-0-supervisor-mode"><a href="#hart-0-supervisor-mode">5 Hart 0, Supervisor Mode</a></h1>
