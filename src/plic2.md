@@ -20,7 +20,7 @@ Our Story today is all about __RISC-V Interrupts__ on the tiny [__Pine64 Ox64 BL
 
 We'll walk through the steps with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
 
-Though we'll hit a bumpy ride with our work-in-progress __NuttX on Ox64__...
+Though we'll hit a bumpy journey with our work-in-progress __NuttX on Ox64__...
 
 - __Leaky Writes__ seem to be affecting adjacent PLIC Registers
 
@@ -170,9 +170,9 @@ _Our Platform-Level Interrupt Controller (PLIC) is all ready for action..._
 
 _How will we enable Interrupts in PLIC?_
 
-TODO
+Suppose we're enabling __RISC-V IRQ 20__ for UART3 Interrupts.
 
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L158-L208)
+All we need to do is to flip __Bit 20__ to 1 in the __Interrupt Enable__ Register (pic above). Like so: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L158-L208)
 
 ```c
 // Enable the NuttX IRQ specified by `irq`
@@ -202,9 +202,24 @@ void up_enable_irq(int irq) {
 }
 ```
 
+And PLIC will happily accept RISC-V IRQ 20 whenever we press a key! (On the Serial Console, pic above)
+
 _Who calls up_enable_irq?_
 
-TODO: We're halfway through our Grand Plan of __PLIC Interrupts__! (Steps 1, 2 and 3, pic below)
+At startup, NuttX calls [__bl602_attach__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L383-L442) to attach the UART Interrupt Handler...
+
+```c
+// Attach UART Interrupt Handler
+static int bl602_attach(struct uart_dev_s *dev) {
+  ...
+  // Enable Interrupt for UART3.
+  // `irq` is NuttX IRQ 45
+  up_enable_irq(priv->irq);
+```
+
+Which will call [__up_enable_irq__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L158-L208) to enable the UART3 Interrupt.
+
+We're halfway through our Grand Plan of __PLIC Interrupts__! (Steps 1, 2 and 3, pic below)
 
 We pause a moment to talk about Harts...
 
