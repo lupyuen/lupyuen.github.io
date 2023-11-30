@@ -124,6 +124,9 @@
 <h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">1 Platform-Level Interrupt Controller</a></h1>
 <p><em>What’s this PLIC?</em></p>
 <p>TODO: PLIC doc</p>
+<p>(<strong>IRQ</strong> means Interrupt Request Number)</p>
+<p>NuttX IRQ Number = 25 + RISC-V IRQ Number</p>
+<p>NuttX reserves a bunch of IRQ Numbers for Internal Use. Hence the Offset of 25.</p>
 <p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="BL808 Platform-Level Interrupt Controller" /></p>
 <h1 id="uart-interrupt"><a href="#uart-interrupt">2 UART Interrupt</a></h1>
 <p>TODO</p>
@@ -311,6 +314,7 @@ static int bl602_attach(struct uart_dev_s *dev) {
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
   // Compute the (Interim) NuttX IRQ Number
+  // Based on the Interrupt Vector Number
   int irq = (vector &gt;&gt; RV_IRQ_MASK) | (vector &amp; 0xf);
 
   // If this is an External Interrupt...
