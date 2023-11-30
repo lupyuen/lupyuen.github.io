@@ -142,7 +142,9 @@ void up_enable_irq(int irq) {
 }
 ```
 
-TODO: We're halfway through!
+TODO: We're halfway through! Steps 1, 2 and 3
+
+Before the complete the rest, let's talk about Harts...
 
 ![Registers for Platform-Level Interrupt Controller](https://lupyuen.github.io/images/plic2-registers.jpg)
 
@@ -152,54 +154,23 @@ _The pic above: Why does it say "Hart 0, Supervisor Mode"?_
 
 TODO
 
+"Hart" refers to
+
+"Hart 0" refers to
+
 ![BL808](https://lupyuen.github.io/images/plic2-bl808a.jpg)
 
 TODO
 
 ![JH7110](https://lupyuen.github.io/images/plic2-bl808b.jpg)
 
-TODO
-
-![BL808 vs JH7110](https://lupyuen.github.io/images/plic2-bl808.jpg)
+_Why "Supervisor Mode"?_
 
 TODO
 
 ![Handle Interrupt](https://lupyuen.github.io/images/plic2-registers4.jpg)
 
 # Handle the Interrupt
-
-TODO
-
-[jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
-
-```c
-// Check the Pending Interrupts...
-
-// Read PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-uintptr_t ip0 = getreg32(0xe0001000);
-
-// Read PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-uintptr_t ip1 = getreg32(0xe0001004);
-
-// If Bit 20 of `ip0` is set...
-if (ip0 & (1 << 20)) {
-  // Then UART3 Interrupt was fired (RISC-V IRQ 20)
-  val = 20;
-}
-```
-
-TODO
-
-```c
-// Clear the Pending Interrupts...
-// TODO: Clear the Individual Bits instead of wiping out the Entire Register
-
-// Clear PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-putreg32(0, 0xe0001000);
-
-// Clear PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-putreg32(0, 0xe0001004);
-```
 
 TODO
 
@@ -273,12 +244,6 @@ TODO
       irq - RISCV_IRQ_EXT,  // RISC-V IRQ Number (RISCV_IRQ_EXT = 25)
       JH7110_PLIC_CLAIM     // PLIC Claim (Complete) Register
     );
-
-    ////Begin
-    // Clear Pending Interrupts
-    putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-    putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-    ////End
   }
 
   // Return the Registers to the Caller
@@ -292,74 +257,48 @@ TODO
 
 ## Pending Interrupts
 
-TODO
+_What's with the Pending Interrupts? (Pic above)_
+
+TODO: Normally the Claim / Complete is perfectly adequate for handling interrupts 
 
 [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105)
 
 ```c
-// Dispatch the RISC-V Interrupt
-void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
+// Check the Pending Interrupts...
 
-  // Compute the (Interim) NuttX IRQ Number
-  int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
+// Read PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+uintptr_t ip0 = getreg32(0xe0001000);
 
-  // If this is an External Interrupt...
-  if (RISCV_IRQ_EXT == irq) {
+// Read PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+uintptr_t ip1 = getreg32(0xe0001004);
 
-    // Read the RISC-V IRQ Number
-    // and Claim the Interrupt.
-    uintptr_t val = getreg32(
-      JH7110_PLIC_CLAIM  // From PLIC Claim Register
-    );
-
-    ////Begin
-    if (val == 0) {  // If Interrupt Claimed is 0...
-      // Check Pending Interrupts
-      uintptr_t ip0 = getreg32(0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-      uintptr_t ip1 = getreg32(0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-      // if (ip1 & (1 << 20)) { val = 52; }  // EMAC
-      if (ip0 & (1 << 20)) { val = 20; }  // UART3 Interrupt was fired
-    }
-    ////End
-
-    // Compute the Actual NuttX IRQ Number:
-    // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
-    irq += val;
-  }
-
-  // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
-  // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
-
-  // If the RISC-V IRQ Number is valid (non-zero)...
-  if (RISCV_IRQ_EXT != irq) {
-
-    // Call the Interrupt Handler
-    regs = riscv_doirq(irq, regs);
-  }
-
-  // If this is an External Interrupt...
-  if (RISCV_IRQ_EXT <= irq) {
-
-    // Compute the RISC-V IRQ Number
-    // and Complete the Interrupt.
-    putreg32(
-      irq - RISCV_IRQ_EXT,  // RISC-V IRQ Number (RISCV_IRQ_EXT = 25)
-      JH7110_PLIC_CLAIM     // PLIC Claim (Complete) Register
-    );
-
-    ////Begin
-    // Clear Pending Interrupts
-    putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
-    putreg32(0, 0xe0001004);  // PLIC_IP1: Interrupt Pending for interrupts 32 to 63
-    ////End
-  }
-
-  // Return the Registers to the Caller
-  return regs;
+// If Bit 20 of `ip0` is set...
+if (ip0 & (1 << 20)) {
+  // Then UART3 Interrupt was fired (RISC-V IRQ 20)
+  val = 20;
 }
 ```
 
 TODO
+
+```c
+// Clear the Pending Interrupts...
+// TODO: Clear the Individual Bits instead of wiping out the Entire Register
+
+// Clear PLIC_IP0: Interrupt Pending for interrupts 1 to 31
+putreg32(0, 0xe0001000);
+
+// Clear PLIC_IP1: Interrupt Pending for interrupts 32 to 63
+putreg32(0, 0xe0001004);
+```
+
+TODO: All this tested with
+
+- Star64 JH7110 RISC-V Supervisor Mode (SiFive U74)
+
+- C906 RISC-V Machine Mode
+
+But not C906 RISC-V Supervisor Mode (BL808)
 
 ![Set Interrupt Priority](https://lupyuen.github.io/images/plic2-registers1.jpg)
 
@@ -414,13 +353,19 @@ void test_interrupt_priority(void) {
   uint32_t after54 = *(volatile uint32_t *) 0xe0000054UL;
 
   // Dump before and after values:
-  // before50=0 before54=0
-  // after50=1  after54=1
-  // Why after54=1 ???
   _info("before50=%u, before54=%u, after50=%u, after54=%u\n",
     before50, before54, after50, after54);
 }
 ```
+
+TODO
+
+```text
+before50=0, before54=0
+after50=1,  after54=1
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L257)
 
 TODO
 
