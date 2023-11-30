@@ -545,7 +545,7 @@ Today we're hitting 2 strange issues in the __BL808 (C906) PLIC__...
 
 So many questions...
 
-1.  _Any clues what's causing this?_
+1.  _Any clue what's causing this?_
 
     The __Leaky Writes__ don't seem to happen [__before enabling the MMU__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L298) (Memory Management Unit)...
 
@@ -566,7 +566,9 @@ So many questions...
 
     So it might be a problem with our MMU Settings.
 
-    [(More about the __Memory Management Unit__)](https://lupyuen.github.io/articles/mmu)
+    [(More about __Memory Management Unit__)](https://lupyuen.github.io/articles/mmu)
+
+    [(__U-Boot Bootloader__ doesn't have Leaky Writes)](https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic)
 
 1.  TODO: C906 MMU
 
@@ -574,17 +576,23 @@ So many questions...
 
 1.  TODO: Level 1?
 
-1.  _Something special about T-Head C906 PLIC?_
+1.  TODO: GCC Assembly?
 
-    From this [Linux Patch](https://lore.kernel.org/lkml/CAJF2gTS8Z+6Ewy0D5+0X_h2Jz4BqsJp7wEC5F0iNaDsSpiE2aw@mail.gmail.com/)
+    SFENCE
+
+1.  _Something special about C906 PLIC?_
+
+    According to the [__Linux PLIC Driver__](https://lore.kernel.org/lkml/CAJF2gTS8Z+6Ewy0D5+0X_h2Jz4BqsJp7wEC5F0iNaDsSpiE2aw@mail.gmail.com/)...
 
     > "The T-HEAD C9xx SoC implements a modified/custom T-HEAD PLIC
     specification which will mask current IRQ upon read to CLAIM register
-    and will unmask the IRQ upon write to CLAIM register. The
-    thead,c900-plic compatible string represents the custom T-HEAD PLIC
-    specification."
+    and will unmask the IRQ upon write to CLAIM register"
 
-    "thead,c900-plic" is implemented in Linux here: [irq-sifive-plic.c](https://github.com/torvalds/linux/blob/master/drivers/irqchip/irq-sifive-plic.c#L574-L582)
+    [(More about __C906 PLIC__)](https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic)
+
+1.  _Maybe our problem is Leaky Reads? Not Leaky Writes?_
+
+    Hmmm... Possibly!
 
 TODO
 
