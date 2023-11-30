@@ -53,11 +53,15 @@ void up_irqinitialize(void) {
   putreg32(0x0, PLIC_ENABLE2);  // RISC-V IRQ 32 to 63
 ```
 
+[(__up_irq_save__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/irq.h#L674-L703)
+
 [(__putreg32__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_internal.h#L124-L132)
 
 [(__PLIC_ENABLE__ and other PLIC Offsets are defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L34-L49)
 
 [(NuttX calls __up_irqinitialize__ at startup)](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
+
+Hence at startup, all PLIC Interrupts are disabled until we __enable them later__ (in PLIC).
 
 ![Clear Interrupts](https://lupyuen.github.io/images/plic2-registers5a.jpg)
 
@@ -85,7 +89,7 @@ We initialise the __Interrupt Priority__ of all Interrupts to 1 (pic above): [jh
 
 ```c
   // Set Priority for all External Interrupts to 1 (Lowest)
-  // NR_IRQS is 83
+  // NR_IRQS is 83 (TODO: BL808 only supports 82 Peripheral Interrupts)
   // PLIC_PRIORITY is 0xE000_0000
   for (int id = 1; id <= NR_IRQS; id++) {
     putreg32(
@@ -97,7 +101,11 @@ We initialise the __Interrupt Priority__ of all Interrupts to 1 (pic above): [jh
 
 _Why set Interrupt Priority to 1?_
 
-TODO
+- 1 is the __Lowest Interrupt Priority__
+
+- Default Interrupt Priority is 0, but it's __not valid__
+
+- Interrupt won't actually fire until we __enable it later__ (in PLIC)
 
 ![Set Interrupt Threshold](https://lupyuen.github.io/images/plic2-registers2.jpg)
 
@@ -110,16 +118,21 @@ TODO
 ```c
   // Set Interrupt Threshold to 0
   // (Permits all External Interrupts)
+  // PLIC_THRESHOLD is 0xE020_1000
   putreg32(0, PLIC_THRESHOLD);
 
-  // Attach the Common Interrupt Handlers
-  // TODO: Show do this earlier
+  // Attach the Common RISC-V Exception Handlers
+  // TODO: Do this earlier
   riscv_exception_attach();
 
   // Enable Supervisor-Mode Interrupts (SIE Register)
   up_irq_enable();
 }
 ```
+
+[(__riscv_exception_attach__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L89-L142)
+
+[(__up_irq_enable__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L208-L223)
 
 TODO
 
