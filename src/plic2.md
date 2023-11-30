@@ -210,6 +210,8 @@ void up_enable_irq(int irq) {
     int extirq = irq - RISCV_IRQ_EXT;
 
     // Set the Interrupt Enable Bit for `extirq` in PLIC
+    // PLIC_ENABLE1 is 0xE000_2080
+    // PLIC_ENABLE2 is 0xE000_2084
     if (0 <= extirq && extirq <= 63) {
       modifyreg32(
         PLIC_ENABLE1 + (4 * (extirq / 32)),  // Address
@@ -444,7 +446,7 @@ One again, we don't need really need this. We'll stash this as our Backup Plan i
 
 _I sense a twist in our story..._
 
-Earlier we initialised the __Interrupt Priorities to 1__ at startup: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90)
+Earlier we initialised the __Interrupt Priorities to 1__ at startup (pic above): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90)
 
 ```c
 // Init the Platform-Level Interrupt Controller
@@ -491,7 +493,7 @@ void test_interrupt_priority(void) {
   uint32_t before54 = *(volatile uint32_t *) 0xe0000054UL;  // RISC-V IRQ 21
 
   // Set the Interrupt Priority
-  // for 0x50 but NOT 0x54
+  // for 0x50 (IRQ 20) but NOT 0x54 (IRQ 21)
   *(volatile uint32_t *) 0xe0000050UL = 1;
 
   // Read the values after setting Interrupt Priority
@@ -504,7 +506,7 @@ void test_interrupt_priority(void) {
 }
 ```
 
-Again we get odd results...
+Again we get odd results (pic below)...
 
 ```text
 before50=0, before54=0
@@ -513,7 +515,9 @@ after50=1,  after54=1
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L257)
 
-IRQ 20 is set correctly. But __IRQ 21 is also set__! (Pic below)
+IRQ 20 is set correctly: _"after50=1"_
+
+But __IRQ 21 is also set__! _"after54=1"_
 
 _Hmmm... Our writing seems to have leaked over to the next 32-bit word?_
 
@@ -623,7 +627,7 @@ We can figure out the RISC-V IRQ Number by reading the __Interrupt Pending__ Reg
   // and Complete the Interrupt
 ```
 
-Which tells us the correct __RISC-V IRQ Number__ yay!
+Which tells us the correct __RISC-V IRQ Number__ for UART3 yay!
 
 ```text
 riscv_dispatch_irq:
@@ -657,13 +661,15 @@ bl602_receive: rxdata=0x0
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308)
 
+(Pic below)
+
 TODO: Screenshot
 
 # All Things Considered
 
 _Feels like we're wading into murky greyish territory... Like Jaws meets Twilight Zone on the Beach?_
 
-Yeah we said this [__last time__](https://lupyuen.github.io/articles/ox2#begin-with-star64-nuttx) and it's happening now...
+Yeah we said this [__last time__](https://lupyuen.github.io/articles/ox2#begin-with-star64-nuttx), and it's happening now...
 
 > "If RISC-V ain't RISC-V on SiFive vs T-Head: We'll find out!"
 
@@ -691,7 +697,7 @@ Today we're hitting 2 Strange Issues in the __BL808 (C906) PLIC__...
 
   (Instead of the RISC-V External Interrupt Number)
 
-So many questions...
+Which shouldn't happen because PLIC is in the [__Official RISC-V Spec__](https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic)! So many questions...
 
 1.  _Any clue what's causing this?_
 
@@ -751,6 +757,8 @@ So many questions...
 1.  _Perhaps our problem is Leaky Reads? Not Leaky Writes?_
 
     Hmmm... Perhaps!
+
+Can we end this sad story with a happier conclusion? Please lemme know! 🙏
 
 # What's Next
 
