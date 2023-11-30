@@ -124,10 +124,18 @@
 <p><img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">1 Platform-Level Interrupt Controller</a></h1>
 <p><em>What’s this PLIC?</em></p>
-<p>TODO: PLIC doc</p>
+<p><strong>Platform-Level Interrupt Controller</strong> (PLIC) is the hardware inside our BL808 SoC that controls the forwarding of <strong>Peripheral Interrupts</strong> to our 64-bit RISC-V CPU. (Pic below)</p>
+<p>(Like Interrupts for UART, I2C, SPI, …)</p>
+<p>Each Interrupt is identified by a <strong>RISC-V IRQ Number</strong>.</p>
 <p>(<strong>IRQ</strong> means Interrupt Request Number)</p>
-<p>NuttX IRQ Number = 25 + RISC-V IRQ Number</p>
-<p>NuttX reserves a bunch of IRQ Numbers for Internal Use. Hence the Offset of 25.</p>
+<p>NuttX uses its own <strong>NuttX IRQ Number</strong>…</p>
+<ul>
+<li>NuttX IRQ Number = 25 + RISC-V IRQ Number</li>
+</ul>
+<p>That’s because NuttX reserves a bunch of IRQ Numbers for Internal Use.</p>
+<p>(Hence the Offset of 25)</p>
+<p>Let’s find out the NuttX IRQ Number for UART Input / Output…</p>
+<p>TODO: PLIC doc</p>
 <p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="BL808 Platform-Level Interrupt Controller" /></p>
 <h1 id="uart-interrupt"><a href="#uart-interrupt">2 UART Interrupt</a></h1>
 <p>TODO</p>
@@ -513,7 +521,7 @@ nsh&gt;
 <p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Pending Interrupts" /></p>
 <h1 id="backup-plan"><a href="#backup-plan">9 Backup Plan</a></h1>
 <p><em>We have a Backup Plan for Handling Interrupts?</em></p>
-<p>Our Backup Plan is to figure out the RISC-V IRQ Number by reading the <strong>Interrupt Pending</strong> Register (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
+<p>We can figure out the RISC-V IRQ Number by reading the <strong>Interrupt Pending</strong> Register (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    // If Interrupt Claimed is 0...
     if (val == 0) {
       // Check the Pending Interrupts...
@@ -580,7 +588,7 @@ bl602_receive: rxdata=0x0
 <p>(Which might explain our troubles)</p>
 </li>
 </ul>
-<p>Today we’re hitting 2 strange issues in the <strong>BL808 (C906) PLIC</strong>…</p>
+<p>Today we’re hitting 2 Strange Issues in the <strong>BL808 (C906) PLIC</strong>…</p>
 <ul>
 <li>
 <p><strong>Leaky Writes</strong> to PLIC Registers</p>
