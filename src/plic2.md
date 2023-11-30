@@ -60,9 +60,23 @@ TODO: PLIC doc
 
 # UART Interrupt
 
+_What's the RISC-V Interrupt Number for Ox64 UART?_
+
+- We're running on the __D0 Multimedia Core__ of the BL808 SoC. (Pic above)
+
+- Connected to the D0 Multimedia Core is the __UART3 Controller__ for Serial Console. (Pic below)
+
 TODO
 
-![BL808 UART3 Interrupt](https://lupyuen.github.io/images/plic2-irq.jpg)
+Remember that NuttX uses its own __NuttX IRQ Number__...
+
+- NuttX IRQ Number = 25 + RISC-V IRQ Number
+
+Thus we'll mention __NuttX IRQ Number 45__.
+
+![BL808 Reference Manual (Page 44)](https://lupyuen.github.io/images/plic2-irq.jpg)
+
+[_BL808 Reference Manual (Page 44)_](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
 # Initialise the Interrupts
 
