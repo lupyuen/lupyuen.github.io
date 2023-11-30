@@ -118,9 +118,11 @@ void up_irqinitialize(void) {
   putreg32(0x0, PLIC_ENABLE1);  // RISC-V IRQ 1  to 31
   putreg32(0x0, PLIC_ENABLE2);  // RISC-V IRQ 32 to 63
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/irq.h#L674-L703">(<strong>up_irq_save</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_internal.h#L124-L132">(<strong>putreg32</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L34-L49">(<strong>PLIC_ENABLE</strong> and other PLIC Offsets are defined here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow">(NuttX calls <strong>up_irqinitialize</strong> at startup)</a></p>
+<p>Hence at startup, all PLIC Interrupts are disabled until we <strong>enable them later</strong> (in PLIC).</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5a.jpg" alt="Clear Interrupts" /></p>
 <h2 id="clear-the-interrupts"><a href="#clear-the-interrupts">3.2 Clear the Interrupts</a></h2>
 <p>Next we <strong>Claim and Complete</strong> the Outstanding Interrupts (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L61-L68">jh7110_irq.c</a></p>
@@ -136,7 +138,7 @@ void up_irqinitialize(void) {
 <h2 id="set-the-interrupt-priority"><a href="#set-the-interrupt-priority">3.3 Set the Interrupt Priority</a></h2>
 <p>We initialise the <strong>Interrupt Priority</strong> of all Interrupts to 1 (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set Priority for all External Interrupts to 1 (Lowest)
-  // NR_IRQS is 83
+  // NR_IRQS is 83 (TODO: BL808 only supports 82 Peripheral Interrupts)
   // PLIC_PRIORITY is 0xE000_0000
   for (int id = 1; id &lt;= NR_IRQS; id++) {
     putreg32(
@@ -146,23 +148,36 @@ void up_irqinitialize(void) {
   }
 </code></pre></div>
 <p><em>Why set Interrupt Priority to 1?</em></p>
-<p>TODO</p>
+<ul>
+<li>
+<p>1 is the <strong>Lowest Interrupt Priority</strong></p>
+</li>
+<li>
+<p>Default Interrupt Priority is 0, but it’s <strong>not valid</strong></p>
+</li>
+<li>
+<p>Interrupt won’t actually fire until we <strong>enable it later</strong> (in PLIC)</p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/plic2-registers2.jpg" alt="Set Interrupt Threshold" /></p>
 <h2 id="set-the-interrupt-threshold"><a href="#set-the-interrupt-threshold">3.4 Set the Interrupt Threshold</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L90-L114">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set Interrupt Threshold to 0
   // (Permits all External Interrupts)
+  // PLIC_THRESHOLD is 0xE020_1000
   putreg32(0, PLIC_THRESHOLD);
 
-  // Attach the Common Interrupt Handlers
-  // TODO: Show do this earlier
+  // Attach the Common RISC-V Exception Handlers
+  // TODO: Do this earlier
   riscv_exception_attach();
 
   // Enable Supervisor-Mode Interrupts (SIE Register)
   up_irq_enable();
 }
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L89-L142">(<strong>riscv_exception_attach</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L208-L223">(<strong>up_irq_enable</strong> is defined here)</a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers3.jpg" alt="Enable Interrupt" /></p>
 <h1 id="enable-the-interrupt"><a href="#enable-the-interrupt">4 Enable the Interrupt</a></h1>
