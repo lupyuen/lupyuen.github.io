@@ -130,7 +130,7 @@
 <p>(<strong>IRQ</strong> means Interrupt Request Number)</p>
 <p>NuttX uses its own <strong>NuttX IRQ Number</strong>…</p>
 <ul>
-<li>NuttX IRQ Number = 25 + RISC-V IRQ Number</li>
+<li>NuttX IRQ = 25 + RISC-V IRQ</li>
 </ul>
 <p>That’s because NuttX reserves a bunch of IRQ Numbers for Internal Use.</p>
 <p>(Hence the Offset of 25)</p>
@@ -146,11 +146,17 @@
 <li>
 <p>Connected to the D0 Multimedia Core is the <strong>UART3 Controller</strong> for Serial Console. (Pic below)</p>
 </li>
+<li>
+<p>According to the table below: RISC-V IRQ Number for UART3 is <strong>IRQ_NUM_BASE + 4</strong></p>
+</li>
+<li>
+<p>Also in the table: <strong>IRQ_NUM_BASE</strong> is 16</p>
+</li>
 </ul>
-<p>TODO</p>
+<p>Therefore the <strong>RISC-V IRQ Number</strong> for UART3 is <strong>20</strong>.</p>
 <p>Remember that NuttX uses its own <strong>NuttX IRQ Number</strong>…</p>
 <ul>
-<li>NuttX IRQ Number = 25 + RISC-V IRQ Number</li>
+<li>NuttX IRQ = 25 + RISC-V IRQ</li>
 </ul>
 <p>Thus later we’ll see <strong>NuttX IRQ Number 45</strong>.</p>
 <p>TODO: NuttX UART Driver</p>
