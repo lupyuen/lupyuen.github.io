@@ -839,7 +839,7 @@ Which shouldn't happen because PLIC is in the [__Official RISC-V Spec__](https:/
 
     Hmmm... Perhaps!
 
-Can we finish our Sad Story with a Happier Conclusion? Please lemme know! 🙏
+Can we rewrite our Sad Story with a Happier Conclusion? Please lemme know! 🙏
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
 
