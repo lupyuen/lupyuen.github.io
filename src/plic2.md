@@ -40,23 +40,19 @@ _What's this PLIC?_
 
 [__Platform-Level Interrupt Controller__](https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic) (PLIC) is the hardware inside our BL808 SoC that controls the forwarding of __Peripheral Interrupts__ to our 64-bit RISC-V CPU.
 
-Like the Interrupts for __UART__, __I2C__, __SPI__, ...
-
-(Pic below)
+(Like the Interrupts for __UART__, __I2C__, __SPI__, ...)
 
 _Why should we bother with PLIC?_
 
-Here's why...
+Suppose we're working with Ox64 SBC through a __Serial Console__ (pic below)...
 
-- Suppose we're working with Ox64 SBC through a __Serial Console__
+- Every single __key that we press__...
 
-- Every single __key that we press__ (pic below)...
+- Will fire an __Interrupt through the PLIC__ to the RISC-V CPU
 
-  Will fire an __Interrupt through the PLIC__ to the RISC-V CPU
+- Without the PLIC, it's __impossible to enter commands__ in the Serial Console!
 
-- Without the PLIC, it's simply __impossible to enter commands__ in the Serial Console!
-
-That's why it's good to understand how PLIC works on __any operating system__: Linux, NuttX, ...
+That's why it's good to understand how PLIC works with an Operating System. (Like Linux or NuttX)
 
 TODO
 
@@ -68,7 +64,7 @@ NuttX uses its own __NuttX IRQ Number__...
 
 That's because NuttX reserves a bunch of IRQ Numbers for Internal Use. (Hence the Offset of 25)
 
-Pressing a key in the Ox64 Serial Console will fire an Interrupt in PLIC. First we need the IRQ Number for Serial Console...
+First we need the IRQ Number for Serial Console...
 
 [(PLIC is documented in __C906 User Manual__, Page 74)](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)
 
