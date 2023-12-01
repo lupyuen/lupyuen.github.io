@@ -536,7 +536,7 @@ after50=1,  after54=1
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L257">(See the <strong>Complete Log</strong>)</a></p>
 <p>IRQ 20 is set correctly: <em>“after50=1”</em></p>
-<p>But <strong>IRQ 21 is also set</strong>! <em>“after54=1”</em></p>
+<p>However <strong>IRQ 21 is also set</strong>! <em>“after54=1”</em></p>
 <p><em>Hmmm… Our writing seems to have leaked over to the next 32-bit word?</em></p>
 <p>Yeah we see the <strong>Leaky Write</strong> again when we set the <strong>Interrupt Enable</strong> Register…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Before setting Interrupt Enable: Everything is 0
