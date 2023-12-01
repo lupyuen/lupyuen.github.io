@@ -579,7 +579,7 @@ after50=1,  after54=1
 
 IRQ 20 is set correctly: _"after50=1"_
 
-But __IRQ 21 is also set__! _"after54=1"_
+However __IRQ 21 is also set__! _"after54=1"_
 
 _Hmmm... Our writing seems to have leaked over to the next 32-bit word?_
 
