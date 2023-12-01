@@ -524,7 +524,7 @@ putreg32(0, 0xe0001000);
 // TODO: Clear the Individual Bits instead of wiping out the Entire Register
 ```
 
-One again, we don't need really need this. We'll stash this as our __Backup Plan__ in case things go wrong.
+Once again, we don't need really need this. We'll stash this as our __Backup Plan__ in case things go wrong.
 
 (Oh yes, things will go wrong in a while)
 
