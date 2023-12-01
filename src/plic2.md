@@ -351,13 +351,13 @@ _Why "Supervisor Mode"?_
 
 1.  __RISC-V Supervisor Mode__ is less powerful than Machine Mode.
 
-    __NuttX Kernel__ runs in Supervisor Mode.
+    [__NuttX Kernel__](https://lupyuen.github.io/articles/ox2) runs in Supervisor Mode.
     
     (Linux too!)
 
 1.  __RISC-V User Mode__ is the least powerful mode.
 
-    __NuttX Apps__ run in User Mode.
+    [__NuttX Apps__](https://lupyuen.github.io/articles/app) run in User Mode.
 
     (Same for Linux Apps)
 
