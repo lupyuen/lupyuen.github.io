@@ -8,7 +8,7 @@
 
 > — ["Interrupting Chicken"](https://share.libbyapp.com/title/4190211)
 
-Our Story today is all about __RISC-V Interrupts__ on the tiny [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit Single-Board Computer (pic below)...
+Our Story today is all about __RISC-V Interrupts__ on the tiny adorable [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit Single-Board Computer (pic below)...
 
 - What's inside the __Platform-Level Interrupt Controller__ (PLIC)
 
