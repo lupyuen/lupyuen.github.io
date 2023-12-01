@@ -14,9 +14,9 @@ Our Story today is all about __RISC-V Interrupts__ on the tiny adorable [__Pine6
 
 - __Setting up the PLIC__ at startup
 
-- __Enabling the PLIC Interrupt__ for UART Input
+- __Enabling the PLIC Interrupt__ for Serial Console
 
-- __Handling PLIC Interrupts__ for UART
+- __Handling PLIC Interrupts__ for UART Input
 
   [(Based on __Bouffalo Lab BL808 SoC__)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
@@ -48,7 +48,7 @@ NuttX uses its own __NuttX IRQ Number__...
 
 That's because NuttX reserves a bunch of IRQ Numbers for Internal Use. (Hence the Offset of 25)
 
-First we get the NuttX IRQ Number for UART Input / Output...
+Pressing a key in the Ox64 Serial Console will fire an Interrupt in PLIC. First we need the IRQ Number for Serial Console...
 
 [(PLIC is documented in __C906 User Manual__, Page 74)](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)
 
@@ -58,25 +58,35 @@ First we get the NuttX IRQ Number for UART Input / Output...
 
 # UART Interrupt
 
-_What's the RISC-V Interrupt Number for Ox64 UART?_
+_What's the Interrupt Number for the Serial Console?_
 
-- We're running on the __D0 Multimedia Core__ of the BL808 SoC. (Pic above)
+To enable Text Input in the __Ox64 Serial Console__, we need the UART Interrupt Number...
 
-- Connected to the D0 Multimedia Core is the __UART3 Controller__ for Serial Console. (Pic below)
+- We're running on the __D0 Multimedia Core__ of the BL808 SoC
 
-- According to the table below: RISC-V IRQ Number for UART3 is __IRQ_NUM_BASE + 4__
+  (Pic above)
 
-- Also in the table: __IRQ_NUM_BASE__ is 16
+- Connected to the D0 Multimedia Core is the __UART3 Controller__ for Serial Console
 
-Therefore the __RISC-V IRQ Number__ for UART3 is __20__.
+  (Pic below)
+
+- According to the table below: RISC-V IRQ Number for UART3 is...
+
+  __IRQ_NUM_BASE + 4__
+
+- Also in the table...
+
+  __IRQ_NUM_BASE__ is __16__
+
+Therefore the __RISC-V IRQ Number__ for our Serial Console (UART3) is __20__.
 
 Remember that NuttX uses its own __NuttX IRQ Number__...
 
 - NuttX IRQ = 25 + RISC-V IRQ
 
-Thus later we'll see __NuttX IRQ Number 45__ in our code.
+Thus later we'll handle __NuttX IRQ Number 45__ in our code. And our Ox64 Serial Console will support Text Input!
 
-_How did we get the NuttX UART Driver for Ox64 BL808?_
+_How did we get the UART Driver for Ox64 BL808?_
 
 We copied the __NuttX UART Driver__ from BL602 to BL808, since the UART Controllers are similar...
 
