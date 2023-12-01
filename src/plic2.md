@@ -845,7 +845,7 @@ Can we rewrite our Sad Story with a Happier Conclusion? Please lemme know! 🙏
 
 # What's Next
 
-TODO: Today we talked about __Interrupting Chickens__ and __Ox64 BL808 SBC__...
+TODO: Today we talked about __Interrupting Chickens, Oxen__ and __Ox64 BL808 RISC-V SBC__...
 
 We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
 
