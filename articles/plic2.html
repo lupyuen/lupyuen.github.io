@@ -126,23 +126,21 @@
 <h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">1 Platform-Level Interrupt Controller</a></h1>
 <p><em>What’s this PLIC?</em></p>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic"><strong>Platform-Level Interrupt Controller</strong></a> (PLIC) is the hardware inside our BL808 SoC that controls the forwarding of <strong>Peripheral Interrupts</strong> to our 64-bit RISC-V CPU.</p>
-<p>Like the Interrupts for <strong>UART</strong>, <strong>I2C</strong>, <strong>SPI</strong>, …</p>
-<p>(Pic below)</p>
+<p>(Like the Interrupts for <strong>UART</strong>, <strong>I2C</strong>, <strong>SPI</strong>, …)</p>
 <p><em>Why should we bother with PLIC?</em></p>
-<p>Here’s why…</p>
+<p>Suppose we’re working with Ox64 SBC through a <strong>Serial Console</strong> (pic below)…</p>
 <ul>
 <li>
-<p>Suppose we’re working with Ox64 SBC through a <strong>Serial Console</strong></p>
+<p>Every single <strong>key that we press</strong>…</p>
 </li>
 <li>
-<p>Every single <strong>key that we press</strong> (pic below)…</p>
 <p>Will fire an <strong>Interrupt through the PLIC</strong> to the RISC-V CPU</p>
 </li>
 <li>
-<p>Without the PLIC, it’s simply <strong>impossible to enter commands</strong> in the Serial Console!</p>
+<p>Without the PLIC, it’s <strong>impossible to enter commands</strong> in the Serial Console!</p>
 </li>
 </ul>
-<p>That’s why it’s good to understand how PLIC works on <strong>any operating system</strong>: Linux, NuttX, …</p>
+<p>That’s why it’s good to understand how PLIC works with an Operating System. (Like Linux or NuttX)</p>
 <p>TODO</p>
 <p>Each Interrupt is identified by a <strong>RISC-V IRQ Number</strong>. (<strong>IRQ</strong> means Interrupt Request Number)</p>
 <p>NuttX uses its own <strong>NuttX IRQ Number</strong>…</p>
@@ -150,7 +148,7 @@
 <li>NuttX IRQ = 25 + RISC-V IRQ</li>
 </ul>
 <p>That’s because NuttX reserves a bunch of IRQ Numbers for Internal Use. (Hence the Offset of 25)</p>
-<p>Pressing a key in the Ox64 Serial Console will fire an Interrupt in PLIC. First we need the IRQ Number for Serial Console…</p>
+<p>First we need the IRQ Number for Serial Console…</p>
 <p><a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">(PLIC is documented in <strong>C906 User Manual</strong>, Page 74)</a></p>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic">(See the <strong>Official PLIC Spec</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="BL808 Platform-Level Interrupt Controller" /></p>
