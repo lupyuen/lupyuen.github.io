@@ -103,10 +103,10 @@
 <p><strong>Setting up the PLIC</strong> at startup</p>
 </li>
 <li>
-<p><strong>Enabling the PLIC Interrupt</strong> for UART Input</p>
+<p><strong>Enabling the PLIC Interrupt</strong> for Serial Console</p>
 </li>
 <li>
-<p><strong>Handling PLIC Interrupts</strong> for UART</p>
+<p><strong>Handling PLIC Interrupts</strong> for UART Input</p>
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(Based on <strong>Bouffalo Lab BL808 SoC</strong>)</a></p>
 </li>
 </ul>
@@ -132,33 +132,38 @@
 <li>NuttX IRQ = 25 + RISC-V IRQ</li>
 </ul>
 <p>That’s because NuttX reserves a bunch of IRQ Numbers for Internal Use. (Hence the Offset of 25)</p>
-<p>First we get the NuttX IRQ Number for UART Input / Output…</p>
+<p>Pressing a key in the Ox64 Serial Console will fire an Interrupt in PLIC. First we need the IRQ Number for Serial Console…</p>
 <p><a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">(PLIC is documented in <strong>C906 User Manual</strong>, Page 74)</a></p>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic">(See the <strong>Official PLIC Spec</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="BL808 Platform-Level Interrupt Controller" /></p>
 <h1 id="uart-interrupt"><a href="#uart-interrupt">2 UART Interrupt</a></h1>
-<p><em>What’s the RISC-V Interrupt Number for Ox64 UART?</em></p>
+<p><em>What’s the Interrupt Number for the Serial Console?</em></p>
+<p>To enable Text Input in the <strong>Ox64 Serial Console</strong>, we need the UART Interrupt Number…</p>
 <ul>
 <li>
-<p>We’re running on the <strong>D0 Multimedia Core</strong> of the BL808 SoC. (Pic above)</p>
+<p>We’re running on the <strong>D0 Multimedia Core</strong> of the BL808 SoC</p>
+<p>(Pic above)</p>
 </li>
 <li>
-<p>Connected to the D0 Multimedia Core is the <strong>UART3 Controller</strong> for Serial Console. (Pic below)</p>
+<p>Connected to the D0 Multimedia Core is the <strong>UART3 Controller</strong> for Serial Console</p>
+<p>(Pic below)</p>
 </li>
 <li>
-<p>According to the table below: RISC-V IRQ Number for UART3 is <strong>IRQ_NUM_BASE + 4</strong></p>
+<p>According to the table below: RISC-V IRQ Number for UART3 is…</p>
+<p><strong>IRQ_NUM_BASE + 4</strong></p>
 </li>
 <li>
-<p>Also in the table: <strong>IRQ_NUM_BASE</strong> is 16</p>
+<p>Also in the table…</p>
+<p><strong>IRQ_NUM_BASE</strong> is <strong>16</strong></p>
 </li>
 </ul>
-<p>Therefore the <strong>RISC-V IRQ Number</strong> for UART3 is <strong>20</strong>.</p>
+<p>Therefore the <strong>RISC-V IRQ Number</strong> for our Serial Console (UART3) is <strong>20</strong>.</p>
 <p>Remember that NuttX uses its own <strong>NuttX IRQ Number</strong>…</p>
 <ul>
 <li>NuttX IRQ = 25 + RISC-V IRQ</li>
 </ul>
-<p>Thus later we’ll see <strong>NuttX IRQ Number 45</strong> in our code.</p>
-<p><em>How did we get the NuttX UART Driver for Ox64 BL808?</em></p>
+<p>Thus later we’ll handle <strong>NuttX IRQ Number 45</strong> in our code. And our Ox64 Serial Console will support Text Input!</p>
+<p><em>How did we get the UART Driver for Ox64 BL808?</em></p>
 <p>We copied the <strong>NuttX UART Driver</strong> from BL602 to BL808, since the UART Controllers are similar…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64"><strong>“UART Driver for Ox64”</strong></a></li>
