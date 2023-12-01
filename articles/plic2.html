@@ -141,20 +141,20 @@
 </li>
 </ul>
 <p>That’s why it’s good to understand how PLIC works with an Operating System. (Like Linux or NuttX)</p>
-<p>TODO</p>
-<p>Each Interrupt is identified by a <strong>RISC-V IRQ Number</strong>. (<strong>IRQ</strong> means Interrupt Request Number)</p>
+<p><em>PLIC handles all kinds of Interrupts?</em></p>
+<p>Yep plenty! We identify each Interrupt by its <strong>RISC-V IRQ Number</strong>. (<strong>IRQ</strong> means Interrupt Request Number)</p>
 <p>NuttX uses its own <strong>NuttX IRQ Number</strong>…</p>
 <ul>
 <li>NuttX IRQ = 25 + RISC-V IRQ</li>
 </ul>
 <p>That’s because NuttX reserves a bunch of IRQ Numbers for Internal Use. (Hence the Offset of 25)</p>
-<p>First we need the IRQ Number for Serial Console…</p>
+<p>Let’s figure out the IRQ Number for Serial Console…</p>
 <p><a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">(PLIC is documented in <strong>C906 User Manual</strong>, Page 74)</a></p>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic">(See the <strong>Official PLIC Spec</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="BL808 Platform-Level Interrupt Controller" /></p>
 <h1 id="uart-interrupt"><a href="#uart-interrupt">2 UART Interrupt</a></h1>
 <p><em>What’s the Interrupt Number for the Serial Console?</em></p>
-<p>To enable Text Input in the <strong>Ox64 Serial Console</strong>, we need the UART Interrupt Number…</p>
+<p>To enable Text Input in the <strong>Ox64 Serial Console</strong>, we need the Interrupt Number for the <strong>UART Controller</strong>…</p>
 <ul>
 <li>
 <p>We’re running on the <strong>D0 Multimedia Core</strong> of the BL808 SoC</p>
@@ -178,7 +178,7 @@
 <ul>
 <li>NuttX IRQ = 25 + RISC-V IRQ</li>
 </ul>
-<p>Thus later we’ll handle <strong>NuttX IRQ Number 45</strong> in our code. And our Ox64 Serial Console will support Text Input!</p>
+<p>Later we’ll handle <strong>NuttX IRQ Number 45</strong> in our code. And our Ox64 Serial Console will support Text Input!</p>
 <p><em>How did we get the UART Driver for Ox64 BL808?</em></p>
 <p>We copied the <strong>NuttX UART Driver</strong> from BL602 to BL808, since the UART Controllers are similar…</p>
 <ul>
