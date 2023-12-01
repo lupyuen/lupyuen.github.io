@@ -482,7 +482,7 @@ putreg32(0, 0xe0001000);
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
 <h1 id="trouble-with-interrupt-priority"><a href="#trouble-with-interrupt-priority">7 Trouble with Interrupt Priority</a></h1>
 <p><em>I sense a twist in our story…</em></p>
-<p>Earlier we initialised the <strong>Interrupt Priorities to 1</strong> at startup (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
+<p>Earlier we initialised the <a href="https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority"><strong>Interrupt Priorities to 1</strong></a> at startup (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Platform-Level Interrupt Controller
 void up_irqinitialize(void) {
   ...
@@ -557,9 +557,9 @@ PLIC Hart 0 S-Mode Interrupt Enable: After (0xe0002080):
 <p>Up Next: More worries…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-title.jpg" alt="Leaky Write for PLIC Interrupt Priority" /></p>
 <h1 id="more-trouble-with-interrupt-claim"><a href="#more-trouble-with-interrupt-claim">8 More Trouble with Interrupt Claim</a></h1>
-<p>We talked earlier about <strong>Handling Interrupts</strong>…</p>
+<p>We talked earlier about <a href="https://lupyuen.github.io/articles/plic2#handle-the-interrupt"><strong>Handling Interrupts</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Claim Interrupt" /></p>
-<p>And how we fetch the <strong>RISC-V IRQ Number</strong> from the <strong>Interrupt Claim</strong> Register: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L62">jh7110_irq.c</a></p>
+<p>And how we fetch the <strong>RISC-V IRQ Number</strong> from the <a href="https://lupyuen.github.io/articles/plic2#claim-the-interrupt"><strong>Interrupt Claim</strong></a> Register: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L62">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Dispatch the RISC-V Interrupt
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
@@ -591,7 +591,7 @@ nsh&gt;
 <p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Pending Interrupts" /></p>
 <h1 id="backup-plan"><a href="#backup-plan">9 Backup Plan</a></h1>
 <p><em>What’s our Backup Plan for Handling Interrupts?</em></p>
-<p>We can figure out the RISC-V IRQ Number by reading the <strong>Interrupt Pending</strong> Register (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L62-L76">jh7110_irq.c</a></p>
+<p>We can get the RISC-V IRQ Number by reading the <a href="https://lupyuen.github.io/articles/plic2#pending-interrupts"><strong>Interrupt Pending</strong></a> Register (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L62-L76">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// If Interrupt Claimed is 0...
 if (val == 0) {
   // Check the Pending Interrupts...
