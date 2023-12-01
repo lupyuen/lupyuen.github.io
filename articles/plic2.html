@@ -168,7 +168,25 @@
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><em>BL808 Reference Manual (Page 44)</em></a></p>
 <h1 id="initialise-the-interrupts"><a href="#initialise-the-interrupts">3 Initialise the Interrupts</a></h1>
 <p><em>How shall we get started with PLIC?</em></p>
-<p>TODO</p>
+<p>We walk through the steps to <strong>prepare the Platform-Level Interrupt Controller</strong> (PLIC) at startup…</p>
+<ol>
+<li>
+<p><strong>Disable all Interrupts</strong></p>
+<p>(Because we’re about to configure them)</p>
+</li>
+<li>
+<p>Clear the <strong>Outstanding Interrupts</strong></p>
+<p>(So we won’t get stuck at startup)</p>
+</li>
+<li>
+<p>Set the <strong>Interrupt Priority</strong></p>
+<p>(To the Lowest Priority)</p>
+</li>
+<li>
+<p>Set the <strong>Interrupt Threshold</strong></p>
+<p>(Allowing Interrupts to be fired later)</p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/plic2-registers3a.jpg" alt="Disable Interrupts" /></p>
 <h2 id="disable-all-interrupts"><a href="#disable-all-interrupts">3.1 Disable all Interrupts</a></h2>
 <p>We begin by <strong>disabling all Interrupts</strong> in PLIC.</p>
@@ -343,7 +361,25 @@ static int bl602_attach(struct uart_dev_s *dev) {
 <h1 id="handle-the-interrupt"><a href="#handle-the-interrupt">6 Handle the Interrupt</a></h1>
 <p><em>What happens when we press a key on the Serial Console? (Pic above)</em></p>
 <p><em>How will PLIC handle the UART Interrupt?</em></p>
-<p>TODO</p>
+<p>This is how we <strong>handle Interrupts</strong> with the Platform-Level Interrupt Controller (PLIC)…</p>
+<ol>
+<li>
+<p><strong>Claim</strong> the Interrupt</p>
+<p>(To acknowledge the Interrupt)</p>
+</li>
+<li>
+<p><strong>Dispatch</strong> the Interrupt</p>
+<p>(And call the Interrupt Handler)</p>
+</li>
+<li>
+<p><strong>Complete</strong> the Interrupt</p>
+<p>(Telling PLIC we’re done)</p>
+</li>
+<li>
+<p>Optional: Inspect and reset the <strong>Pending Interrupts</strong></p>
+<p>(In case we’re really curious)</p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Interrupt Claim Register" /></p>
 <h2 id="claim-the-interrupt"><a href="#claim-the-interrupt">6.1 Claim the Interrupt</a></h2>
 <p><em>How will we know which RISC-V Interrupt has been fired?</em></p>
@@ -461,7 +497,7 @@ void up_irqinitialize(void) {
   // Dump the Interrupt Priorities
   infodumpbuffer(&quot;PLIC Interrupt Priority: After&quot;, 0xe0000004, 0x50 * 4);
 </code></pre></div>
-<p>When we run this on Ox64, something strange happens…</p>
+<p>When we <a href="https://lupyuen.github.io/articles/plic2#appendix-build-and-run-nuttx"><strong>boot NuttX on Ox64</strong></a>, something strange happens…</p>
 <div class="example-wrap"><pre class="language-text"><code>PLIC Interrupt Priority: After (0xe0000004):
 0000  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
 0010  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
@@ -470,7 +506,7 @@ void up_irqinitialize(void) {
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L150-L170">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>Everything becomes zero! Why???</em></p>
-<p>Yeah this is totally baffling! And no Interrupts get fired, because <strong>Interrupt Priority 0 is invalid</strong>.</p>
+<p>Yeah this is totally baffling! And no Interrupts get fired, because <strong>Interrupt Priority 0 is NOT valid</strong>.</p>
 <p>Let’s set the Interrupt Priority specifically for <strong>RISC-V IRQ 20</strong> (UART3 Interrupt): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L444-L465">bl602_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Test the setting of PLIC Interrupt Priority
 // For RISC-V IRQ 20 only
@@ -592,12 +628,14 @@ infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);
 // PLIC Interrupt Pending (0xe0001000):
 // 0000  00 00 00 00 00 00 00 00                          ........        
 </code></pre></div>
-<p>TODO</p>
+<p><em>Does it work for UART Input?</em></p>
+<p>Since we’ve correctly identified the IRQ Number, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105"><strong>riscv_dispatch_irq</strong></a> will (eventually) call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L859-L904"><strong>bl602_receive</strong></a> to read the UART Input (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_receive: rxdata=-1
 bl602_receive: rxdata=0x0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308">(See the <strong>Complete Log</strong>)</a></p>
-<p>(Pic below)</p>
+<p>But the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L892-L901"><strong>UART Input is empty</strong></a>! We need to troubleshoot our UART Driver some more.</p>
+<p>Meanwhile let’s wrap up our story for today…</p>
 <p>TODO: Screenshot</p>
 <h1 id="all-things-considered"><a href="#all-things-considered">10 All Things Considered</a></h1>
 <p><em>Feels like we’re wading into murky greyish territory… Like Jaws meets Twilight Zone on the Beach?</em></p>
@@ -711,26 +749,42 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic2.md"><strong>lupyuen.github.io/src/plic2.md</strong></a></p>
 <h1 id="appendix-uart-driver-for-ox64"><a href="#appendix-uart-driver-for-ox64">12 Appendix: UART Driver for Ox64</a></h1>
-<p>TODO: Compare docs</p>
-<p>BL808 UART is mostly identical to BL602 UART, so we ported the NuttX BL602 UART Driver to BL808.</p>
-<p>Here’s the UART Driver ported to BL808: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c">bl602_serial.c</a></p>
-<p>We hardcoded the UART3 Base Address: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/hardware/bl602_uart.h#L30-L41">bl602_uart.h</a></p>
+<p><em>How did we create the NuttX UART Driver for Ox64 BL808?</em></p>
+<p>Today NuttX supports the 32-bit predecessor of BL808: <a href="https://github.com/apache/nuttx/tree/master/arch/risc-v/src/bl602"><strong>Bouffalo Lab BL602</strong></a>.</p>
+<p>When we compare these UARTs…</p>
+<ul>
+<li>
+<p><strong>BL808 UART Controller</strong></p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(<strong>BL808 Reference Manual</strong>, Page 402)</a></p>
+</li>
+<li>
+<p><strong>BL602 UART Controller</strong></p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">(<strong>BL602 Reference Manual</strong>, Page 126)</a></p>
+</li>
+</ul>
+<p>We discover that BL808 UART works the <strong>same way as BL602</strong>!</p>
+<p>Thus we’ll simply copy the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX Driver for BL602 UART</strong></a> to Ox64.</p>
+<p>Here’s the UART Driver <strong>ported to BL808</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c">bl602_serial.c</a></p>
+<p><em>What did we change?</em></p>
+<p>We hardcoded the <strong>UART3 Base Address</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/hardware/bl602_uart.h#L30-L41">bl602_uart.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define BL602_UART0_BASE   0x30002000
 #define BL602_UART_BASE(n) (BL602_UART0_BASE)
 
 // Previously: #define BL602_UART_BASE(n) (BL602_UART0_BASE + (n * (BL602_UART1_BASE - BL602_UART0_BASE)))
 </code></pre></div>
-<p>We fixed the NuttX Start Code to call our new UART Driver: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L175-L184">jh7110_start.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>void riscv_earlyserialinit(void) {
+<p>We fixed the <strong>NuttX Start Code</strong> to call our new UART Driver: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_start.c#L175-L184">jh7110_start.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// At Startup, init the new UART Driver
+void riscv_earlyserialinit(void) {
   bl602_earlyserialinit();
 }
 
+// Same here
 void riscv_serialinit(void) {
   bl602_serialinit();
 }
 </code></pre></div>
-<p>We disabled UART Interrupts for now: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c#L377-L431">bl602_attach and bl602_detach</a></p>
-<p>And the UART Driver works! <a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89">(See the log)</a></p>
+<p>And the UART Driver works for printing output to the Serial Console! (But not for input)</p>
+<p><a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89">(See the <strong>Complete Log</strong>)</a></p>
 <h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">13 Appendix: Build and Run NuttX</a></h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong>, with PLIC partially working.</p>
 <p>(Console Input is not yet fixed)</p>
@@ -805,7 +859,7 @@ diskutil unmountDisk /dev/disk2
 </code></pre></div>
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH). (Pic above)</p>
-<p>TODO: <a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525">(See the <strong>NuttX Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L110-L323">(See the <strong>NuttX Log</strong>)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
 
     
