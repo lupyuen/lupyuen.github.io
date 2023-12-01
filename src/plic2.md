@@ -92,7 +92,23 @@ We copied the __NuttX UART Driver__ from BL602 to BL808, since the UART Controll
 
 _How shall we get started with PLIC?_
 
-TODO
+We walk through the steps to __prepare the Platform-Level Interrupt Controller__ (PLIC) at startup...
+
+1.  __Disable all Interrupts__
+
+    (Because we're about to configure them)
+
+1.  Clear the __Outstanding Interrupts__
+
+    (So we won't get stuck at startup)
+
+1.  Set the __Interrupt Priority__
+
+    (To the Lowest Priority)
+
+1.  Set the __Interrupt Threshold__
+
+    (Allowing Interrupts to be fired later)
 
 ![Disable Interrupts](https://lupyuen.github.io/images/plic2-registers3a.jpg)
 
@@ -329,7 +345,23 @@ _What happens when we press a key on the Serial Console? (Pic above)_
 
 _How will PLIC handle the UART Interrupt?_
 
-TODO
+This is how we __handle Interrupts__ with the Platform-Level Interrupt Controller (PLIC)...
+
+1.  __Claim__ the Interrupt
+
+    (To acknowledge the Interrupt)
+
+1.  __Dispatch__ the Interrupt
+
+    (And call the Interrupt Handler)
+
+1.  __Complete__ the Interrupt
+
+    (Telling PLIC we're done)
+
+1.  Optional: Inspect and reset the __Pending Interrupts__
+
+    (In case we're really curious)
 
 ![Interrupt Claim Register](https://lupyuen.github.io/images/plic2-registers5.jpg)
 
@@ -492,7 +524,7 @@ void up_irqinitialize(void) {
   infodumpbuffer("PLIC Interrupt Priority: After", 0xe0000004, 0x50 * 4);
 ```
 
-When we run this on Ox64, something strange happens...
+When we [__boot NuttX on Ox64__](https://lupyuen.github.io/articles/plic2#appendix-build-and-run-nuttx), something strange happens...
 
 ```text
 PLIC Interrupt Priority: After (0xe0000004):
@@ -506,7 +538,7 @@ PLIC Interrupt Priority: After (0xe0000004):
 
 _Everything becomes zero! Why???_
 
-Yeah this is totally baffling! And no Interrupts get fired, because __Interrupt Priority 0 is invalid__.
+Yeah this is totally baffling! And no Interrupts get fired, because __Interrupt Priority 0 is NOT valid__.
 
 Let's set the Interrupt Priority specifically for __RISC-V IRQ 20__ (UART3 Interrupt): [bl602_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L444-L465)
 
@@ -677,7 +709,9 @@ infodumpbuffer("PLIC Interrupt Pending", 0xe0001000, 2 * 4);
 // 0000  00 00 00 00 00 00 00 00                          ........        
 ```
 
-TODO
+_Does it work for UART Input?_
+
+Since we've correctly identified the IRQ Number, [__riscv_dispatch_irq__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105) will (eventually) call [__bl602_receive__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L859-L904) to read the UART Input (pic below)...
 
 ```text
 bl602_receive: rxdata=-1
@@ -686,7 +720,9 @@ bl602_receive: rxdata=0x0
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308)
 
-(Pic below)
+But the [__UART Input is empty__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L892-L901)! We need to troubleshoot our UART Driver some more.
+
+Meanwhile let's wrap up our story for today...
 
 TODO: Screenshot
 
@@ -811,13 +847,29 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: UART Driver for Ox64
 
-TODO: Compare docs
+_How did we create the NuttX UART Driver for Ox64 BL808?_
 
-BL808 UART is mostly identical to BL602 UART, so we ported the NuttX BL602 UART Driver to BL808.
+Today NuttX supports the 32-bit predecessor of BL808: [__Bouffalo Lab BL602__](https://github.com/apache/nuttx/tree/master/arch/risc-v/src/bl602).
 
-Here's the UART Driver ported to BL808: [bl602_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c)
+When we compare these UARTs...
 
-We hardcoded the UART3 Base Address: [bl602_uart.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/hardware/bl602_uart.h#L30-L41)
+- __BL808 UART Controller__
+
+  [(__BL808 Reference Manual__, Page 402)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+
+- __BL602 UART Controller__
+
+  [(__BL602 Reference Manual__, Page 126)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+
+We discover that BL808 UART works the __same way as BL602__!
+
+Thus we'll simply copy the [__NuttX Driver for BL602 UART__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c) to Ox64.
+
+Here's the UART Driver __ported to BL808__: [bl602_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c)
+
+_What did we change?_
+
+We hardcoded the __UART3 Base Address__: [bl602_uart.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/hardware/bl602_uart.h#L30-L41)
 
 ```c
 #define BL602_UART0_BASE   0x30002000
@@ -826,21 +878,23 @@ We hardcoded the UART3 Base Address: [bl602_uart.h](https://github.com/lupyuen2/
 // Previously: #define BL602_UART_BASE(n) (BL602_UART0_BASE + (n * (BL602_UART1_BASE - BL602_UART0_BASE)))
 ```
 
-We fixed the NuttX Start Code to call our new UART Driver: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L175-L184)
+We fixed the __NuttX Start Code__ to call our new UART Driver: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_start.c#L175-L184)
 
 ```c
+// At Startup, init the new UART Driver
 void riscv_earlyserialinit(void) {
   bl602_earlyserialinit();
 }
 
+// Same here
 void riscv_serialinit(void) {
   bl602_serialinit();
 }
 ```
 
-We disabled UART Interrupts for now: [bl602_attach and bl602_detach](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c#L377-L431)
+And the UART Driver works for printing output to the Serial Console! (But not for input)
 
-And the UART Driver works! [(See the log)](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89)
 
 # Appendix: Build and Run NuttX
 
@@ -937,6 +991,6 @@ Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg)
 
 Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH). (Pic above)
 
-TODO: [(See the __NuttX Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L110-L323)
 
 TODO: [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
