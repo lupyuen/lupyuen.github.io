@@ -508,7 +508,7 @@ One again, we don't need really need this. We'll stash this as our __Backup Plan
 
 _I sense a twist in our story..._
 
-Earlier we initialised the __Interrupt Priorities to 1__ at startup (pic above): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90)
+Earlier we initialised the [__Interrupt Priorities to 1__](https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority) at startup (pic above): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90)
 
 ```c
 // Init the Platform-Level Interrupt Controller
@@ -611,11 +611,11 @@ Up Next: More worries...
 
 # More Trouble with Interrupt Claim
 
-We talked earlier about __Handling Interrupts__...
+We talked earlier about [__Handling Interrupts__](https://lupyuen.github.io/articles/plic2#handle-the-interrupt)...
 
 ![Claim Interrupt](https://lupyuen.github.io/images/plic2-registers5.jpg)
 
-And how we fetch the __RISC-V IRQ Number__ from the __Interrupt Claim__ Register: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L62)
+And how we fetch the __RISC-V IRQ Number__ from the [__Interrupt Claim__](https://lupyuen.github.io/articles/plic2#claim-the-interrupt) Register: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L62)
 
 ```c
 // Dispatch the RISC-V Interrupt
@@ -664,7 +664,7 @@ We activate our Backup Plan...
 
 _What's our Backup Plan for Handling Interrupts?_
 
-We can figure out the RISC-V IRQ Number by reading the __Interrupt Pending__ Register (pic above): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L62-L76)
+We can get the RISC-V IRQ Number by reading the [__Interrupt Pending__](https://lupyuen.github.io/articles/plic2#pending-interrupts) Register (pic above): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L62-L76)
 
 ```c
 // If Interrupt Claimed is 0...
