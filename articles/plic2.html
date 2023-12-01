@@ -643,7 +643,7 @@ bl602_receive: rxdata=0x0
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308">(See the <strong>Complete Log</strong>)</a></p>
 <p>But the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L892-L901"><strong>UART Input is empty</strong></a>! We need to troubleshoot our UART Driver some more.</p>
 <p>Meanwhile we wrap up our story for today…</p>
-<p>TODO: Screenshot</p>
+<p><img src="https://lupyuen.github.io/images/plic2-run.png" alt="NuttX boots OK on Ox64 BL808! But UART Input is null" /></p>
 <h1 id="all-things-considered"><a href="#all-things-considered">10 All Things Considered</a></h1>
 <p><em>Feels like we’re wading into murky greyish territory… Like Jaws meets Twilight Zone on the Beach?</em></p>
 <p>Yeah we said this <a href="https://lupyuen.github.io/articles/ox2#begin-with-star64-nuttx"><strong>last time</strong></a>, and it’s happening now…</p>
@@ -787,9 +787,9 @@ void riscv_serialinit(void) {
   bl602_serialinit();
 }
 </code></pre></div>
-<p>And the UART Driver works OK for printing output to the Ox64 Serial Console! (But not for input)</p>
+<p>And the UART Driver works OK for printing output to the Ox64 Serial Console! (But not for input, pic below)</p>
 <p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L110-L323">(See the <strong>Complete Log</strong>)</a></p>
-<p>TODO: Console Pic</p>
+<p><img src="https://lupyuen.github.io/images/plic2-run.png" alt="NuttX boots OK on Ox64 BL808! But UART Input is null" /></p>
 <h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">13 Appendix: Build and Run NuttX</a></h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong>, with PLIC partially working.</p>
 <p>(Console Input is not yet fixed)</p>
