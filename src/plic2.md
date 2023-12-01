@@ -54,7 +54,7 @@ That's because NuttX reserves a bunch of IRQ Numbers for Internal Use.
 
 Let's find out the NuttX IRQ Number for UART Input / Output...
 
-TODO: PLIC doc
+[(PLIC is officially documented in __C906 User Manual__, Page 74)](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)
 
 ![BL808 Platform-Level Interrupt Controller](https://lupyuen.github.io/images/plic2-bl808a.jpg)
 
@@ -76,15 +76,21 @@ Remember that NuttX uses its own __NuttX IRQ Number__...
 
 - NuttX IRQ = 25 + RISC-V IRQ
 
-Thus later we'll see __NuttX IRQ Number 45__.
+Thus later we'll see __NuttX IRQ Number 45__ in our code.
 
-TODO: NuttX UART Driver
+_How did we get the NuttX UART Driver for Ox64 BL808?_
+
+We copied the __NuttX UART Driver__ from BL602 to BL808, since the UART Controllers are similar...
+
+- [__"Appendix: UART Driver for Ox64"__](https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64)
 
 ![BL808 Reference Manual (Page 44)](https://lupyuen.github.io/images/plic2-irq.jpg)
 
 [_BL808 Reference Manual (Page 44)_](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
 # Initialise the Interrupts
+
+_How shall we get started with PLIC?_
 
 TODO
 
@@ -751,7 +757,7 @@ Which shouldn't happen because PLIC is in the [__Official RISC-V Spec__](https:/
 
 1.  _Something special about the C906 MMU?_
 
-    According to the [__C906 User Manual__](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)  (Page 53), the C906 MMU supports __Extended Page Attributes__. Which might affect us?
+    According to the [__C906 User Manual__](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf) (Page 53), the C906 MMU supports __Extended Page Attributes__. Which might affect us?
 
     [(More about __C906 Extended Page Attributes__)](https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic)
 
@@ -805,7 +811,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: UART Driver for Ox64
 
-TODO
+TODO: Compare docs
 
 BL808 UART is mostly identical to BL602 UART, so we ported the NuttX BL602 UART Driver to BL808.
 
@@ -814,9 +820,10 @@ Here's the UART Driver ported to BL808: [bl602_serial.c](https://github.com/lupy
 We hardcoded the UART3 Base Address: [bl602_uart.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/hardware/bl602_uart.h#L30-L41)
 
 ```c
-#define BL602_UART0_BASE 0x30002000
+#define BL602_UART0_BASE   0x30002000
 #define BL602_UART_BASE(n) (BL602_UART0_BASE)
-// Previously: #define BL602_UART_BASE(n)    (BL602_UART0_BASE + (n * (BL602_UART1_BASE - BL602_UART0_BASE)))
+
+// Previously: #define BL602_UART_BASE(n) (BL602_UART0_BASE + (n * (BL602_UART1_BASE - BL602_UART0_BASE)))
 ```
 
 We fixed the NuttX Start Code to call our new UART Driver: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L175-L184)
@@ -835,41 +842,101 @@ We disabled UART Interrupts for now: [bl602_attach and bl602_detach](https://git
 
 And the UART Driver works! [(See the log)](https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89)
 
-TODO: /dev/ttyS0 is missing
+# Appendix: Build and Run NuttX
 
-TODO: Enable UART Interrupts
+In this article, we ran a Work-In-Progress Version of __Apache NuttX RTOS for Ox64__, with PLIC partially working.
 
-# Appendix: UART Interrupt for Ox64
+(Console Input is not yet fixed)
 
-TODO
+This is how we download and build NuttX for Ox64 BL808 SBC...
 
-Let's fix the UART Interrupts for NuttX on Ox64 BL808!
+```bash
+## Download the WIP NuttX Source Code
+git clone \
+  --branch ox64b \
+  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  nuttx
+git clone \
+  --branch ox64b \
+  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  apps
 
-We fix the PLIC Offsets according to [C906 User Manual (Page 77)](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)
+## Build NuttX
+cd nuttx
+tools/configure.sh star64:nsh
+make
 
-_What's the UART3 IRQ?_
+## Export the NuttX Kernel
+## to `nuttx.bin`
+riscv64-unknown-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
 
-From the Linux Device Tree...
-
-```text
-serial@30002000 {
-  compatible = "bflb,bl808-uart";
-  reg = <0x30002000 0x1000>;
-  interrupts = <0x14 0x04>;
-  clocks = <0x04>;
-  status = "okay";
-  phandle = <0x0a>;
-};
+## Dump the disassembly to nuttx.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  >nuttx.S \
+  2>&1
 ```
 
-Thus...
+[(Remember to install the __Build Prerequisites and Toolchain__)](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
 
-- RISC-V IRQ = 0x14 = 20
+[(And enable __Scheduler Info Output__)](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu)
 
-- UART3 Int = (IRQ_NUM_BASE + 4)
+Then we build the __Initial RAM Disk__ that contains NuttX Shell and NuttX Apps...
 
-- IRQ_NUM_BASE = 16
+```bash
+## Build the Apps Filesystem
+make -j 8 export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j 8 import
+popd
 
-- NuttX IRQ = 45 (Offset by RISCV_IRQ_EXT)
+## Generate the Initial RAM Disk `initrd`
+## in ROMFS Filesystem Format
+## from the Apps Filesystem `../apps/bin`
+## and label it `NuttXBootVol`
+genromfs \
+  -f initrd \
+  -d ../apps/bin \
+  -V "NuttXBootVol"
 
-- RISCV_IRQ_EXT = 25
+## Prepare a Padding with 64 KB of zeroes
+head -c 65536 /dev/zero >/tmp/nuttx.zero
+
+## Append Padding and Initial RAM Disk to NuttX Kernel
+cat nuttx.bin /tmp/nuttx.zero initrd \
+  >Image
+```
+
+[(See the __Build Script__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
+
+TODO: [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
+
+[(Why the __64 KB Padding__)](https://github.com/lupyuen/nuttx-ox64#initial-ram-disk-for-ox64-bl808)
+
+Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
+
+[(Remember to flash __OpenSBI and U-Boot Bootloader__)](https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot)
+
+Then we do the [__Linux-To-NuttX Switcheroo__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64): Overwrite the microSD Linux Image by the __NuttX Kernel__...
+
+```bash
+## Overwrite the Linux Image
+## on Ox64 microSD
+cp Image \
+  "/Volumes/NO NAME/Image"
+diskutil unmountDisk /dev/disk2
+```
+
+Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg) and power up Ox64.
+
+Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH). (Pic above)
+
+TODO: [(See the __NuttX Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
+
+TODO: [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
