@@ -54,9 +54,9 @@ Suppose we're working with Ox64 SBC through a __Serial Console__ (pic below)...
 
 That's why it's good to understand how PLIC works with an Operating System. (Like Linux or NuttX)
 
-TODO
+_PLIC handles all kinds of Interrupts?_
 
-Each Interrupt is identified by a __RISC-V IRQ Number__. (__IRQ__ means Interrupt Request Number)
+Yep plenty! We identify each Interrupt by its __RISC-V IRQ Number__. (__IRQ__ means Interrupt Request Number)
 
 NuttX uses its own __NuttX IRQ Number__...
 
@@ -64,7 +64,7 @@ NuttX uses its own __NuttX IRQ Number__...
 
 That's because NuttX reserves a bunch of IRQ Numbers for Internal Use. (Hence the Offset of 25)
 
-First we need the IRQ Number for Serial Console...
+Let's figure out the IRQ Number for Serial Console...
 
 [(PLIC is documented in __C906 User Manual__, Page 74)](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)
 
@@ -76,7 +76,7 @@ First we need the IRQ Number for Serial Console...
 
 _What's the Interrupt Number for the Serial Console?_
 
-To enable Text Input in the __Ox64 Serial Console__, we need the UART Interrupt Number...
+To enable Text Input in the __Ox64 Serial Console__, we need the Interrupt Number for the __UART Controller__...
 
 - We're running on the __D0 Multimedia Core__ of the BL808 SoC
 
@@ -100,7 +100,7 @@ Remember that NuttX uses its own __NuttX IRQ Number__...
 
 - NuttX IRQ = 25 + RISC-V IRQ
 
-Thus later we'll handle __NuttX IRQ Number 45__ in our code. And our Ox64 Serial Console will support Text Input!
+Later we'll handle __NuttX IRQ Number 45__ in our code. And our Ox64 Serial Console will support Text Input!
 
 _How did we get the UART Driver for Ox64 BL808?_
 
