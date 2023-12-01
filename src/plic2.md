@@ -823,11 +823,11 @@ Which shouldn't happen because PLIC is in the [__Official RISC-V Spec__](https:/
 
     Hmmm... Perhaps!
 
-Can we finish this Sad Story with a Happier Conclusion? Please lemme know! 🙏
+Can we finish our Sad Story with a Happier Conclusion? Please lemme know! 🙏
 
 # What's Next
 
-TODO
+TODO: Today we talked about __Interrupting Chickens__ and __Ox64 BL808 SBC__...
 
 We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
 
