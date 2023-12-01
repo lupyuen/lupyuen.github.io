@@ -972,7 +972,7 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
 
 [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
 
-[(Why the __64 KB Padding__)](https://github.com/lupyuen/nuttx-ox64#initial-ram-disk-for-ox64-bl808)
+[(Why the __64 KB Padding__)](https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk)
 
 Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
 
