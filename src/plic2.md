@@ -742,6 +742,8 @@ Meanwhile we wrap up our story for today...
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
 
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1)
+
 ![NuttX boots OK on Ox64 BL808! But UART Input is null](https://lupyuen.github.io/images/plic2-run.png)
 
 # All Things Considered
