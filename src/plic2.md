@@ -738,7 +738,7 @@ But the [__UART Input is empty__](https://github.com/lupyuen2/wip-pinephone-nutt
 
 Meanwhile we wrap up our story for today...
 
-TODO: Screenshot
+![NuttX boots OK on Ox64 BL808! But UART Input is null](https://lupyuen.github.io/images/plic2-run.png)
 
 # All Things Considered
 
@@ -905,11 +905,11 @@ void riscv_serialinit(void) {
 }
 ```
 
-And the UART Driver works OK for printing output to the Ox64 Serial Console! (But not for input)
+And the UART Driver works OK for printing output to the Ox64 Serial Console! (But not for input, pic below)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L110-L323)
 
-TODO: Console Pic
+![NuttX boots OK on Ox64 BL808! But UART Input is null](https://lupyuen.github.io/images/plic2-run.png)
 
 # Appendix: Build and Run NuttX
 
