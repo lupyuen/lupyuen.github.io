@@ -782,7 +782,7 @@ Which shouldn't happen because PLIC is in the [__Official RISC-V Spec__](https:/
 
 1.  _Any clue what's causing this?_
 
-    The __Leaky Writes__ don't seem to happen [__before enabling the MMU__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L298) (Memory Management Unit)...
+    __Leaky Writes__ don't seem to happen [__before enabling the MMU__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L298) (Memory Management Unit)...
 
     ```text
     // Before enabling Memory Mgmt Unit...
@@ -840,6 +840,8 @@ Which shouldn't happen because PLIC is in the [__Official RISC-V Spec__](https:/
     Hmmm... Perhaps!
 
 Can we finish our Sad Story with a Happier Conclusion? Please lemme know! 🙏
+
+![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
 
 # What's Next
 
