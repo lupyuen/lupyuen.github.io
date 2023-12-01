@@ -38,9 +38,27 @@ We begin our story...
 
 _What's this PLIC?_
 
-[__Platform-Level Interrupt Controller__](https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic) (PLIC) is the hardware inside our BL808 SoC that controls the forwarding of __Peripheral Interrupts__ to our 64-bit RISC-V CPU. (Pic below)
+[__Platform-Level Interrupt Controller__](https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic) (PLIC) is the hardware inside our BL808 SoC that controls the forwarding of __Peripheral Interrupts__ to our 64-bit RISC-V CPU.
 
-(Like Interrupts for UART, I2C, SPI, ...)
+Like the Interrupts for __UART__, __I2C__, __SPI__, ...
+
+(Pic below)
+
+_Why should we bother with PLIC?_
+
+Here's why...
+
+- Suppose we're working with Ox64 SBC through a __Serial Console__
+
+- Every single __key that we press__ (pic below)...
+
+  Will fire an __Interrupt through the PLIC__ to the RISC-V CPU
+
+- Without the PLIC, it's simply __impossible to enter commands__ in the Serial Console!
+
+That's why we need PLIC for the Serial Console to work correctly on __any operating system__: Linux, NuttX, ...
+
+TODO
 
 Each Interrupt is identified by a __RISC-V IRQ Number__. (__IRQ__ means Interrupt Request Number)
 
