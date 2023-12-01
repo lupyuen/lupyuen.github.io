@@ -548,7 +548,7 @@ PLIC Interrupt Priority: After (0xe0000004):
 0030  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L150-L170)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L152-L172)
 
 _Everything becomes zero! Why???_
 
@@ -585,7 +585,7 @@ before50=0, before54=0
 after50=1,  after54=1
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L257)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L258-L260)
 
 IRQ 20 is set correctly: _"after50=1"_
 
@@ -609,7 +609,7 @@ PLIC Hart 0 S-Mode Interrupt Enable: After (0xe0002080):
 0000  00 00 10 00 00 00 10 00                          ........  
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L194-L198)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L196-L200)
 
 Interrupt Enable has leaked over from __`0xE000` `2080`__ to __`0xE000` `2084`__!
 
@@ -653,7 +653,7 @@ NuttShell (NSH) NuttX-12.0.3
 nsh>
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L294-L325)
 
 When we __press a key__ on the Serial Console (to trigger a UART Interrupt)...
 
@@ -732,7 +732,7 @@ bl602_receive: rxdata=-1
 bl602_receive: rxdata=0x0
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L294-L325)
 
 But the [__UART Input is empty__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L892-L901)! We need to troubleshoot our UART Driver some more.
 
@@ -791,7 +791,7 @@ Which shouldn't happen because PLIC is in the [__Official RISC-V Spec__](https:/
     jh7110_kernel_mppings: map I/O regions
     ```
 
-    [(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L116-L118)
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L118-L120)
 
     So it might be a problem with our MMU Settings.
 
@@ -907,7 +907,7 @@ void riscv_serialinit(void) {
 
 And the UART Driver works OK for printing output to the Ox64 Serial Console! (But not for input, pic below)
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L110-L323)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325)
 
 ![NuttX boots OK on Ox64 BL808! But UART Input is null](https://lupyuen.github.io/images/plic2-run.png)
 
@@ -1006,7 +1006,7 @@ Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg)
 
 Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH). (Pic above)
 
-[(See the __NuttX Log__)](https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L110-L323)
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325)
 
 TODO: [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
 
