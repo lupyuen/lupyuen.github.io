@@ -511,7 +511,7 @@ void up_irqinitialize(void) {
 0020  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
 0030  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L150-L170">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L152-L172">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>Everything becomes zero! Why???</em></p>
 <p>Yeah this is totally baffling! And no Interrupts get fired, because <strong>Interrupt Priority 0 is NOT valid</strong>.</p>
 <p>Let’s set the Interrupt Priority specifically for <strong>RISC-V IRQ 20</strong> (UART3 Interrupt): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L444-L465">bl602_serial.c</a></p>
@@ -539,7 +539,7 @@ void test_interrupt_priority(void) {
 <div class="example-wrap"><pre class="language-text"><code>before50=0, before54=0
 after50=1,  after54=1
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L257">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L258-L260">(See the <strong>Complete Log</strong>)</a></p>
 <p>IRQ 20 is set correctly: <em>“after50=1”</em></p>
 <p>However <strong>IRQ 21 is also set</strong>! <em>“after54=1”</em></p>
 <p><em>Hmmm… Our writing seems to have leaked over to the next 32-bit word?</em></p>
@@ -556,7 +556,7 @@ up_enable_irq: extirq=20, addr=0xe0002080, val=0x1048576
 PLIC Hart 0 S-Mode Interrupt Enable: After (0xe0002080):
 0000  00 00 10 00 00 00 10 00                          ........  
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L194-L198">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L196-L200">(See the <strong>Complete Log</strong>)</a></p>
 <p>Interrupt Enable has leaked over from <strong><code>0xE000</code> <code>2080</code></strong> to <strong><code>0xE000</code> <code>2084</code></strong>!</p>
 <p>Thus we have an unexplained problem of <strong>Leaky Writes</strong>, affecting the Interrupt Priority and Interrupt Enable Registers.</p>
 <p>Up Next: More worries…</p>
@@ -585,7 +585,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
 nsh&gt;
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L294-L325">(See the <strong>Complete Log</strong>)</a></p>
 <p>When we <strong>press a key</strong> on the Serial Console (to trigger a UART Interrupt)…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq:
   claim=0
@@ -640,7 +640,7 @@ infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);
 <div class="example-wrap"><pre class="language-text"><code>bl602_receive: rxdata=-1
 bl602_receive: rxdata=0x0
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L293-L308">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L294-L325">(See the <strong>Complete Log</strong>)</a></p>
 <p>But the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L892-L901"><strong>UART Input is empty</strong></a>! We need to troubleshoot our UART Driver some more.</p>
 <p>Meanwhile we wrap up our story for today…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-run.png" alt="NuttX boots OK on Ox64 BL808! But UART Input is null" /></p>
@@ -692,7 +692,7 @@ test_interrupt_priority:
 // Leaky Writes after enabling Memory Mgmt Unit
 jh7110_kernel_mppings: map I/O regions
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L116-L118">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L118-L120">(See the <strong>Complete Log</strong>)</a></p>
 <p>So it might be a problem with our MMU Settings.</p>
 <p><a href="https://lupyuen.github.io/articles/mmu">(More about <strong>Memory Management Unit</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic">(<strong>U-Boot Bootloader</strong> doesn’t have Leaky Writes)</a></p>
@@ -788,7 +788,7 @@ void riscv_serialinit(void) {
 }
 </code></pre></div>
 <p>And the UART Driver works OK for printing output to the Ox64 Serial Console! (But not for input, pic below)</p>
-<p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L110-L323">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-run.png" alt="NuttX boots OK on Ox64 BL808! But UART Input is null" /></p>
 <h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">13 Appendix: Build and Run NuttX</a></h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong>, with PLIC partially working.</p>
@@ -864,7 +864,7 @@ diskutil unmountDisk /dev/disk2
 </code></pre></div>
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH). (Pic above)</p>
-<p><a href="https://gist.github.com/lupyuen/4e8ca1f0c0c2bd3b22a8b63f098abdd5#file-ox64-nuttx-int-clear-pending-log-L110-L323">(See the <strong>NuttX Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325">(See the <strong>NuttX Log</strong>)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-draw.jpg" alt="Drawing the Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 
