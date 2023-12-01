@@ -28,6 +28,8 @@ Though we'll hit a bumpy journey with our work-in-progress __NuttX on Ox64__...
 
 - __Interrupt Claim__ doesn't seem to work right
 
+  [(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
+
 We begin our story...
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
@@ -732,11 +734,13 @@ bl602_receive: rxdata=-1
 bl602_receive: rxdata=0x0
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L294-L325)
-
 But the [__UART Input is empty__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L892-L901)! We need to troubleshoot our UART Driver some more.
 
 Meanwhile we wrap up our story for today...
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L294-L325)
+
+[(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
 
 ![NuttX boots OK on Ox64 BL808! But UART Input is null](https://lupyuen.github.io/images/plic2-run.png)
 
@@ -909,6 +913,8 @@ And the UART Driver works OK for printing output to the Ox64 Serial Console! (Bu
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325)
 
+[(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
+
 ![NuttX boots OK on Ox64 BL808! But UART Input is null](https://lupyuen.github.io/images/plic2-run.png)
 
 # Appendix: Build and Run NuttX
@@ -982,9 +988,9 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
   >Image
 ```
 
-TODO: [(See the __Build Script__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
+[(See the __Build Script__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1)
 
-TODO: [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1)
 
 [(Why the __64 KB Padding__)](https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk)
 
@@ -1008,6 +1014,8 @@ Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325)
 
-TODO: [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
+[(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
+
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1)
 
 ![Drawing the Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/plic2-draw.jpg)
