@@ -483,7 +483,7 @@ This will [__Complete the Interrupt__](https://five-embeddev.com/riscv-isa-manua
   // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
   // For UART3: `irq` is 45
 
-  // If this is an External Interrupt...
+  // If this is an External Interrupt (RISCV_IRQ_EXT = 25)...
   if (RISCV_IRQ_EXT <= irq) {
 
     // Compute the RISC-V IRQ Number (20 for UART3)
