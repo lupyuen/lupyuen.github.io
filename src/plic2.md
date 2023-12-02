@@ -895,7 +895,7 @@ Today we talked about __Interrupting Chicken, Oxen__ and __Ox64 BL808 RISC-V SBC
 
 - Thus we activated our Backup Plan with the __Interrupt Pending__ Register
 
-Plenty to fix for __NuttX on Ox64 BL808__. Stay tuned for updates!
+We have plenty to fix for __NuttX on Ox64 BL808__. Stay tuned for updates!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -914,6 +914,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/plic2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic2.md)
+
+![Ox64 Serial Console](https://lupyuen.github.io/images/ox64-pinout3.jpg)
 
 # Appendix: UART Driver for Ox64
 
