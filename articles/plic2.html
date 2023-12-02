@@ -224,11 +224,11 @@ void up_irqinitialize(void) {
   putreg32(0x0, PLIC_ENABLE1);  // RISC-V IRQ 1  to 31
   putreg32(0x0, PLIC_ENABLE2);  // RISC-V IRQ 32 to 63
 </code></pre></div>
+<p>Hence at startup, all PLIC Interrupts are disabled until we <strong>enable them later</strong> (in PLIC).</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/irq.h#L674-L703">(<strong>up_irq_save</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_internal.h#L124-L132">(<strong>putreg32</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L34-L49">(<strong>PLIC_ENABLE</strong> and other PLIC Offsets)</a></p>
 <p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow">(NuttX calls <strong>up_irqinitialize</strong> at startup)</a></p>
-<p>Hence at startup, all PLIC Interrupts are disabled until we <strong>enable them later</strong> (in PLIC).</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5a.jpg" alt="Clear Interrupts" /></p>
 <h2 id="clear-the-interrupts"><a href="#clear-the-interrupts">3.2 Clear the Interrupts</a></h2>
 <p>Next we <strong>Claim and Complete</strong> the Outstanding Interrupts, so they won’t bother us at startup (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L61-L68">jh7110_irq.c</a></p>
