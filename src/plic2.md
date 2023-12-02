@@ -379,7 +379,7 @@ _What happens when we press a key on the Serial Console? (Pic above)_
 
 _How will PLIC handle the UART Interrupt?_
 
-This is how we __handle Interrupts__ with the Platform-Level Interrupt Controller (PLIC)...
+This is how we __handle an Interrupt__ with the Platform-Level Interrupt Controller (PLIC)...
 
 1.  __Claim__ the Interrupt
 
@@ -405,7 +405,7 @@ _How will we know which RISC-V Interrupt has been fired?_
 
 That's why we have the __Interrupt Claim__ Register! (Pic above)
 
-We read the Interrupt Claim Register to get the __RISC-V IRQ Number__ that has been fired: [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L76)
+We read the Interrupt Claim Register to get the __RISC-V IRQ Number__ that has been fired (20 for UART3): [jh7110_irq.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L76)
 
 ```c
 // Dispatch the RISC-V Interrupt
@@ -428,6 +428,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
     irq += val;
   }
+  // For UART3: `val` is 20 and `irq` is 45
   // Up Next: Dispatch and Complete the Interrupt
 ```
 
@@ -450,6 +451,7 @@ We have Claimed the Interrupt. It's time to do some work: [jh7110_irq.c](https:/
   ...
   // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
   // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+  // For UART3: `irq` is 45
 
   // If the RISC-V IRQ Number is valid (non-zero)...
   if (RISCV_IRQ_EXT != irq) {
@@ -468,7 +470,7 @@ For UART Interrupts: [__riscv_doirq__](https://github.com/lupyuen2/wip-pinephone
 
 ## Complete the Interrupt
 
-To tell PLIC we're done, we write the RISC-V IRQ Number back to the __Interrupt Claim__ Register.
+To tell PLIC we're done, we write the RISC-V IRQ Number (20) back to the __Interrupt Claim__ Register.
 
 (Yep the same one we read earlier! Pic above)
 
@@ -477,10 +479,14 @@ This will [__Complete the Interrupt__](https://five-embeddev.com/riscv-isa-manua
 ```c
   // Omitted: Claim and Dispatch the Interrupt
   ...
+  // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
+  // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+  // For UART3: `irq` is 45
+
   // If this is an External Interrupt...
   if (RISCV_IRQ_EXT <= irq) {
 
-    // Compute the RISC-V IRQ Number
+    // Compute the RISC-V IRQ Number (20 for UART3)
     // and Complete the Interrupt.
     // PLIC_CLAIM is 0xE020_1004
     putreg32(               // We write the...
@@ -494,7 +500,7 @@ This will [__Complete the Interrupt__](https://five-embeddev.com/riscv-isa-manua
 }
 ```
 
-And that's how we handle PLIC Interrupts!
+And that's how we handle a PLIC Interrupt!
 
 ![Interrupt Pending Register](https://lupyuen.github.io/images/plic2-registers6.jpg)
 
