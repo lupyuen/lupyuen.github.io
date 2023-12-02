@@ -881,13 +881,13 @@ Today we talked about __Interrupting Chicken, Oxen__ and __Ox64 BL808 RISC-V SBC
 
 - Also __handled PLIC Interrupts__ for UART Input
 
-- But we hit some __Leaky Writes__ that affect adjacent PLIC Registers
+- But we hit some __Leaky Writes__ that affects adjacent PLIC Registers
 
-- Sadly __Interrupt Claim__ doesn't work right either
+- Sadly __Interrupt Claim__ doesn't work as expected
 
 - Thus we activated our Backup Plan with the __Interrupt Pending__ Register
 
-We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
+Plenty to fix for __NuttX on Ox64 BL808__. Stay tuned for updates!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
