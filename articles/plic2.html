@@ -852,6 +852,15 @@ void riscv_serialinit(void) {
   bl602_serialinit();
 }
 </code></pre></div>
+<p>Finally we enabled and handled the <strong>UART Interrupt</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/plic2#enable-the-interrupt"><strong>“Enable the Interrupt”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/plic2#handle-the-interrupt"><strong>“Handle the Interrupt”</strong></a></p>
+</li>
+</ul>
 <p>After making these changes, the UART Driver works OK for printing output to the Ox64 Serial Console!</p>
 <p>(But not yet for UART Input, pic below)</p>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325">(See the <strong>Complete Log</strong>)</a></p>
