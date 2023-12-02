@@ -12,10 +12,10 @@
     content="RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)" 
     data-rh="true">
 <meta property="og:description" 
-    content="TODO"
+    content="We dive into the Platform-Level Interrupt Controller (PLIC) for the tiny adorable Pine64 Ox64 BL808 64-bit Single-Board Computer... Using Apache NuttX Real-Time Operating System to explain the inner workings of PLIC"
     data-rh="true">
 <meta name="description" 
-    content="TODO">
+    content="We dive into the Platform-Level Interrupt Controller (PLIC) for the tiny adorable Pine64 Ox64 BL808 64-bit Single-Board Computer... Using Apache NuttX Real-Time Operating System to explain the inner workings of PLIC">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/plic2-registers.jpg">
 <meta property="og:type" 
@@ -86,7 +86,7 @@
 <li><a href="#all-things-considered">10 All Things Considered</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-uart-driver-for-ox64">12 Appendix: UART Driver for Ox64</a><ul></ul></li>
-<li><a href="#appendix-build-and-run-nuttx">13 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>7 Dec 2023</em></p>
+<li><a href="#appendix-build-and-run-nuttx">13 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>3 Dec 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <blockquote>
 <p><em>“It’s time for the little red chicken’s bedtime story - and a reminder from Papa to try not to interrupt. But the chicken can’t help herself!”</em></p>
@@ -379,6 +379,8 @@ static int bl602_attach(struct uart_dev_s *dev) {
 </ol>
 <p>PLIC has a different set of registers for Machine Mode vs Supervisor Mode.</p>
 <p>That’s why we specify <strong>Supervisor Mode</strong> for the PLIC Registers.</p>
+<p><em>What about the registers WITHOUT “Hart 0, Supervisor Mode”?</em></p>
+<p>These are the <strong>Common PLIC Registers</strong>, shared across all Harts and RISC-V Modes.</p>
 <p>Heading back to our (interrupted) story…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers4.jpg" alt="Handle Interrupt" /></p>
 <h1 id="handle-the-interrupt"><a href="#handle-the-interrupt">6 Handle the Interrupt</a></h1>
@@ -747,7 +749,30 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 <p>Can we rewrite our Sad Story with a Happier Conclusion? Please lemme know! 🙏</p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
-<p>TODO: Today we talked about <strong>Interrupting Chickens, Oxen</strong> and <strong>Ox64 BL808 RISC-V SBC</strong>…</p>
+<p>Today we talked about <strong>Interrupting Chicken, Oxen</strong> and <strong>Ox64 BL808 RISC-V SBC</strong>…</p>
+<ul>
+<li>
+<p>We looked inside the <strong>Platform-Level Interrupt Controller</strong> (PLIC)</p>
+</li>
+<li>
+<p>And <strong>set up the PLIC</strong> at startup</p>
+</li>
+<li>
+<p>We <strong>enabled the PLIC Interrupt</strong> for Serial Console</p>
+</li>
+<li>
+<p>Also <strong>handled PLIC Interrupts</strong> for UART Input</p>
+</li>
+<li>
+<p>But we hit some <strong>Leaky Writes</strong> that affect adjacent PLIC Registers</p>
+</li>
+<li>
+<p>Sadly <strong>Interrupt Claim</strong> doesn’t work right either</p>
+</li>
+<li>
+<p>Thus we activated our Backup Plan with the <strong>Interrupt Pending</strong> Register</p>
+</li>
+</ul>
 <p>We’ll do much more for <strong>NuttX on Ox64 BL808</strong>, stay tuned for updates!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
