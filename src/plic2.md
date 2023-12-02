@@ -973,6 +973,12 @@ void riscv_serialinit(void) {
 }
 ```
 
+Finally we enabled and handled the __UART Interrupt__...
+
+- [__"Enable the Interrupt"__](https://lupyuen.github.io/articles/plic2#enable-the-interrupt)
+
+- [__"Handle the Interrupt"__](https://lupyuen.github.io/articles/plic2#handle-the-interrupt)
+
 After making these changes, the UART Driver works OK for printing output to the Ox64 Serial Console!
 
 (But not yet for UART Input, pic below)
