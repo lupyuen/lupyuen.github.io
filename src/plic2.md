@@ -865,6 +865,14 @@ Which shouldn't happen because PLIC is in the [__Official RISC-V Spec__](https:/
 
     Hmmm... Perhaps!
 
+1.  _So RISC-V ain't RISC-V on SiFive vs T-Head?_
+
+    It feels... Very different? Compare the docs...
+
+    [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)
+
+    [__T-Head C906 Manual__](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf) 
+
 Can we rewrite our Sad Story with a Happier Conclusion? Please lemme know! 🙏
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
