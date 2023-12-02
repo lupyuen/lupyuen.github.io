@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)</title>
+            <link>https://lupyuen.github.io/articles/plic2</link>
+            <description><![CDATA[We dive into the Platform-Level Interrupt Controller (PLIC) for the tiny adorable Pine64 Ox64 BL808 64-bit Single-Board Computer... Using Apache NuttX Real-Time Operating System to explain the inner workings of PLIC]]></description>
+            <guid>https://lupyuen.github.io/articles/plic2</guid>
+            <pubDate>Sun, 03 Dec 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk</title>
             <link>https://lupyuen.github.io/articles/app</link>
             <description><![CDATA[(1) What's inside an Application for Apache NuttX RTOS (2) How it calls the NuttX Kernel (3) How NuttX Apps are bundled into the Initial RAM Disk for Pine64 Ox64 BL808 RISC-V SBC]]></description>
