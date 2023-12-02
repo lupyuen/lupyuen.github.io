@@ -385,7 +385,7 @@ Why is Data Address __`0x0C00` `2104`__ causing unhappiness? First we learn abou
 
 _What's this Platform-Level Interrupt Controller?_
 
-Inside our BL808 SoC, the [__Platform-Level Interrupt Controller (PLIC)__](https://lupyuen.github.io/articles/plic) is the hardware that receives __External Interrupts__ and forwards them to our RISC-V CPU.
+Inside our BL808 SoC, the [__Platform-Level Interrupt Controller (PLIC)__](https://lupyuen.github.io/articles/plic2) is the hardware that receives __External Interrupts__ and forwards them to our RISC-V CPU.
 
 (Like for __UART Interrupts__, pic above)
 
@@ -989,6 +989,10 @@ Here's how we __fixed the Memory Map__ for Ox64 NuttX...
 
 # Appendix: UART Driver for Ox64
 
+Read the article...
+
+-   [__"RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)"__](https://lupyuen.github.io/articles/plic2)
+
 _How will we create the NuttX UART Driver for Ox64 BL808?_
 
 Today NuttX supports the 32-bit predecessor of BL808: [__Bouffalo Lab BL602__](https://github.com/apache/nuttx/tree/master/arch/risc-v/src/bl602).
@@ -1011,9 +1015,7 @@ __UART Interrupts__ are mandatory: If UART Interrupts aren't implemented, NuttX 
 
 BL602 UART Driver has just been [__ported to Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c)! (Minus the UART Interrupts) Check our progress here...
 
-- [__"NuttX UART Driver for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64#nuttx-uart-driver-for-ox64-bl808)
-
-- [__"UART Interrupt for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64#uart-interrupt-for-ox64-bl808)
+-   [__"RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)"__](https://lupyuen.github.io/articles/plic2)
 
 _What about other drivers: BL808 vs BL602?_
 
