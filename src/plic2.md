@@ -619,7 +619,7 @@ However __IRQ 21 is also set__! _"after54=1"_
 
 _Hmmm... Our writing seems to have leaked over to the next 32-bit word?_
 
-Yeah we see the __Leaky Write__ again when we set the __Interrupt Enable__ Register...
+Yeah we see the __Leaky Write__ again when we set the [__Interrupt Enable__](https://lupyuen.github.io/articles/plic2#enable-the-interrupt) Register...
 
 ```text
 // Before setting Interrupt Enable: Everything is 0
