@@ -820,7 +820,14 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 #define BL602_UART0_BASE   0x30002000
 #define BL602_UART_BASE(n) (BL602_UART0_BASE)
 </code></pre></div>
-<p>We fixed the <strong>NuttX Start Code</strong> to call our new UART Driver: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_start.c#L175-L184">jh7110_start.c</a></p>
+<p>Then we set the <strong>UART3 Interrupt Number</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L169-L175">bl602_serial.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// From BL808 Manual: UART3 Interrupt = (IRQ_NUM_BASE + 4)
+// Where IRQ_NUM_BASE = 16
+// So RISC-V IRQ = 20
+// And NuttX IRQ = 45 (Offset by 25)
+#define BL602_IRQ_UART0 45
+</code></pre></div>
+<p>And we modified the <strong>NuttX Start Code</strong> to call our new UART Driver: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_start.c#L175-L184">jh7110_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// At Startup, init the new UART Driver
 void riscv_earlyserialinit(void) {
   bl602_earlyserialinit();
@@ -831,7 +838,8 @@ void riscv_serialinit(void) {
   bl602_serialinit();
 }
 </code></pre></div>
-<p>And the UART Driver works OK for printing output to the Ox64 Serial Console! (But not for input, pic below)</p>
+<p>After making these changes, the UART Driver works OK for printing output to the Ox64 Serial Console!</p>
+<p>(But not yet for UART Input, pic below)</p>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://youtu.be/VSTpsSJ_7L0">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-run.png" alt="NuttX boots OK on Ox64 BL808! But UART Input is null" /></p>
@@ -908,7 +916,10 @@ cp Image \
 diskutil unmountDisk /dev/disk2
 </code></pre></div>
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
-<p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH). (Pic above)</p>
+<p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH).</p>
+<p><em>What happens when we press a key?</em></p>
+<p>NuttX will respond to our keypress. (Because we configured the PLIC)</p>
+<p>But the UART Input reads as null right now. (Pic above)</p>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325">(See the <strong>NuttX Log</strong>)</a></p>
 <p><a href="https://youtu.be/VSTpsSJ_7L0">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1">(See the <strong>Build Outputs</strong>)</a></p>
