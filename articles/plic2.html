@@ -386,7 +386,7 @@ static int bl602_attach(struct uart_dev_s *dev) {
 <h1 id="handle-the-interrupt"><a href="#handle-the-interrupt">6 Handle the Interrupt</a></h1>
 <p><em>What happens when we press a key on the Serial Console? (Pic above)</em></p>
 <p><em>How will PLIC handle the UART Interrupt?</em></p>
-<p>This is how we <strong>handle Interrupts</strong> with the Platform-Level Interrupt Controller (PLIC)…</p>
+<p>This is how we <strong>handle an Interrupt</strong> with the Platform-Level Interrupt Controller (PLIC)…</p>
 <ol>
 <li>
 <p><strong>Claim</strong> the Interrupt</p>
@@ -409,7 +409,7 @@ static int bl602_attach(struct uart_dev_s *dev) {
 <h2 id="claim-the-interrupt"><a href="#claim-the-interrupt">6.1 Claim the Interrupt</a></h2>
 <p><em>How will we know which RISC-V Interrupt has been fired?</em></p>
 <p>That’s why we have the <strong>Interrupt Claim</strong> Register! (Pic above)</p>
-<p>We read the Interrupt Claim Register to get the <strong>RISC-V IRQ Number</strong> that has been fired: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L76">jh7110_irq.c</a></p>
+<p>We read the Interrupt Claim Register to get the <strong>RISC-V IRQ Number</strong> that has been fired (20 for UART3): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L76">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Dispatch the RISC-V Interrupt
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
@@ -430,6 +430,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
     irq += val;
   }
+  // For UART3: `val` is 20 and `irq` is 45
   // Up Next: Dispatch and Complete the Interrupt
 </code></pre></div>
 <p><em>What exactly are we “claiming”?</em></p>
@@ -443,6 +444,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   ...
   // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
   // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+  // For UART3: `irq` is 45
 
   // If the RISC-V IRQ Number is valid (non-zero)...
   if (RISCV_IRQ_EXT != irq) {
@@ -456,15 +458,19 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p>(That’s because at startup, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L383-L442"><strong>bl602_attach</strong></a> has registered <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L285-L343"><strong>uart_interrupt</strong></a> as the UART Interrupt Handler)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Interrupt Claim Register" /></p>
 <h2 id="complete-the-interrupt"><a href="#complete-the-interrupt">6.3 Complete the Interrupt</a></h2>
-<p>To tell PLIC we’re done, we write the RISC-V IRQ Number back to the <strong>Interrupt Claim</strong> Register.</p>
+<p>To tell PLIC we’re done, we write the RISC-V IRQ Number (20) back to the <strong>Interrupt Claim</strong> Register.</p>
 <p>(Yep the same one we read earlier! Pic above)</p>
 <p>This will <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#interrupt-completion"><strong>Complete the Interrupt</strong></a>, so PLIC can fire the next one: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L85-L105">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Omitted: Claim and Dispatch the Interrupt
   ...
+  // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
+  // RISC-V IRQ Number + 25 (RISCV_IRQ_EXT)
+  // For UART3: `irq` is 45
+
   // If this is an External Interrupt...
   if (RISCV_IRQ_EXT &lt;= irq) {
 
-    // Compute the RISC-V IRQ Number
+    // Compute the RISC-V IRQ Number (20 for UART3)
     // and Complete the Interrupt.
     // PLIC_CLAIM is 0xE020_1004
     putreg32(               // We write the...
@@ -477,7 +483,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   return regs;
 }
 </code></pre></div>
-<p>And that’s how we handle PLIC Interrupts!</p>
+<p>And that’s how we handle a PLIC Interrupt!</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Interrupt Pending Register" /></p>
 <h2 id="pending-interrupts"><a href="#pending-interrupts">6.4 Pending Interrupts</a></h2>
 <p><em>What’s with the Pending Interrupts?</em></p>
