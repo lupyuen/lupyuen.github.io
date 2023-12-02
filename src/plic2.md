@@ -837,7 +837,9 @@ Which shouldn't happen because PLIC is in the [__Official RISC-V Spec__](https:/
 
 1.  _Something special about the C906 MMU?_
 
-    According to the [__C906 User Manual__](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf) (Page 53), the C906 MMU supports __Extended Page Attributes__. Which might affect us?
+    According to the [__C906 User Manual__](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf) (Page 53), the C906 MMU supports __Extended Page Attributes__.
+    
+    Is the MMU Caching causing issues?
 
     [(More about __C906 Extended Page Attributes__)](https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic)
 
