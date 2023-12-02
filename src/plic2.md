@@ -1,6 +1,6 @@
 # RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)
 
-📝 _7 Dec 2023_
+📝 _3 Dec 2023_
 
 ![Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/plic2-registers.jpg)
 
@@ -364,6 +364,10 @@ _Why "Supervisor Mode"?_
 PLIC has a different set of registers for Machine Mode vs Supervisor Mode.
 
 That's why we specify __Supervisor Mode__ for the PLIC Registers.
+
+_What about the registers WITHOUT "Hart 0, Supervisor Mode"?_
+
+These are the __Common PLIC Registers__, shared across all Harts and RISC-V Modes.
 
 Heading back to our (interrupted) story...
 
@@ -859,7 +863,21 @@ Can we rewrite our Sad Story with a Happier Conclusion? Please lemme know! 🙏
 
 # What's Next
 
-TODO: Today we talked about __Interrupting Chickens, Oxen__ and __Ox64 BL808 RISC-V SBC__...
+Today we talked about __Interrupting Chicken, Oxen__ and __Ox64 BL808 RISC-V SBC__...
+
+- We looked inside the __Platform-Level Interrupt Controller__ (PLIC)
+
+- And __set up the PLIC__ at startup
+
+- We __enabled the PLIC Interrupt__ for Serial Console
+
+- Also __handled PLIC Interrupts__ for UART Input
+
+- But we hit some __Leaky Writes__ that affect adjacent PLIC Registers
+
+- Sadly __Interrupt Claim__ doesn't work right either
+
+- Thus we activated our Backup Plan with the __Interrupt Pending__ Register
 
 We'll do much more for __NuttX on Ox64 BL808__, stay tuned for updates!
 

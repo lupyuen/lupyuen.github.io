@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-12-03",
+      "website": "https://lupyuen.github.io/articles/plic2",
+      "summary": "We dive into the Platform-Level Interrupt Controller (PLIC) for the tiny adorable Pine64 Ox64 BL808 64-bit Single-Board Computer... Using Apache NuttX Real-Time Operating System to explain the inner workings of PLIC"
+    },
+    {
       "name": "RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-11-26",
