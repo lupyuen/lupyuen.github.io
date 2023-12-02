@@ -157,6 +157,8 @@ void up_irqinitialize(void) {
   putreg32(0x0, PLIC_ENABLE2);  // RISC-V IRQ 32 to 63
 ```
 
+Hence at startup, all PLIC Interrupts are disabled until we __enable them later__ (in PLIC).
+
 [(__up_irq_save__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/irq.h#L674-L703)
 
 [(__putreg32__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_internal.h#L124-L132)
@@ -164,8 +166,6 @@ void up_irqinitialize(void) {
 [(__PLIC_ENABLE__ and other PLIC Offsets)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L34-L49)
 
 [(NuttX calls __up_irqinitialize__ at startup)](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
-
-Hence at startup, all PLIC Interrupts are disabled until we __enable them later__ (in PLIC).
 
 ![Clear Interrupts](https://lupyuen.github.io/images/plic2-registers5a.jpg)
 
