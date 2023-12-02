@@ -771,16 +771,16 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 <p>Also <strong>handled PLIC Interrupts</strong> for UART Input</p>
 </li>
 <li>
-<p>But we hit some <strong>Leaky Writes</strong> that affect adjacent PLIC Registers</p>
+<p>But we hit some <strong>Leaky Writes</strong> that affects adjacent PLIC Registers</p>
 </li>
 <li>
-<p>Sadly <strong>Interrupt Claim</strong> doesn’t work right either</p>
+<p>Sadly <strong>Interrupt Claim</strong> doesn’t work as expected</p>
 </li>
 <li>
 <p>Thus we activated our Backup Plan with the <strong>Interrupt Pending</strong> Register</p>
 </li>
 </ul>
-<p>We’ll do much more for <strong>NuttX on Ox64 BL808</strong>, stay tuned for updates!</p>
+<p>Plenty to fix for <strong>NuttX on Ox64 BL808</strong>. Stay tuned for updates!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
