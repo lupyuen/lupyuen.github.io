@@ -931,7 +931,17 @@ We hardcoded the __UART3 Base Address__: [bl602_uart.h](https://github.com/lupyu
 #define BL602_UART_BASE(n) (BL602_UART0_BASE)
 ```
 
-We fixed the __NuttX Start Code__ to call our new UART Driver: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_start.c#L175-L184)
+Then we set the __UART3 Interrupt Number__: [bl602_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L169-L175)
+
+```c
+// From BL808 Manual: UART3 Interrupt = (IRQ_NUM_BASE + 4)
+// Where IRQ_NUM_BASE = 16
+// So RISC-V IRQ = 20
+// And NuttX IRQ = 45 (Offset by 25)
+#define BL602_IRQ_UART0 45
+```
+
+And we modified the __NuttX Start Code__ to call our new UART Driver: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_start.c#L175-L184)
 
 ```c
 // At Startup, init the new UART Driver
@@ -945,7 +955,9 @@ void riscv_serialinit(void) {
 }
 ```
 
-And the UART Driver works OK for printing output to the Ox64 Serial Console! (But not for input, pic below)
+After making these changes, the UART Driver works OK for printing output to the Ox64 Serial Console!
+
+(But not yet for UART Input, pic below)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325)
 
@@ -1046,7 +1058,13 @@ diskutil unmountDisk /dev/disk2
 
 Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg) and power up Ox64.
 
-Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH). (Pic above)
+Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH).
+
+_What happens when we press a key?_
+
+NuttX will respond to our keypress. (Because we configured the PLIC)
+
+But the UART Input reads as null right now. (Pic above)
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325)
 
