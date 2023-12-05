@@ -758,7 +758,7 @@ bl602_receive: rxdata=-1
 bl602_receive: rxdata=0x0
 ```
 
-But the [__UART Input is empty__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L892-L901)! We need to troubleshoot our UART Driver some more.
+But the [__UART Input is empty__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L892-L901)! We need to [__troubleshoot our UART Driver__](https://github.com/lupyuen/nuttx-ox64#compare-ox64-bl808-uart-registers) some more.
 
 Meanwhile we wrap up our story for today...
 
