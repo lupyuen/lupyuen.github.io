@@ -1,6 +1,6 @@
 # Recipe for Wholemeal Sourdough with Bread Machine
 
-📝 _27 Nov 2023_
+📝 _5 Dec 2023_
 
 ![Honey & Milk Sourdough](https://lupyuen.github.io/images/sourdough25.jpg)
 
@@ -91,6 +91,8 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Ov
     Allow the dough to rise for 4 hours. Or until the dough reaches the brim of the Bread Bucket.
 
     (Nowadays I leave my Bread Bucket overnight for 8 hours in my Microwave Oven. The dough deflates a little, but the bread gets fluffier)
+
+    (After rising for 8 hours, it's OK to refrigerate the whole Bread Bucket, covered in cellophane wrap, before baking the next day. Not the freezer!)
 
 1.  Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "French Bread" Cycle (5 hour cycle) WITHOUT the Bread Bucket.
 
