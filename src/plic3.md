@@ -165,11 +165,15 @@ Inspire the solution
 
 Re-read and re-think
 
+Sounds like an Agatha Christie Mystery, but maybe there's a single reason that's causing all the weirdness
+
+Indeed: Memory Caching!
+
 Upstream to NuttX
 
 # What's Next
 
-TODO
+TODO: Thank you so much for reading, you're my inspiration for solving this sticky problem 
 
 We have plenty to fix for __NuttX on Ox64 BL808__. Stay tuned for updates!
 
