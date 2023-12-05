@@ -165,7 +165,7 @@ Inspire the solution
 
 Re-read and re-think
 
-Sounds like an Agatha Christie Mystery... But sometimes it's indeed a Single Culprit (Memory Caching) for all the seemingly unrelated problems!
+Sounds like an Agatha Christie Mystery... But sometimes it's indeed One Single Culprit (Memory Caching) for all the seemingly unrelated problems!
 
 Taking a brief break from writing
 
