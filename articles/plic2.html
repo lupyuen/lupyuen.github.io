@@ -664,7 +664,7 @@ infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);
 <div class="example-wrap"><pre class="language-text"><code>bl602_receive: rxdata=-1
 bl602_receive: rxdata=0x0
 </code></pre></div>
-<p>But the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L892-L901"><strong>UART Input is empty</strong></a>! We need to troubleshoot our UART Driver some more.</p>
+<p>But the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L892-L901"><strong>UART Input is empty</strong></a>! We need to <a href="https://github.com/lupyuen/nuttx-ox64#compare-ox64-bl808-uart-registers"><strong>troubleshoot our UART Driver</strong></a> some more.</p>
 <p>Meanwhile we wrap up our story for today…</p>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L294-L325">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://youtu.be/VSTpsSJ_7L0">(Watch the <strong>Demo on YouTube</strong>)</a></p>
