@@ -871,7 +871,9 @@ Which shouldn't happen because PLIC is in the [__Official RISC-V Spec__](https:/
 
     [__SiFive U74 Manual__](https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf)
 
-    [__T-Head C906 Manual__](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf) 
+    [__T-Head C906 User Manual__](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf) 
+
+    [__T-Head C906 Integration Manual__ (Chinese)](https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf)
 
 Can we rewrite our Sad Story with a Happier Conclusion? Please lemme know! 🙏
 
