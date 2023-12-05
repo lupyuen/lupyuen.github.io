@@ -173,7 +173,7 @@ Upstream to NuttX
 
 # What's Next
 
-TODO: Thank you so much for reading, you're my inspiration for solving this sticky problem 
+TODO: Thank you so much for reading, you're my inspiration for solving this sticky problem 🙏
 
 We have plenty to fix for __NuttX on Ox64 BL808__. Stay tuned for updates!
 
