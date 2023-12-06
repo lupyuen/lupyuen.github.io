@@ -294,11 +294,18 @@ Bit[59] Sec - Trustable
 <p>We deduce that <strong>“Strong Order”</strong> is the Magical Bit that we need for UART and PLIC!</p>
 <p><em>What’s “Strong Order”</em></p>
 <p><a href="https://en.wikipedia.org/wiki/Memory_ordering#Runtime_memory_ordering"><strong>“Strong Order”</strong></a> means “All Reads and All Writes are In-Order”.</p>
-<p>Apparently T-Head C906 will (by default) <strong>Disable Strong Order</strong>, to read and write memory <strong>Out-of-Sequence</strong>. (So that it performs better)</p>
+<p>Apparently T-Head C906 will (by default) <strong>Disable Strong Order</strong> and read / write memory <strong>Out-of-Sequence</strong>. (So that it performs better)</p>
 <p>Which will surely mess up our UART and PLIC Registers!</p>
-<p><a href="https://github.com/T-head-Semi/openc906/blob/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl/aq_mmu_regs.v#L341-L342">(What’s <strong>“Shareable”</strong>? It’s not documented)</a></p>
+<p><em>They should’ve warned us about Strong Order and I/O Memory!</em></p>
+<p>Ahem <a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt"><strong>they did</strong></a>…</p>
+<blockquote>
+<p>“A Device Driver written to rely on <strong>I/O Strong Ordering</strong> rules <strong>will not operate correctly</strong> if the Address Range is mapped with PBMT=NC [Weakly Ordered]. As such, this <strong>configuration is discouraged</strong>.”</p>
+</blockquote>
+<p>But that comes from the <a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt"><strong>New Svpbmt Extension</strong></a>. Which isn’t supported by T-Head C906.</p>
+<p>(Svpbmt Bits 61~62 will conflict with T-Head Bits 59~63. Oh boy)</p>
 <p><em>How to enable Strong Order?</em></p>
 <p>We do it in the T-Head C906 MMU…</p>
+<p><a href="https://github.com/T-head-Semi/openc906/blob/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl/aq_mmu_regs.v#L341-L342">(What’s <strong>“Shareable”</strong>? It’s not documented)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table for MMU" /></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#huge-chunks-level-1"><em>Level 1 Page Table for MMU</em></a></p>
 <h1 id="memory-management-unit"><a href="#memory-management-unit">5 Memory Management Unit</a></h1>
