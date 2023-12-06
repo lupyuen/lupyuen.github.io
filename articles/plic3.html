@@ -435,6 +435,8 @@ nsh&gt;
 nsh&gt; hello
 Hello, World!!
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324">(See the <strong>Complete Log</strong>)</a></p>
+<p>(Pic above)</p>
 <p>C906 MMU is actually explained in <a href="https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf"><strong>C906 Integration Manual (Chinese)</strong></a>, Page 9.</p>
 <p><a href="https://github.com/T-head-Semi/openc906/tree/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl"><strong>MMU RTL Code</strong></a></p>
 <h1 id="lessons-learnt"><a href="#lessons-learnt">8 Lessons Learnt</a></h1>
@@ -662,10 +664,7 @@ diskutil unmountDisk /dev/disk2
 </code></pre></div>
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH).</p>
-<p><em>What happens when we press a key?</em></p>
-<p>NuttX will respond to our keypress. (Because we configured the PLIC)</p>
-<p>But the UART Input reads as null right now. (Pic above)</p>
-<p>TODO: <a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325">(See the <strong>NuttX Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324">(See the <strong>NuttX Log</strong>)</a></p>
 <p>TODO: <a href="https://youtu.be/VSTpsSJ_7L0">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-beach.jpg" alt="Quick dip in the sea + Picnic on the beach … Really helps with NuttX + Ox64 troubleshooting! 👍" /></p>
