@@ -606,6 +606,8 @@ RX FIFO. OK to ignore this.
 
 Nope still the same.
 
+![UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!](https://lupyuen.github.io/images/plic3-title.png)
+
 # Appendix: Build and Run NuttX
 
 In this article, we ran a Work-In-Progress Version of __Apache NuttX RTOS for Ox64__, with PLIC and Console Input working OK.
