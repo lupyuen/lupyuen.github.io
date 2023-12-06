@@ -203,15 +203,19 @@ Exactly! (Pic below)
 
   Before we actually read it!
 
-Yep we indeed have a Leaky Read + Leaky Write that's causing all our UART + PLIC worries. Why oh why?
+Yep we indeed have a Leaky Read + Leaky Write that's causing all our UART + PLIC worries.
+
+Something is Buffering or Caching our Reads and Writes. Why oh why?
 
 TODO: Pic of leaky read
 
 # T-Head Errata
 
-_But Linux runs OK on Ox64 right?_
+_But Linux runs OK on Ox64 BL808 right?_
 
-We searched for __"T-Head"__ in the [__Linux Repo__](https://github.com/torvalds/linux). And we see this vital clue: [errata_list.h](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/errata_list.h#L69-L164)
+_Something special about Linux on T-Head C906?_
+
+We search for __"T-Head"__ in the [__Linux Kernel Repo__](https://github.com/torvalds/linux). And we see this vital clue: [errata_list.h](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/errata_list.h#L69-L164)
 
 ```c
 #ifdef CONFIG_ERRATA_THEAD_PBMT
@@ -224,11 +228,37 @@ asm volatile(... _PAGE_MTMASK_THEAD ...)
 
 _Aha! A Linux Errata for T-Head CPUs!_
 
-TODO
+We track down __PAGE_MTMASK_THEAD__: [pgtable-64.h](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142)
+
+```c
+#define _PAGE_PMA_THEAD     ((1UL << 62) | (1UL << 61) | (1UL << 60))
+#define _PAGE_NOCACHE_THEAD ((1UL < 61) | (1UL << 60))
+#define _PAGE_IO_THEAD      ((1UL << 63) | (1UL << 60))
+#define _PAGE_MTMASK_THEAD  (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL << 59))
+```
+
+Which says...
+
+```c
+[63:59] T-Head Memory Type definitions:
+bit[63] SO  - Strong Order
+bit[62] C   - Cacheable
+bit[61] B   - Bufferable
+bit[60] SH  - Shareable
+bit[59] Sec - Trustable
+
+00110 - NC: Weakly-ordered, Non-cacheable, Bufferable, Shareable, Non-trustable
+01110 - PMA: Weakly-ordered, Cacheable, Bufferable, Shareable, Non-trustable
+10010 - IO: Strongly-ordered, Non-cacheable, Non-bufferable, Shareable, Non-trustable
+```
+
+We found the Magical Bits to __Disable Caching and Buffering__ in the C906 MMU!
+
+![Level 1 Page Table in Memory Management Unit](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
 
 # Memory Management Unit
 
-_Wow the soup gets too salty. What's PAGE_MTMASK_THEAD?_
+_Wow the soup gets too salty. What's MMU?_
 
 TODO
 
@@ -330,10 +360,10 @@ We do the same to Disable MMU Cache in NuttX: [riscv_mmu.c](https://github.com/l
   * 01110 - PMA  Weakly-ordered, Cacheable, Bufferable, Shareable, Non-trustable
   * 10010 - IO   Strongly-ordered, Non-cacheable, Non-bufferable, Shareable, Non-trustable
   */
-  #define _PAGE_PMA_THEAD		((1UL << 62) | (1UL << 61) | (1UL << 60))
-  #define _PAGE_NOCACHE_THEAD	((1UL < 61) | (1UL << 60))
-  #define _PAGE_IO_THEAD		((1UL << 63) | (1UL << 60))
-  #define _PAGE_MTMASK_THEAD	(_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL << 59))
+  #define _PAGE_PMA_THEAD  ((1UL << 62) | (1UL << 61) | (1UL << 60))
+  #define _PAGE_NOCACHE_THEAD ((1UL < 61) | (1UL << 60))
+  #define _PAGE_IO_THEAD  ((1UL << 63) | (1UL << 60))
+  #define _PAGE_MTMASK_THEAD (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL << 59))
   if ((mmuflags & PTE_R) &&
     (vaddr < 0x40000000UL || vaddr >= 0xe0000000UL))
     {
