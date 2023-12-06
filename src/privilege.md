@@ -433,7 +433,7 @@ Yes indeed, __CSR_STATUS__ becomes __`mstatus`__: [mode.h](https://github.com/ap
 
 _So if ARCH_USE_S_MODE is enabled, NuttX will use `sstatus` instead?_
 
-Yep! We need to disable __ARCH_USE_S_MODE__, so that NuttX will use __`sstatus`__ (instead of __`mstatus`__)...
+Yep! We need to enable __ARCH_USE_S_MODE__, so that NuttX will use __`sstatus`__ (instead of __`mstatus`__)...
 
 Which is perfectly hunky dory for __RISC-V Supervisor Mode__!
 
