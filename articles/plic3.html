@@ -284,7 +284,7 @@ Bit[59] Sec - Trustable
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142">(Source)</a></p>
 <p><em>Something special about I/O Memory?</em></p>
 <p>The last line suggests we need to configure the <strong>T-Head Memory Type</strong> specifically to support <strong>I/O Memory</strong> (PAGE_IO_THEAD)…</p>
-<div><table><thead><tr><th style="text-align: left">Memory Attribute</th><th style="text-align: left">Bit</th></tr></thead><tbody>
+<div><table><thead><tr><th style="text-align: left">Memory Attribute</th><th style="text-align: left">Page Table Entry</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>Strongly-Ordered</strong></td><td style="text-align: left">Bit 63 is 1</td></tr>
 <tr><td style="text-align: left"><strong>Non-Cacheable</strong></td><td style="text-align: left">Bit 62 is 0 <em>(Default)</em></td></tr>
 <tr><td style="text-align: left"><strong>Non-Bufferable</strong></td><td style="text-align: left">Bit 61 is 0 <em>(Default)</em></td></tr>
@@ -306,6 +306,7 @@ Bit[59] Sec - Trustable
 <p>(Svpbmt Bits 61~62 will conflict with T-Head Bits 59~63. Oh boy)</p>
 <p><em>How to enable Strong Order?</em></p>
 <p>We do it in the T-Head C906 MMU…</p>
+<p><a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">(<strong>Strong Order</strong> appears briefly in <strong>C906 User Manual</strong>, Pages 24 &amp; 53)</a></p>
 <p><a href="https://github.com/T-head-Semi/openc906/blob/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl/aq_mmu_regs.v#L341-L342">(What’s <strong>“Shareable”</strong>? It’s not documented)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table for MMU" /></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#huge-chunks-level-1"><em>Level 1 Page Table for MMU</em></a></p>
@@ -322,9 +323,9 @@ Bit[59] Sec - Trustable
 <p>(Kinda like “The Matrix”)</p>
 </li>
 </ul>
-<p>For Ox64: We switched on the MMU to protect the Kernel Memory from the Apps. And to protect the Apps from each other.</p>
+<p><strong>For Ox64:</strong> We switched on the MMU to protect the Kernel Memory from the Apps. And to protect the Apps from each other.</p>
 <p><em>How does it work?</em></p>
-<p>The pic above shows the <strong>Level 1 Page Table</strong> that we configured in our MMU. The Page Table has a <strong>Page Table Entry</strong> that says…</p>
+<p>The pic above shows the <strong>Level 1 Page Table</strong> that we configured for our MMU. The Page Table has a <strong>Page Table Entry</strong> that says…</p>
 <ul>
 <li>
 <p><strong>V:</strong> It’s a <strong>Valid</strong> Page Table Entry</p>
@@ -340,8 +341,8 @@ Bit[59] Sec - Trustable
 <p>(Including the UART Registers at <code>0x3000_2000</code>)</p>
 </li>
 </ul>
-<p>Remember <strong>PAGE_IO_THEAD</strong> and <strong>Strong Order</strong>?</p>
-<div><table><thead><tr><th style="text-align: left">Memory Attribute</th><th style="text-align: left">Bit</th></tr></thead><tbody>
+<p><em>What about PAGE_IO_THEAD and Strong Order?</em></p>
+<div><table><thead><tr><th style="text-align: left">Memory Attribute</th><th style="text-align: left">Page Table Entry</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>SO: Strongly-Ordered</strong></td><td style="text-align: left">Bit 63 is 1</td></tr>
 <tr><td style="text-align: left"><strong>SH: Shareable</strong></td><td style="text-align: left">Bit 60 is 1</td></tr>
 </tbody></table>
@@ -351,7 +352,12 @@ Bit[59] Sec - Trustable
 <p>TODO: Strong Order Pic</p>
 <h1 id="enable-strong-order"><a href="#enable-strong-order">6 Enable Strong Order</a></h1>
 <p><em>We need to set the Strong Order Bit…</em></p>
-<p><em>How will we set it in our Page Table Entry?</em></p>
+<p><em>How will we enable it in our Page Table Entry?</em></p>
+<div><table><thead><tr><th style="text-align: left">Memory Attribute</th><th style="text-align: left">Page Table Entry</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>SO: Strongly-Ordered</strong></td><td style="text-align: left">Bit 63 is 1</td></tr>
+<tr><td style="text-align: left"><strong>SH: Shareable</strong></td><td style="text-align: left">Bit 60 is 1</td></tr>
+</tbody></table>
+</div>
 <p>For testing, we patched our MMU Code to set the <strong>Strong Order Bit</strong> in our Page Table Entries: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127">riscv_mmu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set a Page Table Entry in a Page Table for the MMU
 void mmu_ln_setentry(
@@ -412,22 +418,31 @@ map PLIC as Interrupt L2
 <p><a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
 <h1 id="it-works"><a href="#it-works">7 It Works!</a></h1>
+<p><em>What happens when we run our patched code?</em></p>
+<p>Our UART and PLIC Troubles are all over!</p>
+<ul>
+<li>
+<p><strong>Interrupt Priorities</strong> are <a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946/4b137b2f6a20289bbaab8d79ed0f2f9ea2a87ef5#file-ox64-nuttx-uart-ok-log-L188-L191"><strong>set correctly to 1</strong></a></p>
+<div class="example-wrap"><pre class="language-text"><code>PLIC Interrupt Priority: After (0xe0000004):
+0000  01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................
+0010  01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................
+0020  01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................
+</code></pre></div></li>
+<li>
+<p><strong>Interrupt Enable</strong> <a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946/4b137b2f6a20289bbaab8d79ed0f2f9ea2a87ef5#file-ox64-nuttx-uart-ok-log-L280-L281"><strong>doesn’t leak</strong></a> to the next word</p>
+<div class="example-wrap"><pre class="language-text"><code>PLIC Hart 0 S-Mode Interrupt Enable (0xe0002080):
+0000  00 00 10 00 00 00 00 00                          ........   
+</code></pre></div></li>
+<li>
+<p><strong>Interrupt Claim</strong> returns the correct Interrupt Number</p>
 <p>TODO</p>
-<p>Yep <a href="https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167">UART Input works OK</a> yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>nx_start: CPU0: Beginning Idle Loop
-bl602_receive: rxdata=0x31
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-1riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-bl602_receive: rxdata=0x32
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-2
-</code></pre></div>
+</li>
+<li>
+<p>Our <strong>UART Driver</strong> returns the <a href="https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167/97b914fd3e285eb8afbe3c01a814c018170b5b7#file-ox64-nuttx-mmu-uncache-log-L344"><strong>correct UART Input</strong></a></p>
+<div class="example-wrap"><pre class="language-text"><code>bl602_receive: rxdata=0x31
+</code></pre></div></li>
+</ul>
+<p>TODO</p>
 <p>Finally <a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324">UART Input and PLIC are both OK</a> yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
 nsh&gt; uname -a
