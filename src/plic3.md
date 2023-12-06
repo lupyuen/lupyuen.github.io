@@ -254,7 +254,7 @@ Bit[59] Sec - Trustable
 10010 - IO: Strongly-ordered, Non-cacheable, Non-bufferable, Shareable, Non-trustable
 ```
 
-We found the Magical Bits to __Disable Caching and Buffering__ in the C906 MMU!
+TODO: We found the Magical Bits (PAGE_IO_THEAD) to TODO in the C906 MMU!
 
 ![Level 1 Page Table in Memory Management Unit](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
 
@@ -298,78 +298,6 @@ We'll add them to our Page Table Entry.
 
 TODO
 
-# It Works!
-
-TODO
-
-# Fix the UART Interrupt for Ox64 BL808
-
-TODO
-
-Let's fix the UART Interrupt for Ox64 BL808!
-
-UART Input is strangely null, so we tried printing the UART Input just before reading it: [bl602_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/jh7110/bl602_serial.c#L1026-L1044)
-
-```c
-/****************************************************************************
- * Name: bl602_rxavailable
- *
- * Description:
- *   Return true if the receive register is not empty
- *
- ****************************************************************************/
-
-static bool bl602_rxavailable(struct uart_dev_s *dev)
-{
-  struct bl602_uart_s *priv = (struct bl602_uart_s *)dev->priv;
-  uint8_t uart_idx          = priv->config.idx;
-
-  /* Return true is data is available in the receive data buffer */
-
-  uintptr_t rx = getreg32(0x3000208c); _info("rx=%p\n", rx); ////
-  return (getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) & \
-          UART_FIFO_CONFIG_1_RX_CNT_MASK) != 0;
-}
-```
-
-Yes UART Input is correct!
-
-```text
-nx_start: CPU0: Beginning Idle Loop
-bl602_rxavailable: rx=0x31
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrut Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-bl602_rxavailable: rx=0x32
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........  
-```
-
-But somehow UART Input is erased when we read BL602_UART_FIFO_CONFIG_1 (Offset 0x84)...
-
-```c
-  uintptr_t fifo = getreg32(0x30002084);
-  uintptr_t rx = getreg32(0x3000208c);
-  _info("fifo=%p, rx=%p\n", fifo, rx);
-```
-
-Which shows...
-
-```text
-nx_start: CPU0: Beginning Idle Loop
-bl602_rxavailable: fifo=0x7070120, rx=0
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........
-```
-
-_Is C906 read-caching the entire page?_
-
-Let's Disable MMU Caching and retest. From Linux Kernel we see these MMU Flags to Disable the MMU Caching: [pgtable-64.h](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142)
-
-Which is used by this T-Head Errata: [errata_list.h](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/errata_list.h#L70-L92)
-
 We do the same to Disable MMU Cache in NuttX: [riscv_mmu.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127)
 
 ```c
@@ -397,10 +325,26 @@ We do the same to Disable MMU Cache in NuttX: [riscv_mmu.c](https://github.com/l
   if ((mmuflags & PTE_R) &&
     (vaddr < 0x40000000UL || vaddr >= 0xe0000000UL))
     {
-      lntable[index] = lntable[index] | _PAGE_MTMASK_THEAD;
+      lntable[index] = lntable[index] | _PAGE_IO_THEAD;
       _info("vaddr=%p, lntable[index]=%p\n", vaddr, lntable[index]);
     }
   //// End Test
+```
+
+[Bits are set OK](https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946)
+
+```text
+map I/O regions
+   vaddr=0, lntable[index]=0x90000000000000e7
+
+map PLIC as Interrupt L2
+   vaddr=0xe0000000, lntable[index]=0x90000000380000e7
+   vaddr=0xe0200000, lntable[index]=0x90000000380800e7
+   vaddr=0xe0400000, lntable[index]=0x90000000381000e7
+   vaddr=0xe0600000, lntable[index]=0x90000000381800e7
+   ...
+   vaddr=0xefc00000, lntable[index]=0x900000003bf000e7
+   vaddr=0xefe00000, lntable[index]=0x900000003bf800e7
 ```
 
 Yep [UART Input works OK](https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167) yay!
@@ -421,7 +365,7 @@ PLIC Interrupt Pending (0xe0001000):
 2
 ```
 
-Finally [UART Input and PLIC are both OK](https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946) yay!
+Finally [UART Input and PLIC are both OK](https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324) yay!
 
 ```text
 NuttShell (NSH) NuttX-12.0.3
@@ -440,6 +384,10 @@ Hello, World!!
 ```
 
 C906 MMU Caching is actually explained in [C906 Integration Manual (Chinese)](https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf), Page 9.
+
+# It Works!
+
+TODO
 
 ![UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!](https://lupyuen.github.io/images/plic3-title.png)
 
