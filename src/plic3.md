@@ -62,19 +62,39 @@ Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC...
 
 ![Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/plic2-registers.jpg)
 
-1.  TODO: At Startup, Interrupt Priority
+1.  At Startup, we set the [__Interrupt Priority__](https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority) to 1
 
-1.  TODO: Interrupt Threshold
+    (Lowest Priority)
 
-1.  TODO: Interrupt Enable
+1.  And [__Interrupt Threshold__](https://lupyuen.github.io/articles/plic2#set-the-interrupt-threshold) to 0.
 
-1.  TODO: Key press
+    (Allow all Interrupts to fire later)
 
-1.  TODO: Interrupt Claim
+1.  We flip Bit 20 of [__Interrupt Enable__](https://lupyuen.github.io/articles/plic2#enable-the-interrupt) Register to 1.
 
-1.  TODO: Interrupt Pending
+    (To enable __RISC-V IRQ 20__ for UART3)
 
-TODO
+1.  Suppose we __press a key__ on the Serial Console.
+
+    Our SoC will __fire an Interrupt__ for IRQ 20.
+
+    (IRQ means __Interrupt Request Number__)
+
+1.  Our Interrupt Handler will read the Interrupt Number (20) from the [__Interrupt Claim__](https://lupyuen.github.io/articles/plic2#claim-the-interrupt) Register...
+
+    Call the [__UART Driver__](https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64) to read the keypress...
+
+    Then write 20 back into the same old [__Interrupt Claim__](https://lupyuen.github.io/articles/plic2#claim-the-interrupt) Register...
+
+    Which will __Complete the Interrupt__.
+
+1.  Useful But Non-Essential: [__Interrupt Pending__](https://lupyuen.github.io/articles/plic2#pending-interrupts) Register tells us which Interrupts are awaiting Claiming and Completion.
+
+    (We'll use it for troubleshooting)
+
+That's the Textbook Recipe for PLIC, according to the [__Official RISC-V PLIC Spec__](https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic).
+
+But it doesn't work on Ox64 BL808 SBC and T-Head C906 Core...
 
 # Our Problem
 
