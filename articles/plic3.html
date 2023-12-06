@@ -128,25 +128,35 @@
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <ol>
 <li>
-<p>TODO: At Startup, Interrupt Priority</p>
+<p>At Startup, we set the <a href="https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority"><strong>Interrupt Priority</strong></a> to 1</p>
+<p>(Lowest Priority)</p>
 </li>
 <li>
-<p>TODO: Interrupt Threshold</p>
+<p>And <a href="https://lupyuen.github.io/articles/plic2#set-the-interrupt-threshold"><strong>Interrupt Threshold</strong></a> to 0.</p>
+<p>(Allow all Interrupts to fire later)</p>
 </li>
 <li>
-<p>TODO: Interrupt Enable</p>
+<p>We flip Bit 20 of <a href="https://lupyuen.github.io/articles/plic2#enable-the-interrupt"><strong>Interrupt Enable</strong></a> Register to 1.</p>
+<p>(To enable <strong>RISC-V IRQ 20</strong> for UART3)</p>
 </li>
 <li>
-<p>TODO: Key press</p>
+<p>Suppose we <strong>press a key</strong> on the Serial Console.</p>
+<p>Our SoC will <strong>fire an Interrupt</strong> for IRQ 20.</p>
+<p>(IRQ means <strong>Interrupt Request Number</strong>)</p>
 </li>
 <li>
-<p>TODO: Interrupt Claim</p>
+<p>Our Interrupt Handler will read the Interrupt Number (20) from the <a href="https://lupyuen.github.io/articles/plic2#claim-the-interrupt"><strong>Interrupt Claim</strong></a> Register…</p>
+<p>Call the <a href="https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64"><strong>UART Driver</strong></a> to read the keypress…</p>
+<p>Then write 20 back into the same old <a href="https://lupyuen.github.io/articles/plic2#claim-the-interrupt"><strong>Interrupt Claim</strong></a> Register…</p>
+<p>Which will <strong>Complete the Interrupt</strong>.</p>
 </li>
 <li>
-<p>TODO: Interrupt Pending</p>
+<p>Useful But Non-Essential: <a href="https://lupyuen.github.io/articles/plic2#pending-interrupts"><strong>Interrupt Pending</strong></a> Register tells us which Interrupts are awaiting Claiming and Completion.</p>
+<p>(We’ll use it for troubleshooting)</p>
 </li>
 </ol>
-<p>TODO</p>
+<p>That’s the Textbook Recipe for PLIC, according to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic"><strong>Official RISC-V PLIC Spec</strong></a>.</p>
+<p>But it doesn’t work on Ox64 BL808 SBC and T-Head C906 Core…</p>
 <h1 id="our-problem"><a href="#our-problem">2 Our Problem</a></h1>
 <p>TODO</p>
 <h1 id="leaky-reads"><a href="#leaky-reads">3 Leaky Reads</a></h1>
