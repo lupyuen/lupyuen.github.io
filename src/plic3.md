@@ -239,7 +239,11 @@ TODO
 
 1.  Clean up our code
 
+    (Rename all the JH7110 stuff to BL808)
+
 1.  Upstream our code to NuttX Mainline
+
+    (Delicate Operation because we're adding MMU Flags)
 
 1.  Apache NuttX RTOS will officially support Ox64 BL808 SBC real soon!
 
