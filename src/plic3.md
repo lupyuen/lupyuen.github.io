@@ -32,7 +32,7 @@ Here's how we solved the baffling mystery...
 
 # UART Interrupt
 
-_Sorry TLDR: What's this PLIC? Why is it used by Serial Console?_
+_Sorry TLDR: What's this PLIC? What's Serial Console gotta do with it?_
 
 TODO
 
