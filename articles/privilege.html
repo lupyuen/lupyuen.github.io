@@ -397,7 +397,7 @@ static inline irqstate_t up_irq_save(void) {
 </code></pre></div>
 <p>…BUT only if NuttX Configuration <strong>ARCH_USE_S_MODE</strong> is disabled!</p>
 <p><em>So if ARCH_USE_S_MODE is enabled, NuttX will use <code>sstatus</code> instead?</em></p>
-<p>Yep! We need to disable <strong>ARCH_USE_S_MODE</strong>, so that NuttX will use <strong><code>sstatus</code></strong> (instead of <strong><code>mstatus</code></strong>)…</p>
+<p>Yep! We need to enable <strong>ARCH_USE_S_MODE</strong>, so that NuttX will use <strong><code>sstatus</code></strong> (instead of <strong><code>mstatus</code></strong>)…</p>
 <p>Which is perfectly hunky dory for <strong>RISC-V Supervisor Mode</strong>!</p>
 <p>We dig around for the elusive (but essential) <strong>ARCH_USE_S_MODE</strong>…</p>
 <h1 id="nuttx-flat-mode-becomes-kernel-mode"><a href="#nuttx-flat-mode-becomes-kernel-mode">6 NuttX Flat Mode becomes Kernel Mode</a></h1>
