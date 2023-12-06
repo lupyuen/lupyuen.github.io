@@ -4,7 +4,7 @@
 
 ![UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!](https://lupyuen.github.io/images/plic3-title.png)
 
-Last week we walked through the __Serial Console__ for [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit Single-Board Computer (pic below)...
+Last week we walked through the __Serial Console__ for [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit RISC-V Single-Board Computer (pic below)...
 
 -   [__"UART Interrupt and Platform-Level Interrupt Controller"__](https://lupyuen.github.io/articles/plic2)
 
@@ -26,7 +26,7 @@ Today we discover the __One Single Culprit__ behind all this rowdy mischief...
 
 __MMU Caching__! (Memory Management Unit)
 
-Here's how we solved the mystery...
+Here's how we solved the baffling mystery...
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
 
@@ -55,6 +55,8 @@ TODO
 _Wow the soup gets too salty. What's PAGE_MTMASK_THEAD?_
 
 TODO
+
+(__TODO:__ Buffering vs Caching: What's the diff?)
 
 # Patching Our Code
 
