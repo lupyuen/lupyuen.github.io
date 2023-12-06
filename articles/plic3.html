@@ -66,18 +66,43 @@
 
     <h1 class="title">Fixing UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)</h1>
     <nav id="TOC"><ul>
-<li><a href="#fix-the-uart-interrupt-for-ox64-bl808">1 Fix the UART Interrupt for Ox64 BL808</a><ul></ul></li>
-<li><a href="#todo">2 TODO</a><ul></ul></li>
-<li><a href="#whats-next">3 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-compare-ox64-bl808-uart-registers">4 Appendix: Compare Ox64 BL808 UART Registers</a><ul></ul></li>
-<li><a href="#appendix-build-and-run-nuttx">5 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Dec 2023</em></p>
+<li><a href="#uart-interrupt">1 UART Interrupt</a><ul></ul></li>
+<li><a href="#our-problem">2 Our Problem</a><ul></ul></li>
+<li><a href="#linux-errata">3 Linux Errata</a><ul></ul></li>
+<li><a href="#memory-management-unit">4 Memory Management Unit</a><ul></ul></li>
+<li><a href="#patching-our-code">5 Patching Our Code</a><ul></ul></li>
+<li><a href="#it-works">6 It Works!</a><ul></ul></li>
+<li><a href="#fix-the-uart-interrupt-for-ox64-bl808">7 Fix the UART Interrupt for Ox64 BL808</a><ul></ul></li>
+<li><a href="#todo">8 TODO</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-compare-ox64-bl808-uart-registers">10 Appendix: Compare Ox64 BL808 UART Registers</a><ul></ul></li>
+<li><a href="#appendix-build-and-run-nuttx">11 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Dec 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="TODO" /></p>
 <p>TODO</p>
+<p>Console Input is always empty</p>
+<p>(Can’t enter any Console Commands)</p>
+<p>Interrupt Claim is forever 0</p>
+<p>(Our SBC won’t tell us which Interrupt was fired!)</p>
+<p>Leaky Writes</p>
+<p>(Or Leaky Reads?)</p>
 <p><a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> 64-bit Single-Board Computer (pic below)…</p>
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(Based on <strong>Bouffalo Lab BL808 SoC</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a>. (Real-Time Operating System)</p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
-<h1 id="fix-the-uart-interrupt-for-ox64-bl808"><a href="#fix-the-uart-interrupt-for-ox64-bl808">1 Fix the UART Interrupt for Ox64 BL808</a></h1>
+<h1 id="uart-interrupt"><a href="#uart-interrupt">1 UART Interrupt</a></h1>
+<p><em>Sorry TLDR: What’s this PLIC? Why is it used by Serial Console?</em></p>
+<p>TODO</p>
+<h1 id="our-problem"><a href="#our-problem">2 Our Problem</a></h1>
+<p>TODO</p>
+<h1 id="linux-errata"><a href="#linux-errata">3 Linux Errata</a></h1>
+<p>TODO</p>
+<h1 id="memory-management-unit"><a href="#memory-management-unit">4 Memory Management Unit</a></h1>
+<p>TODO</p>
+<h1 id="patching-our-code"><a href="#patching-our-code">5 Patching Our Code</a></h1>
+<p>TODO</p>
+<h1 id="it-works"><a href="#it-works">6 It Works!</a></h1>
+<p>TODO</p>
+<h1 id="fix-the-uart-interrupt-for-ox64-bl808"><a href="#fix-the-uart-interrupt-for-ox64-bl808">7 Fix the UART Interrupt for Ox64 BL808</a></h1>
 <p>TODO</p>
 <p>Let’s fix the UART Interrupt for Ox64 BL808!</p>
 <p>UART Input is strangely null, so we tried printing the UART Input just before reading it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/jh7110/bl602_serial.c#L1026-L1044">bl602_serial.c</a></p>
@@ -189,15 +214,16 @@ Hello, World!!
 </code></pre></div>
 <p>C906 MMU Caching is actually explained in <a href="https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf">C906 Integration Manual (Chinese)</a>, Page 9.</p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and PLIC are both OK!" /></p>
-<h1 id="todo"><a href="#todo">2 TODO</a></h1>
+<h1 id="todo"><a href="#todo">8 TODO</a></h1>
 <p>Share</p>
 <p>Read the Comments</p>
 <p>Inspire the solution</p>
 <p>Re-read and re-think</p>
-<p>Sounds like an Agatha Christie Mystery… But sometimes it’s indeed One Single Culprit (Memory Caching) behind all the seemingly unrelated problems!</p>
+<p>Sounds like an Agatha Christie Mystery… But sometimes it’s indeed <strong>One Single Culprit</strong> (Memory Caching) behind all the Seemingly Unrelated Problems!</p>
 <p>Taking a brief break from writing</p>
+<p>Clean up our code</p>
 <p>Upstream to NuttX</p>
-<h1 id="whats-next"><a href="#whats-next">3 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO: Thank you so much for reading, you’re my inspiration for solving this sticky problem 🙏</p>
 <p>We have plenty to fix for <strong>NuttX on Ox64 BL808</strong>. Stay tuned for updates!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -223,7 +249,7 @@ Hello, World!!
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic3.md"><strong>lupyuen.github.io/src/plic3.md</strong></a></p>
-<h1 id="appendix-compare-ox64-bl808-uart-registers"><a href="#appendix-compare-ox64-bl808-uart-registers">4 Appendix: Compare Ox64 BL808 UART Registers</a></h1>
+<h1 id="appendix-compare-ox64-bl808-uart-registers"><a href="#appendix-compare-ox64-bl808-uart-registers">10 Appendix: Compare Ox64 BL808 UART Registers</a></h1>
 <p>TODO</p>
 <p>To fix the null UART Input, let’s compare the <a href="https://gist.github.com/lupyuen/5d16f536133c0c3b5a30a50950a1ee75">UART Registers from NuttX</a> vs <a href="https://gist.github.com/lupyuen/e0d13fb888a490fbf3dfcb01bbdd86fc">U-Boot Bootloader</a></p>
 <p>UART Registers from <a href="https://gist.github.com/lupyuen/5d16f536133c0c3b5a30a50950a1ee75">NuttX UART Driver</a>…</p>
@@ -306,7 +332,7 @@ Offset 8c: uart_fifo_rdata (Receive Data)
 RX FIFO. OK to ignore this.
 </code></pre></div>
 <p>Nope still the same.</p>
-<h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">5 Appendix: Build and Run NuttX</a></h1>
+<h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">11 Appendix: Build and Run NuttX</a></h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong>, with PLIC and Console Input working OK.</p>
 <p>This is how we download and build NuttX for Ox64 BL808 SBC…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
