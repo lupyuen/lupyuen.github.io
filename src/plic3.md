@@ -62,7 +62,7 @@ Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC...
 
 ![Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/plic2-registers.jpg)
 
-1.  At Startup, we set the [__Interrupt Priority__](https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority) to 1
+1.  At Startup: We set [__Interrupt Priority__](https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority) to 1
 
     (Lowest Priority)
 
@@ -74,7 +74,7 @@ Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC...
 
     (To enable __RISC-V IRQ 20__ for UART3)
 
-1.  Suppose we __press a key__ on the Serial Console.
+1.  Suppose we __press a key__ on the Serial Console...
 
     Our SoC will __fire an Interrupt__ for IRQ 20.
 
@@ -82,11 +82,11 @@ Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC...
 
 1.  Our Interrupt Handler will read the Interrupt Number (20) from the [__Interrupt Claim__](https://lupyuen.github.io/articles/plic2#claim-the-interrupt) Register...
 
-    Call the [__UART Driver__](https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64) to read the keypress...
+    Call the [__UART Driver__](https://lupyuen.github.io/articles/plic2#dispatch-the-interrupt) to read the keypress...
 
     Then write 20 back into the same old [__Interrupt Claim__](https://lupyuen.github.io/articles/plic2#claim-the-interrupt) Register...
 
-    Which will __Complete the Interrupt__.
+    Which will [__Complete the Interrupt__](https://lupyuen.github.io/articles/plic2#complete-the-interrupt).
 
 1.  Useful But Non-Essential: [__Interrupt Pending__](https://lupyuen.github.io/articles/plic2#pending-interrupts) Register says which Interrupts are awaiting Claiming and Completion.
 
@@ -104,7 +104,9 @@ _What happens when we run the PLIC Recipe on Ox64?_
 
 Absolute Disaster! (Pic above)
 
-- [__Interrupt Priorities__](https://lupyuen.github.io/articles/plic2#trouble-with-interrupt-priority) all get mushed up to 0
+- [__Interrupt Priorities__](https://lupyuen.github.io/articles/plic2#trouble-with-interrupt-priority) get mushed into 0
+
+  (Instead of 1)
 
 - When we set the [__Interrupt Enable__](https://lupyuen.github.io/articles/plic2#trouble-with-interrupt-priority) Register...
 
@@ -117,6 +119,8 @@ Absolute Disaster! (Pic above)
   (Can't read the __Actual Interrupt Number__!)
 
 - Our [__UART Driver__](https://lupyuen.github.io/articles/plic2#backup-plan) says that the UART Input is Empty!
+
+  TODO: (We validated the __UART Registers__)
 
 Our troubles are all Seemingly Unrelated. However there's actually only One Sinister Culprit causing all these headaches...
 
