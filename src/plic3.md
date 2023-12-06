@@ -24,7 +24,7 @@ And we hit some illogical impossible problems on [__Apache NuttX RTOS__](https:/
 
 Today we discover the __One Single Culprit__ behind all this rowdy mischief...
 
-__MMU Caching__! (Memory Management Unit)
+__Weak Ordering in the MMU__! (Memory Management Unit)
 
 Here's how we solved the baffling mystery...
 
@@ -56,7 +56,7 @@ Suppose we're using the __Serial Console__ on Ox64 SBC (pic above)...
 
 Without the PLIC, it's __impossible to enter commands__ in the Serial Console!
 
-_More details please?_
+_Tell me more..._
 
 Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC... 
 
@@ -399,7 +399,6 @@ We test our patched code...
 # It Works!
 
 TODO
-
 
 Yep [UART Input works OK](https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167) yay!
 
