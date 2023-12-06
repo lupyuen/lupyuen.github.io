@@ -127,7 +127,7 @@
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <ol>
 <li>
-<p>At Startup, we set the <a href="https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority"><strong>Interrupt Priority</strong></a> to 1</p>
+<p>At Startup: We set <a href="https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority"><strong>Interrupt Priority</strong></a> to 1</p>
 <p>(Lowest Priority)</p>
 </li>
 <li>
@@ -139,15 +139,15 @@
 <p>(To enable <strong>RISC-V IRQ 20</strong> for UART3)</p>
 </li>
 <li>
-<p>Suppose we <strong>press a key</strong> on the Serial Console.</p>
+<p>Suppose we <strong>press a key</strong> on the Serial Console…</p>
 <p>Our SoC will <strong>fire an Interrupt</strong> for IRQ 20.</p>
 <p>(IRQ means <strong>Interrupt Request Number</strong>)</p>
 </li>
 <li>
 <p>Our Interrupt Handler will read the Interrupt Number (20) from the <a href="https://lupyuen.github.io/articles/plic2#claim-the-interrupt"><strong>Interrupt Claim</strong></a> Register…</p>
-<p>Call the <a href="https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64"><strong>UART Driver</strong></a> to read the keypress…</p>
+<p>Call the <a href="https://lupyuen.github.io/articles/plic2#dispatch-the-interrupt"><strong>UART Driver</strong></a> to read the keypress…</p>
 <p>Then write 20 back into the same old <a href="https://lupyuen.github.io/articles/plic2#claim-the-interrupt"><strong>Interrupt Claim</strong></a> Register…</p>
-<p>Which will <strong>Complete the Interrupt</strong>.</p>
+<p>Which will <a href="https://lupyuen.github.io/articles/plic2#complete-the-interrupt"><strong>Complete the Interrupt</strong></a>.</p>
 </li>
 <li>
 <p>Useful But Non-Essential: <a href="https://lupyuen.github.io/articles/plic2#pending-interrupts"><strong>Interrupt Pending</strong></a> Register says which Interrupts are awaiting Claiming and Completion.</p>
@@ -162,7 +162,8 @@
 <p>Absolute Disaster! (Pic above)</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/plic2#trouble-with-interrupt-priority"><strong>Interrupt Priorities</strong></a> all get mushed up to 0</p>
+<p><a href="https://lupyuen.github.io/articles/plic2#trouble-with-interrupt-priority"><strong>Interrupt Priorities</strong></a> get mushed into 0</p>
+<p>(Instead of 1)</p>
 </li>
 <li>
 <p>When we set the <a href="https://lupyuen.github.io/articles/plic2#trouble-with-interrupt-priority"><strong>Interrupt Enable</strong></a> Register…</p>
@@ -175,6 +176,7 @@
 </li>
 <li>
 <p>Our <a href="https://lupyuen.github.io/articles/plic2#backup-plan"><strong>UART Driver</strong></a> says that the UART Input is Empty!</p>
+<p>TODO: (We validated the <strong>UART Registers</strong>)</p>
 </li>
 </ul>
 <p>Our troubles are all Seemingly Unrelated. However there’s actually only One Sinister Culprit causing all these headaches…</p>
