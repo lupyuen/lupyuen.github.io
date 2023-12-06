@@ -276,15 +276,25 @@ _What's "Strong Order"_
 
 [__"Strong Order"__](https://en.wikipedia.org/wiki/Memory_ordering#Runtime_memory_ordering) means "All Reads and All Writes are In-Order".
 
-Apparently T-Head C906 will (by default) __Disable Strong Order__, to read and write memory __Out-of-Sequence__. (So that it performs better)
+Apparently T-Head C906 will (by default) __Disable Strong Order__ and read / write memory __Out-of-Sequence__. (So that it performs better)
 
 Which will surely mess up our UART and PLIC Registers!
 
-[(What's __"Shareable"__? It's not documented)](https://github.com/T-head-Semi/openc906/blob/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl/aq_mmu_regs.v#L341-L342)
+_They should've warned us about Strong Order and I/O Memory!_
+
+Ahem [__they did__](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt)...
+
+> "A Device Driver written to rely on __I/O Strong Ordering__ rules __will not operate correctly__ if the Address Range is mapped with PBMT=NC \[Weakly Ordered\]. As such, this __configuration is discouraged__."
+
+But that comes from the [__New Svpbmt Extension__](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt). Which isn't supported by T-Head C906.
+
+(Svpbmt Bits 61~62 will conflict with T-Head Bits 59~63. Oh boy)
 
 _How to enable Strong Order?_
 
 We do it in the T-Head C906 MMU...
+
+[(What's __"Shareable"__? It's not documented)](https://github.com/T-head-Semi/openc906/blob/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl/aq_mmu_regs.v#L341-L342)
 
 ![Level 1 Page Table for MMU](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
 
