@@ -96,13 +96,116 @@ That's the Textbook Recipe for PLIC, according to the [__Official RISC-V PLIC Sp
 
 But it doesn't work on Ox64 BL808 SBC and T-Head C906 Core...
 
+TODO: Trouble pic
+
 # Our Troubles
 
-TODO
+_What happens when we run the PLIC Recipe on Ox64?_
+
+Absolute Disaster! (Pic above)
+
+- [__Interrupt Priorities__](https://lupyuen.github.io/articles/plic2#trouble-with-interrupt-priority) all get mushed up to 0
+
+- When we set the [__Interrupt Enable__](https://lupyuen.github.io/articles/plic2#trouble-with-interrupt-priority) Register...
+
+  The value gets __leaked over__ into the next 32-bit word
+
+  (Hence the __"Leaky Write"__)
+
+- [__Interrupt Claim__](https://lupyuen.github.io/articles/plic2#more-trouble-with-interrupt-claim) Register is always 0
+
+  (Can't read the __Actual Interrupt Number__!)
+
+- Our [__UART Driver__](https://lupyuen.github.io/articles/plic2#backup-plan) says that the UART Input is Empty!
+
+Our troubles are all Seemingly Unrelated. However there's actually only One Sinister Culprit causing all these headaches...
 
 # Leaky Reads
 
-TODO
+_How do we track down the culprit?_
+
+We begin with the simplest bug: [__UART Input__](https://lupyuen.github.io/articles/plic2#backup-plan) is always Empty.
+
+This is how we read the __UART Input__: [bl602_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/jh7110/bl602_serial.c#L943-L995)
+
+```c
+// Receive one character from the UART Port.
+// Called (indirectly) by the UART Interrupt Handler: __uart_interrupt
+int bl602_receive(...) {
+  ...
+  // If there's Pending UART Input...
+  // (FIFO_CONFIG_1 is 0x30002084)
+  if (getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) & \
+    UART_FIFO_CONFIG_1_RX_CNT_MASK) {
+
+    // Then read the Actual UART Input
+    // (FIFO_RDATA is 0x3000208c)
+    rxdata = getreg32(BL602_UART_FIFO_RDATA(uart_idx)) & \
+      UART_FIFO_RDATA_MASK;
+```
+
+Which says that we...
+
+- Check if there's any __Pending UART Input__...
+
+  (At address `0x3000` `2084`)
+
+- Before reading the __Actual UART Input__
+
+  (At address `0x3000` `208C`)
+
+Or simply...
+
+```c
+// Check for Pending UART Input
+uintptr_t pending = getreg32(0x30002084);
+
+// Read the Actual UART Input
+uintptr_t rx = getreg32(0x3000208c);
+
+// Dump the values
+_info("pending=%p, rx=%p\n", pending, rx);
+```
+
+_What happens when we run this?_
+
+Something strange happens...
+
+```text
+// Yep there's Pending UART Input...
+pending=0x7070120
+
+// But Actual UART Input is empty!
+rx=0
+```
+
+UART Controller says there's __UART Input to be read__... And it's __totally empty__!
+
+_How is that possible?_
+
+The only logical explanation: Someone has __already read__ the UART Input!
+
+UART Input gets __Auto-Reset to 0__, right after it's read. Someone must have read it, unintentionally.
+
+_Hmmm this sounds like a Leaky Read..._
+
+Exactly! (Pic below)
+
+- When we check if there's any __Pending UART Input__...
+
+  (At address `0x3000` `2084`)
+
+- It causes the neighbouring __Actual UART Input__ to be read unintentionally...
+
+  (At address `0x3000` `208C`)
+
+- Which auto-erases the __Actual UART Input__...
+
+  Before we actually read it!
+
+Yep we indeed have a Leaky Read + Leaky Write that's causing all our UART + PLIC worries. But why?
+
+TODO: Pic of leaky read
 
 # T-Head Errata
 
