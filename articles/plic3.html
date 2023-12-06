@@ -104,6 +104,48 @@
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <h1 id="uart-interrupt"><a href="#uart-interrupt">1 UART Interrupt</a></h1>
 <p><em>Sorry TLDR: What’s this PLIC? What’s Serial Console gotta do with it?</em></p>
+<p><a href="https://lupyuen.github.io/articles/plic2#platform-level-interrupt-controller"><strong>Platform-Level Interrupt Controller</strong></a> (PLIC) is the hardware inside our BL808 SoC that controls the forwarding of <strong>Peripheral Interrupts</strong> to our 64-bit RISC-V CPU.</p>
+<p>(Like the Interrupts for <strong>UART</strong>, <strong>I2C</strong>, <strong>SPI</strong>, …)</p>
+<p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="BL808 Platform-Level Interrupt Controller" /></p>
+<p><em>Why should we bother with PLIC?</em></p>
+<p>Suppose we’re using the <strong>Serial Console</strong> on Ox64 SBC (pic above)…</p>
+<ul>
+<li>
+<p>Every single <strong>key that we press</strong>…</p>
+</li>
+<li>
+<p>Is received by the <strong>UART Controller</strong> in our RISC-V SoC…</p>
+<p>(Bouffalo Lab BL808 SoC)</p>
+</li>
+<li>
+<p>Which fires an <strong>Interrupt through the PLIC</strong> to the RISC-V CPU </p>
+<p>(T-Head C906 RISC-V Core)</p>
+</li>
+</ul>
+<p>Without the PLIC, it’s <strong>impossible to enter commands</strong> in the Serial Console!</p>
+<p><em>More details please?</em></p>
+<p>Let’s run through the steps to <strong>handle a UART Interrupt</strong> on a RISC-V SBC… </p>
+<p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
+<ol>
+<li>
+<p>TODO: At Startup, Interrupt Priority</p>
+</li>
+<li>
+<p>TODO: Interrupt Threshold</p>
+</li>
+<li>
+<p>TODO: Interrupt Enable</p>
+</li>
+<li>
+<p>TODO: Key press</p>
+</li>
+<li>
+<p>TODO: Interrupt Claim</p>
+</li>
+<li>
+<p>TODO: Interrupt Pending</p>
+</li>
+</ol>
 <p>TODO</p>
 <h1 id="our-problem"><a href="#our-problem">2 Our Problem</a></h1>
 <p>TODO</p>
