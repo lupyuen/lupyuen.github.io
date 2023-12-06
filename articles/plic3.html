@@ -67,7 +67,7 @@
     <h1 class="title">Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)</h1>
     <nav id="TOC"><ul>
 <li><a href="#uart-interrupt">1 UART Interrupt</a><ul></ul></li>
-<li><a href="#our-problem">2 Our Problem</a><ul></ul></li>
+<li><a href="#our-troubles">2 Our Troubles</a><ul></ul></li>
 <li><a href="#leaky-reads">3 Leaky Reads</a><ul></ul></li>
 <li><a href="#t-head-errata">4 T-Head Errata</a><ul></ul></li>
 <li><a href="#memory-management-unit">5 Memory Management Unit</a><ul></ul></li>
@@ -151,13 +151,13 @@
 <p>Which will <strong>Complete the Interrupt</strong>.</p>
 </li>
 <li>
-<p>Useful But Non-Essential: <a href="https://lupyuen.github.io/articles/plic2#pending-interrupts"><strong>Interrupt Pending</strong></a> Register tells us which Interrupts are awaiting Claiming and Completion.</p>
+<p>Useful But Non-Essential: <a href="https://lupyuen.github.io/articles/plic2#pending-interrupts"><strong>Interrupt Pending</strong></a> Register says which Interrupts are awaiting Claiming and Completion.</p>
 <p>(We’ll use it for troubleshooting)</p>
 </li>
 </ol>
 <p>That’s the Textbook Recipe for PLIC, according to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic"><strong>Official RISC-V PLIC Spec</strong></a>.</p>
 <p>But it doesn’t work on Ox64 BL808 SBC and T-Head C906 Core…</p>
-<h1 id="our-problem"><a href="#our-problem">2 Our Problem</a></h1>
+<h1 id="our-troubles"><a href="#our-troubles">2 Our Troubles</a></h1>
 <p>TODO</p>
 <h1 id="leaky-reads"><a href="#leaky-reads">3 Leaky Reads</a></h1>
 <p>TODO</p>
