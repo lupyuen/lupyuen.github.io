@@ -839,7 +839,7 @@ Which shouldn't happen because PLIC is in the [__Official RISC-V Spec__](https:/
 
     According to the [__C906 User Manual__](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf) (Page 53), the C906 MMU supports __Extended Page Attributes__.
     
-    Is the __MMU Caching__ causing issues? What's "__sysmap.h__"?
+    Is the __MMU Caching / Buffering / Strong Ordering__ causing issues? What's [__sysmap.h__](https://github.com/T-head-Semi/openc906/blob/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl/sysmap.h)?
 
     [(More about __C906 Extended Page Attributes__)](https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic)
 
