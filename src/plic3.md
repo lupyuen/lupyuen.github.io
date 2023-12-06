@@ -44,7 +44,7 @@ TODO
 
 TODO
 
-# Linux Errata
+# T-Head Errata
 
 _But Linux runs OK on Ox64 right?_
 
@@ -230,6 +230,8 @@ TODO
 1.  Sounds like an Agatha Christie Mystery...
 
     But sometimes it's indeed __One Single Culprit__ (Memory Caching) behind all the Seemingly Unrelated Problems!
+
+RISC-V aint's RISC-V? Beware of C906 MMU, C906 PLIC and T-Head Errata!
 
 TODO
 
