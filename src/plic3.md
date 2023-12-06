@@ -92,13 +92,13 @@ Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC...
 
     (We'll use it for troubleshooting)
 
-That's the Textbook Recipe for PLIC, according to the [__Official RISC-V PLIC Spec__](https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic).
+That's the Textbook Recipe for PLIC, according to the [__Official RISC-V PLIC Spec__](https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic). (If Julia Child wrote a PLIC Textbook)
 
 But it doesn't work on Ox64 BL808 SBC and T-Head C906 Core...
 
 TODO: Trouble pic
 
-# Our Troubles
+# UART and PLIC Troubles
 
 _What happens when we run the PLIC Recipe on Ox64?_
 
@@ -120,7 +120,7 @@ Absolute Disaster! (Pic above)
 
 Our troubles are all Seemingly Unrelated. However there's actually only One Sinister Culprit causing all these headaches...
 
-# Leaky Reads
+# Leaky Reads in UART
 
 _How do we track down the culprit?_
 
@@ -223,8 +223,6 @@ We search for __"T-Head"__ in the [__Linux Kernel Repo__](https://github.com/tor
   asm volatile(... _PAGE_MTMASK_THEAD ...)
 ```
 
-TODO: __PAGE_MTMASK_THEAD__
-
 _Aha! A Linux Errata for T-Head CPU!_
 
 We track down __PAGE_MTMASK_THEAD__: [pgtable-64.h](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142)
@@ -237,9 +235,9 @@ We track down __PAGE_MTMASK_THEAD__: [pgtable-64.h](https://github.com/torvalds/
 #define _PAGE_MTMASK_THEAD  (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL << 59))
 ```
 
-Which has this annotation...
+Which is annotated with...
 
-```c
+```text
 [63:59] T-Head Memory Type definitions:
 Bit[63] SO  - Strong Order
 Bit[62] C   - Cacheable
@@ -251,6 +249,10 @@ Bit[59] Sec - Trustable
 01110 - PMA: Weakly-Ordered, Cacheable, Bufferable, Shareable, Non-Trustable
 10010 - IO:  Strongly-Ordered, Non-Cacheable, Non-Bufferable, Shareable, Non-Trustable
 ```
+
+[(Source)](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142)
+
+_Something special about I/O Memory?_
 
 The last line suggests we need to configure the __T-Head Memory Type__ specifically to support __I/O Memory__ (PAGE_IO_THEAD)...
 
@@ -270,13 +272,13 @@ _What's "Strong Order"_
 
 Apparently T-Head C906 will (by default) __Disable Strong Order__, to read and write memory __Out-of-Sequence__. (So that it performs better)
 
-Which will certainly mess up our UART and PLIC Registers!
+Which will surely mess up our UART and PLIC Registers!
 
-(What's "Shareable"? It's not documented for C906)
+[(What's __"Shareable"__? It's not documented)](https://github.com/T-head-Semi/openc906/blob/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl/aq_mmu_regs.v#L341-L342)
 
 _How to enable Strong Order?_
 
-We do it in the C906 MMU...
+We do it in the T-Head C906 MMU...
 
 ![Level 1 Page Table in Memory Management Unit](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
 
@@ -284,7 +286,7 @@ We do it in the C906 MMU...
 
 _Wow the soup gets too salty. What's MMU?_
 
-[__Memory Management Unit (MMU)__](https://lupyuen.github.io/articles/mmu) is the hardware inside SBC that does...
+[__Memory Management Unit (MMU)__](https://lupyuen.github.io/articles/mmu) is the hardware inside our SBC that does...
 
 - __Memory Protection__: Prevent Applications (and Kernel) from meddling with things (in System Memory) that they're not supposed to
 
@@ -317,7 +319,9 @@ Remember __PAGE_IO_THEAD__ and __Strong Order__?
 | __SO: Strongly-Ordered__ | Bit 63 is 1 |
 | __SH: Shareable__ | Bit 60 is 1 |
 
-We'll set the __SO and SH Bits__ in our Page Table Entry. Hopefully UART and PLIC won't get mushed up no more...
+We'll set the __SO and SH Bits__ in our Page Table Entries. Hopefully UART and PLIC won't get mushed up no more...
+
+TODO: Strong Order Pic
 
 # Enable Strong Order
 
@@ -431,7 +435,9 @@ nsh> hello
 Hello, World!!
 ```
 
-C906 MMU Caching is actually explained in [C906 Integration Manual (Chinese)](https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf), Page 9.
+C906 MMU is actually explained in [__C906 Integration Manual (Chinese)__](https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf), Page 9.
+
+[__MMU RTL Code__](https://github.com/T-head-Semi/openc906/tree/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl)
 
 # Lessons Learnt
 
@@ -449,13 +455,13 @@ TODO
 
     (Challenge all our Assumptions)
 
-1.  Head to [__the Beach__](https://qoto.org/@lupyuen/111528215670914785). Have a Picnic.
+1.  [__Head to the Beach__](https://qoto.org/@lupyuen/111528215670914785). Have a Picnic.
 
     (Never know when the solution might pop up!)
 
 1.  Sounds like an Agatha Christie Mystery...
 
-    But sometimes it's indeed __One Single Culprit__ (Memory Caching) behind all the Seemingly Unrelated Problems!
+    But sometimes it's indeed __One Single Culprit__ (Weak Ordering) behind all the Seemingly Unrelated Problems!
 
 RISC-V aint's RISC-V? Beware of C906 MMU, C906 PLIC and T-Head Errata!
 
