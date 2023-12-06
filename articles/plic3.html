@@ -246,11 +246,13 @@ rx=0
 <p>Before we actually read it!</p>
 </li>
 </ul>
-<p>Yep we indeed have a Leaky Read + Leaky Write that’s causing all our UART + PLIC worries. Why oh why?</p>
+<p>Yep we indeed have a Leaky Read + Leaky Write that’s causing all our UART + PLIC worries.</p>
+<p>Something is Buffering or Caching our Reads and Writes. Why oh why?</p>
 <p>TODO: Pic of leaky read</p>
 <h1 id="t-head-errata"><a href="#t-head-errata">4 T-Head Errata</a></h1>
-<p><em>But Linux runs OK on Ox64 right?</em></p>
-<p>We searched for <strong>“T-Head”</strong> in the <a href="https://github.com/torvalds/linux"><strong>Linux Repo</strong></a>. And we see this vital clue: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/errata_list.h#L69-L164">errata_list.h</a></p>
+<p><em>But Linux runs OK on Ox64 BL808 right?</em></p>
+<p><em>Something special about Linux on T-Head C906?</em></p>
+<p>We search for <strong>“T-Head”</strong> in the <a href="https://github.com/torvalds/linux"><strong>Linux Kernel Repo</strong></a>. And we see this vital clue: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/errata_list.h#L69-L164">errata_list.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_ERRATA_THEAD_PBMT
 // IO/NOCACHE memory types are handled together with svpbmt,
 // so on T-Head chips, check if no other memory type is set,
@@ -259,9 +261,28 @@ rx=0
 asm volatile(... _PAGE_MTMASK_THEAD ...)
 </code></pre></div>
 <p><em>Aha! A Linux Errata for T-Head CPUs!</em></p>
-<p>TODO</p>
+<p>We track down <strong>PAGE_MTMASK_THEAD</strong>: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142">pgtable-64.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define _PAGE_PMA_THEAD     ((1UL &lt;&lt; 62) | (1UL &lt;&lt; 61) | (1UL &lt;&lt; 60))
+#define _PAGE_NOCACHE_THEAD ((1UL &lt; 61) | (1UL &lt;&lt; 60))
+#define _PAGE_IO_THEAD      ((1UL &lt;&lt; 63) | (1UL &lt;&lt; 60))
+#define _PAGE_MTMASK_THEAD  (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL &lt;&lt; 59))
+</code></pre></div>
+<p>Which says…</p>
+<div class="example-wrap"><pre class="language-c"><code>[63:59] T-Head Memory Type definitions:
+bit[63] SO  - Strong Order
+bit[62] C   - Cacheable
+bit[61] B   - Bufferable
+bit[60] SH  - Shareable
+bit[59] Sec - Trustable
+
+00110 - NC: Weakly-ordered, Non-cacheable, Bufferable, Shareable, Non-trustable
+01110 - PMA: Weakly-ordered, Cacheable, Bufferable, Shareable, Non-trustable
+10010 - IO: Strongly-ordered, Non-cacheable, Non-bufferable, Shareable, Non-trustable
+</code></pre></div>
+<p>We found the Magical Bits to <strong>Disable Caching and Buffering</strong> in the C906 MMU!</p>
+<p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table in Memory Management Unit" /></p>
 <h1 id="memory-management-unit"><a href="#memory-management-unit">5 Memory Management Unit</a></h1>
-<p><em>Wow the soup gets too salty. What’s PAGE_MTMASK_THEAD?</em></p>
+<p><em>Wow the soup gets too salty. What’s MMU?</em></p>
 <p>TODO</p>
 <p>(<strong>TODO:</strong> Buffering vs Caching: What’s the diff?)</p>
 <h1 id="patching-our-code"><a href="#patching-our-code">6 Patching Our Code</a></h1>
@@ -336,10 +357,10 @@ PLIC Interrupt Pending (0xe0001000):
   * 01110 - PMA  Weakly-ordered, Cacheable, Bufferable, Shareable, Non-trustable
   * 10010 - IO   Strongly-ordered, Non-cacheable, Non-bufferable, Shareable, Non-trustable
   */
-  #define _PAGE_PMA_THEAD		((1UL &lt;&lt; 62) | (1UL &lt;&lt; 61) | (1UL &lt;&lt; 60))
-  #define _PAGE_NOCACHE_THEAD	((1UL &lt; 61) | (1UL &lt;&lt; 60))
-  #define _PAGE_IO_THEAD		((1UL &lt;&lt; 63) | (1UL &lt;&lt; 60))
-  #define _PAGE_MTMASK_THEAD	(_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL &lt;&lt; 59))
+  #define _PAGE_PMA_THEAD  ((1UL &lt;&lt; 62) | (1UL &lt;&lt; 61) | (1UL &lt;&lt; 60))
+  #define _PAGE_NOCACHE_THEAD ((1UL &lt; 61) | (1UL &lt;&lt; 60))
+  #define _PAGE_IO_THEAD  ((1UL &lt;&lt; 63) | (1UL &lt;&lt; 60))
+  #define _PAGE_MTMASK_THEAD (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL &lt;&lt; 59))
   if ((mmuflags &amp; PTE_R) &amp;&amp;
     (vaddr &lt; 0x40000000UL || vaddr &gt;= 0xe0000000UL))
     {
