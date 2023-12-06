@@ -83,7 +83,7 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/plic2"><strong>“UART Interrupt and Platform-Level Interrupt Controller”</strong></a></li>
 </ul>
-<p>And we hit some baffling problems on <a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System)…</p>
+<p>And we hit some illogical impossible problems on <a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System)…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/plic2#backup-plan"><strong>Console Input</strong></a> is always empty</p>
@@ -98,7 +98,8 @@
 <p>(Or maybe Leaky Reads?)</p>
 </li>
 </ul>
-<p>Today we found the <strong>One Single Culprit</strong> behind all this mischief: <strong>MMU Caching</strong>! (Memory Management Unit)</p>
+<p>Today we discover the <strong>One Single Culprit</strong> behind all this rowdy mischief…</p>
+<p><strong>MMU Caching</strong>! (Memory Management Unit)</p>
 <p>Here’s how we solved the mystery…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <h1 id="uart-interrupt"><a href="#uart-interrupt">1 UART Interrupt</a></h1>
