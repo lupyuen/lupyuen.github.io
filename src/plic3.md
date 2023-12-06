@@ -88,7 +88,7 @@ Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC...
 
     Which will __Complete the Interrupt__.
 
-1.  Useful But Non-Essential: [__Interrupt Pending__](https://lupyuen.github.io/articles/plic2#pending-interrupts) Register tells us which Interrupts are awaiting Claiming and Completion.
+1.  Useful But Non-Essential: [__Interrupt Pending__](https://lupyuen.github.io/articles/plic2#pending-interrupts) Register says which Interrupts are awaiting Claiming and Completion.
 
     (We'll use it for troubleshooting)
 
@@ -96,7 +96,7 @@ That's the Textbook Recipe for PLIC, according to the [__Official RISC-V PLIC Sp
 
 But it doesn't work on Ox64 BL808 SBC and T-Head C906 Core...
 
-# Our Problem
+# Our Troubles
 
 TODO
 
