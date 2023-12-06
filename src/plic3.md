@@ -223,6 +223,8 @@ We search for __"T-Head"__ in the [__Linux Kernel Repo__](https://github.com/tor
   asm volatile(... _PAGE_MTMASK_THEAD ...)
 ```
 
+[(__Svpbmt Extension__ defines __Page-Based Memory Types__)](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt)
+
 _Aha! A Linux Errata for T-Head CPU!_
 
 We track down __PAGE_MTMASK_THEAD__: [pgtable-64.h](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142)
@@ -322,6 +324,8 @@ Remember __PAGE_IO_THEAD__ and __Strong Order__?
 | __SH: Shareable__ | Bit 60 is 1 |
 
 We'll set the __SO and SH Bits__ in our Page Table Entries. Hopefully UART and PLIC won't get mushed up no more...
+
+[(__Svpbmt Extension__ will support __Strong Ordering__)](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt)
 
 TODO: Strong Order Pic
 
