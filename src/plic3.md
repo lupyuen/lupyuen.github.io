@@ -14,9 +14,11 @@ Interrupt Claim is forever 0
 
 (Our SBC won't tell us which Interrupt was fired!)
 
-Leaky Writes
+Leaky Writes seem to mush up adjacent PLIC registers
 
 (Or Leaky Reads?)
+
+One Single Culprit behind all this mischief: MMU Caching!
 
 [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit Single-Board Computer (pic below)...
 
@@ -36,11 +38,19 @@ TODO
 
 TODO
 
+# Leaky Reads
+
+TODO
+
 # Linux Errata
+
+_But Linux runs OK on Ox64 right?_
 
 TODO
 
 # Memory Management Unit
+
+_Wow the soup gets too salty. What's PAGE_MTMASK_THEAD?_
 
 TODO
 
