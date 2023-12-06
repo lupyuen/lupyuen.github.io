@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Fixing UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)</title>
+    <title>Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)</title>
 
     
     <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
 <meta property="og:title" 
-    content="Fixing UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)" 
+    content="Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)" 
     data-rh="true">
 <meta property="og:description" 
     content=""
@@ -64,7 +64,7 @@
     <!-- End scripts/rustdoc-before.html -->
     
 
-    <h1 class="title">Fixing UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)</h1>
+    <h1 class="title">Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)</h1>
     <nav id="TOC"><ul>
 <li><a href="#uart-interrupt">1 UART Interrupt</a><ul></ul></li>
 <li><a href="#our-problem">2 Our Problem</a><ul></ul></li>
@@ -74,22 +74,32 @@
 <li><a href="#patching-our-code">6 Patching Our Code</a><ul></ul></li>
 <li><a href="#it-works">7 It Works!</a><ul></ul></li>
 <li><a href="#fix-the-uart-interrupt-for-ox64-bl808">8 Fix the UART Interrupt for Ox64 BL808</a><ul></ul></li>
-<li><a href="#todo">9 TODO</a><ul></ul></li>
+<li><a href="#lessons-learnt">9 Lessons Learnt</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-compare-ox64-bl808-uart-registers">11 Appendix: Compare Ox64 BL808 UART Registers</a><ul></ul></li>
 <li><a href="#appendix-build-and-run-nuttx">12 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Dec 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="TODO" /></p>
-<p>TODO</p>
-<p>Console Input is always empty</p>
+<p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
+<p>Last week we walked through the <strong>Serial Console</strong> for <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> 64-bit Single-Board Computer (pic below)…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/plic2"><strong>“UART Interrupt and Platform-Level Interrupt Controller”</strong></a></li>
+</ul>
+<p>And we hit some baffling problems on <a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System)…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/plic2#backup-plan"><strong>Console Input</strong></a> is always empty</p>
 <p>(Can’t enter any Console Commands)</p>
-<p>Interrupt Claim is forever 0</p>
-<p>(Our SBC won’t tell us which Interrupt was fired!)</p>
-<p>Leaky Writes seem to mush up adjacent PLIC registers</p>
-<p>(Or Leaky Reads?)</p>
-<p>One Single Culprit behind all this mischief: MMU Caching!</p>
-<p><a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> 64-bit Single-Board Computer (pic below)…</p>
-<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(Based on <strong>Bouffalo Lab BL808 SoC</strong>)</a></p>
-<p><a href="https://lupyuen.github.io/articles/ox2"><strong>Apache NuttX RTOS</strong></a>. (Real-Time Operating System)</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/plic2#more-trouble-with-interrupt-claim"><strong>Interrupt Claim</strong></a> is forever 0</p>
+<p>(Ox64 won’t tell us which Interrupt was fired!)</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/plic2#trouble-with-interrupt-priority"><strong>Leaky Writes</strong></a> are mushing up adjacent Interrupt Registers</p>
+<p>(Or maybe Leaky Reads?)</p>
+</li>
+</ul>
+<p>Today we found the <strong>One Single Culprit</strong> behind all this mischief: <strong>MMU Caching</strong>! (Memory Management Unit)</p>
+<p>Here’s how we solved the mystery…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <h1 id="uart-interrupt"><a href="#uart-interrupt">1 UART Interrupt</a></h1>
 <p><em>Sorry TLDR: What’s this PLIC? Why is it used by Serial Console?</em></p>
@@ -219,18 +229,48 @@ nsh&gt; hello
 Hello, World!!
 </code></pre></div>
 <p>C906 MMU Caching is actually explained in <a href="https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf">C906 Integration Manual (Chinese)</a>, Page 9.</p>
-<p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and PLIC are both OK!" /></p>
-<h1 id="todo"><a href="#todo">9 TODO</a></h1>
-<p>Share</p>
-<p>Read the Comments</p>
-<p>Inspire the solution</p>
-<p>Re-read and re-think</p>
-<p>Sounds like an Agatha Christie Mystery… But sometimes it’s indeed <strong>One Single Culprit</strong> (Memory Caching) behind all the Seemingly Unrelated Problems!</p>
+<p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
+<h1 id="lessons-learnt"><a href="#lessons-learnt">9 Lessons Learnt</a></h1>
+<p>TODO</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/plic2"><strong>Write up Everything</strong></a> about our troubles</p>
+<p>(And share them publicly)</p>
+</li>
+<li>
+<p><a href="https://news.ycombinator.com/item?id=38502979"><strong>Read the Comments</strong></a></p>
+<p>(They might inspire the solution!)</p>
+</li>
+<li>
+<p><strong>Re-Read and Re-Think</strong> everything we wrote</p>
+<p>(Challenge all our Assumptions)</p>
+</li>
+<li>
+<p>Head to <a href="https://qoto.org/@lupyuen/111528215670914785"><strong>the Beach</strong></a>. Have a Picnic.</p>
+<p>(Never know when the solution might pop up!)</p>
+</li>
+<li>
+<p>Sounds like an Agatha Christie Mystery…</p>
+<p>But sometimes it’s indeed <strong>One Single Culprit</strong> (Memory Caching) behind all the Seemingly Unrelated Problems!</p>
+</li>
+</ol>
+<p>TODO</p>
+<ol>
+<li>
 <p>Taking a brief break from writing</p>
+</li>
+<li>
 <p>Clean up our code</p>
-<p>Upstream to NuttX</p>
+</li>
+<li>
+<p>Upstream our code to NuttX Mainline</p>
+</li>
+<li>
+<p>Apache NuttX RTOS will officially support Ox64 BL808 SBC real soon!</p>
+</li>
+</ol>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
-<p>TODO: Thank you so much for reading, you’re my inspiration for solving this sticky problem 🙏</p>
+<p>TODO: Thank you so much for reading, you’re my inspiration for solving this sticky mystery 🙏</p>
 <p>We have plenty to fix for <strong>NuttX on Ox64 BL808</strong>. Stay tuned for updates!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
