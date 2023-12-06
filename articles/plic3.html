@@ -73,11 +73,10 @@
 <li><a href="#memory-management-unit">5 Memory Management Unit</a><ul></ul></li>
 <li><a href="#patching-our-code">6 Patching Our Code</a><ul></ul></li>
 <li><a href="#it-works">7 It Works!</a><ul></ul></li>
-<li><a href="#fix-the-uart-interrupt-for-ox64-bl808">8 Fix the UART Interrupt for Ox64 BL808</a><ul></ul></li>
-<li><a href="#lessons-learnt">9 Lessons Learnt</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-compare-ox64-bl808-uart-registers">11 Appendix: Compare Ox64 BL808 UART Registers</a><ul></ul></li>
-<li><a href="#appendix-build-and-run-nuttx">12 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Dec 2023</em></p>
+<li><a href="#lessons-learnt">8 Lessons Learnt</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-compare-ox64-bl808-uart-registers">10 Appendix: Compare Ox64 BL808 UART Registers</a><ul></ul></li>
+<li><a href="#appendix-build-and-run-nuttx">11 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Dec 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
 <p>Last week we walked through the <strong>Serial Console</strong> for <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> 64-bit RISC-V Single-Board Computer (pic below)…</p>
 <ul>
@@ -280,7 +279,7 @@ Bit[59] Sec - Trustable
 01110 - PMA: Weakly-ordered, Cacheable, Bufferable, Shareable, Non-trustable
 10010 - IO: Strongly-ordered, Non-cacheable, Non-bufferable, Shareable, Non-trustable
 </code></pre></div>
-<p>We found the Magical Bits to <strong>Disable Caching and Buffering</strong> in the C906 MMU!</p>
+<p>TODO: We found the Magical Bits (PAGE_IO_THEAD) to TODO in the C906 MMU!</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table in Memory Management Unit" /></p>
 <h1 id="memory-management-unit"><a href="#memory-management-unit">5 Memory Management Unit</a></h1>
 <p><em>Wow the soup gets too salty. What’s MMU?</em></p>
@@ -318,58 +317,6 @@ Bit[59] Sec - Trustable
 <p>(<strong>TODO:</strong> Buffering vs Caching: What’s the diff?)</p>
 <h1 id="patching-our-code"><a href="#patching-our-code">6 Patching Our Code</a></h1>
 <p>TODO</p>
-<h1 id="it-works"><a href="#it-works">7 It Works!</a></h1>
-<p>TODO</p>
-<h1 id="fix-the-uart-interrupt-for-ox64-bl808"><a href="#fix-the-uart-interrupt-for-ox64-bl808">8 Fix the UART Interrupt for Ox64 BL808</a></h1>
-<p>TODO</p>
-<p>Let’s fix the UART Interrupt for Ox64 BL808!</p>
-<p>UART Input is strangely null, so we tried printing the UART Input just before reading it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/jh7110/bl602_serial.c#L1026-L1044">bl602_serial.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: bl602_rxavailable
- *
- * Description:
- *   Return true if the receive register is not empty
- *
- ****************************************************************************/
-
-static bool bl602_rxavailable(struct uart_dev_s *dev)
-{
-  struct bl602_uart_s *priv = (struct bl602_uart_s *)dev-&gt;priv;
-  uint8_t uart_idx          = priv-&gt;config.idx;
-
-  /* Return true is data is available in the receive data buffer */
-
-  uintptr_t rx = getreg32(0x3000208c); _info(&quot;rx=%p\n&quot;, rx); ////
-  return (getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) &amp; \
-          UART_FIFO_CONFIG_1_RX_CNT_MASK) != 0;
-}
-</code></pre></div>
-<p>Yes UART Input is correct!</p>
-<div class="example-wrap"><pre class="language-text"><code>nx_start: CPU0: Beginning Idle Loop
-bl602_rxavailable: rx=0x31
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrut Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-bl602_rxavailable: rx=0x32
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........  
-</code></pre></div>
-<p>But somehow UART Input is erased when we read BL602_UART_FIFO_CONFIG_1 (Offset 0x84)…</p>
-<div class="example-wrap"><pre class="language-c"><code>  uintptr_t fifo = getreg32(0x30002084);
-  uintptr_t rx = getreg32(0x3000208c);
-  _info(&quot;fifo=%p, rx=%p\n&quot;, fifo, rx);
-</code></pre></div>
-<p>Which shows…</p>
-<div class="example-wrap"><pre class="language-text"><code>nx_start: CPU0: Beginning Idle Loop
-bl602_rxavailable: fifo=0x7070120, rx=0
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........
-</code></pre></div>
-<p><em>Is C906 read-caching the entire page?</em></p>
-<p>Let’s Disable MMU Caching and retest. From Linux Kernel we see these MMU Flags to Disable the MMU Caching: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142">pgtable-64.h</a></p>
-<p>Which is used by this T-Head Errata: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/errata_list.h#L70-L92">errata_list.h</a></p>
 <p>We do the same to Disable MMU Cache in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127">riscv_mmu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Save it */
 
@@ -395,10 +342,23 @@ PLIC Interrupt Pending (0xe0001000):
   if ((mmuflags &amp; PTE_R) &amp;&amp;
     (vaddr &lt; 0x40000000UL || vaddr &gt;= 0xe0000000UL))
     {
-      lntable[index] = lntable[index] | _PAGE_MTMASK_THEAD;
+      lntable[index] = lntable[index] | _PAGE_IO_THEAD;
       _info(&quot;vaddr=%p, lntable[index]=%p\n&quot;, vaddr, lntable[index]);
     }
   //// End Test
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946">Bits are set OK</a></p>
+<div class="example-wrap"><pre class="language-text"><code>map I/O regions
+   vaddr=0, lntable[index]=0x90000000000000e7
+
+map PLIC as Interrupt L2
+   vaddr=0xe0000000, lntable[index]=0x90000000380000e7
+   vaddr=0xe0200000, lntable[index]=0x90000000380800e7
+   vaddr=0xe0400000, lntable[index]=0x90000000381000e7
+   vaddr=0xe0600000, lntable[index]=0x90000000381800e7
+   ...
+   vaddr=0xefc00000, lntable[index]=0x900000003bf000e7
+   vaddr=0xefe00000, lntable[index]=0x900000003bf800e7
 </code></pre></div>
 <p>Yep <a href="https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167">UART Input works OK</a> yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>nx_start: CPU0: Beginning Idle Loop
@@ -415,7 +375,7 @@ PLIC Interrupt Pending (0xe0001000):
 0000  00 00 00 00 00 00 00 00                          ........        
 2
 </code></pre></div>
-<p>Finally <a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946">UART Input and PLIC are both OK</a> yay!</p>
+<p>Finally <a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324">UART Input and PLIC are both OK</a> yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
 nsh&gt; uname -a
 NuttX 12.0.3 fd05b07 Nov 24 2023 07:42:54 risc-v star64
@@ -431,8 +391,10 @@ nsh&gt; hello
 Hello, World!!
 </code></pre></div>
 <p>C906 MMU Caching is actually explained in <a href="https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf">C906 Integration Manual (Chinese)</a>, Page 9.</p>
+<h1 id="it-works"><a href="#it-works">7 It Works!</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
-<h1 id="lessons-learnt"><a href="#lessons-learnt">9 Lessons Learnt</a></h1>
+<h1 id="lessons-learnt"><a href="#lessons-learnt">8 Lessons Learnt</a></h1>
 <p>TODO</p>
 <ol>
 <li>
@@ -474,7 +436,7 @@ Hello, World!!
 <p>Apache NuttX RTOS will officially support Ox64 BL808 SBC real soon!</p>
 </li>
 </ol>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO: Thank you so much for reading, you’re my inspiration for solving this sticky mystery 🙏</p>
 <p>We have plenty to fix for <strong>NuttX on Ox64 BL808</strong>. Stay tuned for updates!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -500,7 +462,7 @@ Hello, World!!
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic3.md"><strong>lupyuen.github.io/src/plic3.md</strong></a></p>
-<h1 id="appendix-compare-ox64-bl808-uart-registers"><a href="#appendix-compare-ox64-bl808-uart-registers">11 Appendix: Compare Ox64 BL808 UART Registers</a></h1>
+<h1 id="appendix-compare-ox64-bl808-uart-registers"><a href="#appendix-compare-ox64-bl808-uart-registers">10 Appendix: Compare Ox64 BL808 UART Registers</a></h1>
 <p>TODO</p>
 <p>To fix the null UART Input, let’s compare the <a href="https://gist.github.com/lupyuen/5d16f536133c0c3b5a30a50950a1ee75">UART Registers from NuttX</a> vs <a href="https://gist.github.com/lupyuen/e0d13fb888a490fbf3dfcb01bbdd86fc">U-Boot Bootloader</a></p>
 <p>UART Registers from <a href="https://gist.github.com/lupyuen/5d16f536133c0c3b5a30a50950a1ee75">NuttX UART Driver</a>…</p>
@@ -583,7 +545,7 @@ Offset 8c: uart_fifo_rdata (Receive Data)
 RX FIFO. OK to ignore this.
 </code></pre></div>
 <p>Nope still the same.</p>
-<h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">12 Appendix: Build and Run NuttX</a></h1>
+<h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">11 Appendix: Build and Run NuttX</a></h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong>, with PLIC and Console Input working OK.</p>
 <p>This is how we download and build NuttX for Ox64 BL808 SBC…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
