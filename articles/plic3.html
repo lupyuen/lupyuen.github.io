@@ -75,8 +75,7 @@
 <li><a href="#it-works">7 It Works!</a><ul></ul></li>
 <li><a href="#lessons-learnt">8 Lessons Learnt</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-compare-ox64-bl808-uart-registers">10 Appendix: Compare Ox64 BL808 UART Registers</a><ul></ul></li>
-<li><a href="#appendix-build-and-run-nuttx">11 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Dec 2023</em></p>
+<li><a href="#appendix-build-and-run-nuttx">10 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Dec 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
 <p>Last week we walked through the <strong>Serial Console</strong> for <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> 64-bit RISC-V Single-Board Computer (pic below)…</p>
 <ul>
@@ -150,7 +149,7 @@
 <p>Which will <a href="https://lupyuen.github.io/articles/plic2#complete-the-interrupt"><strong>Complete the Interrupt</strong></a>.</p>
 </li>
 <li>
-<p>Useful But Non-Essential: <a href="https://lupyuen.github.io/articles/plic2#pending-interrupts"><strong>Interrupt Pending</strong></a> Register says which Interrupts are awaiting Claiming and Completion.</p>
+<p>Useful And Non-Essential: <a href="https://lupyuen.github.io/articles/plic2#pending-interrupts"><strong>Interrupt Pending</strong></a> Register says which Interrupts are awaiting Claiming and Completion.</p>
 <p>(We’ll use it for troubleshooting)</p>
 </li>
 </ol>
@@ -176,7 +175,7 @@
 </li>
 <li>
 <p>Our <a href="https://lupyuen.github.io/articles/plic2#backup-plan"><strong>UART Driver</strong></a> says that the UART Input is Empty!</p>
-<p>TODO: (We validated the <strong>UART Registers</strong>)</p>
+<p>(We verified the <a href="https://github.com/lupyuen/nuttx-ox64#compare-ox64-bl808-uart-registers"><strong>UART Registers</strong></a>)</p>
 </li>
 </ul>
 <p>Our troubles are all Seemingly Unrelated. However there’s actually only One Sinister Culprit causing all these headaches…</p>
@@ -302,7 +301,7 @@ Bit[59] Sec - Trustable
 <blockquote>
 <p>“A Device Driver written to rely on <strong>I/O Strong Ordering</strong> rules <strong>will not operate correctly</strong> if the Address Range is mapped with PBMT=NC [Weakly Ordered]. As such, this <strong>configuration is discouraged</strong>.”</p>
 </blockquote>
-<p>But that comes from the <a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt"><strong>New Svpbmt Extension</strong></a>. Which isn’t supported by T-Head C906.</p>
+<p>Though that comes from the <a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt"><strong>New Svpbmt Extension</strong></a>. Which isn’t supported by T-Head C906.</p>
 <p>(Svpbmt Bits 61~62 will conflict with T-Head Bits 59~63. Oh boy)</p>
 <p><em>How to enable Strong Order?</em></p>
 <p>We do it in the T-Head C906 MMU…</p>
@@ -416,6 +415,7 @@ map PLIC as Interrupt L2
 </code></pre></div>
 <p>We test our patched code…</p>
 <p><a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4e343153d996f7f7a9b2d8a79edf42cd3900d42e">(<strong>Shareable Bit</strong> doesn’t effect anything. We’re keeping it to be consistent with Linux)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
 <h1 id="it-works"><a href="#it-works">7 It Works!</a></h1>
 <p><em>What happens when we run our patched code?</em></p>
@@ -531,91 +531,8 @@ Hello, World!!
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic3.md"><strong>lupyuen.github.io/src/plic3.md</strong></a></p>
-<h1 id="appendix-compare-ox64-bl808-uart-registers"><a href="#appendix-compare-ox64-bl808-uart-registers">10 Appendix: Compare Ox64 BL808 UART Registers</a></h1>
-<p>TODO</p>
-<p>To fix the null UART Input, let’s compare the <a href="https://gist.github.com/lupyuen/5d16f536133c0c3b5a30a50950a1ee75">UART Registers from NuttX</a> vs <a href="https://gist.github.com/lupyuen/e0d13fb888a490fbf3dfcb01bbdd86fc">U-Boot Bootloader</a></p>
-<p>UART Registers from <a href="https://gist.github.com/lupyuen/5d16f536133c0c3b5a30a50950a1ee75">NuttX UART Driver</a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>// UART Registers from NuttX
-bl602_receive: rxdata=-1
-bl602_receive: rxdata=0x0
-UART Registers (0x30002000):
-0000  05 17 00 00 | 01 07 00 00 | 13 00 13 00 | 00 00 00 00  ................
-0010  70 00 9f 00 | 6f 00 00 00 | 0f 00 00 00 | 00 00 00 00  p...o...........
-0020 [94 00 00 00]|[f5 0f 00 00]| 00 00 00 00 | ff 0f 00 00  ................
-0030  01 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-0040  00 00 00 00 | 00 00 00 00 | 03 00 00 00 | 00 00 00 00  ................
-0050 [ff ff 1c 00]| 02 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-0060  00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ...............
-0070  00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-0080 [80 00 00 00]|[18 00 07 07]| 0a 00 00 00 |[00 00 00 00] ................
-0090  00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-00a0  00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-00b0  00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-00c0  00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-00d0  00 00 00 00 | 00 00 00 00 |             |              ........        
-</code></pre></div>
-<p>UART Registers from <a href="https://gist.github.com/lupyuen/e0d13fb888a490fbf3dfcb01bbdd86fc">U-Boot Bootloader</a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## UART Registers from U-Boot
-=&gt; md 0x30002000 0x36
-30002000: 00001705  00000701 00130013 00000000  ................
-30002010: 009f0070  0000006f 0000000f 00000000  p...o..........
-30002020:[00000012][00000fff]00000000 00000fff  ................
-30002030: 00000001  00000000 00000000 00000000  ................
-30002040: 00000000  00000000 00000003 00000000  ................
-30002050:[0026ffff] 00000002 00000000 00000000  ..&amp;.............
-30002060: 00000000  00000000 00000000 00000000  ................
-30002070: 00000000  00000000 00000000 00000000  ................
-30002080:[00000000][07070000]0000000a[00000078]  ............x...
-30002090: 00000000  00000000 00000000 00000000  ................
-300020a0: 00000000  00000000 00000000 00000000  ................
-300020b0: 00000000  00000000 00000000 00000000  ................
-300020c0: 00000000  00000000 00000000 00000000  ................
-300020d0: 00000000  00000000                    ........
-</code></pre></div>
-<p>Here are the differences (marked above)…</p>
-<div class="example-wrap"><pre class="language-text"><code>Offset 20: uart_int_sts (Interrupt Status)
-
-00000094 = 0b10010100
-Bit 7 urx_fer_int: UART RX FIFO error interrupt, auto-cleared when FIFO overflow/underflow error flag is cleared
-Bit 4 urx_rto_int: UART RX Time-out interrupt
-Bit 2 utx_frdy_int: UART TX FIFO ready (tx_fifo_cnt &gt; tx_fifo_th) interrupt, auto-cleared when data is pushed
-
-00000012 = 0b00010010
-Bit 4 urx_rto_int: UART RX Time-out interrupt
-Bit 1 urx_end_int: UART RX transfer end interrupt (set according to cr_urx_-len)
-
-Offset 24: uart_int_mask (Interrupt Mask)
-00000ff5
-00000fff
-TODO: Set to 0xfff
-
-Offset 50: urx_bcr_int_cfg (Receive Byte Count)
-001cffff
-0026ffff
-Number of bytes received. OK to ignore this.
-
-Offset 80: uart_fifo_config_0 (FIFO Config 0)
-00000080
-00000000
-Bit 7 rx_fifo_underflow: Underflow flag of RX FIFO
-Can be cleared by rx_fifo_clr.
-TODO: Set Bit 3 rx_fifo_clr: Clear signal of RX FIFO
-
-Offset 84: uart_fifo_config_1 (FIFO Config 1)
-07070018
-07070000
-rx_fifo_cnt = 1 (RX FIFO available count)
-tx_fifo_cnt = 8 (TX FIFO available count)
-Let&#39;s ignore this.
-
-Offset 8c: uart_fifo_rdata (Receive Data)
-00000000
-00000078
-RX FIFO. OK to ignore this.
-</code></pre></div>
-<p>Nope still the same.</p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
-<h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">11 Appendix: Build and Run NuttX</a></h1>
+<h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">10 Appendix: Build and Run NuttX</a></h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong>, with PLIC and Console Input working OK.</p>
 <p>This is how we download and build NuttX for Ox64 BL808 SBC…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
