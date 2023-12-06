@@ -79,7 +79,7 @@
 <li><a href="#appendix-compare-ox64-bl808-uart-registers">11 Appendix: Compare Ox64 BL808 UART Registers</a><ul></ul></li>
 <li><a href="#appendix-build-and-run-nuttx">12 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Dec 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
-<p>Last week we walked through the <strong>Serial Console</strong> for <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> 64-bit Single-Board Computer (pic below)…</p>
+<p>Last week we walked through the <strong>Serial Console</strong> for <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> 64-bit RISC-V Single-Board Computer (pic below)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/plic2"><strong>“UART Interrupt and Platform-Level Interrupt Controller”</strong></a></li>
 </ul>
@@ -100,7 +100,7 @@
 </ul>
 <p>Today we discover the <strong>One Single Culprit</strong> behind all this rowdy mischief…</p>
 <p><strong>MMU Caching</strong>! (Memory Management Unit)</p>
-<p>Here’s how we solved the mystery…</p>
+<p>Here’s how we solved the baffling mystery…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <h1 id="uart-interrupt"><a href="#uart-interrupt">1 UART Interrupt</a></h1>
 <p><em>Sorry TLDR: What’s this PLIC? Why is it used by Serial Console?</em></p>
@@ -115,6 +115,7 @@
 <h1 id="memory-management-unit"><a href="#memory-management-unit">5 Memory Management Unit</a></h1>
 <p><em>Wow the soup gets too salty. What’s PAGE_MTMASK_THEAD?</em></p>
 <p>TODO</p>
+<p>(<strong>TODO:</strong> Buffering vs Caching: What’s the diff?)</p>
 <h1 id="patching-our-code"><a href="#patching-our-code">6 Patching Our Code</a></h1>
 <p>TODO</p>
 <h1 id="it-works"><a href="#it-works">7 It Works!</a></h1>
