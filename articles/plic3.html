@@ -257,6 +257,7 @@ rx=0
   ...
   asm volatile(... _PAGE_MTMASK_THEAD ...)
 </code></pre></div>
+<p><a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt">(<strong>Svpbmt Extension</strong> defines <strong>Page-Based Memory Types</strong>)</a></p>
 <p><em>Aha! A Linux Errata for T-Head CPU!</em></p>
 <p>We track down <strong>PAGE_MTMASK_THEAD</strong>: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142">pgtable-64.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// T-Head Memory Type Definitions in Linux
@@ -336,6 +337,7 @@ Bit[59] Sec - Trustable
 </tbody></table>
 </div>
 <p>We’ll set the <strong>SO and SH Bits</strong> in our Page Table Entries. Hopefully UART and PLIC won’t get mushed up no more…</p>
+<p><a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt">(<strong>Svpbmt Extension</strong> will support <strong>Strong Ordering</strong>)</a></p>
 <p>TODO: Strong Order Pic</p>
 <h1 id="enable-strong-order"><a href="#enable-strong-order">6 Enable Strong Order</a></h1>
 <p><em>We need to set the Strong Order Bit…</em></p>
