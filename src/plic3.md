@@ -211,6 +211,19 @@ TODO: Pic of leaky read
 
 _But Linux runs OK on Ox64 right?_
 
+We searched for __"T-Head"__ in the [__Linux Repo__](https://github.com/torvalds/linux). And we see this vital clue: [errata_list.h](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/errata_list.h#L69-L164)
+
+```c
+#ifdef CONFIG_ERRATA_THEAD_PBMT
+// IO/NOCACHE memory types are handled together with svpbmt,
+// so on T-Head chips, check if no other memory type is set,
+// and set the non-0 PMA type if applicable.
+...
+asm volatile(... _PAGE_MTMASK_THEAD ...)
+```
+
+_Aha! A Linux Errata for T-Head CPUs!_
+
 TODO
 
 # Memory Management Unit
