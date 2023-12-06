@@ -264,7 +264,7 @@ _Something special about I/O Memory?_
 
 The last line suggests we need to configure the __T-Head Memory Type__ specifically to support __I/O Memory__ (PAGE_IO_THEAD)...
 
-| Memory Attribute | Bit |
+| Memory Attribute | Page Table Entry |
 |:-----------------|:----|
 | __Strongly-Ordered__ | Bit 63 is 1 |
 | __Non-Cacheable__ | Bit 62 is 0 _(Default)_ |
@@ -296,6 +296,8 @@ _How to enable Strong Order?_
 
 We do it in the T-Head C906 MMU...
 
+[(__Strong Order__ appears briefly in __C906 User Manual__, Pages 24 & 53)](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)
+
 [(What's __"Shareable"__? It's not documented)](https://github.com/T-head-Semi/openc906/blob/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl/aq_mmu_regs.v#L341-L342)
 
 ![Level 1 Page Table for MMU](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
@@ -316,11 +318,11 @@ _Wow the soup gets too salty. What's MMU?_
 
   (Kinda like "The Matrix")
 
-For Ox64: We switched on the MMU to protect the Kernel Memory from the Apps. And to protect the Apps from each other.
+__For Ox64:__ We switched on the MMU to protect the Kernel Memory from the Apps. And to protect the Apps from each other.
 
 _How does it work?_
 
-The pic above shows the __Level 1 Page Table__ that we configured in our MMU. The Page Table has a __Page Table Entry__ that says...
+The pic above shows the __Level 1 Page Table__ that we configured for our MMU. The Page Table has a __Page Table Entry__ that says...
 
 - __V:__ It's a __Valid__ Page Table Entry
 
@@ -332,9 +334,9 @@ The pic above shows the __Level 1 Page Table__ that we configured in our MMU. Th
 
   (Including the UART Registers at `0x3000_2000`)
 
-Remember __PAGE_IO_THEAD__ and __Strong Order__?
+_What about PAGE_IO_THEAD and Strong Order?_
 
-| Memory Attribute | Bit |
+| Memory Attribute | Page Table Entry |
 |:-----------------|:----|
 | __SO: Strongly-Ordered__ | Bit 63 is 1 |
 | __SH: Shareable__ | Bit 60 is 1 |
@@ -349,7 +351,12 @@ TODO: Strong Order Pic
 
 _We need to set the Strong Order Bit..._
 
-_How will we set it in our Page Table Entry?_
+_How will we enable it in our Page Table Entry?_
+
+| Memory Attribute | Page Table Entry |
+|:-----------------|:----|
+| __SO: Strongly-Ordered__ | Bit 63 is 1 |
+| __SH: Shareable__ | Bit 60 is 1 |
 
 For testing, we patched our MMU Code to set the __Strong Order Bit__ in our Page Table Entries: [riscv_mmu.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127)
 
@@ -418,25 +425,37 @@ We test our patched code...
 
 # It Works!
 
+_What happens when we run our patched code?_
+
+Our UART and PLIC Troubles are all over!
+
+- __Interrupt Priorities__ are [__set correctly to 1__](https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946/4b137b2f6a20289bbaab8d79ed0f2f9ea2a87ef5#file-ox64-nuttx-uart-ok-log-L188-L191)
+
+  ```text
+  PLIC Interrupt Priority: After (0xe0000004):
+  0000  01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................
+  0010  01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................
+  0020  01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................
+  ```
+
+- __Interrupt Enable__ [__doesn't leak__](https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946/4b137b2f6a20289bbaab8d79ed0f2f9ea2a87ef5#file-ox64-nuttx-uart-ok-log-L280-L281) to the next word
+
+  ```text
+  PLIC Hart 0 S-Mode Interrupt Enable (0xe0002080):
+  0000  00 00 10 00 00 00 00 00                          ........   
+  ```
+
+- __Interrupt Claim__ returns the correct Interrupt Number
+
+  TODO
+
+- Our __UART Driver__ returns the [__correct UART Input__](https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167/97b914fd3e285eb8afbe3c01a814c018170b5b7#file-ox64-nuttx-mmu-uncache-log-L344)
+
+  ```text
+  bl602_receive: rxdata=0x31
+  ```
+
 TODO
-
-Yep [UART Input works OK](https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167) yay!
-
-```text
-nx_start: CPU0: Beginning Idle Loop
-bl602_receive: rxdata=0x31
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-1riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-bl602_receive: rxdata=0x32
-riscv_dispatch_irq: Clear Pending Interrupts, irq=45, claim=0
-PLIC Interrupt Pending (0xe0001000):
-0000  00 00 00 00 00 00 00 00                          ........        
-2
-```
 
 Finally [UART Input and PLIC are both OK](https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324) yay!
 
