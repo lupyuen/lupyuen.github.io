@@ -259,7 +259,8 @@ rx=0
   ...
   asm volatile(... _PAGE_MTMASK_THEAD ...)
 </code></pre></div>
-<p><em>Aha! A Linux Errata for T-Head CPUs!</em></p>
+<p>TODO: <strong>PAGE_MTMASK_THEAD</strong></p>
+<p><em>Aha! A Linux Errata for T-Head CPU!</em></p>
 <p>We track down <strong>PAGE_MTMASK_THEAD</strong>: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142">pgtable-64.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// T-Head Memory Type Definitions in Linux
 #define _PAGE_PMA_THEAD     ((1UL &lt;&lt; 62) | (1UL &lt;&lt; 61) | (1UL &lt;&lt; 60))
