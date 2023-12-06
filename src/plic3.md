@@ -280,7 +280,9 @@ _How to enable Strong Order?_
 
 We do it in the T-Head C906 MMU...
 
-![Level 1 Page Table in Memory Management Unit](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
+![Level 1 Page Table for MMU](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
+
+[_Level 1 Page Table for MMU_](https://lupyuen.github.io/articles/mmu#huge-chunks-level-1)
 
 # Memory Management Unit
 
