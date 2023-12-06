@@ -67,8 +67,8 @@
     <h1 class="title">Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)</h1>
     <nav id="TOC"><ul>
 <li><a href="#uart-interrupt">1 UART Interrupt</a><ul></ul></li>
-<li><a href="#our-troubles">2 Our Troubles</a><ul></ul></li>
-<li><a href="#leaky-reads">3 Leaky Reads</a><ul></ul></li>
+<li><a href="#uart-and-plic-troubles">2 UART and PLIC Troubles</a><ul></ul></li>
+<li><a href="#leaky-reads-in-uart">3 Leaky Reads in UART</a><ul></ul></li>
 <li><a href="#t-head-errata">4 T-Head Errata</a><ul></ul></li>
 <li><a href="#memory-management-unit">5 Memory Management Unit</a><ul></ul></li>
 <li><a href="#enable-strong-order">6 Enable Strong Order</a><ul></ul></li>
@@ -154,10 +154,10 @@
 <p>(We’ll use it for troubleshooting)</p>
 </li>
 </ol>
-<p>That’s the Textbook Recipe for PLIC, according to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic"><strong>Official RISC-V PLIC Spec</strong></a>.</p>
+<p>That’s the Textbook Recipe for PLIC, according to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic"><strong>Official RISC-V PLIC Spec</strong></a>. (If Julia Child wrote a PLIC Textbook)</p>
 <p>But it doesn’t work on Ox64 BL808 SBC and T-Head C906 Core…</p>
 <p>TODO: Trouble pic</p>
-<h1 id="our-troubles"><a href="#our-troubles">2 Our Troubles</a></h1>
+<h1 id="uart-and-plic-troubles"><a href="#uart-and-plic-troubles">2 UART and PLIC Troubles</a></h1>
 <p><em>What happens when we run the PLIC Recipe on Ox64?</em></p>
 <p>Absolute Disaster! (Pic above)</p>
 <ul>
@@ -178,7 +178,7 @@
 </li>
 </ul>
 <p>Our troubles are all Seemingly Unrelated. However there’s actually only One Sinister Culprit causing all these headaches…</p>
-<h1 id="leaky-reads"><a href="#leaky-reads">3 Leaky Reads</a></h1>
+<h1 id="leaky-reads-in-uart"><a href="#leaky-reads-in-uart">3 Leaky Reads in UART</a></h1>
 <p><em>How do we track down the culprit?</em></p>
 <p>We begin with the simplest bug: <a href="https://lupyuen.github.io/articles/plic2#backup-plan"><strong>UART Input</strong></a> is always Empty.</p>
 <p>This is how we read the <strong>UART Input</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/jh7110/bl602_serial.c#L943-L995">bl602_serial.c</a></p>
@@ -257,7 +257,6 @@ rx=0
   ...
   asm volatile(... _PAGE_MTMASK_THEAD ...)
 </code></pre></div>
-<p>TODO: <strong>PAGE_MTMASK_THEAD</strong></p>
 <p><em>Aha! A Linux Errata for T-Head CPU!</em></p>
 <p>We track down <strong>PAGE_MTMASK_THEAD</strong>: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142">pgtable-64.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// T-Head Memory Type Definitions in Linux
@@ -266,8 +265,8 @@ rx=0
 #define _PAGE_IO_THEAD      ((1UL &lt;&lt; 63) | (1UL &lt;&lt; 60))
 #define _PAGE_MTMASK_THEAD  (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL &lt;&lt; 59))
 </code></pre></div>
-<p>Which has this annotation…</p>
-<div class="example-wrap"><pre class="language-c"><code>[63:59] T-Head Memory Type definitions:
+<p>Which is annotated with…</p>
+<div class="example-wrap"><pre class="language-text"><code>[63:59] T-Head Memory Type definitions:
 Bit[63] SO  - Strong Order
 Bit[62] C   - Cacheable
 Bit[61] B   - Bufferable
@@ -278,6 +277,8 @@ Bit[59] Sec - Trustable
 01110 - PMA: Weakly-Ordered, Cacheable, Bufferable, Shareable, Non-Trustable
 10010 - IO:  Strongly-Ordered, Non-Cacheable, Non-Bufferable, Shareable, Non-Trustable
 </code></pre></div>
+<p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142">(Source)</a></p>
+<p><em>Something special about I/O Memory?</em></p>
 <p>The last line suggests we need to configure the <strong>T-Head Memory Type</strong> specifically to support <strong>I/O Memory</strong> (PAGE_IO_THEAD)…</p>
 <div><table><thead><tr><th style="text-align: left">Memory Attribute</th><th style="text-align: left">Bit</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>Strongly-Ordered</strong></td><td style="text-align: left">Bit 63 is 1</td></tr>
@@ -291,14 +292,14 @@ Bit[59] Sec - Trustable
 <p><em>What’s “Strong Order”</em></p>
 <p><a href="https://en.wikipedia.org/wiki/Memory_ordering#Runtime_memory_ordering"><strong>“Strong Order”</strong></a> means “All Reads and All Writes are In-Order”.</p>
 <p>Apparently T-Head C906 will (by default) <strong>Disable Strong Order</strong>, to read and write memory <strong>Out-of-Sequence</strong>. (So that it performs better)</p>
-<p>Which will certainly mess up our UART and PLIC Registers!</p>
-<p>(What’s “Shareable”? It’s not documented for C906)</p>
+<p>Which will surely mess up our UART and PLIC Registers!</p>
+<p><a href="https://github.com/T-head-Semi/openc906/blob/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl/aq_mmu_regs.v#L341-L342">(What’s <strong>“Shareable”</strong>? It’s not documented)</a></p>
 <p><em>How to enable Strong Order?</em></p>
-<p>We do it in the C906 MMU…</p>
+<p>We do it in the T-Head C906 MMU…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table in Memory Management Unit" /></p>
 <h1 id="memory-management-unit"><a href="#memory-management-unit">5 Memory Management Unit</a></h1>
 <p><em>Wow the soup gets too salty. What’s MMU?</em></p>
-<p><a href="https://lupyuen.github.io/articles/mmu"><strong>Memory Management Unit (MMU)</strong></a> is the hardware inside SBC that does…</p>
+<p><a href="https://lupyuen.github.io/articles/mmu"><strong>Memory Management Unit (MMU)</strong></a> is the hardware inside our SBC that does…</p>
 <ul>
 <li>
 <p><strong>Memory Protection</strong>: Prevent Applications (and Kernel) from meddling with things (in System Memory) that they’re not supposed to</p>
@@ -333,7 +334,8 @@ Bit[59] Sec - Trustable
 <tr><td style="text-align: left"><strong>SH: Shareable</strong></td><td style="text-align: left">Bit 60 is 1</td></tr>
 </tbody></table>
 </div>
-<p>We’ll set the <strong>SO and SH Bits</strong> in our Page Table Entry. Hopefully UART and PLIC won’t get mushed up no more…</p>
+<p>We’ll set the <strong>SO and SH Bits</strong> in our Page Table Entries. Hopefully UART and PLIC won’t get mushed up no more…</p>
+<p>TODO: Strong Order Pic</p>
 <h1 id="enable-strong-order"><a href="#enable-strong-order">6 Enable Strong Order</a></h1>
 <p><em>We need to set the Strong Order Bit…</em></p>
 <p><em>How will we set it in our Page Table Entry?</em></p>
@@ -428,7 +430,8 @@ nsh&gt;
 nsh&gt; hello
 Hello, World!!
 </code></pre></div>
-<p>C906 MMU Caching is actually explained in <a href="https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf">C906 Integration Manual (Chinese)</a>, Page 9.</p>
+<p>C906 MMU is actually explained in <a href="https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf"><strong>C906 Integration Manual (Chinese)</strong></a>, Page 9.</p>
+<p><a href="https://github.com/T-head-Semi/openc906/tree/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl"><strong>MMU RTL Code</strong></a></p>
 <h1 id="lessons-learnt"><a href="#lessons-learnt">8 Lessons Learnt</a></h1>
 <p>TODO</p>
 <ol>
@@ -445,12 +448,12 @@ Hello, World!!
 <p>(Challenge all our Assumptions)</p>
 </li>
 <li>
-<p>Head to <a href="https://qoto.org/@lupyuen/111528215670914785"><strong>the Beach</strong></a>. Have a Picnic.</p>
+<p><a href="https://qoto.org/@lupyuen/111528215670914785"><strong>Head to the Beach</strong></a>. Have a Picnic.</p>
 <p>(Never know when the solution might pop up!)</p>
 </li>
 <li>
 <p>Sounds like an Agatha Christie Mystery…</p>
-<p>But sometimes it’s indeed <strong>One Single Culprit</strong> (Memory Caching) behind all the Seemingly Unrelated Problems!</p>
+<p>But sometimes it’s indeed <strong>One Single Culprit</strong> (Weak Ordering) behind all the Seemingly Unrelated Problems!</p>
 </li>
 </ol>
 <p>RISC-V aint’s RISC-V? Beware of C906 MMU, C906 PLIC and T-Head Errata!</p>
