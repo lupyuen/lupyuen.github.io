@@ -88,7 +88,7 @@ Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC...
 
     Which will [__Complete the Interrupt__](https://lupyuen.github.io/articles/plic2#complete-the-interrupt).
 
-1.  Useful But Non-Essential: [__Interrupt Pending__](https://lupyuen.github.io/articles/plic2#pending-interrupts) Register says which Interrupts are awaiting Claiming and Completion.
+1.  Useful And Non-Essential: [__Interrupt Pending__](https://lupyuen.github.io/articles/plic2#pending-interrupts) Register says which Interrupts are awaiting Claiming and Completion.
 
     (We'll use it for troubleshooting)
 
@@ -120,7 +120,7 @@ Absolute Disaster! (Pic above)
 
 - Our [__UART Driver__](https://lupyuen.github.io/articles/plic2#backup-plan) says that the UART Input is Empty!
 
-  TODO: (We validated the __UART Registers__)
+  (We verified the [__UART Registers__](https://github.com/lupyuen/nuttx-ox64#compare-ox64-bl808-uart-registers))
 
 Our troubles are all Seemingly Unrelated. However there's actually only One Sinister Culprit causing all these headaches...
 
@@ -288,7 +288,7 @@ Ahem [__they did__](https://github.com/riscv/riscv-isa-manual/blob/main/src/supe
 
 > "A Device Driver written to rely on __I/O Strong Ordering__ rules __will not operate correctly__ if the Address Range is mapped with PBMT=NC \[Weakly Ordered\]. As such, this __configuration is discouraged__."
 
-But that comes from the [__New Svpbmt Extension__](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt). Which isn't supported by T-Head C906.
+Though that comes from the [__New Svpbmt Extension__](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt). Which isn't supported by T-Head C906.
 
 (Svpbmt Bits 61~62 will conflict with T-Head Bits 59~63. Oh boy)
 
@@ -421,6 +421,8 @@ We test our patched code...
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946)
 
+[(__Shareable Bit__ doesn't effect anything. We're keeping it to be consistent with Linux)](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4e343153d996f7f7a9b2d8a79edf42cd3900d42e)
+
 ![UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!](https://lupyuen.github.io/images/plic3-title.png)
 
 # It Works!
@@ -548,102 +550,6 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/plic3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic3.md)
-
-# Appendix: Compare Ox64 BL808 UART Registers
-
-TODO
-
-To fix the null UART Input, let's compare the [UART Registers from NuttX](https://gist.github.com/lupyuen/5d16f536133c0c3b5a30a50950a1ee75) vs [U-Boot Bootloader](https://gist.github.com/lupyuen/e0d13fb888a490fbf3dfcb01bbdd86fc)
-
-UART Registers from [NuttX UART Driver](https://gist.github.com/lupyuen/5d16f536133c0c3b5a30a50950a1ee75)...
-
-```bash
-// UART Registers from NuttX
-bl602_receive: rxdata=-1
-bl602_receive: rxdata=0x0
-UART Registers (0x30002000):
-0000  05 17 00 00 | 01 07 00 00 | 13 00 13 00 | 00 00 00 00  ................
-0010  70 00 9f 00 | 6f 00 00 00 | 0f 00 00 00 | 00 00 00 00  p...o...........
-0020 [94 00 00 00]|[f5 0f 00 00]| 00 00 00 00 | ff 0f 00 00  ................
-0030  01 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-0040  00 00 00 00 | 00 00 00 00 | 03 00 00 00 | 00 00 00 00  ................
-0050 [ff ff 1c 00]| 02 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-0060  00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ...............
-0070  00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-0080 [80 00 00 00]|[18 00 07 07]| 0a 00 00 00 |[00 00 00 00] ................
-0090  00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-00a0  00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-00b0  00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-00c0  00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00  ................
-00d0  00 00 00 00 | 00 00 00 00 |             |              ........        
-```
-
-UART Registers from [U-Boot Bootloader](https://gist.github.com/lupyuen/e0d13fb888a490fbf3dfcb01bbdd86fc)...
-
-```bash
-## UART Registers from U-Boot
-=> md 0x30002000 0x36
-30002000: 00001705  00000701 00130013 00000000  ................
-30002010: 009f0070  0000006f 0000000f 00000000  p...o..........
-30002020:[00000012][00000fff]00000000 00000fff  ................
-30002030: 00000001  00000000 00000000 00000000  ................
-30002040: 00000000  00000000 00000003 00000000  ................
-30002050:[0026ffff] 00000002 00000000 00000000  ..&.............
-30002060: 00000000  00000000 00000000 00000000  ................
-30002070: 00000000  00000000 00000000 00000000  ................
-30002080:[00000000][07070000]0000000a[00000078]  ............x...
-30002090: 00000000  00000000 00000000 00000000  ................
-300020a0: 00000000  00000000 00000000 00000000  ................
-300020b0: 00000000  00000000 00000000 00000000  ................
-300020c0: 00000000  00000000 00000000 00000000  ................
-300020d0: 00000000  00000000                    ........
-```
-
-Here are the differences (marked above)...
-
-```text
-Offset 20: uart_int_sts (Interrupt Status)
-
-00000094 = 0b10010100
-Bit 7 urx_fer_int: UART RX FIFO error interrupt, auto-cleared when FIFO overflow/underflow error flag is cleared
-Bit 4 urx_rto_int: UART RX Time-out interrupt
-Bit 2 utx_frdy_int: UART TX FIFO ready (tx_fifo_cnt > tx_fifo_th) interrupt, auto-cleared when data is pushed
-
-00000012 = 0b00010010
-Bit 4 urx_rto_int: UART RX Time-out interrupt
-Bit 1 urx_end_int: UART RX transfer end interrupt (set according to cr_urx_-len)
-
-Offset 24: uart_int_mask (Interrupt Mask)
-00000ff5
-00000fff
-TODO: Set to 0xfff
-
-Offset 50: urx_bcr_int_cfg (Receive Byte Count)
-001cffff
-0026ffff
-Number of bytes received. OK to ignore this.
-
-Offset 80: uart_fifo_config_0 (FIFO Config 0)
-00000080
-00000000
-Bit 7 rx_fifo_underflow: Underflow flag of RX FIFO
-Can be cleared by rx_fifo_clr.
-TODO: Set Bit 3 rx_fifo_clr: Clear signal of RX FIFO
-
-Offset 84: uart_fifo_config_1 (FIFO Config 1)
-07070018
-07070000
-rx_fifo_cnt = 1 (RX FIFO available count)
-tx_fifo_cnt = 8 (TX FIFO available count)
-Let's ignore this.
-
-Offset 8c: uart_fifo_rdata (Receive Data)
-00000000
-00000078
-RX FIFO. OK to ignore this.
-```
-
-Nope still the same.
 
 ![UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!](https://lupyuen.github.io/images/plic3-title.png)
 
