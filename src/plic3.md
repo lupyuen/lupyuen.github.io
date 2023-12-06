@@ -135,24 +135,22 @@ int bl602_receive(...) {
   ...
   // If there's Pending UART Input...
   // (FIFO_CONFIG_1 is 0x30002084)
-  if (getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) & \
-    UART_FIFO_CONFIG_1_RX_CNT_MASK) {
+  if (getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) & UART_FIFO_CONFIG_1_RX_CNT_MASK) {
 
     // Then read the Actual UART Input
     // (FIFO_RDATA is 0x3000208c)
-    rxdata = getreg32(BL602_UART_FIFO_RDATA(uart_idx)) & \
-      UART_FIFO_RDATA_MASK;
+    rxdata = getreg32(BL602_UART_FIFO_RDATA(uart_idx)) & UART_FIFO_RDATA_MASK;
 ```
 
 Which says that we...
 
 - Check if there's any __Pending UART Input__...
 
-  (At address `0x3000` `2084`)
+  (At address `0x3000_2084`)
 
 - Before reading the __Actual UART Input__
 
-  (At address `0x3000` `208C`)
+  (At address `0x3000_208C`)
 
 Or simply...
 
@@ -193,11 +191,11 @@ Exactly! (Pic below)
 
 - When we check if there's any __Pending UART Input__...
 
-  (At address `0x3000` `2084`)
+  (At address `0x3000_2084`)
 
 - It causes the neighbouring __Actual UART Input__ to be read unintentionally...
 
-  (At address `0x3000` `208C`)
+  (At address `0x3000_208C`)
 
 - Which auto-erases the __Actual UART Input__...
 
@@ -211,19 +209,20 @@ TODO: Pic of leaky read
 
 # T-Head Errata
 
-_But Linux runs OK on Ox64 BL808 right?_
+_But Linux runs OK on Ox64 BL808..._
 
 _Something special about Linux on T-Head C906?_
 
 We search for __"T-Head"__ in the [__Linux Kernel Repo__](https://github.com/torvalds/linux). And we see this vital clue: [errata_list.h](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/errata_list.h#L69-L164)
 
 ```c
+// T-Head Errata for Linux
 #ifdef CONFIG_ERRATA_THEAD_PBMT
-// IO/NOCACHE memory types are handled together with svpbmt,
-// so on T-Head chips, check if no other memory type is set,
-// and set the non-0 PMA type if applicable.
-...
-asm volatile(... _PAGE_MTMASK_THEAD ...)
+  // IO/NOCACHE memory types are handled together with svpbmt,
+  // so on T-Head chips, check if no other memory type is set,
+  // and set the non-0 PMA type if applicable.
+  ...
+  asm volatile(... _PAGE_MTMASK_THEAD ...)
 ```
 
 _Aha! A Linux Errata for T-Head CPUs!_
@@ -231,6 +230,7 @@ _Aha! A Linux Errata for T-Head CPUs!_
 We track down __PAGE_MTMASK_THEAD__: [pgtable-64.h](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142)
 
 ```c
+// T-Head Memory Type Definitions in Linux
 #define _PAGE_PMA_THEAD     ((1UL << 62) | (1UL << 61) | (1UL << 60))
 #define _PAGE_NOCACHE_THEAD ((1UL < 61) | (1UL << 60))
 #define _PAGE_IO_THEAD      ((1UL << 63) | (1UL << 60))
@@ -241,11 +241,11 @@ Which says...
 
 ```c
 [63:59] T-Head Memory Type definitions:
-bit[63] SO  - Strong Order
-bit[62] C   - Cacheable
-bit[61] B   - Bufferable
-bit[60] SH  - Shareable
-bit[59] Sec - Trustable
+Bit[63] SO  - Strong Order
+Bit[62] C   - Cacheable
+Bit[61] B   - Bufferable
+Bit[60] SH  - Shareable
+Bit[59] Sec - Trustable
 
 00110 - NC: Weakly-ordered, Non-cacheable, Bufferable, Shareable, Non-trustable
 01110 - PMA: Weakly-ordered, Cacheable, Bufferable, Shareable, Non-trustable
@@ -260,7 +260,35 @@ We found the Magical Bits to __Disable Caching and Buffering__ in the C906 MMU!
 
 _Wow the soup gets too salty. What's MMU?_
 
-TODO
+[__Memory Management Unit (MMU)__](https://lupyuen.github.io/articles/mmu) is the hardware inside SBC that does...
+
+- __Memory Protection__: Prevent Applications (and Kernel) from meddling with things (in System Memory) that they're not supposed to
+
+- __Virtual Memory__: Allow Applications to access chunks of "Imaginary Memory" at Exotic Addresses (__`0x8000_0000`__!)
+
+  But in reality: They're System RAM recycled from boring old addresses (like __`0x5060_4000`__)
+
+  (Kinda like "The Matrix")
+
+For Ox64: We switched on the MMU to protect the Kernel Memory from the Apps. And to protect the Apps from each other.
+
+_How does it work?_
+
+The pic above shows the __Level 1 Page Table__ that we configured in our MMU. The Page Table has a __Page Table Entry__ that says...
+
+- __V:__ It's a __Valid__ Page Table Entry
+
+- __G:__ It's a [__Global Mapping__](https://lupyuen.github.io/articles/mmu#swap-the-satp-register)
+
+- __R:__ Allow __Kernel Reads__ for __`0x0`__ to __`0x3FFF_FFFF`__
+
+- __W:__ Allow __Kernel Writes__ for __`0x0`__ to __`0x3FFF_FFFF`__
+
+  (Including the UART Registers at `0x3000_2000`)
+
+Remember the __MMU Magical Bits__? Non-Cacheable, Non-Bufferable, Strong Order, ...
+
+We'll add them to our Page Table Entry.
 
 (__TODO:__ Buffering vs Caching: What's the diff?)
 
