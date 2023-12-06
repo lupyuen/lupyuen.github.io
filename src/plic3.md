@@ -470,6 +470,8 @@ TODO
 
 RISC-V aint's RISC-V? Beware of C906 MMU, C906 PLIC and T-Head Errata!
 
+[(__Svpbmt Extension__ will support __Strong Ordering__)](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt)
+
 TODO
 
 1.  Taking a brief break from writing
