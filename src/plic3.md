@@ -8,7 +8,7 @@ Last week we walked through the __Serial Console__ for [__Pine64 Ox64 BL808__](h
 
 -   [__"UART Interrupt and Platform-Level Interrupt Controller"__](https://lupyuen.github.io/articles/plic2)
 
-And we hit some baffling problems on [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) (Real-Time Operating System)...
+And we hit some illogical impossible problems on [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) (Real-Time Operating System)...
 
 - [__Console Input__](https://lupyuen.github.io/articles/plic2#backup-plan) is always empty
 
@@ -22,7 +22,9 @@ And we hit some baffling problems on [__Apache NuttX RTOS__](https://lupyuen.git
 
   (Or maybe Leaky Reads?)
 
-Today we found the __One Single Culprit__ behind all this mischief: __MMU Caching__! (Memory Management Unit)
+Today we discover the __One Single Culprit__ behind all this rowdy mischief...
+
+__MMU Caching__! (Memory Management Unit)
 
 Here's how we solved the mystery...
 
