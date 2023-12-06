@@ -1,30 +1,30 @@
-# Fixing UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)
+# Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)
 
 📝 _20 Dec 2023_
 
-![TODO](https://lupyuen.github.io/images/plic3-title.png)
+![UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!](https://lupyuen.github.io/images/plic3-title.png)
 
-TODO
+Last week we walked through the __Serial Console__ for [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit Single-Board Computer (pic below)...
 
-Console Input is always empty
+-   [__"UART Interrupt and Platform-Level Interrupt Controller"__](https://lupyuen.github.io/articles/plic2)
 
-(Can't enter any Console Commands)
+And we hit some baffling problems on [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2) (Real-Time Operating System)...
 
-Interrupt Claim is forever 0
+- [__Console Input__](https://lupyuen.github.io/articles/plic2#backup-plan) is always empty
 
-(Our SBC won't tell us which Interrupt was fired!)
+  (Can't enter any Console Commands)
 
-Leaky Writes seem to mush up adjacent PLIC registers
+- [__Interrupt Claim__](https://lupyuen.github.io/articles/plic2#more-trouble-with-interrupt-claim) is forever 0
 
-(Or Leaky Reads?)
+  (Ox64 won't tell us which Interrupt was fired!)
 
-One Single Culprit behind all this mischief: MMU Caching!
+- [__Leaky Writes__](https://lupyuen.github.io/articles/plic2#trouble-with-interrupt-priority) are mushing up adjacent Interrupt Registers
 
-[__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit Single-Board Computer (pic below)...
+  (Or maybe Leaky Reads?)
 
-[(Based on __Bouffalo Lab BL808 SoC__)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+Today we found the __One Single Culprit__ behind all this mischief: __MMU Caching__! (Memory Management Unit)
 
-[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
+Here's how we solved the mystery...
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
 
@@ -201,29 +201,45 @@ Hello, World!!
 
 C906 MMU Caching is actually explained in [C906 Integration Manual (Chinese)](https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf), Page 9.
 
-![UART Input and PLIC are both OK!](https://lupyuen.github.io/images/plic3-title.png)
+![UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!](https://lupyuen.github.io/images/plic3-title.png)
 
-# TODO
+# Lessons Learnt
 
-Share
+TODO
 
-Read the Comments
+1.  [__Write up Everything__](https://lupyuen.github.io/articles/plic2) about our troubles
 
-Inspire the solution
+    (And share them publicly)
 
-Re-read and re-think
+1.  [__Read the Comments__](https://news.ycombinator.com/item?id=38502979)
 
-Sounds like an Agatha Christie Mystery... But sometimes it's indeed __One Single Culprit__ (Memory Caching) behind all the Seemingly Unrelated Problems!
+    (They might inspire the solution!)
 
-Taking a brief break from writing
+1.  __Re-Read and Re-Think__ everything we wrote
 
-Clean up our code
+    (Challenge all our Assumptions)
 
-Upstream to NuttX
+1.  Head to [__the Beach__](https://qoto.org/@lupyuen/111528215670914785). Have a Picnic.
+
+    (Never know when the solution might pop up!)
+
+1.  Sounds like an Agatha Christie Mystery...
+
+    But sometimes it's indeed __One Single Culprit__ (Memory Caching) behind all the Seemingly Unrelated Problems!
+
+TODO
+
+1.  Taking a brief break from writing
+
+1.  Clean up our code
+
+1.  Upstream our code to NuttX Mainline
+
+1.  Apache NuttX RTOS will officially support Ox64 BL808 SBC real soon!
 
 # What's Next
 
-TODO: Thank you so much for reading, you're my inspiration for solving this sticky problem 🙏
+TODO: Thank you so much for reading, you're my inspiration for solving this sticky mystery 🙏
 
 We have plenty to fix for __NuttX on Ox64 BL808__. Stay tuned for updates!
 
