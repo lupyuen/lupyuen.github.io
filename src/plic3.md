@@ -6,6 +6,18 @@
 
 TODO
 
+Console Input is always empty
+
+(Can't enter any Console Commands)
+
+Interrupt Claim is forever 0
+
+(Our SBC won't tell us which Interrupt was fired!)
+
+Leaky Writes
+
+(Or Leaky Reads?)
+
 [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit Single-Board Computer (pic below)...
 
 [(Based on __Bouffalo Lab BL808 SoC__)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
@@ -13,6 +25,32 @@ TODO
 [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ox2). (Real-Time Operating System)
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
+
+# UART Interrupt
+
+_Sorry TLDR: What's this PLIC? Why is it used by Serial Console?_
+
+TODO
+
+# Our Problem
+
+TODO
+
+# Linux Errata
+
+TODO
+
+# Memory Management Unit
+
+TODO
+
+# Patching Our Code
+
+TODO
+
+# It Works!
+
+TODO
 
 # Fix the UART Interrupt for Ox64 BL808
 
@@ -165,9 +203,11 @@ Inspire the solution
 
 Re-read and re-think
 
-Sounds like an Agatha Christie Mystery... But sometimes it's indeed One Single Culprit (Memory Caching) behind all the seemingly unrelated problems!
+Sounds like an Agatha Christie Mystery... But sometimes it's indeed __One Single Culprit__ (Memory Caching) behind all the Seemingly Unrelated Problems!
 
 Taking a brief break from writing
+
+Clean up our code
 
 Upstream to NuttX
 
