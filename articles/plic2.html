@@ -731,7 +731,7 @@ jh7110_kernel_mppings: map I/O regions
 <li>
 <p><em>Something special about the C906 MMU?</em></p>
 <p>According to the <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf"><strong>C906 User Manual</strong></a> (Page 53), the C906 MMU supports <strong>Extended Page Attributes</strong>.</p>
-<p>Is the <strong>MMU Caching</strong> causing issues? What’s “<strong>sysmap.h</strong>”?</p>
+<p>Is the <strong>MMU Caching / Buffering / Strong Ordering</strong> causing issues? What’s <a href="https://github.com/T-head-Semi/openc906/blob/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl/sysmap.h"><strong>sysmap.h</strong></a>?</p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic">(More about <strong>C906 Extended Page Attributes</strong>)</a></p>
 </li>
 <li>
