@@ -71,7 +71,7 @@
 <li><a href="#leaky-reads">3 Leaky Reads</a><ul></ul></li>
 <li><a href="#t-head-errata">4 T-Head Errata</a><ul></ul></li>
 <li><a href="#memory-management-unit">5 Memory Management Unit</a><ul></ul></li>
-<li><a href="#patching-our-code">6 Patching Our Code</a><ul></ul></li>
+<li><a href="#enable-strong-order">6 Enable Strong Order</a><ul></ul></li>
 <li><a href="#it-works">7 It Works!</a><ul></ul></li>
 <li><a href="#lessons-learnt">8 Lessons Learnt</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
@@ -243,8 +243,7 @@ rx=0
 <p>Before we actually read it!</p>
 </li>
 </ul>
-<p>Yep we indeed have a Leaky Read + Leaky Write that’s causing all our UART + PLIC worries.</p>
-<p>Something is Buffering or Caching our Reads and Writes. Why oh why?</p>
+<p>Yep we indeed have a Leaky Read + Leaky Write that’s causing all our UART + PLIC worries. Why oh why?</p>
 <p>TODO: Pic of leaky read</p>
 <h1 id="t-head-errata"><a href="#t-head-errata">4 T-Head Errata</a></h1>
 <p><em>But Linux runs OK on Ox64 BL808…</em></p>
@@ -267,7 +266,7 @@ rx=0
 #define _PAGE_IO_THEAD      ((1UL &lt;&lt; 63) | (1UL &lt;&lt; 60))
 #define _PAGE_MTMASK_THEAD  (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL &lt;&lt; 59))
 </code></pre></div>
-<p>Which says…</p>
+<p>Which has this annotation…</p>
 <div class="example-wrap"><pre class="language-c"><code>[63:59] T-Head Memory Type definitions:
 Bit[63] SO  - Strong Order
 Bit[62] C   - Cacheable
@@ -275,11 +274,27 @@ Bit[61] B   - Bufferable
 Bit[60] SH  - Shareable
 Bit[59] Sec - Trustable
 
-00110 - NC: Weakly-ordered, Non-cacheable, Bufferable, Shareable, Non-trustable
-01110 - PMA: Weakly-ordered, Cacheable, Bufferable, Shareable, Non-trustable
-10010 - IO: Strongly-ordered, Non-cacheable, Non-bufferable, Shareable, Non-trustable
+00110 - NC:  Weakly-Ordered, Non-Cacheable, Bufferable, Shareable, Non-Trustable
+01110 - PMA: Weakly-Ordered, Cacheable, Bufferable, Shareable, Non-Trustable
+10010 - IO:  Strongly-Ordered, Non-Cacheable, Non-Bufferable, Shareable, Non-Trustable
 </code></pre></div>
-<p>TODO: We found the Magical Bits (PAGE_IO_THEAD) to TODO in the C906 MMU!</p>
+<p>The last line suggests we need to configure the <strong>T-Head Memory Type</strong> specifically to support <strong>I/O Memory</strong> (PAGE_IO_THEAD)…</p>
+<div><table><thead><tr><th style="text-align: left">Memory Attribute</th><th style="text-align: left">Bit</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Strongly-Ordered</strong></td><td style="text-align: left">Bit 63 is 1</td></tr>
+<tr><td style="text-align: left"><strong>Non-Cacheable</strong></td><td style="text-align: left">Bit 62 is 0 <em>(Default)</em></td></tr>
+<tr><td style="text-align: left"><strong>Non-Bufferable</strong></td><td style="text-align: left">Bit 61 is 0 <em>(Default)</em></td></tr>
+<tr><td style="text-align: left"><strong>Shareable</strong></td><td style="text-align: left">Bit 60 is 1</td></tr>
+<tr><td style="text-align: left"><strong>Non-Trustable</strong></td><td style="text-align: left">Bit 59 is 0 <em>(Default)</em></td></tr>
+</tbody></table>
+</div>
+<p>We deduce that <strong>“Strong Order”</strong> is the Magical Bit that we need for UART and PLIC!</p>
+<p><em>What’s “Strong Order”</em></p>
+<p><a href="https://en.wikipedia.org/wiki/Memory_ordering#Runtime_memory_ordering"><strong>“Strong Order”</strong></a> means “All Reads and All Writes are In-Order”.</p>
+<p>Apparently T-Head C906 will (by default) <strong>Disable Strong Order</strong>, to read and write memory <strong>Out-of-Sequence</strong>. (So that it performs better)</p>
+<p>Which will certainly mess up our UART and PLIC Registers!</p>
+<p>(What’s “Shareable”? It’s not documented for C906)</p>
+<p><em>How to enable Strong Order?</em></p>
+<p>We do it in the C906 MMU…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table in Memory Management Unit" /></p>
 <h1 id="memory-management-unit"><a href="#memory-management-unit">5 Memory Management Unit</a></h1>
 <p><em>Wow the soup gets too salty. What’s MMU?</em></p>
@@ -312,54 +327,77 @@ Bit[59] Sec - Trustable
 <p>(Including the UART Registers at <code>0x3000_2000</code>)</p>
 </li>
 </ul>
-<p>Remember the <strong>MMU Magical Bits</strong>? Non-Cacheable, Non-Bufferable, Strong Order, …</p>
-<p>We’ll add them to our Page Table Entry.</p>
-<p>(<strong>TODO:</strong> Buffering vs Caching: What’s the diff?)</p>
-<h1 id="patching-our-code"><a href="#patching-our-code">6 Patching Our Code</a></h1>
-<p>TODO</p>
-<p>We do the same to Disable MMU Cache in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127">riscv_mmu.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  /* Save it */
-
+<p>Remember <strong>PAGE_IO_THEAD</strong> and <strong>Strong Order</strong>?</p>
+<div><table><thead><tr><th style="text-align: left">Memory Attribute</th><th style="text-align: left">Bit</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>SO: Strongly-Ordered</strong></td><td style="text-align: left">Bit 63 is 1</td></tr>
+<tr><td style="text-align: left"><strong>SH: Shareable</strong></td><td style="text-align: left">Bit 60 is 1</td></tr>
+</tbody></table>
+</div>
+<p>We’ll set the <strong>SO and SH Bits</strong> in our Page Table Entry. Hopefully UART and PLIC won’t get mushed up no more…</p>
+<h1 id="enable-strong-order"><a href="#enable-strong-order">6 Enable Strong Order</a></h1>
+<p><em>We need to set the Strong Order Bit…</em></p>
+<p><em>How will we set it in our Page Table Entry?</em></p>
+<p>For testing, we patched our MMU Code to set the <strong>Strong Order Bit</strong> in our Page Table Entries: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127">riscv_mmu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Set a Page Table Entry in a Page Table for the MMU
+void mmu_ln_setentry(
+  uint32_t ptlevel,   // Level of Page Table: 1, 2 or 3 
+  uintptr_t lntable,  // Page Table Address
+  uintptr_t paddr,    // Physical Address
+  uintptr_t vaddr,    // Virtual Address (For Kernel: Same as Physical Address)
+  uint32_t mmuflags   // MMU Flags (V / G / R / W)
+) {
+  ...
+  // Set the Page Table Entry:
+  // Physical Page Number and MMU Flags (V / G / R / W)
   lntable[index] = (paddr | mmuflags);
 
-  //// Begin Test
-  // From https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142
-  /*
-  * [63:59] T-Head Memory Type definitions:
-  * bit[63] SO - Strong Order
-  * bit[62] C - Cacheable
-  * bit[61] B - Bufferable
-  * bit[60] SH - Shareable
-  * bit[59] Sec - Trustable
-  * 00110 - NC   Weakly-ordered, Non-cacheable, Bufferable, Shareable, Non-trustable
-  * 01110 - PMA  Weakly-ordered, Cacheable, Bufferable, Shareable, Non-trustable
-  * 10010 - IO   Strongly-ordered, Non-cacheable, Non-bufferable, Shareable, Non-trustable
-  */
-  #define _PAGE_PMA_THEAD  ((1UL &lt;&lt; 62) | (1UL &lt;&lt; 61) | (1UL &lt;&lt; 60))
-  #define _PAGE_NOCACHE_THEAD ((1UL &lt; 61) | (1UL &lt;&lt; 60))
-  #define _PAGE_IO_THEAD  ((1UL &lt;&lt; 63) | (1UL &lt;&lt; 60))
-  #define _PAGE_MTMASK_THEAD (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL &lt;&lt; 59))
-  if ((mmuflags &amp; PTE_R) &amp;&amp;
-    (vaddr &lt; 0x40000000UL || vaddr &gt;= 0xe0000000UL))
-    {
-      lntable[index] = lntable[index] | _PAGE_IO_THEAD;
-      _info(&quot;vaddr=%p, lntable[index]=%p\n&quot;, vaddr, lntable[index]);
-    }
-  //// End Test
+  // Now we set the T-Head Memory Type in Bits 59 to 63.
+  // For I/O and PLIC Memory, we set...
+  // SO (Bit 63): Strong Order
+  // SH (Bit 60): Shareable
+  #define _PAGE_IO_THEAD ((1UL &lt;&lt; 63) | (1UL &lt;&lt; 60))
+
+  // If this is a Leaf Page Table Entry
+  // for I/O Memory or PLIC Memory...
+  if ((mmuflags &amp; PTE_R) &amp;&amp;    // Leaf Page Table Entry
+    (vaddr &lt; 0x40000000UL ||   // I/O Memory
+    vaddr &gt;= 0xe0000000UL)) {  // PLIC Memory
+
+    // Then set the Strong Order
+    // and Shareable Bits
+    lntable[index] = lntable[index]
+      | _PAGE_IO_THEAD;
+  }
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946">Bits are set OK</a></p>
+<p>The code above will set the <strong>Strong Order and Shareable Bits</strong> for…</p>
+<ul>
+<li>
+<p><strong>I/O Memory</strong>: <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong></p>
+<p>(Including the UART Registers at <code>0x3000_2000</code>)</p>
+</li>
+<li>
+<p><strong>PLIC Memory</strong>: <strong><code>0xE000_0000</code></strong> to <strong><code>0xEFFF_FFFF</code></strong></p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>map I/O regions
-   vaddr=0, lntable[index]=0x90000000000000e7
+  vaddr=0, lntable[index]=0x90000000000000e7
+  // &quot;0x9000...&quot; means Strong Order (Bit 63) and Shareable (Bit 60) are set
 
 map PLIC as Interrupt L2
-   vaddr=0xe0000000, lntable[index]=0x90000000380000e7
-   vaddr=0xe0200000, lntable[index]=0x90000000380800e7
-   vaddr=0xe0400000, lntable[index]=0x90000000381000e7
-   vaddr=0xe0600000, lntable[index]=0x90000000381800e7
-   ...
-   vaddr=0xefc00000, lntable[index]=0x900000003bf000e7
-   vaddr=0xefe00000, lntable[index]=0x900000003bf800e7
+  vaddr=0xe0000000, lntable[index]=0x90000000380000e7
+  vaddr=0xe0200000, lntable[index]=0x90000000380800e7
+  vaddr=0xe0400000, lntable[index]=0x90000000381000e7
+  vaddr=0xe0600000, lntable[index]=0x90000000381800e7
+  ...
+  vaddr=0xefc00000, lntable[index]=0x900000003bf000e7
+  vaddr=0xefe00000, lntable[index]=0x900000003bf800e7
+  // &quot;0x9000...&quot; means Strong Order (Bit 63) and Shareable (Bit 60) are set
 </code></pre></div>
+<p>We test our patched code…</p>
+<p><a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946">(See the <strong>Complete Log</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
+<h1 id="it-works"><a href="#it-works">7 It Works!</a></h1>
+<p>TODO</p>
 <p>Yep <a href="https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167">UART Input works OK</a> yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>nx_start: CPU0: Beginning Idle Loop
 bl602_receive: rxdata=0x31
@@ -391,9 +429,6 @@ nsh&gt; hello
 Hello, World!!
 </code></pre></div>
 <p>C906 MMU Caching is actually explained in <a href="https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf">C906 Integration Manual (Chinese)</a>, Page 9.</p>
-<h1 id="it-works"><a href="#it-works">7 It Works!</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
 <h1 id="lessons-learnt"><a href="#lessons-learnt">8 Lessons Learnt</a></h1>
 <p>TODO</p>
 <ol>
