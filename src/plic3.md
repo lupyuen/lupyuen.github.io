@@ -203,7 +203,7 @@ Exactly! (Pic below)
 
   Before we actually read it!
 
-Yep we indeed have a Leaky Read + Leaky Write that's causing all our UART + PLIC worries. But why?
+Yep we indeed have a Leaky Read + Leaky Write that's causing all our UART + PLIC worries. Why oh why?
 
 TODO: Pic of leaky read
 
