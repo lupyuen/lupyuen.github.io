@@ -189,23 +189,21 @@ int bl602_receive(...) {
   ...
   // If there&#39;s Pending UART Input...
   // (FIFO_CONFIG_1 is 0x30002084)
-  if (getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) &amp; \
-    UART_FIFO_CONFIG_1_RX_CNT_MASK) {
+  if (getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) &amp; UART_FIFO_CONFIG_1_RX_CNT_MASK) {
 
     // Then read the Actual UART Input
     // (FIFO_RDATA is 0x3000208c)
-    rxdata = getreg32(BL602_UART_FIFO_RDATA(uart_idx)) &amp; \
-      UART_FIFO_RDATA_MASK;
+    rxdata = getreg32(BL602_UART_FIFO_RDATA(uart_idx)) &amp; UART_FIFO_RDATA_MASK;
 </code></pre></div>
 <p>Which says that we…</p>
 <ul>
 <li>
 <p>Check if there’s any <strong>Pending UART Input</strong>…</p>
-<p>(At address <code>0x3000</code> <code>2084</code>)</p>
+<p>(At address <code>0x3000_2084</code>)</p>
 </li>
 <li>
 <p>Before reading the <strong>Actual UART Input</strong></p>
-<p>(At address <code>0x3000</code> <code>208C</code>)</p>
+<p>(At address <code>0x3000_208C</code>)</p>
 </li>
 </ul>
 <p>Or simply…</p>
@@ -235,11 +233,11 @@ rx=0
 <ul>
 <li>
 <p>When we check if there’s any <strong>Pending UART Input</strong>…</p>
-<p>(At address <code>0x3000</code> <code>2084</code>)</p>
+<p>(At address <code>0x3000_2084</code>)</p>
 </li>
 <li>
 <p>It causes the neighbouring <strong>Actual UART Input</strong> to be read unintentionally…</p>
-<p>(At address <code>0x3000</code> <code>208C</code>)</p>
+<p>(At address <code>0x3000_208C</code>)</p>
 </li>
 <li>
 <p>Which auto-erases the <strong>Actual UART Input</strong>…</p>
@@ -250,30 +248,32 @@ rx=0
 <p>Something is Buffering or Caching our Reads and Writes. Why oh why?</p>
 <p>TODO: Pic of leaky read</p>
 <h1 id="t-head-errata"><a href="#t-head-errata">4 T-Head Errata</a></h1>
-<p><em>But Linux runs OK on Ox64 BL808 right?</em></p>
+<p><em>But Linux runs OK on Ox64 BL808…</em></p>
 <p><em>Something special about Linux on T-Head C906?</em></p>
 <p>We search for <strong>“T-Head”</strong> in the <a href="https://github.com/torvalds/linux"><strong>Linux Kernel Repo</strong></a>. And we see this vital clue: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/errata_list.h#L69-L164">errata_list.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_ERRATA_THEAD_PBMT
-// IO/NOCACHE memory types are handled together with svpbmt,
-// so on T-Head chips, check if no other memory type is set,
-// and set the non-0 PMA type if applicable.
-...
-asm volatile(... _PAGE_MTMASK_THEAD ...)
+<div class="example-wrap"><pre class="language-c"><code>// T-Head Errata for Linux
+#ifdef CONFIG_ERRATA_THEAD_PBMT
+  // IO/NOCACHE memory types are handled together with svpbmt,
+  // so on T-Head chips, check if no other memory type is set,
+  // and set the non-0 PMA type if applicable.
+  ...
+  asm volatile(... _PAGE_MTMASK_THEAD ...)
 </code></pre></div>
 <p><em>Aha! A Linux Errata for T-Head CPUs!</em></p>
 <p>We track down <strong>PAGE_MTMASK_THEAD</strong>: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142">pgtable-64.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define _PAGE_PMA_THEAD     ((1UL &lt;&lt; 62) | (1UL &lt;&lt; 61) | (1UL &lt;&lt; 60))
+<div class="example-wrap"><pre class="language-c"><code>// T-Head Memory Type Definitions in Linux
+#define _PAGE_PMA_THEAD     ((1UL &lt;&lt; 62) | (1UL &lt;&lt; 61) | (1UL &lt;&lt; 60))
 #define _PAGE_NOCACHE_THEAD ((1UL &lt; 61) | (1UL &lt;&lt; 60))
 #define _PAGE_IO_THEAD      ((1UL &lt;&lt; 63) | (1UL &lt;&lt; 60))
 #define _PAGE_MTMASK_THEAD  (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL &lt;&lt; 59))
 </code></pre></div>
 <p>Which says…</p>
 <div class="example-wrap"><pre class="language-c"><code>[63:59] T-Head Memory Type definitions:
-bit[63] SO  - Strong Order
-bit[62] C   - Cacheable
-bit[61] B   - Bufferable
-bit[60] SH  - Shareable
-bit[59] Sec - Trustable
+Bit[63] SO  - Strong Order
+Bit[62] C   - Cacheable
+Bit[61] B   - Bufferable
+Bit[60] SH  - Shareable
+Bit[59] Sec - Trustable
 
 00110 - NC: Weakly-ordered, Non-cacheable, Bufferable, Shareable, Non-trustable
 01110 - PMA: Weakly-ordered, Cacheable, Bufferable, Shareable, Non-trustable
@@ -283,7 +283,37 @@ bit[59] Sec - Trustable
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table in Memory Management Unit" /></p>
 <h1 id="memory-management-unit"><a href="#memory-management-unit">5 Memory Management Unit</a></h1>
 <p><em>Wow the soup gets too salty. What’s MMU?</em></p>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/mmu"><strong>Memory Management Unit (MMU)</strong></a> is the hardware inside SBC that does…</p>
+<ul>
+<li>
+<p><strong>Memory Protection</strong>: Prevent Applications (and Kernel) from meddling with things (in System Memory) that they’re not supposed to</p>
+</li>
+<li>
+<p><strong>Virtual Memory</strong>: Allow Applications to access chunks of “Imaginary Memory” at Exotic Addresses (<strong><code>0x8000_0000</code></strong>!)</p>
+<p>But in reality: They’re System RAM recycled from boring old addresses (like <strong><code>0x5060_4000</code></strong>)</p>
+<p>(Kinda like “The Matrix”)</p>
+</li>
+</ul>
+<p>For Ox64: We switched on the MMU to protect the Kernel Memory from the Apps. And to protect the Apps from each other.</p>
+<p><em>How does it work?</em></p>
+<p>The pic above shows the <strong>Level 1 Page Table</strong> that we configured in our MMU. The Page Table has a <strong>Page Table Entry</strong> that says…</p>
+<ul>
+<li>
+<p><strong>V:</strong> It’s a <strong>Valid</strong> Page Table Entry</p>
+</li>
+<li>
+<p><strong>G:</strong> It’s a <a href="https://lupyuen.github.io/articles/mmu#swap-the-satp-register"><strong>Global Mapping</strong></a></p>
+</li>
+<li>
+<p><strong>R:</strong> Allow <strong>Kernel Reads</strong> for <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong></p>
+</li>
+<li>
+<p><strong>W:</strong> Allow <strong>Kernel Writes</strong> for <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong></p>
+<p>(Including the UART Registers at <code>0x3000_2000</code>)</p>
+</li>
+</ul>
+<p>Remember the <strong>MMU Magical Bits</strong>? Non-Cacheable, Non-Bufferable, Strong Order, …</p>
+<p>We’ll add them to our Page Table Entry.</p>
 <p>(<strong>TODO:</strong> Buffering vs Caching: What’s the diff?)</p>
 <h1 id="patching-our-code"><a href="#patching-our-code">6 Patching Our Code</a></h1>
 <p>TODO</p>
