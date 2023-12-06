@@ -34,6 +34,46 @@ Here's how we solved the baffling mystery...
 
 _Sorry TLDR: What's this PLIC? What's Serial Console gotta do with it?_
 
+[__Platform-Level Interrupt Controller__](https://lupyuen.github.io/articles/plic2#platform-level-interrupt-controller) (PLIC) is the hardware inside our BL808 SoC that controls the forwarding of __Peripheral Interrupts__ to our 64-bit RISC-V CPU.
+
+(Like the Interrupts for __UART__, __I2C__, __SPI__, ...)
+
+![BL808 Platform-Level Interrupt Controller](https://lupyuen.github.io/images/plic2-bl808a.jpg)
+
+_Why should we bother with PLIC?_
+
+Suppose we're using the __Serial Console__ on Ox64 SBC (pic above)...
+
+- Every single __key that we press__...
+
+- Is received by the __UART Controller__ in our RISC-V SoC...
+
+  (Bouffalo Lab BL808 SoC)
+
+- Which fires an __Interrupt through the PLIC__ to the RISC-V CPU 
+
+  (T-Head C906 RISC-V Core)
+
+Without the PLIC, it's __impossible to enter commands__ in the Serial Console!
+
+_More details please?_
+
+Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC... 
+
+![Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/plic2-registers.jpg)
+
+1.  TODO: At Startup, Interrupt Priority
+
+1.  TODO: Interrupt Threshold
+
+1.  TODO: Interrupt Enable
+
+1.  TODO: Key press
+
+1.  TODO: Interrupt Claim
+
+1.  TODO: Interrupt Pending
+
 TODO
 
 # Our Problem
