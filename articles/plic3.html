@@ -442,26 +442,25 @@ map PLIC as Interrupt L2
 <div class="example-wrap"><pre class="language-text"><code>bl602_receive: rxdata=0x31
 </code></pre></div></li>
 </ul>
-<p>TODO</p>
-<p>Finally <a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324">UART Input and PLIC are both OK</a> yay!</p>
+<p><em>Is NuttX usable on Ox64 now?</em></p>
+<p>Yep! <a href="https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx"><strong>NuttX on Ox64</strong></a> now boots OK to the NuttX Shell (NSH). And accepts commands through the <strong>Serial Console</strong> yay! (Pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
 nsh&gt; uname -a
 NuttX 12.0.3 fd05b07 Nov 24 2023 07:42:54 risc-v star64
-nsh&gt; 
+
 nsh&gt; ls /dev
 /dev:
  console
  null
  ram0
  zero
-nsh&gt; 
+
 nsh&gt; hello
 Hello, World!!
 </code></pre></div>
+<p>TODO: <a href="https://youtu.be/VSTpsSJ_7L0">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324">(See the <strong>Complete Log</strong>)</a></p>
-<p>(Pic above)</p>
-<p>C906 MMU is actually explained in <a href="https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf"><strong>C906 Integration Manual (Chinese)</strong></a>, Page 9.</p>
-<p><a href="https://github.com/T-head-Semi/openc906/tree/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl"><strong>MMU RTL Code</strong></a></p>
+<p>TODO</p>
 <h1 id="lessons-learnt"><a href="#lessons-learnt">8 Lessons Learnt</a></h1>
 <p>TODO</p>
 <ol>
@@ -505,6 +504,8 @@ Hello, World!!
 <p>Apache NuttX RTOS will officially support Ox64 BL808 SBC real soon!</p>
 </li>
 </ol>
+<p>TODO: C906 MMU is actually explained in <a href="https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf"><strong>C906 Integration Manual (Chinese)</strong></a>, Page 9.</p>
+<p><a href="https://github.com/T-head-Semi/openc906/tree/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl"><strong>MMU RTL Code</strong></a></p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO: Thank you so much for reading, you’re my inspiration for solving this sticky mystery 🙏</p>
 <p>We have plenty to fix for <strong>NuttX on Ox64 BL808</strong>. Stay tuned for updates!</p>
