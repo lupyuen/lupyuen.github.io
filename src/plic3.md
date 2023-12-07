@@ -260,9 +260,9 @@ Bit[59] Sec - Trustable
 
 [(Source)](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142)
 
-_Something special about I/O Memory?_
+_Something sus about I/O Memory?_
 
-The last line suggests we need to configure the __T-Head Memory Type__ specifically to support __I/O Memory__ (PAGE_IO_THEAD)...
+The last line suggests we should configure the __T-Head Memory Type__ specifically to support __I/O Memory__ (PAGE_IO_THEAD)...
 
 | Memory Attribute | Page Table Entry |
 |:-----------------|:----|
@@ -274,7 +274,7 @@ The last line suggests we need to configure the __T-Head Memory Type__ specifica
 
 We deduce that __"Strong Order"__ is the Magical Bit that we need for UART and PLIC!
 
-_What's "Strong Order"_
+_What's "Strong Order"?_
 
 [__"Strong Order"__](https://en.wikipedia.org/wiki/Memory_ordering#Runtime_memory_ordering) means "All Reads and All Writes are In-Order".
 
@@ -300,9 +300,9 @@ We do it in the T-Head C906 MMU...
 
 [(What's __"Shareable"__? It's not documented)](https://github.com/T-head-Semi/openc906/blob/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl/aq_mmu_regs.v#L341-L342)
 
-![Level 1 Page Table for MMU](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
+![Level 1 Page Table for Ox64 MMU](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
 
-[_Level 1 Page Table for MMU_](https://lupyuen.github.io/articles/mmu#huge-chunks-level-1)
+[_Level 1 Page Table for Ox64 MMU_](https://lupyuen.github.io/articles/mmu#huge-chunks-level-1)
 
 # Memory Management Unit
 
