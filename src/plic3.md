@@ -209,7 +209,7 @@ Yep indeed we have Leaky Read + Leaky Write that are causing all our UART + PLIC
 
 Things are looking mighty illogical and _incoherent_. Why oh why?
 
-TODO: Pic of leaky read
+![Leaky Reads in UART](https://lupyuen.github.io/images/plic3-uart.jpg)
 
 # T-Head Errata
 
