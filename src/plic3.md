@@ -459,7 +459,7 @@ Our UART and PLIC Troubles are all over!
 
 _Is NuttX usable on Ox64 now?_
 
-Yep! [__NuttX on Ox64__](https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx) now boots OK to the NuttX Shell (NSH). And accepts commands through the __Serial Console__ yay! (Pic above)
+Yep! [__NuttX RTOS on Ox64__](https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx) now boots OK to the NuttX Shell (NSH). And accepts commands through the __Serial Console__ yay! (Pic above)
 
 ```text
 NuttShell (NSH) NuttX-12.0.3
@@ -481,11 +481,11 @@ TODO: [(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324)
 
-TODO
-
 # Lessons Learnt
 
-TODO
+_Phew that was some quick intense debugging..._
+
+Yeah we're really fortunate to get NuttX RTOS running OK on Ox64. Couple of things that might have helped...
 
 1.  [__Write up Everything__](https://lupyuen.github.io/articles/plic2) about our troubles
 
@@ -507,33 +507,39 @@ TODO
 
     But sometimes it's indeed __One Single Culprit__ (Weak Ordering) behind all the Seemingly Unrelated Problems!
 
-RISC-V aint's RISC-V? Beware of C906 MMU, C906 PLIC and T-Head Errata!
+_Will NuttX officially support Ox64?_
 
-[(__Svpbmt Extension__ will support __Strong Ordering__)](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt)
+We plan to...
 
-TODO
+- Take a __brief break__ from writing
 
-1.  Taking a brief break from writing
+  (No new article next week)
 
-1.  Clean up our code
+- __Clean up__ our code
 
-    (Rename all the JH7110 stuff to BL808)
+  (Rename all the JH7110 things to BL808)
 
-1.  Upstream our code to NuttX Mainline
+- Upstream our code to [__NuttX Mainline__](https://lupyuen.github.io/articles/pr)
 
-    (Delicate Operation because we're adding MMU Flags)
+  (Delicate Regression Operation because we're adding [__MMU Flags__](https://lupyuen.github.io/articles/plic3#t-head-errata))
 
-1.  Apache NuttX RTOS will officially support Ox64 BL808 SBC real soon!
+Apache NuttX RTOS shall __officially support Ox64 BL808 SBC__ real soon!
 
-TODO: C906 MMU is actually explained in [__C906 Integration Manual (Chinese)__](https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf), Page 9.
+_Are we hunky dory with Ox64 BL808 and T-Head C906?_
 
-[__MMU RTL Code__](https://github.com/T-head-Semi/openc906/tree/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl)
+We said this [__last time__](https://lupyuen.github.io/articles/plic2#all-things-considered)...
+
+> _"If RISC-V ain't RISC-V on SiFive vs T-Head: We'll find out!"_
+
+As of Today: Yep __RISC-V is indeed RISC-V__ on SiFive vs T-Head... Just beware of [__C906 MMU__](https://lupyuen.github.io/articles/plic3#memory-management-unit), [__C906 PLIC__](https://lupyuen.github.io/articles/plic2#all-things-considered) and [__T-Head Errata__](https://lupyuen.github.io/articles/plic3#t-head-errata)!
+
+[(__New T-Head Cores__ will probably migrate to __Svpbmt Extension__)](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt)
 
 # What's Next
 
 TODO: Thank you so much for reading, you're my inspiration for solving this sticky mystery 🙏
 
-We have plenty to fix for __NuttX on Ox64 BL808__. Stay tuned for updates!
+We have plenty to do for __NuttX on Ox64 BL808__. Stay tuned for updates!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
