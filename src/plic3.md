@@ -457,33 +457,31 @@ Our UART and PLIC Troubles are all over!
   bl602_receive: rxdata=0x31
   ```
 
-TODO
+_Is NuttX usable on Ox64 now?_
 
-Finally [UART Input and PLIC are both OK](https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324) yay!
+Yep! [__NuttX on Ox64__](https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx) now boots OK to the NuttX Shell (NSH). And accepts commands through the __Serial Console__ yay! (Pic above)
 
 ```text
 NuttShell (NSH) NuttX-12.0.3
 nsh> uname -a
 NuttX 12.0.3 fd05b07 Nov 24 2023 07:42:54 risc-v star64
-nsh> 
+
 nsh> ls /dev
 /dev:
  console
  null
  ram0
  zero
-nsh> 
+
 nsh> hello
 Hello, World!!
 ```
 
+TODO: [(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
+
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324)
 
-(Pic above)
-
-C906 MMU is actually explained in [__C906 Integration Manual (Chinese)__](https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf), Page 9.
-
-[__MMU RTL Code__](https://github.com/T-head-Semi/openc906/tree/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl)
+TODO
 
 # Lessons Learnt
 
@@ -526,6 +524,10 @@ TODO
     (Delicate Operation because we're adding MMU Flags)
 
 1.  Apache NuttX RTOS will officially support Ox64 BL808 SBC real soon!
+
+TODO: C906 MMU is actually explained in [__C906 Integration Manual (Chinese)__](https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf), Page 9.
+
+[__MMU RTL Code__](https://github.com/T-head-Semi/openc906/tree/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl)
 
 # What's Next
 
