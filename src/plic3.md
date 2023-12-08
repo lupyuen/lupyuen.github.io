@@ -34,7 +34,7 @@ Here's how we solved the baffling mystery...
 
 _Sorry TLDR: What's this PLIC? What's Serial Console gotta do with it?_
 
-[__Platform-Level Interrupt Controller__](https://lupyuen.github.io/articles/plic2#platform-level-interrupt-controller) (PLIC) is the hardware inside our BL808 SoC that controls the forwarding of __Peripheral Interrupts__ to our 64-bit RISC-V CPU.
+[__Platform-Level Interrupt Controller__](https://lupyuen.github.io/articles/plic2#platform-level-interrupt-controller) (PLIC) is the hardware inside our SBC that controls the forwarding of __Peripheral Interrupts__ to our 64-bit RISC-V CPU.
 
 (Like the Interrupts for __UART__, __I2C__, __SPI__, ...)
 
@@ -42,7 +42,7 @@ _Sorry TLDR: What's this PLIC? What's Serial Console gotta do with it?_
 
 _Why should we bother with PLIC?_
 
-Suppose we're using the __Serial Console__ on Ox64 SBC (pic above)...
+Suppose we're typing something in the __Serial Console__ on Ox64 SBC (pic above)...
 
 - Every single __key that we press__...
 
@@ -62,7 +62,7 @@ Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC...
 
 ![Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/plic2-registers.jpg)
 
-1.  At Startup: We set [__Interrupt Priority__](https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority) to 1
+1.  At Startup: We set [__Interrupt Priority__](https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority) to 1.
 
     (Lowest Priority)
 
@@ -76,7 +76,7 @@ Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC...
 
 1.  Suppose we __press a key__ on the Serial Console...
 
-    Our SoC will __fire an Interrupt__ for IRQ 20.
+    Our UART Controller will __fire an Interrupt__ for IRQ 20.
 
     (IRQ means __Interrupt Request Number__)
 
@@ -88,7 +88,7 @@ Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC...
 
     Which will [__Complete the Interrupt__](https://lupyuen.github.io/articles/plic2#complete-the-interrupt).
 
-1.  Useful And Non-Essential: [__Interrupt Pending__](https://lupyuen.github.io/articles/plic2#pending-interrupts) Register says which Interrupts are awaiting Claiming and Completion.
+1.  Non-Essential But Useful: [__Interrupt Pending__](https://lupyuen.github.io/articles/plic2#pending-interrupts) Register says which Interrupts are awaiting Claiming and Completion.
 
     (We'll use it for troubleshooting)
 
