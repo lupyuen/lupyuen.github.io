@@ -98,7 +98,7 @@ That's the Textbook Recipe for PLIC, according to the [__Official RISC-V PLIC Sp
 
 But it doesn't work on Ox64 BL808 SBC and T-Head C906 Core...
 
-TODO: Trouble pic
+![UART and PLIC Troubles on Ox64](https://lupyuen.github.io/images/plic3-trouble.jpg)
 
 # UART and PLIC Troubles
 
@@ -126,9 +126,9 @@ Absolute Disaster! (Pic above)
 
 Our troubles are all Seemingly Unrelated. However there's actually only One Sinister Culprit causing all these headaches...
 
-![BL808 Reference Manual (Page 405)](https://lupyuen.github.io/images/plic3-rx.png)
+![BL808 UART Receive Status (Page 405)](https://lupyuen.github.io/images/plic3-rx.png)
 
-[_BL808 Reference Manual (Page 405)_](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+[_BL808 UART Receive Status (Page 405)_](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
 # Leaky Reads in UART
 
