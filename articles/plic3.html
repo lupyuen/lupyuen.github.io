@@ -436,16 +436,16 @@ map PLIC as Interrupt L2
 0000  00 00 10 00 00 00 00 00                          ........   
 </code></pre></div></li>
 <li>
-<p><strong>Interrupt Claim</strong> returns the correct Interrupt Number</p>
-<p>TODO</p>
-</li>
+<p><strong>Interrupt Claim</strong> returns the <a href="https://gist.github.com/lupyuen/365d9d6d162a60a5f8514d1040eec495#file-ox64-nuttx-claim-ok-log-L33-L44"><strong>correct Interrupt Number</strong></a></p>
+<div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: claim=0x14
+</code></pre></div></li>
 <li>
 <p>Our <strong>UART Driver</strong> returns the <a href="https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167/97b914fd3e285eb8afbe3c01a814c018170b5b7#file-ox64-nuttx-mmu-uncache-log-L344"><strong>correct UART Input</strong></a></p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_receive: rxdata=0x31
 </code></pre></div></li>
 </ul>
-<p><em>Is NuttX usable on Ox64 now?</em></p>
-<p>Yep! <a href="https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx"><strong>NuttX RTOS on Ox64</strong></a> now boots OK to the NuttX Shell (NSH). And accepts commands through the <strong>Serial Console</strong> yay! (Pic above)</p>
+<p><em>Is NuttX usable on Ox64?</em></p>
+<p>Yep! <a href="https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx"><strong>NuttX RTOS on Ox64</strong></a> now boots OK to the NuttX Shell (NSH). And happily accepts commands through the <strong>Serial Console</strong> yay! (Pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
 nsh&gt; uname -a
 NuttX 12.0.3 fd05b07 Nov 24 2023 07:42:54 risc-v star64
