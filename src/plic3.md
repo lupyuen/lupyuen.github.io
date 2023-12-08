@@ -38,21 +38,23 @@ _Sorry TLDR: What's this PLIC? What's Serial Console gotta do with it?_
 
 [__Platform-Level Interrupt Controller__](https://lupyuen.github.io/articles/plic2#platform-level-interrupt-controller) (PLIC) is the hardware inside our SBC that controls the forwarding of __Peripheral Interrupts__ to our 64-bit RISC-V CPU.
 
-(Like the Interrupts for __UART__, __I2C__, __SPI__, ...)
+(Like Interrupts for __UART__, __I2C__, __SPI__, ...)
 
 ![BL808 Platform-Level Interrupt Controller](https://lupyuen.github.io/images/plic2-bl808a.jpg)
 
 _Why should we bother with PLIC?_
 
-Suppose we're typing something in the __Serial Console__ on Ox64 SBC (pic above)...
+Suppose we're typing something in the __Serial Console__ on Ox64 SBC...
 
 - Every single __key that we press__...
+
+  (Pic above)
 
 - Is received by the __UART Controller__ in our RISC-V SoC...
 
   (Bouffalo Lab BL808 SoC)
 
-- Which fires an __Interrupt through the PLIC__ to the RISC-V CPU 
+- Which fires an __Interrupt through the PLIC__ to our RISC-V CPU 
 
   (T-Head C906 RISC-V Core)
 
@@ -86,7 +88,7 @@ Let's run through the steps to __handle a UART Interrupt__ on a RISC-V SBC...
 
     Call the [__UART Driver__](https://lupyuen.github.io/articles/plic2#dispatch-the-interrupt) to read the keypress...
 
-    Then write 20 back into the same old [__Interrupt Claim__](https://lupyuen.github.io/articles/plic2#claim-the-interrupt) Register...
+    Then write the Interrupt Number (20) back into the same old [__Interrupt Claim__](https://lupyuen.github.io/articles/plic2#complete-the-interrupt) Register...
 
     Which will [__Complete the Interrupt__](https://lupyuen.github.io/articles/plic2#complete-the-interrupt).
 
@@ -132,7 +134,7 @@ Our troubles are all Seemingly Unrelated. However there's actually only One Sini
 
 # Leaky Reads in UART
 
-_How do we track down the culprit?_
+_How to track down the culprit?_
 
 We begin with the simplest bug: [__UART Input__](https://lupyuen.github.io/articles/plic2#backup-plan) is always Empty.
 
@@ -248,6 +250,8 @@ We track down __PAGE_MTMASK_THEAD__: [pgtable-64.h](https://github.com/torvalds/
 #define _PAGE_IO_THEAD      ((1UL << 63) | (1UL << 60))
 #define _PAGE_MTMASK_THEAD  (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL << 59))
 ```
+
+[(Spot the Typo!)](https://qoto.org/@lupyuen/111544462454486393)
 
 Which is annotated with...
 
@@ -425,7 +429,7 @@ map PLIC as Interrupt L2
 
 We test our patched code...
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946#file-ox64-nuttx-uart-ok-log-L25-L160)
 
 [(__Shareable Bit__ doesn't effect anything. We're keeping it to be consistent with Linux)](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4e343153d996f7f7a9b2d8a79edf42cd3900d42e)
 
@@ -433,11 +437,11 @@ We test our patched code...
 
 # It Works!
 
-_What happens when we run our patched code?_
+_What happens when we run our patched MMU code?_
 
-Our UART and PLIC Troubles are all over!
+Our UART and PLIC Troubles are finally over!
 
-- __Interrupt Priorities__ are [__set correctly to 1__](https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946/4b137b2f6a20289bbaab8d79ed0f2f9ea2a87ef5#file-ox64-nuttx-uart-ok-log-L188-L191)
+- __Interrupt Priorities__ are [__set correctly to 1__](https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946/4b137b2f6a20289bbaab8d79ed0f2f9ea2a87ef5#file-ox64-nuttx-uart-ok-log-L188-L208)
 
   ```text
   PLIC Interrupt Priority: After (0xe0000004):
@@ -459,7 +463,7 @@ Our UART and PLIC Troubles are all over!
   riscv_dispatch_irq: claim=0x14
   ```
 
-- Our __UART Driver__ returns the [__correct UART Input__](https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167/97b914fd3e285eb8afbe3c01a814c018170b5b7#file-ox64-nuttx-mmu-uncache-log-L344)
+- Our __UART Driver__ returns the [__correct UART Input__](https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167#file-ox64-nuttx-mmu-uncache-log-L344)
 
   ```text
   bl602_receive: rxdata=0x31
@@ -467,7 +471,9 @@ Our UART and PLIC Troubles are all over!
 
 _Is NuttX usable on Ox64?_
 
-Yep! [__NuttX RTOS on Ox64__](https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx) now boots OK to the NuttX Shell (NSH). And happily accepts commands through the __Serial Console__ yay! (Pic above)
+Yep! [__NuttX RTOS on Ox64__](https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx) now boots OK to the NuttX Shell (NSH).
+
+And happily accepts commands through the __Serial Console__ yay! (Pic above)
 
 ```text
 NuttShell (NSH) NuttX-12.0.3
@@ -487,7 +493,7 @@ Hello, World!!
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/l7Y36nTkr8c)
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324#file-ox64-nuttx-uart-ok2-log-L127-L146)
 
 ![We are hunky dory with Ox64 BL808 and T-Head C906 👍](https://lupyuen.github.io/images/plic3-ox64.jpg)
 
@@ -541,7 +547,7 @@ We said this [__last time__](https://lupyuen.github.io/articles/plic2#all-things
 
 > _"If RISC-V ain't RISC-V on SiFive vs T-Head: We'll find out!"_
 
-As of Today: Yep __RISC-V is indeed RISC-V__ on SiFive vs T-Head... Just beware of [__C906 MMU__](https://lupyuen.github.io/articles/plic3#memory-management-unit), [__C906 PLIC__](https://lupyuen.github.io/articles/plic2#all-things-considered) and [__T-Head Errata__](https://lupyuen.github.io/articles/plic3#t-head-errata)!
+As of Today: Yep __RISC-V is indeed RISC-V__ on SiFive vs T-Head... Just beware of [__C906 MMU__](https://lupyuen.codeberg.page/articles/plic2.html#all-things-considered), [__C906 PLIC__](https://lupyuen.github.io/articles/plic2#all-things-considered) and [__T-Head Errata__](https://lupyuen.github.io/articles/plic3#t-head-errata)!
 
 [(__New T-Head Cores__ will probably migrate to __Svpbmt Extension__)](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt)
 
