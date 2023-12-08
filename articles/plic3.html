@@ -104,20 +104,21 @@
 <h1 id="uart-interrupt"><a href="#uart-interrupt">1 UART Interrupt</a></h1>
 <p><em>Sorry TLDR: What’s this PLIC? What’s Serial Console gotta do with it?</em></p>
 <p><a href="https://lupyuen.github.io/articles/plic2#platform-level-interrupt-controller"><strong>Platform-Level Interrupt Controller</strong></a> (PLIC) is the hardware inside our SBC that controls the forwarding of <strong>Peripheral Interrupts</strong> to our 64-bit RISC-V CPU.</p>
-<p>(Like the Interrupts for <strong>UART</strong>, <strong>I2C</strong>, <strong>SPI</strong>, …)</p>
+<p>(Like Interrupts for <strong>UART</strong>, <strong>I2C</strong>, <strong>SPI</strong>, …)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="BL808 Platform-Level Interrupt Controller" /></p>
 <p><em>Why should we bother with PLIC?</em></p>
-<p>Suppose we’re typing something in the <strong>Serial Console</strong> on Ox64 SBC (pic above)…</p>
+<p>Suppose we’re typing something in the <strong>Serial Console</strong> on Ox64 SBC…</p>
 <ul>
 <li>
 <p>Every single <strong>key that we press</strong>…</p>
+<p>(Pic above)</p>
 </li>
 <li>
 <p>Is received by the <strong>UART Controller</strong> in our RISC-V SoC…</p>
 <p>(Bouffalo Lab BL808 SoC)</p>
 </li>
 <li>
-<p>Which fires an <strong>Interrupt through the PLIC</strong> to the RISC-V CPU </p>
+<p>Which fires an <strong>Interrupt through the PLIC</strong> to our RISC-V CPU </p>
 <p>(T-Head C906 RISC-V Core)</p>
 </li>
 </ul>
@@ -146,7 +147,7 @@
 <li>
 <p>Our Interrupt Handler will read the Interrupt Number (20) from the <a href="https://lupyuen.github.io/articles/plic2#claim-the-interrupt"><strong>Interrupt Claim</strong></a> Register…</p>
 <p>Call the <a href="https://lupyuen.github.io/articles/plic2#dispatch-the-interrupt"><strong>UART Driver</strong></a> to read the keypress…</p>
-<p>Then write 20 back into the same old <a href="https://lupyuen.github.io/articles/plic2#claim-the-interrupt"><strong>Interrupt Claim</strong></a> Register…</p>
+<p>Then write the Interrupt Number (20) back into the same old <a href="https://lupyuen.github.io/articles/plic2#complete-the-interrupt"><strong>Interrupt Claim</strong></a> Register…</p>
 <p>Which will <a href="https://lupyuen.github.io/articles/plic2#complete-the-interrupt"><strong>Complete the Interrupt</strong></a>.</p>
 </li>
 <li>
@@ -183,7 +184,7 @@
 <p><img src="https://lupyuen.github.io/images/plic3-rx.png" alt="BL808 UART Receive Status (Page 405)" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><em>BL808 UART Receive Status (Page 405)</em></a></p>
 <h1 id="leaky-reads-in-uart"><a href="#leaky-reads-in-uart">3 Leaky Reads in UART</a></h1>
-<p><em>How do we track down the culprit?</em></p>
+<p><em>How to track down the culprit?</em></p>
 <p>We begin with the simplest bug: <a href="https://lupyuen.github.io/articles/plic2#backup-plan"><strong>UART Input</strong></a> is always Empty.</p>
 <p>In our <a href="https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64"><strong>UART Driver</strong></a>, this is how we read the <strong>UART Input</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/jh7110/bl602_serial.c#L943-L995">bl602_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Receive one character from the UART Port.
@@ -271,6 +272,7 @@ rx=0
 #define _PAGE_IO_THEAD      ((1UL &lt;&lt; 63) | (1UL &lt;&lt; 60))
 #define _PAGE_MTMASK_THEAD  (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL &lt;&lt; 59))
 </code></pre></div>
+<p><a href="https://qoto.org/@lupyuen/111544462454486393">(Spot the Typo!)</a></p>
 <p>Which is annotated with…</p>
 <div class="example-wrap"><pre class="language-text"><code>[63:59] T-Head Memory Type definitions:
 Bit[63] SO  - Strong Order
@@ -419,15 +421,15 @@ map PLIC as Interrupt L2
   // &quot;0x9000...&quot; means Strong Order (Bit 63) and Shareable (Bit 60) are set
 </code></pre></div>
 <p>We test our patched code…</p>
-<p><a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946#file-ox64-nuttx-uart-ok-log-L25-L160">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4e343153d996f7f7a9b2d8a79edf42cd3900d42e">(<strong>Shareable Bit</strong> doesn’t effect anything. We’re keeping it to be consistent with Linux)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
 <h1 id="it-works"><a href="#it-works">7 It Works!</a></h1>
-<p><em>What happens when we run our patched code?</em></p>
-<p>Our UART and PLIC Troubles are all over!</p>
+<p><em>What happens when we run our patched MMU code?</em></p>
+<p>Our UART and PLIC Troubles are finally over!</p>
 <ul>
 <li>
-<p><strong>Interrupt Priorities</strong> are <a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946/4b137b2f6a20289bbaab8d79ed0f2f9ea2a87ef5#file-ox64-nuttx-uart-ok-log-L188-L191"><strong>set correctly to 1</strong></a></p>
+<p><strong>Interrupt Priorities</strong> are <a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946/4b137b2f6a20289bbaab8d79ed0f2f9ea2a87ef5#file-ox64-nuttx-uart-ok-log-L188-L208"><strong>set correctly to 1</strong></a></p>
 <div class="example-wrap"><pre class="language-text"><code>PLIC Interrupt Priority: After (0xe0000004):
 0000  01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................
 0010  01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................
@@ -443,12 +445,13 @@ map PLIC as Interrupt L2
 <div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: claim=0x14
 </code></pre></div></li>
 <li>
-<p>Our <strong>UART Driver</strong> returns the <a href="https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167/97b914fd3e285eb8afbe3c01a814c018170b5b7#file-ox64-nuttx-mmu-uncache-log-L344"><strong>correct UART Input</strong></a></p>
+<p>Our <strong>UART Driver</strong> returns the <a href="https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167#file-ox64-nuttx-mmu-uncache-log-L344"><strong>correct UART Input</strong></a></p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_receive: rxdata=0x31
 </code></pre></div></li>
 </ul>
 <p><em>Is NuttX usable on Ox64?</em></p>
-<p>Yep! <a href="https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx"><strong>NuttX RTOS on Ox64</strong></a> now boots OK to the NuttX Shell (NSH). And happily accepts commands through the <strong>Serial Console</strong> yay! (Pic above)</p>
+<p>Yep! <a href="https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx"><strong>NuttX RTOS on Ox64</strong></a> now boots OK to the NuttX Shell (NSH).</p>
+<p>And happily accepts commands through the <strong>Serial Console</strong> yay! (Pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
 nsh&gt; uname -a
 NuttX 12.0.3 fd05b07 Nov 24 2023 07:42:54 risc-v star64
@@ -464,7 +467,7 @@ nsh&gt; hello
 Hello, World!!
 </code></pre></div>
 <p><a href="https://youtu.be/l7Y36nTkr8c">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324#file-ox64-nuttx-uart-ok2-log-L127-L146">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-ox64.jpg" alt="We are hunky dory with Ox64 BL808 and T-Head C906 👍" /></p>
 <h1 id="lessons-learnt"><a href="#lessons-learnt">8 Lessons Learnt</a></h1>
 <p><em>Phew that was some quick intense debugging…</em></p>
@@ -513,7 +516,7 @@ Hello, World!!
 <blockquote>
 <p><em>“If RISC-V ain’t RISC-V on SiFive vs T-Head: We’ll find out!”</em></p>
 </blockquote>
-<p>As of Today: Yep <strong>RISC-V is indeed RISC-V</strong> on SiFive vs T-Head… Just beware of <a href="https://lupyuen.github.io/articles/plic3#memory-management-unit"><strong>C906 MMU</strong></a>, <a href="https://lupyuen.github.io/articles/plic2#all-things-considered"><strong>C906 PLIC</strong></a> and <a href="https://lupyuen.github.io/articles/plic3#t-head-errata"><strong>T-Head Errata</strong></a>!</p>
+<p>As of Today: Yep <strong>RISC-V is indeed RISC-V</strong> on SiFive vs T-Head… Just beware of <a href="https://lupyuen.codeberg.page/articles/plic2.html#all-things-considered"><strong>C906 MMU</strong></a>, <a href="https://lupyuen.github.io/articles/plic2#all-things-considered"><strong>C906 PLIC</strong></a> and <a href="https://lupyuen.github.io/articles/plic3#t-head-errata"><strong>T-Head Errata</strong></a>!</p>
 <p><a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt">(<strong>New T-Head Cores</strong> will probably migrate to <strong>Svpbmt Extension</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-beach2.jpg" alt="Quick dip in the sea + Picnic on the beach … Really helps with NuttX + Ox64 troubleshooting! 👍" /></p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
