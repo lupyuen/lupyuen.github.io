@@ -110,7 +110,7 @@ Absolute Disaster! (Pic above)
 
 - When we set the [__Interrupt Enable__](https://lupyuen.github.io/articles/plic2#trouble-with-interrupt-priority) Register...
 
-  The value gets __leaked over__ into the next 32-bit word
+  The value __leaks over__ into the next 32-bit word
 
   (Hence the __"Leaky Write"__)
 
