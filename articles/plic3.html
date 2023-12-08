@@ -174,7 +174,7 @@
 <p>(Can’t read the <strong>Actual Interrupt Number</strong>!)</p>
 </li>
 <li>
-<p>Our <a href="https://lupyuen.github.io/articles/plic2#backup-plan"><strong>UART Driver</strong></a> says that the UART Input is Empty!</p>
+<p>Our <a href="https://lupyuen.github.io/articles/plic2#backup-plan"><strong>UART Driver</strong></a> says that the UART Input is Empty</p>
 <p>(We verified the <a href="https://github.com/lupyuen/nuttx-ox64#compare-ox64-bl808-uart-registers"><strong>UART Registers</strong></a>)</p>
 </li>
 </ul>
@@ -182,7 +182,7 @@
 <h1 id="leaky-reads-in-uart"><a href="#leaky-reads-in-uart">3 Leaky Reads in UART</a></h1>
 <p><em>How do we track down the culprit?</em></p>
 <p>We begin with the simplest bug: <a href="https://lupyuen.github.io/articles/plic2#backup-plan"><strong>UART Input</strong></a> is always Empty.</p>
-<p>This is how we read the <strong>UART Input</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/jh7110/bl602_serial.c#L943-L995">bl602_serial.c</a></p>
+<p>In our <a href="https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64"><strong>UART Driver</strong></a>, this is how we read the <strong>UART Input</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/jh7110/bl602_serial.c#L943-L995">bl602_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Receive one character from the UART Port.
 // Called (indirectly) by the UART Interrupt Handler: __uart_interrupt
 int bl602_receive(...) {
@@ -282,7 +282,7 @@ Bit[59] Sec - Trustable
 </code></pre></div>
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142">(Source)</a></p>
 <p><em>Something sus about I/O Memory?</em></p>
-<p>The last line suggests we should configure the <strong>T-Head Memory Type</strong> specifically to support <strong>I/O Memory</strong> (PAGE_IO_THEAD)…</p>
+<p>The last line suggests we should configure the <strong>T-Head Memory Type</strong> specifically to support <strong>I/O Memory</strong>: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142"><strong>PAGE_IO_THEAD</strong></a></p>
 <div><table><thead><tr><th style="text-align: left">Memory Attribute</th><th style="text-align: left">Page Table Entry</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>Strongly-Ordered</strong></td><td style="text-align: left">Bit 63 is 1</td></tr>
 <tr><td style="text-align: left"><strong>Non-Cacheable</strong></td><td style="text-align: left">Bit 62 is 0 <em>(Default)</em></td></tr>
@@ -291,7 +291,7 @@ Bit[59] Sec - Trustable
 <tr><td style="text-align: left"><strong>Non-Trustable</strong></td><td style="text-align: left">Bit 59 is 0 <em>(Default)</em></td></tr>
 </tbody></table>
 </div>
-<p>We deduce that <strong>“Strong Order”</strong> is the Magical Bit that we need for UART and PLIC!</p>
+<p>With the above evidence, we deduce that <strong>“Strong Order”</strong> is the Magical Bit that we need for UART and PLIC!</p>
 <p><em>What’s “Strong Order”?</em></p>
 <p><a href="https://en.wikipedia.org/wiki/Memory_ordering#Runtime_memory_ordering"><strong>“Strong Order”</strong></a> means “All Reads and All Writes are In-Order”.</p>
 <p>Apparently T-Head C906 will (by default) <strong>Disable Strong Order</strong> and read / write memory <strong>Out-of-Sequence</strong>. (So that it performs better)</p>
@@ -299,9 +299,12 @@ Bit[59] Sec - Trustable
 <p><em>They should’ve warned us about Strong Order and I/O Memory!</em></p>
 <p>Ahem <a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt"><strong>they did</strong></a>…</p>
 <blockquote>
-<p>“A Device Driver written to rely on <strong>I/O Strong Ordering</strong> rules <strong>will not operate correctly</strong> if the Address Range is mapped with PBMT=NC [Weakly Ordered]. As such, this <strong>configuration is discouraged</strong>.”</p>
+<p>“A Device Driver written to rely on <strong>I/O Strong Ordering</strong> rules <strong>will not operate correctly</strong> if the Address Range is mapped with PBMT=NC <em>[Weakly Ordered]</em>”</p>
 </blockquote>
-<p>Though that comes from the <a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt"><strong>New Svpbmt Extension</strong></a>. Which isn’t supported by T-Head C906.</p>
+<blockquote>
+<p>“As such, this <strong>configuration is discouraged</strong>”</p>
+</blockquote>
+<p>Though that warning comes from the <a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt"><strong>New Svpbmt Extension</strong></a>. Which <a href="https://patchwork.kernel.org/project/linux-riscv/patch/20210911092139.79607-3-guoren@kernel.org/#24450685"><strong>isn’t supported</strong></a> by T-Head C906.</p>
 <p>(Svpbmt Bits 61~62 will conflict with T-Head Bits 59~63. Oh boy)</p>
 <p><em>How to enable Strong Order?</em></p>
 <p>We do it in the T-Head C906 MMU…</p>
@@ -347,7 +350,6 @@ Bit[59] Sec - Trustable
 </tbody></table>
 </div>
 <p>We’ll set the <strong>SO and SH Bits</strong> in our Page Table Entries. Hopefully UART and PLIC won’t get mushed up no more…</p>
-<p><a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt">(<strong>Svpbmt Extension</strong> will support <strong>Strong Ordering</strong>)</a></p>
 <p>TODO: Strong Order Pic</p>
 <h1 id="enable-strong-order"><a href="#enable-strong-order">6 Enable Strong Order</a></h1>
 <p><em>We need to set the Strong Order Bit…</em></p>
@@ -473,7 +475,7 @@ Hello, World!!
 <p>(They might inspire the solution!)</p>
 </li>
 <li>
-<p><strong>Re-Read and Re-Think</strong> everything we wrote</p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64#fix-the-uart-interrupt-for-ox64-bl808"><strong>Re-Read and Re-Think</strong></a> everything we wrote</p>
 <p>(Challenge all our Assumptions)</p>
 </li>
 <li>
@@ -482,7 +484,7 @@ Hello, World!!
 </li>
 <li>
 <p>Sounds like an Agatha Christie Mystery…</p>
-<p>But sometimes it’s indeed <strong>One Single Culprit</strong> (Weak Ordering) behind all the Seemingly Unrelated Problems!</p>
+<p>But sometimes it’s indeed <a href="https://lupyuen.github.io/articles/plic3#t-head-errata"><strong>One Single Culprit</strong></a> (Weak Ordering) behind all the Seemingly Unrelated Problems!</p>
 </li>
 </ol>
 <p><em>Will NuttX officially support Ox64?</em></p>
@@ -494,14 +496,14 @@ Hello, World!!
 </li>
 <li>
 <p><strong>Clean up</strong> our code</p>
-<p>(Rename all the JH7110 things to BL808)</p>
+<p>(Rename the JH7110 things to BL808)</p>
 </li>
 <li>
 <p>Upstream our code to <a href="https://lupyuen.github.io/articles/pr"><strong>NuttX Mainline</strong></a></p>
 <p>(Delicate Regression Operation because we’re adding <a href="https://lupyuen.github.io/articles/plic3#t-head-errata"><strong>MMU Flags</strong></a>)</p>
 </li>
 </ul>
-<p>Apache NuttX RTOS shall <strong>officially support Ox64 BL808 SBC</strong> real soon!</p>
+<p>And Apache NuttX RTOS shall <strong>officially support Ox64 BL808 SBC</strong> real soon!</p>
 <p><em>Are we hunky dory with Ox64 BL808 and T-Head C906?</em></p>
 <p>We said this <a href="https://lupyuen.github.io/articles/plic2#all-things-considered"><strong>last time</strong></a>…</p>
 <blockquote>
