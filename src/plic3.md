@@ -485,7 +485,7 @@ TODO: [(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324)
 
-![We are hunky dory with Ox64 BL808 and T-Head C906 👍](https://lupyuen.github.io/images/plic3-ox6.jpg)
+![We are hunky dory with Ox64 BL808 and T-Head C906 👍](https://lupyuen.github.io/images/plic3-ox64.jpg)
 
 # Lessons Learnt
 
