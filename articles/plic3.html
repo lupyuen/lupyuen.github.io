@@ -102,11 +102,11 @@
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <h1 id="uart-interrupt"><a href="#uart-interrupt">1 UART Interrupt</a></h1>
 <p><em>Sorry TLDR: What’s this PLIC? What’s Serial Console gotta do with it?</em></p>
-<p><a href="https://lupyuen.github.io/articles/plic2#platform-level-interrupt-controller"><strong>Platform-Level Interrupt Controller</strong></a> (PLIC) is the hardware inside our BL808 SoC that controls the forwarding of <strong>Peripheral Interrupts</strong> to our 64-bit RISC-V CPU.</p>
+<p><a href="https://lupyuen.github.io/articles/plic2#platform-level-interrupt-controller"><strong>Platform-Level Interrupt Controller</strong></a> (PLIC) is the hardware inside our SBC that controls the forwarding of <strong>Peripheral Interrupts</strong> to our 64-bit RISC-V CPU.</p>
 <p>(Like the Interrupts for <strong>UART</strong>, <strong>I2C</strong>, <strong>SPI</strong>, …)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="BL808 Platform-Level Interrupt Controller" /></p>
 <p><em>Why should we bother with PLIC?</em></p>
-<p>Suppose we’re using the <strong>Serial Console</strong> on Ox64 SBC (pic above)…</p>
+<p>Suppose we’re typing something in the <strong>Serial Console</strong> on Ox64 SBC (pic above)…</p>
 <ul>
 <li>
 <p>Every single <strong>key that we press</strong>…</p>
@@ -126,7 +126,7 @@
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <ol>
 <li>
-<p>At Startup: We set <a href="https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority"><strong>Interrupt Priority</strong></a> to 1</p>
+<p>At Startup: We set <a href="https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority"><strong>Interrupt Priority</strong></a> to 1.</p>
 <p>(Lowest Priority)</p>
 </li>
 <li>
@@ -139,7 +139,7 @@
 </li>
 <li>
 <p>Suppose we <strong>press a key</strong> on the Serial Console…</p>
-<p>Our SoC will <strong>fire an Interrupt</strong> for IRQ 20.</p>
+<p>Our UART Controller will <strong>fire an Interrupt</strong> for IRQ 20.</p>
 <p>(IRQ means <strong>Interrupt Request Number</strong>)</p>
 </li>
 <li>
@@ -149,7 +149,7 @@
 <p>Which will <a href="https://lupyuen.github.io/articles/plic2#complete-the-interrupt"><strong>Complete the Interrupt</strong></a>.</p>
 </li>
 <li>
-<p>Useful And Non-Essential: <a href="https://lupyuen.github.io/articles/plic2#pending-interrupts"><strong>Interrupt Pending</strong></a> Register says which Interrupts are awaiting Claiming and Completion.</p>
+<p>Non-Essential But Useful: <a href="https://lupyuen.github.io/articles/plic2#pending-interrupts"><strong>Interrupt Pending</strong></a> Register says which Interrupts are awaiting Claiming and Completion.</p>
 <p>(We’ll use it for troubleshooting)</p>
 </li>
 </ol>
