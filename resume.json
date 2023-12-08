@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-12-10",
+      "website": "https://lupyuen.github.io/articles/plic3",
+      "summary": "Weak Ordering in the Ox64 BL808 Memory Management Unit (T-Head C906)... Causes problems with UART Interrupts and the Platform-Level Interrupt Controller"
+    },
+    {
       "name": "RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-12-03",

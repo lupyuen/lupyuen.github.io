@@ -1,6 +1,6 @@
 # Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)
 
-📝 _20 Dec 2023_
+📝 _10 Dec 2023_
 
 ![UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!](https://lupyuen.github.io/images/plic3-title.png)
 
