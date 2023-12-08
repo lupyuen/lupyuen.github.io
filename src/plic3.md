@@ -28,7 +28,7 @@ __Weak Ordering in the MMU__! (Memory Management Unit)
 
 Here's how we solved the baffling mystery...
 
-TODO: [(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
+[(Watch the __Demo on YouTube__)](https://youtu.be/l7Y36nTkr8c)
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
 
@@ -485,7 +485,7 @@ nsh> hello
 Hello, World!!
 ```
 
-TODO: [(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
+[(Watch the __Demo on YouTube__)](https://youtu.be/l7Y36nTkr8c)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324)
 
@@ -666,7 +666,7 @@ Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324)
 
-TODO: [(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
+[(Watch the __Demo on YouTube__)](https://youtu.be/l7Y36nTkr8c)
 
 [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64c-1)
 
