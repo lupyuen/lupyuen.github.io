@@ -118,7 +118,7 @@ Absolute Disaster! (Pic above)
 
   (Can't read the __Actual Interrupt Number__!)
 
-- Our [__UART Driver__](https://lupyuen.github.io/articles/plic2#backup-plan) says that the UART Input is Empty!
+- Our [__UART Driver__](https://lupyuen.github.io/articles/plic2#backup-plan) says that the UART Input is Empty
 
   (We verified the [__UART Registers__](https://github.com/lupyuen/nuttx-ox64#compare-ox64-bl808-uart-registers))
 
@@ -130,7 +130,7 @@ _How do we track down the culprit?_
 
 We begin with the simplest bug: [__UART Input__](https://lupyuen.github.io/articles/plic2#backup-plan) is always Empty.
 
-This is how we read the __UART Input__: [bl602_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/jh7110/bl602_serial.c#L943-L995)
+In our [__UART Driver__](https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64), this is how we read the __UART Input__: [bl602_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/jh7110/bl602_serial.c#L943-L995)
 
 ```c
 // Receive one character from the UART Port.
@@ -262,7 +262,7 @@ Bit[59] Sec - Trustable
 
 _Something sus about I/O Memory?_
 
-The last line suggests we should configure the __T-Head Memory Type__ specifically to support __I/O Memory__ (PAGE_IO_THEAD)...
+The last line suggests we should configure the __T-Head Memory Type__ specifically to support __I/O Memory__: [__PAGE_IO_THEAD__](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142)
 
 | Memory Attribute | Page Table Entry |
 |:-----------------|:----|
@@ -272,7 +272,7 @@ The last line suggests we should configure the __T-Head Memory Type__ specifical
 | __Shareable__ | Bit 60 is 1 |
 | __Non-Trustable__ | Bit 59 is 0 _(Default)_ |
 
-We deduce that __"Strong Order"__ is the Magical Bit that we need for UART and PLIC!
+With the above evidence, we deduce that __"Strong Order"__ is the Magical Bit that we need for UART and PLIC!
 
 _What's "Strong Order"?_
 
@@ -286,9 +286,11 @@ _They should've warned us about Strong Order and I/O Memory!_
 
 Ahem [__they did__](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt)...
 
-> "A Device Driver written to rely on __I/O Strong Ordering__ rules __will not operate correctly__ if the Address Range is mapped with PBMT=NC \[Weakly Ordered\]. As such, this __configuration is discouraged__."
+> "A Device Driver written to rely on __I/O Strong Ordering__ rules __will not operate correctly__ if the Address Range is mapped with PBMT=NC _\[Weakly Ordered\]_"
 
-Though that comes from the [__New Svpbmt Extension__](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt). Which isn't supported by T-Head C906.
+> "As such, this __configuration is discouraged__"
+
+Though that warning comes from the [__New Svpbmt Extension__](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt). Which [__isn't supported__](https://patchwork.kernel.org/project/linux-riscv/patch/20210911092139.79607-3-guoren@kernel.org/#24450685) by T-Head C906.
 
 (Svpbmt Bits 61~62 will conflict with T-Head Bits 59~63. Oh boy)
 
@@ -342,8 +344,6 @@ _What about PAGE_IO_THEAD and Strong Order?_
 | __SH: Shareable__ | Bit 60 is 1 |
 
 We'll set the __SO and SH Bits__ in our Page Table Entries. Hopefully UART and PLIC won't get mushed up no more...
-
-[(__Svpbmt Extension__ will support __Strong Ordering__)](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt)
 
 TODO: Strong Order Pic
 
@@ -495,7 +495,7 @@ Yeah we're really fortunate to get NuttX RTOS running OK on Ox64. Couple of thin
 
     (They might inspire the solution!)
 
-1.  __Re-Read and Re-Think__ everything we wrote
+1.  [__Re-Read and Re-Think__](https://github.com/lupyuen/nuttx-ox64#fix-the-uart-interrupt-for-ox64-bl808) everything we wrote
 
     (Challenge all our Assumptions)
 
@@ -505,7 +505,7 @@ Yeah we're really fortunate to get NuttX RTOS running OK on Ox64. Couple of thin
 
 1.  Sounds like an Agatha Christie Mystery...
 
-    But sometimes it's indeed __One Single Culprit__ (Weak Ordering) behind all the Seemingly Unrelated Problems!
+    But sometimes it's indeed [__One Single Culprit__](https://lupyuen.github.io/articles/plic3#t-head-errata) (Weak Ordering) behind all the Seemingly Unrelated Problems!
 
 _Will NuttX officially support Ox64?_
 
@@ -517,13 +517,13 @@ We plan to...
 
 - __Clean up__ our code
 
-  (Rename all the JH7110 things to BL808)
+  (Rename the JH7110 things to BL808)
 
 - Upstream our code to [__NuttX Mainline__](https://lupyuen.github.io/articles/pr)
 
   (Delicate Regression Operation because we're adding [__MMU Flags__](https://lupyuen.github.io/articles/plic3#t-head-errata))
 
-Apache NuttX RTOS shall __officially support Ox64 BL808 SBC__ real soon!
+And Apache NuttX RTOS shall __officially support Ox64 BL808 SBC__ real soon!
 
 _Are we hunky dory with Ox64 BL808 and T-Head C906?_
 
