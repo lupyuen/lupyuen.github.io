@@ -351,7 +351,7 @@ _What about PAGE_IO_THEAD and Strong Order?_
 
 We'll set the __SO and SH Bits__ in our Page Table Entries. Hopefully UART and PLIC won't get mushed up no more...
 
-TODO: Strong Order Pic
+![Enable Strong Order in Ox64 MMU](https://lupyuen.github.io/images/plic3-mmu.jpg)
 
 # Enable Strong Order
 
@@ -364,7 +364,7 @@ _How will we enable it in our Page Table Entry?_
 | __SO: Strongly-Ordered__ | Bit 63 is 1 |
 | __SH: Shareable__ | Bit 60 is 1 |
 
-For testing, we patched our MMU Code to set the __Strong Order Bit__ in our Page Table Entries: [riscv_mmu.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127)
+For testing, we patched our MMU Code to set the __Strong Order Bit__ in our Page Table Entries (pic above): [riscv_mmu.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127)
 
 ```c
 // Set a Page Table Entry in a Page Table for the MMU
