@@ -126,6 +126,8 @@ Absolute Disaster! (Pic above)
 
 Our troubles are all Seemingly Unrelated. However there's actually only One Sinister Culprit causing all these headaches...
 
+![UART Receive Register in BL808 UART Controller](https://lupyuen.github.io/images/plic3-rx.png)
+
 # Leaky Reads in UART
 
 _How do we track down the culprit?_
