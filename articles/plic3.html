@@ -353,7 +353,7 @@ Bit[59] Sec - Trustable
 </tbody></table>
 </div>
 <p>We’ll set the <strong>SO and SH Bits</strong> in our Page Table Entries. Hopefully UART and PLIC won’t get mushed up no more…</p>
-<p>TODO: Strong Order Pic</p>
+<p><img src="https://lupyuen.github.io/images/plic3-mmu.jpg" alt="Enable Strong Order in Ox64 MMU" /></p>
 <h1 id="enable-strong-order"><a href="#enable-strong-order">6 Enable Strong Order</a></h1>
 <p><em>We need to set the Strong Order Bit…</em></p>
 <p><em>How will we enable it in our Page Table Entry?</em></p>
@@ -362,7 +362,7 @@ Bit[59] Sec - Trustable
 <tr><td style="text-align: left"><strong>SH: Shareable</strong></td><td style="text-align: left">Bit 60 is 1</td></tr>
 </tbody></table>
 </div>
-<p>For testing, we patched our MMU Code to set the <strong>Strong Order Bit</strong> in our Page Table Entries: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127">riscv_mmu.c</a></p>
+<p>For testing, we patched our MMU Code to set the <strong>Strong Order Bit</strong> in our Page Table Entries (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127">riscv_mmu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set a Page Table Entry in a Page Table for the MMU
 void mmu_ln_setentry(
   uint32_t ptlevel,   // Level of Page Table: 1, 2 or 3 
