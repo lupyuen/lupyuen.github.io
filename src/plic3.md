@@ -28,6 +28,8 @@ __Weak Ordering in the MMU__! (Memory Management Unit)
 
 Here's how we solved the baffling mystery...
 
+TODO: [(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
+
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
 
 # UART Interrupt
@@ -630,9 +632,9 @@ cat nuttx.bin /tmp/nuttx.zero initrd \
   >Image
 ```
 
-TODO: [(See the __Build Script__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1)
+[(See the __Build Script__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64c-1)
 
-TODO: [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1)
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64c-1)
 
 [(Why the __64 KB Padding__)](https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk)
 
@@ -658,7 +660,7 @@ Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [
 
 TODO: [(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
 
-TODO: [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1)
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64c-1)
 
 ![Quick dip in the sea + Picnic on the beach ... Really helps with NuttX + Ox64 troubleshooting! 👍](https://lupyuen.github.io/images/plic3-beach.jpg)
 
