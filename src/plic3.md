@@ -485,6 +485,8 @@ TODO: [(Watch the __Demo on YouTube__)](https://youtu.be/VSTpsSJ_7L0)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324)
 
+![We are hunky dory with Ox64 BL808 and T-Head C906 👍](https://lupyuen.github.io/images/plic3-ox6.jpg)
+
 # Lessons Learnt
 
 _Phew that was some quick intense debugging..._
@@ -538,6 +540,8 @@ We said this [__last time__](https://lupyuen.github.io/articles/plic2#all-things
 As of Today: Yep __RISC-V is indeed RISC-V__ on SiFive vs T-Head... Just beware of [__C906 MMU__](https://lupyuen.github.io/articles/plic3#memory-management-unit), [__C906 PLIC__](https://lupyuen.github.io/articles/plic2#all-things-considered) and [__T-Head Errata__](https://lupyuen.github.io/articles/plic3#t-head-errata)!
 
 [(__New T-Head Cores__ will probably migrate to __Svpbmt Extension__)](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt)
+
+![Quick dip in the sea + Picnic on the beach ... Really helps with NuttX + Ox64 troubleshooting! 👍](https://lupyuen.github.io/images/plic3-beach2.jpg)
 
 # What's Next
 
