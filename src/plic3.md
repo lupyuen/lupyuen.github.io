@@ -447,9 +447,11 @@ Our UART and PLIC Troubles are all over!
   0000  00 00 10 00 00 00 00 00                          ........   
   ```
 
-- __Interrupt Claim__ returns the correct Interrupt Number
+- __Interrupt Claim__ returns the [__correct Interrupt Number__](https://gist.github.com/lupyuen/365d9d6d162a60a5f8514d1040eec495#file-ox64-nuttx-claim-ok-log-L33-L44)
 
-  TODO
+  ```text
+  riscv_dispatch_irq: claim=0x14
+  ```
 
 - Our __UART Driver__ returns the [__correct UART Input__](https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167/97b914fd3e285eb8afbe3c01a814c018170b5b7#file-ox64-nuttx-mmu-uncache-log-L344)
 
@@ -457,9 +459,9 @@ Our UART and PLIC Troubles are all over!
   bl602_receive: rxdata=0x31
   ```
 
-_Is NuttX usable on Ox64 now?_
+_Is NuttX usable on Ox64?_
 
-Yep! [__NuttX RTOS on Ox64__](https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx) now boots OK to the NuttX Shell (NSH). And accepts commands through the __Serial Console__ yay! (Pic above)
+Yep! [__NuttX RTOS on Ox64__](https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx) now boots OK to the NuttX Shell (NSH). And happily accepts commands through the __Serial Console__ yay! (Pic above)
 
 ```text
 NuttShell (NSH) NuttX-12.0.3
