@@ -557,7 +557,13 @@ As of Today: Yep __RISC-V is indeed RISC-V__ on SiFive vs T-Head... Just beware 
 
 TODO: Thank you so much for reading, you're my inspiration for solving this sticky mystery 🙏
 
-We have plenty to do for __NuttX on Ox64 BL808__. Stay tuned for updates!
+But when we __Enabled Strong Ordering__ in the MMU...
+
+(Memory Management Unit)
+
+Everything becomes OK!
+
+__Apache NuttX RTOS for Ox64 BL808__ shall be Upstreamed to Mainline real soon. Stay tuned for updates!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
