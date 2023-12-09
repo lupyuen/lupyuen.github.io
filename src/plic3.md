@@ -555,13 +555,27 @@ As of Today: Yep __RISC-V is indeed RISC-V__ on SiFive vs T-Head... Just beware 
 
 # What's Next
 
-TODO: Thank you so much for reading, you're my inspiration for solving this sticky mystery 🙏
+Thank you so much for reading, you're my inspiration for solving this sticky mystery of NuttX on Ox64 🙏
 
-But when we __Enabled Strong Ordering__ in the MMU...
+- Previously the __Console Input__ was always empty
 
-(Memory Management Unit)
+  (Couldn't enter any Console Commands)
 
-Everything becomes OK!
+- And __Interrupt Claim__ wasn't working correctly
+
+  (Ox64 wouldn't say which Interrupt was fired)
+
+- Because __Leaky Reads and Writes__ were contaminating our UART and PLIC Registers
+
+  (Something was doing phantom reads and writes)
+
+- But when we __Enabled Strong Ordering__ in the T-Head C906 MMU...
+
+  (Memory Management Unit)
+
+- Everything becomes OK
+
+  (No more worries!)
 
 __Apache NuttX RTOS for Ox64 BL808__ shall be Upstreamed to Mainline real soon. Stay tuned for updates!
 
