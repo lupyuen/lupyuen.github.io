@@ -555,7 +555,7 @@ As of Today: Yep __RISC-V is indeed RISC-V__ on SiFive vs T-Head... Just beware 
 
 # What's Next
 
-Thank you so much for reading, you're my inspiration for solving this sticky mystery of NuttX on Ox64 🙏
+Thank you so much for reading my adventures of NuttX on Ox64... You're my inspiration for solving this sticky mystery! 🙏
 
 - Previously the __Console Input__ was always empty
 
@@ -582,6 +582,8 @@ __Apache NuttX RTOS for Ox64 BL808__ shall be Upstreamed to Mainline real soon. 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=38587092)
 
 -   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 

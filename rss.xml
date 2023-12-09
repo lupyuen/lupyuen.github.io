@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)</title>
+            <link>https://lupyuen.github.io/articles/plic3</link>
+            <description><![CDATA[Weak Ordering in the Ox64 BL808 Memory Management Unit (T-Head C906)... Causes problems with UART Interrupts and the Platform-Level Interrupt Controller]]></description>
+            <guid>https://lupyuen.github.io/articles/plic3</guid>
+            <pubDate>Sun, 10 Dec 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)</title>
             <link>https://lupyuen.github.io/articles/plic2</link>
             <description><![CDATA[We dive into the Platform-Level Interrupt Controller (PLIC) for the tiny adorable Pine64 Ox64 BL808 64-bit Single-Board Computer... Using Apache NuttX Real-Time Operating System to explain the inner workings of PLIC]]></description>
