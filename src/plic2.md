@@ -875,7 +875,9 @@ Which shouldn't happen because PLIC is in the [__Official RISC-V Spec__](https:/
 
     [__T-Head C906 Integration Manual__ (Chinese)](https://github.com/T-head-Semi/openc906/blob/main/doc/%E7%8E%84%E9%93%81C906%E9%9B%86%E6%88%90%E6%89%8B%E5%86%8C.pdf)
 
-Can we rewrite our Sad Story with a Happier Conclusion? Please lemme know! 🙏
+Can we rewrite our Sad Story with a Happier Conclusion? Find out in the next article...
+
+-   [__"Fixed the UART Interrupt and Platform-Level Interrupt Controller"__](https://lupyuen.github.io/articles/plic3)
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
 
