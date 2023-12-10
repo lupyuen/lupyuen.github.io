@@ -678,30 +678,13 @@ CONFIG_DEBUG_WARN=y
 
 Before merging with NuttX Mainline, remember to remove the Debug Options for BINFMT, FS, MM and SCHED.
 
-![NuttX Supported Platforms](https://lupyuen.github.io/images/release-doc3.png)
+![JH7110 NuttX Arch](https://lupyuen.github.io/images/release-doc2.png)
 
 # Update the NuttX Docs
 
 Earlier we created a Pull Request to [__add a new NuttX Board__](https://lupyuen.github.io/articles/release#add-the-nuttx-board).
 
 In the same Pull Request, we update the __NuttX Docs__ like so...
-
-Add JH7110 and Star64 to the list of __Supported Platforms__ (pic above)...
-
-[Documentation/introduction/ detailed_support.rst](https://github.com/apache/nuttx/pull/10094/files#diff-d8a0e68fcb8fcb7e919c4b01226b6a25f888ed297145b82c719875cf8e6f5ae4)
-
-```text
-StarFive JH7110
----------------
-
-The basic port has been completed for the following StarFive JH7110 board:
-
--  **PINE64 Star64**: Refer to :doc:`PINE64 Star64 </platforms/risc-v/jh7110/boards/star64/index>` for further information.
-```
-
-[(Tips for __Restructured Text__)](https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html)
-
-![JH7110 NuttX Arch](https://lupyuen.github.io/images/release-doc2.png)
 
 Create a page for the __JH7110 NuttX Arch__ (pic above)...
 
@@ -719,6 +702,8 @@ StarFive JH7110
 ```
 
 (Which goes under "RISC-V" because it's a RISC-V SoC)
+
+[(Tips for __Restructured Text__)](https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html)
 
 ![Star64 NuttX Board](https://lupyuen.github.io/images/release-doc1.png)
 
