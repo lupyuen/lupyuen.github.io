@@ -658,21 +658,10 @@ CONFIG_DEBUG_WARN=y
 </li>
 </ul>
 <p>Before merging with NuttX Mainline, remember to remove the Debug Options for BINFMT, FS, MM and SCHED.</p>
-<p><img src="https://lupyuen.github.io/images/release-doc3.png" alt="NuttX Supported Platforms" /></p>
+<p><img src="https://lupyuen.github.io/images/release-doc2.png" alt="JH7110 NuttX Arch" /></p>
 <h1 id="update-the-nuttx-docs"><a href="#update-the-nuttx-docs">6 Update the NuttX Docs</a></h1>
 <p>Earlier we created a Pull Request to <a href="https://lupyuen.github.io/articles/release#add-the-nuttx-board"><strong>add a new NuttX Board</strong></a>.</p>
 <p>In the same Pull Request, we update the <strong>NuttX Docs</strong> like so…</p>
-<p>Add JH7110 and Star64 to the list of <strong>Supported Platforms</strong> (pic above)…</p>
-<p><a href="https://github.com/apache/nuttx/pull/10094/files#diff-d8a0e68fcb8fcb7e919c4b01226b6a25f888ed297145b82c719875cf8e6f5ae4">Documentation/introduction/ detailed_support.rst</a></p>
-<div class="example-wrap"><pre class="language-text"><code>StarFive JH7110
----------------
-
-The basic port has been completed for the following StarFive JH7110 board:
-
--  **PINE64 Star64**: Refer to :doc:`PINE64 Star64 &lt;/platforms/risc-v/jh7110/boards/star64/index&gt;` for further information.
-</code></pre></div>
-<p><a href="https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html">(Tips for <strong>Restructured Text</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/release-doc2.png" alt="JH7110 NuttX Arch" /></p>
 <p>Create a page for the <strong>JH7110 NuttX Arch</strong> (pic above)…</p>
 <p><a href="https://github.com/apache/nuttx/pull/10094/files#diff-79d8d013e3cbf7600551f1ac23beb5db8bd234a0067576bfe0997b16e5d5c148">Documentation/platforms/risc-v/ jh7110/index.rst</a></p>
 <div class="example-wrap"><pre class="language-text"><code>===============
@@ -685,6 +674,7 @@ StarFive JH7110
 ...
 </code></pre></div>
 <p>(Which goes under “RISC-V” because it’s a RISC-V SoC)</p>
+<p><a href="https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html">(Tips for <strong>Restructured Text</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/release-doc1.png" alt="Star64 NuttX Board" /></p>
 <p>Under JH7110, create a page for the <strong>Star64 NuttX Board</strong> (pic above)…</p>
 <p><a href="https://github.com/apache/nuttx/pull/10094/files#diff-a57fa454397c544c8a717c35212a88d3e3e0c77c9c6e402f5bb52dfeb62e1349">Documentation/platforms/risc-v/ jh7110/boards/star64/index.rst</a></p>
