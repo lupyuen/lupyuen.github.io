@@ -675,10 +675,10 @@ riscv64-unknown-elf-objcopy \
   nuttx.bin
 
 ## Prepare a Padding with 64 KB of zeroes
-head -c 65536 /dev/zero &gt;/tmp/nuttx.zero
+head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 
 ## Append Padding and Initial RAM Disk to NuttX Kernel
-cat nuttx.bin /tmp/nuttx.zero initrd \
+cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 
 ## Overwrite the Linux Image on Ox64 microSD
@@ -799,10 +799,10 @@ elf_read: Read 64 bytes from offset 0
 <p><em>Between NuttX Kernel and Initial RAM Disk…</em></p>
 <p><em>Why did we pad 64 KB of zeroes? (Pic above)</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Prepare a Padding with 64 KB of zeroes
-head -c 65536 /dev/zero &gt;/tmp/nuttx.zero
+head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 
 ## Append Padding and Initial RAM Disk to NuttX Kernel
-cat nuttx.bin /tmp/nuttx.zero initrd \
+cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 
 ## U-Boot Bootloader will load NuttX Kernel and

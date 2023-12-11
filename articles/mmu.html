@@ -815,10 +815,10 @@ genromfs \
   -V &quot;NuttXBootVol&quot;
 
 ## Prepare a Padding with 64 KB of zeroes
-head -c 65536 /dev/zero &gt;/tmp/nuttx.zero
+head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 
 ## Append Padding and Initial RAM Disk to NuttX Kernel
-cat nuttx.bin /tmp/nuttx.zero initrd \
+cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1">(See the <strong>Build Script</strong>)</a></p>
