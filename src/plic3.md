@@ -429,6 +429,8 @@ map PLIC as Interrupt L2
 
 We test our patched code...
 
+__UPDATE:__ NuttX Mainline now supports [__T-Head C906 Memory Types__](https://github.com/apache/nuttx/pull/11365)
+
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946#file-ox64-nuttx-uart-ok-log-L25-L160)
 
 [(__Shareable Bit__ doesn't effect anything. We're keeping it to be consistent with Linux)](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4e343153d996f7f7a9b2d8a79edf42cd3900d42e)
