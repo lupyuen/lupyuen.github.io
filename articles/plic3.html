@@ -421,6 +421,7 @@ map PLIC as Interrupt L2
   // &quot;0x9000...&quot; means Strong Order (Bit 63) and Shareable (Bit 60) are set
 </code></pre></div>
 <p>We test our patched code…</p>
+<p><strong>UPDATE:</strong> NuttX Mainline now supports <a href="https://github.com/apache/nuttx/pull/11365"><strong>T-Head C906 Memory Types</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946#file-ox64-nuttx-uart-ok-log-L25-L160">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4e343153d996f7f7a9b2d8a79edf42cd3900d42e">(<strong>Shareable Bit</strong> doesn’t effect anything. We’re keeping it to be consistent with Linux)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
