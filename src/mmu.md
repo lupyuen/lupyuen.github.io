@@ -961,10 +961,10 @@ genromfs \
   -V "NuttXBootVol"
 
 ## Prepare a Padding with 64 KB of zeroes
-head -c 65536 /dev/zero >/tmp/nuttx.zero
+head -c 65536 /dev/zero >/tmp/nuttx.pad
 
 ## Append Padding and Initial RAM Disk to NuttX Kernel
-cat nuttx.bin /tmp/nuttx.zero initrd \
+cat nuttx.bin /tmp/nuttx.pad initrd \
   >Image
 ```
 

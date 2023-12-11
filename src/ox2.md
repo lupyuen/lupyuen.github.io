@@ -1100,10 +1100,10 @@ riscv64-unknown-elf-objcopy \
   nuttx.bin
 
 ## Prepare a Padding with 64 KB of zeroes
-head -c 65536 /dev/zero >/tmp/nuttx.zero
+head -c 65536 /dev/zero >/tmp/nuttx.pad
 
 ## Append Padding and Initial RAM Disk to NuttX Kernel
-cat nuttx.bin /tmp/nuttx.zero initrd \
+cat nuttx.bin /tmp/nuttx.pad initrd \
   >Image
 
 ## Overwrite the Linux Image on Ox64 microSD
