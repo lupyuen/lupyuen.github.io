@@ -312,6 +312,8 @@ We do it in the T-Head C906 MMU...
 
 [(What's __"Shareable"__? It's not documented)](https://github.com/T-head-Semi/openc906/blob/main/C906_RTL_FACTORY/gen_rtl/mmu/rtl/aq_mmu_regs.v#L341-L342)
 
+__UPDATE:__ Shareable might support [__Strong Ordering across Multiple Cores__](https://news.ycombinator.com/item?id=38587092#38591801)
+
 ![Level 1 Page Table for Ox64 MMU](https://lupyuen.github.io/images/mmu-l1kernel2b.jpg)
 
 [_Level 1 Page Table for Ox64 MMU_](https://lupyuen.github.io/articles/mmu#huge-chunks-level-1)
