@@ -154,11 +154,10 @@
 <ol>
 <li>
 <p><strong>Ox64 Flashing UART</strong>: Used for Flashing Ox64</p>
-<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>TX:</strong></td><td style="text-align: center"><strong><code>GPIO 14</code></strong></td><td style="text-align: left">Physical Pin 1</td></tr>
-<tr><td style="text-align: left"><strong>RX:</strong></td><td style="text-align: center"><strong><code>GPIO 15</code></strong></td><td style="text-align: left">Physical Pin 2</td></tr>
-<tr><td style="text-align: left"><strong>GND:</strong></td><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left">Ground</td></tr>
-<tr><td style="text-align: left"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<div><table><thead><tr><th style="text-align: center">USB Serial</th><th style="text-align: center">Ox64 Pin</th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong><code>GPIO 14</code></strong> <em>(TX)</em></td><td style="text-align: left">Pin 1</td></tr>
+<tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong><code>GPIO 15</code></strong> <em>(RX)</em></td><td style="text-align: left">Pin 2</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left">Pin 3</td></tr>
 </tbody></table>
 </div>
 <p><strong>Baud Rates</strong> are…</p>
@@ -172,11 +171,10 @@
 </li>
 <li>
 <p><strong>Ox64 Serial Console</strong>: Used for Linux Serial Console. (Plus OpenSBI and U-Boot Bootloader)</p>
-<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>TX:</strong></td><td style="text-align: center"><strong><code>GPIO 16</code></strong></td><td style="text-align: left">Physical Pin 32</td></tr>
-<tr><td style="text-align: left"><strong>RX:</strong></td><td style="text-align: center"><strong><code>GPIO 17</code></strong></td><td style="text-align: left">Physical Pin 31</td></tr>
-<tr><td style="text-align: left"><strong>GND:</strong></td><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left">Ground</td></tr>
-<tr><td style="text-align: left"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<div><table><thead><tr><th style="text-align: center">USB Serial</th><th style="text-align: center">Ox64 Pin</th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong><code>GPIO 16</code></strong> <em>(TX)</em></td><td style="text-align: left">Pin 32</td></tr>
+<tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong><code>GPIO 17</code></strong> <em>(RX)</em></td><td style="text-align: left">Pin 31</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left">Pin 33</td></tr>
 </tbody></table>
 </div>
 <p><strong>Baud Rate:</strong> 2,000,000 (2 Mbps)</p>
@@ -228,15 +226,12 @@
 <ol>
 <li>
 <p>Connect the <strong>USB Serial Adapter</strong> to the port for <strong>Ox64 Flashing UART</strong> (pic above)…</p>
-<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>TX:</strong></td><td style="text-align: center"><strong><code>GPIO 14</code></strong></td><td style="text-align: left">Physical Pin 1</td></tr>
-<tr><td style="text-align: left"><strong>RX:</strong></td><td style="text-align: center"><strong><code>GPIO 15</code></strong></td><td style="text-align: left">Physical Pin 2</td></tr>
-<tr><td style="text-align: left"><strong>GND:</strong></td><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left">Ground</td></tr>
-<tr><td style="text-align: left"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<div><table><thead><tr><th style="text-align: center">USB Serial</th><th style="text-align: center">Ox64 Pin</th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong><code>GPIO 14</code></strong> <em>(TX)</em></td><td style="text-align: left">Pin 1</td></tr>
+<tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong><code>GPIO 15</code></strong> <em>(RX)</em></td><td style="text-align: left">Pin 2</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left">Pin 3</td></tr>
 </tbody></table>
-</div>
-<p>(Remember: <strong>Ox64 TX</strong> goes to <strong>USB Serial RX</strong>, and vice versa)</p>
-</li>
+</div></li>
 <li>
 <p>Start the <strong>USB Serial Terminal</strong> for <strong>Flashing UART</strong>.</p>
 <p>Connect at <strong>2,000,000 bps</strong>. (2 Mbps)</p>
@@ -438,15 +433,12 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <ol>
 <li>
 <p>Connect our <strong>USB Serial Adapter</strong> to the port for <strong>Ox64 Serial Console</strong> (pic above)…</p>
-<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>TX:</strong></td><td style="text-align: center"><strong><code>GPIO 16</code></strong></td><td style="text-align: left">Physical Pin 32</td></tr>
-<tr><td style="text-align: left"><strong>RX:</strong></td><td style="text-align: center"><strong><code>GPIO 17</code></strong></td><td style="text-align: left">Physical Pin 31</td></tr>
-<tr><td style="text-align: left"><strong>GND:</strong></td><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left">Ground</td></tr>
-<tr><td style="text-align: left"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<div><table><thead><tr><th style="text-align: center">USB Serial</th><th style="text-align: center">Ox64 Pin</th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong><code>GPIO 16</code></strong> <em>(TX)</em></td><td style="text-align: left">Pin 32</td></tr>
+<tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong><code>GPIO 17</code></strong> <em>(RX)</em></td><td style="text-align: left">Pin 31</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left">Pin 33</td></tr>
 </tbody></table>
-</div>
-<p>(Remember: <strong>Ox64 TX</strong> goes to <strong>USB Serial RX</strong>, and vice versa)</p>
-</li>
+</div></li>
 <li>
 <p>Start the <strong>USB Serial Terminal</strong> for <strong>Serial Console</strong>.</p>
 <p>Connect at <strong>2,000,000 bps</strong>. (2 Mbps)</p>
@@ -496,11 +488,10 @@ Retry time exceeded; starting again
 </li>
 <li>
 <p>Connect our <strong>USB Serial Adapter</strong> to the port for <strong>Ox64 Flashing UART</strong> (pic above)…</p>
-<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>TX:</strong></td><td style="text-align: center"><strong><code>GPIO 14</code></strong></td><td style="text-align: left">Physical Pin 1</td></tr>
-<tr><td style="text-align: left"><strong>RX:</strong></td><td style="text-align: center"><strong><code>GPIO 15</code></strong></td><td style="text-align: left">Physical Pin 2</td></tr>
-<tr><td style="text-align: left"><strong>GND:</strong></td><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left">Ground</td></tr>
-<tr><td style="text-align: left"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<div><table><thead><tr><th style="text-align: center">USB Serial</th><th style="text-align: center">Ox64 Pin</th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong><code>GPIO 14</code></strong> <em>(TX)</em></td><td style="text-align: left">Pin 1</td></tr>
+<tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong><code>GPIO 15</code></strong> <em>(RX)</em></td><td style="text-align: left">Pin 2</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left">Pin 3</td></tr>
 </tbody></table>
 </div>
 <p>Start the <strong>USB Serial Terminal</strong> for <strong>Flashing UART</strong>.</p>
@@ -524,11 +515,10 @@ Unhandled Interupts: 0 Unhandled Signals 0
 </li>
 <li>
 <p>Connect our <strong>USB Serial Adapter</strong> to the port for <strong>Ox64 Serial Console</strong> (pic above)…</p>
-<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>TX:</strong></td><td style="text-align: center"><strong><code>GPIO 16</code></strong></td><td style="text-align: left">Physical Pin 32</td></tr>
-<tr><td style="text-align: left"><strong>RX:</strong></td><td style="text-align: center"><strong><code>GPIO 17</code></strong></td><td style="text-align: left">Physical Pin 31</td></tr>
-<tr><td style="text-align: left"><strong>GND:</strong></td><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left">Ground</td></tr>
-<tr><td style="text-align: left"> </td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<div><table><thead><tr><th style="text-align: center">USB Serial</th><th style="text-align: center">Ox64 Pin</th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><strong><code>GPIO 16</code></strong> <em>(TX)</em></td><td style="text-align: left">Pin 32</td></tr>
+<tr><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><strong><code>GPIO 17</code></strong> <em>(RX)</em></td><td style="text-align: left">Pin 31</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left">Pin 33</td></tr>
 </tbody></table>
 </div>
 <p>Start the <strong>USB Serial Terminal</strong> for <strong>Serial Console</strong>.</p>
