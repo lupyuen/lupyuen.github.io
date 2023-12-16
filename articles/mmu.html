@@ -135,10 +135,10 @@
 <p>Ox64 SBC needs the <strong>Memory Regions</strong> below to boot our Kernel.</p>
 <p>Today we configure the Sv39 MMU so that our <strong>Kernel can access these regions</strong> (and nothing else)…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5040_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5060_0000</code></strong></td><td style="text-align: left"><strong><code>0x0140_0000</code></strong> <em>(20 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L51-L54"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L24"><strong>Kernel Data</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5040_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5060_0000</code></strong></td><td style="text-align: left"><strong><code>0x0140_0000</code></strong> <em>(20 MB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
 </tbody></table>
 </div>
@@ -176,7 +176,7 @@
 <p><strong>[ 1 GB per Huge Chunk ]</strong></p>
 <p><em>How will we protect the I/O Memory?</em></p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L51-L54"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
 </tbody></table>
 </div>
 <p>Here’s the simplest setup for Sv39 MMU that will protect the <strong>I/O Memory</strong> from <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong>…</p>
@@ -213,7 +213,7 @@
 </li>
 <li>
 <p><em>How to allocate the Page Table?</em></p>
-<p>In NuttX, we write this to allocate the <strong>Level 1 Page Table</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L58-L93">jh7110_mm_init.c</a></p>
+<p>In NuttX, we write this to allocate the <strong>Level 1 Page Table</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L68-L103">bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Number of Page Table Entries (8 bytes per entry)
 #define PGT_L1_SIZE (512)  // Page Table Size is 4 KB
 
@@ -221,7 +221,7 @@
 static size_t m_l1_pgtable[PGT_L1_SIZE]
   locate_data(&quot;.pgtables&quot;);
 </code></pre></div>
-<p><strong><code>.pgtables</code></strong> comes from the NuttX Linker Script: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L121-L127">ld.script</a></p>
+<p><strong><code>.pgtables</code></strong> comes from the NuttX Linker Script: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L121-L127">ld.script</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>/* Page Tables (aligned to 4 KB boundary) */
 .pgtables (NOLOAD) : ALIGN(0x1000) {
     *(.pgtables)
@@ -238,7 +238,7 @@ static size_t m_l1_pgtable[PGT_L1_SIZE]
     = 0x50407000 / 4096
     = 0x50407
 </code></pre></div>
-<p>This is how we set the <strong>SATP Register</strong> in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L302">jh7110_mm_init.c</a></p>
+<p>This is how we set the <strong>SATP Register</strong> in NuttX: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L278-L298">bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set the SATP Register to the
 // Physical Page Number of Level 1 Page Table.
 // Set SATP Mode to Sv39.
@@ -247,13 +247,13 @@ mmu_enable(
   0  // Set Address Space ID to 0
 );
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L270-L294">(<strong>mmu_enable</strong> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L152-L176">(Which calls <strong>mmu_satp_reg</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L177-L203">(Remember to <strong>sfence</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292">(<strong>mmu_enable</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L152-L176">(Which calls <strong>mmu_satp_reg</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L176-L201">(Remember to <strong>sfence</strong>)</a></p>
 </li>
 <li>
 <p><em>How to set the Page Table Entry?</em></p>
-<p>To set the Level 1 <strong>Page Table Entry</strong> for <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L227-L240">jh7110_mm_init.c</a></p>
+<p>To set the Level 1 <strong>Page Table Entry</strong> for <strong><code>0x0</code></strong> to <strong><code>0x3FFF_FFFF</code></strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L235-L247">bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the I/O Region in Level 1 Page Table
 mmu_ln_map_region(
   1,             // Level 1
@@ -264,7 +264,7 @@ mmu_ln_map_region(
   PTE_R | PTE_W | PTE_G  // Read + Write + Global
 );
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-io-region-level-1">(See the <strong>NuttX L1 Log</strong>)</a></p>
 </li>
 <li>
@@ -304,7 +304,7 @@ mmu_ln_map_region(
 <li>
 <p><strong>Level 2 PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 9) &amp; <code>0b1_1111_1111</code> <br> = <code>0x100</code></p>
 <p>(Extract Bits 9 to 17 to get Level 2 Index)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L61C1-L107">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
 </li>
 </ul>
@@ -312,7 +312,7 @@ mmu_ln_map_region(
 <p>Do the same for <strong><code>0xEFFF_FFFF</code></strong>, and we’ll get Index <strong><code>0x17F</code></strong>.</p>
 <p>Thus our Page Table Index runs from <strong><code>0x100</code></strong> to <strong><code>0x17F</code></strong>.</p>
 <p><em>How to allocate the Level 2 Page Table?</em></p>
-<p>In NuttX we do this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L58-L93">jh7110_mm_init.c</a></p>
+<p>In NuttX we do this: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L68-L103">bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Number of Page Table Entries (8 bytes per entry)
 #define PGT_INT_L2_SIZE (512)  // Page Table Size is 4 KB
 
@@ -320,10 +320,10 @@ mmu_ln_map_region(
 static size_t m_int_l2_pgtable[PGT_INT_L2_SIZE]
   locate_data(&quot;.pgtables&quot;);
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L121-L127">(<strong><code>.pgtables</code></strong> comes from the Linker Script)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L121-L127">(<strong><code>.pgtables</code></strong> comes from the Linker Script)</a></p>
 <p>Then GCC Linker respectfully allocates our Level 2 Page Table at RAM Address <strong><code>0x5040</code> <code>3000</code></strong>.</p>
 <p><em>How to populate the 128 Page Table Entries?</em></p>
-<p>Just do this in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L249-L254">jh7110_mm_init.c</a></p>
+<p>Just do this in NuttX: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L247-L253">bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the Interrupt Controller in Level 2 Page Table
 mmu_ln_map_region(
   2,  // Level 2
@@ -334,7 +334,7 @@ mmu_ln_map_region(
   PTE_R | PTE_W | PTE_G  // Read + Write + Global
 );
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L163">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-plic-level-2">(See the <strong>NuttX L2 Log</strong>)</a></p>
 <p>We’re not done yet! Next we connect the Levels…</p>
 <h1 id="connect-level-1-to-level-2"><a href="#connect-level-1-to-level-2">4 Connect Level 1 to Level 2</a></h1>
@@ -360,7 +360,7 @@ mmu_ln_map_region(
 <li>
 <p><strong>Level 1 PTE Index</strong> <br> = (<strong>vpn</strong> &gt;&gt; 18) &amp; <code>0b1_1111_1111</code> <br> = 3</p>
 <p>(Extract Bits 18 to 26 to get Level 1 Index)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L61C1-L107">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
 </li>
 </ul>
@@ -369,7 +369,7 @@ mmu_ln_map_region(
 <p>When we set the <strong>Read, Write and Execute Bits</strong> to 0…</p>
 <p>Sv39 MMU interprets the PPN (Physical Page Number) as a <strong>Pointer to Level 2 Page Table</strong>. That’s how we connect Level 1 to Level 2!</p>
 <p>(Remember: Actual Address = PPN * 4,096)</p>
-<p>In NuttX, we write this to <strong>connect Level 1 with Level 2</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L254-L258">jh7110_mm_init.c</a></p>
+<p>In NuttX, we write this to <strong>connect Level 1 with Level 2</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L253-L258">bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Connect the L1 and L2 Page Tables for Interrupt Controller
 mmu_ln_setentry(
   1,  // Level 1
@@ -379,12 +379,12 @@ mmu_ln_setentry(
   PTE_G        // Global Only
 );
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(<strong>mmu_ln_setentry</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L61C1-L107">(<strong>mmu_ln_setentry</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables-for-plic">(See the <strong>NuttX L1 and L2 Log</strong>)</a></p>
 <p>We’re done protecting the Interrupt Controller with Level 1 AND Level 2 Page Tables!</p>
 <p><em>Wait wasn’t there something already in the Level 1 Page Table?</em></p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L51-L54"><strong>Memory-Mapped I/O</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
 </tbody></table>
 </div>
@@ -396,8 +396,8 @@ mmu_ln_setentry(
 <p>Yep we have smaller (bite-size) <strong>Level 3 Chunks</strong> of <strong>4 KB</strong> each.</p>
 <p>We create a <strong>Level 3 Page Table</strong> for the Kernel Code. And fill it (to the brim) with <strong>4 KB Chunks</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x20_0000</code></strong> <em>(2 MB)</em></td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5040_0000</code></strong></td><td style="text-align: left"><strong><code>0x20_0000</code></strong> <em>(2 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x20_0000</code></strong> <em>(2 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L24"><strong>Kernel Data</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5040_0000</code></strong></td><td style="text-align: left"><strong><code>0x20_0000</code></strong> <em>(2 MB)</em></td></tr>
 </tbody></table>
 </div>
 <p><img src="https://lupyuen.github.io/images/mmu-l3kernel.jpg" alt="Level 3 Page Table for Kernel" /></p>
@@ -417,13 +417,13 @@ mmu_ln_setentry(
 <li>
 <p><strong>Level 3 PTE Index</strong> <br> = <strong>vpn</strong> &amp; <code>0b1_1111_1111</code> <br> = 1</p>
 <p>(Extract Bits 0 to 8 to get Level 3 Index)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L61C1-L107">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-address-translation">(More about <strong>Address Translation</strong>)</a></p>
 </li>
 </ul>
 </span>
 <p>Thus address <strong><code>0x5020_1000</code></strong> is configured by <strong>Index 1</strong> of the Level 3 Page Table.</p>
-<p>To populate the <strong>Level 3 Page Table</strong>, our code looks a little different: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L258-L268">jh7110_mm_init.c</a></p>
+<p>To populate the <strong>Level 3 Page Table</strong>, our code looks a little different: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L258-L266">bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Number of Page Table Entries (8 bytes per entry)
 // for Kernel Code and Data
 #define PGT_L3_SIZE (1024)  // 2 Page Tables (4 KB each)
@@ -449,17 +449,17 @@ map_region(
   PTE_R | PTE_W | PTE_G  // Read + Write + Global
 );
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L150-L208">(<strong>map_region</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L158-L216">(<strong>map_region</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-kernel-text-levels-2--3">(See the <strong>NuttX L2 and L3 Log</strong>)</a></p>
-<p>That’s because <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L150-L208"><strong>map_region</strong></a> calls a <a href="https://en.wikipedia.org/wiki/Slab_allocation"><strong>Slab Allocator</strong></a> to manage the Level 3 Page Table Entries.</p>
-<p>But internally it calls the same old functions: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156"><strong>mmu_ln_map_region</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109"><strong>mmu_ln_setentry</strong></a></p>
+<p>That’s because <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L158-L216"><strong>map_region</strong></a> calls a <a href="https://en.wikipedia.org/wiki/Slab_allocation"><strong>Slab Allocator</strong></a> to manage the Level 3 Page Table Entries.</p>
+<p>But internally it calls the same old functions: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153"><strong>mmu_ln_map_region</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L61-L107"><strong>mmu_ln_setentry</strong></a></p>
 <h1 id="connect-level-2-to-level-3"><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a></h1>
 <p><em>Level 3 will talk back to Level 2 right?</em></p>
 <p>Correct! Finally we create a <strong>Level 2 Page Table</strong> for Kernel Code and Data…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5040_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5060_0000</code></strong></td><td style="text-align: left"><strong><code>0x0140_0000</code></strong> <em>(20 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L23"><strong>Kernel Code</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L24"><strong>Kernel Data</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5040_0000</code></strong></td><td style="text-align: left"><strong><code>0x0020_0000</code></strong> <em>(2 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a> <em>(RAM)</em></td><td style="text-align: center"><strong><code>0x5060_0000</code></strong></td><td style="text-align: left"><strong><code>0x0140_0000</code></strong> <em>(20 MB)</em></td></tr>
 </tbody></table>
 </div>
 <p>(Not to be confused with the earlier Level 2 Page Table for Interrupt Controller)</p>
@@ -468,7 +468,7 @@ map_region(
 <p><em>Page Pool goes into the same Level 2 Page Table?</em></p>
 <p>Yep, that’s because the <strong>Page Pool</strong> contains Medium-Size Chunks (2 MB) of goodies anyway.</p>
 <p>(Page Pool will be <strong>allocated to Applications</strong> in a while)</p>
-<p>This is how we populate the Level 2 Entries for the <strong>Page Pool</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L274-L280">jh7110_mm_init.c</a></p>
+<p>This is how we populate the Level 2 Entries for the <strong>Page Pool</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L271-L278">bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the Page Pool in Level 2 Page Table
 mmu_ln_map_region(
   2,             // Level 2
@@ -479,10 +479,10 @@ mmu_ln_map_region(
   PTE_R | PTE_W | PTE_G  // Read + Write + Global
 );
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L140-L156">(<strong>mmu_ln_map_region</strong> is defined here)</a> </p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153">(<strong>mmu_ln_map_region</strong> is defined here)</a> </p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-page-pool-level-2">(See the <strong>NuttX Page Pool Log</strong>)</a></p>
 <p><em>Did we forget something?</em></p>
-<p>Oh yeah, remember to <strong>connect the Level 1 and 2</strong> Page Tables: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L268-L274">jh7110_mm_init.c</a></p>
+<p>Oh yeah, remember to <strong>connect the Level 1 and 2</strong> Page Tables: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L266-L271">bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Connect the L1 and L2 Page Tables
 // for Kernel Code, Data and Page Pool
 mmu_ln_setentry(
@@ -493,7 +493,7 @@ mmu_ln_setentry(
   PTE_G          // Global Only
 );
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(<strong>mmu_ln_setentry</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L61-L107">(<strong>mmu_ln_setentry</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables">(See the <strong>NuttX L1 and L2 Log</strong>)</a></p>
 <p>Our <strong>Level 1 Page Table</strong> becomes chock full of toppings…</p>
 <div><table><thead><tr><th style="text-align: center">Index</th><th style="text-align: center">Permissions</th><th style="text-align: left">Physical Page Number</th></tr></thead><tbody>
@@ -504,8 +504,8 @@ mmu_ln_setentry(
 </div>
 <p>But it tastes very similar to our <strong>Kernel Memory Map</strong>!</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47"><strong>I/O Memory</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23-L26"><strong>RAM</strong></a></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0180_0000</code></strong> <em>(24 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L51-L54"><strong>I/O Memory</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L23-L26"><strong>RAM</strong></a></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0180_0000</code></strong> <em>(24 MB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
 </tbody></table>
 </div>
@@ -523,7 +523,7 @@ mmu_ln_setentry(
 </blockquote>
 <p>Let’s make some magic!</p>
 <p><em>What are the “Exotic Addresses” for our Application?</em></p>
-<p>NuttX will map the <strong>Application Code (Text), Data and Heap</strong> at these <strong>Virtual Addresses</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L30">nsh/defconfig</a></p>
+<p>NuttX will map the <strong>Application Code (Text), Data and Heap</strong> at these <strong>Virtual Addresses</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_ARCH_TEXT_VBASE=0x80000000
 CONFIG_ARCH_TEXT_NPAGES=128
 CONFIG_ARCH_DATA_VBASE=0x80100000
@@ -602,7 +602,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p>But actually there’s only <strong>one SATP Register</strong>!</p>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp">(SATP is for <strong>Supervisor Address Translation and Protection</strong>)</a></p>
 <p>Here’s the secret: NuttX uses this nifty recipe to cook up the illusion of Multiple SATP Registers…</p>
-<p>Earlier we wrote this to set the <strong>SATP Register</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L302">jh7110_mm_init.c</a></p>
+<p>Earlier we wrote this to set the <strong>SATP Register</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L278-L298">bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set the SATP Register to the
 // Physical Page Number of Level 1 Page Table.
 // Set SATP Mode to Sv39.
@@ -611,7 +611,7 @@ mmu_enable(
   0  // Set Address Space ID to 0
 );
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.h#L270-L294">(<strong>mmu_enable</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292">(<strong>mmu_enable</strong> is defined here)</a></p>
 <p>When we <strong>switch the context</strong> from Kernel to Application: We <strong>swap the value</strong> of the SATP Register… Which points to a <strong>Different Level 1</strong> Page Table!</p>
 <p>The <strong>Address Space ID</strong> (stored in SATP Register) can also change. It’s a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.</p>
 <p>(NuttX doesn’t seem to use Address Space)</p>
@@ -749,7 +749,7 @@ mmu_write_satp:
 <li>
 <p><strong>Level 3 PTE Index</strong> <br> = <strong>vpn</strong> &amp; <code>0b1_1111_1111</code></p>
 <p>(Extract Bits 0 to 8 to get Level 3 Index)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/common/riscv_mmu.c#L62-L109">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L61C1-L107">(Implemented as <strong>mmu_ln_setentry</strong>)</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="RISC-V Machine Mode vs Supervisor Mode" /></p>
@@ -842,8 +842,8 @@ diskutil unmountDisk /dev/disk2
 <p><em>What’s wrong with the Interrupt Controller?</em></p>
 <p>Earlier we had difficulty configuring the Sv39 MMU for the Interrupt Controller at <strong><code>0xE000_0000</code></strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_mm_init.c#L42-L47"><strong>I/O Memory</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L23-L26"><strong>RAM</strong></a></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0180_0000</code></strong> <em>(24 MB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L51-L54"><strong>I/O Memory</strong></a></td><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: left"><strong><code>0x4000_0000</code></strong> <em>(1 GB)</em></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L23-L26"><strong>RAM</strong></a></td><td style="text-align: center"><strong><code>0x5020_0000</code></strong></td><td style="text-align: left"><strong><code>0x0180_0000</code></strong> <em>(24 MB)</em></td></tr>
 <tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Interrupt Controller</strong></a></td><td style="text-align: center"><strong><code>0xE000_0000</code></strong></td><td style="text-align: left"><strong><code>0x1000_0000</code></strong> <em>(256 MB)</em></td></tr>
 </tbody></table>
 </div>
@@ -872,7 +872,7 @@ diskutil unmountDisk /dev/disk2
 <tr><td style="text-align: left">User Heap</td><td style="text-align: center"><strong><code>0x8020_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em> <br> <em>(Each Page is 4 KB)</em></td></tr>
 </tbody></table>
 </div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L30">(Source)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30">(Source)</a></p>
 <p>Which won’t conflict with our Interrupt Controller.</p>
 <p>(Or maybe we should have moved the User Memory to another Exotic Address: <strong><code>0x1_0000_0000</code></strong>)</p>
 <p><em>But we said that Level 1 is too wasteful for Interrupt Controller?</em></p>
