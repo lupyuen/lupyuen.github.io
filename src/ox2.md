@@ -217,6 +217,8 @@ Our hunch is 100% correct, __NuttX is ALIVE on Ox64__ yay!
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L112-L115)
 
+[(__Boot Code__ has moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_head.S#L68-L70)
+
 _Anything else we changed in the NuttX Boot Code?_
 
 OpenSBI boots on Ox64 with [__Hart ID 0__](https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L57) (instead of 1). Which means we remove this adjustment for Hart ID: [jh7110_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93)
@@ -266,6 +268,8 @@ MEMORY
 } /* TODO: Use up the entire 64 MB RAM */
 ```
 
+[(Moved here)](https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L20-L27)
+
 We make the same changes to the __NuttX Build Configuration__: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L31-L77)
 
 ```text
@@ -276,14 +280,19 @@ CONFIG_ARCH_PGPOOL_VBASE=0x50600000
 CONFIG_ARCH_PGPOOL_SIZE=4194304
 ```
 
+[(Moved here)](https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L23-L70)
+
 And we update the __NuttX Memory Map__: [jh7110_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
 
 ```c
 // Map the whole I/O Memory
 // with Virtual Address = Physical Address
-#define MMU_IO_BASE (0x00000000)
-#define MMU_IO_SIZE (0x50000000)
+// TODO: Interrupt Controller is missing!
+#define MMU_IO_BASE (0x00000000ul)
+#define MMU_IO_SIZE (0x50000000ul)
 ```
+
+[(Moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L49-L57)
 
 _What's this Memory Map?_
 
@@ -325,6 +334,8 @@ void u16550_putc(FAR struct u16550_s *priv, int ch) {
   // u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
 }
 ```
+
+[(Moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615)
 
 (Yeah the UART Buffer might overflow, we'll fix later)
 
@@ -408,7 +419,7 @@ nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
     50208086: 2701  sext.w a4,a4
 ```
 
-Which points to this: [riscv_modifyreg32.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_modifyreg32.c#L38-L57)
+Which points to this: [riscv_modifyreg32.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_modifyreg32.c#L38-L57)
 
 ```c
 // Atomically modify the specified bits
@@ -462,8 +473,10 @@ interrupt-controller@e0000000 {
 Based on the above, we change the __PLIC Base Address__ for Ox64: [jh7110_memorymap.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30)
 
 ```c
-#define JH7110_PLIC_BASE 0xe0000000
+#define JH7110_PLIC_BASE 0xe0000000ul
 ```
+
+[(Moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/hardware/bl808_memorymap.h#L27-L32)
 
 [(PLIC Offsets are in __XuanTie OpenC906 User Manual__, Page 77)](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf)
 
@@ -528,6 +541,8 @@ void up_irqinitialize(void) {
   riscv_exception_attach();
 ```
 
+[(Moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L42-L103)
+
 _Something doesn't look right..._
 
 Yeah in the code above, we attach the RISC-V Exception Handlers (__riscv_exception_attach__)...
@@ -555,7 +570,9 @@ void up_irqinitialize(void) {
   putreg32(0x0, JH7110_PLIC_ENABLE2);
 ```
 
-Then __riscv_exception_attach__ will handle all RISC-V Exceptions correctly, including IRQ 15: [riscv_exception.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142)
+[(Moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L42-L103)
+
+Then __riscv_exception_attach__ will handle all RISC-V Exceptions correctly, including IRQ 15: [riscv_exception.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_exception.c#L89-L142)
 
 ```c
 // Attach the RISC-V Exception Handlers
@@ -591,6 +608,8 @@ nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
     50207e6a: 1007a023  sw   zero,256(a5) # 70001100 <__ramdisk_end+0x1e601100>
 ```
 
+[(Moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L57-L62)
+
 The offending Data Address (MTVAL) is __`0xE000` `2100`__.
 
 Which is our __Ox64 PLIC__! We scrutinise PLIC again...
@@ -607,9 +626,12 @@ Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the __Memo
 // Map the whole I/O Memory
 // with Virtual Address = Physical Address
 // (Includes PLIC)
-#define MMU_IO_BASE (0x00000000)
-#define MMU_IO_SIZE (0xf0000000)
+// TODO: This is mapping too much memory!
+#define MMU_IO_BASE (0x00000000ul)
+#define MMU_IO_SIZE (0xf0000000ul)
 ```
+
+[(Moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L49-L57)
 
 [(__Memory Map__ doesn't look right)](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64)
 
@@ -650,6 +672,8 @@ int u16550_attach(struct uart_dev_s *dev) {
   // up_enable_irq(priv->irq);
 ```
 
+[(Moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L275-L304)
+
 NuttX hits another roadblock...
 
 ![Initial RAM Disk for Star64 JH7110](https://lupyuen.github.io/images/semihost-title.jpg)
@@ -673,7 +697,7 @@ _assert: Assertion failed ret >= 0: at file: init/nx_bringup.c:283 task: AppBrin
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf#file-ox64-nuttx7-log-L136-L177)
 
-That's because NuttX couldn't mount the __Initial RAM Disk__: [nx_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L276-L284)
+That's because NuttX couldn't mount the __Initial RAM Disk__: [nx_bringup.c](https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L282-L291)
 
 ```c
 // Mount the File System containing
@@ -776,63 +800,63 @@ In this article, NuttX has booted plenty of code on Ox64. Here's the flow of the
 
 [_Clickable Version of NuttX Boot Flow_](https://github.com/lupyuen/nuttx-ox64#nuttx-boot-flow-for-ox64-bl808)
 
-[__NuttX Boot Code: jh7110_head__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L41-L156) prints "123" and calls...
+[__NuttX Boot Code: bl808_head__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_head.S#L41-L156) calls...
 
-- [__NuttX Start Code: jh7110_start__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L129-L159) which calls...
+- [__NuttX Start Code: bl808_start__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L254-L297) which calls...
 
-- [__Start Supervisor Mode: jh7110_start_s__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129) which prints "ABC" and calls...
+- [__Start Supervisor Mode: bl808_start_s__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L200-L254) which prints "ABC" and calls...
 
-- [__Early Serial Init: riscv_earlyserialinit__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L159-L164) (see below) and...
+- [__Early Serial Init: riscv_earlyserialinit__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L297-L314) (see below) and...
 
-  [__Memory Mgmt Init: jh7110_mm_init__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284) (to init the Memory Mgmt Unit) and...
+  [__Memory Mgmt Init: bl808_mm_init__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L278-L298) (to init the Memory Mgmt Unit) and...
 
-  [__Start NuttX: nx_start__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_start.c#L298-L713) (see below)
+  [__Start NuttX: nx_start__](https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L298-L713) (see below)
 
-[__Early Serial Init: riscv_earlyserialinit__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L159-L164) calls...
+[__Early Serial Init: riscv_earlyserialinit__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L297-L314) calls...
 
-- [__UART Early Init: u16550_earlyserialinit__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1722-L1747)
+- [__UART Early Init: bl808_earlyserialinit__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L700-L720)
 
   (To setup the UART)
 
-[__Memory Mgmt Init: jh7110_mm_init__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L259-L284) inits the [__Memory Mgmt Unit__](https://lupyuen.github.io/articles/mmu) by calling...
+[__Memory Mgmt Init: bl808_mm_init__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L278-L298) inits the [__Memory Mgmt Unit__](https://lupyuen.github.io/articles/mmu) by calling...
 
-- [__MMU Map Region: mmu_ln_map_region__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_mmu.c#L137-L153) (to map a Memory Region) and...
+- [__MMU Map Region: mmu_ln_map_region__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153) (to map a Memory Region) and...
 
-  [__MMU Set Entry: mmu_ln_setentry__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_mmu.c#L61C1-L107) (to set a Page Table Entry)
+  [__MMU Set Entry: mmu_ln_setentry__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L61C1-L107) (to set a Page Table Entry)
 
   [(More about the __Memory Mgmt Unit__)](https://lupyuen.github.io/articles/mmu)
 
-[__Start NuttX: nx_start__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_start.c#L298-L713) does [__many things__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine) and calls...
+[__Start NuttX: nx_start__](https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L298-L713) does [__many things__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine) and calls...
 
-- [__IRQ Init: up_irqinitialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L41C1-L103) (see below) and...
+- [__IRQ Init: up_irqinitialize__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L41C1-L103) (see below) and...
 
-  [__Bringup NuttX: nx_bringup__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L373-L462) (see below)
+  [__Bringup NuttX: nx_bringup__](https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L379-L468) (see below)
 
-[__IRQ Init: up_irqinitialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L41C1-L103) calls...
+[__IRQ Init: up_irqinitialize__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L41C1-L103) calls...
 
-- [__Attach RISC-V Exceptions: riscv_exception_attach__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_exception.c#L89-L142) (to attach the RISC-V Exception Handlers) and...
+- [__Attach RISC-V Exceptions: riscv_exception_attach__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_exception.c#L89-L142) (to attach the RISC-V Exception Handlers) and...
 
-  [__Init NuttX: up_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_initialize.c#L70-L132) (see below)
+  [__Init NuttX: up_initialize__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_initialize.c#L70-L132) (see below)
 
-[__Init NuttX: up_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/common/riscv_initialize.c#L70-L132) calls...
+[__Init NuttX: up_initialize__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_initialize.c#L70-L132) calls...
 
-- [__Serial Init: riscv_serialinit__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_start.c#L164-L168) which calls...
+- [__Serial Init: riscv_serialinit__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L314-L327) which calls...
 
-- [__UART Init: u16550_serialinit__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1747-L1775)
+- [__UART Init: bl808_serialinit__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L720-L762)
 
-  (To register "/dev/console" and "/dev/ttyS0")
+  (To register "/dev/console")
 
-[__Bringup NuttX: nx_bringup__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L373-L462) calls...
+[__Bringup NuttX: nx_bringup__](https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L379-L468) calls...
 
-- [__Create Init Thread: nx_create_initthread__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L330-L369) (to create "AppBringUp" thread) which calls...
+- [__Create Init Thread: nx_create_initthread__](https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L336-L375) (to create "AppBringUp" thread) which calls...
 
-- [__Start NuttX Task: nx_start_task__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L304-L330) (to start NuttX Task) which calls...
+- [__Start NuttX Task: nx_start_task__](https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L310-L336) (to start NuttX Task) which calls...
 
-- [__Start Application: nx_start_application__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/sched/init/nx_bringup.c#L212-L304) which calls...
+- [__Start Application: nx_start_application__](https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L213-L310) which calls...
 
-- [__Board Late Init: board_late_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L134-L167) (to mount Initial RAM Disk) and...
+- [__Board Late Init: board_late_initialize__](https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/src/bl808_appinit.c#L134-L167) (to mount Initial RAM Disk) and...
 
-  [__Mount RAM Disk: nx_mount__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/fs/mount/fs_mount.c#L260-L514) (to mount ROM File System from Initial RAM Disk)
+  [__Mount RAM Disk: nx_mount__](https://github.com/apache/nuttx/blob/master/fs/mount/fs_mount.c#L260-L514) (to mount ROM File System from Initial RAM Disk)
 
   (Which fails because our Initial RAM Disk is missing)
 
@@ -861,11 +885,14 @@ _What's this Memory Map?_
 ```c
 // Map the whole I/O Memory
 // with Virtual Address = Physical Address
-#define MMU_IO_BASE (0x00000000)
-#define MMU_IO_SIZE (0x50000000)
+// TODO: Interrupt Controller is missing!
+#define MMU_IO_BASE (0x00000000ul)
+#define MMU_IO_SIZE (0x50000000ul)
 ```
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50)
+
+[(Moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L49-L57)
 
 Inside the BL808 SoC is the [__Sv39 Memory Management Unit (MMU)__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39) with 128 / 256 / 512 TLB table entries. (Same for Star64 JH7110)
 
@@ -887,9 +914,12 @@ Let's add the PLIC to the Memory Map: [jh7110_mm_init.c](https://github.com/lupy
 // Map the whole I/O Memory
 // with Virtual Address = Physical Address
 // (Includes PLIC)
-#define MMU_IO_BASE (0x00000000)
-#define MMU_IO_SIZE (0xf0000000)
+// TODO: This is mapping too much memory!
+#define MMU_IO_BASE (0x00000000ul)
+#define MMU_IO_SIZE (0xf0000000ul)
 ```
+
+[(Moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L49-L57)
 
 _This doesn't look right..._
 
@@ -927,6 +957,8 @@ void jh7110_kernel_mappings(void) {
 }
 ```
 
+[(Moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L220-L278)
+
 We see a problem with the __Memory Map__...
 
 | Memory Region | Start Address | Size
@@ -959,6 +991,8 @@ CONFIG_ARCH_DATA_NPAGES=128
 CONFIG_ARCH_HEAP_VBASE=0xC0200000
 CONFIG_ARCH_HEAP_NPAGES=128
 ```
+
+[(Moved here)](https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L26)
 
 But our Kernel Memory Space already extends to __`0xF000` `0000`__!
 
