@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "$8 RISC-V SBC on a Real-Time Operating System: Ox64 + NuttX",
+      "publisher": "hackster.io",
+      "releaseDate": "2023-12-17",
+      "website": "https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358",
+      "summary": "Bare Metal Experiments with Apache NuttX RTOS (Real-Time Operating System) on the affordable Pine64 Ox64 BL808 64-bit RISC-V SBC"
+    },
+    {
       "name": "Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-12-10",

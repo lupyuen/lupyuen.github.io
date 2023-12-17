@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>$8 RISC-V SBC on a Real-Time Operating System: Ox64 + NuttX</title>
+            <link>https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358</link>
+            <description><![CDATA[Bare Metal Experiments with Apache NuttX RTOS (Real-Time Operating System) on the affordable Pine64 Ox64 BL808 64-bit RISC-V SBC]]></description>
+            <guid>https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358</guid>
+            <pubDate>Sun, 17 Dec 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)</title>
             <link>https://lupyuen.github.io/articles/plic3</link>
             <description><![CDATA[Weak Ordering in the Ox64 BL808 Memory Management Unit (T-Head C906)... Causes problems with UART Interrupts and the Platform-Level Interrupt Controller]]></description>
