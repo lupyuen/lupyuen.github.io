@@ -130,6 +130,10 @@ Our Page Table contains only one __Page Table Entry__ (8 Bytes) that says...
 
   (We don't allow Execute for I/O Memory)
 
+- __SO:__ Enforce [__Strong-Ordering__](https://lupyuen.github.io/articles/plic3#t-head-errata) for Memory Access
+
+- __S:__ Enforce [__Shareable__](https://lupyuen.github.io/articles/plic3#t-head-errata) Memory Access
+
 - __PPN:__ Physical Page Number (44 Bits) is __`0x0`__
 
   (PPN = Memory Address / 4,096)
@@ -213,9 +217,11 @@ But we have so many questions...
       MMU_IO_BASE,   // 0x0 (Physical Address)
       MMU_IO_BASE,   // 0x0 (Virtual Address)
       MMU_IO_SIZE,   // 0x4000 0000 (Size is 1 GB)
-      PTE_R | PTE_W | PTE_G  // Read + Write + Global
+      PTE_R | PTE_W | PTE_G | MMU_THEAD_STRONG_ORDER | MMU_THEAD_SHAREABLE // Read + Write + Global + Strong Order + Shareable
     );
     ```
+
+    [(Why we need __Strong-Ordering__)](https://lupyuen.github.io/articles/plic3#t-head-errata)
 
     [(__mmu_ln_map_region__ is defined here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153)
 
@@ -312,9 +318,11 @@ mmu_ln_map_region(
   0xE0000000,  // Physical Address of Interrupt Controller
   0xE0000000,  // Virtual Address of Interrupt Controller
   0x10000000,  // 256 MB (Size)
-  PTE_R | PTE_W | PTE_G  // Read + Write + Global
+  PTE_R | PTE_W | PTE_G | MMU_THEAD_STRONG_ORDER | MMU_THEAD_SHAREABLE // Read + Write + Global + Strong Order + Shareable
 );
 ```
+
+[(Why we need __Strong-Ordering__)](https://lupyuen.github.io/articles/plic3#t-head-errata)
 
 [(__mmu_ln_map_region__ is defined here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153)
 
@@ -544,7 +552,7 @@ Our __Level 1 Page Table__ becomes chock full of toppings...
 
 | Index | Permissions | Physical Page Number | 
 |:-----:|:-----------:|:----|
-| 0 | VGRW | __`0x00000`__ _(I/O Memory)_
+| 0 | VGRWSO+S | __`0x00000`__ _(I/O Memory)_
 | 1 | VG _(Pointer)_ | __`0x50406`__ _(L2 Kernel Code & Data)_
 | 3 | VG _(Pointer)_ | __`0x50403`__ _(L2 Interrupt Controller)_
 
@@ -1014,9 +1022,9 @@ _Why not park the Interrupt Controller as a Level 1 Page Table Entry?_
 
 | Index | Permissions | Physical Page Number | 
 |:-----:|:-----------:|:----|
-| 0 | VGRW | __`0x00000`__ _(I/O Memory)_
+| 0 | VGRWSO+S | __`0x00000`__ _(I/O Memory)_
 | 1 | VG _(Pointer)_ | __`0x50406`__ _(L2 Kernel Code & Data)_
-| 3 | VGRW | __`0xC0000`__ _(Interrupt Controller)_
+| 3 | VGRWSO+S | __`0xC0000`__ _(Interrupt Controller)_
 
 Uh it's super wasteful to reserve __1 GB of Address Space__ (Level 1 at __`0xC000_0000`__) for our Interrupt Controller that requires only 256 MB.
 
@@ -1062,7 +1070,7 @@ And that's how we arrived at this final __MMU Mapping__...
 
 | Index | Permissions | Physical Page Number | 
 |:-----:|:-----------:|:----|
-| 0 | VGRW | __`0x00000`__ _(I/O Memory)_
+| 0 | VGRWSO+S | __`0x00000`__ _(I/O Memory)_
 | 1 | VG _(Pointer)_ | __`0x50406`__ _(L2 Kernel Code & Data)_
 | 3 | VG _(Pointer)_ | __`0x50403`__ _(L2 Interrupt Controller)_
 
