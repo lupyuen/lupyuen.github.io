@@ -198,6 +198,12 @@
 <p>(We don’t allow Execute for I/O Memory)</p>
 </li>
 <li>
+<p><strong>SO:</strong> Enforce <a href="https://lupyuen.github.io/articles/plic3#t-head-errata"><strong>Strong-Ordering</strong></a> for Memory Access</p>
+</li>
+<li>
+<p><strong>S:</strong> Enforce <a href="https://lupyuen.github.io/articles/plic3#t-head-errata"><strong>Shareable</strong></a> Memory Access</p>
+</li>
+<li>
 <p><strong>PPN:</strong> Physical Page Number (44 Bits) is <strong><code>0x0</code></strong></p>
 <p>(PPN = Memory Address / 4,096)</p>
 </li>
@@ -261,9 +267,10 @@ mmu_ln_map_region(
   MMU_IO_BASE,   // 0x0 (Physical Address)
   MMU_IO_BASE,   // 0x0 (Virtual Address)
   MMU_IO_SIZE,   // 0x4000 0000 (Size is 1 GB)
-  PTE_R | PTE_W | PTE_G  // Read + Write + Global
+  PTE_R | PTE_W | PTE_G | MMU_THEAD_STRONG_ORDER | MMU_THEAD_SHAREABLE // Read + Write + Global + Strong Order + Shareable
 );
 </code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/plic3#t-head-errata">(Why we need <strong>Strong-Ordering</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-io-region-level-1">(See the <strong>NuttX L1 Log</strong>)</a></p>
 </li>
@@ -331,9 +338,10 @@ mmu_ln_map_region(
   0xE0000000,  // Physical Address of Interrupt Controller
   0xE0000000,  // Virtual Address of Interrupt Controller
   0x10000000,  // 256 MB (Size)
-  PTE_R | PTE_W | PTE_G  // Read + Write + Global
+  PTE_R | PTE_W | PTE_G | MMU_THEAD_STRONG_ORDER | MMU_THEAD_SHAREABLE // Read + Write + Global + Strong Order + Shareable
 );
 </code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/plic3#t-head-errata">(Why we need <strong>Strong-Ordering</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-plic-level-2">(See the <strong>NuttX L2 Log</strong>)</a></p>
 <p>We’re not done yet! Next we connect the Levels…</p>
@@ -497,7 +505,7 @@ mmu_ln_setentry(
 <p><a href="https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables">(See the <strong>NuttX L1 and L2 Log</strong>)</a></p>
 <p>Our <strong>Level 1 Page Table</strong> becomes chock full of toppings…</p>
 <div><table><thead><tr><th style="text-align: center">Index</th><th style="text-align: center">Permissions</th><th style="text-align: left">Physical Page Number</th></tr></thead><tbody>
-<tr><td style="text-align: center">0</td><td style="text-align: center">VGRW</td><td style="text-align: left"><strong><code>0x00000</code></strong> <em>(I/O Memory)</em></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">VGRWSO+S</td><td style="text-align: left"><strong><code>0x00000</code></strong> <em>(I/O Memory)</em></td></tr>
 <tr><td style="text-align: center">1</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50406</code></strong> <em>(L2 Kernel Code &amp; Data)</em></td></tr>
 <tr><td style="text-align: center">3</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50403</code></strong> <em>(L2 Interrupt Controller)</em></td></tr>
 </tbody></table>
@@ -849,9 +857,9 @@ diskutil unmountDisk /dev/disk2
 </div>
 <p><em>Why not park the Interrupt Controller as a Level 1 Page Table Entry?</em></p>
 <div><table><thead><tr><th style="text-align: center">Index</th><th style="text-align: center">Permissions</th><th style="text-align: left">Physical Page Number</th></tr></thead><tbody>
-<tr><td style="text-align: center">0</td><td style="text-align: center">VGRW</td><td style="text-align: left"><strong><code>0x00000</code></strong> <em>(I/O Memory)</em></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">VGRWSO+S</td><td style="text-align: left"><strong><code>0x00000</code></strong> <em>(I/O Memory)</em></td></tr>
 <tr><td style="text-align: center">1</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50406</code></strong> <em>(L2 Kernel Code &amp; Data)</em></td></tr>
-<tr><td style="text-align: center">3</td><td style="text-align: center">VGRW</td><td style="text-align: left"><strong><code>0xC0000</code></strong> <em>(Interrupt Controller)</em></td></tr>
+<tr><td style="text-align: center">3</td><td style="text-align: center">VGRWSO+S</td><td style="text-align: left"><strong><code>0xC0000</code></strong> <em>(Interrupt Controller)</em></td></tr>
 </tbody></table>
 </div>
 <p>Uh it’s super wasteful to reserve <strong>1 GB of Address Space</strong> (Level 1 at <strong><code>0xC000_0000</code></strong>) for our Interrupt Controller that requires only 256 MB.</p>
@@ -882,7 +890,7 @@ diskutil unmountDisk /dev/disk2
 <p>That’s why we wrote this article: To figure out how to move the Interrupt Controller to a <strong>Level 2 Page Table</strong>. (And connect Level 1 with Level 2)</p>
 <p>And that’s how we arrived at this final <strong>MMU Mapping</strong>…</p>
 <div><table><thead><tr><th style="text-align: center">Index</th><th style="text-align: center">Permissions</th><th style="text-align: left">Physical Page Number</th></tr></thead><tbody>
-<tr><td style="text-align: center">0</td><td style="text-align: center">VGRW</td><td style="text-align: left"><strong><code>0x00000</code></strong> <em>(I/O Memory)</em></td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">VGRWSO+S</td><td style="text-align: left"><strong><code>0x00000</code></strong> <em>(I/O Memory)</em></td></tr>
 <tr><td style="text-align: center">1</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50406</code></strong> <em>(L2 Kernel Code &amp; Data)</em></td></tr>
 <tr><td style="text-align: center">3</td><td style="text-align: center">VG <em>(Pointer)</em></td><td style="text-align: left"><strong><code>0x50403</code></strong> <em>(L2 Interrupt Controller)</em></td></tr>
 </tbody></table>
