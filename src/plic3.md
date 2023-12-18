@@ -138,20 +138,20 @@ _How to track down the culprit?_
 
 We begin with the simplest bug: [__UART Input__](https://lupyuen.github.io/articles/plic2#backup-plan) is always Empty.
 
-In our [__UART Driver__](https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64), this is how we read the __UART Input__: [bl602_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/jh7110/bl602_serial.c#L943-L995)
+In our [__UART Driver__](https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64), this is how we read the __UART Input__: [bl808_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L502-L540)
 
 ```c
 // Receive one character from the UART Port.
 // Called (indirectly) by the UART Interrupt Handler: __uart_interrupt
-int bl602_receive(...) {
+int bl808_receive(...) {
   ...
   // If there's Pending UART Input...
   // (FIFO_CONFIG_1 is 0x30002084)
-  if (getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) & UART_FIFO_CONFIG_1_RX_CNT_MASK) {
+  if (getreg32(BL808_UART_FIFO_CONFIG_1(uart_idx)) & UART_FIFO_CONFIG_1_RX_CNT_MASK) {
 
     // Then read the Actual UART Input
     // (FIFO_RDATA is 0x3000208c)
-    rxdata = getreg32(BL602_UART_FIFO_RDATA(uart_idx)) & UART_FIFO_RDATA_MASK;
+    rxdata = getreg32(BL808_UART_FIFO_RDATA(uart_idx)) & UART_FIFO_RDATA_MASK;
 ```
 
 Which says that we...
@@ -405,6 +405,10 @@ void mmu_ln_setentry(
   }
 ```
 
+[(Moved here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L42-L49)
+
+[(And here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L241-L253)
+
 The code above will set the __Strong Order and Shareable Bits__ for...
 
 - __I/O Memory__: __`0x0`__ to __`0x3FFF_FFFF`__
@@ -470,7 +474,7 @@ Our UART and PLIC Troubles are finally over!
 - Our __UART Driver__ returns the [__correct UART Input__](https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167#file-ox64-nuttx-mmu-uncache-log-L344)
 
   ```text
-  bl602_receive: rxdata=0x31
+  bl808_receive: rxdata=0x31
   ```
 
 _Is NuttX usable on Ox64?_
