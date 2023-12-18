@@ -210,12 +210,15 @@
 <p><img src="https://lupyuen.github.io/images/plic2-registers3a.jpg" alt="Disable Interrupts" /></p>
 <h2 id="disable-all-interrupts"><a href="#disable-all-interrupts">3.1 Disable all Interrupts</a></h2>
 <p>We begin by <strong>disabling all Interrupts</strong> in PLIC.</p>
-<p>Writing 0 to the <strong>Interrupt Enable</strong> Register (pic above) will disable all PLIC Interrupts: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L41-L61">jh7110_irq.c</a></p>
+<p>Writing 0 to the <strong>Interrupt Enable</strong> Register (pic above) will disable all PLIC Interrupts: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L41-L61">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Platform-Level Interrupt Controller
 void up_irqinitialize(void) {
 
   // Disable Supervisor-Mode Interrupts (SIE Register)
   up_irq_save();
+
+  // Attach the Common RISC-V Exception Handlers
+  riscv_exception_attach();
 
   // Disable all External Interrupts
   // PLIC_ENABLE1 is 0xE000_2080
@@ -225,24 +228,24 @@ void up_irqinitialize(void) {
   putreg32(0x0, PLIC_ENABLE2);  // RISC-V IRQ 32 to 63
 </code></pre></div>
 <p>Hence at startup, all PLIC Interrupts are disabled until we <strong>enable them later</strong> (in PLIC).</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/include/irq.h#L674-L703">(<strong>up_irq_save</strong> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_internal.h#L124-L132">(<strong>putreg32</strong> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L34-L49">(<strong>PLIC_ENABLE</strong> and other PLIC Offsets)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L674-L703">(<strong>up_irq_save</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L124-L132">(<strong>putreg32</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/hardware/bl808_plic.h#L34-L49">(<strong>PLIC_ENABLE</strong> and other PLIC Offsets)</a></p>
 <p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow">(NuttX calls <strong>up_irqinitialize</strong> at startup)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5a.jpg" alt="Clear Interrupts" /></p>
 <h2 id="clear-the-interrupts"><a href="#clear-the-interrupts">3.2 Clear the Interrupts</a></h2>
-<p>Next we <strong>Claim and Complete</strong> the Outstanding Interrupts, so they won’t bother us at startup (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L61-L68">jh7110_irq.c</a></p>
+<p>Next we <strong>Claim and Complete</strong> the Outstanding Interrupts, so they won’t bother us at startup (pic above): <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L62-L67">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Claim and Complete the Outstanding Interrupts
   // PLIC_CLAIM is 0xE020_1004
   // getreg32(A) reads a 32-bit value from address A
   uintptr_t val = getreg32(PLIC_CLAIM);
   putreg32(val, PLIC_CLAIM);
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_internal.h#L124-L132">(<strong>getreg32</strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L124-L132">(<strong>getreg32</strong> is defined here)</a></p>
 <p>(More about <strong>Claim and Complete</strong> in a while)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
 <h2 id="set-the-interrupt-priority"><a href="#set-the-interrupt-priority">3.3 Set the Interrupt Priority</a></h2>
-<p>We initialise the <strong>Interrupt Priority</strong> of all Interrupts to 1 (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
+<p>We initialise the <strong>Interrupt Priority</strong> of all Interrupts to 1 (pic above): <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L74-L83">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set Priority for all External Interrupts to 1 (Lowest)
   // NR_IRQS is 83 (TODO: BL808 only supports 82 Peripheral Interrupts)
   // PLIC_PRIORITY is 0xE000_0000
@@ -267,22 +270,18 @@ void up_irqinitialize(void) {
 </ul>
 <p><img src="https://lupyuen.github.io/images/plic2-registers2.jpg" alt="Set Interrupt Threshold" /></p>
 <h2 id="set-the-interrupt-threshold"><a href="#set-the-interrupt-threshold">3.4 Set the Interrupt Threshold</a></h2>
-<p>Finally we set the <strong>Interrupt Threshold</strong> to 0 (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L90-L114">jh7110_irq.c</a></p>
+<p>Finally we set the <strong>Interrupt Threshold</strong> to 0 (pic above): <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L83-L103">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set Interrupt Threshold to 0
   // (Permits all External Interrupts)
   // PLIC_THRESHOLD is 0xE020_1000
   putreg32(0, PLIC_THRESHOLD);
 
-  // Attach the Common RISC-V Exception Handlers
-  // TODO: Do this earlier
-  riscv_exception_attach();
-
   // Enable Supervisor-Mode Interrupts (SIE Register)
   up_irq_enable();
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception.c#L89-L142">(<strong>riscv_exception_attach</strong> is here)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L208-L223">(<strong>up_irq_enable</strong> is here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_exception.c#L89-L142">(<strong>riscv_exception_attach</strong> is here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L187-L201">(<strong>up_irq_enable</strong> is here)</a></p>
 <p><em>Why set Interrupt Threshold to 0?</em></p>
 <ul>
 <li>
@@ -302,7 +301,7 @@ void up_irqinitialize(void) {
 <p><em>Our Platform-Level Interrupt Controller (PLIC) is all ready for action…</em></p>
 <p><em>How will we enable Interrupts in PLIC?</em></p>
 <p>Suppose we’re enabling <strong>RISC-V IRQ 20</strong> for UART3 Interrupt.</p>
-<p>All we need to do is to flip <strong>Bit 20</strong> to 1 in the <strong>Interrupt Enable</strong> Register (pic above). Like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L158-L208">jh7110_irq.c</a></p>
+<p>All we need to do is to flip <strong>Bit 20</strong> to 1 in the <strong>Interrupt Enable</strong> Register (pic above). Like so: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L145-L187">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the NuttX IRQ specified by `irq`
 // UART3 Interrupt is RISC-V IRQ 20
 // Which is NuttX IRQ 45 (Offset by 25)
@@ -331,19 +330,19 @@ void up_enable_irq(int irq) {
   }
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_modifyreg32.c#L37-L57">(<strong>modifyreg32</strong> is here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_modifyreg32.c#L37-L57">(<strong>modifyreg32</strong> is here)</a></p>
 <p>And PLIC will happily accept RISC-V IRQ 20 whenever we press a key!</p>
 <p>(On the Serial Console, pic above)</p>
 <p><em>Who calls up_enable_irq?</em></p>
-<p>At startup, NuttX calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L383-L442"><strong>bl602_attach</strong></a> to attach the UART Interrupt Handler…</p>
+<p>At startup, NuttX calls <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L275-L304"><strong>bl808_attach</strong></a> to attach the UART Interrupt Handler…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Attach UART Interrupt Handler
-static int bl602_attach(struct uart_dev_s *dev) {
+static int bl808_attach(struct uart_dev_s *dev) {
   ...
   // Enable Interrupt for UART3.
   // `irq` is NuttX IRQ 45
   up_enable_irq(priv-&gt;irq);
 </code></pre></div>
-<p>Which will call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L158-L208"><strong>up_enable_irq</strong></a> to enable the UART3 Interrupt.</p>
+<p>Which will call <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L145-L187"><strong>up_enable_irq</strong></a> to enable the UART3 Interrupt.</p>
 <p>We’re halfway through our Grand Plan of <strong>PLIC Interrupts</strong>! (Steps 1, 2 and 3, pic below)</p>
 <p>We pause a moment to talk about Harts…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Registers for Platform-Level Interrupt Controller" /></p>
@@ -409,7 +408,7 @@ static int bl602_attach(struct uart_dev_s *dev) {
 <h2 id="claim-the-interrupt"><a href="#claim-the-interrupt">6.1 Claim the Interrupt</a></h2>
 <p><em>How will we know which RISC-V Interrupt has been fired?</em></p>
 <p>That’s why we have the <strong>Interrupt Claim</strong> Register! (Pic above)</p>
-<p>We read the Interrupt Claim Register to get the <strong>RISC-V IRQ Number</strong> that has been fired (20 for UART3): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L76">jh7110_irq.c</a></p>
+<p>We read the Interrupt Claim Register to get the <strong>RISC-V IRQ Number</strong> that has been fired (20 for UART3): <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq_dispatch.c#L47-L66">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Dispatch the RISC-V Interrupt
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
@@ -437,9 +436,9 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p>When we <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#interrupt-claims"><strong>Claim an Interrupt</strong></a> (by reading the Interrupt Claim Register)…</p>
 <p>We’re telling the PLIC: “Yes we <strong>acknowledge the Interrupt</strong>, but we’re not done yet!”</p>
 <p>In a while we shall Complete the Interrupt. (To tell PLIC we’re done)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_exception_common.S#L63-L177">(<strong>riscv_dispatch_irq</strong> is called by the RISC-V Common Exception Handler)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_exception_common.S#L63-L177">(<strong>riscv_dispatch_irq</strong> is called by the RISC-V Common Exception Handler)</a></p>
 <h2 id="dispatch-the-interrupt"><a href="#dispatch-the-interrupt">6.2 Dispatch the Interrupt</a></h2>
-<p>We have Claimed the Interrupt. It’s time to do some work: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L76-L85">jh7110_irq.c</a></p>
+<p>We have Claimed the Interrupt. It’s time to do some work: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq_dispatch.c#L66-L75">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Omitted: Claim the Interrupt
   ...
   // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
@@ -454,13 +453,13 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   }
   // Up Next: Complete the Interrupt
 </code></pre></div>
-<p>For UART Interrupts: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/common/riscv_doirq.c#L58-L134"><strong>riscv_doirq</strong></a> will call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L285-L343"><strong>uart_interrupt</strong></a> to handle the keypress.</p>
-<p>(That’s because at startup, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L383-L442"><strong>bl602_attach</strong></a> has registered <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L285-L343"><strong>uart_interrupt</strong></a> as the UART Interrupt Handler)</p>
+<p>For UART Interrupts: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_doirq.c#L58-L134"><strong>riscv_doirq</strong></a> will call <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L225"><strong>uart_interrupt</strong></a> to handle the keypress.</p>
+<p>(That’s because at startup, <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L275-L304"><strong>bl808_attach</strong></a> has registered <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L225"><strong>uart_interrupt</strong></a> as the UART Interrupt Handler)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Interrupt Claim Register" /></p>
 <h2 id="complete-the-interrupt"><a href="#complete-the-interrupt">6.3 Complete the Interrupt</a></h2>
 <p>To tell PLIC we’re done, we write the RISC-V IRQ Number (20) back to the <strong>Interrupt Claim</strong> Register.</p>
 <p>(Yep the same one we read earlier! Pic above)</p>
-<p>This will <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#interrupt-completion"><strong>Complete the Interrupt</strong></a>, so PLIC can fire the next one: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L85-L105">jh7110_irq.c</a></p>
+<p>This will <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#interrupt-completion"><strong>Complete the Interrupt</strong></a>, so PLIC can fire the next one: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq_dispatch.c#L75-L84">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Omitted: Claim and Dispatch the Interrupt
   ...
   // Remember: `irq` is now the ACTUAL NuttX IRQ Number:
@@ -511,7 +510,7 @@ putreg32(0, 0xe0001000);
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
 <h1 id="trouble-with-interrupt-priority"><a href="#trouble-with-interrupt-priority">7 Trouble with Interrupt Priority</a></h1>
 <p><em>I sense a twist in our story…</em></p>
-<p>Earlier we initialised the <a href="https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority"><strong>Interrupt Priorities to 1</strong></a> at startup (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq.c#L75C1-L90">jh7110_irq.c</a></p>
+<p>Earlier we initialised the <a href="https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority"><strong>Interrupt Priorities to 1</strong></a> at startup (pic above): <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L74-L83">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Platform-Level Interrupt Controller
 void up_irqinitialize(void) {
   ...
@@ -588,7 +587,7 @@ PLIC Hart 0 S-Mode Interrupt Enable: After (0xe0002080):
 <h1 id="more-trouble-with-interrupt-claim"><a href="#more-trouble-with-interrupt-claim">8 More Trouble with Interrupt Claim</a></h1>
 <p>We talked earlier about <a href="https://lupyuen.github.io/articles/plic2#handle-the-interrupt"><strong>Handling Interrupts</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Claim Interrupt" /></p>
-<p>And how we fetch the <strong>RISC-V IRQ Number</strong> from the <a href="https://lupyuen.github.io/articles/plic2#claim-the-interrupt"><strong>Interrupt Claim</strong></a> Register: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L62">jh7110_irq.c</a></p>
+<p>And how we fetch the <strong>RISC-V IRQ Number</strong> from the <a href="https://lupyuen.github.io/articles/plic2#claim-the-interrupt"><strong>Interrupt Claim</strong></a> Register: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq_dispatch.c#L47-L66">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Dispatch the RISC-V Interrupt
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
@@ -660,11 +659,11 @@ infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);
 // 0000  00 00 00 00 00 00 00 00                          ........        
 </code></pre></div>
 <p><em>Does it work for UART Input?</em></p>
-<p>Since we’ve correctly identified the IRQ Number, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105"><strong>riscv_dispatch_irq</strong></a> will (eventually) call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L859-L904"><strong>bl602_receive</strong></a> to read the UART Input (pic below)…</p>
-<div class="example-wrap"><pre class="language-text"><code>bl602_receive: rxdata=-1
-bl602_receive: rxdata=0x0
+<p>Since we’ve correctly identified the IRQ Number, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105"><strong>riscv_dispatch_irq</strong></a> will (eventually) call <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L502-L540"><strong>bl808_receive</strong></a> to read the UART Input (pic below)…</p>
+<div class="example-wrap"><pre class="language-text"><code>bl808_receive: rxdata=-1
+bl808_receive: rxdata=0x0
 </code></pre></div>
-<p>But the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L892-L901"><strong>UART Input is empty</strong></a>! We need to <a href="https://github.com/lupyuen/nuttx-ox64#compare-ox64-bl808-uart-registers"><strong>troubleshoot our UART Driver</strong></a> some more.</p>
+<p>But the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L502-L540"><strong>UART Input is empty</strong></a>! We need to <a href="https://github.com/lupyuen/nuttx-ox64#compare-ox64-bl808-uart-registers"><strong>troubleshoot our UART Driver</strong></a> some more.</p>
 <p>Meanwhile we wrap up our story for today…</p>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L294-L325">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://youtu.be/VSTpsSJ_7L0">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -708,7 +707,7 @@ bl602_receive: rxdata=0x0
 <p><em>Any clue what’s causing this?</em></p>
 <p><strong>Leaky Writes</strong> don’t seem to happen <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L298"><strong>before enabling the MMU</strong></a> (Memory Management Unit)…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Before enabling Memory Mgmt Unit...
-jh7110_mm_init: Test Interrupt Priority
+bl808_mm_init: Test Interrupt Priority
 
 // No Leaky Writes!
 test_interrupt_priority:
@@ -716,7 +715,7 @@ test_interrupt_priority:
   after50=1,  after54=0
 
 // Leaky Writes after enabling Memory Mgmt Unit
-jh7110_kernel_mppings: map I/O regions
+bl808_kernel_mppings: map I/O regions
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L118-L120">(See the <strong>Complete Log</strong>)</a></p>
 <p>So it might be a problem with our MMU Settings.</p>
@@ -840,29 +839,29 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 </ul>
 <p>We discover that BL808 UART works the <strong>same way as BL602</strong>!</p>
 <p>Thus we’ll simply copy the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX Driver for BL602 UART</strong></a> to Ox64.</p>
-<p>Here’s the UART Driver <strong>ported to BL808</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c">bl602_serial.c</a></p>
+<p>Here’s the UART Driver <strong>ported to BL808</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c">bl808_serial.c</a></p>
 <p><em>What did we change?</em></p>
-<p>We hardcoded the <strong>UART3 Base Address</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/hardware/bl602_uart.h#L30-L41">bl602_uart.h</a></p>
+<p>We hardcoded the <strong>UART3 Base Address</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/hardware/bl808_uart.h#L34-L38">bl808_uart.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// UART3 Base Address
-#define BL602_UART0_BASE   0x30002000
-#define BL602_UART_BASE(n) (BL602_UART0_BASE)
+#define BL808_UART3_BASE   0x30002000ul
+#define BL808_UART_BASE(n) (BL808_UART3_BASE)
 </code></pre></div>
-<p>Then we set the <strong>UART3 Interrupt Number</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L169-L175">bl602_serial.c</a></p>
+<p>Then we set the <strong>UART3 Interrupt Number</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/bl808/irq.h#L31-L39">irq.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// From BL808 Manual: UART3 Interrupt = (IRQ_NUM_BASE + 4)
 // Where IRQ_NUM_BASE = 16
 // So RISC-V IRQ = 20
 // And NuttX IRQ = 45 (Offset by 25)
-#define BL602_IRQ_UART0 45
+#define BL808_IRQ_UART3 45
 </code></pre></div>
-<p>And we modified the <strong>NuttX Start Code</strong> to call our new UART Driver: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_start.c#L175-L184">jh7110_start.c</a></p>
+<p>And we modified the <strong>NuttX Start Code</strong> to call our new UART Driver: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L297-L327">bl808_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// At Startup, init the new UART Driver
 void riscv_earlyserialinit(void) {
-  bl602_earlyserialinit();
+  bl808_earlyserialinit();
 }
 
 // Same here
 void riscv_serialinit(void) {
-  bl602_serialinit();
+  bl808_serialinit();
 }
 </code></pre></div>
 <p>Finally we enabled and handled the <strong>UART Interrupt</strong>…</p>
