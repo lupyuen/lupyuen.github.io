@@ -694,15 +694,15 @@ cp Image &quot;/Volumes/NO NAME/&quot;
 <p><em>U-Boot Bootloader loads the NuttX Kernel + Initial RAM Disk into RAM…</em></p>
 <p><em>How in RAM will NuttX Kernel locate the Initial RAM Disk?</em></p>
 <p>Our Initial RAM Disk follows the <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM File System Format</strong></a> (ROM FS). We <strong>search our RAM</strong> for the ROM File System by its Magic Number.</p>
-<p>Then we copy it into the designated <strong>Memory Region</strong> for mounting: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L190-L245">jh7110_start.c</a></p>
+<p>Then we copy it into the designated <strong>Memory Region</strong> for mounting: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L104-L177">bl808_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Locate the Initial RAM Disk and copy to the designated Memory Region
-void jh7110_copy_ramdisk(void) {
+void bl808_copy_ramdisk(void) {
 
   // After _edata, search for &quot;-rom1fs-&quot;. This is the RAM Disk Address.
   // Limit search to 256 KB after Idle Stack Top.
   const char *header = &quot;-rom1fs-&quot;;
   uint8_t *ramdisk_addr = NULL;
-  for (uint8_t *addr = _edata; addr &lt; (uint8_t *)JH7110_IDLESTACK_TOP + (256 * 1024); addr++) {
+  for (uint8_t *addr = _edata; addr &lt; (uint8_t *)BL808_IDLESTACK_TOP + (256 * 1024); addr++) {
     if (memcmp(addr, header, strlen(header)) == 0) {
       ramdisk_addr = addr;
       break;
@@ -710,10 +710,10 @@ void jh7110_copy_ramdisk(void) {
   }
 
   // Stop if RAM Disk is missing
-  DEBUGASSERT(ramdisk_addr != NULL);
+  if (ramdisk_addr == NULL) { PANIC(); }
 
   // RAM Disk must be after Idle Stack, to prevent overwriting
-  DEBUGASSERT(ramdisk_addr &gt; (uint8_t *)JH7110_IDLESTACK_TOP);
+  if (ramdisk_addr &lt;= (uint8_t *)BL808_IDLESTACK_TOP) { PANIC(); }
 
   // Read the Filesystem Size from the next 4 bytes, in Big Endian
   // Add 0x1F0 to Filesystem Size
@@ -725,19 +725,19 @@ void jh7110_copy_ramdisk(void) {
     0x1F0;
 
   // Filesystem Size must be less than RAM Disk Memory Region
-  DEBUGASSERT(size &lt;= (size_t)__ramdisk_size);
+  if (size &gt; (size_t)__ramdisk_size) { PANIC(); }
 
   // Copy the Filesystem bytes to RAM Disk Memory Region
   // Warning: __ramdisk_start overlaps with ramdisk_addr + size
   // Which doesn&#39;t work with memcpy.
   // Sadly memmove is aliased to memcpy, so we implement memmove ourselves
-  local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
+  bl808_copy_overlap((void *)__ramdisk_start, ramdisk_addr, size);
 }
 </code></pre></div>
-<p>(More about <strong>edata</strong>, <strong>Idle Stack</strong> and <strong>local_memmove</strong> in the next section)</p>
+<p>(More about <strong>edata</strong>, <strong>Idle Stack</strong> and <strong>bl808_copy_overlap</strong> in the next section)</p>
 <p><em>Why did we copy Initial RAM Disk to ramdisk_start?</em></p>
 <p><strong>ramdisk_start</strong> points to the Memory Region that we reserved for mounting our RAM Disk.</p>
-<p>It’s defined in the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L21-L48">ld.script</a></p>
+<p>It’s defined in the <strong>NuttX Linker Script</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L21-L48">ld.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Memory Region for Mounting RAM Disk */
 ramdisk (rwx) : ORIGIN = 0x50A00000, LENGTH = 16M
 ...
@@ -747,18 +747,17 @@ __ramdisk_end  = ORIGIN(ramdisk) + LENGTH(ramdisk);
 </code></pre></div>
 <p><em>Who calls the code above?</em></p>
 <p>We locate and copy the Initial RAM Disk at the very top of our <strong>NuttX Start Code</strong>. </p>
-<p>This happens before <strong>erasing the BSS</strong> (Global and Static Variables), in case it corrupts our RAM Disk: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L144-L156">jh7110_start.c</a></p>
+<p>This just after <strong>erasing the BSS</strong> (Global and Static Variables), in case we need to print some messages and it uses Global and Static Variables: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L254-L284">bl808_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX Start Code
-void jh7110_start(int mhartid) {
-
-  // Copy the RAM Disk
-  jh7110_copy_ramdisk();
+void bl808_start(int mhartid) {
 
   // Clear the BSS for Global and Static Variables
-  jh7110_clear_bss();
+  bl808_clear_bss();
+
+  // Copy the RAM Disk
+  bl808_copy_ramdisk();
 </code></pre></div>
-<p>(Though BSS shouldn’t matter, as explained below)</p>
-<p>Later during startup, we <strong>mount the RAM Disk</strong> from the Memory Region: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L51-L87">jh7110_appinit.c</a></p>
+<p>Later during startup, we <strong>mount the RAM Disk</strong> from the Memory Region: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/src/bl808_appinit.c#L51-L87">bl808_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// After NuttX has booted...
 void board_late_initialize(void) {
   // Mount the RAM Disk
@@ -775,8 +774,8 @@ int mount_ramdisk(void) {
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow">(How NuttX calls <strong>board_late_initialize</strong>)</a></p>
 <p>All this works great: NuttX mounts our RAM Disk successfully, and starts the ELF Executable for NuttX Shell!</p>
-<div class="example-wrap"><pre class="language-text"><code>jh7110_copy_ramdisk:
-  _edata=0x50400258, _sbss=0x50400290, _ebss=0x50407000, JH7110_IDLESTACK_TOP=0x50407c00
+<div class="example-wrap"><pre class="language-text"><code>bl808_copy_ramdisk:
+  _edata=0x50400258, _sbss=0x50400290, _ebss=0x50407000, BL808_IDLESTACK_TOP=0x50407c00
   ramdisk_addr=0x50408288
   size=8192016
   Before Copy: ramdisk_addr=0x50408288
@@ -810,7 +809,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 </code></pre></div>
 <p>U-Boot Bootloader will load our Initial RAM Disk into RAM. However it’s dangerously close to <strong>BSS Memory</strong> (Global and Static Variables) and <strong>Kernel Stack</strong>.</p>
 <p>There’s a risk that our Initial RAM Disk will be <strong>contaminated by BSS and Stack</strong>. This is how we found a clean, safe space for our Initial RAM Disk (pic above)…</p>
-<p>We inspect the <a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89#file-ox64-nuttx13-log-L114-L118"><strong>NuttX Log</strong></a> and the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L28"><strong>NuttX Linker Script</strong></a>…</p>
+<p>We inspect the <a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89#file-ox64-nuttx13-log-L114-L118"><strong>NuttX Log</strong></a> and the <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L20-L28"><strong>NuttX Linker Script</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>// End of Data Section
 _edata=0x50400258
 
@@ -821,7 +820,7 @@ _sbss=0x50400290
 _ebss=0x50407000
 
 // Top of Kernel Idle Stack
-JH7110_IDLESTACK_TOP=0x50407c00
+BL808_IDLESTACK_TOP=0x50407c00
 
 // We located the initrd after the Top of Idle Stack
 ramdisk_addr=0x50408288, size=8192016
@@ -848,7 +847,7 @@ __ramdisk_start=0x50a00000
 </li>
 <li>
 <p>If we append Initial RAM Disk <strong><code>initrd</code></strong> directly to the end of <strong><code>nuttx.bin</code></strong>…</p>
-<p>It will collide with the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L74-L92"><strong>BSS Section</strong></a> and the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_head.S#L94-L101"><strong>Kernel Idle Stack</strong></a>.</p>
+<p>It will collide with the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L181-L200"><strong>BSS Section</strong></a> and the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_head.S#L68-L77"><strong>Kernel Idle Stack</strong></a>.</p>
 <p>And <strong><code>initrd</code></strong> will get overwritten when NuttX runs the <strong>Boot Code</strong> and <strong>Start Code</strong>.</p>
 <p>(Boot Code uses the Kernel Idle Stack. Start Code erases the BSS)</p>
 </li>
@@ -873,26 +872,24 @@ __ramdisk_start=0x50a00000
 </ol>
 <p>Yep our 64 KB Padding looks legit!</p>
 <p><em>64 KB sounds arbitrary. What if the parameters change?</em></p>
-<p>We have <strong>Runtime Checks</strong> to catch problems: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L214-L236">jh7110_start.c</a></p>
+<p>We have <strong>Runtime Checks</strong> to catch problems: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L136-L170">bl808_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Stop if RAM Disk is missing
-if (ramdisk_addr == NULL) { _info(&quot;Missing RAM Disk. Check the initrd padding.&quot;); }
-DEBUGASSERT(ramdisk_addr != NULL);
+if (ramdisk_addr == NULL) { _err(&quot;Missing RAM Disk. Check the initrd padding.&quot;); PANIC(); }
 
 // RAM Disk must be after Idle Stack, to prevent overwriting
-if (ramdisk_addr &lt;= (uint8_t *)JH7110_IDLESTACK_TOP) { _info(&quot;RAM Disk must be after Idle Stack. Increase the initrd padding by %ul bytes.&quot;, (size_t)JH7110_IDLESTACK_TOP - (size_t)ramdisk_addr); }
-DEBUGASSERT(ramdisk_addr &gt; (uint8_t *)JH7110_IDLESTACK_TOP);
+if (ramdisk_addr &lt;= (uint8_t *)BL808_IDLESTACK_TOP) { _err(&quot;RAM Disk must be after Idle Stack. Increase the initrd padding by %ul bytes.&quot;, (size_t)BL808_IDLESTACK_TOP - (size_t)ramdisk_addr); PANIC(): }
 
 // Filesystem Size must be less than RAM Disk Memory Region
-DEBUGASSERT(size &lt;= (size_t)__ramdisk_size);
+if (size &gt; (size_t)__ramdisk_size) { _err(&quot;RAM Disk Region too small&quot;); PANIC(); }
 </code></pre></div>
-<p><em>Why call local_memmove to copy initrd to RAM Disk Region? Why not memcpy?</em></p>
+<p><em>Why call bl808_copy_overlap to copy initrd to RAM Disk Region? Why not memcpy?</em></p>
 <p>That’s because <strong><code>initrd</code></strong> overlaps with <strong>RAM Disk Region</strong>! (See above)</p>
-<p><strong><code>memcpy</code></strong> won’t work with <strong>Overlapping Memory Regions</strong>. Thus we added this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L455-L489">jh7110_start.c</a></p>
+<p><strong><code>memcpy</code></strong> won’t work with <strong>Overlapping Memory Regions</strong>. Thus we added this: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L70-L104">bl808_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Copy a chunk of memory from `src` to `dest`.
 // `dest` overlaps with the end of `src`.
 // From libs/libc/string/lib_memmove.c
-void *local_memmove(void *dest, const void *src, size_t count) {
-  DEBUGASSERT(dest &gt; src);
+void *bl808_copy_overlap(void *dest, const void *src, size_t count) {
+  if (dest &lt;= src) { _err(&quot;dest and src should overlap&quot;); PANIC(); }
   char *d = (char *) dest + count;
   char *s = (char *) src + count;
   // TODO: This needs to be `volatile` or GCC Compiler will replace this by memcpy. Very strange. 
@@ -913,13 +910,13 @@ verify_image(ramdisk_addr);
 // Warning: __ramdisk_start overlaps with ramdisk_addr + size
 // Which doesn&#39;t work with memcpy.
 // Sadly memmove is aliased to memcpy, so we implement memmove ourselves
-local_memmove((void *)__ramdisk_start, ramdisk_addr, size);
+bl808_copy_overlap((void *)__ramdisk_start, ramdisk_addr, size);
 
 // After Copy: Verify the copied RAM Disk Image
 verify_image(__ramdisk_start);
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L248-L455">(<strong><code>verify_image</code></strong> searches for a specific byte)</a></p>
-<p>That’s how we discovered that <strong><code>memcpy</code></strong> doesn’t work. And our <strong><code>local_memmove</code></strong> works great for the Initial RAM Disk and NuttX Shell! (Pic below)</p>
+<p>That’s how we discovered that <strong><code>memcpy</code></strong> doesn’t work. And our <strong><code>bl808_copy_overlap</code></strong> works great for the Initial RAM Disk and NuttX Shell! (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L115-L323"><em>Ox64 boots to NuttX Shell</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
