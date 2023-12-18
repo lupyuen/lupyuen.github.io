@@ -186,18 +186,18 @@
 <h1 id="leaky-reads-in-uart"><a href="#leaky-reads-in-uart">3 Leaky Reads in UART</a></h1>
 <p><em>How to track down the culprit?</em></p>
 <p>We begin with the simplest bug: <a href="https://lupyuen.github.io/articles/plic2#backup-plan"><strong>UART Input</strong></a> is always Empty.</p>
-<p>In our <a href="https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64"><strong>UART Driver</strong></a>, this is how we read the <strong>UART Input</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/jh7110/bl602_serial.c#L943-L995">bl602_serial.c</a></p>
+<p>In our <a href="https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64"><strong>UART Driver</strong></a>, this is how we read the <strong>UART Input</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L502-L540">bl808_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Receive one character from the UART Port.
 // Called (indirectly) by the UART Interrupt Handler: __uart_interrupt
-int bl602_receive(...) {
+int bl808_receive(...) {
   ...
   // If there&#39;s Pending UART Input...
   // (FIFO_CONFIG_1 is 0x30002084)
-  if (getreg32(BL602_UART_FIFO_CONFIG_1(uart_idx)) &amp; UART_FIFO_CONFIG_1_RX_CNT_MASK) {
+  if (getreg32(BL808_UART_FIFO_CONFIG_1(uart_idx)) &amp; UART_FIFO_CONFIG_1_RX_CNT_MASK) {
 
     // Then read the Actual UART Input
     // (FIFO_RDATA is 0x3000208c)
-    rxdata = getreg32(BL602_UART_FIFO_RDATA(uart_idx)) &amp; UART_FIFO_RDATA_MASK;
+    rxdata = getreg32(BL808_UART_FIFO_RDATA(uart_idx)) &amp; UART_FIFO_RDATA_MASK;
 </code></pre></div>
 <p>Which says that we…</p>
 <ul>
@@ -397,6 +397,8 @@ void mmu_ln_setentry(
       | _PAGE_IO_THEAD;
   }
 </code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L42-L49">(Moved here)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L241-L253">(And here)</a></p>
 <p>The code above will set the <strong>Strong Order and Shareable Bits</strong> for…</p>
 <ul>
 <li>
@@ -448,7 +450,7 @@ map PLIC as Interrupt L2
 </code></pre></div></li>
 <li>
 <p>Our <strong>UART Driver</strong> returns the <a href="https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167#file-ox64-nuttx-mmu-uncache-log-L344"><strong>correct UART Input</strong></a></p>
-<div class="example-wrap"><pre class="language-text"><code>bl602_receive: rxdata=0x31
+<div class="example-wrap"><pre class="language-text"><code>bl808_receive: rxdata=0x31
 </code></pre></div></li>
 </ul>
 <p><em>Is NuttX usable on Ox64?</em></p>
