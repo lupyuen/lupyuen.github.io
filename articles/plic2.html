@@ -897,6 +897,7 @@ static void bl808_uart_configure(const struct uart_config_s *config)
   // Assume that U-Boot Bootloader has already configured the UART
 }
 </code></pre></div>
+<p><a href="https://github.com/apache/nuttx/pull/11371#discussion_r1423963947">(Comments on <strong>UART Configuration</strong>)</a></p>
 <p><em>Does it work?</em></p>
 <p>After making these changes, the UART Driver works OK for Serial Console Input and Output! We need to enable <strong>Strongly-Ordered Access to I/O Memory</strong>, as explained here…</p>
 <ul>
