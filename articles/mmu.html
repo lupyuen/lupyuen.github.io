@@ -271,6 +271,7 @@ mmu_ln_map_region(
 );
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/plic3#t-head-errata">(Why we need <strong>Strong-Ordering</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L42-L49">(<strong>STRONG_ORDER</strong> and <strong>SHAREABLE</strong> are here)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-io-region-level-1">(See the <strong>NuttX L1 Log</strong>)</a></p>
 </li>
@@ -342,6 +343,7 @@ mmu_ln_map_region(
 );
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/plic3#t-head-errata">(Why we need <strong>Strong-Ordering</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L42-L49">(<strong>STRONG_ORDER</strong> and <strong>SHAREABLE</strong> are here)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-plic-level-2">(See the <strong>NuttX L2 Log</strong>)</a></p>
 <p>We’re not done yet! Next we connect the Levels…</p>

@@ -844,7 +844,8 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 <p>We hardcoded the <strong>UART3 Base Address</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/hardware/bl808_uart.h#L34-L38">bl808_uart.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// UART3 Base Address
 #define BL808_UART3_BASE   0x30002000ul
-#define BL808_UART_BASE(n) (BL808_UART3_BASE)
+#define BL808_UART_BASE(n) (UNUSED(n), BL808_UART3_BASE)
+// We call `UNUSED` to suppress warnings about unused `uart_idx`
 </code></pre></div>
 <p>Then we set the <strong>UART3 Interrupt Number</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/bl808/irq.h#L31-L39">irq.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// From BL808 Manual: UART3 Interrupt = (IRQ_NUM_BASE + 4)
@@ -873,8 +874,34 @@ void riscv_serialinit(void) {
 <p><a href="https://lupyuen.github.io/articles/plic2#handle-the-interrupt"><strong>“Handle the Interrupt”</strong></a></p>
 </li>
 </ul>
-<p>After making these changes, the UART Driver works OK for printing output to the Ox64 Serial Console!</p>
-<p>(But not yet for UART Input, pic below)</p>
+<p><em>What about the UART Configuration?</em></p>
+<p>We enable UART3 in the <strong>BL808 Peripheral Configuration</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/Kconfig">Kconfig</a></p>
+<div class="example-wrap"><pre class="language-text"><code>comment &quot;BL808 Configuration Options&quot;
+menu &quot;BL808 Peripheral Support&quot;
+config BL808_UART3
+	bool &quot;UART 3&quot;
+	default n
+	select UART3_SERIALDRIVER
+	select ARCH_HAVE_SERIAL_TERMIOS
+endmenu
+</code></pre></div>
+<p>And we select UART3 as the <strong>Serial Console</strong> in the <strong>NuttX Build Configuration</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L34-L83">nsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_BL808_UART3=y
+CONFIG_UART3_BAUD=2000000
+CONFIG_UART3_SERIAL_CONSOLE=y
+</code></pre></div>
+<p>For now, the <strong>UART3 Baud Rate</strong> isn’t used. We assume that U-Boot Bootloader has already configured the UART3 Port: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L225-L238">bl808_serial.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Configure the UART baud, bits, parity, etc.
+static void bl808_uart_configure(const struct uart_config_s *config)
+{
+  // Assume that U-Boot Bootloader has already configured the UART
+}
+</code></pre></div>
+<p><em>Does it work?</em></p>
+<p>After making these changes, the UART Driver works OK for Serial Console Input and Output! We need to enable <strong>Strongly-Ordered Access to I/O Memory</strong>, as explained here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/plic3"><strong>“Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)”</strong></a></li>
+</ul>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://youtu.be/VSTpsSJ_7L0">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-run.png" alt="NuttX boots OK on Ox64 BL808! But UART Input is null" /></p>
