@@ -223,6 +223,8 @@ But we have so many questions...
 
     [(Why we need __Strong-Ordering__)](https://lupyuen.github.io/articles/plic3#t-head-errata)
 
+    [(__STRONG_ORDER__ and __SHAREABLE__ are here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L42-L49)
+
     [(__mmu_ln_map_region__ is defined here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153)
 
     [(See the __NuttX L1 Log__)](https://github.com/lupyuen/nuttx-ox64#map-the-io-region-level-1)
@@ -323,6 +325,8 @@ mmu_ln_map_region(
 ```
 
 [(Why we need __Strong-Ordering__)](https://lupyuen.github.io/articles/plic3#t-head-errata)
+
+[(__STRONG_ORDER__ and __SHAREABLE__ are here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L42-L49)
 
 [(__mmu_ln_map_region__ is defined here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153)
 

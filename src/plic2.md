@@ -955,7 +955,8 @@ We hardcoded the __UART3 Base Address__: [bl808_uart.h](https://github.com/apach
 ```c
 // UART3 Base Address
 #define BL808_UART3_BASE   0x30002000ul
-#define BL808_UART_BASE(n) (BL808_UART3_BASE)
+#define BL808_UART_BASE(n) (UNUSED(n), BL808_UART3_BASE)
+// We call `UNUSED` to suppress warnings about unused `uart_idx`
 ```
 
 Then we set the __UART3 Interrupt Number__: [irq.h](https://github.com/apache/nuttx/blob/master/arch/risc-v/include/bl808/irq.h#L31-L39)
@@ -988,9 +989,44 @@ Finally we enabled and handled the __UART Interrupt__...
 
 - [__"Handle the Interrupt"__](https://lupyuen.github.io/articles/plic2#handle-the-interrupt)
 
-After making these changes, the UART Driver works OK for printing output to the Ox64 Serial Console!
+_What about the UART Configuration?_
 
-(But not yet for UART Input, pic below)
+We enable UART3 in the __BL808 Peripheral Configuration__: [Kconfig](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/Kconfig)
+
+```text
+comment "BL808 Configuration Options"
+menu "BL808 Peripheral Support"
+config BL808_UART3
+	bool "UART 3"
+	default n
+	select UART3_SERIALDRIVER
+	select ARCH_HAVE_SERIAL_TERMIOS
+endmenu
+```
+
+And we select UART3 as the __Serial Console__ in the __NuttX Build Configuration__: [nsh/defconfig](https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L34-L83)
+
+```bash
+CONFIG_BL808_UART3=y
+CONFIG_UART3_BAUD=2000000
+CONFIG_UART3_SERIAL_CONSOLE=y
+```
+
+For now, the __UART3 Baud Rate__ isn't used. We assume that U-Boot Bootloader has already configured the UART3 Port: [bl808_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L225-L238)
+
+```c
+// Configure the UART baud, bits, parity, etc.
+static void bl808_uart_configure(const struct uart_config_s *config)
+{
+  // Assume that U-Boot Bootloader has already configured the UART
+}
+```
+
+_Does it work?_
+
+After making these changes, the UART Driver works OK for Serial Console Input and Output! We need to enable __Strongly-Ordered Access to I/O Memory__, as explained here...
+
+- [__"Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)"__](https://lupyuen.github.io/articles/plic3)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325)
 
