@@ -724,6 +724,18 @@ Changes not staged for commit:
 <p>Thus we can’t copy any Default Settings in <strong>.config</strong> to <strong>defconfig</strong>.</p>
 </li>
 <li>
+<p>If the auto-build fails with <strong>“Untracked etctmp”</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>HEAD detached at pull/11379/merge
+Untracked files: (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+boards/risc-v/k230/canmv230/src/etctmp.c
+boards/risc-v/k230/canmv230/src/etctmp/
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/actions/runs/7203675079/job/19625255417?pr=11379">(Source)</a></p>
+<p>Check that we have added “<strong>etctmp</strong>” to the <strong>Board-Specific Git Ignore</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/src/.gitignore">boards/risc-v/jh7110/star64/src/.gitignore</a></p>
+<div class="example-wrap"><pre class="language-text"><code>etctmp
+etctmp.c
+</code></pre></div></li>
+<li>
 <p>Here’s an excellent guide for the <strong>Git Command Line</strong>…</p>
 <p><a href="https://github.com/k88hudson/git-flight-rules"><strong>“Flight rules for Git”</strong></a></p>
 </li>

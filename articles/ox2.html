@@ -771,6 +771,9 @@ DEBUGASSERT(ret &gt;= 0);
 <p><a href="https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64"><strong>Memory Map</strong></a> might need fixing too</p>
 </li>
 </ul>
+<p><em>How did we figure out the NuttX Boot Flow?</em></p>
+<p>It’s awfully tricky to follow the Boot Flow by reading the <strong>NuttX Source Code</strong>. (So many C Macros!)</p>
+<p>Instead we searched for Function Names in the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/bl808d-1/nuttx.S"><strong>NuttX Disassembly</strong></a>. Which has the C Macros completely expanded for us.</p>
 <h1 id="appendix-memory-map-for-ox64"><a href="#appendix-memory-map-for-ox64">11 Appendix: Memory Map for Ox64</a></h1>
 <p>Read the article…</p>
 <ul>
