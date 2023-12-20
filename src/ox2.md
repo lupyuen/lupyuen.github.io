@@ -874,6 +874,12 @@ Therefore we expect NuttX to __boot completely on Ox64__ when we've implemented.
 
 - [__Memory Map__](https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64) might need fixing too
 
+_How did we figure out the NuttX Boot Flow?_
+
+It's awfully tricky to follow the Boot Flow by reading the __NuttX Source Code__. (So many C Macros!)
+
+Instead we searched for Function Names in the [__NuttX Disassembly__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/bl808d-1/nuttx.S). Which has the C Macros completely expanded for us.
+
 # Appendix: Memory Map for Ox64
 
 Read the article...

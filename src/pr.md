@@ -753,6 +753,24 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Thus we can't copy any Default Settings in __.config__ to __defconfig__.
 
+1.  If the auto-build fails with __"Untracked etctmp"__...
+
+    ```text
+    HEAD detached at pull/11379/merge
+    Untracked files: (use "git add <file>..." to include in what will be committed)
+    boards/risc-v/k230/canmv230/src/etctmp.c
+    boards/risc-v/k230/canmv230/src/etctmp/
+    ```
+
+    [(Source)](https://github.com/apache/nuttx/actions/runs/7203675079/job/19625255417?pr=11379)
+
+    Check that we have added "__etctmp__" to the __Board-Specific Git Ignore__: [boards/risc-v/jh7110/star64/src/.gitignore](https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/src/.gitignore)
+
+    ```text
+    etctmp
+    etctmp.c
+    ```
+
 1.  Here's an excellent guide for the __Git Command Line__...
 
     [__"Flight rules for Git"__](https://github.com/k88hudson/git-flight-rules)
