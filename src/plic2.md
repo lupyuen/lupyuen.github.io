@@ -1022,6 +1022,8 @@ static void bl808_uart_configure(const struct uart_config_s *config)
 }
 ```
 
+[(Comments on __UART Configuration__)](https://github.com/apache/nuttx/pull/11371#discussion_r1423963947)
+
 _Does it work?_
 
 After making these changes, the UART Driver works OK for Serial Console Input and Output! We need to enable __Strongly-Ordered Access to I/O Memory__, as explained here...
