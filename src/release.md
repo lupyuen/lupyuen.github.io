@@ -1045,6 +1045,8 @@ __For Ox64 BL808 SBC:__ We skipped the UART Configuration completely. Which is O
 
 - [__bl808_uart_configure__ in __bl808_serial.c__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L225-L238)
 
+  [(More about __BL808 UART__)](https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64)
+
 So if we're building the UART Driver ourselves and it's incomplete, it's OK to upstream it first and __complete it later__. That's how we did it for __PinePhone on Allwinner A64__...
 
 - [__History of a64_serial.c__](https://github.com/apache/nuttx/commits/master/arch/arm64/src/a64/a64_serial.c)
