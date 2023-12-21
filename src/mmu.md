@@ -247,7 +247,7 @@ __[ 2 MB per Medium Chunk ]__
 
 _Our Interrupt Controller needs 256 MB of protection..._
 
-_Surely a Level 1 Chunk (2 GB) is too wasteful?_
+_Surely a Level 1 Chunk (1 GB) is too wasteful?_
 
 | Region | Start Address | Size
 |:--------------|:-------------:|:----
