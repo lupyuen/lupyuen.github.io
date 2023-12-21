@@ -1007,7 +1007,10 @@ uartclk = (13 * 1843200) - 921600
 </ol>
 <p><strong>For Ox64 BL808 SBC:</strong> We skipped the UART Configuration completely. Which is OK because we won’t use the other UART Ports anyway…</p>
 <ul>
-<li><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L225-L238"><strong>bl808_uart_configure</strong> in <strong>bl808_serial.c</strong></a></li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L225-L238"><strong>bl808_uart_configure</strong> in <strong>bl808_serial.c</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64">(More about <strong>BL808 UART</strong>)</a></p>
+</li>
 </ul>
 <p>So if we’re building the UART Driver ourselves and it’s incomplete, it’s OK to upstream it first and <strong>complete it later</strong>. That’s how we did it for <strong>PinePhone on Allwinner A64</strong>…</p>
 <ul>
