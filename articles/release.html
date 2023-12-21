@@ -988,6 +988,31 @@ uartclk = (13 * 1843200) - 921600
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_CLOCK=23040000
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/52527d9915ea0ba1d7e75bb9f2f81356bb2b8ba9/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18">(Source)</a></p>
+<p><em>Shouldn’t we get the UART Clock from the SoC Datasheet?</em></p>
+<p>Yep absolutely! For JH7110 there isn’t a complete Datasheet, the docs only point to the Linux Device Tree. That’s why we derived the UART Clock ourselves.</p>
+<p>Sometimes we work backwards when <strong>porting NuttX to SBCs</strong>…</p>
+<ol>
+<li>
+<p>Assume that the UART Driver is already configured by U-Boot</p>
+</li>
+<li>
+<p>Get the simple UART Driver working, without configuring the UART</p>
+</li>
+<li>
+<p>Figure out the right values of DLL and DLM, so that UART Driver will configure the UART correctly</p>
+</li>
+<li>
+<p>DLL and DLM will be reused by other UARTs: UART 1, 2, 3, …</p>
+</li>
+</ol>
+<p><strong>For Ox64 BL808 SBC:</strong> We skipped the UART Configuration completely. Which is OK because we won’t use the other UART Ports anyway…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L225-L238"><strong>bl808_uart_configure</strong> in <strong>bl808_serial.c</strong></a></li>
+</ul>
+<p>So if we’re building the UART Driver ourselves and it’s incomplete, it’s OK to upstream it first and <strong>complete it later</strong>. That’s how we did it for <strong>PinePhone on Allwinner A64</strong>…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/commits/master/arch/arm64/src/a64/a64_serial.c"><strong>History of a64_serial.c</strong></a></li>
+</ul>
 
     
 </body>
