@@ -435,6 +435,8 @@ map PLIC as Interrupt L2
 
 We test our patched code...
 
+__NOTE:__ T-Head MMU Flags (Strong Order / Shareable) are available only if OpenSBI has set the [__MAEE Bit in the MXSTATUS Register to 1__](https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic). Otherwise the MMU will crash when we set the flags!
+
 __UPDATE:__ NuttX Mainline now supports [__T-Head C906 Memory Types__](https://github.com/apache/nuttx/pull/11365)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946#file-ox64-nuttx-uart-ok-log-L25-L160)
