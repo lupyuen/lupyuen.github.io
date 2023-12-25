@@ -858,6 +858,8 @@ Follow these steps to download the __64-bit RISC-V Toolchain__ (SiFive Freedom T
 
     -   [__Arm64 Linux__](https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v) (Raspberry Pi, Pinebook Pro)
 
+    -   [__Alpine / Debian Linux Containers__](https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v) (for VSCode)
+
 1.  Extract the Downloaded Toolchain
 
 1.  Add the Extracted Toolchain to the __`PATH`__ Environment Variable...
@@ -878,7 +880,7 @@ __For Arm64 Linux__ (Raspberry Pi, Pinebook Pro): See the next section...
 
 In the previous section we use the __64-bit RISC-V Toolchain__ from SiFive Freedom Tools. But the toolchain won't work on __Arm64 Linux__. (Like Raspberry Pi and Pinebook Pro)
 
-For Arm64 Linux we use a different toolchain: [__xPack GNU RISC-V Embedded GCC__](https://xpack.github.io/dev-tools/riscv-none-elf-gcc/install/)
+To build NuttX on an Arm64 Linux computer, we use a different toolchain: [__xPack GNU RISC-V Embedded GCC__](https://xpack.github.io/dev-tools/riscv-none-elf-gcc/install/)
 
 ```bash
 ## Install Toolchain for RISC-V Target: xPack GNU RISC-V Embedded GCC
@@ -897,22 +899,7 @@ ls: cannot access '/usr/bin/riscv*': No such file or directory
 ~ $ tar xf xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
 ~ $ export PATH=$PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin:$PATH
 
-## xPack Toolchain names the binaries as "riscv" instead of "riscv64". 
-## So we symlink the Toolchain Binaries from "riscv" to "riscv64".
-## TODO: Symlink the rest of the Toolchain Binaries
-
-~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-ar  $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-ar
-~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-gcc $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-gcc
-~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-ld  $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-ld
-~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-nm  $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-nm
-~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-objcopy $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-objcopy
-~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-objdump $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-objdump
-~ $ ln -s $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-size    $PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-size
-
-~ $ which riscv64-unknown-elf-gcc
-/home/pi/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv64-unknown-elf-gcc
-
-~ $ riscv64-unknown-elf-gcc -v
+~ $ riscv-none-elf-gcc -v
 gcc version 12.3.0 (xPack GNU RISC-V Embedded GCC aarch64)
 
 ## Build NuttX, based on...
@@ -944,6 +931,18 @@ xpack-riscv-none-elf-gcc-12.3.0-1/bin
 ```
 
 xPack Toolchain works OK with __Math Functions__ on JH7110: [__Source Code__](https://gist.github.com/lupyuen/63bd510d7e45ceebe7443c78ed31c6c8) / [__Output Log__](https://gist.github.com/lupyuen/9bdb1f5478318631d0480f03f6041d83) / [__ELF Symbols__](https://gist.github.com/lupyuen/24f440e14349b2ed56d1784867156378)
+
+_What about Alpine Linux and Debian Linux Containers?_
+
+Yep xPack Toolchain also works with __Alpine and Debian Linux Containers__ (like for VSCode)...
+
+- [__Build NuttX with Debian Linux Container__](https://github.com/lupyuen/nuttx-nim#build-nuttx-with-debian-container-in-vscode)
+
+  (Debian builds more easily than Alpine)
+
+- [__Build NuttX with Alpine Linux Container__](https://gist.github.com/lupyuen/880caa0547378028243b8cc5cfdc50a8)
+
+  (Beware of glibc-to-musl conversion!)
 
 _Does the xPack Toolchain support `-mcmodel=medany`?_
 

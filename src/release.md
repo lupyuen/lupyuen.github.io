@@ -898,6 +898,8 @@ NuttX Kernel will boot OK if we don't actually use any Math Functions. But NuttX
 
 [(See this)](https://lists.apache.org/thread/1lzjphvlhr0b6b4tdq6k1l4rhy900h0z)
 
+[(More about __CONFIG_LIBM__)](https://cwiki.apache.org/confluence/display/NUTTX/Integrating+with+Newlib)
+
 [(Thanks to __Ken Dickey__ for the tip!)](https://github.com/KenDickey)
 
 # Appendix: StarFive VisionFive2 Software Release
