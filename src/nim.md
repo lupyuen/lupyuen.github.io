@@ -37,7 +37,7 @@ Also TinyGo
 
 _(3 languages in a title heh heh)_
 
-This is the __simplest Nim Program__ that will run on NuttX: [hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim)
+This is the __simplest Nim Program__ (that will run on NuttX): [hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L56-L65)
 
 ```nim
 ## Main Function in Nim.
@@ -51,9 +51,17 @@ proc hello_nim() {.exportc, cdecl.} =
   GC_runOrc()
 ```
 
+Which looks a lot like Python!
+
 _What's GC_runOrc?_
 
-TODO: We might forget
+Our Nim Program will be __called by C__. (Remember NuttX?)
+
+And Nim works with [__Garbage Collection__](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)). Thus we call __GC_runOrc__ to force the Garbage Collection to complete, clean up all remaining Nim Objects, before returning to C and NuttX.
+
+_What if we forget to call GC_runOrc?_
+
+Erm don't! To make it unforgettable, we __`defer`__ the Garbage Collection: [hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L56-L65)
 
 ```nim
 ## Main Function in Nim
@@ -65,6 +73,12 @@ proc hello_nim() {.exportc, cdecl.} =
   ## Print something
   echo "Hello Nim!"
 ```
+
+This means that the Garbage Collection __will always happen__, as soon as we return from the Main Function.
+
+# Blink an LED
+
+TODO
 
 # Experiments with Nim on Apache NuttX Real-Time Operating System
 
