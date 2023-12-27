@@ -309,7 +309,7 @@ TODO: We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
 1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
-# Run Nim on Ox64 SBC
+# Run Nim on Ox64
 
 TODO
 
@@ -323,7 +323,36 @@ That's because __Nim compiles to C__...
 
 As far as NuttX is concerned: __Nim looks like another C Program!__
 
+_Whoa! How is Nim compiled to C?_
+
 TODO
+
+```nim
+proc hello_nim() {.exportc, cdecl.} =
+  echo "Hello Nim!"
+```
+
+TODO
+
+```bash
+export TOPDIR=nuttx
+cd apps/examples/hello_nim
+nim c --header hello_nim_async.nim 
+```
+
+TODO
+
+```c
+TODO
+```
+
+TODO: Nim on NuttX?
+
+- Nim Configuration for NuttX
+
+- Nim Support for NuttX
+
+Thanks to ??? and the Nim Community for contributing the above!
 
 # Experiments with Nim on Apache NuttX Real-Time Operating System
 
@@ -1264,3 +1293,11 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/nim.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nim.md)
+
+# Appendix: Build NuttX for QEMU
+
+TODO
+
+# Appendix: Build NuttX for Ox64
+
+TODO
