@@ -70,7 +70,7 @@
 <li><a href="#blink-an-led">2 Blink an LED</a><ul></ul></li>
 <li><a href="#import-nuttx-functions">3 Import NuttX Functions</a><ul></ul></li>
 <li><a href="#run-nim-on-qemu">4 Run Nim on QEMU</a><ul></ul></li>
-<li><a href="#run-nim-on-ox64-sbc">5 Run Nim on Ox64 SBC</a><ul></ul></li>
+<li><a href="#run-nim-on-ox64">5 Run Nim on Ox64</a><ul></ul></li>
 <li><a href="#inside-nim-on-nuttx">6 Inside Nim on NuttX</a><ul></ul></li>
 <li><a href="#experiments-with-nim-on-apache-nuttx-real-time-operating-system">7 Experiments with Nim on Apache NuttX Real-Time Operating System</a><ul></ul></li>
 <li><a href="#fix-nuttx-for-nim">8 Fix NuttX for Nim</a><ul></ul></li>
@@ -82,7 +82,9 @@
 <li><a href="#documentation">14 Documentation</a><ul></ul></li>
 <li><a href="#fix-the-risc-v-timer-with-opensbi">15 Fix the RISC-V Timer with OpenSBI</a><ul></ul></li>
 <li><a href="#led-driver-for-ox64-bl808">16 LED Driver for Ox64 BL808</a><ul></ul></li>
-<li><a href="#whats-next">17 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2024</em></p>
+<li><a href="#whats-next">17 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-qemu">18 Appendix: Build NuttX for QEMU</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-ox64">19 Appendix: Build NuttX for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="TODO" /></p>
 <p>TODO</p>
 <p>2024 is (nearly) here. Apache NuttX RTOS (Real-Time Operating System) now runs on Single-Board Computers with plenty of RAM</p>
@@ -314,14 +316,36 @@ nsh&gt; ps
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
 </li>
 </ol>
-<h1 id="run-nim-on-ox64-sbc"><a href="#run-nim-on-ox64-sbc">5 Run Nim on Ox64 SBC</a></h1>
+<h1 id="run-nim-on-ox64"><a href="#run-nim-on-ox64">5 Run Nim on Ox64</a></h1>
 <p>TODO</p>
 <h1 id="inside-nim-on-nuttx"><a href="#inside-nim-on-nuttx">6 Inside Nim on NuttX</a></h1>
 <p><em>Nim runs incredibly well on NuttX…</em></p>
 <p><em>How is that possible?</em></p>
 <p>That’s because <strong>Nim compiles to C</strong>…</p>
 <p>As far as NuttX is concerned: <strong>Nim looks like another C Program!</strong></p>
+<p><em>Whoa! How is Nim compiled to C?</em></p>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-nim"><code>proc hello_nim() {.exportc, cdecl.} =
+  echo &quot;Hello Nim!&quot;
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>export TOPDIR=nuttx
+cd apps/examples/hello_nim
+nim c --header hello_nim_async.nim 
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>TODO
+</code></pre></div>
+<p>TODO: Nim on NuttX?</p>
+<ul>
+<li>
+<p>Nim Configuration for NuttX</p>
+</li>
+<li>
+<p>Nim Support for NuttX</p>
+</li>
+</ul>
+<p>Thanks to ??? and the Nim Community for contributing the above!</p>
 <h1 id="experiments-with-nim-on-apache-nuttx-real-time-operating-system"><a href="#experiments-with-nim-on-apache-nuttx-real-time-operating-system">7 Experiments with Nim on Apache NuttX Real-Time Operating System</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/nim-title.png" alt="Nim App runs OK on Apache NuttX Real-Time Operating System" /></p>
@@ -1175,6 +1199,10 @@ Function select to Register Control GPIO)
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nim.md"><strong>lupyuen.github.io/src/nim.md</strong></a></p>
+<h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">18 Appendix: Build NuttX for QEMU</a></h1>
+<p>TODO</p>
+<h1 id="appendix-build-nuttx-for-ox64"><a href="#appendix-build-nuttx-for-ox64">19 Appendix: Build NuttX for Ox64</a></h1>
+<p>TODO</p>
 
     
 </body>
