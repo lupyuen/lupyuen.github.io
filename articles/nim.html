@@ -87,7 +87,7 @@
 <li><a href="#appendix-build-nuttx-for-ox64">19 Appendix: Build NuttX for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="TODO" /></p>
 <p>TODO</p>
-<p>2024 is (nearly) here. Apache NuttX RTOS (Real-Time Operating System) now runs on Single-Board Computers with plenty of RAM</p>
+<p>2024 is here! We’re running Apache NuttX RTOS (Real-Time Operating System) on Single-Board Computers with plenty of RAM…</p>
 <p>Like Ox64 BL808 RISC-V SBC with 64 MB RAM!</p>
 <p><em>How do we use the Plentiful RAM?</em></p>
 <p>Let’s consume the extra RAM meaningfully… We’ll create NuttX Apps the simpler safer way with a Garbage-Collected Language: Nim Programming Language!</p>
@@ -328,13 +328,16 @@ nsh&gt; ps
 <div class="example-wrap"><pre class="language-nim"><code>proc hello_nim() {.exportc, cdecl.} =
   echo &quot;Hello Nim!&quot;
 </code></pre></div>
-<p>TODO</p>
+<p>TODO: Makefile</p>
 <div class="example-wrap"><pre class="language-bash"><code>export TOPDIR=nuttx
 cd apps/examples/hello_nim
 nim c --header hello_nim_async.nim 
 </code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>TODO
+</code></pre></div>
+<p>TODO: Makefile</p>
+<div class="example-wrap"><pre class="language-text"><code>TODO
 </code></pre></div>
 <p>TODO: Nim on NuttX?</p>
 <ul>
