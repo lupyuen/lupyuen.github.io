@@ -69,17 +69,18 @@
 <li><a href="#basic-nim-from-scratch">1 Basic Nim from scratch</a><ul></ul></li>
 <li><a href="#blink-an-led">2 Blink an LED</a><ul></ul></li>
 <li><a href="#import-nuttx-functions">3 Import NuttX Functions</a><ul></ul></li>
-<li><a href="#experiments-with-nim-on-apache-nuttx-real-time-operating-system">4 Experiments with Nim on Apache NuttX Real-Time Operating System</a><ul></ul></li>
-<li><a href="#fix-nuttx-for-nim">5 Fix NuttX for Nim</a><ul></ul></li>
-<li><a href="#nim-on-apache-nuttx-rtos-and-ox64-bl808-risc-v-sbc">6 Nim on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC</a><ul></ul></li>
-<li><a href="#blink-an-led-with-nim">7 Blink an LED with Nim</a><ul></ul></li>
-<li><a href="#inside-a-nim-app-for-nuttx">8 Inside a Nim App for NuttX</a><ul></ul></li>
-<li><a href="#build-nuttx-with-debian-container-in-vscode">9 Build NuttX with Debian Container in VSCode</a><ul></ul></li>
-<li><a href="#usleep">10 usleep</a><ul></ul></li>
-<li><a href="#documentation">11 Documentation</a><ul></ul></li>
-<li><a href="#fix-the-risc-v-timer-with-opensbi">12 Fix the RISC-V Timer with OpenSBI</a><ul></ul></li>
-<li><a href="#led-driver-for-ox64-bl808">13 LED Driver for Ox64 BL808</a><ul></ul></li>
-<li><a href="#whats-next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2024</em></p>
+<li><a href="#run-nim-on-qemu">4 Run Nim on QEMU</a><ul></ul></li>
+<li><a href="#experiments-with-nim-on-apache-nuttx-real-time-operating-system">5 Experiments with Nim on Apache NuttX Real-Time Operating System</a><ul></ul></li>
+<li><a href="#fix-nuttx-for-nim">6 Fix NuttX for Nim</a><ul></ul></li>
+<li><a href="#nim-on-apache-nuttx-rtos-and-ox64-bl808-risc-v-sbc">7 Nim on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC</a><ul></ul></li>
+<li><a href="#blink-an-led-with-nim">8 Blink an LED with Nim</a><ul></ul></li>
+<li><a href="#inside-a-nim-app-for-nuttx">9 Inside a Nim App for NuttX</a><ul></ul></li>
+<li><a href="#build-nuttx-with-debian-container-in-vscode">10 Build NuttX with Debian Container in VSCode</a><ul></ul></li>
+<li><a href="#usleep">11 usleep</a><ul></ul></li>
+<li><a href="#documentation">12 Documentation</a><ul></ul></li>
+<li><a href="#fix-the-risc-v-timer-with-opensbi">13 Fix the RISC-V Timer with OpenSBI</a><ul></ul></li>
+<li><a href="#led-driver-for-ox64-bl808">14 LED Driver for Ox64 BL808</a><ul></ul></li>
+<li><a href="#whats-next">15 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="TODO" /></p>
 <p>TODO</p>
 <p>2024 is (nearly) here. Apache NuttX RTOS (Real-Time Operating System) now runs on Single-Board Computers with plenty of RAM</p>
@@ -96,6 +97,9 @@ Syntax is Python like but static compiled </p>
 <p>Also TinyGo</p>
 <p><a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> 64-bit RISC-V Single-Board Computer (pic below)…</p>
 <p><a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System)</p>
+<p><em>But we need RISC-V Hardware?</em></p>
+<p>No worries! We’ll run NuttX on the <strong>QEMU Emulator</strong> for 64-bit RISC-V.</p>
+<p>(Which will work on Linux, macOS and Windows machines)</p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <h1 id="basic-nim-from-scratch"><a href="#basic-nim-from-scratch">1 Basic Nim from scratch</a></h1>
 <p><em>(3 languages in a title heh heh)</em></p>
@@ -228,7 +232,87 @@ var ULEDIOC_SETALL {.
   header: &quot;&lt;nuttx/leds/userled.h&gt;&quot;.}: cint
 </code></pre></div>
 <p>We’re ready to run this!</p>
-<h1 id="experiments-with-nim-on-apache-nuttx-real-time-operating-system"><a href="#experiments-with-nim-on-apache-nuttx-real-time-operating-system">4 Experiments with Nim on Apache NuttX Real-Time Operating System</a></h1>
+<h1 id="run-nim-on-qemu"><a href="#run-nim-on-qemu">4 Run Nim on QEMU</a></h1>
+<p>TODO</p>
+<p>We begin by <strong>booting NuttX RTOS</strong> on RISC-V QEMU Emulator (64-bit)…</p>
+<ol>
+<li>
+<p>Download and install <a href="https://www.qemu.org/download/"><strong>QEMU Emulator for RISC-V (64-bit)</strong></a>…</p>
+<p>For macOS we may use <strong><code>brew</code></strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>brew install qemu
+</code></pre></div>
+<p>TODO: Debian</p>
+</li>
+<li>
+<p>TODO: Download <strong><code>nuttx</code></strong> from the <a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64"><strong>NuttX Release</strong></a>…</p>
+<p>TODO: <a href="https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx"><strong>nuttx: NuttX Image for 64-bit RISC-V QEMU</strong></a></p>
+<p>TODO: If we prefer to <strong>build NuttX</strong> ourselves: <a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><strong>Follow these steps</strong></a></p>
+</li>
+<li>
+<p>Start the <strong>QEMU RISC-V Emulator</strong> (64-bit) with NuttX RTOS…</p>
+<div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+</code></pre></div></li>
+<li>
+<p>NuttX is now running in the QEMU Emulator! (Pic below)</p>
+<div class="example-wrap"><pre class="language-text"><code>uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+nx_start_application: Starting init thread
+
+NuttShell (NSH) NuttX-12.1.0-RC0
+nsh&gt; nx_start: CPU0: Beginning Idle Loop
+nsh&gt;
+</code></pre></div>
+<p>TODO: <a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">(See the Complete Log)</a></p>
+</li>
+<li>
+<p>TODO: hello_nim</p>
+</li>
+<li>
+<p>TODO: Enter “<strong>help</strong>” to see the available commands…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; help
+help usage:  help [-v] [&lt;cmd&gt;]
+
+    .         break     dd        exit      ls        ps        source    umount
+    [         cat       df        false     mkdir     pwd       test      unset
+    ?         cd        dmesg     free      mkrd      rm        time      uptime
+    alias     cp        echo      help      mount     rmdir     true      usleep
+    unalias   cmp       env       hexdump   mv        set       truncate  xd
+    basename  dirname   exec      kill      printf    sleep     uname
+
+Builtin Apps:
+    nsh     ostest  sh
+</code></pre></div></li>
+<li>
+<p>TODO: NuttX works like a tiny version of Linux, so the commands will look familiar…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
+NuttX 12.1.0-RC0 275db39 Jun 16 2023 20:22:08 risc-v rv-virt
+
+nsh&gt; ls /dev
+/dev:
+console
+null
+ttyS0
+zero
+
+nsh&gt; ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK           STACK   USED  FILLED COMMAND
+    0     0   0 FIFO     Kthread N-- Ready              0000000000000000 002000 001224  61.2%  Idle Task
+    1     1 100 RR       Task    --- Running            0000000000000000 002992 002024  67.6%  nsh_main
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">(See the Complete Log)</a></p>
+</li>
+<li>
+<p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
+</li>
+</ol>
+<h1 id="experiments-with-nim-on-apache-nuttx-real-time-operating-system"><a href="#experiments-with-nim-on-apache-nuttx-real-time-operating-system">5 Experiments with Nim on Apache NuttX Real-Time Operating System</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/nim-title.png" alt="Nim App runs OK on Apache NuttX Real-Time Operating System" /></p>
 <p>Today Apache NuttX RTOS runs on SBCs that have plenty of RAM: Ox64 with 64 MB RAM!</p>
@@ -279,7 +363,7 @@ qemu-system-riscv64 \
   -nographic
 </code></pre></div>
 <p>We made some minor tweaks in NuttX…</p>
-<h1 id="fix-nuttx-for-nim"><a href="#fix-nuttx-for-nim">5 Fix NuttX for Nim</a></h1>
+<h1 id="fix-nuttx-for-nim"><a href="#fix-nuttx-for-nim">6 Fix NuttX for Nim</a></h1>
 <p>TODO</p>
 <p><em>How did we fix NuttX to compile Nim Apps correctly?</em></p>
 <p>We moved .nimcache 2 levels up: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/Makefile">apps/examples/hello_nim/Makefile</a></p>
@@ -314,7 +398,7 @@ switch &quot;riscv64.nuttx.gcc.exe&quot;, &quot;riscv-none-elf-gcc&quot; ## TODO
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files">Changes to NuttX Kernel</a></p>
 </li>
 </ul>
-<h1 id="nim-on-apache-nuttx-rtos-and-ox64-bl808-risc-v-sbc"><a href="#nim-on-apache-nuttx-rtos-and-ox64-bl808-risc-v-sbc">6 Nim on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC</a></h1>
+<h1 id="nim-on-apache-nuttx-rtos-and-ox64-bl808-risc-v-sbc"><a href="#nim-on-apache-nuttx-rtos-and-ox64-bl808-risc-v-sbc">7 Nim on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC</a></h1>
 <p>TODO</p>
 <p>Nim also runs OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!</p>
 <p>This Nim App: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim">hello_nim_async.nim</a></p>
@@ -389,7 +473,7 @@ diskutil unmountDisk /dev/disk2
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="Nim App runs OK on Apache NuttX Real-Time Operating System and Ox64 BL808 RISC-V SBC" /></p>
-<h1 id="blink-an-led-with-nim"><a href="#blink-an-led-with-nim">7 Blink an LED with Nim</a></h1>
+<h1 id="blink-an-led-with-nim"><a href="#blink-an-led-with-nim">8 Blink an LED with Nim</a></h1>
 <p>TODO</p>
 <p>This is how we Blink an LED with Nim on NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim">hello_nim_async.nim</a></p>
 <div class="example-wrap"><pre class="language-nim"><code>import std/strformat  ## String Formatting
@@ -528,7 +612,7 @@ int main(int argc, FAR char *argv[])
 
   return 0;
 }
-</code></pre></div><h1 id="inside-a-nim-app-for-nuttx"><a href="#inside-a-nim-app-for-nuttx">8 Inside a Nim App for NuttX</a></h1>
+</code></pre></div><h1 id="inside-a-nim-app-for-nuttx"><a href="#inside-a-nim-app-for-nuttx">9 Inside a Nim App for NuttX</a></h1>
 <p>TODO: What happens inside a NuttX App for NuttX?</p>
 <p>https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c714a317e531aa8ab2de7b9a8e4c4b0f89f66626/config.nims</p>
 <div class="example-wrap"><pre class="language-text"><code>$ export TOPDIR=/workspaces/bookworm/nuttx
@@ -553,7 +637,7 @@ Hint: used config file &#39;/workspaces/bookworm/apps/config.nims&#39; [Conf]
 ....................................................................................................................................
 Hint: mm: orc; opt: size; options: -d:danger
 92931 lines; 1.214s; 137.633MiB peakmem; proj: /workspaces/bookworm/apps/examples/hello_nim/hello_nim_async.nim; out: /workspaces/bookworm/apps/.nimcache/hello_nim_async.json [SuccessX]
-</code></pre></div><h1 id="build-nuttx-with-debian-container-in-vscode"><a href="#build-nuttx-with-debian-container-in-vscode">9 Build NuttX with Debian Container in VSCode</a></h1>
+</code></pre></div><h1 id="build-nuttx-with-debian-container-in-vscode"><a href="#build-nuttx-with-debian-container-in-vscode">10 Build NuttX with Debian Container in VSCode</a></h1>
 <p>TODO</p>
 <p>Nim Compiler won’t install on some machines (like a 10-year-old Mac). So we create a Debian Bookworm Container in VSCode that will compile Nim and NuttX…</p>
 <ol>
@@ -697,7 +781,7 @@ qemu-system-riscv64 \
   -bios none \
   -kernel nuttx \
   -nographic
-</code></pre></div><h1 id="usleep"><a href="#usleep">10 usleep</a></h1>
+</code></pre></div><h1 id="usleep"><a href="#usleep">11 usleep</a></h1>
 <p>TODO</p>
 <p>usleep calls clock_nanosleep…</p>
 <div class="example-wrap"><pre class="language-text"><code>00000000000007e8 &lt;usleep&gt;:
@@ -794,7 +878,7 @@ clock_nanosleep():
 <div class="example-wrap"><pre class="language-text"><code> &lt;2&gt;&lt;b5b0&gt;: Abbrev Number: 1 (DW_TAG_enumerator)
     &lt;b5b1&gt;   DW_AT_name        : (strp) (offset: 0x8ca9): SYS_clock_nanosleep
     &lt;b5b5&gt;   DW_AT_const_value : (data1) 49
-</code></pre></div><h1 id="documentation"><a href="#documentation">11 Documentation</a></h1>
+</code></pre></div><h1 id="documentation"><a href="#documentation">12 Documentation</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -822,7 +906,7 @@ clock_nanosleep():
 <p><a href="https://github.com/mantielero/lvgl.nim">Nim Wrapper for LVGL</a></p>
 </li>
 </ul>
-<h1 id="fix-the-risc-v-timer-with-opensbi"><a href="#fix-the-risc-v-timer-with-opensbi">12 Fix the RISC-V Timer with OpenSBI</a></h1>
+<h1 id="fix-the-risc-v-timer-with-opensbi"><a href="#fix-the-risc-v-timer-with-opensbi">13 Fix the RISC-V Timer with OpenSBI</a></h1>
 <p>TODO</p>
 <p><em>The <code>sleep</code> command hangs in NuttX Shell. How to fix it?</em></p>
 <p>That’s because we haven’t implemented the RISC-V Timer for Ox64! We should call OpenSBI to handle the Timer, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee">here’s the fix</a>.</p>
@@ -865,7 +949,7 @@ void up_timer_initialize(void) {
 </code></pre></div>
 <p>Now the <code>sleep</code> command works correctly in NuttX Shell!</p>
 <p><a href="https://gist.github.com/lupyuen/8aa66e7f88d1e31a5f198958c15e4393">Here’s the log (ignore the errors)</a></p>
-<h1 id="led-driver-for-ox64-bl808"><a href="#led-driver-for-ox64-bl808">13 LED Driver for Ox64 BL808</a></h1>
+<h1 id="led-driver-for-ox64-bl808"><a href="#led-driver-for-ox64-bl808">14 LED Driver for Ox64 BL808</a></h1>
 <p>TODO</p>
 <p>We wish to blink an LED with Nim on Ox64…</p>
 <ul>
@@ -1056,7 +1140,7 @@ Function select to Register Control GPIO)
 1 reg_gpio_29_smt r/w 1 GPIO SMT Control
 
 0 reg_gpio_29_ie r/w 0 GPIO Input Enable
-</code></pre></div><h1 id="whats-next"><a href="#whats-next">14 What’s Next</a></h1>
+</code></pre></div><h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
