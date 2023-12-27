@@ -551,6 +551,8 @@ We plan to...
 
 And Apache NuttX RTOS shall __officially support Ox64 BL808 SBC__ real soon!
 
+__UPDATE:__ NuttX officially [__supports Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358)!
+
 _Are we hunky dory with Ox64 BL808 and T-Head C906?_
 
 We said this [__last time__](https://lupyuen.github.io/articles/plic2#all-things-considered)...
@@ -588,6 +590,8 @@ Thank you so much for reading my adventures of NuttX on Ox64... You're my inspir
   (No more worries!)
 
 __Apache NuttX RTOS for Ox64 BL808__ shall be Upstreamed to Mainline real soon. Stay tuned for updates!
+
+__UPDATE:__ NuttX officially [__supports Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358)!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
