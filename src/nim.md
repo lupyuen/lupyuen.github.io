@@ -74,7 +74,11 @@ proc hello_nim() {.exportc, cdecl.} =
   echo "Hello Nim!"
 ```
 
-This means that the Garbage Collection __will always happen__, as soon as we return from the Main Function.
+__`defer`__ ensures that the Garbage Collection __will always happen__, as soon as we return from the Main Function.
+
+Now we do something cool and enlightening...
+
+![Blink an LED with Nim](https://lupyuen.github.io/images/nim-code.png)
 
 # Blink an LED
 
@@ -276,8 +280,6 @@ See the modified files...
 # Blink an LED with Nim
 
 TODO
-
-![Blink an LED with Nim](https://lupyuen.github.io/images/nim-code.png)
 
 This is how we Blink an LED with Nim on NuttX: [hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim)
 
