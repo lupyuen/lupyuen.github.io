@@ -222,19 +222,17 @@ We're ready to run this!
 
 # Run Nim on QEMU
 
-TODO
+TODO: We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
-We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
-
-1.  Download and install [__QEMU Emulator for RISC-V (64-bit)__](https://www.qemu.org/download/)...
-
-    For macOS we may use __`brew`__...
+1.  Install [__QEMU Emulator for RISC-V (64-bit)__](https://www.qemu.org/download/)...
 
     ```bash
+    ## For macOS:
     brew install qemu
-    ```
 
-    TODO: Debian
+    ## For Debian and Ubuntu:
+    sudo apt install qemu-system-riscv64
+    ```
 
 1.  TODO: Download __`nuttx`__ from the [__NuttX Release__](https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64)...
 
@@ -310,6 +308,14 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
     [(See the Complete Log)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
 
 1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
+
+# Ox64
+
+TODO
+
+# Inside Nim for NuttX
+
+TODO
 
 # Experiments with Nim on Apache NuttX Real-Time Operating System
 
