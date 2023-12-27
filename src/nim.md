@@ -124,7 +124,7 @@ Next we call the NuttX Function __`ioctl`__ to flip __LED 0 to On__...
     return
 ```
 
-__ULEDIOC_SETALL__ accepts a Bit Mask of LED States. We pass the value __`1`__ because Bit 0 refers to LED 0.
+__ULEDIOC_SETALL__ accepts a Bit Mask of LED States. The value __`1`__ says LED 0 (Bit 0) will be flipped On. (Other LEDs will be flipped Off)
 
 We __pause a while__...
 
