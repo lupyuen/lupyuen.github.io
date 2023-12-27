@@ -82,7 +82,127 @@ Now we do something cool and enlightening...
 
 # Blink an LED
 
+This is how we __blink an LED__ with Nim on NuttX: [hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L21-L56)
+
+```nim
+## Blink the LED
+proc blink_led() =
+
+  ## Open the LED Driver
+  echo "Opening /dev/userleds"
+  let fd = c_open("/dev/userleds", O_WRONLY)
+
+  ## Check the File Descriptor for errors
+  if fd < 0:
+    echo "Failed to open /dev/userleds"
+    return
+```
+
+First we call the NuttX Function __`open`__ to access the __LED Driver__.
+
+We might forget to __`close`__ the LED Driver (in case of errors), so we __`defer`__ the closing...
+
+```nim
+  ## On Return: Close the LED Driver
+  defer: c_close(fd)
+```
+
+Next we call the NuttX Function __`ioctl`__ to flip __LED 0 to On__...
+
+```nim
+  ## Turn on LED
+  echo "Set LED 0 to 1"
+  var ret = c_ioctl(fd, ULEDIOC_SETALL, 1)
+  if ret < 0:
+    echo "ioctl(ULEDIOC_SETALL) failed"
+    return
+```
+
+__ULEDIOC_SETALL__ accepts a Bit Mask of LED States. We pass the value __`1`__ because Bit 0 refers to LED 0.
+
+We __pause a while__...
+
+```nim
+  ## Wait a second (literally)
+  ## Because 1 million microseconds = 1 second
+  echo "Waiting..."
+  c_usleep(1000_000)
+```
+
+Finally we flip __LED 0 to Off__...
+
+```nim
+  ## Turn off LED
+  echo "Set LED 0 to 0"
+  ret = c_ioctl(fd, ULEDIOC_SETALL, 0)
+  if ret < 0:
+    echo "ioctl(ULEDIOC_SETALL) failed"
+    return
+
+  ## Wait again
+  echo "Waiting..."
+  c_usleep(1000_000)
+```
+
+In our [__Main Function__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L56-L69): We call the above function __20 times__...
+
+```nim
+## Main Function in Nim
+proc hello_nim() {.exportc, cdecl.} =
+
+  ## On Return: Force the Garbage Collection
+  defer: GC_runOrc()
+
+  ## Blink the LED 20 times
+  for loop in 0..19:
+    blink_led()
+```
+
+TODO: Looks very similar to C
+
+And we're almost done! Nim needs to discover our NuttX Functions...
+
+# Import NuttX Functions
+
+_How will Nim know about open / close / ioctl / usleep?_
+
+TODO: At the top of our Nim Program
+
+[hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L21)
+
+```nim
+## Import NuttX Functions from C.
+## Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
+
+proc c_open(filename: cstring, mode: cint): cint {.
+  importc: "open", header: "<fcntl.h>",
+  nodecl.}
+
+proc c_close(fd: cint): cint {.
+  importc: "close", header: "<fcntl.h>",
+  nodecl, discardable.}
+
+proc c_ioctl(fd: cint, request: cint): cint {.
+  importc: "ioctl", header: "<sys/ioctl.h>",
+  nodecl, varargs.}
+
+proc c_usleep(usec: cuint): cint {.
+  importc: "usleep", header: "<unistd.h>",
+  nodecl, discardable.}
+```
+
 TODO
+
+```nim
+## Import NuttX Macros from C.
+## Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
+
+var O_WRONLY {.
+  importc: "O_WRONLY", header: "<fcntl.h>".}: cint
+
+var ULEDIOC_SETALL {.
+  importc: "ULEDIOC_SETALL", header: "<nuttx/leds/userled.h>".}: cint
+```
 
 # Experiments with Nim on Apache NuttX Real-Time Operating System
 
