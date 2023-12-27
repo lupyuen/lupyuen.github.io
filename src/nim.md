@@ -6,7 +6,7 @@
 
 TODO
 
-2024 is (nearly) here. Apache NuttX RTOS (Real-Time Operating System) now runs on Single-Board Computers with plenty of RAM
+2024 is here! We're running Apache NuttX RTOS (Real-Time Operating System) on Single-Board Computers with plenty of RAM...
 
 Like Ox64 BL808 RISC-V SBC with 64 MB RAM!
 
@@ -332,7 +332,7 @@ proc hello_nim() {.exportc, cdecl.} =
   echo "Hello Nim!"
 ```
 
-TODO
+TODO: Makefile
 
 ```bash
 export TOPDIR=nuttx
@@ -343,6 +343,12 @@ nim c --header hello_nim_async.nim
 TODO
 
 ```c
+TODO
+```
+
+TODO: Makefile
+
+```text
 TODO
 ```
 
