@@ -319,6 +319,10 @@ _Nim runs incredibly well on NuttX..._
 
 _How is that possible?_
 
+That's because __Nim compiles to C__...
+
+As far as NuttX is concerned: __Nim looks like another C Program!__
+
 TODO
 
 # Experiments with Nim on Apache NuttX Real-Time Operating System
