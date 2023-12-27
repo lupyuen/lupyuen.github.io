@@ -166,43 +166,53 @@ And we're almost done! Nim needs to discover our NuttX Functions...
 
 _How will Nim know about open / close / ioctl / usleep?_
 
-TODO: At the top of our Nim Program
-
-[hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L21)
+We __import the NuttX Functions__ from C into Nim: [hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L21)
 
 ```nim
 ## Import NuttX Functions from C.
 ## Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
 
 proc c_open(filename: cstring, mode: cint): cint {.
-  importc: "open", header: "<fcntl.h>",
+  importc: "open",
+  header: "<fcntl.h>",
   nodecl.}
 
 proc c_close(fd: cint): cint {.
-  importc: "close", header: "<fcntl.h>",
+  importc: "close",
+  header: "<fcntl.h>",
   nodecl, discardable.}
 
 proc c_ioctl(fd: cint, request: cint): cint {.
-  importc: "ioctl", header: "<sys/ioctl.h>",
+  importc: "ioctl",
+  header: "<sys/ioctl.h>",
   nodecl, varargs.}
 
 proc c_usleep(usec: cuint): cint {.
-  importc: "usleep", header: "<unistd.h>",
+  importc: "usleep",
+  header: "<unistd.h>",
   nodecl, discardable.}
 ```
 
-TODO
+(__discardable__ tells Nim Compiler that the Return Value is optional)
+
+(__nodecl__ means don't emit the C Declaration in the Generated Code)
+
+We do the same for __NuttX Macros__...
 
 ```nim
 ## Import NuttX Macros from C.
 ## Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
 
 var O_WRONLY {.
-  importc: "O_WRONLY", header: "<fcntl.h>".}: cint
+  importc: "O_WRONLY", 
+  header: "<fcntl.h>".}: cint
 
 var ULEDIOC_SETALL {.
-  importc: "ULEDIOC_SETALL", header: "<nuttx/leds/userled.h>".}: cint
+  importc: "ULEDIOC_SETALL", 
+  header: "<nuttx/leds/userled.h>".}: cint
 ```
+
+We're ready to run this!
 
 # Experiments with Nim on Apache NuttX Real-Time Operating System
 
