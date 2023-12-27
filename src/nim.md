@@ -230,6 +230,8 @@ See the modified files...
 
 TODO
 
+![Blink an LED with Nim](https://lupyuen.github.io/images/nim-code.png)
+
 This is how we Blink an LED with Nim on NuttX: [hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim)
 
 ```nim
