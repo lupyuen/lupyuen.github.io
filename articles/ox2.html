@@ -692,8 +692,16 @@ DEBUGASSERT(ret &gt;= 0);
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L254-L297"><strong>NuttX Start Code: bl808_start</strong></a> which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L200-L254"><strong>Start Supervisor Mode: bl808_start_s</strong></a> which prints “ABC” and calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L181-L200"><strong>Erase the BSS Memory: bl808_clear_bss</strong></a> (Global and Static Variables) and…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L104-L177"><strong>Copy the RAM Disk: bl808_copy_ramdisk</strong></a> (from NuttX Image to RAM Disk Memory Region) and…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_percpu.c#L112-L152"><strong>Add the Hart: riscv_percpu_add_hart</strong></a> and…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L284-L288"><strong>Disable the MMU</strong></a> and…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L288-L292"><strong>Set the RISC-V Trap Vector to trap_vec</strong></a> and…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L200-L254"><strong>Start Supervisor Mode: bl808_start_s</strong></a> (see below)</p>
 </li>
+</ul>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L200-L254"><strong>Start Supervisor Mode: bl808_start_s</strong></a> prints “ABC” and calls…</p>
+<ul>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L297-L314"><strong>Early Serial Init: riscv_earlyserialinit</strong></a> (see below) and…</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L278-L298"><strong>Memory Mgmt Init: bl808_mm_init</strong></a> (to init the Memory Mgmt Unit) and…</p>
