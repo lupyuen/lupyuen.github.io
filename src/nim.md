@@ -309,11 +309,15 @@ TODO: We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
 1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
-# Ox64
+# Run Nim on Ox64 SBC
 
 TODO
 
-# Inside Nim for NuttX
+# Inside Nim on NuttX
+
+_Nim runs incredibly well on NuttX..._
+
+_How is that possible?_
 
 TODO
 
