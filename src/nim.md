@@ -31,6 +31,12 @@ Also TinyGo
 
 [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (Real-Time Operating System)
 
+_But we need RISC-V Hardware?_
+
+No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V.
+
+(Which will work on Linux, macOS and Windows machines)
+
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
 
 # Basic Nim from scratch
@@ -213,6 +219,97 @@ var ULEDIOC_SETALL {.
 ```
 
 We're ready to run this!
+
+# Run Nim on QEMU
+
+TODO
+
+We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
+
+1.  Download and install [__QEMU Emulator for RISC-V (64-bit)__](https://www.qemu.org/download/)...
+
+    For macOS we may use __`brew`__...
+
+    ```bash
+    brew install qemu
+    ```
+
+    TODO: Debian
+
+1.  TODO: Download __`nuttx`__ from the [__NuttX Release__](https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64)...
+
+    TODO: [__nuttx: NuttX Image for 64-bit RISC-V QEMU__](https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx)
+
+    TODO: If we prefer to __build NuttX__ ourselves: [__Follow these steps__](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu)
+
+1.  Start the __QEMU RISC-V Emulator__ (64-bit) with NuttX RTOS...
+
+    ```bash
+    qemu-system-riscv64 \
+      -semihosting \
+      -M virt,aclint=on \
+      -cpu rv64 \
+      -smp 8 \
+      -bios none \
+      -kernel nuttx \
+      -nographic
+    ```
+
+1.  NuttX is now running in the QEMU Emulator! (Pic below)
+
+    ```text
+    uart_register: Registering /dev/console
+    uart_register: Registering /dev/ttyS0
+    nx_start_application: Starting init thread
+
+    NuttShell (NSH) NuttX-12.1.0-RC0
+    nsh> nx_start: CPU0: Beginning Idle Loop
+    nsh>
+    ```
+
+    TODO: [(See the Complete Log)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
+
+1.  TODO: hello_nim
+
+1.  TODO: Enter "__help__" to see the available commands...
+
+    ```text
+    nsh> help
+    help usage:  help [-v] [<cmd>]
+
+        .         break     dd        exit      ls        ps        source    umount
+        [         cat       df        false     mkdir     pwd       test      unset
+        ?         cd        dmesg     free      mkrd      rm        time      uptime
+        alias     cp        echo      help      mount     rmdir     true      usleep
+        unalias   cmp       env       hexdump   mv        set       truncate  xd
+        basename  dirname   exec      kill      printf    sleep     uname
+
+    Builtin Apps:
+        nsh     ostest  sh
+    ```
+
+1.  TODO: NuttX works like a tiny version of Linux, so the commands will look familiar...
+
+    ```text
+    nsh> uname -a
+    NuttX 12.1.0-RC0 275db39 Jun 16 2023 20:22:08 risc-v rv-virt
+
+    nsh> ls /dev
+    /dev:
+    console
+    null
+    ttyS0
+    zero
+
+    nsh> ps
+      PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK           STACK   USED  FILLED COMMAND
+        0     0   0 FIFO     Kthread N-- Ready              0000000000000000 002000 001224  61.2%  Idle Task
+        1     1 100 RR       Task    --- Running            0000000000000000 002992 002024  67.6%  nsh_main
+    ```
+
+    [(See the Complete Log)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
+
+1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
 # Experiments with Nim on Apache NuttX Real-Time Operating System
 
