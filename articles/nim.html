@@ -161,7 +161,7 @@ proc blink_led() =
     echo &quot;ioctl(ULEDIOC_SETALL) failed&quot;
     return
 </code></pre></div>
-<p><strong>ULEDIOC_SETALL</strong> accepts a Bit Mask of LED States. We pass the value <strong><code>1</code></strong> because Bit 0 refers to LED 0.</p>
+<p><strong>ULEDIOC_SETALL</strong> accepts a Bit Mask of LED States. The value <strong><code>1</code></strong> says LED 0 (Bit 0) will be flipped On. (Other LEDs will be flipped Off)</p>
 <p>We <strong>pause a while</strong>…</p>
 <div class="example-wrap"><pre class="language-nim"><code>  ## Wait a second (literally)
   ## Because 1 million microseconds = 1 second
