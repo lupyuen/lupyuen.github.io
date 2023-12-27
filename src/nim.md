@@ -33,11 +33,44 @@ Also TinyGo
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
 
-![Nim App runs OK on Apache NuttX Real-Time Operating System](https://lupyuen.github.io/images/nim-title.png)
+# Basic Nim from scratch
+
+_(3 languages in a title heh heh)_
+
+This is the __simplest Nim Program__ that will run on NuttX: [hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim)
+
+```nim
+## Main Function in Nim.
+## Will be called by NuttX, so we export to C.
+proc hello_nim() {.exportc, cdecl.} =
+
+  ## Print something
+  echo "Hello Nim!"
+
+  ## Force the Garbage Collection
+  GC_runOrc()
+```
+
+_What's GC_runOrc?_
+
+TODO: We might forget
+
+```nim
+## Main Function in Nim
+proc hello_nim() {.exportc, cdecl.} =
+
+  ## On Return: Force the Garbage Collection
+  defer: GC_runOrc()
+
+  ## Print something
+  echo "Hello Nim!"
+```
 
 # Experiments with Nim on Apache NuttX Real-Time Operating System
 
 TODO
+
+![Nim App runs OK on Apache NuttX Real-Time Operating System](https://lupyuen.github.io/images/nim-title.png)
 
 Today Apache NuttX RTOS runs on SBCs that have plenty of RAM: Ox64 with 64 MB RAM!
 
