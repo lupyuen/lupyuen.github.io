@@ -189,37 +189,46 @@ proc hello_nim() {.exportc, cdecl.} =
 <p>And we’re almost done! Nim needs to discover our NuttX Functions…</p>
 <h1 id="import-nuttx-functions"><a href="#import-nuttx-functions">3 Import NuttX Functions</a></h1>
 <p><em>How will Nim know about open / close / ioctl / usleep?</em></p>
-<p>TODO: At the top of our Nim Program</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L21">hello_nim_async.nim</a></p>
+<p>We <strong>import the NuttX Functions</strong> from C into Nim: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L21">hello_nim_async.nim</a></p>
 <div class="example-wrap"><pre class="language-nim"><code>## Import NuttX Functions from C.
 ## Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
 
 proc c_open(filename: cstring, mode: cint): cint {.
-  importc: &quot;open&quot;, header: &quot;&lt;fcntl.h&gt;&quot;,
+  importc: &quot;open&quot;,
+  header: &quot;&lt;fcntl.h&gt;&quot;,
   nodecl.}
 
 proc c_close(fd: cint): cint {.
-  importc: &quot;close&quot;, header: &quot;&lt;fcntl.h&gt;&quot;,
+  importc: &quot;close&quot;,
+  header: &quot;&lt;fcntl.h&gt;&quot;,
   nodecl, discardable.}
 
 proc c_ioctl(fd: cint, request: cint): cint {.
-  importc: &quot;ioctl&quot;, header: &quot;&lt;sys/ioctl.h&gt;&quot;,
+  importc: &quot;ioctl&quot;,
+  header: &quot;&lt;sys/ioctl.h&gt;&quot;,
   nodecl, varargs.}
 
 proc c_usleep(usec: cuint): cint {.
-  importc: &quot;usleep&quot;, header: &quot;&lt;unistd.h&gt;&quot;,
+  importc: &quot;usleep&quot;,
+  header: &quot;&lt;unistd.h&gt;&quot;,
   nodecl, discardable.}
 </code></pre></div>
-<p>TODO</p>
+<p>(<strong>discardable</strong> tells Nim Compiler that the Return Value is optional)</p>
+<p>(<strong>nodecl</strong> means don’t emit the C Declaration in the Generated Code)</p>
+<p>We do the same for <strong>NuttX Macros</strong>…</p>
 <div class="example-wrap"><pre class="language-nim"><code>## Import NuttX Macros from C.
 ## Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
 
 var O_WRONLY {.
-  importc: &quot;O_WRONLY&quot;, header: &quot;&lt;fcntl.h&gt;&quot;.}: cint
+  importc: &quot;O_WRONLY&quot;, 
+  header: &quot;&lt;fcntl.h&gt;&quot;.}: cint
 
 var ULEDIOC_SETALL {.
-  importc: &quot;ULEDIOC_SETALL&quot;, header: &quot;&lt;nuttx/leds/userled.h&gt;&quot;.}: cint
-</code></pre></div><h1 id="experiments-with-nim-on-apache-nuttx-real-time-operating-system"><a href="#experiments-with-nim-on-apache-nuttx-real-time-operating-system">4 Experiments with Nim on Apache NuttX Real-Time Operating System</a></h1>
+  importc: &quot;ULEDIOC_SETALL&quot;, 
+  header: &quot;&lt;nuttx/leds/userled.h&gt;&quot;.}: cint
+</code></pre></div>
+<p>We’re ready to run this!</p>
+<h1 id="experiments-with-nim-on-apache-nuttx-real-time-operating-system"><a href="#experiments-with-nim-on-apache-nuttx-real-time-operating-system">4 Experiments with Nim on Apache NuttX Real-Time Operating System</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/nim-title.png" alt="Nim App runs OK on Apache NuttX Real-Time Operating System" /></p>
 <p>Today Apache NuttX RTOS runs on SBCs that have plenty of RAM: Ox64 with 64 MB RAM!</p>
