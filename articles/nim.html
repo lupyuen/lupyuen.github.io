@@ -124,7 +124,9 @@ proc hello_nim() {.exportc, cdecl.} =
   ## Print something
   echo &quot;Hello Nim!&quot;
 </code></pre></div>
-<p>This means that the Garbage Collection <strong>will always happen</strong>, as soon as we return from the Main Function.</p>
+<p><strong><code>defer</code></strong> ensures that the Garbage Collection <strong>will always happen</strong>, as soon as we return from the Main Function.</p>
+<p>Now we do something cool and enlightening…</p>
+<p><img src="https://lupyuen.github.io/images/nim-code.png" alt="Blink an LED with Nim" /></p>
 <h1 id="blink-an-led"><a href="#blink-an-led">2 Blink an LED</a></h1>
 <p>TODO</p>
 <h1 id="experiments-with-nim-on-apache-nuttx-real-time-operating-system"><a href="#experiments-with-nim-on-apache-nuttx-real-time-operating-system">3 Experiments with Nim on Apache NuttX Real-Time Operating System</a></h1>
@@ -290,7 +292,6 @@ diskutil unmountDisk /dev/disk2
 <p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="Nim App runs OK on Apache NuttX Real-Time Operating System and Ox64 BL808 RISC-V SBC" /></p>
 <h1 id="blink-an-led-with-nim"><a href="#blink-an-led-with-nim">6 Blink an LED with Nim</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/nim-code.png" alt="Blink an LED with Nim" /></p>
 <p>This is how we Blink an LED with Nim on NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim">hello_nim_async.nim</a></p>
 <div class="example-wrap"><pre class="language-nim"><code>import std/strformat  ## String Formatting
 
