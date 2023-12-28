@@ -377,13 +377,13 @@ CSRCS  += $(wildcard ../../.nimcache/*.c)
 <p>We made some <strong>Minor Fixes</strong>, we’ll upstream to NuttX shortly…</p>
 <ul>
 <li>
-<p>TODO: Makefile</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307"><strong>Makefile</strong></a>: Nimcache has moved 2 folders up</p>
 </li>
 <li>
-<p>TODO: Config</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879"><strong>config.nims</strong></a>: Add support for 64-bit RISC-V</p>
 </li>
 </ul>
-<p>Here we see the Nim Compiler at work, compiling our program for NuttX (by parsing the NuttX Build Config)…</p>
+<p>Here we see the Nim Compiler working perfectly, compiling our program for NuttX (by parsing the NuttX Build Config)…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ export TOPDIR=/workspaces/bookworm/nuttx
 $ cd /workspaces/bookworm/apps/examples/hello_nim
 $ nim c --header hello_nim_async.nim
