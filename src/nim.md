@@ -393,11 +393,11 @@ _Everything is hunky dory with Nim on NuttX?_
 
 We made some __Minor Fixes__, we'll upstream to NuttX shortly...
 
-- TODO: Makefile
+- [__Makefile__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307): Nimcache has moved 2 folders up
 
-- TODO: Config
+- [__config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879): Add support for 64-bit RISC-V
 
-Here we see the Nim Compiler at work, compiling our program for NuttX (by parsing the NuttX Build Config)...
+Here we see the Nim Compiler working perfectly, compiling our program for NuttX (by parsing the NuttX Build Config)...
 
 ```text
 $ export TOPDIR=/workspaces/bookworm/nuttx
