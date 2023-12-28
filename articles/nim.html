@@ -324,16 +324,16 @@ nsh&gt; ps
 <p>That’s because <strong>Nim compiles to C</strong>…</p>
 <p>As far as NuttX is concerned: <strong>Nim looks like another C Program!</strong></p>
 <p><em>Whoa! How is Nim compiled to C?</em></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-nim"><code>proc hello_nim() {.exportc, cdecl.} =
-  echo &quot;Hello Nim!&quot;
-</code></pre></div>
-<p>TODO: Makefile</p>
+<p>TODO: NuttX Build calls the Nim Compiler: Makefile</p>
 <div class="example-wrap"><pre class="language-bash"><code>export TOPDIR=nuttx
 cd apps/examples/hello_nim
 nim c --header hello_nim_async.nim 
 </code></pre></div>
-<p>TODO</p>
+<p>TODO: Nim Compiler compiles our Nim Program…</p>
+<div class="example-wrap"><pre class="language-nim"><code>proc hello_nim() {.exportc, cdecl.} =
+  echo &quot;Hello Nim!&quot;
+</code></pre></div>
+<p>TODO: Into this C Program…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Main Function compiled from Nim to C
 N_LIB_PRIVATE N_CDECL(void, hello_nim)(void) {
   ...
@@ -346,13 +346,13 @@ static NIM_CONST tyArray__nHXaesL0DJZHyVS07ARPRA TM__1vqzGCGyH8jPEpAwiaNwvg_2
   = {{10, (NimStrPayload*)&amp;TM__1vqzGCGyH8jPEpAwiaNwvg_3}};
 
 // Actual String for &quot;Hello Nim!&quot;
-static const struct {
-  NI cap; NIM_CHAR data[10+1];
-} TM__1vqzGCGyH8jPEpAwiaNwvg_3 
-= { 10 | NIM_STRLIT_FLAG, &quot;Hello Nim!&quot; };
+static const struct { NI cap; NIM_CHAR data[10+1]; } TM__1vqzGCGyH8jPEpAwiaNwvg_3 
+  = { 10 | NIM_STRLIT_FLAG, &quot;Hello Nim!&quot; };
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L130-L146">(Source)</a></p>
-<p><a href="https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar">nimcache.tar</a></p>
+<p><a href="https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L130-L146">(From .nimcache/@mhello_nim_async.nim.c)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar">(See the nimcache)</a></p>
+<p>Yep Nim Compiler has produced a perfectly valid C Program. That will compile with any C Compiler!</p>
+<p><em>How will NuttX compile this?</em></p>
 <p>TODO: Makefile</p>
 <div class="example-wrap"><pre class="language-text"><code>TODO
 </code></pre></div>
@@ -367,7 +367,6 @@ static const struct {
 </ul>
 <p>Thanks to ??? and the Nim Community for contributing the above!</p>
 <p><a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">ox64-1</a></p>
-<p><a href="https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86">@mhello_nim_async.nim.c</a></p>
 <h1 id="experiments-with-nim-on-apache-nuttx-real-time-operating-system"><a href="#experiments-with-nim-on-apache-nuttx-real-time-operating-system">7 Experiments with Nim on Apache NuttX Real-Time Operating System</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/nim-title.png" alt="Nim App runs OK on Apache NuttX Real-Time Operating System" /></p>
