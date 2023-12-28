@@ -97,9 +97,10 @@ Syntax is Python like but static compiled </p>
 <p><em>But Garbage Collection? Won’t it run-pause-run-pause?</em></p>
 <p>Awesome folks Wilderness Labs are running .NET on NuttX with Garbage Collection. Maybe it’s not so bad!</p>
 <p>Also TinyGo</p>
-<p><em>But we need RISC-V Hardware?</em></p>
-<p>No worries! We’ll run NuttX on the <strong>QEMU Emulator</strong> for 64-bit RISC-V.</p>
-<p>(Which will work on Linux, macOS and Windows machines)</p>
+<p><em>But we need an Ox64 SBC?</em></p>
+<p>No worries! We’ll run Nim + NuttX on the <strong>QEMU Emulator</strong> for 64-bit RISC-V. Which works great on Linux, macOS and Windows machines.</p>
+<p>Everything that happens on Ox64 SBC, we’ll see the <strong>exact same thing</strong> in QEMU!</p>
+<p>(Well everything except the blinkenlight)</p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <h1 id="basic-nim-from-scratch"><a href="#basic-nim-from-scratch">1 Basic Nim from scratch</a></h1>
 <p><em>(3 languages in a title heh heh)</em></p>
@@ -372,7 +373,7 @@ CSRCS  += $(wildcard ../../.nimcache/*.c)
 </li>
 </ul>
 <p>Kudos to <a href="https://github.com/centurysys"><strong>centurysys</strong></a> and the Nim Community for making this possible!</p>
-<p>Nim Compiler shows this when compiling programs for NuttX…</p>
+<p>Here we see the Nim Compiler at work, compiling our program for NuttX (by parsing the NuttX Build Config)…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ export TOPDIR=/workspaces/bookworm/nuttx
 $ cd /workspaces/bookworm/apps/examples/hello_nim
 $ nim c --header hello_nim_async.nim
