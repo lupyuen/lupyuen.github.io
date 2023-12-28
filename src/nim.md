@@ -1,4 +1,4 @@
-# Nim on a Real-Time Operating System: Apache NuttX RTOS + Ox64 BL808
+# Nim on a Real-Time Operating System: Apache NuttX RTOS + Ox64 BL808 SBC
 
 📝 _7 Jan 2024_
 
