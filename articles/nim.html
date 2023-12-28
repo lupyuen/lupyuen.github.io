@@ -319,24 +319,28 @@ nsh&gt; ps
 <h1 id="run-nim-on-ox64"><a href="#run-nim-on-ox64">5 Run Nim on Ox64</a></h1>
 <p>TODO</p>
 <h1 id="inside-nim-on-nuttx"><a href="#inside-nim-on-nuttx">6 Inside Nim on NuttX</a></h1>
-<p><em>Nim runs incredibly well on NuttX…</em></p>
-<p><em>How is that possible?</em></p>
-<p>That’s because <strong>Nim compiles to C</strong>…</p>
-<p>As far as NuttX is concerned: <strong>Nim looks like another C Program!</strong></p>
+<p><em>Nim runs incredibly well on NuttX. How is that possible?</em></p>
+<p>That’s because <strong>Nim compiles to C</strong>. As far as NuttX is concerned…</p>
+<p>Nim looks like <strong>another C Program!</strong></p>
 <p><em>Whoa! How is Nim compiled to C?</em></p>
-<p>TODO: NuttX Build calls the Nim Compiler: Makefile</p>
-<div class="example-wrap"><pre class="language-bash"><code>export TOPDIR=nuttx
+<p>Our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L37-L41"><strong>NuttX Makefile</strong></a> calls the Nim Compiler…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile Nim to C
+export TOPDIR=$PWD/nuttx
 cd apps/examples/hello_nim
 nim c --header hello_nim_async.nim 
 </code></pre></div>
-<p>TODO: Nim Compiler compiles our Nim Program…</p>
-<div class="example-wrap"><pre class="language-nim"><code>proc hello_nim() {.exportc, cdecl.} =
+<p>Nim Compiler compiles our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63"><strong>Nim Program</strong></a>…</p>
+<div class="example-wrap"><pre class="language-nim"><code>## Nim Program that prints something
+proc hello_nim() {.exportc, cdecl.} =
   echo &quot;Hello Nim!&quot;
 </code></pre></div>
-<p>TODO: Into this C Program…</p>
-<div class="example-wrap"><pre class="language-c"><code>// Main Function compiled from Nim to C
+<p>Into this <a href="https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L130-L146"><strong>C Program</strong></a>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Main Function compiled from Nim to C:
+// echo &quot;Hello Nim!&quot;
 N_LIB_PRIVATE N_CDECL(void, hello_nim)(void) {
   ...
+  // `echo` comes from the Nim System Library
+  // https://github.com/nim-lang/Nim/blob/devel/lib/system.nim#L2849-L2902
   echoBinSafe(TM__1vqzGCGyH8jPEpAwiaNwvg_2, 1);
   ...
 }
@@ -353,20 +357,25 @@ static const struct { NI cap; NIM_CHAR data[10+1]; } TM__1vqzGCGyH8jPEpAwiaNwvg_
 <p><a href="https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar">(See the nimcache)</a></p>
 <p>Yep Nim Compiler has produced a perfectly valid C Program. That will compile with any C Compiler!</p>
 <p><em>How will NuttX compile this?</em></p>
-<p>TODO: Makefile</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO
+<p>Nim Compiler generates the code above into the <a href="https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar"><strong><code>.nimcache</code></strong></a> folder.</p>
+<p>Our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L31-L35"><strong>NuttX Makefile</strong></a> compiles everything inside <a href="https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar"><strong><code>.nimcache</code></strong></a> with the GCC Compiler…</p>
+<div class="example-wrap"><pre class="language-text"><code>## Compile everything in the .nimcache folder
+NIMPATH = $(shell choosenim show path)
+CFLAGS += -I $(NIMPATH)/lib -I ../../.nimcache
+CSRCS  += $(wildcard ../../.nimcache/*.c)
 </code></pre></div>
-<p>TODO: Nim on NuttX?</p>
+<p>And links the Nim Modules (compiled by GCC) into NuttX.</p>
+<p><em>So Nim Compiler is aware of NuttX?</em></p>
+<p>Yep! Nim Compiler is internally wired to <strong>produce NuttX Code</strong> (that GCC will compile correctly)…</p>
 <ul>
 <li>
-<p>Nim Configuration for NuttX</p>
+<p><a href="https://github.com/nim-lang/Nim/pull/21372/files"><strong>Nim Support for NuttX</strong></a></p>
 </li>
 <li>
-<p>Nim Support for NuttX</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/config.nims"><strong>Nim Configuration for NuttX: config.nims</strong></a></p>
 </li>
 </ul>
-<p>Thanks to ??? and the Nim Community for contributing the above!</p>
-<p><a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">ox64-1</a></p>
+<p>Kudos to <a href="https://github.com/centurysys"><strong>centurysys</strong></a> and the Nim Community for making this possible!</p>
 <h1 id="experiments-with-nim-on-apache-nuttx-real-time-operating-system"><a href="#experiments-with-nim-on-apache-nuttx-real-time-operating-system">7 Experiments with Nim on Apache NuttX Real-Time Operating System</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/nim-title.png" alt="Nim App runs OK on Apache NuttX Real-Time Operating System" /></p>
@@ -1223,7 +1232,7 @@ Function select to Register Control GPIO)
 <h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">18 Appendix: Build NuttX for QEMU</a></h1>
 <p>TODO</p>
 <h1 id="appendix-build-nuttx-for-ox64"><a href="#appendix-build-nuttx-for-ox64">19 Appendix: Build NuttX for Ox64</a></h1>
-<p>TODO</p>
+<p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">ox64-1</a></p>
 
     
 </body>
