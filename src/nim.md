@@ -389,6 +389,14 @@ Yep! Nim Compiler is internally wired to __produce NuttX Code__ (that GCC will c
 
 Kudos to [__centurysys__](https://github.com/centurysys) and the Nim Community for making this possible!
 
+_Everything is hunky dory with Nim on NuttX?_
+
+We made some __Minor Fixes__, we'll upstream to NuttX shortly...
+
+- TODO: Makefile
+
+- TODO: Config
+
 Here we see the Nim Compiler at work, compiling our program for NuttX (by parsing the NuttX Build Config)...
 
 ```text
