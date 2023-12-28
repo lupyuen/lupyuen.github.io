@@ -2,15 +2,13 @@
 
 📝 _7 Jan 2024_
 
-![TODO](https://lupyuen.github.io/images/nim-ox64.png)
+![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!](https://lupyuen.github.io/images/nim-ox64.png)
 
-TODO
+It's 2024 (Happy New Year!) and we're running [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (Real-Time Operating System) on Single-Board Computers with __plenty of RAM__...
 
-2024 is here. (Happy New Year!) We're running Apache NuttX RTOS (Real-Time Operating System) on Single-Board Computers with plenty of RAM...
+Like [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC with 64 MB RAM! (Pic below)
 
-Like Ox64 BL808 RISC-V SBC with 64 MB RAM!
-
-_How do we use the Plentiful RAM?_
+_How will we use the Plentiful RAM?_
 
 To consume the extra RAM (meaningfully), let's create NuttX Apps the simpler safer way with a Garbage-Collected Language: Nim Programming Language!
 
@@ -26,10 +24,6 @@ _But Garbage Collection? Won't it run-pause-run-pause?_
 Awesome folks Wilderness Labs are running .NET on NuttX with Garbage Collection. Maybe it's not so bad!
 
 Also TinyGo
-
-[__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit RISC-V Single-Board Computer (pic below)...
-
-[__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (Real-Time Operating System)
 
 _But we need RISC-V Hardware?_
 
@@ -393,6 +387,33 @@ Yep! Nim Compiler is internally wired to __produce NuttX Code__ (that GCC will c
 
 Kudos to [__centurysys__](https://github.com/centurysys) and the Nim Community for making this possible!
 
+Nim Compiler shows this when compiling programs for NuttX...
+
+```text
+$ export TOPDIR=/workspaces/bookworm/nuttx
+$ cd /workspaces/bookworm/apps/examples/hello_nim
+$ nim c --header hello_nim_async.nim
+
+read_config: /workspaces/bookworm/nuttx/.config
+line=CONFIG_DEBUG_SYMBOLS=y
+line=CONFIG_DEBUG_FULLOPT=y
+line=CONFIG_ARCH="risc-v"
+@["keyval=", "ARCH", "\"risc-v\""]
+keyval[1]="risc-v"
+line=CONFIG_RAM_SIZE=33554432
+* arch:    riscv64
+* opt:     oSize
+* debug:   true
+* ramSize: 33554432
+* isSim:   false
+Hint: used config file '/home/vscode/.choosenim/toolchains/nim-#devel/config/nim.cfg' [Conf]
+Hint: used config file '/home/vscode/.choosenim/toolchains/nim-#devel/config/config.nims' [Conf]
+Hint: used config file '/workspaces/bookworm/apps/config.nims' [Conf]
+....................................................................................................................................
+Hint: mm: orc; opt: size; options: -d:danger
+92931 lines; 1.214s; 137.633MiB peakmem; proj: /workspaces/bookworm/apps/examples/hello_nim/hello_nim_async.nim; out: /workspaces/bookworm/apps/.nimcache/hello_nim_async.json [SuccessX]
+```
+
 # Experiments with Nim on Apache NuttX Real-Time Operating System
 
 TODO
@@ -730,37 +751,6 @@ int main(int argc, FAR char *argv[])
 
   return 0;
 }
-```
-
-# Inside a Nim App for NuttX
-
-TODO: What happens inside a NuttX App for NuttX?
-
-https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c714a317e531aa8ab2de7b9a8e4c4b0f89f66626/config.nims
-
-```text
-$ export TOPDIR=/workspaces/bookworm/nuttx
-$ cd /workspaces/bookworm/apps/examples/hello_nim
-$ nim c --header hello_nim_async.nim
-
-read_config: /workspaces/bookworm/nuttx/.config
-line=CONFIG_DEBUG_SYMBOLS=y
-line=CONFIG_DEBUG_FULLOPT=y
-line=CONFIG_ARCH="risc-v"
-@["keyval=", "ARCH", "\"risc-v\""]
-keyval[1]="risc-v"
-line=CONFIG_RAM_SIZE=33554432
-* arch:    riscv64
-* opt:     oSize
-* debug:   true
-* ramSize: 33554432
-* isSim:   false
-Hint: used config file '/home/vscode/.choosenim/toolchains/nim-#devel/config/nim.cfg' [Conf]
-Hint: used config file '/home/vscode/.choosenim/toolchains/nim-#devel/config/config.nims' [Conf]
-Hint: used config file '/workspaces/bookworm/apps/config.nims' [Conf]
-....................................................................................................................................
-Hint: mm: orc; opt: size; options: -d:danger
-92931 lines; 1.214s; 137.633MiB peakmem; proj: /workspaces/bookworm/apps/examples/hello_nim/hello_nim_async.nim; out: /workspaces/bookworm/apps/.nimcache/hello_nim_async.json [SuccessX]
 ```
 
 # Build NuttX with Debian Container in VSCode
