@@ -6,13 +6,13 @@
 
 TODO
 
-2024 is here! We're running Apache NuttX RTOS (Real-Time Operating System) on Single-Board Computers with plenty of RAM...
+2024 is here. (Happy New Year!) We're running Apache NuttX RTOS (Real-Time Operating System) on Single-Board Computers with plenty of RAM...
 
 Like Ox64 BL808 RISC-V SBC with 64 MB RAM!
 
 _How do we use the Plentiful RAM?_
 
-Let's consume the extra RAM meaningfully... We'll create NuttX Apps the simpler safer way with a Garbage-Collected Language: Nim Programming Language!
+To consume the extra RAM (meaningfully), let's create NuttX Apps the simpler safer way with a Garbage-Collected Language: Nim Programming Language!
 
 how different from Zig and Rust?
 
