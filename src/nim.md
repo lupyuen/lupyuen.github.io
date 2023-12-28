@@ -315,37 +315,40 @@ TODO
 
 # Inside Nim on NuttX
 
-_Nim runs incredibly well on NuttX..._
+_Nim runs incredibly well on NuttX. How is that possible?_
 
-_How is that possible?_
+That's because __Nim compiles to C__. As far as NuttX is concerned...
 
-That's because __Nim compiles to C__...
-
-As far as NuttX is concerned: __Nim looks like another C Program!__
+Nim looks like __another C Program!__
 
 _Whoa! How is Nim compiled to C?_
 
-TODO: NuttX Build calls the Nim Compiler: Makefile
+Our [__NuttX Makefile__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L37-L41) calls the Nim Compiler...
 
 ```bash
-export TOPDIR=nuttx
+## Compile Nim to C
+export TOPDIR=$PWD/nuttx
 cd apps/examples/hello_nim
 nim c --header hello_nim_async.nim 
 ```
 
-TODO: Nim Compiler compiles our Nim Program...
+Nim Compiler compiles our [__Nim Program__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63)...
 
 ```nim
+## Nim Program that prints something
 proc hello_nim() {.exportc, cdecl.} =
   echo "Hello Nim!"
 ```
 
-TODO: Into this C Program...
+Into this [__C Program__](https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L130-L146)...
 
 ```c
-// Main Function compiled from Nim to C
+// Main Function compiled from Nim to C:
+// echo "Hello Nim!"
 N_LIB_PRIVATE N_CDECL(void, hello_nim)(void) {
   ...
+  // `echo` comes from the Nim System Library
+  // https://github.com/nim-lang/Nim/blob/devel/lib/system.nim#L2849-L2902
   echoBinSafe(TM__1vqzGCGyH8jPEpAwiaNwvg_2, 1);
   ...
 }
@@ -367,21 +370,28 @@ Yep Nim Compiler has produced a perfectly valid C Program. That will compile wit
 
 _How will NuttX compile this?_
 
-TODO: Makefile
+Nim Compiler generates the code above into the [__`.nimcache`__](https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar) folder.
+
+Our [__NuttX Makefile__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L31-L35) compiles everything inside [__`.nimcache`__](https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar) with the GCC Compiler...
 
 ```text
-TODO
+## Compile everything in the .nimcache folder
+NIMPATH = $(shell choosenim show path)
+CFLAGS += -I $(NIMPATH)/lib -I ../../.nimcache
+CSRCS  += $(wildcard ../../.nimcache/*.c)
 ```
 
-TODO: Nim on NuttX?
+And links the Nim Modules (compiled by GCC) into NuttX.
 
-- Nim Configuration for NuttX
+_So Nim Compiler is aware of NuttX?_
 
-- Nim Support for NuttX
+Yep! Nim Compiler is internally wired to __produce NuttX Code__ (that GCC will compile correctly)...
 
-Thanks to ??? and the Nim Community for contributing the above!
+- [__Nim Support for NuttX__](https://github.com/nim-lang/Nim/pull/21372/files)
 
-[ox64-1](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
+- [__Nim Configuration for NuttX: config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/config.nims)
+
+Kudos to [__centurysys__](https://github.com/centurysys) and the Nim Community for making this possible!
 
 # Experiments with Nim on Apache NuttX Real-Time Operating System
 
@@ -1329,4 +1339,5 @@ TODO
 
 # Appendix: Build NuttX for Ox64
 
-TODO
+TODO: [ox64-1](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
+
