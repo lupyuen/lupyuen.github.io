@@ -334,8 +334,25 @@ cd apps/examples/hello_nim
 nim c --header hello_nim_async.nim 
 </code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>TODO
+<div class="example-wrap"><pre class="language-c"><code>// Main Function compiled from Nim to C
+N_LIB_PRIVATE N_CDECL(void, hello_nim)(void) {
+  ...
+  echoBinSafe(TM__1vqzGCGyH8jPEpAwiaNwvg_2, 1);
+  ...
+}
+
+// String &quot;Hello Nim!&quot; compiled from Nim to C
+static NIM_CONST tyArray__nHXaesL0DJZHyVS07ARPRA TM__1vqzGCGyH8jPEpAwiaNwvg_2 
+  = {{10, (NimStrPayload*)&amp;TM__1vqzGCGyH8jPEpAwiaNwvg_3}};
+
+// Actual String for &quot;Hello Nim!&quot;
+static const struct {
+  NI cap; NIM_CHAR data[10+1];
+} TM__1vqzGCGyH8jPEpAwiaNwvg_3 
+= { 10 | NIM_STRLIT_FLAG, &quot;Hello Nim!&quot; };
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L130-L146">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar">nimcache.tar</a></p>
 <p>TODO: Makefile</p>
 <div class="example-wrap"><pre class="language-text"><code>TODO
 </code></pre></div>
@@ -349,6 +366,8 @@ nim c --header hello_nim_async.nim
 </li>
 </ul>
 <p>Thanks to ??? and the Nim Community for contributing the above!</p>
+<p><a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">ox64-1</a></p>
+<p><a href="https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86">@mhello_nim_async.nim.c</a></p>
 <h1 id="experiments-with-nim-on-apache-nuttx-real-time-operating-system"><a href="#experiments-with-nim-on-apache-nuttx-real-time-operating-system">7 Experiments with Nim on Apache NuttX Real-Time Operating System</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/nim-title.png" alt="Nim App runs OK on Apache NuttX Real-Time Operating System" /></p>
