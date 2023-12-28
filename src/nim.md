@@ -325,14 +325,7 @@ As far as NuttX is concerned: __Nim looks like another C Program!__
 
 _Whoa! How is Nim compiled to C?_
 
-TODO
-
-```nim
-proc hello_nim() {.exportc, cdecl.} =
-  echo "Hello Nim!"
-```
-
-TODO: Makefile
+TODO: NuttX Build calls the Nim Compiler: Makefile
 
 ```bash
 export TOPDIR=nuttx
@@ -340,7 +333,14 @@ cd apps/examples/hello_nim
 nim c --header hello_nim_async.nim 
 ```
 
-TODO
+TODO: Nim Compiler compiles our Nim Program...
+
+```nim
+proc hello_nim() {.exportc, cdecl.} =
+  echo "Hello Nim!"
+```
+
+TODO: Into this C Program...
 
 ```c
 // Main Function compiled from Nim to C
@@ -355,15 +355,17 @@ static NIM_CONST tyArray__nHXaesL0DJZHyVS07ARPRA TM__1vqzGCGyH8jPEpAwiaNwvg_2
   = {{10, (NimStrPayload*)&TM__1vqzGCGyH8jPEpAwiaNwvg_3}};
 
 // Actual String for "Hello Nim!"
-static const struct {
-  NI cap; NIM_CHAR data[10+1];
-} TM__1vqzGCGyH8jPEpAwiaNwvg_3 
-= { 10 | NIM_STRLIT_FLAG, "Hello Nim!" };
+static const struct { NI cap; NIM_CHAR data[10+1]; } TM__1vqzGCGyH8jPEpAwiaNwvg_3 
+  = { 10 | NIM_STRLIT_FLAG, "Hello Nim!" };
 ```
 
-[(Source)](https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L130-L146)
+[(From .nimcache/@mhello_nim_async.nim.c)](https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L130-L146)
 
-[nimcache.tar](https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar)
+[(See the nimcache)](https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar)
+
+Yep Nim Compiler has produced a perfectly valid C Program. That will compile with any C Compiler!
+
+_How will NuttX compile this?_
 
 TODO: Makefile
 
@@ -380,8 +382,6 @@ TODO: Nim on NuttX?
 Thanks to ??? and the Nim Community for contributing the above!
 
 [ox64-1](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
-
-[@mhello_nim_async.nim.c](https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86)
 
 # Experiments with Nim on Apache NuttX Real-Time Operating System
 
