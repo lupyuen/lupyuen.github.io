@@ -4,15 +4,15 @@
 
 ![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!](https://lupyuen.github.io/images/nim-ox64.png)
 
-It's 2024 (Happy New Year!) and we're running [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (Real-Time Operating System) on Single-Board Computers with __plenty of RAM__...
+Happy New Year! It's 2024 and we're running [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (Real-Time Operating System) on Single-Board Computers with __plenty of RAM__...
 
 Like [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC with 64 MB RAM! (Pic below)
 
-_How will we use the Plentiful RAM?_
+_How will we use the Plentiful RAM meaningfully?_
 
-To consume the extra RAM (meaningfully), let's create NuttX Apps the simpler safer way with a Garbage-Collected Language: Nim Programming Language!
+Let's create simpler, safer __NuttX Apps__ with a Modern, [__Garbage-Collected__](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) Language: [__Nim Programming Language__](https://nim-lang.org)!
 
-how different from Zig and Rust?
+TODO: how different from Zig and Rust?
 
 Memory Safe (like Rust)
 Garbage Collected
