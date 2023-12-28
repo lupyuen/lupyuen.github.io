@@ -25,11 +25,13 @@ Awesome folks Wilderness Labs are running .NET on NuttX with Garbage Collection.
 
 Also TinyGo
 
-_But we need RISC-V Hardware?_
+_But we need an Ox64 SBC?_
 
-No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V.
+No worries! We'll run Nim + NuttX on the __QEMU Emulator__ for 64-bit RISC-V. Which works great on Linux, macOS and Windows machines.
 
-(Which will work on Linux, macOS and Windows machines)
+Everything that happens on Ox64 SBC, we'll see the __exact same thing__ in QEMU!
+
+(Well everything except the blinkenlight)
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
 
