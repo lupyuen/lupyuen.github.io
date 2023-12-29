@@ -319,10 +319,19 @@ nsh&gt; ps
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
 </li>
 </ol>
+<p>TODO: Wiring pic</p>
 <h1 id="nim-blinky-on-ox64"><a href="#nim-blinky-on-ox64">5 Nim Blinky on Ox64</a></h1>
+<p><em>Will Nim Blinky run on a real RISC-V SBC?</em></p>
+<p>Yep! Connect an LED to Ox64 at <strong>GPIO 29, Pin 21</strong> (pic above)…</p>
+<div><table><thead><tr><th style="text-align: left">Connect</th><th style="text-align: left">To</th><th style="text-align: left">Wire</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Ox64 Pin 21</strong></td><td style="text-align: left"><strong>LED +</strong> <em>(Curved)</em></td><td style="text-align: left">Red</td></tr>
+<tr><td style="text-align: left"><strong>LED -</strong> <em>(Flat)</em></td><td style="text-align: left"><strong>Resistor</strong></td><td style="text-align: left">Breadboard</td></tr>
+<tr><td style="text-align: left"><strong>Resistor</strong></td><td style="text-align: left"><strong>Ox64 GND</strong></td><td style="text-align: left">Black</td></tr>
+</tbody></table>
+</div>
+<p><a href="https://wiki.pine64.org/wiki/File:Ox64_pinout.png">(See the <strong>Ox64 Pinout</strong>)</a></p>
+<p>(Resistor is <strong>47 Ohm</strong>, yellow-purple-black-gold, almost Karma Chameleon)</p>
 <p>TODO</p>
-<p>We assume LED is connected to GPIO 29, Pin 21. <a href="https://wiki.pine64.org/wiki/File:Ox64_pinout.png">(See the Pinout)</a></p>
-<p>(With a 47 Ohm Resistor, yellow-purple-black-gold, almost Karma Chameleon)</p>
 <h1 id="inside-nim-on-nuttx"><a href="#inside-nim-on-nuttx">6 Inside Nim on NuttX</a></h1>
 <p><em>Nim runs incredibly well on NuttX. How is that possible?</em></p>
 <p>That’s because <strong>Nim compiles to C</strong>. As far as NuttX is concerned…</p>
