@@ -4,7 +4,7 @@
 
 ![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!](https://lupyuen.github.io/images/nim-ox64.png)
 
-Happy New Year! It's 2024 and we're running [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (Real-Time Operating System) on Single-Board Computers with __plenty of RAM__...
+Happy New Year! 2024 is here and we're running [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (Real-Time Operating System) on Single-Board Computers with __plenty of RAM__...
 
 Like [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC with 64 MB RAM! (Pic below)
 
@@ -433,9 +433,7 @@ _Our Nim Experiment needs an LED Driver for Ox64..._
 
 _What's the Quickest Way to create a NuttX LED Driver?_
 
-__U-Boot Bootloader__ was superful helpful for creating our LED Driver!
-
-When Ox64 boots, press Enter a few times. The __U-Boot Command Prompt__ will appear.
+__U-Boot Bootloader__ can help! Power up Ox64 and press Enter a few times to reveal the __U-Boot Command Prompt__.
 
 We enter these __U-Boot Commands__...
 
@@ -465,7 +463,7 @@ $ md 0x20000938 1
 
 And our LED (GPIO 29) will __flip On and Off__!
 
-Thus we have discovered the Magic Bits for flipping our LED...
+Thus we have verified the __Magic Bits__ for flipping our LED...
 
 - Write to __GPIO 29 Register__ at __`0x2000` `0938`__ (gpio_cfg29)
 
@@ -494,7 +492,7 @@ From BL808 Reference Manual Page 56, "Normal GPIO Output Mode"...
 - Set the level of I/O pin through reg_gpio_xx_o (Bit 24) <br>
   = Either (0 << 24) Or (1 << 24)
 
-(GPIO Bit Definitions are below)
+TODO: (__GPIO Bits__ are listed in the pic above)
 
 Which means...
 
@@ -506,8 +504,6 @@ Which means...
   = (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (1 << 24) <br>
   = 0x1000b40
 
-TODO: The bits are listed in the pic above
-
 TODO
 
 _How to flip the GPIO in our NuttX LED Driver?_
@@ -517,40 +513,37 @@ This is how we flip the GPIO in our NuttX LED Driver: [bl808_userleds.c](https:/
 ```c
 // Switch the LEDs On and Off according to the LED Set
 // (Bit 0 = LED 0)
-void board_userled_all(uint32_t ledset)
-{
-  _info("ledset=0x%x\n", ledset);
-  int i;
+void board_userled_all(uint32_t ledset) {
 
   // For LED 0 to 2...
-  for (i = 0; i < BOARD_LEDS; i++)
-    {
-      // Get the desired state of the LED
-      bool val = ((ledset & g_led_setmap[i]) != 0);
-      _info("led=%d, val=%d\n", i, val);
+  for (int i = 0; i < BOARD_LEDS; i++) {
 
-      // If this is LED 0...
-      if (i == 0)
-        {
-          // Switch it On or Off?
-          if (val)
-            {
-              // Switch LED 0 (GPIO 29) to On:
-              // Set gpio_cfg29 to (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (1 << 24)
-              // mw 0x20000938 0x1000b40 1
-              *(volatile uint32_t *) 0x20000938 = 0x1000b40;
-            }
-          else
-            {
-              // Switch LED 0 (GPIO 29) to Off:
-              // Set gpio_cfg29 to (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (0 << 24)
-              // mw 0x20000938 0xb40 1
-              *(volatile uint32_t *) 0x20000938 = 0xb40;
-            }
-        }
+    // Get the desired state of the LED
+    bool val = ((ledset & g_led_setmap[i]) != 0);
+
+    // If this is LED 0...
+    if (i == 0) {
+
+      // Switch it On or Off?
+      if (val) {
+
+        // Switch LED 0 (GPIO 29) to On:
+        // Set gpio_cfg29 to (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (1 << 24)
+        // mw 0x20000938 0x1000b40 1
+        *(volatile uint32_t *) 0x20000938 = 0x1000b40;
+      } else {
+
+        // Switch LED 0 (GPIO 29) to Off:
+        // Set gpio_cfg29 to (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (0 << 24)
+        // mw 0x20000938 0xb40 1
+        *(volatile uint32_t *) 0x20000938 = 0xb40;
+      }
     }
+  }
 }
 ```
+
+TODO
 
 And our LED Driver works OK with Nim: It blinks our LED on Ox64 BL808 SBC!
 
