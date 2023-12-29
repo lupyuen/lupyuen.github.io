@@ -322,8 +322,8 @@ Yep! Connect an LED to Ox64 at __GPIO 29, Pin 21__ (pic above)...
 
 | Connect | To | Wire |
 |:-----|:---|:-----|
-| __Ox64 Pin 21__ | __LED +__ _(Curved)_ | Red |
-| __LED -__ _(Flat)_ | __Resistor__ | Breadboard
+| __Ox64 Pin 21__ | __LED +__ _(Curved Egde)_ | Red |
+| __LED -__ _(Flat Edge)_ | __Resistor__ | Breadboard
 | __Resistor__ | __Ox64 GND__ | Black 
 
 [(See the __Ox64 Pinout__)](https://wiki.pine64.org/wiki/File:Ox64_pinout.png)
