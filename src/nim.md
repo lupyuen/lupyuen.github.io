@@ -318,7 +318,7 @@ TODO
 
 We assume LED is connected to GPIO 29, Pin 21. [(See the Pinout)](https://wiki.pine64.org/wiki/File:Ox64_pinout.png)
 
-(With a 47 Ohm Resistor, yellow-purple-black-gold, not quite Karma Chameleon)
+(With a 47 Ohm Resistor, yellow-purple-black-gold, almost Karma Chameleon)
 
 # Inside Nim on NuttX
 
