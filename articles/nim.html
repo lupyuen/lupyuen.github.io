@@ -1166,7 +1166,7 @@ void up_timer_initialize(void) {
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nim.md"><strong>lupyuen.github.io/src/nim.md</strong></a></p>
 <h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">17 Appendix: Build NuttX for QEMU</a></h1>
-<p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong> that has Minor Fixes for Nim…</p>
+<p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit)</strong> that has Minor Fixes for Nim…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307"><strong>Makefile</strong></a>: Nimcache has moved 2 folders up</p>
@@ -1175,7 +1175,7 @@ void up_timer_initialize(void) {
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879"><strong>config.nims</strong></a>: Add support for 64-bit RISC-V</p>
 </li>
 </ul>
-<p>This is how we download and build NuttX for Ox64 BL808 SBC…</p>
+<p>This is how we download and build NuttX for <strong>QEMU RISC-V (64-bit)</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
 git clone \
   --branch nim \
@@ -1228,7 +1228,7 @@ qemu-system-riscv64 \
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879"><strong>config.nims</strong></a>: Add support for 64-bit RISC-V</p>
 </li>
 </ul>
-<p>This is how we download and build NuttX for Ox64 BL808 SBC…</p>
+<p>This is how we download and build NuttX for <strong>Ox64 BL808 SBC</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
 git clone \
   --branch nim \
@@ -1297,7 +1297,6 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <p><a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/578a7eb2d4d827aa252fff37c172dd18">(See the <strong>Build Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">(See the <strong>Build Outputs</strong>)</a></p>
-<p><a href="https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk">(Why the <strong>64 KB Padding</strong>)</a></p>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
 <p>Then we do the <a href="https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64"><strong>Linux-To-NuttX Switcheroo</strong></a>: Overwrite the microSD Linux Image by the <strong>NuttX Kernel</strong>…</p>
