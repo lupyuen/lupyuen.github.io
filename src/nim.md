@@ -1264,13 +1264,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build NuttX for QEMU
 
-In this article, we ran a Work-In-Progress Version of __Apache NuttX RTOS for Ox64__ that has Minor Fixes for Nim...
+In this article, we ran a Work-In-Progress Version of __Apache NuttX RTOS for QEMU RISC-V (64-bit)__ that has Minor Fixes for Nim...
 
 - [__Makefile__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307): Nimcache has moved 2 folders up
 
 - [__config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879): Add support for 64-bit RISC-V
 
-This is how we download and build NuttX for Ox64 BL808 SBC...
+This is how we download and build NuttX for __QEMU RISC-V (64-bit)__...
 
 ```bash
 ## Download the WIP NuttX Source Code
@@ -1333,7 +1333,7 @@ In this article, we ran a Work-In-Progress Version of __Apache NuttX RTOS for Ox
 
 - [__config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879): Add support for 64-bit RISC-V
 
-This is how we download and build NuttX for Ox64 BL808 SBC...
+This is how we download and build NuttX for __Ox64 BL808 SBC__...
 
 ```bash
 ## Download the WIP NuttX Source Code
@@ -1411,8 +1411,6 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 [(See the __Build Log__)](https://gist.github.com/lupyuen/578a7eb2d4d827aa252fff37c172dd18)
 
 [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
-
-[(Why the __64 KB Padding__)](https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk)
 
 Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
 
