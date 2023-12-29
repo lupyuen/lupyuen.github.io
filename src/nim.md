@@ -312,12 +312,13 @@ TODO: We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
 1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
-# Nim blinks the LED on Ox64
+# Nim Blinky on Ox64
 
 TODO
+
 We assume LED is connected to GPIO 29, Pin 21. [(See the Pinout)](https://wiki.pine64.org/wiki/File:Ox64_pinout.png)
 
-(With a 47 Ohm Resistor, yellow-purple-black-gold)
+(With a 47 Ohm Resistor, yellow-purple-black-gold, not quite Karma Chameleon)
 
 # Inside Nim on NuttX
 
