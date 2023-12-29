@@ -124,7 +124,18 @@ proc hello_nim() {.exportc, cdecl.} =
 <p>Which looks a lot like Python!</p>
 <p><em>What’s GC_runOrc?</em></p>
 <p>Our Nim Program will be <strong>called by C</strong>. (Remember NuttX?)</p>
-<p>And Nim works with <a href="https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)"><strong>Garbage Collection</strong></a>. Thus we call <strong>GC_runOrc</strong> to force the Garbage Collection to complete, clean up all remaining Nim Objects, before returning to C and NuttX.</p>
+<p>And Nim works with <a href="https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)"><strong>Garbage Collection</strong></a>. Thus we call <strong>GC_runOrc</strong> to…</p>
+<ul>
+<li>
+<p>Force the Garbage Collection to complete</p>
+</li>
+<li>
+<p>Clean up all remaining Nim Objects</p>
+</li>
+<li>
+<p>Then return to C and NuttX</p>
+</li>
+</ul>
 <p><em>What if we forget to call GC_runOrc?</em></p>
 <p>Erm don’t! To make it unforgettable, we <strong><code>defer</code></strong> the Garbage Collection: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L56-L65">hello_nim_async.nim</a></p>
 <div class="example-wrap"><pre class="language-nim"><code>## Main Function in Nim
@@ -239,6 +250,7 @@ var ULEDIOC_SETALL {.
   header: &quot;&lt;nuttx/leds/userled.h&gt;&quot;.}: cint
 </code></pre></div>
 <p>We’re ready to run this!</p>
+<p>TODO: Nim on QEMU</p>
 <h1 id="run-nim-on-qemu"><a href="#run-nim-on-qemu">4 Run Nim on QEMU</a></h1>
 <p><em>How to run Nim Blinky on QEMU Emulator?</em></p>
 <p>TODO: We begin by <strong>booting NuttX RTOS</strong> on RISC-V QEMU Emulator (64-bit)…</p>
@@ -268,7 +280,7 @@ sudo apt install qemu-system-riscv64
   -nographic
 </code></pre></div></li>
 <li>
-<p>NuttX is now running in the QEMU Emulator! (Pic below)</p>
+<p>NuttX is now running in the <strong>QEMU Emulator</strong>! (Pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 nx_start_application: Starting init thread
@@ -277,44 +289,11 @@ NuttShell (NSH) NuttX-12.1.0-RC0
 nsh&gt; nx_start: CPU0: Beginning Idle Loop
 nsh&gt;
 </code></pre></div>
-<p>TODO: <a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">(See the Complete Log)</a></p>
+<p>TODO: <a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 <li>
 <p>TODO: hello_nim</p>
-</li>
-<li>
-<p>TODO: Enter “<strong>help</strong>” to see the available commands…</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; help
-help usage:  help [-v] [&lt;cmd&gt;]
-
-    .         break     dd        exit      ls        ps        source    umount
-    [         cat       df        false     mkdir     pwd       test      unset
-    ?         cd        dmesg     free      mkrd      rm        time      uptime
-    alias     cp        echo      help      mount     rmdir     true      usleep
-    unalias   cmp       env       hexdump   mv        set       truncate  xd
-    basename  dirname   exec      kill      printf    sleep     uname
-
-Builtin Apps:
-    nsh     ostest  sh
-</code></pre></div></li>
-<li>
-<p>TODO: NuttX works like a tiny version of Linux, so the commands will look familiar…</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
-NuttX 12.1.0-RC0 275db39 Jun 16 2023 20:22:08 risc-v rv-virt
-
-nsh&gt; ls /dev
-/dev:
-console
-null
-ttyS0
-zero
-
-nsh&gt; ps
-  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK           STACK   USED  FILLED COMMAND
-    0     0   0 FIFO     Kthread N-- Ready              0000000000000000 002000 001224  61.2%  Idle Task
-    1     1 100 RR       Task    --- Running            0000000000000000 002992 002024  67.6%  nsh_main
-</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">(See the Complete Log)</a></p>
+<p>(Enter “<strong>help</strong>” to see the available commands)</p>
 </li>
 <li>
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
@@ -325,9 +304,9 @@ nsh&gt; ps
 <p><em>Will Nim Blinky run on a real RISC-V SBC?</em></p>
 <p>Yep! Connect an LED to Ox64 at <strong>GPIO 29, Pin 21</strong> (pic above)…</p>
 <div><table><thead><tr><th style="text-align: left">Connect</th><th style="text-align: left">To</th><th style="text-align: left">Wire</th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>Ox64 Pin 21</strong></td><td style="text-align: left"><strong>LED +</strong> <em>(Curved Egde)</em></td><td style="text-align: left">Red</td></tr>
-<tr><td style="text-align: left"><strong>LED -</strong> <em>(Flat Edge)</em></td><td style="text-align: left"><strong>Resistor</strong></td><td style="text-align: left">Breadboard</td></tr>
-<tr><td style="text-align: left"><strong>Resistor</strong></td><td style="text-align: left"><strong>Ox64 GND</strong></td><td style="text-align: left">Black</td></tr>
+<tr><td style="text-align: left"><strong>Ox64 Pin 21</strong> <br><em>(GPIO 29)</em></td><td style="text-align: left"><strong>LED +</strong> <br><em>(Curved Edge)</em></td><td style="text-align: left">Red</td></tr>
+<tr><td style="text-align: left"><strong>LED -</strong> <br><em>(Flat Edge)</em></td><td style="text-align: left"><strong>Resistor</strong></td><td style="text-align: left">Breadboard</td></tr>
+<tr><td style="text-align: left"><strong>Resistor</strong></td><td style="text-align: left"><strong>Ox64 Pin 23</strong> <br><em>(GND)</em></td><td style="text-align: left">Black</td></tr>
 </tbody></table>
 </div>
 <p><a href="https://wiki.pine64.org/wiki/File:Ox64_pinout.png">(See the <strong>Ox64 Pinout</strong>)</a></p>
