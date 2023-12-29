@@ -610,7 +610,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/nim.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nim.md)
 
-# Appendix: Fix the RISC-V Timer with OpenSBI
+# Appendix: RISC-V Timer with OpenSBI
 
 TODO
 
