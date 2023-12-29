@@ -75,7 +75,7 @@
 <li><a href="#led-driver-for-ox64">7 LED Driver for Ox64</a><ul></ul></li>
 <li><a href="#documentation">8 Documentation</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-risc-v-timer-with-opensbi">10 Appendix: RISC-V Timer with OpenSBI</a><ul></ul></li>
+<li><a href="#appendix-opensbi-timer">10 Appendix: OpenSBI Timer</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-qemu">11 Appendix: Build NuttX for QEMU</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-ox64">12 Appendix: Build NuttX for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!" /></p>
@@ -581,7 +581,7 @@ void board_userled_all(uint32_t ledset) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nim.md"><strong>lupyuen.github.io/src/nim.md</strong></a></p>
-<h1 id="appendix-risc-v-timer-with-opensbi"><a href="#appendix-risc-v-timer-with-opensbi">10 Appendix: RISC-V Timer with OpenSBI</a></h1>
+<h1 id="appendix-opensbi-timer"><a href="#appendix-opensbi-timer">10 Appendix: OpenSBI Timer</a></h1>
 <p>TODO</p>
 <p><em>The <code>sleep</code> command hangs in NuttX Shell. How to fix it?</em></p>
 <p>That’s because we haven’t implemented the RISC-V Timer for Ox64! We should call OpenSBI to handle the Timer, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee">here’s the fix</a>.</p>
