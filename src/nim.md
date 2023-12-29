@@ -312,13 +312,25 @@ TODO: We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
 1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
+TODO: Wiring pic
+
 # Nim Blinky on Ox64
 
+_Will Nim Blinky run on a real RISC-V SBC?_
+
+Yep! Connect an LED to Ox64 at __GPIO 29, Pin 21__ (pic above)...
+
+| Connect | To | Wire |
+|:-----|:---|:-----|
+| __Ox64 Pin 21__ | __LED +__ _(Curved)_ | Red |
+| __LED -__ _(Flat)_ | __Resistor__ | Breadboard
+| __Resistor__ | __Ox64 GND__ | Black 
+
+[(See the __Ox64 Pinout__)](https://wiki.pine64.org/wiki/File:Ox64_pinout.png)
+
+(Resistor is __47 Ohm__, yellow-purple-black-gold, almost Karma Chameleon)
+
 TODO
-
-We assume LED is connected to GPIO 29, Pin 21. [(See the Pinout)](https://wiki.pine64.org/wiki/File:Ox64_pinout.png)
-
-(With a 47 Ohm Resistor, yellow-purple-black-gold, almost Karma Chameleon)
 
 # Inside Nim on NuttX
 
