@@ -1283,9 +1283,11 @@ git clone \
   https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
   apps
 
-## Build NuttX
+## Configure NuttX for QEMU RISC-V (64-bit)
 cd nuttx
-tools/configure.sh ox64:nsh
+tools/configure.sh rv-virt:nsh64
+
+## Build NuttX
 make
 
 ## Dump the disassembly to nuttx.S
@@ -1344,9 +1346,11 @@ git clone \
   https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
   apps
 
-## Build NuttX
+## Configure NuttX for Ox64 BL808 RISC-V SBC
 cd nuttx
 tools/configure.sh ox64:nsh
+
+## Build NuttX
 make
 
 ## Export the NuttX Kernel
