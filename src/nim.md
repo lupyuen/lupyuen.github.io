@@ -10,7 +10,9 @@ Like [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC with 
 
 _How will we use the Plentiful RAM meaningfully?_
 
-Let's create simpler, safer __NuttX Apps__ with a Modern, [__Garbage-Collected__](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) Language: [__Nim Programming Language__](https://nim-lang.org)!
+Let's create simpler, safer __NuttX Apps__ with a Modern, [__Garbage-Collected__](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) Language: [__Nim Programming Language__](https://nim-lang.org).
+
+Garbage-Collected Languages (like Nim) require __a bit more RAM__ than Low-Level Languages (like C). Perfect for our roomy SBC!
 
 TODO: how different from Zig and Rust?
 
