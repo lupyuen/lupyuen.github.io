@@ -1268,5 +1268,8 @@ TODO
 
 # Appendix: Build NuttX for Ox64
 
-TODO: [ox64-1](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
+TODO
 
+[(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
+
+[(See the __Build Log__)](https://gist.github.com/lupyuen/578a7eb2d4d827aa252fff37c172dd18)
