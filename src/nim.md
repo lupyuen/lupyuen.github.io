@@ -545,17 +545,13 @@ void board_userled_all(uint32_t ledset) {
 }
 ```
 
-TODO
+That's how we created a barebones LED Driver for Ox64!
 
-And our LED Driver works OK with Nim: It blinks our LED on Ox64 BL808 SBC!
+TODO: Startup
 
-- [Watch the Demo on YouTube](https://youtube.com/shorts/KCkiXFxBgxQ)
+_Ahem it looks a little messy..._
 
-- [See the Log](https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96)
-
-- ["Blink an LED with Nim"](https://github.com/lupyuen/nuttx-nim#blink-an-led-with-nim)
-
-Later we'll replace the (awful) code above by the BL808 GPIO Driver. Which we'll copy from NuttX for BL602.
+TODO: No Worries! Later we'll replace the (awful) code above by the __BL808 GPIO Driver__. Which we'll copy from __NuttX for BL602__.
 
 # Experiments with Nim on Apache NuttX Real-Time Operating System
 
