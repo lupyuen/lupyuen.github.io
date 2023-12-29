@@ -32,9 +32,9 @@ We've tested [__Rust__](https://lupyuen.github.io/articles/rusti2c) and [__Zig__
 
 - __Compiles to C__ (instead of Machine Code)
 
-- TODO: Garbage Collected
+- Syntax is __Python-like__ (but Statically Compiled)
 
-- TODO: Syntax is Python like but static compiled 
+- Automatic __Garbage Collection__ (no Borrow Checker)
 
 - And it's __Memory Safe__ (like Rust)
 
