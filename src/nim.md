@@ -427,6 +427,10 @@ Hint: mm: orc; opt: size; options: -d:danger
 92931 lines; 1.214s; 137.633MiB peakmem; proj: /workspaces/bookworm/apps/examples/hello_nim/hello_nim_async.nim; out: /workspaces/bookworm/apps/.nimcache/hello_nim_async.json [SuccessX]
 ```
 
+![GPIO 29 in BL808 Reference Manual (Page 119)](https://lupyuen.github.io/images/nim-gpio.jpg)
+
+[_GPIO 29 in BL808 Reference Manual (Page 119)_](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+
 # LED Driver for Ox64
 
 _Our Nim Experiment needs an LED Driver for Ox64..._
@@ -473,45 +477,43 @@ Thus we have verified the __Magic Bits__ for flipping our LED...
 
 _How did we figure out the Magic Bits for GPIO 29?_
 
-TODO
+From [__BL808 Reference Manual__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) Page 56, "Normal GPIO Output Mode"...
 
-From BL808 Reference Manual Page 56, "Normal GPIO Output Mode"...
-
-- Set reg_gpio_xx_oe (Bit 6) to 1 to enable the GPIO output mode <br>
+- Set __reg_gpio_29_oe__ (Bit 6) to __`1`__ to enable GPIO Output Mode <br>
   = (1 << 6)
 
-- Set reg_gpio_xx_func_sel (Bits 8 to 12) to 11 to enter the SWGPIO mode <br>
+- Set __reg_gpio_29_func_sel__ (Bits 8 to 12) to __`11`__ to enter SWGPIO Mode <br>
   = (11 << 8)
 
-- Set reg_gpio_xx_mode (Bits 30 to 31) to 0 to enable the normal output function of I/O <br>
+- Set __reg_gpio_29_mode__ (Bits 30 to 31) to __`0`__ to enable Normal Output Function of I/O <br>
   = (0 << 30)
 
-- Set reg_gpio_xx_pu (Bit 4) and reg_gpio_xx_pd (Bit 5) to 0 to disable the internal pull-up and pull-down functions <br>
+- Set __reg_gpio_29_pu__ (Bit 4) and __reg_gpio_29_pd__ (Bit 5) to __`0`__ to disable Internal Pull-Up and Pull-Down functions <br>
   = (0 << 4)
 
-- Set the level of I/O pin through reg_gpio_xx_o (Bit 24) <br>
+- Set the Pin Level (__`0`__ or __`1`__) through __reg_gpio_29_o__ (Bit 24) <br>
   = Either (0 << 24) Or (1 << 24)
 
-TODO: (__GPIO Bits__ are listed in the pic above)
+[(__GPIO Bits__ are listed in the pic above)](https://lupyuen.github.io/images/nim-gpio.jpg)
 
 Which means...
 
-- Set GPIO Output to 0 <br>
+- __Set GPIO Output to 0__ <br>
   = (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (0 << 24) <br>
-  = 0xb40
+  = __`0xB40`__
 
-- Set GPIO Output to 1 <br>
+- __Set GPIO Output to 1__ <br>
   = (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (1 << 24) <br>
-  = 0x1000b40
+  = __`0x100` `0B40`__
 
-TODO
+And we write the above values to __GPIO 29 Register__ at __`0x2000` `0938`__ (gpio_cfg29)
 
-_How to flip the GPIO in our NuttX LED Driver?_
+_How to flip the GPIO in our LED Driver?_
 
-This is how we flip the GPIO in our NuttX LED Driver: [bl808_userleds.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_userleds.c#L176-L209)
+We do this in our __NuttX LED Driver__: [bl808_userleds.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_userleds.c#L176-L209)
 
 ```c
-// Switch the LEDs On and Off according to the LED Set
+// Flip the LEDs On and Off according to the LED Set
 // (Bit 0 = LED 0)
 void board_userled_all(uint32_t ledset) {
 
@@ -524,16 +526,16 @@ void board_userled_all(uint32_t ledset) {
     // If this is LED 0...
     if (i == 0) {
 
-      // Switch it On or Off?
+      // Flip it On or Off?
       if (val) {
 
-        // Switch LED 0 (GPIO 29) to On:
+        // Flip LED 0 (GPIO 29) to On:
         // Set gpio_cfg29 to (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (1 << 24)
         // mw 0x20000938 0x1000b40 1
         *(volatile uint32_t *) 0x20000938 = 0x1000b40;
       } else {
 
-        // Switch LED 0 (GPIO 29) to Off:
+        // Flip LED 0 (GPIO 29) to Off:
         // Set gpio_cfg29 to (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (0 << 24)
         // mw 0x20000938 0xb40 1
         *(volatile uint32_t *) 0x20000938 = 0xb40;
@@ -1239,208 +1241,6 @@ But this causes the command `sleep 1` to pause for 10 seconds. So we divide the 
 Now the `sleep` command works correctly in NuttX Shell!
 
 [Here's the log (ignore the errors)](https://gist.github.com/lupyuen/8aa66e7f88d1e31a5f198958c15e4393)
-
-# LED Driver for Ox64 BL808
-
-TODO
-
-We wish to blink an LED with Nim on Ox64...
-
-- ["Blink an LED with Nim"](https://github.com/lupyuen/nuttx-nim#blink-an-led-with-nim)
-
-But first we need a barebones NuttX LED Driver for Ox64.
-
-_How to create the NuttX LED Driver?_
-
-We assume LED is connected to GPIO 29, Pin 21. [(See the Pinout)](https://wiki.pine64.org/wiki/File:Ox64_pinout.png)
-
-(With a 47 Ohm Resistor, yellow-purple-black-gold)
-
-_How do we flip a BL808 GPIO High and Low?_
-
-From BL808 Reference Manual Page 56, "Normal GPIO Output Mode"...
-
-- Set reg_gpio_xx_oe (Bit 6) to 1 to enable the GPIO output mode <br>
-  = (1 << 6)
-
-- Set reg_gpio_xx_func_sel (Bits 8 to 12) to 11 to enter the SWGPIO mode <br>
-  = (11 << 8)
-
-- Set reg_gpio_xx_mode (Bits 30 to 31) to 0 to enable the normal output function of I/O <br>
-  = (0 << 30)
-
-- Set reg_gpio_xx_pu (Bit 4) and reg_gpio_xx_pd (Bit 5) to 0 to disable the internal pull-up and pull-down functions <br>
-  = (0 << 4)
-
-- Set the level of I/O pin through reg_gpio_xx_o (Bit 24) <br>
-  = Either (0 << 24) Or (1 << 24)
-
-(GPIO Bit Definitions are below)
-
-Which means...
-
-- Set GPIO Output to 0 <br>
-  = (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (0 << 24) <br>
-  = 0xb40
-
-- Set GPIO Output to 1 <br>
-  = (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (1 << 24) <br>
-  = 0x1000b40
-
-_How to test this?_
-
-GPIO 29 Base Address `gpio_cfg29` is 0x20000938.
-
-For testing, we run U-Boot Bootloader Commands to set GPIO 29 to High and Low...
-
-```bash
-## Dump gpio_cfg29 at 0x20000938
-$ md 0x20000938 1
-20000938: 00400803                             ..@.
-
-## Set GPIO Output to 0: (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (0 << 24)
-## = 0xb40
-$ mw 0x20000938 0xb40 1
-$ md 0x20000938 1
-20000938: 00000b40                             @...
-
-## Set GPIO Output to 1: (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (1 << 24)
-## = 0x1000b40
-$ mw 0x20000938 0x1000b40 1
-$ md 020000938 1
-20000938: 01000b40                             @...
-```
-
-And U-Boot switches the LED On and Off correctly yay!
-
-_How to flip the GPIO in our NuttX LED Driver?_
-
-This is how we flip the GPIO in our NuttX LED Driver: [bl808_userleds.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_userleds.c#L176-L209)
-
-```c
-// Switch the LEDs On and Off according to the LED Set
-// (Bit 0 = LED 0)
-void board_userled_all(uint32_t ledset)
-{
-  _info("ledset=0x%x\n", ledset);////
-  int i;
-
-  // For LED 0 to 2...
-  for (i = 0; i < BOARD_LEDS; i++)
-    {
-      // Get the desired state of the LED
-      bool val = ((ledset & g_led_setmap[i]) != 0);
-      _info("led=%d, val=%d\n", i, val);////
-
-      // If this is LED 0...
-      if (i == 0)
-        {
-          // Switch it On or Off?
-          if (val)
-            {
-              // Switch LED 0 (GPIO 29) to On:
-              // Set gpio_cfg29 to (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (1 << 24)
-              // mw 0x20000938 0x1000b40 1
-              *(volatile uint32_t *) 0x20000938 = 0x1000b40;
-            }
-          else
-            {
-              // Switch LED 0 (GPIO 29) to Off:
-              // Set gpio_cfg29 to (1 << 6) | (11 << 8) | (0 << 30) | (0 << 4) | (0 << 24)
-              // mw 0x20000938 0xb40 1
-              *(volatile uint32_t *) 0x20000938 = 0xb40;
-            }
-        }
-      ////TODO: a64_pio_write(g_led_map[i], (ledset & g_led_setmap[i]) != 0);
-    }
-}
-```
-
-And our LED Driver works OK with Nim: It blinks our LED on Ox64 BL808 SBC!
-
-- [Watch the Demo on YouTube](https://youtube.com/shorts/KCkiXFxBgxQ)
-
-- [See the Log](https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96)
-
-- ["Blink an LED with Nim"](https://github.com/lupyuen/nuttx-nim#blink-an-led-with-nim)
-
-Later we'll replace the (awful) code above by the BL808 GPIO Driver. Which we'll copy from NuttX for BL602.
-
-_How did we get the GPIO Bit Definitions?_
-
-From BL808 Reference Manual Page 119...
-
-```text
-4.8.30 gpio_cfg29
-Base Address：0x20000938
-
-Bits Name Type Reset Description
-
-31:30 reg_gpio_29_mode r/w 0 When GPIO Function Selected to SWGPIO
-00 (Output Value Mode): GPIO Output by reg_gpio_x_o
-Value
-01 (Set/Celar Mode ) :GPIO Output set by reg_gpio_x_set
-and clear by reg_gpio_x_clr
-10 : SWGPIO Source comes from GPIO DMA (GPIO DMA
-Mode), GPIO Output value by gpio_dma_o
-11: SWGPIO Source comes from GPIO DMA (GPIO DMA
-Mode), GPIO Outout value by gpio_dma_set/gpio_dma_clr
-
-29 RSVD
-
-28 reg_gpio_29_i r 0
-
-27 RSVD
-
-26 reg_gpio_29_clr w1p 0 When SWGPIO @ Set/Clear Mode
-Set this bit will clear GPIO output value to 0,when set/clr at
-the same time, only set take effect
-
-25 reg_gpio_29_set w1p 0 When SWGPIO @ Set/Clear Mode
-Set this bit will set GPIO output value to 1,when set/clr at
-the same time, only set take effect
-
-24 reg_gpio_29_o r/w 0 When SWGPIO @ Output Value Mode
-00 : GPIO Value changes according to this value
-01 : GPIO Value Set by this register and clr by clr_reg
-
-23 RSVD
-
-22 reg_gpio_29_int_mask r/w 1 mask interrupt (1)
-
-21 gpio_29_int_stat r 0 interrupt status
-
-20 reg_gpio_29_int_clr r/w 0 clear interrupt
-
-19:16 reg_gpio_29_int_mode_set r/w 0 0000 : sync falling edge trigger
-0001 : sync rising edge trigger
-0010 : sync low level trigger
-0011 : sync high level trigger
-01xx : sync rising & falling edge trigger
-1000 : async falling edge trigger
-1001 : async rising edge trigger
-1010 : async low level trigger
-1011 : async high level trigger
-
-15:13 RSVD
-
-12:8 reg_gpio_29_func_sel r/w 5’hB GPIO Function Select (Default : SW-GPIO)
-
-7 RSVD
-
-6 reg_gpio_29_oe r/w 0 Register Controlled GPIO Output Enable (Used when GPIO
-Function select to Register Control GPIO)
-
-5 reg_gpio_29_pd r/w 0 GPIO Pull Down Control
-
-4 reg_gpio_29_pu r/w 0 GPIO Pull Up Control
-
-3:2 reg_gpio_29_drv r/w 0 GPIO Driving Control
-
-1 reg_gpio_29_smt r/w 1 GPIO SMT Control
-
-0 reg_gpio_29_ie r/w 0 GPIO Input Enable
-```
 
 # What's Next
 
