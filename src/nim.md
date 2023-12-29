@@ -1266,7 +1266,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
-TODO: [(See the __Build Outputs__)](TODO)
+[(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-nim/releases/tag/qemu-1)
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa)
 
