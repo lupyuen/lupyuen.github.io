@@ -66,7 +66,13 @@ _What's GC_runOrc?_
 
 Our Nim Program will be __called by C__. (Remember NuttX?)
 
-And Nim works with [__Garbage Collection__](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)). Thus we call __GC_runOrc__ to force the Garbage Collection to complete, clean up all remaining Nim Objects, before returning to C and NuttX.
+And Nim works with [__Garbage Collection__](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)). Thus we call __GC_runOrc__ to...
+
+- Force the Garbage Collection to complete
+
+- Clean up all remaining Nim Objects
+
+- Then return to C and NuttX
 
 _What if we forget to call GC_runOrc?_
 
@@ -223,6 +229,8 @@ var ULEDIOC_SETALL {.
 
 We're ready to run this!
 
+TODO: Nim on QEMU
+
 # Run Nim on QEMU
 
 _How to run Nim Blinky on QEMU Emulator?_
@@ -258,7 +266,7 @@ TODO: We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
       -nographic
     ```
 
-1.  NuttX is now running in the QEMU Emulator! (Pic below)
+1.  NuttX is now running in the __QEMU Emulator__! (Pic above)
 
     ```text
     uart_register: Registering /dev/console
@@ -270,47 +278,11 @@ TODO: We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
     nsh>
     ```
 
-    TODO: [(See the Complete Log)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
+    TODO: [(See the __Complete Log__)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
 
 1.  TODO: hello_nim
 
-1.  TODO: Enter "__help__" to see the available commands...
-
-    ```text
-    nsh> help
-    help usage:  help [-v] [<cmd>]
-
-        .         break     dd        exit      ls        ps        source    umount
-        [         cat       df        false     mkdir     pwd       test      unset
-        ?         cd        dmesg     free      mkrd      rm        time      uptime
-        alias     cp        echo      help      mount     rmdir     true      usleep
-        unalias   cmp       env       hexdump   mv        set       truncate  xd
-        basename  dirname   exec      kill      printf    sleep     uname
-
-    Builtin Apps:
-        nsh     ostest  sh
-    ```
-
-1.  TODO: NuttX works like a tiny version of Linux, so the commands will look familiar...
-
-    ```text
-    nsh> uname -a
-    NuttX 12.1.0-RC0 275db39 Jun 16 2023 20:22:08 risc-v rv-virt
-
-    nsh> ls /dev
-    /dev:
-    console
-    null
-    ttyS0
-    zero
-
-    nsh> ps
-      PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK           STACK   USED  FILLED COMMAND
-        0     0   0 FIFO     Kthread N-- Ready              0000000000000000 002000 001224  61.2%  Idle Task
-        1     1 100 RR       Task    --- Running            0000000000000000 002992 002024  67.6%  nsh_main
-    ```
-
-    [(See the Complete Log)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
+    (Enter "__help__" to see the available commands)
 
 1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
@@ -324,9 +296,9 @@ Yep! Connect an LED to Ox64 at __GPIO 29, Pin 21__ (pic above)...
 
 | Connect | To | Wire |
 |:-----|:---|:-----|
-| __Ox64 Pin 21__ | __LED +__ _(Curved Egde)_ | Red |
-| __LED -__ _(Flat Edge)_ | __Resistor__ | Breadboard
-| __Resistor__ | __Ox64 GND__ | Black 
+| __Ox64 Pin 21__ <br>_(GPIO 29)_ | __LED +__ <br>_(Curved Edge)_ | Red |
+| __LED -__ <br>_(Flat Edge)_ | __Resistor__ | Breadboard
+| __Resistor__ | __Ox64 Pin 23__ <br>_(GND)_ | Black 
 
 [(See the __Ox64 Pinout__)](https://wiki.pine64.org/wiki/File:Ox64_pinout.png)
 
