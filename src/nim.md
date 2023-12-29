@@ -24,17 +24,27 @@ Everything that happens on Ox64 SBC, we'll see the __exact same thing__ in QEMU!
 
 _Hmmm Garbage Collection... Won't it run-pause-run-pause?_
 
+TODO
+
 Awesome folks Wilderness Labs are running .NET on NuttX with Garbage Collection. Maybe it's not so bad!
 
-Also TinyGo
+Also TinyGo, MicroPython
 
-TODO: how different from Zig and Rust?
+_How is Nim different from Rust and Zig?_
 
-Memory Safe (like Rust)
-Garbage Collected
-Compiles to C (instead of LLVM)
-Syntax is Python like but static compiled 
+TOOD
 
+We've tested __Rust__ and __Zig__ with NuttX. __Nim is different__ because it...
+
+- __Compiles to C__ (instead of Machine Code)
+
+- TODO: Garbage Collected
+
+- TODO: Syntax is Python like but static compiled 
+
+- And it's __Memory Safe__ (like Rust)
+
+TODO
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
 
