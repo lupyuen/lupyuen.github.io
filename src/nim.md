@@ -10,9 +10,9 @@ Like [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC with 
 
 _How will we use the Plentiful RAM?_
 
-In this article, we create a __Blinky LED__ app with a Modern, [__Garbage-Collected__](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) Language: [__Nim Programming Language__](https://nim-lang.org).
+In this article, we create a __Blinky LED__ app with a Modern, Garbage-Collected Language: [__Nim Programming Language__](https://nim-lang.org).
 
-Garbage-Collected Languages (like Nim) require __a bit more RAM__ than Low-Level Languages (like C). Perfect for our roomy SBC!
+[__Garbage-Collected__](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) Languages (like Nim) require [__a bit more RAM__](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)#Disadvantages) than Low-Level Languages (like C). Perfect for our roomy (and vroomy) SBC!
 
 [(Watch the __Demo on YouTube__)](https://youtube.com/shorts/KCkiXFxBgxQ)
 
