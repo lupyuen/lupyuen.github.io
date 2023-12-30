@@ -97,7 +97,7 @@ __`defer`__ ensures that the Garbage Collection __will always happen__, as soon 
 
 Now we do something cool and enlightening...
 
-![Blink an LED with Nim](https://lupyuen.github.io/images/nim-code.png)
+![Blink an LED with Nim](https://lupyuen.github.io/images/nim-code.jpg)
 
 # Blink an LED
 
