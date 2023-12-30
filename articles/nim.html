@@ -924,10 +924,10 @@ void up_timer_initialize(void) {
 <p>Originally we set <strong>MTIMER_FREQ</strong> to <code>10000000</code>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 10000000
 </code></pre></div>
-<p>But this causes the command <code>sleep 1</code> to pause for 10 seconds. So we divide the frequency by 10: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
+<p>But this causes the command <strong><code>sleep 1</code></strong> to pause for 10 seconds. So we divide the frequency by 10: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 1000000
 </code></pre></div>
-<p>Now the <code>sleep</code> command works correctly in NuttX Shell! Here’s the log (ignore the errors)…</p>
+<p>Now the <strong><code>sleep</code></strong> command works correctly in NuttX Shell! Here’s the log (ignore the errors)…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/8aa66e7f88d1e31a5f198958c15e4393"><strong><code>sleep</code> works OK on Ox64</strong></a></li>
 </ul>
