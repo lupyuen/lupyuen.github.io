@@ -922,11 +922,13 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 
 [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
 
+This produces the NuttX Image: __`Image`__
+
 Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
 
 [(Remember to flash __OpenSBI and U-Boot Bootloader__)](https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot)
 
-Then we do the [__Linux-To-NuttX Switcheroo__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64): Overwrite the microSD Linux Image by the __NuttX Kernel__...
+Then we do the [__Linux-To-NuttX Switcheroo__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64): Copy the __`Image`__ file (from above) and overwrite the __`Image`__ in the Linux microSD...
 
 ```bash
 ## Overwrite the Linux Image
