@@ -97,6 +97,8 @@ __`defer`__ ensures that the Garbage Collection __will always happen__, as soon 
 
 Now we do something cool and enlightening...
 
+([__hello_nim__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67) is called by our C Program [__hello_nim_main.c__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_main.c#L35-L42))
+
 ![Blink an LED with Nim](https://lupyuen.github.io/images/nim-code.jpg)
 
 # Blink an LED
