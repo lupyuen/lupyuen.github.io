@@ -444,7 +444,7 @@ static const struct { NI cap; NIM_CHAR data[10+1]; } TM__1vqzGCGyH8jPEpAwiaNwvg_
 
 [(From .nimcache/@mhello_nim_async.nim.c)](https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L130-L146)
 
-[(See the nimcache)](https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar)
+[(See the __nimcache__)](https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar)
 
 Yep Nim Compiler has produced a perfectly valid C Program. That will compile with any C Compiler!
 
@@ -640,9 +640,11 @@ void board_userled_all(uint32_t ledset) {
 
 That's how we created a barebones LED Driver for Ox64!
 
-[(How NuttX starts our __LED Driver__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_appinit.c#L167-L179)
-
 [(Remember to add the __Auto-LED Driver__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_autoleds.c)
+
+[(And update the __Kconfig__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64)
+
+[(How NuttX starts our __LED Driver__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_appinit.c#L167-L179)
 
 _Ahem it looks a little messy..._
 
@@ -691,15 +693,35 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 In this article, we ran a Work-In-Progress Version of __Apache NuttX RTOS for QEMU RISC-V (64-bit)__ that has Minor Fixes for Nim...
 
-- TODO: LED Driver for QEMU
+- [__nsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-dd54e0076f30825f912248f2424460e3126c2a8f4e2880709f5c68af9342ddcf): NuttX Config for QEMU
+
+- [__qemu_rv_autoleds.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-5905dc63d5fd592e0a1e25ab25783ae99e54180a7b98fb59f56a73dee79104e6)
+: Auto LED Driver for QEMU
+
+- [__qemu_rv_userleds.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-a6fd389669ddef88302f00a34d401479886cb8983f7be58b32ba075699cb5bb8): User LED Driver for QEMU
+
+- [__qemu_rv_appinit.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-beeaeb03fa5642002a542446c89251c9a7c5c1681cfe915387740ea0975e91b3): Start LED Driver
 
 - [__Makefile__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307): Nimcache has moved 2 folders up
 
 - [__config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879): Add support for 64-bit RISC-V
 
-TODO: Install Nim. Nim won't install? Try a Linux Container
+First we install [__Nim Compiler__](https://nim-lang.org/install_unix.html) (only the Latest Dev Version supports NuttX)...
 
-This is how we download and build NuttX for __QEMU RISC-V (64-bit)__...
+```bash
+## Install Nim Compiler: https://nim-lang.org/install_unix.html
+curl https://nim-lang.org/choosenim/init.sh -sSf | sh
+
+## Add Nim to PATH
+export PATH=$HOME/.nimble/bin:$PATH
+
+## Select Latest Dev Version of Nim. Will take a while!
+choosenim devel --latest
+```
+
+[(Nim won't install? Try a __Linux Container__)](https://github.com/lupyuen/nuttx-nim#build-nuttx-with-debian-container-in-vscode)
+
+Then we download and build NuttX for __QEMU RISC-V (64-bit)__...
 
 ```bash
 ## Download the WIP NuttX Source Code
@@ -750,25 +772,70 @@ qemu-system-riscv64 \
   -nographic
 ```
 
-TODO: [(See the __NuttX Log__)](https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324)
+At the NuttX Prompt, enter "__hello_nim__"...
 
-TODO: [(Watch the __Demo on YouTube__)](https://youtu.be/l7Y36nTkr8c)
+```text
+nsh> hello_nim
+Hello Nim!
+Opening /dev/userleds
+```
+
+[(Enter "__help__" to see the available commands)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L472-L497)
+
+Nim on NuttX blinks our __Simulated LED__...
+
+```text
+Set LED 0 to 1
+board_userled_all: led=0, val=1
+Waiting...
+
+Set LED 0 to 0
+board_userled_all: led=0, val=0
+Waiting...
+
+Set LED 0 to 1
+board_userled_all: led=0, val=1
+Waiting...
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L210-L471)
+
+To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
 # Appendix: Build NuttX for Ox64
 
 In this article, we ran a Work-In-Progress Version of __Apache NuttX RTOS for Ox64__ that has Minor Fixes for Nim...
 
-- TODO: LED Driver for Ox64
+- [__nsh/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078): NuttX Config for Ox64
 
-- TODO: RISC-V Timer for Ox64
+- [__bl808_timerisr.c__](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx): RISC-V Timer for Ox64
+
+- [__bl808_autoleds.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-efdf5ed87983905c7021de03a7add73932da529d4312b80f948eb199c256b170): Auto LED Driver for Ox64
+
+- [__bl808_userleds.c__](https://lupyuen.github.io/articles/nim#led-driver-for-ox64): User LED Driver for Ox64
+
+- [__bl808_appinit.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-902a3cb106dc7153d030370077938ef28c9412d8b3434888fca8bbf1a1cfbd54): Start LED Driver for Ox64
 
 - [__Makefile__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307): Nimcache has moved 2 folders up
 
 - [__config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879): Add support for 64-bit RISC-V
 
-TODO: Install Nim. Nim won't install? Try a Linux Container
+First we install [__Nim Compiler__](https://nim-lang.org/install_unix.html) (only the Latest Dev Version supports NuttX)...
 
-This is how we download and build NuttX for __Ox64 BL808 SBC__...
+```bash
+## Install Nim Compiler: https://nim-lang.org/install_unix.html
+curl https://nim-lang.org/choosenim/init.sh -sSf | sh
+
+## Add Nim to PATH
+export PATH=$HOME/.nimble/bin:$PATH
+
+## Select Latest Dev Version of Nim. Will take a while!
+choosenim devel --latest
+```
+
+[(Nim won't install? Try a __Linux Container__)](https://github.com/lupyuen/nuttx-nim#build-nuttx-with-debian-container-in-vscode)
+
+Then we download and build NuttX for __Ox64 BL808 SBC__...
 
 ```bash
 ## Download the WIP NuttX Source Code
@@ -871,6 +938,14 @@ At the NuttX Prompt, enter "__hello_nim__"...
 nsh> hello_nim
 Hello Nim!
 Opening /dev/userleds
+
+Set LED 0 to 1
+board_userled_all: led=0, val=1
+Waiting...
+
+Set LED 0 to 0
+board_userled_all: led=0, val=0
+Waiting...
 ```
 
 [(Enter "__help__" to see the available commands)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L472-L497)
