@@ -516,7 +516,7 @@ Yeah so far we're doing Low-Level Coding with NuttX. And the __Nim Memory Safety
 
 Later when we write __LVGL Graphical Apps__ in Nim, we'll appreciate the [__safety and simplicity__](https://github.com/mantielero/lvgl.nim/blob/main/examples/ex02_label.nim) of Nim...
 
-- [__Nim Wrapper for LVGL__](https://github.com/mantielero/lvgl.nim)
+- [__Nim Wrapper for LVGL Graphics Library__](https://github.com/mantielero/lvgl.nim)
 
   [(More about __Embedded Nim__)](https://nim-lang.org/docs/nimc.html#nim-for-embedded-systems)
 
