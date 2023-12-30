@@ -75,7 +75,7 @@
 <li><a href="#led-driver-for-ox64">7 LED Driver for Ox64</a><ul></ul></li>
 <li><a href="#documentation">8 Documentation</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-opensbi-timer">10 Appendix: OpenSBI Timer</a><ul></ul></li>
+<li><a href="#appendix-opensbi-timer-for-nuttx">10 Appendix: OpenSBI Timer for NuttX</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-qemu">11 Appendix: Build NuttX for QEMU</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-ox64">12 Appendix: Build NuttX for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!" /></p>
@@ -106,7 +106,7 @@
 <p>And it’s <strong>Memory Safe</strong> (like Rust)</p>
 </li>
 </ul>
-<p>TODO</p>
+<p>First we say hello to Nim…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <h1 id="basic-nim-from-scratch"><a href="#basic-nim-from-scratch">1 Basic Nim from scratch</a></h1>
 <p><em>(3 languages in a title heh heh)</em></p>
@@ -196,7 +196,7 @@ proc blink_led() =
   echo &quot;Waiting...&quot;
   c_usleep(1000_000)
 </code></pre></div>
-<p>In our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L56-L69"><strong>Main Function</strong></a>: We call the above function <strong>20 times</strong>…</p>
+<p>In our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L56-L69"><strong>Main Function</strong></a>: We call the above function <strong>20 times</strong> to blink our LED (pic below)…</p>
 <div class="example-wrap"><pre class="language-nim"><code>## Main Function in Nim
 proc hello_nim() {.exportc, cdecl.} =
 
@@ -207,8 +207,9 @@ proc hello_nim() {.exportc, cdecl.} =
   for loop in 0..19:
     blink_led()
 </code></pre></div>
-<p>TODO: Looks very similar to C</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85">(Looks very similar to the <strong>C Version</strong>)</a></p>
 <p>And we’re almost done! Nim needs to discover our NuttX Functions…</p>
+<p>TODO: Blink pic</p>
 <h1 id="import-nuttx-functions"><a href="#import-nuttx-functions">3 Import NuttX Functions</a></h1>
 <p><em>How will Nim know about open / close / ioctl / usleep?</em></p>
 <p>We <strong>import the NuttX Functions</strong> from C into Nim: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L21">hello_nim_async.nim</a></p>
@@ -253,7 +254,7 @@ var ULEDIOC_SETALL {.
 <p>TODO: Nim on QEMU</p>
 <h1 id="run-nim-on-qemu"><a href="#run-nim-on-qemu">4 Run Nim on QEMU</a></h1>
 <p><em>How to run Nim Blinky on QEMU Emulator?</em></p>
-<p>TODO: We begin by <strong>booting NuttX RTOS</strong> on RISC-V QEMU Emulator (64-bit)…</p>
+<p>We begin by <strong>booting NuttX RTOS</strong> on RISC-V QEMU Emulator (64-bit)…</p>
 <ol>
 <li>
 <p>Install <a href="https://www.qemu.org/download/"><strong>QEMU Emulator for RISC-V (64-bit)</strong></a>…</p>
@@ -264,9 +265,9 @@ brew install qemu
 sudo apt install qemu-system-riscv64
 </code></pre></div></li>
 <li>
-<p>TODO: Download <strong><code>nuttx</code></strong> from the <a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64"><strong>NuttX Release</strong></a>…</p>
-<p>TODO: <a href="https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx"><strong>nuttx: NuttX Image for 64-bit RISC-V QEMU</strong></a></p>
-<p>TODO: If we prefer to <strong>build NuttX</strong> ourselves: <a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><strong>Follow these steps</strong></a></p>
+<p>Download <strong><code>nuttx</code></strong> from the <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/qemu-1"><strong>NuttX Release</strong></a>…</p>
+<p><a href="https://github.com/lupyuen/nuttx-nim/releases/download/qemu-1/nuttx"><strong>nuttx: NuttX Image for 64-bit RISC-V QEMU</strong></a></p>
+<p>If we prefer to <strong>build NuttX</strong> ourselves: <a href="https://lupyuen.github.io/articles/nim#appendix-build-nuttx-for-qemu"><strong>Follow these steps</strong></a></p>
 </li>
 <li>
 <p>Start the <strong>QEMU RISC-V Emulator</strong> (64-bit) with NuttX RTOS…</p>
@@ -281,24 +282,40 @@ sudo apt install qemu-system-riscv64
 </code></pre></div></li>
 <li>
 <p>NuttX is now running in the <strong>QEMU Emulator</strong>! (Pic above)</p>
-<div class="example-wrap"><pre class="language-text"><code>uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-nx_start_application: Starting init thread
-
-NuttShell (NSH) NuttX-12.1.0-RC0
-nsh&gt; nx_start: CPU0: Beginning Idle Loop
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
 nsh&gt;
 </code></pre></div>
-<p>TODO: <a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L199-L208">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 <li>
-<p>TODO: hello_nim</p>
-<p>(Enter “<strong>help</strong>” to see the available commands)</p>
+<p>At the NuttX Prompt, enter “<strong>hello_nim</strong>”…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_nim
+Hello Nim!
+Opening /dev/userleds
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L472-L497">(Enter “<strong>help</strong>” to see the available commands)</a></p>
+</li>
+<li>
+<p>Nim on NuttX blinks our <strong>Simulated LED</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>Set LED 0 to 1
+board_userled_all: led=0, val=1
+Waiting...
+
+Set LED 0 to 0
+board_userled_all: led=0, val=0
+Waiting...
+
+Set LED 0 to 1
+board_userled_all: led=0, val=1
+Waiting...
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L210-L471">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 <li>
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
 </li>
 </ol>
+<p>Now we step out from the Virtual World into the Real World (like “The Matrix”)…</p>
 <p>TODO: Wiring pic</p>
 <h1 id="nim-blinky-on-ox64"><a href="#nim-blinky-on-ox64">5 Nim Blinky on Ox64</a></h1>
 <p><em>Will Nim Blinky run on a real RISC-V SBC?</em></p>
@@ -311,7 +328,62 @@ nsh&gt;
 </div>
 <p><a href="https://wiki.pine64.org/wiki/File:Ox64_pinout.png">(See the <strong>Ox64 Pinout</strong>)</a></p>
 <p>(Resistor is <strong>47 Ohm</strong>, yellow-purple-black-gold, almost Karma Chameleon)</p>
-<p>TODO</p>
+<p>Follow these steps to <strong>boot NuttX RTOS</strong> on our Ox64 BL808 SBC…</p>
+<p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
+<ol>
+<li>
+<p>Flash <a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot"><strong>OpenSBI and U-Boot Bootloader</strong>)</a> to Ox64</p>
+</li>
+<li>
+<p>Prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a></p>
+</li>
+<li>
+<p>Download <strong><code>Image</code></strong> from the <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1"><strong>NuttX Release</strong></a>…</p>
+<p><a href="https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/Image"><strong>Image: NuttX Image for Ox64 BL808 SBC</strong></a></p>
+<p>If we prefer to <strong>build NuttX</strong> ourselves: <a href="https://lupyuen.github.io/articles/nim#appendix-build-nuttx-for-ox64"><strong>Follow these steps</strong></a></p>
+</li>
+<li>
+<p>Copy the <strong><code>Image</code></strong> file and overwrite the <strong><code>Image</code></strong> in the Linux microSD</p>
+</li>
+<li>
+<p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
+</li>
+<li>
+<p>NuttX is now running on our <strong>Ox64 SBC</strong>! (Pic below)</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel...
+NuttShell (NSH) NuttX-12.0.3
+nsh&gt;
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96#file-ox64-nuttx-nim-blink-log-L112-L125">(See the <strong>Complete Log</strong>)</a></p>
+</li>
+<li>
+<p>At the NuttX Prompt, enter “<strong>hello_nim</strong>”…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_nim
+Hello Nim!
+Opening /dev/userleds
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L472-L497">(Enter “<strong>help</strong>” to see the available commands)</a></p>
+</li>
+<li>
+<p>Nim on NuttX <a href="TODO"><strong>blinks our LED</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>Set LED 0 to 1
+board_userled_all: led=0, val=1
+Waiting...
+
+Set LED 0 to 0
+board_userled_all: led=0, val=0
+Waiting...
+
+Set LED 0 to 1
+board_userled_all: led=0, val=1
+Waiting...
+</code></pre></div>
+<p><a href="https://youtube.com/shorts/KCkiXFxBgxQ">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96#file-ox64-nuttx-nim-blink-log-L129-L395">(See the <strong>Complete Log</strong>)</a></p>
+</li>
+</ol>
+<p>Nim blinks a real LED on a real RISC-V SBC! Let’s figure out how it works…</p>
+<p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!" /></p>
 <h1 id="inside-nim-on-nuttx"><a href="#inside-nim-on-nuttx">6 Inside Nim on NuttX</a></h1>
 <p><em>Nim runs incredibly well on NuttX. How is that possible?</em></p>
 <p>That’s because <strong>Nim compiles to C</strong>. As far as NuttX is concerned…</p>
@@ -380,7 +452,7 @@ CSRCS  += $(wildcard ../../.nimcache/*.c)
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879"><strong>config.nims</strong></a>: Add support for 64-bit RISC-V</p>
 </li>
 </ul>
-<p>Here we see the Nim Compiler working perfectly, compiling our program for NuttX (by parsing the NuttX Build Config)…</p>
+<p>Here we see the Nim Compiler working perfectly, <a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L55-L185"><strong>compiling our program</strong></a> for NuttX (by parsing the NuttX Build Config)…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ export TOPDIR=/workspaces/bookworm/nuttx
 $ cd /workspaces/bookworm/apps/examples/hello_nim
 $ nim c --header hello_nim_async.nim
@@ -404,10 +476,12 @@ Hint: used config file &#39;/workspaces/bookworm/apps/config.nims&#39; [Conf]
 Hint: mm: orc; opt: size; options: -d:danger
 92931 lines; 1.214s; 137.633MiB peakmem; proj: /workspaces/bookworm/apps/examples/hello_nim/hello_nim_async.nim; out: /workspaces/bookworm/apps/.nimcache/hello_nim_async.json [SuccessX]
 </code></pre></div>
+<p><a href="https://github.com/nim-lang/Nim/blob/devel/doc/nimc.md#nim-for-embedded-systems">(More about <strong>Embedded Nim</strong>)</a></p>
+<p><a href="https://nim-lang.org/docs/nimc.html">(More about <strong>Nim Compiler</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/nim-gpio.jpg" alt="GPIO 29 in BL808 Reference Manual (Page 119)" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><em>GPIO 29 in BL808 Reference Manual (Page 119)</em></a></p>
 <h1 id="led-driver-for-ox64"><a href="#led-driver-for-ox64">7 LED Driver for Ox64</a></h1>
-<p><em>Our Nim Experiment needs an LED Driver for Ox64…</em></p>
+<p><em>Nim Blinky needs an LED Driver for Ox64…</em></p>
 <p><em>What’s the Quickest Way to create a NuttX LED Driver?</em></p>
 <p><strong>U-Boot Bootloader</strong> can help! Power up Ox64 and press Enter a few times to reveal the <strong>U-Boot Command Prompt</strong>.</p>
 <p>We enter these <strong>U-Boot Commands</strong>…</p>
@@ -495,7 +569,7 @@ void board_userled_all(uint32_t ledset) {
   for (int i = 0; i &lt; BOARD_LEDS; i++) {
 
     // Get the desired state of the LED
-    bool val = ((ledset &amp; g_led_setmap[i]) != 0);
+    const bool val = ((ledset &amp; g_led_setmap[i]) != 0);
 
     // If this is LED 0...
     if (i == 0) {
@@ -519,45 +593,30 @@ void board_userled_all(uint32_t ledset) {
 }
 </code></pre></div>
 <p>That’s how we created a barebones LED Driver for Ox64!</p>
-<p>TODO: How NuttX starts our <strong>LED Driver</strong></p>
-<p>TODO: Remember to add the <strong>Auto-LED Driver</strong></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_appinit.c#L167-L179">(How NuttX starts our <strong>LED Driver</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_autoleds.c">(Remember to add the <strong>Auto-LED Driver</strong>)</a></p>
 <p><em>Ahem it looks a little messy…</em></p>
-<p>TODO: No Worries! Later we’ll replace the (awful) code above by the <strong>BL808 GPIO Driver</strong>. Which we’ll copy from <strong>NuttX for BL602</strong>.</p>
-<div class="example-wrap"><pre class="language-c"><code>TODO: GPIO
+<p>No Worries! Later we’ll replace the (awful) code above by the <strong>BL808 GPIO Driver</strong>. Which we’ll copy from <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c"><strong>NuttX for BL602</strong></a>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Get the desired state of LED[i]
+const bool val = ((ledset &amp; g_led_setmap[i]) != 0);
+
+// TODO: Call the BL808 GPIO Driver to flip the LED On or Off
+bl808_gpio_write(  // Write to the GPIO Output...
+  g_led_map[i],    // GPIO Number for LED[i]
+  val              // Flip it On or Off
+);
 </code></pre></div>
 <p><em>Anything else we patched?</em></p>
+<p>We fixed the <strong>NuttX Timer</strong> for Ox64 (otherwise we can’t blink)…</p>
 <p>TODO: RISC-V Timer</p>
 <p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="Nim App runs OK on Apache NuttX Real-Time Operating System and Ox64 BL808 RISC-V SBC" /></p>
 <h1 id="documentation"><a href="#documentation">8 Documentation</a></h1>
 <p>TODO</p>
-<ul>
-<li>
-<p><a href="https://github.com/apache/nuttx-apps/pull/1597">NuttX support for Nim</a></p>
-</li>
-<li>
-<p><a href="https://github.com/nim-lang/Nim/pull/21372/files">Nim support for NuttX</a></p>
-</li>
-<li>
-<p><a href="https://github.com/nim-lang/Nim/pull/21384">For Nuttx, change ioselectors to use “select”</a></p>
-</li>
-<li>
-<p><a href="https://github.com/apache/nuttx/issues/8604">Which implementation of NuttX select/poll/EPOLL is recommended in terms of performance and efficiency</a></p>
-</li>
-<li>
-<p><a href="https://disconnected.systems/blog/nim-on-adruino/">Nim on Arduino</a></p>
-</li>
-<li>
-<p><a href="https://github.com/nim-lang/Nim/blob/devel/doc/nimc.md#nim-for-embedded-systems">Nim for Embedded Systems</a></p>
-</li>
-<li>
-<p><a href="https://nim-lang.org/docs/nimc.html">Nim Compiler User Guide</a></p>
-</li>
-<li>
-<p><a href="https://github.com/mantielero/lvgl.nim">Nim Wrapper for LVGL</a></p>
-</li>
-</ul>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
+<ul>
+<li><a href="https://github.com/mantielero/lvgl.nim">Nim Wrapper for LVGL</a></li>
+</ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -581,7 +640,7 @@ void board_userled_all(uint32_t ledset) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nim.md"><strong>lupyuen.github.io/src/nim.md</strong></a></p>
-<h1 id="appendix-opensbi-timer"><a href="#appendix-opensbi-timer">10 Appendix: OpenSBI Timer</a></h1>
+<h1 id="appendix-opensbi-timer-for-nuttx"><a href="#appendix-opensbi-timer-for-nuttx">10 Appendix: OpenSBI Timer for NuttX</a></h1>
 <p>TODO</p>
 <p><em>The <code>sleep</code> command hangs in NuttX Shell. How to fix it?</em></p>
 <p>That’s because we haven’t implemented the RISC-V Timer for Ox64! We should call OpenSBI to handle the Timer, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee">here’s the fix</a>.</p>
