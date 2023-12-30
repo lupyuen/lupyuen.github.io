@@ -514,7 +514,7 @@ _Isn't Nim supposed to be Memory Safe?_
 
 Yeah so far we're doing Low-Level Coding with NuttX. And the __Nim Memory Safety__ doesn't shine through.
 
-Later when we write __LVGL Graphical Apps__ in Nim, we'll appreciate the safety and simplicity of Nim...
+Later when we write __LVGL Graphical Apps__ in Nim, we'll appreciate the [__safety and simplicity__](https://github.com/mantielero/lvgl.nim/blob/main/examples/ex02_label.nim) of Nim...
 
 - [__Nim Wrapper for LVGL__](https://github.com/mantielero/lvgl.nim)
 
