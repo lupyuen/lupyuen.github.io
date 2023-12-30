@@ -966,6 +966,8 @@ Nim on NuttX [__blinks our LED__](https://lupyuen.github.io/images/nim-blink.jpg
 
 [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
 
+![OpenSBI Supervisor Binary Interface](https://lupyuen.github.io/images/privilege-title.jpg)
+
 # Appendix: OpenSBI Timer for NuttX
 
 _The `sleep` command hangs in NuttX Shell. How to fix it?_
