@@ -311,11 +311,13 @@ Now we step out from the Virtual World into the Real World (like "The Matrix")..
 
 TODO: Wiring pic
 
+![Connect an LED to Ox64 SBC at GPIO 29, Pin 21](https://lupyuen.github.io/images/nim-wiring.jpg)
+
 # Nim Blinky on Ox64
 
 _Will Nim Blinky run on a real RISC-V SBC?_
 
-Yep! Connect an LED to Ox64 at __GPIO 29, Pin 21__ (pic above)...
+Yep! Connect an LED to Ox64 SBC at __GPIO 29, Pin 21__ (pic above)...
 
 | Connect | To | Wire |
 |:-----|:---|:-----|
