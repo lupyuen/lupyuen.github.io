@@ -309,8 +309,6 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
 Now we step out from the Virtual World into the Real World (like "The Matrix")...
 
-TODO: Wiring pic
-
 ![Connect an LED to Ox64 SBC at GPIO 29, Pin 21](https://lupyuen.github.io/images/nim-wiring.jpg)
 
 # Nim Blinky on Ox64
