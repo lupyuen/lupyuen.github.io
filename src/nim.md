@@ -40,7 +40,7 @@ We've tested [__Rust on NuttX__](https://lupyuen.github.io/articles/rusti2c) and
 
 - Automatic __Garbage Collection__ (no Borrow Checker)
 
-- And it's __Memory Safe__ (like Rust)
+- And it's [__Memory Safe__](https://nim-lang.org/faq.html) (like Rust)
 
 First we say hello to Nim...
 
