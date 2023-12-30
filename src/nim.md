@@ -22,7 +22,7 @@ No worries! We'll run Nim + NuttX on the __QEMU Emulator__ for 64-bit RISC-V. Wh
 
 Everything that happens on Ox64 SBC, we'll see the __exact same thing__ in QEMU!
 
-(Except the blinkenlight)
+[(Except the __blinkenlight__)](TODO)
 
 _Hmmm Garbage Collection... Won't it run-pause-run-pause?_
 
