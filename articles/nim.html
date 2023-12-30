@@ -89,8 +89,8 @@
 <p>Everything that happens on Ox64 SBC, we’ll see the <strong>exact same thing</strong> in QEMU!</p>
 <p><a href="https://lupyuen.github.io/images/nim-blink.jpg">(Except the <strong>blinkenlight</strong>)</a></p>
 <p><em>Hmmm Garbage Collection… Won’t it run-pause-run-pause?</em></p>
-<p>The fine folks at <a href="https://www.wildernesslabs.co/"><strong>Wilderness Labs</strong></a> are running <a href="https://www.wildernesslabs.co/developers"><strong>.NET on NuttX</strong></a> with Garbage Collection. Maybe it’s not so bad!</p>
-<p>(Also check out <strong>TinyGo</strong> and <strong>MicroPython</strong>)</p>
+<p>The fine folks at <a href="https://www.wildernesslabs.co/"><strong>Wilderness Labs</strong></a> are running <a href="https://www.wildernesslabs.co/developers"><strong>.NET on NuttX</strong></a> with Garbage Collection. Optimising for performance really helps!</p>
+<p><a href="https://www.mdpi.com/2079-9292/12/1/143">(Also check out <strong>TinyGo</strong> and <strong>MicroPython</strong>)</a></p>
 <p><em>How is Nim different from Rust and Zig?</em></p>
 <p>We’ve tested <a href="https://lupyuen.github.io/articles/rusti2c"><strong>Rust</strong></a> and <a href="https://lupyuen.github.io/articles/lvgl4"><strong>Zig</strong></a> with NuttX. <strong>Nim is different</strong> because it…</p>
 <ul>
@@ -111,7 +111,7 @@
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <h1 id="basic-nim-from-scratch"><a href="#basic-nim-from-scratch">1 Basic Nim from scratch</a></h1>
 <p><em>(3 languages in a title heh heh)</em></p>
-<p>This is the <strong>simplest Nim Program</strong> (that will run on NuttX): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L56-L65">hello_nim_async.nim</a></p>
+<p>This is the <strong>simplest Nim Program</strong> that will run on NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63">hello_nim_async.nim</a></p>
 <div class="example-wrap"><pre class="language-nim"><code>## Main Function in Nim.
 ## Will be called by NuttX, so we export to C.
 proc hello_nim() {.exportc, cdecl.} =
@@ -125,7 +125,7 @@ proc hello_nim() {.exportc, cdecl.} =
 <p>Which looks a lot like Python!</p>
 <p><em>What’s GC_runOrc?</em></p>
 <p>Our Nim Program will be <strong>called by C</strong>. (Remember NuttX?)</p>
-<p>And Nim works with <a href="https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)"><strong>Garbage Collection</strong></a>. Thus we call <strong>GC_runOrc</strong> to…</p>
+<p>And Nim works with <a href="https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)"><strong>Garbage Collection</strong></a>. Thus we call <a href="https://nim-lang.org/blog/2022/11/11/a-cost-model-for-nim.html"><strong>GC_runOrc</strong></a> to…</p>
 <ul>
 <li>
 <p>Force the Garbage Collection to complete</p>
@@ -138,7 +138,7 @@ proc hello_nim() {.exportc, cdecl.} =
 </li>
 </ul>
 <p><em>What if we forget to call GC_runOrc?</em></p>
-<p>Erm don’t! To make it unforgettable, we <strong><code>defer</code></strong> the Garbage Collection: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L56-L65">hello_nim_async.nim</a></p>
+<p>Erm don’t! To make it unforgettable, we <a href="https://nim-lang.org/docs/manual.html#exception-handling-defer-statement"><strong><code>defer</code></strong></a> the Garbage Collection: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63">hello_nim_async.nim</a></p>
 <div class="example-wrap"><pre class="language-nim"><code>## Main Function in Nim
 proc hello_nim() {.exportc, cdecl.} =
 
@@ -153,7 +153,7 @@ proc hello_nim() {.exportc, cdecl.} =
 <p>(<a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67"><strong>hello_nim</strong></a> is called by our C Program <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_main.c#L35-L42"><strong>hello_nim_main.c</strong></a>)</p>
 <p><img src="https://lupyuen.github.io/images/nim-code.jpg" alt="Blink an LED with Nim" /></p>
 <h1 id="blink-an-led"><a href="#blink-an-led">2 Blink an LED</a></h1>
-<p>This is how we <strong>blink an LED</strong> with Nim on NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L21-L56">hello_nim_async.nim</a></p>
+<p>This is how we <strong>blink an LED</strong> with Nim on NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L19-L50">hello_nim_async.nim</a></p>
 <div class="example-wrap"><pre class="language-nim"><code>## Blink the LED
 proc blink_led() =
 
@@ -161,13 +161,13 @@ proc blink_led() =
   echo &quot;Opening /dev/userleds&quot;
   let fd = c_open(&quot;/dev/userleds&quot;, O_WRONLY)
 
-  ## Check the File Descriptor for errors
+  ## Check the File Descriptor for error
   if fd &lt; 0:
     echo &quot;Failed to open /dev/userleds&quot;
     return
 </code></pre></div>
 <p>First we call the NuttX Function <strong><code>open</code></strong> to access the <strong>LED Driver</strong>.</p>
-<p>We might forget to <strong><code>close</code></strong> the LED Driver (in case of errors), so we <strong><code>defer</code></strong> the closing…</p>
+<p>We might forget to <strong><code>close</code></strong> the LED Driver (in case of error), so we <a href="https://nim-lang.org/docs/manual.html#exception-handling-defer-statement"><strong><code>defer</code></strong></a> the closing…</p>
 <div class="example-wrap"><pre class="language-nim"><code>  ## On Return: Close the LED Driver
   defer: c_close(fd)
 </code></pre></div>
@@ -179,7 +179,8 @@ proc blink_led() =
     echo &quot;ioctl(ULEDIOC_SETALL) failed&quot;
     return
 </code></pre></div>
-<p><strong>ULEDIOC_SETALL</strong> accepts a Bit Mask of LED States. The value <strong><code>1</code></strong> says LED 0 (Bit 0) will be flipped On. (Other LEDs will be flipped Off)</p>
+<p><strong>ULEDIOC_SETALL</strong> accepts a Bit Mask of LED States. The value <strong><code>1</code></strong> says that <strong>LED 0</strong> (Bit 0) will be flipped On.</p>
+<p>(Other LEDs will be flipped Off)</p>
 <p>We <strong>pause a while</strong>…</p>
 <div class="example-wrap"><pre class="language-nim"><code>  ## Wait a second (literally)
   ## Because 1 million microseconds = 1 second
@@ -198,7 +199,7 @@ proc blink_led() =
   echo &quot;Waiting...&quot;
   c_usleep(1000_000)
 </code></pre></div>
-<p>In our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L56-L69"><strong>Main Function</strong></a>: We call the above function <strong>20 times</strong> to blink our LED (pic below)…</p>
+<p>In our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67"><strong>Main Function</strong></a>: We call the above function <strong>20 times</strong> to blink our LED (pic below)…</p>
 <div class="example-wrap"><pre class="language-nim"><code>## Main Function in Nim
 proc hello_nim() {.exportc, cdecl.} =
 
@@ -209,12 +210,12 @@ proc hello_nim() {.exportc, cdecl.} =
   for loop in 0..19:
     blink_led()
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85">(Looks very similar to the <strong>C Version</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85">(Looks mighty similar to the <strong>C Version</strong>)</a></p>
 <p>And we’re almost done! Nim needs to discover our NuttX Functions…</p>
 <p><img src="https://lupyuen.github.io/images/nim-blink2.jpg" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Nim blinks our LED" /></p>
 <h1 id="import-nuttx-functions"><a href="#import-nuttx-functions">3 Import NuttX Functions</a></h1>
-<p><em>How will Nim know about open / close / ioctl / usleep?</em></p>
-<p>We <strong>import the NuttX Functions</strong> from C into Nim: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L21">hello_nim_async.nim</a></p>
+<p><em>How will Nim know about open, close, ioctl, usleep?</em></p>
+<p>We <strong>import the NuttX Functions</strong> from C into Nim: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L19">hello_nim_async.nim</a></p>
 <div class="example-wrap"><pre class="language-nim"><code>## Import NuttX Functions from C.
 ## Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
 
@@ -238,8 +239,8 @@ proc c_usleep(usec: cuint): cint {.
   header: &quot;&lt;unistd.h&gt;&quot;,
   nodecl, discardable.}
 </code></pre></div>
-<p>(<strong>discardable</strong> tells Nim Compiler that the Return Value is optional)</p>
-<p>(<strong>nodecl</strong> means don’t emit the C Declaration in the Generated Code)</p>
+<p><a href="https://nim-lang.org/docs/manual.html#statements-and-expressions-discard-statement">(<strong>discardable</strong> tells Nim Compiler that the Return Value is Optional)</a></p>
+<p><a href="https://nim-lang.org/docs/manual.html#implementation-specific-pragmas-nodecl-pragma">(<strong>nodecl</strong> means don’t emit the C Declaration in the Generated Code)</a></p>
 <p>We do the same for <strong>NuttX Macros</strong>…</p>
 <div class="example-wrap"><pre class="language-nim"><code>## Import NuttX Macros from C.
 ## Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
@@ -331,10 +332,9 @@ Waiting...
 <p><a href="https://wiki.pine64.org/wiki/File:Ox64_pinout.png">(See the <strong>Ox64 Pinout</strong>)</a></p>
 <p>(Resistor is <strong>47 Ohm</strong>, yellow-purple-black-gold, almost Karma Chameleon)</p>
 <p>Follow these steps to <strong>boot NuttX RTOS</strong> on our Ox64 BL808 SBC…</p>
-<p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
 <ol>
 <li>
-<p>Flash <a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot"><strong>OpenSBI and U-Boot Bootloader</strong>)</a> to Ox64</p>
+<p>Flash <a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot"><strong>OpenSBI and U-Boot Bootloader</strong></a> to Ox64</p>
 </li>
 <li>
 <p>Prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a></p>
@@ -348,7 +348,7 @@ Waiting...
 <p>Copy the <strong><code>Image</code></strong> file and overwrite the <strong><code>Image</code></strong> in the Linux microSD</p>
 </li>
 <li>
-<p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
+<p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64</p>
 </li>
 <li>
 <p>NuttX is now running on our <strong>Ox64 SBC</strong>! (Pic below)</p>
