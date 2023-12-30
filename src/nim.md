@@ -28,7 +28,7 @@ _Hmmm Garbage Collection... Won't it run-pause-run-pause?_
 
 The fine folks at [__Wilderness Labs__](https://www.wildernesslabs.co/) are running [__.NET on NuttX__](https://www.wildernesslabs.co/developers) with Garbage Collection. Optimising for performance really helps!
 
-[(Also check out __TinyGo__ and __MicroPython__)](https://www.mdpi.com/2079-9292/12/1/143)
+[(See __TinyGo__ and __MicroPython__)](https://www.mdpi.com/2079-9292/12/1/143)
 
 _How is Nim different from Rust and Zig?_
 
