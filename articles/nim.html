@@ -880,6 +880,7 @@ Waiting...
 <p><a href="https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96">(See the <strong>NuttX Log</strong>)</a></p>
 <p><a href="https://youtube.com/shorts/KCkiXFxBgxQ">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="OpenSBI Supervisor Binary Interface" /></p>
 <h1 id="appendix-opensbi-timer-for-nuttx"><a href="#appendix-opensbi-timer-for-nuttx">11 Appendix: OpenSBI Timer for NuttX</a></h1>
 <p><em>The <code>sleep</code> command hangs in NuttX Shell. How to fix it?</em></p>
 <p>That’s because we haven’t implemented the <strong>RISC-V Timer</strong> for Ox64! We should call <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358#toc-bare-metal-experiments-8"><strong>OpenSBI Supervisor Binary Interface</strong></a> to handle the Timer, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee">here’s the fix</a>.</p>
