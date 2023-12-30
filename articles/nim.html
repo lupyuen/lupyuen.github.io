@@ -148,7 +148,7 @@ proc hello_nim() {.exportc, cdecl.} =
   ## Print something
   echo &quot;Hello Nim!&quot;
 </code></pre></div>
-<p><strong><code>defer</code></strong> ensures that the Garbage Collection <strong>will always happen</strong>, as soon as we return from the Main Function.</p>
+<p><a href="https://nim-lang.org/docs/manual.html#exception-handling-defer-statement"><strong><code>defer</code></strong></a> ensures that the Garbage Collection <strong>will always happen</strong>, as soon as we return from the Main Function.</p>
 <p>Now we do something cool and enlightening…</p>
 <p>(<a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67"><strong>hello_nim</strong></a> is called by our C Program <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_main.c#L35-L42"><strong>hello_nim_main.c</strong></a>)</p>
 <p><img src="https://lupyuen.github.io/images/nim-code.jpg" alt="Blink an LED with Nim" /></p>
@@ -389,7 +389,7 @@ Waiting...
 <h1 id="inside-nim-on-nuttx"><a href="#inside-nim-on-nuttx">6 Inside Nim on NuttX</a></h1>
 <p><em>Nim runs incredibly well on NuttX. How is that possible?</em></p>
 <p>That’s because <strong>Nim compiles to C</strong>. As far as NuttX is concerned…</p>
-<p>Nim looks like <strong>another C Program!</strong></p>
+<p>Nim looks like <strong>any other C Program!</strong></p>
 <p><em>Whoa! How is Nim compiled to C?</em></p>
 <p>Our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L37-L41"><strong>NuttX Makefile</strong></a> calls the Nim Compiler…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile Nim to C
