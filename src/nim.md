@@ -22,7 +22,7 @@ No worries! We'll run Nim + NuttX on the __QEMU Emulator__ for 64-bit RISC-V. Wh
 
 Everything that happens on Ox64 SBC, we'll see the __exact same thing__ in QEMU!
 
-[(Except the __blinkenlight__)](TODO)
+[(Except the __blinkenlight__)](https://lupyuen.github.io/images/nim-blink.jpg)
 
 _Hmmm Garbage Collection... Won't it run-pause-run-pause?_
 
@@ -181,7 +181,7 @@ proc hello_nim() {.exportc, cdecl.} =
 
 And we're almost done! Nim needs to discover our NuttX Functions...
 
-TODO: Blink pic
+![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Nim blinks our LED](https://lupyuen.github.io/images/nim-blink2.jpg)
 
 # Import NuttX Functions
 
@@ -369,7 +369,7 @@ Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous art
 
     [(Enter "__help__" to see the available commands)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L472-L497)
 
-1.  Nim on NuttX [__blinks our LED__](TODO)...
+1.  Nim on NuttX [__blinks our LED__](https://lupyuen.github.io/images/nim-blink.jpg)...
 
     ```text
     Set LED 0 to 1
@@ -666,6 +666,8 @@ _Anything else we patched?_
 We fixed the __NuttX Timer__ for Ox64 (otherwise we can't blink)...
 
 - [__"OpenSBI Timer for NuttX"__](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
+
+![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Nim blinks our LED](https://lupyuen.github.io/images/nim-blink.jpg)
 
 # What's Next
 
