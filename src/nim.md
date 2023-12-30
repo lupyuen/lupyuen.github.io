@@ -879,7 +879,7 @@ riscv64-unknown-elf-objdump \
   2>&1
 
 ## Dump the hello_nim disassembly to hello_nim.S
-riscv-none-elf-objdump \
+riscv64-unknown-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
   ../apps/bin/hello_nim \
