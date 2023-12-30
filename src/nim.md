@@ -323,9 +323,9 @@ Yep! Connect an LED to Ox64 SBC at __GPIO 29, Pin 21__ (pic above)...
 
 | Connect | To | Wire |
 |:-----|:---|:-----|
-| __Ox64 Pin 21__ <br>_(GPIO 29)_ | __LED +__ <br>_(Curved Edge)_ | Red |
-| __LED -__ <br>_(Flat Edge)_ | __Resistor__ | Breadboard
-| __Resistor__ | __Ox64 Pin 23__ <br>_(GND)_ | Black 
+| __Ox64 Pin 21__ <br>_(GPIO 29)_ | __Resistor__ <br>_(47 Ohm)_ | Red |
+| __Resistor__ <br>_(47 Ohm)_ | __LED +__ <br>_(Curved Edge)_ | Breadboard
+| __LED -__ <br>_(Flat Edge)_ | __Ox64 Pin 23__ <br>_(GND)_ | Black 
 
 [(See the __Ox64 Pinout__)](https://wiki.pine64.org/wiki/File:Ox64_pinout.png)
 
