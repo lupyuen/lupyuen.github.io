@@ -24,7 +24,7 @@ Everything that happens on Ox64 SBC, we'll see the __exact same thing__ in QEMU!
 
 [(Except the __blinkenlight__)](https://lupyuen.github.io/images/nim-blink.jpg)
 
-_Hmmm Garbage Collection... Won't it run-pause-run-pause?_
+_Hmmm Garbage Collection... Won't it jitter: run-pause-run-pause?_
 
 The fine folks at [__Wilderness Labs__](https://www.wildernesslabs.co/) are running [__.NET on NuttX__](https://www.wildernesslabs.co/developers) with Garbage Collection. Optimising for performance really helps!
 
@@ -32,7 +32,7 @@ The fine folks at [__Wilderness Labs__](https://www.wildernesslabs.co/) are runn
 
 _How is Nim different from Rust and Zig?_
 
-We've tested [__Rust__](https://lupyuen.github.io/articles/rusti2c) and [__Zig__](https://lupyuen.github.io/articles/lvgl4) with NuttX. __Nim is different__ because it...
+We've tested [__Rust on NuttX__](https://lupyuen.github.io/articles/rusti2c) and [__Zig on NuttX__](https://lupyuen.github.io/articles/lvgl4). __Nim is different__ because it...
 
 - __Compiles to C__ (instead of Machine Code)
 
