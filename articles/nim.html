@@ -150,6 +150,7 @@ proc hello_nim() {.exportc, cdecl.} =
 </code></pre></div>
 <p><strong><code>defer</code></strong> ensures that the Garbage Collection <strong>will always happen</strong>, as soon as we return from the Main Function.</p>
 <p>Now we do something cool and enlightening…</p>
+<p>(<a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67"><strong>hello_nim</strong></a> is called by our C Program <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_main.c#L35-L42"><strong>hello_nim_main.c</strong></a>)</p>
 <p><img src="https://lupyuen.github.io/images/nim-code.jpg" alt="Blink an LED with Nim" /></p>
 <h1 id="blink-an-led"><a href="#blink-an-led">2 Blink an LED</a></h1>
 <p>This is how we <strong>blink an LED</strong> with Nim on NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L21-L56">hello_nim_async.nim</a></p>
