@@ -974,11 +974,13 @@ Nim on NuttX [__blinks our LED__](https://lupyuen.github.io/images/nim-blink.jpg
 
 _The `sleep` command hangs in NuttX Shell. How to fix it?_
 
-That's because we haven't implemented the __RISC-V Timer__ for Ox64! We should call [__OpenSBI Supervisor Binary Interface__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358#toc-bare-metal-experiments-8) to handle the Timer, [here's the fix](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee).
+That's because we haven't implemented the __RISC-V Timer__ for Ox64! We should call [__OpenSBI Supervisor Binary Interface__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358#toc-bare-metal-experiments-8) to handle the Timer...
 
-(Ignore riscv_mtimer.c, we were verifying that mtime and mtimecmp are unused in Kernel Mode)
+- [__Fix RISC-V Timer for Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee)
 
-We only need to change [arch/risc-v/src/bl808/bl808_timerisr.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L116)
+  (Ignore [riscv_mtimer.c](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-922834c58227800347b4486fa310c3570cd4014f200ac5ea0cd2e40764cefac4))
+
+We only need to change the __Timer Initialisation__: [bl808_timerisr.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L116)
 
 ```c
 // Timer Frequency
@@ -993,19 +995,19 @@ void up_timer_initialize(void) {
 }
 ```
 
-How it works: At startup, `up_timer_initialize` (above) calls...
+How it works: At startup, [__up_timer_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L98-L116) (above) calls...
 
-- [riscv_mtimer_initialize](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L318-L332) which calls...
+- [__riscv_mtimer_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L318-L332) which calls...
 
-- [riscv_mtimer_set_mtimecmp](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L136-L141) which calls...
+- [__riscv_mtimer_set_mtimecmp__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L136-L141) which calls...
 
-- [riscv_sbi_set_timer](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L94-L107) which calls...
+- [__riscv_sbi_set_timer__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L94-L107) which calls...
 
-- [sbi_ecall](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L53-L76) which makes an ecall to OpenSBI
+- [__sbi_ecall__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L53-L76) which makes an ecall to OpenSBI
 
-- Which accesses the System Timer
+- Which accesses the __RISC-V System Timer__
 
-Originally we set MTIMER_FREQ to 10000000: [bl808_timerisr.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48)
+Originally we set __MTIMER_FREQ__ to `10000000`: [bl808_timerisr.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48)
 
 ```c
 #define MTIMER_FREQ 10000000
@@ -1017,6 +1019,6 @@ But this causes the command `sleep 1` to pause for 10 seconds. So we divide the 
 #define MTIMER_FREQ 1000000
 ```
 
-Now the `sleep` command works correctly in NuttX Shell!
+Now the `sleep` command works correctly in NuttX Shell! Here's the log (ignore the errors)...
 
-[Here's the log (ignore the errors)](https://gist.github.com/lupyuen/8aa66e7f88d1e31a5f198958c15e4393)
+- [__`sleep` works OK on Ox64__](https://gist.github.com/lupyuen/8aa66e7f88d1e31a5f198958c15e4393)
