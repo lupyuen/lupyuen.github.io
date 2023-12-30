@@ -884,9 +884,14 @@ Waiting...
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="OpenSBI Supervisor Binary Interface" /></p>
 <h1 id="appendix-opensbi-timer-for-nuttx"><a href="#appendix-opensbi-timer-for-nuttx">11 Appendix: OpenSBI Timer for NuttX</a></h1>
 <p><em>The <code>sleep</code> command hangs in NuttX Shell. How to fix it?</em></p>
-<p>That’s because we haven’t implemented the <strong>RISC-V Timer</strong> for Ox64! We should call <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358#toc-bare-metal-experiments-8"><strong>OpenSBI Supervisor Binary Interface</strong></a> to handle the Timer, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee">here’s the fix</a>.</p>
-<p>(Ignore riscv_mtimer.c, we were verifying that mtime and mtimecmp are unused in Kernel Mode)</p>
-<p>We only need to change <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L116">arch/risc-v/src/bl808/bl808_timerisr.c</a></p>
+<p>That’s because we haven’t implemented the <strong>RISC-V Timer</strong> for Ox64! We should call <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358#toc-bare-metal-experiments-8"><strong>OpenSBI Supervisor Binary Interface</strong></a> to handle the Timer…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee"><strong>Fix RISC-V Timer for Ox64</strong></a></p>
+<p>(Ignore <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-922834c58227800347b4486fa310c3570cd4014f200ac5ea0cd2e40764cefac4">riscv_mtimer.c</a>)</p>
+</li>
+</ul>
+<p>We only need to change the <strong>Timer Initialisation</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L116">bl808_timerisr.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Timer Frequency
 #define MTIMER_FREQ 1000000
 
@@ -898,32 +903,34 @@ void up_timer_initialize(void) {
   up_alarm_set_lowerhalf(lower);
 }
 </code></pre></div>
-<p>How it works: At startup, <code>up_timer_initialize</code> (above) calls…</p>
+<p>How it works: At startup, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L98-L116"><strong>up_timer_initialize</strong></a> (above) calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L318-L332">riscv_mtimer_initialize</a> which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L318-L332"><strong>riscv_mtimer_initialize</strong></a> which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L136-L141">riscv_mtimer_set_mtimecmp</a> which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L136-L141"><strong>riscv_mtimer_set_mtimecmp</strong></a> which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L94-L107">riscv_sbi_set_timer</a> which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L94-L107"><strong>riscv_sbi_set_timer</strong></a> which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L53-L76">sbi_ecall</a> which makes an ecall to OpenSBI</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L53-L76"><strong>sbi_ecall</strong></a> which makes an ecall to OpenSBI</p>
 </li>
 <li>
-<p>Which accesses the System Timer</p>
+<p>Which accesses the <strong>RISC-V System Timer</strong></p>
 </li>
 </ul>
-<p>Originally we set MTIMER_FREQ to 10000000: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
+<p>Originally we set <strong>MTIMER_FREQ</strong> to <code>10000000</code>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 10000000
 </code></pre></div>
 <p>But this causes the command <code>sleep 1</code> to pause for 10 seconds. So we divide the frequency by 10: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 1000000
 </code></pre></div>
-<p>Now the <code>sleep</code> command works correctly in NuttX Shell!</p>
-<p><a href="https://gist.github.com/lupyuen/8aa66e7f88d1e31a5f198958c15e4393">Here’s the log (ignore the errors)</a></p>
+<p>Now the <code>sleep</code> command works correctly in NuttX Shell! Here’s the log (ignore the errors)…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/8aa66e7f88d1e31a5f198958c15e4393"><strong><code>sleep</code> works OK on Ox64</strong></a></li>
+</ul>
 
     
 </body>
