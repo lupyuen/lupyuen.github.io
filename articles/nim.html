@@ -73,20 +73,21 @@
 <li><a href="#nim-blinky-on-ox64">5 Nim Blinky on Ox64</a><ul></ul></li>
 <li><a href="#inside-nim-on-nuttx">6 Inside Nim on NuttX</a><ul></ul></li>
 <li><a href="#led-driver-for-ox64">7 LED Driver for Ox64</a><ul></ul></li>
-<li><a href="#documentation">8 Documentation</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-opensbi-timer-for-nuttx">10 Appendix: OpenSBI Timer for NuttX</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-qemu">11 Appendix: Build NuttX for QEMU</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-ox64">12 Appendix: Build NuttX for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2024</em></p>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-qemu">9 Appendix: Build NuttX for QEMU</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-ox64">10 Appendix: Build NuttX for Ox64</a><ul></ul></li>
+<li><a href="#appendix-opensbi-timer-for-nuttx">11 Appendix: OpenSBI Timer for NuttX</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!" /></p>
 <p>Happy New Year! 2024 is here and we’re running <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) on Single-Board Computers with <strong>plenty of RAM</strong>…</p>
 <p>Like <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 BL808</strong></a> RISC-V SBC with 64 MB RAM! (Pic below)</p>
 <p><em>How will we use the Plentiful RAM?</em></p>
 <p>In this article, we create a <strong>Blinky LED</strong> app with a Modern, <a href="https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)"><strong>Garbage-Collected</strong></a> Language: <a href="https://nim-lang.org"><strong>Nim Programming Language</strong></a>.</p>
 <p>Garbage-Collected Languages (like Nim) require <strong>a bit more RAM</strong> than Low-Level Languages (like C). Perfect for our roomy SBC!</p>
+<p><a href="https://youtube.com/shorts/KCkiXFxBgxQ">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><em>But we need a RISC-V SBC?</em></p>
 <p>No worries! We’ll run Nim + NuttX on the <strong>QEMU Emulator</strong> for 64-bit RISC-V. Which works great on Linux, macOS and Windows machines.</p>
-<p>Everything that happens on Ox64 SBC, we’ll see the <strong>exact same thing</strong> in QEMU! (Except the blinkenlight)</p>
+<p>Everything that happens on Ox64 SBC, we’ll see the <strong>exact same thing</strong> in QEMU!</p>
+<p>(Except the blinkenlight)</p>
 <p><em>Hmmm Garbage Collection… Won’t it run-pause-run-pause?</em></p>
 <p>The fine folks at <a href="https://www.wildernesslabs.co/"><strong>Wilderness Labs</strong></a> are running <a href="https://www.wildernesslabs.co/developers"><strong>.NET on NuttX</strong></a> with Garbage Collection. Maybe it’s not so bad!</p>
 <p>(Also check out <strong>TinyGo</strong> and <strong>MicroPython</strong>)</p>
@@ -476,8 +477,16 @@ Hint: used config file &#39;/workspaces/bookworm/apps/config.nims&#39; [Conf]
 Hint: mm: orc; opt: size; options: -d:danger
 92931 lines; 1.214s; 137.633MiB peakmem; proj: /workspaces/bookworm/apps/examples/hello_nim/hello_nim_async.nim; out: /workspaces/bookworm/apps/.nimcache/hello_nim_async.json [SuccessX]
 </code></pre></div>
+<p><em>Isn’t Nim supposed to be Memory Safe?</em></p>
+<p>Yeah so far we’re doing Low-Level Coding with NuttX, and the <strong>Nim Memory Safety</strong> doesn’t shine through.</p>
+<p>Later when we write <strong>LVGL Graphical Apps</strong> in Nim, we’ll appreciate the safety and simplicity of Nim…</p>
+<ul>
+<li>
+<p><a href="https://github.com/mantielero/lvgl.nim"><strong>Nim Wrapper for LVGL</strong></a></p>
 <p><a href="https://github.com/nim-lang/Nim/blob/devel/doc/nimc.md#nim-for-embedded-systems">(More about <strong>Embedded Nim</strong>)</a></p>
 <p><a href="https://nim-lang.org/docs/nimc.html">(More about <strong>Nim Compiler</strong>)</a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/nim-gpio.jpg" alt="GPIO 29 in BL808 Reference Manual (Page 119)" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><em>GPIO 29 in BL808 Reference Manual (Page 119)</em></a></p>
 <h1 id="led-driver-for-ox64"><a href="#led-driver-for-ox64">7 LED Driver for Ox64</a></h1>
@@ -600,7 +609,7 @@ void board_userled_all(uint32_t ledset) {
 <div class="example-wrap"><pre class="language-c"><code>// Get the desired state of LED[i]
 const bool val = ((ledset &amp; g_led_setmap[i]) != 0);
 
-// TODO: Call the BL808 GPIO Driver to flip the LED On or Off
+// Call the BL808 GPIO Driver to flip the LED On or Off
 bl808_gpio_write(  // Write to the GPIO Output...
   g_led_map[i],    // GPIO Number for LED[i]
   val              // Flip it On or Off
@@ -608,15 +617,11 @@ bl808_gpio_write(  // Write to the GPIO Output...
 </code></pre></div>
 <p><em>Anything else we patched?</em></p>
 <p>We fixed the <strong>NuttX Timer</strong> for Ox64 (otherwise we can’t blink)…</p>
-<p>TODO: RISC-V Timer</p>
-<p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="Nim App runs OK on Apache NuttX Real-Time Operating System and Ox64 BL808 RISC-V SBC" /></p>
-<h1 id="documentation"><a href="#documentation">8 Documentation</a></h1>
-<p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
-<p>TODO</p>
 <ul>
-<li><a href="https://github.com/mantielero/lvgl.nim">Nim Wrapper for LVGL</a></li>
+<li><a href="https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx"><strong>“OpenSBI Timer for NuttX”</strong></a></li>
 </ul>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -640,50 +645,7 @@ bl808_gpio_write(  // Write to the GPIO Output...
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nim.md"><strong>lupyuen.github.io/src/nim.md</strong></a></p>
-<h1 id="appendix-opensbi-timer-for-nuttx"><a href="#appendix-opensbi-timer-for-nuttx">10 Appendix: OpenSBI Timer for NuttX</a></h1>
-<p>TODO</p>
-<p><em>The <code>sleep</code> command hangs in NuttX Shell. How to fix it?</em></p>
-<p>That’s because we haven’t implemented the RISC-V Timer for Ox64! We should call OpenSBI to handle the Timer, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee">here’s the fix</a>.</p>
-<p>(Ignore riscv_mtimer.c, we were verifying that mtime and mtimecmp are unused in Kernel Mode)</p>
-<p>We only need to change <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L116">arch/risc-v/src/bl808/bl808_timerisr.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Timer Frequency
-#define MTIMER_FREQ 1000000
-
-// This function is called during start-up to initialize the timer interrupt.
-void up_timer_initialize(void) {
-  struct oneshot_lowerhalf_s *lower = riscv_mtimer_initialize(
-    0, 0, RISCV_IRQ_STIMER, MTIMER_FREQ);
-  DEBUGASSERT(lower);
-  up_alarm_set_lowerhalf(lower);
-}
-</code></pre></div>
-<p>How it works: At startup, <code>up_timer_initialize</code> (above) calls…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L318-L332">riscv_mtimer_initialize</a> which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L136-L141">riscv_mtimer_set_mtimecmp</a> which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L94-L107">riscv_sbi_set_timer</a> which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L53-L76">sbi_ecall</a> which makes an ecall to OpenSBI</p>
-</li>
-<li>
-<p>Which accesses the System Timer</p>
-</li>
-</ul>
-<p>Originally we set MTIMER_FREQ to 10000000: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 10000000
-</code></pre></div>
-<p>But this causes the command <code>sleep 1</code> to pause for 10 seconds. So we divide the frequency by 10: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 1000000
-</code></pre></div>
-<p>Now the <code>sleep</code> command works correctly in NuttX Shell!</p>
-<p><a href="https://gist.github.com/lupyuen/8aa66e7f88d1e31a5f198958c15e4393">Here’s the log (ignore the errors)</a></p>
-<h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">11 Appendix: Build NuttX for QEMU</a></h1>
+<h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">9 Appendix: Build NuttX for QEMU</a></h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit)</strong> that has Minor Fixes for Nim…</p>
 <ul>
 <li>
@@ -740,7 +702,7 @@ qemu-system-riscv64 \
 </code></pre></div>
 <p>TODO: <a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324">(See the <strong>NuttX Log</strong>)</a></p>
 <p>TODO: <a href="https://youtu.be/l7Y36nTkr8c">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<h1 id="appendix-build-nuttx-for-ox64"><a href="#appendix-build-nuttx-for-ox64">12 Appendix: Build NuttX for Ox64</a></h1>
+<h1 id="appendix-build-nuttx-for-ox64"><a href="#appendix-build-nuttx-for-ox64">10 Appendix: Build NuttX for Ox64</a></h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong> that has Minor Fixes for Nim…</p>
 <ul>
 <li>
@@ -837,9 +799,59 @@ diskutil unmountDisk /dev/disk2
 </code></pre></div>
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH).</p>
-<p>TODO: <a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324">(See the <strong>NuttX Log</strong>)</a></p>
-<p>TODO: <a href="https://youtu.be/l7Y36nTkr8c">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p>At the NuttX Prompt, enter “<strong>hello_nim</strong>”…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_nim
+Hello Nim!
+Opening /dev/userleds
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L472-L497">(Enter “<strong>help</strong>” to see the available commands)</a></p>
+<p>Nim on NuttX <a href="TODO"><strong>blinks our LED</strong></a>.</p>
+<p><a href="https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96">(See the <strong>NuttX Log</strong>)</a></p>
+<p><a href="https://youtube.com/shorts/KCkiXFxBgxQ">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">(See the <strong>Build Outputs</strong>)</a></p>
+<h1 id="appendix-opensbi-timer-for-nuttx"><a href="#appendix-opensbi-timer-for-nuttx">11 Appendix: OpenSBI Timer for NuttX</a></h1>
+<p>TODO</p>
+<p><em>The <code>sleep</code> command hangs in NuttX Shell. How to fix it?</em></p>
+<p>That’s because we haven’t implemented the RISC-V Timer for Ox64! We should call OpenSBI to handle the Timer, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee">here’s the fix</a>.</p>
+<p>(Ignore riscv_mtimer.c, we were verifying that mtime and mtimecmp are unused in Kernel Mode)</p>
+<p>We only need to change <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L116">arch/risc-v/src/bl808/bl808_timerisr.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Timer Frequency
+#define MTIMER_FREQ 1000000
+
+// This function is called during start-up to initialize the timer interrupt.
+void up_timer_initialize(void) {
+  struct oneshot_lowerhalf_s *lower = riscv_mtimer_initialize(
+    0, 0, RISCV_IRQ_STIMER, MTIMER_FREQ);
+  DEBUGASSERT(lower);
+  up_alarm_set_lowerhalf(lower);
+}
+</code></pre></div>
+<p>How it works: At startup, <code>up_timer_initialize</code> (above) calls…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L318-L332">riscv_mtimer_initialize</a> which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L136-L141">riscv_mtimer_set_mtimecmp</a> which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L94-L107">riscv_sbi_set_timer</a> which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L53-L76">sbi_ecall</a> which makes an ecall to OpenSBI</p>
+</li>
+<li>
+<p>Which accesses the System Timer</p>
+</li>
+</ul>
+<p>Originally we set MTIMER_FREQ to 10000000: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 10000000
+</code></pre></div>
+<p>But this causes the command <code>sleep 1</code> to pause for 10 seconds. So we divide the frequency by 10: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 1000000
+</code></pre></div>
+<p>Now the <code>sleep</code> command works correctly in NuttX Shell!</p>
+<p><a href="https://gist.github.com/lupyuen/8aa66e7f88d1e31a5f198958c15e4393">Here’s the log (ignore the errors)</a></p>
 
     
 </body>
