@@ -691,6 +691,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/nim.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nim.md)
 
+![Nim with Apache NuttX RTOS on QEMU RISC-V (64-bit)](https://lupyuen.github.io/images/nim-qemu.png)
+
 # Appendix: Build NuttX for QEMU
 
 In this article, we ran a Work-In-Progress Version of __Apache NuttX RTOS for QEMU RISC-V (64-bit)__ that has Minor Fixes for Nim...
@@ -803,6 +805,8 @@ Waiting...
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L210-L471)
 
 To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
+
+![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!](https://lupyuen.github.io/images/nim-ox64.png)
 
 # Appendix: Build NuttX for Ox64
 
