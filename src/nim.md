@@ -93,7 +93,7 @@ proc hello_nim() {.exportc, cdecl.} =
   echo "Hello Nim!"
 ```
 
-__`defer`__ ensures that the Garbage Collection __will always happen__, as soon as we return from the Main Function.
+[__`defer`__](https://nim-lang.org/docs/manual.html#exception-handling-defer-statement) ensures that the Garbage Collection __will always happen__, as soon as we return from the Main Function.
 
 Now we do something cool and enlightening...
 
@@ -401,7 +401,7 @@ _Nim runs incredibly well on NuttX. How is that possible?_
 
 That's because __Nim compiles to C__. As far as NuttX is concerned...
 
-Nim looks like __another C Program!__
+Nim looks like __any other C Program!__
 
 _Whoa! How is Nim compiled to C?_
 
