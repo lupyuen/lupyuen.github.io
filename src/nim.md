@@ -1013,12 +1013,12 @@ Originally we set __MTIMER_FREQ__ to `10000000`: [bl808_timerisr.c](https://gi
 #define MTIMER_FREQ 10000000
 ```
 
-But this causes the command `sleep 1` to pause for 10 seconds. So we divide the frequency by 10: [bl808_timerisr.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48)
+But this causes the command __`sleep 1`__ to pause for 10 seconds. So we divide the frequency by 10: [bl808_timerisr.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48)
 
 ```c
 #define MTIMER_FREQ 1000000
 ```
 
-Now the `sleep` command works correctly in NuttX Shell! Here's the log (ignore the errors)...
+Now the __`sleep`__ command works correctly in NuttX Shell! Here's the log (ignore the errors)...
 
 - [__`sleep` works OK on Ox64__](https://gist.github.com/lupyuen/8aa66e7f88d1e31a5f198958c15e4393)
