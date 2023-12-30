@@ -231,7 +231,7 @@ var ULEDIOC_SETALL {.
 
 We're ready to run this!
 
-TODO: Nim on QEMU
+![Nim with Apache NuttX RTOS on QEMU RISC-V (64-bit)](https://lupyuen.github.io/images/nim-qemu.png)
 
 # Run Nim on QEMU
 
