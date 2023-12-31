@@ -675,6 +675,16 @@ We fixed the __NuttX Timer__ for Ox64 (otherwise we can't blink)...
 
 TODO
 
+- Nim Blinky on QEMU
+
+- Nim Blinky on Ox64
+
+- What's Inside Nim on NuttX
+
+- Fixing the LED Driver and RISC-V Timer on Ox64
+
+- Garbage Collection, Python-like, Compiles to C
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
@@ -962,9 +972,9 @@ Waiting...
 
 Nim on NuttX [__blinks our LED__](https://lupyuen.github.io/images/nim-blink.jpg).
 
-[(Watch the __Demo on YouTube__)](https://youtube.com/shorts/KCkiXFxBgxQ)
-
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96)
+
+[(Watch the __Demo on YouTube__)](https://youtube.com/shorts/KCkiXFxBgxQ)
 
 [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
 
