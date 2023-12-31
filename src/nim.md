@@ -677,7 +677,7 @@ Today we ran some Fun Experiments with __Nim on NuttX__...
 
 - We blinked a Simulated LED on __QEMU Emulator__
 
-- Then we blinked a Real LED on __Ox64 BL808 RISC-V SBC__
+- Then we blinked a Real LED on __Ox64 BL808 RISC-V SBC__ (pic above)
 
 - We peeked __inside Nim on NuttX__
 
