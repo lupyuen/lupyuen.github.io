@@ -26,7 +26,7 @@ Everything that happens on Ox64 SBC, we'll see the __exact same thing__ in QEMU!
 
 _Hmmm Garbage Collection... Won't it jitter: run-pause-run-pause?_
 
-The fine folks at [__Wilderness Labs__](https://www.wildernesslabs.co/) are running [__.NET on NuttX__](https://www.wildernesslabs.co/developers) with Garbage Collection. Optimising for performance really helps!
+The fine folks at [__Wilderness Labs__](https://www.wildernesslabs.co/) are running [__.NET on NuttX__](https://www.wildernesslabs.co/developers) with Garbage Collection. [__Optimising for performance__](https://nim-lang.org/blog/2022/11/11/a-cost-model-for-nim.html) really helps!
 
 [(See __TinyGo__ and __MicroPython__)](https://www.mdpi.com/2079-9292/12/1/143)
 
