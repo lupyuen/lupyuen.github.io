@@ -683,9 +683,13 @@ Today we ran some Fun Experiments with __Nim on NuttX__...
 
 - To figure out how __Nim compiles to C__
 
-- Even though Nim is Python-like with __Garbage Collection__
+- Even though it's Python-like with __Garbage Collection__
 
-- TODO: Fixing the LED Driver and RISC-V Timer on Ox64
+- And __everything works OK__!
+
+  (With minor fixes to Nim Config, LED Driver and RISC-V Timer)
+
+We'll do more with Nim on NuttX. (Maybe __LVGL__?) Stay Tuned!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
