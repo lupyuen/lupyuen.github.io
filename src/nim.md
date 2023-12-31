@@ -685,7 +685,7 @@ Today we ran some Fun Experiments with __Nim on NuttX__...
 
 - Even though it's Python-like with __Garbage Collection__
 
-- And __everything works OK__!
+- And __Everything works OK__!
 
   (With minor fixes to Nim Config, LED Driver and RISC-V Timer)
 
