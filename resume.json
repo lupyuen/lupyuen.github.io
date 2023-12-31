@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Nim on a Real-Time Operating System: Apache NuttX RTOS + Ox64 BL808 SBC",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-01-01",
+      "website": "https://lupyuen.github.io/articles/nim",
+      "summary": "Let's blink an LED on Pine64 Ox64 BL808 64-bit RISC-V Single-Board Computer... With Nim Programming Language and Apache NuttX Real-Time Operating System"
+    },
+    {
       "name": "$8 RISC-V SBC on a Real-Time Operating System: Ox64 + NuttX",
       "publisher": "hackster.io",
       "releaseDate": "2023-12-17",

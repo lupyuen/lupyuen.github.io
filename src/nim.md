@@ -1,6 +1,6 @@
 # Nim on a Real-Time Operating System: Apache NuttX RTOS + Ox64 BL808 SBC
 
-📝 _7 Jan 2024_
+📝 _1 Jan 2024_
 
 ![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!](https://lupyuen.github.io/images/nim-ox64.png)
 
