@@ -112,14 +112,14 @@
 <h1 id="basic-nim-from-scratch"><a href="#basic-nim-from-scratch">1 Basic Nim from scratch</a></h1>
 <p><em>(3 languages in a title heh heh)</em></p>
 <p>This is the <strong>simplest Nim Program</strong> that will run on NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63">hello_nim_async.nim</a></p>
-<div class="example-wrap"><pre class="language-nim"><code>## Main Function in Nim.
-## Will be called by NuttX, so we export to C.
+<div class="example-wrap"><pre class="language-nim"><code># Main Function in Nim.
+# Will be called by NuttX, so we export to C.
 proc hello_nim() {.exportc, cdecl.} =
 
-  ## Print something
+  # Print something
   echo &quot;Hello Nim!&quot;
 
-  ## Force the Garbage Collection
+  # Force the Garbage Collection
   GC_runOrc()
 </code></pre></div>
 <p>Which looks a lot like Python!</p>
@@ -139,13 +139,13 @@ proc hello_nim() {.exportc, cdecl.} =
 </ul>
 <p><em>What if we forget to call GC_runOrc?</em></p>
 <p>Erm don’t! To make it unforgettable, we <a href="https://nim-lang.org/docs/manual.html#exception-handling-defer-statement"><strong><code>defer</code></strong></a> the Garbage Collection: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63">hello_nim_async.nim</a></p>
-<div class="example-wrap"><pre class="language-nim"><code>## Main Function in Nim
+<div class="example-wrap"><pre class="language-nim"><code># Main Function in Nim
 proc hello_nim() {.exportc, cdecl.} =
 
-  ## On Return: Force the Garbage Collection
+  # On Return: Force the Garbage Collection
   defer: GC_runOrc()
 
-  ## Print something
+  # Print something
   echo &quot;Hello Nim!&quot;
 </code></pre></div>
 <p><a href="https://nim-lang.org/docs/manual.html#exception-handling-defer-statement"><strong><code>defer</code></strong></a> ensures that the Garbage Collection <strong>will always happen</strong>, as soon as we return from the Main Function.</p>
@@ -154,25 +154,25 @@ proc hello_nim() {.exportc, cdecl.} =
 <p><img src="https://lupyuen.github.io/images/nim-code.jpg" alt="Blink an LED with Nim" /></p>
 <h1 id="blink-an-led"><a href="#blink-an-led">2 Blink an LED</a></h1>
 <p>This is how we <strong>blink an LED</strong> with Nim on NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L19-L50">hello_nim_async.nim</a></p>
-<div class="example-wrap"><pre class="language-nim"><code>## Blink the LED
+<div class="example-wrap"><pre class="language-nim"><code># Blink the LED
 proc blink_led() =
 
-  ## Open the LED Driver
+  # Open the LED Driver
   echo &quot;Opening /dev/userleds&quot;
   let fd = c_open(&quot;/dev/userleds&quot;, O_WRONLY)
 
-  ## Check the File Descriptor for error
+  # Check the File Descriptor for error
   if fd &lt; 0:
     echo &quot;Failed to open /dev/userleds&quot;
     return
 </code></pre></div>
 <p>First we call the NuttX Function <strong><code>open</code></strong> to access the <strong>LED Driver</strong>.</p>
 <p>We might forget to <strong><code>close</code></strong> the LED Driver (in case of error), so we <a href="https://nim-lang.org/docs/manual.html#exception-handling-defer-statement"><strong><code>defer</code></strong></a> the closing…</p>
-<div class="example-wrap"><pre class="language-nim"><code>  ## On Return: Close the LED Driver
+<div class="example-wrap"><pre class="language-nim"><code>  # On Return: Close the LED Driver
   defer: c_close(fd)
 </code></pre></div>
 <p>Next we call the NuttX Function <strong><code>ioctl</code></strong> to flip <strong>LED 0 to On</strong>…</p>
-<div class="example-wrap"><pre class="language-nim"><code>  ## Turn on LED
+<div class="example-wrap"><pre class="language-nim"><code>  # Turn on LED
   echo &quot;Set LED 0 to 1&quot;
   var ret = c_ioctl(fd, ULEDIOC_SETALL, 1)
   if ret &lt; 0:
@@ -182,31 +182,31 @@ proc blink_led() =
 <p><strong>ULEDIOC_SETALL</strong> accepts a Bit Mask of LED States. The value <strong><code>1</code></strong> says that <strong>LED 0</strong> (Bit 0) will be flipped On.</p>
 <p>(Other LEDs will be flipped Off)</p>
 <p>We <strong>pause a while</strong>…</p>
-<div class="example-wrap"><pre class="language-nim"><code>  ## Wait a second (literally)
-  ## Because 1 million microseconds = 1 second
+<div class="example-wrap"><pre class="language-nim"><code>  # Wait a second (literally)
+  # Because 1 million microseconds = 1 second
   echo &quot;Waiting...&quot;
   c_usleep(1000_000)
 </code></pre></div>
 <p>Finally we flip <strong>LED 0 to Off</strong>…</p>
-<div class="example-wrap"><pre class="language-nim"><code>  ## Turn off LED
+<div class="example-wrap"><pre class="language-nim"><code>  # Turn off LED
   echo &quot;Set LED 0 to 0&quot;
   ret = c_ioctl(fd, ULEDIOC_SETALL, 0)
   if ret &lt; 0:
     echo &quot;ioctl(ULEDIOC_SETALL) failed&quot;
     return
 
-  ## Wait again
+  # Wait again
   echo &quot;Waiting...&quot;
   c_usleep(1000_000)
 </code></pre></div>
 <p>In our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67"><strong>Main Function</strong></a>: We call the above function <strong>20 times</strong> to blink our LED (pic below)…</p>
-<div class="example-wrap"><pre class="language-nim"><code>## Main Function in Nim
+<div class="example-wrap"><pre class="language-nim"><code># Main Function in Nim
 proc hello_nim() {.exportc, cdecl.} =
 
-  ## On Return: Force the Garbage Collection
+  # On Return: Force the Garbage Collection
   defer: GC_runOrc()
 
-  ## Blink the LED 20 times
+  # Blink the LED 20 times
   for loop in 0..19:
     blink_led()
 </code></pre></div>
@@ -216,8 +216,8 @@ proc hello_nim() {.exportc, cdecl.} =
 <h1 id="import-nuttx-functions"><a href="#import-nuttx-functions">3 Import NuttX Functions</a></h1>
 <p><em>How will Nim know about open, close, ioctl, usleep?</em></p>
 <p>We <strong>import the NuttX Functions</strong> from C into Nim: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L19">hello_nim_async.nim</a></p>
-<div class="example-wrap"><pre class="language-nim"><code>## Import NuttX Functions from C.
-## Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
+<div class="example-wrap"><pre class="language-nim"><code># Import NuttX Functions from C.
+# Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
 
 proc c_open(filename: cstring, mode: cint): cint {.
   importc: &quot;open&quot;,
@@ -242,8 +242,8 @@ proc c_usleep(usec: cuint): cint {.
 <p><a href="https://nim-lang.org/docs/manual.html#statements-and-expressions-discard-statement">(<strong>discardable</strong> tells Nim Compiler that the Return Value is Optional)</a></p>
 <p><a href="https://nim-lang.org/docs/manual.html#implementation-specific-pragmas-nodecl-pragma">(<strong>nodecl</strong> means don’t emit the C Declaration in the Generated Code)</a></p>
 <p>We do the same for <strong>NuttX Macros</strong>…</p>
-<div class="example-wrap"><pre class="language-nim"><code>## Import NuttX Macros from C.
-## Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
+<div class="example-wrap"><pre class="language-nim"><code># Import NuttX Macros from C.
+# Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
 
 var O_WRONLY {.
   importc: &quot;O_WRONLY&quot;, 
@@ -398,7 +398,7 @@ cd apps/examples/hello_nim
 nim c --header hello_nim_async.nim 
 </code></pre></div>
 <p>Nim Compiler compiles our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63"><strong>Nim Program</strong></a>…</p>
-<div class="example-wrap"><pre class="language-nim"><code>## Nim Program that prints something
+<div class="example-wrap"><pre class="language-nim"><code># Nim Program that prints something
 proc hello_nim() {.exportc, cdecl.} =
   echo &quot;Hello Nim!&quot;
 </code></pre></div>
