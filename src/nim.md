@@ -962,9 +962,9 @@ Waiting...
 
 Nim on NuttX [__blinks our LED__](https://lupyuen.github.io/images/nim-blink.jpg).
 
-[(See the __NuttX Log__)](https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96)
-
 [(Watch the __Demo on YouTube__)](https://youtube.com/shorts/KCkiXFxBgxQ)
+
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96)
 
 [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
 
