@@ -139,7 +139,7 @@ Next we call the NuttX Function __`ioctl`__ to flip __LED 0 to On__...
     return
 ```
 
-__ULEDIOC_SETALL__ accepts a Bit Mask of LED States. The value __`1`__ says that __LED 0__ (Bit 0) will be flipped On.
+[__ULEDIOC_SETALL__](https://github.com/apache/nuttx/blob/master/include/nuttx/leds/userled.h#L57-L66) accepts a Bit Mask of LED States. The value __`1`__ says that __LED 0__ (Bit 0) will be flipped On.
 
 (Other LEDs will be flipped Off)
 
@@ -199,28 +199,25 @@ We __import the NuttX Functions__ from C into Nim: [hello_nim_async.nim](https:/
 
 proc c_open(filename: cstring, mode: cint): cint {.
   importc: "open",
-  header: "<fcntl.h>",
-  nodecl.}
+  header: "<fcntl.h>".}
 
 proc c_close(fd: cint): cint {.
   importc: "close",
   header: "<fcntl.h>",
-  nodecl, discardable.}
+  discardable.}
 
 proc c_ioctl(fd: cint, request: cint): cint {.
   importc: "ioctl",
   header: "<sys/ioctl.h>",
-  nodecl, varargs.}
+  varargs.}
 
 proc c_usleep(usec: cuint): cint {.
   importc: "usleep",
   header: "<unistd.h>",
-  nodecl, discardable.}
+  discardable.}
 ```
 
 [(__discardable__ tells Nim Compiler that the Return Value is Optional)](https://nim-lang.org/docs/manual.html#statements-and-expressions-discard-statement)
-
-[(__nodecl__ means don't emit the C Declaration in the Generated Code)](https://nim-lang.org/docs/manual.html#implementation-specific-pragmas-nodecl-pragma)
 
 We do the same for __NuttX Macros__...
 
@@ -275,6 +272,8 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
       -kernel nuttx \
       -nographic
     ```
+
+    [(About the __QEMU Options__)](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)
 
 1.  NuttX is now running in the __QEMU Emulator__! (Pic above)
 
@@ -448,7 +447,7 @@ static const struct { NI cap; NIM_CHAR data[10+1]; } TM__1vqzGCGyH8jPEpAwiaNwvg_
 
 [(See the __nimcache__)](https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar)
 
-Hence Nim Compiler has produced a __perfectly valid C Program__. That will compile with any C Compiler!
+Hence Nim Compiler has produced a [__perfectly valid C Program__](https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L198-L203). That will compile with any C Compiler!
 
 _How will NuttX compile this?_
 
@@ -512,7 +511,7 @@ Hint: mm: orc; opt: size; options: -d:danger
 
 _Isn't Nim supposed to be Memory Safe?_
 
-Yeah so far we're doing Low-Level Coding with NuttX. And the __Nim Memory Safety__ doesn't shine through.
+Yeah so far we're doing Low-Level Coding with NuttX. And the [__Nim Memory Safety__](https://nim-lang.org/faq.html) doesn't shine through.
 
 Later when we write __LVGL Graphical Apps__ in Nim, we'll appreciate the [__safety and simplicity__](https://github.com/mantielero/lvgl.nim/blob/main/examples/ex02_label.nim) of Nim...
 
@@ -713,7 +712,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build NuttX for QEMU
 
-In this article, we ran a Work-In-Progress Version of __Apache NuttX RTOS for QEMU RISC-V (64-bit)__ that has Minor Fixes for Nim...
+In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for QEMU RISC-V (64-bit)__ that has Minor Fixes for Nim...
 
 - [__nsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-dd54e0076f30825f912248f2424460e3126c2a8f4e2880709f5c68af9342ddcf): NuttX Config for QEMU
 
@@ -739,6 +738,11 @@ export PATH=$HOME/.nimble/bin:$PATH
 
 ## Select Latest Dev Version of Nim. Will take a while!
 choosenim devel --latest
+
+## Version should be 2.1.1 or later:
+## Nim Compiler Version 2.1.1 [Linux: amd64]
+## Compiled at 2023-12-22
+nim -v
 ```
 
 [(Nim won't install? Try a __Linux Container__)](https://github.com/lupyuen/nuttx-nim#build-nuttx-with-debian-container-in-vscode)
@@ -820,7 +824,7 @@ board_userled_all: led=0, val=1
 Waiting...
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L210-L471)
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L210-L471)
 
 To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
@@ -828,7 +832,7 @@ To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
 # Appendix: Build NuttX for Ox64
 
-In this article, we ran a Work-In-Progress Version of __Apache NuttX RTOS for Ox64__ that has Minor Fixes for Nim...
+In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for Ox64__ that has Minor Fixes for Nim...
 
 - [__nsh/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078): NuttX Config for Ox64
 
@@ -855,6 +859,11 @@ export PATH=$HOME/.nimble/bin:$PATH
 
 ## Select Latest Dev Version of Nim. Will take a while!
 choosenim devel --latest
+
+## Version should be 2.1.1 or later:
+## Nim Compiler Version 2.1.1 [Linux: amd64]
+## Compiled at 2023-12-22
+nim -v
 ```
 
 [(Nim won't install? Try a __Linux Container__)](https://github.com/lupyuen/nuttx-nim#build-nuttx-with-debian-container-in-vscode)
@@ -905,7 +914,7 @@ riscv64-unknown-elf-objdump \
 
 [(Remember to install the __Build Prerequisites and Toolchain__)](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
 
-Then we build the __Initial RAM Disk__ that contains NuttX Shell and NuttX Apps...
+We build the __Initial RAM Disk__ that contains NuttX Shell and NuttX Apps...
 
 ```bash
 ## Build the Apps Filesystem
@@ -938,13 +947,13 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 
 [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
 
-This produces the NuttX Image: __`Image`__
+This produces the NuttX Image for Ox64: __`Image`__
 
 Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
 
 [(Remember to flash __OpenSBI and U-Boot Bootloader__)](https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot)
 
-Then we do the [__Linux-To-NuttX Switcheroo__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64): Copy the __`Image`__ file (from above) and overwrite the __`Image`__ in the Linux microSD...
+And we do the [__Linux-To-NuttX Switcheroo__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64): Copy the __`Image`__ file (from above) and overwrite the __`Image`__ in the Linux microSD...
 
 ```bash
 ## Overwrite the Linux Image
@@ -978,11 +987,9 @@ Waiting...
 
 Nim on NuttX [__blinks our LED__](https://lupyuen.github.io/images/nim-blink.jpg).
 
-[(See the __NuttX Log__)](https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96)
-
 [(Watch the __Demo on YouTube__)](https://youtube.com/shorts/KCkiXFxBgxQ)
 
-[(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96)
 
 ![OpenSBI Supervisor Binary Interface](https://lupyuen.github.io/images/privilege-title.jpg)
 
@@ -1013,13 +1020,13 @@ void up_timer_initialize(void) {
 
 How it works: At startup, [__up_timer_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L98-L116) (above) calls...
 
-- [__riscv_mtimer_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L318-L332) which calls...
+- [__riscv_mtimer_initialize__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mtimer.c#L318-L332) which calls...
 
-- [__riscv_mtimer_set_mtimecmp__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/riscv_mtimer.c#L136-L141) which calls...
+- [__riscv_mtimer_set_mtimecmp__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mtimer.c#L136-L141) which calls...
 
-- [__riscv_sbi_set_timer__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L94-L107) which calls...
+- [__riscv_sbi_set_timer__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L94-L107) which calls...
 
-- [__sbi_ecall__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/common/supervisor/riscv_sbi.c#L53-L76) which makes an ecall to OpenSBI
+- [__sbi_ecall__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L53-L76) which makes an ecall to OpenSBI
 
 - Which accesses the __RISC-V System Timer__
 
