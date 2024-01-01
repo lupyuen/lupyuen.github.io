@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Nim on a Real-Time Operating System: Apache NuttX RTOS + Ox64 BL808 SBC</title>
+            <link>https://lupyuen.github.io/articles/nim</link>
+            <description><![CDATA[Let's blink an LED on Pine64 Ox64 BL808 64-bit RISC-V Single-Board Computer... With Nim Programming Language and Apache NuttX Real-Time Operating System]]></description>
+            <guid>https://lupyuen.github.io/articles/nim</guid>
+            <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>$8 RISC-V SBC on a Real-Time Operating System: Ox64 + NuttX</title>
             <link>https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358</link>
             <description><![CDATA[Bare Metal Experiments with Apache NuttX RTOS (Real-Time Operating System) on the affordable Pine64 Ox64 BL808 64-bit RISC-V SBC]]></description>
