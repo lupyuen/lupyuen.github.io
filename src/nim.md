@@ -472,7 +472,7 @@ Yep! Nim Compiler is internally wired to __produce NuttX Code__ (that GCC will c
 
 - [__Nim Configuration for NuttX: config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/config.nims)
 
-Kudos to [__centurysys__](https://github.com/centurysys) and the Nim Community for making this possible!
+Kudos to [__centurysys__](https://github.com/apache/nuttx-apps/pull/1597) and the Nim Community for making this possible!
 
 _Everything is hunky dory with Nim on NuttX?_
 
