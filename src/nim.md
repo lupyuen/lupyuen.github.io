@@ -99,6 +99,8 @@ Now we do something cool and enlightening...
 
 ([__hello_nim__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67) is called by our C Program [__hello_nim_main.c__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_main.c#L35-L42))
 
+[(Should we call __GC_runOrc__?)](https://news.ycombinator.com/item?id=38828619)
+
 ![Blink an LED with Nim](https://lupyuen.github.io/images/nim-code.jpg)
 
 # Blink an LED
@@ -834,6 +836,16 @@ Waiting...
 
 To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
+_How to run our own Nim Code on NuttX?_
+
+Locate this __Nim Source File__ and replace by our own Nim Code...
+
+```text
+apps/examples/hello_nim/hello_nim_async.nim
+```
+
+Then rebuild and restart NuttX.
+
 ![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!](https://lupyuen.github.io/images/nim-ox64.png)
 
 # Appendix: Build NuttX for Ox64
@@ -996,6 +1008,16 @@ Nim on NuttX [__blinks our LED__](https://lupyuen.github.io/images/nim-blink.jpg
 [(Watch the __Demo on YouTube__)](https://youtube.com/shorts/KCkiXFxBgxQ)
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96)
+
+_How to run our own Nim Code on NuttX?_
+
+Locate this __Nim Source File__ and replace by our own Nim Code...
+
+```text
+apps/examples/hello_nim/hello_nim_async.nim
+```
+
+Then rebuild NuttX, copy to microSD and restart NuttX.
 
 ![OpenSBI Supervisor Binary Interface](https://lupyuen.github.io/images/privilege-title.jpg)
 
