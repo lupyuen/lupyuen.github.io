@@ -151,6 +151,7 @@ proc hello_nim() {.exportc, cdecl.} =
 <p><a href="https://nim-lang.org/docs/manual.html#exception-handling-defer-statement"><strong><code>defer</code></strong></a> ensures that the Garbage Collection <strong>will always happen</strong>, as soon as we return from the Main Function.</p>
 <p>Now we do something cool and enlightening…</p>
 <p>(<a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67"><strong>hello_nim</strong></a> is called by our C Program <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_main.c#L35-L42"><strong>hello_nim_main.c</strong></a>)</p>
+<p><a href="https://news.ycombinator.com/item?id=38828619">(Should we call <strong>GC_runOrc</strong>?)</a></p>
 <p><img src="https://lupyuen.github.io/images/nim-code.jpg" alt="Blink an LED with Nim" /></p>
 <h1 id="blink-an-led"><a href="#blink-an-led">2 Blink an LED</a></h1>
 <p>This is how we <strong>blink an LED</strong> with Nim on NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L19-L50">hello_nim_async.nim</a></p>
@@ -781,6 +782,11 @@ Waiting...
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L210-L471">(See the <strong>NuttX Log</strong>)</a></p>
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
+<p><em>How to run our own Nim Code on NuttX?</em></p>
+<p>Locate this <strong>Nim Source File</strong> and replace by our own Nim Code…</p>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/hello_nim/hello_nim_async.nim
+</code></pre></div>
+<p>Then rebuild and restart NuttX.</p>
 <p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!" /></p>
 <h1 id="appendix-build-nuttx-for-ox64"><a href="#appendix-build-nuttx-for-ox64">10 Appendix: Build NuttX for Ox64</a></h1>
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong> that has Minor Fixes for Nim…</p>
@@ -921,6 +927,11 @@ Waiting...
 <p>Nim on NuttX <a href="https://lupyuen.github.io/images/nim-blink.jpg"><strong>blinks our LED</strong></a>.</p>
 <p><a href="https://youtube.com/shorts/KCkiXFxBgxQ">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96">(See the <strong>NuttX Log</strong>)</a></p>
+<p><em>How to run our own Nim Code on NuttX?</em></p>
+<p>Locate this <strong>Nim Source File</strong> and replace by our own Nim Code…</p>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/hello_nim/hello_nim_async.nim
+</code></pre></div>
+<p>Then rebuild NuttX, copy to microSD and restart NuttX.</p>
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="OpenSBI Supervisor Binary Interface" /></p>
 <h1 id="appendix-opensbi-timer-for-nuttx"><a href="#appendix-opensbi-timer-for-nuttx">11 Appendix: OpenSBI Timer for NuttX</a></h1>
 <p><em>The <code>sleep</code> command hangs in NuttX Shell. How to fix it?</em></p>
