@@ -482,7 +482,7 @@ We made some __Minor Fixes__, we'll upstream to NuttX Mainline shortly...
 
 - [__Makefile__](https://github.com/apache/nuttx-apps/pull/2247): Nimcache has moved 2 folders up
 
-- [__config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879): Add support for 64-bit RISC-V
+- [__config.nims__](https://github.com/apache/nuttx-apps/pull/2251): Add support for 64-bit RISC-V
 
 Here we see the Nim Compiler working perfectly, [__compiling our program__](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L55-L185) for NuttX (by parsing the [__NuttX Build Config__](https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nuttx.config))...
 
