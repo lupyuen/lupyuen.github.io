@@ -721,6 +721,8 @@ As we port __Apache NuttX RTOS__ to Star64 JH7110 SBC, we shall call...
 
 - [__SBI Timer__](https://lupyuen.github.io/articles/sbi#set-a-system-timer) to set the [__System Timer__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108)
 
+  [(Similar to __Ox64 BL808__)](https://github.com/apache/nuttx/pull/11472)
+
 - [__SBI RFENCE__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#8-rfence-extension-eid-0x52464e43-rfnc) to flush [__Device I/O and Memory Accesses__](https://five-embeddev.com/quickref/instructions.html#-rv32--secfence)
 
 - [__Performance Monitoring__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#11-performance-monitoring-unit-extension-eid-0x504d55-pmu) might be helpful for NuttX

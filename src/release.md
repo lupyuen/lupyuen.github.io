@@ -824,6 +824,8 @@ __Display:__
 
 We hope to test NuttX soon on the [__PineTab-V RISC-V Tablet__](https://wiki.pine64.org/wiki/PineTab-V). Stay tuned for updates!
 
+__TODO:__ Fix the System Timer by calling OpenSBI, similar to [__Ox64 BL808__](https://github.com/apache/nuttx/pull/11472)
+
 ![Apache NuttX RTOS boots OK on StarFive VisionFive2 SBC](https://lupyuen.github.io/images/release-visionfive.jpg)
 
 # What's Next
