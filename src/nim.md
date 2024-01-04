@@ -1073,3 +1073,7 @@ But this causes the command __`sleep 1`__ to pause for 10 seconds. So we divide 
 Now the __`sleep`__ command works correctly in NuttX Shell! Here's the log (ignore the errors)...
 
 - [__`sleep` works OK on Ox64__](https://gist.github.com/lupyuen/8aa66e7f88d1e31a5f198958c15e4393)
+
+We're now upstreaming the Ox64 Timer to NuttX Mainline.
+
+[(See the __Pull Request__)](https://github.com/apache/nuttx/pull/11472)
