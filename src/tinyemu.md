@@ -111,7 +111,7 @@ We create a TinyEMU [__Configuration File: `nuttx.cfg`__](https://github.com/lup
 
 This will start the __64-bit RISC-V Emulator__ and boot it with our [__NuttX Kernel: `nuttx.bin`__](TODO)
 
-[(Booting Linux gets __more complicated__)](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-config)
+[(Booting Linux? __It's complicated__)](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-config)
 
 _How do we get the NuttX Kernel?_
 
@@ -135,76 +135,68 @@ First we need to understand the HTIF Console for TinyEMU...
 
 # Print to HTIF Console
 
-TODO
+_How do we print something to the TinyEMU Console?_
 
-_What's HTIF?_
+TinyEMU supports [__Berkeley Host-Target Interface (HTIF)__](https://docs.cartesi.io/machine/target/architecture/#htif) for Console Output.
 
-From [RISC-V Spike Emulator](https://github.com/riscv-software-src/riscv-isa-sim/issues/364#issuecomment-607657754)...
+HTIF comes from the olden days of the [__RISC-V Spike Emulator__](https://github.com/riscv-software-src/riscv-isa-sim/issues/364#issuecomment-607657754)...
 
-> HTIF is a tether between a simulation host and target, not something that's supposed to resemble a real hardware device. It's not a RISC-V standard; it's a UC Berkeley standard. 
+> "HTIF is a tether between a simulation host and target, not something that's supposed to resemble a real hardware device. It's not a RISC-V standard; it's a UC Berkeley standard"
 
-> Bits 63:56 indicate the "device".
+_But how does it work?_
 
-> Bits 55:48 indicate the "command".
-
-> Device 1 is the blocking character device.
-
-> Command 0 reads a character
-
-> Command 1 writes a character from the 8 LSBs of tohost
-
-TinyEMU handles HTIF Commands like this: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L129-L153)
+Use the Source, Luke! TinyEMU handles __HTIF Commands__ like so: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L129-L153)
 
 ```c
-static void htif_handle_cmd(RISCVMachine *s)
-{
-    uint32_t device, cmd;
+// Handle a HTIF Command in TinyEMU:
+// `tohost` contains the HTIF Command
+static void htif_handle_cmd(RISCVMachine *s) {
 
-    device = s->htif_tohost >> 56;
-    cmd = (s->htif_tohost >> 48) & 0xff;
-    if (s->htif_tohost == 1) {
-        /* shuthost */
-        printf("\nPower off.\n");
-        exit(0);
-    } else if (device == 1 && cmd == 1) {
-        uint8_t buf[1];
-        buf[0] = s->htif_tohost & 0xff;
-        s->common.console->write_data(s->common.console->opaque, buf, 1);
-        s->htif_tohost = 0;
-        s->htif_fromhost = ((uint64_t)device << 56) | ((uint64_t)cmd << 48);
-    } else if (device == 1 && cmd == 0) {
-        /* request keyboard interrupt */
-        s->htif_tohost = 0;
-    } else {
-        printf("HTIF: unsupported tohost=0x%016" PRIx64 "\n", s->htif_tohost);
-    }
-}
+  // Bits 56 to 63 indicate the `device`
+  // Bits 48 to 55 indicate the `command`
+  uint32_t device = s->htif_tohost >> 56;
+  uint32_t cmd    = (s->htif_tohost >> 48) & 0xff;
+
+  // If `tohost` is 1: Quit the Emulator
+  if (s->htif_tohost == 1) {
+    printf("\nPower off.\n");
+    exit(0);
+
+  // If `device` and `command` are 1:
+  // Print `buf` (Bits 0 to 7) to Console Output
+  } else if (device == 1 && cmd == 1) {
+    uint8_t buf[1];
+    buf[0] = s->htif_tohost & 0xff;
+    s->common.console->write_data(s->common.console->opaque, buf, 1);
 ```
 
-So to print `1` (ASCII 0x31) to the HTIF Console...
+So to print "__`1`__" (ASCII `0x31`) to the HTIF Console, we set...
 
-- device <br> = (htif_tohost >> 56) <br> = 1
+- __`device`__ <br> = (htif_tohost >> 56) <br> = __`1`__
 
-- cmd <br> = (htif_tohost >> 48) <br> = 1
+- __`cmd`__ <br> = (htif_tohost >> 48) <br> = __`1`__
 
-- buf <br> = (htif_tohost & 0xff) <br> = 0x31
+- __`buf`__ <br> = (htif_tohost & 0xff) <br> = __`0x31`__
 
-Which means we write this value to htif_tohost...
+Which means that we write this value to __htif_tohost__...
 
-- (1 << 56) | (1 << 48) | 0x31 <br> = 0x0101_0000_0000_0031
+- (`1` << 56) | (`1` << 48) | `0x31` <br> = __`0x0101_0000_0000_0031`__
 
 _Where is htif_tohost?_
 
-According to [riscv_machine_init](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L913-L927) and [htif_write](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L154-L178), htif_tohost is at [DEFAULT_HTIF_BASE_ADDR](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82): 0x4000_8000
+__htif_tohost__ is at [__DEFAULT_HTIF_BASE_ADDR: `0x4000_8000`__](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
 
-Thus we print to HTIF Console like this...
+(According to [__riscv_machine_init__](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L913-L927) and [__htif_write__](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L154-L178))
+
+Thus we __print to HTIF Console__ like this...
 
 ```c
 // Print `1` to HTIF Console
-*(volatile uint64_t *) 0x40008000 = 0x0101000000000031ul;
+*(volatile uint64_t *) 0x40008000 // HTIF Base Address
+  = 0x0101000000000031ul;         // device=1, cmd=1, buf=0x31
 ```
 
-Let's print something in our NuttX Boot Code...
+Let's test this in our NuttX Boot Code...
 
 # Print in NuttX Boot Code
 
