@@ -262,30 +262,29 @@ sd  t1, 0(t0)
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv64--load-and-store-instructions">(<strong><code>sd</code></strong> stores a 64-bit Double-Word from a Register into an Address Offset)</a></p>
 <p>Then we work it into our <strong>NuttX Boot Code</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L61">qemu_rv_head.S</a></p>
 <p><em>Does it work?</em></p>
-<p>NuttX prints something to the HTIF Console yay! Now we know that NuttX Boot Code is actually running on TinyEMU…</p>
+<p>NuttX prints something to the HTIF Console yay! Now we know that NuttX Boot Code is actually alive and running on TinyEMU…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ temu nuttx.cfg
 123
 </code></pre></div>
 <p>To see more goodies, we fix the NuttX UART Driver…</p>
 <h1 id="fix-the-nuttx-uart-driver-for-tinyemu"><a href="#fix-the-nuttx-uart-driver-for-tinyemu">6 Fix the NuttX UART Driver for TinyEMU</a></h1>
-<p>TODO</p>
-<p><em>NuttX on TinyEMU has been awfully quiet. How to fix the UART Driver so that NuttX can print things?</em></p>
-<p>NuttX is still running on the QEMU UART Driver (16550). Let’s make a quick patch so that we will see something in the TinyEMU HTIF Console: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720">uart_16550.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Write one character to the UART (polled)
+<p><em>NuttX on TinyEMU has been awfully quiet…</em></p>
+<p><em>How to fix the UART Driver so that NuttX can print things?</em></p>
+<p>NuttX is still running on the <strong>QEMU UART Driver</strong>. (16550 UART)</p>
+<p>Let’s make a quick patch so that we will see something in TinyEMU’s <strong>HTIF Console</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Write one character to the UART Driver
 static void u16550_putc(FAR struct u16550_s *priv, int ch) {
 
-  // Hardcode the HTIF Base Address
-  *(volatile uint64_t *) 0x40008000 = 0x0101000000000000ul | ch;
-
-  // Previously:
-  // while ((u16550_serialin(priv, UART_LSR_OFFSET) &amp; UART_LSR_THRE) == 0);
-  // u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
+  // Hardcode the HTIF Base Address and print...
+  *(volatile uint64_t *) 0x40008000
+    // device=1, cmd=1, buf=ch
+    = 0x0101000000000000ul | ch;
 }
 </code></pre></div>
-<p>We skip the reading and writing of other UART Registers, because we’ll patch them later: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L604-L635">uart_16550.c</a></p>
+<p>We skip the reading and writing of other <strong>UART Registers</strong> (because we’ll patch them later): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L604-L635">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Read UART Register
 static inline uart_datawidth_t u16550_serialin(FAR struct u16550_s *priv, int offset) {
-  return 0; ////
+  return 0;
   // Commented out the rest
 }
 
@@ -294,14 +293,14 @@ static inline void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_
   // Commented out the rest
 }
 </code></pre></div>
-<p>And we won’t wait for UART Ready, since we’re not accessing the Line Control Register: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L635-L673">uart_16550.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Wait until UART is not busy. This is needed before writing to Line Control Register.
-// Otherwise we will get spurious interrupts on Synopsys DesignWare 8250.
+<p>And we won’t wait for <strong>UART Ready</strong>, since we’re not accessing the Line Control Register: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L635-L673">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Wait until UART is not busy
 static int u16550_wait(FAR struct u16550_s *priv) {
   // Nopez! No waiting for now
-  return OK; ////
+  return OK;
 }
 </code></pre></div>
+<p>TODO</p>
 <p>Now we see NuttX booting OK on TinyEMU yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>+ temu nuttx.cfg
 123ABCnx_start: Entry
