@@ -31,8 +31,9 @@ We begin by installing [__TinyEMU RISC-V Emulator__](https://github.com/fernando
 ```bash
 ## Install TinyEMU on Ubuntu
 ## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L6-L13
-git clone https://github.com/fernandotcl/TinyEMU
 sudo apt install libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev
+git clone https://github.com/fernandotcl/TinyEMU
+cd TinyEMU
 make
 
 ## Install TinyEMU on macOS
@@ -47,7 +48,11 @@ temu https://bellard.org/jslinux/buildroot-riscv64.cfg
 temu   
 ```
 
-(Everything that runs in the __Command Line__ TinyEMU, will also run in the __Web Browser__ TinyEMU!)
+[(See the __Build Script__)](https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml)
+
+_What about TinyEMU for the Web Browser?_
+
+No Worries! Everything that runs in the __Command Line__ TinyEMU... Will also run in the __Web Browser__ TinyEMU!
 
 # RISC-V Addresses for TinyEMU
 
