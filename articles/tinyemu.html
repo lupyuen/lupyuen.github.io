@@ -69,23 +69,22 @@
 <li><a href="#install-tinyemu">1 Install TinyEMU</a><ul></ul></li>
 <li><a href="#risc-v-addresses-for-tinyemu">2 RISC-V Addresses for TinyEMU</a><ul></ul></li>
 <li><a href="#boot-nuttx-in-tinyemu">3 Boot NuttX in TinyEMU</a><ul></ul></li>
-<li><a href="#build-nuttx-for-tinyemu">4 Build NuttX for TinyEMU</a><ul></ul></li>
-<li><a href="#print-to-htif-console">5 Print to HTIF Console</a><ul></ul></li>
-<li><a href="#print-in-nuttx-boot-code">6 Print in NuttX Boot Code</a><ul></ul></li>
-<li><a href="#fix-the-nuttx-uart-driver-for-tinyemu">7 Fix the NuttX UART Driver for TinyEMU</a><ul></ul></li>
-<li><a href="#boot-nuttx-in-the-web-browser">8 Boot NuttX in the Web Browser</a><ul></ul></li>
-<li><a href="#virtio-console-in-tinyemu">9 VirtIO Console in TinyEMU</a><ul></ul></li>
-<li><a href="#enable-virtio-and-openamp-in-nuttx">10 Enable VirtIO and OpenAMP in NuttX</a><ul></ul></li>
-<li><a href="#configure-nuttx-virtio-for-tinyemu">11 Configure NuttX VirtIO for TinyEMU</a><ul></ul></li>
-<li><a href="#test-tinyemu-virtio-console-with-nuttx">12 Test TinyEMU VirtIO Console with NuttX</a><ul></ul></li>
-<li><a href="#inside-the-virtio-driver-for-nuttx">13 Inside the VirtIO Driver for NuttX</a><ul></ul></li>
-<li><a href="#inside-the-virtio-host-for-tinyemu">14 Inside the VirtIO Host for TinyEMU</a><ul>
-<li><a href="#tinyemu-virtio">14.1 TinyEMU VirtIO</a><ul></ul></li>
-<li><a href="#tinyemu-virtio-console">14.2 TinyEMU VirtIO Console</a><ul></ul></li>
-<li><a href="#tinyemu-virtio-mmio-queue">14.3 TinyEMU VirtIO MMIO Queue</a><ul></ul></li></ul></li>
-<li><a href="#nuttx-in-kernel-mode">15 NuttX in Kernel Mode</a><ul></ul></li>
-<li><a href="#whats-next">16 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-tinyemu">17 Appendix: Build NuttX for TinyEMU</a><ul></ul></li></ul></nav><p>📝 <em>15 Jan 2024</em></p>
+<li><a href="#print-to-htif-console">4 Print to HTIF Console</a><ul></ul></li>
+<li><a href="#print-in-nuttx-boot-code">5 Print in NuttX Boot Code</a><ul></ul></li>
+<li><a href="#fix-the-nuttx-uart-driver-for-tinyemu">6 Fix the NuttX UART Driver for TinyEMU</a><ul></ul></li>
+<li><a href="#boot-nuttx-in-the-web-browser">7 Boot NuttX in the Web Browser</a><ul></ul></li>
+<li><a href="#virtio-console-in-tinyemu">8 VirtIO Console in TinyEMU</a><ul></ul></li>
+<li><a href="#enable-virtio-and-openamp-in-nuttx">9 Enable VirtIO and OpenAMP in NuttX</a><ul></ul></li>
+<li><a href="#configure-nuttx-virtio-for-tinyemu">10 Configure NuttX VirtIO for TinyEMU</a><ul></ul></li>
+<li><a href="#test-tinyemu-virtio-console-with-nuttx">11 Test TinyEMU VirtIO Console with NuttX</a><ul></ul></li>
+<li><a href="#inside-the-virtio-driver-for-nuttx">12 Inside the VirtIO Driver for NuttX</a><ul></ul></li>
+<li><a href="#inside-the-virtio-host-for-tinyemu">13 Inside the VirtIO Host for TinyEMU</a><ul>
+<li><a href="#tinyemu-virtio">13.1 TinyEMU VirtIO</a><ul></ul></li>
+<li><a href="#tinyemu-virtio-console">13.2 TinyEMU VirtIO Console</a><ul></ul></li>
+<li><a href="#tinyemu-virtio-mmio-queue">13.3 TinyEMU VirtIO MMIO Queue</a><ul></ul></li></ul></li>
+<li><a href="#nuttx-in-kernel-mode">14 NuttX in Kernel Mode</a><ul></ul></li>
+<li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-tinyemu">16 Appendix: Build NuttX for TinyEMU</a><ul></ul></li></ul></nav><p>📝 <em>15 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu-title.png" alt="Apache NuttX RTOS in a Web Browser… With TinyEMU and VirtIO" /> </p>
 <p>TODO</p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/"><strong>Demo of NuttX on TinyEMU</strong></a></p>
@@ -148,7 +147,7 @@ SECTIONS
     {
       _stext = . ;
 </code></pre></div>
-<p>So we’re all ready to boot NuttX on TinyEMU!</p>
+<p>So we’re all ready to boot NuttX QEMU on TinyEMU!</p>
 <h1 id="boot-nuttx-in-tinyemu"><a href="#boot-nuttx-in-tinyemu">3 Boot NuttX in TinyEMU</a></h1>
 <p><em>How to start the TinyEMU Emulator?</em></p>
 <p>We create a TinyEMU <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/root-riscv64.cfg"><strong>Configuration File: <code>nuttx.cfg</code></strong></a></p>
@@ -160,7 +159,7 @@ SECTIONS
 }
 </code></pre></div>
 <p>This will start the <strong>64-bit RISC-V Emulator</strong> and boot it with our <a href="TODO"><strong>NuttX Kernel: <code>nuttx.bin</code></strong></a></p>
-<p><a href="https://github.com/lupyuen/nuttx-tinyemu#tinyemu-config">(Booting Linux is <strong>more complicated</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-tinyemu#tinyemu-config">(Booting Linux gets <strong>more complicated</strong>)</a></p>
 <p><em>How do we get the NuttX Kernel?</em></p>
 <p>TODO: Download <strong><code>nuttx.bin</code></strong> from</p>
 <p>TODO: Or build it ourselves</p>
@@ -168,71 +167,10 @@ SECTIONS
 <p>Yep! Just go ahead and boot <strong>NuttX in TinyEMU</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ temu nuttx.cfg
 </code></pre></div>
-<p>TODO: TinyEMU hangs, nothing happens. Let’s print something to TinyEMU HTIF Console…</p>
-<h1 id="build-nuttx-for-tinyemu"><a href="#build-nuttx-for-tinyemu">4 Build NuttX for TinyEMU</a></h1>
-<p>TODO</p>
-<p><em>Will NuttX boot on TinyEMU?</em></p>
-<p>NuttX for QEMU RISC-V is already configured to boot at 0x8000_0000: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L27">ld.script</a></p>
-<div class="example-wrap"><pre class="language-text"><code>SECTIONS
-{
-  . = 0x80000000;
-  .text :
-    {
-      _stext = . ;
-</code></pre></div>
-<p>So we build NuttX for QEMU RISC-V (64-bit, Flat Mode)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download WIP NuttX
-git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx nuttx
-git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx-apps apps
-
-## Configure NuttX for QEMU RISC-V (64-bit, Flat Mode)
-cd nuttx
-tools/configure.sh rv-virt:nsh64
-make menuconfig
-## Device Drivers
-##   Enable &quot;Simple AddrEnv&quot;
-##   Enable &quot;Virtio Device Support&quot;
-
-## Device Drivers &gt; Virtio Device Support
-##   Enable &quot;Virtio MMIO Device Support&quot;
-
-## Build Setup &gt; Debug Options &gt;
-##   Enable Debug Features
-##   Enable &quot;Debug Assertions &gt; Show Expression, Filename&quot;
-##   Enable &quot;Binary Loader Debug Features &gt; Errors, Warnings, Info&quot;
-##   Enable &quot;File System Debug Features &gt; Errors, Warnings, Info&quot;
-##   Enable &quot;C Library Debug Features &gt; Errors, Warnings, Info&quot;
-##   Enable &quot;Memory Manager Debug Features &gt; Errors, Warnings, Info&quot;
-##   Enable &quot;Scheduler Debug Features &gt; Errors, Warnings, Info&quot;
-##   Enable &quot;Timer Debug Features &gt; Errors, Warnings, Info&quot;
-##   Enable &quot;IPC Debug Features &gt; Errors, Warnings, Info&quot;
-##   Enable &quot;Virtio Debug Features &gt; Error, Warnings, Info&quot;
-
-## Application Configuration &gt; Testing &gt;
-##   Enable &quot;OS Test Example&quot;
-
-## RTOS Features &gt; Tasks and Scheduling &gt;
-##   Set &quot;Application Entry Point&quot; to &quot;ostest_main&quot;
-##   Set &quot;Application Entry Name&quot; to &quot;ostest_main&quot;
-## Save and exit menuconfig
-
-## Build NuttX
-make
-
-## Export the Binary Image to nuttx.bin
-riscv64-unknown-elf-objcopy \
-  -O binary \
-  nuttx \
-  nuttx.bin
-
-## Dump the disassembly to nuttx.S
-riscv64-unknown-elf-objdump \
-  --syms --source --reloc --demangle --line-numbers --wide \
-  --debugging \
-  nuttx \
-  &gt;nuttx.S \
-  2&gt;&amp;1
-</code></pre></div><h1 id="print-to-htif-console"><a href="#print-to-htif-console">5 Print to HTIF Console</a></h1>
+<p><em>Huh? But we’re booting NuttX QEMU on TinyEMU!</em></p>
+<p>Exactly… <strong>Nothing will appear</strong> in TinyEMU!</p>
+<p>First we need to understand the HTIF Console for TinyEMU…</p>
+<h1 id="print-to-htif-console"><a href="#print-to-htif-console">4 Print to HTIF Console</a></h1>
 <p>TODO</p>
 <p><em>What’s HTIF?</em></p>
 <p>From <a href="https://github.com/riscv-software-src/riscv-isa-sim/issues/364#issuecomment-607657754">RISC-V Spike Emulator</a>…</p>
@@ -302,7 +240,7 @@ riscv64-unknown-elf-objdump \
 *(volatile uint64_t *) 0x40008000 = 0x0101000000000031ul;
 </code></pre></div>
 <p>Let’s print something in our NuttX Boot Code…</p>
-<h1 id="print-in-nuttx-boot-code"><a href="#print-in-nuttx-boot-code">6 Print in NuttX Boot Code</a></h1>
+<h1 id="print-in-nuttx-boot-code"><a href="#print-in-nuttx-boot-code">5 Print in NuttX Boot Code</a></h1>
 <p>TODO</p>
 <p><em>How to print to HTIF Console in the NuttX Boot Code? (RISC-V Assembly)</em></p>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console">Based on Star64 Debug Code</a>, we code this in RISC-V Assembly…</p>
@@ -331,7 +269,7 @@ sd  t1, 0(t0)
 123
 </code></pre></div>
 <p>Let’s fix the NuttX UART Driver…</p>
-<h1 id="fix-the-nuttx-uart-driver-for-tinyemu"><a href="#fix-the-nuttx-uart-driver-for-tinyemu">7 Fix the NuttX UART Driver for TinyEMU</a></h1>
+<h1 id="fix-the-nuttx-uart-driver-for-tinyemu"><a href="#fix-the-nuttx-uart-driver-for-tinyemu">6 Fix the NuttX UART Driver for TinyEMU</a></h1>
 <p>TODO</p>
 <p><em>NuttX on TinyEMU has been awfully quiet. How to fix the UART Driver so that NuttX can print things?</em></p>
 <p>NuttX is still running on the QEMU UART Driver (16550). Let’s make a quick patch so that we will see something in the TinyEMU HTIF Console: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720">uart_16550.c</a></p>
@@ -423,7 +361,7 @@ mm_malloc: Allocated 0x800370e0, size 32
 nx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
 <p>Let’s boot NuttX in the Web Browser…</p>
-<h1 id="boot-nuttx-in-the-web-browser"><a href="#boot-nuttx-in-the-web-browser">8 Boot NuttX in the Web Browser</a></h1>
+<h1 id="boot-nuttx-in-the-web-browser"><a href="#boot-nuttx-in-the-web-browser">7 Boot NuttX in the Web Browser</a></h1>
 <p>TODO</p>
 <p><em>Will NuttX boot in the Web Browser?</em></p>
 <p>Yep! WebAssembly Demo is here: <a href="https://lupyuen.github.io/nuttx-tinyemu/">Demo of NuttX on TinyEMU</a></p>
@@ -451,7 +389,7 @@ $ simple-http-server nuttx-tinyemu/docs
 </code></pre></div>
 <p><em>But there’s no Console Input?</em></p>
 <p>To do Console Input, we need to implement VirtIO Console in our NuttX UART Driver…</p>
-<h1 id="virtio-console-in-tinyemu"><a href="#virtio-console-in-tinyemu">9 VirtIO Console in TinyEMU</a></h1>
+<h1 id="virtio-console-in-tinyemu"><a href="#virtio-console-in-tinyemu">8 VirtIO Console in TinyEMU</a></h1>
 <p>TODO</p>
 <p><em>How will we implement Console Input / Output in NuttX TinyEMU?</em></p>
 <p>TinyEMU supports VirtIO for proper Console Input and Output…</p>
@@ -500,7 +438,7 @@ $ simple-http-server nuttx-tinyemu/docs
 </li>
 </ul>
 <p>This will help us understand the inner workings of VirtIO and OpenAMP! But first we enable VirtIO and OpenAMP in NuttX…</p>
-<h1 id="enable-virtio-and-openamp-in-nuttx"><a href="#enable-virtio-and-openamp-in-nuttx">10 Enable VirtIO and OpenAMP in NuttX</a></h1>
+<h1 id="enable-virtio-and-openamp-in-nuttx"><a href="#enable-virtio-and-openamp-in-nuttx">9 Enable VirtIO and OpenAMP in NuttX</a></h1>
 <p>TODO</p>
 <p><em>How do we call VirtIO and OpenAMP?</em></p>
 <p>To enable VirtIO and OpenAMP in NuttX:</p>
@@ -524,7 +462,7 @@ riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_
 nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addrenv_va_to_pa&#39;
 </code></pre></div>
 <p>Now we configure NuttX VirtIO…</p>
-<h1 id="configure-nuttx-virtio-for-tinyemu"><a href="#configure-nuttx-virtio-for-tinyemu">11 Configure NuttX VirtIO for TinyEMU</a></h1>
+<h1 id="configure-nuttx-virtio-for-tinyemu"><a href="#configure-nuttx-virtio-for-tinyemu">10 Configure NuttX VirtIO for TinyEMU</a></h1>
 <p>TODO</p>
 <p><em>How to make NuttX VirtIO talk to TinyEMU?</em></p>
 <p>Previously we saw the TinyEMU config: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
@@ -562,7 +500,7 @@ nx_start: CPU0: Beginning Idle Loop
 </li>
 </ul>
 <p>Let’s create a VirtIO Queue for the VirtIO Console and send some data…</p>
-<h1 id="test-tinyemu-virtio-console-with-nuttx"><a href="#test-tinyemu-virtio-console-with-nuttx">12 Test TinyEMU VirtIO Console with NuttX</a></h1>
+<h1 id="test-tinyemu-virtio-console-with-nuttx"><a href="#test-tinyemu-virtio-console-with-nuttx">11 Test TinyEMU VirtIO Console with NuttX</a></h1>
 <p>TODO</p>
 <p><em>NuttX has started VirtIO and OpenAMP and they talk nicely to TinyEMU. What next?</em></p>
 <p>We dig around NuttX and we see NuttX creating a VirtIO Queue for VirtIO Console: <a href="https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511">virtio_serial_init</a> calls…</p>
@@ -653,7 +591,7 @@ nx_start: CPU0: Beginning Idle Loop
 <p>Up Next: Implement Console Input / Output with the NuttX Serial Driver for VirtIO</p>
 <p>But for now: Let’s look inside our VirtIO Guest (NuttX) and VirtIO Host (TinyEMU)…</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu-title.png" alt="Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO" /></p>
-<h1 id="inside-the-virtio-driver-for-nuttx"><a href="#inside-the-virtio-driver-for-nuttx">13 Inside the VirtIO Driver for NuttX</a></h1>
+<h1 id="inside-the-virtio-driver-for-nuttx"><a href="#inside-the-virtio-driver-for-nuttx">12 Inside the VirtIO Driver for NuttX</a></h1>
 <p>TODO</p>
 <p><em>How does VirtIO Guest work in NuttX?</em></p>
 <p>NuttX VirtIO Driver is based on OpenAMP with MMIO…</p>
@@ -715,11 +653,11 @@ nx_start: CPU0: Beginning Idle Loop
 <p><a href="https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336">virtqueue_kick</a> (OpenAMP)</p>
 </li>
 </ul>
-<h1 id="inside-the-virtio-host-for-tinyemu"><a href="#inside-the-virtio-host-for-tinyemu">14 Inside the VirtIO Host for TinyEMU</a></h1>
+<h1 id="inside-the-virtio-host-for-tinyemu"><a href="#inside-the-virtio-host-for-tinyemu">13 Inside the VirtIO Host for TinyEMU</a></h1>
 <p>TODO</p>
 <p><em>How does VirtIO Host work in TinyEMU?</em></p>
 <p>Let’s look inside the implementation of VirtIO in TinyEMU…</p>
-<h2 id="tinyemu-virtio"><a href="#tinyemu-virtio">14.1 TinyEMU VirtIO</a></h2>
+<h2 id="tinyemu-virtio"><a href="#tinyemu-virtio">13.1 TinyEMU VirtIO</a></h2>
 <p>TODO</p>
 <p>TinyEMU supports these VirtIO Devices:</p>
 <ul>
@@ -757,7 +695,7 @@ case 18: /* Input Device */ ...
 </li>
 </ul>
 <p>TinyEMU Guests (like NuttX) are required to check the <a href="https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L617">VIRTIO_MMIO_MAGIC_VALUE</a> that’s returned by the TinyEMU Host.</p>
-<h2 id="tinyemu-virtio-console"><a href="#tinyemu-virtio-console">14.2 TinyEMU VirtIO Console</a></h2>
+<h2 id="tinyemu-virtio-console"><a href="#tinyemu-virtio-console">13.2 TinyEMU VirtIO Console</a></h2>
 <p>TODO</p>
 <p>From above: VirtIO Console is Device ID 3. Here’s how it works…</p>
 <p>At TinyEMU Startup: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L952">riscv_machine_init</a> calls…</p>
@@ -799,7 +737,7 @@ case 18: /* Input Device */ ...
 <p><a href="https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1261">console device impl</a></p>
 </li>
 </ul>
-<h2 id="tinyemu-virtio-mmio-queue"><a href="#tinyemu-virtio-mmio-queue">14.3 TinyEMU VirtIO MMIO Queue</a></h2>
+<h2 id="tinyemu-virtio-mmio-queue"><a href="#tinyemu-virtio-mmio-queue">13.3 TinyEMU VirtIO MMIO Queue</a></h2>
 <p>TODO</p>
 <p>TinyEMU Guest (like NuttX) is required to set the VirtIO Queue Desc / Avail / Used.</p>
 <p>This is how TinyEMU accesses the VirtIO MMIO Queue: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L645">virtio.c</a></p>
@@ -842,13 +780,13 @@ case VIRTIO_MMIO_QUEUE_USED_HIGH:
 <p><a href="https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L781">VIRTIO_MMIO_QUEUE_NOTIFY</a></p>
 </li>
 </ul>
-<h1 id="nuttx-in-kernel-mode"><a href="#nuttx-in-kernel-mode">15 NuttX in Kernel Mode</a></h1>
+<h1 id="nuttx-in-kernel-mode"><a href="#nuttx-in-kernel-mode">14 NuttX in Kernel Mode</a></h1>
 <p>TODO</p>
 <p><em>Right now we’re running NuttX in Flat Mode…</em></p>
 <p><em>Can NuttX run in Kernel Mode on TinyEMU?</em></p>
 <p>NuttX Kernel Mode requires <a href="https://lupyuen.github.io/articles/semihost#semihosting-on-nuttx-qemu">RISC-V Semihosting</a> to access the NuttX Apps Filesystem. Which is supported by QEMU but not TinyEMU.</p>
 <p>But we can <a href="https://lupyuen.github.io/articles/app#initial-ram-disk">Append the Initial RAM Disk</a> to the NuttX Kernel. So yes it’s possible to run NuttX in Kernel Mode with TinyEMU, with some additional <a href="https://lupyuen.github.io/articles/app#mount-the-initial-ram-disk">Mounting Code</a>.</p>
-<h1 id="whats-next"><a href="#whats-next">16 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -873,7 +811,7 @@ case VIRTIO_MMIO_QUEUE_USED_HIGH:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tinyemu.md"><strong>lupyuen.github.io/src/tinyemu.md</strong></a></p>
-<h1 id="appendix-build-nuttx-for-tinyemu"><a href="#appendix-build-nuttx-for-tinyemu">17 Appendix: Build NuttX for TinyEMU</a></h1>
+<h1 id="appendix-build-nuttx-for-tinyemu"><a href="#appendix-build-nuttx-for-tinyemu">16 Appendix: Build NuttX for TinyEMU</a></h1>
 <p>TODO</p>
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit)</strong> that has Minor Fixes for Nim…</p>
 <p>TODO</p>
@@ -919,7 +857,59 @@ qemu-system-riscv64 \
   -nographic
 </code></pre></div>
 <p>TODO: To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
+<p>So we build NuttX for QEMU RISC-V (64-bit, Flat Mode)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download WIP NuttX
+git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx nuttx
+git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx-apps apps
 
+## Configure NuttX for QEMU RISC-V (64-bit, Flat Mode)
+cd nuttx
+tools/configure.sh rv-virt:nsh64
+make menuconfig
+## Device Drivers
+##   Enable &quot;Simple AddrEnv&quot;
+##   Enable &quot;Virtio Device Support&quot;
+
+## Device Drivers &gt; Virtio Device Support
+##   Enable &quot;Virtio MMIO Device Support&quot;
+
+## Build Setup &gt; Debug Options &gt;
+##   Enable Debug Features
+##   Enable &quot;Debug Assertions &gt; Show Expression, Filename&quot;
+##   Enable &quot;Binary Loader Debug Features &gt; Errors, Warnings, Info&quot;
+##   Enable &quot;File System Debug Features &gt; Errors, Warnings, Info&quot;
+##   Enable &quot;C Library Debug Features &gt; Errors, Warnings, Info&quot;
+##   Enable &quot;Memory Manager Debug Features &gt; Errors, Warnings, Info&quot;
+##   Enable &quot;Scheduler Debug Features &gt; Errors, Warnings, Info&quot;
+##   Enable &quot;Timer Debug Features &gt; Errors, Warnings, Info&quot;
+##   Enable &quot;IPC Debug Features &gt; Errors, Warnings, Info&quot;
+##   Enable &quot;Virtio Debug Features &gt; Error, Warnings, Info&quot;
+
+## Application Configuration &gt; Testing &gt;
+##   Enable &quot;OS Test Example&quot;
+
+## RTOS Features &gt; Tasks and Scheduling &gt;
+##   Set &quot;Application Entry Point&quot; to &quot;ostest_main&quot;
+##   Set &quot;Application Entry Name&quot; to &quot;ostest_main&quot;
+## Save and exit menuconfig
+
+## Build NuttX
+make
+
+## Export the Binary Image to nuttx.bin
+riscv64-unknown-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
+
+## Dump the disassembly to nuttx.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
+</code></pre></div>
     
 </body>
 </html>
