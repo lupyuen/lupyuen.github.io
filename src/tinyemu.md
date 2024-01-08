@@ -24,51 +24,56 @@ Also Imagine: A __NuttX Dashboard__ that lights up in __Real-Time__, as the vari
 
 # Install TinyEMU
 
-TODO
+_How to run TinyEMU?_
 
-_How to run TinyEMU in the Command Line?_
-
-We begin with TinyEMU in the Command Line, then move to WebAssembly. To install TinyEMU on macOS:
+We begin by installing [__TinyEMU RISC-V Emulator__](https://github.com/fernandotcl/TinyEMU) at the Command Line...
 
 ```bash
+## Install TinyEMU on Ubuntu
+## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L6-L13
+git clone https://github.com/fernandotcl/TinyEMU
+sudo apt install libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev
+make
+
+## Install TinyEMU on macOS
+## https://github.com/fernandotcl/homebrew-fernandotcl
+## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L20-L29
 brew tap fernandotcl/homebrew-fernandotcl
 brew install --HEAD fernandotcl/fernandotcl/tinyemu
 temu https://bellard.org/jslinux/buildroot-riscv64.cfg
+
+## Check TinyEMU. Should show...
+## temu version 2019-02-10, Copyright (c) 2016-2018 Fabrice Bellard
+temu   
 ```
 
-Or build TinyEMU on Ubuntu and macOS [with these steps](https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml).
-
-TODO: Generate the Emscripten JavaScript via [GitHub Actions](https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml)
+(Everything that runs in the __Command Line__ TinyEMU, will also run in the __Web Browser__ TinyEMU!)
 
 # RISC-V Addresses for TinyEMU
 
-TODO
+_How will TinyEMU boot our Operating System?_
 
-_Where in RAM will NuttX boot?_
-
-TinyEMU is hardcoded to run at these RISC-V Addresses (yep it's really barebones): [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
+TinyEMU is hardcoded to run at these __RISC-V Addresses__: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
 
 ```c
-#define LOW_RAM_SIZE   0x00010000 /* 64KB */
-#define RAM_BASE_ADDR  0x80000000
-#define CLINT_BASE_ADDR 0x02000000
-#define CLINT_SIZE      0x000c0000
-#define DEFAULT_HTIF_BASE_ADDR 0x40008000
-#define VIRTIO_BASE_ADDR 0x40010000
-#define VIRTIO_SIZE      0x1000
-#define VIRTIO_IRQ       1
-#define PLIC_BASE_ADDR 0x40100000
-#define PLIC_SIZE      0x00400000
-#define FRAMEBUFFER_BASE_ADDR 0x41000000
+#define LOW_RAM_SIZE           0x00010000  // 64KB
+#define RAM_BASE_ADDR          0x80000000
+#define CLINT_BASE_ADDR        0x02000000
+#define CLINT_SIZE             0x000c0000
 
-#define RTC_FREQ 10000000
-#define RTC_FREQ_DIV 16 /* arbitrary, relative to CPU freq to have a
-                           10 MHz frequency */
+#define DEFAULT_HTIF_BASE_ADDR 0x40008000
+#define VIRTIO_BASE_ADDR       0x40010000
+#define VIRTIO_SIZE            0x1000
+#define VIRTIO_IRQ             1
+
+#define PLIC_BASE_ADDR         0x40100000
+#define PLIC_SIZE              0x00400000
+#define FRAMEBUFFER_BASE_ADDR  0x41000000
 ```
 
-Thus we shall compile NuttX Kernel to boot at 0x8000_0000.
+Thus we'll compile our __NuttX Kernel__ to boot at __`0x8000_0000`__.
 
-We begin with the NuttX Port for QEMU 64-bit RISC-V...
+TODO: We begin with the NuttX Port for QEMU 64-bit RISC-V...
 
 # TinyEMU Config
 
