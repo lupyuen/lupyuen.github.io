@@ -68,9 +68,9 @@
     <nav id="TOC"><ul>
 <li><a href="#install-tinyemu">1 Install TinyEMU</a><ul></ul></li>
 <li><a href="#risc-v-addresses-for-tinyemu">2 RISC-V Addresses for TinyEMU</a><ul></ul></li>
-<li><a href="#tinyemu-config">3 TinyEMU Config</a><ul></ul></li>
-<li><a href="#build-nuttx-for-tinyemu">4 Build NuttX for TinyEMU</a><ul></ul></li>
-<li><a href="#run-nuttx-on-tinyemu">5 Run NuttX on TinyEMU</a><ul></ul></li>
+<li><a href="#boot-nuttx-in-tinyemu">3 Boot NuttX in TinyEMU</a><ul></ul></li>
+<li><a href="#tinyemu-config">4 TinyEMU Config</a><ul></ul></li>
+<li><a href="#build-nuttx-for-tinyemu">5 Build NuttX for TinyEMU</a><ul></ul></li>
 <li><a href="#print-to-htif-console">6 Print to HTIF Console</a><ul></ul></li>
 <li><a href="#print-in-nuttx-boot-code">7 Print in NuttX Boot Code</a><ul></ul></li>
 <li><a href="#fix-the-nuttx-uart-driver-for-tinyemu">8 Fix the NuttX UART Driver for TinyEMU</a><ul></ul></li>
@@ -140,7 +140,26 @@ temu
 </code></pre></div>
 <p>Thus we’ll compile our <strong>NuttX Kernel</strong> to boot at <strong><code>0x8000_0000</code></strong>.</p>
 <p>TODO: We begin with the NuttX Port for QEMU 64-bit RISC-V…</p>
-<h1 id="tinyemu-config"><a href="#tinyemu-config">3 TinyEMU Config</a></h1>
+<h1 id="boot-nuttx-in-tinyemu"><a href="#boot-nuttx-in-tinyemu">3 Boot NuttX in TinyEMU</a></h1>
+<p><em>How to start the TinyEMU Emulator?</em></p>
+<p>We create a TinyEMU <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/root-riscv64.cfg"><strong>Configuration File: <code>nuttx.cfg</code></strong></a></p>
+<div class="example-wrap"><pre class="language-json"><code>{
+  version: 1,
+  machine: &quot;riscv64&quot;,
+  memory_size: 256,
+  bios: &quot;nuttx.bin&quot;,
+}
+</code></pre></div>
+<p>This will start the <strong>64-bit RISC-V Emulator</strong> and boot it with our <a href="TODO"><strong>NuttX Kernel: <code>nuttx.bin</code></strong></a></p>
+<p><em>How do we get the NuttX Kernel?</em></p>
+<p>TODO: Download <strong><code>nuttx.bin</code></strong> from</p>
+<p>TODO: Or build it ourselves</p>
+<p><em>That’s all we need?</em></p>
+<p>Yep! Just go ahead and boot <strong>NuttX in TinyEMU</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ temu nuttx.cfg
+</code></pre></div>
+<p>TODO: TinyEMU hangs, nothing happens. Let’s print something to TinyEMU HTIF Console…</p>
+<h1 id="tinyemu-config"><a href="#tinyemu-config">4 TinyEMU Config</a></h1>
 <p>TODO</p>
 <p><em>What’s inside a TinyEMU Config?</em></p>
 <p>RISC-V Virtual Machines for TinyEMU are configured like this: <a href="https://bellard.org/jslinux/buildroot-riscv64.cfg">buildroot-riscv64.cfg</a></p>
@@ -161,7 +180,7 @@ temu
 <p>According to <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L753-L812">copy_bios</a>, the BIOS is mandatory, the Kernel is optional.</p>
 <p>Thus we put NuttX Kernel into <code>bios</code> and leave <code>kernel</code> empty.</p>
 <p><a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L753-L812">copy_bios</a> will load NuttX Kernel at RAM_BASE_ADDR (0x8000_0000).</p>
-<h1 id="build-nuttx-for-tinyemu"><a href="#build-nuttx-for-tinyemu">4 Build NuttX for TinyEMU</a></h1>
+<h1 id="build-nuttx-for-tinyemu"><a href="#build-nuttx-for-tinyemu">5 Build NuttX for TinyEMU</a></h1>
 <p>TODO</p>
 <p><em>Will NuttX boot on TinyEMU?</em></p>
 <p>NuttX for QEMU RISC-V is already configured to boot at 0x8000_0000: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L27">ld.script</a></p>
@@ -224,23 +243,7 @@ riscv64-unknown-elf-objdump \
   nuttx \
   &gt;nuttx.S \
   2&gt;&amp;1
-</code></pre></div><h1 id="run-nuttx-on-tinyemu"><a href="#run-nuttx-on-tinyemu">5 Run NuttX on TinyEMU</a></h1>
-<p>TODO</p>
-<p><em>How to boot NuttX on TinyEMU?</em></p>
-<p>We create a TinyEMU Config for NuttX and run it: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/root-riscv64.cfg">root-riscv64.cfg</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>$ cat nuttx.cfg
-/* VM configuration file */
-{
-  version: 1,
-  machine: &quot;riscv64&quot;,
-  memory_size: 256,
-  bios: &quot;nuttx.bin&quot;,
-}
-
-$ temu nuttx.cfg
-</code></pre></div>
-<p>TinyEMU hangs, nothing happens. Let’s print something to TinyEMU HTIF Console…</p>
-<h1 id="print-to-htif-console"><a href="#print-to-htif-console">6 Print to HTIF Console</a></h1>
+</code></pre></div><h1 id="print-to-htif-console"><a href="#print-to-htif-console">6 Print to HTIF Console</a></h1>
 <p>TODO</p>
 <p><em>What’s HTIF?</em></p>
 <p>From <a href="https://github.com/riscv-software-src/riscv-isa-sim/issues/364#issuecomment-607657754">RISC-V Spike Emulator</a>…</p>
