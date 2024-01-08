@@ -70,7 +70,7 @@
 <li><a href="#risc-v-addresses-for-tinyemu">2 RISC-V Addresses for TinyEMU</a><ul></ul></li>
 <li><a href="#boot-nuttx-in-tinyemu">3 Boot NuttX in TinyEMU</a><ul></ul></li>
 <li><a href="#print-to-htif-console">4 Print to HTIF Console</a><ul></ul></li>
-<li><a href="#print-in-nuttx-boot-code">5 Print in NuttX Boot Code</a><ul></ul></li>
+<li><a href="#print-in-risc-v-assembly">5 Print in RISC-V Assembly</a><ul></ul></li>
 <li><a href="#fix-the-nuttx-uart-driver-for-tinyemu">6 Fix the NuttX UART Driver for TinyEMU</a><ul></ul></li>
 <li><a href="#boot-nuttx-in-the-web-browser">7 Boot NuttX in the Web Browser</a><ul></ul></li>
 <li><a href="#virtio-console-in-tinyemu">8 VirtIO Console in TinyEMU</a><ul></ul></li>
@@ -225,10 +225,21 @@ static void htif_handle_cmd(RISCVMachine *s) {
   = 0x0101000000000031ul;         // device=1, cmd=1, buf=0x31
 </code></pre></div>
 <p>Let’s test this in our NuttX Boot Code…</p>
-<h1 id="print-in-nuttx-boot-code"><a href="#print-in-nuttx-boot-code">5 Print in NuttX Boot Code</a></h1>
-<p>TODO</p>
-<p><em>How to print to HTIF Console in the NuttX Boot Code? (RISC-V Assembly)</em></p>
-<p><a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console">Based on Star64 Debug Code</a>, we code this in RISC-V Assembly…</p>
+<h1 id="print-in-risc-v-assembly"><a href="#print-in-risc-v-assembly">5 Print in RISC-V Assembly</a></h1>
+<p><em>We’re checking if NuttX is alive on TinyEMU…</em></p>
+<p><em>How do we print something in the NuttX Boot Code?</em></p>
+<p>This will be a little delicate: Our NuttX Boot Code is in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S"><strong>RISC-V Assembly</strong></a>!</p>
+<p>(Beause it’s the first thing that runs when NuttX boots)</p>
+<p>From the previous section, we print “<strong><code>123</code></strong>” to TinyEMU’s HTIF Console like so…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Print `1` to HTIF Console
+*(volatile uint64_t *) 0x40008000 // HTIF Base Address
+  = 0x0101000000000031ul;         // device=1, cmd=1, buf=0x31
+
+// Do the same for `2` and `3`
+*(volatile uint64_t *) 0x40008000 = 0x0101000000000032ul;
+*(volatile uint64_t *) 0x40008000 = 0x0101000000000033ul;
+</code></pre></div>
+<p>We flip it (and reverse it) into <strong>RISC-V Assembly</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load HTIF Base Address to Register t0 */
 li  t0, 0x40008000
 
@@ -247,13 +258,15 @@ li  t1, 0x0101000000000033
 /* Store 64-bit double-word from Register t1 to HTIF Base Address, Offset 0 */
 sd  t1, 0(t0)
 </code></pre></div>
-<p>We insert the above code into the NuttX Boot Code: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L61">qemu_rv_head.S</a></p>
+<p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv64--load-and-store-instructions">(<strong><code>sd</code></strong> stores a 64-bit Double-Word from a Register into an Address Offset)</a></p>
+<p>Then we work it into our <strong>NuttX Boot Code</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L61">qemu_rv_head.S</a></p>
 <p><em>Does it work?</em></p>
-<p>NuttX prints to the HTIF Console yay! Now we know that NuttX Boot Code is actually running on TinyEMU…</p>
+<p>NuttX prints something to the HTIF Console yay! Now we know that NuttX Boot Code is actually running on TinyEMU…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ temu nuttx.cfg
 123
 </code></pre></div>
-<p>Let’s fix the NuttX UART Driver…</p>
+<p>To see more goodies, we fix the NuttX UART Driver…</p>
 <h1 id="fix-the-nuttx-uart-driver-for-tinyemu"><a href="#fix-the-nuttx-uart-driver-for-tinyemu">6 Fix the NuttX UART Driver for TinyEMU</a></h1>
 <p>TODO</p>
 <p><em>NuttX on TinyEMU has been awfully quiet. How to fix the UART Driver so that NuttX can print things?</em></p>
