@@ -2,33 +2,23 @@
 
 📝 _15 Jan 2024_
 
-![Apache NuttX RTOS in a Web Browser... With TinyEMU and VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
-
-TODO
-
-[__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (Real-Time Operating System) 
-
-[__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC 
-
-![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
-
-# Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO
+![Apache NuttX RTOS in a Web Browser... With TinyEMU and VirtIO](https://lupyuen.github.io/images/tinyemu-title.png) 
 
 TODO
 
 [__Demo of NuttX on TinyEMU__](https://lupyuen.github.io/nuttx-tinyemu/)
 
-Apache NuttX RTOS is a tiny operating system for 64-bit RISC-V Machines and many other platforms. (Arm, x64, ESP32, ...)
+[__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (Real-Time Operating System) is a tiny operating system for 64-bit RISC-V Machines and many other platforms. (Arm, x64, ESP32, ...)
 
-[TinyEMU](https://github.com/fernandotcl/TinyEMU) is a barebones RISC-V Emulator that runs in a [Web Browser](https://www.barebox.org/jsbarebox/?graphic=1). (Thanks to WebAssembly)
+[__TinyEMU__](https://github.com/fernandotcl/TinyEMU) is a barebones RISC-V Emulator that runs in a [Web Browser](https://www.barebox.org/jsbarebox/?graphic=1). (Thanks to WebAssembly)
 
 Can we boot NuttX in a Web Browser, with a little help from TinyEMU? Let's find out!
 
 _Why are we doing this?_
 
-We might run NuttX in a Web Browser and emulate the Ox64 BL808 RISC-V SBC. Which is great for testing NuttX Apps like [Nim Blinky LED](https://lupyuen.github.io/articles/nim)! Or even LVGL Apps with VirtIO Framebuffer?
+We might run NuttX in a Web Browser and emulate the [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC. Which is great for testing NuttX Apps like [__Nim Blinky LED__](https://lupyuen.github.io/articles/nim)! Or even LVGL Apps with VirtIO Framebuffer?
 
-Also imagine: A NuttX Dashboard that lights up in Real-Time, as the various NuttX Modules are activated! This is all possible when NuttX runs in a Web Browser!
+Also Imagine: A __NuttX Dashboard__ that lights up in __Real-Time__, as the various NuttX Modules are activated... This is all possible when NuttX runs in a Web Browser!
 
 (Sorry QEMU Emulator is a bit too complex to customise)
 
