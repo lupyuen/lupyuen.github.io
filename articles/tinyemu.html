@@ -98,37 +98,45 @@
 <p>Also Imagine: A <strong>NuttX Dashboard</strong> that lights up in <strong>Real-Time</strong>, as the various NuttX Modules are activated… This is all possible when NuttX runs in a Web Browser!</p>
 <p>(Sorry QEMU Emulator is a bit too complex to customise)</p>
 <h1 id="install-tinyemu"><a href="#install-tinyemu">1 Install TinyEMU</a></h1>
-<p>TODO</p>
-<p><em>How to run TinyEMU in the Command Line?</em></p>
-<p>We begin with TinyEMU in the Command Line, then move to WebAssembly. To install TinyEMU on macOS:</p>
-<div class="example-wrap"><pre class="language-bash"><code>brew tap fernandotcl/homebrew-fernandotcl
+<p><em>How to run TinyEMU?</em></p>
+<p>We begin by installing <a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU RISC-V Emulator</strong></a> at the Command Line…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Install TinyEMU on Ubuntu
+## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L6-L13
+git clone https://github.com/fernandotcl/TinyEMU
+sudo apt install libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev
+make
+
+## Install TinyEMU on macOS
+## https://github.com/fernandotcl/homebrew-fernandotcl
+## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L20-L29
+brew tap fernandotcl/homebrew-fernandotcl
 brew install --HEAD fernandotcl/fernandotcl/tinyemu
 temu https://bellard.org/jslinux/buildroot-riscv64.cfg
-</code></pre></div>
-<p>Or build TinyEMU on Ubuntu and macOS <a href="https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml">with these steps</a>.</p>
-<p>TODO: Generate the Emscripten JavaScript via <a href="https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml">GitHub Actions</a></p>
-<h1 id="risc-v-addresses-for-tinyemu"><a href="#risc-v-addresses-for-tinyemu">2 RISC-V Addresses for TinyEMU</a></h1>
-<p>TODO</p>
-<p><em>Where in RAM will NuttX boot?</em></p>
-<p>TinyEMU is hardcoded to run at these RISC-V Addresses (yep it’s really barebones): <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define LOW_RAM_SIZE   0x00010000 /* 64KB */
-#define RAM_BASE_ADDR  0x80000000
-#define CLINT_BASE_ADDR 0x02000000
-#define CLINT_SIZE      0x000c0000
-#define DEFAULT_HTIF_BASE_ADDR 0x40008000
-#define VIRTIO_BASE_ADDR 0x40010000
-#define VIRTIO_SIZE      0x1000
-#define VIRTIO_IRQ       1
-#define PLIC_BASE_ADDR 0x40100000
-#define PLIC_SIZE      0x00400000
-#define FRAMEBUFFER_BASE_ADDR 0x41000000
 
-#define RTC_FREQ 10000000
-#define RTC_FREQ_DIV 16 /* arbitrary, relative to CPU freq to have a
-                           10 MHz frequency */
+## Check TinyEMU. Should show...
+## temu version 2019-02-10, Copyright (c) 2016-2018 Fabrice Bellard
+temu   
 </code></pre></div>
-<p>Thus we shall compile NuttX Kernel to boot at 0x8000_0000.</p>
-<p>We begin with the NuttX Port for QEMU 64-bit RISC-V…</p>
+<p>(Everything that runs in the <strong>Command Line</strong> TinyEMU, will also run in the <strong>Web Browser</strong> TinyEMU!)</p>
+<h1 id="risc-v-addresses-for-tinyemu"><a href="#risc-v-addresses-for-tinyemu">2 RISC-V Addresses for TinyEMU</a></h1>
+<p><em>How will TinyEMU boot our Operating System?</em></p>
+<p>TinyEMU is hardcoded to run at these <strong>RISC-V Addresses</strong>: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define LOW_RAM_SIZE           0x00010000  // 64KB
+#define RAM_BASE_ADDR          0x80000000
+#define CLINT_BASE_ADDR        0x02000000
+#define CLINT_SIZE             0x000c0000
+
+#define DEFAULT_HTIF_BASE_ADDR 0x40008000
+#define VIRTIO_BASE_ADDR       0x40010000
+#define VIRTIO_SIZE            0x1000
+#define VIRTIO_IRQ             1
+
+#define PLIC_BASE_ADDR         0x40100000
+#define PLIC_SIZE              0x00400000
+#define FRAMEBUFFER_BASE_ADDR  0x41000000
+</code></pre></div>
+<p>Thus we’ll compile our <strong>NuttX Kernel</strong> to boot at <strong><code>0x8000_0000</code></strong>.</p>
+<p>TODO: We begin with the NuttX Port for QEMU 64-bit RISC-V…</p>
 <h1 id="tinyemu-config"><a href="#tinyemu-config">3 TinyEMU Config</a></h1>
 <p>TODO</p>
 <p><em>What’s inside a TinyEMU Config?</em></p>
