@@ -198,13 +198,29 @@ Thus we __print to HTIF Console__ like this...
 
 Let's test this in our NuttX Boot Code...
 
-# Print in NuttX Boot Code
+# Print in RISC-V Assembly
 
-TODO
+_We're checking if NuttX is alive on TinyEMU..._
 
-_How to print to HTIF Console in the NuttX Boot Code? (RISC-V Assembly)_
+_How do we print something in the NuttX Boot Code?_
 
-[Based on Star64 Debug Code](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console), we code this in RISC-V Assembly...
+This will be a little delicate: Our NuttX Boot Code is in [__RISC-V Assembly__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S)!
+
+(Beause it's the first thing that runs when NuttX boots)
+
+From the previous section, we print "__`123`__" to TinyEMU's HTIF Console like so...
+
+```c
+// Print `1` to HTIF Console
+*(volatile uint64_t *) 0x40008000 // HTIF Base Address
+  = 0x0101000000000031ul;         // device=1, cmd=1, buf=0x31
+
+// Do the same for `2` and `3`
+*(volatile uint64_t *) 0x40008000 = 0x0101000000000032ul;
+*(volatile uint64_t *) 0x40008000 = 0x0101000000000033ul;
+```
+
+We flip it (and reverse it) into __RISC-V Assembly__...
 
 ```text
 /* Load HTIF Base Address to Register t0 */
@@ -226,18 +242,22 @@ li  t1, 0x0101000000000033
 sd  t1, 0(t0)
 ```
 
-We insert the above code into the NuttX Boot Code: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L61)
+[(__`li`__ loads a Value into a Register)](https://lupyuen.github.io/articles/riscv#other-instructions)
+
+[(__`sd`__ stores a 64-bit Double-Word from a Register into an Address Offset)](https://five-embeddev.com/quickref/instructions.html#-rv64--load-and-store-instructions)
+
+Then we work it into our __NuttX Boot Code__: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L61)
 
 _Does it work?_
 
-NuttX prints to the HTIF Console yay! Now we know that NuttX Boot Code is actually running on TinyEMU...
+NuttX prints something to the HTIF Console yay! Now we know that NuttX Boot Code is actually running on TinyEMU...
 
 ```text
 $ temu nuttx.cfg
 123
 ```
 
-Let's fix the NuttX UART Driver...
+To see more goodies, we fix the NuttX UART Driver...
 
 # Fix the NuttX UART Driver for TinyEMU
 
