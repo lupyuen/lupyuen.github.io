@@ -102,8 +102,9 @@
 <p>We begin by installing <a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU RISC-V Emulator</strong></a> at the Command Line…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install TinyEMU on Ubuntu
 ## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L6-L13
-git clone https://github.com/fernandotcl/TinyEMU
 sudo apt install libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev
+git clone https://github.com/fernandotcl/TinyEMU
+cd TinyEMU
 make
 
 ## Install TinyEMU on macOS
@@ -117,7 +118,9 @@ temu https://bellard.org/jslinux/buildroot-riscv64.cfg
 ## temu version 2019-02-10, Copyright (c) 2016-2018 Fabrice Bellard
 temu   
 </code></pre></div>
-<p>(Everything that runs in the <strong>Command Line</strong> TinyEMU, will also run in the <strong>Web Browser</strong> TinyEMU!)</p>
+<p><a href="https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml">(See the <strong>Build Script</strong>)</a></p>
+<p><em>What about TinyEMU for the Web Browser?</em></p>
+<p>No Worries! Everything that runs in the <strong>Command Line</strong> TinyEMU… Will also run in the <strong>Web Browser</strong> TinyEMU!</p>
 <h1 id="risc-v-addresses-for-tinyemu"><a href="#risc-v-addresses-for-tinyemu">2 RISC-V Addresses for TinyEMU</a></h1>
 <p><em>How will TinyEMU boot our Operating System?</em></p>
 <p>TinyEMU is hardcoded to run at these <strong>RISC-V Addresses</strong>: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
