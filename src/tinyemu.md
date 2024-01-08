@@ -76,9 +76,23 @@ TinyEMU is hardcoded to run at these __RISC-V Addresses__: [riscv_machine.c](htt
 #define FRAMEBUFFER_BASE_ADDR  0x41000000
 ```
 
-Thus we'll compile our __NuttX Kernel__ to boot at __`0x8000_0000`__.
+Thus TinyEMU shall boot our NuttX Kernel at __RAM_BASE_ADDR: `0x8000_0000`__.
 
-TODO: We begin with the NuttX Port for QEMU 64-bit RISC-V...
+_How to set this Boot Address in NuttX?_
+
+Actually we don't! __NuttX for QEMU Emulator__ (64-bit RISC-V) is already configured to boot at __`0x8000_0000`__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L27)
+
+```text
+/* NuttX boots at 0x80000000 */
+SECTIONS
+{
+  . = 0x80000000;
+  .text :
+    {
+      _stext = . ;
+```
+
+So we're all ready to boot NuttX on TinyEMU!
 
 # Boot NuttX in TinyEMU
 
@@ -97,6 +111,8 @@ We create a TinyEMU [__Configuration File: `nuttx.cfg`__](https://github.com/lup
 
 This will start the __64-bit RISC-V Emulator__ and boot it with our [__NuttX Kernel: `nuttx.bin`__](TODO)
 
+[(Booting Linux is __more complicated__)](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-config)
+
 _How do we get the NuttX Kernel?_
 
 TODO: Download __`nuttx.bin`__ from
@@ -112,38 +128,6 @@ $ temu nuttx.cfg
 ```
 
 TODO: TinyEMU hangs, nothing happens. Let's print something to TinyEMU HTIF Console...
-
-# TinyEMU Config
-
-TODO
-
-_What's inside a TinyEMU Config?_
-
-RISC-V Virtual Machines for TinyEMU are configured like this: [buildroot-riscv64.cfg](https://bellard.org/jslinux/buildroot-riscv64.cfg)
-
-```text
-/* VM configuration file */
-{
-  version: 1,
-  machine: "riscv64",
-  memory_size: 256,
-  bios: "bbl64.bin",
-  kernel: "kernel-riscv64.bin",
-  cmdline: "loglevel=3 swiotlb=1 console=hvc0 root=root rootfstype=9p rootflags=trans=virtio ro TZ=${TZ}",
-  fs0: { file: "https://vfsync.org/u/os/buildroot-riscv64" },
-  eth0: { driver: "user" },
-}
-```
-
-`bbl64.bin` is the [Barebox Bootloader](https://www.barebox.org). (Similar to U-Boot)
-
-_Will NuttX go into `bios` or `kernel`?_
-
-According to [copy_bios](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L753-L812), the BIOS is mandatory, the Kernel is optional.
-
-Thus we put NuttX Kernel into `bios` and leave `kernel` empty.
-
-[copy_bios](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L753-L812) will load NuttX Kernel at RAM_BASE_ADDR (0x8000_0000).
 
 # Build NuttX for TinyEMU
 
