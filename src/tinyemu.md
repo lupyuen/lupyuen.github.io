@@ -92,7 +92,7 @@ SECTIONS
       _stext = . ;
 ```
 
-So we're all ready to boot NuttX on TinyEMU!
+So we're all ready to boot NuttX QEMU on TinyEMU!
 
 # Boot NuttX in TinyEMU
 
@@ -111,7 +111,7 @@ We create a TinyEMU [__Configuration File: `nuttx.cfg`__](https://github.com/lup
 
 This will start the __64-bit RISC-V Emulator__ and boot it with our [__NuttX Kernel: `nuttx.bin`__](TODO)
 
-[(Booting Linux is __more complicated__)](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-config)
+[(Booting Linux gets __more complicated__)](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-config)
 
 _How do we get the NuttX Kernel?_
 
@@ -127,80 +127,11 @@ Yep! Just go ahead and boot __NuttX in TinyEMU__...
 $ temu nuttx.cfg
 ```
 
-TODO: TinyEMU hangs, nothing happens. Let's print something to TinyEMU HTIF Console...
+_Huh? But we're booting NuttX QEMU on TinyEMU!_
 
-# Build NuttX for TinyEMU
+Exactly... __Nothing will appear__ in TinyEMU!
 
-TODO
-
-_Will NuttX boot on TinyEMU?_
-
-NuttX for QEMU RISC-V is already configured to boot at 0x8000_0000: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L27)
-
-```text
-SECTIONS
-{
-  . = 0x80000000;
-  .text :
-    {
-      _stext = . ;
-```
-
-So we build NuttX for QEMU RISC-V (64-bit, Flat Mode)...
-
-```bash
-## Download WIP NuttX
-git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx nuttx
-git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx-apps apps
-
-## Configure NuttX for QEMU RISC-V (64-bit, Flat Mode)
-cd nuttx
-tools/configure.sh rv-virt:nsh64
-make menuconfig
-## Device Drivers
-##   Enable "Simple AddrEnv"
-##   Enable "Virtio Device Support"
-
-## Device Drivers > Virtio Device Support
-##   Enable "Virtio MMIO Device Support"
-
-## Build Setup > Debug Options >
-##   Enable Debug Features
-##   Enable "Debug Assertions > Show Expression, Filename"
-##   Enable "Binary Loader Debug Features > Errors, Warnings, Info"
-##   Enable "File System Debug Features > Errors, Warnings, Info"
-##   Enable "C Library Debug Features > Errors, Warnings, Info"
-##   Enable "Memory Manager Debug Features > Errors, Warnings, Info"
-##   Enable "Scheduler Debug Features > Errors, Warnings, Info"
-##   Enable "Timer Debug Features > Errors, Warnings, Info"
-##   Enable "IPC Debug Features > Errors, Warnings, Info"
-##   Enable "Virtio Debug Features > Error, Warnings, Info"
-
-## Application Configuration > Testing >
-##   Enable "OS Test Example"
-
-## RTOS Features > Tasks and Scheduling >
-##   Set "Application Entry Point" to "ostest_main"
-##   Set "Application Entry Name" to "ostest_main"
-## Save and exit menuconfig
-
-## Build NuttX
-make
-
-## Export the Binary Image to nuttx.bin
-riscv64-unknown-elf-objcopy \
-  -O binary \
-  nuttx \
-  nuttx.bin
-
-## Dump the disassembly to nuttx.S
-riscv64-unknown-elf-objdump \
-  --syms --source --reloc --demangle --line-numbers --wide \
-  --debugging \
-  nuttx \
-  >nuttx.S \
-  2>&1
-```
+First we need to understand the HTIF Console for TinyEMU...
 
 # Print to HTIF Console
 
@@ -965,3 +896,59 @@ qemu-system-riscv64 \
 ```
 
 TODO: To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
+
+So we build NuttX for QEMU RISC-V (64-bit, Flat Mode)...
+
+```bash
+## Download WIP NuttX
+git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx nuttx
+git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx-apps apps
+
+## Configure NuttX for QEMU RISC-V (64-bit, Flat Mode)
+cd nuttx
+tools/configure.sh rv-virt:nsh64
+make menuconfig
+## Device Drivers
+##   Enable "Simple AddrEnv"
+##   Enable "Virtio Device Support"
+
+## Device Drivers > Virtio Device Support
+##   Enable "Virtio MMIO Device Support"
+
+## Build Setup > Debug Options >
+##   Enable Debug Features
+##   Enable "Debug Assertions > Show Expression, Filename"
+##   Enable "Binary Loader Debug Features > Errors, Warnings, Info"
+##   Enable "File System Debug Features > Errors, Warnings, Info"
+##   Enable "C Library Debug Features > Errors, Warnings, Info"
+##   Enable "Memory Manager Debug Features > Errors, Warnings, Info"
+##   Enable "Scheduler Debug Features > Errors, Warnings, Info"
+##   Enable "Timer Debug Features > Errors, Warnings, Info"
+##   Enable "IPC Debug Features > Errors, Warnings, Info"
+##   Enable "Virtio Debug Features > Error, Warnings, Info"
+
+## Application Configuration > Testing >
+##   Enable "OS Test Example"
+
+## RTOS Features > Tasks and Scheduling >
+##   Set "Application Entry Point" to "ostest_main"
+##   Set "Application Entry Name" to "ostest_main"
+## Save and exit menuconfig
+
+## Build NuttX
+make
+
+## Export the Binary Image to nuttx.bin
+riscv64-unknown-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
+
+## Dump the disassembly to nuttx.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  >nuttx.S \
+  2>&1
+```
