@@ -80,6 +80,39 @@ Thus we'll compile our __NuttX Kernel__ to boot at __`0x8000_0000`__.
 
 TODO: We begin with the NuttX Port for QEMU 64-bit RISC-V...
 
+# Boot NuttX in TinyEMU
+
+_How to start the TinyEMU Emulator?_
+
+We create a TinyEMU [__Configuration File: `nuttx.cfg`__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/root-riscv64.cfg)
+
+```json
+{
+  version: 1,
+  machine: "riscv64",
+  memory_size: 256,
+  bios: "nuttx.bin",
+}
+```
+
+This will start the __64-bit RISC-V Emulator__ and boot it with our [__NuttX Kernel: `nuttx.bin`__](TODO)
+
+_How do we get the NuttX Kernel?_
+
+TODO: Download __`nuttx.bin`__ from
+
+TODO: Or build it ourselves
+
+_That's all we need?_
+
+Yep! Just go ahead and boot __NuttX in TinyEMU__...
+
+```bash
+$ temu nuttx.cfg
+```
+
+TODO: TinyEMU hangs, nothing happens. Let's print something to TinyEMU HTIF Console...
+
 # TinyEMU Config
 
 TODO
@@ -184,29 +217,6 @@ riscv64-unknown-elf-objdump \
   >nuttx.S \
   2>&1
 ```
-
-# Run NuttX on TinyEMU
-
-TODO
-
-_How to boot NuttX on TinyEMU?_
-
-We create a TinyEMU Config for NuttX and run it: [root-riscv64.cfg](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/root-riscv64.cfg)
-
-```bash
-$ cat nuttx.cfg
-/* VM configuration file */
-{
-  version: 1,
-  machine: "riscv64",
-  memory_size: 256,
-  bios: "nuttx.bin",
-}
-
-$ temu nuttx.cfg
-```
-
-TinyEMU hangs, nothing happens. Let's print something to TinyEMU HTIF Console...
 
 # Print to HTIF Console
 
