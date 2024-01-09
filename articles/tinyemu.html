@@ -89,8 +89,12 @@
 <p>TODO</p>
 <p><em>Why are we doing this?</em></p>
 <p>We might run NuttX in a Web Browser and emulate the <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Ox64 BL808</strong></a> RISC-V SBC. Which is great for testing NuttX Apps like <a href="https://lupyuen.github.io/articles/nim"><strong>Nim Blinky LED</strong></a>! (LVGL Graphical Apps too)</p>
-<p>Also Imagine: A <strong>NuttX Dashboard</strong> that lights up in <strong>Real-Time</strong>, as the various NuttX Modules are activated… This is all possible when NuttX runs in a Web Browser!</p>
+<p>Also Imagine: A <strong>NuttX Dashboard</strong> that lights up in <strong>Real-Time</strong>, as the various NuttX Drivers are activated… This is all possible when NuttX runs in a Web Browser!</p>
 <p>(Sorry QEMU Emulator is a bit too complex to customise)</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu-doom.png" alt="TinyEMU does Doom in a Web Browser" /> </p>
+<blockquote>
+<p><a href="https://www.barebox.org/jsbarebox/?graphic=1"><em>TinyEMU does Doom in a Web Browser</em></a></p>
+</blockquote>
 <h1 id="install-tinyemu-emulator"><a href="#install-tinyemu-emulator">1 Install TinyEMU Emulator</a></h1>
 <p><em>How to run TinyEMU?</em></p>
 <p>We begin by installing <a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU RISC-V Emulator</strong></a> at the Command Line…</p>
@@ -173,7 +177,10 @@ SECTIONS {
 <p>TinyEMU supports <a href="https://docs.cartesi.io/machine/target/architecture/#htif"><strong>Berkeley Host-Target Interface (HTIF)</strong></a> for Console Output.</p>
 <p>HTIF comes from the olden days of the <a href="https://github.com/riscv-software-src/riscv-isa-sim/issues/364#issuecomment-607657754"><strong>RISC-V Spike Emulator</strong></a>…</p>
 <blockquote>
-<p>“HTIF is a tether between a simulation host and target, not something that’s supposed to resemble a real hardware device. It’s not a RISC-V standard; it’s a UC Berkeley standard”</p>
+<p>“HTIF is a tether between a simulation host and target, not something that’s supposed to resemble a real hardware device”</p>
+</blockquote>
+<blockquote>
+<p>“It’s not a RISC-V standard; it’s a UC Berkeley standard”</p>
 </blockquote>
 <p><em>But how does it work?</em></p>
 <p>Use the Source, Luke! TinyEMU handles <strong>HTIF Commands</strong> like so: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L129-L153">riscv_machine.c</a></p>
@@ -201,21 +208,21 @@ static void htif_handle_cmd(RISCVMachine *s) {
 <p>So to print “<strong><code>1</code></strong>” (ASCII <code>0x31</code>) to the HTIF Console, we set…</p>
 <ul>
 <li>
-<p><strong><code>device</code></strong> <br> = (htif_tohost &gt;&gt; 56) <br> = <strong><code>1</code></strong></p>
+<p><strong><code>device</code></strong> <br> = (<em>htif_tohost</em> &gt;&gt; <code>56</code>) <br> = <strong><code>1</code></strong></p>
 </li>
 <li>
-<p><strong><code>cmd</code></strong> <br> = (htif_tohost &gt;&gt; 48) <br> = <strong><code>1</code></strong></p>
+<p><strong><code>cmd</code></strong> <br> = (<em>htif_tohost</em> &gt;&gt; <code>48</code>) <br> = <strong><code>1</code></strong></p>
 </li>
 <li>
-<p><strong><code>buf</code></strong> <br> = (htif_tohost &amp; 0xff) <br> = <strong><code>0x31</code></strong></p>
+<p><strong><code>buf</code></strong> <br> = (<em>htif_tohost</em> &amp; <code>0xFF</code>) <br> = <strong><code>0x31</code></strong></p>
 </li>
 </ul>
 <p>Which means that we write this value to <strong>htif_tohost</strong>…</p>
 <ul>
-<li>(<code>1</code> &lt;&lt; 56) | (<code>1</code> &lt;&lt; 48) | <code>0x31</code> <br> = <strong><code>0x0101_0000_0000_0031</code></strong></li>
+<li>(<code>1</code> &lt;&lt; <code>56</code>) | (<code>1</code> &lt;&lt; <code>48</code>) | <code>0x31</code> <br> = <strong><code>0x0101_0000_0000_0031</code></strong></li>
 </ul>
 <p><em>Where is htif_tohost?</em></p>
-<p><strong>htif_tohost</strong> is at <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82"><strong>DEFAULT_HTIF_BASE_ADDR: <code>0x4000_8000</code></strong></a></p>
+<p><strong>htif_tohost</strong> is at <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82"><strong><code>0x4000_8000</code></strong></a> <em>(DEFAULT_HTIF_BASE_ADDR)</em></p>
 <p>(According to <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L913-L927"><strong>riscv_machine_init</strong></a> and <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L154-L178"><strong>htif_write</strong></a>)</p>
 <p>Thus we <strong>print to HTIF Console</strong> like this…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Print `1` to HTIF Console
@@ -319,7 +326,10 @@ nx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b">(See the <strong>Complete Log</strong>)</a></p>
 <p>Let’s boot NuttX in the Web Browser…</p>
-<p>TODO: Pic of NuttX in Web Browser</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu-wasm.png" alt="NuttX booting in a Web Browser" /> </p>
+<blockquote>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/"><em>NuttX booting in a Web Browser</em></a></p>
+</blockquote>
 <h1 id="boot-nuttx-in-web-browser"><a href="#boot-nuttx-in-web-browser">7 Boot NuttX in Web Browser</a></h1>
 <p><em>Will NuttX boot in the Web Browser?</em></p>
 <p>Yep! (Pic above)</p>
