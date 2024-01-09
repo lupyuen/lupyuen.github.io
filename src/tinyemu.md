@@ -803,3 +803,11 @@ nuttx/openamp/libmetal/lib/system/nuttx/io.c:105: undefined reference to `up_add
 riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_offset_to_phys_':
 nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addrenv_va_to_pa'
 ```
+
+_Right now we're running NuttX in Flat Mode..._
+
+_Can NuttX run in Kernel Mode on TinyEMU?_
+
+NuttX Kernel Mode requires [RISC-V Semihosting](https://lupyuen.github.io/articles/semihost#semihosting-on-nuttx-qemu) to access the NuttX Apps Filesystem. Which is supported by QEMU but not TinyEMU.
+
+But we can [Append the Initial RAM Disk](https://lupyuen.github.io/articles/app#initial-ram-disk) to the NuttX Kernel. So yes it's possible to run NuttX in Kernel Mode with TinyEMU, with some additional [Mounting Code](https://lupyuen.github.io/articles/app#mount-the-initial-ram-disk).
