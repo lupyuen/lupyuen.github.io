@@ -309,66 +309,27 @@ static int u16550_wait(FAR struct u16550_s *priv) {
 }
 ```
 
-TODO
+_What happens when we boot NuttX on TinyEMU?_
 
-Now we see NuttX booting OK on TinyEMU yay!
+Now we see NuttX booting OK on TinyEMU yay! (Later we'll fix the NuttX Shell)
 
 ```text
 + temu nuttx.cfg
-123ABCnx_start: Entry
+123ABC
+nx_start: Entry
 mm_initialize: Heap: name=Umem, start=0x80035700 size=33335552
 mm_addregion: [Umem] Region 1: base=0x800359a8 size=33334864
-mm_malloc: Allocated 0x800359d0, size 48
-mm_malloc: Allocated 0x80035a00, size 288
-mm_malloc: Allocated 0x80035b20, size 32
-mm_malloc: Allocated 0x80035b40, size 720
-mm_malloc: Allocated 0x80035e10, size 80
-mm_malloc: Allocated 0x80035e60, size 64
-mm_malloc: Allocated 0x80035ea0, size 240
-mm_malloc: Allocated 0x80035f90, size 464
-mm_malloc: Allocated 0x80036160, size 176
-mm_malloc: Allocated 0x80036210, size 336
-mm_malloc: Allocated 0x80036360, size 464
-mm_malloc: Allocated 0x80036530, size 464
-mm_malloc: Allocated 0x80036700, size 528
 builtin_initialize: Registering Builtin Loader
 elf_initialize: Registering ELF
+
 uart_register: Registering /dev/console
-mm_malloc: Allocated 0x80036910, size 80
-mm_malloc: Allocated 0x80036960, size 80
 uart_register: Registering /dev/ttyS0
-mm_malloc: Allocated 0x800369b0, size 80
-mm_malloc: Allocated 0x80036a00, size 80
-mm_malloc: Allocated 0x80036a50, size 80
-mm_malloc: Allocated 0x80036aa0, size 32
-mm_malloc: Allocated 0x80036ac0, size 160
-mm_malloc: Allocated 0x80036b60, size 32
-mm_malloc: Allocated 0x80036b80, size 32
-mm_malloc: Allocated 0x80036ba0, size 32
 nx_start_application: Starting init thread
-task_spawn: name=ostest_main entry=0x80006fde file_actions=0 attr=0x80035670 argv=0x80035668
-mm_malloc: Allocated 0x80036bc0, size 272
-mm_malloc: Allocated 0x80036cd0, size 288
-mm_malloc: Allocated 0x80036df0, size 32
-mm_malloc: Allocated 0x80036e10, size 720
-mm_malloc: Allocated 0x800370e0, size 32
-mm_malloc: Allocated 0x80037100, size 32
-mm_malloc: Allocated 0x80037120, size 32
-mm_malloc: Allocated 0x80037140, size 32
-mm_malloc: Allocated 0x80037160, size 160
-mm_malloc: Allocated 0x80037200, size 3088
-mm_free: Freeing 0x80036b60
-mm_free: Freeing 0x80036ba0
-mm_free: Freeing 0x80036b80
-mm_malloc: Allocated 0x80036b60, size 32
-mm_malloc: Allocated 0x80036b80, size 32
-mm_malloc: Allocated 0x80037e10, size 48
-mm_free: Freeing 0x800370e0
-mm_free: Freeing 0x80036b60
-mm_free: Freeing 0x80036b80
-mm_malloc: Allocated 0x800370e0, size 32
+task_spawn: name=nsh_main entry=0x80006fde file_actions=0 attr=0x80035670 argv=0x80035668
 nx_start: CPU0: Beginning Idle Loop
 ```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b)
 
 Let's boot NuttX in the Web Browser...
 
@@ -645,7 +606,7 @@ Hello VirtIO from NuttX!
 nx_start: CPU0: Beginning Idle Loop
 ```
 
-[(See the Complete Log)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b)
 
 Up Next: Implement Console Input / Output with the NuttX Serial Driver for VirtIO
 
