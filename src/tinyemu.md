@@ -52,7 +52,7 @@ temu
 
 _What about TinyEMU for the Web Browser?_
 
-No Worries! Everything that runs in the __Command Line__ TinyEMU... Will also run in the __Web Browser__ TinyEMU!
+No Worries! Everything that runs in __Command Line__ TinyEMU... Will also run in __Web Browser__ TinyEMU!
 
 # RISC-V Addresses for TinyEMU
 
@@ -339,8 +339,6 @@ TODO: Pic of NuttX in Web Browser
 
 # Boot NuttX in the Web Browser
 
-TODO
-
 _Will NuttX boot in the Web Browser?_
 
 Yep! (Pic above)
@@ -349,9 +347,9 @@ Yep! (Pic above)
 
 - WebAssembly Files: [__nuttx-tinyemu/docs__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs)
 
-_How did we do it?_
+_So Cool! How did we make this?_
 
-We copied the TinyEMU Config and NuttX Kernel to the Web Server...
+We copied the __TinyEMU Config__ and __NuttX Kernel__ to the Web Server...
 
 ```bash
 ## Copy to Web Server: NuttX Config, Kernel, Disassembly (for troubleshooting)
@@ -360,13 +358,15 @@ cp nuttx.bin $HOME/nuttx-tinyemu/docs/
 cp nuttx.S   $HOME/nuttx-tinyemu/docs/
 ```
 
-The other files were provided by [TinyEMU](https://bellard.org/tinyemu/)...
+The other [__WebAssembly Files__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs) were provided by [__TinyEMU__](https://bellard.org/tinyemu/)...
 
-- [jslinux-2019-12-21.tar.gz](https://bellard.org/tinyemu/jslinux-2019-12-21.tar.gz): Precompiled JSLinux demo
+- Precompiled JSLinux Demo: [__jslinux-2019-12-21.tar.gz__](https://bellard.org/tinyemu/jslinux-2019-12-21.tar.gz)
+
+Like we said: Everything that runs in __Command Line__ TinyEMU... Will also run in __Web Browser__ TinyEMU!
 
 _How to test this locally?_
 
-To test on our computer, we need to install a Local Web Server (because our Web Browser won't load WebAssembly Files from the File System)...
+To test on our computer, we need to install a __Local Web Server__...
 
 ```bash
 ## Based on https://github.com/TheWaWaR/simple-http-server
@@ -375,15 +375,17 @@ $ git clone https://github.com/lupyuen/nuttx-tinyemu
 $ simple-http-server nuttx-tinyemu/docs
 ```
 
-Then browse to...
+That's because our Web Browser won't load WebAssembly Files from the File System. Then browse to...
 
 ```text
 http://0.0.0.0:8000/index.html
 ```
 
-_But something's missing: Console Input!_
+And NuttX appears in our Web Browser!
 
-To do Console Input, we need to implement VirtIO Console in our NuttX UART Driver...
+_But something's missing: Where's the Console Input?_
+
+To do Console Input, we need to implement VirtIO Console...
 
 TODO: Pic of VirtIO Console, OpenAMP
 
