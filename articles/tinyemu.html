@@ -320,17 +320,16 @@ nx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b">(See the <strong>Complete Log</strong>)</a></p>
 <p>Let’s boot NuttX in the Web Browser…</p>
-<p>TODO: NuttX in Web Browser</p>
+<p>TODO: Pic of NuttX in Web Browser</p>
 <h1 id="boot-nuttx-in-the-web-browser"><a href="#boot-nuttx-in-the-web-browser">7 Boot NuttX in the Web Browser</a></h1>
-<p>TODO</p>
 <p><em>Will NuttX boot in the Web Browser?</em></p>
 <p>Yep! WebAssembly Demo is here: <a href="https://lupyuen.github.io/nuttx-tinyemu/">Demo of NuttX on TinyEMU</a></p>
 <p>WebAssembly Files are located here: <a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs">nuttx-tinyemu/docs</a></p>
 <p>We copied the TinyEMU Config and NuttX Kernel to the Web Server…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy to Web Server: NuttX Config, Kernel, Disassembly (for troubleshooting)
-cp nuttx.cfg ../nuttx-tinyemu/docs/root-riscv64.cfg
-cp nuttx.bin ../nuttx-tinyemu/docs/
-cp nuttx.S ../nuttx-tinyemu/docs/
+cp nuttx.cfg $HOME/nuttx-tinyemu/docs/root-riscv64.cfg
+cp nuttx.bin $HOME/nuttx-tinyemu/docs/
+cp nuttx.S   $HOME/nuttx-tinyemu/docs/
 </code></pre></div>
 <p>The other files were provided by <a href="https://bellard.org/tinyemu/">TinyEMU</a>…</p>
 <ul>
@@ -346,7 +345,7 @@ $ simple-http-server nuttx-tinyemu/docs
 <p>Then browse to…</p>
 <div class="example-wrap"><pre class="language-text"><code>http://0.0.0.0:8000/index.html
 </code></pre></div>
-<p><em>But there’s no Console Input?</em></p>
+<p><em>But something’s missing: Console Input!</em></p>
 <p>To do Console Input, we need to implement VirtIO Console in our NuttX UART Driver…</p>
 <p>TODO: Pic of VirtIO Console, OpenAMP</p>
 <h1 id="virtio-console-in-tinyemu"><a href="#virtio-console-in-tinyemu">8 VirtIO Console in TinyEMU</a></h1>
