@@ -20,9 +20,13 @@ _Why are we doing this?_
 
 We might run NuttX in a Web Browser and emulate the [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC. Which is great for testing NuttX Apps like [__Nim Blinky LED__](https://lupyuen.github.io/articles/nim)! (LVGL Graphical Apps too)
 
-Also Imagine: A __NuttX Dashboard__ that lights up in __Real-Time__, as the various NuttX Modules are activated... This is all possible when NuttX runs in a Web Browser!
+Also Imagine: A __NuttX Dashboard__ that lights up in __Real-Time__, as the various NuttX Drivers are activated... This is all possible when NuttX runs in a Web Browser!
 
 (Sorry QEMU Emulator is a bit too complex to customise)
+
+![TinyEMU does Doom in a Web Browser](https://lupyuen.github.io/images/tinyemu-doom.png) 
+
+> [_TinyEMU does Doom in a Web Browser_](https://www.barebox.org/jsbarebox/?graphic=1)
 
 # Install TinyEMU Emulator
 
@@ -147,7 +151,9 @@ TinyEMU supports [__Berkeley Host-Target Interface (HTIF)__](https://docs.cartes
 
 HTIF comes from the olden days of the [__RISC-V Spike Emulator__](https://github.com/riscv-software-src/riscv-isa-sim/issues/364#issuecomment-607657754)...
 
-> "HTIF is a tether between a simulation host and target, not something that's supposed to resemble a real hardware device. It's not a RISC-V standard; it's a UC Berkeley standard"
+> "HTIF is a tether between a simulation host and target, not something that's supposed to resemble a real hardware device"
+
+> "It's not a RISC-V standard; it's a UC Berkeley standard"
 
 _But how does it work?_
 
@@ -178,19 +184,19 @@ static void htif_handle_cmd(RISCVMachine *s) {
 
 So to print "__`1`__" (ASCII `0x31`) to the HTIF Console, we set...
 
-- __`device`__ <br> = (htif_tohost >> 56) <br> = __`1`__
+- __`device`__ <br> = (_htif_tohost_ >> `56`) <br> = __`1`__
 
-- __`cmd`__ <br> = (htif_tohost >> 48) <br> = __`1`__
+- __`cmd`__ <br> = (_htif_tohost_ >> `48`) <br> = __`1`__
 
-- __`buf`__ <br> = (htif_tohost & 0xff) <br> = __`0x31`__
+- __`buf`__ <br> = (_htif_tohost_ & `0xFF`) <br> = __`0x31`__
 
 Which means that we write this value to __htif_tohost__...
 
-- (`1` << 56) | (`1` << 48) | `0x31` <br> = __`0x0101_0000_0000_0031`__
+- (`1` << `56`) | (`1` << `48`) | `0x31` <br> = __`0x0101_0000_0000_0031`__
 
 _Where is htif_tohost?_
 
-__htif_tohost__ is at [__DEFAULT_HTIF_BASE_ADDR: `0x4000_8000`__](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
+__htif_tohost__ is at [__`0x4000_8000`__](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82) _(DEFAULT_HTIF_BASE_ADDR)_
 
 (According to [__riscv_machine_init__](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L913-L927) and [__htif_write__](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L154-L178))
 
@@ -340,7 +346,9 @@ nx_start: CPU0: Beginning Idle Loop
 
 Let's boot NuttX in the Web Browser...
 
-TODO: Pic of NuttX in Web Browser
+![NuttX booting in a Web Browser](https://lupyuen.github.io/images/tinyemu-wasm.png) 
+
+> [_NuttX booting in a Web Browser_](https://lupyuen.github.io/nuttx-tinyemu/)
 
 # Boot NuttX in Web Browser
 
