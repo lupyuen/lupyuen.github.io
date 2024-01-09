@@ -4,19 +4,17 @@
 
 ![Apache NuttX RTOS in a Web Browser... With TinyEMU and VirtIO](https://lupyuen.github.io/images/tinyemu-title.png) 
 
-TODO
+[_(Demo of NuttX on TinyEMU)_](https://lupyuen.github.io/nuttx-tinyemu/)
 
-[__Demo of NuttX on TinyEMU__](https://lupyuen.github.io/nuttx-tinyemu/)
-
-[__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (Real-Time Operating System) is a tiny operating system for 64-bit RISC-V Machines and many other platforms. (Arm, x64, ESP32, ...)
+[__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) is a tiny operating system for [__64-bit RISC-V Machines__](https://lupyuen.github.io/articles/riscv) and many other platforms. (Arm, x64, ESP32, ...)
 
 [__TinyEMU__](https://github.com/fernandotcl/TinyEMU) is a barebones RISC-V Emulator that runs in a [__Web Browser__](https://www.barebox.org/jsbarebox/?graphic=1). (Thanks to WebAssembly)
 
-Can we boot NuttX in a Web Browser, with a little help from TinyEMU? Let's find out!
+Can we boot __NuttX in a Web Browser__, with a little help from TinyEMU? Let's find out!
 
 _Why are we doing this?_
 
-We might run NuttX in a Web Browser and emulate the [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC. Which is great for testing NuttX Apps like [__Nim Blinky LED__](https://lupyuen.github.io/articles/nim)! Or even LVGL Apps with VirtIO Framebuffer?
+We might run NuttX in a Web Browser and emulate the [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC. Which is great for testing NuttX Apps like [__Nim Blinky LED__](https://lupyuen.github.io/articles/nim)! (LVGL Graphical Apps too)
 
 Also Imagine: A __NuttX Dashboard__ that lights up in __Real-Time__, as the various NuttX Modules are activated... This is all possible when NuttX runs in a Web Browser!
 
@@ -61,22 +59,25 @@ _How will TinyEMU boot our Operating System?_
 TinyEMU is hardcoded to run at these __RISC-V Addresses__: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
 
 ```c
+// RISC-V Addresses for TinyEMU Emulator
 #define LOW_RAM_SIZE           0x00010000  // 64KB
 #define RAM_BASE_ADDR          0x80000000
 #define CLINT_BASE_ADDR        0x02000000
 #define CLINT_SIZE             0x000c0000
 
+// HTIF Console and Virtual I/O
 #define DEFAULT_HTIF_BASE_ADDR 0x40008000
 #define VIRTIO_BASE_ADDR       0x40010000
 #define VIRTIO_SIZE            0x1000
 #define VIRTIO_IRQ             1
 
+// Interrupt Controller and Framebuffer
 #define PLIC_BASE_ADDR         0x40100000
 #define PLIC_SIZE              0x00400000
 #define FRAMEBUFFER_BASE_ADDR  0x41000000
 ```
 
-Thus TinyEMU shall boot our NuttX Kernel at __RAM_BASE_ADDR: `0x8000_0000`__.
+Thus TinyEMU will boot our NuttX Kernel at __RAM_BASE_ADDR: `0x8000_0000`__.
 
 [(Yep TinyEMU has a __Graphics Framebuffer__)](https://www.barebox.org/jsbarebox/?graphic=1)
 
