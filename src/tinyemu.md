@@ -309,7 +309,7 @@ static int u16550_wait(FAR struct u16550_s *priv) {
 }
 ```
 
-_What happens when we boot NuttX on TinyEMU?_
+_What happens when we run this?_
 
 Now we see NuttX booting OK on TinyEMU yay! (Later we'll fix the NuttX Shell)
 
