@@ -581,16 +581,6 @@ Yep NuttX prints correctly to TinyEMU's VirtIO Console yay! (Pic below)
 
 ```bash
 $ temu nuttx.cfg
-123ABC
-nx_start: Entry
-builtin_initialize: Registering Builtin Loader
-elf_initialize: Registering ELF
-
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-nx_start_application: Starting init thread
-task_spawn: name=nsh_main entry=0x8000756e file_actions=0 attr=0x80043e80 argv=0x80043e78
-
 virtio_mmio_init_device: VIRTIO version: 2 device: 3 vendor: ffff
 Hello VirtIO from NuttX!
 nx_start: CPU0: Beginning Idle Loop
@@ -600,9 +590,9 @@ nx_start: CPU0: Beginning Idle Loop
 
 _But still no NuttX Shell?_
 
-Yeah we need to configure NuttX to use the [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c). Then NuttX Shell will appear and we can enter NuttX Commands!
+We've proven that NuttX VirtIO + OpenAMP will talk OK to [__TinyEMU's VirtIO Console__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-host-for-tinyemu).
 
-And we've proven that NuttX VirtIO + OpenAMP will talk OK to [__TinyEMU's VirtIO Console__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-host-for-tinyemu)!
+Very soon we shall configure NuttX to use the [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c). Then NuttX Shell will appear and we can enter NuttX Commands!
 
 ![Apache NuttX RTOS in a Web Browser... With TinyEMU and VirtIO](https://lupyuen.github.io/images/tinyemu-title.png) 
 
