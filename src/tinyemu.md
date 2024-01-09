@@ -279,6 +279,8 @@ $ temu nuttx.cfg
 123
 ```
 
+[(Copy __`nuttx.cfg`__ from here)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/root-riscv64.cfg)
+
 To see more goodies, we fix the NuttX UART Driver...
 
 TODO: UART screenshot
