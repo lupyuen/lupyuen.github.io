@@ -98,19 +98,19 @@
 <h1 id="install-tinyemu"><a href="#install-tinyemu">1 Install TinyEMU</a></h1>
 <p><em>How to run TinyEMU?</em></p>
 <p>We begin by installing <a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU RISC-V Emulator</strong></a> at the Command Line…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Install TinyEMU on Ubuntu
-## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L6-L13
-sudo apt install libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev
-git clone https://github.com/fernandotcl/TinyEMU
-cd TinyEMU
-make
-
-## Install TinyEMU on macOS
+<div class="example-wrap"><pre class="language-bash"><code>## Install TinyEMU on macOS
 ## https://github.com/fernandotcl/homebrew-fernandotcl
 ## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L20-L29
 brew tap fernandotcl/homebrew-fernandotcl
 brew install --HEAD fernandotcl/fernandotcl/tinyemu
 temu https://bellard.org/jslinux/buildroot-riscv64.cfg
+
+## Install TinyEMU on Ubuntu
+## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L6-L13
+sudo apt install libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev
+git clone https://github.com/fernandotcl/TinyEMU
+cd TinyEMU
+make
 
 ## Check TinyEMU. Should show...
 ## temu version 2019-02-10, Copyright (c) 2016-2018 Fabrice Bellard
@@ -140,12 +140,9 @@ temu
 <p><em>How to set this Boot Address in NuttX?</em></p>
 <p>Actually we don’t! <strong>NuttX for QEMU Emulator</strong> (64-bit RISC-V) is already configured to boot at <strong><code>0x8000_0000</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L27">ld.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* NuttX boots at 0x80000000 */
-SECTIONS
-{
+SECTIONS {
   . = 0x80000000;
-  .text :
-    {
-      _stext = . ;
+  .text : { _stext = . ;
 </code></pre></div>
 <p>So we’re all ready to boot NuttX QEMU on TinyEMU!</p>
 <h1 id="boot-nuttx-in-tinyemu"><a href="#boot-nuttx-in-tinyemu">3 Boot NuttX in TinyEMU</a></h1>
@@ -170,6 +167,7 @@ SECTIONS
 <p><em>Huh? But we’re booting NuttX QEMU on TinyEMU!</em></p>
 <p>Exactly… <strong>Nothing will appear</strong> in TinyEMU!</p>
 <p>First we need to understand the HTIF Console for TinyEMU…</p>
+<p>TODO: Pic of HTIF Console</p>
 <h1 id="print-to-htif-console"><a href="#print-to-htif-console">4 Print to HTIF Console</a></h1>
 <p><em>How do we print something to the TinyEMU Console?</em></p>
 <p>TinyEMU supports <a href="https://docs.cartesi.io/machine/target/architecture/#htif"><strong>Berkeley Host-Target Interface (HTIF)</strong></a> for Console Output.</p>
@@ -225,6 +223,7 @@ static void htif_handle_cmd(RISCVMachine *s) {
   = 0x0101000000000031ul;         // device=1, cmd=1, buf=0x31
 </code></pre></div>
 <p>Let’s test this in our NuttX Boot Code…</p>
+<p>TODO: 123 Screenshot</p>
 <h1 id="print-in-risc-v-assembly"><a href="#print-in-risc-v-assembly">5 Print in RISC-V Assembly</a></h1>
 <p><em>We’re checking if NuttX is alive on TinyEMU…</em></p>
 <p><em>How do we print something in the NuttX Boot Code?</em></p>
@@ -240,7 +239,8 @@ static void htif_handle_cmd(RISCVMachine *s) {
 *(volatile uint64_t *) 0x40008000 = 0x0101000000000033ul;
 </code></pre></div>
 <p>We flip it (and reverse it) into <strong>RISC-V Assembly</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>/* Load HTIF Base Address to Register t0 */
+<div class="example-wrap"><pre class="language-text"><code>/* Print `123` to HTIF Console           */
+/* Load HTIF Base Address to Register t0 */
 li  t0, 0x40008000
 
 /* Load to Register t1 the HTIF Command to print `1` */
@@ -267,6 +267,7 @@ sd  t1, 0(t0)
 123
 </code></pre></div>
 <p>To see more goodies, we fix the NuttX UART Driver…</p>
+<p>TODO: UART screenshot</p>
 <h1 id="fix-the-nuttx-uart-driver-for-tinyemu"><a href="#fix-the-nuttx-uart-driver-for-tinyemu">6 Fix the NuttX UART Driver for TinyEMU</a></h1>
 <p><em>NuttX on TinyEMU has been awfully quiet…</em></p>
 <p><em>How to fix the UART Driver so that NuttX can print things?</em></p>
@@ -386,6 +387,7 @@ $ simple-http-server nuttx-tinyemu/docs
 </code></pre></div>
 <p><em>But there’s no Console Input?</em></p>
 <p>To do Console Input, we need to implement VirtIO Console in our NuttX UART Driver…</p>
+<p>TODO: Pic of VirtIO Console, OpenAMP</p>
 <h1 id="virtio-console-in-tinyemu"><a href="#virtio-console-in-tinyemu">8 VirtIO Console in TinyEMU</a></h1>
 <p>TODO</p>
 <p><em>How will we implement Console Input / Output in NuttX TinyEMU?</em></p>
