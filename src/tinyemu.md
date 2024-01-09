@@ -40,7 +40,6 @@ We begin by installing [__TinyEMU RISC-V Emulator__](https://github.com/fernando
 ## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L20-L29
 brew tap fernandotcl/homebrew-fernandotcl
 brew install --HEAD fernandotcl/fernandotcl/tinyemu
-temu https://bellard.org/jslinux/buildroot-riscv64.cfg
 
 ## Install TinyEMU on Ubuntu
 ## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L6-L13
@@ -48,10 +47,14 @@ sudo apt install libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev
 git clone https://github.com/fernandotcl/TinyEMU
 cd TinyEMU
 make
+sudo make install
 
-## Check TinyEMU. Should show...
+## Check TinyEMU. Should show:
 ## temu version 2019-02-10, Copyright (c) 2016-2018 Fabrice Bellard
-temu   
+temu
+
+## Boot RISC-V Linux on TinyEMU (pic below)
+temu https://bellard.org/jslinux/buildroot-riscv64.cfg
 ```
 
 [(See the __Build Script__)](https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml)
@@ -59,6 +62,8 @@ temu
 _What about TinyEMU for the Web Browser?_
 
 No Worries! Everything that runs in __Command Line__ TinyEMU... Will also run in __Web Browser__ TinyEMU!
+
+TODO: TinyEMU Linux
 
 # RISC-V Addresses for TinyEMU
 
@@ -85,7 +90,7 @@ TinyEMU is hardcoded to run at these __RISC-V Addresses__: [riscv_machine.c](htt
 #define FRAMEBUFFER_BASE_ADDR  0x41000000
 ```
 
-Thus TinyEMU will boot our NuttX Kernel at __RAM_BASE_ADDR: `0x8000_0000`__.
+Thus TinyEMU will boot our NuttX Kernel at __`0x8000_0000`__. _(RAM_BASE_ADDR)_
 
 [(Yep TinyEMU has a __Graphics Framebuffer__)](https://www.barebox.org/jsbarebox/?graphic=1)
 
@@ -119,9 +124,9 @@ We create a TinyEMU [__Configuration File: `nuttx.cfg`__](https://github.com/lup
 
 This will start the __64-bit RISC-V Emulator__ and boot it with our [__NuttX Kernel: `nuttx.bin`__](TODO)
 
-[(Booting Linux? __It's complicated__)](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-config)
+[(Booting Linux? __It's more complicated__)](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-config)
 
-_How do we get the NuttX Kernel?_
+_NuttX Kernel comes from?_
 
 TODO: Download __`nuttx.bin`__ from
 
@@ -135,7 +140,9 @@ Yep! Just go ahead and boot __NuttX in TinyEMU__...
 $ temu nuttx.cfg
 ```
 
-_Huh? But we're booting NuttX QEMU on TinyEMU!_
+[(Copy __`nuttx.cfg`__ from here)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/root-riscv64.cfg)
+
+_Huh! We're booting NuttX QEMU on TinyEMU?_
 
 Exactly... __Nothing will appear__ in TinyEMU!
 
