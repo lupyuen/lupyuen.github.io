@@ -385,35 +385,45 @@ And NuttX appears in our Web Browser!
 
 _But something's missing: Where's the Console Input?_
 
-To do Console Input, we need to implement VirtIO Console...
+To do Console Input, NuttX needs to support VirtIO Console...
 
 TODO: Pic of VirtIO Console, OpenAMP
 
-# VirtIO Console in TinyEMU
+# VirtIO Console
 
-TODO
+_We need Console Input for NuttX Shell..._
 
-_How will we implement Console Input / Output in NuttX TinyEMU?_
+_Can't we do it with TinyEMU's HTIF Console?_
 
-TinyEMU supports VirtIO for proper Console Input and Output...
+HTIF Console supports Polling of Input and Output, __but not Interrupts__. (A bit like [__OpenSBI Console__](https://lupyuen.github.io/articles/sbi#opensbi-debug-console))
 
-- [TinyEMU support for VirtIO](https://bellard.org/tinyemu/readme.txt)
+To do proper Console Input / Output with Interrupts, we need __VirtIO Console__.
 
-- [Virtio - OSDev Wiki](https://wiki.osdev.org/Virtio)
+_What's VirtIO?_
 
-- [Virtual I/O Device (VIRTIO) Spec, Version 1.2](https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html)
+[__Virtual I/O Device (VirtIO)__](https://wiki.osdev.org/Virtio) is a Standardised Interface that allows Virtual Machines to access __Consoles, Storage Devices and Network Adapters__. And it works with TinyEMU!
 
-- [About VirtIO Console](https://projectacrn.github.io/latest/developer-guides/hld/virtio-console.html)
+- [__TinyEMU support for VirtIO__](https://bellard.org/tinyemu/readme.txt)
 
-And NuttX supports VirtIO, based on OpenAMP...
+- [__Virtual I/O Device (VirtIO) Spec__](https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html)
 
-- [Running NuttX with VirtIO on QEMU](https://www.youtube.com/watch?v=_8CpLNEWxfo)
+_What about NuttX?_
 
-- [NuttX VirtIO Framework and Future Works](https://www.youtube.com/watch?v=CYMkAv-WjQg)
+NuttX provides __VirtIO Drivers__, built upon __OpenAMP__...
 
-- [Intro to OpenAMP](https://www.openampproject.org/docs/whitepapers/Introduction_to_OpenAMPlib_v1.1a.pdf)
+- [__"Running NuttX with VirtIO on QEMU"__](https://www.youtube.com/watch?v=_8CpLNEWxfo) (YouTube)
 
-- [knetnsh64: NuttX for QEMU RISC-V with VirtIO](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knetnsh64/defconfig#L52)
+- [__"NuttX VirtIO Framework and Future Works"__](https://www.youtube.com/watch?v=CYMkAv-WjQg) (YouTube)
+
+_And OpenAMP is?_
+
+[__Open Asymmetric Multi-Processing (OpenAMP)__](https://www.openampproject.org/) provides the __Message Queue Library__ for VirtIO Guests (like NuttX) to call VirtIO Hosts (like TinyEMU)...
+
+- [__"Introduction to OpenAMP"__](https://www.openampproject.org/docs/whitepapers/Introduction_to_OpenAMPlib_v1.1a.pdf) (Page 4)
+
+We have all the layers, let's assemble our cake!
+
+# TODO
 
 But let's create a simple VirtIO Console Driver for NuttX with OpenAMP...
 
