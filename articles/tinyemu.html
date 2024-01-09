@@ -89,7 +89,7 @@
 <p>TODO</p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/"><strong>Demo of NuttX on TinyEMU</strong></a></p>
 <p><a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) is a tiny operating system for 64-bit RISC-V Machines and many other platforms. (Arm, x64, ESP32, …)</p>
-<p><a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU</strong></a> is a barebones RISC-V Emulator that runs in a <a href="https://www.barebox.org/jsbarebox/?graphic=1">Web Browser</a>. (Thanks to WebAssembly)</p>
+<p><a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU</strong></a> is a barebones RISC-V Emulator that runs in a <a href="https://www.barebox.org/jsbarebox/?graphic=1"><strong>Web Browser</strong></a>. (Thanks to WebAssembly)</p>
 <p>Can we boot NuttX in a Web Browser, with a little help from TinyEMU? Let’s find out!</p>
 <p><em>Why are we doing this?</em></p>
 <p>We might run NuttX in a Web Browser and emulate the <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Ox64 BL808</strong></a> RISC-V SBC. Which is great for testing NuttX Apps like <a href="https://lupyuen.github.io/articles/nim"><strong>Nim Blinky LED</strong></a>! Or even LVGL Apps with VirtIO Framebuffer?</p>
@@ -137,6 +137,7 @@ temu
 #define FRAMEBUFFER_BASE_ADDR  0x41000000
 </code></pre></div>
 <p>Thus TinyEMU shall boot our NuttX Kernel at <strong>RAM_BASE_ADDR: <code>0x8000_0000</code></strong>.</p>
+<p><a href="https://www.barebox.org/jsbarebox/?graphic=1">(Yep TinyEMU has a <strong>Graphics Framebuffer</strong>)</a></p>
 <p><em>How to set this Boot Address in NuttX?</em></p>
 <p>Actually we don’t! <strong>NuttX for QEMU Emulator</strong> (64-bit RISC-V) is already configured to boot at <strong><code>0x8000_0000</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L27">ld.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* NuttX boots at 0x80000000 */
@@ -319,12 +320,12 @@ nx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b">(See the <strong>Complete Log</strong>)</a></p>
 <p>Let’s boot NuttX in the Web Browser…</p>
+<p>TODO: NuttX in Web Browser</p>
 <h1 id="boot-nuttx-in-the-web-browser"><a href="#boot-nuttx-in-the-web-browser">7 Boot NuttX in the Web Browser</a></h1>
 <p>TODO</p>
 <p><em>Will NuttX boot in the Web Browser?</em></p>
 <p>Yep! WebAssembly Demo is here: <a href="https://lupyuen.github.io/nuttx-tinyemu/">Demo of NuttX on TinyEMU</a></p>
 <p>WebAssembly Files are located here: <a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs">nuttx-tinyemu/docs</a></p>
-<p><img src="https://lupyuen.github.io/images/tinyemu-title.png" alt="Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO" /></p>
 <p>We copied the TinyEMU Config and NuttX Kernel to the Web Server…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy to Web Server: NuttX Config, Kernel, Disassembly (for troubleshooting)
 cp nuttx.cfg ../nuttx-tinyemu/docs/root-riscv64.cfg
@@ -459,6 +460,7 @@ nx_start: CPU0: Beginning Idle Loop
 </li>
 </ul>
 <p>Let’s create a VirtIO Queue for the VirtIO Console and send some data…</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu-title.png" alt="Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO" /></p>
 <h1 id="test-tinyemu-virtio-console-with-nuttx"><a href="#test-tinyemu-virtio-console-with-nuttx">11 Test TinyEMU VirtIO Console with NuttX</a></h1>
 <p>TODO</p>
 <p><em>NuttX has started VirtIO and OpenAMP and they talk nicely to TinyEMU. What next?</em></p>
