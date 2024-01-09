@@ -339,11 +339,17 @@ TODO: Pic of NuttX in Web Browser
 
 # Boot NuttX in the Web Browser
 
+TODO
+
 _Will NuttX boot in the Web Browser?_
 
-Yep! WebAssembly Demo is here: [Demo of NuttX on TinyEMU](https://lupyuen.github.io/nuttx-tinyemu/)
+Yep! (Pic above)
 
-WebAssembly Files are located here: [nuttx-tinyemu/docs](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs)
+- WebAssembly Demo: [__NuttX on TinyEMU__](https://lupyuen.github.io/nuttx-tinyemu/)
+
+- WebAssembly Files: [__nuttx-tinyemu/docs__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs)
+
+_How did we do it?_
 
 We copied the TinyEMU Config and NuttX Kernel to the Web Server...
 
