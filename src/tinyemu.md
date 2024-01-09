@@ -128,7 +128,7 @@ This will start the __64-bit RISC-V Emulator__ and boot it with our [__NuttX Ker
 
 _NuttX Kernel comes from?_
 
-TODO: Download __`nuttx.bin`__ from
+TODO: Download __`nuttx.bin`__ from [Release](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.1) / [nuttx.bin](https://github.com/lupyuen/nuttx-tinyemu/releases/download/v0.0.1/nuttx.bin)
 
 TODO: Or build it ourselves
 
@@ -641,11 +641,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build NuttX for TinyEMU
 
-TODO
+TODO: [Release](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.1) / [nuttx.bin](https://github.com/lupyuen/nuttx-tinyemu/releases/download/v0.0.1/nuttx.bin)
 
-In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for QEMU RISC-V (64-bit)__ that has Minor Fixes for Nim...
-
-TODO
+In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for QEMU RISC-V (64-bit)__ that has Minor Fixes for TODO...
 
 TODO: Then we download and build NuttX for __QEMU RISC-V (64-bit)__...
 
