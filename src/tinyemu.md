@@ -598,7 +598,9 @@ virtqueue_kick(vq);
 
 ![Apache NuttX RTOS in a Web Browser... With TinyEMU and VirtIO](https://lupyuen.github.io/images/tinyemu-title.png) 
 
-## NuttX with VirtIO and OpenAMP
+[_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu/)
+
+# NuttX with VirtIO and OpenAMP
 
 _NuttX now talks to TinyEMU over VirtIO and OpenAMP..._
 
@@ -627,7 +629,9 @@ Very soon we shall configure NuttX to use the [__VirtIO Serial Driver__](https:/
 
 Here's a sneak peek (PLIC Interrupts need fixing)...
 
-TODO: Pic of upcoming demo
+![Live Demo of Upcoming NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
+
+> [_Live Demo of Upcoming NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
 
 # What's Next
 
