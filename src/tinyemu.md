@@ -615,6 +615,10 @@ We've proven that NuttX VirtIO + OpenAMP will talk OK to [__TinyEMU's VirtIO Con
 
 Very soon we shall configure NuttX to use the [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c). Then NuttX Shell will appear and we can enter NuttX Commands!
 
+- [__Upcoming Demo__](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
+
+- [__Upcoming Source Files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
+
 ![Apache NuttX RTOS in a Web Browser... With TinyEMU and VirtIO](https://lupyuen.github.io/images/tinyemu-title.png) 
 
 # What's Next
