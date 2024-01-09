@@ -146,7 +146,7 @@ _Huh! We're booting NuttX QEMU on TinyEMU?_
 
 Exactly... __Nothing will appear__ in TinyEMU!
 
-First we need to understand the HTIF Console for TinyEMU...
+To watch NuttX run, we need HTIF Console...
 
 TODO: Pic of HTIF Console
 
