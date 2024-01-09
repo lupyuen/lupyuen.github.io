@@ -22,7 +22,7 @@ Also Imagine: A __NuttX Dashboard__ that lights up in __Real-Time__, as the vari
 
 (Sorry QEMU Emulator is a bit too complex to customise)
 
-# Install TinyEMU
+# Install TinyEMU Emulator
 
 _How to run TinyEMU?_
 
@@ -494,166 +494,102 @@ At NuttX Startup: [__board_app_initialize__](https://github.com/lupyuen2/wip-pin
 
 Let's create a VirtIO Queue and send some data...
 
+[(__virtio_register_mmio_device__ is explained here)](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx)
+
 ## Create the VirtIO Queue
 
-TODO
+_NuttX VirtIO + OpenAMP are talking OK to TinyEMU. What next?_
+
+To send data to VirtIO Console, we need a __VirtIO Queue__: [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925)
+
+```c
+// At Startup: Init VirtIO Device
+// Based on virtio_serial_init
+// https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511
+
+// Configure the VirtIO Driver Features
+struct virtio_device *vdev = &vmdev->vdev;
+virtio_set_status(vdev, VIRTIO_CONFIG_STATUS_DRIVER);
+virtio_set_features(vdev, 0);
+virtio_set_status(vdev, VIRTIO_CONFIG_FEATURES_OK);
+
+// Configure the 2 VirtQueues: Transmit and Receive
+#define VIRTIO_SERIAL_RX  0
+#define VIRTIO_SERIAL_TX  1
+#define VIRTIO_SERIAL_NUM 2
+const char *vqnames[VIRTIO_SERIAL_NUM];
+vqnames[VIRTIO_SERIAL_RX] = "virtio_serial_rx";
+vqnames[VIRTIO_SERIAL_TX] = "virtio_serial_tx";
+
+// No Callbacks for now
+vq_callback callbacks[VIRTIO_SERIAL_NUM];
+callbacks[VIRTIO_SERIAL_RX] = NULL;
+callbacks[VIRTIO_SERIAL_TX] = NULL;
+
+// Create the VirtQueues: Transmit and Receive
+int ret = virtio_create_virtqueues(
+  vdev, 0, VIRTIO_SERIAL_NUM, vqnames, callbacks
+);
+
+// VirtIO Driver is finally OK!
+virtio_set_status(vdev, VIRTIO_CONFIG_STATUS_DRIVER_OK);
+```
+
+Now we have 2 VirtIO Queues: __Transmit and Receive__! Let's message them...
+
+[(__virtio_set_status__ comes from OpenAMP)](https://github.com/OpenAMP/open-amp/blob/main/lib/include/openamp/virtio.h#L346-L366)
+
+[(__virtio_create_virtqueues__ too)](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142)
 
 ## Send the VirtIO Message
 
-TODO
-
-# TODO
-
-But let's create a simple VirtIO Console Driver for NuttX with OpenAMP...
-
-- Create Queue: Call OpenAMP [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49)
-
-  (See [virtio_mmio_create_virtqueue](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L349-L414) or [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142))
-
-- Send Data: Call OpenAMP [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138)
-
-  (See [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345))
-
-- Start Processing: Call OpenAMP [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336)
-
-  (See [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345))
-
-# Enable VirtIO and OpenAMP in NuttX
-
-TODO
-
-_How do we call VirtIO and OpenAMP?_
-
-To enable VirtIO and OpenAMP in NuttX:
-
-```text
-make menuconfig
-## Device Drivers
-##   Enable "Simple AddrEnv"
-##   Enable "Virtio Device Support"
-
-## Device Drivers > Virtio Device Support
-##   Enable "Virtio MMIO Device Support"
-
-## Build Setup > Debug Options >
-##   Enable "Virtio Debug Features > Error, Warnings, Info"
-```
-
-_Why "Simple AddrEnv"?_
-
-`up_addrenv_va_to_pa` is defined in [drivers/misc/addrenv.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/misc/addrenv.c#L89-L112). So we need `CONFIG_DEV_SIMPLE_ADDRENV` (Simple AddrEnv)
-
-Otherwise we see this...
-
-```text
-riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_phys_to_offset_':
-nuttx/openamp/libmetal/lib/system/nuttx/io.c:105: undefined reference to `up_addrenv_pa_to_va'
-riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_offset_to_phys_':
-nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addrenv_va_to_pa'
-```
-
-Now we configure NuttX VirtIO...
-
-# Configure NuttX VirtIO for TinyEMU
-
-TODO
-
-
-![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
-
-# Test TinyEMU VirtIO Console with NuttX
-
-TODO
-
-_NuttX has started VirtIO and OpenAMP and they talk nicely to TinyEMU. What next?_
-
-We dig around NuttX and we see NuttX creating a VirtIO Queue for VirtIO Console: [virtio_serial_init](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511) calls...
-
-- OpenAMP [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142) (create data queues, explained below)
-
-Also we see NuttX sending data to VirtIO Console: [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345) calls...
-
-- OpenAMP [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) (send data to queue) and...
-
-  OpenAMP [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336) (start queue processing, explained below)
-
-Let's do all these in our NuttX Test Code: [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925)
+Finally to print something, we write to the __Transmit Queue__: [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925)
 
 ```c
-  // Testing: Init VirtIO Device
-  // Based on virtio_serial_init
-  // https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511
+// Send data to VirtIO Device
+// Based on virtio_serial_dmasend
+// https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345
 
-  struct virtio_device *vdev = &vmdev->vdev;
-  DEBUGASSERT(vdev != NULL);
+// Get the Transmit VirtQueue
+struct virtqueue *vq = vdev->vrings_info[VIRTIO_SERIAL_TX].vq;
 
-  virtio_set_status(vdev, VIRTIO_CONFIG_STATUS_DRIVER);
-  virtio_set_features(vdev, 0);
-  virtio_set_status(vdev, VIRTIO_CONFIG_FEATURES_OK);
+// Set the VirtQueue Buffer
+static char *HELLO_MSG = "Hello VirtIO from NuttX!\r\n";
+struct virtqueue_buf vb[2];
+vb[0].buf = HELLO_MSG;
+vb[0].len = strlen(HELLO_MSG);
+uintptr_t len = strlen(HELLO_MSG);
 
-  #define VIRTIO_SERIAL_RX           0
-  #define VIRTIO_SERIAL_TX           1
-  #define VIRTIO_SERIAL_NUM          2
-  const char *vqnames[VIRTIO_SERIAL_NUM];
-  vqnames[VIRTIO_SERIAL_RX]   = "virtio_serial_rx";
-  vqnames[VIRTIO_SERIAL_TX]   = "virtio_serial_tx";
+// Add the Buffer to the Transmit VirtQueue:
+// 1 Readable Buffer, 0 Writeable Buffers
+virtqueue_add_buffer(
+  vq, vb, 1, 0, (void *)len
+);
 
-  vq_callback callbacks[VIRTIO_SERIAL_NUM];
-  callbacks[VIRTIO_SERIAL_RX] = NULL; // TODO: virtio_serial_rxready;
-  callbacks[VIRTIO_SERIAL_TX] = NULL; // TODO: virtio_serial_txdone;
-  ret = virtio_create_virtqueues(vdev, 0, VIRTIO_SERIAL_NUM, vqnames,
-                                 callbacks);
-  DEBUGASSERT(ret >= 0);
-  virtio_set_status(vdev, VIRTIO_CONFIG_STATUS_DRIVER_OK);
-
-  // Testing: Send data to VirtIO Device
-  // Based on virtio_serial_dmasend
-  // https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345
-
-  DEBUGASSERT(vdev->vrings_info != NULL);
-  struct virtqueue *vq = vdev->vrings_info[VIRTIO_SERIAL_TX].vq;
-  DEBUGASSERT(vq != NULL);
-
-  /* Set the virtqueue buffer */
-  static char *HELLO_MSG = "Hello VirtIO from NuttX!\r\n";
-  struct virtqueue_buf vb[2];
-  vb[0].buf = HELLO_MSG;
-  vb[0].len = strlen(HELLO_MSG);
-  int num = 1;
-
-  /* Get the total send length */
-  uintptr_t len = strlen(HELLO_MSG);
-
-  // TODO: What's this?
-  // if (xfer->nlength != 0)
-  //   {
-  //     vb[1].buf = xfer->nbuffer;
-  //     vb[1].len = xfer->nlength;
-  //     num = 2;
-  //   }
-
-  /* Add buffer to TX virtiqueue and notify the VirtIO Host */
-  virtqueue_add_buffer(vq, vb, num, 0, (FAR void *)len);
-  virtqueue_kick(vq);  
-  // End of Testing
+// Notify the VirtIO Host (TinyEMU)
+virtqueue_kick(vq);  
 ```
 
-_Does it work?_
+[(__virtqueue_add_buffer__ comes from OpenAMP)](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) 
 
-Yep NuttX prints correctly to TinyEMU's VirtIO Console yay!
+[(__virtqueue_kick__ too)](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336)
 
-[__Demo of NuttX on TinyEMU: lupyuen.github.io/nuttx-tinyemu__](https://lupyuen.github.io/nuttx-tinyemu/)
+_What happens when we run this?_
 
-```text
+Yep NuttX prints correctly to TinyEMU's VirtIO Console yay! (Pic below)
+
+```bash
 $ temu nuttx.cfg
 123ABC
 nx_start: Entry
 builtin_initialize: Registering Builtin Loader
 elf_initialize: Registering ELF
+
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 nx_start_application: Starting init thread
 task_spawn: name=nsh_main entry=0x8000756e file_actions=0 attr=0x80043e80 argv=0x80043e78
+
 virtio_mmio_init_device: VIRTIO version: 2 device: 3 vendor: ffff
 Hello VirtIO from NuttX!
 nx_start: CPU0: Beginning Idle Loop
@@ -661,191 +597,13 @@ nx_start: CPU0: Beginning Idle Loop
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b)
 
-Up Next: Implement Console Input / Output with the NuttX Serial Driver for VirtIO
+_But still no NuttX Shell?_
 
-But for now: Let's look inside our VirtIO Guest (NuttX) and VirtIO Host (TinyEMU)...
+Yeah we need to configure NuttX to use the [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c). Then NuttX Shell will appear and we can enter NuttX Commands!
 
-![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
+And we've proven that NuttX VirtIO + OpenAMP will talk OK to [__TinyEMU's VirtIO Console__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-host-for-tinyemu)!
 
-# Inside the VirtIO Driver for NuttX
-
-TODO
-
-_How does VirtIO Guest work in NuttX?_
-
-NuttX VirtIO Driver is based on OpenAMP with MMIO...
-
-- [Running NuttX with VirtIO on QEMU](https://www.youtube.com/watch?v=_8CpLNEWxfo)
-
-- [NuttX VirtIO Framework and Future Works](https://www.youtube.com/watch?v=CYMkAv-WjQg)
-
-At NuttX Startup: [board_app_initialize](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L77-L123) calls...
-
-- [qemu_virtio_register_mmio_devices](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L54-L73) (to register all VirtIO MMIO Devices) which calls...
-
-- [virtio_register_mmio_device](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L809-L932) 
-(to register a VirtIO MMIO Device) which calls...
-
-- [virtio_mmio_init_device](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L740-L805) which passes...
-
-- [g_virtio_mmio_dispatch](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L234-L254) which contains...
-
-- [virtio_mmio_create_virtqueues](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L419) which calls...
-
-- [virtio_mmio_create_virtqueue](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-mmio.c#L349-L414) which calls...
-
-- [virtqueue_create](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L49) (OpenAMP)
-
-To create a VirtIO Queue for VirtIO Console: [virtio_serial_probe](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L530) calls...
-
-- [virtio_serial_init](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511) which calls...
-
-- [virtio_create_virtqueues](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142) (OpenAMP)
-
-To send data to VirtIO Console: [virtio_serial_send](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L245) calls...
-
-- [virtio_serial_dmatxavail](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L345-L357) which calls...
-
-- [uart_xmitchars_dma](https://github.com/apache/nuttx/blob/master/drivers/serial/serial_dma.c#L86-L125) which calls...
-
-- [virtio_serial_dmasend](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345) which calls...
-
-- [virtqueue_add_buffer](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) (OpenAMP) and...
-
-  [virtqueue_kick](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336) (OpenAMP)
-
-# Inside the VirtIO Host for TinyEMU
-
-TODO
-
-_How does VirtIO Host work in TinyEMU?_
-
-Let's look inside the implementation of VirtIO in TinyEMU...
-
-## TinyEMU VirtIO
-
-TODO
-
-TinyEMU supports these VirtIO Devices:
-
-- Console Device
-
-- [Block Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L979-L1133)
-
-- [Network Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1133-L1259)
-
-- [Input Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1361-L1645)
-
-- [9P Filesystem Device](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1645-L2649)
-
-The Device IDs are: [virtio_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L219-L297)
-
-```c
-switch(device_id) {
-case 1: /* net */ ...
-case 2: /* block */ ...
-case 3: /* console */ ...
-case 9: /* Network Device */ ...
-case 18: /* Input Device */ ...
-```
-
-TinyEMU supports VirtIO over MMIO and PCI:
-
-- [MMIO addresses](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L37)
-
-- [PCI registers](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L66)
-
-TinyEMU Guests (like NuttX) are required to check the [VIRTIO_MMIO_MAGIC_VALUE](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L617) that's returned by the TinyEMU Host.
-
-## TinyEMU VirtIO Console
-
-TODO
-
-From above: VirtIO Console is Device ID 3. Here's how it works...
-
-At TinyEMU Startup: [riscv_machine_init](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L952) calls...
-
-- [virtio_console_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1347-L1361) which calls...
-
-- [virtio_init](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L219-L297) with Device ID 3
-
-To print to VirtIO Console: [virt_machine_run (js)](https://github.com/fernandotcl/TinyEMU/blob/master/jsemu.c#L304-L348) and [virt_machine_run (temu)](https://github.com/fernandotcl/TinyEMU/blob/master/temu.c#L545-L610) call...
-
-- [virtio_console_write_data](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1317-L1337) which calls...
-
-- [memcpy_to_queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L451-L459) which calls...
-
-- [memcpy_to_from_queue](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L380)
-
-Which will access...
-
-- [QueueState](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L97-L107): For desc_addr, avail_addr, used_addr
-
-- [VIRTIODesc](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L111-L118): For [VirtualQueue::Buffers[QueueSize]](https://wiki.osdev.org/Virtio#Virtual_Queue_Descriptor)
-
-TinyEMU Console Device:
-
-- [console device decl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.h#L108)
-
-- [console device impl](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L1261)
-
-## TinyEMU VirtIO MMIO Queue
-
-TODO
-
-TinyEMU Guest (like NuttX) is required to set the VirtIO Queue Desc / Avail / Used.
-
-This is how TinyEMU accesses the VirtIO MMIO Queue: [virtio.c](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L645)
-
-```c
-case VIRTIO_MMIO_QUEUE_SEL:
-    val = s->queue_sel;
-    break;
-case VIRTIO_MMIO_QUEUE_NUM_MAX:
-    val = MAX_QUEUE_NUM;
-    break;
-case VIRTIO_MMIO_QUEUE_NUM:
-    val = s->queue[s->queue_sel].num;
-    break;
-case VIRTIO_MMIO_QUEUE_DESC_LOW:
-    val = s->queue[s->queue_sel].desc_addr;
-    break;
-case VIRTIO_MMIO_QUEUE_AVAIL_LOW:
-    val = s->queue[s->queue_sel].avail_addr;
-    break;
-case VIRTIO_MMIO_QUEUE_USED_LOW:
-    val = s->queue[s->queue_sel].used_addr;
-    break;
-#if VIRTIO_ADDR_BITS == 64
-case VIRTIO_MMIO_QUEUE_DESC_HIGH:
-    val = s->queue[s->queue_sel].desc_addr >> 32;
-    break;
-case VIRTIO_MMIO_QUEUE_AVAIL_HIGH:
-    val = s->queue[s->queue_sel].avail_addr >> 32;
-    break;
-case VIRTIO_MMIO_QUEUE_USED_HIGH:
-    val = s->queue[s->queue_sel].used_addr >> 32;
-    break;
-#endif
-```
-
-To Select and Notify the Queue:
-
-- [VIRTIO_MMIO_QUEUE_SEL](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L741)
-
-- [VIRTIO_MMIO_QUEUE_NOTIFY](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L781)
-
-# NuttX in Kernel Mode
-
-TODO
-
-_Right now we're running NuttX in Flat Mode..._
-
-_Can NuttX run in Kernel Mode on TinyEMU?_
-
-NuttX Kernel Mode requires [RISC-V Semihosting](https://lupyuen.github.io/articles/semihost#semihosting-on-nuttx-qemu) to access the NuttX Apps Filesystem. Which is supported by QEMU but not TinyEMU.
-
-But we can [Append the Initial RAM Disk](https://lupyuen.github.io/articles/app#initial-ram-disk) to the NuttX Kernel. So yes it's possible to run NuttX in Kernel Mode with TinyEMU, with some additional [Mounting Code](https://lupyuen.github.io/articles/app#mount-the-initial-ram-disk).
+![Apache NuttX RTOS in a Web Browser... With TinyEMU and VirtIO](https://lupyuen.github.io/images/tinyemu-title.png) 
 
 # What's Next
 
@@ -984,4 +742,38 @@ riscv64-unknown-elf-objdump \
   nuttx \
   >nuttx.S \
   2>&1
+```
+
+# Appendix: Enable VirtIO and OpenAMP in NuttX
+
+TODO
+
+_How do we call VirtIO and OpenAMP?_
+
+To enable VirtIO and OpenAMP in NuttX:
+
+```text
+make menuconfig
+## Device Drivers
+##   Enable "Simple AddrEnv"
+##   Enable "Virtio Device Support"
+
+## Device Drivers > Virtio Device Support
+##   Enable "Virtio MMIO Device Support"
+
+## Build Setup > Debug Options >
+##   Enable "Virtio Debug Features > Error, Warnings, Info"
+```
+
+_Why "Simple AddrEnv"?_
+
+`up_addrenv_va_to_pa` is defined in [drivers/misc/addrenv.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/misc/addrenv.c#L89-L112). So we need `CONFIG_DEV_SIMPLE_ADDRENV` (Simple AddrEnv)
+
+Otherwise we see this...
+
+```text
+riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_phys_to_offset_':
+nuttx/openamp/libmetal/lib/system/nuttx/io.c:105: undefined reference to `up_addrenv_pa_to_va'
+riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_offset_to_phys_':
+nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addrenv_va_to_pa'
 ```
