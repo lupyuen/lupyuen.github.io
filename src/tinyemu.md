@@ -335,11 +335,9 @@ nx_start: CPU0: Beginning Idle Loop
 
 Let's boot NuttX in the Web Browser...
 
-TODO: NuttX in Web Browser
+TODO: Pic of NuttX in Web Browser
 
 # Boot NuttX in the Web Browser
-
-TODO
 
 _Will NuttX boot in the Web Browser?_
 
@@ -351,9 +349,9 @@ We copied the TinyEMU Config and NuttX Kernel to the Web Server...
 
 ```bash
 ## Copy to Web Server: NuttX Config, Kernel, Disassembly (for troubleshooting)
-cp nuttx.cfg ../nuttx-tinyemu/docs/root-riscv64.cfg
-cp nuttx.bin ../nuttx-tinyemu/docs/
-cp nuttx.S ../nuttx-tinyemu/docs/
+cp nuttx.cfg $HOME/nuttx-tinyemu/docs/root-riscv64.cfg
+cp nuttx.bin $HOME/nuttx-tinyemu/docs/
+cp nuttx.S   $HOME/nuttx-tinyemu/docs/
 ```
 
 The other files were provided by [TinyEMU](https://bellard.org/tinyemu/)...
@@ -377,7 +375,7 @@ Then browse to...
 http://0.0.0.0:8000/index.html
 ```
 
-_But there's no Console Input?_
+_But something's missing: Console Input!_
 
 To do Console Input, we need to implement VirtIO Console in our NuttX UART Driver...
 
