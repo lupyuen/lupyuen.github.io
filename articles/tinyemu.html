@@ -322,9 +322,18 @@ nx_start: CPU0: Beginning Idle Loop
 <p>Let’s boot NuttX in the Web Browser…</p>
 <p>TODO: Pic of NuttX in Web Browser</p>
 <h1 id="boot-nuttx-in-the-web-browser"><a href="#boot-nuttx-in-the-web-browser">7 Boot NuttX in the Web Browser</a></h1>
+<p>TODO</p>
 <p><em>Will NuttX boot in the Web Browser?</em></p>
-<p>Yep! WebAssembly Demo is here: <a href="https://lupyuen.github.io/nuttx-tinyemu/">Demo of NuttX on TinyEMU</a></p>
-<p>WebAssembly Files are located here: <a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs">nuttx-tinyemu/docs</a></p>
+<p>Yep! (Pic above)</p>
+<ul>
+<li>
+<p>WebAssembly Demo: <a href="https://lupyuen.github.io/nuttx-tinyemu/"><strong>NuttX on TinyEMU</strong></a></p>
+</li>
+<li>
+<p>WebAssembly Files: <a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs"><strong>nuttx-tinyemu/docs</strong></a></p>
+</li>
+</ul>
+<p><em>How did we do it?</em></p>
 <p>We copied the TinyEMU Config and NuttX Kernel to the Web Server…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy to Web Server: NuttX Config, Kernel, Disassembly (for troubleshooting)
 cp nuttx.cfg $HOME/nuttx-tinyemu/docs/root-riscv64.cfg
