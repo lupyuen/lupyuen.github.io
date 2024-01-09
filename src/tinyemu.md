@@ -29,19 +29,19 @@ _How to run TinyEMU?_
 We begin by installing [__TinyEMU RISC-V Emulator__](https://github.com/fernandotcl/TinyEMU) at the Command Line...
 
 ```bash
-## Install TinyEMU on Ubuntu
-## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L6-L13
-sudo apt install libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev
-git clone https://github.com/fernandotcl/TinyEMU
-cd TinyEMU
-make
-
 ## Install TinyEMU on macOS
 ## https://github.com/fernandotcl/homebrew-fernandotcl
 ## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L20-L29
 brew tap fernandotcl/homebrew-fernandotcl
 brew install --HEAD fernandotcl/fernandotcl/tinyemu
 temu https://bellard.org/jslinux/buildroot-riscv64.cfg
+
+## Install TinyEMU on Ubuntu
+## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L6-L13
+sudo apt install libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev
+git clone https://github.com/fernandotcl/TinyEMU
+cd TinyEMU
+make
 
 ## Check TinyEMU. Should show...
 ## temu version 2019-02-10, Copyright (c) 2016-2018 Fabrice Bellard
@@ -84,12 +84,9 @@ Actually we don't! __NuttX for QEMU Emulator__ (64-bit RISC-V) is already config
 
 ```text
 /* NuttX boots at 0x80000000 */
-SECTIONS
-{
+SECTIONS {
   . = 0x80000000;
-  .text :
-    {
-      _stext = . ;
+  .text : { _stext = . ;
 ```
 
 So we're all ready to boot NuttX QEMU on TinyEMU!
@@ -132,6 +129,8 @@ _Huh? But we're booting NuttX QEMU on TinyEMU!_
 Exactly... __Nothing will appear__ in TinyEMU!
 
 First we need to understand the HTIF Console for TinyEMU...
+
+TODO: Pic of HTIF Console
 
 # Print to HTIF Console
 
@@ -198,6 +197,8 @@ Thus we __print to HTIF Console__ like this...
 
 Let's test this in our NuttX Boot Code...
 
+TODO: 123 Screenshot
+
 # Print in RISC-V Assembly
 
 _We're checking if NuttX is alive on TinyEMU..._
@@ -223,6 +224,7 @@ From the previous section, we print "__`123`__" to TinyEMU's HTIF Console like s
 We flip it (and reverse it) into __RISC-V Assembly__...
 
 ```text
+/* Print `123` to HTIF Console           */
 /* Load HTIF Base Address to Register t0 */
 li  t0, 0x40008000
 
@@ -258,6 +260,8 @@ $ temu nuttx.cfg
 ```
 
 To see more goodies, we fix the NuttX UART Driver...
+
+TODO: UART screenshot
 
 # Fix the NuttX UART Driver for TinyEMU
 
@@ -413,6 +417,8 @@ http://0.0.0.0:8000/index.html
 _But there's no Console Input?_
 
 To do Console Input, we need to implement VirtIO Console in our NuttX UART Driver...
+
+TODO: Pic of VirtIO Console, OpenAMP
 
 # VirtIO Console in TinyEMU
 
