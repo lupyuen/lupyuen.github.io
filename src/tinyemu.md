@@ -596,9 +596,15 @@ virtqueue_kick(vq);
 
 [(__virtqueue_kick__ too)](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336)
 
+![Apache NuttX RTOS in a Web Browser... With TinyEMU and VirtIO](https://lupyuen.github.io/images/tinyemu-title.png) 
+
+## NuttX with VirtIO and OpenAMP
+
+_NuttX now talks to TinyEMU over VirtIO and OpenAMP..._
+
 _What happens when we run this?_
 
-Yep NuttX prints correctly to TinyEMU's VirtIO Console yay! (Pic below)
+Yep NuttX prints correctly to TinyEMU's VirtIO Console yay! (Pic above)
 
 ```bash
 $ temu nuttx.cfg
@@ -619,7 +625,9 @@ Very soon we shall configure NuttX to use the [__VirtIO Serial Driver__](https:/
 
 - [__Upcoming Source Files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
-![Apache NuttX RTOS in a Web Browser... With TinyEMU and VirtIO](https://lupyuen.github.io/images/tinyemu-title.png) 
+Here's a sneak peek (PLIC Interrupts need fixing)...
+
+TODO: Pic of upcoming demo
 
 # What's Next
 
