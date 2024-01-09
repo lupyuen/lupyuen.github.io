@@ -429,6 +429,18 @@ We have all the layers, let's assemble our cake in 3 steps...
 
 1.  Send the __VirtIO Message__
 
+# Initialise the VirtIO Console
+
+TODO
+
+# Create the VirtIO Queue
+
+TODO
+
+# Send the VirtIO Message
+
+TODO
+
 # TODO
 
 But let's create a simple VirtIO Console Driver for NuttX with OpenAMP...
