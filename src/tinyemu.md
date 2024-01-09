@@ -421,7 +421,13 @@ _And OpenAMP is?_
 
 - [__"Introduction to OpenAMP"__](https://www.openampproject.org/docs/whitepapers/Introduction_to_OpenAMPlib_v1.1a.pdf) (Page 4)
 
-We have all the layers, let's assemble our cake!
+We have all the layers, let's assemble our cake in 3 steps...
+
+1.  Initialise the __VirtIO Console__
+
+1.  Create the __VirtIO Queue__
+
+1.  Send the __VirtIO Message__
 
 # TODO
 
