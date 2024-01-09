@@ -26,7 +26,7 @@ Also Imagine: A __NuttX Dashboard__ that lights up in __Real-Time__, as the vari
 
 ![TinyEMU does Doom in a Web Browser](https://lupyuen.github.io/images/tinyemu-doom.png) 
 
-> [_TinyEMU does Doom in a Web Browser_](https://www.barebox.org/jsbarebox/?graphic=1)
+> [_TinyEMU does Doom in Web Browser_](https://www.barebox.org/jsbarebox/?graphic=1)
 
 # Install TinyEMU Emulator
 
