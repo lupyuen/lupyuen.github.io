@@ -12,6 +12,10 @@
 
 Can we boot __NuttX in a Web Browser__, with a little help from TinyEMU? Let's find out!
 
+In this article we...
+
+TODO
+
 _Why are we doing this?_
 
 We might run NuttX in a Web Browser and emulate the [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC. Which is great for testing NuttX Apps like [__Nim Blinky LED__](https://lupyuen.github.io/articles/nim)! (LVGL Graphical Apps too)
