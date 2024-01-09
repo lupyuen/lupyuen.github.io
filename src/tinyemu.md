@@ -10,7 +10,7 @@ TODO
 
 [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (Real-Time Operating System) is a tiny operating system for 64-bit RISC-V Machines and many other platforms. (Arm, x64, ESP32, ...)
 
-[__TinyEMU__](https://github.com/fernandotcl/TinyEMU) is a barebones RISC-V Emulator that runs in a [Web Browser](https://www.barebox.org/jsbarebox/?graphic=1). (Thanks to WebAssembly)
+[__TinyEMU__](https://github.com/fernandotcl/TinyEMU) is a barebones RISC-V Emulator that runs in a [__Web Browser__](https://www.barebox.org/jsbarebox/?graphic=1). (Thanks to WebAssembly)
 
 Can we boot NuttX in a Web Browser, with a little help from TinyEMU? Let's find out!
 
@@ -77,6 +77,8 @@ TinyEMU is hardcoded to run at these __RISC-V Addresses__: [riscv_machine.c](htt
 ```
 
 Thus TinyEMU shall boot our NuttX Kernel at __RAM_BASE_ADDR: `0x8000_0000`__.
+
+[(Yep TinyEMU has a __Graphics Framebuffer__)](https://www.barebox.org/jsbarebox/?graphic=1)
 
 _How to set this Boot Address in NuttX?_
 
@@ -333,6 +335,8 @@ nx_start: CPU0: Beginning Idle Loop
 
 Let's boot NuttX in the Web Browser...
 
+TODO: NuttX in Web Browser
+
 # Boot NuttX in the Web Browser
 
 TODO
@@ -342,8 +346,6 @@ _Will NuttX boot in the Web Browser?_
 Yep! WebAssembly Demo is here: [Demo of NuttX on TinyEMU](https://lupyuen.github.io/nuttx-tinyemu/)
 
 WebAssembly Files are located here: [nuttx-tinyemu/docs](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs)
-
-![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
 
 We copied the TinyEMU Config and NuttX Kernel to the Web Server...
 
@@ -508,6 +510,8 @@ At NuttX Startup: [board_app_initialize](https://github.com/lupyuen2/wip-pinepho
 (to register a VirtIO MMIO Device, explained below)
 
 Let's create a VirtIO Queue for the VirtIO Console and send some data...
+
+![Apache NuttX RTOS in the Web Browser: TinyEMU with VirtIO](https://lupyuen.github.io/images/tinyemu-title.png)
 
 # Test TinyEMU VirtIO Console with NuttX
 
