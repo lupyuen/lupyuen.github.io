@@ -624,7 +624,7 @@ Very soon we shall configure NuttX to use the [__VirtIO Serial Driver__](https:/
 
 - [__Upcoming Source Files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
-  [(TinyEMU can't enable __Machine-Mode External Interrupts__?)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L204-L222)
+  [(TinyEMU can't enable __Machine-Mode External Interrupts__?)](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-cant-enable-machine-mode-software-interrupts)
 
 Here's a sneak peek...
 
