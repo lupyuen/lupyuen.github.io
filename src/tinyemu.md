@@ -374,10 +374,13 @@ _So Cool! How did we make this?_
 We copied the __TinyEMU Config__ and __NuttX Kernel__ to the Web Server...
 
 ```bash
-## Copy to Web Server: NuttX Config, Kernel, Disassembly (for troubleshooting)
+## Copy to Web Server: NuttX Config and Kernel
 cp nuttx.cfg $HOME/nuttx-tinyemu/docs/root-riscv64.cfg
 cp nuttx.bin $HOME/nuttx-tinyemu/docs/
-cp nuttx.S   $HOME/nuttx-tinyemu/docs/
+
+## For Troubleshooting: Copy the RISC-V Disassembly, Build Config, Git Hash
+cp nuttx.S nuttx.config nuttx.hash  \
+  $HOME/nuttx-tinyemu/docs/
 ```
 
 The other [__WebAssembly Files__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs) were provided by [__TinyEMU__](https://bellard.org/tinyemu/)...
@@ -475,16 +478,10 @@ We copy these VirtIO Settings to __NuttX QEMU__: [qemu_rv_appinit.c](https://git
 #define QEMU_VIRTIO_MMIO_NUM     1  // Number of VirtIO Devices
 #define QEMU_VIRTIO_MMIO_BASE    0x40010000
 #define QEMU_VIRTIO_MMIO_REGSIZE 0x1000
-
-// TODO: Should VirtIO IRQ be 1? (VIRTIO_IRQ)
-#ifdef CONFIG_ARCH_USE_S_MODE  // NuttX Kernel Mode
-#  define QEMU_VIRTIO_MMIO_IRQ   26 
-#else  // NuttX Flat Mode
-#  define QEMU_VIRTIO_MMIO_IRQ   28
-#endif
+#define QEMU_VIRTIO_MMIO_IRQ     (RISCV_IRQ_EXT + 1)
 ```
 
-__MMIO__ says that NuttX will access VirtIO over __Memory-Mapped I/O__. (Instead of PCI)
+__MMIO__ means that NuttX will access VirtIO over __Memory-Mapped I/O__. (Instead of PCI)
 
 With these settings, VirtIO and OpenAMP will start OK on NuttX yay!
 
@@ -627,7 +624,9 @@ Very soon we shall configure NuttX to use the [__VirtIO Serial Driver__](https:/
 
 - [__Upcoming Source Files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
-Here's a sneak peek (PLIC Interrupts need fixing)...
+  [(TinyEMU can't enable __Machine-Mode External Interrupts__?)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L204-L222)
+
+Here's a sneak peek...
 
 ![Live Demo of Upcoming NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
 
