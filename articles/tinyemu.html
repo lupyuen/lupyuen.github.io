@@ -350,10 +350,13 @@ nx_start: CPU0: Beginning Idle Loop
 </ul>
 <p><em>So Cool! How did we make this?</em></p>
 <p>We copied the <strong>TinyEMU Config</strong> and <strong>NuttX Kernel</strong> to the Web Server…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Copy to Web Server: NuttX Config, Kernel, Disassembly (for troubleshooting)
+<div class="example-wrap"><pre class="language-bash"><code>## Copy to Web Server: NuttX Config and Kernel
 cp nuttx.cfg $HOME/nuttx-tinyemu/docs/root-riscv64.cfg
 cp nuttx.bin $HOME/nuttx-tinyemu/docs/
-cp nuttx.S   $HOME/nuttx-tinyemu/docs/
+
+## For Troubleshooting: Copy the RISC-V Disassembly, Build Config, Git Hash
+cp nuttx.S nuttx.config nuttx.hash  \
+  $HOME/nuttx-tinyemu/docs/
 </code></pre></div>
 <p>The other <a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs"><strong>WebAssembly Files</strong></a> were provided by <a href="https://bellard.org/tinyemu/"><strong>TinyEMU</strong></a>…</p>
 <ul>
@@ -431,15 +434,9 @@ $ simple-http-server nuttx-tinyemu/docs
 #define QEMU_VIRTIO_MMIO_NUM     1  // Number of VirtIO Devices
 #define QEMU_VIRTIO_MMIO_BASE    0x40010000
 #define QEMU_VIRTIO_MMIO_REGSIZE 0x1000
-
-// TODO: Should VirtIO IRQ be 1? (VIRTIO_IRQ)
-#ifdef CONFIG_ARCH_USE_S_MODE  // NuttX Kernel Mode
-#  define QEMU_VIRTIO_MMIO_IRQ   26 
-#else  // NuttX Flat Mode
-#  define QEMU_VIRTIO_MMIO_IRQ   28
-#endif
+#define QEMU_VIRTIO_MMIO_IRQ     (RISCV_IRQ_EXT + 1)
 </code></pre></div>
-<p><strong>MMIO</strong> says that NuttX will access VirtIO over <strong>Memory-Mapped I/O</strong>. (Instead of PCI)</p>
+<p><strong>MMIO</strong> means that NuttX will access VirtIO over <strong>Memory-Mapped I/O</strong>. (Instead of PCI)</p>
 <p>With these settings, VirtIO and OpenAMP will start OK on NuttX yay!</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ temu nuttx.cfg
 virtio_mmio_init_device:
@@ -555,9 +552,10 @@ nx_start: CPU0: Beginning Idle Loop
 </li>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files"><strong>Upcoming Source Files</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu2/arch/risc-v/src/qemu-rv/qemu_rv_irq.c#L204-L222">(TinyEMU can’t enable <strong>Machine-Mode External Interrupts</strong>?)</a></p>
 </li>
 </ul>
-<p>Here’s a sneak peek (PLIC Interrupts need fixing)…</p>
+<p>Here’s a sneak peek…</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu-nsh.png" alt="Live Demo of Upcoming NuttX on TinyEMU" /> </p>
 <blockquote>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/tinyemu2"><em>Live Demo of Upcoming NuttX on TinyEMU</em></a></p>
