@@ -252,7 +252,7 @@ static void htif_handle_cmd(RISCVMachine *s) {
 *(volatile uint64_t *) 0x40008000 = 0x0101000000000033ul;
 </code></pre></div>
 <p>We flip it (and reverse it) into <strong>RISC-V Assembly</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>/* Print `123` to HTIF Console           */
+<div class="example-wrap"><pre class="language-c"><code>/* Print `123` to HTIF Console           */
 /* Load HTIF Base Address to Register t0 */
 li  t0, 0x40008000
 
