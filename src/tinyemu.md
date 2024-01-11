@@ -63,7 +63,7 @@ _What about TinyEMU for the Web Browser?_
 
 No Worries! Everything that runs in __Command Line__ TinyEMU... Will also run in __Web Browser__ TinyEMU!
 
-TODO: TinyEMU Linux
+TODO: Pic of TinyEMU Linux
 
 # RISC-V Addresses for TinyEMU
 
@@ -218,7 +218,7 @@ Thus we __print to HTIF Console__ like this...
 
 Let's test this in our NuttX Boot Code...
 
-TODO: 123 Screenshot
+TODO: Pic of 123
 
 # Print in RISC-V Assembly
 
@@ -284,7 +284,7 @@ $ temu nuttx.cfg
 
 To see more goodies, we fix the NuttX UART Driver...
 
-TODO: UART screenshot
+TODO: Pic of UART Driver
 
 # UART Driver for TinyEMU
 
