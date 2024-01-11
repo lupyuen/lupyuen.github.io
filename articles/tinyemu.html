@@ -82,7 +82,7 @@
 <li><a href="#appendix-build-nuttx-for-tinyemu">11 Appendix: Build NuttX for TinyEMU</a><ul></ul></li>
 <li><a href="#appendix-enable-virtio-and-openamp-in-nuttx">12 Appendix: Enable VirtIO and OpenAMP in NuttX</a><ul></ul></li></ul></nav><p>📝 <em>15 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu-title.png" alt="Apache NuttX RTOS in a Web Browser… With TinyEMU and VirtIO" /> </p>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/"><em>(Live Demo of NuttX on TinyEMU)</em></a></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu"><em>(Live Demo of NuttX on TinyEMU)</em></a></p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> is a tiny operating system for <a href="https://lupyuen.github.io/articles/riscv"><strong>64-bit RISC-V Machines</strong></a> and many other platforms. (Arm, x64, ESP32, …)</p>
 <p><a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU</strong></a> is a barebones RISC-V Emulator that runs in a <a href="https://www.barebox.org/jsbarebox/?graphic=1"><strong>Web Browser</strong></a>. (Thanks to WebAssembly)</p>
 <p>Can we boot <strong>NuttX inside a Web Browser</strong>, with a little help from TinyEMU? Let’s find out!</p>
@@ -336,14 +336,14 @@ nx_start: CPU0: Beginning Idle Loop
 <p>Let’s boot NuttX in the Web Browser…</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu-wasm.png" alt="NuttX booting in a Web Browser" /> </p>
 <blockquote>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/"><em>NuttX booting in a Web Browser</em></a></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu"><em>NuttX booting in a Web Browser</em></a></p>
 </blockquote>
 <h1 id="boot-nuttx-in-web-browser"><a href="#boot-nuttx-in-web-browser">7 Boot NuttX in Web Browser</a></h1>
 <p><em>Will NuttX boot in the Web Browser?</em></p>
 <p>Yep! (Pic above)</p>
 <ul>
 <li>
-<p>WebAssembly Demo: <a href="https://lupyuen.github.io/nuttx-tinyemu/"><strong>NuttX on TinyEMU</strong></a></p>
+<p>WebAssembly Demo: <a href="https://lupyuen.github.io/nuttx-tinyemu"><strong>NuttX on TinyEMU</strong></a></p>
 </li>
 <li>
 <p>WebAssembly Files: <a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs"><strong>nuttx-tinyemu/docs</strong></a></p>
@@ -534,7 +534,7 @@ virtqueue_kick(vq);
 <p><a href="https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138">(<strong>virtqueue_add_buffer</strong> comes from OpenAMP)</a> </p>
 <p><a href="https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336">(<strong>virtqueue_kick</strong> too)</a></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu-title.png" alt="Apache NuttX RTOS in a Web Browser… With TinyEMU and VirtIO" /> </p>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/"><em>Live Demo of NuttX on TinyEMU</em></a></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu"><em>Live Demo of NuttX on TinyEMU</em></a></p>
 <h1 id="nuttx-with-virtio-and-openamp"><a href="#nuttx-with-virtio-and-openamp">9 NuttX with VirtIO and OpenAMP</a></h1>
 <p><em>NuttX now talks to TinyEMU over VirtIO and OpenAMP…</em></p>
 <p><em>What happens when we run this?</em></p>
@@ -550,17 +550,17 @@ nx_start: CPU0: Beginning Idle Loop
 <p>Very soon we shall configure NuttX to use the <a href="https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c"><strong>VirtIO Serial Driver</strong></a>. Then NuttX Shell will appear and we can enter NuttX Commands!</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/tinyemu2"><strong>Upcoming Demo</strong></a></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu"><strong>Full Demo</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files"><strong>Upcoming Source Files</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files"><strong>Modified Source Files</strong></a></p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu#tinyemu-cant-enable-machine-mode-software-interrupts">(TinyEMU can’t enable <strong>Machine-Mode External Interrupts</strong>?)</a></p>
 </li>
 </ul>
 <p>Here’s a sneak peek…</p>
-<p><img src="https://lupyuen.github.io/images/tinyemu-nsh.png" alt="Live Demo of Upcoming NuttX on TinyEMU" /> </p>
+<p><img src="https://lupyuen.github.io/images/tinyemu-nsh.png" alt="Live Demo of NuttX on TinyEMU" /> </p>
 <blockquote>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/tinyemu2"><em>Live Demo of Upcoming NuttX on TinyEMU</em></a></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu"><em>Live Demo of NuttX on TinyEMU</em></a></p>
 </blockquote>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
