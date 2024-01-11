@@ -20,7 +20,7 @@ _Why are we doing this?_
 
 We might run NuttX in a Web Browser and emulate the [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC. Which is great for testing NuttX Apps like [__Nim Blinky LED__](https://lupyuen.github.io/articles/nim)! (LVGL Graphical Apps too)
 
-Also Imagine: A __NuttX Dashboard__ that lights up in __Real-Time__, as the various NuttX Drivers are activated... This is all possible when NuttX runs in a Web Browser!
+Also Imagine: A __NuttX Dashboard__ that lights up in __Real-Time__, as the various NuttX Drivers are activated... Impossible is Nothing when NuttX runs in a Web Browser!
 
 (Sorry QEMU Emulator is a bit too complex to customise)
 
