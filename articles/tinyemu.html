@@ -157,7 +157,8 @@ SECTIONS {
 <h1 id="boot-nuttx-in-tinyemu"><a href="#boot-nuttx-in-tinyemu">3 Boot NuttX in TinyEMU</a></h1>
 <p><em>How to start the TinyEMU Emulator?</em></p>
 <p>We create a TinyEMU <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/root-riscv64.cfg"><strong>Configuration File: <code>nuttx.cfg</code></strong></a></p>
-<div class="example-wrap"><pre class="language-json"><code>{
+<div class="example-wrap"><pre class="language-json"><code>/* VM configuration file */
+{
   version: 1,
   machine: &quot;riscv64&quot;,
   memory_size: 256,
@@ -177,10 +178,10 @@ SECTIONS {
 <p><em>Huh! We’re booting NuttX QEMU on TinyEMU?</em></p>
 <p>Exactly… <strong>Nothing will appear</strong> in TinyEMU!</p>
 <p>To watch NuttX run, we need HTIF Console…</p>
-<p>TODO: Pic of HTIF Console</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu-htif.jpg" alt="TinyEMU with HTIF Console" /> </p>
 <h1 id="print-to-htif-console"><a href="#print-to-htif-console">4 Print to HTIF Console</a></h1>
 <p><em>How do we print something to the TinyEMU Console?</em></p>
-<p>TinyEMU supports <a href="https://docs.cartesi.io/machine/target/architecture/#htif"><strong>Berkeley Host-Target Interface (HTIF)</strong></a> for Console Output.</p>
+<p>TinyEMU supports <a href="https://docs.cartesi.io/machine/target/architecture/#htif"><strong>Berkeley Host-Target Interface (HTIF)</strong></a> for Console Output. (Pic above)</p>
 <p>HTIF comes from the olden days of the <a href="https://github.com/riscv-software-src/riscv-isa-sim/issues/364#issuecomment-607657754"><strong>RISC-V Spike Emulator</strong></a>…</p>
 <blockquote>
 <p>“HTIF is a tether between a simulation host and target, not something that’s supposed to resemble a real hardware device”</p>
@@ -376,12 +377,12 @@ $ simple-http-server nuttx-tinyemu/docs
 <p>And NuttX appears in our Web Browser!</p>
 <p><em>But something’s missing: Where’s the Console Input?</em></p>
 <p>To do Console Input, NuttX needs to support VirtIO Console…</p>
-<p>TODO: Pic of VirtIO Console, OpenAMP</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu-virtio.jpg" alt="TinyEMU with VirtIO Console" /> </p>
 <h1 id="virtio-console"><a href="#virtio-console">8 VirtIO Console</a></h1>
 <p><em>We need Console Input for NuttX Shell…</em></p>
 <p><em>Can’t we do it with TinyEMU’s HTIF Console?</em></p>
 <p>HTIF Console supports Polling of Input and Output, <strong>but not Interrupts</strong>. (A bit like <a href="https://lupyuen.github.io/articles/sbi#opensbi-debug-console"><strong>OpenSBI Console</strong></a>)</p>
-<p>To do proper Console Input / Output with Interrupts, we need <strong>VirtIO Console</strong>.</p>
+<p>To do proper Console Input / Output with Interrupts, we need <strong>VirtIO Console</strong>. (Pic above)</p>
 <p><em>What’s VirtIO?</em></p>
 <p><a href="https://wiki.osdev.org/Virtio"><strong>Virtual I/O Device (VirtIO)</strong></a> is a Standardised Interface that allows Virtual Machines to access <strong>Consoles, Storage Devices and Network Adapters</strong>. And it works with TinyEMU!</p>
 <ul>
@@ -390,6 +391,7 @@ $ simple-http-server nuttx-tinyemu/docs
 </li>
 <li>
 <p><a href="https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html"><strong>Virtual I/O Device (VirtIO) Spec</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/semihost">(A bit like <strong>RISC-V Semihosting</strong>)</a></p>
 </li>
 </ul>
 <p><em>What about NuttX?</em></p>
