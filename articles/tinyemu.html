@@ -89,16 +89,19 @@
 <p>In this article we…</p>
 <ul>
 <li>
-<p>Boot NuttX in <strong>TinyEMU Emulator</strong></p>
+<p>Boot NuttX in <strong>TinyEMU RISC-V Emulator</strong></p>
 </li>
 <li>
 <p>Modify NuttX for the <strong>HTIF Console</strong></p>
+<p>(Berkeley Host-Target Interface)</p>
 </li>
 <li>
 <p>Explore <strong>VirtIO Console</strong> with <strong>OpenAMP Library</strong></p>
+<p>(Virtual I/O and Open Asymmetric Multi-Processing)</p>
 </li>
 <li>
-<p>Test Everything in our <strong>Web Browser</strong></p>
+<p>And do all this in our <strong>Web Browser</strong></p>
+<p>(With WebAssembly)</p>
 </li>
 </ul>
 <p><em>Why are we doing this?</em></p>
@@ -597,7 +600,7 @@ nx_start: CPU0: Beginning Idle Loop
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu"><strong>VirtIO Console Input in TinyEMU</strong></a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/tinyemu-nsh.png" alt="Live Demo of NuttX on TinyEMU" /> </p>
+<p><img src="https://lupyuen.github.io/images/tinyemu-nsh2.png" alt="Live Demo of NuttX on TinyEMU" /> </p>
 <blockquote>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu"><em>Live Demo of NuttX on TinyEMU</em></a></p>
 </blockquote>
@@ -627,8 +630,18 @@ nx_start: CPU0: Beginning Idle Loop
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tinyemu.md"><strong>lupyuen.github.io/src/tinyemu.md</strong></a></p>
 <h1 id="appendix-build-nuttx-for-tinyemu"><a href="#appendix-build-nuttx-for-tinyemu">11 Appendix: Build NuttX for TinyEMU</a></h1>
-<p>TODO: Test Version</p>
-<p>TODO: Full Version</p>
+<p>In this article we saw 2 versions of <strong>NuttX for TinyEMU</strong>…</p>
+<ul>
+<li>
+<p><strong>Test Version:</strong> Print to VirtIO Console and halt</p>
+<p><a href="TODO">(See the <strong>Modified Files</strong>)</a></p>
+</li>
+<li>
+<p><strong>Full Version:</strong> NuttX Shell with full VirtIO support</p>
+<p><a href="TODO">(See the <strong>Modified Files</strong>)</a></p>
+</li>
+</ul>
+<p>Here are the steps to build both versions of NuttX for TinyEMU…</p>
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.1">Release</a> / <a href="https://github.com/lupyuen/nuttx-tinyemu/releases/download/v0.0.1/nuttx.bin">nuttx.bin</a></p>
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit)</strong> that has Minor Fixes for TODO…</p>
 <p>TODO: Then we download and build NuttX for <strong>QEMU RISC-V (64-bit)</strong>…</p>
