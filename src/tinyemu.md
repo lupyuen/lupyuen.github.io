@@ -689,13 +689,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 In this article we saw 2 Work-In-Progress versions of __NuttX for TinyEMU__...
 
-- __Test Version:__ Print to VirtIO Console and halt
+- __Test Version:__ Print to [__VirtIO Console__](TODO) and halt
+
+  [(Run the __WebAssembly Demo__)](TODO)
 
   [(See the __Modified Files__)](TODO)
 
   [(See the __Build Outputs__)](TODO)
 
-- __Full Version:__ NuttX Shell with full VirtIO support
+- __Full Version:__ NuttX Shell with [__Full VirtIO__](TODO) support
+
+  [(Run the __WebAssembly Demo__)](TODO)
 
   [(See the __Modified Files__)](TODO)
 
@@ -779,7 +783,7 @@ To Exit TinyEMU: Press __`Ctrl-A`__ then __`x`__
 
 _How did we configure the NuttX Build? ("rv-virt:nsh64")_
 
-TODO
+We modified "__`rv-virt:nsh64`__" like this...
 
 ```bash
 ## Configure NuttX Build and save the Build Config
@@ -787,69 +791,45 @@ make menuconfig \
   && make savedefconfig \
   && grep -v CONFIG_HOST defconfig \
   >boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig
-
-## Device Drivers
-##   Enable "Simple AddrEnv"
-##   Enable "Virtio Device Support"
-
-## Device Drivers > Virtio Device Support
-##   Enable "Virtio MMIO Device Support"
-
-## Build Setup > Debug Options >
-##   Enable Debug Features
-##   Enable "Debug Assertions > Show Expression, Filename"
-##   Enable "Binary Loader Debug Features > Errors, Warnings, Info"
-##   Enable "File System Debug Features > Errors, Warnings, Info"
-##   Enable "C Library Debug Features > Errors, Warnings, Info"
-##   Enable "Memory Manager Debug Features > Errors, Warnings, Info"
-##   Enable "Scheduler Debug Features > Errors, Warnings, Info"
-##   Enable "Timer Debug Features > Errors, Warnings, Info"
-##   Enable "IPC Debug Features > Errors, Warnings, Info"
-##   Enable "Virtio Debug Features > Error, Warnings, Info"
-
-## Application Configuration > Testing >
-##   Enable "OS Test Example"
-
-## RTOS Features > Tasks and Scheduling >
-##   Set "Application Entry Point" to "ostest_main"
-##   Set "Application Entry Name" to "ostest_main"
-## Save and exit menuconfig
 ```
 
-_Right now we're running NuttX in Flat Mode..._
+Inside __menuconfig__, we selected...
 
-_Can NuttX run in Kernel Mode on TinyEMU?_
+- __Device Drivers__
+  - Enable "__Simple AddrEnv__"
+  - Enable "__Virtio Device Support__"
 
-NuttX Kernel Mode requires [__RISC-V Semihosting__](https://lupyuen.github.io/articles/semihost#semihosting-on-nuttx-qemu) to access the NuttX Apps Filesystem. Which is supported by QEMU but not TinyEMU.
+- __Device Drivers > Virtio Device Support__
+  - Enable "__Virtio MMIO Device Support__"
 
-But we can [__Append the Initial RAM Disk__](https://lupyuen.github.io/articles/app#initial-ram-disk) to the NuttX Kernel. So yes it's possible to run NuttX in Kernel Mode with TinyEMU, with some additional [__Mounting Code__](https://lupyuen.github.io/articles/app#mount-the-initial-ram-disk).
+- __Build Setup > Debug Options__
+  - Enable "__Debug Features__"
+  - Enable "__Debug Assertions > Show Expression, Filename__"
+  - Enable "__Binary Loader Debug Features > Errors, Warnings, Info__"
+  - Enable "__File System Debug Features > Errors, Warnings, Info__"
+  - Enable "__C Library Debug Features > Errors, Warnings, Info__"
+  - Enable "__Memory Manager Debug Features > Errors, Warnings, Info__"
+  - Enable "__Scheduler Debug Features > Errors, Warnings, Info__"
+  - Enable "__Timer Debug Features > Errors, Warnings, Info__"
+  - Enable "__IPC Debug Features > Errors, Warnings, Info__"
+  - Enable "__Virtio Debug Features > Error, Warnings, Info__"
 
-# Appendix: Enable VirtIO and OpenAMP in NuttX
+- __Application Configuration > Testing__
+  - Enable "OS Test Example"
 
-TODO
+For the __Full Version__, we added...
 
-_How do we call VirtIO and OpenAMP?_
+- __Device Drivers > Virtio Device Support__
+  - Enable "__Virtio Serial Support__"
 
-To enable VirtIO and OpenAMP in NuttX:
+- __Device Drivers > Serial Driver Support__
+  - Disable "__16550 UART Chip support__"
 
-```text
-make menuconfig
-## Device Drivers
-##   Enable "Simple AddrEnv"
-##   Enable "Virtio Device Support"
+Then Save and Exit __menuconfig__.
 
-## Device Drivers > Virtio Device Support
-##   Enable "Virtio MMIO Device Support"
+_Why enable "Simple AddrEnv"?_
 
-## Build Setup > Debug Options >
-##   Enable "Virtio Debug Features > Error, Warnings, Info"
-```
-
-_Why "Simple AddrEnv"?_
-
-`up_addrenv_va_to_pa` is defined in [drivers/misc/addrenv.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/misc/addrenv.c#L89-L112). So we need `CONFIG_DEV_SIMPLE_ADDRENV` (Simple AddrEnv)
-
-Otherwise we see this...
+We need to enable _CONFIG_DEV_SIMPLE_ADDRENV_ ("Simple AddrEnv"). Otherwise the NuttX Build fails...
 
 ```text
 riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_phys_to_offset_':
@@ -857,3 +837,11 @@ nuttx/openamp/libmetal/lib/system/nuttx/io.c:105: undefined reference to `up_add
 riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_offset_to_phys_':
 nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addrenv_va_to_pa'
 ```
+
+__up_addrenv_va_to_pa__ is defined in [drivers/misc/addrenv.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/misc/addrenv.c#L89-L112)
+
+_Right now we're running NuttX in Flat Mode. Can NuttX run in Kernel Mode on TinyEMU?_
+
+NuttX Kernel Mode requires [__RISC-V Semihosting__](https://lupyuen.github.io/articles/semihost#semihosting-on-nuttx-qemu) to access the NuttX Apps Filesystem. Which is supported by QEMU but not TinyEMU.
+
+But we can [__Append the Initial RAM Disk__](https://lupyuen.github.io/articles/app#initial-ram-disk) to the NuttX Kernel. So yes it's possible to run NuttX in Kernel Mode with TinyEMU, with some additional [__Mounting Code__](https://lupyuen.github.io/articles/app#mount-the-initial-ram-disk).
