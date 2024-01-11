@@ -243,7 +243,7 @@ From the previous section, we print "__`123`__" to TinyEMU's HTIF Console like s
 
 We flip it (and reverse it) into __RISC-V Assembly__...
 
-```text
+```c
 /* Print `123` to HTIF Console           */
 /* Load HTIF Base Address to Register t0 */
 li  t0, 0x40008000
