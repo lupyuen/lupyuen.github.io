@@ -630,37 +630,44 @@ nx_start: CPU0: Beginning Idle Loop
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tinyemu.md"><strong>lupyuen.github.io/src/tinyemu.md</strong></a></p>
 <h1 id="appendix-build-nuttx-for-tinyemu"><a href="#appendix-build-nuttx-for-tinyemu">11 Appendix: Build NuttX for TinyEMU</a></h1>
-<p>In this article we saw 2 versions of <strong>NuttX for TinyEMU</strong>…</p>
+<p>In this article we saw 2 Work-In-Progress versions of <strong>NuttX for TinyEMU</strong>…</p>
 <ul>
 <li>
 <p><strong>Test Version:</strong> Print to VirtIO Console and halt</p>
 <p><a href="TODO">(See the <strong>Modified Files</strong>)</a></p>
+<p><a href="TODO">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
 <li>
 <p><strong>Full Version:</strong> NuttX Shell with full VirtIO support</p>
 <p><a href="TODO">(See the <strong>Modified Files</strong>)</a></p>
+<p><a href="TODO">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
 </ul>
 <p>Here are the steps to build both versions of NuttX for TinyEMU…</p>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.1">Release</a> / <a href="https://github.com/lupyuen/nuttx-tinyemu/releases/download/v0.0.1/nuttx.bin">nuttx.bin</a></p>
-<p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit)</strong> that has Minor Fixes for TODO…</p>
-<p>TODO: Then we download and build NuttX for <strong>QEMU RISC-V (64-bit)</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
+<div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code:
+## Branch tinyemu: Test Version
+## Branch tinyemu2: Full Version
 git clone \
-  --branch nim \
+  --branch tinyemu2 \
   https://github.com/lupyuen2/wip-pinephone-nuttx \
   nuttx
 git clone \
-  --branch nim \
+  --branch tinyemu2 \
   https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
   apps
 
-## Configure NuttX for QEMU RISC-V (64-bit)
+## Configure NuttX for TinyEMU (borrowed from 64-bit QEMU Flat Mode)
 cd nuttx
 tools/configure.sh rv-virt:nsh64
 
 ## Build NuttX
 make
+
+## Export the Binary Image to nuttx.bin
+riscv64-unknown-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
 
 ## Dump the disassembly to nuttx.S
 riscv64-unknown-elf-objdump \
@@ -669,32 +676,47 @@ riscv64-unknown-elf-objdump \
   nuttx \
   &gt;nuttx.S \
   2&gt;&amp;1
+
+## Copy the config
+cp .config nuttx.config
+
+## Record the Git Hash
+hash1=`git rev-parse HEAD`
+pushd ../apps
+hash2=`git rev-parse HEAD`
+popd
+echo NuttX Source: https://github.com/apache/nuttx/tree/$hash1 &gt;nuttx.hash
+echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$hash2 &gt;&gt;nuttx.hash
+
+## Download the TinyEMU Config for NuttX
+wget --output-document=nuttx.cfg https://raw.githubusercontent.com/lupyuen/nuttx-tinyemu/main/docs/root-riscv64.cfg
+
+## Copy to Web Server
+cp nuttx.cfg $HOME/nuttx-tinyemu/docs/root-riscv64.cfg
+cp nuttx.bin $HOME/nuttx-tinyemu/docs/
+cp nuttx.S $HOME/nuttx-tinyemu/docs/
+cp nuttx.hash $HOME/nuttx-tinyemu/docs/
+cp nuttx.config $HOME/nuttx-tinyemu/docs/
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/qemu-1">(See the <strong>Build Script</strong>)</a></p>
-<p>TODO: <a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa">(See the <strong>Build Log</strong>)</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/qemu-1">(See the <strong>Build Outputs</strong>)</a></p>
-<p>TODO: This produces the NuttX ELF Image <strong><code>nuttx</code></strong> that we may boot on QEMU RISC-V Emulator…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Start the QEMU RISC-V Emulator (64-bit) with NuttX RTOS
-qemu-system-riscv64 \
-  -semihosting \
-  -M virt,aclint=on \
-  -cpu rv64 \
-  -smp 8 \
-  -bios none \
-  -kernel nuttx \
-  -nographic
-</code></pre></div>
-<p>TODO: To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
-<p>So we build NuttX for QEMU RISC-V (64-bit, Flat Mode)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download WIP NuttX
-git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx nuttx
-git clone --branch tinyemu https://github.com/lupyuen2/wip-pinephone-nuttx-apps apps
+<p><a href="TODO">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="TODO">(See the <strong>Build Log</strong>)</a></p>
+<p>This produces the NuttX Kernel <strong><code>nuttx.bin</code></strong> that we may boot on TinyEMU RISC-V Emulator…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the TinyEMU Config for NuttX
+wget --output-document=nuttx.cfg https://raw.githubusercontent.com/lupyuen/nuttx-tinyemu/main/docs/root-riscv64.cfg
 
-## Configure NuttX for QEMU RISC-V (64-bit, Flat Mode)
-cd nuttx
-tools/configure.sh rv-virt:nsh64
-make menuconfig
+## Start the TinyEMU RISC-V Emulator with NuttX RTOS
+temu nuttx.cfg
+</code></pre></div>
+<p>To Exit TinyEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
+<p><em>How did we configure the NuttX Build? (“rv-virt:nsh64”)</em></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Configure NuttX Build and save the Build Config
+make menuconfig \
+  &amp;&amp; make savedefconfig \
+  &amp;&amp; grep -v CONFIG_HOST defconfig \
+  &gt;boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig
+
 ## Device Drivers
 ##   Enable &quot;Simple AddrEnv&quot;
 ##   Enable &quot;Virtio Device Support&quot;
@@ -721,24 +743,12 @@ make menuconfig
 ##   Set &quot;Application Entry Point&quot; to &quot;ostest_main&quot;
 ##   Set &quot;Application Entry Name&quot; to &quot;ostest_main&quot;
 ## Save and exit menuconfig
-
-## Build NuttX
-make
-
-## Export the Binary Image to nuttx.bin
-riscv64-unknown-elf-objcopy \
-  -O binary \
-  nuttx \
-  nuttx.bin
-
-## Dump the disassembly to nuttx.S
-riscv64-unknown-elf-objdump \
-  --syms --source --reloc --demangle --line-numbers --wide \
-  --debugging \
-  nuttx \
-  &gt;nuttx.S \
-  2&gt;&amp;1
-</code></pre></div><h1 id="appendix-enable-virtio-and-openamp-in-nuttx"><a href="#appendix-enable-virtio-and-openamp-in-nuttx">12 Appendix: Enable VirtIO and OpenAMP in NuttX</a></h1>
+</code></pre></div>
+<p><em>Right now we’re running NuttX in Flat Mode…</em></p>
+<p><em>Can NuttX run in Kernel Mode on TinyEMU?</em></p>
+<p>NuttX Kernel Mode requires <a href="https://lupyuen.github.io/articles/semihost#semihosting-on-nuttx-qemu"><strong>RISC-V Semihosting</strong></a> to access the NuttX Apps Filesystem. Which is supported by QEMU but not TinyEMU.</p>
+<p>But we can <a href="https://lupyuen.github.io/articles/app#initial-ram-disk"><strong>Append the Initial RAM Disk</strong></a> to the NuttX Kernel. So yes it’s possible to run NuttX in Kernel Mode with TinyEMU, with some additional <a href="https://lupyuen.github.io/articles/app#mount-the-initial-ram-disk"><strong>Mounting Code</strong></a>.</p>
+<h1 id="appendix-enable-virtio-and-openamp-in-nuttx"><a href="#appendix-enable-virtio-and-openamp-in-nuttx">12 Appendix: Enable VirtIO and OpenAMP in NuttX</a></h1>
 <p>TODO</p>
 <p><em>How do we call VirtIO and OpenAMP?</em></p>
 <p>To enable VirtIO and OpenAMP in NuttX:</p>
@@ -761,11 +771,6 @@ nuttx/openamp/libmetal/lib/system/nuttx/io.c:105: undefined reference to `up_add
 riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_offset_to_phys_&#39;:
 nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addrenv_va_to_pa&#39;
 </code></pre></div>
-<p><em>Right now we’re running NuttX in Flat Mode…</em></p>
-<p><em>Can NuttX run in Kernel Mode on TinyEMU?</em></p>
-<p>NuttX Kernel Mode requires <a href="https://lupyuen.github.io/articles/semihost#semihosting-on-nuttx-qemu">RISC-V Semihosting</a> to access the NuttX Apps Filesystem. Which is supported by QEMU but not TinyEMU.</p>
-<p>But we can <a href="https://lupyuen.github.io/articles/app#initial-ram-disk">Append the Initial RAM Disk</a> to the NuttX Kernel. So yes it’s possible to run NuttX in Kernel Mode with TinyEMU, with some additional <a href="https://lupyuen.github.io/articles/app#mount-the-initial-ram-disk">Mounting Code</a>.</p>
-
     
 </body>
 </html>
