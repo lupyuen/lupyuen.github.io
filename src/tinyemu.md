@@ -114,6 +114,7 @@ _How to start the TinyEMU Emulator?_
 We create a TinyEMU [__Configuration File: `nuttx.cfg`__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/root-riscv64.cfg)
 
 ```json
+/* VM configuration file */
 {
   version: 1,
   machine: "riscv64",
@@ -148,13 +149,13 @@ Exactly... __Nothing will appear__ in TinyEMU!
 
 To watch NuttX run, we need HTIF Console...
 
-TODO: Pic of HTIF Console
+![TinyEMU with HTIF Console](https://lupyuen.github.io/images/tinyemu-htif.jpg) 
 
 # Print to HTIF Console
 
 _How do we print something to the TinyEMU Console?_
 
-TinyEMU supports [__Berkeley Host-Target Interface (HTIF)__](https://docs.cartesi.io/machine/target/architecture/#htif) for Console Output.
+TinyEMU supports [__Berkeley Host-Target Interface (HTIF)__](https://docs.cartesi.io/machine/target/architecture/#htif) for Console Output. (Pic above)
 
 HTIF comes from the olden days of the [__RISC-V Spike Emulator__](https://github.com/riscv-software-src/riscv-isa-sim/issues/364#issuecomment-607657754)...
 
@@ -412,7 +413,7 @@ _But something's missing: Where's the Console Input?_
 
 To do Console Input, NuttX needs to support VirtIO Console...
 
-TODO: Pic of VirtIO Console, OpenAMP
+![TinyEMU with VirtIO Console](https://lupyuen.github.io/images/tinyemu-virtio.jpg) 
 
 # VirtIO Console
 
@@ -422,7 +423,7 @@ _Can't we do it with TinyEMU's HTIF Console?_
 
 HTIF Console supports Polling of Input and Output, __but not Interrupts__. (A bit like [__OpenSBI Console__](https://lupyuen.github.io/articles/sbi#opensbi-debug-console))
 
-To do proper Console Input / Output with Interrupts, we need __VirtIO Console__.
+To do proper Console Input / Output with Interrupts, we need __VirtIO Console__. (Pic above)
 
 _What's VirtIO?_
 
@@ -431,6 +432,8 @@ _What's VirtIO?_
 - [__TinyEMU support for VirtIO__](https://bellard.org/tinyemu/readme.txt)
 
 - [__Virtual I/O Device (VirtIO) Spec__](https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html)
+
+  [(A bit like __RISC-V Semihosting__)](https://lupyuen.github.io/articles/semihost)
 
 _What about NuttX?_
 
