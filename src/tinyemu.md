@@ -4,7 +4,7 @@
 
 ![Apache NuttX RTOS in a Web Browser... With TinyEMU and VirtIO](https://lupyuen.github.io/images/tinyemu-title.png) 
 
-[_(Live Demo of NuttX on TinyEMU)_](https://lupyuen.github.io/nuttx-tinyemu/)
+[_(Live Demo of NuttX on TinyEMU)_](https://lupyuen.github.io/nuttx-tinyemu)
 
 [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) is a tiny operating system for [__64-bit RISC-V Machines__](https://lupyuen.github.io/articles/riscv) and many other platforms. (Arm, x64, ESP32, ...)
 
@@ -358,7 +358,7 @@ Let's boot NuttX in the Web Browser...
 
 ![NuttX booting in a Web Browser](https://lupyuen.github.io/images/tinyemu-wasm.png) 
 
-> [_NuttX booting in a Web Browser_](https://lupyuen.github.io/nuttx-tinyemu/)
+> [_NuttX booting in a Web Browser_](https://lupyuen.github.io/nuttx-tinyemu)
 
 # Boot NuttX in Web Browser
 
@@ -366,7 +366,7 @@ _Will NuttX boot in the Web Browser?_
 
 Yep! (Pic above)
 
-- WebAssembly Demo: [__NuttX on TinyEMU__](https://lupyuen.github.io/nuttx-tinyemu/)
+- WebAssembly Demo: [__NuttX on TinyEMU__](https://lupyuen.github.io/nuttx-tinyemu)
 
 - WebAssembly Files: [__nuttx-tinyemu/docs__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs)
 
@@ -598,7 +598,7 @@ virtqueue_kick(vq);
 
 ![Apache NuttX RTOS in a Web Browser... With TinyEMU and VirtIO](https://lupyuen.github.io/images/tinyemu-title.png) 
 
-[_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu/)
+[_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu)
 
 # NuttX with VirtIO and OpenAMP
 
@@ -623,17 +623,17 @@ We've proven that NuttX VirtIO + OpenAMP will talk OK to [__TinyEMU's VirtIO Con
 
 Very soon we shall configure NuttX to use the [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c). Then NuttX Shell will appear and we can enter NuttX Commands!
 
-- [__Upcoming Demo__](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
+- [__Full Demo__](https://lupyuen.github.io/nuttx-tinyemu)
 
-- [__Upcoming Source Files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
+- [__Modified Source Files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
   [(TinyEMU can't enable __Machine-Mode External Interrupts__?)](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-cant-enable-machine-mode-software-interrupts)
 
 Here's a sneak peek...
 
-![Live Demo of Upcoming NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
+![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
 
-> [_Live Demo of Upcoming NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu/tinyemu2)
+> [_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu)
 
 # What's Next
 
