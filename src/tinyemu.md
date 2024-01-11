@@ -14,13 +14,19 @@ Can we boot __NuttX inside a Web Browser__, with a little help from TinyEMU? Let
 
 In this article we...
 
-- Boot NuttX in __TinyEMU Emulator__
+- Boot NuttX in __TinyEMU RISC-V Emulator__
 
 - Modify NuttX for the __HTIF Console__
 
+  (Berkeley Host-Target Interface)
+
 - Explore __VirtIO Console__ with __OpenAMP Library__
 
-- Test Everything in our __Web Browser__
+  (Virtual I/O and Open Asymmetric Multi-Processing)
+
+- And do all this in our __Web Browser__
+
+  (With WebAssembly)
 
 _Why are we doing this?_
 
@@ -653,7 +659,7 @@ Everything shall be explained in the next article. Here's a sneak peek...
 
 - [__VirtIO Console Input in TinyEMU__](https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu)
 
-![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh.png) 
+![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh2.png) 
 
 > [_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu)
 
@@ -681,9 +687,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build NuttX for TinyEMU
 
-TODO: Test Version
+In this article we saw 2 versions of __NuttX for TinyEMU__...
 
-TODO: Full Version
+- __Test Version:__ Print to VirtIO Console and halt
+
+  [(See the __Modified Files__)](TODO)
+
+- __Full Version:__ NuttX Shell with full VirtIO support
+
+  [(See the __Modified Files__)](TODO)
+
+Here are the steps to build both versions of NuttX for TinyEMU...
 
 TODO: [Release](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.1) / [nuttx.bin](https://github.com/lupyuen/nuttx-tinyemu/releases/download/v0.0.1/nuttx.bin)
 
