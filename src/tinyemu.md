@@ -259,7 +259,7 @@ _How do we print something in the NuttX Boot Code?_
 
 This will be a little delicate: Our NuttX Boot Code is in [__RISC-V Assembly__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S)!
 
-(Beause it's the first thing that runs when NuttX boots)
+(Because it's the first thing that runs when NuttX boots)
 
 From the previous section, we print "__`123`__" to TinyEMU's HTIF Console like so...
 
