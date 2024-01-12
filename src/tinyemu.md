@@ -666,7 +666,11 @@ __Up Next:__ We configure NuttX to use the [__VirtIO Serial Driver__](https://gi
 
 - [__Watch on YouTube__](https://youtu.be/KYrdwzIsgeQ)
 
+- [__See the Demo Log__](https://gist.github.com/lupyuen/15a0a02a25722883f5f13e888566c36d#file-nuttx-tinyemu-build-log-L840-L1720)
+
 - [__Source Files for Demo__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
+
+  (Only 9 files modified!)
 
 Everything shall be explained in the next article. Here's a sneak peek...
 
@@ -724,6 +728,8 @@ In this article we saw 2 Work-In-Progress versions of __NuttX for TinyEMU__...
 
   [(Run the __WebAssembly Demo__)](https://lupyuen.github.io/nuttx-tinyemu/test)
 
+  [(See the __Demo Log__)](https://gist.github.com/lupyuen/00f759dccf634a0f5a875796dbec1ad1#file-nuttx-tinyemu-build-log-L781-L842)
+
   [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/51/files)
 
   [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.1)
@@ -731,6 +737,8 @@ In this article we saw 2 Work-In-Progress versions of __NuttX for TinyEMU__...
 - __Full Version:__ NuttX Shell with [__Full VirtIO__](https://lupyuen.github.io/articles/tinyemu#nuttx-with-virtio-and-openamp) support
 
   [(Run the __WebAssembly Demo__)](https://lupyuen.github.io/nuttx-tinyemu)
+
+  [(See the __Demo Log__)](https://gist.github.com/lupyuen/15a0a02a25722883f5f13e888566c36d#file-nuttx-tinyemu-build-log-L840-L1720)
 
   [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
