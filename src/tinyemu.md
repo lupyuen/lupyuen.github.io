@@ -421,6 +421,8 @@ The other [__WebAssembly Files__](https://github.com/lupyuen/nuttx-tinyemu/tree/
 
 - Precompiled JSLinux Demo: [__jslinux-2019-12-21.tar.gz__](https://bellard.org/tinyemu/jslinux-2019-12-21.tar.gz)
 
+  [(Fixed for __Mobile Keyboards__)](https://github.com/lupyuen/nuttx-tinyemu/commit/33f0857a4a5ac8da899b159331be4ea258d490ca)
+
 Like we said: Everything that runs in __Command Line__ TinyEMU... Will also run in __Web Browser__ TinyEMU!
 
 _How to test this locally?_
