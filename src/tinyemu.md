@@ -16,7 +16,7 @@ In this article we...
 
 - Boot NuttX in __TinyEMU RISC-V Emulator__
 
-- Modify NuttX for the __HTIF Console__
+- Modify NuttX for __HTIF Console__
 
   (Berkeley Host-Target Interface)
 
@@ -42,7 +42,7 @@ Also Imagine: A __NuttX Dashboard__ that lights up in __Real-Time__, as the vari
 
 # Install TinyEMU Emulator
 
-_How to run TinyEMU?_
+_How to get started with TinyEMU?_
 
 We begin by installing [__TinyEMU RISC-V Emulator__](https://github.com/fernandotcl/TinyEMU) at the Command Line...
 
@@ -62,10 +62,11 @@ make
 sudo make install
 
 ## Check TinyEMU. Should show:
-## temu version 2019-02-10, Copyright (c) 2016-2018 Fabrice Bellard
+## temu version 2019-02-10
 temu
 
 ## Boot RISC-V Linux on TinyEMU (pic below)
+## To Exit TinyEMU: Press Ctrl-A then `x`
 temu https://bellard.org/jslinux/buildroot-riscv64.cfg
 ```
 
@@ -74,6 +75,8 @@ temu https://bellard.org/jslinux/buildroot-riscv64.cfg
 _What about TinyEMU for the Web Browser?_
 
 No Worries! Everything that runs in __Command Line__ TinyEMU... Will also run in __Web Browser__ TinyEMU!
+
+Let's tweak NuttX for TinyEMU...
 
 TODO: Pic of TinyEMU Linux
 
@@ -110,7 +113,7 @@ _How to set this Boot Address in NuttX?_
 
 Actually we don't! __NuttX for QEMU Emulator__ (64-bit RISC-V) is already configured to boot at __`0x8000_0000`__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L27)
 
-```text
+```c
 /* NuttX boots at 0x80000000 */
 SECTIONS {
   . = 0x80000000;
@@ -135,25 +138,29 @@ We create a TinyEMU [__Configuration File: `nuttx.cfg`__](https://github.com/lup
 }
 ```
 
-This will start the __64-bit RISC-V Emulator__ and boot it with our [__NuttX Kernel: `nuttx.bin`__](TODO)
+This will start the __64-bit RISC-V Emulator__ and boot it with our [__NuttX Kernel: `nuttx.bin`__](https://github.com/lupyuen/nuttx-tinyemu/releases/download/v0.0.2/nuttx.bin)
 
 [(Booting Linux? __It's more complicated__)](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-config)
 
 _NuttX Kernel comes from?_
 
-Download __`nuttx.bin`__ from the [__Test Release__](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.1) or [__Full Release__](TODO)...
+Download __`nuttx.bin`__ from the [__Test Release__](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.1) or [__Full Release__](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.2)...
 
 - [__`nuttx.bin` Test Version__](https://github.com/lupyuen/nuttx-tinyemu/releases/download/v0.0.1/nuttx.bin)
 
-- [__`nuttx.bin` Full Version__](TODO)
+- [__`nuttx.bin` Full Version__](https://github.com/lupyuen/nuttx-tinyemu/releases/download/v0.0.2/nuttx.bin)
 
-Or build it ourselves [__with these steps__](TODO).
+Or build it ourselves [__with these steps__](https://lupyuen.github.io/articles/tinyemu#appendix-build-nuttx-for-tinyemu).
+
+[(About __Test Version__ vs __Full Version__)](https://lupyuen.github.io/articles/tinyemu#appendix-build-nuttx-for-tinyemu)
 
 _That's all we need?_
 
 Yep! Just go ahead and boot __NuttX in TinyEMU__...
 
 ```bash
+## Boot NuttX in TinyEMU
+## To Exit TinyEMU: Press Ctrl-A then `x`
 $ temu nuttx.cfg
 ```
 
@@ -175,9 +182,9 @@ TinyEMU supports [__Berkeley Host-Target Interface (HTIF)__](https://docs.cartes
 
 HTIF comes from the olden days of the [__RISC-V Spike Emulator__](https://github.com/riscv-software-src/riscv-isa-sim/issues/364#issuecomment-607657754)...
 
-> "HTIF is a tether between a simulation host and target, not something that's supposed to resemble a real hardware device"
+> "HTIF is a tether between a Simulation Host and Target, not something that's supposed to resemble a real hardware device"
 
-> "It's not a RISC-V standard; it's a UC Berkeley standard"
+> "It's not a RISC-V Standard; it's a UC Berkeley Standard"
 
 _But how does it work?_
 
@@ -208,15 +215,23 @@ static void htif_handle_cmd(RISCVMachine *s) {
 
 So to print "__`1`__" (ASCII `0x31`) to the HTIF Console, we set...
 
+<span style="font-size:90%">
+
 - __`device`__ <br> = (_htif_tohost_ >> `56`) <br> = __`1`__
 
 - __`cmd`__ <br> = (_htif_tohost_ >> `48`) <br> = __`1`__
 
 - __`buf`__ <br> = (_htif_tohost_ & `0xFF`) <br> = __`0x31`__
 
+</span>
+
 Which means that we write this value to __htif_tohost__...
 
+<span style="font-size:90%">
+
 - (`1` << `56`) | (`1` << `48`) | `0x31` <br> = __`0x0101_0000_0000_0031`__
+
+</span>
 
 _Where is htif_tohost?_
 
@@ -292,13 +307,13 @@ _Does it work?_
 Yep, NuttX prints something to the HTIF Console! Now we know that NuttX Boot Code is actually alive and running on TinyEMU...
 
 ```bash
+## Boot NuttX in TinyEMU
+## To Exit TinyEMU: Press Ctrl-A then `x`
 $ temu nuttx.cfg
 123
 ```
 
-[(Copy __`nuttx.cfg`__ from here)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/root-riscv64.cfg)
-
-To see more goodies, we fix the NuttX UART Driver...
+To see more goodies, we patch the NuttX UART Driver...
 
 TODO: Pic of UART Driver
 
@@ -310,7 +325,7 @@ _How to fix the UART Driver so that NuttX can print things?_
 
 NuttX is still running on the __QEMU UART Driver__. (16550 UART)
 
-Let's make a quick patch so that we will see something in TinyEMU's __HTIF Console__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720)
+Let's make a quick patch so that we'll see something in TinyEMU's __HTIF Console__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720)
 
 ```c
 // Write one character to the UART Driver
@@ -328,8 +343,7 @@ We skip the reading and writing of other __UART Registers__ (because we'll patch
 ```c
 // Read UART Register
 static inline uart_datawidth_t u16550_serialin(FAR struct u16550_s *priv, int offset) {
-  return 0;
-  // Commented out the rest
+  return 0;  // Commented out the rest
 }
 
 // Write UART Register
@@ -343,8 +357,7 @@ And we won't wait for __UART Ready__, since we're not accessing the Line Control
 ```c
 // Wait until UART is not busy
 static int u16550_wait(FAR struct u16550_s *priv) {
-  // Nopez! No waiting for now
-  return OK;
+  return OK;  // Nopez! No waiting for now
 }
 ```
 
@@ -388,7 +401,7 @@ Yep! Click below to see the Demo (pic above) and the Source Files...
 
 _So Cool! How did we make this?_
 
-We copied the __TinyEMU Config__ and __NuttX Kernel__ to the Web Server...
+We copied the __TinyEMU Config__ and __NuttX Kernel__ to our Web Server...
 
 ```bash
 ## Copy to Web Server: NuttX Config and Kernel
@@ -400,6 +413,8 @@ cp nuttx.S nuttx.config nuttx.hash  \
   $HOME/nuttx-tinyemu/docs/
 ```
 
+[(See the __Build Steps__)](https://lupyuen.github.io/articles/tinyemu#appendix-build-nuttx-for-tinyemu)
+
 The other [__WebAssembly Files__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs) were provided by [__TinyEMU__](https://bellard.org/tinyemu/)...
 
 - Precompiled JSLinux Demo: [__jslinux-2019-12-21.tar.gz__](https://bellard.org/tinyemu/jslinux-2019-12-21.tar.gz)
@@ -408,22 +423,24 @@ Like we said: Everything that runs in __Command Line__ TinyEMU... Will also run 
 
 _How to test this locally?_
 
+Our Web Browser won't load WebAssembly Files from the File System.
+
 To test on our computer, we need to install a __Local Web Server__...
 
 ```bash
 ## Based on https://github.com/TheWaWaR/simple-http-server
-$ cargo install simple-http-server
-$ git clone https://github.com/lupyuen/nuttx-tinyemu
-$ simple-http-server nuttx-tinyemu/docs
+cargo install simple-http-server
+git clone https://github.com/lupyuen/nuttx-tinyemu
+simple-http-server nuttx-tinyemu/docs
 ```
 
-That's because our Web Browser won't load WebAssembly Files from the File System. Then browse to...
+Then browse to...
 
 ```text
 http://0.0.0.0:8000/index.html
 ```
 
-And NuttX appears in our Web Browser!
+And NuttX appears in our Web Browser! (Pic above)
 
 _But something's missing: Where's the Console Input?_
 
@@ -465,7 +482,7 @@ _And OpenAMP is?_
 
 - [__"Introduction to OpenAMP"__](https://www.openampproject.org/docs/whitepapers/Introduction_to_OpenAMPlib_v1.1a.pdf) (Page 4)
 
-We have all the layers, let's assemble our cake and print to VirtIO Console (pic above)...
+We have all the layers, let's assemble our cake and __print to VirtIO Console__ (pic above)...
 
 1.  Initialise the __VirtIO Console__
 
@@ -502,7 +519,7 @@ We copy these VirtIO Settings to __NuttX QEMU__: [qemu_rv_appinit.c](https://git
 
 __MMIO__ means that NuttX will access VirtIO over __Memory-Mapped I/O__. (Instead of PCI)
 
-With these settings, VirtIO and OpenAMP will start OK on NuttX yay!
+With these settings, VirtIO and OpenAMP will start OK on NuttX...
 
 ```bash
 $ temu nuttx.cfg
@@ -575,7 +592,7 @@ int ret = virtio_create_virtqueues(
 virtio_set_status(vdev, VIRTIO_CONFIG_STATUS_DRIVER_OK);
 ```
 
-Now we have 2 VirtIO Queues: __Transmit and Receive__! Let's message them...
+Now we have 2 VirtIO Queues: __Transmit and Receive__. Let's message them...
 
 [(__virtio_set_status__ comes from OpenAMP)](https://github.com/OpenAMP/open-amp/blob/main/lib/include/openamp/virtio.h#L346-L366)
 
@@ -585,7 +602,7 @@ TODO: Pic of Transmit Queue to Console
 
 ## Send the VirtIO Message
 
-Finally to print something, we write to the __Transmit Queue__: [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925)
+To print something, we write to the __Transmit Queue__: [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925)
 
 ```c
 // Send data to VirtIO Device
@@ -612,6 +629,8 @@ virtqueue_add_buffer(
 virtqueue_kick(vq);  
 ```
 
+Finally we test this...
+
 [(__virtqueue_add_buffer__ comes from OpenAMP)](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) 
 
 [(__virtqueue_kick__ too)](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336)
@@ -622,7 +641,7 @@ virtqueue_kick(vq);
 
 # NuttX with VirtIO and OpenAMP
 
-_NuttX now talks to TinyEMU over VirtIO and OpenAMP..._
+_NuttX talks to TinyEMU over VirtIO and OpenAMP..._
 
 _What happens when we run this?_
 
@@ -630,9 +649,7 @@ NuttX prints correctly to TinyEMU's VirtIO Console. Yep our VirtIO Queue is work
 
 ```bash
 $ temu nuttx.cfg
-virtio_mmio_init_device: VIRTIO version: 2 device: 3 vendor: ffff
 Hello VirtIO from NuttX!
-nx_start: CPU0: Beginning Idle Loop
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b)
@@ -641,7 +658,7 @@ _But still no NuttX Shell?_
 
 We've proven that NuttX VirtIO + OpenAMP will talk OK to [__TinyEMU's VirtIO Console__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-host-for-tinyemu).
 
-Up Next: We'll configure NuttX to use the [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c). Then NuttX Shell will appear and we can enter NuttX Commands!
+Up Next: We configure NuttX to use the [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c). Then NuttX Shell will appear and we can enter NuttX Commands!
 
 - [__See the Full Demo__](https://lupyuen.github.io/nuttx-tinyemu)
 
@@ -689,21 +706,21 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 In this article we saw 2 Work-In-Progress versions of __NuttX for TinyEMU__...
 
-- __Test Version:__ Print to [__VirtIO Console__](TODO) and halt
+- __Test Version:__ Print to [__VirtIO Console__](https://lupyuen.github.io/articles/tinyemu#virtio-console) and halt
 
-  [(Run the __WebAssembly Demo__)](TODO)
+  [(Run the __WebAssembly Demo__)](https://lupyuen.github.io/nuttx-tinyemu/test)
 
-  [(See the __Modified Files__)](TODO)
+  [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/51)
 
-  [(See the __Build Outputs__)](TODO)
+  [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.1)
 
-- __Full Version:__ NuttX Shell with [__Full VirtIO__](TODO) support
+- __Full Version:__ NuttX Shell with [__Full VirtIO__](https://lupyuen.github.io/articles/tinyemu#nuttx-with-virtio-and-openamp) support
 
-  [(Run the __WebAssembly Demo__)](TODO)
+  [(Run the __WebAssembly Demo__)](https://lupyuen.github.io/nuttx-tinyemu)
 
-  [(See the __Modified Files__)](TODO)
+  [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50)
 
-  [(See the __Build Outputs__)](TODO)
+  [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.2)
 
 Here are the steps to build both versions of NuttX for TinyEMU...
 
@@ -765,9 +782,9 @@ cp nuttx.config $HOME/nuttx-tinyemu/docs/
 
 [(Remember to install the __Build Prerequisites and Toolchain__)](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
 
-[(See the __Build Script__)](TODO)
+[(See the __Build Script__)](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.2)
 
-[(See the __Build Log__)](TODO)
+[(See the __Build Log__)](https://gist.github.com/lupyuen/15a0a02a25722883f5f13e888566c36d)
 
 This produces the NuttX Kernel __`nuttx.bin`__ that we may boot on TinyEMU RISC-V Emulator...
 
@@ -783,7 +800,7 @@ To Exit TinyEMU: Press __`Ctrl-A`__ then __`x`__
 
 _How did we configure the NuttX Build? ("rv-virt:nsh64")_
 
-We modified "__`rv-virt:nsh64`__" like this...
+We modified "__rv-virt:nsh64__" like this...
 
 ```bash
 ## Configure NuttX Build and save the Build Config
@@ -815,7 +832,7 @@ Inside __menuconfig__, we selected...
   - Enable "__Virtio Debug Features > Error, Warnings, Info__"
 
 - __Application Configuration > Testing__
-  - Enable "OS Test Example"
+  - Enable "__OS Test Example__"
 
 For the __Full Version__, we added...
 
