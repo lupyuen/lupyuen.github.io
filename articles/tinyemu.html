@@ -85,8 +85,7 @@
 <p><a href="https://youtu.be/KYrdwzIsgeQ"><em>(Watch on YouTube)</em></a></p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> is a tiny operating system for <a href="https://lupyuen.github.io/articles/riscv"><strong>64-bit RISC-V Machines</strong></a> and many other platforms. (Arm, x64, ESP32, …)</p>
 <p><a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU</strong></a> is a barebones RISC-V Emulator that runs in a <a href="https://www.barebox.org/jsbarebox/?graphic=1"><strong>Web Browser</strong></a>. (Thanks to WebAssembly)</p>
-<p>Can we boot <strong>NuttX inside a Web Browser</strong>, with a little help from TinyEMU? Let’s find out!</p>
-<p>In this article we…</p>
+<p>Can we boot <strong>NuttX inside a Web Browser</strong>, with a little help from TinyEMU? In this article we…</p>
 <ul>
 <li>
 <p>Boot NuttX in <strong>TinyEMU RISC-V Emulator</strong></p>
@@ -140,7 +139,7 @@ temu https://bellard.org/jslinux/buildroot-riscv64.cfg
 <p><a href="https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml">(See the <strong>Build Script</strong>)</a></p>
 <p><em>What about TinyEMU for the Web Browser?</em></p>
 <p>No Worries! Everything that runs in <strong>Command Line</strong> TinyEMU… Will also run in <strong>Web Browser</strong> TinyEMU!</p>
-<p>Let’s tweak NuttX for TinyEMU…</p>
+<p>We tweak NuttX for TinyEMU…</p>
 <p>TODO: Pic of TinyEMU Linux</p>
 <h1 id="risc-v-addresses-for-tinyemu"><a href="#risc-v-addresses-for-tinyemu">2 RISC-V Addresses for TinyEMU</a></h1>
 <p><em>How will TinyEMU boot our Operating System?</em></p>
@@ -269,7 +268,7 @@ static void htif_handle_cmd(RISCVMachine *s) {
 *(volatile uint64_t *) 0x40008000 // HTIF Base Address
   = 0x0101000000000031ul;         // device=1, cmd=1, buf=0x31
 </code></pre></div>
-<p>Let’s test this in our NuttX Boot Code…</p>
+<p>We test this in our NuttX Boot Code…</p>
 <p>TODO: Pic of 123</p>
 <h1 id="print-in-risc-v-assembly"><a href="#print-in-risc-v-assembly">5 Print in RISC-V Assembly</a></h1>
 <p><em>We’re checking if NuttX is alive on TinyEMU…</em></p>
@@ -321,7 +320,7 @@ $ temu nuttx.cfg
 <p><em>NuttX on TinyEMU has been awfully quiet…</em></p>
 <p><em>How to fix the UART Driver so that NuttX can print things?</em></p>
 <p>NuttX is still running on the <strong>QEMU UART Driver</strong>. (16550 UART)</p>
-<p>Let’s make a quick patch so that we’ll see something in TinyEMU’s <strong>HTIF Console</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720">uart_16550.c</a></p>
+<p>We make a quick patch so that we’ll see something in TinyEMU’s <strong>HTIF Console</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Write one character to the UART Driver
 static void u16550_putc(FAR struct u16550_s *priv, int ch) {
 
@@ -349,7 +348,7 @@ static int u16550_wait(FAR struct u16550_s *priv) {
 }
 </code></pre></div>
 <p><em>What happens when we run this?</em></p>
-<p>Now we see NuttX booting OK on TinyEMU! (Later we’ll fix the NuttX Shell)</p>
+<p>We see NuttX booting OK on TinyEMU! (Later we’ll fix the NuttX Shell)</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ temu nuttx.cfg
 123ABC
 nx_start: Entry
@@ -459,7 +458,7 @@ simple-http-server nuttx-tinyemu/docs
 </li>
 </ol>
 <p><em>Isn’t there a VirtIO Console Driver in NuttX?</em></p>
-<p>Yeah NuttX has a <a href="https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c"><strong>VirtIO Serial Driver</strong></a>. But let’s do it ourselves anyway and discover the inner workings of VirtIO and OpenAMP!</p>
+<p>Yeah NuttX has a <a href="https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c"><strong>VirtIO Serial Driver</strong></a>. But we’ll do it ourselves anyway and discover the inner workings of VirtIO and OpenAMP!</p>
 <h2 id="initialise-the-virtio-console"><a href="#initialise-the-virtio-console">8.1 Initialise the VirtIO Console</a></h2>
 <p><em>How to make NuttX VirtIO talk to TinyEMU?</em></p>
 <p>Previously we saw the <strong>TinyEMU Config</strong> for VirtIO: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
@@ -504,7 +503,7 @@ virtio_mmio_init_device:
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L809-L932"><strong>virtio_register_mmio_device</strong></a> (to register a VirtIO MMIO Device)</p>
 </li>
 </ul>
-<p>Let’s create a VirtIO Queue and send some data…</p>
+<p>Next we create a VirtIO Queue and send some data…</p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx">(<strong>virtio_register_mmio_device</strong> is explained here)</a></p>
 <p>TODO: Pic of VirtIO Queue</p>
 <h2 id="create-the-virtio-queue"><a href="#create-the-virtio-queue">8.2 Create the VirtIO Queue</a></h2>
@@ -583,7 +582,7 @@ virtqueue_kick(vq);
 Hello VirtIO from NuttX!
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b">(See the <strong>Complete Log</strong>)</a></p>
-<p><em>But still no NuttX Shell?</em></p>
+<p><em>Still no NuttX Shell?</em></p>
 <p>We’ve proven that NuttX VirtIO + OpenAMP will talk OK to <a href="https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-host-for-tinyemu"><strong>TinyEMU’s VirtIO Console</strong></a>.</p>
 <p>Up Next: We configure NuttX to use the <a href="https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c"><strong>VirtIO Serial Driver</strong></a>. Then NuttX Shell will appear and we can enter NuttX Commands!</p>
 <ul>
