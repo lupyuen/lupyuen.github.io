@@ -676,7 +676,7 @@ __Up Next:__ We configure NuttX to use the [__VirtIO Serial Driver__](https://gi
 
 - [__Source Files for Demo__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
-  (Only 9 files modified!)
+  (Only 8 files modified!)
 
 Everything shall be explained in the next article. Here's a sneak peek...
 
