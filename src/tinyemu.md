@@ -315,7 +315,7 @@ $ temu nuttx.cfg
 
 To see more goodies, we patch the NuttX UART Driver...
 
-TODO: Pic of UART Driver
+![NuttX 16550 UART Driver patched for TinyEMU HTIF Console](https://lupyuen.github.io/images/tinyemu-uart.jpg) 
 
 # UART Driver for TinyEMU
 
@@ -325,7 +325,7 @@ _How to fix the UART Driver so that NuttX can print things?_
 
 NuttX is still running on the __QEMU UART Driver__. (16550 UART)
 
-We make a quick patch so that we'll see something in TinyEMU's __HTIF Console__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720)
+We make a quick patch so that we'll see something in TinyEMU's __HTIF Console__ (pic above): [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720)
 
 ```c
 // Write one character to the UART Driver
