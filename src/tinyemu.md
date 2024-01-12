@@ -682,6 +682,8 @@ Everything shall be explained in the next article. Here's a sneak peek...
 
 1.  [__"VirtIO Console Input in TinyEMU"__](https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu)
 
+1.  TODO: TinyEMU supports VirtIO Block, Network, Input and Filesystem Devices
+
 </span>
 
 ![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh2.png) 
@@ -691,6 +693,8 @@ Everything shall be explained in the next article. Here's a sneak peek...
 # What's Next
 
 TODO
+
+How will you use NuttX in a Web Browser? Please lemme know! 🙏
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
