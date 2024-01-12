@@ -517,7 +517,7 @@ virtio_mmio_init_device:
 <p><img src="https://lupyuen.github.io/images/tinyemu-virtio2.jpg" alt="VirtIO Queues" /> </p>
 <h2 id="create-the-virtio-queue"><a href="#create-the-virtio-queue">8.2 Create the VirtIO Queue</a></h2>
 <p><em>NuttX VirtIO + OpenAMP are talking OK to TinyEMU. What next?</em></p>
-<p>To send data to VirtIO Console, we need a <strong>VirtIO Queue</strong> (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925">virtio-mmio.c</a></p>
+<p>To send data to VirtIO Console, we need a <strong>VirtIO Queue</strong> (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L869-L895">virtio-mmio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// At Startup: Init VirtIO Device
 // Based on virtio_serial_init
 // https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511
@@ -554,7 +554,7 @@ virtio_set_status(vdev, VIRTIO_CONFIG_STATUS_DRIVER_OK);
 <p><a href="https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142">(<strong>virtio_create_virtqueues</strong> too)</a></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu-virtio3.jpg" alt="Send data to VirtIO Queue" /> </p>
 <h2 id="send-the-virtio-message"><a href="#send-the-virtio-message">8.3 Send the VirtIO Message</a></h2>
-<p>To print something, we write to the <strong>Transmit Queue</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925">virtio-mmio.c</a></p>
+<p>To print something, we write to the <strong>Transmit Queue</strong> (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L895-L926">virtio-mmio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Send data to VirtIO Device
 // Based on virtio_serial_dmasend
 // https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L310-L345
@@ -747,8 +747,8 @@ wget --output-document=nuttx.cfg https://raw.githubusercontent.com/lupyuen/nuttx
 temu nuttx.cfg
 </code></pre></div>
 <p>To Exit TinyEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
-<p><em>How did we configure the NuttX Build? (“rv-virt:nsh64”)</em></p>
-<p>We modified “<strong>rv-virt:nsh64</strong>” like this…</p>
+<p><em>How did we configure the NuttX Build?</em></p>
+<p>We modified the NuttX Config “<strong>rv-virt:nsh64</strong>” (64-bit RISC-V QEMU Flat Mode) like this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Configure NuttX Build and save the Build Config
 make menuconfig \
   &amp;&amp; make savedefconfig \
