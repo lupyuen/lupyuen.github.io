@@ -24,7 +24,7 @@ Can we boot __NuttX inside a Web Browser__, with a little help from TinyEMU? In 
 
   (Virtual I/O and Open Asymmetric Multi-Processing)
 
-- And do all this in our __Web Browser__
+- And run all this in our __Web Browser__
 
   (With WebAssembly)
 
