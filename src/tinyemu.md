@@ -668,6 +668,8 @@ Up Next: We configure NuttX to use the [__VirtIO Serial Driver__](https://github
 
 Everything shall be explained in the next article. Here's a sneak peek...
 
+<span style="font-size:90%">
+
 - [__"Enable the VirtIO Serial Driver"__](https://github.com/lupyuen/nuttx-tinyemu#enable-the-virtio-serial-driver)
 
 - [__"Enable NuttX Console for VirtIO"__](https://github.com/lupyuen/nuttx-tinyemu#enable-nuttx-console-for-virtio)
@@ -677,6 +679,8 @@ Everything shall be explained in the next article. Here's a sneak peek...
 - [__"Inside the VirtIO Driver for NuttX"__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx)
 
 - [__VirtIO Console Input in TinyEMU__](https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu)
+
+</span>
 
 ![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh2.png) 
 
@@ -814,14 +818,16 @@ make menuconfig \
 
 Inside __menuconfig__, we selected...
 
-- __Device Drivers__
+<span style="font-size:90%">
+
+__Device Drivers__
   - Enable "__Simple AddrEnv__"
   - Enable "__Virtio Device Support__"
 
-- __Device Drivers > Virtio Device Support__
+__Device Drivers > Virtio Device Support__
   - Enable "__Virtio MMIO Device Support__"
 
-- __Build Setup > Debug Options__
+__Build Setup > Debug Options__
   - Enable "__Debug Features__"
   - Enable "__Debug Assertions > Show Expression, Filename__"
   - Enable "__Binary Loader Debug Features > Errors, Warnings, Info__"
@@ -833,16 +839,22 @@ Inside __menuconfig__, we selected...
   - Enable "__IPC Debug Features > Errors, Warnings, Info__"
   - Enable "__Virtio Debug Features > Error, Warnings, Info__"
 
-- __Application Configuration > Testing__
+__Application Configuration > Testing__
   - Enable "__OS Test Example__"
+
+</span>
 
 For the __Full Version__, we added...
 
-- __Device Drivers > Virtio Device Support__
-  - Enable "__Virtio Serial Support__"
+<span style="font-size:90%">
 
-- __Device Drivers > Serial Driver Support__
-  - Disable "__16550 UART Chip support__"
+__Device Drivers > Virtio Device Support__
+- Enable "__Virtio Serial Support__"
+
+__Device Drivers > Serial Driver Support__
+- Disable "__16550 UART Chip support__"
+
+</span>
 
 Then Save and Exit __menuconfig__.
 
