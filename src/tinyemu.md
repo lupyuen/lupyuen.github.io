@@ -6,6 +6,8 @@
 
 [_(Live Demo of NuttX on TinyEMU)_](https://lupyuen.github.io/nuttx-tinyemu)
 
+[_(Watch on YouTube)_](https://youtu.be/KYrdwzIsgeQ)
+
 [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) is a tiny operating system for [__64-bit RISC-V Machines__](https://lupyuen.github.io/articles/riscv) and many other platforms. (Arm, x64, ESP32, ...)
 
 [__TinyEMU__](https://github.com/fernandotcl/TinyEMU) is a barebones RISC-V Emulator that runs in a [__Web Browser__](https://www.barebox.org/jsbarebox/?graphic=1). (Thanks to WebAssembly)
