@@ -249,7 +249,7 @@ Thus we __print to HTIF Console__ like this...
 
 We test this in our NuttX Boot Code...
 
-> ![Booting NuttX in TinyEMU](https://lupyuen.github.io/images/tinyemu-boot.png) 
+>>> ![Booting NuttX in TinyEMU](https://lupyuen.github.io/images/tinyemu-boot.png) 
 
 # Print in RISC-V Assembly
 
@@ -662,29 +662,31 @@ We've proven that NuttX VirtIO + OpenAMP will talk OK to [__TinyEMU's VirtIO Con
 
 Up Next: We configure NuttX to use the [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c). Then NuttX Shell will appear and we can enter NuttX Commands!
 
-- [__See the Full Demo__](https://lupyuen.github.io/nuttx-tinyemu)
+- [__Run the Full Demo__](https://lupyuen.github.io/nuttx-tinyemu)
 
-- [__Source Files for Full Demo__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
+- [__Watch on YouTube__](https://youtu.be/KYrdwzIsgeQ)
+
+- [__Source Files for Demo__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
 Everything shall be explained in the next article. Here's a sneak peek...
 
 <span style="font-size:90%">
 
-- [__"Enable the VirtIO Serial Driver"__](https://github.com/lupyuen/nuttx-tinyemu#enable-the-virtio-serial-driver)
+1.  [__"Enable the VirtIO Serial Driver"__](https://github.com/lupyuen/nuttx-tinyemu#enable-the-virtio-serial-driver)
 
-- [__"Enable NuttX Console for VirtIO"__](https://github.com/lupyuen/nuttx-tinyemu#enable-nuttx-console-for-virtio)
+1.  [__"Enable NuttX Console for VirtIO"__](https://github.com/lupyuen/nuttx-tinyemu#enable-nuttx-console-for-virtio)
 
-- [__"TinyEMU can't enable Machine-Mode Software Interrupts"__](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-cant-enable-machine-mode-software-interrupts)
+1.  [__"TinyEMU can't enable Machine-Mode Software Interrupts"__](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-cant-enable-machine-mode-software-interrupts)
 
-- [__"Inside the VirtIO Driver for NuttX"__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx)
+1.  [__"Inside the VirtIO Driver for NuttX"__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx)
 
-- [__VirtIO Console Input in TinyEMU__](https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu)
+1.  [__"VirtIO Console Input in TinyEMU"__](https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu)
 
 </span>
 
 ![Live Demo of NuttX on TinyEMU](https://lupyuen.github.io/images/tinyemu-nsh2.png) 
 
-> [_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu)
+[_Live Demo of NuttX on TinyEMU_](https://lupyuen.github.io/nuttx-tinyemu)
 
 # What's Next
 
