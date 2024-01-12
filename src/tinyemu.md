@@ -249,7 +249,7 @@ Thus we __print to HTIF Console__ like this...
 
 We test this in our NuttX Boot Code...
 
->>> ![Booting NuttX in TinyEMU](https://lupyuen.github.io/images/tinyemu-boot.png) 
+> ![Booting NuttX in TinyEMU](https://lupyuen.github.io/images/tinyemu-boot.png) 
 
 # Print in RISC-V Assembly
 
