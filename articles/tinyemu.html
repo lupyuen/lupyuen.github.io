@@ -268,7 +268,7 @@ static void htif_handle_cmd(RISCVMachine *s) {
 *(volatile uint64_t *) 0x40008000 // HTIF Base Address
   = 0x0101000000000031ul;         // device=1, cmd=1, buf=0x31
 </code></pre></div>
-<p>We test this in our NuttX Boot Code…</p>
+<p>We test it in our NuttX Boot Code…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/tinyemu-boot.png" alt="Booting NuttX in TinyEMU" /> </p>
 </blockquote>
