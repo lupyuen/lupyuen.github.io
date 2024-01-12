@@ -365,7 +365,7 @@ nx_start_application: Starting init thread
 task_spawn: name=nsh_main entry=0x80006fde file_actions=0 attr=0x80035670 argv=0x80035668
 nx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b#file-nuttx-tinyemu-log-L58-L118">(See the <strong>Complete Log</strong>)</a></p>
 <p>Let’s boot NuttX in the Web Browser…</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu-wasm.png" alt="NuttX booting in a Web Browser" /> </p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu"><em>NuttX booting in a Web Browser</em></a></p>
@@ -420,14 +420,14 @@ simple-http-server nuttx-tinyemu/docs
 <p>HTIF Console supports Polling of Input and Output, <strong>but not Interrupts</strong>. (A bit like <a href="https://lupyuen.github.io/articles/sbi#opensbi-debug-console"><strong>OpenSBI Console</strong></a>)</p>
 <p>To do proper Console Input / Output with Interrupts, we need <strong>VirtIO Console</strong>. (Pic above)</p>
 <p><em>What’s VirtIO?</em></p>
-<p><a href="https://wiki.osdev.org/Virtio"><strong>Virtual I/O Device (VirtIO)</strong></a> is a Standardised Interface that allows Virtual Machines to access <strong>Consoles, Storage Devices and Network Adapters</strong>. And it works with TinyEMU!</p>
+<p><a href="https://wiki.osdev.org/Virtio"><strong>Virtual I/O Device (VirtIO)</strong></a> is a Standardised Interface that allows Virtual Machines to access <strong>Consoles, Storage Devices and Network Adapters</strong>.</p>
+<p>And it works with TinyEMU! (A bit like <a href="https://lupyuen.github.io/articles/semihost"><strong>RISC-V Semihosting</strong></a>)</p>
 <ul>
 <li>
 <p><a href="https://bellard.org/tinyemu/readme.txt"><strong>TinyEMU support for VirtIO</strong></a></p>
 </li>
 <li>
 <p><a href="https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html"><strong>Virtual I/O Device (VirtIO) Spec</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/semihost">(A bit like <strong>RISC-V Semihosting</strong>)</a></p>
 </li>
 </ul>
 <p><em>What about NuttX?</em></p>
@@ -443,7 +443,15 @@ simple-http-server nuttx-tinyemu/docs
 <p><em>And OpenAMP is?</em></p>
 <p><a href="https://www.openampproject.org/"><strong>Open Asymmetric Multi-Processing (OpenAMP)</strong></a> provides the <strong>Message Queue Library</strong> for VirtIO Guests (like NuttX) to call VirtIO Hosts (like TinyEMU)…</p>
 <ul>
-<li><a href="https://www.openampproject.org/docs/whitepapers/Introduction_to_OpenAMPlib_v1.1a.pdf"><strong>“Introduction to OpenAMP”</strong></a> (Page 4)</li>
+<li>
+<p><a href="https://github.com/OpenAMP/open-amp"><strong>OpenAMP Library</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/OpenAMP/libmetal/tree/main/lib/system/nuttx"><strong>OpenAMP libmetal</strong></a> (supports NuttX)</p>
+</li>
+<li>
+<p><a href="https://www.openampproject.org/docs/whitepapers/Introduction_to_OpenAMPlib_v1.1a.pdf"><strong>“Introduction to OpenAMP”</strong></a> (Page 4)</p>
+</li>
 </ul>
 <p>We have all the layers, let’s assemble our cake and <strong>print to VirtIO Console</strong> (pic above)…</p>
 <ol>
@@ -482,6 +490,7 @@ virtio_mmio_init_device:
   device: 3
   vendor: ffff
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b#file-nuttx-tinyemu-log-L58-L118">(See the <strong>Complete Log</strong>)</a></p>
 <p>This says…</p>
 <ul>
 <li>
@@ -581,7 +590,7 @@ virtqueue_kick(vq);
 <div class="example-wrap"><pre class="language-bash"><code>$ temu nuttx.cfg
 Hello VirtIO from NuttX!
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b#file-nuttx-tinyemu-log-L58-L118">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>Still no NuttX Shell?</em></p>
 <p>We’ve proven that <a href="https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx"><strong>NuttX VirtIO + OpenAMP</strong></a> are totally hunky dory with <a href="https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-host-for-tinyemu"><strong>TinyEMU’s VirtIO Console</strong></a>.</p>
 <p><strong>Up Next:</strong> We configure NuttX to use the <a href="https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c"><strong>VirtIO Serial Driver</strong></a>. Then NuttX Shell will appear and we can enter NuttX Commands! (Pic below)</p>
