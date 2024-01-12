@@ -12,9 +12,7 @@
 
 [__TinyEMU__](https://github.com/fernandotcl/TinyEMU) is a barebones RISC-V Emulator that runs in a [__Web Browser__](https://www.barebox.org/jsbarebox/?graphic=1). (Thanks to WebAssembly)
 
-Can we boot __NuttX inside a Web Browser__, with a little help from TinyEMU? Let's find out!
-
-In this article we...
+Can we boot __NuttX inside a Web Browser__, with a little help from TinyEMU? In this article we...
 
 - Boot NuttX in __TinyEMU RISC-V Emulator__
 
@@ -78,7 +76,7 @@ _What about TinyEMU for the Web Browser?_
 
 No Worries! Everything that runs in __Command Line__ TinyEMU... Will also run in __Web Browser__ TinyEMU!
 
-Let's tweak NuttX for TinyEMU...
+We tweak NuttX for TinyEMU...
 
 TODO: Pic of TinyEMU Linux
 
@@ -249,7 +247,7 @@ Thus we __print to HTIF Console__ like this...
   = 0x0101000000000031ul;         // device=1, cmd=1, buf=0x31
 ```
 
-Let's test this in our NuttX Boot Code...
+We test this in our NuttX Boot Code...
 
 TODO: Pic of 123
 
@@ -327,7 +325,7 @@ _How to fix the UART Driver so that NuttX can print things?_
 
 NuttX is still running on the __QEMU UART Driver__. (16550 UART)
 
-Let's make a quick patch so that we'll see something in TinyEMU's __HTIF Console__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720)
+We make a quick patch so that we'll see something in TinyEMU's __HTIF Console__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720)
 
 ```c
 // Write one character to the UART Driver
@@ -365,7 +363,7 @@ static int u16550_wait(FAR struct u16550_s *priv) {
 
 _What happens when we run this?_
 
-Now we see NuttX booting OK on TinyEMU! (Later we'll fix the NuttX Shell)
+We see NuttX booting OK on TinyEMU! (Later we'll fix the NuttX Shell)
 
 ```bash
 $ temu nuttx.cfg
@@ -496,7 +494,7 @@ We have all the layers, let's assemble our cake and __print to VirtIO Console__ 
 
 _Isn't there a VirtIO Console Driver in NuttX?_
 
-Yeah NuttX has a [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c). But let's do it ourselves anyway and discover the inner workings of VirtIO and OpenAMP!
+Yeah NuttX has a [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c). But we'll do it ourselves anyway and discover the inner workings of VirtIO and OpenAMP!
 
 ## Initialise the VirtIO Console
 
@@ -551,7 +549,7 @@ At NuttX Startup: [__board_app_initialize__](https://github.com/lupyuen2/wip-pin
 
 - [__virtio_register_mmio_device__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L809-L932) (to register a VirtIO MMIO Device)
 
-Let's create a VirtIO Queue and send some data...
+Next we create a VirtIO Queue and send some data...
 
 [(__virtio_register_mmio_device__ is explained here)](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx)
 
@@ -658,7 +656,7 @@ Hello VirtIO from NuttX!
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b)
 
-_But still no NuttX Shell?_
+_Still no NuttX Shell?_
 
 We've proven that NuttX VirtIO + OpenAMP will talk OK to [__TinyEMU's VirtIO Console__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-host-for-tinyemu).
 
