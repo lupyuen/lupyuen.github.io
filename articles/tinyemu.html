@@ -592,6 +592,7 @@ Hello VirtIO from NuttX!
 </li>
 </ul>
 <p>Everything shall be explained in the next article. Here’s a sneak peek…</p>
+<span style="font-size:90%">
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu#enable-the-virtio-serial-driver"><strong>“Enable the VirtIO Serial Driver”</strong></a></p>
@@ -609,6 +610,7 @@ Hello VirtIO from NuttX!
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu"><strong>VirtIO Console Input in TinyEMU</strong></a></p>
 </li>
 </ul>
+</span>
 <p><img src="https://lupyuen.github.io/images/tinyemu-nsh2.png" alt="Live Demo of NuttX on TinyEMU" /> </p>
 <blockquote>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu"><em>Live Demo of NuttX on TinyEMU</em></a></p>
@@ -729,21 +731,16 @@ make menuconfig \
   &gt;boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig
 </code></pre></div>
 <p>Inside <strong>menuconfig</strong>, we selected…</p>
-<ul>
-<li>
+<span style="font-size:90%">
 <p><strong>Device Drivers</strong></p>
 <ul>
 <li>Enable “<strong>Simple AddrEnv</strong>”</li>
 <li>Enable “<strong>Virtio Device Support</strong>”</li>
 </ul>
-</li>
-<li>
 <p><strong>Device Drivers &gt; Virtio Device Support</strong></p>
 <ul>
 <li>Enable “<strong>Virtio MMIO Device Support</strong>”</li>
 </ul>
-</li>
-<li>
 <p><strong>Build Setup &gt; Debug Options</strong></p>
 <ul>
 <li>Enable “<strong>Debug Features</strong>”</li>
@@ -757,29 +754,22 @@ make menuconfig \
 <li>Enable “<strong>IPC Debug Features &gt; Errors, Warnings, Info</strong>”</li>
 <li>Enable “<strong>Virtio Debug Features &gt; Error, Warnings, Info</strong>”</li>
 </ul>
-</li>
-<li>
 <p><strong>Application Configuration &gt; Testing</strong></p>
 <ul>
 <li>Enable “<strong>OS Test Example</strong>”</li>
 </ul>
-</li>
-</ul>
+</span>
 <p>For the <strong>Full Version</strong>, we added…</p>
-<ul>
-<li>
+<span style="font-size:90%">
 <p><strong>Device Drivers &gt; Virtio Device Support</strong></p>
 <ul>
 <li>Enable “<strong>Virtio Serial Support</strong>”</li>
 </ul>
-</li>
-<li>
 <p><strong>Device Drivers &gt; Serial Driver Support</strong></p>
 <ul>
 <li>Disable “<strong>16550 UART Chip support</strong>”</li>
 </ul>
-</li>
-</ul>
+</span>
 <p>Then Save and Exit <strong>menuconfig</strong>.</p>
 <p><em>Why enable “Simple AddrEnv”?</em></p>
 <p>We need to enable <em>CONFIG_DEV_SIMPLE_ADDRENV</em> (“Simple AddrEnv”). Otherwise the NuttX Build fails…</p>
