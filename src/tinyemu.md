@@ -643,7 +643,7 @@ And we're done! One final test for today...
 
 # NuttX with VirtIO and OpenAMP
 
-_NuttX talks to TinyEMU over VirtIO and OpenAMP..._
+_NuttX talks to TinyEMU Console over VirtIO and OpenAMP..._
 
 _What happens when we run this?_
 
@@ -678,13 +678,13 @@ Everything shall be explained in the next article. Here's a sneak peek...
 
 1.  [__"TinyEMU can't enable Machine-Mode Software Interrupts"__](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-cant-enable-machine-mode-software-interrupts)
 
-1.  TODO: TinyEMU supports VirtIO Block, Network, Input and Filesystem Devices
+1.  [__"TinyEMU supports VirtIO Block, Network, Input and Filesystem Devices"__](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-supports-virtio-block-network-input-and-filesystem-devices)
 
 1.  [__"Inside the VirtIO Driver for NuttX"__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx)
 
 1.  [__"VirtIO Console Input in TinyEMU"__](https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu)
 
-1.  TODO: VirtIO Console Input in NuttX
+1.  [__"VirtIO Console Input in NuttX"__](https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-nuttx)
 
 </span>
 
