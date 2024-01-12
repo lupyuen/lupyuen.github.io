@@ -565,7 +565,7 @@ Next we create a VirtIO Queue and send some data...
 
 _NuttX VirtIO + OpenAMP are talking OK to TinyEMU. What next?_
 
-To send data to VirtIO Console, we need a __VirtIO Queue__ (pic above): [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925)
+To send data to VirtIO Console, we need a __VirtIO Queue__ (pic above): [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L869-L895)
 
 ```c
 // At Startup: Init VirtIO Device
@@ -610,7 +610,7 @@ Now we have 2 VirtIO Queues: __Transmit and Receive__. Let's message them...
 
 ## Send the VirtIO Message
 
-To print something, we write to the __Transmit Queue__: [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925)
+To print something, we write to the __Transmit Queue__ (pic above): [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L895-L926)
 
 ```c
 // Send data to VirtIO Device
@@ -826,9 +826,9 @@ temu nuttx.cfg
 
 To Exit TinyEMU: Press __`Ctrl-A`__ then __`x`__
 
-_How did we configure the NuttX Build? ("rv-virt:nsh64")_
+_How did we configure the NuttX Build?_
 
-We modified "__rv-virt:nsh64__" like this...
+We modified the NuttX Config "__rv-virt:nsh64__" (64-bit RISC-V QEMU Flat Mode) like this...
 
 ```bash
 ## Configure NuttX Build and save the Build Config
