@@ -315,12 +315,12 @@ $ temu nuttx.cfg
 123
 </code></pre></div>
 <p>To see more goodies, we patch the NuttX UART Driver…</p>
-<p>TODO: Pic of UART Driver</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu-uart.jpg" alt="NuttX 16550 UART Driver patched for TinyEMU HTIF Console" /> </p>
 <h1 id="uart-driver-for-tinyemu"><a href="#uart-driver-for-tinyemu">6 UART Driver for TinyEMU</a></h1>
 <p><em>NuttX on TinyEMU has been awfully quiet…</em></p>
 <p><em>How to fix the UART Driver so that NuttX can print things?</em></p>
 <p>NuttX is still running on the <strong>QEMU UART Driver</strong>. (16550 UART)</p>
-<p>We make a quick patch so that we’ll see something in TinyEMU’s <strong>HTIF Console</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720">uart_16550.c</a></p>
+<p>We make a quick patch so that we’ll see something in TinyEMU’s <strong>HTIF Console</strong> (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Write one character to the UART Driver
 static void u16550_putc(FAR struct u16550_s *priv, int ch) {
 
