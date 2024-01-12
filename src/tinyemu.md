@@ -42,7 +42,7 @@ Also Imagine: A __NuttX Dashboard__ that lights up in __Real-Time__, as the vari
 
 # Install TinyEMU Emulator
 
-_How to get started with TinyEMU?_
+_Let's get started with TinyEMU!_
 
 We begin by installing [__TinyEMU RISC-V Emulator__](https://github.com/fernandotcl/TinyEMU) at the Command Line...
 
@@ -82,7 +82,7 @@ We tweak NuttX for TinyEMU...
 
 # RISC-V Addresses for TinyEMU
 
-_How will TinyEMU boot our Operating System?_
+_Will TinyEMU boot our Operating System?_
 
 TinyEMU is hardcoded to run at these __RISC-V Addresses__: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
 
@@ -109,7 +109,7 @@ Thus TinyEMU will boot our NuttX Kernel at __`0x8000_0000`__. _(RAM_BASE_ADDR)_
 
 [(Yep TinyEMU has a __Graphics Framebuffer__)](https://www.barebox.org/jsbarebox/?graphic=1)
 
-_How to set this Boot Address in NuttX?_
+_And we set this Boot Address in NuttX?_
 
 Actually we don't! __NuttX for QEMU Emulator__ (64-bit RISC-V) is already configured to boot at __`0x8000_0000`__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L27)
 
@@ -156,7 +156,7 @@ Or build it ourselves [__with these steps__](https://lupyuen.github.io/articles/
 
 _That's all we need?_
 
-Yep! Just go ahead and boot __NuttX in TinyEMU__...
+You bet! Just go ahead and boot __NuttX in TinyEMU__...
 
 ```bash
 ## Boot NuttX in TinyEMU
@@ -176,7 +176,7 @@ To watch NuttX run, we need HTIF Console...
 
 # Print to HTIF Console
 
-_How do we print something to the TinyEMU Console?_
+_Printing to the TinyEMU Console: What will we need?_
 
 TinyEMU supports [__Berkeley Host-Target Interface (HTIF)__](https://docs.cartesi.io/machine/target/architecture/#htif) for Console Output. (Pic above)
 
@@ -255,7 +255,7 @@ We test it in our NuttX Boot Code...
 
 _We're checking if NuttX is alive on TinyEMU..._
 
-_How do we print something in the NuttX Boot Code?_
+_Can we print something in our NuttX Boot Code?_
 
 This will be a little delicate: Our NuttX Boot Code is in [__RISC-V Assembly__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S)!
 
@@ -321,7 +321,7 @@ To see more goodies, we patch the NuttX UART Driver...
 
 _NuttX on TinyEMU has been awfully quiet..._
 
-_How to fix the UART Driver so that NuttX can print things?_
+_Can we fix the UART Driver so that NuttX can print things?_
 
 NuttX is still running on the __QEMU UART Driver__. (16550 UART)
 
@@ -352,7 +352,7 @@ static inline void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_
 }
 ```
 
-And we won't wait for __UART Ready__, since we're not accessing the Line Control Register: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L635-L673)
+And we won't wait for __UART Ready__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L635-L673)
 
 ```c
 // Wait until UART is not busy
@@ -383,7 +383,7 @@ nx_start: CPU0: Beginning Idle Loop
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b#file-nuttx-tinyemu-log-L58-L118)
 
-Let's boot NuttX in the Web Browser...
+We promote NuttX from Command Line to Web Browser...
 
 ![NuttX booting in a Web Browser](https://lupyuen.github.io/images/tinyemu-wasm.png) 
 
@@ -391,9 +391,9 @@ Let's boot NuttX in the Web Browser...
 
 # Boot NuttX in Web Browser
 
-_Will NuttX boot in the Web Browser?_
+_Will NuttX run in the Web Browser?_
 
-Yep! Click below to see the Demo (pic above) and the Source Files...
+Amazingly, Yes! Click below to see the Demo (pic above) and the Source Files...
 
 - WebAssembly Demo: [__NuttX on TinyEMU__](https://lupyuen.github.io/nuttx-tinyemu)
 
@@ -423,14 +423,14 @@ The other [__WebAssembly Files__](https://github.com/lupyuen/nuttx-tinyemu/tree/
 
 Like we said: Everything that runs in __Command Line__ TinyEMU... Will also run in __Web Browser__ TinyEMU!
 
-_How to test this locally?_
+_Can we test this locally?_
 
 Our Web Browser won't load WebAssembly Files from the File System.
 
-To test on our computer, we need to install a __Local Web Server__...
+To test on our computer, we need a __Local Web Server__...
 
 ```bash
-## Based on https://github.com/TheWaWaR/simple-http-server
+## Install Web Server based on https://github.com/TheWaWaR/simple-http-server
 cargo install simple-http-server
 git clone https://github.com/lupyuen/nuttx-tinyemu
 simple-http-server nuttx-tinyemu/docs
@@ -502,7 +502,7 @@ Yeah NuttX has a [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob
 
 ## Initialise the VirtIO Console
 
-_How to make NuttX VirtIO talk to TinyEMU?_
+_How will NuttX VirtIO talk to TinyEMU?_
 
 Previously we saw the __TinyEMU Config__ for VirtIO: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
 
@@ -525,7 +525,7 @@ We copy these VirtIO Settings to __NuttX QEMU__: [qemu_rv_appinit.c](https://git
 
 __MMIO__ means that NuttX will access VirtIO over __Memory-Mapped I/O__. (Instead of PCI)
 
-With these settings, VirtIO and OpenAMP will start OK on NuttX...
+With these settings, VirtIO and OpenAMP will start correctly on NuttX...
 
 ```bash
 $ temu nuttx.cfg
@@ -649,11 +649,11 @@ And we're done! One final test for today...
 
 # NuttX with VirtIO and OpenAMP
 
-_NuttX talks to TinyEMU Console over VirtIO and OpenAMP..._
+_NuttX sends data to TinyEMU Console over VirtIO and OpenAMP..._
 
 _What happens when we run this?_
 
-NuttX prints correctly to TinyEMU's VirtIO Console. Yep our VirtIO Queue is working OK! (Pic above)
+NuttX prints correctly to TinyEMU's VirtIO Console. Our VirtIO Queue is working perfectly! (Pic above)
 
 ```bash
 $ temu nuttx.cfg
