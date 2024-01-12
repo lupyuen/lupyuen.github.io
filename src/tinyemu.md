@@ -381,7 +381,7 @@ task_spawn: name=nsh_main entry=0x80006fde file_actions=0 attr=0x80035670 argv=0
 nx_start: CPU0: Beginning Idle Loop
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b#file-nuttx-tinyemu-log-L58-L118)
 
 Let's boot NuttX in the Web Browser...
 
@@ -462,13 +462,13 @@ To do proper Console Input / Output with Interrupts, we need __VirtIO Console__.
 
 _What's VirtIO?_
 
-[__Virtual I/O Device (VirtIO)__](https://wiki.osdev.org/Virtio) is a Standardised Interface that allows Virtual Machines to access __Consoles, Storage Devices and Network Adapters__. And it works with TinyEMU!
+[__Virtual I/O Device (VirtIO)__](https://wiki.osdev.org/Virtio) is a Standardised Interface that allows Virtual Machines to access __Consoles, Storage Devices and Network Adapters__.
+
+And it works with TinyEMU! (A bit like [__RISC-V Semihosting__](https://lupyuen.github.io/articles/semihost))
 
 - [__TinyEMU support for VirtIO__](https://bellard.org/tinyemu/readme.txt)
 
 - [__Virtual I/O Device (VirtIO) Spec__](https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html)
-
-  [(A bit like __RISC-V Semihosting__)](https://lupyuen.github.io/articles/semihost)
 
 _What about NuttX?_
 
@@ -481,6 +481,10 @@ NuttX provides __VirtIO Drivers__, built upon the __OpenAMP Library__...
 _And OpenAMP is?_
 
 [__Open Asymmetric Multi-Processing (OpenAMP)__](https://www.openampproject.org/) provides the __Message Queue Library__ for VirtIO Guests (like NuttX) to call VirtIO Hosts (like TinyEMU)...
+
+- [__OpenAMP Library__](https://github.com/OpenAMP/open-amp)
+
+- [__OpenAMP libmetal__](https://github.com/OpenAMP/libmetal/tree/main/lib/system/nuttx) (supports NuttX)
 
 - [__"Introduction to OpenAMP"__](https://www.openampproject.org/docs/whitepapers/Introduction_to_OpenAMPlib_v1.1a.pdf) (Page 4)
 
@@ -530,6 +534,8 @@ virtio_mmio_init_device:
   device: 3
   vendor: ffff
 ```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b#file-nuttx-tinyemu-log-L58-L118)
 
 This says...
 
@@ -654,7 +660,7 @@ $ temu nuttx.cfg
 Hello VirtIO from NuttX!
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b#file-nuttx-tinyemu-log-L58-L118)
 
 _Still no NuttX Shell?_
 
