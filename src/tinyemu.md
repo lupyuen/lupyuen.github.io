@@ -531,7 +531,7 @@ virtio_mmio_init_device:
   vendor: ffff
 ```
 
-This means...
+This says...
 
 - NuttX has validated the [__VirtIO Magic Number__](https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L614-L619) from TinyEMU
 
@@ -631,7 +631,7 @@ virtqueue_add_buffer(
 virtqueue_kick(vq);  
 ```
 
-Finally we test this...
+And we're done! One final test for today...
 
 [(__virtqueue_add_buffer__ comes from OpenAMP)](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138) 
 
@@ -658,9 +658,9 @@ Hello VirtIO from NuttX!
 
 _Still no NuttX Shell?_
 
-We've proven that NuttX VirtIO + OpenAMP will talk OK to [__TinyEMU's VirtIO Console__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-host-for-tinyemu).
+We've proven that [__NuttX VirtIO + OpenAMP__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx) are totally hunky dory with [__TinyEMU's VirtIO Console__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-host-for-tinyemu).
 
-Up Next: We configure NuttX to use the [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c). Then NuttX Shell will appear and we can enter NuttX Commands! (Pic below)
+__Up Next:__ We configure NuttX to use the [__VirtIO Serial Driver__](https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c). Then NuttX Shell will appear and we can enter NuttX Commands! (Pic below)
 
 - [__Run the Full Demo__](https://lupyuen.github.io/nuttx-tinyemu)
 
@@ -678,11 +678,13 @@ Everything shall be explained in the next article. Here's a sneak peek...
 
 1.  [__"TinyEMU can't enable Machine-Mode Software Interrupts"__](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-cant-enable-machine-mode-software-interrupts)
 
+1.  TODO: TinyEMU supports VirtIO Block, Network, Input and Filesystem Devices
+
 1.  [__"Inside the VirtIO Driver for NuttX"__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx)
 
 1.  [__"VirtIO Console Input in TinyEMU"__](https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu)
 
-1.  TODO: TinyEMU supports VirtIO Block, Network, Input and Filesystem Devices
+1.  TODO: VirtIO Console Input in NuttX
 
 </span>
 
@@ -694,7 +696,7 @@ Everything shall be explained in the next article. Here's a sneak peek...
 
 TODO
 
-How will you use NuttX in a Web Browser? Please lemme know! 🙏
+How will you use NuttX in a Web Browser? Please lemme know 🙏
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -722,7 +724,7 @@ In this article we saw 2 Work-In-Progress versions of __NuttX for TinyEMU__...
 
   [(Run the __WebAssembly Demo__)](https://lupyuen.github.io/nuttx-tinyemu/test)
 
-  [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/51)
+  [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/51/files)
 
   [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.1)
 
@@ -730,7 +732,7 @@ In this article we saw 2 Work-In-Progress versions of __NuttX for TinyEMU__...
 
   [(Run the __WebAssembly Demo__)](https://lupyuen.github.io/nuttx-tinyemu)
 
-  [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50)
+  [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
 
   [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.2)
 
