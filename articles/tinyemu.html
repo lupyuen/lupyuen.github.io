@@ -482,7 +482,7 @@ virtio_mmio_init_device:
   device: 3
   vendor: ffff
 </code></pre></div>
-<p>This means…</p>
+<p>This says…</p>
 <ul>
 <li>
 <p>NuttX has validated the <a href="https://github.com/fernandotcl/TinyEMU/blob/master/virtio.c#L614-L619"><strong>VirtIO Magic Number</strong></a> from TinyEMU</p>
@@ -569,7 +569,7 @@ virtqueue_add_buffer(
 // Notify the VirtIO Host (TinyEMU)
 virtqueue_kick(vq);  
 </code></pre></div>
-<p>Finally we test this…</p>
+<p>And we’re done! One final test for today…</p>
 <p><a href="https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L83C1-L138">(<strong>virtqueue_add_buffer</strong> comes from OpenAMP)</a> </p>
 <p><a href="https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtqueue.c#L321-L336">(<strong>virtqueue_kick</strong> too)</a></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu-title.png" alt="Apache NuttX RTOS in a Web Browser… With TinyEMU and VirtIO" /> </p>
@@ -583,8 +583,8 @@ Hello VirtIO from NuttX!
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>Still no NuttX Shell?</em></p>
-<p>We’ve proven that NuttX VirtIO + OpenAMP will talk OK to <a href="https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-host-for-tinyemu"><strong>TinyEMU’s VirtIO Console</strong></a>.</p>
-<p>Up Next: We configure NuttX to use the <a href="https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c"><strong>VirtIO Serial Driver</strong></a>. Then NuttX Shell will appear and we can enter NuttX Commands! (Pic below)</p>
+<p>We’ve proven that <a href="https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx"><strong>NuttX VirtIO + OpenAMP</strong></a> are totally hunky dory with <a href="https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-host-for-tinyemu"><strong>TinyEMU’s VirtIO Console</strong></a>.</p>
+<p><strong>Up Next:</strong> We configure NuttX to use the <a href="https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c"><strong>VirtIO Serial Driver</strong></a>. Then NuttX Shell will appear and we can enter NuttX Commands! (Pic below)</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu"><strong>Run the Full Demo</strong></a></p>
@@ -609,13 +609,16 @@ Hello VirtIO from NuttX!
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu#tinyemu-cant-enable-machine-mode-software-interrupts"><strong>“TinyEMU can’t enable Machine-Mode Software Interrupts”</strong></a></p>
 </li>
 <li>
+<p>TODO: TinyEMU supports VirtIO Block, Network, Input and Filesystem Devices</p>
+</li>
+<li>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx"><strong>“Inside the VirtIO Driver for NuttX”</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu"><strong>“VirtIO Console Input in TinyEMU”</strong></a></p>
 </li>
 <li>
-<p>TODO: TinyEMU supports VirtIO Block, Network, Input and Filesystem Devices</p>
+<p>TODO: VirtIO Console Input in NuttX</p>
 </li>
 </ol>
 </span>
@@ -623,7 +626,7 @@ Hello VirtIO from NuttX!
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu"><em>Live Demo of NuttX on TinyEMU</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
-<p>How will you use NuttX in a Web Browser? Please lemme know! 🙏</p>
+<p>How will you use NuttX in a Web Browser? Please lemme know 🙏</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -653,13 +656,13 @@ Hello VirtIO from NuttX!
 <li>
 <p><strong>Test Version:</strong> Print to <a href="https://lupyuen.github.io/articles/tinyemu#virtio-console"><strong>VirtIO Console</strong></a> and halt</p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/test">(Run the <strong>WebAssembly Demo</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/51">(See the <strong>Modified Files</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/51/files">(See the <strong>Modified Files</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
 <li>
 <p><strong>Full Version:</strong> NuttX Shell with <a href="https://lupyuen.github.io/articles/tinyemu#nuttx-with-virtio-and-openamp"><strong>Full VirtIO</strong></a> support</p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu">(Run the <strong>WebAssembly Demo</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50">(See the <strong>Modified Files</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files">(See the <strong>Modified Files</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.2">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
 </ul>
