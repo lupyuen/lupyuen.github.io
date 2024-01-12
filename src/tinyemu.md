@@ -78,7 +78,7 @@ No Worries! Everything that runs in __Command Line__ TinyEMU... Will also run in
 
 We tweak NuttX for TinyEMU...
 
-TODO: Pic of TinyEMU Linux
+![Booting Linux in TinyEMU](https://lupyuen.github.io/images/tinyemu-linux.png) 
 
 # RISC-V Addresses for TinyEMU
 
@@ -249,7 +249,7 @@ Thus we __print to HTIF Console__ like this...
 
 We test this in our NuttX Boot Code...
 
-TODO: Pic of 123
+> ![Booting NuttX in TinyEMU](https://lupyuen.github.io/images/tinyemu-boot.png) 
 
 # Print in RISC-V Assembly
 
@@ -304,7 +304,7 @@ Then we work it into our __NuttX Boot Code__: [qemu_rv_head.S](https://github.co
 
 _Does it work?_
 
-Yep, NuttX prints something to the HTIF Console! Now we know that NuttX Boot Code is actually alive and running on TinyEMU...
+Yep, NuttX prints something to the HTIF Console! Now we know that NuttX Boot Code is actually alive and running on TinyEMU (pic above)...
 
 ```bash
 ## Boot NuttX in TinyEMU
@@ -387,7 +387,7 @@ Let's boot NuttX in the Web Browser...
 
 ![NuttX booting in a Web Browser](https://lupyuen.github.io/images/tinyemu-wasm.png) 
 
-> [_NuttX booting in a Web Browser_](https://lupyuen.github.io/nuttx-tinyemu)
+[_NuttX booting in a Web Browser_](https://lupyuen.github.io/nuttx-tinyemu)
 
 # Boot NuttX in Web Browser
 
@@ -553,13 +553,13 @@ Next we create a VirtIO Queue and send some data...
 
 [(__virtio_register_mmio_device__ is explained here)](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx)
 
-TODO: Pic of VirtIO Queue
+![VirtIO Queues](https://lupyuen.github.io/images/tinyemu-virtio2.jpg) 
 
 ## Create the VirtIO Queue
 
 _NuttX VirtIO + OpenAMP are talking OK to TinyEMU. What next?_
 
-To send data to VirtIO Console, we need a __VirtIO Queue__: [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925)
+To send data to VirtIO Console, we need a __VirtIO Queue__ (pic above): [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925)
 
 ```c
 // At Startup: Init VirtIO Device
@@ -600,7 +600,7 @@ Now we have 2 VirtIO Queues: __Transmit and Receive__. Let's message them...
 
 [(__virtio_create_virtqueues__ too)](https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142)
 
-TODO: Pic of Transmit Queue to Console
+![Send data to VirtIO Queue](https://lupyuen.github.io/images/tinyemu-virtio3.jpg) 
 
 ## Send the VirtIO Message
 
