@@ -140,7 +140,7 @@ temu https://bellard.org/jslinux/buildroot-riscv64.cfg
 <p><em>What about TinyEMU for the Web Browser?</em></p>
 <p>No Worries! Everything that runs in <strong>Command Line</strong> TinyEMU… Will also run in <strong>Web Browser</strong> TinyEMU!</p>
 <p>We tweak NuttX for TinyEMU…</p>
-<p>TODO: Pic of TinyEMU Linux</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu-linux.png" alt="Booting Linux in TinyEMU" /> </p>
 <h1 id="risc-v-addresses-for-tinyemu"><a href="#risc-v-addresses-for-tinyemu">2 RISC-V Addresses for TinyEMU</a></h1>
 <p><em>How will TinyEMU boot our Operating System?</em></p>
 <p>TinyEMU is hardcoded to run at these <strong>RISC-V Addresses</strong>: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
@@ -269,7 +269,9 @@ static void htif_handle_cmd(RISCVMachine *s) {
   = 0x0101000000000031ul;         // device=1, cmd=1, buf=0x31
 </code></pre></div>
 <p>We test this in our NuttX Boot Code…</p>
-<p>TODO: Pic of 123</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/tinyemu-boot.png" alt="Booting NuttX in TinyEMU" /> </p>
+</blockquote>
 <h1 id="print-in-risc-v-assembly"><a href="#print-in-risc-v-assembly">5 Print in RISC-V Assembly</a></h1>
 <p><em>We’re checking if NuttX is alive on TinyEMU…</em></p>
 <p><em>How do we print something in the NuttX Boot Code?</em></p>
@@ -308,7 +310,7 @@ sd  t1, 0(t0)
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv64--load-and-store-instructions">(<strong><code>sd</code></strong> stores a 64-bit Double-Word from a Register into an Address Offset)</a></p>
 <p>Then we work it into our <strong>NuttX Boot Code</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L61">qemu_rv_head.S</a></p>
 <p><em>Does it work?</em></p>
-<p>Yep, NuttX prints something to the HTIF Console! Now we know that NuttX Boot Code is actually alive and running on TinyEMU…</p>
+<p>Yep, NuttX prints something to the HTIF Console! Now we know that NuttX Boot Code is actually alive and running on TinyEMU (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in TinyEMU
 ## To Exit TinyEMU: Press Ctrl-A then `x`
 $ temu nuttx.cfg
@@ -366,9 +368,7 @@ nx_start: CPU0: Beginning Idle Loop
 <p><a href="https://gist.github.com/lupyuen/8805f8f21dfae237bc06dfbda210628b">(See the <strong>Complete Log</strong>)</a></p>
 <p>Let’s boot NuttX in the Web Browser…</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu-wasm.png" alt="NuttX booting in a Web Browser" /> </p>
-<blockquote>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu"><em>NuttX booting in a Web Browser</em></a></p>
-</blockquote>
 <h1 id="boot-nuttx-in-web-browser"><a href="#boot-nuttx-in-web-browser">7 Boot NuttX in Web Browser</a></h1>
 <p><em>Will NuttX boot in the Web Browser?</em></p>
 <p>Yep! Click below to see the Demo (pic above) and the Source Files…</p>
@@ -505,10 +505,10 @@ virtio_mmio_init_device:
 </ul>
 <p>Next we create a VirtIO Queue and send some data…</p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx">(<strong>virtio_register_mmio_device</strong> is explained here)</a></p>
-<p>TODO: Pic of VirtIO Queue</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu-virtio2.jpg" alt="VirtIO Queues" /> </p>
 <h2 id="create-the-virtio-queue"><a href="#create-the-virtio-queue">8.2 Create the VirtIO Queue</a></h2>
 <p><em>NuttX VirtIO + OpenAMP are talking OK to TinyEMU. What next?</em></p>
-<p>To send data to VirtIO Console, we need a <strong>VirtIO Queue</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925">virtio-mmio.c</a></p>
+<p>To send data to VirtIO Console, we need a <strong>VirtIO Queue</strong> (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925">virtio-mmio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// At Startup: Init VirtIO Device
 // Based on virtio_serial_init
 // https://github.com/apache/nuttx/blob/master/drivers/virtio/virtio-serial.c#L445-L511
@@ -543,7 +543,7 @@ virtio_set_status(vdev, VIRTIO_CONFIG_STATUS_DRIVER_OK);
 <p>Now we have 2 VirtIO Queues: <strong>Transmit and Receive</strong>. Let’s message them…</p>
 <p><a href="https://github.com/OpenAMP/open-amp/blob/main/lib/include/openamp/virtio.h#L346-L366">(<strong>virtio_set_status</strong> comes from OpenAMP)</a></p>
 <p><a href="https://github.com/OpenAMP/open-amp/blob/main/lib/virtio/virtio.c#L96-L142">(<strong>virtio_create_virtqueues</strong> too)</a></p>
-<p>TODO: Pic of Transmit Queue to Console</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu-virtio3.jpg" alt="Send data to VirtIO Queue" /> </p>
 <h2 id="send-the-virtio-message"><a href="#send-the-virtio-message">8.3 Send the VirtIO Message</a></h2>
 <p>To print something, we write to the <strong>Transmit Queue</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L870-L925">virtio-mmio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Send data to VirtIO Device
