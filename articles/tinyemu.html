@@ -276,7 +276,7 @@ static void htif_handle_cmd(RISCVMachine *s) {
 <p><em>We’re checking if NuttX is alive on TinyEMU…</em></p>
 <p><em>How do we print something in the NuttX Boot Code?</em></p>
 <p>This will be a little delicate: Our NuttX Boot Code is in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S"><strong>RISC-V Assembly</strong></a>!</p>
-<p>(Beause it’s the first thing that runs when NuttX boots)</p>
+<p>(Because it’s the first thing that runs when NuttX boots)</p>
 <p>From the previous section, we print “<strong><code>123</code></strong>” to TinyEMU’s HTIF Console like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Print `1` to HTIF Console
 *(volatile uint64_t *) 0x40008000 // HTIF Base Address
