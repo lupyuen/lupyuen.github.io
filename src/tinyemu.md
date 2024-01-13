@@ -415,7 +415,7 @@ cp nuttx.S nuttx.config nuttx.hash  \
 
 [(See the __Build Steps__)](https://lupyuen.github.io/articles/tinyemu#appendix-build-nuttx-for-tinyemu)
 
-The other [__WebAssembly Files__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs) were provided by [__TinyEMU__](https://bellard.org/tinyemu/)...
+The other [__WebAssembly Files__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs) were provided by [__TinyEMU__](https://bellard.org/tinyemu/) (compiled with [__Emscripten__](https://emscripten.org/))...
 
 - Precompiled JSLinux Demo: [__jslinux-2019-12-21.tar.gz__](https://bellard.org/tinyemu/jslinux-2019-12-21.tar.gz)
 
