@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-01-14",
+      "website": "https://lupyuen.github.io/articles/tinyemu",
+      "summary": "Here's how we boot and run Apache NuttX RTOS in the Web Browser... Thanks to TinyEMU RISC-V Emulator, VirtIO Virtual Devices and OpenAMP Library"
+    },
+    {
       "name": "Nim on a Real-Time Operating System: Apache NuttX RTOS + Ox64 BL808 SBC",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-01-01",

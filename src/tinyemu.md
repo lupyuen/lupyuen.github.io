@@ -1,6 +1,6 @@
 # Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO
 
-📝 _15 Jan 2024_
+📝 _14 Jan 2024_
 
 ![Apache NuttX RTOS in a Web Browser... With TinyEMU and VirtIO](https://lupyuen.github.io/images/tinyemu-title.png) 
 
@@ -686,7 +686,7 @@ Everything shall be explained in the next article. Here's a sneak peek...
 
 1.  [__"Enable NuttX Console for VirtIO"__](https://github.com/lupyuen/nuttx-tinyemu#enable-nuttx-console-for-virtio)
 
-1.  [__"TinyEMU can't enable Machine-Mode Software Interrupts"__](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-cant-enable-machine-mode-software-interrupts)
+1.  [__"TinyEMU can't enable Machine-Mode External Interrupts"__](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-cant-enable-machine-mode-external-interrupts)
 
 1.  [__"TinyEMU supports VirtIO Block, Network, Input and Filesystem Devices"__](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-supports-virtio-block-network-input-and-filesystem-devices)
 
@@ -704,13 +704,23 @@ Everything shall be explained in the next article. Here's a sneak peek...
 
 # What's Next
 
-TODO
+Today we've built some cool things that might __Emulate NuttX Gadgets__ in the Web Browser (like Ox64 BL808 SBC) or light up a __Real-Time NuttX Dashboard__...
 
-How will you use NuttX in a Web Browser? Please lemme know 🙏
+- We booted NuttX in __TinyEMU RISC-V Emulator__
+
+- Added support for __HTIF Console__
+
+- Tested __VirtIO Console__ with __OpenAMP Library__
+
+- And everything works great on the web thanks to __Emscripten and WebAssembly__!
+
+How will you use __NuttX in a Web Browser__? Please lemme know 🙏
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=38985760)
 
 -   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 

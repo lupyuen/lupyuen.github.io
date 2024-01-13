@@ -664,6 +664,8 @@ bl808_gpio_write(  // Write to the GPIO Output...
 );
 ```
 
+[(See the __Upcoming GPIO Driver__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/52)
+
 _Anything else we patched?_
 
 We fixed the __NuttX Timer__ for Ox64 (otherwise we can't blink)...

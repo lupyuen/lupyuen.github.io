@@ -1,6 +1,6 @@
 # Recipe for Wholemeal Sourdough with Bread Machine
 
-📝 _5 Dec 2023_
+📝 _14 Jan 2024_
 
 ![Honey & Milk Sourdough](https://lupyuen.github.io/images/sourdough25.jpg)
 
@@ -10,39 +10,33 @@ _Honey & Milk Sourdough_
 
 Daily routine for Sourdough Starter, assuming that we bake every other day...
 
--   Every Other Morning: Discard 2 ladles (2/3 cups) of Sourdough Starter.
+-   Before Every Feeding: Pour away most of the Sourdough Starter. A tiny bit of Sourdough Starter is sufficient to chomp up the flour.
 
-    Place the discard at Bread Machine, ready for baking.
-    
 -   Feed 2 times daily:
 
     -   1/4 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
     
-    -   1/8 cup Boiled Water at Room Temperature
+    -   1/4 cup Boiled Water at Room Temperature. Consistency should be watery, so it's easier to pour away.
 
-    Except for the night before baking, increase to:
+    Except for the morning of dough-making, increase to:
 
-    -   1/2 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
+    -   3/4 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
     
-    -   1/4 cup Boiled Water at Room Temperature
-
-    After each feeding, consistency should be like thick oatmeal. If it's too watery, skip the water.
+    -   1/4 cup Boiled Water at Room Temperature. Consistency should be like thick oatmeal, so it will rise better.
 
 -   Stir the Sourdough Starter with a chopstick (the blunt end)
 
--   Every Other Morning: Sourdough Starter should rise 2 cm by morning, ready for baking.
+-   Every Other Afternoon / Evening: Sourdough Starter should double in height by afternoon / evening, ready for dough-making.
 
     [(See pic below)](https://lupyuen.github.io/images/sourdough2.jpg)
 
--   Wipe clean the inside of the Sourdough Jar whenever we discard Sourdough Starter in the morning.
-
--   If Sourdough Starter has exceeded 4 cups in volume, throw away half of the Sourdough Starter
+-   Wipe clean the inside of the Sourdough Jar whenever we discard Sourdough Starter
 
 ![Wholemeal Sourdough Starter](https://lupyuen.github.io/images/sourdough2.jpg)
 
 # Baking the Wholemeal Sourdough
 
-Every other morning we bake a One-Pound Loaf of Honey & Milk Sourdough Bread.
+Every other afternoon / evening we prepare the dough for a One-Pound Loaf of Honey & Milk Sourdough Bread. (Baked the next morning)
 
 Add in this sequence to Bread Machine...
 
@@ -50,35 +44,35 @@ Add in this sequence to Bread Machine...
 
 -   1 tablespoon Honey
 
+    [(Or 1 stick of Ovaltine Instant Malt Drink Powder, 30g)](https://www.fairprice.com.sg/product/ovaltine-malt-drink-chocolate-820g-13058372)
+
 -   1 tablespoon Full Cream Milk Powder 
 
--   2 cups Boiling Water (100 deg C)
+-   3/4 cup Boiling Water (100 deg C)
 
-    Stir the Boiling Water to melt the butter and blend the honey and milk.
+    Stir the Boiling Water to melt the butter and blend the honey (or Ovaltine) and milk.
 
--   1/2 cup Wholemeal Sourdough Starter, ripe (fed) from above
+-   1 cup Wholemeal Sourdough Starter, ripe (fed) from above
 
-    (I mark out 1.5 cm of the above container with 13 cm diameter)
-
-    (Too much starter will make the bread gummy)
+    (Just add all the Sourdough Starter, leaving a little bit to regenerate)
 
 -   2 cups (240g) Bread Flour
 
 -   1/2 teaspoon (2.8g) Salt
 
--   1/2 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness).
+-   1/4 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness).
 
     Too much Baking Soda will taste soapy!
 
 ![Honey & Milk Sourdough](https://lupyuen.github.io/images/sourdough25.jpg)
 
-We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Oven to rise the dough (4 hours), then move the Bread Bucket back to the Bread Machine for more rising and baking. Here are the steps...
+We will knead the dough in the Bread Machine, move the Bread Bucket to a Cool Oven to rise the dough (3 hours), refrigerate overnight (slow rising), then move the Bread Bucket back to the Bread Machine for more rising and baking. Here are the steps...
 
 1.  To knead the dough, start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "Quick Baking" Cycle.
 
     (This is the quickest way to knead)
 
-1.  Sprinkle Bread Flour or Water until dough becomes a Smooth and Creamy Ball. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
+1.  If Necessary: Sprinkle Bread Flour or Water until dough becomes a Smooth and Creamy Ball. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
 
 1.  After the Kneading Step has completed, power off the Bread Machine
 
@@ -86,21 +80,29 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Ov
 
     Here's how: Tilt the Bread Bucket to one side, scrape the dough off the Paddle with a wooden chopstick, remove the Paddle.
 
-1.  Place the Bread Bucket in a Warm Oven, and cover with a Dry Towel. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
+1.  Inside the Bread Bucket: Wet our hands and [Stretch and Fold](https://www.theperfectloaf.com/how-to-stretch-and-fold-sourdough-bread-dough/) the dough one round: North, South, East, West
 
-    Allow the dough to rise for 4 hours. Or until the dough reaches the brim of the Bread Bucket.
+    Seriously Stretch the dough with a Looooong Pull, before Each Folding. Makes the bread super floofy!
 
-    (Nowadays I leave my Bread Bucket overnight for 8 hours in my Microwave Oven. The dough deflates a little, but the bread gets fluffier)
+1.  Inside the Bread Bucket: Wet our hands and pat the dough until it becomes a Smooth and Creamy Ball. Scrape the dough away from the sides of the Bread Bucket.
 
-    (After rising for 8 hours, it's OK to refrigerate the whole Bread Bucket, covered in cellophane wrap, before baking the next day. Not the freezer!)
+    Smooth over any holes, make the dough airtight.
 
-1.  Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "French Bread" Cycle (5 hour cycle) WITHOUT the Bread Bucket.
+1.  Place the Bread Bucket in a Cool Oven, and cover with a Dry Towel. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
+
+    Allow the dough to rise for 3 hours. The dough should reach almost the brim of the Bread Bucket.
+
+1.  Refrigerate overnight the whole Bread Bucket (covered with Dry Towel) for slow rising, before baking the next day.
+
+    (Not the freezer!)
+
+1.  Next Morning: Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "French Bread" Cycle (5 hour cycle) WITHOUT the Bread Bucket.
 
     Bread Machine will try to knead without the Bread Bucket. And that's OK.
 
 1.  35 mins after starting "French Bread" Cycle: Bread Machine will stop kneading.
 
-    Move the Bread Bucket into the Bread Machine.
+    Move the Bread Bucket from fridge into the Bread Machine.
 
 1.  "French Bread" Cycle will warm up and rise the dough for 3 hours.
 
@@ -108,21 +110,13 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Warm Ov
 
     [(French Bread Mode is explained on Page 17)](https://www.zojirushi.com/servicesupport/manuals/manual_pdf/bb_hac10.pdf)
 
-1.  Just Before Baking: Score our dough lengthwise with a wet sewing thread. (In a sawing motion)
-
-    Pop any large bubbles.
-
-    (Otherwise our dough will pop and deflate during baking)
-
 1.  After Baking: Our loaf might get stuck to the Spindle in the Bread Bucket.
 
     Turn the Spindle a few rounds, via the Bottom Exterior of Bread Bucket. (Very hot!)
 
     Our loaf will plop out from the Bread Bucket. Don't shake the Bread Bucket too hard, because the loaf will tear with a circular hole.
 
-Yep it's 9 hours in total, instead of the normal 5-hour "French Bread" Mode! This gives the sourdough plenty of time to rise (7.5 hours), for the extra bubbly floofiness.
-
-How warm is the oven? For breakfast I toast my bread in the oven at 250 deg C for 5 minutes. I wait for the oven to cool a bit, then I move the Bread Bucket inside.
+Yep it's 8 hours plus fridge overnight 9 hours, instead of the normal 5-hour "French Bread" Mode! This gives the dough plenty of time to rise (12 hours), for the extra bubbly floofiness.
 
 [(Watch the Video on YouTube)](https://www.youtube.com/shorts/R7GI71rqUc8)
 
@@ -147,8 +141,6 @@ Add in this sequence to Bread Machine...
 -   1/2 teaspoon (2.8g) Salt
 
 -   1/2 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness). Too much Baking Soda will taste soapy!
-
--   NO MILK because the loaf will look burnt
 
 During Kneading...
 
