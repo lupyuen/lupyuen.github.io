@@ -690,6 +690,8 @@ Everything shall be explained in the next article. Here's a sneak peek...
 
 1.  [__"TinyEMU supports VirtIO Block, Network, Input and Filesystem Devices"__](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-supports-virtio-block-network-input-and-filesystem-devices)
 
+1.  [__"TinyEMU Networking in the Web Browser"__](https://github.com/lupyuen/nuttx-tinyemu#tinyemu-networking-in-the-web-browser)
+
 1.  [__"Inside the VirtIO Driver for NuttX"__](https://github.com/lupyuen/nuttx-tinyemu#inside-the-virtio-driver-for-nuttx)
 
 1.  [__"VirtIO Console Input in TinyEMU"__](https://github.com/lupyuen/nuttx-tinyemu#virtio-console-input-in-tinyemu)
