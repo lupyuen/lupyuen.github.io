@@ -116,12 +116,12 @@
 <p>We begin by installing <a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU RISC-V Emulator</strong></a> at the Command Line…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install TinyEMU on macOS
 ## https://github.com/fernandotcl/homebrew-fernandotcl
-## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L20-L29
+## https://github.com/lupyuen/ox64-tinyemu/blob/upstream/.github/workflows/ci.yml#L22-L32
 brew tap fernandotcl/homebrew-fernandotcl
 brew install --HEAD fernandotcl/fernandotcl/tinyemu
 
 ## Install TinyEMU on Ubuntu
-## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L6-L13
+## https://github.com/lupyuen/ox64-tinyemu/blob/upstream/.github/workflows/ci.yml#L6-L13
 sudo apt install libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev
 git clone https://github.com/fernandotcl/TinyEMU
 cd TinyEMU
@@ -136,7 +136,7 @@ temu
 ## To Exit TinyEMU: Press Ctrl-A then `x`
 temu https://bellard.org/jslinux/buildroot-riscv64.cfg
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/upstream/.github/workflows/ci.yml">(See the <strong>Build Script</strong>)</a></p>
 <p><em>What about TinyEMU for the Web Browser?</em></p>
 <p>No Worries! Everything that runs in <strong>Command Line</strong> TinyEMU… Will also run in <strong>Web Browser</strong> TinyEMU!</p>
 <p>We tweak NuttX for TinyEMU…</p>
@@ -612,6 +612,9 @@ Hello VirtIO from NuttX!
 <p>Everything shall be explained in the next article. Here’s a sneak peek…</p>
 <span style="font-size:90%">
 <ol>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-tinyemu#risc-v-addresses-for-tinyemu"><strong>“Define the PLIC and CLINT Addresses in NuttX”</strong></a></p>
+</li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu#enable-the-virtio-serial-driver"><strong>“Enable the VirtIO Serial Driver”</strong></a></p>
 </li>
