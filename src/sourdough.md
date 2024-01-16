@@ -92,7 +92,11 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Cool Ov
 
     Allow the dough to rise for 3 hours. The dough should reach almost the brim of the Bread Bucket.
 
-1.  Refrigerate overnight the whole Bread Bucket (covered with Dry Towel) for slow rising, before baking the next day.
+1.  While waiting 3 hours: Do 3 more rounds of [Stretch and Fold](https://www.theperfectloaf.com/how-to-stretch-and-fold-sourdough-bread-dough/) inside the Bread Bucket. (30 mins between each round of Stretch and Fold)
+
+    Makes the bread super floofy!
+
+1.  Refrigerate overnight (9 hours) the whole Bread Bucket (covered with Dry Towel) for slow rising (yep it will still rise), before baking the next day.
 
     (Not the freezer!)
 
