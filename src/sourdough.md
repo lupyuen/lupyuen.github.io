@@ -100,7 +100,9 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Cool Ov
 
     (Not the freezer!)
 
-1.  Next Morning: Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "French Bread" Cycle (5 hour cycle) WITHOUT the Bread Bucket.
+__At the Next Morning (9am):__
+
+1.  Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "French Bread" Cycle (5 hour cycle) WITHOUT the Bread Bucket.
 
     Bread Machine will try to knead without the Bread Bucket. And that's OK.
 
