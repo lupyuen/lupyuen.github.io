@@ -49,12 +49,12 @@ We begin by installing [__TinyEMU RISC-V Emulator__](https://github.com/fernando
 ```bash
 ## Install TinyEMU on macOS
 ## https://github.com/fernandotcl/homebrew-fernandotcl
-## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L20-L29
+## https://github.com/lupyuen/ox64-tinyemu/blob/upstream/.github/workflows/ci.yml#L22-L32
 brew tap fernandotcl/homebrew-fernandotcl
 brew install --HEAD fernandotcl/fernandotcl/tinyemu
 
 ## Install TinyEMU on Ubuntu
-## https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml#L6-L13
+## https://github.com/lupyuen/ox64-tinyemu/blob/upstream/.github/workflows/ci.yml#L6-L13
 sudo apt install libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev
 git clone https://github.com/fernandotcl/TinyEMU
 cd TinyEMU
@@ -70,7 +70,7 @@ temu
 temu https://bellard.org/jslinux/buildroot-riscv64.cfg
 ```
 
-[(See the __Build Script__)](https://github.com/lupyuen/TinyEMU/blob/master/.github/workflows/ci.yml)
+[(See the __Build Script__)](https://github.com/lupyuen/ox64-tinyemu/blob/upstream/.github/workflows/ci.yml)
 
 _What about TinyEMU for the Web Browser?_
 
@@ -681,6 +681,8 @@ __Up Next:__ We configure NuttX to use the [__VirtIO Serial Driver__](https://gi
 Everything shall be explained in the next article. Here's a sneak peek...
 
 <span style="font-size:90%">
+
+1.  [__"Define the PLIC and CLINT Addresses in NuttX"__](https://github.com/lupyuen/nuttx-tinyemu#risc-v-addresses-for-tinyemu)
 
 1.  [__"Enable the VirtIO Serial Driver"__](https://github.com/lupyuen/nuttx-tinyemu#enable-the-virtio-serial-driver)
 
