@@ -8,19 +8,33 @@ TODO: [_(Live Demo of NuttX on TinyEMU)_](https://lupyuen.github.io/nuttx-tinyem
 
 TODO: [_(Watch on YouTube)_](https://youtu.be/KYrdwzIsgeQ)
 
-In olden times we had Computer Games (plus Operating Systems) on 5.25-inch __Floppy Disks__. And we'd boot the Floppy Disks (clakety-clack) on __Apple II Computers__ with 64 KB RAM.
+_In olden times we had Computer Games (plus Operating Systems) on 5.25-inch __Floppy Disks__. And we'd boot the Floppy Disks (clakety-clack) on __Apple II Computers__ with 64 KB RAM._
 
 Today (40 years later) we boot __microSD Cards__ (clickety-click) on [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V Single-Board Computers with 64 MB RAM. (Pic below)
 
-_What if we could turn it into a Virtual Ox64 that boots in our Web Browser? Exactly like an Emulated Apple II!_
+_What if we could turn it into a_ __Virtual Ox64 SBC__ _that boots in our_ __Web Browser__? _Exactly like an_ [__Emulated Apple II__](https://www.scullinsteel.com/apple2/#dos33master)!
 
 In this article we...
 
-TODO
+- Take [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) precompiled for Ox64
 
-[__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) is a tiny operating system for [__64-bit RISC-V Machines__](https://lupyuen.github.io/articles/riscv) and many other platforms. (Arm, x64, ESP32, ...)
+  (Without any modifications!)
 
-[__TinyEMU__](https://github.com/fernandotcl/TinyEMU) is a barebones RISC-V Emulator that runs in a [__Web Browser__](https://www.barebox.org/jsbarebox/?graphic=1). (Thanks to WebAssembly)
+- Boot it on the [__TinyEMU__](https://github.com/fernandotcl/TinyEMU) RISC-V Emulator
+
+  [(Which runs in a __Web Browser__)](https://www.barebox.org/jsbarebox/?graphic=1)
+
+- Create our own __Emulator for Ox64 SBC__
+
+  (With minor tweaks to TinyEMU)
+
+- And run everything in our __Web Browser__!
+
+  (Thanks to WebAssembly)
+
+TODO: Why NuttX?
+
+[__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) is a tiny operating system for [__64-bit RISC-V Machines__](https://lupyuen.github.io/articles/riscv) and many other platforms. (Arm, x64, ESP32, ...)
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
 
