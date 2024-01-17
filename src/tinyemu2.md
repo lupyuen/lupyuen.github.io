@@ -8,7 +8,7 @@
 
 TODO: [_(Watch on YouTube)_](https://youtu.be/KYrdwzIsgeQ)
 
-_In olden times we had Computer Games (plus Operating Systems) on 5.25-inch __Floppy Disks__. And we'd boot the Floppy Disks (clakety-clack) on __Apple II Computers__ with 64 KB RAM._
+_In olden times we had Computer Games (plus Operating Systems) on 5.25-inch __Floppy Disks__. And we'd boot the Floppy Disks (clackety-clack) on __Apple II Computers__ with 64 KB RAM._
 
 Today (40 years later) we boot __microSD Cards__ (clickety-click) on [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V Single-Board Computers with 64 MB RAM. (Pic below)
 
@@ -467,27 +467,88 @@ Let's find out! First we fix the [TinyEMU Build for Emscripten](https://github.c
 
 TODO: Emulate BL808 GPIO to Blink an LED
 
-# RISC-V Machine Mode vs Supervisor Mode
+# Machine Mode vs Supervisor Mode
 
-TODO
+_Back to our earlier question: Why did our System Call fail?_
 
-NuttX Shell: [init.S](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358)
+Our NuttX App (NuttX Shell) tried to make a __System Call (ECALL)__ to NuttX Kernel. And it failed: [init.S](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358)
 
 ```c
 nuttx/syscall/proxies/PROXY_sched_getparam.c:8
   int sched_getparam(pid_t parm1, FAR struct sched_param * parm2) {
   ...
+  // ECALL fails with a RISC-V Exception
   nuttx/include/arch/syscall.h:229
     19c6: 00000073  ecall
 ```
 
-_What's ecall?_
+TODO: (See the __Source Code__)
 
-At `0x19C6` we see the __RISC-V ECALL Instruction__ that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). 
+_What's ECALL again?_
 
-Hence our NuttX Shell is making a __System Call__ to NuttX Kernel!
+The __RISC-V ECALL Instruction__ normally jumps...
 
-Which fails because everything runs in RISC-V Machine Mode right now. We will need to start TinyEMU in RISC-V Supervisor Mode (instead of Machine Mode).
+- From our __NuttX App__
+
+  (In __RISC-V User Mode__)
+  
+- To the __NuttX Kernel__
+
+  (In __RISC-V Supervisor Mode__)
+
+- In order to make a __System Call__
+
+  (Which failed)
+
+__System Calls__ are absolutely essential. That's how our apps will execute system functions, like printing to the Console Output.
+
+_Why did ECALL fail?_
+
+That's because our NuttX App is actually running in __RISC-V Machine Mode__, not User Mode!
+
+Machine Mode is the __most powerful mode__ in a RISC-V System, more powerful than Supervisor Mode and User Mode...
+
+And Machine Mode __can't possibly make ECALLS__ to a Higher Mode!
+
+TODO: Pic of Machine, Supervisor, User Modes. Start / System Call (ECALL)
+
+_Huh! How did that happen?_
+
+TinyEMU always __starts in Machine Mode__. Everything we saw today: That's all running in (super-powerful) Machine Mode.
+
+But a __Real Ox64 SBC__ is a little different...
+
+1.  Ox64 boots the __OpenSBI Supervisor Binary Interface__ in __Machine Mode__...
+
+    (Think BIOS, but for RISC-V Machines)
+
+1.  Which starts the __U-Boot Bootloader__ in __Supervisor Mode__...
+
+1.  Which starts the __NuttX Kernel__, also in __Supervisor Mode__...
+
+1.  And NuttX Kernel starts the __NuttX Apps__ in __User Mode__
+
+TODO: Pic of OpenSBI, U-Boot, Kernel, Apps
+
+_So we need to start NuttX Kernel in Supervisor Mode?_
+
+Yep, we need more tweaks in TinyEMU to start NuttX in Supervisor Mode. (Instead of Machine Mode)
+
+TODO: Pic of TinyEMU, Kernel, Apps. Start / System Call (ECALL). Emulate OpenSBI Timer
+
+_Any other gotchas?_
+
+There's a tiny quirk: NuttX Kernel will __make an ECALL__ too...
+
+NuttX Kernel makes a __System Call to OpenSBI__ to set the System Timer. (Pic above)
+
+_Do we plan to boot OpenSBI on TinyEMU?_
+
+That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU. (Pic above)
+
+(It's truly amazing we managed to boot so much in Machine Mode!)
+
+TODO
 
 # Emulate Ox64 BL808 SBC with TinyEMU
 
