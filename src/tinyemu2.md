@@ -18,7 +18,7 @@ In this article we...
 
 - Take [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) precompiled for Ox64
 
-  (Without any modifications!)
+  (Without any modifications)
 
 - Boot it on the [__TinyEMU RISC-V Emulator__](https://github.com/fernandotcl/TinyEMU)
 
@@ -28,15 +28,15 @@ In this article we...
 
   (With minor tweaks to TinyEMU)
 
-- And run everything in our __Web Browser__!
+- And run everything in our __Web Browser__
 
   (Thanks to WebAssembly)
 
 _Why NuttX?_
 
-[__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) is a tiny operating system for [__64-bit RISC-V Machines__](https://lupyuen.github.io/articles/riscv) and many other platforms. (Arm, x64, ESP32, ...)
+[__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) is a tiny operating system for [__64-bit RISC-V Machines__](https://lupyuen.github.io/articles/riscv). (Also Arm, x64, ESP32, ...)
 
-So we'll understand __everything that happens__ as NuttX boots on our Ox64 Emulator.
+Which makes it easier to understand __everything that happens__ as NuttX boots on our Ox64 Emulator.
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
 
@@ -68,7 +68,7 @@ make CFLAGS=-I$(brew --prefix)/opt/openssl/include LDFLAGS=-L$(brew --prefix)/op
 
 _What about TinyEMU for the Web Browser?_
 
-No Worries! Everything that runs in __Command Line__ TinyEMU... Will also run in __Web Browser__ TinyEMU!
+No Worries! Everything that runs in __Command Line__ TinyEMU... Will also run in __Web Browser__ TinyEMU.
 
 We tweak TinyEMU for Ox64...
 
@@ -76,7 +76,7 @@ We tweak TinyEMU for Ox64...
 
 _TinyEMU needs to emulate our Ox64 BL808 SBC. What shall we tweak?_
 
-TinyEMU is hardcoded to run at __Fixed RISC-V Addresses__. (Yep it's really barebones!)
+TinyEMU is hardcoded to run at __Fixed RISC-V Addresses__. (Yep it's really barebones)
 
 We tweak the RISC-V Addresses in TinyEMU, so that they match the __Bouffalo Lab BL808 SoC__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82)
 
@@ -546,7 +546,7 @@ _Do we plan to boot OpenSBI on TinyEMU?_
 
 That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU. (Pic above)
 
-(It's truly amazing we managed to boot so much in Machine Mode!)
+(It's truly amazing we managed to boot so much in Machine Mode)
 
 TODO
 
