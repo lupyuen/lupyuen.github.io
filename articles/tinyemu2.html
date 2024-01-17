@@ -70,7 +70,9 @@
 <li><a href="#change-risc-v-addresses-in-tinyemu">2 Change RISC-V Addresses in TinyEMU</a><ul></ul></li>
 <li><a href="#run-tinyemu-emulator">3 Run TinyEMU Emulator</a><ul></ul></li>
 <li><a href="#uart-registers-for-bl808-soc">4 UART Registers for BL808 SoC</a><ul></ul></li>
-<li><a href="#intercept-the-uart-registers">5 Intercept the UART Registers</a><ul></ul></li>
+<li><a href="#intercept-the-uart-registers">5 Intercept the UART Registers</a><ul>
+<li><a href="#emulate-the-uart-status">5.1 Emulate the UART Status</a><ul></ul></li>
+<li><a href="#emulate-the-uart-output">5.2 Emulate the UART Output</a><ul></ul></li></ul></li>
 <li><a href="#nuttx-exception-in-ox64-bl808-emulator">6 NuttX Exception in Ox64 BL808 Emulator</a><ul></ul></li>
 <li><a href="#emulate-ox64-bl808-in-web-browser">7 Emulate Ox64 BL808 in Web Browser</a><ul></ul></li>
 <li><a href="#emulate-ox64-bl808-sbc-with-tinyemu">8 Emulate Ox64 BL808 SBC with TinyEMU</a><ul></ul></li>
@@ -275,8 +277,15 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
 <p><em>NuttX tries to print something but fails…</em></p>
 <p><em>How to fix the UART Registers in our Ox64 Emulator?</em></p>
 <p>Inside TinyEMU, we intercept all “<strong>read <code>0x3000_2084</code></strong>” and “<strong>write <code>0x3000_2088</code></strong>”. And we pretend to be a <strong>UART Port</strong>…</p>
+<h2 id="emulate-the-uart-status"><a href="#emulate-the-uart-status">5.1 Emulate the UART Status</a></h2>
 <p>TODO</p>
-<p>Let’s intercept the “read 0x3000_2084” and “write 0x3000_2088” in TinyEMU Emulator for Ox64 BL808, so we can print the UART Output.</p>
+<blockquote>
+<p><strong><code>0x3000_2084</code></strong> is <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>uart_fifo_config_1</strong> (Page 427)</a> </p>
+</blockquote>
+<blockquote>
+<p><em>We read this UART Register to check if <strong>UART Transmit is ready</strong> (for more output)</em></p>
+</blockquote>
+<p>TODO</p>
 <p>We handle all “read 0x3000_2084” (uart_fifo_config_1) by returning 32 (TX FIFO Available Count), to tell NuttX that the UART Port is always ready to transmit: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3">riscv_cpu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* return 0 if OK, != 0 if exception */
 int target_read_slow(RISCVCPUState *s, mem_uint_t *pval, target_ulong addr, int size_log2) {
@@ -297,7 +306,15 @@ int target_read_slow(RISCVCPUState *s, mem_uint_t *pval, target_ulong addr, int 
       return 0;
     }
     //// End Test
-</code></pre></div>
+</code></pre></div><h2 id="emulate-the-uart-output"><a href="#emulate-the-uart-output">5.2 Emulate the UART Output</a></h2>
+<p>TODO</p>
+<blockquote>
+<p><strong><code>0x3000_2088</code></strong> is <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>uart_fifo_wdata</strong> (Page 428)</a> </p>
+</blockquote>
+<blockquote>
+<p><em>We write to this UART Register to <strong>print a character</strong> to UART Output</em></p>
+</blockquote>
+<p>TODO</p>
 <p>We handle all “write 0x3000_2088” (uart_fifo_wdata) by printing the character to the UART Output Register: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3">riscv_cpu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* return 0 if OK, != 0 if exception */
 int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int size_log2) {
