@@ -68,11 +68,12 @@
     <nav id="TOC"><ul>
 <li><a href="#install-tinyemu-emulator">1 Install TinyEMU Emulator</a><ul></ul></li>
 <li><a href="#change-risc-v-addresses-in-tinyemu">2 Change RISC-V Addresses in TinyEMU</a><ul></ul></li>
-<li><a href="#intercept-uart-registers-for-ox64-bl808-emulator">3 Intercept UART Registers for Ox64 BL808 Emulator</a><ul></ul></li>
-<li><a href="#nuttx-exception-in-ox64-bl808-emulator">4 NuttX Exception in Ox64 BL808 Emulator</a><ul></ul></li>
-<li><a href="#emulate-ox64-bl808-in-web-browser">5 Emulate Ox64 BL808 in Web Browser</a><ul></ul></li>
-<li><a href="#emulate-ox64-bl808-sbc-with-tinyemu">6 Emulate Ox64 BL808 SBC with TinyEMU</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
+<li><a href="#run-tinyemu-emulator">3 Run TinyEMU Emulator</a><ul></ul></li>
+<li><a href="#intercept-uart-registers-for-ox64-bl808-emulator">4 Intercept UART Registers for Ox64 BL808 Emulator</a><ul></ul></li>
+<li><a href="#nuttx-exception-in-ox64-bl808-emulator">5 NuttX Exception in Ox64 BL808 Emulator</a><ul></ul></li>
+<li><a href="#emulate-ox64-bl808-in-web-browser">6 Emulate Ox64 BL808 in Web Browser</a><ul></ul></li>
+<li><a href="#emulate-ox64-bl808-sbc-with-tinyemu">7 Emulate Ox64 BL808 SBC with TinyEMU</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-title.png" alt="Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><em>(Live Demo of Ox64 BL808 Emulator)</em></a></p>
 <p>TODO: <a href="https://youtu.be/KYrdwzIsgeQ"><em>(Watch on YouTube)</em></a></p>
@@ -126,9 +127,10 @@ make CFLAGS=-I$(brew --prefix)/opt/openssl/include LDFLAGS=-L$(brew --prefix)/op
 <h1 id="change-risc-v-addresses-in-tinyemu"><a href="#change-risc-v-addresses-in-tinyemu">2 Change RISC-V Addresses in TinyEMU</a></h1>
 <p><em>TinyEMU needs to emulate our Ox64 BL808 SBC. What shall we tweak?</em></p>
 <p>TinyEMU is hardcoded to run at <strong>Fixed RISC-V Addresses</strong>. (Yep it’s really barebones!)</p>
-<p>We tweak the RISC-V Addresses in TinyEMU, so that they match the <strong>BL808 SoC</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/8100f25ce053ca858c7588aea211bb20401be980">riscv_machine.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
-#define RAM_BASE_ADDR   0x50200000ul  // BL808 boots here
+<p>We tweak the RISC-V Addresses in TinyEMU, so that they match the <strong>Bouffalo Lab BL808 SoC</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// RISC-V Addresses for TinyEMU (modded for Ox64 BL808)
+#define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
+#define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
 #define PLIC_BASE_ADDR  0xe0000000ul  // Platform-Level Interrupt Controller (PLIC)
 #define PLIC_SIZE       0x00400000ul  // Address Range of PLIC
 #define CLINT_BASE_ADDR 0x02000000ul  // TODO: CLINT is Unused
@@ -137,15 +139,31 @@ make CFLAGS=-I$(brew --prefix)/opt/openssl/include LDFLAGS=-L$(brew --prefix)/op
 #define PLIC_HART_BASE  0x201000  // Hart 0 S-Mode Priority Threshold in PLIC
 #define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
 </code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>// At 0x0: Jump to RAM_BASE_ADDR
-q = (uint32_t *)(ram_ptr + 0x1000);
-q[0] = 0x297 + RAM_BASE_ADDR - 0x1000; /* auipc t0, jump_addr */
-q[1] = 0x597; /* auipc a1, dtb */
-q[2] = 0x58593 + ((fdt_addr - 4) &lt;&lt; 20); /* addi a1, a1, dtb */
-q[3] = 0xf1402573; /* csrr a0, mhartid */
-</code></pre></div>
 <p>TODO: Where did we get the addresses?</p>
+<p><em>What’s this Boot Code?</em></p>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L862-L872">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// At TinyEMU Startup: Init the Emulated RAM...
+static void copy_bios(...) {
+  ...
+  // Init the TinyEMU Boot Code at Address 0x1000 (ram_ptr is 0x0)
+  uint32_t *q = (uint32_t *)(ram_ptr + 0x1000);
+
+  // Load into Register T0 the RAM_BASE_ADDR (0x5020_0000)
+  // Load into Register A1 the Binary Device Tree
+  q[0] = 0x297 + RAM_BASE_ADDR - 0x1000;    // auipc t0, jump_addr
+  q[1] = 0x597;                             // auipc a1, dtb
+  q[2] = 0x58593 + ((fdt_addr - 4) &lt;&lt; 20);  // addi  a1, a1, dtb
+
+  // Load into Register A0 the Hart ID (RISC-V CPU ID: 0)
+  // Jump to Register T0: Our Kernel at RAM_BASE_ADDR (0x5020_0000)
+  q[3] = 0xf1402573;  // csrr a0, mhartid
+  q[4] = 0x00028067;  // jalr zero, t0, jump_addr
+</code></pre></div>
+<p>TODO</p>
+<h1 id="run-tinyemu-emulator"><a href="#run-tinyemu-emulator">3 Run TinyEMU Emulator</a></h1>
+<p><em>We modded TinyEMU for Ox64. What happens when we run it?</em></p>
+<p>TODO</p>
 <p>Now NuttX Ox64 boots a tiny bit on TinyEMU yay!</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ temu root-riscv64.cfg | more
 virtio_console_init
@@ -193,7 +211,7 @@ target_write_slow: invalid physical address 0x0000000030002088
 </li>
 </ul>
 <p>Note that we’re still booting in RISC-V Machine Mode! This will cause problems later, because NuttX Ox64 expects to boot in RISC-V Supervisor Mode. (Due to OpenSBI)</p>
-<h1 id="intercept-uart-registers-for-ox64-bl808-emulator"><a href="#intercept-uart-registers-for-ox64-bl808-emulator">3 Intercept UART Registers for Ox64 BL808 Emulator</a></h1>
+<h1 id="intercept-uart-registers-for-ox64-bl808-emulator"><a href="#intercept-uart-registers-for-ox64-bl808-emulator">4 Intercept UART Registers for Ox64 BL808 Emulator</a></h1>
 <p>TODO</p>
 <p>Let’s intercept the “read 0x30002084” and “write 0x30002088” in TinyEMU Emulator for Ox64 BL808, so we can print the UART Output.</p>
 <p>We handle all “read 0x30002084” (uart_fifo_config_1) by returning 32 (TX FIFO Available Count), to tell NuttX that the UART Port is always ready to transmit: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3">riscv_cpu.c</a></p>
@@ -300,7 +318,7 @@ raise_exception2: cause=2, tval=0x0
 <p>TODO: Why does NuttX read from 0x4000000030002084? Probably due to T-Head C906 MMU Flags</p>
 <p>TODO: What is <code>raise_exception2: cause=2, tval=0x0</code>?</p>
 <p>TODO: Why is NuttX Shell started twice? Because it failed? (<code>/system/bin/init</code>)</p>
-<h1 id="nuttx-exception-in-ox64-bl808-emulator"><a href="#nuttx-exception-in-ox64-bl808-emulator">4 NuttX Exception in Ox64 BL808 Emulator</a></h1>
+<h1 id="nuttx-exception-in-ox64-bl808-emulator"><a href="#nuttx-exception-in-ox64-bl808-emulator">5 NuttX Exception in Ox64 BL808 Emulator</a></h1>
 <p>TODO</p>
 <p><em>What is <code>raise_exception2: cause=8</code>?</em></p>
 <p>From the <a href="https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177">TinyEMU Log for Intercepted UART Registers</a>…</p>
@@ -338,7 +356,7 @@ nuttx/include/arch/syscall.h:229
 <p>0x19c6 is an ECALL from NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). Our NuttX Shell is making a System Call to NuttX Kernel!</p>
 <p>Which fails because everything runs in RISC-V Machine Mode right now. We will need to start TinyEMU in RISC-V Supervisor Mode (instead of Machine Mode).</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/9da5b066c9fe29ef46b93ff8174662d5e6858038">(We quit if mcause=2, otherwise it will loop forever)</a></p>
-<h1 id="emulate-ox64-bl808-in-web-browser"><a href="#emulate-ox64-bl808-in-web-browser">5 Emulate Ox64 BL808 in Web Browser</a></h1>
+<h1 id="emulate-ox64-bl808-in-web-browser"><a href="#emulate-ox64-bl808-in-web-browser">6 Emulate Ox64 BL808 in Web Browser</a></h1>
 <p>TODO</p>
 <p><em>Will our Ox64 BL808 Emulator run in the Web Browser?</em></p>
 <p>Let’s find out! First we fix the <a href="https://github.com/lupyuen/ox64-tinyemu/commit/170abb06b58a58328efa8a1874795f1daac0b7a7">TinyEMU Build for Emscripten</a>.</p>
@@ -347,7 +365,7 @@ nuttx/include/arch/syscall.h:229
 <p>And it runs OK in Web Browser yay!</p>
 <p>https://lupyuen.github.io/nuttx-tinyemu/ox64/</p>
 <p>TODO: Emulate BL808 GPIO to Blink an LED</p>
-<h1 id="emulate-ox64-bl808-sbc-with-tinyemu"><a href="#emulate-ox64-bl808-sbc-with-tinyemu">6 Emulate Ox64 BL808 SBC with TinyEMU</a></h1>
+<h1 id="emulate-ox64-bl808-sbc-with-tinyemu"><a href="#emulate-ox64-bl808-sbc-with-tinyemu">7 Emulate Ox64 BL808 SBC with TinyEMU</a></h1>
 <p>TODO</p>
 <p>Objective: Take the NuttX Kernel built for <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358">Ox64 BL808 SBC</a>. And boot it on TinyEMU RISC-V Emulator in the Web Browser!</p>
 <ol>
@@ -388,7 +406,7 @@ nuttx/include/arch/syscall.h:229
 </ol>
 <p>Let’s try booting NuttX Ox64 on TinyEMU…</p>
 <p>TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?</p>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
