@@ -278,63 +278,83 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
 <p><em>How to fix the UART Registers in our Ox64 Emulator?</em></p>
 <p>Inside TinyEMU, we intercept all “<strong>read <code>0x3000_2084</code></strong>” and “<strong>write <code>0x3000_2088</code></strong>”. And we pretend to be a <strong>UART Port</strong>…</p>
 <h2 id="emulate-the-uart-status"><a href="#emulate-the-uart-status">5.1 Emulate the UART Status</a></h2>
-<p>TODO</p>
+<p>Earlier we said…</p>
 <blockquote>
 <p><strong><code>0x3000_2084</code></strong> is <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>uart_fifo_config_1</strong> (Page 427)</a> </p>
 </blockquote>
 <blockquote>
 <p><em>We read this UART Register to check if <strong>UART Transmit is ready</strong> (for more output)</em></p>
 </blockquote>
-<p>TODO</p>
-<p>We handle all “read 0x3000_2084” (uart_fifo_config_1) by returning 32 (TX FIFO Available Count), to tell NuttX that the UART Port is always ready to transmit: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3">riscv_cpu.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/* return 0 if OK, != 0 if exception */
+<p>In TinyEMU: We intercept “<strong>read <code>0x3000_2084</code></strong>” and return the value <code>32</code>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L377-L392">riscv_cpu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// TinyEMU reads a Memory Address...
 int target_read_slow(RISCVCPUState *s, mem_uint_t *pval, target_ulong addr, int size_log2) {
-...        
+...
+  // If the Memory Address is not mapped...
   pr = get_phys_mem_range(s-&gt;mem_map, paddr);
   if (!pr) {
-    //// Begin Test: Intercept Memory-Mapped I/O
-    switch(paddr &amp; 0xfffffffffffful) {  // TODO: Why does NuttX read from 0x4000000030002084?
-    case 0x30002084:     // uart_fifo_config_1: Is UART Ready?
-      ret = 32; break; // UART TX is always ready, default TX FIFO Available is 32
+    // Because of T-Head MMU Flags, Emulator might read from 0x4000000030002084 
+    // https://lupyuen.github.io/articles/plic3#t-head-errata
+    switch(paddr &amp; 0xfffffffffffful) {  
 
-    default:  // Unknown Memory-Mapped I/O
-#ifdef DUMP_INVALID_MEM_ACCESS
-      printf(&quot;target_read_slow: invalid physical address 0x&quot;);
-      print_target_ulong(paddr);
-      printf(&quot;\n&quot;);
-#endif
-      return 0;
-    }
-    //// End Test
-</code></pre></div><h2 id="emulate-the-uart-output"><a href="#emulate-the-uart-output">5.2 Emulate the UART Output</a></h2>
-<p>TODO</p>
+      // If we&#39;re reading uart_fifo_config_1:
+      // Tell Emulator that UART Transmit is always ready
+      case 0x30002084:
+        ret = 32; break;
+
+      // If Unknown Address:
+      // Print &quot;target_read_slow: invalid physical address&quot;
+      default:
+        ...
+</code></pre></div>
+<p><em>Why 32?</em></p>
+<p>Our <strong>NuttX UART Driver</strong> checks the lower bits of <strong><code>0x3000_2084</code></strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615">bl808_serial.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// NuttX sends a character to the UART Port...
+void bl808_send(struct uart_dev_s *dev, int ch) {
+  ...
+  // Wait for Transmit FIFO to be empty.
+  // FIFO_CONFIG_1 is 0x3000_2084
+  // TX_CNT_MASK is 0x3F
+  while ((getreg32(BL808_UART_FIFO_CONFIG_1(uart_idx)) &amp;
+    UART_FIFO_CONFIG_1_TX_CNT_MASK) == 0) {}
+
+  // Omitted: Write character to Transmit FIFO.
+</code></pre></div>
+<p>And the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>UART Transmit Buffer Size</strong> (Page 427)</a> defaults to <code>32</code>. Thus we always return <code>32</code>.</p>
+<h2 id="emulate-the-uart-output"><a href="#emulate-the-uart-output">5.2 Emulate the UART Output</a></h2>
+<p>Earlier we saw…</p>
 <blockquote>
 <p><strong><code>0x3000_2088</code></strong> is <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>uart_fifo_wdata</strong> (Page 428)</a> </p>
 </blockquote>
 <blockquote>
 <p><em>We write to this UART Register to <strong>print a character</strong> to UART Output</em></p>
 </blockquote>
-<p>TODO</p>
-<p>We handle all “write 0x3000_2088” (uart_fifo_wdata) by printing the character to the UART Output Register: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3">riscv_cpu.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/* return 0 if OK, != 0 if exception */
+<p>In TinyEMU: We intercept all “<strong>write <code>0x3000_2088</code></strong>” by printing the character: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L472-L490">riscv_cpu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// TinyEMU writes to a Memory Address...
 int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int size_log2) {
 ...
+  // If the Memory Address is not mapped...
   pr = get_phys_mem_range(s-&gt;mem_map, paddr);
   if (!pr) {
-    //// Begin Test: Intercept Memory-Mapped I/O
-    switch(paddr &amp; 0xfffffffffffful) {  // TODO: Why does NuttX write to 0x4000000030002088?
-    case 0x30002088:  // uart_fifo_wdata: UART Output
-      putchar(val); break;  // Print the character
+    // Because of T-Head MMU Flags, Emulator might write to 0x4000000030002088
+    // https://lupyuen.github.io/articles/plic3#t-head-errata
+    switch(paddr &amp; 0xfffffffffffful) { 
 
-    default:  // Unknown Memory-Mapped I/O
-#ifdef DUMP_INVALID_MEM_ACCESS
-      printf(&quot;target_write_slow: invalid physical address 0x&quot;);
-      print_target_ulong(paddr);
-      printf(&quot;\n&quot;);
-#endif                
-    }
-    //// End Test
+      // If we&#39;re writing to uart_fifo_wdata:
+      // Print the character
+      case 0x30002088:
+        char buf[1];
+        buf[0] = val;
+        print_console(NULL, buf, 1);
+        break;
+
+      // If Unknown Address:
+      // Print &quot;target_write_slow: invalid physical address&quot;
+      default:
+        ...
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1127-L1138">(<strong>print_console</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L956-L963">(<strong>riscv_machine_init</strong> inits the console)</a></p>
+<p>TODO</p>
 <p>Here’s the <a href="https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177">TinyEMU Log for Intercepted UART Registers</a>. We see NuttX booting on TinyEMU yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>$ temu root-riscv64.cfg | more
 virtio_console_init
