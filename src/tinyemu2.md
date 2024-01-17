@@ -129,14 +129,15 @@ _We modded TinyEMU to emulate Ox64. What happens when we run it?_
 We see signs of life... __NuttX Kernel__ is actually booting in our Ox64 Emulator!
 
 ```bash
+## Download the TinyEMU Config and NuttX Kernel Image
+$ wget https://raw.githubusercontent.com/lupyuen/nuttx-tinyemu/main/docs/ox64/root-riscv64.cfg
+$ wget https://github.com/lupyuen/nuttx-tinyemu/raw/main/docs/ox64/Image
+
 ## Boot TinyEMU with NuttX Kernel
 $ temu root-riscv64.cfg | more
 
 csr_write: csr=0x104 val=0x0
 csr_write: csr=0x105 val=0x50200090
-csr_write: csr=0x100 val=0x200000000
-csr_write: csr=0x100 val=0x200000000
-csr_write: csr=0x100 val=0x200000000
 csr_write: csr=0x100 val=0x200000000
 csr_write: csr=0x140 val=0x50400cd0
 csr_write: csr=0x180 val=0x0
@@ -157,7 +158,7 @@ target_write_slow:
 
 _What's root-riscv64.cfg?_
 
-It's the TinyEMU Config that will boot the NuttX Ox64 `Image` file: [root-riscv64.cfg](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/root-riscv64.cfg)
+It's the __TinyEMU Config__ that will boot NuttX Kernel in our Ox64 Emulator: [root-riscv64.cfg](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/root-riscv64.cfg)
 
 ```json
 /* VM configuration file */
@@ -169,15 +170,43 @@ It's the TinyEMU Config that will boot the NuttX Ox64 `Image` file: [root-riscv6
 }
 ```
 
-`Image` file comes from a typical [NuttX Build for Ox64](https://github.com/lupyuen/nuttx-ox64/releases).
+__`Image`__ is the __NuttX Kernel Image__ comes from a typical [__NuttX Build for Ox64__](https://github.com/lupyuen/nuttx-ox64/releases).
 
-_What's CSR Write?_
+_What are the CSR Writes?_
 
-TODO
+```bash
+csr_write: csr=0x104 val=0x0
+csr_write: csr=0x105 val=0x50200090
+csr_write: csr=0x100 val=0x200000000
+```
+
+CSR refers to [__Control and Status Registers__](https://five-embeddev.com/quickref/csrs.html). They're the System Registers in our RISC-V SoC (BL808)...
+
+- [__CSR `0x104`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie): __Supervisor-Mode Interrupt Enable__
+
+  (Enable or Disable Interrupts)
+
+- [__CSR `0x105`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec): __Supervisor-Mode Trap Vector Base Address__
+
+  (Set the Interrupt Vector Table)
+
+- [__CSR `0x100`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sstatus): __Supervisor-Mode Status__
+
+  TODO: (Set the Status)
+
+  (Why Supervisor-Mode? We'll find out later)
+
+_Why is it writing to CSR Registers?_
+
+This comes from our __NuttX Boot Code__
+
+TODO: NuttX Boot Code
+
+# UART Registers for BL808 SoC
 
 _What are 0x3000_2084 and 0x3000_2088? Why are they invalid?_
 
-```text
+```yaml
 target_read_slow:
   invalid physical address
   0x30002084
@@ -190,13 +219,13 @@ TODO
 
 From our [BL808 UART Docs](https://lupyuen.github.io/articles/ox2#print-to-serial-console)...
 
-- 0x30002088 (uart_fifo_wdata) means NuttX is writing to the UART Output Register. It's printing something to the console! [(BL808 Reference Manual, Page 428)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+- 0x3000_2088 (uart_fifo_wdata) means NuttX is writing to the UART Output Register. It's printing something to the console! [(BL808 Reference Manual, Page 428)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
-- 0x30002084 (uart_fifo_config_1) means NuttX is checking if UART Transmit is ready. [(BL808 Reference Manual, Page 427)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+- 0x3000_2084 (uart_fifo_config_1) means NuttX is checking if UART Transmit is ready. [(BL808 Reference Manual, Page 427)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
   [(`*0x30002084 & 0x3f` must be non-zero to indicate that UART Transmit is ready)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615)
 
-- That's why we always see "read 0x30002084" before "write 0x30002088".
+- That's why we always see "read 0x3000_2084" before "write 0x3000_2088".
 
   [(See `bl808_send`)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615)
 
@@ -206,9 +235,9 @@ Note that we're still booting in RISC-V Machine Mode! This will cause problems l
 
 TODO
 
-Let's intercept the "read 0x30002084" and "write 0x30002088" in TinyEMU Emulator for Ox64 BL808, so we can print the UART Output.
+Let's intercept the "read 0x3000_2084" and "write 0x3000_2088" in TinyEMU Emulator for Ox64 BL808, so we can print the UART Output.
 
-We handle all "read 0x30002084" (uart_fifo_config_1) by returning 32 (TX FIFO Available Count), to tell NuttX that the UART Port is always ready to transmit: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3)
+We handle all "read 0x3000_2084" (uart_fifo_config_1) by returning 32 (TX FIFO Available Count), to tell NuttX that the UART Port is always ready to transmit: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3)
 
 ```c
 /* return 0 if OK, != 0 if exception */
@@ -232,7 +261,7 @@ int target_read_slow(RISCVCPUState *s, mem_uint_t *pval, target_ulong addr, int 
     //// End Test
 ```
 
-We handle all "write 0x30002088" (uart_fifo_wdata) by printing the character to the UART Output Register: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3)
+We handle all "write 0x3000_2088" (uart_fifo_wdata) by printing the character to the UART Output Register: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3)
 
 ```c
 /* return 0 if OK, != 0 if exception */
