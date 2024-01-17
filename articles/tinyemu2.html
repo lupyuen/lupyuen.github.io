@@ -76,13 +76,13 @@
 <li><a href="#emulator-prints-to-console">6 Emulator Prints To Console</a><ul></ul></li>
 <li><a href="#risc-v-exception-in-emulator">7 RISC-V Exception in Emulator</a><ul></ul></li>
 <li><a href="#emulator-in-the-web-browser">8 Emulator in the Web Browser</a><ul></ul></li>
-<li><a href="#risc-v-machine-mode-vs-supervisor-mode">9 RISC-V Machine Mode vs Supervisor Mode</a><ul></ul></li>
+<li><a href="#machine-mode-vs-supervisor-mode">9 Machine Mode vs Supervisor Mode</a><ul></ul></li>
 <li><a href="#emulate-ox64-bl808-sbc-with-tinyemu">10 Emulate Ox64 BL808 SBC with TinyEMU</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-title.png" alt="Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><em>(Live Demo of Ox64 BL808 Emulator)</em></a></p>
 <p>TODO: <a href="https://youtu.be/KYrdwzIsgeQ"><em>(Watch on YouTube)</em></a></p>
-<p><em>In olden times we had Computer Games (plus Operating Systems) on 5.25-inch <strong>Floppy Disks</strong>. And we’d boot the Floppy Disks (clakety-clack) on <strong>Apple II Computers</strong> with 64 KB RAM.</em></p>
+<p><em>In olden times we had Computer Games (plus Operating Systems) on 5.25-inch <strong>Floppy Disks</strong>. And we’d boot the Floppy Disks (clackety-clack) on <strong>Apple II Computers</strong> with 64 KB RAM.</em></p>
 <p>Today (40 years later) we boot <strong>microSD Cards</strong> (clickety-click) on <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Ox64 BL808</strong></a> RISC-V Single-Board Computers with 64 MB RAM. (Pic below)</p>
 <p><em>What if we could turn it into a</em> <a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><strong>Virtual Ox64 SBC</strong></a> <em>that boots in our</em> <a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><strong>Web Browser</strong></a>? <em>(Pic above) Exactly like an</em> <a href="https://www.scullinsteel.com/apple2/#dos33master"><strong>Emulated Apple II</strong></a>!</p>
 <p>In this article we…</p>
@@ -429,19 +429,68 @@ CONFIG_ARCH_HEAP_VBASE=0x80200000
 <p>Let’s find out! First we fix the <a href="https://github.com/lupyuen/ox64-tinyemu/commit/170abb06b58a58328efa8a1874795f1daac0b7a7">TinyEMU Build for Emscripten</a>.</p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/ox64/">And it runs OK in Web Browser yay!</a></p>
 <p>TODO: Emulate BL808 GPIO to Blink an LED</p>
-<h1 id="risc-v-machine-mode-vs-supervisor-mode"><a href="#risc-v-machine-mode-vs-supervisor-mode">9 RISC-V Machine Mode vs Supervisor Mode</a></h1>
-<p>TODO</p>
-<p>NuttX Shell: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358">init.S</a></p>
+<h1 id="machine-mode-vs-supervisor-mode"><a href="#machine-mode-vs-supervisor-mode">9 Machine Mode vs Supervisor Mode</a></h1>
+<p><em>Back to our earlier question: Why did our System Call fail?</em></p>
+<p>Our NuttX App (NuttX Shell) tried to make a <strong>System Call (ECALL)</strong> to NuttX Kernel. And it failed: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358">init.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>nuttx/syscall/proxies/PROXY_sched_getparam.c:8
   int sched_getparam(pid_t parm1, FAR struct sched_param * parm2) {
   ...
+  // ECALL fails with a RISC-V Exception
   nuttx/include/arch/syscall.h:229
     19c6: 00000073  ecall
 </code></pre></div>
-<p><em>What’s ecall?</em></p>
-<p>At <code>0x19C6</code> we see the <strong>RISC-V ECALL Instruction</strong> that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). </p>
-<p>Hence our NuttX Shell is making a <strong>System Call</strong> to NuttX Kernel!</p>
-<p>Which fails because everything runs in RISC-V Machine Mode right now. We will need to start TinyEMU in RISC-V Supervisor Mode (instead of Machine Mode).</p>
+<p>TODO: (See the <strong>Source Code</strong>)</p>
+<p><em>What’s ECALL again?</em></p>
+<p>The <strong>RISC-V ECALL Instruction</strong> normally jumps…</p>
+<ul>
+<li>
+<p>From our <strong>NuttX App</strong></p>
+<p>(In <strong>RISC-V User Mode</strong>)</p>
+</li>
+<li>
+<p>To the <strong>NuttX Kernel</strong></p>
+<p>(In <strong>RISC-V Supervisor Mode</strong>)</p>
+</li>
+<li>
+<p>In order to make a <strong>System Call</strong></p>
+<p>(Which failed)</p>
+</li>
+</ul>
+<p><strong>System Calls</strong> are absolutely essential. That’s how our apps will execute system functions, like printing to the Console Output.</p>
+<p><em>Why did ECALL fail?</em></p>
+<p>That’s because our NuttX App is actually running in <strong>RISC-V Machine Mode</strong>, not User Mode!</p>
+<p>Machine Mode is the <strong>most powerful mode</strong> in a RISC-V System, more powerful than Supervisor Mode and User Mode…</p>
+<p>And Machine Mode <strong>can’t possibly make ECALLS</strong> to a Higher Mode!</p>
+<p>TODO: Pic of Machine, Supervisor, User Modes. Start / System Call (ECALL)</p>
+<p><em>Huh! How did that happen?</em></p>
+<p>TinyEMU always <strong>starts in Machine Mode</strong>. Everything we saw today: That’s all running in (super-powerful) Machine Mode.</p>
+<p>But a <strong>Real Ox64 SBC</strong> is a little different…</p>
+<ol>
+<li>
+<p>Ox64 boots the <strong>OpenSBI Supervisor Binary Interface</strong> in <strong>Machine Mode</strong>…</p>
+<p>(Think BIOS, but for RISC-V Machines)</p>
+</li>
+<li>
+<p>Which starts the <strong>U-Boot Bootloader</strong> in <strong>Supervisor Mode</strong>…</p>
+</li>
+<li>
+<p>Which starts the <strong>NuttX Kernel</strong>, also in <strong>Supervisor Mode</strong>…</p>
+</li>
+<li>
+<p>And NuttX Kernel starts the <strong>NuttX Apps</strong> in <strong>User Mode</strong></p>
+</li>
+</ol>
+<p>TODO: Pic of OpenSBI, U-Boot, Kernel, Apps</p>
+<p><em>So we need to start NuttX Kernel in Supervisor Mode?</em></p>
+<p>Yep, we need more tweaks in TinyEMU to start NuttX in Supervisor Mode. (Instead of Machine Mode)</p>
+<p>TODO: Pic of TinyEMU, Kernel, Apps. Start / System Call (ECALL). Emulate OpenSBI Timer</p>
+<p><em>Any other gotchas?</em></p>
+<p>There’s a tiny quirk: NuttX Kernel will <strong>make an ECALL</strong> too…</p>
+<p>NuttX Kernel makes a <strong>System Call to OpenSBI</strong> to set the System Timer. (Pic above)</p>
+<p><em>Do we plan to boot OpenSBI on TinyEMU?</em></p>
+<p>That’s not necessary. We’ll <strong>emulate the OpenSBI</strong> System Timer in TinyEMU. (Pic above)</p>
+<p>(It’s truly amazing we managed to boot so much in Machine Mode!)</p>
+<p>TODO</p>
 <h1 id="emulate-ox64-bl808-sbc-with-tinyemu"><a href="#emulate-ox64-bl808-sbc-with-tinyemu">10 Emulate Ox64 BL808 SBC with TinyEMU</a></h1>
 <p>TODO</p>
 <p>Objective: Take the NuttX Kernel built for <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358">Ox64 BL808 SBC</a>. And boot it on TinyEMU RISC-V Emulator in the Web Browser!</p>
