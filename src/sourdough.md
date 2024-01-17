@@ -82,7 +82,7 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Cool Ov
 
 1.  Inside the Bread Bucket: Wet our hands and [Stretch and Fold](https://www.theperfectloaf.com/how-to-stretch-and-fold-sourdough-bread-dough/) the dough one round: North, South, East, West
 
-    Seriously Stretch the dough with a Looooong Pull, before Each Folding. Makes the bread super floofy!
+    Seriously Stretch the dough with a Looooong Pull, before Each Folding. [Makes the bread super floofy!](https://qoto.org/@lupyuen/111763975783868661)
 
 1.  Inside the Bread Bucket: Wet our hands and pat the dough until it becomes a Smooth and Creamy Ball. Scrape the dough away from the sides of the Bread Bucket.
 
@@ -94,7 +94,7 @@ We will knead the dough in the Bread Machine, move the Bread Bucket to a Cool Ov
 
 1.  While waiting 3 hours: Do 3 more rounds of [Stretch and Fold](https://www.theperfectloaf.com/how-to-stretch-and-fold-sourdough-bread-dough/) inside the Bread Bucket. (30 mins between each round of Stretch and Fold)
 
-    Makes the bread super floofy!
+    [Makes the bread super floofy!](https://qoto.org/@lupyuen/111763975783868661)
 
 1.  Refrigerate overnight (9 hours) the whole Bread Bucket (covered with Dry Towel) for slow rising (yep it will still rise), before baking the next day.
 
