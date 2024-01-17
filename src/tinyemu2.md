@@ -261,7 +261,13 @@ We haven't defined in TinyEMU the addresses for __Memory-Mapped Input / Output__
 
 That's why TinyEMU __won't read and write__ our UART Registers. Let's fix this...
 
-# Intercept UART Registers for Ox64 BL808 Emulator
+# Intercept the UART Registers
+
+_NuttX tries to print something but fails..._
+
+_How to fix the UART Registers in our Ox64 Emulator?_
+
+Inside TinyEMU, we intercept all "__read `0x3000_2084`__" and "__write `0x3000_2088`__". And we pretend to be a __UART Port__...
 
 TODO
 
