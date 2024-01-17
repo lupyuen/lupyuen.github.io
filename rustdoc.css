@@ -70,7 +70,7 @@ html {
 }
 
 body {
-    font: 16px/1.4 "Source Serif Pro", serif;
+    font: 1rem/1.5 "Source Serif Pro", serif;
     margin: 0;
     position: relative;
     padding: 10px 15px 20px 15px;
@@ -80,15 +80,15 @@ body {
 }
 
 h1 {
-    font-size: 1.5em;
+    font-size: 1.5rem;
 }
 
 h2 {
-    font-size: 1.4em;
+    font-size: 1.375rem;
 }
 
 h3 {
-    font-size: 1.3em;
+    font-size: 1.25rem;
 }
 
 h1,
@@ -433,17 +433,17 @@ nav {
 }
 
 #main>.docblock h1 {
-    font-size: 1.3em;
+    font-size: 1.5rem;
 }
 
 #main>.docblock h2 {
-    font-size: 1.15em;
+    font-size: 1.375rem;
 }
 
 #main>.docblock h3,
 #main>.docblock h4,
 #main>.docblock h5 {
-    font-size: 1em;
+    font-size: 1.25rem;
 }
 
 #main>h2+div,
@@ -458,13 +458,13 @@ nav {
 }
 
 .docblock h2 {
-    font-size: 0.95em;
+    font-size: 1.375rem;
 }
 
 .docblock h3,
 .docblock h4,
 .docblock h5 {
-    font-size: 0.9em;
+    font-size: 1.25rem;
 }
 
 .docblock {
@@ -474,18 +474,18 @@ nav {
 
 .content .out-of-band {
     float: right;
-    font-size: 23px;
+    font-size: 1.125rem;
     margin: 0px;
     padding: 0px;
     font-weight: normal;
 }
 
 h3.impl>.out-of-band {
-    font-size: 21px;
+    font-size: 1.125rem;
 }
 
 h4.method>.out-of-band {
-    font-size: 19px;
+    font-size: 1.125rem;
 }
 
 h4>code,
