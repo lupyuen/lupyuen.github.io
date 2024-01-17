@@ -72,23 +72,29 @@ No Worries! Everything that runs in __Command Line__ TinyEMU... Will also run in
 
 We tweak TinyEMU for Ox64...
 
-# Change RISC-V Addresses in TinyEMU for Ox64 BL808
+# Change RISC-V Addresses in TinyEMU
+
+_TinyEMU needs to emulate our Ox64 BL808 SBC. What shall we tweak?_
+
+TinyEMU is hardcoded to run at __Fixed RISC-V Addresses__. (Yep it's really barebones!)
+
+We tweak the RISC-V Addresses in TinyEMU, so that they match the __BL808 SoC__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/commit/8100f25ce053ca858c7588aea211bb20401be980)
+
+```c
+#define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
+#define RAM_BASE_ADDR   0x50200000ul  // BL808 boots here
+#define PLIC_BASE_ADDR  0xe0000000ul  // Platform-Level Interrupt Controller (PLIC)
+#define PLIC_SIZE       0x00400000ul  // Address Range of PLIC
+#define CLINT_BASE_ADDR 0x02000000ul  // TODO: CLINT is Unused
+#define CLINT_SIZE      0x000c0000ul  // TODO: CLINT is Unused
+...
+#define PLIC_HART_BASE  0x201000  // Hart 0 S-Mode Priority Threshold in PLIC
+#define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
+```
 
 TODO
 
-To boot NuttX Ox64 in TinyEMU: We change the RISC-V Addresses in TinyEMU, so that they match Ox64 BL808: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/commit/8100f25ce053ca858c7588aea211bb20401be980)
-
 ```c
-#define LOW_RAM_SIZE    0x00010000  // 64KB of Boot Code at 0x0
-#define RAM_BASE_ADDR   0x50200000
-#define CLINT_BASE_ADDR 0x02000000  // TODO: Unused
-#define CLINT_SIZE      0x000c0000  // TODO: Unused
-#define PLIC_BASE_ADDR  0xe0000000ul
-#define PLIC_SIZE       0x00400000
-...
-#define PLIC_HART_BASE 0x201000  // Hart 0 S-Mode Priority Threshold
-#define PLIC_HART_SIZE 0x1000
-...
 // At 0x0: Jump to RAM_BASE_ADDR
 q = (uint32_t *)(ram_ptr + 0x1000);
 q[0] = 0x297 + RAM_BASE_ADDR - 0x1000; /* auipc t0, jump_addr */
@@ -96,6 +102,8 @@ q[1] = 0x597; /* auipc a1, dtb */
 q[2] = 0x58593 + ((fdt_addr - 4) << 20); /* addi a1, a1, dtb */
 q[3] = 0xf1402573; /* csrr a0, mhartid */
 ```
+
+TODO: Where did we get the addresses?
 
 Now NuttX Ox64 boots a tiny bit on TinyEMU yay!
 
