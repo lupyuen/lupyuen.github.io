@@ -189,7 +189,7 @@ target_write_slow:
   invalid physical address 
   0x30002088
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb">(See the Complete Log)</a></p>
+<p><a href="https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>What’s root-riscv64.cfg?</em></p>
 <p>It’s the <strong>TinyEMU Config</strong> that will boot NuttX Kernel in our Ox64 Emulator: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/root-riscv64.cfg">root-riscv64.cfg</a></p>
 <div class="example-wrap"><pre class="language-json"><code>/* VM configuration file */
@@ -225,6 +225,7 @@ csr_write: csr=0x100 val=0x200000000
 <p><em>Why is it writing to CSR Registers?</em></p>
 <p>This comes from our <strong>NuttX Boot Code</strong></p>
 <p>TODO: NuttX Boot Code</p>
+<p>TODO: BL808 UART Registers</p>
 <h1 id="uart-registers-for-bl808-soc"><a href="#uart-registers-for-bl808-soc">4 UART Registers for BL808 SoC</a></h1>
 <p><em>What are 0x3000_2084 and 0x3000_2088? Why are they invalid?</em></p>
 <div class="example-wrap"><pre class="language-yaml"><code>target_read_slow:
@@ -234,6 +235,8 @@ target_write_slow:
   invalid physical address 
   0x30002088
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb">(See the <strong>Complete Log</strong>)</a></p>
+<p>We dig around the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>BL808 Reference Manual</strong></a> (pic above) and we discover…</p>
 <p>TODO</p>
 <p>From our <a href="https://lupyuen.github.io/articles/ox2#print-to-serial-console">BL808 UART Docs</a>…</p>
 <ul>
@@ -250,6 +253,7 @@ target_write_slow:
 </li>
 </ul>
 <p>Note that we’re still booting in RISC-V Machine Mode! This will cause problems later, because NuttX Ox64 expects to boot in RISC-V Supervisor Mode. (Due to OpenSBI)</p>
+<p>TODO: NuttX Code</p>
 <h1 id="intercept-uart-registers-for-ox64-bl808-emulator"><a href="#intercept-uart-registers-for-ox64-bl808-emulator">5 Intercept UART Registers for Ox64 BL808 Emulator</a></h1>
 <p>TODO</p>
 <p>Let’s intercept the “read 0x3000_2084” and “write 0x3000_2088” in TinyEMU Emulator for Ox64 BL808, so we can print the UART Output.</p>
