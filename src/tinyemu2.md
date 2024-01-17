@@ -120,36 +120,40 @@ static void copy_bios(...) {
 
 And that's our barebones Ox64 Emulator! Let's run it...
 
+[(Remember to enable __Exception Logging__)](https://github.com/lupyuen/ox64-tinyemu/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6)
+
 # Run TinyEMU Emulator
 
-_We modded TinyEMU for Ox64. What happens when we run it?_
+_We modded TinyEMU to emulate Ox64. What happens when we run it?_
 
-TODO
-
-Now NuttX Ox64 boots a tiny bit on TinyEMU yay!
+We see signs of life... __NuttX Kernel__ is actually booting in our Ox64 Emulator!
 
 ```bash
+## Boot TinyEMU with NuttX Kernel
 $ temu root-riscv64.cfg | more
-virtio_console_init
-csr_write: csr=0x104 val=0x0000000000000000
-csr_write: csr=0x105 val=0x0000000050200090
-csr_write: csr=0x100 val=0x0000000200000000
-csr_write: csr=0x100 val=0x0000000200000000
-csr_write: csr=0x100 val=0x0000000200000000
-csr_write: csr=0x100 val=0x0000000200000000
-csr_write: csr=0x140 val=0x0000000050400cd0
-csr_write: csr=0x180 val=0x0000000000000000
-csr_write: csr=0x105 val=0x0000000050200090
-csr_write: csr=0x100 val=0x0000000200002000
-csr_write: csr=0x003 val=0x0000000000000000
+
+csr_write: csr=0x104 val=0x0
+csr_write: csr=0x105 val=0x50200090
+csr_write: csr=0x100 val=0x200000000
+csr_write: csr=0x100 val=0x200000000
+csr_write: csr=0x100 val=0x200000000
+csr_write: csr=0x100 val=0x200000000
+csr_write: csr=0x140 val=0x50400cd0
+csr_write: csr=0x180 val=0x0
+csr_write: csr=0x105 val=0x50200090
+csr_write: csr=0x100 val=0x200002000
+csr_write: csr=0x003 val=0x0
 csr_write: csr=0x100 val=0x8000000200006000
-target_read_slow: invalid physical address 0x0000000030002084
-target_write_slow: invalid physical address 0x0000000030002088
+
+target_read_slow:
+  invalid physical address
+  0x30002084
+target_write_slow: 
+  invalid physical address 
+  0x30002088
 ```
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb)
-
-Remember to [Enable Exception Logging](https://github.com/lupyuen/ox64-tinyemu/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6) in TinyEMU.
 
 _What's root-riscv64.cfg?_
 
@@ -167,7 +171,22 @@ It's the TinyEMU Config that will boot the NuttX Ox64 `Image` file: [root-riscv6
 
 `Image` file comes from a typical [NuttX Build for Ox64](https://github.com/lupyuen/nuttx-ox64/releases).
 
-_What are 0x30002084 and 0x30002088?_
+_What's CSR Write?_
+
+TODO
+
+_What are 0x3000_2084 and 0x3000_2088? Why are they invalid?_
+
+```text
+target_read_slow:
+  invalid physical address
+  0x30002084
+target_write_slow: 
+  invalid physical address 
+  0x30002088
+```
+
+TODO
 
 From our [BL808 UART Docs](https://lupyuen.github.io/articles/ox2#print-to-serial-console)...
 
