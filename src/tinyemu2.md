@@ -36,7 +36,7 @@ _Why NuttX?_
 
 [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) is a tiny operating system for [__64-bit RISC-V Machines__](https://lupyuen.github.io/articles/riscv) and many other platforms. (Arm, x64, ESP32, ...)
 
-TODO: Simpler to troubleshoot
+So we'll understand __everything that happens__ as NuttX boots on our Ox64 Emulator.
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
 
@@ -170,7 +170,7 @@ It's the __TinyEMU Config__ that will boot NuttX Kernel in our Ox64 Emulator: [r
 }
 ```
 
-__`Image`__ is the __NuttX Kernel Image__ comes from a typical [__NuttX Build for Ox64__](https://github.com/lupyuen/nuttx-ox64/releases).
+__`Image`__ is the __NuttX Kernel Image__ that comes from a typical [__NuttX Build for Ox64__](https://github.com/lupyuen/nuttx-ox64/releases).
 
 _What are the CSR Writes?_
 
@@ -202,16 +202,19 @@ This comes from our __NuttX Boot Code__
 
 TODO: NuttX Boot Code
 
+Let's talk about the invalid reads and writes...
+
 TODO: BL808 UART Registers
 
 # UART Registers for BL808 SoC
 
-_What are 0x3000_2084 and 0x3000_2088? Why are they invalid?_
+_What are 0x3000_2084 and 0x3000_2088? Why are they Invalid Addresses?_
 
 ```yaml
 target_read_slow:
   invalid physical address
   0x30002084
+
 target_write_slow: 
   invalid physical address 
   0x30002088
@@ -219,25 +222,44 @@ target_write_slow:
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb)
 
-We dig around the [__BL808 Reference Manual__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) (pic above) and we discover...
+We dig around the [__BL808 Reference Manual__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) (pic above) and we discover these __UART Registers__...
 
-TODO
+- __`0x3000_2088`__ is [__uart_fifo_wdata__ (Page 428)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) 
 
-From our [BL808 UART Docs](https://lupyuen.github.io/articles/ox2#print-to-serial-console)...
+  We write to this UART Register to __print a character__ to UART Output.
 
-- 0x3000_2088 (uart_fifo_wdata) means NuttX is writing to the UART Output Register. It's printing something to the console! [(BL808 Reference Manual, Page 428)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+- __`0x3000_2084`__ is [__uart_fifo_config_1__ (Page 427)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) 
 
-- 0x3000_2084 (uart_fifo_config_1) means NuttX is checking if UART Transmit is ready. [(BL808 Reference Manual, Page 427)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+  We read this UART Register to check if __UART Transmit is ready__ (for more output).
 
-  [(`*0x30002084 & 0x3f` must be non-zero to indicate that UART Transmit is ready)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615)
+- Which explains why we always see "__read `0x3000_2084`__" before "__write `0x3000_2088`__"...
 
-- That's why we always see "read 0x3000_2084" before "write 0x3000_2088".
+  NuttX Kernel is trying to [__print something__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615) to the UART Console!
 
-  [(See `bl808_send`)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615)
+  ```c
+  // NuttX sends a character to the UART Port...
+  void bl808_send(struct uart_dev_s *dev, int ch) {
+    ...
+    // Wait for Transmit FIFO to be empty.
+    // FIFO_CONFIG_1 is 0x3000_2084
+    // TX_CNT_MASK is 0x3F
+    while ((getreg32(BL808_UART_FIFO_CONFIG_1(uart_idx)) &
+      UART_FIFO_CONFIG_1_TX_CNT_MASK) == 0) {}
 
-Note that we're still booting in RISC-V Machine Mode! This will cause problems later, because NuttX Ox64 expects to boot in RISC-V Supervisor Mode. (Due to OpenSBI)
+    // Write character to Transmit FIFO.
+    // FIFO_WDATA is 0x3000_2088
+    putreg32(ch, BL808_UART_FIFO_WDATA(uart_idx));
+  ```
 
-TODO: NuttX Code
+  [(`0x3000_2000` is the __UART3 Base Address__, Page 41)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+
+  [(More about __BL808 UART__)](https://lupyuen.github.io/articles/ox2#print-to-serial-console)...
+
+_But why are they Invalid Addresses?_
+
+We haven't defined in TinyEMU the addresses for __Memory-Mapped Input / Output__. (Like for UART Registers)
+
+That's why TinyEMU __won't read and write__ our UART Registers. Let's fix this...
 
 # Intercept UART Registers for Ox64 BL808 Emulator
 
