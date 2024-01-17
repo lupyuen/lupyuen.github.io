@@ -69,11 +69,12 @@
 <li><a href="#install-tinyemu-emulator">1 Install TinyEMU Emulator</a><ul></ul></li>
 <li><a href="#change-risc-v-addresses-in-tinyemu">2 Change RISC-V Addresses in TinyEMU</a><ul></ul></li>
 <li><a href="#run-tinyemu-emulator">3 Run TinyEMU Emulator</a><ul></ul></li>
-<li><a href="#intercept-uart-registers-for-ox64-bl808-emulator">4 Intercept UART Registers for Ox64 BL808 Emulator</a><ul></ul></li>
-<li><a href="#nuttx-exception-in-ox64-bl808-emulator">5 NuttX Exception in Ox64 BL808 Emulator</a><ul></ul></li>
-<li><a href="#emulate-ox64-bl808-in-web-browser">6 Emulate Ox64 BL808 in Web Browser</a><ul></ul></li>
-<li><a href="#emulate-ox64-bl808-sbc-with-tinyemu">7 Emulate Ox64 BL808 SBC with TinyEMU</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
+<li><a href="#uart-registers-for-bl808-soc">4 UART Registers for BL808 SoC</a><ul></ul></li>
+<li><a href="#intercept-uart-registers-for-ox64-bl808-emulator">5 Intercept UART Registers for Ox64 BL808 Emulator</a><ul></ul></li>
+<li><a href="#nuttx-exception-in-ox64-bl808-emulator">6 NuttX Exception in Ox64 BL808 Emulator</a><ul></ul></li>
+<li><a href="#emulate-ox64-bl808-in-web-browser">7 Emulate Ox64 BL808 in Web Browser</a><ul></ul></li>
+<li><a href="#emulate-ox64-bl808-sbc-with-tinyemu">8 Emulate Ox64 BL808 SBC with TinyEMU</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-title.png" alt="Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><em>(Live Demo of Ox64 BL808 Emulator)</em></a></p>
 <p>TODO: <a href="https://youtu.be/KYrdwzIsgeQ"><em>(Watch on YouTube)</em></a></p>
@@ -164,14 +165,15 @@ static void copy_bios(...) {
 <h1 id="run-tinyemu-emulator"><a href="#run-tinyemu-emulator">3 Run TinyEMU Emulator</a></h1>
 <p><em>We modded TinyEMU to emulate Ox64. What happens when we run it?</em></p>
 <p>We see signs of life… <strong>NuttX Kernel</strong> is actually booting in our Ox64 Emulator!</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Boot TinyEMU with NuttX Kernel
+<div class="example-wrap"><pre class="language-bash"><code>## Download the TinyEMU Config and NuttX Kernel Image
+$ wget https://raw.githubusercontent.com/lupyuen/nuttx-tinyemu/main/docs/ox64/root-riscv64.cfg
+$ wget https://github.com/lupyuen/nuttx-tinyemu/raw/main/docs/ox64/Image
+
+## Boot TinyEMU with NuttX Kernel
 $ temu root-riscv64.cfg | more
 
 csr_write: csr=0x104 val=0x0
 csr_write: csr=0x105 val=0x50200090
-csr_write: csr=0x100 val=0x200000000
-csr_write: csr=0x100 val=0x200000000
-csr_write: csr=0x100 val=0x200000000
 csr_write: csr=0x100 val=0x200000000
 csr_write: csr=0x140 val=0x50400cd0
 csr_write: csr=0x180 val=0x0
@@ -189,7 +191,7 @@ target_write_slow:
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb">(See the Complete Log)</a></p>
 <p><em>What’s root-riscv64.cfg?</em></p>
-<p>It’s the TinyEMU Config that will boot the NuttX Ox64 <code>Image</code> file: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/root-riscv64.cfg">root-riscv64.cfg</a></p>
+<p>It’s the <strong>TinyEMU Config</strong> that will boot NuttX Kernel in our Ox64 Emulator: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/root-riscv64.cfg">root-riscv64.cfg</a></p>
 <div class="example-wrap"><pre class="language-json"><code>/* VM configuration file */
 {
   version: 1,
@@ -198,11 +200,34 @@ target_write_slow:
   bios: &quot;Image&quot;,
 }
 </code></pre></div>
-<p><code>Image</code> file comes from a typical <a href="https://github.com/lupyuen/nuttx-ox64/releases">NuttX Build for Ox64</a>.</p>
-<p><em>What’s CSR Write?</em></p>
-<p>TODO</p>
+<p><strong><code>Image</code></strong> is the <strong>NuttX Kernel Image</strong> comes from a typical <a href="https://github.com/lupyuen/nuttx-ox64/releases"><strong>NuttX Build for Ox64</strong></a>.</p>
+<p><em>What are the CSR Writes?</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>csr_write: csr=0x104 val=0x0
+csr_write: csr=0x105 val=0x50200090
+csr_write: csr=0x100 val=0x200000000
+</code></pre></div>
+<p>CSR refers to <a href="https://five-embeddev.com/quickref/csrs.html"><strong>Control and Status Registers</strong></a>. They’re the System Registers in our RISC-V SoC (BL808)…</p>
+<ul>
+<li>
+<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"><strong>CSR <code>0x104</code></strong></a>: <strong>Supervisor-Mode Interrupt Enable</strong></p>
+<p>(Enable or Disable Interrupts)</p>
+</li>
+<li>
+<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"><strong>CSR <code>0x105</code></strong></a>: <strong>Supervisor-Mode Trap Vector Base Address</strong></p>
+<p>(Set the Interrupt Vector Table)</p>
+</li>
+<li>
+<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sstatus"><strong>CSR <code>0x100</code></strong></a>: <strong>Supervisor-Mode Status</strong></p>
+<p>TODO: (Set the Status)</p>
+<p>(Why Supervisor-Mode? We’ll find out later)</p>
+</li>
+</ul>
+<p><em>Why is it writing to CSR Registers?</em></p>
+<p>This comes from our <strong>NuttX Boot Code</strong></p>
+<p>TODO: NuttX Boot Code</p>
+<h1 id="uart-registers-for-bl808-soc"><a href="#uart-registers-for-bl808-soc">4 UART Registers for BL808 SoC</a></h1>
 <p><em>What are 0x3000_2084 and 0x3000_2088? Why are they invalid?</em></p>
-<div class="example-wrap"><pre class="language-text"><code>target_read_slow:
+<div class="example-wrap"><pre class="language-yaml"><code>target_read_slow:
   invalid physical address
   0x30002084
 target_write_slow: 
@@ -213,22 +238,22 @@ target_write_slow:
 <p>From our <a href="https://lupyuen.github.io/articles/ox2#print-to-serial-console">BL808 UART Docs</a>…</p>
 <ul>
 <li>
-<p>0x30002088 (uart_fifo_wdata) means NuttX is writing to the UART Output Register. It’s printing something to the console! <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(BL808 Reference Manual, Page 428)</a></p>
+<p>0x3000_2088 (uart_fifo_wdata) means NuttX is writing to the UART Output Register. It’s printing something to the console! <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(BL808 Reference Manual, Page 428)</a></p>
 </li>
 <li>
-<p>0x30002084 (uart_fifo_config_1) means NuttX is checking if UART Transmit is ready. <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(BL808 Reference Manual, Page 427)</a></p>
+<p>0x3000_2084 (uart_fifo_config_1) means NuttX is checking if UART Transmit is ready. <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(BL808 Reference Manual, Page 427)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615">(<code>*0x30002084 &amp; 0x3f</code> must be non-zero to indicate that UART Transmit is ready)</a></p>
 </li>
 <li>
-<p>That’s why we always see “read 0x30002084” before “write 0x30002088”.</p>
+<p>That’s why we always see “read 0x3000_2084” before “write 0x3000_2088”.</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615">(See <code>bl808_send</code>)</a></p>
 </li>
 </ul>
 <p>Note that we’re still booting in RISC-V Machine Mode! This will cause problems later, because NuttX Ox64 expects to boot in RISC-V Supervisor Mode. (Due to OpenSBI)</p>
-<h1 id="intercept-uart-registers-for-ox64-bl808-emulator"><a href="#intercept-uart-registers-for-ox64-bl808-emulator">4 Intercept UART Registers for Ox64 BL808 Emulator</a></h1>
+<h1 id="intercept-uart-registers-for-ox64-bl808-emulator"><a href="#intercept-uart-registers-for-ox64-bl808-emulator">5 Intercept UART Registers for Ox64 BL808 Emulator</a></h1>
 <p>TODO</p>
-<p>Let’s intercept the “read 0x30002084” and “write 0x30002088” in TinyEMU Emulator for Ox64 BL808, so we can print the UART Output.</p>
-<p>We handle all “read 0x30002084” (uart_fifo_config_1) by returning 32 (TX FIFO Available Count), to tell NuttX that the UART Port is always ready to transmit: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3">riscv_cpu.c</a></p>
+<p>Let’s intercept the “read 0x3000_2084” and “write 0x3000_2088” in TinyEMU Emulator for Ox64 BL808, so we can print the UART Output.</p>
+<p>We handle all “read 0x3000_2084” (uart_fifo_config_1) by returning 32 (TX FIFO Available Count), to tell NuttX that the UART Port is always ready to transmit: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3">riscv_cpu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* return 0 if OK, != 0 if exception */
 int target_read_slow(RISCVCPUState *s, mem_uint_t *pval, target_ulong addr, int size_log2) {
 ...        
@@ -249,7 +274,7 @@ int target_read_slow(RISCVCPUState *s, mem_uint_t *pval, target_ulong addr, int 
     }
     //// End Test
 </code></pre></div>
-<p>We handle all “write 0x30002088” (uart_fifo_wdata) by printing the character to the UART Output Register: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3">riscv_cpu.c</a></p>
+<p>We handle all “write 0x3000_2088” (uart_fifo_wdata) by printing the character to the UART Output Register: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3">riscv_cpu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* return 0 if OK, != 0 if exception */
 int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int size_log2) {
 ...
@@ -332,7 +357,7 @@ raise_exception2: cause=2, tval=0x0
 <p>TODO: Why does NuttX read from 0x4000000030002084? Probably due to T-Head C906 MMU Flags</p>
 <p>TODO: What is <code>raise_exception2: cause=2, tval=0x0</code>?</p>
 <p>TODO: Why is NuttX Shell started twice? Because it failed? (<code>/system/bin/init</code>)</p>
-<h1 id="nuttx-exception-in-ox64-bl808-emulator"><a href="#nuttx-exception-in-ox64-bl808-emulator">5 NuttX Exception in Ox64 BL808 Emulator</a></h1>
+<h1 id="nuttx-exception-in-ox64-bl808-emulator"><a href="#nuttx-exception-in-ox64-bl808-emulator">6 NuttX Exception in Ox64 BL808 Emulator</a></h1>
 <p>TODO</p>
 <p><em>What is <code>raise_exception2: cause=8</code>?</em></p>
 <p>From the <a href="https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177">TinyEMU Log for Intercepted UART Registers</a>…</p>
@@ -370,7 +395,7 @@ nuttx/include/arch/syscall.h:229
 <p>0x19c6 is an ECALL from NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). Our NuttX Shell is making a System Call to NuttX Kernel!</p>
 <p>Which fails because everything runs in RISC-V Machine Mode right now. We will need to start TinyEMU in RISC-V Supervisor Mode (instead of Machine Mode).</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/9da5b066c9fe29ef46b93ff8174662d5e6858038">(We quit if mcause=2, otherwise it will loop forever)</a></p>
-<h1 id="emulate-ox64-bl808-in-web-browser"><a href="#emulate-ox64-bl808-in-web-browser">6 Emulate Ox64 BL808 in Web Browser</a></h1>
+<h1 id="emulate-ox64-bl808-in-web-browser"><a href="#emulate-ox64-bl808-in-web-browser">7 Emulate Ox64 BL808 in Web Browser</a></h1>
 <p>TODO</p>
 <p><em>Will our Ox64 BL808 Emulator run in the Web Browser?</em></p>
 <p>Let’s find out! First we fix the <a href="https://github.com/lupyuen/ox64-tinyemu/commit/170abb06b58a58328efa8a1874795f1daac0b7a7">TinyEMU Build for Emscripten</a>.</p>
@@ -379,7 +404,7 @@ nuttx/include/arch/syscall.h:229
 <p>And it runs OK in Web Browser yay!</p>
 <p>https://lupyuen.github.io/nuttx-tinyemu/ox64/</p>
 <p>TODO: Emulate BL808 GPIO to Blink an LED</p>
-<h1 id="emulate-ox64-bl808-sbc-with-tinyemu"><a href="#emulate-ox64-bl808-sbc-with-tinyemu">7 Emulate Ox64 BL808 SBC with TinyEMU</a></h1>
+<h1 id="emulate-ox64-bl808-sbc-with-tinyemu"><a href="#emulate-ox64-bl808-sbc-with-tinyemu">8 Emulate Ox64 BL808 SBC with TinyEMU</a></h1>
 <p>TODO</p>
 <p>Objective: Take the NuttX Kernel built for <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358">Ox64 BL808 SBC</a>. And boot it on TinyEMU RISC-V Emulator in the Web Browser!</p>
 <ol>
@@ -420,7 +445,7 @@ nuttx/include/arch/syscall.h:229
 </ol>
 <p>Let’s try booting NuttX Ox64 on TinyEMU…</p>
 <p>TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?</p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
