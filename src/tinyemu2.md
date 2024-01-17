@@ -78,11 +78,12 @@ _TinyEMU needs to emulate our Ox64 BL808 SBC. What shall we tweak?_
 
 TinyEMU is hardcoded to run at __Fixed RISC-V Addresses__. (Yep it's really barebones!)
 
-We tweak the RISC-V Addresses in TinyEMU, so that they match the __BL808 SoC__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/commit/8100f25ce053ca858c7588aea211bb20401be980)
+We tweak the RISC-V Addresses in TinyEMU, so that they match the __Bouffalo Lab BL808 SoC__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82)
 
 ```c
+// RISC-V Addresses for TinyEMU (modded for Ox64 BL808)
 #define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
-#define RAM_BASE_ADDR   0x50200000ul  // BL808 boots here
+#define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
 #define PLIC_BASE_ADDR  0xe0000000ul  // Platform-Level Interrupt Controller (PLIC)
 #define PLIC_SIZE       0x00400000ul  // Address Range of PLIC
 #define CLINT_BASE_ADDR 0x02000000ul  // TODO: CLINT is Unused
@@ -92,18 +93,40 @@ We tweak the RISC-V Addresses in TinyEMU, so that they match the __BL808 SoC__: 
 #define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
 ```
 
+TODO: Where did we get the addresses?
+
+_What's this Boot Code?_
+
 TODO
 
+[riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L862-L872)
+
 ```c
-// At 0x0: Jump to RAM_BASE_ADDR
-q = (uint32_t *)(ram_ptr + 0x1000);
-q[0] = 0x297 + RAM_BASE_ADDR - 0x1000; /* auipc t0, jump_addr */
-q[1] = 0x597; /* auipc a1, dtb */
-q[2] = 0x58593 + ((fdt_addr - 4) << 20); /* addi a1, a1, dtb */
-q[3] = 0xf1402573; /* csrr a0, mhartid */
+// At TinyEMU Startup: Init the Emulated RAM...
+static void copy_bios(...) {
+  ...
+  // Init the TinyEMU Boot Code at Address 0x1000 (ram_ptr is 0x0)
+  uint32_t *q = (uint32_t *)(ram_ptr + 0x1000);
+
+  // Load into Register T0 the RAM_BASE_ADDR (0x5020_0000)
+  // Load into Register A1 the Binary Device Tree
+  q[0] = 0x297 + RAM_BASE_ADDR - 0x1000;    // auipc t0, jump_addr
+  q[1] = 0x597;                             // auipc a1, dtb
+  q[2] = 0x58593 + ((fdt_addr - 4) << 20);  // addi  a1, a1, dtb
+
+  // Load into Register A0 the Hart ID (RISC-V CPU ID: 0)
+  // Jump to Register T0: Our Kernel at RAM_BASE_ADDR (0x5020_0000)
+  q[3] = 0xf1402573;  // csrr a0, mhartid
+  q[4] = 0x00028067;  // jalr zero, t0, jump_addr
 ```
 
-TODO: Where did we get the addresses?
+TODO
+
+# Run TinyEMU Emulator
+
+_We modded TinyEMU for Ox64. What happens when we run it?_
+
+TODO
 
 Now NuttX Ox64 boots a tiny bit on TinyEMU yay!
 
