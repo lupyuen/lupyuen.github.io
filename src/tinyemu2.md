@@ -467,7 +467,13 @@ Let's find out! First we fix the [TinyEMU Build for Emscripten](https://github.c
 
 TODO: Emulate BL808 GPIO to Blink an LED
 
+_What about Console Input?_
+
+Console Input requires [__UART Interrupts__](https://lupyuen.github.io/articles/plic2). We'll implement UART Interrupts soon. (Pic below)
+
 One more thing to tweak...
+
+![UART Interrupts for Ox64 BL808 SBC](https://lupyuen.github.io/images/plic2-registers.jpg)
 
 # Machine Mode vs Supervisor Mode
 
