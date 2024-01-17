@@ -141,8 +141,7 @@ make CFLAGS=-I$(brew --prefix)/opt/openssl/include LDFLAGS=-L$(brew --prefix)/op
 </code></pre></div>
 <p>TODO: Where did we get the addresses?</p>
 <p><em>What’s this Boot Code?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L862-L872">riscv_machine.c</a></p>
+<p>TinyEMU needs a tiny chunk of <strong>RISC-V Machine Code</strong> that will jump to our <strong>Kernel Image</strong> (and pass the Device Tree): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L862-L872">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// At TinyEMU Startup: Init the Emulated RAM...
 static void copy_bios(...) {
   ...
@@ -160,7 +159,7 @@ static void copy_bios(...) {
   q[3] = 0xf1402573;  // csrr a0, mhartid
   q[4] = 0x00028067;  // jalr zero, t0, jump_addr
 </code></pre></div>
-<p>TODO</p>
+<p>And that’s our barebones Ox64 Emulator! Let’s run it…</p>
 <h1 id="run-tinyemu-emulator"><a href="#run-tinyemu-emulator">3 Run TinyEMU Emulator</a></h1>
 <p><em>We modded TinyEMU for Ox64. What happens when we run it?</em></p>
 <p>TODO</p>
