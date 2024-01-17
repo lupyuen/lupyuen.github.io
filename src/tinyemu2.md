@@ -154,7 +154,7 @@ target_write_slow:
   0x30002088
 ```
 
-[(See the Complete Log)](https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb)
 
 _What's root-riscv64.cfg?_
 
@@ -202,6 +202,8 @@ This comes from our __NuttX Boot Code__
 
 TODO: NuttX Boot Code
 
+TODO: BL808 UART Registers
+
 # UART Registers for BL808 SoC
 
 _What are 0x3000_2084 and 0x3000_2088? Why are they invalid?_
@@ -214,6 +216,10 @@ target_write_slow:
   invalid physical address 
   0x30002088
 ```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb)
+
+We dig around the [__BL808 Reference Manual__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) (pic above) and we discover...
 
 TODO
 
@@ -230,6 +236,8 @@ From our [BL808 UART Docs](https://lupyuen.github.io/articles/ox2#print-to-seria
   [(See `bl808_send`)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615)
 
 Note that we're still booting in RISC-V Machine Mode! This will cause problems later, because NuttX Ox64 expects to boot in RISC-V Supervisor Mode. (Due to OpenSBI)
+
+TODO: NuttX Code
 
 # Intercept UART Registers for Ox64 BL808 Emulator
 
