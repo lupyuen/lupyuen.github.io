@@ -89,7 +89,7 @@
 <ul>
 <li>
 <p>Take <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Apache NuttX RTOS</strong></a> precompiled for Ox64</p>
-<p>(Without any modifications!)</p>
+<p>(Without any modifications)</p>
 </li>
 <li>
 <p>Boot it on the <a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU RISC-V Emulator</strong></a></p>
@@ -100,13 +100,13 @@
 <p>(With minor tweaks to TinyEMU)</p>
 </li>
 <li>
-<p>And run everything in our <strong>Web Browser</strong>!</p>
+<p>And run everything in our <strong>Web Browser</strong></p>
 <p>(Thanks to WebAssembly)</p>
 </li>
 </ul>
 <p><em>Why NuttX?</em></p>
-<p><a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Apache NuttX RTOS</strong></a> is a tiny operating system for <a href="https://lupyuen.github.io/articles/riscv"><strong>64-bit RISC-V Machines</strong></a> and many other platforms. (Arm, x64, ESP32, …)</p>
-<p>So we’ll understand <strong>everything that happens</strong> as NuttX boots on our Ox64 Emulator.</p>
+<p><a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Apache NuttX RTOS</strong></a> is a tiny operating system for <a href="https://lupyuen.github.io/articles/riscv"><strong>64-bit RISC-V Machines</strong></a>. (Also Arm, x64, ESP32, …)</p>
+<p>Which makes it easier to understand <strong>everything that happens</strong> as NuttX boots on our Ox64 Emulator.</p>
 <p><img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <h1 id="install-tinyemu-emulator"><a href="#install-tinyemu-emulator">1 Install TinyEMU Emulator</a></h1>
 <p><em>What’s this TinyEMU?</em></p>
@@ -127,11 +127,11 @@ make CFLAGS=-I$(brew --prefix)/opt/openssl/include LDFLAGS=-L$(brew --prefix)/op
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/.github/workflows/ci.yml">(See the <strong>Build Script</strong>)</a></p>
 <p><em>What about TinyEMU for the Web Browser?</em></p>
-<p>No Worries! Everything that runs in <strong>Command Line</strong> TinyEMU… Will also run in <strong>Web Browser</strong> TinyEMU!</p>
+<p>No Worries! Everything that runs in <strong>Command Line</strong> TinyEMU… Will also run in <strong>Web Browser</strong> TinyEMU.</p>
 <p>We tweak TinyEMU for Ox64…</p>
 <h1 id="change-risc-v-addresses-in-tinyemu"><a href="#change-risc-v-addresses-in-tinyemu">2 Change RISC-V Addresses in TinyEMU</a></h1>
 <p><em>TinyEMU needs to emulate our Ox64 BL808 SBC. What shall we tweak?</em></p>
-<p>TinyEMU is hardcoded to run at <strong>Fixed RISC-V Addresses</strong>. (Yep it’s really barebones!)</p>
+<p>TinyEMU is hardcoded to run at <strong>Fixed RISC-V Addresses</strong>. (Yep it’s really barebones)</p>
 <p>We tweak the RISC-V Addresses in TinyEMU, so that they match the <strong>Bouffalo Lab BL808 SoC</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// RISC-V Addresses for TinyEMU (modded for Ox64 BL808)
 #define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
@@ -489,7 +489,7 @@ CONFIG_ARCH_HEAP_VBASE=0x80200000
 <p>NuttX Kernel makes a <strong>System Call to OpenSBI</strong> to set the System Timer. (Pic above)</p>
 <p><em>Do we plan to boot OpenSBI on TinyEMU?</em></p>
 <p>That’s not necessary. We’ll <strong>emulate the OpenSBI</strong> System Timer in TinyEMU. (Pic above)</p>
-<p>(It’s truly amazing we managed to boot so much in Machine Mode!)</p>
+<p>(It’s truly amazing we managed to boot so much in Machine Mode)</p>
 <p>TODO</p>
 <h1 id="emulate-ox64-bl808-sbc-with-tinyemu"><a href="#emulate-ox64-bl808-sbc-with-tinyemu">10 Emulate Ox64 BL808 SBC with TinyEMU</a></h1>
 <p>TODO</p>
