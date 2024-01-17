@@ -66,18 +66,19 @@
 
     <h1 class="title">Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#emulate-ox64-bl808-sbc-with-tinyemu">1 Emulate Ox64 BL808 SBC with TinyEMU</a><ul></ul></li>
+<li><a href="#install-tinyemu-emulator">1 Install TinyEMU Emulator</a><ul></ul></li>
 <li><a href="#change-risc-v-addresses-in-tinyemu-for-ox64-bl808">2 Change RISC-V Addresses in TinyEMU for Ox64 BL808</a><ul></ul></li>
 <li><a href="#intercept-uart-registers-for-ox64-bl808-emulator">3 Intercept UART Registers for Ox64 BL808 Emulator</a><ul></ul></li>
 <li><a href="#nuttx-exception-in-ox64-bl808-emulator">4 NuttX Exception in Ox64 BL808 Emulator</a><ul></ul></li>
 <li><a href="#emulate-ox64-bl808-in-web-browser">5 Emulate Ox64 BL808 in Web Browser</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
+<li><a href="#emulate-ox64-bl808-sbc-with-tinyemu">6 Emulate Ox64 BL808 SBC with TinyEMU</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-title.png" alt="Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><em>(Live Demo of Ox64 BL808 Emulator)</em></a></p>
 <p>TODO: <a href="https://youtu.be/KYrdwzIsgeQ"><em>(Watch on YouTube)</em></a></p>
 <p><em>In olden times we had Computer Games (plus Operating Systems) on 5.25-inch <strong>Floppy Disks</strong>. And we’d boot the Floppy Disks (clakety-clack) on <strong>Apple II Computers</strong> with 64 KB RAM.</em></p>
 <p>Today (40 years later) we boot <strong>microSD Cards</strong> (clickety-click) on <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Ox64 BL808</strong></a> RISC-V Single-Board Computers with 64 MB RAM. (Pic below)</p>
-<p><em>What if we could turn it into a</em> <a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><strong>Virtual Ox64 SBC</strong></a> <em>that boots in our</em> <a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><strong>Web Browser</strong></a>? <em>Exactly like an</em> <a href="https://www.scullinsteel.com/apple2/#dos33master"><strong>Emulated Apple II</strong></a>!</p>
+<p><em>What if we could turn it into a</em> <a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><strong>Virtual Ox64 SBC</strong></a> <em>that boots in our</em> <a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><strong>Web Browser</strong></a>? <em>(Pic above) Exactly like an</em> <a href="https://www.scullinsteel.com/apple2/#dos33master"><strong>Emulated Apple II</strong></a>!</p>
 <p>In this article we…</p>
 <ul>
 <li>
@@ -101,47 +102,27 @@
 <p><a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Apache NuttX RTOS</strong></a> is a tiny operating system for <a href="https://lupyuen.github.io/articles/riscv"><strong>64-bit RISC-V Machines</strong></a> and many other platforms. (Arm, x64, ESP32, …)</p>
 <p>TODO: Simpler to troubleshoot</p>
 <p><img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
-<h1 id="emulate-ox64-bl808-sbc-with-tinyemu"><a href="#emulate-ox64-bl808-sbc-with-tinyemu">1 Emulate Ox64 BL808 SBC with TinyEMU</a></h1>
-<p>TODO</p>
-<p>Objective: Take the NuttX Kernel built for <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358">Ox64 BL808 SBC</a>. And boot it on TinyEMU RISC-V Emulator in the Web Browser!</p>
-<ol>
-<li>
-<p>Fix these RISC-V Addresses in TinyEMU to follow BL808 Memory Map: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define LOW_RAM_SIZE   0x00010000 /* 64KB */
-#define RAM_BASE_ADDR  0x80000000
-#define CLINT_BASE_ADDR 0x02000000
-#define CLINT_SIZE      0x000c0000
-#define DEFAULT_HTIF_BASE_ADDR 0x40008000
-#define VIRTIO_BASE_ADDR 0x40010000
-#define VIRTIO_SIZE      0x1000
-#define VIRTIO_IRQ       1
-#define PLIC_BASE_ADDR 0x40100000
-#define PLIC_SIZE      0x00400000
-#define FRAMEBUFFER_BASE_ADDR 0x41000000
+<h1 id="install-tinyemu-emulator"><a href="#install-tinyemu-emulator">1 Install TinyEMU Emulator</a></h1>
+<p><em>What’s this TinyEMU?</em></p>
+<p><a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU</strong></a> is a barebones <strong>64-bit RISC-V Emulator</strong>.</p>
+<p>It doesn’t have all the features of QEMU Emulator. But TinyEMU runs in a <a href="https://www.barebox.org/jsbarebox/?graphic=1"><strong>Web Browser</strong></a> and it’s much simpler for modding!</p>
+<p>We begin by installing (our modded) <strong>TinyEMU for the Command Line</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download TinyEMU modded for Ox64
+git clone https://github.com/lupyuen/ox64-tinyemu
+cd ox64-tinyemu
 
-#define RTC_FREQ 10000000
-#define RTC_FREQ_DIV 16 /* arbitrary, relative to CPU freq to have a
-                          10 MHz frequency */
-</code></pre></div></li>
-<li>
-<p>Start TinyEMU in RISC-V Supervisor Mode (instead of Machine Mode)</p>
-<p>(So we don’t need OpenSBI and U-Boot Bootloader)</p>
-</li>
-<li>
-<p>Emulate <a href="https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx">OpenSBI Timer</a></p>
-<p>(Intercept the Supervisor-To-Machine Mode ECALL)</p>
-</li>
-<li>
-<p>Emulate BL808 UART I/O (Memory Mapped I/O and PLIC Interrupts)</p>
-<p>(So we can run NuttX Shell)</p>
-</li>
-<li>
-<p>Emulate BL808 GPIO Output (Memory Mapped I/O)</p>
-<p>(So we can test Nim Blinky)</p>
-</li>
-</ol>
-<p>Let’s try booting NuttX Ox64 on TinyEMU…</p>
-<p>TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?</p>
+## For Ubuntu:
+sudo apt install libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev
+make
+
+## For macOS:
+brew install openssl sdl2
+make CFLAGS=-I$(brew --prefix)/opt/openssl/include LDFLAGS=-L$(brew --prefix)/opt/openssl/lib CONFIG_MACOS=y
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/.github/workflows/ci.yml">(See the <strong>Build Script</strong>)</a></p>
+<p><em>What about TinyEMU for the Web Browser?</em></p>
+<p>No Worries! Everything that runs in <strong>Command Line</strong> TinyEMU… Will also run in <strong>Web Browser</strong> TinyEMU!</p>
+<p>We tweak TinyEMU for Ox64…</p>
 <h1 id="change-risc-v-addresses-in-tinyemu-for-ox64-bl808"><a href="#change-risc-v-addresses-in-tinyemu-for-ox64-bl808">2 Change RISC-V Addresses in TinyEMU for Ox64 BL808</a></h1>
 <p>TODO</p>
 <p>To boot NuttX Ox64 in TinyEMU: We change the RISC-V Addresses in TinyEMU, so that they match Ox64 BL808: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/8100f25ce053ca858c7588aea211bb20401be980">riscv_machine.c</a></p>
@@ -363,7 +344,48 @@ nuttx/include/arch/syscall.h:229
 <p>And it runs OK in Web Browser yay!</p>
 <p>https://lupyuen.github.io/nuttx-tinyemu/ox64/</p>
 <p>TODO: Emulate BL808 GPIO to Blink an LED</p>
-<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="emulate-ox64-bl808-sbc-with-tinyemu"><a href="#emulate-ox64-bl808-sbc-with-tinyemu">6 Emulate Ox64 BL808 SBC with TinyEMU</a></h1>
+<p>TODO</p>
+<p>Objective: Take the NuttX Kernel built for <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358">Ox64 BL808 SBC</a>. And boot it on TinyEMU RISC-V Emulator in the Web Browser!</p>
+<ol>
+<li>
+<p>Fix these RISC-V Addresses in TinyEMU to follow BL808 Memory Map: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define LOW_RAM_SIZE   0x00010000 /* 64KB */
+#define RAM_BASE_ADDR  0x80000000
+#define CLINT_BASE_ADDR 0x02000000
+#define CLINT_SIZE      0x000c0000
+#define DEFAULT_HTIF_BASE_ADDR 0x40008000
+#define VIRTIO_BASE_ADDR 0x40010000
+#define VIRTIO_SIZE      0x1000
+#define VIRTIO_IRQ       1
+#define PLIC_BASE_ADDR 0x40100000
+#define PLIC_SIZE      0x00400000
+#define FRAMEBUFFER_BASE_ADDR 0x41000000
+
+#define RTC_FREQ 10000000
+#define RTC_FREQ_DIV 16 /* arbitrary, relative to CPU freq to have a
+                          10 MHz frequency */
+</code></pre></div></li>
+<li>
+<p>Start TinyEMU in RISC-V Supervisor Mode (instead of Machine Mode)</p>
+<p>(So we don’t need OpenSBI and U-Boot Bootloader)</p>
+</li>
+<li>
+<p>Emulate <a href="https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx">OpenSBI Timer</a></p>
+<p>(Intercept the Supervisor-To-Machine Mode ECALL)</p>
+</li>
+<li>
+<p>Emulate BL808 UART I/O (Memory Mapped I/O and PLIC Interrupts)</p>
+<p>(So we can run NuttX Shell)</p>
+</li>
+<li>
+<p>Emulate BL808 GPIO Output (Memory Mapped I/O)</p>
+<p>(So we can test Nim Blinky)</p>
+</li>
+</ol>
+<p>Let’s try booting NuttX Ox64 on TinyEMU…</p>
+<p>TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?</p>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
