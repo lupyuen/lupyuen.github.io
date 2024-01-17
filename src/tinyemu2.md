@@ -358,147 +358,136 @@ int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int s
 
 [(__riscv_machine_init__ inits the console)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L956-L963)
 
-TODO
+# Emulator Prints To Console
 
-Here's the [TinyEMU Log for Intercepted UART Registers](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177). We see NuttX booting on TinyEMU yay!
+_We modded our Ox64 Emulator to handle UART Output. Does it work?_
 
-```text
-$ temu root-riscv64.cfg | more
-virtio_console_init
-ABCnx_start: Entry
-mm_initialize: Heap: name=Kmem, start=0x50407c00 size=2065408
-mm_addregion: [Kmem] Region 1: base=0x50407ea8 size=2064720
-mm_malloc: Allocated 0x50407ed0, size 704
-mm_malloc: Allocated 0x50408190, size 48
-...
-uart_register: Registering /dev/console
-target_read_slow: invalid physical address 0x0000000030002024
-target_write_slow: invalid physical address 0x0000000030002024
-work_start_lowpri kernel worker thread(s)
-uart_register: Registering /dev/console
-target_read_slow: invalid physical address 0x0000000030002024
-target_write_slow: invalid physical address 0x0000000030002024
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nx_start_applicaystem/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Fa: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-mm_initialize: Heap: name=(null), start=0x80200000 size=528384
-mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
-mm_initialize: Heap: name=(null), start=0x80200000 size=528384
-mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
-up_exit: TCB=0x504098d0 exiting
-raise_exception2: cause=8, tval=0x0
-pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
-tp =0000000000000000 t0 =0000000000000000 t1 =0000000000000000 t2 =0000000000000000
-s0 =0000000000000001 s1 =0000000080202010 a0 =000000000000000d a1 =0000000000000000
-a2 =0000000080202bc8 a3 =0000000080202010 a4 =0000000080000030 a5 =0000000000000000
-a6 =0000000000000101 a7 =0000000000000000 s2 =0000000000000000 s3 =0000000000000000
-s4 =0000000000000000 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000000
-s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
-t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
-priv=U mstatus=0000000a0006806
- mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
-raise_exception2: cause=2, tval=0x0
-raise_exception2: cause=2, tval=0x0
-...
-raise_exception2: cause=2, tval=0x0
-up_exit: TCB=0x504098d0 exiting
-raise_exception2: cause=8, tval=0x0
-pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
-tp =0000000000000000 t0 =0000000000000000 t1 =0000000000000000 t2 =0000000000000000
-s0 =0000000000000001 s1 =0000000080202010 a0 =000000000000000d a1 =0000000000000000
-a2 =0000000080202bc8 a3 =0000000080202010 a4 =0000000080000030 a5 =0000000000000000
-a6 =00000000000001 s2 =0000000000000000 s3 =0000000000000000
-s4 =0000000000000000 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000000
-s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
-t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
-priv=U mstatus=0000000a00040021 cycles=82846806
- mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
-raise_exception2: cause=2, tval=0x0
-raise_exception2: cause=2, tval=0x0
-```
-
-TODO: Why does NuttX read from 0x4000000030002084? Probably due to T-Head C906 MMU Flags
-
-TODO: What is `raise_exception2: cause=2, tval=0x0`?
-
-TODO: Why is NuttX Shell started twice? Because it failed? (`/system/bin/init`)
-
-# NuttX Exception in Ox64 BL808 Emulator
-
-TODO
-
-_What is `raise_exception2: cause=8`?_
-
-From the [TinyEMU Log for Intercepted UART Registers](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177)...
-
-```text
-up_exit: TCB=0x504098d0 exiting
-raise_exception2: cause=8, tval=0x0
-pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
-tp =0000000000000000 t0 =0000000000000000 t1 =0000000000000000 t2 =0000000000000000
-s0 =0000000000000001 s1 =0000000080202010 a0 =000000000000000d a1 =0000000000000000
-a2 =0000000080202bc8 a3 =0000000080202010 a4 =0000000080000030 a5 =0000000000000000
-a6 =0000000000000101 a7 =0000000000000000 s2 =0000000000000000 s3 =0000000000000000
-s4 =0000000000000000 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000000
-s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
-t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
-priv=U mstatus=0000000a0006806
- mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
-raise_exception2: cause=2, tval=0x0
-```
-
-We look up the offending Code Address: `pc=8000_19c6`. This address comes from the NuttX App Virtual Memory: [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/heapcrash/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30)
+Yep, we see NuttX booting on our Ox64 Emulator yay!
 
 ```bash
+## Boot TinyEMU with NuttX Kernel
+$ temu root-riscv64.cfg | more
+
+ABC
+nx_start: Entry
+mm_initialize: Heap: name=Kmem, start=0x50407c00 size=2065408
+mm_addregion:  [Kmem] Region 1: base=0x50407ea8 size=2064720
+uart_register: Registering /dev/console
+target_read_slow:  invalid physical address 0x0000000030002024
+target_write_slow: invalid physical address 0x0000000030002024
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+
+nx_start_application: Starting init task: /system/bin/init
+mm_initialize: Heap: name=(null), start=0x80200000 size=528384
+mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
+up_exit: TCB=0x504098d0 exiting
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177)
+
+Followed by this __RISC-V Exception__...
+
+```bash
+raise_exception2: cause=8, tval=0x0
+pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
+tp =0000000000000000 t0 =0000000000000000 t1 =0000000000000000 t2 =0000000000000000
+s0 =0000000000000001 s1 =0000000080202010 a0 =000000000000000d a1 =0000000000000000
+a2 =0000000080202bc8 a3 =0000000080202010 a4 =0000000080000030 a5 =0000000000000000
+a6 =0000000000000101 a7 =0000000000000000 s2 =0000000000000000 s3 =0000000000000000
+s4 =0000000000000000 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000000
+s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
+t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
+priv=U mstatus=0000000a0006806
+ mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+raise_exception2: cause=2, tval=0x0
+raise_exception2: cause=2, tval=0x0
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177)
+
+Why? We investigate the alligator in the vest...
+
+# RISC-V Exception in Emulator
+
+_What's this RISC-V Exception?_
+
+```yaml
+raise_exception2:
+  cause=8, tval=0x0
+  pc=800019c6
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177)
+
+We look up the offending Code Address: __`0x8000_19C6`__.
+
+This address comes from the Virtual Memory of a __NuttX App__ (not the NuttX Kernel): [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/heapcrash/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30)
+
+```bash
+## Virtual Memory of NuttX Apps:
+## Code, Data and Heap
 CONFIG_ARCH_TEXT_VBASE=0x80000000
-CONFIG_ARCH_TEXT_NPAGES=128
 CONFIG_ARCH_DATA_VBASE=0x80100000
-CONFIG_ARCH_DATA_NPAGES=128
 CONFIG_ARCH_HEAP_VBASE=0x80200000
-CONFIG_ARCH_HEAP_NPAGES=128
 ```
 
-The only NuttX App we're running is the NuttX Shell. So we look up the RISC-V Disassembly for the NuttX Shell: [init.S](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358)
+_What NuttX App are we running?_
 
-```text
+The only NuttX App we're running at Startup is the __NuttX Shell__.
+
+Thus we look up the __RISC-V Disassembly__ for the NuttX Shell: [init.S](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358)
+
+```c
 nuttx/syscall/proxies/PROXY_sched_getparam.c:8
-int sched_getparam(pid_t parm1, FAR struct sched_param * parm2) {
-...
-00000000000019c6 <.LVL4>:
-nuttx/include/arch/syscall.h:229
-  asm volatile
-    19c6:	00000073          	ecall
+  int sched_getparam(pid_t parm1, FAR struct sched_param * parm2) {
+  ...
+  nuttx/include/arch/syscall.h:229
+    19c6: 00000073  ecall
 ```
 
-0x19c6 is an ECALL from NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). Our NuttX Shell is making a System Call to NuttX Kernel!
+_What's ecall?_
 
-Which fails because everything runs in RISC-V Machine Mode right now. We will need to start TinyEMU in RISC-V Supervisor Mode (instead of Machine Mode).
+At `0x19C6` we see the __RISC-V ECALL Instruction__ that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). 
 
-[(We quit if mcause=2, otherwise it will loop forever)](https://github.com/lupyuen/ox64-tinyemu/commit/9da5b066c9fe29ef46b93ff8174662d5e6858038)
+Hence our NuttX Shell is making a __System Call__ to NuttX Kernel!
 
-# Emulate Ox64 BL808 in Web Browser
+Why did it fail? We'll come back to this, first we surf the web...
+
+[(We quit if __MCAUSE is 2__, otherwise we loop forever)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1142-L1147)
+
+# Emulator in the Web Browser
+
+_Will our Ox64 Emulator run in the Web Browser?_
 
 TODO
-
-_Will our Ox64 BL808 Emulator run in the Web Browser?_
 
 Let's find out! First we fix the [TinyEMU Build for Emscripten](https://github.com/lupyuen/ox64-tinyemu/commit/170abb06b58a58328efa8a1874795f1daac0b7a7).
 
-Print to Device Console instead of JavaScript Console:
-
-https://github.com/lupyuen/ox64-tinyemu/commit/41383b85be0f0a16369d2661338487dd28a56a75
-
-And it runs OK in Web Browser yay!
-
-https://lupyuen.github.io/nuttx-tinyemu/ox64/
+[And it runs OK in Web Browser yay!](https://lupyuen.github.io/nuttx-tinyemu/ox64/)
 
 TODO: Emulate BL808 GPIO to Blink an LED
+
+# RISC-V Machine Mode vs Supervisor Mode
+
+TODO
+
+NuttX Shell: [init.S](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358)
+
+```c
+nuttx/syscall/proxies/PROXY_sched_getparam.c:8
+  int sched_getparam(pid_t parm1, FAR struct sched_param * parm2) {
+  ...
+  nuttx/include/arch/syscall.h:229
+    19c6: 00000073  ecall
+```
+
+_What's ecall?_
+
+At `0x19C6` we see the __RISC-V ECALL Instruction__ that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). 
+
+Hence our NuttX Shell is making a __System Call__ to NuttX Kernel!
+
+Which fails because everything runs in RISC-V Machine Mode right now. We will need to start TinyEMU in RISC-V Supervisor Mode (instead of Machine Mode).
 
 # Emulate Ox64 BL808 SBC with TinyEMU
 
