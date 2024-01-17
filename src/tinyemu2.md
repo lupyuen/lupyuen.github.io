@@ -97,9 +97,7 @@ TODO: Where did we get the addresses?
 
 _What's this Boot Code?_
 
-TODO
-
-[riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L862-L872)
+TinyEMU needs a tiny chunk of __RISC-V Machine Code__ that will jump to our __Kernel Image__ (and pass the Device Tree): [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L862-L872)
 
 ```c
 // At TinyEMU Startup: Init the Emulated RAM...
@@ -120,7 +118,7 @@ static void copy_bios(...) {
   q[4] = 0x00028067;  // jalr zero, t0, jump_addr
 ```
 
-TODO
+And that's our barebones Ox64 Emulator! Let's run it...
 
 # Run TinyEMU Emulator
 
