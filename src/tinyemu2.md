@@ -2,9 +2,9 @@
 
 📝 _31 Jan 2024_
 
-![TODO](https://lupyuen.github.io/images/tinyemu2-title.png) 
+![Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS](https://lupyuen.github.io/images/tinyemu2-title.png)
 
-TODO: [_(Live Demo of NuttX on TinyEMU)_](https://lupyuen.github.io/nuttx-tinyemu)
+[_(Live Demo of Ox64 BL808 Emulator)_](https://lupyuen.github.io/nuttx-tinyemu/ox64)
 
 TODO: [_(Watch on YouTube)_](https://youtu.be/KYrdwzIsgeQ)
 
@@ -12,7 +12,7 @@ _In olden times we had Computer Games (plus Operating Systems) on 5.25-inch __Fl
 
 Today (40 years later) we boot __microSD Cards__ (clickety-click) on [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V Single-Board Computers with 64 MB RAM. (Pic below)
 
-_What if we could turn it into a_ __Virtual Ox64 SBC__ _that boots in our_ __Web Browser__? _Exactly like an_ [__Emulated Apple II__](https://www.scullinsteel.com/apple2/#dos33master)!
+_What if we could turn it into a_ [__Virtual Ox64 SBC__](https://lupyuen.github.io/nuttx-tinyemu/ox64) _that boots in our_ [__Web Browser__](https://lupyuen.github.io/nuttx-tinyemu/ox64)? _Exactly like an_ [__Emulated Apple II__](https://www.scullinsteel.com/apple2/#dos33master)!
 
 In this article we...
 
@@ -20,11 +20,11 @@ In this article we...
 
   (Without any modifications!)
 
-- Boot it on the [__TinyEMU__](https://github.com/fernandotcl/TinyEMU) RISC-V Emulator
+- Boot it on the [__TinyEMU RISC-V Emulator__](https://github.com/fernandotcl/TinyEMU)
 
   [(Which runs in a __Web Browser__)](https://www.barebox.org/jsbarebox/?graphic=1)
 
-- Create our own __Emulator for Ox64 SBC__
+- Create our own [__Emulator for Ox64 SBC__](https://lupyuen.github.io/nuttx-tinyemu/ox64)
 
   (With minor tweaks to TinyEMU)
 
@@ -32,9 +32,11 @@ In this article we...
 
   (Thanks to WebAssembly)
 
-TODO: Why NuttX?
+_Why NuttX?_
 
 [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) is a tiny operating system for [__64-bit RISC-V Machines__](https://lupyuen.github.io/articles/riscv) and many other platforms. (Arm, x64, ESP32, ...)
+
+TODO: Simpler to troubleshoot
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
 
