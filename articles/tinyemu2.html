@@ -70,7 +70,7 @@
 <li><a href="#change-risc-v-addresses-in-tinyemu">2 Change RISC-V Addresses in TinyEMU</a><ul></ul></li>
 <li><a href="#run-tinyemu-emulator">3 Run TinyEMU Emulator</a><ul></ul></li>
 <li><a href="#uart-registers-for-bl808-soc">4 UART Registers for BL808 SoC</a><ul></ul></li>
-<li><a href="#intercept-uart-registers-for-ox64-bl808-emulator">5 Intercept UART Registers for Ox64 BL808 Emulator</a><ul></ul></li>
+<li><a href="#intercept-the-uart-registers">5 Intercept the UART Registers</a><ul></ul></li>
 <li><a href="#nuttx-exception-in-ox64-bl808-emulator">6 NuttX Exception in Ox64 BL808 Emulator</a><ul></ul></li>
 <li><a href="#emulate-ox64-bl808-in-web-browser">7 Emulate Ox64 BL808 in Web Browser</a><ul></ul></li>
 <li><a href="#emulate-ox64-bl808-sbc-with-tinyemu">8 Emulate Ox64 BL808 SBC with TinyEMU</a><ul></ul></li>
@@ -271,7 +271,10 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
 <p><em>But why are they Invalid Addresses?</em></p>
 <p>We haven’t defined in TinyEMU the addresses for <strong>Memory-Mapped Input / Output</strong>. (Like for UART Registers)</p>
 <p>That’s why TinyEMU <strong>won’t read and write</strong> our UART Registers. Let’s fix this…</p>
-<h1 id="intercept-uart-registers-for-ox64-bl808-emulator"><a href="#intercept-uart-registers-for-ox64-bl808-emulator">5 Intercept UART Registers for Ox64 BL808 Emulator</a></h1>
+<h1 id="intercept-the-uart-registers"><a href="#intercept-the-uart-registers">5 Intercept the UART Registers</a></h1>
+<p><em>NuttX tries to print something but fails…</em></p>
+<p><em>How to fix the UART Registers in our Ox64 Emulator?</em></p>
+<p>Inside TinyEMU, we intercept all “<strong>read <code>0x3000_2084</code></strong>” and “<strong>write <code>0x3000_2088</code></strong>”. And we pretend to be a <strong>UART Port</strong>…</p>
 <p>TODO</p>
 <p>Let’s intercept the “read 0x3000_2084” and “write 0x3000_2088” in TinyEMU Emulator for Ox64 BL808, so we can print the UART Output.</p>
 <p>We handle all “read 0x3000_2084” (uart_fifo_config_1) by returning 32 (TX FIFO Available Count), to tell NuttX that the UART Port is always ready to transmit: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3">riscv_cpu.c</a></p>
