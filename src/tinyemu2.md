@@ -467,6 +467,8 @@ Let's find out! First we fix the [TinyEMU Build for Emscripten](https://github.c
 
 TODO: Emulate BL808 GPIO to Blink an LED
 
+One more thing to tweak...
+
 # Machine Mode vs Supervisor Mode
 
 _Back to our earlier question: Why did our System Call fail?_
@@ -534,6 +536,8 @@ _So we need to start NuttX Kernel in Supervisor Mode?_
 
 Yep, we need more tweaks in TinyEMU to start NuttX in Supervisor Mode. (Instead of Machine Mode)
 
+TODO: (Maybe in the TinyEMU Boot Code)
+
 TODO: Pic of TinyEMU, Kernel, Apps. Start / System Call (ECALL). Emulate OpenSBI Timer
 
 _Any other gotchas?_
@@ -545,6 +549,8 @@ NuttX Kernel makes a __System Call to OpenSBI__ to set the System Timer. (Pic ab
 _Do we plan to boot OpenSBI on TinyEMU?_
 
 That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU. (Pic above)
+
+TODO: More about System Timer
 
 (It's truly amazing we managed to boot so much in Machine Mode)
 
