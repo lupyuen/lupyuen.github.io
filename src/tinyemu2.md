@@ -269,9 +269,15 @@ _How to fix the UART Registers in our Ox64 Emulator?_
 
 Inside TinyEMU, we intercept all "__read `0x3000_2084`__" and "__write `0x3000_2088`__". And we pretend to be a __UART Port__...
 
+## Emulate the UART Status
+
 TODO
 
-Let's intercept the "read 0x3000_2084" and "write 0x3000_2088" in TinyEMU Emulator for Ox64 BL808, so we can print the UART Output.
+> __`0x3000_2084`__ is [__uart_fifo_config_1__ (Page 427)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) 
+
+> _We read this UART Register to check if __UART Transmit is ready__ (for more output)_
+
+TODO
 
 We handle all "read 0x3000_2084" (uart_fifo_config_1) by returning 32 (TX FIFO Available Count), to tell NuttX that the UART Port is always ready to transmit: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3)
 
@@ -296,6 +302,17 @@ int target_read_slow(RISCVCPUState *s, mem_uint_t *pval, target_ulong addr, int 
     }
     //// End Test
 ```
+
+## Emulate the UART Output
+
+TODO
+
+> __`0x3000_2088`__ is [__uart_fifo_wdata__ (Page 428)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) 
+
+> _We write to this UART Register to __print a character__ to UART Output_
+
+TODO
+
 
 We handle all "write 0x3000_2088" (uart_fifo_wdata) by printing the character to the UART Output Register: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/commit/14badbc271f6dfe9602b889e4636c855833874d3)
 
