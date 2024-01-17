@@ -429,6 +429,7 @@ CONFIG_ARCH_HEAP_VBASE=0x80200000
 <p>Let’s find out! First we fix the <a href="https://github.com/lupyuen/ox64-tinyemu/commit/170abb06b58a58328efa8a1874795f1daac0b7a7">TinyEMU Build for Emscripten</a>.</p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/ox64/">And it runs OK in Web Browser yay!</a></p>
 <p>TODO: Emulate BL808 GPIO to Blink an LED</p>
+<p>One more thing to tweak…</p>
 <h1 id="machine-mode-vs-supervisor-mode"><a href="#machine-mode-vs-supervisor-mode">9 Machine Mode vs Supervisor Mode</a></h1>
 <p><em>Back to our earlier question: Why did our System Call fail?</em></p>
 <p>Our NuttX App (NuttX Shell) tried to make a <strong>System Call (ECALL)</strong> to NuttX Kernel. And it failed: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358">init.S</a></p>
@@ -483,12 +484,14 @@ CONFIG_ARCH_HEAP_VBASE=0x80200000
 <p>TODO: Pic of OpenSBI, U-Boot, Kernel, Apps</p>
 <p><em>So we need to start NuttX Kernel in Supervisor Mode?</em></p>
 <p>Yep, we need more tweaks in TinyEMU to start NuttX in Supervisor Mode. (Instead of Machine Mode)</p>
+<p>TODO: (Maybe in the TinyEMU Boot Code)</p>
 <p>TODO: Pic of TinyEMU, Kernel, Apps. Start / System Call (ECALL). Emulate OpenSBI Timer</p>
 <p><em>Any other gotchas?</em></p>
 <p>There’s a tiny quirk: NuttX Kernel will <strong>make an ECALL</strong> too…</p>
 <p>NuttX Kernel makes a <strong>System Call to OpenSBI</strong> to set the System Timer. (Pic above)</p>
 <p><em>Do we plan to boot OpenSBI on TinyEMU?</em></p>
 <p>That’s not necessary. We’ll <strong>emulate the OpenSBI</strong> System Timer in TinyEMU. (Pic above)</p>
+<p>TODO: More about System Timer</p>
 <p>(It’s truly amazing we managed to boot so much in Machine Mode)</p>
 <p>TODO</p>
 <h1 id="emulate-ox64-bl808-sbc-with-tinyemu"><a href="#emulate-ox64-bl808-sbc-with-tinyemu">10 Emulate Ox64 BL808 SBC with TinyEMU</a></h1>
