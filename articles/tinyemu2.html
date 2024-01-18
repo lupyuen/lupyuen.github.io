@@ -546,14 +546,14 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow.jpg" alt="TODO" /></p>
-<p><em>So we will start NuttX Kernel in Supervisor Mode?</em></p>
+<p><em>So we will boot NuttX Kernel in Supervisor Mode?</em></p>
 <p>Yep we shall tweak TinyEMU to start NuttX in <strong>Supervisor Mode</strong>. (Instead of Machine Mode)</p>
 <p><a href="https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu">(Maybe in the <strong>TinyEMU Boot Code</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TODO" /></p>
 <p><em>Any other gotchas?</em></p>
 <p>There’s a tiny quirk: NuttX Kernel will <strong>make an ECALL</strong> too…</p>
 <p>NuttX Kernel makes a <strong>System Call to OpenSBI</strong> to start the System Timer. (Pic above)</p>
-<p><em>Do we plan to boot OpenSBI on TinyEMU?</em></p>
+<p><em>Will we run OpenSBI on TinyEMU?</em></p>
 <p>That’s not necessary. We’ll <strong>emulate the OpenSBI</strong> System Timer in TinyEMU.</p>
 <p><a href="https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx">(More about <strong>System Timer</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64?tab=readme-ov-file#nuttx-automated-daily-build-for-ox64">(Ox64 Emulator today might be sufficient for <strong>Daily Automated Testing</strong>)</a></p>
