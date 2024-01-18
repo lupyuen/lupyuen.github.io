@@ -205,7 +205,7 @@ target_write_slow:
   bios: &quot;Image&quot;,
 }
 </code></pre></div>
-<p><strong><code>Image</code></strong> is the <strong>NuttX Kernel Image</strong> that comes from a typical <a href="https://github.com/lupyuen/nuttx-ox64/releases"><strong>NuttX Build for Ox64</strong></a>.</p>
+<p><strong><code>Image</code></strong> is the <strong>NuttX Kernel Image</strong> that comes from a typical <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.4.0"><strong>NuttX Build for Ox64</strong></a>.</p>
 <p><em>What are the CSR Writes?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Emulator writes to CSR Registers
 csr_write: csr=0x104 val=0x0
@@ -396,7 +396,7 @@ mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
 ## NuttX Shell crashes due to a RISC-V Exception
 up_exit: TCB=0x504098d0 exiting
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e">(See the <strong>Complete Log</strong>)</a></p>
 <p>Followed by this <strong>RISC-V Exception</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
 raise_exception2: cause=8, tval=0x0
@@ -415,7 +415,7 @@ mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 raise_exception2: cause=2, tval=0x0
 raise_exception2: cause=2, tval=0x0
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e">(See the <strong>Complete Log</strong>)</a></p>
 <p>Why? We investigate the alligator in the vest…</p>
 <h1 id="risc-v-exception-in-emulator"><a href="#risc-v-exception-in-emulator">7 RISC-V Exception in Emulator</a></h1>
 <p><em>What’s this RISC-V Exception?</em></p>
@@ -424,7 +424,7 @@ raise_exception2:
   cause=8, tval=0x0
   pc=800019c6
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e">(See the <strong>Complete Log</strong>)</a></p>
 <p>We track down the offending Code Address: <strong><code>0x8000_19C6</code></strong></p>
 <p>This address comes from the Virtual Memory of a <strong>NuttX App</strong> (not the NuttX Kernel): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/heapcrash/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Virtual Memory of NuttX Apps:
@@ -479,6 +479,7 @@ simple-http-server $HOME/nuttx-tinyemu/docs
 <p>And our Ox64 Emulator appears in the Web Browser! (Pic above)</p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/ox64">(Live Demo of <strong>Ox64 Emulator</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/ox64">(See the <strong>Web Server Files</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/tinyemu#boot-nuttx-in-web-browser">(How we got the <strong>WebAssembly Files</strong>)</a></p>
 <p><em>What about Console Input?</em></p>
 <p>Console Input requires <a href="https://lupyuen.github.io/articles/plic2"><strong>UART Interrupts</strong></a>. We’ll implement UART Interrupts soon. (Pic below)</p>
 <p>One more thing to tweak…</p>
