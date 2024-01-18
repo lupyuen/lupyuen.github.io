@@ -640,7 +640,7 @@ But a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
 
 1.  OpenSBI starts the [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) in __Supervisor Mode__
 
-1.  U-Boot starts the [__NuttX Kernel__](https://lupyuen.github.io/articles/ox2), also in __Supervisor Mode__
+1.  U-Boot starts the [__NuttX Kernel__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow), also in __Supervisor Mode__
 
 1.  And NuttX Kernel starts the [__NuttX Apps__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app) in __User Mode__
 
