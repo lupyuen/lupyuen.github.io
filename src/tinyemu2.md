@@ -209,7 +209,7 @@ This comes from our __NuttX Boot Code__ (in RISC-V Assembly):  [bl808_head.S](ht
 
 ```c
 /* Disable all interrupts (i.e. timer, external) in SIE CSR */
-csrw	sie, zero
+csrw  sie, zero
 
 /* Set the Interrupt Vector Table in STVEC CSR */
 la    t0, __trap_vec
@@ -379,6 +379,7 @@ int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int s
       default:
         ...
 ```
+
 [(__print_console__ is defined here)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1127-L1138)
 
 [(__riscv_machine_init__ inits the console)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L956-L963)
