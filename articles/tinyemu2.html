@@ -213,7 +213,7 @@ target_write_slow:
   bios: &quot;Image&quot;,
 }
 </code></pre></div>
-<p><strong><code>Image</code></strong> is the <strong>NuttX Kernel Image</strong> that comes from a typical <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.4.0"><strong>NuttX Build for Ox64</strong></a>.</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.4.0/Image"><strong><code>Image</code></strong></a> is the <strong>NuttX Kernel Image</strong> that comes from a typical <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.4.0"><strong>NuttX Build for Ox64</strong></a>.</p>
 <p><em>What are the CSR Writes?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Emulator writes to CSR Registers
 csr_write: csr=0x104 val=0x0
@@ -235,7 +235,7 @@ csr_write: csr=0x100 val=0x200000000
 <p>(Set the Status)</p>
 </li>
 </ul>
-<p>These are all <strong>Supervisor-Mode</strong> CSR Registers. (We’ll find out why later)</p>
+<p>These are all <strong>Supervisor-Mode</strong> CSR Registers. (We’ll find out why)</p>
 <p><em>Why is it writing to CSR Registers?</em></p>
 <p>This comes from our <strong>NuttX Boot Code</strong> (in RISC-V Assembly):  <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_head.S#L121-L128">bl808_head.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Disable all interrupts
@@ -248,7 +248,7 @@ csrw  sie, zero
 la    t0, __trap_vec
 csrw  stvec, t0
 </code></pre></div>
-<p>Let’s talk about the invalid reads and writes…</p>
+<p>Let’s talk about the funny reads and writes…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-register.jpg" alt="BL808 UART Registers (Page 427)" /></p>
 </blockquote>
