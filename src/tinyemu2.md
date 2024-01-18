@@ -18,7 +18,7 @@ In this article we...
 
   (Without any modifications)
 
-- Boot it on the [__TinyEMU RISC-V Emulator__](https://github.com/fernandotcl/TinyEMU)
+- Boot it on the [__TinyEMU RISC-V Emulator__](https://lupyuen.github.io/articles/tinyemu)
 
   [(Which runs in a __Web Browser__)](https://www.barebox.org/jsbarebox/?graphic=1)
 
@@ -42,7 +42,7 @@ Which makes it easier to understand __everything that happens__ as NuttX boots o
 
 _What's this TinyEMU?_
 
-[__TinyEMU__](https://github.com/fernandotcl/TinyEMU) is a barebones __64-bit RISC-V Emulator__.
+[__TinyEMU__](https://lupyuen.github.io/articles/tinyemu) is a barebones __64-bit RISC-V Emulator__.
 
 It doesn't have all the features of QEMU Emulator. But TinyEMU runs in a [__Web Browser__](https://www.barebox.org/jsbarebox/?graphic=1) and it's much simpler for modding!
 
@@ -636,13 +636,13 @@ TinyEMU always __starts in Machine Mode__. Everything we saw today: That's all r
 
 But a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
 
-1.  Ox64 boots the __OpenSBI Supervisor Binary Interface__ in __Machine Mode__ (Think BIOS, but for RISC-V Machines)
+1.  Ox64 boots the [__OpenSBI Supervisor Binary Interface__](https://lupyuen.github.io/articles/sbi) in __Machine Mode__ (Think BIOS, but for RISC-V Machines)
 
-1.  OpenSBI starts the __U-Boot Bootloader__ in __Supervisor Mode__
+1.  OpenSBI starts the [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) in __Supervisor Mode__
 
-1.  U-Boot starts the __NuttX Kernel__, also in __Supervisor Mode__
+1.  U-Boot starts the [__NuttX Kernel__](https://lupyuen.github.io/articles/ox2), also in __Supervisor Mode__
 
-1.  And NuttX Kernel starts the __NuttX Apps__ in __User Mode__
+1.  And NuttX Kernel starts the [__NuttX Apps__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app) in __User Mode__
 
 ![Ox64 SBC will run in Machine, Supervisor AND User Modes](https://lupyuen.github.io/images/tinyemu2-flow.jpg)
 
@@ -658,7 +658,7 @@ _Any other gotchas?_
 
 There's a tiny quirk: NuttX Kernel will __make an ECALL__ too...
 
-NuttX Kernel makes a __System Call to OpenSBI__ to start the System Timer. (Pic above)
+NuttX Kernel makes a [__System Call to OpenSBI__](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx) to start the System Timer. (Pic above)
 
 _Will we run OpenSBI on TinyEMU?_
 
