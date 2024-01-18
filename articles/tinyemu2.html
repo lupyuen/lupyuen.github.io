@@ -292,7 +292,7 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
 <p><em>But why are they Invalid Addresses?</em></p>
 <p>We haven’t defined in TinyEMU the addresses for <strong>Memory-Mapped Input / Output</strong>. (Like for UART Registers)</p>
 <p>That’s why TinyEMU <strong>won’t read and write</strong> our UART Registers. Let’s fix this…</p>
-<p><img src="https://lupyuen.github.io/images/tinyemu2-uart.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-uart.jpg" alt="Emulating the UART Registers with TinyEMU" /></p>
 <h1 id="intercept-the-uart-registers"><a href="#intercept-the-uart-registers">5 Intercept the UART Registers</a></h1>
 <p><em>NuttX tries to print something but fails…</em></p>
 <p><em>How to fix the UART Registers in our Ox64 Emulator?</em></p>
@@ -342,7 +342,7 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
   // Omitted: Write character to Transmit FIFO.
 </code></pre></div>
 <p>And the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>UART Transmit Buffer Size</strong> (Page 427)</a> defaults to <code>32</code>. Thus we always return <code>32</code>.</p>
-<p><img src="https://lupyuen.github.io/images/tinyemu2-uart2.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-uart2.jpg" alt="Emulating the UART Output Register with TinyEMU" /></p>
 <h2 id="emulate-the-uart-output"><a href="#emulate-the-uart-output">5.2 Emulate the UART Output</a></h2>
 <p>Earlier we saw…</p>
 <blockquote>
@@ -428,7 +428,7 @@ raise_exception2: cause=2, tval=0x0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e">(See the <strong>Complete Log</strong>)</a></p>
 <p>Why? We investigate the alligator in the vest…</p>
-<p><img src="https://lupyuen.github.io/images/tinyemu2-flow2a.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow2a.jpg" alt="System Call Fails in NuttX Kernel" /></p>
 <h1 id="risc-v-exception-in-emulator"><a href="#risc-v-exception-in-emulator">7 RISC-V Exception in Emulator</a></h1>
 <p><em>What’s this RISC-V Exception?</em></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
@@ -532,10 +532,10 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p>That’s because our NuttX Kernel is actually running in <strong>RISC-V Machine Mode</strong>, not Supervisor Mode!</p>
 <p>Machine Mode is the <strong>most powerful mode</strong> in a RISC-V System, more powerful than Supervisor Mode and User Mode. But NuttX expects to boot in <strong>Supervisor Mode</strong>. (Pic below)</p>
 <p>(Which explains the <a href="https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator"><strong>Supervisor-Mode CSR Registers</strong></a> we saw earlier)</p>
-<p><img src="https://lupyuen.github.io/images/tinyemu2-flow2.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow2.jpg" alt="NuttX Kernel won’t work in Machine Mode" /></p>
 <p><em>Huh! How did that happen?</em></p>
 <p>TinyEMU always <strong>starts in Machine Mode</strong>. Everything we saw today: That’s all running in (super-powerful) <strong>Machine Mode</strong>.</p>
-<p>But on a <strong>Real Ox64 SBC</strong> will run in Machine, Supervisor AND User Modes…</p>
+<p>But a <strong>Real Ox64 SBC</strong> will run in Machine, Supervisor AND User Modes…</p>
 <ol>
 <li>
 <p>Ox64 boots the <strong>OpenSBI Supervisor Binary Interface</strong> in <strong>Machine Mode</strong> (Think BIOS, but for RISC-V Machines)</p>
@@ -550,11 +550,11 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p>And NuttX Kernel starts the <strong>NuttX Apps</strong> in <strong>User Mode</strong></p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/tinyemu2-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow.jpg" alt="Ox64 SBC will run in Machine, Supervisor AND User Modes" /></p>
 <p><em>So we will boot NuttX Kernel in Supervisor Mode?</em></p>
 <p>Yep we shall tweak TinyEMU to start NuttX in <strong>Supervisor Mode</strong>. (Instead of Machine Mode)</p>
 <p><a href="https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu">(Maybe in the <strong>TinyEMU Boot Code</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will boot NuttX in Supervisor Mode" /></p>
 <p><em>Any other gotchas?</em></p>
 <p>There’s a tiny quirk: NuttX Kernel will <strong>make an ECALL</strong> too…</p>
 <p>NuttX Kernel makes a <strong>System Call to OpenSBI</strong> to start the System Timer. (Pic above)</p>
@@ -563,6 +563,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p><a href="https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx">(More about <strong>System Timer</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64?tab=readme-ov-file#nuttx-automated-daily-build-for-ox64">(Ox64 Emulator today might be sufficient for <strong>Daily Automated Testing</strong>)</a></p>
 <p>(It’s truly amazing we managed to boot so much in Machine Mode)</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-console.png" alt="JavaScript Console of Ox64 BL808 Emulator" /></p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -588,7 +589,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tinyemu2.md"><strong>lupyuen.github.io/src/tinyemu2.md</strong></a></p>
-<p>TODO: Pic of BL808 Memory Map</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-memory.jpg" alt="BL808 Memory Map (Page 41)" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><em>BL808 Memory Map (Page 41)</em></a></p>
 <h1 id="appendix-risc-v-addresses-for-ox64"><a href="#appendix-risc-v-addresses-for-ox64">11 Appendix: RISC-V Addresses for Ox64</a></h1>
 <p>Earlier we <a href="https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu"><strong>tweaked the RISC-V Addresses</strong></a> in TinyEMU, so that they match the <strong>Bouffalo Lab BL808 SoC</strong> (pic above): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
