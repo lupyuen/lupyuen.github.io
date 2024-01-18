@@ -249,7 +249,7 @@ We dig around the [__BL808 Reference Manual__](https://github.com/bouffalolab/bl
 
 - Which explains why we always see "__read `0x3000_2084`__" before "__write `0x3000_2088`__"...
 
-  NuttX Kernel is trying to [__print something__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615) to the UART Console!
+  NuttX Kernel is trying to [__print something__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615) to the UART Console! (Pic below)
 
   ```c
   // NuttX sends a character to the UART Port...
