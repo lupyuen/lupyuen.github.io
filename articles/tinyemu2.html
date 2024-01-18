@@ -167,7 +167,7 @@ static void copy_bios(...) {
 </code></pre></div>
 <p>And that’s our barebones Ox64 Emulator! Let’s run it…</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6">(Remember to enable <strong>Exception Logging</strong>)</a></p>
-<p>TODO: Pic of TinyEMU, CSR, Invalid Reads / Writes</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-run.png" alt="TinyEMU Emulator at the Command Line" /></p>
 <h1 id="run-tinyemu-emulator"><a href="#run-tinyemu-emulator">3 Run TinyEMU Emulator</a></h1>
 <p><em>We modded TinyEMU to emulate Ox64. What happens when we run it?</em></p>
 <p>We see signs of life… <strong>NuttX Kernel</strong> is actually booting in our Ox64 Emulator!</p>
@@ -379,7 +379,7 @@ int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int s
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1127-L1138">(<strong>print_console</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L956-L963">(<strong>riscv_machine_init</strong> inits the console)</a></p>
-<p>TODO: Pic of TinyEMU</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-run2.png" alt="TinyEMU Emulator emulates UART Output" /></p>
 <h1 id="emulator-prints-to-console"><a href="#emulator-prints-to-console">6 Emulator Prints To Console</a></h1>
 <p><em>We modded our Ox64 Emulator to handle UART Output. Does it work?</em></p>
 <p>Yep, we see NuttX booting on our Ox64 Emulator yay! (Pic above)</p>
