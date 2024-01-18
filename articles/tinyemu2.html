@@ -128,10 +128,12 @@ make CFLAGS=-I$(brew --prefix)/opt/openssl/include LDFLAGS=-L$(brew --prefix)/op
 <p><em>What about TinyEMU for the Web Browser?</em></p>
 <p>No Worries! Everything that runs in <strong>Command Line</strong> TinyEMU… Will also run in <strong>Web Browser</strong> TinyEMU.</p>
 <p>We tweak TinyEMU for Ox64…</p>
+<p>TODO: Pic of BL808 Memory Map</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><em>BL808 Memory Map (Page 41)</em></a></p>
 <h1 id="change-risc-v-addresses-in-tinyemu"><a href="#change-risc-v-addresses-in-tinyemu">2 Change RISC-V Addresses in TinyEMU</a></h1>
 <p><em>TinyEMU needs to emulate our Ox64 BL808 SBC. What shall we tweak?</em></p>
 <p>TinyEMU is hardcoded to run at <strong>Fixed RISC-V Addresses</strong>. (Yep it’s really barebones)</p>
-<p>We tweak the RISC-V Addresses in TinyEMU, so that they match the <strong>Bouffalo Lab BL808 SoC</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
+<p>We tweak the RISC-V Addresses in TinyEMU, so that they match the <strong>Bouffalo Lab BL808 SoC</strong> (pic above): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// RISC-V Addresses for TinyEMU (modded for Ox64 BL808)
 #define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
 #define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
@@ -165,6 +167,7 @@ static void copy_bios(...) {
 </code></pre></div>
 <p>And that’s our barebones Ox64 Emulator! Let’s run it…</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6">(Remember to enable <strong>Exception Logging</strong>)</a></p>
+<p>TODO: Pic of TinyEMU, CSR, Invalid Reads / Writes</p>
 <h1 id="run-tinyemu-emulator"><a href="#run-tinyemu-emulator">3 Run TinyEMU Emulator</a></h1>
 <p><em>We modded TinyEMU to emulate Ox64. What happens when we run it?</em></p>
 <p>We see signs of life… <strong>NuttX Kernel</strong> is actually booting in our Ox64 Emulator!</p>
@@ -284,10 +287,11 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
 <p><em>But why are they Invalid Addresses?</em></p>
 <p>We haven’t defined in TinyEMU the addresses for <strong>Memory-Mapped Input / Output</strong>. (Like for UART Registers)</p>
 <p>That’s why TinyEMU <strong>won’t read and write</strong> our UART Registers. Let’s fix this…</p>
+<p>TODO: Pic of Intercept UART Registers, UART Status, UART Output</p>
 <h1 id="intercept-the-uart-registers"><a href="#intercept-the-uart-registers">5 Intercept the UART Registers</a></h1>
 <p><em>NuttX tries to print something but fails…</em></p>
 <p><em>How to fix the UART Registers in our Ox64 Emulator?</em></p>
-<p>Inside TinyEMU, we intercept all “<strong>read <code>0x3000_2084</code></strong>” and “<strong>write <code>0x3000_2088</code></strong>”. And we pretend to be a <strong>UART Port</strong>…</p>
+<p>Inside TinyEMU, we intercept all “<strong>read <code>0x3000_2084</code></strong>” and “<strong>write <code>0x3000_2088</code></strong>”. And we pretend to be a <strong>UART Port</strong> (pic above)…</p>
 <h2 id="emulate-the-uart-status"><a href="#emulate-the-uart-status">5.1 Emulate the UART Status</a></h2>
 <p>Earlier we said…</p>
 <blockquote>
@@ -369,9 +373,10 @@ int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int s
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1127-L1138">(<strong>print_console</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L956-L963">(<strong>riscv_machine_init</strong> inits the console)</a></p>
+<p>TODO: Pic of TinyEMU</p>
 <h1 id="emulator-prints-to-console"><a href="#emulator-prints-to-console">6 Emulator Prints To Console</a></h1>
 <p><em>We modded our Ox64 Emulator to handle UART Output. Does it work?</em></p>
-<p>Yep, we see NuttX booting on our Ox64 Emulator yay!</p>
+<p>Yep, we see NuttX booting on our Ox64 Emulator yay! (Pic above)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot TinyEMU with NuttX Kernel
 $ temu root-riscv64.cfg | more
 
@@ -397,7 +402,7 @@ mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
 up_exit: TCB=0x504098d0 exiting
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e">(See the <strong>Complete Log</strong>)</a></p>
-<p>Followed by this <strong>RISC-V Exception</strong>…</p>
+<p>Followed by this <strong>RISC-V Exception</strong> (pic below)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
 raise_exception2: cause=8, tval=0x0
 pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
@@ -417,8 +422,9 @@ raise_exception2: cause=2, tval=0x0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e">(See the <strong>Complete Log</strong>)</a></p>
 <p>Why? We investigate the alligator in the vest…</p>
+<p>TODO: Pic of RISC-V Exception</p>
 <h1 id="risc-v-exception-in-emulator"><a href="#risc-v-exception-in-emulator">7 RISC-V Exception in Emulator</a></h1>
-<p><em>What’s this RISC-V Exception?</em></p>
+<p><em>What’s this RISC-V Exception? (Pic above)</em></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
 raise_exception2:
   cause=8, tval=0x0
@@ -539,7 +545,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 </ol>
 <p>TODO: Pic of OpenSBI, U-Boot, Kernel, Apps</p>
 <p><em>So we need to start NuttX Kernel in Supervisor Mode?</em></p>
-<p>Yep, we need more tweaks in TinyEMU to start NuttX in Supervisor Mode. (Instead of Machine Mode)</p>
+<p>Yep, we need more tweaks in TinyEMU to start NuttX in <strong>Supervisor Mode</strong>. (Instead of Machine Mode)</p>
 <p><a href="https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu">(Maybe in the <strong>TinyEMU Boot Code</strong>)</a></p>
 <p>TODO: Pic of TinyEMU, Kernel, Apps. Start / System Call (ECALL). Emulate OpenSBI Timer</p>
 <p><em>Any other gotchas?</em></p>
@@ -574,8 +580,10 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tinyemu2.md"><strong>lupyuen.github.io/src/tinyemu2.md</strong></a></p>
+<p>TODO: Pic of BL808 Memory Map</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><em>BL808 Memory Map (Page 41)</em></a></p>
 <h1 id="appendix-risc-v-addresses-for-ox64"><a href="#appendix-risc-v-addresses-for-ox64">11 Appendix: RISC-V Addresses for Ox64</a></h1>
-<p>Earlier we <a href="https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu"><strong>tweaked the RISC-V Addresses</strong></a> in TinyEMU, so that they match the <strong>Bouffalo Lab BL808 SoC</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
+<p>Earlier we <a href="https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu"><strong>tweaked the RISC-V Addresses</strong></a> in TinyEMU, so that they match the <strong>Bouffalo Lab BL808 SoC</strong> (pic above): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// RISC-V Addresses for TinyEMU (modded for Ox64 BL808)
 #define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
 #define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
