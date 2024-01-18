@@ -403,7 +403,7 @@ mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
 up_exit: TCB=0x504098d0 exiting
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e">(See the <strong>Complete Log</strong>)</a></p>
-<p>Followed by this <strong>RISC-V Exception</strong> (pic below)…</p>
+<p>Followed by this <strong>RISC-V Exception</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
 raise_exception2: cause=8, tval=0x0
 pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
@@ -425,7 +425,7 @@ raise_exception2: cause=2, tval=0x0
 <p>Why? We investigate the alligator in the vest…</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow2a.jpg" alt="TODO" /></p>
 <h1 id="risc-v-exception-in-emulator"><a href="#risc-v-exception-in-emulator">7 RISC-V Exception in Emulator</a></h1>
-<p><em>What’s this RISC-V Exception? (Pic above)</em></p>
+<p><em>What’s this RISC-V Exception?</em></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
 raise_exception2:
   cause=8, tval=0x0
