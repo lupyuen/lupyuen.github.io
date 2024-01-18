@@ -483,7 +483,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
     19c6: 00000073  ecall
 ```
 
-_What's ecall?_
+_What's this ecall?_
 
 At `0x19C6` we see the __RISC-V ECALL Instruction__ that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). 
 
@@ -513,7 +513,7 @@ sudo apt install emscripten
 cd $HOME/ox64-tinyemu
 make -f Makefile.js
 
-## Copy the generated JavaScript and WebAssembly to Web Server
+## Copy the generated JavaScript and WebAssembly to our Web Server
 cp js/riscvemu64-wasm.js \
    js/riscvemu64-wasm.wasm \
    $HOME/nuttx-tinyemu/docs/ox64/
@@ -525,6 +525,8 @@ simple-http-server $HOME/nuttx-tinyemu/docs
 
 [(See the __Build Script__)](https://github.com/lupyuen/ox64-tinyemu/blob/main/.github/workflows/ci.yml)
 
+[(See the __Web Server Files__)](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/ox64)
+
 We point our Web Browser to...
 
 ```text
@@ -534,8 +536,6 @@ http://0.0.0.0:8000/ox64/index.html
 And our Ox64 Emulator appears in the Web Browser! (Pic above)
 
 [(Live Demo of __Ox64 Emulator__)](https://lupyuen.github.io/nuttx-tinyemu/ox64)
-
-[(See the __Web Server Files__)](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/ox64)
 
 [(How we got the __WebAssembly Files__)](https://lupyuen.github.io/articles/tinyemu#boot-nuttx-in-web-browser)
 
@@ -591,17 +591,15 @@ _Why did ECALL fail?_
 
 That's because our NuttX Kernel is actually running in __RISC-V Machine Mode__, not Supervisor Mode!
 
-Machine Mode is the __most powerful mode__ in a RISC-V System, more powerful than Supervisor Mode and User Mode. But NuttX expects to boot in __Supervisor Mode__.
+Machine Mode is the __most powerful mode__ in a RISC-V System, more powerful than Supervisor Mode and User Mode. But NuttX expects to boot in __Supervisor Mode__. (Pic below)
 
 (Which explains the [__Supervisor-Mode CSR Registers__](https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator) we saw earlier)
 
-TODO: Pic of Machine, Supervisor, User Modes. Start / System Call (ECALL)
-
 _Huh! How did that happen?_
 
-TinyEMU always __starts in Machine Mode__. Everything we saw today: That's all running in (super-powerful) Machine Mode.
+TinyEMU always __starts in Machine Mode__. Everything we saw today: That's all running in (super-powerful) __Machine Mode__.
 
-But a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
+But on a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
 
 1.  Ox64 boots the __OpenSBI Supervisor Binary Interface__ in __Machine Mode__ (Think BIOS, but for RISC-V Machines)
 
@@ -613,9 +611,9 @@ But a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
 
 TODO: Pic of OpenSBI, U-Boot, Kernel, Apps
 
-_So we need to start NuttX Kernel in Supervisor Mode?_
+_So we will start NuttX Kernel in Supervisor Mode?_
 
-Yep, we need more tweaks in TinyEMU to start NuttX in __Supervisor Mode__. (Instead of Machine Mode)
+Yep we shall tweak TinyEMU to start NuttX in __Supervisor Mode__. (Instead of Machine Mode)
 
 [(Maybe in the __TinyEMU Boot Code__)](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu)
 
@@ -629,7 +627,7 @@ NuttX Kernel makes a __System Call to OpenSBI__ to start the System Timer. (Pic 
 
 _Do we plan to boot OpenSBI on TinyEMU?_
 
-That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU. (Pic above)
+That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU.
 
 [(More about __System Timer__)](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
 
