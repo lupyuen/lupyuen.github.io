@@ -170,7 +170,7 @@ It's the __TinyEMU Config__ that will boot NuttX Kernel in our Ox64 Emulator: [r
 }
 ```
 
-__`Image`__ is the __NuttX Kernel Image__ that comes from a typical [__NuttX Build for Ox64__](https://github.com/lupyuen/nuttx-ox64/releases).
+__`Image`__ is the __NuttX Kernel Image__ that comes from a typical [__NuttX Build for Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.4.0).
 
 _What are the CSR Writes?_
 
@@ -403,7 +403,7 @@ mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
 up_exit: TCB=0x504098d0 exiting
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e)
 
 Followed by this __RISC-V Exception__...
 
@@ -426,7 +426,7 @@ raise_exception2: cause=2, tval=0x0
 raise_exception2: cause=2, tval=0x0
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e)
 
 Why? We investigate the alligator in the vest...
 
@@ -441,7 +441,7 @@ raise_exception2:
   pc=800019c6
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e)
 
 We track down the offending Code Address: __`0x8000_19C6`__
 
@@ -524,6 +524,8 @@ And our Ox64 Emulator appears in the Web Browser! (Pic above)
 [(Live Demo of __Ox64 Emulator__)](https://lupyuen.github.io/nuttx-tinyemu/ox64)
 
 [(See the __Web Server Files__)](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/ox64)
+
+[(How we got the __WebAssembly Files__)](https://lupyuen.github.io/articles/tinyemu#boot-nuttx-in-web-browser)
 
 _What about Console Input?_
 
