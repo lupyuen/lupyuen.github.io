@@ -6,8 +6,6 @@
 
 [_(Live Demo of Ox64 BL808 Emulator)_](https://lupyuen.github.io/nuttx-tinyemu/ox64)
 
-TODO: [_(Watch on YouTube)_](https://youtu.be/KYrdwzIsgeQ)
-
 _In olden times we had Computer Games (plus Operating Systems) on 5.25-inch __Floppy Disks__. And we'd boot the Floppy Disks (clackety-clack) on __Apple II Computers__ with 64 KB RAM._
 
 Today (40 years later) we boot __microSD Cards__ (clickety-click) on [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V Single-Board Computers with 64 MB RAM. (Pic below)
@@ -93,7 +91,7 @@ We tweak the RISC-V Addresses in TinyEMU, so that they match the __Bouffalo Lab 
 #define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
 ```
 
-TODO: Where did we get the addresses?
+TODO: (How we got the __RISC-V Addresses__)
 
 _What's this Boot Code?_
 
@@ -504,8 +502,9 @@ cd $HOME/ox64-tinyemu
 make -f Makefile.js
 
 ## Copy the generated JavaScript and WebAssembly to Web Server
-cp js/riscvemu64-wasm.js js/riscvemu64-wasm.wasm \
-  $HOME/nuttx-tinyemu/docs/ox64/
+cp js/riscvemu64-wasm.js \
+   js/riscvemu64-wasm.wasm \
+   $HOME/nuttx-tinyemu/docs/ox64/
 
 ## Start the Web Server
 cargo install simple-http-server
@@ -521,6 +520,8 @@ http://0.0.0.0:8000/ox64/index.html
 ```
 
 And our Ox64 Emulator appears in the Web Browser! (Pic above)
+
+[(Live Demo of __Ox64 Emulator__)](https://lupyuen.github.io/nuttx-tinyemu/ox64)
 
 [(See the __Web Server Files__)](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/ox64)
 
@@ -576,7 +577,9 @@ _Why did ECALL fail?_
 
 That's because our NuttX Kernel is actually running in __RISC-V Machine Mode__, not Supervisor Mode!
 
-Machine Mode is the __most powerful mode__ in a RISC-V System, more powerful than Supervisor Mode and User Mode.
+Machine Mode is the __most powerful mode__ in a RISC-V System, more powerful than Supervisor Mode and User Mode. But NuttX expects to boot in __Supervisor Mode__.
+
+(Which explains the [__Supervisor-Mode CSR Registers__](https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator) we saw earlier)
 
 TODO: Pic of Machine, Supervisor, User Modes. Start / System Call (ECALL)
 
@@ -593,8 +596,6 @@ But a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
 1.  U-Boot starts the __NuttX Kernel__, also in __Supervisor Mode__
 
 1.  And NuttX Kernel starts the __NuttX Apps__ in __User Mode__
-
-Which explains the [__Supervisor-Mode CSR Registers__](https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator) we saw earlier.
 
 TODO: Pic of OpenSBI, U-Boot, Kernel, Apps
 
@@ -652,8 +653,8 @@ Earlier we [__tweaked the RISC-V Addresses__](https://lupyuen.github.io/articles
 #define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
 #define PLIC_BASE_ADDR  0xe0000000ul  // Platform-Level Interrupt Controller (PLIC)
 #define PLIC_SIZE       0x00400000ul  // Address Range of PLIC
-#define CLINT_BASE_ADDR 0x02000000ul  // TODO: CLINT is Unused
-#define CLINT_SIZE      0x000c0000ul  // TODO: CLINT is Unused
+#define CLINT_BASE_ADDR 0x02000000ul  // CLINT is Unused
+#define CLINT_SIZE      0x000c0000ul  // CLINT is Unused
 ...
 #define PLIC_HART_BASE  0x201000  // Hart 0 S-Mode Priority Threshold in PLIC
 #define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
@@ -697,8 +698,8 @@ __PLIC Hart:__
 TODO
 
 ```c
-#define CLINT_BASE_ADDR 0x02000000ul  // TODO: CLINT is Unused
-#define CLINT_SIZE      0x000c0000ul  // TODO: CLINT is Unused
+#define CLINT_BASE_ADDR 0x02000000ul  // CLINT is Unused
+#define CLINT_SIZE      0x000c0000ul  // CLINT is Unused
 ```
 
 __CLINT:__
