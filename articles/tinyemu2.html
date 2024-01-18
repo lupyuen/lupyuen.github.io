@@ -482,7 +482,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
   nuttx/include/arch/syscall.h:229
     19c6: 00000073  ecall
 </code></pre></div>
-<p>TODO: (See the <strong>Source Code</strong>)</p>
+<p><a href="https://gist.github.com/lupyuen/69b832f89efe2dc31e6da40a19b78354">(See the <strong>Source Code</strong>)</a></p>
 <p><em>What’s ECALL again?</em></p>
 <p>The <strong>RISC-V ECALL Instruction</strong> normally jumps…</p>
 <ul>
@@ -499,25 +499,23 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p>(Which failed)</p>
 </li>
 </ul>
-<p><strong>System Calls</strong> are absolutely essential. That’s how our apps will execute system functions, like printing to the Console Output.</p>
+<p><a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>System Calls</strong></a> are absolutely essential. That’s how our apps will execute system functions, like printing to the Console Output.</p>
 <p><em>Why did ECALL fail?</em></p>
-<p>That’s because our NuttX App is actually running in <strong>RISC-V Machine Mode</strong>, not User Mode!</p>
-<p>Machine Mode is the <strong>most powerful mode</strong> in a RISC-V System, more powerful than Supervisor Mode and User Mode…</p>
-<p>And Machine Mode <strong>can’t possibly make ECALLS</strong> to a Higher Mode!</p>
+<p>That’s because our NuttX Kernel is actually running in <strong>RISC-V Machine Mode</strong>, not Supervisor Mode!</p>
+<p>Machine Mode is the <strong>most powerful mode</strong> in a RISC-V System, more powerful than Supervisor Mode and User Mode.</p>
 <p>TODO: Pic of Machine, Supervisor, User Modes. Start / System Call (ECALL)</p>
 <p><em>Huh! How did that happen?</em></p>
 <p>TinyEMU always <strong>starts in Machine Mode</strong>. Everything we saw today: That’s all running in (super-powerful) Machine Mode.</p>
-<p>But a <strong>Real Ox64 SBC</strong> is a little different…</p>
+<p>But a <strong>Real Ox64 SBC</strong> will run in Machine, Supervisor AND User Modes…</p>
 <ol>
 <li>
-<p>Ox64 boots the <strong>OpenSBI Supervisor Binary Interface</strong> in <strong>Machine Mode</strong>…</p>
-<p>(Think BIOS, but for RISC-V Machines)</p>
+<p>Ox64 boots the <strong>OpenSBI Supervisor Binary Interface</strong> in <strong>Machine Mode</strong> (Think BIOS, but for RISC-V Machines)</p>
 </li>
 <li>
-<p>Which starts the <strong>U-Boot Bootloader</strong> in <strong>Supervisor Mode</strong>…</p>
+<p>OpenSBI starts the <strong>U-Boot Bootloader</strong> in <strong>Supervisor Mode</strong></p>
 </li>
 <li>
-<p>Which starts the <strong>NuttX Kernel</strong>, also in <strong>Supervisor Mode</strong>…</p>
+<p>U-Boot starts the <strong>NuttX Kernel</strong>, also in <strong>Supervisor Mode</strong></p>
 </li>
 <li>
 <p>And NuttX Kernel starts the <strong>NuttX Apps</strong> in <strong>User Mode</strong></p>
@@ -526,14 +524,14 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p>TODO: Pic of OpenSBI, U-Boot, Kernel, Apps</p>
 <p><em>So we need to start NuttX Kernel in Supervisor Mode?</em></p>
 <p>Yep, we need more tweaks in TinyEMU to start NuttX in Supervisor Mode. (Instead of Machine Mode)</p>
-<p>TODO: (Maybe in the TinyEMU Boot Code)</p>
+<p><a href="https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu">(Maybe in the <strong>TinyEMU Boot Code</strong>)</a></p>
 <p>TODO: Pic of TinyEMU, Kernel, Apps. Start / System Call (ECALL). Emulate OpenSBI Timer</p>
 <p><em>Any other gotchas?</em></p>
 <p>There’s a tiny quirk: NuttX Kernel will <strong>make an ECALL</strong> too…</p>
-<p>NuttX Kernel makes a <strong>System Call to OpenSBI</strong> to set the System Timer. (Pic above)</p>
+<p>NuttX Kernel makes a <strong>System Call to OpenSBI</strong> to start the System Timer. (Pic above)</p>
 <p><em>Do we plan to boot OpenSBI on TinyEMU?</em></p>
 <p>That’s not necessary. We’ll <strong>emulate the OpenSBI</strong> System Timer in TinyEMU. (Pic above)</p>
-<p>TODO: More about System Timer</p>
+<p><a href="https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx">(More about <strong>System Timer</strong>)</a></p>
 <p>(It’s truly amazing we managed to boot so much in Machine Mode)</p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
