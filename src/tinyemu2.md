@@ -278,7 +278,7 @@ We haven't defined in TinyEMU the addresses for __Memory-Mapped Input / Output__
 
 That's why TinyEMU __won't read and write__ our UART Registers. Let's fix this...
 
-![TODO](https://lupyuen.github.io/images/tinyemu2-uart.jpg)
+![Emulating the UART Registers with TinyEMU](https://lupyuen.github.io/images/tinyemu2-uart.jpg)
 
 # Intercept the UART Registers
 
@@ -341,7 +341,7 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
 
 And the [__UART Transmit Buffer Size__ (Page 427)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) defaults to `32`. Thus we always return `32`.
 
-![TODO](https://lupyuen.github.io/images/tinyemu2-uart2.jpg)
+![Emulating the UART Output Register with TinyEMU](https://lupyuen.github.io/images/tinyemu2-uart2.jpg)
 
 ## Emulate the UART Output
 
@@ -444,7 +444,7 @@ raise_exception2: cause=2, tval=0x0
 
 Why? We investigate the alligator in the vest...
 
-![TODO](https://lupyuen.github.io/images/tinyemu2-flow2a.jpg)
+![System Call Fails in NuttX Kernel](https://lupyuen.github.io/images/tinyemu2-flow2a.jpg)
 
 # RISC-V Exception in Emulator
 
@@ -601,13 +601,13 @@ Machine Mode is the __most powerful mode__ in a RISC-V System, more powerful tha
 
 (Which explains the [__Supervisor-Mode CSR Registers__](https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator) we saw earlier)
 
-![TODO](https://lupyuen.github.io/images/tinyemu2-flow2.jpg)
+![NuttX Kernel won't work in Machine Mode](https://lupyuen.github.io/images/tinyemu2-flow2.jpg)
 
 _Huh! How did that happen?_
 
 TinyEMU always __starts in Machine Mode__. Everything we saw today: That's all running in (super-powerful) __Machine Mode__.
 
-But on a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
+But a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
 
 1.  Ox64 boots the __OpenSBI Supervisor Binary Interface__ in __Machine Mode__ (Think BIOS, but for RISC-V Machines)
 
@@ -617,7 +617,7 @@ But on a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
 
 1.  And NuttX Kernel starts the __NuttX Apps__ in __User Mode__
 
-![TODO](https://lupyuen.github.io/images/tinyemu2-flow.jpg)
+![Ox64 SBC will run in Machine, Supervisor AND User Modes](https://lupyuen.github.io/images/tinyemu2-flow.jpg)
 
 _So we will boot NuttX Kernel in Supervisor Mode?_
 
@@ -625,7 +625,7 @@ Yep we shall tweak TinyEMU to start NuttX in __Supervisor Mode__. (Instead of Ma
 
 [(Maybe in the __TinyEMU Boot Code__)](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu)
 
-![TODO](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
+![TinyEMU will boot NuttX in Supervisor Mode](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
 
 _Any other gotchas?_
 
@@ -642,6 +642,8 @@ That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU.
 [(Ox64 Emulator today might be sufficient for __Daily Automated Testing__)](https://github.com/lupyuen/nuttx-ox64?tab=readme-ov-file#nuttx-automated-daily-build-for-ox64)
 
 (It's truly amazing we managed to boot so much in Machine Mode)
+
+![JavaScript Console of Ox64 BL808 Emulator](https://lupyuen.github.io/images/tinyemu2-console.png)
 
 # What's Next
 
@@ -665,7 +667,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/tinyemu2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tinyemu2.md)
 
-TODO: Pic of BL808 Memory Map
+![BL808 Memory Map (Page 41)](https://lupyuen.github.io/images/tinyemu2-memory.jpg)
 
 [_BL808 Memory Map (Page 41)_](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
