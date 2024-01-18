@@ -525,6 +525,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p>That’s because our NuttX Kernel is actually running in <strong>RISC-V Machine Mode</strong>, not Supervisor Mode!</p>
 <p>Machine Mode is the <strong>most powerful mode</strong> in a RISC-V System, more powerful than Supervisor Mode and User Mode. But NuttX expects to boot in <strong>Supervisor Mode</strong>. (Pic below)</p>
 <p>(Which explains the <a href="https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator"><strong>Supervisor-Mode CSR Registers</strong></a> we saw earlier)</p>
+<p>TODO: Pic of NuttX in Machine Mode</p>
 <p><em>Huh! How did that happen?</em></p>
 <p>TinyEMU always <strong>starts in Machine Mode</strong>. Everything we saw today: That’s all running in (super-powerful) <strong>Machine Mode</strong>.</p>
 <p>But on a <strong>Real Ox64 SBC</strong> will run in Machine, Supervisor AND User Modes…</p>
