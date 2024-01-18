@@ -287,7 +287,7 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
 <p><em>But why are they Invalid Addresses?</em></p>
 <p>We haven’t defined in TinyEMU the addresses for <strong>Memory-Mapped Input / Output</strong>. (Like for UART Registers)</p>
 <p>That’s why TinyEMU <strong>won’t read and write</strong> our UART Registers. Let’s fix this…</p>
-<p>TODO: Pic of Intercept UART Registers, UART Status, UART Output</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-uart.jpg" alt="TODO" /></p>
 <h1 id="intercept-the-uart-registers"><a href="#intercept-the-uart-registers">5 Intercept the UART Registers</a></h1>
 <p><em>NuttX tries to print something but fails…</em></p>
 <p><em>How to fix the UART Registers in our Ox64 Emulator?</em></p>
@@ -337,6 +337,7 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
   // Omitted: Write character to Transmit FIFO.
 </code></pre></div>
 <p>And the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>UART Transmit Buffer Size</strong> (Page 427)</a> defaults to <code>32</code>. Thus we always return <code>32</code>.</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-uart2.jpg" alt="TODO" /></p>
 <h2 id="emulate-the-uart-output"><a href="#emulate-the-uart-output">5.2 Emulate the UART Output</a></h2>
 <p>Earlier we saw…</p>
 <blockquote>
@@ -525,7 +526,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p>That’s because our NuttX Kernel is actually running in <strong>RISC-V Machine Mode</strong>, not Supervisor Mode!</p>
 <p>Machine Mode is the <strong>most powerful mode</strong> in a RISC-V System, more powerful than Supervisor Mode and User Mode. But NuttX expects to boot in <strong>Supervisor Mode</strong>. (Pic below)</p>
 <p>(Which explains the <a href="https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator"><strong>Supervisor-Mode CSR Registers</strong></a> we saw earlier)</p>
-<p>TODO: Pic of NuttX in Machine Mode</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow2.jpg" alt="TODO" /></p>
 <p><em>Huh! How did that happen?</em></p>
 <p>TinyEMU always <strong>starts in Machine Mode</strong>. Everything we saw today: That’s all running in (super-powerful) <strong>Machine Mode</strong>.</p>
 <p>But on a <strong>Real Ox64 SBC</strong> will run in Machine, Supervisor AND User Modes…</p>
@@ -543,11 +544,11 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p>And NuttX Kernel starts the <strong>NuttX Apps</strong> in <strong>User Mode</strong></p>
 </li>
 </ol>
-<p>TODO: Pic of OpenSBI, U-Boot, Kernel, Apps</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow.jpg" alt="TODO" /></p>
 <p><em>So we will start NuttX Kernel in Supervisor Mode?</em></p>
 <p>Yep we shall tweak TinyEMU to start NuttX in <strong>Supervisor Mode</strong>. (Instead of Machine Mode)</p>
 <p><a href="https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu">(Maybe in the <strong>TinyEMU Boot Code</strong>)</a></p>
-<p>TODO: Pic of TinyEMU, Kernel, Apps. Start / System Call (ECALL). Emulate OpenSBI Timer</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TODO" /></p>
 <p><em>Any other gotchas?</em></p>
 <p>There’s a tiny quirk: NuttX Kernel will <strong>make an ECALL</strong> too…</p>
 <p>NuttX Kernel makes a <strong>System Call to OpenSBI</strong> to start the System Timer. (Pic above)</p>
