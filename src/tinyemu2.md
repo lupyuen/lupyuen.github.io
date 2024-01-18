@@ -276,7 +276,7 @@ We haven't defined in TinyEMU the addresses for __Memory-Mapped Input / Output__
 
 That's why TinyEMU __won't read and write__ our UART Registers. Let's fix this...
 
-TODO: Pic of Intercept UART Registers, UART Status, UART Output
+![TODO](https://lupyuen.github.io/images/tinyemu2-uart.jpg)
 
 # Intercept the UART Registers
 
@@ -338,6 +338,8 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
 ```
 
 And the [__UART Transmit Buffer Size__ (Page 427)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) defaults to `32`. Thus we always return `32`.
+
+![TODO](https://lupyuen.github.io/images/tinyemu2-uart2.jpg)
 
 ## Emulate the UART Output
 
@@ -595,7 +597,7 @@ Machine Mode is the __most powerful mode__ in a RISC-V System, more powerful tha
 
 (Which explains the [__Supervisor-Mode CSR Registers__](https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator) we saw earlier)
 
-TODO: Pic of NuttX in Machine Mode
+![TODO](https://lupyuen.github.io/images/tinyemu2-flow2.jpg)
 
 _Huh! How did that happen?_
 
@@ -611,7 +613,7 @@ But on a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
 
 1.  And NuttX Kernel starts the __NuttX Apps__ in __User Mode__
 
-TODO: Pic of OpenSBI, U-Boot, Kernel, Apps
+![TODO](https://lupyuen.github.io/images/tinyemu2-flow.jpg)
 
 _So we will start NuttX Kernel in Supervisor Mode?_
 
@@ -619,7 +621,7 @@ Yep we shall tweak TinyEMU to start NuttX in __Supervisor Mode__. (Instead of Ma
 
 [(Maybe in the __TinyEMU Boot Code__)](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu)
 
-TODO: Pic of TinyEMU, Kernel, Apps. Start / System Call (ECALL). Emulate OpenSBI Timer
+![TODO](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
 
 _Any other gotchas?_
 
