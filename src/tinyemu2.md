@@ -617,7 +617,7 @@ But on a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
 
 ![TODO](https://lupyuen.github.io/images/tinyemu2-flow.jpg)
 
-_So we will start NuttX Kernel in Supervisor Mode?_
+_So we will boot NuttX Kernel in Supervisor Mode?_
 
 Yep we shall tweak TinyEMU to start NuttX in __Supervisor Mode__. (Instead of Machine Mode)
 
@@ -631,7 +631,7 @@ There's a tiny quirk: NuttX Kernel will __make an ECALL__ too...
 
 NuttX Kernel makes a __System Call to OpenSBI__ to start the System Timer. (Pic above)
 
-_Do we plan to boot OpenSBI on TinyEMU?_
+_Will we run OpenSBI on TinyEMU?_
 
 That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU.
 
