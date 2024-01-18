@@ -91,7 +91,7 @@
 <p>(Without any modifications)</p>
 </li>
 <li>
-<p>Boot it on the <a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU RISC-V Emulator</strong></a></p>
+<p>Boot it on the <a href="https://lupyuen.github.io/articles/tinyemu"><strong>TinyEMU RISC-V Emulator</strong></a></p>
 <p><a href="https://www.barebox.org/jsbarebox/?graphic=1">(Which runs in a <strong>Web Browser</strong>)</a></p>
 </li>
 <li>
@@ -109,7 +109,7 @@
 <p><img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <h1 id="install-tinyemu-emulator"><a href="#install-tinyemu-emulator">1 Install TinyEMU Emulator</a></h1>
 <p><em>What’s this TinyEMU?</em></p>
-<p><a href="https://github.com/fernandotcl/TinyEMU"><strong>TinyEMU</strong></a> is a barebones <strong>64-bit RISC-V Emulator</strong>.</p>
+<p><a href="https://lupyuen.github.io/articles/tinyemu"><strong>TinyEMU</strong></a> is a barebones <strong>64-bit RISC-V Emulator</strong>.</p>
 <p>It doesn’t have all the features of QEMU Emulator. But TinyEMU runs in a <a href="https://www.barebox.org/jsbarebox/?graphic=1"><strong>Web Browser</strong></a> and it’s much simpler for modding!</p>
 <p>We begin by installing (our modded) <strong>TinyEMU for the Command Line</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download TinyEMU modded for Ox64
@@ -564,16 +564,16 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p>But a <strong>Real Ox64 SBC</strong> will run in Machine, Supervisor AND User Modes…</p>
 <ol>
 <li>
-<p>Ox64 boots the <strong>OpenSBI Supervisor Binary Interface</strong> in <strong>Machine Mode</strong> (Think BIOS, but for RISC-V Machines)</p>
+<p>Ox64 boots the <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI Supervisor Binary Interface</strong></a> in <strong>Machine Mode</strong> (Think BIOS, but for RISC-V Machines)</p>
 </li>
 <li>
-<p>OpenSBI starts the <strong>U-Boot Bootloader</strong> in <strong>Supervisor Mode</strong></p>
+<p>OpenSBI starts the <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> in <strong>Supervisor Mode</strong></p>
 </li>
 <li>
-<p>U-Boot starts the <strong>NuttX Kernel</strong>, also in <strong>Supervisor Mode</strong></p>
+<p>U-Boot starts the <a href="https://lupyuen.github.io/articles/ox2"><strong>NuttX Kernel</strong></a>, also in <strong>Supervisor Mode</strong></p>
 </li>
 <li>
-<p>And NuttX Kernel starts the <strong>NuttX Apps</strong> in <strong>User Mode</strong></p>
+<p>And NuttX Kernel starts the <a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app"><strong>NuttX Apps</strong></a> in <strong>User Mode</strong></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow.jpg" alt="Ox64 SBC will run in Machine, Supervisor AND User Modes" /></p>
@@ -583,7 +583,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will boot NuttX in Supervisor Mode" /></p>
 <p><em>Any other gotchas?</em></p>
 <p>There’s a tiny quirk: NuttX Kernel will <strong>make an ECALL</strong> too…</p>
-<p>NuttX Kernel makes a <strong>System Call to OpenSBI</strong> to start the System Timer. (Pic above)</p>
+<p>NuttX Kernel makes a <a href="https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx"><strong>System Call to OpenSBI</strong></a> to start the System Timer. (Pic above)</p>
 <p><em>Will we run OpenSBI on TinyEMU?</em></p>
 <p>That’s not necessary. We’ll <strong>emulate the OpenSBI</strong> System Timer in TinyEMU.</p>
 <p><a href="https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx">(More about <strong>System Timer</strong>)</a></p>
