@@ -86,8 +86,8 @@ We tweak the RISC-V Addresses in TinyEMU, so that they match the __Bouffalo Lab 
 #define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
 #define PLIC_BASE_ADDR  0xe0000000ul  // Platform-Level Interrupt Controller (PLIC)
 #define PLIC_SIZE       0x00400000ul  // Address Range of PLIC
-#define CLINT_BASE_ADDR 0x02000000ul  // TODO: CLINT is Unused
-#define CLINT_SIZE      0x000c0000ul  // TODO: CLINT is Unused
+#define CLINT_BASE_ADDR 0x02000000ul  // CLINT is Unused
+#define CLINT_SIZE      0x000c0000ul  // CLINT is Unused
 ...
 #define PLIC_HART_BASE  0x201000  // Hart 0 S-Mode Priority Threshold in PLIC
 #define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
@@ -136,6 +136,7 @@ $ wget https://github.com/lupyuen/nuttx-tinyemu/raw/main/docs/ox64/Image
 ## Boot TinyEMU with NuttX Kernel
 $ temu root-riscv64.cfg | more
 
+## Emulator writes to CSR Registers
 csr_write: csr=0x104 val=0x0
 csr_write: csr=0x105 val=0x50200090
 csr_write: csr=0x100 val=0x200000000
@@ -146,6 +147,7 @@ csr_write: csr=0x100 val=0x200002000
 csr_write: csr=0x003 val=0x0
 csr_write: csr=0x100 val=0x8000000200006000
 
+## Emulator gets invalid reads and writes
 target_read_slow:
   invalid physical address
   0x30002084
@@ -175,6 +177,7 @@ __`Image`__ is the __NuttX Kernel Image__ that comes from a typical [__NuttX Bui
 _What are the CSR Writes?_
 
 ```bash
+## Emulator writes to CSR Registers
 csr_write: csr=0x104 val=0x0
 csr_write: csr=0x105 val=0x50200090
 csr_write: csr=0x100 val=0x200000000
@@ -192,25 +195,33 @@ CSR refers to [__Control and Status Registers__](https://five-embeddev.com/quick
 
 - [__CSR `0x100`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sstatus): __Supervisor-Mode Status__
 
-  TODO: (Set the Status)
+  (Set the Status)
 
-  (Why Supervisor-Mode? We'll find out later)
+These are all __Supervisor-Mode__ CSR Registers. (We'll find out why later)
 
 _Why is it writing to CSR Registers?_
 
-This comes from our __NuttX Boot Code__
+This comes from our __NuttX Boot Code__ (in RISC-V Assembly):  [bl808_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_head.S#L121-L128)
 
-TODO: NuttX Boot Code
+```c
+/* Disable all interrupts (i.e. timer, external) in SIE CSR */
+csrw	sie, zero
+
+/* Set the Interrupt Vector Table in STVEC CSR */
+la    t0, __trap_vec
+csrw  stvec, t0
+```
 
 Let's talk about the invalid reads and writes...
 
-TODO: BL808 UART Registers
+TODO: Pic of BL808 UART Registers
 
 # UART Registers for BL808 SoC
 
 _What are 0x3000_2084 and 0x3000_2088? Why are they Invalid Addresses?_
 
 ```yaml
+## Emulator gets invalid reads and writes
 target_read_slow:
   invalid physical address
   0x30002084
@@ -472,11 +483,15 @@ Why did it fail? We'll come back to this, first we surf the web...
 
 [(We quit if __MCAUSE is 2__, otherwise we loop forever)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1142-L1147)
 
+![Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS](https://lupyuen.github.io/images/tinyemu2-title.png)
+
+[_Live Demo of Ox64 BL808 Emulator_](https://lupyuen.github.io/nuttx-tinyemu/ox64)
+
 # Emulator in the Web Browser
 
 _Will our Ox64 Emulator run in the Web Browser?_
 
-TODO
+Let's find out! We compile __TinyEMU to WebAssembly__ with [__Emscripten__](https://emscripten.org)...
 
 ```bash
 ## Download the Web Server files
@@ -495,25 +510,27 @@ cp js/riscvemu64-wasm.js js/riscvemu64-wasm.wasm \
 ## Start the Web Server
 cargo install simple-http-server
 simple-http-server $HOME/nuttx-tinyemu/docs
-
-## TODO: Browse to http://0.0.0.0:8000/ox64/index.html
 ```
 
 [(See the __Build Script__)](https://github.com/lupyuen/ox64-tinyemu/blob/main/.github/workflows/ci.yml)
 
-TODO
+We point our Web Browser to...
 
-Let's find out! First we fix the [TinyEMU Build for Emscripten](https://github.com/lupyuen/ox64-tinyemu/commit/170abb06b58a58328efa8a1874795f1daac0b7a7).
+```text
+http://0.0.0.0:8000/ox64/index.html
+```
 
-[And it runs OK in Web Browser yay!](https://lupyuen.github.io/nuttx-tinyemu/ox64/)
+And our Ox64 Emulator appears in the Web Browser! (Pic above)
 
-TODO: Emulate BL808 GPIO to Blink an LED
+[(See the __Web Server Files__)](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/ox64)
 
 _What about Console Input?_
 
 Console Input requires [__UART Interrupts__](https://lupyuen.github.io/articles/plic2). We'll implement UART Interrupts soon. (Pic below)
 
 One more thing to tweak...
+
+TODO: Emulate BL808 GPIO to Blink an LED
 
 TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?
 
@@ -577,6 +594,8 @@ But a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
 
 1.  And NuttX Kernel starts the __NuttX Apps__ in __User Mode__
 
+Which explains the [__Supervisor-Mode CSR Registers__](https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator) we saw earlier.
+
 TODO: Pic of OpenSBI, U-Boot, Kernel, Apps
 
 _So we need to start NuttX Kernel in Supervisor Mode?_
@@ -622,3 +641,66 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/tinyemu2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tinyemu2.md)
+
+# Appendix: RISC-V Addresses for Ox64
+
+Earlier we [__tweaked the RISC-V Addresses__](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu) in TinyEMU, so that they match the __Bouffalo Lab BL808 SoC__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82)
+
+```c
+// RISC-V Addresses for TinyEMU (modded for Ox64 BL808)
+#define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
+#define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
+#define PLIC_BASE_ADDR  0xe0000000ul  // Platform-Level Interrupt Controller (PLIC)
+#define PLIC_SIZE       0x00400000ul  // Address Range of PLIC
+#define CLINT_BASE_ADDR 0x02000000ul  // TODO: CLINT is Unused
+#define CLINT_SIZE      0x000c0000ul  // TODO: CLINT is Unused
+...
+#define PLIC_HART_BASE  0x201000  // Hart 0 S-Mode Priority Threshold in PLIC
+#define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
+```
+
+This is how we derived the above RISC-V Addresses...
+
+```c
+// RISC-V Addresses for TinyEMU (modded for Ox64 BL808)
+#define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
+```
+
+__Low RAM:__
+
+TODO
+
+```c
+#define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
+```
+
+__RAM Base:__
+
+TODO
+
+```c
+#define PLIC_BASE_ADDR  0xe0000000ul  // Platform-Level Interrupt Controller (PLIC)
+#define PLIC_SIZE       0x00400000ul  // Address Range of PLIC
+```
+
+__Platform-Level Interrupt Controller (PLIC):__
+
+TODO
+
+```c
+#define PLIC_HART_BASE  0x201000  // Hart 0 S-Mode Priority Threshold in PLIC
+#define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
+```
+
+__PLIC Hart:__
+
+TODO
+
+```c
+#define CLINT_BASE_ADDR 0x02000000ul  // TODO: CLINT is Unused
+#define CLINT_SIZE      0x000c0000ul  // TODO: CLINT is Unused
+```
+
+__CLINT:__
+
+TODO
