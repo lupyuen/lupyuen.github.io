@@ -234,7 +234,7 @@ csr_write: csr=0x100 val=0x200000000
 <p><em>Why is it writing to CSR Registers?</em></p>
 <p>This comes from our <strong>NuttX Boot Code</strong> (in RISC-V Assembly):  <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_head.S#L121-L128">bl808_head.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Disable all interrupts (i.e. timer, external) in SIE CSR */
-csrw	sie, zero
+csrw  sie, zero
 
 /* Set the Interrupt Vector Table in STVEC CSR */
 la    t0, __trap_vec
