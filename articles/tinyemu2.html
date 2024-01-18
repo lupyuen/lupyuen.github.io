@@ -266,7 +266,7 @@ target_write_slow:
 </li>
 <li>
 <p>Which explains why we always see “<strong>read <code>0x3000_2084</code></strong>” before “<strong>write <code>0x3000_2088</code></strong>”…</p>
-<p>NuttX Kernel is trying to <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615"><strong>print something</strong></a> to the UART Console!</p>
+<p>NuttX Kernel is trying to <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615"><strong>print something</strong></a> to the UART Console! (Pic below)</p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX sends a character to the UART Port...
 void bl808_send(struct uart_dev_s *dev, int ch) {
   ...
