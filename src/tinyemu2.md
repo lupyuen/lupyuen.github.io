@@ -133,7 +133,7 @@ And that's our barebones Ox64 Emulator! Let's run it...
 
 _We modded TinyEMU to emulate Ox64. What happens when we run it?_
 
-We see signs of life... __NuttX Kernel__ is actually booting in our Ox64 Emulator!
+We see signs of life... [__NuttX Kernel__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow) is actually booting in our Ox64 Emulator!
 
 ```bash
 ## Download the TinyEMU Config
@@ -144,7 +144,7 @@ $ wget https://github.com/lupyuen/nuttx-tinyemu/raw/main/docs/ox64/Image
 ## Boot TinyEMU with NuttX Kernel
 $ temu root-riscv64.cfg | more
 
-## Emulator writes to CSR Registers
+## NuttX Kernel writes to CSR Registers
 csr_write: csr=0x104 val=0x0
 csr_write: csr=0x105 val=0x50200090
 csr_write: csr=0x100 val=0x200000000
@@ -155,7 +155,7 @@ csr_write: csr=0x100 val=0x200002000
 csr_write: csr=0x003 val=0x0
 csr_write: csr=0x100 val=0x8000000200006000
 
-## Emulator gets invalid
+## NuttX Kernel does invalid
 ## reads and writes
 target_read_slow:
   invalid physical address
@@ -186,7 +186,7 @@ It's the __TinyEMU Config__ that will boot NuttX Kernel in our Ox64 Emulator: [r
 _What are the CSR Writes?_
 
 ```bash
-## Emulator writes to CSR Registers
+## NuttX Kernel writes to CSR Registers
 csr_write: csr=0x104 val=0x0
 csr_write: csr=0x105 val=0x50200090
 csr_write: csr=0x100 val=0x200000000
@@ -235,7 +235,7 @@ Let's talk about the funny reads and writes...
 _What are 0x3000_2084 and 0x3000_2088? Why are they Invalid Addresses?_
 
 ```yaml
-## Emulator gets invalid
+## NuttX Kernel does invalid
 ## reads and writes
 target_read_slow:
   invalid physical address
@@ -278,7 +278,7 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
   putreg32(ch, BL808_UART_FIFO_WDATA(uart_idx));
 ```
 
-[(`0x3000_2000` is the __UART3 Base Address__, Page 41)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+[(__`0x3000_2000`__ is the __UART3 Base Address__, Page 41)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
 [(More about __BL808 UART__)](https://lupyuen.github.io/articles/ox2#print-to-serial-console)
 
@@ -512,11 +512,11 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 
 [(See the __Source Code__)](https://gist.github.com/lupyuen/69b832f89efe2dc31e6da40a19b78354)
 
-_What's this ecall?_
+_What's this ECALL?_
 
-At `0x19C6` we see the __RISC-V ECALL Instruction__ that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). 
+At `0x19C6` we see the [__RISC-V ECALL Instruction__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). 
 
-Hence our NuttX Shell is making a __System Call__ to NuttX Kernel! (Pic above)
+Hence our NuttX Shell is making a [__System Call__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) to NuttX Kernel! (Pic above)
 
 Why did it fail? We'll come back to this, first we surf the web...
 
@@ -586,7 +586,7 @@ One more thing to tweak...
 
 _Back to our earlier question: Why did our System Call fail?_
 
-Our NuttX App (NuttX Shell) tried to make a __System Call (ECALL)__ to NuttX Kernel. And it failed: [init.S](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358)
+Our NuttX App (NuttX Shell) tried to make a [__System Call (ECALL)__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) to NuttX Kernel. And it failed: [init.S](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358)
 
 ```c
 // NuttX Shell makes a System Call
@@ -604,17 +604,17 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 
 _What's ECALL again?_
 
-The __RISC-V ECALL Instruction__ normally jumps...
+The [__RISC-V ECALL Instruction__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) normally jumps...
 
-- From our __NuttX App__
+- From our [__NuttX App__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app)
 
   (In __RISC-V User Mode__)
   
-- To the __NuttX Kernel__
+- To the [__NuttX Kernel__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
 
   (In __RISC-V Supervisor Mode__)
 
-- In order to make a __System Call__
+- In order to make a [__System Call__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel)
 
   (Which failed)
 
@@ -634,7 +634,7 @@ _Huh! How did that happen?_
 
 TinyEMU always __starts in Machine Mode__. Everything we saw today: That's all running in (super-powerful) __Machine Mode__.
 
-But a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
+But a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes (pic below)...
 
 1.  Ox64 boots the [__OpenSBI Supervisor Binary Interface__](https://lupyuen.github.io/articles/sbi) in __Machine Mode__ (Think BIOS, but for RISC-V Machines)
 
@@ -646,7 +646,7 @@ But a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
 
 ![Ox64 SBC will run in Machine, Supervisor AND User Modes](https://lupyuen.github.io/images/tinyemu2-flow.jpg)
 
-_So we will boot NuttX Kernel in Supervisor Mode?_
+_So we'll boot NuttX Kernel in Supervisor Mode?_
 
 Yep we shall tweak TinyEMU to start NuttX in __Supervisor Mode__. (Instead of Machine Mode)
 
