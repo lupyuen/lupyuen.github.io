@@ -535,7 +535,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
     19c6: 00000073  ecall
 ```
 
-TODO: (See the __Source Code__)
+[(See the __Source Code__)](https://gist.github.com/lupyuen/69b832f89efe2dc31e6da40a19b78354)
 
 _What's ECALL again?_
 
@@ -553,15 +553,13 @@ The __RISC-V ECALL Instruction__ normally jumps...
 
   (Which failed)
 
-__System Calls__ are absolutely essential. That's how our apps will execute system functions, like printing to the Console Output.
+[__System Calls__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) are absolutely essential. That's how our apps will execute system functions, like printing to the Console Output.
 
 _Why did ECALL fail?_
 
-That's because our NuttX App is actually running in __RISC-V Machine Mode__, not User Mode!
+That's because our NuttX Kernel is actually running in __RISC-V Machine Mode__, not Supervisor Mode!
 
-Machine Mode is the __most powerful mode__ in a RISC-V System, more powerful than Supervisor Mode and User Mode...
-
-And Machine Mode __can't possibly make ECALLS__ to a Higher Mode!
+Machine Mode is the __most powerful mode__ in a RISC-V System, more powerful than Supervisor Mode and User Mode.
 
 TODO: Pic of Machine, Supervisor, User Modes. Start / System Call (ECALL)
 
@@ -569,15 +567,13 @@ _Huh! How did that happen?_
 
 TinyEMU always __starts in Machine Mode__. Everything we saw today: That's all running in (super-powerful) Machine Mode.
 
-But a __Real Ox64 SBC__ is a little different...
+But a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes...
 
-1.  Ox64 boots the __OpenSBI Supervisor Binary Interface__ in __Machine Mode__...
+1.  Ox64 boots the __OpenSBI Supervisor Binary Interface__ in __Machine Mode__ (Think BIOS, but for RISC-V Machines)
 
-    (Think BIOS, but for RISC-V Machines)
+1.  OpenSBI starts the __U-Boot Bootloader__ in __Supervisor Mode__
 
-1.  Which starts the __U-Boot Bootloader__ in __Supervisor Mode__...
-
-1.  Which starts the __NuttX Kernel__, also in __Supervisor Mode__...
+1.  U-Boot starts the __NuttX Kernel__, also in __Supervisor Mode__
 
 1.  And NuttX Kernel starts the __NuttX Apps__ in __User Mode__
 
@@ -587,7 +583,7 @@ _So we need to start NuttX Kernel in Supervisor Mode?_
 
 Yep, we need more tweaks in TinyEMU to start NuttX in Supervisor Mode. (Instead of Machine Mode)
 
-TODO: (Maybe in the TinyEMU Boot Code)
+[(Maybe in the __TinyEMU Boot Code__)](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu)
 
 TODO: Pic of TinyEMU, Kernel, Apps. Start / System Call (ECALL). Emulate OpenSBI Timer
 
@@ -595,13 +591,13 @@ _Any other gotchas?_
 
 There's a tiny quirk: NuttX Kernel will __make an ECALL__ too...
 
-NuttX Kernel makes a __System Call to OpenSBI__ to set the System Timer. (Pic above)
+NuttX Kernel makes a __System Call to OpenSBI__ to start the System Timer. (Pic above)
 
 _Do we plan to boot OpenSBI on TinyEMU?_
 
 That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU. (Pic above)
 
-TODO: More about System Timer
+[(More about __System Timer__)](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
 
 (It's truly amazing we managed to boot so much in Machine Mode)
 
