@@ -181,7 +181,7 @@ It's the __TinyEMU Config__ that will boot NuttX Kernel in our Ox64 Emulator: [r
 }
 ```
 
-__`Image`__ is the __NuttX Kernel Image__ that comes from a typical [__NuttX Build for Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.4.0).
+[__`Image`__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.4.0/Image) is the __NuttX Kernel Image__ that comes from a typical [__NuttX Build for Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.4.0).
 
 _What are the CSR Writes?_
 
@@ -206,7 +206,7 @@ CSR refers to [__Control and Status Registers__](https://five-embeddev.com/quick
 
   (Set the Status)
 
-These are all __Supervisor-Mode__ CSR Registers. (We'll find out why later)
+These are all __Supervisor-Mode__ CSR Registers. (We'll find out why)
 
 _Why is it writing to CSR Registers?_
 
@@ -224,7 +224,7 @@ la    t0, __trap_vec
 csrw  stvec, t0
 ```
 
-Let's talk about the invalid reads and writes...
+Let's talk about the funny reads and writes...
 
 > ![BL808 UART Registers (Page 427)](https://lupyuen.github.io/images/tinyemu2-register.jpg)
 
