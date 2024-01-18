@@ -346,7 +346,7 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
 <blockquote>
 <p><em>We write to this UART Register to <strong>print a character</strong> to UART Output</em></p>
 </blockquote>
-<p>In TinyEMU: We intercept all “<strong>write <code>0x3000_2088</code></strong>” by printing the character: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L472-L490">riscv_cpu.c</a></p>
+<p>In TinyEMU: We intercept all “<strong>write <code>0x3000_2088</code></strong>” by printing the character (pic above): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L472-L490">riscv_cpu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// TinyEMU writes to a Memory Address...
 int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int size_log2) {
 ...
