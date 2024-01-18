@@ -349,7 +349,7 @@ Earlier we saw...
 
 > _We write to this UART Register to __print a character__ to UART Output_
 
-In TinyEMU: We intercept all "__write `0x3000_2088`__" by printing the character: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L472-L490)
+In TinyEMU: We intercept all "__write `0x3000_2088`__" by printing the character (pic above): [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L472-L490)
 
 ```c
 // TinyEMU writes to a Memory Address...
