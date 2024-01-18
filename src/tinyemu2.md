@@ -386,9 +386,11 @@ target_write_slow: invalid physical address 0x0000000030002024
 work_start_lowpri: Starting low-priority kernel worker thread(s)
 nx_start_application: Starting init task: /system/bin/init
 
-## NuttX Kernel creates the Heap Memory for NuttX Shell, which crashes
+## NuttX Kernel creates the Heap Memory for NuttX Shell
 mm_initialize: Heap: name=(null), start=0x80200000 size=528384
 mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
+
+## NuttX Shell crashes due to a RISC-V Exception
 up_exit: TCB=0x504098d0 exiting
 ```
 
@@ -410,7 +412,7 @@ t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000
 priv=U mstatus=0000000a0006806
 mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 
-## What are these RISC-V Exceptions? MCAUSE is 2
+## What's this RISC-V Exception with MCAUSE 2?
 raise_exception2: cause=2, tval=0x0
 raise_exception2: cause=2, tval=0x0
 ```
@@ -432,7 +434,7 @@ raise_exception2:
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/efb6750b317f52b629c115ac16635177)
 
-We look up the offending Code Address: __`0x8000_19C6`__.
+We track down the offending Code Address: __`0x8000_19C6`__
 
 This address comes from the Virtual Memory of a __NuttX App__ (not the NuttX Kernel): [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/heapcrash/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30)
 
