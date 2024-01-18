@@ -70,7 +70,7 @@ No Worries! Everything that runs in __Command Line__ TinyEMU... Will also run in
 
 We tweak TinyEMU for Ox64...
 
-TODO: Pic of BL808 Memory Map
+![BL808 Memory Map (Page 41)](https://lupyuen.github.io/images/tinyemu2-memory.jpg)
 
 [_BL808 Memory Map (Page 41)_](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
@@ -95,7 +95,7 @@ We tweak the RISC-V Addresses in TinyEMU, so that they match the __Bouffalo Lab 
 #define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
 ```
 
-TODO: (How we got the __RISC-V Addresses__)
+[(How we got the __RISC-V Addresses__)](https://lupyuen.github.io/articles/tinyemu2#appendix-risc-v-addresses-for-ox64)
 
 _What's this Boot Code?_
 
@@ -218,7 +218,9 @@ csrw  stvec, t0
 
 Let's talk about the invalid reads and writes...
 
-TODO: Pic of BL808 UART Registers
+> ![BL808 UART Registers (Page 427)](https://lupyuen.github.io/images/tinyemu2-register.jpg)
+
+> [_BL808 UART Registers (Page 427)_](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
 # UART Registers for BL808 SoC
 
