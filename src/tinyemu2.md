@@ -83,7 +83,8 @@ TinyEMU is hardcoded to run at __Fixed RISC-V Addresses__. (Yep it's really bare
 We tweak the RISC-V Addresses in TinyEMU, so that they match the __Bouffalo Lab BL808 SoC__ (pic above): [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82)
 
 ```c
-// RISC-V Addresses for TinyEMU (modded for Ox64 BL808)
+// RISC-V Addresses for TinyEMU
+// (modded for Ox64 BL808)
 #define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
 #define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
 #define PLIC_BASE_ADDR  0xe0000000ul  // Platform-Level Interrupt Controller (PLIC)
@@ -102,10 +103,12 @@ _What's this Boot Code?_
 TinyEMU needs a tiny chunk of __RISC-V Machine Code__ that will jump to our __Kernel Image__ (and pass the Device Tree): [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L862-L872)
 
 ```c
-// At TinyEMU Startup: Init the Emulated RAM...
+// At TinyEMU Startup: Init the
+// Emulated RAM...
 static void copy_bios(...) {
   ...
-  // Init the TinyEMU Boot Code at Address 0x1000 (ram_ptr is 0x0)
+  // Init the TinyEMU Boot Code at
+  // Address 0x1000 (ram_ptr is 0x0)
   uint32_t *q = (uint32_t *)(ram_ptr + 0x1000);
 
   // Load into Register T0 the RAM_BASE_ADDR (0x5020_0000)
@@ -133,7 +136,8 @@ _We modded TinyEMU to emulate Ox64. What happens when we run it?_
 We see signs of life... __NuttX Kernel__ is actually booting in our Ox64 Emulator!
 
 ```bash
-## Download the TinyEMU Config and NuttX Kernel Image
+## Download the TinyEMU Config
+## and NuttX Kernel Image
 $ wget https://raw.githubusercontent.com/lupyuen/nuttx-tinyemu/main/docs/ox64/root-riscv64.cfg
 $ wget https://github.com/lupyuen/nuttx-tinyemu/raw/main/docs/ox64/Image
 
@@ -151,7 +155,8 @@ csr_write: csr=0x100 val=0x200002000
 csr_write: csr=0x003 val=0x0
 csr_write: csr=0x100 val=0x8000000200006000
 
-## Emulator gets invalid reads and writes
+## Emulator gets invalid
+## reads and writes
 target_read_slow:
   invalid physical address
   0x30002084
@@ -208,10 +213,13 @@ _Why is it writing to CSR Registers?_
 This comes from our __NuttX Boot Code__ (in RISC-V Assembly):  [bl808_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_head.S#L121-L128)
 
 ```c
-/* Disable all interrupts (i.e. timer, external) in SIE CSR */
+/* Disable all interrupts
+  (i.e. timer, external)
+  in SIE CSR */
 csrw  sie, zero
 
-/* Set the Interrupt Vector Table in STVEC CSR */
+/* Set the Interrupt Vector Table
+   in STVEC CSR */
 la    t0, __trap_vec
 csrw  stvec, t0
 ```
@@ -227,7 +235,8 @@ Let's talk about the invalid reads and writes...
 _What are 0x3000_2084 and 0x3000_2088? Why are they Invalid Addresses?_
 
 ```yaml
-## Emulator gets invalid reads and writes
+## Emulator gets invalid
+## reads and writes
 target_read_slow:
   invalid physical address
   0x30002084
@@ -251,26 +260,27 @@ We dig around the [__BL808 Reference Manual__](https://github.com/bouffalolab/bl
 
 - Which explains why we always see "__read `0x3000_2084`__" before "__write `0x3000_2088`__"...
 
-  NuttX Kernel is trying to [__print something__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615) to the UART Console! (Pic below)
+NuttX Kernel is trying to [__print something__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615) to the UART Console! (Pic below)
 
-  ```c
-  // NuttX sends a character to the UART Port...
-  void bl808_send(struct uart_dev_s *dev, int ch) {
-    ...
-    // Wait for Transmit FIFO to be empty.
-    // FIFO_CONFIG_1 is 0x3000_2084
-    // TX_CNT_MASK is 0x3F
-    while ((getreg32(BL808_UART_FIFO_CONFIG_1(uart_idx)) &
-      UART_FIFO_CONFIG_1_TX_CNT_MASK) == 0) {}
+```c
+// NuttX sends a character to
+// the UART Port...
+void bl808_send(struct uart_dev_s *dev, int ch) {
+  ...
+  // Wait for Transmit FIFO to be empty.
+  // FIFO_CONFIG_1 is 0x3000_2084
+  // TX_CNT_MASK is 0x3F
+  while ((getreg32(BL808_UART_FIFO_CONFIG_1(uart_idx)) &
+    UART_FIFO_CONFIG_1_TX_CNT_MASK) == 0) {}
 
-    // Write character to Transmit FIFO.
-    // FIFO_WDATA is 0x3000_2088
-    putreg32(ch, BL808_UART_FIFO_WDATA(uart_idx));
-  ```
+  // Write character to Transmit FIFO.
+  // FIFO_WDATA is 0x3000_2088
+  putreg32(ch, BL808_UART_FIFO_WDATA(uart_idx));
+```
 
-  [(`0x3000_2000` is the __UART3 Base Address__, Page 41)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+[(`0x3000_2000` is the __UART3 Base Address__, Page 41)](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
 
-  [(More about __BL808 UART__)](https://lupyuen.github.io/articles/ox2#print-to-serial-console)...
+[(More about __BL808 UART__)](https://lupyuen.github.io/articles/ox2#print-to-serial-console)
 
 _But why are they Invalid Addresses?_
 
@@ -302,7 +312,8 @@ In TinyEMU: We intercept "__read `0x3000_2084`__" and return the value `32`: [ri
 // TinyEMU reads a Memory Address...
 int target_read_slow(RISCVCPUState *s, mem_uint_t *pval, target_ulong addr, int size_log2) {
 ...
-  // If the Memory Address is not mapped...
+  // If the Memory Address is
+  // not mapped...
   pr = get_phys_mem_range(s->mem_map, paddr);
   if (!pr) {
 
@@ -312,7 +323,8 @@ int target_read_slow(RISCVCPUState *s, mem_uint_t *pval, target_ulong addr, int 
     switch(paddr & 0xfffffffffffful) {  
 
       // If we're reading uart_fifo_config_1:
-      // Tell Emulator that UART Transmit is always ready
+      // Tell Emulator that UART
+      // Transmit is always ready
       case 0x30002084:
         ret = 32; break;  // UART Transmit Buffer Size defaults to 32
 
@@ -327,7 +339,8 @@ _Why 32?_
 Our __NuttX UART Driver__ checks the lower bits of __`0x3000_2084`__: [bl808_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615)
 
 ```c
-// NuttX sends a character to the UART Port...
+// NuttX sends a character to
+// the UART Port...
 void bl808_send(struct uart_dev_s *dev, int ch) {
   ...
   // Wait for Transmit FIFO to be empty.
@@ -357,7 +370,8 @@ In TinyEMU: We intercept all "__write `0x3000_2088`__" by printing the character
 // TinyEMU writes to a Memory Address...
 int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int size_log2) {
 ...
-  // If the Memory Address is not mapped...
+  // If the Memory Address is
+  // not mapped...
   pr = get_phys_mem_range(s->mem_map, paddr);
   if (!pr) {
 
@@ -401,7 +415,8 @@ nx_start: Entry
 mm_initialize: Heap: name=Kmem, start=0x50407c00 size=2065408
 mm_addregion:  [Kmem] Region 1: base=0x50407ea8 size=2064720
 
-## NuttX Kernel starts the UART Driver (What are the Invalid Addresses?)
+## NuttX Kernel starts the UART Driver
+## (What are the Invalid Addresses?)
 uart_register: Registering /dev/console
 target_read_slow:  invalid physical address 0x0000000030002024
 target_write_slow: invalid physical address 0x0000000030002024
@@ -410,11 +425,13 @@ target_write_slow: invalid physical address 0x0000000030002024
 work_start_lowpri: Starting low-priority kernel worker thread(s)
 nx_start_application: Starting init task: /system/bin/init
 
-## NuttX Kernel creates the Heap Memory for NuttX Shell
+## NuttX Kernel creates the Heap Memory
+## for NuttX Shell
 mm_initialize: Heap: name=(null), start=0x80200000 size=528384
 mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
 
-## NuttX Shell crashes due to a RISC-V Exception
+## NuttX Shell crashes with a
+## RISC-V Exception
 up_exit: TCB=0x504098d0 exiting
 ```
 
@@ -423,7 +440,8 @@ up_exit: TCB=0x504098d0 exiting
 Followed by this __RISC-V Exception__...
 
 ```bash
-## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
+## NuttX Shell crashes with a
+## RISC-V Exception, MCAUSE is 8
 raise_exception2: cause=8, tval=0x0
 pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
 tp =0000000000000000 t0 =0000000000000000 t1 =0000000000000000 t2 =0000000000000000
@@ -436,7 +454,8 @@ t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000
 priv=U mstatus=0000000a0006806
 mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 
-## What's this RISC-V Exception with MCAUSE 2?
+## What's this RISC-V Exception
+## with MCAUSE 2?
 raise_exception2: cause=2, tval=0x0
 raise_exception2: cause=2, tval=0x0
 ```
@@ -452,7 +471,8 @@ Why? We investigate the alligator in the vest...
 _What's this RISC-V Exception?_
 
 ```yaml
-## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
+## NuttX Shell crashes with a 
+## RISC-V Exception, MCAUSE is 8
 raise_exception2:
   cause=8, tval=0x0
   pc=800019c6
@@ -479,11 +499,13 @@ The only NuttX App we're running at Startup is the __NuttX Shell__.
 Thus we look up the __RISC-V Disassembly__ for the NuttX Shell: [init.S](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358)
 
 ```c
-// NuttX Shell makes a System Call to fetch a Scheduler Parameter
+// NuttX Shell makes a System Call
+// to fetch a Scheduler Parameter
 nuttx/syscall/proxies/PROXY_sched_getparam.c:8
   int sched_getparam(pid_t parm1, FAR struct sched_param * parm2) {
   ...
-  // ECALL fails with a RISC-V Exception
+  // ECALL fails with a 
+  // RISC-V Exception
   nuttx/include/arch/syscall.h:229
     19c6: 00000073  ecall
 ```
@@ -515,12 +537,14 @@ Let's find out! We compile __TinyEMU to WebAssembly__ with [__Emscripten__](http
 cd $HOME
 git clone https://github.com/lupyuen/nuttx-tinyemu
 
-## Compile TinyEMU into WebAssembly with Emscripten
+## Compile TinyEMU into WebAssembly
+## with Emscripten
 sudo apt install emscripten
 cd $HOME/ox64-tinyemu
 make -f Makefile.js
 
-## Copy the generated JavaScript and WebAssembly to our Web Server
+## Copy the generated JavaScript and
+## WebAssembly to our Web Server
 cp js/riscvemu64-wasm.js \
    js/riscvemu64-wasm.wasm \
    $HOME/nuttx-tinyemu/docs/ox64/
@@ -565,11 +589,13 @@ _Back to our earlier question: Why did our System Call fail?_
 Our NuttX App (NuttX Shell) tried to make a __System Call (ECALL)__ to NuttX Kernel. And it failed: [init.S](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358)
 
 ```c
-// NuttX Shell makes a System Call to fetch a Scheduler Parameter
+// NuttX Shell makes a System Call
+// to fetch a Scheduler Parameter
 nuttx/syscall/proxies/PROXY_sched_getparam.c:8
   int sched_getparam(pid_t parm1, FAR struct sched_param * parm2) {
   ...
-  // ECALL fails with a RISC-V Exception
+  // ECALL fails with a
+  // RISC-V Exception
   nuttx/include/arch/syscall.h:229
     19c6: 00000073  ecall
 ```
@@ -677,7 +703,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 Earlier we [__tweaked the RISC-V Addresses__](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu) in TinyEMU, so that they match the __Bouffalo Lab BL808 SoC__ (pic above): [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82)
 
 ```c
-// RISC-V Addresses for TinyEMU (modded for Ox64 BL808)
+// RISC-V Addresses for TinyEMU
+// (modded for Ox64 BL808)
 #define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
 #define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
 #define PLIC_BASE_ADDR  0xe0000000ul  // Platform-Level Interrupt Controller (PLIC)
@@ -692,14 +719,15 @@ Earlier we [__tweaked the RISC-V Addresses__](https://lupyuen.github.io/articles
 This is how we derived the above RISC-V Addresses...
 
 ```c
-// RISC-V Addresses for TinyEMU (modded for Ox64 BL808)
-#define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
+// 64 KB of Boot Code at Address 0x0
+#define LOW_RAM_SIZE    0x00010000ul
 ```
 
 __Low RAM:__ This setting is specfic to TinyEMU, we left it unchanged. At Address `0x0` we'll find the [__TinyEMU Boot Code__](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu) and the __Binary Device Tree__.
 
 ```c
-#define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
+// Our Kernel boots here
+#define RAM_BASE_ADDR   0x50200000ul
 ```
 
 __RAM Base:__ NuttX boots at the above address, as explained here...
@@ -707,8 +735,10 @@ __RAM Base:__ NuttX boots at the above address, as explained here...
 - [__"RISC-V Ox64 BL808 SBC: Starting Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/ox2#update-the-boot-address)
 
 ```c
-#define PLIC_BASE_ADDR  0xe0000000ul  // Platform-Level Interrupt Controller (PLIC)
-#define PLIC_SIZE       0x00400000ul  // Address Range of PLIC
+// Platform-Level Interrupt Controller (PLIC)
+// and Address Range of PLIC
+#define PLIC_BASE_ADDR  0xe0000000ul  
+#define PLIC_SIZE       0x00400000ul
 ```
 
 __Platform-Level Interrupt Controller (PLIC):__ The PLIC Addresses are documented here...
@@ -716,8 +746,10 @@ __Platform-Level Interrupt Controller (PLIC):__ The PLIC Addresses are documente
 - [__"RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)"__](https://lupyuen.github.io/articles/plic2#disable-all-interrupts)
 
 ```c
-#define PLIC_HART_BASE  0x201000  // Hart 0 S-Mode Priority Threshold in PLIC
-#define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
+// Hart 0 S-Mode Priority Threshold in PLIC
+// and Address Range of Hart 0 PLIC
+#define PLIC_HART_BASE  0x201000
+#define PLIC_HART_SIZE  0x1000
 ```
 
 __PLIC Hart:__ We specify Hart 0, Supervisor-Mode as explained here...
@@ -725,8 +757,9 @@ __PLIC Hart:__ We specify Hart 0, Supervisor-Mode as explained here...
 - [__"Hart 0, Supervisor Mode"__](https://lupyuen.github.io/articles/plic2#hart-0-supervisor-mode)
 
 ```c
-#define CLINT_BASE_ADDR 0x02000000ul  // CLINT is Unused
-#define CLINT_SIZE      0x000c0000ul  // CLINT is Unused
+// Core-Local Interrupt Controller (CLINT) is Unused
+#define CLINT_BASE_ADDR 0x02000000ul
+#define CLINT_SIZE      0x000c0000ul
 ```
 
 [__Core-Local Interrupt Controller (CLINT)__](https://github.com/riscv/riscv-aclint/blob/main/riscv-aclint.adoc) is unused. We left the setting unchanged.
