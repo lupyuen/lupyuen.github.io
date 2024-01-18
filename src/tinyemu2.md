@@ -124,7 +124,7 @@ And that's our barebones Ox64 Emulator! Let's run it...
 
 [(Remember to enable __Exception Logging__)](https://github.com/lupyuen/ox64-tinyemu/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6)
 
-TODO: Pic of TinyEMU, CSR, Invalid Reads / Writes
+![TinyEMU Emulator at the Command Line](https://lupyuen.github.io/images/tinyemu2-run.png)
 
 # Run TinyEMU Emulator
 
@@ -383,7 +383,7 @@ int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int s
 
 [(__riscv_machine_init__ inits the console)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L956-L963)
 
-TODO: Pic of TinyEMU
+![TinyEMU Emulator emulates UART Output](https://lupyuen.github.io/images/tinyemu2-run2.png)
 
 # Emulator Prints To Console
 
