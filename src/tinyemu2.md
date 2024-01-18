@@ -70,13 +70,17 @@ No Worries! Everything that runs in __Command Line__ TinyEMU... Will also run in
 
 We tweak TinyEMU for Ox64...
 
+TODO: Pic of BL808 Memory Map
+
+[_BL808 Memory Map (Page 41)_](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+
 # Change RISC-V Addresses in TinyEMU
 
 _TinyEMU needs to emulate our Ox64 BL808 SBC. What shall we tweak?_
 
 TinyEMU is hardcoded to run at __Fixed RISC-V Addresses__. (Yep it's really barebones)
 
-We tweak the RISC-V Addresses in TinyEMU, so that they match the __Bouffalo Lab BL808 SoC__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82)
+We tweak the RISC-V Addresses in TinyEMU, so that they match the __Bouffalo Lab BL808 SoC__ (pic above): [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82)
 
 ```c
 // RISC-V Addresses for TinyEMU (modded for Ox64 BL808)
@@ -119,6 +123,8 @@ static void copy_bios(...) {
 And that's our barebones Ox64 Emulator! Let's run it...
 
 [(Remember to enable __Exception Logging__)](https://github.com/lupyuen/ox64-tinyemu/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6)
+
+TODO: Pic of TinyEMU, CSR, Invalid Reads / Writes
 
 # Run TinyEMU Emulator
 
@@ -270,13 +276,15 @@ We haven't defined in TinyEMU the addresses for __Memory-Mapped Input / Output__
 
 That's why TinyEMU __won't read and write__ our UART Registers. Let's fix this...
 
+TODO: Pic of Intercept UART Registers, UART Status, UART Output
+
 # Intercept the UART Registers
 
 _NuttX tries to print something but fails..._
 
 _How to fix the UART Registers in our Ox64 Emulator?_
 
-Inside TinyEMU, we intercept all "__read `0x3000_2084`__" and "__write `0x3000_2088`__". And we pretend to be a __UART Port__...
+Inside TinyEMU, we intercept all "__read `0x3000_2084`__" and "__write `0x3000_2088`__". And we pretend to be a __UART Port__ (pic above)...
 
 ## Emulate the UART Status
 
@@ -371,11 +379,13 @@ int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int s
 
 [(__riscv_machine_init__ inits the console)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L956-L963)
 
+TODO: Pic of TinyEMU
+
 # Emulator Prints To Console
 
 _We modded our Ox64 Emulator to handle UART Output. Does it work?_
 
-Yep, we see NuttX booting on our Ox64 Emulator yay!
+Yep, we see NuttX booting on our Ox64 Emulator yay! (Pic above)
 
 ```bash
 ## Boot TinyEMU with NuttX Kernel
@@ -405,7 +415,7 @@ up_exit: TCB=0x504098d0 exiting
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e)
 
-Followed by this __RISC-V Exception__...
+Followed by this __RISC-V Exception__ (pic below)...
 
 ```bash
 ## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
@@ -430,9 +440,11 @@ raise_exception2: cause=2, tval=0x0
 
 Why? We investigate the alligator in the vest...
 
+TODO: Pic of RISC-V Exception
+
 # RISC-V Exception in Emulator
 
-_What's this RISC-V Exception?_
+_What's this RISC-V Exception? (Pic above)_
 
 ```yaml
 ## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
@@ -603,7 +615,7 @@ TODO: Pic of OpenSBI, U-Boot, Kernel, Apps
 
 _So we need to start NuttX Kernel in Supervisor Mode?_
 
-Yep, we need more tweaks in TinyEMU to start NuttX in Supervisor Mode. (Instead of Machine Mode)
+Yep, we need more tweaks in TinyEMU to start NuttX in __Supervisor Mode__. (Instead of Machine Mode)
 
 [(Maybe in the __TinyEMU Boot Code__)](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu)
 
@@ -645,9 +657,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/tinyemu2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tinyemu2.md)
 
+TODO: Pic of BL808 Memory Map
+
+[_BL808 Memory Map (Page 41)_](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf)
+
 # Appendix: RISC-V Addresses for Ox64
 
-Earlier we [__tweaked the RISC-V Addresses__](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu) in TinyEMU, so that they match the __Bouffalo Lab BL808 SoC__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82)
+Earlier we [__tweaked the RISC-V Addresses__](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu) in TinyEMU, so that they match the __Bouffalo Lab BL808 SoC__ (pic above): [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L66-L82)
 
 ```c
 // RISC-V Addresses for TinyEMU (modded for Ox64 BL808)
