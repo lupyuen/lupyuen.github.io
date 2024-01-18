@@ -633,6 +633,8 @@ That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU.
 
 [(More about __System Timer__)](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
 
+[(Ox64 Emulator today might be sufficient for __Daily Automated Testing__)](https://github.com/lupyuen/nuttx-ox64?tab=readme-ov-file#nuttx-automated-daily-build-for-ox64)
+
 (It's truly amazing we managed to boot so much in Machine Mode)
 
 # What's Next
