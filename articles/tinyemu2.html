@@ -81,7 +81,6 @@
 <li><a href="#appendix-risc-v-addresses-for-ox64">11 Appendix: RISC-V Addresses for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-title.png" alt="Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><em>(Live Demo of Ox64 BL808 Emulator)</em></a></p>
-<p>TODO: <a href="https://youtu.be/KYrdwzIsgeQ"><em>(Watch on YouTube)</em></a></p>
 <p><em>In olden times we had Computer Games (plus Operating Systems) on 5.25-inch <strong>Floppy Disks</strong>. And we’d boot the Floppy Disks (clackety-clack) on <strong>Apple II Computers</strong> with 64 KB RAM.</em></p>
 <p>Today (40 years later) we boot <strong>microSD Cards</strong> (clickety-click) on <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Ox64 BL808</strong></a> RISC-V Single-Board Computers with 64 MB RAM. (Pic below)</p>
 <p><em>What if we could turn it into a</em> <a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><strong>Virtual Ox64 SBC</strong></a> <em>that boots in our</em> <a href="https://lupyuen.github.io/nuttx-tinyemu/ox64"><strong>Web Browser</strong></a>? <em>(Pic above) Exactly like an</em> <a href="https://www.scullinsteel.com/apple2/#dos33master"><strong>Emulated Apple II</strong></a>!</p>
@@ -144,7 +143,7 @@ make CFLAGS=-I$(brew --prefix)/opt/openssl/include LDFLAGS=-L$(brew --prefix)/op
 #define PLIC_HART_BASE  0x201000  // Hart 0 S-Mode Priority Threshold in PLIC
 #define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
 </code></pre></div>
-<p>TODO: Where did we get the addresses?</p>
+<p>TODO: (How we got the <strong>RISC-V Addresses</strong>)</p>
 <p><em>What’s this Boot Code?</em></p>
 <p>TinyEMU needs a tiny chunk of <strong>RISC-V Machine Code</strong> that will jump to our <strong>Kernel Image</strong> (and pass the Device Tree): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L862-L872">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// At TinyEMU Startup: Init the Emulated RAM...
@@ -465,8 +464,9 @@ cd $HOME/ox64-tinyemu
 make -f Makefile.js
 
 ## Copy the generated JavaScript and WebAssembly to Web Server
-cp js/riscvemu64-wasm.js js/riscvemu64-wasm.wasm \
-  $HOME/nuttx-tinyemu/docs/ox64/
+cp js/riscvemu64-wasm.js \
+   js/riscvemu64-wasm.wasm \
+   $HOME/nuttx-tinyemu/docs/ox64/
 
 ## Start the Web Server
 cargo install simple-http-server
@@ -477,6 +477,7 @@ simple-http-server $HOME/nuttx-tinyemu/docs
 <div class="example-wrap"><pre class="language-text"><code>http://0.0.0.0:8000/ox64/index.html
 </code></pre></div>
 <p>And our Ox64 Emulator appears in the Web Browser! (Pic above)</p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/ox64">(Live Demo of <strong>Ox64 Emulator</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/ox64">(See the <strong>Web Server Files</strong>)</a></p>
 <p><em>What about Console Input?</em></p>
 <p>Console Input requires <a href="https://lupyuen.github.io/articles/plic2"><strong>UART Interrupts</strong></a>. We’ll implement UART Interrupts soon. (Pic below)</p>
@@ -515,7 +516,8 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p><a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>System Calls</strong></a> are absolutely essential. That’s how our apps will execute system functions, like printing to the Console Output.</p>
 <p><em>Why did ECALL fail?</em></p>
 <p>That’s because our NuttX Kernel is actually running in <strong>RISC-V Machine Mode</strong>, not Supervisor Mode!</p>
-<p>Machine Mode is the <strong>most powerful mode</strong> in a RISC-V System, more powerful than Supervisor Mode and User Mode.</p>
+<p>Machine Mode is the <strong>most powerful mode</strong> in a RISC-V System, more powerful than Supervisor Mode and User Mode. But NuttX expects to boot in <strong>Supervisor Mode</strong>.</p>
+<p>(Which explains the <a href="https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator"><strong>Supervisor-Mode CSR Registers</strong></a> we saw earlier)</p>
 <p>TODO: Pic of Machine, Supervisor, User Modes. Start / System Call (ECALL)</p>
 <p><em>Huh! How did that happen?</em></p>
 <p>TinyEMU always <strong>starts in Machine Mode</strong>. Everything we saw today: That’s all running in (super-powerful) Machine Mode.</p>
@@ -534,7 +536,6 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p>And NuttX Kernel starts the <strong>NuttX Apps</strong> in <strong>User Mode</strong></p>
 </li>
 </ol>
-<p>Which explains the <a href="https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator"><strong>Supervisor-Mode CSR Registers</strong></a> we saw earlier.</p>
 <p>TODO: Pic of OpenSBI, U-Boot, Kernel, Apps</p>
 <p><em>So we need to start NuttX Kernel in Supervisor Mode?</em></p>
 <p>Yep, we need more tweaks in TinyEMU to start NuttX in Supervisor Mode. (Instead of Machine Mode)</p>
@@ -579,8 +580,8 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 #define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
 #define PLIC_BASE_ADDR  0xe0000000ul  // Platform-Level Interrupt Controller (PLIC)
 #define PLIC_SIZE       0x00400000ul  // Address Range of PLIC
-#define CLINT_BASE_ADDR 0x02000000ul  // TODO: CLINT is Unused
-#define CLINT_SIZE      0x000c0000ul  // TODO: CLINT is Unused
+#define CLINT_BASE_ADDR 0x02000000ul  // CLINT is Unused
+#define CLINT_SIZE      0x000c0000ul  // CLINT is Unused
 ...
 #define PLIC_HART_BASE  0x201000  // Hart 0 S-Mode Priority Threshold in PLIC
 #define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
@@ -605,8 +606,8 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 </code></pre></div>
 <p><strong>PLIC Hart:</strong></p>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>#define CLINT_BASE_ADDR 0x02000000ul  // TODO: CLINT is Unused
-#define CLINT_SIZE      0x000c0000ul  // TODO: CLINT is Unused
+<div class="example-wrap"><pre class="language-c"><code>#define CLINT_BASE_ADDR 0x02000000ul  // CLINT is Unused
+#define CLINT_SIZE      0x000c0000ul  // CLINT is Unused
 </code></pre></div>
 <p><strong>CLINT:</strong></p>
 <p>TODO</p>
