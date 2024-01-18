@@ -128,7 +128,7 @@ make CFLAGS=-I$(brew --prefix)/opt/openssl/include LDFLAGS=-L$(brew --prefix)/op
 <p><em>What about TinyEMU for the Web Browser?</em></p>
 <p>No Worries! Everything that runs in <strong>Command Line</strong> TinyEMU… Will also run in <strong>Web Browser</strong> TinyEMU.</p>
 <p>We tweak TinyEMU for Ox64…</p>
-<p>TODO: Pic of BL808 Memory Map</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-memory.jpg" alt="BL808 Memory Map (Page 41)" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><em>BL808 Memory Map (Page 41)</em></a></p>
 <h1 id="change-risc-v-addresses-in-tinyemu"><a href="#change-risc-v-addresses-in-tinyemu">2 Change RISC-V Addresses in TinyEMU</a></h1>
 <p><em>TinyEMU needs to emulate our Ox64 BL808 SBC. What shall we tweak?</em></p>
@@ -145,7 +145,7 @@ make CFLAGS=-I$(brew --prefix)/opt/openssl/include LDFLAGS=-L$(brew --prefix)/op
 #define PLIC_HART_BASE  0x201000  // Hart 0 S-Mode Priority Threshold in PLIC
 #define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
 </code></pre></div>
-<p>TODO: (How we got the <strong>RISC-V Addresses</strong>)</p>
+<p><a href="https://lupyuen.github.io/articles/tinyemu2#appendix-risc-v-addresses-for-ox64">(How we got the <strong>RISC-V Addresses</strong>)</a></p>
 <p><em>What’s this Boot Code?</em></p>
 <p>TinyEMU needs a tiny chunk of <strong>RISC-V Machine Code</strong> that will jump to our <strong>Kernel Image</strong> (and pass the Device Tree): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L862-L872">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// At TinyEMU Startup: Init the Emulated RAM...
@@ -241,7 +241,12 @@ la    t0, __trap_vec
 csrw  stvec, t0
 </code></pre></div>
 <p>Let’s talk about the invalid reads and writes…</p>
-<p>TODO: Pic of BL808 UART Registers</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-register.jpg" alt="BL808 UART Registers (Page 427)" /></p>
+</blockquote>
+<blockquote>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><em>BL808 UART Registers (Page 427)</em></a></p>
+</blockquote>
 <h1 id="uart-registers-for-bl808-soc"><a href="#uart-registers-for-bl808-soc">4 UART Registers for BL808 SoC</a></h1>
 <p><em>What are 0x3000_2084 and 0x3000_2088? Why are they Invalid Addresses?</em></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Emulator gets invalid reads and writes
