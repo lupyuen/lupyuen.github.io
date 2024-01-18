@@ -668,7 +668,7 @@ That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU.
 
 [(Ox64 Emulator today might be sufficient for __Daily Automated Testing__)](https://github.com/lupyuen/nuttx-ox64?tab=readme-ov-file#nuttx-automated-daily-build-for-ox64)
 
-(It's truly amazing we managed to boot so much in Machine Mode)
+[(So amazing we __booted so much NuttX__ in Machine Mode)](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
 
 ![JavaScript Console of Ox64 BL808 Emulator](https://lupyuen.github.io/images/tinyemu2-console.png)
 
