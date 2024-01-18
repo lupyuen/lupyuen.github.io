@@ -423,7 +423,7 @@ raise_exception2: cause=2, tval=0x0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e">(See the <strong>Complete Log</strong>)</a></p>
 <p>Why? We investigate the alligator in the vest…</p>
-<p>TODO: Pic of RISC-V Exception</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow2a.jpg" alt="TODO" /></p>
 <h1 id="risc-v-exception-in-emulator"><a href="#risc-v-exception-in-emulator">7 RISC-V Exception in Emulator</a></h1>
 <p><em>What’s this RISC-V Exception? (Pic above)</em></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
@@ -451,9 +451,10 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
   nuttx/include/arch/syscall.h:229
     19c6: 00000073  ecall
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/69b832f89efe2dc31e6da40a19b78354">(See the <strong>Source Code</strong>)</a></p>
 <p><em>What’s this ecall?</em></p>
 <p>At <code>0x19C6</code> we see the <strong>RISC-V ECALL Instruction</strong> that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). </p>
-<p>Hence our NuttX Shell is making a <strong>System Call</strong> to NuttX Kernel!</p>
+<p>Hence our NuttX Shell is making a <strong>System Call</strong> to NuttX Kernel! (Pic above)</p>
 <p>Why did it fail? We’ll come back to this, first we surf the web…</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1142-L1147">(We quit if <strong>MCAUSE is 2</strong>, otherwise we loop forever)</a></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-title.png" alt="Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS" /></p>
