@@ -491,8 +491,8 @@ simple-http-server $HOME/nuttx-tinyemu/docs
 <p><em>What about Console Input?</em></p>
 <p>Console Input requires <a href="https://lupyuen.github.io/articles/plic2"><strong>UART Interrupts</strong></a>. We’ll implement UART Interrupts soon. (Pic below)</p>
 <p>One more thing to tweak…</p>
-<p>TODO: Emulate BL808 GPIO to Blink an LED</p>
-<p>TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?</p>
+<p><a href="https://lupyuen.github.io/articles/nim#led-driver-for-ox64">(We’ll emulate <strong>BL808 GPIO</strong> to Blink a Virtual LED)</a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4">(Maybe wrap <strong>TinyEMU with Zig</strong> for Memory Safety and Simpler WebAssembly?)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="UART Interrupts for Ox64 BL808 SBC" /></p>
 <h1 id="machine-mode-vs-supervisor-mode"><a href="#machine-mode-vs-supervisor-mode">9 Machine Mode vs Supervisor Mode</a></h1>
 <p><em>Back to our earlier question: Why did our System Call fail?</em></p>
