@@ -696,41 +696,37 @@ This is how we derived the above RISC-V Addresses...
 #define LOW_RAM_SIZE    0x00010000ul  // 64 KB of Boot Code at Address 0x0
 ```
 
-__Low RAM:__
-
-TODO
+__Low RAM:__ This setting is specfic to TinyEMU, we left it unchanged. At Address `0x0` we'll find the [__TinyEMU Boot Code__](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu) and the __Binary Device Tree__.
 
 ```c
 #define RAM_BASE_ADDR   0x50200000ul  // Our Kernel boots here
 ```
 
-__RAM Base:__
+__RAM Base:__ NuttX boots at the above address, as explained here...
 
-TODO
+- [__"RISC-V Ox64 BL808 SBC: Starting Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/ox2#update-the-boot-address)
 
 ```c
 #define PLIC_BASE_ADDR  0xe0000000ul  // Platform-Level Interrupt Controller (PLIC)
 #define PLIC_SIZE       0x00400000ul  // Address Range of PLIC
 ```
 
-__Platform-Level Interrupt Controller (PLIC):__
+__Platform-Level Interrupt Controller (PLIC):__ The PLIC Addresses are documented here...
 
-TODO
+- [__"RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)"__](https://lupyuen.github.io/articles/plic2#disable-all-interrupts)
 
 ```c
 #define PLIC_HART_BASE  0x201000  // Hart 0 S-Mode Priority Threshold in PLIC
 #define PLIC_HART_SIZE  0x1000    // Address Range of Hart 0 PLIC
 ```
 
-__PLIC Hart:__
+__PLIC Hart:__ We specify Hart 0, Supervisor-Mode as explained here...
 
-TODO
+- [__"Hart 0, Supervisor Mode"__](https://lupyuen.github.io/articles/plic2#hart-0-supervisor-mode)
 
 ```c
 #define CLINT_BASE_ADDR 0x02000000ul  // CLINT is Unused
 #define CLINT_SIZE      0x000c0000ul  // CLINT is Unused
 ```
 
-__CLINT:__
-
-TODO
+[__Core-Local Interrupt Controller (CLINT)__](https://github.com/riscv/riscv-aclint/blob/main/riscv-aclint.adoc) is unused. We left the setting unchanged.
