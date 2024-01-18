@@ -286,14 +286,16 @@ int target_read_slow(RISCVCPUState *s, mem_uint_t *pval, target_ulong addr, int 
   // If the Memory Address is not mapped...
   pr = get_phys_mem_range(s->mem_map, paddr);
   if (!pr) {
-    // Because of T-Head MMU Flags, Emulator might read from 0x4000000030002084 
+
+    // Ignore the Upper Bits of the Memory Address.
+    // Because of T-Head MMU Flags, our Kernel might read from 0x4000000030002084 
     // https://lupyuen.github.io/articles/plic3#t-head-errata
     switch(paddr & 0xfffffffffffful) {  
 
       // If we're reading uart_fifo_config_1:
       // Tell Emulator that UART Transmit is always ready
       case 0x30002084:
-        ret = 32; break;
+        ret = 32; break;  // UART Transmit Buffer Size defaults to 32
 
       // If Unknown Address:
       // Print "target_read_slow: invalid physical address"
@@ -337,12 +339,14 @@ int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int s
   // If the Memory Address is not mapped...
   pr = get_phys_mem_range(s->mem_map, paddr);
   if (!pr) {
-    // Because of T-Head MMU Flags, Emulator might write to 0x4000000030002088
+
+    // Ignore the Upper Bits of the Memory Address.
+    // Because of T-Head MMU Flags, our Kernel might write to 0x4000000030002088
     // https://lupyuen.github.io/articles/plic3#t-head-errata
     switch(paddr & 0xfffffffffffful) { 
 
       // If we're writing to uart_fifo_wdata:
-      // Print the character
+      // Print the character (val)
       case 0x30002088:
         char buf[1];
         buf[0] = val;
@@ -368,16 +372,21 @@ Yep, we see NuttX booting on our Ox64 Emulator yay!
 ## Boot TinyEMU with NuttX Kernel
 $ temu root-riscv64.cfg | more
 
-ABC
+## NuttX Kernel inits the Kernel Memory
 nx_start: Entry
 mm_initialize: Heap: name=Kmem, start=0x50407c00 size=2065408
 mm_addregion:  [Kmem] Region 1: base=0x50407ea8 size=2064720
+
+## NuttX Kernel starts the UART Driver (What are the Invalid Addresses?)
 uart_register: Registering /dev/console
 target_read_slow:  invalid physical address 0x0000000030002024
 target_write_slow: invalid physical address 0x0000000030002024
-work_start_lowpri: Starting low-priority kernel worker thread(s)
 
+## NuttX Kernel starts the NuttX Shell
+work_start_lowpri: Starting low-priority kernel worker thread(s)
 nx_start_application: Starting init task: /system/bin/init
+
+## NuttX Kernel creates the Heap Memory for NuttX Shell, which crashes
 mm_initialize: Heap: name=(null), start=0x80200000 size=528384
 mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
 up_exit: TCB=0x504098d0 exiting
@@ -388,6 +397,7 @@ up_exit: TCB=0x504098d0 exiting
 Followed by this __RISC-V Exception__...
 
 ```bash
+## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
 raise_exception2: cause=8, tval=0x0
 pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
 tp =0000000000000000 t0 =0000000000000000 t1 =0000000000000000 t2 =0000000000000000
@@ -398,7 +408,9 @@ s4 =0000000000000000 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000
 s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
 t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
 priv=U mstatus=0000000a0006806
- mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+
+## What are these RISC-V Exceptions? MCAUSE is 2
 raise_exception2: cause=2, tval=0x0
 raise_exception2: cause=2, tval=0x0
 ```
@@ -412,6 +424,7 @@ Why? We investigate the alligator in the vest...
 _What's this RISC-V Exception?_
 
 ```yaml
+## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
 raise_exception2:
   cause=8, tval=0x0
   pc=800019c6
@@ -438,9 +451,11 @@ The only NuttX App we're running at Startup is the __NuttX Shell__.
 Thus we look up the __RISC-V Disassembly__ for the NuttX Shell: [init.S](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358)
 
 ```c
+// NuttX Shell makes a System Call to fetch a Scheduler Parameter
 nuttx/syscall/proxies/PROXY_sched_getparam.c:8
   int sched_getparam(pid_t parm1, FAR struct sched_param * parm2) {
   ...
+  // ECALL fails with a RISC-V Exception
   nuttx/include/arch/syscall.h:229
     19c6: 00000073  ecall
 ```
@@ -461,6 +476,31 @@ _Will our Ox64 Emulator run in the Web Browser?_
 
 TODO
 
+```bash
+## Download the Web Server files
+cd $HOME
+git clone https://github.com/lupyuen/nuttx-tinyemu
+
+## Compile TinyEMU into WebAssembly with Emscripten
+sudo apt install emscripten
+cd $HOME/ox64-tinyemu
+make -f Makefile.js
+
+## Copy the generated JavaScript and WebAssembly to Web Server
+cp js/riscvemu64-wasm.js js/riscvemu64-wasm.wasm \
+  $HOME/nuttx-tinyemu/docs/ox64/
+
+## Start the Web Server
+cargo install simple-http-server
+simple-http-server $HOME/nuttx-tinyemu/docs
+
+## TODO: Browse to http://0.0.0.0:8000/ox64/index.html
+```
+
+[(See the __Build Script__)](https://github.com/lupyuen/ox64-tinyemu/blob/main/.github/workflows/ci.yml)
+
+TODO
+
 Let's find out! First we fix the [TinyEMU Build for Emscripten](https://github.com/lupyuen/ox64-tinyemu/commit/170abb06b58a58328efa8a1874795f1daac0b7a7).
 
 [And it runs OK in Web Browser yay!](https://lupyuen.github.io/nuttx-tinyemu/ox64/)
@@ -473,6 +513,8 @@ Console Input requires [__UART Interrupts__](https://lupyuen.github.io/articles/
 
 One more thing to tweak...
 
+TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?
+
 ![UART Interrupts for Ox64 BL808 SBC](https://lupyuen.github.io/images/plic2-registers.jpg)
 
 # Machine Mode vs Supervisor Mode
@@ -482,6 +524,7 @@ _Back to our earlier question: Why did our System Call fail?_
 Our NuttX App (NuttX Shell) tried to make a __System Call (ECALL)__ to NuttX Kernel. And it failed: [init.S](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/ox64/init.S#L45327-L45358)
 
 ```c
+// NuttX Shell makes a System Call to fetch a Scheduler Parameter
 nuttx/syscall/proxies/PROXY_sched_getparam.c:8
   int sched_getparam(pid_t parm1, FAR struct sched_param * parm2) {
   ...
@@ -559,54 +602,6 @@ That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU. (Pi
 TODO: More about System Timer
 
 (It's truly amazing we managed to boot so much in Machine Mode)
-
-TODO
-
-# Emulate Ox64 BL808 SBC with TinyEMU
-
-TODO
-
-Objective: Take the NuttX Kernel built for [Ox64 BL808 SBC](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358). And boot it on TinyEMU RISC-V Emulator in the Web Browser!
-
-1.  Fix these RISC-V Addresses in TinyEMU to follow BL808 Memory Map: [riscv_machine.c](https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L66-L82)
-
-    ```c
-    #define LOW_RAM_SIZE   0x00010000 /* 64KB */
-    #define RAM_BASE_ADDR  0x80000000
-    #define CLINT_BASE_ADDR 0x02000000
-    #define CLINT_SIZE      0x000c0000
-    #define DEFAULT_HTIF_BASE_ADDR 0x40008000
-    #define VIRTIO_BASE_ADDR 0x40010000
-    #define VIRTIO_SIZE      0x1000
-    #define VIRTIO_IRQ       1
-    #define PLIC_BASE_ADDR 0x40100000
-    #define PLIC_SIZE      0x00400000
-    #define FRAMEBUFFER_BASE_ADDR 0x41000000
-
-    #define RTC_FREQ 10000000
-    #define RTC_FREQ_DIV 16 /* arbitrary, relative to CPU freq to have a
-                              10 MHz frequency */
-    ```
-
-1.  Start TinyEMU in RISC-V Supervisor Mode (instead of Machine Mode)
-
-    (So we don't need OpenSBI and U-Boot Bootloader)
-
-1.  Emulate [OpenSBI Timer](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
-
-    (Intercept the Supervisor-To-Machine Mode ECALL)
-
-1.  Emulate BL808 UART I/O (Memory Mapped I/O and PLIC Interrupts)
-
-    (So we can run NuttX Shell)
-
-1.  Emulate BL808 GPIO Output (Memory Mapped I/O)
-
-    (So we can test Nim Blinky)
-
-Let's try booting NuttX Ox64 on TinyEMU...
-
-TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?
 
 # What's Next
 
