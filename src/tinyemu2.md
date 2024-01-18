@@ -595,6 +595,8 @@ Machine Mode is the __most powerful mode__ in a RISC-V System, more powerful tha
 
 (Which explains the [__Supervisor-Mode CSR Registers__](https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator) we saw earlier)
 
+TODO: Pic of NuttX in Machine Mode
+
 _Huh! How did that happen?_
 
 TinyEMU always __starts in Machine Mode__. Everything we saw today: That's all running in (super-powerful) __Machine Mode__.
