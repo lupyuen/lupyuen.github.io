@@ -442,7 +442,7 @@ raise_exception2: cause=2, tval=0x0
 
 Why? We investigate the alligator in the vest...
 
-TODO: Pic of RISC-V Exception
+![TODO](https://lupyuen.github.io/images/tinyemu2-flow2a.jpg)
 
 # RISC-V Exception in Emulator
 
@@ -485,11 +485,13 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
     19c6: 00000073  ecall
 ```
 
+[(See the __Source Code__)](https://gist.github.com/lupyuen/69b832f89efe2dc31e6da40a19b78354)
+
 _What's this ecall?_
 
 At `0x19C6` we see the __RISC-V ECALL Instruction__ that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). 
 
-Hence our NuttX Shell is making a __System Call__ to NuttX Kernel!
+Hence our NuttX Shell is making a __System Call__ to NuttX Kernel! (Pic above)
 
 Why did it fail? We'll come back to this, first we surf the web...
 
