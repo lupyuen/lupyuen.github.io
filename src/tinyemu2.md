@@ -549,9 +549,9 @@ Console Input requires [__UART Interrupts__](https://lupyuen.github.io/articles/
 
 One more thing to tweak...
 
-TODO: Emulate BL808 GPIO to Blink an LED
+[(We'll emulate __BL808 GPIO__ to Blink a Virtual LED)](https://lupyuen.github.io/articles/nim#led-driver-for-ox64)
 
-TODO: Wrap TinyEMU with Zig for Memory Safety and WebAssembly?
+[(Maybe wrap __TinyEMU with Zig__ for Memory Safety and Simpler WebAssembly?)](https://lupyuen.github.io/articles/lvgl4)
 
 ![UART Interrupts for Ox64 BL808 SBC](https://lupyuen.github.io/images/plic2-registers.jpg)
 
