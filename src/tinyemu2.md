@@ -417,7 +417,7 @@ up_exit: TCB=0x504098d0 exiting
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e)
 
-Followed by this __RISC-V Exception__ (pic below)...
+Followed by this __RISC-V Exception__...
 
 ```bash
 ## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
@@ -446,7 +446,7 @@ Why? We investigate the alligator in the vest...
 
 # RISC-V Exception in Emulator
 
-_What's this RISC-V Exception? (Pic above)_
+_What's this RISC-V Exception?_
 
 ```yaml
 ## NuttX Shell crashes with a RISC-V Exception, MCAUSE is 8
