@@ -123,7 +123,7 @@ static void copy_bios(...) {
   q[4] = 0x00028067;  // jalr zero, t0, jump_addr
 ```
 
-And that's our barebones Ox64 Emulator! Let's run it...
+And that's our barebones Ox64 Emulator, all ready to run...
 
 [(Remember to enable __Exception Logging__)](https://github.com/lupyuen/ox64-tinyemu/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6)
 
@@ -224,7 +224,7 @@ la    t0, __trap_vec
 csrw  stvec, t0
 ```
 
-Let's talk about the funny reads and writes...
+Now we talk about the funny reads and writes...
 
 > ![BL808 UART Registers (Page 427)](https://lupyuen.github.io/images/tinyemu2-register.jpg)
 
@@ -292,7 +292,7 @@ That's why TinyEMU __won't read and write__ our UART Registers. Let's fix this..
 
 # Intercept the UART Registers
 
-_NuttX tries to print something but fails..._
+_NuttX tries to print something and fails..._
 
 _How to fix the UART Registers in our Ox64 Emulator?_
 
@@ -516,7 +516,7 @@ _What's this ECALL?_
 
 At `0x19C6` we see the [__RISC-V ECALL Instruction__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). 
 
-Hence our NuttX Shell is making a [__System Call__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) to NuttX Kernel! (Pic above)
+Hence our NuttX Shell is making a [__System Call__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) to NuttX Kernel. (Pic above)
 
 Why did it fail? We'll come back to this, first we surf the web...
 
@@ -624,7 +624,7 @@ _Why did ECALL fail?_
 
 That's because our NuttX Kernel is actually running in __RISC-V Machine Mode__, not Supervisor Mode!
 
-Machine Mode is the __most powerful mode__ in a RISC-V System, more powerful than Supervisor Mode and User Mode. But NuttX expects to boot in __Supervisor Mode__. (Pic below)
+Machine Mode is the __most powerful mode__ in a RISC-V System, more powerful than Supervisor Mode and User Mode. However NuttX expects to boot in __Supervisor Mode__. (Pic below)
 
 (Which explains the [__Supervisor-Mode CSR Registers__](https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator) we saw earlier)
 
@@ -634,9 +634,9 @@ _Huh! How did that happen?_
 
 TinyEMU always __starts in Machine Mode__. Everything we saw today: That's all running in (super-powerful) __Machine Mode__.
 
-But a __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes (pic below)...
+Which sounds super simplistic: A __Real Ox64 SBC__ will run in Machine, Supervisor AND User Modes (pic below)...
 
-1.  Ox64 boots the [__OpenSBI Supervisor Binary Interface__](https://lupyuen.github.io/articles/sbi) in __Machine Mode__ (Think BIOS, but for RISC-V Machines)
+1.  Ox64 boots the [__OpenSBI Supervisor Binary Interface__](https://lupyuen.github.io/articles/sbi) in __Machine Mode__ (Think BIOS for RISC-V Machines)
 
 1.  OpenSBI starts the [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) in __Supervisor Mode__
 
@@ -683,6 +683,8 @@ TODO: GPIO Virtual LED
 TODO: Console Input
 
 TODO: Supervisor Mode
+
+TODO: Daily Automated Testing
 
 40 Years from Today: Maybe we'll play with a better Ox64 Emulator?
 
