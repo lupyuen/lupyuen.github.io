@@ -168,7 +168,7 @@ static void copy_bios(...) {
   q[3] = 0xf1402573;  // csrr a0, mhartid
   q[4] = 0x00028067;  // jalr zero, t0, jump_addr
 </code></pre></div>
-<p>And that’s our barebones Ox64 Emulator! Let’s run it…</p>
+<p>And that’s our barebones Ox64 Emulator, all ready to run…</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/ff10a3065701d049f079ee5f1f6246e47a8345d6">(Remember to enable <strong>Exception Logging</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-run.png" alt="TinyEMU Emulator at the Command Line" /></p>
 <h1 id="run-tinyemu-emulator"><a href="#run-tinyemu-emulator">3 Run TinyEMU Emulator</a></h1>
@@ -248,7 +248,7 @@ csrw  sie, zero
 la    t0, __trap_vec
 csrw  stvec, t0
 </code></pre></div>
-<p>Let’s talk about the funny reads and writes…</p>
+<p>Now we talk about the funny reads and writes…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-register.jpg" alt="BL808 UART Registers (Page 427)" /></p>
 </blockquote>
@@ -304,7 +304,7 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
 <p>That’s why TinyEMU <strong>won’t read and write</strong> our UART Registers. Let’s fix this…</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-uart.jpg" alt="Emulating the UART Registers with TinyEMU" /></p>
 <h1 id="intercept-the-uart-registers"><a href="#intercept-the-uart-registers">5 Intercept the UART Registers</a></h1>
-<p><em>NuttX tries to print something but fails…</em></p>
+<p><em>NuttX tries to print something and fails…</em></p>
 <p><em>How to fix the UART Registers in our Ox64 Emulator?</em></p>
 <p>Inside TinyEMU, we intercept all “<strong>read <code>0x3000_2084</code></strong>” and “<strong>write <code>0x3000_2088</code></strong>”. And we pretend to be a <strong>UART Port</strong> (pic above)…</p>
 <h2 id="emulate-the-uart-status"><a href="#emulate-the-uart-status">5.1 Emulate the UART Status</a></h2>
@@ -481,7 +481,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p><a href="https://gist.github.com/lupyuen/69b832f89efe2dc31e6da40a19b78354">(See the <strong>Source Code</strong>)</a></p>
 <p><em>What’s this ECALL?</em></p>
 <p>At <code>0x19C6</code> we see the <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>RISC-V ECALL Instruction</strong></a> that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). </p>
-<p>Hence our NuttX Shell is making a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>System Call</strong></a> to NuttX Kernel! (Pic above)</p>
+<p>Hence our NuttX Shell is making a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>System Call</strong></a> to NuttX Kernel. (Pic above)</p>
 <p>Why did it fail? We’ll come back to this, first we surf the web…</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1142-L1147">(We quit if <strong>MCAUSE is 2</strong>, otherwise we loop forever)</a></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-title.png" alt="Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS" /></p>
@@ -556,15 +556,15 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p><a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>System Calls</strong></a> are absolutely essential. That’s how our apps will execute system functions, like printing to the Console Output.</p>
 <p><em>Why did ECALL fail?</em></p>
 <p>That’s because our NuttX Kernel is actually running in <strong>RISC-V Machine Mode</strong>, not Supervisor Mode!</p>
-<p>Machine Mode is the <strong>most powerful mode</strong> in a RISC-V System, more powerful than Supervisor Mode and User Mode. But NuttX expects to boot in <strong>Supervisor Mode</strong>. (Pic below)</p>
+<p>Machine Mode is the <strong>most powerful mode</strong> in a RISC-V System, more powerful than Supervisor Mode and User Mode. However NuttX expects to boot in <strong>Supervisor Mode</strong>. (Pic below)</p>
 <p>(Which explains the <a href="https://lupyuen.github.io/articles/tinyemu2#run-tinyemu-emulator"><strong>Supervisor-Mode CSR Registers</strong></a> we saw earlier)</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow2.jpg" alt="NuttX Kernel won’t work in Machine Mode" /></p>
 <p><em>Huh! How did that happen?</em></p>
 <p>TinyEMU always <strong>starts in Machine Mode</strong>. Everything we saw today: That’s all running in (super-powerful) <strong>Machine Mode</strong>.</p>
-<p>But a <strong>Real Ox64 SBC</strong> will run in Machine, Supervisor AND User Modes (pic below)…</p>
+<p>Which sounds super simplistic: A <strong>Real Ox64 SBC</strong> will run in Machine, Supervisor AND User Modes (pic below)…</p>
 <ol>
 <li>
-<p>Ox64 boots the <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI Supervisor Binary Interface</strong></a> in <strong>Machine Mode</strong> (Think BIOS, but for RISC-V Machines)</p>
+<p>Ox64 boots the <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI Supervisor Binary Interface</strong></a> in <strong>Machine Mode</strong> (Think BIOS for RISC-V Machines)</p>
 </li>
 <li>
 <p>OpenSBI starts the <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> in <strong>Supervisor Mode</strong></p>
@@ -596,6 +596,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p>TODO: GPIO Virtual LED</p>
 <p>TODO: Console Input</p>
 <p>TODO: Supervisor Mode</p>
+<p>TODO: Daily Automated Testing</p>
 <p>40 Years from Today: Maybe we’ll play with a better Ox64 Emulator?</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
