@@ -456,9 +456,7 @@ t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000
 priv=U mstatus=0000000a0006806
 mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 
-## What's this RISC-V Exception
-## with MCAUSE 2?
-raise_exception2: cause=2, tval=0x0
+## Illegal Instruction at 0x0
 raise_exception2: cause=2, tval=0x0
 ```
 
