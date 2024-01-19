@@ -431,10 +431,6 @@ nx_start_application: Starting init task: /system/bin/init
 ## for NuttX Shell
 mm_initialize: Heap: name=(null), start=0x80200000 size=528384
 mm_addregion: [(null)] Region 1: base=0x802002a8 size=527696
-
-## NuttX Shell crashes with a
-## RISC-V Exception
-up_exit: TCB=0x504098d0 exiting
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e)
