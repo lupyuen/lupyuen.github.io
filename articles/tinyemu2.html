@@ -635,11 +635,19 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <div class="example-wrap"><pre class="language-c"><code>// 64 KB of Boot Code at Address 0x0
 #define LOW_RAM_SIZE    0x00010000ul
 </code></pre></div>
-<p><strong>Low RAM:</strong> This setting is specfic to TinyEMU, we left it unchanged. At Address <code>0x0</code> we’ll find the <a href="https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu"><strong>TinyEMU Boot Code</strong></a> and the <strong>Binary Device Tree</strong>.</p>
+<p><strong>Low RAM:</strong> This setting is specfic to TinyEMU, we left it unchanged. The Low RAM contains…</p>
+<ul>
+<li>
+<p>Address <strong><code>0x1000</code></strong>: <a href="https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu"><strong>TinyEMU Boot Code</strong></a></p>
+</li>
+<li>
+<p>Address <strong><code>0x1040</code></strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L852-L862"><strong>Binary Device Tree</strong></a></p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-c"><code>// Our Kernel boots here
 #define RAM_BASE_ADDR   0x50200000ul
 </code></pre></div>
-<p><strong>RAM Base:</strong> NuttX boots at the above address, as explained here…</p>
+<p><strong>RAM Base:</strong> NuttX (also Linux) boots at the above RAM Address (because of U-Boot Bootloader), as explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ox2#update-the-boot-address"><strong>“RISC-V Ox64 BL808 SBC: Starting Apache NuttX Real-Time Operating System”</strong></a></li>
 </ul>
@@ -648,7 +656,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 #define PLIC_BASE_ADDR  0xe0000000ul  
 #define PLIC_SIZE       0x00400000ul
 </code></pre></div>
-<p><strong>Platform-Level Interrupt Controller (PLIC):</strong> The PLIC Addresses are documented here…</p>
+<p><strong>Platform-Level Interrupt Controller (PLIC):</strong> We documented the PLIC Addresses here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/plic2#disable-all-interrupts"><strong>“RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)”</strong></a></li>
 </ul>
