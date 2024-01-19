@@ -723,14 +723,18 @@ This is how we derived the above RISC-V Addresses...
 #define LOW_RAM_SIZE    0x00010000ul
 ```
 
-__Low RAM:__ This setting is specfic to TinyEMU, we left it unchanged. At Address `0x0` we'll find the [__TinyEMU Boot Code__](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu) and the __Binary Device Tree__.
+__Low RAM:__ This setting is specfic to TinyEMU, we left it unchanged. The Low RAM contains...
+
+- Address __`0x1000`__: [__TinyEMU Boot Code__](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu)
+
+- Address __`0x1040`__: [__Binary Device Tree__](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L852-L862)
 
 ```c
 // Our Kernel boots here
 #define RAM_BASE_ADDR   0x50200000ul
 ```
 
-__RAM Base:__ NuttX boots at the above address, as explained here...
+__RAM Base:__ NuttX (also Linux) boots at the above RAM Address (because of U-Boot Bootloader), as explained here...
 
 - [__"RISC-V Ox64 BL808 SBC: Starting Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/ox2#update-the-boot-address)
 
@@ -741,7 +745,7 @@ __RAM Base:__ NuttX boots at the above address, as explained here...
 #define PLIC_SIZE       0x00400000ul
 ```
 
-__Platform-Level Interrupt Controller (PLIC):__ The PLIC Addresses are documented here...
+__Platform-Level Interrupt Controller (PLIC):__ We documented the PLIC Addresses here...
 
 - [__"RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)"__](https://lupyuen.github.io/articles/plic2#disable-all-interrupts)
 
