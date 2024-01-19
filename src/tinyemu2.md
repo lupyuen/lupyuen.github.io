@@ -676,6 +676,14 @@ That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU.
 
 TODO
 
+Today we created a barebones __Ox64 BL808 Emulator__ that runs the in Web Browser...
+
+TODO: GPIO Virtual LED
+
+TODO: Console Input
+
+TODO: Supervisor Mode
+
 40 Years from Today: Maybe we'll play with a better Ox64 Emulator?
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
