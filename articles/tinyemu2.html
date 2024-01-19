@@ -391,7 +391,7 @@ int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int s
       default:
         ...
 </code></pre></div>
-<p>We test our Emulated UART Port…</p>
+<p>NuttX is ready to talk, we test our Emulated UART Port…</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1127-L1138">(<strong>print_console</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L956-L963">(<strong>riscv_machine_init</strong> inits the console)</a></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-run2.png" alt="TinyEMU Emulator emulates UART Output" /></p>
