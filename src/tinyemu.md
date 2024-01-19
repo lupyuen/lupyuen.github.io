@@ -856,6 +856,9 @@ Inside __menuconfig__, we selected...
 
 <span style="font-size:90%">
 
+__Open Asymmetric Multi Processing__
+  - Enable "__Open Asymmetric Multi Processing support__"
+
 __Device Drivers__
   - Enable "__Simple AddrEnv__"
   - Enable "__Virtio Device Support__"
