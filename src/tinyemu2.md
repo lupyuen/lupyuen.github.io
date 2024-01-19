@@ -648,7 +648,7 @@ _So we'll boot NuttX Kernel in Supervisor Mode?_
 
 Yep we shall tweak TinyEMU to start NuttX in __Supervisor Mode__. (Instead of Machine Mode)
 
-[(Maybe in the __TinyEMU Boot Code__)](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu)
+[(By updating the __TinyEMU Boot Code__)](https://github.com/lupyuen/ox64-tinyemu/tree/smode#start-nuttx-kernel-in-supervisor-mode)
 
 ![TinyEMU will boot NuttX in Supervisor Mode](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
 
