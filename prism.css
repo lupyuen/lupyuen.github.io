@@ -67,11 +67,11 @@ pre[class*=language-] {
 .token.comment,
 .token.doctype,
 .token.prolog {
-    color: #708090
+    color: #687888
 }
 
 .token.punctuation {
-    color: #999
+    color: #818181
 }
 
 .token.namespace {
@@ -94,7 +94,7 @@ pre[class*=language-] {
 .token.inserted,
 .token.selector,
 .token.string {
-    color: #690
+    color: rgb(62, 93, 0)
 }
 
 .language-css .token.string,
@@ -108,18 +108,18 @@ pre[class*=language-] {
 .token.atrule,
 .token.attr-value,
 .token.keyword {
-    color: #07a
+    color: rgb(0, 74, 106)
 }
 
 .token.class-name,
 .token.function {
-    color: #dd4a68
+    color: #923144
 }
 
 .token.important,
 .token.regex,
 .token.variable {
-    color: #e90
+    color: rgb(137, 89, 0)
 }
 
 .token.bold,
