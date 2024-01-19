@@ -857,29 +857,29 @@ Inside __menuconfig__, we selected...
 <span style="font-size:90%">
 
 __Open Asymmetric Multi Processing__
-  - Enable "__Open Asymmetric Multi Processing support__"
+- Enable "__Open Asymmetric Multi Processing support__"
 
 __Device Drivers__
-  - Enable "__Simple AddrEnv__"
-  - Enable "__Virtio Device Support__"
+- Enable "__Simple AddrEnv__"
+- Enable "__Virtio Device Support__"
 
 __Device Drivers > Virtio Device Support__
-  - Enable "__Virtio MMIO Device Support__"
+- Enable "__Virtio MMIO Device Support__"
 
 __Build Setup > Debug Options__
-  - Enable "__Debug Features__"
-  - Enable "__Debug Assertions > Show Expression, Filename__"
-  - Enable "__Binary Loader Debug Features > Errors, Warnings, Info__"
-  - Enable "__File System Debug Features > Errors, Warnings, Info__"
-  - Enable "__C Library Debug Features > Errors, Warnings, Info__"
-  - Enable "__Memory Manager Debug Features > Errors, Warnings, Info__"
-  - Enable "__Scheduler Debug Features > Errors, Warnings, Info__"
-  - Enable "__Timer Debug Features > Errors, Warnings, Info__"
-  - Enable "__IPC Debug Features > Errors, Warnings, Info__"
-  - Enable "__Virtio Debug Features > Error, Warnings, Info__"
+- Enable "__Debug Features__"
+- Enable "__Debug Assertions > Show Expression, Filename__"
+- Enable "__Binary Loader Debug Features > Errors, Warnings, Info__"
+- Enable "__File System Debug Features > Errors, Warnings, Info__"
+- Enable "__C Library Debug Features > Errors, Warnings, Info__"
+- Enable "__Memory Manager Debug Features > Errors, Warnings, Info__"
+- Enable "__Scheduler Debug Features > Errors, Warnings, Info__"
+- Enable "__Timer Debug Features > Errors, Warnings, Info__"
+- Enable "__IPC Debug Features > Errors, Warnings, Info__"
+- Enable "__Virtio Debug Features > Error, Warnings, Info__"
 
 __Application Configuration > Testing__
-  - Enable "__OS Test Example__"
+- Enable "__OS Test Example__"
 
 </span>
 
