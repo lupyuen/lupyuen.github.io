@@ -267,7 +267,7 @@ target_write_slow:
   invalid physical address 
   0x30002088
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb#file-ox64-tinyemu-log-L15-L46">(See the <strong>Complete Log</strong>)</a></p>
 <p>We dig around the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>BL808 Reference Manual</strong></a> (pic above) and we discover these <strong>UART Registers</strong>…</p>
 <ul>
 <li>
@@ -391,6 +391,7 @@ int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int s
       default:
         ...
 </code></pre></div>
+<p>We test our Emulated UART Port…</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1127-L1138">(<strong>print_console</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L956-L963">(<strong>riscv_machine_init</strong> inits the console)</a></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-run2.png" alt="TinyEMU Emulator emulates UART Output" /></p>
@@ -445,7 +446,7 @@ mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 raise_exception2: cause=2, tval=0x0
 raise_exception2: cause=2, tval=0x0
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e#file-ox64-tinyemu-log-L223-L236">(See the <strong>Complete Log</strong>)</a></p>
 <p>Why? We investigate the alligator in the vest…</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow2a.jpg" alt="System Call Fails in NuttX Kernel" /></p>
 <h1 id="risc-v-exception-in-emulator"><a href="#risc-v-exception-in-emulator">7 RISC-V Exception in Emulator</a></h1>
@@ -456,8 +457,9 @@ raise_exception2:
   cause=8, tval=0x0
   pc=800019c6
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e#file-ox64-tinyemu-log-L223-L236">(See the <strong>Complete Log</strong>)</a></p>
 <p>We track down the offending Code Address: <strong><code>0x8000_19C6</code></strong></p>
+<p><em>Someplace in NuttX Kernel?</em></p>
 <p>This address comes from the Virtual Memory of a <strong>NuttX App</strong> (not the NuttX Kernel): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/heapcrash/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Virtual Memory of NuttX Apps:
 ## Code, Data and Heap
@@ -480,7 +482,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/69b832f89efe2dc31e6da40a19b78354">(See the <strong>Source Code</strong>)</a></p>
 <p><em>What’s this ECALL?</em></p>
-<p>At <code>0x19C6</code> we see the <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>RISC-V ECALL Instruction</strong></a> that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). </p>
+<p>At <code>0x19C6</code> we see the <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>RISC-V ECALL Instruction</strong></a> that will jump from our <strong>NuttX App</strong> (RISC-V User Mode) to <strong>NuttX Kernel</strong> (RISC-V Supervisor Mode). </p>
 <p>Hence our NuttX Shell is making a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>System Call</strong></a> to NuttX Kernel. (Pic above)</p>
 <p>Why did it fail? We’ll come back to this, first we surf the web…</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1142-L1147">(We quit if <strong>MCAUSE is 2</strong>, otherwise we loop forever)</a></p>
@@ -688,7 +690,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 #define PLIC_HART_BASE  0x201000
 #define PLIC_HART_SIZE  0x1000
 </code></pre></div>
-<p><strong>PLIC Hart:</strong> We specify Hart 0, Supervisor-Mode as explained here…</p>
+<p><strong>PLIC Hart:</strong> We specify Hart 0, Supervisor Mode as explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/plic2#hart-0-supervisor-mode"><strong>“Hart 0, Supervisor Mode”</strong></a></li>
 </ul>
