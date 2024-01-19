@@ -592,6 +592,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p><img src="https://lupyuen.github.io/images/tinyemu2-console.png" alt="JavaScript Console of Ox64 BL808 Emulator" /></p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
+<p>40 Years from Today: Maybe we’ll play with a better Ox64 Emulator?</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -639,9 +640,11 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <ul>
 <li>
 <p>Address <strong><code>0x1000</code></strong>: <a href="https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu"><strong>TinyEMU Boot Code</strong></a></p>
+<p>(Why not <code>0x0</code>?)</p>
 </li>
 <li>
 <p>Address <strong><code>0x1040</code></strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L852-L862"><strong>Binary Device Tree</strong></a></p>
+<p>(NuttX doesn’t need the Device Tree)</p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-c"><code>// Our Kernel boots here
