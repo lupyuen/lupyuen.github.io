@@ -520,7 +520,7 @@ simple-http-server $HOME/nuttx-tinyemu/docs
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/ox64">(Live Demo of <strong>Ox64 Emulator</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tinyemu#boot-nuttx-in-web-browser">(How we got the <strong>WebAssembly Files</strong>)</a></p>
 <p><em>What about Console Input?</em></p>
-<p>Console Input requires <a href="https://lupyuen.github.io/articles/plic2"><strong>UART Interrupts</strong></a>. We’ll implement UART Interrupts soon. (Pic below)</p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu"><strong>Console Input</strong></a> requires <a href="https://lupyuen.github.io/articles/plic2"><strong>UART Interrupts</strong></a>. We’ll implement UART Interrupts soon. (Pic below)</p>
 <p>One more thing to tweak…</p>
 <p><a href="https://lupyuen.github.io/articles/nim#led-driver-for-ox64">(We’ll emulate <strong>BL808 GPIO</strong> to Blink a Virtual LED)</a></p>
 <p><a href="https://lupyuen.github.io/articles/lvgl4">(Maybe wrap <strong>TinyEMU with Zig</strong> for Memory Safety and Simpler WebAssembly?)</a></p>
@@ -606,7 +606,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p>Though <a href="https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator"><strong>NuttX Apps</strong></a> will crash, because NuttX needs to boot in <a href="https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator"><strong>RISC-V Supervisor Mode</strong></a> (not Machine Mode)</p>
 </li>
 <li>
-<p>And <a href="https://lupyuen.github.io/articles/plic2"><strong>Console Input</strong></a> won’t work until we <a href="https://lupyuen.github.io/articles/plic2"><strong>Emulate UART Interrupts</strong></a></p>
+<p>And <a href="https://lupyuen.github.io/nuttx-tinyemu"><strong>Console Input</strong></a> won’t work until we <a href="https://lupyuen.github.io/articles/plic2"><strong>Emulate UART Interrupts</strong></a></p>
 </li>
 <li>
 <p><strong>Up Next:</strong> Ox64 Emulator might <a href="https://lupyuen.github.io/articles/nim#led-driver-for-ox64"><strong>Blink a Virtual LED</strong></a>. And it might get triggered daily for <a href="https://github.com/lupyuen/nuttx-ox64#nuttx-automated-daily-build-for-ox64"><strong>Automated NuttX Testing</strong></a>.</p>
