@@ -246,7 +246,7 @@ target_write_slow:
   0x30002088
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/6dafe6052eef7c30450a30e4ce1f94fb#file-ox64-tinyemu-log-L15-L46)
 
 We dig around the [__BL808 Reference Manual__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf) (pic above) and we discover these __UART Registers__...
 
@@ -394,6 +394,8 @@ int target_write_slow(RISCVCPUState *s, target_ulong addr, mem_uint_t val, int s
         ...
 ```
 
+We test our Emulated UART Port...
+
 [(__print_console__ is defined here)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1127-L1138)
 
 [(__riscv_machine_init__ inits the console)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L956-L963)
@@ -460,7 +462,7 @@ raise_exception2: cause=2, tval=0x0
 raise_exception2: cause=2, tval=0x0
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e#file-ox64-tinyemu-log-L223-L236)
 
 Why? We investigate the alligator in the vest...
 
@@ -478,9 +480,11 @@ raise_exception2:
   pc=800019c6
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e#file-ox64-tinyemu-log-L223-L236)
 
 We track down the offending Code Address: __`0x8000_19C6`__
+
+_Someplace in NuttX Kernel?_
 
 This address comes from the Virtual Memory of a __NuttX App__ (not the NuttX Kernel): [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/heapcrash/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30)
 
@@ -514,7 +518,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 
 _What's this ECALL?_
 
-At `0x19C6` we see the [__RISC-V ECALL Instruction__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) that will jump from our NuttX App (RISC-V User Mode) to NuttX Kernel (RISC-V Supervisor Mode). 
+At `0x19C6` we see the [__RISC-V ECALL Instruction__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) that will jump from our __NuttX App__ (RISC-V User Mode) to __NuttX Kernel__ (RISC-V Supervisor Mode). 
 
 Hence our NuttX Shell is making a [__System Call__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) to NuttX Kernel. (Pic above)
 
@@ -774,7 +778,7 @@ __Platform-Level Interrupt Controller (PLIC):__ We documented the PLIC Addresses
 #define PLIC_HART_SIZE  0x1000
 ```
 
-__PLIC Hart:__ We specify Hart 0, Supervisor-Mode as explained here...
+__PLIC Hart:__ We specify Hart 0, Supervisor Mode as explained here...
 
 - [__"Hart 0, Supervisor Mode"__](https://lupyuen.github.io/articles/plic2#hart-0-supervisor-mode)
 
