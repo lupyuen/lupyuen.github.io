@@ -676,6 +676,8 @@ That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU.
 
 TODO
 
+40 Years from Today: Maybe we'll play with a better Ox64 Emulator?
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
@@ -727,7 +729,11 @@ __Low RAM:__ This setting is specfic to TinyEMU, we left it unchanged. The Low R
 
 - Address __`0x1000`__: [__TinyEMU Boot Code__](https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu)
 
+  (Why not `0x0`?)
+
 - Address __`0x1040`__: [__Binary Device Tree__](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L852-L862)
+
+  (NuttX doesn't need the Device Tree)
 
 ```c
 // Our Kernel boots here
