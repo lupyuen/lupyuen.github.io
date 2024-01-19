@@ -666,7 +666,7 @@ That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU.
 
 [(More about __System Timer__)](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
 
-[(Ox64 Emulator today might be sufficient for __Daily Automated Testing__)](https://github.com/lupyuen/nuttx-ox64?tab=readme-ov-file#nuttx-automated-daily-build-for-ox64)
+[(Ox64 Emulator today might be sufficient for __Daily Automated Testing__)](https://github.com/lupyuen/nuttx-ox64#nuttx-automated-daily-build-for-ox64)
 
 [(So amazing we __booted so much NuttX__ in Machine Mode)](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
 
@@ -676,17 +676,19 @@ That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU.
 
 TODO
 
-Today we created a barebones __Ox64 BL808 Emulator__ that runs the in Web Browser...
+Today we created a barebones [__Ox64 BL808 Emulator__](https://lupyuen.github.io/nuttx-tinyemu/ox64) that runs the in Web Browser...
 
-TODO: GPIO Virtual LED
+- We made it by (slightly) tweaking [__TinyEMU RISC-V Emulator__](https://lupyuen.github.io/articles/tinyemu) and compiling to [__WebAssembly__](https://lupyuen.github.io/articles/tinyemu2#emulator-in-the-web-browser)
 
-TODO: Console Input
+- Will it boot [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) unmodified? Yep [__NuttX Kernel__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow) boots all the the way!
 
-TODO: Supervisor Mode
+- Though [__NuttX Apps__](https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator) will crash because NuttX needs to boot in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator) (not Machine Mode)
 
-TODO: Daily Automated Testing
+- And [__Console Input__](https://lupyuen.github.io/articles/plic2) won't work until we [__Emulate UART Interrupts__](https://lupyuen.github.io/articles/plic2)
 
-40 Years from Today: Maybe we'll play with a better Ox64 Emulator?
+- __Up Next:__ Ox64 Emulator might [__Blink a Virtual LED__](https://lupyuen.github.io/articles/nim#led-driver-for-ox64). And it might get triggered daily for [__Automated NuttX Testing__](https://github.com/lupyuen/nuttx-ox64#nuttx-automated-daily-build-for-ox64).
+
+- __40 Years from Today:__ Maybe we'll play with a __better Ox64 Emulator__?
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
