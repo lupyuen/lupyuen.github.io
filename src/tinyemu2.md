@@ -576,7 +576,7 @@ And our Ox64 Emulator appears in the Web Browser! (Pic above)
 
 _What about Console Input?_
 
-Console Input requires [__UART Interrupts__](https://lupyuen.github.io/articles/plic2). We'll implement UART Interrupts soon. (Pic below)
+[__Console Input__](https://lupyuen.github.io/nuttx-tinyemu) requires [__UART Interrupts__](https://lupyuen.github.io/articles/plic2). We'll implement UART Interrupts soon. (Pic below)
 
 One more thing to tweak...
 
@@ -688,7 +688,7 @@ Today we created a barebones [__Ox64 BL808 Emulator__](https://lupyuen.github.io
 
 - Though [__NuttX Apps__](https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator) will crash, because NuttX needs to boot in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator) (not Machine Mode)
 
-- And [__Console Input__](https://lupyuen.github.io/articles/plic2) won't work until we [__Emulate UART Interrupts__](https://lupyuen.github.io/articles/plic2)
+- And [__Console Input__](https://lupyuen.github.io/nuttx-tinyemu) won't work until we [__Emulate UART Interrupts__](https://lupyuen.github.io/articles/plic2)
 
 - __Up Next:__ Ox64 Emulator might [__Blink a Virtual LED__](https://lupyuen.github.io/articles/nim#led-driver-for-ox64). And it might get triggered daily for [__Automated NuttX Testing__](https://github.com/lupyuen/nuttx-ox64#nuttx-automated-daily-build-for-ox64).
 
