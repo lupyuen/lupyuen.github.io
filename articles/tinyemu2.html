@@ -575,7 +575,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow.jpg" alt="Ox64 SBC will run in Machine, Supervisor AND User Modes" /></p>
 <p><em>So we’ll boot NuttX Kernel in Supervisor Mode?</em></p>
 <p>Yep we shall tweak TinyEMU to start NuttX in <strong>Supervisor Mode</strong>. (Instead of Machine Mode)</p>
-<p><a href="https://lupyuen.github.io/articles/tinyemu2#change-risc-v-addresses-in-tinyemu">(Maybe in the <strong>TinyEMU Boot Code</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/tree/smode#start-nuttx-kernel-in-supervisor-mode">(By updating the <strong>TinyEMU Boot Code</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will boot NuttX in Supervisor Mode" /></p>
 <p><em>Any other gotchas?</em></p>
 <p>There’s a tiny quirk: NuttX Kernel will <strong>make an ECALL</strong> too…</p>
