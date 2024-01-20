@@ -6,6 +6,8 @@
 
 [_(Live Demo of Ox64 BL808 Emulator)_](https://lupyuen.github.io/nuttx-tinyemu/smode)
 
+[_(Watch the Demo on YouTube)_](https://youtu.be/FAxaMt6A59I)
+
 _In olden times we had Computer Games (plus Operating Systems) on 5.25-inch __Floppy Disks__. And we'd boot the Floppy Disks (clackety-clack) on __Apple II Computers__ with 64 KB RAM._
 
 Today (40 years later) we boot __microSD Cards__ (clickety-click) on [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V Single-Board Computers with 64 MB RAM. (Pic below)
@@ -565,6 +567,8 @@ http://0.0.0.0:8000/ox64/index.html
 And our Ox64 Emulator appears in the Web Browser! (Pic above)
 
 [(Live Demo of __Ox64 Emulator__)](https://lupyuen.github.io/nuttx-tinyemu/smode)
+
+[(Watch the __Demo on YouTube__)](https://youtu.be/FAxaMt6A59I)
 
 [(How we got the __WebAssembly Files__)](https://lupyuen.github.io/articles/tinyemu#boot-nuttx-in-web-browser)
 
