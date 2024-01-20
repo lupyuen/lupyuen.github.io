@@ -139,7 +139,7 @@ We see signs of life... [__NuttX Kernel__](https://lupyuen.github.io/articles/ox
 ## Download the TinyEMU Config
 ## and NuttX Kernel Image
 $ wget https://raw.githubusercontent.com/lupyuen/nuttx-tinyemu/main/docs/ox64/root-riscv64.cfg
-$ wget https://github.com/lupyuen/nuttx-tinyemu/raw/main/docs/ox64/Image
+$ wget https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-2024-01-20/Image
 
 ## Boot TinyEMU with NuttX Kernel
 $ temu root-riscv64.cfg | more
@@ -181,7 +181,7 @@ It's the __TinyEMU Config__ that will boot NuttX Kernel in our Ox64 Emulator: [r
 }
 ```
 
-[__`Image`__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.4.0/Image) is the __NuttX Kernel Image__ that comes from a typical [__NuttX Build for Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.4.0).
+[__`Image`__](https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-2024-01-20/Image) is the __NuttX Kernel Image__ that comes from a typical [__NuttX Build for Ox64__](https://github.com/lupyuen/nuttx-ox64/releases/tag/nuttx-ox64-2024-01-20).
 
 _What are the CSR Writes?_
 
@@ -682,7 +682,7 @@ Today we created a barebones [__Ox64 BL808 Emulator__](https://lupyuen.github.io
 
 - Will it boot [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) unmodified? Yep [__NuttX Kernel__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow) boots all the way!
 
-- Though [__NuttX Apps__](https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator) will crash, because NuttX needs to boot in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator) (not Machine Mode)
+- Though [__NuttX Apps__](https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator) will crash, because NuttX needs to boot in [__RISC-V Supervisor Mode__](https://github.com/lupyuen/ox64-tinyemu/tree/smode#start-nuttx-kernel-in-supervisor-mode) (not Machine Mode)
 
 - And [__Console Input__](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-uart-interrupts-for-console-input) won't work until we [__Emulate UART Interrupts__](https://lupyuen.github.io/articles/plic2)
 
