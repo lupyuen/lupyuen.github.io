@@ -4,13 +4,13 @@
 
 ![Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS](https://lupyuen.github.io/images/tinyemu2-title.png)
 
-[_(Live Demo of Ox64 BL808 Emulator)_](https://lupyuen.github.io/nuttx-tinyemu/ox64)
+[_(Live Demo of Ox64 BL808 Emulator)_](https://lupyuen.github.io/nuttx-tinyemu/smode)
 
 _In olden times we had Computer Games (plus Operating Systems) on 5.25-inch __Floppy Disks__. And we'd boot the Floppy Disks (clackety-clack) on __Apple II Computers__ with 64 KB RAM._
 
 Today (40 years later) we boot __microSD Cards__ (clickety-click) on [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V Single-Board Computers with 64 MB RAM. (Pic below)
 
-_What if we could turn it into a_ [__Virtual Ox64 SBC__](https://lupyuen.github.io/nuttx-tinyemu/ox64) _that boots in our_ [__Web Browser__](https://lupyuen.github.io/nuttx-tinyemu/ox64)? _(Pic above) Exactly like an_ [__Emulated Apple II__](https://www.scullinsteel.com/apple2/#dos33master)!
+_What if we could turn it into a_ [__Virtual Ox64 SBC__](https://lupyuen.github.io/nuttx-tinyemu/smode) _that boots in our_ [__Web Browser__](https://lupyuen.github.io/nuttx-tinyemu/smode)? _(Pic above) Exactly like an_ [__Emulated Apple II__](https://www.scullinsteel.com/apple2/#dos33master)!
 
 In this article we...
 
@@ -22,7 +22,7 @@ In this article we...
 
   [(Which runs in a __Web Browser__)](https://www.barebox.org/jsbarebox/?graphic=1)
 
-- Create our own [__Emulator for Ox64 SBC__](https://lupyuen.github.io/nuttx-tinyemu/ox64)
+- Create our own [__Emulator for Ox64 SBC__](https://lupyuen.github.io/nuttx-tinyemu/smode)
 
   (With minor tweaks to TinyEMU)
 
@@ -522,7 +522,7 @@ Why did it fail? We'll come back to this, first we surf the web...
 
 ![Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS](https://lupyuen.github.io/images/tinyemu2-title.png)
 
-[_Live Demo of Ox64 BL808 Emulator_](https://lupyuen.github.io/nuttx-tinyemu/ox64)
+[_Live Demo of Ox64 BL808 Emulator_](https://lupyuen.github.io/nuttx-tinyemu/smode)
 
 # Emulator in the Web Browser
 
@@ -564,7 +564,7 @@ http://0.0.0.0:8000/ox64/index.html
 
 And our Ox64 Emulator appears in the Web Browser! (Pic above)
 
-[(Live Demo of __Ox64 Emulator__)](https://lupyuen.github.io/nuttx-tinyemu/ox64)
+[(Live Demo of __Ox64 Emulator__)](https://lupyuen.github.io/nuttx-tinyemu/smode)
 
 [(How we got the __WebAssembly Files__)](https://lupyuen.github.io/articles/tinyemu#boot-nuttx-in-web-browser)
 
@@ -674,7 +674,7 @@ That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU.
 
 TODO
 
-Today we created a barebones [__Ox64 BL808 Emulator__](https://lupyuen.github.io/nuttx-tinyemu/ox64) that runs in the Web Browser...
+Today we created a barebones [__Ox64 BL808 Emulator__](https://lupyuen.github.io/nuttx-tinyemu/smode) that runs in the Web Browser...
 
 - We made it by (slightly) tweaking [__TinyEMU RISC-V Emulator__](https://lupyuen.github.io/articles/tinyemu) and compiling to [__WebAssembly__](https://lupyuen.github.io/articles/tinyemu2#emulator-in-the-web-browser)
 
