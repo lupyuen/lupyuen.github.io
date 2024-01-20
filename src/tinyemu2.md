@@ -570,7 +570,9 @@ And our Ox64 Emulator appears in the Web Browser! (Pic above)
 
 _What about Console Input?_
 
-[__Console Input__](https://lupyuen.github.io/nuttx-tinyemu) requires [__UART Interrupts__](https://lupyuen.github.io/articles/plic2). We'll implement UART Interrupts soon. (Pic below)
+[__Console Input__](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-uart-interrupts-for-console-input) requires [__UART Interrupts__](https://lupyuen.github.io/articles/plic2). (Pic below)
+
+We'll explain the details in the next article. [(Here's a __Sneak Peek__)](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-uart-interrupts-for-console-input)
 
 One more thing to tweak...
 
@@ -660,7 +662,7 @@ NuttX Kernel makes a [__System Call to OpenSBI__](https://lupyuen.github.io/arti
 
 _Will we run OpenSBI on TinyEMU?_
 
-That's not necessary. We'll __emulate the OpenSBI__ System Timer in TinyEMU.
+That's not necessary. We'll [__emulate the System Timer__](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-opensbi-for-system-timer) in TinyEMU.
 
 [(More about __System Timer__)](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
 
@@ -682,7 +684,7 @@ Today we created a barebones [__Ox64 BL808 Emulator__](https://lupyuen.github.io
 
 - Though [__NuttX Apps__](https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator) will crash, because NuttX needs to boot in [__RISC-V Supervisor Mode__](https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator) (not Machine Mode)
 
-- And [__Console Input__](https://lupyuen.github.io/nuttx-tinyemu) won't work until we [__Emulate UART Interrupts__](https://lupyuen.github.io/articles/plic2)
+- And [__Console Input__](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-uart-interrupts-for-console-input) won't work until we [__Emulate UART Interrupts__](https://lupyuen.github.io/articles/plic2)
 
 - __Up Next:__ Ox64 Emulator might [__Blink a Virtual LED__](https://lupyuen.github.io/articles/nim#led-driver-for-ox64). And it might get triggered daily for [__Automated NuttX Testing__](https://github.com/lupyuen/nuttx-ox64#nuttx-automated-daily-build-for-ox64).
 
