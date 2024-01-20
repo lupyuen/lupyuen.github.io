@@ -177,7 +177,7 @@ static void copy_bios(...) {
 <div class="example-wrap"><pre class="language-bash"><code>## Download the TinyEMU Config
 ## and NuttX Kernel Image
 $ wget https://raw.githubusercontent.com/lupyuen/nuttx-tinyemu/main/docs/ox64/root-riscv64.cfg
-$ wget https://github.com/lupyuen/nuttx-tinyemu/raw/main/docs/ox64/Image
+$ wget https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-2024-01-20/Image
 
 ## Boot TinyEMU with NuttX Kernel
 $ temu root-riscv64.cfg | more
@@ -213,7 +213,7 @@ target_write_slow:
   bios: &quot;Image&quot;,
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.4.0/Image"><strong><code>Image</code></strong></a> is the <strong>NuttX Kernel Image</strong> that comes from a typical <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.4.0"><strong>NuttX Build for Ox64</strong></a>.</p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-2024-01-20/Image"><strong><code>Image</code></strong></a> is the <strong>NuttX Kernel Image</strong> that comes from a typical <a href="https://github.com/lupyuen/nuttx-ox64/releases/tag/nuttx-ox64-2024-01-20"><strong>NuttX Build for Ox64</strong></a>.</p>
 <p><em>What are the CSR Writes?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX Kernel writes to CSR Registers
 csr_write: csr=0x104 val=0x0
@@ -598,7 +598,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 <p>Will it boot <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Apache NuttX RTOS</strong></a> unmodified? Yep <a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow"><strong>NuttX Kernel</strong></a> boots all the way!</p>
 </li>
 <li>
-<p>Though <a href="https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator"><strong>NuttX Apps</strong></a> will crash, because NuttX needs to boot in <a href="https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator"><strong>RISC-V Supervisor Mode</strong></a> (not Machine Mode)</p>
+<p>Though <a href="https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator"><strong>NuttX Apps</strong></a> will crash, because NuttX needs to boot in <a href="https://github.com/lupyuen/ox64-tinyemu/tree/smode#start-nuttx-kernel-in-supervisor-mode"><strong>RISC-V Supervisor Mode</strong></a> (not Machine Mode)</p>
 </li>
 <li>
 <p>And <a href="https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-uart-interrupts-for-console-input"><strong>Console Input</strong></a> won’t work until we <a href="https://lupyuen.github.io/articles/plic2"><strong>Emulate UART Interrupts</strong></a></p>
