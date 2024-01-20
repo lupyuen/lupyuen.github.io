@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-01-21",
+      "website": "https://lupyuen.github.io/articles/tinyemu2",
+      "summary": "Let's create a barebones Ox64 BL808 Emulator that runs in the Web Browser... By tweaking TinyEMU RISC-V Emulator and booting Apache NuttX RTOS without any modification"
+    },
+    {
       "name": "Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-01-14",

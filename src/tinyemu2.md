@@ -1,6 +1,6 @@
 # Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS
 
-📝 _31 Jan 2024_
+📝 _21 Jan 2024_
 
 ![Ox64 BL808 Emulator with TinyEMU RISC-V Emulator and Apache NuttX RTOS](https://lupyuen.github.io/images/tinyemu2-title.png)
 
@@ -678,8 +678,6 @@ That's not necessary. We'll [__emulate the System Timer__](https://github.com/lu
 
 # What's Next
 
-TODO
-
 Today we created a barebones [__Ox64 BL808 Emulator__](https://lupyuen.github.io/nuttx-tinyemu/smode) that runs in the Web Browser...
 
 - We made it by (slightly) tweaking [__TinyEMU RISC-V Emulator__](https://lupyuen.github.io/articles/tinyemu) and compiling to [__WebAssembly__](https://lupyuen.github.io/articles/tinyemu2#emulator-in-the-web-browser)
@@ -697,6 +695,8 @@ Today we created a barebones [__Ox64 BL808 Emulator__](https://lupyuen.github.io
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=39073694)
 
 -   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 
