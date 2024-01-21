@@ -781,7 +781,7 @@ Yep! Here's how...
 
 - [__"Kernel Accesses App Memory"__](https://lupyuen.github.io/articles/app#kernel-accesses-app-memory)
 
-  [(Strange MMU Crash in __NuttX App Heap__)](https://gist.github.com/lupyuen/def8fb96245643c046e5f3ad6c4e3ed0)
+  [__TODO:__ Flush the __MMU Cache__ for T-Head C906](https://gist.github.com/lupyuen/def8fb96245643c046e5f3ad6c4e3ed0)
 
 ![NuttX swaps the SATP Register](https://lupyuen.github.io/images/mmu-boot2.jpg)
 
