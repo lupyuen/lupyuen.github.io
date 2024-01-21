@@ -831,6 +831,49 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/mmu.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mmu.md)
 
+# Appendix: Flush the MMU Cache for T-Head C906
+
+TODO
+
+Ox64 BL808 crashes with a Page Fault when we run `getprime` then `hello`. This is caused by the T-Head C906 MMU incorrectly accessing the MMU Page Tables of the Previous Process (`getprime`) while starting the New Process (`hello`).
+
+To fix the problem, this PR flushes the MMU Cache whenever we point the MMU SATP Register to the New Page Tables. We execute 2 RISC-V Instructions that are specific to T-Head C906:
+
+- DCACHE.IALL: Invalidate all Page Table Entries in the D-Cache
+- SYNC.S: Ensure that all Cache Operations are completed
+
+This is derived from the T-Head Errata for Linux Kernel. More details here: ???
+
+TODO: [bl808_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/bl808/bl808_mm_init.c#L299-L323)
+
+```c
+/****************************************************************************
+ * Name: mmu_flush_cache
+ *
+ * Description:
+ *   Flush the MMU Cache for T-Head C906.  Called by mmu_write_satp() after
+ *   updating the MMU SATP Register, when swapping MMU Page Tables.
+ *   This operation executes RISC-V Instructions that are specific to
+ *   T-Head C906.
+ *
+ ****************************************************************************/
+
+void weak_function mmu_flush_cache(void)
+{
+  __asm__ __volatile__
+    (
+
+      /* DCACHE.IALL: Invalidate all Page Table Entries in the D-Cache */
+
+      ".long 0x0020000b\n"
+
+      /* SYNC.S: Ensure that all Cache Operations are completed */
+
+      ".long 0x0190000b\n"
+    );
+}
+```
+
 ![Virtual Address Translation Process (Page 82)](https://lupyuen.github.io/images/mmu-address.jpg)
 
 [_Virtual Address Translation Process (Page 82)_](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf)
