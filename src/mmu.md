@@ -984,7 +984,7 @@ static inline void mmu_write_satp(uintptr_t reg) {
 
 With this fix, the `hello` app now accesses the Heap Memory correctly...
 
-```
+```text
 ## Virtual Address 0x8020_0000 is OK for Previous Process
 nsh> getprime
 Virtual Address 0x80200000 maps to Physical Address 0x506a6000
