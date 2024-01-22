@@ -256,7 +256,7 @@ mmu_enable(
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292">(<strong>mmu_enable</strong> is defined here)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L152-L176">(Which calls <strong>mmu_satp_reg</strong>)</a></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L176-L201">(Remember to <strong>sfence</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906">(Remember to <strong>sfence</strong> and flush the <strong>MMU Cache</strong>)</a></p>
 </li>
 <li>
 <p><em>How to set the Page Table Entry?</em></p>
