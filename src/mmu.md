@@ -1002,6 +1002,8 @@ Virtual Address 0x80200000 maps to Physical Address 0x506a4000
 
 [(See the __Detailed Analysis__)](https://gist.github.com/lupyuen/def8fb96245643c046e5f3ad6c4e3ed0)
 
+[(See the __Pull Request__)](https://github.com/apache/nuttx/pull/11585)
+
 ![Virtual Address Translation Process (Page 82)](https://lupyuen.github.io/images/mmu-address.jpg)
 
 [_Virtual Address Translation Process (Page 82)_](https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf)
