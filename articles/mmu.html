@@ -841,18 +841,18 @@ static inline void mmu_write_satp(uintptr_t reg) {
 }
 </code></pre></div>
 <p>With this fix, the <code>hello</code> app now accesses the Heap Memory correctly…</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code># Virtual Address <span class="number">0x8020_0000 </span>is OK <span class="kw">for </span>Previous Process
+<div class="example-wrap"><pre class="language-text"><code>## Virtual Address 0x8020_0000 is OK for Previous Process
 nsh&gt; getprime
-Virtual Address <span class="number">0x80200000 </span>maps to Physical Address <span class="number">0x506a6000
-</span><span class="kw-2">*</span><span class="number">0x506a6000 </span>is <span class="number">0
-</span><span class="kw-2">*</span><span class="number">0x80200000 </span>is <span class="number">0
+Virtual Address 0x80200000 maps to Physical Address 0x506a6000
+*0x506a6000 is 0
+*0x80200000 is 0
 
-</span># Virtual Address <span class="number">0x8020_0000 </span>is OK <span class="kw">for </span>New Process
+## Virtual Address 0x8020_0000 is OK for New Process
 nsh&gt; hello
-Virtual Address <span class="number">0x80200000 </span>maps to Physical Address <span class="number">0x506a4000
-</span><span class="kw-2">*</span><span class="number">0x506a4000 </span>is <span class="number">0
-</span><span class="kw-2">*</span><span class="number">0x80200000 </span>is <span class="number">0</span></code></pre></div>
+Virtual Address 0x80200000 maps to Physical Address 0x506a4000
+*0x506a4000 is 0
+*0x80200000 is 0
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ebf6c35f73132e99cedc2808e57d39e5">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/def8fb96245643c046e5f3ad6c4e3ed0">(See the <strong>Detailed Analysis</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-address.jpg" alt="Virtual Address Translation Process (Page 82)" /></p>
