@@ -842,35 +842,91 @@ To fix the problem, this PR flushes the MMU Cache whenever we point the MMU SATP
 - DCACHE.IALL: Invalidate all Page Table Entries in the D-Cache
 - SYNC.S: Ensure that all Cache Operations are completed
 
-This is derived from the T-Head Errata for Linux Kernel. More details here: ???
-
-TODO: [bl808_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/bl808/bl808_mm_init.c#L299-L323)
+This is derived from the [T-Head Errata for Linux Kernel](https://github.com/torvalds/linux/blob/master/arch/riscv/errata/thead/errata.c#L38-L78).
 
 ```c
-/****************************************************************************
- * Name: mmu_flush_cache
- *
- * Description:
- *   Flush the MMU Cache for T-Head C906.  Called by mmu_write_satp() after
- *   updating the MMU SATP Register, when swapping MMU Page Tables.
- *   This operation executes RISC-V Instructions that are specific to
- *   T-Head C906.
- *
- ****************************************************************************/
+// th.dcache.ipa rs1 (invalidate, physical address)
+// | 31 - 25 | 24 - 20 | 19 - 15 | 14 - 12 | 11 - 7 | 6 - 0 |
+//   0000001    01010      rs1       000      00000  0001011
+// th.dcache.iva rs1 (invalidate, virtual address)
+//   0000001    00110      rs1       000      00000  0001011
 
-void weak_function mmu_flush_cache(void)
-{
-  __asm__ __volatile__
-    (
+// th.dcache.cpa rs1 (clean, physical address)
+// | 31 - 25 | 24 - 20 | 19 - 15 | 14 - 12 | 11 - 7 | 6 - 0 |
+//   0000001    01001      rs1       000      00000  0001011
+// th.dcache.cva rs1 (clean, virtual address)
+//   0000001    00101      rs1       000      00000  0001011
 
-      /* DCACHE.IALL: Invalidate all Page Table Entries in the D-Cache */
+// th.dcache.cipa rs1 (clean then invalidate, physical address)
+// | 31 - 25 | 24 - 20 | 19 - 15 | 14 - 12 | 11 - 7 | 6 - 0 |
+//   0000001    01011      rs1       000      00000  0001011
+// th.dcache.civa rs1 (clean then invalidate, virtual address)
+//   0000001    00111      rs1       000      00000  0001011
 
-      ".long 0x0020000b\n"
+// th.sync.s (make sure all cache operations finished)
+// | 31 - 25 | 24 - 20 | 19 - 15 | 14 - 12 | 11 - 7 | 6 - 0 |
+//   0000000    11001     00000      000      00000  0001011
 
-      /* SYNC.S: Ensure that all Cache Operations are completed */
+#define THEAD_INVAL_A0	".long 0x02a5000b"
+#define THEAD_CLEAN_A0	".long 0x0295000b"
+#define THEAD_FLUSH_A0	".long 0x02b5000b"
+#define THEAD_SYNC_S	  ".long 0x0190000b"
 
-      ".long 0x0190000b\n"
-    );
+#define THEAD_CMO_OP(_op, _start, _size, _cachesize) \
+asm volatile( \
+  "mv a0, %1\n\t"	\
+  "j 2f\n\t" \
+  "3:\n\t" \
+  THEAD_##_op##_A0 "\n\t" \
+  "add a0, a0, %0\n\t" \
+  "2:\n\t" \
+  "bltu a0, %2, 3b\n\t" \
+  THEAD_SYNC_S \
+  : : "r"(_cachesize), \
+      "r"((unsigned long)(_start) & ~((_cachesize) - 1UL)), \
+      "r"((unsigned long)(_start) + (_size)) \
+  : "a0")
+```
+
+TODO: [C906 User Manual](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf) (Page 548)
+
+TODO: [arch/risc-v/src/bl808/bl808_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/bl808/bl808_mm_init.c#L299-L323)
+
+```c
+// Flush the MMU Cache for T-Head C906.  Called by mmu_write_satp() after
+// updating the MMU SATP Register, when swapping MMU Page Tables.
+// This operation executes RISC-V Instructions that are specific to
+// T-Head C906.
+void weak_function mmu_flush_cache(void) {
+  __asm__ __volatile__ (
+    // DCACHE.IALL: Invalidate all Page Table Entries in the D-Cache
+    ".long 0x0020000b\n"
+
+    // SYNC.S: Ensure that all Cache Operations are completed
+    ".long 0x0190000b\n"
+  );
+}
+```
+
+TODO: [arch/risc-v/src/common/riscv_mmu.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/common/riscv_mmu.h#L190-L221)
+
+```c
+// Update the MMU SATP Register for swapping MMU Page Tables
+static inline void mmu_write_satp(uintptr_t reg) {
+  __asm__ __volatile__ (
+    "csrw satp, %0\n"
+    "sfence.vma x0, x0\n"
+    "fence rw, rw\n"
+    "fence.i\n"
+    :
+    : "rK" (reg)
+    : "memory"
+  );
+
+  // Flush the MMU Cache if needed (T-Head C906)
+  if (mmu_flush_cache != NULL) {
+    mmu_flush_cache();
+  }
 }
 ```
 
