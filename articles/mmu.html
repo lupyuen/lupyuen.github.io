@@ -714,14 +714,42 @@ mmu_write_satp:
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mmu.md"><strong>lupyuen.github.io/src/mmu.md</strong></a></p>
 <h1 id="appendix-flush-the-mmu-cache-for-t-head-c906"><a href="#appendix-flush-the-mmu-cache-for-t-head-c906">12 Appendix: Flush the MMU Cache for T-Head C906</a></h1>
-<p>TODO</p>
-<p>Ox64 BL808 crashes with a Page Fault when we run <code>getprime</code> then <code>hello</code>. This is caused by the T-Head C906 MMU incorrectly accessing the MMU Page Tables of the Previous Process (<code>getprime</code>) while starting the New Process (<code>hello</code>).</p>
-<p>To fix the problem, this PR flushes the MMU Cache whenever we point the MMU SATP Register to the New Page Tables. We execute 2 RISC-V Instructions that are specific to T-Head C906:</p>
-<ul>
-<li>DCACHE.IALL: Invalidate all Page Table Entries in the D-Cache</li>
-<li>SYNC.S: Ensure that all Cache Operations are completed</li>
-</ul>
-<p>This is derived from the <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/errata/thead/errata.c#L38-L78">T-Head Errata for Linux Kernel</a>.</p>
+<p>Ox64 BL808 crashes with a <strong>Page Fault</strong> when we run <code>getprime</code> then <code>hello</code>…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; getprime
+getprime took 0 msec
+
+nsh&gt; hello
+riscv_exception: EXCEPTION: Store/AMO page fault.
+  MCAUSE: 0f,
+  EPC:    50208fcc,
+  MTVAL:  80200000
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/84ceeb5bd4eed98d9d1a3cd83d712dab">(See the <strong>Complete Log</strong>)</a></p>
+<p>The Invalid Address <code>0x8020_0000</code> is the Virtual Address of the <strong>Dynamic Heap</strong> (<code>malloc</code>) for the <code>hello</code> app: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nuttx-12.4.0-RC0/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L20">boards/risc-v/bl808/ox64/configs/nsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## NuttX Config for Ox64
+CONFIG_ARCH_DATA_NPAGES=128
+CONFIG_ARCH_DATA_VBASE=0x80100000
+CONFIG_ARCH_HEAP_NPAGES=128
+CONFIG_ARCH_HEAP_VBASE=0x80200000
+CONFIG_ARCH_TEXT_NPAGES=128
+CONFIG_ARCH_TEXT_VBASE=0x80000000
+</code></pre></div>
+<p>We discover that T-Head C906 MMU is incorrectly accessing the <strong>MMU Page Tables of the Previous Process</strong> (<code>getprime</code>) while starting the New Process (<code>hello</code>)…</p>
+<div class="example-wrap"><pre class="language-text"><code>## Virtual Address 0x8020_0000 is OK for Previous Process
+nsh&gt; getprime
+Virtual Address 0x80200000 maps to Physical Address 0x506a6000
+*0x506a6000 is 0
+*0x80200000 is 0
+
+## Virtual Address 0x8020_0000 crashes for New Process
+nsh&gt; hello
+Virtual Address 0x80200000 maps to Physical Address 0x506a4000
+*0x506a4000 is 0
+riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000005020c020, MTVAL: 0000000080200000
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/8d5fb67ef5e174cacbb55121d04e4b10">(See the <strong>Complete Log</strong>)</a></p>
+<p>Which means that the <strong>T-Head C906 MMU Cache</strong> needs to be flushed. This should be done right after we swap the <strong>MMU SATP Register</strong>.</p>
+<p>To fix the problem, we refer to the <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/errata/thead/errata.c#L38-L78"><strong>T-Head Errata for Linux Kernel</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// th.dcache.ipa rs1 (invalidate, physical address)
 // | 31 - 25 | 24 - 20 | 19 - 15 | 14 - 12 | 11 - 7 | 6 - 0 |
 //   0000001    01010      rs1       000      00000  0001011
@@ -744,14 +772,14 @@ mmu_write_satp:
 // | 31 - 25 | 24 - 20 | 19 - 15 | 14 - 12 | 11 - 7 | 6 - 0 |
 //   0000000    11001     00000      000      00000  0001011
 
-#define THEAD_INVAL_A0	&quot;.long 0x02a5000b&quot;
-#define THEAD_CLEAN_A0	&quot;.long 0x0295000b&quot;
-#define THEAD_FLUSH_A0	&quot;.long 0x02b5000b&quot;
-#define THEAD_SYNC_S	  &quot;.long 0x0190000b&quot;
+#define THEAD_INVAL_A0 &quot;.long 0x02a5000b&quot;
+#define THEAD_CLEAN_A0 &quot;.long 0x0295000b&quot;
+#define THEAD_FLUSH_A0 &quot;.long 0x02b5000b&quot;
+#define THEAD_SYNC_S   &quot;.long 0x0190000b&quot;
 
 #define THEAD_CMO_OP(_op, _start, _size, _cachesize) \
 asm volatile( \
-  &quot;mv a0, %1\n\t&quot;	\
+  &quot;mv a0, %1\n\t&quot; \
   &quot;j 2f\n\t&quot; \
   &quot;3:\n\t&quot; \
   THEAD_##_op##_A0 &quot;\n\t&quot; \
@@ -764,8 +792,20 @@ asm volatile( \
       &quot;r&quot;((unsigned long)(_start) + (_size)) \
   : &quot;a0&quot;)
 </code></pre></div>
-<p>TODO: <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">C906 User Manual</a> (Page 548)</p>
-<p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/bl808/bl808_mm_init.c#L299-L323">arch/risc-v/src/bl808/bl808_mm_init.c</a></p>
+<p><strong>For NuttX:</strong> We flush the MMU Cache whenever we <strong>swap the MMU SATP Register</strong> to the New Page Tables.</p>
+<p>We execute 2 RISC-V Instructions that are <strong>specific to T-Head C906</strong>…</p>
+<ul>
+<li>
+<p><strong>DCACHE.IALL</strong>: Invalidate all Page Table Entries in the D-Cache</p>
+<p>(From <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf"><strong>C906 User Manual</strong></a>, Page 551)</p>
+</li>
+<li>
+<p><strong>SYNC.S</strong>: Ensure that all Cache Operations are completed</p>
+<p>(Undocumented, comes from the T-Head Errata above)</p>
+<p>(Looks similar to <strong>SYNC</strong> and <strong>SYNC.I</strong> from <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf"><strong>C906 User Manual</strong></a>, Page 559)</p>
+</li>
+</ul>
+<p>This is how we <strong>Flush the MMU Cache</strong> for T-Head C906: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/bl808/bl808_mm_init.c#L299-L323">arch/risc-v/src/bl808/bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Flush the MMU Cache for T-Head C906.  Called by mmu_write_satp() after
 // updating the MMU SATP Register, when swapping MMU Page Tables.
 // This operation executes RISC-V Instructions that are specific to
@@ -780,7 +820,7 @@ void weak_function mmu_flush_cache(void) {
   );
 }
 </code></pre></div>
-<p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/common/riscv_mmu.h#L190-L221">arch/risc-v/src/common/riscv_mmu.h</a></p>
+<p><code>mmu_flush_cache</code> is called by <code>mmu_write_satp</code>, whenever the <strong>MMU SATP Register is updated</strong> (and the MMU Page Tables are swapped): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/common/riscv_mmu.h#L190-L221">arch/risc-v/src/common/riscv_mmu.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Update the MMU SATP Register for swapping MMU Page Tables
 static inline void mmu_write_satp(uintptr_t reg) {
   __asm__ __volatile__ (
@@ -799,6 +839,21 @@ static inline void mmu_write_satp(uintptr_t reg) {
   }
 }
 </code></pre></div>
+<p>With this fix, the <code>hello</code> app now accesses the Heap Memory correctly…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code># Virtual Address <span class="number">0x8020_0000 </span>is OK <span class="kw">for </span>Previous Process
+nsh&gt; getprime
+Virtual Address <span class="number">0x80200000 </span>maps to Physical Address <span class="number">0x506a6000
+</span><span class="kw-2">*</span><span class="number">0x506a6000 </span>is <span class="number">0
+</span><span class="kw-2">*</span><span class="number">0x80200000 </span>is <span class="number">0
+
+</span># Virtual Address <span class="number">0x8020_0000 </span>is OK <span class="kw">for </span>New Process
+nsh&gt; hello
+Virtual Address <span class="number">0x80200000 </span>maps to Physical Address <span class="number">0x506a4000
+</span><span class="kw-2">*</span><span class="number">0x506a4000 </span>is <span class="number">0
+</span><span class="kw-2">*</span><span class="number">0x80200000 </span>is <span class="number">0</span></code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/ebf6c35f73132e99cedc2808e57d39e5">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/def8fb96245643c046e5f3ad6c4e3ed0">(See the <strong>Detailed Analysis</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-address.jpg" alt="Virtual Address Translation Process (Page 82)" /></p>
 <p><a href="https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf"><em>Virtual Address Translation Process (Page 82)</em></a></p>
 <h1 id="appendix-address-translation"><a href="#appendix-address-translation">13 Appendix: Address Translation</a></h1>
