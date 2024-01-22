@@ -721,32 +721,82 @@ mmu_write_satp:
 <li>DCACHE.IALL: Invalidate all Page Table Entries in the D-Cache</li>
 <li>SYNC.S: Ensure that all Cache Operations are completed</li>
 </ul>
-<p>This is derived from the T-Head Errata for Linux Kernel. More details here: ???</p>
-<p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/bl808/bl808_mm_init.c#L299-L323">bl808_mm_init.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: mmu_flush_cache
- *
- * Description:
- *   Flush the MMU Cache for T-Head C906.  Called by mmu_write_satp() after
- *   updating the MMU SATP Register, when swapping MMU Page Tables.
- *   This operation executes RISC-V Instructions that are specific to
- *   T-Head C906.
- *
- ****************************************************************************/
+<p>This is derived from the <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/errata/thead/errata.c#L38-L78">T-Head Errata for Linux Kernel</a>.</p>
+<div class="example-wrap"><pre class="language-c"><code>// th.dcache.ipa rs1 (invalidate, physical address)
+// | 31 - 25 | 24 - 20 | 19 - 15 | 14 - 12 | 11 - 7 | 6 - 0 |
+//   0000001    01010      rs1       000      00000  0001011
+// th.dcache.iva rs1 (invalidate, virtual address)
+//   0000001    00110      rs1       000      00000  0001011
 
-void weak_function mmu_flush_cache(void)
-{
-  __asm__ __volatile__
-    (
+// th.dcache.cpa rs1 (clean, physical address)
+// | 31 - 25 | 24 - 20 | 19 - 15 | 14 - 12 | 11 - 7 | 6 - 0 |
+//   0000001    01001      rs1       000      00000  0001011
+// th.dcache.cva rs1 (clean, virtual address)
+//   0000001    00101      rs1       000      00000  0001011
 
-      /* DCACHE.IALL: Invalidate all Page Table Entries in the D-Cache */
+// th.dcache.cipa rs1 (clean then invalidate, physical address)
+// | 31 - 25 | 24 - 20 | 19 - 15 | 14 - 12 | 11 - 7 | 6 - 0 |
+//   0000001    01011      rs1       000      00000  0001011
+// th.dcache.civa rs1 (clean then invalidate, virtual address)
+//   0000001    00111      rs1       000      00000  0001011
 
-      &quot;.long 0x0020000b\n&quot;
+// th.sync.s (make sure all cache operations finished)
+// | 31 - 25 | 24 - 20 | 19 - 15 | 14 - 12 | 11 - 7 | 6 - 0 |
+//   0000000    11001     00000      000      00000  0001011
 
-      /* SYNC.S: Ensure that all Cache Operations are completed */
+#define THEAD_INVAL_A0	&quot;.long 0x02a5000b&quot;
+#define THEAD_CLEAN_A0	&quot;.long 0x0295000b&quot;
+#define THEAD_FLUSH_A0	&quot;.long 0x02b5000b&quot;
+#define THEAD_SYNC_S	  &quot;.long 0x0190000b&quot;
 
-      &quot;.long 0x0190000b\n&quot;
-    );
+#define THEAD_CMO_OP(_op, _start, _size, _cachesize) \
+asm volatile( \
+  &quot;mv a0, %1\n\t&quot;	\
+  &quot;j 2f\n\t&quot; \
+  &quot;3:\n\t&quot; \
+  THEAD_##_op##_A0 &quot;\n\t&quot; \
+  &quot;add a0, a0, %0\n\t&quot; \
+  &quot;2:\n\t&quot; \
+  &quot;bltu a0, %2, 3b\n\t&quot; \
+  THEAD_SYNC_S \
+  : : &quot;r&quot;(_cachesize), \
+      &quot;r&quot;((unsigned long)(_start) &amp; ~((_cachesize) - 1UL)), \
+      &quot;r&quot;((unsigned long)(_start) + (_size)) \
+  : &quot;a0&quot;)
+</code></pre></div>
+<p>TODO: <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">C906 User Manual</a> (Page 548)</p>
+<p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/bl808/bl808_mm_init.c#L299-L323">arch/risc-v/src/bl808/bl808_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Flush the MMU Cache for T-Head C906.  Called by mmu_write_satp() after
+// updating the MMU SATP Register, when swapping MMU Page Tables.
+// This operation executes RISC-V Instructions that are specific to
+// T-Head C906.
+void weak_function mmu_flush_cache(void) {
+  __asm__ __volatile__ (
+    // DCACHE.IALL: Invalidate all Page Table Entries in the D-Cache
+    &quot;.long 0x0020000b\n&quot;
+
+    // SYNC.S: Ensure that all Cache Operations are completed
+    &quot;.long 0x0190000b\n&quot;
+  );
+}
+</code></pre></div>
+<p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/common/riscv_mmu.h#L190-L221">arch/risc-v/src/common/riscv_mmu.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Update the MMU SATP Register for swapping MMU Page Tables
+static inline void mmu_write_satp(uintptr_t reg) {
+  __asm__ __volatile__ (
+    &quot;csrw satp, %0\n&quot;
+    &quot;sfence.vma x0, x0\n&quot;
+    &quot;fence rw, rw\n&quot;
+    &quot;fence.i\n&quot;
+    :
+    : &quot;rK&quot; (reg)
+    : &quot;memory&quot;
+  );
+
+  // Flush the MMU Cache if needed (T-Head C906)
+  if (mmu_flush_cache != NULL) {
+    mmu_flush_cache();
+  }
 }
 </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/mmu-address.jpg" alt="Virtual Address Translation Process (Page 82)" /></p>
