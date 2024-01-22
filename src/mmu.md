@@ -203,7 +203,7 @@ But we have so many questions...
 
     [(Which calls __mmu_satp_reg__)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L152-L176)
 
-    [(Remember to __sfence__)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L176-L201)
+    [(Remember to __sfence__ and flush the __MMU Cache__)](https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906)
 
 1.  _How to set the Page Table Entry?_
 
