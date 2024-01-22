@@ -763,6 +763,10 @@ mmu_write_satp:
 
 [(See the __NuttX SATP Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L271-L304)
 
+Always remember to __Flush the MMU Cache__ when swapping the SATP Register (and switching Page Tables)...
+
+- [__"Flush the MMU Cache for T-Head C906"__](https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906)
+
 _So indeed we can have "Multiple" SATP Registers sweet!_
 
 Ah there's a catch... Remember the __"G" Global Mapping Permission__ from earlier?
@@ -780,8 +784,6 @@ _Can NuttX Kernel access the Virtual Memory of NuttX Apps?_
 Yep! Here's how...
 
 - [__"Kernel Accesses App Memory"__](https://lupyuen.github.io/articles/app#kernel-accesses-app-memory)
-
-  [__TODO:__ Flush the __MMU Cache__ for T-Head C906](https://gist.github.com/lupyuen/def8fb96245643c046e5f3ad6c4e3ed0)
 
 ![NuttX swaps the SATP Register](https://lupyuen.github.io/images/mmu-boot2.jpg)
 
