@@ -32,6 +32,83 @@ Which makes it easier to understand __everything that happens__ as NuttX boots o
 
 TODO: ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
 
+# Expect Scripting
+
+TODO
+
+[nuttx.exp](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp)
+
+```bash
+#!/usr/bin/expect
+## Expect Script for Testing NuttX with Ox64 BL808 Emulator
+
+## For every 1 character sent, wait 0.001 milliseconds
+set send_slow {1 0.001}
+
+## Start the Ox64 BL808 Emulator
+spawn ./temu nuttx.cfg
+
+## Wait for the prompt and enter `uname -a`
+expect "nsh> "
+send -s "uname -a\r"
+
+## Wait for the prompt and enter `ostest`
+expect "nsh> "
+send -s "ostest\r"
+
+## Wait at most 30 seconds
+set timeout 30
+
+## Check the response...
+expect {
+  ## If we see this message, exit normally
+  "ostest_main: Exiting with status -1" { exit 0 }
+
+  ## If timeout, exit with an error
+  timeout { exit 1 }
+}
+```
+
+[ox64-test.yml](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml)
+
+```bash
+## Install `expect` and the Build Prerequisites
+sudo apt -y update
+sudo apt -y install \
+  expect libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev wget
+
+## Build Ox64 BL808 Emulator
+git clone https://github.com/lupyuen/ox64-tinyemu
+pushd ox64-tinyemu
+make
+cp temu ..
+popd
+
+## Download NuttX Build
+wget https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-${{ steps.date.outputs.date }}/Image
+wget https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-${{ steps.date.outputs.date }}/nuttx.hash
+cat nuttx.hash
+
+## Download Test Script
+wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg
+wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.exp
+chmod +x nuttx.exp
+
+## Run Test Script
+./nuttx.exp
+```
+
+TODO
+
+```yaml
+- name: Get Current Date
+  id:   date
+  run:  echo "::set-output name=date::$(date +'%Y-%m-%d')"
+```
+
+TODO
+
+[Output Logs](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
 
 # Start NuttX Kernel in Supervisor Mode
 
