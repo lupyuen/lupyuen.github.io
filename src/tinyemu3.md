@@ -2,11 +2,17 @@
 
 📝 _29 Jan 2024_
 
-![TODO](https://lupyuen.github.io/images/tinyemu3-title.png)
+![Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)](https://lupyuen.github.io/images/tinyemu3-title.png)
 
-TODO: [_(Live Demo of Ox64 BL808 Emulator)_](https://lupyuen.github.io/nuttx-tinyemu/smode)
+_Every day we're auto-building Apache NuttX RTOS for Ox64 BL808 SBC..._
 
-TODO: [_(Watch the Demo on YouTube)_](https://youtu.be/FAxaMt6A59I)
+_Can we test NuttX on Ox64 automatically after building?_
+
+Yes we can!
+
+[Daily Builds](https://github.com/lupyuen/nuttx-ox64/tags)
+
+TODO: Pic of [daily build, daily test](https://github.com/lupyuen/nuttx-ox64)
 
 [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) precompiled for Ox64
 
