@@ -8,7 +8,14 @@ _Every day we're auto-building Apache NuttX RTOS for Ox64 BL808 SBC..._
 
 _Can we test NuttX on Ox64 automatically after building?_
 
-Yes we can!
+Yes we can! With a little help from the__ Ox64 BL808 Emulator__ that we created last week.
+
+_But our Ox64 Emulator was incomplete?_
+
+Today we fill in the missing pieces of our Ox64 Emulator and make it ready for __Automated Testing__...
+
+
+
 
 [Daily Builds](https://github.com/lupyuen/nuttx-ox64/tags)
 
