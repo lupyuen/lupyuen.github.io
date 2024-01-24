@@ -574,9 +574,9 @@ And our Ox64 Emulator appears in the Web Browser! (Pic above)
 
 _What about Console Input?_
 
-[__Console Input__](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-uart-interrupts-for-console-input) requires [__UART Interrupts__](https://lupyuen.github.io/articles/plic2). (Pic below)
+[__Console Input__](https://github.com/lupyuen/nuttx-tinyemu#emulate-uart-interrupts-for-console-input) requires [__UART Interrupts__](https://lupyuen.github.io/articles/plic2). (Pic below)
 
-We'll explain the details in the next article. [(Here's a __Sneak Peek__)](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-uart-interrupts-for-console-input)
+We'll explain the details in the next article. [(Here's a __Sneak Peek__)](https://github.com/lupyuen/nuttx-tinyemu#emulate-uart-interrupts-for-console-input)
 
 One more thing to tweak...
 
@@ -654,7 +654,7 @@ _So we'll boot NuttX Kernel in Supervisor Mode?_
 
 Yep we shall tweak TinyEMU to start NuttX in __Supervisor Mode__. (Instead of Machine Mode)
 
-[(By updating the __TinyEMU Boot Code__)](https://github.com/lupyuen/ox64-tinyemu/tree/smode#start-nuttx-kernel-in-supervisor-mode)
+[(By updating the __TinyEMU Boot Code__)](https://github.com/lupyuen/nuttx-tinyemu#start-nuttx-kernel-in-supervisor-mode)
 
 ![TinyEMU will boot NuttX in Supervisor Mode](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
 
@@ -666,7 +666,7 @@ NuttX Kernel makes a [__System Call to OpenSBI__](https://lupyuen.github.io/arti
 
 _Will we run OpenSBI on TinyEMU?_
 
-That's not necessary. We'll [__emulate the System Timer__](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-opensbi-for-system-timer) in TinyEMU.
+That's not necessary. We'll [__emulate the System Timer__](https://github.com/lupyuen/nuttx-tinyemu#emulate-opensbi-for-system-timer) in TinyEMU.
 
 [(More about __System Timer__)](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
 
@@ -684,9 +684,9 @@ Today we created a barebones [__Ox64 BL808 Emulator__](https://lupyuen.github.io
 
 - Will it boot [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) unmodified? Yep [__NuttX Kernel__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow) boots all the way!
 
-- Though [__NuttX Apps__](https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator) will crash, because NuttX needs to boot in [__RISC-V Supervisor Mode__](https://github.com/lupyuen/ox64-tinyemu/tree/smode#start-nuttx-kernel-in-supervisor-mode) (not Machine Mode)
+- Though [__NuttX Apps__](https://lupyuen.github.io/articles/tinyemu2#risc-v-exception-in-emulator) will crash, because NuttX needs to boot in [__RISC-V Supervisor Mode__](https://github.com/lupyuen/nuttx-tinyemu#start-nuttx-kernel-in-supervisor-mode) (not Machine Mode)
 
-- And [__Console Input__](https://github.com/lupyuen/ox64-tinyemu/tree/smode#emulate-uart-interrupts-for-console-input) won't work until we [__Emulate UART Interrupts__](https://lupyuen.github.io/articles/plic2)
+- And [__Console Input__](https://github.com/lupyuen/nuttx-tinyemu#emulate-uart-interrupts-for-console-input) won't work until we [__Emulate UART Interrupts__](https://lupyuen.github.io/articles/plic2)
 
 - __Up Next:__ Ox64 Emulator might [__Blink a Virtual LED__](https://lupyuen.github.io/articles/nim#led-driver-for-ox64). And it might get triggered daily for [__Automated NuttX Testing__](https://github.com/lupyuen/nuttx-ox64#nuttx-automated-daily-build-for-ox64).
 
