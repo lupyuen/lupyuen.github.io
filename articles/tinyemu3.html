@@ -66,11 +66,12 @@
 
     <h1 class="title">Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)</h1>
     <nav id="TOC"><ul>
-<li><a href="#start-nuttx-kernel-in-supervisor-mode">1 Start NuttX Kernel in Supervisor Mode</a><ul></ul></li>
-<li><a href="#emulate-uart-interrupts-for-console-input">2 Emulate UART Interrupts for Console Input</a><ul></ul></li>
-<li><a href="#emulate-opensbi-for-system-timer">3 Emulate OpenSBI for System Timer</a><ul></ul></li>
-<li><a href="#fix-the-system-timer">4 Fix the System Timer</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2024</em></p>
+<li><a href="#expect-scripting">1 Expect Scripting</a><ul></ul></li>
+<li><a href="#start-nuttx-kernel-in-supervisor-mode">2 Start NuttX Kernel in Supervisor Mode</a><ul></ul></li>
+<li><a href="#emulate-uart-interrupts-for-console-input">3 Emulate UART Interrupts for Console Input</a><ul></ul></li>
+<li><a href="#emulate-opensbi-for-system-timer">4 Emulate OpenSBI for System Timer</a><ul></ul></li>
+<li><a href="#fix-the-system-timer">5 Fix the System Timer</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu3-title.png" alt="TODO" /></p>
 <p>TODO: <a href="https://lupyuen.github.io/nuttx-tinyemu/smode"><em>(Live Demo of Ox64 BL808 Emulator)</em></a></p>
 <p>TODO: <a href="https://youtu.be/FAxaMt6A59I"><em>(Watch the Demo on YouTube)</em></a></p>
@@ -94,7 +95,72 @@
 <p><a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Apache NuttX RTOS</strong></a> is a tiny operating system for <a href="https://lupyuen.github.io/articles/riscv"><strong>64-bit RISC-V Machines</strong></a>. (Also Arm, x64, ESP32, …)</p>
 <p>Which makes it easier to understand <strong>everything that happens</strong> as NuttX boots on our Ox64 Emulator.</p>
 <p>TODO: <img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
-<h1 id="start-nuttx-kernel-in-supervisor-mode"><a href="#start-nuttx-kernel-in-supervisor-mode">1 Start NuttX Kernel in Supervisor Mode</a></h1>
+<h1 id="expect-scripting"><a href="#expect-scripting">1 Expect Scripting</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp">nuttx.exp</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
+## Expect Script for Testing NuttX with Ox64 BL808 Emulator
+
+## For every 1 character sent, wait 0.001 milliseconds
+set send_slow {1 0.001}
+
+## Start the Ox64 BL808 Emulator
+spawn ./temu nuttx.cfg
+
+## Wait for the prompt and enter `uname -a`
+expect &quot;nsh&gt; &quot;
+send -s &quot;uname -a\r&quot;
+
+## Wait for the prompt and enter `ostest`
+expect &quot;nsh&gt; &quot;
+send -s &quot;ostest\r&quot;
+
+## Wait at most 30 seconds
+set timeout 30
+
+## Check the response...
+expect {
+  ## If we see this message, exit normally
+  &quot;ostest_main: Exiting with status -1&quot; { exit 0 }
+
+  ## If timeout, exit with an error
+  timeout { exit 1 }
+}
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml">ox64-test.yml</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Install `expect` and the Build Prerequisites
+sudo apt -y update
+sudo apt -y install \
+  expect libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev wget
+
+## Build Ox64 BL808 Emulator
+git clone https://github.com/lupyuen/ox64-tinyemu
+pushd ox64-tinyemu
+make
+cp temu ..
+popd
+
+## Download NuttX Build
+wget https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-${{ steps.date.outputs.date }}/Image
+wget https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-${{ steps.date.outputs.date }}/nuttx.hash
+cat nuttx.hash
+
+## Download Test Script
+wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg
+wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.exp
+chmod +x nuttx.exp
+
+## Run Test Script
+./nuttx.exp
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-yaml"><code>- name: Get Current Date
+  id:   date
+  run:  echo &quot;::set-output name=date::$(date +&#39;%Y-%m-%d&#39;)&quot;
+</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml">Output Logs</a></p>
+<h1 id="start-nuttx-kernel-in-supervisor-mode"><a href="#start-nuttx-kernel-in-supervisor-mode">2 Start NuttX Kernel in Supervisor Mode</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow2.jpg" alt="NuttX Kernel won’t work in Machine Mode" /></p>
 <p><em>NuttX needs to boot in Supervisor Mode, not Machine Mode. How to fix this in TinyEMU?</em></p>
@@ -194,7 +260,7 @@ nsh&gt;
 nx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340">(See the Complete Log)</a></p>
-<h1 id="emulate-uart-interrupts-for-console-input"><a href="#emulate-uart-interrupts-for-console-input">2 Emulate UART Interrupts for Console Input</a></h1>
+<h1 id="emulate-uart-interrupts-for-console-input"><a href="#emulate-uart-interrupts-for-console-input">3 Emulate UART Interrupts for Console Input</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="UART Interrupts for Ox64 BL808 SBC" /></p>
 <p><em>How will we emulate <a href="https://lupyuen.github.io/articles/plic2">UART Interrupts</a> to support Console Input?</em></p>
@@ -336,7 +402,7 @@ nxposix_spawn_exec: ERROR: exec failed: 2
 NuttX 12.4.0 96c2707 Jan 18 2024 12:07:28 risc-v ox64
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340">(See the Complete Log)</a></p>
-<h1 id="emulate-opensbi-for-system-timer"><a href="#emulate-opensbi-for-system-timer">3 Emulate OpenSBI for System Timer</a></h1>
+<h1 id="emulate-opensbi-for-system-timer"><a href="#emulate-opensbi-for-system-timer">4 Emulate OpenSBI for System Timer</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will boot NuttX in Supervisor Mode" /></p>
 <p><em>How to emulate the OpenSBI ECALL to start the System Timer?</em></p>
@@ -373,7 +439,7 @@ help usage:  help [-v] [&lt;cmd&gt;]
 nsh&gt;
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340">(See the Complete Log)</a></p>
-<h1 id="fix-the-system-timer"><a href="#fix-the-system-timer">4 Fix the System Timer</a></h1>
+<h1 id="fix-the-system-timer"><a href="#fix-the-system-timer">5 Fix the System Timer</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/758287cc3aa8165303c6a726292e665af099aefd">For OpenSBI Set Timer: Clear the pending timer interrupt bit</a></p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/1bcf19a4b2354bc47b515a3fe2f2e8a427e3900d">For RDTIME: Return the time</a></p>
@@ -420,7 +486,7 @@ expect &quot;ostest_main: Exiting with status -1&quot;
 expect &quot;nsh&gt; &quot;
 </code></pre></div>
 <p>We’ll run this for Daily Automated Testing, right after the Daily Automated Build.</p>
-<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
