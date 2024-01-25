@@ -176,15 +176,15 @@ spawn ./temu nuttx.cfg
 
 ## Our Expect Script completes successfully
 </code></pre></div>
-<p>TODO: <a href="">(See the <strong>Test Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml">(See the <strong>Test Log</strong>)</a></p>
 <h1 id="daily-automated-testing"><a href="#daily-automated-testing">2 Daily Automated Testing</a></h1>
 <p><em>We run this every day?</em></p>
-<p><strong>GitHub Actions</strong> will start our Automated Test every day at 1am (GMT): <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml">ox64-test.yml</a></p>
+<p><strong>GitHub Actions</strong> will start our Automated Test every day at 12:55am (GMT): <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml">ox64-test.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Run our Automated Test
-## Every day at 1:00 UTC
+## Every day at 0:55 UTC
 on:
   schedule:
-    - cron: &#39;0 1 * * *&#39;
+    - cron: &#39;55 0 * * *&#39;
 </code></pre></div>
 <p>We build our <strong>Ox64 BL808 Emulator</strong>: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml#L18-L58">ox64-test.yml</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install `expect` and the Build Prerequisites on Ubuntu
@@ -222,7 +222,19 @@ chmod +x nuttx.exp
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.cfg">(<strong>nuttx.cfg</strong> is our <strong>TinyEMU Config</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp">(<strong>nuttx.exp</strong> is our <strong>Expect Script</strong>)</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml">Output Logs</a></p>
+<p>That’s everything we need for Daily Automated Testing! Our Ox64 Emulator will emulate <a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c"><strong><code>ostest</code></strong></a> and launch a whole bunch of tests…</p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml">(See the <strong>Test Log</strong>)</a></p>
+<span style="font-size:90%">
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c#L622-L639"><strong>Standard I/O</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c#L146-L209"><strong>Environment Variables</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/setvbuf.c"><strong>Stream VBuf</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/mutex.c"><strong>Mutex</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/cancel.c"><strong>Start Thread</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/robust.c"><strong>Robust Mutex</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/sem.c"><strong>Semaphore</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/semtimed.c"><strong>Timed Semaphore</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/cond.c"><strong>Condition Variables</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/pthread_exit.c"><strong>PThread Exit</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/timedwait.c"><strong>Timed Wait</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/mqueue.c"><strong>Message Queue</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/timedmqueue.c"><strong>Timed Message Queue</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/sighand.c"><strong>Signal Handler</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/signest.c"><strong>Nested Signal Handler</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/posixtimer.c"><strong>POSIX Timer</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/roundrobin.c"><strong>Round-Robin Scheduler</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/barrier.c"><strong>PThread Barrier</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/schedlock.c"><strong>Scheduler Lock</strong></a></td><td style="text-align: left"></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div></span>
 <h1 id="start-nuttx-kernel-in-supervisor-mode"><a href="#start-nuttx-kernel-in-supervisor-mode">3 Start NuttX Kernel in Supervisor Mode</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow2.jpg" alt="NuttX Kernel won’t work in Machine Mode" /></p>
