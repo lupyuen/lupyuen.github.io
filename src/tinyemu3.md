@@ -140,6 +140,8 @@ spawn ./temu nuttx.cfg
 
 [(See the __Test Log__)](https://gist.github.com/lupyuen/1693ffb16ae943e44faada4428335eb0)
 
+![Daily Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)](https://lupyuen.github.io/images/tinyemu3-test.jpg)
+
 # Daily Automated Testing
 
 _We run this every day?_
