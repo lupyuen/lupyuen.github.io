@@ -182,6 +182,7 @@ spawn ./temu nuttx.cfg
 <p><strong>GitHub Actions</strong> will start our Automated Test every day at 12:55am (GMT): <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml">ox64-test.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Run our Automated Test
 ## Every day at 0:55 UTC
+## (After Daily Build at 0:00 UTC)
 on:
   schedule:
     - cron: &#39;55 0 * * *&#39;
