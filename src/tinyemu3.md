@@ -325,13 +325,25 @@ Why set Previous Privilege to Supervisor Mode? So we can execute an __MRET (Retu
 
 _Do we need so much Boot Code?_
 
-Yes! Check out what happens if we remove some bits of our Boot Code...
+Yes! Check out what happens if we remove some bits of our Boot Code from TinyEMU...
 
 TODO: Appendix
 
 ![UART Interrupts for Ox64 BL808 SBC](https://lupyuen.github.io/images/plic2-registers.jpg)
 
 # Emulate UART Interrupts
+
+_Ox64 SBC has a UART Controller that will handle Console Input..._
+
+_How did we emulate the Ox64 UART Controller?_
+
+Previously we emulated the __BL808 UART Registers__ to do Console Output...
+
+- [__"Intercept the UART Registers"__](https://lupyuen.github.io/articles/tinyemu2#intercept-the-uart-registers)
+
+But Console Input is a little more tricky... We need to emulate __UART Interrupts__! (Pic above)
+
+- [__"UART Interrupt and Platform-Level Interrupt Controller"__](https://lupyuen.github.io/articles/plic2)
 
 TODO
 
