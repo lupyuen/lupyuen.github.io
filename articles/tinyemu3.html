@@ -66,7 +66,7 @@
 
     <h1 class="title">Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)</h1>
     <nav id="TOC"><ul>
-<li><a href="#expect-scripting">1 Expect Scripting</a><ul></ul></li>
+<li><a href="#scripting-the-expected">1 Scripting The Expected</a><ul></ul></li>
 <li><a href="#start-nuttx-kernel-in-supervisor-mode">2 Start NuttX Kernel in Supervisor Mode</a><ul></ul></li>
 <li><a href="#emulate-uart-interrupts-for-console-input">3 Emulate UART Interrupts for Console Input</a><ul></ul></li>
 <li><a href="#emulate-opensbi-for-system-timer">4 Emulate OpenSBI for System Timer</a><ul></ul></li>
@@ -83,31 +83,29 @@
 <p>Today we fill in the missing pieces of our Ox64 Emulator and make it ready for <strong>Automated Testing</strong>…</p>
 <p>TODO</p>
 <p>We begin with the easier bit: Scripting our Ox64 Emulator…</p>
-<p><a href="https://github.com/lupyuen/nuttx-ox64/tags">Daily Builds</a></p>
-<p>TODO: Pic of <a href="https://github.com/lupyuen/nuttx-ox64">daily build, daily test</a></p>
-<p><a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Apache NuttX RTOS</strong></a> precompiled for Ox64</p>
-<p>(Without any modifications)</p>
-<ul>
-<li>
-<p>Boot it on the <a href="https://lupyuen.github.io/articles/tinyemu"><strong>TinyEMU RISC-V Emulator</strong></a></p>
-<p><a href="https://www.barebox.org/jsbarebox/?graphic=1">(Which runs in a <strong>Web Browser</strong>)</a></p>
-</li>
-<li>
-<p>Create our own <a href="https://lupyuen.github.io/nuttx-tinyemu/smode"><strong>Emulator for Ox64 SBC</strong></a></p>
-<p>(With minor tweaks to TinyEMU)</p>
-</li>
-<li>
-<p>And run everything in our <strong>Web Browser</strong></p>
-<p>(Thanks to WebAssembly)</p>
-</li>
-</ul>
-<p><em>Why NuttX?</em></p>
-<p><a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Apache NuttX RTOS</strong></a> is a tiny operating system for <a href="https://lupyuen.github.io/articles/riscv"><strong>64-bit RISC-V Machines</strong></a>. (Also Arm, x64, ESP32, …)</p>
-<p>Which makes it easier to understand <strong>everything that happens</strong> as NuttX boots on our Ox64 Emulator.</p>
-<p>TODO: <img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
-<h1 id="expect-scripting"><a href="#expect-scripting">1 Expect Scripting</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp">nuttx.exp</a></p>
+<h1 id="scripting-the-expected"><a href="#scripting-the-expected">1 Scripting The Expected</a></h1>
+<p><em>What’s this “Expect Scripting”?</em></p>
+<p><strong><code>expect</code></strong> is a cool Command-Line Tool that sends commands to another app and checks the responses.</p>
+<p><em>How is it used for Automated Testing?</em></p>
+<p>Normally when we start our Ox64 Emulator, it boots NuttX and <strong>waits for our command</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>## Start our Ox64 Emulator with NuttX
+$ temu nuttx.cfg
+
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt;
+</code></pre></div>
+<p>TODO: nuttx.cfg is our TinyEMU Config</p>
+<p>But with an <strong>Expect Script</strong>, we can <strong>feed our commands automatically</strong> into the Emulator!</p>
+<div class="example-wrap"><pre class="language-text"><code>## Run our Expect Script to start the Ox64 Emulator
+$ ./nuttx.exp
+...
+nsh&gt; uname -a
+NuttX 12.4.0-RC0 55ec92e181 Jan 24 2024 00:11:08 risc-v ox64
+nsh&gt; 
+</code></pre></div>
+<p><em>What’s nuttx.exp?</em></p>
+<p>That’s our <strong>Expect Script</strong> containing the commands that will be sent to our Emulator: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp">nuttx.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
 ## Expect Script for Testing NuttX with Ox64 BL808 Emulator
 
@@ -120,8 +118,9 @@ spawn ./temu nuttx.cfg
 ## Wait for the prompt and enter `uname -a`
 expect &quot;nsh&gt; &quot;
 send -s &quot;uname -a\r&quot;
-
-## Wait for the prompt and enter `ostest`
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Wait for the prompt and enter `ostest`
 expect &quot;nsh&gt; &quot;
 send -s &quot;ostest\r&quot;
 
@@ -170,6 +169,7 @@ chmod +x nuttx.exp
 </code></pre></div>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml">Output Logs</a></p>
+<p>TODO: <a href="https://github.com/lupyuen/nuttx-ox64/tags">Daily Builds</a></p>
 <h1 id="start-nuttx-kernel-in-supervisor-mode"><a href="#start-nuttx-kernel-in-supervisor-mode">2 Start NuttX Kernel in Supervisor Mode</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow2.jpg" alt="NuttX Kernel won’t work in Machine Mode" /></p>
