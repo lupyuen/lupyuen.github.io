@@ -499,14 +499,14 @@ plic_update_mip: reset_mip, pending=0x0, served=0x0
 <p>Some more tweaks to TinyEMU VirtIO for Console Input…</p>
 <ol>
 <li>
-<p>We disable the <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1370-L1382"><strong>Console Resize Event</strong></a></p>
-<p>(Because it crashes NuttX at startup)</p>
-</li>
-<li>
 <p>We always allow <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1297-L1313"><strong>VirtIO to Write Data</strong></a></p>
 </li>
 <li>
 <p>We’re always <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1313-L1338"><strong>Ready for VirtIO Writes</strong></a></p>
+</li>
+<li>
+<p>We disable the <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1370-L1382"><strong>Console Resize Event</strong></a></p>
+<p>(Because the UART Interrupt crashes NuttX at startup)</p>
 </li>
 </ol>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
@@ -557,9 +557,11 @@ plic_update_mip: reset_mip, pending=0x0, served=0x0
 </code></pre></div>
 <p>Watch what happens when we run it…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Illegal Instruction in RISC-V User Mode (priv=U)
-raise_exception2: cause=2, tval=0x10401073
-pc =0000000050200074 ra =0000000000000000 sp =0000000050407c00 gp =0000000000000000
-priv=U mstatus=0000000a00000080 cycles=13
+raise_exception2: cause=2
+  tval=0x10401073
+  pc=50200074
+  priv=U
+  mstatus=a00000080
 </code></pre></div>
 <p>TinyEMU halts with an <strong>Illegal Instuction</strong>. The offending code comes from…</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/chip/bl808_head.S:124
@@ -590,7 +592,7 @@ priv=U mstatus=0000000a00000080 cycles=13
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush">(<strong>MSTATUS</strong> is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/app#kernel-accesses-app-memory">(<strong>SUM</strong> is needed for NuttX Apps)</a></p>
 <p><a href="https://gist.github.com/lupyuen/368744ef01b7feba10c022cd4f4c5ef2#file-nuttx-start-s-L1282-L1314">(Why <strong>Register A5</strong>? Because we copied from the <strong>NuttX QEMU Boot Code</strong>)</a></p>
-<p>(Why <strong>NOP</strong>? Because TinyEMU needs every instruction padded to 32 bits)</p>
+<p>(Why <strong>NOP</strong>? Because TinyEMU needs every Boot Instruction padded to 32 bits)</p>
 <p><em>Now what happens?</em></p>
 <p>NuttX Shell makes a <strong>System Call (ECALL)</strong> to NuttX Kernel. Which is supposed to jump from RISC-V User Mode to <strong>Supervisor Mode</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX Kernel starts NuttX Shell
@@ -598,15 +600,21 @@ nx_start_application: Starting init task: /system/bin/init
 
 ## NuttX Shell makes an ECALL from User Mode (priv=U)
 raise_exception2: cause=8, tval=0x0
-pc=00000000800019c6
-priv=U mstatus=0000000a000400a1 cycles=79648442
-mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+  pc=800019c6
+  priv=U
+  mstatus=a000400a1
+  mideleg=00
+  mie=00
+  mip=80
 
 ## But TinyEMU jumps to Machine Mode! (priv=M)
 raise_exception2: cause=2, tval=0x0
-pc=0000000000000000
-priv=M mstatus=0000000a000400a1 cycles=79648467
-mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+  pc=00
+  priv=M
+  mstatus=a000400a1
+  mideleg=00
+  mie=00
+  mip=80
 </code></pre></div>
 <p>Nope, it actually jumps from RISC-V User Mode (<strong><code>priv=U</code></strong>) to <strong>Machine Mode</strong> (<strong><code>priv=M</code></strong>)! (Instead of Supervisor Mode)</p>
 <p>To fix this: We delegate all <strong>Exceptions and Interrupts</strong> to <strong>RISC-V Supervisor Mode</strong>. (Instead of Machine Mode)</p>
