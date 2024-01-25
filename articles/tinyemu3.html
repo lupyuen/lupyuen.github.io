@@ -81,8 +81,27 @@
 <li><a href="https://lupyuen.github.io/articles/tinyemu2"><strong>“Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS”</strong></a></li>
 </ul>
 <p><em>But our Ox64 Emulator was incomplete?</em></p>
-<p>Today we fill in the missing pieces of our Ox64 Emulator and make it ready for <strong>Automated Testing</strong>…</p>
-<p>TODO</p>
+<p>Today we fill in the missing pieces of our Ox64 Emulator and call it for <strong>Automated Testing</strong>…</p>
+<ul>
+<li>
+<p>TODO: Start NuttX Kernel in Supervisor Mode</p>
+</li>
+<li>
+<p>TODO: Emulate UART Interrupts for Console Input</p>
+</li>
+<li>
+<p>TODO: Emulate OpenSBI for System Timer</p>
+</li>
+<li>
+<p>TODO: Fix the System Timer</p>
+</li>
+<li>
+<p>TODO: Scripting The Expected</p>
+</li>
+<li>
+<p>TODO: Daily Automated Testing</p>
+</li>
+</ul>
 <p>We begin with the easier bit: Scripting our Ox64 Emulator…</p>
 <h1 id="scripting-the-expected"><a href="#scripting-the-expected">1 Scripting The Expected</a></h1>
 <p><em>What’s this “Expect Scripting”?</em></p>
@@ -109,6 +128,7 @@ spawn ./temu nuttx.cfg
   NuttX 12.4.0-RC0 55ec92e181 Jan 24 2024 00:11:08 risc-v ox64
   nsh&gt; 
 </code></pre></div>
+<p>That’s why we create an Expect Script to test Ox64 NuttX.</p>
 <p><em>What’s nuttx.exp?</em></p>
 <p>That’s our <strong>Expect Script</strong> containing the commands that will be sent to our Emulator: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp">nuttx.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
