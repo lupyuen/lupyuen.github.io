@@ -123,7 +123,7 @@ NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.cfg">(<strong>nuttx.cfg</strong> is our <strong>TinyEMU Config</strong>)</a></p>
-<p>But with an <strong>Expect Script</strong>, we can <strong>feed our commands automatically</strong> into the Emulator!</p>
+<p>With an <strong>Expect Script</strong>, we can <strong>feed our commands automatically</strong> into the Emulator!</p>
 <div class="example-wrap"><pre class="language-text"><code>## Run our Expect Script...
 $ ./nuttx.exp
 
@@ -256,7 +256,7 @@ chmod +x nuttx.exp
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tinyemu2#machine-mode-vs-supervisor-mode"><strong>“Machine Mode vs Supervisor Mode”</strong></a></li>
 </ul>
-<p><em>But all Operating Systems should boot in (super-powerful) Machine Mode. Right?</em></p>
+<p><em>All Operating Systems should boot in (super-powerful) Machine Mode. Right?</em></p>
 <p>Actually a <strong>RISC-V SBC</strong> (like Ox64) will boot the <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI Supervisor Binary Interface</strong></a> in <strong>Machine Mode</strong>…</p>
 <p>Followed by the <a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow"><strong>NuttX Kernel</strong></a> (or Linux Kernel) in <strong>Supervisor Mode</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow.jpg" alt="Ox64 SBC will run in Machine, Supervisor AND User Modes" /></p>
@@ -360,7 +360,7 @@ for (int i = 0; i &lt; 0x10000; i++) {
   }
 </code></pre></div>
 <p>The <a href="https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers"><strong>TIME CSR Register</strong></a> gets assembled into the <a href="https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers"><strong>RDTIME RISC-V Instruction</strong></a>…</p>
-<p>But <strong>RDTIME</strong> isn’t supported by TinyEMU. <a href="https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers">(Needs the <strong>Zicntr Extension</strong>)</a></p>
+<p>However <strong>RDTIME</strong> isn’t supported by TinyEMU. <a href="https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers">(Needs the <strong>Zicntr Extension</strong>)</a></p>
 <p>Hence we patch <strong>RDTIME</strong> to become <strong>ECALL</strong> and we emulate later: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L927-L937">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // If we find the RDTIME Instruction: (Read System Time)
   // c0102573 rdtime a0
@@ -398,7 +398,7 @@ for (int i = 0; i &lt; 0x10000; i++) {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tinyemu2#intercept-the-uart-registers"><strong>“Intercept the UART Registers”</strong></a></li>
 </ul>
-<p>But Console Input is a little more tricky… We need to emulate <strong>UART Interrupts</strong>! (Pic above)</p>
+<p>Console Input is a little more tricky… We need to emulate <strong>UART Interrupts</strong>! (Pic above)</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/plic2"><strong>“UART Interrupt and Platform-Level Interrupt Controller”</strong></a></li>
 </ul>
@@ -608,7 +608,7 @@ pc=0000000000000000
 priv=M mstatus=0000000a000400a1 cycles=79648467
 mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 </code></pre></div>
-<p>But it actually jumps from RISC-V User Mode (<strong><code>priv=U</code></strong>) to <strong>Machine Mode</strong> (<strong><code>priv=M</code></strong>)! (Instead of Supervisor Mode)</p>
+<p>Nope, it actually jumps from RISC-V User Mode (<strong><code>priv=U</code></strong>) to <strong>Machine Mode</strong> (<strong><code>priv=M</code></strong>)! (Instead of Supervisor Mode)</p>
 <p>To fix this: We delegate all <strong>Exceptions and Interrupts</strong> to <strong>RISC-V Supervisor Mode</strong>. (Instead of Machine Mode)</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Previously: We jump to RAM_BASE_ADDR in Machine Mode
   // Now: We jump to RAM_BASE_ADDR in Supervisor Mode...
@@ -637,7 +637,7 @@ mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 NuttShell (NSH) NuttX-12.4.0
 nsh&gt;
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340">(See the Complete Log)</a></p>
+<p><a href="https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340">(See the <strong>Complete Log</strong>)</a></p>
 <p>And that’s why we need the big chunk of <a href="https://lupyuen.github.io/articles/tinyemu3#boot-nuttx-in-supervisor-mode"><strong>TinyEMU Boot Code</strong></a> that we saw earlier.</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will emulate the System Timer" /></p>
 <h1 id="appendix-start-the-system-timer"><a href="#appendix-start-the-system-timer">8 Appendix: Start the System Timer</a></h1>
