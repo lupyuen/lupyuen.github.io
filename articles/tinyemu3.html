@@ -388,7 +388,7 @@ for (int i = 0; i &lt; 0x10000; i++) {
 </ul>
 <p><em>Anything else we patched?</em></p>
 <p>We patched these Special RISC-V Instructions to become ECALL:  <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L937-L956"><strong>DCACHE.IALL</strong> and <strong>SYNC.S</strong></a></p>
-<p>These instructions are specific to <strong>T-Head C906 CPU</strong>. NuttX calls them to <a href="https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906"><strong>Flush the MMU Cache</strong></a>.</p>
+<p>These instructions are specific to <strong>T-Head C906 CPU</strong> (and won’t work in TinyEMU). NuttX calls them to <a href="https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906"><strong>Flush the MMU Cache</strong></a>.</p>
 <p>(Though we don’t emulate them right now)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="UART Interrupts for Ox64 BL808 SBC" /></p>
 <h1 id="emulate-the-uart-interrupts"><a href="#emulate-the-uart-interrupts">5 Emulate the UART Interrupts</a></h1>
