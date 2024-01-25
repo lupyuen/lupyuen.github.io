@@ -20,39 +20,41 @@ TODO
 
 We begin with the easier bit: Scripting our Ox64 Emulator...
 
-[Daily Builds](https://github.com/lupyuen/nuttx-ox64/tags)
+# Scripting The Expected
 
-TODO: Pic of [daily build, daily test](https://github.com/lupyuen/nuttx-ox64)
+_What's this "Expect Scripting"?_
 
-[__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) precompiled for Ox64
+__`expect`__ is a cool Command-Line Tool that sends commands to another app and checks the responses.
 
-  (Without any modifications)
+_How is it used for Automated Testing?_
 
-- Boot it on the [__TinyEMU RISC-V Emulator__](https://lupyuen.github.io/articles/tinyemu)
+Normally when we start our Ox64 Emulator, it boots NuttX and __waits for our command__...
 
-  [(Which runs in a __Web Browser__)](https://www.barebox.org/jsbarebox/?graphic=1)
+```text
+## Start our Ox64 Emulator with NuttX
+$ temu nuttx.cfg
 
-- Create our own [__Emulator for Ox64 SBC__](https://lupyuen.github.io/nuttx-tinyemu/smode)
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh>
+```
 
-  (With minor tweaks to TinyEMU)
+TODO: nuttx.cfg is our TinyEMU Config
 
-- And run everything in our __Web Browser__
+But with an __Expect Script__, we can __feed our commands automatically__ into the Emulator!
 
-  (Thanks to WebAssembly)
+```text
+## Run our Expect Script to start the Ox64 Emulator
+$ ./nuttx.exp
+...
+nsh> uname -a
+NuttX 12.4.0-RC0 55ec92e181 Jan 24 2024 00:11:08 risc-v ox64
+nsh> 
+```
 
-_Why NuttX?_
+_What's nuttx.exp?_
 
-[__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) is a tiny operating system for [__64-bit RISC-V Machines__](https://lupyuen.github.io/articles/riscv). (Also Arm, x64, ESP32, ...)
-
-Which makes it easier to understand __everything that happens__ as NuttX boots on our Ox64 Emulator.
-
-TODO: ![Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)](https://lupyuen.github.io/images/ox64-sd.jpg)
-
-# Expect Scripting
-
-TODO
-
-[nuttx.exp](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp)
+That's our __Expect Script__ containing the commands that will be sent to our Emulator: [nuttx.exp](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp)
 
 ```bash
 #!/usr/bin/expect
@@ -67,7 +69,11 @@ spawn ./temu nuttx.cfg
 ## Wait for the prompt and enter `uname -a`
 expect "nsh> "
 send -s "uname -a\r"
+```
 
+TODO
+
+```bash
 ## Wait for the prompt and enter `ostest`
 expect "nsh> "
 send -s "ostest\r"
@@ -125,6 +131,8 @@ TODO
 TODO
 
 [Output Logs](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
+
+TODO: [Daily Builds](https://github.com/lupyuen/nuttx-ox64/tags)
 
 # Start NuttX Kernel in Supervisor Mode
 
