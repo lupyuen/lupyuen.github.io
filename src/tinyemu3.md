@@ -167,7 +167,7 @@ sudo apt -y update
 sudo apt -y install \
   expect libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev wget
 
-## Build Ox64 BL808 Emulator
+## Build our Ox64 BL808 Emulator
 git clone https://github.com/lupyuen/ox64-tinyemu
 pushd ox64-tinyemu
 make
@@ -175,24 +175,28 @@ cp temu ..
 popd
 ```
 
-Download the __Daily NuttX Build__...
+Next we download the __Daily NuttX Build__...
 
 ```bash
 ## Location of Daily NuttX Builds
 ## `outputs.date` looks like `2024-01-25`
 url=https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-${{ steps.date.outputs.date }}
 
-## Download the NuttX Build and show the Git Hash
+## Download the NuttX Build and print the Git Hash
 wget $url/Image
 wget $url/nuttx.hash
 cat nuttx.hash
+
+## Git Hash looks like...
+## NuttX Source: https://github.com/apache/nuttx/tree/501896415589aa1a0264b0765746d8bdb43bdf42
+## NuttX Apps: https://github.com/apache/nuttx-apps/tree/a16fb23dd752e84849ffcf865fc5d6d5ac745e43
 ```
 
 [(__NuttX Builds__ are here)](https://github.com/lupyuen/nuttx-ox64/tags)
 
 [(__outputs.date__ is defined here)](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml#L25-L29)
 
-And start our __Test Script__...
+And we start our __Test Script__...
 
 ```bash
 ## Download the Test Script from
@@ -232,7 +236,7 @@ That's everything we need for Daily Automated Testing! Our Ox64 Emulator will em
 
 _Ox64 Automated Testing doesn't look so hard?_
 
-That's because most of the tough work was done in our __Ox64 BL808 Emulator__! Let's look back at the challenging bits...
+That's because most of the tough work was done in our [__Ox64 BL808 Emulator__](https://lupyuen.github.io/articles/tinyemu2)! Let's look back at the challenging bits...
 
 _What's this Supervisor Mode? Why does it matter?_
 
@@ -242,7 +246,7 @@ Which won't work because NuttX expects to run in __RISC-V Supervisor Mode__...
 
 - [__"Machine Mode vs Supervisor Mode"__](https://lupyuen.github.io/articles/tinyemu2#machine-mode-vs-supervisor-mode)
 
-_All Operating Systems should boot in (super-powerful) Machine Mode. Right?_
+_All Operating Systems should boot in Machine Mode. Right?_
 
 Actually a __RISC-V SBC__ (like Ox64) will boot the [__OpenSBI Supervisor Binary Interface__](https://lupyuen.github.io/articles/sbi) in __Machine Mode__...
 
