@@ -531,13 +531,19 @@ Hence we patch __RDTIME__ to become __ECALL__ and we emulate later: [riscv_machi
   }
 ```
 
-How to handle both ECALLs? Check out the details here...
+How to handle both ECALLs? Check the details here...
 
 TODO: Appendix
 
-[Patch DCACHE.IALL and SYNC.S to become ECALL](https://github.com/lupyuen/ox64-tinyemu/commit/b8671f76414747b6902a7dcb89f6fc3c8184075f)
+_Anything else we patched?_
 
-[Emulator Timer Log](https://gist.github.com/lupyuen/31bde9c2563e8ea2f1764fb95c6ea0fc)
+We patched these Special RISC-V Instructions to become ECALL:  [__DCACHE.IALL__ and __SYNC.S__](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L937-L956)
+
+These instructions are specific to __T-Head C906 CPU__. NuttX calls them to [__Flush the MMU Cache__](https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906).
+
+(Though we won't emulate them yet)
+
+TODO: [Emulator Timer Log](https://gist.github.com/lupyuen/31bde9c2563e8ea2f1764fb95c6ea0fc)
 
 Test `ostest`...
 
@@ -556,11 +562,9 @@ _assert: Assertion failed (_Bool)0: at file: semtimed.c:240 task: ostest process
 up_dump_register: EPC: 0000000050202008
 ```
 
-[Remove the Timer Interrupt Interval because ostest will fail](https://github.com/lupyuen/ox64-tinyemu/commit/169dd727a5e06bdc95ac3f32e1f1b119c3cbbb75)
+TODO: [Remove the Timer Interrupt Interval because ostest will fail](https://github.com/lupyuen/ox64-tinyemu/commit/169dd727a5e06bdc95ac3f32e1f1b119c3cbbb75)
 
-`ostest` is OK yay!
-
-https://lupyuen.github.io/nuttx-tinyemu/timer/
+TODO: [`ostest` is OK yay!](https://lupyuen.github.io/nuttx-tinyemu/timer/)
 
 # What's Next
 
@@ -714,6 +718,8 @@ nx_start: CPU0: Beginning Idle Loop
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340)
 
+![TinyEMU will emulate the System Timer](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
+
 # Appendix: Start the System Timer
 
 TODO
@@ -748,7 +754,23 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
       return;          
 ```
 
-TODO: set_timecmp is here
+__set_timecmp__ sets the System Timer: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1225-L1235)
+
+```c
+// Set the System Timer
+void set_timecmp(RISCVMachine *machine0, uint64_t timecmp) {
+
+  // At Startup: Remember the RISC-V Machine and return
+  static RISCVMachine *machine = NULL;
+  if (machine0 != NULL) { machine = machine0; return; }
+
+  // Otherwise set the System Timer
+  if (machine == NULL) { puts("set_timecmp: machine is null"); return; }
+  machine->timecmp = timecmp;
+}
+```
+
+[(__set_timecmp__ is initialised by __riscv_machine_init__)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1136-L1140)
 
 # Appendix: Read the System Time
 
@@ -780,6 +802,8 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
       return; 
 ```
 
+TODO: __set_timecmp__ is here
+
 TODO: real_time is set by
 
 # Appendix: Trigger the Timer Interrupt
@@ -805,8 +829,6 @@ static int riscv_machine_get_sleep_duration(VirtMachine *s1, int delay) {
     }
   }
 ```
-
-[Handle System Timer with mtimecmp](https://github.com/lupyuen/ox64-tinyemu/commit/f00d40c0de3d97e93844626c0edfd3b19e8252db)
 
 TODO
 
