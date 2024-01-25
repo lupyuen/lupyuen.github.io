@@ -38,6 +38,10 @@ Today we fill in the missing pieces of our Ox64 Emulator and call it for __Autom
 
 We begin with the easier bit: Scripting our Ox64 Emulator...
 
+![Ox64 BL808 Emulator runs in a Web Browser too](https://lupyuen.github.io/images/tinyemu2-title.png)
+
+[_Ox64 BL808 Emulator runs in a Web Browser too_](https://lupyuen.github.io/nuttx-tinyemu/timer)
+
 # Scripting The Expected
 
 _What's this "Expect Scripting"?_
@@ -134,7 +138,7 @@ spawn ./temu nuttx.cfg
 ## Our Expect Script completes successfully
 ```
 
-TODO: [(See the __Test Log__)](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
+[(See the __Test Log__)](https://gist.github.com/lupyuen/1693ffb16ae943e44faada4428335eb0)
 
 # Daily Automated Testing
 
@@ -208,8 +212,6 @@ That's everything we need for Daily Automated Testing! Our Ox64 Emulator will em
 
 <span style="font-size:90%">
 
-TODO: [(See the __Test Log__)](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
-
 | | | |
 |:--|:--|:--|
 | [__Standard I/O__](https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c#L622-L639) | [__Environment Variables__](https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c#L146-L209) | [__Stream VBuf__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/setvbuf.c)
@@ -218,7 +220,7 @@ TODO: [(See the __Test Log__)](https://github.com/lupyuen/nuttx-ox64/actions/wor
 | [__PThread Exit__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/pthread_exit.c) | [__Timed Wait__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/timedwait.c) | [__Message Queue__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/mqueue.c)
 | [__Timed Message Queue__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/timedmqueue.c) | [__Signal Handler__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/sighand.c) | [__Nested Signal Handler__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/signest.c)
 | [__POSIX Timer__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/posixtimer.c) | [__Round-Robin Scheduler__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/roundrobin.c) | [__PThread Barrier__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/barrier.c)
-| [__Scheduler Lock__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/schedlock.c)
+| [__Scheduler Lock__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/schedlock.c) | [(See the __Test Log__)](https://gist.github.com/lupyuen/1693ffb16ae943e44faada4428335eb0) | [(See the __Daily Logs__)](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
 
 </span>
 
@@ -460,7 +462,7 @@ int virtio_console_write_data(VIRTIODevice *s, const uint8_t *buf, int buf_len) 
 
 [(__set_input__ is defined here)](https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L2697-L2704)
 
-TODO: set_irq is defined here
+[(__set_irq__ is defined here)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L319-L332)
 
 When we run this: TinyEMU loops forever handling UART Interrupts :-(
 
@@ -724,7 +726,7 @@ And that's why we need the big chunk of [__TinyEMU Boot Code__](https://lupyuen.
 
 # Appendix: Start the System Timer
 
-Earlier we talked about emulating OpenSBI for __starting the System Timer__...
+Earlier we talked about emulating OpenSBI for __starting the System Timer__ (pic above)...
 
 - [__"Emulate the System Timer"__](https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer)
 
@@ -747,12 +749,15 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
       // We emulate the OpenSBI Set Timer Function:
       // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0
 
+      // Clear the Pending Timer Interrupt Bit
+      // (Says the SBI Spec)
+      riscv_cpu_reset_mip(s, MIP_STIP);
+
       // If Parameter A0 is not -1, set the System Timer (timecmp)
       // Parameter A0 is Register X10
       uint64_t timecmp = s->reg[10];
       if (timecmp != (uint64_t) -1) {
         set_timecmp(NULL, timecmp);
-        // TODO: We clear the Pending Timer Interrupt Bit.
       }
 
       // Skip to the next instruction (RET)
@@ -778,7 +783,7 @@ void set_timecmp(RISCVMachine *machine0, uint64_t timecmp) {
 
 [(__set_timecmp__ is initialised by __riscv_machine_init__)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1136-L1140)
 
-Note that nothing will happen unless we trigger a __Supervisor-Mode Timer Interrupt__ to NuttX!
+Note that nothing will happen unless we trigger a __Supervisor-Mode Timer Interrupt__ to NuttX...
 
 - [__"Trigger the Timer Interrupt"__](https://lupyuen.github.io/articles/tinyemu3#appendix-trigger-the-timer-interrupt)
 
@@ -828,13 +833,13 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
 
 [(__real_time__ is explained in the next section)](https://lupyuen.github.io/articles/tinyemu3#appendix-trigger-the-timer-interrupt)
 
-Note that nothing will happen unless we trigger a __Supervisor-Mode Timer Interrupt__ to NuttX!
+Note that nothing will happen unless we trigger a __Supervisor-Mode Timer Interrupt__ to NuttX...
 
 - [__"Trigger the Timer Interrupt"__](https://lupyuen.github.io/articles/tinyemu3#appendix-trigger-the-timer-interrupt)
 
 # Appendix: Trigger the Timer Interrupt
 
-Previously we discussed the emulation of the __System Timer__...
+Previously we discussed the emulation of the __System Timer__ (pic above)...
 
 - [__"Emulate the System Timer"__](https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer)
 
@@ -864,7 +869,7 @@ static int riscv_machine_get_sleep_duration(VirtMachine *s1, int delay) {
   }
 ```
 
-Again we're using the Machine-Mode System Timer, to trigger the Supervisor-Mode Timer Interrupt.
+Again we're using the __Machine-Mode System Timer__, to trigger the Supervisor-Mode Timer Interrupt.
 
 With this Timer Interrupt, __`usleep`__ (and other Timer Functions) will work perfectly in NuttX...
 
@@ -875,3 +880,5 @@ NuttShell (NSH) NuttX-12.4.0-RC0
 nsh> usleep 1
 nsh> 
 ```
+
+[(See the __Timer Log__)](https://gist.github.com/lupyuen/31bde9c2563e8ea2f1764fb95c6ea0fc)
