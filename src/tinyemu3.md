@@ -331,6 +331,104 @@ Yes! Check out what happens if we remove some bits of our Boot Code from TinyEMU
 
 TODO: Appendix
 
+![TinyEMU will emulate the System Timer](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
+
+# Emulate the System Timer
+
+_NuttX can't access the System Timer because it runs in RISC-V Supervisor Mode..._
+
+_What can we do to help NuttX?_
+
+NuttX will make a __System Call (ECALL)__ to OpenSBI to start the System Timer (pic above)...
+
+- [__"OpenSBI Timer for NuttX"__](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
+
+And NuttX reads the System Time through the __TIME CSR Register__: [riscv_sbi.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L108-L141)
+
+```c
+// Fetch the System Time...
+uint64_t riscv_sbi_get_time(void) {
+
+  // Read the TIME CSR Register, which becomes
+  // the `RDTIME` RISC-V Instruction
+  return READ_CSR(time);
+}
+```
+
+Thus we emulate the [__OpenSBI System Timer__](https://lupyuen.github.io/articles/sbi#set-a-system-timer) and the [__TIME CSR Register__](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers).
+
+__At Startup:__ We search for the ECALL to OpenSBI and remember the __ECALL Address__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L916-L927)
+
+```c
+// Scan the Kernel Image for Special Instructions...
+uint8_t *kernel_ptr = get_ram_ptr(s, RAM_BASE_ADDR, TRUE);
+for (int i = 0; i < 0x10000; i++) {
+
+  // If we find the ECALL Instruction:
+  // 00000073 ecall
+  const uint8_t ecall[] = { 0x73, 0x00, 0x00, 0x00 };
+  if (memcmp(&kernel_ptr[i], ecall, sizeof(ecall)) == 0) {
+
+    // Remember the ECALL Address
+    ecall_addr = RAM_BASE_ADDR + i;
+  }
+```
+
+The [__TIME CSR Register__](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers) gets assembled into the [__RDTIME RISC-V Instruction__](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers)...
+
+But __RDTIME__ isn't supported by TinyEMU. [(Needs the __Zicntr Extension__)](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers)
+
+Hence we patch __RDTIME__ to become __ECALL__ and we emulate later: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L927-L937)
+
+```c
+  // If we find the RDTIME Instruction: (Read System Time)
+  // c0102573 rdtime a0
+  const uint8_t rdtime[] = { 0x73, 0x25, 0x10, 0xc0 };
+  if (memcmp(&kernel_ptr[i], rdtime, sizeof(rdtime)) == 0) {
+
+    // Patch RDTIME to become ECALL
+    memcpy(&kernel_ptr[i], ecall,  sizeof(ecall));
+
+    // Remember the RDTIME Address
+    rdtime_addr = RAM_BASE_ADDR + i;
+  }
+```
+
+How to handle both ECALLs? Check the details here...
+
+TODO: Appendix
+
+_Anything else we patched?_
+
+We patched these Special RISC-V Instructions to become ECALL:  [__DCACHE.IALL__ and __SYNC.S__](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L937-L956)
+
+These instructions are specific to __T-Head C906 CPU__. NuttX calls them to [__Flush the MMU Cache__](https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906).
+
+(Though we won't emulate them yet)
+
+TODO: [Emulator Timer Log](https://gist.github.com/lupyuen/31bde9c2563e8ea2f1764fb95c6ea0fc)
+
+Test `ostest`...
+
+```text
+semtimed_test: Starting poster thread
+semtimed_test: Set thread 1 priority to 191
+semtimed_test: Starting poster thread 3
+semtimed_test: Set thread 3 priority to 64
+semtimed_test: Waiting for two second timeout
+poster_func: Waiting for 1 second
+semtimed_test: ERROR: sem_timedwait failed with: 110
+_assert: Current Version: NuttX  12.4.0-RC0 55ec92e181 Jan 24 2024 00:11:51 risc
+-v
+_assert: Assertion failed (_Bool)0: at file: semtimed.c:240 task: ostest process
+: ostest 0x8000004a
+up_dump_register: EPC: 0000000050202008
+```
+
+TODO: [Remove the Timer Interrupt Interval because ostest will fail](https://github.com/lupyuen/ox64-tinyemu/commit/169dd727a5e06bdc95ac3f32e1f1b119c3cbbb75)
+
+TODO: [`ostest` is OK yay!](https://lupyuen.github.io/nuttx-tinyemu/timer/)
+
 ![UART Interrupts for Ox64 BL808 SBC](https://lupyuen.github.io/images/plic2-registers.jpg)
 
 # Emulate the UART Interrupts
@@ -468,104 +566,6 @@ A few more tweaks to TinyEMU VirtIO for Console Input...
 
 1.  We're always [__Ready for VirtIO Writes__](https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1313-L1338)
 
-![TinyEMU will emulate the System Timer](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
-
-# Emulate the System Timer
-
-_NuttX can't access the System Timer because it runs in RISC-V Supervisor Mode..._
-
-_What can we do to help NuttX?_
-
-NuttX will make a __System Call (ECALL)__ to OpenSBI to start the System Timer (pic above)...
-
-- [__"OpenSBI Timer for NuttX"__](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
-
-And NuttX reads the System Time through the __TIME CSR Register__: [riscv_sbi.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L108-L141)
-
-```c
-// Fetch the System Time...
-uint64_t riscv_sbi_get_time(void) {
-
-  // Read the TIME CSR Register, which becomes
-  // the `RDTIME` RISC-V Instruction
-  return READ_CSR(time);
-}
-```
-
-Thus we emulate the [__OpenSBI System Timer__](https://lupyuen.github.io/articles/sbi#set-a-system-timer) and the [__TIME CSR Register__](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers).
-
-__At Startup:__ We search for the ECALL to OpenSBI and remember the __ECALL Address__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L916-L927)
-
-```c
-// Scan the Kernel Image for Special Instructions...
-uint8_t *kernel_ptr = get_ram_ptr(s, RAM_BASE_ADDR, TRUE);
-for (int i = 0; i < 0x10000; i++) {
-
-  // If we find the ECALL Instruction:
-  // 00000073 ecall
-  const uint8_t ecall[] = { 0x73, 0x00, 0x00, 0x00 };
-  if (memcmp(&kernel_ptr[i], ecall, sizeof(ecall)) == 0) {
-
-    // Remember the ECALL Address
-    ecall_addr = RAM_BASE_ADDR + i;
-  }
-```
-
-The [__TIME CSR Register__](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers) gets assembled into the [__RDTIME RISC-V Instruction__](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers)...
-
-But __RDTIME__ isn't supported by TinyEMU. [(Needs the __Zicntr Extension__)](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers)
-
-Hence we patch __RDTIME__ to become __ECALL__ and we emulate later: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L927-L937)
-
-```c
-  // If we find the RDTIME Instruction: (Read System Time)
-  // c0102573 rdtime a0
-  const uint8_t rdtime[] = { 0x73, 0x25, 0x10, 0xc0 };
-  if (memcmp(&kernel_ptr[i], rdtime, sizeof(rdtime)) == 0) {
-
-    // Patch RDTIME to become ECALL
-    memcpy(&kernel_ptr[i], ecall,  sizeof(ecall));
-
-    // Remember the RDTIME Address
-    rdtime_addr = RAM_BASE_ADDR + i;
-  }
-```
-
-How to handle both ECALLs? Check the details here...
-
-TODO: Appendix
-
-_Anything else we patched?_
-
-We patched these Special RISC-V Instructions to become ECALL:  [__DCACHE.IALL__ and __SYNC.S__](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L937-L956)
-
-These instructions are specific to __T-Head C906 CPU__. NuttX calls them to [__Flush the MMU Cache__](https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906).
-
-(Though we won't emulate them yet)
-
-TODO: [Emulator Timer Log](https://gist.github.com/lupyuen/31bde9c2563e8ea2f1764fb95c6ea0fc)
-
-Test `ostest`...
-
-```text
-semtimed_test: Starting poster thread
-semtimed_test: Set thread 1 priority to 191
-semtimed_test: Starting poster thread 3
-semtimed_test: Set thread 3 priority to 64
-semtimed_test: Waiting for two second timeout
-poster_func: Waiting for 1 second
-semtimed_test: ERROR: sem_timedwait failed with: 110
-_assert: Current Version: NuttX  12.4.0-RC0 55ec92e181 Jan 24 2024 00:11:51 risc
--v
-_assert: Assertion failed (_Bool)0: at file: semtimed.c:240 task: ostest process
-: ostest 0x8000004a
-up_dump_register: EPC: 0000000050202008
-```
-
-TODO: [Remove the Timer Interrupt Interval because ostest will fail](https://github.com/lupyuen/ox64-tinyemu/commit/169dd727a5e06bdc95ac3f32e1f1b119c3cbbb75)
-
-TODO: [`ostest` is OK yay!](https://lupyuen.github.io/nuttx-tinyemu/timer/)
-
 # What's Next
 
 TODO
@@ -597,6 +597,19 @@ Earlier we saw a big chunk of __TinyEMU Boot Code__ (pic above) that will start 
 TODO
 
 _Can't we call MRET directly? And jump from Machine Mode to Supervisor Mode?_
+
+```c
+  // Load RAM_BASE_ADDR into Register T0.
+  // That's 0x5020_0000, the Start Address of
+  // NuttX Kernel (Linux too)
+  auipc t0, RAM_BASE_ADDR
+
+  // Testing: Can we jump like this?
+  // Jump to RAM_BASE_ADDR in Supervisor Mode:
+  // Set the MEPC CSR Register, then Return from Machine Mode
+  csrw  mepc, t0
+  mret
+```
 
 TODO: machine exception delegation register (medeleg) and machine interrupt delegation register ( mideleg)
 
