@@ -202,26 +202,30 @@ sudo apt -y update
 sudo apt -y install \
   expect libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev wget
 
-## Build Ox64 BL808 Emulator
+## Build our Ox64 BL808 Emulator
 git clone https://github.com/lupyuen/ox64-tinyemu
 pushd ox64-tinyemu
 make
 cp temu ..
 popd
 </code></pre></div>
-<p>Download the <strong>Daily NuttX Build</strong>…</p>
+<p>Next we download the <strong>Daily NuttX Build</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Location of Daily NuttX Builds
 ## `outputs.date` looks like `2024-01-25`
 url=https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-${{ steps.date.outputs.date }}
 
-## Download the NuttX Build and show the Git Hash
+## Download the NuttX Build and print the Git Hash
 wget $url/Image
 wget $url/nuttx.hash
 cat nuttx.hash
+
+## Git Hash looks like...
+## NuttX Source: https://github.com/apache/nuttx/tree/501896415589aa1a0264b0765746d8bdb43bdf42
+## NuttX Apps: https://github.com/apache/nuttx-apps/tree/a16fb23dd752e84849ffcf865fc5d6d5ac745e43
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/tags">(<strong>NuttX Builds</strong> are here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml#L25-L29">(<strong>outputs.date</strong> is defined here)</a></p>
-<p>And start our <strong>Test Script</strong>…</p>
+<p>And we start our <strong>Test Script</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Test Script from
 ## https://github.com/lupyuen/nuttx-ox64
 url=https://github.com/lupyuen/nuttx-ox64/raw/main
@@ -249,14 +253,14 @@ chmod +x nuttx.exp
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow2.jpg" alt="NuttX Kernel won’t work in Machine Mode" /></p>
 <h1 id="boot-nuttx-in-supervisor-mode"><a href="#boot-nuttx-in-supervisor-mode">3 Boot NuttX in Supervisor Mode</a></h1>
 <p><em>Ox64 Automated Testing doesn’t look so hard?</em></p>
-<p>That’s because most of the tough work was done in our <strong>Ox64 BL808 Emulator</strong>! Let’s look back at the challenging bits…</p>
+<p>That’s because most of the tough work was done in our <a href="https://lupyuen.github.io/articles/tinyemu2"><strong>Ox64 BL808 Emulator</strong></a>! Let’s look back at the challenging bits…</p>
 <p><em>What’s this Supervisor Mode? Why does it matter?</em></p>
 <p>We created our Ox64 Emulator with the <a href="https://lupyuen.github.io/articles/tinyemu2"><strong>TinyEMU RISC-V Emulator</strong></a>. And TinyEMU boots NuttX in <strong>RISC-V Machine Mode</strong>. (Pic above)</p>
 <p>Which won’t work because NuttX expects to run in <strong>RISC-V Supervisor Mode</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tinyemu2#machine-mode-vs-supervisor-mode"><strong>“Machine Mode vs Supervisor Mode”</strong></a></li>
 </ul>
-<p><em>All Operating Systems should boot in (super-powerful) Machine Mode. Right?</em></p>
+<p><em>All Operating Systems should boot in Machine Mode. Right?</em></p>
 <p>Actually a <strong>RISC-V SBC</strong> (like Ox64) will boot the <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI Supervisor Binary Interface</strong></a> in <strong>Machine Mode</strong>…</p>
 <p>Followed by the <a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow"><strong>NuttX Kernel</strong></a> (or Linux Kernel) in <strong>Supervisor Mode</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow.jpg" alt="Ox64 SBC will run in Machine, Supervisor AND User Modes" /></p>
