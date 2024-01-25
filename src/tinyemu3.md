@@ -242,14 +242,20 @@ void copy_bios(...) {
 
   // Load the Hart ID (CPU ID: 0) into Register A0
   csrr  a0, mhartid
+```
 
+The code above comes from the original TinyEMU Emulator.
+
+Next comes the code that we specially inserted for our __Ox64 Emulator__...
+
+```c
   // Previously: We jump to RAM_BASE_ADDR in Machine Mode
   // Now: We jump to RAM_BASE_ADDR in Machine Mode...
 
   // Set Exception and Interrupt Delegation for Supervisor Mode:
   // Set MEDELEG CSR Register to 0xFFFF
-  lui   a5, 0x10   ; nop
-  addiw a5, a5, -1 ; nop
+  lui   a5, 0x10   ; nop  // A5 is 0x10000
+  addiw a5, a5, -1 ; nop  // A5 is 0xFFFF
   csrw  medeleg, a5
 
   // Set MIDELEG CSR Register to 0xFFFF
