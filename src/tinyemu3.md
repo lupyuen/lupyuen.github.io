@@ -380,7 +380,20 @@ for (int i = 0; i < 0x10000; i++) {
   }
 ```
 
+_What about the TIME CSR Register?_
+
 The [__TIME CSR Register__](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers) gets assembled into the [__RDTIME RISC-V Instruction__](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers)...
+
+```c
+// Read the TIME CSR Register, which becomes
+// the `RDTIME` RISC-V Instruction
+nuttx/arch/risc-v/src/common/supervisor/riscv_sbi.c:126
+  riscv_sbi_get_time():
+    return READ_CSR(time);
+      5020bae6: c0102573  rdtime a0
+```
+
+[(See the __NuttX Disassembly__)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/timer/nuttx.S)
 
 However __RDTIME__ isn't supported by TinyEMU. [(Needs the __Zicntr Extension__)](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers)
 
@@ -592,16 +605,16 @@ Earlier we saw a big chunk of __TinyEMU Boot Code__ (pic above) that will start 
 _Can't we call MRET directly? And jump from Machine Mode to Supervisor Mode?_
 
 ```c
-  // Load RAM_BASE_ADDR into Register T0.
-  // That's 0x5020_0000, the Start Address of
-  // NuttX Kernel (Linux too)
-  auipc t0, RAM_BASE_ADDR
+// Load RAM_BASE_ADDR into Register T0.
+// That's 0x5020_0000, the Start Address of
+// NuttX Kernel (Linux too)
+auipc t0, RAM_BASE_ADDR
 
-  // Testing: Can we jump like this?
-  // Jump to RAM_BASE_ADDR in Supervisor Mode:
-  // Set the MEPC CSR Register, then Return from Machine Mode
-  csrw  mepc, t0
-  mret
+// Testing: Can we jump like this?
+// Jump to RAM_BASE_ADDR in Supervisor Mode:
+// Set the MEPC CSR Register, then Return from Machine Mode
+csrw  mepc, t0
+mret
 ```
 
 Watch what happens when we run it...
@@ -617,7 +630,7 @@ raise_exception2: cause=2
 
 TinyEMU halts with an __Illegal Instuction__. The offending code comes from...
 
-```text
+```c
 nuttx/arch/risc-v/src/chip/bl808_head.S:124
   /* Disable all interrupts (i.e. timer, external) in sie */
   csrw sie, zero
@@ -633,21 +646,21 @@ The instruction is invalid because we're running in __RISC-V User Mode__ (__`pri
 Somehow __MRET__ has jumped from Machine Mode to User Mode. To fix this, we set the __Previous Privilege Mode__ to Supervisor Mode...
 
 ```c
-  // Clear these bits in MSTATUS CSR Register...
-  // MPP (Bits 11 and 12): Clear the Previous Privilege Mode
-  lui   a5, 0xffffe ; nop
-  addiw a5, a5, 2047
-  csrc  mstatus, a5
+// Clear these bits in MSTATUS CSR Register...
+// MPP (Bits 11 and 12): Clear the Previous Privilege Mode
+lui   a5, 0xffffe ; nop
+addiw a5, a5, 2047
+csrc  mstatus, a5
 
-  // Set these bits in MSTATUS CSR Register...
-  // MPPS (Bit 11): Previous Privilege Mode is Supervisor Mode
-  // SUM  (Bit 18): Allow Supervisor Mode to access Memory of User Mode
-  lui   a5, 0x41
-  addiw a5, a5, -2048
-  csrs  mstatus, a5
+// Set these bits in MSTATUS CSR Register...
+// MPPS (Bit 11): Previous Privilege Mode is Supervisor Mode
+// SUM  (Bit 18): Allow Supervisor Mode to access Memory of User Mode
+lui   a5, 0x41
+addiw a5, a5, -2048
+csrs  mstatus, a5
 
-  // Return from Machine Mode to Supervisor Mode
-  mret
+// Return from Machine Mode to Supervisor Mode
+mret
 ```
 
 [(__MSTATUS__ is explained here)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
@@ -690,22 +703,19 @@ Nope, it actually jumps from RISC-V User Mode (__`priv=U`__) to __Machine Mode__
 To fix this: We delegate all __Exceptions and Interrupts__ to __RISC-V Supervisor Mode__. (Instead of Machine Mode)
 
 ```c
-  // Previously: We jump to RAM_BASE_ADDR in Machine Mode
-  // Now: We jump to RAM_BASE_ADDR in Supervisor Mode...
+// Delegate all Exceptions to Supervisor Mode (instead of Machine Mode)
+// We set MEDELEG CSR Register to 0xFFFF
+lui   a5, 0x10   ; nop  // A5 is 0x10000
+addiw a5, a5, -1 ; nop  // A5 is 0xFFFF
+csrw  medeleg, a5
 
-  // Delegate all Exceptions to Supervisor Mode (instead of Machine Mode)
-  // We set MEDELEG CSR Register to 0xFFFF
-  lui   a5, 0x10   ; nop  // A5 is 0x10000
-  addiw a5, a5, -1 ; nop  // A5 is 0xFFFF
-  csrw  medeleg, a5
+// Delegate all Interrupts to Supervisor Mode (instead of Machine Mode)
+// We set MIDELEG CSR Register to 0xFFFF
+csrw  mideleg, a5
 
-  // Delegate all Interrupts to Supervisor Mode (instead of Machine Mode)
-  // We set MIDELEG CSR Register to 0xFFFF
-  csrw  mideleg, a5
-
-  // Rightfully: Follow the OpenSBI Settings for Ox64
-  // Boot HART MIDELEG: 0x0222
-  // Boot HART MEDELEG: 0xB109
+// Rightfully: Follow the OpenSBI Settings for Ox64
+// Boot HART MIDELEG: 0x0222
+// Boot HART MEDELEG: 0xB109
 ```
 
 (__MEDELEG__ is the Machine Exception Delegation Register)
@@ -760,7 +770,7 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
       riscv_cpu_reset_mip(s, MIP_STIP);
 
       // If Parameter A0 is not -1, set the System Timer (timecmp)
-      // Parameter A0 is Register X10
+      // (Parameter A0 is Register X10)
       uint64_t timecmp = s->reg[10];
       if (timecmp != (uint64_t) -1) {
         set_timecmp(NULL, timecmp);
@@ -827,7 +837,7 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
       // https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers
 
       // Return the System Time in Register A0
-      // Which is aliased to Register X10
+      // (Which is aliased to Register X10)
       s->reg[10] = real_time;
 
       // Skip to the next instruction (RET)
@@ -845,7 +855,7 @@ Note that nothing will happen unless we trigger a __Supervisor-Mode Timer Interr
 
 # Appendix: Trigger the Timer Interrupt
 
-Previously we discussed the emulation of the __System Timer__ (pic above)...
+Previously we discussed the emulation of the __System Timer__...
 
 - [__"Emulate the System Timer"__](https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer)
 
@@ -864,18 +874,21 @@ static int riscv_machine_get_sleep_duration(VirtMachine *s1, int delay) {
   // Pass the System Time to raise_exception2()
   real_time = rtc_get_time(m);
 
-  // If the System Timer has expired...
+  // If the Timer Interrupt has not been triggered...
   if (!(riscv_cpu_get_mip(s) & MIP_STIP)) {
 
-    // Trigger the Timer Interrupt for Supervisor Mode
+    // And the System Timer has expired...
     const int64_t delay2 = m->timecmp - rtc_get_time(m);
     if (delay2 <= 0) {
+
+      // We trigger the Timer Interrupt
+      // for Supervisor Mode
       riscv_cpu_set_mip(s, MIP_STIP);
     }
   }
 ```
 
-Again we're using the __Machine-Mode System Timer__, to trigger the Supervisor-Mode Timer Interrupt.
+Again we're reusing the __Machine-Mode System Timer__, to trigger the Supervisor-Mode Timer Interrupt.
 
 With this Timer Interrupt, __`usleep`__ (and other Timer Functions) will work perfectly in NuttX...
 
