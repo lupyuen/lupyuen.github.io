@@ -410,6 +410,7 @@ Hence we patch __RDTIME__ to become __ECALL__ and we emulate later: [riscv_machi
   if (memcmp(&kernel_ptr[i], rdtime, sizeof(rdtime)) == 0) {
 
     // Patch RDTIME to become ECALL
+    const uint8_t ecall[] = { 0x73, 0x00, 0x00, 0x00 };
     memcpy(&kernel_ptr[i], ecall,  sizeof(ecall));
 
     // Remember the RDTIME Address
