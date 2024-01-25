@@ -69,7 +69,7 @@
 <li><a href="#scripting-the-expected">1 Scripting The Expected</a><ul></ul></li>
 <li><a href="#daily-automated-testing">2 Daily Automated Testing</a><ul></ul></li>
 <li><a href="#boot-nuttx-in-supervisor-mode">3 Boot NuttX in Supervisor Mode</a><ul></ul></li>
-<li><a href="#emulate-uart-interrupts">4 Emulate UART Interrupts</a><ul></ul></li>
+<li><a href="#emulate-the-uart-interrupts">4 Emulate the UART Interrupts</a><ul></ul></li>
 <li><a href="#emulate-the-system-timer">5 Emulate the System Timer</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-boot-nuttx-in-supervisor-mode">7 Appendix: Boot NuttX in Supervisor Mode</a><ul></ul></li>
@@ -325,7 +325,7 @@ void copy_bios(...) {
 <p>Yes! Check out what happens if we remove some bits of our Boot Code from TinyEMU…</p>
 <p>TODO: Appendix</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="UART Interrupts for Ox64 BL808 SBC" /></p>
-<h1 id="emulate-uart-interrupts"><a href="#emulate-uart-interrupts">4 Emulate UART Interrupts</a></h1>
+<h1 id="emulate-the-uart-interrupts"><a href="#emulate-the-uart-interrupts">4 Emulate the UART Interrupts</a></h1>
 <p><em>Ox64 SBC has a UART Controller that will handle Console Input…</em></p>
 <p><em>How did we emulate the Ox64 UART Controller?</em></p>
 <p>Previously we emulated the <strong>BL808 UART Registers</strong> to do Console Output…</p>
@@ -490,7 +490,7 @@ for (int i = 0; i &lt; 0x10000; i++) {
     rdtime_addr = RAM_BASE_ADDR + i;
   }
 </code></pre></div>
-<p>This is how we handle both ECALLs…</p>
+<p>How to handle both ECALLs? Check out the details here…</p>
 <p>TODO: Appendix</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/b8671f76414747b6902a7dcb89f6fc3c8184075f">Patch DCACHE.IALL and SYNC.S to become ECALL</a></p>
 <p><a href="https://gist.github.com/lupyuen/31bde9c2563e8ea2f1764fb95c6ea0fc">Emulator Timer Log</a></p>
@@ -642,56 +642,77 @@ nx_start: CPU0: Beginning Idle Loop
 <h1 id="appendix-start-the-system-timer"><a href="#appendix-start-the-system-timer">8 Appendix: Start the System Timer</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1164-L1182">riscv_cpu.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>    //// Begin Test: Emulate Patched Instructions and OpenSBI for System Timer
-    if (cause == CAUSE_SUPERVISOR_ECALL) {
+<div class="example-wrap"><pre class="language-c"><code>// Called by TinyEMU to handle RISC-V Exceptions
+void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
+  ...
+  // If this is an ECALL from Supervisor Mode...
+  // (Not ECALL from User Mode)
+  if (cause == CAUSE_SUPERVISOR_ECALL) {
 
-        if (s-&gt;pc == ecall_addr) {
-            // For OpenSBI Set Timer: Clear the pending timer interrupt bit
-            // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0
-            _info(&quot;Set Timer\n&quot;);
-            _info(&quot;  reg %s=%p\n&quot;, reg_name[16], s-&gt;reg[16]); //// A6 is X16 (fid)
-            _info(&quot;  reg %s=%p\n&quot;, reg_name[17], s-&gt;reg[17]); //// A7 is X17 (extid)
-            _info(&quot;  reg %s=%p\n&quot;, reg_name[10], s-&gt;reg[10]); //// A0 is X10 (parm0)
-            riscv_cpu_reset_mip(s, MIP_STIP);
+    // If Program Counter is the
+    // ECALL to OpenSBI...
+    if (s-&gt;pc == ecall_addr) {
 
-            // If parm0 is not -1, set the System Timer (timecmp)
-            uint64_t timecmp = s-&gt;reg[10];  // A0 is X10 (parm0)
-            if (timecmp != (uint64_t) -1) {
-                void set_timecmp(void *machine0, uint64_t timecmp);
-                set_timecmp(NULL, timecmp);
-            }
+      // We emulate the OpenSBI Set Timer Function:
+      // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0
 
-        s-&gt;pc += 4;  // Jump to the next instruction (ret)
-        return;          
-</code></pre></div><h1 id="appendix-read-the-system-time"><a href="#appendix-read-the-system-time">9 Appendix: Read the System Time</a></h1>
+      // If Parameter A0 is not -1, set the System Timer (timecmp)
+      // Parameter A0 is Register X10
+      uint64_t timecmp = s-&gt;reg[10];
+      if (timecmp != (uint64_t) -1) {
+        set_timecmp(NULL, timecmp);
+        // TODO: We clear the Pending Timer Interrupt Bit.
+      }
+
+      // Skip to the next instruction (RET)
+      s-&gt;pc += 4;
+      return;          
+</code></pre></div>
+<p>TODO: set_timecmp is here</p>
+<h1 id="appendix-read-the-system-time"><a href="#appendix-read-the-system-time">9 Appendix: Read the System Time</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1183-L1195">riscv_cpu.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>        } else if (s-&gt;pc == rdtime_addr) {
-            // For RDTIME: Return the time
-            // https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers
-            _info(&quot;Get Time\n&quot;);
-            // static uint64_t t = 0;
-            // s-&gt;reg[10] = t++;  // Not too much or usleep will hang
-            s-&gt;reg[10] = real_time;
-            _info(&quot;  Return reg %s=%p\n&quot;, reg_name[10], s-&gt;reg[10]); //// A0 is X10
-        }
+<div class="example-wrap"><pre class="language-c"><code>// Called by TinyEMU to handle RISC-V Exceptions
+void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
+  ...
+  // If this is an ECALL from Supervisor Mode...
+  // (Not ECALL from User Mode)
+  if (cause == CAUSE_SUPERVISOR_ECALL) {
 
-        s-&gt;pc += 4;  // Jump to the next instruction (ret)
-        return; 
-    }
-</code></pre></div><h1 id="appendix-trigger-the-timer-interrupt"><a href="#appendix-trigger-the-timer-interrupt">10 Appendix: Trigger the Timer Interrupt</a></h1>
+    // If Program Counter is the
+    // (formerly) RDTIME Instruction...
+    if (s-&gt;pc == rdtime_addr) {
+
+      // We emulate the RDTIME Instruction to fetch the System Time:
+      // https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers
+
+      // Return the System Time in Register A0
+      // Which is aliased to Register X10
+      s-&gt;reg[10] = real_time;
+
+      // Skip to the next instruction (RET)
+      s-&gt;pc += 4;
+      return; 
+</code></pre></div>
+<p>TODO: real_time is set by</p>
+<h1 id="appendix-trigger-the-timer-interrupt"><a href="#appendix-trigger-the-timer-interrupt">10 Appendix: Trigger the Timer Interrupt</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1172-L1182">riscv_machine.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>    //// Begin Test: Trigger the Supervisor-Mode Timer Interrupt
-    real_time = rtc_get_time(m);
-    if (!(riscv_cpu_get_mip(s) &amp; MIP_STIP)) {
-        const int64_t delay2 = m-&gt;timecmp - rtc_get_time(m);
-        if (delay2 &lt;= 0) {
-            riscv_cpu_set_mip(s, MIP_STIP);
-        }
+<div class="example-wrap"><pre class="language-c"><code>// Called by TinyEMU periodically to check the System Timer
+static int riscv_machine_get_sleep_duration(VirtMachine *s1, int delay) {
+  ...
+  // Pass the System Time to raise_exception2()
+  real_time = rtc_get_time(m);
+
+  // If the System Timer has expired...
+  if (!(riscv_cpu_get_mip(s) &amp; MIP_STIP)) {
+
+    // Trigger the Timer Interrupt for Supervisor Mode
+    const int64_t delay2 = m-&gt;timecmp - rtc_get_time(m);
+    if (delay2 &lt;= 0) {
+      riscv_cpu_set_mip(s, MIP_STIP);
     }
-    //// End Test
-    return delay;
+  }
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/f00d40c0de3d97e93844626c0edfd3b19e8252db">Handle System Timer with mtimecmp</a></p>
 <p>TODO</p>
