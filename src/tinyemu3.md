@@ -222,9 +222,27 @@ That's because most of the tough work was done in our __Ox64 BL808 Emulator__! L
 
 _What's this Supervisor Mode? Why does it matter?_
 
-TODO: The pic above 
+TinyEMU Emulator boots NuttX in __RISC-V Machine Mode__. (Pic above)
 
-[riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L874-L885)
+Which won't work because NuttX expects to run in __RISC-V Supervisor Mode__...
+
+- [__"Machine Mode vs Supervisor Mode"__](https://lupyuen.github.io/articles/tinyemu2#machine-mode-vs-supervisor-mode)
+
+_But all Operating Systems should boot in Machine Mode. Right?_
+
+Actually a __RISC-V SBC__ (like Ox64) will boot the [__OpenSBI Supervisor Binary Interface__](https://lupyuen.github.io/articles/sbi) in __Machine Mode__...
+
+Followed by the [__NuttX Kernel__](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow) (or Linux Kernel) in __Supervisor Mode__...
+
+![Ox64 SBC will run in Machine, Supervisor AND User Modes](https://lupyuen.github.io/images/tinyemu2-flow.jpg)
+
+_How to fix this?_
+
+We tweak TinyEMU to boot NuttX in __Supervisor Mode__ (instead of Machine Mode)...
+
+![TinyEMU will boot NuttX in Supervisor Mode](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
+
+We do this in the __TinyEMU Boot Code__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L874-L885)
 
 ```c
 // At Startup: Init the TinyEMU Boot Code...
@@ -305,7 +323,7 @@ Why set Previous Privilege to Supervisor Mode? So we can execute an __MRET (Retu
 
 _Do we really need so much Boot Code?_
 
-Yes! Find out what happens if we remove some bits of our Boot Code...
+Yes! Check out what happens if we remove some bits of our Boot Code...
 
 TODO: Appendix
 
