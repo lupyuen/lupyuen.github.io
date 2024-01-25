@@ -399,12 +399,14 @@ int uart_interrupt(int irq, void *context, void *arg) {
   if ((int_status & UART_INT_STS_URX_END_INT) &&
     !(int_mask & UART_INT_MASK_CR_URX_END_MASK)) {
 
-    // At 0x30002028: Clear the UART Interrupt
+    // At 0x3000_2028: Clear the UART Interrupt
     putreg32(UART_INT_CLEAR_CR_URX_END_CLR, BL808_UART_INT_CLEAR(uart_idx));
 
-    // Receive the UART Input
+    // At 0x3000_208C: Read the UART Input
     uart_recvchars(dev);
 ```
+
+TODO: uart_recvchars is defined here
 
 Aha! We must emulate the __BL808 UART Registers__ above...
 
@@ -415,6 +417,8 @@ TODO
 - Fix the UART Interrupt Mask: [BL808_UART_INT_MASK (0x30002024) must NOT return UART_INT_MASK_CR_URX_END_MASK (1 << 1)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L407-L412)
 
 - To prevent looping: [Clear the interrupt after setting BL808_UART_INT_CLEAR (0x30002028)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L526-L532)
+
+- [BL808_UART_FIFO_RDATA_OFFSET (0x3000208c) returns the Input Char](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L412-L422)
 
 Now it doesn't loop!
 
@@ -440,9 +444,6 @@ plic_write: offset=0x201004, val=0x14
 plic_update_mip: reset_mip, pending=0x0, served=0x0
 ```
 
-We pass the keypress from VirtIO Console to the Emulated UART Input Register...
-
-- [BL808_UART_FIFO_RDATA_OFFSET (0x3000208c) returns the Input Char](https://github.com/lupyuen/ox64-tinyemu/commit/63cba6275c850b668598120355240f5d485c4538)
 
 Console Input works OK yay!
 
