@@ -222,9 +222,9 @@ That's because most of the tough work was done in our __Ox64 BL808 Emulator__! L
 
 _What's this Supervisor Mode? Why does it matter?_
 
-The pic above 
+TODO: The pic above 
 
-[riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L874-L916)
+[riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L874-L885)
 
 ```c
 // At Startup: Init the TinyEMU Boot Code...
@@ -246,59 +246,55 @@ void copy_bios(...) {
 
 The code above comes from the original TinyEMU Emulator.
 
-Next comes the code that we specially inserted for our __Ox64 Emulator__...
+Next comes the code that we specially inserted for our __Ox64 Emulator__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L882-L960)
 
 ```c
   // Previously: We jump to RAM_BASE_ADDR in Machine Mode
   // Now: We jump to RAM_BASE_ADDR in Machine Mode...
 
-  // All Exceptions are Delegated to Supervisor Mode (instead of Machine Mode).
+  // Delegate all Exceptions to Supervisor Mode (instead of Machine Mode)
   // We set MEDELEG CSR Register to 0xFFFF
   lui   a5, 0x10   ; nop  // A5 is 0x10000
   addiw a5, a5, -1 ; nop  // A5 is 0xFFFF
   csrw  medeleg, a5
 
-  // All Interrupts are Delegated to Supervisor Mode (instead of Machine Mode).
+  // Delegate all Interrupts to Supervisor Mode (instead of Machine Mode)
   // We set MIDELEG CSR Register to 0xFFFF
   csrw  mideleg, a5
 
-  // TODO: Follow the OpenSBI Settings for Ox64
+  // Rightfully: Follow the OpenSBI Settings for Ox64
   // Boot HART MIDELEG: 0x0222
   // Boot HART MEDELEG: 0xB109
 ```
 
-machine exception delegation register (medeleg) and machine interrupt delegation register ( mideleg)
+(Why __NOP__? Because TinyEMU needs every instruction padded to 32 bits)
 
-[MIDELEG and MEDELEG](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg)
+The code above delegates all __Exceptions and Interrupts__ to __RISC-V Supervisor Mode__. (Instead of Machine Mode)
 
-[MCAUSE](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause)
+[(__MIDELEG and MEDELEG__ are explained here)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg)
 
-0xFFFF means all Exceptions and Interrupts are delegated to Supervisor Mode (instead of Machine Mode)
-
-TODO
+Next we set the __Previous Privilege Mode__ to Supervisor Mode (we'll see why)...
 
 ```c
-  // Set MSTATUS to Supervisor Mode and enable SUM:
-  // Clear the MPP (Bits 11 and 12) in MSTATUS CSR Register
+  // Clear these bits in MSTATUS CSR Register...
+  // MPP (Bits 11 and 12): Clear the Previous Privilege Mode
   lui   a5, 0xffffe ; nop
   addiw a5, a5, 2047
   csrc  mstatus, a5
 
-  // Set the MPPS (Bit 11) and SUM (Bit 18)
-  // in MSTATUS CSR Register
+  // Set these bits in MSTATUS CSR Register...
+  // MPPS (Bit 11): Previous Privilege Mode is Supervisor Mode
+  // SUM  (Bit 18): Allow Supervisor Mode to access Memory of User Mode
   lui   a5, 0x41
   addiw a5, a5, -2048
   csrs  mstatus, a5
-
-#define MSTATUS_MPPS        (0x1 << 11) /* Machine Previous Privilege (s-mode) */
-#define MSTATUS_MPPM        (0x3 << 11) /* Machine Previous Privilege (m-mode) */
-#define MSTATUS_MPP_MASK    (0x3 << 11)
-#define MSTATUS_SUM         (0x1 << 18) /* S mode access to U mode memory */
 ```
 
-[MSTATUS](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
+[(__MSTATUS__ is explained here)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
 
-TODO
+[(Why __Register A5__? Because we copied from the __NuttX QEMU Boot Code__)](https://gist.github.com/lupyuen/368744ef01b7feba10c022cd4f4c5ef2#file-nuttx-start-s-L1282-L1314)
+
+Why set Previous Privilege to Supervisor Mode? So we can execute an __MRET (Return from Machine Mode)__ that will jump to the Previous Privilege... __Supervisor Mode!__
 
 ```c
   // Jump to RAM_BASE_ADDR in Supervisor Mode:
@@ -307,55 +303,17 @@ TODO
   mret
 ```
 
-TODO: Why NOP?
+_Do we really need so much Boot Code?_
 
-[riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L874-L916)
+Yes! Find out what happens if we remove some bits of our Boot Code...
 
-```c
-void copy_bios(...) {
-  ...
-  /* jump_addr = RAM_BASE_ADDR */
-  
-  q = (uint32_t *)(ram_ptr + 0x1000);
-  q[0] = 0x297 + RAM_BASE_ADDR - 0x1000; /* auipc t0, jump_addr */
-  q[1] = 0x597; /* auipc a1, dtb */
-  q[2] = 0x58593 + ((fdt_addr - 4) << 20); /* addi a1, a1, dtb */
-  q[3] = 0xf1402573; /* csrr a0, mhartid */
+TODO: Appendix
 
-  //// Previously: Jump to RAM_BASE_ADDR in Machine Mode
-  // q[4] = 0x00028067; /* jalr zero, t0, jump_addr */
+TODO: machine exception delegation register (medeleg) and machine interrupt delegation register ( mideleg)
 
-  //// Begin Test: Start in Supervisor Mode
-  uint32_t pc = 4;
+TODO: [MCAUSE](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause)
 
-  // Set exception and interrupt delegation for S-mode
-  // WRITE_CSR(medeleg, 0xffff);
-  q[pc++] = 0x000167c1;  // lui a5, 0x10 ; nop
-  q[pc++] = 0x000137fd;  // addiw a5, a5, -1 ; nop
-  q[pc++] = 0x30279073;  // csrw medeleg, a5
-
-  // WRITE_CSR(mideleg, 0xffff);
-  q[pc++] = 0x30379073;  // csrw mideleg, a5
-
-  // TODO: Follow the OpenSBI Settings for Ox64
-  // Boot HART MIDELEG         : 0x0000000000000222
-  // Boot HART MEDELEG         : 0x000000000000b109
-
-  // Set mstatus to S-mode and enable SUM
-  // CLEAR_CSR(mstatus, ~MSTATUS_MPP_MASK);
-  q[pc++] = 0x000177f9;  // lui a5, 0xffffe ; nop
-  q[pc++] = 0x7ff7879b;  // addiw a5, a5, 2047
-  q[pc++] = 0x3007b073;  // csrc mstatus, a5
-
-  // SET_CSR(mstatus, MSTATUS_MPPS | SSTATUS_SUM);
-  q[pc++] = 0x000417b7;  // lui a5, 0x41
-  q[pc++] = 0x8007879b;  // addiw a5, a5, -2048
-  q[pc++] = 0x3007a073;  // csrs mstatus, a5
-
-  // Jump to RAM_BASE_ADDR in Supervisor Mode
-  q[pc++] = 0x34129073;  // csrw mepc, t0
-  q[pc++] = 0x30200073;  // mret
-```
+TODO
 
 _NuttX needs to boot in Supervisor Mode, not Machine Mode. How to fix this in TinyEMU?_
 
