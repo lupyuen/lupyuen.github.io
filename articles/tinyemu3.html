@@ -480,7 +480,7 @@ int uart_interrupt(int irq, void *context, void *arg) {
 </li>
 </ol>
 <p>Now we see NuttX correctly handling the UART Interrupt triggered by TinyEMU…</p>
-<div class="example-wrap"><pre class="language-text"><code>## When we press a key...
+<div class="example-wrap"><pre class="language-bash"><code>## When we press a key...
 ## TinyEMU triggers the UART Interrupt
 plic_set_irq: irq_num=20, state=1
 plic_update_mip: set_mip, pending=0x80000, served=0x0
