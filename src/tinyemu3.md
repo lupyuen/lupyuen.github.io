@@ -2,7 +2,7 @@
 
 📝 _29 Jan 2024_
 
-![Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)](https://lupyuen.github.io/images/tinyemu3-title.png)
+![Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)](https://lupyuen.github.io/images/tinyemu3-title.jpg)
 
 _Every day we're auto-building Apache NuttX RTOS for Ox64 BL808 SBC..._
 
