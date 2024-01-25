@@ -143,6 +143,8 @@ on:
     - cron: '55 0 * * *'
 ```
 
+[(Why not one o'clock? __It's too busy__)](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule)
+
 We build our __Ox64 BL808 Emulator__: [ox64-test.yml](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml#L18-L58)
 
 ```bash
@@ -351,11 +353,15 @@ TinyEMU has a [__VirtIO Console__](https://lupyuen.github.io/articles/tinyemu#vi
 
 Let's hack TinyEMU's VirtIO Console so that it behaves like [__BL808 UART Controller__](https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64).
 
+We tweak the __VirtIO Interrupt Number__ so it works like BL808 UART3: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L69-L85)
+
+```c
+// VirtIO now emulates
+// BL808 UART3 Interrupt
+#define VIRTIO_IRQ 20
+```
+
 TODO
-
-And we switch the VirtIO IRQ so that it pretends to be BL808 UART3...
-
-- [Set VirtIO IRQ to UART3 IRQ](https://github.com/lupyuen/ox64-tinyemu/commit/6841e7fe90f2826b54751e4fff2fe9ab3872bd99)
 
 - [Disable Console Resize event because it crashes VM Guest at startup](https://github.com/lupyuen/ox64-tinyemu/commit/dc869fe6a9a726d413e8a83c56cf40f271c6fe3c)
 
