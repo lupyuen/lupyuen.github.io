@@ -108,6 +108,8 @@
 </li>
 </ul>
 <p>We begin with the easier bit: Scripting our Ox64 Emulator…</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-title.png" alt="Ox64 BL808 Emulator runs in a Web Browser too" /></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/timer"><em>Ox64 BL808 Emulator runs in a Web Browser too</em></a></p>
 <h1 id="scripting-the-expected"><a href="#scripting-the-expected">1 Scripting The Expected</a></h1>
 <p><em>What’s this “Expect Scripting”?</em></p>
 <p><strong><code>expect</code></strong> is a cool Command-Line Tool that sends commands to another app and checks the responses.</p>
@@ -181,7 +183,7 @@ spawn ./temu nuttx.cfg
 
 ## Our Expect Script completes successfully
 </code></pre></div>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml">(See the <strong>Test Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/1693ffb16ae943e44faada4428335eb0">(See the <strong>Test Log</strong>)</a></p>
 <h1 id="daily-automated-testing"><a href="#daily-automated-testing">2 Daily Automated Testing</a></h1>
 <p><em>We run this every day?</em></p>
 <p><strong>GitHub Actions</strong> will start our Automated Test every day at 12:55am (GMT): <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml">ox64-test.yml</a></p>
@@ -233,7 +235,6 @@ chmod +x nuttx.exp
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp">(<strong>nuttx.exp</strong> is our <strong>Expect Script</strong>)</a></p>
 <p>That’s everything we need for Daily Automated Testing! Our Ox64 Emulator will emulate <a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c"><strong><code>ostest</code></strong></a> and launch a whole bunch of tests…</p>
 <span style="font-size:90%">
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml">(See the <strong>Test Log</strong>)</a></p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c#L622-L639"><strong>Standard I/O</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c#L146-L209"><strong>Environment Variables</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/setvbuf.c"><strong>Stream VBuf</strong></a></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/mutex.c"><strong>Mutex</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/cancel.c"><strong>Start Thread</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/robust.c"><strong>Robust Mutex</strong></a></td></tr>
@@ -241,7 +242,7 @@ chmod +x nuttx.exp
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/pthread_exit.c"><strong>PThread Exit</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/timedwait.c"><strong>Timed Wait</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/mqueue.c"><strong>Message Queue</strong></a></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/timedmqueue.c"><strong>Timed Message Queue</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/sighand.c"><strong>Signal Handler</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/signest.c"><strong>Nested Signal Handler</strong></a></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/posixtimer.c"><strong>POSIX Timer</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/roundrobin.c"><strong>Round-Robin Scheduler</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/barrier.c"><strong>PThread Barrier</strong></a></td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/schedlock.c"><strong>Scheduler Lock</strong></a></td><td style="text-align: left"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/schedlock.c"><strong>Scheduler Lock</strong></a></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/1693ffb16ae943e44faada4428335eb0">(See the <strong>Test Log</strong>)</a></td><td style="text-align: left"><a href="https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml">(See the <strong>Daily Logs</strong>)</a></td></tr>
 </tbody></table>
 </div></span>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow2.jpg" alt="NuttX Kernel won’t work in Machine Mode" /></p>
@@ -421,7 +422,7 @@ int virtio_console_write_data(VIRTIODevice *s, const uint8_t *buf, int buf_len) 
   set_irq(s-&gt;irq, 1);
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L2697-L2704">(<strong>set_input</strong> is defined here)</a></p>
-<p>TODO: set_irq is defined here</p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L319-L332">(<strong>set_irq</strong> is defined here)</a></p>
 <p>When we run this: TinyEMU loops forever handling UART Interrupts :-(</p>
 <p><em>Surely we need to Clear the UART Interrupt?</em></p>
 <p>We check our <strong>NuttX UART Driver</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L224">bl808_serial.c</a></p>
@@ -641,7 +642,7 @@ nsh&gt;
 <p>And that’s why we need the big chunk of <a href="https://lupyuen.github.io/articles/tinyemu3#boot-nuttx-in-supervisor-mode"><strong>TinyEMU Boot Code</strong></a> that we saw earlier.</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will emulate the System Timer" /></p>
 <h1 id="appendix-start-the-system-timer"><a href="#appendix-start-the-system-timer">8 Appendix: Start the System Timer</a></h1>
-<p>Earlier we talked about emulating OpenSBI for <strong>starting the System Timer</strong>…</p>
+<p>Earlier we talked about emulating OpenSBI for <strong>starting the System Timer</strong> (pic above)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer"><strong>“Emulate the System Timer”</strong></a></li>
 </ul>
@@ -661,12 +662,15 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
       // We emulate the OpenSBI Set Timer Function:
       // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0
 
+      // Clear the Pending Timer Interrupt Bit
+      // (Says the SBI Spec)
+      riscv_cpu_reset_mip(s, MIP_STIP);
+
       // If Parameter A0 is not -1, set the System Timer (timecmp)
       // Parameter A0 is Register X10
       uint64_t timecmp = s-&gt;reg[10];
       if (timecmp != (uint64_t) -1) {
         set_timecmp(NULL, timecmp);
-        // TODO: We clear the Pending Timer Interrupt Bit.
       }
 
       // Skip to the next instruction (RET)
@@ -687,7 +691,7 @@ void set_timecmp(RISCVMachine *machine0, uint64_t timecmp) {
 }
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1136-L1140">(<strong>set_timecmp</strong> is initialised by <strong>riscv_machine_init</strong>)</a></p>
-<p>Note that nothing will happen unless we trigger a <strong>Supervisor-Mode Timer Interrupt</strong> to NuttX!</p>
+<p>Note that nothing will happen unless we trigger a <strong>Supervisor-Mode Timer Interrupt</strong> to NuttX…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tinyemu3#appendix-trigger-the-timer-interrupt"><strong>“Trigger the Timer Interrupt”</strong></a></li>
 </ul>
@@ -732,12 +736,12 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/tinyemu3#appendix-start-the-system-timer">(<strong>set_timecmp</strong> is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tinyemu3#appendix-trigger-the-timer-interrupt">(<strong>real_time</strong> is explained in the next section)</a></p>
-<p>Note that nothing will happen unless we trigger a <strong>Supervisor-Mode Timer Interrupt</strong> to NuttX!</p>
+<p>Note that nothing will happen unless we trigger a <strong>Supervisor-Mode Timer Interrupt</strong> to NuttX…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tinyemu3#appendix-trigger-the-timer-interrupt"><strong>“Trigger the Timer Interrupt”</strong></a></li>
 </ul>
 <h1 id="appendix-trigger-the-timer-interrupt"><a href="#appendix-trigger-the-timer-interrupt">10 Appendix: Trigger the Timer Interrupt</a></h1>
-<p>Previously we discussed the emulation of the <strong>System Timer</strong>…</p>
+<p>Previously we discussed the emulation of the <strong>System Timer</strong> (pic above)…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer"><strong>“Emulate the System Timer”</strong></a></p>
@@ -767,7 +771,7 @@ static int riscv_machine_get_sleep_duration(VirtMachine *s1, int delay) {
     }
   }
 </code></pre></div>
-<p>Again we’re using the Machine-Mode System Timer, to trigger the Supervisor-Mode Timer Interrupt.</p>
+<p>Again we’re using the <strong>Machine-Mode System Timer</strong>, to trigger the Supervisor-Mode Timer Interrupt.</p>
 <p>With this Timer Interrupt, <strong><code>usleep</code></strong> (and other Timer Functions) will work perfectly in NuttX…</p>
 <div class="example-wrap"><pre class="language-text"><code>Loading...
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
@@ -775,6 +779,8 @@ NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; usleep 1
 nsh&gt; 
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/31bde9c2563e8ea2f1764fb95c6ea0fc">(See the <strong>Timer Log</strong>)</a></p>
+
     
 </body>
 </html>
