@@ -319,10 +319,20 @@ void copy_bios(...) {
   mret
 </code></pre></div>
 <p><em>Do we need so much Boot Code?</em></p>
-<p>Yes! Check out what happens if we remove some bits of our Boot Code…</p>
+<p>Yes! Check out what happens if we remove some bits of our Boot Code from TinyEMU…</p>
 <p>TODO: Appendix</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="UART Interrupts for Ox64 BL808 SBC" /></p>
 <h1 id="emulate-uart-interrupts"><a href="#emulate-uart-interrupts">4 Emulate UART Interrupts</a></h1>
+<p><em>Ox64 SBC has a UART Controller that will handle Console Input…</em></p>
+<p><em>How did we emulate the Ox64 UART Controller?</em></p>
+<p>Previously we emulated the <strong>BL808 UART Registers</strong> to do Console Output…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/tinyemu2#intercept-the-uart-registers"><strong>“Intercept the UART Registers”</strong></a></li>
+</ul>
+<p>But Console Input is a little more tricky… We need to emulate <strong>UART Interrupts</strong>! (Pic above)</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/plic2"><strong>“UART Interrupt and Platform-Level Interrupt Controller”</strong></a></li>
+</ul>
 <p>TODO</p>
 <p><em>How will we emulate <a href="https://lupyuen.github.io/articles/plic2">UART Interrupts</a> to support Console Input?</em></p>
 <p>We modify the VirtIO Console Driver in TinyEMU so that it behaves like BL808 UART. And we switch the VirtIO IRQ so that it pretends to be BL808 UART3…</p>
