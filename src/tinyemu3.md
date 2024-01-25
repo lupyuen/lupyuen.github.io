@@ -412,7 +412,7 @@ _Anything else we patched?_
 
 We patched these Special RISC-V Instructions to become ECALL:  [__DCACHE.IALL__ and __SYNC.S__](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L937-L956)
 
-These instructions are specific to __T-Head C906 CPU__. NuttX calls them to [__Flush the MMU Cache__](https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906).
+These instructions are specific to __T-Head C906 CPU__ (and won't work in TinyEMU). NuttX calls them to [__Flush the MMU Cache__](https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906).
 
 (Though we don't emulate them right now)
 
