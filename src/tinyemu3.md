@@ -16,17 +16,25 @@ _But our Ox64 Emulator was incomplete?_
 
 Today we fill in the missing pieces of our Ox64 Emulator and call it for __Automated Testing__...
 
-- TODO: Boot NuttX in Supervisor Mode
+- We boot NuttX in __Supervisor Mode__
 
-- TODO: Emulate UART Interrupts for Console Input
+  (Instead of Machine Mode)
 
-- TODO: Emulate OpenSBI for System Timer
+- Emulate OpenSBI for setting the __System Timer__
 
-- TODO: Fix the System Timer
+  (And read the System Time)
 
-- TODO: Scripting The Expected
+- Emulate the UART Interrupts for __Console Input__
 
-- TODO: Daily Automated Testing
+  (By modding the VirtIO Console)
+
+- Execute everything with __Expect Scripting__
+
+  (TODO)
+
+- Which becomes our __Daily Automated Testing__
+
+  (Triggered every day by GitHub Actions)
 
 We begin with the easier bit: Scripting our Ox64 Emulator...
 
@@ -291,7 +299,7 @@ Next comes the code that we specially inserted for our __Ox64 Emulator__: [riscv
 
 The code above delegates all __Exceptions and Interrupts__ to __RISC-V Supervisor Mode__. (Instead of Machine Mode)
 
-[(__MIDELEG and MEDELEG__ are explained here)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg)
+[(__MEDELEG and MIDELEG__ are explained here)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg)
 
 Next we set the __Previous Privilege Mode__ to Supervisor Mode (we'll see why)...
 
@@ -404,30 +412,7 @@ We patched these Special RISC-V Instructions to become ECALL:  [__DCACHE.IALL__ 
 
 These instructions are specific to __T-Head C906 CPU__. NuttX calls them to [__Flush the MMU Cache__](https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906).
 
-(Though we won't emulate them yet)
-
-TODO: [Emulator Timer Log](https://gist.github.com/lupyuen/31bde9c2563e8ea2f1764fb95c6ea0fc)
-
-Test `ostest`...
-
-```text
-semtimed_test: Starting poster thread
-semtimed_test: Set thread 1 priority to 191
-semtimed_test: Starting poster thread 3
-semtimed_test: Set thread 3 priority to 64
-semtimed_test: Waiting for two second timeout
-poster_func: Waiting for 1 second
-semtimed_test: ERROR: sem_timedwait failed with: 110
-_assert: Current Version: NuttX  12.4.0-RC0 55ec92e181 Jan 24 2024 00:11:51 risc
--v
-_assert: Assertion failed (_Bool)0: at file: semtimed.c:240 task: ostest process
-: ostest 0x8000004a
-up_dump_register: EPC: 0000000050202008
-```
-
-TODO: [Remove the Timer Interrupt Interval because ostest will fail](https://github.com/lupyuen/ox64-tinyemu/commit/169dd727a5e06bdc95ac3f32e1f1b119c3cbbb75)
-
-TODO: [`ostest` is OK yay!](https://lupyuen.github.io/nuttx-tinyemu/timer/)
+(Though we don't emulate them right now)
 
 ![UART Interrupts for Ox64 BL808 SBC](https://lupyuen.github.io/images/plic2-registers.jpg)
 
@@ -611,129 +596,122 @@ _Can't we call MRET directly? And jump from Machine Mode to Supervisor Mode?_
   mret
 ```
 
-TODO: machine exception delegation register (medeleg) and machine interrupt delegation register ( mideleg)
+Watch what happens when we run it...
 
-TODO: [MCAUSE](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause)
-
-TODO
-
-_NuttX needs to boot in Supervisor Mode, not Machine Mode. How to fix this in TinyEMU?_
-
-We copy to TinyEMU Boot Code the Machine-Mode Start Code from [NuttX Start Code for 64-bit RISC-V Kernel Mode (rv-virt:knsh64)](https://gist.github.com/lupyuen/368744ef01b7feba10c022cd4f4c5ef2)...
-
-- [Execute the MRET Instruction to jump from Machine Mode to Supervisor Mode](https://github.com/lupyuen/ox64-tinyemu/commit/e62d49f1a8b27002871f712e80b1785442e23393)
-
-- [Dump the RISC-V Registers MCAUSE 2: Illegal Instruction](https://github.com/lupyuen/ox64-tinyemu/commit/37c2d1169706a56afbd2d7d2a13624b58269e1ef#diff-2080434ac7de762b1948a6bc493874b21b9e3df3de8b9e52de23bfdcec354abd) (for easier troubleshooting)
-
-![TinyEMU will boot NuttX in Supervisor Mode](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
-
-```text
-TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-virtio_console_init
-csr_write: csr=0x341 val=0x0000000050200000
+```bash
 raise_exception2: cause=2, tval=0x10401073
 pc =0000000050200074 ra =0000000000000000 sp =0000000050407c00 gp =0000000000000000
-tp =0000000000000000 t0 =0000000050200000 t1 =0000000000000000 t2 =0000000000000000
-s0 =0000000000000000 s1 =0000000000000000 a0 =0000000000000000 a1 =0000000000001040
-a2 =0000000000000000 a3 =0000000000000000 a4 =0000000000000000 a5 =0000000000000000
-a6 =0000000000000000 a7 =0000000000000000 s2 =0000000000000000 s3 =0000000000000000
-s4 =fffffffffffffff3 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000000
-s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
-t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
 priv=U mstatus=0000000a00000080 cycles=13
- mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
-raise_exception2: cause=2, tval=0x0
-pc =0000000000000000 ra =0000000000000000 sp =0000000050407c00 gp = 
 ```
 
-Which fails with an Illegal Instuction. The offending code comes from...
+TinyEMU halts with an __Illegal Instuction__. The offending code comes from...
 
 ```text
 nuttx/arch/risc-v/src/chip/bl808_head.S:124
-2:
   /* Disable all interrupts (i.e. timer, external) in sie */
-  csrw	sie, zero
-    50200074:	10401073          	csrw	sie,zero
+  csrw sie, zero
+    50200074: 10401073  csrw sie, zero
 ```
 
 _Why is this instruction invalid?_
 
-`csrw sie,zero` is invalid because we're in User Mode (`priv=U`), not Supervisor Mode. And SIE is a Supervisor-Mode CSR Register.
+__`csrw sie`__ writes to SIE (Supervisor-Mode Interrupt Enable). And SIE is a __Supervisor-Mode__ CSR Register.
 
-So we [set MSTATUS to Supervisor Mode and enable SUM](https://github.com/lupyuen/ox64-tinyemu/commit/d379d92bfe544681e0560306a1aad96f5792da9e).
+The instruction is invalid because we're running in __RISC-V User Mode__ (__`priv=U`__), not Supervisor Mode!
 
-```text
-TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-virtio_console_init
-raise_exception2: cause=2, tval=0x879b0000
-pc =0000000000001012 ra =0000000000000000 sp =0000000000000000 gp =0000000000000000
-tp =0000000000000000 t0 =0000000050200000 t1 =0000000000000000 t2 =0000000000000000
-s0 =0000000000000000 s1 =0000000000000000 a0 =0000000000000000 a1 =0000000000001040
-a2 =0000000000000000 a3 =0000000000000000 a4 =0000000000000000 a5 =ffffffffffffe000
-a6 =0000000000000000 a7 =0000000000000000 s2 =0000000000000000 s3 =0000000000000000
-s4 =0000000000000000 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000000
-s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
-t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
-priv=M mstatus=0000000a00000000 cycles=4
- mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
-tinyemu: Unknown mcause 2, quitting
+Somehow __MRET__ has jumped from Machine Mode to User Mode. To fix this, we set the __Previous Privilege Mode__ to Supervisor Mode...
+
+```c
+  // Clear these bits in MSTATUS CSR Register...
+  // MPP (Bits 11 and 12): Clear the Previous Privilege Mode
+  lui   a5, 0xffffe ; nop
+  addiw a5, a5, 2047
+  csrc  mstatus, a5
+
+  // Set these bits in MSTATUS CSR Register...
+  // MPPS (Bit 11): Previous Privilege Mode is Supervisor Mode
+  // SUM  (Bit 18): Allow Supervisor Mode to access Memory of User Mode
+  lui   a5, 0x41
+  addiw a5, a5, -2048
+  csrs  mstatus, a5
+
+  // Return from Machine Mode to Supervisor Mode
+  mret
 ```
 
-Now we hit an Illegal Instruction caused by an unpadded 16-bit instruction: 0x879b0000.
+[(__MSTATUS__ is explained here)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
 
-TinyEMU requires all Boot Code Instructions to be 32-bit. So we [insert NOP (0x0001) to pad 16-bit RISC-V Instructions to 32-bit](https://github.com/lupyuen/ox64-tinyemu/commit/23a36478cf03561d40f357f876284c09722ce455).
+[(__SUM__ is needed for NuttX Apps)](https://lupyuen.github.io/articles/app#kernel-accesses-app-memory)
 
-```text
-work_start_lowpri: Starting low-priority kernel worker thread(s)
+[(Why __Register A5__? Because we copied from the __NuttX QEMU Boot Code__)](https://gist.github.com/lupyuen/368744ef01b7feba10c022cd4f4c5ef2#file-nuttx-start-s-L1282-L1314)
+
+(Why __NOP__? Because TinyEMU needs every instruction padded to 32 bits)
+
+_Now what happens?_
+
+NuttX Shell makes a __System Call (ECALL)__ to NuttX Kernel. Which is supposed to jump from RISC-V User Mode to __Supervisor Mode__...
+
+```bash
+## NuttX Kernel starts NuttX Shell
 nx_start_application: Starting init task: /system/bin/init
-up_exit: TCB=0x504098d0 exiting
 
+## NuttX Shell makes an ECALL from User Mode (priv=U)
 raise_exception2: cause=8, tval=0x0
 pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
-tp =0000000000000000 t0 =0000000000000000 t1 =0000000000000000 t2 =0000000000000000
-s0 =0000000000000001 s1 =0000000080202010 a0 =000000000000000d a1 =0000000000000000
-a2 =0000000080202bc8 a3 =0000000080202010 a4 =0000000080000030 a5 =0000000000000000
-a6 =0000000000000101 a7 =0000000000000000 s2 =0000000000000000 s3 =0000000000000000
-s4 =0000000000000000 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000000
-s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
-t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
 priv=U mstatus=0000000a000400a1 cycles=79648442
  mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 
+## But TinyEMU jumps to Machine Mode! (priv=M)
 raise_exception2: cause=2, tval=0x0
 pc =0000000000000000 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
-tp =0000000000000000 t0 =0000000000000000 t1 =0000000000000000 t2 =0000000000000000
-s0 =0000000000000001 s1 =0000000080202010 a0 =000000000000000d a1 =0000000000000000
-a2 =0000000080202bc8 a3 =0000000080202010 a4 =0000000080000030 a5 =0000000000000000
-a6 =0000000000000101 a7 =0000000000000000 s2 =0000000000000000 s3 =0000000000000000
-s4 =0000000000000000 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000000
-s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
-t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
 priv=M mstatus=0000000a000400a1 cycles=79648467
  mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
-tinyemu: Unknown mcause 2, quitting
 ```
 
-But the ECALL goes from User Mode (`priv=U`) to Machine Mode (`priv=M`), not Supervisor Mode!
+But it actually jumps from RISC-V User Mode (__`priv=U`__) to __Machine Mode__ (__`priv=M`__)! (Instead of Supervisor Mode)
 
-We [set the Exception and Interrupt delegation for Supervisor Mode](https://github.com/lupyuen/ox64-tinyemu/commit/9536e86217bcccbe15272dc4450eac9fab173b03).
+(Note that MEDELEG and MIDELEG are 0: No Delegation)
 
-Finally NuttX Shell starts OK yay! User Mode ECALLs are working perfectly!
+To fix this: We delegate all __Exceptions and Interrupts__ to __RISC-V Supervisor Mode__. (Instead of Machine Mode)
 
-[_(Live Demo of Ox64 BL808 Emulator)_](https://lupyuen.github.io/nuttx-tinyemu/timer)
+```c
+  // Previously: We jump to RAM_BASE_ADDR in Machine Mode
+  // Now: We jump to RAM_BASE_ADDR in Supervisor Mode...
 
-[_(Watch the Demo on YouTube)_](https://youtu.be/FAxaMt6A59I)
+  // Delegate all Exceptions to Supervisor Mode (instead of Machine Mode)
+  // We set MEDELEG CSR Register to 0xFFFF
+  lui   a5, 0x10   ; nop  // A5 is 0x10000
+  addiw a5, a5, -1 ; nop  // A5 is 0xFFFF
+  csrw  medeleg, a5
+
+  // Delegate all Interrupts to Supervisor Mode (instead of Machine Mode)
+  // We set MIDELEG CSR Register to 0xFFFF
+  csrw  mideleg, a5
+
+  // Rightfully: Follow the OpenSBI Settings for Ox64
+  // Boot HART MIDELEG: 0x0222
+  // Boot HART MEDELEG: 0xB109
+```
+
+(__MEDELEG__ is the Machine Exception Delegation Register)
+
+(__MIDELEG__ is the Machine Interrupt Delegation Register)
+
+[(__MEDELEG and MIDELEG__ are explained here)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg)
+
+Finally NuttX Shell starts OK! User-Mode ECALLs are working perfectly yay!
 
 ```text
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nx_start_application: Starting init task: /system/bin/init
-up_exit: TCB=0x504098d0 exiting
+nx_start_application:
+  Starting init task:
+    /system/bin/init
 NuttShell (NSH) NuttX-12.4.0
 nsh>
-nx_start: CPU0: Beginning Idle Loop
 ```
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340)
+
+And that's why we need the big chunk of [__TinyEMU Boot Code__](TODO) that we saw earlier.
 
 ![TinyEMU will emulate the System Timer](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
 
@@ -847,15 +825,7 @@ static int riscv_machine_get_sleep_duration(VirtMachine *s1, int delay) {
   }
 ```
 
-TODO
-
-[For OpenSBI Set Timer: Clear the pending timer interrupt bit](https://github.com/lupyuen/ox64-tinyemu/commit/758287cc3aa8165303c6a726292e665af099aefd)
-
-[For RDTIME: Return the time](https://github.com/lupyuen/ox64-tinyemu/commit/1bcf19a4b2354bc47b515a3fe2f2e8a427e3900d)
-
-[Regularly trigger the Supervisor-Mode Timer Interrupt](https://github.com/lupyuen/ox64-tinyemu/commit/ddedb862a786e52b17cf3331752d50662eddffd3)
-
-`usleep` works OK yay!
+TODO: `usleep` works OK yay!
 
 ```text
 Loading...
