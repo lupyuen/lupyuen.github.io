@@ -126,20 +126,20 @@ spawn ./temu nuttx.cfg
 ## Our Expect Script completes successfully
 ```
 
-TODO: [(See the __Test Log__)]()
+[(See the __Test Log__)](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
 
 # Daily Automated Testing
 
 _We run this every day?_
 
-__GitHub Actions__ will start our Automated Test every day at 1am (GMT): [ox64-test.yml](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml)
+__GitHub Actions__ will start our Automated Test every day at 12:55am (GMT): [ox64-test.yml](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml)
 
 ```yaml
 ## Run our Automated Test
-## Every day at 1:00 UTC
+## Every day at 0:55 UTC
 on:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '55 0 * * *'
 ```
 
 We build our __Ox64 BL808 Emulator__: [ox64-test.yml](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml#L18-L58)
@@ -191,7 +191,23 @@ chmod +x nuttx.exp
 
 [(__nuttx.exp__ is our __Expect Script__)](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp)
 
-TODO: [Output Logs](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
+That's everything we need for Daily Automated Testing! Our Ox64 Emulator will emulate [__`ostest`__](https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c) and launch a whole bunch of tests...
+
+[(See the __Test Log__)](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
+
+<span style="font-size:90%">
+
+| | | |
+|:--|:--|:--|
+| [__Standard I/O__](https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c#L622-L639) | [__Environment Variables__](https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c#L146-L209) | [__Stream VBuf__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/setvbuf.c)
+| [__Mutex__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/mutex.c) | [__Start Thread__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/cancel.c) | [__Robust Mutex__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/robust.c)
+| [__Semaphore__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/sem.c) | [__Timed Semaphore__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/semtimed.c) | [__Condition Variables__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/cond.c)
+| [__PThread Exit__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/pthread_exit.c) | [__Timed Wait__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/timedwait.c) | [__Message Queue__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/mqueue.c)
+| [__Timed Message Queue__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/timedmqueue.c) | [__Signal Handler__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/sighand.c) | [__Nested Signal Handler__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/signest.c)
+| [__POSIX Timer__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/posixtimer.c) | [__Round-Robin Scheduler__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/roundrobin.c) | [__PThread Barrier__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/barrier.c)
+| [__Scheduler Lock__](https://github.com/apache/nuttx-apps/tree/master/testing/ostest/schedlock.c)
+
+</span>
 
 # Start NuttX Kernel in Supervisor Mode
 
