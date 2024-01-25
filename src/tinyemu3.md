@@ -252,13 +252,14 @@ Next comes the code that we specially inserted for our __Ox64 Emulator__...
   // Previously: We jump to RAM_BASE_ADDR in Machine Mode
   // Now: We jump to RAM_BASE_ADDR in Machine Mode...
 
-  // Set Exception and Interrupt Delegation for Supervisor Mode:
-  // Set MEDELEG CSR Register to 0xFFFF
+  // All Exceptions are Delegated to Supervisor Mode (instead of Machine Mode).
+  // We set MEDELEG CSR Register to 0xFFFF
   lui   a5, 0x10   ; nop  // A5 is 0x10000
   addiw a5, a5, -1 ; nop  // A5 is 0xFFFF
   csrw  medeleg, a5
 
-  // Set MIDELEG CSR Register to 0xFFFF
+  // All Interrupts are Delegated to Supervisor Mode (instead of Machine Mode).
+  // We set MIDELEG CSR Register to 0xFFFF
   csrw  mideleg, a5
 
   // TODO: Follow the OpenSBI Settings for Ox64
@@ -266,21 +267,36 @@ Next comes the code that we specially inserted for our __Ox64 Emulator__...
   // Boot HART MEDELEG: 0xB109
 ```
 
+machine exception delegation register (medeleg) and machine interrupt delegation register ( mideleg)
+
+[MIDELEG and MEDELEG](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg)
+
+[MCAUSE](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause)
+
+0xFFFF means all Exceptions and Interrupts are delegated to Supervisor Mode (instead of Machine Mode)
+
 TODO
 
 ```c
   // Set MSTATUS to Supervisor Mode and enable SUM:
-  // Clear the MSTATUS_MPP Bit in MSTATUS CSR Register
+  // Clear the MPP (Bits 11 and 12) in MSTATUS CSR Register
   lui   a5, 0xffffe ; nop
   addiw a5, a5, 2047
   csrc  mstatus, a5
 
-  // Set the MSTATUS_MPPS and SSTATUS_SUM Bits
+  // Set the MPPS (Bit 11) and SUM (Bit 18)
   // in MSTATUS CSR Register
   lui   a5, 0x41
   addiw a5, a5, -2048
   csrs  mstatus, a5
+
+#define MSTATUS_MPPS        (0x1 << 11) /* Machine Previous Privilege (s-mode) */
+#define MSTATUS_MPPM        (0x3 << 11) /* Machine Previous Privilege (m-mode) */
+#define MSTATUS_MPP_MASK    (0x3 << 11)
+#define MSTATUS_SUM         (0x1 << 18) /* S mode access to U mode memory */
 ```
+
+[MSTATUS](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
 
 TODO
 
