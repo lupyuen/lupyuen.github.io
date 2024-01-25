@@ -70,7 +70,7 @@
 <li><a href="#daily-automated-testing">2 Daily Automated Testing</a><ul></ul></li>
 <li><a href="#boot-nuttx-in-supervisor-mode">3 Boot NuttX in Supervisor Mode</a><ul></ul></li>
 <li><a href="#emulate-uart-interrupts">4 Emulate UART Interrupts</a><ul></ul></li>
-<li><a href="#emulate-opensbi-for-system-timer">5 Emulate OpenSBI for System Timer</a><ul></ul></li>
+<li><a href="#emulate-the-system-timer">5 Emulate the System Timer</a><ul></ul></li>
 <li><a href="#fix-the-system-timer">6 Fix the System Timer</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-boot-nuttx-in-supervisor-mode">8 Appendix: Boot NuttX in Supervisor Mode</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2024</em></p>
@@ -361,103 +361,89 @@ int virtio_console_write_data(VIRTIODevice *s, const uint8_t *buf, int buf_len) 
 <div class="example-wrap"><pre class="language-c"><code>// NuttX Interrupt Handler for BL808 UART
 int uart_interrupt(int irq, void *context, void *arg) {
 
-  // At 0x3000_2020: Read the UART Interrupt Status
+  // At 0x3000_2020: Read the UART Interrupt Status (uart_int_sts)
   int_status = getreg32(BL808_UART_INT_STS(uart_idx));
 
-  // At 0x3000_2024: Read the UART Interrupt Mask
+  // At 0x3000_2024: Read the UART Interrupt Mask (uart_int_mask)
   int_mask = getreg32(BL808_UART_INT_MASK(uart_idx));
 
   // If there&#39;s UART Input...
   if ((int_status &amp; UART_INT_STS_URX_END_INT) &amp;&amp;
     !(int_mask &amp; UART_INT_MASK_CR_URX_END_MASK)) {
 
-    // At 0x3000_2028: Clear the UART Interrupt
+    // At 0x3000_2028: Clear the UART Interrupt (uart_int_clear)
     putreg32(UART_INT_CLEAR_CR_URX_END_CLR, BL808_UART_INT_CLEAR(uart_idx));
 
-    // At 0x3000_208C: Read the UART Input
+    // At 0x3000_208C: Read the UART Input (uart_fifo_rdata)
     uart_recvchars(dev);
 </code></pre></div>
 <p>TODO: uart_recvchars is defined here</p>
 <p>Aha! We must emulate the <strong>BL808 UART Registers</strong> above…</p>
-<p>TODO</p>
-<ul>
+<ol>
 <li>
-<p>Fix the UART Interrupt Status: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L402-L407">BL808_UART_INT_STS (0x30002020) must return UART_INT_STS_URX_END_INT (1 &lt;&lt; 1)</a></p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L402-L407"><strong>UART Interrupt Status</strong></a> should say there’s UART Input</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(<strong>uart_int_sts</strong>, Page 419)</a></p>
 </li>
 <li>
-<p>Fix the UART Interrupt Mask: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L407-L412">BL808_UART_INT_MASK (0x30002024) must NOT return UART_INT_MASK_CR_URX_END_MASK (1 &lt;&lt; 1)</a></p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L407-L412"><strong>UART Interrupt Mask</strong></a> should return 0</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(<strong>uart_int_mask</strong>, Page 420)</a></p>
 </li>
 <li>
-<p>To prevent looping: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L526-L532">Clear the interrupt after setting BL808_UART_INT_CLEAR (0x30002028)</a></p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L526-L532"><strong>UART Clear Interrupt</strong></a> should clear the VirtIO Interrupt</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(<strong>uart_int_clear</strong>, Page 421)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L412-L422">BL808_UART_FIFO_RDATA_OFFSET (0x3000208c) returns the Input Char</a></p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L412-L422"><strong>UART Input</strong></a> should return the keypress</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf">(<strong>uart_fifo_rdata</strong>, Page 428)</a></p>
 </li>
-</ul>
-<p>Now it doesn’t loop!</p>
-<div class="example-wrap"><pre class="language-text"><code>nx_start: CPU0: Beginning Idle Loop
-[a]
+</ol>
+<p>Now we see NuttX correctly handling the UART Interrupt triggered by TinyEMU…</p>
+<div class="example-wrap"><pre class="language-text"><code>## When we press a key...
+## TinyEMU triggers the UART Interrupt
 plic_set_irq: irq_num=20, state=1
 plic_update_mip: set_mip, pending=0x80000, served=0x0
 raise_exception: cause=-2147483639
 raise_exception2: cause=-2147483639, tval=0x0
 
-## Claim Interrupt
+## NuttX Claims the UART Interrupt
 plic_read: offset=0x201004
 plic_update_mip: reset_mip, pending=0x80000, served=0x80000
 
-## Handle Interrupt in Interrupt Handler
+## NuttX handles the UART Interrupt in Interrupt Handler
 virtio_ack_irq
 plic_set_irq: irq_num=20, state=0
 plic_update_mip: reset_mip, pending=0x0, served=0x80000
 
-## Complete Interrupt
+## NuttX Completes the UART Interrupt
 plic_write: offset=0x201004, val=0x14
 plic_update_mip: reset_mip, pending=0x0, served=0x0
 </code></pre></div>
-<p>Console Input works OK yay!</p>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/smode"><em>(Live Demo of Ox64 BL808 Emulator)</em></a></p>
-<p><a href="https://youtu.be/FAxaMt6A59I"><em>(Watch the Demo on YouTube)</em></a></p>
-<div class="example-wrap"><pre class="language-text"><code>Loading...
-TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-ABCnx_start: Entry
-uart_register: Registering /dev/console
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nx_start_application: Starting init task: /system/bin/init
-up_exit: TCB=0x504098d0 exiting
- 
-NuttShell (NSH) NuttX-12.4.0
-nsh&gt; nx_start: CPU0: Beginning Idle Loop
- 
-nsh&gt; ls
-posix_spawn: pid=0x80202978 path=ls file_actions=0x80202980 attr=0x80202988 argv
-=0x80202a28
-nxposix_spawn_exec: ERROR: exec failed: 2
-/:
- dev/
- proc/
- system/
-nsh&gt; uname -a
-posix_spawn: pid=0x80202978 path=uname file_actions=0x80202980 attr=0x80202988 a
-rgv=0x80202a28
-nxposix_spawn_exec: ERROR: exec failed: 2
-NuttX 12.4.0 96c2707 Jan 18 2024 12:07:28 risc-v ox64
-</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340">(See the Complete Log)</a></p>
+<p><a href="https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340#file-ox64-tinyemu-log-L129-L172">(See the Complete Log)</a></p>
+<p>Finally Console Input works OK yay!</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/dc869fe6a9a726d413e8a83c56cf40f271c6fe3c">Disable Console Resize event because it crashes VM Guest at startup</a></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/timer">Live Demo of <strong>Ox64 BL808 Emulator</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/93cd86a7311986e5063cb0c8e368f89cdae73e27">We always allow VirtIO Write Data</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/b893255b42a8aaa443f7264dc06537b96326b414">Ww’re always ready for VirtIO Writes</a></p>
+<p><a href="https://youtu.be/FAxaMt6A59I">Watch the <strong>Demo on YouTube</strong></a></p>
 </li>
 </ul>
-<h1 id="emulate-opensbi-for-system-timer"><a href="#emulate-opensbi-for-system-timer">5 Emulate OpenSBI for System Timer</a></h1>
+<p>A few more tweaks to TinyEMU VirtIO for Console Input…</p>
+<ol>
+<li>
+<p>We disable the <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1370-L1382"><strong>Console Resize Event</strong></a></p>
+<p>(Because it crashes NuttX at startup)</p>
+</li>
+<li>
+<p>We always allow <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1297-L1313"><strong>VirtIO to Write Data</strong></a></p>
+</li>
+<li>
+<p>We’re always <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1313-L1338"><strong>Ready for VirtIO Writes</strong></a></p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will emulate the System Timer" /></p>
+<h1 id="emulate-the-system-timer"><a href="#emulate-the-system-timer">5 Emulate the System Timer</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will boot NuttX in Supervisor Mode" /></p>
 <p><em>How to emulate the OpenSBI ECALL to start the System Timer?</em></p>
 <p>For now we ignore the OpenSBI ECALL from NuttX, we’ll fix later…</p>
 <ul>
@@ -468,7 +454,7 @@ NuttX 12.4.0 96c2707 Jan 18 2024 12:07:28 risc-v ox64
 <li><a href="https://github.com/lupyuen/ox64-tinyemu/commit/5cb2fb4e263b9e965777f567b053a0914f3cf368">Patch the RDTTIME (Read System Timer) with NOP for now. We will support later.</a></li>
 </ul>
 <p>The <a href="https://github.com/lupyuen/nuttx-ox64/releases/tag/nuttx-ox64-2024-01-20">Latest NuttX Build</a> includes an OpenSBI ECALL. And it works OK with TinyEMU yay!</p>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/smode"><em>(Live Demo of Ox64 BL808 Emulator)</em></a></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/timer"><em>(Live Demo of Ox64 BL808 Emulator)</em></a></p>
 <p><a href="https://youtu.be/FAxaMt6A59I"><em>(Watch the Demo on YouTube)</em></a></p>
 <div class="example-wrap"><pre class="language-text"><code>Loading...
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
@@ -657,7 +643,7 @@ tinyemu: Unknown mcause 2, quitting
 <p>But the ECALL goes from User Mode (<code>priv=U</code>) to Machine Mode (<code>priv=M</code>), not Supervisor Mode!</p>
 <p>We <a href="https://github.com/lupyuen/ox64-tinyemu/commit/9536e86217bcccbe15272dc4450eac9fab173b03">set the Exception and Interrupt delegation for Supervisor Mode</a>.</p>
 <p>Finally NuttX Shell starts OK yay! User Mode ECALLs are working perfectly!</p>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/smode"><em>(Live Demo of Ox64 BL808 Emulator)</em></a></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/timer"><em>(Live Demo of Ox64 BL808 Emulator)</em></a></p>
 <p><a href="https://youtu.be/FAxaMt6A59I"><em>(Watch the Demo on YouTube)</em></a></p>
 <div class="example-wrap"><pre class="language-text"><code>work_start_lowpri: Starting low-priority kernel worker thread(s)
 nx_start_application: Starting init task: /system/bin/init
