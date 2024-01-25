@@ -594,6 +594,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Earlier we saw a big chunk of __TinyEMU Boot Code__ (pic above) that will start __NuttX in RISC-V Supervisor Mode__ (instead of Machine Mode)...
 
+TODO
+
+_Can't we call MRET directly? And jump from Machine Mode to Supervisor Mode?_
+
 TODO: machine exception delegation register (medeleg) and machine interrupt delegation register ( mideleg)
 
 TODO: [MCAUSE](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause)
