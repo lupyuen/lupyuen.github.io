@@ -333,9 +333,11 @@ void copy_bios(...) {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/plic2"><strong>“UART Interrupt and Platform-Level Interrupt Controller”</strong></a></li>
 </ul>
+<p><em>Is there a TinyEMU UART Controller that we can reuse?</em></p>
+<p>TinyEMU has a <a href="https://lupyuen.github.io/articles/tinyemu#virtio-console"><strong>VirtIO Console</strong></a> that emulates a UART Controller.</p>
+<p>Let’s hack TinyEMU’s VirtIO Console so that it behaves like <a href="https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64"><strong>BL808 UART Controller</strong></a>.</p>
 <p>TODO</p>
-<p><em>How will we emulate <a href="https://lupyuen.github.io/articles/plic2">UART Interrupts</a> to support Console Input?</em></p>
-<p>We modify the VirtIO Console Driver in TinyEMU so that it behaves like BL808 UART. And we switch the VirtIO IRQ so that it pretends to be BL808 UART3…</p>
+<p>And we switch the VirtIO IRQ so that it pretends to be BL808 UART3…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/6841e7fe90f2826b54751e4fff2fe9ab3872bd99">Set VirtIO IRQ to UART3 IRQ</a></p>
