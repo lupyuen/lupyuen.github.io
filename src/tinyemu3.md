@@ -134,7 +134,7 @@ spawn ./temu nuttx.cfg
 ## Our Expect Script completes successfully
 ```
 
-[(See the __Test Log__)](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
+TODO: [(See the __Test Log__)](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
 
 # Daily Automated Testing
 
@@ -208,7 +208,7 @@ That's everything we need for Daily Automated Testing! Our Ox64 Emulator will em
 
 <span style="font-size:90%">
 
-[(See the __Test Log__)](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
+TODO: [(See the __Test Log__)](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
 
 | | | |
 |:--|:--|:--|
@@ -333,7 +333,7 @@ _Do we need so much Boot Code?_
 
 Yes! Check out what happens if we remove some bits of our Boot Code from TinyEMU...
 
-TODO: Appendix
+- [__"Boot NuttX in Supervisor Mode"__](https://lupyuen.github.io/articles/tinyemu3#appendix-boot-nuttx-in-supervisor-mode)
 
 ![TinyEMU will emulate the System Timer](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
 
@@ -400,7 +400,11 @@ Hence we patch __RDTIME__ to become __ECALL__ and we emulate later: [riscv_machi
 
 How to handle both ECALLs? Check the details here...
 
-TODO: Appendix
+- [__"Start the System Timer"__](https://lupyuen.github.io/articles/tinyemu3#appendix-start-the-system-timer)
+
+- [__"Read the System Time"__](https://lupyuen.github.io/articles/tinyemu3#appendix-read-the-system-time)
+
+- [__"Trigger the Timer Interrupt"__](https://lupyuen.github.io/articles/tinyemu3#appendix-trigger-the-timer-interrupt)
 
 _Anything else we patched?_
 
@@ -454,7 +458,7 @@ int virtio_console_write_data(VIRTIODevice *s, const uint8_t *buf, int buf_len) 
   set_irq(s->irq, 1);
 ```
 
-TODO: set_input is defined here
+[(__set_input__ is defined here)](https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L2697-L2704)
 
 TODO: set_irq is defined here
 
@@ -485,7 +489,7 @@ int uart_interrupt(int irq, void *context, void *arg) {
     uart_recvchars(dev);
 ```
 
-TODO: uart_recvchars is defined here
+[(__uart_recvchars__ is defined here)](https://github.com/apache/nuttx/blob/master/drivers/serial/serial_io.c#L107-L268)
 
 Aha! We must emulate the __BL808 UART Registers__ above...
 
@@ -529,7 +533,7 @@ plic_write: offset=0x201004, val=0x14
 plic_update_mip: reset_mip, pending=0x0, served=0x0
 ```
 
-[(See the Complete Log)](https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340#file-ox64-tinyemu-log-L129-L172)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340#file-ox64-tinyemu-log-L129-L172)
 
 Finally Console Input works OK yay!
 
@@ -550,6 +554,12 @@ Some more tweaks to TinyEMU VirtIO for Console Input...
 # What's Next
 
 TODO
+
+We created a tool that's super helpful for __validating our Daily NuttX Builds__, whether they'll actually boot OK on Ox64...
+
+TODO
+
+We tried creating a [__PinePhone Emulator__](https://lupyuen.github.io/articles/unicorn2), but Arm64 Emulation was way too difficult. Ox64 with RISC-V is so much easier!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -575,7 +585,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Earlier we saw a big chunk of __TinyEMU Boot Code__ (pic above) that will start __NuttX in RISC-V Supervisor Mode__ (instead of Machine Mode)...
 
-TODO
+- [__"Boot NuttX in Supervisor Mode"__](https://lupyuen.github.io/articles/tinyemu3#boot-nuttx-in-supervisor-mode)
 
 _Can't we call MRET directly? And jump from Machine Mode to Supervisor Mode?_
 
@@ -612,7 +622,7 @@ nuttx/arch/risc-v/src/chip/bl808_head.S:124
 
 _Why is this instruction invalid?_
 
-__`csrw sie`__ writes to SIE (Supervisor-Mode Interrupt Enable). And SIE is a __Supervisor-Mode__ CSR Register.
+"__`csrw sie`__" writes to SIE (Supervisor-Mode Interrupt Enable). And SIE is a __Supervisor-Mode__ CSR Register.
 
 The instruction is invalid because we're running in __RISC-V User Mode__ (__`priv=U`__), not Supervisor Mode!
 
@@ -708,7 +718,7 @@ nsh>
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340)
 
-And that's why we need the big chunk of [__TinyEMU Boot Code__](TODO) that we saw earlier.
+And that's why we need the big chunk of [__TinyEMU Boot Code__](https://lupyuen.github.io/articles/tinyemu3#boot-nuttx-in-supervisor-mode) that we saw earlier.
 
 ![TinyEMU will emulate the System Timer](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
 
@@ -716,7 +726,7 @@ And that's why we need the big chunk of [__TinyEMU Boot Code__](TODO) that we sa
 
 Earlier we talked about emulating OpenSBI for __starting the System Timer__...
 
-TODO
+- [__"Emulate the System Timer"__](https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer)
 
 And at startup, we captured the address of the __System Call (ECALL)__ from NuttX Kernel (Supervisor Mode) to OpenSBI (Machine Mode).
 
@@ -768,6 +778,10 @@ void set_timecmp(RISCVMachine *machine0, uint64_t timecmp) {
 
 [(__set_timecmp__ is initialised by __riscv_machine_init__)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1136-L1140)
 
+Note that nothing will happen unless we trigger a __Supervisor-Mode Timer Interrupt__ to NuttX!
+
+- [__"Trigger the Timer Interrupt"__](https://lupyuen.github.io/articles/tinyemu3#appendix-trigger-the-timer-interrupt)
+
 _We're emulating the OpenSBI System Timer with the Machine-Mode System Timer?_
 
 Exactly! We do the same for reading the System Time...
@@ -776,7 +790,7 @@ Exactly! We do the same for reading the System Time...
 
 Just now we talked about emulating the RDTIME RISC-V Instruction for __reading the System Time__...
 
-TODO
+- [__"Emulate the System Timer"__](https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer)
 
 And at startup we...
 
@@ -810,15 +824,23 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
       return; 
 ```
 
-TODO: __set_timecmp__ is explained here
+[(__set_timecmp__ is explained here)](https://lupyuen.github.io/articles/tinyemu3#appendix-start-the-system-timer)
 
-(__real_time__ is explained in the next section)
+[(__real_time__ is explained in the next section)](https://lupyuen.github.io/articles/tinyemu3#appendix-trigger-the-timer-interrupt)
+
+Note that nothing will happen unless we trigger a __Supervisor-Mode Timer Interrupt__ to NuttX!
+
+- [__"Trigger the Timer Interrupt"__](https://lupyuen.github.io/articles/tinyemu3#appendix-trigger-the-timer-interrupt)
 
 # Appendix: Trigger the Timer Interrupt
 
 Previously we discussed the emulation of the __System Timer__...
 
-TODO
+- [__"Emulate the System Timer"__](https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer)
+
+- [__"Start the System Timer"__](https://lupyuen.github.io/articles/tinyemu3#appendix-start-the-system-timer)
+
+- [__"Read the System Time"__](https://lupyuen.github.io/articles/tinyemu3#appendix-read-the-system-time)
 
 But nothing will happen unless we trigger a __Supervisor-Mode Timer Interrupt__ to NuttX!
 
