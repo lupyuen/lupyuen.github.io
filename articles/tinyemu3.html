@@ -490,10 +490,13 @@ for (int i = 0; i &lt; 0x10000; i++) {
     rdtime_addr = RAM_BASE_ADDR + i;
   }
 </code></pre></div>
-<p>How to handle both ECALLs? Check out the details here…</p>
+<p>How to handle both ECALLs? Check the details here…</p>
 <p>TODO: Appendix</p>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/b8671f76414747b6902a7dcb89f6fc3c8184075f">Patch DCACHE.IALL and SYNC.S to become ECALL</a></p>
-<p><a href="https://gist.github.com/lupyuen/31bde9c2563e8ea2f1764fb95c6ea0fc">Emulator Timer Log</a></p>
+<p><em>Anything else we patched?</em></p>
+<p>We patched these Special RISC-V Instructions to become ECALL:  <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L937-L956"><strong>DCACHE.IALL</strong> and <strong>SYNC.S</strong></a></p>
+<p>These instructions are specific to <strong>T-Head C906 CPU</strong>. NuttX calls them to <a href="https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906"><strong>Flush the MMU Cache</strong></a>.</p>
+<p>(Though we won’t emulate them yet)</p>
+<p>TODO: <a href="https://gist.github.com/lupyuen/31bde9c2563e8ea2f1764fb95c6ea0fc">Emulator Timer Log</a></p>
 <p>Test <code>ostest</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>semtimed_test: Starting poster thread
 semtimed_test: Set thread 1 priority to 191
@@ -508,9 +511,8 @@ _assert: Assertion failed (_Bool)0: at file: semtimed.c:240 task: ostest process
 : ostest 0x8000004a
 up_dump_register: EPC: 0000000050202008
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/169dd727a5e06bdc95ac3f32e1f1b119c3cbbb75">Remove the Timer Interrupt Interval because ostest will fail</a></p>
-<p><code>ostest</code> is OK yay!</p>
-<p>https://lupyuen.github.io/nuttx-tinyemu/timer/</p>
+<p>TODO: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/169dd727a5e06bdc95ac3f32e1f1b119c3cbbb75">Remove the Timer Interrupt Interval because ostest will fail</a></p>
+<p>TODO: <a href="https://lupyuen.github.io/nuttx-tinyemu/timer/"><code>ostest</code> is OK yay!</a></p>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -639,6 +641,7 @@ nsh&gt;
 nx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340">(See the Complete Log)</a></p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will emulate the System Timer" /></p>
 <h1 id="appendix-start-the-system-timer"><a href="#appendix-start-the-system-timer">8 Appendix: Start the System Timer</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1164-L1182">riscv_cpu.c</a></p>
@@ -668,7 +671,20 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
       s-&gt;pc += 4;
       return;          
 </code></pre></div>
-<p>TODO: set_timecmp is here</p>
+<p><strong>set_timecmp</strong> sets the System Timer: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1225-L1235">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Set the System Timer
+void set_timecmp(RISCVMachine *machine0, uint64_t timecmp) {
+
+  // At Startup: Remember the RISC-V Machine and return
+  static RISCVMachine *machine = NULL;
+  if (machine0 != NULL) { machine = machine0; return; }
+
+  // Otherwise set the System Timer
+  if (machine == NULL) { puts(&quot;set_timecmp: machine is null&quot;); return; }
+  machine-&gt;timecmp = timecmp;
+}
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1136-L1140">(<strong>set_timecmp</strong> is initialised by <strong>riscv_machine_init</strong>)</a></p>
 <h1 id="appendix-read-the-system-time"><a href="#appendix-read-the-system-time">9 Appendix: Read the System Time</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1183-L1195">riscv_cpu.c</a></p>
@@ -694,6 +710,7 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
       s-&gt;pc += 4;
       return; 
 </code></pre></div>
+<p>TODO: <strong>set_timecmp</strong> is here</p>
 <p>TODO: real_time is set by</p>
 <h1 id="appendix-trigger-the-timer-interrupt"><a href="#appendix-trigger-the-timer-interrupt">10 Appendix: Trigger the Timer Interrupt</a></h1>
 <p>TODO</p>
@@ -714,7 +731,6 @@ static int riscv_machine_get_sleep_duration(VirtMachine *s1, int delay) {
     }
   }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/f00d40c0de3d97e93844626c0edfd3b19e8252db">Handle System Timer with mtimecmp</a></p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/758287cc3aa8165303c6a726292e665af099aefd">For OpenSBI Set Timer: Clear the pending timer interrupt bit</a></p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/1bcf19a4b2354bc47b515a3fe2f2e8a427e3900d">For RDTIME: Return the time</a></p>
