@@ -278,8 +278,9 @@ void copy_bios(...) {
   // TODO: Follow the OpenSBI Settings for Ox64
   // Boot HART MIDELEG: 0x0222
   // Boot HART MEDELEG: 0xB109
-
-  // Set MSTATUS to Supervisor Mode and enable SUM:
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Set MSTATUS to Supervisor Mode and enable SUM:
   // Clear the MSTATUS_MPP Bit in MSTATUS CSR Register
   lui   a5, 0xffffe ; nop
   addiw a5, a5, 2047
@@ -290,8 +291,9 @@ void copy_bios(...) {
   lui   a5, 0x41
   addiw a5, a5, -2048
   csrs  mstatus, a5
-
-  // Jump to RAM_BASE_ADDR in Supervisor Mode:
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Jump to RAM_BASE_ADDR in Supervisor Mode:
   // Set the MEPC CSR Register, then Return from Machine Mode
   csrw  mepc, t0
   mret
