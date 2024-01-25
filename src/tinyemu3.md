@@ -264,7 +264,11 @@ Next comes the code that we specially inserted for our __Ox64 Emulator__...
   // TODO: Follow the OpenSBI Settings for Ox64
   // Boot HART MIDELEG: 0x0222
   // Boot HART MEDELEG: 0xB109
+```
 
+TODO
+
+```c
   // Set MSTATUS to Supervisor Mode and enable SUM:
   // Clear the MSTATUS_MPP Bit in MSTATUS CSR Register
   lui   a5, 0xffffe ; nop
@@ -276,7 +280,11 @@ Next comes the code that we specially inserted for our __Ox64 Emulator__...
   lui   a5, 0x41
   addiw a5, a5, -2048
   csrs  mstatus, a5
+```
 
+TODO
+
+```c
   // Jump to RAM_BASE_ADDR in Supervisor Mode:
   // Set the MEPC CSR Register, then Return from Machine Mode
   csrw  mepc, t0
