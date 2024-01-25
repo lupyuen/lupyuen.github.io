@@ -137,6 +137,7 @@ __GitHub Actions__ will start our Automated Test every day at 12:55am (GMT): [ox
 ```yaml
 ## Run our Automated Test
 ## Every day at 0:55 UTC
+## (After Daily Build at 0:00 UTC)
 on:
   schedule:
     - cron: '55 0 * * *'
