@@ -63,7 +63,7 @@ nsh>
 
 [(__nuttx.cfg__ is our __TinyEMU Config__)](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.cfg)
 
-But with an __Expect Script__, we can __feed our commands automatically__ into the Emulator!
+With an __Expect Script__, we can __feed our commands automatically__ into the Emulator!
 
 ```text
 ## Run our Expect Script...
@@ -242,7 +242,7 @@ Which won't work because NuttX expects to run in __RISC-V Supervisor Mode__...
 
 - [__"Machine Mode vs Supervisor Mode"__](https://lupyuen.github.io/articles/tinyemu2#machine-mode-vs-supervisor-mode)
 
-_But all Operating Systems should boot in (super-powerful) Machine Mode. Right?_
+_All Operating Systems should boot in (super-powerful) Machine Mode. Right?_
 
 Actually a __RISC-V SBC__ (like Ox64) will boot the [__OpenSBI Supervisor Binary Interface__](https://lupyuen.github.io/articles/sbi) in __Machine Mode__...
 
@@ -382,7 +382,7 @@ for (int i = 0; i < 0x10000; i++) {
 
 The [__TIME CSR Register__](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers) gets assembled into the [__RDTIME RISC-V Instruction__](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers)...
 
-But __RDTIME__ isn't supported by TinyEMU. [(Needs the __Zicntr Extension__)](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers)
+However __RDTIME__ isn't supported by TinyEMU. [(Needs the __Zicntr Extension__)](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers)
 
 Hence we patch __RDTIME__ to become __ECALL__ and we emulate later: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L927-L937)
 
@@ -428,7 +428,7 @@ Previously we emulated the __BL808 UART Registers__ to do Console Output...
 
 - [__"Intercept the UART Registers"__](https://lupyuen.github.io/articles/tinyemu2#intercept-the-uart-registers)
 
-But Console Input is a little more tricky... We need to emulate __UART Interrupts__! (Pic above)
+Console Input is a little more tricky... We need to emulate __UART Interrupts__! (Pic above)
 
 - [__"UART Interrupt and Platform-Level Interrupt Controller"__](https://lupyuen.github.io/articles/plic2)
 
@@ -677,7 +677,7 @@ priv=M mstatus=0000000a000400a1 cycles=79648467
 mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 ```
 
-But it actually jumps from RISC-V User Mode (__`priv=U`__) to __Machine Mode__ (__`priv=M`__)! (Instead of Supervisor Mode)
+Nope, it actually jumps from RISC-V User Mode (__`priv=U`__) to __Machine Mode__ (__`priv=M`__)! (Instead of Supervisor Mode)
 
 To fix this: We delegate all __Exceptions and Interrupts__ to __RISC-V Supervisor Mode__. (Instead of Machine Mode)
 
@@ -716,7 +716,7 @@ NuttShell (NSH) NuttX-12.4.0
 nsh>
 ```
 
-[(See the Complete Log)](https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340)
 
 And that's why we need the big chunk of [__TinyEMU Boot Code__](https://lupyuen.github.io/articles/tinyemu3#boot-nuttx-in-supervisor-mode) that we saw earlier.
 
