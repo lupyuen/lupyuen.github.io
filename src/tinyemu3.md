@@ -14,9 +14,19 @@ Yes we can! With a little help from the __Ox64 BL808 Emulator__ that we created 
 
 _But our Ox64 Emulator was incomplete?_
 
-Today we fill in the missing pieces of our Ox64 Emulator and make it ready for __Automated Testing__...
+Today we fill in the missing pieces of our Ox64 Emulator and call it for __Automated Testing__...
 
-TODO
+- TODO: Start NuttX Kernel in Supervisor Mode
+
+- TODO: Emulate UART Interrupts for Console Input
+
+- TODO: Emulate OpenSBI for System Timer
+
+- TODO: Fix the System Timer
+
+- TODO: Scripting The Expected
+
+- TODO: Daily Automated Testing
 
 We begin with the easier bit: Scripting our Ox64 Emulator...
 
@@ -41,7 +51,6 @@ nsh>
 
 [(__nuttx.cfg__ is our __TinyEMU Config__)](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.cfg)
 
-
 But with an __Expect Script__, we can __feed our commands automatically__ into the Emulator!
 
 ```text
@@ -56,6 +65,8 @@ spawn ./temu nuttx.cfg
   NuttX 12.4.0-RC0 55ec92e181 Jan 24 2024 00:11:08 risc-v ox64
   nsh> 
 ```
+
+That's why we create an Expect Script to test Ox64 NuttX.
 
 _What's nuttx.exp?_
 
