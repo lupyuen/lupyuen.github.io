@@ -179,9 +179,11 @@ cat nuttx.hash
 And start our __Test Script__...
 
 ```bash
-## Download the Test Script
-wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg
-wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.exp
+## Download the Test Script from
+## https://github.com/lupyuen/nuttx-ox64
+url=https://github.com/lupyuen/nuttx-ox64/raw/main
+wget $url/nuttx.cfg
+wget $url/nuttx.exp
 
 ## Run the Test Script
 chmod +x nuttx.exp
@@ -194,9 +196,9 @@ chmod +x nuttx.exp
 
 That's everything we need for Daily Automated Testing! Our Ox64 Emulator will emulate [__`ostest`__](https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c) and launch a whole bunch of tests...
 
-[(See the __Test Log__)](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
-
 <span style="font-size:90%">
+
+[(See the __Test Log__)](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
 
 | | | |
 |:--|:--|:--|
@@ -210,11 +212,19 @@ That's everything we need for Daily Automated Testing! Our Ox64 Emulator will em
 
 </span>
 
+![NuttX Kernel won't work in Machine Mode](https://lupyuen.github.io/images/tinyemu2-flow2.jpg)
+
 # Start NuttX Kernel in Supervisor Mode
 
-TODO
+_Ox64 Automated Testing doesn't look so hard?_
 
-![NuttX Kernel won't work in Machine Mode](https://lupyuen.github.io/images/tinyemu2-flow2.jpg)
+That's because most of the tough work was done in our __Ox64 BL808 Emulator__! Let's look back at the challenging bits...
+
+_What's this Supervisor Mode? Why does it matter?_
+
+The pic above 
+
+TODO
 
 _NuttX needs to boot in Supervisor Mode, not Machine Mode. How to fix this in TinyEMU?_
 
