@@ -213,9 +213,11 @@ cat nuttx.hash
 <p><a href="https://github.com/lupyuen/nuttx-ox64/tags">(<strong>NuttX Builds</strong> are here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml#L25-L29">(<strong>outputs.date</strong> is defined here)</a></p>
 <p>And start our <strong>Test Script</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download the Test Script
-wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg
-wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.exp
+<div class="example-wrap"><pre class="language-bash"><code>## Download the Test Script from
+## https://github.com/lupyuen/nuttx-ox64
+url=https://github.com/lupyuen/nuttx-ox64/raw/main
+wget $url/nuttx.cfg
+wget $url/nuttx.exp
 
 ## Run the Test Script
 chmod +x nuttx.exp
@@ -224,8 +226,8 @@ chmod +x nuttx.exp
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.cfg">(<strong>nuttx.cfg</strong> is our <strong>TinyEMU Config</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp">(<strong>nuttx.exp</strong> is our <strong>Expect Script</strong>)</a></p>
 <p>That’s everything we need for Daily Automated Testing! Our Ox64 Emulator will emulate <a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c"><strong><code>ostest</code></strong></a> and launch a whole bunch of tests…</p>
-<p><a href="https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml">(See the <strong>Test Log</strong>)</a></p>
 <span style="font-size:90%">
+<p><a href="https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml">(See the <strong>Test Log</strong>)</a></p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c#L622-L639"><strong>Standard I/O</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/ostest_main.c#L146-L209"><strong>Environment Variables</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/setvbuf.c"><strong>Stream VBuf</strong></a></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/mutex.c"><strong>Mutex</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/cancel.c"><strong>Start Thread</strong></a></td><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/robust.c"><strong>Robust Mutex</strong></a></td></tr>
@@ -236,9 +238,13 @@ chmod +x nuttx.exp
 <tr><td style="text-align: left"><a href="https://github.com/apache/nuttx-apps/tree/master/testing/ostest/schedlock.c"><strong>Scheduler Lock</strong></a></td><td style="text-align: left"></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div></span>
-<h1 id="start-nuttx-kernel-in-supervisor-mode"><a href="#start-nuttx-kernel-in-supervisor-mode">3 Start NuttX Kernel in Supervisor Mode</a></h1>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow2.jpg" alt="NuttX Kernel won’t work in Machine Mode" /></p>
+<h1 id="start-nuttx-kernel-in-supervisor-mode"><a href="#start-nuttx-kernel-in-supervisor-mode">3 Start NuttX Kernel in Supervisor Mode</a></h1>
+<p><em>Ox64 Automated Testing doesn’t look so hard?</em></p>
+<p>That’s because most of the tough work was done in our <strong>Ox64 BL808 Emulator</strong>! Let’s look back at the challenging bits…</p>
+<p><em>What’s this Supervisor Mode? Why does it matter?</em></p>
+<p>The pic above </p>
+<p>TODO</p>
 <p><em>NuttX needs to boot in Supervisor Mode, not Machine Mode. How to fix this in TinyEMU?</em></p>
 <p>We copy to TinyEMU Boot Code the Machine-Mode Start Code from <a href="https://gist.github.com/lupyuen/368744ef01b7feba10c022cd4f4c5ef2">NuttX Start Code for 64-bit RISC-V Kernel Mode (rv-virt:knsh64)</a>…</p>
 <ul>
