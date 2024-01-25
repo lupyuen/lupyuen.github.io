@@ -299,8 +299,8 @@ void copy_bios(...) {
   // Boot HART MIDELEG: 0x0222
   // Boot HART MEDELEG: 0xB109
 </code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/tinyemu3#appendix-boot-nuttx-in-supervisor-mode">(<strong>MEDELEG and MIDELEG</strong> are explained here)</a></p>
 <p>The code above delegates all <strong>Exceptions and Interrupts</strong> to <strong>RISC-V Supervisor Mode</strong>. (Instead of Machine Mode)</p>
-<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg">(<strong>MEDELEG and MIDELEG</strong> are explained here)</a></p>
 <p>Next we set the <strong>Previous Privilege Mode</strong> to Supervisor Mode (we’ll see why)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Clear these bits in MSTATUS CSR Register...
   // MPP (Bits 11 and 12): Clear the Previous Privilege Mode
@@ -315,8 +315,7 @@ void copy_bios(...) {
   addiw a5, a5, -2048
   csrs  mstatus, a5
 </code></pre></div>
-<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush">(<strong>MSTATUS</strong> is explained here)</a></p>
-<p><a href="https://lupyuen.github.io/articles/app#kernel-accesses-app-memory">(<strong>SUM</strong> is needed for NuttX Apps)</a></p>
+<p><a href="https://lupyuen.github.io/articles/tinyemu3#appendix-boot-nuttx-in-supervisor-mode">(<strong>MSTATUS and SUM</strong> are explained here)</a></p>
 <p>Why set Previous Privilege to Supervisor Mode? So we can execute an <strong>MRET (Return from Machine Mode)</strong> that will jump to the Previous Privilege… <strong>Supervisor Mode!</strong></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Jump to RAM_BASE_ADDR in Supervisor Mode:
   // Set the MEPC CSR Register, then Return from Machine Mode
@@ -599,18 +598,17 @@ nx_start_application: Starting init task: /system/bin/init
 
 ## NuttX Shell makes an ECALL from User Mode (priv=U)
 raise_exception2: cause=8, tval=0x0
-pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
+pc=00000000800019c6
 priv=U mstatus=0000000a000400a1 cycles=79648442
- mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 
 ## But TinyEMU jumps to Machine Mode! (priv=M)
 raise_exception2: cause=2, tval=0x0
-pc =0000000000000000 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
+pc=0000000000000000
 priv=M mstatus=0000000a000400a1 cycles=79648467
- mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 </code></pre></div>
 <p>But it actually jumps from RISC-V User Mode (<strong><code>priv=U</code></strong>) to <strong>Machine Mode</strong> (<strong><code>priv=M</code></strong>)! (Instead of Supervisor Mode)</p>
-<p>(Note that MEDELEG and MIDELEG are 0: No Delegation)</p>
 <p>To fix this: We delegate all <strong>Exceptions and Interrupts</strong> to <strong>RISC-V Supervisor Mode</strong>. (Instead of Machine Mode)</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Previously: We jump to RAM_BASE_ADDR in Machine Mode
   // Now: We jump to RAM_BASE_ADDR in Supervisor Mode...
