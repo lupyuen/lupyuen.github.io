@@ -353,6 +353,8 @@ int virtio_console_write_data(VIRTIODevice *s, const uint8_t *buf, int buf_len) 
   s-&gt;int_status |= 1;
   set_irq(s-&gt;irq, 1);
 </code></pre></div>
+<p>TODO: set_input is defined here</p>
+<p>TODO: set_irq is defined here</p>
 <p>When we run this: TinyEMU loops forever handling UART Interrupts :-(</p>
 <p><em>Surely we need to Clear the UART Interrupt?</em></p>
 <p>We check our <strong>NuttX UART Driver</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L224">bl808_serial.c</a></p>
@@ -379,13 +381,13 @@ int uart_interrupt(int irq, void *context, void *arg) {
 <p>TODO</p>
 <ul>
 <li>
-<p>Fix the UART Interrupt Status: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/074f8c30cb4a39a0d2d0dfd195be31858c5c9e52">BL808_UART_INT_STS (0x30002020) must return UART_INT_STS_URX_END_INT (1 &lt;&lt; 1)</a></p>
+<p>Fix the UART Interrupt Status: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L402-L407">BL808_UART_INT_STS (0x30002020) must return UART_INT_STS_URX_END_INT (1 &lt;&lt; 1)</a></p>
 </li>
 <li>
-<p>Fix the UART Interrupt Mask: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/074f8c30cb4a39a0d2d0dfd195be31858c5c9e52">BL808_UART_INT_MASK (0x30002024) must NOT return UART_INT_MASK_CR_URX_END_MASK (1 &lt;&lt; 1)</a></p>
+<p>Fix the UART Interrupt Mask: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L407-L412">BL808_UART_INT_MASK (0x30002024) must NOT return UART_INT_MASK_CR_URX_END_MASK (1 &lt;&lt; 1)</a></p>
 </li>
 <li>
-<p>To prevent looping: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/f9c1841d7699ecc04f9ce4499f1c081ae50aa225">Clear the interrupt after setting BL808_UART_INT_CLEAR (0x30002028)</a></p>
+<p>To prevent looping: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L526-L532">Clear the interrupt after setting BL808_UART_INT_CLEAR (0x30002028)</a></p>
 </li>
 </ul>
 <p>Now it doesn’t loop!</p>
