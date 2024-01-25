@@ -375,32 +375,36 @@ int virtio_console_write_data(VIRTIODevice *s, const uint8_t *buf, int buf_len) 
   set_irq(s->irq, 1);
 ```
 
-TODO
+When we run this: TinyEMU loops forever handling UART Interrupts :-(
 
-But TinyEMU loops forever handling UART Interrupts. We check our NuttX UART Driver: [bl808_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu4/arch/risc-v/src/bl808/bl808_serial.c#L166-L224)
+_Surely we need to Clear the UART Interrupt?_
+
+We check our __NuttX UART Driver__: [bl808_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L224)
 
 ```c
 // NuttX Interrupt Handler for BL808 UART
-static int __uart_interrupt(int irq, void *context, void *arg) {
-  // 0x000020  /* UART interrupt status */
+int uart_interrupt(int irq, void *context, void *arg) {
+
+  // At 0x3000_2020: Read the UART Interrupt Status
   int_status = getreg32(BL808_UART_INT_STS(uart_idx));
 
-  // 0x000024  /* UART interrupt mask */
+  // At 0x3000_2024: Read the UART Interrupt Mask
   int_mask = getreg32(BL808_UART_INT_MASK(uart_idx));
 
-  /* Length of uart rx data transfer arrived interrupt */
+  // If there's UART Input...
   if ((int_status & UART_INT_STS_URX_END_INT) &&
-      !(int_mask & UART_INT_MASK_CR_URX_END_MASK))
-    {
-      // 0x000028  /* UART interrupt clear */
-      putreg32(UART_INT_CLEAR_CR_URX_END_CLR,
-               BL808_UART_INT_CLEAR(uart_idx));
-      /* Receive Data ready */
-      uart_recvchars(dev);
-    }
+    !(int_mask & UART_INT_MASK_CR_URX_END_MASK)) {
+
+    // At 0x30002028: Clear the UART Interrupt
+    putreg32(UART_INT_CLEAR_CR_URX_END_CLR, BL808_UART_INT_CLEAR(uart_idx));
+
+    // Receive the UART Input
+    uart_recvchars(dev);
 ```
 
-To make the NuttX Interrupt Handler work...
+Aha! We must emulate the __BL808 UART Registers__ above...
+
+TODO
 
 - Fix the UART Interrupt Status: [BL808_UART_INT_STS (0x30002020) must return UART_INT_STS_URX_END_INT (1 << 1)](https://github.com/lupyuen/ox64-tinyemu/commit/074f8c30cb4a39a0d2d0dfd195be31858c5c9e52)
 
