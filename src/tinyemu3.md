@@ -232,13 +232,13 @@ That's because most of the tough work was done in our __Ox64 BL808 Emulator__! L
 
 _What's this Supervisor Mode? Why does it matter?_
 
-TinyEMU Emulator boots NuttX in __RISC-V Machine Mode__. (Pic above)
+We created our Ox64 Emulator with the [__TinyEMU RISC-V Emulator__](https://lupyuen.github.io/articles/tinyemu2). And TinyEMU boots NuttX in __RISC-V Machine Mode__. (Pic above)
 
 Which won't work because NuttX expects to run in __RISC-V Supervisor Mode__...
 
 - [__"Machine Mode vs Supervisor Mode"__](https://lupyuen.github.io/articles/tinyemu2#machine-mode-vs-supervisor-mode)
 
-_But all Operating Systems should boot in Machine Mode. Right?_
+_But all Operating Systems should boot in (super-powerful) Machine Mode. Right?_
 
 Actually a __RISC-V SBC__ (like Ox64) will boot the [__OpenSBI Supervisor Binary Interface__](https://lupyuen.github.io/articles/sbi) in __Machine Mode__...
 
@@ -295,8 +295,6 @@ Next comes the code that we specially inserted for our __Ox64 Emulator__: [riscv
   // Boot HART MEDELEG: 0xB109
 ```
 
-(Why __NOP__? Because TinyEMU needs every instruction padded to 32 bits)
-
 The code above delegates all __Exceptions and Interrupts__ to __RISC-V Supervisor Mode__. (Instead of Machine Mode)
 
 [(__MEDELEG and MIDELEG__ are explained here)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg)
@@ -321,8 +319,6 @@ Next we set the __Previous Privilege Mode__ to Supervisor Mode (we'll see why)..
 [(__MSTATUS__ is explained here)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
 
 [(__SUM__ is needed for NuttX Apps)](https://lupyuen.github.io/articles/app#kernel-accesses-app-memory)
-
-[(Why __Register A5__? Because we copied from the __NuttX QEMU Boot Code__)](https://gist.github.com/lupyuen/368744ef01b7feba10c022cd4f4c5ef2#file-nuttx-start-s-L1282-L1314)
 
 Why set Previous Privilege to Supervisor Mode? So we can execute an __MRET (Return from Machine Mode)__ that will jump to the Previous Privilege... __Supervisor Mode!__
 
@@ -541,7 +537,7 @@ Finally Console Input works OK yay!
 
 - [Watch the __Demo on YouTube__](https://youtu.be/FAxaMt6A59I)
 
-A few more tweaks to TinyEMU VirtIO for Console Input...
+Some more tweaks to TinyEMU VirtIO for Console Input...
 
 1.  We disable the [__Console Resize Event__](https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1370-L1382)
 
@@ -599,6 +595,7 @@ _Can't we call MRET directly? And jump from Machine Mode to Supervisor Mode?_
 Watch what happens when we run it...
 
 ```bash
+## Illegal Instruction in RISC-V User Mode (priv=U)
 raise_exception2: cause=2, tval=0x10401073
 pc =0000000050200074 ra =0000000000000000 sp =0000000050407c00 gp =0000000000000000
 priv=U mstatus=0000000a00000080 cycles=13
@@ -717,9 +714,13 @@ And that's why we need the big chunk of [__TinyEMU Boot Code__](TODO) that we sa
 
 # Appendix: Start the System Timer
 
+Earlier we talked about emulating OpenSBI for __starting the System Timer__...
+
 TODO
 
-[riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1164-L1182)
+And at startup, we captured the address of the __System Call (ECALL)__ from NuttX Kernel (Supervisor Mode) to OpenSBI (Machine Mode).
+
+This is how we emulate the __ECALL to OpenSBI__: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1164-L1182)
 
 ```c
 // Called by TinyEMU to handle RISC-V Exceptions
@@ -749,7 +750,7 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
       return;          
 ```
 
-__set_timecmp__ sets the System Timer: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1225-L1235)
+__set_timecmp__ sets the __Machine-Mode System Timer__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1225-L1235)
 
 ```c
 // Set the System Timer
@@ -767,11 +768,23 @@ void set_timecmp(RISCVMachine *machine0, uint64_t timecmp) {
 
 [(__set_timecmp__ is initialised by __riscv_machine_init__)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1136-L1140)
 
+_We're emulating the OpenSBI System Timer with the Machine-Mode System Timer?_
+
+Exactly! We do the same for reading the System Time...
+
 # Appendix: Read the System Time
+
+Just now we talked about emulating the RDTIME RISC-V Instruction for __reading the System Time__...
 
 TODO
 
-[riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1183-L1195)
+And at startup we...
+
+- Captured the address of the __RDTIME Instruction__
+
+- Patched the RDTIME Instruction to become a __System Call (ECALL)__
+
+This is how we emulate the Patched ECALL to __read the System Time__: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1183-L1195)
 
 ```c
 // Called by TinyEMU to handle RISC-V Exceptions
@@ -797,15 +810,19 @@ void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
       return; 
 ```
 
-TODO: __set_timecmp__ is here
+TODO: __set_timecmp__ is explained here
 
-TODO: real_time is set by
+(__real_time__ is explained in the next section)
 
 # Appendix: Trigger the Timer Interrupt
 
+Previously we discussed the emulation of the __System Timer__...
+
 TODO
 
-[riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1172-L1182)
+But nothing will happen unless we trigger a __Supervisor-Mode Timer Interrupt__ to NuttX!
+
+This is how we trigger the __Timer Interrupt__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1172-L1182)
 
 ```c
 // Called by TinyEMU periodically to check the System Timer
@@ -825,12 +842,13 @@ static int riscv_machine_get_sleep_duration(VirtMachine *s1, int delay) {
   }
 ```
 
-TODO: `usleep` works OK yay!
+Again we're using the Machine-Mode System Timer, to trigger the Supervisor-Mode Timer Interrupt.
+
+With this Timer Interrupt, __`usleep`__ (and other Timer Functions) will work perfectly in NuttX...
 
 ```text
 Loading...
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-ABC
 NuttShell (NSH) NuttX-12.4.0-RC0
 nsh> usleep 1
 nsh> 
