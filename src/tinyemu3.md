@@ -361,51 +361,21 @@ We tweak the __VirtIO Interrupt Number__ so it works like BL808 UART3: [riscv_ma
 #define VIRTIO_IRQ 20
 ```
 
-TODO
+When we detect a keypress, we trigger the __UART Interrupt__: [virtio.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1338-L1347)
 
-- [Disable Console Resize event because it crashes VM Guest at startup](https://github.com/lupyuen/ox64-tinyemu/commit/dc869fe6a9a726d413e8a83c56cf40f271c6fe3c)
+```c
+// When we receive a keypress...
+int virtio_console_write_data(VIRTIODevice *s, const uint8_t *buf, int buf_len) {
 
-- [We always allow VirtIO Write Data](https://github.com/lupyuen/ox64-tinyemu/commit/93cd86a7311986e5063cb0c8e368f89cdae73e27)
+  // Pass the keypress to NuttX later
+  set_input(buf[0]);
 
-- [Ww're always ready for VirtIO Writes](https://github.com/lupyuen/ox64-tinyemu/commit/b893255b42a8aaa443f7264dc06537b96326b414)
-
-- [Handle a keypress](https://github.com/lupyuen/ox64-tinyemu/commit/a3d029e6e08d1ee3147f41536df76dc3986cb23e)
-
-- [To handle a keypress, we trigger the UART3 Interrupt](https://github.com/lupyuen/ox64-tinyemu/commit/3deaef2a5d5ca3ad8a4339c21be3b054fba4fda2)
-
-When we press a key, we see the UART Interrupt fired in NuttX!
-
-```text
-nx_start: CPU0: Beginning Idle Loop
-[a]
-plic_set_irq: irq_num=20, state=1
-plic_update_mip: set_mip, pending=0x80000, served=0x0
-raise_exception: cause=-2147483639
-raise_exception: sleep
-raise_exception2: cause=-2147483639, tval=0x0
-
-## Claim Interrupt
-plic_read: offset=0x201004
-plic_update_mip: reset_mip, pending=0x80000, served=0x80000
-
-## Handle Interrupt in Interrupt Handler
-target_read_slow: invalid physical address 0x0000000030002020
-target_read_slow: invalid physical address 0x0000000030002024
-
-## Complete Interrupt
-plic_write: offset=0x201004, val=0x14
-
-## Loop Again
-plic_update_mip: set_mip, pending=0x80000, served=0x0
-raise_exception: cause=-2147483639
-raise_exception: sleep
-raise_exception2: cause=-2147483639, tval=0x0
-plic_read: offset=0x201004
-plic_update_mip: reset_mip, pending=0x80000, served=0x80000
-target_read_slow: invalid physical address 0x0000000030002020
-target_read_slow: invalid physical address 0x0000000030002024
-plic_write: offset=0x201004, val=0x14
+  // Trigger the UART Interrupt
+  s->int_status |= 1;
+  set_irq(s->irq, 1);
 ```
+
+TODO
 
 But TinyEMU loops forever handling UART Interrupts. We check our NuttX UART Driver: [bl808_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu4/arch/risc-v/src/bl808/bl808_serial.c#L166-L224)
 
@@ -500,6 +470,13 @@ NuttX 12.4.0 96c2707 Jan 18 2024 12:07:28 risc-v ox64
 ```
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340)
+
+- [Disable Console Resize event because it crashes VM Guest at startup](https://github.com/lupyuen/ox64-tinyemu/commit/dc869fe6a9a726d413e8a83c56cf40f271c6fe3c)
+
+- [We always allow VirtIO Write Data](https://github.com/lupyuen/ox64-tinyemu/commit/93cd86a7311986e5063cb0c8e368f89cdae73e27)
+
+- [Ww're always ready for VirtIO Writes](https://github.com/lupyuen/ox64-tinyemu/commit/b893255b42a8aaa443f7264dc06537b96326b414)
+
 
 # Emulate OpenSBI for System Timer
 
