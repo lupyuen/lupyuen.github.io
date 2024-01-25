@@ -71,9 +71,11 @@
 <li><a href="#boot-nuttx-in-supervisor-mode">3 Boot NuttX in Supervisor Mode</a><ul></ul></li>
 <li><a href="#emulate-uart-interrupts">4 Emulate UART Interrupts</a><ul></ul></li>
 <li><a href="#emulate-the-system-timer">5 Emulate the System Timer</a><ul></ul></li>
-<li><a href="#fix-the-system-timer">6 Fix the System Timer</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-boot-nuttx-in-supervisor-mode">8 Appendix: Boot NuttX in Supervisor Mode</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2024</em></p>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-boot-nuttx-in-supervisor-mode">7 Appendix: Boot NuttX in Supervisor Mode</a><ul></ul></li>
+<li><a href="#appendix-start-the-system-timer">8 Appendix: Start the System Timer</a><ul></ul></li>
+<li><a href="#appendix-read-the-system-time">9 Appendix: Read the System Time</a><ul></ul></li>
+<li><a href="#appendix-trigger-the-timer-interrupt">10 Appendix: Trigger the Timer Interrupt</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu3-title.png" alt="Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)" /></p>
 <p><em>Every day we’re auto-building Apache NuttX RTOS for Ox64 BL808 SBC…</em></p>
 <p><em>Can we test NuttX on Ox64 automatically after building?</em></p>
@@ -443,56 +445,54 @@ plic_update_mip: reset_mip, pending=0x0, served=0x0
 </ol>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will emulate the System Timer" /></p>
 <h1 id="emulate-the-system-timer"><a href="#emulate-the-system-timer">5 Emulate the System Timer</a></h1>
-<p>TODO</p>
-<p><em>How to emulate the OpenSBI ECALL to start the System Timer?</em></p>
-<p>For now we ignore the OpenSBI ECALL from NuttX, we’ll fix later…</p>
+<p><em>NuttX can’t access the System Timer because it runs in RISC-V Supervisor Mode…</em></p>
+<p><em>What can we do to help NuttX?</em></p>
+<p>NuttX will make a <strong>System Call (ECALL)</strong> to OpenSBI to start the System Timer (pic above)…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/ox64-tinyemu/commit/ab58cd2dc6a1d94b9bd13faa0f402a7ada4b270d">Emulate OpenSBI for System Timer</a></li>
+<li><a href="https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx"><strong>“OpenSBI Timer for NuttX”</strong></a></li>
 </ul>
-<p>Strangely TinyEMU crashes with an Illegal Instruction Exception at RDTTIME (Read System Timer). We patch it with NOP and handle later…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/ox64-tinyemu/commit/5cb2fb4e263b9e965777f567b053a0914f3cf368">Patch the RDTTIME (Read System Timer) with NOP for now. We will support later.</a></li>
-</ul>
-<p>The <a href="https://github.com/lupyuen/nuttx-ox64/releases/tag/nuttx-ox64-2024-01-20">Latest NuttX Build</a> includes an OpenSBI ECALL. And it works OK with TinyEMU yay!</p>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/timer"><em>(Live Demo of Ox64 BL808 Emulator)</em></a></p>
-<p><a href="https://youtu.be/FAxaMt6A59I"><em>(Watch the Demo on YouTube)</em></a></p>
-<div class="example-wrap"><pre class="language-text"><code>Loading...
-TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-Patched RDTTIME (Read System Timer) at 0x5020bad6
-ABC
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; uname -a
-NuttX 12.4.0-RC0 4c41d84d21 Jan 20 2024 00:10:33 risc-v ox64
-nsh&gt; help
-help usage:  help [-v] [&lt;cmd&gt;]
- 
-    .           cp          exit        mkrd        set         unset
-    [           cmp         false       mount       sleep       uptime
-    ?           dirname     fdinfo      mv          source      usleep
-    alias       dd          free        pidof       test        xd
-    unalias     df          help        printf      time
-    basename    dmesg       hexdump     ps          true
-    break       echo        kill        pwd         truncate
-    cat         env         ls          rm          uname
-    cd          exec        mkdir       rmdir       umount
-nsh&gt;
+<p>And NuttX reads the System Time through the <strong>TIME CSR Register</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L108-L141">riscv_sbi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Fetch the System Time...
+uint64_t riscv_sbi_get_time(void) {
+
+  // Read the TIME CSR Register, which becomes
+  // the `RDTIME` RISC-V Instruction
+  return READ_CSR(time);
+}
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340">(See the Complete Log)</a></p>
-<h1 id="fix-the-system-timer"><a href="#fix-the-system-timer">6 Fix the System Timer</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/758287cc3aa8165303c6a726292e665af099aefd">For OpenSBI Set Timer: Clear the pending timer interrupt bit</a></p>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/1bcf19a4b2354bc47b515a3fe2f2e8a427e3900d">For RDTIME: Return the time</a></p>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/ddedb862a786e52b17cf3331752d50662eddffd3">Regularly trigger the Supervisor-Mode Timer Interrupt</a></p>
-<p><code>usleep</code> works OK yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>Loading...
-TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-ABC
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; usleep 1
-nsh&gt; 
+<p>Thus we emulate the <a href="https://lupyuen.github.io/articles/sbi#set-a-system-timer"><strong>OpenSBI System Timer</strong></a> and the <a href="https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers"><strong>TIME CSR Register</strong></a>.</p>
+<p><strong>At Startup:</strong> We search for the ECALL to OpenSBI and remember the <strong>ECALL Address</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L916-L927">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Scan the Kernel Image for Special Instructions...
+uint8_t *kernel_ptr = get_ram_ptr(s, RAM_BASE_ADDR, TRUE);
+for (int i = 0; i &lt; 0x10000; i++) {
+
+  // If we find the ECALL Instruction:
+  // 00000073 ecall
+  const uint8_t ecall[] = { 0x73, 0x00, 0x00, 0x00 };
+  if (memcmp(&amp;kernel_ptr[i], ecall, sizeof(ecall)) == 0) {
+
+    // Remember the ECALL Address
+    ecall_addr = RAM_BASE_ADDR + i;
+  }
 </code></pre></div>
+<p>The <a href="https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers"><strong>TIME CSR Register</strong></a> gets assembled into the <a href="https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers"><strong>RDTIME RISC-V Instruction</strong></a>…</p>
+<p>But <strong>RDTIME</strong> isn’t supported by TinyEMU. <a href="https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers">(Needs the <strong>Zicntr Extension</strong>)</a></p>
+<p>Hence we patch <strong>RDTIME</strong> to become <strong>ECALL</strong> and we emulate later: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L927-L937">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>  // If we find the RDTIME Instruction: (Read System Time)
+  // c0102573 rdtime a0
+  const uint8_t rdtime[] = { 0x73, 0x25, 0x10, 0xc0 };
+  if (memcmp(&amp;kernel_ptr[i], rdtime, sizeof(rdtime)) == 0) {
+
+    // Patch RDTIME to become ECALL
+    memcpy(&amp;kernel_ptr[i], ecall,  sizeof(ecall));
+
+    // Remember the RDTIME Address
+    rdtime_addr = RAM_BASE_ADDR + i;
+  }
+</code></pre></div>
+<p>This is how we handle both ECALLs…</p>
+<p>TODO: Appendix</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/b8671f76414747b6902a7dcb89f6fc3c8184075f">Patch DCACHE.IALL and SYNC.S to become ECALL</a></p>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/f00d40c0de3d97e93844626c0edfd3b19e8252db">Handle System Timer with mtimecmp</a></p>
 <p><a href="https://gist.github.com/lupyuen/31bde9c2563e8ea2f1764fb95c6ea0fc">Emulator Timer Log</a></p>
 <p>Test <code>ostest</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>semtimed_test: Starting poster thread
@@ -511,21 +511,7 @@ up_dump_register: EPC: 0000000050202008
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/169dd727a5e06bdc95ac3f32e1f1b119c3cbbb75">Remove the Timer Interrupt Interval because ostest will fail</a></p>
 <p><code>ostest</code> is OK yay!</p>
 <p>https://lupyuen.github.io/nuttx-tinyemu/timer/</p>
-<p><code>expect</code> script works OK with Ox64 BL808 Emulator…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
-set send_slow {1 0.001}
-spawn /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
-
-expect &quot;nsh&gt; &quot;
-send -s &quot;uname -a\r&quot;
-
-expect &quot;nsh&gt; &quot;
-send -s &quot;ostest\r&quot;
-expect &quot;ostest_main: Exiting with status -1&quot;
-expect &quot;nsh&gt; &quot;
-</code></pre></div>
-<p>We’ll run this for Daily Automated Testing, right after the Daily Automated Build.</p>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -551,7 +537,7 @@ expect &quot;nsh&gt; &quot;
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tinyemu3.md"><strong>lupyuen.github.io/src/tinyemu3.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will boot NuttX in Supervisor Mode" /></p>
-<h1 id="appendix-boot-nuttx-in-supervisor-mode"><a href="#appendix-boot-nuttx-in-supervisor-mode">8 Appendix: Boot NuttX in Supervisor Mode</a></h1>
+<h1 id="appendix-boot-nuttx-in-supervisor-mode"><a href="#appendix-boot-nuttx-in-supervisor-mode">7 Appendix: Boot NuttX in Supervisor Mode</a></h1>
 <p>Earlier we saw a big chunk of <strong>TinyEMU Boot Code</strong> (pic above) that will start <strong>NuttX in RISC-V Supervisor Mode</strong> (instead of Machine Mode)…</p>
 <p>TODO: machine exception delegation register (medeleg) and machine interrupt delegation register ( mideleg)</p>
 <p>TODO: <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause">MCAUSE</a></p>
@@ -653,7 +639,73 @@ nsh&gt;
 nx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340">(See the Complete Log)</a></p>
+<h1 id="appendix-start-the-system-timer"><a href="#appendix-start-the-system-timer">8 Appendix: Start the System Timer</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1164-L1182">riscv_cpu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>    //// Begin Test: Emulate Patched Instructions and OpenSBI for System Timer
+    if (cause == CAUSE_SUPERVISOR_ECALL) {
 
+        if (s-&gt;pc == ecall_addr) {
+            // For OpenSBI Set Timer: Clear the pending timer interrupt bit
+            // https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0
+            _info(&quot;Set Timer\n&quot;);
+            _info(&quot;  reg %s=%p\n&quot;, reg_name[16], s-&gt;reg[16]); //// A6 is X16 (fid)
+            _info(&quot;  reg %s=%p\n&quot;, reg_name[17], s-&gt;reg[17]); //// A7 is X17 (extid)
+            _info(&quot;  reg %s=%p\n&quot;, reg_name[10], s-&gt;reg[10]); //// A0 is X10 (parm0)
+            riscv_cpu_reset_mip(s, MIP_STIP);
+
+            // If parm0 is not -1, set the System Timer (timecmp)
+            uint64_t timecmp = s-&gt;reg[10];  // A0 is X10 (parm0)
+            if (timecmp != (uint64_t) -1) {
+                void set_timecmp(void *machine0, uint64_t timecmp);
+                set_timecmp(NULL, timecmp);
+            }
+
+        s-&gt;pc += 4;  // Jump to the next instruction (ret)
+        return;          
+</code></pre></div><h1 id="appendix-read-the-system-time"><a href="#appendix-read-the-system-time">9 Appendix: Read the System Time</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1183-L1195">riscv_cpu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>        } else if (s-&gt;pc == rdtime_addr) {
+            // For RDTIME: Return the time
+            // https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers
+            _info(&quot;Get Time\n&quot;);
+            // static uint64_t t = 0;
+            // s-&gt;reg[10] = t++;  // Not too much or usleep will hang
+            s-&gt;reg[10] = real_time;
+            _info(&quot;  Return reg %s=%p\n&quot;, reg_name[10], s-&gt;reg[10]); //// A0 is X10
+        }
+
+        s-&gt;pc += 4;  // Jump to the next instruction (ret)
+        return; 
+    }
+</code></pre></div><h1 id="appendix-trigger-the-timer-interrupt"><a href="#appendix-trigger-the-timer-interrupt">10 Appendix: Trigger the Timer Interrupt</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L1172-L1182">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>    //// Begin Test: Trigger the Supervisor-Mode Timer Interrupt
+    real_time = rtc_get_time(m);
+    if (!(riscv_cpu_get_mip(s) &amp; MIP_STIP)) {
+        const int64_t delay2 = m-&gt;timecmp - rtc_get_time(m);
+        if (delay2 &lt;= 0) {
+            riscv_cpu_set_mip(s, MIP_STIP);
+        }
+    }
+    //// End Test
+    return delay;
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/f00d40c0de3d97e93844626c0edfd3b19e8252db">Handle System Timer with mtimecmp</a></p>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/758287cc3aa8165303c6a726292e665af099aefd">For OpenSBI Set Timer: Clear the pending timer interrupt bit</a></p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/1bcf19a4b2354bc47b515a3fe2f2e8a427e3900d">For RDTIME: Return the time</a></p>
+<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/ddedb862a786e52b17cf3331752d50662eddffd3">Regularly trigger the Supervisor-Mode Timer Interrupt</a></p>
+<p><code>usleep</code> works OK yay!</p>
+<div class="example-wrap"><pre class="language-text"><code>Loading...
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+ABC
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; usleep 1
+nsh&gt; 
+</code></pre></div>
     
 </body>
 </html>
