@@ -224,7 +224,108 @@ _What's this Supervisor Mode? Why does it matter?_
 
 The pic above 
 
-TODO
+[riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L874-L916)
+
+```c
+// At Startup: Init the TinyEMU Boot Code...
+void copy_bios(...) {
+  ...
+  // Load RAM_BASE_ADDR into Register T0.
+  // That's 0x5020_0000, the Start Address of
+  // NuttX Kernel (Linux too)
+  auipc t0, RAM_BASE_ADDR
+
+  // Load the Device Tree into Register A1.
+  // (Used by Linux but not NuttX)
+  auipc a1, dtb
+  addi  a1, a1, dtb
+
+  // Load the Hart ID (CPU ID: 0) into Register A0
+  csrr  a0, mhartid
+
+  // Previously: We jump to RAM_BASE_ADDR in Machine Mode
+  // Now: We jump to RAM_BASE_ADDR in Machine Mode...
+
+  // Set Exception and Interrupt Delegation for Supervisor Mode:
+  // Set MEDELEG CSR Register to 0xFFFF
+  lui   a5, 0x10   ; nop
+  addiw a5, a5, -1 ; nop
+  csrw  medeleg, a5
+
+  // Set MIDELEG CSR Register to 0xFFFF
+  csrw  mideleg, a5
+
+  // TODO: Follow the OpenSBI Settings for Ox64
+  // Boot HART MIDELEG: 0x0222
+  // Boot HART MEDELEG: 0xB109
+
+  // Set MSTATUS to Supervisor Mode and enable SUM:
+  // Clear the MSTATUS_MPP Bit in MSTATUS CSR Register
+  lui   a5, 0xffffe ; nop
+  addiw a5, a5, 2047
+  csrc  mstatus, a5
+
+  // Set the MSTATUS_MPPS and SSTATUS_SUM Bits
+  // in MSTATUS CSR Register
+  lui   a5, 0x41
+  addiw a5, a5, -2048
+  csrs  mstatus, a5
+
+  // Jump to RAM_BASE_ADDR in Supervisor Mode:
+  // Set the MEPC CSR Register, then Return from Machine Mode
+  csrw  mepc, t0
+  mret
+```
+
+TODO: Why NOP?
+
+[riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L874-L916)
+
+```c
+void copy_bios(...) {
+  ...
+  /* jump_addr = RAM_BASE_ADDR */
+  
+  q = (uint32_t *)(ram_ptr + 0x1000);
+  q[0] = 0x297 + RAM_BASE_ADDR - 0x1000; /* auipc t0, jump_addr */
+  q[1] = 0x597; /* auipc a1, dtb */
+  q[2] = 0x58593 + ((fdt_addr - 4) << 20); /* addi a1, a1, dtb */
+  q[3] = 0xf1402573; /* csrr a0, mhartid */
+
+  //// Previously: Jump to RAM_BASE_ADDR in Machine Mode
+  // q[4] = 0x00028067; /* jalr zero, t0, jump_addr */
+
+  //// Begin Test: Start in Supervisor Mode
+  uint32_t pc = 4;
+
+  // Set exception and interrupt delegation for S-mode
+  // WRITE_CSR(medeleg, 0xffff);
+  q[pc++] = 0x000167c1;  // lui a5, 0x10 ; nop
+  q[pc++] = 0x000137fd;  // addiw a5, a5, -1 ; nop
+  q[pc++] = 0x30279073;  // csrw medeleg, a5
+
+  // WRITE_CSR(mideleg, 0xffff);
+  q[pc++] = 0x30379073;  // csrw mideleg, a5
+
+  // TODO: Follow the OpenSBI Settings for Ox64
+  // Boot HART MIDELEG         : 0x0000000000000222
+  // Boot HART MEDELEG         : 0x000000000000b109
+
+  // Set mstatus to S-mode and enable SUM
+  // CLEAR_CSR(mstatus, ~MSTATUS_MPP_MASK);
+  q[pc++] = 0x000177f9;  // lui a5, 0xffffe ; nop
+  q[pc++] = 0x7ff7879b;  // addiw a5, a5, 2047
+  q[pc++] = 0x3007b073;  // csrc mstatus, a5
+
+  // SET_CSR(mstatus, MSTATUS_MPPS | SSTATUS_SUM);
+  q[pc++] = 0x000417b7;  // lui a5, 0x41
+  q[pc++] = 0x8007879b;  // addiw a5, a5, -2048
+  q[pc++] = 0x3007a073;  // csrs mstatus, a5
+
+  // Jump to RAM_BASE_ADDR in Supervisor Mode
+  q[pc++] = 0x34129073;  // csrw mepc, t0
+  q[pc++] = 0x30200073;  // mret
+```
 
 _NuttX needs to boot in Supervisor Mode, not Machine Mode. How to fix this in TinyEMU?_
 
