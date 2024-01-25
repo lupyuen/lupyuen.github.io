@@ -32,24 +32,29 @@ Normally when we start our Ox64 Emulator, it boots NuttX and __waits for our com
 
 ```text
 ## Start our Ox64 Emulator with NuttX
-$ temu nuttx.cfg
+$ ./temu nuttx.cfg
 
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
 NuttShell (NSH) NuttX-12.4.0-RC0
 nsh>
 ```
 
-TODO: nuttx.cfg is our TinyEMU Config
+[(__nuttx.cfg__ is our __TinyEMU Config__)](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.cfg)
+
 
 But with an __Expect Script__, we can __feed our commands automatically__ into the Emulator!
 
 ```text
-## Run our Expect Script to start the Ox64 Emulator
+## Run our Expect Script...
 $ ./nuttx.exp
-...
-nsh> uname -a
-NuttX 12.4.0-RC0 55ec92e181 Jan 24 2024 00:11:08 risc-v ox64
-nsh> 
+
+## Which starts the Ox64 Emulator...
+spawn ./temu nuttx.cfg
+
+  ## And sends a Command to the Emulator
+  nsh> uname -a
+  NuttX 12.4.0-RC0 55ec92e181 Jan 24 2024 00:11:08 risc-v ox64
+  nsh> 
 ```
 
 _What's nuttx.exp?_
@@ -67,11 +72,14 @@ set send_slow {1 0.001}
 spawn ./temu nuttx.cfg
 
 ## Wait for the prompt and enter `uname -a`
+## `send -s` will send slowly (0.001 ms per char)
 expect "nsh> "
 send -s "uname -a\r"
 ```
 
-TODO
+_Will it work for complicated tests?_
+
+Yep we may use __Pattern Matching__ and __Timeout Detection__ in our script: [nuttx.exp](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp)
 
 ```bash
 ## Wait for the prompt and enter `ostest`
@@ -91,10 +99,42 @@ expect {
 }
 ```
 
-[ox64-test.yml](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml)
+Which works great for thoroughly exercising __NuttX on our Ox64 Emulator__...
+
+```text
+## Run our Expect Script to start Ox64 Emulator...
+$ ./nuttx.exp
+spawn ./temu nuttx.cfg
+
+  ## And run all kinds of NuttX Tests
+  nsh> ostest
+  ...
+  ostest_main: Exiting with status -1
+  nsh>
+
+## Our Expect Script completes successfully
+```
+
+TODO: [(See the __Test Log__)]()
+
+# Daily Automated Testing
+
+_We run this every day?_
+
+__GitHub Actions__ will start our Automated Test every day at 1am (GMT): [ox64-test.yml](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml)
+
+```yaml
+## Run our Automated Test
+## Every day at 1:00 UTC
+on:
+  schedule:
+    - cron: '0 1 * * *'
+```
+
+We build our __Ox64 BL808 Emulator__: [ox64-test.yml](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml#L18-L58)
 
 ```bash
-## Install `expect` and the Build Prerequisites
+## Install `expect` and the Build Prerequisites on Ubuntu
 sudo apt -y update
 sudo apt -y install \
   expect libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev wget
@@ -105,34 +145,42 @@ pushd ox64-tinyemu
 make
 cp temu ..
 popd
+```
 
-## Download NuttX Build
-wget https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-${{ steps.date.outputs.date }}/Image
-wget https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-${{ steps.date.outputs.date }}/nuttx.hash
+Download the __Daily NuttX Build__...
+
+```bash
+## Location of Daily NuttX Builds
+## `outputs.date` looks like `2024-01-25`
+url=https://github.com/lupyuen/nuttx-ox64/releases/download/nuttx-ox64-${{ steps.date.outputs.date }}
+
+## Download the NuttX Build and show the Git Hash
+wget $url/Image
+wget $url/nuttx.hash
 cat nuttx.hash
+```
 
-## Download Test Script
+[(__NuttX Builds__ are here)](https://github.com/lupyuen/nuttx-ox64/tags)
+
+[(__outputs.date__ is defined here)](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml#L25-L29)
+
+And start our __Test Script__...
+
+```bash
+## Download the Test Script
 wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg
 wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.exp
-chmod +x nuttx.exp
 
-## Run Test Script
+## Run the Test Script
+chmod +x nuttx.exp
 ./nuttx.exp
 ```
 
-TODO
+[(__nuttx.cfg__ is our __TinyEMU Config__)](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.cfg)
 
-```yaml
-- name: Get Current Date
-  id:   date
-  run:  echo "::set-output name=date::$(date +'%Y-%m-%d')"
-```
+[(__nuttx.exp__ is our __Expect Script__)](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp)
 
-TODO
-
-[Output Logs](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
-
-TODO: [Daily Builds](https://github.com/lupyuen/nuttx-ox64/tags)
+TODO: [Output Logs](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
 
 # Start NuttX Kernel in Supervisor Mode
 
