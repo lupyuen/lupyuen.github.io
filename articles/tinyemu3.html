@@ -188,6 +188,7 @@ on:
   schedule:
     - cron: &#39;55 0 * * *&#39;
 </code></pre></div>
+<p><a href="https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule">(Why not one o’clock? <strong>It’s too busy</strong>)</a></p>
 <p>We build our <strong>Ox64 BL808 Emulator</strong>: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml#L18-L58">ox64-test.yml</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install `expect` and the Build Prerequisites on Ubuntu
 sudo apt -y update
@@ -336,12 +337,13 @@ void copy_bios(...) {
 <p><em>Is there a TinyEMU UART Controller that we can reuse?</em></p>
 <p>TinyEMU has a <a href="https://lupyuen.github.io/articles/tinyemu#virtio-console"><strong>VirtIO Console</strong></a> that emulates a UART Controller.</p>
 <p>Let’s hack TinyEMU’s VirtIO Console so that it behaves like <a href="https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64"><strong>BL808 UART Controller</strong></a>.</p>
+<p>We tweak the <strong>VirtIO Interrupt Number</strong> so it works like BL808 UART3: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L69-L85">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// VirtIO now emulates
+// BL808 UART3 Interrupt
+#define VIRTIO_IRQ 20
+</code></pre></div>
 <p>TODO</p>
-<p>And we switch the VirtIO IRQ so that it pretends to be BL808 UART3…</p>
 <ul>
-<li>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/6841e7fe90f2826b54751e4fff2fe9ab3872bd99">Set VirtIO IRQ to UART3 IRQ</a></p>
-</li>
 <li>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/commit/dc869fe6a9a726d413e8a83c56cf40f271c6fe3c">Disable Console Resize event because it crashes VM Guest at startup</a></p>
 </li>
