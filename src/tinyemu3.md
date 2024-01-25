@@ -299,9 +299,9 @@ Next comes the code that we specially inserted for our __Ox64 Emulator__: [riscv
   // Boot HART MEDELEG: 0xB109
 ```
 
-The code above delegates all __Exceptions and Interrupts__ to __RISC-V Supervisor Mode__. (Instead of Machine Mode)
+[(__MEDELEG and MIDELEG__ are explained here)](https://lupyuen.github.io/articles/tinyemu3#appendix-boot-nuttx-in-supervisor-mode)
 
-[(__MEDELEG and MIDELEG__ are explained here)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg)
+The code above delegates all __Exceptions and Interrupts__ to __RISC-V Supervisor Mode__. (Instead of Machine Mode)
 
 Next we set the __Previous Privilege Mode__ to Supervisor Mode (we'll see why)...
 
@@ -320,9 +320,7 @@ Next we set the __Previous Privilege Mode__ to Supervisor Mode (we'll see why)..
   csrs  mstatus, a5
 ```
 
-[(__MSTATUS__ is explained here)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
-
-[(__SUM__ is needed for NuttX Apps)](https://lupyuen.github.io/articles/app#kernel-accesses-app-memory)
+[(__MSTATUS and SUM__ are explained here)](https://lupyuen.github.io/articles/tinyemu3#appendix-boot-nuttx-in-supervisor-mode)
 
 Why set Previous Privilege to Supervisor Mode? So we can execute an __MRET (Return from Machine Mode)__ that will jump to the Previous Privilege... __Supervisor Mode!__
 
@@ -668,20 +666,18 @@ nx_start_application: Starting init task: /system/bin/init
 
 ## NuttX Shell makes an ECALL from User Mode (priv=U)
 raise_exception2: cause=8, tval=0x0
-pc =00000000800019c6 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
+pc=00000000800019c6
 priv=U mstatus=0000000a000400a1 cycles=79648442
- mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 
 ## But TinyEMU jumps to Machine Mode! (priv=M)
 raise_exception2: cause=2, tval=0x0
-pc =0000000000000000 ra =0000000080000086 sp =0000000080202bc0 gp =0000000000000000
+pc=0000000000000000
 priv=M mstatus=0000000a000400a1 cycles=79648467
- mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
 ```
 
 But it actually jumps from RISC-V User Mode (__`priv=U`__) to __Machine Mode__ (__`priv=M`__)! (Instead of Supervisor Mode)
-
-(Note that MEDELEG and MIDELEG are 0: No Delegation)
 
 To fix this: We delegate all __Exceptions and Interrupts__ to __RISC-V Supervisor Mode__. (Instead of Machine Mode)
 
