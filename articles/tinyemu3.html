@@ -309,6 +309,7 @@ void copy_bios(...) {
   csrs  mstatus, a5
 </code></pre></div>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush">(<strong>MSTATUS</strong> is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/app#kernel-accesses-app-memory">(<strong>SUM</strong> is needed for NuttX Apps)</a></p>
 <p><a href="https://gist.github.com/lupyuen/368744ef01b7feba10c022cd4f4c5ef2#file-nuttx-start-s-L1282-L1314">(Why <strong>Register A5</strong>? Because we copied from the <strong>NuttX QEMU Boot Code</strong>)</a></p>
 <p>Why set Previous Privilege to Supervisor Mode? So we can execute an <strong>MRET (Return from Machine Mode)</strong> that will jump to the Previous Privilege… <strong>Supervisor Mode!</strong></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Jump to RAM_BASE_ADDR in Supervisor Mode:
