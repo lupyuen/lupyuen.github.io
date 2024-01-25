@@ -375,6 +375,10 @@ int virtio_console_write_data(VIRTIODevice *s, const uint8_t *buf, int buf_len) 
   set_irq(s->irq, 1);
 ```
 
+TODO: set_input is defined here
+
+TODO: set_irq is defined here
+
 When we run this: TinyEMU loops forever handling UART Interrupts :-(
 
 _Surely we need to Clear the UART Interrupt?_
@@ -406,11 +410,11 @@ Aha! We must emulate the __BL808 UART Registers__ above...
 
 TODO
 
-- Fix the UART Interrupt Status: [BL808_UART_INT_STS (0x30002020) must return UART_INT_STS_URX_END_INT (1 << 1)](https://github.com/lupyuen/ox64-tinyemu/commit/074f8c30cb4a39a0d2d0dfd195be31858c5c9e52)
+- Fix the UART Interrupt Status: [BL808_UART_INT_STS (0x30002020) must return UART_INT_STS_URX_END_INT (1 << 1)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L402-L407)
 
-- Fix the UART Interrupt Mask: [BL808_UART_INT_MASK (0x30002024) must NOT return UART_INT_MASK_CR_URX_END_MASK (1 << 1)](https://github.com/lupyuen/ox64-tinyemu/commit/074f8c30cb4a39a0d2d0dfd195be31858c5c9e52)
+- Fix the UART Interrupt Mask: [BL808_UART_INT_MASK (0x30002024) must NOT return UART_INT_MASK_CR_URX_END_MASK (1 << 1)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L407-L412)
 
-- To prevent looping: [Clear the interrupt after setting BL808_UART_INT_CLEAR (0x30002028)](https://github.com/lupyuen/ox64-tinyemu/commit/f9c1841d7699ecc04f9ce4499f1c081ae50aa225)
+- To prevent looping: [Clear the interrupt after setting BL808_UART_INT_CLEAR (0x30002028)](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L526-L532)
 
 Now it doesn't loop!
 
