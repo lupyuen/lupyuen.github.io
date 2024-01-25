@@ -243,8 +243,19 @@ chmod +x nuttx.exp
 <p><em>Ox64 Automated Testing doesn’t look so hard?</em></p>
 <p>That’s because most of the tough work was done in our <strong>Ox64 BL808 Emulator</strong>! Let’s look back at the challenging bits…</p>
 <p><em>What’s this Supervisor Mode? Why does it matter?</em></p>
-<p>TODO: The pic above </p>
-<p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L874-L885">riscv_machine.c</a></p>
+<p>TinyEMU Emulator boots NuttX in <strong>RISC-V Machine Mode</strong>. (Pic above)</p>
+<p>Which won’t work because NuttX expects to run in <strong>RISC-V Supervisor Mode</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/tinyemu2#machine-mode-vs-supervisor-mode"><strong>“Machine Mode vs Supervisor Mode”</strong></a></li>
+</ul>
+<p><em>But all Operating Systems should boot in Machine Mode. Right?</em></p>
+<p>Actually a <strong>RISC-V SBC</strong> (like Ox64) will boot the <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI Supervisor Binary Interface</strong></a> in <strong>Machine Mode</strong>…</p>
+<p>Followed by the <a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow"><strong>NuttX Kernel</strong></a> (or Linux Kernel) in <strong>Supervisor Mode</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow.jpg" alt="Ox64 SBC will run in Machine, Supervisor AND User Modes" /></p>
+<p><em>How to fix this?</em></p>
+<p>We tweak TinyEMU to boot NuttX in <strong>Supervisor Mode</strong> (instead of Machine Mode)…</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will boot NuttX in Supervisor Mode" /></p>
+<p>We do this in the <strong>TinyEMU Boot Code</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L874-L885">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// At Startup: Init the TinyEMU Boot Code...
 void copy_bios(...) {
   ...
@@ -306,7 +317,7 @@ void copy_bios(...) {
   mret
 </code></pre></div>
 <p><em>Do we really need so much Boot Code?</em></p>
-<p>Yes! Find out what happens if we remove some bits of our Boot Code…</p>
+<p>Yes! Check out what happens if we remove some bits of our Boot Code…</p>
 <p>TODO: Appendix</p>
 <p>TODO: machine exception delegation register (medeleg) and machine interrupt delegation register ( mideleg)</p>
 <p>TODO: <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause">MCAUSE</a></p>
