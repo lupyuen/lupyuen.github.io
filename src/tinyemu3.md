@@ -345,11 +345,15 @@ But Console Input is a little more tricky... We need to emulate __UART Interrupt
 
 - [__"UART Interrupt and Platform-Level Interrupt Controller"__](https://lupyuen.github.io/articles/plic2)
 
+_Is there a TinyEMU UART Controller that we can reuse?_
+
+TinyEMU has a [__VirtIO Console__](https://lupyuen.github.io/articles/tinyemu#virtio-console) that emulates a UART Controller.
+
+Let's hack TinyEMU's VirtIO Console so that it behaves like [__BL808 UART Controller__](https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64).
+
 TODO
 
-_How will we emulate [UART Interrupts](https://lupyuen.github.io/articles/plic2) to support Console Input?_
-
-We modify the VirtIO Console Driver in TinyEMU so that it behaves like BL808 UART. And we switch the VirtIO IRQ so that it pretends to be BL808 UART3...
+And we switch the VirtIO IRQ so that it pretends to be BL808 UART3...
 
 - [Set VirtIO IRQ to UART3 IRQ](https://github.com/lupyuen/ox64-tinyemu/commit/6841e7fe90f2826b54751e4fff2fe9ab3872bd99)
 
