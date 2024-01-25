@@ -642,13 +642,15 @@ nuttx/arch/risc-v/src/chip/bl808_head.S:124
     50200074: 10401073  csrw sie, zero
 ```
 
-_Why is this instruction invalid?_
-
 "__`csrw sie`__" writes to SIE (Supervisor-Mode Interrupt Enable). And SIE is a __Supervisor-Mode__ CSR Register.
+
+_Why is this instruction invalid?_
 
 The instruction is invalid because we're running in __RISC-V User Mode__ (__`priv=U`__), not Supervisor Mode!
 
-Somehow __MRET__ has jumped from Machine Mode to User Mode. To fix this, we set the __Previous Privilege Mode__ to Supervisor Mode...
+Somehow __MRET__ has jumped from Machine Mode to User Mode.
+
+To fix this, we set the __Previous Privilege Mode__ to Supervisor Mode (so MRET will jump to Supvervisor Mode)...
 
 ```c
 // Clear these bits in MSTATUS CSR Register...
@@ -729,7 +731,9 @@ csrw  mideleg, a5
 
 [(__MEDELEG and MIDELEG__ are explained here)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg)
 
-Finally NuttX Shell starts OK! User-Mode ECALLs are working perfectly yay!
+_Does it work?_
+
+Finally NuttX Shell starts OK! And User-Mode ECALLs are working perfectly yay!
 
 ```text
 nx_start_application:
@@ -741,7 +745,7 @@ nsh>
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/de071bf54b603f4aaff3954648dcc340)
 
-And that's why we need the big chunk of [__TinyEMU Boot Code__](https://lupyuen.github.io/articles/tinyemu3#boot-nuttx-in-supervisor-mode) that we saw earlier.
+That's why we need the big chunk of [__TinyEMU Boot Code__](https://lupyuen.github.io/articles/tinyemu3#boot-nuttx-in-supervisor-mode) that we saw earlier.
 
 ![TinyEMU will emulate the System Timer](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
 
