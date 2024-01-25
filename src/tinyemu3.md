@@ -545,13 +545,13 @@ Finally Console Input works OK yay!
 
 Some more tweaks to TinyEMU VirtIO for Console Input...
 
-1.  We disable the [__Console Resize Event__](https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1370-L1382)
-
-    (Because it crashes NuttX at startup)
-
 1.  We always allow [__VirtIO to Write Data__](https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1297-L1313)
 
 1.  We're always [__Ready for VirtIO Writes__](https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1313-L1338)
+
+1.  We disable the [__Console Resize Event__](https://github.com/lupyuen/ox64-tinyemu/blob/main/virtio.c#L1370-L1382)
+
+    (Because the UART Interrupt crashes NuttX at startup)
 
 # What's Next
 
@@ -608,9 +608,11 @@ Watch what happens when we run it...
 
 ```bash
 ## Illegal Instruction in RISC-V User Mode (priv=U)
-raise_exception2: cause=2, tval=0x10401073
-pc =0000000050200074 ra =0000000000000000 sp =0000000050407c00 gp =0000000000000000
-priv=U mstatus=0000000a00000080 cycles=13
+raise_exception2: cause=2
+  tval=0x10401073
+  pc=50200074
+  priv=U
+  mstatus=a00000080
 ```
 
 TinyEMU halts with an __Illegal Instuction__. The offending code comes from...
@@ -654,7 +656,7 @@ Somehow __MRET__ has jumped from Machine Mode to User Mode. To fix this, we set 
 
 [(Why __Register A5__? Because we copied from the __NuttX QEMU Boot Code__)](https://gist.github.com/lupyuen/368744ef01b7feba10c022cd4f4c5ef2#file-nuttx-start-s-L1282-L1314)
 
-(Why __NOP__? Because TinyEMU needs every instruction padded to 32 bits)
+(Why __NOP__? Because TinyEMU needs every Boot Instruction padded to 32 bits)
 
 _Now what happens?_
 
@@ -666,15 +668,21 @@ nx_start_application: Starting init task: /system/bin/init
 
 ## NuttX Shell makes an ECALL from User Mode (priv=U)
 raise_exception2: cause=8, tval=0x0
-pc=00000000800019c6
-priv=U mstatus=0000000a000400a1 cycles=79648442
-mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+  pc=800019c6
+  priv=U
+  mstatus=a000400a1
+  mideleg=00
+  mie=00
+  mip=80
 
 ## But TinyEMU jumps to Machine Mode! (priv=M)
 raise_exception2: cause=2, tval=0x0
-pc=0000000000000000
-priv=M mstatus=0000000a000400a1 cycles=79648467
-mideleg=0000000000000000 mie=0000000000000000 mip=0000000000000080
+  pc=00
+  priv=M
+  mstatus=a000400a1
+  mideleg=00
+  mie=00
+  mip=80
 ```
 
 Nope, it actually jumps from RISC-V User Mode (__`priv=U`__) to __Machine Mode__ (__`priv=M`__)! (Instead of Supervisor Mode)
