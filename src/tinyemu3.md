@@ -432,6 +432,25 @@ _Anything else we patched?_
 
 We patched these Special RISC-V Instructions to become ECALL:  [__DCACHE.IALL__ and __SYNC.S__](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L937-L956)
 
+```bash
+## Ox64 Emulator patches the Special Instructions
+$ ./temu nuttx.cfg
+
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache)
+  at 0x5020099a
+Patched SYNC.S (Ensure that all Cache Operations are completed)
+  at 0x5020099e
+Found ECALL (Start System Timer)
+  at 0x5020bae0
+Patched RDTIME (Read System Time)
+  at 0x5020bae6
+```
+
+[(See the __Test Log__)](https://gist.github.com/lupyuen/1693ffb16ae943e44faada4428335eb0)
+
+[(See the __NuttX Disassembly__)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/timer/nuttx.S)
+
 These instructions are specific to __T-Head C906 CPU__ (and won't work in TinyEMU). NuttX calls them to [__Flush the MMU Cache__](https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906).
 
 (Though we don't emulate them right now)
@@ -757,7 +776,26 @@ Earlier we talked about emulating OpenSBI for __starting the System Timer__ (pic
 
 - [__"Emulate the System Timer"__](https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer)
 
-And at startup, we captured the address of the __System Call (ECALL)__ from NuttX Kernel (Supervisor Mode) to OpenSBI (Machine Mode).
+And at startup, we captured the address of the __System Call (ECALL)__ from NuttX Kernel (Supervisor Mode) to OpenSBI (Machine Mode)...
+
+```bash
+## Ox64 Emulator patches the Special Instructions
+$ ./temu nuttx.cfg
+
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache)
+  at 0x5020099a
+Patched SYNC.S (Ensure that all Cache Operations are completed)
+  at 0x5020099e
+Found ECALL (Start System Timer)
+  at 0x5020bae0
+Patched RDTIME (Read System Time)
+  at 0x5020bae6
+```
+
+[(See the __Test Log__)](https://gist.github.com/lupyuen/1693ffb16ae943e44faada4428335eb0)
+
+[(See the __NuttX Disassembly__)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/timer/nuttx.S)
 
 This is how we emulate the __ECALL to OpenSBI__: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1164-L1182)
 
@@ -829,6 +867,25 @@ And at startup we...
 - Captured the address of the __RDTIME Instruction__
 
 - Patched the RDTIME Instruction to become a __System Call (ECALL)__
+
+```bash
+## Ox64 Emulator patches the Special Instructions
+$ ./temu nuttx.cfg
+
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache)
+  at 0x5020099a
+Patched SYNC.S (Ensure that all Cache Operations are completed)
+  at 0x5020099e
+Found ECALL (Start System Timer)
+  at 0x5020bae0
+Patched RDTIME (Read System Time)
+  at 0x5020bae6
+```
+
+[(See the __Test Log__)](https://gist.github.com/lupyuen/1693ffb16ae943e44faada4428335eb0)
+
+[(See the __NuttX Disassembly__)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/timer/nuttx.S)
 
 This is how we emulate the Patched ECALL to __read the System Time__: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1183-L1195)
 
