@@ -140,9 +140,9 @@ spawn ./temu nuttx.cfg
 
 [(See the __Test Log__)](https://gist.github.com/lupyuen/1693ffb16ae943e44faada4428335eb0)
 
-![NuttX for Ox64 gets tested every day automatically](https://lupyuen.github.io/images/tinyemu3-test.jpg)
+![NuttX for Ox64 gets tested every day](https://lupyuen.github.io/images/tinyemu3-test.jpg)
 
-[_NuttX for Ox64 gets tested every day automatically_](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
+[_NuttX for Ox64 gets tested every day_](https://github.com/lupyuen/nuttx-ox64/actions/workflows/ox64-test.yml)
 
 # Daily Automated Testing
 
