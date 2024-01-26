@@ -411,7 +411,8 @@ Hence we patch __RDTIME__ to become __ECALL__ and we emulate later: [riscv_machi
   const uint8_t rdtime[] = { 0x73, 0x25, 0x10, 0xc0 };
   if (memcmp(&kernel_ptr[i], rdtime, sizeof(rdtime)) == 0) {
 
-    // Patch RDTIME to become ECALL
+    // Patch RDTIME to become ECALL:
+    // 00000073 ecall
     const uint8_t ecall[] = { 0x73, 0x00, 0x00, 0x00 };
     memcpy(&kernel_ptr[i], ecall,  sizeof(ecall));
 
