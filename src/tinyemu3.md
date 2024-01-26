@@ -305,7 +305,7 @@ Next comes the code that we specially inserted for our __Ox64 Emulator__: [riscv
   // Boot HART MEDELEG: 0xB109
 ```
 
-[(__MEDELEG and MIDELEG__ are explained here)](https://lupyuen.github.io/articles/tinyemu3#appendix-boot-nuttx-in-supervisor-mode)
+[(__MEDELEG and MIDELEG__ explained)](https://lupyuen.github.io/articles/tinyemu3#appendix-boot-nuttx-in-supervisor-mode)
 
 The code above delegates all __Exceptions and Interrupts__ to __RISC-V Supervisor Mode__. (Instead of Machine Mode)
 
