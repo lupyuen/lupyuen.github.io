@@ -381,7 +381,8 @@ nuttx/arch/risc-v/src/common/supervisor/riscv_sbi.c:126
   const uint8_t rdtime[] = { 0x73, 0x25, 0x10, 0xc0 };
   if (memcmp(&amp;kernel_ptr[i], rdtime, sizeof(rdtime)) == 0) {
 
-    // Patch RDTIME to become ECALL
+    // Patch RDTIME to become ECALL:
+    // 00000073 ecall
     const uint8_t ecall[] = { 0x73, 0x00, 0x00, 0x00 };
     memcpy(&amp;kernel_ptr[i], ecall,  sizeof(ecall));
 
