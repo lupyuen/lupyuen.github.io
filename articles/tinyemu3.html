@@ -603,7 +603,7 @@ raise_exception2: cause=2
 <p><em>Why is this instruction invalid?</em></p>
 <p>The instruction is invalid because we’re running in <strong>RISC-V User Mode</strong> (<strong><code>priv=U</code></strong>), not Supervisor Mode!</p>
 <p>Somehow <strong>MRET</strong> has jumped from Machine Mode to User Mode.</p>
-<p>To fix this, we set the <strong>Previous Privilege Mode</strong> to Supervisor Mode (so MRET will jump to Supvervisor Mode)…</p>
+<p>To fix this, we set the <strong>Previous Privilege Mode</strong> to Supervisor Mode (so MRET will jump to Supervisor Mode)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Clear these bits in MSTATUS CSR Register...
 // MPP (Bits 11 and 12): Clear the Previous Privilege Mode
 lui   a5, 0xffffe ; nop
