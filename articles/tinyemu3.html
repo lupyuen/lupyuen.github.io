@@ -403,6 +403,21 @@ nuttx/arch/risc-v/src/common/supervisor/riscv_sbi.c:126
 </ul>
 <p><em>Anything else we patched?</em></p>
 <p>We patched these Special RISC-V Instructions to become ECALL:  <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L937-L956"><strong>DCACHE.IALL</strong> and <strong>SYNC.S</strong></a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Ox64 Emulator patches the Special Instructions
+$ ./temu nuttx.cfg
+
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache)
+  at 0x5020099a
+Patched SYNC.S (Ensure that all Cache Operations are completed)
+  at 0x5020099e
+Found ECALL (Start System Timer)
+  at 0x5020bae0
+Patched RDTIME (Read System Time)
+  at 0x5020bae6
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/1693ffb16ae943e44faada4428335eb0">(See the <strong>Test Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/timer/nuttx.S">(See the <strong>NuttX Disassembly</strong>)</a></p>
 <p>These instructions are specific to <strong>T-Head C906 CPU</strong> (and won’t work in TinyEMU). NuttX calls them to <a href="https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906"><strong>Flush the MMU Cache</strong></a>.</p>
 <p>(Though we don’t emulate them right now)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="UART Interrupts for Ox64 BL808 SBC" /></p>
@@ -667,7 +682,22 @@ nsh&gt;
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer"><strong>“Emulate the System Timer”</strong></a></li>
 </ul>
-<p>And at startup, we captured the address of the <strong>System Call (ECALL)</strong> from NuttX Kernel (Supervisor Mode) to OpenSBI (Machine Mode).</p>
+<p>And at startup, we captured the address of the <strong>System Call (ECALL)</strong> from NuttX Kernel (Supervisor Mode) to OpenSBI (Machine Mode)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Ox64 Emulator patches the Special Instructions
+$ ./temu nuttx.cfg
+
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache)
+  at 0x5020099a
+Patched SYNC.S (Ensure that all Cache Operations are completed)
+  at 0x5020099e
+Found ECALL (Start System Timer)
+  at 0x5020bae0
+Patched RDTIME (Read System Time)
+  at 0x5020bae6
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/1693ffb16ae943e44faada4428335eb0">(See the <strong>Test Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/timer/nuttx.S">(See the <strong>NuttX Disassembly</strong>)</a></p>
 <p>This is how we emulate the <strong>ECALL to OpenSBI</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1164-L1182">riscv_cpu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Called by TinyEMU to handle RISC-V Exceptions
 void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
@@ -732,6 +762,21 @@ void set_timecmp(RISCVMachine *machine0, uint64_t timecmp) {
 <p>Patched the RDTIME Instruction to become a <strong>System Call (ECALL)</strong></p>
 </li>
 </ul>
+<div class="example-wrap"><pre class="language-bash"><code>## Ox64 Emulator patches the Special Instructions
+$ ./temu nuttx.cfg
+
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache)
+  at 0x5020099a
+Patched SYNC.S (Ensure that all Cache Operations are completed)
+  at 0x5020099e
+Found ECALL (Start System Timer)
+  at 0x5020bae0
+Patched RDTIME (Read System Time)
+  at 0x5020bae6
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/1693ffb16ae943e44faada4428335eb0">(See the <strong>Test Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/timer/nuttx.S">(See the <strong>NuttX Disassembly</strong>)</a></p>
 <p>This is how we emulate the Patched ECALL to <strong>read the System Time</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1183-L1195">riscv_cpu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Called by TinyEMU to handle RISC-V Exceptions
 void raise_exception2(RISCVCPUState *s, uint32_t cause, target_ulong tval) {
