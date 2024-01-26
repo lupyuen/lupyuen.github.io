@@ -304,7 +304,7 @@ void copy_bios(...) {
   // Boot HART MIDELEG: 0x0222
   // Boot HART MEDELEG: 0xB109
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/tinyemu3#appendix-boot-nuttx-in-supervisor-mode">(<strong>MEDELEG and MIDELEG</strong> are explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/tinyemu3#appendix-boot-nuttx-in-supervisor-mode">(<strong>MEDELEG and MIDELEG</strong> explained)</a></p>
 <p>The code above delegates all <strong>Exceptions and Interrupts</strong> to <strong>RISC-V Supervisor Mode</strong>. (Instead of Machine Mode)</p>
 <p>Next we set the <strong>Previous Privilege Mode</strong> to Supervisor Mode (we’ll see why)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Clear these bits in MSTATUS CSR Register...
