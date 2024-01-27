@@ -681,11 +681,11 @@ nsh&gt;
 <p>That’s why we need the big chunk of <a href="https://lupyuen.github.io/articles/tinyemu3#boot-nuttx-in-supervisor-mode"><strong>TinyEMU Boot Code</strong></a> that we saw earlier.</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TinyEMU will emulate the System Timer" /></p>
 <h1 id="appendix-start-the-system-timer"><a href="#appendix-start-the-system-timer">8 Appendix: Start the System Timer</a></h1>
-<p>Earlier we talked about emulating OpenSBI for <strong>starting the System Timer</strong> (pic above)…</p>
+<p>Earlier we talked about emulating OpenSBI to <strong>start the System Timer</strong> (pic above)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer"><strong>“Emulate the System Timer”</strong></a></li>
 </ul>
-<p>And at startup, we captured the address of the <strong>System Call (ECALL)</strong> from NuttX Kernel (Supervisor Mode) to OpenSBI (Machine Mode)…</p>
+<p>And at startup, we captured the address of the <strong>System Call (ECALL)</strong> from NuttX Kernel (Supervisor Mode) to OpenSBI (Machine Mode): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L916-L927">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Ox64 Emulator patches the Special Instructions
 $ ./temu nuttx.cfg
 
@@ -756,13 +756,13 @@ void set_timecmp(RISCVMachine *machine0, uint64_t timecmp) {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer"><strong>“Emulate the System Timer”</strong></a></li>
 </ul>
-<p>And at startup we…</p>
+<p>And at startup we do these: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L927-L937">riscv_machine.c</a></p>
 <ul>
 <li>
-<p>Captured the address of the <strong>RDTIME Instruction</strong></p>
+<p>Capture the address of the <strong>RDTIME Instruction</strong></p>
 </li>
 <li>
-<p>Patched the RDTIME Instruction to become a <strong>System Call (ECALL)</strong></p>
+<p>Patch the RDTIME Instruction to become a <strong>System Call (ECALL)</strong></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-bash"><code>## Ox64 Emulator patches the Special Instructions
