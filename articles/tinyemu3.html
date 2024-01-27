@@ -12,10 +12,10 @@
     content="Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Every day we're auto-building Apache NuttX RTOS for Ox64 BL808 SBC... Can we test NuttX on Ox64 automatically after building? Let's find out!"
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Every day we're auto-building Apache NuttX RTOS for Ox64 BL808 SBC... Can we test NuttX on Ox64 automatically after building? Let's find out!">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/tinyemu3-title.jpg">
 <meta property="og:type" 
@@ -549,24 +549,19 @@ plic_update_mip: reset_mip, pending=0x0, served=0x0
 <p>We created an <strong>Ox64 Emulator</strong> with TinyEMU RISC-V Emulator</p>
 </li>
 <li>
-<p>TODO: We boot NuttX in <strong>Supervisor Mode</strong></p>
-<p>(Instead of Machine Mode)</p>
+<p>Fixed it to boot NuttX in <strong>Supervisor Mode</strong></p>
 </li>
 <li>
-<p>TODO: Emulate OpenSBI for setting the <strong>System Timer</strong></p>
-<p>(And read the System Time)</p>
+<p>Emulated OpenSBI for setting the <strong>System Timer</strong></p>
 </li>
 <li>
-<p>TODO: Emulate the UART Interrupts for <strong>Console Input</strong></p>
-<p>(By modding the VirtIO Console)</p>
+<p>Emulated the UART Interrupts for <strong>Console Input</strong></p>
 </li>
 <li>
-<p>TODO: Execute everything with <strong>Expect Scripting</strong></p>
-<p>(Based on good old TCL)</p>
+<p>Then we ran everything with an <strong>Expect Script</strong></p>
 </li>
 <li>
-<p>TODO: Which becomes our <strong>Daily Automated Testing</strong></p>
-<p>(Triggered every day by GitHub Actions)</p>
+<p>Which becomes our <strong>Daily Automated Testing</strong></p>
 </li>
 </ul>
 <p>Previously we tried creating a <a href="https://lupyuen.github.io/articles/unicorn2"><strong>PinePhone Emulator</strong></a>, but Arm64 Emulation was way too difficult. Ox64 with RISC-V is so much easier!</p>
