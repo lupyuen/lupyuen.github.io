@@ -603,25 +603,15 @@ We created a tool that's super helpful for __validating our Daily NuttX Builds__
 
 - We created an __Ox64 Emulator__ with TinyEMU RISC-V Emulator
 
-- TODO: We boot NuttX in __Supervisor Mode__
+- Fixed it to boot NuttX in __Supervisor Mode__
 
-  (Instead of Machine Mode)
+- Emulated OpenSBI for setting the __System Timer__
 
-- TODO: Emulate OpenSBI for setting the __System Timer__
+- Emulated the UART Interrupts for __Console Input__
 
-  (And read the System Time)
+- Then we ran everything with an __Expect Script__
 
-- TODO: Emulate the UART Interrupts for __Console Input__
-
-  (By modding the VirtIO Console)
-
-- TODO: Execute everything with __Expect Scripting__
-
-  (Based on good old TCL)
-
-- TODO: Which becomes our __Daily Automated Testing__
-
-  (Triggered every day by GitHub Actions)
+- Which becomes our __Daily Automated Testing__
 
 Previously we tried creating a [__PinePhone Emulator__](https://lupyuen.github.io/articles/unicorn2), but Arm64 Emulation was way too difficult. Ox64 with RISC-V is so much easier!
 
