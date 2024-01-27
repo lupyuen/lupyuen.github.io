@@ -776,11 +776,11 @@ That's why we need the big chunk of [__TinyEMU Boot Code__](https://lupyuen.gith
 
 # Appendix: Start the System Timer
 
-Earlier we talked about emulating OpenSBI for __starting the System Timer__ (pic above)...
+Earlier we talked about emulating OpenSBI to __start the System Timer__ (pic above)...
 
 - [__"Emulate the System Timer"__](https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer)
 
-And at startup, we captured the address of the __System Call (ECALL)__ from NuttX Kernel (Supervisor Mode) to OpenSBI (Machine Mode)...
+And at startup, we captured the address of the __System Call (ECALL)__ from NuttX Kernel (Supervisor Mode) to OpenSBI (Machine Mode): [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L916-L927)
 
 ```bash
 ## Ox64 Emulator patches the Special Instructions
@@ -866,11 +866,11 @@ Just now we talked about emulating the RDTIME RISC-V Instruction for __reading t
 
 - [__"Emulate the System Timer"__](https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer)
 
-And at startup we...
+And at startup we do these: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L927-L937)
 
-- Captured the address of the __RDTIME Instruction__
+- Capture the address of the __RDTIME Instruction__
 
-- Patched the RDTIME Instruction to become a __System Call (ECALL)__
+- Patch the RDTIME Instruction to become a __System Call (ECALL)__
 
 ```bash
 ## Ox64 Emulator patches the Special Instructions
