@@ -510,7 +510,7 @@ When we run this: TinyEMU loops forever handling UART Interrupts :-(
 
 _Surely we need to Clear the UART Interrupt?_
 
-We check our __NuttX UART Driver__: [bl808_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L224)
+We check our __BL808 UART Driver__ in NuttX: [bl808_serial.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L224)
 
 ```c
 // NuttX Interrupt Handler for BL808 UART
@@ -522,7 +522,7 @@ int uart_interrupt(int irq, void *context, void *arg) {
   // At 0x3000_2024: Read the UART Interrupt Mask (uart_int_mask)
   int_mask = getreg32(BL808_UART_INT_MASK(uart_idx));
 
-  // If there's UART Input...
+  // If UART Interrupt Status says there's UART Input...
   if ((int_status & UART_INT_STS_URX_END_INT) &&
     !(int_mask & UART_INT_MASK_CR_URX_END_MASK)) {
 
@@ -599,11 +599,11 @@ Some more tweaks to TinyEMU VirtIO for Console Input...
 
 TODO
 
-We created a tool that's super helpful for __validating our Daily NuttX Builds__, whether they'll actually boot OK on Ox64...
+We created a tool that's super helpful for __validating our Daily NuttX Builds__, checking if they'll actually boot OK on Ox64...
 
 TODO
 
-We tried creating a [__PinePhone Emulator__](https://lupyuen.github.io/articles/unicorn2), but Arm64 Emulation was way too difficult. Ox64 with RISC-V is so much easier!
+Previously we tried creating a [__PinePhone Emulator__](https://lupyuen.github.io/articles/unicorn2), but Arm64 Emulation was way too difficult. Ox64 with RISC-V is so much easier!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -658,7 +658,7 @@ raise_exception2: cause=2
   mstatus=a00000080
 ```
 
-TinyEMU halts with an __Illegal Instuction__. The offending code comes from...
+TinyEMU halts with an __Illegal Instuction__. The offending code is here: [bl808_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_head.S#L121-L128)
 
 ```c
 nuttx/arch/risc-v/src/chip/bl808_head.S:124
@@ -673,7 +673,7 @@ _Why is this instruction invalid?_
 
 The instruction is invalid because we're running in __RISC-V User Mode__ (__`priv=U`__), not Supervisor Mode!
 
-Somehow __MRET__ has jumped from Machine Mode to User Mode.
+Somehow __MRET__ has jumped from Machine Mode to __User Mode__.
 
 To fix this, we set the __Previous Privilege Mode__ to Supervisor Mode (so MRET will jump to Supervisor Mode)...
 
