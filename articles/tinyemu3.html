@@ -457,7 +457,7 @@ int virtio_console_write_data(VIRTIODevice *s, const uint8_t *buf, int buf_len) 
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L319-L332">(<strong>set_irq</strong> is defined here)</a></p>
 <p>When we run this: TinyEMU loops forever handling UART Interrupts :-(</p>
 <p><em>Surely we need to Clear the UART Interrupt?</em></p>
-<p>We check our <strong>NuttX UART Driver</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L224">bl808_serial.c</a></p>
+<p>We check our <strong>BL808 UART Driver</strong> in NuttX: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L224">bl808_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX Interrupt Handler for BL808 UART
 int uart_interrupt(int irq, void *context, void *arg) {
 
@@ -467,7 +467,7 @@ int uart_interrupt(int irq, void *context, void *arg) {
   // At 0x3000_2024: Read the UART Interrupt Mask (uart_int_mask)
   int_mask = getreg32(BL808_UART_INT_MASK(uart_idx));
 
-  // If there&#39;s UART Input...
+  // If UART Interrupt Status says there&#39;s UART Input...
   if ((int_status &amp; UART_INT_STS_URX_END_INT) &amp;&amp;
     !(int_mask &amp; UART_INT_MASK_CR_URX_END_MASK)) {
 
@@ -543,9 +543,9 @@ plic_update_mip: reset_mip, pending=0x0, served=0x0
 </ol>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
-<p>We created a tool that’s super helpful for <strong>validating our Daily NuttX Builds</strong>, whether they’ll actually boot OK on Ox64…</p>
+<p>We created a tool that’s super helpful for <strong>validating our Daily NuttX Builds</strong>, checking if they’ll actually boot OK on Ox64…</p>
 <p>TODO</p>
-<p>We tried creating a <a href="https://lupyuen.github.io/articles/unicorn2"><strong>PinePhone Emulator</strong></a>, but Arm64 Emulation was way too difficult. Ox64 with RISC-V is so much easier!</p>
+<p>Previously we tried creating a <a href="https://lupyuen.github.io/articles/unicorn2"><strong>PinePhone Emulator</strong></a>, but Arm64 Emulation was way too difficult. Ox64 with RISC-V is so much easier!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -596,7 +596,7 @@ raise_exception2: cause=2
   priv=U
   mstatus=a00000080
 </code></pre></div>
-<p>TinyEMU halts with an <strong>Illegal Instuction</strong>. The offending code comes from…</p>
+<p>TinyEMU halts with an <strong>Illegal Instuction</strong>. The offending code is here: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_head.S#L121-L128">bl808_head.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>nuttx/arch/risc-v/src/chip/bl808_head.S:124
   /* Disable all interrupts (i.e. timer, external) in sie */
   csrw sie, zero
@@ -605,7 +605,7 @@ raise_exception2: cause=2
 <p>“<strong><code>csrw sie</code></strong>” writes to SIE (Supervisor-Mode Interrupt Enable). And SIE is a <strong>Supervisor-Mode</strong> CSR Register.</p>
 <p><em>Why is this instruction invalid?</em></p>
 <p>The instruction is invalid because we’re running in <strong>RISC-V User Mode</strong> (<strong><code>priv=U</code></strong>), not Supervisor Mode!</p>
-<p>Somehow <strong>MRET</strong> has jumped from Machine Mode to User Mode.</p>
+<p>Somehow <strong>MRET</strong> has jumped from Machine Mode to <strong>User Mode</strong>.</p>
 <p>To fix this, we set the <strong>Previous Privilege Mode</strong> to Supervisor Mode (so MRET will jump to Supervisor Mode)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Clear these bits in MSTATUS CSR Register...
 // MPP (Bits 11 and 12): Clear the Previous Privilege Mode
