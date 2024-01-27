@@ -30,7 +30,7 @@ Today we fill in the missing pieces of our Ox64 Emulator and call it for __Autom
 
 - Execute everything with __Expect Scripting__
 
-  (TODO)
+  (Based on good old TCL)
 
 - Which becomes our __Daily Automated Testing__
 
@@ -46,7 +46,7 @@ We begin with the easier bit: Scripting our Ox64 Emulator...
 
 _What's this "Expect Scripting"?_
 
-__`expect`__ is a cool Command-Line Tool that sends commands to another app and checks the responses.
+[__`expect`__](https://en.wikipedia.org/wiki/Expect) is a cool Command-Line Tool that sends commands to another app and checks the responses.
 
 _How is it used for Automated Testing?_
 
@@ -63,7 +63,7 @@ nsh>
 
 [(__nuttx.cfg__ is our __TinyEMU Config__)](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.cfg)
 
-With an __Expect Script__, we can __feed our commands automatically__ into the Emulator!
+With an __Expect Script__, we can __feed our commands automatically__ into the Emulator...
 
 ```text
 ## Run our Expect Script...
@@ -82,7 +82,7 @@ That's why we create an Expect Script to test Ox64 NuttX.
 
 _What's nuttx.exp?_
 
-That's our __Expect Script__ containing the commands that will be sent to our Emulator: [nuttx.exp](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp)
+That's our __Expect Script__ containing the commands that will be sent to our Ox64 Emulator: [nuttx.exp](https://github.com/lupyuen/nuttx-ox64/blob/main/nuttx.exp)
 
 ```bash
 #!/usr/bin/expect
@@ -161,7 +161,9 @@ on:
 
 [(Why not one o'clock? __It's too busy__)](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule)
 
-We build our __Ox64 BL808 Emulator__: [ox64-test.yml](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml#L18-L58)
+_What happens during Daily Automated Testing?_
+
+First it builds our __Ox64 BL808 Emulator__: [ox64-test.yml](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml#L29-L58)
 
 ```bash
 ## Install `expect` and the Build Prerequisites on Ubuntu
@@ -177,7 +179,7 @@ cp temu ..
 popd
 ```
 
-Next we download the __Daily NuttX Build__...
+Next we download the [__Daily NuttX Build__](https://github.com/lupyuen/nuttx-ox64#nuttx-automated-daily-build-for-ox64)...
 
 ```bash
 ## Location of Daily NuttX Builds
@@ -201,8 +203,7 @@ cat nuttx.hash
 And we start our __Test Script__...
 
 ```bash
-## Download the Test Script from
-## https://github.com/lupyuen/nuttx-ox64
+## Download the Test Script from github.com/lupyuen/nuttx-ox64
 url=https://github.com/lupyuen/nuttx-ox64/raw/main
 wget $url/nuttx.cfg
 wget $url/nuttx.exp
@@ -236,9 +237,9 @@ That's everything we need for Daily Automated Testing! Our Ox64 Emulator will em
 
 # Boot NuttX in Supervisor Mode
 
-_Ox64 Automated Testing doesn't look so hard?_
+_Automated Testing doesn't look so hard?_
 
-That's because most of the tough work was done in our [__Ox64 BL808 Emulator__](https://lupyuen.github.io/articles/tinyemu2)! Let's look back at the challenging bits...
+That's because we did the tough work inside our [__Ox64 BL808 Emulator__](https://lupyuen.github.io/articles/tinyemu2)! Let's look back at the challenging bits...
 
 _What's this Supervisor Mode? Why does it matter?_
 
@@ -332,7 +333,8 @@ Why set Previous Privilege to Supervisor Mode? So we can execute an __MRET (Retu
 
 ```c
   // Jump to RAM_BASE_ADDR in Supervisor Mode:
-  // Set the MEPC CSR Register, then Return from Machine Mode
+  // Set the MEPC CSR Register to RAM_BASE_ADDR
+  // Then Return from Machine Mode to Supervisor Mode
   csrw  mepc, t0
   mret
 ```
@@ -349,13 +351,13 @@ Yes! Check out what happens if we remove some bits of our Boot Code from TinyEMU
 
 _NuttX can't access the System Timer because it runs in RISC-V Supervisor Mode..._
 
-_What can we do to help NuttX?_
+_What can we do to help?_
 
 NuttX will make a __System Call (ECALL)__ to OpenSBI to start the System Timer (pic above)...
 
 - [__"OpenSBI Timer for NuttX"__](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
 
-And NuttX reads the System Time through the __TIME CSR Register__: [riscv_sbi.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L108-L141)
+And NuttX reads the System Time through the __TIME CSR Register__: [riscv_sbi.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L125-L127)
 
 ```c
 // Fetch the System Time...
@@ -403,7 +405,7 @@ nuttx/arch/risc-v/src/common/supervisor/riscv_sbi.c:126
 
 However __RDTIME__ isn't supported by TinyEMU. [(Needs the __Zicntr Extension__)](https://five-embeddev.com/riscv-isa-manual/latest/counters.html#zicntr-standard-extension-for-base-counters-and-timers)
 
-Hence we patch __RDTIME__ to become __ECALL__ and we emulate later: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L927-L937)
+Hence we patch __RDTIME__ to become __ECALL__, and we emulate later: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L927-L937)
 
 ```c
   // If we find the RDTIME Instruction: (Read System Time)
@@ -462,23 +464,23 @@ These instructions are specific to __T-Head C906 CPU__ (and won't work in TinyEM
 
 _Ox64 SBC has a UART Controller that will handle Console Input..._
 
-_How did we emulate the Ox64 UART Controller?_
+_How do we emulate the Ox64 UART Controller?_
 
 Previously we emulated the __BL808 UART Registers__ to do Console Output...
 
 - [__"Intercept the UART Registers"__](https://lupyuen.github.io/articles/tinyemu2#intercept-the-uart-registers)
 
-Console Input is a little more tricky... We need to emulate __UART Interrupts__! (Pic above)
+Console Input is tricky... We need to emulate __UART Interrupts__! (Pic above)
 
 - [__"UART Interrupt and Platform-Level Interrupt Controller"__](https://lupyuen.github.io/articles/plic2)
 
-_Is there a TinyEMU UART Controller that we can reuse?_
+_Any UART Controller in TinyEMU that we can reuse?_
 
-TinyEMU has a [__VirtIO Console__](https://lupyuen.github.io/articles/tinyemu#virtio-console) that emulates a UART Controller.
+TinyEMU has a [__VirtIO Console__](https://lupyuen.github.io/articles/tinyemu#virtio-console) that works like a UART Controller.
 
 Let's hack TinyEMU's VirtIO Console so that it behaves like [__BL808 UART Controller__](https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64).
 
-We tweak the __VirtIO Interrupt Number__ so it works like BL808 UART3: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L69-L85)
+We tweak the __VirtIO Interrupt Number__ so it triggers the same Interrupt as BL808 UART3: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_machine.c#L69-L85)
 
 ```c
 // VirtIO now emulates
@@ -639,7 +641,8 @@ auipc t0, RAM_BASE_ADDR
 
 // Testing: Can we jump like this?
 // Jump to RAM_BASE_ADDR in Supervisor Mode:
-// Set the MEPC CSR Register, then Return from Machine Mode
+// Set the MEPC CSR Register to RAM_BASE_ADDR
+// Then Return from Machine Mode to Supervisor Mode
 csrw  mepc, t0
 mret
 ```
