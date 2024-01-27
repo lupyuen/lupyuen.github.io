@@ -14,7 +14,7 @@ Yes we can! With a little help from the __Ox64 BL808 Emulator__ that we created 
 
 _But our Ox64 Emulator was incomplete?_
 
-Today we fill in the missing pieces of our Ox64 Emulator and call it for __Automated Testing__...
+Today we fill in the missing pieces of our Ox64 Emulator and run it for __Automated Testing__...
 
 - We boot NuttX in __Supervisor Mode__
 
@@ -617,7 +617,7 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
--   [__Discuss this article on Hacker News__](TODO)
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=39160763)
 
 -   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 
