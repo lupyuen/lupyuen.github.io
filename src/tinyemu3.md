@@ -1,6 +1,6 @@
 # Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)
 
-📝 _29 Jan 2024_
+📝 _28 Jan 2024_
 
 ![Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)](https://lupyuen.github.io/images/tinyemu3-title.jpg)
 
@@ -597,8 +597,6 @@ Some more tweaks to TinyEMU VirtIO for Console Input...
 
 # What's Next
 
-TODO
-
 We created a tool that's super helpful for __validating our Daily NuttX Builds__, checking if they'll actually boot OK on Ox64...
 
 - We created an __Ox64 Emulator__ with TinyEMU RISC-V Emulator
@@ -618,6 +616,8 @@ Previously we tried creating a [__PinePhone Emulator__](https://lupyuen.github.i
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss this article on Hacker News__](TODO)
 
 -   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 
