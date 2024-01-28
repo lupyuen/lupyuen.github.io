@@ -576,7 +576,9 @@ _What about Console Input?_
 
 [__Console Input__](https://github.com/lupyuen/nuttx-tinyemu#emulate-uart-interrupts-for-console-input) requires [__UART Interrupts__](https://lupyuen.github.io/articles/plic2). (Pic below)
 
-We'll explain the details in the next article. [(Here's a __Sneak Peek__)](https://github.com/lupyuen/nuttx-tinyemu#emulate-uart-interrupts-for-console-input)
+We'll explain the details in the next article...
+
+-   [__"Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)"__](https://lupyuen.github.io/articles/tinyemu3)
 
 One more thing to tweak...
 
@@ -654,7 +656,9 @@ _So we'll boot NuttX Kernel in Supervisor Mode?_
 
 Yep we shall tweak TinyEMU to start NuttX in __Supervisor Mode__. (Instead of Machine Mode)
 
-[(By updating the __TinyEMU Boot Code__)](https://github.com/lupyuen/nuttx-tinyemu#start-nuttx-kernel-in-supervisor-mode)
+We'll explain the details in the next article...
+
+-   [__"Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)"__](https://lupyuen.github.io/articles/tinyemu3)
 
 ![TinyEMU will boot NuttX in Supervisor Mode](https://lupyuen.github.io/images/tinyemu2-flow3.jpg)
 
@@ -668,11 +672,11 @@ _Will we run OpenSBI on TinyEMU?_
 
 That's not necessary. We'll [__emulate the System Timer__](https://github.com/lupyuen/nuttx-tinyemu#emulate-opensbi-for-system-timer) in TinyEMU.
 
-[(More about __System Timer__)](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx)
+We'll explain the details in the next article...
 
-[(Ox64 Emulator today might be sufficient for __Daily Automated Testing__)](https://github.com/lupyuen/nuttx-ox64#nuttx-automated-daily-build-for-ox64)
+- [__"Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)"__](https://lupyuen.github.io/articles/tinyemu3)
 
-[(So amazing we __booted so much NuttX__ in Machine Mode)](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
+  [(So amazing we __booted so much NuttX__ in Machine Mode)](https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow)
 
 ![JavaScript Console of Ox64 BL808 Emulator](https://lupyuen.github.io/images/tinyemu2-console.png)
 
