@@ -6,6 +6,37 @@
 
 TODO
 
+_TCC is a Tiny C Compiler for 64-bit RISC-V... Can we run TCC in a Web Browser?_
+
+Let's find out! We'll compile TCC to WebAssembly with Zig Compiler.
+
+TODO: Interesting challenges
+
+_Why are we doing this?_
+
+Today we can run [__Apache NuttX RTOS in a Web Browser__](https://lupyuen.github.io/articles/tinyemu2) (with WebAssembly + Emscripten + 64-bit RISC-V).
+
+What if we could allow NuttX Apps to be compiled and tested in the Web Browser?
+
+1.  We type a C Program into a HTML Textbox...
+
+    ```c
+    int main(int argc, char *argv[]) {
+      printf("Hello, World!!\n");
+      return 0;
+    }
+    ```
+
+1.  Run TCC in the Web Browser to compile the C Program into an ELF Executable (64-bit RISC-V)
+
+1.  Copy the ELF Executable to the NuttX Filesystem (via WebAssembly)
+
+1.  NuttX runs our ELF Executable inside the Web Browser
+
+![TCC RISC-V Compiler: Compiled to WebAssembly with Zig Compiler](https://lupyuen.github.io/images/tcc-web.png)
+
+[_(Try the __Online Demo__)_](https://lupyuen.github.io/tcc-riscv32-wasm/)
+
 # What's Next
 
 TODO
