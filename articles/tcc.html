@@ -66,37 +66,46 @@
 
     <h1 class="title">TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)</h1>
     <nav id="TOC"><ul>
-<li><a href="#tcc-generates-64-bit-risc-v-code">1 TCC generates 64-bit RISC-V code</a><ul></ul></li>
-<li><a href="#compile-tcc-with-zig-compiler">2 Compile TCC with Zig Compiler</a><ul></ul></li>
-<li><a href="#compile-tcc-to-webassembly-with-zig-compiler">3 Compile TCC to WebAssembly with Zig Compiler</a><ul></ul></li>
-<li><a href="#missing-functions-in-tcc-webassembly">4 Missing Functions in TCC WebAssembly</a><ul></ul></li>
-<li><a href="#test-the-tcc-webassembly-with-nodejs">5 Test the TCC WebAssembly with NodeJS</a><ul></ul></li>
-<li><a href="#test-the-tcc-webassembly-in-a-web-browser">6 Test the TCC WebAssembly in a Web Browser</a><ul></ul></li>
-<li><a href="#fix-the-missing-functions">7 Fix the Missing Functions</a><ul></ul></li>
-<li><a href="#tcc-webassembly-runs-ok-in-a-web-browser">8 TCC WebAssembly runs OK in a Web Browser!</a><ul></ul></li>
-<li><a href="#verify-the-tcc-output">9 Verify the TCC Output</a><ul></ul></li>
-<li><a href="#fix-the-varargs-functions">10 Fix the Varargs Functions</a><ul></ul></li>
-<li><a href="#test-tcc-output-with-nuttx">11 Test TCC Output with NuttX</a><ul></ul></li>
-<li><a href="#how-nuttx-build-links-a-nuttx-app">12 How NuttX Build links a NuttX App</a><ul></ul></li>
-<li><a href="#fix-missing-printf-in-nuttx-app">13 Fix Missing <code>printf</code> in NuttX App</a><ul></ul></li>
-<li><a href="#ecall-for-nuttx-system-call">14 ECALL for NuttX System Call</a><ul></ul></li>
-<li><a href="#analysis-of-missing-functions">15 Analysis of Missing Functions</a><ul>
-<li><a href="#semaphore-functions">15.1 Semaphore Functions</a><ul></ul></li>
-<li><a href="#standard-library">15.2 Standard Library</a><ul></ul></li>
-<li><a href="#time-functions">15.3 Time Functions</a><ul></ul></li>
-<li><a href="#math-functions">15.4 Math Functions</a><ul></ul></li>
-<li><a href="#varargs-functions">15.5 Varargs Functions</a><ul></ul></li>
-<li><a href="#filesystem-functions">15.6 Filesystem Functions</a><ul></ul></li>
-<li><a href="#file-io-functions">15.7 File I/O Functions</a><ul></ul></li>
-<li><a href="#string-functions">15.8 String Functions</a><ul></ul></li></ul></li>
-<li><a href="#whats-next">16 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Feb 2024</em></p>
+<li><a href="#tcc-in-the-web-browser">1 TCC in the Web Browser</a><ul></ul></li>
+<li><a href="#posix-functions">2 POSIX Functions</a><ul></ul></li>
+<li><a href="#file-input-and-output">3 File Input and Output</a><ul></ul></li>
+<li><a href="#fearsome-fprintf-and-friends">4 Fearsome fprintf and Friends</a><ul></ul></li>
+<li><a href="#test-with-apache-nuttx-rtos">5 Test with Apache NuttX RTOS</a><ul></ul></li>
+<li><a href="#tcc-generates-64-bit-risc-v-code">6 TCC generates 64-bit RISC-V code</a><ul></ul></li>
+<li><a href="#compile-tcc-with-zig-compiler">7 Compile TCC with Zig Compiler</a><ul></ul></li>
+<li><a href="#compile-tcc-to-webassembly-with-zig-compiler">8 Compile TCC to WebAssembly with Zig Compiler</a><ul></ul></li>
+<li><a href="#missing-functions-in-tcc-webassembly">9 Missing Functions in TCC WebAssembly</a><ul></ul></li>
+<li><a href="#test-the-tcc-webassembly-with-nodejs">10 Test the TCC WebAssembly with NodeJS</a><ul></ul></li>
+<li><a href="#test-the-tcc-webassembly-in-a-web-browser">11 Test the TCC WebAssembly in a Web Browser</a><ul></ul></li>
+<li><a href="#fix-the-missing-functions">12 Fix the Missing Functions</a><ul></ul></li>
+<li><a href="#tcc-webassembly-runs-ok-in-a-web-browser">13 TCC WebAssembly runs OK in a Web Browser!</a><ul></ul></li>
+<li><a href="#verify-the-tcc-output">14 Verify the TCC Output</a><ul></ul></li>
+<li><a href="#fearsome-fprintf-and-friends-1">15 Fearsome fprintf and Friends</a><ul></ul></li>
+<li><a href="#test-tcc-output-with-nuttx">16 Test TCC Output with NuttX</a><ul></ul></li>
+<li><a href="#how-nuttx-build-links-a-nuttx-app">17 How NuttX Build links a NuttX App</a><ul></ul></li>
+<li><a href="#fix-missing-printf-in-nuttx-app">18 Fix Missing <code>printf</code> in NuttX App</a><ul></ul></li>
+<li><a href="#ecall-for-nuttx-system-call">19 ECALL for NuttX System Call</a><ul></ul></li>
+<li><a href="#whats-next">20 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-analysis-of-missing-functions">21 Appendix: Analysis of Missing Functions</a><ul>
+<li><a href="#semaphore-functions">21.1 Semaphore Functions</a><ul></ul></li>
+<li><a href="#standard-library">21.2 Standard Library</a><ul></ul></li>
+<li><a href="#time-functions">21.3 Time Functions</a><ul></ul></li>
+<li><a href="#math-functions">21.4 Math Functions</a><ul></ul></li>
+<li><a href="#varargs-functions">21.5 Varargs Functions</a><ul></ul></li>
+<li><a href="#filesystem-functions">21.6 Filesystem Functions</a><ul></ul></li>
+<li><a href="#file-io-functions">21.7 File I/O Functions</a><ul></ul></li>
+<li><a href="#string-functions">21.8 String Functions</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tcc-title.png" alt="TODO" /></p>
+<p><em>TCC is a Tiny C Compiler for 64-bit RISC-V (and other platforms)…</em></p>
+<p><em>Can we run TCC in a Web Browser?</em></p>
+<p>Let’s do it! We’ll compile <a href="https://github.com/sellicott/tcc-riscv32"><strong>TCC (Tiny C Compiler)</strong></a> from C to WebAssembly with <a href="https://ziglang.org/"><strong>Zig Compiler</strong></a>.</p>
+<p>In this article, we talk about the tricky bits of the conversion from <strong>C to WebAssembly</strong>…</p>
 <p>TODO</p>
-<p><em>TCC is a Tiny C Compiler for 64-bit RISC-V… Can we run TCC in a Web Browser?</em></p>
-<p>Let’s find out! We’ll compile TCC to WebAssembly with Zig Compiler.</p>
-<p>TODO: Interesting challenges</p>
+<p><a href="https://en.wikipedia.org/wiki/Turing_(programming_language)">(Not to be confused with <strong>TCC from the 80’s</strong>)</a></p>
 <p><em>Why are we doing this?</em></p>
-<p>Today we can run <a href="https://lupyuen.github.io/articles/tinyemu2"><strong>Apache NuttX RTOS in a Web Browser</strong></a> (with WebAssembly + Emscripten + 64-bit RISC-V).</p>
+<p>TODO</p>
+<p>Today we can run <a href="https://lupyuen.github.io/articles/tinyemu2"><strong>Apache NuttX RTOS in a Web Browser</strong></a>. (With WebAssembly + Emscripten + 64-bit RISC-V)</p>
+<p>(<strong>Real-Time Operating System</strong> in Web Browser on General-Purpose Operating System!)</p>
 <p>What if we could allow NuttX Apps to be compiled and tested in the Web Browser?</p>
 <ol>
 <li>
@@ -118,7 +127,18 @@
 </ol>
 <p><img src="https://lupyuen.github.io/images/tcc-web.png" alt="TCC RISC-V Compiler: Compiled to WebAssembly with Zig Compiler" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><em>(Try the <strong>Online Demo</strong>)</em></a></p>
-<h1 id="tcc-generates-64-bit-risc-v-code"><a href="#tcc-generates-64-bit-risc-v-code">1 TCC generates 64-bit RISC-V code</a></h1>
+<h1 id="tcc-in-the-web-browser"><a href="#tcc-in-the-web-browser">1 TCC in the Web Browser</a></h1>
+<p>TODO</p>
+<h1 id="posix-functions"><a href="#posix-functions">2 POSIX Functions</a></h1>
+<p>TODO</p>
+<p><a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX</strong></a></p>
+<h1 id="file-input-and-output"><a href="#file-input-and-output">3 File Input and Output</a></h1>
+<p>TODO</p>
+<h1 id="fearsome-fprintf-and-friends"><a href="#fearsome-fprintf-and-friends">4 Fearsome fprintf and Friends</a></h1>
+<p>TODO: Funny how printf is the first thing we learn about C. But yet it’s incredibly difficult to implement!</p>
+<h1 id="test-with-apache-nuttx-rtos"><a href="#test-with-apache-nuttx-rtos">5 Test with Apache NuttX RTOS</a></h1>
+<p>TODO</p>
+<h1 id="tcc-generates-64-bit-risc-v-code"><a href="#tcc-generates-64-bit-risc-v-code">6 TCC generates 64-bit RISC-V code</a></h1>
 <p>TODO</p>
 <p>We build TCC to support 64-bit RISC-V Target…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build TCC for 64-bit RISC-V Target
@@ -180,7 +200,7 @@ main():
   3c:   00008067                ret
 </code></pre></div>
 <p>See the Object File: <a href="https://gist.github.com/lupyuen/ac600d793a60b1e7f6ac95918580f266">hello_main.o</a></p>
-<h1 id="compile-tcc-with-zig-compiler"><a href="#compile-tcc-with-zig-compiler">2 Compile TCC with Zig Compiler</a></h1>
+<h1 id="compile-tcc-with-zig-compiler"><a href="#compile-tcc-with-zig-compiler">7 Compile TCC with Zig Compiler</a></h1>
 <p>TODO</p>
 <p>We compile TCC Compiler with the Zig Compiler. First we figure out the GCC Options…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Show the GCC Options
@@ -257,7 +277,7 @@ riscv-none-elf-objdump \
   2&gt;&amp;1
 </code></pre></div>
 <p>Yep it works OK!</p>
-<h1 id="compile-tcc-to-webassembly-with-zig-compiler"><a href="#compile-tcc-to-webassembly-with-zig-compiler">3 Compile TCC to WebAssembly with Zig Compiler</a></h1>
+<h1 id="compile-tcc-to-webassembly-with-zig-compiler"><a href="#compile-tcc-to-webassembly-with-zig-compiler">8 Compile TCC to WebAssembly with Zig Compiler</a></h1>
 <p>TODO</p>
 <p>Now we compile TCC to WebAssembly.</p>
 <p>Zig Compiler doesn’t like it, so we <a href="https://github.com/lupyuen/tcc-riscv32-wasm/commit/e30454a0eb9916f820d58a7c3e104eeda67988d8">Patch the longjmp / setjmp</a>. (We probably won’t need it unless TCC hits Compiler Errors)</p>
@@ -294,7 +314,7 @@ wasm-objdump -h tcc.o
 wasm-objdump -x tcc.o &gt;/tmp/tcc.txt
 </code></pre></div>
 <p>Yep TCC compiles OK to WebAssembly with Zig Compiler!</p>
-<h1 id="missing-functions-in-tcc-webassembly"><a href="#missing-functions-in-tcc-webassembly">4 Missing Functions in TCC WebAssembly</a></h1>
+<h1 id="missing-functions-in-tcc-webassembly"><a href="#missing-functions-in-tcc-webassembly">9 Missing Functions in TCC WebAssembly</a></h1>
 <p>TODO</p>
 <p>We check the Compiled WebAssembly. These POSIX Functions are missing from the Compiled WebAssembly…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ wasm-objdump -x tcc.o &gt;/tmp/tcc.txt
@@ -379,7 +399,7 @@ Import[75]:
 </code></pre></div>
 <p>TODO: How to fix these missing POSIX Functions for WebAssembly (Web Browser)</p>
 <p>TODO: Do we need all of them? Maybe we run in a Web Browser and see what crashes? <a href="https://lupyuen.github.io/articles/lvgl3">Similar to this</a></p>
-<h1 id="test-the-tcc-webassembly-with-nodejs"><a href="#test-the-tcc-webassembly-with-nodejs">5 Test the TCC WebAssembly with NodeJS</a></h1>
+<h1 id="test-the-tcc-webassembly-with-nodejs"><a href="#test-the-tcc-webassembly-with-nodejs">10 Test the TCC WebAssembly with NodeJS</a></h1>
 <p>TODO</p>
 <p>We link our Compiled WebAssembly <code>tcc.o</code> with our Zig App: <a href="zig/tcc-wasm.zig">zig/tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile our Zig App `tcc-wasm.zig` for WebAssembly
@@ -415,7 +435,7 @@ WebAssembly.instantiate(typedArray, {
   const ret = compile_program();
   console.log(`ret=${ret}`);
 });
-</code></pre></div><h1 id="test-the-tcc-webassembly-in-a-web-browser"><a href="#test-the-tcc-webassembly-in-a-web-browser">6 Test the TCC WebAssembly in a Web Browser</a></h1>
+</code></pre></div><h1 id="test-the-tcc-webassembly-in-a-web-browser"><a href="#test-the-tcc-webassembly-in-a-web-browser">11 Test the TCC WebAssembly in a Web Browser</a></h1>
 <p>TODO</p>
 <p>We test the TCC WebAssembly in a Web Browser with <a href="docs/index.html">docs/index.html</a> and <a href="docs/tcc.js">docs/tcc.js</a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start the Web Server
@@ -434,7 +454,7 @@ ret=123
 main: end
 </code></pre></div>
 <p>Also published publicly here (see the JavaScript Console): https://lupyuen.github.io/tcc-riscv32-wasm/</p>
-<h1 id="fix-the-missing-functions"><a href="#fix-the-missing-functions">7 Fix the Missing Functions</a></h1>
+<h1 id="fix-the-missing-functions"><a href="#fix-the-missing-functions">12 Fix the Missing Functions</a></h1>
 <p>TODO</p>
 <p>When we call <code>main()</code> in our Zig App: <a href="zig/tcc-wasm.zig">zig/tcc-wasm.zig</a></p>
 <p>We see many many Undefined Symbols…</p>
@@ -522,7 +542,7 @@ pub export fn close(_: c_int) c_int {
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/commit/a6602a602293addfeb9ce548b9a3aacb62127c5f">Dump the <code>a.out</code> file</a></p>
 </li>
 </ol>
-<h1 id="tcc-webassembly-runs-ok-in-a-web-browser"><a href="#tcc-webassembly-runs-ok-in-a-web-browser">8 TCC WebAssembly runs OK in a Web Browser!</a></h1>
+<h1 id="tcc-webassembly-runs-ok-in-a-web-browser"><a href="#tcc-webassembly-runs-ok-in-a-web-browser">13 TCC WebAssembly runs OK in a Web Browser!</a></h1>
 <p>TODO</p>
 <p>When we run it in a <a href="https://lupyuen.github.io/tcc-riscv32-wasm/">Web Browser</a>: TCC compiles <code>hello.c</code> and writes to <code>a.out</code> yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>+ node zig/test.js
@@ -794,7 +814,7 @@ ret=1040
 <p>Note: <code>invalid macro name</code> is caused by <code>#define %s%s</code>. We should mock up a valid name for <code>%s%s</code></p>
 <p><img src="https://lupyuen.github.io/images/tcc-title.png" alt="TCC RISC-V Compiler: Compiled to WebAssembly with Zig Compiler" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><em>(Try the <strong>Online Demo</strong>)</em></a></p>
-<h1 id="verify-the-tcc-output"><a href="#verify-the-tcc-output">9 Verify the TCC Output</a></h1>
+<h1 id="verify-the-tcc-output"><a href="#verify-the-tcc-output">14 Verify the TCC Output</a></h1>
 <p>TODO</p>
 <p>Let’s verify the generated <code>a.out</code>.</p>
 <p>We copy the above <code>a.out</code> Hex Dump into a Text File: <a href="https://gist.github.com/lupyuen/fd78742847b146c6eea5dfcff0d932f7">a.txt</a></p>
@@ -836,7 +856,8 @@ riscv-none-elf-objdump \
 <p>So yes TCC runs correctly in a Web Browser. With some limitations and lots of hacking! Yay!</p>
 <p><img src="https://lupyuen.github.io/images/tcc-web.png" alt="TCC RISC-V Compiler: Compiled to WebAssembly with Zig Compiler" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><em>(Try the <strong>Online Demo</strong>)</em></a></p>
-<h1 id="fix-the-varargs-functions"><a href="#fix-the-varargs-functions">10 Fix the Varargs Functions</a></h1>
+<p>TODO: Pic of Format Patterns</p>
+<h1 id="fearsome-fprintf-and-friends-1"><a href="#fearsome-fprintf-and-friends-1">15 Fearsome fprintf and Friends</a></h1>
 <p>TODO</p>
 <p><em>TCC calls C Formatting Functions with Variable Arguments: fprintf, sprintf, …</em></p>
 <p><em>How will we implement them with Zig in WebAssembly?</em></p>
@@ -1040,7 +1061,7 @@ a.out: 1040 bytes
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36">(See the Complete Log)</a></p>
 <p>TODO: Implement sscanf: <code>str=0.9.27, format=%d.%d.%d</code></p>
-<h1 id="test-tcc-output-with-nuttx"><a href="#test-tcc-output-with-nuttx">11 Test TCC Output with NuttX</a></h1>
+<h1 id="test-tcc-output-with-nuttx"><a href="#test-tcc-output-with-nuttx">16 Test TCC Output with NuttX</a></h1>
 <p>TODO</p>
 <p><em>TCC in WebAssembly has compiled our C Program into the ELF Binary <code>a.out</code>. What happens when we run it on NuttX?</em></p>
 <p>Let’s run the TCC Output <code>a.out</code> on NuttX! We copy <code>a.out</code> to NuttX Apps Filesystem…</p>
@@ -1248,7 +1269,7 @@ nsh&gt;
 </code></pre></div>
 <p>It says <code>printf</code> is missing. Let’s fix it…</p>
 <p>For Reference: Here’s the log for an ELF that loads properly on NuttX: <a href="https://gist.github.com/lupyuen/847f7adee50499cac5212f2b95d19cd3">NuttX ELF Loader Log</a></p>
-<h1 id="how-nuttx-build-links-a-nuttx-app"><a href="#how-nuttx-build-links-a-nuttx-app">12 How NuttX Build links a NuttX App</a></h1>
+<h1 id="how-nuttx-build-links-a-nuttx-app"><a href="#how-nuttx-build-links-a-nuttx-app">17 How NuttX Build links a NuttX App</a></h1>
 <p>TODO</p>
 <p><em><code>printf</code> is missing from our TCC Output <code>a.out</code>. How does NuttX Build link a NuttX App?</em></p>
 <p>Let’s find out…</p>
@@ -1302,7 +1323,7 @@ total 18776
 -rw-r--r-- 1 3086312 Jan 29 01:18 libproxies.a
 </code></pre></div>
 <p>Let’s run TCC to link <code>a.out</code> with the above libraries…</p>
-<h1 id="fix-missing-printf-in-nuttx-app"><a href="#fix-missing-printf-in-nuttx-app">13 Fix Missing <code>printf</code> in NuttX App</a></h1>
+<h1 id="fix-missing-printf-in-nuttx-app"><a href="#fix-missing-printf-in-nuttx-app">18 Fix Missing <code>printf</code> in NuttX App</a></h1>
 <p>TODO</p>
 <p>We run TCC to link <code>a.out</code> with the above libraries…</p>
 <div class="example-wrap"><pre class="language-bash"><code>tcc-riscv32-wasm/riscv64-tcc \
@@ -1499,7 +1520,7 @@ exec_module: Initialize the user heap (heapsize=528384)
 </code></pre></div>
 <p>(NuttX seems to be starting the first thing that appears in <code>a.out</code>)</p>
 <p>TODO: Unknown Relocation Type may be due to <a href="https://lists.gnu.org/archive/html/tinycc-devel/2020-06/msg00000.html">Thread Local Storage</a> generated by GCC Compiler?</p>
-<h1 id="ecall-for-nuttx-system-call"><a href="#ecall-for-nuttx-system-call">14 ECALL for NuttX System Call</a></h1>
+<h1 id="ecall-for-nuttx-system-call"><a href="#ecall-for-nuttx-system-call">19 ECALL for NuttX System Call</a></h1>
 <p>TODO</p>
 <p><em>TCC fails to link our NuttX App because of Unknown Relocation Type for printf(). How else can we print something in our NuttX App?</em></p>
 <p>We can make a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel">NuttX System Call (ECALL)</a> to <code>write(fd, buf, buflen)</code>.</p>
@@ -1671,79 +1692,7 @@ main():
 </code></pre></div>
 <p>TODO: Is there a workaround? Do we paste the ECALL Machine Code ourselves?</p>
 <p>TODO: Call the NuttX System Call <code>__exit</code> to terminate peacefully</p>
-<h1 id="analysis-of-missing-functions"><a href="#analysis-of-missing-functions">15 Analysis of Missing Functions</a></h1>
-<p>TODO</p>
-<p>TCC calls surprisingly few External Functions! We might get it running on WebAssembly. Here’s our analysis of the Missing Functions: <a href="zig/tcc-wasm.zig">zig/tcc-wasm.zig</a></p>
-<h2 id="semaphore-functions"><a href="#semaphore-functions">15.1 Semaphore Functions</a></h2>
-<p>TODO</p>
-<p>Not sure why TCC uses Semaphores? Maybe we’ll understand when we support <code>#include</code> files.</p>
-<p>TODO: Borrow Semaphore Functions from where?</p>
-<ul>
-<li>sem_init, sem_post, sem_wait</li>
-</ul>
-<h2 id="standard-library"><a href="#standard-library">15.2 Standard Library</a></h2>
-<p>TODO</p>
-<p>qsort isn’t used right now. Maybe for the Linker later?</p>
-<p>TODO: Borrow qsort from where?</p>
-<ul>
-<li>exit, qsort</li>
-</ul>
-<h2 id="time-functions"><a href="#time-functions">15.3 Time Functions</a></h2>
-<p>TODO</p>
-<p>Not used right now.</p>
-<p>TODO: Borrow Time Functions from where?</p>
-<ul>
-<li>time, gettimeofday, localtime</li>
-</ul>
-<h2 id="math-functions"><a href="#math-functions">15.4 Math Functions</a></h2>
-<p>TODO</p>
-<p>Also not used right now.</p>
-<p>TODO: Borrow Math Functions from where?</p>
-<ul>
-<li>ldexp</li>
-</ul>
-<h2 id="varargs-functions"><a href="#varargs-functions">15.5 Varargs Functions</a></h2>
-<p>TODO</p>
-<p>Varargs will be tricky to implement in Zig. Probably we should implement in C. Maybe MUSL?</p>
-<p>Right now we’re doing simple Pattern Matching. But it won’t work for Real Programs.</p>
-<ul>
-<li>printf, snprintf, sprintf, vsnprintf</li>
-<li>sscanf</li>
-</ul>
-<h2 id="filesystem-functions"><a href="#filesystem-functions">15.6 Filesystem Functions</a></h2>
-<p>TODO</p>
-<p>Will mock up these functions for WebAssembly. Maybe an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">Emscripten File System</a>?</p>
-<ul>
-<li>getcwd</li>
-<li>remove, unlink</li>
-</ul>
-<h2 id="file-io-functions"><a href="#file-io-functions">15.7 File I/O Functions</a></h2>
-<p>TODO</p>
-<p>Will mock up these functions for WebAssembly. Right now we read only 1 simple C Source File, and produce only 1 Object File. No header files, no libraries. And it works!</p>
-<p>But later we might need an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">Emscripten File System</a>. And our File I/O code will support Multiple Files with proper Buffer Overflow Checks.</p>
-<ul>
-<li>open, fopen, fdopen, </li>
-<li>close, fclose</li>
-<li>fprintf, fputc, fputs</li>
-<li>read, fread</li>
-<li>fwrite</li>
-<li>fflush</li>
-<li>fseek, ftell, lseek</li>
-<li>puts</li>
-</ul>
-<h2 id="string-functions"><a href="#string-functions">15.8 String Functions</a></h2>
-<p>TODO</p>
-<p>Borrow from <a href="https://github.com/ZigEmbeddedGroup/foundation-libc">foundation-libc</a> and <a href="https://github.com/marler8997/ziglibc">ziglibc</a></p>
-<ul>
-<li>atoi</li>
-<li>strcat, strchr, strcmp</li>
-<li>strncmp, strncpy, strrchr</li>
-<li>strstr, strtod, strtof</li>
-<li>strtol, strtold, strtoll</li>
-<li>strtoul, strtoull</li>
-<li>strerror</li>
-</ul>
-<h1 id="whats-next"><a href="#whats-next">16 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">20 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -1768,6 +1717,78 @@ main():
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tcc.md"><strong>lupyuen.github.io/src/tcc.md</strong></a></p>
+<h1 id="appendix-analysis-of-missing-functions"><a href="#appendix-analysis-of-missing-functions">21 Appendix: Analysis of Missing Functions</a></h1>
+<p>TODO</p>
+<p>TCC calls surprisingly few External Functions! We might get it running on WebAssembly. Here’s our analysis of the Missing Functions: <a href="zig/tcc-wasm.zig">zig/tcc-wasm.zig</a></p>
+<h2 id="semaphore-functions"><a href="#semaphore-functions">21.1 Semaphore Functions</a></h2>
+<p>TODO</p>
+<p>Not sure why TCC uses Semaphores? Maybe we’ll understand when we support <code>#include</code> files.</p>
+<p>TODO: Borrow Semaphore Functions from where?</p>
+<ul>
+<li>sem_init, sem_post, sem_wait</li>
+</ul>
+<h2 id="standard-library"><a href="#standard-library">21.2 Standard Library</a></h2>
+<p>TODO</p>
+<p>qsort isn’t used right now. Maybe for the Linker later?</p>
+<p>TODO: Borrow qsort from where?</p>
+<ul>
+<li>exit, qsort</li>
+</ul>
+<h2 id="time-functions"><a href="#time-functions">21.3 Time Functions</a></h2>
+<p>TODO</p>
+<p>Not used right now.</p>
+<p>TODO: Borrow Time Functions from where?</p>
+<ul>
+<li>time, gettimeofday, localtime</li>
+</ul>
+<h2 id="math-functions"><a href="#math-functions">21.4 Math Functions</a></h2>
+<p>TODO</p>
+<p>Also not used right now.</p>
+<p>TODO: Borrow Math Functions from where?</p>
+<ul>
+<li>ldexp</li>
+</ul>
+<h2 id="varargs-functions"><a href="#varargs-functions">21.5 Varargs Functions</a></h2>
+<p>TODO</p>
+<p>Varargs will be tricky to implement in Zig. Probably we should implement in C. Maybe MUSL?</p>
+<p>Right now we’re doing simple Pattern Matching. But it won’t work for Real Programs.</p>
+<ul>
+<li>printf, snprintf, sprintf, vsnprintf</li>
+<li>sscanf</li>
+</ul>
+<h2 id="filesystem-functions"><a href="#filesystem-functions">21.6 Filesystem Functions</a></h2>
+<p>TODO</p>
+<p>Will mock up these functions for WebAssembly. Maybe an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">Emscripten File System</a>?</p>
+<ul>
+<li>getcwd</li>
+<li>remove, unlink</li>
+</ul>
+<h2 id="file-io-functions"><a href="#file-io-functions">21.7 File I/O Functions</a></h2>
+<p>TODO</p>
+<p>Will mock up these functions for WebAssembly. Right now we read only 1 simple C Source File, and produce only 1 Object File. No header files, no libraries. And it works!</p>
+<p>But later we might need an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">Emscripten File System</a>. And our File I/O code will support Multiple Files with proper Buffer Overflow Checks.</p>
+<ul>
+<li>open, fopen, fdopen, </li>
+<li>close, fclose</li>
+<li>fprintf, fputc, fputs</li>
+<li>read, fread</li>
+<li>fwrite</li>
+<li>fflush</li>
+<li>fseek, ftell, lseek</li>
+<li>puts</li>
+</ul>
+<h2 id="string-functions"><a href="#string-functions">21.8 String Functions</a></h2>
+<p>TODO</p>
+<p>Borrow from <a href="https://github.com/ZigEmbeddedGroup/foundation-libc">foundation-libc</a> and <a href="https://github.com/marler8997/ziglibc">ziglibc</a></p>
+<ul>
+<li>atoi</li>
+<li>strcat, strchr, strcmp</li>
+<li>strncmp, strncpy, strrchr</li>
+<li>strstr, strtod, strtof</li>
+<li>strtol, strtold, strtoll</li>
+<li>strtoul, strtoull</li>
+<li>strerror</li>
+</ul>
 
     
 </body>
