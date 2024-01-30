@@ -608,7 +608,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/tcc.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tcc.md)
 
-# Appendix: Compile TCC with Zig Compiler
+# Appendix: Compile TCC with Zig
 
 This is how we run __Zig Compiler to compile TCC Compiler__ from C to WebAssembly...
 
@@ -673,13 +673,21 @@ gcc \
 
 And we copied above GCC Options to become the [__Zig Compiler Options__](TODO).
 
-# Appendix: JavaScript calls TCC Compiler
+# Appendix: JavaScript calls TCC
 
-TODO: Earlier we saw
+Up above we saw some __JavaScript (Web Browser and NodeJS)__ calling our TCC Compiler in WebAssembly...
 
-We test the TCC WebAssembly in a Web Browser with [docs/index.html](docs/index.html) and [docs/tcc.js](docs/tcc.js)...
+- [__TCC WebAssembly in Web Browser__](https://lupyuen.github.io/tcc-riscv32-wasm/)
+
+- TODO: TCC WebAssembly in NodeJS
+
+This is how we test the TCC WebAssembly in a Web Browser with a __Local Web Server__...
 
 ```bash
+## Download the TCC Source Code.
+git clone https://github.com/lupyuen/tcc-riscv32-wasm
+cd tcc-riscv32-wasm
+
 ## Start the Web Server
 cargo install simple-http-server
 simple-http-server ./docs &
@@ -688,96 +696,120 @@ simple-http-server ./docs &
 cp tcc-wasm.wasm docs/
 ```
 
-Browse to...
+Browse to this URL and our TCC WebAssembly will appear...
 
-```text
+```bash
+## Test TCC WebAssembly with Web Browser
 http://localhost:8000/index.html
 ```
 
-Open the JavaScript Console. Yep our TCC WebAssembly runs OK in a Web Browser!
+Check the __JavaScript Console__ for more messages.
 
-```text
-main: start
-ret=123
-main: end
-```
+_How does it work?_
 
-Also published publicly here (see the JavaScript Console): https://lupyuen.github.io/tcc-riscv32-wasm/
-
-
-We link our Compiled WebAssembly `tcc.o` with our Zig App: [zig/tcc-wasm.zig](zig/tcc-wasm.zig)
-
-```bash
-## Compile our Zig App `tcc-wasm.zig` for WebAssembly
-## and link with TCC compiled for WebAssembly
-zig build-exe \
-  -target wasm32-freestanding \
-  -rdynamic \
-  -lc \
-  -fno-entry \
-  -freference-trace \
-  --verbose-cimport \
-  --export=compile_program \
-  zig/tcc-wasm.zig \
-  tcc.o
-
-## Dump our Linked WebAssembly
-wasm-objdump -h tcc-wasm.wasm
-wasm-objdump -x tcc-wasm.wasm >/tmp/tcc-wasm.txt
-
-## Run our Linked WebAssembly
-## Shows: ret=123
-node zig/test.js
-```
-
-Yep it runs OK and prints `123`, with our NodeJS Script: [zig/test.js](zig/test.js)
+On clicking the __Compile Button__, our JavaScript loads the TCC WebAssembly: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L170-L187)
 
 ```javascript
-const fs = require('fs');
-const source = fs.readFileSync("./tcc-wasm.wasm");
-const typedArray = new Uint8Array(source);
+// Load the WebAssembly Module and start the Main Function.
+// Called by the Compile Button.
+async function bootstrap() {
+  // Load the WebAssembly Module
+  // https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
+  const result = await WebAssembly.instantiateStreaming(
+    fetch("tcc-wasm.wasm"),
+    importObject
+  );
 
-WebAssembly.instantiate(typedArray, {
-  env: {
-    print: (result) => { console.log(`The result is ${result}`); }
-  }}).then(result => {
-  const compile_program = result.instance.exports.compile_program;
-  const ret = compile_program();
-  console.log(`ret=${ret}`);
-});
+  // Store references to WebAssembly Functions and Memory exported by Zig
+  wasm.init(result);
+
+  // Start the Main Function
+  window.requestAnimationFrame(main);
+}        
 ```
 
-# Appendix: Pattern Matching for Format Strings
+[(__importObject__ exports our __JavaScript Logger__ to Zig)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L25-L48)
 
-TODO: Earlier we saw
+[(__wasm__ is our __WebAssembly Helper__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L6-L25)
 
-_TCC calls C Formatting Functions with Variable Arguments: fprintf, sprintf, ..._
+Which triggers the __Main Function__ and calls our Zig Function __compile_program__: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L48-L86)
 
-_How will we implement them with Zig in WebAssembly?_
+```javascript
+// Main Function
+function main() {
+  // Allocate a String for passing the Compiler Options to Zig
+  const options = read_options();
+  const options_ptr = allocateString(JSON.stringify(options));
+  
+  // Allocate a String for passing the Program Code to Zig
+  const code = document.getElementById("code").value;
+  const code_ptr = allocateString(code);
 
-Parsing the C Format Strings in Zig will be tedious. Thankfully, TCC only uses 5 patterns of C Format Strings: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
+  // Call TCC to compile a program
+  const ptr = wasm.instance.exports
+    .compile_program(options_ptr, code_ptr);
+  console.log(`main: ptr=${ptr}`);
 
-```zig
-/// Pattern Matching for String Formatting: We will match these patterns when formatting strings
-const format_patterns = [_]FormatPattern{
-    // Format a Single `%d`, like `#define __TINYC__ %d`
-    FormatPattern{ .c_spec = "%d", .zig_spec = "{}", .type0 = c_int, .type1 = null },
+  // Get the `a.out` size from first 4 bytes returned
+  const memory = wasm.instance.exports.memory;
+  const data_len = new Uint8Array(memory.buffer, ptr, 4);
+  const len = data_len[0] | data_len[1] << 8 | data_len[2] << 16 | data_len[3] << 24;
+  console.log(`main: len=${len}`);
+  if (len <= 0) { return; }
 
-    // Format a Single `%u`, like `L.%u`
-    FormatPattern{ .c_spec = "%u", .zig_spec = "{}", .type0 = c_int, .type1 = null },
+  // Encode the `a.out` data from the rest of the bytes returned
+  const data = new Uint8Array(memory.buffer, ptr + 4, len);
+  let encoded_data = "";
+  for (const i in data) {
+    const hex = Number(data[i]).toString(16).padStart(2, "0");
+    encoded_data += `%${hex}`;
+  }
 
-    // Format a Single `%s`, like `#define __BASE_FILE__ "%s"` or `.rela%s`
-    FormatPattern{ .c_spec = "%s", .zig_spec = "{s}", .type0 = [*:0]const u8, .type1 = null },
-
-    // Format Two `%s`, like `#define %s%s\n`
-    FormatPattern{ .c_spec = "%s%s", .zig_spec = "{s}{s}", .type0 = [*:0]const u8, .type1 = [*:0]const u8 },
-
-    // Format `%s:%d`, like `%s:%d: `
-    FormatPattern{ .c_spec = "%s:%d", .zig_spec = "{s}:{}", .type0 = [*:0]const u8, .type1 = c_int },
+  // Download the `a.out` data into the Web Browser
+  download("a.out", encoded_data);
 };
 ```
 
-We use `comptime` functions in Zig to implement the C String Formatting: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L326)
+Our Main Function then downloads the __a.out__ file returned by our Zig Function.
+
+[(__allocateString__ allocates a String from Zig Memory)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L86-L108)
+
+[(__download__ is here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L158-L170)
+
+_What about NodeJS calling TCC WebAssembly?_
+
+```bash
+## Test TCC WebAssembly with NodeJS
+node zig/test.js
+```
+
+For Easier Testing (via Command-Line): We copied the JavaScript above into a NodeJS Script: [test.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js)
+
+```javascript
+// Allocate a String for passing the Compiler Options to Zig
+const options = ["-c", "hello.c"];
+const options_ptr = allocateString(JSON.stringify(options));
+
+// Allocate a String for passing Program Code to Zig
+const code_ptr = allocateString(`
+  int main(int argc, char *argv[]) {
+    printf("Hello, World!!\\n");
+    return 0;
+  }
+`);
+
+// Call TCC to compile a program
+const ptr = wasm.instance.exports
+  .compile_program(options_ptr, code_ptr);
+```
+
+# Appendix: Pattern Matching
+
+A while back we saw our Zig Wrapper doing __Pattern Matching for Formatting C Strings__...
+
+- TODO
+
+We use __comptime Functions__ in Zig to implement the C String Formatting: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L326)
 
 ```zig
 /// CompTime Function to format a string by Pattern Matching.
@@ -785,200 +817,114 @@ We use `comptime` functions in Zig to implement the C String Formatting: [tcc-wa
 /// If the Spec matches the Format: Return the number of bytes written to `str`, excluding terminating null.
 /// Else return 0.
 fn format_string1(
-    ap: *std.builtin.VaList,
-    str: [*]u8,
-    size: size_t,
-    format: []const u8, // Like `#define %s%s\n`
-    comptime c_spec: []const u8, // Like `%s%s`
-    comptime zig_spec: []const u8, // Like `{s}{s}`
-    comptime T0: type, // Like `[*:0]const u8`
+  ap: *std.builtin.VaList,
+  str: [*]u8,
+  size: size_t,
+  format: []const u8,  // Like `#define %s%s\n`
+  comptime c_spec: []const u8,   // Like `%s%s`
+  comptime zig_spec: []const u8, // Like `{s}{s}`
+  comptime T0: type,  // Like `[*:0]const u8`
 ) usize {
-    // Count the Format Specifiers: `%`
-    const spec_cnt = std.mem.count(u8, c_spec, "%");
-    const format_cnt = std.mem.count(u8, format, "%");
+  // Count the Format Specifiers: `%`
+  const spec_cnt = std.mem.count(u8, c_spec, "%");
+  const format_cnt = std.mem.count(u8, format, "%");
 
-    // Check the Format Specifiers: `%`
-    if (format_cnt != spec_cnt or // Quit if the number of specifiers are different
-        !std.mem.containsAtLeast(u8, format, 1, c_spec)) // Or if the specifiers are not found
-    {
-        return 0;
-    }
+  // Check the Format Specifiers: `%`
+  if (format_cnt != spec_cnt or // Quit if the number of specifiers are different
+      !std.mem.containsAtLeast(u8, format, 1, c_spec)) // Or if the specifiers are not found
+  {
+    return 0;
+  }
 
-    // Fetch the args
-    const a = @cVaArg(ap, T0);
-    if (T0 == c_int) {
-        debug("format_string1: size={}, format={s}, a={}", .{ size, format, a });
-    } else {
-        debug("format_string1: size={}, format={s}, a={s}", .{ size, format, a });
-    }
+  // Fetch the args
+  const a = @cVaArg(ap, T0);
 
-    // Format the string. TODO: Check for overflow
-    var buf: [100]u8 = undefined; // Limit to 100 chars
-    const buf_slice = std.fmt.bufPrint(&buf, zig_spec, .{a}) catch {
-        wasmlog.Console.log("*** format_string1 error: buf too small", .{});
-        @panic("*** format_string1 error: buf too small");
-    };
+  // Format the string. TODO: Check for overflow
+  var buf: [100]u8 = undefined; // Limit to 100 chars
+  const buf_slice = std.fmt.bufPrint(&buf, zig_spec, .{a}) catch {
+    @panic("*** format_string1 error: buf too small");
+  };
 
-    // Replace the Format Specifier
-    var buf2 = std.mem.zeroes([100]u8); // Limit to 100 chars
-    _ = std.mem.replace(u8, format, c_spec, buf_slice, &buf2);
+  // Replace the Format Specifier
+  var buf2 = std.mem.zeroes([100]u8); // Limit to 100 chars
+  _ = std.mem.replace(u8, format, c_spec, buf_slice, &buf2);
 
-    // Return the string
-    const len = std.mem.indexOfScalar(u8, &buf2, 0).?;
-    @memcpy(str[0..len], buf2[0..len]);
-    str[len] = 0;
-    return len;
+  // Return the string
+  const len = std.mem.indexOfScalar(u8, &buf2, 0).?;
+  @memcpy(str[0..len], buf2[0..len]);
+  str[len] = 0;
+  return len;
 }
 ```
 
-Previously without `comptime`, the implementation of C String Formatting gets very lengthy: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/8df0b4f64d188ff5936225dc545e8387ca512b8d/zig/tcc-wasm.zig#L188-L401)
+The function above is called by a __comptime Inline Loop__ that applies all the [__Format Patterns__](tcc-wasm.zig) that we saw earlier: [](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L252)
 
 ```zig
-export fn vsnprintf(str: [*:0]u8, size: size_t, format: [*:0]const u8, ...) c_int {
-    // Count the Format Specifiers: `%`
-    const format_slice = std.mem.span(format);
-    const format_cnt = std.mem.count(u8, format_slice, "%");
+/// Runtime Function to format a string by Pattern Matching.
+/// Return the number of bytes written to `str`, excluding terminating null.
+fn format_string(
+  ap: *std.builtin.VaList,
+  str: [*]u8,
+  size: size_t,
+  format: []const u8, // Like `#define %s%s\n`
+) usize {
+  // If no Format Specifiers: Return the Format, like `warning: `
+  const len = format_string0(str, size, format);
+  if (len > 0) { return len; }
 
-    // TODO: Catch overflow
-    if (format_cnt == 0) {
-        // If no Format Specifiers: Return the Format, like `warning: `
-        debug("vsnprintf: size={}, format={s}, format_cnt={}", .{ size, format, format_cnt });
-        _ = memcpy(str, format, strlen(format));
-        str[strlen(format)] = 0;
-    } else if (format_cnt == 2 and std.mem.containsAtLeast(u8, format_slice, 1, "%s%s")) {
-        // Format Two `%s`, like `#define %s%s\n`
-        var ap = @cVaStart();
-        defer @cVaEnd(&ap);
-        const s0 = @cVaArg(&ap, [*:0]const u8);
-        const s1 = @cVaArg(&ap, [*:0]const u8);
-        debug("vsnprintf: size={}, format={s}, s0={s}, s1={s}", .{ size, format, s0, s1 });
+  // For every Format Pattern...
+  inline for (format_patterns) |pattern| {
+    // Try formatting the string with the pattern...
+    const len2 =
+      if (pattern.type1) |t1|
+      // Pattern has 2 parameters
+      format_string2(ap, str, size, format, // Output String and Format String
+        pattern.c_spec, pattern.zig_spec, // Format Specifiers for C and Zig
+        pattern.type0, t1 // Types of the Parameters
+      )
+    else
+      // Pattern has 1 parameter
+      format_string1(ap, str, size, format, // Output String and Format String
+        pattern.c_spec, pattern.zig_spec, // Format Specifiers for C and Zig
+        pattern.type0 // Type of the Parameter
+      );
+    if (len2 > 0) { return len2; }
+  }
 
-        // Format the string
-        const format2 = "{s}{s}"; // Equivalent to C: `%s%s`
-        var buf: [100]u8 = undefined; // Limit to 100 chars
-        const buf_slice = std.fmt.bufPrint(&buf, format2, .{ s0, s1 }) catch {
-            wasmlog.Console.log("*** vsnprintf error: buf too small", .{});
-            @panic("*** vsnprintf error: buf too small");
-        };
-
-        // Replace the Format Specifier
-        var buf2 = std.mem.zeroes([100]u8); // Limit to 100 chars
-        _ = std.mem.replace(u8, format_slice, "%s%s", buf_slice, &buf2);
-
-        // Return the string
-        const len = std.mem.indexOfScalar(u8, &buf2, 0).?;
-        _ = memcpy(str, &buf2, @intCast(len));
-        str[len] = 0;
-    } else if (format_cnt == 2 and std.mem.containsAtLeast(u8, format_slice, 1, "%s:%d")) {
-      // ...
+  // Format String doesn't match any Format Pattern. We return the Format String.
+  const len3 = format.len;
+  @memcpy(str[0..len3], format[0..len3]);
+  str[len3] = 0;
+  return len3;
+}
 ```
 
-Plus lots lots more of tedious coding! It's a lot simpler now with `comptime` Format Patterns.
+[(__format_string2__ is here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L326-L380)
 
-Now we can handle all String Formatting correctly in TCC...
+And the above function is called by __fprintf and friends__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L380-L431)
 
-```text
-+ node zig/test.js
-compile_program: start
-compile_program: options=["-c","hello.c"]
-compile_program: code=
-    int main(int argc, char *argv[]) {
-      printf("Hello, World!!\n");
-      return 0;
-    }
+```zig
+/// Implement the POSIX Function `fprintf`
+export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
+  // Prepare the varargs
+  var ap = @cVaStart();
+  defer @cVaEnd(&ap);
 
-compile_program: options[0]=-c
-compile_program: options[1]=hello.c
-open: path=hello.c, oflag=0, return fd=3
-sem_init: sem=tcc-wasm.sem_t@10cfe8, pshared=0, value=1
-sem_wait: sem=tcc-wasm.sem_t@10cfe8
-TODO: setjmp
-TODO: sscanf: str=0.9.27, format=%d.%d.%d
-format_string1: size=128, format=#define __TINYC__ %d, a=1991381505
-vsnprintf: return str=#define __TINYC__ 1991381505
-format_string2: size=99, format=#define %s%s, a0=__riscv, a1= 1
-vsnprintf: return str=#define __riscv 1
-format_string2: size=81, format=#define %s%s, a0=__riscv_xlen 64, a1=
-vsnprintf: return str=#define __riscv_xlen 64
-format_string2: size=185, format=#define %s%s, a0=__riscv_flen 64, a1=
-vsnprintf: return str=#define __riscv_flen 64
-format_string2: size=161, format=#define %s%s, a0=__riscv_div, a1= 1
-vsnprintf: return str=#define __riscv_div 1
-format_string2: size=139, format=#define %s%s, a0=__riscv_mul, a1= 1
-vsnprintf: return str=#define __riscv_mul 1
-format_string2: size=117, format=#define %s%s, a0=__riscv_fdiv, a1= 1
-vsnprintf: return str=#define __riscv_fdiv 1
-format_string2: size=94, format=#define %s%s, a0=__riscv_fsqrt, a1= 1
-vsnprintf: return str=#define __riscv_fsqrt 1
-format_string2: size=326, format=#define %s%s, a0=__riscv_float_abi_double, a1= 1
-vsnprintf: return str=#define __riscv_float_abi_double 1
-format_string2: size=291, format=#define %s%s, a0=__linux__, a1= 1
-vsnprintf: return str=#define __linux__ 1
-format_string2: size=271, format=#define %s%s, a0=__linux, a1= 1
-vsnprintf: return str=#define __linux 1
-format_string2: size=253, format=#define %s%s, a0=__unix__, a1= 1
-vsnprintf: return str=#define __unix__ 1
-format_string2: size=234, format=#define %s%s, a0=__unix, a1= 1
-vsnprintf: return str=#define __unix 1
-format_string2: size=217, format=#define %s%s, a0=__CHAR_UNSIGNED__, a1= 1
-vsnprintf: return str=#define __CHAR_UNSIGNED__ 1
-format_string1: size=189, format=#define __SIZEOF_POINTER__ %d, a=8
-vsnprintf: return str=#define __SIZEOF_POINTER__ 8
-format_string1: size=160, format=#define __SIZEOF_LONG__ %d, a=8
-vsnprintf: return str=#define __SIZEOF_LONG__ 8
-format_string2: size=134, format=#define %s%s, a0=__STDC__, a1= 1
-vsnprintf: return str=#define __STDC__ 1
-format_string1: size=115, format=#define __STDC_VERSION__ %dL, a=199901
-vsnprintf: return str=#define __STDC_VERSION__ 199901L
-format_string1: size=356, format=#define __BASE_FILE__ "%s", a=hello.c
-vsnprintf: return str=#define __BASE_FILE__ "hello.c"
-read: fd=3, nbyte=8192
-read: return buf=
-    int main(int argc, char *argv[]) {
-      printf("Hello, World!!\n");
-      return 0;
-    }
-  
-format_string2: size=128, format=%s:%d: , a0=hello.c, a1=3
-vsnprintf: return str=hello.c:3: 
-format_string0: size=117, format=warning: 
-vsnprintf: return str=warning: 
-format_string1: size=108, format=implicit declaration of function '%s', a=printf
-vsnprintf: return str=implicit declaration of function 'printf'
-format_string1: size=0, format=%s, a=hello.c:3: warning: implicit declaration of function 'printf'
-fprintf: stream=tcc-wasm.FILE@2
-hello.c:3: warning: implicit declaration of function 'printf'
-format_string1: size=0, format=L.%u, a=0
-sprintf: return str=L.0
-format_string1: size=256, format=.rela%s, a=.text
-snprintf: return str=.rela.text
-read: fd=3, nbyte=8192
-read: return buf=
-close: fd=3
-sem_post: sem=tcc-wasm.sem_t@10cfe8
-format_string1: size=1024, format=%s, a=hello.c
-snprintf: return str=hello.c
-unlink: path=hello.o
-open: path=hello.o, oflag=577, return fd=4
-fdopen: fd=4, mode=wb, return FILE=5
-...
-close: stream=tcc-wasm.FILE@5
-a.out: 1040 bytes
+  // Format the string. TODO: Catch overflow
+  var buf = std.mem.zeroes([100]u8); // Limit to 100 chars
+  const format_slice = std.mem.span(format);
+  const len = format_string(&ap, &buf, 0, format_slice);
+
+  // TODO: Print to other File Streams. Right now we assume it's stderr (File Descriptor 2)
+  return @intCast(len);
+}
 ```
 
-[(See the Complete Log)](https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36)
-
-TODO: Implement sscanf: `str=0.9.27, format=%d.%d.%d`
+[(See the __Formatting Log__)](https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36)
 
 # Appendix: NuttX System Call
 
 TODO: Earlier we saw
-
-# Appendix: Build NuttX for QEMU RISC-V
-
-TODO: Earlier we saw
-
-
 
 _TCC fails to link our NuttX App because of Unknown Relocation Type for printf(). How else can we print something in our NuttX App?_
 
@@ -1180,7 +1126,11 @@ TODO: Is there a workaround? Do we paste the ECALL Machine Code ourselves?
 
 TODO: Call the NuttX System Call `__exit` to terminate peacefully
 
-# Appendix: Analysis of Missing Functions
+# Appendix: Build NuttX for QEMU
+
+TODO: Earlier we saw
+
+# Appendix: Missing Functions
 
 TODO: Earlier we saw
 
