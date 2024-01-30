@@ -940,23 +940,23 @@ asm volatile (
 <div class="example-wrap"><pre class="language-yaml"><code>NuttShell (NSH) NuttX-12.4.0
 nsh&gt; a.out
 ...
-elf_read: Read 576 bytes from offset 512
-elf_loadfile: Loaded sections:
-elf_read: Read 154 bytes from offset 64
-elf_loadfile: 1. 00000000-&gt;c0000000
-elf_read: Read 0 bytes from offset 224
-elf_loadfile: 2. 00000000-&gt;c0101000
-elf_read: Read 16 bytes from offset 224
-elf_loadfile: 3. 00000000-&gt;c0101000
-elf_loadfile: 4. 00000000-&gt;c0101010
+Read 576 bytes from offset 512
+Read 154 bytes from offset 64
+1. 00000000-&gt;c0000000
+Read 0 bytes from offset 224
+2. 00000000-&gt;c0101000
+Read 16 bytes from offset 224
+3. 00000000-&gt;c0101000
+4. 00000000-&gt;c0101010
 </code></pre></div>
 <p>Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section <code>.data.ro</code> to <code>0xC010_1000</code>. That’s all 15 bytes of <em>“Hello, World!!\n”</em>, including the terminating null.</p>
+<p>Thus our buffer is at buffer is at <code>0xC010_1000</code>.</p>
 <p><em>Why did we Loop Forever?</em></p>
-<div class="example-wrap"><pre class="language-c"><code>  // Omitted: Execute ECALL for System Call to NuttX Kernel
-  asm volatile ( ... );
+<div class="example-wrap"><pre class="language-c"><code>// Omitted: Execute ECALL for System Call to NuttX Kernel
+asm volatile ( ... );
 
-  // Loop Forever
-  for(;;) {}
+// Loop Forever
+for(;;) {}
 </code></pre></div>
 <p>That’s because NuttX Apps are not supposed to Return to NuttX Kernel.</p>
 <p>We should call the NuttX System Call <code>__exit</code> to terminate peacefully.</p>
