@@ -4,17 +4,25 @@
 
 ![TODO](https://lupyuen.github.io/images/tcc-title.png)
 
+_TCC is a Tiny C Compiler for 64-bit RISC-V (and other platforms)..._
+
+_Can we run TCC in a Web Browser?_
+
+Let's do it! We'll compile [__TCC (Tiny C Compiler)__](https://github.com/sellicott/tcc-riscv32) from C to WebAssembly with [__Zig Compiler__](https://ziglang.org/).
+
+In this article, we talk about the tricky bits of the conversion from __C to WebAssembly__...
+
 TODO
 
-_TCC is a Tiny C Compiler for 64-bit RISC-V... Can we run TCC in a Web Browser?_
-
-Let's find out! We'll compile TCC to WebAssembly with Zig Compiler.
-
-TODO: Interesting challenges
+[(Not to be confused with __TCC from the 80's__)](https://en.wikipedia.org/wiki/Turing_(programming_language))
 
 _Why are we doing this?_
 
-Today we can run [__Apache NuttX RTOS in a Web Browser__](https://lupyuen.github.io/articles/tinyemu2) (with WebAssembly + Emscripten + 64-bit RISC-V).
+TODO
+
+Today we can run [__Apache NuttX RTOS in a Web Browser__](https://lupyuen.github.io/articles/tinyemu2). (With WebAssembly + Emscripten + 64-bit RISC-V)
+
+(__Real-Time Operating System__ in Web Browser on General-Purpose Operating System!)
 
 What if we could allow NuttX Apps to be compiled and tested in the Web Browser?
 
@@ -36,6 +44,28 @@ What if we could allow NuttX Apps to be compiled and tested in the Web Browser?
 ![TCC RISC-V Compiler: Compiled to WebAssembly with Zig Compiler](https://lupyuen.github.io/images/tcc-web.png)
 
 [_(Try the __Online Demo__)_](https://lupyuen.github.io/tcc-riscv32-wasm/)
+
+# TCC in the Web Browser
+
+TODO
+
+# POSIX Functions
+
+TODO
+
+[__POSIX__](https://en.wikipedia.org/wiki/POSIX)
+
+# File Input and Output
+
+TODO
+
+# Fearsome fprintf and Friends
+
+TODO: Funny how printf is the first thing we learn about C. But yet it's incredibly difficult to implement!
+
+# Test with Apache NuttX RTOS
+
+TODO
 
 # TCC generates 64-bit RISC-V code
 
@@ -828,7 +858,9 @@ So yes TCC runs correctly in a Web Browser. With some limitations and lots of ha
 
 [_(Try the __Online Demo__)_](https://lupyuen.github.io/tcc-riscv32-wasm/)
 
-# Fix the Varargs Functions
+TODO: Pic of Format Patterns
+
+# Fearsome fprintf and Friends
 
 TODO
 
@@ -1789,7 +1821,29 @@ TODO: Is there a workaround? Do we paste the ECALL Machine Code ourselves?
 
 TODO: Call the NuttX System Call `__exit` to terminate peacefully
 
-# Analysis of Missing Functions
+# What's Next
+
+TODO
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
+
+-   [__My Other Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
+
+-   [__Older Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/tcc.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tcc.md)
+
+# Appendix: Analysis of Missing Functions
 
 TODO
 
@@ -1885,25 +1939,3 @@ Borrow from [foundation-libc](https://github.com/ZigEmbeddedGroup/foundation-lib
 - strtol, strtold, strtoll
 - strtoul, strtoull
 - strerror
-
-# What's Next
-
-TODO
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
-
--   [__My Other Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
-
--   [__Older Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/tcc.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tcc.md)
