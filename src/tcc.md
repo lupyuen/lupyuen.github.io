@@ -1008,27 +1008,27 @@ Thus we __hardcode Registers A0, A1, A2 and A3__ in Machine Code: [test-nuttx.js
 ```c
 // Load 61 to Register A0 (SYS_write)
 // li a0, 61
-".long 0x03d00513 \\n"
+".long 0x03d00513 \n"
 
 // Load 1 to Register A1 (File Descriptor)
 // li a1, 1
-".long 0x00100593 \\n"
+".long 0x00100593 \n"
 
 // Load 0xc0101000 to Register A2 (Buffer)
 // li a2, 0xc0101000
-".long 0x000c0637 \\n"
-".long 0x1016061b \\n"
-".long 0x00c61613 \\n"
+".long 0x000c0637 \n"
+".long 0x1016061b \n"
+".long 0x00c61613 \n"
 
 // Load 15 to Register A3 (Buffer Length)
 // li a3, 15
-".long 0x00f00693 \\n"
+".long 0x00f00693 \n"
 
 // ECALL for System Call to NuttX Kernel
-"ecall \\n"
+"ecall \n"
 
 // We inserted NOP, because TCC says it's invalid (see below)
-".word 0x0001 \\n"
+".word 0x0001 \n"
 ```
 
 __TODO:__ Is there a workaround? Do we paste the ECALL Machine Code ourselves?
