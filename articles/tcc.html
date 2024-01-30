@@ -129,7 +129,7 @@
 <p><img src="https://lupyuen.github.io/images/tcc-web.png" alt="TCC RISC-V Compiler: Compiled to WebAssembly with Zig Compiler" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><em>(Try the <strong>Online Demo</strong>)</em></a></p>
 <h1 id="tcc-in-the-web-browser"><a href="#tcc-in-the-web-browser">1 TCC in the Web Browser</a></h1>
-<p>Head over to this link to try <strong>TCC Compiler in our Web Browser</strong>…</p>
+<p>Head over to this link to try <strong>TCC Compiler in our Web Browser</strong> (pic above)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><strong>TCC RISC-V Compiler in WebAssembly</strong></a></li>
 </ul>
@@ -214,7 +214,7 @@ zig cc \
 <p><a href="TODO">(How we got the <strong>Zig Compiler Options</strong>)</a></p>
 <p>Then we link it with our <strong>Zig Wrapper</strong> that exports the TCC Compiler to JavaScript…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
-## and link it with TCC compiled for WebAssembly
+## and link it with TCC compiled for WebAssembly `tcc.o`
 ## Generates `tcc-wasm.wasm`
 zig build-exe \
   --verbose-cimport \
@@ -280,22 +280,169 @@ pub export fn compile_program(
 <p><a href="TODO">(How <strong>JavaScript</strong> calls our Zig Wrapper)</a></p>
 <p><em>Zig Compiler compiles TCC without any Code Changes?</em></p>
 <p>Inside TCC, we stubbed out the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/commit/e30454a0eb9916f820d58a7c3e104eeda67988d8"><strong>setjmp / longjmp</strong></a> to make it compile with Zig Compiler.</p>
-<p>(Nothing else was changed!)</p>
+<p>(Everything else compiles OK!)</p>
 <p><em>Is that really OK?</em></p>
 <p>Well <a href="https://en.wikipedia.org/wiki/Setjmp.h"><strong>setjmp / longjmp</strong></a> are called to <strong>Handle Errors</strong> during TCC Compilation.</p>
 <p>We’ll find a better way to express our outrage. Instead of jumping around!</p>
 <p>Let’s talk about Magical Bits inside our Zig Wrapper…</p>
 <h1 id="posix-for-webassembly"><a href="#posix-for-webassembly">3 POSIX for WebAssembly</a></h1>
 <p><em>What’s this POSIX?</em></p>
-<p>TODO</p>
-<p><a href="https://en.wikipedia.org/wiki/C_standard_library">(Some folks will call it the <strong>C Standard Library libc</strong>)</a></p>
-<p><a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX</strong></a></p>
-<p>malloc from <a href="https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation"><strong>PinePhone Simulator</strong></a></p>
+<p>TCC Compiler was created as a <strong>Command-Line App</strong>. So it calls the typical <a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX Functions</strong></a> like <strong>fopen, fprintf, strncpy, malloc,</strong> …</p>
+<p><a href="https://en.wikipedia.org/wiki/C_standard_library">(Similar to the <strong>C Standard Library libc</strong>)</a></p>
+<p><em>Is POSIX a problem for WebAssembly?</em></p>
+<p>WebAssembly running in a Web Browser ain’t <strong>No Command-Line</strong>!</p>
+<p>We counted <a href="TODO"><strong>72 POSIX Functions</strong></a> needed by TCC Compiler, but missing from WebAssembly.</p>
+<p>Thus we’ll fill in the <a href="TODO"><strong>Missing Functions</strong></a> ourselves.</p>
+<p><em>Surely other Zig Devs will have the same problem?</em></p>
+<p>Thankfully we can borrow the POSIX-like code from other <strong>Zig Libraries</strong>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/marler8997/ziglibc"><strong>ziglibc</strong></a>: Zig implementation of libc</p>
+</li>
+<li>
+<p><a href="https://github.com/ZigEmbeddedGroup/foundation-libc"><strong>foundation-libc</strong></a>: Freestanding implementation of libc</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation"><strong>PinePhone Simulator</strong></a>: For malloc</p>
+</li>
+</ul>
+<p><em>72 POSIX Functions? Sounds like a lot of work…</em></p>
+<p>Actually we haven’t implemented all 72 POSIX Functions. We <strong>stubbed out most of the functions</strong> to figure out which ones are normally used: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Stub Out the Missing POSIX Functions.
+// If TCC calls them, we&#39;ll see a Zig Panic.
+// Then we implement them.
+// The Types don&#39;t matter because we&#39;ll halt anyway.
+
+pub export fn atoi(_: c_int) c_int {
+  @panic(&quot;TODO: atoi&quot;);
+}
+pub export fn exit(_: c_int) c_int {
+  @panic(&quot;TODO: exit&quot;);
+}
+pub export fn fopen(_: c_int) c_int {
+  @panic(&quot;TODO: fopen&quot;);
+}
+
+// And many more functions...
+</code></pre></div>
+<p>Some of these functions are problematic in WebAssembly…</p>
 <h1 id="file-input-and-output"><a href="#file-input-and-output">4 File Input and Output</a></h1>
-<p><em>Why no #include in TCC for WebAssembly? And C Libraries?</em></p>
-<p>TODO: <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS</strong>?</a></p>
+<p><em>Why no #include in TCC for WebAssembly? And no C Libraries?</em></p>
+<p>WebAssembly runs in a <strong>Secure Sandbox</strong>. No File Access allowed! (Like C Header and Library Files)</p>
+<p>That’s why our Zig Wrapper only <strong>Emulates File Access</strong> for the bare minimum 2 files…</p>
+<ul>
+<li>
+<p>Read the C Program: <strong>hello.c</strong></p>
+</li>
+<li>
+<p>Write the RISC-V ELF: <strong>a.out</strong></p>
+</li>
+</ul>
+<p><strong>Reading a Source File (hello.c)</strong> is extremely simplistic: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L107-L119">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Emulate the POSIX Function `read()`
+/// We copy from One Single Read Buffer
+/// that contains our C Program
+export fn read(fd0: c_int, buf: [*:0]u8, nbyte: size_t) isize {
+
+  // TODO: Support more than one file
+  // TODO: Check overflow
+  const len = read_buf.len;
+  @memcpy(buf[0..len], read_buf[0..len]);
+  buf[len] = 0;
+  read_buf.len = 0;
+  return @intCast(len);
+}
+</code></pre></div>
+<p><strong>Writing the Compiled Output (a.out)</strong> is just as barebones: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L130-L142">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Emulate the POSIX Function `write()`
+/// We write to One Single Memory Buffer
+/// that will be returned to JavaScript as `a.out`
+export fn fwrite(ptr: [*:0]const u8, size: usize, nmemb: usize, stream: *FILE) usize {
+
+  // TODO: Support more than one `stream`
+  const len = size * nmemb;
+  @memcpy(write_buf[write_buflen .. write_buflen + len], ptr[0..]);
+  write_buflen += len;
+  return nmemb;
+}
+</code></pre></div>
+<p><em>Can we handle Multiple Files?</em></p>
+<p>We’ll have to embed an <strong>Emulated File System</strong> inside our Zig Wrapper. The File System will contain the C Header and Library Files needed by TCC.</p>
+<p><a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">(Similar to the <strong>Emscripten File System</strong>)</a></p>
+<p><a href="https://docs.kernel.org/filesystems/romfs.html">(Maybe we embed the simple <strong>ROM FS File System</strong>)</a></p>
+<p>TODO: Pic of Format Patterns</p>
 <h1 id="fearsome-fprintf-and-friends"><a href="#fearsome-fprintf-and-friends">5 Fearsome fprintf and Friends</a></h1>
-<p>TODO: Funny how printf is the first thing we learn about C. But yet it’s incredibly difficult to implement!</p>
+<p><em>Why is fprintf particularly problematic?</em></p>
+<p>Here’s the fearsome thing about <strong>fprintf</strong> and friends: <strong>sprintf, snprintf, vsnprintf</strong>…</p>
+<ul>
+<li>
+<p><strong>C Format Strings</strong>: Difficult to parse</p>
+</li>
+<li>
+<p><strong>Variable Number of Untyped Arguments</strong>: Might create Bad Pointers</p>
+</li>
+</ul>
+<p>Hence we hacked up an implementation of <strong>String Formatting</strong> that’s safer, simpler and so-barebones-you-can-make-<em>soup-tulang</em>.</p>
+<p><em>Soup tulang? Tell me more…</em></p>
+<p>Our Zig Wrapper uses <strong>Pattern Matching</strong> to match the <strong>C Formats</strong> and substitute the <strong>Zig Equivalent</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Format a Single `%d`
+// like `#define __TINYC__ %d`
+FormatPattern{
+
+  // If the C Format String contains this...
+  .c_spec = &quot;%d&quot;,
+  
+  // Then we apply this Zig Format...
+  .zig_spec = &quot;{}&quot;,
+  
+  // And extract these Argument Types
+  // from the Varargs...
+  .type0 = c_int,
+  .type1 = null
+}
+</code></pre></div>
+<p>This works OK (for now) because TCC Compiler only uses <strong>5 Patterns for C Format Strings</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Pattern Matching for C String Formatting:
+/// We&#39;ll match these patterns when formatting strings
+const format_patterns = [_]FormatPattern{
+
+  // Format a Single `%d`, like `#define __TINYC__ %d`
+  FormatPattern{
+    .c_spec = &quot;%d&quot;,  .zig_spec = &quot;{}&quot;, 
+    .type0  = c_int, .type1 = null
+  },
+
+  // Format a Single `%u`, like `L.%u`
+  FormatPattern{ 
+    .c_spec = &quot;%u&quot;,  .zig_spec = &quot;{}&quot;, 
+    .type0  = c_int, .type1 = null 
+  },
+
+  // Format a Single `%s`, like `#define __BASE_FILE__ &quot;%s&quot;`
+  // or `.rela%s`
+  FormatPattern{
+    .c_spec = &quot;%s&quot;, .zig_spec = &quot;{s}&quot;,
+    .type0  = [*:0]const u8, .type1 = null
+  },
+
+  // Format Two `%s`, like `#define %s%s\n`
+  FormatPattern{
+    .c_spec = &quot;%s%s&quot;, .zig_spec = &quot;{s}{s}&quot;,
+    .type0  = [*:0]const u8, .type1 = [*:0]const u8
+  },
+
+  // Format `%s:%d`, like `%s:%d: ` (File Name and Line Number)
+  FormatPattern{
+    .c_spec = &quot;%s:%d&quot;, .zig_spec = &quot;{s}:{}&quot;,
+    .type0  = [*:0]const u8, .type1 = c_int
+  },
+};
+</code></pre></div>
+<p><a href="TODO">(How we do <strong>Pattern Matching</strong>)</a></p>
+<p><em>So simple? Unbelievable!</em></p>
+<p>OK actually we’ll hit more Format Patterns as TCC Compiler emits various Warning and Error Messages. But it’s a good start!</p>
+<p>Later our Zig Wrapper will have to parse meticulously all kinds of C Format Strings. Or we do the <a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191"><strong>parsing in C</strong></a>, compiled to WebAssembly.</p>
+<p>(Funny how <strong>printf</strong> is the first thing we learn about C. Yet it’s incredibly difficult to implement!)</p>
 <h1 id="test-with-apache-nuttx-rtos"><a href="#test-with-apache-nuttx-rtos">6 Test with Apache NuttX RTOS</a></h1>
 <p>TODO</p>
 <h1 id="tcc-generates-64-bit-risc-v-code"><a href="#tcc-generates-64-bit-risc-v-code">7 TCC generates 64-bit RISC-V code</a></h1>
