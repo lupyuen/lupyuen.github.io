@@ -924,75 +924,76 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
 
 # Appendix: NuttX System Call
 
-TODO: Earlier we saw
+Not long ago we saw a huge chunk of C Code to making a __NuttX System Call__...
 
-_TCC fails to link our NuttX App because of Unknown Relocation Type for printf(). How else can we print something in our NuttX App?_
+- TODO
 
-We can make a [NuttX System Call (ECALL)](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) to `write(fd, buf, buflen)`.
+_Why so complicated?_
 
-Directly in our C Code! Like this: [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87)
+Rightfully this should work...
 
 ```c
-  int main(int argc, char *argv[])
-  {
-    // Make NuttX System Call to write(fd, buf, buflen)
-    const unsigned int nbr = 61; // SYS_write
-    const void *parm1 = 1;       // File Descriptor (stdout)
-    const void *parm2 = "Hello, World!!\n"; // Buffer
-    const void *parm3 = 15; // Buffer Length
+// Make NuttX System Call to write(fd, buf, buflen)
+const unsigned int nbr = 61; // SYS_write
+const void *parm1 = 1;       // File Descriptor (stdout)
+const void *parm2 = "Hello, World!!\n"; // Buffer
+const void *parm3 = 15; // Buffer Length
 
-    // Execute ECALL for System Call to NuttX Kernel
-    register long r0 asm("a0") = (long)(nbr);
-    register long r1 asm("a1") = (long)(parm1);
-    register long r2 asm("a2") = (long)(parm2);
-    register long r3 asm("a3") = (long)(parm3);
-  
-    asm volatile
-    (
-      // ECALL for System Call to NuttX Kernel
-      "ecall \n"
+// Execute ECALL for System Call to NuttX Kernel
+register long r0 asm("a0") = (long)(nbr);
+register long r1 asm("a1") = (long)(parm1);
+register long r2 asm("a2") = (long)(parm2);
+register long r3 asm("a3") = (long)(parm3);
 
-      // We inserted NOP, because TCC says it's invalid (see below)
-      ".word 0x0001 \n"
-      :: "r"(r0), "r"(r1), "r"(r2), "r"(r3)
-      : "memory"
-    );
-  
-    // TODO: TCC says this is invalid
-    // asm volatile("nop" : "=r"(r0));
+asm volatile (
+  // ECALL for System Call to NuttX Kernel
+  "ecall \n"
 
-    // Loop Forever
-    for(;;) {}
-    return 0;
-  }
+  // NuttX needs NOP after ECALL
+  ".word 0x0001 \n"
+);
 ```
 
-Why SysCall 61? Because that's the value of `SYS_write` System Call according to `nuttx.S` (the RISC-V Disassembly of NuttX Kernel).
+Unfortunately TCC generates __incorrect RISC-V Machine Code__ that mashes up the RISC-V Registers...
 
-_Does it work?_
+```text
+main():
+// Prepare the Stack
+   0:  fc010113  add     sp,sp,-64
+   4:  02113c23  sd      ra,56(sp)
+   8:  02813823  sd      s0,48(sp)
+   c:  04010413  add     s0,sp,64
+  10:  00000013  nop
+  14:  fea43423  sd      a0,-24(s0)
+  18:  feb43023  sd      a1,-32(s0)
 
-Nope we don't see SysCall 61, but we see a SysCall 15 (what?)...
+// Correct: Load Register A0 with 61 (SYS_write)
+  1c:  03d0051b  addw    a0,zero,61
+  20:  fca43c23  sd      a0,-40(s0)
 
-```yaml
-NuttShell (NSH) NuttX-12.4.0
-nsh> a.out
-...
-riscv_swint: Entry: regs: 0x8020be10 cmd: 15
-up_dump_register: EPC: 00000000c000006c
-up_dump_register: A0: 000000000000000f A1: 00000000c0202010 A2: 0000000000000001 A3: 00000000c0202010
-up_dump_register: A4: 00000000c0000000 A5: 0000000000000000 A6: 0000000000000000 A7: 0000000000000000
-up_dump_register: T0: 0000000000000000 T1: 0000000000000000 T2: 0000000000000000 T3: 0000000000000000
-up_dump_register: T4: 0000000000000000 T5: 0000000000000000 T6: 0000000000000000
-up_dump_register: S0: 00000000c0202800 S1: 0000000000000000 S2: 0000000000000000 S3: 0000000000000000
-up_dump_register: S4: 0000000000000000 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
-up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
-up_dump_register: SP: 00000000c02027a0 FP: 00000000c0202800 TP: 0000000000000000 RA: 000000008000adee
-riscv_swint: SWInt Return: 7
+// Nope: Load Register A0 with 1?
+// Mixed up with Register A1! (Value 1)
+  24:  0010051b  addw    a0,zero,1
+  28:  fca43823  sd      a0,-48(s0)
+
+// Nope: Load Register A0 with "Hello World"?
+// Mixed up with Register A2!
+  2c:  00000517  auipc   a0,0x0  2c: R_RISCV_PCREL_HI20  L.0
+  30:  00050513  mv      a0,a0   30: R_RISCV_PCREL_LO12_I        .text
+  34:  fca43423  sd      a0,-56(s0)
+
+// Nope: Load Register A0 with 15?
+// Mixed up with Register A3! (Value 15)
+  38:  00f0051b  addw    a0,zero,15
+  3c:  fca43023  sd      a0,-64(s0)
+
+// Execute ECALL with Register A0 set to 15.
+// Nope A0 should be 1!
+  40:  00000073  ecall
+  44:  0001      nop
 ```
 
-_But the registers A0, A1, A2 and A3 don't look right!_
-
-Let's hardcode Registers A0, A1, A2 and A3 in Machine Code (because TCC won't assemble the `li` instruction): [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87)
+Thus we __hardcode Registers A0, A1, A2 and A3__ in Machine Code (because TCC won't assemble the `li` instruction): [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87)
 
 ```c
 // Load 61 to Register A0 (SYS_write)
@@ -1022,29 +1023,9 @@ Let's hardcode Registers A0, A1, A2 and A3 in Machine Code (because TCC won't as
 
 (We used this [RISC-V Online Assembler](https://riscvasm.lucasteske.dev/#) to assemble the Machine Code)
 
-When we run this, we see SysCall 61...
+__TODO:__ Is there a workaround? Do we paste the ECALL Machine Code ourselves?
 
-```yaml
-NuttShell (NSH) NuttX-12.4.0
-nsh> a.out
-...
-riscv_swint: Entry: regs: 0x8020be10 cmd: 61
-up_dump_register: EPC: 00000000c0000084
-up_dump_register: A0: 000000000000003d A1: 0000000000000001 A2: 00000000c0101000 A3: 000000000000000f
-up_dump_register: A4: 00000000c0000000 A5: 0000000000000000 A6: 0000000000000000 A7: 0000000000000000
-up_dump_register: T0: 0000000000000000 T1: 0000000000000000 T2: 0000000000000000 T3: 0000000000000000
-up_dump_register: T4: 0000000000000000 T5: 0000000000000000 T6: 0000000000000000
-up_dump_register: S0: 00000000c0202800 S1: 0000000000000000 S2: 0000000000000000 S3: 0000000000000000
-up_dump_register: S4: 0000000000000000 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
-up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
-up_dump_register: SP: 00000000c02027a0 FP: 00000000c0202800 TP: 0000000000000000 RA: 000000008000adee
-riscv_swint: SWInt Return: 35
-Hello, World!!
-```
-
-And "Hello, World!!" is printed yay!
-
-_How did we figure out that the buffer is at 0xc0101000?_
+_How did we figure out that the buffer is at 0xC010_1000?_
 
 We saw this in the NuttX Log...
 
@@ -1063,68 +1044,21 @@ elf_loadfile: 3. 00000000->c0101000
 elf_loadfile: 4. 00000000->c0101010
 ```
 
-Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section `.data.ro` to 0xc0101000. That's all 15 bytes of "Hello, World!!\n", including the terminating null!
+Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section `.data.ro` to `0xC010_1000`. That's all 15 bytes of _"Hello, World!!\n"_, including the terminating null.
 
-_Something odd about the TCC-generated RISC-V Machine Code?_
+_Why did we Loop Forever?_
 
-The registers seem to be mushed up in the generated RISC-V Machine Code. That's why it was passing value 15 in Register A0. (Supposed to be Register A3)
+```c
+  // Omitted: Execute ECALL for System Call to NuttX Kernel
+  asm volatile ( ... );
 
-```text
-// register long a0 asm("a0") = 61; // SYS_write
-// register long a1 asm("a1") = 1;  // File Descriptor (stdout)
-// register long a2 asm("a2") = "Hello, World!!\\n"; // Buffer
-// register long a3 asm("a3") = 15; // Buffer Length
-// Execute ECALL for System Call to NuttX Kernel
-// asm volatile (
-// ECALL for System Call to NuttX Kernel
-//   "ecall \\n"
-//   ".word 0x0001 \\n"
-
-main():
-   0:   fc010113                add     sp,sp,-64
-   4:   02113c23                sd      ra,56(sp)
-   8:   02813823                sd      s0,48(sp)
-   c:   04010413                add     s0,sp,64
-  10:   00000013                nop
-  14:   fea43423                sd      a0,-24(s0)
-  18:   feb43023                sd      a1,-32(s0)
-
-// Correct: Load Register A0 with 61 (SYS_write)
-  1c:   03d0051b                addw    a0,zero,61
-  20:   fca43c23                sd      a0,-40(s0)
-
-// Nope: Load Register A0 with 1?
-// Mixed up with Register A1! (Value 1)
-  24:   0010051b                addw    a0,zero,1
-  28:   fca43823                sd      a0,-48(s0)
-
-// Nope: Load Register A0 with "Hello World"?
-// Mixed up with Register A2!
-  2c:   00000517                auipc   a0,0x0  2c: R_RISCV_PCREL_HI20  L.0
-  30:   00050513                mv      a0,a0   30: R_RISCV_PCREL_LO12_I        .text
-  34:   fca43423                sd      a0,-56(s0)
-
-// Nope: Load Register A0 with 15?
-// Mixed up with Register A3! (Value 15)
-  38:   00f0051b                addw    a0,zero,15
-  3c:   fca43023                sd      a0,-64(s0)
-
-// Execute ECALL with Register A0 set to 15.
-// Nope A0 should be 1!
-  40:   00000073                ecall
-  44:   0001                    nop
-
-// Loop Forever
-  46:   0000006f                j       46 <main+0x46>
-  4a:   03813083                ld      ra,56(sp)
-  4e:   03013403                ld      s0,48(sp)
-  52:   04010113                add     sp,sp,64
-  56:   00008067                ret
+  // Loop Forever
+  for(;;) {}
 ```
 
-TODO: Is there a workaround? Do we paste the ECALL Machine Code ourselves?
+That's because NuttX Apps are not supposed to Return to NuttX Kernel.
 
-TODO: Call the NuttX System Call `__exit` to terminate peacefully
+We should call the NuttX System Call `__exit` to terminate peacefully.
 
 # Appendix: Build NuttX for QEMU
 
