@@ -456,21 +456,40 @@ exec_internal: ERROR: Failed to load program 'a.out': -2
 
 [(See the __Complete Log__)](https://github.com/lupyuen/tcc-riscv32-wasm#test-tcc-output-with-nuttx)
 
-NuttX gladly accepts the RISC-V ELF (produced by TCC). And says that __printf__ is missing.
+NuttX politely accepts the RISC-V ELF (produced by TCC). And says that __printf__ is missing.
 
-Which makes sense because we haven't linked our C Program with the C Library!
-
-We find another way to say hello...
+Which makes sense: We haven't linked our C Program with the C Library!
 
 [(NuttX should load a __RISC-V ELF__ like this)](https://gist.github.com/lupyuen/847f7adee50499cac5212f2b95d19cd3)
 
 [(How we build and run __NuttX for QEMU__)](TODO)
 
+_How else can we print something in NuttX?_
+
+To print something, we can make a [__NuttX System Call (ECALL)__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) directly to NuttX Kernel...
+
+```c
+// NuttX System Call that prints something
+// System Call Number is 61 (SYS_write)
+// Works exactly like POSIX `write()`
+ssize_t write(
+  int fd,           // File Descriptor (1 for Standard Output)
+  const char *buf,  // Buffer to be printed
+  size_t buflen     // Buffer Length
+);
+```
+
+That's the same NuttX System Call that __printf__ executes internally.
+
+One last chance to make NuttX say hello...
+
 # Hello NuttX!
 
-_printf won't work because we can't link with C Libraries_
+_We're making a System Call (ECALL) to NuttX Kernel to print something..._
 
-_How else can we print something in NuttX?_
+_How will we write this in C?_
+
+We code the [__ECALL in RISC-V Assembly__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) like this: [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L52-L105)
 
 ```c
 int main(int argc, char *argv[]) {
@@ -482,7 +501,7 @@ int main(int argc, char *argv[]) {
   const void *parm3 = 15; // Buffer Length
 
   // Load the Parameters into Registers A0 to A3
-  // TODO: This doesn't work, so we load again below
+  // TODO: This doesn't work with TCC, so we load again below
   register long r0 asm("a0") = (long)(nbr);
   register long r1 asm("a1") = (long)(parm1);
   register long r2 asm("a2") = (long)(parm2);
@@ -523,7 +542,35 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-TODO
+We copy this into [__TCC WebAssembly__](https://lupyuen.github.io/tcc-riscv32-wasm/) and compile it.
+
+[(Why so complicated? __Explained here__)](TODO)
+
+_Does it work?_
+
+TCC in WebAssembly compiles the code above to __RISC-V ELF (a.out)__. When we run it on NuttX...
+
+```bash
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> a.out
+...
+## NuttX System Call for SYS_write (61)
+riscv_swint:
+  cmd: 61
+  A0:  3d  ## SYS_write (61)
+  A1:  01  ## File Descriptor (Standard Output)
+  A2:  c0101000  ## Buffer
+  A3:  0f        ## Buffer Length
+...
+## NuttX Kernel says hello
+Hello, World!!
+```
+
+NuttX Kernel prints __"Hello World"__ yay!
+
+Indeed we've created a C Compiler in a Web Browser, that __produces proper NuttX Apps__!
+
+[(__Warning:__ SYS_write 61 may change!)](https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call)
 
 # TCC generates 64-bit RISC-V code
 
