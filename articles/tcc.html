@@ -304,6 +304,7 @@ pub export fn compile_program(
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation"><strong>PinePhone Simulator</strong></a>: For malloc</p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L447-L774">(See the <strong>Borrowed Code</strong>)</a></p>
 </li>
 </ul>
 <p><em>72 POSIX Functions? Sounds like a lot of work…</em></p>
@@ -438,9 +439,10 @@ const format_patterns = [_]FormatPattern{
   },
 };
 </code></pre></div>
+<p>And that’s how we implement <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L447"><strong>fprintf and friends</strong></a>!</p>
 <p><a href="TODO">(How we do <strong>Pattern Matching</strong>)</a></p>
 <p><em>So simple? Unbelievable!</em></p>
-<p>OK actually we’ll hit more Format Patterns as TCC Compiler emits various Warning and Error Messages. But it’s a good start!</p>
+<p>OK actually we’ll hit more Format Patterns as TCC Compiler emits various Error and Warning Messages. But it’s a good start!</p>
 <p>Later our Zig Wrapper will have to parse meticulously all kinds of C Format Strings. Or we do the <a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191"><strong>parsing in C</strong></a>, compiled to WebAssembly.</p>
 <p>(Funny how <strong>printf</strong> is the first thing we learn about C. Yet it’s incredibly difficult to implement!)</p>
 <h1 id="test-with-apache-nuttx-rtos"><a href="#test-with-apache-nuttx-rtos">6 Test with Apache NuttX RTOS</a></h1>
