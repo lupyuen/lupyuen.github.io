@@ -4,13 +4,15 @@
 
 ![TODO](https://lupyuen.github.io/images/tcc-title.png)
 
+[_(Try the __Online Demo__)_](https://lupyuen.github.io/tcc-riscv32-wasm/)
+
 _TCC is a Tiny C Compiler for 64-bit RISC-V (and other platforms)..._
 
-_Can we run TCC in a Web Browser?_
+_Can we run TCC Compiler in a Web Browser?_
 
 Let's do it! We'll compile [__TCC (Tiny C Compiler)__](https://github.com/sellicott/tcc-riscv32) from C to WebAssembly with [__Zig Compiler__](https://ziglang.org/).
 
-In this article, we talk about the tricky bits of the TCC Porting from __C to WebAssembly__...
+In this article, we talk about the tricky bits of the TCC Port from __C to WebAssembly__...
 
 TODO
 
