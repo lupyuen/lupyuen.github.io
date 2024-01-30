@@ -47,11 +47,74 @@ What if we could allow NuttX Apps to be compiled and tested in the Web Browser?
 
 # TCC in the Web Browser
 
-TODO
+Head over to this link to try __TCC Compiler in our Web Browser__...
 
-# Zig compiles TCCC to WebAssembly
+- [__TCC RISC-V Compiler in WebAssembly__](https://lupyuen.github.io/tcc-riscv32-wasm/)
 
-TODO
+This __C Program__ appears...
+
+```c
+// Demo Program for TCC Compiler
+int main(int argc, char *argv[]) {
+  printf("Hello, World!!\n");
+  return 0;
+}
+```
+
+Click the "__Compile__" button. Our Web Browser calls TCC to compile the above program...
+
+```bash
+## Compile to RISC-V ELF
+tcc -c hello.c
+```
+
+And it downloads the compiled __RISC-V ELF `a.out`__. We inspect the Compiled Output...
+
+```bash
+## Dump the RISC-V Disassembly of TCC Output
+$ riscv64-unknown-elf-objdump \
+    --syms --source --reloc --demangle \
+    --line-numbers --wide  --debugging \
+    a.out
+
+main():
+   ## Prepare the Stack
+   0: fe010113  addi   sp, sp, -32
+   4: 00113c23  sd     ra, 24(sp)
+   8: 00813823  sd     s0, 16(sp)
+   c: 02010413  addi   s0, sp, 32
+  10: 00000013  nop
+
+   ## Load to Register A0: "Hello World"
+  14: fea43423  sd     a0, -24(s0)
+  18: feb43023  sd     a1, -32(s0)
+  1c: 00000517  auipc  a0, 0x0
+  1c: R_RISCV_PCREL_HI20 L.0
+  20: 00050513  mv     a0, a0
+  20: R_RISCV_PCREL_LO12_I .text
+
+   ## Call printf()
+  24: 00000097  auipc  ra, 0x0
+  24: R_RISCV_CALL_PLT printf
+  28: 000080e7  jalr   ra  ## 24 <main+0x24>
+
+   ## Clean up the Stack and return 0 to Caller
+  2c: 0000051b  sext.w a0, zero
+  30: 01813083  ld     ra, 24(sp)
+  34: 01013403  ld     s0, 16(sp)
+  38: 02010113  addi   sp, sp, 32
+  3c: 00008067  ret
+```
+
+[(About the __RISC-V Instructions__)](https://lupyuen.github.io/articles/app#inside-a-nuttx-app)
+
+[(See the __Complete Output__)](https://gist.github.com/lupyuen/ab8febefa9c649ad7c242ee3f7aaf974)
+
+Yep the __64-bit RISC-V Code__ looks legit! Very similar to our [__NuttX App__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app). (So it will probably run on NuttX)
+
+# Zig compiles TCC to WebAssembly
+
+TODO: longjmp
 
 # POSIX for WebAssembly
 
@@ -61,9 +124,13 @@ TODO: Also [__libc (C Standard Library)__](https://en.wikipedia.org/wiki/C_stand
 
 [__POSIX__](https://en.wikipedia.org/wiki/POSIX)
 
+malloc from [__PinePhone Simulator__](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation)
+
 # File Input and Output
 
-TODO
+_Why no #include in TCC for WebAssembly? And C Libraries?_
+
+TODO: [__ROM FS__?](https://docs.kernel.org/filesystems/romfs.html)
 
 # Fearsome fprintf and Friends
 
@@ -838,22 +905,22 @@ And the Decompiled RISC-V Disassembly looks correct! [a.S](https://gist.github.c
 
 ```text
 main():
-   0:	fe010113          	add	sp,sp,-32
-   4:	00113c23          	sd	ra,24(sp)
-   8:	00813823          	sd	s0,16(sp)
-   c:	02010413          	add	s0,sp,32
-  10:	00000013          	nop
-  14:	fea43423          	sd	a0,-24(s0)
-  18:	feb43023          	sd	a1,-32(s0)
-  1c:	00000517          	auipc	a0,0x0	1c: R_RISCV_PCREL_HI20	L.0
-  20:	00050513          	mv	a0,a0	20: R_RISCV_PCREL_LO12_I	.text
-  24:	00000097          	auipc	ra,0x0	24: R_RISCV_CALL_PLT	printf
-  28:	000080e7          	jalr	ra # 24 <main+0x24>
-  2c:	0000051b          	sext.w	a0,zero
-  30:	01813083          	ld	ra,24(sp)
-  34:	01013403          	ld	s0,16(sp)
-  38:	02010113          	add	sp,sp,32
-  3c:	00008067          	ret
+   0: fe010113           add sp,sp,-32
+   4: 00113c23           sd ra,24(sp)
+   8: 00813823           sd s0,16(sp)
+   c: 02010413           add s0,sp,32
+  10: 00000013           nop
+  14: fea43423           sd a0,-24(s0)
+  18: feb43023           sd a1,-32(s0)
+  1c: 00000517           auipc a0,0x0 1c: R_RISCV_PCREL_HI20 L.0
+  20: 00050513           mv a0,a0 20: R_RISCV_PCREL_LO12_I .text
+  24: 00000097           auipc ra,0x0 24: R_RISCV_CALL_PLT printf
+  28: 000080e7           jalr ra # 24 <main+0x24>
+  2c: 0000051b           sext.w a0,zero
+  30: 01813083           ld ra,24(sp)
+  34: 01013403           ld s0,16(sp)
+  38: 02010113           add sp,sp,32
+  3c: 00008067           ret
 ```
 
 Very similar to [hello_main.S](https://gist.github.com/lupyuen/46ffc9481c79e36274c0980f9d58f806)
@@ -1553,24 +1620,24 @@ _Where is the Exception Program Counter 0x8000ad8a?_
 up_task_start():
 nuttx/arch/risc-v/src/common/riscv_task_start.c:65
 void up_task_start(main_t taskentry, int argc, char *argv[]) {
-    8000ad7a:	1141                	add	sp,sp,-16
-    8000ad7c:	86b2                	mv	a3,a2
+    8000ad7a: 1141                 add sp,sp,-16
+    8000ad7c: 86b2                 mv a3,a2
 nuttx/arch/risc-v/src/common/riscv_task_start.c:68
   /* Let sys_call3() do all of the work */
 
   sys_call3(SYS_task_start, (uintptr_t)taskentry, (uintptr_t)argc,
-    8000ad7e:	862e                	mv	a2,a1
-    8000ad80:	85aa                	mv	a1,a0
-    8000ad82:	4511                	li	a0,4
+    8000ad7e: 862e                 mv a2,a1
+    8000ad80: 85aa                 mv a1,a0
+    8000ad82: 4511                 li a0,4
 nuttx/arch/risc-v/src/common/riscv_task_start.c:65
-    8000ad84:	e406                	sd	ra,8(sp)
+    8000ad84: e406                 sd ra,8(sp)
 nuttx/arch/risc-v/src/common/riscv_task_start.c:68
   sys_call3(SYS_task_start, (uintptr_t)taskentry, (uintptr_t)argc,
-    8000ad86:	875f50ef          	jal	800005fa <sys_call0>
+    8000ad86: 875f50ef           jal 800005fa <sys_call0>
 nuttx/arch/risc-v/src/common/riscv_task_start.c:71
             (uintptr_t)argv);
   PANIC();
-    8000ad8a:	0000e617          	auipc	a2,0xe
+    8000ad8a: 0000e617           auipc a2,0xe
 ```
 
 Maybe NuttX Kernel crashed because our NuttX App terminated without calling `exit()`?
