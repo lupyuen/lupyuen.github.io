@@ -14,11 +14,11 @@ In this article, we talk about the tricky bits of the TCC Porting from __C to We
 
 TODO
 
-[(Not to be confused with __TCC from the 80's__)](https://en.wikipedia.org/wiki/Turing_(programming_language))
+[(Not to be confused with __TTC from the 80's__)](https://research.cs.queensu.ca/home/cordy/pub/downloads/tplus/Turing_Plus_Report.pdf)
 
 _Why are we doing this?_
 
-TODO
+TODO: Somewhat working
 
 Today we can run [__Apache NuttX RTOS in a Web Browser__](https://lupyuen.github.io/articles/tinyemu2). (With WebAssembly + Emscripten + 64-bit RISC-V)
 
@@ -428,6 +428,100 @@ Later our Zig Wrapper will have to parse meticulously all kinds of C Format Stri
 (Funny how __printf__ is the first thing we learn about C. Yet it's incredibly difficult to implement!)
 
 # Test with Apache NuttX RTOS
+
+_TCC in WebAssembly has compiled our C Program to RISC-V ELF..._
+
+_Will the RISC-V ELF run on Apache NuttX RTOS?_
+
+We copy the __RISC-V ELF (a.out)__ to the __NuttX Apps__ File System...
+
+```bash
+## Copy RISC-V ELF `a.out`
+## to NuttX Apps File System
+cp a.out apps/bin/
+chmod +x apps/bin/a.out
+```
+
+Then we boot __NuttX on QEMU__ (64-bit RISC-V) and run __a.out__ on NuttX...
+
+```bash
+NuttShell (NSH) NuttX-12.4.0
+nsh> a.out
+load_absmodule: Loading /system/bin/a.out
+elf_loadbinary: Loading file: /system/bin/a.out
+...
+elf_symvalue: SHN_UNDEF: Exported symbol "printf" not found
+exec_internal: ERROR: Failed to load program 'a.out': -2
+```
+
+[(See the __Complete Log__)](https://github.com/lupyuen/tcc-riscv32-wasm#test-tcc-output-with-nuttx)
+
+NuttX gladly accepts the RISC-V ELF (produced by TCC). And says that __printf__ is missing.
+
+Which makes sense because we haven't linked our C Program with the C Library!
+
+We find another way to say hello...
+
+[(NuttX should load a __RISC-V ELF__ like this)](https://gist.github.com/lupyuen/847f7adee50499cac5212f2b95d19cd3)
+
+[(How we build and run __NuttX for QEMU__)](TODO)
+
+# Hello NuttX!
+
+_printf won't work because we can't link with C Libraries_
+
+_How else can we print something in NuttX?_
+
+```c
+int main(int argc, char *argv[]) {
+
+  // Make NuttX System Call to write(fd, buf, buflen)
+  const unsigned int nbr = 61; // SYS_write
+  const void *parm1 = 1;       // File Descriptor (stdout)
+  const void *parm2 = "Hello, World!!\n"; // Buffer
+  const void *parm3 = 15; // Buffer Length
+
+  // Load the Parameters into Registers A0 to A3
+  // TODO: This doesn't work, so we load again below
+  register long r0 asm("a0") = (long)(nbr);
+  register long r1 asm("a1") = (long)(parm1);
+  register long r2 asm("a2") = (long)(parm2);
+  register long r3 asm("a3") = (long)(parm3);
+
+  // Execute ECALL for System Call to NuttX Kernel
+  // Again: Load the Parameters into Registers A0 to A3
+  asm volatile (
+
+    // Load 61 to Register A0 (SYS_write)
+    // li a0, 61
+    ".long 0x03d00513 \n"
+
+    // Load 1 to Register A1 (File Descriptor)
+    // li a1, 1
+    ".long 0x00100593 \n"
+
+    // Load 0xc0101000 to Register A2 (Buffer)
+    // li a2, 0xc0101000
+    ".long 0x000c0637 \n"
+    ".long 0x1016061b \n"
+    ".long 0x00c61613 \n"
+
+    // Load 15 to Register A3 (Buffer Length)
+    // li a3, 15
+    ".long 0x00f00693 \n"
+
+    // ECALL for System Call to NuttX Kernel
+    "ecall \n"
+
+    // NuttX needs NOP after ECALL
+    ".word 0x0001 \n"
+  );
+
+  // Loop Forever
+  for(;;) {}
+  return 0;
+}
+```
 
 TODO
 
