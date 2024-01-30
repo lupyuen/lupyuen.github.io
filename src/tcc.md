@@ -114,13 +114,28 @@ Yep the __64-bit RISC-V Code__ looks legit! Very similar to our [__NuttX App__](
 
 # Zig compiles TCC to WebAssembly
 
+_Zig Compiler will happily compile TCC to WebAssembly?_
+
+Amazingly, yes!
+
+TODO
+
+```bash
+zig cc
+TODO
+```
+
+[(How we got the __Zig Compiler Options__)](TODO)
+
 TODO: longjmp
 
 # POSIX for WebAssembly
 
 _What's this POSIX?_
 
-TODO: Also [__libc (C Standard Library)__](https://en.wikipedia.org/wiki/C_standard_library)
+TODO
+
+[(Some folks will call it the __C Standard Library libc__)](https://en.wikipedia.org/wiki/C_standard_library)
 
 [__POSIX__](https://en.wikipedia.org/wiki/POSIX)
 
