@@ -159,11 +159,12 @@ Then we link it with our __Zig Wrapper__ that exports the TCC Compiler to JavaSc
 ## and link it with TCC compiled for WebAssembly `tcc.o`
 ## Generates `tcc-wasm.wasm`
 zig build-exe \
-  --verbose-cimport \
   -target wasm32-freestanding \
   -rdynamic \
   -lc \
   -fno-entry \
+  -freference-trace \
+  --verbose-cimport \
   --export=compile_program \
   zig/tcc-wasm.zig \
   tcc.o
@@ -626,6 +627,13 @@ make --trace cross-riscv64
 
 ## Omitted: Run the `zig cc` command from earlier...
 ## TODO
+
+## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
+## and link it with TCC compiled for WebAssembly `tcc.o`
+## Generates `tcc-wasm.wasm`
+
+## Omitted: Run the `zig build-exe` command from earlier...
+## TODO
 ```
 
 _How did we figure out the `zig cc` options?_
@@ -783,7 +791,7 @@ _What about NodeJS calling TCC WebAssembly?_
 node zig/test.js
 ```
 
-For Easier Testing (via Command-Line): We copied the JavaScript above into a NodeJS Script: [test.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js)
+__For Easier Testing__ (via Command-Line): We copied the JavaScript above into a NodeJS Script: [test.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js)
 
 ```javascript
 // Allocate a String for passing the Compiler Options to Zig
@@ -918,19 +926,21 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
   // TODO: Print to other File Streams. Right now we assume it's stderr (File Descriptor 2)
   return @intCast(len);
 }
+
+// Do the same for sprintf, snprintf, vsnprintf
 ```
 
 [(See the __Formatting Log__)](https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36)
 
 # Appendix: NuttX System Call
 
-Not long ago we saw a huge chunk of C Code to making a __NuttX System Call__...
+Not long ago we saw a huge chunk of C Code that makes a __NuttX System Call__...
 
 - TODO
 
 _Why so complicated?_
 
-Rightfully this should work...
+Rightfully this shorter version should work...
 
 ```c
 // Make NuttX System Call to write(fd, buf, buflen)
@@ -1023,7 +1033,11 @@ Thus we __hardcode Registers A0, A1, A2 and A3__ in Machine Code: [test-nuttx.js
 
 __TODO:__ Is there a workaround? Do we paste the ECALL Machine Code ourselves?
 
-TCC won't assemble the __`li`__ instruction, so we used this [__RISC-V Online Assembler__](https://riscvasm.lucasteske.dev/#) to assemble the Machine Code above.
+_What's with the `li` and `nop`?_
+
+TCC won't assemble the __`li`__ and __`nop`__ instructions.
+
+So we used this [__RISC-V Online Assembler__](https://riscvasm.lucasteske.dev/#) to assemble the Machine Code above.
 
 _How did we figure out that the buffer is at 0xC010_1000?_
 
@@ -1109,8 +1123,6 @@ Here are the steps to build and run __NuttX for QEMU 64-bit RISC-V__ (Kernel Mod
     make -j 8 import
     popd
     ```
-
-    TODO: [(See the Build Outputs)](https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64)
 
 This produces the NuttX ELF Image __nuttx__ that we may boot on QEMU RISC-V Emulator...
 
