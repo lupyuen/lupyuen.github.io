@@ -10,7 +10,7 @@ _Can we run TCC in a Web Browser?_
 
 Let's do it! We'll compile [__TCC (Tiny C Compiler)__](https://github.com/sellicott/tcc-riscv32) from C to WebAssembly with [__Zig Compiler__](https://ziglang.org/).
 
-In this article, we talk about the tricky bits of the conversion from __C to WebAssembly__...
+In this article, we talk about the tricky bits of the TCC Porting from __C to WebAssembly__...
 
 TODO
 
@@ -49,9 +49,15 @@ What if we could allow NuttX Apps to be compiled and tested in the Web Browser?
 
 TODO
 
-# POSIX Functions
+# Zig compiles TCCC to WebAssembly
 
 TODO
+
+# POSIX for WebAssembly
+
+_What's this POSIX?_
+
+TODO: Also [__libc (C Standard Library)__](https://en.wikipedia.org/wiki/C_standard_library)
 
 [__POSIX__](https://en.wikipedia.org/wiki/POSIX)
 
