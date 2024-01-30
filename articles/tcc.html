@@ -921,27 +921,27 @@ asm volatile (
 <p>Thus we <strong>hardcode Registers A0, A1, A2 and A3</strong> in Machine Code: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87">test-nuttx.js</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Load 61 to Register A0 (SYS_write)
 // li a0, 61
-&quot;.long 0x03d00513 \\n&quot;
+&quot;.long 0x03d00513 \n&quot;
 
 // Load 1 to Register A1 (File Descriptor)
 // li a1, 1
-&quot;.long 0x00100593 \\n&quot;
+&quot;.long 0x00100593 \n&quot;
 
 // Load 0xc0101000 to Register A2 (Buffer)
 // li a2, 0xc0101000
-&quot;.long 0x000c0637 \\n&quot;
-&quot;.long 0x1016061b \\n&quot;
-&quot;.long 0x00c61613 \\n&quot;
+&quot;.long 0x000c0637 \n&quot;
+&quot;.long 0x1016061b \n&quot;
+&quot;.long 0x00c61613 \n&quot;
 
 // Load 15 to Register A3 (Buffer Length)
 // li a3, 15
-&quot;.long 0x00f00693 \\n&quot;
+&quot;.long 0x00f00693 \n&quot;
 
 // ECALL for System Call to NuttX Kernel
-&quot;ecall \\n&quot;
+&quot;ecall \n&quot;
 
 // We inserted NOP, because TCC says it&#39;s invalid (see below)
-&quot;.word 0x0001 \\n&quot;
+&quot;.word 0x0001 \n&quot;
 </code></pre></div>
 <p><strong>TODO:</strong> Is there a workaround? Do we paste the ECALL Machine Code ourselves?</p>
 <p><em>What’s with the <code>li</code> and <code>nop</code>?</em></p>
