@@ -258,6 +258,8 @@ Thankfully we can borrow the POSIX-like code from other __Zig Libraries__...
 
 - [__PinePhone Simulator__](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation): For malloc
 
+  [(See the __Borrowed Code__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L447-L774)
+
 _72 POSIX Functions? Sounds like a lot of work..._
 
 Actually we haven't implemented all 72 POSIX Functions. We __stubbed out most of the functions__ to figure out which ones are normally used: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
@@ -413,11 +415,13 @@ const format_patterns = [_]FormatPattern{
 };
 ```
 
+And that's how we implement [__fprintf and friends__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L447)!
+
 [(How we do __Pattern Matching__)](TODO)
 
 _So simple? Unbelievable!_
 
-OK actually we'll hit more Format Patterns as TCC Compiler emits various Warning and Error Messages. But it's a good start!
+OK actually we'll hit more Format Patterns as TCC Compiler emits various Error and Warning Messages. But it's a good start!
 
 Later our Zig Wrapper will have to parse meticulously all kinds of C Format Strings. Or we do the [__parsing in C__](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191), compiled to WebAssembly.
 
