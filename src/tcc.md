@@ -118,16 +118,116 @@ _Zig Compiler will happily compile TCC to WebAssembly?_
 
 Amazingly, yes!
 
-TODO
-
 ```bash
-zig cc
-TODO
+## Zig Compiler compiles TCC Compiler from C to WebAssembly.
+## Produces `tcc.o`
+zig cc \
+  -c \
+  -target wasm32-freestanding \
+  -dynamic \
+  -rdynamic \
+  -lc \
+  tcc.c \
+  -DTCC_TARGET_RISCV64 \
+  -DCONFIG_TCC_CROSSPREFIX="\"riscv64-\""  \
+  -DCONFIG_TCC_CRTPREFIX="\"/usr/riscv64-linux-gnu/lib\"" \
+  -DCONFIG_TCC_LIBPATHS="\"{B}:/usr/riscv64-linux-gnu/lib\"" \
+  -DCONFIG_TCC_SYSINCLUDEPATHS="\"{B}/include:/usr/riscv64-linux-gnu/include\""   \
+  -DTCC_GITHASH="\"main:b3d10a35\"" \
+  -Wall \
+  -O2 \
+  -Wdeclaration-after-statement \
+  -fno-strict-aliasing \
+  -Wno-pointer-sign \
+  -Wno-sign-compare \
+  -Wno-unused-result \
+  -Wno-format-truncation \
+  -Wno-stringop-truncation \
+  -I.
 ```
 
 [(How we got the __Zig Compiler Options__)](TODO)
 
-TODO: longjmp
+Then we link it with our __Zig Wrapper__ that exports the TCC Compiler to JavaScript...
+
+```bash
+## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
+## and link it with TCC compiled for WebAssembly
+## Generates `tcc-wasm.wasm`
+zig build-exe \
+  --verbose-cimport \
+  -target wasm32-freestanding \
+  -rdynamic \
+  -lc \
+  -fno-entry \
+  --export=compile_program \
+  zig/tcc-wasm.zig \
+  tcc.o
+```
+
+_What's inside our Zig Wrapper?_
+
+Our Zig Wrapper will...
+
+1.  Receive the __C Program__ from JavaScript
+
+1.  Receive the __TCC Compiler Options__ from JavaScript
+
+1.  Call TCC Compiler to __compile our program__
+
+1.  Return the compiled __RISC-V ELF__ to JavaScript
+
+Like so: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L12-L77)
+
+```zig
+/// Call TCC Compiler to compile a C Program to RISC-V ELF
+pub export fn compile_program(
+  options_ptr: [*:0]const u8, // Options for TCC Compiler (Pointer to JSON Array:  ["-c", "hello.c"])
+  code_ptr:    [*:0]const u8, // C Program to be compiled (Pointer to String)
+) [*]const u8 { // Returns a pointer to the `a.out` Compiled Code (Size in first 4 bytes)
+
+  // Receive the C Program from JavaScript and set our Read Buffer
+  // https://blog.battlefy.com/zig-made-it-easy-to-pass-strings-back-and-forth-with-webassembly
+  const code: []const u8 = std.mem.span(code_ptr);
+  read_buf = code;
+
+  // Omitted: Receive the TCC Compiler Options from JavaScript
+  // (JSON containing String Array: ["-c", "hello.c"])
+  ...
+
+  // Call the TCC Compiler
+  _ = main(@intCast(argc), &args_ptrs);
+
+  // Return pointer of `a.out` to JavaScript.
+  // First 4 bytes: Size of `a.out`. Followed by `a.out` data.
+  const slice = std.heap.page_allocator.alloc(u8, write_buflen + 4)   
+    catch @panic("Failed to allocate memory");
+  slice[0] = @intCast((write_buflen >>  0) & 0xff);
+  slice[1] = @intCast((write_buflen >>  8) & 0xff);
+  slice[2] = @intCast((write_buflen >> 16) & 0xff);
+  slice[3] = @intCast(write_buflen  >> 24);
+  @memcpy(slice[4 .. write_buflen + 4], write_buf[0..write_buflen]);
+  return slice.ptr; // TODO: Deallocate this memory
+}
+```
+
+Plus a couple of Magical Bits that we'll explain in the next section.
+
+[(How __JavaScript__ calls our Zig Wrapper)](TODO)
+
+_Zig Compiler compiles TCC without any Code Changes?_
+
+Inside TCC, we stubbed out the [__setjmp / longjmp__](https://github.com/lupyuen/tcc-riscv32-wasm/commit/e30454a0eb9916f820d58a7c3e104eeda67988d8) to make it compile with Zig Compiler.
+
+(Nothing else was changed!)
+
+_Is that really OK?_
+
+Well [__setjmp / longjmp__](https://en.wikipedia.org/wiki/Setjmp.h) are called to __Handle Errors__ during TCC Compilation.
+
+We'll find a better way to express our outrage. Instead of jumping around!
+
+Let's talk about Magical Bits inside our Zig Wrapper...
 
 # POSIX for WebAssembly
 
@@ -464,11 +564,12 @@ We link our Compiled WebAssembly `tcc.o` with our Zig App: [zig/tcc-wasm.zig](zi
 ## Compile our Zig App `tcc-wasm.zig` for WebAssembly
 ## and link with TCC compiled for WebAssembly
 zig build-exe \
-  --verbose-cimport \
   -target wasm32-freestanding \
   -rdynamic \
   -lc \
   -fno-entry \
+  -freference-trace \
+  --verbose-cimport \
   --export=compile_program \
   zig/tcc-wasm.zig \
   tcc.o
