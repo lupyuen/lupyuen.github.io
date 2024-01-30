@@ -633,6 +633,7 @@ _How did we figure out the `zig cc` options?_
 Earlier we saw a long list of [__Zig Compiler Options__](TODO)...
 
 ```bash
+## Zig Compiler Options for TCC Compiler
 zig cc \
   tcc.c \
   -DTCC_TARGET_RISCV64 \
@@ -643,13 +644,12 @@ zig cc \
   ...
 ```
 
-TODO
-
-We compile TCC Compiler with the Zig Compiler. First we figure out the GCC Options...
+We got them from `make --trace`, which shows the __GCC Compiler Options__...
 
 ```bash
-## Show the GCC Options
+## Show the GCC Options for compiling TCC
 $ make --trace cross-riscv64
+
 gcc \
   -o riscv64-tcc.o \
   -c tcc.c \
@@ -671,16 +671,11 @@ gcc \
   -I. 
 ```
 
-We copy the above GCC Options and we compile TCC with Zig Compiler...
-
-
-Yep it works OK!
+And we copied above GCC Options to become the [__Zig Compiler Options__](TODO).
 
 # Appendix: JavaScript calls TCC Compiler
 
 TODO: Earlier we saw
-
-TODO
 
 We test the TCC WebAssembly in a Web Browser with [docs/index.html](docs/index.html) and [docs/tcc.js](docs/tcc.js)...
 
