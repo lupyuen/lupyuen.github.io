@@ -16,7 +16,7 @@ In this article, we talk about the tricky bits of the TCC Port from __C to WebAs
 
 TODO
 
-[(Not to be confused with __TTC from the 80's__)](https://research.cs.queensu.ca/home/cordy/pub/downloads/tplus/Turing_Plus_Report.pdf)
+[(Not to be confused with __TTC Compiler__)](https://research.cs.queensu.ca/home/cordy/pub/downloads/tplus/Turing_Plus_Report.pdf)
 
 _Why are we doing this?_
 
