@@ -585,7 +585,9 @@ NuttX Kernel prints __"Hello World"__ yay!
 
 Indeed we've created a C Compiler in a Web Browser, that __produces proper NuttX Apps__!
 
-![TODO](https://lupyuen.github.io/images/tcc-emu.png)
+![NuttX App compiled in a Web Browser... Runs inside the Web Browser!](https://lupyuen.github.io/images/tcc-emu.png)
+
+[_NuttX App compiled in a Web Browser... Runs inside the Web Browser!_](https://lupyuen.github.io/nuttx-tinyemu/timer)
 
 # What's Next
 
