@@ -496,7 +496,7 @@ One last chance to say hello to NuttX...
 
 [(__Warning:__ SYS_write 61 may change!)](https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call)
 
-TODO: Pic of ECALL
+![TODO](https://lupyuen.github.io/images/tcc-ecall.png)
 
 # Hello NuttX!
 
@@ -585,7 +585,7 @@ NuttX Kernel prints __"Hello World"__ yay!
 
 Indeed we've created a C Compiler in a Web Browser, that __produces proper NuttX Apps__!
 
-TODO: Pic of hello world
+![TODO](https://lupyuen.github.io/images/tcc-emu.png)
 
 # What's Next
 
