@@ -446,6 +446,7 @@ const format_patterns = [_]FormatPattern{
 <p>OK actually we’ll hit more Format Patterns as TCC Compiler emits various Error and Warning Messages. But it’s a good start!</p>
 <p>Later our Zig Wrapper will have to parse meticulously all kinds of C Format Strings. Or we do the <a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191"><strong>parsing in C</strong></a>, compiled to WebAssembly.</p>
 <p>(Funny how <strong>printf</strong> is the first thing we learn about C. Yet it’s incredibly difficult to implement!)</p>
+<p>TODO: Pic of missing printf</p>
 <h1 id="test-with-apache-nuttx-rtos"><a href="#test-with-apache-nuttx-rtos">6 Test with Apache NuttX RTOS</a></h1>
 <p><em>TCC in WebAssembly has compiled our C Program to RISC-V ELF…</em></p>
 <p><em>Will the RISC-V ELF run on Apache NuttX RTOS?</em></p>
@@ -481,7 +482,9 @@ ssize_t write(
 );
 </code></pre></div>
 <p>That’s the same NuttX System Call that <strong>printf</strong> executes internally.</p>
-<p>One last chance to make NuttX say hello…</p>
+<p>One last chance to say hello to NuttX…</p>
+<p><a href="https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call">(<strong>Warning:</strong> SYS_write 61 may change!)</a></p>
+<p>TODO: Pic of ECALL</p>
 <h1 id="hello-nuttx"><a href="#hello-nuttx">7 Hello NuttX!</a></h1>
 <p><em>We’re making a System Call (ECALL) to NuttX Kernel to print something…</em></p>
 <p><em>How will we write this in C?</em></p>
@@ -555,7 +558,7 @@ Hello, World!!
 </code></pre></div>
 <p>NuttX Kernel prints <strong>“Hello World”</strong> yay!</p>
 <p>Indeed we’ve created a C Compiler in a Web Browser, that <strong>produces proper NuttX Apps</strong>!</p>
-<p><a href="https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call">(<strong>Warning:</strong> SYS_write 61 may change!)</a></p>
+<p>TODO: Pic of hello world</p>
 <h1 id="tcc-generates-64-bit-risc-v-code"><a href="#tcc-generates-64-bit-risc-v-code">8 TCC generates 64-bit RISC-V code</a></h1>
 <p>TODO</p>
 <p>We build TCC to support 64-bit RISC-V Target…</p>
