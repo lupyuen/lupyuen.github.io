@@ -47,7 +47,7 @@ What if we could allow NuttX Apps to be compiled and tested in the Web Browser?
 
 # TCC in the Web Browser
 
-Head over to this link to try __TCC Compiler in our Web Browser__...
+Head over to this link to try __TCC Compiler in our Web Browser__ (pic above)...
 
 - [__TCC RISC-V Compiler in WebAssembly__](https://lupyuen.github.io/tcc-riscv32-wasm/)
 
@@ -152,7 +152,7 @@ Then we link it with our __Zig Wrapper__ that exports the TCC Compiler to JavaSc
 
 ```bash
 ## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
-## and link it with TCC compiled for WebAssembly
+## and link it with TCC compiled for WebAssembly `tcc.o`
 ## Generates `tcc-wasm.wasm`
 zig build-exe \
   --verbose-cimport \
@@ -222,7 +222,7 @@ _Zig Compiler compiles TCC without any Code Changes?_
 
 Inside TCC, we stubbed out the [__setjmp / longjmp__](https://github.com/lupyuen/tcc-riscv32-wasm/commit/e30454a0eb9916f820d58a7c3e104eeda67988d8) to make it compile with Zig Compiler.
 
-(Nothing else was changed!)
+(Everything else compiles OK!)
 
 _Is that really OK?_
 
@@ -236,23 +236,192 @@ Let's talk about Magical Bits inside our Zig Wrapper...
 
 _What's this POSIX?_
 
-TODO
+TCC Compiler was created as a __Command-Line App__. So it calls the typical [__POSIX Functions__](https://en.wikipedia.org/wiki/POSIX) like __fopen, fprintf, strncpy, malloc,__ ...
 
-[(Some folks will call it the __C Standard Library libc__)](https://en.wikipedia.org/wiki/C_standard_library)
+[(Similar to the __C Standard Library libc__)](https://en.wikipedia.org/wiki/C_standard_library)
 
-[__POSIX__](https://en.wikipedia.org/wiki/POSIX)
+_Is POSIX a problem for WebAssembly?_
 
-malloc from [__PinePhone Simulator__](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation)
+WebAssembly running in a Web Browser ain't __No Command-Line__!
+
+We counted [__72 POSIX Functions__](TODO) needed by TCC Compiler, but missing from WebAssembly.
+
+Thus we'll fill in the [__Missing Functions__](TODO) ourselves.
+
+_Surely other Zig Devs will have the same problem?_
+
+Thankfully we can borrow the POSIX-like code from other __Zig Libraries__...
+
+- [__ziglibc__](https://github.com/marler8997/ziglibc): Zig implementation of libc
+
+- [__foundation-libc__](https://github.com/ZigEmbeddedGroup/foundation-libc): Freestanding implementation of libc
+
+- [__PinePhone Simulator__](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation): For malloc
+
+_72 POSIX Functions? Sounds like a lot of work..._
+
+Actually we haven't implemented all 72 POSIX Functions. We __stubbed out most of the functions__ to figure out which ones are normally used: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
+
+```zig
+// Stub Out the Missing POSIX Functions.
+// If TCC calls them, we'll see a Zig Panic.
+// Then we implement them.
+// The Types don't matter because we'll halt anyway.
+
+pub export fn atoi(_: c_int) c_int {
+  @panic("TODO: atoi");
+}
+pub export fn exit(_: c_int) c_int {
+  @panic("TODO: exit");
+}
+pub export fn fopen(_: c_int) c_int {
+  @panic("TODO: fopen");
+}
+
+// And many more functions...
+```
+
+Some of these functions are problematic in WebAssembly...
 
 # File Input and Output
 
-_Why no #include in TCC for WebAssembly? And C Libraries?_
+_Why no #include in TCC for WebAssembly? And no C Libraries?_
 
-TODO: [__ROM FS__?](https://docs.kernel.org/filesystems/romfs.html)
+WebAssembly runs in a __Secure Sandbox__. No File Access allowed! (Like C Header and Library Files)
+
+That's why our Zig Wrapper only __Emulates File Access__ for the bare minimum 2 files...
+
+- Read the C Program: __hello.c__
+
+- Write the RISC-V ELF: __a.out__
+
+__Reading a Source File (hello.c)__ is extremely simplistic: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L107-L119)
+
+```zig
+/// Emulate the POSIX Function `read()`
+/// We copy from One Single Read Buffer
+/// that contains our C Program
+export fn read(fd0: c_int, buf: [*:0]u8, nbyte: size_t) isize {
+
+  // TODO: Support more than one file
+  // TODO: Check overflow
+  const len = read_buf.len;
+  @memcpy(buf[0..len], read_buf[0..len]);
+  buf[len] = 0;
+  read_buf.len = 0;
+  return @intCast(len);
+}
+```
+
+__Writing the Compiled Output (a.out)__ is just as barebones: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L130-L142)
+
+```zig
+/// Emulate the POSIX Function `write()`
+/// We write to One Single Memory Buffer
+/// that will be returned to JavaScript as `a.out`
+export fn fwrite(ptr: [*:0]const u8, size: usize, nmemb: usize, stream: *FILE) usize {
+
+  // TODO: Support more than one `stream`
+  const len = size * nmemb;
+  @memcpy(write_buf[write_buflen .. write_buflen + len], ptr[0..]);
+  write_buflen += len;
+  return nmemb;
+}
+```
+
+_Can we handle Multiple Files?_
+
+We'll have to embed an __Emulated File System__ inside our Zig Wrapper. The File System will contain the C Header and Library Files needed by TCC.
+
+[(Similar to the __Emscripten File System__)](https://emscripten.org/docs/porting/files/file_systems_overview.html)
+
+[(Maybe we embed the simple __ROM FS File System__)](https://docs.kernel.org/filesystems/romfs.html)
+
+TODO: Pic of Format Patterns
 
 # Fearsome fprintf and Friends
 
-TODO: Funny how printf is the first thing we learn about C. But yet it's incredibly difficult to implement!
+_Why is fprintf particularly problematic?_
+
+Here's the fearsome thing about __fprintf__ and friends: __sprintf, snprintf, vsnprintf__...
+
+- __C Format Strings__: Difficult to parse
+
+- __Variable Number of Untyped Arguments__: Might create Bad Pointers
+
+Hence we hacked up an implementation of __String Formatting__ that's safer, simpler and so-barebones-you-can-make-_soup-tulang_.
+
+_Soup tulang? Tell me more..._
+
+Our Zig Wrapper uses __Pattern Matching__ to match the __C Formats__ and substitute the __Zig Equivalent__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
+
+```zig
+// Format a Single `%d`
+// like `#define __TINYC__ %d`
+FormatPattern{
+
+  // If the C Format String contains this...
+  .c_spec = "%d",
+  
+  // Then we apply this Zig Format...
+  .zig_spec = "{}",
+  
+  // And extract these Argument Types
+  // from the Varargs...
+  .type0 = c_int,
+  .type1 = null
+}
+```
+
+This works OK (for now) because TCC Compiler only uses __5 Patterns for C Format Strings__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
+
+```zig
+/// Pattern Matching for C String Formatting:
+/// We'll match these patterns when formatting strings
+const format_patterns = [_]FormatPattern{
+
+  // Format a Single `%d`, like `#define __TINYC__ %d`
+  FormatPattern{
+    .c_spec = "%d",  .zig_spec = "{}", 
+    .type0  = c_int, .type1 = null
+  },
+
+  // Format a Single `%u`, like `L.%u`
+  FormatPattern{ 
+    .c_spec = "%u",  .zig_spec = "{}", 
+    .type0  = c_int, .type1 = null 
+  },
+
+  // Format a Single `%s`, like `#define __BASE_FILE__ "%s"`
+  // or `.rela%s`
+  FormatPattern{
+    .c_spec = "%s", .zig_spec = "{s}",
+    .type0  = [*:0]const u8, .type1 = null
+  },
+
+  // Format Two `%s`, like `#define %s%s\n`
+  FormatPattern{
+    .c_spec = "%s%s", .zig_spec = "{s}{s}",
+    .type0  = [*:0]const u8, .type1 = [*:0]const u8
+  },
+
+  // Format `%s:%d`, like `%s:%d: ` (File Name and Line Number)
+  FormatPattern{
+    .c_spec = "%s:%d", .zig_spec = "{s}:{}",
+    .type0  = [*:0]const u8, .type1 = c_int
+  },
+};
+```
+
+[(How we do __Pattern Matching__)](TODO)
+
+_So simple? Unbelievable!_
+
+OK actually we'll hit more Format Patterns as TCC Compiler emits various Warning and Error Messages. But it's a good start!
+
+Later our Zig Wrapper will have to parse meticulously all kinds of C Format Strings. Or we do the [__parsing in C__](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191), compiled to WebAssembly.
+
+(Funny how __printf__ is the first thing we learn about C. Yet it's incredibly difficult to implement!)
 
 # Test with Apache NuttX RTOS
 
