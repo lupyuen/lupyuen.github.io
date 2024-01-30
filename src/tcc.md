@@ -993,7 +993,7 @@ main():
   44:  0001      nop
 ```
 
-Thus we __hardcode Registers A0, A1, A2 and A3__ in Machine Code (because TCC won't assemble the `li` instruction): [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87)
+Thus we __hardcode Registers A0, A1, A2 and A3__ in Machine Code: [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87)
 
 ```c
 // Load 61 to Register A0 (SYS_write)
@@ -1021,9 +1021,9 @@ Thus we __hardcode Registers A0, A1, A2 and A3__ in Machine Code (because TCC wo
 ".word 0x0001 \\n"
 ```
 
-(We used this [RISC-V Online Assembler](https://riscvasm.lucasteske.dev/#) to assemble the Machine Code)
-
 __TODO:__ Is there a workaround? Do we paste the ECALL Machine Code ourselves?
+
+TCC won't assemble the __`li`__ instruction, so we used this [__RISC-V Online Assembler__](https://riscvasm.lucasteske.dev/#) to assemble the Machine Code above.
 
 _How did we figure out that the buffer is at 0xC010_1000?_
 
@@ -1043,9 +1043,9 @@ Read 16 bytes from offset 224
 4. 00000000->c0101010
 ```
 
-Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section `.data.ro` to `0xC010_1000`. That's all 15 bytes of _"Hello, World!!\n"_, including the terminating null.
+Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section __`.data.ro`__ to __`0xC010_1000`__. That's all 15 bytes of _"Hello, World!!\n"_, including the terminating null.
 
-Thus our buffer is at buffer is at `0xC010_1000`.
+Thus our buffer is at buffer is at __`0xC010_1000`__.
 
 _Why did we Loop Forever?_
 
@@ -1059,11 +1059,82 @@ for(;;) {}
 
 That's because NuttX Apps are not supposed to Return to NuttX Kernel.
 
-We should call the NuttX System Call `__exit` to terminate peacefully.
+We should call the NuttX System Call __`__exit`__ to terminate peacefully.
 
 # Appendix: Build NuttX for QEMU
 
-TODO: Earlier we saw
+Here are the steps to build and run __NuttX for QEMU 64-bit RISC-V__ (Kernel Mode)...
+
+1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
+
+    [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+1.  Download the RISC-V Toolchain for __riscv64-unknown-elf__...
+    
+    [__"Download Toolchain for 64-bit RISC-V"__](https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v)
+
+1.  Download and configure NuttX...
+
+    ```bash
+    mkdir nuttx
+    cd nuttx
+    git clone https://github.com/apache/nuttx nuttx
+    git clone https://github.com/apache/nuttx-apps apps
+
+    cd nuttx
+    tools/configure.sh rv-virt:knsh64
+    make menuconfig
+    ```
+
+1.  (Optional) To enable __ELF Loader Logging__, select...
+
+    - Build Setup > Debug Options > Binary Loader Debug Features > Enable "Binary Loader Error, Warnings and Info"
+
+1.  (Optional) To enable __System Call Logging__, select...
+
+    - Build Setup > Debug Options > SYSCALL  Debug Features > Enable "SYSCALL Error, Warnings and Info"
+
+1.  Save and exit __menuconfig__.
+
+1.  Build the __NuttX Kernel and NuttX Apps__...
+
+    ```bash
+    ## Build NuttX Kernel
+    make -j 8
+
+    ## Build NuttX Apps
+    make -j 8 export
+    pushd ../apps
+    ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+    make -j 8 import
+    popd
+    ```
+
+    TODO: [(See the Build Outputs)](https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64)
+
+This produces the NuttX ELF Image __nuttx__ that we may boot on QEMU RISC-V Emulator...
+
+```bash
+## For macOS: Install QEMU
+brew install qemu
+
+## For Debian and Ubuntu: Install QEMU
+sudo apt install qemu-system-riscv64
+
+## Boot NuttX on QEMU 64-bit RISC-V
+qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+```
+
+NuttX Apps are located in __`apps/bin`__.
+
+We may copy our __RISC-V ELF `a.out`__ to that folder.
 
 # Appendix: Missing Functions
 
