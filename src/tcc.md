@@ -427,6 +427,8 @@ Later our Zig Wrapper will have to parse meticulously all kinds of C Format Stri
 
 (Funny how __printf__ is the first thing we learn about C. Yet it's incredibly difficult to implement!)
 
+TODO: Pic of missing printf
+
 # Test with Apache NuttX RTOS
 
 _TCC in WebAssembly has compiled our C Program to RISC-V ELF..._
@@ -481,7 +483,11 @@ ssize_t write(
 
 That's the same NuttX System Call that __printf__ executes internally.
 
-One last chance to make NuttX say hello...
+One last chance to say hello to NuttX...
+
+[(__Warning:__ SYS_write 61 may change!)](https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call)
+
+TODO: Pic of ECALL
 
 # Hello NuttX!
 
@@ -570,7 +576,7 @@ NuttX Kernel prints __"Hello World"__ yay!
 
 Indeed we've created a C Compiler in a Web Browser, that __produces proper NuttX Apps__!
 
-[(__Warning:__ SYS_write 61 may change!)](https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call)
+TODO: Pic of hello world
 
 # TCC generates 64-bit RISC-V code
 
