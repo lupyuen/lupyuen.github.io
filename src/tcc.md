@@ -1033,27 +1033,28 @@ We saw this in the NuttX Log...
 NuttShell (NSH) NuttX-12.4.0
 nsh> a.out
 ...
-elf_read: Read 576 bytes from offset 512
-elf_loadfile: Loaded sections:
-elf_read: Read 154 bytes from offset 64
-elf_loadfile: 1. 00000000->c0000000
-elf_read: Read 0 bytes from offset 224
-elf_loadfile: 2. 00000000->c0101000
-elf_read: Read 16 bytes from offset 224
-elf_loadfile: 3. 00000000->c0101000
-elf_loadfile: 4. 00000000->c0101010
+Read 576 bytes from offset 512
+Read 154 bytes from offset 64
+1. 00000000->c0000000
+Read 0 bytes from offset 224
+2. 00000000->c0101000
+Read 16 bytes from offset 224
+3. 00000000->c0101000
+4. 00000000->c0101010
 ```
 
 Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section `.data.ro` to `0xC010_1000`. That's all 15 bytes of _"Hello, World!!\n"_, including the terminating null.
 
+Thus our buffer is at buffer is at `0xC010_1000`.
+
 _Why did we Loop Forever?_
 
 ```c
-  // Omitted: Execute ECALL for System Call to NuttX Kernel
-  asm volatile ( ... );
+// Omitted: Execute ECALL for System Call to NuttX Kernel
+asm volatile ( ... );
 
-  // Loop Forever
-  for(;;) {}
+// Loop Forever
+for(;;) {}
 ```
 
 That's because NuttX Apps are not supposed to Return to NuttX Kernel.
