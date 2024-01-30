@@ -908,7 +908,7 @@ asm volatile (
   40:  00000073  ecall
   44:  0001      nop
 </code></pre></div>
-<p>Thus we <strong>hardcode Registers A0, A1, A2 and A3</strong> in Machine Code (because TCC won’t assemble the <code>li</code> instruction): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87">test-nuttx.js</a></p>
+<p>Thus we <strong>hardcode Registers A0, A1, A2 and A3</strong> in Machine Code: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87">test-nuttx.js</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Load 61 to Register A0 (SYS_write)
 // li a0, 61
 &quot;.long 0x03d00513 \\n&quot;
@@ -933,8 +933,8 @@ asm volatile (
 // We inserted NOP, because TCC says it&#39;s invalid (see below)
 &quot;.word 0x0001 \\n&quot;
 </code></pre></div>
-<p>(We used this <a href="https://riscvasm.lucasteske.dev/#">RISC-V Online Assembler</a> to assemble the Machine Code)</p>
 <p><strong>TODO:</strong> Is there a workaround? Do we paste the ECALL Machine Code ourselves?</p>
+<p>TCC won’t assemble the <strong><code>li</code></strong> instruction, so we used this <a href="https://riscvasm.lucasteske.dev/#"><strong>RISC-V Online Assembler</strong></a> to assemble the Machine Code above.</p>
 <p><em>How did we figure out that the buffer is at 0xC010_1000?</em></p>
 <p>We saw this in the NuttX Log…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>NuttShell (NSH) NuttX-12.4.0
@@ -949,8 +949,8 @@ Read 16 bytes from offset 224
 3. 00000000-&gt;c0101000
 4. 00000000-&gt;c0101010
 </code></pre></div>
-<p>Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section <code>.data.ro</code> to <code>0xC010_1000</code>. That’s all 15 bytes of <em>“Hello, World!!\n”</em>, including the terminating null.</p>
-<p>Thus our buffer is at buffer is at <code>0xC010_1000</code>.</p>
+<p>Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section <strong><code>.data.ro</code></strong> to <strong><code>0xC010_1000</code></strong>. That’s all 15 bytes of <em>“Hello, World!!\n”</em>, including the terminating null.</p>
+<p>Thus our buffer is at buffer is at <strong><code>0xC010_1000</code></strong>.</p>
 <p><em>Why did we Loop Forever?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Omitted: Execute ECALL for System Call to NuttX Kernel
 asm volatile ( ... );
@@ -959,9 +959,78 @@ asm volatile ( ... );
 for(;;) {}
 </code></pre></div>
 <p>That’s because NuttX Apps are not supposed to Return to NuttX Kernel.</p>
-<p>We should call the NuttX System Call <code>__exit</code> to terminate peacefully.</p>
+<p>We should call the NuttX System Call <strong><code>__exit</code></strong> to terminate peacefully.</p>
 <h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">13 Appendix: Build NuttX for QEMU</a></h1>
-<p>TODO: Earlier we saw</p>
+<p>Here are the steps to build and run <strong>NuttX for QEMU 64-bit RISC-V</strong> (Kernel Mode)…</p>
+<ol>
+<li>
+<p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
+</li>
+<li>
+<p>Download the RISC-V Toolchain for <strong>riscv64-unknown-elf</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></p>
+</li>
+<li>
+<p>Download and configure NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone https://github.com/apache/nuttx nuttx
+git clone https://github.com/apache/nuttx-apps apps
+
+cd nuttx
+tools/configure.sh rv-virt:knsh64
+make menuconfig
+</code></pre></div></li>
+<li>
+<p>(Optional) To enable <strong>ELF Loader Logging</strong>, select…</p>
+<ul>
+<li>Build Setup &gt; Debug Options &gt; Binary Loader Debug Features &gt; Enable “Binary Loader Error, Warnings and Info”</li>
+</ul>
+</li>
+<li>
+<p>(Optional) To enable <strong>System Call Logging</strong>, select…</p>
+<ul>
+<li>Build Setup &gt; Debug Options &gt; SYSCALL  Debug Features &gt; Enable “SYSCALL Error, Warnings and Info”</li>
+</ul>
+</li>
+<li>
+<p>Save and exit <strong>menuconfig</strong>.</p>
+</li>
+<li>
+<p>Build the <strong>NuttX Kernel and NuttX Apps</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Kernel
+make -j 8
+
+## Build NuttX Apps
+make -j 8 export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j 8 import
+popd
+</code></pre></div>
+<p>TODO: <a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64">(See the Build Outputs)</a></p>
+</li>
+</ol>
+<p>This produces the NuttX ELF Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## For macOS: Install QEMU
+brew install qemu
+
+## For Debian and Ubuntu: Install QEMU
+sudo apt install qemu-system-riscv64
+
+## Boot NuttX on QEMU 64-bit RISC-V
+qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+</code></pre></div>
+<p>NuttX Apps are located in <strong><code>apps/bin</code></strong>.</p>
+<p>We may copy our <strong>RISC-V ELF <code>a.out</code></strong> to that folder.</p>
 <h1 id="appendix-missing-functions"><a href="#appendix-missing-functions">14 Appendix: Missing Functions</a></h1>
 <p>TODO: Earlier we saw</p>
 <p>TCC calls surprisingly few External Functions! We might get it running on WebAssembly. Here’s our analysis of the Missing Functions: <a href="zig/tcc-wasm.zig">zig/tcc-wasm.zig</a></p>
