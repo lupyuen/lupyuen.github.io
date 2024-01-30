@@ -185,12 +185,103 @@ main():
 <h1 id="zig-compiles-tcc-to-webassembly"><a href="#zig-compiles-tcc-to-webassembly">2 Zig compiles TCC to WebAssembly</a></h1>
 <p><em>Zig Compiler will happily compile TCC to WebAssembly?</em></p>
 <p>Amazingly, yes!</p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>zig cc
-TODO
+<div class="example-wrap"><pre class="language-bash"><code>## Zig Compiler compiles TCC Compiler from C to WebAssembly.
+## Produces `tcc.o`
+zig cc \
+  -c \
+  -target wasm32-freestanding \
+  -dynamic \
+  -rdynamic \
+  -lc \
+  tcc.c \
+  -DTCC_TARGET_RISCV64 \
+  -DCONFIG_TCC_CROSSPREFIX=&quot;\&quot;riscv64-\&quot;&quot;  \
+  -DCONFIG_TCC_CRTPREFIX=&quot;\&quot;/usr/riscv64-linux-gnu/lib\&quot;&quot; \
+  -DCONFIG_TCC_LIBPATHS=&quot;\&quot;{B}:/usr/riscv64-linux-gnu/lib\&quot;&quot; \
+  -DCONFIG_TCC_SYSINCLUDEPATHS=&quot;\&quot;{B}/include:/usr/riscv64-linux-gnu/include\&quot;&quot;   \
+  -DTCC_GITHASH=&quot;\&quot;main:b3d10a35\&quot;&quot; \
+  -Wall \
+  -O2 \
+  -Wdeclaration-after-statement \
+  -fno-strict-aliasing \
+  -Wno-pointer-sign \
+  -Wno-sign-compare \
+  -Wno-unused-result \
+  -Wno-format-truncation \
+  -Wno-stringop-truncation \
+  -I.
 </code></pre></div>
 <p><a href="TODO">(How we got the <strong>Zig Compiler Options</strong>)</a></p>
-<p>TODO: longjmp</p>
+<p>Then we link it with our <strong>Zig Wrapper</strong> that exports the TCC Compiler to JavaScript…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
+## and link it with TCC compiled for WebAssembly
+## Generates `tcc-wasm.wasm`
+zig build-exe \
+  --verbose-cimport \
+  -target wasm32-freestanding \
+  -rdynamic \
+  -lc \
+  -fno-entry \
+  --export=compile_program \
+  zig/tcc-wasm.zig \
+  tcc.o
+</code></pre></div>
+<p><em>What’s inside our Zig Wrapper?</em></p>
+<p>Our Zig Wrapper will…</p>
+<ol>
+<li>
+<p>Receive the <strong>C Program</strong> from JavaScript</p>
+</li>
+<li>
+<p>Receive the <strong>TCC Compiler Options</strong> from JavaScript</p>
+</li>
+<li>
+<p>Call TCC Compiler to <strong>compile our program</strong></p>
+</li>
+<li>
+<p>Return the compiled <strong>RISC-V ELF</strong> to JavaScript</p>
+</li>
+</ol>
+<p>Like so: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L12-L77">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Call TCC Compiler to compile a C Program to RISC-V ELF
+pub export fn compile_program(
+  options_ptr: [*:0]const u8, // Options for TCC Compiler (Pointer to JSON Array:  [&quot;-c&quot;, &quot;hello.c&quot;])
+  code_ptr:    [*:0]const u8, // C Program to be compiled (Pointer to String)
+) [*]const u8 { // Returns a pointer to the `a.out` Compiled Code (Size in first 4 bytes)
+
+  // Receive the C Program from JavaScript and set our Read Buffer
+  // https://blog.battlefy.com/zig-made-it-easy-to-pass-strings-back-and-forth-with-webassembly
+  const code: []const u8 = std.mem.span(code_ptr);
+  read_buf = code;
+
+  // Omitted: Receive the TCC Compiler Options from JavaScript
+  // (JSON containing String Array: [&quot;-c&quot;, &quot;hello.c&quot;])
+  ...
+
+  // Call the TCC Compiler
+  _ = main(@intCast(argc), &amp;args_ptrs);
+
+  // Return pointer of `a.out` to JavaScript.
+  // First 4 bytes: Size of `a.out`. Followed by `a.out` data.
+  const slice = std.heap.page_allocator.alloc(u8, write_buflen + 4)   
+    catch @panic(&quot;Failed to allocate memory&quot;);
+  slice[0] = @intCast((write_buflen &gt;&gt;  0) &amp; 0xff);
+  slice[1] = @intCast((write_buflen &gt;&gt;  8) &amp; 0xff);
+  slice[2] = @intCast((write_buflen &gt;&gt; 16) &amp; 0xff);
+  slice[3] = @intCast(write_buflen  &gt;&gt; 24);
+  @memcpy(slice[4 .. write_buflen + 4], write_buf[0..write_buflen]);
+  return slice.ptr; // TODO: Deallocate this memory
+}
+</code></pre></div>
+<p>Plus a couple of Magical Bits that we’ll explain in the next section.</p>
+<p><a href="TODO">(How <strong>JavaScript</strong> calls our Zig Wrapper)</a></p>
+<p><em>Zig Compiler compiles TCC without any Code Changes?</em></p>
+<p>Inside TCC, we stubbed out the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/commit/e30454a0eb9916f820d58a7c3e104eeda67988d8"><strong>setjmp / longjmp</strong></a> to make it compile with Zig Compiler.</p>
+<p>(Nothing else was changed!)</p>
+<p><em>Is that really OK?</em></p>
+<p>Well <a href="https://en.wikipedia.org/wiki/Setjmp.h"><strong>setjmp / longjmp</strong></a> are called to <strong>Handle Errors</strong> during TCC Compilation.</p>
+<p>We’ll find a better way to express our outrage. Instead of jumping around!</p>
+<p>Let’s talk about Magical Bits inside our Zig Wrapper…</p>
 <h1 id="posix-for-webassembly"><a href="#posix-for-webassembly">3 POSIX for WebAssembly</a></h1>
 <p><em>What’s this POSIX?</em></p>
 <p>TODO</p>
@@ -471,11 +562,12 @@ Import[75]:
 <div class="example-wrap"><pre class="language-bash"><code>## Compile our Zig App `tcc-wasm.zig` for WebAssembly
 ## and link with TCC compiled for WebAssembly
 zig build-exe \
-  --verbose-cimport \
   -target wasm32-freestanding \
   -rdynamic \
   -lc \
   -fno-entry \
+  -freference-trace \
+  --verbose-cimport \
   --export=compile_program \
   zig/tcc-wasm.zig \
   tcc.o
