@@ -163,6 +163,9 @@ zig build-exe \
   --export=compile_program \
   zig/tcc-wasm.zig \
   tcc.o
+
+## Test everything with Web Browser or NodeJS
+node zig/test.js
 ```
 
 _What's inside our Zig Wrapper?_
