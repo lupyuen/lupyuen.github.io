@@ -211,11 +211,12 @@ zig cc \
 ## and link it with TCC compiled for WebAssembly `tcc.o`
 ## Generates `tcc-wasm.wasm`
 zig build-exe \
-  --verbose-cimport \
   -target wasm32-freestanding \
   -rdynamic \
   -lc \
   -fno-entry \
+  -freference-trace \
+  --verbose-cimport \
   --export=compile_program \
   zig/tcc-wasm.zig \
   tcc.o
@@ -594,6 +595,13 @@ make --trace cross-riscv64
 
 ## Omitted: Run the `zig cc` command from earlier...
 ## TODO
+
+## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
+## and link it with TCC compiled for WebAssembly `tcc.o`
+## Generates `tcc-wasm.wasm`
+
+## Omitted: Run the `zig build-exe` command from earlier...
+## TODO
 </code></pre></div>
 <p><em>How did we figure out the <code>zig cc</code> options?</em></p>
 <p>Earlier we saw a long list of <a href="TODO"><strong>Zig Compiler Options</strong></a>…</p>
@@ -722,7 +730,7 @@ function main() {
 <div class="example-wrap"><pre class="language-bash"><code>## Test TCC WebAssembly with NodeJS
 node zig/test.js
 </code></pre></div>
-<p>For Easier Testing (via Command-Line): We copied the JavaScript above into a NodeJS Script: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js">test.js</a></p>
+<p><strong>For Easier Testing</strong> (via Command-Line): We copied the JavaScript above into a NodeJS Script: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js">test.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Allocate a String for passing the Compiler Options to Zig
 const options = [&quot;-c&quot;, &quot;hello.c&quot;];
 const options_ptr = allocateString(JSON.stringify(options));
@@ -843,15 +851,17 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
   // TODO: Print to other File Streams. Right now we assume it&#39;s stderr (File Descriptor 2)
   return @intCast(len);
 }
+
+// Do the same for sprintf, snprintf, vsnprintf
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36">(See the <strong>Formatting Log</strong>)</a></p>
 <h1 id="appendix-nuttx-system-call"><a href="#appendix-nuttx-system-call">12 Appendix: NuttX System Call</a></h1>
-<p>Not long ago we saw a huge chunk of C Code to making a <strong>NuttX System Call</strong>…</p>
+<p>Not long ago we saw a huge chunk of C Code that makes a <strong>NuttX System Call</strong>…</p>
 <ul>
 <li>TODO</li>
 </ul>
 <p><em>Why so complicated?</em></p>
-<p>Rightfully this should work…</p>
+<p>Rightfully this shorter version should work…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Make NuttX System Call to write(fd, buf, buflen)
 const unsigned int nbr = 61; // SYS_write
 const void *parm1 = 1;       // File Descriptor (stdout)
@@ -934,7 +944,9 @@ asm volatile (
 &quot;.word 0x0001 \\n&quot;
 </code></pre></div>
 <p><strong>TODO:</strong> Is there a workaround? Do we paste the ECALL Machine Code ourselves?</p>
-<p>TCC won’t assemble the <strong><code>li</code></strong> instruction, so we used this <a href="https://riscvasm.lucasteske.dev/#"><strong>RISC-V Online Assembler</strong></a> to assemble the Machine Code above.</p>
+<p><em>What’s with the <code>li</code> and <code>nop</code>?</em></p>
+<p>TCC won’t assemble the <strong><code>li</code></strong> and <strong><code>nop</code></strong> instructions.</p>
+<p>So we used this <a href="https://riscvasm.lucasteske.dev/#"><strong>RISC-V Online Assembler</strong></a> to assemble the Machine Code above.</p>
 <p><em>How did we figure out that the buffer is at 0xC010_1000?</em></p>
 <p>We saw this in the NuttX Log…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>NuttShell (NSH) NuttX-12.4.0
@@ -1008,9 +1020,7 @@ pushd ../apps
 ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
 make -j 8 import
 popd
-</code></pre></div>
-<p>TODO: <a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64">(See the Build Outputs)</a></p>
-</li>
+</code></pre></div></li>
 </ol>
 <p>This produces the NuttX ELF Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS: Install QEMU
