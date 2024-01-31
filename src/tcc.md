@@ -589,7 +589,7 @@ Indeed we've created a C Compiler in a Web Browser, that __produces proper NuttX
 
 _OK so we can compile NuttX Apps in a Web Browser... But can we run them in a Web Browser?_
 
-Yep! A NuttX App compiled in the Web Browser... Now runs OK with NuttX Emulator in Web Browser! 🎉
+Yep! A NuttX App compiled in the Web Browser... Now runs OK with __NuttX Emulator in the Web Browser__! 🎉 (Pic below)
 
 - [Watch the __Demo on YouTube__](https://youtu.be/DJMDYq52Iv8)
 
@@ -597,7 +597,7 @@ Yep! A NuttX App compiled in the Web Browser... Now runs OK with NuttX Emulator 
 
 ![NuttX App compiled in a Web Browser... Runs inside the Web Browser!](https://lupyuen.github.io/images/tcc-emu2.png)
 
-[_NuttX App compiled in a Web Browser... Runs inside the Web Browser!_](https://lupyuen.github.io/nuttx-tinyemu/timer)
+[_NuttX App compiled in a Web Browser... Runs inside the Web Browser!_](https://lupyuen.github.io/nuttx-tinyemu/tcc)
 
 # What's Next
 
