@@ -166,7 +166,7 @@ zig cc \
 
 [(About the __Zig Compiler Options__)](TODO)
 
-We link the TCC WebAssembly with our [__Zig Wrapper__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig) that exports the TCC Compiler to JavaScript...
+We link the TCC WebAssembly with our [__Zig Wrapper__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig) (that exports the TCC Compiler to JavaScript)...
 
 ```bash
 ## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
@@ -241,17 +241,17 @@ Plus a couple of Magical Bits that we'll cover in the next section.
 
 [(How JavaScript calls our __Zig Wrapper__)](TODO)
 
-_Zig Compiler compiles TCC without any Code Changes?_
+_Zig Compiler compiles TCC without any code changes?_
 
 Inside TCC, we stubbed out the [__setjmp / longjmp__](https://github.com/lupyuen/tcc-riscv32-wasm/commit/e30454a0eb9916f820d58a7c3e104eeda67988d8) to make it compile with Zig Compiler.
 
-(Everything else compiles OK!)
+Everything else compiles OK!
 
-_Is that really OK?_
+_Is it really OK to stub them out?_
 
 Well [__setjmp / longjmp__](https://en.wikipedia.org/wiki/Setjmp.h) are called to __Handle Errors__ during TCC Compilation.
 
-We'll find a better way to express our outrage. Instead of jumping around!
+We'll find a better way to express our outrage. (Instead of jumping around)
 
 Let's study the Magical Bits inside our Zig Wrapper...
 
@@ -259,17 +259,17 @@ Let's study the Magical Bits inside our Zig Wrapper...
 
 _What's this POSIX?_
 
-TCC Compiler was created as a __Command-Line App__. So it calls the typical [__POSIX Functions__](https://en.wikipedia.org/wiki/POSIX) like __fopen, fprintf, strncpy, malloc,__ ...
+TCC Compiler was created as a __Command Line App__. So it calls the typical [__POSIX Functions__](https://en.wikipedia.org/wiki/POSIX) like __fopen, fprintf, strncpy, malloc,__ ...
 
 [(Similar to the __C Standard Library libc__)](https://en.wikipedia.org/wiki/C_standard_library)
 
 _Is POSIX a problem for WebAssembly?_
 
-WebAssembly running in a Web Browser ain't __No Command-Line__!
+WebAssembly running in a Web Browser ain't __No Command Line__!
 
 We counted [__72 POSIX Functions__](TODO) needed by TCC Compiler, but missing from WebAssembly.
 
-Thus we'll fill in the [__Missing Functions__](TODO) ourselves.
+Thus we fill in the [__Missing Functions__](TODO) ourselves.
 
 _Surely other Zig Devs will have the same problem?_
 
@@ -285,7 +285,7 @@ Thankfully we can borrow the POSIX Code from other __Zig Libraries__...
 
 _72 POSIX Functions? Sounds like a lot of work..._
 
-Actually we haven't implemented all 72 POSIX Functions. We __stubbed out most of the functions__ to identify the ones that are called: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
+Actually we might not need all 72 POSIX Functions. We stubbed out __most of the functions__ to identify the ones that are called: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
 
 ```zig
 // Stub Out the Missing POSIX Functions.
@@ -306,7 +306,7 @@ pub export fn fopen(_: c_int) c_int {
 // And many more functions...
 ```
 
-Some of these functions are troubling for WebAssembly...
+Some of these functions are especially troubling for WebAssembly...
 
 # File Input and Output
 
@@ -514,9 +514,9 @@ One last chance to say hello to NuttX...
 
 _We're making a System Call (ECALL) to NuttX Kernel to print something..._
 
-_How will we write this in C?_
+_How will we code this in C?_
 
-We code the [__ECALL in RISC-V Assembly__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) like this: [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L52-L105)
+We execute the [__ECALL in RISC-V Assembly__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) like this: [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L52-L105)
 
 ```c
 int main(int argc, char *argv[]) {
@@ -990,7 +990,7 @@ asm volatile (
 
 Unfortunately TCC generates __incorrect RISC-V Machine Code__ that mashes up the RISC-V Registers...
 
-```text
+```yaml
 main():
 // Prepare the Stack
    0:  fc010113  add     sp,sp,-64
@@ -1174,7 +1174,7 @@ We may copy our __RISC-V ELF `a.out`__ to that folder.
 
 # Appendix: Missing Functions
 
-TODO: Earlier we saw
+TODO: Remember we said that POSIX Functions aren't supported in WebAssembly?
 
 TCC calls surprisingly few External Functions! We might get it running on WebAssembly. Here's our analysis of the Missing Functions: [zig/tcc-wasm.zig](zig/tcc-wasm.zig)
 
