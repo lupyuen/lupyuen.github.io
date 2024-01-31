@@ -225,7 +225,7 @@ zig cc \
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/tcc.c">(See the <strong>TCC Source Code</strong>)</a></p>
 <p><a href="TODO">(About the <strong>Zig Compiler Options</strong>)</a></p>
-<p>We link the TCC WebAssembly with our <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig"><strong>Zig Wrapper</strong></a> that exports the TCC Compiler to JavaScript…</p>
+<p>We link the TCC WebAssembly with our <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig"><strong>Zig Wrapper</strong></a> (that exports the TCC Compiler to JavaScript)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
 ## and link it with TCC compiled for WebAssembly `tcc.o`
 ## Generates `tcc-wasm.wasm`
@@ -294,21 +294,21 @@ pub export fn compile_program(
 </code></pre></div>
 <p>Plus a couple of Magical Bits that we’ll cover in the next section.</p>
 <p><a href="TODO">(How JavaScript calls our <strong>Zig Wrapper</strong>)</a></p>
-<p><em>Zig Compiler compiles TCC without any Code Changes?</em></p>
+<p><em>Zig Compiler compiles TCC without any code changes?</em></p>
 <p>Inside TCC, we stubbed out the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/commit/e30454a0eb9916f820d58a7c3e104eeda67988d8"><strong>setjmp / longjmp</strong></a> to make it compile with Zig Compiler.</p>
-<p>(Everything else compiles OK!)</p>
-<p><em>Is that really OK?</em></p>
+<p>Everything else compiles OK!</p>
+<p><em>Is it really OK to stub them out?</em></p>
 <p>Well <a href="https://en.wikipedia.org/wiki/Setjmp.h"><strong>setjmp / longjmp</strong></a> are called to <strong>Handle Errors</strong> during TCC Compilation.</p>
-<p>We’ll find a better way to express our outrage. Instead of jumping around!</p>
+<p>We’ll find a better way to express our outrage. (Instead of jumping around)</p>
 <p>Let’s study the Magical Bits inside our Zig Wrapper…</p>
 <h1 id="posix-for-webassembly"><a href="#posix-for-webassembly">3 POSIX for WebAssembly</a></h1>
 <p><em>What’s this POSIX?</em></p>
-<p>TCC Compiler was created as a <strong>Command-Line App</strong>. So it calls the typical <a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX Functions</strong></a> like <strong>fopen, fprintf, strncpy, malloc,</strong> …</p>
+<p>TCC Compiler was created as a <strong>Command Line App</strong>. So it calls the typical <a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX Functions</strong></a> like <strong>fopen, fprintf, strncpy, malloc,</strong> …</p>
 <p><a href="https://en.wikipedia.org/wiki/C_standard_library">(Similar to the <strong>C Standard Library libc</strong>)</a></p>
 <p><em>Is POSIX a problem for WebAssembly?</em></p>
-<p>WebAssembly running in a Web Browser ain’t <strong>No Command-Line</strong>!</p>
+<p>WebAssembly running in a Web Browser ain’t <strong>No Command Line</strong>!</p>
 <p>We counted <a href="TODO"><strong>72 POSIX Functions</strong></a> needed by TCC Compiler, but missing from WebAssembly.</p>
-<p>Thus we’ll fill in the <a href="TODO"><strong>Missing Functions</strong></a> ourselves.</p>
+<p>Thus we fill in the <a href="TODO"><strong>Missing Functions</strong></a> ourselves.</p>
 <p><em>Surely other Zig Devs will have the same problem?</em></p>
 <p>Thankfully we can borrow the POSIX Code from other <strong>Zig Libraries</strong>…</p>
 <ul>
@@ -324,7 +324,7 @@ pub export fn compile_program(
 </li>
 </ul>
 <p><em>72 POSIX Functions? Sounds like a lot of work…</em></p>
-<p>Actually we haven’t implemented all 72 POSIX Functions. We <strong>stubbed out most of the functions</strong> to identify the ones that are called: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853">tcc-wasm.zig</a></p>
+<p>Actually we might not need all 72 POSIX Functions. We stubbed out <strong>most of the functions</strong> to identify the ones that are called: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Stub Out the Missing POSIX Functions.
 // If TCC calls them, we&#39;ll see a Zig Panic.
 // Then we implement them.
@@ -342,7 +342,7 @@ pub export fn fopen(_: c_int) c_int {
 
 // And many more functions...
 </code></pre></div>
-<p>Some of these functions are troubling for WebAssembly…</p>
+<p>Some of these functions are especially troubling for WebAssembly…</p>
 <h1 id="file-input-and-output"><a href="#file-input-and-output">4 File Input and Output</a></h1>
 <p><em>Why no #include in TCC for WebAssembly? And no C Libraries?</em></p>
 <p>WebAssembly runs in a <strong>Secure Sandbox</strong>. No File Access allowed! (Like for C Header and Library Files)</p>
@@ -501,8 +501,8 @@ ssize_t write(
 <p><img src="https://lupyuen.github.io/images/tcc-ecall.png" alt="TODO" /></p>
 <h1 id="hello-nuttx"><a href="#hello-nuttx">7 Hello NuttX!</a></h1>
 <p><em>We’re making a System Call (ECALL) to NuttX Kernel to print something…</em></p>
-<p><em>How will we write this in C?</em></p>
-<p>We code the <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>ECALL in RISC-V Assembly</strong></a> like this: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L52-L105">test-nuttx.js</a></p>
+<p><em>How will we code this in C?</em></p>
+<p>We execute the <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>ECALL in RISC-V Assembly</strong></a> like this: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L52-L105">test-nuttx.js</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int main(int argc, char *argv[]) {
 
   // Make NuttX System Call to write(fd, buf, buflen)
@@ -913,7 +913,7 @@ asm volatile (
 );
 </code></pre></div>
 <p>Unfortunately TCC generates <strong>incorrect RISC-V Machine Code</strong> that mashes up the RISC-V Registers…</p>
-<div class="example-wrap"><pre class="language-text"><code>main():
+<div class="example-wrap"><pre class="language-yaml"><code>main():
 // Prepare the Stack
    0:  fc010113  add     sp,sp,-64
    4:  02113c23  sd      ra,56(sp)
@@ -1072,7 +1072,7 @@ qemu-system-riscv64 \
 <p>NuttX Apps are located in <strong><code>apps/bin</code></strong>.</p>
 <p>We may copy our <strong>RISC-V ELF <code>a.out</code></strong> to that folder.</p>
 <h1 id="appendix-missing-functions"><a href="#appendix-missing-functions">14 Appendix: Missing Functions</a></h1>
-<p>TODO: Earlier we saw</p>
+<p>TODO: Remember we said that POSIX Functions aren’t supported in WebAssembly?</p>
 <p>TCC calls surprisingly few External Functions! We might get it running on WebAssembly. Here’s our analysis of the Missing Functions: <a href="zig/tcc-wasm.zig">zig/tcc-wasm.zig</a></p>
 <h2 id="semaphore-functions"><a href="#semaphore-functions">14.1 Semaphore Functions</a></h2>
 <p>TODO</p>
