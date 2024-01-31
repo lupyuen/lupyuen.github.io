@@ -120,15 +120,17 @@ main():
   3c: 00008067  ret
 ```
 
-[(About the __RISC-V Instructions__)](https://lupyuen.github.io/articles/app#inside-a-nuttx-app)
+[(See the __Entire Disassembly__)](https://gist.github.com/lupyuen/ab8febefa9c649ad7c242ee3f7aaf974)
 
-[(See the __Entire Dump__)](https://gist.github.com/lupyuen/ab8febefa9c649ad7c242ee3f7aaf974)
+[(About the __RISC-V Instructions__)](https://lupyuen.github.io/articles/app#inside-a-nuttx-app)
 
 Yep the __64-bit RISC-V Code__ looks legit! Very similar to our [__NuttX App__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app). (So it will probably run on NuttX)
 
+What's really happening? We go behind the scenes...
+
 # Zig compiles TCC to WebAssembly
 
-_Zig Compiler will happily compile TCC to WebAssembly?_
+_Will Zig Compiler happily compile TCC to WebAssembly?_
 
 Amazingly, yes!
 
@@ -160,11 +162,11 @@ zig cc \
   -I.
 ```
 
-[(See __tcc.c__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/tcc.c)
+[(See the __TCC Source Code__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/tcc.c)
 
-[(How we got the __Zig Compiler Options__)](TODO)
+[(About the __Zig Compiler Options__)](TODO)
 
-Then we link it with our __Zig Wrapper__ that exports the TCC Compiler to JavaScript...
+We link the TCC WebAssembly with our [__Zig Wrapper__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig) that exports the TCC Compiler to JavaScript...
 
 ```bash
 ## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
@@ -185,9 +187,9 @@ zig build-exe \
 node zig/test.js
 ```
 
-[(__tcc-wasm.zig__ is here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig)
+[(See the __Zig Wrapper tcc-wasm.zig__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig)
 
-[(__test.js__ is here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js)
+[(See the __Test JavaScript test.js__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js)
 
 _What's inside our Zig Wrapper?_
 
@@ -235,9 +237,9 @@ pub export fn compile_program(
 }
 ```
 
-Plus a couple of Magical Bits that we'll explain in the next section.
+Plus a couple of Magical Bits that we'll cover in the next section.
 
-[(How __JavaScript__ calls our Zig Wrapper)](TODO)
+[(How JavaScript calls our __Zig Wrapper__)](TODO)
 
 _Zig Compiler compiles TCC without any Code Changes?_
 
@@ -251,7 +253,7 @@ Well [__setjmp / longjmp__](https://en.wikipedia.org/wiki/Setjmp.h) are called t
 
 We'll find a better way to express our outrage. Instead of jumping around!
 
-Let's talk about Magical Bits inside our Zig Wrapper...
+Let's study the Magical Bits inside our Zig Wrapper...
 
 # POSIX for WebAssembly
 
@@ -271,7 +273,7 @@ Thus we'll fill in the [__Missing Functions__](TODO) ourselves.
 
 _Surely other Zig Devs will have the same problem?_
 
-Thankfully we can borrow the POSIX-like code from other __Zig Libraries__...
+Thankfully we can borrow the POSIX Code from other __Zig Libraries__...
 
 - [__ziglibc__](https://github.com/marler8997/ziglibc): Zig implementation of libc
 
@@ -283,7 +285,7 @@ Thankfully we can borrow the POSIX-like code from other __Zig Libraries__...
 
 _72 POSIX Functions? Sounds like a lot of work..._
 
-Actually we haven't implemented all 72 POSIX Functions. We __stubbed out most of the functions__ to figure out which ones are normally used: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
+Actually we haven't implemented all 72 POSIX Functions. We __stubbed out most of the functions__ to identify the ones that are called: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
 
 ```zig
 // Stub Out the Missing POSIX Functions.
@@ -304,19 +306,19 @@ pub export fn fopen(_: c_int) c_int {
 // And many more functions...
 ```
 
-Some of these functions are problematic in WebAssembly...
+Some of these functions are troubling for WebAssembly...
 
 # File Input and Output
 
 _Why no #include in TCC for WebAssembly? And no C Libraries?_
 
-WebAssembly runs in a __Secure Sandbox__. No File Access allowed! (Like C Header and Library Files)
+WebAssembly runs in a __Secure Sandbox__. No File Access allowed! (Like for C Header and Library Files)
 
 That's why our Zig Wrapper only __Emulates File Access__ for the bare minimum 2 files...
 
-- Read the C Program: __`hello.c`__
+- Read the __C Program `hello.c`__
 
-- Write the RISC-V ELF: __`a.out`__
+- Write the __RISC-V ELF `a.out`__
 
 __Reading a Source File `hello.c`__ is extremely simplistic: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L107-L119)
 
@@ -368,9 +370,9 @@ _Why is fprintf particularly problematic?_
 
 Here's the fearsome thing about __fprintf__ and friends: __sprintf, snprintf, vsnprintf__...
 
-- __C Format Strings__: Difficult to parse
+- __C Format Strings__ are difficult to parse
 
-- __Variable Number of Untyped Arguments__: Might create Bad Pointers
+- __Variable Number of Untyped Arguments__ might create Bad Pointers
 
 Hence we hacked up an implementation of __String Formatting__ that's safer, simpler and so-barebones-you-can-make-_soup-tulang_.
 
@@ -506,8 +508,6 @@ That's the same NuttX System Call that __printf__ executes internally.
 
 One last chance to say hello to NuttX...
 
-[(__Warning:__ SYS_write 61 may change!)](https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call)
-
 ![TODO](https://lupyuen.github.io/images/tcc-ecall.png)
 
 # Hello NuttX!
@@ -572,6 +572,8 @@ int main(int argc, char *argv[]) {
 We copy this into [__TCC WebAssembly__](https://lupyuen.github.io/tcc-riscv32-wasm/) and compile it.
 
 [(Why so complicated? __Explained here__)](TODO)
+
+[(Warning: __SYS_write 61__ may change!)](https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call)
 
 _Does it work?_
 
