@@ -4,7 +4,9 @@
 
 ![TODO](https://lupyuen.github.io/images/tcc-title.png)
 
-[_(Try the __Online Demo__)_](https://lupyuen.github.io/tcc-riscv32-wasm/)
+[(Try the __Online Demo__)](https://lupyuen.github.io/tcc-riscv32-wasm/)
+
+[(Watch the __Demo on YouTube__)](https://youtu.be/DJMDYq52Iv8)
 
 _TCC is a Tiny C Compiler for 64-bit RISC-V (and other platforms)..._
 
@@ -585,7 +587,15 @@ NuttX Kernel prints __"Hello World"__ yay!
 
 Indeed we've created a C Compiler in a Web Browser, that __produces proper NuttX Apps__!
 
-![NuttX App compiled in a Web Browser... Runs inside the Web Browser!](https://lupyuen.github.io/images/tcc-emu.png)
+_OK so we can compile NuttX Apps in a Web Browser... But can we run them in a Web Browser?_
+
+Yep! A NuttX App compiled in the Web Browser... Now runs OK with NuttX Emulator in Web Browser! 🎉
+
+- [Watch the __Demo on YouTube__](https://youtu.be/DJMDYq52Iv8)
+
+- [Find out __How It Works__](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser)
+
+![NuttX App compiled in a Web Browser... Runs inside the Web Browser!](https://lupyuen.github.io/images/tcc-emu2.png)
 
 [_NuttX App compiled in a Web Browser... Runs inside the Web Browser!_](https://lupyuen.github.io/nuttx-tinyemu/timer)
 
