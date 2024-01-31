@@ -1174,78 +1174,38 @@ We may copy our __RISC-V ELF `a.out`__ to that folder.
 
 # Appendix: Missing Functions
 
-TODO: Remember we said that POSIX Functions aren't supported in WebAssembly?
+Remember we said that POSIX Functions aren't supported in WebAssembly?
 
-TCC calls surprisingly few External Functions! We might get it running on WebAssembly. Here's our analysis of the Missing Functions: [zig/tcc-wasm.zig](zig/tcc-wasm.zig)
+- TODO
 
-## Semaphore Functions
+We dump the __Compiled WebAssembly__ of TCC Compiler, and we discover that it calls __72 POSIX Functions__...
 
-TODO
+```bash
+## Dump the Compiled WebAssembly
+## for TCC Compiler
+$ sudo apt install wabt
+$ wasm-objdump -x tcc.o
 
-Not sure why TCC uses Semaphores? Maybe we'll understand when we support `#include` files.
+Import:
+ - func[0] sig=1 <env.strcmp>  <- env.strcmp
+ - func[1] sig=12 <env.memset> <- env.memset
+ - func[2] sig=1 <env.getcwd>  <- env.getcwd
+ ...
+ - func[69] sig=2 <env.localtime> <- env.localtime
+ - func[70] sig=13 <env.qsort>    <- env.qsort
+ - func[71] sig=19 <env.strtoll>  <- env.strtoll
+```
 
-TODO: Borrow Semaphore Functions from where?
+[(See the __Complete List__)](https://github.com/lupyuen/tcc-riscv32-wasm#missing-functions-in-tcc-webassembly)
 
-- sem_init, sem_post, sem_wait
+Do we really need all 72 POSIX Functions? We run through the list...
 
-## Standard Library
+__Filesystem Functions:__
 
-TODO
-
-qsort isn't used right now. Maybe for the Linker later?
-
-TODO: Borrow qsort from where?
-
-- exit, qsort
-
-## Time Functions
-
-TODO
-
-Not used right now.
-
-TODO: Borrow Time Functions from where?
-
-- time, gettimeofday, localtime
-
-## Math Functions
-
-TODO
-
-Also not used right now.
-
-TODO: Borrow Math Functions from where?
-
-- ldexp
-
-## Varargs Functions
-
-TODO
-
-Varargs will be tricky to implement in Zig. Probably we should implement in C. Maybe MUSL?
-
-Right now we're doing simple Pattern Matching. But it won't work for Real Programs.
-
-- printf, snprintf, sprintf, vsnprintf
-- sscanf
-
-## Filesystem Functions
-
-TODO
-
-Will mock up these functions for WebAssembly. Maybe an Emulated Filesystem, similar to [Emscripten Filesystem](https://emscripten.org/docs/porting/files/file_systems_overview.html)?
+We'll simulate these functions for WebAssembly. Maybe with an Emulated Filesystem, similar to [__Emscripten Filesystem__](https://emscripten.org/docs/porting/files/file_systems_overview.html). Or we embed [__ROM FS Filesystem__](https://docs.kernel.org/filesystems/romfs.html) into our Zig Wrapper.
 
 - getcwd
 - remove, unlink
-
-## File I/O Functions
-
-TODO
-
-Will mock up these functions for WebAssembly. Right now we read only 1 simple C Source File, and produce only 1 Object File. No header files, no libraries. And it works!
-
-But later we might need an Emulated Filesystem, similar to [Emscripten Filesystem](https://emscripten.org/docs/porting/files/file_systems_overview.html). And our File I/O code will support Multiple Files with proper Buffer Overflow Checks.
-
 - open, fopen, fdopen, 
 - close, fclose
 - fprintf, fputc, fputs
@@ -1255,11 +1215,18 @@ But later we might need an Emulated Filesystem, similar to [Emscripten Filesyste
 - fseek, ftell, lseek
 - puts
 
-## String Functions
+__Varargs Functions:__
 
-TODO
+As discussed earlier, Varargs will be tricky to implement in Zig. Probably we should do it in C. [(Like __ziglibc__)](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191)
 
-Borrow from [foundation-libc](https://github.com/ZigEmbeddedGroup/foundation-libc) and [ziglibc](https://github.com/marler8997/ziglibc)
+Right now we're doing simple Pattern Matching. But it might not be sufficient when TCC compiles Real Programs.
+
+- printf, snprintf, sprintf, vsnprintf
+- sscanf
+
+__String Functions:__
+
+We'll borrow from [__ziglibc__](https://github.com/marler8997/ziglibc) and [__foundation-libc__](https://github.com/ZigEmbeddedGroup/foundation-libc).
 
 - atoi
 - strcat, strchr, strcmp
@@ -1268,3 +1235,41 @@ Borrow from [foundation-libc](https://github.com/ZigEmbeddedGroup/foundation-lib
 - strtol, strtold, strtoll
 - strtoul, strtoull
 - strerror
+
+__Semaphore Functions:__
+
+Not sure why TCC uses Semaphores? Maybe we'll understand when we support __`#include`__ files.
+
+(Where can we borrow the Semaphore Functions?)
+
+- sem_init, sem_post, sem_wait
+
+__Standard Library:__
+
+__qsort__ isn't used right now. Maybe for the Linker later?
+
+(Borrow __qsort__ from where? We can probably implement __exit__)
+
+- exit, qsort
+
+__Time Functions:__
+
+Not used right now, maybe later.
+
+(How will we get the Time Functions? Call out to JavaScript to fetch the actual time?)
+
+- time, gettimeofday, localtime
+
+__Math Functions:__
+
+Also not used right now.
+
+(Anyone can lend us __ldexp__?)
+
+- ldexp
+
+__Outstanding Functions:__
+
+We have implemented (fully or partially) many of the POSIX Functions above. The functions we haven't implemented are...
+
+TODO
