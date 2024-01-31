@@ -30,13 +30,13 @@ In this article, we talk about the tricky bits of the TCC Port from __C to WebAs
 
 _Why are we doing this?_
 
-Today we can run [__Apache NuttX RTOS in a Web Browser__](https://lupyuen.github.io/articles/tinyemu2), with WebAssembly + Emscripten + 64-bit RISC-V.
+Today we can run [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/tinyemu2) in a Web Browser, with WebAssembly + Emscripten + 64-bit RISC-V.
 
 (__Real-Time Operating System__ in Web Browser on General-Purpose Operating System!)
 
 What if we could __compile and test NuttX Apps__ in the Web Browser...
 
-1.  We type a __C Program__ into a HTML Textbox...
+1.  We type a __C Program__ into our Web Browser (pic below)...
 
     ```c
     int main(int argc, char *argv[]) {
@@ -45,19 +45,19 @@ What if we could __compile and test NuttX Apps__ in the Web Browser...
     }
     ```
 
-1.  Run TCC in the Web Browser to compile it into an __ELF Executable__ (64-bit RISC-V)
+1.  Compile it into an __ELF Executable__ (64-bit RISC-V) with TCC in the Web Browser
 
 1.  Copy the ELF Executable to the __NuttX Filesystem__ (via WebAssembly)
 
-1.  And NuttX __runs our ELF Executable__ inside the Web Browser
+1.  And __NuttX Emulator__ runs our ELF Executable inside the Web Browser
 
     [(Watch the __Demo on YouTube__)](https://youtu.be/DJMDYq52Iv8)
 
-We do this step by step...
+This is how we made it happen...
 
-![TCC RISC-V Compiler: Compiled to WebAssembly with Zig Compiler](https://lupyuen.github.io/images/tcc-web.png)
+![Online Demo of TCC Compiler in WebAssembly](https://lupyuen.github.io/images/tcc-web.png)
 
-[_(Try the __Online Demo__)_](https://lupyuen.github.io/tcc-riscv32-wasm/)
+[_Online Demo of TCC Compiler in WebAssembly_](https://lupyuen.github.io/tcc-riscv32-wasm/)
 
 # TCC in the Web Browser
 
