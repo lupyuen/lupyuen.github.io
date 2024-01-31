@@ -639,6 +639,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/tcc.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tcc.md)
 
+TODO: Pic of Zig Compiler
+
 # Appendix: Compile TCC with Zig
 
 This is how we run __Zig Compiler to compile TCC Compiler__ from C to WebAssembly...
@@ -710,6 +712,8 @@ gcc \
 ```
 
 And we copied above GCC Options to become the [__Zig Compiler Options__](TODO).
+
+TODO: Pic of JavaScript
 
 # Appendix: JavaScript calls TCC
 
@@ -841,6 +845,8 @@ const ptr = wasm.instance.exports
   .compile_program(options_ptr, code_ptr);
 ```
 
+TODO: Pic of Pattern Matching
+
 # Appendix: Pattern Matching
 
 A while back we saw our Zig Wrapper doing __Pattern Matching for Formatting C Strings__...
@@ -961,6 +967,8 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
 ```
 
 [(See the __Formatting Log__)](https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36)
+
+![TODO](https://lupyuen.github.io/images/app-syscall.jpg)
 
 # Appendix: NuttX System Call
 
@@ -1105,6 +1113,8 @@ That's because NuttX Apps are not supposed to Return to NuttX Kernel.
 
 We should call the NuttX System Call __`__exit`__ to terminate peacefully.
 
+TODO: Pic of QEMU
+
 # Appendix: Build NuttX for QEMU
 
 Here are the steps to build and run __NuttX for QEMU 64-bit RISC-V__ (Kernel Mode)...
@@ -1177,6 +1187,8 @@ qemu-system-riscv64 \
 NuttX Apps are located in __`apps/bin`__.
 
 We may copy our __RISC-V ELF `a.out`__ to that folder.
+
+TODO: Pic of POSIX Functions
 
 # Appendix: Missing Functions
 
