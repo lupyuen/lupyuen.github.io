@@ -88,38 +88,55 @@
 <li><a href="#filesystem-functions">14.6 Filesystem Functions</a><ul></ul></li>
 <li><a href="#file-io-functions">14.7 File I/O Functions</a><ul></ul></li>
 <li><a href="#string-functions">14.8 String Functions</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Feb 2024</em></p>
-<p><img src="https://lupyuen.github.io/images/tcc-title.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/tcc-title.png" alt="TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/DJMDYq52Iv8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><em>TCC is a Tiny C Compiler for 64-bit RISC-V (and other platforms)…</em></p>
 <p><em>Can we run TCC Compiler in a Web Browser?</em></p>
 <p>Let’s do it! We’ll compile <a href="https://github.com/sellicott/tcc-riscv32"><strong>TCC (Tiny C Compiler)</strong></a> from C to WebAssembly with <a href="https://ziglang.org/"><strong>Zig Compiler</strong></a>.</p>
 <p>In this article, we talk about the tricky bits of the TCC Port from <strong>C to WebAssembly</strong>…</p>
-<p>TODO</p>
+<ul>
+<li>
+<p>We compiled <strong>TCC to WebAssembly</strong> with one tiny fix</p>
+</li>
+<li>
+<p>But we hit some <strong>Missing POSIX Functions</strong></p>
+</li>
+<li>
+<p>So we cut down on <strong>File Input and Output</strong> </p>
+</li>
+<li>
+<p>We hacked a simple workaround for <strong>fprintf and friends</strong></p>
+</li>
+<li>
+<p>And TCC produces a <strong>RISC-V Binary</strong> that runs OK! (Somewhat)</p>
 <p><a href="https://research.cs.queensu.ca/home/cordy/pub/downloads/tplus/Turing_Plus_Report.pdf">(Not to be confused with <strong>TTC Compiler</strong>)</a></p>
+</li>
+</ul>
 <p><em>Why are we doing this?</em></p>
-<p>TODO: Somewhat working</p>
-<p>Today we can run <a href="https://lupyuen.github.io/articles/tinyemu2"><strong>Apache NuttX RTOS in a Web Browser</strong></a>. (With WebAssembly + Emscripten + 64-bit RISC-V)</p>
+<p>Today we can run <a href="https://lupyuen.github.io/articles/tinyemu2"><strong>Apache NuttX RTOS in a Web Browser</strong></a>, with WebAssembly + Emscripten + 64-bit RISC-V.</p>
 <p>(<strong>Real-Time Operating System</strong> in Web Browser on General-Purpose Operating System!)</p>
-<p>What if we could allow NuttX Apps to be compiled and tested in the Web Browser?</p>
+<p>What if we could <strong>compile and test NuttX Apps</strong> in the Web Browser…</p>
 <ol>
 <li>
-<p>We type a C Program into a HTML Textbox…</p>
+<p>We type a <strong>C Program</strong> into a HTML Textbox…</p>
 <div class="example-wrap"><pre class="language-c"><code>int main(int argc, char *argv[]) {
   printf(&quot;Hello, World!!\n&quot;);
   return 0;
 }
 </code></pre></div></li>
 <li>
-<p>Run TCC in the Web Browser to compile the C Program into an ELF Executable (64-bit RISC-V)</p>
+<p>Run TCC in the Web Browser to compile it into an <strong>ELF Executable</strong> (64-bit RISC-V)</p>
 </li>
 <li>
-<p>Copy the ELF Executable to the NuttX Filesystem (via WebAssembly)</p>
+<p>Copy the ELF Executable to the <strong>NuttX Filesystem</strong> (via WebAssembly)</p>
 </li>
 <li>
-<p>NuttX runs our ELF Executable inside the Web Browser</p>
+<p>And NuttX <strong>runs our ELF Executable</strong> inside the Web Browser</p>
+<p><a href="https://youtu.be/DJMDYq52Iv8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
 </ol>
+<p>We do this step by step…</p>
 <p><img src="https://lupyuen.github.io/images/tcc-web.png" alt="TCC RISC-V Compiler: Compiled to WebAssembly with Zig Compiler" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><em>(Try the <strong>Online Demo</strong>)</em></a></p>
 <h1 id="tcc-in-the-web-browser"><a href="#tcc-in-the-web-browser">1 TCC in the Web Browser</a></h1>
