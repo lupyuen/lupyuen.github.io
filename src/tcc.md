@@ -2,7 +2,7 @@
 
 📝 _7 Feb 2024_
 
-![TODO](https://lupyuen.github.io/images/tcc-title.png)
+![TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)](https://lupyuen.github.io/images/tcc-title.png)
 
 [(Try the __Online Demo__)](https://lupyuen.github.io/tcc-riscv32-wasm/)
 
@@ -16,21 +16,27 @@ Let's do it! We'll compile [__TCC (Tiny C Compiler)__](https://github.com/sellic
 
 In this article, we talk about the tricky bits of the TCC Port from __C to WebAssembly__...
 
-TODO
+- We compiled __TCC to WebAssembly__ with one tiny fix
 
-[(Not to be confused with __TTC Compiler__)](https://research.cs.queensu.ca/home/cordy/pub/downloads/tplus/Turing_Plus_Report.pdf)
+- But we hit some __Missing POSIX Functions__
+
+- So we cut down on __File Input and Output__ 
+
+- We hacked a simple workaround for __fprintf and friends__
+
+- And TCC produces a __RISC-V Binary__ that runs OK! (Somewhat)
+
+  [(Not to be confused with __TTC Compiler__)](https://research.cs.queensu.ca/home/cordy/pub/downloads/tplus/Turing_Plus_Report.pdf)
 
 _Why are we doing this?_
 
-TODO: Somewhat working
-
-Today we can run [__Apache NuttX RTOS in a Web Browser__](https://lupyuen.github.io/articles/tinyemu2). (With WebAssembly + Emscripten + 64-bit RISC-V)
+Today we can run [__Apache NuttX RTOS in a Web Browser__](https://lupyuen.github.io/articles/tinyemu2), with WebAssembly + Emscripten + 64-bit RISC-V.
 
 (__Real-Time Operating System__ in Web Browser on General-Purpose Operating System!)
 
-What if we could allow NuttX Apps to be compiled and tested in the Web Browser?
+What if we could __compile and test NuttX Apps__ in the Web Browser...
 
-1.  We type a C Program into a HTML Textbox...
+1.  We type a __C Program__ into a HTML Textbox...
 
     ```c
     int main(int argc, char *argv[]) {
@@ -39,11 +45,15 @@ What if we could allow NuttX Apps to be compiled and tested in the Web Browser?
     }
     ```
 
-1.  Run TCC in the Web Browser to compile the C Program into an ELF Executable (64-bit RISC-V)
+1.  Run TCC in the Web Browser to compile it into an __ELF Executable__ (64-bit RISC-V)
 
-1.  Copy the ELF Executable to the NuttX Filesystem (via WebAssembly)
+1.  Copy the ELF Executable to the __NuttX Filesystem__ (via WebAssembly)
 
-1.  NuttX runs our ELF Executable inside the Web Browser
+1.  And NuttX __runs our ELF Executable__ inside the Web Browser
+
+    [(Watch the __Demo on YouTube__)](https://youtu.be/DJMDYq52Iv8)
+
+We do this step by step...
 
 ![TCC RISC-V Compiler: Compiled to WebAssembly with Zig Compiler](https://lupyuen.github.io/images/tcc-web.png)
 
