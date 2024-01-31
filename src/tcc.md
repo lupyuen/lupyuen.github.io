@@ -45,7 +45,7 @@ What if we could __compile and test NuttX Apps__ in the Web Browser...
     }
     ```
 
-1.  Compile it into an __ELF Executable__ (64-bit RISC-V) with TCC in the Web Browser
+1.  Compile it into an __ELF Executable__ (64-bit RISC-V) with TCC
 
 1.  Copy the ELF Executable to the __NuttX Filesystem__ (via WebAssembly)
 
@@ -314,11 +314,11 @@ WebAssembly runs in a __Secure Sandbox__. No File Access allowed! (Like C Header
 
 That's why our Zig Wrapper only __Emulates File Access__ for the bare minimum 2 files...
 
-- Read the C Program: __hello.c__
+- Read the C Program: __`hello.c`__
 
-- Write the RISC-V ELF: __a.out__
+- Write the RISC-V ELF: __`a.out`__
 
-__Reading a Source File (hello.c)__ is extremely simplistic: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L107-L119)
+__Reading a Source File `hello.c`__ is extremely simplistic: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L107-L119)
 
 ```zig
 /// Emulate the POSIX Function `read()`
@@ -336,7 +336,7 @@ export fn read(fd0: c_int, buf: [*:0]u8, nbyte: size_t) isize {
 }
 ```
 
-__Writing the Compiled Output (a.out)__ is just as barebones: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L130-L142)
+__Writing the Compiled Output `a.out`__ is just as barebones: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L130-L142)
 
 ```zig
 /// Emulate the POSIX Function `write()`
@@ -354,11 +354,11 @@ export fn fwrite(ptr: [*:0]const u8, size: usize, nmemb: usize, stream: *FILE) u
 
 _Can we handle Multiple Files?_
 
-We'll have to embed an __Emulated File System__ inside our Zig Wrapper. The File System will contain the C Header and Library Files needed by TCC.
+We'll have to embed an __Emulated Filesystem__ inside our Zig Wrapper. The Filesystem will contain the C Header and Library Files needed by TCC.
 
-[(Similar to the __Emscripten File System__)](https://emscripten.org/docs/porting/files/file_systems_overview.html)
+[(Similar to the __Emscripten Filesystem__)](https://emscripten.org/docs/porting/files/file_systems_overview.html)
 
-[(Maybe we embed the simple __ROM FS File System__)](https://docs.kernel.org/filesystems/romfs.html)
+[(Maybe we embed the simple __ROM FS Filesystem__)](https://docs.kernel.org/filesystems/romfs.html)
 
 TODO: Pic of Format Patterns
 
@@ -456,16 +456,16 @@ _TCC in WebAssembly has compiled our C Program to RISC-V ELF..._
 
 _Will the RISC-V ELF run on Apache NuttX RTOS?_
 
-We copy the __RISC-V ELF (a.out)__ to the __NuttX Apps__ File System...
+We copy the __RISC-V ELF `a.out`__ to the __NuttX Apps Filesystem__...
 
 ```bash
 ## Copy RISC-V ELF `a.out`
-## to NuttX Apps File System
+## to NuttX Apps Filesystem
 cp a.out apps/bin/
 chmod +x apps/bin/a.out
 ```
 
-Then we boot __NuttX on QEMU__ (64-bit RISC-V) and run __a.out__ on NuttX...
+Then we boot __NuttX on QEMU__ (64-bit RISC-V) and run __`a.out`__ on NuttX...
 
 ```bash
 NuttShell (NSH) NuttX-12.4.0
@@ -575,7 +575,7 @@ We copy this into [__TCC WebAssembly__](https://lupyuen.github.io/tcc-riscv32-wa
 
 _Does it work?_
 
-TCC in WebAssembly compiles the code above to __RISC-V ELF (a.out)__. When we run it on NuttX...
+TCC in WebAssembly compiles the code above to __RISC-V ELF `a.out`__. When we run it on NuttX...
 
 ```bash
 NuttShell (NSH) NuttX-12.4.0-RC0
@@ -800,7 +800,7 @@ function main() {
 };
 ```
 
-Our Main Function then downloads the __a.out__ file returned by our Zig Function.
+Our Main Function then downloads the __`a.out`__ file returned by our Zig Function.
 
 [(__allocateString__ allocates a String from Zig Memory)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L86-L108)
 
@@ -1231,7 +1231,7 @@ Right now we're doing simple Pattern Matching. But it won't work for Real Progra
 
 TODO
 
-Will mock up these functions for WebAssembly. Maybe an Emulated Filesystem, similar to [Emscripten File System](https://emscripten.org/docs/porting/files/file_systems_overview.html)?
+Will mock up these functions for WebAssembly. Maybe an Emulated Filesystem, similar to [Emscripten Filesystem](https://emscripten.org/docs/porting/files/file_systems_overview.html)?
 
 - getcwd
 - remove, unlink
@@ -1242,7 +1242,7 @@ TODO
 
 Will mock up these functions for WebAssembly. Right now we read only 1 simple C Source File, and produce only 1 Object File. No header files, no libraries. And it works!
 
-But later we might need an Emulated Filesystem, similar to [Emscripten File System](https://emscripten.org/docs/porting/files/file_systems_overview.html). And our File I/O code will support Multiple Files with proper Buffer Overflow Checks.
+But later we might need an Emulated Filesystem, similar to [Emscripten Filesystem](https://emscripten.org/docs/porting/files/file_systems_overview.html). And our File I/O code will support Multiple Files with proper Buffer Overflow Checks.
 
 - open, fopen, fdopen, 
 - close, fclose
