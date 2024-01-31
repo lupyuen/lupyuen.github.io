@@ -126,7 +126,7 @@
 }
 </code></pre></div></li>
 <li>
-<p>Compile it into an <strong>ELF Executable</strong> (64-bit RISC-V) with TCC in the Web Browser</p>
+<p>Compile it into an <strong>ELF Executable</strong> (64-bit RISC-V) with TCC</p>
 </li>
 <li>
 <p>Copy the ELF Executable to the <strong>NuttX Filesystem</strong> (via WebAssembly)</p>
@@ -348,13 +348,13 @@ pub export fn fopen(_: c_int) c_int {
 <p>That’s why our Zig Wrapper only <strong>Emulates File Access</strong> for the bare minimum 2 files…</p>
 <ul>
 <li>
-<p>Read the C Program: <strong>hello.c</strong></p>
+<p>Read the C Program: <strong><code>hello.c</code></strong></p>
 </li>
 <li>
-<p>Write the RISC-V ELF: <strong>a.out</strong></p>
+<p>Write the RISC-V ELF: <strong><code>a.out</code></strong></p>
 </li>
 </ul>
-<p><strong>Reading a Source File (hello.c)</strong> is extremely simplistic: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L107-L119">tcc-wasm.zig</a></p>
+<p><strong>Reading a Source File <code>hello.c</code></strong> is extremely simplistic: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L107-L119">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Emulate the POSIX Function `read()`
 /// We copy from One Single Read Buffer
 /// that contains our C Program
@@ -369,7 +369,7 @@ export fn read(fd0: c_int, buf: [*:0]u8, nbyte: size_t) isize {
   return @intCast(len);
 }
 </code></pre></div>
-<p><strong>Writing the Compiled Output (a.out)</strong> is just as barebones: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L130-L142">tcc-wasm.zig</a></p>
+<p><strong>Writing the Compiled Output <code>a.out</code></strong> is just as barebones: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L130-L142">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Emulate the POSIX Function `write()`
 /// We write to One Single Memory Buffer
 /// that will be returned to JavaScript as `a.out`
@@ -383,9 +383,9 @@ export fn fwrite(ptr: [*:0]const u8, size: usize, nmemb: usize, stream: *FILE) u
 }
 </code></pre></div>
 <p><em>Can we handle Multiple Files?</em></p>
-<p>We’ll have to embed an <strong>Emulated File System</strong> inside our Zig Wrapper. The File System will contain the C Header and Library Files needed by TCC.</p>
-<p><a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">(Similar to the <strong>Emscripten File System</strong>)</a></p>
-<p><a href="https://docs.kernel.org/filesystems/romfs.html">(Maybe we embed the simple <strong>ROM FS File System</strong>)</a></p>
+<p>We’ll have to embed an <strong>Emulated Filesystem</strong> inside our Zig Wrapper. The Filesystem will contain the C Header and Library Files needed by TCC.</p>
+<p><a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">(Similar to the <strong>Emscripten Filesystem</strong>)</a></p>
+<p><a href="https://docs.kernel.org/filesystems/romfs.html">(Maybe we embed the simple <strong>ROM FS Filesystem</strong>)</a></p>
 <p>TODO: Pic of Format Patterns</p>
 <h1 id="fearsome-fprintf-and-friends"><a href="#fearsome-fprintf-and-friends">5 Fearsome fprintf and Friends</a></h1>
 <p><em>Why is fprintf particularly problematic?</em></p>
@@ -464,13 +464,13 @@ const format_patterns = [_]FormatPattern{
 <h1 id="test-with-apache-nuttx-rtos"><a href="#test-with-apache-nuttx-rtos">6 Test with Apache NuttX RTOS</a></h1>
 <p><em>TCC in WebAssembly has compiled our C Program to RISC-V ELF…</em></p>
 <p><em>Will the RISC-V ELF run on Apache NuttX RTOS?</em></p>
-<p>We copy the <strong>RISC-V ELF (a.out)</strong> to the <strong>NuttX Apps</strong> File System…</p>
+<p>We copy the <strong>RISC-V ELF <code>a.out</code></strong> to the <strong>NuttX Apps Filesystem</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy RISC-V ELF `a.out`
-## to NuttX Apps File System
+## to NuttX Apps Filesystem
 cp a.out apps/bin/
 chmod +x apps/bin/a.out
 </code></pre></div>
-<p>Then we boot <strong>NuttX on QEMU</strong> (64-bit RISC-V) and run <strong>a.out</strong> on NuttX…</p>
+<p>Then we boot <strong>NuttX on QEMU</strong> (64-bit RISC-V) and run <strong><code>a.out</code></strong> on NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0
 nsh&gt; a.out
 load_absmodule: Loading /system/bin/a.out
@@ -555,7 +555,7 @@ ssize_t write(
 <p>We copy this into <a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><strong>TCC WebAssembly</strong></a> and compile it.</p>
 <p><a href="TODO">(Why so complicated? <strong>Explained here</strong>)</a></p>
 <p><em>Does it work?</em></p>
-<p>TCC in WebAssembly compiles the code above to <strong>RISC-V ELF (a.out)</strong>. When we run it on NuttX…</p>
+<p>TCC in WebAssembly compiles the code above to <strong>RISC-V ELF <code>a.out</code></strong>. When we run it on NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; a.out
 ...
@@ -752,7 +752,7 @@ function main() {
   download(&quot;a.out&quot;, encoded_data);
 };
 </code></pre></div>
-<p>Our Main Function then downloads the <strong>a.out</strong> file returned by our Zig Function.</p>
+<p>Our Main Function then downloads the <strong><code>a.out</code></strong> file returned by our Zig Function.</p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L86-L108">(<strong>allocateString</strong> allocates a String from Zig Memory)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L158-L170">(<strong>download</strong> is here)</a></p>
 <p><em>What about NodeJS calling TCC WebAssembly?</em></p>
@@ -1111,7 +1111,7 @@ qemu-system-riscv64 \
 </ul>
 <h2 id="filesystem-functions"><a href="#filesystem-functions">14.6 Filesystem Functions</a></h2>
 <p>TODO</p>
-<p>Will mock up these functions for WebAssembly. Maybe an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">Emscripten File System</a>?</p>
+<p>Will mock up these functions for WebAssembly. Maybe an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">Emscripten Filesystem</a>?</p>
 <ul>
 <li>getcwd</li>
 <li>remove, unlink</li>
@@ -1119,7 +1119,7 @@ qemu-system-riscv64 \
 <h2 id="file-io-functions"><a href="#file-io-functions">14.7 File I/O Functions</a></h2>
 <p>TODO</p>
 <p>Will mock up these functions for WebAssembly. Right now we read only 1 simple C Source File, and produce only 1 Object File. No header files, no libraries. And it works!</p>
-<p>But later we might need an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">Emscripten File System</a>. And our File I/O code will support Multiple Files with proper Buffer Overflow Checks.</p>
+<p>But later we might need an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">Emscripten Filesystem</a>. And our File I/O code will support Multiple Files with proper Buffer Overflow Checks.</p>
 <ul>
 <li>open, fopen, fdopen, </li>
 <li>close, fclose</li>
