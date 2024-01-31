@@ -79,15 +79,7 @@
 <li><a href="#appendix-pattern-matching">11 Appendix: Pattern Matching</a><ul></ul></li>
 <li><a href="#appendix-nuttx-system-call">12 Appendix: NuttX System Call</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-qemu">13 Appendix: Build NuttX for QEMU</a><ul></ul></li>
-<li><a href="#appendix-missing-functions">14 Appendix: Missing Functions</a><ul>
-<li><a href="#semaphore-functions">14.1 Semaphore Functions</a><ul></ul></li>
-<li><a href="#standard-library">14.2 Standard Library</a><ul></ul></li>
-<li><a href="#time-functions">14.3 Time Functions</a><ul></ul></li>
-<li><a href="#math-functions">14.4 Math Functions</a><ul></ul></li>
-<li><a href="#varargs-functions">14.5 Varargs Functions</a><ul></ul></li>
-<li><a href="#filesystem-functions">14.6 Filesystem Functions</a><ul></ul></li>
-<li><a href="#file-io-functions">14.7 File I/O Functions</a><ul></ul></li>
-<li><a href="#string-functions">14.8 String Functions</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Feb 2024</em></p>
+<li><a href="#appendix-missing-functions">14 Appendix: Missing Functions</a><ul></ul></li></ul></nav><p>📝 <em>7 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tcc-title.png" alt="TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/DJMDYq52Iv8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -1072,56 +1064,32 @@ qemu-system-riscv64 \
 <p>NuttX Apps are located in <strong><code>apps/bin</code></strong>.</p>
 <p>We may copy our <strong>RISC-V ELF <code>a.out</code></strong> to that folder.</p>
 <h1 id="appendix-missing-functions"><a href="#appendix-missing-functions">14 Appendix: Missing Functions</a></h1>
-<p>TODO: Remember we said that POSIX Functions aren’t supported in WebAssembly?</p>
-<p>TCC calls surprisingly few External Functions! We might get it running on WebAssembly. Here’s our analysis of the Missing Functions: <a href="zig/tcc-wasm.zig">zig/tcc-wasm.zig</a></p>
-<h2 id="semaphore-functions"><a href="#semaphore-functions">14.1 Semaphore Functions</a></h2>
-<p>TODO</p>
-<p>Not sure why TCC uses Semaphores? Maybe we’ll understand when we support <code>#include</code> files.</p>
-<p>TODO: Borrow Semaphore Functions from where?</p>
+<p>Remember we said that POSIX Functions aren’t supported in WebAssembly?</p>
 <ul>
-<li>sem_init, sem_post, sem_wait</li>
+<li>TODO</li>
 </ul>
-<h2 id="standard-library"><a href="#standard-library">14.2 Standard Library</a></h2>
-<p>TODO</p>
-<p>qsort isn’t used right now. Maybe for the Linker later?</p>
-<p>TODO: Borrow qsort from where?</p>
-<ul>
-<li>exit, qsort</li>
-</ul>
-<h2 id="time-functions"><a href="#time-functions">14.3 Time Functions</a></h2>
-<p>TODO</p>
-<p>Not used right now.</p>
-<p>TODO: Borrow Time Functions from where?</p>
-<ul>
-<li>time, gettimeofday, localtime</li>
-</ul>
-<h2 id="math-functions"><a href="#math-functions">14.4 Math Functions</a></h2>
-<p>TODO</p>
-<p>Also not used right now.</p>
-<p>TODO: Borrow Math Functions from where?</p>
-<ul>
-<li>ldexp</li>
-</ul>
-<h2 id="varargs-functions"><a href="#varargs-functions">14.5 Varargs Functions</a></h2>
-<p>TODO</p>
-<p>Varargs will be tricky to implement in Zig. Probably we should implement in C. Maybe MUSL?</p>
-<p>Right now we’re doing simple Pattern Matching. But it won’t work for Real Programs.</p>
-<ul>
-<li>printf, snprintf, sprintf, vsnprintf</li>
-<li>sscanf</li>
-</ul>
-<h2 id="filesystem-functions"><a href="#filesystem-functions">14.6 Filesystem Functions</a></h2>
-<p>TODO</p>
-<p>Will mock up these functions for WebAssembly. Maybe an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">Emscripten Filesystem</a>?</p>
+<p>We dump the <strong>Compiled WebAssembly</strong> of TCC Compiler, and we discover that it calls <strong>72 POSIX Functions</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Dump the Compiled WebAssembly
+## for TCC Compiler
+$ sudo apt install wabt
+$ wasm-objdump -x tcc.o
+
+Import:
+ - func[0] sig=1 &lt;env.strcmp&gt;  &lt;- env.strcmp
+ - func[1] sig=12 &lt;env.memset&gt; &lt;- env.memset
+ - func[2] sig=1 &lt;env.getcwd&gt;  &lt;- env.getcwd
+ ...
+ - func[69] sig=2 &lt;env.localtime&gt; &lt;- env.localtime
+ - func[70] sig=13 &lt;env.qsort&gt;    &lt;- env.qsort
+ - func[71] sig=19 &lt;env.strtoll&gt;  &lt;- env.strtoll
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#missing-functions-in-tcc-webassembly">(See the <strong>Complete List</strong>)</a></p>
+<p>Do we really need all 72 POSIX Functions? We run through the list…</p>
+<p><strong>Filesystem Functions:</strong></p>
+<p>We’ll simulate these functions for WebAssembly. Maybe with an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html"><strong>Emscripten Filesystem</strong></a>. Or we embed <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Filesystem</strong></a> into our Zig Wrapper.</p>
 <ul>
 <li>getcwd</li>
 <li>remove, unlink</li>
-</ul>
-<h2 id="file-io-functions"><a href="#file-io-functions">14.7 File I/O Functions</a></h2>
-<p>TODO</p>
-<p>Will mock up these functions for WebAssembly. Right now we read only 1 simple C Source File, and produce only 1 Object File. No header files, no libraries. And it works!</p>
-<p>But later we might need an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">Emscripten Filesystem</a>. And our File I/O code will support Multiple Files with proper Buffer Overflow Checks.</p>
-<ul>
 <li>open, fopen, fdopen, </li>
 <li>close, fclose</li>
 <li>fprintf, fputc, fputs</li>
@@ -1131,9 +1099,15 @@ qemu-system-riscv64 \
 <li>fseek, ftell, lseek</li>
 <li>puts</li>
 </ul>
-<h2 id="string-functions"><a href="#string-functions">14.8 String Functions</a></h2>
-<p>TODO</p>
-<p>Borrow from <a href="https://github.com/ZigEmbeddedGroup/foundation-libc">foundation-libc</a> and <a href="https://github.com/marler8997/ziglibc">ziglibc</a></p>
+<p><strong>Varargs Functions:</strong></p>
+<p>As discussed earlier, Varargs will be tricky to implement in Zig. Probably we should do it in C. <a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191">(Like <strong>ziglibc</strong>)</a></p>
+<p>Right now we’re doing simple Pattern Matching. But it might not be sufficient when TCC compiles Real Programs.</p>
+<ul>
+<li>printf, snprintf, sprintf, vsnprintf</li>
+<li>sscanf</li>
+</ul>
+<p><strong>String Functions:</strong></p>
+<p>We’ll borrow from <a href="https://github.com/marler8997/ziglibc"><strong>ziglibc</strong></a> and <a href="https://github.com/ZigEmbeddedGroup/foundation-libc"><strong>foundation-libc</strong></a>.</p>
 <ul>
 <li>atoi</li>
 <li>strcat, strchr, strcmp</li>
@@ -1143,6 +1117,33 @@ qemu-system-riscv64 \
 <li>strtoul, strtoull</li>
 <li>strerror</li>
 </ul>
+<p><strong>Semaphore Functions:</strong></p>
+<p>Not sure why TCC uses Semaphores? Maybe we’ll understand when we support <strong><code>#include</code></strong> files.</p>
+<p>(Where can we borrow the Semaphore Functions?)</p>
+<ul>
+<li>sem_init, sem_post, sem_wait</li>
+</ul>
+<p><strong>Standard Library:</strong></p>
+<p><strong>qsort</strong> isn’t used right now. Maybe for the Linker later?</p>
+<p>(Borrow <strong>qsort</strong> from where? We can probably implement <strong>exit</strong>)</p>
+<ul>
+<li>exit, qsort</li>
+</ul>
+<p><strong>Time Functions:</strong></p>
+<p>Not used right now, maybe later.</p>
+<p>(How will we get the Time Functions? Call out to JavaScript to fetch the actual time?)</p>
+<ul>
+<li>time, gettimeofday, localtime</li>
+</ul>
+<p><strong>Math Functions:</strong></p>
+<p>Also not used right now.</p>
+<p>(Anyone can lend us <strong>ldexp</strong>?)</p>
+<ul>
+<li>ldexp</li>
+</ul>
+<p><strong>Outstanding Functions:</strong></p>
+<p>We have implemented (fully or partially) many of the POSIX Functions above. The functions we haven’t implemented are…</p>
+<p>TODO</p>
 
     
 </body>
