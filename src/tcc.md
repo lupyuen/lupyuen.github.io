@@ -128,6 +128,8 @@ Yep the __64-bit RISC-V Code__ looks legit! Very similar to our [__NuttX App__](
 
 What's really happening? We go behind the scenes...
 
+TODO: Pic of Zig Compiler, WebAssembly, JavaScript, NodeJS, Web Browser
+
 # Zig compiles TCC to WebAssembly
 
 _Will Zig Compiler happily compile TCC to WebAssembly?_
@@ -255,6 +257,8 @@ We'll find a better way to express our outrage. (Instead of jumping around)
 
 Let's study the Magical Bits inside our Zig Wrapper...
 
+TODO: Pic of TCC Compiler in the Universe of Command-Line Apps (Linux, macOS, Windows), crossing the Multiverse
+
 # POSIX for WebAssembly
 
 _What's this POSIX?_
@@ -307,6 +311,8 @@ pub export fn fopen(_: c_int) c_int {
 ```
 
 Some of these functions are especially troubling for WebAssembly...
+
+TODO: Pic of File Input and Output
 
 # File Input and Output
 
@@ -450,7 +456,7 @@ Later our Zig Wrapper will have to parse meticulously all kinds of C Format Stri
 
 (Funny how __printf__ is the first thing we learn about C. Yet it's incredibly difficult to implement!)
 
-TODO: Pic of missing printf
+TODO: Pic of compiling and running NuttX App
 
 # Test with Apache NuttX RTOS
 
