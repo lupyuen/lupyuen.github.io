@@ -186,6 +186,7 @@ main():
 <p><a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app">(About the <strong>RISC-V Instructions</strong>)</a></p>
 <p>Yep the <strong>64-bit RISC-V Code</strong> looks legit! Very similar to our <a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app"><strong>NuttX App</strong></a>. (So it will probably run on NuttX)</p>
 <p>What’s really happening? We go behind the scenes…</p>
+<p>TODO: Pic of Zig Compiler, WebAssembly, JavaScript, NodeJS, Web Browser</p>
 <h1 id="zig-compiles-tcc-to-webassembly"><a href="#zig-compiles-tcc-to-webassembly">2 Zig compiles TCC to WebAssembly</a></h1>
 <p><em>Will Zig Compiler happily compile TCC to WebAssembly?</em></p>
 <p>Amazingly, yes!</p>
@@ -293,6 +294,7 @@ pub export fn compile_program(
 <p>Well <a href="https://en.wikipedia.org/wiki/Setjmp.h"><strong>setjmp / longjmp</strong></a> are called to <strong>Handle Errors</strong> during TCC Compilation.</p>
 <p>We’ll find a better way to express our outrage. (Instead of jumping around)</p>
 <p>Let’s study the Magical Bits inside our Zig Wrapper…</p>
+<p>TODO: Pic of TCC Compiler in the Universe of Command-Line Apps (Linux, macOS, Windows), crossing the Multiverse</p>
 <h1 id="posix-for-webassembly"><a href="#posix-for-webassembly">3 POSIX for WebAssembly</a></h1>
 <p><em>What’s this POSIX?</em></p>
 <p>TCC Compiler was created as a <strong>Command Line App</strong>. So it calls the typical <a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX Functions</strong></a> like <strong>fopen, fprintf, strncpy, malloc,</strong> …</p>
@@ -335,6 +337,7 @@ pub export fn fopen(_: c_int) c_int {
 // And many more functions...
 </code></pre></div>
 <p>Some of these functions are especially troubling for WebAssembly…</p>
+<p>TODO: Pic of File Input and Output</p>
 <h1 id="file-input-and-output"><a href="#file-input-and-output">4 File Input and Output</a></h1>
 <p><em>Why no #include in TCC for WebAssembly? And no C Libraries?</em></p>
 <p>WebAssembly runs in a <strong>Secure Sandbox</strong>. No File Access allowed! (Like for C Header and Library Files)</p>
@@ -453,7 +456,7 @@ const format_patterns = [_]FormatPattern{
 <p>OK actually we’ll hit more Format Patterns as TCC Compiler emits various Error and Warning Messages. But it’s a good start!</p>
 <p>Later our Zig Wrapper will have to parse meticulously all kinds of C Format Strings. Or we do the <a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191"><strong>parsing in C</strong></a>, compiled to WebAssembly.</p>
 <p>(Funny how <strong>printf</strong> is the first thing we learn about C. Yet it’s incredibly difficult to implement!)</p>
-<p>TODO: Pic of missing printf</p>
+<p>TODO: Pic of compiling and running NuttX App</p>
 <h1 id="test-with-apache-nuttx-rtos"><a href="#test-with-apache-nuttx-rtos">6 Test with Apache NuttX RTOS</a></h1>
 <p><em>TCC in WebAssembly has compiled our C Program to RISC-V ELF…</em></p>
 <p><em>Will the RISC-V ELF run on Apache NuttX RTOS?</em></p>
