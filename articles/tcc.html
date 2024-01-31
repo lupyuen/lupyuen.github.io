@@ -605,6 +605,7 @@ Hello, World!!
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tcc.md"><strong>lupyuen.github.io/src/tcc.md</strong></a></p>
+<p>TODO: Pic of Zig Compiler</p>
 <h1 id="appendix-compile-tcc-with-zig"><a href="#appendix-compile-tcc-with-zig">9 Appendix: Compile TCC with Zig</a></h1>
 <p>This is how we run <strong>Zig Compiler to compile TCC Compiler</strong> from C to WebAssembly…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the TCC Source Code.
@@ -665,6 +666,7 @@ gcc \
   -I. 
 </code></pre></div>
 <p>And we copied above GCC Options to become the <a href="TODO"><strong>Zig Compiler Options</strong></a>.</p>
+<p>TODO: Pic of JavaScript</p>
 <h1 id="appendix-javascript-calls-tcc"><a href="#appendix-javascript-calls-tcc">10 Appendix: JavaScript calls TCC</a></h1>
 <p>Up above we saw some <strong>JavaScript (Web Browser and NodeJS)</strong> calling our TCC Compiler in WebAssembly…</p>
 <ul>
@@ -771,7 +773,9 @@ const code_ptr = allocateString(`
 // Call TCC to compile a program
 const ptr = wasm.instance.exports
   .compile_program(options_ptr, code_ptr);
-</code></pre></div><h1 id="appendix-pattern-matching"><a href="#appendix-pattern-matching">11 Appendix: Pattern Matching</a></h1>
+</code></pre></div>
+<p>TODO: Pic of Pattern Matching</p>
+<h1 id="appendix-pattern-matching"><a href="#appendix-pattern-matching">11 Appendix: Pattern Matching</a></h1>
 <p>A while back we saw our Zig Wrapper doing <strong>Pattern Matching for Formatting C Strings</strong>…</p>
 <ul>
 <li>TODO</li>
@@ -880,6 +884,7 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
 // Do the same for sprintf, snprintf, vsnprintf
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36">(See the <strong>Formatting Log</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="TODO" /></p>
 <h1 id="appendix-nuttx-system-call"><a href="#appendix-nuttx-system-call">12 Appendix: NuttX System Call</a></h1>
 <p>Not long ago we saw a huge chunk of C Code that makes a <strong>NuttX System Call</strong>…</p>
 <ul>
@@ -997,6 +1002,7 @@ for(;;) {}
 </code></pre></div>
 <p>That’s because NuttX Apps are not supposed to Return to NuttX Kernel.</p>
 <p>We should call the NuttX System Call <strong><code>__exit</code></strong> to terminate peacefully.</p>
+<p>TODO: Pic of QEMU</p>
 <h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">13 Appendix: Build NuttX for QEMU</a></h1>
 <p>Here are the steps to build and run <strong>NuttX for QEMU 64-bit RISC-V</strong> (Kernel Mode)…</p>
 <ol>
@@ -1066,6 +1072,7 @@ qemu-system-riscv64 \
 </code></pre></div>
 <p>NuttX Apps are located in <strong><code>apps/bin</code></strong>.</p>
 <p>We may copy our <strong>RISC-V ELF <code>a.out</code></strong> to that folder.</p>
+<p>TODO: Pic of POSIX Functions</p>
 <h1 id="appendix-missing-functions"><a href="#appendix-missing-functions">14 Appendix: Missing Functions</a></h1>
 <p>Remember we said that POSIX Functions aren’t supported in WebAssembly?</p>
 <ul>
