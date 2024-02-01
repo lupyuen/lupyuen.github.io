@@ -257,7 +257,7 @@ We'll find a better way to express our outrage. (Instead of jumping around)
 
 Let's study the Magical Bits inside our Zig Wrapper...
 
-TODO: Pic of TCC Compiler in the Universe of Command-Line Apps (Linux, macOS, Windows), crossing the Multiverse
+![TODO](https://lupyuen.github.io/images/tcc-posix.jpg)
 
 # POSIX for WebAssembly
 
@@ -269,7 +269,7 @@ TCC Compiler was created as a __Command Line App__. So it calls the typical [__P
 
 _Is POSIX a problem for WebAssembly?_
 
-WebAssembly running in a Web Browser ain't __No Command Line__!
+WebAssembly running in a Web Browser ain't __No Command Line__! (Pic above)
 
 We counted [__72 POSIX Functions__](TODO) needed by TCC Compiler, but missing from WebAssembly.
 
@@ -1188,11 +1188,11 @@ NuttX Apps are located in __`apps/bin`__.
 
 We may copy our __RISC-V ELF `a.out`__ to that folder.
 
-TODO: Pic of POSIX Functions
+![TODO](https://lupyuen.github.io/images/tcc-posix.jpg)
 
 # Appendix: Missing Functions
 
-Remember we said that POSIX Functions aren't supported in WebAssembly?
+Remember we said that POSIX Functions aren't supported in WebAssembly? (Pic above)
 
 - TODO
 
