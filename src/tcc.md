@@ -851,7 +851,7 @@ A while back we saw our Zig Wrapper doing __Pattern Matching for Formatting C St
 
 - TODO
 
-We use __comptime Functions__ in Zig to implement the C String Formatting: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L326)
+We use __comptime Functions__ in Zig to implement the C String Formatting (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L326)
 
 ```zig
 /// CompTime Function to format a string by Pattern Matching.
