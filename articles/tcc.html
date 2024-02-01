@@ -455,7 +455,7 @@ const format_patterns = [_]FormatPattern{
 <p>And that’s how we implement <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L447"><strong>fprintf and friends</strong></a>!</p>
 <p><a href="TODO">(How we do <strong>Pattern Matching</strong>)</a></p>
 <p><em>So simple? Unbelievable!</em></p>
-<p>OK actually we’ll hit more Format Patterns as TCC Compiler emits various Error and Warning Messages. But it’s a good start!</p>
+<p>OK actually we’ll hit more Format Patterns as TCC Compiler emits various <strong>Error and Warning Messages</strong>. But it’s a good start!</p>
 <p>Later our Zig Wrapper will have to parse meticulously all kinds of C Format Strings. Or we do the <a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191"><strong>parsing in C</strong></a>, compiled to WebAssembly.</p>
 <p>(Funny how <strong>printf</strong> is the first thing we learn about C. Yet it’s incredibly difficult to implement!)</p>
 <p><img src="https://lupyuen.github.io/images/tcc-nuttx.jpg" alt="TODO" /></p>
@@ -1001,9 +1001,10 @@ asm volatile ( ... );
 // Loop Forever
 for(;;) {}
 </code></pre></div>
-<p>That’s because NuttX Apps are not supposed to Return to NuttX Kernel.</p>
+<p>That’s because NuttX Apps are not supposed to <a href="https://github.com/lupyuen/tcc-riscv32-wasm#fix-missing-printf-in-nuttx-app"><strong>Return to NuttX Kernel</strong></a>.</p>
 <p>We should call the NuttX System Call <strong><code>__exit</code></strong> to terminate peacefully.</p>
-<p>TODO: Pic of QEMU</p>
+<p><img src="https://lupyuen.github.io/images/tcc-demo.png" alt="Online Demo of Apache NuttX RTOS" /></p>
+<p><a href="https://nuttx.apache.org/demo/"><em>Online Demo of Apache NuttX RTOS</em></a></p>
 <h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">13 Appendix: Build NuttX for QEMU</a></h1>
 <p>Here are the steps to build and run <strong>NuttX for QEMU 64-bit RISC-V</strong> (Kernel Mode)…</p>
 <ol>
