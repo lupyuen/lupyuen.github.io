@@ -1254,9 +1254,9 @@ Right now we're doing simple [__Pattern Matching__](TODO). But it might not be s
 
 [__String Functions:__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L539-L774)
 
-We'll borrow from [__ziglibc__](https://github.com/marler8997/ziglibc) and [__foundation-libc__](https://github.com/ZigEmbeddedGroup/foundation-libc).
+We'll borrow from [__ziglibc__](https://github.com/marler8997/ziglibc)...
 
-- atoi
+- [__atoi__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+atoi)
 - strcat, strchr, strcmp
 - strncmp, strncpy, strrchr
 - strstr, strtod, strtof
