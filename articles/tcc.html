@@ -1102,58 +1102,60 @@ Import:
 <p>Do we really need all 72 POSIX Functions? We run through the list…</p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L89-L168"><strong>Filesystem Functions:</strong></a></p>
 <p>We’ll simulate these functions for WebAssembly. Maybe with an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html"><strong>Emscripten Filesystem</strong></a>. Or we embed <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Filesystem</strong></a> into our Zig Wrapper.</p>
-<ul>
-<li>getcwd</li>
-<li>remove, unlink</li>
-<li>open, fopen, fdopen, </li>
-<li>close, fclose</li>
-<li>fprintf, fputc, fputs</li>
-<li>read, fread</li>
-<li>fwrite</li>
-<li>fflush</li>
-<li>fseek, ftell, lseek</li>
-<li>puts</li>
-</ul>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+getcwd"><strong>getcwd</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+remove"><strong>remove</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+unlink"><strong>unlink</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+open"><strong>open</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fopen"><strong>fopen</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fdopen"><strong>fdopen</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+close"><strong>close</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fclose"><strong>fclose</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fprintf"><strong>fprintf</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fputc"><strong>fputc</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fputs"><strong>fputs</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+read"><strong>read</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fread"><strong>fread</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fwrite"><strong>fwrite</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fflush"><strong>fflush</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fseek"><strong>fseek</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+ftell"><strong>ftell</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+lseek"><strong>lseek</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+puts"><strong>puts</strong></a></td><td style="text-align: left"></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L188-L447"><strong>Varargs Functions:</strong></a></p>
 <p>As discussed earlier, Varargs will be tricky to implement in Zig. Probably we should do it in C. <a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191">(Like <strong>ziglibc</strong>)</a></p>
 <p>Right now we’re doing simple <a href="TODO"><strong>Pattern Matching</strong></a>. But it might not be sufficient when TCC compiles Real Programs.</p>
-<ul>
-<li>printf, snprintf, sprintf, vsnprintf</li>
-<li>sscanf</li>
-</ul>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+printf"><strong>printf</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+snprintf"><strong>snprintf</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sprintf"><strong>sprintf</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+vsnprintf"><strong>vsnprintf</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sscanf"><strong>sscanf</strong></a></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L539-L774"><strong>String Functions:</strong></a></p>
 <p>We’ll borrow from <a href="https://github.com/marler8997/ziglibc"><strong>ziglibc</strong></a>…</p>
-<ul>
-<li><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+atoi"><strong>atoi</strong></a></li>
-<li>strcat, strchr, strcmp</li>
-<li>strncmp, strncpy, strrchr</li>
-<li>strstr, strtod, strtof</li>
-<li>strtol, strtold, strtoll</li>
-<li>strtoul, strtoull</li>
-<li>strerror</li>
-</ul>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+atoi"><strong>atoi</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strcat"><strong>strcat</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strchr"><strong>strchr</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strcmp"><strong>strcmp</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strncmp"><strong>strncmp</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strncpy"><strong>strncpy</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strrchr"><strong>strrchr</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strstr"><strong>strstr</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtod"><strong>strtod</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtof"><strong>strtof</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtol"><strong>strtol</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtold"><strong>strtold</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtoll"><strong>strtoll</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtoul"><strong>strtoul</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtoull"><strong>strtoull</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strerror"><strong>strerror</strong></a></td><td style="text-align: left"></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L168-L188"><strong>Semaphore Functions:</strong></a></p>
 <p>Not sure why TCC uses Semaphores? Maybe we’ll understand when we support <strong><code>#include</code></strong> files.</p>
 <p>(Where can we borrow the Semaphore Functions?)</p>
-<ul>
-<li>sem_init, sem_post, sem_wait</li>
-</ul>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sem_init"><strong>sem_init</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sem_post"><strong>sem_post</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sem_wait"><strong>sem_wait</strong></a></td></tr>
+</tbody></table>
+</div>
 <p><strong>Standard Library:</strong></p>
 <p><strong>qsort</strong> isn’t used right now. Maybe for the Linker later?</p>
 <p>(Borrow <strong>qsort</strong> from where? We can probably implement <strong>exit</strong>)</p>
-<ul>
-<li>exit, qsort</li>
-</ul>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+exit"><strong>exit</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+qsort"><strong>qsort</strong></a></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
 <p><strong>Time and Math Functions:</strong></p>
 <p>Not used right now, maybe later.</p>
 <p>(Anyone can lend us <strong>ldexp</strong>? How will we get the Time Functions? Call out to JavaScript to fetch the actual time?)</p>
-<ul>
-<li>time, gettimeofday, localtime</li>
-<li>ldexp</li>
-</ul>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+time"><strong>time</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+gettimeofday"><strong>gettimeofday</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+localtime"><strong>localtime</strong></a></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+ldexp"><strong>ldexp</strong></a></td><td style="text-align: left"></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
 <p><strong>Outstanding Functions:</strong></p>
 <p>We have implemented (fully or partially) many of the POSIX Functions above.</p>
-<p>The ones that we haven’t implemented? <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853"><strong>They will halt</strong></a> when TCC WebAssembly calls them…</p>
+<p>The ones that we haven’t implemented? <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853"><strong>These functions will halt</strong></a> when TCC WebAssembly calls them…</p>
 <p>TODO</p>
 
     
