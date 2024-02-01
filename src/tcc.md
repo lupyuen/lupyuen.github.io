@@ -480,11 +480,9 @@ Then we boot __NuttX on QEMU__ (64-bit RISC-V) and run __`a.out`__ on NuttX...
 ```bash
 NuttShell (NSH) NuttX-12.4.0
 nsh> a.out
-load_absmodule: Loading /system/bin/a.out
-elf_loadbinary: Loading file: /system/bin/a.out
-...
-elf_symvalue: SHN_UNDEF: Exported symbol "printf" not found
-exec_internal: ERROR: Failed to load program 'a.out': -2
+Loading /system/bin/a.out
+Exported symbol "printf" not found
+Failed to load program 'a.out'
 ```
 
 [(See the __Complete Log__)](https://github.com/lupyuen/tcc-riscv32-wasm#test-tcc-output-with-nuttx)
@@ -751,7 +749,7 @@ http://localhost:8000/index.html
 
 Check the __JavaScript Console__ for more messages.
 
-[(See the __JavaScript Log__)](TODO)
+[(See the __JavaScript Log__)](https://gist.github.com/lupyuen/5f8191d5c63b7dba030582cbe7481572)
 
 _How does it work?_
 
@@ -851,7 +849,7 @@ const ptr = wasm.instance.exports
   .compile_program(options_ptr, code_ptr);
 ```
 
-[(See the __NodeJS Log__)](TODO)
+[(See the __NodeJS Log__)](https://gist.github.com/lupyuen/795327506cad9b1ee82206e614c399cd)
 
 ![Our Zig Wrapper doing Pattern Matching for Formatting C Strings](https://lupyuen.github.io/images/tcc-format.jpg)
 
@@ -1087,7 +1085,7 @@ So we used this [__RISC-V Online Assembler__](https://riscvasm.lucasteske.dev/#)
 
 _How did we figure out that the buffer is at 0xC010_1000?_
 
-We saw this in the NuttX Log...
+We saw this in the [__NuttX Log__](https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d)...
 
 ```yaml
 NuttShell (NSH) NuttX-12.4.0
