@@ -1101,7 +1101,7 @@ Read 16 bytes from offset 224
 
 Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section __`.data.ro`__ to __`0xC010_1000`__. That's all 15 bytes of _"Hello, World!!\n"_, including the terminating null.
 
-Thus our buffer is at buffer is at __`0xC010_1000`__.
+Thus our buffer is at __`0xC010_1000`__.
 
 _Why did we Loop Forever?_
 
