@@ -312,7 +312,7 @@ pub export fn fopen(_: c_int) c_int {
 
 Some of these functions are especially troubling for WebAssembly...
 
-![TODO](https://lupyuen.github.io/images/tcc-posix2.jpg)
+> ![TODO](https://lupyuen.github.io/images/tcc-posix2.jpg)
 
 # File Input and Output
 
