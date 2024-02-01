@@ -368,7 +368,7 @@ We'll have to embed an __Emulated Filesystem__ inside our Zig Wrapper. The Files
 
 [(Maybe we embed the simple __ROM FS Filesystem__)](https://docs.kernel.org/filesystems/romfs.html)
 
-TODO: Pic of Format Patterns
+![TODO](https://lupyuen.github.io/images/tcc-format.jpg)
 
 # Fearsome fprintf and Friends
 
@@ -843,7 +843,7 @@ const ptr = wasm.instance.exports
   .compile_program(options_ptr, code_ptr);
 ```
 
-TODO: Pic of Pattern Matching
+![TODO](https://lupyuen.github.io/images/tcc-format.jpg)
 
 # Appendix: Pattern Matching
 
