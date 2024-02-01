@@ -85,7 +85,8 @@ tcc -c hello.c
 And it downloads the compiled __RISC-V ELF `a.out`__. We inspect the Compiled Output...
 
 ```bash
-## Dump the RISC-V Disassembly of TCC Output
+## Dump the RISC-V Disassembly
+## of TCC Output
 $ riscv64-unknown-elf-objdump \
     --syms --source --reloc --demangle \
     --line-numbers --wide  --debugging \
@@ -112,7 +113,8 @@ main():
   24: R_RISCV_CALL_PLT printf
   28: 000080e7  jalr   ra  ## 24 <main+0x24>
 
-   ## Clean up the Stack and return 0 to Caller
+   ## Clean up the Stack and
+   ## return 0 to Caller
   2c: 0000051b  sext.w a0, zero
   30: 01813083  ld     ra, 24(sp)
   34: 01013403  ld     s0, 16(sp)
@@ -137,8 +139,8 @@ _Will Zig Compiler happily compile TCC to WebAssembly?_
 Amazingly, yes! (Pic above)
 
 ```bash
-## Zig Compiler compiles TCC Compiler from C to WebAssembly.
-## Produces `tcc.o`
+## Zig Compiler compiles TCC Compiler
+## from C to WebAssembly. Produces `tcc.o`
 zig cc \
   -c \
   -target wasm32-freestanding \
@@ -185,7 +187,8 @@ zig build-exe \
   zig/tcc-wasm.zig \
   tcc.o
 
-## Test everything with Web Browser or NodeJS
+## Test everything with Web Browser
+## or Node.js
 node zig/test.js
 ```
 
@@ -208,26 +211,30 @@ Our Zig Wrapper will...
 Like so: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L12-L77)
 
 ```zig
-/// Call TCC Compiler to compile a C Program to RISC-V ELF
+/// Call TCC Compiler to compile a
+/// C Program to RISC-V ELF
 pub export fn compile_program(
   options_ptr: [*:0]const u8, // Options for TCC Compiler (Pointer to JSON Array:  ["-c", "hello.c"])
   code_ptr:    [*:0]const u8, // C Program to be compiled (Pointer to String)
 ) [*]const u8 { // Returns a pointer to the `a.out` Compiled Code (Size in first 4 bytes)
 
-  // Receive the C Program from JavaScript and set our Read Buffer
+  // Receive the C Program from
+  // JavaScript and set our Read Buffer
   // https://blog.battlefy.com/zig-made-it-easy-to-pass-strings-back-and-forth-with-webassembly
   const code: []const u8 = std.mem.span(code_ptr);
   read_buf = code;
 
-  // Omitted: Receive the TCC Compiler Options from JavaScript
+  // Omitted: Receive the TCC Compiler
+  // Options from JavaScript
   // (JSON containing String Array: ["-c", "hello.c"])
   ...
 
   // Call the TCC Compiler
   _ = main(@intCast(argc), &args_ptrs);
 
-  // Return pointer of `a.out` to JavaScript.
-  // First 4 bytes: Size of `a.out`. Followed by `a.out` data.
+  // Return pointer of `a.out` to
+  // JavaScript. First 4 bytes: Size of
+  // `a.out`. Followed by `a.out` data.
   const slice = std.heap.page_allocator.alloc(u8, write_buflen + 4)   
     catch @panic("Failed to allocate memory");
   slice[0] = @intCast((write_buflen >>  0) & 0xff);
@@ -294,10 +301,11 @@ _72 POSIX Functions? Sounds like a lot of work..._
 Actually we might not need all 72 POSIX Functions. We stubbed out __most of the functions__ to identify the ones that are called: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
 
 ```zig
-// Stub Out the Missing POSIX Functions.
-// If TCC calls them, we'll see a Zig Panic.
-// Then we implement them.
-// The Types don't matter because we'll halt anyway.
+// Stub Out the Missing POSIX
+// Functions. If TCC calls them, 
+// we'll see a Zig Panic. Then we 
+// implement them. The Types don't
+// matter because we'll halt anyway.
 
 pub export fn atoi(_: c_int) c_int {
   @panic("TODO: atoi");
@@ -350,8 +358,9 @@ __Writing the Compiled Output `a.out`__ is just as barebones: [tcc-wasm.zig](htt
 
 ```zig
 /// Emulate the POSIX Function `write()`
-/// We write to One Single Memory Buffer
-/// that will be returned to JavaScript as `a.out`
+/// We write to One Single Memory
+/// Buffer that will be returned to 
+/// JavaScript as `a.out`
 export fn fwrite(ptr: [*:0]const u8, size: usize, nmemb: usize, stream: *FILE) usize {
 
   // TODO: Support more than one `stream`
@@ -410,7 +419,8 @@ This works OK (for now) because TCC Compiler only uses __5 Patterns for C Format
 
 ```zig
 /// Pattern Matching for C String Formatting:
-/// We'll match these patterns when formatting strings
+/// We'll match these patterns when
+/// formatting strings
 const format_patterns = [_]FormatPattern{
 
   // Format a Single `%d`, like `#define __TINYC__ %d`
@@ -500,9 +510,10 @@ _How else can we print something in NuttX?_
 To print something, we can make a [__NuttX System Call (ECALL)__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) directly to NuttX Kernel...
 
 ```c
-// NuttX System Call that prints something
-// System Call Number is 61 (SYS_write)
-// Works exactly like POSIX `write()`
+// NuttX System Call that prints
+// something. System Call Number
+// is 61 (SYS_write). Works exactly
+// like POSIX `write()`
 ssize_t write(
   int fd,           // File Descriptor (1 for Standard Output)
   const char *buf,  // Buffer to be printed
@@ -527,21 +538,25 @@ We execute the [__ECALL in RISC-V Assembly__](https://lupyuen.github.io/articles
 ```c
 int main(int argc, char *argv[]) {
 
-  // Make NuttX System Call to write(fd, buf, buflen)
+  // Make NuttX System Call
+  // to write(fd, buf, buflen)
   const unsigned int nbr = 61; // SYS_write
   const void *parm1 = 1;       // File Descriptor (stdout)
   const void *parm2 = "Hello, World!!\n"; // Buffer
   const void *parm3 = 15; // Buffer Length
 
-  // Load the Parameters into Registers A0 to A3
-  // TODO: This doesn't work with TCC, so we load again below
+  // Load the Parameters into
+  // Registers A0 to A3
+  // Note: This doesn't work with TCC,
+  // so we load again below
   register long r0 asm("a0") = (long)(nbr);
   register long r1 asm("a1") = (long)(parm1);
   register long r2 asm("a2") = (long)(parm2);
   register long r3 asm("a3") = (long)(parm3);
 
-  // Execute ECALL for System Call to NuttX Kernel
-  // Again: Load the Parameters into Registers A0 to A3
+  // Execute ECALL for System Call
+  // to NuttX Kernel. Again: Load the
+  // Parameters into Registers A0 to A3
   asm volatile (
 
     // Load 61 to Register A0 (SYS_write)
@@ -719,11 +734,11 @@ And we copied above GCC Options to become the [__Zig Compiler Options__](https:/
 
 # Appendix: JavaScript calls TCC
 
-Previously we saw some __JavaScript (Web Browser and NodeJS)__ calling our TCC Compiler in WebAssembly (pic above)...
+Previously we saw some __JavaScript (Web Browser and Node.js)__ calling our TCC Compiler in WebAssembly (pic above)...
 
 - [__TCC WebAssembly in Web Browser__](https://lupyuen.github.io/tcc-riscv32-wasm/)
 
-- [__TCC WebAssembly in NodeJS__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly)
+- [__TCC WebAssembly in Node.js__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly)
 
 This is how we test the TCC WebAssembly in a Web Browser with a __Local Web Server__...
 
@@ -822,14 +837,14 @@ Our Main Function then downloads the __`a.out`__ file returned by our Zig Functi
 
 [(__download__ is here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L158-L170)
 
-_What about NodeJS calling TCC WebAssembly?_
+_What about Node.js calling TCC WebAssembly?_
 
 ```bash
-## Test TCC WebAssembly with NodeJS
+## Test TCC WebAssembly with Node.js
 node zig/test.js
 ```
 
-__For Easier Testing__ (via Command-Line): We copied the JavaScript above into a NodeJS Script: [test.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js)
+__For Easier Testing__ (via Command-Line): We copied the JavaScript above into a Node.js Script: [test.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js)
 
 ```javascript
 // Allocate a String for passing the Compiler Options to Zig
@@ -849,7 +864,7 @@ const ptr = wasm.instance.exports
   .compile_program(options_ptr, code_ptr);
 ```
 
-[(See the __NodeJS Log__)](https://gist.github.com/lupyuen/795327506cad9b1ee82206e614c399cd)
+[(See the __Node.js Log__)](https://gist.github.com/lupyuen/795327506cad9b1ee82206e614c399cd)
 
 ![Our Zig Wrapper doing Pattern Matching for Formatting C Strings](https://lupyuen.github.io/images/tcc-format.jpg)
 
@@ -1226,6 +1241,8 @@ Import:
 
 Do we really need all 72 POSIX Functions? We run through the list...
 
+<hr>
+
 [__Filesystem Functions:__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L89-L168)
 
 We'll simulate these functions for WebAssembly. Maybe with an Emulated Filesystem, similar to [__Emscripten Filesystem__](https://emscripten.org/docs/porting/files/file_systems_overview.html). Or we embed [__ROM FS Filesystem__](https://docs.kernel.org/filesystems/romfs.html) into our Zig Wrapper.
@@ -1240,6 +1257,8 @@ We'll simulate these functions for WebAssembly. Maybe with an Emulated Filesyste
 | [__fseek__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fseek) | [__ftell__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+ftell) | [__lseek__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+lseek)
 | [__puts__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+puts)
 
+<hr>
+
 [__Varargs Functions:__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L188-L447)
 
 As discussed earlier, Varargs will be tricky to implement in Zig. Probably we should do it in C. [(Like __ziglibc__)](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191)
@@ -1250,6 +1269,8 @@ Right now we're doing simple [__Pattern Matching__](TODO). But it might not be s
 |:---|:---|:---|
 | [__printf__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+printf) | [__snprintf__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+snprintf) | [__sprintf__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sprintf)
 | [__vsnprintf__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+vsnprintf) | [__sscanf__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sscanf)
+
+<hr>
 
 [__String Functions:__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L539-L774)
 
@@ -1264,6 +1285,8 @@ We'll borrow from [__ziglibc__](https://github.com/marler8997/ziglibc)...
 | [__strtoll__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtoll) | [__strtoul__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtoul) | [__strtoull__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtoull)
 | [__strerror__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strerror)
 
+<hr>
+
 [__Semaphore Functions:__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L168-L188)
 
 Not sure why TCC uses Semaphores? Maybe we'll understand when we support __`#include`__ files.
@@ -1274,6 +1297,8 @@ Not sure why TCC uses Semaphores? Maybe we'll understand when we support __`#inc
 |:---|:---|:---|
 | [__sem_init__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sem_init) | [__sem_post__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sem_post) | [__sem_wait__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sem_wait)
 
+<hr>
+
 __Standard Library:__
 
 __qsort__ isn't used right now. Maybe for the Linker later?
@@ -1283,6 +1308,8 @@ __qsort__ isn't used right now. Maybe for the Linker later?
 | | | |
 |:---|:---|:---|
 | [__exit__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+exit) | [__qsort__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+qsort)
+
+<hr>
 
 __Time and Math Functions:__
 
@@ -1295,10 +1322,21 @@ Not used right now, maybe later.
 | [__time__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+time) | [__gettimeofday__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+gettimeofday) | [__localtime__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+localtime)
 | [__ldexp__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+ldexp)
 
-__Outstanding Functions:__
+<hr>
+
+[__Outstanding Functions:__](ttps://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
 
 We have implemented (fully or partially) many of the POSIX Functions above.
 
-The ones that we haven't implemented? [__These functions will halt__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853) when TCC WebAssembly calls them...
+The ones that we haven't implemented? [__These 24 Functions will Halt__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853) when TCC WebAssembly calls them...
 
-TODO
+| | | |
+|:---|:---|:---|
+| [__atoi__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+atoi) | [__exit__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+exit) | [__fopen__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fopen)
+| [__fread__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fread) | [__fseek__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fseek) | [__ftell__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+ftell)
+| [__getcwd__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+getcwd) | [__gettimeofday__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+gettimeofday) | [__ldexp__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+ldexp)
+| [__localtime__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+localtime) | [__lseek__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+lseek) | [__printf__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+printf)
+| [__qsort__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+qsort) | [__remove__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+remove) | [__strcat__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strcat)
+| [__strerror__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strerror) | [__strncpy__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strncpy) | [__strtod__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtod)
+| [__strtof__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtof) | [__strtol__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtol) | [__strtold__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtold)
+| [__strtoll__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtoll) | [__strtoul__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtoul) | [__time__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+time)
