@@ -128,13 +128,13 @@ Yep the __64-bit RISC-V Code__ looks legit! Very similar to our [__NuttX App__](
 
 What's really happening? We go behind the scenes...
 
-TODO: Pic of Zig Compiler, WebAssembly, JavaScript, NodeJS, Web Browser
+![TODO](https://lupyuen.github.io/images/tcc-zig.jpg)
 
 # Zig compiles TCC to WebAssembly
 
 _Will Zig Compiler happily compile TCC to WebAssembly?_
 
-Amazingly, yes!
+Amazingly, yes! (Pic above)
 
 ```bash
 ## Zig Compiler compiles TCC Compiler from C to WebAssembly.
@@ -639,11 +639,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/tcc.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tcc.md)
 
-TODO: Pic of Zig Compiler
-
 # Appendix: Compile TCC with Zig
 
-This is how we run __Zig Compiler to compile TCC Compiler__ from C to WebAssembly...
+This is how we run __Zig Compiler to compile TCC Compiler__ from C to WebAssembly (pic below)...
 
 ```bash
 ## Download the TCC Source Code.
@@ -715,9 +713,11 @@ And we copied above GCC Options to become the [__Zig Compiler Options__](TODO).
 
 TODO: Pic of JavaScript
 
+![TODO](https://lupyuen.github.io/images/tcc-zig.jpg)
+
 # Appendix: JavaScript calls TCC
 
-Up above we saw some __JavaScript (Web Browser and NodeJS)__ calling our TCC Compiler in WebAssembly...
+Previously we saw some __JavaScript (Web Browser and NodeJS)__ calling our TCC Compiler in WebAssembly (pic above)...
 
 - [__TCC WebAssembly in Web Browser__](https://lupyuen.github.io/tcc-riscv32-wasm/)
 
