@@ -294,13 +294,13 @@ pub export fn compile_program(
 <p>Well <a href="https://en.wikipedia.org/wiki/Setjmp.h"><strong>setjmp / longjmp</strong></a> are called to <strong>Handle Errors</strong> during TCC Compilation.</p>
 <p>We’ll find a better way to express our outrage. (Instead of jumping around)</p>
 <p>Let’s study the Magical Bits inside our Zig Wrapper…</p>
-<p>TODO: Pic of TCC Compiler in the Universe of Command-Line Apps (Linux, macOS, Windows), crossing the Multiverse</p>
+<p><img src="https://lupyuen.github.io/images/tcc-posix.jpg" alt="TODO" /></p>
 <h1 id="posix-for-webassembly"><a href="#posix-for-webassembly">3 POSIX for WebAssembly</a></h1>
 <p><em>What’s this POSIX?</em></p>
 <p>TCC Compiler was created as a <strong>Command Line App</strong>. So it calls the typical <a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX Functions</strong></a> like <strong>fopen, fprintf, strncpy, malloc,</strong> …</p>
 <p><a href="https://en.wikipedia.org/wiki/C_standard_library">(Similar to the <strong>C Standard Library libc</strong>)</a></p>
 <p><em>Is POSIX a problem for WebAssembly?</em></p>
-<p>WebAssembly running in a Web Browser ain’t <strong>No Command Line</strong>!</p>
+<p>WebAssembly running in a Web Browser ain’t <strong>No Command Line</strong>! (Pic above)</p>
 <p>We counted <a href="TODO"><strong>72 POSIX Functions</strong></a> needed by TCC Compiler, but missing from WebAssembly.</p>
 <p>Thus we fill in the <a href="TODO"><strong>Missing Functions</strong></a> ourselves.</p>
 <p><em>Surely other Zig Devs will have the same problem?</em></p>
@@ -1072,9 +1072,9 @@ qemu-system-riscv64 \
 </code></pre></div>
 <p>NuttX Apps are located in <strong><code>apps/bin</code></strong>.</p>
 <p>We may copy our <strong>RISC-V ELF <code>a.out</code></strong> to that folder.</p>
-<p>TODO: Pic of POSIX Functions</p>
+<p><img src="https://lupyuen.github.io/images/tcc-posix.jpg" alt="TODO" /></p>
 <h1 id="appendix-missing-functions"><a href="#appendix-missing-functions">14 Appendix: Missing Functions</a></h1>
-<p>Remember we said that POSIX Functions aren’t supported in WebAssembly?</p>
+<p>Remember we said that POSIX Functions aren’t supported in WebAssembly? (Pic above)</p>
 <ul>
 <li>TODO</li>
 </ul>
