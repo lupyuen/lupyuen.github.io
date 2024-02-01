@@ -186,10 +186,10 @@ main():
 <p><a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app">(About the <strong>RISC-V Instructions</strong>)</a></p>
 <p>Yep the <strong>64-bit RISC-V Code</strong> looks legit! Very similar to our <a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app"><strong>NuttX App</strong></a>. (So it will probably run on NuttX)</p>
 <p>What’s really happening? We go behind the scenes…</p>
-<p>TODO: Pic of Zig Compiler, WebAssembly, JavaScript, NodeJS, Web Browser</p>
+<p><img src="https://lupyuen.github.io/images/tcc-zig.jpg" alt="TODO" /></p>
 <h1 id="zig-compiles-tcc-to-webassembly"><a href="#zig-compiles-tcc-to-webassembly">2 Zig compiles TCC to WebAssembly</a></h1>
 <p><em>Will Zig Compiler happily compile TCC to WebAssembly?</em></p>
-<p>Amazingly, yes!</p>
+<p>Amazingly, yes! (Pic above)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Zig Compiler compiles TCC Compiler from C to WebAssembly.
 ## Produces `tcc.o`
 zig cc \
@@ -605,9 +605,8 @@ Hello, World!!
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tcc.md"><strong>lupyuen.github.io/src/tcc.md</strong></a></p>
-<p>TODO: Pic of Zig Compiler</p>
 <h1 id="appendix-compile-tcc-with-zig"><a href="#appendix-compile-tcc-with-zig">9 Appendix: Compile TCC with Zig</a></h1>
-<p>This is how we run <strong>Zig Compiler to compile TCC Compiler</strong> from C to WebAssembly…</p>
+<p>This is how we run <strong>Zig Compiler to compile TCC Compiler</strong> from C to WebAssembly (pic below)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the TCC Source Code.
 ## Configure the build for 64-bit RISC=V.
 
@@ -667,8 +666,9 @@ gcc \
 </code></pre></div>
 <p>And we copied above GCC Options to become the <a href="TODO"><strong>Zig Compiler Options</strong></a>.</p>
 <p>TODO: Pic of JavaScript</p>
+<p><img src="https://lupyuen.github.io/images/tcc-zig.jpg" alt="TODO" /></p>
 <h1 id="appendix-javascript-calls-tcc"><a href="#appendix-javascript-calls-tcc">10 Appendix: JavaScript calls TCC</a></h1>
-<p>Up above we saw some <strong>JavaScript (Web Browser and NodeJS)</strong> calling our TCC Compiler in WebAssembly…</p>
+<p>Previously we saw some <strong>JavaScript (Web Browser and NodeJS)</strong> calling our TCC Compiler in WebAssembly (pic above)…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><strong>TCC WebAssembly in Web Browser</strong></a></p>
