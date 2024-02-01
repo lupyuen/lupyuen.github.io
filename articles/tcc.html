@@ -382,7 +382,7 @@ export fn fwrite(ptr: [*:0]const u8, size: usize, nmemb: usize, stream: *FILE) u
 <p>We’ll have to embed an <strong>Emulated Filesystem</strong> inside our Zig Wrapper. The Filesystem will contain the C Header and Library Files needed by TCC.</p>
 <p><a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">(Similar to the <strong>Emscripten Filesystem</strong>)</a></p>
 <p><a href="https://docs.kernel.org/filesystems/romfs.html">(Maybe we embed the simple <strong>ROM FS Filesystem</strong>)</a></p>
-<p>TODO: Pic of Format Patterns</p>
+<p><img src="https://lupyuen.github.io/images/tcc-format.jpg" alt="TODO" /></p>
 <h1 id="fearsome-fprintf-and-friends"><a href="#fearsome-fprintf-and-friends">5 Fearsome fprintf and Friends</a></h1>
 <p><em>Why is fprintf particularly problematic?</em></p>
 <p>Here’s the fearsome thing about <strong>fprintf</strong> and friends: <strong>sprintf, snprintf, vsnprintf</strong>…</p>
@@ -773,7 +773,7 @@ const code_ptr = allocateString(`
 const ptr = wasm.instance.exports
   .compile_program(options_ptr, code_ptr);
 </code></pre></div>
-<p>TODO: Pic of Pattern Matching</p>
+<p><img src="https://lupyuen.github.io/images/tcc-format.jpg" alt="TODO" /></p>
 <h1 id="appendix-pattern-matching"><a href="#appendix-pattern-matching">11 Appendix: Pattern Matching</a></h1>
 <p>A while back we saw our Zig Wrapper doing <strong>Pattern Matching for Formatting C Strings</strong>…</p>
 <ul>
