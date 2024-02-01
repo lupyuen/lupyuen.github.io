@@ -182,10 +182,10 @@ main():
   38: 02010113  addi   sp, sp, 32
   3c: 00008067  ret
 </code></pre></div>
+<p>Yep the <strong>64-bit RISC-V Code</strong> looks legit! Very similar to our <a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app"><strong>NuttX App</strong></a>. (So it will probably run on NuttX)</p>
+<p>What just happened? We go behind the scenes…</p>
 <p><a href="https://gist.github.com/lupyuen/ab8febefa9c649ad7c242ee3f7aaf974">(See the <strong>Entire Disassembly</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app">(About the <strong>RISC-V Instructions</strong>)</a></p>
-<p>Yep the <strong>64-bit RISC-V Code</strong> looks legit! Very similar to our <a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app"><strong>NuttX App</strong></a>. (So it will probably run on NuttX)</p>
-<p>What’s really happening? We go behind the scenes…</p>
 <p><img src="https://lupyuen.github.io/images/tcc-zig.jpg" alt="Zig Compiler compiles TCC Compiler to WebAssembly" /></p>
 <h1 id="zig-compiles-tcc-to-webassembly"><a href="#zig-compiles-tcc-to-webassembly">2 Zig compiles TCC to WebAssembly</a></h1>
 <p><em>Will Zig Compiler happily compile TCC to WebAssembly?</em></p>
