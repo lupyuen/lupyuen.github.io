@@ -456,7 +456,7 @@ Later our Zig Wrapper will have to parse meticulously all kinds of C Format Stri
 
 (Funny how __printf__ is the first thing we learn about C. Yet it's incredibly difficult to implement!)
 
-TODO: Pic of compiling and running NuttX App
+![TODO](https://lupyuen.github.io/images/tcc-nuttx.jpg)
 
 # Test with Apache NuttX RTOS
 
@@ -464,7 +464,7 @@ _TCC in WebAssembly has compiled our C Program to RISC-V ELF..._
 
 _Will the RISC-V ELF run on Apache NuttX RTOS?_
 
-We copy the __RISC-V ELF `a.out`__ to the __NuttX Apps Filesystem__...
+We copy the __RISC-V ELF `a.out`__ to the __NuttX Apps Filesystem__ (pic above)...
 
 ```bash
 ## Copy RISC-V ELF `a.out`
@@ -710,8 +710,6 @@ gcc \
 ```
 
 And we copied above GCC Options to become the [__Zig Compiler Options__](TODO).
-
-TODO: Pic of JavaScript
 
 ![TODO](https://lupyuen.github.io/images/tcc-zig.jpg)
 
