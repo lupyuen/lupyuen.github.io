@@ -1230,16 +1230,15 @@ Do we really need all 72 POSIX Functions? We run through the list...
 
 We'll simulate these functions for WebAssembly. Maybe with an Emulated Filesystem, similar to [__Emscripten Filesystem__](https://emscripten.org/docs/porting/files/file_systems_overview.html). Or we embed [__ROM FS Filesystem__](https://docs.kernel.org/filesystems/romfs.html) into our Zig Wrapper.
 
-- getcwd
-- remove, unlink
-- open, fopen, fdopen, 
-- close, fclose
-- fprintf, fputc, fputs
-- read, fread
-- fwrite
-- fflush
-- fseek, ftell, lseek
-- puts
+| | | |
+|:---|:---|:---|
+| [__getcwd__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+getcwd) | [__remove__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+remove) | [__unlink__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+unlink)
+| [__open__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+open) | [__fopen__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fopen) | [__fdopen__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fdopen)
+| [__close__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+close) | [__fclose__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fclose) | [__fprintf__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fprintf)
+| [__fputc__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fputc) | [__fputs__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fputs) | [__read__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+read)
+| [__fread__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fread) | [__fwrite__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fwrite) | [__fflush__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fflush)
+| [__fseek__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fseek) | [__ftell__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+ftell) | [__lseek__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+lseek)
+| [__puts__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+puts)
 
 [__Varargs Functions:__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L188-L447)
 
@@ -1247,20 +1246,23 @@ As discussed earlier, Varargs will be tricky to implement in Zig. Probably we sh
 
 Right now we're doing simple [__Pattern Matching__](TODO). But it might not be sufficient when TCC compiles Real Programs.
 
-- printf, snprintf, sprintf, vsnprintf
-- sscanf
+| | | |
+|:---|:---|:---|
+| [__printf__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+printf) | [__snprintf__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+snprintf) | [__sprintf__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sprintf)
+| [__vsnprintf__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+vsnprintf) | [__sscanf__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sscanf)
 
 [__String Functions:__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L539-L774)
 
 We'll borrow from [__ziglibc__](https://github.com/marler8997/ziglibc)...
 
-- [__atoi__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+atoi)
-- strcat, strchr, strcmp
-- strncmp, strncpy, strrchr
-- strstr, strtod, strtof
-- strtol, strtold, strtoll
-- strtoul, strtoull
-- strerror
+| | | |
+|:---|:---|:---|
+| [__atoi__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+atoi) | [__strcat__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strcat) | [__strchr__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strchr)
+| [__strcmp__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strcmp) | [__strncmp__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strncmp) | [__strncpy__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strncpy)
+| [__strrchr__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strrchr) | [__strstr__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strstr) | [__strtod__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtod)
+| [__strtof__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtof) | [__strtol__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtol) | [__strtold__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtold)
+| [__strtoll__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtoll) | [__strtoul__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtoul) | [__strtoull__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strtoull)
+| [__strerror__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strerror)
 
 [__Semaphore Functions:__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L168-L188)
 
@@ -1268,7 +1270,9 @@ Not sure why TCC uses Semaphores? Maybe we'll understand when we support __`#inc
 
 (Where can we borrow the Semaphore Functions?)
 
-- sem_init, sem_post, sem_wait
+| | | |
+|:---|:---|:---|
+| [__sem_init__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sem_init) | [__sem_post__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sem_post) | [__sem_wait__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sem_wait)
 
 __Standard Library:__
 
@@ -1276,7 +1280,9 @@ __qsort__ isn't used right now. Maybe for the Linker later?
 
 (Borrow __qsort__ from where? We can probably implement __exit__)
 
-- exit, qsort
+| | | |
+|:---|:---|:---|
+| [__exit__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+exit) | [__qsort__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+qsort)
 
 __Time and Math Functions:__
 
@@ -1284,13 +1290,15 @@ Not used right now, maybe later.
 
 (Anyone can lend us __ldexp__? How will we get the Time Functions? Call out to JavaScript to fetch the actual time?)
 
-- time, gettimeofday, localtime
-- ldexp
+| | | |
+|:---|:---|:---|
+| [__time__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+time) | [__gettimeofday__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+gettimeofday) | [__localtime__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+localtime)
+| [__ldexp__](https://github.com/search?type=code&q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+ldexp)
 
 __Outstanding Functions:__
 
 We have implemented (fully or partially) many of the POSIX Functions above.
 
-The ones that we haven't implemented? [__They will halt__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853) when TCC WebAssembly calls them...
+The ones that we haven't implemented? [__These functions will halt__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853) when TCC WebAssembly calls them...
 
 TODO
