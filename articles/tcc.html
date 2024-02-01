@@ -398,7 +398,7 @@ export fn fwrite(ptr: [*:0]const u8, size: usize, nmemb: usize, stream: *FILE) u
 </ul>
 <p>Hence we hacked up an implementation of <strong>String Formatting</strong> that’s safer, simpler and so-barebones-you-can-make-<em>soup-tulang</em>.</p>
 <p><em>Soup tulang? Tell me more…</em></p>
-<p>Our Zig Wrapper uses <strong>Pattern Matching</strong> to match the <strong>C Formats</strong> and substitute the <strong>Zig Equivalent</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">tcc-wasm.zig</a></p>
+<p>Our Zig Wrapper uses <strong>Pattern Matching</strong> to match the <strong>C Formats</strong> and substitute the <strong>Zig Equivalent</strong> (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Format a Single `%d`
 // like `#define __TINYC__ %d`
 FormatPattern{
