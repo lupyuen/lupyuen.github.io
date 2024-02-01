@@ -996,7 +996,7 @@ Read 16 bytes from offset 224
 4. 00000000-&gt;c0101010
 </code></pre></div>
 <p>Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section <strong><code>.data.ro</code></strong> to <strong><code>0xC010_1000</code></strong>. That’s all 15 bytes of <em>“Hello, World!!\n”</em>, including the terminating null.</p>
-<p>Thus our buffer is at buffer is at <strong><code>0xC010_1000</code></strong>.</p>
+<p>Thus our buffer is at <strong><code>0xC010_1000</code></strong>.</p>
 <p><em>Why did we Loop Forever?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Omitted: Execute ECALL for System Call to NuttX Kernel
 asm volatile ( ... );
