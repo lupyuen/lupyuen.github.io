@@ -30,13 +30,13 @@ In this article, we talk about the tricky bits of the TCC Port from __C to WebAs
 
 _Why are we doing this?_
 
-Today we can run [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/tinyemu2) in a Web Browser, with WebAssembly + Emscripten + 64-bit RISC-V.
+Today we're running [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/tinyemu2) inside a Web Browser, with WebAssembly + Emscripten + 64-bit RISC-V.
 
 (__Real-Time Operating System__ in Web Browser on General-Purpose Operating System!)
 
 What if we could __compile and test NuttX Apps__ in the Web Browser...
 
-1.  We type a __C Program__ into our Web Browser (pic below)...
+1.  We type a __C Program__ into our Web Browser (pic below)
 
     ```c
     int main(int argc, char *argv[]) {
