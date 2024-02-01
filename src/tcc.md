@@ -623,9 +623,9 @@ Yep, a NuttX App compiled in the Web Browser... Now runs OK with __NuttX Emulato
 
 TODO
 
-How would you use TCC in a Web Browser? Please lemme know 🙏
+How would you use __TCC in a Web Browser__? Please lemme know 🙏
 
-(Build and run RISC-V apps on iPhone?)
+_(Build and run RISC-V Apps on iPhone?)_
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
 
