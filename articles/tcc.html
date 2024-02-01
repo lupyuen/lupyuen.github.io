@@ -472,11 +472,9 @@ chmod +x apps/bin/a.out
 <p>Then we boot <strong>NuttX on QEMU</strong> (64-bit RISC-V) and run <strong><code>a.out</code></strong> on NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0
 nsh&gt; a.out
-load_absmodule: Loading /system/bin/a.out
-elf_loadbinary: Loading file: /system/bin/a.out
-...
-elf_symvalue: SHN_UNDEF: Exported symbol &quot;printf&quot; not found
-exec_internal: ERROR: Failed to load program &#39;a.out&#39;: -2
+Loading /system/bin/a.out
+Exported symbol &quot;printf&quot; not found
+Failed to load program &#39;a.out&#39;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#test-tcc-output-with-nuttx">(See the <strong>Complete Log</strong>)</a></p>
 <p>NuttX politely accepts the RISC-V ELF (produced by TCC). And says that <strong>printf</strong> is missing.</p>
@@ -698,7 +696,7 @@ cp tcc-wasm.wasm docs/
 http://localhost:8000/index.html
 </code></pre></div>
 <p>Check the <strong>JavaScript Console</strong> for more messages.</p>
-<p><a href="TODO">(See the <strong>JavaScript Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/5f8191d5c63b7dba030582cbe7481572">(See the <strong>JavaScript Log</strong>)</a></p>
 <p><em>How does it work?</em></p>
 <p>On clicking the <strong>Compile Button</strong>, our JavaScript loads the TCC WebAssembly: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L170-L187">tcc.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Load the WebAssembly Module and start the Main Function.
@@ -779,7 +777,7 @@ const code_ptr = allocateString(`
 const ptr = wasm.instance.exports
   .compile_program(options_ptr, code_ptr);
 </code></pre></div>
-<p><a href="TODO">(See the <strong>NodeJS Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/795327506cad9b1ee82206e614c399cd">(See the <strong>NodeJS Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tcc-format.jpg" alt="Our Zig Wrapper doing Pattern Matching for Formatting C Strings" /></p>
 <h1 id="appendix-pattern-matching"><a href="#appendix-pattern-matching">11 Appendix: Pattern Matching</a></h1>
 <p>A while back we saw our Zig Wrapper doing <strong>Pattern Matching</strong> for Formatting C Strings…</p>
@@ -984,7 +982,7 @@ asm volatile (
 <p>TCC won’t assemble the <strong><code>li</code></strong> and <strong><code>nop</code></strong> instructions.</p>
 <p>So we used this <a href="https://riscvasm.lucasteske.dev/#"><strong>RISC-V Online Assembler</strong></a> to assemble the Machine Code above.</p>
 <p><em>How did we figure out that the buffer is at 0xC010_1000?</em></p>
-<p>We saw this in the NuttX Log…</p>
+<p>We saw this in the <a href="https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d"><strong>NuttX Log</strong></a>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>NuttShell (NSH) NuttX-12.4.0
 nsh&gt; a.out
 ...
