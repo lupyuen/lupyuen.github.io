@@ -24,7 +24,7 @@ In this article, we talk about the tricky bits of the TCC Port from __C to WebAs
 
 - We hacked a simple workaround for __fprintf and friends__
 
-- And TCC produces a __RISC-V Binary__ that runs OK! (Somewhat)
+- And TCC produces a __RISC-V Binary__ that runs OK (Somewhat)
 
   [(Not to be confused with __TTC Compiler__)](https://research.cs.queensu.ca/home/cordy/pub/downloads/tplus/Turing_Plus_Report.pdf)
 
@@ -128,7 +128,7 @@ Yep the __64-bit RISC-V Code__ looks legit! Very similar to our [__NuttX App__](
 
 What's really happening? We go behind the scenes...
 
-![TODO](https://lupyuen.github.io/images/tcc-zig.jpg)
+![Zig Compiler compiles TCC Compiler to WebAssembly](https://lupyuen.github.io/images/tcc-zig.jpg)
 
 # Zig compiles TCC to WebAssembly
 
@@ -166,7 +166,7 @@ zig cc \
 
 [(See the __TCC Source Code__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/tcc.c)
 
-[(About the __Zig Compiler Options__)](TODO)
+[(About the __Zig Compiler Options__)](https://lupyuen.github.io/articles/tcc#appendix-compile-tcc-with-zig)
 
 We link the TCC WebAssembly with our [__Zig Wrapper__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig) (that exports the TCC Compiler to JavaScript)...
 
@@ -241,7 +241,7 @@ pub export fn compile_program(
 
 Plus a couple of Magical Bits that we'll cover in the next section.
 
-[(How JavaScript calls our __Zig Wrapper__)](TODO)
+[(How JavaScript calls our __Zig Wrapper__)](https://lupyuen.github.io/articles/tcc#appendix-javascript-calls-tcc)
 
 _Zig Compiler compiles TCC without any code changes?_
 
@@ -257,7 +257,7 @@ We'll find a better way to express our outrage. (Instead of jumping around)
 
 Let's study the Magical Bits inside our Zig Wrapper...
 
-![TODO](https://lupyuen.github.io/images/tcc-posix.jpg)
+![TCC Compiler in WebAssembly needs POSIX Functions](https://lupyuen.github.io/images/tcc-posix.jpg)
 
 # POSIX for WebAssembly
 
@@ -271,9 +271,11 @@ _Is POSIX a problem for WebAssembly?_
 
 WebAssembly running in a Web Browser ain't __No Command Line__! (Pic above)
 
-We counted [__72 POSIX Functions__](TODO) needed by TCC Compiler, but missing from WebAssembly.
+We counted [__72 POSIX Functions__](https://lupyuen.github.io/articles/tcc#appendix-missing-functions) needed by TCC Compiler, but missing from WebAssembly.
 
-Thus we fill in the [__Missing Functions__](TODO) ourselves.
+Thus we fill in the [__Missing Functions__](https://lupyuen.github.io/articles/tcc#appendix-missing-functions) ourselves.
+
+[(About the __Missing POSIX Functions__)](https://lupyuen.github.io/articles/tcc#appendix-missing-functions)
 
 _Surely other Zig Devs will have the same problem?_
 
@@ -312,7 +314,7 @@ pub export fn fopen(_: c_int) c_int {
 
 Some of these functions are especially troubling for WebAssembly...
 
-> ![TODO](https://lupyuen.github.io/images/tcc-posix2.jpg)
+> ![File Input and Output are especially troubling for WebAssembly](https://lupyuen.github.io/images/tcc-posix2.jpg)
 
 # File Input and Output
 
@@ -368,7 +370,7 @@ We'll have to embed an __Emulated Filesystem__ inside our Zig Wrapper. The Files
 
 [(Maybe we embed the simple __ROM FS Filesystem__)](https://docs.kernel.org/filesystems/romfs.html)
 
-![TODO](https://lupyuen.github.io/images/tcc-format.jpg)
+![Our Zig Wrapper uses Pattern Matching to match the C Formats and substitute the Zig Equivalent](https://lupyuen.github.io/images/tcc-format.jpg)
 
 # Fearsome fprintf and Friends
 
@@ -446,7 +448,7 @@ const format_patterns = [_]FormatPattern{
 
 And that's how we implement [__fprintf and friends__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L447)!
 
-[(How we do __Pattern Matching__)](TODO)
+[(How we do __Pattern Matching__)](https://lupyuen.github.io/articles/tcc#appendix-pattern-matching)
 
 _So simple? Unbelievable!_
 
@@ -456,7 +458,7 @@ Later our Zig Wrapper will have to parse meticulously all kinds of C Format Stri
 
 (Funny how __printf__ is the first thing we learn about C. Yet it's incredibly difficult to implement!)
 
-![TODO](https://lupyuen.github.io/images/tcc-nuttx.jpg)
+![Compile and Run NuttX Apps in the Web Browser](https://lupyuen.github.io/images/tcc-nuttx.jpg)
 
 # Test with Apache NuttX RTOS
 
@@ -493,7 +495,7 @@ Which makes sense: We haven't linked our C Program with the C Library!
 
 [(NuttX should load a __RISC-V ELF__ like this)](https://gist.github.com/lupyuen/847f7adee50499cac5212f2b95d19cd3)
 
-[(How we build and run __NuttX for QEMU__)](TODO)
+[(How we build and run __NuttX for QEMU__)](https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu)
 
 _How else can we print something in NuttX?_
 
@@ -514,7 +516,7 @@ That's the same NuttX System Call that __printf__ executes internally.
 
 One last chance to say hello to NuttX...
 
-![TODO](https://lupyuen.github.io/images/tcc-ecall.png)
+![TCC WebAssembly compiles a NuttX System Call](https://lupyuen.github.io/images/tcc-ecall.png)
 
 # Hello NuttX!
 
@@ -577,9 +579,9 @@ int main(int argc, char *argv[]) {
 
 We copy this into [__TCC WebAssembly__](https://lupyuen.github.io/tcc-riscv32-wasm/) and compile it.
 
-[(Why so complicated? __Explained here__)](TODO)
+[(Why so complicated? __Explained here__)](https://lupyuen.github.io/articles/tcc#appendix-nuttx-system-call)
 
-[(Warning: __SYS_write 61__ may change!)](https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call)
+[(Warning: __SYS_write 61__ may change)](https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call)
 
 _Does it work?_
 
@@ -607,7 +609,7 @@ Indeed we've created a C Compiler in a Web Browser, that __produces proper NuttX
 
 _OK so we can compile NuttX Apps in a Web Browser... But can we run them in a Web Browser?_
 
-Yep! A NuttX App compiled in the Web Browser... Now runs OK with __NuttX Emulator in the Web Browser__! 🎉 (Pic below)
+Yep, a NuttX App compiled in the Web Browser... Now runs OK with __NuttX Emulator in the Web Browser__! 🎉 (Pic below)
 
 - [Watch the __Demo on YouTube__](https://youtu.be/DJMDYq52Iv8)
 
@@ -620,6 +622,10 @@ Yep! A NuttX App compiled in the Web Browser... Now runs OK with __NuttX Emulato
 # What's Next
 
 TODO
+
+How would you use TCC in a Web Browser? Please lemme know 🙏
+
+(Build and run RISC-V apps on iPhone?)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -656,19 +662,19 @@ make --trace cross-riscv64
 ## from C to WebAssembly. Produces `tcc.o`
 
 ## Omitted: Run the `zig cc` command from earlier...
-## TODO
+## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
 
 ## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
 ## and link it with TCC compiled for WebAssembly `tcc.o`
 ## Generates `tcc-wasm.wasm`
 
 ## Omitted: Run the `zig build-exe` command from earlier...
-## TODO
+## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
 ```
 
 _How did we figure out the `zig cc` options?_
 
-Earlier we saw a long list of [__Zig Compiler Options__](TODO)...
+Earlier we saw a long list of [__Zig Compiler Options__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly)...
 
 ```bash
 ## Zig Compiler Options for TCC Compiler
@@ -709,7 +715,7 @@ gcc \
   -I. 
 ```
 
-And we copied above GCC Options to become the [__Zig Compiler Options__](TODO).
+And we copied above GCC Options to become the [__Zig Compiler Options__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly).
 
 ![TODO](https://lupyuen.github.io/images/tcc-zig.jpg)
 
@@ -719,7 +725,7 @@ Previously we saw some __JavaScript (Web Browser and NodeJS)__ calling our TCC C
 
 - [__TCC WebAssembly in Web Browser__](https://lupyuen.github.io/tcc-riscv32-wasm/)
 
-- TODO: TCC WebAssembly in NodeJS
+- [__TCC WebAssembly in NodeJS__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly)
 
 This is how we test the TCC WebAssembly in a Web Browser with a __Local Web Server__...
 
@@ -843,13 +849,13 @@ const ptr = wasm.instance.exports
   .compile_program(options_ptr, code_ptr);
 ```
 
-![TODO](https://lupyuen.github.io/images/tcc-format.jpg)
+![Our Zig Wrapper doing Pattern Matching for Formatting C Strings](https://lupyuen.github.io/images/tcc-format.jpg)
 
 # Appendix: Pattern Matching
 
-A while back we saw our Zig Wrapper doing __Pattern Matching for Formatting C Strings__...
+A while back we saw our Zig Wrapper doing __Pattern Matching__ for Formatting C Strings...
 
-- TODO
+- [__"Fearsome fprintf and Friends"__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends)
 
 We use __comptime Functions__ in Zig to implement the C String Formatting (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L326)
 
@@ -966,17 +972,17 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
 
 [(See the __Formatting Log__)](https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36)
 
-![TODO](https://lupyuen.github.io/images/app-syscall.jpg)
+![NuttX Apps make a System Call to print to the console](https://lupyuen.github.io/images/app-syscall.jpg)
 
 # Appendix: NuttX System Call
 
 Not long ago we saw a huge chunk of C Code that makes a __NuttX System Call__...
 
-- TODO
+- [__"Hello NuttX!"__](https://lupyuen.github.io/articles/tcc#hello-nuttx)
 
 _Why so complicated?_
 
-Rightfully this shorter version should work...
+Rightfully this __shorter version__ should work...
 
 ```c
 // Make NuttX System Call to write(fd, buf, buflen)
@@ -1000,7 +1006,7 @@ asm volatile (
 );
 ```
 
-Unfortunately TCC generates __incorrect RISC-V Machine Code__ that mashes up the RISC-V Registers...
+Sadly TCC generates __incorrect RISC-V Machine Code__ that mashes up the RISC-V Registers...
 
 ```yaml
 main():
@@ -1188,13 +1194,13 @@ NuttX Apps are located in __`apps/bin`__.
 
 We may copy our __RISC-V ELF `a.out`__ to that folder.
 
-![TODO](https://lupyuen.github.io/images/tcc-posix.jpg)
+![POSIX Functions aren't supported for TCC in WebAssembly](https://lupyuen.github.io/images/tcc-posix.jpg)
 
 # Appendix: Missing Functions
 
 Remember we said that POSIX Functions aren't supported in WebAssembly? (Pic above)
 
-- TODO
+- [__"POSIX for WebAssembly"__](https://lupyuen.github.io/articles/tcc#posix-for-webassembly)
 
 We dump the __Compiled WebAssembly__ of TCC Compiler, and we discover that it calls __72 POSIX Functions__...
 
@@ -1237,7 +1243,7 @@ __Varargs Functions:__
 
 As discussed earlier, Varargs will be tricky to implement in Zig. Probably we should do it in C. [(Like __ziglibc__)](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191)
 
-Right now we're doing simple Pattern Matching. But it might not be sufficient when TCC compiles Real Programs.
+Right now we're doing simple [__Pattern Matching__](TODO). But it might not be sufficient when TCC compiles Real Programs.
 
 - printf, snprintf, sprintf, vsnprintf
 - sscanf
@@ -1288,6 +1294,8 @@ Also not used right now.
 
 __Outstanding Functions:__
 
-We have implemented (fully or partially) many of the POSIX Functions above. The functions we haven't implemented are...
+We have implemented (fully or partially) many of the POSIX Functions above.
+
+The ones that we haven't implemented? [__They will crash__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853) when TCC WebAssembly calls them...
 
 TODO
