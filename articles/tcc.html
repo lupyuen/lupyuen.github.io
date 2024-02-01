@@ -456,11 +456,11 @@ const format_patterns = [_]FormatPattern{
 <p>OK actually we’ll hit more Format Patterns as TCC Compiler emits various Error and Warning Messages. But it’s a good start!</p>
 <p>Later our Zig Wrapper will have to parse meticulously all kinds of C Format Strings. Or we do the <a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191"><strong>parsing in C</strong></a>, compiled to WebAssembly.</p>
 <p>(Funny how <strong>printf</strong> is the first thing we learn about C. Yet it’s incredibly difficult to implement!)</p>
-<p>TODO: Pic of compiling and running NuttX App</p>
+<p><img src="https://lupyuen.github.io/images/tcc-nuttx.jpg" alt="TODO" /></p>
 <h1 id="test-with-apache-nuttx-rtos"><a href="#test-with-apache-nuttx-rtos">6 Test with Apache NuttX RTOS</a></h1>
 <p><em>TCC in WebAssembly has compiled our C Program to RISC-V ELF…</em></p>
 <p><em>Will the RISC-V ELF run on Apache NuttX RTOS?</em></p>
-<p>We copy the <strong>RISC-V ELF <code>a.out</code></strong> to the <strong>NuttX Apps Filesystem</strong>…</p>
+<p>We copy the <strong>RISC-V ELF <code>a.out</code></strong> to the <strong>NuttX Apps Filesystem</strong> (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy RISC-V ELF `a.out`
 ## to NuttX Apps Filesystem
 cp a.out apps/bin/
@@ -665,7 +665,6 @@ gcc \
   -I. 
 </code></pre></div>
 <p>And we copied above GCC Options to become the <a href="TODO"><strong>Zig Compiler Options</strong></a>.</p>
-<p>TODO: Pic of JavaScript</p>
 <p><img src="https://lupyuen.github.io/images/tcc-zig.jpg" alt="TODO" /></p>
 <h1 id="appendix-javascript-calls-tcc"><a href="#appendix-javascript-calls-tcc">10 Appendix: JavaScript calls TCC</a></h1>
 <p>Previously we saw some <strong>JavaScript (Web Browser and NodeJS)</strong> calling our TCC Compiler in WebAssembly (pic above)…</p>
