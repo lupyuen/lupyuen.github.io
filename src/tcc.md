@@ -384,7 +384,7 @@ Hence we hacked up an implementation of __String Formatting__ that's safer, simp
 
 _Soup tulang? Tell me more..._
 
-Our Zig Wrapper uses __Pattern Matching__ to match the __C Formats__ and substitute the __Zig Equivalent__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
+Our Zig Wrapper uses __Pattern Matching__ to match the __C Formats__ and substitute the __Zig Equivalent__ (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
 
 ```zig
 // Format a Single `%d`
