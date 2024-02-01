@@ -120,13 +120,13 @@ main():
   3c: 00008067  ret
 ```
 
+Yep the __64-bit RISC-V Code__ looks legit! Very similar to our [__NuttX App__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app). (So it will probably run on NuttX)
+
+What just happened? We go behind the scenes...
+
 [(See the __Entire Disassembly__)](https://gist.github.com/lupyuen/ab8febefa9c649ad7c242ee3f7aaf974)
 
 [(About the __RISC-V Instructions__)](https://lupyuen.github.io/articles/app#inside-a-nuttx-app)
-
-Yep the __64-bit RISC-V Code__ looks legit! Very similar to our [__NuttX App__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app). (So it will probably run on NuttX)
-
-What's really happening? We go behind the scenes...
 
 ![Zig Compiler compiles TCC Compiler to WebAssembly](https://lupyuen.github.io/images/tcc-zig.jpg)
 
