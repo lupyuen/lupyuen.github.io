@@ -450,7 +450,7 @@ And that's how we implement [__fprintf and friends__](https://github.com/lupyuen
 
 _So simple? Unbelievable!_
 
-OK actually we'll hit more Format Patterns as TCC Compiler emits various Error and Warning Messages. But it's a good start!
+OK actually we'll hit more Format Patterns as TCC Compiler emits various __Error and Warning Messages__. But it's a good start!
 
 Later our Zig Wrapper will have to parse meticulously all kinds of C Format Strings. Or we do the [__parsing in C__](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191), compiled to WebAssembly.
 
@@ -1107,11 +1107,13 @@ asm volatile ( ... );
 for(;;) {}
 ```
 
-That's because NuttX Apps are not supposed to Return to NuttX Kernel.
+That's because NuttX Apps are not supposed to [__Return to NuttX Kernel__](https://github.com/lupyuen/tcc-riscv32-wasm#fix-missing-printf-in-nuttx-app).
 
 We should call the NuttX System Call __`__exit`__ to terminate peacefully.
 
-TODO: Pic of QEMU
+![Online Demo of Apache NuttX RTOS](https://lupyuen.github.io/images/tcc-demo.png)
+
+[_Online Demo of Apache NuttX RTOS_](https://nuttx.apache.org/demo/)
 
 # Appendix: Build NuttX for QEMU
 
