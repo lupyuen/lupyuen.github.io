@@ -617,7 +617,7 @@ Yep, a NuttX App compiled in the Web Browser... Now runs OK with __NuttX Emulato
 
 ![NuttX App compiled in a Web Browser... Runs inside the Web Browser!](https://lupyuen.github.io/images/tcc-emu2.png)
 
-[_NuttX App compiled in a Web Browser... Runs inside the Web Browser!_](https://lupyuen.github.io/nuttx-tinyemu/tcc)
+[_NuttX App compiled in a Web Browser... Runs inside the Web Browser!_](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser)
 
 # What's Next
 
@@ -751,6 +751,8 @@ http://localhost:8000/index.html
 
 Check the __JavaScript Console__ for more messages.
 
+[(See the __JavaScript Log__)](TODO)
+
 _How does it work?_
 
 On clicking the __Compile Button__, our JavaScript loads the TCC WebAssembly: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L170-L187)
@@ -848,6 +850,8 @@ const code_ptr = allocateString(`
 const ptr = wasm.instance.exports
   .compile_program(options_ptr, code_ptr);
 ```
+
+[(See the __NodeJS Log__)](TODO)
 
 ![Our Zig Wrapper doing Pattern Matching for Formatting C Strings](https://lupyuen.github.io/images/tcc-format.jpg)
 
@@ -1224,7 +1228,7 @@ Import:
 
 Do we really need all 72 POSIX Functions? We run through the list...
 
-__Filesystem Functions:__
+[__Filesystem Functions:__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L89-L168)
 
 We'll simulate these functions for WebAssembly. Maybe with an Emulated Filesystem, similar to [__Emscripten Filesystem__](https://emscripten.org/docs/porting/files/file_systems_overview.html). Or we embed [__ROM FS Filesystem__](https://docs.kernel.org/filesystems/romfs.html) into our Zig Wrapper.
 
@@ -1239,7 +1243,7 @@ We'll simulate these functions for WebAssembly. Maybe with an Emulated Filesyste
 - fseek, ftell, lseek
 - puts
 
-__Varargs Functions:__
+[__Varargs Functions:__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L188-L447)
 
 As discussed earlier, Varargs will be tricky to implement in Zig. Probably we should do it in C. [(Like __ziglibc__)](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191)
 
@@ -1248,7 +1252,7 @@ Right now we're doing simple [__Pattern Matching__](TODO). But it might not be s
 - printf, snprintf, sprintf, vsnprintf
 - sscanf
 
-__String Functions:__
+[__String Functions:__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L539-L774)
 
 We'll borrow from [__ziglibc__](https://github.com/marler8997/ziglibc) and [__foundation-libc__](https://github.com/ZigEmbeddedGroup/foundation-libc).
 
@@ -1260,7 +1264,7 @@ We'll borrow from [__ziglibc__](https://github.com/marler8997/ziglibc) and [__fo
 - strtoul, strtoull
 - strerror
 
-__Semaphore Functions:__
+[__Semaphore Functions:__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L168-L188)
 
 Not sure why TCC uses Semaphores? Maybe we'll understand when we support __`#include`__ files.
 
@@ -1276,26 +1280,19 @@ __qsort__ isn't used right now. Maybe for the Linker later?
 
 - exit, qsort
 
-__Time Functions:__
+__Time and Math Functions:__
 
 Not used right now, maybe later.
 
-(How will we get the Time Functions? Call out to JavaScript to fetch the actual time?)
+(Anyone can lend us __ldexp__? How will we get the Time Functions? Call out to JavaScript to fetch the actual time?)
 
 - time, gettimeofday, localtime
-
-__Math Functions:__
-
-Also not used right now.
-
-(Anyone can lend us __ldexp__?)
-
 - ldexp
 
 __Outstanding Functions:__
 
 We have implemented (fully or partially) many of the POSIX Functions above.
 
-The ones that we haven't implemented? [__They will crash__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853) when TCC WebAssembly calls them...
+The ones that we haven't implemented? [__They will halt__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853) when TCC WebAssembly calls them...
 
 TODO
