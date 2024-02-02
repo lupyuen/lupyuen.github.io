@@ -996,7 +996,7 @@ fn format_string1(
 // but for 2 Varargs (instead of 1)
 ```
 
-The function above is called by a __comptime Inline Loop__ that applies all the [__Format Patterns__](tcc-wasm.zig) that we saw earlier: [](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L252)
+The function above is called by a __comptime Inline Loop__ that applies all the [__Format Patterns__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209) that we saw earlier: [](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L252)
 
 ```zig
 /// Runtime Function to format a string by Pattern Matching.
@@ -1444,7 +1444,7 @@ Not used right now, maybe later.
 
 __Outstanding Functions__
 
-[_(Implemented here)_](ttps://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
+[_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
 
 We have implemented (fully or partially) __48 POSIX Functions__ from above.
 
