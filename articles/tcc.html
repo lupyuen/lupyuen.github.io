@@ -1114,7 +1114,8 @@ Read 16 bytes from offset 224
 </code></pre></div>
 <p>Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section (<strong><code>.data.ro</code></strong>) to <strong><code>0xC010_1000</code></strong>.</p>
 <p>That’s all 15 bytes of <em>“Hello, World!!\n”</em>, including the terminating null.</p>
-<p>Thus our buffer should be at <strong><code>0xC010_1000</code></strong>.</p>
+<p>Thus our buffer in NuttX QEMU should be at <strong><code>0xC010_1000</code></strong>.</p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser">(<strong>NuttX WebAssembly Emulator</strong> uses <strong><code>0x8010_1000</code></strong> instead)</a></p>
 <p><a href="https://lupyuen.github.io/articles/app#kernel-starts-a-nuttx-app">(More about the <strong>NuttX ELF Loader</strong>)</a></p>
 <p><em>Why do we Loop Forever?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Omitted: Execute ECALL for System Call to NuttX Kernel
