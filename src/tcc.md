@@ -269,11 +269,11 @@ _What's this POSIX?_
 
 TCC Compiler was created as a __Command-Line App__. So it calls the typical [__POSIX Functions__](https://en.wikipedia.org/wiki/POSIX) like __fopen, fprintf, strncpy, malloc,__ ...
 
-[(Linked from the __C Standard Library libc__)](https://en.wikipedia.org/wiki/C_standard_library)
+But WebAssembly running in a Web Browser ain't __No Command Line__! (Pic above)
+
+[(WebAssembly doesn't have a __C Standard Library libc__)](https://en.wikipedia.org/wiki/C_standard_library)
 
 _Is POSIX a problem for WebAssembly?_
-
-WebAssembly running in a Web Browser ain't __No Command Line__! (Pic above)
 
 We counted [__72 POSIX Functions__](https://lupyuen.github.io/articles/tcc#appendix-missing-functions) needed by TCC Compiler, but missing from WebAssembly.
 
@@ -787,7 +787,8 @@ cd tcc-riscv32-wasm
 cargo install simple-http-server
 simple-http-server ./docs &
 
-## Copy the Linked TCC WebAssembly to the Web Server
+## Whenever we rebuild TCC WebAssembly...
+## Copy it to the Web Server
 cp tcc-wasm.wasm docs/
 ```
 
@@ -944,12 +945,12 @@ To implement this, we call __comptime Functions__ in Zig: [tcc-wasm.zig](https:/
 /// Else return 0.
 fn format_string1(
   ap: *std.builtin.VaList,  // Varargs passed from C
-  str: [*]u8,    // Buffer for returning Formatted String
-  size: size_t,  // Buffer Size
-  format: []const u8,  // C Format String, like `#define __TINYC__ %d\n`
-  comptime c_spec: []const u8,   // C Format Pattern, like `%d`
-  comptime zig_spec: []const u8, // Zig Equivalent, like `{}`
-  comptime T0: type,   // Type of First Vararg, like `c_int`
+  str:    [*]u8,            // Buffer for returning Formatted String
+  size:   size_t,           // Buffer Size
+  format: []const u8,       // C Format String, like `#define __TINYC__ %d\n`
+  comptime c_spec:   []const u8,  // C Format Pattern, like `%d`
+  comptime zig_spec: []const u8,  // Zig Equivalent, like `{}`
+  comptime T0:       type,        // Type of First Vararg, like `c_int`
 ) usize {
   // Count the Format Specifiers: `%`
   const spec_cnt   = std.mem.count(u8, c_spec, "%");
@@ -991,9 +992,9 @@ The function above is called by a __comptime Inline Loop__ that applies all the 
 /// Return the number of bytes written to `str`, excluding terminating null.
 fn format_string(
   ap: *std.builtin.VaList,  // Varargs passed from C
-  str: [*]u8,    // Buffer for returning Formatted String
-  size: size_t,  // Buffer Size
-  format: []const u8,  // C Format String, like `#define __TINYC__ %d\n`
+  str:    [*]u8,            // Buffer for returning Formatted String
+  size:   size_t,           // Buffer Size
+  format: []const u8,       // C Format String, like `#define __TINYC__ %d\n`
 ) usize {
   // If no Format Specifiers: Return the Format, like `warning: `
   const len = format_string0(str, size, format);
@@ -1207,7 +1208,7 @@ Thus our buffer should be at __`0xC010_1000`__.
 
 [(More about the __NuttX ELF Loader__)](https://lupyuen.github.io/articles/app#kernel-starts-a-nuttx-app)
 
-_Why did we Loop Forever?_
+_Why do we Loop Forever?_
 
 ```c
 // Omitted: Execute ECALL for System Call to NuttX Kernel
@@ -1323,18 +1324,18 @@ $ sudo apt install wabt
 $ wasm-objdump -x tcc.o
 
 Import:
- - func[0] sig=1 <env.strcmp>  <- env.strcmp
+ - func[0] sig=1  <env.strcmp> <- env.strcmp
  - func[1] sig=12 <env.memset> <- env.memset
- - func[2] sig=1 <env.getcwd>  <- env.getcwd
+ - func[2] sig=1  <env.getcwd> <- env.getcwd
  ...
- - func[69] sig=2 <env.localtime> <- env.localtime
- - func[70] sig=13 <env.qsort>    <- env.qsort
- - func[71] sig=19 <env.strtoll>  <- env.strtoll
+ - func[69] sig=2  <env.localtime> <- env.localtime
+ - func[70] sig=13 <env.qsort>     <- env.qsort
+ - func[71] sig=19 <env.strtoll>   <- env.strtoll
 ```
 
 [(See the __Complete List__)](https://github.com/lupyuen/tcc-riscv32-wasm#missing-functions-in-tcc-webassembly)
 
-Do we really need all 72 POSIX Functions? We run through the list...
+Do we need all 72 POSIX Functions? We scrutinise the list...
 
 <hr>
 
@@ -1404,7 +1405,7 @@ Not sure why TCC uses Semaphores? Maybe we'll understand when we support __`#inc
 
 <hr>
 
-__Standard Library:__
+__Standard Library__
 
 __qsort__ isn't used right now. Maybe for the Linker later?
 
@@ -1420,7 +1421,7 @@ __Time and Math Functions:__
 
 Not used right now, maybe later.
 
-(Anyone can lend us __ldexp__? How will we get the Time Functions? Call out to JavaScript to fetch the actual time?)
+(Anyone can lend us __ldexp__? How will we do the Time Functions? Call out to JavaScript to [__fetch the time__](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer)?)
 
 | | | |
 |:---|:---|:---|
