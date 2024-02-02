@@ -420,7 +420,7 @@ var write_buflen: usize = 0;
 </ul>
 <p>Hence we hacked up an implementation of <strong>String Formatting</strong> that’s safer, simpler and so-barebones-you-can-make-<em>soup-tulang</em>.</p>
 <p><em>Soup tulang? Tell me more…</em></p>
-<p>Our Zig Wrapper uses <strong>Pattern Matching</strong> to match the <strong>C Formats</strong> and substitute the <strong>Zig Equivalent</strong> (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">tcc-wasm.zig</a></p>
+<p>Our Zig Wrapper uses <a href="https://lupyuen.github.io/articles/tcc#appendix-pattern-matching"><strong>Pattern Matching</strong></a> to match the <strong>C Formats</strong> and substitute the <strong>Zig Equivalent</strong> (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Format a Single `%d`
 // like `#define __TINYC__ %d`
 FormatPattern{
@@ -455,8 +455,8 @@ const format_patterns = [_]FormatPattern{
     .type0  = c_int, .type1 = null 
   },
 
-  // Format a Single `%s`, like `#define __BASE_FILE__ &quot;%s&quot;`
-  // or `.rela%s`
+  // Format a Single `%s`, like `.rela%s`
+  // Or `#define __BASE_FILE__ &quot;%s&quot;`
   FormatPattern{
     .c_spec = &quot;%s&quot;, .zig_spec = &quot;{s}&quot;,
     .type0  = [*:0]const u8, .type1 = null
@@ -468,14 +468,15 @@ const format_patterns = [_]FormatPattern{
     .type0  = [*:0]const u8, .type1 = [*:0]const u8
   },
 
-  // Format `%s:%d`, like `%s:%d: ` (File Name and Line Number)
+  // Format `%s:%d`, like `%s:%d: `
+  // (File Name and Line Number)
   FormatPattern{
     .c_spec = &quot;%s:%d&quot;, .zig_spec = &quot;{s}:{}&quot;,
     .type0  = [*:0]const u8, .type1 = c_int
   },
 };
 </code></pre></div>
-<p>And that’s how we implement <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L447"><strong>fprintf and friends</strong></a>!</p>
+<p>That’s our quick hack for <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L447"><strong>fprintf and friends</strong></a>!</p>
 <p><a href="https://lupyuen.github.io/articles/tcc#appendix-pattern-matching">(How we do <strong>Pattern Matching</strong>)</a></p>
 <p><em>So simple? Unbelievable!</em></p>
 <p>OK actually we’ll hit more Format Patterns as TCC Compiler emits various <strong>Error and Warning Messages</strong>. But it’s a good start!</p>
@@ -825,7 +826,25 @@ const ptr = wasm.instance.exports
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>“Fearsome fprintf and Friends”</strong></a></li>
 </ul>
-<p>We use <strong>comptime Functions</strong> in Zig to implement the C String Formatting (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L326">tcc-wasm.zig</a></p>
+<p>We search for <strong>Format Patterns</strong> in the C Format Strings and substitute the <strong>Zig Equivalent</strong> (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Format a Single `%d`
+// like `#define __TINYC__ %d`
+FormatPattern{
+
+  // If the C Format String contains this...
+  .c_spec = &quot;%d&quot;,
+  
+  // Then we apply this Zig Format...
+  .zig_spec = &quot;{}&quot;,
+  
+  // And extract these Argument Types
+  // from the Varargs...
+  .type0 = c_int,
+  .type1 = null
+}
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">(See the <strong>Format Patterns</strong>)</a></p>
+<p>To implement this, we call <strong>comptime Functions</strong> in Zig: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L326">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// CompTime Function to format a string by Pattern Matching.
 /// Format a Single Specifier, like `#define __BASE_FILE__ &quot;%s&quot;`
 /// If the Spec matches the Format: Return the number of bytes written to `str`, excluding terminating null.
