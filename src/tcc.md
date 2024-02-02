@@ -408,7 +408,7 @@ Hence we hacked up an implementation of __String Formatting__ that's safer, simp
 
 _Soup tulang? Tell me more..._
 
-Our Zig Wrapper uses __Pattern Matching__ to match the __C Formats__ and substitute the __Zig Equivalent__ (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
+Our Zig Wrapper uses [__Pattern Matching__](https://lupyuen.github.io/articles/tcc#appendix-pattern-matching) to match the __C Formats__ and substitute the __Zig Equivalent__ (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
 
 ```zig
 // Format a Single `%d`
@@ -448,8 +448,8 @@ const format_patterns = [_]FormatPattern{
     .type0  = c_int, .type1 = null 
   },
 
-  // Format a Single `%s`, like `#define __BASE_FILE__ "%s"`
-  // or `.rela%s`
+  // Format a Single `%s`, like `.rela%s`
+  // Or `#define __BASE_FILE__ "%s"`
   FormatPattern{
     .c_spec = "%s", .zig_spec = "{s}",
     .type0  = [*:0]const u8, .type1 = null
@@ -461,7 +461,8 @@ const format_patterns = [_]FormatPattern{
     .type0  = [*:0]const u8, .type1 = [*:0]const u8
   },
 
-  // Format `%s:%d`, like `%s:%d: ` (File Name and Line Number)
+  // Format `%s:%d`, like `%s:%d: `
+  // (File Name and Line Number)
   FormatPattern{
     .c_spec = "%s:%d", .zig_spec = "{s}:{}",
     .type0  = [*:0]const u8, .type1 = c_int
@@ -469,7 +470,7 @@ const format_patterns = [_]FormatPattern{
 };
 ```
 
-And that's how we implement [__fprintf and friends__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L447)!
+That's our quick hack for [__fprintf and friends__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L447)!
 
 [(How we do __Pattern Matching__)](https://lupyuen.github.io/articles/tcc#appendix-pattern-matching)
 
@@ -904,7 +905,29 @@ A while back we saw our Zig Wrapper doing __Pattern Matching__ for Formatting C 
 
 - [__"Fearsome fprintf and Friends"__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends)
 
-We use __comptime Functions__ in Zig to implement the C String Formatting (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L326)
+We search for __Format Patterns__ in the C Format Strings and substitute the __Zig Equivalent__ (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
+
+```zig
+// Format a Single `%d`
+// like `#define __TINYC__ %d`
+FormatPattern{
+
+  // If the C Format String contains this...
+  .c_spec = "%d",
+  
+  // Then we apply this Zig Format...
+  .zig_spec = "{}",
+  
+  // And extract these Argument Types
+  // from the Varargs...
+  .type0 = c_int,
+  .type1 = null
+}
+```
+
+[(See the __Format Patterns__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
+
+To implement this, we call __comptime Functions__ in Zig: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L326)
 
 ```zig
 /// CompTime Function to format a string by Pattern Matching.
