@@ -992,7 +992,7 @@ asm volatile (
   &quot;.word 0x0001 \n&quot;
 );
 </code></pre></div>
-<p>Sadly TCC generates <a href="https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call"><strong>incorrect RISC-V Machine Code</strong></a> that mashes up the RISC-V Registers…</p>
+<p>Sadly TCC generates <a href="https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call"><strong>mysterious RISC-V Machine Code</strong></a> that mashes up the RISC-V Registers…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>main():
 // Prepare the Stack
    0:  fc010113  add     sp, sp, -64
