@@ -1171,7 +1171,7 @@ make -j 8 import
 popd
 </code></pre></div></li>
 </ol>
-<p>This produces the NuttX ELF Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator…</p>
+<p>This produces the NuttX ELF Image <strong><code>nuttx</code></strong> that we may boot on QEMU RISC-V Emulator…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS: Install QEMU
 brew install qemu
 
@@ -1189,7 +1189,11 @@ qemu-system-riscv64 \
   -nographic
 </code></pre></div>
 <p>NuttX Apps are located in <strong><code>apps/bin</code></strong>.</p>
-<p>We may copy our <strong>RISC-V ELF <code>a.out</code></strong> to that folder.</p>
+<p>We may copy our <strong>RISC-V ELF <code>a.out</code></strong> to that folder and run it…</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; a.out
+Hello, World!!
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/tcc-posix.jpg" alt="POSIX Functions aren’t supported for TCC in WebAssembly" /></p>
 <h1 id="appendix-missing-functions"><a href="#appendix-missing-functions">14 Appendix: Missing Functions</a></h1>
 <p>Remember we said that POSIX Functions aren’t supported in WebAssembly? (Pic above)</p>
@@ -1198,7 +1202,7 @@ qemu-system-riscv64 \
 </ul>
 <p>We dump the <strong>Compiled WebAssembly</strong> of TCC Compiler, and we discover that it calls <strong>72 POSIX Functions</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the Compiled WebAssembly
-## for TCC Compiler
+## for TCC Compiler `tcc.o`
 $ sudo apt install wabt
 $ wasm-objdump -x tcc.o
 
