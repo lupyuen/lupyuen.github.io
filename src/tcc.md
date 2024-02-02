@@ -1464,7 +1464,7 @@ __qsort__ isn't used right now. Maybe for the Linker later?
 
 <hr>
 
-__Time and Math Functions:__
+__Time and Math Functions__
 
 Not used right now, maybe later.
 
