@@ -1302,7 +1302,7 @@ Here are the steps to build and run __NuttX for QEMU 64-bit RISC-V__ (Kernel Mod
     popd
     ```
 
-This produces the NuttX ELF Image __nuttx__ that we may boot on QEMU RISC-V Emulator...
+This produces the NuttX ELF Image __`nuttx`__ that we may boot on QEMU RISC-V Emulator...
 
 ```bash
 ## For macOS: Install QEMU
@@ -1324,7 +1324,13 @@ qemu-system-riscv64 \
 
 NuttX Apps are located in __`apps/bin`__.
 
-We may copy our __RISC-V ELF `a.out`__ to that folder.
+We may copy our __RISC-V ELF `a.out`__ to that folder and run it...
+
+```bash
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> a.out
+Hello, World!!
+```
 
 ![POSIX Functions aren't supported for TCC in WebAssembly](https://lupyuen.github.io/images/tcc-posix.jpg)
 
@@ -1338,7 +1344,7 @@ We dump the __Compiled WebAssembly__ of TCC Compiler, and we discover that it ca
 
 ```bash
 ## Dump the Compiled WebAssembly
-## for TCC Compiler
+## for TCC Compiler `tcc.o`
 $ sudo apt install wabt
 $ wasm-objdump -x tcc.o
 
