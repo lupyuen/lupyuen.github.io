@@ -746,7 +746,7 @@ http://localhost:8000/index.html
 <p>Check the <strong>JavaScript Console</strong> for more messages.</p>
 <p><a href="https://gist.github.com/lupyuen/5f8191d5c63b7dba030582cbe7481572">(See the <strong>JavaScript Log</strong>)</a></p>
 <p><em>How does it work?</em></p>
-<p>On clicking the <strong>Compile Button</strong>, our JavaScript loads the TCC WebAssembly: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L170-L187">tcc.js</a></p>
+<p>On clicking the <strong>Compile Button</strong>, our JavaScript loads the TCC WebAssembly: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L174-L191">tcc.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Load the WebAssembly Module and start the Main Function.
 // Called by the Compile Button.
 async function bootstrap() {
@@ -766,7 +766,7 @@ async function bootstrap() {
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L25-L48">(<strong>importObject</strong> exports our <strong>JavaScript Logger</strong> to Zig)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L6-L25">(<strong>wasm</strong> is our <strong>WebAssembly Helper</strong>)</a></p>
-<p>Which triggers the <strong>Main Function</strong> and calls our Zig Function <strong>compile_program</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L48-L86">tcc.js</a></p>
+<p>Which triggers the <strong>Main Function</strong> and calls our Zig Function <strong>compile_program</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L48-L90">tcc.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Main Function
 function main() {
   // Allocate a String for passing the Compiler Options to Zig
@@ -805,13 +805,13 @@ function main() {
 };
 </code></pre></div>
 <p>Our Main Function then downloads the <strong><code>a.out</code></strong> file returned by our Zig Function.</p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L86-L108">(<strong>allocateString</strong> allocates a String from Zig Memory)</a></p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L158-L170">(<strong>download</strong> is here)</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L90-L112">(<strong>allocateString</strong> allocates a String from Zig Memory)</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L162-L174">(<strong>download</strong> is here)</a></p>
 <p><em>What about Node.js calling TCC WebAssembly?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Test TCC WebAssembly with Node.js
 node zig/test.js
 </code></pre></div>
-<p><strong>For Easier Testing</strong> (via Command-Line): We copied the JavaScript above into a Node.js Script: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js">test.js</a></p>
+<p><strong>For Easier Testing</strong> (via Command-Line): We copied the JavaScript above into a Node.js Script: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js#L46-L78">test.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Allocate a String for passing the Compiler Options to Zig
 const options = [&quot;-c&quot;, &quot;hello.c&quot;];
 const options_ptr = allocateString(JSON.stringify(options));
