@@ -1062,6 +1062,8 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
 
 [(See the __Formatting Log__)](https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36)
 
+[(Without __comptime__, the code gets __super tedious__)](https://github.com/lupyuen/tcc-riscv32-wasm#fix-the-varargs-functions)
+
 ![NuttX Apps make a System Call to print to the console](https://lupyuen.github.io/images/app-syscall.jpg)
 
 # Appendix: NuttX System Call
