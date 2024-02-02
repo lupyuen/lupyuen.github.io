@@ -982,7 +982,7 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
 <li><a href="https://lupyuen.github.io/articles/tcc#hello-nuttx"><strong>“Hello NuttX!”</strong></a></li>
 </ul>
 <p><em>Why so complicated?</em></p>
-<p>We refer to the docs for <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>NuttX System Calls (ECALL)</strong></a>. Rightfully this <strong>shorter version</strong> should work…</p>
+<p>We refer to the Sample Code for <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>NuttX System Calls (ECALL)</strong></a>. Rightfully this <strong>shorter version</strong> should work…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Make NuttX System Call to write(fd, buf, buflen)
 const unsigned int nbr = 61; // SYS_write
 const void *parm1 = 1;       // File Descriptor (stdout)
@@ -1001,9 +1001,16 @@ asm volatile (
 
   // NuttX needs NOP after ECALL
   &quot;.word 0x0001 \n&quot;
+
+  // Input+Output Registers: None
+  // Input-Only Registers: A0 to A3
+  // Clobbers the Memory
+  :
+  : &quot;r&quot;(r0), &quot;r&quot;(r1), &quot;r&quot;(r2), &quot;r&quot;(r3)
+  : &quot;memory&quot;
 );
 </code></pre></div>
-<p>Sadly TCC generates <a href="https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call"><strong>mysterious RISC-V Machine Code</strong></a> that mashes up the RISC-V Registers…</p>
+<p>Strangely TCC generates <a href="https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call"><strong>mysterious RISC-V Machine Code</strong></a> that mashes up the RISC-V Registers…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>main():
 // Prepare the Stack
    0:  fc010113  add     sp, sp, -64
@@ -1039,7 +1046,7 @@ asm volatile (
   40:  00000073  ecall
   44:  0001      nop
 </code></pre></div>
-<p>Thus we <a href="https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call"><strong>hardcode Registers A0, A1, A2 and A3</strong></a> in RISC-V Machine Code: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87">test-nuttx.js</a></p>
+<p>Thus we <a href="https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call"><strong>hardcode Registers A0 to A3</strong></a> in RISC-V Machine Code: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L97">test-nuttx.js</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Load 61 to Register A0 (SYS_write)
 // li a0, 61
 &quot;.long 0x03d00513 \n&quot;
@@ -1079,7 +1086,7 @@ asm volatile (
 00c61613  slli   a2, a2, 0xc
 </code></pre></div>
 <p><em>How did we figure out that the buffer is at 0xC010_1000?</em></p>
-<p>We saw this in the <a href="https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L32-L42"><strong>ELF Loader Log</strong></a>…</p>
+<p>We saw this in our <a href="https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L32-L42"><strong>ELF Loader Log</strong></a>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>NuttShell (NSH) NuttX-12.4.0
 nsh&gt; a.out
 ...
@@ -1092,7 +1099,7 @@ Read 16 bytes from offset 224
 3. 00000000-&gt;c0101000
 4. 00000000-&gt;c0101010
 </code></pre></div>
-<p>Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section <strong><code>.data.ro</code></strong> to <strong><code>0xC010_1000</code></strong>.</p>
+<p>Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section (<strong><code>.data.ro</code></strong>) to <strong><code>0xC010_1000</code></strong>.</p>
 <p>That’s all 15 bytes of <em>“Hello, World!!\n”</em>, including the terminating null.</p>
 <p>Thus our buffer should be at <strong><code>0xC010_1000</code></strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/app#kernel-starts-a-nuttx-app">(More about the <strong>NuttX ELF Loader</strong>)</a></p>
