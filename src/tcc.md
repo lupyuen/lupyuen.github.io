@@ -485,9 +485,9 @@ _TCC in WebAssembly has compiled our C Program to RISC-V ELF..._
 
 _Will the ELF run on NuttX?_
 
-[__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) is a tiny operating system for 64-bit RISC-V that runs on [__QEMU Emulator__](https://www.qemu.org/docs/master/system/target-riscv.html). (And many other platforms)
+[__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) is a tiny operating system for 64-bit RISC-V that runs on [__QEMU Emulator__](https://www.qemu.org/docs/master/system/target-riscv.html). (And many other devices)
 
-We build [__NuttX for QEMU__](https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu) and copy the __RISC-V ELF `a.out`__ to the __NuttX Apps Filesystem__ (pic above)...
+We build [__NuttX for QEMU__](https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu) and copy our [__RISC-V ELF `a.out`__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) to the [__NuttX Apps Filesystem__](https://lupyuen.github.io/articles/semihost#nuttx-apps-filesystem) (pic above)...
 
 ```bash
 ## Copy RISC-V ELF `a.out`
@@ -529,7 +529,7 @@ Which makes sense: We haven't linked our C Program with the [__C Library__](http
 
 _How else can we print something in NuttX?_
 
-To print something, we can make a [__System Call (ECALL)__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) directly to NuttX Kernel...
+To print something, we can make a [__System Call (ECALL)__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) directly to NuttX Kernel (bypassing the POSIX Functions)...
 
 ```c
 // NuttX System Call that prints
@@ -622,7 +622,7 @@ We copy this into our Web Browser and compile it. (Pic above)
 
 [(Why so complicated? __Explained here__)](https://lupyuen.github.io/articles/tcc#appendix-nuttx-system-call)
 
-[(Warning: __SYS_write 61__ may change)](https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call)
+[(Caution: __SYS_write 61__ may change)](https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call)
 
 _Does it work?_
 
@@ -648,23 +648,23 @@ NuttX Kernel prints __"Hello World"__ yay!
 
 Indeed we've created a C Compiler in a Web Browser, that __produces proper NuttX Apps__!
 
-_OK so we can compile NuttX Apps in a Web Browser... But can we run them in a Web Browser?_
+_OK so we can build NuttX Apps in a Web Browser... But can we run them in a Web Browser?_
 
-Yep, a NuttX App compiled in the Web Browser... Now runs OK with __NuttX Emulator in the Web Browser__! 🎉 (Pic below)
+Yep, a NuttX App built in the Web Browser... Now runs OK with __NuttX Emulator in the Web Browser__! 🎉 (Pic below)
 
 - [Watch the __Demo on YouTube__](https://youtu.be/DJMDYq52Iv8)
 
 - [Find out __How It Works__](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser)
 
-![NuttX App compiled in a Web Browser... Runs inside the Web Browser!](https://lupyuen.github.io/images/tcc-emu2.png)
+![NuttX App built in a Web Browser... Runs inside the Web Browser!](https://lupyuen.github.io/images/tcc-emu2.png)
 
-[_NuttX App compiled in a Web Browser... Runs inside the Web Browser!_](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser)
+[_NuttX App built in a Web Browser... Runs inside the Web Browser!_](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser)
 
 # What's Next
 
 TODO
 
-Thanks to the [__TCC Team__](https://github.com/sellicott/tcc-riscv32), we have a __64-bit RISC-V Compiler__ that runs in the Web Browser!
+Thanks to the [__TCC Team__](https://github.com/sellicott/tcc-riscv32), we have a __64-bit RISC-V Compiler__ that runs in the Web Browser...
 
 TODO
 
@@ -705,7 +705,7 @@ This is how we run __Zig Compiler to compile TCC Compiler__ from C to WebAssembl
 git clone https://github.com/lupyuen/tcc-riscv32-wasm
 cd tcc-riscv32-wasm
 ./configure
-make --trace cross-riscv64
+make cross-riscv64
 
 ## Call Zig Compiler to compile TCC Compiler
 ## from C to WebAssembly. Produces `tcc.o`
@@ -737,7 +737,7 @@ zig cc \
   ...
 ```
 
-We got them from "`make` `--trace`", which reveals the __GCC Compiler Options__...
+We got them from "__`make` `--trace`__", which reveals the __GCC Compiler Options__...
 
 ```bash
 ## Show the GCC Options for compiling TCC
@@ -745,7 +745,8 @@ $ make --trace cross-riscv64
 
 gcc \
   -o riscv64-tcc.o \
-  -c tcc.c \
+  -c \
+  tcc.c \
   -DTCC_TARGET_RISCV64 \
   -DCONFIG_TCC_CROSSPREFIX="\"riscv64-\""  \
   -DCONFIG_TCC_CRTPREFIX="\"/usr/riscv64-linux-gnu/lib\"" \
@@ -799,7 +800,7 @@ Browse to this URL and our TCC WebAssembly will appear...
 http://localhost:8000/index.html
 ```
 
-Check the __JavaScript Console__ for more messages.
+Check the __JavaScript Console__ for Debug Messages.
 
 [(See the __JavaScript Log__)](https://gist.github.com/lupyuen/5f8191d5c63b7dba030582cbe7481572)
 
@@ -811,14 +812,16 @@ On clicking the __Compile Button__, our JavaScript loads the TCC WebAssembly: [t
 // Load the WebAssembly Module and start the Main Function.
 // Called by the Compile Button.
 async function bootstrap() {
-  // Load the WebAssembly Module
+
+  // Load the WebAssembly Module `tcc-wasm.wasm`
   // https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
   const result = await WebAssembly.instantiateStreaming(
     fetch("tcc-wasm.wasm"),
     importObject
   );
 
-  // Store references to WebAssembly Functions and Memory exported by Zig
+  // Store references to WebAssembly Functions
+  // and Memory exported by Zig
   wasm.init(result);
 
   // Start the Main Function
@@ -906,6 +909,10 @@ const ptr = wasm.instance.exports
 
 [(See the __Node.js Log__)](https://gist.github.com/lupyuen/795327506cad9b1ee82206e614c399cd)
 
+[(Test Script for NuttX QEMU: __test-nuttx.js__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js)
+
+[(Test Log for NuttX QEMU: __test-nuttx.log__)](https://gist.github.com/lupyuen/55a4d4cae26994aa673e6d8451716b27)
+
 ![Our Zig Wrapper doing Pattern Matching for Formatting C Strings](https://lupyuen.github.io/images/tcc-format.jpg)
 
 # Appendix: Pattern Matching
@@ -936,7 +943,7 @@ FormatPattern{
 
 [(See the __Format Patterns__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
 
-To implement this, we call __comptime Functions__ in Zig: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L326)
+To implement this, we call __comptime Functions__ in Zig: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L380)
 
 ```zig
 /// CompTime Function to format a string by Pattern Matching.
@@ -983,6 +990,9 @@ fn format_string1(
   str[len] = 0;
   return len;
 }
+
+// Omitted: Function `format_string2` looks similar,
+// but for 2 Varargs (instead of 1)
 ```
 
 The function above is called by a __comptime Inline Loop__ that applies all the [__Format Patterns__](tcc-wasm.zig) that we saw earlier: [](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L252)
