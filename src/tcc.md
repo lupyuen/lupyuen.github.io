@@ -1082,7 +1082,7 @@ Just now we saw a huge chunk of C Code that makes a __NuttX System Call__...
 
 _Why so complicated?_
 
-We refer to the docs for [__NuttX System Calls (ECALL)__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel). Rightfully this __shorter version__ should work...
+We refer to the Sample Code for [__NuttX System Calls (ECALL)__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel). Rightfully this __shorter version__ should work...
 
 ```c
 // Make NuttX System Call to write(fd, buf, buflen)
@@ -1103,10 +1103,17 @@ asm volatile (
 
   // NuttX needs NOP after ECALL
   ".word 0x0001 \n"
+
+  // Input+Output Registers: None
+  // Input-Only Registers: A0 to A3
+  // Clobbers the Memory
+  :
+  : "r"(r0), "r"(r1), "r"(r2), "r"(r3)
+  : "memory"
 );
 ```
 
-Sadly TCC generates [__mysterious RISC-V Machine Code__](https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call) that mashes up the RISC-V Registers...
+Strangely TCC generates [__mysterious RISC-V Machine Code__](https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call) that mashes up the RISC-V Registers...
 
 ```yaml
 main():
@@ -1145,7 +1152,7 @@ main():
   44:  0001      nop
 ```
 
-Thus we [__hardcode Registers A0, A1, A2 and A3__](https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call) in RISC-V Machine Code: [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87)
+Thus we [__hardcode Registers A0 to A3__](https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call) in RISC-V Machine Code: [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L97)
 
 ```c
 // Load 61 to Register A0 (SYS_write)
@@ -1196,7 +1203,7 @@ So we used this [__RISC-V Online Assembler__](https://riscvasm.lucasteske.dev/#)
 
 _How did we figure out that the buffer is at 0xC010_1000?_
 
-We saw this in the [__ELF Loader Log__](https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L32-L42)...
+We saw this in our [__ELF Loader Log__](https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L32-L42)...
 
 ```yaml
 NuttShell (NSH) NuttX-12.4.0
@@ -1212,7 +1219,7 @@ Read 16 bytes from offset 224
 4. 00000000->c0101010
 ```
 
-Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section __`.data.ro`__ to __`0xC010_1000`__.
+Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section (__`.data.ro`__) to __`0xC010_1000`__.
 
 That's all 15 bytes of _"Hello, World!!\n"_, including the terminating null.
 
