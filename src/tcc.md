@@ -474,9 +474,11 @@ Later our Zig Wrapper will have to parse meticulously all kinds of C Format Stri
 
 _TCC in WebAssembly has compiled our C Program to RISC-V ELF..._
 
-_Will the RISC-V ELF run on Apache NuttX RTOS?_
+_Will the RISC-V ELF run on NuttX?_
 
-We copy the __RISC-V ELF `a.out`__ to the __NuttX Apps Filesystem__ (pic above)...
+[__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) is a tiny operating system for 64-bit RISC-V that runs on [__QEMU Emulator__](https://www.qemu.org/docs/master/system/target-riscv.html). (And many other platforms)
+
+We build [__NuttX for QEMU__](https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu) and copy the __RISC-V ELF `a.out`__ to the __NuttX Apps Filesystem__ (pic above)...
 
 ```bash
 ## Copy RISC-V ELF `a.out`
@@ -485,9 +487,20 @@ cp a.out apps/bin/
 chmod +x apps/bin/a.out
 ```
 
-Then we boot __NuttX on QEMU__ (64-bit RISC-V) and run __`a.out`__ on NuttX...
+Then we boot NuttX and run __`a.out`__...
 
 ```bash
+## Boot NuttX on QEMU 64-bit RISC-V
+$ qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+## Run `a.out` in NuttX Shell
 NuttShell (NSH) NuttX-12.4.0
 nsh> a.out
 Loading /system/bin/a.out
@@ -633,6 +646,10 @@ Yep, a NuttX App compiled in the Web Browser... Now runs OK with __NuttX Emulato
 [_NuttX App compiled in a Web Browser... Runs inside the Web Browser!_](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser)
 
 # What's Next
+
+TODO
+
+Thanks to the [__TCC Team__](https://github.com/sellicott/tcc-riscv32), we have a __64-bit RISC-V Compiler__ that runs in the Web Browser!
 
 TODO
 
