@@ -24,9 +24,9 @@ In this article, we talk about the tricky bits of the TCC Port from __C to WebAs
 
 - Hacked up a simple workaround for __fprintf and friends__
 
-- And TCC produces a __RISC-V Binary__ that runs OK (Somewhat)
+- And TCC produces a __RISC-V Binary__ that runs OK
 
-  [(Not to be confused with __TTC Compiler__)](https://research.cs.queensu.ca/home/cordy/pub/downloads/tplus/Turing_Plus_Report.pdf)
+  (After fixing the RISC-V Assembly)
 
 _Why are we doing this?_
 
@@ -54,6 +54,8 @@ What if we could __compile and test NuttX Apps__ in the Web Browser...
     [(Watch the __Demo on YouTube__)](https://youtu.be/DJMDYq52Iv8)
 
 This is how we made it happen...
+
+[(Not to be confused with __TTC Compiler__)](https://research.cs.queensu.ca/home/cordy/pub/downloads/tplus/Turing_Plus_Report.pdf)
 
 ![Online Demo of TCC Compiler in WebAssembly](https://lupyuen.github.io/images/tcc-web.png)
 
