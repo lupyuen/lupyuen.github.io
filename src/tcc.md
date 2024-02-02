@@ -1093,7 +1093,7 @@ asm volatile (
 );
 ```
 
-Sadly TCC generates [__incorrect RISC-V Machine Code__](https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call) that mashes up the RISC-V Registers...
+Sadly TCC generates [__mysterious RISC-V Machine Code__](https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call) that mashes up the RISC-V Registers...
 
 ```yaml
 main():
