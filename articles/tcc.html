@@ -472,15 +472,27 @@ const format_patterns = [_]FormatPattern{
 <p><img src="https://lupyuen.github.io/images/tcc-nuttx.jpg" alt="Compile and Run NuttX Apps in the Web Browser" /></p>
 <h1 id="test-with-apache-nuttx-rtos"><a href="#test-with-apache-nuttx-rtos">6 Test with Apache NuttX RTOS</a></h1>
 <p><em>TCC in WebAssembly has compiled our C Program to RISC-V ELF…</em></p>
-<p><em>Will the RISC-V ELF run on Apache NuttX RTOS?</em></p>
-<p>We copy the <strong>RISC-V ELF <code>a.out</code></strong> to the <strong>NuttX Apps Filesystem</strong> (pic above)…</p>
+<p><em>Will the RISC-V ELF run on NuttX?</em></p>
+<p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> is a tiny operating system for 64-bit RISC-V that runs on <a href="https://www.qemu.org/docs/master/system/target-riscv.html"><strong>QEMU Emulator</strong></a>. (And many other platforms)</p>
+<p>We build <a href="https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu"><strong>NuttX for QEMU</strong></a> and copy the <strong>RISC-V ELF <code>a.out</code></strong> to the <strong>NuttX Apps Filesystem</strong> (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy RISC-V ELF `a.out`
 ## to NuttX Apps Filesystem
 cp a.out apps/bin/
 chmod +x apps/bin/a.out
 </code></pre></div>
-<p>Then we boot <strong>NuttX on QEMU</strong> (64-bit RISC-V) and run <strong><code>a.out</code></strong> on NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0
+<p>Then we boot NuttX and run <strong><code>a.out</code></strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX on QEMU 64-bit RISC-V
+$ qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+## Run `a.out` in NuttX Shell
+NuttShell (NSH) NuttX-12.4.0
 nsh&gt; a.out
 Loading /system/bin/a.out
 Exported symbol &quot;printf&quot; not found
@@ -597,6 +609,8 @@ Hello, World!!
 <p><img src="https://lupyuen.github.io/images/tcc-emu2.png" alt="NuttX App compiled in a Web Browser… Runs inside the Web Browser!" /></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser"><em>NuttX App compiled in a Web Browser… Runs inside the Web Browser!</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<p>TODO</p>
+<p>Thanks to the <a href="https://github.com/sellicott/tcc-riscv32"><strong>TCC Team</strong></a>, we have a <strong>64-bit RISC-V Compiler</strong> that runs in the Web Browser!</p>
 <p>TODO</p>
 <p>How would you use <strong>TCC in a Web Browser</strong>? Please lemme know 🙏</p>
 <p><em>(Build and run RISC-V Apps on iPhone?)</em></p>
