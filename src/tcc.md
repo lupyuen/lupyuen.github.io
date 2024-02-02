@@ -56,7 +56,7 @@ This is how we made it happen...
 
 # TCC in the Web Browser
 
-Click this link to try __TCC Compiler in our Web Browser__ (pic above)...
+Click this link to try __TCC Compiler in our Web Browser__ (pic above)
 
 - [__TCC RISC-V Compiler in WebAssembly__](https://lupyuen.github.io/tcc-riscv32-wasm/)
 
@@ -1227,7 +1227,7 @@ We should call the NuttX System Call __`__exit`__ to terminate peacefully.
 
 # Appendix: Build NuttX for QEMU
 
-Here are the steps to build and run __NuttX for QEMU 64-bit RISC-V__ (Kernel Mode)...
+Here are the steps to build and run __NuttX for QEMU 64-bit RISC-V__ (Kernel Mode)
 
 1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
 
