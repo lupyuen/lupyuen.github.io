@@ -305,9 +305,9 @@ pub export fn compile_program(
 <h1 id="posix-for-webassembly"><a href="#posix-for-webassembly">3 POSIX for WebAssembly</a></h1>
 <p><em>What’s this POSIX?</em></p>
 <p>TCC Compiler was created as a <strong>Command-Line App</strong>. So it calls the typical <a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX Functions</strong></a> like <strong>fopen, fprintf, strncpy, malloc,</strong> …</p>
-<p><a href="https://en.wikipedia.org/wiki/C_standard_library">(Linked from the <strong>C Standard Library libc</strong>)</a></p>
+<p>But WebAssembly running in a Web Browser ain’t <strong>No Command Line</strong>! (Pic above)</p>
+<p><a href="https://en.wikipedia.org/wiki/C_standard_library">(WebAssembly doesn’t have a <strong>C Standard Library libc</strong>)</a></p>
 <p><em>Is POSIX a problem for WebAssembly?</em></p>
-<p>WebAssembly running in a Web Browser ain’t <strong>No Command Line</strong>! (Pic above)</p>
 <p>We counted <a href="https://lupyuen.github.io/articles/tcc#appendix-missing-functions"><strong>72 POSIX Functions</strong></a> needed by TCC Compiler, but missing from WebAssembly.</p>
 <p>Thus we fill in the <a href="https://lupyuen.github.io/articles/tcc#appendix-missing-functions"><strong>Missing Functions</strong></a> ourselves.</p>
 <p><a href="https://lupyuen.github.io/articles/tcc#appendix-missing-functions">(About the <strong>Missing POSIX Functions</strong>)</a></p>
@@ -735,7 +735,8 @@ cd tcc-riscv32-wasm
 cargo install simple-http-server
 simple-http-server ./docs &amp;
 
-## Copy the Linked TCC WebAssembly to the Web Server
+## Whenever we rebuild TCC WebAssembly...
+## Copy it to the Web Server
 cp tcc-wasm.wasm docs/
 </code></pre></div>
 <p>Browse to this URL and our TCC WebAssembly will appear…</p>
@@ -859,12 +860,12 @@ FormatPattern{
 /// Else return 0.
 fn format_string1(
   ap: *std.builtin.VaList,  // Varargs passed from C
-  str: [*]u8,    // Buffer for returning Formatted String
-  size: size_t,  // Buffer Size
-  format: []const u8,  // C Format String, like `#define __TINYC__ %d\n`
-  comptime c_spec: []const u8,   // C Format Pattern, like `%d`
-  comptime zig_spec: []const u8, // Zig Equivalent, like `{}`
-  comptime T0: type,   // Type of First Vararg, like `c_int`
+  str:    [*]u8,            // Buffer for returning Formatted String
+  size:   size_t,           // Buffer Size
+  format: []const u8,       // C Format String, like `#define __TINYC__ %d\n`
+  comptime c_spec:   []const u8,  // C Format Pattern, like `%d`
+  comptime zig_spec: []const u8,  // Zig Equivalent, like `{}`
+  comptime T0:       type,        // Type of First Vararg, like `c_int`
 ) usize {
   // Count the Format Specifiers: `%`
   const spec_cnt   = std.mem.count(u8, c_spec, &quot;%&quot;);
@@ -903,9 +904,9 @@ fn format_string1(
 /// Return the number of bytes written to `str`, excluding terminating null.
 fn format_string(
   ap: *std.builtin.VaList,  // Varargs passed from C
-  str: [*]u8,    // Buffer for returning Formatted String
-  size: size_t,  // Buffer Size
-  format: []const u8,  // C Format String, like `#define __TINYC__ %d\n`
+  str:    [*]u8,            // Buffer for returning Formatted String
+  size:   size_t,           // Buffer Size
+  format: []const u8,       // C Format String, like `#define __TINYC__ %d\n`
 ) usize {
   // If no Format Specifiers: Return the Format, like `warning: `
   const len = format_string0(str, size, format);
@@ -1085,7 +1086,7 @@ Read 16 bytes from offset 224
 <p>That’s all 15 bytes of <em>“Hello, World!!\n”</em>, including the terminating null.</p>
 <p>Thus our buffer should be at <strong><code>0xC010_1000</code></strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/app#kernel-starts-a-nuttx-app">(More about the <strong>NuttX ELF Loader</strong>)</a></p>
-<p><em>Why did we Loop Forever?</em></p>
+<p><em>Why do we Loop Forever?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Omitted: Execute ECALL for System Call to NuttX Kernel
 asm volatile ( ... );
 
@@ -1185,16 +1186,16 @@ $ sudo apt install wabt
 $ wasm-objdump -x tcc.o
 
 Import:
- - func[0] sig=1 &lt;env.strcmp&gt;  &lt;- env.strcmp
+ - func[0] sig=1  &lt;env.strcmp&gt; &lt;- env.strcmp
  - func[1] sig=12 &lt;env.memset&gt; &lt;- env.memset
- - func[2] sig=1 &lt;env.getcwd&gt;  &lt;- env.getcwd
+ - func[2] sig=1  &lt;env.getcwd&gt; &lt;- env.getcwd
  ...
- - func[69] sig=2 &lt;env.localtime&gt; &lt;- env.localtime
- - func[70] sig=13 &lt;env.qsort&gt;    &lt;- env.qsort
- - func[71] sig=19 &lt;env.strtoll&gt;  &lt;- env.strtoll
+ - func[69] sig=2  &lt;env.localtime&gt; &lt;- env.localtime
+ - func[70] sig=13 &lt;env.qsort&gt;     &lt;- env.qsort
+ - func[71] sig=19 &lt;env.strtoll&gt;   &lt;- env.strtoll
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#missing-functions-in-tcc-webassembly">(See the <strong>Complete List</strong>)</a></p>
-<p>Do we really need all 72 POSIX Functions? We run through the list…</p>
+<p>Do we need all 72 POSIX Functions? We scrutinise the list…</p>
 <hr>
 <p><strong>Filesystem Functions</strong></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L89-L168"><em>(Implemented here)</em></a></p>
@@ -1239,7 +1240,7 @@ Import:
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sem_init"><strong>sem_init</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sem_post"><strong>sem_post</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sem_wait"><strong>sem_wait</strong></a></td></tr>
 </tbody></table>
 </div><hr>
-<p><strong>Standard Library:</strong></p>
+<p><strong>Standard Library</strong></p>
 <p><strong>qsort</strong> isn’t used right now. Maybe for the Linker later?</p>
 <p>(Borrow <strong>qsort</strong> from where? We can probably implement <strong>exit</strong>)</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
@@ -1248,7 +1249,7 @@ Import:
 </div><hr>
 <p><strong>Time and Math Functions:</strong></p>
 <p>Not used right now, maybe later.</p>
-<p>(Anyone can lend us <strong>ldexp</strong>? How will we get the Time Functions? Call out to JavaScript to fetch the actual time?)</p>
+<p>(Anyone can lend us <strong>ldexp</strong>? How will we do the Time Functions? Call out to JavaScript to <a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer"><strong>fetch the time</strong></a>?)</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+time"><strong>time</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+gettimeofday"><strong>gettimeofday</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+localtime"><strong>localtime</strong></a></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+ldexp"><strong>ldexp</strong></a></td><td style="text-align: left"></td><td style="text-align: left"></td></tr>
