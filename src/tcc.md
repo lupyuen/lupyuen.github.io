@@ -14,7 +14,7 @@ _Can we run TCC Compiler in a Web Browser?_
 
 Let's do it! We'll compile [__TCC (Tiny C Compiler)__](https://github.com/sellicott/tcc-riscv32) from C to WebAssembly with [__Zig Compiler__](https://ziglang.org/).
 
-In this article, we talk about the tricky bits of the TCC Port from __C to WebAssembly__...
+In this article, we talk about the tricky bits of our __TCC modded for WebAssembly__...
 
 - We compiled __TCC to WebAssembly__ with one tiny fix
 
@@ -26,7 +26,7 @@ In this article, we talk about the tricky bits of the TCC Port from __C to WebAs
 
 - And TCC produces a __RISC-V Binary__ that runs OK
 
-  (After fixing the RISC-V Assembly)
+  (After some fiddling of RISC-V Assembly)
 
 _Why are we doing this?_
 
@@ -34,7 +34,7 @@ Today we're running [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/t
 
 (__Real-Time Operating System__ in Web Browser on General-Purpose Operating System!)
 
-What if we could __compile and test NuttX Apps__ in the Web Browser...
+What if we could __Build and Test NuttX Apps__ in the Web Browser...
 
 1.  We type a __C Program__ into our Web Browser (pic below)
 
@@ -44,7 +44,7 @@ What if we could __compile and test NuttX Apps__ in the Web Browser...
 
 1.  And __NuttX Emulator__ runs our ELF Executable inside the Web Browser
 
-This is how we made it happen...
+Learning NuttX becomes so cool! This is how we made it happen...
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/DJMDYq52Iv8)
 
