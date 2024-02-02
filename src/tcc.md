@@ -588,28 +588,31 @@ int main(int argc, char *argv[]) {
   asm volatile (
 
     // Load 61 to Register A0 (SYS_write)
-    // li a0, 61
-    ".long 0x03d00513 \n"
-
+    "addi a0, zero, 61 \n"
+    
     // Load 1 to Register A1 (File Descriptor)
-    // li a1, 1
-    ".long 0x00100593 \n"
-
+    "addi a1, zero, 1 \n"
+    
     // Load 0xc0101000 to Register A2 (Buffer)
-    // li a2, 0xc0101000
-    ".long 0x000c0637 \n"
-    ".long 0x1016061b \n"
-    ".long 0x00c61613 \n"
-
+    "lui   a2, 0xc0 \n"
+    "addiw a2, a2, 257 \n"
+    "slli  a2, a2, 0xc \n"
+    
     // Load 15 to Register A3 (Buffer Length)
-    // li a3, 15
-    ".long 0x00f00693 \n"
-
+    "addi a3, zero, 15 \n"
+    
     // ECALL for System Call to NuttX Kernel
     "ecall \n"
-
+    
     // NuttX needs NOP after ECALL
     ".word 0x0001 \n"
+
+    // Input+Output Registers: None
+    // Input-Only Registers: A0 to A3
+    // Clobbers the Memory
+    :
+    : "r"(r0), "r"(r1), "r"(r2), "r"(r3)
+    : "memory"
   );
 
   // Loop Forever
@@ -1152,53 +1155,68 @@ main():
   44:  0001      nop
 ```
 
-Thus we [__hardcode Registers A0 to A3__](https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call) in RISC-V Machine Code: [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L97)
+Thus we [__hardcode Registers A0 to A3__](https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call) in RISC-V Assembly: [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L97)
 
 ```c
 // Load 61 to Register A0 (SYS_write)
-// li a0, 61
-".long 0x03d00513 \n"
+addi  a0, zero, 61
 
 // Load 1 to Register A1 (File Descriptor)
-// li a1, 1
-".long 0x00100593 \n"
+addi  a1, zero, 1
 
 // Load 0xc0101000 to Register A2 (Buffer)
-// li a2, 0xc0101000
-".long 0x000c0637 \n"
-".long 0x1016061b \n"
-".long 0x00c61613 \n"
+lui   a2, 0xc0
+addiw a2, a2, 257
+slli  a2, a2, 0xc
 
 // Load 15 to Register A3 (Buffer Length)
-// li a3, 15
-".long 0x00f00693 \n"
+addi  a3, zero, 15
 
 // ECALL for System Call to NuttX Kernel
-"ecall \n"
+ecall
 
 // NuttX needs NOP after ECALL
-".word 0x0001 \n"
+.word 0x0001
 ```
 
-__TODO:__ Is there a workaround? Do we paste the ECALL Machine Code ourselves? [__NuttX Libraries__](https://github.com/lupyuen/tcc-riscv32-wasm#fix-missing-printf-in-nuttx-app) won't link with TCC
+And it prints "Hello World"!
 
-_What's with the `li` and `nop`?_
+__TODO:__ Is there a workaround? Do we paste the ECALL Assembly Code ourselves? [__NuttX Libraries__](https://github.com/lupyuen/tcc-riscv32-wasm#fix-missing-printf-in-nuttx-app) won't link with TCC
 
-TCC won't assemble the __`li`__ and __`nop`__ instructions.
+[(See the __TCC WebAssembly Log__)](https://gist.github.com/lupyuen/55a4d4cae26994aa673e6d8451716b27)
 
-So we used this [__RISC-V Online Assembler__](https://riscvasm.lucasteske.dev/#) to assemble the Machine Code above.
+_What's with the `addi` and `nop`?_
 
-"`li a2, 0xc0101000`" is special because it expands to multiple RISC-V Instructions...
+TCC won't assemble the "__`li`__" and "__`nop`__" instructions.
 
-```yaml
+So we used this [__RISC-V Online Assembler__](https://riscvasm.lucasteske.dev/#) to assemble the code above.
+
+"__`addi`__" above is the longer form of "__`li`__", which TCC won't assemble...
+
+```c
+// Load 61 to Register A0 (SYS_write)
+// But TCC won't assemble `li a0, 61`
+// So we do this...
+
+// Add 0 to 61 and save to Register A0
+addi a0, zero, 61
+```
+
+"__`lui / addiw / slli`__" above is our expansion of "__`li a2, 0xc0101000`__", which TCC won't assemble...
+
+```c
+// Load 0xC010_1000 to Register A2 (Buffer)
+// But TCC won't assemble `li a2, 0xc0101000`
+// So we do this...
+
 // Load 0xC0 << 12 into Register A2 (0xC0000)
-000c0637  lui    a2, 0xc0
+lui   a2, 0xc0
 
 // Add 257 to Register A2 (0xC0101)
-1016061b  addiw  a2, a2, 257
+addiw a2, a2, 257
 
 // Shift Left by 12 Bits (0xC010_1000)
-00c61613  slli   a2, a2, 0xc
+slli  a2, a2, 0xc
 ```
 
 _How did we figure out that the buffer is at 0xC010_1000?_
