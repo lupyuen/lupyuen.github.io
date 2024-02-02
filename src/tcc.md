@@ -61,7 +61,7 @@ This is how we made it happen...
 
 # TCC in the Web Browser
 
-Head over to this link to try __TCC Compiler in our Web Browser__ (pic above)...
+Click this link to try __TCC Compiler in our Web Browser__ (pic above)...
 
 - [__TCC RISC-V Compiler in WebAssembly__](https://lupyuen.github.io/tcc-riscv32-wasm/)
 
@@ -149,7 +149,6 @@ zig cc \
   -dynamic \
   -rdynamic \
   -lc \
-  tcc.c \
   -DTCC_TARGET_RISCV64 \
   -DCONFIG_TCC_CROSSPREFIX="\"riscv64-\""  \
   -DCONFIG_TCC_CRTPREFIX="\"/usr/riscv64-linux-gnu/lib\"" \
@@ -165,7 +164,8 @@ zig cc \
   -Wno-unused-result \
   -Wno-format-truncation \
   -Wno-stringop-truncation \
-  -I.
+  -I. \
+  tcc.c
 ```
 
 [(See the __TCC Source Code__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/tcc.c)
@@ -260,11 +260,11 @@ Everything else compiles OK!
 
 _Is it really OK to stub them out?_
 
-Well [__setjmp / longjmp__](https://en.wikipedia.org/wiki/Setjmp.h) are called to __Handle Errors__ during TCC Compilation.
+[__setjmp / longjmp__](https://en.wikipedia.org/wiki/Setjmp.h) are called to __Handle Errors__ during TCC Compilation. Assuming everything goes hunky dory, we won't need them.
 
-We'll find a better way to express our outrage. (Instead of jumping around)
+Later we'll find a better way to express our outrage. (Instead of jumping around)
 
-Let's study the Magical Bits inside our Zig Wrapper...
+We probe the Magical Bits inside our Zig Wrapper...
 
 ![TCC Compiler in WebAssembly needs POSIX Functions](https://lupyuen.github.io/images/tcc-posix.jpg)
 
@@ -272,9 +272,9 @@ Let's study the Magical Bits inside our Zig Wrapper...
 
 _What's this POSIX?_
 
-TCC Compiler was created as a __Command Line App__. So it calls the typical [__POSIX Functions__](https://en.wikipedia.org/wiki/POSIX) like __fopen, fprintf, strncpy, malloc,__ ...
+TCC Compiler was created as a __Command-Line App__. So it calls the typical [__POSIX Functions__](https://en.wikipedia.org/wiki/POSIX) like __fopen, fprintf, strncpy, malloc,__ ...
 
-[(Similar to the __C Standard Library libc__)](https://en.wikipedia.org/wiki/C_standard_library)
+[(Which are linked from the __C Standard Library libc__)](https://en.wikipedia.org/wiki/C_standard_library)
 
 _Is POSIX a problem for WebAssembly?_
 
@@ -300,7 +300,7 @@ Thankfully we can borrow the POSIX Code from other __Zig Libraries__...
 
 _72 POSIX Functions? Sounds like a lot of work..._
 
-Actually we might not need all 72 POSIX Functions. We stubbed out __most of the functions__ to identify the ones that are called: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
+We might not need all 72 POSIX Functions. We stubbed out __many of the functions__ to identify the ones that are called: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
 
 ```zig
 // Stub Out the Missing POSIX
