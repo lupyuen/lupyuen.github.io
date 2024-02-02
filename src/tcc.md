@@ -473,7 +473,7 @@ _So simple? Unbelievable!_
 
 Actually we'll hit more Format Patterns as TCC Compiler emits various __Error and Warning Messages__. But it's a good start!
 
-Later our Zig Wrapper shall cautiously and meticulously parse all kinds of C Format Strings. Or we do the [__parsing in C__](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191), compiled to WebAssembly.
+Later our Zig Wrapper shall cautiously and meticulously parse all kinds of C Format Strings. Or we do the [__parsing in C__](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191), compiled to WebAssembly. (160 lines of C!)
 
 (Funny how __printf__ is the first thing we learn about C. Yet it's incredibly difficult to implement!)
 
