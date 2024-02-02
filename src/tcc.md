@@ -1098,33 +1098,33 @@ Sadly TCC generates [__incorrect RISC-V Machine Code__](https://github.com/lupyu
 ```yaml
 main():
 // Prepare the Stack
-   0:  fc010113  add     sp,sp,-64
-   4:  02113c23  sd      ra,56(sp)
-   8:  02813823  sd      s0,48(sp)
-   c:  04010413  add     s0,sp,64
+   0:  fc010113  add     sp, sp, -64
+   4:  02113c23  sd      ra, 56(sp)
+   8:  02813823  sd      s0, 48(sp)
+   c:  04010413  add     s0, sp, 64
   10:  00000013  nop
-  14:  fea43423  sd      a0,-24(s0)
-  18:  feb43023  sd      a1,-32(s0)
+  14:  fea43423  sd      a0, -24(s0)
+  18:  feb43023  sd      a1, -32(s0)
 
 // Correct: Load Register A0 with 61 (SYS_write)
-  1c:  03d0051b  addw    a0,zero,61
-  20:  fca43c23  sd      a0,-40(s0)
+  1c:  03d0051b  addw    a0, zero, 61
+  20:  fca43c23  sd      a0, -40(s0)
 
 // Nope: Load Register A0 with 1?
 // Mixed up with Register A1! (Value 1)
-  24:  0010051b  addw    a0,zero,1
-  28:  fca43823  sd      a0,-48(s0)
+  24:  0010051b  addw    a0, zero, 1
+  28:  fca43823  sd      a0, -48(s0)
 
 // Nope: Load Register A0 with "Hello World"?
 // Mixed up with Register A2!
   2c:  00000517  auipc   a0,0x0  2c: R_RISCV_PCREL_HI20  L.0
   30:  00050513  mv      a0,a0   30: R_RISCV_PCREL_LO12_I        .text
-  34:  fca43423  sd      a0,-56(s0)
+  34:  fca43423  sd      a0, -56(s0)
 
 // Nope: Load Register A0 with 15?
 // Mixed up with Register A3! (Value 15)
-  38:  00f0051b  addw    a0,zero,15
-  3c:  fca43023  sd      a0,-64(s0)
+  38:  00f0051b  addw    a0, zero, 15
+  3c:  fca43023  sd      a0, -64(s0)
 
 // Execute ECALL with Register A0 set to 15.
 // Nope: A0 should be 61!
@@ -1160,13 +1160,26 @@ Thus we [__hardcode Registers A0, A1, A2 and A3__](https://github.com/lupyuen/tc
 ".word 0x0001 \n"
 ```
 
-__TODO:__ Is there a workaround? Do we paste the ECALL Machine Code ourselves?
+__TODO:__ Is there a workaround? Do we paste the ECALL Machine Code ourselves? [__NuttX Libraries__](https://github.com/lupyuen/tcc-riscv32-wasm#fix-missing-printf-in-nuttx-app) won't link with TCC
 
 _What's with the `li` and `nop`?_
 
 TCC won't assemble the __`li`__ and __`nop`__ instructions.
 
 So we used this [__RISC-V Online Assembler__](https://riscvasm.lucasteske.dev/#) to assemble the Machine Code above.
+
+"`li a2, 0xc0101000`" is special because it expands to multiple RISC-V Instructions...
+
+```yaml
+// Load 0xC0 << 12 into Register A2 (0xC0000)
+000c0637  lui    a2, 0xc0
+
+// Add 257 to Register A2 (0xC0101)
+1016061b  addiw  a2, a2, 257
+
+// Shift Left by 12 Bits (0xC010_1000)
+00c61613  slli   a2, a2, 0xc
+```
 
 _How did we figure out that the buffer is at 0xC010_1000?_
 
