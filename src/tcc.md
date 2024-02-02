@@ -20,9 +20,9 @@ In this article, we talk about the tricky bits of the TCC Port from __C to WebAs
 
 - But we hit some __Missing POSIX Functions__
 
-- So we cut down on __File Input and Output__ 
+- So we built minimal __File Input and Output__ 
 
-- We hacked a simple workaround for __fprintf and friends__
+- Hacked up a simple workaround for __fprintf and friends__
 
 - And TCC produces a __RISC-V Binary__ that runs OK (Somewhat)
 
@@ -45,9 +45,9 @@ What if we could __compile and test NuttX Apps__ in the Web Browser...
     }
     ```
 
-1.  Compile it into an __ELF Executable__ (64-bit RISC-V) with TCC
+1.  Compile it into an __ELF Executable__ with TCC
 
-1.  Copy the ELF Executable to the __NuttX Filesystem__ (via WebAssembly)
+1.  Copy the ELF Executable to the __NuttX Filesystem__
 
 1.  And __NuttX Emulator__ runs our ELF Executable inside the Web Browser
 
