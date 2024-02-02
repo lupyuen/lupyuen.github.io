@@ -65,6 +65,8 @@ Head over to this link to try __TCC Compiler in our Web Browser__ (pic above)...
 
 - [__TCC RISC-V Compiler in WebAssembly__](https://lupyuen.github.io/tcc-riscv32-wasm/)
 
+  [(Watch the __Demo on YouTube__)](https://youtu.be/DJMDYq52Iv8)
+
 This __C Program__ appears...
 
 ```c
@@ -328,7 +330,7 @@ Some of these functions are especially troubling for WebAssembly...
 
 _Why no #include in TCC for WebAssembly? And no C Libraries?_
 
-WebAssembly runs in a __Secure Sandbox__. No File Access allowed! (Like for C Header and Library Files)
+WebAssembly runs in a Secure Sandbox. __No File Access__ allowed, sorry! (Like for Header and Library Files)
 
 That's why our Zig Wrapper only __Emulates File Access__ for the bare minimum 2 files...
 
