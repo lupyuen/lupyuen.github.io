@@ -38,22 +38,15 @@ What if we could __compile and test NuttX Apps__ in the Web Browser...
 
 1.  We type a __C Program__ into our Web Browser (pic below)
 
-    ```c
-    int main(int argc, char *argv[]) {
-      printf("Hello, World!!\n");
-      return 0;
-    }
-    ```
-
 1.  Compile it into an __ELF Executable__ with TCC
 
 1.  Copy the ELF Executable to the __NuttX Filesystem__
 
 1.  And __NuttX Emulator__ runs our ELF Executable inside the Web Browser
 
-    [(Watch the __Demo on YouTube__)](https://youtu.be/DJMDYq52Iv8)
-
 This is how we made it happen...
+
+[(Watch the __Demo on YouTube__)](https://youtu.be/DJMDYq52Iv8)
 
 [(Not to be confused with __TTC Compiler__)](https://research.cs.queensu.ca/home/cordy/pub/downloads/tplus/Turing_Plus_Report.pdf)
 
