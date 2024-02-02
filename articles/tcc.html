@@ -493,6 +493,7 @@ const format_patterns = [_]FormatPattern{
 cp a.out apps/bin/
 chmod +x apps/bin/a.out
 </code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu">(How we build <strong>NuttX for QEMU</strong>)</a></p>
 <p>Then we boot NuttX and run <strong><code>a.out</code></strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX on QEMU 64-bit RISC-V
 $ qemu-system-riscv64 \
@@ -513,9 +514,8 @@ Failed to load program &#39;a.out&#39;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#test-tcc-output-with-nuttx">(See the <strong>Complete Log</strong>)</a></p>
 <p>NuttX politely accepts the RISC-V ELF (produced by TCC). And says that <strong>printf</strong> is missing.</p>
-<p>Which makes sense: We haven’t linked our C Program with the C Library!</p>
-<p><a href="https://gist.github.com/lupyuen/847f7adee50499cac5212f2b95d19cd3#file-nuttx-elf-loader-log-L882-L1212">(NuttX should load a <strong>RISC-V ELF</strong> like this)</a></p>
-<p><a href="https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu">(How we build and run <strong>NuttX for QEMU</strong>)</a></p>
+<p>Which makes sense: We haven’t linked our C Program with the <a href="https://github.com/lupyuen/tcc-riscv32-wasm#how-nuttx-build-links-a-nuttx-app"><strong>C Library</strong></a>!</p>
+<p><a href="https://gist.github.com/lupyuen/847f7adee50499cac5212f2b95d19cd3#file-nuttx-elf-loader-log-L882-L1212">(Loading a <strong>RISC-V ELF</strong> should look like this)</a></p>
 <p><em>How else can we print something in NuttX?</em></p>
 <p>To print something, we can make a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>System Call (ECALL)</strong></a> directly to NuttX Kernel…</p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX System Call that prints
@@ -528,14 +528,14 @@ ssize_t write(
   size_t buflen     // Buffer Length
 );
 
-// ECALL Parameters:
+// Which makes an ECALL with these Parameters...
 // Register A0 is 61 (SYS_write)
 // Register A1 is the File Descriptor (1 for Standard Output)
 // Register A2 points to the String Buffer to be printed
 // Register A3 is the Buffer Length
 </code></pre></div>
 <p>That’s the same NuttX System Call that <strong>printf</strong> executes internally.</p>
-<p>One last chance to say hello to NuttX…</p>
+<p>Final chance to say hello to NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/tcc-ecall.png" alt="TCC WebAssembly compiles a NuttX System Call" /></p>
 <h1 id="hello-nuttx"><a href="#hello-nuttx">7 Hello NuttX!</a></h1>
 <p><em>We’re making a System Call (ECALL) to NuttX Kernel to print something…</em></p>
