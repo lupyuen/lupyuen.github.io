@@ -479,13 +479,13 @@ const format_patterns = [_]FormatPattern{
 <p>That’s our quick hack for <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L447"><strong>fprintf and friends</strong></a>!</p>
 <p><a href="https://lupyuen.github.io/articles/tcc#appendix-pattern-matching">(How we do <strong>Pattern Matching</strong>)</a></p>
 <p><em>So simple? Unbelievable!</em></p>
-<p>OK actually we’ll hit more Format Patterns as TCC Compiler emits various <strong>Error and Warning Messages</strong>. But it’s a good start!</p>
-<p>Later our Zig Wrapper will have to parse meticulously all kinds of C Format Strings. Or we do the <a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191"><strong>parsing in C</strong></a>, compiled to WebAssembly.</p>
+<p>Actually we’ll hit more Format Patterns as TCC Compiler emits various <strong>Error and Warning Messages</strong>. But it’s a good start!</p>
+<p>Later our Zig Wrapper shall cautiously and meticulously parse all kinds of C Format Strings. Or we do the <a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191"><strong>parsing in C</strong></a>, compiled to WebAssembly.</p>
 <p>(Funny how <strong>printf</strong> is the first thing we learn about C. Yet it’s incredibly difficult to implement!)</p>
 <p><img src="https://lupyuen.github.io/images/tcc-nuttx.jpg" alt="Compile and Run NuttX Apps in the Web Browser" /></p>
 <h1 id="test-with-apache-nuttx-rtos"><a href="#test-with-apache-nuttx-rtos">6 Test with Apache NuttX RTOS</a></h1>
 <p><em>TCC in WebAssembly has compiled our C Program to RISC-V ELF…</em></p>
-<p><em>Will the RISC-V ELF run on NuttX?</em></p>
+<p><em>Will the ELF run on NuttX?</em></p>
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> is a tiny operating system for 64-bit RISC-V that runs on <a href="https://www.qemu.org/docs/master/system/target-riscv.html"><strong>QEMU Emulator</strong></a>. (And many other platforms)</p>
 <p>We build <a href="https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu"><strong>NuttX for QEMU</strong></a> and copy the <strong>RISC-V ELF <code>a.out</code></strong> to the <strong>NuttX Apps Filesystem</strong> (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy RISC-V ELF `a.out`
@@ -514,10 +514,10 @@ Failed to load program &#39;a.out&#39;
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#test-tcc-output-with-nuttx">(See the <strong>Complete Log</strong>)</a></p>
 <p>NuttX politely accepts the RISC-V ELF (produced by TCC). And says that <strong>printf</strong> is missing.</p>
 <p>Which makes sense: We haven’t linked our C Program with the C Library!</p>
-<p><a href="https://gist.github.com/lupyuen/847f7adee50499cac5212f2b95d19cd3">(NuttX should load a <strong>RISC-V ELF</strong> like this)</a></p>
+<p><a href="https://gist.github.com/lupyuen/847f7adee50499cac5212f2b95d19cd3#file-nuttx-elf-loader-log-L882-L1212">(NuttX should load a <strong>RISC-V ELF</strong> like this)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu">(How we build and run <strong>NuttX for QEMU</strong>)</a></p>
 <p><em>How else can we print something in NuttX?</em></p>
-<p>To print something, we can make a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>NuttX System Call (ECALL)</strong></a> directly to NuttX Kernel…</p>
+<p>To print something, we can make a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>System Call (ECALL)</strong></a> directly to NuttX Kernel…</p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX System Call that prints
 // something. System Call Number
 // is 61 (SYS_write). Works exactly
@@ -527,6 +527,12 @@ ssize_t write(
   const char *buf,  // Buffer to be printed
   size_t buflen     // Buffer Length
 );
+
+// ECALL Parameters:
+// Register A0 is 61 (SYS_write)
+// Register A1 is the File Descriptor (1 for Standard Output)
+// Register A2 points to the String Buffer to be printed
+// Register A3 is the Buffer Length
 </code></pre></div>
 <p>That’s the same NuttX System Call that <strong>printf</strong> executes internally.</p>
 <p>One last chance to say hello to NuttX…</p>
@@ -1042,7 +1048,7 @@ asm volatile (
 <p>TCC won’t assemble the <strong><code>li</code></strong> and <strong><code>nop</code></strong> instructions.</p>
 <p>So we used this <a href="https://riscvasm.lucasteske.dev/#"><strong>RISC-V Online Assembler</strong></a> to assemble the Machine Code above.</p>
 <p><em>How did we figure out that the buffer is at 0xC010_1000?</em></p>
-<p>We saw this in the <a href="https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d"><strong>NuttX Log</strong></a>…</p>
+<p>We saw this in the <a href="https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L32-L42"><strong>ELF Loader Log</strong></a>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>NuttShell (NSH) NuttX-12.4.0
 nsh&gt; a.out
 ...
