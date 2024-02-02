@@ -14,7 +14,7 @@ _Can we run TCC Compiler in a Web Browser?_
 
 Let's do it! We'll compile [__TCC (Tiny C Compiler)__](https://github.com/sellicott/tcc-riscv32) from C to WebAssembly with [__Zig Compiler__](https://ziglang.org/).
 
-In this article, we talk about the tricky bits of our __TCC modded for WebAssembly__...
+In this article, we talk about the tricky bits of our __TCC ported to WebAssembly__...
 
 - We compiled __TCC to WebAssembly__ with one tiny fix
 
@@ -32,7 +32,7 @@ _Why are we doing this?_
 
 Today we're running [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/tinyemu2) inside a Web Browser, with WebAssembly + Emscripten + 64-bit RISC-V.
 
-(__Real-Time Operating System__ in Web Browser on General-Purpose Operating System!)
+(__Real-Time Operating System__ in a Web Browser on a General-Purpose Operating System!)
 
 What if we could __Build and Test NuttX Apps__ in the Web Browser...
 
