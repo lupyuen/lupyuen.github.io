@@ -501,6 +501,8 @@ cp a.out apps/bin/
 chmod +x apps/bin/a.out
 ```
 
+[(How we build __NuttX for QEMU__)](https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu)
+
 Then we boot NuttX and run __`a.out`__...
 
 ```bash
@@ -526,11 +528,9 @@ Failed to load program 'a.out'
 
 NuttX politely accepts the RISC-V ELF (produced by TCC). And says that __printf__ is missing.
 
-Which makes sense: We haven't linked our C Program with the C Library!
+Which makes sense: We haven't linked our C Program with the [__C Library__](https://github.com/lupyuen/tcc-riscv32-wasm#how-nuttx-build-links-a-nuttx-app)!
 
-[(NuttX should load a __RISC-V ELF__ like this)](https://gist.github.com/lupyuen/847f7adee50499cac5212f2b95d19cd3#file-nuttx-elf-loader-log-L882-L1212)
-
-[(How we build and run __NuttX for QEMU__)](https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu)
+[(Loading a __RISC-V ELF__ should look like this)](https://gist.github.com/lupyuen/847f7adee50499cac5212f2b95d19cd3#file-nuttx-elf-loader-log-L882-L1212)
 
 _How else can we print something in NuttX?_
 
@@ -547,7 +547,7 @@ ssize_t write(
   size_t buflen     // Buffer Length
 );
 
-// ECALL Parameters:
+// Which makes an ECALL with these Parameters...
 // Register A0 is 61 (SYS_write)
 // Register A1 is the File Descriptor (1 for Standard Output)
 // Register A2 points to the String Buffer to be printed
@@ -556,7 +556,7 @@ ssize_t write(
 
 That's the same NuttX System Call that __printf__ executes internally.
 
-One last chance to say hello to NuttX...
+Final chance to say hello to NuttX...
 
 ![TCC WebAssembly compiles a NuttX System Call](https://lupyuen.github.io/images/tcc-ecall.png)
 
