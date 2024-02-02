@@ -908,7 +908,7 @@ fn format_string1(
 // Omitted: Function `format_string2` looks similar,
 // but for 2 Varargs (instead of 1)
 </code></pre></div>
-<p>The function above is called by a <strong>comptime Inline Loop</strong> that applies all the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209"><strong>Format Patterns</strong></a> that we saw earlier: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L252"></a></p>
+<p>The function above is called by a <strong>comptime Inline Loop</strong> that applies all the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209"><strong>Format Patterns</strong></a> that we saw earlier: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L252">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Runtime Function to format a string by Pattern Matching.
 /// Return the number of bytes written to `str`, excluding terminating null.
 fn format_string(
@@ -974,7 +974,7 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
 // Do the same for sprintf, snprintf, vsnprintf
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36">(See the <strong>Formatting Log</strong>)</a></p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#fix-the-varargs-functions">(Without <strong>comptime</strong>, the code gets <strong>super tedious</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#fix-the-varargs-functions">(Without <strong>comptime</strong>: Our code gets <strong>super tedious</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX Apps make a System Call to print to the console" /></p>
 <h1 id="appendix-nuttx-system-call"><a href="#appendix-nuttx-system-call">12 Appendix: NuttX System Call</a></h1>
 <p>Just now we saw a huge chunk of C Code that makes a <strong>NuttX System Call</strong>…</p>
