@@ -805,7 +805,7 @@ Check the __JavaScript Console__ for more messages.
 
 _How does it work?_
 
-On clicking the __Compile Button__, our JavaScript loads the TCC WebAssembly: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L170-L187)
+On clicking the __Compile Button__, our JavaScript loads the TCC WebAssembly: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L174-L191)
 
 ```javascript
 // Load the WebAssembly Module and start the Main Function.
@@ -830,7 +830,7 @@ async function bootstrap() {
 
 [(__wasm__ is our __WebAssembly Helper__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L6-L25)
 
-Which triggers the __Main Function__ and calls our Zig Function __compile_program__: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L48-L86)
+Which triggers the __Main Function__ and calls our Zig Function __compile_program__: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L48-L90)
 
 ```javascript
 // Main Function
@@ -873,9 +873,9 @@ function main() {
 
 Our Main Function then downloads the __`a.out`__ file returned by our Zig Function.
 
-[(__allocateString__ allocates a String from Zig Memory)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L86-L108)
+[(__allocateString__ allocates a String from Zig Memory)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L90-L112)
 
-[(__download__ is here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L158-L170)
+[(__download__ is here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L162-L174)
 
 _What about Node.js calling TCC WebAssembly?_
 
@@ -884,7 +884,7 @@ _What about Node.js calling TCC WebAssembly?_
 node zig/test.js
 ```
 
-__For Easier Testing__ (via Command-Line): We copied the JavaScript above into a Node.js Script: [test.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js)
+__For Easier Testing__ (via Command-Line): We copied the JavaScript above into a Node.js Script: [test.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js#L46-L78)
 
 ```javascript
 // Allocate a String for passing the Compiler Options to Zig
