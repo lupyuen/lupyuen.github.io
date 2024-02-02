@@ -918,7 +918,7 @@ A while back we saw our Zig Wrapper doing __Pattern Matching__ for Formatting C 
 
 - [__"Fearsome fprintf and Friends"__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends)
 
-We search for __Format Patterns__ in the C Format Strings and substitute the __Zig Equivalent__ (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
+How It Works: We search for __Format Patterns__ in the C Format Strings and substitute the __Zig Equivalent__ (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
 
 ```zig
 // Format a Single `%d`
@@ -944,43 +944,44 @@ To implement this, we call __comptime Functions__ in Zig: [tcc-wasm.zig](https:/
 
 ```zig
 /// CompTime Function to format a string by Pattern Matching.
-/// Format a Single Specifier, like `#define __BASE_FILE__ "%s"`
+/// Format a Single Specifier, like `#define __TINYC__ %d\n`
 /// If the Spec matches the Format: Return the number of bytes written to `str`, excluding terminating null.
 /// Else return 0.
 fn format_string1(
-  ap: *std.builtin.VaList,
-  str: [*]u8,
-  size: size_t,
-  format: []const u8,  // Like `#define %s%s\n`
-  comptime c_spec: []const u8,   // Like `%s%s`
-  comptime zig_spec: []const u8, // Like `{s}{s}`
-  comptime T0: type,  // Like `[*:0]const u8`
+  ap: *std.builtin.VaList,  // Varargs passed from C
+  str: [*]u8,    // Buffer for returning Formatted String
+  size: size_t,  // Buffer Size
+  format: []const u8,  // C Format String, like `#define __TINYC__ %d\n`
+  comptime c_spec: []const u8,   // C Format Pattern, like `%d`
+  comptime zig_spec: []const u8, // Zig Equivalent, like `{}`
+  comptime T0: type,   // Type of First Vararg, like `c_int`
 ) usize {
   // Count the Format Specifiers: `%`
-  const spec_cnt = std.mem.count(u8, c_spec, "%");
+  const spec_cnt   = std.mem.count(u8, c_spec, "%");
   const format_cnt = std.mem.count(u8, format, "%");
 
   // Check the Format Specifiers: `%`
-  if (format_cnt != spec_cnt or // Quit if the number of specifiers are different
-      !std.mem.containsAtLeast(u8, format, 1, c_spec)) // Or if the specifiers are not found
-  {
+  // Quit if the number of specifiers are different
+  // Or if the specifiers are not found
+  if (format_cnt != spec_cnt or
+      !std.mem.containsAtLeast(u8, format, 1, c_spec)) {
     return 0;
   }
 
-  // Fetch the args
+  // Fetch the First Argument from the C Varargs
   const a = @cVaArg(ap, T0);
 
-  // Format the string. TODO: Check for overflow
+  // Format the Argument. TODO: Check for overflow
   var buf: [100]u8 = undefined; // Limit to 100 chars
   const buf_slice = std.fmt.bufPrint(&buf, zig_spec, .{a}) catch {
     @panic("*** format_string1 error: buf too small");
   };
 
-  // Replace the Format Specifier
+  // Replace the C Format Pattern by the Zig Equivalent
   var buf2 = std.mem.zeroes([100]u8); // Limit to 100 chars
   _ = std.mem.replace(u8, format, c_spec, buf_slice, &buf2);
 
-  // Return the string
+  // Return the Formatted String and Length
   const len = std.mem.indexOfScalar(u8, &buf2, 0).?;
   @memcpy(str[0..len], buf2[0..len]);
   str[len] = 0;
@@ -994,10 +995,10 @@ The function above is called by a __comptime Inline Loop__ that applies all the 
 /// Runtime Function to format a string by Pattern Matching.
 /// Return the number of bytes written to `str`, excluding terminating null.
 fn format_string(
-  ap: *std.builtin.VaList,
-  str: [*]u8,
-  size: size_t,
-  format: []const u8, // Like `#define %s%s\n`
+  ap: *std.builtin.VaList,  // Varargs passed from C
+  str: [*]u8,    // Buffer for returning Formatted String
+  size: size_t,  // Buffer Size
+  format: []const u8,  // C Format String, like `#define __TINYC__ %d\n`
 ) usize {
   // If no Format Specifiers: Return the Format, like `warning: `
   const len = format_string0(str, size, format);
@@ -1005,24 +1006,28 @@ fn format_string(
 
   // For every Format Pattern...
   inline for (format_patterns) |pattern| {
+
     // Try formatting the string with the pattern...
     const len2 =
       if (pattern.type1) |t1|
       // Pattern has 2 parameters
       format_string2(ap, str, size, format, // Output String and Format String
-        pattern.c_spec, pattern.zig_spec, // Format Specifiers for C and Zig
+        pattern.c_spec, pattern.zig_spec,   // Format Specifiers for C and Zig
         pattern.type0, t1 // Types of the Parameters
       )
     else
       // Pattern has 1 parameter
       format_string1(ap, str, size, format, // Output String and Format String
-        pattern.c_spec, pattern.zig_spec, // Format Specifiers for C and Zig
+        pattern.c_spec, pattern.zig_spec,   // Format Specifiers for C and Zig
         pattern.type0 // Type of the Parameter
       );
+
+    // Loop until we find a match pattern
     if (len2 > 0) { return len2; }
   }
 
-  // Format String doesn't match any Format Pattern. We return the Format String.
+  // Format String doesn't match any Format Pattern.
+  // We return the Format String and Length.
   const len3 = format.len;
   @memcpy(str[0..len3], format[0..len3]);
   str[len3] = 0;
@@ -1037,6 +1042,7 @@ And the above function is called by __fprintf and friends__: [tcc-wasm.zig](http
 ```zig
 /// Implement the POSIX Function `fprintf`
 export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
+
   // Prepare the varargs
   var ap = @cVaStart();
   defer @cVaEnd(&ap);
@@ -1046,7 +1052,8 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
   const format_slice = std.mem.span(format);
   const len = format_string(&ap, &buf, 0, format_slice);
 
-  // TODO: Print to other File Streams. Right now we assume it's stderr (File Descriptor 2)
+  // TODO: Print to other File Streams.
+  // Right now we assume it's stderr (File Descriptor 2)
   return @intCast(len);
 }
 
@@ -1059,7 +1066,7 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
 
 # Appendix: NuttX System Call
 
-Not long ago we saw a huge chunk of C Code that makes a __NuttX System Call__...
+Just now we saw a huge chunk of C Code that makes a __NuttX System Call__...
 
 - [__"Hello NuttX!"__](https://lupyuen.github.io/articles/tcc#hello-nuttx)
 
@@ -1123,7 +1130,7 @@ main():
   3c:  fca43023  sd      a0,-64(s0)
 
 // Execute ECALL with Register A0 set to 15.
-// Nope A0 should be 1!
+// Nope: A0 should be 61!
   40:  00000073  ecall
   44:  0001      nop
 ```
@@ -1182,9 +1189,11 @@ Read 16 bytes from offset 224
 4. 00000000->c0101010
 ```
 
-Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section __`.data.ro`__ to __`0xC010_1000`__. That's all 15 bytes of _"Hello, World!!\n"_, including the terminating null.
+Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section __`.data.ro`__ to __`0xC010_1000`__.
 
-Thus our buffer is at __`0xC010_1000`__.
+That's all 15 bytes of _"Hello, World!!\n"_, including the terminating null.
+
+Thus our buffer should be at __`0xC010_1000`__.
 
 [(More about the __NuttX ELF Loader__)](https://lupyuen.github.io/articles/app#kernel-starts-a-nuttx-app)
 
