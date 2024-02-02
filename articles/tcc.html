@@ -12,10 +12,10 @@
     content="TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Today we're running Apache NuttX RTOS inside a Web Browser. What if we could compile and test NuttX Apps in the Web Browser? Let's explore with TCC 64-bit RISC-V Compiler, compiled to WebAssembly with Zig Compiler."
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Today we're running Apache NuttX RTOS inside a Web Browser. What if we could compile and test NuttX Apps in the Web Browser? Let's explore with TCC 64-bit RISC-V Compiler, compiled to WebAssembly with Zig Compiler.">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/tcc-title.png">
 <meta property="og:type" 
@@ -134,7 +134,10 @@
 <h1 id="tcc-in-the-web-browser"><a href="#tcc-in-the-web-browser">1 TCC in the Web Browser</a></h1>
 <p>Head over to this link to try <strong>TCC Compiler in our Web Browser</strong> (pic above)…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><strong>TCC RISC-V Compiler in WebAssembly</strong></a></li>
+<li>
+<p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><strong>TCC RISC-V Compiler in WebAssembly</strong></a></p>
+<p><a href="https://youtu.be/DJMDYq52Iv8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+</li>
 </ul>
 <p>This <strong>C Program</strong> appears…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler
@@ -351,7 +354,7 @@ pub export fn fopen(_: c_int) c_int {
 </blockquote>
 <h1 id="file-input-and-output"><a href="#file-input-and-output">4 File Input and Output</a></h1>
 <p><em>Why no #include in TCC for WebAssembly? And no C Libraries?</em></p>
-<p>WebAssembly runs in a <strong>Secure Sandbox</strong>. No File Access allowed! (Like for C Header and Library Files)</p>
+<p>WebAssembly runs in a Secure Sandbox. <strong>No File Access</strong> allowed, sorry! (Like for Header and Library Files)</p>
 <p>That’s why our Zig Wrapper only <strong>Emulates File Access</strong> for the bare minimum 2 files…</p>
 <ul>
 <li>
