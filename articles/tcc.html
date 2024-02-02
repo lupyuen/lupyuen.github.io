@@ -86,7 +86,7 @@
 <p><em>TCC is a Tiny C Compiler for 64-bit RISC-V (and other platforms)…</em></p>
 <p><em>Can we run TCC Compiler in a Web Browser?</em></p>
 <p>Let’s do it! We’ll compile <a href="https://github.com/sellicott/tcc-riscv32"><strong>TCC (Tiny C Compiler)</strong></a> from C to WebAssembly with <a href="https://ziglang.org/"><strong>Zig Compiler</strong></a>.</p>
-<p>In this article, we talk about the tricky bits of the TCC Port from <strong>C to WebAssembly</strong>…</p>
+<p>In this article, we talk about the tricky bits of our <strong>TCC modded for WebAssembly</strong>…</p>
 <ul>
 <li>
 <p>We compiled <strong>TCC to WebAssembly</strong> with one tiny fix</p>
@@ -102,13 +102,13 @@
 </li>
 <li>
 <p>And TCC produces a <strong>RISC-V Binary</strong> that runs OK</p>
-<p>(After fixing the RISC-V Assembly)</p>
+<p>(After some fiddling of RISC-V Assembly)</p>
 </li>
 </ul>
 <p><em>Why are we doing this?</em></p>
 <p>Today we’re running <a href="https://lupyuen.github.io/articles/tinyemu2"><strong>Apache NuttX RTOS</strong></a> inside a Web Browser, with WebAssembly + Emscripten + 64-bit RISC-V.</p>
 <p>(<strong>Real-Time Operating System</strong> in Web Browser on General-Purpose Operating System!)</p>
-<p>What if we could <strong>compile and test NuttX Apps</strong> in the Web Browser…</p>
+<p>What if we could <strong>Build and Test NuttX Apps</strong> in the Web Browser…</p>
 <ol>
 <li>
 <p>We type a <strong>C Program</strong> into our Web Browser (pic below)</p>
@@ -123,7 +123,7 @@
 <p>And <strong>NuttX Emulator</strong> runs our ELF Executable inside the Web Browser</p>
 </li>
 </ol>
-<p>This is how we made it happen…</p>
+<p>Learning NuttX becomes so cool! This is how we made it happen…</p>
 <p><a href="https://youtu.be/DJMDYq52Iv8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://research.cs.queensu.ca/home/cordy/pub/downloads/tplus/Turing_Plus_Report.pdf">(Not to be confused with <strong>TTC Compiler</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tcc-web.png" alt="Online Demo of TCC Compiler in WebAssembly" /></p>
