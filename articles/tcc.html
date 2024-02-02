@@ -1220,7 +1220,7 @@ Import:
 <hr>
 <p><strong>Filesystem Functions</strong></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L89-L168"><em>(Implemented here)</em></a></p>
-<p>We’ll simulate these functions for WebAssembly. Maybe with an Emulated Filesystem, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html"><strong>Emscripten Filesystem</strong></a>.</p>
+<p>We’ll simulate these functions for WebAssembly. Maybe with an <strong>Emulated Filesystem</strong>, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html"><strong>Emscripten Filesystem</strong></a>.</p>
 <p>Or we embed the simple <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Filesystem</strong></a> into our Zig Wrapper…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+getcwd"><strong>getcwd</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+remove"><strong>remove</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+unlink"><strong>unlink</strong></a></td></tr>
@@ -1234,7 +1234,8 @@ Import:
 </div><hr>
 <p><strong>Varargs Functions</strong></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L188-L447"><em>(Implemented here)</em></a></p>
-<p>As discussed earlier, Varargs will be <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>tricky to implement</strong></a> in Zig. Probably we should do it in C. <a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191">(Like <strong>ziglibc</strong>)</a></p>
+<p>As discussed earlier, Varargs will be <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>tricky to implement</strong></a> in Zig. Probably we should do it in C.</p>
+<p><a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191">(Similar to <strong>ziglibc</strong>)</a></p>
 <p>Right now we’re doing simple <a href="https://lupyuen.github.io/articles/tcc#appendix-pattern-matching"><strong>Pattern Matching</strong></a>. But it might not be sufficient when TCC compiles Real Programs…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+printf"><strong>printf</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+snprintf"><strong>snprintf</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sprintf"><strong>sprintf</strong></a></td></tr>
