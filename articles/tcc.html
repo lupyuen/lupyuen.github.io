@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
 <div class="example-wrap"><pre class="language-bash"><code>## Compile to RISC-V ELF
 tcc -c hello.c
 </code></pre></div>
-<p>And it downloads the compiled <strong>RISC-V ELF <code>a.out</code></strong>. We inspect the Compiled Output…</p>
+<p>And it downloads the compiled <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>RISC-V ELF <code>a.out</code></strong></a>. We inspect the Compiled Output…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the RISC-V Disassembly
 ## of TCC Output
 $ riscv64-unknown-elf-objdump \
@@ -355,13 +355,13 @@ pub export fn fopen(_: c_int) c_int {
 <h1 id="file-input-and-output"><a href="#file-input-and-output">4 File Input and Output</a></h1>
 <p><em>Why no #include in TCC for WebAssembly? And no C Libraries?</em></p>
 <p>WebAssembly runs in a Secure Sandbox. <strong>No File Access</strong> allowed, sorry! (Like for Header and Library Files)</p>
-<p>That’s why our Zig Wrapper only <strong>Emulates File Access</strong> for the bare minimum 2 files…</p>
+<p>That’s why our Zig Wrapper <strong>Emulates File Access</strong> for the bare minimum 2 files…</p>
 <ul>
 <li>
-<p>Read the <strong>C Program <code>hello.c</code></strong></p>
+<p>Read the <strong>C Program: <code>hello.c</code></strong></p>
 </li>
 <li>
-<p>Write the <strong>RISC-V ELF <code>a.out</code></strong></p>
+<p>Write the <strong>RISC-V ELF: <code>a.out</code></strong></p>
 </li>
 </ul>
 <p><strong>Reading a Source File <code>hello.c</code></strong> is extremely simplistic: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L107-L119">tcc-wasm.zig</a></p>
@@ -378,7 +378,11 @@ export fn read(fd0: c_int, buf: [*:0]u8, nbyte: size_t) isize {
   read_buf.len = 0;
   return @intCast(len);
 }
+
+/// Read Buffer for read
+var read_buf: []const u8 = undefined;
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L26-L32">(<strong>read_buf</strong> is populated at startup)</a></p>
 <p><strong>Writing the Compiled Output <code>a.out</code></strong> is just as barebones: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L130-L142">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Emulate the POSIX Function `write()`
 /// We write to One Single Memory
@@ -392,10 +396,15 @@ export fn fwrite(ptr: [*:0]const u8, size: usize, nmemb: usize, stream: *FILE) u
   write_buflen += len;
   return nmemb;
 }
+
+/// Write Buffer for fputc and fwrite
+var write_buf = std.mem.zeroes([8192]u8);
+var write_buflen: usize = 0;
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L62-L78">(<strong>write_buf</strong> will be returned to JavaScript)</a></p>
 <p><em>Can we handle Multiple Files?</em></p>
-<p>We’ll have to embed an <strong>Emulated Filesystem</strong> inside our Zig Wrapper. The Filesystem will contain the C Header and Library Files needed by TCC.</p>
-<p><a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">(Similar to the <strong>Emscripten Filesystem</strong>)</a></p>
+<p>We’ll have to embed an <strong>Emulated Filesystem</strong> inside our Zig Wrapper. The Filesystem will be preloaded with the Header and Library Files needed by TCC.</p>
+<p><a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">(Works like the <strong>Emscripten Filesystem</strong>)</a></p>
 <p><a href="https://docs.kernel.org/filesystems/romfs.html">(Maybe we embed the simple <strong>ROM FS Filesystem</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tcc-format.jpg" alt="Our Zig Wrapper uses Pattern Matching to match the C Formats and substitute the Zig Equivalent" /></p>
 <h1 id="fearsome-fprintf-and-friends"><a href="#fearsome-fprintf-and-friends">5 Fearsome fprintf and Friends</a></h1>
@@ -948,7 +957,7 @@ asm volatile (
   &quot;.word 0x0001 \n&quot;
 );
 </code></pre></div>
-<p>Sadly TCC generates <strong>incorrect RISC-V Machine Code</strong> that mashes up the RISC-V Registers…</p>
+<p>Sadly TCC generates <a href="https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call"><strong>incorrect RISC-V Machine Code</strong></a> that mashes up the RISC-V Registers…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>main():
 // Prepare the Stack
    0:  fc010113  add     sp,sp,-64
@@ -984,7 +993,7 @@ asm volatile (
   40:  00000073  ecall
   44:  0001      nop
 </code></pre></div>
-<p>Thus we <strong>hardcode Registers A0, A1, A2 and A3</strong> in Machine Code: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87">test-nuttx.js</a></p>
+<p>Thus we <a href="https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call"><strong>hardcode Registers A0, A1, A2 and A3</strong></a> in RISC-V Machine Code: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87">test-nuttx.js</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Load 61 to Register A0 (SYS_write)
 // li a0, 61
 &quot;.long 0x03d00513 \n&quot;
@@ -1006,7 +1015,7 @@ asm volatile (
 // ECALL for System Call to NuttX Kernel
 &quot;ecall \n&quot;
 
-// We inserted NOP, because TCC says it&#39;s invalid (see below)
+// NuttX needs NOP after ECALL
 &quot;.word 0x0001 \n&quot;
 </code></pre></div>
 <p><strong>TODO:</strong> Is there a workaround? Do we paste the ECALL Machine Code ourselves?</p>
@@ -1029,6 +1038,7 @@ Read 16 bytes from offset 224
 </code></pre></div>
 <p>Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section <strong><code>.data.ro</code></strong> to <strong><code>0xC010_1000</code></strong>. That’s all 15 bytes of <em>“Hello, World!!\n”</em>, including the terminating null.</p>
 <p>Thus our buffer is at <strong><code>0xC010_1000</code></strong>.</p>
+<p><a href="https://lupyuen.github.io/articles/app#kernel-starts-a-nuttx-app">(More about the <strong>NuttX ELF Loader</strong>)</a></p>
 <p><em>Why did we Loop Forever?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Omitted: Execute ECALL for System Call to NuttX Kernel
 asm volatile ( ... );
