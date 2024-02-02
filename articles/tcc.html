@@ -908,7 +908,7 @@ fn format_string1(
 // Omitted: Function `format_string2` looks similar,
 // but for 2 Varargs (instead of 1)
 </code></pre></div>
-<p>The function above is called by a <strong>comptime Inline Loop</strong> that applies all the <a href="tcc-wasm.zig"><strong>Format Patterns</strong></a> that we saw earlier: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L252"></a></p>
+<p>The function above is called by a <strong>comptime Inline Loop</strong> that applies all the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209"><strong>Format Patterns</strong></a> that we saw earlier: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L252"></a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Runtime Function to format a string by Pattern Matching.
 /// Return the number of bytes written to `str`, excluding terminating null.
 fn format_string(
@@ -1266,7 +1266,7 @@ Import:
 </tbody></table>
 </div><hr>
 <p><strong>Outstanding Functions</strong></p>
-<p><a href="ttps://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853"><em>(Implemented here)</em></a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853"><em>(Implemented here)</em></a></p>
 <p>We have implemented (fully or partially) <strong>48 POSIX Functions</strong> from above.</p>
 <p>The ones that we haven’t implemented? These <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853"><strong>24 POSIX Functions will Halt</strong></a> when TCC WebAssembly calls them…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
