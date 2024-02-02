@@ -132,7 +132,7 @@
 <p><img src="https://lupyuen.github.io/images/tcc-web.png" alt="Online Demo of TCC Compiler in WebAssembly" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><em>Online Demo of TCC Compiler in WebAssembly</em></a></p>
 <h1 id="tcc-in-the-web-browser"><a href="#tcc-in-the-web-browser">1 TCC in the Web Browser</a></h1>
-<p>Head over to this link to try <strong>TCC Compiler in our Web Browser</strong> (pic above)…</p>
+<p>Click this link to try <strong>TCC Compiler in our Web Browser</strong> (pic above)…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><strong>TCC RISC-V Compiler in WebAssembly</strong></a></p>
@@ -203,7 +203,6 @@ zig cc \
   -dynamic \
   -rdynamic \
   -lc \
-  tcc.c \
   -DTCC_TARGET_RISCV64 \
   -DCONFIG_TCC_CROSSPREFIX=&quot;\&quot;riscv64-\&quot;&quot;  \
   -DCONFIG_TCC_CRTPREFIX=&quot;\&quot;/usr/riscv64-linux-gnu/lib\&quot;&quot; \
@@ -219,7 +218,8 @@ zig cc \
   -Wno-unused-result \
   -Wno-format-truncation \
   -Wno-stringop-truncation \
-  -I.
+  -I. \
+  tcc.c
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/tcc.c">(See the <strong>TCC Source Code</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tcc#appendix-compile-tcc-with-zig">(About the <strong>Zig Compiler Options</strong>)</a></p>
@@ -301,14 +301,14 @@ pub export fn compile_program(
 <p>Inside TCC, we stubbed out the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/commit/e30454a0eb9916f820d58a7c3e104eeda67988d8"><strong>setjmp / longjmp</strong></a> to make it compile with Zig Compiler.</p>
 <p>Everything else compiles OK!</p>
 <p><em>Is it really OK to stub them out?</em></p>
-<p>Well <a href="https://en.wikipedia.org/wiki/Setjmp.h"><strong>setjmp / longjmp</strong></a> are called to <strong>Handle Errors</strong> during TCC Compilation.</p>
-<p>We’ll find a better way to express our outrage. (Instead of jumping around)</p>
-<p>Let’s study the Magical Bits inside our Zig Wrapper…</p>
+<p><a href="https://en.wikipedia.org/wiki/Setjmp.h"><strong>setjmp / longjmp</strong></a> are called to <strong>Handle Errors</strong> during TCC Compilation. Assuming everything goes hunky dory, we won’t need them.</p>
+<p>Later we’ll find a better way to express our outrage. (Instead of jumping around)</p>
+<p>We probe the Magical Bits inside our Zig Wrapper…</p>
 <p><img src="https://lupyuen.github.io/images/tcc-posix.jpg" alt="TCC Compiler in WebAssembly needs POSIX Functions" /></p>
 <h1 id="posix-for-webassembly"><a href="#posix-for-webassembly">3 POSIX for WebAssembly</a></h1>
 <p><em>What’s this POSIX?</em></p>
-<p>TCC Compiler was created as a <strong>Command Line App</strong>. So it calls the typical <a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX Functions</strong></a> like <strong>fopen, fprintf, strncpy, malloc,</strong> …</p>
-<p><a href="https://en.wikipedia.org/wiki/C_standard_library">(Similar to the <strong>C Standard Library libc</strong>)</a></p>
+<p>TCC Compiler was created as a <strong>Command-Line App</strong>. So it calls the typical <a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX Functions</strong></a> like <strong>fopen, fprintf, strncpy, malloc,</strong> …</p>
+<p><a href="https://en.wikipedia.org/wiki/C_standard_library">(Which are linked from the <strong>C Standard Library libc</strong>)</a></p>
 <p><em>Is POSIX a problem for WebAssembly?</em></p>
 <p>WebAssembly running in a Web Browser ain’t <strong>No Command Line</strong>! (Pic above)</p>
 <p>We counted <a href="https://lupyuen.github.io/articles/tcc#appendix-missing-functions"><strong>72 POSIX Functions</strong></a> needed by TCC Compiler, but missing from WebAssembly.</p>
@@ -329,7 +329,7 @@ pub export fn compile_program(
 </li>
 </ul>
 <p><em>72 POSIX Functions? Sounds like a lot of work…</em></p>
-<p>Actually we might not need all 72 POSIX Functions. We stubbed out <strong>most of the functions</strong> to identify the ones that are called: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853">tcc-wasm.zig</a></p>
+<p>We might not need all 72 POSIX Functions. We stubbed out <strong>many of the functions</strong> to identify the ones that are called: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Stub Out the Missing POSIX
 // Functions. If TCC calls them, 
 // we&#39;ll see a Zig Panic. Then we 
