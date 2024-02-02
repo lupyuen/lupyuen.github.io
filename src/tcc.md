@@ -1241,7 +1241,9 @@ Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Sec
 
 That's all 15 bytes of _"Hello, World!!\n"_, including the terminating null.
 
-Thus our buffer should be at __`0xC010_1000`__.
+Thus our buffer in NuttX QEMU should be at __`0xC010_1000`__.
+
+[(__NuttX WebAssembly Emulator__ uses __`0x8010_1000`__ instead)](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser)
 
 [(More about the __NuttX ELF Loader__)](https://lupyuen.github.io/articles/app#kernel-starts-a-nuttx-app)
 
