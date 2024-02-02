@@ -1230,23 +1230,31 @@ Here are the steps to build and run __NuttX for QEMU 64-bit RISC-V__ (Kernel Mod
 1.  Download and configure NuttX...
 
     ```bash
+    ## Download NuttX Source Code
     mkdir nuttx
     cd nuttx
     git clone https://github.com/apache/nuttx nuttx
     git clone https://github.com/apache/nuttx-apps apps
 
+    ## Configure NuttX for QEMU RISC-V 64-bit (Kernel Mode)
     cd nuttx
     tools/configure.sh rv-virt:knsh64
     make menuconfig
     ```
 
+    We use [__Kernel Mode__](https://lupyuen.github.io/articles/semihost#nuttx-apps-filesystem) because it allows loading of NuttX Apps as ELF Files.
+    
+    (Instead of Statically Linking the NuttX Apps into NuttX Kernel)
+
 1.  (Optional) To enable __ELF Loader Logging__, select...
 
-    - Build Setup > Debug Options > Binary Loader Debug Features > Enable "Binary Loader Error, Warnings and Info"
+    Build Setup > Debug Options > Binary Loader Debug Features:
+    - Enable "Binary Loader Error, Warnings and Info"
 
 1.  (Optional) To enable __System Call Logging__, select...
 
-    - Build Setup > Debug Options > SYSCALL  Debug Features > Enable "SYSCALL Error, Warnings and Info"
+    Build Setup > Debug Options > SYSCALL  Debug Features:
+    - Enable "SYSCALL Error, Warnings and Info"
 
 1.  Save and exit __menuconfig__.
 
