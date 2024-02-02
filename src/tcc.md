@@ -329,9 +329,9 @@ WebAssembly runs in a Secure Sandbox. __No File Access__ allowed, sorry! (Like f
 
 That's why our Zig Wrapper __Emulates File Access__ for the bare minimum 2 files...
 
-- Read the __C Program: `hello.c`__
+- Read the __C Program__: __`hello.c`__
 
-- Write the __RISC-V ELF: `a.out`__
+- Write the __RISC-V ELF__: __`a.out`__
 
 __Reading a Source File `hello.c`__ is extremely simplistic: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L107-L119)
 
