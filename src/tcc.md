@@ -958,7 +958,8 @@ fn format_string1(
   comptime c_spec:   []const u8,  // C Format Pattern, like `%d`
   comptime zig_spec: []const u8,  // Zig Equivalent, like `{}`
   comptime T0:       type,        // Type of First Vararg, like `c_int`
-) usize {
+) usize {  // Return the number of bytes written to `str`, excluding terminating null
+
   // Count the Format Specifiers: `%`
   const spec_cnt   = std.mem.count(u8, c_spec, "%");
   const format_cnt = std.mem.count(u8, format, "%");
@@ -1005,7 +1006,8 @@ fn format_string(
   str:    [*]u8,            // Buffer for returning Formatted String
   size:   size_t,           // Buffer Size
   format: []const u8,       // C Format String, like `#define __TINYC__ %d\n`
-) usize {
+) usize {  // Return the number of bytes written to `str`, excluding terminating null
+
   // If no Format Specifiers: Return the Format, like `warning: `
   const len = format_string0(str, size, format);
   if (len > 0) { return len; }
