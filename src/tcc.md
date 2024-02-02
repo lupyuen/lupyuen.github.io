@@ -269,7 +269,7 @@ _What's this POSIX?_
 
 TCC Compiler was created as a __Command-Line App__. So it calls the typical [__POSIX Functions__](https://en.wikipedia.org/wiki/POSIX) like __fopen, fprintf, strncpy, malloc,__ ...
 
-[(Which are linked from the __C Standard Library libc__)](https://en.wikipedia.org/wiki/C_standard_library)
+[(Linked from the __C Standard Library libc__)](https://en.wikipedia.org/wiki/C_standard_library)
 
 _Is POSIX a problem for WebAssembly?_
 
