@@ -996,7 +996,7 @@ fn format_string1(
 // but for 2 Varargs (instead of 1)
 ```
 
-The function above is called by a __comptime Inline Loop__ that applies all the [__Format Patterns__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209) that we saw earlier: [](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L252)
+The function above is called by a __comptime Inline Loop__ that applies all the [__Format Patterns__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209) that we saw earlier: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L252)
 
 ```zig
 /// Runtime Function to format a string by Pattern Matching.
@@ -1070,7 +1070,7 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
 
 [(See the __Formatting Log__)](https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36)
 
-[(Without __comptime__, the code gets __super tedious__)](https://github.com/lupyuen/tcc-riscv32-wasm#fix-the-varargs-functions)
+[(Without __comptime__: Our code gets __super tedious__)](https://github.com/lupyuen/tcc-riscv32-wasm#fix-the-varargs-functions)
 
 ![NuttX Apps make a System Call to print to the console](https://lupyuen.github.io/images/app-syscall.jpg)
 
