@@ -84,7 +84,7 @@ Click the "__Compile__" button. Our Web Browser calls TCC to compile the above p
 tcc -c hello.c
 ```
 
-And it downloads the compiled __RISC-V ELF `a.out`__. We inspect the Compiled Output...
+And it downloads the compiled [__RISC-V ELF `a.out`__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format). We inspect the Compiled Output...
 
 ```bash
 ## Dump the RISC-V Disassembly
@@ -332,11 +332,11 @@ _Why no #include in TCC for WebAssembly? And no C Libraries?_
 
 WebAssembly runs in a Secure Sandbox. __No File Access__ allowed, sorry! (Like for Header and Library Files)
 
-That's why our Zig Wrapper only __Emulates File Access__ for the bare minimum 2 files...
+That's why our Zig Wrapper __Emulates File Access__ for the bare minimum 2 files...
 
-- Read the __C Program `hello.c`__
+- Read the __C Program: `hello.c`__
 
-- Write the __RISC-V ELF `a.out`__
+- Write the __RISC-V ELF: `a.out`__
 
 __Reading a Source File `hello.c`__ is extremely simplistic: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L107-L119)
 
@@ -354,7 +354,12 @@ export fn read(fd0: c_int, buf: [*:0]u8, nbyte: size_t) isize {
   read_buf.len = 0;
   return @intCast(len);
 }
+
+/// Read Buffer for read
+var read_buf: []const u8 = undefined;
 ```
+
+[(__read_buf__ is populated at startup)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L26-L32)
 
 __Writing the Compiled Output `a.out`__ is just as barebones: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L130-L142)
 
@@ -371,13 +376,19 @@ export fn fwrite(ptr: [*:0]const u8, size: usize, nmemb: usize, stream: *FILE) u
   write_buflen += len;
   return nmemb;
 }
+
+/// Write Buffer for fputc and fwrite
+var write_buf = std.mem.zeroes([8192]u8);
+var write_buflen: usize = 0;
 ```
+
+[(__write_buf__ will be returned to JavaScript)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L62-L78)
 
 _Can we handle Multiple Files?_
 
-We'll have to embed an __Emulated Filesystem__ inside our Zig Wrapper. The Filesystem will contain the C Header and Library Files needed by TCC.
+We'll have to embed an __Emulated Filesystem__ inside our Zig Wrapper. The Filesystem will be preloaded with the Header and Library Files needed by TCC.
 
-[(Similar to the __Emscripten Filesystem__)](https://emscripten.org/docs/porting/files/file_systems_overview.html)
+[(Works like the __Emscripten Filesystem__)](https://emscripten.org/docs/porting/files/file_systems_overview.html)
 
 [(Maybe we embed the simple __ROM FS Filesystem__)](https://docs.kernel.org/filesystems/romfs.html)
 
@@ -1042,7 +1053,7 @@ asm volatile (
 );
 ```
 
-Sadly TCC generates __incorrect RISC-V Machine Code__ that mashes up the RISC-V Registers...
+Sadly TCC generates [__incorrect RISC-V Machine Code__](https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call) that mashes up the RISC-V Registers...
 
 ```yaml
 main():
@@ -1081,7 +1092,7 @@ main():
   44:  0001      nop
 ```
 
-Thus we __hardcode Registers A0, A1, A2 and A3__ in Machine Code: [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87)
+Thus we [__hardcode Registers A0, A1, A2 and A3__](https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call) in RISC-V Machine Code: [test-nuttx.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L87)
 
 ```c
 // Load 61 to Register A0 (SYS_write)
@@ -1105,7 +1116,7 @@ Thus we __hardcode Registers A0, A1, A2 and A3__ in Machine Code: [test-nuttx.js
 // ECALL for System Call to NuttX Kernel
 "ecall \n"
 
-// We inserted NOP, because TCC says it's invalid (see below)
+// NuttX needs NOP after ECALL
 ".word 0x0001 \n"
 ```
 
@@ -1138,6 +1149,8 @@ Read 16 bytes from offset 224
 Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section __`.data.ro`__ to __`0xC010_1000`__. That's all 15 bytes of _"Hello, World!!\n"_, including the terminating null.
 
 Thus our buffer is at __`0xC010_1000`__.
+
+[(More about the __NuttX ELF Loader__)](https://lupyuen.github.io/articles/app#kernel-starts-a-nuttx-app)
 
 _Why did we Loop Forever?_
 
