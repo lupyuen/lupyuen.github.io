@@ -1368,7 +1368,7 @@ __Filesystem Functions__
 
 [_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L89-L168)
 
-We'll simulate these functions for WebAssembly. Maybe with an Emulated Filesystem, similar to [__Emscripten Filesystem__](https://emscripten.org/docs/porting/files/file_systems_overview.html).
+We'll simulate these functions for WebAssembly. Maybe with an __Emulated Filesystem__, similar to [__Emscripten Filesystem__](https://emscripten.org/docs/porting/files/file_systems_overview.html).
 
 Or we embed the simple [__ROM FS Filesystem__](https://docs.kernel.org/filesystems/romfs.html) into our Zig Wrapper...
 
@@ -1388,7 +1388,9 @@ __Varargs Functions__
 
 [_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L188-L447)
 
-As discussed earlier, Varargs will be [__tricky to implement__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends) in Zig. Probably we should do it in C. [(Like __ziglibc__)](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191)
+As discussed earlier, Varargs will be [__tricky to implement__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends) in Zig. Probably we should do it in C.
+
+[(Similar to __ziglibc__)](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191)
 
 Right now we're doing simple [__Pattern Matching__](https://lupyuen.github.io/articles/tcc#appendix-pattern-matching). But it might not be sufficient when TCC compiles Real Programs...
 
