@@ -623,7 +623,7 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-We copy this into [__TCC WebAssembly__](https://lupyuen.github.io/tcc-riscv32-wasm/) and compile it.
+We copy this into our Web Browser and compile it. (Pic above)
 
 [(Why so complicated? __Explained here__)](https://lupyuen.github.io/articles/tcc#appendix-nuttx-system-call)
 
@@ -631,7 +631,7 @@ We copy this into [__TCC WebAssembly__](https://lupyuen.github.io/tcc-riscv32-wa
 
 _Does it work?_
 
-TCC in WebAssembly compiles the code above to __RISC-V ELF `a.out`__. When we run it on NuttX...
+TCC in WebAssembly compiles the code above to __RISC-V ELF `a.out`__. When we copy it to NuttX and run it...
 
 ```bash
 NuttShell (NSH) NuttX-12.4.0-RC0
@@ -673,7 +673,7 @@ Thanks to the [__TCC Team__](https://github.com/sellicott/tcc-riscv32), we have 
 
 TODO
 
-How would you use __TCC in a Web Browser__? Please lemme know 🙏
+How will you use __TCC in a Web Browser__? Please lemme know 🙏
 
 _(Build and run RISC-V Apps on iPhone?)_
 
@@ -695,13 +695,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/tcc.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tcc.md)
 
+![Online Demo of TCC Compiler in WebAssembly](https://lupyuen.github.io/images/tcc-web.png)
+
+[_Online Demo of TCC Compiler in WebAssembly_](https://lupyuen.github.io/tcc-riscv32-wasm/)
+
 # Appendix: Compile TCC with Zig
 
 This is how we run __Zig Compiler to compile TCC Compiler__ from C to WebAssembly (pic below)...
 
 ```bash
-## Download the TCC Source Code.
-## Configure the build for 64-bit RISC=V.
+## Download the (slightly) Modified TCC Source Code.
+## Configure the build for 64-bit RISC-V.
 
 git clone https://github.com/lupyuen/tcc-riscv32-wasm
 cd tcc-riscv32-wasm
@@ -722,7 +726,7 @@ make --trace cross-riscv64
 ## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
 ```
 
-_How did we figure out the `zig cc` options?_
+_How did we figure out the "`zig` `cc`" options?_
 
 Earlier we saw a long list of [__Zig Compiler Options__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly)...
 
@@ -738,7 +742,7 @@ zig cc \
   ...
 ```
 
-We got them from `make --trace`, which shows the __GCC Compiler Options__...
+We got them from "`make` `--trace`", which reveals the __GCC Compiler Options__...
 
 ```bash
 ## Show the GCC Options for compiling TCC
@@ -765,9 +769,9 @@ gcc \
   -I. 
 ```
 
-And we copied above GCC Options to become the [__Zig Compiler Options__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly).
+And we copied above GCC Options to become our [__Zig Compiler Options__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly).
 
-![TODO](https://lupyuen.github.io/images/tcc-zig.jpg)
+![Zig Compiler compiles TCC Compiler to WebAssembly](https://lupyuen.github.io/images/tcc-zig.jpg)
 
 # Appendix: JavaScript calls TCC
 
@@ -780,7 +784,7 @@ Previously we saw some __JavaScript (Web Browser and Node.js)__ calling our TCC 
 This is how we test the TCC WebAssembly in a Web Browser with a __Local Web Server__...
 
 ```bash
-## Download the TCC Source Code.
+## Download the (slightly) Modified TCC Source Code
 git clone https://github.com/lupyuen/tcc-riscv32-wasm
 cd tcc-riscv32-wasm
 
@@ -836,6 +840,7 @@ Which triggers the __Main Function__ and calls our Zig Function __compile_progra
 // Main Function
 function main() {
   // Allocate a String for passing the Compiler Options to Zig
+  // `options` is a JSON Array: ["-c", "hello.c"]
   const options = read_options();
   const options_ptr = allocateString(JSON.stringify(options));
   
@@ -843,19 +848,18 @@ function main() {
   const code = document.getElementById("code").value;
   const code_ptr = allocateString(code);
 
-  // Call TCC to compile a program
+  // Call TCC to compile the program
   const ptr = wasm.instance.exports
     .compile_program(options_ptr, code_ptr);
-  console.log(`main: ptr=${ptr}`);
 
   // Get the `a.out` size from first 4 bytes returned
   const memory = wasm.instance.exports.memory;
   const data_len = new Uint8Array(memory.buffer, ptr, 4);
   const len = data_len[0] | data_len[1] << 8 | data_len[2] << 16 | data_len[3] << 24;
-  console.log(`main: len=${len}`);
   if (len <= 0) { return; }
 
   // Encode the `a.out` data from the rest of the bytes returned
+  // `encoded_data` looks like %7f%45%4c%46...
   const data = new Uint8Array(memory.buffer, ptr + 4, len);
   let encoded_data = "";
   for (const i in data) {
@@ -865,6 +869,9 @@ function main() {
 
   // Download the `a.out` data into the Web Browser
   download("a.out", encoded_data);
+
+  // Save the ELF Data to Local Storage for loading by NuttX Emulator
+  localStorage.setItem("elf_data", encoded_data);
 };
 ```
 
