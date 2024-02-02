@@ -305,7 +305,7 @@ pub export fn compile_program(
 <h1 id="posix-for-webassembly"><a href="#posix-for-webassembly">3 POSIX for WebAssembly</a></h1>
 <p><em>What’s this POSIX?</em></p>
 <p>TCC Compiler was created as a <strong>Command-Line App</strong>. So it calls the typical <a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX Functions</strong></a> like <strong>fopen, fprintf, strncpy, malloc,</strong> …</p>
-<p><a href="https://en.wikipedia.org/wiki/C_standard_library">(Which are linked from the <strong>C Standard Library libc</strong>)</a></p>
+<p><a href="https://en.wikipedia.org/wiki/C_standard_library">(Linked from the <strong>C Standard Library libc</strong>)</a></p>
 <p><em>Is POSIX a problem for WebAssembly?</em></p>
 <p>WebAssembly running in a Web Browser ain’t <strong>No Command Line</strong>! (Pic above)</p>
 <p>We counted <a href="https://lupyuen.github.io/articles/tcc#appendix-missing-functions"><strong>72 POSIX Functions</strong></a> needed by TCC Compiler, but missing from WebAssembly.</p>
