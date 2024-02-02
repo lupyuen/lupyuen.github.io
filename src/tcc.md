@@ -476,9 +476,9 @@ That's our quick hack for [__fprintf and friends__](https://github.com/lupyuen/t
 
 _So simple? Unbelievable!_
 
-OK actually we'll hit more Format Patterns as TCC Compiler emits various __Error and Warning Messages__. But it's a good start!
+Actually we'll hit more Format Patterns as TCC Compiler emits various __Error and Warning Messages__. But it's a good start!
 
-Later our Zig Wrapper will have to parse meticulously all kinds of C Format Strings. Or we do the [__parsing in C__](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191), compiled to WebAssembly.
+Later our Zig Wrapper shall cautiously and meticulously parse all kinds of C Format Strings. Or we do the [__parsing in C__](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191), compiled to WebAssembly.
 
 (Funny how __printf__ is the first thing we learn about C. Yet it's incredibly difficult to implement!)
 
@@ -488,7 +488,7 @@ Later our Zig Wrapper will have to parse meticulously all kinds of C Format Stri
 
 _TCC in WebAssembly has compiled our C Program to RISC-V ELF..._
 
-_Will the RISC-V ELF run on NuttX?_
+_Will the ELF run on NuttX?_
 
 [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) is a tiny operating system for 64-bit RISC-V that runs on [__QEMU Emulator__](https://www.qemu.org/docs/master/system/target-riscv.html). (And many other platforms)
 
@@ -528,13 +528,13 @@ NuttX politely accepts the RISC-V ELF (produced by TCC). And says that __printf_
 
 Which makes sense: We haven't linked our C Program with the C Library!
 
-[(NuttX should load a __RISC-V ELF__ like this)](https://gist.github.com/lupyuen/847f7adee50499cac5212f2b95d19cd3)
+[(NuttX should load a __RISC-V ELF__ like this)](https://gist.github.com/lupyuen/847f7adee50499cac5212f2b95d19cd3#file-nuttx-elf-loader-log-L882-L1212)
 
 [(How we build and run __NuttX for QEMU__)](https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu)
 
 _How else can we print something in NuttX?_
 
-To print something, we can make a [__NuttX System Call (ECALL)__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) directly to NuttX Kernel...
+To print something, we can make a [__System Call (ECALL)__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel) directly to NuttX Kernel...
 
 ```c
 // NuttX System Call that prints
@@ -546,6 +546,12 @@ ssize_t write(
   const char *buf,  // Buffer to be printed
   size_t buflen     // Buffer Length
 );
+
+// ECALL Parameters:
+// Register A0 is 61 (SYS_write)
+// Register A1 is the File Descriptor (1 for Standard Output)
+// Register A2 points to the String Buffer to be printed
+// Register A3 is the Buffer Length
 ```
 
 That's the same NuttX System Call that __printf__ executes internally.
@@ -1153,7 +1159,7 @@ So we used this [__RISC-V Online Assembler__](https://riscvasm.lucasteske.dev/#)
 
 _How did we figure out that the buffer is at 0xC010_1000?_
 
-We saw this in the [__NuttX Log__](https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d)...
+We saw this in the [__ELF Loader Log__](https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L32-L42)...
 
 ```yaml
 NuttShell (NSH) NuttX-12.4.0
