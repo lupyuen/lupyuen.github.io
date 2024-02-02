@@ -1101,25 +1101,32 @@ for(;;) {}
 </li>
 <li>
 <p>Download and configure NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+<div class="example-wrap"><pre class="language-bash"><code>## Download NuttX Source Code
+mkdir nuttx
 cd nuttx
 git clone https://github.com/apache/nuttx nuttx
 git clone https://github.com/apache/nuttx-apps apps
 
+## Configure NuttX for QEMU RISC-V 64-bit (Kernel Mode)
 cd nuttx
 tools/configure.sh rv-virt:knsh64
 make menuconfig
-</code></pre></div></li>
+</code></pre></div>
+<p>We use <a href="https://lupyuen.github.io/articles/semihost#nuttx-apps-filesystem"><strong>Kernel Mode</strong></a> because it allows loading of NuttX Apps as ELF Files.</p>
+<p>(Instead of Statically Linking the NuttX Apps into NuttX Kernel)</p>
+</li>
 <li>
 <p>(Optional) To enable <strong>ELF Loader Logging</strong>, select…</p>
+<p>Build Setup &gt; Debug Options &gt; Binary Loader Debug Features:</p>
 <ul>
-<li>Build Setup &gt; Debug Options &gt; Binary Loader Debug Features &gt; Enable “Binary Loader Error, Warnings and Info”</li>
+<li>Enable “Binary Loader Error, Warnings and Info”</li>
 </ul>
 </li>
 <li>
 <p>(Optional) To enable <strong>System Call Logging</strong>, select…</p>
+<p>Build Setup &gt; Debug Options &gt; SYSCALL  Debug Features:</p>
 <ul>
-<li>Build Setup &gt; Debug Options &gt; SYSCALL  Debug Features &gt; Enable “SYSCALL Error, Warnings and Info”</li>
+<li>Enable “SYSCALL Error, Warnings and Info”</li>
 </ul>
 </li>
 <li>
