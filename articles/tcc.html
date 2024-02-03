@@ -257,7 +257,7 @@ node zig/test.js
 <p>Return the compiled <strong>RISC-V ELF</strong> to JavaScript</p>
 </li>
 </ol>
-<p>Like so: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L12-L77">tcc-wasm.zig</a></p>
+<p>Like so: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L11-L76">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Call TCC Compiler to compile a
 /// C Program to RISC-V ELF
 pub export fn compile_program(
@@ -324,7 +324,7 @@ pub export fn compile_program(
 </li>
 </ul>
 <p><em>72 POSIX Functions? Sounds like a lot of work…</em></p>
-<p>We might not need all 72 POSIX Functions. We stubbed out <strong>many of the functions</strong> to identify the ones that are called: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853">tcc-wasm.zig</a></p>
+<p>We might not need all 72 POSIX Functions. We stubbed out <strong>many of the functions</strong> to identify the ones that are called: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L776-L855">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Stub Out the Missing POSIX
 // Functions. If TCC calls them, 
 // we&#39;ll see a Zig Panic. Then we 
@@ -359,15 +359,15 @@ pub export fn fopen(_: c_int) c_int {
 <p>Write the <strong>RISC-V ELF</strong>: <strong><code>a.out</code></strong></p>
 </li>
 </ul>
-<p><strong>Reading a Source File <code>hello.c</code></strong> is extremely simplistic: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L107-L119">tcc-wasm.zig</a></p>
+<p><strong>Reading a Source File <code>hello.c</code></strong> is extremely simplistic: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L104-L118">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Emulate the POSIX Function `read()`
 /// We copy from One Single Read Buffer
 /// that contains our C Program
 export fn read(fd0: c_int, buf: [*:0]u8, nbyte: size_t) isize {
 
   // TODO: Support more than one file
-  // TODO: Check overflow
   const len = read_buf.len;
+  assert(len &lt; nbyte);
   @memcpy(buf[0..len], read_buf[0..len]);
   buf[len] = 0;
   read_buf.len = 0;
@@ -378,7 +378,7 @@ export fn read(fd0: c_int, buf: [*:0]u8, nbyte: size_t) isize {
 var read_buf: []const u8 = undefined;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L26-L32">(<strong>read_buf</strong> is populated at startup)</a></p>
-<p><strong>Writing the Compiled Output <code>a.out</code></strong> is just as barebones: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L130-L142">tcc-wasm.zig</a></p>
+<p><strong>Writing the Compiled Output <code>a.out</code></strong> is just as barebones: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L128-L140">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Emulate the POSIX Function `write()`
 /// We write to One Single Memory
 /// Buffer that will be returned to 
@@ -415,7 +415,7 @@ var write_buflen: usize = 0;
 </ul>
 <p>Hence we hacked up an implementation of <strong>String Formatting</strong> that’s safer, simpler and so-barebones-you-can-make-<em>soup-tulang</em>.</p>
 <p><em>Soup tulang? Tell me more…</em></p>
-<p>Our Zig Wrapper uses <a href="https://lupyuen.github.io/articles/tcc#appendix-pattern-matching"><strong>Pattern Matching</strong></a> to match the <strong>C Formats</strong> and substitute the <strong>Zig Equivalent</strong> (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">tcc-wasm.zig</a></p>
+<p>Our Zig Wrapper uses <a href="https://lupyuen.github.io/articles/tcc#appendix-pattern-matching"><strong>Pattern Matching</strong></a> to match the <strong>C Formats</strong> and substitute the <strong>Zig Equivalent</strong> (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L189-L207">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Format a Single `%d`
 // like `#define __TINYC__ %d`
 FormatPattern{
@@ -432,7 +432,7 @@ FormatPattern{
   .type1 = null
 }
 </code></pre></div>
-<p>This works OK (for now) because TCC Compiler only uses <strong>5 Patterns for C Format Strings</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">tcc-wasm.zig</a></p>
+<p>This works OK (for now) because TCC Compiler only uses <strong>5 Patterns for C Format Strings</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L189-L207">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Pattern Matching for C String Formatting:
 /// We&#39;ll match these patterns when
 /// formatting strings
@@ -843,7 +843,7 @@ const ptr = wasm.instance.exports
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>“Fearsome fprintf and Friends”</strong></a></li>
 </ul>
-<p>How It Works: We search for <strong>Format Patterns</strong> in the C Format Strings and substitute the <strong>Zig Equivalent</strong> (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">tcc-wasm.zig</a></p>
+<p>How It Works: We search for <strong>Format Patterns</strong> in the C Format Strings and substitute the <strong>Zig Equivalent</strong> (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L189-L207">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Format a Single `%d`
 // like `#define __TINYC__ %d`
 FormatPattern{
@@ -860,8 +860,9 @@ FormatPattern{
   .type1 = null
 }
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L438-L446">(<strong>FormatPattern</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">(See the <strong>Format Patterns</strong>)</a></p>
-<p>To implement this, we call <strong>comptime Functions</strong> in Zig: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L380">tcc-wasm.zig</a></p>
+<p>To implement this, we call <strong>comptime Functions</strong> in Zig: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L327">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// CompTime Function to format a string by Pattern Matching.
 /// Format a Single Specifier, like `#define __TINYC__ %d\n`
 /// If the Spec matches the Format: Return the number of bytes written to `str`, excluding terminating null.
@@ -891,18 +892,19 @@ fn format_string1(
   // Fetch the First Argument from the C Varargs
   const a = @cVaArg(ap, T0);
 
-  // Format the Argument. TODO: Check for overflow
-  var buf: [100]u8 = undefined; // Limit to 100 chars
+  // Format the Argument
+  var buf: [512]u8 = undefined;
   const buf_slice = std.fmt.bufPrint(&amp;buf, zig_spec, .{a}) catch {
-    @panic(&quot;*** format_string1 error: buf too small&quot;);
+    @panic(&quot;format_string1 error: buf too small&quot;);
   };
 
   // Replace the C Format Pattern by the Zig Equivalent
-  var buf2 = std.mem.zeroes([100]u8); // Limit to 100 chars
+  var buf2 = std.mem.zeroes([512]u8);
   _ = std.mem.replace(u8, format, c_spec, buf_slice, &amp;buf2);
 
   // Return the Formatted String and Length
   const len = std.mem.indexOfScalar(u8, &amp;buf2, 0).?;
+  assert(len &lt; size);
   @memcpy(str[0..len], buf2[0..len]);
   str[len] = 0;
   return len;
@@ -911,7 +913,7 @@ fn format_string1(
 // Omitted: Function `format_string2` looks similar,
 // but for 2 Varargs (instead of 1)
 </code></pre></div>
-<p>The function above is called by a <strong>comptime Inline Loop</strong> that applies all the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209"><strong>Format Patterns</strong></a> that we saw earlier: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L252">tcc-wasm.zig</a></p>
+<p>The function above is called by a <strong>comptime Inline Loop</strong> that applies all the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209"><strong>Format Patterns</strong></a> that we saw earlier: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L207-L251">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Runtime Function to format a string by Pattern Matching.
 /// Return the number of bytes written to `str`, excluding terminating null.
 fn format_string(
@@ -950,13 +952,14 @@ fn format_string(
   // Format String doesn&#39;t match any Format Pattern.
   // We return the Format String and Length.
   const len3 = format.len;
+  assert(len3 &lt; size);
   @memcpy(str[0..len3], format[0..len3]);
   str[len3] = 0;
   return len3;
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L326-L380">(<strong>format_string2</strong> is here)</a></p>
-<p>And the above function is called by <strong>fprintf and friends</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L380-L431">tcc-wasm.zig</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L327-L382">(<strong>format_string2</strong> is here)</a></p>
+<p>And the above function is called by <strong>fprintf and friends</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L382-L438">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Implement the POSIX Function `fprintf`
 export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
 
@@ -964,10 +967,10 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
   var ap = @cVaStart();
   defer @cVaEnd(&amp;ap);
 
-  // Format the string. TODO: Catch overflow
-  var buf = std.mem.zeroes([100]u8); // Limit to 100 chars
+  // Format the string
+  var buf = std.mem.zeroes([512]u8);
   const format_slice = std.mem.span(format);
-  const len = format_string(&amp;ap, &amp;buf, 0, format_slice);
+  const len = format_string(&amp;ap, &amp;buf, buf.len, format_slice);
 
   // TODO: Print to other File Streams.
   // Right now we assume it&#39;s stderr (File Descriptor 2)
@@ -1233,7 +1236,7 @@ Import:
 <p>Do we need all 72 POSIX Functions? We scrutinise the list…</p>
 <hr>
 <p><strong>Filesystem Functions</strong></p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L89-L168"><em>(Implemented here)</em></a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L87-L166"><em>(Implemented here)</em></a></p>
 <p>We’ll simulate these functions for WebAssembly. Maybe with an <strong>Emulated Filesystem</strong>, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html"><strong>Emscripten Filesystem</strong></a>.</p>
 <p>Or we embed the simple <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Filesystem</strong></a> into our Zig Wrapper…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
@@ -1247,7 +1250,7 @@ Import:
 </tbody></table>
 </div><hr>
 <p><strong>Varargs Functions</strong></p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L188-L447"><em>(Implemented here)</em></a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L186-L445"><em>(Implemented here)</em></a></p>
 <p>As discussed earlier, Varargs will be <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>tricky to implement</strong></a> in Zig. Probably we should do it in C.</p>
 <p><a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191">(Similar to <strong>ziglibc</strong>)</a></p>
 <p>Right now we’re doing simple <a href="https://lupyuen.github.io/articles/tcc#appendix-pattern-matching"><strong>Pattern Matching</strong></a>. But it might not be sufficient when TCC compiles Real Programs…</p>
@@ -1257,7 +1260,7 @@ Import:
 </tbody></table>
 </div><hr>
 <p><strong>String Functions</strong></p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L539-L774"><em>(Implemented here)</em></a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L541-L776"><em>(Implemented here)</em></a></p>
 <p>We’ll borrow the String Functions from <a href="https://github.com/marler8997/ziglibc/blob/main/src/cstd.zig"><strong>ziglibc</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+atoi"><strong>atoi</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strcat"><strong>strcat</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+strchr"><strong>strchr</strong></a></td></tr>
@@ -1269,7 +1272,7 @@ Import:
 </tbody></table>
 </div><hr>
 <p><strong>Semaphore Functions</strong></p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L168-L188"><em>(Implemented here)</em></a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L166-L186"><em>(Implemented here)</em></a></p>
 <p>Not sure why TCC uses Semaphores? Maybe we’ll understand when we support <strong><code>#include</code></strong> files.</p>
 <p>(Where can we borrow the Semaphore Functions?)</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
@@ -1292,9 +1295,9 @@ Import:
 </tbody></table>
 </div><hr>
 <p><strong>Outstanding Functions</strong></p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853"><em>(Implemented here)</em></a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L776-L855"><em>(Implemented here)</em></a></p>
 <p>We have implemented (fully or partially) <strong>48 POSIX Functions</strong> from above.</p>
-<p>The ones that we haven’t implemented? These <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853"><strong>24 POSIX Functions will Halt</strong></a> when TCC WebAssembly calls them…</p>
+<p>The ones that we haven’t implemented? These <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L776-L855"><strong>24 POSIX Functions will Halt</strong></a> when TCC WebAssembly calls them…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+atoi"><strong>atoi</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+exit"><strong>exit</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fopen"><strong>fopen</strong></a></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fread"><strong>fread</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fseek"><strong>fseek</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+ftell"><strong>ftell</strong></a></td></tr>
