@@ -383,7 +383,7 @@ We'll have to embed an __Emulated Filesystem__ inside our Zig Wrapper. The Files
 
 [(Works like the __Emscripten Filesystem__)](https://emscripten.org/docs/porting/files/file_systems_overview.html)
 
-[(Maybe we embed the simple __ROM FS Filesystem__)](https://docs.kernel.org/filesystems/romfs.html)
+[(Maybe we embed the simple __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly)
 
 ![Our Zig Wrapper uses Pattern Matching to match the C Formats and substitute the Zig Equivalent](https://lupyuen.github.io/images/tcc-format.jpg)
 
@@ -1400,7 +1400,7 @@ __Filesystem Functions__
 
 We'll simulate these functions for WebAssembly. Maybe with an __Emulated Filesystem__, similar to [__Emscripten Filesystem__](https://emscripten.org/docs/porting/files/file_systems_overview.html).
 
-Or we embed the simple [__ROM FS Filesystem__](https://docs.kernel.org/filesystems/romfs.html) into our Zig Wrapper...
+Or we embed the simple [__ROM FS Filesystem__](https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly) into our Zig Wrapper...
 
 | | | |
 |:---|:---|:---|
