@@ -79,7 +79,7 @@
 <li><a href="#appendix-pattern-matching">11 Appendix: Pattern Matching</a><ul></ul></li>
 <li><a href="#appendix-nuttx-system-call">12 Appendix: NuttX System Call</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-qemu">13 Appendix: Build NuttX for QEMU</a><ul></ul></li>
-<li><a href="#appendix-missing-functions">14 Appendix: Missing Functions</a><ul></ul></li></ul></nav><p>📝 <em>7 Feb 2024</em></p>
+<li><a href="#appendix-missing-functions">14 Appendix: Missing Functions</a><ul></ul></li></ul></nav><p>📝 <em>4 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tcc-title.png" alt="TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/DJMDYq52Iv8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -398,9 +398,9 @@ var write_buflen: usize = 0;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L62-L78">(<strong>write_buf</strong> will be returned to JavaScript)</a></p>
 <p><em>Can we handle Multiple Files?</em></p>
-<p>We’ll have to embed an <strong>Emulated Filesystem</strong> inside our Zig Wrapper. The Filesystem will be preloaded with the Header and Library Files needed by TCC.</p>
-<p><a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">(Works like the <strong>Emscripten Filesystem</strong>)</a></p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly">(Maybe we embed the simple <strong>ROM FS Filesystem</strong>)</a></p>
+<p>Right now we’re trying to embed the simple <a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly"><strong>ROM FS Filesystem</strong></a> into our Zig Wrapper.</p>
+<p>The ROM FS Filesystem will be preloaded with the Header and Library Files needed by TCC.</p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly">(See the updates for <strong>ROM FS Filesystem</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tcc-format.jpg" alt="Our Zig Wrapper uses Pattern Matching to match the C Formats and substitute the Zig Equivalent" /></p>
 <h1 id="fearsome-fprintf-and-friends"><a href="#fearsome-fprintf-and-friends">5 Fearsome fprintf and Friends</a></h1>
 <p><em>Why is fprintf particularly problematic?</em></p>
@@ -628,7 +628,6 @@ to copy the RISC-V ELF <code>a.out</code> from TCC WebAssembly to NuttX Emulator
 <p><img src="https://lupyuen.github.io/images/tcc-emu2.png" alt="NuttX App built in a Web Browser… Runs inside the Web Browser!" /></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser"><em>NuttX App built in a Web Browser… Runs inside the Web Browser!</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
-<p>TODO</p>
 <p>Thanks to the <a href="https://github.com/sellicott/tcc-riscv32"><strong>TCC Team</strong></a>, we have a <strong>64-bit RISC-V Compiler</strong> that runs in the Web Browser…</p>
 <ul>
 <li>
@@ -656,6 +655,9 @@ to copy the RISC-V ELF <code>a.out</code> from TCC WebAssembly to NuttX Emulator
 <ul>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://news.ycombinator.com/item?id=39245664"><strong>Discuss this article on Hacker News</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Current Project: “Apache NuttX RTOS for Ox64 BL808”</strong></a></p>
@@ -1260,8 +1262,8 @@ Import:
 <hr>
 <p><strong>Filesystem Functions</strong></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L87-L166"><em>(Implemented here)</em></a></p>
-<p>We’ll simulate these functions for WebAssembly. Maybe with an <strong>Emulated Filesystem</strong>, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html"><strong>Emscripten Filesystem</strong></a>.</p>
-<p>Or we embed the simple <a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly"><strong>ROM FS Filesystem</strong></a> into our Zig Wrapper…</p>
+<p>We’ll simulate these functions for WebAssembly, by embedding the simple <a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly"><strong>ROM FS Filesystem</strong></a> into our Zig Wrapper…</p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly">(See the updates for <strong>ROM FS Filesystem</strong>)</a></p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+getcwd"><strong>getcwd</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+remove"><strong>remove</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+unlink"><strong>unlink</strong></a></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+open"><strong>open</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fopen"><strong>fopen</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fdopen"><strong>fdopen</strong></a></td></tr>
