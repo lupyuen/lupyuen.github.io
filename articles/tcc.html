@@ -400,7 +400,7 @@ var write_buflen: usize = 0;
 <p><em>Can we handle Multiple Files?</em></p>
 <p>We’ll have to embed an <strong>Emulated Filesystem</strong> inside our Zig Wrapper. The Filesystem will be preloaded with the Header and Library Files needed by TCC.</p>
 <p><a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">(Works like the <strong>Emscripten Filesystem</strong>)</a></p>
-<p><a href="https://docs.kernel.org/filesystems/romfs.html">(Maybe we embed the simple <strong>ROM FS Filesystem</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly">(Maybe we embed the simple <strong>ROM FS Filesystem</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tcc-format.jpg" alt="Our Zig Wrapper uses Pattern Matching to match the C Formats and substitute the Zig Equivalent" /></p>
 <h1 id="fearsome-fprintf-and-friends"><a href="#fearsome-fprintf-and-friends">5 Fearsome fprintf and Friends</a></h1>
 <p><em>Why is fprintf particularly problematic?</em></p>
@@ -1242,7 +1242,7 @@ Import:
 <p><strong>Filesystem Functions</strong></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L87-L166"><em>(Implemented here)</em></a></p>
 <p>We’ll simulate these functions for WebAssembly. Maybe with an <strong>Emulated Filesystem</strong>, similar to <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html"><strong>Emscripten Filesystem</strong></a>.</p>
-<p>Or we embed the simple <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Filesystem</strong></a> into our Zig Wrapper…</p>
+<p>Or we embed the simple <a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly"><strong>ROM FS Filesystem</strong></a> into our Zig Wrapper…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+getcwd"><strong>getcwd</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+remove"><strong>remove</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+unlink"><strong>unlink</strong></a></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+open"><strong>open</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fopen"><strong>fopen</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fdopen"><strong>fdopen</strong></a></td></tr>
