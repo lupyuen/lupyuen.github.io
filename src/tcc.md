@@ -234,10 +234,8 @@ pub export fn compile_program(
   // `a.out`. Followed by `a.out` data.
   const slice = std.heap.page_allocator.alloc(u8, write_buflen + 4)   
     catch @panic("Failed to allocate memory");
-  slice[0] = @intCast((write_buflen >>  0) & 0xff);
-  slice[1] = @intCast((write_buflen >>  8) & 0xff);
-  slice[2] = @intCast((write_buflen >> 16) & 0xff);
-  slice[3] = @intCast(write_buflen  >> 24);
+  const size_ptr: *u32 = @alignCast(@ptrCast(slice.ptr));
+  size_ptr.* = write_buflen;
   @memcpy(slice[4 .. write_buflen + 4], write_buf[0..write_buflen]);
   return slice.ptr; // TODO: Deallocate this memory
 }
@@ -660,7 +658,7 @@ Yep, a NuttX App built in the Web Browser... Now runs OK with __NuttX Emulator i
 - [Find out __How It Works__](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser)
 
 __TLDR:__ 1️⃣ We called [__JavaScript Local Storage__](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser)
- to copy the RISC-V ELF `a.out` from TCC WebAssembly to NuttX Emulator... 2️⃣ Then we patched `a.out` into the [__ROM FS Filesystem__](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser) for NuttX Apps. Nifty!
+ to copy the RISC-V ELF `a.out` from TCC WebAssembly to NuttX Emulator... 2️⃣ Then we patched `a.out` into the [__ROM FS Filesystem__](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser) for NuttX Emulator. Nifty!
 
 ![NuttX App built in a Web Browser... Runs inside the Web Browser!](https://lupyuen.github.io/images/tcc-emu2.png)
 
