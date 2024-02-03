@@ -673,6 +673,7 @@ make cross-riscv64
 
 ## Omitted: Run the `zig cc` command from earlier...
 ## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
+zig cc ...
 
 ## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
 ## and link it with TCC compiled for WebAssembly `tcc.o`
@@ -680,7 +681,9 @@ make cross-riscv64
 
 ## Omitted: Run the `zig build-exe` command from earlier...
 ## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
+zig build-exe ...
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
 <p><em>How did we figure out the “<code>zig</code> <code>cc</code>” options?</em></p>
 <p>Earlier we saw a long list of <a href="https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly"><strong>Zig Compiler Options</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Zig Compiler Options for TCC Compiler
@@ -719,6 +722,7 @@ gcc \
   -I. 
 </code></pre></div>
 <p>And we copied above GCC Options to become our <a href="https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly"><strong>Zig Compiler Options</strong></a>.</p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tcc-zig.jpg" alt="Zig Compiler compiles TCC Compiler to WebAssembly" /></p>
 <h1 id="appendix-javascript-calls-tcc"><a href="#appendix-javascript-calls-tcc">10 Appendix: JavaScript calls TCC</a></h1>
 <p>Previously we saw some <strong>JavaScript (Web Browser and Node.js)</strong> calling our TCC Compiler in WebAssembly (pic above)…</p>
