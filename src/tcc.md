@@ -670,7 +670,17 @@ TODO
 
 Thanks to the [__TCC Team__](https://github.com/sellicott/tcc-riscv32), we have a __64-bit RISC-V Compiler__ that runs in the Web Browser...
 
-TODO
+- __Zig Compiler__ compiles TCC to WebAssembly with one tiny fix
+
+- But __POSIX Functions__ are missing in WebAssembly
+
+- So we did the bare minimum for __File Input and Output__ 
+
+- And cooked up the simplest workaround for __fprintf and friends__
+
+- Finally TCC produces a __RISC-V Binary__ that runs OK on Apache NuttX RTOS
+
+- Now we can __Build and Test NuttX Apps__ all within a Web Browser!
 
 How will you use __TCC in a Web Browser__? Please lemme know 🙏
 
