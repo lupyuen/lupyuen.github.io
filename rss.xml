@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)</title>
+            <link>https://lupyuen.github.io/articles/tcc</link>
+            <description><![CDATA[Today we're running Apache NuttX RTOS inside a Web Browser. What if we could compile and test NuttX Apps in the Web Browser? Let's explore with TCC 64-bit RISC-V Compiler, compiled to WebAssembly with Zig Compiler.]]></description>
+            <guid>https://lupyuen.github.io/articles/tcc</guid>
+            <pubDate>Sun, 04 Feb 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)</title>
             <link>https://lupyuen.github.io/articles/tinyemu3</link>
             <description><![CDATA[Every day we're auto-building Apache NuttX RTOS for Ox64 BL808 SBC... Can we test NuttX on Ox64 automatically after building? Let's find out!]]></description>

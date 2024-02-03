@@ -1,6 +1,6 @@
 # TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)
 
-📝 _7 Feb 2024_
+📝 _4 Feb 2024_
 
 ![TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)](https://lupyuen.github.io/images/tcc-title.png)
 
@@ -379,11 +379,11 @@ var write_buflen: usize = 0;
 
 _Can we handle Multiple Files?_
 
-We'll have to embed an __Emulated Filesystem__ inside our Zig Wrapper. The Filesystem will be preloaded with the Header and Library Files needed by TCC.
+Right now we're trying to embed the simple [__ROM FS Filesystem__](https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly) into our Zig Wrapper.
 
-[(Works like the __Emscripten Filesystem__)](https://emscripten.org/docs/porting/files/file_systems_overview.html)
+The ROM FS Filesystem will be preloaded with the Header and Library Files needed by TCC.
 
-[(Maybe we embed the simple __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly)
+[(See the updates for __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly)
 
 ![Our Zig Wrapper uses Pattern Matching to match the C Formats and substitute the Zig Equivalent](https://lupyuen.github.io/images/tcc-format.jpg)
 
@@ -666,8 +666,6 @@ __TLDR:__ We called [__JavaScript Local Storage__](https://github.com/lupyuen/tc
 
 # What's Next
 
-TODO
-
 Thanks to the [__TCC Team__](https://github.com/sellicott/tcc-riscv32), we have a __64-bit RISC-V Compiler__ that runs in the Web Browser...
 
 - __Zig Compiler__ compiles TCC to WebAssembly with one tiny fix
@@ -689,6 +687,8 @@ _(Build and run RISC-V Apps on iPhone?)_
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=39245664)
 
 -   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 
@@ -1408,9 +1408,9 @@ __Filesystem Functions__
 
 [_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L87-L166)
 
-We'll simulate these functions for WebAssembly. Maybe with an __Emulated Filesystem__, similar to [__Emscripten Filesystem__](https://emscripten.org/docs/porting/files/file_systems_overview.html).
+We'll simulate these functions for WebAssembly, by embedding the simple [__ROM FS Filesystem__](https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly) into our Zig Wrapper...
 
-Or we embed the simple [__ROM FS Filesystem__](https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly) into our Zig Wrapper...
+[(See the updates for __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly)
 
 | | | |
 |:---|:---|:---|
