@@ -716,6 +716,7 @@ make cross-riscv64
 
 ## Omitted: Run the `zig cc` command from earlier...
 ## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
+zig cc ...
 
 ## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
 ## and link it with TCC compiled for WebAssembly `tcc.o`
@@ -723,7 +724,10 @@ make cross-riscv64
 
 ## Omitted: Run the `zig build-exe` command from earlier...
 ## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
+zig build-exe ...
 ```
+
+[(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/build.sh)
 
 _How did we figure out the "`zig` `cc`" options?_
 
@@ -770,6 +774,8 @@ gcc \
 ```
 
 And we copied above GCC Options to become our [__Zig Compiler Options__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly).
+
+[(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/build.sh)
 
 ![Zig Compiler compiles TCC Compiler to WebAssembly](https://lupyuen.github.io/images/tcc-zig.jpg)
 
