@@ -205,7 +205,7 @@ Our Zig Wrapper will...
 
 1.  Return the compiled __RISC-V ELF__ to JavaScript
 
-Like so: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L12-L77)
+Like so: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L11-L76)
 
 ```zig
 /// Call TCC Compiler to compile a
@@ -293,7 +293,7 @@ Thankfully we can borrow the POSIX Code from other __Zig Libraries__...
 
 _72 POSIX Functions? Sounds like a lot of work..._
 
-We might not need all 72 POSIX Functions. We stubbed out __many of the functions__ to identify the ones that are called: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
+We might not need all 72 POSIX Functions. We stubbed out __many of the functions__ to identify the ones that are called: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L776-L855)
 
 ```zig
 // Stub Out the Missing POSIX
@@ -331,7 +331,7 @@ That's why our Zig Wrapper __Emulates File Access__ for the bare minimum 2 files
 
 - Write the __RISC-V ELF__: __`a.out`__
 
-__Reading a Source File `hello.c`__ is extremely simplistic: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L107-L119)
+__Reading a Source File `hello.c`__ is extremely simplistic: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L104-L118)
 
 ```zig
 /// Emulate the POSIX Function `read()`
@@ -340,8 +340,8 @@ __Reading a Source File `hello.c`__ is extremely simplistic: [tcc-wasm.zig](http
 export fn read(fd0: c_int, buf: [*:0]u8, nbyte: size_t) isize {
 
   // TODO: Support more than one file
-  // TODO: Check overflow
   const len = read_buf.len;
+  assert(len < nbyte);
   @memcpy(buf[0..len], read_buf[0..len]);
   buf[len] = 0;
   read_buf.len = 0;
@@ -354,7 +354,7 @@ var read_buf: []const u8 = undefined;
 
 [(__read_buf__ is populated at startup)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L26-L32)
 
-__Writing the Compiled Output `a.out`__ is just as barebones: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L130-L142)
+__Writing the Compiled Output `a.out`__ is just as barebones: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L128-L140)
 
 ```zig
 /// Emulate the POSIX Function `write()`
@@ -401,7 +401,7 @@ Hence we hacked up an implementation of __String Formatting__ that's safer, simp
 
 _Soup tulang? Tell me more..._
 
-Our Zig Wrapper uses [__Pattern Matching__](https://lupyuen.github.io/articles/tcc#appendix-pattern-matching) to match the __C Formats__ and substitute the __Zig Equivalent__ (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
+Our Zig Wrapper uses [__Pattern Matching__](https://lupyuen.github.io/articles/tcc#appendix-pattern-matching) to match the __C Formats__ and substitute the __Zig Equivalent__ (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L189-L207)
 
 ```zig
 // Format a Single `%d`
@@ -421,7 +421,7 @@ FormatPattern{
 }
 ```
 
-This works OK (for now) because TCC Compiler only uses __5 Patterns for C Format Strings__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
+This works OK (for now) because TCC Compiler only uses __5 Patterns for C Format Strings__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L189-L207)
 
 ```zig
 /// Pattern Matching for C String Formatting:
@@ -925,7 +925,7 @@ A while back we saw our Zig Wrapper doing __Pattern Matching__ for Formatting C 
 
 - [__"Fearsome fprintf and Friends"__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends)
 
-How It Works: We search for __Format Patterns__ in the C Format Strings and substitute the __Zig Equivalent__ (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
+How It Works: We search for __Format Patterns__ in the C Format Strings and substitute the __Zig Equivalent__ (pic above): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L189-L207)
 
 ```zig
 // Format a Single `%d`
@@ -944,10 +944,11 @@ FormatPattern{
   .type1 = null
 }
 ```
+[(__FormatPattern__ is defined here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L438-L446)
 
 [(See the __Format Patterns__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209)
 
-To implement this, we call __comptime Functions__ in Zig: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L380)
+To implement this, we call __comptime Functions__ in Zig: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L327)
 
 ```zig
 /// CompTime Function to format a string by Pattern Matching.
@@ -979,18 +980,19 @@ fn format_string1(
   // Fetch the First Argument from the C Varargs
   const a = @cVaArg(ap, T0);
 
-  // Format the Argument. TODO: Check for overflow
-  var buf: [100]u8 = undefined; // Limit to 100 chars
+  // Format the Argument
+  var buf: [512]u8 = undefined;
   const buf_slice = std.fmt.bufPrint(&buf, zig_spec, .{a}) catch {
-    @panic("*** format_string1 error: buf too small");
+    @panic("format_string1 error: buf too small");
   };
 
   // Replace the C Format Pattern by the Zig Equivalent
-  var buf2 = std.mem.zeroes([100]u8); // Limit to 100 chars
+  var buf2 = std.mem.zeroes([512]u8);
   _ = std.mem.replace(u8, format, c_spec, buf_slice, &buf2);
 
   // Return the Formatted String and Length
   const len = std.mem.indexOfScalar(u8, &buf2, 0).?;
+  assert(len < size);
   @memcpy(str[0..len], buf2[0..len]);
   str[len] = 0;
   return len;
@@ -1000,7 +1002,7 @@ fn format_string1(
 // but for 2 Varargs (instead of 1)
 ```
 
-The function above is called by a __comptime Inline Loop__ that applies all the [__Format Patterns__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209) that we saw earlier: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L252)
+The function above is called by a __comptime Inline Loop__ that applies all the [__Format Patterns__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209) that we saw earlier: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L207-L251)
 
 ```zig
 /// Runtime Function to format a string by Pattern Matching.
@@ -1041,15 +1043,16 @@ fn format_string(
   // Format String doesn't match any Format Pattern.
   // We return the Format String and Length.
   const len3 = format.len;
+  assert(len3 < size);
   @memcpy(str[0..len3], format[0..len3]);
   str[len3] = 0;
   return len3;
 }
 ```
 
-[(__format_string2__ is here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L326-L380)
+[(__format_string2__ is here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L327-L382)
 
-And the above function is called by __fprintf and friends__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L380-L431)
+And the above function is called by __fprintf and friends__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L382-L438)
 
 ```zig
 /// Implement the POSIX Function `fprintf`
@@ -1059,10 +1062,10 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
   var ap = @cVaStart();
   defer @cVaEnd(&ap);
 
-  // Format the string. TODO: Catch overflow
-  var buf = std.mem.zeroes([100]u8); // Limit to 100 chars
+  // Format the string
+  var buf = std.mem.zeroes([512]u8);
   const format_slice = std.mem.span(format);
-  const len = format_string(&ap, &buf, 0, format_slice);
+  const len = format_string(&ap, &buf, buf.len, format_slice);
 
   // TODO: Print to other File Streams.
   // Right now we assume it's stderr (File Descriptor 2)
@@ -1387,7 +1390,7 @@ Do we need all 72 POSIX Functions? We scrutinise the list...
 
 __Filesystem Functions__
 
-[_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L89-L168)
+[_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L87-L166)
 
 We'll simulate these functions for WebAssembly. Maybe with an __Emulated Filesystem__, similar to [__Emscripten Filesystem__](https://emscripten.org/docs/porting/files/file_systems_overview.html).
 
@@ -1407,7 +1410,7 @@ Or we embed the simple [__ROM FS Filesystem__](https://docs.kernel.org/filesyste
 
 __Varargs Functions__
 
-[_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L188-L447)
+[_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L186-L445)
 
 As discussed earlier, Varargs will be [__tricky to implement__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends) in Zig. Probably we should do it in C.
 
@@ -1424,7 +1427,7 @@ Right now we're doing simple [__Pattern Matching__](https://lupyuen.github.io/ar
 
 __String Functions__
 
-[_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L539-L774)
+[_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L541-L776)
 
 We'll borrow the String Functions from [__ziglibc__](https://github.com/marler8997/ziglibc/blob/main/src/cstd.zig)...
 
@@ -1441,7 +1444,7 @@ We'll borrow the String Functions from [__ziglibc__](https://github.com/marler89
 
 __Semaphore Functions__
 
-[_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L168-L188)
+[_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L166-L186)
 
 Not sure why TCC uses Semaphores? Maybe we'll understand when we support __`#include`__ files.
 
@@ -1480,11 +1483,11 @@ Not used right now, maybe later.
 
 __Outstanding Functions__
 
-[_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853)
+[_(Implemented here)_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L776-L855)
 
 We have implemented (fully or partially) __48 POSIX Functions__ from above.
 
-The ones that we haven't implemented? These [__24 POSIX Functions will Halt__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L774-L853) when TCC WebAssembly calls them...
+The ones that we haven't implemented? These [__24 POSIX Functions will Halt__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L776-L855) when TCC WebAssembly calls them...
 
 | | | |
 |:---|:---|:---|
