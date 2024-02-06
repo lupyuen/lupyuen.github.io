@@ -239,7 +239,7 @@ _What if the ROM FS Filesystem contains garbage?_
 
 Our ROM FS Driver will __Fail the Mount Operation__.
 
-That's because it searches for a Magic Number at the top of the filesystem: [fs_romfsutil.c](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfsutil.c#L765-L770)
+That's because it searches for a __Magic Number__ at the top of the filesystem: [fs_romfsutil.c](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfsutil.c#L765-L770)
 
 ```c
 // Verify the Magic Number that identifies
