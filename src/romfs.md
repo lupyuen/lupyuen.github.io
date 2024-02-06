@@ -142,7 +142,7 @@ ROM FS is __a lot simpler__ than Read-Write Filesystems (like FAT and EXT4). Tha
 
 _How to bundle our C Header Files into ROM FS?_
 
-__`genromfs`__ will preload our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
+__`genromfs`__ will pack our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
 
 ```bash
 ## For Ubuntu: Install `genromfs`
@@ -187,13 +187,19 @@ _Is there a ROM FS Driver in Zig?_
 
 We looked around [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) (Real-Time Operating System) and we found a [__ROM FS Driver__](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.c). It works well in Zig!
 
-TODO
+Let's walk through the steps to call the __NuttX ROM FS Driver__ in Zig...
 
-## Mount the ROM FS Filesystem
+- __Mounting__ the ROM FS Filesystem
 
-TODO
+- __Opening__ a ROM FS File
 
-[tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L11-L45)
+- __Reading__ the ROM FS File
+
+- And __Closing__ it
+
+## Mount the Filesystem
+
+This is how we __Mount our ROM FS Filesystem__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L11-L45)
 
 ```zig
 /// Import the NuttX ROM FS Driver
@@ -201,33 +207,35 @@ const c = @cImport({
   @cInclude("zig_romfs.h");
 });
 
-/// Compile a C program to 64-bit RISC-V
+/// Main Function of our Zig Wrapper
 pub export fn compile_program(...) [*]const u8 {
 
   // Create the Memory Allocator for malloc
   memory_allocator = std.heap.FixedBufferAllocator
     .init(&memory_buffer);
 
-  // Allocate the Map from File Descriptor to ROM FS File
+  // Allocate the POSIX File Descriptors
   romfs_files = std.ArrayList(*c.struct_file)
     .init(std.heap.page_allocator);
   defer romfs_files.deinit();  // Deallocate later
 
   // Mount the ROM FS Filesystem
   const ret = c.romfs_bind(
-    c.romfs_blkdriver, // blkdriver: ?*struct_inode_6
-    null, // data: ?*const anyopaque
-    &c.romfs_mountpt // handle: [*c]?*anyopaque
+    c.romfs_blkdriver, // Block Driver for ROM FS
+    null,              // No Data needed
+    &c.romfs_mountpt   // Returns the Mount Point
   );
   assert(ret >= 0);
 
   // Prepare the Mount Inode
   romfs_inode = c.create_mount_inode(
-    c.romfs_mountpt
+    c.romfs_mountpt  // Mount Point
   );
 
-  // Omitted: Call TCC Compiler
+  // Omitted: Call the TCC Compiler
 ```
+
+TODO: See the log
 
 [(Not to be confused with __i-mode__)](https://en.wikipedia.org/wiki/I-mode)
 
@@ -244,10 +252,10 @@ file.f_inode = romfs_inode;
 
 // Open the file
 const ret2 = c.romfs_open( // Open "hello" for Read-Only. `mode` is used only for creating files.
-    &file, // filep: [*c]struct_file
-    "stdio.h", // relpath: [*c]const u8
-    c.O_RDONLY, // oflags: c_int
-    0 // mode: mode_t
+  &file, // filep: [*c]struct_file
+  "stdio.h", // relpath: [*c]const u8
+  c.O_RDONLY, // oflags: c_int
+  0 // mode: mode_t
 );
 assert(ret2 >= 0);
 ```
@@ -262,9 +270,9 @@ TODO
 // Read the ROM FS File, first 4 bytes
 var buf = std.mem.zeroes([4]u8);
 const ret3 = c.romfs_read( // Read the file
-    &file, // filep: [*c]struct_file
-    &buf, // buffer: [*c]u8
-    buf.len // buflen: usize
+  &file, // filep: [*c]struct_file
+  &buf, // buffer: [*c]u8
+  buf.len // buflen: usize
 );
 assert(ret3 >= 0);
 
