@@ -73,15 +73,12 @@
 <li><a href="#mount-the-filesystem">4.1 Mount the Filesystem</a><ul></ul></li>
 <li><a href="#open-a-rom-fs-file">4.2 Open a ROM FS File</a><ul></ul></li>
 <li><a href="#read-a-rom-fs-file">4.3 Read a ROM FS File</a><ul></ul></li></ul></li>
-<li><a href="#mount-the-rom-fs-filesystem-in-zig">5 Mount the ROM FS Filesystem in Zig</a><ul></ul></li>
-<li><a href="#open-a-rom-fs-file-in-zig">6 Open a ROM FS File in Zig</a><ul></ul></li>
-<li><a href="#read-a-rom-fs-file-in-zig">7 Read a ROM FS File in Zig</a><ul></ul></li>
-<li><a href="#integrate-nuttx-rom-fs-driver-with-tcc">8 Integrate NuttX ROM FS Driver with TCC</a><ul></ul></li>
-<li><a href="#tcc-webassembly-with-nuttx-emulator">9 TCC WebAssembly with NuttX Emulator</a><ul>
-<li><a href="#rom-fs-filesystem-for-include-files">9.1 ROM FS Filesystem for Include Files</a><ul></ul></li>
-<li><a href="#implement-puts-with-nuttx-system-call">9.2 Implement <code>puts</code> with NuttX System Call</a><ul></ul></li>
-<li><a href="#implement-exit-with-nuttx-system-call">9.3 Implement <code>exit</code> with NuttX System Call</a><ul></ul></li></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
+<li><a href="#tcc-calls-rom-fs-driver">5 TCC calls ROM FS Driver</a><ul></ul></li>
+<li><a href="#from-tcc-to-nuttx-emulator">6 From TCC to NuttX Emulator</a><ul>
+<li><a href="#rom-fs-filesystem-for-include-files">6.1 ROM FS Filesystem for Include Files</a><ul></ul></li>
+<li><a href="#implement-puts-with-nuttx-system-call">6.2 Implement <code>puts</code> with NuttX System Call</a><ul></ul></li>
+<li><a href="#implement-exit-with-nuttx-system-call">6.3 Implement <code>exit</code> with NuttX System Call</a><ul></ul></li></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="TODO" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/sU69bUyrgN8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -274,7 +271,7 @@ pub export fn compile_program(...) [*]const u8 {
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L320-L324">(<strong>romfs_files</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163">(<strong>romfs_inode</strong> is here)</a></p>
 <p><em>What if the ROM FS Filesystem contains garbage?</em></p>
-<p>Our ROM FS Driver will <strong>fail the Mount Operation</strong>.</p>
+<p>Our ROM FS Driver will <strong>Fail the Mount Operation</strong>.</p>
 <p>That’s because it searches for a Magic Number at the top of the filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfsutil.c#L765-L770">fs_romfsutil.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Verify the Magic Number that identifies
 // a ROM FS Filesystem
@@ -283,29 +280,30 @@ pub export fn compile_program(...) [*]const u8 {
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L91-L98">(See the <strong>Mount Log</strong>)</a></p>
 <p><a href="https://en.wikipedia.org/wiki/I-mode">(Not to be confused with <strong>i-mode</strong>)</a></p>
 <h2 id="open-a-rom-fs-file"><a href="#open-a-rom-fs-file">4.2 Open a ROM FS File</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L115-L129">tcc-wasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// Create the File Struct
+<p>Next we <strong>Open a ROM FS File</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L127-L138">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Create the File Struct and
+// connect to the Mount Inode
 var file = std.mem.zeroes(c.struct_file);
 file.f_inode = romfs_inode;
 
-// Open the file
-const ret2 = c.romfs_open( // Open &quot;hello&quot; for Read-Only. `mode` is used only for creating files.
-  &amp;file, // filep: [*c]struct_file
-  &quot;stdio.h&quot;, // relpath: [*c]const u8
-  c.O_RDONLY, // oflags: c_int
-  0 // mode: mode_t
+// Open the ROM FS File
+const ret2 = c.romfs_open(
+  &amp;file,       // File Struct
+  &quot;stdio.h&quot;,   // Pathname (&quot;/&quot; paths are accepted)
+  c.O_RDONLY,  // Read-Only
+  0            // Mode (Unused for Read-Only Files)
 );
 assert(ret2 &gt;= 0);
-</code></pre></div><h2 id="read-a-rom-fs-file"><a href="#read-a-rom-fs-file">4.3 Read a ROM FS File</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L129-L146">tcc-wasm.zig</a></p>
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L99-L101">(See the <strong>Open Log</strong>)</a></p>
+<h2 id="read-a-rom-fs-file"><a href="#read-a-rom-fs-file">4.3 Read a ROM FS File</a></h2>
+<p>Finally we <strong>Read a ROM FS File</strong> and Close it: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L138-L157">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Read the ROM FS File, first 4 bytes
 var buf = std.mem.zeroes([4]u8);
-const ret3 = c.romfs_read( // Read the file
-  &amp;file, // filep: [*c]struct_file
-  &amp;buf, // buffer: [*c]u8
-  buf.len // buflen: usize
+const ret3 = c.romfs_read(
+  &amp;file,   // File Struct
+  &amp;buf,    // Buffer to be populated
+  buf.len  // Buffer Size
 );
 assert(ret3 &gt;= 0);
 
@@ -316,203 +314,21 @@ hexdump.hexdump(@ptrCast(&amp;buf), @intCast(ret3));
 const ret4 = c.romfs_close(&amp;file);
 assert(ret4 &gt;= 0);
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/hexdump.zig#L9-L92">(<strong>hexdump</strong> is here)</a></p>
+<p>We’ll see this…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>romfs_read: Read 4 bytes from offset 0 
+romfs_read: Read sector 17969028 
+romfs_filecacheread: sector: 2 cached: 0 ncached: 1 sectorsize: 64 XIP base: anyopaque@1122f74 buffer: anyopaque@1122f74 
+romfs_filecacheread: XIP buffer: anyopaque@1122ff4 
+romfs_read: Return 4 bytes from sector offset 0 
+  0000:  2F 2F 20 43  // C
+romfs_close: Closing 
+</code></pre></div>
+<p>Which looks right because <em>&lt;stdio.h&gt;</em> begins with “<a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><strong><code>// C</code></strong></a>”</p>
+<p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L102-L113">(See the <strong>Read Log</strong>)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig">(See the <strong>Modified Source Files</strong>)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
-<p>This compiles OK with Zig Compiler with a few tweaks, let’s test it in Zig…</p>
-<h1 id="mount-the-rom-fs-filesystem-in-zig"><a href="#mount-the-rom-fs-filesystem-in-zig">5 Mount the ROM FS Filesystem in Zig</a></h1>
-<p>TODO</p>
-<p><em>We borrowed the ROM FS Driver from Apache NuttX RTOS. Zig Compiler compiles it to WebAssembly with a few tweaks…</em></p>
-<p><em>How do we call the ROM FS Driver to Mount the ROM FS Filesystem?</em></p>
-<p>This is how we mount the ROM FS Filesystem in Zig: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L12-L34">tcc-wasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Import the ROM FS
-const c = @cImport({
-  @cInclude(&quot;zig_romfs.h&quot;);
-});
-
-/// Compile a C program to 64-bit RISC-V
-pub export fn compile_program(...) [*]const u8 {
-
-  // Create the Memory Allocator for malloc
-  memory_allocator = std.heap.FixedBufferAllocator.init(&amp;memory_buffer);
-
-  // Mount the ROM FS Filesystem
-  const ret = c.romfs_bind( // Bind the ROM FS Filesystem
-    c.romfs_blkdriver, // blkdriver: ?*struct_inode_6
-    null, // data: ?*const anyopaque
-    &amp;c.romfs_mountpt // handle: [*c]?*anyopaque
-  );
-  assert(ret &gt;= 0);
-</code></pre></div>
-<p>Zig won’t let us create objects for <code>romfs_blkdriver</code> and <code>romfs_mountpt</code>, so we create them in C: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfs.c#L48-L50">fs_romfs.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>struct inode romfs_blkdriver_inode;
-struct inode *romfs_blkdriver = &amp;romfs_blkdriver_inode;
-void *romfs_mountpt = NULL;
-</code></pre></div>
-<p>This crashes inside <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfsutil.c#L738-L796">romfs_fsconfigure</a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ node zig/test.js
-compile_program: start
-Entry
-
-wasm://wasm/0085e9b2:1
-RuntimeError: unreachable
-    at signature_mismatch:mtd_bread (wasm://wasm/0085e9b2:wasm-function[10]:0x842)
-    at romfs_fsconfigure (wasm://wasm/0085e9b2:wasm-function[22]:0xab3)
-    at romfs_bind (wasm://wasm/0085e9b2:wasm-function[20]:0x954)
-    at compile_program (wasm://wasm/0085e9b2:wasm-function[251]:0x4e683)
-    at /workspaces/bookworm/tcc-riscv32-wasm/zig/test.js:63:6
-</code></pre></div>
-<p>We need to return the XIP Address so that <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfsutil.c#L738-L796">romfs_fsconfigure</a> will read the RAM directly. (Instead of reading from the device)</p>
-<p>From <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfsutil.c#L704-L705">fs_romfsutil.c</a>:</p>
-<div class="example-wrap"><pre class="language-c"><code>// Implement mid_ioctl() so that BIOC_XIPBASE
-// sets the XIP Address in rm_xipbase
-ret = MTD_IOCTL(inode-&gt;u.i_mtd, BIOC_XIPBASE,
-  (unsigned long)&amp;rm-&gt;rm_xipbase);
-</code></pre></div>
-<p>We implement <code>mid_ioctl</code> for <code>BIOC_XIPBASE</code>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L819-L826">tcc-wasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
-  assert(rm_xipbase != null);
-  if (cmd == c.BIOC_XIPBASE) {
-    // Return the XIP Base Address
-    rm_xipbase.?.* = @intCast(@intFromPtr(ROMFS_DATA));
-  } else if (cmd == c.MTDIOC_GEOMETRY) {
-    // Return the Storage Device Geometry
-    const geo: *c.mtd_geometry_s = @ptrCast(rm_xipbase.?);
-    geo.*.blocksize = 64;
-    geo.*.erasesize = 64;
-    geo.*.neraseblocks = 1024; // TODO: Is this needed?
-    const name = &quot;ZIG_ROMFS&quot;;
-    @memcpy(geo.*.model[0..name.len], name);
-    geo.*.model[name.len] = 0;
-  } else {
-    debug(&quot;mtd_ioctl: Unknown command {}&quot;, .{cmd});
-  }
-  return 0;
-}
-
-/// Embed the ROM FS Filesystem.
-/// Later our JavaScript shall fetch this over HTTP.
-const ROMFS_DATA = @embedFile(&quot;romfs.bin&quot;);
-</code></pre></div>
-<p>Also we embed the ROM FS Data inside our Zig Wrapper for now. Later our JavaScript shall fetch <code>romfs.bin</code> over HTTP.</p>
-<p>And the mounting succeeds yay! </p>
-<div class="example-wrap"><pre class="language-bash"><code>$ node zig/test.js
-compile_program: start
-compile_program: Mounting ROM FS...
-Entry
-compile_program: ROM FS mounted OK!
-</code></pre></div>
-<p>The ROM FS Driver verifies the Magic Number when mounting. So we know it’s correct: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfsutil.c#L765-L770">fs_romfsutil.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>int romfs_fsconfigure(FAR struct romfs_mountpt_s *rm) {
-  ...
-  /* Verify the magic number at that identifies this as a ROMFS filesystem */
-  #define ROMFS_VHDR_MAGIC   &quot;-rom1fs-&quot;
-  if (memcmp(rm-&gt;rm_buffer, ROMFS_VHDR_MAGIC, 8) != 0)
-    { return -EINVAL; }
-</code></pre></div>
-<p><em>We’re sure it’s correct?</em></p>
-<p>If we don’t embed a proper ROM FS Filesystem, the Magic Number will fail…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Let&#39;s embed some junk:
-## const ROMFS_DATA = @embedFile(&quot;build.sh&quot;);
-
-## The ROM FS Mounting fails...
-$ node zig/test.js
-compile_program: start
-Entry
-ERROR: romfs_fsconfigure failed: -22
-</code></pre></div>
-<p>So yeah we’re correct.</p>
-<p>Let’s open a file from ROM FS…</p>
-<h1 id="open-a-rom-fs-file-in-zig"><a href="#open-a-rom-fs-file-in-zig">6 Open a ROM FS File in Zig</a></h1>
-<p>TODO</p>
-<p>This is how we open a file from ROM FS in Zig: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L39-L46">tcc-wasm.zig</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Create the Mount Inode
-const mount_inode = c.create_mount_inode(c.romfs_mountpt);
-
-// Create the File Struct
-var filep = std.mem.zeroes(c.struct_file);
-filep.f_inode = mount_inode;
-
-// Open the file
-const ret2 = c.romfs_open( // Open &quot;hello&quot; for Read-Only. `mode` is used only for creating files.
-  &amp;filep, // filep: [*c]struct_file
-  &quot;hello&quot;, // relpath: [*c]const u8
-  c.O_RDONLY, // oflags: c_int
-  0 // mode: mode_t
-);
-assert(ret2 &gt;= 0);
-</code></pre></div>
-<p>Our file has been opened successfully yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>$ node zig/test-nuttx.js
-compile_program: start
-compile_program: Mounting ROM FS...
-Entry
-compile_program: ROM FS mounted OK!
-
-compile_program: Opening ROM FS File `hello`...
-Open &#39;hello&#39;
-compile_program: ROM FS File `hello` opened OK!
-</code></pre></div>
-<p>“/hello” works OK too…</p>
-<div class="example-wrap"><pre class="language-zig"><code>// Open &quot;/hello&quot;
-romfs_open(..., &quot;/hello&quot;, ...);
-</code></pre></div>
-<p><em>What if the file doesn’t exist?</em></p>
-<p>ROM FS Driver says that the file doesn’t exist…</p>
-<div class="example-wrap"><pre class="language-text"><code>## Let&#39;s try a file that doesn&#39;t exist:
-## romfs_open(..., &quot;hello2&quot;, ...)
-
-compile_program: Opening ROM FS File
-Open &#39;hello2&#39;
-ERROR: Failed to find directory directory entry for &#39;%s&#39;: %d
-</code></pre></div>
-<p>So yep our ROM FS Driver is reading the ROM FS Directory correctly!</p>
-<p><em>How did we figure out the Mount Inode?</em></p>
-<p>See the NuttX Code: <a href="https://github.com/apache/nuttx/blob/master/fs/mount/fs_mount.c#L379-L409">Create a Mount Inode</a> with <a href="https://github.com/apache/nuttx/blob/master/fs/inode/fs_inodereserve.c#L146-L260">inode_reserve</a></p>
-<p>Finally we read a ROM FS file…</p>
-<h1 id="read-a-rom-fs-file-in-zig"><a href="#read-a-rom-fs-file-in-zig">7 Read a ROM FS File in Zig</a></h1>
-<p>TODO</p>
-<p>This is how we read a ROM FS File in Zig (and close it): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L57-L73">tcc-wasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// Read the file
-var buf = std.mem.zeroes([4]u8);
-const ret3 = c.romfs_read( // Read the file
-  &amp;filep, // filep: [*c]struct_file
-  &amp;buf, // buffer: [*c]u8
-  buf.len // buflen: usize
-);
-assert(ret3 &gt;= 0);
-hexdump.hexdump(@ptrCast(&amp;buf), @intCast(ret3));
-
-// Close the file
-const ret4 = c.romfs_close(&amp;filep);
-assert(ret4 &gt;= 0);
-</code></pre></div>
-<p>And it works yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>$ node zig/test.js
-compile_program: start
-compile_program: Mounting ROM FS...
-Entry
-compile_program: ROM FS mounted OK!
-
-compile_program: Opening ROM FS File `hello`...
-Open &#39;hello&#39;
-compile_program: ROM FS File `hello` opened OK!
-
-compile_program: Reading ROM FS File `hello`...
-Read %zu bytes from offset %jd
-Read sector %jd
-sector: %d cached: %d ncached: %d sectorsize: %d XIP base: %p buffer: %p
-XIP buffer: %p
-Return %d bytes from sector offset %d
-compile_program: ROM FS File `hello` read OK!
-  0000:  7F 45 4C 46                                       .ELF
-
-compile_program: Closing ROM FS File `hello`...
-Closing
-compile_program: ROM FS File `hello` closed OK!
-</code></pre></div>
-<p>This works OK in the Web Browser too!</p>
-<p>Let’s integrate the ROM FS Driver with TCC…</p>
-<h1 id="integrate-nuttx-rom-fs-driver-with-tcc"><a href="#integrate-nuttx-rom-fs-driver-with-tcc">8 Integrate NuttX ROM FS Driver with TCC</a></h1>
+<h1 id="tcc-calls-rom-fs-driver"><a href="#tcc-calls-rom-fs-driver">5 TCC calls ROM FS Driver</a></h1>
 <p>TODO</p>
 <p><em>TCC WebAssembly needs a ROM FS Filesystem that will have C Header Files and C Library Files for building apps…</em></p>
 <p><em>How will we integrate the NuttX ROM FS Driver in Zig?</em></p>
@@ -713,7 +529,7 @@ Closing
 <p><em>Why not FAT?</em></p>
 <p>TODO: <a href="https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/"><strong>Immutable Filesystem</strong></a></p>
 <p>Time to wrap up and run everything in a Web Browser…</p>
-<h1 id="tcc-webassembly-with-nuttx-emulator"><a href="#tcc-webassembly-with-nuttx-emulator">9 TCC WebAssembly with NuttX Emulator</a></h1>
+<h1 id="from-tcc-to-nuttx-emulator"><a href="#from-tcc-to-nuttx-emulator">6 From TCC to NuttX Emulator</a></h1>
 <p>TODO</p>
 <p><a href="https://youtu.be/sU69bUyrgN8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>Remember we’re doing a Decent Demo of Building and Testing a #NuttX App in the Web Browser… <code>puts</code> and <code>exit</code> finally work OK yay! 🎉</p>
@@ -762,7 +578,7 @@ nsh&gt;
 <p>Try changing “Hello World” to something else. Recompile and Reload the <a href="https://lupyuen.github.io/nuttx-tinyemu/tcc/">NuttX Emulator</a>. It works!</p>
 <p>Impressive, no? 3 things we fixed…</p>
 <p><a href="https://youtu.be/sU69bUyrgN8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<h2 id="rom-fs-filesystem-for-include-files"><a href="#rom-fs-filesystem-for-include-files">9.1 ROM FS Filesystem for Include Files</a></h2>
+<h2 id="rom-fs-filesystem-for-include-files"><a href="#rom-fs-filesystem-for-include-files">6.1 ROM FS Filesystem for Include Files</a></h2>
 <p>TODO</p>
 <p><em>How did we get &lt;stdio.h&gt; and &lt;stdlib.h&gt; in TCC WebAssembly?</em></p>
 <p>We create a Staging Folder <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs">zig/romfs</a> that contains our C Header Files for TCC Compiler…</p>
@@ -785,7 +601,7 @@ genromfs \
 <p>Which becomes the ROM FS Data File <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin">zig/romfs.bin</a></p>
 <p>Inside our TCC WebAssembly: We mounted the ROM FS Filesystem by calling the NuttX ROM FS Driver. (Which has been integrated into our Zig WebAssembly)</p>
 <p>See the earlier sections to find out how we modded the POSIX Filesystem Calls (from TCC WebAssembly) to access the NuttX ROM FS Driver.</p>
-<h2 id="implement-puts-with-nuttx-system-call"><a href="#implement-puts-with-nuttx-system-call">9.2 Implement <code>puts</code> with NuttX System Call</a></h2>
+<h2 id="implement-puts-with-nuttx-system-call"><a href="#implement-puts-with-nuttx-system-call">6.2 Implement <code>puts</code> with NuttX System Call</a></h2>
 <p>TODO</p>
 <p>In our Demo NuttX App, we implement <code>puts</code> by calling <code>write</code>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25">stdio.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print the string to Standard Output
@@ -896,7 +712,7 @@ Hello, World!!
 asm volatile (&quot;andi a2, a0, 0xffffffff&quot;);
 </code></pre></div>
 <p>Because 0xffffffff gets assembled to -1. (Bug?)</p>
-<h2 id="implement-exit-with-nuttx-system-call"><a href="#implement-exit-with-nuttx-system-call">9.3 Implement <code>exit</code> with NuttX System Call</a></h2>
+<h2 id="implement-exit-with-nuttx-system-call"><a href="#implement-exit-with-nuttx-system-call">6.3 Implement <code>exit</code> with NuttX System Call</a></h2>
 <p>TODO</p>
 <p>In our Demo NuttX App, we implement <code>exit</code> the same way as NuttX, by making a System Call: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10">stdlib.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Caution: This may change
@@ -955,7 +771,7 @@ inline uintptr_t sys_call1(
 <p>(Maybe we’ll revisit this when the RISC-V Registers are working OK in TCC)</p>
 <p>TODO: Define the printf formats %jd, %zu</p>
 <p>TODO: Iteratively handle printf formats</p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
