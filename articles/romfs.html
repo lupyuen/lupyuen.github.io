@@ -263,14 +263,16 @@ pub export fn compile_program(...) [*]const u8 {
   );
   assert(ret &gt;= 0);
 
-  // Prepare the Mount Inode
+  // Prepare the Mount Inode.
+  // We&#39;ll use it for opening files.
   romfs_inode = c.create_mount_inode(
     c.romfs_mountpt  // Mount Point
   );
 
   // Omitted: Call the TCC Compiler
 </code></pre></div>
-<p>TODO: See the log</p>
+<p>TODO: What if ROM FS Filesystem is invalid?</p>
+<p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://en.wikipedia.org/wiki/I-mode">(Not to be confused with <strong>i-mode</strong>)</a></p>
 <h2 id="open-a-rom-fs-file"><a href="#open-a-rom-fs-file">4.2 Open a ROM FS File</a></h2>
 <p>TODO</p>
