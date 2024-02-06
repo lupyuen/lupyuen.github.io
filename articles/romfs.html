@@ -67,8 +67,8 @@
     <h1 class="title">Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)</h1>
     <nav id="TOC"><ul>
 <li><a href="#c-compiler-in-the-web-browser">1 C Compiler in the Web Browser</a><ul></ul></li>
-<li><a href="#posix-for-webassembly">2 POSIX for WebAssembly</a><ul></ul></li>
-<li><a href="#rom-fs-filesystem-for-tcc-webassembly">3 ROM FS Filesystem for TCC WebAssembly</a><ul></ul></li>
+<li><a href="#file-access-for-webassembly">2 File Access for WebAssembly</a><ul></ul></li>
+<li><a href="#rom-fs-filesystem">3 ROM FS Filesystem</a><ul></ul></li>
 <li><a href="#mount-the-rom-fs-filesystem-in-zig">4 Mount the ROM FS Filesystem in Zig</a><ul></ul></li>
 <li><a href="#open-a-rom-fs-file-in-zig">5 Open a ROM FS File in Zig</a><ul></ul></li>
 <li><a href="#read-a-rom-fs-file-in-zig">6 Read a ROM FS File in Zig</a><ul></ul></li>
@@ -156,18 +156,25 @@ Hello, World!!
 </ol>
 <p>And the message changes! We discuss the internals…</p>
 <p><img src="https://lupyuen.github.io/images/tcc-posix.jpg" alt="TCC Compiler in WebAssembly needs POSIX Functions" /></p>
-<h1 id="posix-for-webassembly"><a href="#posix-for-webassembly">2 POSIX for WebAssembly</a></h1>
-<p><em>There’s something oddly liberating about our demo…</em></p>
+<h1 id="file-access-for-webassembly"><a href="#file-access-for-webassembly">2 File Access for WebAssembly</a></h1>
+<p><em>Something oddly liberating about our demo…</em></p>
+<p>TCC Compiler was created as a <strong>Command-Line App</strong> that calls the usual <a href="https://lupyuen.github.io/articles/tcc#posix-for-webassembly"><strong>POSIX Functions</strong></a> like <strong>open, read, write,</strong> …</p>
+<p>But WebAssembly runs in a Secure Sandbox. <a href="https://lupyuen.github.io/articles/tcc#file-input-and-output"><strong>No File Access</strong></a> allowed, sorry! (Like for C Header Files)</p>
+<p><em>Huh! How did we get &lt;stdio.h&gt; and &lt;stdlib.h&gt;?</em></p>
+<div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler with ROM FS
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void main(int argc, char *argv[]) {
+  puts(&quot;Hello, World!!\n&quot;);
+  exit(0);
+}            
+</code></pre></div>
 <p>TODO</p>
-<p><em>What’s this POSIX?</em></p>
-<p>TCC Compiler was created as a <strong>Command-Line App</strong>. So it calls the typical <a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX Functions</strong></a> like <strong>fopen, fprintf, strncpy, malloc,</strong> …</p>
-<p>But WebAssembly running in a Web Browser ain’t <strong>No Command Line</strong>! (Pic above)</p>
-<p><a href="https://en.wikipedia.org/wiki/C_standard_library">(WebAssembly doesn’t have a <strong>C Standard Library libc</strong>)</a></p>
-<p><em>Is POSIX a problem for WebAssembly?</em></p>
-<p>We counted <a href="https://lupyuen.github.io/articles/tcc#appendix-missing-functions"><strong>72 POSIX Functions</strong></a> needed by TCC Compiler, but missing from WebAssembly.</p>
-<p>Thus we fill in the <a href="https://lupyuen.github.io/articles/tcc#appendix-missing-functions"><strong>Missing Functions</strong></a> ourselves.</p>
-<p><a href="https://lupyuen.github.io/articles/tcc#appendix-missing-functions">(About the <strong>Missing POSIX Functions</strong>)</a></p>
-<h1 id="rom-fs-filesystem-for-tcc-webassembly"><a href="#rom-fs-filesystem-for-tcc-webassembly">3 ROM FS Filesystem for TCC WebAssembly</a></h1>
+<h1 id="rom-fs-filesystem"><a href="#rom-fs-filesystem">3 ROM FS Filesystem</a></h1>
+<p><em>What’s this ROM FS?</em></p>
+<p><a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS</strong></a> is a <strong>Read-Only Filesystem</strong> that runs entirely in memory.</p>
+<p>ROM FS is <strong>a lot simpler</strong> than Read-Write Filesystems (like FAT and EXT4). That’s why we run it inside TCC WebAssembly to host our C Include Files.</p>
 <p>TODO</p>
 <p><em>TCC WebAssembly needs an Embedded Filesystem that will have C Header Files and C Library Files for building apps…</em></p>
 <p><em>How will we implement this Embedded Filesystem in Zig?</em></p>
