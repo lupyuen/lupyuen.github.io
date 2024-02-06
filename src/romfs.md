@@ -185,9 +185,9 @@ TODO: [(Works like the __Emscripten Filesystem__)](https://emscripten.org/docs/p
 
 _Is there a ROM FS Driver in Zig?_
 
-We looked around [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) (Real-Time Operating System) and we found a [__ROM FS Driver__](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.c) (in C). It works well in Zig!
+We looked around [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) (Real-Time Operating System) and we found a [__ROM FS Driver__](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.c) (in C). It works well with Zig!
 
-Let's walk through the steps to call the __NuttX ROM FS Driver__ in Zig...
+Let's walk through the steps to call the __NuttX ROM FS Driver__ from Zig...
 
 - __Mounting__ the ROM FS Filesystem
 
