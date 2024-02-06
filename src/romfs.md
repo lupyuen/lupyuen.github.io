@@ -160,9 +160,9 @@ genromfs \
   -V "ROMFS"
 ```
 
-[(See the __ROM FS Files__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs)
+[(_<stdio.h>_ and _<stdlib.h>_ are in the __ROM FS Folder__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs)
 
-[(And the __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)
+[(Bundled into this __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)
 
 We embed the __ROM FS Filesystem `romfs.bin`__ into our [__Zig Wrapper__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly), so it will be accessible by TCC WebAssembly: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L993-L997)
 
@@ -766,7 +766,7 @@ Try the NuttX Tmp FS Driver: [nuttx/fs/tmpfs](https://github.com/apache/nuttx/tr
 
 _Why not FAT?_
 
-TODO: Immutable Filesystem
+TODO: [__Immutable Filesystem__](https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/)
 
 Time to wrap up and run everything in a Web Browser...
 
