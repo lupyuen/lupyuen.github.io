@@ -164,7 +164,7 @@ genromfs \
 
 [(Bundled into this __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)
 
-We embed the __ROM FS Filesystem `romfs.bin`__ into our [__Zig Wrapper__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly), so it will be accessible by TCC WebAssembly: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L993-L997)
+We embed the __ROM FS Filesystem `romfs.bin`__ into our [__Zig Wrapper__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly), so it will be accessible by TCC WebAssembly: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/c2146f65cc8f338b8a3aaa4c2e88e550e82514ec/zig/tcc-wasm.zig#L993-L997)
 
 ```zig
 // Embed the ROM FS Filesystem
@@ -176,6 +176,8 @@ const ROMFS_DATA = @embedFile("romfs.bin");
 ```
 
 [(About __@embedFile__)](https://ziglang.org/documentation/master/#embedFile)
+
+__For Easier Updates__: We should download [__`romfs.bin` from our Web Server__](TODO).
 
 TODO: [(Works like the __Emscripten Filesystem__)](https://emscripten.org/docs/porting/files/file_systems_overview.html)
 
