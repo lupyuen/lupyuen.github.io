@@ -268,7 +268,7 @@ pub export fn compile_program(...) [*]const u8 {
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163">(<strong>romfs_inode</strong> is here)</a></p>
 <p><em>What if the ROM FS Filesystem contains garbage?</em></p>
 <p>Our ROM FS Driver will <strong>Fail the Mount Operation</strong>.</p>
-<p>That’s because it searches for a Magic Number at the top of the filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfsutil.c#L765-L770">fs_romfsutil.c</a></p>
+<p>That’s because it searches for a <strong>Magic Number</strong> at the top of the filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfsutil.c#L765-L770">fs_romfsutil.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Verify the Magic Number that identifies
 // a ROM FS Filesystem
 #define ROMFS_VHDR_MAGIC &quot;-rom1fs-&quot;
