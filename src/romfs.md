@@ -875,6 +875,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/romfs.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/romfs.md)
 
+# Appendix: Build TCC WebAssembly
+
+TODO
+
 # Appendix: Download ROM FS from Web Server
 
 TODO
@@ -883,33 +887,67 @@ TODO
 
 TODO
 
-```text
-00000000  2d 72 6f 6d 31 66 73 2d  00 00 0f 90 58 57 01 f8  |-rom1fs-....XW..|
-00000010  52 4f 4d 46 53 00 00 00  00 00 00 00 00 00 00 00  |ROMFS...........|
-00000020  00 00 00 49 00 00 00 20  00 00 00 00 d1 ff ff 97  |...I... ........|
-00000030  2e 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-00000040  00 00 00 60 00 00 00 20  00 00 00 00 d1 d1 ff 80  |...`... ........|
-00000050  2e 2e 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-00000060  00 00 0a 42 00 00 00 00  00 00 09 b7 1d 5d 1f 9e  |...B.........]..|
-00000070  73 74 64 69 6f 2e 68 00  00 00 00 00 00 00 00 00  |stdio.h.........|
+```bash
+hexdump -C tcc-riscv32-wasm/zig/romfs.bin 
 ```
 
+TODO
+
 ```text
-00000a00  20 2f 2f 20 52 65 74 75  72 6e 20 74 68 65 20 72  | // Return the r|
-00000a10  65 73 75 6c 74 20 66 72  6f 6d 20 52 65 67 69 73  |esult from Regis|
+          [ Magic Number        ]  [ FS Size ] [ Checksum ]
+00000000  2d 72 6f 6d 31 66 73 2d  00 00 0f 90 58 57 01 f8  |-rom1fs-....XW..|
+          [ Volume Name: ROMFS                            ]
+00000010  52 4f 4d 46 53 00 00 00  00 00 00 00 00 00 00 00  |ROMFS...........|
+
+--------  File Header for `.`
+          [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksum ]
+00000020  00 00 00 49 00 00 00 20  00 00 00 00 d1 ff ff 97  |...I... ........|
+          [ File Name: `.`                               ]
+00000030  2e 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+          (NextHdr & 0xF = 9 means Executable Directory)
+```
+
+TODO
+
+```text
+--------  File Header for `..`
+          [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksum ]
+00000040  00 00 00 60 00 00 00 20  00 00 00 00 d1 d1 ff 80  |...`... ........|
+          [ File Name: `..`                              ]
+00000050  2e 2e 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+          (NextHdr & 0xF = 0 means Hard Link)
+```
+
+TODO
+
+```text
+--------  File Header for `stdio.h`
+          [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksum ]
+00000060  00 00 0a 42 00 00 00 00  00 00 09 b7 1d 5d 1f 9e  |...B.........]..|
+          [ File Name: `stdio.h`                         ]
+00000070  73 74 64 69 6f 2e 68 00  00 00 00 00 00 00 00 00  |stdio.h.........|
+          (NextHdr & 0xF = 2 means Regular File)
+
+--------  File Data for `stdio.h`
+00000080  2f 2f 20 43 61 75 74 69  6f 6e 3a 20 54 68 69 73  |// Caution: This|
+........
 00000a20  74 65 72 20 41 30 0a 20  20 72 65 74 75 72 6e 20  |ter A0.  return |
 00000a30  72 30 3b 0a 7d 20 0a 00  00 00 00 00 00 00 00 00  |r0;.} ..........|
-00000a40  00 00 00 02 00 00 00 00  00 00 05 2e 23 29 67 fc  |............#)g.|
-00000a50  73 74 64 6c 69 62 2e 68  00 00 00 00 00 00 00 00  |stdlib.h........|
-00000a60  2f 2f 20 43 61 75 74 69  6f 6e 3a 20 54 68 69 73  |// Caution: This|
-00000a70  20 6d 61 79 20 63 68 61  6e 67 65 0a 23 64 65 66  | may change.#def|
-00000a80  69 6e 65 20 53 59 53 5f  5f 65 78 69 74 20 38 0a  |ine SYS__exit 8.|
 ```
 
+TODO
+
 ```text
-00000f50  20 20 29 3b 0a 0a 20 20  2f 2f 20 52 65 74 75 72  |  );..  // Retur|
-00000f60  6e 20 74 68 65 20 72 65  73 75 6c 74 20 66 72 6f  |n the result fro|
-00000f70  6d 20 52 65 67 69 73 74  65 72 20 41 30 0a 20 20  |m Register A0.  |
+--------  File Header for `stdlib.h`
+          [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksum ]
+00000a40  00 00 00 02 00 00 00 00  00 00 05 2e 23 29 67 fc  |............#)g.|
+          [ File Name: `stdlib.h`                        ]
+00000a50  73 74 64 6c 69 62 2e 68  00 00 00 00 00 00 00 00  |stdlib.h........|
+          (NextHdr & 0xF = 2 means Regular File)
+
+--------  File Data for `stdio.h`
+00000a60  2f 2f 20 43 61 75 74 69  6f 6e 3a 20 54 68 69 73  |// Caution: This|
+........
 00000f80  72 65 74 75 72 6e 20 72  30 3b 0a 7d 20 0a 00 00  |return r0;.} ...|
 00000f90  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 ```
