@@ -72,8 +72,8 @@
 <li><a href="#mount-the-rom-fs-filesystem-in-zig">4 Mount the ROM FS Filesystem in Zig</a><ul></ul></li>
 <li><a href="#open-a-rom-fs-file-in-zig">5 Open a ROM FS File in Zig</a><ul></ul></li>
 <li><a href="#read-a-rom-fs-file-in-zig">6 Read a ROM FS File in Zig</a><ul></ul></li>
-<li><a href="#integrate-nuttx-rom-fs-driver-with-tcc-webassembly-in-zig">7 Integrate NuttX ROM FS Driver with TCC WebAssembly in Zig</a><ul></ul></li>
-<li><a href="#puts-and-exit-work-ok-in-tcc-webassembly-and-nuttx-emulator-yay">8 <code>puts</code> and <code>exit</code> work OK in TCC WebAssembly and NuttX Emulator yay!</a><ul>
+<li><a href="#integrate-nuttx-rom-fs-driver-with-tcc">7 Integrate NuttX ROM FS Driver with TCC</a><ul></ul></li>
+<li><a href="#tcc-webassembly-with-nuttx-emulator">8 TCC WebAssembly with NuttX Emulator</a><ul>
 <li><a href="#rom-fs-filesystem-for-include-files">8.1 ROM FS Filesystem for Include Files</a><ul></ul></li>
 <li><a href="#implement-puts-with-nuttx-system-call">8.2 Implement <code>puts</code> with NuttX System Call</a><ul></ul></li>
 <li><a href="#implement-exit-with-nuttx-system-call">8.3 Implement <code>exit</code> with NuttX System Call</a><ul></ul></li></ul></li>
@@ -97,11 +97,13 @@
 <li>
 <p>TODO: Integrate NuttX Emulator</p>
 </li>
+<li>
+<p>TODO: NuttX System Calls</p>
+</li>
 </ul>
 <p>TODO: <img src="https://lupyuen.github.io/images/tcc-web.png" alt="Online Demo of TCC Compiler in WebAssembly" /></p>
-<p>TODO: <a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><em>Online Demo of TCC Compiler in WebAssembly</em></a></p>
+<p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs"><em>Online Demo of TCC Compiler in WebAssembly</em></a></p>
 <h1 id="c-compiler-in-the-web-browser"><a href="#c-compiler-in-the-web-browser">1 C Compiler in the Web Browser</a></h1>
-<p>TODO</p>
 <p>Head over here to open <strong>TCC Compiler in our Web Browser</strong> (pic above)</p>
 <ul>
 <li>
@@ -110,19 +112,49 @@
 </li>
 </ul>
 <p>This <strong>C Program</strong> appears…</p>
-<div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler
-int main(int argc, char *argv[]) {
-  printf(&quot;Hello, World!!\n&quot;);
-  return 0;
-}
+<div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler with ROM FS
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void main(int argc, char *argv[]) {
+  puts(&quot;Hello, World!!\n&quot;);
+  exit(0);
+}            
 </code></pre></div>
 <p>Click the “<strong>Compile</strong>” button. Our Web Browser calls TCC to compile the above program…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile to RISC-V ELF
 tcc -c hello.c
 </code></pre></div>
-<p>And it downloads the compiled <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>RISC-V ELF <code>a.out</code></strong></a></p>
-<p><em>Surely it’s a staged demo? Or something server side?</em></p>
-<p>Let’s talk internals…</p>
+<p>And it downloads the compiled <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>RISC-V ELF <code>a.out</code></strong></a>.</p>
+<p>To test the Compiled Output, we browse to the <strong>NuttX Emulator</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/nuttx-tinyemu/tcc/"><strong>NuttX Emulator for Ox64 RISC-V SBC</strong></a></li>
+</ul>
+<p>We run <strong><code>a.out</code></strong> in the NuttX Emulator…</p>
+<div class="example-wrap"><pre class="language-bash"><code>TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; a.out
+Hello, World!!
+</code></pre></div>
+<p>And it works: Our Web Browser generates a RISC-V Executable, that runs in a RISC-V Emulator!</p>
+<p><a href="https://youtu.be/sU69bUyrgN8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><em>Surely it’s a staged demo? Or something server-side?</em></p>
+<p>Everything runs entirely in our Web Browser. Try this…</p>
+<ol>
+<li>
+<p>Change the <em>“Hello World”</em> message</p>
+</li>
+<li>
+<p>Click “<strong>Compile</strong>”</p>
+</li>
+<li>
+<p>Reload the <a href="https://lupyuen.github.io/nuttx-tinyemu/tcc/"><strong>NuttX Emulator</strong></a></p>
+</li>
+<li>
+<p>Run <strong><code>a.out</code></strong></p>
+</li>
+</ol>
+<p>And the message changes! We discuss the internals…</p>
 <p><img src="https://lupyuen.github.io/images/tcc-posix.jpg" alt="TCC Compiler in WebAssembly needs POSIX Functions" /></p>
 <h1 id="posix-for-webassembly"><a href="#posix-for-webassembly">2 POSIX for WebAssembly</a></h1>
 <p><em>There’s something oddly liberating about our demo…</em></p>
@@ -381,7 +413,7 @@ compile_program: ROM FS File `hello` closed OK!
 </code></pre></div>
 <p>This works OK in the Web Browser too!</p>
 <p>Let’s integrate the ROM FS Driver with TCC…</p>
-<h1 id="integrate-nuttx-rom-fs-driver-with-tcc-webassembly-in-zig"><a href="#integrate-nuttx-rom-fs-driver-with-tcc-webassembly-in-zig">7 Integrate NuttX ROM FS Driver with TCC WebAssembly in Zig</a></h1>
+<h1 id="integrate-nuttx-rom-fs-driver-with-tcc"><a href="#integrate-nuttx-rom-fs-driver-with-tcc">7 Integrate NuttX ROM FS Driver with TCC</a></h1>
 <p>TODO</p>
 <p><em>TCC WebAssembly needs a ROM FS Filesystem that will have C Header Files and C Library Files for building apps…</em></p>
 <p><em>How will we integrate the NuttX ROM FS Driver in Zig?</em></p>
@@ -582,7 +614,7 @@ Closing
 <p><em>Why not FAT?</em></p>
 <p>TODO: Immutable Filesystem</p>
 <p>Time to wrap up and run everything in a Web Browser…</p>
-<h1 id="puts-and-exit-work-ok-in-tcc-webassembly-and-nuttx-emulator-yay"><a href="#puts-and-exit-work-ok-in-tcc-webassembly-and-nuttx-emulator-yay">8 <code>puts</code> and <code>exit</code> work OK in TCC WebAssembly and NuttX Emulator yay!</a></h1>
+<h1 id="tcc-webassembly-with-nuttx-emulator"><a href="#tcc-webassembly-with-nuttx-emulator">8 TCC WebAssembly with NuttX Emulator</a></h1>
 <p>TODO</p>
 <p><a href="https://youtu.be/sU69bUyrgN8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>Remember we’re doing a Decent Demo of Building and Testing a #NuttX App in the Web Browser… <code>puts</code> and <code>exit</code> finally work OK yay! 🎉</p>
