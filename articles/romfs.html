@@ -271,8 +271,16 @@ pub export fn compile_program(...) [*]const u8 {
 
   // Omitted: Call the TCC Compiler
 </code></pre></div>
-<p>TODO: What if ROM FS Filesystem is invalid?</p>
-<p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L320-L324">(<strong>romfs_files</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163">(<strong>romfs_inode</strong> is here)</a></p>
+<p><em>What if the ROM FS Filesystem contains garbage?</em></p>
+<p>Our ROM FS Driver will <strong>fail the Mount Operation</strong>.</p>
+<p>That’s because it searches for a Magic Number at the top of the filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfsutil.c#L765-L770">fs_romfsutil.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Verify the Magic Number that identifies
+// a ROM FS Filesystem
+#define ROMFS_VHDR_MAGIC &quot;-rom1fs-&quot;
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L91-L98">(See the <strong>Mount Log</strong>)</a></p>
 <p><a href="https://en.wikipedia.org/wiki/I-mode">(Not to be confused with <strong>i-mode</strong>)</a></p>
 <h2 id="open-a-rom-fs-file"><a href="#open-a-rom-fs-file">4.2 Open a ROM FS File</a></h2>
 <p>TODO</p>
