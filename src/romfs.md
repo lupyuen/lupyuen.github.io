@@ -84,7 +84,7 @@ Everything runs entirely in our Web Browser. Try this...
 
 1.  Click "__Compile__"
 
-1.  Reload the [__NuttX Emulator__](https://lupyuen.github.io/nuttx-tinyemu/tcc/)
+1.  Reload the Web Browser for [__NuttX Emulator__](https://lupyuen.github.io/nuttx-tinyemu/tcc/)
 
 1.  Run __`a.out`__
 
