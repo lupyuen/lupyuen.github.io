@@ -2,11 +2,11 @@
 
 📝 _20 Feb 2024_
 
-![TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)](https://lupyuen.github.io/images/romfs-title.png)
+![TODO](https://lupyuen.github.io/images/romfs-title.png)
 
-TODO: [(Try the __Online Demo__)](https://lupyuen.github.io/tcc-riscv32-wasm/)
+[(Try the __Online Demo__)](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
 
-TODO: [(Watch the __Demo on YouTube__)](https://youtu.be/DJMDYq52Iv8)
+[(Watch the __Demo on YouTube__)](https://youtu.be/sU69bUyrgN8)
 
 TODO
 
