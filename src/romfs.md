@@ -95,7 +95,7 @@ And the message changes! We discuss the internals...
 
 _Something oddly liberating about our demo..._
 
-TCC Compiler was created as a __Command-Line App__ that calls the usual [__POSIX Functions__](https://lupyuen.github.io/articles/tcc#posix-for-webassembly) like __open, read, write,__ ...
+TCC Compiler was created as a __Command-Line App__ that calls the usual [__POSIX Functions__](https://lupyuen.github.io/articles/tcc#posix-for-webassembly) for File Access: __open, read, write,__ ...
 
 But WebAssembly runs in a Secure Sandbox. [__No File Access__](https://lupyuen.github.io/articles/tcc#file-input-and-output) allowed, sorry! (Like for C Header Files)
 
@@ -112,7 +112,21 @@ void main(int argc, char *argv[]) {
 }            
 ```
 
-TODO
+_<stdio.h>_ and _<stdlib.h>_ come from the __ROM FS Filesystem__ that's bundled inside our TCC WebAssembly.
+
+(Coming up in the next section)
+
+_Hmmm sounds like a major makeover for TCC Compiler..._
+
+Previously TCC Compiler could access Header Files __directly from the Local Filesystem__...
+
+TODO: Pic of TCC Filesystem
+
+Now TCC WebAssembly needs to hoop through our [__Zig Wrapper__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly) to read the ROM FS Filesystem...
+
+TODO: Pic of TCC ROM FS
+
+This is how we made it work...
 
 # ROM FS Filesystem
 
@@ -122,58 +136,143 @@ _What's this ROM FS?_
 
 ROM FS is __a lot simpler__ than Read-Write Filesystems (like FAT and EXT4). That's why we run it inside TCC WebAssembly to host our C Include Files.
 
-TODO
+_How to bundle our C Header Files into ROM FS?_
 
-_TCC WebAssembly needs an Embedded Filesystem that will have C Header Files and C Library Files for building apps..._
-
-_How will we implement this Embedded Filesystem in Zig?_
-
-Let's embed the simple [__ROM FS Filesystem__](https://docs.kernel.org/filesystems/romfs.html) inside our Zig Wrapper...
-
-1.  Our TCC JavaScript will fetch the Bundled ROM FS Filesystem over HTTP: [romfs.bin](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/romfs.bin)
-
-1.  Then copy the Bundled ROM FS into Zig Wrapper's WebAssembly Memory
-
-1.  Our Zig Wrapper will mount the ROM FS in memory
-
-1.  And expose POSIX Functions to TCC that will access the Emulated Filesystem
-
-[(Works like the __Emscripten Filesystem__)](https://emscripten.org/docs/porting/files/file_systems_overview.html)
-
-_How to bundle our C Header Files and C Library Files into the ROM FS Filesystem?_
-
-Like this...
+__`genromfs`__ will pack our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
 
 ```bash
-## Bundle the romfs folder into ROM FS Filesystem romfs.bin
+## For Ubuntu: Install `genromfs`
+sudo apt install genromfs
+
+## For macOS: Install `genromfs`
+brew install genromfs
+
+## Bundle the `romfs` folder into
+## ROM FS Filesystem `romfs.bin`
 ## and label with this Volume Name
 genromfs \
-  -f zig/romfs.bin \
-  -d zig/romfs \
+  -f romfs.bin \
+  -d romfs \
   -V "ROMFS"
 ```
 
-[(See the ROM FS Binary `zig/romfs.bin`)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)
+[(See the __ROM FS Files__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs)
 
-[(See the ROM FS Files `zig/romfs`)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs)
+[(And the __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)
 
-_How to implement the ROM FS in our Zig Wrapper?_
+We embed the __ROM FS Filesystem `romfs.bin`__ into our [__Zig Wrapper__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly), so it will be accessible by TCC WebAssembly: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L993-L997)
 
-We'll borrow the ROM FS Driver from Apache NuttX RTOS. And compile it from C to WebAssembly with Zig Compiler...
+```zig
+// Embed the ROM FS Filesystem
+// into our Zig Wrapper
+const ROMFS_DATA = @embedFile("romfs.bin");
 
-- [fs_romfs.c](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.c)
+// Later: Mount the ROM FS Filesystem
+// from `ROMFS_DATA`
+```
 
-- [fs_romfs.h](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h)
+[(About __@embedFile__)](https://ziglang.org/documentation/master/#embedFile)
 
-- [fs_romfsutil.c](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfsutil.c)
+TODO: [(Works like the __Emscripten Filesystem__)](https://emscripten.org/docs/porting/files/file_systems_overview.html)
 
-- [inode.h](https://github.com/apache/nuttx/blob/master/fs/inode/inode.h)
+# NuttX Driver for ROM FS
 
-- [fs.h](https://github.com/apache/nuttx/blob/master/include/nuttx/fs/fs.h)
+_Is there a ROM FS Driver in Zig?_
 
-[(See the __Modified Source Files__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig)
+We looked around [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) (Real-Time Operating System) and we found a [__ROM FS Driver__](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.c). It works well in Zig!
 
-[(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
+TODO
+
+## Mount the ROM FS Filesystem
+
+TODO
+
+[tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L11-L45)
+
+```zig
+/// Import the NuttX ROM FS Driver
+const c = @cImport({
+  @cInclude("zig_romfs.h");
+});
+
+/// Compile a C program to 64-bit RISC-V
+pub export fn compile_program(...) [*]const u8 {
+
+  // Create the Memory Allocator for malloc
+  memory_allocator = std.heap.FixedBufferAllocator
+    .init(&memory_buffer);
+
+  // Allocate the Map from File Descriptor to ROM FS File
+  romfs_files = std.ArrayList(*c.struct_file)
+    .init(std.heap.page_allocator);
+  defer romfs_files.deinit();  // Deallocate later
+
+  // Mount the ROM FS Filesystem
+  const ret = c.romfs_bind(
+    c.romfs_blkdriver, // blkdriver: ?*struct_inode_6
+    null, // data: ?*const anyopaque
+    &c.romfs_mountpt // handle: [*c]?*anyopaque
+  );
+  assert(ret >= 0);
+
+  // Prepare the Mount Inode
+  romfs_inode = c.create_mount_inode(
+    c.romfs_mountpt
+  );
+
+  // Omitted: Call TCC Compiler
+```
+
+[(Not to be confused with __i-mode__)](https://en.wikipedia.org/wiki/I-mode)
+
+## Open a ROM FS File
+
+TODO
+
+[tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L115-L129)
+
+```zig
+// Create the File Struct
+var file = std.mem.zeroes(c.struct_file);
+file.f_inode = romfs_inode;
+
+// Open the file
+const ret2 = c.romfs_open( // Open "hello" for Read-Only. `mode` is used only for creating files.
+    &file, // filep: [*c]struct_file
+    "stdio.h", // relpath: [*c]const u8
+    c.O_RDONLY, // oflags: c_int
+    0 // mode: mode_t
+);
+assert(ret2 >= 0);
+```
+
+## Read a ROM FS File
+
+TODO
+
+[tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L129-L146)
+
+```zig
+// Read the ROM FS File, first 4 bytes
+var buf = std.mem.zeroes([4]u8);
+const ret3 = c.romfs_read( // Read the file
+    &file, // filep: [*c]struct_file
+    &buf, // buffer: [*c]u8
+    buf.len // buflen: usize
+);
+assert(ret3 >= 0);
+
+// Dump the 4 bytes
+hexdump.hexdump(@ptrCast(&buf), @intCast(ret3));
+
+// Close the ROM FS File
+const ret4 = c.romfs_close(&file);
+assert(ret4 >= 0);
+```
+
+TODO: [(See the __Modified Source Files__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig)
+
+TODO: [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
 
 This compiles OK with Zig Compiler with a few tweaks, let's test it in Zig...
 
