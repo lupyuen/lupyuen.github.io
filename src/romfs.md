@@ -91,29 +91,36 @@ And the message changes! We discuss the internals...
 
 ![TCC Compiler in WebAssembly needs POSIX Functions](https://lupyuen.github.io/images/tcc-posix.jpg)
 
-# POSIX for WebAssembly
+# File Access for WebAssembly
 
-_There's something oddly liberating about our demo..._
+_Something oddly liberating about our demo..._
+
+TCC Compiler was created as a __Command-Line App__ that calls the usual [__POSIX Functions__](https://lupyuen.github.io/articles/tcc#posix-for-webassembly) like __open, read, write,__ ...
+
+But WebAssembly runs in a Secure Sandbox. [__No File Access__](https://lupyuen.github.io/articles/tcc#file-input-and-output) allowed, sorry! (Like for C Header Files)
+
+_Huh! How did we get <stdio.h> and <stdlib.h>?_
+
+```c
+// Demo Program for TCC Compiler with ROM FS
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(int argc, char *argv[]) {
+  puts("Hello, World!!\n");
+  exit(0);
+}            
+```
 
 TODO
 
-_What's this POSIX?_
+# ROM FS Filesystem
 
-TCC Compiler was created as a __Command-Line App__. So it calls the typical [__POSIX Functions__](https://en.wikipedia.org/wiki/POSIX) like __fopen, fprintf, strncpy, malloc,__ ...
+_What's this ROM FS?_
 
-But WebAssembly running in a Web Browser ain't __No Command Line__! (Pic above)
+[__ROM FS__](https://docs.kernel.org/filesystems/romfs.html) is a __Read-Only Filesystem__ that runs entirely in memory.
 
-[(WebAssembly doesn't have a __C Standard Library libc__)](https://en.wikipedia.org/wiki/C_standard_library)
-
-_Is POSIX a problem for WebAssembly?_
-
-We counted [__72 POSIX Functions__](https://lupyuen.github.io/articles/tcc#appendix-missing-functions) needed by TCC Compiler, but missing from WebAssembly.
-
-Thus we fill in the [__Missing Functions__](https://lupyuen.github.io/articles/tcc#appendix-missing-functions) ourselves.
-
-[(About the __Missing POSIX Functions__)](https://lupyuen.github.io/articles/tcc#appendix-missing-functions)
-
-# ROM FS Filesystem for TCC WebAssembly
+ROM FS is __a lot simpler__ than Read-Write Filesystems (like FAT and EXT4). That's why we run it inside TCC WebAssembly to host our C Include Files.
 
 TODO
 
