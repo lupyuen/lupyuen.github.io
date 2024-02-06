@@ -39,7 +39,8 @@ Head over here to open __TCC Compiler in our Web Browser__ (pic above)
 This __C Program__ appears...
 
 ```c
-// Demo Program for TCC Compiler with ROM FS
+// Demo Program for TCC Compiler
+// with ROM FS
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -102,7 +103,8 @@ But WebAssembly runs in a Secure Sandbox. [__No File Access__](https://lupyuen.g
 _Huh! How did we get <stdio.h> and <stdlib.h>?_
 
 ```c
-// Demo Program for TCC Compiler with ROM FS
+// Demo Program for TCC Compiler
+// with ROM FS
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -113,6 +115,8 @@ void main(int argc, char *argv[]) {
 ```
 
 _<stdio.h>_ and _<stdlib.h>_ come from the __ROM FS Filesystem__ that's bundled inside our TCC WebAssembly.
+
+ROM FS works like a regular Filesystem (think FAT and EXT4). Just that it's tiny, __runs in memory__. And bundles easily with WebAssembly.
 
 (Coming up in the next section)
 
@@ -138,7 +142,7 @@ ROM FS is __a lot simpler__ than Read-Write Filesystems (like FAT and EXT4). Tha
 
 _How to bundle our C Header Files into ROM FS?_
 
-__`genromfs`__ will pack our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
+__`genromfs`__ will preload our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
 
 ```bash
 ## For Ubuntu: Install `genromfs`
