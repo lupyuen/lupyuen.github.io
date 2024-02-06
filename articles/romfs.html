@@ -217,7 +217,7 @@ const ROMFS_DATA = @embedFile(&quot;romfs.bin&quot;);
 <p>TODO: <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">(Works like the <strong>Emscripten Filesystem</strong>)</a></p>
 <h1 id="nuttx-driver-for-rom-fs"><a href="#nuttx-driver-for-rom-fs">4 NuttX Driver for ROM FS</a></h1>
 <p><em>Is there a ROM FS Driver in Zig?</em></p>
-<p>We looked around <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) and we found a <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.c"><strong>ROM FS Driver</strong></a>. It works well in Zig!</p>
+<p>We looked around <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) and we found a <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.c"><strong>ROM FS Driver</strong></a> (in C). It works well in Zig!</p>
 <p>Let’s walk through the steps to call the <strong>NuttX ROM FS Driver</strong> in Zig…</p>
 <ul>
 <li>
