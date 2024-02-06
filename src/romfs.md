@@ -22,13 +22,13 @@ In this article we add a __Read-Only Filesystem__ to our Zig Webassembly...
 
 - TODO: Integrate NuttX Emulator
 
+- TODO: NuttX System Calls
+
 TODO: ![Online Demo of TCC Compiler in WebAssembly](https://lupyuen.github.io/images/tcc-web.png)
 
-TODO: [_Online Demo of TCC Compiler in WebAssembly_](https://lupyuen.github.io/tcc-riscv32-wasm/)
+[_Online Demo of TCC Compiler in WebAssembly_](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
 
 # C Compiler in the Web Browser
-
-TODO
 
 Head over here to open __TCC Compiler in our Web Browser__ (pic above)
 
@@ -39,11 +39,14 @@ Head over here to open __TCC Compiler in our Web Browser__ (pic above)
 This __C Program__ appears...
 
 ```c
-// Demo Program for TCC Compiler
-int main(int argc, char *argv[]) {
-  printf("Hello, World!!\n");
-  return 0;
-}
+// Demo Program for TCC Compiler with ROM FS
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(int argc, char *argv[]) {
+  puts("Hello, World!!\n");
+  exit(0);
+}            
 ```
 
 Click the "__Compile__" button. Our Web Browser calls TCC to compile the above program...
@@ -53,11 +56,38 @@ Click the "__Compile__" button. Our Web Browser calls TCC to compile the above p
 tcc -c hello.c
 ```
 
-And it downloads the compiled [__RISC-V ELF `a.out`__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format)
+And it downloads the compiled [__RISC-V ELF `a.out`__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format).
 
-_Surely it's a staged demo? Or something server side?_
+To test the Compiled Output, we browse to the __NuttX Emulator__...
 
-Let's talk internals...
+- [__NuttX Emulator for Ox64 RISC-V SBC__](https://lupyuen.github.io/nuttx-tinyemu/tcc/)
+
+We run __`a.out`__ in the NuttX Emulator...
+
+```bash
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> a.out
+Hello, World!!
+```
+
+And it works: Our Web Browser generates a RISC-V Executable, that runs in a RISC-V Emulator!
+
+[(Watch the __Demo on YouTube__)](https://youtu.be/sU69bUyrgN8)
+
+_Surely it's a staged demo? Or something server-side?_
+
+Everything runs entirely in our Web Browser. Try this...
+
+1.  Change the _"Hello World"_ message
+
+1.  Click "__Compile__"
+
+1.  Reload the [__NuttX Emulator__](https://lupyuen.github.io/nuttx-tinyemu/tcc/)
+
+1.  Run __`a.out`__
+
+And the message changes! We discuss the internals...
 
 ![TCC Compiler in WebAssembly needs POSIX Functions](https://lupyuen.github.io/images/tcc-posix.jpg)
 
@@ -395,7 +425,7 @@ This works OK in the Web Browser too!
 
 Let's integrate the ROM FS Driver with TCC...
 
-# Integrate NuttX ROM FS Driver with TCC WebAssembly in Zig
+# Integrate NuttX ROM FS Driver with TCC
 
 TODO
 
@@ -630,7 +660,7 @@ TODO: Immutable Filesystem
 
 Time to wrap up and run everything in a Web Browser...
 
-# `puts` and `exit` work OK in TCC WebAssembly and NuttX Emulator yay!
+# TCC WebAssembly with NuttX Emulator
 
 TODO
 
