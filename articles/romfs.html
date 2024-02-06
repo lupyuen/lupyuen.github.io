@@ -116,7 +116,8 @@
 </li>
 </ul>
 <p>This <strong>C Program</strong> appears…</p>
-<div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler with ROM FS
+<div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler
+// with ROM FS
 #include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
 
@@ -165,7 +166,8 @@ Hello, World!!
 <p>TCC Compiler was created as a <strong>Command-Line App</strong> that calls the usual <a href="https://lupyuen.github.io/articles/tcc#posix-for-webassembly"><strong>POSIX Functions</strong></a> for File Access: <strong>open, read, write,</strong> …</p>
 <p>But WebAssembly runs in a Secure Sandbox. <a href="https://lupyuen.github.io/articles/tcc#file-input-and-output"><strong>No File Access</strong></a> allowed, sorry! (Like for C Header Files)</p>
 <p><em>Huh! How did we get &lt;stdio.h&gt; and &lt;stdlib.h&gt;?</em></p>
-<div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler with ROM FS
+<div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler
+// with ROM FS
 #include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
 
@@ -175,6 +177,7 @@ void main(int argc, char *argv[]) {
 }            
 </code></pre></div>
 <p><em>&lt;stdio.h&gt;</em> and <em>&lt;stdlib.h&gt;</em> come from the <strong>ROM FS Filesystem</strong> that’s bundled inside our TCC WebAssembly.</p>
+<p>ROM FS works like a regular Filesystem (think FAT and EXT4). Just that it’s tiny, <strong>runs in memory</strong>. And bundles easily with WebAssembly.</p>
 <p>(Coming up in the next section)</p>
 <p><em>Hmmm sounds like a major makeover for TCC Compiler…</em></p>
 <p>Previously TCC Compiler could access Header Files <strong>directly from the Local Filesystem</strong>…</p>
@@ -187,7 +190,7 @@ void main(int argc, char *argv[]) {
 <p><a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS</strong></a> is a <strong>Read-Only Filesystem</strong> that runs entirely in memory.</p>
 <p>ROM FS is <strong>a lot simpler</strong> than Read-Write Filesystems (like FAT and EXT4). That’s why we run it inside TCC WebAssembly to host our C Include Files.</p>
 <p><em>How to bundle our C Header Files into ROM FS?</em></p>
-<p><strong><code>genromfs</code></strong> will pack our C Header Files into a ROM FS Filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190">build.sh</a></p>
+<p><strong><code>genromfs</code></strong> will preload our C Header Files into a ROM FS Filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190">build.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu: Install `genromfs`
 sudo apt install genromfs
 
