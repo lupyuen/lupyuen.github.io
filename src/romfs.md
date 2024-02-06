@@ -214,11 +214,6 @@ pub export fn compile_program(...) [*]const u8 {
   memory_allocator = std.heap.FixedBufferAllocator
     .init(&memory_buffer);
 
-  // Allocate the POSIX File Descriptors
-  romfs_files = std.ArrayList(*c.struct_file)
-    .init(std.heap.page_allocator);
-  defer romfs_files.deinit();  // Deallocate later
-
   // Mount the ROM FS Filesystem
   const ret = c.romfs_bind(
     c.romfs_blkdriver, // Block Driver for ROM FS
@@ -261,8 +256,8 @@ That's because it searches for a Magic Number at the top of the filesystem: [fs_
 Next we __Open a ROM FS File__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L127-L138)
 
 ```zig
-// Create the File Struct and
-// connect to the Mount Inode
+// Create the File Struct.
+// Link to the Mount Inode.
 var file = std.mem.zeroes(c.struct_file);
 file.f_inode = romfs_inode;
 
@@ -280,7 +275,7 @@ assert(ret2 >= 0);
 
 ## Read a ROM FS File
 
-Finally we __Read a ROM FS File__ and Close it: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L138-L157)
+Finally we __Read and Close__ the ROM FS File: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L138-L157)
 
 ```zig
 // Read the ROM FS File, first 4 bytes
@@ -314,13 +309,17 @@ romfs_read: Return 4 bytes from sector offset 0
 romfs_close: Closing 
 ```
 
-Which looks right because _<stdio.h>_ begins with "[__`// C`__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1)"
+Which looks right because [_<stdio.h>_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1) begins with "[__`// C`__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1)"
 
 [(See the __Read Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L102-L113)
 
 TODO: [(See the __Modified Source Files__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig)
 
 TODO: [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
+
+# Inside a ROM FS Filesystem
+
+TODO
 
 # TCC calls ROM FS Driver
 
@@ -612,7 +611,7 @@ Impressive, no? 3 things we fixed...
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/sU69bUyrgN8)
 
-## ROM FS Filesystem for Include Files
+# ROM FS Filesystem for TCC
 
 TODO
 
@@ -641,7 +640,7 @@ Inside our TCC WebAssembly: We mounted the ROM FS Filesystem by calling the Nutt
 
 See the earlier sections to find out how we modded the POSIX Filesystem Calls (from TCC WebAssembly) to access the NuttX ROM FS Driver.
 
-## Implement `puts` with NuttX System Call
+# Print with NuttX System Call
 
 TODO
 
@@ -781,7 +780,7 @@ asm volatile ("andi a2, a0, 0xffffffff");
 
 Because 0xffffffff gets assembled to -1. (Bug?)
 
-## Implement `exit` with NuttX System Call
+# Exit with NuttX System Call
 
 TODO
 
