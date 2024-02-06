@@ -8,7 +8,80 @@
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/sU69bUyrgN8)
 
+We're building a [__C Compiler for RISC-V__](https://lupyuen.github.io/articles/tcc) that runs in the __Web Browser__. (With [__Zig Compiler__](https://ziglang.org/) and WebAssembly)
+
+But our C Compiler is kinda boring if it doesn't support __C Header Files__ and Library Files.
+
+In this article we add a __Read-Only Filesystem__ to our Zig Webassembly...
+
+- TODO: Hosting Include Files
+
+- TODO: NuttX ROM FS Driver
+
+- TODO: Integrate TCC Compiler
+
+- TODO: Integrate NuttX Emulator
+
+TODO: ![Online Demo of TCC Compiler in WebAssembly](https://lupyuen.github.io/images/tcc-web.png)
+
+TODO: [_Online Demo of TCC Compiler in WebAssembly_](https://lupyuen.github.io/tcc-riscv32-wasm/)
+
+# C Compiler in the Web Browser
+
 TODO
+
+Head over here to open __TCC Compiler in our Web Browser__ (pic above)
+
+- [__TCC RISC-V Compiler with ROM FS__](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
+
+  [(Watch the __Demo on YouTube__)](https://youtu.be/sU69bUyrgN8)
+
+This __C Program__ appears...
+
+```c
+// Demo Program for TCC Compiler
+int main(int argc, char *argv[]) {
+  printf("Hello, World!!\n");
+  return 0;
+}
+```
+
+Click the "__Compile__" button. Our Web Browser calls TCC to compile the above program...
+
+```bash
+## Compile to RISC-V ELF
+tcc -c hello.c
+```
+
+And it downloads the compiled [__RISC-V ELF `a.out`__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format)
+
+_Surely it's a staged demo? Or something server side?_
+
+Let's talk internals...
+
+![TCC Compiler in WebAssembly needs POSIX Functions](https://lupyuen.github.io/images/tcc-posix.jpg)
+
+# POSIX for WebAssembly
+
+_There's something oddly liberating about our demo..._
+
+TODO
+
+_What's this POSIX?_
+
+TCC Compiler was created as a __Command-Line App__. So it calls the typical [__POSIX Functions__](https://en.wikipedia.org/wiki/POSIX) like __fopen, fprintf, strncpy, malloc,__ ...
+
+But WebAssembly running in a Web Browser ain't __No Command Line__! (Pic above)
+
+[(WebAssembly doesn't have a __C Standard Library libc__)](https://en.wikipedia.org/wiki/C_standard_library)
+
+_Is POSIX a problem for WebAssembly?_
+
+We counted [__72 POSIX Functions__](https://lupyuen.github.io/articles/tcc#appendix-missing-functions) needed by TCC Compiler, but missing from WebAssembly.
+
+Thus we fill in the [__Missing Functions__](https://lupyuen.github.io/articles/tcc#appendix-missing-functions) ourselves.
+
+[(About the __Missing POSIX Functions__)](https://lupyuen.github.io/articles/tcc#appendix-missing-functions)
 
 # ROM FS Filesystem for TCC WebAssembly
 
@@ -550,6 +623,10 @@ Closing
 _What if we need a Temporary Writeable Filesystem?_
 
 Try the NuttX Tmp FS Driver: [nuttx/fs/tmpfs](https://github.com/apache/nuttx/tree/master/fs/tmpfs)
+
+_Why not FAT?_
+
+TODO: Immutable Filesystem
 
 Time to wrap up and run everything in a Web Browser...
 
