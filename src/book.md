@@ -226,7 +226,7 @@ What happens inside the __WiFi Driver__ on BL602 and BL604.
 
 For __BL602 IoT SDK__
 
--   [__"Reverse Engineering WiFi on RISC-V BL602](https://lupyuen.github.io/articles/wifi)
+-   [__"Reverse Engineering WiFi on RISC-V BL602"__](https://lupyuen.github.io/articles/wifi)
 
 ![Graphics on BL602](https://lupyuen.github.io/images/book-display.jpg)
 
