@@ -185,16 +185,16 @@ void main(int argc, char *argv[]) {
 <p>ROM FS works like a regular Filesystem (think FAT and EXT4). Just that it’s tiny, <strong>runs in memory</strong>. And bundles easily with WebAssembly.</p>
 <p>(Coming up in the next section)</p>
 <p><em>Hmmm sounds like a major makeover for TCC Compiler…</em></p>
-<p>Previously TCC Compiler could access Header Files <strong>directly from the Local Filesystem</strong>…</p>
+<p>Previously TCC Compiler could access Header Files directly from the <strong>Local Filesystem</strong>…</p>
 <p>TODO: Pic of TCC Filesystem</p>
-<p>Now TCC WebAssembly needs to hoop through our <a href="https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly"><strong>Zig Wrapper</strong></a> to read the ROM FS Filesystem…</p>
+<p>Now TCC WebAssembly needs to hoop through our <a href="https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly"><strong>Zig Wrapper</strong></a> to read the <strong>ROM FS Filesystem</strong>…</p>
 <p>TODO: Pic of TCC ROM FS</p>
 <p>This is how we made it work…</p>
 <h1 id="rom-fs-filesystem"><a href="#rom-fs-filesystem">3 ROM FS Filesystem</a></h1>
 <p><em>What’s this ROM FS?</em></p>
 <p><a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS</strong></a> is a <strong>Read-Only Filesystem</strong> that runs entirely in memory.</p>
 <p>ROM FS is <strong>a lot simpler</strong> than Read-Write Filesystems (like FAT and EXT4). That’s why we run it inside TCC WebAssembly to host our C Header Files.</p>
-<p><em>How to bundle our C Header Files into ROM FS?</em></p>
+<p><em>How to bundle our files into ROM FS?</em></p>
 <p><strong><code>genromfs</code></strong> will helpfully pack our C Header Files into a ROM FS Filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190">build.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu: Install `genromfs`
 sudo apt install genromfs
