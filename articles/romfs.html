@@ -78,8 +78,8 @@
 <li><a href="#from-tcc-to-nuttx-emulator">7 From TCC to NuttX Emulator</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-build-tcc-webassembly">9 Appendix: Build TCC WebAssembly</a><ul></ul></li>
-<li><a href="#appendix-download-rom-fs">10 Appendix: Download ROM FS</a><ul></ul></li>
-<li><a href="#appendix-nuttx-rom-fs-driver">11 Appendix: NuttX ROM FS Driver</a><ul></ul></li>
+<li><a href="#appendix-nuttx-rom-fs-driver">10 Appendix: NuttX ROM FS Driver</a><ul></ul></li>
+<li><a href="#appendix-download-rom-fs">11 Appendix: Download ROM FS</a><ul></ul></li>
 <li><a href="#appendix-print-via-nuttx-system-call">12 Appendix: Print via NuttX System Call</a><ul></ul></li>
 <li><a href="#appendix-exit-via-nuttx-system-call">13 Appendix: Exit via NuttX System Call</a><ul></ul></li>
 <li><a href="#appendix-patch-the-nuttx-emulator">14 Appendix: Patch the NuttX Emulator</a><ul></ul></li>
@@ -215,14 +215,15 @@ genromfs \
 <p>We embed the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin"><strong>ROM FS Filesystem <code>romfs.bin</code></strong></a> into our <a href="https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly"><strong>Zig Wrapper</strong></a>, so it will be accessible by TCC WebAssembly: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/c2146f65cc8f338b8a3aaa4c2e88e550e82514ec/zig/tcc-wasm.zig#L993-L997">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Embed the ROM FS Filesystem
 // into our Zig Wrapper
-const ROMFS_DATA = @embedFile(&quot;romfs.bin&quot;);
+const ROMFS_DATA = @embedFile(
+  &quot;romfs.bin&quot;
+);
 
 // Later: Mount the ROM FS Filesystem
 // from `ROMFS_DATA`
 </code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#embedFile">(About <strong>@embedFile</strong>)</a></p>
 <p><strong>For Easier Updates</strong>: We should download <a href="TODO"><strong><code>romfs.bin</code> from our Web Server</strong></a>.</p>
-<p>TODO: <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">(Works like the <strong>Emscripten Filesystem</strong>)</a></p>
 <p>TODO: Pic of NuttX Driver</p>
 <h1 id="nuttx-driver-for-rom-fs"><a href="#nuttx-driver-for-rom-fs">4 NuttX Driver for ROM FS</a></h1>
 <p><em>Is there a ROM FS Driver in Zig?</em></p>
@@ -325,12 +326,10 @@ romfs_close: Closing
 </code></pre></div>
 <p>Which looks right because <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><em>&lt;stdio.h&gt;</em></a> begins with “<a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><strong><code>// C</code></strong></a>”</p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L102-L113">(See the <strong>Read Log</strong>)</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig">(See the <strong>Modified Source Files</strong>)</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
 <h1 id="inside-a-rom-fs-filesystem"><a href="#inside-a-rom-fs-filesystem">5 Inside a ROM FS Filesystem</a></h1>
-<p>TODO</p>
-<p><strong><code>genromfs</code></strong> will kindly pack our C Header Files into a ROM FS Filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190">build.sh</a></p>
+<p><em>Is a ROM FS Filesystem really so simple and embeddable?</em></p>
+<p>We saw <strong><code>genromfs</code></strong> kindly packing our C Header Files into a <strong>ROM FS Filesystem</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190">build.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu: Install `genromfs`
 sudo apt install genromfs
 
@@ -347,11 +346,47 @@ genromfs \
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs">(<em>&lt;stdio.h&gt;</em> and <em>&lt;stdlib.h&gt;</em> are in the <strong>ROM FS Folder</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin">(Bundled into this <strong>ROM FS Filesystem</strong>)</a></p>
-<p>TODO</p>
+<p>Based on the <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Spec</strong></a>, we snoop around our <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin"><strong>ROM FS Filesystem <code>romfs.bin</code></strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Dump our ROM FS Filesystem
+hexdump -C tcc-riscv32-wasm/zig/romfs.bin 
+</code></pre></div>
+<p>This <strong>ROM FS Header</strong> appears at the top of the filesystem (pic above)…</p>
+<ul>
+<li>
+<p><strong>Magic Number</strong>: Always TODO</p>
+</li>
+<li>
+<p><strong>Filesystem Size</strong>: Big Endian (<code>0xF90</code>)</p>
+</li>
+<li>
+<p><strong>Checksum</strong>: TODO</p>
+</li>
+<li>
+<p><strong>Volume Name</strong>: We made it “ROMFS”</p>
+</li>
+</ul>
 <p>Next comes <strong>File Header and Data</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/romfs-format2.jpg" alt="ROM FS File Header and Data" /></p>
+<ul>
+<li>
+<p><strong>Next Header</strong>: Offset of the Next File Header</p>
+</li>
+<li>
+<p><strong>File Info</strong>: TODO</p>
+</li>
+<li>
+<p><strong>File Size</strong>:  Big Endian (<code>0x8B7</code>)</p>
+</li>
+<li>
+<p><strong>Checksum</strong>: TODO</p>
+</li>
+<li>
+<p><strong>File Name</strong> and <strong>File Data</strong>: Padded to 16 bytes</p>
+</li>
+</ul>
+<p>The Entire Dump of our ROM FS Filesystem is <a href="TODO"><strong>dissected in the Appendix</strong></a>.</p>
+<p><em>Why is Next Header pointing to <code>0xA42</code>? Shouldn’t it be padded?</em></p>
 <p>TODO</p>
-<p><em>Why is Next Header pointing to 0x0A42? Shouldn’t it be padded?</em></p>
 <p>TODO: Pic of NuttX Driver</p>
 <h1 id="tcc-calls-rom-fs-driver"><a href="#tcc-calls-rom-fs-driver">6 TCC calls ROM FS Driver</a></h1>
 <p><em>TCC Compiler expects POSIX Functions like open(), read(), close()…</em></p>
@@ -646,8 +681,56 @@ http://localhost:8000/romfs/index.html
 </code></pre></div>
 <p>Check the <strong>JavaScript Console</strong> for Debug Messages.</p>
 <p><a href="TODO">(See the <strong>JavaScript Log</strong>)</a></p>
-<h1 id="appendix-download-rom-fs"><a href="#appendix-download-rom-fs">10 Appendix: Download ROM FS</a></h1>
-<p>TODO</p>
+<h1 id="appendix-nuttx-rom-fs-driver"><a href="#appendix-nuttx-rom-fs-driver">10 Appendix: NuttX ROM FS Driver</a></h1>
+<p><em>What did we change in the NuttX ROM FS Driver?</em></p>
+<p>Not much! NuttX ROM FS Driver will call <strong><code>mtd_ioctl</code></strong> in Zig to map the ROM FS Data in memory: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem
+/// (Or download it, see next section)
+const ROMFS_DATA = @embedFile(
+  &quot;romfs.bin&quot;
+);
+
+/// ROM FS Driver makes this IOCTL Request
+export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
+
+  // Request for Memory Address of ROM FS
+  if (cmd == c.BIOC_XIPBASE) {
+    // If we&#39;re loading `romfs.bin` from Web Server:
+    // Change `ROMFS_DATA` to `&amp;ROMFS_DATA`
+    rm_xipbase.?.* = @intCast(@intFromPtr(
+      ROMFS_DATA
+    ));
+
+  // Request for Storage Device Geometry
+  // Probably because NuttX Driver caches One Block of Data
+  } else if (cmd == c.MTDIOC_GEOMETRY) {
+    const geo: *c.mtd_geometry_s = @ptrCast(rm_xipbase.?);
+    geo.*.blocksize = 64;
+    geo.*.erasesize = 64;
+    geo.*.neraseblocks = 1024; // TODO: Is this needed?
+    const name = &quot;ZIG_ROMFS&quot;;
+    @memcpy(geo.*.model[0..name.len], name);
+    geo.*.model[name.len] = 0;
+
+  // Unknown Request
+  } else { debug(&quot;mtd_ioctl: Unknown command {}&quot;, .{cmd}); }
+  return 0;
+}
+</code></pre></div>
+<p><a href="https://ziglang.org/documentation/master/#embedFile">(About <strong>@embedFile</strong>)</a></p>
+<p>TODO: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig">(See the <strong>Modified Source Files</strong>)</a></p>
+<p>TODO: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
+<p>TODO: C Integration</p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.c">zig_romfs.c</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.h">zig_romfs.h</a></p>
+<p>TODO: Because of extra logging: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411"><strong>Iteratively handle printf formats</strong></a></p>
+<h1 id="appendix-download-rom-fs"><a href="#appendix-download-rom-fs">11 Appendix: Download ROM FS</a></h1>
+<p>In the previous section, our Zig Wrapper <strong>embedded <code>romfs.bin</code> inside WebAssembly</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem
+const ROMFS_DATA = @embedFile(
+  &quot;romfs.bin&quot;
+);
+</code></pre></div>
 <p><strong>For Easier Updates</strong>: We should download __<code>romfs.bin</code> from our Web Server: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L189-L212">tcc.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Load the WebAssembly Module and start the Main Function.
 // Called by the Compile Button.
@@ -709,46 +792,7 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
     rm_xipbase.?.* = @intCast(@intFromPtr(
       &amp;ROMFS_DATA
     ));
-</code></pre></div><h1 id="appendix-nuttx-rom-fs-driver"><a href="#appendix-nuttx-rom-fs-driver">11 Appendix: NuttX ROM FS Driver</a></h1>
-<p>TODO</p>
-<p>NuttX ROM FS Driver will call <code>mtd_ioctl</code> to map the ROM FS Data in memory: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem.
-const ROMFS_DATA = @embedFile(&quot;romfs.bin&quot;);
-
-/// ROM FS Driver makes this IOCTL Request
-export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
-
-  // Request for Memory Address of ROM FS
-  if (cmd == c.BIOC_XIPBASE) {
-    // If we&#39;re loading `romfs.bin` from Web Server:
-    // Change `ROMFS_DATA` to `&amp;ROMFS_DATA`
-    rm_xipbase.?.* = @intCast(@intFromPtr(
-      ROMFS_DATA
-    ));
-
-  // Request for Storage Device Geometry
-  } else if (cmd == c.MTDIOC_GEOMETRY) {
-    const geo: *c.mtd_geometry_s = @ptrCast(rm_xipbase.?);
-    geo.*.blocksize = 64;
-    geo.*.erasesize = 64;
-    geo.*.neraseblocks = 1024; // TODO: Is this needed?
-    const name = &quot;ZIG_ROMFS&quot;;
-    @memcpy(geo.*.model[0..name.len], name);
-    geo.*.model[name.len] = 0;
-
-  // Unknown Request
-  } else {
-    debug(&quot;mtd_ioctl: Unknown command {}&quot;, .{cmd});
-  }
-  return 0;
-}
-</code></pre></div>
-<p>TODO: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
-<p>TODO: C Integration</p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.c">zig_romfs.c</a></p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.h">zig_romfs.h</a></p>
-<p>TODO: Because of extra logging: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411"><strong>Iteratively handle printf formats</strong></a></p>
-<h1 id="appendix-print-via-nuttx-system-call"><a href="#appendix-print-via-nuttx-system-call">12 Appendix: Print via NuttX System Call</a></h1>
+</code></pre></div><h1 id="appendix-print-via-nuttx-system-call"><a href="#appendix-print-via-nuttx-system-call">12 Appendix: Print via NuttX System Call</a></h1>
 <p>TODO</p>
 <p>In our Demo NuttX App, we implement <strong><code>puts</code></strong> by calling <strong><code>write</code></strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25">stdio.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print the string to Standard Output
@@ -996,8 +1040,7 @@ void vm_start(...) {
 <p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
 <h1 id="appendix-rom-fs-filesystem"><a href="#appendix-rom-fs-filesystem">15 Appendix: ROM FS Filesystem</a></h1>
-<p>TODO</p>
-<p><strong><code>genromfs</code></strong> will faithfully pack our C Header Files into a ROM FS Filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190">build.sh</a></p>
+<p>A while ago we saw <strong><code>genromfs</code></strong> faithfully packing our C Header Files into a <strong>ROM FS Filesystem</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190">build.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu: Install `genromfs`
 sudo apt install genromfs
 
@@ -1014,17 +1057,17 @@ genromfs \
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs">(<em>&lt;stdio.h&gt;</em> and <em>&lt;stdlib.h&gt;</em> are in the <strong>ROM FS Folder</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin">(Bundled into this <strong>ROM FS Filesystem</strong>)</a></p>
-<p>Based on <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Spec</strong></a></p>
-<p>And our <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin"><strong>ROM FS Filesystem <code>romfs.bin</code></strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>hexdump -C tcc-riscv32-wasm/zig/romfs.bin 
+<p>Based on the <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Spec</strong></a>, we take a walk inside our <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin"><strong>ROM FS Filesystem <code>romfs.bin</code></strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Dump our ROM FS Filesystem
+hexdump -C tcc-riscv32-wasm/zig/romfs.bin 
 </code></pre></div>
-<p>We see the <strong>ROM FS Filesystem Header</strong> (pic above)…</p>
+<p>Everything begins with the <strong>ROM FS Filesystem Header</strong> (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>      [ Magic Number        ]  [ FS Size ] [ Checksm ]
 0000  2d 72 6f 6d 31 66 73 2d  00 00 0f 90 58 57 01 f8  |-rom1fs-....XW..|
       [ Volume Name: ROMFS                           ]
 0010  52 4f 4d 46 53 00 00 00  00 00 00 00 00 00 00 00  |ROMFS...........|
 </code></pre></div>
-<p>Followed by the <strong>File Header</strong> for “<strong><code>.</code></strong>”…</p>
+<p>Next comes the <strong>File Header</strong> for “<strong><code>.</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `.`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0020  00 00 00 49 00 00 00 20  00 00 00 00 d1 ff ff 97  |...I... ........|
@@ -1032,7 +1075,7 @@ genromfs \
 0030  2e 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
       (NextHdr &amp; 0xF = 9 means Executable Directory)
 </code></pre></div>
-<p>Then the <strong>File Header</strong> for “<strong><code>..</code></strong>”…</p>
+<p>Followed by the <strong>File Header</strong> for “<strong><code>..</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `..`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0040  00 00 00 60 00 00 00 20  00 00 00 00 d1 d1 ff 80  |...`... ........|
@@ -1054,7 +1097,7 @@ genromfs \
 0a20  74 65 72 20 41 30 0a 20  20 72 65 74 75 72 6e 20  |ter A0.  return |
 0a30  72 30 3b 0a 7d 20 0a 00  00 00 00 00 00 00 00 00  |r0;.} ..........|
 </code></pre></div>
-<p>Finally the by <strong>File Header and Data</strong> for “<strong><code>stdlib.h</code></strong>”…</p>
+<p>Finally the <strong>File Header and Data</strong> for “<strong><code>stdlib.h</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `stdlib.h`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0a40  00 00 00 02 00 00 00 00  00 00 05 2e 23 29 67 fc  |............#)g.|
@@ -1068,6 +1111,7 @@ genromfs \
 0f80  72 65 74 75 72 6e 20 72  30 3b 0a 7d 20 0a 00 00  |return r0;.} ...|
 0f90  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 </code></pre></div>
+<p>Zero fuss, ROM FS is remarkably easy to read!</p>
 <p><img src="https://lupyuen.github.io/images/romfs-format2.jpg" alt="ROM FS File Header and Data" /></p>
 
     
