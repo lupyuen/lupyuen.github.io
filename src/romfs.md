@@ -661,6 +661,8 @@ zig build-exe ...
 
 TODO
 
+__For Easier Updates__: We should download __`romfs.bin` from our Web Server__
+
 [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121)
 
 ```zig
@@ -690,6 +692,52 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
     rm_xipbase.?.* = @intCast(@intFromPtr(
       ROMFS_DATA
     ));
+```
+
+_How is this called by JavaScript?_
+
+[tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L189-L212)
+
+```javascript
+// Load the WebAssembly Module and start the Main Function.
+// Called by the Compile Button.
+async function bootstrap() {
+  // Omitted: Download the WebAssembly
+  ...
+  // Download the ROM FS Filesystem
+  console.log("Fetching romfs.bin...");
+  const response = await fetch("romfs.bin");
+  wasm.romfs = await response.arrayBuffer();
+  console.log("ROM FS Size: " + wasm.romfs.byteLength);
+
+  // Start the Main Function
+  window.requestAnimationFrame(main);
+}        
+```
+
+[tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L52-L81)
+
+```javascript
+// Main Function
+function main() {
+  // Omitted: Read the Compiler Options and Program Code
+  ...
+  // Copy `romfs.bin` into ROM FS Filesystem
+  const romfs_data = new Uint8Array(wasm.romfs);
+  const romfs_size = romfs_data.length;
+  const memory = wasm.instance.exports.memory;
+  const romfs_ptr = wasm.instance.exports
+    .get_romfs(romfs_size);
+  const romfs_slice = new Uint8Array(
+    memory.buffer,
+    romfs_ptr,
+    romfs_size
+  );
+  romfs_slice.set(romfs_data);
+    
+  // Call TCC to compile the program
+  const ptr = wasm.instance.exports
+    .compile_program(options_ptr, code_ptr);
 ```
 
 # Appendix: NuttX ROM FS Driver
@@ -1029,6 +1077,28 @@ That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emul
 
 TODO
 
+__`genromfs`__ will pack our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
+
+```bash
+## For Ubuntu: Install `genromfs`
+sudo apt install genromfs
+
+## For macOS: Install `genromfs`
+brew install genromfs
+
+## Bundle the `romfs` folder into
+## ROM FS Filesystem `romfs.bin`
+## and label with this Volume Name
+genromfs \
+  -f romfs.bin \
+  -d romfs \
+  -V "ROMFS"
+```
+
+[(_<stdio.h>_ and _<stdlib.h>_ are in the __ROM FS Folder__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs)
+
+[(Bundled into this __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)
+
 Based on [__ROM FS Spec__](https://docs.kernel.org/filesystems/romfs.html)
 
 And our [__ROM FS Filesystem `romfs.bin`__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)...
@@ -1037,7 +1107,7 @@ And our [__ROM FS Filesystem `romfs.bin`__](https://github.com/lupyuen/tcc-riscv
 hexdump -C tcc-riscv32-wasm/zig/romfs.bin 
 ```
 
-We see the ROM FS Filesystem Header...
+We see the __ROM FS Filesystem Header__ (pic above)...
 
 ```text
       [ Magic Number        ]  [ FS Size ] [ Checksm ]
@@ -1046,7 +1116,7 @@ We see the ROM FS Filesystem Header...
 0010  52 4f 4d 46 53 00 00 00  00 00 00 00 00 00 00 00  |ROMFS...........|
 ```
 
-Followed by File Header for `.`...
+Followed by File Header for "__`.`__"...
 
 ```text
 ----  File Header for `.`
@@ -1057,7 +1127,7 @@ Followed by File Header for `.`...
       (NextHdr & 0xF = 9 means Executable Directory)
 ```
 
-Followed by File Header for `..`...
+Followed by File Header for "__`..`__"...
 
 ```text
 ----  File Header for `..`
@@ -1068,7 +1138,7 @@ Followed by File Header for `..`...
       (NextHdr & 0xF = 0 means Hard Link)
 ```
 
-Followed by File Header and Data for `stdio.h`...
+Followed by File Header and Data for "__`stdio.h`__" (pic below)...
 
 ```text
 ----  File Header for `stdio.h`
@@ -1085,7 +1155,7 @@ Followed by File Header and Data for `stdio.h`...
 0a30  72 30 3b 0a 7d 20 0a 00  00 00 00 00 00 00 00 00  |r0;.} ..........|
 ```
 
-Followed by File Header and Data for `stdlib.h`...
+Followed by File Header and Data for "__`stdlib.h`__"...
 
 ```text
 ----  File Header for `stdlib.h`
