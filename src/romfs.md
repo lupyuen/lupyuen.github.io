@@ -596,7 +596,7 @@ TODO
 
 That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉
 
-_Is there something special inside <stdio.h> and <stdlib.h>_
+_Is there something special inside <stdio.h> and <stdlib.h>?_
 
 They'll make __System Calls__ to NuttX Kernel, for printing and quitting...
 
