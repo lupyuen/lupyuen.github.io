@@ -81,8 +81,8 @@
 <li><a href="#appendix-download-rom-fs">10 Appendix: Download ROM FS</a><ul></ul></li>
 <li><a href="#appendix-nuttx-rom-fs-driver">11 Appendix: NuttX ROM FS Driver</a><ul></ul></li>
 <li><a href="#appendix-patch-the-nuttx-emulator">12 Appendix: Patch the NuttX Emulator</a><ul></ul></li>
-<li><a href="#appendix-print-with-nuttx-system-call">13 Appendix: Print with NuttX System Call</a><ul></ul></li>
-<li><a href="#appendix-exit-with-nuttx-system-call">14 Appendix: Exit with NuttX System Call</a><ul></ul></li>
+<li><a href="#appendix-print-via-nuttx-system-call">13 Appendix: Print via NuttX System Call</a><ul></ul></li>
+<li><a href="#appendix-exit-via-nuttx-system-call">14 Appendix: Exit via NuttX System Call</a><ul></ul></li>
 <li><a href="#appendix-rom-fs-filesystem">15 Appendix: ROM FS Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="TODO" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs">(Try the <strong>Online Demo</strong>)</a></p>
@@ -740,7 +740,7 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 </code></pre></div>
 <p>And we overwrite the Fake <code>a.out</code> with the Real <code>a.out</code> from <code>elf_data</code>.</p>
 <p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
-<h1 id="appendix-print-with-nuttx-system-call"><a href="#appendix-print-with-nuttx-system-call">13 Appendix: Print with NuttX System Call</a></h1>
+<h1 id="appendix-print-via-nuttx-system-call"><a href="#appendix-print-via-nuttx-system-call">13 Appendix: Print via NuttX System Call</a></h1>
 <p>TODO</p>
 <p>In our Demo NuttX App, we implement <code>puts</code> by calling <code>write</code>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25">stdio.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print the string to Standard Output
@@ -851,7 +851,7 @@ Hello, World!!
 asm volatile (&quot;andi a2, a0, 0xffffffff&quot;);
 </code></pre></div>
 <p>Because 0xffffffff gets assembled to -1. (Bug?)</p>
-<h1 id="appendix-exit-with-nuttx-system-call"><a href="#appendix-exit-with-nuttx-system-call">14 Appendix: Exit with NuttX System Call</a></h1>
+<h1 id="appendix-exit-via-nuttx-system-call"><a href="#appendix-exit-via-nuttx-system-call">14 Appendix: Exit via NuttX System Call</a></h1>
 <p>TODO</p>
 <p>In our Demo NuttX App, we implement <code>exit</code> the same way as NuttX, by making a System Call: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10">stdlib.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Caution: This may change
