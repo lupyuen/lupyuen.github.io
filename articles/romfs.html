@@ -334,6 +334,23 @@ romfs_close: Closing
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
 <h1 id="inside-a-rom-fs-filesystem"><a href="#inside-a-rom-fs-filesystem">5 Inside a ROM FS Filesystem</a></h1>
 <p>TODO</p>
+<p><strong><code>genromfs</code></strong> will pack our C Header Files into a ROM FS Filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190">build.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu: Install `genromfs`
+sudo apt install genromfs
+
+## For macOS: Install `genromfs`
+brew install genromfs
+
+## Bundle the `romfs` folder into
+## ROM FS Filesystem `romfs.bin`
+## and label with this Volume Name
+genromfs \
+  -f romfs.bin \
+  -d romfs \
+  -V &quot;ROMFS&quot;
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs">(<em>&lt;stdio.h&gt;</em> and <em>&lt;stdlib.h&gt;</em> are in the <strong>ROM FS Folder</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin">(Bundled into this <strong>ROM FS Filesystem</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-format2.jpg" alt="ROM FS File Header and Data" /></p>
 <p>TODO</p>
 <h1 id="tcc-calls-rom-fs-driver"><a href="#tcc-calls-rom-fs-driver">6 TCC calls ROM FS Driver</a></h1>
