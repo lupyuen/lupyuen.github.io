@@ -315,7 +315,7 @@ Which looks right because [_<stdio.h>_](https://github.com/lupyuen/tcc-riscv32-w
 
 _Is a ROM FS Filesystem really so simple and embeddable?_
 
-We saw __`genromfs`__ kindly packing our C Header Files into a __ROM FS Filesystem__: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
+Seconds ago we bundled our C Header Files into a __ROM FS Filesystem__: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
 
 ```bash
 ## For Ubuntu: Install `genromfs`
@@ -337,20 +337,20 @@ genromfs \
 
 [(Bundled into this __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)
 
-Based on the [__ROM FS Spec__](https://docs.kernel.org/filesystems/romfs.html), we snoop around our [__ROM FS Filesystem `romfs.bin`__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)...
+Guided by the [__ROM FS Spec__](https://docs.kernel.org/filesystems/romfs.html), we snoop around our [__ROM FS Filesystem `romfs.bin`__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)...
 
 ```bash
 ## Dump our ROM FS Filesystem
-hexdump -C tcc-riscv32-wasm/zig/romfs.bin 
+hexdump -C romfs.bin 
 ```
 
 This __ROM FS Header__ appears at the top of the filesystem (pic above)...
 
-- __Magic Number__: Always TODO
+- __Magic Number__: Always _"-rom1fs-"_
 
 - __Filesystem Size__: Big Endian (`0xF90`)
 
-- __Checksum__: TODO
+- __Checksum__: For first 512 bytes
 
 - __Volume Name__: We made it "ROMFS"
 
@@ -358,21 +358,23 @@ Next comes __File Header and Data__...
 
 ![ROM FS File Header and Data](https://lupyuen.github.io/images/romfs-format2.jpg)
 
-- __Next Header__: Offset of the Next File Header
+- __Next Header__: Offset of Next File Header
 
-- __File Info__: TODO
+- __File Info__: For Special Files
 
 - __File Size__:  Big Endian (`0x8B7`)
 
-- __Checksum__: TODO
+- __Checksum__: For Metadata, File Name and Padding
 
-- __File Name__ and __File Data__: Padded to 16 bytes
+- __File Name__, __File Data__: Padded to 16 bytes
 
 The Entire Dump of our ROM FS Filesystem is [__dissected in the Appendix__](TODO).
 
 _Why is Next Header pointing to `0xA42`? Shouldn't it be padded?_
 
-TODO
+Bits 0 to 3 of "Next Header" tell us the [__File Type__](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79).
+
+__`0xA42`__ says that this is a [__Regular File__](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79). (Type 2)
 
 TODO: Pic of NuttX Driver
 
@@ -432,7 +434,7 @@ export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
 
 [(Caution: We might have __holes__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L166-L219)
 
-[tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L27-L31)
+__`romfs_files`__ remembers our __POSIX File Descriptors__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L27-L31)
 
 ```zig
 // POSIX File Descriptors for TCC.
@@ -507,9 +509,9 @@ export fn close(fd: c_int) c_int {
 
 _What if we need a Writeable Filesystem?_
 
-Try the [__Tmp FS Driver from Apache NuttX RTOS__](https://github.com/apache/nuttx/tree/master/fs/tmpfs).
+Try the [__Tmp FS Driver from NuttX__](https://github.com/apache/nuttx/tree/master/fs/tmpfs).
 
-It's much simpler than FAT and it won't get corrupted easily. Probably wiser to split the [__Immutable Filesystem__](https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/) (ROM FS) and Writeable Filesystem (Tmp FS).
+It's simpler than FAT and easier to embed in WebAssembly. Probably wiser to split the [__Immutable Filesystem__](https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/) (ROM FS) and Writeable Filesystem (Tmp FS).
 
 ![TODO](https://lupyuen.github.io/images/romfs-title.png)
 
@@ -571,7 +573,7 @@ _But NuttX Emulator boots from a Fixed NuttX Image, loaded from our Static Web S
 
 _How did `a.out` magically appear inside the NuttX Image?_
 
-We used a Nifty Illusion... __`a.out`__ was in the [__NuttX Image__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image) all along!
+We conjured a Nifty Illusion... __`a.out`__ was in the [__NuttX Image__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image) all along!
 
 ```bash
 ## Create a Fake `a.out` that
@@ -676,32 +678,15 @@ cd tcc-riscv32-wasm
 ./configure
 make cross-riscv64
 
-## TODO
+## Call Zig Compiler to compile TCC Compiler
+## from C to WebAssembly. And link with Zig Wrapper.
+## Produces `tcc-wasm.wasm`
 cd zig
 ./build.sh
-
-## Call Zig Compiler to compile TCC Compiler
-## from C to WebAssembly. Produces `tcc.o`
-
-## Omitted: Run the `zig cc` command from earlier...
-## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
-TODO: zig cc ...
-
-## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
-## and link it with TCC compiled for WebAssembly `tcc.o`
-## Generates `tcc-wasm.wasm`
-
-## Omitted: Run the `zig build-exe` command from earlier...
-## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
-TODO: zig build-exe ...
 
 ## Start the Web Server
 cargo install simple-http-server
 simple-http-server ./docs &
-
-## Whenever we rebuild TCC WebAssembly...
-## Copy it to the Web Server
-cp tcc-wasm.wasm docs/
 ```
 
 [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
@@ -715,13 +700,13 @@ http://localhost:8000/romfs/index.html
 
 Check the __JavaScript Console__ for Debug Messages.
 
-[(See the __JavaScript Log__)](TODO)
+[(See the __JavaScript Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191)
 
 # Appendix: NuttX ROM FS Driver
 
 _What did we change in the NuttX ROM FS Driver?_
 
-Not much! NuttX ROM FS Driver will call __`mtd_ioctl`__ in Zig to map the ROM FS Data in memory: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
+Not much! NuttX ROM FS Driver will call __`mtd_ioctl`__ in Zig when it maps the ROM FS Data in memory: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
 
 ```zig
 /// Embed the ROM FS Filesystem
@@ -760,17 +745,21 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 
 [(About __@embedFile__)](https://ziglang.org/documentation/master/#embedFile)
 
-TODO: [(See the __Modified Source Files__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig)
+We wrote some __Glue Code in C__ (because some things couldn't be expressed in Zig)...
 
-TODO: [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
+- [__zig_romfs.c__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.c)
 
-TODO: C Integration
+- [__zig_romfs.h__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.h)
 
-[zig_romfs.c](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.c)
+We made minor tweaks to the __NuttX ROM FS Driver__ and added a Build Script...
 
-[zig_romfs.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.h)
+- [__ROM FS Source Files__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig)
 
-TODO: Because of extra logging: [__Iteratively handle printf formats__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411)
+  [(See the __Modified Files__)](TODO)
+
+- [__ROM FS Build Script__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
+
+Because of NuttX Logging: We extended [__fprintf and friends__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411) to handle Format Strings iteratively.
 
 # Appendix: Download ROM FS
 
@@ -783,12 +772,14 @@ const ROMFS_DATA = @embedFile(
 );
 ```
 
-__For Easier Updates__: We should download __`romfs.bin` from our Web Server: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L189-L212)
+__For Easier Updates__: We should download __`romfs.bin`__ from our __Web Server__: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L189-L212)
 
 ```javascript
-// Load the WebAssembly Module and start the Main Function.
+// JavaScript to load the WebAssembly Module
+// and start the Main Function.
 // Called by the Compile Button.
 async function bootstrap() {
+
   // Omitted: Download the WebAssembly
   ...
   // Download the ROM FS Filesystem
@@ -800,14 +791,14 @@ async function bootstrap() {
 }        
 ```
 
-Our Main Function passes the __ROM FS Filesystem__ to our Zig Wrapper: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L52-L81)
+Our JavaScript Main Function passes the __ROM FS Filesystem__ to our Zig Wrapper: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L52-L81)
 
 ```javascript
 // Main Function
 function main() {
   // Omitted: Read the Compiler Options and Program Code
   ...
-  // Copy `romfs.bin` into ROM FS Filesystem
+  // Copy `romfs.bin` into WebAssembly Memory
   const romfs_data = new Uint8Array(wasm.romfs);
   const romfs_size = romfs_data.length;
   const memory = wasm.instance.exports.memory;
@@ -825,15 +816,17 @@ function main() {
     .compile_program(options_ptr, code_ptr);
 ```
 
-__`get_romfs`__ comes from our Zig Wrapper: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121)
+__`get_romfs`__ returns the WebAssembly Memory from our __Zig Wrapper__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121)
 
 ```zig
 /// Storage for ROM FS Filesystem
 var ROMFS_DATA = std.mem.zeroes([8192]u8);
 
-/// Return the pointer to ROM FS.
+/// Return the pointer to ROM FS Storage.
 /// `size` is the expected filesystem size.
 pub export fn get_romfs(size: u32) [*]const u8 {
+
+  // Halt if we run out of memory
   if (size > ROMFS_DATA.len) {
     @panic("get_romfs_ptr: Increase ROMFS_DATA size");
   }
@@ -1025,7 +1018,7 @@ _Chotto matte_ there's more...
 
 # Appendix: Exit via NuttX System Call
 
-_What's inside `exit`?_
+_Tell me about `exit`..._
 
 ```c
 // Demo Program for TCC Compiler
@@ -1214,7 +1207,7 @@ Based on the [__ROM FS Spec__](https://docs.kernel.org/filesystems/romfs.html), 
 
 ```bash
 ## Dump our ROM FS Filesystem
-hexdump -C tcc-riscv32-wasm/zig/romfs.bin 
+hexdump -C romfs.bin 
 ```
 
 Everything begins with the __ROM FS Filesystem Header__ (pic above)...
