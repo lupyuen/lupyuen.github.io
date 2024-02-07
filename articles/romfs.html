@@ -223,6 +223,7 @@ const ROMFS_DATA = @embedFile(&quot;romfs.bin&quot;);
 <p><a href="https://ziglang.org/documentation/master/#embedFile">(About <strong>@embedFile</strong>)</a></p>
 <p><strong>For Easier Updates</strong>: We should download <a href="TODO"><strong><code>romfs.bin</code> from our Web Server</strong></a>.</p>
 <p>TODO: <a href="https://emscripten.org/docs/porting/files/file_systems_overview.html">(Works like the <strong>Emscripten Filesystem</strong>)</a></p>
+<p>TODO: Pic of NuttX Driver</p>
 <h1 id="nuttx-driver-for-rom-fs"><a href="#nuttx-driver-for-rom-fs">4 NuttX Driver for ROM FS</a></h1>
 <p><em>Is there a ROM FS Driver in Zig?</em></p>
 <p>We looked around <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) and we found a <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.c"><strong>ROM FS Driver</strong></a> (in C). It works well with Zig!</p>
@@ -470,8 +471,7 @@ export fn close(fd: c_int) c_int {
 <p>TODO: <a href="https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/"><strong>Immutable Filesystem</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="TODO" /></p>
 <h1 id="from-tcc-to-nuttx-emulator"><a href="#from-tcc-to-nuttx-emulator">7 From TCC to NuttX Emulator</a></h1>
-<p><em>TCC compiles our C Program and sends it to NuttX Emulator…</em></p>
-<p><em>How does it work?</em></p>
+<p><em>TCC compiles our C Program and sends it to NuttX Emulator… How does it work?</em></p>
 <p>Here’s the Teleporting Magic Trick that we saw…</p>
 <ol>
 <li>
@@ -491,7 +491,7 @@ export fn close(fd: c_int) c_int {
 <p><a href="https://youtu.be/sU69bUyrgN8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
 </ol>
-<p>What just happened? In Chrome Web Browser, click to <code>Menu &gt; Developer Tools &gt; Application Tab &gt; Local Storage &gt; lupyuen.github.io</code></p>
+<p>What just happened? In Chrome Web Browser, click to <em>Menu &gt; Developer Tools &gt; Application Tab &gt; Local Storage &gt; lupyuen.github.io</em></p>
 <p>We’ll see that the <strong>RISC-V ELF <code>a.out</code></strong> is stored locally as <strong><code>elf_data</code></strong> in the <strong>JavaScript Local Storage</strong>…</p>
 <p>TODO: Pic of elf_data</p>
 <p>That’s why NuttX Emulator can pick up <strong><code>a.out</code></strong> from our Web Browser!</p>
@@ -518,7 +518,8 @@ localStorage.setItem(
   encoded_data  // Encoded ELF Data
 );
 </code></pre></div>
-<p><em>But NuttX Emulator boots from a fixed NuttX Image, loaded from our Static Web Server. How did <code>a.out</code> appear inside the NuttX Image?</em></p>
+<p><em>But NuttX Emulator boots from a Fixed NuttX Image, loaded from our Static Web Server…</em></p>
+<p><em>How did <code>a.out</code> magically appear inside the NuttX Image?</em></p>
 <p>We used a nifty illusion… <strong><code>a.out</code></strong> was in the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image"><strong>NuttX Image</strong></a> all along!</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Create a Fake `a.out` that
 ## contains a Distinct Pattern:
@@ -544,17 +545,16 @@ hexdump -C apps/bin/a.out
 ## 0010  22 05 69 04 22 05 69 05  22 05 69 06 22 05 69 07  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
 ## 0020  22 05 69 08 22 05 69 09  22 05 69 0a 22 05 69 0b  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
 </code></pre></div>
-<p>During our NuttX Build, the <strong>Fake <code>a.out</code></strong> gets bundled into the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd"><strong>Initial RAM Disk (initrd)</strong></a>.</p>
+<p>During our NuttX Build, the <strong>Fake <code>a.out</code></strong> gets bundled into the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd"><strong>Initial RAM Disk (initrd)</strong></a>…</p>
 <p><a href="https://lupyuen.github.io/articles/app#initial-ram-disk"><strong>Which gets appended</strong></a> to the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image"><strong>NuttX Image</strong></a>.</p>
 <p><em>So we patched Fake <code>a.out</code> in the NuttX Image with the Real <code>a.out</code>?</em></p>
-<p>TODO</p>
 <p>Exactly!</p>
 <ol>
 <li>
-<p>In the NuttX Emulator JavaScript: We read <strong><code>elf_data</code></strong> from the Local Storage and pass it to <strong>TinyEMU WebAssembly</strong></p>
+<p>In the JavaScript for <strong>NuttX Emulator</strong>: We read <strong><code>elf_data</code></strong> from JavaScript Local Storage and pass it to TinyEMU WebAssembly</p>
 </li>
 <li>
-<p>Inside the TinyEMU WebAssembly: We receive the <strong><code>elf_data</code></strong> and copy it locally</p>
+<p>Inside the <strong>TinyEMU WebAssembly</strong>: We receive the <strong><code>elf_data</code></strong> and copy it locally</p>
 </li>
 <li>
 <p>Then we search for our <strong>Magic Pattern <code>22 05 69 00</code></strong> in our Fake <strong><code>a.out</code></strong></p>
@@ -803,10 +803,7 @@ inline uintptr_t sys_call3(
   // `ecall` will jump from RISC-V User Mode
   // to RISC-V Supervisor Mode
   // to execute the System Call.
-  // Input + Output Registers: A0 to A3
-  // Clobbers the Memory
-  asm volatile
-  (
+  asm volatile (
     // ECALL for System Call to NuttX Kernel
     &quot;ecall \n&quot;
     
@@ -827,7 +824,7 @@ inline uintptr_t sys_call3(
 </code></pre></div>
 <p><em>Why so complicated?</em></p>
 <p>That’s because TCC <a href="https://lupyuen.github.io/articles/tcc#appendix-nuttx-system-call">won’t load the RISC-V Registers correctly</a>. Thus we load the registers ourselves.</p>
-<p><em>Why not simply copy A0 to A2?</em></p>
+<p><em>Why not simply copy A0 to A2 minus the hokey pokey?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>register long r2 asm(&quot;a0&quot;) = (long)(parm2);  // Will move to A2
 asm volatile (&quot;addi a2, a0, 0&quot;);  // Copy A0 to A2
 </code></pre></div>
@@ -899,10 +896,7 @@ inline uintptr_t sys_call1(
   // `ecall` will jump from RISC-V User Mode
   // to RISC-V Supervisor Mode
   // to execute the System Call.
-  // Input + Output Registers: A0 to A1
-  // Clobbers the Memory
-  asm volatile
-  (
+  asm volatile (
     // ECALL for System Call to NuttX Kernel
     &quot;ecall \n&quot;
     
