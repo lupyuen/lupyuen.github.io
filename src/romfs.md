@@ -644,7 +644,7 @@ make cross-riscv64
 
 ## Omitted: Run the `zig cc` command from earlier...
 ## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
-zig cc ...
+TODO: zig cc ...
 
 ## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
 ## and link it with TCC compiled for WebAssembly `tcc.o`
@@ -652,10 +652,29 @@ zig cc ...
 
 ## Omitted: Run the `zig build-exe` command from earlier...
 ## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
-zig build-exe ...
+TODO: zig build-exe ...
+
+## Start the Web Server
+cargo install simple-http-server
+simple-http-server ./docs &
+
+## Whenever we rebuild TCC WebAssembly...
+## Copy it to the Web Server
+cp tcc-wasm.wasm docs/
 ```
 
 [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/build.sh)
+
+Browse to this URL and our TCC WebAssembly will appear...
+
+```bash
+## Test ROM FS with TCC WebAssembly
+http://localhost:8000/romfs/index.html
+```
+
+Check the __JavaScript Console__ for Debug Messages.
+
+[(See the __JavaScript Log__)](TODO)
 
 # Appendix: Download ROM FS
 
