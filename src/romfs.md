@@ -859,9 +859,21 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 
 # Appendix: Print via NuttX System Call
 
-TODO
+_What's inside `puts`?_
 
-In our Demo NuttX App, we implement __`puts`__ by calling __`write`__: [stdio.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25)
+```c
+// Demo Program for TCC Compiler
+// with ROM FS
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(int argc, char *argv[]) {
+  puts("Hello, World!!\n");
+  exit(0);
+}            
+```
+
+We implement __`puts`__ by calling __`write`__: [stdio.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25)
 
 ```c
 // Print the string to Standard Output
@@ -1009,11 +1021,25 @@ asm volatile ("andi a2, a0, 0xffffffff");
 
 Because __`0xFFFF_FFFF`__ gets assembled to __`-1`__.
 
+_Chotto matte_ there's more...
+
 # Appendix: Exit via NuttX System Call
 
-TODO
+_What's inside `exit`?_
 
-In our Demo NuttX App, we implement __`exit`__ the same way as NuttX, by making a System Call: [stdlib.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10)
+```c
+// Demo Program for TCC Compiler
+// with ROM FS
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(int argc, char *argv[]) {
+  puts("Hello, World!!\n");
+  exit(0);
+}            
+```
+
+We implement __`exit`__ the same way as NuttX, by making a __System Call__ to NuttX Kernel: [stdlib.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10)
 
 ```c
 // Caution: NuttX System Call Number may change
@@ -1075,7 +1101,7 @@ inline uintptr_t sys_call1(
 } 
 ```
 
-And everything works OK now!
+And everything works OK!
 
 _Wow this looks horribly painful... Are we doing any more of this?_
 
