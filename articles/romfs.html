@@ -76,12 +76,12 @@
 <li><a href="#inside-a-rom-fs-filesystem">5 Inside a ROM FS Filesystem</a><ul></ul></li>
 <li><a href="#tcc-calls-rom-fs-driver">6 TCC calls ROM FS Driver</a><ul></ul></li>
 <li><a href="#from-tcc-to-nuttx-emulator">7 From TCC to NuttX Emulator</a><ul></ul></li>
-<li><a href="#print-with-nuttx-system-call">8 Print with NuttX System Call</a><ul></ul></li>
-<li><a href="#exit-with-nuttx-system-call">9 Exit with NuttX System Call</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-tcc-webassembly">11 Appendix: Build TCC WebAssembly</a><ul></ul></li>
-<li><a href="#appendix-download-rom-fs-from-web-server">12 Appendix: Download ROM FS from Web Server</a><ul></ul></li>
-<li><a href="#appendix-nuttx-rom-fs-driver">13 Appendix: NuttX ROM FS Driver</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-tcc-webassembly">9 Appendix: Build TCC WebAssembly</a><ul></ul></li>
+<li><a href="#appendix-download-rom-fs">10 Appendix: Download ROM FS</a><ul></ul></li>
+<li><a href="#appendix-nuttx-rom-fs-driver">11 Appendix: NuttX ROM FS Driver</a><ul></ul></li>
+<li><a href="#appendix-print-with-nuttx-system-call">12 Appendix: Print with NuttX System Call</a><ul></ul></li>
+<li><a href="#appendix-exit-with-nuttx-system-call">13 Appendix: Exit with NuttX System Call</a><ul></ul></li>
 <li><a href="#appendix-rom-fs-filesystem">14 Appendix: ROM FS Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="TODO" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs">(Try the <strong>Online Demo</strong>)</a></p>
@@ -442,7 +442,121 @@ export fn close(fd: c_int) c_int {
 <p>TODO: <a href="https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/"><strong>Immutable Filesystem</strong></a></p>
 <h1 id="from-tcc-to-nuttx-emulator"><a href="#from-tcc-to-nuttx-emulator">7 From TCC to NuttX Emulator</a></h1>
 <p>TODO</p>
-<h1 id="print-with-nuttx-system-call"><a href="#print-with-nuttx-system-call">8 Print with NuttX System Call</a></h1>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<p>TODO</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Current Project: “Apache NuttX RTOS for Ox64 BL808”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>My Other Project: “NuttX for Star64 JH7110”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Older Project: “NuttX for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/romfs.md"><strong>lupyuen.github.io/src/romfs.md</strong></a></p>
+<h1 id="appendix-build-tcc-webassembly"><a href="#appendix-build-tcc-webassembly">9 Appendix: Build TCC WebAssembly</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the ROMFS Branch of TCC Source Code.
+## Configure the build for 64-bit RISC-V.
+
+git clone \
+  --branch romfs \
+  https://github.com/lupyuen/tcc-riscv32-wasm
+cd tcc-riscv32-wasm
+./configure
+make cross-riscv64
+
+## Call Zig Compiler to compile TCC Compiler
+## from C to WebAssembly. Produces `tcc.o`
+
+## Omitted: Run the `zig cc` command from earlier...
+## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
+zig cc ...
+
+## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
+## and link it with TCC compiled for WebAssembly `tcc.o`
+## Generates `tcc-wasm.wasm`
+
+## Omitted: Run the `zig build-exe` command from earlier...
+## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
+zig build-exe ...
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
+<h1 id="appendix-download-rom-fs"><a href="#appendix-download-rom-fs">10 Appendix: Download ROM FS</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Storage for ROM FS Filesystem
+var ROMFS_DATA = std.mem.zeroes([8192]u8);
+
+/// Return the pointer to ROM FS.
+/// `size` is the expected filesystem size.
+pub export fn get_romfs(size: u32) [*]const u8 {
+  if (size &gt; ROMFS_DATA.len) {
+    @panic(&quot;get_romfs_ptr: Increase ROMFS_DATA size&quot;);
+  }
+  return &amp;ROMFS_DATA;
+}
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// ROM FS Driver makes this IOCTL Request
+export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
+
+  // Request for Memory Address of ROM FS
+  if (cmd == c.BIOC_XIPBASE) {
+    // If we&#39;re loading `romfs.bin` from Web Server:
+    // Change `ROMFS_DATA` to `&amp;ROMFS_DATA`
+    rm_xipbase.?.* = @intCast(@intFromPtr(
+      ROMFS_DATA
+    ));
+</code></pre></div><h1 id="appendix-nuttx-rom-fs-driver"><a href="#appendix-nuttx-rom-fs-driver">11 Appendix: NuttX ROM FS Driver</a></h1>
+<p>TODO</p>
+<p>NuttX ROM FS Driver will call <code>mtd_ioctl</code> to map the ROM FS Data in memory: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem.
+const ROMFS_DATA = @embedFile(&quot;romfs.bin&quot;);
+
+/// ROM FS Driver makes this IOCTL Request
+export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
+
+  // Request for Memory Address of ROM FS
+  if (cmd == c.BIOC_XIPBASE) {
+    // If we&#39;re loading `romfs.bin` from Web Server:
+    // Change `ROMFS_DATA` to `&amp;ROMFS_DATA`
+    rm_xipbase.?.* = @intCast(@intFromPtr(
+      ROMFS_DATA
+    ));
+
+  // Request for Storage Device Geometry
+  } else if (cmd == c.MTDIOC_GEOMETRY) {
+    const geo: *c.mtd_geometry_s = @ptrCast(rm_xipbase.?);
+    geo.*.blocksize = 64;
+    geo.*.erasesize = 64;
+    geo.*.neraseblocks = 1024; // TODO: Is this needed?
+    const name = &quot;ZIG_ROMFS&quot;;
+    @memcpy(geo.*.model[0..name.len], name);
+    geo.*.model[name.len] = 0;
+
+  // Unknown Request
+  } else {
+    debug(&quot;mtd_ioctl: Unknown command {}&quot;, .{cmd});
+  }
+  return 0;
+}
+</code></pre></div>
+<p>TODO</p>
+<h1 id="appendix-print-with-nuttx-system-call"><a href="#appendix-print-with-nuttx-system-call">12 Appendix: Print with NuttX System Call</a></h1>
 <p>TODO</p>
 <p>In our Demo NuttX App, we implement <code>puts</code> by calling <code>write</code>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25">stdio.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print the string to Standard Output
@@ -553,7 +667,7 @@ Hello, World!!
 asm volatile (&quot;andi a2, a0, 0xffffffff&quot;);
 </code></pre></div>
 <p>Because 0xffffffff gets assembled to -1. (Bug?)</p>
-<h1 id="exit-with-nuttx-system-call"><a href="#exit-with-nuttx-system-call">9 Exit with NuttX System Call</a></h1>
+<h1 id="appendix-exit-with-nuttx-system-call"><a href="#appendix-exit-with-nuttx-system-call">13 Appendix: Exit with NuttX System Call</a></h1>
 <p>TODO</p>
 <p>In our Demo NuttX App, we implement <code>exit</code> the same way as NuttX, by making a System Call: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10">stdlib.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Caution: This may change
@@ -612,68 +726,6 @@ inline uintptr_t sys_call1(
 <p>(Maybe we’ll revisit this when the RISC-V Registers are working OK in TCC)</p>
 <p>TODO: Define the printf formats %jd, %zu</p>
 <p>TODO: Iteratively handle printf formats</p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
-<p>TODO</p>
-<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn’t have been possible without your support.</p>
-<ul>
-<li>
-<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Current Project: “Apache NuttX RTOS for Ox64 BL808”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>My Other Project: “NuttX for Star64 JH7110”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Older Project: “NuttX for PinePhone”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
-</li>
-</ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/romfs.md"><strong>lupyuen.github.io/src/romfs.md</strong></a></p>
-<h1 id="appendix-build-tcc-webassembly"><a href="#appendix-build-tcc-webassembly">11 Appendix: Build TCC WebAssembly</a></h1>
-<p>TODO</p>
-<h1 id="appendix-download-rom-fs-from-web-server"><a href="#appendix-download-rom-fs-from-web-server">12 Appendix: Download ROM FS from Web Server</a></h1>
-<p>TODO</p>
-<h1 id="appendix-nuttx-rom-fs-driver"><a href="#appendix-nuttx-rom-fs-driver">13 Appendix: NuttX ROM FS Driver</a></h1>
-<p>TODO</p>
-<p>NuttX ROM FS Driver will call <code>mtd_ioctl</code> to map the ROM FS Data in memory: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem.
-const ROMFS_DATA = @embedFile(&quot;romfs.bin&quot;);
-
-/// ROM FS Driver makes this IOCTL Request
-export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
-
-  // Request for Memory Address of ROM FS
-  if (cmd == c.BIOC_XIPBASE) {
-    // If we&#39;re loading `romfs.bin` from Web Server:
-    // Change `ROMFS_DATA` to `&amp;ROMFS_DATA`
-    rm_xipbase.?.* = @intCast(@intFromPtr(ROMFS_DATA));
-
-  // Request for Storage Device Geometry
-  } else if (cmd == c.MTDIOC_GEOMETRY) {
-    const geo: *c.mtd_geometry_s = @ptrCast(rm_xipbase.?);
-    geo.*.blocksize = 64;
-    geo.*.erasesize = 64;
-    geo.*.neraseblocks = 1024; // TODO: Is this needed?
-    const name = &quot;ZIG_ROMFS&quot;;
-    @memcpy(geo.*.model[0..name.len], name);
-    geo.*.model[name.len] = 0;
-
-  // Unknown Request
-  } else {
-    debug(&quot;mtd_ioctl: Unknown command {}&quot;, .{cmd});
-  }
-  return 0;
-}
-</code></pre></div>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
 <h1 id="appendix-rom-fs-filesystem"><a href="#appendix-rom-fs-filesystem">14 Appendix: ROM FS Filesystem</a></h1>
 <p>TODO</p>
