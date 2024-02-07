@@ -513,7 +513,8 @@ localStorage.setItem(
 </code></pre></div>
 <p><em>But NuttX Emulator boots from a fixed NuttX Image, loaded from our Static Web Server. How did <code>a.out</code> appear inside the NuttX Image?</em></p>
 <p>We used a nifty illusion… <strong><code>a.out</code></strong> was in the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image"><strong>NuttX Image</strong></a> all along!</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Create a Fake `a.out` that contains a Distinct Pattern:
+<div class="example-wrap"><pre class="language-bash"><code>## Create a Fake `a.out` that
+## contains a Distinct Pattern:
 ##   22 05 69 00
 ##   22 05 69 01
 ## For 1024 times
@@ -524,37 +525,43 @@ do
   printf 0x%x\\n $(($start + $i)) &gt;&gt; /tmp/pattern.txt
 done
 
-## Copy the Fake `a.out` to our NuttX Apps Folder
+## Copy the Fake `a.out`
+## to our NuttX Apps Folder
 cat /tmp/pattern.txt \
   | xxd -revert -plain \
   &gt;apps/bin/a.out
 hexdump -C apps/bin/a.out
 
-## `a.out` looks like...
+## Fake `a.out` looks like...
 ## 0000  22 05 69 00 22 05 69 01  22 05 69 02 22 05 69 03  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
 ## 0010  22 05 69 04 22 05 69 05  22 05 69 06 22 05 69 07  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
 ## 0020  22 05 69 08 22 05 69 09  22 05 69 0a 22 05 69 0b  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
 </code></pre></div>
-<p>During NuttX Build, the Fake <strong><code>a.out</code></strong> gets bundled into the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd"><strong>Initial RAM Disk (initrd)</strong></a>.</p>
+<p>During our NuttX Build, the <strong>Fake <code>a.out</code></strong> gets bundled into the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd"><strong>Initial RAM Disk (initrd)</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/app#initial-ram-disk"><strong>Which gets appended</strong></a> to the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image"><strong>NuttX Image</strong></a>.</p>
 <p><em>So we patched Fake <code>a.out</code> in the NuttX Image with the Real <code>a.out</code>?</em></p>
 <p>TODO</p>
 <p>Exactly!</p>
 <ol>
 <li>
-<p>In the NuttX Emulator JavaScript, we read <code>elf_data</code> from the Local Storage and pass it to TinyEMU WebAssembly</p>
+<p>In the NuttX Emulator JavaScript: We read <strong><code>elf_data</code></strong> from the Local Storage and pass it to <strong>TinyEMU WebAssembly</strong></p>
 </li>
 <li>
-<p>Inside the TinyEMU WebAssembly: We receive the <code>elf_data</code> and copy it locally</p>
+<p>Inside the TinyEMU WebAssembly: We receive the <strong><code>elf_data</code></strong> and copy it locally</p>
 </li>
 <li>
-<p>Then we search for our Magic Pattern <code>22 05 69 00</code> in our Fake <code>a.out</code></p>
+<p>Then we search for our <strong>Magic Pattern <code>22 05 69 00</code></strong> in our Fake <strong><code>a.out</code></strong></p>
 </li>
 <li>
-<p>And we overwrite the Fake <code>a.out</code> with the Real <code>a.out</code> from <code>elf_data</code>.</p>
+<p>And we overwrite the Fake <strong><code>a.out</code></strong> with the Real <strong><code>a.out</code></strong> from <strong><code>elf_data</code></strong></p>
 </li>
 </ol>
+<p>Everything is explained here…</p>
+<p>TODO</p>
 <p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
+<p><em>Is there something special inside &lt;stdio.h&gt; and &lt;stdlib.h&gt;</em></p>
+<p>They’ll make <strong>System Calls</strong> to NuttX Kernel, for printing and quitting…</p>
+<p>TODO</p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn’t have been possible without your support.</p>
