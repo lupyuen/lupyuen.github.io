@@ -124,11 +124,11 @@ ROM FS works like a regular Filesystem (think FAT and EXT4). Just that it's tiny
 
 _Hmmm sounds like a major makeover for TCC Compiler..._
 
-Previously TCC Compiler could access Header Files __directly from the Local Filesystem__...
+Previously TCC Compiler could access Header Files directly from the __Local Filesystem__...
 
 TODO: Pic of TCC Filesystem
 
-Now TCC WebAssembly needs to hoop through our [__Zig Wrapper__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly) to read the ROM FS Filesystem...
+Now TCC WebAssembly needs to hoop through our [__Zig Wrapper__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly) to read the __ROM FS Filesystem__...
 
 TODO: Pic of TCC ROM FS
 
@@ -142,7 +142,7 @@ _What's this ROM FS?_
 
 ROM FS is __a lot simpler__ than Read-Write Filesystems (like FAT and EXT4). That's why we run it inside TCC WebAssembly to host our C Header Files.
 
-_How to bundle our C Header Files into ROM FS?_
+_How to bundle our files into ROM FS?_
 
 __`genromfs`__ will helpfully pack our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
 
