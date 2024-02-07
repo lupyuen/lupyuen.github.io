@@ -235,21 +235,13 @@ pub export fn compile_program(...) [*]const u8 {
   // Omitted: Call the TCC Compiler
 ```
 
-[(__romfs_files__ is defined here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L320-L324)
-
 [(__romfs_inode__ is here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163)
 
 _What if the ROM FS Filesystem contains garbage?_
 
 Our ROM FS Driver will __Fail the Mount Operation__.
 
-That's because it searches for a __Magic Number__ at the top of the filesystem: [fs_romfsutil.c](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfsutil.c#L765-L770)
-
-```c
-// Verify the Magic Number that identifies
-// a ROM FS Filesystem
-#define ROMFS_VHDR_MAGIC "-rom1fs-"
-```
+That's because it searches for a [__Magic Number__](TODO) at the top of the filesystem.
 
 [(See the __Mount Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L91-L98)
 
@@ -352,6 +344,8 @@ genromfs \
 ![ROM FS File Header and Data](https://lupyuen.github.io/images/romfs-format2.jpg)
 
 TODO
+
+TODO: Pic of NuttX Driver
 
 # TCC calls ROM FS Driver
 
@@ -821,7 +815,11 @@ TODO: [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/b
 
 TODO: C Integration
 
-TODO: Because of extra logging: Iteratively handle printf formats
+[zig_romfs.c](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.c)
+
+[zig_romfs.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.h)
+
+TODO: Because of extra logging: [__Iteratively handle printf formats__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411)
 
 # Appendix: Print via NuttX System Call
 
@@ -909,7 +907,7 @@ inline uintptr_t sys_call3(
 
 _Why so complicated?_
 
-That's because TCC [won't load the RISC-V Registers correctly](https://lupyuen.github.io/articles/tcc#appendix-nuttx-system-call). Thus we load the registers ourselves.
+That's because TCC [__won't load the RISC-V Registers correctly__](https://lupyuen.github.io/articles/tcc#appendix-nuttx-system-call). Thus we load the registers ourselves.
 
 _Why not simply copy A0 to A2 minus the hokey pokey?_
 
@@ -934,7 +932,7 @@ A3: 0f
 [...Page Fault because A2 is an Invalid Address...]
 ```
 
-So we Shift Away the __Negative Sign__...
+So we Shift Away the __Negative Sign__ (_silly_ and _seriously_)...
 
 ```c
 // Load SysCall Parameter to Register A0
@@ -962,7 +960,7 @@ A3: 0f
 Hello, World!!
 ```
 
-BTW __`andi`__ doesn't work...
+BTW _Andy_ won't work either...
 
 ```c
 // Load SysCall Parameter to Register A0
@@ -1045,9 +1043,9 @@ And everything works OK now!
 
 _Wow this looks horribly painful... Are we doing any more of this?_
 
-Nope we won't do any more of this! Hand-crafting the NuttX System Calls in RISC-V Assembly was extremely painful.
+Nope sorry, we won't do any more of this! Hand-crafting the NuttX System Calls in RISC-V Assembly was [__positively painful__](TODO).
 
-(Maybe we'll revisit this when the RISC-V Registers are working OK in TCC)
+(We'll revisit this when the RISC-V Registers are hunky dory in TCC)
 
 # Appendix: Patch the NuttX Emulator
 
@@ -1085,7 +1083,7 @@ Module.ccall(
 );
 ```
 
-Inside the TinyEMU WebAssembly: We receive the `elf_data` and copy it locally, because it will be clobbered (why?): [jsemu.c](https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211)
+Inside the __TinyEMU WebAssembly__: We receive __`elf_data`__ and copy it locally, because it will be clobbered (why?): [jsemu.c](https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211)
 
 ```c
 // Start the TinyEMU Emulator. Called by JavaScript.
@@ -1101,7 +1099,7 @@ void vm_start(...) {
   memcpy(elf_data, elf_data0, elf_len);
 ```
 
-Then we search for our Magic Pattern `22 05 69 00` in our Fake `a.out`: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053)
+Then we search for our __Magic Pattern `22 05 69 00`__ in our Fake __`a.out`__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053)
 
 ```c
   // Patch the ELF Data to Fake `a.out` in Initial RAM Disk
@@ -1120,7 +1118,7 @@ Then we search for our Magic Pattern `22 05 69 00` in our Fake `a.out`: [riscv_m
   }
 ```
 
-And we overwrite the Fake `a.out` with the Real `a.out` from `elf_data`.
+And we overwrite the Fake __`a.out`__ with the Real __`a.out`__ from __`elf_data`__.
 
 That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉
 
