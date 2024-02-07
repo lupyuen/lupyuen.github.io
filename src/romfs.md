@@ -317,6 +317,8 @@ TODO: [(See the __Modified Source Files__)](https://github.com/lupyuen/tcc-riscv
 
 TODO: [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
 
+![Inside a ROM FS Filesystem](https://lupyuen.github.io/images/romfs-format.jpg)
+
 # Inside a ROM FS Filesystem
 
 TODO
@@ -760,7 +762,7 @@ TODO
 
 ![Inside a ROM FS Filesystem](https://lupyuen.github.io/images/romfs-format.jpg)
 
-# Appendix: Inside a ROM FS Filesystem
+# Appendix: ROM FS Filesystem
 
 TODO
 
