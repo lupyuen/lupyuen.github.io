@@ -408,6 +408,12 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
   }
 }
 </code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L27-L31">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Allocate the POSIX File Descriptors for TCC
+romfs_files = std.ArrayList(*c.struct_file)
+  .init(std.heap.page_allocator);
+</code></pre></div>
 <p>When TCC WebAssembly calls <code>read</code> to read the Include File, we call ROM FS: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L214-L244">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>export fn read(fd: c_int, buf: [*:0]u8, nbyte: size_t) isize {
 
@@ -456,20 +462,6 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
   return 0;
 }
 </code></pre></div>
-<p>We stage the Include Files <code>stdio.h</code> and <code>stdlib.h</code> here: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs">zig/romfs</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>$ ls -l zig/romfs
--rw-r--r-- 1 25 stdio.h
--rw-r--r-- 1 23 stdlib.h
-</code></pre></div>
-<p>And we bundle them into <code>romfs.bin</code>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Bundle the romfs folder into ROM FS Filesystem romfs.bin
-## and label with this Volume Name
-genromfs \
-  -f zig/romfs.bin \
-  -d zig/romfs \
-  -V &quot;ROMFS&quot;
-</code></pre></div>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin">(See the ROM FS Binary <code>zig/romfs.bin</code>)</a></p>
 <p>At last we have a proper POSIX (Read-Only) Filesystem for TCC WebAssembly yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>open: path=/usr/local/lib/tcc/include/stdio.h, oflag=0, return fd=4
 Open &#39;stdio.h&#39;
@@ -502,11 +494,7 @@ Closing
 <p>Time to wrap up and run everything in a Web Browser…</p>
 <h1 id="from-tcc-to-nuttx-emulator"><a href="#from-tcc-to-nuttx-emulator">7 From TCC to NuttX Emulator</a></h1>
 <p>TODO</p>
-<p>https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L27-L31</p>
-<div class="example-wrap"><pre class="language-zig"><code>// Allocate the POSIX File Descriptors for TCC
-romfs_files = std.ArrayList(*c.struct_file)
-  .init(std.heap.page_allocator);
-</code></pre></div><h1 id="print-with-nuttx-system-call"><a href="#print-with-nuttx-system-call">8 Print with NuttX System Call</a></h1>
+<h1 id="print-with-nuttx-system-call"><a href="#print-with-nuttx-system-call">8 Print with NuttX System Call</a></h1>
 <p>TODO</p>
 <p>In our Demo NuttX App, we implement <code>puts</code> by calling <code>write</code>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25">stdio.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print the string to Standard Output
