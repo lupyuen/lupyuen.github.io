@@ -779,7 +779,7 @@ TODO
 
 ```text
 ----  File Header for `.`
-      [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksm ]
+      [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0020  00 00 00 49 00 00 00 20  00 00 00 00 d1 ff ff 97  |...I... ........|
       [ File Name: `.`                               ]
 0030  2e 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
@@ -790,7 +790,7 @@ TODO
 
 ```text
 ----  File Header for `..`
-      [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksm ]
+      [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0040  00 00 00 60 00 00 00 20  00 00 00 00 d1 d1 ff 80  |...`... ........|
       [ File Name: `..`                              ]
 0050  2e 2e 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
@@ -801,7 +801,7 @@ TODO
 
 ```text
 ----  File Header for `stdio.h`
-      [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksm ]
+      [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0060  00 00 0a 42 00 00 00 00  00 00 09 b7 1d 5d 1f 9e  |...B.........]..|
       [ File Name: `stdio.h`                         ]
 0070  73 74 64 69 6f 2e 68 00  00 00 00 00 00 00 00 00  |stdio.h.........|
@@ -818,7 +818,7 @@ TODO
 
 ```text
 ----  File Header for `stdlib.h`
-      [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksm ]
+      [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0a40  00 00 00 02 00 00 00 00  00 00 05 2e 23 29 67 fc  |............#)g.|
       [ File Name: `stdlib.h`                        ]
 0a50  73 74 64 6c 69 62 2e 68  00 00 00 00 00 00 00 00  |stdlib.h........|
