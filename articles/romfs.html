@@ -326,8 +326,10 @@ romfs_close: Closing
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L102-L113">(See the <strong>Read Log</strong>)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig">(See the <strong>Modified Source Files</strong>)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/romfs-format.jpg" alt="Inside a ROM FS Filesystem" /></p>
+<p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
 <h1 id="inside-a-rom-fs-filesystem"><a href="#inside-a-rom-fs-filesystem">5 Inside a ROM FS Filesystem</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/romfs-format2.jpg" alt="ROM FS File Header and Data" /></p>
 <p>TODO</p>
 <h1 id="tcc-calls-rom-fs-driver"><a href="#tcc-calls-rom-fs-driver">6 TCC calls ROM FS Driver</a></h1>
 <p>TODO</p>
@@ -694,7 +696,7 @@ inline uintptr_t sys_call1(
 <p>TODO</p>
 <h1 id="appendix-download-rom-fs-from-web-server"><a href="#appendix-download-rom-fs-from-web-server">12 Appendix: Download ROM FS from Web Server</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/romfs-format.jpg" alt="Inside a ROM FS Filesystem" /></p>
+<p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
 <h1 id="appendix-rom-fs-filesystem"><a href="#appendix-rom-fs-filesystem">13 Appendix: ROM FS Filesystem</a></h1>
 <p>TODO</p>
 <p>Based on <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Spec</strong></a></p>
@@ -751,6 +753,8 @@ inline uintptr_t sys_call1(
 0f80  72 65 74 75 72 6e 20 72  30 3b 0a 7d 20 0a 00 00  |return r0;.} ...|
 0f90  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 </code></pre></div>
+<p><img src="https://lupyuen.github.io/images/romfs-format2.jpg" alt="ROM FS File Header and Data" /></p>
+
     
 </body>
 </html>
