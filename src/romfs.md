@@ -812,7 +812,7 @@ And we overwrite the Fake `a.out` with the Real `a.out` from `elf_data`.
 
 That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉
 
-# Appendix: Print with NuttX System Call
+# Appendix: Print via NuttX System Call
 
 TODO
 
@@ -952,7 +952,7 @@ asm volatile ("andi a2, a0, 0xffffffff");
 
 Because 0xffffffff gets assembled to -1. (Bug?)
 
-# Appendix: Exit with NuttX System Call
+# Appendix: Exit via NuttX System Call
 
 TODO
 
