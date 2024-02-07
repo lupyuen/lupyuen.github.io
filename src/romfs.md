@@ -464,7 +464,138 @@ TODO: [__Immutable Filesystem__](https://blog.setale.me/2022/06/27/Steam-Deck-an
 
 TODO
 
-# Print with NuttX System Call
+# What's Next
+
+TODO
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
+
+-   [__My Other Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
+
+-   [__Older Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/romfs.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/romfs.md)
+
+# Appendix: Build TCC WebAssembly
+
+TODO
+
+```bash
+## Download the ROMFS Branch of TCC Source Code.
+## Configure the build for 64-bit RISC-V.
+
+git clone \
+  --branch romfs \
+  https://github.com/lupyuen/tcc-riscv32-wasm
+cd tcc-riscv32-wasm
+./configure
+make cross-riscv64
+
+## Call Zig Compiler to compile TCC Compiler
+## from C to WebAssembly. Produces `tcc.o`
+
+## Omitted: Run the `zig cc` command from earlier...
+## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
+zig cc ...
+
+## Compile our Zig Wrapper `tcc-wasm.zig` for WebAssembly
+## and link it with TCC compiled for WebAssembly `tcc.o`
+## Generates `tcc-wasm.wasm`
+
+## Omitted: Run the `zig build-exe` command from earlier...
+## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
+zig build-exe ...
+```
+
+[(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/build.sh)
+
+# Appendix: Download ROM FS
+
+TODO
+
+[tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121)
+
+```zig
+/// Storage for ROM FS Filesystem
+var ROMFS_DATA = std.mem.zeroes([8192]u8);
+
+/// Return the pointer to ROM FS.
+/// `size` is the expected filesystem size.
+pub export fn get_romfs(size: u32) [*]const u8 {
+  if (size > ROMFS_DATA.len) {
+    @panic("get_romfs_ptr: Increase ROMFS_DATA size");
+  }
+  return &ROMFS_DATA;
+}
+```
+
+[tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
+
+```zig
+/// ROM FS Driver makes this IOCTL Request
+export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
+
+  // Request for Memory Address of ROM FS
+  if (cmd == c.BIOC_XIPBASE) {
+    // If we're loading `romfs.bin` from Web Server:
+    // Change `ROMFS_DATA` to `&ROMFS_DATA`
+    rm_xipbase.?.* = @intCast(@intFromPtr(
+      ROMFS_DATA
+    ));
+```
+
+# Appendix: NuttX ROM FS Driver
+
+TODO
+
+NuttX ROM FS Driver will call `mtd_ioctl` to map the ROM FS Data in memory: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
+
+```zig
+/// Embed the ROM FS Filesystem.
+const ROMFS_DATA = @embedFile("romfs.bin");
+
+/// ROM FS Driver makes this IOCTL Request
+export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
+
+  // Request for Memory Address of ROM FS
+  if (cmd == c.BIOC_XIPBASE) {
+    // If we're loading `romfs.bin` from Web Server:
+    // Change `ROMFS_DATA` to `&ROMFS_DATA`
+    rm_xipbase.?.* = @intCast(@intFromPtr(
+      ROMFS_DATA
+    ));
+
+  // Request for Storage Device Geometry
+  } else if (cmd == c.MTDIOC_GEOMETRY) {
+    const geo: *c.mtd_geometry_s = @ptrCast(rm_xipbase.?);
+    geo.*.blocksize = 64;
+    geo.*.erasesize = 64;
+    geo.*.neraseblocks = 1024; // TODO: Is this needed?
+    const name = "ZIG_ROMFS";
+    @memcpy(geo.*.model[0..name.len], name);
+    geo.*.model[name.len] = 0;
+
+  // Unknown Request
+  } else {
+    debug("mtd_ioctl: Unknown command {}", .{cmd});
+  }
+  return 0;
+}
+```
+
+TODO
+
+# Appendix: Print with NuttX System Call
 
 TODO
 
@@ -604,7 +735,7 @@ asm volatile ("andi a2, a0, 0xffffffff");
 
 Because 0xffffffff gets assembled to -1. (Bug?)
 
-# Exit with NuttX System Call
+# Appendix: Exit with NuttX System Call
 
 TODO
 
@@ -676,76 +807,6 @@ Nope we won't do any more of this! Hand-crafting the NuttX System Calls in RISC-
 TODO: Define the printf formats %jd, %zu
 
 TODO: Iteratively handle printf formats
-
-# What's Next
-
-TODO
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
-
--   [__My Other Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
-
--   [__Older Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/romfs.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/romfs.md)
-
-# Appendix: Build TCC WebAssembly
-
-TODO
-
-# Appendix: Download ROM FS from Web Server
-
-TODO
-
-
-# Appendix: NuttX ROM FS Driver
-
-TODO
-
-NuttX ROM FS Driver will call `mtd_ioctl` to map the ROM FS Data in memory: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
-
-```zig
-/// Embed the ROM FS Filesystem.
-const ROMFS_DATA = @embedFile("romfs.bin");
-
-/// ROM FS Driver makes this IOCTL Request
-export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
-
-  // Request for Memory Address of ROM FS
-  if (cmd == c.BIOC_XIPBASE) {
-    // If we're loading `romfs.bin` from Web Server:
-    // Change `ROMFS_DATA` to `&ROMFS_DATA`
-    rm_xipbase.?.* = @intCast(@intFromPtr(ROMFS_DATA));
-
-  // Request for Storage Device Geometry
-  } else if (cmd == c.MTDIOC_GEOMETRY) {
-    const geo: *c.mtd_geometry_s = @ptrCast(rm_xipbase.?);
-    geo.*.blocksize = 64;
-    geo.*.erasesize = 64;
-    geo.*.neraseblocks = 1024; // TODO: Is this needed?
-    const name = "ZIG_ROMFS";
-    @memcpy(geo.*.model[0..name.len], name);
-    geo.*.model[name.len] = 0;
-
-  // Unknown Request
-  } else {
-    debug("mtd_ioctl: Unknown command {}", .{cmd});
-  }
-  return 0;
-}
-```
-
-TODO
 
 ![ROM FS Filesystem Header](https://lupyuen.github.io/images/romfs-format1.jpg)
 
