@@ -325,59 +325,23 @@ TODO
 
 TODO
 
-_TCC WebAssembly needs a ROM FS Filesystem that will have C Header Files and C Library Files for building apps..._
-
-_How will we integrate the NuttX ROM FS Driver in Zig?_
-
-At Startup: We call the NuttX ROM FS Driver to mount the ROM FS Filesystem: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L24-L45)
-
-```zig
-/// Next File Descriptor Number.
-/// First File Descriptor is reserved for C Program `hello.c`
-var next_fd: c_int = FIRST_FD;
-const FIRST_FD = 3;
-
-/// Map a File Descriptor to the ROM FS File
-/// Index of romfs_files = File Descriptor Number - FIRST_FD - 1
-var romfs_files: std.ArrayList(*c.struct_file) = undefined;
-
-/// Compile a C program to 64-bit RISC-V
-pub export fn compile_program(...) [*]const u8 {
-
-  // Create the Memory Allocator for malloc
-  memory_allocator = std.heap.FixedBufferAllocator.init(&memory_buffer);
-
-  // Map from File Descriptor to ROM FS File
-  romfs_files = std.ArrayList(*c.struct_file).init(std.heap.page_allocator);
-  defer romfs_files.deinit();
-
-  // Mount the ROM FS Filesystem
-  const ret = c.romfs_bind( // Bind the ROM FS Filesystem
-    c.romfs_blkdriver, // blkdriver: ?*struct_inode_6
-    null, // data: ?*const anyopaque
-    &c.romfs_mountpt // handle: [*c]?*anyopaque
-  );
-  assert(ret >= 0);
-
-  // Create the Mount Inode and test the ROM FS
-  romfs_inode = c.create_mount_inode(c.romfs_mountpt);
-  test_romfs();
-```
-
-NuttX ROM FS Driver will call `mtd_ioctl` to map the ROM FS Data in memory: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L974-L994)
+NuttX ROM FS Driver will call `mtd_ioctl` to map the ROM FS Data in memory: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
 
 ```zig
 /// Embed the ROM FS Filesystem.
-/// Later our JavaScript shall fetch this over HTTP.
 const ROMFS_DATA = @embedFile("romfs.bin");
 
+/// ROM FS Driver makes this IOCTL Request
 export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
-  assert(rm_xipbase != null);
+
+  // Request for Memory Address of ROM FS
   if (cmd == c.BIOC_XIPBASE) {
-    // Return the XIP Base Address
+    // If we're loading `romfs.bin` from Web Server:
+    // Change `ROMFS_DATA` to `&ROMFS_DATA`
     rm_xipbase.?.* = @intCast(@intFromPtr(ROMFS_DATA));
+
+  // Request for Storage Device Geometry
   } else if (cmd == c.MTDIOC_GEOMETRY) {
-    // Return the Storage Device Geometry
     const geo: *c.mtd_geometry_s = @ptrCast(rm_xipbase.?);
     geo.*.blocksize = 64;
     geo.*.erasesize = 64;
@@ -385,6 +349,8 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
     const name = "ZIG_ROMFS";
     @memcpy(geo.*.model[0..name.len], name);
     geo.*.model[name.len] = 0;
+
+  // Unknown Request
   } else {
     debug("mtd_ioctl: Unknown command {}", .{cmd});
   }
@@ -560,85 +526,13 @@ Time to wrap up and run everything in a Web Browser...
 
 TODO
 
-[(Watch the __Demo on YouTube__)](https://youtu.be/sU69bUyrgN8)
+https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L27-L31
 
-Remember we're doing a Decent Demo of Building and Testing a #NuttX App in the Web Browser... `puts` and `exit` finally work OK yay! 🎉
-
-1.  TCC Compiler in WebAssembly compiles `puts` and `exit` to proper NuttX System Calls
-
-1.  By loading `<stdio.h>` and `<stdlib.h>` from the ROM FS Filesystem (thanks to the NuttX Driver)
-
-1.  TCC Compiler generates the 64-bit RISC-V ELF `a.out`
-
-1.  Which gets automagically copied to NuttX Emulator in WebAssembly
-
-1.  And NuttX Emulator executes `puts` and `exit` correctly as NuttX System Calls!
-
-Try the new ROM FS Demo here: https://lupyuen.github.io/tcc-riscv32-wasm/romfs/
-
-```c
-#include <stdio.h>
-#include <stdlib.h>
-
-void main(int argc, char *argv[]) {
-  puts("Hello, World!!\n");
-  exit(0);
-}
+```zig
+// Allocate the POSIX File Descriptors for TCC
+romfs_files = std.ArrayList(*c.struct_file)
+  .init(std.heap.page_allocator);
 ```
-
-Click "Compile". Then run the `a.out` here: https://lupyuen.github.io/nuttx-tinyemu/tcc/
-
-```text
-Loading...
-TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-ABC
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> a.out
-Hello, World!!
- 
-nsh> a.out
-Hello, World!!
- 
-nsh> a.out
-Hello, World!!
- 
-nsh>
-```
-
-Try changing "Hello World" to something else. Recompile and Reload the [NuttX Emulator](https://lupyuen.github.io/nuttx-tinyemu/tcc/). It works!
-
-Impressive, no? 3 things we fixed...
-
-[(Watch the __Demo on YouTube__)](https://youtu.be/sU69bUyrgN8)
-
-# ROM FS Filesystem for TCC
-
-TODO
-
-_How did we get <stdio.h> and <stdlib.h> in TCC WebAssembly?_
-
-We create a Staging Folder [zig/romfs](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs) that contains our C Header Files for TCC Compiler...
-
-- [stdio.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h)
-
-- [stdlib.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h)
-
-Then we bundle the Staging Folder into a ROM FS Filesystem...
-
-```bash
-## Bundle the romfs folder into ROM FS Filesystem romfs.bin
-## and label with this Volume Name
-genromfs \
-  -f zig/romfs.bin \
-  -d zig/romfs \
-  -V "ROMFS"
-```
-
-Which becomes the ROM FS Data File [zig/romfs.bin](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)
-
-Inside our TCC WebAssembly: We mounted the ROM FS Filesystem by calling the NuttX ROM FS Driver. (Which has been integrated into our Zig WebAssembly)
-
-See the earlier sections to find out how we modded the POSIX Filesystem Calls (from TCC WebAssembly) to access the NuttX ROM FS Driver.
 
 # Print with NuttX System Call
 
@@ -894,60 +788,64 @@ hexdump -C tcc-riscv32-wasm/zig/romfs.bin
 TODO
 
 ```text
-          [ Magic Number        ]  [ FS Size ] [ Checksum ]
-00000000  2d 72 6f 6d 31 66 73 2d  00 00 0f 90 58 57 01 f8  |-rom1fs-....XW..|
-          [ Volume Name: ROMFS                            ]
-00000010  52 4f 4d 46 53 00 00 00  00 00 00 00 00 00 00 00  |ROMFS...........|
-
---------  File Header for `.`
-          [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksum ]
-00000020  00 00 00 49 00 00 00 20  00 00 00 00 d1 ff ff 97  |...I... ........|
-          [ File Name: `.`                               ]
-00000030  2e 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-          (NextHdr & 0xF = 9 means Executable Directory)
+      [ Magic Number        ]  [ FS Size ] [ Checksm ]
+0000  2d 72 6f 6d 31 66 73 2d  00 00 0f 90 58 57 01 f8  |-rom1fs-....XW..|
+      [ Volume Name: ROMFS                           ]
+0010  52 4f 4d 46 53 00 00 00  00 00 00 00 00 00 00 00  |ROMFS...........|
 ```
 
 TODO
 
 ```text
---------  File Header for `..`
-          [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksum ]
-00000040  00 00 00 60 00 00 00 20  00 00 00 00 d1 d1 ff 80  |...`... ........|
-          [ File Name: `..`                              ]
-00000050  2e 2e 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-          (NextHdr & 0xF = 0 means Hard Link)
+----  File Header for `.`
+      [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksm ]
+0020  00 00 00 49 00 00 00 20  00 00 00 00 d1 ff ff 97  |...I... ........|
+      [ File Name: `.`                               ]
+0030  2e 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+      (NextHdr & 0xF = 9 means Executable Directory)
 ```
 
 TODO
 
 ```text
---------  File Header for `stdio.h`
-          [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksum ]
-00000060  00 00 0a 42 00 00 00 00  00 00 09 b7 1d 5d 1f 9e  |...B.........]..|
-          [ File Name: `stdio.h`                         ]
-00000070  73 74 64 69 6f 2e 68 00  00 00 00 00 00 00 00 00  |stdio.h.........|
-          (NextHdr & 0xF = 2 means Regular File)
-
---------  File Data for `stdio.h`
-00000080  2f 2f 20 43 61 75 74 69  6f 6e 3a 20 54 68 69 73  |// Caution: This|
-........
-00000a20  74 65 72 20 41 30 0a 20  20 72 65 74 75 72 6e 20  |ter A0.  return |
-00000a30  72 30 3b 0a 7d 20 0a 00  00 00 00 00 00 00 00 00  |r0;.} ..........|
+----  File Header for `..`
+      [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksm ]
+0040  00 00 00 60 00 00 00 20  00 00 00 00 d1 d1 ff 80  |...`... ........|
+      [ File Name: `..`                              ]
+0050  2e 2e 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+      (NextHdr & 0xF = 0 means Hard Link)
 ```
 
 TODO
 
 ```text
---------  File Header for `stdlib.h`
-          [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksum ]
-00000a40  00 00 00 02 00 00 00 00  00 00 05 2e 23 29 67 fc  |............#)g.|
-          [ File Name: `stdlib.h`                        ]
-00000a50  73 74 64 6c 69 62 2e 68  00 00 00 00 00 00 00 00  |stdlib.h........|
-          (NextHdr & 0xF = 2 means Regular File)
+----  File Header for `stdio.h`
+      [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksm ]
+0060  00 00 0a 42 00 00 00 00  00 00 09 b7 1d 5d 1f 9e  |...B.........]..|
+      [ File Name: `stdio.h`                         ]
+0070  73 74 64 69 6f 2e 68 00  00 00 00 00 00 00 00 00  |stdio.h.........|
+      (NextHdr & 0xF = 2 means Regular File)
 
---------  File Data for `stdio.h`
-00000a60  2f 2f 20 43 61 75 74 69  6f 6e 3a 20 54 68 69 73  |// Caution: This|
-........
-00000f80  72 65 74 75 72 6e 20 72  30 3b 0a 7d 20 0a 00 00  |return r0;.} ...|
-00000f90  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+----  File Data for `stdio.h`
+0080  2f 2f 20 43 61 75 74 69  6f 6e 3a 20 54 68 69 73  |// Caution: This|
+....
+0a20  74 65 72 20 41 30 0a 20  20 72 65 74 75 72 6e 20  |ter A0.  return |
+0a30  72 30 3b 0a 7d 20 0a 00  00 00 00 00 00 00 00 00  |r0;.} ..........|
+```
+
+TODO
+
+```text
+----  File Header for `stdlib.h`
+      [ NextHdr ] [ SpecInf ]  [ Size    ] [ Checksm ]
+0a40  00 00 00 02 00 00 00 00  00 00 05 2e 23 29 67 fc  |............#)g.|
+      [ File Name: `stdlib.h`                        ]
+0a50  73 74 64 6c 69 62 2e 68  00 00 00 00 00 00 00 00  |stdlib.h........|
+      (NextHdr & 0xF = 2 means Regular File)
+
+----  File Data for `stdio.h`
+0a60  2f 2f 20 43 61 75 74 69  6f 6e 3a 20 54 68 69 73  |// Caution: This|
+....
+0f80  72 65 74 75 72 6e 20 72  30 3b 0a 7d 20 0a 00 00  |return r0;.} ...|
+0f90  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 ```
