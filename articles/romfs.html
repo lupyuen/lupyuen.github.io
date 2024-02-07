@@ -207,7 +207,7 @@ genromfs \
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs">(<em>&lt;stdio.h&gt;</em> and <em>&lt;stdlib.h&gt;</em> are in the <strong>ROM FS Folder</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin">(Bundled into this <strong>ROM FS Filesystem</strong>)</a></p>
-<p>We embed the <strong>ROM FS Filesystem <code>romfs.bin</code></strong> into our <a href="https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly"><strong>Zig Wrapper</strong></a>, so it will be accessible by TCC WebAssembly: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/c2146f65cc8f338b8a3aaa4c2e88e550e82514ec/zig/tcc-wasm.zig#L993-L997">tcc-wasm.zig</a></p>
+<p>We embed the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin"><strong>ROM FS Filesystem <code>romfs.bin</code></strong></a> into our <a href="https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly"><strong>Zig Wrapper</strong></a>, so it will be accessible by TCC WebAssembly: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/c2146f65cc8f338b8a3aaa4c2e88e550e82514ec/zig/tcc-wasm.zig#L993-L997">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Embed the ROM FS Filesystem
 // into our Zig Wrapper
 const ROMFS_DATA = @embedFile(&quot;romfs.bin&quot;);
@@ -693,17 +693,20 @@ inline uintptr_t sys_call1(
 <p>TODO</p>
 <h1 id="appendix-download-rom-fs-from-web-server"><a href="#appendix-download-rom-fs-from-web-server">12 Appendix: Download ROM FS from Web Server</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/romfs-format.jpg" alt="Inside a ROM FS Filesystem" /></p>
 <h1 id="appendix-inside-a-rom-fs-filesystem"><a href="#appendix-inside-a-rom-fs-filesystem">13 Appendix: Inside a ROM FS Filesystem</a></h1>
 <p>TODO</p>
+<p>Based on <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Spec</strong></a></p>
+<p>And our <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin"><strong>ROM FS Filesystem <code>romfs.bin</code></strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>hexdump -C tcc-riscv32-wasm/zig/romfs.bin 
 </code></pre></div>
-<p>TODO</p>
+<p>We see the ROM FS Filesystem Header…</p>
 <div class="example-wrap"><pre class="language-text"><code>      [ Magic Number        ]  [ FS Size ] [ Checksm ]
 0000  2d 72 6f 6d 31 66 73 2d  00 00 0f 90 58 57 01 f8  |-rom1fs-....XW..|
       [ Volume Name: ROMFS                           ]
 0010  52 4f 4d 46 53 00 00 00  00 00 00 00 00 00 00 00  |ROMFS...........|
 </code></pre></div>
-<p>TODO</p>
+<p>Followed by File Header for <code>.</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `.`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0020  00 00 00 49 00 00 00 20  00 00 00 00 d1 ff ff 97  |...I... ........|
@@ -711,7 +714,7 @@ inline uintptr_t sys_call1(
 0030  2e 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
       (NextHdr &amp; 0xF = 9 means Executable Directory)
 </code></pre></div>
-<p>TODO</p>
+<p>Followed by File Header for <code>..</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `..`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0040  00 00 00 60 00 00 00 20  00 00 00 00 d1 d1 ff 80  |...`... ........|
@@ -719,7 +722,7 @@ inline uintptr_t sys_call1(
 0050  2e 2e 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
       (NextHdr &amp; 0xF = 0 means Hard Link)
 </code></pre></div>
-<p>TODO</p>
+<p>Followed by File Header and Data for <code>stdio.h</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `stdio.h`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0060  00 00 0a 42 00 00 00 00  00 00 09 b7 1d 5d 1f 9e  |...B.........]..|
@@ -733,7 +736,7 @@ inline uintptr_t sys_call1(
 0a20  74 65 72 20 41 30 0a 20  20 72 65 74 75 72 6e 20  |ter A0.  return |
 0a30  72 30 3b 0a 7d 20 0a 00  00 00 00 00 00 00 00 00  |r0;.} ..........|
 </code></pre></div>
-<p>TODO</p>
+<p>Followed by File Header and Data for <code>stdlib.h</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `stdlib.h`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0a40  00 00 00 02 00 00 00 00  00 00 05 2e 23 29 67 fc  |............#)g.|
