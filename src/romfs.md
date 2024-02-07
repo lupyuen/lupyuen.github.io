@@ -547,7 +547,8 @@ _But NuttX Emulator boots from a fixed NuttX Image, loaded from our Static Web S
 We used a nifty illusion... __`a.out`__ was in the [__NuttX Image__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image) all along!
 
 ```bash
-## Create a Fake `a.out` that contains a Distinct Pattern:
+## Create a Fake `a.out` that
+## contains a Distinct Pattern:
 ##   22 05 69 00
 ##   22 05 69 01
 ## For 1024 times
@@ -558,19 +559,20 @@ do
   printf 0x%x\\n $(($start + $i)) >> /tmp/pattern.txt
 done
 
-## Copy the Fake `a.out` to our NuttX Apps Folder
+## Copy the Fake `a.out`
+## to our NuttX Apps Folder
 cat /tmp/pattern.txt \
   | xxd -revert -plain \
   >apps/bin/a.out
 hexdump -C apps/bin/a.out
 
-## `a.out` looks like...
+## Fake `a.out` looks like...
 ## 0000  22 05 69 00 22 05 69 01  22 05 69 02 22 05 69 03  |".i.".i.".i.".i.|
 ## 0010  22 05 69 04 22 05 69 05  22 05 69 06 22 05 69 07  |".i.".i.".i.".i.|
 ## 0020  22 05 69 08 22 05 69 09  22 05 69 0a 22 05 69 0b  |".i.".i.".i.".i.|
 ```
 
-During NuttX Build, the Fake __`a.out`__ gets bundled into the [__Initial RAM Disk (initrd)__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd).
+During our NuttX Build, the __Fake `a.out`__ gets bundled into the [__Initial RAM Disk (initrd)__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd).
 
 [__Which gets appended__](https://lupyuen.github.io/articles/app#initial-ram-disk) to the [__NuttX Image__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image).
 
@@ -580,15 +582,25 @@ TODO
 
 Exactly!
 
-1.  In the NuttX Emulator JavaScript, we read `elf_data` from the Local Storage and pass it to TinyEMU WebAssembly
+1.  In the NuttX Emulator JavaScript: We read __`elf_data`__ from the Local Storage and pass it to __TinyEMU WebAssembly__
 
-1.  Inside the TinyEMU WebAssembly: We receive the `elf_data` and copy it locally
+1.  Inside the TinyEMU WebAssembly: We receive the __`elf_data`__ and copy it locally
 
-1.  Then we search for our Magic Pattern `22 05 69 00` in our Fake `a.out`
+1.  Then we search for our __Magic Pattern `22 05 69 00`__ in our Fake __`a.out`__
 
-1.  And we overwrite the Fake `a.out` with the Real `a.out` from `elf_data`.
+1.  And we overwrite the Fake __`a.out`__ with the Real __`a.out`__ from __`elf_data`__
+
+Everything is explained here...
+
+TODO
 
 That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉
+
+_Is there something special inside <stdio.h> and <stdlib.h>_
+
+They'll make __System Calls__ to NuttX Kernel, for printing and quitting...
+
+TODO
 
 # What's Next
 
