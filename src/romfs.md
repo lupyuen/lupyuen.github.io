@@ -24,11 +24,11 @@ In this article we add a __Read-Only Filesystem__ to our Zig Webassembly...
 
 - TODO: NuttX System Calls
 
-TODO: ![Online Demo of TCC Compiler in WebAssembly](https://lupyuen.github.io/images/tcc-web.png)
+![Online Demo of TCC Compiler in WebAssembly](TODO)
 
 [_Online Demo of TCC Compiler in WebAssembly_](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
 
-# C Compiler in the Web Browser
+# C Compiler in our Web Browser
 
 Head over here to open __TCC Compiler in our Web Browser__ (pic above)
 
@@ -80,13 +80,13 @@ _Surely it's a staged demo? Or something server-side?_
 
 Everything runs entirely in our Web Browser. Try this...
 
-1.  Browse to [__TCC RISC-V Compiler (ROM FS)__](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
+1.  Browse to [__TCC RISC-V Compiler__](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
 
 1.  Change the _"Hello World"_ message
 
 1.  Click "__Compile__"
 
-1.  Reload the Web Browser for [__NuttX Emulator__](https://lupyuen.github.io/nuttx-tinyemu/tcc/)
+1.  Reload the browser for [__NuttX Emulator__](https://lupyuen.github.io/nuttx-tinyemu/tcc/)
 
 1.  Run __`a.out`__
 
@@ -496,13 +496,13 @@ _TCC compiles our C Program and sends it to NuttX Emulator... How does it work?_
 
 Here's the Teleporting Magic Trick that we saw...
 
-1.  Browse to [__TCC RISC-V Compiler (ROM FS)__](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
+1.  Browse to [__TCC RISC-V Compiler__](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
 
 1.  Change the _"Hello World"_ message
 
 1.  Click "__Compile__"
 
-1.  Reload the Web Browser for [__NuttX Emulator__](https://lupyuen.github.io/nuttx-tinyemu/tcc/)
+1.  Reload the browser for [__NuttX Emulator__](https://lupyuen.github.io/nuttx-tinyemu/tcc/)
 
 1.  Enter __`a.out`__ and the new message appears
 
