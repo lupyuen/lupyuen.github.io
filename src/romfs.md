@@ -325,6 +325,28 @@ TODO: [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/b
 
 TODO
 
+__`genromfs`__ will pack our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
+
+```bash
+## For Ubuntu: Install `genromfs`
+sudo apt install genromfs
+
+## For macOS: Install `genromfs`
+brew install genromfs
+
+## Bundle the `romfs` folder into
+## ROM FS Filesystem `romfs.bin`
+## and label with this Volume Name
+genromfs \
+  -f romfs.bin \
+  -d romfs \
+  -V "ROMFS"
+```
+
+[(_<stdio.h>_ and _<stdlib.h>_ are in the __ROM FS Folder__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs)
+
+[(Bundled into this __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)
+
 ![ROM FS File Header and Data](https://lupyuen.github.io/images/romfs-format2.jpg)
 
 TODO
