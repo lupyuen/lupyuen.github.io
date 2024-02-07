@@ -183,6 +183,8 @@ __For Easier Updates__: We should download [__`romfs.bin` from our Web Server__]
 
 TODO: [(Works like the __Emscripten Filesystem__)](https://emscripten.org/docs/porting/files/file_systems_overview.html)
 
+TODO: Pic of NuttX Driver
+
 # NuttX Driver for ROM FS
 
 _Is there a ROM FS Driver in Zig?_
@@ -496,9 +498,7 @@ TODO: [__Immutable Filesystem__](https://blog.setale.me/2022/06/27/Steam-Deck-an
 
 # From TCC to NuttX Emulator
 
-_TCC compiles our C Program and sends it to NuttX Emulator..._
-
-_How does it work?_
+_TCC compiles our C Program and sends it to NuttX Emulator... How does it work?_
 
 Here's the Teleporting Magic Trick that we saw...
 
@@ -514,7 +514,7 @@ Here's the Teleporting Magic Trick that we saw...
 
     [(Watch the __Demo on YouTube__)](https://youtu.be/sU69bUyrgN8)
 
-What just happened? In Chrome Web Browser, click to `Menu > Developer Tools > Application Tab > Local Storage > lupyuen.github.io`
+What just happened? In Chrome Web Browser, click to _Menu > Developer Tools > Application Tab > Local Storage > lupyuen.github.io_
 
 We'll see that the __RISC-V ELF `a.out`__ is stored locally as __`elf_data`__ in the __JavaScript Local Storage__...
 
@@ -550,7 +550,9 @@ localStorage.setItem(
 );
 ```
 
-_But NuttX Emulator boots from a fixed NuttX Image, loaded from our Static Web Server. How did `a.out` appear inside the NuttX Image?_
+_But NuttX Emulator boots from a Fixed NuttX Image, loaded from our Static Web Server..._
+
+_How did `a.out` magically appear inside the NuttX Image?_
 
 We used a nifty illusion... __`a.out`__ was in the [__NuttX Image__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image) all along!
 
@@ -580,19 +582,17 @@ hexdump -C apps/bin/a.out
 ## 0020  22 05 69 08 22 05 69 09  22 05 69 0a 22 05 69 0b  |".i.".i.".i.".i.|
 ```
 
-During our NuttX Build, the __Fake `a.out`__ gets bundled into the [__Initial RAM Disk (initrd)__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd).
+During our NuttX Build, the __Fake `a.out`__ gets bundled into the [__Initial RAM Disk (initrd)__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd)...
 
 [__Which gets appended__](https://lupyuen.github.io/articles/app#initial-ram-disk) to the [__NuttX Image__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image).
 
 _So we patched Fake `a.out` in the NuttX Image with the Real `a.out`?_
 
-TODO
-
 Exactly!
 
-1.  In the NuttX Emulator JavaScript: We read __`elf_data`__ from the Local Storage and pass it to __TinyEMU WebAssembly__
+1.  In the JavaScript for __NuttX Emulator__: We read __`elf_data`__ from JavaScript Local Storage and pass it to TinyEMU WebAssembly
 
-1.  Inside the TinyEMU WebAssembly: We receive the __`elf_data`__ and copy it locally
+1.  Inside the __TinyEMU WebAssembly__: We receive the __`elf_data`__ and copy it locally
 
 1.  Then we search for our __Magic Pattern `22 05 69 00`__ in our Fake __`a.out`__
 
@@ -886,10 +886,7 @@ inline uintptr_t sys_call3(
   // `ecall` will jump from RISC-V User Mode
   // to RISC-V Supervisor Mode
   // to execute the System Call.
-  // Input + Output Registers: A0 to A3
-  // Clobbers the Memory
-  asm volatile
-  (
+  asm volatile (
     // ECALL for System Call to NuttX Kernel
     "ecall \n"
     
@@ -913,7 +910,7 @@ _Why so complicated?_
 
 That's because TCC [won't load the RISC-V Registers correctly](https://lupyuen.github.io/articles/tcc#appendix-nuttx-system-call). Thus we load the registers ourselves.
 
-_Why not simply copy A0 to A2?_
+_Why not simply copy A0 to A2 minus the hokey pokey?_
 
 ```c
 register long r2 asm("a0") = (long)(parm2);  // Will move to A2
@@ -1008,10 +1005,7 @@ inline uintptr_t sys_call1(
   // `ecall` will jump from RISC-V User Mode
   // to RISC-V Supervisor Mode
   // to execute the System Call.
-  // Input + Output Registers: A0 to A1
-  // Clobbers the Memory
-  asm volatile
-  (
+  asm volatile (
     // ECALL for System Call to NuttX Kernel
     "ecall \n"
     
