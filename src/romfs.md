@@ -413,13 +413,17 @@ export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
 // POSIX File Descriptors for TCC.
 // This maps a File Descriptor to the File Struct.
 // Index of romfs_files = File Descriptor Number - FIRST_FD - 1
-var romfs_files: std.ArrayList(*c.struct_file) = undefined;
+var romfs_files: std.ArrayList(  // Array List of...
+  *c.struct_file                 // Pointers to File Structs
+) = undefined;
 
 // At Startup: Allocate the POSIX
 // File Descriptors for TCC
 romfs_files = std.ArrayList(*c.struct_file)
   .init(std.heap.page_allocator);
 ```
+
+(Why [__ArrayList__](https://ziglang.org/documentation/master/std/#A;std:ArrayList)? Because it grows easily as we add File Descriptors)
 
 TODO: __POSIX `read()`__
 
@@ -435,7 +439,9 @@ export fn read(fd: c_int, buf: [*:0]u8, nbyte: size_t) isize {
   // Fetch the File Struct by
   // POSIX File Descriptor
   const f = fd - FIRST_FD - 1;
-  const file = romfs_files.items[@intCast(f)];
+  const file = romfs_files.items[
+    @intCast(f)
+  ];
 
   // Read from the ROM FS File
   const ret = c.romfs_read(
@@ -465,7 +471,9 @@ export fn close(fd: c_int) c_int {
   // Fetch the File Struct by
   // POSIX File Descriptor
   const f = fd - FIRST_FD - 1;
-  const file = romfs_files.items[@intCast(f)];
+  const file = romfs_files.items[
+    @intCast(f)
+  ];
 
   // Close the ROM FS File. TODO: Deallocate the file
   const ret = c.romfs_close(file);
@@ -598,6 +606,18 @@ That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emul
 
 _Is there something special inside <stdio.h> and <stdlib.h>?_
 
+```c
+// Demo Program for TCC Compiler
+// with ROM FS
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(int argc, char *argv[]) {
+  puts("Hello, World!!\n");
+  exit(0);
+}            
+```
+
 They'll make __System Calls__ to NuttX Kernel, for printing and quitting...
 
 TODO
@@ -639,6 +659,10 @@ cd tcc-riscv32-wasm
 ./configure
 make cross-riscv64
 
+## TODO
+cd zig
+./build.sh
+
 ## Call Zig Compiler to compile TCC Compiler
 ## from C to WebAssembly. Produces `tcc.o`
 
@@ -663,7 +687,7 @@ simple-http-server ./docs &
 cp tcc-wasm.wasm docs/
 ```
 
-[(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/build.sh)
+[(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
 
 Browse to this URL and our TCC WebAssembly will appear...
 
@@ -680,42 +704,7 @@ Check the __JavaScript Console__ for Debug Messages.
 
 TODO
 
-__For Easier Updates__: We should download __`romfs.bin` from our Web Server__
-
-[tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121)
-
-```zig
-/// Storage for ROM FS Filesystem
-var ROMFS_DATA = std.mem.zeroes([8192]u8);
-
-/// Return the pointer to ROM FS.
-/// `size` is the expected filesystem size.
-pub export fn get_romfs(size: u32) [*]const u8 {
-  if (size > ROMFS_DATA.len) {
-    @panic("get_romfs_ptr: Increase ROMFS_DATA size");
-  }
-  return &ROMFS_DATA;
-}
-```
-
-[tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
-
-```zig
-/// ROM FS Driver makes this IOCTL Request
-export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
-
-  // Request for Memory Address of ROM FS
-  if (cmd == c.BIOC_XIPBASE) {
-    // If we're loading `romfs.bin` from Web Server:
-    // Change `ROMFS_DATA` to `&ROMFS_DATA`
-    rm_xipbase.?.* = @intCast(@intFromPtr(
-      ROMFS_DATA
-    ));
-```
-
-_How is this called by JavaScript?_
-
-[tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L189-L212)
+__For Easier Updates__: We should download __`romfs.bin` from our Web Server: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L189-L212)
 
 ```javascript
 // Load the WebAssembly Module and start the Main Function.
@@ -724,17 +713,15 @@ async function bootstrap() {
   // Omitted: Download the WebAssembly
   ...
   // Download the ROM FS Filesystem
-  console.log("Fetching romfs.bin...");
   const response = await fetch("romfs.bin");
   wasm.romfs = await response.arrayBuffer();
-  console.log("ROM FS Size: " + wasm.romfs.byteLength);
 
   // Start the Main Function
   window.requestAnimationFrame(main);
 }        
 ```
 
-[tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L52-L81)
+Our Main Function passes the __ROM FS Filesystem__ to our Zig Wrapper: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L52-L81)
 
 ```javascript
 // Main Function
@@ -757,6 +744,38 @@ function main() {
   // Call TCC to compile the program
   const ptr = wasm.instance.exports
     .compile_program(options_ptr, code_ptr);
+```
+
+__`get_romfs`__ comes from our Zig Wrapper: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121)
+
+```zig
+/// Storage for ROM FS Filesystem
+var ROMFS_DATA = std.mem.zeroes([8192]u8);
+
+/// Return the pointer to ROM FS.
+/// `size` is the expected filesystem size.
+pub export fn get_romfs(size: u32) [*]const u8 {
+  if (size > ROMFS_DATA.len) {
+    @panic("get_romfs_ptr: Increase ROMFS_DATA size");
+  }
+  return &ROMFS_DATA;
+}
+```
+
+Inside our Zig Wrapper, __`ROMFS_DATA`__ is passed to our NuttX ROM FS Driver via an __IOCTL Request__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
+
+```zig
+/// ROM FS Driver makes this IOCTL Request
+export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
+
+  // Request for Memory Address of ROM FS
+  if (cmd == c.BIOC_XIPBASE) {
+
+    // Note: We changed `ROMFS_DATA` to `&ROMFS_DATA`
+    // because we're loading from Web Server
+    rm_xipbase.?.* = @intCast(@intFromPtr(
+      &ROMFS_DATA
+    ));
 ```
 
 # Appendix: NuttX ROM FS Driver
@@ -798,7 +817,11 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 }
 ```
 
-TODO
+TODO: [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
+
+TODO: C Integration
+
+TODO: Because of extra logging: Iteratively handle printf formats
 
 # Appendix: Print via NuttX System Call
 
@@ -818,7 +841,7 @@ inline int puts(const char *s) {
 Then we implement `write` the exact same way as NuttX, making a System Call: [stdio.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L25-L36)
 
 ```c
-// Caution: This may change
+// Caution: NuttX System Call Number may change
 #define SYS_write 61
 
 // Write to the File Descriptor
@@ -947,13 +970,20 @@ TODO
 In our Demo NuttX App, we implement `exit` the same way as NuttX, by making a System Call: [stdlib.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10)
 
 ```c
-// Caution: This may change
+// Caution: NuttX System Call Number may change
 #define SYS__exit 8
 
-// Terminate the NuttX Process
+// Terminate the NuttX Process.
 // From nuttx/syscall/proxies/PROXY__exit.c
 inline void exit(int parm1) {
-  sys_call1((unsigned int)SYS__exit, (uintptr_t)parm1);
+
+  // Make a System Call to NuttX Kernel
+  sys_call1(
+    (unsigned int)SYS__exit,  // System Call Number
+    (uintptr_t)parm1          // Exit Status
+  );
+
+  // Loop Forever
   while(1);
 }
 ```
@@ -1009,17 +1039,11 @@ Nope we won't do any more of this! Hand-crafting the NuttX System Calls in RISC-
 
 (Maybe we'll revisit this when the RISC-V Registers are working OK in TCC)
 
-TODO: Define the printf formats %jd, %zu
-
-TODO: Iteratively handle printf formats
-
 # Appendix: Patch the NuttX Emulator
 
 TODO
 
 _So we patched Fake `a.out` in the NuttX Image with the Real `a.out`?_
-
-TODO
 
 Exactly! In the NuttX Emulator JavaScript, we read `elf_data` from the Local Storage and pass it to TinyEMU WebAssembly: [jslinux.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545)
 
