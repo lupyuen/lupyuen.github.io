@@ -80,9 +80,10 @@
 <li><a href="#appendix-build-tcc-webassembly">9 Appendix: Build TCC WebAssembly</a><ul></ul></li>
 <li><a href="#appendix-download-rom-fs">10 Appendix: Download ROM FS</a><ul></ul></li>
 <li><a href="#appendix-nuttx-rom-fs-driver">11 Appendix: NuttX ROM FS Driver</a><ul></ul></li>
-<li><a href="#appendix-print-with-nuttx-system-call">12 Appendix: Print with NuttX System Call</a><ul></ul></li>
-<li><a href="#appendix-exit-with-nuttx-system-call">13 Appendix: Exit with NuttX System Call</a><ul></ul></li>
-<li><a href="#appendix-rom-fs-filesystem">14 Appendix: ROM FS Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
+<li><a href="#appendix-patch-the-nuttx-emulator">12 Appendix: Patch the NuttX Emulator</a><ul></ul></li>
+<li><a href="#appendix-print-with-nuttx-system-call">13 Appendix: Print with NuttX System Call</a><ul></ul></li>
+<li><a href="#appendix-exit-with-nuttx-system-call">14 Appendix: Exit with NuttX System Call</a><ul></ul></li>
+<li><a href="#appendix-rom-fs-filesystem">15 Appendix: ROM FS Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="TODO" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/sU69bUyrgN8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -443,8 +444,11 @@ export fn close(fd: c_int) c_int {
 <p>Try the NuttX Tmp FS Driver: <a href="https://github.com/apache/nuttx/tree/master/fs/tmpfs">nuttx/fs/tmpfs</a></p>
 <p><em>Why not FAT?</em></p>
 <p>TODO: <a href="https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/"><strong>Immutable Filesystem</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="TODO" /></p>
 <h1 id="from-tcc-to-nuttx-emulator"><a href="#from-tcc-to-nuttx-emulator">7 From TCC to NuttX Emulator</a></h1>
-<p>TODO</p>
+<p><em>TCC compiles our C Program and sends it to NuttX Emulator…</em></p>
+<p><em>How does it work?</em></p>
+<p>Here’s the Teleporting Magic Trick that we saw…</p>
 <ol>
 <li>
 <p>Browse to <a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs"><strong>TCC RISC-V Compiler (ROM FS)</strong></a></p>
@@ -459,14 +463,17 @@ export fn close(fd: c_int) c_int {
 <p>Reload the Web Browser for <a href="https://lupyuen.github.io/nuttx-tinyemu/tcc/"><strong>NuttX Emulator</strong></a></p>
 </li>
 <li>
-<p>Run <strong><code>a.out</code></strong></p>
+<p>Enter <strong><code>a.out</code></strong> and the new message appears</p>
+<p><a href="https://youtu.be/sU69bUyrgN8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
 </ol>
-<p><em>Wow how does it work?</em></p>
-<p>In Chrome Web Browser, click to <code>Menu &gt; Developer Tools &gt; Application Tab &gt; Local Storage &gt; lupyuen.github.io</code></p>
-<p>We’ll see that the RISC-V ELF <code>a.out</code> is stored locally as <code>elf_data</code> in Local Storage.</p>
-<p>That’s why NuttX Emulator can pick up the <code>a.out</code> from our Web Browser!</p>
-<p>TCC Compiler saves <code>a.out</code> to <code>elf_data</code> in Local Storage: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/tcc.js#L60-L90">tcc.js</a></p>
+<p>What just happened? In Chrome Web Browser, click to <code>Menu &gt; Developer Tools &gt; Application Tab &gt; Local Storage &gt; lupyuen.github.io</code></p>
+<p>We’ll see that the <strong>RISC-V ELF <code>a.out</code></strong> is stored locally as <strong><code>elf_data</code></strong> in the <strong>JavaScript Local Storage</strong>…</p>
+<p>TODO: Pic of elf_data</p>
+<p>That’s why NuttX Emulator can pick up <strong><code>a.out</code></strong> from our Web Browser!</p>
+<p><em>How did it get there?</em></p>
+<p>TODO</p>
+<p>In our WebAssembly JavaScript: TCC Compiler saves <strong><code>a.out</code></strong> to our <strong>JavaScript Local Storage</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/tcc.js#L60-L90">tcc.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Call TCC to compile a program
 const ptr = wasm.instance.exports
   .compile_program(options_ptr, code_ptr);
@@ -487,9 +494,9 @@ localStorage.setItem(
   encoded_data  // Encoded ELF Data
 );
 </code></pre></div>
-<p><em>But NuttX Emulator boots from a fixed <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image">NuttX Image</a>, loaded from our Static Web Server. How did <code>a.out</code> appear inside the NuttX Image?</em></p>
-<p>We used a nifty illusion… <code>a.out</code> was in the NuttX Image all along!</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Create a Fake a.out that contains a Distinct Pattern:
+<p><em>But NuttX Emulator boots from a fixed NuttX Image, loaded from our Static Web Server. How did <code>a.out</code> appear inside the NuttX Image?</em></p>
+<p>We used a nifty illusion… <strong><code>a.out</code></strong> was in the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image"><strong>NuttX Image</strong></a> all along!</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Create a Fake `a.out` that contains a Distinct Pattern:
 ##   22 05 69 00
 ##   22 05 69 01
 ## For 1024 times
@@ -500,76 +507,36 @@ do
   printf 0x%x\\n $(($start + $i)) &gt;&gt; /tmp/pattern.txt
 done
 
-## Copy the Fake a.out to our NuttX Apps Folder
+## Copy the Fake `a.out` to our NuttX Apps Folder
 cat /tmp/pattern.txt \
   | xxd -revert -plain \
-  &gt;~/ox64/apps/bin/a.out
-hexdump -C ~/ox64/apps/bin/a.out
+  &gt;apps/bin/a.out
+hexdump -C apps/bin/a.out
+
+## `a.out` looks like...
+## 0000  22 05 69 00 22 05 69 01  22 05 69 02 22 05 69 03  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
+## 0010  22 05 69 04 22 05 69 05  22 05 69 06 22 05 69 07  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
+## 0020  22 05 69 08 22 05 69 09  22 05 69 0a 22 05 69 0b  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
 </code></pre></div>
-<p>During NuttX Build, the Fake <code>a.out</code> gets bundled into the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd">Initial RAM Disk (initrd)</a>.</p>
-<p><a href="https://lupyuen.github.io/articles/app#initial-ram-disk">Which gets appended</a> to the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image">NuttX Image</a>.</p>
-<p>But because <code>a.out</code> doesn’t contain a valid ELF File, NuttX says “command not found” because it couldn’t load <code>a.out</code> as an ELF Executable.</p>
-<p>(This won’t work with QEMU, because NuttX QEMU doesn’t append the Initial RAM Disk to NuttX Image. Instead <a href="https://lupyuen.github.io/articles/semihost#nuttx-calls-semihosting">QEMU uses Semihosting</a> to access the NuttX Apps, which won’t work in a Web Browsr)</p>
+<p>During NuttX Build, the Fake <strong><code>a.out</code></strong> gets bundled into the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd"><strong>Initial RAM Disk (initrd)</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/app#initial-ram-disk"><strong>Which gets appended</strong></a> to the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image"><strong>NuttX Image</strong></a>.</p>
 <p><em>So we patched Fake <code>a.out</code> in the NuttX Image with the Real <code>a.out</code>?</em></p>
-<p>Exactly! In the NuttX Emulator JavaScript, we read <code>elf_data</code> from the Local Storage and pass it to TinyEMU WebAssembly: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545">jslinux.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>function start() {
-  //// Patch the ELF Data to a.out in Initial RAM Disk
-  let elf_len = 0;
-  let elf_data = new Uint8Array([]);
-  const elf_data_encoded = localStorage.getItem(&quot;elf_data&quot;);
-  if (elf_data_encoded) {
-    elf_data = new Uint8Array(
-      elf_data_encoded
-        .split(&quot;%&quot;)
-        .slice(1)
-        .map(hex=&gt;Number(&quot;0x&quot; + hex))
-    );
-    elf_len = elf_data.length;
-  }
-  ...
-  // Pass `elf_data` and `elf_len` to TinyEMU
-  Module.ccall(
-    &quot;vm_start&quot;,
-    null,
-    [&quot;string&quot;, &quot;number&quot;, &quot;string&quot;, &quot;string&quot;, &quot;number&quot;, &quot;number&quot;, &quot;number&quot;, &quot;string&quot;, &quot;array&quot;, &quot;number&quot;],
-    [url, mem_size, cmdline, pwd, width, height, (net_state != null) | 0, drive_url, 
-      elf_data, elf_len]  // Added these
-  );
-</code></pre></div>
-<p>Inside the TinyEMU WebAssembly: We receive the <code>elf_data</code> and copy it locally, because it will be clobbered (why?): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211">jsemu.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>void vm_start(const char *url, int ram_size, const char *cmdline,
-              const char *pwd, int width, int height, BOOL has_network,
-              const char *drive_url, uint8_t *elf_data0, int elf_len0) {
-
-  // Patch the ELF Data to a.out in Initial RAM Disk
-  extern uint8_t elf_data[];  // From riscv_machine.c
-  extern int elf_len;
-  elf_len = elf_len0;
-
-  // Must copy ELF Data to Local Buffer because it will get overwritten
-  if (elf_len &gt; 4096) { puts(&quot;*** ERROR: elf_len exceeds 4096, increase elf_data and a.out size&quot;); }
-  memcpy(elf_data, elf_data0, elf_len);
-</code></pre></div>
-<p>Then we search for our Magic Pattern <code>22 05 69 00</code> in our Fake <code>a.out</code>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053">riscv_machine.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  // Patch the ELF Data to a.out in Initial RAM Disk
-  uint64_t elf_addr = 0;
-  printf(&quot;elf_len=%d\n&quot;, elf_len);
-  if (elf_len &gt; 0) {
-    // TODO: Fix the Image Size
-    for (int i = 0; i &lt; 0xD61680; i++) {
-      const uint8_t pattern[] = { 0x22, 0x05, 0x69, 0x00 };
-      if (memcmp(&amp;kernel_ptr[i], pattern, sizeof(pattern)) == 0) {
-        // TODO: Catch overflow of a.out
-        memcpy(&amp;kernel_ptr[i], elf_data, elf_len);
-        elf_addr = RAM_BASE_ADDR + i;
-        printf(&quot;Patched ELF Data to a.out at %p\n&quot;, elf_addr);
-        break;
-      }
-    }
-    if (elf_addr == 0) { puts(&quot;*** ERROR: Pattern for ELF Data a.out is missing&quot;); }
-  }
-</code></pre></div>
+<p>TODO</p>
+<p>Exactly!</p>
+<ol>
+<li>
+<p>In the NuttX Emulator JavaScript, we read <code>elf_data</code> from the Local Storage and pass it to TinyEMU WebAssembly</p>
+</li>
+<li>
+<p>Inside the TinyEMU WebAssembly: We receive the <code>elf_data</code> and copy it locally</p>
+</li>
+<li>
+<p>Then we search for our Magic Pattern <code>22 05 69 00</code> in our Fake <code>a.out</code></p>
+</li>
+<li>
 <p>And we overwrite the Fake <code>a.out</code> with the Real <code>a.out</code> from <code>elf_data</code>.</p>
+</li>
+</ol>
 <p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
@@ -685,7 +652,71 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 }
 </code></pre></div>
 <p>TODO</p>
-<h1 id="appendix-print-with-nuttx-system-call"><a href="#appendix-print-with-nuttx-system-call">12 Appendix: Print with NuttX System Call</a></h1>
+<h1 id="appendix-patch-the-nuttx-emulator"><a href="#appendix-patch-the-nuttx-emulator">12 Appendix: Patch the NuttX Emulator</a></h1>
+<p>TODO</p>
+<p><em>So we patched Fake <code>a.out</code> in the NuttX Image with the Real <code>a.out</code>?</em></p>
+<p>TODO</p>
+<p>Exactly! In the NuttX Emulator JavaScript, we read <code>elf_data</code> from the Local Storage and pass it to TinyEMU WebAssembly: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545">jslinux.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>function start() {
+  //// Patch the ELF Data to a.out in Initial RAM Disk
+  let elf_len = 0;
+  let elf_data = new Uint8Array([]);
+  const elf_data_encoded = localStorage.getItem(&quot;elf_data&quot;);
+  if (elf_data_encoded) {
+    elf_data = new Uint8Array(
+      elf_data_encoded
+        .split(&quot;%&quot;)
+        .slice(1)
+        .map(hex=&gt;Number(&quot;0x&quot; + hex))
+    );
+    elf_len = elf_data.length;
+  }
+  ...
+  // Pass `elf_data` and `elf_len` to TinyEMU
+  Module.ccall(
+    &quot;vm_start&quot;,
+    null,
+    [&quot;string&quot;, &quot;number&quot;, &quot;string&quot;, &quot;string&quot;, &quot;number&quot;, &quot;number&quot;, &quot;number&quot;, &quot;string&quot;, &quot;array&quot;, &quot;number&quot;],
+    [url, mem_size, cmdline, pwd, width, height, (net_state != null) | 0, drive_url, 
+      elf_data, elf_len]  // Added these
+  );
+</code></pre></div>
+<p>Inside the TinyEMU WebAssembly: We receive the <code>elf_data</code> and copy it locally, because it will be clobbered (why?): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211">jsemu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void vm_start(const char *url, int ram_size, const char *cmdline,
+              const char *pwd, int width, int height, BOOL has_network,
+              const char *drive_url, uint8_t *elf_data0, int elf_len0) {
+
+  // Patch the ELF Data to a.out in Initial RAM Disk
+  extern uint8_t elf_data[];  // From riscv_machine.c
+  extern int elf_len;
+  elf_len = elf_len0;
+
+  // Must copy ELF Data to Local Buffer because it will get overwritten
+  if (elf_len &gt; 4096) { puts(&quot;*** ERROR: elf_len exceeds 4096, increase elf_data and a.out size&quot;); }
+  memcpy(elf_data, elf_data0, elf_len);
+</code></pre></div>
+<p>Then we search for our Magic Pattern <code>22 05 69 00</code> in our Fake <code>a.out</code>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>  // Patch the ELF Data to a.out in Initial RAM Disk
+  uint64_t elf_addr = 0;
+  printf(&quot;elf_len=%d\n&quot;, elf_len);
+  if (elf_len &gt; 0) {
+    // TODO: Fix the Image Size
+    for (int i = 0; i &lt; 0xD61680; i++) {
+      const uint8_t pattern[] = { 0x22, 0x05, 0x69, 0x00 };
+      if (memcmp(&amp;kernel_ptr[i], pattern, sizeof(pattern)) == 0) {
+        // TODO: Catch overflow of a.out
+        memcpy(&amp;kernel_ptr[i], elf_data, elf_len);
+        elf_addr = RAM_BASE_ADDR + i;
+        printf(&quot;Patched ELF Data to a.out at %p\n&quot;, elf_addr);
+        break;
+      }
+    }
+    if (elf_addr == 0) { puts(&quot;*** ERROR: Pattern for ELF Data a.out is missing&quot;); }
+  }
+</code></pre></div>
+<p>And we overwrite the Fake <code>a.out</code> with the Real <code>a.out</code> from <code>elf_data</code>.</p>
+<p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
+<h1 id="appendix-print-with-nuttx-system-call"><a href="#appendix-print-with-nuttx-system-call">13 Appendix: Print with NuttX System Call</a></h1>
 <p>TODO</p>
 <p>In our Demo NuttX App, we implement <code>puts</code> by calling <code>write</code>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25">stdio.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print the string to Standard Output
@@ -796,7 +827,7 @@ Hello, World!!
 asm volatile (&quot;andi a2, a0, 0xffffffff&quot;);
 </code></pre></div>
 <p>Because 0xffffffff gets assembled to -1. (Bug?)</p>
-<h1 id="appendix-exit-with-nuttx-system-call"><a href="#appendix-exit-with-nuttx-system-call">13 Appendix: Exit with NuttX System Call</a></h1>
+<h1 id="appendix-exit-with-nuttx-system-call"><a href="#appendix-exit-with-nuttx-system-call">14 Appendix: Exit with NuttX System Call</a></h1>
 <p>TODO</p>
 <p>In our Demo NuttX App, we implement <code>exit</code> the same way as NuttX, by making a System Call: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10">stdlib.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Caution: This may change
@@ -856,7 +887,7 @@ inline uintptr_t sys_call1(
 <p>TODO: Define the printf formats %jd, %zu</p>
 <p>TODO: Iteratively handle printf formats</p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
-<h1 id="appendix-rom-fs-filesystem"><a href="#appendix-rom-fs-filesystem">14 Appendix: ROM FS Filesystem</a></h1>
+<h1 id="appendix-rom-fs-filesystem"><a href="#appendix-rom-fs-filesystem">15 Appendix: ROM FS Filesystem</a></h1>
 <p>TODO</p>
 <p>Based on <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Spec</strong></a></p>
 <p>And our <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin"><strong>ROM FS Filesystem <code>romfs.bin</code></strong></a>…</p>
