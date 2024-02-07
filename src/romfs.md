@@ -80,6 +80,8 @@ _Surely it's a staged demo? Or something server-side?_
 
 Everything runs entirely in our Web Browser. Try this...
 
+1.  Browse to [__TCC RISC-V Compiler (ROM FS)__](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
+
 1.  Change the _"Hello World"_ message
 
 1.  Click "__Compile__"
@@ -463,6 +465,152 @@ TODO: [__Immutable Filesystem__](https://blog.setale.me/2022/06/27/Steam-Deck-an
 # From TCC to NuttX Emulator
 
 TODO
+
+1.  Browse to [__TCC RISC-V Compiler (ROM FS)__](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
+
+1.  Change the _"Hello World"_ message
+
+1.  Click "__Compile__"
+
+1.  Reload the Web Browser for [__NuttX Emulator__](https://lupyuen.github.io/nuttx-tinyemu/tcc/)
+
+1.  Run __`a.out`__
+
+_Wow how does it work?_
+
+In Chrome Web Browser, click to `Menu > Developer Tools > Application Tab > Local Storage > lupyuen.github.io`
+
+We'll see that the RISC-V ELF `a.out` is stored locally as `elf_data` in Local Storage.
+
+That's why NuttX Emulator can pick up the `a.out` from our Web Browser!
+
+TCC Compiler saves `a.out` to `elf_data` in Local Storage: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/tcc.js#L60-L90)
+
+```javascript
+// Call TCC to compile a program
+const ptr = wasm.instance.exports
+  .compile_program(options_ptr, code_ptr);
+...
+// Encode the `a.out` data in text.
+// Looks like: %7f%45%4c%46...
+const data = new Uint8Array(memory.buffer, ptr + 4, len);
+let encoded_data = "";
+for (const i in data) {
+  const hex = Number(data[i]).toString(16).padStart(2, "0");
+  encoded_data += `%${hex}`;
+}
+
+// Save the ELF Data to JavaScript Local Storage.
+// Will be loaded by NuttX Emulator
+localStorage.setItem(
+  "elf_data",   // Name for Local Storage
+  encoded_data  // Encoded ELF Data
+);
+```
+
+_But NuttX Emulator boots from a fixed [NuttX Image](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image), loaded from our Static Web Server. How did `a.out` appear inside the NuttX Image?_
+
+We used a nifty illusion... `a.out` was in the NuttX Image all along!
+
+```bash
+## Create a Fake a.out that contains a Distinct Pattern:
+##   22 05 69 00
+##   22 05 69 01
+## For 1024 times
+rm -f /tmp/pattern.txt
+start=$((0x22056900))
+for i in {0..1023}
+do
+  printf 0x%x\\n $(($start + $i)) >> /tmp/pattern.txt
+done
+
+## Copy the Fake a.out to our NuttX Apps Folder
+cat /tmp/pattern.txt \
+  | xxd -revert -plain \
+  >~/ox64/apps/bin/a.out
+hexdump -C ~/ox64/apps/bin/a.out
+```
+
+During NuttX Build, the Fake `a.out` gets bundled into the [Initial RAM Disk (initrd)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd).
+
+[Which gets appended](https://lupyuen.github.io/articles/app#initial-ram-disk) to the [NuttX Image](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image).
+
+But because `a.out` doesn't contain a valid ELF File, NuttX says "command not found" because it couldn't load `a.out` as an ELF Executable.
+
+(This won't work with QEMU, because NuttX QEMU doesn't append the Initial RAM Disk to NuttX Image. Instead [QEMU uses Semihosting](https://lupyuen.github.io/articles/semihost#nuttx-calls-semihosting) to access the NuttX Apps, which won't work in a Web Browsr)
+
+_So we patched Fake `a.out` in the NuttX Image with the Real `a.out`?_
+
+Exactly! In the NuttX Emulator JavaScript, we read `elf_data` from the Local Storage and pass it to TinyEMU WebAssembly: [jslinux.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545)
+
+```javascript
+function start() {
+  //// Patch the ELF Data to a.out in Initial RAM Disk
+  let elf_len = 0;
+  let elf_data = new Uint8Array([]);
+  const elf_data_encoded = localStorage.getItem("elf_data");
+  if (elf_data_encoded) {
+    elf_data = new Uint8Array(
+      elf_data_encoded
+        .split("%")
+        .slice(1)
+        .map(hex=>Number("0x" + hex))
+    );
+    elf_len = elf_data.length;
+  }
+  ...
+  // Pass `elf_data` and `elf_len` to TinyEMU
+  Module.ccall(
+    "vm_start",
+    null,
+    ["string", "number", "string", "string", "number", "number", "number", "string", "array", "number"],
+    [url, mem_size, cmdline, pwd, width, height, (net_state != null) | 0, drive_url, 
+      elf_data, elf_len]  // Added these
+  );
+```
+
+Inside the TinyEMU WebAssembly: We receive the `elf_data` and copy it locally, because it will be clobbered (why?): [jsemu.c](https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211)
+
+```c
+void vm_start(const char *url, int ram_size, const char *cmdline,
+              const char *pwd, int width, int height, BOOL has_network,
+              const char *drive_url, uint8_t *elf_data0, int elf_len0) {
+
+  // Patch the ELF Data to a.out in Initial RAM Disk
+  extern uint8_t elf_data[];  // From riscv_machine.c
+  extern int elf_len;
+  elf_len = elf_len0;
+
+  // Must copy ELF Data to Local Buffer because it will get overwritten
+  if (elf_len > 4096) { puts("*** ERROR: elf_len exceeds 4096, increase elf_data and a.out size"); }
+  memcpy(elf_data, elf_data0, elf_len);
+```
+
+Then we search for our Magic Pattern `22 05 69 00` in our Fake `a.out`: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053)
+
+```c
+  // Patch the ELF Data to a.out in Initial RAM Disk
+  uint64_t elf_addr = 0;
+  printf("elf_len=%d\n", elf_len);
+  if (elf_len > 0) {
+    // TODO: Fix the Image Size
+    for (int i = 0; i < 0xD61680; i++) {
+      const uint8_t pattern[] = { 0x22, 0x05, 0x69, 0x00 };
+      if (memcmp(&kernel_ptr[i], pattern, sizeof(pattern)) == 0) {
+        // TODO: Catch overflow of a.out
+        memcpy(&kernel_ptr[i], elf_data, elf_len);
+        elf_addr = RAM_BASE_ADDR + i;
+        printf("Patched ELF Data to a.out at %p\n", elf_addr);
+        break;
+      }
+    }
+    if (elf_addr == 0) { puts("*** ERROR: Pattern for ELF Data a.out is missing"); }
+  }
+```
+
+And we overwrite the Fake `a.out` with the Real `a.out` from `elf_data`.
+
+That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉
 
 # What's Next
 
