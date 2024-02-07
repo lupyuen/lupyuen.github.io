@@ -272,15 +272,10 @@ pub export fn compile_program(...) [*]const u8 {
 
   // Omitted: Call the TCC Compiler
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L320-L324">(<strong>romfs_files</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163">(<strong>romfs_inode</strong> is here)</a></p>
 <p><em>What if the ROM FS Filesystem contains garbage?</em></p>
 <p>Our ROM FS Driver will <strong>Fail the Mount Operation</strong>.</p>
-<p>That’s because it searches for a <strong>Magic Number</strong> at the top of the filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/fs_romfsutil.c#L765-L770">fs_romfsutil.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Verify the Magic Number that identifies
-// a ROM FS Filesystem
-#define ROMFS_VHDR_MAGIC &quot;-rom1fs-&quot;
-</code></pre></div>
+<p>That’s because it searches for a <a href="TODO"><strong>Magic Number</strong></a> at the top of the filesystem.</p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L91-L98">(See the <strong>Mount Log</strong>)</a></p>
 <p><a href="https://en.wikipedia.org/wiki/I-mode">(Not to be confused with <strong>i-mode</strong>)</a></p>
 <h2 id="open-a-rom-fs-file"><a href="#open-a-rom-fs-file">4.2 Open a ROM FS File</a></h2>
@@ -354,6 +349,7 @@ genromfs \
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin">(Bundled into this <strong>ROM FS Filesystem</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-format2.jpg" alt="ROM FS File Header and Data" /></p>
 <p>TODO</p>
+<p>TODO: Pic of NuttX Driver</p>
 <h1 id="tcc-calls-rom-fs-driver"><a href="#tcc-calls-rom-fs-driver">6 TCC calls ROM FS Driver</a></h1>
 <p><em>TCC Compiler expects POSIX Functions like open(), read(), close()…</em></p>
 <p><em>How will we connect them to ROM FS?</em></p>
@@ -749,7 +745,9 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 </code></pre></div>
 <p>TODO: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
 <p>TODO: C Integration</p>
-<p>TODO: Because of extra logging: Iteratively handle printf formats</p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.c">zig_romfs.c</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.h">zig_romfs.h</a></p>
+<p>TODO: Because of extra logging: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411"><strong>Iteratively handle printf formats</strong></a></p>
 <h1 id="appendix-print-via-nuttx-system-call"><a href="#appendix-print-via-nuttx-system-call">12 Appendix: Print via NuttX System Call</a></h1>
 <p>TODO</p>
 <p>In our Demo NuttX App, we implement <strong><code>puts</code></strong> by calling <strong><code>write</code></strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25">stdio.h</a></p>
@@ -824,7 +822,7 @@ inline uintptr_t sys_call3(
 } 
 </code></pre></div>
 <p><em>Why so complicated?</em></p>
-<p>That’s because TCC <a href="https://lupyuen.github.io/articles/tcc#appendix-nuttx-system-call">won’t load the RISC-V Registers correctly</a>. Thus we load the registers ourselves.</p>
+<p>That’s because TCC <a href="https://lupyuen.github.io/articles/tcc#appendix-nuttx-system-call"><strong>won’t load the RISC-V Registers correctly</strong></a>. Thus we load the registers ourselves.</p>
 <p><em>Why not simply copy A0 to A2 minus the hokey pokey?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Load SysCall Parameter to Register A0
 register long r2 asm(&quot;a0&quot;) = (long)(parm2);
@@ -842,7 +840,7 @@ A2: ffffffffc0101000
 A3: 0f
 [...Page Fault because A2 is an Invalid Address...]
 </code></pre></div>
-<p>So we Shift Away the <strong>Negative Sign</strong>…</p>
+<p>So we Shift Away the <strong>Negative Sign</strong> (<em>silly</em> and <em>seriously</em>)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Load SysCall Parameter to Register A0
 register long r2 asm(&quot;a0&quot;) = (long)(parm2);
 
@@ -864,7 +862,7 @@ A2: c0101000
 A3: 0f
 Hello, World!!
 </code></pre></div>
-<p>BTW <strong><code>andi</code></strong> doesn’t work…</p>
+<p>BTW <em>Andy</em> won’t work either…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Load SysCall Parameter to Register A0
 register long r2 asm(&quot;a0&quot;) = (long)(parm2);
 
@@ -933,8 +931,8 @@ inline uintptr_t sys_call1(
 </code></pre></div>
 <p>And everything works OK now!</p>
 <p><em>Wow this looks horribly painful… Are we doing any more of this?</em></p>
-<p>Nope we won’t do any more of this! Hand-crafting the NuttX System Calls in RISC-V Assembly was extremely painful.</p>
-<p>(Maybe we’ll revisit this when the RISC-V Registers are working OK in TCC)</p>
+<p>Nope sorry, we won’t do any more of this! Hand-crafting the NuttX System Calls in RISC-V Assembly was <a href="TODO"><strong>positively painful</strong></a>.</p>
+<p>(We’ll revisit this when the RISC-V Registers are hunky dory in TCC)</p>
 <h1 id="appendix-patch-the-nuttx-emulator"><a href="#appendix-patch-the-nuttx-emulator">14 Appendix: Patch the NuttX Emulator</a></h1>
 <p>TODO</p>
 <p><em>So we patched Fake <code>a.out</code> in the NuttX Image with the Real <code>a.out</code>?</em></p>
@@ -965,7 +963,7 @@ Module.ccall(
   ]
 );
 </code></pre></div>
-<p>Inside the TinyEMU WebAssembly: We receive the <code>elf_data</code> and copy it locally, because it will be clobbered (why?): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211">jsemu.c</a></p>
+<p>Inside the <strong>TinyEMU WebAssembly</strong>: We receive <strong><code>elf_data</code></strong> and copy it locally, because it will be clobbered (why?): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211">jsemu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Start the TinyEMU Emulator. Called by JavaScript.
 void vm_start(...) {
 
@@ -978,7 +976,7 @@ void vm_start(...) {
   if (elf_len &gt; 4096) { puts(&quot;elf_len exceeds 4096, increase elf_data and a.out size&quot;); }
   memcpy(elf_data, elf_data0, elf_len);
 </code></pre></div>
-<p>Then we search for our Magic Pattern <code>22 05 69 00</code> in our Fake <code>a.out</code>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053">riscv_machine.c</a></p>
+<p>Then we search for our <strong>Magic Pattern <code>22 05 69 00</code></strong> in our Fake <strong><code>a.out</code></strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Patch the ELF Data to Fake `a.out` in Initial RAM Disk
   uint64_t elf_addr = 0;
   for (int i = 0; i &lt; 0xD61680; i++) { // TODO: Fix the Image Size
@@ -994,7 +992,7 @@ void vm_start(...) {
     }
   }
 </code></pre></div>
-<p>And we overwrite the Fake <code>a.out</code> with the Real <code>a.out</code> from <code>elf_data</code>.</p>
+<p>And we overwrite the Fake <strong><code>a.out</code></strong> with the Real <strong><code>a.out</code></strong> from <strong><code>elf_data</code></strong>.</p>
 <p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
 <h1 id="appendix-rom-fs-filesystem"><a href="#appendix-rom-fs-filesystem">15 Appendix: ROM FS Filesystem</a></h1>
