@@ -793,8 +793,18 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
       &amp;ROMFS_DATA
     ));
 </code></pre></div><h1 id="appendix-print-via-nuttx-system-call"><a href="#appendix-print-via-nuttx-system-call">12 Appendix: Print via NuttX System Call</a></h1>
-<p>TODO</p>
-<p>In our Demo NuttX App, we implement <strong><code>puts</code></strong> by calling <strong><code>write</code></strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25">stdio.h</a></p>
+<p><em>What’s inside <code>puts</code>?</em></p>
+<div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler
+// with ROM FS
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void main(int argc, char *argv[]) {
+  puts(&quot;Hello, World!!\n&quot;);
+  exit(0);
+}            
+</code></pre></div>
+<p>We implement <strong><code>puts</code></strong> by calling <strong><code>write</code></strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25">stdio.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print the string to Standard Output
 inline int puts(const char *s) {
   return
@@ -915,9 +925,20 @@ register long r2 asm(&quot;a0&quot;) = (long)(parm2);
 asm volatile (&quot;andi a2, a0, 0xffffffff&quot;);
 </code></pre></div>
 <p>Because <strong><code>0xFFFF_FFFF</code></strong> gets assembled to <strong><code>-1</code></strong>.</p>
+<p><em>Chotto matte</em> there’s more…</p>
 <h1 id="appendix-exit-via-nuttx-system-call"><a href="#appendix-exit-via-nuttx-system-call">13 Appendix: Exit via NuttX System Call</a></h1>
-<p>TODO</p>
-<p>In our Demo NuttX App, we implement <strong><code>exit</code></strong> the same way as NuttX, by making a System Call: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10">stdlib.h</a></p>
+<p><em>What’s inside <code>exit</code>?</em></p>
+<div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler
+// with ROM FS
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void main(int argc, char *argv[]) {
+  puts(&quot;Hello, World!!\n&quot;);
+  exit(0);
+}            
+</code></pre></div>
+<p>We implement <strong><code>exit</code></strong> the same way as NuttX, by making a <strong>System Call</strong> to NuttX Kernel: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10">stdlib.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Caution: NuttX System Call Number may change
 #define SYS__exit 8
 
@@ -973,7 +994,7 @@ inline uintptr_t sys_call1(
   return r0;
 } 
 </code></pre></div>
-<p>And everything works OK now!</p>
+<p>And everything works OK!</p>
 <p><em>Wow this looks horribly painful… Are we doing any more of this?</em></p>
 <p>Nope sorry, we won’t do any more of this! Hand-crafting the NuttX System Calls in RISC-V Assembly was <a href="TODO"><strong>positively painful</strong></a>.</p>
 <p>(We’ll revisit this when the RISC-V Registers are hunky dory in TCC)</p>
