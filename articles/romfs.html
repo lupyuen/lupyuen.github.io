@@ -148,6 +148,9 @@ Hello, World!!
 <p>Everything runs entirely in our Web Browser. Try this…</p>
 <ol>
 <li>
+<p>Browse to <a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs"><strong>TCC RISC-V Compiler (ROM FS)</strong></a></p>
+</li>
+<li>
 <p>Change the <em>“Hello World”</em> message</p>
 </li>
 <li>
@@ -442,6 +445,132 @@ export fn close(fd: c_int) c_int {
 <p>TODO: <a href="https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/"><strong>Immutable Filesystem</strong></a></p>
 <h1 id="from-tcc-to-nuttx-emulator"><a href="#from-tcc-to-nuttx-emulator">7 From TCC to NuttX Emulator</a></h1>
 <p>TODO</p>
+<ol>
+<li>
+<p>Browse to <a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs"><strong>TCC RISC-V Compiler (ROM FS)</strong></a></p>
+</li>
+<li>
+<p>Change the <em>“Hello World”</em> message</p>
+</li>
+<li>
+<p>Click “<strong>Compile</strong>”</p>
+</li>
+<li>
+<p>Reload the Web Browser for <a href="https://lupyuen.github.io/nuttx-tinyemu/tcc/"><strong>NuttX Emulator</strong></a></p>
+</li>
+<li>
+<p>Run <strong><code>a.out</code></strong></p>
+</li>
+</ol>
+<p><em>Wow how does it work?</em></p>
+<p>In Chrome Web Browser, click to <code>Menu &gt; Developer Tools &gt; Application Tab &gt; Local Storage &gt; lupyuen.github.io</code></p>
+<p>We’ll see that the RISC-V ELF <code>a.out</code> is stored locally as <code>elf_data</code> in Local Storage.</p>
+<p>That’s why NuttX Emulator can pick up the <code>a.out</code> from our Web Browser!</p>
+<p>TCC Compiler saves <code>a.out</code> to <code>elf_data</code> in Local Storage: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/tcc.js#L60-L90">tcc.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Call TCC to compile a program
+const ptr = wasm.instance.exports
+  .compile_program(options_ptr, code_ptr);
+...
+// Encode the `a.out` data in text.
+// Looks like: %7f%45%4c%46...
+const data = new Uint8Array(memory.buffer, ptr + 4, len);
+let encoded_data = &quot;&quot;;
+for (const i in data) {
+  const hex = Number(data[i]).toString(16).padStart(2, &quot;0&quot;);
+  encoded_data += `%${hex}`;
+}
+
+// Save the ELF Data to JavaScript Local Storage.
+// Will be loaded by NuttX Emulator
+localStorage.setItem(
+  &quot;elf_data&quot;,   // Name for Local Storage
+  encoded_data  // Encoded ELF Data
+);
+</code></pre></div>
+<p><em>But NuttX Emulator boots from a fixed <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image">NuttX Image</a>, loaded from our Static Web Server. How did <code>a.out</code> appear inside the NuttX Image?</em></p>
+<p>We used a nifty illusion… <code>a.out</code> was in the NuttX Image all along!</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Create a Fake a.out that contains a Distinct Pattern:
+##   22 05 69 00
+##   22 05 69 01
+## For 1024 times
+rm -f /tmp/pattern.txt
+start=$((0x22056900))
+for i in {0..1023}
+do
+  printf 0x%x\\n $(($start + $i)) &gt;&gt; /tmp/pattern.txt
+done
+
+## Copy the Fake a.out to our NuttX Apps Folder
+cat /tmp/pattern.txt \
+  | xxd -revert -plain \
+  &gt;~/ox64/apps/bin/a.out
+hexdump -C ~/ox64/apps/bin/a.out
+</code></pre></div>
+<p>During NuttX Build, the Fake <code>a.out</code> gets bundled into the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd">Initial RAM Disk (initrd)</a>.</p>
+<p><a href="https://lupyuen.github.io/articles/app#initial-ram-disk">Which gets appended</a> to the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image">NuttX Image</a>.</p>
+<p>But because <code>a.out</code> doesn’t contain a valid ELF File, NuttX says “command not found” because it couldn’t load <code>a.out</code> as an ELF Executable.</p>
+<p>(This won’t work with QEMU, because NuttX QEMU doesn’t append the Initial RAM Disk to NuttX Image. Instead <a href="https://lupyuen.github.io/articles/semihost#nuttx-calls-semihosting">QEMU uses Semihosting</a> to access the NuttX Apps, which won’t work in a Web Browsr)</p>
+<p><em>So we patched Fake <code>a.out</code> in the NuttX Image with the Real <code>a.out</code>?</em></p>
+<p>Exactly! In the NuttX Emulator JavaScript, we read <code>elf_data</code> from the Local Storage and pass it to TinyEMU WebAssembly: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545">jslinux.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>function start() {
+  //// Patch the ELF Data to a.out in Initial RAM Disk
+  let elf_len = 0;
+  let elf_data = new Uint8Array([]);
+  const elf_data_encoded = localStorage.getItem(&quot;elf_data&quot;);
+  if (elf_data_encoded) {
+    elf_data = new Uint8Array(
+      elf_data_encoded
+        .split(&quot;%&quot;)
+        .slice(1)
+        .map(hex=&gt;Number(&quot;0x&quot; + hex))
+    );
+    elf_len = elf_data.length;
+  }
+  ...
+  // Pass `elf_data` and `elf_len` to TinyEMU
+  Module.ccall(
+    &quot;vm_start&quot;,
+    null,
+    [&quot;string&quot;, &quot;number&quot;, &quot;string&quot;, &quot;string&quot;, &quot;number&quot;, &quot;number&quot;, &quot;number&quot;, &quot;string&quot;, &quot;array&quot;, &quot;number&quot;],
+    [url, mem_size, cmdline, pwd, width, height, (net_state != null) | 0, drive_url, 
+      elf_data, elf_len]  // Added these
+  );
+</code></pre></div>
+<p>Inside the TinyEMU WebAssembly: We receive the <code>elf_data</code> and copy it locally, because it will be clobbered (why?): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211">jsemu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void vm_start(const char *url, int ram_size, const char *cmdline,
+              const char *pwd, int width, int height, BOOL has_network,
+              const char *drive_url, uint8_t *elf_data0, int elf_len0) {
+
+  // Patch the ELF Data to a.out in Initial RAM Disk
+  extern uint8_t elf_data[];  // From riscv_machine.c
+  extern int elf_len;
+  elf_len = elf_len0;
+
+  // Must copy ELF Data to Local Buffer because it will get overwritten
+  if (elf_len &gt; 4096) { puts(&quot;*** ERROR: elf_len exceeds 4096, increase elf_data and a.out size&quot;); }
+  memcpy(elf_data, elf_data0, elf_len);
+</code></pre></div>
+<p>Then we search for our Magic Pattern <code>22 05 69 00</code> in our Fake <code>a.out</code>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>  // Patch the ELF Data to a.out in Initial RAM Disk
+  uint64_t elf_addr = 0;
+  printf(&quot;elf_len=%d\n&quot;, elf_len);
+  if (elf_len &gt; 0) {
+    // TODO: Fix the Image Size
+    for (int i = 0; i &lt; 0xD61680; i++) {
+      const uint8_t pattern[] = { 0x22, 0x05, 0x69, 0x00 };
+      if (memcmp(&amp;kernel_ptr[i], pattern, sizeof(pattern)) == 0) {
+        // TODO: Catch overflow of a.out
+        memcpy(&amp;kernel_ptr[i], elf_data, elf_len);
+        elf_addr = RAM_BASE_ADDR + i;
+        printf(&quot;Patched ELF Data to a.out at %p\n&quot;, elf_addr);
+        break;
+      }
+    }
+    if (elf_addr == 0) { puts(&quot;*** ERROR: Pattern for ELF Data a.out is missing&quot;); }
+  }
+</code></pre></div>
+<p>And we overwrite the Fake <code>a.out</code> with the Real <code>a.out</code> from <code>elf_data</code>.</p>
+<p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn’t have been possible without your support.</p>
