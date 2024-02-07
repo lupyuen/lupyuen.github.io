@@ -409,6 +409,16 @@ export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
 }
 ```
 
+TODO
+
+[tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L27-L31)
+
+```zig
+// Allocate the POSIX File Descriptors for TCC
+romfs_files = std.ArrayList(*c.struct_file)
+  .init(std.heap.page_allocator);
+```
+
 When TCC WebAssembly calls `read` to read the Include File, we call ROM FS: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L214-L244)
 
 ```zig
@@ -463,27 +473,6 @@ export fn close(fd: c_int) c_int {
 }
 ```
 
-We stage the Include Files `stdio.h` and `stdlib.h` here: [zig/romfs](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs)
-
-```bash
-$ ls -l zig/romfs
--rw-r--r-- 1 25 stdio.h
--rw-r--r-- 1 23 stdlib.h
-```
-
-And we bundle them into `romfs.bin`...
-
-```bash
-## Bundle the romfs folder into ROM FS Filesystem romfs.bin
-## and label with this Volume Name
-genromfs \
-  -f zig/romfs.bin \
-  -d zig/romfs \
-  -V "ROMFS"
-```
-
-[(See the ROM FS Binary `zig/romfs.bin`)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)
-
 At last we have a proper POSIX (Read-Only) Filesystem for TCC WebAssembly yay!
 
 ```text
@@ -525,14 +514,6 @@ Time to wrap up and run everything in a Web Browser...
 # From TCC to NuttX Emulator
 
 TODO
-
-https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L27-L31
-
-```zig
-// Allocate the POSIX File Descriptors for TCC
-romfs_files = std.ArrayList(*c.struct_file)
-  .init(std.heap.page_allocator);
-```
 
 # Print with NuttX System Call
 
