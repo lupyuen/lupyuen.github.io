@@ -14,7 +14,7 @@ But our C Compiler is kinda boring if it doesn't support __C Header Files__ and 
 
 In this article we add a __Read-Only Filesystem__ to our Zig Webassembly...
 
-- TODO: Hosting Include Files
+- TODO: Hosting C Header Files
 
 - TODO: NuttX ROM FS Driver
 
@@ -59,7 +59,7 @@ tcc -c hello.c
 
 And it downloads the compiled [__RISC-V ELF `a.out`__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format).
 
-To test the Compiled Output, we browse to the __NuttX Emulator__...
+To test the Compiled Output, we browse to the __Emulator for Apache NuttX RTOS__...
 
 - [__NuttX Emulator for Ox64 RISC-V SBC__](https://lupyuen.github.io/nuttx-tinyemu/tcc/)
 
@@ -76,7 +76,7 @@ And it works: Our Web Browser generates a RISC-V Executable, that runs in a RISC
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/sU69bUyrgN8)
 
-_Surely it's a staged demo? Or something server-side?_
+_Surely it's a staged demo? Something server-side?_
 
 Everything runs entirely in our Web Browser. Try this...
 
@@ -140,11 +140,11 @@ _What's this ROM FS?_
 
 [__ROM FS__](https://docs.kernel.org/filesystems/romfs.html) is a __Read-Only Filesystem__ that runs entirely in memory.
 
-ROM FS is __a lot simpler__ than Read-Write Filesystems (like FAT and EXT4). That's why we run it inside TCC WebAssembly to host our C Include Files.
+ROM FS is __a lot simpler__ than Read-Write Filesystems (like FAT and EXT4). That's why we run it inside TCC WebAssembly to host our C Header Files.
 
 _How to bundle our C Header Files into ROM FS?_
 
-__`genromfs`__ will pack our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
+__`genromfs`__ will helpfully pack our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
 
 ```bash
 ## For Ubuntu: Install `genromfs`
@@ -191,7 +191,7 @@ _Is there a ROM FS Driver in Zig?_
 
 We looked around [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) (Real-Time Operating System) and we found a [__ROM FS Driver__](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.c) (in C). It works well with Zig!
 
-Let's walk through the steps to call the __NuttX ROM FS Driver__ from Zig...
+Let's walk through the steps to call the __NuttX ROM FS Driver__ from Zig (pic above)...
 
 - __Mounting__ the ROM FS Filesystem
 
@@ -260,7 +260,7 @@ file.f_inode = romfs_inode;
 // Open the ROM FS File
 const ret2 = c.romfs_open(
   &file,       // File Struct
-  "stdio.h",   // Pathname ("/" paths are accepted)
+  "stdio.h",   // Pathname ("/" paths are OK)
   c.O_RDONLY,  // Read-Only
   0            // Mode (Unused for Read-Only Files)
 );
@@ -319,7 +319,7 @@ TODO: [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/b
 
 TODO
 
-__`genromfs`__ will pack our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
+__`genromfs`__ will kindly pack our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
 
 ```bash
 ## For Ubuntu: Install `genromfs`
@@ -341,9 +341,15 @@ genromfs \
 
 [(Bundled into this __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)
 
+TODO
+
+Next comes __File Header and Data__...
+
 ![ROM FS File Header and Data](https://lupyuen.github.io/images/romfs-format2.jpg)
 
 TODO
+
+_Why is Next Header pointing to 0x0A42? Shouldn't it be padded?_
 
 TODO: Pic of NuttX Driver
 
@@ -351,7 +357,7 @@ TODO: Pic of NuttX Driver
 
 _TCC Compiler expects POSIX Functions like open(), read(), close()..._
 
-_How will we connect them to ROM FS?_
+_How will we connect them to ROM FS? (Pic above)_
 
 This is how we implement __POSIX `open()`__ to open a C Header File (from ROM FS): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L166-L219)
 
@@ -421,9 +427,7 @@ romfs_files = std.ArrayList(*c.struct_file)
 
 (Why [__ArrayList__](https://ziglang.org/documentation/master/std/#A;std:ArrayList)? Because it grows easily as we add File Descriptors)
 
-TODO: __POSIX `read()`__
-
-When TCC WebAssembly calls `read` to read the Include File, we call ROM FS: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L226-L256)
+When TCC WebAssembly calls __POSIX `read()`__ to read the C Header File, we call ROM FS: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L226-L256)
 
 ```zig
 /// Read the POSIX File Descriptor `fd`.
@@ -452,9 +456,7 @@ export fn read(fd: c_int, buf: [*:0]u8, nbyte: size_t) isize {
 
 [(See the __Read Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L142-L238)
 
-TODO: __POSIX `close()`__
-
-And finally we call ROM FS Driver to close the Include File: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L278-L298)
+Finally TCC WebAssembly calls __POSIX `close()`__ to close the C Header File: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L278-L298)
 
 ```zig
 /// Close the POSIX File Descriptor
@@ -480,13 +482,11 @@ export fn close(fd: c_int) c_int {
 
 [(See the __Close Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L238-L240)
 
-_What if we need a Temporary Writeable Filesystem?_
+_What if we need a Writeable Filesystem?_
 
-Try the NuttX Tmp FS Driver: [nuttx/fs/tmpfs](https://github.com/apache/nuttx/tree/master/fs/tmpfs)
+Try the [__Tmp FS Driver from Apache NuttX RTOS__](https://github.com/apache/nuttx/tree/master/fs/tmpfs).
 
-_Why not FAT?_
-
-TODO: [__Immutable Filesystem__](https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/)
+It's much simpler than FAT and it won't get corrupted easily. Probably wiser to split the [__Immutable Filesystem__](https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/) (ROM FS) and Writeable Filesystem (Tmp FS).
 
 ![TODO](https://lupyuen.github.io/images/romfs-title.png)
 
@@ -494,7 +494,7 @@ TODO: [__Immutable Filesystem__](https://blog.setale.me/2022/06/27/Steam-Deck-an
 
 _TCC compiles our C Program and sends it to NuttX Emulator... How does it work?_
 
-Here's the Teleporting Magic Trick that we saw...
+Recall our Teleporting Magic Trick...
 
 1.  Browse to [__TCC RISC-V Compiler__](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
 
@@ -520,7 +520,7 @@ _How did it get there?_
 
 TODO
 
-In our WebAssembly JavaScript: TCC Compiler saves __`a.out`__ to our __JavaScript Local Storage__: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/tcc.js#L60-L90)
+In our __WebAssembly JavaScript__: TCC Compiler saves __`a.out`__ to our __JavaScript Local Storage__: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/tcc.js#L60-L90)
 
 ```javascript
 // Call TCC to compile a program
@@ -548,7 +548,7 @@ _But NuttX Emulator boots from a Fixed NuttX Image, loaded from our Static Web S
 
 _How did `a.out` magically appear inside the NuttX Image?_
 
-We used a nifty illusion... __`a.out`__ was in the [__NuttX Image__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image) all along!
+We used a Nifty Illusion... __`a.out`__ was in the [__NuttX Image__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image) all along!
 
 ```bash
 ## Create a Fake `a.out` that
@@ -576,7 +576,7 @@ hexdump -C apps/bin/a.out
 ## 0020  22 05 69 08 22 05 69 09  22 05 69 0a 22 05 69 0b  |".i.".i.".i.".i.|
 ```
 
-During our NuttX Build, the __Fake `a.out`__ gets bundled into the [__Initial RAM Disk (initrd)__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd)...
+During our NuttX Build, the __Fake `a.out`__ gets bundled into the [__Initial RAM Disk `initrd`__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd)...
 
 [__Which gets appended__](https://lupyuen.github.io/articles/app#initial-ram-disk) to the [__NuttX Image__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image).
 
@@ -612,7 +612,7 @@ void main(int argc, char *argv[]) {
 }            
 ```
 
-They'll make __System Calls__ to NuttX Kernel, for printing and quitting...
+They'll make System Calls to __NuttX Kernel__, for printing and quitting...
 
 TODO
 
@@ -1128,7 +1128,7 @@ That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emul
 
 TODO
 
-__`genromfs`__ will pack our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
+__`genromfs`__ will faithfully pack our C Header Files into a ROM FS Filesystem: [build.sh](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190)
 
 ```bash
 ## For Ubuntu: Install `genromfs`
@@ -1167,7 +1167,7 @@ We see the __ROM FS Filesystem Header__ (pic above)...
 0010  52 4f 4d 46 53 00 00 00  00 00 00 00 00 00 00 00  |ROMFS...........|
 ```
 
-Followed by File Header for "__`.`__"...
+Followed by the __File Header__ for "__`.`__"...
 
 ```text
 ----  File Header for `.`
@@ -1178,7 +1178,7 @@ Followed by File Header for "__`.`__"...
       (NextHdr & 0xF = 9 means Executable Directory)
 ```
 
-Followed by File Header for "__`..`__"...
+Then the __File Header__ for "__`..`__"...
 
 ```text
 ----  File Header for `..`
@@ -1189,7 +1189,7 @@ Followed by File Header for "__`..`__"...
       (NextHdr & 0xF = 0 means Hard Link)
 ```
 
-Followed by File Header and Data for "__`stdio.h`__" (pic below)...
+Then the __File Header and Data__ for "__`stdio.h`__" (pic below)...
 
 ```text
 ----  File Header for `stdio.h`
@@ -1206,7 +1206,7 @@ Followed by File Header and Data for "__`stdio.h`__" (pic below)...
 0a30  72 30 3b 0a 7d 20 0a 00  00 00 00 00 00 00 00 00  |r0;.} ..........|
 ```
 
-Followed by File Header and Data for "__`stdlib.h`__"...
+Finally the by __File Header and Data__ for "__`stdlib.h`__"...
 
 ```text
 ----  File Header for `stdlib.h`
