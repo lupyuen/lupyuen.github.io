@@ -317,9 +317,13 @@ TODO: [(See the __Modified Source Files__)](https://github.com/lupyuen/tcc-riscv
 
 TODO: [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
 
-![Inside a ROM FS Filesystem](https://lupyuen.github.io/images/romfs-format.jpg)
+![ROM FS Filesystem Header](https://lupyuen.github.io/images/romfs-format1.jpg)
 
 # Inside a ROM FS Filesystem
+
+TODO
+
+![ROM FS File Header and Data](https://lupyuen.github.io/images/romfs-format2.jpg)
 
 TODO
 
@@ -760,7 +764,7 @@ TODO
 
 TODO
 
-![Inside a ROM FS Filesystem](https://lupyuen.github.io/images/romfs-format.jpg)
+![ROM FS Filesystem Header](https://lupyuen.github.io/images/romfs-format1.jpg)
 
 # Appendix: ROM FS Filesystem
 
@@ -838,3 +842,5 @@ Followed by File Header and Data for `stdlib.h`...
 0f80  72 65 74 75 72 6e 20 72  30 3b 0a 7d 20 0a 00 00  |return r0;.} ...|
 0f90  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 ```
+
+![ROM FS File Header and Data](https://lupyuen.github.io/images/romfs-format2.jpg)
