@@ -617,6 +617,7 @@ zig build-exe ...
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
 <h1 id="appendix-download-rom-fs"><a href="#appendix-download-rom-fs">10 Appendix: Download ROM FS</a></h1>
 <p>TODO</p>
+<p><strong>For Easier Updates</strong>: We should download <strong><code>romfs.bin</code> from our Web Server</strong></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Storage for ROM FS Filesystem
 var ROMFS_DATA = std.mem.zeroes([8192]u8);
@@ -641,6 +642,45 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
     rm_xipbase.?.* = @intCast(@intFromPtr(
       ROMFS_DATA
     ));
+</code></pre></div>
+<p><em>How is this called by JavaScript?</em></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L189-L212">tcc.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Load the WebAssembly Module and start the Main Function.
+// Called by the Compile Button.
+async function bootstrap() {
+  // Omitted: Download the WebAssembly
+  ...
+  // Download the ROM FS Filesystem
+  console.log(&quot;Fetching romfs.bin...&quot;);
+  const response = await fetch(&quot;romfs.bin&quot;);
+  wasm.romfs = await response.arrayBuffer();
+  console.log(&quot;ROM FS Size: &quot; + wasm.romfs.byteLength);
+
+  // Start the Main Function
+  window.requestAnimationFrame(main);
+}        
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L52-L81">tcc.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Main Function
+function main() {
+  // Omitted: Read the Compiler Options and Program Code
+  ...
+  // Copy `romfs.bin` into ROM FS Filesystem
+  const romfs_data = new Uint8Array(wasm.romfs);
+  const romfs_size = romfs_data.length;
+  const memory = wasm.instance.exports.memory;
+  const romfs_ptr = wasm.instance.exports
+    .get_romfs(romfs_size);
+  const romfs_slice = new Uint8Array(
+    memory.buffer,
+    romfs_ptr,
+    romfs_size
+  );
+  romfs_slice.set(romfs_data);
+    
+  // Call TCC to compile the program
+  const ptr = wasm.instance.exports
+    .compile_program(options_ptr, code_ptr);
 </code></pre></div><h1 id="appendix-nuttx-rom-fs-driver"><a href="#appendix-nuttx-rom-fs-driver">11 Appendix: NuttX ROM FS Driver</a></h1>
 <p>TODO</p>
 <p>NuttX ROM FS Driver will call <code>mtd_ioctl</code> to map the ROM FS Data in memory: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
@@ -911,17 +951,34 @@ void vm_start(...) {
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
 <h1 id="appendix-rom-fs-filesystem"><a href="#appendix-rom-fs-filesystem">15 Appendix: ROM FS Filesystem</a></h1>
 <p>TODO</p>
+<p><strong><code>genromfs</code></strong> will pack our C Header Files into a ROM FS Filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190">build.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu: Install `genromfs`
+sudo apt install genromfs
+
+## For macOS: Install `genromfs`
+brew install genromfs
+
+## Bundle the `romfs` folder into
+## ROM FS Filesystem `romfs.bin`
+## and label with this Volume Name
+genromfs \
+  -f romfs.bin \
+  -d romfs \
+  -V &quot;ROMFS&quot;
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs">(<em>&lt;stdio.h&gt;</em> and <em>&lt;stdlib.h&gt;</em> are in the <strong>ROM FS Folder</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin">(Bundled into this <strong>ROM FS Filesystem</strong>)</a></p>
 <p>Based on <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Spec</strong></a></p>
 <p>And our <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin"><strong>ROM FS Filesystem <code>romfs.bin</code></strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>hexdump -C tcc-riscv32-wasm/zig/romfs.bin 
 </code></pre></div>
-<p>We see the ROM FS Filesystem Header…</p>
+<p>We see the <strong>ROM FS Filesystem Header</strong> (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>      [ Magic Number        ]  [ FS Size ] [ Checksm ]
 0000  2d 72 6f 6d 31 66 73 2d  00 00 0f 90 58 57 01 f8  |-rom1fs-....XW..|
       [ Volume Name: ROMFS                           ]
 0010  52 4f 4d 46 53 00 00 00  00 00 00 00 00 00 00 00  |ROMFS...........|
 </code></pre></div>
-<p>Followed by File Header for <code>.</code>…</p>
+<p>Followed by File Header for “<strong><code>.</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `.`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0020  00 00 00 49 00 00 00 20  00 00 00 00 d1 ff ff 97  |...I... ........|
@@ -929,7 +986,7 @@ void vm_start(...) {
 0030  2e 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
       (NextHdr &amp; 0xF = 9 means Executable Directory)
 </code></pre></div>
-<p>Followed by File Header for <code>..</code>…</p>
+<p>Followed by File Header for “<strong><code>..</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `..`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0040  00 00 00 60 00 00 00 20  00 00 00 00 d1 d1 ff 80  |...`... ........|
@@ -937,7 +994,7 @@ void vm_start(...) {
 0050  2e 2e 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
       (NextHdr &amp; 0xF = 0 means Hard Link)
 </code></pre></div>
-<p>Followed by File Header and Data for <code>stdio.h</code>…</p>
+<p>Followed by File Header and Data for “<strong><code>stdio.h</code></strong>” (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `stdio.h`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0060  00 00 0a 42 00 00 00 00  00 00 09 b7 1d 5d 1f 9e  |...B.........]..|
@@ -951,7 +1008,7 @@ void vm_start(...) {
 0a20  74 65 72 20 41 30 0a 20  20 72 65 74 75 72 6e 20  |ter A0.  return |
 0a30  72 30 3b 0a 7d 20 0a 00  00 00 00 00 00 00 00 00  |r0;.} ..........|
 </code></pre></div>
-<p>Followed by File Header and Data for <code>stdlib.h</code>…</p>
+<p>Followed by File Header and Data for “<strong><code>stdlib.h</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `stdlib.h`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0a40  00 00 00 02 00 00 00 00  00 00 05 2e 23 29 67 fc  |............#)g.|
