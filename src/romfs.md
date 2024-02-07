@@ -329,12 +329,14 @@ TODO
 
 # TCC calls ROM FS Driver
 
-TODO
+_TCC Compiler expects POSIX Functions like open(), read(), close()..._
 
-When TCC WebAssembly calls `open` to open an Include File, we call the NuttX ROM FS Driver to open the file in ROM FS: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L157-L207)
+_How will we connect them to ROM FS?_
+
+This is how we implement POSIX __`open()`__ to open a C Header File (from ROM FS): [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L157-L207)
 
 ```zig
-/// Open the file and return the POSIX File Descriptor.
+/// Open the ROM FS File and return the POSIX File Descriptor.
 /// Emulates POSIX `open()`
 export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
 
@@ -379,8 +381,6 @@ export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
 
 [(See the __Open Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L139-L141)
 
-TODO
-
 [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L27-L31)
 
 ```zig
@@ -394,6 +394,8 @@ var romfs_files: std.ArrayList(*c.struct_file) = undefined;
 romfs_files = std.ArrayList(*c.struct_file)
   .init(std.heap.page_allocator);
 ```
+
+TODO: POSIX __`read()`__
 
 When TCC WebAssembly calls `read` to read the Include File, we call ROM FS: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L214-L244)
 
@@ -421,6 +423,8 @@ export fn read(fd: c_int, buf: [*:0]u8, nbyte: size_t) isize {
 ```
 
 [(See the __Read Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L142-L238)
+
+TODO: POSIX __`close()`__
 
 And finally we call ROM FS Driver to close the Include File: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L266-L286)
 
