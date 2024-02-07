@@ -827,7 +827,7 @@ TODO: Because of extra logging: Iteratively handle printf formats
 
 TODO
 
-In our Demo NuttX App, we implement `puts` by calling `write`: [stdio.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25)
+In our Demo NuttX App, we implement __`puts`__ by calling __`write`__: [stdio.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25)
 
 ```c
 // Print the string to Standard Output
@@ -838,7 +838,7 @@ inline int puts(const char *s) {
 }
 ```
 
-Then we implement `write` the exact same way as NuttX, making a System Call: [stdio.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L25-L36)
+Then we implement __`write`__ the exact same way as NuttX, making a System Call: [stdio.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L25-L36)
 
 ```c
 // Caution: NuttX System Call Number may change
@@ -856,7 +856,7 @@ inline ssize_t write(int parm1, const void * parm2, size_t parm3) {
 }
 ```
 
-`sys_call3` is our hacked implementation of NuttX System Call: [stdio.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L36-L84)
+__`sys_call3`__ is our hacked implementation of NuttX System Call: [stdio.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L36-L84)
 
 ```c
 // Make a System Call with 3 parameters
@@ -887,6 +887,7 @@ inline uintptr_t sys_call3(
   // to RISC-V Supervisor Mode
   // to execute the System Call.
   asm volatile (
+
     // ECALL for System Call to NuttX Kernel
     "ecall \n"
     
@@ -913,58 +914,72 @@ That's because TCC [won't load the RISC-V Registers correctly](https://lupyuen.g
 _Why not simply copy A0 to A2 minus the hokey pokey?_
 
 ```c
-register long r2 asm("a0") = (long)(parm2);  // Will move to A2
-asm volatile ("addi a2, a0, 0");  // Copy A0 to A2
+// Load SysCall Parameter to Register A0
+register long r2 asm("a0") = (long)(parm2);
+
+// Copy Register A0 to A2
+asm volatile ("addi a2, a0, 0");
 ```
 
-Because then Register A2 becomes negative...
+When we do that, Register A2 __becomes negative__...
 
-```text
+```yaml
 riscv_swint: Entry: regs: 0x8020be10
 cmd: 61
-EPC: 00000000c0000160
-A0: 000000000000003d 
-A1: 0000000000000001 
+EPC: c0000160
+A0: 3d 
+A1: 01 
 A2: ffffffffc0101000 
-A3: 000000000000000f
-[...Page Fault because A2 is Invalid Address...]
+A3: 0f
+[...Page Fault because A2 is an Invalid Address...]
 ```
 
-So we Shift away the Negative Sign...
+So we Shift Away the __Negative Sign__...
 
 ```c
-register long r2 asm("a0") = (long)(parm2);  // Will move to A2
-asm volatile ("slli a2, a0, 32");  // Shift 32 bits Left then Right
-asm volatile ("srli a2, a2, 32");  // To clear the top 32 bits
+// Load SysCall Parameter to Register A0
+register long r2 asm("a0") = (long)(parm2);
+
+// Shift 32 bits Left and
+// save to Register A2
+asm volatile ("slli a2, a0, 32");
+
+// Then shift 32 bits Right
+// to clear the top 32 bits
+asm volatile ("srli a2, a2, 32");
 ```
 
-Then Register A2 becomes Positively OK...
+Then Register A2 becomes __Positively OK__...
 
-```text
+```yaml
 riscv_swint: Entry: regs: 0x8020be10
 cmd: 61
-EPC: 00000000c0000164
-A0: 000000000000003d 
-A1: 0000000000000001
-A2: 00000000c0101000
-A3: 000000000000000f
+EPC: c0000164
+A0: 3d 
+A1: 01
+A2: c0101000
+A3: 0f
 Hello, World!!
 ```
 
-BTW `andi` doesn't work...
+BTW __`andi`__ doesn't work...
 
 ```c
-register long r2 asm("a0") = (long)(parm2);  // Will move to A2
+// Load SysCall Parameter to Register A0
+register long r2 asm("a0") = (long)(parm2);
+
+// Logical AND with 0xffffffff
+// then save to Register A2
 asm volatile ("andi a2, a0, 0xffffffff");
 ```
 
-Because 0xffffffff gets assembled to -1. (Bug?)
+Because __`0xFFFF_FFFF`__ gets assembled to __`-1`__.
 
 # Appendix: Exit via NuttX System Call
 
 TODO
 
-In our Demo NuttX App, we implement `exit` the same way as NuttX, by making a System Call: [stdlib.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10)
+In our Demo NuttX App, we implement __`exit`__ the same way as NuttX, by making a System Call: [stdlib.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10)
 
 ```c
 // Caution: NuttX System Call Number may change
@@ -985,10 +1000,10 @@ inline void exit(int parm1) {
 }
 ```
 
-`sys_call1` makes a NuttX System Call, with our hand-crafted RISC-V Assembly (as a workaround): [stdlib.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L10-L48)
+__`sys_call1`__ makes a NuttX System Call, with our hand-crafted RISC-V Assembly (as a workaround): [stdlib.h](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L10-L48)
 
 ```c
-// Make a System Call with 1 parameters
+// Make a System Call with 1 parameter
 // https://github.com/apache/nuttx/blob/master/arch/risc-v/include/syscall.h#L188-L213
 inline uintptr_t sys_call1(
   unsigned int nbr,  // System Call Number
@@ -1006,6 +1021,7 @@ inline uintptr_t sys_call1(
   // to RISC-V Supervisor Mode
   // to execute the System Call.
   asm volatile (
+
     // ECALL for System Call to NuttX Kernel
     "ecall \n"
     
