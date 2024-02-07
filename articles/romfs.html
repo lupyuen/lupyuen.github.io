@@ -333,9 +333,10 @@ romfs_close: Closing
 <p><img src="https://lupyuen.github.io/images/romfs-format2.jpg" alt="ROM FS File Header and Data" /></p>
 <p>TODO</p>
 <h1 id="tcc-calls-rom-fs-driver"><a href="#tcc-calls-rom-fs-driver">6 TCC calls ROM FS Driver</a></h1>
-<p>TODO</p>
-<p>When TCC WebAssembly calls <code>open</code> to open an Include File, we call the NuttX ROM FS Driver to open the file in ROM FS: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L157-L207">tcc-wasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Open the file and return the POSIX File Descriptor.
+<p><em>TCC Compiler expects POSIX Functions like open(), read(), close()…</em></p>
+<p><em>How will we connect them to ROM FS?</em></p>
+<p>This is how we implement POSIX <strong><code>open()</code></strong> to open a C Header File (from ROM FS): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L157-L207">tcc-wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Open the ROM FS File and return the POSIX File Descriptor.
 /// Emulates POSIX `open()`
 export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
 
@@ -378,7 +379,6 @@ export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
 }
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L139-L141">(See the <strong>Open Log</strong>)</a></p>
-<p>TODO</p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L27-L31">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// POSIX File Descriptors for TCC.
 // This maps a File Descriptor to the File Struct.
@@ -390,6 +390,7 @@ var romfs_files: std.ArrayList(*c.struct_file) = undefined;
 romfs_files = std.ArrayList(*c.struct_file)
   .init(std.heap.page_allocator);
 </code></pre></div>
+<p>TODO: POSIX <strong><code>read()</code></strong></p>
 <p>When TCC WebAssembly calls <code>read</code> to read the Include File, we call ROM FS: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L214-L244">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read the POSIX File Descriptor `fd`.
 /// Emulates POSIX `read()`
@@ -413,6 +414,7 @@ export fn read(fd: c_int, buf: [*:0]u8, nbyte: size_t) isize {
 }
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L142-L238">(See the <strong>Read Log</strong>)</a></p>
+<p>TODO: POSIX <strong><code>close()</code></strong></p>
 <p>And finally we call ROM FS Driver to close the Include File: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L266-L286">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Close the POSIX File Descriptor
 /// Emulates POSIX `close()`
