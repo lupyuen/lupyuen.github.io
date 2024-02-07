@@ -164,7 +164,7 @@ genromfs \
 
 [(Bundled into this __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)
 
-We embed the __ROM FS Filesystem `romfs.bin`__ into our [__Zig Wrapper__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly), so it will be accessible by TCC WebAssembly: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/c2146f65cc8f338b8a3aaa4c2e88e550e82514ec/zig/tcc-wasm.zig#L993-L997)
+We embed the [__ROM FS Filesystem `romfs.bin`__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin) into our [__Zig Wrapper__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly), so it will be accessible by TCC WebAssembly: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/c2146f65cc8f338b8a3aaa4c2e88e550e82514ec/zig/tcc-wasm.zig#L993-L997)
 
 ```zig
 // Embed the ROM FS Filesystem
@@ -758,15 +758,21 @@ TODO
 
 TODO
 
+![Inside a ROM FS Filesystem](https://lupyuen.github.io/images/romfs-format.jpg)
+
 # Appendix: Inside a ROM FS Filesystem
 
 TODO
+
+Based on [__ROM FS Spec__](https://docs.kernel.org/filesystems/romfs.html)
+
+And our [__ROM FS Filesystem `romfs.bin`__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin)...
 
 ```bash
 hexdump -C tcc-riscv32-wasm/zig/romfs.bin 
 ```
 
-TODO
+We see the ROM FS Filesystem Header...
 
 ```text
       [ Magic Number        ]  [ FS Size ] [ Checksm ]
@@ -775,7 +781,7 @@ TODO
 0010  52 4f 4d 46 53 00 00 00  00 00 00 00 00 00 00 00  |ROMFS...........|
 ```
 
-TODO
+Followed by File Header for `.`...
 
 ```text
 ----  File Header for `.`
@@ -786,7 +792,7 @@ TODO
       (NextHdr & 0xF = 9 means Executable Directory)
 ```
 
-TODO
+Followed by File Header for `..`...
 
 ```text
 ----  File Header for `..`
@@ -797,7 +803,7 @@ TODO
       (NextHdr & 0xF = 0 means Hard Link)
 ```
 
-TODO
+Followed by File Header and Data for `stdio.h`...
 
 ```text
 ----  File Header for `stdio.h`
@@ -814,7 +820,7 @@ TODO
 0a30  72 30 3b 0a 7d 20 0a 00  00 00 00 00 00 00 00 00  |r0;.} ..........|
 ```
 
-TODO
+Followed by File Header and Data for `stdlib.h`...
 
 ```text
 ----  File Header for `stdlib.h`
