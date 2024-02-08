@@ -1196,6 +1196,8 @@ And we overwrite the Fake __`a.out`__ with the Real __`a.out`__ from __`elf_data
 
 That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉
 
+[(See the __Web Server Files__)](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/tcc)
+
 ![ROM FS Filesystem Header](https://lupyuen.github.io/images/romfs-format1.jpg)
 
 # Appendix: ROM FS Filesystem
