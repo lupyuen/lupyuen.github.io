@@ -388,7 +388,7 @@ hexdump -C romfs.bin
 <p><em>Why is Next Header pointing to <code>0xA42</code>? Shouldn’t it be padded?</em></p>
 <p>Bits 0 to 3 of “Next Header” tell us the <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79"><strong>File Type</strong></a>.</p>
 <p><strong><code>0xA42</code></strong> says that this is a <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79"><strong>Regular File</strong></a>. (Type 2)</p>
-<p>TODO: Pic of NuttX Driver</p>
+<p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="TODO" /></p>
 <h1 id="tcc-calls-rom-fs-driver"><a href="#tcc-calls-rom-fs-driver">6 TCC calls ROM FS Driver</a></h1>
 <p><em>TCC Compiler expects POSIX Functions like open(), read(), close()…</em></p>
 <p><em>How will we connect them to ROM FS? (Pic above)</em></p>
