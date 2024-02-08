@@ -1068,7 +1068,7 @@ inline uintptr_t sys_call1(
 </ul>
 <p>And we discovered that TCC WebAssembly saves <strong><code>a.out</code></strong> to the <strong>JavaScript Local Storage</strong>, encoded as <strong><code>elf_data</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/romfs-tcc2.png" alt="RISC-V ELF in the JavaScript Local Storage" /></p>
-<p>This is how we take <strong><code>elf_data</code></strong> and patch the <strong>Fake <code>a.out</code></strong> in the NuttX Image with the Real <strong><code>a.out</code></strong> (from TCC)…</p>
+<p>This is how we take <strong><code>elf_data</code></strong> and patch the <strong>Fake <code>a.out</code></strong> in the NuttX Image with the <strong>Real <code>a.out</code></strong> (from TCC)…</p>
 <p>In our <strong>NuttX Emulator JavaScript</strong>: We read <strong><code>elf_data</code></strong> from the <strong>JavaScript Local Storage</strong> and pass it to TinyEMU WebAssembly: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545">jslinux.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Receive the Encoded ELF Data for `a.out`
 // from JavaScript Local Storage and decode it
