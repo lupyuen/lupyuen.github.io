@@ -300,6 +300,9 @@ const ret2 = c.romfs_open(
 assert(ret2 &gt;= 0);
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L99-L101">(See the <strong>Open Log</strong>)</a></p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/romfs-flow2.jpg" alt="TODO" /></p>
+</blockquote>
 <h2 id="read-a-rom-fs-file"><a href="#read-a-rom-fs-file">4.3 Read a ROM FS File</a></h2>
 <p>Finally we <strong>Read and Close</strong> the ROM FS File: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L138-L157">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Read the ROM FS File, first 4 bytes
