@@ -313,6 +313,8 @@ What's going on inside the filesystem? We snoop around...
 
 [(See the __Read Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L102-L113)
 
+[(About the __ROM FS Driver__)](https://lupyuen.github.io/articles/romfs#appendix-nuttx-rom-fs-driver)
+
 ![ROM FS Filesystem Header](https://lupyuen.github.io/images/romfs-format1.jpg)
 
 # Inside a ROM FS Filesystem
@@ -403,9 +405,9 @@ export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
   // Or create the RISC-V ELF `hello.o`
   ...
   // Allocate the File Struct
-  const files = std.heap.page_allocator.alloc(c.struct_file, 1) catch {
-    @panic("open: Failed to allocate file");
-  };
+  const files = std.heap.page_allocator.alloc(
+    c.struct_file, 1
+  ) catch { @panic("Failed to allocate file"); };
   const file = &files[0];
   file.* = std.mem.zeroes(c.struct_file);
   file.*.f_inode = romfs_inode;
@@ -431,9 +433,8 @@ export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
   next_fd += 1;
   const f = fd - FIRST_FD - 1;
   assert(romfs_files.items.len == f);
-  romfs_files.append(file) catch {
-    @panic("Unable to allocate file");
-  };
+  romfs_files.append(file)
+    catch { @panic("Failed to add file"); };
   return fd;
 }
 ```
@@ -514,6 +515,8 @@ export fn close(fd: c_int) c_int {
 ```
 
 [(See the __Close Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L238-L240)
+
+[(Build and test __TCC WebAssembly__)](https://lupyuen.github.io/articles/romfs#appendix-build-tcc-webassembly)
 
 _What if we need a Writeable Filesystem?_
 
@@ -735,7 +738,21 @@ Check the __JavaScript Console__ for Debug Messages.
 
 _What did we change in the NuttX ROM FS Driver? (Pic above)_
 
-Not much! NuttX ROM FS Driver will call __`mtd_ioctl`__ in Zig when it maps the ROM FS Data in memory: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
+Not much! We made minor tweaks to the __NuttX ROM FS Driver__ and added a Build Script...
+
+- [__ROM FS Source Files__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig)
+
+  [(See the __Modified Files__)](https://github.com/lupyuen/tcc-riscv32-wasm/pull/1/files)
+
+- [__ROM FS Build Script__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
+
+We wrote some __Glue Code in C__ (because some things couldn't be expressed in Zig)...
+
+- [__zig_romfs.c__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.c)
+
+- [__zig_romfs.h__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.h)
+
+NuttX ROM FS Driver will call __`mtd_ioctl`__ in Zig when it maps the ROM FS Data in memory: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
 
 ```zig
 /// Embed the ROM FS Filesystem
@@ -773,20 +790,6 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 ```
 
 [(About __@embedFile__)](https://ziglang.org/documentation/master/#embedFile)
-
-We wrote some __Glue Code in C__ (because some things couldn't be expressed in Zig)...
-
-- [__zig_romfs.c__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.c)
-
-- [__zig_romfs.h__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.h)
-
-We made minor tweaks to the __NuttX ROM FS Driver__ and added a Build Script...
-
-- [__ROM FS Source Files__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig)
-
-  [(See the __Modified Files__)](https://github.com/lupyuen/tcc-riscv32-wasm/pull/1/files)
-
-- [__ROM FS Build Script__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
 
 _Anything else we changed in our Zig Wrapper?_
 
