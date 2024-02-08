@@ -89,16 +89,16 @@
 <p><a href="https://youtu.be/sU69bUyrgN8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>We’re building a <a href="https://lupyuen.github.io/articles/tcc"><strong>C Compiler for RISC-V</strong></a> that runs in the <strong>Web Browser</strong>. (With <a href="https://ziglang.org/"><strong>Zig Compiler</strong></a> and WebAssembly)</p>
 <p>But our C Compiler is kinda boring if it doesn’t support <strong>C Header Files</strong> and Library Files.</p>
-<p>In this article we add a <strong>Read-Only Filesystem</strong> to our Zig Webassembly…</p>
+<p>In this article we add a <strong>Read-Only Filesystem</strong> to our Zig WebAssembly…</p>
 <ul>
 <li>
-<p>TODO: Hosting C Header Files</p>
+<p>We host the C Header Files in a <strong>ROM FS Filesystem</strong></p>
 </li>
 <li>
-<p>TODO: NuttX ROM FS Driver</p>
+<p>Zig reads them with the ROM FS Driver from <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a></p>
 </li>
 <li>
-<p>TODO: Integrate TCC Compiler</p>
+<p>Zig emulates <strong>POSIX File Access</strong> for TCC Compiler</p>
 </li>
 <li>
 <p>TODO: Integrate NuttX Emulator</p>
