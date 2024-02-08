@@ -277,7 +277,7 @@ pub export fn compile_program(...) [*]const u8 {
 
   // Omitted: Call the TCC Compiler
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163">(<strong>romfs_inode</strong> is here)</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163">(<strong>romfs_inode</strong> is our <strong>Mount Inode</strong>)</a></p>
 <p><em>What if the ROM FS Filesystem contains garbage?</em></p>
 <p>Our ROM FS Driver will <strong>Fail the Mount Operation</strong>.</p>
 <p>That’s because it searches for a <a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem"><strong>Magic Number</strong></a> at the top of the filesystem.</p>
@@ -299,7 +299,9 @@ const ret2 = c.romfs_open(
 );
 assert(ret2 &gt;= 0);
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163">(<strong>romfs_inode</strong> is our <strong>Mount Inode</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L99-L101">(See the <strong>Open Log</strong>)</a></p>
+<p>(Later we’ll allocate File Struct from the Heap)</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/romfs-flow2.jpg" alt="POSIX Functions for ROM FS" /></p>
 </blockquote>
@@ -460,7 +462,8 @@ var romfs_files: std.ArrayList(  // Array List of...
 romfs_files = std.ArrayList(*c.struct_file)
   .init(std.heap.page_allocator);
 </code></pre></div>
-<p>(Why <a href="https://ziglang.org/documentation/master/std/#A;std:ArrayList"><strong>ArrayList</strong></a>? It grows easily as we add File Descriptors)</p>
+<p>Why <a href="https://ziglang.org/documentation/master/std/#A;std:ArrayList"><strong>ArrayList</strong></a>? It grows easily as we add File Descriptors…</p>
+<p>TODO: Pic of ArrayList</p>
 <p>When TCC WebAssembly calls <strong>POSIX <code>read()</code></strong> to read the C Header File, we call ROM FS: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L226-L256">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read the POSIX File Descriptor `fd`.
 /// Emulates POSIX `read()`
@@ -486,7 +489,7 @@ export fn read(fd: c_int, buf: [*:0]u8, nbyte: size_t) isize {
 }
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L142-L238">(See the <strong>Read Log</strong>)</a></p>
-<p>Finally TCC WebAssembly calls <strong>POSIX <code>close()</code></strong> to close the C Header File: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L278-L298">tcc-wasm.zig</a></p>
+<p>Finally TCC WebAssembly calls <strong>POSIX <code>close()</code></strong> to close the C Header File. We do the same for ROM FS: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L278-L298">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Close the POSIX File Descriptor
 /// Emulates POSIX `close()`
 export fn close(fd: c_int) c_int {
@@ -507,8 +510,9 @@ export fn close(fd: c_int) c_int {
   return 0;
 }
 </code></pre></div>
+<p>That’s all we need to support C Header Files in TCC WebAssembly!</p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L238-L240">(See the <strong>Close Log</strong>)</a></p>
-<p><a href="https://lupyuen.github.io/articles/romfs#appendix-build-tcc-webassembly">(Build and test <strong>TCC WebAssembly</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/romfs#appendix-build-tcc-webassembly">(Build and Test <strong>TCC WebAssembly</strong>)</a></p>
 <p><em>What if we need a Writeable Filesystem?</em></p>
 <p>Try the <a href="https://github.com/apache/nuttx/tree/master/fs/tmpfs"><strong>Tmp FS Driver from NuttX</strong></a>.</p>
 <p>It’s simpler than FAT and easier to embed in WebAssembly. Probably wiser to split the <a href="https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/"><strong>Immutable Filesystem</strong></a> (ROM FS) and Writeable Filesystem (Tmp FS).</p>
@@ -784,6 +788,7 @@ async function bootstrap() {
   window.requestAnimationFrame(main);
 }        
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L6-L28">(<strong>wasm</strong> is our <strong>WebAssembly Helper</strong>)</a></p>
 <p>Our JavaScript Main Function passes the <strong>ROM FS Filesystem</strong> to our Zig Wrapper: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L52-L81">tcc.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Main Function
 function main() {
@@ -792,9 +797,9 @@ function main() {
   // Copy `romfs.bin` into WebAssembly Memory
   const romfs_data = new Uint8Array(wasm.romfs);
   const romfs_size = romfs_data.length;
-  const memory = wasm.instance.exports.memory;
-  const romfs_ptr = wasm.instance.exports
-    .get_romfs(romfs_size);
+  const exports = wasm.instance.exports;
+  const memory = exports.memory;
+  const romfs_ptr = exports.get_romfs(romfs_size);
   const romfs_slice = new Uint8Array(
     memory.buffer,
     romfs_ptr,
@@ -806,6 +811,7 @@ function main() {
   const ptr = wasm.instance.exports
     .compile_program(options_ptr, code_ptr);
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L6-L28">(<strong>wasm</strong> is our <strong>WebAssembly Helper</strong>)</a></p>
 <p><strong><code>get_romfs</code></strong> returns the WebAssembly Memory from our <strong>Zig Wrapper</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Storage for ROM FS Filesystem, loaded from Web Server
 /// Previously: We embedded the filesystem with `@embedFile`
