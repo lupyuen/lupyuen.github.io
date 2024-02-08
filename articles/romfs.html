@@ -528,9 +528,9 @@ export fn close(fd: c_int) c_int {
 </li>
 </ol>
 <p>What just happened? In Chrome Web Browser, click to <em>Menu &gt; Developer Tools &gt; Application Tab &gt; Local Storage &gt; lupyuen.github.io</em></p>
-<p>We’ll see that the <strong>RISC-V ELF <code>a.out</code></strong> is stored locally as <strong><code>elf_data</code></strong> in the <strong>JavaScript Local Storage</strong>…</p>
-<p>TODO: Pic of elf_data</p>
+<p>We’ll see that the <strong>RISC-V ELF <code>a.out</code></strong> is stored locally as <strong><code>elf_data</code></strong> in the <strong>JavaScript Local Storage</strong>. (Pic below)</p>
 <p>That’s why NuttX Emulator can pick up <strong><code>a.out</code></strong> from our Web Browser!</p>
+<p><img src="https://lupyuen.github.io/images/romfs-tcc2.png" alt="RISC-V ELF in the JavaScript Local Storage" /></p>
 <p><em>How did it get there?</em></p>
 <p>TODO</p>
 <p>In our <strong>WebAssembly JavaScript</strong>: TCC Compiler saves <strong><code>a.out</code></strong> to our <strong>JavaScript Local Storage</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/tcc.js#L60-L90">tcc.js</a></p>
