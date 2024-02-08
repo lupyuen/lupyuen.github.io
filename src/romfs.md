@@ -712,6 +712,8 @@ node zig/test-nuttx.js
 
 [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
 
+[(See the __Build Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L1-L93)
+
 Browse to this URL and our TCC WebAssembly will appear (pic above)...
 
 ```bash
@@ -723,7 +725,7 @@ Check the __JavaScript Console__ for Debug Messages.
 
 [(See the __Web Browser Log__)](https://gist.github.com/lupyuen/748e6d36ce21f7db76cb963eee099d9e)
 
-[(See the __Node.js Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191)
+[(See the __Node.js Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L94-L1454)
 
 [(See the __Web Server Files__)](https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs)
 
@@ -887,9 +889,11 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
     ));
 ```
 
-With a few tweaks to __`ROMFS_DATA`__, we're now loading __`romfs.bin`__ from our Web Server. Which is much better for maintainability.
+With a few tweaks to __`ROMFS_DATA`__, we're now loading __`romfs.bin`__ from our Web Server. Which is better for maintainability.
 
 [(See the __Web Server Files__)](https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs)
+
+[(Loading __`romfs.bin`__ also works in __Node.js__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/test.js#L62-L75)
 
 ![NuttX Apps make a System Call to print to the console](https://lupyuen.github.io/images/app-syscall.jpg)
 
