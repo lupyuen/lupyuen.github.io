@@ -1242,7 +1242,7 @@ Then we search for our __Magic Pattern `22 05 69 00`__ in our Fake __`a.out`__: 
 
 And we overwrite the Fake __`a.out`__ with the Real __`a.out`__ from __`elf_data`__.
 
-This is perfectly OK because [__ROM FS Files are continuous__](https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem) and contiguous. (Though we ought to patch the File Size too)
+This is perfectly OK because [__ROM FS Files are continuous__](https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem) and contiguous. (Though we ought to patch the File Size and the Filesystem Header Checksum)
 
 That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉
 
