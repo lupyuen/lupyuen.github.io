@@ -235,7 +235,7 @@ pub export fn compile_program(...) [*]const u8 {
   // Omitted: Call the TCC Compiler
 ```
 
-[(__romfs_inode__ is here)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163)
+[(__romfs_inode__ is our __Mount Inode__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163)
 
 _What if the ROM FS Filesystem contains garbage?_
 
@@ -267,7 +267,11 @@ const ret2 = c.romfs_open(
 assert(ret2 >= 0);
 ```
 
+[(__romfs_inode__ is our __Mount Inode__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163)
+
 [(See the __Open Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L99-L101)
+
+(Later we'll allocate File Struct from the Heap)
 
 > ![POSIX Functions for ROM FS](https://lupyuen.github.io/images/romfs-flow2.jpg)
 
@@ -459,7 +463,9 @@ romfs_files = std.ArrayList(*c.struct_file)
   .init(std.heap.page_allocator);
 ```
 
-(Why [__ArrayList__](https://ziglang.org/documentation/master/std/#A;std:ArrayList)? It grows easily as we add File Descriptors)
+Why [__ArrayList__](https://ziglang.org/documentation/master/std/#A;std:ArrayList)? It grows easily as we add File Descriptors...
+
+TODO: Pic of ArrayList
 
 When TCC WebAssembly calls __POSIX `read()`__ to read the C Header File, we call ROM FS: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L226-L256)
 
@@ -490,7 +496,7 @@ export fn read(fd: c_int, buf: [*:0]u8, nbyte: size_t) isize {
 
 [(See the __Read Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L142-L238)
 
-Finally TCC WebAssembly calls __POSIX `close()`__ to close the C Header File: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L278-L298)
+Finally TCC WebAssembly calls __POSIX `close()`__ to close the C Header File. We do the same for ROM FS: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L278-L298)
 
 ```zig
 /// Close the POSIX File Descriptor
@@ -514,9 +520,11 @@ export fn close(fd: c_int) c_int {
 }
 ```
 
+That's all we need to support C Header Files in TCC WebAssembly!
+
 [(See the __Close Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L238-L240)
 
-[(Build and test __TCC WebAssembly__)](https://lupyuen.github.io/articles/romfs#appendix-build-tcc-webassembly)
+[(Build and Test __TCC WebAssembly__)](https://lupyuen.github.io/articles/romfs#appendix-build-tcc-webassembly)
 
 _What if we need a Writeable Filesystem?_
 
@@ -832,6 +840,8 @@ async function bootstrap() {
 }        
 ```
 
+[(__wasm__ is our __WebAssembly Helper__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L6-L28)
+
 Our JavaScript Main Function passes the __ROM FS Filesystem__ to our Zig Wrapper: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L52-L81)
 
 ```javascript
@@ -842,9 +852,9 @@ function main() {
   // Copy `romfs.bin` into WebAssembly Memory
   const romfs_data = new Uint8Array(wasm.romfs);
   const romfs_size = romfs_data.length;
-  const memory = wasm.instance.exports.memory;
-  const romfs_ptr = wasm.instance.exports
-    .get_romfs(romfs_size);
+  const exports = wasm.instance.exports;
+  const memory = exports.memory;
+  const romfs_ptr = exports.get_romfs(romfs_size);
   const romfs_slice = new Uint8Array(
     memory.buffer,
     romfs_ptr,
@@ -856,6 +866,8 @@ function main() {
   const ptr = wasm.instance.exports
     .compile_program(options_ptr, code_ptr);
 ```
+
+[(__wasm__ is our __WebAssembly Helper__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L6-L28)
 
 __`get_romfs`__ returns the WebAssembly Memory from our __Zig Wrapper__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121)
 
