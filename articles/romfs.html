@@ -133,7 +133,7 @@ void main(int argc, char *argv[]) {
 tcc -c hello.c
 </code></pre></div>
 <p>And it downloads the compiled <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>RISC-V ELF <code>a.out</code></strong></a>.</p>
-<p>To test the Compiled Output, we browse to the <strong>Emulator for Apache NuttX RTOS</strong>…</p>
+<p>To test the Compiled Output, we browse to the Emulator for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/nuttx-tinyemu/tcc/"><strong>NuttX Emulator for Ox64 RISC-V SBC</strong></a></li>
 </ul>
@@ -331,7 +331,7 @@ romfs_read: Return 4 bytes from sector offset 0
   0000:  2F 2F 20 43  // C
 romfs_close: Closing 
 </code></pre></div>
-<p>Which looks right because <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><em>&lt;stdio.h&gt;</em></a> begins with “<a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><strong><code>// C</code></strong></a>”</p>
+<p>Which looks right: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><em>&lt;stdio.h&gt;</em></a> begins with “<a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><strong><code>// C</code></strong></a>”</p>
 <p>What’s going on inside the filesystem? We snoop around…</p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L102-L113">(See the <strong>Read Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
@@ -393,6 +393,7 @@ hexdump -C romfs.bin
 </li>
 </ul>
 <p>The Entire Dump of our ROM FS Filesystem is <a href="https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem"><strong>dissected in the Appendix</strong></a>.</p>
+<p>ROM FS is indeed tiny and easy to embed in our apps!</p>
 <p><em>Why is Next Header pointing to <code>0xA42</code>? Shouldn’t it be padded?</em></p>
 <p>Bits 0 to 3 of “Next Header” tell us the <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79"><strong>File Type</strong></a>.</p>
 <p><strong><code>0xA42</code></strong> says that this is a <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79"><strong>Regular File</strong></a>. (Type 2)</p>
@@ -459,7 +460,7 @@ var romfs_files: std.ArrayList(  // Array List of...
 romfs_files = std.ArrayList(*c.struct_file)
   .init(std.heap.page_allocator);
 </code></pre></div>
-<p>(Why <a href="https://ziglang.org/documentation/master/std/#A;std:ArrayList"><strong>ArrayList</strong></a>? Because it grows easily as we add File Descriptors)</p>
+<p>(Why <a href="https://ziglang.org/documentation/master/std/#A;std:ArrayList"><strong>ArrayList</strong></a>? It grows easily as we add File Descriptors)</p>
 <p>When TCC WebAssembly calls <strong>POSIX <code>read()</code></strong> to read the C Header File, we call ROM FS: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L226-L256">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read the POSIX File Descriptor `fd`.
 /// Emulates POSIX `read()`
@@ -690,7 +691,8 @@ node zig/test-nuttx.js
 http://localhost:8000/romfs/index.html
 </code></pre></div>
 <p>Check the <strong>JavaScript Console</strong> for Debug Messages.</p>
-<p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191">(See the <strong>JavaScript Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/748e6d36ce21f7db76cb963eee099d9e">(See the <strong>Web Browser Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191">(See the <strong>Node.js Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs">(See the <strong>Web Server Files</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="NuttX Driver for ROM FS" /></p>
 <h1 id="appendix-nuttx-rom-fs-driver"><a href="#appendix-nuttx-rom-fs-driver">10 Appendix: NuttX ROM FS Driver</a></h1>
