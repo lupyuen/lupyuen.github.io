@@ -334,6 +334,7 @@ romfs_close: Closing
 <p>Which looks right: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><em>&lt;stdio.h&gt;</em></a> begins with “<a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><strong><code>// C</code></strong></a>”</p>
 <p>What’s going on inside the filesystem? We snoop around…</p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L102-L113">(See the <strong>Read Log</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/romfs#appendix-nuttx-rom-fs-driver">(About the <strong>ROM FS Driver</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
 <h1 id="inside-a-rom-fs-filesystem"><a href="#inside-a-rom-fs-filesystem">5 Inside a ROM FS Filesystem</a></h1>
 <p><em>Is a ROM FS Filesystem really so simple and embeddable?</em></p>
@@ -411,9 +412,9 @@ export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
   // Or create the RISC-V ELF `hello.o`
   ...
   // Allocate the File Struct
-  const files = std.heap.page_allocator.alloc(c.struct_file, 1) catch {
-    @panic(&quot;open: Failed to allocate file&quot;);
-  };
+  const files = std.heap.page_allocator.alloc(
+    c.struct_file, 1
+  ) catch { @panic(&quot;Failed to allocate file&quot;); };
   const file = &amp;files[0];
   file.* = std.mem.zeroes(c.struct_file);
   file.*.f_inode = romfs_inode;
@@ -439,9 +440,8 @@ export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
   next_fd += 1;
   const f = fd - FIRST_FD - 1;
   assert(romfs_files.items.len == f);
-  romfs_files.append(file) catch {
-    @panic(&quot;Unable to allocate file&quot;);
-  };
+  romfs_files.append(file)
+    catch { @panic(&quot;Failed to add file&quot;); };
   return fd;
 }
 </code></pre></div>
@@ -508,6 +508,7 @@ export fn close(fd: c_int) c_int {
 }
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L238-L240">(See the <strong>Close Log</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/romfs#appendix-build-tcc-webassembly">(Build and test <strong>TCC WebAssembly</strong>)</a></p>
 <p><em>What if we need a Writeable Filesystem?</em></p>
 <p>Try the <a href="https://github.com/apache/nuttx/tree/master/fs/tmpfs"><strong>Tmp FS Driver from NuttX</strong></a>.</p>
 <p>It’s simpler than FAT and easier to embed in WebAssembly. Probably wiser to split the <a href="https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/"><strong>Immutable Filesystem</strong></a> (ROM FS) and Writeable Filesystem (Tmp FS).</p>
@@ -698,7 +699,26 @@ http://localhost:8000/romfs/index.html
 <p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="NuttX Driver for ROM FS" /></p>
 <h1 id="appendix-nuttx-rom-fs-driver"><a href="#appendix-nuttx-rom-fs-driver">10 Appendix: NuttX ROM FS Driver</a></h1>
 <p><em>What did we change in the NuttX ROM FS Driver? (Pic above)</em></p>
-<p>Not much! NuttX ROM FS Driver will call <strong><code>mtd_ioctl</code></strong> in Zig when it maps the ROM FS Data in memory: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
+<p>Not much! We made minor tweaks to the <strong>NuttX ROM FS Driver</strong> and added a Build Script…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig"><strong>ROM FS Source Files</strong></a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/pull/1/files">(See the <strong>Modified Files</strong>)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh"><strong>ROM FS Build Script</strong></a></p>
+</li>
+</ul>
+<p>We wrote some <strong>Glue Code in C</strong> (because some things couldn’t be expressed in Zig)…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.c"><strong>zig_romfs.c</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.h"><strong>zig_romfs.h</strong></a></p>
+</li>
+</ul>
+<p>NuttX ROM FS Driver will call <strong><code>mtd_ioctl</code></strong> in Zig when it maps the ROM FS Data in memory: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem
 /// (Or download it, see next section)
 const ROMFS_DATA = @embedFile(
@@ -733,25 +753,6 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 }
 </code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#embedFile">(About <strong>@embedFile</strong>)</a></p>
-<p>We wrote some <strong>Glue Code in C</strong> (because some things couldn’t be expressed in Zig)…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.c"><strong>zig_romfs.c</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.h"><strong>zig_romfs.h</strong></a></p>
-</li>
-</ul>
-<p>We made minor tweaks to the <strong>NuttX ROM FS Driver</strong> and added a Build Script…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig"><strong>ROM FS Source Files</strong></a></p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/pull/1/files">(See the <strong>Modified Files</strong>)</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh"><strong>ROM FS Build Script</strong></a></p>
-</li>
-</ul>
 <p><em>Anything else we changed in our Zig Wrapper?</em></p>
 <p>Last week we hacked up a simple <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>Format Pattern</strong></a> for handling <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>fprintf and friends</strong></a>.</p>
 <p>Now with Logging Enabled in NuttX ROM FS, we need to handle more complex Format Strings. Thus we extended our formatting to handle <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411"><strong>Multiple Format Patterns</strong></a> per Format String.</p>
