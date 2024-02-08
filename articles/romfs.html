@@ -1089,6 +1089,7 @@ void vm_start(...) {
 </code></pre></div>
 <p>And we overwrite the Fake <strong><code>a.out</code></strong> with the Real <strong><code>a.out</code></strong> from <strong><code>elf_data</code></strong>.</p>
 <p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
+<p><a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/tcc">(See the <strong>Web Server Files</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
 <h1 id="appendix-rom-fs-filesystem"><a href="#appendix-rom-fs-filesystem">15 Appendix: ROM FS Filesystem</a></h1>
 <p>A while ago we saw <strong><code>genromfs</code></strong> faithfully packing our C Header Files into a <strong>ROM FS Filesystem</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190">build.sh</a></p>
