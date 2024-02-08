@@ -1173,7 +1173,7 @@ And we discovered that TCC WebAssembly saves __`a.out`__ to the __JavaScript Loc
 
 ![RISC-V ELF in the JavaScript Local Storage](https://lupyuen.github.io/images/romfs-tcc2.png)
 
-This is how we take __`elf_data`__ and patch the __Fake `a.out`__ in the NuttX Image with the Real __`a.out`__ (from TCC)...
+This is how we take __`elf_data`__ and patch the __Fake `a.out`__ in the NuttX Image with the __Real `a.out`__ (from TCC)...
 
 In our __NuttX Emulator JavaScript__: We read __`elf_data`__ from the __JavaScript Local Storage__ and pass it to TinyEMU WebAssembly: [jslinux.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545)
 
