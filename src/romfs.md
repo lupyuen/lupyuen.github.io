@@ -181,7 +181,7 @@ const ROMFS_DATA = @embedFile(
 
 [(About __@embedFile__)](https://ziglang.org/documentation/master/#embedFile)
 
-__For Easier Updates__: We should download [__`romfs.bin` from our Web Server__](TODO).
+__For Easier Updates__: We should download [__`romfs.bin` from our Web Server__](TODO). (Pic below)
 
 ![TODO](https://lupyuen.github.io/images/romfs-flow.jpg)
 
