@@ -953,18 +953,22 @@ inline uintptr_t sys_call3(
   // Register A3 is the Third Parameter
 
   // But we're manually moving them around because of... issues
+  // Register A0 (parm3) goes to A3
   register long r3 asm("a0") = (long)(parm3);  // Will move to A3
   asm volatile ("slli a3, a0, 32");  // Shift 32 bits Left then Right
   asm volatile ("srli a3, a3, 32");  // To clear the top 32 bits
 
+  // Register A0 (parm2) goes to A2
   register long r2 asm("a0") = (long)(parm2);  // Will move to A2
   asm volatile ("slli a2, a0, 32");  // Shift 32 bits Left then Right
   asm volatile ("srli a2, a2, 32");  // To clear the top 32 bits
 
+  // Register A0 (parm1) goes to A1
   register long r1 asm("a0") = (long)(parm1);  // Will move to A1
   asm volatile ("slli a1, a0, 32");  // Shift 32 bits Left then Right
   asm volatile ("srli a1, a1, 32");  // To clear the top 32 bits
 
+  // Register A0 (nbr) stays the same
   register long r0 asm("a0") = (long)(nbr);  // Will stay in A0
 
   // `ecall` will jump from RISC-V User Mode
@@ -1117,10 +1121,12 @@ inline uintptr_t sys_call1(
   // Register A1 is the First Parameter
 
   // But we're manually moving them around because of... issues
+  // Register A0 (parm1) goes to A1
   register long r1 asm("a0") = (long)(parm1);  // Will move to A1
   asm volatile ("slli a1, a0, 32");  // Shift 32 bits Left then Right
   asm volatile ("srli a1, a1, 32");  // To clear the top 32 bits
 
+  // Register A0 (nbr) stays the same
   register long r0 asm("a0") = (long)(nbr);  // Will stay in A0
 
   // `ecall` will jump from RISC-V User Mode
@@ -1135,7 +1141,7 @@ inline uintptr_t sys_call1(
     ".word 0x0001 \n"
 
     // Input+Output Registers: None
-    // Input-Only Registers: A0 to A1
+    // Input-Only Registers: A0 and A1
     // Clobbers the Memory
     :
     : "r"(r0), "r"(r1)
