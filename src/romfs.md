@@ -535,11 +535,11 @@ Recall our Teleporting Magic Trick...
 
 What just happened? In Chrome Web Browser, click to _Menu > Developer Tools > Application Tab > Local Storage > lupyuen.github.io_
 
-We'll see that the __RISC-V ELF `a.out`__ is stored locally as __`elf_data`__ in the __JavaScript Local Storage__...
-
-TODO: Pic of elf_data
+We'll see that the __RISC-V ELF `a.out`__ is stored locally as __`elf_data`__ in the __JavaScript Local Storage__. (Pic below)
 
 That's why NuttX Emulator can pick up __`a.out`__ from our Web Browser!
+
+![RISC-V ELF in the JavaScript Local Storage](https://lupyuen.github.io/images/romfs-tcc2.png)
 
 _How did it get there?_
 
