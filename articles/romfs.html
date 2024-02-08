@@ -1126,6 +1126,7 @@ void vm_start(...) {
   }
 </code></pre></div>
 <p>And we overwrite the Fake <strong><code>a.out</code></strong> with the Real <strong><code>a.out</code></strong> from <strong><code>elf_data</code></strong>.</p>
+<p>This is perfectly OK because <a href="https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem"><strong>ROM FS Files are continuous</strong></a> and contiguous. (Though we ought to patch the File Size too)</p>
 <p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/tcc">(See the <strong>Web Server Files</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
