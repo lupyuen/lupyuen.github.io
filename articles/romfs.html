@@ -749,7 +749,9 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh"><strong>ROM FS Build Script</strong></a></p>
 </li>
 </ul>
-<p>Because of NuttX Logging: We extended <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411"><strong>fprintf and friends</strong></a> to handle Format Strings iteratively.</p>
+<p><em>Anything else we changed in our Zig Wrapper?</em></p>
+<p>Last week we hacked up a simple <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>Format Pattern</strong></a> for handling <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>fprintf and friends</strong></a>.</p>
+<p>Now with Logging Enabled in NuttX ROM FS, we need to handle more complex Format Strings. Thus we extended our formatting to handle <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411"><strong>Multiple Format Patterns</strong></a> per Format String.</p>
 <p>Let’s do better and download our filesystem…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/romfs-flow3.jpg" alt="NuttX Driver for ROM FS" /></p>
