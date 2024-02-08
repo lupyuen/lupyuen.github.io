@@ -126,11 +126,11 @@ _Hmmm sounds like a major makeover for TCC Compiler..._
 
 Previously TCC Compiler could access Header Files directly from the __Local Filesystem__...
 
-TODO: Pic of TCC Filesystem
+![TODO](https://lupyuen.github.io/images/romfs-wasm.jpg2)
 
 Now TCC WebAssembly needs to hoop through our [__Zig Wrapper__](https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly) to read the __ROM FS Filesystem__...
 
-TODO: Pic of TCC ROM FS
+![TODO](https://lupyuen.github.io/images/romfs-wasm.jpg)
 
 This is how we made it work...
 
