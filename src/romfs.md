@@ -2,7 +2,7 @@
 
 📝 _20 Feb 2024_
 
-![TODO](https://lupyuen.github.io/images/romfs-title.png)
+![Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)](https://lupyuen.github.io/images/romfs-title.png)
 
 [(Try the __Online Demo__)](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
 
@@ -181,9 +181,9 @@ const ROMFS_DATA = @embedFile(
 
 [(About __@embedFile__)](https://ziglang.org/documentation/master/#embedFile)
 
-__For Easier Updates__: We should download [__`romfs.bin` from our Web Server__](TODO). (Pic below)
+__For Easier Updates__: We should download [__`romfs.bin` from our Web Server__](https://lupyuen.github.io/articles/romfs#appendix-download-rom-fs). (Pic below)
 
-![TODO](https://lupyuen.github.io/images/romfs-flow.jpg)
+![NuttX Driver for ROM FS](https://lupyuen.github.io/images/romfs-flow.jpg)
 
 # NuttX Driver for ROM FS
 
@@ -241,7 +241,7 @@ _What if the ROM FS Filesystem contains garbage?_
 
 Our ROM FS Driver will __Fail the Mount Operation__.
 
-That's because it searches for a [__Magic Number__](TODO) at the top of the filesystem.
+That's because it searches for a [__Magic Number__](https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem) at the top of the filesystem.
 
 [(See the __Mount Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L91-L98)
 
@@ -269,7 +269,7 @@ assert(ret2 >= 0);
 
 [(See the __Open Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L99-L101)
 
-> ![TODO](https://lupyuen.github.io/images/romfs-flow2.jpg)
+> ![POSIX Functions for ROM FS](https://lupyuen.github.io/images/romfs-flow2.jpg)
 
 ## Read a ROM FS File
 
@@ -370,7 +370,7 @@ Next comes __File Header and Data__...
 
 - __File Name__, __File Data__: Padded to 16 bytes
 
-The Entire Dump of our ROM FS Filesystem is [__dissected in the Appendix__](TODO).
+The Entire Dump of our ROM FS Filesystem is [__dissected in the Appendix__](https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem).
 
 _Why is Next Header pointing to `0xA42`? Shouldn't it be padded?_
 
@@ -378,7 +378,7 @@ Bits 0 to 3 of "Next Header" tell us the [__File Type__](https://github.com/apac
 
 __`0xA42`__ says that this is a [__Regular File__](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79). (Type 2)
 
-![TODO](https://lupyuen.github.io/images/romfs-flow.jpg)
+![TCC calls ROM FS Driver](https://lupyuen.github.io/images/romfs-flow.jpg)
 
 # TCC calls ROM FS Driver
 
@@ -515,7 +515,7 @@ Try the [__Tmp FS Driver from NuttX__](https://github.com/apache/nuttx/tree/mast
 
 It's simpler than FAT and easier to embed in WebAssembly. Probably wiser to split the [__Immutable Filesystem__](https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/) (ROM FS) and Writeable Filesystem (Tmp FS).
 
-![TODO](https://lupyuen.github.io/images/romfs-title.png)
+![Compile and Run NuttX Apps in the Web Browser](https://lupyuen.github.io/images/romfs-title.png)
 
 # From TCC to NuttX Emulator
 
@@ -619,7 +619,7 @@ Exactly!
 
 Everything is explained here...
 
-- TODO
+- [__"Patch the NuttX Emulator"__](https://lupyuen.github.io/articles/romfs#appendix-patch-the-nuttx-emulator)
 
 That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉
 
@@ -639,9 +639,9 @@ void main(int argc, char *argv[]) {
 
 They'll make System Calls to __NuttX Kernel__, for printing and quitting...
 
-- TODO: Print
+- [__"Print via NuttX System Call"__](https://lupyuen.github.io/articles/romfs#appendix-print-via-nuttx-system-call)
 
-- TODO: Exit
+- [__"Exit via NuttX System Call"__](https://lupyuen.github.io/articles/romfs#appendix-exit-via-nuttx-system-call)
 
 ![Compile and Run NuttX Apps in the Web Browser](https://lupyuen.github.io/images/tcc-nuttx.jpg)
 
@@ -669,12 +669,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build TCC WebAssembly
 
-TODO
+Follow these steps to __Build and Test TCC WebAssembly__ (with ROM FS)...
 
 ```bash
 ## Download the ROMFS Branch of TCC Source Code.
 ## Configure the build for 64-bit RISC-V.
-
 git clone \
   --branch romfs \
   https://github.com/lupyuen/tcc-riscv32-wasm
@@ -684,13 +683,19 @@ make cross-riscv64
 
 ## Call Zig Compiler to compile TCC Compiler
 ## from C to WebAssembly. And link with Zig Wrapper.
-## Produces `tcc-wasm.wasm`
-cd zig
+## Produces `tcc-wasm.wasm` and `zig/romfs.bin`
+pushd zig
 ./build.sh
+popd
 
-## Start the Web Server
+## Start the Web Server to test
+## `tcc-wasm.wasm` and `zig/romfs.bin`
 cargo install simple-http-server
 simple-http-server ./docs &
+
+## Or test with Node.js
+node zig/test.js
+node zig/test-nuttx.js
 ```
 
 [(See the __Build Script__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
@@ -705,6 +710,8 @@ http://localhost:8000/romfs/index.html
 Check the __JavaScript Console__ for Debug Messages.
 
 [(See the __JavaScript Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191)
+
+[(See the __Web Server Files__)](https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs)
 
 # Appendix: NuttX ROM FS Driver
 
@@ -1102,17 +1109,25 @@ And everything works OK!
 
 _Wow this looks horribly painful... Are we doing any more of this?_
 
-Nope sorry, we won't do any more of this! Hand-crafting the NuttX System Calls in RISC-V Assembly was [__positively painful__](TODO).
+Nope sorry, we won't do any more of this! Hand-crafting the NuttX System Calls in RISC-V Assembly was [__positively painful__](https://lupyuen.github.io/articles/romfs#appendix-print-via-nuttx-system-call).
 
 (We'll revisit this when the RISC-V Registers are hunky dory in TCC)
 
+![Compile and Run NuttX Apps in the Web Browser](https://lupyuen.github.io/images/tcc-nuttx.jpg)
+
 # Appendix: Patch the NuttX Emulator
 
-TODO
+Moments ago we saw __RISC-V ELF `a.out`__ teleport magically from TCC WebAssembly to NuttX Emulator (pic above)...
 
-_So we patched Fake `a.out` in the NuttX Image with the Real `a.out`?_
+- [__"From TCC to NuttX Emulator"__](https://lupyuen.github.io/articles/romfs#from-tcc-to-nuttx-emulator)
 
-Exactly! In the NuttX Emulator JavaScript, we read `elf_data` from the Local Storage and pass it to TinyEMU WebAssembly: [jslinux.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545)
+And we discovered that TCC WebAssembly saves __`a.out`__ to the __JavaScript Local Storage__, encoded as __`elf_data`__...
+
+![RISC-V ELF in the JavaScript Local Storage](https://lupyuen.github.io/images/romfs-tcc2.png)
+
+This is how we take __`elf_data`__ and patch the __Fake `a.out`__ in the NuttX Image with the Real __`a.out`__ (from TCC)...
+
+In our __NuttX Emulator JavaScript__: We read __`elf_data`__ from the __JavaScript Local Storage__ and pass it to TinyEMU WebAssembly: [jslinux.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545)
 
 ```javascript
 // Receive the Encoded ELF Data for `a.out`
@@ -1142,7 +1157,7 @@ Module.ccall(
 );
 ```
 
-Inside the __TinyEMU WebAssembly__: We receive __`elf_data`__ and copy it locally, because it will be clobbered (why?): [jsemu.c](https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211)
+Inside our __TinyEMU WebAssembly__: We receive __`elf_data`__ and copy it locally, because it will be clobbered (why?): [jsemu.c](https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211)
 
 ```c
 // Start the TinyEMU Emulator. Called by JavaScript.
