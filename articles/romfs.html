@@ -84,7 +84,7 @@
 <li><a href="#appendix-exit-via-nuttx-system-call">13 Appendix: Exit via NuttX System Call</a><ul></ul></li>
 <li><a href="#appendix-patch-the-nuttx-emulator">14 Appendix: Patch the NuttX Emulator</a><ul></ul></li>
 <li><a href="#appendix-rom-fs-filesystem">15 Appendix: ROM FS Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
-<p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/sU69bUyrgN8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>We’re building a <a href="https://lupyuen.github.io/articles/tcc"><strong>C Compiler for RISC-V</strong></a> that runs in the <strong>Web Browser</strong>. (With <a href="https://ziglang.org/"><strong>Zig Compiler</strong></a> and WebAssembly)</p>
@@ -227,8 +227,8 @@ const ROMFS_DATA = @embedFile(
 // from `ROMFS_DATA`
 </code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#embedFile">(About <strong>@embedFile</strong>)</a></p>
-<p><strong>For Easier Updates</strong>: We should download <a href="TODO"><strong><code>romfs.bin</code> from our Web Server</strong></a>. (Pic below)</p>
-<p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="TODO" /></p>
+<p><strong>For Easier Updates</strong>: We should download <a href="https://lupyuen.github.io/articles/romfs#appendix-download-rom-fs"><strong><code>romfs.bin</code> from our Web Server</strong></a>. (Pic below)</p>
+<p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="NuttX Driver for ROM FS" /></p>
 <h1 id="nuttx-driver-for-rom-fs"><a href="#nuttx-driver-for-rom-fs">4 NuttX Driver for ROM FS</a></h1>
 <p><em>Is there a ROM FS Driver in Zig?</em></p>
 <p>We looked around <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) and we found a <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.c"><strong>ROM FS Driver</strong></a> (in C). It works well with Zig!</p>
@@ -280,7 +280,7 @@ pub export fn compile_program(...) [*]const u8 {
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163">(<strong>romfs_inode</strong> is here)</a></p>
 <p><em>What if the ROM FS Filesystem contains garbage?</em></p>
 <p>Our ROM FS Driver will <strong>Fail the Mount Operation</strong>.</p>
-<p>That’s because it searches for a <a href="TODO"><strong>Magic Number</strong></a> at the top of the filesystem.</p>
+<p>That’s because it searches for a <a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem"><strong>Magic Number</strong></a> at the top of the filesystem.</p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L91-L98">(See the <strong>Mount Log</strong>)</a></p>
 <p><a href="https://en.wikipedia.org/wiki/I-mode">(Not to be confused with <strong>i-mode</strong>)</a></p>
 <h2 id="open-a-rom-fs-file"><a href="#open-a-rom-fs-file">4.2 Open a ROM FS File</a></h2>
@@ -301,7 +301,7 @@ assert(ret2 &gt;= 0);
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L99-L101">(See the <strong>Open Log</strong>)</a></p>
 <blockquote>
-<p><img src="https://lupyuen.github.io/images/romfs-flow2.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/romfs-flow2.jpg" alt="POSIX Functions for ROM FS" /></p>
 </blockquote>
 <h2 id="read-a-rom-fs-file"><a href="#read-a-rom-fs-file">4.3 Read a ROM FS File</a></h2>
 <p>Finally we <strong>Read and Close</strong> the ROM FS File: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L138-L157">tcc-wasm.zig</a></p>
@@ -391,11 +391,11 @@ hexdump -C romfs.bin
 <p><strong>File Name</strong>, <strong>File Data</strong>: Padded to 16 bytes</p>
 </li>
 </ul>
-<p>The Entire Dump of our ROM FS Filesystem is <a href="TODO"><strong>dissected in the Appendix</strong></a>.</p>
+<p>The Entire Dump of our ROM FS Filesystem is <a href="https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem"><strong>dissected in the Appendix</strong></a>.</p>
 <p><em>Why is Next Header pointing to <code>0xA42</code>? Shouldn’t it be padded?</em></p>
 <p>Bits 0 to 3 of “Next Header” tell us the <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79"><strong>File Type</strong></a>.</p>
 <p><strong><code>0xA42</code></strong> says that this is a <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79"><strong>Regular File</strong></a>. (Type 2)</p>
-<p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="TCC calls ROM FS Driver" /></p>
 <h1 id="tcc-calls-rom-fs-driver"><a href="#tcc-calls-rom-fs-driver">6 TCC calls ROM FS Driver</a></h1>
 <p><em>TCC Compiler expects POSIX Functions like open(), read(), close()…</em></p>
 <p><em>How will we connect them to ROM FS? (Pic above)</em></p>
@@ -508,7 +508,7 @@ export fn close(fd: c_int) c_int {
 <p><em>What if we need a Writeable Filesystem?</em></p>
 <p>Try the <a href="https://github.com/apache/nuttx/tree/master/fs/tmpfs"><strong>Tmp FS Driver from NuttX</strong></a>.</p>
 <p>It’s simpler than FAT and easier to embed in WebAssembly. Probably wiser to split the <a href="https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/"><strong>Immutable Filesystem</strong></a> (ROM FS) and Writeable Filesystem (Tmp FS).</p>
-<p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="Compile and Run NuttX Apps in the Web Browser" /></p>
 <h1 id="from-tcc-to-nuttx-emulator"><a href="#from-tcc-to-nuttx-emulator">7 From TCC to NuttX Emulator</a></h1>
 <p><em>TCC compiles our C Program and sends it to NuttX Emulator… How does it work?</em></p>
 <p>Recall our Teleporting Magic Trick…</p>
@@ -603,7 +603,7 @@ hexdump -C apps/bin/a.out
 </ol>
 <p>Everything is explained here…</p>
 <ul>
-<li>TODO</li>
+<li><a href="https://lupyuen.github.io/articles/romfs#appendix-patch-the-nuttx-emulator"><strong>“Patch the NuttX Emulator”</strong></a></li>
 </ul>
 <p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
 <p><em>Is there something special inside &lt;stdio.h&gt; and &lt;stdlib.h&gt;?</em></p>
@@ -620,10 +620,10 @@ void main(int argc, char *argv[]) {
 <p>They’ll make System Calls to <strong>NuttX Kernel</strong>, for printing and quitting…</p>
 <ul>
 <li>
-<p>TODO: Print</p>
+<p><a href="https://lupyuen.github.io/articles/romfs#appendix-print-via-nuttx-system-call"><strong>“Print via NuttX System Call”</strong></a></p>
 </li>
 <li>
-<p>TODO: Exit</p>
+<p><a href="https://lupyuen.github.io/articles/romfs#appendix-exit-via-nuttx-system-call"><strong>“Exit via NuttX System Call”</strong></a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/tcc-nuttx.jpg" alt="Compile and Run NuttX Apps in the Web Browser" /></p>
@@ -653,10 +653,9 @@ void main(int argc, char *argv[]) {
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/romfs.md"><strong>lupyuen.github.io/src/romfs.md</strong></a></p>
 <h1 id="appendix-build-tcc-webassembly"><a href="#appendix-build-tcc-webassembly">9 Appendix: Build TCC WebAssembly</a></h1>
-<p>TODO</p>
+<p>Follow these steps to <strong>Build and Test TCC WebAssembly</strong> (with ROM FS)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the ROMFS Branch of TCC Source Code.
 ## Configure the build for 64-bit RISC-V.
-
 git clone \
   --branch romfs \
   https://github.com/lupyuen/tcc-riscv32-wasm
@@ -666,13 +665,19 @@ make cross-riscv64
 
 ## Call Zig Compiler to compile TCC Compiler
 ## from C to WebAssembly. And link with Zig Wrapper.
-## Produces `tcc-wasm.wasm`
-cd zig
+## Produces `tcc-wasm.wasm` and `zig/romfs.bin`
+pushd zig
 ./build.sh
+popd
 
-## Start the Web Server
+## Start the Web Server to test
+## `tcc-wasm.wasm` and `zig/romfs.bin`
 cargo install simple-http-server
 simple-http-server ./docs &amp;
+
+## Or test with Node.js
+node zig/test.js
+node zig/test-nuttx.js
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
 <p>Browse to this URL and our TCC WebAssembly will appear…</p>
@@ -681,6 +686,7 @@ http://localhost:8000/romfs/index.html
 </code></pre></div>
 <p>Check the <strong>JavaScript Console</strong> for Debug Messages.</p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191">(See the <strong>JavaScript Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs">(See the <strong>Web Server Files</strong>)</a></p>
 <h1 id="appendix-nuttx-rom-fs-driver"><a href="#appendix-nuttx-rom-fs-driver">10 Appendix: NuttX ROM FS Driver</a></h1>
 <p><em>What did we change in the NuttX ROM FS Driver?</em></p>
 <p>Not much! NuttX ROM FS Driver will call <strong><code>mtd_ioctl</code></strong> in Zig when it maps the ROM FS Data in memory: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
@@ -1014,12 +1020,18 @@ inline uintptr_t sys_call1(
 </code></pre></div>
 <p>And everything works OK!</p>
 <p><em>Wow this looks horribly painful… Are we doing any more of this?</em></p>
-<p>Nope sorry, we won’t do any more of this! Hand-crafting the NuttX System Calls in RISC-V Assembly was <a href="TODO"><strong>positively painful</strong></a>.</p>
+<p>Nope sorry, we won’t do any more of this! Hand-crafting the NuttX System Calls in RISC-V Assembly was <a href="https://lupyuen.github.io/articles/romfs#appendix-print-via-nuttx-system-call"><strong>positively painful</strong></a>.</p>
 <p>(We’ll revisit this when the RISC-V Registers are hunky dory in TCC)</p>
+<p><img src="https://lupyuen.github.io/images/tcc-nuttx.jpg" alt="Compile and Run NuttX Apps in the Web Browser" /></p>
 <h1 id="appendix-patch-the-nuttx-emulator"><a href="#appendix-patch-the-nuttx-emulator">14 Appendix: Patch the NuttX Emulator</a></h1>
-<p>TODO</p>
-<p><em>So we patched Fake <code>a.out</code> in the NuttX Image with the Real <code>a.out</code>?</em></p>
-<p>Exactly! In the NuttX Emulator JavaScript, we read <code>elf_data</code> from the Local Storage and pass it to TinyEMU WebAssembly: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545">jslinux.js</a></p>
+<p>Moments ago we saw <strong>RISC-V ELF <code>a.out</code></strong> teleport magically from TCC WebAssembly to NuttX Emulator (pic above)…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/romfs#from-tcc-to-nuttx-emulator"><strong>“From TCC to NuttX Emulator”</strong></a></li>
+</ul>
+<p>And we discovered that TCC WebAssembly saves <strong><code>a.out</code></strong> to the <strong>JavaScript Local Storage</strong>, encoded as <strong><code>elf_data</code></strong>…</p>
+<p><img src="https://lupyuen.github.io/images/romfs-tcc2.png" alt="RISC-V ELF in the JavaScript Local Storage" /></p>
+<p>This is how we take <strong><code>elf_data</code></strong> and patch the <strong>Fake <code>a.out</code></strong> in the NuttX Image with the Real <strong><code>a.out</code></strong> (from TCC)…</p>
+<p>In our <strong>NuttX Emulator JavaScript</strong>: We read <strong><code>elf_data</code></strong> from the <strong>JavaScript Local Storage</strong> and pass it to TinyEMU WebAssembly: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545">jslinux.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Receive the Encoded ELF Data for `a.out`
 // from JavaScript Local Storage and decode it
 // Encoded data looks like: %7f%45%4c%46...
@@ -1046,7 +1058,7 @@ Module.ccall(
   ]
 );
 </code></pre></div>
-<p>Inside the <strong>TinyEMU WebAssembly</strong>: We receive <strong><code>elf_data</code></strong> and copy it locally, because it will be clobbered (why?): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211">jsemu.c</a></p>
+<p>Inside our <strong>TinyEMU WebAssembly</strong>: We receive <strong><code>elf_data</code></strong> and copy it locally, because it will be clobbered (why?): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211">jsemu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Start the TinyEMU Emulator. Called by JavaScript.
 void vm_start(...) {
 
