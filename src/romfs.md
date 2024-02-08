@@ -543,9 +543,7 @@ That's why NuttX Emulator can pick up __`a.out`__ from our Web Browser!
 
 _How did it get there?_
 
-TODO
-
-In our __WebAssembly JavaScript__: TCC Compiler saves __`a.out`__ to our __JavaScript Local Storage__: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/tcc.js#L60-L90)
+In our __WebAssembly JavaScript__: TCC Compiler saves __`a.out`__ to our __JavaScript Local Storage__ (pic below): [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/tcc.js#L60-L90)
 
 ```javascript
 // Call TCC to compile a program
@@ -639,7 +637,7 @@ void main(int argc, char *argv[]) {
 
 They'll make System Calls to __NuttX Kernel__, for printing and quitting...
 
-TODO
+![Compile and Run NuttX Apps in the Web Browser](https://lupyuen.github.io/images/tcc-nuttx.jpg)
 
 # What's Next
 
