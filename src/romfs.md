@@ -782,7 +782,11 @@ We made minor tweaks to the __NuttX ROM FS Driver__ and added a Build Script...
 
 - [__ROM FS Build Script__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh)
 
-Because of NuttX Logging: We extended [__fprintf and friends__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411) to handle Format Strings iteratively.
+_Anything else we changed in our Zig Wrapper?_
+
+Last week we hacked up a simple [__Format Pattern__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends) for handling [__fprintf and friends__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends).
+
+Now with Logging Enabled in NuttX ROM FS, we need to handle more complex Format Strings. Thus we extended our formatting to handle [__Multiple Format Patterns__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411) per Format String.
 
 Let's do better and download our filesystem...
 
