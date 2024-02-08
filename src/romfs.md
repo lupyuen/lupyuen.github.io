@@ -374,7 +374,7 @@ Next comes __File Header and Data__...
 
 The Entire Dump of our ROM FS Filesystem is [__dissected in the Appendix__](https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem).
 
-ROM FS is indeed tiny and easy to embed in our apps!
+ROM FS is indeed tiny, no frills and easy to embed in our apps!
 
 _Why is Next Header pointing to `0xA42`? Shouldn't it be padded?_
 
