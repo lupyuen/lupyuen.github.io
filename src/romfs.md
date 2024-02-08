@@ -189,7 +189,7 @@ __For Easier Updates__: We should download [__`romfs.bin` from our Web Server__]
 
 _Is there a ROM FS Driver in Zig?_
 
-We looked around [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) (Real-Time Operating System) and we found a [__ROM FS Driver__](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.c) (in C). It works well with Zig!
+We looked around [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) (Real-Time Operating System) and we found a [__ROM FS Driver__](https://github.com/apache/nuttx/blob/master/fs/romfs) (in C). It works well with Zig!
 
 Let's walk through the steps to call the __NuttX ROM FS Driver__ from Zig (pic above)...
 
