@@ -756,12 +756,13 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 </blockquote>
 <h1 id="appendix-download-rom-fs"><a href="#appendix-download-rom-fs">11 Appendix: Download ROM FS</a></h1>
 <p>In the previous section, our Zig Wrapper <strong>embedded <code>romfs.bin</code> inside WebAssembly</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem
+<div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem.
+/// But what if we need to update it?
 const ROMFS_DATA = @embedFile(
   &quot;romfs.bin&quot;
 );
 </code></pre></div>
-<p><strong>For Easier Updates</strong>: We should download <strong><code>romfs.bin</code></strong> from our <strong>Web Server</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L189-L212">tcc.js</a></p>
+<p><strong>For Easier Updates</strong>: We should download <strong><code>romfs.bin</code></strong> from our <strong>Web Server</strong> (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L189-L212">tcc.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// JavaScript to load the WebAssembly Module
 // and start the Main Function.
 // Called by the Compile Button.
