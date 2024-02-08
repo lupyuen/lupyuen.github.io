@@ -24,9 +24,9 @@ In this article we add a __Read-Only Filesystem__ to our Zig Webassembly...
 
 - TODO: NuttX System Calls
 
-![Online Demo of TCC Compiler in WebAssembly](TODO)
+![TCC Compiler in WebAssembly with ROM FS](https://lupyuen.github.io/images/romfs-tcc.png)
 
-[_Online Demo of TCC Compiler in WebAssembly_](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
+[_TCC Compiler in WebAssembly with ROM FS_](https://lupyuen.github.io/tcc-riscv32-wasm/romfs)
 
 # C Compiler in our Web Browser
 
