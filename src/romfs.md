@@ -59,7 +59,7 @@ tcc -c hello.c
 
 And it downloads the compiled [__RISC-V ELF `a.out`__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format).
 
-To test the Compiled Output, we browse to the __Emulator for Apache NuttX RTOS__...
+To test the Compiled Output, we browse to the Emulator for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)...
 
 - [__NuttX Emulator for Ox64 RISC-V SBC__](https://lupyuen.github.io/nuttx-tinyemu/tcc/)
 
@@ -307,7 +307,7 @@ romfs_read: Return 4 bytes from sector offset 0
 romfs_close: Closing 
 ```
 
-Which looks right because [_<stdio.h>_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1) begins with "[__`// C`__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1)"
+Which looks right: [_<stdio.h>_](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1) begins with "[__`// C`__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1)"
 
 What's going on inside the filesystem? We snoop around...
 
@@ -373,6 +373,8 @@ Next comes __File Header and Data__...
 - __File Name__, __File Data__: Padded to 16 bytes
 
 The Entire Dump of our ROM FS Filesystem is [__dissected in the Appendix__](https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem).
+
+ROM FS is indeed tiny and easy to embed in our apps!
 
 _Why is Next Header pointing to `0xA42`? Shouldn't it be padded?_
 
@@ -456,7 +458,7 @@ romfs_files = std.ArrayList(*c.struct_file)
   .init(std.heap.page_allocator);
 ```
 
-(Why [__ArrayList__](https://ziglang.org/documentation/master/std/#A;std:ArrayList)? Because it grows easily as we add File Descriptors)
+(Why [__ArrayList__](https://ziglang.org/documentation/master/std/#A;std:ArrayList)? It grows easily as we add File Descriptors)
 
 When TCC WebAssembly calls __POSIX `read()`__ to read the C Header File, we call ROM FS: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L226-L256)
 
@@ -719,7 +721,9 @@ http://localhost:8000/romfs/index.html
 
 Check the __JavaScript Console__ for Debug Messages.
 
-[(See the __JavaScript Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191)
+[(See the __Web Browser Log__)](https://gist.github.com/lupyuen/748e6d36ce21f7db76cb963eee099d9e)
+
+[(See the __Node.js Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191)
 
 [(See the __Web Server Files__)](https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs)
 
