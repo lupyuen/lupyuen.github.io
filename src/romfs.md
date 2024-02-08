@@ -20,9 +20,9 @@ In this article we add a __Read-Only Filesystem__ to our Zig WebAssembly...
 
 - Zig emulates __POSIX File Access__ for TCC Compiler
 
-- TODO: Integrate NuttX Emulator
+- We test the Compiled Output with __NuttX Emulator__
 
-- TODO: NuttX System Calls
+- By making System Calls to __NuttX Kernel__
 
 ![TCC Compiler in WebAssembly with ROM FS](https://lupyuen.github.io/images/romfs-tcc.png)
 
