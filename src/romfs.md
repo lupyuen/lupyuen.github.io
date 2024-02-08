@@ -183,7 +183,7 @@ const ROMFS_DATA = @embedFile(
 
 __For Easier Updates__: We should download [__`romfs.bin` from our Web Server__](TODO).
 
-TODO: Pic of NuttX Driver
+![TODO](https://lupyuen.github.io/images/romfs-flow.jpg)
 
 # NuttX Driver for ROM FS
 
@@ -617,7 +617,7 @@ Exactly!
 
 Everything is explained here...
 
-TODO
+- TODO
 
 That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉
 
@@ -636,6 +636,10 @@ void main(int argc, char *argv[]) {
 ```
 
 They'll make System Calls to __NuttX Kernel__, for printing and quitting...
+
+- TODO: Print
+
+- TODO: Exit
 
 ![Compile and Run NuttX Apps in the Web Browser](https://lupyuen.github.io/images/tcc-nuttx.jpg)
 
