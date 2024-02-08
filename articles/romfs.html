@@ -332,6 +332,7 @@ romfs_read: Return 4 bytes from sector offset 0
 romfs_close: Closing 
 </code></pre></div>
 <p>Which looks right because <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><em>&lt;stdio.h&gt;</em></a> begins with “<a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><strong><code>// C</code></strong></a>”</p>
+<p>What’s going on inside the filesystem? We snoop around…</p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L102-L113">(See the <strong>Read Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
 <h1 id="inside-a-rom-fs-filesystem"><a href="#inside-a-rom-fs-filesystem">5 Inside a ROM FS Filesystem</a></h1>
@@ -382,7 +383,7 @@ hexdump -C romfs.bin
 <p><strong>File Info</strong>: For Special Files</p>
 </li>
 <li>
-<p><strong>File Size</strong>:  Big Endian (<code>0x8B7</code>)</p>
+<p><strong>File Size</strong>:  Big Endian (<code>0x9B7</code>)</p>
 </li>
 <li>
 <p><strong>Checksum</strong>: For Metadata, File Name and Padding</p>
@@ -395,6 +396,7 @@ hexdump -C romfs.bin
 <p><em>Why is Next Header pointing to <code>0xA42</code>? Shouldn’t it be padded?</em></p>
 <p>Bits 0 to 3 of “Next Header” tell us the <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79"><strong>File Type</strong></a>.</p>
 <p><strong><code>0xA42</code></strong> says that this is a <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79"><strong>Regular File</strong></a>. (Type 2)</p>
+<p>We zoom out to TCC Compiler…</p>
 <p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="TCC calls ROM FS Driver" /></p>
 <h1 id="tcc-calls-rom-fs-driver"><a href="#tcc-calls-rom-fs-driver">6 TCC calls ROM FS Driver</a></h1>
 <p><em>TCC Compiler expects POSIX Functions like open(), read(), close()…</em></p>
@@ -508,6 +510,7 @@ export fn close(fd: c_int) c_int {
 <p><em>What if we need a Writeable Filesystem?</em></p>
 <p>Try the <a href="https://github.com/apache/nuttx/tree/master/fs/tmpfs"><strong>Tmp FS Driver from NuttX</strong></a>.</p>
 <p>It’s simpler than FAT and easier to embed in WebAssembly. Probably wiser to split the <a href="https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/"><strong>Immutable Filesystem</strong></a> (ROM FS) and Writeable Filesystem (Tmp FS).</p>
+<p>Seeking closure, we circle back to our very first demo…</p>
 <p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="Compile and Run NuttX Apps in the Web Browser" /></p>
 <h1 id="from-tcc-to-nuttx-emulator"><a href="#from-tcc-to-nuttx-emulator">7 From TCC to NuttX Emulator</a></h1>
 <p><em>TCC compiles our C Program and sends it to NuttX Emulator… How does it work?</em></p>
@@ -652,6 +655,8 @@ void main(int argc, char *argv[]) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/romfs.md"><strong>lupyuen.github.io/src/romfs.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/romfs-tcc.png" alt="TCC Compiler in WebAssembly with ROM FS" /></p>
+<p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs"><em>TCC Compiler in WebAssembly with ROM FS</em></a></p>
 <h1 id="appendix-build-tcc-webassembly"><a href="#appendix-build-tcc-webassembly">9 Appendix: Build TCC WebAssembly</a></h1>
 <p>Follow these steps to <strong>Build and Test TCC WebAssembly</strong> (with ROM FS)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the ROMFS Branch of TCC Source Code.
@@ -680,15 +685,16 @@ node zig/test.js
 node zig/test-nuttx.js
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
-<p>Browse to this URL and our TCC WebAssembly will appear…</p>
+<p>Browse to this URL and our TCC WebAssembly will appear (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Test ROM FS with TCC WebAssembly
 http://localhost:8000/romfs/index.html
 </code></pre></div>
 <p>Check the <strong>JavaScript Console</strong> for Debug Messages.</p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191">(See the <strong>JavaScript Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs">(See the <strong>Web Server Files</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="NuttX Driver for ROM FS" /></p>
 <h1 id="appendix-nuttx-rom-fs-driver"><a href="#appendix-nuttx-rom-fs-driver">10 Appendix: NuttX ROM FS Driver</a></h1>
-<p><em>What did we change in the NuttX ROM FS Driver?</em></p>
+<p><em>What did we change in the NuttX ROM FS Driver? (Pic above)</em></p>
 <p>Not much! NuttX ROM FS Driver will call <strong><code>mtd_ioctl</code></strong> in Zig when it maps the ROM FS Data in memory: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem
 /// (Or download it, see next section)
@@ -744,6 +750,10 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 </li>
 </ul>
 <p>Because of NuttX Logging: We extended <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411"><strong>fprintf and friends</strong></a> to handle Format Strings iteratively.</p>
+<p>Let’s do better and download our filesystem…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/romfs-flow3.jpg" alt="NuttX Driver for ROM FS" /></p>
+</blockquote>
 <h1 id="appendix-download-rom-fs"><a href="#appendix-download-rom-fs">11 Appendix: Download ROM FS</a></h1>
 <p>In the previous section, our Zig Wrapper <strong>embedded <code>romfs.bin</code> inside WebAssembly</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem
@@ -790,7 +800,8 @@ function main() {
     .compile_program(options_ptr, code_ptr);
 </code></pre></div>
 <p><strong><code>get_romfs</code></strong> returns the WebAssembly Memory from our <strong>Zig Wrapper</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121">tcc-wasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Storage for ROM FS Filesystem
+<div class="example-wrap"><pre class="language-zig"><code>/// Storage for ROM FS Filesystem, loaded from Web Server
+/// Previously: We embedded the filesystem with `@embedFile`
 var ROMFS_DATA = std.mem.zeroes([8192]u8);
 
 /// Return the pointer to ROM FS Storage.
@@ -799,7 +810,7 @@ pub export fn get_romfs(size: u32) [*]const u8 {
 
   // Halt if we run out of memory
   if (size &gt; ROMFS_DATA.len) {
-    @panic(&quot;get_romfs_ptr: Increase ROMFS_DATA size&quot;);
+    @panic(&quot;Increase ROMFS_DATA size&quot;);
   }
   return &amp;ROMFS_DATA;
 }
@@ -816,7 +827,11 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
     rm_xipbase.?.* = @intCast(@intFromPtr(
       &amp;ROMFS_DATA
     ));
-</code></pre></div><h1 id="appendix-print-via-nuttx-system-call"><a href="#appendix-print-via-nuttx-system-call">12 Appendix: Print via NuttX System Call</a></h1>
+</code></pre></div>
+<p>With a few tweaks to <strong><code>ROMFS_DATA</code></strong>, we’re now loading <strong><code>romfs.bin</code></strong> from our Web Server. Which is much better for maintainability.</p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs">(See the <strong>Web Server Files</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX Apps make a System Call to print to the console" /></p>
+<h1 id="appendix-print-via-nuttx-system-call"><a href="#appendix-print-via-nuttx-system-call">12 Appendix: Print via NuttX System Call</a></h1>
 <p><em>What’s inside <code>puts</code>?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler
 // with ROM FS
@@ -836,7 +851,7 @@ inline int puts(const char *s) {
     write(1, &quot;\n&quot;, 1);
 }
 </code></pre></div>
-<p>Then we implement <strong><code>write</code></strong> the exact same way as NuttX, making a System Call: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L25-L36">stdio.h</a></p>
+<p>Then we implement <strong><code>write</code></strong> the exact same way as NuttX, making a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>NuttX System Call (ECALL)</strong></a> to NuttX Kernel (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L25-L36">stdio.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Caution: NuttX System Call Number may change
 #define SYS_write 61
 
@@ -851,7 +866,8 @@ inline ssize_t write(int parm1, const void * parm2, size_t parm3) {
   );
 }
 </code></pre></div>
-<p><strong><code>sys_call3</code></strong> is our hacked implementation of NuttX System Call: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L36-L84">stdio.h</a></p>
+<p><a href="https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call">(<strong>System Call Numbers</strong> may change)</a></p>
+<p><strong><code>sys_call3</code></strong> is our hacked implementation of <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>NuttX System Call (ECALL)</strong></a>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L36-L84">stdio.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Make a System Call with 3 parameters
 // https://github.com/apache/nuttx/blob/master/arch/risc-v/include/syscall.h#L240-L268
 inline uintptr_t sys_call3(
@@ -862,6 +878,14 @@ inline uintptr_t sys_call3(
 ) {
   // Pass the Function Number and Parameters in
   // Registers A0 to A3
+
+  // Rightfully:
+  // Register A0 is the System Call Number
+  // Register A1 is the First Parameter
+  // Register A2 is the Second Paramter
+  // Register A3 is the Third Parameter
+
+  // But we&#39;re manually moving them around because of... issues
   register long r3 asm(&quot;a0&quot;) = (long)(parm3);  // Will move to A3
   asm volatile (&quot;slli a3, a0, 32&quot;);  // Shift 32 bits Left then Right
   asm volatile (&quot;srli a3, a3, 32&quot;);  // To clear the top 32 bits
@@ -962,7 +986,7 @@ void main(int argc, char *argv[]) {
   exit(0);
 }            
 </code></pre></div>
-<p>We implement <strong><code>exit</code></strong> the same way as NuttX, by making a <strong>System Call</strong> to NuttX Kernel: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10">stdlib.h</a></p>
+<p>We implement <strong><code>exit</code></strong> the same way as NuttX, by making a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>NuttX System Call (ECALL)</strong></a> to NuttX Kernel: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10">stdlib.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Caution: NuttX System Call Number may change
 #define SYS__exit 8
 
@@ -980,7 +1004,8 @@ inline void exit(int parm1) {
   while(1);
 }
 </code></pre></div>
-<p><strong><code>sys_call1</code></strong> makes a NuttX System Call, with our hand-crafted RISC-V Assembly (as a workaround): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L10-L48">stdlib.h</a></p>
+<p><a href="https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call">(<strong>System Call Numbers</strong> may change)</a></p>
+<p><strong><code>sys_call1</code></strong> makes a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>NuttX System Call (ECALL)</strong></a>, with our hand-crafted RISC-V Assembly (as a workaround): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L10-L48">stdlib.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Make a System Call with 1 parameter
 // https://github.com/apache/nuttx/blob/master/arch/risc-v/include/syscall.h#L188-L213
 inline uintptr_t sys_call1(
@@ -989,6 +1014,12 @@ inline uintptr_t sys_call1(
 ) {
   // Pass the Function Number and Parameters
   // Registers A0 to A1
+
+  // Rightfully:
+  // Register A0 is the System Call Number
+  // Register A1 is the First Parameter
+
+  // But we&#39;re manually moving them around because of... issues
   register long r1 asm(&quot;a0&quot;) = (long)(parm1);  // Will move to A1
   asm volatile (&quot;slli a1, a0, 32&quot;);  // Shift 32 bits Left then Right
   asm volatile (&quot;srli a1, a1, 32&quot;);  // To clear the top 32 bits
