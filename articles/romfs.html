@@ -393,7 +393,7 @@ hexdump -C romfs.bin
 </li>
 </ul>
 <p>The Entire Dump of our ROM FS Filesystem is <a href="https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem"><strong>dissected in the Appendix</strong></a>.</p>
-<p>ROM FS is indeed tiny and easy to embed in our apps!</p>
+<p>ROM FS is indeed tiny, no frills and easy to embed in our apps!</p>
 <p><em>Why is Next Header pointing to <code>0xA42</code>? Shouldn’t it be padded?</em></p>
 <p>Bits 0 to 3 of “Next Header” tell us the <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79"><strong>File Type</strong></a>.</p>
 <p><strong><code>0xA42</code></strong> says that this is a <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79"><strong>Regular File</strong></a>. (Type 2)</p>
