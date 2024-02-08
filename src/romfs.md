@@ -18,7 +18,7 @@ In this article we add a __Read-Only Filesystem__ to our Zig WebAssembly...
 
 - Zig reads them with the ROM FS Driver from [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)
 
-- Zig emulates __POSIX File Access__ for TCC Compiler
+- And emulates __POSIX File Access__ for TCC Compiler
 
 - We test the Compiled Output with __NuttX Emulator__
 
