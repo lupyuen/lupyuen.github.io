@@ -376,7 +376,7 @@ Bits 0 to 3 of "Next Header" tell us the [__File Type__](https://github.com/apac
 
 __`0xA42`__ says that this is a [__Regular File__](https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79). (Type 2)
 
-TODO: Pic of NuttX Driver
+![TODO](https://lupyuen.github.io/images/romfs-flow.jpg)
 
 # TCC calls ROM FS Driver
 
