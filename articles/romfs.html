@@ -686,13 +686,14 @@ node zig/test.js
 node zig/test-nuttx.js
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L1-L93">(See the <strong>Build Log</strong>)</a></p>
 <p>Browse to this URL and our TCC WebAssembly will appear (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Test ROM FS with TCC WebAssembly
 http://localhost:8000/romfs/index.html
 </code></pre></div>
 <p>Check the <strong>JavaScript Console</strong> for Debug Messages.</p>
 <p><a href="https://gist.github.com/lupyuen/748e6d36ce21f7db76cb963eee099d9e">(See the <strong>Web Browser Log</strong>)</a></p>
-<p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191">(See the <strong>Node.js Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L94-L1454">(See the <strong>Node.js Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs">(See the <strong>Web Server Files</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="NuttX Driver for ROM FS" /></p>
 <h1 id="appendix-nuttx-rom-fs-driver"><a href="#appendix-nuttx-rom-fs-driver">10 Appendix: NuttX ROM FS Driver</a></h1>
@@ -833,8 +834,9 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
       &amp;ROMFS_DATA
     ));
 </code></pre></div>
-<p>With a few tweaks to <strong><code>ROMFS_DATA</code></strong>, we’re now loading <strong><code>romfs.bin</code></strong> from our Web Server. Which is much better for maintainability.</p>
+<p>With a few tweaks to <strong><code>ROMFS_DATA</code></strong>, we’re now loading <strong><code>romfs.bin</code></strong> from our Web Server. Which is better for maintainability.</p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs">(See the <strong>Web Server Files</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/test.js#L62-L75">(Loading <strong><code>romfs.bin</code></strong> also works in <strong>Node.js</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX Apps make a System Call to print to the console" /></p>
 <h1 id="appendix-print-via-nuttx-system-call"><a href="#appendix-print-via-nuttx-system-call">12 Appendix: Print via NuttX System Call</a></h1>
 <p><em>What’s inside <code>puts</code>?</em></p>
