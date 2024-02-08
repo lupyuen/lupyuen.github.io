@@ -269,6 +269,8 @@ assert(ret2 >= 0);
 
 [(See the __Open Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L99-L101)
 
+> ![TODO](https://lupyuen.github.io/images/romfs-flow2.jpg)
+
 ## Read a ROM FS File
 
 Finally we __Read and Close__ the ROM FS File: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L138-L157)
