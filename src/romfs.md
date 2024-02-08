@@ -793,13 +793,14 @@ Let's do better and download our filesystem...
 In the previous section, our Zig Wrapper __embedded `romfs.bin` inside WebAssembly__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
 
 ```zig
-/// Embed the ROM FS Filesystem
+/// Embed the ROM FS Filesystem.
+/// But what if we need to update it?
 const ROMFS_DATA = @embedFile(
   "romfs.bin"
 );
 ```
 
-__For Easier Updates__: We should download __`romfs.bin`__ from our __Web Server__: [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L189-L212)
+__For Easier Updates__: We should download __`romfs.bin`__ from our __Web Server__ (pic above): [tcc.js](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L189-L212)
 
 ```javascript
 // JavaScript to load the WebAssembly Module
