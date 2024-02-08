@@ -12,13 +12,13 @@ We're building a [__C Compiler for RISC-V__](https://lupyuen.github.io/articles/
 
 But our C Compiler is kinda boring if it doesn't support __C Header Files__ and Library Files.
 
-In this article we add a __Read-Only Filesystem__ to our Zig Webassembly...
+In this article we add a __Read-Only Filesystem__ to our Zig WebAssembly...
 
-- TODO: Hosting C Header Files
+- We host the C Header Files in a __ROM FS Filesystem__
 
-- TODO: NuttX ROM FS Driver
+- Zig reads them with the ROM FS Driver from [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)
 
-- TODO: Integrate TCC Compiler
+- Zig emulates __POSIX File Access__ for TCC Compiler
 
 - TODO: Integrate NuttX Emulator
 
