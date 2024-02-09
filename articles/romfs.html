@@ -414,10 +414,9 @@ export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
   // Or create the RISC-V ELF `hello.o`
   ...
   // Allocate the File Struct
-  const files = std.heap.page_allocator.alloc(
-    c.struct_file, 1
+  const file = std.heap.page_allocator.create(
+    c.struct_file
   ) catch { @panic(&quot;Failed to allocate file&quot;); };
-  const file = &amp;files[0];
   file.* = std.mem.zeroes(c.struct_file);
   file.*.f_inode = romfs_inode;
 
@@ -454,12 +453,12 @@ export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
 // This maps a File Descriptor to the File Struct.
 // Index of romfs_files = File Descriptor Number - FIRST_FD - 1
 var romfs_files: std.ArrayList(  // Array List of...
-  *c.struct_file                 // Pointers to File Structs
+  ?*c.struct_file                // Pointers to File Structs (Nullable)
 ) = undefined;
 
 // At Startup: Allocate the POSIX
 // File Descriptors for TCC
-romfs_files = std.ArrayList(*c.struct_file)
+romfs_files = std.ArrayList(?*c.struct_file)
   .init(std.heap.page_allocator);
 </code></pre></div>
 <p>Why <a href="https://ziglang.org/documentation/master/std/#A;std:ArrayList"><strong>ArrayList</strong></a>? It grows easily as we add File Descriptors…</p>
@@ -499,14 +498,17 @@ export fn close(fd: c_int) c_int {
   ...
   // Fetch the File Struct by
   // POSIX File Descriptor
-  const f = fd - FIRST_FD - 1;
-  const file = romfs_files.items[
-    @intCast(f)
-  ];
+  const f: usize = @intCast(fd - FIRST_FD - 1);
 
-  // Close the ROM FS File. TODO: Deallocate the file
-  const ret = c.romfs_close(file);
-  assert(ret &gt;= 0);
+  // Close the ROM FS File if non-null
+  if (romfs_files.items[f]) |file| {
+    const ret = c.romfs_close(file);
+    assert(ret &gt;= 0);
+
+    // Deallocate the File Struct
+    std.heap.page_allocator.destroy(file);
+    romfs_files.items[f] = null;
+  }
   return 0;
 }
 </code></pre></div>
