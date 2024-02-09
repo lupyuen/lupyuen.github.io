@@ -622,7 +622,7 @@ hexdump -C apps/bin/a.out
 ## 0020  22 05 69 08 22 05 69 09  22 05 69 0a 22 05 69 0b  |".i.".i.".i.".i.|
 ```
 
-During our NuttX Build, the __Fake `a.out`__ gets bundled into the [__Initial RAM Disk `initrd`__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd)...
+In our [__NuttX Build__](https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64.yml#L88-L98): __Fake `a.out`__ gets bundled into the [__Initial RAM Disk `initrd`__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd)...
 
 [__Which gets appended__](https://lupyuen.github.io/articles/app#initial-ram-disk) to the [__NuttX Image__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image).
 
