@@ -594,7 +594,7 @@ hexdump -C apps/bin/a.out
 ## 0010  22 05 69 04 22 05 69 05  22 05 69 06 22 05 69 07  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
 ## 0020  22 05 69 08 22 05 69 09  22 05 69 0a 22 05 69 0b  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
 </code></pre></div>
-<p>During our NuttX Build, the <strong>Fake <code>a.out</code></strong> gets bundled into the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd"><strong>Initial RAM Disk <code>initrd</code></strong></a>…</p>
+<p>In our <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64.yml#L88-L98"><strong>NuttX Build</strong></a>: <strong>Fake <code>a.out</code></strong> gets bundled into the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd"><strong>Initial RAM Disk <code>initrd</code></strong></a>…</p>
 <p><a href="https://lupyuen.github.io/articles/app#initial-ram-disk"><strong>Which gets appended</strong></a> to the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image"><strong>NuttX Image</strong></a>.</p>
 <p><em>So we patched Fake <code>a.out</code> in the NuttX Image with the Real <code>a.out</code>?</em></p>
 <p>Exactly!</p>
