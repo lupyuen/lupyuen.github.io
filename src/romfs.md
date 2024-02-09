@@ -785,13 +785,11 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
   // Request for Storage Device Geometry
   // Probably because NuttX Driver caches One Block of Data
   } else if (cmd == c.MTDIOC_GEOMETRY) {
+    const blocksize = 64;
     const geo: *c.mtd_geometry_s = @ptrCast(rm_xipbase.?);
-    geo.*.blocksize = 64;
-    geo.*.erasesize = 64;
-    geo.*.neraseblocks = 1024; // TODO: Is this needed?
-    const name = "ZIG_ROMFS";
-    @memcpy(geo.*.model[0..name.len], name);
-    geo.*.model[name.len] = 0;
+    geo.*.blocksize = blocksize;
+    geo.*.erasesize = blocksize;
+    geo.*.neraseblocks = ROMFS_DATA.len / blocksize;
 
   // Unknown Request
   } else { debug("mtd_ioctl: Unknown command {}", .{cmd}); }
