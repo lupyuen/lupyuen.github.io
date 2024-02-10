@@ -271,7 +271,7 @@ assert(ret2 >= 0);
 
 [(See the __Open Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L99-L101)
 
-(Later we'll allocate File Struct from the Heap)
+In the code above, we allocate the File Struct from the Stack. In a while we'll allocate the File Struct from the Heap.
 
 > ![POSIX Functions for ROM FS](https://lupyuen.github.io/images/romfs-flow2.jpg)
 
@@ -353,6 +353,8 @@ Guided by the [__ROM FS Spec__](https://docs.kernel.org/filesystems/romfs.html),
 ## Dump our ROM FS Filesystem
 hexdump -C romfs.bin 
 ```
+
+[(See the __Filesystem Dump__)](https://gist.github.com/lupyuen/837184772dd091a83f2c61ec357a3d1d)
 
 This __ROM FS Header__ appears at the top of the filesystem (pic above)...
 
@@ -634,7 +636,7 @@ Exactly!
 
 1.  Inside the __TinyEMU WebAssembly__: We receive the __`elf_data`__ and copy it locally
 
-1.  Then we search for our __Magic Pattern `22 05 69 00`__ in our Fake __`a.out`__
+1.  Then we search for our __Magic Pattern `22` `05` `69` `00`__ in our Fake __`a.out`__
 
 1.  And we overwrite the Fake __`a.out`__ with the Real __`a.out`__ from __`elf_data`__
 
@@ -801,9 +803,9 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 
 _Anything else we changed in our Zig Wrapper?_
 
-Last week we hacked up a simple [__Format Pattern__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends) for handling [__fprintf and friends__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends).
+Last week we hacked up a simple [__Format Pattern__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends) for handling [__fprintf and friends__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends). (One Format Pattern per C Format String)
 
-Now with Logging Enabled in NuttX ROM FS, we need to handle more complex Format Strings. Thus we extended our formatting to handle [__Multiple Format Patterns__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L372-L415) per Format String.
+Now with Logging Enabled in NuttX ROM FS, we need to handle __Complex Format Strings__. Thus we extend our formatting to handle [__Multiple Format Patterns__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L372-L415) per Format String.
 
 Instead of embedding our filesystem, let's do better and download our filesystem...
 
@@ -869,7 +871,7 @@ function main() {
 
 [(__wasm__ is our __WebAssembly Helper__)](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L6-L28)
 
-__`get_romfs`__ returns the WebAssembly Memory from our __Zig Wrapper__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121)
+In our __Zig Wrapper__: __`get_romfs`__ returns the WebAssembly Memory reserved for our ROM FS Filesystem: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121)
 
 ```zig
 /// Storage for ROM FS Filesystem, loaded from Web Server
@@ -888,7 +890,7 @@ pub export fn get_romfs(size: u32) [*]const u8 {
 }
 ```
 
-Inside our Zig Wrapper, __`ROMFS_DATA`__ is passed to our NuttX ROM FS Driver via an __IOCTL Request__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L967-L991)
+__NuttX ROM FS Driver__ fetches __`ROMFS_DATA`__ from our Zig Wrapper, via an __IOCTL Request__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L967-L991)
 
 ```zig
 /// ROM FS Driver makes this IOCTL Request
@@ -1078,7 +1080,7 @@ A3: 0f
 Hello, World!!
 ```
 
-BTW _Andy_ won't work either...
+BTW _Andy_ won't work...
 
 ```c
 // Load SysCall Parameter to Register A0
@@ -1181,7 +1183,7 @@ inline uintptr_t sys_call1(
 } 
 ```
 
-And everything works OK!
+This cumbersome workaround works OK with TCC Compiler and NuttX Apps!
 
 _Wow this looks horribly painful... Are we doing any more of this?_
 
@@ -1201,7 +1203,13 @@ And we discovered that TCC WebAssembly saves __`a.out`__ to the __JavaScript Loc
 
 ![RISC-V ELF in the JavaScript Local Storage](https://lupyuen.github.io/images/romfs-tcc2.png)
 
-This is how we take __`elf_data`__ and patch the __Fake `a.out`__ in the NuttX Image with the __Real `a.out`__ (from TCC)...
+This is how we...
+
+1.  Take __`elf_data`__ from JavaScript Local Storage
+
+1.  Patch the __Fake `a.out`__ in the NuttX Image
+
+1.  With the __Real `a.out`__ from TCC
 
 In our __NuttX Emulator JavaScript__: We read __`elf_data`__ from the __JavaScript Local Storage__ and pass it to TinyEMU WebAssembly: [jslinux.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545)
 
@@ -1249,7 +1257,7 @@ void vm_start(...) {
   memcpy(elf_data, elf_data0, elf_len);
 ```
 
-Then we search for our __Magic Pattern `22 05 69 00`__ in our Fake __`a.out`__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053)
+Then we search for our __Magic Pattern `22` `05` `69` `00`__ in our Fake __`a.out`__: [riscv_machine.c](https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053)
 
 ```c
   // Patch the ELF Data to Fake `a.out` in Initial RAM Disk
@@ -1270,7 +1278,7 @@ Then we search for our __Magic Pattern `22 05 69 00`__ in our Fake __`a.out`__: 
 
 And we overwrite the Fake __`a.out`__ with the Real __`a.out`__ from __`elf_data`__.
 
-This is perfectly OK because [__ROM FS Files are continuous__](https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem) and contiguous. (Though we ought to patch the File Size and the Filesystem Header Checksum)
+This is perfectly OK because [__ROM FS Files are continuous__](https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem) and contiguous. (Though we ought to patch the [__File Size__](https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem) and [__Filesystem Header Checksum__](https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem))
 
 That's how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉
 
@@ -1308,6 +1316,8 @@ Based on the [__ROM FS Spec__](https://docs.kernel.org/filesystems/romfs.html), 
 ## Dump our ROM FS Filesystem
 hexdump -C romfs.bin 
 ```
+
+[(See the __Filesystem Dump__)](https://gist.github.com/lupyuen/837184772dd091a83f2c61ec357a3d1d)
 
 Everything begins with the __ROM FS Filesystem Header__ (pic above)...
 
