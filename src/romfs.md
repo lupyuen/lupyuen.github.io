@@ -495,7 +495,7 @@ export fn read(fd: c_int, buf: [*:0]u8, nbyte: size_t) isize {
 
 [(See the __Read Log__)](https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L142-L238)
 
-Finally TCC WebAssembly calls __POSIX `close()`__ to close the C Header File. We do the same for ROM FS: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L278-L298)
+Finally TCC WebAssembly calls __POSIX `close()`__ to close the C Header File. We do the same for ROM FS: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L277-L302)
 
 ```zig
 /// Close the POSIX File Descriptor
