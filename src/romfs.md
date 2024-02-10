@@ -762,7 +762,7 @@ We wrote some __Glue Code in C__ (because some things couldn't be expressed in Z
 
 - [__zig_romfs.h__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.h)
 
-NuttX ROM FS Driver will call __`mtd_ioctl`__ in Zig when it maps the ROM FS Data in memory: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
+NuttX ROM FS Driver will call __`mtd_ioctl`__ in Zig when it maps the ROM FS Data in memory: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L967-L991)
 
 ```zig
 /// Embed the ROM FS Filesystem
@@ -803,15 +803,15 @@ _Anything else we changed in our Zig Wrapper?_
 
 Last week we hacked up a simple [__Format Pattern__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends) for handling [__fprintf and friends__](https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends).
 
-Now with Logging Enabled in NuttX ROM FS, we need to handle more complex Format Strings. Thus we extended our formatting to handle [__Multiple Format Patterns__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411) per Format String.
+Now with Logging Enabled in NuttX ROM FS, we need to handle more complex Format Strings. Thus we extended our formatting to handle [__Multiple Format Patterns__](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L372-L415) per Format String.
 
-Let's do better and download our filesystem...
+Instead of embedding our filesystem, let's do better and download our filesystem...
 
 > ![NuttX Driver for ROM FS](https://lupyuen.github.io/images/romfs-flow3.jpg)
 
 # Appendix: Download ROM FS
 
-In the previous section, our Zig Wrapper __embedded `romfs.bin` inside WebAssembly__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
+In the previous section, our Zig Wrapper __embeds `romfs.bin` inside WebAssembly__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/c2146f65cc8f338b8a3aaa4c2e88e550e82514ec/zig/tcc-wasm.zig#L993-L997)
 
 ```zig
 /// Embed the ROM FS Filesystem.
@@ -888,7 +888,7 @@ pub export fn get_romfs(size: u32) [*]const u8 {
 }
 ```
 
-Inside our Zig Wrapper, __`ROMFS_DATA`__ is passed to our NuttX ROM FS Driver via an __IOCTL Request__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986)
+Inside our Zig Wrapper, __`ROMFS_DATA`__ is passed to our NuttX ROM FS Driver via an __IOCTL Request__: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L967-L991)
 
 ```zig
 /// ROM FS Driver makes this IOCTL Request
@@ -1039,6 +1039,7 @@ asm volatile ("addi a2, a0, 0");
 When we do that, Register A2 __becomes negative__...
 
 ```yaml
+nsh> a.out
 riscv_swint: Entry: regs: 0x8020be10
 cmd: 61
 EPC: c0000160
@@ -1049,7 +1050,7 @@ A3: 0f
 [...Page Fault because A2 is an Invalid Address...]
 ```
 
-So we Shift Away the __Negative Sign__ (_silly_ and _seriously_)...
+So we Shift Away the __Negative Sign__ (_silly_ + _seriously_)...
 
 ```c
 // Load SysCall Parameter to Register A0
@@ -1083,7 +1084,7 @@ BTW _Andy_ won't work either...
 // Load SysCall Parameter to Register A0
 register long r2 asm("a0") = (long)(parm2);
 
-// Logical AND with 0xffffffff
+// Logical AND with 0xFFFF_FFFF
 // then save to Register A2
 asm volatile ("andi a2, a0, 0xffffffff");
 ```
