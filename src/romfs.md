@@ -1,6 +1,6 @@
 # Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)
 
-📝 _20 Feb 2024_
+📝 _12 Feb 2024_
 
 ![Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)](https://lupyuen.github.io/images/romfs-title.png)
 
