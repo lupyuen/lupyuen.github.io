@@ -686,6 +686,8 @@ Today we solved a hefty headache in our port of TCC Compiler to WebAssembly: __M
 
 - Now we can build __NuttX Apps__ in the Web Browser, and test them in the Web Browser too!
 
+_(NuttX becomes a Triple Treat: In the C Compiler, in the Apps and in the Emulator!)_
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
