@@ -462,7 +462,7 @@ romfs_files = std.ArrayList(?*c.struct_file)
   .init(std.heap.page_allocator);
 </code></pre></div>
 <p>Why <a href="https://ziglang.org/documentation/master/std/#A;std:ArrayList"><strong>ArrayList</strong></a>? It grows easily as we add File Descriptors…</p>
-<p>TODO: Pic of ArrayList</p>
+<p><img src="https://lupyuen.github.io/images/romfs-fd.jpg" alt="romfs_files remembers our POSIX File Descriptors" /></p>
 <p>When TCC WebAssembly calls <strong>POSIX <code>read()</code></strong> to read the C Header File, we call ROM FS: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L226-L256">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read the POSIX File Descriptor `fd`.
 /// Emulates POSIX `read()`
