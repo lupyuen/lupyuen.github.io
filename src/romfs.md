@@ -672,6 +672,10 @@ They'll make System Calls to __NuttX Kernel__, for printing and quitting...
 
 TODO
 
+Today we solved a problem in our port of TCC Compiler to WebAssembly: __Missing C Header Files__...
+
+TODO
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
