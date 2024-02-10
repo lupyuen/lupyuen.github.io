@@ -1,6 +1,6 @@
 # Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)
 
-📝 _12 Feb 2024_
+📝 _11 Feb 2024_
 
 ![Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)](https://lupyuen.github.io/images/romfs-title.png)
 
@@ -670,8 +670,6 @@ They'll make System Calls to __NuttX Kernel__, for printing and quitting...
 
 # What's Next
 
-TODO
-
 Today we solved a hefty headache in our port of TCC Compiler to WebAssembly: __Missing C Header Files__
 
 - We host the C Header Files in a __ROM FS Filesystem__
@@ -691,6 +689,8 @@ _(NuttX becomes a Triple Treat: In the C Compiler, in the Apps and in the Emulat
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=39331107)
 
 -   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 

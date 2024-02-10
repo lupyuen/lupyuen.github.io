@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)</title>
+            <link>https://lupyuen.github.io/articles/romfs</link>
+            <description><![CDATA[We solve a hefty headache in our port of TCC Compiler to WebAssembly: Missing C Header Files... Thanks to the ROM FS Filesystem and the ROM FS Driver from Apache NuttX RTOS]]></description>
+            <guid>https://lupyuen.github.io/articles/romfs</guid>
+            <pubDate>Sun, 11 Feb 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)</title>
             <link>https://lupyuen.github.io/articles/tcc</link>
             <description><![CDATA[Today we're running Apache NuttX RTOS inside a Web Browser. What if we could compile and test NuttX Apps in the Web Browser? Let's explore with TCC 64-bit RISC-V Compiler, compiled to WebAssembly with Zig Compiler.]]></description>

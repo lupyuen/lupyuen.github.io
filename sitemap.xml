@@ -2,7 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://lupyuen.github.io/</loc>
-    <lastmod>2024-02-04T00:00:00+00:00</lastmod>
+    <lastmod>2024-02-11T00:00:00+00:00</lastmod>
+  </url>
+  <url>
+    <loc>https://lupyuen.github.io/articles/romfs</loc>
+    <lastmod>2024-02-11T00:00:00+00:00</lastmod>
   </url>
   <url>
     <loc>https://lupyuen.github.io/articles/tcc</loc>
