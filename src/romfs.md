@@ -672,7 +672,7 @@ They'll make System Calls to __NuttX Kernel__, for printing and quitting...
 
 TODO
 
-Today we solved a problem in our port of TCC Compiler to WebAssembly: __Missing C Header Files__...
+Today we solved a major headache in our port of TCC Compiler to WebAssembly: __Missing C Header Files__
 
 TODO
 
