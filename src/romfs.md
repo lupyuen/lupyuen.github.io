@@ -672,9 +672,19 @@ They'll make System Calls to __NuttX Kernel__, for printing and quitting...
 
 TODO
 
-Today we solved a major headache in our port of TCC Compiler to WebAssembly: __Missing C Header Files__
+Today we solved a hefty headache in our port of TCC Compiler to WebAssembly: __Missing C Header Files__
 
-TODO
+- We host the C Header Files in a __ROM FS Filesystem__
+
+- We found a ROM FS Driver from __Apache NuttX RTOS__ that works well with WebAssembly
+
+- Our Zig Wrapper emulates __POSIX File Access__ for ROM FS
+
+- TCC Compiler now compiles __C Programs with Header Files__ yay!
+
+- We tested the Compiler Output with __NuttX Emulator__ in the Web Browser
+
+- Now we can build __NuttX Apps__ in the Web Browser, and test them in the Web Browser too!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
 
