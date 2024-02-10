@@ -301,7 +301,7 @@ assert(ret2 &gt;= 0);
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163">(<strong>romfs_inode</strong> is our <strong>Mount Inode</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L99-L101">(See the <strong>Open Log</strong>)</a></p>
-<p>(Later we’ll allocate File Struct from the Heap)</p>
+<p>In the code above, we allocate the File Struct from the Stack. In a while we’ll allocate the File Struct from the Heap.</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/romfs-flow2.jpg" alt="POSIX Functions for ROM FS" /></p>
 </blockquote>
@@ -361,6 +361,7 @@ genromfs \
 <div class="example-wrap"><pre class="language-bash"><code>## Dump our ROM FS Filesystem
 hexdump -C romfs.bin 
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/837184772dd091a83f2c61ec357a3d1d">(See the <strong>Filesystem Dump</strong>)</a></p>
 <p>This <strong>ROM FS Header</strong> appears at the top of the filesystem (pic above)…</p>
 <ul>
 <li>
@@ -606,7 +607,7 @@ hexdump -C apps/bin/a.out
 <p>Inside the <strong>TinyEMU WebAssembly</strong>: We receive the <strong><code>elf_data</code></strong> and copy it locally</p>
 </li>
 <li>
-<p>Then we search for our <strong>Magic Pattern <code>22 05 69 00</code></strong> in our Fake <strong><code>a.out</code></strong></p>
+<p>Then we search for our <strong>Magic Pattern <code>22</code> <code>05</code> <code>69</code> <code>00</code></strong> in our Fake <strong><code>a.out</code></strong></p>
 </li>
 <li>
 <p>And we overwrite the Fake <strong><code>a.out</code></strong> with the Real <strong><code>a.out</code></strong> from <strong><code>elf_data</code></strong></p>
@@ -724,7 +725,7 @@ http://localhost:8000/romfs/index.html
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/zig_romfs.h"><strong>zig_romfs.h</strong></a></p>
 </li>
 </ul>
-<p>NuttX ROM FS Driver will call <strong><code>mtd_ioctl</code></strong> in Zig when it maps the ROM FS Data in memory: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
+<p>NuttX ROM FS Driver will call <strong><code>mtd_ioctl</code></strong> in Zig when it maps the ROM FS Data in memory: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L967-L991">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem
 /// (Or download it, see next section)
 const ROMFS_DATA = @embedFile(
@@ -758,14 +759,14 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 </code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#embedFile">(About <strong>@embedFile</strong>)</a></p>
 <p><em>Anything else we changed in our Zig Wrapper?</em></p>
-<p>Last week we hacked up a simple <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>Format Pattern</strong></a> for handling <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>fprintf and friends</strong></a>.</p>
-<p>Now with Logging Enabled in NuttX ROM FS, we need to handle more complex Format Strings. Thus we extended our formatting to handle <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L368-L411"><strong>Multiple Format Patterns</strong></a> per Format String.</p>
-<p>Let’s do better and download our filesystem…</p>
+<p>Last week we hacked up a simple <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>Format Pattern</strong></a> for handling <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>fprintf and friends</strong></a>. (One Format Pattern per C Format String)</p>
+<p>Now with Logging Enabled in NuttX ROM FS, we need to handle <strong>Complex Format Strings</strong>. Thus we extend our formatting to handle <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L372-L415"><strong>Multiple Format Patterns</strong></a> per Format String.</p>
+<p>Instead of embedding our filesystem, let’s do better and download our filesystem…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/romfs-flow3.jpg" alt="NuttX Driver for ROM FS" /></p>
 </blockquote>
 <h1 id="appendix-download-rom-fs"><a href="#appendix-download-rom-fs">11 Appendix: Download ROM FS</a></h1>
-<p>In the previous section, our Zig Wrapper <strong>embedded <code>romfs.bin</code> inside WebAssembly</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
+<p>In the previous section, our Zig Wrapper <strong>embeds <code>romfs.bin</code> inside WebAssembly</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/c2146f65cc8f338b8a3aaa4c2e88e550e82514ec/zig/tcc-wasm.zig#L993-L997">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem.
 /// But what if we need to update it?
 const ROMFS_DATA = @embedFile(
@@ -812,7 +813,7 @@ function main() {
     .compile_program(options_ptr, code_ptr);
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L6-L28">(<strong>wasm</strong> is our <strong>WebAssembly Helper</strong>)</a></p>
-<p><strong><code>get_romfs</code></strong> returns the WebAssembly Memory from our <strong>Zig Wrapper</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121">tcc-wasm.zig</a></p>
+<p>In our <strong>Zig Wrapper</strong>: <strong><code>get_romfs</code></strong> returns the WebAssembly Memory reserved for our ROM FS Filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Storage for ROM FS Filesystem, loaded from Web Server
 /// Previously: We embedded the filesystem with `@embedFile`
 var ROMFS_DATA = std.mem.zeroes([8192]u8);
@@ -828,7 +829,7 @@ pub export fn get_romfs(size: u32) [*]const u8 {
   return &amp;ROMFS_DATA;
 }
 </code></pre></div>
-<p>Inside our Zig Wrapper, <strong><code>ROMFS_DATA</code></strong> is passed to our NuttX ROM FS Driver via an <strong>IOCTL Request</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L963-L986">tcc-wasm.zig</a></p>
+<p><strong>NuttX ROM FS Driver</strong> fetches <strong><code>ROMFS_DATA</code></strong> from our Zig Wrapper, via an <strong>IOCTL Request</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L967-L991">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// ROM FS Driver makes this IOCTL Request
 export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 
@@ -951,7 +952,8 @@ register long r2 asm(&quot;a0&quot;) = (long)(parm2);
 asm volatile (&quot;addi a2, a0, 0&quot;);
 </code></pre></div>
 <p>When we do that, Register A2 <strong>becomes negative</strong>…</p>
-<div class="example-wrap"><pre class="language-yaml"><code>riscv_swint: Entry: regs: 0x8020be10
+<div class="example-wrap"><pre class="language-yaml"><code>nsh&gt; a.out
+riscv_swint: Entry: regs: 0x8020be10
 cmd: 61
 EPC: c0000160
 A0: 3d 
@@ -960,7 +962,7 @@ A2: ffffffffc0101000
 A3: 0f
 [...Page Fault because A2 is an Invalid Address...]
 </code></pre></div>
-<p>So we Shift Away the <strong>Negative Sign</strong> (<em>silly</em> and <em>seriously</em>)…</p>
+<p>So we Shift Away the <strong>Negative Sign</strong> (<em>silly</em> + <em>seriously</em>)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Load SysCall Parameter to Register A0
 register long r2 asm(&quot;a0&quot;) = (long)(parm2);
 
@@ -982,11 +984,11 @@ A2: c0101000
 A3: 0f
 Hello, World!!
 </code></pre></div>
-<p>BTW <em>Andy</em> won’t work either…</p>
+<p>BTW <em>Andy</em> won’t work…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Load SysCall Parameter to Register A0
 register long r2 asm(&quot;a0&quot;) = (long)(parm2);
 
-// Logical AND with 0xffffffff
+// Logical AND with 0xFFFF_FFFF
 // then save to Register A2
 asm volatile (&quot;andi a2, a0, 0xffffffff&quot;);
 </code></pre></div>
@@ -1069,7 +1071,7 @@ inline uintptr_t sys_call1(
   return r0;
 } 
 </code></pre></div>
-<p>And everything works OK!</p>
+<p>This cumbersome workaround works OK with TCC Compiler and NuttX Apps!</p>
 <p><em>Wow this looks horribly painful… Are we doing any more of this?</em></p>
 <p>Nope sorry, we won’t do any more of this! Hand-crafting the NuttX System Calls in RISC-V Assembly was <a href="https://lupyuen.github.io/articles/romfs#appendix-print-via-nuttx-system-call"><strong>positively painful</strong></a>.</p>
 <p>(We’ll revisit this when the RISC-V Registers are hunky dory in TCC)</p>
@@ -1081,7 +1083,18 @@ inline uintptr_t sys_call1(
 </ul>
 <p>And we discovered that TCC WebAssembly saves <strong><code>a.out</code></strong> to the <strong>JavaScript Local Storage</strong>, encoded as <strong><code>elf_data</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/romfs-tcc2.png" alt="RISC-V ELF in the JavaScript Local Storage" /></p>
-<p>This is how we take <strong><code>elf_data</code></strong> and patch the <strong>Fake <code>a.out</code></strong> in the NuttX Image with the <strong>Real <code>a.out</code></strong> (from TCC)…</p>
+<p>This is how we…</p>
+<ol>
+<li>
+<p>Take <strong><code>elf_data</code></strong> from JavaScript Local Storage</p>
+</li>
+<li>
+<p>Patch the <strong>Fake <code>a.out</code></strong> in the NuttX Image</p>
+</li>
+<li>
+<p>With the <strong>Real <code>a.out</code></strong> from TCC</p>
+</li>
+</ol>
 <p>In our <strong>NuttX Emulator JavaScript</strong>: We read <strong><code>elf_data</code></strong> from the <strong>JavaScript Local Storage</strong> and pass it to TinyEMU WebAssembly: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/jslinux.js#L504-L545">jslinux.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Receive the Encoded ELF Data for `a.out`
 // from JavaScript Local Storage and decode it
@@ -1122,7 +1135,7 @@ void vm_start(...) {
   if (elf_len &gt; 4096) { puts(&quot;elf_len exceeds 4096, increase elf_data and a.out size&quot;); }
   memcpy(elf_data, elf_data0, elf_len);
 </code></pre></div>
-<p>Then we search for our <strong>Magic Pattern <code>22 05 69 00</code></strong> in our Fake <strong><code>a.out</code></strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053">riscv_machine.c</a></p>
+<p>Then we search for our <strong>Magic Pattern <code>22</code> <code>05</code> <code>69</code> <code>00</code></strong> in our Fake <strong><code>a.out</code></strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Patch the ELF Data to Fake `a.out` in Initial RAM Disk
   uint64_t elf_addr = 0;
   for (int i = 0; i &lt; 0xD61680; i++) { // TODO: Fix the Image Size
@@ -1139,7 +1152,7 @@ void vm_start(...) {
   }
 </code></pre></div>
 <p>And we overwrite the Fake <strong><code>a.out</code></strong> with the Real <strong><code>a.out</code></strong> from <strong><code>elf_data</code></strong>.</p>
-<p>This is perfectly OK because <a href="https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem"><strong>ROM FS Files are continuous</strong></a> and contiguous. (Though we ought to patch the File Size and the Filesystem Header Checksum)</p>
+<p>This is perfectly OK because <a href="https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem"><strong>ROM FS Files are continuous</strong></a> and contiguous. (Though we ought to patch the <a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem"><strong>File Size</strong></a> and <a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem"><strong>Filesystem Header Checksum</strong></a>)</p>
 <p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/tcc">(See the <strong>Web Server Files</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
@@ -1165,6 +1178,7 @@ genromfs \
 <div class="example-wrap"><pre class="language-bash"><code>## Dump our ROM FS Filesystem
 hexdump -C romfs.bin 
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/837184772dd091a83f2c61ec357a3d1d">(See the <strong>Filesystem Dump</strong>)</a></p>
 <p>Everything begins with the <strong>ROM FS Filesystem Header</strong> (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>      [ Magic Number        ]  [ FS Size ] [ Checksm ]
 0000  2d 72 6f 6d 31 66 73 2d  00 00 0f 90 58 57 01 f8  |-rom1fs-....XW..|
