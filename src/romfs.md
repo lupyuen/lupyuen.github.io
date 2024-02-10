@@ -680,7 +680,7 @@ Today we solved a hefty headache in our port of TCC Compiler to WebAssembly: __M
 
 - Our Zig Wrapper emulates __POSIX File Access__ for ROM FS
 
-- TCC Compiler now compiles __C Programs with Header Files__ yay!
+- TCC Compiler compiles __C Programs with Header Files__ yay!
 
 - We tested the Compiler Output with __NuttX Emulator__ in the Web Browser
 
