@@ -464,7 +464,7 @@ romfs_files = std.ArrayList(?*c.struct_file)
 
 Why [__ArrayList__](https://ziglang.org/documentation/master/std/#A;std:ArrayList)? It grows easily as we add File Descriptors...
 
-TODO: Pic of ArrayList
+![romfs_files remembers our POSIX File Descriptors](https://lupyuen.github.io/images/romfs-fd.jpg)
 
 When TCC WebAssembly calls __POSIX `read()`__ to read the C Header File, we call ROM FS: [tcc-wasm.zig](https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L226-L256)
 
