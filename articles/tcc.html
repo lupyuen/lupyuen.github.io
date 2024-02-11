@@ -399,8 +399,10 @@ var write_buflen: usize = 0;
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L62-L78">(<strong>write_buf</strong> will be returned to JavaScript)</a></p>
 <p><em>Can we handle Multiple Files?</em></p>
 <p>Right now we’re trying to embed the simple <a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly"><strong>ROM FS Filesystem</strong></a> into our Zig Wrapper.</p>
-<p>The ROM FS Filesystem will be preloaded with the Header and Library Files needed by TCC.</p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly">(See the updates for <strong>ROM FS Filesystem</strong>)</a></p>
+<p>The ROM FS Filesystem will be preloaded with the Header and Library Files needed by TCC. See the details here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/romfs"><strong>“Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/tcc-format.jpg" alt="Our Zig Wrapper uses Pattern Matching to match the C Formats and substitute the Zig Equivalent" /></p>
 <h1 id="fearsome-fprintf-and-friends"><a href="#fearsome-fprintf-and-friends">5 Fearsome fprintf and Friends</a></h1>
 <p><em>Why is fprintf particularly problematic?</em></p>
@@ -476,6 +478,10 @@ const format_patterns = [_]FormatPattern{
 <p><em>So simple? Unbelievable!</em></p>
 <p>Actually we’ll hit more Format Patterns as TCC Compiler emits various <strong>Error and Warning Messages</strong>. But it’s a good start!</p>
 <p>Later our Zig Wrapper shall cautiously and meticulously parse all kinds of C Format Strings. Or we do the <a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191"><strong>parsing in C</strong></a>, compiled to WebAssembly. (160 lines of C!)</p>
+<p>See the updates here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/romfs#appendix-nuttx-rom-fs-driver"><strong>“Multiple Format Patterns per Format String”</strong></a></li>
+</ul>
 <p>(Funny how <strong>printf</strong> is the first thing we learn about C. Yet it’s incredibly difficult to implement!)</p>
 <p><img src="https://lupyuen.github.io/images/tcc-nuttx.jpg" alt="Compile and Run NuttX Apps in the Web Browser" /></p>
 <h1 id="test-with-apache-nuttx-rtos"><a href="#test-with-apache-nuttx-rtos">6 Test with Apache NuttX RTOS</a></h1>
@@ -620,7 +626,7 @@ Hello, World!!
 <p><a href="https://youtu.be/DJMDYq52Iv8">Watch the <strong>Demo on YouTube</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser">Find out <strong>How It Works</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/romfs#from-tcc-to-nuttx-emulator">Find out <strong>How It Works</strong></a></p>
 </li>
 </ul>
 <p><strong>TLDR:</strong> We called <a href="https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser"><strong>JavaScript Local Storage</strong></a>
@@ -1263,7 +1269,9 @@ Import:
 <p><strong>Filesystem Functions</strong></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L87-L166"><em>(Implemented here)</em></a></p>
 <p>We’ll simulate these functions for WebAssembly, by embedding the simple <a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly"><strong>ROM FS Filesystem</strong></a> into our Zig Wrapper…</p>
-<p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly">(See the updates for <strong>ROM FS Filesystem</strong>)</a></p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/romfs"><strong>“Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)”</strong></a></li>
+</ul>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+getcwd"><strong>getcwd</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+remove"><strong>remove</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+unlink"><strong>unlink</strong></a></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+open"><strong>open</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fopen"><strong>fopen</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+fdopen"><strong>fdopen</strong></a></td></tr>
@@ -1278,7 +1286,10 @@ Import:
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L186-L445"><em>(Implemented here)</em></a></p>
 <p>As discussed earlier, Varargs will be <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>tricky to implement</strong></a> in Zig. Probably we should do it in C.</p>
 <p><a href="https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191">(Similar to <strong>ziglibc</strong>)</a></p>
-<p>Right now we’re doing simple <a href="https://lupyuen.github.io/articles/tcc#appendix-pattern-matching"><strong>Pattern Matching</strong></a>. But it might not be sufficient when TCC compiles Real Programs…</p>
+<p>Right now we’re doing simple <a href="https://lupyuen.github.io/articles/tcc#appendix-pattern-matching"><strong>Pattern Matching</strong></a>. But it might not be sufficient when TCC compiles Real Programs. See the updates here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/romfs#appendix-nuttx-rom-fs-driver"><strong>“Multiple Format Patterns per Format String”</strong></a></li>
+</ul>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+printf"><strong>printf</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+snprintf"><strong>snprintf</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sprintf"><strong>sprintf</strong></a></td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+vsnprintf"><strong>vsnprintf</strong></a></td><td style="text-align: left"><a href="https://github.com/search?type=code&amp;q=repo%3Asellicott%2Ftcc-riscv32+path%3A*tcc*.c+sscanf"><strong>sscanf</strong></a></td><td style="text-align: left"></td></tr>
