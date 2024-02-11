@@ -381,9 +381,9 @@ _Can we handle Multiple Files?_
 
 Right now we're trying to embed the simple [__ROM FS Filesystem__](https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly) into our Zig Wrapper.
 
-The ROM FS Filesystem will be preloaded with the Header and Library Files needed by TCC.
+The ROM FS Filesystem will be preloaded with the Header and Library Files needed by TCC. See the details here...
 
-[(See the updates for __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly)
+- [__"Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)"__](https://lupyuen.github.io/articles/romfs)
 
 ![Our Zig Wrapper uses Pattern Matching to match the C Formats and substitute the Zig Equivalent](https://lupyuen.github.io/images/tcc-format.jpg)
 
@@ -472,6 +472,10 @@ _So simple? Unbelievable!_
 Actually we'll hit more Format Patterns as TCC Compiler emits various __Error and Warning Messages__. But it's a good start!
 
 Later our Zig Wrapper shall cautiously and meticulously parse all kinds of C Format Strings. Or we do the [__parsing in C__](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191), compiled to WebAssembly. (160 lines of C!)
+
+See the updates here...
+
+- [__"Multiple Format Patterns per Format String"__](https://lupyuen.github.io/articles/romfs#appendix-nuttx-rom-fs-driver)
 
 (Funny how __printf__ is the first thing we learn about C. Yet it's incredibly difficult to implement!)
 
@@ -655,7 +659,7 @@ Yep, a NuttX App built in the Web Browser... Now runs OK with __NuttX Emulator i
 
 - [Watch the __Demo on YouTube__](https://youtu.be/DJMDYq52Iv8)
 
-- [Find out __How It Works__](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser)
+- [Find out __How It Works__](https://lupyuen.github.io/articles/romfs#from-tcc-to-nuttx-emulator)
 
 __TLDR:__ We called [__JavaScript Local Storage__](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser)
  to copy the RISC-V ELF `a.out` from TCC WebAssembly to NuttX Emulator... Then we patched `a.out` into the [__ROM FS Filesystem__](https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser) for NuttX Emulator. Nifty!
@@ -1410,7 +1414,7 @@ __Filesystem Functions__
 
 We'll simulate these functions for WebAssembly, by embedding the simple [__ROM FS Filesystem__](https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly) into our Zig Wrapper...
 
-[(See the updates for __ROM FS Filesystem__)](https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly)
+- [__"Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)"__](https://lupyuen.github.io/articles/romfs)
 
 | | | |
 |:---|:---|:---|
@@ -1432,7 +1436,9 @@ As discussed earlier, Varargs will be [__tricky to implement__](https://lupyuen.
 
 [(Similar to __ziglibc__)](https://github.com/marler8997/ziglibc/blob/main/src/printf.c#L32-L191)
 
-Right now we're doing simple [__Pattern Matching__](https://lupyuen.github.io/articles/tcc#appendix-pattern-matching). But it might not be sufficient when TCC compiles Real Programs...
+Right now we're doing simple [__Pattern Matching__](https://lupyuen.github.io/articles/tcc#appendix-pattern-matching). But it might not be sufficient when TCC compiles Real Programs. See the updates here...
+
+- [__"Multiple Format Patterns per Format String"__](https://lupyuen.github.io/articles/romfs#appendix-nuttx-rom-fs-driver)
 
 | | | |
 |:---|:---|:---|
