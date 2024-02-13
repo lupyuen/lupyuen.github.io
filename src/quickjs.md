@@ -12,13 +12,83 @@ TODO
 
 [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)
 
-TODO: Let's do some typing practice (sorry copy-pasta won't work in the Emulator)
+TODO: How Small?
 
-![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.png)
+# QuickJS on NuttX Emulator
 
-[(Live Demo of __QuickJS on NuttX__)](https://lupyuen.github.io/nuttx-tinyemu/quickjs)
+Click here to try __QuickJS JavaScript Engine__ in NuttX Emulator...
+
+- [__QuickJS on Ox64 NuttX Emulator__](https://lupyuen.github.io/nuttx-tinyemu/quickjs)
+
+  [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
+
+Now we do some finger exercises (sorry __copy-pasta won't work__ in the Emulator)...
+
+1.  To start QuickJS: Enter...
+
+    ```bash
+    qjs
+    ```
+
+1.  At the QuickJS Prompt, enter this to define the __NuttX LED Command__...
+
+    ```javascript
+    ULEDIOC_SETALL = 0x1d03
+    ```
+
+1.  Next we open the __NuttX LED Device__ (write-only)...
+
+    ```javascript
+    fd = os.open("/dev/userleds", os.O_WRONLY)
+    ```
+
+1.  Watch what happens when we __Flip On the LED__...
+
+    ```javascript    
+    os.ioctl(fd, ULEDIOC_SETALL, 1)
+    ```
+
+    __GPIO 29__ (lower right) turns Green!
+
+1.  Then we __Flip Off the LED__...
+
+    ```javascript
+    os.ioctl(fd, ULEDIOC_SETALL, 0)
+    ```
+
+    __GPIO 29__ goes back to normal!
+
+Our Demo looks like this...
+
+```bash
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> qjs
+QuickJS - Type "\h" for help
+
+## Define the NuttX LED Command
+qjs > ULEDIOC_SETALL = 0x1d03
+7427
+
+## Open the NuttX LED Device (write-only)
+qjs > fd = os.open("/dev/userleds", os.O_WRONLY)
+3
+
+## Flip LED On: GPIO 29 turns Green...
+qjs > os.ioctl(fd, ULEDIOC_SETALL, 1)
+bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+0
+
+## Flip LED Off: GPIO 29 goes back to normal...
+qjs > os.ioctl(fd, ULEDIOC_SETALL, 0)
+bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+0
+```
+
+[(See the __Complete Log__)](https://github.com/lupyuen/quickjs-nuttx#quickjs-blinks-the-led-on-ox64-emulator)
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
+
+TODO
 
 # Porting QuickJS JavaScript Engine to Apache NuttX RTOS
 
