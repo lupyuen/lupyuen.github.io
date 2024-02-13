@@ -110,11 +110,47 @@ _Wow... A Blinky in JavaScript?_
 
 Yep we flipped this [__NuttX Blinky App__](TODO) from C to __Interactive JavaScript__!
 
+_Does it work on Real Hardware?_
+
+The exact same NuttX Image blinks a Real LED on [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (64-bit RISC-V). Though it's a little sluggish, we'll come back to this.
+
 How did we make this happen? Read on to find out...
 
-# Compile QuickJS for NuttX
+TODO: Pic of Real LED
 
-TODO
+# Build QuickJS for NuttX
+
+_QuickJS compiles OK for NuttX?_
+
+Mostly. QuickJS compiles for NuttX __with no code changes__...
+
+- [__"Build QuickJS for NuttX"__](TODO)
+
+Then we hit some __Missing Functions__...
+
+1.  __POSIX Functions:__ popen, pclose, pipe2, symlink, ...
+
+1.  __Dynamic Linking:__ dlopen, dlsym, dlclose
+
+1.  __Math Functions:__ pow, floor, trunc, ...
+
+1.  __Atomic Functions:__ atomic_fetch_add_2, ...
+
+_How did we fix the missing functions?_
+
+1.  __POSIX Functions:__ They're probably available if we tweak the __Build Options__ for NuttX. For now, we [__stubbed them out__](TODO).
+
+1.  __Dynamic Linking:__ We won't support Dynamic Linking for NuttX. We [__stubbed them out__](TODO).
+
+1.  __Math Functions:__ We linked them with GCC Option __`-lm`__. The last few stragglers: We [__stubbed them out__](TODO).
+
+1.  __Atomic Functions:__ We patched in the [__Missing Atomic Functions__](TODO).
+
+    [(About __NuttX Atomic Functions__)](https://github.com/apache/nuttx/issues/10642)
+
+    [(We might __disable QuickJS Atomic Functions__)](TODO)
+
+TODO: Mostly
 
 From the [Makefile Log](nuttx/make.log)...
 
