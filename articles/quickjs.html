@@ -89,6 +89,13 @@
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>TODO</p>
+<p>In 4 lines of JavaScript we’ll blink the LED…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Blink the NuttX LED, on then off
+const ULEDIOC_SETALL = 0x1d03;
+const fd = os.open(&quot;/dev/userleds&quot;, os.O_WRONLY);
+os.ioctl(fd, ULEDIOC_SETALL, 1);
+os.ioctl(fd, ULEDIOC_SETALL, 0);
+</code></pre></div>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a></p>
 <p>TODO: How Small?</p>
 <h1 id="quickjs-on-nuttx-emulator"><a href="#quickjs-on-nuttx-emulator">1 QuickJS on NuttX Emulator</a></h1>
