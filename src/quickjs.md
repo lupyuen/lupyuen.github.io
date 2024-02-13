@@ -12,7 +12,7 @@ TODO
 
 [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)
 
-TODO
+TODO: Let's do some typing practice (sorry copy-pasta won't work in the Emulator)
 
 ![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.png)
 
