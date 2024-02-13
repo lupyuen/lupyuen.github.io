@@ -316,7 +316,9 @@ qjs &gt; os.ioctl(1,2,3)
 
 qjs &gt; os.ioctl(100,2,3)
 -9
-</code></pre></div><h1 id="quickjs-blinks-the-led-on-ox64-sbc"><a href="#quickjs-blinks-the-led-on-ox64-sbc">5 QuickJS Blinks the LED on Ox64 SBC</a></h1>
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/nim-wiring.jpg" alt="Connect an LED to Ox64 SBC at GPIO 29, Pin 21" /></p>
+<h1 id="quickjs-blinks-the-led-on-ox64-sbc"><a href="#quickjs-blinks-the-led-on-ox64-sbc">5 QuickJS Blinks the LED on Ox64 SBC</a></h1>
 <p><em>We added ioctl() to QuickJS… Does it work?</em></p>
 <p>We test <strong>ioctl()</strong> on a Real Device with a Real LED: <strong>Ox64 BL808 RISC-V SBC</strong>. Right after these fixes…</p>
 <ul>
@@ -339,8 +341,40 @@ qjs &gt; os.ioctl(100,2,3)
 <p>(Because <strong>task_create()</strong> is missing from Kernel Mode)</p>
 </li>
 </ul>
-<p>TODO: Connect LED</p>
-<p>TODO: Ox64 Log</p>
+<p>Connect an LED to Ox64 SBC at <strong>GPIO 29, Pin 21</strong> (pic above)…</p>
+<div><table><thead><tr><th style="text-align: left">Connect</th><th style="text-align: left">To</th><th style="text-align: left">Wire</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Ox64 Pin 21</strong> <br><em>(GPIO 29)</em></td><td style="text-align: left"><strong>Resistor</strong> <br><em>(47 Ohm)</em></td><td style="text-align: left">Red</td></tr>
+<tr><td style="text-align: left"><strong>Resistor</strong> <br><em>(47 Ohm)</em></td><td style="text-align: left"><strong>LED +</strong> <br><em>(Curved Edge)</em></td><td style="text-align: left">Breadboard</td></tr>
+<tr><td style="text-align: left"><strong>LED -</strong> <br><em>(Flat Edge)</em></td><td style="text-align: left"><strong>Ox64 Pin 23</strong> <br><em>(GND)</em></td><td style="text-align: left">Black</td></tr>
+</tbody></table>
+</div>
+<p><a href="https://wiki.pine64.org/wiki/File:Ox64_pinout.png">(See the <strong>Ox64 Pinout</strong>)</a></p>
+<p>(Resistor is <strong>47 Ohm</strong>, yellow-purple-black-gold, almost Karma Chameleon)</p>
+<p>Boot NuttX on Ox64. Enter these commands…</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; qjs
+QuickJS - Type &quot;\h&quot; for help
+
+## Define the NuttX LED Command
+qjs &gt; ULEDIOC_SETALL = 0x1d03
+7427
+
+## Open the NuttX LED Device (write-only)
+qjs &gt; fd = os.open(&quot;/dev/userleds&quot;, os.O_WRONLY)
+3
+
+## Flip LED to On
+qjs &gt; os.ioctl(fd, ULEDIOC_SETALL, 1)
+bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+0
+
+## Flip LED to Off
+qjs &gt; os.ioctl(fd, ULEDIOC_SETALL, 0)
+bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+0
+</code></pre></div>
+<p>Yep <strong>ioctl()</strong> works great on a Real Device, with a Real LED!</p>
+<p><img src="https://lupyuen.github.io/images/nim-blink2.jpg" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: QuickJS blinks our LED" /></p>
 <p><em>If we don’t have an Ox64 SBC?</em></p>
 <p>No worries, the exact same steps will work for <strong>QEMU Emulator</strong> (64-bit RISC-V)…</p>
 <ul>
