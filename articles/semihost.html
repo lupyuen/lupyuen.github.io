@@ -509,7 +509,8 @@ genromfs \
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e">(See the <strong>Build Log</strong>)</a></p>
-<p><a href="https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html">(<strong>genromfs</strong> generates a <strong>ROMFS Filesystem</strong>)</a></p>
+<p><a href="https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html">(<strong>genromfs</strong> generates a <strong>ROM FS Filesystem</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem">(Inside a <strong>ROM FS Filesystem</strong>)</a></p>
 <p>This creates an Initial RAM Disk <strong>initrd</strong> (in ROMFS format) that’s 7.9 MB…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l initrd
 -rw-r--r--  1 7902208 initrd
@@ -638,7 +639,8 @@ cp initrd $HOME/tftproot
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/ae59a840c94280ce8d618699278a0436">(See the <strong>Build Log</strong>)</a></p>
-<p><a href="https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html">(<strong>genromfs</strong> generates a <strong>ROMFS Filesystem</strong>)</a></p>
+<p><a href="https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html">(<strong>genromfs</strong> generates a <strong>ROM FS Filesystem</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem">(Inside a <strong>ROM FS Filesystem</strong>)</a></p>
 <p>Our Initial RAM Disk <strong>initrd</strong> (with ROMFS inside) is 7.9 MB (slightly bigger)…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l initrd
 -rw-r--r--  1 7930880 initrd
@@ -1026,6 +1028,7 @@ genromfs \
 </code></pre></div>
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html">(Source)</a></p>
 <p><a href="https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html">(About <strong>genromfs</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem">(Inside a <strong>ROM FS Filesystem</strong>)</a></p>
 <p><a href="https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=139629548#content/view/139629548">(About NuttX RAM Disks and ROM Disks)</a></p>
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html#booting"><strong>LiteX Memory Map</strong></a> tells us where the RAM Disk is loaded: <strong><code>0x40C0</code> <code>0000</code></strong></p>
 <div class="example-wrap"><pre class="language-text"><code>&quot;romfs.img&quot;:   &quot;0x40C00000&quot;,
