@@ -69,21 +69,20 @@
 <li><a href="#quickjs-on-nuttx-emulator">1 QuickJS on NuttX Emulator</a><ul></ul></li>
 <li><a href="#build-quickjs-for-nuttx">2 Build QuickJS for NuttX</a><ul></ul></li>
 <li><a href="#nuttx-stack-is-full-of-quickjs">3 NuttX Stack is Full of QuickJS</a><ul></ul></li>
-<li><a href="#fix-quickjs-interactive-mode-on-nuttx">4 Fix QuickJS Interactive Mode on NuttX</a><ul></ul></li>
-<li><a href="#quickjs-crashes-on-nuttx">5 QuickJS Crashes on NuttX</a><ul></ul></li>
-<li><a href="#atom-sentinel-becomes-0xffff_ffff">6 Atom Sentinel becomes 0xFFFF_FFFF</a><ul></ul></li>
-<li><a href="#heap-errors-and-stdio-weirdness">7 Heap Errors and STDIO Weirdness</a><ul></ul></li>
-<li><a href="#unexpected-character-in-quickjs">8 Unexpected Character in QuickJS</a><ul></ul></li>
-<li><a href="#malloc-problems-in-nuttx">9 Malloc Problems in NuttX</a><ul></ul></li>
-<li><a href="#quickjs-calls-posix-open-on-nuttx">10 QuickJS calls POSIX <code>open()</code> on NuttX</a><ul></ul></li>
-<li><a href="#add-ioctl-to-quickjs-for-nuttx">11 Add ioctl() to QuickJS for NuttX</a><ul></ul></li>
-<li><a href="#add-led-driver-to-nuttx-qemu-risc-v">12 Add LED Driver to NuttX QEMU RISC-V</a><ul></ul></li>
-<li><a href="#quickjs-calls-nuttx-led-driver">13 QuickJS calls NuttX LED Driver</a><ul></ul></li>
-<li><a href="#add-led-driver-to-nuttx-ox64-bl808-sbc">14 Add LED Driver to NuttX Ox64 BL808 SBC</a><ul></ul></li>
-<li><a href="#quickjs-blinks-the-led-on-ox64-emulator">15 QuickJS blinks the LED on Ox64 Emulator</a><ul></ul></li>
-<li><a href="#simulate-the-led-on-ox64-emulator">16 Simulate the LED on Ox64 Emulator</a><ul></ul></li>
-<li><a href="#whats-next">17 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-quickjs-for-nuttx">18 Appendix: Build QuickJS for NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
+<li><a href="#quickjs-crashes-on-nuttx">4 QuickJS Crashes on NuttX</a><ul></ul></li>
+<li><a href="#atom-sentinel-becomes-0xffff_ffff">5 Atom Sentinel becomes 0xFFFF_FFFF</a><ul></ul></li>
+<li><a href="#heap-errors-and-stdio-weirdness">6 Heap Errors and STDIO Weirdness</a><ul></ul></li>
+<li><a href="#unexpected-character-in-quickjs">7 Unexpected Character in QuickJS</a><ul></ul></li>
+<li><a href="#malloc-problems-in-nuttx">8 Malloc Problems in NuttX</a><ul></ul></li>
+<li><a href="#quickjs-calls-posix-open-on-nuttx">9 QuickJS calls POSIX <code>open()</code> on NuttX</a><ul></ul></li>
+<li><a href="#add-ioctl-to-quickjs-for-nuttx">10 Add ioctl() to QuickJS for NuttX</a><ul></ul></li>
+<li><a href="#add-led-driver-to-nuttx-qemu-risc-v">11 Add LED Driver to NuttX QEMU RISC-V</a><ul></ul></li>
+<li><a href="#quickjs-calls-nuttx-led-driver">12 QuickJS calls NuttX LED Driver</a><ul></ul></li>
+<li><a href="#add-led-driver-to-nuttx-ox64-bl808-sbc">13 Add LED Driver to NuttX Ox64 BL808 SBC</a><ul></ul></li>
+<li><a href="#quickjs-blinks-the-led-on-ox64-emulator">14 QuickJS blinks the LED on Ox64 Emulator</a><ul></ul></li>
+<li><a href="#simulate-the-led-on-ox64-emulator">15 Simulate the LED on Ox64 Emulator</a><ul></ul></li>
+<li><a href="#whats-next">16 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-quickjs-for-nuttx">17 Appendix: Build QuickJS for NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -239,20 +238,31 @@ dump_task:       3     3 100 RR       Task    - Running            0000000000000
 <p>The last line shows that the <strong>QuickJS Stack</strong> (2 KB) was <strong>100% Full</strong>! (And the Command Line was badly messed up)</p>
 <p>(Lesson Learnt: If the NuttX Stack Dump loops forever, we’re probably <strong>Out Of Stack Space</strong>)</p>
 <p>We follow these steps to <a href="https://github.com/lupyuen/nuttx-star64#increase-stack-size"><strong>increase the Stack Size</strong></a>…</p>
-<ul>
+<ol>
 <li>
-<p>In “<strong><code>make menuconfig</code></strong>”, select <em>“Library Routines &gt; Program Execution Options”</em></p>
+<p>Enter “<strong><code>make menuconfig</code></strong>”</p>
+</li>
+<li>
+<p>Select <em>“Library Routines &gt; Program Execution Options”</em></p>
 </li>
 <li>
 <p>Set <em>“Default task_spawn Stack Size”</em> to <strong>65536</strong></p>
 <p>(That’s 64 KB)</p>
 </li>
-</ul>
-<p>TODO</p>
-<p>Here are all the settings we changed so far…</p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_POSIX_SPAWN_DEFAULT_STACKSIZE=8192
-## Remove CONFIG_SYSLOG_TIMESTAMP=y
+<li>
+<p>Select <em>“Library Routines &gt; Thread Local Storage (TLS)”</em></p>
+<p><a href="https://github.com/lupyuen/quickjs-nuttx#fix-quickjs-interactive-mode-on-nuttx">(Why we set <strong>Thread Local Storage</strong>)</a></p>
+</li>
+<li>
+<p>Set <em>“Maximum stack size (log2)”</em> to <strong>16</strong></p>
+<p>(Because 2^16 = 64 KB)</p>
+</li>
+</ol>
+<p>Which becomes this in our <strong>NuttX Build Config</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078">ox64/nsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_POSIX_SPAWN_DEFAULT_STACKSIZE=65536
+CONFIG_TLS_LOG2_MAXSTACK=16
 </code></pre></div>
+<p>TODO</p>
 <p>QuickJS on NuttX QEMU prints 123 correctly yay! <a href="nuttx/qemu.log">nuttx/qemu.log</a></p>
 <div class="example-wrap"><pre class="language-text"><code>$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
 
@@ -261,38 +271,8 @@ NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; qjs -e console.log(123) 
 123
 nsh&gt;
-</code></pre></div><h1 id="fix-quickjs-interactive-mode-on-nuttx"><a href="#fix-quickjs-interactive-mode-on-nuttx">4 Fix QuickJS Interactive Mode on NuttX</a></h1>
-<p>TODO</p>
-<p>But QuickJS nteractive Mode REPL fails. Need to increase stack some more. We see our old friend 8_c021_8308, which appears when we run out of stack</p>
-<div class="example-wrap"><pre class="language-text"><code>$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
-
-ABC
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; qjs
-riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 00000000c0006484, MTVAL: 00000008c0218308
-</code></pre></div>
-<p>We increase Stack from 8 KB to 16 KB (looks too little?)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_POSIX_SPAWN_DEFAULT_STACKSIZE=16384
-</code></pre></div>
-<p>Oops too much (I think)…</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; qjs -e console.log(123) 
-_assert: Current Version: NuttX  12.4.0-RC0 f8b0b06-dirty Feb 11 2024 08:30:16 risc-v
-_assert: Assertion failed : at file: common/riscv_createstack.c:89 task: /system/bin/init process: /system/bin/init 0xc000004a
-</code></pre></div>
-<p>Which comes from <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_createstack.c#L82-L89">riscv_createstack.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>int up_create_stack(struct tcb_s *tcb, size_t stack_size, uint8_t ttype) {
-#ifdef CONFIG_TLS_ALIGNED
-  /* The allocated stack size must not exceed the maximum possible for the
-   * TLS feature.
-   */
-  DEBUGASSERT(stack_size &lt;= TLS_MAXSTACK);
 </code></pre></div>
 <p>We increase CONFIG_TLS_LOG2_MAXSTACK from 13 to 14:</p>
-<ul>
-<li>Library Routines &gt; Thread Local Storage (TLS) &gt; Maximum stack size (log2)</li>
-<li>Set to 14</li>
-</ul>
 <p>Stack is still full. Increase Stack some more…</p>
 <div class="example-wrap"><pre class="language-text"><code>→ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
 ABC
@@ -322,7 +302,7 @@ qjs &gt; console.log(123)
 123
 undefined
 qjs &gt; 
-</code></pre></div><h1 id="quickjs-crashes-on-nuttx"><a href="#quickjs-crashes-on-nuttx">5 QuickJS Crashes on NuttX</a></h1>
+</code></pre></div><h1 id="quickjs-crashes-on-nuttx"><a href="#quickjs-crashes-on-nuttx">4 QuickJS Crashes on NuttX</a></h1>
 <p>TODO</p>
 <p><em>Does QuickJS run on NuttX?</em></p>
 <p>We tested with our Expect Script: <a href="nuttx/qemu.exp">nuttx/qemu.exp</a>. The latest NuttX Log is always at <a href="nuttx/qemu.log">qemu.log</a></p>
@@ -405,7 +385,7 @@ static JSAtom __JS_FindAtom(JSRuntime *rt, const char *str, size_t len,
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L39-L40">NuttX Config</a> says we have 128 pages of App Text. Assuming 8 KB per page, that’s 1 MB of App Text.</p>
 <p>TODO: Why does hash_string8 hang? Stack problems?</p>
 <p>TODO: Memory Corruption? Now <code>printf</code> seems to crash with Mutex problems</p>
-<h1 id="atom-sentinel-becomes-0xffff_ffff"><a href="#atom-sentinel-becomes-0xffff_ffff">6 Atom Sentinel becomes 0xFFFF_FFFF</a></h1>
+<h1 id="atom-sentinel-becomes-0xffff_ffff"><a href="#atom-sentinel-becomes-0xffff_ffff">5 Atom Sentinel becomes 0xFFFF_FFFF</a></h1>
 <p>TODO</p>
 <p>We discover that the Atom Sentinel has become 0xFFFF_FFFF (instead of 0), causing crashes while searching the Atom List for an Atom…</p>
 <div class="example-wrap"><pre class="language-text"><code>__JS_FindAtom: e
@@ -426,7 +406,7 @@ __JS_FindAtom: i
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/commit/42eb9be1547dd42bf4eebf1e21b1be6732f95f7d#diff-45f1ae674139f993bf8a99c382c1ba4863272a6fec2f492d76d7ff1b2cfcfbe2">__JS_NewAtom</a></p>
 </li>
 </ul>
-<h1 id="heap-errors-and-stdio-weirdness"><a href="#heap-errors-and-stdio-weirdness">7 Heap Errors and STDIO Weirdness</a></h1>
+<h1 id="heap-errors-and-stdio-weirdness"><a href="#heap-errors-and-stdio-weirdness">6 Heap Errors and STDIO Weirdness</a></h1>
 <p>TODO</p>
 <p>Now it halts inside the NuttX Mutex for printf…</p>
 <div class="example-wrap"><pre class="language-text"><code>__JS_FindAtom: 0
@@ -526,7 +506,7 @@ bool nxmutex_is_hold(FAR mutex_t *mutex) {
     c0053046:	047030ef          	jal	ra,c005688c &lt;gettid&gt;
 </code></pre></div>
 <p>Which comes from fprintf(). So we <a href="https://github.com/lupyuen/quickjs-nuttx/commit/28b001034e18e23b58825e942b8a70e18a98fa84#diff-95fe784bea3e0fbdf30ba834b1a74b538090f4d70f4f8770ef397ef68ec37aa3">change fprintf() to write()</a> because it doesn’t use Mutex.</p>
-<h1 id="unexpected-character-in-quickjs"><a href="#unexpected-character-in-quickjs">8 Unexpected Character in QuickJS</a></h1>
+<h1 id="unexpected-character-in-quickjs"><a href="#unexpected-character-in-quickjs">7 Unexpected Character in QuickJS</a></h1>
 <p>TODO</p>
 <p>Now we see…</p>
 <div class="example-wrap"><pre class="language-text"><code>js_dump_obj: SyntaxError: unexpected character
@@ -545,7 +525,7 @@ mm_malloc: Allocated 0xc0214bf0, size 32
 next_token: c0=00000000000000FF
 next_token: c=00000000000000FF
 next_token: c2=FFFFFFFFFFFFFFFF
-</code></pre></div><h1 id="malloc-problems-in-nuttx"><a href="#malloc-problems-in-nuttx">9 Malloc Problems in NuttX</a></h1>
+</code></pre></div><h1 id="malloc-problems-in-nuttx"><a href="#malloc-problems-in-nuttx">8 Malloc Problems in NuttX</a></h1>
 <p>TODO</p>
 <p>We <a href="https://github.com/lupyuen/quickjs-nuttx/commit/571b0487ed86d00cfaa15e0a3e5ff1e370844c55#diff-45f1ae674139f993bf8a99c382c1ba4863272a6fec2f492d76d7ff1b2cfcfbe2">logged the calls to malloc</a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>void *js_malloc(JSContext *ctx, size_t size)
@@ -575,7 +555,7 @@ js_def_malloc: d=
 <p>Why? We <a href="https://github.com/lupyuen/quickjs-nuttx/commit/3283e9f16631f6d9f1babbe2e0cd5cba635f34e0">switched to our own barebones malloc</a> for testing.</p>
 <p>But nope doesn’t work.</p>
 <p>We <a href="https://github.com/lupyuen/quickjs-nuttx/commit/a4e0b308089c69ce08439a7812fbe1a8836dfc6e#diff-93a38cdf6b6645fff66fa78773011a5330ea9ed48cc1f70f4c65a6f6b707e246">copied the Command-Line Arg to Local Buffer</a>. Works much better!</p>
-<h1 id="quickjs-calls-posix-open-on-nuttx"><a href="#quickjs-calls-posix-open-on-nuttx">10 QuickJS calls POSIX <code>open()</code> on NuttX</a></h1>
+<h1 id="quickjs-calls-posix-open-on-nuttx"><a href="#quickjs-calls-posix-open-on-nuttx">9 QuickJS calls POSIX <code>open()</code> on NuttX</a></h1>
 <p>TODO</p>
 <p><a href="https://bellard.org/quickjs/quickjs.html#os-module">POSIX <code>open()</code></a> works OK too!</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
@@ -619,7 +599,7 @@ expect {
  554847     260      94  555201   878c1 ../apps/bin/qjs
 </code></pre></div>
 <p>Mostly Text (Code), very little Data and BSS. Most of the Dynamic Data comes from the Heap. Stack is currently under 64 KB, but above 16 KB.</p>
-<h1 id="add-ioctl-to-quickjs-for-nuttx"><a href="#add-ioctl-to-quickjs-for-nuttx">11 Add ioctl() to QuickJS for NuttX</a></h1>
+<h1 id="add-ioctl-to-quickjs-for-nuttx"><a href="#add-ioctl-to-quickjs-for-nuttx">10 Add ioctl() to QuickJS for NuttX</a></h1>
 <p>TODO</p>
 <p>Let’s add ioctl() so we can control the NuttX LED Driver (and other devices)!</p>
 <p>We copied os.seek() from QuickJS and modded it <a href="https://github.com/lupyuen/quickjs-nuttx/commit/91aaf4257992c08b01590f0d61fa37a386933a4b#diff-95fe784bea3e0fbdf30ba834b1a74b538090f4d70f4f8770ef397ef68ec37aa3">to become os.ioctl()</a>…</p>
@@ -666,7 +646,7 @@ qjs &gt; os.ioctl(100,2,3)
 qjs &gt; 
 </code></pre></div>
 <p>Let’s test QuickJS ioctl() with NuttX LED Driver…</p>
-<h1 id="add-led-driver-to-nuttx-qemu-risc-v"><a href="#add-led-driver-to-nuttx-qemu-risc-v">12 Add LED Driver to NuttX QEMU RISC-V</a></h1>
+<h1 id="add-led-driver-to-nuttx-qemu-risc-v"><a href="#add-led-driver-to-nuttx-qemu-risc-v">11 Add LED Driver to NuttX QEMU RISC-V</a></h1>
 <p>TODO</p>
 <p>We add the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911">LED Driver to NuttX QEMU RISC-V (knsh64)</a>.</p>
 <p>We fix the <code>leds</code> app because <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429">task_create is missing from QEMU knsh64</a>.</p>
@@ -701,7 +681,7 @@ led_daemon: LED set 0x03
 [   30.657000] board_userled_all: led=2, val=0
 </code></pre></div>
 <p>Now we test with QuickJS…</p>
-<h1 id="quickjs-calls-nuttx-led-driver"><a href="#quickjs-calls-nuttx-led-driver">13 QuickJS calls NuttX LED Driver</a></h1>
+<h1 id="quickjs-calls-nuttx-led-driver"><a href="#quickjs-calls-nuttx-led-driver">12 QuickJS calls NuttX LED Driver</a></h1>
 <p>TODO</p>
 <p>This is how we blink an LED in C: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/qemuled/examples/leds/leds_main.c">leds_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define _ULEDBASE       (0x1d00) /* User LED ioctl commands */
@@ -752,7 +732,7 @@ qjs &gt; ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
 [   29.618000] board_userled_all: led=2, val=0
 0
 qjs &gt; 
-</code></pre></div><h1 id="add-led-driver-to-nuttx-ox64-bl808-sbc"><a href="#add-led-driver-to-nuttx-ox64-bl808-sbc">14 Add LED Driver to NuttX Ox64 BL808 SBC</a></h1>
+</code></pre></div><h1 id="add-led-driver-to-nuttx-ox64-bl808-sbc"><a href="#add-led-driver-to-nuttx-ox64-bl808-sbc">13 Add LED Driver to NuttX Ox64 BL808 SBC</a></h1>
 <p>TODO</p>
 <p>Now we test on a Real Device with a Real LED: Ox64 BL808 SBC…</p>
 <ul>
@@ -871,7 +851,7 @@ dump_task:       3     3 100 RR       Task    - Waiting Semaphore  0000000000000
 -rw-r--r--  1 Luppy  staff  35765248 Feb 12 14:57 /Users/Luppy/ox64/nuttx/initrd
 </code></pre></div>
 <p>And QuickJS blinks the LED on Ox64 yay!</p>
-<h1 id="quickjs-blinks-the-led-on-ox64-emulator"><a href="#quickjs-blinks-the-led-on-ox64-emulator">15 QuickJS blinks the LED on Ox64 Emulator</a></h1>
+<h1 id="quickjs-blinks-the-led-on-ox64-emulator"><a href="#quickjs-blinks-the-led-on-ox64-emulator">14 QuickJS blinks the LED on Ox64 Emulator</a></h1>
 <p>TODO</p>
 <p><em>Will QuickJS run on Ox64 Emulator?</em></p>
 <p>Yep it works! https://lupyuen.github.io/nuttx-tinyemu/quickjs/</p>
@@ -903,7 +883,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </code></pre></div>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
-<h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">16 Simulate the LED on Ox64 Emulator</a></h1>
+<h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">15 Simulate the LED on Ox64 Emulator</a></h1>
 <p>TODO</p>
 <p>Let’s simulate the LED on Ox64 Emulator…</p>
 <ul>
@@ -917,7 +897,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>And it works! https://lupyuen.github.io/nuttx-tinyemu/quickjs/</p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title2.png" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
-<h1 id="whats-next"><a href="#whats-next">17 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">16 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -942,7 +922,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/quickjs.md"><strong>lupyuen.github.io/src/quickjs.md</strong></a></p>
-<h1 id="appendix-build-quickjs-for-nuttx"><a href="#appendix-build-quickjs-for-nuttx">18 Appendix: Build QuickJS for NuttX</a></h1>
+<h1 id="appendix-build-quickjs-for-nuttx"><a href="#appendix-build-quickjs-for-nuttx">17 Appendix: Build QuickJS for NuttX</a></h1>
 <p>TODO</p>
 <p>From the <a href="nuttx/make.log">Makefile Log</a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build qjs.o
