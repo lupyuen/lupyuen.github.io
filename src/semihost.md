@@ -562,7 +562,9 @@ genromfs \
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e)
 
-[(__genromfs__ generates a __ROMFS Filesystem__)](https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html)
+[(__genromfs__ generates a __ROM FS Filesystem__)](https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html)
+
+[(Inside a __ROM FS Filesystem__)](https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem)
 
 This creates an Initial RAM Disk __initrd__ (in ROMFS format) that's 7.9 MB...
 
@@ -725,7 +727,9 @@ cp initrd $HOME/tftproot
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/ae59a840c94280ce8d618699278a0436)
 
-[(__genromfs__ generates a __ROMFS Filesystem__)](https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html)
+[(__genromfs__ generates a __ROM FS Filesystem__)](https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html)
+
+[(Inside a __ROM FS Filesystem__)](https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem)
 
 Our Initial RAM Disk __initrd__ (with ROMFS inside) is 7.9 MB (slightly bigger)...
 
@@ -1162,6 +1166,8 @@ genromfs \
 [(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html)
 
 [(About __genromfs__)](https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html)
+
+[(Inside a __ROM FS Filesystem__)](https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem)
 
 [(About NuttX RAM Disks and ROM Disks)](https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=139629548#content/view/139629548)
 

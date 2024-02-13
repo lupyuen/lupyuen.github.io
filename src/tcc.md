@@ -1099,6 +1099,10 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
 // Do the same for sprintf, snprintf, vsnprintf
 ```
 
+Right now we're doing simple [__Pattern Matching__](https://lupyuen.github.io/articles/tcc#appendix-pattern-matching). But it might not be sufficient when TCC compiles Real Programs. See the updates here...
+
+- [__"Multiple Format Patterns per Format String"__](https://lupyuen.github.io/articles/romfs#appendix-nuttx-rom-fs-driver)
+
 [(See the __Formatting Log__)](https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36)
 
 [(Without __comptime__: Our code gets __super tedious__)](https://github.com/lupyuen/tcc-riscv32-wasm#fix-the-varargs-functions)

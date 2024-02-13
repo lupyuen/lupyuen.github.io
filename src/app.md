@@ -661,6 +661,8 @@ genromfs \
   -V "NuttXBootVol"
 ```
 
+[(Inside a __ROM FS Filesystem__)](https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem)
+
 _How to load the Initial RAM Disk from microSD to RAM?_
 
 [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) will do it for us!

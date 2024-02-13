@@ -89,6 +89,8 @@ Let's walk through the steps to __build NuttX for Star64__...
 
     This generates the Initial RAM Disk [__initrd__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/initrd)
 
+    [(Inside a __ROM FS Filesystem__)](https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem)
+
 1.  Download the Device Tree [__jh7110-visionfive-v2.dtb__](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb) from [__StarFive VisionFive2 Software Releases__](https://github.com/starfive-tech/VisionFive2/releases).
 
     Save it into the __nuttx__ folder. Or do this...
