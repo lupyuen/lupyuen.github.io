@@ -347,6 +347,14 @@ TODO: Heap Size?
 
 TODO: Static Linking
 
+QuickJS with All The Toppings
+
+Without BigInt
+
+Without REPL
+
+Without BigInt + REPL
+
 # What's Next
 
 TODO
