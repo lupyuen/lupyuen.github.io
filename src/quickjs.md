@@ -214,34 +214,47 @@ CONFIG_TLS_LOG2_MAXSTACK=16
 
 _ioctl() doesn't appear in the QuickJS Docs?_
 
-That's because we added __ioctl()__ to QuickJS. And it's not that hard: [quickjs-libc.c](https://github.com/lupyuen/quickjs-nuttx/commit/91aaf4257992c08b01590f0d61fa37a386933a4b#diff-95fe784bea3e0fbdf30ba834b1a74b538090f4d70f4f8770ef397ef68ec37aa3)...
-
-TODO
+That's because we added __ioctl()__ to QuickJS: [quickjs-libc.c](https://github.com/lupyuen/quickjs-nuttx/commit/91aaf4257992c08b01590f0d61fa37a386933a4b#diff-95fe784bea3e0fbdf30ba834b1a74b538090f4d70f4f8770ef397ef68ec37aa3)
 
 ```c
+// List of JavaScript Functions in `os` Module
 static const JSCFunctionListEntry js_os_funcs[] = {
-    ...
-    JS_CFUNC_DEF("ioctl", 3, js_os_ioctl ),
-    ...
+  ...
+  // Declare our ioctl() function...
+  JS_CFUNC_DEF(
+    "ioctl",     // Function Name
+    3,           // Parameters
+    js_os_ioctl  // Implemented here
+  ),
+  ...
 };
 
-static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val,
-                           int argc, JSValueConst *argv)
-{
+// Define our ioctl() function
+static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv) {
     int fd, req;
     int64_t arg, ret;
     BOOL is_bigint;
     
+    // First Arg is File Descriptor (int32)
     if (JS_ToInt32(ctx, &fd, argv[0]))
         return JS_EXCEPTION;
+    
+    // Second Arg is ioctl() Request (int32)
     if (JS_ToInt32(ctx, &req, argv[1]))
         return JS_EXCEPTION;
+
+    // Third Arg is ioctl() Parameter (int64)
+    // TODO: What if it's int32? How to we pass a Pointer to Struct?
     is_bigint = JS_IsBigInt(ctx, argv[2]);
     if (JS_ToInt64Ext(ctx, &arg, argv[2]))
         return JS_EXCEPTION;
+
+    // Call NuttX ioctl()
     ret = ioctl(fd, req, arg);
     if (ret == -1)
         ret = -errno;
+
+    // Return the result as int64 or int32
     if (is_bigint)
         return JS_NewBigInt64(ctx, ret);
     else
@@ -249,7 +262,7 @@ static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val,
 }
 ```
 
-TODO: Is arg int32 or int64?
+TODO
 
 Yep it seems to work...
 
