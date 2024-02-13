@@ -359,7 +359,23 @@ No worries, the exact same steps will work for __QEMU Emulator__ (64-bit RISC-V)
 
 TODO: QEMU Log
 
+TODO: Pic of Emulator
+
 # Simulate the LED on Ox64 Emulator
+
+_NuttX Emulator shows a Simulated LED (pic above, lower right)..._
+
+_How does it work?_
+
+We modded NuttX Emulator (in WebAssembly) to...
+
+1.  Watch for updates to __GPIO Registers__
+
+    (Like `0x2000_0938` for GPIO 29)
+
+1.  Notify the __Web Browser JavaScript__ of any updates
+
+    (Like `{"nuttxemu":{"gpio29":1}}`)
 
 TODO
 
