@@ -275,37 +275,37 @@ static const JSCFunctionListEntry js_os_funcs[] = {
 
 // Define our ioctl() function
 static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv) {
-    int fd, req;
-    int64_t arg, ret;
-    BOOL is_bigint;
-    
-    // First Arg is ioctl() File Descriptor (int32)
-    if (JS_ToInt32(ctx, &amp;fd, argv[0]))
-        return JS_EXCEPTION;
-    
-    // Second Arg is ioctl() Request (int32)
-    if (JS_ToInt32(ctx, &amp;req, argv[1]))
-        return JS_EXCEPTION;
+  int fd, req;       // ioctl() File Descriptor and Request Number
+  int64_t arg, ret;  // ioctl() Parameter and Return Value
+  BOOL is_bigint;    // True if we&#39;re using BigInt for 64-bit Integers
+  
+  // First Arg is ioctl() File Descriptor (int32)
+  if (JS_ToInt32(ctx, &amp;fd, argv[0]))
+    return JS_EXCEPTION;
+  
+  // Second Arg is ioctl() Request Number (int32)
+  if (JS_ToInt32(ctx, &amp;req, argv[1]))
+    return JS_EXCEPTION;
 
-    // Third Arg is ioctl() Parameter (int64)
-    // TODO: What if it&#39;s int32? How to pass a Pointer to Struct?
-    is_bigint = JS_IsBigInt(ctx, argv[2]);
-    if (JS_ToInt64Ext(ctx, &amp;arg, argv[2]))
-        return JS_EXCEPTION;
+  // Third Arg is ioctl() Parameter (int64)
+  // TODO: What if it&#39;s int32? How to pass a Pointer to Struct?
+  is_bigint = JS_IsBigInt(ctx, argv[2]);
+  if (JS_ToInt64Ext(ctx, &amp;arg, argv[2]))
+    return JS_EXCEPTION;
 
-    // Call NuttX ioctl()
-    ret = ioctl(fd, req, arg);
-    if (ret == -1)
-        ret = -errno;
+  // Call NuttX ioctl()
+  ret = ioctl(fd, req, arg);
+  if (ret == -1)
+    ret = -errno;
 
-    // Return the result as int64 or int32
-    if (is_bigint)
-        return JS_NewBigInt64(ctx, ret);
-    else
-        return JS_NewInt64(ctx, ret);
+  // Return the Result as 64-bit or 32-bit Integers
+  if (is_bigint)
+    return JS_NewBigInt64(ctx, ret);
+  else
+    return JS_NewInt64(ctx, ret);
 }
 </code></pre></div>
-<p>Yep it seems to work…</p>
+<p>Yep <strong>ioctl()</strong> is alive…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; qjs
 QuickJS - Type &quot;\h&quot; for help
@@ -330,7 +330,7 @@ qjs &gt; os.ioctl(100,2,3)
 </li>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048"><strong>Increase the App Stack Size</strong></a>  from 2 KB to 64 KB</p>
-<p>(Because QuickJS will crash mysteriously)</p>
+<p>(Otherwise QuickJS will crash mysteriously)</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226"><strong>Increase the RAM Disk Region</strong></a> from 16 MB to 40 MB</p>
@@ -342,7 +342,21 @@ qjs &gt; os.ioctl(100,2,3)
 </li>
 </ul>
 <p>TODO: Connect LED</p>
-<p>TODO: QEMU</p>
+<p>TODO: Ox64 Log</p>
+<p><em>If we don’t have an Ox64 SBC?</em></p>
+<p>No worries, the exact same steps will work for <strong>QEMU Emulator</strong> (64-bit RISC-V)…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911"><strong>Add the LED Driver</strong></a> for QEMU</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429"><strong>Fix the <code>leds</code> app</strong></a> for testing LED Driver</p>
+</li>
+<li>
+<p><a href="TODO"><strong>Build QuickJS</strong></a> for NuttX QEMU</p>
+</li>
+</ul>
+<p>TODO: QEMU Log</p>
 <h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">6 Simulate the LED on Ox64 Emulator</a></h1>
 <p>TODO</p>
 <p>Let’s simulate the LED on Ox64 Emulator…</p>
