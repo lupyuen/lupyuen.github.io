@@ -8,9 +8,11 @@
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
 
-TODO
+[__QuickJS__](https://github.com/bellard/quickjs) is a small __JavaScript Engine__ that supports [__POSIX Functions__](https://bellard.org/quickjs/quickjs.html#os-module).
 
-In 4 lines of JavaScript we'll blink the LED...
+[__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) is a tiny __Real-Time Operating System__ (for all kinds of devices) that's compatible with POSIX.
+
+_Can we run QuickJS on NuttX? And Blink the LED in 4 lines of JavaScript?_
 
 ```javascript
 // Blink the NuttX LED, on then off
@@ -20,7 +22,7 @@ os.ioctl(fd, ULEDIOC_SETALL, 1);
 os.ioctl(fd, ULEDIOC_SETALL, 0);
 ```
 
-[__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)
+Let's do it!
 
 TODO: How Small?
 
