@@ -173,22 +173,22 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>Our Rust Blinky Function looks similar to the C version: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L10-L44"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// `rust_main` will be called by the BL602 command-line interface
-</span><span class="attr">#[no_mangle]              </span><span class="comment">//  Don't mangle the name `rust_main`
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>rust_main(  <span class="comment">//  Declare `extern "C"` because it will be called by BL602 firmware
+</span><span class="attr">#[no_mangle]              </span><span class="comment">//  Don&#39;t mangle the name `rust_main`
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>rust_main(  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware
     </span>_buf:  <span class="kw-2">*const </span>u8,        <span class="comment">//  Command line (char *)
     </span>_len:  i32,              <span class="comment">//  Length of command line (int)
     </span>_argc: i32,              <span class="comment">//  Number of command line args (int)
     </span>_argv: <span class="kw-2">*const *const </span>u8  <span class="comment">//  Array of command line args (char **)
 </span>) {
     <span class="comment">//  Show a message on the serial console
-    </span>puts(<span class="string">"Hello from Rust!"</span>);
+    </span>puts(<span class="string">&quot;Hello from Rust!&quot;</span>);
 
     <span class="comment">//  PineCone Blue LED is connected on BL602 GPIO 11
     </span><span class="kw">const </span>LED_GPIO: u8 = <span class="number">11</span>;  <span class="comment">//  `u8` is 8-bit unsigned integer
 
     //  Configure the LED GPIO for output (instead of input)
     </span>bl_gpio_enable_output(LED_GPIO, <span class="number">0</span>, <span class="number">0</span>)      <span class="comment">//  No pullup, no pulldown
-        </span>.expect(<span class="string">"GPIO enable output failed"</span>);  <span class="comment">//  Halt on error</span></code></pre></div>
+        </span>.expect(<span class="string">&quot;GPIO enable output failed&quot;</span>);  <span class="comment">//  Halt on error</span></code></pre></div>
 <p>When <strong>code-switching from C to Rust</strong> we consciously…</p>
 <ol>
 <li>
@@ -210,7 +210,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
         </span>bl_gpio_output_set(  <span class="comment">//  Set the GPIO output (from BL602 GPIO HAL)
             </span>LED_GPIO,        <span class="comment">//  GPIO pin number
             </span>i % <span class="number">2            </span><span class="comment">//  0 for low, 1 for high
-        </span>).expect(<span class="string">"GPIO output failed"</span>);  <span class="comment">//  Halt on error
+        </span>).expect(<span class="string">&quot;GPIO output failed&quot;</span>);  <span class="comment">//  Halt on error
 
         //  Sleep 1 second
         </span>time_delay(                   <span class="comment">//  Sleep by number of ticks (from NimBLE Porting Layer)
@@ -230,7 +230,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
     //  https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/rust/app/src/lib.rs#L115-L146
 
     //  For now we display a message
-    </span>puts(<span class="string">"TODO: Rust panic"</span>); 
+    </span>puts(<span class="string">&quot;TODO: Rust panic&quot;</span>); 
 
 	<span class="comment">//  Loop forever, do not pass go, do not collect $200
     </span><span class="kw">loop </span>{}
@@ -262,14 +262,14 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>This makes the error handling easier (with <code>expect</code>). We’ll see the returned result in a while.</p>
 <p>Inside the wrapper, we <strong>import the C function</strong> like so…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">extern </span><span class="string">"C" </span>{  <span class="comment">//  Import C Function
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{  <span class="comment">//  Import C Function
         </span><span class="doccomment">/// Set the GPIO pin output to high or low (from BL602 GPIO HAL)
         </span><span class="kw">fn </span>bl_gpio_output_set(pin: u8, value: u8) -&gt; i32;
     }</code></pre></div>
 <p>Next our wrapper <strong>calls the imported C function</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Call the C function
-    </span><span class="kw">let </span>res = <span class="kw">unsafe </span>{  <span class="comment">//  Flag this code as unsafe because we're calling a C function
+    </span><span class="kw">let </span>res = <span class="kw">unsafe </span>{  <span class="comment">//  Flag this code as unsafe because we&#39;re calling a C function
         </span>bl_gpio_output_set(pin, value)
     };</code></pre></div>
 <p>Rust requires us to flag this code as <strong><code>unsafe</code></strong> because we’re calling a C function.</p>
@@ -296,7 +296,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>“<code>&amp;str</code>” is a <strong>Reference to a String Slice</strong>. It’s similar to “<code>const char *</code>” in C.</p>
 <p>We <strong>import the <code>puts</code> function</strong> from BL602 IoT SDK (<code>stdio</code> library)…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">extern </span><span class="string">"C" </span>{  <span class="comment">//  Import C Function
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{  <span class="comment">//  Import C Function
         </span><span class="doccomment">/// Print a message to the serial console (from C stdio library)
         </span><span class="kw">fn </span>puts(s: <span class="kw-2">*const </span>u8) -&gt; i32;
     }</code></pre></div>
@@ -305,15 +305,15 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Convert `str` to `String`, which similar to `char [64]` in C
     </span><span class="kw">let </span><span class="kw-2">mut </span>s_with_null = String::from_str(s)  <span class="comment">//  `mut` because we will modify it
-        </span>.expect(<span class="string">"puts conversion failed"</span>);     <span class="comment">//  If it exceeds 64 chars, halt with an error</span></code></pre></div>
+        </span>.expect(<span class="string">&quot;puts conversion failed&quot;</span>);     <span class="comment">//  If it exceeds 64 chars, halt with an error</span></code></pre></div>
 <p>“<code>String</code>” is similar to “<code>char[64]</code>” in C.</p>
 <p>Here we create a “<code>String</code>” (instead of “<code>&amp;str</code>”) because “<code>String</code>” will allocate storage (on the stack) to hold the copied string.</p>
 <p>If our input string exceeds 64 characters, the copying fails with an error.</p>
 <p>(More about “<code>String</code>” in a while)</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Terminate the string with null, since we will be passing to C
-    </span>s_with_null.push(<span class="string">'\0'</span>)
-        .expect(<span class="string">"puts overflow"</span>);  <span class="comment">//  If we exceed 64 chars, halt with an error</span></code></pre></div>
+    </span>s_with_null.push(<span class="string">&#39;\0&#39;</span>)
+        .expect(<span class="string">&quot;puts overflow&quot;</span>);  <span class="comment">//  If we exceed 64 chars, halt with an error</span></code></pre></div>
 <p>Here we <strong>pad the copied string with null</strong>.</p>
 <p>This also fails with an error if the padded string exceeds 64 characters.</p>
 <p>Finally we <strong>fetch the pointer</strong> to our null-terminated string, and pass it to the C function…</p>
@@ -322,7 +322,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
     </span><span class="kw">let </span>p = s_with_null.as_str().as_ptr();
 
     <span class="comment">//  Call the C function
-    </span><span class="kw">unsafe </span>{  <span class="comment">//  Flag this code as unsafe because we're calling a C function
+    </span><span class="kw">unsafe </span>{  <span class="comment">//  Flag this code as unsafe because we&#39;re calling a C function
         </span>puts(p)
     }
 

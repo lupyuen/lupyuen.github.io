@@ -212,27 +212,27 @@ a + b </code></pre></div>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// This function will be called by 
 /// WebAssembly to run a script
-</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don't mangle the function name
-</span><span class="kw">extern </span><span class="string">"C"    </span><span class="comment">//  Declare `extern "C"` because it will be called by Emscripten
+</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot;    </span><span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by Emscripten
 </span><span class="kw">fn </span>rust_script( ... ) {
 
   <span class="comment">//  Init the Rhai script engine
   </span><span class="kw">let </span><span class="kw-2">mut </span>engine = Engine::new();
 
   <span class="comment">//  Rhai Script to be evaluated
-  </span><span class="kw">let </span>script = <span class="string">r#" 
+  </span><span class="kw">let </span>script = <span class="string">r#&quot; 
     //  Evaluate an expression
     let a = 40; 
     let b = 2;
     a + b 
-  "#</span>;
+  &quot;#</span>;
 
   <span class="comment">//  Evaluate the Rhai Script
   </span><span class="kw">let </span>result = engine.eval::&lt;i32&gt;(script)
     .unwrap() <span class="kw">as </span>isize;
 
   <span class="comment">//  Display the result
-  </span><span class="macro">println!</span>(<span class="string">"{}"</span>, result);
+  </span><span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, result);
 }</code></pre></div>
 <p>This code <strong>initialises the Rhai engine</strong> and evaluates a Rhai Script that returns an integer result…</p>
 <div class="example-wrap"><pre class="language-text"><code>42
@@ -245,16 +245,16 @@ a + b </code></pre></div>
 </span><span class="kw">let </span><span class="kw-2">mut </span>engine = Engine::new();
 
 <span class="comment">//  Register our functions with Rhai
-</span>engine.register_fn(<span class="string">"time_delay"</span>, time_delay);
+</span>engine.register_fn(<span class="string">&quot;time_delay&quot;</span>, time_delay);
 
 <span class="comment">//  Rhai Script to be evaluated
-</span><span class="kw">let </span>script = <span class="string">r#" 
+</span><span class="kw">let </span>script = <span class="string">r#&quot; 
   //  Sleep 1 second
   time_delay(1000);
 
   //  Return 0
   0
-"#</span>;
+&quot;#</span>;
 
 <span class="comment">//  Evaluate the Rhai Script (returns 0)
 </span><span class="kw">let </span>result = engine.eval::&lt;i32&gt;(script)
@@ -266,13 +266,13 @@ a + b </code></pre></div>
 </span><span class="kw">pub fn </span>time_delay(
     ticks: i32  <span class="comment">//  Number of ticks to sleep
 </span>) {
-  <span class="kw">extern </span><span class="string">"C" </span>{  <span class="comment">//  Import C Function
+  <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{  <span class="comment">//  Import C Function
     </span><span class="doccomment">/// Sleep for the specified number of system ticks (from NimBLE Porting Layer)
     </span><span class="kw">fn </span>ble_npl_time_delay(ticks: u32);
   }
 
   <span class="comment">//  Call the C function
-  </span><span class="kw">unsafe </span>{  <span class="comment">//  Flag this code as unsafe because we're calling a C function
+  </span><span class="kw">unsafe </span>{  <span class="comment">//  Flag this code as unsafe because we&#39;re calling a C function
     </span>ble_npl_time_delay(ticks <span class="kw">as </span>u32);
   }
 }</code></pre></div>
@@ -291,11 +291,11 @@ a + b </code></pre></div>
 </span><span class="kw">let </span>module = <span class="macro">exported_module!</span>(gpio);
 
 <span class="comment">//  Register our module as a Static Module
-</span>engine.register_static_module(<span class="string">"gpio"</span>, module.into());</code></pre></div>
+</span>engine.register_static_module(<span class="string">&quot;gpio&quot;</span>, module.into());</code></pre></div>
 <p><strong><code>gpio</code></strong> is a Rust Module that exports the functions <strong><code>enable_output</code></strong> and <strong><code>output_set</code></strong>, which may be called like so…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Rhai Script to be evaluated
-</span><span class="kw">let </span>script = <span class="string">r#" 
+</span><span class="kw">let </span>script = <span class="string">r#&quot; 
   //  Blink the LED connected on BL602 GPIO 11
   let LED_GPIO = 11;
 
@@ -317,7 +317,7 @@ a + b </code></pre></div>
 
   //  Return 0
   0
-"#</span>;
+&quot;#</span>;
 
 <span class="comment">//  Evaluate the Rhai Script (returns 0)
 </span><span class="kw">let </span>result = engine.eval::&lt;i32&gt;(script)
@@ -330,7 +330,7 @@ a + b </code></pre></div>
   <span class="doccomment">/// Rhai Shim for Enable GPIO Output
   /// TODO: Modified parameters from u8 to i32
   </span><span class="kw">pub fn </span>enable_output(pin: i32, pullup: i32, pulldown: i32) {
-    <span class="kw">extern </span><span class="string">"C" </span>{
+    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
       <span class="kw">pub fn </span>bl_gpio_enable_output(pin: u8, pullup: u8, pulldown: u8) -&gt; i32;
     }
     <span class="kw">unsafe </span>{
@@ -342,7 +342,7 @@ a + b </code></pre></div>
   <span class="doccomment">/// Rhai Shim for Set GPIO Output
   /// TODO: Modified parameters from u8 to i32
   </span><span class="kw">pub fn </span>output_set(pin: i32, value: i32) {
-    <span class="kw">extern </span><span class="string">"C" </span>{
+    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
       <span class="kw">pub fn </span>bl_gpio_output_set(pin: u8, value: u8) -&gt; i32;
     }
     <span class="kw">unsafe </span>{
@@ -387,7 +387,7 @@ a + b </code></pre></div>
 <p>Below is the kitchen-sink <strong>Rhai Script</strong> that will be converted to uLisp…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Rhai Script to be parsed
-</span><span class="kw">let </span>script = <span class="string">r#" 
+</span><span class="kw">let </span>script = <span class="string">r#&quot; 
   //  Rhai Loop and Conditional
   loop { 
     let a = 1;
@@ -418,7 +418,7 @@ a + b </code></pre></div>
   let a = 40; 
   let b = 2;
   a + b 
-"#</span>;</code></pre></div>
+&quot;#</span>;</code></pre></div>
 <p>Now comes the interesting part: Rhai lets us <strong>compile our script</strong> into an <strong>Abstract Syntax Tree</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Compile the Rhai Script into
@@ -449,7 +449,7 @@ gpio::enable_output(LED_GPIO, <span class="number">0</span>, <span class="number
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>Var(
   <span class="number">11 </span>@ <span class="number">11</span>:<span class="number">24</span>,
-  <span class="string">"LED_GPIO" </span>@ <span class="number">11</span>:<span class="number">13</span>,
+  <span class="string">&quot;LED_GPIO&quot; </span>@ <span class="number">11</span>:<span class="number">13</span>,
   (),
   <span class="number">11</span>:<span class="number">9</span>,
 ),
@@ -468,7 +468,7 @@ FnCall(
       <span class="number">0</span>,
       <span class="number">0</span>,
     ],
-    name: <span class="string">"enable_output"</span>,
+    name: <span class="string">&quot;enable_output&quot;</span>,
     capture: <span class="bool-val">false</span>,
   },
   <span class="number">14</span>:<span class="number">15</span>,
@@ -492,7 +492,7 @@ FnCall(
 /// (Abstract Syntax Tree) to uLisp
 </span><span class="kw">pub fn </span>transcode(ast: <span class="kw-2">&amp;</span>AST) -&gt; String {
   <span class="comment">//  Start the first uLisp Scope
-  </span><span class="kw">let </span>scope_index = scope::begin_scope(<span class="string">"let* ()"</span>);
+  </span><span class="kw">let </span>scope_index = scope::begin_scope(<span class="string">&quot;let* ()&quot;</span>);
 
   <span class="comment">//  Walk the nodes in the Rhai Abstract Syntax Tree
   </span>ast.walk(<span class="kw-2">&amp;mut </span>transcode_node);
@@ -517,7 +517,7 @@ FnCall(
     ASTNode::Expr(expr) =&gt; expr.position(),
   };
 
-  <span class="comment">//  Skip this node if we've already handled it
+  <span class="comment">//  Skip this node if we&#39;ve already handled it
   </span><span class="kw">unsafe </span>{
     <span class="kw">static </span><span class="kw-2">mut </span>LAST_POSITION: Position = Position::NONE;
     <span class="kw">if </span>LAST_POSITION == pos { <span class="kw">return </span><span class="bool-val">true</span>; }
@@ -567,14 +567,14 @@ FnCall(
       <span class="comment">//  Begin a new uLisp Scope
       </span>scope::begin_scope(
         <span class="macro">format!</span>(
-          <span class="string">"let* (( {} {} ))"</span>,    <span class="comment">//  `let* (( LED_GPIO 11 ))`
+          <span class="string">&quot;let* (( {} {} ))&quot;</span>,    <span class="comment">//  `let* (( LED_GPIO 11 ))`
           </span>ident.name,            <span class="comment">//  `LED_GPIO`
           </span>transcode_expr(expr),  <span class="comment">//  `11`
         </span>).as_str()
       );
 
       <span class="comment">//  Scope will end when the parent scope ends
-      </span><span class="string">""</span>.to_string()
+      </span><span class="string">&quot;&quot;</span>.to_string()
     }</code></pre></div>
 <p><em>Why do we need uLisp Scopes?</em></p>
 <p>Hint: The transcoded uLisp will look like this…</p>
@@ -612,7 +612,7 @@ FnCall(
       //  Begin a new uLisp Scope
       </span><span class="kw">let </span>scope_index = scope::begin_scope(
         <span class="macro">format!</span>(
-          <span class="string">"dotimes ({} {})"</span>,  <span class="comment">//  `dotimes (i 10)`
+          <span class="string">&quot;dotimes ({} {})&quot;</span>,  <span class="comment">//  `dotimes (i 10)`
           </span>id.name,            <span class="comment">//  `i`
           </span>upper_limit,        <span class="comment">//  `10`
         </span>).as_str()
@@ -633,7 +633,7 @@ FnCall(
     ...
     <span class="comment">//  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
     </span>Stmt::FnCall(expr, <span class="kw">_</span>) =&gt; <span class="macro">format!</span>(
-      <span class="string">"{}"</span>,
+      <span class="string">&quot;{}&quot;</span>,
       transcode_fncall(expr)
     ),</code></pre></div>
 <p>(We’ll meet <code>transcode_fncall</code> in a while)</p>
@@ -676,15 +676,15 @@ FnCall(
 </span><span class="kw">fn </span>transcode_expr(expr: <span class="kw-2">&amp;</span>Expr) -&gt; String {
   <span class="kw">match </span>expr {
     <span class="comment">//  Integers become themselves, e.g. `1`
-    </span>Expr::IntegerConstant(i, <span class="kw">_</span>) =&gt; <span class="macro">format!</span>(<span class="string">"{}"</span>, i),
+    </span>Expr::IntegerConstant(i, <span class="kw">_</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, i),
 
     <span class="comment">//  Variables become their names, e.g. `a`
-    </span>Expr::Variable(<span class="kw">_</span>, <span class="kw">_</span>, var) =&gt; <span class="macro">format!</span>(<span class="string">"{}"</span>, var.<span class="number">2</span>),
+    </span>Expr::Variable(<span class="kw">_</span>, <span class="kw">_</span>, var) =&gt; <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, var.<span class="number">2</span>),
 
     <span class="comment">//  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
     </span>Expr::FnCall(expr, <span class="kw">_</span>) =&gt; transcode_fncall(expr),
 
-    <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"Unknown expr: {:#?}"</span>, expr)
+    <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Unknown expr: {:#?}&quot;</span>, expr)
   }
 }</code></pre></div>
 <p>Which means that…</p>
@@ -709,8 +709,8 @@ FnCall(
 </span><span class="kw">fn </span>transcode_fncall(expr: <span class="kw-2">&amp;</span>FnCallExpr) -&gt; String {
   <span class="comment">//  Compose namespace e.g. `bl_gpio_` or ``
   </span><span class="kw">let </span>namespace = <span class="kw">match </span><span class="kw-2">&amp;</span>expr.namespace {
-    <span class="prelude-val">Some</span>(ns) =&gt; <span class="macro">format!</span>(<span class="string">"bl_{:#?}_"</span>, ns),  <span class="comment">//  TODO
-    </span><span class="prelude-val">None </span>=&gt; <span class="string">""</span>.to_string()
+    <span class="prelude-val">Some</span>(ns) =&gt; <span class="macro">format!</span>(<span class="string">&quot;bl_{:#?}_&quot;</span>, ns),  <span class="comment">//  TODO
+    </span><span class="prelude-val">None </span>=&gt; <span class="string">&quot;&quot;</span>.to_string()
   };</code></pre></div>
 <p><strong><code>transcode_fncall</code></strong> begins by converting the Rhai Namespace (like <strong>“<code>gpio::</code>”</strong>) to its uLisp equivalent (like <strong>“<code>bl_gpio_</code>”</strong>)</p>
 <p>Next it composes the <strong>list of arguments</strong> for the function call…</p>
@@ -720,19 +720,19 @@ FnCall(
     <span class="comment">//  Transcode each argument
     </span><span class="kw">let </span>val = <span class="kw">match </span>arg {
       <span class="comment">//  Transcode a StackSlot by looking up the constants
-      </span>Expr::Stack(i, <span class="kw">_</span>) =&gt; <span class="macro">format!</span>(<span class="string">"{}"</span>, expr.constants[<span class="kw-2">*</span>i]),
+      </span>Expr::Stack(i, <span class="kw">_</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, expr.constants[<span class="kw-2">*</span>i]),
 
       <span class="comment">//  Transcode other expressions
       </span><span class="kw">_ </span>=&gt; transcode_expr(<span class="kw-2">&amp;</span>arg)
     };
-    val + <span class="string">" "
+    val + <span class="string">&quot; &quot;
   </span>});</code></pre></div>
 <p>And concatenates everything into a <strong>uLisp Function Call</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Transcode to uLisp Function Call:
   //  `( bl_gpio_enable_output LED_GPIO 0 0 )`
   </span><span class="macro">format!</span>(
-    <span class="string">"( {}{} {})"</span>,
+    <span class="string">&quot;( {}{} {})&quot;</span>,
     namespace,                             <span class="comment">//  `bl_gpio_` or ``
     </span>rename_function(<span class="kw-2">&amp;</span>expr.name.as_str()),  <span class="comment">//  `enable_output`, `+` or `mod`
     </span>args.collect::&lt;String&gt;()               <span class="comment">//  `LED_GPIO 0 0 `
@@ -747,8 +747,8 @@ FnCall(
 /// `%` becomes `mod`, `==` becomes `eq`
 </span><span class="kw">fn </span>rename_function(name: <span class="kw-2">&amp;</span>str) -&gt; String {
   <span class="kw">match </span>name {
-    <span class="string">"%"  </span>=&gt; <span class="string">"mod"</span>,  <span class="comment">//  `%` becomes `mod`
-    </span><span class="string">"==" </span>=&gt; <span class="string">"eq"</span>,   <span class="comment">//  `==` becomes `eq`
+    <span class="string">&quot;%&quot;  </span>=&gt; <span class="string">&quot;mod&quot;</span>,  <span class="comment">//  `%` becomes `mod`
+    </span><span class="string">&quot;==&quot; </span>=&gt; <span class="string">&quot;eq&quot;</span>,   <span class="comment">//  `==` becomes `eq`
     </span><span class="kw">_    </span>=&gt; name    <span class="comment">//  Else pass through
   </span>}.to_string()
 }</code></pre></div>

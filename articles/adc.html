@@ -486,14 +486,14 @@ export APP_NAME=sdk_app_rust_adc
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Command to init the ADC Channel and start reading the ADC Samples.
 /// Based on `hal_adc_init` in &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L50-L102&gt;
-</span><span class="attr">#[no_mangle]             </span><span class="comment">//  Don't mangle the function name
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>init_adc(  <span class="comment">//  Declare `extern "C"` because it will be called by BL602 firmware
+</span><span class="attr">#[no_mangle]             </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>init_adc(  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware
   </span>_result: <span class="kw-2">*mut </span>u8,        <span class="comment">//  Result to be returned to command-line interface (char *)
   </span>_len:  i32,              <span class="comment">//  Size of result buffer (int)
   </span>_argc: i32,              <span class="comment">//  Number of command line args (int)
   </span>_argv: <span class="kw-2">*const *const </span>u8  <span class="comment">//  Array of command line args (char **)
 </span>) {
-  puts(<span class="string">"[Rust] Init ADC"</span>);</code></pre></div>
+  puts(<span class="string">&quot;[Rust] Init ADC&quot;</span>);</code></pre></div>
 <p>(We won’t be parsing the command-line arguments, so let’s ignore the parameters passed to <code>init_adc</code>)</p>
 <p>We start by validating the GPIO Pin Number and ADC Frequency…</p>
 
@@ -507,12 +507,12 @@ export APP_NAME=sdk_app_rust_adc
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the ADC Frequency for Single-Channel Conversion Mode
   </span>adc::freq_init(<span class="number">1</span>, ADC_FREQUENCY)
-    .expect(<span class="string">"ADC Freq failed"</span>);</code></pre></div>
+    .expect(<span class="string">&quot;ADC Freq failed&quot;</span>);</code></pre></div>
 <p>We set the <strong>ADC GPIO Pin Number</strong> for ADC Mode 1…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the ADC GPIO for Single-Channel Conversion Mode
   </span>adc::init(<span class="number">1</span>, ADC_GPIO)
-    .expect(<span class="string">"ADC Init failed"</span>);</code></pre></div>
+    .expect(<span class="string">&quot;ADC Init failed&quot;</span>);</code></pre></div>
 <p>To increase the ADC sensitivity, we set the <strong>ADC Gain</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Enable ADC Gain to increase the ADC sensitivity
@@ -523,22 +523,22 @@ export APP_NAME=sdk_app_rust_adc
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init DMA for the ADC Channel for Single-Channel Conversion Mode
   </span>adc::dma_init(<span class="number">1</span>, ADC_SAMPLES <span class="kw">as </span>u32)
-    .expect(<span class="string">"DMA Init failed"</span>);</code></pre></div>
+    .expect(<span class="string">&quot;DMA Init failed&quot;</span>);</code></pre></div>
 <p>(First parameter of <code>dma_init</code> is the ADC Mode)</p>
 <p>We configure the GPIO Pin for <strong>ADC Input</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Configure the GPIO Pin as ADC Input, no pullup, no pulldown
   </span>adc::gpio_init(ADC_GPIO)
-    .expect(<span class="string">"ADC GPIO failed"</span>);</code></pre></div>
+    .expect(<span class="string">&quot;ADC GPIO failed&quot;</span>);</code></pre></div>
 <p>And we fetch the <strong>DMA Context</strong> for the ADC Channel…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Get the ADC Channel Number for the GPIO Pin
   </span><span class="kw">let </span>channel = adc::get_channel_by_gpio(ADC_GPIO)
-    .expect(<span class="string">"ADC Channel failed"</span>);
+    .expect(<span class="string">&quot;ADC Channel failed&quot;</span>);
 
   <span class="comment">//  Get the DMA Context for the ADC Channel
   </span><span class="kw">let </span>ptr = dma::find_ctx_by_channel(adc::ADC_DMA_CHANNEL <span class="kw">as </span>i32)
-    .expect(<span class="string">"DMA Ctx failed"</span>);</code></pre></div>
+    .expect(<span class="string">&quot;DMA Ctx failed&quot;</span>);</code></pre></div>
 <p>However the returned pointer <code>ptr</code> is actually a “<code>void *</code>” pointer from C.</p>
 <p>To use the pointer in Rust, we cast it to a <strong>DMA Context Pointer</strong>…</p>
 
@@ -561,7 +561,7 @@ export APP_NAME=sdk_app_rust_adc
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Start reading the ADC via DMA
   </span>adc::start()
-    .expect(<span class="string">"ADC Start failed"</span>);
+    .expect(<span class="string">&quot;ADC Start failed&quot;</span>);
 }</code></pre></div>
 <p>BL602 ADC Controller will <strong>read the ADC Samples continuously</strong> (from the GPIO Pin) into RAM (until we stop the ADC Channel).</p>
 <p><img src="https://lupyuen.github.io/images/adc-rust2.png" alt="Rust Firmware to read BL602 ADC" /></p>
@@ -571,8 +571,8 @@ export APP_NAME=sdk_app_rust_adc
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Command to compute the average value of the ADC Samples that have just been read.
 /// Based on `hal_adc_get_data` in &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L142-L179&gt;
-</span><span class="attr">#[no_mangle]              </span><span class="comment">//  Don't mangle the function name
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>read_adc(   <span class="comment">//  Declare `extern "C"` because it will be called by BL602 firmware
+</span><span class="attr">#[no_mangle]              </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>read_adc(   <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware
   </span>_result: <span class="kw-2">*mut </span>u8,        <span class="comment">//  Result to be returned to command-line interface (char *)
   </span>_len:  i32,              <span class="comment">//  Size of result buffer (int)
   </span>_argc: i32,              <span class="comment">//  Number of command line args (int)
@@ -582,11 +582,11 @@ export APP_NAME=sdk_app_rust_adc
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Get the ADC Channel Number for the GPIO Pin
   </span><span class="kw">let </span>channel = adc::get_channel_by_gpio(ADC_GPIO)
-    .expect(<span class="string">"ADC Channel failed"</span>);
+    .expect(<span class="string">&quot;ADC Channel failed&quot;</span>);
   
   <span class="comment">//  Get the DMA Context for the ADC Channel
   </span><span class="kw">let </span>ptr = dma::find_ctx_by_channel(adc::ADC_DMA_CHANNEL <span class="kw">as </span>i32)
-    .expect(<span class="string">"DMA Ctx failed"</span>);</code></pre></div>
+    .expect(<span class="string">&quot;DMA Ctx failed&quot;</span>);</code></pre></div>
 <p>Again we cast the returned C pointer <code>ptr</code> to a <strong>DMA Context Pointer</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)
@@ -608,7 +608,7 @@ export APP_NAME=sdk_app_rust_adc
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  If ADC Sampling is not finished, try again later    
   </span><span class="kw">if unsafe </span>{ (<span class="kw-2">*</span>ctx).channel_data.is_null() } {  <span class="comment">//  Unsafe because we are dereferencing a pointer
-    </span>puts(<span class="string">"ADC Sampling not finished"</span>);
+    </span>puts(<span class="string">&quot;ADC Sampling not finished&quot;</span>);
     <span class="kw">return</span>;
   }</code></pre></div>
 <p>(Again we flag as <code>unsafe</code> because we’re dereferencing the pointer <code>ctx</code>)</p>
@@ -647,8 +647,8 @@ export APP_NAME=sdk_app_rust_adc
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Format the output
   </span><span class="kw">let </span><span class="kw-2">mut </span>buf = String::new();
-  <span class="macro">write!</span>(buf, <span class="string">"[Rust] Average: {}"</span>, avg)
-    .expect(<span class="string">"buf overflow"</span>);
+  <span class="macro">write!</span>(buf, <span class="string">&quot;[Rust] Average: {}&quot;</span>, avg)
+    .expect(<span class="string">&quot;buf overflow&quot;</span>);
 
   <span class="comment">//  Display the formatted output
   </span>puts(<span class="kw-2">&amp;</span>buf);
@@ -1060,7 +1060,7 @@ read_adc
 <p>Unfortunately <strong>Static Variables in Rust are <code>unsafe</code></strong>.</p>
 <p>Thus all references to <code>adc_data</code> must be <strong>flagged as <code>unsafe</code></strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  `adc_data` is now unsafe because it's a Static Variable
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  `adc_data` is now unsafe because it&#39;s a Static Variable
 </span><span class="kw">let </span>scaled = <span class="kw">unsafe </span>{ adc_data[i] } &amp; ...</code></pre></div>
 <p>Which makes the code harder to read. That’s why we left <code>adc_data</code> on the stack for this tutorial.</p>
 <p><em>Why are Static Variables <code>unsafe</code>?</em></p>
@@ -1241,7 +1241,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>This calls the C Function <code>set_adc_gain</code>, which we have <strong>imported into Rust</strong> here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  In Rust: Import C Function
-</span><span class="kw">extern </span><span class="string">"C" </span>{
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
   <span class="doccomment">/// Enable ADC Gain to increase the ADC sensitivity.
   /// Defined in customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c
   </span><span class="kw">fn </span>set_adc_gain(gain1: u32, gain2: u32) -&gt; i32;
@@ -1390,11 +1390,11 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 </ul>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Rust Bindings for BL602 GPIO generated by gen-bindings.sh
-</span><span class="attr">#[safe_wrap(<span class="kw">_</span>)] </span><span class="kw">extern </span><span class="string">"C" </span>{
+</span><span class="attr">#[safe_wrap(<span class="kw">_</span>)] </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
     <span class="kw">pub fn </span>bl_gpio_enable_output(pin: u8, pullup: u8, pulldown: u8) -&gt; ::cty::c_int;
 }
 
-<span class="attr">#[safe_wrap(<span class="kw">_</span>)] </span><span class="kw">extern </span><span class="string">"C" </span>{
+<span class="attr">#[safe_wrap(<span class="kw">_</span>)] </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
     <span class="kw">pub fn </span>bl_gpio_output_set(pin: u8, value: u8) -&gt; ::cty::c_int;
 }</code></pre></div>
 <p>(<code>safe_wrap</code> was inserted by an <code>sed</code> script in <code>gen-bindings.sh</code>)</p>
@@ -1408,37 +1408,37 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 </ul>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Expanded version of `safe_wrap` macros for the GPIO Rust Bindings
-</span><span class="attr">#[doc = <span class="string">"Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in \"Enable GPIO\" &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;"</span>]
+</span><span class="attr">#[doc = <span class="string">&quot;Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in \&quot;Enable GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;&quot;</span>]
 </span><span class="kw">pub fn </span>enable_output(pin: u8, pullup: u8, pulldown: u8)
     -&gt; BlResult&lt;()&gt; {
-    <span class="string">"----------Extern Decl----------"</span>;
-    <span class="kw">extern </span><span class="string">"C" </span>{
+    <span class="string">&quot;----------Extern Decl----------&quot;</span>;
+    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
         <span class="kw">pub fn </span>bl_gpio_enable_output(pin: u8, pullup: u8, pulldown: u8)
         -&gt; ::cty::c_int;
     }
-    <span class="string">"----------Validation----------"</span>;
+    <span class="string">&quot;----------Validation----------&quot;</span>;
     <span class="kw">unsafe </span>{
-        <span class="string">"----------Call----------"</span>;
+        <span class="string">&quot;----------Call----------&quot;</span>;
         <span class="kw">let </span>res =
             bl_gpio_enable_output(pin <span class="kw">as </span>u8, pullup <span class="kw">as </span>u8,
                                     pulldown <span class="kw">as </span>u8);
-        <span class="string">"----------Result----------"</span>;
+        <span class="string">&quot;----------Result----------&quot;</span>;
         <span class="kw">match </span>res { <span class="number">0 </span>=&gt; <span class="prelude-val">Ok</span>(()), <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(BlError::from(res)), }
     }
 }
 
-<span class="attr">#[doc = <span class="string">"Set output value of GPIO Pin. See `bl_gpio_output_set` in \"Read and Write GPIO\" &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;"</span>]
+<span class="attr">#[doc = <span class="string">&quot;Set output value of GPIO Pin. See `bl_gpio_output_set` in \&quot;Read and Write GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;&quot;</span>]
 </span><span class="kw">pub fn </span>output_set(pin: u8, value: u8) -&gt; BlResult&lt;()&gt; {
-    <span class="string">"----------Extern Decl----------"</span>;
-    <span class="kw">extern </span><span class="string">"C" </span>{
+    <span class="string">&quot;----------Extern Decl----------&quot;</span>;
+    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
         <span class="kw">pub fn </span>bl_gpio_output_set(pin: u8, value: u8)
         -&gt; ::cty::c_int;
     }
-    <span class="string">"----------Validation----------"</span>;
+    <span class="string">&quot;----------Validation----------&quot;</span>;
     <span class="kw">unsafe </span>{
-        <span class="string">"----------Call----------"</span>;
+        <span class="string">&quot;----------Call----------&quot;</span>;
         <span class="kw">let </span>res = bl_gpio_output_set(pin <span class="kw">as </span>u8, value <span class="kw">as </span>u8);
-        <span class="string">"----------Result----------"</span>;
+        <span class="string">&quot;----------Result----------&quot;</span>;
         <span class="kw">match </span>res { <span class="number">0 </span>=&gt; <span class="prelude-val">Ok</span>(()), <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(BlError::from(res)), }
     }
 }</code></pre></div>
@@ -1474,10 +1474,10 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 <p>We do this through the <strong>Rust <code>doc</code> Attribute</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Expanded version of `safe_wrap` macros for the GPIO Rust Bindings
-</span><span class="attr">#[doc = <span class="string">"Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in \"Enable GPIO\" &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;"</span>]
+</span><span class="attr">#[doc = <span class="string">&quot;Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in \&quot;Enable GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;&quot;</span>]
 </span><span class="kw">pub fn </span>enable_output(pin: u8, pullup: u8, pulldown: u8) { ...
 
-<span class="attr">#[doc = <span class="string">"Set output value of GPIO Pin. See `bl_gpio_output_set` in \"Read and Write GPIO\" &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;"</span>]
+<span class="attr">#[doc = <span class="string">&quot;Set output value of GPIO Pin. See `bl_gpio_output_set` in \&quot;Read and Write GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;&quot;</span>]
 </span><span class="kw">pub fn </span>output_set(pin: u8, value: u8) -&gt; BlResult&lt;()&gt; { ...</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/adc-doclink.png" alt="Documentation links to be injected" /></p>
 <p><em>How did we inject the doc links into the <code>doc</code> Attribute?</em></p>
