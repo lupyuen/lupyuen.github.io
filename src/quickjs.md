@@ -281,6 +281,8 @@ qjs > os.ioctl(100,2,3)
 -9
 ```
 
+![Connect an LED to Ox64 SBC at GPIO 29, Pin 21](https://lupyuen.github.io/images/nim-wiring.jpg)
+
 # QuickJS Blinks the LED on Ox64 SBC
 
 _We added ioctl() to QuickJS... Does it work?_
@@ -303,9 +305,47 @@ We test __ioctl()__ on a Real Device with a Real LED: __Ox64 BL808 RISC-V SBC__.
  
   (Because __task_create()__ is missing from Kernel Mode)
 
-TODO: Connect LED
+Connect an LED to Ox64 SBC at __GPIO 29, Pin 21__ (pic above)...
 
-TODO: Ox64 Log
+| Connect | To | Wire |
+|:-----|:---|:-----|
+| __Ox64 Pin 21__ <br>_(GPIO 29)_ | __Resistor__ <br>_(47 Ohm)_ | Red |
+| __Resistor__ <br>_(47 Ohm)_ | __LED +__ <br>_(Curved Edge)_ | Breadboard
+| __LED -__ <br>_(Flat Edge)_ | __Ox64 Pin 23__ <br>_(GND)_ | Black 
+
+[(See the __Ox64 Pinout__)](https://wiki.pine64.org/wiki/File:Ox64_pinout.png)
+
+(Resistor is __47 Ohm__, yellow-purple-black-gold, almost Karma Chameleon)
+
+Boot NuttX on Ox64. Enter these commands...
+
+```bash
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> qjs
+QuickJS - Type "\h" for help
+
+## Define the NuttX LED Command
+qjs > ULEDIOC_SETALL = 0x1d03
+7427
+
+## Open the NuttX LED Device (write-only)
+qjs > fd = os.open("/dev/userleds", os.O_WRONLY)
+3
+
+## Flip LED to On
+qjs > os.ioctl(fd, ULEDIOC_SETALL, 1)
+bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+0
+
+## Flip LED to Off
+qjs > os.ioctl(fd, ULEDIOC_SETALL, 0)
+bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+0
+```
+
+Yep __ioctl()__ works great on a Real Device, with a Real LED!
+
+![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: QuickJS blinks our LED](https://lupyuen.github.io/images/nim-blink2.jpg)
 
 _If we don't have an Ox64 SBC?_
 
