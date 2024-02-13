@@ -161,7 +161,7 @@
   </span><span class="kw">let </span><span class="kw-2">mut </span>unicorn = Unicorn::new(
     Arch::ARM64,
     Mode::LITTLE_ENDIAN
-  ).expect(<span class="string">&quot;failed to init Unicorn&quot;</span>);
+  ).expect(<span class="string">"failed to init Unicorn"</span>);
 
   <span class="comment">// Magical horse mutates to bird
   </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;</code></pre></div>
@@ -174,14 +174,14 @@
     ADDRESS,          <span class="comment">// Address is 0x10000
     </span><span class="number">2 </span>* <span class="number">1024 </span>* <span class="number">1024</span>,  <span class="comment">// Size is 2MB
     </span>Permission::ALL   <span class="comment">// Read, Write and Execute Access
-  </span>).expect(<span class="string">&quot;failed to map code page&quot;</span>);</code></pre></div>
+  </span>).expect(<span class="string">"failed to map code page"</span>);</code></pre></div>
 <p>And we <strong>populate the Executable Memory</strong> with our Arm64 Machine Code…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Write Arm64 Machine Code to emulated Executable Memory
   </span>emu.mem_write(
     ADDRESS,     <span class="comment">// Address is 0x10000
     </span><span class="kw-2">&amp;</span>arm64_code  <span class="comment">// Arm64 Machine Code
-  </span>).expect(<span class="string">&quot;failed to write instructions&quot;</span>);</code></pre></div>
+  </span>).expect(<span class="string">"failed to write instructions"</span>);</code></pre></div>
 <p>We <strong>set the Arm64 Registers</strong>: X11, X13 and X15…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Register Values
@@ -191,11 +191,11 @@
   
   // Set the Arm64 Registers
   </span>emu.reg_write(RegisterARM64::X11, X11)
-    .expect(<span class="string">&quot;failed to set X11&quot;</span>);
+    .expect(<span class="string">"failed to set X11"</span>);
   emu.reg_write(RegisterARM64::X13, X13)
-    .expect(<span class="string">&quot;failed to set X13&quot;</span>);
+    .expect(<span class="string">"failed to set X13"</span>);
   emu.reg_write(RegisterARM64::X15, X15)
-    .expect(<span class="string">&quot;failed to set X15&quot;</span>);</code></pre></div>
+    .expect(<span class="string">"failed to set X15"</span>);</code></pre></div>
 <p>We <strong>start the emulator</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Emulate Arm64 Machine Code
@@ -207,7 +207,7 @@
   </span>);
 
   <span class="comment">// Print the Emulator Error
-  </span><span class="macro">println!</span>(<span class="string">&quot;err={:?}&quot;</span>, err);</code></pre></div>
+  </span><span class="macro">println!</span>(<span class="string">"err={:?}"</span>, err);</code></pre></div>
 <p>Finally we <strong>read Register X15</strong> and verify the result…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Read the X15 Register
@@ -257,7 +257,7 @@ err=Ok(())
 </span>) -&gt; bool {         <span class="comment">// Always return true
 
   // TODO: Emulate Memory-Mapped Input/Output (UART Controller)
-  </span><span class="macro">println!</span>(<span class="string">&quot;hook_memory: mem_type={:?}, address={:#x}, size={:?}, value={:#x}&quot;</span>, mem_type, address, size, value);
+  </span><span class="macro">println!</span>(<span class="string">"hook_memory: mem_type={:?}, address={:#x}, size={:?}, value={:#x}"</span>, mem_type, address, size, value);
 
   <span class="comment">// Always return true, value is unused by caller
   // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
@@ -272,7 +272,7 @@ err=Ok(())
   </span><span class="number">0</span>,           <span class="comment">// Begin Address
   </span>u64::MAX,    <span class="comment">// End Address
   </span>hook_memory  <span class="comment">// Hook Function
-</span>).expect(<span class="string">&quot;failed to add memory hook&quot;</span>);</code></pre></div>
+</span>).expect(<span class="string">"failed to add memory hook"</span>);</code></pre></div>
 <p>When we run this, we see the Read and Write Memory Accesses made by our <a href="https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code"><strong>Emulated Arm64 Code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_memory: 
   mem_type=WRITE, 
@@ -303,7 +303,7 @@ hook_memory:
   </span>size: u32      <span class="comment">// Instruction Size
 </span>) {
   <span class="comment">// TODO: Handle special Arm64 Instructions
-  </span><span class="macro">println!</span>(<span class="string">&quot;hook_code: address={:#x}, size={:?}&quot;</span>, address, size);
+  </span><span class="macro">println!</span>(<span class="string">"hook_code: address={:#x}, size={:?}"</span>, address, size);
 }</code></pre></div>
 <p>And this is how we call Unicorn Emulator to <strong>attach the Code Hook Function</strong>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L52-L57">main.rs</a></p>
 
@@ -312,7 +312,7 @@ hook_memory:
   ADDRESS,  <span class="comment">// Begin Address
   </span>ADDRESS + arm64_code.len() <span class="kw">as </span>u64,  <span class="comment">// End Address
   </span>hook_code  <span class="comment">// Hook Function for Code Emulation
-</span>).expect(<span class="string">&quot;failed to add code hook&quot;</span>);</code></pre></div>
+</span>).expect(<span class="string">"failed to add code hook"</span>);</code></pre></div>
 <p>When we run this with our <a href="https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code"><strong>Arm64 Machine Code</strong></a>, we see the Address of <strong>every Arm64 Instruction emulated</strong> (and its size)…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_code:
   address=0x10000,
@@ -338,13 +338,13 @@ hook_code:
   </span>size: u32      <span class="comment">// Block Size
 </span>) {
   <span class="comment">// TODO: Trace the flow of emulated code
-  </span><span class="macro">println!</span>(<span class="string">&quot;hook_block: address={:#x}, size={:?}&quot;</span>, address, size);
+  </span><span class="macro">println!</span>(<span class="string">"hook_block: address={:#x}, size={:?}"</span>, address, size);
 }</code></pre></div>
 <p>This is how we <strong>attach the Block Execution Hook</strong>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L48-L50">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Add Hook for emulating each Basic Block of Arm64 Instructions
 </span><span class="kw">let _ </span>= emu.add_block_hook(hook_block)
-  .expect(<span class="string">&quot;failed to add block hook&quot;</span>);</code></pre></div>
+  .expect(<span class="string">"failed to add block hook"</span>);</code></pre></div>
 <p>Block Execution Hooks are <strong>less granular</strong> (called less often) than Code Execution Hooks…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_block: address=0x10000, size=8
 hook_code:  address=0x10000, size=4
@@ -388,7 +388,7 @@ hook_code:  address=0x10004, size=4
   <span class="number">0x0100_0000</span>,       <span class="comment">// Address
   </span><span class="number">16 </span>* <span class="number">1024 </span>* <span class="number">1024</span>,  <span class="comment">// Size
   </span>Permission::READ | Permission::WRITE  <span class="comment">// Read and Write Access
-</span>).expect(<span class="string">&quot;failed to map memory mapped I/O&quot;</span>);</code></pre></div>
+</span>).expect(<span class="string">"failed to map memory mapped I/O"</span>);</code></pre></div>
 <p>We’ll see this later when we handle Memory-Mapped Input / Output.</p>
 <p><em>Can we map Memory Regions during emulation?</em></p>
 <p>Yep we may use a Memory Access Hook to <strong>map memory regions on the fly</strong>.</p>
@@ -404,7 +404,7 @@ hook_code:  address=0x10004, size=4
 </span><span class="kw">const </span>ADDRESS: u64 = <span class="number">0x4008_0000</span>;
 
 <span class="comment">// Arm64 Machine Code for the above address
-</span><span class="kw">let </span>arm64_code = <span class="macro">include_bytes!</span>(<span class="string">&quot;../nuttx/nuttx.bin&quot;</span>);</code></pre></div>
+</span><span class="kw">let </span>arm64_code = <span class="macro">include_bytes!</span>(<span class="string">"../nuttx/nuttx.bin"</span>);</code></pre></div>
 <p><a href="https://doc.rust-lang.org/std/macro.include_bytes.html"><em>(Rustle… Whoosh!)</em></a></p>
 <p>We <strong>initialise the emulator</strong> the same way…</p>
 
@@ -412,7 +412,7 @@ hook_code:  address=0x10004, size=4
 </span><span class="kw">let </span><span class="kw-2">mut </span>unicorn = Unicorn::new(
   Arch::ARM64,
   Mode::LITTLE_ENDIAN
-).expect(<span class="string">&quot;failed to init Unicorn&quot;</span>);
+).expect(<span class="string">"failed to init Unicorn"</span>);
 
 <span class="comment">// Magical horse mutates to bird
 </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;</code></pre></div>
@@ -434,7 +434,7 @@ hook_code:  address=0x10004, size=4
   <span class="number">0x4000_0000</span>,        <span class="comment">// Address
   </span><span class="number">128 </span>* <span class="number">1024 </span>* <span class="number">1024</span>,  <span class="comment">// Size
   </span>Permission::ALL     <span class="comment">// Read, Write and Execute Access
-</span>).expect(<span class="string">&quot;failed to map code page&quot;</span>);
+</span>).expect(<span class="string">"failed to map code page"</span>);
 
 <span class="comment">// Map 512 MB Read/Write Memory at 0x0000 0000 for
 // Memory-Mapped I/O by Allwinner A64 Peripherals
@@ -443,14 +443,14 @@ hook_code:  address=0x10004, size=4
   <span class="number">0x0000_0000</span>,        <span class="comment">// Address
   </span><span class="number">512 </span>* <span class="number">1024 </span>* <span class="number">1024</span>,  <span class="comment">// Size
   </span>Permission::READ | Permission::WRITE  <span class="comment">// Read and Write Access
-</span>).expect(<span class="string">&quot;failed to map memory mapped I/O&quot;</span>);</code></pre></div>
+</span>).expect(<span class="string">"failed to map memory mapped I/O"</span>);</code></pre></div>
 <p>We <strong>load the NuttX Machine Code</strong> into Emulated Memory…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Write Arm64 Machine Code to emulated Executable Memory
 </span>emu.mem_write(
   ADDRESS,    <span class="comment">// Address is 4008 0000
   </span>arm64_code  <span class="comment">// NuttX Binary Image
-</span>).expect(<span class="string">&quot;failed to write instructions&quot;</span>);</code></pre></div>
+</span>).expect(<span class="string">"failed to write instructions"</span>);</code></pre></div>
 <p>And we <strong>run NuttX RTOS</strong>!</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Omitted: Attach Code, Block and Memory Hooks
@@ -539,7 +539,7 @@ nuttx/arch/arm64/src/chip/a64_lowputc.S:91
 </span>emu.mem_write(
   <span class="number">0x01c2_8014</span>,  <span class="comment">// UART Register Address
   </span><span class="kw-2">&amp;</span>[<span class="number">0b10_0000</span>]  <span class="comment">// UART Register Value
-</span>).expect(<span class="string">&quot;failed to set UART_LSR&quot;</span>);</code></pre></div>
+</span>).expect(<span class="string">"failed to set UART_LSR"</span>);</code></pre></div>
 <p>And Unicorn Emulator stops looping!</p>
 <p>Unicorn continues booting NuttX, which fills the <a href="https://en.wikipedia.org/wiki/.bss"><strong>BSS Section</strong></a> with 0…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_block:  address=0x40089328, size=8
@@ -579,7 +579,7 @@ hook_memory: address=0x400b6a53, size=1, mem_type=WRITE, value=0x0
   // Print the output
   // https://lupyuen.github.io/articles/serial#transmit-uart
   </span><span class="kw">if </span>address == <span class="number">0x01c2_8000 </span>{
-    <span class="macro">println!</span>(<span class="string">&quot;uart output: {:?}&quot;</span>, value <span class="kw">as </span>u8 <span class="kw">as </span>char);
+    <span class="macro">println!</span>(<span class="string">"uart output: {:?}"</span>, value <span class="kw">as </span>u8 <span class="kw">as </span>char);
   }
 
   <span class="comment">// Always return true, value is unused by caller
@@ -775,21 +775,21 @@ err=Err(EXCEPTION)
   </span>address: u64,  <span class="comment">// Block Address
   </span>size: u32      <span class="comment">// Block Size
 </span>) {
-  <span class="macro">print!</span>(<span class="string">&quot;hook_block:  address={:#010x}, size={:02}&quot;</span>, address, size);
+  <span class="macro">print!</span>(<span class="string">"hook_block:  address={:#010x}, size={:02}"</span>, address, size);
 
   <span class="comment">// Print the Function Name
   </span><span class="kw">let </span>function = map_address_to_function(address);
   <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>name) = function {
-    <span class="macro">print!</span>(<span class="string">&quot;, {}&quot;</span>, name);
+    <span class="macro">print!</span>(<span class="string">", {}"</span>, name);
   }
 
   <span class="comment">// Print the Source Filename
   </span><span class="kw">let </span>loc = map_address_to_location(address);
   <span class="kw">if let </span><span class="prelude-val">Some</span>((<span class="kw-2">ref </span>file, line, col)) = loc {
-    <span class="kw">let </span>file = file.clone().unwrap_or(<span class="string">&quot;&quot;</span>.to_string());
+    <span class="kw">let </span>file = file.clone().unwrap_or(<span class="string">""</span>.to_string());
     <span class="kw">let </span>line = line.unwrap_or(<span class="number">0</span>);
     <span class="kw">let </span>col = col.unwrap_or(<span class="number">0</span>);
-    <span class="macro">print!</span>(<span class="string">&quot;, {}:{}:{}&quot;</span>, file, line, col);
+    <span class="macro">print!</span>(<span class="string">", {}:{}:{}"</span>, file, line, col);
   }
   <span class="macro">println!</span>();
 }</code></pre></div>
@@ -802,7 +802,7 @@ err=Err(EXCEPTION)
   // Lookup the Arm64 Code Address in the ELF Context
   </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
   <span class="kw">let </span><span class="kw-2">mut </span>frames = context.find_frames(address)
-    .expect(<span class="string">&quot;failed to find frames&quot;</span>);
+    .expect(<span class="string">"failed to find frames"</span>);
 
   <span class="comment">// Return the Function Name
   </span><span class="kw">if let </span><span class="prelude-val">Some</span>(frame) = frames.next().unwrap() {
@@ -827,14 +827,14 @@ err=Err(EXCEPTION)
   <span class="comment">// Lookup the Arm64 Code Address in the ELF Context
   </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
   <span class="kw">let </span>loc = context.find_location(address)
-    .expect(<span class="string">&quot;failed to find location&quot;</span>);
+    .expect(<span class="string">"failed to find location"</span>);
 
   <span class="comment">// Return the Filename, Line and Column
   </span><span class="kw">if let </span><span class="prelude-val">Some</span>(loc) = loc {
     <span class="kw">if let </span><span class="prelude-val">Some</span>(file) = loc.file {
       <span class="kw">let </span>s = String::from(file)
-        .replace(<span class="string">&quot;/private/tmp/nuttx/nuttx/&quot;</span>, <span class="string">&quot;&quot;</span>)
-        .replace(<span class="string">&quot;arch/arm64/src/chip&quot;</span>, <span class="string">&quot;arch/arm64/src/a64&quot;</span>);  <span class="comment">// TODO: Handle other chips
+        .replace(<span class="string">"/private/tmp/nuttx/nuttx/"</span>, <span class="string">""</span>)
+        .replace(<span class="string">"arch/arm64/src/chip"</span>, <span class="string">"arch/arm64/src/a64"</span>);  <span class="comment">// TODO: Handle other chips
       </span><span class="prelude-val">Some</span>((<span class="prelude-val">Some</span>(s), loc.line, loc.column))
     } <span class="kw">else </span>{
       <span class="prelude-val">Some</span>((<span class="prelude-val">None</span>, loc.line, loc.column))
@@ -857,21 +857,21 @@ unicorn-engine = &quot;2.0.0&quot;
 <span class="kw">use </span>once_cell::sync::Lazy;
 
 <span class="doccomment">/// ELF File for mapping Addresses to Function Names and Filenames
-</span><span class="kw">const </span>ELF_FILENAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;nuttx/nuttx&quot;</span>;
+</span><span class="kw">const </span>ELF_FILENAME: <span class="kw-2">&amp;</span>str = <span class="string">"nuttx/nuttx"</span>;
 
 <span class="doccomment">/// ELF Context for mapping Addresses to Function Names and Filenames
 </span><span class="kw">static </span>ELF_CONTEXT: Lazy&lt;ElfContext&gt; = Lazy::new(|| {
   <span class="comment">// Open the ELF File
   </span><span class="kw">let </span>path = std::path::PathBuf::from(ELF_FILENAME);
   <span class="kw">let </span>file_data = std::fs::read(path)
-    .expect(<span class="string">&quot;failed to read ELF&quot;</span>);
+    .expect(<span class="string">"failed to read ELF"</span>);
   <span class="kw">let </span>slice = file_data.as_slice();
 
   <span class="comment">// Parse the ELF File
   </span><span class="kw">let </span>obj = addr2line::object::read::File::parse(slice)
-    .expect(<span class="string">&quot;failed to parse ELF&quot;</span>);
+    .expect(<span class="string">"failed to parse ELF"</span>);
   <span class="kw">let </span>context = addr2line::Context::new(<span class="kw-2">&amp;</span>obj)
-    .expect(<span class="string">&quot;failed to parse debug info&quot;</span>);
+    .expect(<span class="string">"failed to parse debug info"</span>);
 
   <span class="comment">// Set the ELF Context
   </span>ElfContext {
@@ -885,7 +885,7 @@ unicorn-engine = &quot;2.0.0&quot;
     addr2line::Context&lt;
       gimli::EndianReader&lt;
         gimli::RunTimeEndian, 
-        Rc&lt;[u8]&gt;  <span class="comment">// Doesn&#39;t implement Send / Sync
+        Rc&lt;[u8]&gt;  <span class="comment">// Doesn't implement Send / Sync
       </span>&gt;
     &gt;
   &gt;

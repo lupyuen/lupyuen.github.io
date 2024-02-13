@@ -211,7 +211,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>After these fixes, QuickJS builds OK for NuttX! We run it…</p>
 <h1 id="nuttx-stack-is-full-of-quickjs"><a href="#nuttx-stack-is-full-of-quickjs">3 NuttX Stack is Full of QuickJS</a></h1>
 <p><em>We fixed the QuickJS Build for NuttX… Does it run?</em></p>
-<p>Sorry nope! QuickJS ran into <a href="https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx"><strong>Mysterious Crashes</strong></a> on NuttX…</p>
+<p>Sorry nope! QuickJS ran into <a href="https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx"><strong>Mysterious Crashes</strong></a> on NuttX (with looping Stack Traces)…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#atom-sentinel-becomes-0xffff_ffff"><strong>Strange Pointers</strong></a> (<code>0xFFFF_FFFF</code>) while reading the JavaScript Atoms</p>
@@ -226,7 +226,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#heap-errors-and-stdio-weirdness"><strong>Heap Memory</strong></a> got weirdly corrupted (even <strong><code>printf</code></strong> failed)</p>
 </li>
 </ul>
-<p>Then we saw this <a href="https://github.com/lupyuen/quickjs-nuttx#nuttx-stack-is-full-of-quickjs"><strong>Vital Clue</strong></a>…</p>
+<p>After plenty of headscratching troubleshooting, this <a href="https://github.com/lupyuen/quickjs-nuttx#nuttx-stack-is-full-of-quickjs"><strong>Vital Clue</strong></a> suddenly popped up…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 00000000c0006d52, MTVAL: ffffffffffffffff
 ...
 dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
@@ -237,6 +237,7 @@ dump_task:       2     2 100 RR       Task    - Waiting Semaphore  0000000000000
 dump_task:       3     3 100 RR       Task    - Running            0000000000000000 0xc0202050      1968      1968   100.0%!   qjs }¼uq¦ü®઄²äÅ
 </code></pre></div>
 <p>The last line shows that the <strong>QuickJS Stack</strong> (2 KB) was <strong>100% Full</strong>! (And the Command Line was badly messed up)</p>
+<p>(Lesson Learnt: If the NuttX Stack Dump loops forever, we’re probably <strong>Out Of Stack Space</strong>)</p>
 <p>We follow these steps to <a href="https://github.com/lupyuen/nuttx-star64#increase-stack-size"><strong>increase the Stack Size</strong></a>…</p>
 <ul>
 <li>
