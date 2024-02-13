@@ -170,7 +170,7 @@ Sorry nope! QuickJS ran into [__Mysterious Crashes__](https://github.com/lupyuen
 
 After plenty of headscratching troubleshooting, this [__Vital Clue__](https://github.com/lupyuen/quickjs-nuttx#nuttx-stack-is-full-of-quickjs) suddenly popped up...
 
-```text
+```yaml
 riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 00000000c0006d52, MTVAL: ffffffffffffffff
 ...
 dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
@@ -214,6 +214,13 @@ CONFIG_TLS_LOG2_MAXSTACK=16
 
 _ioctl() doesn't appear in the QuickJS Docs?_
 
+```javascript
+// Flip On the NuttX LED
+const ULEDIOC_SETALL = 0x1d03;
+const fd = os.open("/dev/userleds", os.O_WRONLY);
+os.ioctl(fd, ULEDIOC_SETALL, 1);
+```
+
 That's because we added __ioctl()__ to QuickJS: [quickjs-libc.c](https://github.com/lupyuen/quickjs-nuttx/commit/91aaf4257992c08b01590f0d61fa37a386933a4b#diff-95fe784bea3e0fbdf30ba834b1a74b538090f4d70f4f8770ef397ef68ec37aa3)
 
 ```c
@@ -226,7 +233,6 @@ static const JSCFunctionListEntry js_os_funcs[] = {
     3,           // Parameters
     js_os_ioctl  // Implemented here
   ),
-  ...
 };
 
 // Define our ioctl() function
@@ -235,7 +241,7 @@ static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSVa
     int64_t arg, ret;
     BOOL is_bigint;
     
-    // First Arg is File Descriptor (int32)
+    // First Arg is ioctl() File Descriptor (int32)
     if (JS_ToInt32(ctx, &fd, argv[0]))
         return JS_EXCEPTION;
     
@@ -244,7 +250,7 @@ static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSVa
         return JS_EXCEPTION;
 
     // Third Arg is ioctl() Parameter (int64)
-    // TODO: What if it's int32? How to we pass a Pointer to Struct?
+    // TODO: What if it's int32? How to pass a Pointer to Struct?
     is_bigint = JS_IsBigInt(ctx, argv[2]);
     if (JS_ToInt64Ext(ctx, &arg, argv[2]))
         return JS_EXCEPTION;
@@ -262,24 +268,22 @@ static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSVa
 }
 ```
 
-TODO
-
 Yep it seems to work...
 
-```text
+```bash
 NuttShell (NSH) NuttX-12.4.0-RC0
 nsh> qjs
 QuickJS - Type "\h" for help
+
 qjs > os.ioctl
 function ioctl()
+
 qjs > os.ioctl(1,2,3)
 -25
+
 qjs > os.ioctl(100,2,3)
 -9
-qjs > 
 ```
-
-Let's test QuickJS ioctl() with NuttX LED Driver...
 
 # Add LED Driver to NuttX QEMU RISC-V
 
