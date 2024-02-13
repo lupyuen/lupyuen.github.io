@@ -187,20 +187,30 @@ The last line shows that the __QuickJS Stack__ (2 KB) was __100% Full__! (And th
 
 We follow these steps to [__increase the Stack Size__](https://github.com/lupyuen/nuttx-star64#increase-stack-size)...
 
-- In "__`make menuconfig`__", select _"Library Routines > Program Execution Options"_
+1.  Enter "__`make menuconfig`__"
 
-- Set _"Default task_spawn Stack Size"_ to __65536__
+1.  Select _"Library Routines > Program Execution Options"_
 
-  (That's 64 KB)
+1.  Set _"Default task_spawn Stack Size"_ to __65536__
 
-TODO
+    (That's 64 KB)
 
-Here are all the settings we changed so far...
+1.  Select _"Library Routines > Thread Local Storage (TLS)"_
+
+    [(Why we set __Thread Local Storage__)](https://github.com/lupyuen/quickjs-nuttx#fix-quickjs-interactive-mode-on-nuttx)
+
+1.  Set _"Maximum stack size (log2)"_ to __16__
+
+    (Because 2^16 = 64 KB)
+
+Which becomes this in our __NuttX Build Config__: [ox64/nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078)
 
 ```bash
-CONFIG_POSIX_SPAWN_DEFAULT_STACKSIZE=8192
-## Remove CONFIG_SYSLOG_TIMESTAMP=y
+CONFIG_POSIX_SPAWN_DEFAULT_STACKSIZE=65536
+CONFIG_TLS_LOG2_MAXSTACK=16
 ```
+
+TODO
 
 QuickJS on NuttX QEMU prints 123 correctly yay! [nuttx/qemu.log](nuttx/qemu.log)
 
@@ -214,50 +224,7 @@ nsh> qjs -e console.log(123)
 nsh>
 ```
 
-# Fix QuickJS Interactive Mode on NuttX
-
-TODO
-
-But QuickJS nteractive Mode REPL fails. Need to increase stack some more. We see our old friend 8_c021_8308, which appears when we run out of stack
-
-```text
-$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
-
-ABC
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> qjs
-riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 00000000c0006484, MTVAL: 00000008c0218308
-```
-
-We increase Stack from 8 KB to 16 KB (looks too little?)...
-
-```bash
-CONFIG_POSIX_SPAWN_DEFAULT_STACKSIZE=16384
-```
-
-Oops too much (I think)...
-
-```text
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> qjs -e console.log(123) 
-_assert: Current Version: NuttX  12.4.0-RC0 f8b0b06-dirty Feb 11 2024 08:30:16 risc-v
-_assert: Assertion failed : at file: common/riscv_createstack.c:89 task: /system/bin/init process: /system/bin/init 0xc000004a
-```
-
-Which comes from [riscv_createstack.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_createstack.c#L82-L89)
-
-```c
-int up_create_stack(struct tcb_s *tcb, size_t stack_size, uint8_t ttype) {
-#ifdef CONFIG_TLS_ALIGNED
-  /* The allocated stack size must not exceed the maximum possible for the
-   * TLS feature.
-   */
-  DEBUGASSERT(stack_size <= TLS_MAXSTACK);
-```
-
 We increase CONFIG_TLS_LOG2_MAXSTACK from 13 to 14:
-- Library Routines > Thread Local Storage (TLS) > Maximum stack size (log2)
-- Set to 14
 
 Stack is still full. Increase Stack some more...
 
