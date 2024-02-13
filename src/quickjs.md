@@ -32,6 +32,8 @@ TODO: How Small? Heap Size?
 
 TODO: Static Linking
 
+TODO: QEMU LED Driver
+
 # QuickJS on NuttX Emulator
 
 Click here to try __QuickJS JavaScript Engine__ in NuttX Emulator...
@@ -183,9 +185,7 @@ dump_task:       3     3 100 RR       Task    - Running            0000000000000
 
 The last line shows that the __QuickJS Stack__ (2 KB) was __100% Full__! (And the Command Line was badly messed up)
 
-(Lesson Learnt: If the NuttX Stack Dump loops forever, we're probably __Out Of Stack Space__)
-
-We follow these steps to [__increase the Stack Size__](https://github.com/lupyuen/nuttx-star64#increase-stack-size)...
+We follow these steps to [__increase the App Stack Size__](https://github.com/lupyuen/nuttx-star64#increase-stack-size)...
 
 1.  Enter "__`make menuconfig`__"
 
@@ -209,6 +209,8 @@ Which becomes this in our __NuttX Build Config__: [ox64/nsh/defconfig](https://g
 CONFIG_POSIX_SPAWN_DEFAULT_STACKSIZE=65536
 CONFIG_TLS_LOG2_MAXSTACK=16
 ```
+
+(Lesson Learnt: If the NuttX Stack Dump loops forever, we're probably __Out Of Stack Space__)
 
 # Add ioctl() to QuickJS
 
@@ -285,282 +287,31 @@ qjs > os.ioctl(100,2,3)
 -9
 ```
 
-# Add LED Driver to NuttX QEMU RISC-V
-
-TODO
-
-We add the [LED Driver to NuttX QEMU RISC-V (knsh64)](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911).
-
-We fix the `leds` app because [task_create is missing from QEMU knsh64](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429).
-
-The `leds` app works great with the LED Driver...
-
-```text
-+ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
-ABC[    0.015000] board_userled_all: ledset=0x0
-[    0.016000] board_userled_all: led=0, val=0
-[    0.016000] board_userled_all: led=1, val=0
-[    0.017000] board_userled_all: led=2, val=0
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> leds
-leds_main: Starting the led_daemon
-
-led_daemon (pid# 3): Running
-led_daemon: Opening /dev/userleds
-led_daemon: Supported LEDs 0x07
-led_daemon: LED set 0x01
-[   29.652000] board_userled_all: ledset=0x1
-[   29.652000] board_userled_all: led=0, val=1
-[   29.652000] board_userled_all: led=1, val=0
-[   29.653000] board_userled_all: led=2, val=0
-led_daemon: LED set 0x02
-[   30.154000] board_userled_all: ledset=0x2
-[   30.154000] board_userled_all: led=0, val=0
-[   30.155000] board_userled_all: led=1, val=1
-[   30.155000] board_userled_all: led=2, val=0
-led_daemon: LED set 0x03
-[   30.656000] board_userled_all: ledset=0x3
-[   30.656000] board_userled_all: led=0, val=1
-[   30.656000] board_userled_all: led=1, val=1
-[   30.657000] board_userled_all: led=2, val=0
-```
-
-Now we test with QuickJS...
-
-# QuickJS calls NuttX LED Driver
-
-TODO
-
-This is how we blink an LED in C: [leds_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/qemuled/examples/leds/leds_main.c)
-
-```c
-#define _ULEDBASE       (0x1d00) /* User LED ioctl commands */
-#define _IOC(type,nr)   ((type)|(nr))
-#define _ULEDIOC(nr)      _IOC(_ULEDBASE,nr)
-#define ULEDIOC_SETALL     _ULEDIOC(0x0003)
-
-// Open the LED Device
-int fd = open("/dev/userleds", os.O_WRONLY);
-assert(fd > 0);
-
-// Flip LED 0 to On
-int ret = ioctl(fd, ULEDIOC_SETALL, 1);
-assert(ret >= 0);
-
-// Flip LED 0 to Off
-int ret = ioctl(fd, ULEDIOC_SETALL, 0);
-assert(ret >= 0);
-
-close(fd);
-```
-
-Which becomes this in QuickJS...
-
-```text
-ULEDIOC_SETALL = 0x1d03
-fd = os.open("/dev/userleds", os.O_WRONLY)
-os.ioctl(fd, ULEDIOC_SETALL, 1)
-os.ioctl(fd, ULEDIOC_SETALL, 0)
-```
-
-And it works yay!
-
-```text
-→ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> qjs
-QuickJS - Type "\h" for help
-qjs > ULEDIOC_SETALL = 0x1d03
-7427
-qjs > fd = os.open("/dev/userleds", os.O_WRONLY)
-3
-qjs > ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-[   24.851000] board_userled_all: ledset=0x1
-[   24.852000] board_userled_all: led=0, val=1
-[   24.852000] board_userled_all: led=1, val=0
-[   24.852000] board_userled_all: led=2, val=0
-0
-qjs > ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-[   29.617000] board_userled_all: ledset=0x0
-[   29.617000] board_userled_all: led=0, val=0
-[   29.617000] board_userled_all: led=1, val=0
-[   29.618000] board_userled_all: led=2, val=0
-0
-qjs > 
-```
-
 # Add LED Driver to NuttX Ox64 BL808 SBC
 
-TODO
+_We added ioctl() to QuickJS... Does it work?_
 
-Now we test on a Real Device with a Real LED: Ox64 BL808 SBC...
+We test __ioctl()__ on a Real Device with a Real LED: __Ox64 BL808 RISC-V SBC__. Right after these fixes...
 
-- We add the [GPIO Driver for Ox64 BL808](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/8f75f3744f3964bd3ed0596421a93e59fb39cdd8)
+- [__Add the GPIO Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/8f75f3744f3964bd3ed0596421a93e59fb39cdd8)  for Ox64 BL808
 
-- We add the [LED Driver for Ox64 BL808](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4f3996959132ca0d35874b7be3eef89d6bf7f351)
+- [__Add the LED Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4f3996959132ca0d35874b7be3eef89d6bf7f351) for Ox64 BL808
 
-- We increase [Ox64 BL808 Stack Size to 64 KB](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048) for QuickJS
+- [__Increase the App Stack Size__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048)  from 2 KB to 64 KB
 
-- We fix the `leds` app because [task_create is missing from QEMU knsh64](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3)
+  (Because QuickJS will crash mysteriously)
 
-But our RAM Disk Region is too small (16 MB)...
+- [__Increase the RAM Disk Region__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226) from 16 MB to 40 MB
 
-```text
-Starting kernel ...
-bl808_copy_ramdisk: RAM Disk Region too small. Increase by 586288l bytes.
-```
+  [(Why we enlarge the __RAM Disk Region__)](https://github.com/lupyuen/quickjs-nuttx#add-led-driver-to-nuttx-ox64-bl808-sbc)
 
-Initial RAM Disk (initrd) is now 17 MB...
+- [__Fix the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3) for testing LED Driver
+ 
+  (Because __task_create()__ is missing from Kernel Mode)
 
-```text
-→ ls -l $HOME/ox64/nuttx/initrd
--rw-r--r--  1 17363968 Feb 12 13:06 /Users/Luppy/ox64/nuttx/initrd
-```
+TODO: Connect LED
 
-We [increase the RAM Disk Region from](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226) 16 MB to 40 MB.
-
-But QuickJS crashes on Ox64...
-
-```text
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> qjs
-riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 0000000000007028, MTVAL: 0000000000007028
-riscv_exception: PANIC!!! Exception = 000000000000000c
-_assert: Current Version: NuttX  12.4.0-RC0 904b955-dirty Feb 12 2024 14:32:16 risc-v
-_assert: Assertion failed panic: at file: common/riscv_exception.c:85 task: /system/bin/init process: /system/bin/init 0x8000004a
-up_dump_register: EPC: 0000000000007028
-up_dump_register: A0: 0000000000000001 A1: 0000000080210010 A2: 0000000000000001 A3: 0000000080210010
-up_dump_register: A4: 0000000000000000 A5: 0000000000007028 A6: 0000000000000101 A7: 0000000000000000
-up_dump_register: T0: 0000000000000000 T1: 0000000000000000 T2: 0000000000000000 T3: 0000000000000000
-up_dump_register: T4: 0000000000000000 T5: 0000000000000000 T6: 0000000000000000
-up_dump_register: S0: 0000000000000000 S1: 0000000000000000 S2: 0000000000000000 S3: 0000000000000000
-up_dump_register: S4: 0000000000000000 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
-up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
-up_dump_register: SP: 0000000080220000 FP: 0000000000000000 TP: 0000000000000000 RA: 000000005020b28e
-dump_stacks: ERROR: Stack pointer is not within the stack
-dump_stack: IRQ Stack:
-dump_stack:   base: 0x50400290
-dump_stack:   size: 00002048
-stack_dump: 0x50400708: 5021986a 00000000 5021a6d8 00000000 0000000a 00000000 50400828 00000000
-stack_dump: 0x50400728: 00000008 00000000 0000005f 00000000 5020825e 00000000 504008d0 00000000
-stack_dump: 0x50400748: 00000008 00000000 ffff9fef ffffffff 00004010 00000000 504008b0 00000000
-stack_dump: 0x50400768: 30386230 35303430 ffff9fef ffffffff 00004010 00000000 00000039 00000000
-stack_dump: 0x50400788: 00000000 00000000 5040b440 00000000 80210c00 00000000 00000bc0 00000000
-stack_dump: 0x504007a8: 50401b30 00000000 00042020 00000002 80210040 00000000 50400290 00000000
-stack_dump: 0x504007c8: 5021a3d0 00000000 5021a6c8 00000000 50400a90 00000000 50400848 00000000
-stack_dump: 0x504007e8: 502175bc 00000000 50400290 00000000 5021a3d0 00000000 50400868 00000000
-stack_dump: 0x50400808: 00000060 00000000 50218706 00000000 502186a0 00000000 50209008 00000000
-stack_dump: 0x50400828: 0000000a 00000000 50400808 00000000 5020923c 00000000 50209008 00000000
-stack_dump: 0x50400848: 50400880 00000000 00000800 00000000 5020925c 00000000 50218706 00000000
-stack_dump: 0x50400868: 50400880 00000000 50209008 00000000 50201dd0 00000000 5021a6c8 00000000
-stack_dump: 0x50400888: 50400868 00000000 50400880 00000000 00000000 00000000 50209008 00000000
-stack_dump: 0x504008a8: 00000000 00000000 00000000 00000000 00000000 00000000 50209008 00000000
-stack_dump: 0x504008c8: 00000000 00000000 5021a6e8 00000000 00000001 00000000 00000001 00000000
-stack_dump: 0x504008e8: 5040a630 00000000 00000000 00000000 5020216a 00000000 8000004a 00000000
-stack_dump: 0x50400908: deadbeef deadbeef deadbeef deadbeef 00000000 00000000 5040a630 00000000
-stack_dump: 0x50400928: 5040ca40 00000000 50219b20 00000000 50219df8 00000000 00000055 00000000
-stack_dump: 0x50400948: 7474754e 00000058 00000000 00000000 00000000 00000000 0000000c 00000000
-stack_dump: 0x50400968: 5040ca40 00000000 504009d8 00000000 502175bc 2e323100 2d302e34 00304352
-stack_dump: 0x50400988: 50219dd0 00000000 3039beef 35396234 69642d35 20797472 20626546 32203231
-stack_dump: 0x504009a8: 20343230 333a3431 36313a32 00000000 0000000a 00000000 0000000c 73697200
-stack_dump: 0x504009c8: 00762d63 00000000 50400028 00000000 50400a10 00000000 00000000 00000000
-stack_dump: 0x504009e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x50400a08: 00000000 00000000 00000000 00000000 00000000 00000000 0000000c 00000000
-stack_dump: 0x50400a28: 5040ca40 00000000 0000000c 00000000 502012e8 00000000 00000008 00000000
-stack_dump: 0x50400a48: 50401b30 00000000 5040ca40 00000000 50200d66 00000000 00000000 00000000
-stack_dump: 0x50400a68: 00000000 00000000 0000000c 00000000 50200894 00000000 00007028 00000000
-stack_dump: 0x50400a88: 50200180 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-dump_stack: Kernel Stack:
-dump_stack:   base: 0x5040b440
-dump_stack:   size: 00003072
-stack_dump: 0x5040c040: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-dump_stack: User Stack:
-dump_stack:   base: 0x80210040
-dump_stack:   size: 00003008
-stack_dump:0x80210918: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210938: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210958: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210978: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210998: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x802109b8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x802109d8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x802109f8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210a18: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210a38: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210a58: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210a78: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210a98: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210ab8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210ad8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210af8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210b18: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210b38: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210b58: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210b78: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbee deadbeef
-stack_dump: 0x80210b98: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210bb8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210bd8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210bf8: deadbeef deadbeef 00000000 00000000 00000000 00000000 00000000 00000000
-dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- ---------------- 0x50400290      2048       968    47.2%    irq
-dump_task:       0     0   0 FIFO     Kthread - Ready              0000000000000000 0x50407010      3056      1136    37.1%    Idle_Task
-dump_task:       1     1 100 RR       Kthread - Waiting Semaphore  0000000000000000 0x50410050      1968       704    35.7%    lpwork 0x50401a90 0x50401ab8
-dump_task:       6     6 100 RR       Task    - Running            0000000000000000 0x80210030     65488         0     0.0%    qjs
-dump_task:       3     3 100 RR       Task    - Waiting Semaphore  0000000000000000 0x80210040      3008       744    24.7%    /system/bin/init
-```
-
-That's because [Ox64 Build is different](https://github.com/lupyuen/quickjs-nuttx/commit/221f80518f175a080888f2824408d81c734b9877#diff-a1427809210c3d4b0e73ca2c8712d61eaa10652316dfdcb7ac0cec8a8a81e27d)
-
-We fix it, now it has doubled in size...
-
-```text
-→ ls -l $HOME/ox64/nuttx/initrd
--rw-r--r--  1 Luppy  staff  35765248 Feb 12 14:57 /Users/Luppy/ox64/nuttx/initrd
-```
-
-And QuickJS blinks the LED on Ox64 yay!
-
-# QuickJS blinks the LED on Ox64 Emulator
-
-TODO
-
-_Will QuickJS run on Ox64 Emulator?_
-
-Yep it works! https://lupyuen.github.io/nuttx-tinyemu/quickjs/
-
-```text
-Loading...
-TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> qjs
-QuickJS - Type "\h" for help
-qjs > console.log(123)
-123
-undefined
-
-qjs > ULEDIOC_SETALL = 0x1d03
-7427
-
-qjs > fd = os.open("/dev/userleds", os.O_WRONLY)
-3
-
-qjs > os.ioctl(fd, ULEDIOC_SETALL, 1)
-bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-0
-
-qjs > os.ioctl(fd, ULEDIOC_SETALL, 0)
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-0
-```
-
-[(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
-
-![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.png)
+TODO: QEMU
 
 # Simulate the LED on Ox64 Emulator
 
