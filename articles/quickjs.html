@@ -391,7 +391,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>TODO: QEMU Log</p>
 <p>TODO: Pic of Emulator</p>
 <h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">6 Simulate the LED on Ox64 Emulator</a></h1>
-<p><em>NuttX Emulator shows a Simulated LED (pic above, lower right)…</em></p>
+<p><em>NuttX Emulator blinks a Simulated LED (pic above, lower right)…</em></p>
 <p><em>How does it work?</em></p>
 <p>We modded NuttX Emulator (in WebAssembly) to…</p>
 <ol>
@@ -402,6 +402,10 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <li>
 <p>Notify the <strong>Web Browser JavaScript</strong> of any updates</p>
 <p>(Like <code>{&quot;nuttxemu&quot;:{&quot;gpio29&quot;:1}}</code>)</p>
+</li>
+<li>
+<p>Web Browser JavaScript <strong>Flips the Simulated LED</strong></p>
+<p>(On or Off)</p>
 </li>
 </ol>
 <p>TODO</p>
