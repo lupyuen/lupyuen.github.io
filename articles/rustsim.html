@@ -103,22 +103,22 @@
 <p>We start with this <strong>BL602 Rust Firmware <code>sdk_app_rust_gpio</code></strong> that blinks the LED: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs"><code>sdk_app_rust_gpio/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// This function will be called by the BL602 command-line interface
-</span><span class="attr">#[no_mangle]              </span><span class="comment">//  Don't mangle the function name
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>rust_main(  <span class="comment">//  Declare `extern "C"` because it will be called by BL602 firmware
+</span><span class="attr">#[no_mangle]              </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>rust_main(  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware
   </span>_result: <span class="kw-2">*mut </span>u8,        <span class="comment">//  Result to be returned to command-line interface (char *)
   </span>_len:  i32,              <span class="comment">//  Size of result buffer (int)
   </span>_argc: i32,              <span class="comment">//  Number of command line args (int)
   </span>_argv: <span class="kw-2">*const *const </span>u8  <span class="comment">//  Array of command line args (char **)
 </span>) {
   <span class="comment">//  Show a message on the serial console
-  </span>puts(<span class="string">"Hello from Rust!"</span>);
+  </span>puts(<span class="string">&quot;Hello from Rust!&quot;</span>);
 
   <span class="comment">//  PineCone Blue LED is connected on BL602 GPIO 11
   </span><span class="kw">const </span>LED_GPIO: u8 = <span class="number">11</span>;  <span class="comment">//  `u8` is 8-bit unsigned integer
 
   //  Configure the LED GPIO for output (instead of input)
   </span>gpio::enable_output(LED_GPIO, <span class="number">0</span>, <span class="number">0</span>)      <span class="comment">//  No pullup, no pulldown
-    </span>.expect(<span class="string">"GPIO enable output failed"</span>);  <span class="comment">//  Halt on error
+    </span>.expect(<span class="string">&quot;GPIO enable output failed&quot;</span>);  <span class="comment">//  Halt on error
 
   //  Blink the LED 5 times
   </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">10 </span>{  <span class="comment">//  Iterates 10 times from 0 to 9 (`..` excludes 10)
@@ -127,7 +127,7 @@
     </span>gpio::output_set(  <span class="comment">//  Set the GPIO output (from BL602 GPIO HAL)
       </span>LED_GPIO,        <span class="comment">//  GPIO pin number
       </span>i % <span class="number">2            </span><span class="comment">//  0 for low, 1 for high
-    </span>).expect(<span class="string">"GPIO output failed"</span>);  <span class="comment">//  Halt on error
+    </span>).expect(<span class="string">&quot;GPIO output failed&quot;</span>);  <span class="comment">//  Halt on error
 
     //  Sleep 1 second
     </span>time_delay(                 <span class="comment">//  Sleep by number of ticks (from NimBLE Porting Layer)
@@ -416,7 +416,7 @@ cp wasm/wasm.wasm docs
 </span><span class="attr">#[derive(Serialize, Deserialize, Debug)]
 </span><span class="kw">enum </span>SimulationEvent {
   <span class="doccomment">/// GPIO Set Output:
-  /// `{ "gpio_output_set": { "pin": 11, "value": 1 }`
+  /// `{ &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 }`
   </span>gpio_output_set {
     pin:   u8,
     value: u8,
@@ -443,7 +443,7 @@ cp wasm/wasm.wasm docs
   .unwrap();
 
 <span class="comment">// Print the serialized JSON events
-</span><span class="macro">println!</span>(<span class="string">"{}"</span>, serialized);</code></pre></div>
+</span><span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, serialized);</code></pre></div>
 <p>The result is a <strong>JSON Array</strong> of Simulation Events…</p>
 <div class="example-wrap"><pre class="language-text"><code>[{&quot;gpio_output_set&quot;:{&quot;pin&quot;:11,&quot;value&quot;:0}}]
 </code></pre></div>
@@ -459,7 +459,7 @@ cp wasm/wasm.wasm docs
     <span class="doccomment">/// Omitted: GPIO Set Output
     </span>...
     <span class="doccomment">/// Time Delay:
-    /// `{ "time_delay": { "ticks": 1000 } }`
+    /// `{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }`
     </span>time_delay {
         ticks: u32,
     },
@@ -491,7 +491,7 @@ cp wasm/wasm.wasm docs
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// BL602 Rust Wrapper Function that sets the GPIO output
 </span><span class="kw">pub fn </span>output_set(pin: u8, value: u8) -&gt; BlResult&lt;()&gt; {
   <span class="comment">//  Import the C function from BL602 IoT SDK
-  </span><span class="kw">extern </span><span class="string">"C" </span>{
+  </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
     <span class="kw">pub fn </span>bl_gpio_output_set(pin: u8, value: u8) -&gt; ::cty::c_int;
   }
   <span class="kw">unsafe </span>{
@@ -508,9 +508,9 @@ cp wasm/wasm.wasm docs
 <p>To fix this we introduce the <a href="https://github.com/lupyuen/bl602-simulator/tree/main/bl602-simulator"><strong>Rust Simulator Library</strong></a>, which pretends to be the <strong>BL602 IoT SDK for WebAssembly</strong>.</p>
 <p>Here’s how it works: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L116-L136"><code>bl602-simulator/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Set the output value of a GPIO Pin. See `bl_gpio_output_set` in "Read and Write GPIO" &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;
-</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don't mangle the function name
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>bl_gpio_output_set(pin: u8, value: u8) -&gt; c_int {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Set the output value of a GPIO Pin. See `bl_gpio_output_set` in &quot;Read and Write GPIO&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;
+</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>bl_gpio_output_set(pin: u8, value: u8) -&gt; c_int {
   <span class="comment">//  Omitted: If the GPIO Pin has not been configured for Output, halt
   </span>...
   <span class="comment">//  Create a GPIO Set Output event
@@ -806,8 +806,8 @@ function gpio_output_set(pin, value) {
 </ol>
 <p>Remember that the BL602 Shim Functions in our Rust Simulator Library are declared <strong>“<code>extern C</code>”</strong>?</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[no_mangle]  </span><span class="comment">//  Don't mangle the function name
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>bl_gpio_output_set(pin: u8, value: u8) -&gt; c_int { ...</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>bl_gpio_output_set(pin: u8, value: u8) -&gt; c_int { ...</code></pre></div>
 <p>Yep this means they can be <strong>called from C Firmware</strong>!</p>
 <p>And the BL602 Shim Functions will <strong>emit simulation events</strong>… Our C Firmware will work exactly like Rust Firmware!</p>
 <h1 id="validate-calls-to-bl602-iot-sdk"><a href="#validate-calls-to-bl602-iot-sdk">8 Validate Calls to BL602 IoT SDK</a></h1>
@@ -835,20 +835,20 @@ function gpio_output_set(pin, value) {
 </span><span class="kw">static </span><span class="kw-2">mut </span>GPIO_CONFIGS: [GpioConfig; <span class="number">32</span>] = [GpioConfig::Unconfigured; <span class="number">32</span>];</code></pre></div>
 <p>We <strong>update the GPIO Configuration</strong> whenever the GPIO is configured for Input or Output: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L105-L114"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in "Enable GPIO" &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;
-</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don't mangle the function name
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>bl_gpio_enable_output(pin: u8, _pullup: u8, _pulldown: u8) -&gt; c_int {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in &quot;Enable GPIO&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;
+</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>bl_gpio_enable_output(pin: u8, _pullup: u8, _pulldown: u8) -&gt; c_int {
   <span class="comment">//  Remember that the GPIO Pin has been configured for Output
   </span>GPIO_CONFIGS[pin <span class="kw">as </span>usize] = GpioConfig::Output;</code></pre></div>
 <p>While setting the GPIO output value, we <strong>raise an error</strong> if the GPIO Configuration is incorrect: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L116-L136"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Set the output value of a GPIO Pin. See `bl_gpio_output_set` in "Read and Write GPIO" &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;
-</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don't mangle the function name
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>bl_gpio_output_set(pin: u8, value: u8) -&gt; c_int {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Set the output value of a GPIO Pin. See `bl_gpio_output_set` in &quot;Read and Write GPIO&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;
+</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>bl_gpio_output_set(pin: u8, value: u8) -&gt; c_int {
   <span class="comment">//  If the GPIO Pin has not been configured for Output, halt
   </span><span class="macro">assert!</span>(
     GPIO_CONFIGS[pin <span class="kw">as </span>usize] == GpioConfig::Output,
-    <span class="string">"GPIO {} is {:?}, unable to set the GPIO Output Value. Please configure the GPIO for Output with `gpio::enable_output(pin, pullup, pulldown)` or `bl_gpio_enable_output(pin, pullup, pulldown)`. See \"Enable GPIO\" &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;"</span>,
+    <span class="string">&quot;GPIO {} is {:?}, unable to set the GPIO Output Value. Please configure the GPIO for Output with `gpio::enable_output(pin, pullup, pulldown)` or `bl_gpio_enable_output(pin, pullup, pulldown)`. See \&quot;Enable GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;&quot;</span>,
     pin, GPIO_CONFIGS[pin <span class="kw">as </span>usize]
   );</code></pre></div>
 <p>That’s how we make BL602 Simulator a little more helpful for Embedded Learners… By validating the calls to BL602 IoT SDK!</p>
@@ -1120,23 +1120,23 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 <p>Thus we define an <strong>Event Buffer</strong> that exposes the vector as a JSON String…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// String Buffer that returns the JSON Stream of Simulation Events:
-/// `[ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
-///   { "time_delay": { "ticks": 1000 } }, 
+/// `[ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
+///   { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, 
 ///   ... 
 /// ]`
 </span><span class="kw">static </span><span class="kw-2">mut </span>EVENT_BUFFER: [u8; <span class="number">1024</span>] = [<span class="number">0</span>; <span class="number">1024</span>];</code></pre></div>
 <p>When our JavaScript code calls <code>get_simulation_events</code> to fetch the Simulation Events, we <strong>convert the Rust Vector to JSON</strong> and <strong>copy it into the Event Buffer</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L58-L92"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Return the JSON Stream of Simulation Events
-</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don't mangle the function name
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>get_simulation_events() -&gt; <span class="kw-2">*const </span>u8 {
+</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>get_simulation_events() -&gt; <span class="kw-2">*const </span>u8 {
     <span class="comment">//  Convert vector of events to a JSON string
     </span><span class="kw">let </span><span class="kw-2">mut </span>serialized = <span class="kw">unsafe </span>{
         serde_json::to_string(<span class="kw-2">&amp;</span>SIMULATION_EVENTS)
     }.unwrap();
 
     <span class="comment">//  Terminate the JSON string with null, since we will be returning to C
-    </span>serialized.push(<span class="string">'\0'</span>);
+    </span>serialized.push(<span class="string">&#39;\0&#39;</span>);
 
     <span class="comment">//  Check that JSON string fits into the Event Buffer
     </span><span class="macro">assert!</span>(serialized.len() &lt;= <span class="kw">unsafe </span>{ EVENT_BUFFER.len() });
@@ -1168,20 +1168,20 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
         serde_json::to_string(<span class="kw-2">&amp;</span>SIMULATION_EVENTS)
     }.unwrap();
 
-    <span class="comment">//  If the JSON string doesn't fit into the Event Buffer...
+    <span class="comment">//  If the JSON string doesn&#39;t fit into the Event Buffer...
     </span><span class="kw">if </span>(serialized.len() + <span class="number">1 </span>&gt; <span class="kw">unsafe </span>{ EVENT_BUFFER.len() }) {
         <span class="comment">//  Remove the event from the vector and stop the simulation</span></code></pre></div>
 <p>Here’s how we <strong>initialise the Vector of Simulation Events</strong> before use: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L47-L56"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Clear the JSON Stream of Simulation Events
-</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don't mangle the function name
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>clear_simulation_events() {
+</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>clear_simulation_events() {
     <span class="comment">//  Clear the vector of Simulation Events
     </span><span class="kw">unsafe </span>{
         SIMULATION_EVENTS.clear();
     }
     <span class="comment">//  Show Rust Backtrace on error
-    </span>std::env::set_var(<span class="string">"RUST_BACKTRACE"</span>, <span class="string">"full"</span>);
+    </span>std::env::set_var(<span class="string">&quot;RUST_BACKTRACE&quot;</span>, <span class="string">&quot;full&quot;</span>);
 }</code></pre></div>
 
     

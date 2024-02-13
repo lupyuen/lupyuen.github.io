@@ -70,7 +70,7 @@
 <li><a href="#build-quickjs-for-nuttx">2 Build QuickJS for NuttX</a><ul></ul></li>
 <li><a href="#nuttx-stack-is-full-of-quickjs">3 NuttX Stack is Full of QuickJS</a><ul></ul></li>
 <li><a href="#add-ioctl-to-quickjs">4 Add ioctl() to QuickJS</a><ul></ul></li>
-<li><a href="#add-led-driver-to-nuttx-ox64-bl808-sbc">5 Add LED Driver to NuttX Ox64 BL808 SBC</a><ul></ul></li>
+<li><a href="#quickjs-blinks-the-led-on-ox64-sbc">5 QuickJS Blinks the LED on Ox64 SBC</a><ul></ul></li>
 <li><a href="#simulate-the-led-on-ox64-emulator">6 Simulate the LED on Ox64 Emulator</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-build-quickjs-for-nuttx">8 Appendix: Build QuickJS for NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
@@ -217,7 +217,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#heap-errors-and-stdio-weirdness"><strong>Heap Memory</strong></a> got weirdly corrupted (even <strong>printf()</strong> failed)</p>
 </li>
 </ul>
-<p>After plenty of headscratching troubleshooting, this <a href="https://github.com/lupyuen/quickjs-nuttx#nuttx-stack-is-full-of-quickjs"><strong>Vital Clue</strong></a> suddenly popped up…</p>
+<p>After plenty of headscratching troubleshooting, this <a href="https://github.com/lupyuen/quickjs-nuttx#nuttx-stack-is-full-of-quickjs"><strong>Vital Clue</strong></a> suddenly pops up…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 00000000c0006d52, MTVAL: ffffffffffffffff
 ...
 dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
@@ -318,7 +318,7 @@ qjs &gt; os.ioctl(1,2,3)
 
 qjs &gt; os.ioctl(100,2,3)
 -9
-</code></pre></div><h1 id="add-led-driver-to-nuttx-ox64-bl808-sbc"><a href="#add-led-driver-to-nuttx-ox64-bl808-sbc">5 Add LED Driver to NuttX Ox64 BL808 SBC</a></h1>
+</code></pre></div><h1 id="quickjs-blinks-the-led-on-ox64-sbc"><a href="#quickjs-blinks-the-led-on-ox64-sbc">5 QuickJS Blinks the LED on Ox64 SBC</a></h1>
 <p><em>We added ioctl() to QuickJS… Does it work?</em></p>
 <p>We test <strong>ioctl()</strong> on a Real Device with a Real LED: <strong>Ox64 BL808 RISC-V SBC</strong>. Right after these fixes…</p>
 <ul>

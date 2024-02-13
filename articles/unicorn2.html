@@ -121,13 +121,13 @@
 <p>In the <a href="https://lupyuen.github.io/articles/unicorn"><strong>last article</strong></a> we called Unicorn (in Rust) to run the <strong>Arm64 Machine Code</strong> for Apache NuttX RTOS…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Arm64 Machine Code for Apache NuttX RTOS
-</span><span class="kw">let </span>arm64_code = <span class="macro">include_bytes!</span>(<span class="string">"../nuttx/nuttx.bin"</span>);
+</span><span class="kw">let </span>arm64_code = <span class="macro">include_bytes!</span>(<span class="string">&quot;../nuttx/nuttx.bin&quot;</span>);
 
 <span class="comment">// Init Unicorn Emulator in Arm64 mode
 </span><span class="kw">let </span><span class="kw-2">mut </span>unicorn = Unicorn::new(
   Arch::ARM64,
   Mode::LITTLE_ENDIAN
-).expect(<span class="string">"failed to init Unicorn"</span>);
+).expect(<span class="string">&quot;failed to init Unicorn&quot;</span>);
 
 <span class="comment">// Magical horse mutates to bird
 </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;
@@ -157,7 +157,7 @@
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Add Unicorn Hook that will intercept
 // every Block of Arm64 Instructions
 </span><span class="kw">let _ </span>= emu.add_block_hook(hook_block)
-  .expect(<span class="string">"failed to add block hook"</span>);</code></pre></div>
+  .expect(<span class="string">&quot;failed to add block hook&quot;</span>);</code></pre></div>
 <p>So we can <strong>trace the flow</strong> of the Emulated Code.</p>
 <p>Here’s the <strong>Hook Function</strong> that will be called whenever Unicorn emulates a Block of Arm64 Instructions…</p>
 
@@ -169,7 +169,7 @@
   </span>size: u32      <span class="comment">// Size of Arm64 Code Block
 </span>) {
   <span class="comment">// TODO: Trace the flow of emulated code
-  </span><span class="macro">println!</span>(<span class="string">"hook_block:  address={address:#010x}, size={size:02}"</span>);
+  </span><span class="macro">println!</span>(<span class="string">&quot;hook_block:  address={address:#010x}, size={size:02}&quot;</span>);
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/unicorn#block-execution-hook">(Source)</a></p>
 <p>Unicorn Emulator calls our Hook Function, passing the…</p>
@@ -211,22 +211,22 @@ hook_block:
   </span>address: u64,  <span class="comment">// Address of Arm64 Code Block
   </span>size: u32      <span class="comment">// Size of Arm64 Code Block
 </span>) {
-  <span class="macro">print!</span>(<span class="string">"hook_block:  address={address:#010x}, size={size:02}"</span>);
+  <span class="macro">print!</span>(<span class="string">&quot;hook_block:  address={address:#010x}, size={size:02}&quot;</span>);
 
   <span class="comment">// Print the Function Name for the Arm64 Address
   </span><span class="kw">let </span>function = map_address_to_function(address);
   <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>name) = function {  <span class="comment">// If we find the Function Name...
-    </span><span class="macro">print!</span>(<span class="string">", {name}"</span>);
+    </span><span class="macro">print!</span>(<span class="string">&quot;, {name}&quot;</span>);
   }
 
   <span class="comment">// Print the Source Filename, Line Number
   // and Column Number for the Arm64 Address
   </span><span class="kw">let </span>loc = map_address_to_location(address);
   <span class="kw">let </span>(<span class="kw-2">ref </span>file, line, col) = loc;
-  <span class="kw">let </span>file = file.clone().unwrap_or(<span class="string">""</span>.to_string());  <span class="comment">// Default filename is ""
+  <span class="kw">let </span>file = file.clone().unwrap_or(<span class="string">&quot;&quot;</span>.to_string());  <span class="comment">// Default filename is &quot;&quot;
   </span><span class="kw">let </span>line = line.unwrap_or(<span class="number">0</span>);  <span class="comment">// Default line is 0
   </span><span class="kw">let </span>col  = col.unwrap_or(<span class="number">0</span>);   <span class="comment">// Default column is 0
-  </span><span class="macro">println!</span>(<span class="string">", {file}:{line}:{col}"</span>);
+  </span><span class="macro">println!</span>(<span class="string">&quot;, {file}:{line}:{col}&quot;</span>);
 }</code></pre></div>
 <p><em>The Debug Symbols will tell us the Source Filename?</em></p>
 <p>Yep the <strong>Source Filename, Line Number and Column Number</strong> are in the DWARF Debug Symbols too!</p>
@@ -249,7 +249,7 @@ hook_block:
   // Lookup the DWARF Frame for the Arm64 Code Address
   </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
   <span class="kw">let </span><span class="kw-2">mut </span>frames = context.find_frames(address)
-    .expect(<span class="string">"failed to find frames"</span>);
+    .expect(<span class="string">&quot;failed to find frames&quot;</span>);
 
   <span class="comment">// Return the Function Name
   </span><span class="kw">if let </span><span class="prelude-val">Some</span>(frame) = frames.next().unwrap() {
@@ -290,7 +290,7 @@ hook_block:
   <span class="comment">// Lookup the Source Location for the Arm64 Code Address
   </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
   <span class="kw">let </span>loc = context.find_location(address)
-    .expect(<span class="string">"failed to find location"</span>);
+    .expect(<span class="string">&quot;failed to find location&quot;</span>);
 
   <span class="comment">// Return the Source Filename, Line and Column
   </span><span class="kw">if let </span><span class="prelude-val">Some</span>(loc) = loc {
@@ -298,8 +298,8 @@ hook_block:
 
       <span class="comment">// Shorten the path
       </span><span class="kw">let </span>s = String::from(file)
-        .replace(<span class="string">"/private/tmp/nuttx/nuttx/"</span>, <span class="string">""</span>)
-        .replace(<span class="string">"arch/arm64/src/chip"</span>, <span class="string">"arch/arm64/src/a64"</span>);  <span class="comment">// TODO: Handle other chips
+        .replace(<span class="string">&quot;/private/tmp/nuttx/nuttx/&quot;</span>, <span class="string">&quot;&quot;</span>)
+        .replace(<span class="string">&quot;arch/arm64/src/chip&quot;</span>, <span class="string">&quot;arch/arm64/src/a64&quot;</span>);  <span class="comment">// TODO: Handle other chips
       </span>(<span class="prelude-val">Some</span>(s), loc.line, loc.column)
     } <span class="kw">else </span>{
       <span class="comment">// If Filename is missing, return the Line and Column
@@ -441,24 +441,24 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p>(OK this doesn’t always work… But it’s good enough!)</p>
 <p>This is how we <strong>start the Call Graph</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// GitHub won't render Mermaid Markdown that's too long.
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// GitHub won&#39;t render Mermaid Markdown that&#39;s too long.
   // If this function has not been shown too often...
   </span><span class="kw">if </span>can_show_function(<span class="kw-2">&amp;</span>fname) {
     <span class="comment">// Print the Call Flow
     </span><span class="kw">if </span>last_fname.is_empty() {            
-      <span class="macro">println!</span>(<span class="string">"call_graph:  flowchart TD"</span>);  <span class="comment">// Top-Down Flowchart
-      </span><span class="macro">println!</span>(<span class="string">"call_graph:  START --&gt; {fname}"</span>);</code></pre></div>
+      <span class="macro">println!</span>(<span class="string">&quot;call_graph:  flowchart TD&quot;</span>);  <span class="comment">// Top-Down Flowchart
+      </span><span class="macro">println!</span>(<span class="string">&quot;call_graph:  START --&gt; {fname}&quot;</span>);</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L282-L295">(<strong>can_show_function</strong> is defined here)</a></p>
 <p>And this is how we <strong>connect the Calling Function</strong> with the Called Function…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    } <span class="kw">else </span>{
       <span class="comment">// URL looks like https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541
       </span><span class="kw">let </span>(file, line, <span class="kw">_</span>) = last_loc.clone();
-      <span class="kw">let </span>file = file.unwrap_or(<span class="string">""</span>.to_string());
+      <span class="kw">let </span>file = file.unwrap_or(<span class="string">&quot;&quot;</span>.to_string());
       <span class="kw">let </span>line = line.unwrap_or(<span class="number">1</span>) - <span class="number">1</span>;
-      <span class="kw">let </span>url = <span class="macro">format!</span>(<span class="string">"https://github.com/apache/nuttx/blob/master/{file}#L{line}"</span>);
-      <span class="macro">println!</span>(<span class="string">"call_graph:  {last_fname} --&gt; {fname}"</span>);
-      <span class="macro">println!</span>(<span class="string">"call_graph:  click {last_fname} href \"{url}\" \"{file} \""</span>);
+      <span class="kw">let </span>url = <span class="macro">format!</span>(<span class="string">&quot;https://github.com/apache/nuttx/blob/master/{file}#L{line}&quot;</span>);
+      <span class="macro">println!</span>(<span class="string">&quot;call_graph:  {last_fname} --&gt; {fname}&quot;</span>);
+      <span class="macro">println!</span>(<span class="string">&quot;call_graph:  click {last_fname} href \&quot;{url}\&quot; \&quot;{file} \&quot;&quot;</span>);
     }
   }
 
@@ -884,11 +884,11 @@ hook_block:
 
 <span class="comment">// Lookup the DWARF Frame for the Arm64 Code Address
 </span><span class="kw">let </span><span class="kw-2">mut </span>frames = context.find_frames(address)
-  .expect(<span class="string">"failed to find frames"</span>);
+  .expect(<span class="string">&quot;failed to find frames&quot;</span>);
 
 <span class="comment">// Lookup the Source Location for the Arm64 Code Address
 </span><span class="kw">let </span>loc = context.find_location(address)
-  .expect(<span class="string">"failed to find location"</span>);</code></pre></div>
+  .expect(<span class="string">&quot;failed to find location&quot;</span>);</code></pre></div>
 <p><em>What’s ELF_CONTEXT?</em></p>
 <p><strong>ELF_CONTEXT</strong> contains the <strong>Parsed Debug Symbols</strong> from our ELF File.</p>
 <p>To parse the Debug Symbols, we call the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a>, <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> and <a href="https://crates.io/crates/once_cell"><strong>once_cell</strong></a> crates: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12">Cargo.toml</a></p>
@@ -905,21 +905,21 @@ unicorn-engine = &quot;2.0.0&quot;
 <span class="kw">use </span>once_cell::sync::Lazy;
 
 <span class="doccomment">/// ELF File for mapping Addresses to Function Names and Filenames
-</span><span class="kw">const </span>ELF_FILENAME: <span class="kw-2">&amp;</span>str = <span class="string">"nuttx/nuttx"</span>;
+</span><span class="kw">const </span>ELF_FILENAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;nuttx/nuttx&quot;</span>;
 
 <span class="doccomment">/// ELF Context for mapping Addresses to Function Names and Filenames
 </span><span class="kw">static </span>ELF_CONTEXT: Lazy&lt;ElfContext&gt; = Lazy::new(|| {
   <span class="comment">// Open the ELF File
   </span><span class="kw">let </span>path = std::path::PathBuf::from(ELF_FILENAME);
   <span class="kw">let </span>file_data = std::fs::read(path)
-    .expect(<span class="string">"failed to read ELF"</span>);
+    .expect(<span class="string">&quot;failed to read ELF&quot;</span>);
   <span class="kw">let </span>slice = file_data.as_slice();
 
   <span class="comment">// Parse the ELF File
   </span><span class="kw">let </span>obj = addr2line::object::read::File::parse(slice)
-    .expect(<span class="string">"failed to parse ELF"</span>);
+    .expect(<span class="string">&quot;failed to parse ELF&quot;</span>);
   <span class="kw">let </span>context = addr2line::Context::new(<span class="kw-2">&amp;</span>obj)
-    .expect(<span class="string">"failed to parse debug info"</span>);
+    .expect(<span class="string">&quot;failed to parse debug info&quot;</span>);
 
   <span class="comment">// Set the ELF Context
   </span>ElfContext {
@@ -933,7 +933,7 @@ unicorn-engine = &quot;2.0.0&quot;
     addr2line::Context&lt;
       gimli::EndianReader&lt;
         gimli::RunTimeEndian, 
-        Rc&lt;[u8]&gt;  <span class="comment">// Doesn't implement Send / Sync
+        Rc&lt;[u8]&gt;  <span class="comment">// Doesn&#39;t implement Send / Sync
       </span>&gt;
     &gt;
   &gt;
