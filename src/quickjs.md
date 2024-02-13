@@ -28,12 +28,6 @@ TODO
 
 We go hands-on (fingers too)...
 
-TODO: How Small? Heap Size?
-
-TODO: Static Linking
-
-TODO: QEMU LED Driver
-
 # QuickJS on NuttX Emulator
 
 Click here to try __QuickJS JavaScript Engine__ in NuttX Emulator...
@@ -340,6 +334,18 @@ And it works! https://lupyuen.github.io/nuttx-tinyemu/quickjs/
 [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
 
 ![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title2.png)
+
+# How Small is QuickJS
+
+_Will QuickJS runs on all kinds of NuttX Devices?_
+
+Probably not? JavaScript needs quite a bit of RAM to run efficiently.
+
+TODO: Text, data, BSS
+
+TODO: Heap Size?
+
+TODO: Static Linking
 
 # What's Next
 
