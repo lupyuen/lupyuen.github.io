@@ -10,6 +10,16 @@
 
 TODO
 
+In 4 lines of JavaScript we'll blink the LED...
+
+```javascript
+// Blink the NuttX LED, on then off
+const ULEDIOC_SETALL = 0x1d03;
+const fd = os.open("/dev/userleds", os.O_WRONLY);
+os.ioctl(fd, ULEDIOC_SETALL, 1);
+os.ioctl(fd, ULEDIOC_SETALL, 0);
+```
+
 [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)
 
 TODO: How Small?
