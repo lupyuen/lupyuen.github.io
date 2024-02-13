@@ -381,6 +381,22 @@ We modded NuttX Emulator (in WebAssembly) to...
 
     (On or Off)
 
+TODO: Pic of Simulated LED
+
+Here's our NuttX Emulator intercepting all __Writes to GPIO 29__...
+
+TODO
+
+Which sends a Notification to the Web Browser, saying that the __GPIO Output has changed__...
+
+```json
+{"nuttxemu":
+  {"gpio29": 1}
+}
+```
+
+Our Web Browser JavaScript receives the Notification and __Flips the Simulated LED__...
+
 TODO
 
 Let's simulate the LED on Ox64 Emulator...
