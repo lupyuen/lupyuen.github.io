@@ -170,7 +170,7 @@ Sorry nope! QuickJS ran into [__Mysterious Crashes__](https://github.com/lupyuen
 
 - [__Heap Memory__](https://github.com/lupyuen/quickjs-nuttx#heap-errors-and-stdio-weirdness) got weirdly corrupted (even __printf()__ failed)
 
-After plenty of headscratching troubleshooting, this [__Vital Clue__](https://github.com/lupyuen/quickjs-nuttx#nuttx-stack-is-full-of-quickjs) suddenly popped up...
+After plenty of headscratching troubleshooting, this [__Vital Clue__](https://github.com/lupyuen/quickjs-nuttx#nuttx-stack-is-full-of-quickjs) suddenly pops up...
 
 ```yaml
 riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 00000000c0006d52, MTVAL: ffffffffffffffff
@@ -287,7 +287,7 @@ qjs > os.ioctl(100,2,3)
 -9
 ```
 
-# Add LED Driver to NuttX Ox64 BL808 SBC
+# QuickJS Blinks the LED on Ox64 SBC
 
 _We added ioctl() to QuickJS... Does it work?_
 
