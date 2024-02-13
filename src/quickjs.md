@@ -363,7 +363,7 @@ TODO: Pic of Emulator
 
 # Simulate the LED on Ox64 Emulator
 
-_NuttX Emulator shows a Simulated LED (pic above, lower right)..._
+_NuttX Emulator blinks a Simulated LED (pic above, lower right)..._
 
 _How does it work?_
 
@@ -376,6 +376,10 @@ We modded NuttX Emulator (in WebAssembly) to...
 1.  Notify the __Web Browser JavaScript__ of any updates
 
     (Like `{"nuttxemu":{"gpio29":1}}`)
+
+1.  Web Browser JavaScript __Flips the Simulated LED__
+
+    (On or Off)
 
 TODO
 
