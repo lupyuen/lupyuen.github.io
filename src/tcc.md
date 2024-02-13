@@ -670,6 +670,10 @@ __TLDR:__ We called [__JavaScript Local Storage__](https://github.com/lupyuen/tc
 
 # What's Next
 
+Check out the next article...
+
+- [__"Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)"__](https://lupyuen.github.io/articles/romfs)
+
 Thanks to the [__TCC Team__](https://github.com/sellicott/tcc-riscv32), we have a __64-bit RISC-V Compiler__ that runs in the Web Browser...
 
 - __Zig Compiler__ compiles TCC to WebAssembly with one tiny fix
