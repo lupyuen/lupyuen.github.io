@@ -67,7 +67,7 @@
     <h1 class="title">QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)</h1>
     <nav id="TOC"><ul>
 <li><a href="#quickjs-on-nuttx-emulator">1 QuickJS on NuttX Emulator</a><ul></ul></li>
-<li><a href="#compile-quickjs-for-nuttx">2 Compile QuickJS for NuttX</a><ul></ul></li>
+<li><a href="#build-quickjs-for-nuttx">2 Build QuickJS for NuttX</a><ul></ul></li>
 <li><a href="#fix-the-missing-functions">3 Fix the Missing Functions</a><ul></ul></li>
 <li><a href="#quickjs-crashes-on-nuttx">4 QuickJS Crashes on NuttX</a><ul></ul></li>
 <li><a href="#atom-sentinel-becomes-0xffff_ffff">5 Atom Sentinel becomes 0xFFFF_FFFF</a><ul></ul></li>
@@ -165,9 +165,49 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </ol>
 <p><em>Wow… A Blinky in JavaScript?</em></p>
 <p>Yep we flipped this <a href="TODO"><strong>NuttX Blinky App</strong></a> from C to <strong>Interactive JavaScript</strong>!</p>
+<p><em>Does it work on Real Hardware?</em></p>
+<p>The exact same NuttX Image blinks a Real LED on <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 SBC</strong></a> (64-bit RISC-V). Though it’s a little sluggish, we’ll come back to this.</p>
 <p>How did we make this happen? Read on to find out…</p>
-<h1 id="compile-quickjs-for-nuttx"><a href="#compile-quickjs-for-nuttx">2 Compile QuickJS for NuttX</a></h1>
-<p>TODO</p>
+<p>TODO: Pic of Real LED</p>
+<h1 id="build-quickjs-for-nuttx"><a href="#build-quickjs-for-nuttx">2 Build QuickJS for NuttX</a></h1>
+<p><em>QuickJS compiles OK for NuttX?</em></p>
+<p>Mostly. QuickJS compiles for NuttX <strong>with no code changes</strong>…</p>
+<ul>
+<li><a href="TODO"><strong>“Build QuickJS for NuttX”</strong></a></li>
+</ul>
+<p>Then we hit some <strong>Missing Functions</strong>…</p>
+<ol>
+<li>
+<p><strong>POSIX Functions:</strong> popen, pclose, pipe2, symlink, …</p>
+</li>
+<li>
+<p><strong>Dynamic Linking:</strong> dlopen, dlsym, dlclose</p>
+</li>
+<li>
+<p><strong>Math Functions:</strong> pow, floor, trunc, …</p>
+</li>
+<li>
+<p><strong>Atomic Functions:</strong> atomic_fetch_add_2, …</p>
+</li>
+</ol>
+<p><em>How did we fix the missing functions?</em></p>
+<ol>
+<li>
+<p><strong>POSIX Functions:</strong> They’re probably available if we tweak the <strong>Build Options</strong> for NuttX. For now, we <a href="TODO"><strong>stubbed them out</strong></a>.</p>
+</li>
+<li>
+<p><strong>Dynamic Linking:</strong> We won’t support Dynamic Linking for NuttX. We <a href="TODO"><strong>stubbed them out</strong></a>.</p>
+</li>
+<li>
+<p><strong>Math Functions:</strong> We linked them with GCC Option <strong><code>-lm</code></strong>. The last few stragglers: We <a href="TODO"><strong>stubbed them out</strong></a>.</p>
+</li>
+<li>
+<p><strong>Atomic Functions:</strong> We patched in the <a href="TODO"><strong>Missing Atomic Functions</strong></a>.</p>
+<p><a href="https://github.com/apache/nuttx/issues/10642">(About <strong>NuttX Atomic Functions</strong>)</a></p>
+<p><a href="TODO">(We might <strong>disable QuickJS Atomic Functions</strong>)</a></p>
+</li>
+</ol>
+<p>TODO: Mostly</p>
 <p>From the <a href="nuttx/make.log">Makefile Log</a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build qjs.o
 gcc \
