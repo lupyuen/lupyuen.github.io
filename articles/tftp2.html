@@ -328,8 +328,8 @@ thread::sleep(millis);</code></pre></div>
 </span><span class="kw">static </span><span class="kw-2">mut </span>LAST_BLOCK_NUM: u16 = <span class="number">0</span>;            
 <span class="kw">if </span>block_num &gt; <span class="number">1 </span>&amp;&amp; block_num &lt;= LAST_BLOCK_NUM {
 
-  <span class="comment">// If it's a resend: Double the delay
-  </span><span class="macro">println!</span>(<span class="string">"*** send_window RESEND: block_num={}"</span>, block_num);
+  <span class="comment">// If it&#39;s a resend: Double the delay
+  </span><span class="macro">println!</span>(<span class="string">&quot;*** send_window RESEND: block_num={}&quot;</span>, block_num);
   DELAY_MS = DELAY_MS * <span class="number">2</span>;
 }
 
@@ -344,8 +344,8 @@ thread::sleep(millis);</code></pre></div>
 <span class="kw">let </span>diff_time = Instant::now() - <span class="kw-2">*</span>LAST_TIMESTAMP;
 <span class="kw">if </span>block_num &gt; <span class="number">1 </span>&amp;&amp; diff_time &gt; Duration::from_millis(<span class="number">1000</span>) {
 
-  <span class="comment">// If it's delayed by 1 sec: Double the delay
-  </span><span class="macro">println!</span>(<span class="string">"+++ send_window DELAY: block_num={}"</span>, block_num);
+  <span class="comment">// If it&#39;s delayed by 1 sec: Double the delay
+  </span><span class="macro">println!</span>(<span class="string">&quot;+++ send_window DELAY: block_num={}&quot;</span>, block_num);
   DELAY_MS = DELAY_MS * <span class="number">2</span>;
 }
 

@@ -129,10 +129,10 @@
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#![no_std]  </span><span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
 
-</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don't mangle the function name
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>rust_main() {  <span class="comment">//  Declare `extern "C"` because it will be called by NuttX
+</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>rust_main() {  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by NuttX
 
-  </span><span class="kw">extern </span><span class="string">"C" </span>{  <span class="comment">//  Import C Function
+  </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{  <span class="comment">//  Import C Function
     </span><span class="doccomment">/// Print a message to the serial console (from C stdio library)
     </span><span class="kw">fn </span>puts(s: <span class="kw-2">*const </span>u8) -&gt; i32;
   }
@@ -140,7 +140,7 @@
   <span class="kw">unsafe </span>{  <span class="comment">//  Mark as unsafe because we are calling C
     //  Print a message to the serial console
     </span>puts(
-      <span class="string">b"Hello World!\0"  </span><span class="comment">//  Byte String terminated with null
+      <span class="string">b&quot;Hello World!\0&quot;  </span><span class="comment">//  Byte String terminated with null
         </span>.as_ptr()        <span class="comment">//  Convert to pointer
     </span>);
   }
@@ -153,15 +153,15 @@
 <p>We select the <strong>Rust Core Library</strong> (for embedded platforms), which is a subset of the Rust Standard Library (for desktops and servers).</p>
 <p>Next we declare the <strong>Rust Function</strong> that will be called by NuttX…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Don't mangle the function name
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Don&#39;t mangle the function name
 </span><span class="attr">#[no_mangle]
-</span><span class="comment">//  Declare `extern "C"` because it will be called by NuttX
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>rust_main() {</code></pre></div>
+</span><span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by NuttX
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>rust_main() {</code></pre></div>
 <p>(Why is it named <strong>“rust_main”</strong>? We’ll find out in a while)</p>
 <p>NuttX provides the <strong>“puts”</strong> function because it’s POSIX Compliant (like Linux), so we import it from C…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Import C Function
-  </span><span class="kw">extern </span><span class="string">"C" </span>{
+  </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
     <span class="doccomment">/// Print a message to the serial console (from C stdio library)
     </span><span class="kw">fn </span>puts(s: <span class="kw-2">*const </span>u8) -&gt; i32;
   }</code></pre></div>
@@ -182,7 +182,7 @@
   </span><span class="kw">unsafe </span>{
     <span class="comment">//  Print a message to the serial console
     </span>puts(
-      <span class="string">b"Hello World!\0"  </span><span class="comment">//  Byte String terminated with null
+      <span class="string">b&quot;Hello World!\0&quot;  </span><span class="comment">//  Byte String terminated with null
         </span>.as_ptr()        <span class="comment">//  Convert to pointer
     </span>);
   }</code></pre></div>
@@ -218,14 +218,14 @@ Hello World!
 </span><span class="kw">unsafe </span>{
   <span class="comment">//  Print a message to the serial console
   </span>puts(
-    <span class="string">b"Hello World!\0"  </span><span class="comment">//  Byte String terminated with null
+    <span class="string">b&quot;Hello World!\0&quot;  </span><span class="comment">//  Byte String terminated with null
       </span>.as_ptr()        <span class="comment">//  Convert to pointer
   </span>);
 }</code></pre></div>
 <p>…with a <strong>Rust Macro</strong>. And we’ll get this…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Print a message to the serial console
-</span><span class="macro">println!</span>(<span class="string">"Hello World!"</span>);</code></pre></div>
+</span><span class="macro">println!</span>(<span class="string">&quot;Hello World!&quot;</span>);</code></pre></div>
 <p>Much neater! We’ll see later that <strong>“println!”</strong> supports Formatted Output too.</p>
 <p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/macros.rs">(<strong>println!</strong> is defined here. Thanks Huang Qi! 👍)</a></p>
 <p><a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L175-L216">(<strong>puts</strong> is wrapped here)</a></p>
@@ -250,7 +250,7 @@ int main(int argc, FAR char *argv[]) {
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open GPIO Output
 </span><span class="kw">let </span>cs = <span class="kw">unsafe </span>{
-  open(<span class="string">b"/dev/gpio1\0"</span>.as_ptr(), O_RDWR) 
+  open(<span class="string">b&quot;/dev/gpio1\0&quot;</span>.as_ptr(), O_RDWR) 
 };
 <span class="macro">assert!</span>(cs &gt; <span class="number">0</span>);</code></pre></div>
 <p>We open the GPIO Output at <strong>“/dev/gpio1”</strong> with read-write access.</p>
@@ -288,7 +288,7 @@ int main(int argc, FAR char *argv[]) {
 <p><em>How did we import the NuttX Functions: open, ioctl, sleep, close, …?</em></p>
 <p>We <strong>imported the NuttX Functions</strong> like so: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L248-L257">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">extern </span><span class="string">"C" </span>{  <span class="comment">//  Import NuttX Functions. TODO: Import with bindgen
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{  <span class="comment">//  Import NuttX Functions. TODO: Import with bindgen
   </span><span class="kw">pub fn </span>open(path: <span class="kw-2">*const </span>u8, oflag: i32, ...) -&gt; i32;
   <span class="kw">pub fn </span>read(fd: i32, buf: <span class="kw-2">*mut </span>u8, count: u32) -&gt; i32;
   <span class="kw">pub fn </span>write(fd: i32, buf: <span class="kw-2">*const </span>u8, count: u32) -&gt; i32;
@@ -349,8 +349,8 @@ sx126x = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open GPIO Output
 </span><span class="kw">let </span><span class="kw-2">mut </span>cs = nuttx_embedded_hal::OutputPin
-  ::new(<span class="string">"/dev/gpio1"</span>)
-  .expect(<span class="string">"open gpio failed"</span>);</code></pre></div>
+  ::new(<span class="string">&quot;/dev/gpio1&quot;</span>)
+  .expect(<span class="string">&quot;open gpio failed&quot;</span>);</code></pre></div>
 <p>(This halts with an error if “/dev/gpio1” doesn’t exist)</p>
 <p>We declare it as <strong>“<code>mut</code>”</strong> (mutable) because we expect its Internal State to change as we flip the GPIO.</p>
 <p>Next we fetch the <strong>Delay Interface</strong> that we’ll call to sleep…</p>
@@ -361,7 +361,7 @@ sx126x = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to Low
 </span>cs.set_low()
-  .expect(<span class="string">"cs failed"</span>);</code></pre></div>
+  .expect(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
 <p>(“<code>expect</code>” works like an Assertion Check)</p>
 <p>We sleep for 1 second…</p>
 
@@ -372,7 +372,7 @@ sx126x = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to High
 </span>cs.set_high()
-  .expect(<span class="string">"cs failed"</span>);</code></pre></div>
+  .expect(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
 <p>Rust Embedded HAL makes GPIO programming more fun! Let’s do SPI now.</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
 <h1 id="spi-transfer"><a href="#spi-transfer">6 SPI Transfer</a></h1>
@@ -385,20 +385,20 @@ sx126x = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }
 
   <span class="comment">//  Open GPIO Output for SX1262 Chip Select
   </span><span class="kw">let </span><span class="kw-2">mut </span>cs = nuttx_embedded_hal::OutputPin
-    ::new(<span class="string">"/dev/gpio1"</span>)
-    .expect(<span class="string">"open gpio failed"</span>);</code></pre></div>
+    ::new(<span class="string">&quot;/dev/gpio1&quot;</span>)
+    .expect(<span class="string">&quot;open gpio failed&quot;</span>);</code></pre></div>
 <p>Next we open the <strong>SPI Bus</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Open SPI Bus for SX1262
   </span><span class="kw">let </span><span class="kw-2">mut </span>spi = nuttx_embedded_hal::Spi
-    ::new(<span class="string">"/dev/spitest0"</span>)
-    .expect(<span class="string">"open spi failed"</span>);</code></pre></div>
+    ::new(<span class="string">&quot;/dev/spitest0&quot;</span>)
+    .expect(<span class="string">&quot;open spi failed&quot;</span>);</code></pre></div>
 <p><strong>“/dev/spitest0”</strong> is our <strong>SPI Test Driver</strong> that simplifies SPI programming. <a href="https://lupyuen.github.io/articles/spi2">(See this)</a></p>
 <p>Before talking to SX1262, we set <strong>Chip Select to Low</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set SX1262 Chip Select to Low
   </span>cs.set_low()
-    .expect(<span class="string">"cs failed"</span>);</code></pre></div>
+    .expect(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
 <p>We transmit <strong>5 bytes of data</strong> to SX1262 over SPI…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Define the SX1262 Command: Read Register 8
@@ -406,19 +406,19 @@ sx126x = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }
 
   <span class="comment">//  Transfer the command to SX1262 over SPI
   </span>spi.transfer(<span class="kw-2">&amp;mut </span>data)
-    .expect(<span class="string">"spi failed"</span>);</code></pre></div>
+    .expect(<span class="string">&quot;spi failed&quot;</span>);</code></pre></div>
 <p>The data transmitted over SPI is the <strong>SX1262 Command</strong> that will read <strong>SX1262 Register 8</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>  1D 00 08 00 00
 </code></pre></div>
 <p>We pass the data as a <strong>Mutable Reference</strong> “<code>&amp;mut</code>” because we expect the contents to be changed during the SPI Transfer.</p>
 <p>The value of SX1262 Register 8 is returned as the <strong>last byte</strong> of the SPI Response…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="macro">println!</span>(<span class="string">"test_hal: SX1262 Register 8 is 0x{:02x}"</span>, data[<span class="number">4</span>]);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="macro">println!</span>(<span class="string">&quot;test_hal: SX1262 Register 8 is 0x{:02x}&quot;</span>, data[<span class="number">4</span>]);</code></pre></div>
 <p>We set <strong>Chip Select to High</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set SX1262 Chip Select to High
   </span>cs.set_high()
-    .expect(<span class="string">"cs failed"</span>);</code></pre></div>
+    .expect(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
 <p>And we’re done! Running this Rust code on NuttX shows…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; rust_test
 ...
@@ -447,35 +447,35 @@ test_hal: SX1262 Register 8 is 0x80
 
   <span class="comment">//  Open GPIO Input for SX1262 Busy Pin
   </span><span class="kw">let </span>lora_busy = nuttx_embedded_hal::InputPin
-    ::new(<span class="string">"/dev/gpio0"</span>)
-    .expect(<span class="string">"open gpio failed"</span>);
+    ::new(<span class="string">&quot;/dev/gpio0&quot;</span>)
+    .expect(<span class="string">&quot;open gpio failed&quot;</span>);
 
   <span class="comment">//  Open GPIO Output for SX1262 Chip Select
   </span><span class="kw">let </span>lora_nss = nuttx_embedded_hal::OutputPin
-    ::new(<span class="string">"/dev/gpio1"</span>)
-    .expect(<span class="string">"open gpio failed"</span>);
+    ::new(<span class="string">&quot;/dev/gpio1&quot;</span>)
+    .expect(<span class="string">&quot;open gpio failed&quot;</span>);
 
   <span class="comment">//  Open GPIO Interrupt for SX1262 DIO1 Pin
   </span><span class="kw">let </span>lora_dio1 = nuttx_embedded_hal::InterruptPin
-    ::new(<span class="string">"/dev/gpio2"</span>)
-    .expect(<span class="string">"open gpio failed"</span>);</code></pre></div>
+    ::new(<span class="string">&quot;/dev/gpio2&quot;</span>)
+    .expect(<span class="string">&quot;open gpio failed&quot;</span>);</code></pre></div>
 <p>(We won’t handle interrupts today)</p>
 <p>The <strong>NRESET and Antenna Pins</strong> are unused for now…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  TODO: Open GPIO Output for SX1262 NRESET Pin
   </span><span class="kw">let </span>lora_nreset = nuttx_embedded_hal::UnusedPin
     ::new()
-    .expect(<span class="string">"open gpio failed"</span>);
+    .expect(<span class="string">&quot;open gpio failed&quot;</span>);
 
   <span class="comment">//  TODO: Open GPIO Output for SX1262 Antenna Pin
   </span><span class="kw">let </span>lora_ant = nuttx_embedded_hal::UnusedPin
     ::new()
-    .expect(<span class="string">"open gpio failed"</span>);
+    .expect(<span class="string">&quot;open gpio failed&quot;</span>);
 
   <span class="comment">//  Open SPI Bus for SX1262
   </span><span class="kw">let </span><span class="kw-2">mut </span>spi1 = nuttx_embedded_hal::Spi
-    ::new(<span class="string">"/dev/spitest0"</span>)
-    .expect(<span class="string">"open spi failed"</span>);</code></pre></div>
+    ::new(<span class="string">&quot;/dev/spitest0&quot;</span>)
+    .expect(<span class="string">&quot;open spi failed&quot;</span>);</code></pre></div>
 <p>And we open the <strong>SPI Bus</strong> like before.</p>
 <p>We <strong>define the pins</strong> for our SX1262 Driver…</p>
 
@@ -500,7 +500,7 @@ test_hal: SX1262 Register 8 is 0x80
 
   <span class="comment">//  Init the SX1262 Driver
   </span>lora.init(<span class="kw-2">&amp;mut </span>spi1, delay, conf)
-    .expect(<span class="string">"sx1262 init failed"</span>);</code></pre></div>
+    .expect(<span class="string">&quot;sx1262 init failed&quot;</span>);</code></pre></div>
 <p><a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L117-L157">(<strong>build_config</strong> is defined here)</a></p>
 <p>Lastly we <strong>read SX1262 Register 8</strong> and print the result…</p>
 
@@ -509,10 +509,10 @@ test_hal: SX1262 Register 8 is 0x80
 
   <span class="comment">//  Read SX1262 Register 8 into Result Buffer
   </span>lora.read_register(<span class="kw-2">&amp;mut </span>spi1, delay, <span class="number">8</span>, <span class="kw-2">&amp;mut </span>result)
-    .expect(<span class="string">"sx1262 read register failed"</span>);
+    .expect(<span class="string">&quot;sx1262 read register failed&quot;</span>);
 
   <span class="comment">//  Show the register value
-  </span><span class="macro">println!</span>(<span class="string">"test_sx1262: SX1262 Register 8 is 0x{:02x}"</span>, result[<span class="number">0</span>]);</code></pre></div>
+  </span><span class="macro">println!</span>(<span class="string">&quot;test_sx1262: SX1262 Register 8 is 0x{:02x}&quot;</span>, result[<span class="number">0</span>]);</code></pre></div>
 <p>When we run the Rust code we’ll see…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; rust_test
 ...
@@ -543,19 +543,19 @@ test_sx1262: SX1262 Register 8 is 0x80
 
   //  Write Register 0x889: 0x04 (TxModulation)
   </span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::TxModulaton, <span class="kw-2">&amp;</span>[<span class="number">0x04</span>])
-    .expect(<span class="string">"write register failed"</span>);
+    .expect(<span class="string">&quot;write register failed&quot;</span>);
 
   <span class="comment">//  Write Register 0x8D8: 0xFE (TxClampConfig)
   </span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::TxClampConfig, <span class="kw-2">&amp;</span>[<span class="number">0xFE</span>])
-    .expect(<span class="string">"write register failed"</span>);
+    .expect(<span class="string">&quot;write register failed&quot;</span>);
 
   <span class="comment">//  Write Register 0x8E7: 0x38 (Over Current Protection)
   </span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::OcpConfiguration, <span class="kw-2">&amp;</span>[<span class="number">0x38</span>])
-    .expect(<span class="string">"write register failed"</span>);
+    .expect(<span class="string">&quot;write register failed&quot;</span>);
 
   <span class="comment">//  Write Register 0x736: 0x0D (Inverted IQ)
   </span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::IqPolaritySetup, <span class="kw-2">&amp;</span>[<span class="number">0x0D</span>])
-    .expect(<span class="string">"write register failed"</span>);</code></pre></div>
+    .expect(<span class="string">&quot;write register failed&quot;</span>);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/rust2#set-registers">(More about this)</a></p>
 <p>Then we <strong>transmit a LoRa Message</strong> over the airwaves…</p>
 
@@ -563,11 +563,11 @@ test_sx1262: SX1262 Register 8 is 0x80
   </span>lora.write_bytes(
     <span class="kw-2">&amp;mut </span>spi1,  <span class="comment">//  SPI Interface
     </span>delay,      <span class="comment">//  Delay Interface
-    </span><span class="string">b"Hello from Rust on NuttX!"</span>,  <span class="comment">//  Payload
+    </span><span class="string">b&quot;Hello from Rust on NuttX!&quot;</span>,  <span class="comment">//  Payload
     </span><span class="number">0</span>.into(),   <span class="comment">//  Disable Transmit Timeout
     </span><span class="number">8</span>,          <span class="comment">//  Preamble Length
     </span>packet::lora::LoRaCrcType::CrcOn,  <span class="comment">//  Enable CRC
-  </span>).expect(<span class="string">"send failed"</span>);</code></pre></div>
+  </span>).expect(<span class="string">&quot;send failed&quot;</span>);</code></pre></div>
 <p>Containing the <strong>Message Payload</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Hello from Rust on NuttX!
 </code></pre></div>
@@ -865,9 +865,9 @@ Done!
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of GPIO Output
 </span><span class="kw">impl </span>OutputPin {
-  <span class="doccomment">/// Create a GPIO Output Pin from a Device Path (e.g. "/dev/gpio1")
+  <span class="doccomment">/// Create a GPIO Output Pin from a Device Path (e.g. &quot;/dev/gpio1&quot;)
   </span><span class="kw">pub fn </span>new(path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, i32&gt; {
-    <span class="comment">//  Open the NuttX Device Path (e.g. "/dev/gpio1") for read-write
+    <span class="comment">//  Open the NuttX Device Path (e.g. &quot;/dev/gpio1&quot;) for read-write
     </span><span class="kw">let </span>fd = open(path, O_RDWR);
     <span class="kw">if </span>fd &lt; <span class="number">0 </span>{ <span class="kw">return </span><span class="prelude-val">Err</span>(fd) }
 
@@ -938,9 +938,9 @@ Done!
 
 <span class="doccomment">/// NuttX Implementation of SPI Bus
 </span><span class="kw">impl </span>Spi {
-  <span class="doccomment">/// Create an SPI Bus from a Device Path (e.g. "/dev/spitest0")
+  <span class="doccomment">/// Create an SPI Bus from a Device Path (e.g. &quot;/dev/spitest0&quot;)
   </span><span class="kw">pub fn </span>new(path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, i32&gt; {
-    <span class="comment">//  Open the NuttX Device Path (e.g. "/dev/spitest0") for read-write
+    <span class="comment">//  Open the NuttX Device Path (e.g. &quot;/dev/spitest0&quot;) for read-write
     </span><span class="kw">let </span>fd = open(path, O_RDWR);
     <span class="kw">if </span>fd &lt; <span class="number">0 </span>{ <span class="kw">return </span><span class="prelude-val">Err</span>(fd) }
 
@@ -982,7 +982,7 @@ Done!
   </span><span class="kw">type </span>Error = i32;
 
   <span class="doccomment">/// Transfer SPI data
-  </span><span class="kw">fn </span>transfer&lt;<span class="lifetime">'w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, words: <span class="kw-2">&amp;</span><span class="lifetime">'w </span><span class="kw-2">mut </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'w </span>[u8], <span class="self">Self</span>::Error&gt; {
+  </span><span class="kw">fn </span>transfer&lt;<span class="lifetime">&#39;w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, words: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span><span class="kw-2">mut </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>[u8], <span class="self">Self</span>::Error&gt; {
     <span class="comment">//  Transmit data
     </span><span class="kw">let </span>bytes_written = <span class="kw">unsafe </span>{ 
         write(<span class="self">self</span>.fd, words.as_ptr(), words.len() <span class="kw">as </span>u32) 
@@ -1050,13 +1050,13 @@ Done!
 <p>This fails on NuttX because the SPI Request needs to be in <strong>one contiguous block</strong> as Chip Select flips from High to Low and High.</p>
 <p>To fix this, we buffer all SPI Requests in the Chip Select Guard: <a href="https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/slave_select.rs#L86-L126">sx126x-rs-nuttx/src/sx/slave_select.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">impl</span>&lt;<span class="lifetime">'nss</span>, <span class="lifetime">'spi</span>, TNSS, TSPI, TSPIERR&gt; Transfer&lt;u8&gt; <span class="kw">for </span>SlaveSelectGuard&lt;<span class="lifetime">'nss</span>, <span class="lifetime">'spi</span>, TNSS, TSPI&gt;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">impl</span>&lt;<span class="lifetime">&#39;nss</span>, <span class="lifetime">&#39;spi</span>, TNSS, TSPI, TSPIERR&gt; Transfer&lt;u8&gt; <span class="kw">for </span>SlaveSelectGuard&lt;<span class="lifetime">&#39;nss</span>, <span class="lifetime">&#39;spi</span>, TNSS, TSPI&gt;
 <span class="kw">where
   </span>TNSS: OutputPin,
   TSPI: Write&lt;u8, Error = TSPIERR&gt; + Transfer&lt;u8, Error = TSPIERR&gt;,
 {
   <span class="kw">type </span>Error = SpiError&lt;TSPIERR&gt;;
-  <span class="kw">fn </span>transfer&lt;<span class="lifetime">'w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, words: <span class="kw-2">&amp;</span><span class="lifetime">'w </span><span class="kw-2">mut </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'w </span>[u8], <span class="self">Self</span>::Error&gt; {
+  <span class="kw">fn </span>transfer&lt;<span class="lifetime">&#39;w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, words: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span><span class="kw-2">mut </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>[u8], <span class="self">Self</span>::Error&gt; {
     <span class="kw">unsafe </span>{
       <span class="comment">//  Prevent a second transfer
       </span><span class="macro">debug_assert!</span>(!TRANSFERRED);
@@ -1120,9 +1120,9 @@ Done!
 <p>We inserted a null byte for the Read Register command, because Read Requests should have minimum 5 bytes (instead of 4): <a href="https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/mod.rs#L229-L246">sx126x-rs-nuttx/src/sx/mod.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read data from a register
-</span><span class="kw">pub fn </span>read_register&lt;<span class="lifetime">'spi</span>&gt;(
-  <span class="kw-2">&amp;</span><span class="lifetime">'spi </span><span class="kw-2">mut </span><span class="self">self</span>,
-  spi: <span class="kw-2">&amp;</span><span class="lifetime">'spi </span><span class="kw-2">mut </span>TSPI,
+</span><span class="kw">pub fn </span>read_register&lt;<span class="lifetime">&#39;spi</span>&gt;(
+  <span class="kw-2">&amp;</span><span class="lifetime">&#39;spi </span><span class="kw-2">mut </span><span class="self">self</span>,
+  spi: <span class="kw-2">&amp;</span><span class="lifetime">&#39;spi </span><span class="kw-2">mut </span>TSPI,
   delay: <span class="kw-2">&amp;mut </span><span class="kw">impl </span>DelayUs&lt;u32&gt;,
   start_addr: u16,
   result: <span class="kw-2">&amp;mut </span>[u8],
@@ -1147,19 +1147,19 @@ Done!
 
 //  Write Register 0x889: 0x04 (TxModulation)
 </span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::TxModulaton, <span class="kw-2">&amp;</span>[<span class="number">0x04</span>])
-  .expect(<span class="string">"write register failed"</span>);
+  .expect(<span class="string">&quot;write register failed&quot;</span>);
 
 <span class="comment">//  Write Register 0x8D8: 0xFE (TxClampConfig)
 </span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::TxClampConfig, <span class="kw-2">&amp;</span>[<span class="number">0xFE</span>])
-  .expect(<span class="string">"write register failed"</span>);
+  .expect(<span class="string">&quot;write register failed&quot;</span>);
 
 <span class="comment">//  Write Register 0x8E7: 0x38 (Over Current Protection)
 </span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::OcpConfiguration, <span class="kw-2">&amp;</span>[<span class="number">0x38</span>])
-  .expect(<span class="string">"write register failed"</span>);
+  .expect(<span class="string">&quot;write register failed&quot;</span>);
 
 <span class="comment">//  Write Register 0x736: 0x0D (Inverted IQ)
 </span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::IqPolaritySetup, <span class="kw-2">&amp;</span>[<span class="number">0x0D</span>])
-  .expect(<span class="string">"write register failed"</span>);</code></pre></div>
+  .expect(<span class="string">&quot;write register failed&quot;</span>);</code></pre></div>
 <p>We derived the registers from the log generated by the SX1262 driver in C…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668"><strong>Log from SX1262 Driver in C</strong></a></li>
@@ -1178,27 +1178,27 @@ Done!
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read Priority Mask Register. Missing function called by sx126x crate (Arm only, not RISC-V).
 /// See https://github.com/rust-embedded/cortex-m/blob/master/src/register/primask.rs#L29
-</span><span class="attr">#[cfg(not(target_arch = <span class="string">"arm"</span>))]  </span><span class="comment">//  If architecture is not Arm...
+</span><span class="attr">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
 </span><span class="attr">#[no_mangle]
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>__primask_r() -&gt; u32 { <span class="number">0 </span>}
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__primask_r() -&gt; u32 { <span class="number">0 </span>}
 
 <span class="doccomment">/// Disables all interrupts. Missing function called by sx126x crate (Arm only, not RISC-V).
 /// See https://github.com/rust-embedded/cortex-m/blob/master/src/interrupt.rs#L29
-</span><span class="attr">#[cfg(not(target_arch = <span class="string">"arm"</span>))]  </span><span class="comment">//  If architecture is not Arm...
+</span><span class="attr">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
 </span><span class="attr">#[no_mangle]
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>__cpsid() {}
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__cpsid() {}
 
 <span class="doccomment">/// Enables all interrupts. Missing function called by sx126x crate (Arm only, not RISC-V).
 /// See https://github.com/rust-embedded/cortex-m/blob/master/src/interrupt.rs#L39
-</span><span class="attr">#[cfg(not(target_arch = <span class="string">"arm"</span>))]  </span><span class="comment">//  If architecture is not Arm...
+</span><span class="attr">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
 </span><span class="attr">#[no_mangle]
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>__cpsie() {}
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__cpsie() {}
 
 <span class="doccomment">/// No operation. Missing function called by sx126x crate (Arm only, not RISC-V).
 /// See https://github.com/rust-embedded/cortex-m/blob/master/src/asm.rs#L35
-</span><span class="attr">#[cfg(not(target_arch = <span class="string">"arm"</span>))]  </span><span class="comment">//  If architecture is not Arm...
+</span><span class="attr">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
 </span><span class="attr">#[no_mangle]
-</span><span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>__nop() {}</code></pre></div>
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__nop() {}</code></pre></div>
 <p>We haven’t tested the driver for receiving LoRa Messages, we might need more fixes for NuttX on RISC-V.</p>
 <p>(But then again we might not need to receive LoRa Messages if we’re building a simple IoT Sensor)</p>
 <p><img src="https://lupyuen.github.io/images/rust2-build.png" alt="Rust Build Script for NuttX" /></p>
