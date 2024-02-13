@@ -257,38 +257,52 @@ dump_task:       3     3 100 RR       Task    - Running            0000000000000
 CONFIG_TLS_LOG2_MAXSTACK=16
 </code></pre></div><h1 id="add-ioctl-to-quickjs"><a href="#add-ioctl-to-quickjs">4 Add ioctl() to QuickJS</a></h1>
 <p><em>ioctl() doesn’t appear in the QuickJS Docs?</em></p>
-<p>That’s because we added <strong>ioctl()</strong> to QuickJS. And it’s not that hard: <a href="https://github.com/lupyuen/quickjs-nuttx/commit/91aaf4257992c08b01590f0d61fa37a386933a4b#diff-95fe784bea3e0fbdf30ba834b1a74b538090f4d70f4f8770ef397ef68ec37aa3">quickjs-libc.c</a>…</p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>static const JSCFunctionListEntry js_os_funcs[] = {
-    ...
-    JS_CFUNC_DEF(&quot;ioctl&quot;, 3, js_os_ioctl ),
-    ...
+<p>That’s because we added <strong>ioctl()</strong> to QuickJS: <a href="https://github.com/lupyuen/quickjs-nuttx/commit/91aaf4257992c08b01590f0d61fa37a386933a4b#diff-95fe784bea3e0fbdf30ba834b1a74b538090f4d70f4f8770ef397ef68ec37aa3">quickjs-libc.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// List of JavaScript Functions in `os` Module
+static const JSCFunctionListEntry js_os_funcs[] = {
+  ...
+  // Declare our ioctl() function...
+  JS_CFUNC_DEF(
+    &quot;ioctl&quot;,     // Function Name
+    3,           // Parameters
+    js_os_ioctl  // Implemented here
+  ),
+  ...
 };
 
-static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val,
-                           int argc, JSValueConst *argv)
-{
+// Define our ioctl() function
+static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv) {
     int fd, req;
     int64_t arg, ret;
     BOOL is_bigint;
     
+    // First Arg is File Descriptor (int32)
     if (JS_ToInt32(ctx, &amp;fd, argv[0]))
         return JS_EXCEPTION;
+    
+    // Second Arg is ioctl() Request (int32)
     if (JS_ToInt32(ctx, &amp;req, argv[1]))
         return JS_EXCEPTION;
+
+    // Third Arg is ioctl() Parameter (int64)
+    // TODO: What if it&#39;s int32? How to we pass a Pointer to Struct?
     is_bigint = JS_IsBigInt(ctx, argv[2]);
     if (JS_ToInt64Ext(ctx, &amp;arg, argv[2]))
         return JS_EXCEPTION;
+
+    // Call NuttX ioctl()
     ret = ioctl(fd, req, arg);
     if (ret == -1)
         ret = -errno;
+
+    // Return the result as int64 or int32
     if (is_bigint)
         return JS_NewBigInt64(ctx, ret);
     else
         return JS_NewInt64(ctx, ret);
 }
 </code></pre></div>
-<p>TODO: Is arg int32 or int64?</p>
+<p>TODO</p>
 <p>Yep it seems to work…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; qjs
