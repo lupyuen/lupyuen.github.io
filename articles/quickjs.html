@@ -72,8 +72,9 @@
 <li><a href="#add-ioctl-to-quickjs">4 Add ioctl() to QuickJS</a><ul></ul></li>
 <li><a href="#quickjs-blinks-the-led-on-ox64-sbc">5 QuickJS Blinks the LED on Ox64 SBC</a><ul></ul></li>
 <li><a href="#simulate-the-led-on-ox64-emulator">6 Simulate the LED on Ox64 Emulator</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-quickjs-for-nuttx">8 Appendix: Build QuickJS for NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
+<li><a href="#how-small-is-quickjs">7 How Small is QuickJS</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-quickjs-for-nuttx">9 Appendix: Build QuickJS for NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -89,9 +90,6 @@ os.ioctl(fd, ULEDIOC_SETALL, 0);
 <p>Let’s do it! In this article we…</p>
 <p>TODO</p>
 <p>We go hands-on (fingers too)…</p>
-<p>TODO: How Small? Heap Size?</p>
-<p>TODO: Static Linking</p>
-<p>TODO: QEMU LED Driver</p>
 <h1 id="quickjs-on-nuttx-emulator"><a href="#quickjs-on-nuttx-emulator">1 QuickJS on NuttX Emulator</a></h1>
 <p>Click here to try <strong>QuickJS JavaScript Engine</strong> in NuttX Emulator…</p>
 <ul>
@@ -371,7 +369,13 @@ qjs &gt; os.ioctl(100,2,3)
 <p>And it works! https://lupyuen.github.io/nuttx-tinyemu/quickjs/</p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title2.png" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="how-small-is-quickjs"><a href="#how-small-is-quickjs">7 How Small is QuickJS</a></h1>
+<p><em>Will QuickJS runs on all kinds of NuttX Devices?</em></p>
+<p>Probably not? JavaScript needs quite a bit of RAM to run efficiently.</p>
+<p>TODO: Text, data, BSS</p>
+<p>TODO: Heap Size?</p>
+<p>TODO: Static Linking</p>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -396,7 +400,7 @@ qjs &gt; os.ioctl(100,2,3)
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/quickjs.md"><strong>lupyuen.github.io/src/quickjs.md</strong></a></p>
-<h1 id="appendix-build-quickjs-for-nuttx"><a href="#appendix-build-quickjs-for-nuttx">8 Appendix: Build QuickJS for NuttX</a></h1>
+<h1 id="appendix-build-quickjs-for-nuttx"><a href="#appendix-build-quickjs-for-nuttx">9 Appendix: Build QuickJS for NuttX</a></h1>
 <p>TODO</p>
 <p>From the <a href="nuttx/make.log">Makefile Log</a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build qjs.o

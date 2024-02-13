@@ -653,13 +653,13 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <p><code>Serial</code> is defined in the <a href="https://lupyuen.github.io/pinecone-rust/bl602_hal/">BL602 Hardware Abstraction Layer</a></p>
 <h2 id="write-to-the-serial-interface"><a href="#write-to-the-serial-interface">7.3 Write to the Serial Interface</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">loop </span>{
-    serial.try_write(<span class="string">b&#39;R&#39;</span>).ok();
+    serial.try_write(<span class="string">b'R'</span>).ok();
     serial.try_flush().ok();
-    serial.try_write(<span class="string">b&#39;U&#39;</span>).ok();
+    serial.try_write(<span class="string">b'U'</span>).ok();
     serial.try_flush().ok();
-    serial.try_write(<span class="string">b&#39;S&#39;</span>).ok();
+    serial.try_write(<span class="string">b'S'</span>).ok();
     serial.try_flush().ok();
-    serial.try_write(<span class="string">b&#39;T&#39;</span>).ok();
+    serial.try_write(<span class="string">b'T'</span>).ok();
     serial.try_flush().ok();
 }</code></pre></div>
 <p>This code loops forever, writing the characters <code>RUST</code> to the Serial Interface.</p>
