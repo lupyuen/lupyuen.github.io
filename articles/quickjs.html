@@ -70,13 +70,10 @@
 <li><a href="#build-quickjs-for-nuttx">2 Build QuickJS for NuttX</a><ul></ul></li>
 <li><a href="#nuttx-stack-is-full-of-quickjs">3 NuttX Stack is Full of QuickJS</a><ul></ul></li>
 <li><a href="#add-ioctl-to-quickjs">4 Add ioctl() to QuickJS</a><ul></ul></li>
-<li><a href="#add-led-driver-to-nuttx-qemu-risc-v">5 Add LED Driver to NuttX QEMU RISC-V</a><ul></ul></li>
-<li><a href="#quickjs-calls-nuttx-led-driver">6 QuickJS calls NuttX LED Driver</a><ul></ul></li>
-<li><a href="#add-led-driver-to-nuttx-ox64-bl808-sbc">7 Add LED Driver to NuttX Ox64 BL808 SBC</a><ul></ul></li>
-<li><a href="#quickjs-blinks-the-led-on-ox64-emulator">8 QuickJS blinks the LED on Ox64 Emulator</a><ul></ul></li>
-<li><a href="#simulate-the-led-on-ox64-emulator">9 Simulate the LED on Ox64 Emulator</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-quickjs-for-nuttx">11 Appendix: Build QuickJS for NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
+<li><a href="#add-led-driver-to-nuttx-ox64-bl808-sbc">5 Add LED Driver to NuttX Ox64 BL808 SBC</a><ul></ul></li>
+<li><a href="#simulate-the-led-on-ox64-emulator">6 Simulate the LED on Ox64 Emulator</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-quickjs-for-nuttx">8 Appendix: Build QuickJS for NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -94,6 +91,7 @@ os.ioctl(fd, ULEDIOC_SETALL, 0);
 <p>We go hands-on (fingers too)…</p>
 <p>TODO: How Small? Heap Size?</p>
 <p>TODO: Static Linking</p>
+<p>TODO: QEMU LED Driver</p>
 <h1 id="quickjs-on-nuttx-emulator"><a href="#quickjs-on-nuttx-emulator">1 QuickJS on NuttX Emulator</a></h1>
 <p>Click here to try <strong>QuickJS JavaScript Engine</strong> in NuttX Emulator…</p>
 <ul>
@@ -230,8 +228,7 @@ dump_task:       2     2 100 RR       Task    - Waiting Semaphore  0000000000000
 dump_task:       3     3 100 RR       Task    - Running            0000000000000000 0xc0202050      1968      1968   100.0%!   qjs }¼uq¦ü®઄²äÅ
 </code></pre></div>
 <p>The last line shows that the <strong>QuickJS Stack</strong> (2 KB) was <strong>100% Full</strong>! (And the Command Line was badly messed up)</p>
-<p>(Lesson Learnt: If the NuttX Stack Dump loops forever, we’re probably <strong>Out Of Stack Space</strong>)</p>
-<p>We follow these steps to <a href="https://github.com/lupyuen/nuttx-star64#increase-stack-size"><strong>increase the Stack Size</strong></a>…</p>
+<p>We follow these steps to <a href="https://github.com/lupyuen/nuttx-star64#increase-stack-size"><strong>increase the App Stack Size</strong></a>…</p>
 <ol>
 <li>
 <p>Enter “<strong><code>make menuconfig</code></strong>”</p>
@@ -255,7 +252,9 @@ dump_task:       3     3 100 RR       Task    - Running            0000000000000
 <p>Which becomes this in our <strong>NuttX Build Config</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078">ox64/nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_POSIX_SPAWN_DEFAULT_STACKSIZE=65536
 CONFIG_TLS_LOG2_MAXSTACK=16
-</code></pre></div><h1 id="add-ioctl-to-quickjs"><a href="#add-ioctl-to-quickjs">4 Add ioctl() to QuickJS</a></h1>
+</code></pre></div>
+<p>(Lesson Learnt: If the NuttX Stack Dump loops forever, we’re probably <strong>Out Of Stack Space</strong>)</p>
+<h1 id="add-ioctl-to-quickjs"><a href="#add-ioctl-to-quickjs">4 Add ioctl() to QuickJS</a></h1>
 <p><em>ioctl() doesn’t appear in the QuickJS Docs?</em></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Flip On the NuttX LED
 const ULEDIOC_SETALL = 0x1d03;
@@ -319,244 +318,32 @@ qjs &gt; os.ioctl(1,2,3)
 
 qjs &gt; os.ioctl(100,2,3)
 -9
-</code></pre></div><h1 id="add-led-driver-to-nuttx-qemu-risc-v"><a href="#add-led-driver-to-nuttx-qemu-risc-v">5 Add LED Driver to NuttX QEMU RISC-V</a></h1>
-<p>TODO</p>
-<p>We add the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911">LED Driver to NuttX QEMU RISC-V (knsh64)</a>.</p>
-<p>We fix the <code>leds</code> app because <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429">task_create is missing from QEMU knsh64</a>.</p>
-<p>The <code>leds</code> app works great with the LED Driver…</p>
-<div class="example-wrap"><pre class="language-text"><code>+ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
-ABC[    0.015000] board_userled_all: ledset=0x0
-[    0.016000] board_userled_all: led=0, val=0
-[    0.016000] board_userled_all: led=1, val=0
-[    0.017000] board_userled_all: led=2, val=0
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; leds
-leds_main: Starting the led_daemon
-
-led_daemon (pid# 3): Running
-led_daemon: Opening /dev/userleds
-led_daemon: Supported LEDs 0x07
-led_daemon: LED set 0x01
-[   29.652000] board_userled_all: ledset=0x1
-[   29.652000] board_userled_all: led=0, val=1
-[   29.652000] board_userled_all: led=1, val=0
-[   29.653000] board_userled_all: led=2, val=0
-led_daemon: LED set 0x02
-[   30.154000] board_userled_all: ledset=0x2
-[   30.154000] board_userled_all: led=0, val=0
-[   30.155000] board_userled_all: led=1, val=1
-[   30.155000] board_userled_all: led=2, val=0
-led_daemon: LED set 0x03
-[   30.656000] board_userled_all: ledset=0x3
-[   30.656000] board_userled_all: led=0, val=1
-[   30.656000] board_userled_all: led=1, val=1
-[   30.657000] board_userled_all: led=2, val=0
-</code></pre></div>
-<p>Now we test with QuickJS…</p>
-<h1 id="quickjs-calls-nuttx-led-driver"><a href="#quickjs-calls-nuttx-led-driver">6 QuickJS calls NuttX LED Driver</a></h1>
-<p>TODO</p>
-<p>This is how we blink an LED in C: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/qemuled/examples/leds/leds_main.c">leds_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define _ULEDBASE       (0x1d00) /* User LED ioctl commands */
-#define _IOC(type,nr)   ((type)|(nr))
-#define _ULEDIOC(nr)      _IOC(_ULEDBASE,nr)
-#define ULEDIOC_SETALL     _ULEDIOC(0x0003)
-
-// Open the LED Device
-int fd = open(&quot;/dev/userleds&quot;, os.O_WRONLY);
-assert(fd &gt; 0);
-
-// Flip LED 0 to On
-int ret = ioctl(fd, ULEDIOC_SETALL, 1);
-assert(ret &gt;= 0);
-
-// Flip LED 0 to Off
-int ret = ioctl(fd, ULEDIOC_SETALL, 0);
-assert(ret &gt;= 0);
-
-close(fd);
-</code></pre></div>
-<p>Which becomes this in QuickJS…</p>
-<div class="example-wrap"><pre class="language-text"><code>ULEDIOC_SETALL = 0x1d03
-fd = os.open(&quot;/dev/userleds&quot;, os.O_WRONLY)
-os.ioctl(fd, ULEDIOC_SETALL, 1)
-os.ioctl(fd, ULEDIOC_SETALL, 0)
-</code></pre></div>
-<p>And it works yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>→ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; qjs
-QuickJS - Type &quot;\h&quot; for help
-qjs &gt; ULEDIOC_SETALL = 0x1d03
-7427
-qjs &gt; fd = os.open(&quot;/dev/userleds&quot;, os.O_WRONLY)
-3
-qjs &gt; ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-[   24.851000] board_userled_all: ledset=0x1
-[   24.852000] board_userled_all: led=0, val=1
-[   24.852000] board_userled_all: led=1, val=0
-[   24.852000] board_userled_all: led=2, val=0
-0
-qjs &gt; ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-[   29.617000] board_userled_all: ledset=0x0
-[   29.617000] board_userled_all: led=0, val=0
-[   29.617000] board_userled_all: led=1, val=0
-[   29.618000] board_userled_all: led=2, val=0
-0
-qjs &gt; 
-</code></pre></div><h1 id="add-led-driver-to-nuttx-ox64-bl808-sbc"><a href="#add-led-driver-to-nuttx-ox64-bl808-sbc">7 Add LED Driver to NuttX Ox64 BL808 SBC</a></h1>
-<p>TODO</p>
-<p>Now we test on a Real Device with a Real LED: Ox64 BL808 SBC…</p>
+</code></pre></div><h1 id="add-led-driver-to-nuttx-ox64-bl808-sbc"><a href="#add-led-driver-to-nuttx-ox64-bl808-sbc">5 Add LED Driver to NuttX Ox64 BL808 SBC</a></h1>
+<p><em>We added ioctl() to QuickJS… Does it work?</em></p>
+<p>We test <strong>ioctl()</strong> on a Real Device with a Real LED: <strong>Ox64 BL808 RISC-V SBC</strong>. Right after these fixes…</p>
 <ul>
 <li>
-<p>We add the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/8f75f3744f3964bd3ed0596421a93e59fb39cdd8">GPIO Driver for Ox64 BL808</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/8f75f3744f3964bd3ed0596421a93e59fb39cdd8"><strong>Add the GPIO Driver</strong></a>  for Ox64 BL808</p>
 </li>
 <li>
-<p>We add the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4f3996959132ca0d35874b7be3eef89d6bf7f351">LED Driver for Ox64 BL808</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4f3996959132ca0d35874b7be3eef89d6bf7f351"><strong>Add the LED Driver</strong></a> for Ox64 BL808</p>
 </li>
 <li>
-<p>We increase <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048">Ox64 BL808 Stack Size to 64 KB</a> for QuickJS</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048"><strong>Increase the App Stack Size</strong></a>  from 2 KB to 64 KB</p>
+<p>(Because QuickJS will crash mysteriously)</p>
 </li>
 <li>
-<p>We fix the <code>leds</code> app because <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3">task_create is missing from QEMU knsh64</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226"><strong>Increase the RAM Disk Region</strong></a> from 16 MB to 40 MB</p>
+<p><a href="https://github.com/lupyuen/quickjs-nuttx#add-led-driver-to-nuttx-ox64-bl808-sbc">(Why we enlarge the <strong>RAM Disk Region</strong>)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3"><strong>Fix the <code>leds</code> app</strong></a> for testing LED Driver</p>
+<p>(Because <strong>task_create()</strong> is missing from Kernel Mode)</p>
 </li>
 </ul>
-<p>But our RAM Disk Region is too small (16 MB)…</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-bl808_copy_ramdisk: RAM Disk Region too small. Increase by 586288l bytes.
-</code></pre></div>
-<p>Initial RAM Disk (initrd) is now 17 MB…</p>
-<div class="example-wrap"><pre class="language-text"><code>→ ls -l $HOME/ox64/nuttx/initrd
--rw-r--r--  1 17363968 Feb 12 13:06 /Users/Luppy/ox64/nuttx/initrd
-</code></pre></div>
-<p>We <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226">increase the RAM Disk Region from</a> 16 MB to 40 MB.</p>
-<p>But QuickJS crashes on Ox64…</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; qjs
-riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 0000000000007028, MTVAL: 0000000000007028
-riscv_exception: PANIC!!! Exception = 000000000000000c
-_assert: Current Version: NuttX  12.4.0-RC0 904b955-dirty Feb 12 2024 14:32:16 risc-v
-_assert: Assertion failed panic: at file: common/riscv_exception.c:85 task: /system/bin/init process: /system/bin/init 0x8000004a
-up_dump_register: EPC: 0000000000007028
-up_dump_register: A0: 0000000000000001 A1: 0000000080210010 A2: 0000000000000001 A3: 0000000080210010
-up_dump_register: A4: 0000000000000000 A5: 0000000000007028 A6: 0000000000000101 A7: 0000000000000000
-up_dump_register: T0: 0000000000000000 T1: 0000000000000000 T2: 0000000000000000 T3: 0000000000000000
-up_dump_register: T4: 0000000000000000 T5: 0000000000000000 T6: 0000000000000000
-up_dump_register: S0: 0000000000000000 S1: 0000000000000000 S2: 0000000000000000 S3: 0000000000000000
-up_dump_register: S4: 0000000000000000 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
-up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
-up_dump_register: SP: 0000000080220000 FP: 0000000000000000 TP: 0000000000000000 RA: 000000005020b28e
-dump_stacks: ERROR: Stack pointer is not within the stack
-dump_stack: IRQ Stack:
-dump_stack:   base: 0x50400290
-dump_stack:   size: 00002048
-stack_dump: 0x50400708: 5021986a 00000000 5021a6d8 00000000 0000000a 00000000 50400828 00000000
-stack_dump: 0x50400728: 00000008 00000000 0000005f 00000000 5020825e 00000000 504008d0 00000000
-stack_dump: 0x50400748: 00000008 00000000 ffff9fef ffffffff 00004010 00000000 504008b0 00000000
-stack_dump: 0x50400768: 30386230 35303430 ffff9fef ffffffff 00004010 00000000 00000039 00000000
-stack_dump: 0x50400788: 00000000 00000000 5040b440 00000000 80210c00 00000000 00000bc0 00000000
-stack_dump: 0x504007a8: 50401b30 00000000 00042020 00000002 80210040 00000000 50400290 00000000
-stack_dump: 0x504007c8: 5021a3d0 00000000 5021a6c8 00000000 50400a90 00000000 50400848 00000000
-stack_dump: 0x504007e8: 502175bc 00000000 50400290 00000000 5021a3d0 00000000 50400868 00000000
-stack_dump: 0x50400808: 00000060 00000000 50218706 00000000 502186a0 00000000 50209008 00000000
-stack_dump: 0x50400828: 0000000a 00000000 50400808 00000000 5020923c 00000000 50209008 00000000
-stack_dump: 0x50400848: 50400880 00000000 00000800 00000000 5020925c 00000000 50218706 00000000
-stack_dump: 0x50400868: 50400880 00000000 50209008 00000000 50201dd0 00000000 5021a6c8 00000000
-stack_dump: 0x50400888: 50400868 00000000 50400880 00000000 00000000 00000000 50209008 00000000
-stack_dump: 0x504008a8: 00000000 00000000 00000000 00000000 00000000 00000000 50209008 00000000
-stack_dump: 0x504008c8: 00000000 00000000 5021a6e8 00000000 00000001 00000000 00000001 00000000
-stack_dump: 0x504008e8: 5040a630 00000000 00000000 00000000 5020216a 00000000 8000004a 00000000
-stack_dump: 0x50400908: deadbeef deadbeef deadbeef deadbeef 00000000 00000000 5040a630 00000000
-stack_dump: 0x50400928: 5040ca40 00000000 50219b20 00000000 50219df8 00000000 00000055 00000000
-stack_dump: 0x50400948: 7474754e 00000058 00000000 00000000 00000000 00000000 0000000c 00000000
-stack_dump: 0x50400968: 5040ca40 00000000 504009d8 00000000 502175bc 2e323100 2d302e34 00304352
-stack_dump: 0x50400988: 50219dd0 00000000 3039beef 35396234 69642d35 20797472 20626546 32203231
-stack_dump: 0x504009a8: 20343230 333a3431 36313a32 00000000 0000000a 00000000 0000000c 73697200
-stack_dump: 0x504009c8: 00762d63 00000000 50400028 00000000 50400a10 00000000 00000000 00000000
-stack_dump: 0x504009e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x50400a08: 00000000 00000000 00000000 00000000 00000000 00000000 0000000c 00000000
-stack_dump: 0x50400a28: 5040ca40 00000000 0000000c 00000000 502012e8 00000000 00000008 00000000
-stack_dump: 0x50400a48: 50401b30 00000000 5040ca40 00000000 50200d66 00000000 00000000 00000000
-stack_dump: 0x50400a68: 00000000 00000000 0000000c 00000000 50200894 00000000 00007028 00000000
-stack_dump: 0x50400a88: 50200180 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-dump_stack: Kernel Stack:
-dump_stack:   base: 0x5040b440
-dump_stack:   size: 00003072
-stack_dump: 0x5040c040: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-dump_stack: User Stack:
-dump_stack:   base: 0x80210040
-dump_stack:   size: 00003008
-stack_dump:0x80210918: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210938: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210958: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210978: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210998: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x802109b8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x802109d8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x802109f8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210a18: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210a38: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210a58: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210a78: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210a98: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210ab8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210ad8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210af8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210b18: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210b38: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210b58: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210b78: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbee deadbeef
-stack_dump: 0x80210b98: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210bb8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210bd8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
-stack_dump: 0x80210bf8: deadbeef deadbeef 00000000 00000000 00000000 00000000 00000000 00000000
-dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- ---------------- 0x50400290      2048       968    47.2%    irq
-dump_task:       0     0   0 FIFO     Kthread - Ready              0000000000000000 0x50407010      3056      1136    37.1%    Idle_Task
-dump_task:       1     1 100 RR       Kthread - Waiting Semaphore  0000000000000000 0x50410050      1968       704    35.7%    lpwork 0x50401a90 0x50401ab8
-dump_task:       6     6 100 RR       Task    - Running            0000000000000000 0x80210030     65488         0     0.0%    qjs
-dump_task:       3     3 100 RR       Task    - Waiting Semaphore  0000000000000000 0x80210040      3008       744    24.7%    /system/bin/init
-</code></pre></div>
-<p>That’s because <a href="https://github.com/lupyuen/quickjs-nuttx/commit/221f80518f175a080888f2824408d81c734b9877#diff-a1427809210c3d4b0e73ca2c8712d61eaa10652316dfdcb7ac0cec8a8a81e27d">Ox64 Build is different</a></p>
-<p>We fix it, now it has doubled in size…</p>
-<div class="example-wrap"><pre class="language-text"><code>→ ls -l $HOME/ox64/nuttx/initrd
--rw-r--r--  1 Luppy  staff  35765248 Feb 12 14:57 /Users/Luppy/ox64/nuttx/initrd
-</code></pre></div>
-<p>And QuickJS blinks the LED on Ox64 yay!</p>
-<h1 id="quickjs-blinks-the-led-on-ox64-emulator"><a href="#quickjs-blinks-the-led-on-ox64-emulator">8 QuickJS blinks the LED on Ox64 Emulator</a></h1>
-<p>TODO</p>
-<p><em>Will QuickJS run on Ox64 Emulator?</em></p>
-<p>Yep it works! https://lupyuen.github.io/nuttx-tinyemu/quickjs/</p>
-<div class="example-wrap"><pre class="language-text"><code>Loading...
-TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; qjs
-QuickJS - Type &quot;\h&quot; for help
-qjs &gt; console.log(123)
-123
-undefined
-
-qjs &gt; ULEDIOC_SETALL = 0x1d03
-7427
-
-qjs &gt; fd = os.open(&quot;/dev/userleds&quot;, os.O_WRONLY)
-3
-
-qjs &gt; os.ioctl(fd, ULEDIOC_SETALL, 1)
-bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-0
-
-qjs &gt; os.ioctl(fd, ULEDIOC_SETALL, 0)
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-0
-</code></pre></div>
-<p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
-<h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">9 Simulate the LED on Ox64 Emulator</a></h1>
+<p>TODO: Connect LED</p>
+<p>TODO: QEMU</p>
+<h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">6 Simulate the LED on Ox64 Emulator</a></h1>
 <p>TODO</p>
 <p>Let’s simulate the LED on Ox64 Emulator…</p>
 <ul>
@@ -570,7 +357,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>And it works! https://lupyuen.github.io/nuttx-tinyemu/quickjs/</p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title2.png" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -595,7 +382,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/quickjs.md"><strong>lupyuen.github.io/src/quickjs.md</strong></a></p>
-<h1 id="appendix-build-quickjs-for-nuttx"><a href="#appendix-build-quickjs-for-nuttx">11 Appendix: Build QuickJS for NuttX</a></h1>
+<h1 id="appendix-build-quickjs-for-nuttx"><a href="#appendix-build-quickjs-for-nuttx">8 Appendix: Build QuickJS for NuttX</a></h1>
 <p>TODO</p>
 <p>From the <a href="nuttx/make.log">Makefile Log</a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build qjs.o
