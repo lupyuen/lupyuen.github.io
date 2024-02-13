@@ -239,38 +239,38 @@ static const JSCFunctionListEntry js_os_funcs[] = {
 
 // Define our ioctl() function
 static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv) {
-    int fd, req;
-    int64_t arg, ret;
-    BOOL is_bigint;
-    
-    // First Arg is ioctl() File Descriptor (int32)
-    if (JS_ToInt32(ctx, &fd, argv[0]))
-        return JS_EXCEPTION;
-    
-    // Second Arg is ioctl() Request (int32)
-    if (JS_ToInt32(ctx, &req, argv[1]))
-        return JS_EXCEPTION;
+  int fd, req;       // ioctl() File Descriptor and Request Number
+  int64_t arg, ret;  // ioctl() Parameter and Return Value
+  BOOL is_bigint;    // True if we're using BigInt for 64-bit Integers
+  
+  // First Arg is ioctl() File Descriptor (int32)
+  if (JS_ToInt32(ctx, &fd, argv[0]))
+    return JS_EXCEPTION;
+  
+  // Second Arg is ioctl() Request Number (int32)
+  if (JS_ToInt32(ctx, &req, argv[1]))
+    return JS_EXCEPTION;
 
-    // Third Arg is ioctl() Parameter (int64)
-    // TODO: What if it's int32? How to pass a Pointer to Struct?
-    is_bigint = JS_IsBigInt(ctx, argv[2]);
-    if (JS_ToInt64Ext(ctx, &arg, argv[2]))
-        return JS_EXCEPTION;
+  // Third Arg is ioctl() Parameter (int64)
+  // TODO: What if it's int32? How to pass a Pointer to Struct?
+  is_bigint = JS_IsBigInt(ctx, argv[2]);
+  if (JS_ToInt64Ext(ctx, &arg, argv[2]))
+    return JS_EXCEPTION;
 
-    // Call NuttX ioctl()
-    ret = ioctl(fd, req, arg);
-    if (ret == -1)
-        ret = -errno;
+  // Call NuttX ioctl()
+  ret = ioctl(fd, req, arg);
+  if (ret == -1)
+    ret = -errno;
 
-    // Return the result as int64 or int32
-    if (is_bigint)
-        return JS_NewBigInt64(ctx, ret);
-    else
-        return JS_NewInt64(ctx, ret);
+  // Return the Result as 64-bit or 32-bit Integers
+  if (is_bigint)
+    return JS_NewBigInt64(ctx, ret);
+  else
+    return JS_NewInt64(ctx, ret);
 }
 ```
 
-Yep it seems to work...
+Yep __ioctl()__ is alive...
 
 ```bash
 NuttShell (NSH) NuttX-12.4.0-RC0
@@ -299,7 +299,7 @@ We test __ioctl()__ on a Real Device with a Real LED: __Ox64 BL808 RISC-V SBC__.
 
 - [__Increase the App Stack Size__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048)  from 2 KB to 64 KB
 
-  (Because QuickJS will crash mysteriously)
+  (Otherwise QuickJS will crash mysteriously)
 
 - [__Increase the RAM Disk Region__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226) from 16 MB to 40 MB
 
@@ -311,7 +311,19 @@ We test __ioctl()__ on a Real Device with a Real LED: __Ox64 BL808 RISC-V SBC__.
 
 TODO: Connect LED
 
-TODO: QEMU
+TODO: Ox64 Log
+
+_If we don't have an Ox64 SBC?_
+
+No worries, the exact same steps will work for __QEMU Emulator__ (64-bit RISC-V)...
+
+- [__Add the LED Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911) for QEMU
+
+- [__Fix the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429) for testing LED Driver
+
+- [__Build QuickJS__](TODO) for NuttX QEMU
+
+TODO: QEMU Log
 
 # Simulate the LED on Ox64 Emulator
 
