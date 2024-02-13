@@ -408,6 +408,15 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>(On or Off)</p>
 </li>
 </ol>
+<p>TODO: Pic of Simulated LED</p>
+<p>Here’s our NuttX Emulator intercepting all <strong>Writes to GPIO 29</strong>…</p>
+<p>TODO</p>
+<p>Which sends a Notification to the Web Browser, saying that the <strong>GPIO Output has changed</strong>…</p>
+<div class="example-wrap"><pre class="language-json"><code>{&quot;nuttxemu&quot;:
+  {&quot;gpio29&quot;: 1}
+}
+</code></pre></div>
+<p>Our Web Browser JavaScript receives the Notification and <strong>Flips the Simulated LED</strong>…</p>
 <p>TODO</p>
 <p>Let’s simulate the LED on Ox64 Emulator…</p>
 <ul>
