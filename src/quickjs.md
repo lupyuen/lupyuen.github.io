@@ -158,7 +158,7 @@ After these fixes, QuickJS builds OK for NuttX! We run it...
 
 _We fixed the QuickJS Build for NuttX... Does it run?_
 
-Sorry nope! QuickJS ran into [__Mysterious Crashes__](https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx) on NuttX...
+Sorry nope! QuickJS ran into [__Mysterious Crashes__](https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx) on NuttX (with looping Stack Traces)...
 
 - [__Strange Pointers__](https://github.com/lupyuen/quickjs-nuttx#atom-sentinel-becomes-0xffff_ffff) (`0xFFFF_FFFF`) while reading the JavaScript Atoms
 
@@ -168,7 +168,7 @@ Sorry nope! QuickJS ran into [__Mysterious Crashes__](https://github.com/lupyuen
 
 - [__Heap Memory__](https://github.com/lupyuen/quickjs-nuttx#heap-errors-and-stdio-weirdness) got weirdly corrupted (even __`printf`__ failed)
 
-Then we saw this [__Vital Clue__](https://github.com/lupyuen/quickjs-nuttx#nuttx-stack-is-full-of-quickjs)...
+After plenty of headscratching troubleshooting, this [__Vital Clue__](https://github.com/lupyuen/quickjs-nuttx#nuttx-stack-is-full-of-quickjs) suddenly popped up...
 
 ```text
 riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 00000000c0006d52, MTVAL: ffffffffffffffff
@@ -182,6 +182,8 @@ dump_task:       3     3 100 RR       Task    - Running            0000000000000
 ```
 
 The last line shows that the __QuickJS Stack__ (2 KB) was __100% Full__! (And the Command Line was badly messed up)
+
+(Lesson Learnt: If the NuttX Stack Dump loops forever, we're probably __Out Of Stack Space__)
 
 We follow these steps to [__increase the Stack Size__](https://github.com/lupyuen/nuttx-star64#increase-stack-size)...
 
