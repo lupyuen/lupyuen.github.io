@@ -58,35 +58,39 @@ Now we do some finger exercises (sorry __copy-pasta won't work__ in the Emulator
 
     __GPIO 29__ goes back to normal!
 
-Our Demo looks like this...
+1.  Our Demo goes like this...
 
-```bash
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> qjs
-QuickJS - Type "\h" for help
+    ```bash
+    NuttShell (NSH) NuttX-12.4.0-RC0
+    nsh> qjs
+    QuickJS - Type "\h" for help
 
-## Define the NuttX LED Command
-qjs > ULEDIOC_SETALL = 0x1d03
-7427
+    ## Define the NuttX LED Command
+    qjs > ULEDIOC_SETALL = 0x1d03
+    7427
 
-## Open the NuttX LED Device (write-only)
-qjs > fd = os.open("/dev/userleds", os.O_WRONLY)
-3
+    ## Open the NuttX LED Device (write-only)
+    qjs > fd = os.open("/dev/userleds", os.O_WRONLY)
+    3
 
-## Flip LED On: GPIO 29 turns Green...
-qjs > os.ioctl(fd, ULEDIOC_SETALL, 1)
-bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-0
+    ## Flip LED On: GPIO 29 turns Green...
+    qjs > os.ioctl(fd, ULEDIOC_SETALL, 1)
+    bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+    0
 
-## Flip LED Off: GPIO 29 goes back to normal...
-qjs > os.ioctl(fd, ULEDIOC_SETALL, 0)
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-0
-```
+    ## Flip LED Off: GPIO 29 goes back to normal...
+    qjs > os.ioctl(fd, ULEDIOC_SETALL, 0)
+    bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+    0
+    ```
 
-[(See the __Complete Log__)](https://github.com/lupyuen/quickjs-nuttx#quickjs-blinks-the-led-on-ox64-emulator)
+    [(See the __Complete Log__)](https://github.com/lupyuen/quickjs-nuttx#quickjs-blinks-the-led-on-ox64-emulator)
 
-[(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
+    [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
+
+_Wow a Blinky in JavaScript?_
+
+Yep we flipped this [__NuttX Blinky App__](TODO) from C to __Interactive JavaScript__!
 
 TODO
 
