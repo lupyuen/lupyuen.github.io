@@ -22,9 +22,15 @@ os.ioctl(fd, ULEDIOC_SETALL, 1);
 os.ioctl(fd, ULEDIOC_SETALL, 0);
 ```
 
-Let's do it!
+Let's do it! In this article we...
 
-TODO: How Small?
+TODO
+
+We go hands-on (fingers too)...
+
+TODO: How Small? Heap Size?
+
+TODO: Static Linking
 
 # QuickJS on NuttX Emulator
 
@@ -34,15 +40,15 @@ Click here to try __QuickJS JavaScript Engine__ in NuttX Emulator...
 
   [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
 
-Now we do some finger exercises (sorry __copy-pasta won't work__ in the Emulator)...
+Now we do some Finger Exercises (sorry __copy-pasta won't work__ in the Emulator)
 
-1.  To start QuickJS: Enter...
+1.  To start QuickJS: Enter this at the __NSH Prompt__...
 
     ```bash
     qjs
     ```
 
-1.  At the QuickJS Prompt, enter this to define the __NuttX LED Command__...
+1.  At the QuickJS Prompt: We define the __NuttX LED Command__...
 
     ```javascript
     ULEDIOC_SETALL = 0x1d03
@@ -100,25 +106,11 @@ Now we do some finger exercises (sorry __copy-pasta won't work__ in the Emulator
 
     [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
 
-_Wow a Blinky in JavaScript?_
+_Wow... A Blinky in JavaScript?_
 
 Yep we flipped this [__NuttX Blinky App__](TODO) from C to __Interactive JavaScript__!
 
-TODO
-
-# Porting QuickJS JavaScript Engine to Apache NuttX RTOS
-
-TODO
-
-Let's port [QuickJS JavaScript Engine](https://bellard.org/quickjs/quickjs.html) to Apache NuttX RTOS! (64-bit RISC-V QEMU, Kernel Mode)
-
-_Why are we doing this?_
-
-[QuickJS supports POSIX](https://bellard.org/quickjs/quickjs.html#os-module) open(), read(), ...
-
-So we might run the JavaScript Interpreter on NuttX to control NuttX Devices, REPL-style! (Like blinking the LED Driver)
-
-(But ioctl() is missing, maybe we can extend QuickJS?)
+How did we make this happen? Read on to find out...
 
 # Compile QuickJS for NuttX
 
