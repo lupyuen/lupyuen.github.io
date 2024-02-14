@@ -152,6 +152,11 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
 </ol>
+<p><em>Help! Our fingers are hurting…</em></p>
+<p>Try this instead…</p>
+<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; 
+</code></pre></div>
+<p>TODO</p>
 <p><em>Wow… A Blinky in JavaScript?</em></p>
 <p>Yep we flipped this <a href="TODO"><strong>NuttX Blinky App</strong></a> from C to <strong>Interactive JavaScript</strong>!</p>
 <p><em>Does it work on Real Hardware?</em></p>
@@ -394,7 +399,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><em>Will QuickJS runs on all kinds of NuttX Devices?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ riscv64-unknown-elf-size apps/bin/qjs
    text    data     bss     dec     hex filename
- 554847     260      94  555201   878c1 ../apps/bin/qjs
+ 554847     260      94  555201   878c1 apps/bin/qjs
 </code></pre></div>
 <p>Probably not? JavaScript needs quite a bit of RAM to run efficiently.</p>
 <p>We ran <a href="https://github.com/PromyLOPh/linkermapviz">linkermapviz</a> on the Linker Map: <a href="nuttx/qjs-riscv.map">nuttx/qjs-riscv.map</a></p>
