@@ -445,7 +445,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>(On or Off)</p>
 </li>
 </ol>
-<p>TODO: Pic of Simulated LED</p>
+<p><img src="https://lupyuen.github.io/images/quickjs-led.jpg" alt="Simulate the LED on Ox64 Emulator" /></p>
 <p>Here’s our NuttX Emulator (WebAssembly) intercepting all <strong>Writes to GPIO 29</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L486-L553">riscv_cpu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// WebAssembly called by TinyEmu to emulate
 // Writes to RISC-V Addresses
