@@ -102,6 +102,16 @@ Now we do some Finger Exercises (sorry __copy-pasta won't work__ in the Emulator
 
     [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
 
+_Help! Our fingers are hurting..._
+
+Try this instead...
+
+```bash
+nsh> 
+```
+
+TODO
+
 _Wow... A Blinky in JavaScript?_
 
 Yep we flipped this [__NuttX Blinky App__](TODO) from C to __Interactive JavaScript__!
@@ -368,7 +378,7 @@ _Will QuickJS runs on all kinds of NuttX Devices?_
 ```bash
 $ riscv64-unknown-elf-size apps/bin/qjs
    text    data     bss     dec     hex filename
- 554847     260      94  555201   878c1 ../apps/bin/qjs
+ 554847     260      94  555201   878c1 apps/bin/qjs
 ```
 
 Probably not? JavaScript needs quite a bit of RAM to run efficiently.
