@@ -107,10 +107,10 @@ _Help! Our fingers are hurting..._
 Try this instead...
 
 ```bash
-nsh> 
+nsh> qjs --std /system/bin/blink.js
 ```
 
-TODO
+[(See the __Blinky JavaScript__)](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/blink.js)
 
 _Wow... A Blinky in JavaScript?_
 
