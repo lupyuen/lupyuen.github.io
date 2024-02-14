@@ -409,25 +409,104 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </li>
 </ol>
 <p>TODO: Pic of Simulated LED</p>
-<p>Here’s our NuttX Emulator intercepting all <strong>Writes to GPIO 29</strong>…</p>
-<p>TODO</p>
+<p>Here’s our NuttX Emulator intercepting all <strong>Writes to GPIO 29</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L486-L553">riscv_cpu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* return 0 if OK, != 0 if exception */
+int target_write_slow(RISCVCPUState *s, target_ulong addr,
+                      mem_uint_t val, int size_log2)
+{
+    int size, i, tlb_idx, err;
+    target_ulong paddr, offset;
+    uint8_t *ptr;
+    PhysMemoryRange *pr;
+    
+    /* first handle unaligned accesses */
+    size = 1 &lt;&lt; size_log2;
+    if ((addr &amp; (size - 1)) != 0) {
+        /* XXX: should avoid modifying the memory in case of exception */
+        for(i = 0; i &lt; size; i++) {
+            err = target_write_u8(s, addr + i, (val &gt;&gt; (8 * i)) &amp; 0xff);
+            if (err)
+                return err;
+        }
+    } else {
+        if (get_phys_addr(s, &amp;paddr, addr, ACCESS_WRITE)) {
+            s-&gt;pending_tval = addr;
+            s-&gt;pending_exception = CAUSE_STORE_PAGE_FAULT;
+            return -1;
+        }
+
+        //// Ignore the Upper Bits due to T-Head MMU Flags
+        paddr &amp;= 0xfffffffffffful; ////
+
+        pr = get_phys_mem_range(s-&gt;mem_map, paddr);
+        if (!pr) {
+            //// Begin Test: Intercept Memory-Mapped I/O
+            switch(paddr) {
+            case 0x30002088: { // uart_fifo_wdata: UART Output
+                // Print the character
+                char buf[1];
+                buf[0] = val;
+                print_console(NULL, buf, 1);
+                break;
+            }
+            // Console Input: Clear the interrupt after setting BL808_UART_INT_CLEAR (0x30002028)
+            case 0x30002028: {
+                _info(&quot;write BL808_UART_INT_CLEAR: 0x%x\n&quot;, val);
+                void virtio_ack_irq(void *device0);
+                virtio_ack_irq(NULL);
+                break;
+            }
+            // GPIO Output: Send an Emulator Notification to the Console: {&quot;nuttxemu&quot;:{&quot;gpio29&quot;:1}}
+            case 0x20000938: {  // GPIO 29
+                // Check if the Output Bit is Off or On
+                #define reg_gpio_xx_o 24
+                #define reg_gpio_xx_i 28
+                const char b =
+                    ((val &amp; (1 &lt;&lt; reg_gpio_xx_o)) == 0)
+                    ? &#39;0&#39; : &#39;1&#39;;
+                char notify[] = &quot;{\&quot;nuttxemu\&quot;:{\&quot;gpio29\&quot;:0}}\r\n&quot;;
+                notify[strlen(notify) - 5] = b;
+                print_console(NULL, notify, strlen(notify));
+            }
+            default:  // Unknown Memory-Mapped I/O
+#ifdef DUMP_INVALID_MEM_ACCESS
+                printf(&quot;target_write_slow: invalid physical address 0x&quot;);
+                print_target_ulong(paddr);
+                printf(&quot;\n&quot;);
+#else
+                break;
+#endif                
+            }
+</code></pre></div>
 <p>Which sends a Notification to the Web Browser, saying that the <strong>GPIO Output has changed</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{&quot;nuttxemu&quot;:
   {&quot;gpio29&quot;: 1}
 }
 </code></pre></div>
-<p>Our Web Browser JavaScript receives the Notification and <strong>Flips the Simulated LED</strong>…</p>
+<p>Our Web Browser JavaScript receives the Notification and <strong>Flips the Simulated LED</strong>: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/term.js#L487-L507">term.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>Term.prototype.write = function(str)
+{
+    //// Begin Test: Handle Emulator Notification: {&quot;nuttxemu&quot;:{&quot;gpio29&quot;:1}}
+    if (str.indexOf(`{&quot;nuttxemu&quot;:`) == 0) {
+        const notify = JSON.parse(str).nuttxemu;  // {gpio29:1}
+        console.log({ notify });
+        const gpio = Object.keys(notify)[0];  // &quot;gpio29&quot;
+        const val = notify[gpio];  // 0 or 1
+        console.log({ gpio, val });
+
+        document.getElementById(&quot;status&quot;).style.width = document.getElementById(&quot;term_wrap&quot;).style.width;
+        const gpio_status = document.getElementById(gpio);
+        gpio_status.style.display = &quot;block&quot;;
+        gpio_status.className = (val == 0)
+            ? &quot;gpio_off&quot;
+            : &quot;gpio_on&quot;;
+        return;
+    }
+    //// End Test
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/index.html#L21-L29">(<strong>status</strong> and <strong>gpio29</strong> are in HTML)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/style.css#L106-L117">(<strong>gpio_off</strong> and <strong>gpio_on</strong> are in CSS)</a></p>
 <p>TODO</p>
-<p>Let’s simulate the LED on Ox64 Emulator…</p>
-<ul>
-<li>
-<p>When writing to BL808 GPIO Output: <a href="https://github.com/lupyuen/ox64-tinyemu/commit/622ba840fd40ac627de2bdb6a73354ce291754b9">Send an Emulator Notification</a> to the Console: <code>{&quot;nuttxemu&quot;:{&quot;gpio29&quot;:1}}</code></p>
-</li>
-<li>
-<p>In our Web Browser JavaScript: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/2cadf80b7a95e182d9ad0aef2edfd08e0948affa#diff-0935fa7cc51b2920653500625c6e64acb1c8b81b85a6042c716b049205c75a63">Handle Emulator Notification</a></p>
-</li>
-</ul>
-<p>And it works! https://lupyuen.github.io/nuttx-tinyemu/quickjs/</p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-text.jpg" alt="QuickJS Code Size" /></p>
 <h1 id="how-small-is-quickjs"><a href="#how-small-is-quickjs">7 How Small is QuickJS</a></h1>
@@ -438,10 +517,13 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>TODO: Text, data, BSS</p>
 <p>TODO: Heap Size?</p>
 <p>TODO: Static Linking</p>
-<p>QuickJS with All The Toppings: 400 KB + 154 KB</p>
-<p>Without BigInt: -32 KB</p>
-<p>Without REPL: -16 KB</p>
-<p>Without BigInt + REPL: -32 KB - 16 KB</p>
+<div><table><thead><tr><th style="text-align: left">Size of Code + Data</th><th style="text-align: center"></th></tr></thead><tbody>
+<tr><td style="text-align: left">QuickJS with All The Toppings</td><td style="text-align: center">554 KB</td></tr>
+<tr><td style="text-align: left">Without REPL</td><td style="text-align: center">538 KB</td></tr>
+<tr><td style="text-align: left">Without BigInt</td><td style="text-align: center">522 KB</td></tr>
+<tr><td style="text-align: left">Without BigInt, REPL</td><td style="text-align: center">506 KB</td></tr>
+</tbody></table>
+</div>
 <p><img src="https://lupyuen.github.io/images/quickjs-data.jpg" alt="QuickJS Data Size" /></p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
