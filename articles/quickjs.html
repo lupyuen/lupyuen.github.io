@@ -409,100 +409,61 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </li>
 </ol>
 <p>TODO: Pic of Simulated LED</p>
-<p>Here’s our NuttX Emulator intercepting all <strong>Writes to GPIO 29</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L486-L553">riscv_cpu.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/* return 0 if OK, != 0 if exception */
-int target_write_slow(RISCVCPUState *s, target_ulong addr,
-                      mem_uint_t val, int size_log2)
-{
-    int size, i, tlb_idx, err;
-    target_ulong paddr, offset;
-    uint8_t *ptr;
-    PhysMemoryRange *pr;
-    
-    /* first handle unaligned accesses */
-    size = 1 &lt;&lt; size_log2;
-    if ((addr &amp; (size - 1)) != 0) {
-        /* XXX: should avoid modifying the memory in case of exception */
-        for(i = 0; i &lt; size; i++) {
-            err = target_write_u8(s, addr + i, (val &gt;&gt; (8 * i)) &amp; 0xff);
-            if (err)
-                return err;
-        }
-    } else {
-        if (get_phys_addr(s, &amp;paddr, addr, ACCESS_WRITE)) {
-            s-&gt;pending_tval = addr;
-            s-&gt;pending_exception = CAUSE_STORE_PAGE_FAULT;
-            return -1;
-        }
+<p>Here’s our NuttX Emulator (WebAssembly) intercepting all <strong>Writes to GPIO 29</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L486-L553">riscv_cpu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// WebAssembly called by TinyEmu to emulate
+// Writes to RISC-V Addresses
+int target_write_slow(...) {
+  ...
+  // Intercept Writes to Memory-Mapped I/O
+  switch(paddr) {
 
-        //// Ignore the Upper Bits due to T-Head MMU Flags
-        paddr &amp;= 0xfffffffffffful; ////
+    // If we&#39;re writing to BL808 GPIO 29 (0x2000_0938)...
+    case 0x20000938: {
+      // Send an Emulator Notification to the Console:
+      // {&quot;nuttxemu&quot;:{&quot;gpio29&quot;:1}}
 
-        pr = get_phys_mem_range(s-&gt;mem_map, paddr);
-        if (!pr) {
-            //// Begin Test: Intercept Memory-Mapped I/O
-            switch(paddr) {
-            case 0x30002088: { // uart_fifo_wdata: UART Output
-                // Print the character
-                char buf[1];
-                buf[0] = val;
-                print_console(NULL, buf, 1);
-                break;
-            }
-            // Console Input: Clear the interrupt after setting BL808_UART_INT_CLEAR (0x30002028)
-            case 0x30002028: {
-                _info(&quot;write BL808_UART_INT_CLEAR: 0x%x\n&quot;, val);
-                void virtio_ack_irq(void *device0);
-                virtio_ack_irq(NULL);
-                break;
-            }
-            // GPIO Output: Send an Emulator Notification to the Console: {&quot;nuttxemu&quot;:{&quot;gpio29&quot;:1}}
-            case 0x20000938: {  // GPIO 29
-                // Check if the Output Bit is Off or On
-                #define reg_gpio_xx_o 24
-                #define reg_gpio_xx_i 28
-                const char b =
-                    ((val &amp; (1 &lt;&lt; reg_gpio_xx_o)) == 0)
-                    ? &#39;0&#39; : &#39;1&#39;;
-                char notify[] = &quot;{\&quot;nuttxemu\&quot;:{\&quot;gpio29\&quot;:0}}\r\n&quot;;
-                notify[strlen(notify) - 5] = b;
-                print_console(NULL, notify, strlen(notify));
-            }
-            default:  // Unknown Memory-Mapped I/O
-#ifdef DUMP_INVALID_MEM_ACCESS
-                printf(&quot;target_write_slow: invalid physical address 0x&quot;);
-                print_target_ulong(paddr);
-                printf(&quot;\n&quot;);
-#else
-                break;
-#endif                
-            }
+      // Check if the Output Bit is Off or On
+      #define reg_gpio_xx_o 24
+      #define reg_gpio_xx_i 28
+      const char b =
+        ((val &amp; (1 &lt;&lt; reg_gpio_xx_o)) == 0)
+        ? &#39;0&#39; : &#39;1&#39;;
+
+      // Send the Notification to Console
+      char notify[] = &quot;{\&quot;nuttxemu\&quot;:{\&quot;gpio29\&quot;:0}}\r\n&quot;;
+      notify[strlen(notify) - 5] = b;
+      print_console(NULL, notify, strlen(notify));
+    }
 </code></pre></div>
-<p>Which sends a Notification to the Web Browser, saying that the <strong>GPIO Output has changed</strong>…</p>
+<p>Which sends a Notification to the Web Browser (JavaScript), saying that the <strong>GPIO Output has changed</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{&quot;nuttxemu&quot;:
   {&quot;gpio29&quot;: 1}
 }
 </code></pre></div>
-<p>Our Web Browser JavaScript receives the Notification and <strong>Flips the Simulated LED</strong>: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/term.js#L487-L507">term.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>Term.prototype.write = function(str)
-{
-    //// Begin Test: Handle Emulator Notification: {&quot;nuttxemu&quot;:{&quot;gpio29&quot;:1}}
-    if (str.indexOf(`{&quot;nuttxemu&quot;:`) == 0) {
-        const notify = JSON.parse(str).nuttxemu;  // {gpio29:1}
-        console.log({ notify });
-        const gpio = Object.keys(notify)[0];  // &quot;gpio29&quot;
-        const val = notify[gpio];  // 0 or 1
-        console.log({ gpio, val });
+<p>Our Web Browser (JavaScript) receives the Notification and <strong>Flips the Simulated LED</strong>: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/term.js#L487-L507">term.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// JavaScript called by our WebAssembly
+// to print something to Console
+Term.prototype.write = function(str) {
 
-        document.getElementById(&quot;status&quot;).style.width = document.getElementById(&quot;term_wrap&quot;).style.width;
-        const gpio_status = document.getElementById(gpio);
-        gpio_status.style.display = &quot;block&quot;;
-        gpio_status.className = (val == 0)
-            ? &quot;gpio_off&quot;
-            : &quot;gpio_on&quot;;
-        return;
-    }
-    //// End Test
+  // If this is a Notification JSON from Emulator WebAssembly:
+  // {&quot;nuttxemu&quot;:{&quot;gpio29&quot;:1}}
+  if (str.indexOf(`{&quot;nuttxemu&quot;:`) == 0) {
+    
+    // Get the GPIO Number and GPIO Value from JSON
+    const notify = JSON.parse(str).nuttxemu;  // {gpio29:1}
+    const gpio = Object.keys(notify)[0];  // &quot;gpio29&quot;
+    const val = notify[gpio];  // 0 or 1
+
+    // Render the GPIO in HTML:
+    // &lt;td id=&quot;gpio29&quot; class=&quot;gpio_on&quot;&gt;GPIO29&lt;/td&gt;
+    document.getElementById(&quot;status&quot;).style.width = document.getElementById(&quot;term_wrap&quot;).style.width;  // Spread out the GPIO Status
+    const gpio_status = document.getElementById(gpio);
+    gpio_status.style.display = &quot;block&quot;;
+    gpio_status.className = (val == 0)
+      ? &quot;gpio_off&quot;  // Normal CSS Style
+      : &quot;gpio_on&quot;;  // Green CSS Style
+    return;
+  }
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/index.html#L21-L29">(<strong>status</strong> and <strong>gpio29</strong> are in HTML)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/style.css#L106-L117">(<strong>gpio_off</strong> and <strong>gpio_on</strong> are in CSS)</a></p>
