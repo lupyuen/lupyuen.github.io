@@ -52,6 +52,8 @@ Now we do some Finger Exercises (sorry __copy-pasta won't work__ in the Emulator
     ULEDIOC_SETALL = 0x1d03
     ```
 
+    [(About __ULEDIOC_SETALL__)](https://lupyuen.github.io/articles/nim#blink-an-led)
+
 1.  Next we open the __NuttX LED Device__ (write-only)...
 
     ```javascript
@@ -64,7 +66,7 @@ Now we do some Finger Exercises (sorry __copy-pasta won't work__ in the Emulator
     os.ioctl(fd, ULEDIOC_SETALL, 1)
     ```
 
-    __GPIO 29__ (lower right) turns Green!
+    __GPIO 29__ (pic above, lower right) turns Green!
 
 1.  Then we __Flip Off the LED__...
 
@@ -126,7 +128,7 @@ The exact same NuttX Image blinks a Real LED on [__Ox64 BL808 SBC__](https://www
 
 How did we make this happen? Read on to find out...
 
-TODO: Pic of Real LED
+TODO: Pic of ???
 
 # Build QuickJS for NuttX
 
@@ -443,9 +445,9 @@ And experiment with all kinds of __NuttX Drivers__ via ioctl(), the Interactive 
 
 _Any diff between QEMU and Ox64 QuickJS?_
 
-QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Static Linking__](TODO).
+QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Static Linking__](https://github.com/apache/nuttx/pull/11524). (Instead of ELF Loader fixing the Relocatable Symbols)
 
-Ox64 QuickJS is kinda chonky right now. But we might reduce the size by ??? % when we switch to Static Linking.
+Right now Ox64 QuickJS is kinda chonky: 23 MB! We might reduce the size to 5 MB when we switch to Static Linking.
 
 ![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.png)
 
