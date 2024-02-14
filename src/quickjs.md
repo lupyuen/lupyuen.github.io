@@ -474,12 +474,12 @@ TODO: Heap Size?
 
 TODO: Static Linking
 
-| Size of Code + Data | |
-|:-----------------|:---:
-| QuickJS with All The Toppings | 554 KB |
-| Without REPL | 538 KB |
-| Without BigInt | 522 KB |
-| Without BigInt, REPL | 506 KB |
+| Size of Code + Data (Read-Only) | |
+|:--------------------|:---:
+| QuickJS with All The Toppings | __554 KB__ |
+| Without REPL | __538 KB__ |
+| Without BigInt | __522 KB__ |
+| Without BigInt, REPL | __506 KB__ |
 
 ![QuickJS Data Size](https://lupyuen.github.io/images/quickjs-data.jpg)
 
