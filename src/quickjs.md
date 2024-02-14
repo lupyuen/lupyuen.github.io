@@ -651,3 +651,5 @@ const uint8_t qjsc_repl[16280] = {
 ```
 
 TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1
+
+TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1
