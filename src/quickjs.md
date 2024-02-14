@@ -102,7 +102,7 @@ Now we do some Finger Exercises (sorry __copy-pasta won't work__ in the Emulator
 
     [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
 
-_Help! Our fingers are hurting..._
+_Whelp our fingers are hurting!_
 
 Try this instead...
 
@@ -148,7 +148,9 @@ Then we hit some __Missing Functions__...
 
 _How did we fix the missing functions?_
 
-1.  __POSIX Functions:__ The typical POSIX Functions are OK. The special ones are probably available if we tweak the __Build Options__ for NuttX. For now, we [__stubbed them out__](TODO).
+1.  __POSIX Functions:__ The typical POSIX Functions are OK. The special ones are probably available if we tweak the __Build Options__ for NuttX.
+
+    For now, we stick with the Basic NuttX Config and stub out the [__Advanced POSIX Functions__](TODO).
 
 1.  __Dynamic Linking:__ We won't support Dynamic Linking for NuttX. We [__stubbed them out__](TODO).
 
@@ -371,7 +373,9 @@ No worries, the exact same steps will work for __QEMU Emulator__ (64-bit RISC-V)
 
 TODO: QEMU Log
 
-![QuickJS Code Size](https://lupyuen.github.io/images/quickjs-text.jpg)
+![QuickJS Code Size rendered with linkermapviz](https://lupyuen.github.io/images/quickjs-text.jpg)
+
+[_QuickJS Code Size rendered with linkermapviz_](https://lupyuen.github.io/nuttx-tinyemu/quickjs/linkermap)
 
 # How Small is QuickJS
 
@@ -383,11 +387,11 @@ $ riscv64-unknown-elf-size apps/bin/qjs
  554847     260      94  555201   878c1 apps/bin/qjs
 ```
 
-Probably not? JavaScript needs quite a bit of RAM to run efficiently.
+Probably not? JavaScript needs __quite a bit of RAM__ to run comfortably.
 
-We ran [linkermapviz](https://github.com/PromyLOPh/linkermapviz) on the Linker Map: [nuttx/qjs-riscv.map](nuttx/qjs-riscv.map)
+We ran [__linkermapviz__](https://github.com/PromyLOPh/linkermapviz) on the [__QuickJS Linker Map__](nuttx/qjs-riscv.map) for NuttX QEMU.
 
-To produce this [Visualised Linker Map](https://lupyuen.github.io/nuttx-tinyemu/quickjs/linkermap)
+According to the [__Visualised Linker Map__](https://lupyuen.github.io/nuttx-tinyemu/quickjs/linkermap) (pics above and below), here are the sizes of QuickJS and its options...
 
 | Size of Code + Data (Read-Only) | |
 |:--------------------|:---:
@@ -400,25 +404,42 @@ To produce this [Visualised Linker Map](https://lupyuen.github.io/nuttx-tinyemu/
 
 _What about the Heap Memory Size?_
 
-Based on the NuttX Logs with Heap Logging Enabled...
+Based on the NuttX Logs with __Heap Logging Enabled__...
 
-- [Heap Log: Without REPL](https://github.com/lupyuen/quickjs-nuttx/blob/d2dbef1afef26ae4cc76719d7cac3740da5f3387/nuttx/qemu.log)
+- [__Heap Log: Without REPL__](https://github.com/lupyuen/quickjs-nuttx/blob/d2dbef1afef26ae4cc76719d7cac3740da5f3387/nuttx/qemu.log)
 
-- [Heap Log: With REPL](https://github.com/lupyuen/quickjs-nuttx/blob/38e004e6eb643932f6957e03828ad25242cf803a/nuttx/qemu.log)
+- [__Heap Log: With REPL__](https://github.com/lupyuen/quickjs-nuttx/blob/38e004e6eb643932f6957e03828ad25242cf803a/nuttx/qemu.log)
 
-We compute the Heap Usage in a Spreadsheet...
+TODO: Pic of Spreadsheet
 
-- [Heap Usage: Without Repl](https://docs.google.com/spreadsheets/d/1EpdktueHxfAR4VR80d1XSZRwdO2UvNGf_sPetHHzAGQ/edit?usp=sharing)
+We compute the __Heap Usage__ with a Spreadsheet...
+
+- [__Heap Usage: Without Repl__ (Google Sheets)](https://docs.google.com/spreadsheets/d/1EpdktueHxfAR4VR80d1XSZRwdO2UvNGf_sPetHHzAGQ/edit?usp=sharing)
 
   Max: 276 KB
 
-- [Heap Usage: With Repl](https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit?usp=sharing)
+- [__Heap Usage: With Repl__ (Google Sheets)](https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit?usp=sharing)
 
   Max: 371 KB
 
   (__"Free Size"__ might not be accurate because it uses __VLOOKUP__ for Top-Down Lookup)
 
-TODO: Static Linking
+We figured out the __QuickJS Heap Usage__ (pic below)...
+
+| Max Heap Usage | |
+|:---------------|:---:
+| QuickJS without REPL | __276 KB__
+| QuickJS with REPL | __371 KB__
+
+Which totals __??? KB__ for Barebones QuickJS. And a whopping __??? KB__ for Supersized QuickJS.
+
+TODO: Pic of Chart
+
+_Any diff between QEMU and Ox64 QuickJS?_
+
+QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Static Linking__](TODO).
+
+Ox64 QuickJS is kinda chonky right now. But we might reduce the size by ??? % when we switch to Static Linking.
 
 ![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title2.png)
 
@@ -668,65 +689,32 @@ const uint8_t qjsc_repl[16280] = {
  0x2e, 0x6a, 0x73, 0x06, 0x73, 0x74, 0x64, 0x04,
 ```
 
-TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1
-
-TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1
-
 # Appendix: Build NuttX for QEMU
 
-TODO
+TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1
 
-In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for QEMU RISC-V (64-bit)__ that has Minor Fixes for Nim...
+In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for QEMU RISC-V (64-bit)__ that has...
 
-- [__nsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-dd54e0076f30825f912248f2424460e3126c2a8f4e2880709f5c68af9342ddcf): NuttX Config for QEMU
+- QEMU LED Driver
 
-- [__qemu_rv_autoleds.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-5905dc63d5fd592e0a1e25ab25783ae99e54180a7b98fb59f56a73dee79104e6)
-: Auto LED Driver for QEMU
+- Extra Stack Space
 
-- [__qemu_rv_userleds.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-a6fd389669ddef88302f00a34d401479886cb8983f7be58b32ba075699cb5bb8): User LED Driver for QEMU
-
-- [__qemu_rv_appinit.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-beeaeb03fa5642002a542446c89251c9a7c5c1681cfe915387740ea0975e91b3): Start LED Driver
-
-- [__Makefile__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307): Nimcache has moved 2 folders up
-
-- [__config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879): Add support for 64-bit RISC-V
-
-First we install [__Nim Compiler__](https://nim-lang.org/install_unix.html) (only the Latest Dev Version supports NuttX)...
-
-```bash
-## Install Nim Compiler: https://nim-lang.org/install_unix.html
-curl https://nim-lang.org/choosenim/init.sh -sSf | sh
-
-## Add Nim to PATH
-export PATH=$HOME/.nimble/bin:$PATH
-
-## Select Latest Dev Version of Nim. Will take a while!
-choosenim devel --latest
-
-## Version should be 2.1.1 or later:
-## Nim Compiler Version 2.1.1 [Linux: amd64]
-## Compiled at 2023-12-22
-nim -v
-```
-
-[(Nim won't install? Try a __Linux Container__)](https://github.com/lupyuen/nuttx-nim#build-nuttx-with-debian-container-in-vscode)
-
-Then we download and build NuttX for __QEMU RISC-V (64-bit)__...
+Here are the steps to download and build NuttX for __QEMU RISC-V (64-bit)__...
 
 ```bash
 ## Download the WIP NuttX Source Code
 git clone \
-  --branch nim \
+  --branch qemuled \
   https://github.com/lupyuen2/wip-pinephone-nuttx \
   nuttx
 git clone \
-  --branch nim \
+  --branch qemuled \
   https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
   apps
 
-## Configure NuttX for QEMU RISC-V (64-bit)
+## Configure NuttX for QEMU RISC-V (64-bit Kernel Mode)
 cd nuttx
-tools/configure.sh rv-virt:nsh64
+tools/configure.sh rv-virt:knsh64
 
 ## Build NuttX
 make
@@ -738,6 +726,13 @@ riscv64-unknown-elf-objdump \
   nuttx \
   >nuttx.S \
   2>&1
+
+## Build the Apps Filesystem
+make -j 8 export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j 8 import
+popd
 ```
 
 [(Remember to install the __Build Prerequisites and Toolchain__)](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
@@ -762,98 +757,46 @@ qemu-system-riscv64 \
   -nographic
 ```
 
-At the NuttX Prompt, enter "__hello_nim__"...
+At the NuttX Prompt, enter...
 
 ```text
-nsh> hello_nim
-Hello Nim!
-Opening /dev/userleds
+nsh> qjs --std /system/bin/blink.js
 ```
 
-[(Enter "__help__" to see the available commands)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L472-L497)
-
-Nim on NuttX blinks our __Simulated LED__...
+QuickJS on NuttX blinks our __Simulated LED__...
 
 ```text
-Set LED 0 to 1
-board_userled_all: led=0, val=1
-Waiting...
-
-Set LED 0 to 0
-board_userled_all: led=0, val=0
-Waiting...
-
-Set LED 0 to 1
-board_userled_all: led=0, val=1
-Waiting...
+TODO
 ```
 
-[(See the __NuttX Log__)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L210-L471)
+TODO: [(See the __NuttX Log__)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L210-L471)
 
 To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
-_How to run our own Nim Code on NuttX?_
-
-Locate this __Nim Source File__ and replace by our own Nim Code...
-
-```text
-apps/examples/hello_nim/hello_nim_async.nim
-```
-
-Then rebuild and restart NuttX.
-
-![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!](https://lupyuen.github.io/images/nim-ox64.png)
-
 # Appendix: Build NuttX for Ox64
 
-TODO
+TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1
 
-In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for Ox64__ that has Minor Fixes for Nim...
+In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for Ox64__ that has...
 
-- [__nsh/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078): NuttX Config for Ox64
+- BL808 GPIO Driver
 
-- [__bl808_timerisr.c__](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx): RISC-V Timer for Ox64
+- BL808 LED Driver
 
-- [__bl808_autoleds.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-efdf5ed87983905c7021de03a7add73932da529d4312b80f948eb199c256b170): Auto LED Driver for Ox64
+- Extra Stack Space
 
-- [__bl808_userleds.c__](https://lupyuen.github.io/articles/nim#led-driver-for-ox64): User LED Driver for Ox64
+- Enlarged RAM Disk Region
 
-- [__bl808_appinit.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-902a3cb106dc7153d030370077938ef28c9412d8b3434888fca8bbf1a1cfbd54): Start LED Driver for Ox64
-
-- [__Makefile__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307): Nimcache has moved 2 folders up
-
-- [__config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879): Add support for 64-bit RISC-V
-
-First we install [__Nim Compiler__](https://nim-lang.org/install_unix.html) (only the Latest Dev Version supports NuttX)...
-
-```bash
-## Install Nim Compiler: https://nim-lang.org/install_unix.html
-curl https://nim-lang.org/choosenim/init.sh -sSf | sh
-
-## Add Nim to PATH
-export PATH=$HOME/.nimble/bin:$PATH
-
-## Select Latest Dev Version of Nim. Will take a while!
-choosenim devel --latest
-
-## Version should be 2.1.1 or later:
-## Nim Compiler Version 2.1.1 [Linux: amd64]
-## Compiled at 2023-12-22
-nim -v
-```
-
-[(Nim won't install? Try a __Linux Container__)](https://github.com/lupyuen/nuttx-nim#build-nuttx-with-debian-container-in-vscode)
-
-Then we download and build NuttX for __Ox64 BL808 SBC__...
+These are the steps to build NuttX for __Ox64 BL808 SBC__...
 
 ```bash
 ## Download the WIP NuttX Source Code
 git clone \
-  --branch nim \
+  --branch gpio2 \
   https://github.com/lupyuen2/wip-pinephone-nuttx \
   nuttx
 git clone \
-  --branch nim \
+  --branch gpio2 \
   https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
   apps
 
@@ -942,3 +885,15 @@ diskutil unmountDisk /dev/disk2
 Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg) and power up Ox64.
 
 Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH).
+
+At the NuttX Prompt, enter...
+
+```text
+nsh> qjs --std /system/bin/blink.js
+```
+
+QuickJS on NuttX blinks our __LED on GPIO 29__...
+
+```text
+TODO
+```
