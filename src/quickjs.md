@@ -359,6 +359,43 @@ No worries, the exact same steps will work for __QEMU Emulator__ (64-bit RISC-V)
 
 TODO: QEMU Log
 
+![QuickJS Code Size](https://lupyuen.github.io/images/quickjs-text.jpg)
+
+# How Small is QuickJS
+
+_Will QuickJS runs on all kinds of NuttX Devices?_
+
+Probably not? JavaScript needs quite a bit of RAM to run efficiently.
+
+We ran [linkermapviz](https://github.com/PromyLOPh/linkermapviz) on the Linker Map: [nuttx/qjs-riscv.map](nuttx/qjs-riscv.map)
+
+To produce this [Visualised Linker Map](https://lupyuen.github.io/nuttx-tinyemu/quickjs/linkermap)
+
+| Size of Code + Data (Read-Only) | |
+|:--------------------|:---:
+| QuickJS with All The Toppings | __554 KB__ |
+| Without REPL | __538 KB__ |
+| Without BigInt | __522 KB__ |
+| Without BigInt, REPL | __506 KB__ |
+
+![QuickJS Data Size](https://lupyuen.github.io/images/quickjs-data.jpg)
+
+_What about the Heap Memory Size?_
+
+Based on the NuttX Logs with Heap Logging Enabled...
+
+- [Heap Log: Without REPL](https://github.com/lupyuen/quickjs-nuttx/blob/d2dbef1afef26ae4cc76719d7cac3740da5f3387/nuttx/qemu.log)
+
+- [Heap Log: With REPL](https://github.com/lupyuen/quickjs-nuttx/blob/38e004e6eb643932f6957e03828ad25242cf803a/nuttx/qemu.log)
+
+We compute the Heap Usage in a Spreadsheet...
+
+- [Heap Usage: Without Repl](https://docs.google.com/spreadsheets/d/1EpdktueHxfAR4VR80d1XSZRwdO2UvNGf_sPetHHzAGQ/edit?usp=sharing)
+
+- [Heap Usage: With Repl](https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit?usp=sharing)
+
+TODO: Static Linking
+
 ![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title2.png)
 
 # Simulate the LED on Ox64 Emulator
@@ -455,33 +492,6 @@ Term.prototype.write = function(str) {
 TODO
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
-
-![QuickJS Code Size](https://lupyuen.github.io/images/quickjs-text.jpg)
-
-# How Small is QuickJS
-
-_Will QuickJS runs on all kinds of NuttX Devices?_
-
-Probably not? JavaScript needs quite a bit of RAM to run efficiently.
-
-We ran [linkermapviz](https://github.com/PromyLOPh/linkermapviz) on the Linker Map: [nuttx/qjs-riscv.map](nuttx/qjs-riscv.map)
-
-To produce this [Visualised Linker Map](https://lupyuen.github.io/nuttx-tinyemu/quickjs/linkermap)
-
-TODO: Text, data, BSS
-
-TODO: Heap Size?
-
-TODO: Static Linking
-
-| Size of Code + Data (Read-Only) | |
-|:--------------------|:---:
-| QuickJS with All The Toppings | __554 KB__ |
-| Without REPL | __538 KB__ |
-| Without BigInt | __522 KB__ |
-| Without BigInt, REPL | __506 KB__ |
-
-![QuickJS Data Size](https://lupyuen.github.io/images/quickjs-data.jpg)
 
 # What's Next
 
