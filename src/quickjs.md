@@ -112,6 +112,8 @@ nsh> qjs --std /system/bin/blink.js
 
 [(See the __Blinky JavaScript__)](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/blink.js)
 
+[(Option "__`--std`__" will import the __`os`__ functions)](https://bellard.org/quickjs/quickjs.html#qjs-interpreter)
+
 _Wow... A Blinky in JavaScript?_
 
 Yep we flipped this [__NuttX Blinky App__](TODO) from C to __Interactive JavaScript__!
