@@ -104,7 +104,7 @@ Now we do some Finger Exercises (sorry __copy-pasta won't work__ in the Emulator
 
 _Erm our fingers are hurting?_
 
-Try this script that's __Non-Interactive__...
+Try this __Non-Interactive JavaScript__ with QuickJS...
 
 ```bash
 nsh> qjs --std /system/bin/blink.js
@@ -414,9 +414,9 @@ Based on the NuttX Logs with __Heap Logging Enabled__...
 
 - [__Heap Log: With REPL__](https://github.com/lupyuen/quickjs-nuttx/blob/38e004e6eb643932f6957e03828ad25242cf803a/nuttx/qemu.log)
 
-TODO: Pic of Spreadsheet
+![Computing the QuickJS Heap Usage with a Spreadsheet](https://lupyuen.github.io/images/quickjs-sheet.jpg)
 
-We compute the __Heap Usage__ with a Spreadsheet...
+We compute the __Heap Usage__ with a Spreadsheet (pic above)...
 
 - [__Heap Usage: Without Repl__ (Google Sheets)](https://docs.google.com/spreadsheets/d/1EpdktueHxfAR4VR80d1XSZRwdO2UvNGf_sPetHHzAGQ/edit?usp=sharing)
 
@@ -424,20 +424,20 @@ We compute the __Heap Usage__ with a Spreadsheet...
 
   (__"Free Size"__ might not be accurate because it uses __VLOOKUP__ for Top-Down Lookup)
 
-And we figured out the __QuickJS Heap Usage__ (pic below)...
+And deduce the __QuickJS Heap Usage__ (pic below)...
 
 | Max Heap Usage | |
 |:---------------|:---:
-| QuickJS without REPL | __276 KB__
-| QuickJS with REPL | __371 KB__
+| QuickJS without REPL | __276 KB__ |
+| QuickJS with REPL | __371 KB__ |
 
-Which totals __??? KB__ for Barebones QuickJS. And a whopping __??? KB__ for Supersized QuickJS.
+Which totals __782 KB__ for Barebones QuickJS. And a whopping __925 KB__ for Supersized QuickJS. (Nearly 1 MB for Code + Data + Heap!)
 
-For newer __Upsized NuttX Gadgets__ that are __Extra Roomy__ (and Vroomy), there's a high chance that we can run QuickJS.
+For newer __Upsized NuttX Gadgets__ that are __Extra Roomy__ (and Vroomy), there's a high chance that we can run QuickJS...
 
 And experiment with all kinds of __NuttX Drivers__ via ioctl(), the Interactive JavaScript Way!
 
-TODO: Pic of Chart
+![QuickJS Heap Usage](https://lupyuen.github.io/images/quickjs-heap.jpg)
 
 _Any diff between QEMU and Ox64 QuickJS?_
 
