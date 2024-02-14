@@ -155,7 +155,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </li>
 </ol>
 <p><em>Erm our fingers are hurting?</em></p>
-<p>Try this script that’s <strong>Non-Interactive</strong>…</p>
+<p>Try this <strong>Non-Interactive JavaScript</strong> with QuickJS…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; qjs --std /system/bin/blink.js
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/blink.js">(See the <strong>Blinky JavaScript</strong>)</a></p>
@@ -429,8 +429,8 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/38e004e6eb643932f6957e03828ad25242cf803a/nuttx/qemu.log"><strong>Heap Log: With REPL</strong></a></p>
 </li>
 </ul>
-<p>TODO: Pic of Spreadsheet</p>
-<p>We compute the <strong>Heap Usage</strong> with a Spreadsheet…</p>
+<p><img src="https://lupyuen.github.io/images/quickjs-sheet.jpg" alt="Computing the QuickJS Heap Usage with a Spreadsheet" /></p>
+<p>We compute the <strong>Heap Usage</strong> with a Spreadsheet (pic above)…</p>
 <ul>
 <li>
 <p><a href="https://docs.google.com/spreadsheets/d/1EpdktueHxfAR4VR80d1XSZRwdO2UvNGf_sPetHHzAGQ/edit?usp=sharing"><strong>Heap Usage: Without Repl</strong> (Google Sheets)</a></p>
@@ -440,16 +440,16 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>(<strong>“Free Size”</strong> might not be accurate because it uses <strong>VLOOKUP</strong> for Top-Down Lookup)</p>
 </li>
 </ul>
-<p>And we figured out the <strong>QuickJS Heap Usage</strong> (pic below)…</p>
+<p>And deduce the <strong>QuickJS Heap Usage</strong> (pic below)…</p>
 <div><table><thead><tr><th style="text-align: left">Max Heap Usage</th><th style="text-align: center"></th></tr></thead><tbody>
 <tr><td style="text-align: left">QuickJS without REPL</td><td style="text-align: center"><strong>276 KB</strong></td></tr>
 <tr><td style="text-align: left">QuickJS with REPL</td><td style="text-align: center"><strong>371 KB</strong></td></tr>
 </tbody></table>
 </div>
-<p>Which totals <strong>??? KB</strong> for Barebones QuickJS. And a whopping <strong>??? KB</strong> for Supersized QuickJS.</p>
-<p>For newer <strong>Upsized NuttX Gadgets</strong> that are <strong>Extra Roomy</strong> (and Vroomy), there’s a high chance that we can run QuickJS.</p>
+<p>Which totals <strong>782 KB</strong> for Barebones QuickJS. And a whopping <strong>925 KB</strong> for Supersized QuickJS. (Nearly 1 MB for Code + Data + Heap!)</p>
+<p>For newer <strong>Upsized NuttX Gadgets</strong> that are <strong>Extra Roomy</strong> (and Vroomy), there’s a high chance that we can run QuickJS…</p>
 <p>And experiment with all kinds of <strong>NuttX Drivers</strong> via ioctl(), the Interactive JavaScript Way!</p>
-<p>TODO: Pic of Chart</p>
+<p><img src="https://lupyuen.github.io/images/quickjs-heap.jpg" alt="QuickJS Heap Usage" /></p>
 <p><em>Any diff between QEMU and Ox64 QuickJS?</em></p>
 <p>QuickJS for NuttX QEMU is more Memory-Efficient because it uses <a href="TODO"><strong>Static Linking</strong></a>.</p>
 <p>Ox64 QuickJS is kinda chonky right now. But we might reduce the size by ??? % when we switch to Static Linking.</p>
