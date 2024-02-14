@@ -383,79 +383,36 @@ We modded NuttX Emulator (in WebAssembly) to...
 
 TODO: Pic of Simulated LED
 
-Here's our NuttX Emulator intercepting all __Writes to GPIO 29__: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L486-L553)
+Here's our NuttX Emulator (WebAssembly) intercepting all __Writes to GPIO 29__: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L486-L553)
 
 ```c
-/* return 0 if OK, != 0 if exception */
-int target_write_slow(RISCVCPUState *s, target_ulong addr,
-                      mem_uint_t val, int size_log2)
-{
-    int size, i, tlb_idx, err;
-    target_ulong paddr, offset;
-    uint8_t *ptr;
-    PhysMemoryRange *pr;
-    
-    /* first handle unaligned accesses */
-    size = 1 << size_log2;
-    if ((addr & (size - 1)) != 0) {
-        /* XXX: should avoid modifying the memory in case of exception */
-        for(i = 0; i < size; i++) {
-            err = target_write_u8(s, addr + i, (val >> (8 * i)) & 0xff);
-            if (err)
-                return err;
-        }
-    } else {
-        if (get_phys_addr(s, &paddr, addr, ACCESS_WRITE)) {
-            s->pending_tval = addr;
-            s->pending_exception = CAUSE_STORE_PAGE_FAULT;
-            return -1;
-        }
+// WebAssembly called by TinyEmu to emulate
+// Writes to RISC-V Addresses
+int target_write_slow(...) {
+  ...
+  // Intercept Writes to Memory-Mapped I/O
+  switch(paddr) {
 
-        //// Ignore the Upper Bits due to T-Head MMU Flags
-        paddr &= 0xfffffffffffful; ////
+    // If we're writing to BL808 GPIO 29 (0x2000_0938)...
+    case 0x20000938: {
+      // Send an Emulator Notification to the Console:
+      // {"nuttxemu":{"gpio29":1}}
 
-        pr = get_phys_mem_range(s->mem_map, paddr);
-        if (!pr) {
-            //// Begin Test: Intercept Memory-Mapped I/O
-            switch(paddr) {
-            case 0x30002088: { // uart_fifo_wdata: UART Output
-                // Print the character
-                char buf[1];
-                buf[0] = val;
-                print_console(NULL, buf, 1);
-                break;
-            }
-            // Console Input: Clear the interrupt after setting BL808_UART_INT_CLEAR (0x30002028)
-            case 0x30002028: {
-                _info("write BL808_UART_INT_CLEAR: 0x%x\n", val);
-                void virtio_ack_irq(void *device0);
-                virtio_ack_irq(NULL);
-                break;
-            }
-            // GPIO Output: Send an Emulator Notification to the Console: {"nuttxemu":{"gpio29":1}}
-            case 0x20000938: {  // GPIO 29
-                // Check if the Output Bit is Off or On
-                #define reg_gpio_xx_o 24
-                #define reg_gpio_xx_i 28
-                const char b =
-                    ((val & (1 << reg_gpio_xx_o)) == 0)
-                    ? '0' : '1';
-                char notify[] = "{\"nuttxemu\":{\"gpio29\":0}}\r\n";
-                notify[strlen(notify) - 5] = b;
-                print_console(NULL, notify, strlen(notify));
-            }
-            default:  // Unknown Memory-Mapped I/O
-#ifdef DUMP_INVALID_MEM_ACCESS
-                printf("target_write_slow: invalid physical address 0x");
-                print_target_ulong(paddr);
-                printf("\n");
-#else
-                break;
-#endif                
-            }
+      // Check if the Output Bit is Off or On
+      #define reg_gpio_xx_o 24
+      #define reg_gpio_xx_i 28
+      const char b =
+        ((val & (1 << reg_gpio_xx_o)) == 0)
+        ? '0' : '1';
+
+      // Send the Notification to Console
+      char notify[] = "{\"nuttxemu\":{\"gpio29\":0}}\r\n";
+      notify[strlen(notify) - 5] = b;
+      print_console(NULL, notify, strlen(notify));
+    }
 ```
 
-Which sends a Notification to the Web Browser, saying that the __GPIO Output has changed__...
+Which sends a Notification to the Web Browser (JavaScript), saying that the __GPIO Output has changed__...
 
 ```json
 {"nuttxemu":
@@ -463,28 +420,32 @@ Which sends a Notification to the Web Browser, saying that the __GPIO Output has
 }
 ```
 
-Our Web Browser JavaScript receives the Notification and __Flips the Simulated LED__: [term.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/term.js#L487-L507)
+Our Web Browser (JavaScript) receives the Notification and __Flips the Simulated LED__: [term.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/term.js#L487-L507)
 
 ```javascript
-Term.prototype.write = function(str)
-{
-    //// Begin Test: Handle Emulator Notification: {"nuttxemu":{"gpio29":1}}
-    if (str.indexOf(`{"nuttxemu":`) == 0) {
-        const notify = JSON.parse(str).nuttxemu;  // {gpio29:1}
-        console.log({ notify });
-        const gpio = Object.keys(notify)[0];  // "gpio29"
-        const val = notify[gpio];  // 0 or 1
-        console.log({ gpio, val });
+// JavaScript called by our WebAssembly
+// to print something to Console
+Term.prototype.write = function(str) {
 
-        document.getElementById("status").style.width = document.getElementById("term_wrap").style.width;
-        const gpio_status = document.getElementById(gpio);
-        gpio_status.style.display = "block";
-        gpio_status.className = (val == 0)
-            ? "gpio_off"
-            : "gpio_on";
-        return;
-    }
-    //// End Test
+  // If this is a Notification JSON from Emulator WebAssembly:
+  // {"nuttxemu":{"gpio29":1}}
+  if (str.indexOf(`{"nuttxemu":`) == 0) {
+    
+    // Get the GPIO Number and GPIO Value from JSON
+    const notify = JSON.parse(str).nuttxemu;  // {gpio29:1}
+    const gpio = Object.keys(notify)[0];  // "gpio29"
+    const val = notify[gpio];  // 0 or 1
+
+    // Render the GPIO in HTML:
+    // <td id="gpio29" class="gpio_on">GPIO29</td>
+    document.getElementById("status").style.width = document.getElementById("term_wrap").style.width;  // Spread out the GPIO Status
+    const gpio_status = document.getElementById(gpio);
+    gpio_status.style.display = "block";
+    gpio_status.className = (val == 0)
+      ? "gpio_off"  // Normal CSS Style
+      : "gpio_on";  // Green CSS Style
+    return;
+  }
 ```
 
 [(__status__ and __gpio29__ are in HTML)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/index.html#L21-L29)
