@@ -28,9 +28,11 @@ TODO
 
 We go hands-on (fingers too)...
 
+![QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)](https://lupyuen.github.io/images/quickjs-title2.png)
+
 # QuickJS on NuttX Emulator
 
-Click here to try __QuickJS JavaScript Engine__ in NuttX Emulator...
+Click here to try __QuickJS JavaScript Engine__ in NuttX Emulator (pic above)...
 
 - [__QuickJS on Ox64 NuttX Emulator__](https://lupyuen.github.io/nuttx-tinyemu/quickjs)
 
@@ -445,7 +447,7 @@ QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Static Linkin
 
 Ox64 QuickJS is kinda chonky right now. But we might reduce the size by ??? % when we switch to Static Linking.
 
-![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title2.png)
+![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.png)
 
 # Simulate the LED on Ox64 Emulator
 
