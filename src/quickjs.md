@@ -424,7 +424,7 @@ We modded NuttX Emulator (in WebAssembly) to...
 
     (On or Off)
 
-TODO: Pic of Simulated LED
+![Simulate the LED on Ox64 Emulator](https://lupyuen.github.io/images/quickjs-led.jpg)
 
 Here's our NuttX Emulator (WebAssembly) intercepting all __Writes to GPIO 29__: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L486-L553)
 
