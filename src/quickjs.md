@@ -365,6 +365,12 @@ TODO: QEMU Log
 
 _Will QuickJS runs on all kinds of NuttX Devices?_
 
+```bash
+$ riscv64-unknown-elf-size apps/bin/qjs
+   text    data     bss     dec     hex filename
+ 554847     260      94  555201   878c1 ../apps/bin/qjs
+```
+
 Probably not? JavaScript needs quite a bit of RAM to run efficiently.
 
 We ran [linkermapviz](https://github.com/PromyLOPh/linkermapviz) on the Linker Map: [nuttx/qjs-riscv.map](nuttx/qjs-riscv.map)
