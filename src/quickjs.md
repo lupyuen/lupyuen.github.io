@@ -392,7 +392,13 @@ We compute the Heap Usage in a Spreadsheet...
 
 - [Heap Usage: Without Repl](https://docs.google.com/spreadsheets/d/1EpdktueHxfAR4VR80d1XSZRwdO2UvNGf_sPetHHzAGQ/edit?usp=sharing)
 
+  Max: 276 KB
+
 - [Heap Usage: With Repl](https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit?usp=sharing)
+
+  Max: 371 KB
+
+  (__"Free Size"__ might not be accurate because it uses __VLOOKUP__ for Top-Down Lookup)
 
 TODO: Static Linking
 
