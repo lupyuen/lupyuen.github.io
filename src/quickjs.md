@@ -359,7 +359,7 @@ No worries, the exact same steps will work for __QEMU Emulator__ (64-bit RISC-V)
 
 TODO: QEMU Log
 
-TODO: Pic of Emulator
+![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title2.png)
 
 # Simulate the LED on Ox64 Emulator
 
@@ -409,7 +409,7 @@ And it works! https://lupyuen.github.io/nuttx-tinyemu/quickjs/
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
 
-![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title2.png)
+![QuickJS Code Size](https://lupyuen.github.io/images/quickjs-text.jpg)
 
 # How Small is QuickJS
 
@@ -417,19 +417,25 @@ _Will QuickJS runs on all kinds of NuttX Devices?_
 
 Probably not? JavaScript needs quite a bit of RAM to run efficiently.
 
+We ran [linkermapviz](https://github.com/PromyLOPh/linkermapviz) on the Linker Map: [nuttx/qjs-riscv.map](nuttx/qjs-riscv.map)
+
+To produce this [Visualised Linker Map](https://lupyuen.github.io/nuttx-tinyemu/quickjs/linkermap)
+
 TODO: Text, data, BSS
 
 TODO: Heap Size?
 
 TODO: Static Linking
 
-QuickJS with All The Toppings
+QuickJS with All The Toppings: 400 KB + 154 KB
 
-Without BigInt
+Without BigInt: -32 KB
 
-Without REPL
+Without REPL: -16 KB
 
-Without BigInt + REPL
+Without BigInt + REPL: -32 KB - 16 KB
+
+![QuickJS Data Size](https://lupyuen.github.io/images/quickjs-data.jpg)
 
 # What's Next
 
