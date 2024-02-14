@@ -74,7 +74,9 @@
 <li><a href="#how-small-is-quickjs">6 How Small is QuickJS</a><ul></ul></li>
 <li><a href="#simulate-the-led-on-ox64-emulator">7 Simulate the LED on Ox64 Emulator</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-quickjs-for-nuttx">9 Appendix: Build QuickJS for NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
+<li><a href="#appendix-build-quickjs-for-nuttx">9 Appendix: Build QuickJS for NuttX</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-qemu">10 Appendix: Build NuttX for QEMU</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-ox64">11 Appendix: Build NuttX for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -654,6 +656,237 @@ const uint8_t qjsc_repl[16280] = {
 </code></pre></div>
 <p>TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1</p>
 <p>TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1</p>
+<h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">10 Appendix: Build NuttX for QEMU</a></h1>
+<p>TODO</p>
+<p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit)</strong> that has Minor Fixes for Nim…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-dd54e0076f30825f912248f2424460e3126c2a8f4e2880709f5c68af9342ddcf"><strong>nsh64/defconfig</strong></a>: NuttX Config for QEMU</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-5905dc63d5fd592e0a1e25ab25783ae99e54180a7b98fb59f56a73dee79104e6"><strong>qemu_rv_autoleds.c</strong></a>
+: Auto LED Driver for QEMU</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-a6fd389669ddef88302f00a34d401479886cb8983f7be58b32ba075699cb5bb8"><strong>qemu_rv_userleds.c</strong></a>: User LED Driver for QEMU</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-beeaeb03fa5642002a542446c89251c9a7c5c1681cfe915387740ea0975e91b3"><strong>qemu_rv_appinit.c</strong></a>: Start LED Driver</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307"><strong>Makefile</strong></a>: Nimcache has moved 2 folders up</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879"><strong>config.nims</strong></a>: Add support for 64-bit RISC-V</p>
+</li>
+</ul>
+<p>First we install <a href="https://nim-lang.org/install_unix.html"><strong>Nim Compiler</strong></a> (only the Latest Dev Version supports NuttX)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Install Nim Compiler: https://nim-lang.org/install_unix.html
+curl https://nim-lang.org/choosenim/init.sh -sSf | sh
+
+## Add Nim to PATH
+export PATH=$HOME/.nimble/bin:$PATH
+
+## Select Latest Dev Version of Nim. Will take a while!
+choosenim devel --latest
+
+## Version should be 2.1.1 or later:
+## Nim Compiler Version 2.1.1 [Linux: amd64]
+## Compiled at 2023-12-22
+nim -v
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-nim#build-nuttx-with-debian-container-in-vscode">(Nim won’t install? Try a <strong>Linux Container</strong>)</a></p>
+<p>Then we download and build NuttX for <strong>QEMU RISC-V (64-bit)</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
+git clone \
+  --branch nim \
+  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  nuttx
+git clone \
+  --branch nim \
+  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  apps
+
+## Configure NuttX for QEMU RISC-V (64-bit)
+cd nuttx
+tools/configure.sh rv-virt:nsh64
+
+## Build NuttX
+make
+
+## Dump the disassembly to nuttx.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
+<p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/qemu-1">(See the <strong>Build Script</strong>)</a></p>
+<p>TODO: <a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa">(See the <strong>Build Log</strong>)</a></p>
+<p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/qemu-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p>This produces the NuttX ELF Image <strong><code>nuttx</code></strong> that we may boot on QEMU RISC-V Emulator…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Start the QEMU RISC-V Emulator (64-bit) with NuttX RTOS
+qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+</code></pre></div>
+<p>At the NuttX Prompt, enter “<strong>hello_nim</strong>”…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_nim
+Hello Nim!
+Opening /dev/userleds
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L472-L497">(Enter “<strong>help</strong>” to see the available commands)</a></p>
+<p>Nim on NuttX blinks our <strong>Simulated LED</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>Set LED 0 to 1
+board_userled_all: led=0, val=1
+Waiting...
+
+Set LED 0 to 0
+board_userled_all: led=0, val=0
+Waiting...
+
+Set LED 0 to 1
+board_userled_all: led=0, val=1
+Waiting...
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L210-L471">(See the <strong>NuttX Log</strong>)</a></p>
+<p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
+<p><em>How to run our own Nim Code on NuttX?</em></p>
+<p>Locate this <strong>Nim Source File</strong> and replace by our own Nim Code…</p>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/hello_nim/hello_nim_async.nim
+</code></pre></div>
+<p>Then rebuild and restart NuttX.</p>
+<p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!" /></p>
+<h1 id="appendix-build-nuttx-for-ox64"><a href="#appendix-build-nuttx-for-ox64">11 Appendix: Build NuttX for Ox64</a></h1>
+<p>TODO</p>
+<p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong> that has Minor Fixes for Nim…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078"><strong>nsh/defconfig</strong></a>: NuttX Config for Ox64</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx"><strong>bl808_timerisr.c</strong></a>: RISC-V Timer for Ox64</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-efdf5ed87983905c7021de03a7add73932da529d4312b80f948eb199c256b170"><strong>bl808_autoleds.c</strong></a>: Auto LED Driver for Ox64</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nim#led-driver-for-ox64"><strong>bl808_userleds.c</strong></a>: User LED Driver for Ox64</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-902a3cb106dc7153d030370077938ef28c9412d8b3434888fca8bbf1a1cfbd54"><strong>bl808_appinit.c</strong></a>: Start LED Driver for Ox64</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307"><strong>Makefile</strong></a>: Nimcache has moved 2 folders up</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879"><strong>config.nims</strong></a>: Add support for 64-bit RISC-V</p>
+</li>
+</ul>
+<p>First we install <a href="https://nim-lang.org/install_unix.html"><strong>Nim Compiler</strong></a> (only the Latest Dev Version supports NuttX)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Install Nim Compiler: https://nim-lang.org/install_unix.html
+curl https://nim-lang.org/choosenim/init.sh -sSf | sh
+
+## Add Nim to PATH
+export PATH=$HOME/.nimble/bin:$PATH
+
+## Select Latest Dev Version of Nim. Will take a while!
+choosenim devel --latest
+
+## Version should be 2.1.1 or later:
+## Nim Compiler Version 2.1.1 [Linux: amd64]
+## Compiled at 2023-12-22
+nim -v
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-nim#build-nuttx-with-debian-container-in-vscode">(Nim won’t install? Try a <strong>Linux Container</strong>)</a></p>
+<p>Then we download and build NuttX for <strong>Ox64 BL808 SBC</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
+git clone \
+  --branch nim \
+  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  nuttx
+git clone \
+  --branch nim \
+  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  apps
+
+## Configure NuttX for Ox64 BL808 RISC-V SBC
+cd nuttx
+tools/configure.sh ox64:nsh
+
+## Build NuttX
+make
+
+## Export the NuttX Kernel
+## to `nuttx.bin`
+riscv64-unknown-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
+
+## Dump the disassembly to nuttx.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
+
+## Dump the hello_nim disassembly to hello_nim.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/bin/hello_nim \
+  &gt;hello_nim.S \
+  2&gt;&amp;1
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
+<p>We build the <strong>Initial RAM Disk</strong> that contains NuttX Shell and NuttX Apps…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build the Apps Filesystem
+make -j 8 export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j 8 import
+popd
+
+## Generate the Initial RAM Disk `initrd`
+## in ROMFS Filesystem Format
+## from the Apps Filesystem `../apps/bin`
+## and label it `NuttXBootVol`
+genromfs \
+  -f initrd \
+  -d ../apps/bin \
+  -V &quot;NuttXBootVol&quot;
+
+## Prepare a Padding with 64 KB of zeroes
+head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
+
+## Append Padding and Initial RAM Disk to NuttX Kernel
+cat nuttx.bin /tmp/nuttx.pad initrd \
+  &gt;Image
+</code></pre></div>
+<p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">(See the <strong>Build Script</strong>)</a></p>
+<p>TODO: <a href="https://gist.github.com/lupyuen/578a7eb2d4d827aa252fff37c172dd18">(See the <strong>Build Log</strong>)</a></p>
+<p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p>This produces the NuttX Image for Ox64: <strong><code>Image</code></strong></p>
+<p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
+<p>And we do the <a href="https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64"><strong>Linux-To-NuttX Switcheroo</strong></a>: Copy the <strong><code>Image</code></strong> file (from above) and overwrite the <strong><code>Image</code></strong> in the Linux microSD…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Overwrite the Linux Image
+## on Ox64 microSD
+cp Image \
+  &quot;/Volumes/NO NAME/Image&quot;
+diskutil unmountDisk /dev/disk2
+</code></pre></div>
+<p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
+<p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH).</p>
 
     
 </body>
