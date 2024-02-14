@@ -102,9 +102,9 @@ Now we do some Finger Exercises (sorry __copy-pasta won't work__ in the Emulator
 
     [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
 
-_Whelp our fingers are hurting!_
+_Erm our fingers are hurting?_
 
-Try this instead...
+Try this script that's __Non-Interactive__...
 
 ```bash
 nsh> qjs --std /system/bin/blink.js
@@ -400,6 +400,10 @@ According to the [__Visualised Linker Map__](https://lupyuen.github.io/nuttx-tin
 | Without BigInt | __522 KB__ |
 | Without BigInt, REPL | __506 KB__ |
 
+[(__REPL__ is for Interactive Commands)](https://bellard.org/quickjs/quickjs.html#Quick-start)
+
+[(__BigInt__ is for 64-Bit Numbers)](https://bellard.org/quickjs/quickjs.html#BigInt_002c-BigFloat_002c-BigDecimal)
+
 ![QuickJS Data Size](https://lupyuen.github.io/images/quickjs-data.jpg)
 
 _What about the Heap Memory Size?_
@@ -416,15 +420,11 @@ We compute the __Heap Usage__ with a Spreadsheet...
 
 - [__Heap Usage: Without Repl__ (Google Sheets)](https://docs.google.com/spreadsheets/d/1EpdktueHxfAR4VR80d1XSZRwdO2UvNGf_sPetHHzAGQ/edit?usp=sharing)
 
-  Max: 276 KB
-
 - [__Heap Usage: With Repl__ (Google Sheets)](https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit?usp=sharing)
-
-  Max: 371 KB
 
   (__"Free Size"__ might not be accurate because it uses __VLOOKUP__ for Top-Down Lookup)
 
-We figured out the __QuickJS Heap Usage__ (pic below)...
+And we figured out the __QuickJS Heap Usage__ (pic below)...
 
 | Max Heap Usage | |
 |:---------------|:---:
@@ -432,6 +432,10 @@ We figured out the __QuickJS Heap Usage__ (pic below)...
 | QuickJS with REPL | __371 KB__
 
 Which totals __??? KB__ for Barebones QuickJS. And a whopping __??? KB__ for Supersized QuickJS.
+
+For newer __Upsized NuttX Gadgets__ that are __Extra Roomy__ (and Vroomy), there's a high chance that we can run QuickJS.
+
+And experiment with all kinds of __NuttX Drivers__ via ioctl(), the Interactive JavaScript Way!
 
 TODO: Pic of Chart
 
