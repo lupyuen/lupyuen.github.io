@@ -503,9 +503,13 @@ Here are the sizes of QuickJS and its options...
 | Without BigInt | __522 KB__ |
 | Without BigInt, REPL | __506 KB__ |
 
+<span style="font-size:90%">
+
 [(__REPL__ is for Interactive Commands)](https://bellard.org/quickjs/quickjs.html#Quick-start)
 
 [(__BigInt__ is for 64-Bit Numbers)](https://bellard.org/quickjs/quickjs.html#BigInt_002c-BigFloat_002c-BigDecimal)
+
+</span>
 
 ![QuickJS Data Size](https://lupyuen.github.io/images/quickjs-data.jpg)
 
