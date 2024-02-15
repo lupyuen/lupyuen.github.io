@@ -485,8 +485,15 @@ led=0, val=1
  554847     260      94  555201   878c1 apps/bin/qjs
 </code></pre></div>
 <p>Probably not? JavaScript needs <strong>quite a bit of RAM</strong> to run comfortably.</p>
-<p>We ran <a href="https://github.com/PromyLOPh/linkermapviz"><strong>linkermapviz</strong></a> on the <a href="nuttx/qjs-riscv.map"><strong>QuickJS Linker Map</strong></a> for NuttX QEMU.</p>
-<p>According to the <a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/linkermap"><strong>Visualised Linker Map</strong></a> (pics above and below), here are the sizes of QuickJS and its options…</p>
+<p>We ran <a href="https://github.com/PromyLOPh/linkermapviz"><strong>linkermapviz</strong></a> on the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qjs-riscv.map"><strong>QuickJS Linker Map</strong></a> for NuttX QEMU…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Visualise the QuickJS Linker Map for NuttX QEMU
+git clone https://github.com/PromyLOPh/linkermapviz
+cd linkermapviz
+pip3 install .
+linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
+</code></pre></div>
+<p>Which produces the <a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/linkermap"><strong>Visualised Linker Map</strong></a> for QuickJS. (Pics above and below)</p>
+<p>Here are the sizes of QuickJS and its options…</p>
 <div><table><thead><tr><th style="text-align: left">Size of Code + Data (Read-Only)</th><th style="text-align: center"></th></tr></thead><tbody>
 <tr><td style="text-align: left">QuickJS with All The Toppings</td><td style="text-align: center"><strong>554 KB</strong></td></tr>
 <tr><td style="text-align: left">Without REPL</td><td style="text-align: center"><strong>538 KB</strong></td></tr>
