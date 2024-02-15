@@ -150,31 +150,31 @@ Mostly. QuickJS compiles for NuttX __with no code changes__...
 
 Then we hit some __Missing Functions__...
 
-1.  __POSIX Functions:__ popen, pclose, pipe2, symlink, ...
+1.  __POSIX Functions:__ _popen, pclose, pipe2, symlink, ..._
 
-1.  __Dynamic Linking:__ dlopen, dlsym, dlclose
+1.  __Dynamic Linking:__ _dlopen, dlsym, dlclose_
 
-1.  __Math Functions:__ pow, floor, trunc, ...
+1.  __Math Functions:__ _pow, floor, trunc, ..._
 
-1.  __Atomic Functions:__ atomic_fetch_add_2, ...
+1.  __Atomic Functions:__ _atomic_fetch_add_2, atomic_fetch_or_1, ..._
 
     [(See the __Missing Functions__)](https://github.com/lupyuen/quickjs-nuttx#fix-the-missing-functions)
 
-_How did we fix the missing functions?_
+_How to fix the missing functions?_
 
 1.  __POSIX Functions:__ The typical POSIX Functions are OK. The special ones are probably available if we tweak the __Build Options__ for NuttX.
 
-    For now, we stick with the Basic NuttX Config and stub out the [__Advanced POSIX Functions__](TODO).
+    For now, we stick with the Basic NuttX Config and stub out the [__Advanced POSIX Functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c).
 
-1.  __Dynamic Linking:__ We won't support Dynamic Linking for NuttX. We [__stubbed the missing functions__](TODO).
+1.  __Dynamic Linking:__ We won't support Dynamic Linking for NuttX. We [__stubbed the missing functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c).
 
-1.  __Math Functions:__ We linked them with GCC Option "__`-lm`__". The last few stragglers: We [__stubbed the functions__](TODO).
+1.  __Math Functions:__ We linked them with GCC Option "__`-lm`__". The last few stragglers: We [__stubbed the functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c).
 
-1.  __Atomic Functions:__ We patched in the [__Missing Atomic Functions__](TODO).
+1.  __Atomic Functions:__ We patched in the [__Missing Atomic Functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/arch_atomic.c#L32-L743).
 
     [(About __NuttX Atomic Functions__)](https://github.com/apache/nuttx/issues/10642)
 
-    [(We might __disable QuickJS Atomic Functions__)](TODO)
+    [(We might __Disable Atomic Functions__)](https://github.com/lupyuen/quickjs-nuttx/blob/master/quickjs.c#L67-L73)
 
 After these fixes, QuickJS builds OK for NuttX!
 
@@ -420,6 +420,8 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 0
 ```
 
+[(Or run the __Blinky JavaScript__)](https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67)
+
 Yep __ioctl()__ works great on a Real Device, with a Real LED!
 
 ![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: QuickJS blinks our LED](https://lupyuen.github.io/images/nim-blink2.jpg)
@@ -430,17 +432,31 @@ No worries, the exact same steps will work for __QEMU Emulator__ (64-bit RISC-V)
 
 - [__Add the LED Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911) for QEMU
 
+- [__Increase the App Stack Size__](https://github.com/apache/nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b)  from 2 KB to 64 KB
+
 - [__Fix the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429) for testing LED Driver
 
-- [__Build QuickJS__](TODO) for NuttX QEMU
-
-Just follow these steps...
+Check out the instructions...
 
 - TODO: Build NuttX for QEMU
 
 - TODO: Build QuickJS for NuttX QEMU
 
-TODO: QEMU Log
+QuickJS for NuttX QEMU blinks a __Simulated LED__...
+
+```text
+$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
+
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> qjs --std /system/bin/blink.js
+led=0, val=1
+led=0, val=0
+led=0, val=1
+```
+
+To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db)
 
 ![QuickJS Code Size rendered with linkermapviz](https://lupyuen.github.io/images/quickjs-text.jpg)
 
@@ -771,7 +787,9 @@ riscv-none-elf-ld \
 
 Then we combined everything above into our [__QuickJS Build Script__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh).
 
-(Later we'll merge this into the NuttX Makefiles)
+Everything builds OK without changing any code in QuickJS! Though we [__stubbed out some functions__](TODO) because NuttX works a little differently.
+
+(Later we'll merge our Build Script into the NuttX Makefiles)
 
 _repl.c and qjscalc.c are missing?_
 
@@ -791,7 +809,7 @@ So we __borrow the output__ from another QuickJS Build (Debian x64) and add to N
 
 - [__nuttx/qjscalc.c__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qjscalc.c): BigNum Calculator for QuickJS
 
-_What's inside the files?_
+_What's inside repl.c and qjscalc.c?_
 
 They contain plenty of [__JavaScript Bytecode__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/repl.c). Brilliant!
 
@@ -812,11 +830,11 @@ TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1
 
 In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for QEMU RISC-V (64-bit Kernel Mode)__ that has these updates...
 
-- [__Add the LED Driver__](TODO) for Ox64 BL808
+- [__Add the LED Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911) for QEMU
 
-- [__Increase the App Stack Size__](TODO)  from 2 KB to 64 KB
+- [__Increase the App Stack Size__](https://github.com/apache/nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b)  from 2 KB to 64 KB
 
-- [__Fix the `leds` app__](TODO) for testing LED Driver
+- [__Fix the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429) for testing LED Driver
 
 Here are the steps to download and build NuttX for __QEMU RISC-V (64-bit Kernel Mode)__...
 
@@ -878,17 +896,23 @@ qemu-system-riscv64 \
 
 At the NuttX Prompt, enter...
 
+```bash
+qjs --std /system/bin/blink.js
+```
+
+QuickJS for NuttX QEMU blinks a __Simulated LED__...
+
 ```text
+$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
+
+NuttShell (NSH) NuttX-12.4.0-RC0
 nsh> qjs --std /system/bin/blink.js
+led=0, val=1
+led=0, val=0
+led=0, val=1
 ```
 
-QuickJS on NuttX blinks our __Simulated LED__...
-
-```text
-TODO
-```
-
-TODO: [(See the __NuttX Log__)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L210-L471)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db)
 
 To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
@@ -1011,15 +1035,23 @@ Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [
 
 At the NuttX Prompt, enter...
 
-```text
-nsh> qjs --std /system/bin/blink.js
+```bash
+qjs --std /system/bin/blink.js
 ```
 
 QuickJS on NuttX blinks our __LED on GPIO 29__...
 
-```text
-TODO
+```yaml
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> qjs --std /system/bin/blink.js
+
+bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 ```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67)
 
 _The same files were used for NuttX Emulator?_
 
