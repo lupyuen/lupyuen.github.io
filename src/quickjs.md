@@ -477,7 +477,9 @@ Probably not? JavaScript needs __quite a bit of RAM__ to run comfortably.
 We ran [__linkermapviz__](https://github.com/PromyLOPh/linkermapviz) on the [__QuickJS Linker Map__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qjs-riscv.map) for NuttX QEMU...
 
 ```bash
-## Visualise the QuickJS Linker Map for NuttX QEMU
+## Visualise the QuickJS Linker Map for NuttX QEMU.
+## Produces linkermap.html: https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/linkermap.html
+
 git clone https://github.com/PromyLOPh/linkermapviz
 cd linkermapviz
 pip3 install .
