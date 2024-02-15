@@ -28,7 +28,7 @@ TODO
 
 We go hands-on (fingers too)...
 
-![QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)](https://lupyuen.github.io/images/quickjs-title2.png)
+![QuickJS JavaScript Engine in Ox64 NuttX Emulator](https://lupyuen.github.io/images/quickjs-title2.png)
 
 # QuickJS on NuttX Emulator
 
@@ -565,7 +565,7 @@ TODO
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
 
-![QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)](https://lupyuen.github.io/images/quickjs-title2.png)
+![QuickJS JavaScript Engine in Ox64 NuttX Emulator](https://lupyuen.github.io/images/quickjs-title2.png)
 
 # What's Next
 
@@ -839,6 +839,8 @@ TODO: [(See the __NuttX Log__)](https://gist.github.com/lupyuen/09e653cbd227b9cd
 
 To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
+![QuickJS JavaScript Engine in Ox64 NuttX Emulator](https://lupyuen.github.io/images/quickjs-title2.png)
+
 # Appendix: Build NuttX for Ox64
 
 TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1
@@ -963,3 +965,5 @@ QuickJS on NuttX blinks our __LED on GPIO 29__...
 ```text
 TODO
 ```
+
+We copied the Build Outputs to the [__NuttX Emulator for Ox64__](TODO).
