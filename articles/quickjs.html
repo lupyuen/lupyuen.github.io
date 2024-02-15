@@ -164,7 +164,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/blink.js">(See the <strong>Blinky JavaScript</strong>)</a></p>
 <p><a href="https://bellard.org/quickjs/quickjs.html#qjs-interpreter">(Option “<strong><code>--std</code></strong>” will import the <strong><code>os</code></strong> functions)</a></p>
 <p><em>Wow… A Blinky in JavaScript?</em></p>
-<p>Yep we flipped this <a href="TODO"><strong>NuttX Blinky App</strong></a> from C to <strong>Interactive JavaScript</strong>!</p>
+<p>Yep we flipped this <a href="https://github.com/lupyuen/quickjs-nuttx#quickjs-calls-nuttx-led-driver"><strong>NuttX Blinky App</strong></a> from C to <strong>Interactive JavaScript</strong>!</p>
 <p><em>Does it work on Real Hardware?</em></p>
 <p>The exact same NuttX Image blinks a Real LED on <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 SBC</strong></a> (64-bit RISC-V). Though it’s a little sluggish, we’ll come back to this.</p>
 <p>How did we make this happen? Read on to find out…</p>
@@ -178,7 +178,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>Then we hit some <strong>Missing Functions</strong>…</p>
 <ol>
 <li>
-<p><strong>POSIX Functions:</strong> Special ones like popen, pclose, pipe2, symlink, …</p>
+<p><strong>POSIX Functions:</strong> popen, pclose, pipe2, symlink, …</p>
 </li>
 <li>
 <p><strong>Dynamic Linking:</strong> dlopen, dlsym, dlclose</p>
@@ -201,7 +201,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><strong>Dynamic Linking:</strong> We won’t support Dynamic Linking for NuttX. We <a href="TODO"><strong>stubbed them out</strong></a>.</p>
 </li>
 <li>
-<p><strong>Math Functions:</strong> We linked them with GCC Option <strong><code>-lm</code></strong>. The last few stragglers: We <a href="TODO"><strong>stubbed them out</strong></a>.</p>
+<p><strong>Math Functions:</strong> We linked them with GCC Option “<strong><code>-lm</code></strong>”. The last few stragglers: We <a href="TODO"><strong>stubbed them out</strong></a>.</p>
 </li>
 <li>
 <p><strong>Atomic Functions:</strong> We patched in the <a href="TODO"><strong>Missing Atomic Functions</strong></a>.</p>
@@ -454,8 +454,9 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>And experiment with all kinds of <strong>NuttX Drivers</strong> via ioctl(), the Interactive JavaScript Way!</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-heap.jpg" alt="QuickJS Heap Usage" /></p>
 <p><em>Any diff between QEMU and Ox64 QuickJS?</em></p>
-<p>QuickJS for NuttX QEMU is more Memory-Efficient because it uses <a href="https://github.com/apache/nuttx/pull/11524"><strong>Static Linking</strong></a>. (Instead of ELF Loader fixing the Relocatable Symbols)</p>
-<p>Right now Ox64 QuickJS is multi-mega-chonky: 23 MB! We might downsize to 5 MB when we switch to Static Linking.</p>
+<p>QuickJS for NuttX QEMU is more Memory-Efficient because it uses <a href="https://github.com/apache/nuttx/pull/11524"><strong>Static Linking</strong></a>.</p>
+<p>(Instead of ELF Loader fixing the <a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app"><strong>Relocatable Symbols</strong></a> at runtime)</p>
+<p>Right now Ox64 QuickJS is <strong>multi-mega-chonky</strong>: 23 MB! We might downsize to 5 MB when we switch to Static Linking.</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
 <h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">7 Simulate the LED on Ox64 Emulator</a></h1>
 <p><em>NuttX Emulator blinks a Simulated LED (pic above, lower right)…</em></p>
