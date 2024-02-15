@@ -447,7 +447,7 @@ _Any diff between QEMU and Ox64 QuickJS?_
 
 QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Static Linking__](https://github.com/apache/nuttx/pull/11524). (Instead of ELF Loader fixing the Relocatable Symbols)
 
-Right now Ox64 QuickJS is kinda chonky: 23 MB! We might reduce the size to 5 MB when we switch to Static Linking.
+Right now Ox64 QuickJS is multi-mega-chonky: 23 MB! We might downsize to 5 MB when we switch to Static Linking.
 
 ![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.png)
 
