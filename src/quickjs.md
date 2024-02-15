@@ -850,8 +850,6 @@ That's why REPL and BigNum will require more Heap Memory, to process the extra J
 
 # Appendix: Build NuttX for QEMU
 
-TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1
-
 In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for QEMU RISC-V (64-bit Kernel Mode)__ that has these updates...
 
 - [__Add the LED Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911) for QEMU
@@ -898,11 +896,9 @@ popd
 
 [(Remember to install the __Build Prerequisites and Toolchain__)](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
 
-TODO: [(See the __Build Script__)](https://github.com/lupyuen/nuttx-nim/releases/tag/qemu-1)
+[(See the __Build Script__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1)
 
-TODO: [(See the __Build Log__)](https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa)
-
-TODO: [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-nim/releases/tag/qemu-1)
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1)
 
 This produces the NuttX ELF Image __`nuttx`__ that we may boot on QEMU RISC-V Emulator...
 
@@ -943,8 +939,6 @@ To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 ![QuickJS JavaScript Engine in Ox64 NuttX Emulator](https://lupyuen.github.io/images/quickjs-title2.png)
 
 # Appendix: Build NuttX for Ox64
-
-TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1
 
 In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for Ox64__ that has these updates...
 
@@ -1039,9 +1033,9 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
   >Image
 ```
 
-TODO: [(See the __Build Script__)](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
+[(See the __Build Script__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1)
 
-TODO: [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1)
 
 This produces the NuttX Image for Ox64: __`Image`__
 
