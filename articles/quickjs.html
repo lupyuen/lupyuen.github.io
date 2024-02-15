@@ -701,7 +701,7 @@ riscv-none-elf-ld \
 ## Compile the BigNum Calculator from JavaScript to C
 ./qjsc -fbignum -c -o qjscalc.c qjscalc.js
 </code></pre></div>
-<p>So we <strong>borrow the output</strong> from another QuickJS Build (Debian x64)…</p>
+<p>So we <strong>borrow the output</strong> from another QuickJS Build (Debian x64) and add to NuttX…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/repl.c"><strong>nuttx/repl.c</strong></a>: Interactive-Mode REPL for QuickJS</p>
@@ -711,7 +711,7 @@ riscv-none-elf-ld \
 </li>
 </ul>
 <p><em>What’s inside the files?</em></p>
-<p>They contain <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/repl.c"><strong>JavaScript Bytecode</strong></a>. Brilliant!</p>
+<p>They contain plenty of <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/repl.c"><strong>JavaScript Bytecode</strong></a>. Brilliant!</p>
 <div class="example-wrap"><pre class="language-c"><code>/* File generated automatically by the QuickJS compiler. */
 #include &lt;inttypes.h&gt;
 const uint32_t qjsc_repl_size = 16280;
@@ -722,16 +722,19 @@ const uint8_t qjsc_repl[16280] = {
 <p>That’s why REPL and BigNum will require more Heap Memory, to process the extra JavaScript Bytecode.</p>
 <h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">10 Appendix: Build NuttX for QEMU</a></h1>
 <p>TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1</p>
-<p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit)</strong> that has…</p>
+<p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit Kernel Mode)</strong> that has these updates…</p>
 <ul>
 <li>
-<p>QEMU LED Driver</p>
+<p><a href="TODO"><strong>Add the LED Driver</strong></a> for Ox64 BL808</p>
 </li>
 <li>
-<p>Extra Stack Space</p>
+<p><a href="TODO"><strong>Increase the App Stack Size</strong></a>  from 2 KB to 64 KB</p>
+</li>
+<li>
+<p><a href="TODO"><strong>Fix the <code>leds</code> app</strong></a> for testing LED Driver</p>
 </li>
 </ul>
-<p>Here are the steps to download and build NuttX for <strong>QEMU RISC-V (64-bit)</strong>…</p>
+<p>Here are the steps to download and build NuttX for <strong>QEMU RISC-V (64-bit Kernel Mode)</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
 git clone \
   --branch qemuled \
@@ -790,19 +793,22 @@ qemu-system-riscv64 \
 <p><img src="https://lupyuen.github.io/images/quickjs-title2.png" alt="QuickJS JavaScript Engine in Ox64 NuttX Emulator" /></p>
 <h1 id="appendix-build-nuttx-for-ox64"><a href="#appendix-build-nuttx-for-ox64">11 Appendix: Build NuttX for Ox64</a></h1>
 <p>TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1</p>
-<p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong> that has…</p>
+<p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong> that has these updates…</p>
 <ul>
 <li>
-<p>BL808 GPIO Driver</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/8f75f3744f3964bd3ed0596421a93e59fb39cdd8"><strong>Add the GPIO Driver</strong></a>  for Ox64 BL808</p>
 </li>
 <li>
-<p>BL808 LED Driver</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4f3996959132ca0d35874b7be3eef89d6bf7f351"><strong>Add the LED Driver</strong></a> for Ox64 BL808</p>
 </li>
 <li>
-<p>Extra Stack Space</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048"><strong>Increase the App Stack Size</strong></a>  from 2 KB to 64 KB</p>
 </li>
 <li>
-<p>Enlarged RAM Disk Region</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226"><strong>Increase the RAM Disk Region</strong></a> from 16 MB to 40 MB</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3"><strong>Fix the <code>leds</code> app</strong></a> for testing LED Driver</p>
 </li>
 </ul>
 <p>These are the steps to build NuttX for <strong>Ox64 BL808 SBC</strong>…</p>
