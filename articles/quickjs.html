@@ -168,7 +168,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><em>Does it work on Real Hardware?</em></p>
 <p>The exact same NuttX Image blinks a Real LED on <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 SBC</strong></a> (64-bit RISC-V). Though it’s a little sluggish, we’ll come back to this.</p>
 <p>How did we make this happen? Read on to find out…</p>
-<p>TODO: Pic of ???</p>
+<p><img src="https://lupyuen.github.io/images/quickjs-expect.png" alt="TODO" /></p>
 <h1 id="build-quickjs-for-nuttx"><a href="#build-quickjs-for-nuttx">2 Build QuickJS for NuttX</a></h1>
 <p><em>QuickJS compiles OK for NuttX?</em></p>
 <p>Mostly. QuickJS compiles for NuttX <strong>with no code changes</strong>…</p>
@@ -209,7 +209,12 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><a href="TODO">(We might <strong>disable QuickJS Atomic Functions</strong>)</a></p>
 </li>
 </ol>
-<p>After these fixes, QuickJS builds OK for NuttX! We run it…</p>
+<p>After these fixes, QuickJS builds OK for NuttX!</p>
+<p><em>That’s plenty of fixing. Will it break QuickJS?</em></p>
+<p>TODO: Thankfully we have</p>
+<p>Before the Auto-Test, we fix the Auto-Crash…</p>
+<p>TODO: Pic of Loopy Stack</p>
+<p><em>Loopy Stack Trace probably means Stack Full</em></p>
 <h1 id="nuttx-stack-is-full-of-quickjs"><a href="#nuttx-stack-is-full-of-quickjs">3 NuttX Stack is Full of QuickJS</a></h1>
 <p><em>We fixed the QuickJS Build for NuttX… Does it run?</em></p>
 <p>Sorry nope! QuickJS ran into <a href="https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx"><strong>Mysterious Crashes</strong></a> on NuttX (with looping Stack Traces)…</p>
