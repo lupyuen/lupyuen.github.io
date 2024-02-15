@@ -234,9 +234,13 @@ CONFIG_TLS_LOG2_MAXSTACK=16
 
 (Lesson Learnt: If the NuttX Stack Dump loops forever, we're probably __Out Of Stack Space__)
 
+![POSIX Functions in QuickJS](https://lupyuen.github.io/images/quickjs-posix.png)
+
+[_POSIX Functions in QuickJS_](https://bellard.org/quickjs/quickjs.html#os-module)
+
 # Add ioctl() to QuickJS
 
-_ioctl() doesn't appear in the QuickJS Docs?_
+_ioctl() doesn't appear in the QuickJS Docs? (Pic above)_
 
 ```javascript
 // Flip On the NuttX LED
