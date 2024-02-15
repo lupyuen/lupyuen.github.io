@@ -455,7 +455,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><img src="https://lupyuen.github.io/images/quickjs-heap.jpg" alt="QuickJS Heap Usage" /></p>
 <p><em>Any diff between QEMU and Ox64 QuickJS?</em></p>
 <p>QuickJS for NuttX QEMU is more Memory-Efficient because it uses <a href="https://github.com/apache/nuttx/pull/11524"><strong>Static Linking</strong></a>. (Instead of ELF Loader fixing the Relocatable Symbols)</p>
-<p>Right now Ox64 QuickJS is kinda chonky: 23 MB! We might reduce the size to 5 MB when we switch to Static Linking.</p>
+<p>Right now Ox64 QuickJS is multi-mega-chonky: 23 MB! We might downsize to 5 MB when we switch to Static Linking.</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
 <h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">7 Simulate the LED on Ox64 Emulator</a></h1>
 <p><em>NuttX Emulator blinks a Simulated LED (pic above, lower right)…</em></p>
