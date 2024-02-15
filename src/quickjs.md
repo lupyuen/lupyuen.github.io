@@ -474,9 +474,19 @@ $ riscv64-unknown-elf-size apps/bin/qjs
 
 Probably not? JavaScript needs __quite a bit of RAM__ to run comfortably.
 
-We ran [__linkermapviz__](https://github.com/PromyLOPh/linkermapviz) on the [__QuickJS Linker Map__](nuttx/qjs-riscv.map) for NuttX QEMU.
+We ran [__linkermapviz__](https://github.com/PromyLOPh/linkermapviz) on the [__QuickJS Linker Map__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qjs-riscv.map) for NuttX QEMU...
 
-According to the [__Visualised Linker Map__](https://lupyuen.github.io/nuttx-tinyemu/quickjs/linkermap) (pics above and below), here are the sizes of QuickJS and its options...
+```bash
+## Visualise the QuickJS Linker Map for NuttX QEMU
+git clone https://github.com/PromyLOPh/linkermapviz
+cd linkermapviz
+pip3 install .
+linkermapviz < quickjs-nuttx/nuttx/qjs-riscv.map
+```
+
+Which produces the [__Visualised Linker Map__](https://lupyuen.github.io/nuttx-tinyemu/quickjs/linkermap) for QuickJS. (Pics above and below)
+
+Here are the sizes of QuickJS and its options...
 
 | Size of Code + Data (Read-Only) | |
 |:--------------------|:---:
