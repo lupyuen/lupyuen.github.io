@@ -28,7 +28,7 @@ Let's do it! In this article we...
 
 - Blink the LED by adding the __ioctl() function__
 
-- Reconfigure the __NuttX App Stack__ because it's too tiny
+- Reconfigure the __NuttX App Stack__ (because it's too tiny)
 
 - Analyse the __Memory Footprint__ of QuickJS (Code + Data + Heap Size)
 
