@@ -589,11 +589,33 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build QuickJS for NuttX
 
-TODO
-
-From the [Makefile Log](nuttx/make.log)...
+Follow these steps to build __QuickJS for NuttX__ (QEMU or Ox64)...
 
 ```bash
+## Download and build QuickJS for NuttX
+git clone https://github.com/lupyuen/quickjs-nuttx
+cd quickjs-nutttx/nuttx
+./build.sh
+```
+
+[(See the __Build Script__)](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh)
+
+Remember to...
+
+- Set the [__Toolchain Path__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L4-L8)
+
+- Select the [__Build for QEMU__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L8-L14)
+
+- Or [__Build for Ox64__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L14-L25)
+
+_How did we figure out the steps to build QuickJS for NuttX?_
+
+We ran "__`make --trace`__" to observe the __QuickJS Build__: [make.log](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/make.log)
+
+```bash
+## Build QuickJS for Debian x64 and observe the build
+$ make --trace
+
 ## Build qjs.o
 gcc \
   -g \
@@ -612,7 +634,7 @@ gcc \
   qjs.c
 
 ## Omitted: Build a bunch of other binaries
-
+...
 ## Link them together
 gcc \
   -g \
@@ -632,9 +654,10 @@ gcc \
   -lpthread
 ```
 
-Let's do the same for NuttX. From [tcc-riscv32-wasm](https://github.com/lupyuen/tcc-riscv32-wasm) we know that NuttX builds NuttX Apps like this...
+We know that NuttX builds [__NuttX Apps__](https://github.com/lupyuen/tcc-riscv32-wasm) like this...
 
 ```bash
+## Build NuttX Apps and observe the build
 $ cd ../apps
 $ make --trace import
 
@@ -685,10 +708,13 @@ riscv-none-elf-ld \
   -lmm \
   -lc \
   -lproxies \
-  -lgcc apps/libapps.a xpack-riscv-none-elf-gcc-13.2.0-2/lib/gcc/riscv-none-elf/13.2.0/rv64imafdc_zicsr/lp64d/libgcc.a \
+  -lgcc apps/libapps.a \
+  xpack-riscv-none-elf-gcc-13.2.0-2/lib/gcc/riscv-none-elf/13.2.0/rv64imafdc_zicsr/lp64d/libgcc.a \
   --end-group \
   -o  apps/bin/hello
 ```
+
+TODO
 
 We'll do the same for QuickJS (and worry about the Makefile later).
 
