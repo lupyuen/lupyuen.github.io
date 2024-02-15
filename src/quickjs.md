@@ -271,9 +271,12 @@ We follow these steps to [__increase the App Stack Size__](https://github.com/lu
 Which becomes this in our __NuttX Build Config__: [ox64/nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078)
 
 ```bash
+## Upsize the App Stack to 64 KB
 CONFIG_POSIX_SPAWN_DEFAULT_STACKSIZE=65536
 CONFIG_TLS_LOG2_MAXSTACK=16
 ```
+
+QuickJS crashes no more!
 
 __Lesson Learnt:__ If the NuttX Stack Dump loops forever, we're probably __Out Of Stack Space__.
 
@@ -372,8 +375,6 @@ We test __ioctl()__ on a Real Device with a Real LED: __Ox64 BL808 RISC-V SBC__.
 
 - [__Increase the App Stack Size__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048)  from 2 KB to 64 KB
 
-  (Otherwise QuickJS will crash mysteriously)
-
 - [__Increase the RAM Disk Region__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226) from 16 MB to 40 MB
 
   [(Why we enlarge the __RAM Disk Region__)](https://github.com/lupyuen/quickjs-nuttx#add-led-driver-to-nuttx-ox64-bl808-sbc)
@@ -381,6 +382,12 @@ We test __ioctl()__ on a Real Device with a Real LED: __Ox64 BL808 RISC-V SBC__.
 - [__Fix the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3) for testing LED Driver
  
   (Because __task_create()__ is missing from Kernel Mode)
+
+Follow these steps to download or build __NuttX and QuickJS__...
+
+- [__"Build NuttX for Ox64"__](https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-ox64)
+
+- [__"Build QuickJS for NuttX Ox64"__](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
 
 Connect an LED to Ox64 SBC at __GPIO 29, Pin 21__ (pic above)...
 
@@ -436,7 +443,7 @@ No worries, the exact same steps will work for __QEMU Emulator__ (64-bit RISC-V)
 
 - [__Fix the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429) for testing LED Driver
 
-Check out the instructions...
+Check out the instructions to download or build __NuttX and QuickJS__...
 
 - [__"Build NuttX for QEMU"__](https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-qemu)
 
@@ -566,7 +573,7 @@ We modded NuttX Emulator (in WebAssembly) to...
 
     (Like `{"nuttxemu":{"gpio29":1}}`)
 
-1.  Web Browser JavaScript __Flips the Simulated LED__
+1.  And our Web Browser JavaScript __Flips the Simulated LED__
 
     (On or Off)
 
@@ -669,6 +676,10 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/quickjs.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/quickjs.md)
+
+![Auto-Test QuickJS with Expect Scripting](https://lupyuen.github.io/images/quickjs-expect.png)
+
+[_Auto-Test QuickJS with Expect Scripting_](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp)
 
 # Appendix: Build QuickJS for NuttX
 
@@ -805,11 +816,17 @@ riscv-none-elf-ld \
 
 [(__Ox64 Build__ is a little different)](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L19-L25)
 
-Then we combined everything above into our [__QuickJS Build Script__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh).
+Then we...
+
+- Combine everything above into our [__QuickJS Build Script__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh)
+
+  (Later we'll merge our Build Script into the NuttX Makefiles)
+
+- Add an [__Expect Script__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp) for auto-testing QuickJS on QEMU
+
+  (Pic above)
 
 Everything builds OK without changing any code in QuickJS! Though we [__stubbed out some functions__](https://lupyuen.github.io/articles/quickjs#build-quickjs-for-nuttx) because NuttX works a little differently.
-
-(Later we'll merge our Build Script into the NuttX Makefiles)
 
 _repl.c and qjscalc.c are missing?_
 
