@@ -714,7 +714,7 @@ cp Image "/Volumes/NO NAME/"
 
 This is how we made it work...
 
-[(Ox64 can boot NuttX from __Flash Memory__)](https://gist.github.com/Pavlos1/b60e07e184777af60095c04ebdd55c95)
+[(Ox64 can boot NuttX from __Flash Memory__)](https://github.com/lupyuen/lupyuen.github.io/issues/24)
 
 ![Initial RAM Disk for Ox64](https://lupyuen.github.io/images/app-initrd.jpg)
 
