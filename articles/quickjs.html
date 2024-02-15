@@ -449,14 +449,14 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <tr><td style="text-align: left">QuickJS with REPL</td><td style="text-align: center"><strong>371 KB</strong></td></tr>
 </tbody></table>
 </div>
-<p>Which totals <strong>782 KB</strong> for Barebones QuickJS. And a whopping <strong>925 KB</strong> for Supersized QuickJS. (Nearly 1 MB for Code + Data + Heap!)</p>
+<p>Which totals <strong>782 KB</strong> for Barebones QuickJS. And a whopping <strong>925 KB</strong> for Turducken QuickJS. (Nearly 1 MB for Code + Data + Heap!)</p>
 <p>For newer <strong>Upsized NuttX Gadgets</strong> that are <strong>Extra Roomy</strong> (and Vroomy), there’s a high chance that we can run QuickJS…</p>
 <p>And experiment with all kinds of <strong>NuttX Drivers</strong> via ioctl(), the Interactive JavaScript Way!</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-heap.jpg" alt="QuickJS Heap Usage" /></p>
-<p><em>Any diff between QEMU and Ox64 QuickJS?</em></p>
+<p><em>QEMU and Ox64 QuickJS: Any diff?</em></p>
 <p>QuickJS for NuttX QEMU is more Memory-Efficient because it uses <a href="https://github.com/apache/nuttx/pull/11524"><strong>Static Linking</strong></a>.</p>
 <p>(Instead of ELF Loader fixing the <a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app"><strong>Relocatable Symbols</strong></a> at runtime)</p>
-<p>Right now Ox64 QuickJS is <strong>multi-deca-mega-chonky</strong>: 23 MB! We might downsize to 5 MB when we switch to Static Linking.</p>
+<p>Right now Ox64 QuickJS is slower and <strong>multi-deca-mega-chonky</strong>: 23 MB! We might downsize to 5 MB (like QEMU) when we switch to Static Linking.</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
 <h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">7 Simulate the LED on Ox64 Emulator</a></h1>
 <p><em>NuttX Emulator blinks a Simulated LED (pic above, lower right)…</em></p>
