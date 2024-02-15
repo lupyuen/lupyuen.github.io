@@ -435,7 +435,7 @@ And deduce the __QuickJS Heap Usage__ (pic below)...
 | QuickJS without REPL | __276 KB__ |
 | QuickJS with REPL | __371 KB__ |
 
-Which totals __782 KB__ for Barebones QuickJS. And a whopping __925 KB__ for Supersized QuickJS. (Nearly 1 MB for Code + Data + Heap!)
+Which totals __782 KB__ for Barebones QuickJS. And a whopping __925 KB__ for Turducken QuickJS. (Nearly 1 MB for Code + Data + Heap!)
 
 For newer __Upsized NuttX Gadgets__ that are __Extra Roomy__ (and Vroomy), there's a high chance that we can run QuickJS...
 
@@ -443,13 +443,13 @@ And experiment with all kinds of __NuttX Drivers__ via ioctl(), the Interactive 
 
 ![QuickJS Heap Usage](https://lupyuen.github.io/images/quickjs-heap.jpg)
 
-_Any diff between QEMU and Ox64 QuickJS?_
+_QEMU and Ox64 QuickJS: Any diff?_
 
 QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Static Linking__](https://github.com/apache/nuttx/pull/11524).
 
 (Instead of ELF Loader fixing the [__Relocatable Symbols__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app) at runtime)
 
-Right now Ox64 QuickJS is __multi-deca-mega-chonky__: 23 MB! We might downsize to 5 MB when we switch to Static Linking.
+Right now Ox64 QuickJS is slower and __multi-deca-mega-chonky__: 23 MB! We might downsize to 5 MB (like QEMU) when we switch to Static Linking.
 
 ![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.png)
 
