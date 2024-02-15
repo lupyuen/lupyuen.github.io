@@ -128,7 +128,7 @@ The exact same NuttX Image blinks a Real LED on [__Ox64 BL808 SBC__](https://www
 
 How did we make this happen? Read on to find out...
 
-TODO: Pic of ???
+![TODO](https://lupyuen.github.io/images/quickjs-expect.png)
 
 # Build QuickJS for NuttX
 
@@ -166,7 +166,17 @@ _How did we fix the missing functions?_
 
     [(We might __disable QuickJS Atomic Functions__)](TODO)
 
-After these fixes, QuickJS builds OK for NuttX! We run it...
+After these fixes, QuickJS builds OK for NuttX!
+
+_That's plenty of fixing. Will it break QuickJS?_
+
+TODO: Thankfully we have
+
+Before the Auto-Test, we fix the Auto-Crash...
+
+TODO: Pic of Loopy Stack
+
+_Loopy Stack Trace probably means Stack Full_
 
 # NuttX Stack is Full of QuickJS
 
