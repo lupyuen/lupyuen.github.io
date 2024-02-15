@@ -640,7 +640,16 @@ Term.prototype.write = function(str) {
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/quickjs.md"><strong>lupyuen.github.io/src/quickjs.md</strong></a></p>
 <h1 id="appendix-build-quickjs-for-nuttx"><a href="#appendix-build-quickjs-for-nuttx">9 Appendix: Build QuickJS for NuttX</a></h1>
-<p>Follow these steps to build <strong>QuickJS for NuttX</strong> (QEMU or Ox64)…</p>
+<p>Before building QuickJS: Build NuttX for QEMU or Ox64…</p>
+<ul>
+<li>
+<p><a href="TODO"><strong>Build NuttX for QEMU</strong></a></p>
+</li>
+<li>
+<p><a href="TODO"><strong>Build NuttX for Ox64</strong></a></p>
+</li>
+</ul>
+<p>Then follow these steps to build <strong>QuickJS for NuttX</strong> (QEMU or Ox64)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download and build QuickJS for NuttX
 git clone https://github.com/lupyuen/quickjs-nuttx
 cd quickjs-nutttx/nuttx
@@ -653,10 +662,10 @@ cd quickjs-nutttx/nuttx
 <p>Set the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L4-L8"><strong>Toolchain Path</strong></a></p>
 </li>
 <li>
-<p>Select the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L8-L14"><strong>Build for QEMU</strong></a></p>
+<p>Select <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L8-L14"><strong>QuickJS for NuttX QEMU</strong></a></p>
 </li>
 <li>
-<p>Or <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L14-L25"><strong>Build for Ox64</strong></a></p>
+<p>Or <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L14-L25"><strong>QuickJS for NuttX Ox64</strong></a></p>
 </li>
 </ul>
 <p><em>How did we figure out the steps to build QuickJS for NuttX?</em></p>
@@ -789,6 +798,8 @@ const uint8_t qjsc_repl[16280] = {
  0x2e, 0x6a, 0x73, 0x06, 0x73, 0x74, 0x64, 0x04,
 </code></pre></div>
 <p>That’s why REPL and BigNum will require more Heap Memory, to process the extra JavaScript Bytecode.</p>
+<p><img src="https://lupyuen.github.io/images/quickjs-qemu.png" alt="QuickJS on NuttX QEMU" /></p>
+<p><a href="https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db"><em>QuickJS on NuttX QEMU</em></a></p>
 <h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">10 Appendix: Build NuttX for QEMU</a></h1>
 <p>TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1</p>
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit Kernel Mode)</strong> that has these updates…</p>
@@ -928,15 +939,20 @@ riscv64-unknown-elf-objdump \
   2&gt;&amp;1
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
-<p>We build the <strong>Initial RAM Disk</strong> that contains NuttX Shell and NuttX Apps…</p>
+<p>We build the <strong>NuttX Apps Filesystem</strong> that contains NuttX Shell and NuttX Apps…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Apps Filesystem
 make -j 8 export
 pushd ../apps
 ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
 make -j 8 import
 popd
-
-## Generate the Initial RAM Disk `initrd`
+</code></pre></div>
+<p>Next we build <strong>QuickJS for Ox64</strong>, which will produce <code>qjs</code> and <code>blink.sh</code> in the <code>/apps/bin</code> folder…</p>
+<ul>
+<li><a href="TODO"><strong>“Build QuickJS for NuttX Ox64”</strong></a></li>
+</ul>
+<p>We bundle QuickJS into the <strong>Initial RAM Disk</strong> and append it to the NuttX Image…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Generate the Initial RAM Disk `initrd`
 ## in ROMFS Filesystem Format
 ## from the Apps Filesystem `../apps/bin`
 ## and label it `NuttXBootVol`
@@ -953,7 +969,6 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 </code></pre></div>
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">(See the <strong>Build Script</strong>)</a></p>
-<p>TODO: <a href="https://gist.github.com/lupyuen/578a7eb2d4d827aa252fff37c172dd18">(See the <strong>Build Log</strong>)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>This produces the NuttX Image for Ox64: <strong><code>Image</code></strong></p>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
@@ -980,7 +995,7 @@ bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
 bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67">(See the <strong>Complete Log</strong>)</a></p>
-<p><em>The same files were used for NuttX Emulator?</em></p>
+<p><em>The same files were used for NuttX Emulator? (Pic above)</em></p>
 <p>Yep we copied the Build Outputs above to the <a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/quickjs"><strong>NuttX Emulator for Ox64</strong></a>.</p>
 
     
