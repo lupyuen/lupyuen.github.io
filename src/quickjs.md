@@ -32,7 +32,7 @@ Let's do it! In this article we...
 
 - Analyse the __Memory Footprint__ of QuickJS (Code + Data + Heap Size)
 
-- Test QuickJS on __NuttX WebAssembly Emulator__ (with a Simulated LED)
+- Test QuickJS in the Web Browser with __NuttX Emulator__ (and a Simulated LED)
 
 QuickJS is perfect for Iterative, Interactive Experiments on NuttX! We go hands-on (fingers too)...
 
@@ -84,7 +84,7 @@ Now we do some Finger Exercises (sorry __copy-pasta won't work__ in the Emulator
 
     __GPIO 29__ goes back to normal!
 
-1.  Our Demo goes like this...
+1.  Our Demo does like this...
 
     ```bash
     NuttShell (NSH) NuttX-12.4.0-RC0
@@ -124,7 +124,7 @@ nsh> qjs --std /system/bin/blink.js
 
 [(See the __Blinky JavaScript__)](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/blink.js)
 
-[(Option "__`--std`__" will import the __`os`__ functions)](https://bellard.org/quickjs/quickjs.html#qjs-interpreter)
+[(Option "__`--std`__" will import the __POSIX Functions__)](https://bellard.org/quickjs/quickjs.html#qjs-interpreter)
 
 _Wow... A Blinky in JavaScript?_
 
@@ -160,7 +160,7 @@ Then we hit some __Missing Functions__...
 
     [(See the __Missing Functions__)](https://github.com/lupyuen/quickjs-nuttx#fix-the-missing-functions)
 
-_How to fix the missing functions?_
+_Can we fill in the missing functions?_
 
 1.  __POSIX Functions:__ The typical POSIX Functions are OK. The special ones are probably available if we tweak the __Build Options__ for NuttX.
 
@@ -170,7 +170,7 @@ _How to fix the missing functions?_
 
 1.  __Math Functions:__ We linked them with GCC Option "__`-lm`__". The last few stragglers: We [__stubbed the functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c).
 
-1.  __Atomic Functions:__ We patched in the [__Missing Atomic Functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/arch_atomic.c#L32-L743).
+1.  __Atomic Functions:__ We filled in the [__Missing Atomic Functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/arch_atomic.c#L32-L743).
 
     [(About __NuttX Atomic Functions__)](https://github.com/apache/nuttx/issues/10642)
 
@@ -180,7 +180,7 @@ After these fixes, QuickJS builds OK for NuttX!
 
 [(How to build __QuickJS for NuttX__)](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
 
-_That's plenty of fixing. Will it break QuickJS?_
+_That's plenty of patching. Will it break QuickJS?_
 
 Thankfully we have __Automated Testing__ with an Expect Script (pic above): [qemu.exp](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp)
 
@@ -215,7 +215,7 @@ expect {
 }
 ```
 
-Before the Auto-Test, we fix the Auto-Crash...
+Before the Auto-Test, we solve the Auto-Crash...
 
 ![Loopy Stack Trace probably means Stack Full](https://lupyuen.github.io/images/quickjs-stack.png)
 
@@ -223,7 +223,7 @@ Before the Auto-Test, we fix the Auto-Crash...
 
 # NuttX Stack is Full of QuickJS
 
-_We fixed the QuickJS Build for NuttX... Does it run?_
+_QuickJS builds OK for NuttX. Does it run?_
 
 Sorry nope! QuickJS ran into [__Bizarre Crashes__](https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx) on NuttX (with looping Stack Traces, pic above)...
 
@@ -247,7 +247,7 @@ PID GRP PRI POLICY TYPE    NPX STATE EVENT      STACKBASE  SIZE USED FILLED  COM
 3   3  100  RR     Task    - Running            0xc0202050 1968 1968 100.0%! qjs }¼uq¦ü®઄²äÅ
 ```
 
-The last line shows that the __QuickJS Stack__ (2 KB) was __100% Full__! (And the Command Line was badly messed up)
+The last line shows that the __QuickJS Stack__ (2 KB) was __100% Full__! (With the Command Line horribly corrupted)
 
 We follow these steps to [__increase the App Stack Size__](https://github.com/lupyuen/nuttx-star64#increase-stack-size)...
 
@@ -263,7 +263,7 @@ We follow these steps to [__increase the App Stack Size__](https://github.com/lu
 
     [(Why we set __Thread Local Storage__)](https://github.com/lupyuen/quickjs-nuttx#fix-quickjs-interactive-mode-on-nuttx)
 
-1.  Set _"Maximum stack size (log2)"_ to __16__
+1.  Set _"Maximum Stack Size (Log2)"_ to __16__
 
     (Because 2^16 = 64 KB)
 
@@ -358,15 +358,15 @@ qjs > os.ioctl(100,2,3)
 -9
 ```
 
-Next we test __ioctl()__...
+We test __ioctl()__ some more...
 
 ![Connect an LED to Ox64 SBC at GPIO 29, Pin 21](https://lupyuen.github.io/images/nim-wiring.jpg)
 
 # QuickJS Blinks the LED on Ox64 SBC
 
-_We added ioctl() to QuickJS... Does it work?_
+_We added ioctl() to QuickJS. Does it work?_
 
-We test __ioctl()__ on a Real Device with a Real LED: __Ox64 BL808 RISC-V SBC__. Right after these fixes...
+We test __ioctl()__ on a Real Device with a Real LED: __Ox64 BL808 RISC-V SBC__. Right after these tweaks...
 
 - [__Add the GPIO Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/8f75f3744f3964bd3ed0596421a93e59fb39cdd8)  for Ox64 BL808
 
@@ -378,11 +378,11 @@ We test __ioctl()__ on a Real Device with a Real LED: __Ox64 BL808 RISC-V SBC__.
 
   [(Why we enlarge the __RAM Disk Region__)](https://github.com/lupyuen/quickjs-nuttx#add-led-driver-to-nuttx-ox64-bl808-sbc)
 
-- [__Fix the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3) for testing LED Driver
+- [__Patch the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3) for testing LED Driver
  
   (Because __task_create()__ is missing from Kernel Mode)
 
-Follow these steps to download or build __NuttX and QuickJS__...
+Follow these steps to download (or build) __NuttX and QuickJS__...
 
 - [__"Build NuttX for Ox64"__](https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-ox64)
 
@@ -440,19 +440,21 @@ No worries, the exact same steps will work for __QEMU Emulator__ (64-bit RISC-V)
 
 - [__Increase the App Stack Size__](https://github.com/apache/nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b)  from 2 KB to 64 KB
 
-- [__Fix the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429) for testing LED Driver
+- [__Patch the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429) for testing LED Driver
 
-Check out the instructions to download or build __NuttX and QuickJS__...
+When we download (or build) __NuttX and QuickJS__...
 
 - [__"Build NuttX for QEMU"__](https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-qemu)
 
 - [__"Build QuickJS for NuttX QEMU"__](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
 
-QuickJS for NuttX QEMU blinks a __Simulated LED__...
+QuickJS blinks a __Simulated LED__ on NuttX QEMU...
 
 ```text
+## Start NuttX on QEMU
 $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
 
+## Run our Blinky JavaScript with QuickJS
 NuttShell (NSH) NuttX-12.4.0-RC0
 nsh> qjs --std /system/bin/blink.js
 led=0, val=1
@@ -478,7 +480,7 @@ $ riscv64-unknown-elf-size apps/bin/qjs
  554847     260      94  555201   878c1 apps/bin/qjs
 ```
 
-Probably not? JavaScript needs __quite a bit of RAM__ to run comfortably.
+Probably not ALL devices? JavaScript needs __a fair bit of RAM__ to run comfortably.
 
 We ran [__linkermapviz__](https://github.com/PromyLOPh/linkermapviz) on the [__QuickJS Linker Map__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qjs-riscv.map) for NuttX QEMU...
 
@@ -513,7 +515,7 @@ Here are the sizes of QuickJS and its options...
 
 ![QuickJS Data Size](https://lupyuen.github.io/images/quickjs-data.jpg)
 
-_What about the Heap Memory Size?_
+_What about Heap Memory Size?_
 
 Based on the NuttX Logs with __Heap Logging Enabled__...
 
@@ -527,13 +529,13 @@ Based on the NuttX Logs with __Heap Logging Enabled__...
 
 We compute the __Heap Usage__ with a Spreadsheet (pic above)...
 
-- [__Heap Usage: Without Repl__ (Google Sheets)](https://docs.google.com/spreadsheets/d/1EpdktueHxfAR4VR80d1XSZRwdO2UvNGf_sPetHHzAGQ/edit?usp=sharing)
+- [__Heap Usage: Without REPL__ (Google Sheets)](https://docs.google.com/spreadsheets/d/1EpdktueHxfAR4VR80d1XSZRwdO2UvNGf_sPetHHzAGQ/edit?usp=sharing)
 
-- [__Heap Usage: With Repl__ (Google Sheets)](https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit?usp=sharing)
+- [__Heap Usage: With REPL__ (Google Sheets)](https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit?usp=sharing)
 
   (__"Free Size"__ might be inaccurate because it uses __VLOOKUP__ for Top-Down Lookup, though we actually need Down-Top Lookup)
 
-And deduce the __QuickJS Heap Usage__ (pic below)...
+And derive the __QuickJS Heap Usage__ (pic below)...
 
 | Max Heap Usage | |
 |:---------------|:---:
@@ -554,7 +556,7 @@ _QEMU vs Ox64 QuickJS: Any diff? (Pic above)_
 
 QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Static Linking__](https://github.com/apache/nuttx/pull/11524).
 
-(Instead of ELF Loader fixing the [__Relocatable Symbols__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app) at runtime)
+(Instead of ELF Loader patching the [__Relocatable Symbols__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app) at runtime)
 
 Right now Ox64 QuickJS is slower and [__multi-deca-mega-chonky__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/qjs): 22 MB! We might downsize to 4 MB (like QEMU) when we switch to Static Linking.
 
@@ -647,8 +649,6 @@ Term.prototype.write = function(str) {
     return;         // Don't show in Console Output
   }
 ```
-
-While suppressing the Notification from the Console Output.
 
 [(__status__ and __gpio29__ are in HTML)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/index.html#L21-L29)
 
@@ -823,7 +823,7 @@ Then we...
 
 - Combine everything above into our [__QuickJS Build Script__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh)
 
-  (Later we'll merge our Build Script into the NuttX Makefiles)
+  (Later we'll merge into the NuttX Makefiles)
 
 - Add an [__Expect Script__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp) for auto-testing QuickJS on QEMU
 
@@ -833,7 +833,7 @@ Everything builds OK without changing any code in QuickJS! Though we [__stubbed 
 
 _repl.c and qjscalc.c are missing?_
 
-They're generated by the [__QuickJS Compiler__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/make.log#L28-L32)!
+They're generated by the [__QuickJS Compiler__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/make.log#L28-L32)...
 
 ```bash
 ## Compile the REPL from JavaScript to C
@@ -851,7 +851,7 @@ So we __borrow the output__ from another QuickJS Build (Debian x64) and add to N
 
 _What's inside repl.c and qjscalc.c?_
 
-They contain plenty of [__JavaScript Bytecode__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/repl.c). Brilliant!
+They contain plenty of [__JavaScript Bytecode__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/repl.c)for REPL and BigNum Calculator. Brilliant!
 
 ```c
 /* File generated automatically by the QuickJS compiler. */
@@ -862,7 +862,7 @@ const uint8_t qjsc_repl[16280] = {
  0x2e, 0x6a, 0x73, 0x06, 0x73, 0x74, 0x64, 0x04,
 ```
 
-That's why REPL and BigNum will require more Heap Memory, to process the extra JavaScript Bytecode.
+That's why REPL and BigNum will require more Heap Memory, to execute the extra JavaScript Bytecode.
 
 ![QuickJS on NuttX QEMU](https://lupyuen.github.io/images/quickjs-qemu.png)
 
@@ -876,7 +876,7 @@ In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS f
 
 - [__Increase the App Stack Size__](https://github.com/apache/nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b)  from 2 KB to 64 KB
 
-- [__Fix the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429) for testing LED Driver
+- [__Patch the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429) for testing LED Driver
 
 We may download the [__NuttX Binaries for QEMU__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1)...
 
@@ -950,7 +950,7 @@ popd
 
 This produces the NuttX ELF Image __`nuttx`__ that we'll boot on QEMU RISC-V Emulator in a while.
 
-But first: We build __QuickJS for Ox64__, which will produce `qjs` and `blink.sh` in the `apps/bin` folder...
+But first: We build __QuickJS for QEMU__, which will produce `qjs` and `blink.sh` in the `apps/bin` folder...
 
 - [__"Build QuickJS for NuttX QEMU"__](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
 
@@ -974,7 +974,9 @@ At the NuttX Prompt, enter...
 qjs --std /system/bin/blink.js
 ```
 
-QuickJS for NuttX QEMU blinks a __Simulated LED__...
+[(See the __Blinky JavaScript__)](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/blink.js)
+
+QuickJS runs our Blinky JavaScript and blinks a __Simulated LED__...
 
 ```text
 $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
@@ -1004,7 +1006,7 @@ In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS f
 
 - [__Increase the RAM Disk Region__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226) from 16 MB to 40 MB
 
-- [__Fix the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3) for testing LED Driver
+- [__Patch the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3) for testing LED Driver
 
 We may download the [__NuttX Binaries for Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1)...
 
@@ -1034,7 +1036,9 @@ We may download the [__NuttX Binaries for Ox64__](https://github.com/lupyuen2/wi
     qjs --std /system/bin/blink.js
     ```
 
-    QuickJS on NuttX blinks our __LED on GPIO 29__...
+    [(See the __Blinky JavaScript__)](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/blink.js)
+
+1.  QuickJS executes our Blinky JavaScript and blinks our __LED on GPIO 29__...
 
     ```yaml
     NuttShell (NSH) NuttX-12.4.0-RC0
