@@ -91,12 +91,12 @@ Now we do some Finger Exercises (sorry __copy-pasta won't work__ in the Emulator
     qjs > fd = os.open("/dev/userleds", os.O_WRONLY)
     3
 
-    ## Flip LED On: GPIO 29 turns Green...
+    ## Flip LED On: GPIO 29 turns Green
     qjs > os.ioctl(fd, ULEDIOC_SETALL, 1)
     bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
     0
 
-    ## Flip LED Off: GPIO 29 goes back to normal...
+    ## Flip LED Off: GPIO 29 goes back to normal
     qjs > os.ioctl(fd, ULEDIOC_SETALL, 0)
     bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
     0
@@ -124,11 +124,13 @@ Yep we flipped this [__NuttX Blinky App__](https://github.com/lupyuen/quickjs-nu
 
 _Does it work on Real Hardware?_
 
-The exact same NuttX Image blinks a Real LED on [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (64-bit RISC-V). Though it's a little sluggish, we'll come back to this.
+The exact same QuickJS blinks a Real LED on [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (64-bit RISC-V). Though it's a little sluggish, we'll come back to this.
 
 How did we make this happen? Read on to find out...
 
-![TODO](https://lupyuen.github.io/images/quickjs-expect.png)
+![Auto-Test QuickJS with Expect Scripting](https://lupyuen.github.io/images/quickjs-expect.png)
+
+[_Auto-Test QuickJS with Expect Scripting_](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp)
 
 # Build QuickJS for NuttX
 
@@ -156,9 +158,9 @@ _How did we fix the missing functions?_
 
     For now, we stick with the Basic NuttX Config and stub out the [__Advanced POSIX Functions__](TODO).
 
-1.  __Dynamic Linking:__ We won't support Dynamic Linking for NuttX. We [__stubbed them out__](TODO).
+1.  __Dynamic Linking:__ We won't support Dynamic Linking for NuttX. We [__stubbed the missing functions__](TODO).
 
-1.  __Math Functions:__ We linked them with GCC Option "__`-lm`__". The last few stragglers: We [__stubbed them out__](TODO).
+1.  __Math Functions:__ We linked them with GCC Option "__`-lm`__". The last few stragglers: We [__stubbed the functions__](TODO).
 
 1.  __Atomic Functions:__ We patched in the [__Missing Atomic Functions__](TODO).
 
@@ -168,9 +170,42 @@ _How did we fix the missing functions?_
 
 After these fixes, QuickJS builds OK for NuttX!
 
+[(How to build __QuickJS for NuttX__)](TODO)
+
 _That's plenty of fixing. Will it break QuickJS?_
 
-TODO: Thankfully we have
+Thankfully we have __Automated Testing__ with an Expect Script (pic above): [qemu.exp](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp)
+
+```bash
+#!/usr/bin/expect
+## Expect Script for Testing QuickJS with QEMU Emulator
+
+## For every 1 character sent, wait 0.001 milliseconds
+set send_slow {1 0.001}
+
+## Start NuttX on QEMU Emulator
+spawn qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+## Wait for the prompt and enter this command
+expect "nsh> "
+send -s "qjs -e console.log(123) \r"
+
+## Check the response...
+expect {
+  ## If we see this message, exit normally
+  "nsh>" { exit 0 }
+
+  ## If timeout, exit with an error
+  timeout { exit 1 }
+}
+```
 
 Before the Auto-Test, we fix the Auto-Crash...
 
@@ -182,7 +217,7 @@ Before the Auto-Test, we fix the Auto-Crash...
 
 _We fixed the QuickJS Build for NuttX... Does it run?_
 
-Sorry nope! QuickJS ran into [__Mysterious Crashes__](https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx) on NuttX (with looping Stack Traces, pic above)...
+Sorry nope! QuickJS ran into [__Bizarre Crashes__](https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx) on NuttX (with looping Stack Traces, pic above)...
 
 - [__Strange Pointers__](https://github.com/lupyuen/quickjs-nuttx#atom-sentinel-becomes-0xffff_ffff) (`0xFFFF_FFFF`) while reading the JavaScript Atoms
 
@@ -232,7 +267,7 @@ CONFIG_POSIX_SPAWN_DEFAULT_STACKSIZE=65536
 CONFIG_TLS_LOG2_MAXSTACK=16
 ```
 
-(Lesson Learnt: If the NuttX Stack Dump loops forever, we're probably __Out Of Stack Space__)
+__Lesson Learnt:__ If the NuttX Stack Dump loops forever, we're probably __Out Of Stack Space__.
 
 ![POSIX Functions in QuickJS](https://lupyuen.github.io/images/quickjs-posix.png)
 
@@ -296,7 +331,7 @@ static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSVa
 }
 ```
 
-Yep __ioctl()__ is alive...
+After adding this code to QuickJS, __ioctl()__ comes to life...
 
 ```bash
 NuttShell (NSH) NuttX-12.4.0-RC0
@@ -312,6 +347,8 @@ qjs > os.ioctl(1,2,3)
 qjs > os.ioctl(100,2,3)
 -9
 ```
+
+Next we test __ioctl()__...
 
 ![Connect an LED to Ox64 SBC at GPIO 29, Pin 21](https://lupyuen.github.io/images/nim-wiring.jpg)
 
@@ -389,6 +426,12 @@ No worries, the exact same steps will work for __QEMU Emulator__ (64-bit RISC-V)
 
 - [__Build QuickJS__](TODO) for NuttX QEMU
 
+Just follow these steps...
+
+- TODO: Build NuttX for QEMU
+
+- TODO: Build QuickJS for NuttX QEMU
+
 TODO: QEMU Log
 
 ![QuickJS Code Size rendered with linkermapviz](https://lupyuen.github.io/images/quickjs-text.jpg)
@@ -397,7 +440,7 @@ TODO: QEMU Log
 
 # How Small is QuickJS
 
-_Will QuickJS runs on all kinds of NuttX Devices?_
+_Will QuickJS run on all kinds of NuttX Devices?_
 
 ```bash
 $ riscv64-unknown-elf-size apps/bin/qjs
@@ -442,7 +485,7 @@ We compute the __Heap Usage__ with a Spreadsheet (pic above)...
 
 - [__Heap Usage: With Repl__ (Google Sheets)](https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit?usp=sharing)
 
-  (__"Free Size"__ might not be accurate because it uses __VLOOKUP__ for Top-Down Lookup, though we actually need Down-Top Lookup)
+  (__"Free Size"__ might be inaccurate because it uses __VLOOKUP__ for Top-Down Lookup, though we actually need Down-Top Lookup)
 
 And deduce the __QuickJS Heap Usage__ (pic below)...
 
@@ -455,7 +498,7 @@ Which totals __782 KB__ for Barebones QuickJS. And a whopping __925 KB__ for Tur
 
 For newer __Upsized NuttX Gadgets__ that are __Extra Roomy__ (and Vroomy), there's a high chance that we can run QuickJS...
 
-And experiment with all kinds of __NuttX Drivers__ via ioctl(), the Interactive JavaScript Way!
+And experiment with all kinds of __NuttX Drivers__ via ioctl(). The Interactive JavaScript Way!
 
 ![QuickJS Heap Usage](https://lupyuen.github.io/images/quickjs-heap.jpg)
 
@@ -465,7 +508,7 @@ QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Static Linkin
 
 (Instead of ELF Loader fixing the [__Relocatable Symbols__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app) at runtime)
 
-Right now Ox64 QuickJS is slower and __multi-deca-mega-chonky__: 23 MB! We might downsize to 5 MB (like QEMU) when we switch to Static Linking.
+Right now Ox64 QuickJS is slower and [__multi-deca-mega-chonky__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/qjs): 23 MB! We might downsize to 5 MB (like QEMU) when we switch to Static Linking.
 
 ![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.png)
 
@@ -970,4 +1013,6 @@ QuickJS on NuttX blinks our __LED on GPIO 29__...
 TODO
 ```
 
-We copied the Build Outputs to the [__NuttX Emulator for Ox64__](TODO).
+_The same files were used for NuttX Emulator?_
+
+Yep we copied the Build Outputs above to the [__NuttX Emulator for Ox64__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/quickjs).
