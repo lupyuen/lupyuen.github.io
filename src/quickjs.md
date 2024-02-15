@@ -662,6 +662,10 @@ Term.prototype.write = function(str) {
 
 TODO
 
+Thanks to the [__QuickJS Team__](https://github.com/bellard/quickjs), we have a fun new way to Experiment Interactively with NuttX on newer gadgets!
+
+TODO
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
