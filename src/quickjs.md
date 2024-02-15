@@ -120,7 +120,7 @@ nsh> qjs --std /system/bin/blink.js
 
 _Wow... A Blinky in JavaScript?_
 
-Yep we flipped this [__NuttX Blinky App__](TODO) from C to __Interactive JavaScript__!
+Yep we flipped this [__NuttX Blinky App__](https://github.com/lupyuen/quickjs-nuttx#quickjs-calls-nuttx-led-driver) from C to __Interactive JavaScript__!
 
 _Does it work on Real Hardware?_
 
@@ -140,7 +140,7 @@ Mostly. QuickJS compiles for NuttX __with no code changes__...
 
 Then we hit some __Missing Functions__...
 
-1.  __POSIX Functions:__ Special ones like popen, pclose, pipe2, symlink, ...
+1.  __POSIX Functions:__ popen, pclose, pipe2, symlink, ...
 
 1.  __Dynamic Linking:__ dlopen, dlsym, dlclose
 
@@ -158,7 +158,7 @@ _How did we fix the missing functions?_
 
 1.  __Dynamic Linking:__ We won't support Dynamic Linking for NuttX. We [__stubbed them out__](TODO).
 
-1.  __Math Functions:__ We linked them with GCC Option __`-lm`__. The last few stragglers: We [__stubbed them out__](TODO).
+1.  __Math Functions:__ We linked them with GCC Option "__`-lm`__". The last few stragglers: We [__stubbed them out__](TODO).
 
 1.  __Atomic Functions:__ We patched in the [__Missing Atomic Functions__](TODO).
 
@@ -445,9 +445,11 @@ And experiment with all kinds of __NuttX Drivers__ via ioctl(), the Interactive 
 
 _Any diff between QEMU and Ox64 QuickJS?_
 
-QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Static Linking__](https://github.com/apache/nuttx/pull/11524). (Instead of ELF Loader fixing the Relocatable Symbols)
+QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Static Linking__](https://github.com/apache/nuttx/pull/11524).
 
-Right now Ox64 QuickJS is multi-mega-chonky: 23 MB! We might downsize to 5 MB when we switch to Static Linking.
+(Instead of ELF Loader fixing the [__Relocatable Symbols__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app) at runtime)
+
+Right now Ox64 QuickJS is __multi-mega-chonky__: 23 MB! We might downsize to 5 MB when we switch to Static Linking.
 
 ![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.png)
 
