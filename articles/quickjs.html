@@ -811,7 +811,6 @@ const uint8_t qjsc_repl[16280] = {
 <p><img src="https://lupyuen.github.io/images/quickjs-qemu.png" alt="QuickJS on NuttX QEMU" /></p>
 <p><a href="https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db"><em>QuickJS on NuttX QEMU</em></a></p>
 <h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">10 Appendix: Build NuttX for QEMU</a></h1>
-<p>TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1</p>
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit Kernel Mode)</strong> that has these updates…</p>
 <ul>
 <li>
@@ -858,9 +857,8 @@ make -j 8 import
 popd
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/qemu-1">(See the <strong>Build Script</strong>)</a></p>
-<p>TODO: <a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa">(See the <strong>Build Log</strong>)</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/qemu-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>This produces the NuttX ELF Image <strong><code>nuttx</code></strong> that we may boot on QEMU RISC-V Emulator…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start the QEMU RISC-V Emulator (64-bit) with NuttX RTOS
 qemu-system-riscv64 \
@@ -888,7 +886,6 @@ led=0, val=1
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title2.png" alt="QuickJS JavaScript Engine in Ox64 NuttX Emulator" /></p>
 <h1 id="appendix-build-nuttx-for-ox64"><a href="#appendix-build-nuttx-for-ox64">11 Appendix: Build NuttX for Ox64</a></h1>
-<p>TODO: https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1</p>
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong> that has these updates…</p>
 <ul>
 <li>
@@ -978,8 +975,8 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 </code></pre></div>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">(See the <strong>Build Script</strong>)</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>This produces the NuttX Image for Ox64: <strong><code>Image</code></strong></p>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
