@@ -24,9 +24,17 @@ os.ioctl(fd, ULEDIOC_SETALL, 0);
 
 Let's do it! In this article we...
 
-TODO
+- Run QuickJS on __Ox64 BL808 RISC-V SBC__
 
-We go hands-on (fingers too)...
+- Blink the LED by adding the __ioctl() function__
+
+- Reconfigure the __NuttX App Stack__ because it's too tiny
+
+- Analyse the __Memory Footprint__ of QuickJS (Code + Data + Heap Size)
+
+- Test QuickJS on __NuttX WebAssembly Emulator__ (with a Simulated LED)
+
+QuickJS is perfect for Iterative, Interactive Experiments on NuttX! We go hands-on (fingers too)...
 
 ![QuickJS JavaScript Engine in Ox64 NuttX Emulator](https://lupyuen.github.io/images/quickjs-title2.png)
 
