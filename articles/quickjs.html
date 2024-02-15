@@ -104,7 +104,7 @@ os.ioctl(fd, ULEDIOC_SETALL, 0);
 <p>Analyse the <strong>Memory Footprint</strong> of QuickJS (Code + Data + Heap Size)</p>
 </li>
 <li>
-<p>Test QuickJS on <strong>NuttX WebAssembly Emulator</strong> (with a Simulated LED)</p>
+<p>Test QuickJS in the Web Browser with <strong>NuttX Emulator</strong> (and a Simulated LED)</p>
 </li>
 </ul>
 <p>QuickJS is perfect for Iterative, Interactive Experiments on NuttX! We go hands-on (fingers too)…</p>
@@ -146,7 +146,7 @@ os.ioctl(fd, ULEDIOC_SETALL, 0);
 <p><strong>GPIO 29</strong> goes back to normal!</p>
 </li>
 <li>
-<p>Our Demo goes like this…</p>
+<p>Our Demo does like this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; qjs
 QuickJS - Type &quot;\h&quot; for help
@@ -178,7 +178,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; qjs --std /system/bin/blink.js
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/blink.js">(See the <strong>Blinky JavaScript</strong>)</a></p>
-<p><a href="https://bellard.org/quickjs/quickjs.html#qjs-interpreter">(Option “<strong><code>--std</code></strong>” will import the <strong><code>os</code></strong> functions)</a></p>
+<p><a href="https://bellard.org/quickjs/quickjs.html#qjs-interpreter">(Option “<strong><code>--std</code></strong>” will import the <strong>POSIX Functions</strong>)</a></p>
 <p><em>Wow… A Blinky in JavaScript?</em></p>
 <p>Yep we flipped this <a href="https://github.com/lupyuen/quickjs-nuttx#quickjs-calls-nuttx-led-driver"><strong>NuttX Blinky App</strong></a> from C to <strong>Interactive JavaScript</strong>!</p>
 <p><em>Does it work on Real Hardware?</em></p>
@@ -208,7 +208,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#fix-the-missing-functions">(See the <strong>Missing Functions</strong>)</a></p>
 </li>
 </ol>
-<p><em>How to fix the missing functions?</em></p>
+<p><em>Can we fill in the missing functions?</em></p>
 <ol>
 <li>
 <p><strong>POSIX Functions:</strong> The typical POSIX Functions are OK. The special ones are probably available if we tweak the <strong>Build Options</strong> for NuttX.</p>
@@ -221,14 +221,14 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><strong>Math Functions:</strong> We linked them with GCC Option “<strong><code>-lm</code></strong>”. The last few stragglers: We <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c"><strong>stubbed the functions</strong></a>.</p>
 </li>
 <li>
-<p><strong>Atomic Functions:</strong> We patched in the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/arch_atomic.c#L32-L743"><strong>Missing Atomic Functions</strong></a>.</p>
+<p><strong>Atomic Functions:</strong> We filled in the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/arch_atomic.c#L32-L743"><strong>Missing Atomic Functions</strong></a>.</p>
 <p><a href="https://github.com/apache/nuttx/issues/10642">(About <strong>NuttX Atomic Functions</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/quickjs.c#L67-L73">(We might <strong>Disable Atomic Functions</strong>)</a></p>
 </li>
 </ol>
 <p>After these fixes, QuickJS builds OK for NuttX!</p>
 <p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx">(How to build <strong>QuickJS for NuttX</strong>)</a></p>
-<p><em>That’s plenty of fixing. Will it break QuickJS?</em></p>
+<p><em>That’s plenty of patching. Will it break QuickJS?</em></p>
 <p>Thankfully we have <strong>Automated Testing</strong> with an Expect Script (pic above): <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp">qemu.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
 ## Expect Script for Testing QuickJS with QEMU Emulator
@@ -259,11 +259,11 @@ expect {
   timeout { exit 1 }
 }
 </code></pre></div>
-<p>Before the Auto-Test, we fix the Auto-Crash…</p>
+<p>Before the Auto-Test, we solve the Auto-Crash…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-stack.png" alt="Loopy Stack Trace probably means Stack Full" /></p>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478"><em>Loopy Stack Trace probably means Stack Full</em></a></p>
 <h1 id="nuttx-stack-is-full-of-quickjs"><a href="#nuttx-stack-is-full-of-quickjs">3 NuttX Stack is Full of QuickJS</a></h1>
-<p><em>We fixed the QuickJS Build for NuttX… Does it run?</em></p>
+<p><em>QuickJS builds OK for NuttX. Does it run?</em></p>
 <p>Sorry nope! QuickJS ran into <a href="https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx"><strong>Bizarre Crashes</strong></a> on NuttX (with looping Stack Traces, pic above)…</p>
 <ul>
 <li>
@@ -288,7 +288,7 @@ PID GRP PRI POLICY TYPE    NPX STATE EVENT      STACKBASE  SIZE USED FILLED  COM
 2   2  100  RR     Task    - Waiting Semaphore  0xc0202040 3008  744  24.7%  /system/bin/init
 3   3  100  RR     Task    - Running            0xc0202050 1968 1968 100.0%! qjs }¼uq¦ü®઄²äÅ
 </code></pre></div>
-<p>The last line shows that the <strong>QuickJS Stack</strong> (2 KB) was <strong>100% Full</strong>! (And the Command Line was badly messed up)</p>
+<p>The last line shows that the <strong>QuickJS Stack</strong> (2 KB) was <strong>100% Full</strong>! (With the Command Line horribly corrupted)</p>
 <p>We follow these steps to <a href="https://github.com/lupyuen/nuttx-star64#increase-stack-size"><strong>increase the App Stack Size</strong></a>…</p>
 <ol>
 <li>
@@ -306,7 +306,7 @@ PID GRP PRI POLICY TYPE    NPX STATE EVENT      STACKBASE  SIZE USED FILLED  COM
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#fix-quickjs-interactive-mode-on-nuttx">(Why we set <strong>Thread Local Storage</strong>)</a></p>
 </li>
 <li>
-<p>Set <em>“Maximum stack size (log2)”</em> to <strong>16</strong></p>
+<p>Set <em>“Maximum Stack Size (Log2)”</em> to <strong>16</strong></p>
 <p>(Because 2^16 = 64 KB)</p>
 </li>
 </ol>
@@ -384,11 +384,11 @@ qjs &gt; os.ioctl(1,2,3)
 qjs &gt; os.ioctl(100,2,3)
 -9
 </code></pre></div>
-<p>Next we test <strong>ioctl()</strong>…</p>
+<p>We test <strong>ioctl()</strong> some more…</p>
 <p><img src="https://lupyuen.github.io/images/nim-wiring.jpg" alt="Connect an LED to Ox64 SBC at GPIO 29, Pin 21" /></p>
 <h1 id="quickjs-blinks-the-led-on-ox64-sbc"><a href="#quickjs-blinks-the-led-on-ox64-sbc">5 QuickJS Blinks the LED on Ox64 SBC</a></h1>
-<p><em>We added ioctl() to QuickJS… Does it work?</em></p>
-<p>We test <strong>ioctl()</strong> on a Real Device with a Real LED: <strong>Ox64 BL808 RISC-V SBC</strong>. Right after these fixes…</p>
+<p><em>We added ioctl() to QuickJS. Does it work?</em></p>
+<p>We test <strong>ioctl()</strong> on a Real Device with a Real LED: <strong>Ox64 BL808 RISC-V SBC</strong>. Right after these tweaks…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/8f75f3744f3964bd3ed0596421a93e59fb39cdd8"><strong>Add the GPIO Driver</strong></a>  for Ox64 BL808</p>
@@ -404,11 +404,11 @@ qjs &gt; os.ioctl(100,2,3)
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#add-led-driver-to-nuttx-ox64-bl808-sbc">(Why we enlarge the <strong>RAM Disk Region</strong>)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3"><strong>Fix the <code>leds</code> app</strong></a> for testing LED Driver</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3"><strong>Patch the <code>leds</code> app</strong></a> for testing LED Driver</p>
 <p>(Because <strong>task_create()</strong> is missing from Kernel Mode)</p>
 </li>
 </ul>
-<p>Follow these steps to download or build <strong>NuttX and QuickJS</strong>…</p>
+<p>Follow these steps to download (or build) <strong>NuttX and QuickJS</strong>…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-ox64"><strong>“Build NuttX for Ox64”</strong></a></p>
@@ -462,10 +462,10 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><a href="https://github.com/apache/nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b"><strong>Increase the App Stack Size</strong></a>  from 2 KB to 64 KB</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429"><strong>Fix the <code>leds</code> app</strong></a> for testing LED Driver</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429"><strong>Patch the <code>leds</code> app</strong></a> for testing LED Driver</p>
 </li>
 </ul>
-<p>Check out the instructions to download or build <strong>NuttX and QuickJS</strong>…</p>
+<p>When we download (or build) <strong>NuttX and QuickJS</strong>…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-qemu"><strong>“Build NuttX for QEMU”</strong></a></p>
@@ -474,9 +474,11 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx"><strong>“Build QuickJS for NuttX QEMU”</strong></a></p>
 </li>
 </ul>
-<p>QuickJS for NuttX QEMU blinks a <strong>Simulated LED</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
+<p>QuickJS blinks a <strong>Simulated LED</strong> on NuttX QEMU…</p>
+<div class="example-wrap"><pre class="language-text"><code>## Start NuttX on QEMU
+$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
 
+## Run our Blinky JavaScript with QuickJS
 NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; qjs --std /system/bin/blink.js
 led=0, val=1
@@ -493,7 +495,7 @@ led=0, val=1
    text    data     bss     dec     hex filename
  554847     260      94  555201   878c1 apps/bin/qjs
 </code></pre></div>
-<p>Probably not? JavaScript needs <strong>quite a bit of RAM</strong> to run comfortably.</p>
+<p>Probably not ALL devices? JavaScript needs <strong>a fair bit of RAM</strong> to run comfortably.</p>
 <p>We ran <a href="https://github.com/PromyLOPh/linkermapviz"><strong>linkermapviz</strong></a> on the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qjs-riscv.map"><strong>QuickJS Linker Map</strong></a> for NuttX QEMU…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Visualise the QuickJS Linker Map for NuttX QEMU.
 ## Produces linkermap.html: https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/linkermap.html
@@ -516,7 +518,7 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 <p><a href="https://bellard.org/quickjs/quickjs.html#BigInt_002c-BigFloat_002c-BigDecimal">(<strong>BigInt</strong> is for 64-Bit Numbers)</a></p>
 </span>
 <p><img src="https://lupyuen.github.io/images/quickjs-data.jpg" alt="QuickJS Data Size" /></p>
-<p><em>What about the Heap Memory Size?</em></p>
+<p><em>What about Heap Memory Size?</em></p>
 <p>Based on the NuttX Logs with <strong>Heap Logging Enabled</strong>…</p>
 <ul>
 <li>
@@ -531,14 +533,14 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 <p>We compute the <strong>Heap Usage</strong> with a Spreadsheet (pic above)…</p>
 <ul>
 <li>
-<p><a href="https://docs.google.com/spreadsheets/d/1EpdktueHxfAR4VR80d1XSZRwdO2UvNGf_sPetHHzAGQ/edit?usp=sharing"><strong>Heap Usage: Without Repl</strong> (Google Sheets)</a></p>
+<p><a href="https://docs.google.com/spreadsheets/d/1EpdktueHxfAR4VR80d1XSZRwdO2UvNGf_sPetHHzAGQ/edit?usp=sharing"><strong>Heap Usage: Without REPL</strong> (Google Sheets)</a></p>
 </li>
 <li>
-<p><a href="https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit?usp=sharing"><strong>Heap Usage: With Repl</strong> (Google Sheets)</a></p>
+<p><a href="https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit?usp=sharing"><strong>Heap Usage: With REPL</strong> (Google Sheets)</a></p>
 <p>(<strong>“Free Size”</strong> might be inaccurate because it uses <strong>VLOOKUP</strong> for Top-Down Lookup, though we actually need Down-Top Lookup)</p>
 </li>
 </ul>
-<p>And deduce the <strong>QuickJS Heap Usage</strong> (pic below)…</p>
+<p>And derive the <strong>QuickJS Heap Usage</strong> (pic below)…</p>
 <div><table><thead><tr><th style="text-align: left">Max Heap Usage</th><th style="text-align: center"></th></tr></thead><tbody>
 <tr><td style="text-align: left">QuickJS without REPL</td><td style="text-align: center"><strong>276 KB</strong></td></tr>
 <tr><td style="text-align: left">QuickJS with REPL</td><td style="text-align: center"><strong>371 KB</strong></td></tr>
@@ -551,7 +553,7 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 <p><img src="https://lupyuen.github.io/images/quickjs-size.png" alt="QEMU vs Ox64 QuickJS: 4 MB vs 22 MB" /></p>
 <p><em>QEMU vs Ox64 QuickJS: Any diff? (Pic above)</em></p>
 <p>QuickJS for NuttX QEMU is more Memory-Efficient because it uses <a href="https://github.com/apache/nuttx/pull/11524"><strong>Static Linking</strong></a>.</p>
-<p>(Instead of ELF Loader fixing the <a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app"><strong>Relocatable Symbols</strong></a> at runtime)</p>
+<p>(Instead of ELF Loader patching the <a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app"><strong>Relocatable Symbols</strong></a> at runtime)</p>
 <p>Right now Ox64 QuickJS is slower and <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/qjs"><strong>multi-deca-mega-chonky</strong></a>: 22 MB! We might downsize to 4 MB (like QEMU) when we switch to Static Linking.</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
 <h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">7 Simulate the LED on Ox64 Emulator</a></h1>
@@ -630,7 +632,6 @@ Term.prototype.write = function(str) {
     return;         // Don&#39;t show in Console Output
   }
 </code></pre></div>
-<p>While suppressing the Notification from the Console Output.</p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/index.html#L21-L29">(<strong>status</strong> and <strong>gpio29</strong> are in HTML)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/style.css#L106-L117">(<strong>gpio_off</strong> and <strong>gpio_on</strong> are in CSS)</a></p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -795,7 +796,7 @@ riscv-none-elf-ld \
 <ul>
 <li>
 <p>Combine everything above into our <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh"><strong>QuickJS Build Script</strong></a></p>
-<p>(Later we’ll merge our Build Script into the NuttX Makefiles)</p>
+<p>(Later we’ll merge into the NuttX Makefiles)</p>
 </li>
 <li>
 <p>Add an <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp"><strong>Expect Script</strong></a> for auto-testing QuickJS on QEMU</p>
@@ -804,7 +805,7 @@ riscv-none-elf-ld \
 </ul>
 <p>Everything builds OK without changing any code in QuickJS! Though we <a href="https://lupyuen.github.io/articles/quickjs#build-quickjs-for-nuttx"><strong>stubbed out some functions</strong></a> because NuttX works a little differently.</p>
 <p><em>repl.c and qjscalc.c are missing?</em></p>
-<p>They’re generated by the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/make.log#L28-L32"><strong>QuickJS Compiler</strong></a>!</p>
+<p>They’re generated by the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/make.log#L28-L32"><strong>QuickJS Compiler</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile the REPL from JavaScript to C
 ./qjsc -c -o repl.c -m repl.js
 
@@ -821,7 +822,7 @@ riscv-none-elf-ld \
 </li>
 </ul>
 <p><em>What’s inside repl.c and qjscalc.c?</em></p>
-<p>They contain plenty of <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/repl.c"><strong>JavaScript Bytecode</strong></a>. Brilliant!</p>
+<p>They contain plenty of <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/repl.c"><strong>JavaScript Bytecode</strong></a>for REPL and BigNum Calculator. Brilliant!</p>
 <div class="example-wrap"><pre class="language-c"><code>/* File generated automatically by the QuickJS compiler. */
 #include &lt;inttypes.h&gt;
 const uint32_t qjsc_repl_size = 16280;
@@ -829,7 +830,7 @@ const uint8_t qjsc_repl[16280] = {
  0x02, 0xa5, 0x03, 0x0e, 0x72, 0x65, 0x70, 0x6c,
  0x2e, 0x6a, 0x73, 0x06, 0x73, 0x74, 0x64, 0x04,
 </code></pre></div>
-<p>That’s why REPL and BigNum will require more Heap Memory, to process the extra JavaScript Bytecode.</p>
+<p>That’s why REPL and BigNum will require more Heap Memory, to execute the extra JavaScript Bytecode.</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-qemu.png" alt="QuickJS on NuttX QEMU" /></p>
 <p><a href="https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db"><em>QuickJS on NuttX QEMU</em></a></p>
 <h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">10 Appendix: Build NuttX for QEMU</a></h1>
@@ -842,7 +843,7 @@ const uint8_t qjsc_repl[16280] = {
 <p><a href="https://github.com/apache/nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b"><strong>Increase the App Stack Size</strong></a>  from 2 KB to 64 KB</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429"><strong>Fix the <code>leds</code> app</strong></a> for testing LED Driver</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429"><strong>Patch the <code>leds</code> app</strong></a> for testing LED Driver</p>
 </li>
 </ul>
 <p>We may download the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1"><strong>NuttX Binaries for QEMU</strong></a>…</p>
@@ -908,7 +909,7 @@ popd
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>This produces the NuttX ELF Image <strong><code>nuttx</code></strong> that we’ll boot on QEMU RISC-V Emulator in a while.</p>
-<p>But first: We build <strong>QuickJS for Ox64</strong>, which will produce <code>qjs</code> and <code>blink.sh</code> in the <code>apps/bin</code> folder…</p>
+<p>But first: We build <strong>QuickJS for QEMU</strong>, which will produce <code>qjs</code> and <code>blink.sh</code> in the <code>apps/bin</code> folder…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx"><strong>“Build QuickJS for NuttX QEMU”</strong></a></li>
 </ul>
@@ -926,7 +927,8 @@ qemu-system-riscv64 \
 <p>At the NuttX Prompt, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>qjs --std /system/bin/blink.js
 </code></pre></div>
-<p>QuickJS for NuttX QEMU blinks a <strong>Simulated LED</strong>…</p>
+<p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/blink.js">(See the <strong>Blinky JavaScript</strong>)</a></p>
+<p>QuickJS runs our Blinky JavaScript and blinks a <strong>Simulated LED</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
 
 NuttShell (NSH) NuttX-12.4.0-RC0
@@ -954,7 +956,7 @@ led=0, val=1
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226"><strong>Increase the RAM Disk Region</strong></a> from 16 MB to 40 MB</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3"><strong>Fix the <code>leds</code> app</strong></a> for testing LED Driver</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3"><strong>Patch the <code>leds</code> app</strong></a> for testing LED Driver</p>
 </li>
 </ul>
 <p>We may download the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1"><strong>NuttX Binaries for Ox64</strong></a>…</p>
@@ -984,7 +986,10 @@ diskutil unmountDisk /dev/disk2
 <p>At the NuttX Prompt, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>qjs --std /system/bin/blink.js
 </code></pre></div>
-<p>QuickJS on NuttX blinks our <strong>LED on GPIO 29</strong>…</p>
+<p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/blink.js">(See the <strong>Blinky JavaScript</strong>)</a></p>
+</li>
+<li>
+<p>QuickJS executes our Blinky JavaScript and blinks our <strong>LED on GPIO 29</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; qjs --std /system/bin/blink.js
 
