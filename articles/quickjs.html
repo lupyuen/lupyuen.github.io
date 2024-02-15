@@ -190,7 +190,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><em>QuickJS compiles OK for NuttX?</em></p>
 <p>Mostly. QuickJS compiles for NuttX <strong>with no code changes</strong>…</p>
 <ul>
-<li><a href="TODO"><strong>“Build QuickJS for NuttX”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx"><strong>“Build QuickJS for NuttX”</strong></a></li>
 </ul>
 <p>Then we hit some <strong>Missing Functions</strong>…</p>
 <ol>
@@ -227,7 +227,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </li>
 </ol>
 <p>After these fixes, QuickJS builds OK for NuttX!</p>
-<p><a href="TODO">(How to build <strong>QuickJS for NuttX</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx">(How to build <strong>QuickJS for NuttX</strong>)</a></p>
 <p><em>That’s plenty of fixing. Will it break QuickJS?</em></p>
 <p>Thankfully we have <strong>Automated Testing</strong> with an Expect Script (pic above): <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp">qemu.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
@@ -459,10 +459,10 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>Check out the instructions…</p>
 <ul>
 <li>
-<p>TODO: Build NuttX for QEMU</p>
+<p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-qemu"><strong>“Build NuttX for QEMU”</strong></a></p>
 </li>
 <li>
-<p>TODO: Build QuickJS for NuttX QEMU</p>
+<p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx"><strong>“Build QuickJS for NuttX QEMU”</strong></a></p>
 </li>
 </ul>
 <p>QuickJS for NuttX QEMU blinks a <strong>Simulated LED</strong>…</p>
@@ -514,7 +514,7 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/38e004e6eb643932f6957e03828ad25242cf803a/nuttx/qemu.log"><strong>Heap Log: With REPL</strong></a></p>
-<p><a href="TODO">(REPL runs extra <strong>JavaScript Bytecode</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx">(<strong>REPL</strong> runs extra <strong>JavaScript Bytecode</strong>)</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/quickjs-sheet.jpg" alt="Computing the QuickJS Heap Usage with a Spreadsheet" /></p>
@@ -612,6 +612,8 @@ Term.prototype.write = function(str) {
     document.getElementById(&quot;status&quot;).style.width = document.getElementById(&quot;term_wrap&quot;).style.width;  // Spread out the GPIO Status
     const gpio_status = document.getElementById(gpio);
     gpio_status.style.display = &quot;block&quot;;
+
+    // GPIO Off or On
     gpio_status.className = (val == 0)
       ? &quot;gpio_off&quot;  // Normal CSS Style
       : &quot;gpio_on&quot;;  // Green CSS Style
@@ -621,7 +623,6 @@ Term.prototype.write = function(str) {
 <p>While suppressing the Notification from the Console Output.</p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/index.html#L21-L29">(<strong>status</strong> and <strong>gpio29</strong> are in HTML)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/style.css#L106-L117">(<strong>gpio_off</strong> and <strong>gpio_on</strong> are in CSS)</a></p>
-<p>TODO</p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title2.png" alt="QuickJS JavaScript Engine in Ox64 NuttX Emulator" /></p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
@@ -650,13 +651,13 @@ Term.prototype.write = function(str) {
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/quickjs.md"><strong>lupyuen.github.io/src/quickjs.md</strong></a></p>
 <h1 id="appendix-build-quickjs-for-nuttx"><a href="#appendix-build-quickjs-for-nuttx">9 Appendix: Build QuickJS for NuttX</a></h1>
-<p>Before building QuickJS: Build NuttX for QEMU or Ox64…</p>
+<p>Before building QuickJS: Build NuttX for <strong>QEMU or Ox64</strong>…</p>
 <ul>
 <li>
-<p><a href="TODO"><strong>Build NuttX for QEMU</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-qemu"><strong>Build NuttX for QEMU</strong></a></p>
 </li>
 <li>
-<p><a href="TODO"><strong>Build NuttX for Ox64</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-ox64"><strong>Build NuttX for Ox64</strong></a></p>
 </li>
 </ul>
 <p>Then follow these steps to build <strong>QuickJS for NuttX</strong> (QEMU or Ox64)…</p>
@@ -779,7 +780,7 @@ riscv-none-elf-ld \
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L19-L25">(<strong>Ox64 Build</strong> is a little different)</a></p>
 <p>Then we combined everything above into our <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh"><strong>QuickJS Build Script</strong></a>.</p>
-<p>Everything builds OK without changing any code in QuickJS! Though we <a href="TODO"><strong>stubbed out some functions</strong></a> because NuttX works a little differently.</p>
+<p>Everything builds OK without changing any code in QuickJS! Though we <a href="https://lupyuen.github.io/articles/quickjs#build-quickjs-for-nuttx"><strong>stubbed out some functions</strong></a> because NuttX works a little differently.</p>
 <p>(Later we’ll merge our Build Script into the NuttX Makefiles)</p>
 <p><em>repl.c and qjscalc.c are missing?</em></p>
 <p>They’re generated by the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/make.log#L28-L32"><strong>QuickJS Compiler</strong></a>!</p>
