@@ -239,13 +239,12 @@ After plenty of headscratching troubleshooting, this [__Vital Clue__](https://gi
 
 ```yaml
 riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 00000000c0006d52, MTVAL: ffffffffffffffff
-...
-dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- ---------------- 0x802002b0      2048      2040    99.6%!   irq
-dump_task:       0     0   0 FIFO     Kthread - Ready              0000000000000000 0x80206010      3056      1856    60.7%    Idle_Task
-dump_task:       1     1 100 RR       Kthread - Waiting Semaphore  0000000000000000 0x8020a050      1968       704    35.7%    lpwork 0x802015f0 0x80201618
-dump_task:       2     2 100 RR       Task    - Waiting Semaphore  0000000000000000 0xc0202040      3008       744    24.7%    /system/bin/init
-dump_task:       3     3 100 RR       Task    - Running            0000000000000000 0xc0202050      1968      1968   100.0%!   qjs }¼uq¦ü®઄²äÅ
+PID GRP PRI POLICY TYPE    NPX STATE EVENT      STACKBASE  SIZE USED FILLED  COMMAND
+                                                0x802002b0 2048 2040  99.6%! irq
+0   0    0  FIFO   Kthread - Ready              0x80206010 3056 1856  60.7%  Idle_Task
+1   1  100  RR     Kthread - Waiting Semaphore  0x8020a050 1968  704  35.7%  lpwork 0x802015f0 0x80201618
+2   2  100  RR     Task    - Waiting Semaphore  0xc0202040 3008  744  24.7%  /system/bin/init
+3   3  100  RR     Task    - Running            0xc0202050 1968 1968 100.0%! qjs }¼uq¦ü®઄²äÅ
 ```
 
 The last line shows that the __QuickJS Stack__ (2 KB) was __100% Full__! (And the Command Line was badly messed up)
