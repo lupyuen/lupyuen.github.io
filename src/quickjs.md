@@ -506,7 +506,6 @@ int target_write_slow(...) {
 
       // Check if the Output Bit is Off or On
       #define reg_gpio_xx_o 24
-      #define reg_gpio_xx_i 28
       const char b =
         ((val & (1 << reg_gpio_xx_o)) == 0)
         ? '0' : '1';
@@ -550,9 +549,11 @@ Term.prototype.write = function(str) {
     gpio_status.className = (val == 0)
       ? "gpio_off"  // Normal CSS Style
       : "gpio_on";  // Green CSS Style
-    return;
+    return;         // Don't show in Console Output
   }
 ```
+
+While suppressing the Notification from the Console Output.
 
 [(__status__ and __gpio29__ are in HTML)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/index.html#L21-L29)
 
@@ -561,6 +562,8 @@ Term.prototype.write = function(str) {
 TODO
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
+
+![QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)](https://lupyuen.github.io/images/quickjs-title2.png)
 
 # What's Next
 
