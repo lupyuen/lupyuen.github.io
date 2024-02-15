@@ -486,7 +486,9 @@ led=0, val=1
 </code></pre></div>
 <p>Probably not? JavaScript needs <strong>quite a bit of RAM</strong> to run comfortably.</p>
 <p>We ran <a href="https://github.com/PromyLOPh/linkermapviz"><strong>linkermapviz</strong></a> on the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qjs-riscv.map"><strong>QuickJS Linker Map</strong></a> for NuttX QEMU…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Visualise the QuickJS Linker Map for NuttX QEMU
+<div class="example-wrap"><pre class="language-bash"><code>## Visualise the QuickJS Linker Map for NuttX QEMU.
+## Produces linkermap.html: https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/linkermap.html
+
 git clone https://github.com/PromyLOPh/linkermapviz
 cd linkermapviz
 pip3 install .
