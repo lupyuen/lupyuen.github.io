@@ -858,7 +858,35 @@ In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS f
 
 - [__Fix the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429) for testing LED Driver
 
-Here are the steps to download and build NuttX for __QEMU RISC-V (64-bit Kernel Mode)__...
+We may download the [__NuttX Binaries for QEMU__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1)...
+
+1.  Download the NuttX Kernel: [__`nuttx`__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/qemuled-1/nuttx)
+
+    Copy to __`$HOME/nuttx/`__
+
+1.  Download the NuttX Apps: [__`apps-bin.zip`__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/qemuled-1/apps-bin.zip)
+
+    Unzip and copy the files inside (not the folder) into __`$HOME/apps/bin/`__
+
+    (We should see __`$HOME/apps/bin/qjs`__ and __`blink.js`__)
+ 
+1.  Then run...
+
+    ```bash
+    $ cd $HOME/nuttx/
+    $ qemu-system-riscv64 \
+        -semihosting \
+        -M virt,aclint=on \
+        -cpu rv64 \
+        -smp 8 \
+        -bios none \
+        -kernel nuttx \
+        -nographic
+    ```
+
+    [(See the __NuttX Log__)](https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db)
+
+Or if we prefer to __build NuttX ourselves__...
 
 ```bash
 ## Download the WIP NuttX Source Code
@@ -900,7 +928,13 @@ popd
 
 [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1)
 
-This produces the NuttX ELF Image __`nuttx`__ that we may boot on QEMU RISC-V Emulator...
+This produces the NuttX ELF Image __`nuttx`__ that we'll boot on QEMU RISC-V Emulator in a while.
+
+But first: We build __QuickJS for Ox64__, which will produce `qjs` and `blink.sh` in the `apps/bin` folder...
+
+- [__"Build QuickJS for NuttX QEMU"__](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
+
+Now we boot __`nuttx`__ on QEMU RISC-V Emulator...
 
 ```bash
 ## Start the QEMU RISC-V Emulator (64-bit) with NuttX RTOS
@@ -952,7 +986,49 @@ In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS f
 
 - [__Fix the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3) for testing LED Driver
 
-These are the steps to build NuttX for __Ox64 BL808 SBC__...
+We may download the [__NuttX Binaries for Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1)...
+
+1.  Download the NuttX Image: [__`Image`__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/gpio2-1/Image)
+
+1.  Prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
+
+    [(Remember to flash __OpenSBI and U-Boot Bootloader__)](https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot)
+
+1.  Copy the __`Image`__ file (from above) and overwrite the __`Image`__ in the Linux microSD...
+
+    ```bash
+    ## Overwrite the Linux Image
+    ## on Ox64 microSD
+    cp Image \
+      "/Volumes/NO NAME/Image"
+    diskutil unmountDisk /dev/disk2
+    ```
+
+1.  Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg) and power up Ox64.
+
+1.  Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH).
+
+1.  At the NuttX Prompt, enter...
+
+    ```bash
+    qjs --std /system/bin/blink.js
+    ```
+
+    QuickJS on NuttX blinks our __LED on GPIO 29__...
+
+    ```yaml
+    NuttShell (NSH) NuttX-12.4.0-RC0
+    nsh> qjs --std /system/bin/blink.js
+
+    bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+    bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+    bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+    bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+    ```
+
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67)
+
+Or if we prefer to __build NuttX ourselves__...
 
 ```bash
 ## Download the WIP NuttX Source Code
@@ -1009,9 +1085,9 @@ make -j 8 import
 popd
 ```
 
-Next we build __QuickJS for Ox64__, which will produce `qjs` and `blink.sh` in the `/apps/bin` folder...
+Next we build __QuickJS for Ox64__, which will produce `qjs` and `blink.sh` in the `apps/bin` folder...
 
-- [__"Build QuickJS for NuttX Ox64"__](TODO)
+- [__"Build QuickJS for NuttX Ox64"__](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
 
 We bundle QuickJS into the __Initial RAM Disk__ and append it to the NuttX Image...
 
@@ -1039,43 +1115,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 
 This produces the NuttX Image for Ox64: __`Image`__
 
-Next we prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64).
-
-[(Remember to flash __OpenSBI and U-Boot Bootloader__)](https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot)
-
-And we do the [__Linux-To-NuttX Switcheroo__](https://lupyuen.github.io/articles/ox64#apache-nuttx-rtos-for-ox64): Copy the __`Image`__ file (from above) and overwrite the __`Image`__ in the Linux microSD...
-
-```bash
-## Overwrite the Linux Image
-## on Ox64 microSD
-cp Image \
-  "/Volumes/NO NAME/Image"
-diskutil unmountDisk /dev/disk2
-```
-
-Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg) and power up Ox64.
-
-Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), which starts __NuttX Kernel__ and the NuttX Shell (NSH).
-
-At the NuttX Prompt, enter...
-
-```bash
-qjs --std /system/bin/blink.js
-```
-
-QuickJS on NuttX blinks our __LED on GPIO 29__...
-
-```yaml
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> qjs --std /system/bin/blink.js
-
-bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-```
-
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67)
+Follow the [__earlier instructions__](https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-ox64) to copy __`Image`__ to a Linux microSD and boot it on Ox64.
 
 _The same files were used for NuttX Emulator? (Pic above)_
 
