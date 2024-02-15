@@ -213,11 +213,11 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p><em>That’s plenty of fixing. Will it break QuickJS?</em></p>
 <p>TODO: Thankfully we have</p>
 <p>Before the Auto-Test, we fix the Auto-Crash…</p>
-<p>TODO: Pic of Loopy Stack</p>
-<p><em>Loopy Stack Trace probably means Stack Full</em></p>
+<p><img src="https://lupyuen.github.io/images/quickjs-stack.png" alt="Loopy Stack Trace probably means Stack Full" /></p>
+<p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478"><em>Loopy Stack Trace probably means Stack Full</em></a></p>
 <h1 id="nuttx-stack-is-full-of-quickjs"><a href="#nuttx-stack-is-full-of-quickjs">3 NuttX Stack is Full of QuickJS</a></h1>
 <p><em>We fixed the QuickJS Build for NuttX… Does it run?</em></p>
-<p>Sorry nope! QuickJS ran into <a href="https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx"><strong>Mysterious Crashes</strong></a> on NuttX (with looping Stack Traces)…</p>
+<p>Sorry nope! QuickJS ran into <a href="https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx"><strong>Mysterious Crashes</strong></a> on NuttX (with looping Stack Traces, pic above)…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#atom-sentinel-becomes-0xffff_ffff"><strong>Strange Pointers</strong></a> (<code>0xFFFF_FFFF</code>) while reading the JavaScript Atoms</p>
