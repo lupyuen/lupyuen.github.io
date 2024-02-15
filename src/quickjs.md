@@ -174,15 +174,15 @@ TODO: Thankfully we have
 
 Before the Auto-Test, we fix the Auto-Crash...
 
-TODO: Pic of Loopy Stack
+![Loopy Stack Trace probably means Stack Full](https://lupyuen.github.io/images/quickjs-stack.png)
 
-_Loopy Stack Trace probably means Stack Full_
+[_Loopy Stack Trace probably means Stack Full_](https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478)
 
 # NuttX Stack is Full of QuickJS
 
 _We fixed the QuickJS Build for NuttX... Does it run?_
 
-Sorry nope! QuickJS ran into [__Mysterious Crashes__](https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx) on NuttX (with looping Stack Traces)...
+Sorry nope! QuickJS ran into [__Mysterious Crashes__](https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx) on NuttX (with looping Stack Traces, pic above)...
 
 - [__Strange Pointers__](https://github.com/lupyuen/quickjs-nuttx#atom-sentinel-becomes-0xffff_ffff) (`0xFFFF_FFFF`) while reading the JavaScript Atoms
 
