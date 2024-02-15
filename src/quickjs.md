@@ -146,7 +146,7 @@ _QuickJS compiles OK for NuttX?_
 
 Mostly. QuickJS compiles for NuttX __with no code changes__...
 
-- [__"Build QuickJS for NuttX"__](TODO)
+- [__"Build QuickJS for NuttX"__](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
 
 Then we hit some __Missing Functions__...
 
@@ -178,7 +178,7 @@ _How to fix the missing functions?_
 
 After these fixes, QuickJS builds OK for NuttX!
 
-[(How to build __QuickJS for NuttX__)](TODO)
+[(How to build __QuickJS for NuttX__)](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
 
 _That's plenty of fixing. Will it break QuickJS?_
 
@@ -438,9 +438,9 @@ No worries, the exact same steps will work for __QEMU Emulator__ (64-bit RISC-V)
 
 Check out the instructions...
 
-- TODO: Build NuttX for QEMU
+- [__"Build NuttX for QEMU"__](https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-qemu)
 
-- TODO: Build QuickJS for NuttX QEMU
+- [__"Build QuickJS for NuttX QEMU"__](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
 
 QuickJS for NuttX QEMU blinks a __Simulated LED__...
 
@@ -511,7 +511,7 @@ Based on the NuttX Logs with __Heap Logging Enabled__...
 
 - [__Heap Log: With REPL__](https://github.com/lupyuen/quickjs-nuttx/blob/38e004e6eb643932f6957e03828ad25242cf803a/nuttx/qemu.log)
 
-  [(REPL runs extra __JavaScript Bytecode__)](TODO)
+  [(__REPL__ runs extra __JavaScript Bytecode__)](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
 
 ![Computing the QuickJS Heap Usage with a Spreadsheet](https://lupyuen.github.io/images/quickjs-sheet.jpg)
 
@@ -629,6 +629,8 @@ Term.prototype.write = function(str) {
     document.getElementById("status").style.width = document.getElementById("term_wrap").style.width;  // Spread out the GPIO Status
     const gpio_status = document.getElementById(gpio);
     gpio_status.style.display = "block";
+
+    // GPIO Off or On
     gpio_status.className = (val == 0)
       ? "gpio_off"  // Normal CSS Style
       : "gpio_on";  // Green CSS Style
@@ -641,8 +643,6 @@ While suppressing the Notification from the Console Output.
 [(__status__ and __gpio29__ are in HTML)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/index.html#L21-L29)
 
 [(__gpio_off__ and __gpio_on__ are in CSS)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/style.css#L106-L117)
-
-TODO
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
 
@@ -672,11 +672,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build QuickJS for NuttX
 
-Before building QuickJS: Build NuttX for QEMU or Ox64...
+Before building QuickJS: Build NuttX for __QEMU or Ox64__...
 
-- [__Build NuttX for QEMU__](TODO)
+- [__Build NuttX for QEMU__](https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-qemu)
 
-- [__Build NuttX for Ox64__](TODO)
+- [__Build NuttX for Ox64__](https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-ox64)
 
 Then follow these steps to build __QuickJS for NuttX__ (QEMU or Ox64)...
 
@@ -807,7 +807,7 @@ riscv-none-elf-ld \
 
 Then we combined everything above into our [__QuickJS Build Script__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh).
 
-Everything builds OK without changing any code in QuickJS! Though we [__stubbed out some functions__](TODO) because NuttX works a little differently.
+Everything builds OK without changing any code in QuickJS! Though we [__stubbed out some functions__](https://lupyuen.github.io/articles/quickjs#build-quickjs-for-nuttx) because NuttX works a little differently.
 
 (Later we'll merge our Build Script into the NuttX Makefiles)
 
