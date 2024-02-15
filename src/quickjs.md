@@ -658,7 +658,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build QuickJS for NuttX
 
-Follow these steps to build __QuickJS for NuttX__ (QEMU or Ox64)...
+Before building QuickJS: Build NuttX for QEMU or Ox64...
+
+- [__Build NuttX for QEMU__](TODO)
+
+- [__Build NuttX for Ox64__](TODO)
+
+Then follow these steps to build __QuickJS for NuttX__ (QEMU or Ox64)...
 
 ```bash
 ## Download and build QuickJS for NuttX
@@ -673,9 +679,9 @@ Remember to...
 
 - Set the [__Toolchain Path__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L4-L8)
 
-- Select the [__Build for QEMU__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L8-L14)
+- Select [__QuickJS for NuttX QEMU__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L8-L14)
 
-- Or [__Build for Ox64__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L14-L25)
+- Or [__QuickJS for NuttX Ox64__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L14-L25)
 
 _How did we figure out the steps to build QuickJS for NuttX?_
 
@@ -823,6 +829,10 @@ const uint8_t qjsc_repl[16280] = {
 ```
 
 That's why REPL and BigNum will require more Heap Memory, to process the extra JavaScript Bytecode.
+
+![QuickJS on NuttX QEMU](https://lupyuen.github.io/images/quickjs-qemu.png)
+
+[_QuickJS on NuttX QEMU_](https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db)
 
 # Appendix: Build NuttX for QEMU
 
@@ -980,7 +990,7 @@ riscv64-unknown-elf-objdump \
 
 [(Remember to install the __Build Prerequisites and Toolchain__)](https://lupyuen.github.io/articles/release#build-nuttx-for-star64)
 
-We build the __Initial RAM Disk__ that contains NuttX Shell and NuttX Apps...
+We build the __NuttX Apps Filesystem__ that contains NuttX Shell and NuttX Apps...
 
 ```bash
 ## Build the Apps Filesystem
@@ -989,7 +999,15 @@ pushd ../apps
 ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
 make -j 8 import
 popd
+```
 
+Next we build __QuickJS for Ox64__, which will produce `qjs` and `blink.sh` in the `/apps/bin` folder...
+
+- [__"Build QuickJS for NuttX Ox64"__](TODO)
+
+We bundle QuickJS into the __Initial RAM Disk__ and append it to the NuttX Image...
+
+```bash
 ## Generate the Initial RAM Disk `initrd`
 ## in ROMFS Filesystem Format
 ## from the Apps Filesystem `../apps/bin`
@@ -1008,8 +1026,6 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 ```
 
 TODO: [(See the __Build Script__)](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
-
-TODO: [(See the __Build Log__)](https://gist.github.com/lupyuen/578a7eb2d4d827aa252fff37c172dd18)
 
 TODO: [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1)
 
@@ -1053,6 +1069,6 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67)
 
-_The same files were used for NuttX Emulator?_
+_The same files were used for NuttX Emulator? (Pic above)_
 
 Yep we copied the Build Outputs above to the [__NuttX Emulator for Ox64__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/quickjs).
