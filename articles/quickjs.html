@@ -78,8 +78,8 @@
 <li><a href="#appendix-build-nuttx-for-qemu">10 Appendix: Build NuttX for QEMU</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-ox64">11 Appendix: Build NuttX for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)" /></p>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/">(Try the <strong>Online Demo</strong>)</a></p>
-<p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/"><em>(Try the <strong>Online Demo</strong>)</em></a></p>
+<p><a href="https://youtu.be/AFDVceqQNRs"><em>(Watch the <strong>Demo on YouTube</strong>)</em></a></p>
 <p><a href="https://github.com/bellard/quickjs"><strong>QuickJS</strong></a> is a small <strong>JavaScript Engine</strong> that supports <a href="https://bellard.org/quickjs/quickjs.html#os-module"><strong>POSIX Functions</strong></a>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> is a tiny <strong>Real-Time Operating System</strong> (for all kinds of devices) that’s compatible with POSIX.</p>
 <p><em>Can we run QuickJS on NuttX? And Blink the LED in 4 lines of JavaScript?</em></p>
@@ -632,10 +632,12 @@ Term.prototype.write = function(str) {
     return;         // Don&#39;t show in Console Output
   }
 </code></pre></div>
+<p><strong>Emulator Notifications</strong> won’t appear in the Emulator Console Output. (Because we suppressed them)</p>
+<p>We’ll see the Notifications in the <strong>JavaScript Console</strong>. (Pic below)</p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/index.html#L21-L29">(<strong>status</strong> and <strong>gpio29</strong> are in HTML)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/style.css#L106-L117">(<strong>gpio_off</strong> and <strong>gpio_on</strong> are in CSS)</a></p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/quickjs-title2.png" alt="QuickJS JavaScript Engine in Ox64 NuttX Emulator" /></p>
+<p><img src="https://lupyuen.github.io/images/quickjs-notify.png" alt="Notifications from NuttX Emulator appear in JavaScript Console" /></p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Thanks to the <a href="https://github.com/bellard/quickjs"><strong>QuickJS Team</strong></a>, we have a fun new way to Experiment Interactively with NuttX on newer gadgets!</p>
@@ -941,7 +943,8 @@ led=0, val=1
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db">(See the <strong>Complete Log</strong>)</a></p>
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
-<p><img src="https://lupyuen.github.io/images/quickjs-title2.png" alt="QuickJS JavaScript Engine in Ox64 NuttX Emulator" /></p>
+<p><img src="https://lupyuen.github.io/images/quickjs-title2.png" alt="QuickJS on NuttX Ox64" /></p>
+<p><a href="https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67"><em>QuickJS on NuttX Ox64</em></a></p>
 <h1 id="appendix-build-nuttx-for-ox64"><a href="#appendix-build-nuttx-for-ox64">11 Appendix: Build NuttX for Ox64</a></h1>
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong> that has these updates…</p>
 <ul>
