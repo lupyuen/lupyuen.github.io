@@ -725,6 +725,8 @@ Remember to...
 
 - Or [__QuickJS for NuttX Ox64__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L14-L25)
 
+- For Smaller Ox64 Binaries: [__Use Full Linking__](https://github.com/lupyuen/quickjs-nuttx#switch-ox64-quickjs-to-full-linking)
+
 _How did we figure out the steps to build QuickJS for NuttX?_
 
 We ran "__`make --trace`__" to observe the __QuickJS Build__: [make.log](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/make.log)
