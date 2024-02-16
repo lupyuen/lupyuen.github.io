@@ -4,9 +4,9 @@
 
 ![QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)](https://lupyuen.github.io/images/quickjs-title.png)
 
-[(Try the __Online Demo__)](https://lupyuen.github.io/nuttx-tinyemu/quickjs/)
+[_(Try the __Online Demo__)_](https://lupyuen.github.io/nuttx-tinyemu/quickjs/)
 
-[(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
+[_(Watch the __Demo on YouTube__)_](https://youtu.be/AFDVceqQNRs)
 
 [__QuickJS__](https://github.com/bellard/quickjs) is a small __JavaScript Engine__ that supports [__POSIX Functions__](https://bellard.org/quickjs/quickjs.html#os-module).
 
@@ -650,13 +650,17 @@ Term.prototype.write = function(str) {
   }
 ```
 
+__Emulator Notifications__ won't appear in the Emulator Console Output. (Because we suppressed them)
+
+We'll see the Notifications in the __JavaScript Console__. (Pic below)
+
 [(__status__ and __gpio29__ are in HTML)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/index.html#L21-L29)
 
 [(__gpio_off__ and __gpio_on__ are in CSS)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/style.css#L106-L117)
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
 
-![QuickJS JavaScript Engine in Ox64 NuttX Emulator](https://lupyuen.github.io/images/quickjs-title2.png)
+![Notifications from NuttX Emulator appear in JavaScript Console](https://lupyuen.github.io/images/quickjs-notify.png)
 
 # What's Next
 
@@ -996,7 +1000,9 @@ led=0, val=1
 
 To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
-![QuickJS JavaScript Engine in Ox64 NuttX Emulator](https://lupyuen.github.io/images/quickjs-title2.png)
+![QuickJS on NuttX Ox64](https://lupyuen.github.io/images/quickjs-title2.png)
+
+[_QuickJS on NuttX Ox64_](https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67)
 
 # Appendix: Build NuttX for Ox64
 
