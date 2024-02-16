@@ -430,6 +430,10 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 
 Yep __ioctl()__ works great on a Real Device, with a Real LED!
 
+[(Watch the __Demo on YouTube__)](https://youtu.be/jv29M16CFJQ)
+
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f)
+
 ![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: QuickJS blinks our LED](https://lupyuen.github.io/images/nim-blink2.jpg)
 
 _If we don't have an Ox64 SBC?_
@@ -558,7 +562,7 @@ QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Full Linking_
 
 (Instead of ELF Loader patching the [__Relocatable Symbols__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app) at runtime)
 
-Right now Ox64 QuickJS is slower and [__multi-deca-mega-chonky__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/qjs): 22 MB! We might downsize to 4 MB (like QEMU) when we switch to Full Linking.
+Ox64 QuickJS was slower and __multi-deca-mega-chonky__: 22 MB! So we switched to [__QuickJS with Full Linking__](https://github.com/lupyuen/quickjs-nuttx#switch-ox64-quickjs-to-full-linking), QuickJS is now 4 MB on Ox64. (Similar to QEMU)
 
 [(About __NuttX Full Linking__)](https://github.com/lupyuen/quickjs-nuttx#full-linking-for-nuttx-apps)
 
@@ -1151,8 +1155,14 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 
 This produces the NuttX Image for Ox64: __`Image`__
 
-Follow the [__earlier instructions__](https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-ox64) to copy __`Image`__ to a Linux microSD and boot it on Ox64.
+Follow the [__earlier instructions__](https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-ox64) to copy __`Image`__ to a Linux microSD, boot it on Ox64 and run QuickJS. (Pic below)
+
+[(Watch the __Demo on YouTube__)](https://youtu.be/jv29M16CFJQ)
+
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f)
 
 _The same files were used for NuttX Emulator? (Pic above)_
 
 Yep we copied the Build Outputs above to the [__NuttX Emulator for Ox64__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/quickjs).
+
+![QuickJS on Ox64 BL808 SBC](https://lupyuen.github.io/images/quickjs-ox64.jpg)
