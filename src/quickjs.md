@@ -554,11 +554,13 @@ And experiment with all kinds of __NuttX Drivers__ via ioctl(). The Interactive 
 
 _QEMU vs Ox64 QuickJS: Any diff? (Pic above)_
 
-QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Static Linking__](https://github.com/apache/nuttx/pull/11524).
+QuickJS for NuttX QEMU is more Memory-Efficient because it uses [__Full Linking__](https://github.com/lupyuen/quickjs-nuttx#full-linking-for-nuttx-apps).
 
 (Instead of ELF Loader patching the [__Relocatable Symbols__](https://lupyuen.github.io/articles/app#inside-a-nuttx-app) at runtime)
 
-Right now Ox64 QuickJS is slower and [__multi-deca-mega-chonky__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/qjs): 22 MB! We might downsize to 4 MB (like QEMU) when we switch to Static Linking.
+Right now Ox64 QuickJS is slower and [__multi-deca-mega-chonky__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/qjs): 22 MB! We might downsize to 4 MB (like QEMU) when we switch to Full Linking.
+
+[(About __NuttX Full Linking__)](https://github.com/lupyuen/quickjs-nuttx#full-linking-for-nuttx-apps)
 
 ![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.png)
 
