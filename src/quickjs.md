@@ -132,7 +132,7 @@ Yep we flipped this [__NuttX Blinky App__](https://github.com/lupyuen/quickjs-nu
 
 _Does it work on Real Hardware?_
 
-The exact same QuickJS blinks a Real LED on [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (64-bit RISC-V). Though it's a little sluggish, we'll come back to this.
+The exact same QuickJS blinks a Real LED on [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358), based on 64-bit RISC-V. (We'll come back to this)
 
 How did we make this happen? Read on to find out...
 
