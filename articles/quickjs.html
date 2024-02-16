@@ -12,10 +12,10 @@
     content="QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Can we run QuickJS JavaScript Engine on Apache NuttX RTOS? And Blink the LED on Ox64 BL808 RISC-V SBC... In 4 lines of JavaScript? Let’s do it!"
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Can we run QuickJS JavaScript Engine on Apache NuttX RTOS? And Blink the LED on Ox64 BL808 RISC-V SBC... In 4 lines of JavaScript? Let’s do it!">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/quickjs-title.png">
 <meta property="og:type" 
@@ -644,7 +644,20 @@ Term.prototype.write = function(str) {
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Thanks to the <a href="https://github.com/bellard/quickjs"><strong>QuickJS Team</strong></a>, we have a fun new way to Experiment Interactively with NuttX Gadgets!</p>
-<p>TODO</p>
+<ul>
+<li>
+<p>We ran QuickJS on <strong>Ox64 BL808 RISC-V SBC</strong> and <strong>NuttX Emulator</strong></p>
+</li>
+<li>
+<p>Blinking the LED works great after we added the <strong>ioctl() function</strong></p>
+</li>
+<li>
+<p><strong>Memory Footprint</strong> of QuickJS might reach 1 MB (if we’re using all the features)</p>
+</li>
+<li>
+<p>How will you use <strong>QuickJS on NuttX</strong>? Lemme know!</p>
+</li>
+</ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
