@@ -451,6 +451,8 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67">(Or run the <strong>Blinky JavaScript</strong>)</a></p>
 <p>Yep <strong>ioctl()</strong> works great on a Real Device, with a Real LED!</p>
+<p><a href="https://youtu.be/jv29M16CFJQ">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f">(See the <strong>NuttX Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/nim-blink2.jpg" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: QuickJS blinks our LED" /></p>
 <p><em>If we don’t have an Ox64 SBC?</em></p>
 <p>No worries, the exact same steps will work for <strong>QEMU Emulator</strong> (64-bit RISC-V)…</p>
@@ -554,7 +556,7 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 <p><em>QEMU vs Ox64 QuickJS: Any diff? (Pic above)</em></p>
 <p>QuickJS for NuttX QEMU is more Memory-Efficient because it uses <a href="https://github.com/lupyuen/quickjs-nuttx#full-linking-for-nuttx-apps"><strong>Full Linking</strong></a>.</p>
 <p>(Instead of ELF Loader patching the <a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app"><strong>Relocatable Symbols</strong></a> at runtime)</p>
-<p>Right now Ox64 QuickJS is slower and <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/qjs"><strong>multi-deca-mega-chonky</strong></a>: 22 MB! We might downsize to 4 MB (like QEMU) when we switch to Full Linking.</p>
+<p>Ox64 QuickJS was slower and <strong>multi-deca-mega-chonky</strong>: 22 MB! So we switched to <a href="https://github.com/lupyuen/quickjs-nuttx#switch-ox64-quickjs-to-full-linking"><strong>QuickJS with Full Linking</strong></a>, QuickJS is now 4 MB on Ox64. (Similar to QEMU)</p>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#full-linking-for-nuttx-apps">(About <strong>NuttX Full Linking</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
 <h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">7 Simulate the LED on Ox64 Emulator</a></h1>
@@ -1081,9 +1083,12 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>This produces the NuttX Image for Ox64: <strong><code>Image</code></strong></p>
-<p>Follow the <a href="https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-ox64"><strong>earlier instructions</strong></a> to copy <strong><code>Image</code></strong> to a Linux microSD and boot it on Ox64.</p>
+<p>Follow the <a href="https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-ox64"><strong>earlier instructions</strong></a> to copy <strong><code>Image</code></strong> to a Linux microSD, boot it on Ox64 and run QuickJS. (Pic below)</p>
+<p><a href="https://youtu.be/jv29M16CFJQ">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f">(See the <strong>NuttX Log</strong>)</a></p>
 <p><em>The same files were used for NuttX Emulator? (Pic above)</em></p>
 <p>Yep we copied the Build Outputs above to the <a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/quickjs"><strong>NuttX Emulator for Ox64</strong></a>.</p>
+<p><img src="https://lupyuen.github.io/images/quickjs-ox64.jpg" alt="QuickJS on Ox64 BL808 SBC" /></p>
 
     
 </body>
