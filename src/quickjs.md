@@ -674,7 +674,13 @@ TODO
 
 Thanks to the [__QuickJS Team__](https://github.com/bellard/quickjs), we have a fun new way to Experiment Interactively with NuttX Gadgets!
 
-TODO
+- We ran QuickJS on __Ox64 BL808 RISC-V SBC__ and __NuttX Emulator__
+
+- Blinking the LED works great after we added the __ioctl() function__
+
+- __Memory Footprint__ of QuickJS might reach 1 MB (if we're using all the features)
+
+- How will you use __QuickJS on NuttX__? Lemme know!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
