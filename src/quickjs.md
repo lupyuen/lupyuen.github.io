@@ -668,7 +668,7 @@ We'll see the Notifications in the __JavaScript Console__. (Pic below)
 
 TODO
 
-Thanks to the [__QuickJS Team__](https://github.com/bellard/quickjs), we have a fun new way to Experiment Interactively with NuttX on newer gadgets!
+Thanks to the [__QuickJS Team__](https://github.com/bellard/quickjs), we have a fun new way to Experiment Interactively with NuttX Gadgets!
 
 TODO
 
