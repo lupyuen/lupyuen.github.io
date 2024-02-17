@@ -74,17 +74,17 @@ Now we do some Finger Exercises (sorry __copy-pasta won't work__ in the Emulator
     os.ioctl(fd, ULEDIOC_SETALL, 1)
     ```
 
-    __GPIO 29__ (pic above, lower right) turns Green!
+    __GPIO 29__ turns Green! (Pic above)
 
-1.  Then we __Flip Off the LED__...
+1.  When we __Flip Off the LED__...
 
     ```javascript
     os.ioctl(fd, ULEDIOC_SETALL, 0)
     ```
 
-    __GPIO 29__ goes back to normal!
+    __GPIO 29__ goes back to Normal!
 
-1.  Our Demo does like this...
+1.  Our Demo does this...
 
     ```bash
     NuttShell (NSH) NuttX-12.4.0-RC0
@@ -101,13 +101,9 @@ Now we do some Finger Exercises (sorry __copy-pasta won't work__ in the Emulator
 
     ## Flip LED On: GPIO 29 turns Green
     qjs > os.ioctl(fd, ULEDIOC_SETALL, 1)
-    bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-    0
 
     ## Flip LED Off: GPIO 29 goes back to normal
     qjs > os.ioctl(fd, ULEDIOC_SETALL, 0)
-    bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-    0
     ```
 
     [(See the __Complete Log__)](https://github.com/lupyuen/quickjs-nuttx#quickjs-blinks-the-led-on-ox64-emulator)
@@ -164,11 +160,11 @@ _Can we fill in the missing functions?_
 
 1.  __POSIX Functions:__ The typical POSIX Functions are OK. The special ones are probably available if we tweak the __Build Options__ for NuttX.
 
-    For now, we stick with the Basic NuttX Config and stub out the [__Advanced POSIX Functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c).
+    For now, we stick with the Basic NuttX Config and stub out the [__Advanced POSIX Functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c#L10-L14).
 
-1.  __Dynamic Linking:__ We won't support Dynamic Linking for NuttX. We [__stubbed the missing functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c).
+1.  __Dynamic Linking:__ We won't support Dynamic Linking for NuttX. We [__stubbed the missing functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c#L3-L5).
 
-1.  __Math Functions:__ We linked them with GCC Option "__`-lm`__". The last few stragglers: We [__stubbed the functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c).
+1.  __Math Functions:__ We linked them with GCC Option "__`-lm`__". The last few stragglers: We [__stubbed the functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c#L7-L9).
 
 1.  __Atomic Functions:__ We filled in the [__Missing Atomic Functions__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/arch_atomic.c#L32-L743).
 
@@ -180,7 +176,7 @@ After these fixes, QuickJS builds OK for NuttX!
 
 [(How to build __QuickJS for NuttX__)](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
 
-_That's plenty of patching. Will it break QuickJS?_
+_That's plenty of stubbing. Will it break QuickJS?_
 
 Thankfully we have __Automated Testing__ with an Expect Script (pic above): [qemu.exp](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp)
 
@@ -247,7 +243,7 @@ PID GRP PRI POLICY TYPE    NPX STATE EVENT      STACKBASE  SIZE USED FILLED  COM
 3   3  100  RR     Task    - Running            0xc0202050 1968 1968 100.0%! qjs }¼uq¦ü®઄²äÅ
 ```
 
-The last line shows that the __QuickJS Stack__ (2 KB) was __100% Full__! (With the Command Line horribly corrupted)
+The last line shows that the __QuickJS Stack__ (2 KB) is __100% Full__! (With the Command Line incorrigibly corrupted)
 
 We follow these steps to [__increase the App Stack Size__](https://github.com/lupyuen/nuttx-star64#increase-stack-size)...
 
@@ -426,13 +422,13 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 0
 ```
 
-[(Or run the __Blinky JavaScript__)](https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67)
+[(Or run the __Blinky JavaScript__)](https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f#file-nuttx-quickjs-ox64-log-L165-L247)
 
 Yep __ioctl()__ works great on a Real Device, with a Real LED!
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/jv29M16CFJQ)
 
-[(See the __NuttX Log__)](https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f)
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f#file-nuttx-quickjs-ox64-log-L112-L247)
 
 ![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: QuickJS blinks our LED](https://lupyuen.github.io/images/nim-blink2.jpg)
 
