@@ -466,7 +466,7 @@ To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db)
 
-![QuickJS Code Size rendered with linkermapviz](https://lupyuen.github.io/images/quickjs-text.jpg)
+![QuickJS Code Size rendered with linkermapviz](https://lupyuen.github.io/images/quickjs-text.webp)
 
 [_QuickJS Code Size rendered with linkermapviz_](https://lupyuen.github.io/nuttx-tinyemu/quickjs/linkermap)
 
