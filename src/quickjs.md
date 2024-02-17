@@ -308,7 +308,7 @@ static const JSCFunctionListEntry js_os_funcs[] = {
 static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv) {
   int fd, req;       // ioctl() File Descriptor and Request Number
   int64_t arg, ret;  // ioctl() Parameter and Return Value
-  BOOL is_bigint;    // True if we're using BigInt for 64-bit Integers
+  BOOL is_bigint;    // True if we're using BigInt
   
   // First Arg is ioctl() File Descriptor (int32)
   if (JS_ToInt32(ctx, &fd, argv[0]))
@@ -329,7 +329,7 @@ static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSVa
   if (ret == -1)
     ret = -errno;
 
-  // Return the Result as 64-bit or 32-bit Integers
+  // Return the Result as BigInt or Normal Integer
   if (is_bigint)
     return JS_NewBigInt64(ctx, ret);
   else
@@ -511,7 +511,7 @@ Here are the sizes of QuickJS and its options...
 
 [(__REPL__ is for Interactive Commands)](https://bellard.org/quickjs/quickjs.html#Quick-start)
 
-[(__BigInt__ is for 64-Bit Numbers and Calculator)](https://bellard.org/quickjs/quickjs.html#BigInt_002c-BigFloat_002c-BigDecimal)
+[(__BigInt__ is for Big Numbers and Calculator)](https://bellard.org/quickjs/quickjs.html#BigInt_002c-BigFloat_002c-BigDecimal)
 
 </span>
 
