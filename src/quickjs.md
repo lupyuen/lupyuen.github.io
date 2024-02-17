@@ -430,7 +430,7 @@ Yep __ioctl()__ works great on a Real Device, with a Real LED!
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f#file-nuttx-quickjs-ox64-log-L112-L247)
 
-![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: QuickJS blinks our LED](https://lupyuen.github.io/images/nim-blink2.jpg)
+![Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: QuickJS blinks our LED](https://lupyuen.github.io/images/nim-blink2.webp)
 
 _If we don't have an Ox64 SBC?_
 
@@ -564,7 +564,7 @@ Ox64 QuickJS was slower and __multi-deca-mega-chonky__: 22 MB! So we switched to
 
 [(About __NuttX Full Linking__)](https://github.com/lupyuen/quickjs-nuttx#full-linking-for-nuttx-apps)
 
-![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.png)
+![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.webp)
 
 [_Watch the Demo on YouTube_](https://youtu.be/AFDVceqQNRs)
 
