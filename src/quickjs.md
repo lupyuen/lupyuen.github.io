@@ -319,7 +319,7 @@ static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSVa
     return JS_EXCEPTION;
 
   // Third Arg is ioctl() Parameter (int64)
-  // TODO: What if it's int32? How to pass a Pointer to Struct?
+  // TODO: What if it's int32? What about passing a Pointer to a C Struct?
   is_bigint = JS_IsBigInt(ctx, argv[2]);
   if (JS_ToInt64Ext(ctx, &arg, argv[2]))
     return JS_EXCEPTION;
@@ -354,7 +354,7 @@ qjs > os.ioctl(100,2,3)
 -9
 ```
 
-We test __ioctl()__ some more...
+We test __ioctl()__ on real hardware...
 
 ![Connect an LED to Ox64 SBC at GPIO 29, Pin 21](https://lupyuen.github.io/images/nim-wiring.jpg)
 
