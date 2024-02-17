@@ -4,9 +4,9 @@
 
 ![QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)](https://lupyuen.github.io/images/quickjs-title.png)
 
-[_(Try the __Online Demo__)_](https://lupyuen.github.io/nuttx-tinyemu/quickjs/)
+[_Try the Online Demo_](https://lupyuen.github.io/nuttx-tinyemu/quickjs/)
 
-[_(Watch the __Demo on YouTube__)_](https://youtu.be/AFDVceqQNRs)
+[_Watch the Demo on YouTube_](https://youtu.be/AFDVceqQNRs)
 
 [__QuickJS__](https://github.com/bellard/quickjs) is a small __JavaScript Engine__ that supports [__POSIX Functions__](https://bellard.org/quickjs/quickjs.html#os-module).
 
@@ -476,11 +476,13 @@ _Will QuickJS run on all kinds of NuttX Devices?_
 
 ```bash
 $ riscv64-unknown-elf-size apps/bin/qjs
-   text    data     bss     dec     hex filename
- 554847     260      94  555201   878c1 apps/bin/qjs
+   text  data  bss     dec
+ 554847   260   94  555201
 ```
 
 Probably not ALL devices? JavaScript needs __a fair bit of RAM__ to run comfortably.
+
+_What's the Memory Footprint like?_
 
 We ran [__linkermapviz__](https://github.com/PromyLOPh/linkermapviz) on the [__QuickJS Linker Map__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qjs-riscv.map) for NuttX QEMU...
 
@@ -509,7 +511,7 @@ Here are the sizes of QuickJS and its options...
 
 [(__REPL__ is for Interactive Commands)](https://bellard.org/quickjs/quickjs.html#Quick-start)
 
-[(__BigInt__ is for 64-Bit Numbers)](https://bellard.org/quickjs/quickjs.html#BigInt_002c-BigFloat_002c-BigDecimal)
+[(__BigInt__ is for 64-Bit Numbers and Calculator)](https://bellard.org/quickjs/quickjs.html#BigInt_002c-BigFloat_002c-BigDecimal)
 
 </span>
 
@@ -517,11 +519,11 @@ Here are the sizes of QuickJS and its options...
 
 _What about Heap Memory Size?_
 
-Based on the NuttX Logs with __Heap Logging Enabled__...
+Based on the NuttX Logs with [__Heap Logging Enabled__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/Kconfig#L963-L988)...
 
-- [__Heap Log: Without REPL__](https://github.com/lupyuen/quickjs-nuttx/blob/d2dbef1afef26ae4cc76719d7cac3740da5f3387/nuttx/qemu.log)
+- [__Heap Log: Without REPL__](https://github.com/lupyuen/quickjs-nuttx/blob/d2dbef1afef26ae4cc76719d7cac3740da5f3387/nuttx/qemu.log#L74-L2905)
 
-- [__Heap Log: With REPL__](https://github.com/lupyuen/quickjs-nuttx/blob/38e004e6eb643932f6957e03828ad25242cf803a/nuttx/qemu.log)
+- [__Heap Log: With REPL__](https://github.com/lupyuen/quickjs-nuttx/blob/38e004e6eb643932f6957e03828ad25242cf803a/nuttx/qemu.log#L74-L18308)
 
   [(__REPL__ runs extra __JavaScript Bytecode__)](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
 
@@ -533,9 +535,9 @@ We compute the __Heap Usage__ with a Spreadsheet (pic above)...
 
 - [__Heap Usage: With REPL__ (Google Sheets)](https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit?usp=sharing)
 
-  (__"Free Size"__ might be inaccurate because it uses __VLOOKUP__ for Top-Down Lookup, though we actually need Down-Top Lookup)
+(__"Free Size"__ might be inaccurate because it uses __VLOOKUP__ for Top-Down Lookup, though we actually need Down-Top Lookup)
 
-And derive the __QuickJS Heap Usage__ (pic below)...
+And we derive the __QuickJS Heap Usage__ (pic below)...
 
 | Max Heap Usage | |
 |:---------------|:---:
@@ -564,29 +566,31 @@ Ox64 QuickJS was slower and __multi-deca-mega-chonky__: 22 MB! So we switched to
 
 ![QuickJS JavaScript Engine to Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-title.png)
 
+[_Watch the Demo on YouTube_](https://youtu.be/AFDVceqQNRs)
+
 # Simulate the LED on Ox64 Emulator
 
-_NuttX Emulator blinks a Simulated LED (pic above, lower right)..._
+_NuttX Emulator blinks a Simulated LED..._
 
-_How does it work?_
+_How does it work? (Pic above, lower right)_
 
-We modded NuttX Emulator (in WebAssembly) to...
+We modded [__NuttX Emulator__](https://lupyuen.github.io/articles/tinyemu3) (in WebAssembly) to...
 
-1.  Watch for updates to __GPIO Registers__
+1.  Watch for updates to [__GPIO Registers__](https://lupyuen.github.io/articles/nim#led-driver-for-ox64)
 
     (Like `0x2000_0938` for GPIO 29)
 
-1.  Notify the __Web Browser JavaScript__ of any updates
+1.  Notify our [__Web Browser JavaScript__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/term.js#L487-L497) of any updates
 
     (Like `{"nuttxemu":{"gpio29":1}}`)
 
-1.  And our Web Browser JavaScript __Flips the Simulated LED__
+1.  And our Web Browser JavaScript [__Flips the Simulated LED__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/term.js#L497-L507)
 
     (On or Off)
 
 ![Simulate the LED on Ox64 Emulator](https://lupyuen.github.io/images/quickjs-led.jpg)
 
-Here's our NuttX Emulator (WebAssembly) intercepting all __Writes to GPIO 29__: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L486-L553)
+Here's our [__NuttX Emulator__](https://lupyuen.github.io/articles/tinyemu3) (WebAssembly) intercepting all __Writes to GPIO 29__: [riscv_cpu.c](https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L486-L553)
 
 ```c
 // WebAssembly called by TinyEmu to emulate
@@ -635,12 +639,12 @@ Term.prototype.write = function(str) {
     
     // Get the GPIO Number and GPIO Value from JSON
     const notify = JSON.parse(str).nuttxemu;  // {gpio29:1}
-    const gpio = Object.keys(notify)[0];  // "gpio29"
-    const val = notify[gpio];  // 0 or 1
+    const gpio   = Object.keys(notify)[0];    // "gpio29"
+    const val    = notify[gpio];              // 0 or 1
 
     // Render the GPIO in HTML:
     // <td id="gpio29" class="gpio_on">GPIO29</td>
-    document.getElementById("status").style.width = document.getElementById("term_wrap").style.width;  // Spread out the GPIO Status
+    document.getElementById("status").style.width = document.getElementById("term_wrap").style.width;  // Space out the GPIO Status
     const gpio_status = document.getElementById(gpio);
     gpio_status.style.display = "block";
 
@@ -652,15 +656,13 @@ Term.prototype.write = function(str) {
   }
 ```
 
-__Emulator Notifications__ won't appear in the Emulator Console Output. (Because we suppressed them)
-
-We'll see the Notifications in the __JavaScript Console__. (Pic below)
-
 [(__status__ and __gpio29__ are in HTML)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/index.html#L21-L29)
 
 [(__gpio_off__ and __gpio_on__ are in CSS)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/style.css#L106-L117)
 
-[(Watch the __Demo on YouTube__)](https://youtu.be/AFDVceqQNRs)
+__Emulator Notifications__ won't appear in the Emulator Console Output. (Because we suppressed them)
+
+We'll see the Notifications in the __JavaScript Console__. (Pic below)
 
 ![Notifications from NuttX Emulator appear in JavaScript Console](https://lupyuen.github.io/images/quickjs-notify.png)
 
