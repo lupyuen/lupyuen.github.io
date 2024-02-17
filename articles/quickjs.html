@@ -137,16 +137,16 @@ os.ioctl(fd, ULEDIOC_SETALL, 0);
 <p>Watch what happens when we <strong>Flip On the LED</strong>…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>os.ioctl(fd, ULEDIOC_SETALL, 1)
 </code></pre></div>
-<p><strong>GPIO 29</strong> (pic above, lower right) turns Green!</p>
+<p><strong>GPIO 29</strong> turns Green! (Pic above)</p>
 </li>
 <li>
-<p>Then we <strong>Flip Off the LED</strong>…</p>
+<p>When we <strong>Flip Off the LED</strong>…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>os.ioctl(fd, ULEDIOC_SETALL, 0)
 </code></pre></div>
-<p><strong>GPIO 29</strong> goes back to normal!</p>
+<p><strong>GPIO 29</strong> goes back to Normal!</p>
 </li>
 <li>
-<p>Our Demo does like this…</p>
+<p>Our Demo does this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; qjs
 QuickJS - Type &quot;\h&quot; for help
@@ -161,13 +161,9 @@ qjs &gt; fd = os.open(&quot;/dev/userleds&quot;, os.O_WRONLY)
 
 ## Flip LED On: GPIO 29 turns Green
 qjs &gt; os.ioctl(fd, ULEDIOC_SETALL, 1)
-bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-0
 
 ## Flip LED Off: GPIO 29 goes back to normal
 qjs &gt; os.ioctl(fd, ULEDIOC_SETALL, 0)
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-0
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#quickjs-blinks-the-led-on-ox64-emulator">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -212,13 +208,13 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <ol>
 <li>
 <p><strong>POSIX Functions:</strong> The typical POSIX Functions are OK. The special ones are probably available if we tweak the <strong>Build Options</strong> for NuttX.</p>
-<p>For now, we stick with the Basic NuttX Config and stub out the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c"><strong>Advanced POSIX Functions</strong></a>.</p>
+<p>For now, we stick with the Basic NuttX Config and stub out the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c#L10-L14"><strong>Advanced POSIX Functions</strong></a>.</p>
 </li>
 <li>
-<p><strong>Dynamic Linking:</strong> We won’t support Dynamic Linking for NuttX. We <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c"><strong>stubbed the missing functions</strong></a>.</p>
+<p><strong>Dynamic Linking:</strong> We won’t support Dynamic Linking for NuttX. We <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c#L3-L5"><strong>stubbed the missing functions</strong></a>.</p>
 </li>
 <li>
-<p><strong>Math Functions:</strong> We linked them with GCC Option “<strong><code>-lm</code></strong>”. The last few stragglers: We <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c"><strong>stubbed the functions</strong></a>.</p>
+<p><strong>Math Functions:</strong> We linked them with GCC Option “<strong><code>-lm</code></strong>”. The last few stragglers: We <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/stub.c#L7-L9"><strong>stubbed the functions</strong></a>.</p>
 </li>
 <li>
 <p><strong>Atomic Functions:</strong> We filled in the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/arch_atomic.c#L32-L743"><strong>Missing Atomic Functions</strong></a>.</p>
@@ -228,7 +224,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </ol>
 <p>After these fixes, QuickJS builds OK for NuttX!</p>
 <p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx">(How to build <strong>QuickJS for NuttX</strong>)</a></p>
-<p><em>That’s plenty of patching. Will it break QuickJS?</em></p>
+<p><em>That’s plenty of stubbing. Will it break QuickJS?</em></p>
 <p>Thankfully we have <strong>Automated Testing</strong> with an Expect Script (pic above): <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp">qemu.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
 ## Expect Script for Testing QuickJS with QEMU Emulator
@@ -288,7 +284,7 @@ PID GRP PRI POLICY TYPE    NPX STATE EVENT      STACKBASE  SIZE USED FILLED  COM
 2   2  100  RR     Task    - Waiting Semaphore  0xc0202040 3008  744  24.7%  /system/bin/init
 3   3  100  RR     Task    - Running            0xc0202050 1968 1968 100.0%! qjs }¼uq¦ü®઄²äÅ
 </code></pre></div>
-<p>The last line shows that the <strong>QuickJS Stack</strong> (2 KB) was <strong>100% Full</strong>! (With the Command Line horribly corrupted)</p>
+<p>The last line shows that the <strong>QuickJS Stack</strong> (2 KB) is <strong>100% Full</strong>! (With the Command Line incorrigibly corrupted)</p>
 <p>We follow these steps to <a href="https://github.com/lupyuen/nuttx-star64#increase-stack-size"><strong>increase the App Stack Size</strong></a>…</p>
 <ol>
 <li>
@@ -449,10 +445,10 @@ qjs &gt; os.ioctl(fd, ULEDIOC_SETALL, 0)
 bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 0
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67">(Or run the <strong>Blinky JavaScript</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f#file-nuttx-quickjs-ox64-log-L165-L247">(Or run the <strong>Blinky JavaScript</strong>)</a></p>
 <p>Yep <strong>ioctl()</strong> works great on a Real Device, with a Real LED!</p>
 <p><a href="https://youtu.be/jv29M16CFJQ">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><a href="https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f">(See the <strong>NuttX Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f#file-nuttx-quickjs-ox64-log-L112-L247">(See the <strong>NuttX Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/nim-blink2.jpg" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: QuickJS blinks our LED" /></p>
 <p><em>If we don’t have an Ox64 SBC?</em></p>
 <p>No worries, the exact same steps will work for <strong>QEMU Emulator</strong> (64-bit RISC-V)…</p>
