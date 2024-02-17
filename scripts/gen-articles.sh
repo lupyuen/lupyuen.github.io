@@ -19,8 +19,8 @@ function generate_article() {
     rustdoc \
         --output articles \
         --html-in-header article-rustdoc-header.html \
-        --html-before-content \
-        scripts/rustdoc-before.html \
+        --html-before-content scripts/rustdoc-before.html \
+        --html-after-content scripts/rustdoc-after.html \
         src/$article.md
 
     # Delete the article header
