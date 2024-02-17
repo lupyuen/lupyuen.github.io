@@ -438,7 +438,7 @@ No worries, the exact same steps will work for __QEMU Emulator__ (64-bit RISC-V)
 
 - [__Add the LED Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911) for QEMU
 
-- [__Increase the App Stack Size__](https://github.com/apache/nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b)  from 2 KB to 64 KB
+- [__Increase the App Stack Size__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b)  from 2 KB to 64 KB
 
 - [__Patch the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429) for testing LED Driver
 
@@ -710,6 +710,8 @@ Before building QuickJS: Build NuttX for __QEMU or Ox64__...
 
 - [__Build NuttX for Ox64__](https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-ox64)
 
+(Or download the NuttX and QuickJS Binaries from these links)
+
 Then follow these steps to build __QuickJS for NuttX__ (QEMU or Ox64)...
 
 ```bash
@@ -729,11 +731,11 @@ Remember to...
 
 - Or [__QuickJS for NuttX Ox64__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L14-L25)
 
-- For Smaller Ox64 Binaries: [__Use Full Linking__](https://github.com/lupyuen/quickjs-nuttx#switch-ox64-quickjs-to-full-linking)
+- Do [__Full Linking__](https://github.com/lupyuen/quickjs-nuttx#switch-ox64-quickjs-to-full-linking) for Smaller Ox64 Binaries
 
 _How did we figure out the steps to build QuickJS for NuttX?_
 
-We ran "__`make --trace`__" to observe the __QuickJS Build__: [make.log](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/make.log)
+We ran "__`make` `--trace`__" to observe the __QuickJS Build__: [make.log](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/make.log)
 
 ```bash
 ## Build QuickJS for Debian x64 and observe the build
@@ -777,7 +779,7 @@ gcc \
   -lpthread
 ```
 
-We know that NuttX builds [__NuttX Apps__](https://github.com/lupyuen/tcc-riscv32-wasm) like this...
+And we know that NuttX builds [__NuttX Apps__](https://github.com/lupyuen/tcc-riscv32-wasm#how-nuttx-build-links-a-nuttx-app) like this...
 
 ```bash
 ## Build NuttX Apps for QEMU and observe the build
@@ -839,7 +841,7 @@ riscv-none-elf-ld \
 
 [(__Ox64 Build__ is a little different)](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh#L19-L25)
 
-Then we...
+Thus we...
 
 - Combine everything above into our [__QuickJS Build Script__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/build.sh)
 
@@ -871,7 +873,7 @@ So we __borrow the output__ from another QuickJS Build (Debian x64) and add to N
 
 _What's inside repl.c and qjscalc.c?_
 
-They contain plenty of [__JavaScript Bytecode__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/repl.c)for REPL and BigNum Calculator. Brilliant!
+They contain plenty of [__JavaScript Bytecode__](https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/repl.c) for REPL and BigNum Calculator. Brilliant!
 
 ```c
 /* File generated automatically by the QuickJS compiler. */
@@ -879,7 +881,7 @@ They contain plenty of [__JavaScript Bytecode__](https://github.com/lupyuen/quic
 const uint32_t qjsc_repl_size = 16280;
 const uint8_t qjsc_repl[16280] = {
  0x02, 0xa5, 0x03, 0x0e, 0x72, 0x65, 0x70, 0x6c,
- 0x2e, 0x6a, 0x73, 0x06, 0x73, 0x74, 0x64, 0x04,
+ 0x2e, 0x6a, 0x73, 0x06, 0x73, 0x74, 0x64, 0x04, ...
 ```
 
 That's why REPL and BigNum will require more Heap Memory, to execute the extra JavaScript Bytecode.
@@ -894,7 +896,7 @@ In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS f
 
 - [__Add the LED Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911) for QEMU
 
-- [__Increase the App Stack Size__](https://github.com/apache/nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b)  from 2 KB to 64 KB
+- [__Increase the App Stack Size__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b) from 2 KB to 64 KB
 
 - [__Patch the `leds` app__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429) for testing LED Driver
 
@@ -1072,7 +1074,7 @@ We may download the [__NuttX Binaries for Ox64__](https://github.com/lupyuen2/wi
     bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
     ```
 
-    [(See the __Complete Log__)](https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67)
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f#file-nuttx-quickjs-ox64-log-L112-L247)
 
 Or if we prefer to __build NuttX ourselves__...
 
@@ -1165,10 +1167,12 @@ Follow the [__earlier instructions__](https://lupyuen.github.io/articles/quickjs
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/jv29M16CFJQ)
 
-[(See the __NuttX Log__)](https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f)
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f#file-nuttx-quickjs-ox64-log-L112-L247)
 
-_The same files were used for NuttX Emulator? (Pic above)_
+_What about the NuttX Image for Ox64 Emulator? (Pic above)_
 
-Yep we copied the Build Outputs above to the [__NuttX Emulator for Ox64__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/quickjs).
+The exact same Build Outputs from above, we copied to the [__NuttX Emulator for Ox64__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/quickjs).
 
-![QuickJS on Ox64 BL808 SBC](https://lupyuen.github.io/images/quickjs-ox64.jpg)
+![QuickJS blinks an LED on Ox64 BL808 SBC](https://lupyuen.github.io/images/quickjs-ox64.jpg)
+
+[_QuickJS blinks an LED on Ox64 BL808 SBC_](https://youtu.be/jv29M16CFJQ)
