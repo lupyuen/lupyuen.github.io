@@ -78,8 +78,8 @@
 <li><a href="#appendix-build-nuttx-for-qemu">10 Appendix: Build NuttX for QEMU</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-ox64">11 Appendix: Build NuttX for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)" /></p>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/"><em>(Try the <strong>Online Demo</strong>)</em></a></p>
-<p><a href="https://youtu.be/AFDVceqQNRs"><em>(Watch the <strong>Demo on YouTube</strong>)</em></a></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/"><em>Try the Online Demo</em></a></p>
+<p><a href="https://youtu.be/AFDVceqQNRs"><em>Watch the Demo on YouTube</em></a></p>
 <p><a href="https://github.com/bellard/quickjs"><strong>QuickJS</strong></a> is a small <strong>JavaScript Engine</strong> that supports <a href="https://bellard.org/quickjs/quickjs.html#os-module"><strong>POSIX Functions</strong></a>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> is a tiny <strong>Real-Time Operating System</strong> (for all kinds of devices) that’s compatible with POSIX.</p>
 <p><em>Can we run QuickJS on NuttX? And Blink the LED in 4 lines of JavaScript?</em></p>
@@ -490,10 +490,11 @@ led=0, val=1
 <h1 id="how-small-is-quickjs"><a href="#how-small-is-quickjs">6 How Small is QuickJS</a></h1>
 <p><em>Will QuickJS run on all kinds of NuttX Devices?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ riscv64-unknown-elf-size apps/bin/qjs
-   text    data     bss     dec     hex filename
- 554847     260      94  555201   878c1 apps/bin/qjs
+   text  data  bss     dec
+ 554847   260   94  555201
 </code></pre></div>
 <p>Probably not ALL devices? JavaScript needs <strong>a fair bit of RAM</strong> to run comfortably.</p>
+<p><em>What’s the Memory Footprint like?</em></p>
 <p>We ran <a href="https://github.com/PromyLOPh/linkermapviz"><strong>linkermapviz</strong></a> on the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qjs-riscv.map"><strong>QuickJS Linker Map</strong></a> for NuttX QEMU…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Visualise the QuickJS Linker Map for NuttX QEMU.
 ## Produces linkermap.html: https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/linkermap.html
@@ -513,17 +514,17 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 </tbody></table>
 </div><span style="font-size:90%">
 <p><a href="https://bellard.org/quickjs/quickjs.html#Quick-start">(<strong>REPL</strong> is for Interactive Commands)</a></p>
-<p><a href="https://bellard.org/quickjs/quickjs.html#BigInt_002c-BigFloat_002c-BigDecimal">(<strong>BigInt</strong> is for 64-Bit Numbers)</a></p>
+<p><a href="https://bellard.org/quickjs/quickjs.html#BigInt_002c-BigFloat_002c-BigDecimal">(<strong>BigInt</strong> is for 64-Bit Numbers and Calculator)</a></p>
 </span>
 <p><img src="https://lupyuen.github.io/images/quickjs-data.jpg" alt="QuickJS Data Size" /></p>
 <p><em>What about Heap Memory Size?</em></p>
-<p>Based on the NuttX Logs with <strong>Heap Logging Enabled</strong>…</p>
+<p>Based on the NuttX Logs with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/Kconfig#L963-L988"><strong>Heap Logging Enabled</strong></a>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/d2dbef1afef26ae4cc76719d7cac3740da5f3387/nuttx/qemu.log"><strong>Heap Log: Without REPL</strong></a></p>
+<p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/d2dbef1afef26ae4cc76719d7cac3740da5f3387/nuttx/qemu.log#L74-L2905"><strong>Heap Log: Without REPL</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/38e004e6eb643932f6957e03828ad25242cf803a/nuttx/qemu.log"><strong>Heap Log: With REPL</strong></a></p>
+<p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/38e004e6eb643932f6957e03828ad25242cf803a/nuttx/qemu.log#L74-L18308"><strong>Heap Log: With REPL</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx">(<strong>REPL</strong> runs extra <strong>JavaScript Bytecode</strong>)</a></p>
 </li>
 </ul>
@@ -535,10 +536,10 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 </li>
 <li>
 <p><a href="https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit?usp=sharing"><strong>Heap Usage: With REPL</strong> (Google Sheets)</a></p>
-<p>(<strong>“Free Size”</strong> might be inaccurate because it uses <strong>VLOOKUP</strong> for Top-Down Lookup, though we actually need Down-Top Lookup)</p>
 </li>
 </ul>
-<p>And derive the <strong>QuickJS Heap Usage</strong> (pic below)…</p>
+<p>(<strong>“Free Size”</strong> might be inaccurate because it uses <strong>VLOOKUP</strong> for Top-Down Lookup, though we actually need Down-Top Lookup)</p>
+<p>And we derive the <strong>QuickJS Heap Usage</strong> (pic below)…</p>
 <div><table><thead><tr><th style="text-align: left">Max Heap Usage</th><th style="text-align: center"></th></tr></thead><tbody>
 <tr><td style="text-align: left">QuickJS without REPL</td><td style="text-align: center"><strong>276 KB</strong></td></tr>
 <tr><td style="text-align: left">QuickJS with REPL</td><td style="text-align: center"><strong>371 KB</strong></td></tr>
@@ -555,26 +556,27 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 <p>Ox64 QuickJS was slower and <strong>multi-deca-mega-chonky</strong>: 22 MB! So we switched to <a href="https://github.com/lupyuen/quickjs-nuttx#switch-ox64-quickjs-to-full-linking"><strong>QuickJS with Full Linking</strong></a>, QuickJS is now 4 MB on Ox64. (Similar to QEMU)</p>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#full-linking-for-nuttx-apps">(About <strong>NuttX Full Linking</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
+<p><a href="https://youtu.be/AFDVceqQNRs"><em>Watch the Demo on YouTube</em></a></p>
 <h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">7 Simulate the LED on Ox64 Emulator</a></h1>
-<p><em>NuttX Emulator blinks a Simulated LED (pic above, lower right)…</em></p>
-<p><em>How does it work?</em></p>
-<p>We modded NuttX Emulator (in WebAssembly) to…</p>
+<p><em>NuttX Emulator blinks a Simulated LED…</em></p>
+<p><em>How does it work? (Pic above, lower right)</em></p>
+<p>We modded <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>NuttX Emulator</strong></a> (in WebAssembly) to…</p>
 <ol>
 <li>
-<p>Watch for updates to <strong>GPIO Registers</strong></p>
+<p>Watch for updates to <a href="https://lupyuen.github.io/articles/nim#led-driver-for-ox64"><strong>GPIO Registers</strong></a></p>
 <p>(Like <code>0x2000_0938</code> for GPIO 29)</p>
 </li>
 <li>
-<p>Notify the <strong>Web Browser JavaScript</strong> of any updates</p>
+<p>Notify our <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/term.js#L487-L497"><strong>Web Browser JavaScript</strong></a> of any updates</p>
 <p>(Like <code>{&quot;nuttxemu&quot;:{&quot;gpio29&quot;:1}}</code>)</p>
 </li>
 <li>
-<p>And our Web Browser JavaScript <strong>Flips the Simulated LED</strong></p>
+<p>And our Web Browser JavaScript <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/term.js#L497-L507"><strong>Flips the Simulated LED</strong></a></p>
 <p>(On or Off)</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/quickjs-led.jpg" alt="Simulate the LED on Ox64 Emulator" /></p>
-<p>Here’s our NuttX Emulator (WebAssembly) intercepting all <strong>Writes to GPIO 29</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L486-L553">riscv_cpu.c</a></p>
+<p>Here’s our <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>NuttX Emulator</strong></a> (WebAssembly) intercepting all <strong>Writes to GPIO 29</strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L486-L553">riscv_cpu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// WebAssembly called by TinyEmu to emulate
 // Writes to RISC-V Addresses
 int target_write_slow(...) {
@@ -615,12 +617,12 @@ Term.prototype.write = function(str) {
     
     // Get the GPIO Number and GPIO Value from JSON
     const notify = JSON.parse(str).nuttxemu;  // {gpio29:1}
-    const gpio = Object.keys(notify)[0];  // &quot;gpio29&quot;
-    const val = notify[gpio];  // 0 or 1
+    const gpio   = Object.keys(notify)[0];    // &quot;gpio29&quot;
+    const val    = notify[gpio];              // 0 or 1
 
     // Render the GPIO in HTML:
     // &lt;td id=&quot;gpio29&quot; class=&quot;gpio_on&quot;&gt;GPIO29&lt;/td&gt;
-    document.getElementById(&quot;status&quot;).style.width = document.getElementById(&quot;term_wrap&quot;).style.width;  // Spread out the GPIO Status
+    document.getElementById(&quot;status&quot;).style.width = document.getElementById(&quot;term_wrap&quot;).style.width;  // Space out the GPIO Status
     const gpio_status = document.getElementById(gpio);
     gpio_status.style.display = &quot;block&quot;;
 
@@ -631,11 +633,10 @@ Term.prototype.write = function(str) {
     return;         // Don&#39;t show in Console Output
   }
 </code></pre></div>
-<p><strong>Emulator Notifications</strong> won’t appear in the Emulator Console Output. (Because we suppressed them)</p>
-<p>We’ll see the Notifications in the <strong>JavaScript Console</strong>. (Pic below)</p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/index.html#L21-L29">(<strong>status</strong> and <strong>gpio29</strong> are in HTML)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/style.css#L106-L117">(<strong>gpio_off</strong> and <strong>gpio_on</strong> are in CSS)</a></p>
-<p><a href="https://youtu.be/AFDVceqQNRs">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><strong>Emulator Notifications</strong> won’t appear in the Emulator Console Output. (Because we suppressed them)</p>
+<p>We’ll see the Notifications in the <strong>JavaScript Console</strong>. (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-notify.png" alt="Notifications from NuttX Emulator appear in JavaScript Console" /></p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
