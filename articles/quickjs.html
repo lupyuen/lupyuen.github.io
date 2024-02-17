@@ -448,7 +448,7 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>Yep <strong>ioctl()</strong> works great on a Real Device, with a Real LED!</p>
 <p><a href="https://youtu.be/jv29M16CFJQ">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f#file-nuttx-quickjs-ox64-log-L112-L247">(See the <strong>NuttX Log</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/nim-blink2.jpg" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: QuickJS blinks our LED" /></p>
+<p><img src="https://lupyuen.github.io/images/nim-blink2.webp" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: QuickJS blinks our LED" /></p>
 <p><em>If we don’t have an Ox64 SBC?</em></p>
 <p>No worries, the exact same steps will work for <strong>QEMU Emulator</strong> (64-bit RISC-V)…</p>
 <ul>
@@ -554,7 +554,7 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 <p>(Instead of ELF Loader patching the <a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app"><strong>Relocatable Symbols</strong></a> at runtime)</p>
 <p>Ox64 QuickJS was slower and <strong>multi-deca-mega-chonky</strong>: 22 MB! So we switched to <a href="https://github.com/lupyuen/quickjs-nuttx#switch-ox64-quickjs-to-full-linking"><strong>QuickJS with Full Linking</strong></a>, QuickJS is now 4 MB on Ox64. (Similar to QEMU)</p>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#full-linking-for-nuttx-apps">(About <strong>NuttX Full Linking</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
+<p><img src="https://lupyuen.github.io/images/quickjs-title.webp" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
 <p><a href="https://youtu.be/AFDVceqQNRs"><em>Watch the Demo on YouTube</em></a></p>
 <h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">7 Simulate the LED on Ox64 Emulator</a></h1>
 <p><em>NuttX Emulator blinks a Simulated LED…</em></p>
