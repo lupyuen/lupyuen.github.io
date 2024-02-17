@@ -349,7 +349,7 @@ static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSVa
     return JS_EXCEPTION;
 
   // Third Arg is ioctl() Parameter (int64)
-  // TODO: What if it&#39;s int32? How to pass a Pointer to Struct?
+  // TODO: What if it&#39;s int32? What about passing a Pointer to a C Struct?
   is_bigint = JS_IsBigInt(ctx, argv[2]);
   if (JS_ToInt64Ext(ctx, &amp;arg, argv[2]))
     return JS_EXCEPTION;
@@ -380,7 +380,7 @@ qjs &gt; os.ioctl(1,2,3)
 qjs &gt; os.ioctl(100,2,3)
 -9
 </code></pre></div>
-<p>We test <strong>ioctl()</strong> some more…</p>
+<p>We test <strong>ioctl()</strong> on real hardware…</p>
 <p><img src="https://lupyuen.github.io/images/nim-wiring.jpg" alt="Connect an LED to Ox64 SBC at GPIO 29, Pin 21" /></p>
 <h1 id="quickjs-blinks-the-led-on-ox64-sbc"><a href="#quickjs-blinks-the-led-on-ox64-sbc">5 QuickJS Blinks the LED on Ox64 SBC</a></h1>
 <p><em>We added ioctl() to QuickJS. Does it work?</em></p>
