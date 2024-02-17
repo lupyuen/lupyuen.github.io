@@ -4,9 +4,9 @@
 
 ![QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)](https://lupyuen.github.io/images/quickjs-title.webp)
 
-[_Try the Online Demo_](https://lupyuen.github.io/nuttx-tinyemu/quickjs/)
+[_(Try the Online Demo)_](https://lupyuen.github.io/nuttx-tinyemu/quickjs/)
 
-[_Watch the Demo on YouTube_](https://youtu.be/AFDVceqQNRs)
+[_(Watch the Demo on YouTube)_](https://youtu.be/AFDVceqQNRs)
 
 [__QuickJS__](https://github.com/bellard/quickjs) is a small __JavaScript Engine__ that supports [__POSIX Functions__](https://bellard.org/quickjs/quickjs.html#os-module).
 
@@ -582,7 +582,7 @@ We modded [__NuttX Emulator__](https://lupyuen.github.io/articles/tinyemu3) (in 
 
 1.  Notify our [__Web Browser JavaScript__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/term.js#L487-L497) of any updates
 
-    (Like `{"nuttxemu":{"gpio29":1}}`)
+    (Like _{"nuttxemu":{"gpio29":1}}_)
 
 1.  And our Web Browser JavaScript [__Flips the Simulated LED__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/quickjs/term.js#L497-L507)
 
