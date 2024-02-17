@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-02-18",
+      "website": "https://lupyuen.github.io/articles/quickjs",
+      "summary": "Can we run QuickJS JavaScript Engine on Apache NuttX RTOS? And Blink the LED on Ox64 BL808 RISC-V SBC... In 4 lines of JavaScript? Let’s do it!"
+    },
+    {
       "name": "Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-02-11",
