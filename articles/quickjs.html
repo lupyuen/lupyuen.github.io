@@ -338,7 +338,7 @@ static const JSCFunctionListEntry js_os_funcs[] = {
 static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv) {
   int fd, req;       // ioctl() File Descriptor and Request Number
   int64_t arg, ret;  // ioctl() Parameter and Return Value
-  BOOL is_bigint;    // True if we&#39;re using BigInt for 64-bit Integers
+  BOOL is_bigint;    // True if we&#39;re using BigInt
   
   // First Arg is ioctl() File Descriptor (int32)
   if (JS_ToInt32(ctx, &amp;fd, argv[0]))
@@ -359,7 +359,7 @@ static JSValue js_os_ioctl(JSContext *ctx, JSValueConst this_val, int argc, JSVa
   if (ret == -1)
     ret = -errno;
 
-  // Return the Result as 64-bit or 32-bit Integers
+  // Return the Result as BigInt or Normal Integer
   if (is_bigint)
     return JS_NewBigInt64(ctx, ret);
   else
@@ -514,7 +514,7 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 </tbody></table>
 </div><span style="font-size:90%">
 <p><a href="https://bellard.org/quickjs/quickjs.html#Quick-start">(<strong>REPL</strong> is for Interactive Commands)</a></p>
-<p><a href="https://bellard.org/quickjs/quickjs.html#BigInt_002c-BigFloat_002c-BigDecimal">(<strong>BigInt</strong> is for 64-Bit Numbers and Calculator)</a></p>
+<p><a href="https://bellard.org/quickjs/quickjs.html#BigInt_002c-BigFloat_002c-BigDecimal">(<strong>BigInt</strong> is for Big Numbers and Calculator)</a></p>
 </span>
 <p><img src="https://lupyuen.github.io/images/quickjs-data.jpg" alt="QuickJS Data Size" /></p>
 <p><em>What about Heap Memory Size?</em></p>
