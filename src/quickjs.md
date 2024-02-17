@@ -1,6 +1,6 @@
 # QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)
 
-📝 _20 Feb 2024_
+📝 _18 Feb 2024_
 
 ![QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)](https://lupyuen.github.io/images/quickjs-title.webp)
 
@@ -668,8 +668,6 @@ We'll see the Notifications in the __JavaScript Console__. (Pic below)
 
 # What's Next
 
-TODO
-
 Thanks to the [__QuickJS Team__](https://github.com/bellard/quickjs), we have a fun new way to Experiment Interactively with NuttX Gadgets!
 
 - We ran QuickJS on __Ox64 BL808 RISC-V SBC__ and __NuttX Emulator__
@@ -683,6 +681,8 @@ Thanks to the [__QuickJS Team__](https://github.com/bellard/quickjs), we have a 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=39414388)
 
 -   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 
