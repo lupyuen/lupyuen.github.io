@@ -2,7 +2,7 @@
 
 📝 _20 Feb 2024_
 
-![QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)](https://lupyuen.github.io/images/quickjs-title.png)
+![QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)](https://lupyuen.github.io/images/quickjs-title.webp)
 
 [_Try the Online Demo_](https://lupyuen.github.io/nuttx-tinyemu/quickjs/)
 
@@ -213,7 +213,7 @@ expect {
 
 Before the Auto-Test, we solve the Auto-Crash...
 
-![Loopy Stack Trace probably means Stack Full](https://lupyuen.github.io/images/quickjs-stack.png)
+![Loopy Stack Trace probably means Stack Full](https://lupyuen.github.io/images/quickjs-stack.webp)
 
 [_Loopy Stack Trace probably means Stack Full_](https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478)
 
@@ -356,7 +356,7 @@ qjs > os.ioctl(100,2,3)
 
 We test __ioctl()__ on real hardware...
 
-![Connect an LED to Ox64 SBC at GPIO 29, Pin 21](https://lupyuen.github.io/images/nim-wiring.jpg)
+![Connect an LED to Ox64 SBC at GPIO 29, Pin 21](https://lupyuen.github.io/images/nim-wiring.webp)
 
 # QuickJS Blinks the LED on Ox64 SBC
 
@@ -527,7 +527,7 @@ Based on the NuttX Logs with [__Heap Logging Enabled__](https://github.com/lupyu
 
   [(__REPL__ runs extra __JavaScript Bytecode__)](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
 
-![Computing the QuickJS Heap Usage with a Spreadsheet](https://lupyuen.github.io/images/quickjs-sheet.jpg)
+![Computing the QuickJS Heap Usage with a Spreadsheet](https://lupyuen.github.io/images/quickjs-sheet.webp)
 
 We compute the __Heap Usage__ with a Spreadsheet (pic above)...
 
@@ -1173,6 +1173,6 @@ _What about the NuttX Image for Ox64 Emulator? (Pic above)_
 
 The exact same Build Outputs from above, we copied to the [__NuttX Emulator for Ox64__](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/quickjs).
 
-![QuickJS blinks an LED on Ox64 BL808 SBC](https://lupyuen.github.io/images/quickjs-ox64.jpg)
+![QuickJS blinks an LED on Ox64 BL808 SBC](https://lupyuen.github.io/images/quickjs-ox64.webp)
 
 [_QuickJS blinks an LED on Ox64 BL808 SBC_](https://youtu.be/jv29M16CFJQ)
