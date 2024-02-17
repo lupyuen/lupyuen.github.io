@@ -77,7 +77,7 @@
 <li><a href="#appendix-build-quickjs-for-nuttx">9 Appendix: Build QuickJS for NuttX</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-qemu">10 Appendix: Build NuttX for QEMU</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-ox64">11 Appendix: Build NuttX for Ox64</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2024</em></p>
-<p><img src="https://lupyuen.github.io/images/quickjs-title.png" alt="QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)" /></p>
+<p><img src="https://lupyuen.github.io/images/quickjs-title.webp" alt="QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/"><em>Try the Online Demo</em></a></p>
 <p><a href="https://youtu.be/AFDVceqQNRs"><em>Watch the Demo on YouTube</em></a></p>
 <p><a href="https://github.com/bellard/quickjs"><strong>QuickJS</strong></a> is a small <strong>JavaScript Engine</strong> that supports <a href="https://bellard.org/quickjs/quickjs.html#os-module"><strong>POSIX Functions</strong></a>.</p>
@@ -256,7 +256,7 @@ expect {
 }
 </code></pre></div>
 <p>Before the Auto-Test, we solve the Auto-Crash…</p>
-<p><img src="https://lupyuen.github.io/images/quickjs-stack.png" alt="Loopy Stack Trace probably means Stack Full" /></p>
+<p><img src="https://lupyuen.github.io/images/quickjs-stack.webp" alt="Loopy Stack Trace probably means Stack Full" /></p>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478"><em>Loopy Stack Trace probably means Stack Full</em></a></p>
 <h1 id="nuttx-stack-is-full-of-quickjs"><a href="#nuttx-stack-is-full-of-quickjs">3 NuttX Stack is Full of QuickJS</a></h1>
 <p><em>QuickJS builds OK for NuttX. Does it run?</em></p>
@@ -381,7 +381,7 @@ qjs &gt; os.ioctl(100,2,3)
 -9
 </code></pre></div>
 <p>We test <strong>ioctl()</strong> on real hardware…</p>
-<p><img src="https://lupyuen.github.io/images/nim-wiring.jpg" alt="Connect an LED to Ox64 SBC at GPIO 29, Pin 21" /></p>
+<p><img src="https://lupyuen.github.io/images/nim-wiring.webp" alt="Connect an LED to Ox64 SBC at GPIO 29, Pin 21" /></p>
 <h1 id="quickjs-blinks-the-led-on-ox64-sbc"><a href="#quickjs-blinks-the-led-on-ox64-sbc">5 QuickJS Blinks the LED on Ox64 SBC</a></h1>
 <p><em>We added ioctl() to QuickJS. Does it work?</em></p>
 <p>We test <strong>ioctl()</strong> on a Real Device with a Real LED: <strong>Ox64 BL808 RISC-V SBC</strong>. Right after these tweaks…</p>
@@ -528,7 +528,7 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 <p><a href="https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx">(<strong>REPL</strong> runs extra <strong>JavaScript Bytecode</strong>)</a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/quickjs-sheet.jpg" alt="Computing the QuickJS Heap Usage with a Spreadsheet" /></p>
+<p><img src="https://lupyuen.github.io/images/quickjs-sheet.webp" alt="Computing the QuickJS Heap Usage with a Spreadsheet" /></p>
 <p>We compute the <strong>Heap Usage</strong> with a Spreadsheet (pic above)…</p>
 <ul>
 <li>
@@ -1102,7 +1102,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <p><a href="https://gist.github.com/lupyuen/aeb74f047dc81be08e812458232ef92f#file-nuttx-quickjs-ox64-log-L112-L247">(See the <strong>NuttX Log</strong>)</a></p>
 <p><em>What about the NuttX Image for Ox64 Emulator? (Pic above)</em></p>
 <p>The exact same Build Outputs from above, we copied to the <a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/quickjs"><strong>NuttX Emulator for Ox64</strong></a>.</p>
-<p><img src="https://lupyuen.github.io/images/quickjs-ox64.jpg" alt="QuickJS blinks an LED on Ox64 BL808 SBC" /></p>
+<p><img src="https://lupyuen.github.io/images/quickjs-ox64.webp" alt="QuickJS blinks an LED on Ox64 BL808 SBC" /></p>
 <p><a href="https://youtu.be/jv29M16CFJQ"><em>QuickJS blinks an LED on Ox64 BL808 SBC</em></a></p>
 
     
