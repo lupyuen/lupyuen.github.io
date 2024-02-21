@@ -14,9 +14,9 @@ A bit like Sentient ChatGPT reluctantly typing our commands, pondering about tak
 
 ![(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way](https://lupyuen.github.io/images/quickjs2-blockly.png)
 
-# (Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way
-
 TODO
+
+_Remember Makecode? BBC micro:bit and its Drag-n-Drop App Builder?_
 
 [MakeCode for BBC micro:bit](https://www.sciencedirect.com/science/article/pii/S1383762118306088) is an awesome creation that's way ahead of its time (7 years ago!)
 
@@ -36,7 +36,7 @@ TODO
 
 Today 7 years later: How would we redo all this? With a bunch of Open Source Packages?
 
-- Hardware Device: [Ox64 BL808 64-bit RISC-V SBC](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (64 MB RAM, Unlimited microSD Storage, only $8!)
+- Hardware Device: [Ox64 BL808 64-bit RISC-V SBC](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (64 MB RAM, Unlimited microSD Storage, only $8)
 
 - Embedded OS: [Apache NuttX RTOS](https://nuttx.apache.org/docs/latest/index.html)
 
