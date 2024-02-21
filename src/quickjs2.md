@@ -46,7 +46,7 @@ Today 7 years later: How would we redo all this? With a bunch of Open Source Pac
 
 - C Compiler + Assembler: [TCC WebAssembly for NuttX](https://github.com/lupyuen/tcc-riscv32-wasm) (but we probably won't need this since we have JavaScript on NuttX)
 
-- Device Control: [Web Serial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API) for controlling Ox64 over UART
+- Device Control: [Web Serial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API) and [Term.js](TODO) for controlling Ox64 over UART
 
 ![TODO](https://lupyuen.github.io/images/quickjs2-nuttx.jpg)
 
