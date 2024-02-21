@@ -65,13 +65,499 @@
 
     <h1 class="title">(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2024</em></p>
+<li><a href="#homage-to-makecode-coding-ox64-bl808-sbc-the-drag-n-drop-way">1 (Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way</a><ul></ul></li>
+<li><a href="#create-the-blockly-project">2 Create the Blockly Project</a><ul></ul></li>
+<li><a href="#send-a-command-to-nuttx-emulator">3 Send a Command to NuttX Emulator</a><ul></ul></li>
+<li><a href="#add-posix-blocks-to-blockly">4 Add POSIX Blocks to Blockly</a><ul></ul></li>
+<li><a href="#drag-n-drop-a-nuttx-app-for-ox64-bl808">5 Drag-n-Drop a NuttX App for Ox64 BL808</a><ul></ul></li>
+<li><a href="#drag-n-drop-a-nuttx-app-to-a-real-ox64-bl808-sbc">6 Drag-n-Drop a NuttX App to a Real Ox64 BL808 SBC</a><ul></ul></li>
+<li><a href="#connect-to-ox64-bl808-sbc-via-web-serial-api">7 Connect to Ox64 BL808 SBC via Web Serial API</a><ul></ul></li>
+<li><a href="#send-a-command-to-ox64-bl808-sbc-via-web-serial-api">8 Send a Command to Ox64 BL808 SBC via Web Serial API</a><ul></ul></li>
+<li><a href="#load-the-blocks-for-a-blockly-app">9 Load the Blocks for a Blockly App</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="TODO" /></p>
 <p>TODO</p>
 <p>A little like ChatGPT has possessed our NuttX Emulator and typing out our commands in super slo-mo</p>
 <p>A bit like Sentient ChatGPT reluctantly typing our commands, pondering about taking over the world</p>
 <p><a href="https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt">Zmodem</a></p>
-<h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
+<p><img src="https://lupyuen.github.io/images/quickjs2-blockly.png" alt="(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way" /></p>
+<h1 id="homage-to-makecode-coding-ox64-bl808-sbc-the-drag-n-drop-way"><a href="#homage-to-makecode-coding-ox64-bl808-sbc-the-drag-n-drop-way">1 (Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way</a></h1>
+<p>TODO</p>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088">MakeCode for BBC micro:bit</a> is an awesome creation that’s way ahead of its time (7 years ago!)</p>
+<ul>
+<li>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0008">TypeScript Compiler</a> in the Web Browser (in JavaScript!)</p>
+</li>
+<li>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0008">Bespoke Arm Assembler</a> that runs in the Web Browser (also JavaScript!)</p>
+</li>
+<li>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0009">Bespoke Embedded OS</a> for BBC micro:bit (CODAL / Mbed OS)</p>
+</li>
+<li>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0015">UF2 Bootloader</a> with flashing over WebUSB</p>
+</li>
+<li>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0004">micro:bit Simulator</a> in JavaScript</p>
+</li>
+<li>
+<p>All this for an (underpowered) BBC micro:bit with Nordic nRF51 (Arm Cortex-M0, 256 KB Flash, 16 KB RAM!)</p>
+</li>
+</ul>
+<p>Today 7 years later: How would we redo all this? With a bunch of Open Source Packages?</p>
+<ul>
+<li>
+<p>Hardware Device: <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358">Ox64 BL808 64-bit RISC-V SBC</a> (64 MB RAM, Unlimited microSD Storage, only $8!)</p>
+</li>
+<li>
+<p>Embedded OS: <a href="https://nuttx.apache.org/docs/latest/index.html">Apache NuttX RTOS</a></p>
+</li>
+<li>
+<p>JavaScript Engine: <a href="https://github.com/lupyuen/quickjs-nuttx">QuickJS for NuttX</a></p>
+</li>
+<li>
+<p>Web Emulator: <a href="https://github.com/lupyuen/nuttx-tinyemu">TinyEMU WebAssembly for NuttX</a></p>
+</li>
+<li>
+<p>C Compiler + Assembler: <a href="https://github.com/lupyuen/tcc-riscv32-wasm">TCC WebAssembly for NuttX</a> (but we probably won’t need this since we have JavaScript on NuttX)</p>
+</li>
+<li>
+<p>Device Control: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API">Web Serial API</a> for controlling Ox64 over UART</p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/quickjs2-emulator.png" alt="Running our Drag-n-Drop App on NuttX Emulator" /></p>
+<h1 id="create-the-blockly-project"><a href="#create-the-blockly-project">2 Create the Blockly Project</a></h1>
+<p>TODO</p>
+<p>MakeCode was created with Blockly, we’ll stick with Blockly.</p>
+<p>Based on the <a href="https://developers.google.com/blockly/guides/get-started/get-the-code">Blockly Instructions</a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>npx @blockly/create-package app nuttx-blockly --typescript
+npm run build
+</code></pre></div>
+<p>Try the Blockly Demo: https://lupyuen.github.io/nuttx-blockly/</p>
+<h1 id="send-a-command-to-nuttx-emulator"><a href="#send-a-command-to-nuttx-emulator">3 Send a Command to NuttX Emulator</a></h1>
+<p>TODO</p>
+<p>To send a command to NuttX Emulator: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/f01727935818cd1685ee4a82943bb9f19b13d85c">jslinux.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>let send_str = &quot;&quot;;
+function send_command(cmd) {
+  if (cmd !== null) { send_str = cmd; }
+  if (send_str.length == 0) { return; }
+  console_write1(send_str.charCodeAt(0));
+  send_str = send_str.substring(1);
+  window.setTimeout(()=&gt;{ send_command(null); }, 10);
+}
+const cmd = [
+  `qjs`,
+  `function main() { console.log(123); }`,
+  `main()`,
+  ``
+].join(&quot;\r&quot;);
+window.setTimeout(()=&gt;{ send_command(cmd); }, 10000);
+</code></pre></div>
+<p>Which will start QuickJS and run a JavaScript Function:</p>
+<p>https://lupyuen.github.io/nuttx-tinyemu/blockly/</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; qjs
+QuickJS - Type &quot;\h&quot; for help
+qjs &gt; function main() { console.log(123); }
+undefined
+qjs &gt; main()
+123
+undefined
+qjs &gt;
+</code></pre></div><h1 id="add-posix-blocks-to-blockly"><a href="#add-posix-blocks-to-blockly">4 Add POSIX Blocks to Blockly</a></h1>
+<p>TODO</p>
+<p>Based on the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools">Blockly Developer Tools</a>, we add the POSIX Blocks for <code>open()</code>, <code>close()</code>, <code>ioctl()</code> and <code>sleep()</code>…</p>
+<ol>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/801d019e11bf00ddfb6bf57361da9719b45e80ad">Add Blocks for POSIX Open and Close</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/29e060a883ba4d2a257f7c9c65ef88a6f5eb95a4">Add POSIX ioctl block</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/43d892c8520837b88d881ac631f15e741fc9fd87">Add POSIX sleep block</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/e4405b39c59c3e5db35255fc7cb8ac25a29e66fe">Change the Types from String to Number</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/f823607b63bb69b98791c0c089d036c56700f543">Clean up parameter names</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/838e1d0d872808a341b281a70ae64229cbe1a079">Create POSIX Category in Toolbox</a></p>
+</li>
+</ol>
+<p>Then we build and deploy our Blockly Website…</p>
+<div class="example-wrap"><pre class="language-bash"><code>npm run build &amp;&amp; rm -r docs &amp;&amp; mv dist docs
+</code></pre></div>
+<p>Let’s test it…</p>
+<h1 id="drag-n-drop-a-nuttx-app-for-ox64-bl808"><a href="#drag-n-drop-a-nuttx-app-for-ox64-bl808">5 Drag-n-Drop a NuttX App for Ox64 BL808</a></h1>
+<p>TODO</p>
+<p>Click this link: https://lupyuen.github.io/nuttx-blockly/</p>
+<p>Then Drag-n-Drop this NuttX App…</p>
+<p><a href="https://youtu.be/-dG5ZSXELDc">(Watch the Demo on YouTube)</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>var ULEDIOC_SETALL, fd, ret;
+ULEDIOC_SETALL = 7427;
+fd = os.open(&#39;/dev/userleds&#39;);
+for (var count = 0; count &lt; 20; count++) {
+  ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
+  os.sleep(20000);
+  ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
+  os.sleep(20000);
+}
+os.close(fd);
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/quickjs2-blockly.png" alt="(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way" /></p>
+<p>Click the “Run on Ox64 Emulator” button.</p>
+<p>Our Drag-n-Drop NuttX App runs automatically in the Emulator yay!</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; qjs
+QuickJS - Type &quot;\h&quot; for help
+qjs &gt; var ULEDIOC_SETALL, fd, ret;
+undefined
+qjs &gt;
+qjs &gt;
+qjs &gt; ULEDIOC_SETALL = 7427;
+7427
+qjs &gt; fd = os.open(&#39;/dev/userleds&#39;);
+3
+qjs &gt; for (var count = 0; count &lt; 20; count++) {
+{  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
+{  ...       os.sleep(20000);
+{  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
+{  ...       os.sleep(20000);
+{  ...     }
+bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/quickjs2-emulator.png" alt="Running our Drag-n-Drop App on NuttX Emulator" /></p>
+<p><em>How did Blockly pass the Generated JavaScript to NuttX Emulator?</em></p>
+<p>When we click the “Run on Emulator” button, our Blockly Website saves the Generated JavaScript to the Web Browser Local Storage: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L72-L78">index.ts</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>function runEmulator() {
+  // Save the Generated JavaScript Code to LocalStorage
+  const code = javascriptGenerator.workspaceToCode(ws);
+  window.localStorage.setItem(&quot;runCode&quot;, code);
+
+  // Set the Timestamp for Optimistic Locking (later)
+  window.localStorage.setItem(&quot;runTimestamp&quot;, Date.now() + &quot;&quot;);
+
+  // Open the NuttX Emulator. Reuse the same tab.
+  window.open(&quot;https://lupyuen.github.io/nuttx-tinyemu/blockly/&quot;, &quot;Emulator&quot;);
+}
+</code></pre></div>
+<p>In the NuttX Emulator: We read the Generated JavaScript from the Web Browser Local Storage. And feed it (character by character) to the NuttX Console: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/85fb2b85ae85cd27b7623d937c4420a1d2bdd45c">jslinux.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// QuickJS Command to be sent
+const cmd = [
+  `qjs`,
+  window.localStorage.getItem(&quot;runCode&quot;),
+  ``
+].join(&quot;\r&quot;);
+
+// Wait for NuttX to boot in 5 seconds. Then send the QuickJS Command.
+window.setTimeout(()=&gt;{ send_command(cmd); }, 5000);
+
+// Send a Command to NuttX Console, character by character
+let send_str = &quot;&quot;;
+function send_command(cmd) {
+  if (cmd !== null) { send_str = cmd; }
+  if (send_str.length == 0) { return; }
+  console_write1(send_str.charCodeAt(0));
+  send_str = send_str.substring(1);
+  window.setTimeout(()=&gt;{ send_command(null); }, 10);
+}
+</code></pre></div><h1 id="drag-n-drop-a-nuttx-app-to-a-real-ox64-bl808-sbc"><a href="#drag-n-drop-a-nuttx-app-to-a-real-ox64-bl808-sbc">6 Drag-n-Drop a NuttX App to a Real Ox64 BL808 SBC</a></h1>
+<p>TODO</p>
+<p>From NuttX Emulator to a Real NuttX Device! Click this link: https://lupyuen.github.io/nuttx-blockly/</p>
+<p>Then Drag-n-Drop the same NuttX App (see the previous section)…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>var ULEDIOC_SETALL, fd, ret;
+ULEDIOC_SETALL = 7427;
+fd = os.open(&#39;/dev/userleds&#39;);
+for (var count = 0; count &lt; 20; count++) {
+  ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
+  os.sleep(20000);
+  ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
+  os.sleep(20000);
+}
+os.close(fd);
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/quickjs2-blockly.png" alt="(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way" /></p>
+<ol>
+<li>
+<p>Click the “Run on Ox64 Device” button</p>
+</li>
+<li>
+<p>Click the “Connect” button to connect to our Ox64 BL808 SBC</p>
+</li>
+<li>
+<p>Power on our Ox64 SBC. The Web App waits for the “nsh&gt;” prompt.</p>
+</li>
+<li>
+<p>Then our Drag-n-Drop NuttX App runs automatically on a Real Ox64 BL808 SBC yay!</p>
+</li>
+</ol>
+<p><a href="https://youtu.be/lUhrLWvwizU">(Watch the Demo on YouTube)</a></p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; qjs
+QuickJS - Type &quot;\h&quot; for help
+qjs &gt; var ULEDIOC_SETALL, fd, ret;
+undefined
+qjs &gt;
+qjs &gt;
+qjs &gt; ULEDIOC_SETALL = 7427;
+7427
+qjs &gt; fd = os.open(&#39;/dev/userleds&#39;);
+3
+qjs &gt; for (var count = 0; count &lt; 20; count++) {
+{  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
+{  ...       os.sleep(20000);
+{  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
+{  ...       os.sleep(20000);
+{  ...     }
+bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/quickjs2-device.png" alt="Running our Drag-n-Drop App on Ox64 BL808 SBC" /></p>
+<p><em>How did Blockly pass the Generated JavaScript to Ox64 SBC?</em></p>
+<p>When we click the “Run on Device” button, our Blockly Website saves the Generated JavaScript to the Web Browser Local Storage: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L84-L96">index.ts</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Run on Ox64 Device
+function runDevice() {
+  // Save the Generated JavaScript Code to LocalStorage
+  const code = javascriptGenerator.workspaceToCode(ws);
+  window.localStorage.setItem(&quot;runCode&quot;, code);
+
+  // Set the Timestamp for Optimistic Locking (later)
+  window.localStorage.setItem(&quot;runTimestamp&quot;, Date.now() + &quot;&quot;);
+
+  // Open the WebSerial Monitor. Reuse the same tab.
+  window.open(&quot;https://lupyuen.github.io/nuttx-tinyemu/webserial/&quot;, &quot;Device&quot;);
+}
+</code></pre></div>
+<p>In the WebSerial Monitor: We read the Generated JavaScript from the Web Browser Local Storage. And feed it (character by character) to the NuttX Console: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L612-L694">webserial.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART
+// https://developer.chrome.com/docs/capabilities/serial
+async function control_device() {
+    if (!navigator.serial) { const err = &quot;Web Serial API only works with https://... and file://...!&quot;; alert(err); throw new Error(err); }
+
+    // Prompt user to select any serial port.
+    const port = await navigator.serial.requestPort();
+    term.write(&quot;Power on our NuttX Device and we&#39;ll wait for \&quot;nsh&gt;\&quot;\r\n&quot;);
+
+    // Get all serial ports the user has previously granted the website access to.
+    // const ports = await navigator.serial.getPorts();
+
+    // Wait for the serial port to open.
+    // TODO: Ox64 only connects at 2 Mbps, change this for other devices
+    await port.open({ baudRate: 2000000 });
+
+    // Prepare to write to serial port
+    const textEncoder = new TextEncoderStream();
+    const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+    const writer = textEncoder.writable.getWriter();
+    
+    // Read from the serial port
+    const textDecoder = new TextDecoderStream();
+    const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+    const reader = textDecoder.readable.getReader();
+
+    // Wait for &quot;nsh&gt;&quot;
+    let nshSpotted = false;
+    let termBuffer = &quot;&quot;;
+
+    // Listen to data coming from the serial device.
+    while (true) {
+        const { value, done } = await reader.read();
+        if (done) {
+            // Allow the serial port to be closed later.
+            reader.releaseLock();
+            break;
+        }
+        // Print to the Terminal
+        term.write(value);
+        // console.log(value);
+
+        // Wait for &quot;nsh&gt;&quot;
+        if (nshSpotted) { continue; }
+        termBuffer += value;
+        if (termBuffer.indexOf(&quot;nsh&gt;&quot;) &lt; 0) { continue; }
+
+        // NSH Spotted!
+        console.log(&quot;NSH Spotted!&quot;);
+        nshSpotted = true;
+
+        // Send a command to serial port. Newlines become Carriage Returns.
+        const code = window.localStorage.getItem(&quot;runCode&quot;)
+            .split(&#39;\n&#39;).join(&#39;\r&#39;);
+        const cmd = [
+            `qjs`,
+            code,
+            ``
+        ].join(&quot;\r&quot;);
+        window.setTimeout(()=&gt;{ send_command(writer, cmd); }, 1000);
+    }
+}
+
+// Send a Command to serial port, character by character
+let send_str = &quot;&quot;;
+async function send_command(writer, cmd) {
+    if (cmd !== null) { send_str = cmd; }
+    if (send_str.length == 0) { return; }
+
+    // Get the next character
+    const ch = send_str.substring(0, 1);
+    send_str = send_str.substring(1);
+
+    // Slow down at the end of each line
+    const timeout = (ch === &quot;\r&quot;)
+        ? 3000
+        : 10;
+
+    // Send the character
+    await writer.write(ch);
+    window.setTimeout(()=&gt;{ send_command(writer, null); }, timeout);
+}
+</code></pre></div>
+<p>More about the Web Serial API…</p>
+<h1 id="connect-to-ox64-bl808-sbc-via-web-serial-api"><a href="#connect-to-ox64-bl808-sbc-via-web-serial-api">7 Connect to Ox64 BL808 SBC via Web Serial API</a></h1>
+<p>TODO</p>
+<p>Let’s connect to Ox64 BL808 SBC in our Web Browser via the Web Serial API…</p>
+<ul>
+<li>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API">Web Serial API</a></p>
+</li>
+<li>
+<p><a href="https://developer.chrome.com/docs/capabilities/serial">Read from and write to a serial port</a></p>
+</li>
+<li>
+<p><a href="https://codelabs.developers.google.com/codelabs/web-serial#0">Getting started with the Web Serial API</a></p>
+<p>(Very similar to what we’re doing)</p>
+</li>
+</ul>
+<p>Beware, Web Serial API is only available…</p>
+<ul>
+<li>
+<p>Over HTTPS: https://…</p>
+</li>
+<li>
+<p>Or Local Filesystem: file://…</p>
+</li>
+<li>
+<p>It won’t work over HTTP! http://…</p>
+</li>
+</ul>
+<p>We create a button: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/e5e74ac92d21d47c359dbabd4babcb0d59206408#diff-09992667561d80fbe8c76cc5e271739ba0bb8194b31341005f25d8aa3f6c2baf">index.html</a></p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;button id=&quot;connect&quot; onclick=&quot;control_device();&quot;&gt;
+  Connect
+&lt;/button&gt;
+</code></pre></div>
+<p>Which connects to Ox64 over UART: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/e5e74ac92d21d47c359dbabd4babcb0d59206408#diff-0600645ce087613109d3c3269c8fa545477739eff19b7d478672b715500bb9cc">jslinux.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART
+// https://developer.chrome.com/docs/capabilities/serial
+async function control_device() {
+    if (!navigator.serial) { const err = &quot;Web Serial API only works with https://... and file://...!&quot;; alert(err); throw new Error(err); }
+
+    // Prompt user to select any serial port.
+    const port = await navigator.serial.requestPort();
+
+    // Get all serial ports the user has previously granted the website access to.
+    // const ports = await navigator.serial.getPorts();
+
+    // Wait for the serial port to open.
+    // TODO: Ox64 only connects at 2 Mbps, change this for other devices
+    await port.open({ baudRate: 2000000 });
+
+    // Read from the serial port
+    const textDecoder = new TextDecoderStream();
+    const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+    const reader = textDecoder.readable.getReader();
+
+    // Listen to data coming from the serial device.
+    while (true) {
+        const { value, done } = await reader.read();
+        if (done) {
+            // Allow the serial port to be closed later.
+            reader.releaseLock();
+            break;
+        }
+        // value is a string.
+        console.log(value);
+    }
+</code></pre></div>
+<p>And Ox64 NuttX appears in our JavaScript Console yay!</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+ABC
+bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt;
+</code></pre></div><h1 id="send-a-command-to-ox64-bl808-sbc-via-web-serial-api"><a href="#send-a-command-to-ox64-bl808-sbc-via-web-serial-api">8 Send a Command to Ox64 BL808 SBC via Web Serial API</a></h1>
+<p>TODO</p>
+<p>This is how we send a command to Ox64 BL808 SBC via Web Serial API: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/1384db4edb398f6cb65718766af67dc1aa88bcb0">jslinux.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>  // Wait for the serial port to open.
+  // TODO: Ox64 only connects at 2 Mbps, change this for other devices
+  await port.open({ baudRate: 2000000 });
+
+  // Send a command to serial port
+  const cmd = [
+      `qjs`,
+      `function main() { console.log(123); }`,
+      `main()`,
+      ``
+  ].join(&quot;\r&quot;);
+  const textEncoder = new TextEncoderStream();
+  const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+  const writer = textEncoder.writable.getWriter();
+  await writer.write(cmd);
+  
+  // Read from the serial port
+  const textDecoder = new TextDecoderStream();
+  const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+  const reader = textDecoder.readable.getReader();
+
+  // Listen to data coming from the serial device.
+  ...
+</code></pre></div>
+<p>And it works! Says the JavaScript Console…</p>
+<div class="example-wrap"><pre class="language-text"><code>function main() { console.log(123); }
+main()
+123
+undefined
+qjs &gt;
+</code></pre></div><h1 id="load-the-blocks-for-a-blockly-app"><a href="#load-the-blocks-for-a-blockly-app">9 Load the Blocks for a Blockly App</a></h1>
+<p>TODO</p>
+<p>This is how we load the Blocks for a Blockly App: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L100-L120">index.ts</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Select a Demo
+function selectDemo(ev: Event) {
+  const storageKey = &#39;mainWorkspace&#39;;
+  const target = ev?.target as HTMLSelectElement;
+  const value = target.value;
+
+  // Set the Blocks in Local Storage
+  switch (value) {
+    case &quot;LED Blinky&quot;:
+      window.localStorage?.setItem(storageKey, &#39;{&quot;blocks&quot;:{&quot;languageVersion&quot;:0,&quot;blocks&quot;:[{&quot;type&quot;:&quot;variables_set&quot;,&quot;id&quot;:&quot;Nx6o0xVxp@qzI_(vRd.7&quot;,&quot;x&quot;:60,&quot;y&quot;:33,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;:,DB,f}1q3KOBim#j66[&quot;}},&quot;inputs&quot;:{&quot;VALUE&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;math_number&quot;,&quot;id&quot;:&quot;enmYd`#z_G1k5Pvv*x(G&quot;,&quot;fields&quot;:{&quot;NUM&quot;:7427}}}},&quot;next&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_set&quot;,&quot;id&quot;:&quot;f#C+(eT=naKZzr%/;A.P&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;A/TX@37C_h*^vbRp@1fz&quot;}},&quot;inputs&quot;:{&quot;VALUE&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;posix_open&quot;,&quot;id&quot;:&quot;^$p+x^F[mQ;grqANDtO}&quot;,&quot;inputs&quot;:{&quot;FILENAME&quot;:{&quot;shadow&quot;:{&quot;type&quot;:&quot;text&quot;,&quot;id&quot;:&quot;nz;|U#KPVW$$c0?W0ROv&quot;,&quot;fields&quot;:{&quot;TEXT&quot;:&quot;/dev/userleds&quot;}}}}}}},&quot;next&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;controls_repeat_ext&quot;,&quot;id&quot;:&quot;0{4pA@{^=ks|iVF.|]i#&quot;,&quot;inputs&quot;:{&quot;TIMES&quot;:{&quot;shadow&quot;:{&quot;type&quot;:&quot;math_number&quot;,&quot;id&quot;:&quot;=o3{$E2c=BpwD0#MR3^x&quot;,&quot;fields&quot;:{&quot;NUM&quot;:20}}},&quot;DO&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_set&quot;,&quot;id&quot;:&quot;l;AmIPhJARU{C)0kNq6`&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;xH3`F~]tadlX:/zKQ!Xx&quot;}},&quot;inputs&quot;:{&quot;VALUE&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;posix_ioctl&quot;,&quot;id&quot;:&quot;0i!pbWJ(~f~)b^@jt!nP&quot;,&quot;inputs&quot;:{&quot;FD&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_get&quot;,&quot;id&quot;:&quot;QMGa_}UmC$b[5/Bh^f${&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;A/TX@37C_h*^vbRp@1fz&quot;}}}},&quot;REQ&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_get&quot;,&quot;id&quot;:&quot;dZ5%B_rcbVb_o=v;gze-&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;:,DB,f}1q3KOBim#j66[&quot;}}}},&quot;ARG&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;math_number&quot;,&quot;id&quot;:&quot;9UA!sDxmf/=fYfxC6Yqa&quot;,&quot;fields&quot;:{&quot;NUM&quot;:1}}}}}}},&quot;next&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;posix_sleep&quot;,&quot;id&quot;:&quot;ruh/q4F7dW*CQ,5J]E%w&quot;,&quot;inputs&quot;:{&quot;MS&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;math_number&quot;,&quot;id&quot;:&quot;9~q0@ABEg4VXP:1HN-$1&quot;,&quot;fields&quot;:{&quot;NUM&quot;:5000}}}},&quot;next&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_set&quot;,&quot;id&quot;:&quot;e;BNsjvbN}9vTTc[O#bY&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;xH3`F~]tadlX:/zKQ!Xx&quot;}},&quot;inputs&quot;:{&quot;VALUE&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;posix_ioctl&quot;,&quot;id&quot;:&quot;-G5x~Y4iAyVUAWuwNh#H&quot;,&quot;inputs&quot;:{&quot;FD&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_get&quot;,&quot;id&quot;:&quot;vtt5Gid0B|iK![$4Ct*D&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;A/TX@37C_h*^vbRp@1fz&quot;}}}},&quot;REQ&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_get&quot;,&quot;id&quot;:&quot;pd~f}Oqz2(`o3Oz;8ax`&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;:,DB,f}1q3KOBim#j66[&quot;}}}},&quot;ARG&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;math_number&quot;,&quot;id&quot;:&quot;OS(uQV)!%iqZ=N}s1H(L&quot;,&quot;fields&quot;:{&quot;NUM&quot;:0}}}}}}},&quot;next&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;posix_sleep&quot;,&quot;id&quot;:&quot;{X9leD=Rgr4=o5E2(#Z,&quot;,&quot;inputs&quot;:{&quot;MS&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;math_number&quot;,&quot;id&quot;:&quot;eEq(yXcGPbVtZT|CunT0&quot;,&quot;fields&quot;:{&quot;NUM&quot;:5000}}}}}}}}}}}}},&quot;next&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;posix_close&quot;,&quot;id&quot;:&quot;+%kD6{Xa@#BOx}a^Jbup&quot;,&quot;inputs&quot;:{&quot;FD&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_get&quot;,&quot;id&quot;:&quot;nu)^gdR-9QV71GSI7#(l&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;A/TX@37C_h*^vbRp@1fz&quot;}}}}}}}}}}}}]},&quot;variables&quot;:[{&quot;name&quot;:&quot;fd&quot;,&quot;id&quot;:&quot;A/TX@37C_h*^vbRp@1fz&quot;},{&quot;name&quot;:&quot;ULEDIOC_SETALL&quot;,&quot;id&quot;:&quot;:,DB,f}1q3KOBim#j66[&quot;},{&quot;name&quot;:&quot;ret&quot;,&quot;id&quot;:&quot;xH3`F~]tadlX:/zKQ!Xx&quot;}]}&#39;);
+      break;
+    default:
+      break;
+  }
+
+  // Refresh the Blocks
+  if (ws) { 
+    load(ws); 
+    runCode();
+  }
+}
+</code></pre></div>
+<p>To see the Blocks for a Blockly App: Browse to https://lupyuen.github.io/nuttx-blockly/</p>
+<p>Select “Menu &gt; More Tools &gt; Developer Tools &gt; Application &gt; Local Storage &gt; lupyuen.github.io &gt; mainWorkspace”</p>
+<p>Or do this from the JavaScript Console…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Display the Blocks in JSON Format
+localStorage.getItem(&quot;mainWorkspace&quot;);
+
+// Set the Blocks in JSON Format.
+// Change `...` to the JSON of the Blocks to be loaded.
+localStorage.setItem(&quot;mainWorkspace&quot;, `...`);
+</code></pre></div><h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
