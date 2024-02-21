@@ -32,6 +32,8 @@ TODO
 
 - All this for an (underpowered) BBC micro:bit with Nordic nRF51 (Arm Cortex-M0, 256 KB Flash, 16 KB RAM!)
 
+![TODO](https://lupyuen.github.io/images/quickjs2-makecode.jpg)
+
 Today 7 years later: How would we redo all this? With a bunch of Open Source Packages?
 
 - Hardware Device: [Ox64 BL808 64-bit RISC-V SBC](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (64 MB RAM, Unlimited microSD Storage, only $8!)
@@ -45,6 +47,8 @@ Today 7 years later: How would we redo all this? With a bunch of Open Source Pac
 - C Compiler + Assembler: [TCC WebAssembly for NuttX](https://github.com/lupyuen/tcc-riscv32-wasm) (but we probably won't need this since we have JavaScript on NuttX)
 
 - Device Control: [Web Serial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API) for controlling Ox64 over UART
+
+![TODO](https://lupyuen.github.io/images/quickjs2-nuttx.jpg)
 
 ![Running our Drag-n-Drop App on NuttX Emulator](https://lupyuen.github.io/images/quickjs2-emulator.png)
 
