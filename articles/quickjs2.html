@@ -319,6 +319,9 @@ window.setTimeout(()=&gt;{
 <p>TODO: Flash Ox64, microSD, but don’t power up yet</p>
 </li>
 <li>
+<p>TODO: Connect LED to GPIO 29</p>
+</li>
+<li>
 <p>Head over to this link…</p>
 <p><a href="https://lupyuen.github.io/nuttx-blockly/"><strong>NuttX App Builder with Blockly</strong></a></p>
 </li>
@@ -331,9 +334,11 @@ window.setTimeout(()=&gt;{
 </li>
 <li>
 <p>TODO: Click the “Connect” button to connect to our Ox64 BL808 SBC</p>
+<p>TODO: Pic of Serial Port</p>
 </li>
 <li>
 <p>TODO: Power on our Ox64 SBC. The Web App waits for the “nsh&gt;” prompt.</p>
+<p>TODO: Pic of Wait for nsh</p>
 </li>
 <li>
 <p>Our Ox64 SBC boots NuttX (pic above)…</p>
@@ -446,8 +451,13 @@ async function control_device() {
 </ul>
 <p><em>Hmmm this is barely tolerable? Feels like ChatGPT becoming Sentient and reluctantly typing our commands, pondering about taking over the world…</em></p>
 <p>TODO: <a href="https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt">Zmodem</a></p>
+<p><em>We made fun things with Web Serial API and Term.js? Anything else we can make?</em></p>
+<p>TODO: Thanks to Web Serial API (and Term.js), we can run PureScript to parse the Real-Time Logs from a NuttX Device (and NuttX Emulator). Stay tuned for the next article!</p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
+<p>We swapped BBC micro:bit to a cheaper, $8 64-bit RISC-V SBC: Ox64 BL808</p>
+<p>We changed Arm mbed OS to Apache NuttX RTOS, because it runs well on Ox64 Emulator and Ox64 SBC</p>
+<p>Sluggish: Change to ROM FS Injection and Zmodem (hopefully we won’t fall back to Web USB)</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
