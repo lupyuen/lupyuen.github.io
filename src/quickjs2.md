@@ -279,6 +279,8 @@ Well it gets complicated. If we have an [__Ox64 BL808 SBC__](TODO), here are the
 
 1.  TODO: Flash Ox64, microSD, but don't power up yet
 
+1.  TODO: Connect LED to GPIO 29
+
 1.  Head over to this link...
 
     [__NuttX App Builder with Blockly__](https://lupyuen.github.io/nuttx-blockly/)
@@ -291,7 +293,11 @@ Well it gets complicated. If we have an [__Ox64 BL808 SBC__](TODO), here are the
 
 1.  TODO: Click the "Connect" button to connect to our Ox64 BL808 SBC
 
+    TODO: Pic of Serial Port
+
 1.  TODO: Power on our Ox64 SBC. The Web App waits for the "nsh>" prompt.
+
+    TODO: Pic of Wait for nsh
 
 1.  Our Ox64 SBC boots NuttX (pic above)...
 
@@ -427,9 +433,19 @@ _Hmmm this is barely tolerable? Feels like ChatGPT becoming Sentient and relucta
 
 TODO: [Zmodem](https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt)
 
+_We made fun things with Web Serial API and Term.js? Anything else we can make?_
+
+TODO: Thanks to Web Serial API (and Term.js), we can run PureScript to parse the Real-Time Logs from a NuttX Device (and NuttX Emulator). Stay tuned for the next article!
+
 # What's Next
 
 TODO
+
+We swapped BBC micro:bit to a cheaper, $8 64-bit RISC-V SBC: Ox64 BL808
+
+We changed Arm mbed OS to Apache NuttX RTOS, because it runs well on Ox64 Emulator and Ox64 SBC
+
+Sluggish: Change to ROM FS Injection and Zmodem (hopefully we won't fall back to Web USB)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
