@@ -134,6 +134,8 @@ Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)..
       clear=0x1000000
     ```
 
+    TODO: Watch the Demo on YouTube
+
 _What just happened?_
 
 We drag-n-dropped a NuttX App that Blinks the LED. And tested it in our Web Browser, with the Ox64 Emulator!
@@ -188,11 +190,43 @@ TODO: Every Block
 
 TODO: Details
 
-# Blockly Code Generator
+# Code Generator in Blockly
 
-TODO
+_We dragged the POSIX Blocks to our Blinky App... How did the JavaScript automagically appear?_
 
-# Local Storage
+We created __Code Generators__ in Blockly that will emit the JavaScript Code for each POSIX Block: [javascript.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/generators/javascript.ts#L15-L25)
+
+```javascript
+// Code Generator for POSIX `Open` Block
+forBlock['posix_open'] = function (
+  block: Blockly.Block,             // Our Block
+  generator: Blockly.CodeGenerator  // Blockly Code Generator
+) {
+  // Fetch the Filename Parameter
+  // from the Block: '/dev/userleds'
+  const text = generator.valueToCode(block, 'FILENAME', Order.NONE)
+    || "''";  // Default to blank
+
+  // Generate the Function Call for the block:
+  // os.open('/dev/userleds')
+  const code = `os.open(${text})`;
+  return [code, Order.ATOMIC];
+};
+```
+
+We do this for every POSIX Block...
+
+- TODO: `open` Code Generator
+
+- TODO: `close` Code Generator
+
+- TODO: `ioctl` Code Generator
+
+- TODO: `sleep` Clode Generator
+
+# Transmit JavaScript via Local Storage
+
+_Blockly generates the JavaScript for our Blinky App... How did it appear in our Ox64 Emulator?_
 
 TODO
 
