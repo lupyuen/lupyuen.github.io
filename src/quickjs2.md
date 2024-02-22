@@ -176,9 +176,10 @@ npx @blockly/create-package \
   app nuttx-blockly --typescript
 
 ## Test our Blockly Website
+cd nuttx-blockly
 npm run start
 
-## Deploy to GitHub Pages
+## Deploy to GitHub Pages at `docs`
 npm run build \
   && rm -r docs \
   && mv dist docs
@@ -346,24 +347,9 @@ TODO: Pic of Real Ox64 LED
 
 ![Running our Drag-n-Drop App on Ox64 BL808 SBC](https://lupyuen.github.io/images/quickjs2-device.png)
 
-# Web Serial API
+# Control Ox64 via Web Serial API
 
 TODO
-
-# Create the Blockly Project
-
-TODO
-
-MakeCode was created with Blockly, we'll stick with Blockly.
-
-Based on the [Blockly Instructions](https://developers.google.com/blockly/guides/get-started/get-the-code)...
-
-```bash
-npx @blockly/create-package app nuttx-blockly --typescript
-npm run build
-```
-
-Try the Blockly Demo: https://lupyuen.github.io/nuttx-blockly/
 
 # Send a Command to NuttX Emulator
 
