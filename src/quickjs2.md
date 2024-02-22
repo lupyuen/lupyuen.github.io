@@ -81,11 +81,11 @@ Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)..
 
       // Flip the LED On and wait a while
       ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-      os.sleep(20000);
+      os.sleep(5000);  // Milliseconds
 
       // Flip the LED Off and wait a while
       ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-      os.sleep(20000);
+      os.sleep(5000);  // Milliseconds
     }
 
     // Close the LED Device
@@ -116,9 +116,9 @@ Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)..
     3
     qjs > for (var count = 0; count < 20; count++) {
       ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-      os.sleep(20000);
+      os.sleep(5000);
       ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-      os.sleep(20000);
+      os.sleep(5000);
     }
     ```
 
@@ -156,11 +156,13 @@ fd = os.open('/dev/userleds');
 
 // Flip the LED On and wait a while
 ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-os.sleep(20000);
+os.sleep(5000);
 
 // Close the LED Device
 os.close(fd);
 ```
+
+TODO: Pic of POSIX Blocks
 
 _How did we create the POSIX Blocks?_
 
@@ -180,7 +182,11 @@ npm run build \
   && mv dist docs
 ```
 
-TODO
+We added these __POSIX Blocks__ to Blockly...
+
+TODO: Every Block
+
+TODO: Details
 
 # Blockly Code Generator
 
@@ -295,9 +301,9 @@ ULEDIOC_SETALL = 7427;
 fd = os.open('/dev/userleds');
 for (var count = 0; count < 20; count++) {
   ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-  os.sleep(20000);
+  os.sleep(5000);
   ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-  os.sleep(20000);
+  os.sleep(5000);
 }
 os.close(fd);
 ```
@@ -322,9 +328,9 @@ qjs > fd = os.open('/dev/userleds');
 3
 qjs > for (var count = 0; count < 20; count++) {
 {  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-{  ...       os.sleep(20000);
+{  ...       os.sleep(5000);
 {  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-{  ...       os.sleep(20000);
+{  ...       os.sleep(5000);
 {  ...     }
 bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
 bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
@@ -388,9 +394,9 @@ ULEDIOC_SETALL = 7427;
 fd = os.open('/dev/userleds');
 for (var count = 0; count < 20; count++) {
   ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-  os.sleep(20000);
+  os.sleep(5000);
   ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-  os.sleep(20000);
+  os.sleep(5000);
 }
 os.close(fd);
 ```
@@ -421,9 +427,9 @@ qjs > fd = os.open('/dev/userleds');
 3
 qjs > for (var count = 0; count < 20; count++) {
 {  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-{  ...       os.sleep(20000);
+{  ...       os.sleep(5000);
 {  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-{  ...       os.sleep(20000);
+{  ...       os.sleep(5000);
 {  ...     }
 bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
 bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
