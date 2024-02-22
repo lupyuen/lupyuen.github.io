@@ -126,7 +126,7 @@ Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)..
 
 _What just happened?_
 
-We drag-n-dropped a NuttX App that Blinks the LED. And tested it in our Web Browser, with the Ox64 Emulator!
+We drag-n-dropped a NuttX App that Blinks the LED. And our NuttX App gets automagically tested in our Web Browser, thanks to Ox64 Emulator!
 
 TODO
 
@@ -351,18 +351,21 @@ _Our Web Browser controls Ox64 SBC... How is that possible?_
 
 With the [__Web Serial API__](TODO), it's OK to control any device that's accessible over the __Serial Port__. But it's only available...
 
-- Over __HTTPS__: `https://...`
+- Over __HTTPS__: _https://..._
 
-- Or __Local Filesystem__: `file://...`
+- Or __Local Filesystem__: _file://..._
 
-- It __won't work over HTTP__! `http://...`
+- It __won't work over HTTP__! _http://..._
 
 _How does it work?_
 
 We create a __HTML Button__ for "Connect": [index.html](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/index.html#L27-L29)
 
 ```html
-<button id="connect" onclick="control_device();">
+<!-- Connect Button in HTML -->
+<button
+  id="connect"
+  onclick="control_device();">
   Connect
 </button>
 ```
@@ -394,12 +397,12 @@ TODO: Pic of Serial Port
 We're all set to Read and Write the Serial Port! First we need the __Reader and Writer Streams__...
 
 ```javascript
-  // Prepare to write to Serial Port
+  // Prepare to Write to the Serial Port
   const textEncoder = new TextEncoderStream();
   const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
   const writer = textEncoder.writable.getWriter();
   
-  // Read from the Serial Port
+  // Prepare to Read from the Serial Port
   const textDecoder = new TextDecoderStream();
   const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
   const reader = textDecoder.readable.getReader();
@@ -433,6 +436,8 @@ _Hmmm this is barely tolerable? Feels like ChatGPT becoming Sentient and relucta
 
 TODO: [Zmodem](https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt)
 
+(Too bad we can't [__Inject the JavaScript__](TODO) into a Real microSD Filesystem)
+
 _We created fun things with Web Serial API and Term.js. Anything else we can make?_
 
 Thanks to Web Serial API (and Term.js), we can run __PureScript__ to parse the __Real-Time Logs__ from a NuttX Device (and NuttX Emulator)...
@@ -443,11 +448,11 @@ All this in the Web Browser! Stay tuned for the next article.
 
 TODO
 
-We swapped BBC micro:bit to a cheaper, $8 64-bit RISC-V SBC: Ox64 BL808
+- We swapped BBC micro:bit to a cheaper, $8 64-bit RISC-V SBC: Ox64 BL808
 
-We changed Arm mbed OS to Apache NuttX RTOS, because it runs well on Ox64 Emulator and Ox64 SBC
+- We changed Arm mbed OS to Apache NuttX RTOS, because it runs well on Ox64 Emulator and Ox64 SBC
 
-Sluggish: Change to ROM FS Injection and Zmodem (hopefully we won't fall back to Web USB)
+- Sluggish: Change to ROM FS Injection and Zmodem (hopefully we won't fall back to Web USB)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -469,26 +474,144 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: POSIX Blocks in Blockly
 
-TODO
+TODO: Code Generator
 
-Based on the [Blockly Developer Tools](https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools), we add the POSIX Blocks for `open()`, `close()`, `ioctl()` and `sleep()`...
+With the [__Blockly Developer Tools__](https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools), we add our __POSIX Blocks__ to Blockly: [posix.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/blocks/posix.ts#L7-L26)
 
-1.  [Add Blocks for POSIX Open and Close](https://github.com/lupyuen/nuttx-blockly/commit/801d019e11bf00ddfb6bf57361da9719b45e80ad)
+```javascript
+// Define the POSIX Open Block in Blockly
+const posixOpen = {
 
-1.  [Add POSIX ioctl block](https://github.com/lupyuen/nuttx-blockly/commit/29e060a883ba4d2a257f7c9c65ef88a6f5eb95a4)
+  // Name and Appearance of our Block
+  'type': 'posix_open',
+  'message0': 'Open Filename %1',
 
-1.  [Add POSIX sleep block](https://github.com/lupyuen/nuttx-blockly/commit/43d892c8520837b88d881ac631f15e741fc9fd87)
+  // Our Block has one Parameter: Filename
+  'args0': [
+    {
+      'type': 'input_value',
+      'name': 'FILENAME',
+      'check': 'String',
+    },
+  ],
 
-1.  [Change the Types from String to Number](https://github.com/lupyuen/nuttx-blockly/commit/e4405b39c59c3e5db35255fc7cb8ac25a29e66fe)
+  // How it looks
+  'previousStatement': null,
+  'nextStatement': null,
+  'output': 'Number',
+  'colour': 160,
+  'tooltip': '',
+  'helpUrl': '',
+};
+```
 
-1.  [Clean up parameter names](https://github.com/lupyuen/nuttx-blockly/commit/f823607b63bb69b98791c0c089d036c56700f543)
+The __POSIX Blocks__ that we added...
 
-1.  [Create POSIX Category in Toolbox](https://github.com/lupyuen/nuttx-blockly/commit/838e1d0d872808a341b281a70ae64229cbe1a079)
+- TODO: POSIX Open Block
 
-Then we build and deploy our Blockly Website...
+- TODO: POSIX Close Block
+
+- TODO: POSIX IOCtl Block
+
+- TODO: POSIX Sleep Block
+
+__In the Blockly Toolbox__ (Menu Bar of Blocks): We create a __POSIX Category__ that contains our POSIX Blocks: [toolbox.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/toolbox.ts#L6-L68)
+
+```javascript
+export const toolbox = {
+  'kind': 'categoryToolbox',
+  'contents': [
+    {
+      // Category for POSIX Blocks
+      'kind': 'category',
+      'name': 'POSIX',
+      'categorystyle': 'text_category',
+      'contents': [
+        // POSIX Open Block
+        {
+          'kind': 'block',
+          'type': 'posix_open',
+          'inputs': {
+            'FILENAME': {
+              'shadow': {
+                'type': 'text',
+                'fields': {
+                  'TEXT': '/dev/userleds',
+                },
+              },
+            },
+          },
+        },
+        // Followed by the other POSIX Blocks:
+        // Close, IOCtl, Sleep
+```
+
+Then we __Build and Deploy__ our Blockly Website...
 
 ```bash
-npm run build && rm -r docs && mv dist docs
+## Test our Blockly Website
+cd nuttx-blockly
+npm run start
+
+## Deploy to GitHub Pages at `docs`
+npm run build \
+  && rm -r docs \
+  && mv dist docs
+```
+
+Remember to [__Disable the JavaScript Eval__](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L35-L38).
+
+Let's talk about loading a Blockly App...
+
+# Appendix: Load a Blockly App
+
+TODO
+
+This is how we load the Blocks for a Blockly App: [index.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L100-L120)
+
+```javascript
+// When we Select a Demo...
+function selectDemo(ev: Event) {
+  const storageKey = 'mainWorkspace';
+  const target = ev?.target as HTMLSelectElement;
+  const value = target.value;
+
+  // Set the Blocks in our Local Storage
+  switch (value) {
+    case "LED Blinky":
+      // Omitted: Super-long Blocks JSON
+      window.localStorage?.setItem(storageKey, '{"blocks": ...}');
+      break;
+
+    default: break;
+  }
+
+  // Refresh the Workspace Blocks from Local Storage
+  // And regenerate the JavaScript
+  if (ws) { 
+    load(ws); 
+    runCode();
+  }
+}
+```
+
+To see the __Blocks JSON__ for a Blockly App...
+
+1.  Browse to our [__Blockly Website__](https://lupyuen.github.io/nuttx-blockly/)
+
+1.  Select _"Menu > More Tools > Developer Tools > Application > Local Storage > lupyuen.github.io > mainWorkspace"_
+
+1.  We'll see the super-long __Blocks JSON__: _{"blocks": ...}_
+
+Or do this from the __JavaScript Console__...
+
+```javascript
+// Display the Blocks in JSON Format
+localStorage.getItem("mainWorkspace");
+
+// Set the Blocks in JSON Format.
+// Change `...` to the JSON of the Blocks to be loaded.
+localStorage.setItem("mainWorkspace", `...`);
 ```
 
 # Appendix: Control Ox64 via Web Serial API
@@ -557,7 +680,7 @@ function runDevice() {
 }
 ```
 
-In the WebSerial Monitor: We read the Generated JavaScript from the Web Browser Local Storage. And feed it (character by character) to the NuttX Console: [webserial.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L612-L694)
+__In the WebSerial Monitor__: We read the Generated JavaScript from the Web Browser Local Storage. And feed it (character by character) to the NuttX Console: [webserial.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L612-L694)
 
 ```javascript
 // Control Ox64 over UART
@@ -642,49 +765,4 @@ async function send_command(writer, cmd) {
     await writer.write(ch);
     window.setTimeout(()=>{ send_command(writer, null); }, timeout);
 }
-```
-
-# Appendix: Load a Blockly App
-
-TODO
-
-This is how we load the Blocks for a Blockly App: [index.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L100-L120)
-
-```javascript
-// Select a Demo
-function selectDemo(ev: Event) {
-  const storageKey = 'mainWorkspace';
-  const target = ev?.target as HTMLSelectElement;
-  const value = target.value;
-
-  // Set the Blocks in Local Storage
-  switch (value) {
-    case "LED Blinky":
-      window.localStorage?.setItem(storageKey, '{"blocks":{"languageVersion":0,"blocks":[{"type":"variables_set","id":"Nx6o0xVxp@qzI_(vRd.7","x":60,"y":33,"fields":{"VAR":{"id":":,DB,f}1q3KOBim#j66["}},"inputs":{"VALUE":{"block":{"type":"math_number","id":"enmYd`#z_G1k5Pvv*x(G","fields":{"NUM":7427}}}},"next":{"block":{"type":"variables_set","id":"f#C+(eT=naKZzr%/;A.P","fields":{"VAR":{"id":"A/TX@37C_h*^vbRp@1fz"}},"inputs":{"VALUE":{"block":{"type":"posix_open","id":"^$p+x^F[mQ;grqANDtO}","inputs":{"FILENAME":{"shadow":{"type":"text","id":"nz;|U#KPVW$$c0?W0ROv","fields":{"TEXT":"/dev/userleds"}}}}}}},"next":{"block":{"type":"controls_repeat_ext","id":"0{4pA@{^=ks|iVF.|]i#","inputs":{"TIMES":{"shadow":{"type":"math_number","id":"=o3{$E2c=BpwD0#MR3^x","fields":{"NUM":20}}},"DO":{"block":{"type":"variables_set","id":"l;AmIPhJARU{C)0kNq6`","fields":{"VAR":{"id":"xH3`F~]tadlX:/zKQ!Xx"}},"inputs":{"VALUE":{"block":{"type":"posix_ioctl","id":"0i!pbWJ(~f~)b^@jt!nP","inputs":{"FD":{"block":{"type":"variables_get","id":"QMGa_}UmC$b[5/Bh^f${","fields":{"VAR":{"id":"A/TX@37C_h*^vbRp@1fz"}}}},"REQ":{"block":{"type":"variables_get","id":"dZ5%B_rcbVb_o=v;gze-","fields":{"VAR":{"id":":,DB,f}1q3KOBim#j66["}}}},"ARG":{"block":{"type":"math_number","id":"9UA!sDxmf/=fYfxC6Yqa","fields":{"NUM":1}}}}}}},"next":{"block":{"type":"posix_sleep","id":"ruh/q4F7dW*CQ,5J]E%w","inputs":{"MS":{"block":{"type":"math_number","id":"9~q0@ABEg4VXP:1HN-$1","fields":{"NUM":5000}}}},"next":{"block":{"type":"variables_set","id":"e;BNsjvbN}9vTTc[O#bY","fields":{"VAR":{"id":"xH3`F~]tadlX:/zKQ!Xx"}},"inputs":{"VALUE":{"block":{"type":"posix_ioctl","id":"-G5x~Y4iAyVUAWuwNh#H","inputs":{"FD":{"block":{"type":"variables_get","id":"vtt5Gid0B|iK![$4Ct*D","fields":{"VAR":{"id":"A/TX@37C_h*^vbRp@1fz"}}}},"REQ":{"block":{"type":"variables_get","id":"pd~f}Oqz2(`o3Oz;8ax`","fields":{"VAR":{"id":":,DB,f}1q3KOBim#j66["}}}},"ARG":{"block":{"type":"math_number","id":"OS(uQV)!%iqZ=N}s1H(L","fields":{"NUM":0}}}}}}},"next":{"block":{"type":"posix_sleep","id":"{X9leD=Rgr4=o5E2(#Z,","inputs":{"MS":{"block":{"type":"math_number","id":"eEq(yXcGPbVtZT|CunT0","fields":{"NUM":5000}}}}}}}}}}}}},"next":{"block":{"type":"posix_close","id":"+%kD6{Xa@#BOx}a^Jbup","inputs":{"FD":{"block":{"type":"variables_get","id":"nu)^gdR-9QV71GSI7#(l","fields":{"VAR":{"id":"A/TX@37C_h*^vbRp@1fz"}}}}}}}}}}}}]},"variables":[{"name":"fd","id":"A/TX@37C_h*^vbRp@1fz"},{"name":"ULEDIOC_SETALL","id":":,DB,f}1q3KOBim#j66["},{"name":"ret","id":"xH3`F~]tadlX:/zKQ!Xx"}]}');
-      break;
-    default:
-      break;
-  }
-
-  // Refresh the Blocks
-  if (ws) { 
-    load(ws); 
-    runCode();
-  }
-}
-```
-
-To see the Blocks for a Blockly App: Browse to https://lupyuen.github.io/nuttx-blockly/
-
-Select "Menu > More Tools > Developer Tools > Application > Local Storage > lupyuen.github.io > mainWorkspace"
-
-Or do this from the JavaScript Console...
-
-```javascript
-// Display the Blocks in JSON Format
-localStorage.getItem("mainWorkspace");
-
-// Set the Blocks in JSON Format.
-// Change `...` to the JSON of the Blocks to be loaded.
-localStorage.setItem("mainWorkspace", `...`);
 ```
