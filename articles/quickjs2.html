@@ -137,7 +137,7 @@
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-blockly.png" alt="NuttX App Builder with Blockly" /></p>
 <h1 id="emulator-demo"><a href="#emulator-demo">1 Emulator Demo</a></h1>
-<p>Here’s the Emulator Demo that we can all play along at home…</p>
+<p>Here’s the Emulator Demo that we can play along at home…</p>
 <ol>
 <li>
 <p>Head over to this link…</p>
@@ -173,11 +173,16 @@ os.close(fd);
 <p>Click <strong>“Run on Ox64 Emulator”</strong></p>
 </li>
 <li>
-<p>Our Drag-n-Drop App runs in the Emulator, and blinks the <strong>Simulated LED</strong> (GPIO 29, pic below)…</p>
+<p>Our <a href="TODO"><strong>Emulated Ox64 SBC</strong></a> boots in the Web Browser…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; qjs
 QuickJS - Type &quot;\h&quot; for help
-qjs &gt; var ULEDIOC_SETALL, fd, ret;
+</code></pre></div>
+<p>And starts the <a href="TODO"><strong>QuickJS JavaScript Engine</strong></a>.</p>
+</li>
+<li>
+<p>Ox64 Emulator runs our <strong>Drag-n-Drop JavaScript App</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>qjs &gt; var ULEDIOC_SETALL, fd, ret;
 qjs &gt; ULEDIOC_SETALL = 7427;
 7427
 qjs &gt; fd = os.open(&#39;/dev/userleds&#39;);
@@ -188,10 +193,13 @@ qjs &gt; for (var count = 0; count &lt; 20; count++) {
   ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
   os.sleep(20000);
 }
-bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+</code></pre></div>
+<p>Which blinks the <a href="TODO"><strong>Simulated LED</strong></a> (GPIO 29, pic below)…</p>
+<div class="example-wrap"><pre class="language-text"><code>bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
 bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </code></pre></div></li>
 </ol>
+<p><em>What just happened?</em></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-emulator.png" alt="Running our Drag-n-Drop App on NuttX Emulator" /></p>
 <h1 id="blockly-blocks"><a href="#blockly-blocks">2 Blockly Blocks</a></h1>
