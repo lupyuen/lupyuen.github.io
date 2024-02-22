@@ -278,9 +278,73 @@ Thanks to [__TinyEMU__](TODO) and [__Term.js__](TODO), everything works hunky do
 
 TODO
 
-# Device Demo
+# Blinky on a Real Ox64 SBC
+
+_Will we do the same for a Real Ox64 SBC?_
+
+Well it gets complicated. If we have an [__Ox64 BL808 SBC__](TODO), here are the __Demo Steps__...
+
+1.  TODO: Flash Ox64, microSD, but don't power up yet
+
+1.  Head over to this link...
+
+    [__NuttX App Builder with Blockly__](https://lupyuen.github.io/nuttx-blockly/)
+
+1.  Click __"Select Demo"__ > __"LED Blinky"__
+
+    [(Or __Drag-n-Drop the Blocks__ ourselves)](https://youtu.be/-dG5ZSXELDc)
+
+1.  Click __"Run on Ox64 Device"__
+
+1.  TODO: Click the "Connect" button to connect to our Ox64 BL808 SBC
+
+1.  TODO: Power on our Ox64 SBC. The Web App waits for the "nsh>" prompt.
+
+1.  Our Ox64 SBC boots NuttX...
+
+    ```text
+    NuttShell (NSH) NuttX-12.4.0-RC0
+    nsh> qjs
+
+    QuickJS - Type "\h" for help
+    qjs >
+    ```
+
+    And starts the [__QuickJS JavaScript Engine__](TODO).
+
+1.  QuickJS runs our __Blinky JavaScript App__...
+
+    ```text
+    qjs > var ULEDIOC_SETALL, fd, ret;
+    qjs > ULEDIOC_SETALL = 7427;
+    7427
+    qjs > fd = os.open('/dev/userleds');
+    3
+    qjs > for (var count = 0; count < 20; count++) {
+      ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
+      os.sleep(5000);
+      ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
+      os.sleep(5000);
+    }
+    ```
+
+    Which blinks the [__Real Ox64 LED__](TODO) (GPIO 29, pic below)...
+
+    ```text
+    bl808_gpiowrite:
+      regaddr=0x20000938,
+      set=0x1000000
+
+    bl808_gpiowrite:
+      regaddr=0x20000938,
+      clear=0x1000000
+    ```
 
 TODO
+
+[(Watch the __Demo on YouTube__)](https://youtu.be/lUhrLWvwizU)
+
+![Running our Drag-n-Drop App on Ox64 BL808 SBC](https://lupyuen.github.io/images/quickjs2-device.png)
 
 # Web Serial API
 
