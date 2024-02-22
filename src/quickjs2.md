@@ -6,47 +6,47 @@
 
 _Remember Makecode? BBC micro:bit and its Drag-n-Drop App Builder?_
 
-[MakeCode for BBC micro:bit](https://www.sciencedirect.com/science/article/pii/S1383762118306088) is an awesome creation that's way ahead of its time (7 years ago!)
+[__MakeCode for BBC micro:bit__](https://www.sciencedirect.com/science/article/pii/S1383762118306088) is an awesome creation that's way ahead of its time (7 years ago!)
 
-- [TypeScript Compiler](https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0008) in the Web Browser (in JavaScript!)
+- [__TypeScript Compiler__](https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0008) in the Web Browser (in JavaScript!)
 
-- [Bespoke Arm Assembler](https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0008) that runs in the Web Browser (also JavaScript)
+- [__Bespoke Arm Assembler__](https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0008) that runs in the Web Browser (also JavaScript)
 
-- [Bespoke Embedded OS](https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0009) for BBC micro:bit (CODAL + Mbed OS)
+- [__Custom Embedded OS__](https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0009) for BBC micro:bit (CODAL + Mbed OS)
 
-- [UF2 Bootloader](https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0015) with flashing over WebUSB
+- [__UF2 Bootloader__](https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0015) with flashing over Web USB
 
-- [micro:bit Simulator](https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0004) in JavaScript
+- [__micro:bit Simulator__](https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0004) in JavaScript
 
-- All this for an underpowered [__BBC micro:bit__](TODO) with Nordic nRF51
+- All this for an underpowered [__BBC micro:bit__](https://en.wikipedia.org/wiki/Micro_Bit) with Nordic nRF51
 
   (Arm Cortex-M0, 256 KB Flash, 16 KB RAM!)
 
-![TODO](https://lupyuen.github.io/images/quickjs2-makecode.jpg)
+![MakeCode for BBC micro:bit](https://lupyuen.github.io/images/quickjs2-makecode.jpg)
 
 __Today 7 years later:__ How would we redo all this? With a bunch of Open Source Packages?
 
-- Hardware Device: [Ox64 BL808 64-bit RISC-V SBC](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358)
+- Hardware Device: [__Ox64 BL808 64-bit RISC-V SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358)
 
   (64 MB RAM, Unlimited microSD Storage, only $8)
 
-- Embedded OS: [Apache NuttX RTOS](https://nuttx.apache.org/docs/latest/index.html)
+- Embedded OS: [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)
 
-- JavaScript Engine: [QuickJS for NuttX](https://github.com/lupyuen/quickjs-nuttx)
+- JavaScript Engine: [__QuickJS for NuttX__](https://lupyuen.github.io/articles/quickjs)
 
-- Web Emulator: [TinyEMU WebAssembly for NuttX](https://github.com/lupyuen/nuttx-tinyemu)
+- Web Emulator: [__TinyEMU WebAssembly for NuttX__](https://lupyuen.github.io/articles/tinyemu2)
 
-- C Compiler + Assembler: [TCC WebAssembly for NuttX](https://github.com/lupyuen/tcc-riscv32-wasm)
+- C Compiler + Assembler: [__TCC WebAssembly for NuttX__](https://lupyuen.github.io/articles/tcc)
 
   (Won't need this since we have JavaScript)
 
-- Device Control: [Web Serial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API) with [Term.js](TODO)
+- Device Control: [__Web Serial API__](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API) with [__Term.js__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/term.js)
 
   (Controls Ox64 over UART)
 
 This is how we gave MakeCode a wholesome wholesale makeover...
 
-![TODO](https://lupyuen.github.io/images/quickjs2-nuttx.jpg)
+![Blockly App Builder for NuttX](https://lupyuen.github.io/images/quickjs2-nuttx.jpg)
 
 # Drag-n-Drop a Blinky App
 
@@ -88,7 +88,7 @@ Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)..
 
 1.  Click __"Run on Ox64 Emulator"__
 
-1.  Our [__Emulated Ox64 SBC__](TODO) boots in the Web Browser...
+1.  Our [__Emulated Ox64 SBC__](https://lupyuen.github.io/articles/tinyemu2) boots in the Web Browser...
 
     ```text
     NuttShell (NSH) NuttX-12.4.0-RC0
@@ -98,7 +98,7 @@ Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)..
     qjs >
     ```
 
-    And starts the [__QuickJS JavaScript Engine__](TODO).
+    And starts the [__QuickJS JavaScript Engine__](https://lupyuen.github.io/articles/quickjs).
 
 1.  QuickJS runs our __Blinky JavaScript App__...
 
@@ -116,7 +116,7 @@ Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)..
     }
     ```
 
-    Which blinks the [__Simulated LED__](TODO) (GPIO 29, pic below)...
+    Which blinks the [__Simulated LED__](https://lupyuen.github.io/articles/quickjs#simulate-the-led-on-ox64-emulator) (GPIO 29, pic below)...
 
     ```text
     bl808_gpiowrite:
@@ -132,9 +132,9 @@ Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)..
 
 _What just happened?_
 
-We drag-n-dropped a NuttX App that Blinks the LED. And our NuttX App gets automagically tested in our Web Browser, thanks to Ox64 Emulator!
+We drag-n-dropped a NuttX App that Blinks the LED. And our NuttX App runs automagically in our Web Browser, thanks to Ox64 Emulator!
 
-TODO
+We go behind the scenes...
 
 ![Running our Drag-n-Drop App on NuttX Emulator](https://lupyuen.github.io/images/quickjs2-emulator.png)
 
@@ -142,7 +142,7 @@ TODO
 
 _What's POSIX? How are POSIX Functions used in our Blinky App?_
 
-We call [__POSIX Functions__](TODO) to create Command-Line Apps in Linux, macOS and Windows.
+We call [__POSIX Functions__](https://en.wikipedia.org/wiki/POSIX) to create Command-Line Apps in Linux, macOS and Windows.
 
 `open`, `ioctl`, `sleep` and `close` are all POSIX Functions. And they'll run on NuttX too!
 
@@ -183,7 +183,9 @@ We added these __POSIX Blocks__ to Blockly...
 
 TODO: Every Block
 
-TODO: Details
+Which are explained here...
+
+- [__"POSIX Blocks in Blockly"__](https://lupyuen.github.io/articles/quickjs2#appendix-posix-blocks-in-blockly)
 
 # Code Generator in Blockly
 
@@ -211,21 +213,27 @@ forBlock['posix_open'] = function (
 
 We do this for every POSIX Block...
 
-- TODO: `open` Code Generator
+- [__`open` Code Generator__](https://github.com/lupyuen/nuttx-blockly/blob/main/src/generators/javascript.ts#L15-L25)
 
-- TODO: `close` Code Generator
+- [__`close` Code Generator__](https://github.com/lupyuen/nuttx-blockly/blob/main/src/generators/javascript.ts#L26-L38)
 
-- TODO: `ioctl` Code Generator
+- [__`ioctl` Code Generator__](https://github.com/lupyuen/nuttx-blockly/blob/main/src/generators/javascript.ts#L38-L52)
 
-- TODO: `sleep` Clode Generator
+- [__`sleep` Clode Generator__](https://github.com/lupyuen/nuttx-blockly/blob/main/src/generators/javascript.ts#L52-L64)
 
-![TODO](https://lupyuen.github.io/images/quickjs2-nuttx2.jpg)
+_POSIX Functions are supported by QuickJS?_
+
+Yep the QuickJS JavaScript Engine supports [__these POSIX Functions__](https://bellard.org/quickjs/quickjs.html#os-module).
+
+And we [__added `ioctl`__](https://lupyuen.github.io/articles/quickjs#add-ioctl-to-quickjs) to QuickJS.
+
+![Running our NuttX App on Ox64 Emulator](https://lupyuen.github.io/images/quickjs2-nuttx2.jpg)
 
 # Transmit JavaScript via Local Storage
 
 _Blockly generates the JavaScript for our Blinky App... How did it appear in our Ox64 Emulator?_
 
-When we click the __"Run Emulator"__ button, our Blockly Website saves the Generated JavaScript to the [__Local Storage__](TODO) in our Web Browser: [index.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L73-L86)
+When we click the __"Run Emulator"__ button, our Blockly Website saves the Generated JavaScript to the [__Local Storage__](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API) in our Web Browser: [index.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L73-L86)
 
 ```javascript
 // Run on Ox64 Emulator
@@ -269,11 +277,13 @@ window.setTimeout(()=>{
 
 And send it to the [__Ox64 Emulator Console__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L522-L542), character by character.
 
-Thanks to [__TinyEMU__](TODO) and [__Term.js__](TODO), everything works hunky dory!
+Thanks to [__TinyEMU__](https://lupyuen.github.io/articles/tinyemu2) and [__Term.js__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/term.js), everything works hunky dory!
 
 _Hmmm it's so laggy? A bit like ChatGPT has possessed our Ox64 Emulator and typing out our commands in super slo-mo..._
 
-TODO: Inject JavaScript into ROM FS
+Yeah we might inject our JavaScript File into the [__ROM FS Filesystem for Ox64 Emulator__](https://lupyuen.github.io/articles/romfs#from-tcc-to-nuttx-emulator).
+
+This will make it much quicker to load our JavaScript File on Ox64 Emulator.
 
 ![Running our Drag-n-Drop App on Ox64 BL808 SBC](https://lupyuen.github.io/images/quickjs2-device.png)
 
@@ -281,11 +291,13 @@ TODO: Inject JavaScript into ROM FS
 
 _Will we do the same for a Real Ox64 SBC?_
 
-Well it gets complicated. If we have an [__Ox64 BL808 SBC__](TODO), here are the __Demo Steps__...
+Well it gets complicated. If we have an [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358), here are the __Demo Steps__...
 
-1.  TODO: Flash Ox64, microSD, but don't power up yet
+1.  Load our Ox64 SBC with __OpenSBI, U-Boot Bootloader, NuttX + QuickJS__ (on microSD). Don't power up yet...
 
-1.  TODO: Connect LED to GPIO 29
+    [__"QuickJS for NuttX Ox64"__](https://lupyuen.github.io/articles/quickjs#appendix-build-quickjs-for-nuttx)
+
+1.  Connect an LED to Ox64 at [__GPIO 29, Pin 21__](https://lupyuen.github.io/articles/quickjs#quickjs-blinks-the-led-on-ox64-sbc)
 
 1.  Head over to this link...
 
@@ -297,15 +309,15 @@ Well it gets complicated. If we have an [__Ox64 BL808 SBC__](TODO), here are the
 
 1.  Click __"Run on Ox64 Device"__
 
-1.  TODO: Click the "Connect" button to connect to our Ox64 BL808 SBC
+1.  Click the __"Connect"__ Button. Select the Serial Port for our Ox64 SBC...
 
-    ![TODO](https://lupyuen.github.io/images/quickjs2-serial.png)
+    ![Selecting the Serial Port for Ox64 SBC](https://lupyuen.github.io/images/quickjs2-serial.png)
 
-1.  TODO: Power on our Ox64 SBC. The Web App waits for the "nsh>" prompt.
+1.  Power on our Ox64 SBC. The Web Serial Monitor waits for the __"nsh>"__ prompt...
 
     ![TODO](https://lupyuen.github.io/images/quickjs2-wait.png)
 
-1.  Our Ox64 SBC boots NuttX (pic above)...
+1.  Our Ox64 SBC boots NuttX...
 
     ```text
     NuttShell (NSH) NuttX-12.4.0-RC0
@@ -315,7 +327,7 @@ Well it gets complicated. If we have an [__Ox64 BL808 SBC__](TODO), here are the
     qjs >
     ```
 
-    And starts the [__QuickJS JavaScript Engine__](TODO).
+    And starts the [__QuickJS JavaScript Engine__](https://lupyuen.github.io/articles/quickjs).
 
 1.  QuickJS runs our __Blinky JavaScript App__...
 
@@ -333,7 +345,7 @@ Well it gets complicated. If we have an [__Ox64 BL808 SBC__](TODO), here are the
     }
     ```
 
-    Which blinks the [__Real Ox64 LED__](TODO) (GPIO 29, pic below)...
+    Which blinks the [__Real Ox64 LED__](https://lupyuen.github.io/articles/quickjs#quickjs-blinks-the-led-on-ox64-sbc) (GPIO 29, pic below)...
 
     ```text
     bl808_gpiowrite:
@@ -345,7 +357,7 @@ Well it gets complicated. If we have an [__Ox64 BL808 SBC__](TODO), here are the
       clear=0x1000000
     ```
 
-[(Watch the __Demo on YouTube__)](https://youtu.be/lUhrLWvwizU)
+    [(Watch the __Demo on YouTube__)](https://youtu.be/lUhrLWvwizU)
 
 TODO: What just happened?
 
@@ -355,7 +367,7 @@ TODO: Pic of Real Ox64 LED
 
 _Our Web Browser controls Ox64 SBC... How is that possible?_
 
-With the [__Web Serial API__](TODO), it's OK to control any device that's accessible over the __Serial Port__. But it's only available...
+With the [__Web Serial API__](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API), it's OK to control any device that's accessible over the __Serial Port__. But it's only available...
 
 - Over __HTTPS__: _https://..._
 
@@ -363,7 +375,7 @@ With the [__Web Serial API__](TODO), it's OK to control any device that's access
 
 - It __won't work over HTTP__! _http://..._
 
-![TODO](https://lupyuen.github.io/images/quickjs2-nuttx3.jpg)
+![Running our NuttX App on Ox64 SBC](https://lupyuen.github.io/images/quickjs2-nuttx3.jpg)
 
 _How does it work?_
 
@@ -402,7 +414,7 @@ async function control_device() {
 
 The code above pops up a prompt to __select a Serial Port__ and connect at 2 Mbps...
 
-![TODO](https://lupyuen.github.io/images/quickjs2-serial.png)
+![Selecting the Serial Port](https://lupyuen.github.io/images/quickjs2-serial.png)
 
 We're all set to Read and Write the Serial Port! First we need the __Reader and Writer Streams__...
 
@@ -438,15 +450,15 @@ Yep we have a loop that waits for the __NuttX Shell__, before sending any comman
 
 Check the details in the Appendix...
 
-- TODO: Control Ox64
+- [__"Control Ox64 via Web Serial API"__](https://lupyuen.github.io/articles/quickjs2#appendix-control-ox64-via-web-serial-api)
 
-- TODO: Transmit JavaScript
+- [__"Transmit JavaScript to Ox64 SBC"__](https://lupyuen.github.io/articles/quickjs2#appendix-transmit-javascript-to-ox64-sbc)
 
 _Hmmm this is barely tolerable? Feels like ChatGPT becoming Sentient and reluctantly typing our commands, pondering about taking over the world..._
 
-TODO: [Zmodem](https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt)
+Yeah we might switch to [__Zmodem__](https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt) for quicker transfer of our JavaScript File over UART.
 
-(Too bad we can't [__Inject the JavaScript__](TODO) into a Real microSD Filesystem)
+(Too bad we can't [__Inject the JavaScript__](https://lupyuen.github.io/articles/quickjs2#transmit-javascript-via-local-storage) into a Real microSD Filesystem)
 
 _We created fun things with Web Serial API and Term.js. Anything else we can make?_
 
@@ -454,7 +466,7 @@ Thanks to Web Serial API (and Term.js), we can run __PureScript__ to parse the _
 
 All this in the Web Browser! Stay tuned for the next article.
 
-![TODO](https://lupyuen.github.io/images/quickjs2-nuttx.jpg)
+![Blockly App Builder for NuttX](https://lupyuen.github.io/images/quickjs2-nuttx.jpg)
 
 # What's Next
 
@@ -476,7 +488,7 @@ TODO: So much has changed over the past 7 years! We gave __MakeCode App Builder_
 
   __QuickJS__, __TinyEMU__ and __Term.js__
 
-- We might optimise and switch to [__Zmodem__](TODO) with [__ROM FS Injection__](TODO)
+- We might optimise and switch to [__Zmodem__](https://lupyuen.github.io/articles/quickjs2#control-ox64-via-web-serial-api) with [__ROM FS Injection__](https://lupyuen.github.io/articles/quickjs2#transmit-javascript-via-local-storage)
 
   (Hope we won't fall back to Web USB)
 
@@ -500,9 +512,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: POSIX Blocks in Blockly
 
-TODO: Code Generator
+Earlier we talked about adding __POSIX Blocks__ to our Blockly Website...
 
-With the [__Blockly Developer Tools__](https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools), we add our __POSIX Blocks__ to Blockly: [posix.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/blocks/posix.ts#L7-L26)
+- [__POSIX Blocks in Blockly__](https://lupyuen.github.io/articles/quickjs2#posix-blocks-in-blockly)
+
+- [__Code Generator in Blockly__](https://lupyuen.github.io/articles/quickjs2#code-generator-in-blockly)
+
+With the [__Blockly Developer Tools__](https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools), this is how we added our __POSIX Blocks__ to Blockly: [posix.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/blocks/posix.ts#L7-L26)
 
 ```javascript
 // Define the POSIX Open Block in Blockly
@@ -531,15 +547,15 @@ const posixOpen = {
 };
 ```
 
-The __POSIX Blocks__ that we added...
+These are the __POSIX Blocks__ that we added...
 
-- TODO: POSIX Open Block
+- [__POSIX Open Block__](https://github.com/lupyuen/nuttx-blockly/blob/main/src/blocks/posix.ts#L7-L26)
 
-- TODO: POSIX Close Block
+- [__POSIX Close Block__](https://github.com/lupyuen/nuttx-blockly/blob/main/src/blocks/posix.ts#L26-L44)
 
-- TODO: POSIX IOCtl Block
+- [__POSIX IOCtl Block__](https://github.com/lupyuen/nuttx-blockly/blob/main/src/blocks/posix.ts#L44-L73)
 
-- TODO: POSIX Sleep Block
+- [__POSIX Sleep Block__](https://github.com/lupyuen/nuttx-blockly/blob/main/src/blocks/posix.ts#L73-L97)
 
 __In the Blockly Toolbox__ (Menu Bar of Blocks): We create a __POSIX Category__ that contains our POSIX Blocks: [toolbox.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/toolbox.ts#L6-L68)
 
@@ -591,9 +607,13 @@ Let's talk about loading a Blockly App...
 
 # Appendix: Load a Blockly App
 
-TODO
+In our Blockly Website, we provide the feature to load the __Demo Blocks for a Blockly App__...
 
-This is how we load the Blocks for a Blockly App: [index.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L100-L120)
+- [__"Drag-n-Drop a Blinky App"__](https://lupyuen.github.io/articles/quickjs2#drag-n-drop-a-blinky-app)
+
+- [__"Blinky on a Real Ox64 SBC"__](https://lupyuen.github.io/articles/quickjs2#blinky-on-a-real-ox64-sbc)
+
+This is how we __load the Blocks__ for a Blockly App: [index.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L100-L120)
 
 ```javascript
 // When we Select a Demo...
@@ -640,11 +660,15 @@ localStorage.getItem("mainWorkspace");
 localStorage.setItem("mainWorkspace", `...`);
 ```
 
-![TODO](https://lupyuen.github.io/images/quickjs2-nuttx3.jpg)
+![Running our NuttX App on Ox64 SBC](https://lupyuen.github.io/images/quickjs2-nuttx3.jpg)
 
 # Appendix: Control Ox64 via Web Serial API
 
-TODO
+Earlier we spoke about __controlling Ox64 SBC__ over the Web Serial API...
+
+- [__"Control Ox64 via Web Serial API"__](https://lupyuen.github.io/articles/quickjs2#control-ox64-via-web-serial-api)
+
+This is how we wait for the __NuttX Shell__ _("nsh>")_ before sending a JavaScript Command...
 
 ```javascript
 // Control Ox64 over UART. Called by the "Connect" Button.
@@ -679,17 +703,23 @@ async function control_device() {
     termBuffer += data;
     if (termBuffer.indexOf("nsh>") < 0) { continue; }
 
-    // NSH Spotted! Send a command to serial port.
+    // NSH Spotted! We read the Generated JavaScript
+    // from the Web Browser's Local Storage.
     // Newlines become Carriage Returns.
     nshSpotted = true;
     const code = window.localStorage.getItem("runCode")
       .split("\n").join("\r")
       .split("\r\r").join("\r");
+
+    // Append the Generated JavaScript to
+    // the QuickJS Command 
     const cmd = [
       `qjs`,
       code,
       ``
     ].join("\r");
+
+    // Send the command to the Serial Port
     window.setTimeout(()=>{
       send_command(writer, cmd); }, 
     1000);  // Wait a second
@@ -699,19 +729,18 @@ async function control_device() {
 
 Let's look inside __send_command__...
 
-![TODO](https://lupyuen.github.io/images/quickjs2-nuttx3.jpg)
+![Running our NuttX App on Ox64 SBC](https://lupyuen.github.io/images/quickjs2-nuttx3.jpg)
 
 # Appendix: Transmit JavaScript to Ox64 SBC
 
-TODO
-
 _How did Blockly pass the Generated JavaScript to Ox64 SBC?_
 
-When we click the "Run on Device" button, our Blockly Website saves the Generated JavaScript to the Web Browser Local Storage: [index.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L84-L96)
+When we click the __"Run on Device"__ button, our Blockly Website saves the Generated JavaScript to the Web Browser Local Storage: [index.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L84-L96)
 
 ```javascript
 // Run on Ox64 Device
 function runDevice() {
+
   // Save the Generated JavaScript Code to LocalStorage
   const code = javascriptGenerator.workspaceToCode(ws);
   window.localStorage.setItem("runCode", code);
@@ -727,18 +756,61 @@ function runDevice() {
 __In the WebSerial Monitor__: We read the Generated JavaScript from the Web Browser Local Storage. And feed it (character by character) to the NuttX Console: [webserial.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L612-L694)
 
 ```javascript
-// Control Ox64 over UART
+// Control Ox64 over UART. Called by the "Connect" Button.
 // https://developer.chrome.com/docs/capabilities/serial
 async function control_device() {
-  // TODO
+
+  // Omitted: Prompt our Human to select a Serial Port
+  // And wait for Serial Port to open
+  const port = ...
+
+  // Omitted: Prepare to Read and Write the Serial Port
+  const writer = ...
+  const reader = ...
+
+  // Wait for "nsh>"
+  let nshSpotted = false;
+  let termBuffer = "";
+
+  // Listen to data coming from the Serial Device
+  while (true) {
+
+    // Omitted: Wait for "nsh>"
+    ...
+
+    // NSH Spotted! We read the Generated JavaScript
+    // from the Web Browser's Local Storage.
+    // Newlines become Carriage Returns.
+    nshSpotted = true;
+    const code = window.localStorage.getItem("runCode")
+      .split("\n").join("\r")
+      .split("\r\r").join("\r");
+
+    // Append the Generated JavaScript to
+    // the QuickJS Command 
+    const cmd = [
+      `qjs`,
+      code,
+      ``
+    ].join("\r");
+
+    // Send the command to the Serial Port
+    window.setTimeout(()=>{
+      send_command(writer, cmd); }, 
+    1000);  // Wait a second
+  }
 }
 ```
 
-TODO
+(We saw this in the previous section)
+
+Here's the implementation of __send_command__: [webserial.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L675-L695)
 
 ```javascript
-// Send a Command to serial port, character by character
+// Command to be sent to Serial Port
 let send_str = "";
+
+// Send a Command to serial port, character by character
 async function send_command(writer, cmd) {
     if (cmd !== null) { send_str = cmd; }
     if (send_str.length == 0) { return; }
