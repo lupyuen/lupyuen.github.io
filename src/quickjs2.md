@@ -2,19 +2,7 @@
 
 📝 _28 Feb 2024_
 
-![TODO](https://lupyuen.github.io/images/quickjs2-title.png)
-
-TODO
-
-A little like ChatGPT has possessed our NuttX Emulator and typing out our commands in super slo-mo
-
-A bit like Sentient ChatGPT reluctantly typing our commands, pondering about taking over the world
-
-[Zmodem](https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt)
-
-![(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way](https://lupyuen.github.io/images/quickjs2-blockly.png)
-
-TODO
+![(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way](https://lupyuen.github.io/images/quickjs2-title.png)
 
 _Remember Makecode? BBC micro:bit and its Drag-n-Drop App Builder?_
 
@@ -427,10 +415,15 @@ Yep we have a loop that waits for the __NuttX Shell__, before sending any comman
 
 Check the details in the Appendix...
 
-- TODOL Control Ox64
+- TODO: Control Ox64
 
 - TODO: Transmit JavaScript
 
+A little like ChatGPT has possessed our NuttX Emulator and typing out our commands in super slo-mo
+
+A bit like Sentient ChatGPT reluctantly typing our commands, pondering about taking over the world
+
+[Zmodem](https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt)
 
 # What's Next
 
@@ -457,6 +450,26 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Appendix: POSIX Blocks in Blockly
 
 TODO
+
+Based on the [Blockly Developer Tools](https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools), we add the POSIX Blocks for `open()`, `close()`, `ioctl()` and `sleep()`...
+
+1.  [Add Blocks for POSIX Open and Close](https://github.com/lupyuen/nuttx-blockly/commit/801d019e11bf00ddfb6bf57361da9719b45e80ad)
+
+1.  [Add POSIX ioctl block](https://github.com/lupyuen/nuttx-blockly/commit/29e060a883ba4d2a257f7c9c65ef88a6f5eb95a4)
+
+1.  [Add POSIX sleep block](https://github.com/lupyuen/nuttx-blockly/commit/43d892c8520837b88d881ac631f15e741fc9fd87)
+
+1.  [Change the Types from String to Number](https://github.com/lupyuen/nuttx-blockly/commit/e4405b39c59c3e5db35255fc7cb8ac25a29e66fe)
+
+1.  [Clean up parameter names](https://github.com/lupyuen/nuttx-blockly/commit/f823607b63bb69b98791c0c089d036c56700f543)
+
+1.  [Create POSIX Category in Toolbox](https://github.com/lupyuen/nuttx-blockly/commit/838e1d0d872808a341b281a70ae64229cbe1a079)
+
+Then we build and deploy our Blockly Website...
+
+```bash
+npm run build && rm -r docs && mv dist docs
+```
 
 # Appendix: Control Ox64 via Web Serial API
 
