@@ -219,7 +219,7 @@ We do this for every POSIX Block...
 
 - TODO: `sleep` Clode Generator
 
-TODO: Pic of Local Storage
+![TODO](https://lupyuen.github.io/images/quickjs2-nuttx2.jpg)
 
 # Transmit JavaScript via Local Storage
 
@@ -299,11 +299,11 @@ Well it gets complicated. If we have an [__Ox64 BL808 SBC__](TODO), here are the
 
 1.  TODO: Click the "Connect" button to connect to our Ox64 BL808 SBC
 
-    TODO: Pic of Serial Port
+    ![TODO](https://lupyuen.github.io/images/quickjs2-serial.png)
 
 1.  TODO: Power on our Ox64 SBC. The Web App waits for the "nsh>" prompt.
 
-    TODO: Pic of Wait for nsh
+    ![TODO](https://lupyuen.github.io/images/quickjs2-wait.png)
 
 1.  Our Ox64 SBC boots NuttX (pic above)...
 
@@ -363,6 +363,8 @@ With the [__Web Serial API__](TODO), it's OK to control any device that's access
 
 - It __won't work over HTTP__! _http://..._
 
+![TODO](https://lupyuen.github.io/images/quickjs2-nuttx3.jpg)
+
 _How does it work?_
 
 We create a __HTML Button__ for "Connect": [index.html](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/index.html#L27-L29)
@@ -400,7 +402,7 @@ async function control_device() {
 
 The code above pops up a prompt to __select a Serial Port__ and connect at 2 Mbps...
 
-TODO: Pic of Serial Port
+![TODO](https://lupyuen.github.io/images/quickjs2-serial.png)
 
 We're all set to Read and Write the Serial Port! First we need the __Reader and Writer Streams__...
 
@@ -638,6 +640,8 @@ localStorage.getItem("mainWorkspace");
 localStorage.setItem("mainWorkspace", `...`);
 ```
 
+![TODO](https://lupyuen.github.io/images/quickjs2-nuttx3.jpg)
+
 # Appendix: Control Ox64 via Web Serial API
 
 TODO
@@ -694,6 +698,8 @@ async function control_device() {
 ```
 
 Let's look inside __send_command__...
+
+![TODO](https://lupyuen.github.io/images/quickjs2-nuttx3.jpg)
 
 # Appendix: Transmit JavaScript to Ox64 SBC
 
