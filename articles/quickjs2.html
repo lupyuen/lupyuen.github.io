@@ -84,10 +84,10 @@
 <p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0008">TypeScript Compiler</a> in the Web Browser (in JavaScript!)</p>
 </li>
 <li>
-<p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0008">Bespoke Arm Assembler</a> that runs in the Web Browser (also JavaScript!)</p>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0008">Bespoke Arm Assembler</a> that runs in the Web Browser (also JavaScript)</p>
 </li>
 <li>
-<p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0009">Bespoke Embedded OS</a> for BBC micro:bit (CODAL / Mbed OS)</p>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0009">Bespoke Embedded OS</a> for BBC micro:bit (CODAL + Mbed OS)</p>
 </li>
 <li>
 <p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0015">UF2 Bootloader</a> with flashing over WebUSB</p>
@@ -96,14 +96,16 @@
 <p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0004">micro:bit Simulator</a> in JavaScript</p>
 </li>
 <li>
-<p>All this for an (underpowered) BBC micro:bit with Nordic nRF51 (Arm Cortex-M0, 256 KB Flash, 16 KB RAM!)</p>
+<p>All this for an underpowered <a href="TODO"><strong>BBC micro:bit</strong></a> with Nordic nRF51</p>
+<p>(Arm Cortex-M0, 256 KB Flash, 16 KB RAM!)</p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/quickjs2-makecode.jpg" alt="TODO" /></p>
-<p>Today 7 years later: How would we redo all this? With a bunch of Open Source Packages?</p>
+<p><strong>Today 7 years later:</strong> How would we redo all this? With a bunch of Open Source Packages?</p>
 <ul>
 <li>
-<p>Hardware Device: <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358">Ox64 BL808 64-bit RISC-V SBC</a> (64 MB RAM, Unlimited microSD Storage, only $8)</p>
+<p>Hardware Device: <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358">Ox64 BL808 64-bit RISC-V SBC</a></p>
+<p>(64 MB RAM, Unlimited microSD Storage, only $8)</p>
 </li>
 <li>
 <p>Embedded OS: <a href="https://nuttx.apache.org/docs/latest/index.html">Apache NuttX RTOS</a></p>
@@ -115,14 +117,15 @@
 <p>Web Emulator: <a href="https://github.com/lupyuen/nuttx-tinyemu">TinyEMU WebAssembly for NuttX</a></p>
 </li>
 <li>
-<p>C Compiler + Assembler: <a href="https://github.com/lupyuen/tcc-riscv32-wasm">TCC WebAssembly for NuttX</a> (but we probably won’t need this since we have JavaScript on NuttX)</p>
+<p>C Compiler + Assembler: <a href="https://github.com/lupyuen/tcc-riscv32-wasm">TCC WebAssembly for NuttX</a></p>
+<p>(Won’t need this since we have JavaScript)</p>
 </li>
 <li>
-<p>Device Control: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API">Web Serial API</a> and <a href="TODO">Term.js</a> for controlling Ox64 over UART</p>
+<p>Device Control: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API">Web Serial API</a> with <a href="TODO">Term.js</a></p>
+<p>(Controls Ox64 over UART)</p>
 </li>
 </ul>
-<p>TODO: (Pic below)</p>
-<p>Read on to find out how we made it…</p>
+<p>Read on to find out how we made this happen…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-nuttx.jpg" alt="TODO" /></p>
 <h1 id="drag-n-drop-a-blinky-app"><a href="#drag-n-drop-a-blinky-app">1 Drag-n-Drop a Blinky App</a></h1>
 <p>Here’s the <strong>Emulator Demo</strong> that we can play along at home (without Ox64 SBC)…</p>
@@ -404,16 +407,18 @@ bl808_gpiowrite:
 <div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART. Called by the &quot;Connect&quot; Button.
 // https://developer.chrome.com/docs/capabilities/serial
 async function control_device() {
+
+  // Doesn&#39;t work in http://...
   if (!navigator.serial) { const err = &quot;Web Serial API only works with https://... and file://...!&quot;; alert(err); throw new Error(err); }
 
-  // Prompt user to select any serial port.
+  // Prompt our Human to select a Serial Port
   const port = await navigator.serial.requestPort();
   term.write(&quot;Power on our NuttX Device and we&#39;ll wait for \&quot;nsh&gt;\&quot;\r\n&quot;);
 
-  // TODO: Get all serial ports the user has previously granted the website access to.
+  // TODO: Get all Serial Ports our Human has previously granted access
   // const ports = await navigator.serial.getPorts();
 
-  // Wait for the serial port to open.
+  // Wait for the Serial Port to open.
   // TODO: Ox64 only connects at 2 Mbps, change this for other devices
   await port.open({ baudRate: 2000000 });
 </code></pre></div>
@@ -458,17 +463,29 @@ async function control_device() {
 <p><em>We created fun things with Web Serial API and Term.js. Anything else we can make?</em></p>
 <p>Thanks to Web Serial API (and Term.js), we can run <strong>PureScript</strong> to parse the <strong>Real-Time Logs</strong> from a NuttX Device (and NuttX Emulator)…</p>
 <p>All this in the Web Browser! Stay tuned for the next article.</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-nuttx.jpg" alt="TODO" /></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
-<p>TODO</p>
+<p>TODO: So much has changed over the past 7 years! We gave <strong>MakeCode App Builder</strong> a complete makeover (pic above)…</p>
 <ul>
 <li>
-<p>We swapped BBC micro:bit to a cheaper, $8 64-bit RISC-V SBC: Ox64 BL808</p>
+<p>We swapped BBC micro:bit to a cheaper, $8 64-bit RISC-V Gadget…</p>
+<p><strong>Ox64 BL808 Single-Board Computer</strong></p>
 </li>
 <li>
-<p>We changed Arm mbed OS to Apache NuttX RTOS, because it runs well on Ox64 Emulator and Ox64 SBC</p>
+<p>We changed Mbed OS to <strong>Apache NuttX RTOS</strong></p>
+<p>(Which runs well on Ox64 SBC and Ox64 Emulator)</p>
 </li>
 <li>
-<p>Sluggish: Change to ROM FS Injection and Zmodem (hopefully we won’t fall back to Web USB)</p>
+<p>Huge Chunks of JavaScript became <strong>WebAssembly</strong></p>
+<p>(Though we stuck with Blockly, like MakeCode)</p>
+</li>
+<li>
+<p>Made possible by these awesome Open Source Tools…</p>
+<p><strong>QuickJS</strong>, <strong>TinyEMU</strong> and <strong>Term.js</strong></p>
+</li>
+<li>
+<p>We might optimise and switch to <a href="TODO"><strong>Zmodem</strong></a> with <a href="TODO"><strong>ROM FS Injection</strong></a></p>
+<p>(Hope we won’t fall back to Web USB)</p>
 </li>
 </ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -625,31 +642,41 @@ localStorage.getItem(&quot;mainWorkspace&quot;);
 localStorage.setItem(&quot;mainWorkspace&quot;, `...`);
 </code></pre></div><h1 id="appendix-control-ox64-via-web-serial-api"><a href="#appendix-control-ox64-via-web-serial-api">10 Appendix: Control Ox64 via Web Serial API</a></h1>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-javascript"><code>  // Wait for &quot;nsh&gt;&quot;
+<div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART. Called by the &quot;Connect&quot; Button.
+// https://developer.chrome.com/docs/capabilities/serial
+async function control_device() {
+
+  // Omitted: Prompt our Human to select a Serial Port
+  // And wait for Serial Port to open
+  const port = ...
+
+  // Omitted: Prepare to Read and Write the Serial Port
+  const writer = ...
+  const reader = ...
+
+  // Wait for &quot;nsh&gt;&quot;
   let nshSpotted = false;
   let termBuffer = &quot;&quot;;
 
-  // Listen to data coming from the serial device.
+  // Listen to data coming from the Serial Device
   while (true) {
-    const { value, done } = await reader.read();
+    const { data, done } = await reader.read();
     if (done) {
       // Allow the serial port to be closed later.
       reader.releaseLock();
       break;
     }
     // Print to the Terminal
-    term.write(value);
+    term.write(data);
 
     // Wait for &quot;nsh&gt;&quot;
     if (nshSpotted) { continue; }
-    termBuffer += value;
+    termBuffer += data;
     if (termBuffer.indexOf(&quot;nsh&gt;&quot;) &lt; 0) { continue; }
 
-    // NSH Spotted!
-    console.log(&quot;NSH Spotted!&quot;);
+    // NSH Spotted! Send a command to serial port.
+    // Newlines become Carriage Returns.
     nshSpotted = true;
-
-    // Send a command to serial port. Newlines become Carriage Returns.
     const code = window.localStorage.getItem(&quot;runCode&quot;)
       .split(&quot;\n&quot;).join(&quot;\r&quot;)
       .split(&quot;\r\r&quot;).join(&quot;\r&quot;);
@@ -658,10 +685,14 @@ localStorage.setItem(&quot;mainWorkspace&quot;, `...`);
       code,
       ``
     ].join(&quot;\r&quot;);
-    window.setTimeout(()=&gt;{ send_command(writer, cmd); }, 1000);
+    window.setTimeout(()=&gt;{
+      send_command(writer, cmd); }, 
+    1000);  // Wait a second
   }
 }
-</code></pre></div><h1 id="appendix-transmit-javascript-to-ox64-sbc"><a href="#appendix-transmit-javascript-to-ox64-sbc">11 Appendix: Transmit JavaScript to Ox64 SBC</a></h1>
+</code></pre></div>
+<p>Let’s look inside <strong>send_command</strong>…</p>
+<h1 id="appendix-transmit-javascript-to-ox64-sbc"><a href="#appendix-transmit-javascript-to-ox64-sbc">11 Appendix: Transmit JavaScript to Ox64 SBC</a></h1>
 <p>TODO</p>
 <p><em>How did Blockly pass the Generated JavaScript to Ox64 SBC?</em></p>
 <p>When we click the “Run on Device” button, our Blockly Website saves the Generated JavaScript to the Web Browser Local Storage: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L84-L96">index.ts</a></p>
@@ -682,67 +713,9 @@ function runDevice() {
 <div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART
 // https://developer.chrome.com/docs/capabilities/serial
 async function control_device() {
-    if (!navigator.serial) { const err = &quot;Web Serial API only works with https://... and file://...!&quot;; alert(err); throw new Error(err); }
-
-    // Prompt user to select any serial port.
-    const port = await navigator.serial.requestPort();
-    term.write(&quot;Power on our NuttX Device and we&#39;ll wait for \&quot;nsh&gt;\&quot;\r\n&quot;);
-
-    // Get all serial ports the user has previously granted the website access to.
-    // const ports = await navigator.serial.getPorts();
-
-    // Wait for the serial port to open.
-    // TODO: Ox64 only connects at 2 Mbps, change this for other devices
-    await port.open({ baudRate: 2000000 });
-
-    // Prepare to write to serial port
-    const textEncoder = new TextEncoderStream();
-    const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
-    const writer = textEncoder.writable.getWriter();
-    
-    // Read from the serial port
-    const textDecoder = new TextDecoderStream();
-    const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
-    const reader = textDecoder.readable.getReader();
-
-    // Wait for &quot;nsh&gt;&quot;
-    let nshSpotted = false;
-    let termBuffer = &quot;&quot;;
-
-    // Listen to data coming from the serial device.
-    while (true) {
-        const { value, done } = await reader.read();
-        if (done) {
-            // Allow the serial port to be closed later.
-            reader.releaseLock();
-            break;
-        }
-        // Print to the Terminal
-        term.write(value);
-        // console.log(value);
-
-        // Wait for &quot;nsh&gt;&quot;
-        if (nshSpotted) { continue; }
-        termBuffer += value;
-        if (termBuffer.indexOf(&quot;nsh&gt;&quot;) &lt; 0) { continue; }
-
-        // NSH Spotted!
-        console.log(&quot;NSH Spotted!&quot;);
-        nshSpotted = true;
-
-        // Send a command to serial port. Newlines become Carriage Returns.
-        const code = window.localStorage.getItem(&quot;runCode&quot;)
-            .split(&#39;\n&#39;).join(&#39;\r&#39;);
-        const cmd = [
-            `qjs`,
-            code,
-            ``
-        ].join(&quot;\r&quot;);
-        window.setTimeout(()=&gt;{ send_command(writer, cmd); }, 1000);
-    }
+  // TODO
 }
-
-// Send a Command to serial port, character by character
+</code></pre></div><div class="example-wrap"><pre class="language-javascript"><code>// Send a Command to serial port, character by character
 let send_str = &quot;&quot;;
 async function send_command(writer, cmd) {
     if (cmd !== null) { send_str = cmd; }
