@@ -65,15 +65,21 @@
 
     <h1 class="title">(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way</h1>
     <nav id="TOC"><ul>
-<li><a href="#create-the-blockly-project">1 Create the Blockly Project</a><ul></ul></li>
-<li><a href="#send-a-command-to-nuttx-emulator">2 Send a Command to NuttX Emulator</a><ul></ul></li>
-<li><a href="#add-posix-blocks-to-blockly">3 Add POSIX Blocks to Blockly</a><ul></ul></li>
-<li><a href="#drag-n-drop-a-nuttx-app-for-ox64-bl808">4 Drag-n-Drop a NuttX App for Ox64 BL808</a><ul></ul></li>
-<li><a href="#drag-n-drop-a-nuttx-app-to-a-real-ox64-bl808-sbc">5 Drag-n-Drop a NuttX App to a Real Ox64 BL808 SBC</a><ul></ul></li>
-<li><a href="#connect-to-ox64-bl808-sbc-via-web-serial-api">6 Connect to Ox64 BL808 SBC via Web Serial API</a><ul></ul></li>
-<li><a href="#send-a-command-to-ox64-bl808-sbc-via-web-serial-api">7 Send a Command to Ox64 BL808 SBC via Web Serial API</a><ul></ul></li>
-<li><a href="#load-the-blocks-for-a-blockly-app">8 Load the Blocks for a Blockly App</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2024</em></p>
+<li><a href="#emulator-demo">1 Emulator Demo</a><ul></ul></li>
+<li><a href="#blockly-blocks">2 Blockly Blocks</a><ul></ul></li>
+<li><a href="#blockly-code-generator">3 Blockly Code Generator</a><ul></ul></li>
+<li><a href="#local-storage">4 Local Storage</a><ul></ul></li>
+<li><a href="#device-demo">5 Device Demo</a><ul></ul></li>
+<li><a href="#web-serial-api">6 Web Serial API</a><ul></ul></li>
+<li><a href="#create-the-blockly-project">7 Create the Blockly Project</a><ul></ul></li>
+<li><a href="#send-a-command-to-nuttx-emulator">8 Send a Command to NuttX Emulator</a><ul></ul></li>
+<li><a href="#add-posix-blocks-to-blockly">9 Add POSIX Blocks to Blockly</a><ul></ul></li>
+<li><a href="#drag-n-drop-a-nuttx-app-for-ox64-bl808">10 Drag-n-Drop a NuttX App for Ox64 BL808</a><ul></ul></li>
+<li><a href="#drag-n-drop-a-nuttx-app-to-a-real-ox64-bl808-sbc">11 Drag-n-Drop a NuttX App to a Real Ox64 BL808 SBC</a><ul></ul></li>
+<li><a href="#connect-to-ox64-bl808-sbc-via-web-serial-api">12 Connect to Ox64 BL808 SBC via Web Serial API</a><ul></ul></li>
+<li><a href="#send-a-command-to-ox64-bl808-sbc-via-web-serial-api">13 Send a Command to Ox64 BL808 SBC via Web Serial API</a><ul></ul></li>
+<li><a href="#load-the-blocks-for-a-blockly-app">14 Load the Blocks for a Blockly App</a><ul></ul></li>
+<li><a href="#whats-next">15 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="TODO" /></p>
 <p>TODO</p>
 <p>A little like ChatGPT has possessed our NuttX Emulator and typing out our commands in super slo-mo</p>
@@ -126,8 +132,79 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/quickjs2-nuttx.jpg" alt="TODO" /></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-emulator.png" alt="Running our Drag-n-Drop App on NuttX Emulator" /></p>
-<h1 id="create-the-blockly-project"><a href="#create-the-blockly-project">1 Create the Blockly Project</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-blockly.png" alt="NuttX App Builder with Blockly" /></p>
+<h1 id="emulator-demo"><a href="#emulator-demo">1 Emulator Demo</a></h1>
+<p>Here’s the Emulator Demo that we can all play along at home…</p>
+<ol>
+<li>
+<p>Head over to this link…</p>
+<p><a href="https://lupyuen.github.io/nuttx-blockly/"><strong>NuttX App Builder with Blockly</strong></a></p>
+</li>
+<li>
+<p>Click <strong>“Select Demo”</strong> &gt; <strong>“LED Blinky”</strong></p>
+<p><a href="https://youtu.be/-dG5ZSXELDc">(Or <strong>Drag-n-Drop the Demo</strong> ourselves)</a></p>
+</li>
+<li>
+<p>This JavaScript appears (pic above)…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>// NuttX Command to flip the LED On and Off
+var ULEDIOC_SETALL, fd, ret;
+ULEDIOC_SETALL = 7427;
+
+// Open the LED Device and blink 20 times
+fd = os.open(&#39;/dev/userleds&#39;);
+for (var count = 0; count &lt; 20; count++) {
+
+  // Flip the LED On and wait a while
+  ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
+  os.sleep(20000);
+
+  // Flip the LED Off and wait a while
+  ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
+  os.sleep(20000);
+}
+
+// Close the LED Device
+os.close(fd);
+</code></pre></div></li>
+<li>
+<p>Click <strong>“Run on Ox64 Emulator”</strong></p>
+</li>
+<li>
+<p>Our Drag-n-Drop App runs in the Emulator, and blinks the <strong>Simulated LED</strong> (GPIO 29, pic below)…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; qjs
+QuickJS - Type &quot;\h&quot; for help
+qjs &gt; var ULEDIOC_SETALL, fd, ret;
+qjs &gt; ULEDIOC_SETALL = 7427;
+7427
+qjs &gt; fd = os.open(&#39;/dev/userleds&#39;);
+3
+qjs &gt; for (var count = 0; count &lt; 20; count++) {
+  ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
+  os.sleep(20000);
+  ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
+  os.sleep(20000);
+}
+bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+</code></pre></div></li>
+</ol>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-emulator.png" alt="Running our Drag-n-Drop App on NuttX Emulator" /></p>
+<h1 id="blockly-blocks"><a href="#blockly-blocks">2 Blockly Blocks</a></h1>
+<p>TODO</p>
+<h1 id="blockly-code-generator"><a href="#blockly-code-generator">3 Blockly Code Generator</a></h1>
+<p>TODO</p>
+<h1 id="local-storage"><a href="#local-storage">4 Local Storage</a></h1>
+<p>TODO</p>
+<h1 id="device-demo"><a href="#device-demo">5 Device Demo</a></h1>
+<p>TODO</p>
+<h1 id="web-serial-api"><a href="#web-serial-api">6 Web Serial API</a></h1>
+<p>TODO</p>
+<h1 id="create-the-blockly-project"><a href="#create-the-blockly-project">7 Create the Blockly Project</a></h1>
 <p>TODO</p>
 <p>MakeCode was created with Blockly, we’ll stick with Blockly.</p>
 <p>Based on the <a href="https://developers.google.com/blockly/guides/get-started/get-the-code">Blockly Instructions</a>…</p>
@@ -135,7 +212,7 @@
 npm run build
 </code></pre></div>
 <p>Try the Blockly Demo: https://lupyuen.github.io/nuttx-blockly/</p>
-<h1 id="send-a-command-to-nuttx-emulator"><a href="#send-a-command-to-nuttx-emulator">2 Send a Command to NuttX Emulator</a></h1>
+<h1 id="send-a-command-to-nuttx-emulator"><a href="#send-a-command-to-nuttx-emulator">8 Send a Command to NuttX Emulator</a></h1>
 <p>TODO</p>
 <p>To send a command to NuttX Emulator: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/f01727935818cd1685ee4a82943bb9f19b13d85c">jslinux.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>let send_str = &quot;&quot;;
@@ -165,7 +242,7 @@ qjs &gt; main()
 123
 undefined
 qjs &gt;
-</code></pre></div><h1 id="add-posix-blocks-to-blockly"><a href="#add-posix-blocks-to-blockly">3 Add POSIX Blocks to Blockly</a></h1>
+</code></pre></div><h1 id="add-posix-blocks-to-blockly"><a href="#add-posix-blocks-to-blockly">9 Add POSIX Blocks to Blockly</a></h1>
 <p>TODO</p>
 <p>Based on the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools">Blockly Developer Tools</a>, we add the POSIX Blocks for <code>open()</code>, <code>close()</code>, <code>ioctl()</code> and <code>sleep()</code>…</p>
 <ol>
@@ -192,7 +269,7 @@ qjs &gt;
 <div class="example-wrap"><pre class="language-bash"><code>npm run build &amp;&amp; rm -r docs &amp;&amp; mv dist docs
 </code></pre></div>
 <p>Let’s test it…</p>
-<h1 id="drag-n-drop-a-nuttx-app-for-ox64-bl808"><a href="#drag-n-drop-a-nuttx-app-for-ox64-bl808">4 Drag-n-Drop a NuttX App for Ox64 BL808</a></h1>
+<h1 id="drag-n-drop-a-nuttx-app-for-ox64-bl808"><a href="#drag-n-drop-a-nuttx-app-for-ox64-bl808">10 Drag-n-Drop a NuttX App for Ox64 BL808</a></h1>
 <p>TODO</p>
 <p>Click this link: https://lupyuen.github.io/nuttx-blockly/</p>
 <p>Then Drag-n-Drop this NuttX App…</p>
@@ -266,7 +343,7 @@ function send_command(cmd) {
   send_str = send_str.substring(1);
   window.setTimeout(()=&gt;{ send_command(null); }, 10);
 }
-</code></pre></div><h1 id="drag-n-drop-a-nuttx-app-to-a-real-ox64-bl808-sbc"><a href="#drag-n-drop-a-nuttx-app-to-a-real-ox64-bl808-sbc">5 Drag-n-Drop a NuttX App to a Real Ox64 BL808 SBC</a></h1>
+</code></pre></div><h1 id="drag-n-drop-a-nuttx-app-to-a-real-ox64-bl808-sbc"><a href="#drag-n-drop-a-nuttx-app-to-a-real-ox64-bl808-sbc">11 Drag-n-Drop a NuttX App to a Real Ox64 BL808 SBC</a></h1>
 <p>TODO</p>
 <p>From NuttX Emulator to a Real NuttX Device! Click this link: https://lupyuen.github.io/nuttx-blockly/</p>
 <p>Then Drag-n-Drop the same NuttX App (see the previous section)…</p>
@@ -418,7 +495,7 @@ async function send_command(writer, cmd) {
 }
 </code></pre></div>
 <p>More about the Web Serial API…</p>
-<h1 id="connect-to-ox64-bl808-sbc-via-web-serial-api"><a href="#connect-to-ox64-bl808-sbc-via-web-serial-api">6 Connect to Ox64 BL808 SBC via Web Serial API</a></h1>
+<h1 id="connect-to-ox64-bl808-sbc-via-web-serial-api"><a href="#connect-to-ox64-bl808-sbc-via-web-serial-api">12 Connect to Ox64 BL808 SBC via Web Serial API</a></h1>
 <p>TODO</p>
 <p>Let’s connect to Ox64 BL808 SBC in our Web Browser via the Web Serial API…</p>
 <ul>
@@ -491,7 +568,7 @@ bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
 bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt;
-</code></pre></div><h1 id="send-a-command-to-ox64-bl808-sbc-via-web-serial-api"><a href="#send-a-command-to-ox64-bl808-sbc-via-web-serial-api">7 Send a Command to Ox64 BL808 SBC via Web Serial API</a></h1>
+</code></pre></div><h1 id="send-a-command-to-ox64-bl808-sbc-via-web-serial-api"><a href="#send-a-command-to-ox64-bl808-sbc-via-web-serial-api">13 Send a Command to Ox64 BL808 SBC via Web Serial API</a></h1>
 <p>TODO</p>
 <p>This is how we send a command to Ox64 BL808 SBC via Web Serial API: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/1384db4edb398f6cb65718766af67dc1aa88bcb0">jslinux.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Wait for the serial port to open.
@@ -524,7 +601,7 @@ main()
 123
 undefined
 qjs &gt;
-</code></pre></div><h1 id="load-the-blocks-for-a-blockly-app"><a href="#load-the-blocks-for-a-blockly-app">8 Load the Blocks for a Blockly App</a></h1>
+</code></pre></div><h1 id="load-the-blocks-for-a-blockly-app"><a href="#load-the-blocks-for-a-blockly-app">14 Load the Blocks for a Blockly App</a></h1>
 <p>TODO</p>
 <p>This is how we load the Blocks for a Blockly App: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L100-L120">index.ts</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Select a Demo
@@ -558,7 +635,7 @@ localStorage.getItem(&quot;mainWorkspace&quot;);
 // Set the Blocks in JSON Format.
 // Change `...` to the JSON of the Blocks to be loaded.
 localStorage.setItem(&quot;mainWorkspace&quot;, `...`);
-</code></pre></div><h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+</code></pre></div><h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
