@@ -348,8 +348,8 @@ window.setTimeout(()=&gt;{
 <p><img src="https://lupyuen.github.io/images/quickjs2-serial.png" alt="Selecting the Serial Port for Ox64 SBC" /></p>
 </li>
 <li>
-<p>Power on our Ox64 SBC. The Web Serial Monitor waits for the <strong>“nsh&gt;”</strong> prompt…</p>
-<p><img src="https://lupyuen.github.io/images/quickjs2-wait.png" alt="TODO" /></p>
+<p>Power on our Ox64 SBC. The Web Serial Monitor waits for the NuttX Shell <strong>“nsh&gt;”</strong> prompt…</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-wait.png" alt="Wait for NuttX Shell" /></p>
 </li>
 <li>
 <p>Our Ox64 SBC boots NuttX…</p>
@@ -471,7 +471,7 @@ async function control_device() {
 <p>Yeah we might switch to <a href="https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt"><strong>Zmodem</strong></a> for quicker transfer of our JavaScript File over UART.</p>
 <p>(Too bad we can’t <a href="https://lupyuen.github.io/articles/quickjs2#transmit-javascript-via-local-storage"><strong>Inject the JavaScript</strong></a> into a Real microSD Filesystem)</p>
 <p><em>We created fun things with Web Serial API and Term.js. Anything else we can make?</em></p>
-<p>Thanks to Web Serial API (and Term.js), we can run <strong>PureScript</strong> to parse the <strong>Real-Time Logs</strong> from a NuttX Device (and NuttX Emulator)…</p>
+<p>Thanks to Web Serial API (and Term.js), we can run <a href="https://www.purescript.org/"><strong>PureScript</strong></a> to parse the <a href="https://github.com/lupyuen/nuttx-purescript-parser"><strong>Real-Time Logs</strong></a> from a NuttX Device (or NuttX Emulator)…</p>
 <p>All this in the Web Browser! Stay tuned for the next article.</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-nuttx.jpg" alt="Blockly App Builder for NuttX" /></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
