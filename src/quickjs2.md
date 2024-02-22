@@ -265,6 +265,10 @@ And send it to the [__Ox64 Emulator Console__](https://github.com/lupyuen/nuttx-
 
 Thanks to [__TinyEMU__](TODO) and [__Term.js__](TODO), everything works hunky dory!
 
+_Hmmm it's so laggy? A bit like ChatGPT has possessed our Ox64 Emulator and typing out our commands in super slo-mo..._
+
+TODO: Inject JavaScript into ROM FS
+
 ![Running our Drag-n-Drop App on Ox64 BL808 SBC](https://lupyuen.github.io/images/quickjs2-device.png)
 
 # Blinky on a Real Ox64 SBC
@@ -419,11 +423,9 @@ Check the details in the Appendix...
 
 - TODO: Transmit JavaScript
 
-A little like ChatGPT has possessed our NuttX Emulator and typing out our commands in super slo-mo
+_Hmmm this is barely tolerable? Feels like ChatGPT becoming Sentient and reluctantly typing our commands, pondering about taking over the world..._
 
-A bit like Sentient ChatGPT reluctantly typing our commands, pondering about taking over the world
-
-[Zmodem](https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt)
+TODO: [Zmodem](https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt)
 
 # What's Next
 
