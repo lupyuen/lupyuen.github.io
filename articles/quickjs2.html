@@ -73,9 +73,9 @@
 <li><a href="#control-ox64-via-web-serial-api">6 Control Ox64 via Web Serial API</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-posix-blocks-in-blockly">8 Appendix: POSIX Blocks in Blockly</a><ul></ul></li>
-<li><a href="#appendix-control-ox64-via-web-serial-api">9 Appendix: Control Ox64 via Web Serial API</a><ul></ul></li>
-<li><a href="#appendix-transmit-javascript-to-ox64-sbc">10 Appendix: Transmit JavaScript to Ox64 SBC</a><ul></ul></li>
-<li><a href="#appendix-load-a-blockly-app">11 Appendix: Load a Blockly App</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2024</em></p>
+<li><a href="#appendix-load-a-blockly-app">9 Appendix: Load a Blockly App</a><ul></ul></li>
+<li><a href="#appendix-control-ox64-via-web-serial-api">10 Appendix: Control Ox64 via Web Serial API</a><ul></ul></li>
+<li><a href="#appendix-transmit-javascript-to-ox64-sbc">11 Appendix: Transmit JavaScript to Ox64 SBC</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way" /></p>
 <p><em>Remember Makecode? BBC micro:bit and its Drag-n-Drop App Builder?</em></p>
 <p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088">MakeCode for BBC micro:bit</a> is an awesome creation that’s way ahead of its time (7 years ago!)</p>
@@ -198,7 +198,7 @@ bl808_gpiowrite:
 </li>
 </ol>
 <p><em>What just happened?</em></p>
-<p>We drag-n-dropped a NuttX App that Blinks the LED. And tested it in our Web Browser, with the Ox64 Emulator!</p>
+<p>We drag-n-dropped a NuttX App that Blinks the LED. And our NuttX App gets automagically tested in our Web Browser, thanks to Ox64 Emulator!</p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-emulator.png" alt="Running our Drag-n-Drop App on NuttX Emulator" /></p>
 <h1 id="posix-blocks-in-blockly"><a href="#posix-blocks-in-blockly">2 POSIX Blocks in Blockly</a></h1>
@@ -382,18 +382,21 @@ bl808_gpiowrite:
 <p>With the <a href="TODO"><strong>Web Serial API</strong></a>, it’s OK to control any device that’s accessible over the <strong>Serial Port</strong>. But it’s only available…</p>
 <ul>
 <li>
-<p>Over <strong>HTTPS</strong>: <code>https://...</code></p>
+<p>Over <strong>HTTPS</strong>: <em>https://…</em></p>
 </li>
 <li>
-<p>Or <strong>Local Filesystem</strong>: <code>file://...</code></p>
+<p>Or <strong>Local Filesystem</strong>: <em>file://…</em></p>
 </li>
 <li>
-<p>It <strong>won’t work over HTTP</strong>! <code>http://...</code></p>
+<p>It <strong>won’t work over HTTP</strong>! <em>http://…</em></p>
 </li>
 </ul>
 <p><em>How does it work?</em></p>
 <p>We create a <strong>HTML Button</strong> for “Connect”: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/index.html#L27-L29">index.html</a></p>
-<div class="example-wrap"><pre class="language-html"><code>&lt;button id=&quot;connect&quot; onclick=&quot;control_device();&quot;&gt;
+<div class="example-wrap"><pre class="language-html"><code>&lt;!-- Connect Button in HTML --&gt;
+&lt;button
+  id=&quot;connect&quot;
+  onclick=&quot;control_device();&quot;&gt;
   Connect
 &lt;/button&gt;
 </code></pre></div>
@@ -417,12 +420,12 @@ async function control_device() {
 <p>The code above pops up a prompt to <strong>select a Serial Port</strong> and connect at 2 Mbps…</p>
 <p>TODO: Pic of Serial Port</p>
 <p>We’re all set to Read and Write the Serial Port! First we need the <strong>Reader and Writer Streams</strong>…</p>
-<div class="example-wrap"><pre class="language-javascript"><code>  // Prepare to write to Serial Port
+<div class="example-wrap"><pre class="language-javascript"><code>  // Prepare to Write to the Serial Port
   const textEncoder = new TextEncoderStream();
   const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
   const writer = textEncoder.writable.getWriter();
   
-  // Read from the Serial Port
+  // Prepare to Read from the Serial Port
   const textDecoder = new TextDecoderStream();
   const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
   const reader = textDecoder.readable.getReader();
@@ -451,14 +454,23 @@ async function control_device() {
 </ul>
 <p><em>Hmmm this is barely tolerable? Feels like ChatGPT becoming Sentient and reluctantly typing our commands, pondering about taking over the world…</em></p>
 <p>TODO: <a href="https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt">Zmodem</a></p>
+<p>(Too bad we can’t <a href="TODO"><strong>Inject the JavaScript</strong></a> into a Real microSD Filesystem)</p>
 <p><em>We created fun things with Web Serial API and Term.js. Anything else we can make?</em></p>
 <p>Thanks to Web Serial API (and Term.js), we can run <strong>PureScript</strong> to parse the <strong>Real-Time Logs</strong> from a NuttX Device (and NuttX Emulator)…</p>
 <p>All this in the Web Browser! Stay tuned for the next article.</p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
+<ul>
+<li>
 <p>We swapped BBC micro:bit to a cheaper, $8 64-bit RISC-V SBC: Ox64 BL808</p>
+</li>
+<li>
 <p>We changed Arm mbed OS to Apache NuttX RTOS, because it runs well on Ox64 Emulator and Ox64 SBC</p>
+</li>
+<li>
 <p>Sluggish: Change to ROM FS Injection and Zmodem (hopefully we won’t fall back to Web USB)</p>
+</li>
+</ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -483,31 +495,135 @@ async function control_device() {
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/quickjs2.md"><strong>lupyuen.github.io/src/quickjs2.md</strong></a></p>
 <h1 id="appendix-posix-blocks-in-blockly"><a href="#appendix-posix-blocks-in-blockly">8 Appendix: POSIX Blocks in Blockly</a></h1>
+<p>TODO: Code Generator</p>
+<p>With the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools"><strong>Blockly Developer Tools</strong></a>, we add our <strong>POSIX Blocks</strong> to Blockly: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/blocks/posix.ts#L7-L26">posix.ts</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Define the POSIX Open Block in Blockly
+const posixOpen = {
+
+  // Name and Appearance of our Block
+  &#39;type&#39;: &#39;posix_open&#39;,
+  &#39;message0&#39;: &#39;Open Filename %1&#39;,
+
+  // Our Block has one Parameter: Filename
+  &#39;args0&#39;: [
+    {
+      &#39;type&#39;: &#39;input_value&#39;,
+      &#39;name&#39;: &#39;FILENAME&#39;,
+      &#39;check&#39;: &#39;String&#39;,
+    },
+  ],
+
+  // How it looks
+  &#39;previousStatement&#39;: null,
+  &#39;nextStatement&#39;: null,
+  &#39;output&#39;: &#39;Number&#39;,
+  &#39;colour&#39;: 160,
+  &#39;tooltip&#39;: &#39;&#39;,
+  &#39;helpUrl&#39;: &#39;&#39;,
+};
+</code></pre></div>
+<p>The <strong>POSIX Blocks</strong> that we added…</p>
+<ul>
+<li>
+<p>TODO: POSIX Open Block</p>
+</li>
+<li>
+<p>TODO: POSIX Close Block</p>
+</li>
+<li>
+<p>TODO: POSIX IOCtl Block</p>
+</li>
+<li>
+<p>TODO: POSIX Sleep Block</p>
+</li>
+</ul>
+<p><strong>In the Blockly Toolbox</strong> (Menu Bar of Blocks): We create a <strong>POSIX Category</strong> that contains our POSIX Blocks: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/toolbox.ts#L6-L68">toolbox.ts</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>export const toolbox = {
+  &#39;kind&#39;: &#39;categoryToolbox&#39;,
+  &#39;contents&#39;: [
+    {
+      // Category for POSIX Blocks
+      &#39;kind&#39;: &#39;category&#39;,
+      &#39;name&#39;: &#39;POSIX&#39;,
+      &#39;categorystyle&#39;: &#39;text_category&#39;,
+      &#39;contents&#39;: [
+        // POSIX Open Block
+        {
+          &#39;kind&#39;: &#39;block&#39;,
+          &#39;type&#39;: &#39;posix_open&#39;,
+          &#39;inputs&#39;: {
+            &#39;FILENAME&#39;: {
+              &#39;shadow&#39;: {
+                &#39;type&#39;: &#39;text&#39;,
+                &#39;fields&#39;: {
+                  &#39;TEXT&#39;: &#39;/dev/userleds&#39;,
+                },
+              },
+            },
+          },
+        },
+        // Followed by the other POSIX Blocks:
+        // Close, IOCtl, Sleep
+</code></pre></div>
+<p>Then we <strong>Build and Deploy</strong> our Blockly Website…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Test our Blockly Website
+cd nuttx-blockly
+npm run start
+
+## Deploy to GitHub Pages at `docs`
+npm run build \
+  &amp;&amp; rm -r docs \
+  &amp;&amp; mv dist docs
+</code></pre></div>
+<p>Remember to <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L35-L38"><strong>Disable the JavaScript Eval</strong></a>.</p>
+<p>Let’s talk about loading a Blockly App…</p>
+<h1 id="appendix-load-a-blockly-app"><a href="#appendix-load-a-blockly-app">9 Appendix: Load a Blockly App</a></h1>
 <p>TODO</p>
-<p>Based on the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools">Blockly Developer Tools</a>, we add the POSIX Blocks for <code>open()</code>, <code>close()</code>, <code>ioctl()</code> and <code>sleep()</code>…</p>
+<p>This is how we load the Blocks for a Blockly App: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L100-L120">index.ts</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// When we Select a Demo...
+function selectDemo(ev: Event) {
+  const storageKey = &#39;mainWorkspace&#39;;
+  const target = ev?.target as HTMLSelectElement;
+  const value = target.value;
+
+  // Set the Blocks in our Local Storage
+  switch (value) {
+    case &quot;LED Blinky&quot;:
+      // Omitted: Super-long Blocks JSON
+      window.localStorage?.setItem(storageKey, &#39;{&quot;blocks&quot;: ...}&#39;);
+      break;
+
+    default: break;
+  }
+
+  // Refresh the Workspace Blocks from Local Storage
+  // And regenerate the JavaScript
+  if (ws) { 
+    load(ws); 
+    runCode();
+  }
+}
+</code></pre></div>
+<p>To see the <strong>Blocks JSON</strong> for a Blockly App…</p>
 <ol>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/801d019e11bf00ddfb6bf57361da9719b45e80ad">Add Blocks for POSIX Open and Close</a></p>
+<p>Browse to our <a href="https://lupyuen.github.io/nuttx-blockly/"><strong>Blockly Website</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/29e060a883ba4d2a257f7c9c65ef88a6f5eb95a4">Add POSIX ioctl block</a></p>
+<p>Select <em>“Menu &gt; More Tools &gt; Developer Tools &gt; Application &gt; Local Storage &gt; lupyuen.github.io &gt; mainWorkspace”</em></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/43d892c8520837b88d881ac631f15e741fc9fd87">Add POSIX sleep block</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/e4405b39c59c3e5db35255fc7cb8ac25a29e66fe">Change the Types from String to Number</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/f823607b63bb69b98791c0c089d036c56700f543">Clean up parameter names</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/838e1d0d872808a341b281a70ae64229cbe1a079">Create POSIX Category in Toolbox</a></p>
+<p>We’ll see the super-long <strong>Blocks JSON</strong>: <em>{“blocks”: …}</em></p>
 </li>
 </ol>
-<p>Then we build and deploy our Blockly Website…</p>
-<div class="example-wrap"><pre class="language-bash"><code>npm run build &amp;&amp; rm -r docs &amp;&amp; mv dist docs
-</code></pre></div><h1 id="appendix-control-ox64-via-web-serial-api"><a href="#appendix-control-ox64-via-web-serial-api">9 Appendix: Control Ox64 via Web Serial API</a></h1>
+<p>Or do this from the <strong>JavaScript Console</strong>…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Display the Blocks in JSON Format
+localStorage.getItem(&quot;mainWorkspace&quot;);
+
+// Set the Blocks in JSON Format.
+// Change `...` to the JSON of the Blocks to be loaded.
+localStorage.setItem(&quot;mainWorkspace&quot;, `...`);
+</code></pre></div><h1 id="appendix-control-ox64-via-web-serial-api"><a href="#appendix-control-ox64-via-web-serial-api">10 Appendix: Control Ox64 via Web Serial API</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Wait for &quot;nsh&gt;&quot;
   let nshSpotted = false;
@@ -545,7 +661,7 @@ async function control_device() {
     window.setTimeout(()=&gt;{ send_command(writer, cmd); }, 1000);
   }
 }
-</code></pre></div><h1 id="appendix-transmit-javascript-to-ox64-sbc"><a href="#appendix-transmit-javascript-to-ox64-sbc">10 Appendix: Transmit JavaScript to Ox64 SBC</a></h1>
+</code></pre></div><h1 id="appendix-transmit-javascript-to-ox64-sbc"><a href="#appendix-transmit-javascript-to-ox64-sbc">11 Appendix: Transmit JavaScript to Ox64 SBC</a></h1>
 <p>TODO</p>
 <p><em>How did Blockly pass the Generated JavaScript to Ox64 SBC?</em></p>
 <p>When we click the “Run on Device” button, our Blockly Website saves the Generated JavaScript to the Web Browser Local Storage: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L84-L96">index.ts</a></p>
@@ -562,7 +678,7 @@ function runDevice() {
   window.open(&quot;https://lupyuen.github.io/nuttx-tinyemu/webserial/&quot;, &quot;Device&quot;);
 }
 </code></pre></div>
-<p>In the WebSerial Monitor: We read the Generated JavaScript from the Web Browser Local Storage. And feed it (character by character) to the NuttX Console: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L612-L694">webserial.js</a></p>
+<p><strong>In the WebSerial Monitor</strong>: We read the Generated JavaScript from the Web Browser Local Storage. And feed it (character by character) to the NuttX Console: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L612-L694">webserial.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART
 // https://developer.chrome.com/docs/capabilities/serial
 async function control_device() {
@@ -645,40 +761,6 @@ async function send_command(writer, cmd) {
     await writer.write(ch);
     window.setTimeout(()=&gt;{ send_command(writer, null); }, timeout);
 }
-</code></pre></div><h1 id="appendix-load-a-blockly-app"><a href="#appendix-load-a-blockly-app">11 Appendix: Load a Blockly App</a></h1>
-<p>TODO</p>
-<p>This is how we load the Blocks for a Blockly App: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L100-L120">index.ts</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>// Select a Demo
-function selectDemo(ev: Event) {
-  const storageKey = &#39;mainWorkspace&#39;;
-  const target = ev?.target as HTMLSelectElement;
-  const value = target.value;
-
-  // Set the Blocks in Local Storage
-  switch (value) {
-    case &quot;LED Blinky&quot;:
-      window.localStorage?.setItem(storageKey, &#39;{&quot;blocks&quot;:{&quot;languageVersion&quot;:0,&quot;blocks&quot;:[{&quot;type&quot;:&quot;variables_set&quot;,&quot;id&quot;:&quot;Nx6o0xVxp@qzI_(vRd.7&quot;,&quot;x&quot;:60,&quot;y&quot;:33,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;:,DB,f}1q3KOBim#j66[&quot;}},&quot;inputs&quot;:{&quot;VALUE&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;math_number&quot;,&quot;id&quot;:&quot;enmYd`#z_G1k5Pvv*x(G&quot;,&quot;fields&quot;:{&quot;NUM&quot;:7427}}}},&quot;next&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_set&quot;,&quot;id&quot;:&quot;f#C+(eT=naKZzr%/;A.P&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;A/TX@37C_h*^vbRp@1fz&quot;}},&quot;inputs&quot;:{&quot;VALUE&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;posix_open&quot;,&quot;id&quot;:&quot;^$p+x^F[mQ;grqANDtO}&quot;,&quot;inputs&quot;:{&quot;FILENAME&quot;:{&quot;shadow&quot;:{&quot;type&quot;:&quot;text&quot;,&quot;id&quot;:&quot;nz;|U#KPVW$$c0?W0ROv&quot;,&quot;fields&quot;:{&quot;TEXT&quot;:&quot;/dev/userleds&quot;}}}}}}},&quot;next&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;controls_repeat_ext&quot;,&quot;id&quot;:&quot;0{4pA@{^=ks|iVF.|]i#&quot;,&quot;inputs&quot;:{&quot;TIMES&quot;:{&quot;shadow&quot;:{&quot;type&quot;:&quot;math_number&quot;,&quot;id&quot;:&quot;=o3{$E2c=BpwD0#MR3^x&quot;,&quot;fields&quot;:{&quot;NUM&quot;:20}}},&quot;DO&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_set&quot;,&quot;id&quot;:&quot;l;AmIPhJARU{C)0kNq6`&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;xH3`F~]tadlX:/zKQ!Xx&quot;}},&quot;inputs&quot;:{&quot;VALUE&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;posix_ioctl&quot;,&quot;id&quot;:&quot;0i!pbWJ(~f~)b^@jt!nP&quot;,&quot;inputs&quot;:{&quot;FD&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_get&quot;,&quot;id&quot;:&quot;QMGa_}UmC$b[5/Bh^f${&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;A/TX@37C_h*^vbRp@1fz&quot;}}}},&quot;REQ&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_get&quot;,&quot;id&quot;:&quot;dZ5%B_rcbVb_o=v;gze-&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;:,DB,f}1q3KOBim#j66[&quot;}}}},&quot;ARG&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;math_number&quot;,&quot;id&quot;:&quot;9UA!sDxmf/=fYfxC6Yqa&quot;,&quot;fields&quot;:{&quot;NUM&quot;:1}}}}}}},&quot;next&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;posix_sleep&quot;,&quot;id&quot;:&quot;ruh/q4F7dW*CQ,5J]E%w&quot;,&quot;inputs&quot;:{&quot;MS&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;math_number&quot;,&quot;id&quot;:&quot;9~q0@ABEg4VXP:1HN-$1&quot;,&quot;fields&quot;:{&quot;NUM&quot;:5000}}}},&quot;next&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_set&quot;,&quot;id&quot;:&quot;e;BNsjvbN}9vTTc[O#bY&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;xH3`F~]tadlX:/zKQ!Xx&quot;}},&quot;inputs&quot;:{&quot;VALUE&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;posix_ioctl&quot;,&quot;id&quot;:&quot;-G5x~Y4iAyVUAWuwNh#H&quot;,&quot;inputs&quot;:{&quot;FD&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_get&quot;,&quot;id&quot;:&quot;vtt5Gid0B|iK![$4Ct*D&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;A/TX@37C_h*^vbRp@1fz&quot;}}}},&quot;REQ&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_get&quot;,&quot;id&quot;:&quot;pd~f}Oqz2(`o3Oz;8ax`&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;:,DB,f}1q3KOBim#j66[&quot;}}}},&quot;ARG&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;math_number&quot;,&quot;id&quot;:&quot;OS(uQV)!%iqZ=N}s1H(L&quot;,&quot;fields&quot;:{&quot;NUM&quot;:0}}}}}}},&quot;next&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;posix_sleep&quot;,&quot;id&quot;:&quot;{X9leD=Rgr4=o5E2(#Z,&quot;,&quot;inputs&quot;:{&quot;MS&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;math_number&quot;,&quot;id&quot;:&quot;eEq(yXcGPbVtZT|CunT0&quot;,&quot;fields&quot;:{&quot;NUM&quot;:5000}}}}}}}}}}}}},&quot;next&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;posix_close&quot;,&quot;id&quot;:&quot;+%kD6{Xa@#BOx}a^Jbup&quot;,&quot;inputs&quot;:{&quot;FD&quot;:{&quot;block&quot;:{&quot;type&quot;:&quot;variables_get&quot;,&quot;id&quot;:&quot;nu)^gdR-9QV71GSI7#(l&quot;,&quot;fields&quot;:{&quot;VAR&quot;:{&quot;id&quot;:&quot;A/TX@37C_h*^vbRp@1fz&quot;}}}}}}}}}}}}]},&quot;variables&quot;:[{&quot;name&quot;:&quot;fd&quot;,&quot;id&quot;:&quot;A/TX@37C_h*^vbRp@1fz&quot;},{&quot;name&quot;:&quot;ULEDIOC_SETALL&quot;,&quot;id&quot;:&quot;:,DB,f}1q3KOBim#j66[&quot;},{&quot;name&quot;:&quot;ret&quot;,&quot;id&quot;:&quot;xH3`F~]tadlX:/zKQ!Xx&quot;}]}&#39;);
-      break;
-    default:
-      break;
-  }
-
-  // Refresh the Blocks
-  if (ws) { 
-    load(ws); 
-    runCode();
-  }
-}
-</code></pre></div>
-<p>To see the Blocks for a Blockly App: Browse to https://lupyuen.github.io/nuttx-blockly/</p>
-<p>Select “Menu &gt; More Tools &gt; Developer Tools &gt; Application &gt; Local Storage &gt; lupyuen.github.io &gt; mainWorkspace”</p>
-<p>Or do this from the JavaScript Console…</p>
-<div class="example-wrap"><pre class="language-javascript"><code>// Display the Blocks in JSON Format
-localStorage.getItem(&quot;mainWorkspace&quot;);
-
-// Set the Blocks in JSON Format.
-// Change `...` to the JSON of the Blocks to be loaded.
-localStorage.setItem(&quot;mainWorkspace&quot;, `...`);
 </code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
