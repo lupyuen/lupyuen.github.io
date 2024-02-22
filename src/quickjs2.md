@@ -433,9 +433,11 @@ _Hmmm this is barely tolerable? Feels like ChatGPT becoming Sentient and relucta
 
 TODO: [Zmodem](https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt)
 
-_We made fun things with Web Serial API and Term.js? Anything else we can make?_
+_We created fun things with Web Serial API and Term.js. Anything else we can make?_
 
-TODO: Thanks to Web Serial API (and Term.js), we can run PureScript to parse the Real-Time Logs from a NuttX Device (and NuttX Emulator). Stay tuned for the next article!
+Thanks to Web Serial API (and Term.js), we can run __PureScript__ to parse the __Real-Time Logs__ from a NuttX Device (and NuttX Emulator)...
+
+All this in the Web Browser! Stay tuned for the next article.
 
 # What's Next
 
