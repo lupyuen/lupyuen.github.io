@@ -50,7 +50,96 @@ Today 7 years later: How would we redo all this? With a bunch of Open Source Pac
 
 ![TODO](https://lupyuen.github.io/images/quickjs2-nuttx.jpg)
 
+TODO
+
 ![Running our Drag-n-Drop App on NuttX Emulator](https://lupyuen.github.io/images/quickjs2-emulator.png)
+
+TODO
+
+![NuttX App Builder with Blockly](https://lupyuen.github.io/images/quickjs2-blockly.png)
+
+# Emulator Demo
+
+Here's the Emulator Demo that we can all play along at home...
+
+1.  Head over to this link...
+
+    [__NuttX App Builder with Blockly__](https://lupyuen.github.io/nuttx-blockly/)
+
+1.  Click __"Select Demo"__ > __"LED Blinky"__
+
+    [(Or __Drag-n-Drop the Demo__ ourselves)](https://youtu.be/-dG5ZSXELDc)
+
+1.  This JavaScript appears (pic above)...
+
+    ```javascript
+    // NuttX Command to flip the LED On and Off
+    var ULEDIOC_SETALL, fd, ret;
+    ULEDIOC_SETALL = 7427;
+
+    // Open the LED Device and blink 20 times
+    fd = os.open('/dev/userleds');
+    for (var count = 0; count < 20; count++) {
+
+      // Flip the LED On and wait a while
+      ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
+      os.sleep(20000);
+
+      // Flip the LED Off and wait a while
+      ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
+      os.sleep(20000);
+    }
+
+    // Close the LED Device
+    os.close(fd);
+    ```
+
+1.  Click __"Run on Ox64 Emulator"__
+
+1.  Our Drag-n-Drop App runs in the Emulator, and blinks the __Simulated LED__ (GPIO 29, pic below)...
+
+    ```text
+    NuttShell (NSH) NuttX-12.4.0-RC0
+    nsh> qjs
+    QuickJS - Type "\h" for help
+    qjs > var ULEDIOC_SETALL, fd, ret;
+    qjs > ULEDIOC_SETALL = 7427;
+    7427
+    qjs > fd = os.open('/dev/userleds');
+    3
+    qjs > for (var count = 0; count < 20; count++) {
+      ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
+      os.sleep(20000);
+      ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
+      os.sleep(20000);
+    }
+    bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
+    bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+    ```
+
+TODO
+
+![Running our Drag-n-Drop App on NuttX Emulator](https://lupyuen.github.io/images/quickjs2-emulator.png)
+
+# Blockly Blocks
+
+TODO
+
+# Blockly Code Generator
+
+TODO
+
+# Local Storage
+
+TODO
+
+# Device Demo
+
+TODO
+
+# Web Serial API
+
+TODO
 
 # Create the Blockly Project
 
