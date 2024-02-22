@@ -280,7 +280,7 @@ forBlock[&#39;posix_open&#39;] = function (
 <p>TODO: Pic of Local Storage</p>
 <h1 id="transmit-javascript-via-local-storage"><a href="#transmit-javascript-via-local-storage">4 Transmit JavaScript via Local Storage</a></h1>
 <p><em>Blockly generates the JavaScript for our Blinky App… How did it appear in our Ox64 Emulator?</em></p>
-<p>When we click the <strong>“Run Emulator”</strong> button, our Blockly Website saves the Generated JavaScript to the Web Browser’s <a href="TODO"><strong>Local Storage</strong></a>: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L73-L86">index.ts</a></p>
+<p>When we click the <strong>“Run Emulator”</strong> button, our Blockly Website saves the Generated JavaScript to the <a href="TODO"><strong>Local Storage</strong></a> in our Web Browser: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L73-L86">index.ts</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Run on Ox64 Emulator
 function runEmulator() {
   // Save the Generated JavaScript Code to LocalStorage
@@ -294,6 +294,29 @@ function runEmulator() {
   window.open(&quot;https://lupyuen.github.io/nuttx-tinyemu/blockly/&quot;, &quot;Emulator&quot;);
 }
 </code></pre></div>
+<p><strong>In Ox64 Emulator</strong>: We fetch the Generated JavaScript from Local Storage: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L542-L554">jslinux.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Fetch the Generated JavaScript from Local Storage.
+// Newlines become Carriage Returns.
+const code = window.localStorage.getItem(&quot;runCode&quot;)
+  .split(&quot;\n&quot;).join(&quot;\r&quot;)
+  .split(&quot;\r\r&quot;).join(&quot;\r&quot;);  // Merge multiple newlines
+
+// Append the Generated JavaScript to
+// the QuickJS Command 
+const cmd = [
+  `qjs`,
+  code,
+  ``
+].join(&quot;\r&quot;);
+
+// Send the command to the Emulator Console
+window.setTimeout(()=&gt;{
+  send_command(cmd);
+}, 5000);  // Wait 5 seconds for NuttX and QuickJS to boot
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L522-L542">(<strong>send_command</strong> is here)</a></p>
+<p>And send it to the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L522-L542"><strong>Ox64 Emulator Console</strong></a>, character by character.</p>
+<p>Thanks to <a href="TODO"><strong>TinyEMU</strong></a> and <a href="TODO"><strong>Term.js</strong></a>, everything works hunky dory!</p>
 <p>TODO</p>
 <h1 id="device-demo"><a href="#device-demo">5 Device Demo</a></h1>
 <p>TODO</p>
