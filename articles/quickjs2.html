@@ -158,11 +158,11 @@ for (var count = 0; count &lt; 20; count++) {
 
   // Flip the LED On and wait a while
   ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-  os.sleep(20000);
+  os.sleep(5000);  // Milliseconds
 
   // Flip the LED Off and wait a while
   ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-  os.sleep(20000);
+  os.sleep(5000);  // Milliseconds
 }
 
 // Close the LED Device
@@ -190,9 +190,9 @@ qjs &gt; fd = os.open(&#39;/dev/userleds&#39;);
 3
 qjs &gt; for (var count = 0; count &lt; 20; count++) {
   ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-  os.sleep(20000);
+  os.sleep(5000);
   ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-  os.sleep(20000);
+  os.sleep(5000);
 }
 </code></pre></div>
 <p>Which blinks the <a href="TODO"><strong>Simulated LED</strong></a> (GPIO 29, pic below)…</p>
@@ -218,11 +218,12 @@ fd = os.open(&#39;/dev/userleds&#39;);
 
 // Flip the LED On and wait a while
 ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-os.sleep(20000);
+os.sleep(5000);
 
 // Close the LED Device
 os.close(fd);
 </code></pre></div>
+<p>TODO: Pic of POSIX Blocks</p>
 <p><em>How did we create the POSIX Blocks?</em></p>
 <p>Everything begins with <a href="https://developers.google.com/blockly/guides/get-started/get-the-code"><strong>Blockly</strong></a>, which defines the Blocks that we may drag-n-drop…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Create a Blockly Website in TypeScript
@@ -237,7 +238,9 @@ npm run build \
   &amp;&amp; rm -r docs \
   &amp;&amp; mv dist docs
 </code></pre></div>
-<p>TODO</p>
+<p>We added these <strong>POSIX Blocks</strong> to Blockly…</p>
+<p>TODO: Every Block</p>
+<p>TODO: Details</p>
 <h1 id="blockly-code-generator"><a href="#blockly-code-generator">3 Blockly Code Generator</a></h1>
 <p>TODO</p>
 <h1 id="local-storage"><a href="#local-storage">4 Local Storage</a></h1>
@@ -321,9 +324,9 @@ ULEDIOC_SETALL = 7427;
 fd = os.open(&#39;/dev/userleds&#39;);
 for (var count = 0; count &lt; 20; count++) {
   ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-  os.sleep(20000);
+  os.sleep(5000);
   ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-  os.sleep(20000);
+  os.sleep(5000);
 }
 os.close(fd);
 </code></pre></div>
@@ -343,9 +346,9 @@ qjs &gt; fd = os.open(&#39;/dev/userleds&#39;);
 3
 qjs &gt; for (var count = 0; count &lt; 20; count++) {
 {  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-{  ...       os.sleep(20000);
+{  ...       os.sleep(5000);
 {  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-{  ...       os.sleep(20000);
+{  ...       os.sleep(5000);
 {  ...     }
 bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
 bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
@@ -394,9 +397,9 @@ ULEDIOC_SETALL = 7427;
 fd = os.open(&#39;/dev/userleds&#39;);
 for (var count = 0; count &lt; 20; count++) {
   ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-  os.sleep(20000);
+  os.sleep(5000);
   ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-  os.sleep(20000);
+  os.sleep(5000);
 }
 os.close(fd);
 </code></pre></div>
@@ -429,9 +432,9 @@ qjs &gt; fd = os.open(&#39;/dev/userleds&#39;);
 3
 qjs &gt; for (var count = 0; count &lt; 20; count++) {
 {  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-{  ...       os.sleep(20000);
+{  ...       os.sleep(5000);
 {  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-{  ...       os.sleep(20000);
+{  ...       os.sleep(5000);
 {  ...     }
 bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
 bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
