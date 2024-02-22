@@ -76,13 +76,7 @@
 <li><a href="#appendix-control-ox64-via-web-serial-api">9 Appendix: Control Ox64 via Web Serial API</a><ul></ul></li>
 <li><a href="#appendix-transmit-javascript-to-ox64-sbc">10 Appendix: Transmit JavaScript to Ox64 SBC</a><ul></ul></li>
 <li><a href="#appendix-load-a-blockly-app">11 Appendix: Load a Blockly App</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2024</em></p>
-<p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="TODO" /></p>
-<p>TODO</p>
-<p>A little like ChatGPT has possessed our NuttX Emulator and typing out our commands in super slo-mo</p>
-<p>A bit like Sentient ChatGPT reluctantly typing our commands, pondering about taking over the world</p>
-<p><a href="https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt">Zmodem</a></p>
-<p><img src="https://lupyuen.github.io/images/quickjs2-blockly.png" alt="(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way" /></p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way" /></p>
 <p><em>Remember Makecode? BBC micro:bit and its Drag-n-Drop App Builder?</em></p>
 <p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088">MakeCode for BBC micro:bit</a> is an awesome creation that’s way ahead of its time (7 years ago!)</p>
 <ul>
@@ -442,12 +436,15 @@ async function control_device() {
 <p>Check the details in the Appendix…</p>
 <ul>
 <li>
-<p>TODOL Control Ox64</p>
+<p>TODO: Control Ox64</p>
 </li>
 <li>
 <p>TODO: Transmit JavaScript</p>
 </li>
 </ul>
+<p>A little like ChatGPT has possessed our NuttX Emulator and typing out our commands in super slo-mo</p>
+<p>A bit like Sentient ChatGPT reluctantly typing our commands, pondering about taking over the world</p>
+<p><a href="https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt">Zmodem</a></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -475,7 +472,30 @@ async function control_device() {
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/quickjs2.md"><strong>lupyuen.github.io/src/quickjs2.md</strong></a></p>
 <h1 id="appendix-posix-blocks-in-blockly"><a href="#appendix-posix-blocks-in-blockly">8 Appendix: POSIX Blocks in Blockly</a></h1>
 <p>TODO</p>
-<h1 id="appendix-control-ox64-via-web-serial-api"><a href="#appendix-control-ox64-via-web-serial-api">9 Appendix: Control Ox64 via Web Serial API</a></h1>
+<p>Based on the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools">Blockly Developer Tools</a>, we add the POSIX Blocks for <code>open()</code>, <code>close()</code>, <code>ioctl()</code> and <code>sleep()</code>…</p>
+<ol>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/801d019e11bf00ddfb6bf57361da9719b45e80ad">Add Blocks for POSIX Open and Close</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/29e060a883ba4d2a257f7c9c65ef88a6f5eb95a4">Add POSIX ioctl block</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/43d892c8520837b88d881ac631f15e741fc9fd87">Add POSIX sleep block</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/e4405b39c59c3e5db35255fc7cb8ac25a29e66fe">Change the Types from String to Number</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/f823607b63bb69b98791c0c089d036c56700f543">Clean up parameter names</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/838e1d0d872808a341b281a70ae64229cbe1a079">Create POSIX Category in Toolbox</a></p>
+</li>
+</ol>
+<p>Then we build and deploy our Blockly Website…</p>
+<div class="example-wrap"><pre class="language-bash"><code>npm run build &amp;&amp; rm -r docs &amp;&amp; mv dist docs
+</code></pre></div><h1 id="appendix-control-ox64-via-web-serial-api"><a href="#appendix-control-ox64-via-web-serial-api">9 Appendix: Control Ox64 via Web Serial API</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Wait for &quot;nsh&gt;&quot;
   let nshSpotted = false;
