@@ -71,14 +71,11 @@
 <li><a href="#transmit-javascript-via-local-storage">4 Transmit JavaScript via Local Storage</a><ul></ul></li>
 <li><a href="#blinky-on-a-real-ox64-sbc">5 Blinky on a Real Ox64 SBC</a><ul></ul></li>
 <li><a href="#control-ox64-via-web-serial-api">6 Control Ox64 via Web Serial API</a><ul></ul></li>
-<li><a href="#send-a-command-to-nuttx-emulator">7 Send a Command to NuttX Emulator</a><ul></ul></li>
-<li><a href="#add-posix-blocks-to-blockly">8 Add POSIX Blocks to Blockly</a><ul></ul></li>
-<li><a href="#drag-n-drop-a-nuttx-app-for-ox64-bl808">9 Drag-n-Drop a NuttX App for Ox64 BL808</a><ul></ul></li>
-<li><a href="#drag-n-drop-a-nuttx-app-to-a-real-ox64-bl808-sbc">10 Drag-n-Drop a NuttX App to a Real Ox64 BL808 SBC</a><ul></ul></li>
-<li><a href="#connect-to-ox64-bl808-sbc-via-web-serial-api">11 Connect to Ox64 BL808 SBC via Web Serial API</a><ul></ul></li>
-<li><a href="#send-a-command-to-ox64-bl808-sbc-via-web-serial-api">12 Send a Command to Ox64 BL808 SBC via Web Serial API</a><ul></ul></li>
-<li><a href="#load-the-blocks-for-a-blockly-app">13 Load the Blocks for a Blockly App</a><ul></ul></li>
-<li><a href="#whats-next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2024</em></p>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-posix-blocks-in-blockly">8 Appendix: POSIX Blocks in Blockly</a><ul></ul></li>
+<li><a href="#appendix-control-ox64-via-web-serial-api">9 Appendix: Control Ox64 via Web Serial API</a><ul></ul></li>
+<li><a href="#appendix-transmit-javascript-to-ox64-sbc">10 Appendix: Transmit JavaScript to Ox64 SBC</a><ul></ul></li>
+<li><a href="#appendix-load-a-blockly-app">11 Appendix: Load a Blockly App</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="TODO" /></p>
 <p>TODO</p>
 <p>A little like ChatGPT has possessed our NuttX Emulator and typing out our commands in super slo-mo</p>
@@ -317,7 +314,7 @@ window.setTimeout(()=&gt;{
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L522-L542">(<strong>send_command</strong> is here)</a></p>
 <p>And send it to the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L522-L542"><strong>Ox64 Emulator Console</strong></a>, character by character.</p>
 <p>Thanks to <a href="TODO"><strong>TinyEMU</strong></a> and <a href="TODO"><strong>Term.js</strong></a>, everything works hunky dory!</p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-device.png" alt="Running our Drag-n-Drop App on Ox64 BL808 SBC" /></p>
 <h1 id="blinky-on-a-real-ox64-sbc"><a href="#blinky-on-a-real-ox64-sbc">5 Blinky on a Real Ox64 SBC</a></h1>
 <p><em>Will we do the same for a Real Ox64 SBC?</em></p>
 <p>Well it gets complicated. If we have an <a href="TODO"><strong>Ox64 BL808 SBC</strong></a>, here are the <strong>Demo Steps</strong>…</p>
@@ -343,7 +340,7 @@ window.setTimeout(()=&gt;{
 <p>TODO: Power on our Ox64 SBC. The Web App waits for the “nsh&gt;” prompt.</p>
 </li>
 <li>
-<p>Our Ox64 SBC boots NuttX…</p>
+<p>Our Ox64 SBC boots NuttX (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; qjs
 
@@ -376,194 +373,148 @@ bl808_gpiowrite:
   clear=0x1000000
 </code></pre></div></li>
 </ol>
-<p>TODO: Pic of Real Ox64 LED</p>
 <p><a href="https://youtu.be/lUhrLWvwizU">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/quickjs2-device.png" alt="Running our Drag-n-Drop App on Ox64 BL808 SBC" /></p>
+<p>TODO: What just happened?</p>
+<p>TODO: Pic of Real Ox64 LED</p>
 <h1 id="control-ox64-via-web-serial-api"><a href="#control-ox64-via-web-serial-api">6 Control Ox64 via Web Serial API</a></h1>
-<p>TODO</p>
-<h1 id="send-a-command-to-nuttx-emulator"><a href="#send-a-command-to-nuttx-emulator">7 Send a Command to NuttX Emulator</a></h1>
-<p>TODO</p>
-<p>To send a command to NuttX Emulator: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/f01727935818cd1685ee4a82943bb9f19b13d85c">jslinux.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>let send_str = &quot;&quot;;
-function send_command(cmd) {
-  if (cmd !== null) { send_str = cmd; }
-  if (send_str.length == 0) { return; }
-  console_write1(send_str.charCodeAt(0));
-  send_str = send_str.substring(1);
-  window.setTimeout(()=&gt;{ send_command(null); }, 10);
-}
-const cmd = [
-  `qjs`,
-  `function main() { console.log(123); }`,
-  `main()`,
-  ``
-].join(&quot;\r&quot;);
-window.setTimeout(()=&gt;{ send_command(cmd); }, 10000);
+<p><em>Our Web Browser controls Ox64 SBC… How is that possible?</em></p>
+<p>With the <a href="TODO"><strong>Web Serial API</strong></a>, it’s OK to control any device that’s accessible over the <strong>Serial Port</strong>. But it’s only available…</p>
+<ul>
+<li>
+<p>Over <strong>HTTPS</strong>: <code>https://...</code></p>
+</li>
+<li>
+<p>Or <strong>Local Filesystem</strong>: <code>file://...</code></p>
+</li>
+<li>
+<p>It <strong>won’t work over HTTP</strong>! <code>http://...</code></p>
+</li>
+</ul>
+<p><em>How does it work?</em></p>
+<p>We create a <strong>HTML Button</strong> for “Connect”: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/index.html#L27-L29">index.html</a></p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;button id=&quot;connect&quot; onclick=&quot;control_device();&quot;&gt;
+  Connect
+&lt;/button&gt;
 </code></pre></div>
-<p>Which will start QuickJS and run a JavaScript Function:</p>
-<p>https://lupyuen.github.io/nuttx-tinyemu/blockly/</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; qjs
-QuickJS - Type &quot;\h&quot; for help
-qjs &gt; function main() { console.log(123); }
-undefined
-qjs &gt; main()
-123
-undefined
-qjs &gt;
-</code></pre></div><h1 id="add-posix-blocks-to-blockly"><a href="#add-posix-blocks-to-blockly">8 Add POSIX Blocks to Blockly</a></h1>
-<p>TODO</p>
-<p>Based on the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools">Blockly Developer Tools</a>, we add the POSIX Blocks for <code>open()</code>, <code>close()</code>, <code>ioctl()</code> and <code>sleep()</code>…</p>
-<ol>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/801d019e11bf00ddfb6bf57361da9719b45e80ad">Add Blocks for POSIX Open and Close</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/29e060a883ba4d2a257f7c9c65ef88a6f5eb95a4">Add POSIX ioctl block</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/43d892c8520837b88d881ac631f15e741fc9fd87">Add POSIX sleep block</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/e4405b39c59c3e5db35255fc7cb8ac25a29e66fe">Change the Types from String to Number</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/f823607b63bb69b98791c0c089d036c56700f543">Clean up parameter names</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-blockly/commit/838e1d0d872808a341b281a70ae64229cbe1a079">Create POSIX Category in Toolbox</a></p>
-</li>
-</ol>
-<p>Then we build and deploy our Blockly Website…</p>
-<div class="example-wrap"><pre class="language-bash"><code>npm run build &amp;&amp; rm -r docs &amp;&amp; mv dist docs
-</code></pre></div>
-<p>Let’s test it…</p>
-<h1 id="drag-n-drop-a-nuttx-app-for-ox64-bl808"><a href="#drag-n-drop-a-nuttx-app-for-ox64-bl808">9 Drag-n-Drop a NuttX App for Ox64 BL808</a></h1>
-<p>TODO</p>
-<p>Click this link: https://lupyuen.github.io/nuttx-blockly/</p>
-<p>Then Drag-n-Drop this NuttX App…</p>
-<p><a href="https://youtu.be/-dG5ZSXELDc">(Watch the Demo on YouTube)</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>var ULEDIOC_SETALL, fd, ret;
-ULEDIOC_SETALL = 7427;
-fd = os.open(&#39;/dev/userleds&#39;);
-for (var count = 0; count &lt; 20; count++) {
-  ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-  os.sleep(5000);
-  ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-  os.sleep(5000);
-}
-os.close(fd);
-</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/quickjs2-blockly.png" alt="(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way" /></p>
-<p>Click the “Run on Ox64 Emulator” button.</p>
-<p>Our Drag-n-Drop NuttX App runs automatically in the Emulator yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; qjs
-QuickJS - Type &quot;\h&quot; for help
-qjs &gt; var ULEDIOC_SETALL, fd, ret;
-undefined
-qjs &gt;
-qjs &gt;
-qjs &gt; ULEDIOC_SETALL = 7427;
-7427
-qjs &gt; fd = os.open(&#39;/dev/userleds&#39;);
-3
-qjs &gt; for (var count = 0; count &lt; 20; count++) {
-{  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-{  ...       os.sleep(5000);
-{  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-{  ...       os.sleep(5000);
-{  ...     }
-bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/quickjs2-emulator.png" alt="Running our Drag-n-Drop App on NuttX Emulator" /></p>
-<p><em>How did Blockly pass the Generated JavaScript to NuttX Emulator?</em></p>
-<p>When we click the “Run on Emulator” button, our Blockly Website saves the Generated JavaScript to the Web Browser Local Storage: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L72-L78">index.ts</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>function runEmulator() {
-  // Save the Generated JavaScript Code to LocalStorage
-  const code = javascriptGenerator.workspaceToCode(ws);
-  window.localStorage.setItem(&quot;runCode&quot;, code);
+<p>That calls our JavaScript Function to connect to a Serial Port: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L611-L675">webserial.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART. Called by the &quot;Connect&quot; Button.
+// https://developer.chrome.com/docs/capabilities/serial
+async function control_device() {
+  if (!navigator.serial) { const err = &quot;Web Serial API only works with https://... and file://...!&quot;; alert(err); throw new Error(err); }
 
-  // Set the Timestamp for Optimistic Locking (later)
-  window.localStorage.setItem(&quot;runTimestamp&quot;, Date.now() + &quot;&quot;);
+  // Prompt user to select any serial port.
+  const port = await navigator.serial.requestPort();
+  term.write(&quot;Power on our NuttX Device and we&#39;ll wait for \&quot;nsh&gt;\&quot;\r\n&quot;);
 
-  // Open the NuttX Emulator. Reuse the same tab.
-  window.open(&quot;https://lupyuen.github.io/nuttx-tinyemu/blockly/&quot;, &quot;Emulator&quot;);
-}
+  // TODO: Get all serial ports the user has previously granted the website access to.
+  // const ports = await navigator.serial.getPorts();
+
+  // Wait for the serial port to open.
+  // TODO: Ox64 only connects at 2 Mbps, change this for other devices
+  await port.open({ baudRate: 2000000 });
 </code></pre></div>
-<p>In the NuttX Emulator: We read the Generated JavaScript from the Web Browser Local Storage. And feed it (character by character) to the NuttX Console: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/85fb2b85ae85cd27b7623d937c4420a1d2bdd45c">jslinux.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>// QuickJS Command to be sent
-const cmd = [
-  `qjs`,
-  window.localStorage.getItem(&quot;runCode&quot;),
-  ``
-].join(&quot;\r&quot;);
+<p>The code above pops up a prompt to <strong>select a Serial Port</strong> and connect at 2 Mbps…</p>
+<p>TODO: Pic of Serial Port</p>
+<p>We’re all set to Read and Write the Serial Port! First we need the <strong>Reader and Writer Streams</strong>…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>  // Prepare to write to Serial Port
+  const textEncoder = new TextEncoderStream();
+  const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+  const writer = textEncoder.writable.getWriter();
+  
+  // Read from the Serial Port
+  const textDecoder = new TextDecoderStream();
+  const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+  const reader = textDecoder.readable.getReader();
+</code></pre></div>
+<p>Which we may <strong>read and write</strong> like so…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>  // Read from the Serial Port
+  const { data, done } = await reader.read();
+  // TODO: Close the Serial Port
+  if (done) { reader.releaseLock(); return; }
+  // Print to the Terminal
+  term.write(data);
 
-// Wait for NuttX to boot in 5 seconds. Then send the QuickJS Command.
-window.setTimeout(()=&gt;{ send_command(cmd); }, 5000);
-
-// Send a Command to NuttX Console, character by character
-let send_str = &quot;&quot;;
-function send_command(cmd) {
-  if (cmd !== null) { send_str = cmd; }
-  if (send_str.length == 0) { return; }
-  console_write1(send_str.charCodeAt(0));
-  send_str = send_str.substring(1);
-  window.setTimeout(()=&gt;{ send_command(null); }, 10);
-}
-</code></pre></div><h1 id="drag-n-drop-a-nuttx-app-to-a-real-ox64-bl808-sbc"><a href="#drag-n-drop-a-nuttx-app-to-a-real-ox64-bl808-sbc">10 Drag-n-Drop a NuttX App to a Real Ox64 BL808 SBC</a></h1>
+  // Send the QuickJS Command to Serial Port
+  await writer.write(&quot;qjs\r&quot;);
+</code></pre></div>
+<p><em>But we need to wait for the “nsh&gt;” prompt?</em></p>
+<p>Yep we have a loop that waits for the <strong>NuttX Shell</strong>, before sending any commands.</p>
+<p>Check the details in the Appendix…</p>
+<ul>
+<li>
+<p>TODOL Control Ox64</p>
+</li>
+<li>
+<p>TODO: Transmit JavaScript</p>
+</li>
+</ul>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
-<p>From NuttX Emulator to a Real NuttX Device! Click this link: https://lupyuen.github.io/nuttx-blockly/</p>
-<p>Then Drag-n-Drop the same NuttX App (see the previous section)…</p>
-<div class="example-wrap"><pre class="language-javascript"><code>var ULEDIOC_SETALL, fd, ret;
-ULEDIOC_SETALL = 7427;
-fd = os.open(&#39;/dev/userleds&#39;);
-for (var count = 0; count &lt; 20; count++) {
-  ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-  os.sleep(5000);
-  ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-  os.sleep(5000);
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Current Project: “Apache NuttX RTOS for Ox64 BL808”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>My Other Project: “NuttX for Star64 JH7110”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Older Project: “NuttX for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/quickjs2.md"><strong>lupyuen.github.io/src/quickjs2.md</strong></a></p>
+<h1 id="appendix-posix-blocks-in-blockly"><a href="#appendix-posix-blocks-in-blockly">8 Appendix: POSIX Blocks in Blockly</a></h1>
+<p>TODO</p>
+<h1 id="appendix-control-ox64-via-web-serial-api"><a href="#appendix-control-ox64-via-web-serial-api">9 Appendix: Control Ox64 via Web Serial API</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-javascript"><code>  // Wait for &quot;nsh&gt;&quot;
+  let nshSpotted = false;
+  let termBuffer = &quot;&quot;;
+
+  // Listen to data coming from the serial device.
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) {
+      // Allow the serial port to be closed later.
+      reader.releaseLock();
+      break;
+    }
+    // Print to the Terminal
+    term.write(value);
+
+    // Wait for &quot;nsh&gt;&quot;
+    if (nshSpotted) { continue; }
+    termBuffer += value;
+    if (termBuffer.indexOf(&quot;nsh&gt;&quot;) &lt; 0) { continue; }
+
+    // NSH Spotted!
+    console.log(&quot;NSH Spotted!&quot;);
+    nshSpotted = true;
+
+    // Send a command to serial port. Newlines become Carriage Returns.
+    const code = window.localStorage.getItem(&quot;runCode&quot;)
+      .split(&quot;\n&quot;).join(&quot;\r&quot;)
+      .split(&quot;\r\r&quot;).join(&quot;\r&quot;);
+    const cmd = [
+      `qjs`,
+      code,
+      ``
+    ].join(&quot;\r&quot;);
+    window.setTimeout(()=&gt;{ send_command(writer, cmd); }, 1000);
+  }
 }
-os.close(fd);
-</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/quickjs2-blockly.png" alt="(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way" /></p>
-<ol>
-<li>
-<p>Click the “Run on Ox64 Device” button</p>
-</li>
-<li>
-<p>Click the “Connect” button to connect to our Ox64 BL808 SBC</p>
-</li>
-<li>
-<p>Power on our Ox64 SBC. The Web App waits for the “nsh&gt;” prompt.</p>
-</li>
-<li>
-<p>Then our Drag-n-Drop NuttX App runs automatically on a Real Ox64 BL808 SBC yay!</p>
-</li>
-</ol>
-<p><a href="https://youtu.be/lUhrLWvwizU">(Watch the Demo on YouTube)</a></p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; qjs
-QuickJS - Type &quot;\h&quot; for help
-qjs &gt; var ULEDIOC_SETALL, fd, ret;
-undefined
-qjs &gt;
-qjs &gt;
-qjs &gt; ULEDIOC_SETALL = 7427;
-7427
-qjs &gt; fd = os.open(&#39;/dev/userleds&#39;);
-3
-qjs &gt; for (var count = 0; count &lt; 20; count++) {
-{  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
-{  ...       os.sleep(5000);
-{  ...       ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
-{  ...       os.sleep(5000);
-{  ...     }
-bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/quickjs2-device.png" alt="Running our Drag-n-Drop App on Ox64 BL808 SBC" /></p>
+</code></pre></div><h1 id="appendix-transmit-javascript-to-ox64-sbc"><a href="#appendix-transmit-javascript-to-ox64-sbc">10 Appendix: Transmit JavaScript to Ox64 SBC</a></h1>
+<p>TODO</p>
 <p><em>How did Blockly pass the Generated JavaScript to Ox64 SBC?</em></p>
 <p>When we click the “Run on Device” button, our Blockly Website saves the Generated JavaScript to the Web Browser Local Storage: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L84-L96">index.ts</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Run on Ox64 Device
@@ -662,115 +613,7 @@ async function send_command(writer, cmd) {
     await writer.write(ch);
     window.setTimeout(()=&gt;{ send_command(writer, null); }, timeout);
 }
-</code></pre></div>
-<p>More about the Web Serial API…</p>
-<h1 id="connect-to-ox64-bl808-sbc-via-web-serial-api"><a href="#connect-to-ox64-bl808-sbc-via-web-serial-api">11 Connect to Ox64 BL808 SBC via Web Serial API</a></h1>
-<p>TODO</p>
-<p>Let’s connect to Ox64 BL808 SBC in our Web Browser via the Web Serial API…</p>
-<ul>
-<li>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API">Web Serial API</a></p>
-</li>
-<li>
-<p><a href="https://developer.chrome.com/docs/capabilities/serial">Read from and write to a serial port</a></p>
-</li>
-<li>
-<p><a href="https://codelabs.developers.google.com/codelabs/web-serial#0">Getting started with the Web Serial API</a></p>
-<p>(Very similar to what we’re doing)</p>
-</li>
-</ul>
-<p>Beware, Web Serial API is only available…</p>
-<ul>
-<li>
-<p>Over HTTPS: https://…</p>
-</li>
-<li>
-<p>Or Local Filesystem: file://…</p>
-</li>
-<li>
-<p>It won’t work over HTTP! http://…</p>
-</li>
-</ul>
-<p>We create a button: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/e5e74ac92d21d47c359dbabd4babcb0d59206408#diff-09992667561d80fbe8c76cc5e271739ba0bb8194b31341005f25d8aa3f6c2baf">index.html</a></p>
-<div class="example-wrap"><pre class="language-html"><code>&lt;button id=&quot;connect&quot; onclick=&quot;control_device();&quot;&gt;
-  Connect
-&lt;/button&gt;
-</code></pre></div>
-<p>Which connects to Ox64 over UART: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/e5e74ac92d21d47c359dbabd4babcb0d59206408#diff-0600645ce087613109d3c3269c8fa545477739eff19b7d478672b715500bb9cc">jslinux.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART
-// https://developer.chrome.com/docs/capabilities/serial
-async function control_device() {
-    if (!navigator.serial) { const err = &quot;Web Serial API only works with https://... and file://...!&quot;; alert(err); throw new Error(err); }
-
-    // Prompt user to select any serial port.
-    const port = await navigator.serial.requestPort();
-
-    // Get all serial ports the user has previously granted the website access to.
-    // const ports = await navigator.serial.getPorts();
-
-    // Wait for the serial port to open.
-    // TODO: Ox64 only connects at 2 Mbps, change this for other devices
-    await port.open({ baudRate: 2000000 });
-
-    // Read from the serial port
-    const textDecoder = new TextDecoderStream();
-    const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
-    const reader = textDecoder.readable.getReader();
-
-    // Listen to data coming from the serial device.
-    while (true) {
-        const { value, done } = await reader.read();
-        if (done) {
-            // Allow the serial port to be closed later.
-            reader.releaseLock();
-            break;
-        }
-        // value is a string.
-        console.log(value);
-    }
-</code></pre></div>
-<p>And Ox64 NuttX appears in our JavaScript Console yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-ABC
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt;
-</code></pre></div><h1 id="send-a-command-to-ox64-bl808-sbc-via-web-serial-api"><a href="#send-a-command-to-ox64-bl808-sbc-via-web-serial-api">12 Send a Command to Ox64 BL808 SBC via Web Serial API</a></h1>
-<p>TODO</p>
-<p>This is how we send a command to Ox64 BL808 SBC via Web Serial API: <a href="https://github.com/lupyuen/nuttx-tinyemu/commit/1384db4edb398f6cb65718766af67dc1aa88bcb0">jslinux.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>  // Wait for the serial port to open.
-  // TODO: Ox64 only connects at 2 Mbps, change this for other devices
-  await port.open({ baudRate: 2000000 });
-
-  // Send a command to serial port
-  const cmd = [
-      `qjs`,
-      `function main() { console.log(123); }`,
-      `main()`,
-      ``
-  ].join(&quot;\r&quot;);
-  const textEncoder = new TextEncoderStream();
-  const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
-  const writer = textEncoder.writable.getWriter();
-  await writer.write(cmd);
-  
-  // Read from the serial port
-  const textDecoder = new TextDecoderStream();
-  const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
-  const reader = textDecoder.readable.getReader();
-
-  // Listen to data coming from the serial device.
-  ...
-</code></pre></div>
-<p>And it works! Says the JavaScript Console…</p>
-<div class="example-wrap"><pre class="language-text"><code>function main() { console.log(123); }
-main()
-123
-undefined
-qjs &gt;
-</code></pre></div><h1 id="load-the-blocks-for-a-blockly-app"><a href="#load-the-blocks-for-a-blockly-app">13 Load the Blocks for a Blockly App</a></h1>
+</code></pre></div><h1 id="appendix-load-a-blockly-app"><a href="#appendix-load-a-blockly-app">11 Appendix: Load a Blockly App</a></h1>
 <p>TODO</p>
 <p>This is how we load the Blocks for a Blockly App: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L100-L120">index.ts</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Select a Demo
@@ -804,32 +647,7 @@ localStorage.getItem(&quot;mainWorkspace&quot;);
 // Set the Blocks in JSON Format.
 // Change `...` to the JSON of the Blocks to be loaded.
 localStorage.setItem(&quot;mainWorkspace&quot;, `...`);
-</code></pre></div><h1 id="whats-next"><a href="#whats-next">14 What’s Next</a></h1>
-<p>TODO</p>
-<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
-<ul>
-<li>
-<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Current Project: “Apache NuttX RTOS for Ox64 BL808”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>My Other Project: “NuttX for Star64 JH7110”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Older Project: “NuttX for PinePhone”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
-</li>
-</ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/quickjs2.md"><strong>lupyuen.github.io/src/quickjs2.md</strong></a></p>
-
+</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
