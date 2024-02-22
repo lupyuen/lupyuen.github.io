@@ -48,19 +48,17 @@ Today 7 years later: How would we redo all this? With a bunch of Open Source Pac
 
 - Device Control: [Web Serial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API) and [Term.js](TODO) for controlling Ox64 over UART
 
-![TODO](https://lupyuen.github.io/images/quickjs2-nuttx.jpg)
-
-TODO
-
-![Running our Drag-n-Drop App on NuttX Emulator](https://lupyuen.github.io/images/quickjs2-emulator.png)
+TODO: (Pic below)
 
 Read on to find out how we made it...
 
+![TODO](https://lupyuen.github.io/images/quickjs2-nuttx.jpg)
+
+# Drag-n-Drop a Blinky App
+
+Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)...
+
 ![NuttX App Builder with Blockly](https://lupyuen.github.io/images/quickjs2-blockly.png)
-
-# Emulator Demo
-
-Here's the __Emulator Demo__ that we can play along at home...
 
 1.  Head over to this link...
 
@@ -145,6 +143,42 @@ TODO
 ![Running our Drag-n-Drop App on NuttX Emulator](https://lupyuen.github.io/images/quickjs2-emulator.png)
 
 # POSIX Blocks in Blockly
+
+_What's POSIX? How are POSIX Functions used in our Blinky App?_
+
+We call [__POSIX Functions__](TODO) to create Command-Line Apps in Linux, macOS and Windows.
+
+`open`, `ioctl`, `sleep` and `close` are all POSIX Functions. And they'll run on NuttX too!
+
+```javascript
+// Open the LED Device
+fd = os.open('/dev/userleds');
+
+// Flip the LED On and wait a while
+ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
+os.sleep(20000);
+
+// Close the LED Device
+os.close(fd);
+```
+
+_How did we create the POSIX Blocks?_
+
+Everything begins with [__Blockly__](https://developers.google.com/blockly/guides/get-started/get-the-code), which defines the Blocks that we may drag-n-drop...
+
+```bash
+## Create a Blockly Website in TypeScript
+npx @blockly/create-package \
+  app nuttx-blockly --typescript
+
+## Test our Blockly Website
+npm run start
+
+## Deploy to GitHub Pages
+npm run build \
+  && rm -r docs \
+  && mv dist docs
+```
 
 TODO
 
