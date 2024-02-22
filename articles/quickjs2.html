@@ -271,7 +271,7 @@ forBlock[&#39;posix_open&#39;] = function (
 <p>TODO: <code>sleep</code> Clode Generator</p>
 </li>
 </ul>
-<p>TODO: Pic of Local Storage</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-nuttx2.jpg" alt="TODO" /></p>
 <h1 id="transmit-javascript-via-local-storage"><a href="#transmit-javascript-via-local-storage">4 Transmit JavaScript via Local Storage</a></h1>
 <p><em>Blockly generates the JavaScript for our Blinky App… How did it appear in our Ox64 Emulator?</em></p>
 <p>When we click the <strong>“Run Emulator”</strong> button, our Blockly Website saves the Generated JavaScript to the <a href="TODO"><strong>Local Storage</strong></a> in our Web Browser: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L73-L86">index.ts</a></p>
@@ -337,11 +337,11 @@ window.setTimeout(()=&gt;{
 </li>
 <li>
 <p>TODO: Click the “Connect” button to connect to our Ox64 BL808 SBC</p>
-<p>TODO: Pic of Serial Port</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-serial.png" alt="TODO" /></p>
 </li>
 <li>
 <p>TODO: Power on our Ox64 SBC. The Web App waits for the “nsh&gt;” prompt.</p>
-<p>TODO: Pic of Wait for nsh</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-wait.png" alt="TODO" /></p>
 </li>
 <li>
 <p>Our Ox64 SBC boots NuttX (pic above)…</p>
@@ -394,6 +394,7 @@ bl808_gpiowrite:
 <p>It <strong>won’t work over HTTP</strong>! <em>http://…</em></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/quickjs2-nuttx3.jpg" alt="TODO" /></p>
 <p><em>How does it work?</em></p>
 <p>We create a <strong>HTML Button</strong> for “Connect”: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/index.html#L27-L29">index.html</a></p>
 <div class="example-wrap"><pre class="language-html"><code>&lt;!-- Connect Button in HTML --&gt;
@@ -423,7 +424,7 @@ async function control_device() {
   await port.open({ baudRate: 2000000 });
 </code></pre></div>
 <p>The code above pops up a prompt to <strong>select a Serial Port</strong> and connect at 2 Mbps…</p>
-<p>TODO: Pic of Serial Port</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-serial.png" alt="TODO" /></p>
 <p>We’re all set to Read and Write the Serial Port! First we need the <strong>Reader and Writer Streams</strong>…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Prepare to Write to the Serial Port
   const textEncoder = new TextEncoderStream();
@@ -640,7 +641,9 @@ localStorage.getItem(&quot;mainWorkspace&quot;);
 // Set the Blocks in JSON Format.
 // Change `...` to the JSON of the Blocks to be loaded.
 localStorage.setItem(&quot;mainWorkspace&quot;, `...`);
-</code></pre></div><h1 id="appendix-control-ox64-via-web-serial-api"><a href="#appendix-control-ox64-via-web-serial-api">10 Appendix: Control Ox64 via Web Serial API</a></h1>
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/quickjs2-nuttx3.jpg" alt="TODO" /></p>
+<h1 id="appendix-control-ox64-via-web-serial-api"><a href="#appendix-control-ox64-via-web-serial-api">10 Appendix: Control Ox64 via Web Serial API</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART. Called by the &quot;Connect&quot; Button.
 // https://developer.chrome.com/docs/capabilities/serial
@@ -692,6 +695,7 @@ async function control_device() {
 }
 </code></pre></div>
 <p>Let’s look inside <strong>send_command</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-nuttx3.jpg" alt="TODO" /></p>
 <h1 id="appendix-transmit-javascript-to-ox64-sbc"><a href="#appendix-transmit-javascript-to-ox64-sbc">11 Appendix: Transmit JavaScript to Ox64 SBC</a></h1>
 <p>TODO</p>
 <p><em>How did Blockly pass the Generated JavaScript to Ox64 SBC?</em></p>
