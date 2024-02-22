@@ -68,9 +68,9 @@ Here's the __Emulator Demo__ that we can play along at home...
 
 1.  Click __"Select Demo"__ > __"LED Blinky"__
 
-    [(Or __Drag-n-Drop the Demo__ ourselves)](https://youtu.be/-dG5ZSXELDc)
+    [(Or __Drag-n-Drop the Blocks__ ourselves)](https://youtu.be/-dG5ZSXELDc)
 
-1.  This JavaScript appears (pic above)...
+1.  The __Blinky Demo Blocks__ produce this JavaScript (pic above)...
 
     ```javascript
     // NuttX Command to flip the LED On and Off
@@ -108,7 +108,7 @@ Here's the __Emulator Demo__ that we can play along at home...
 
     And starts the [__QuickJS JavaScript Engine__](TODO).
 
-1.  Ox64 Emulator runs our __Drag-n-Drop JavaScript App__...
+1.  QuickJS runs our __Blinky JavaScript App__...
 
     ```text
     qjs > var ULEDIOC_SETALL, fd, ret;
