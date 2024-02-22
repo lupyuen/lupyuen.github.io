@@ -60,7 +60,7 @@ TODO
 
 # Emulator Demo
 
-Here's the Emulator Demo that we can all play along at home...
+Here's the Emulator Demo that we can play along at home...
 
 1.  Head over to this link...
 
@@ -96,12 +96,19 @@ Here's the Emulator Demo that we can all play along at home...
 
 1.  Click __"Run on Ox64 Emulator"__
 
-1.  Our Drag-n-Drop App runs in the Emulator, and blinks the __Simulated LED__ (GPIO 29, pic below)...
+1.  Our [__Emulated Ox64 SBC__](TODO) boots in the Web Browser...
 
     ```text
     NuttShell (NSH) NuttX-12.4.0-RC0
     nsh> qjs
     QuickJS - Type "\h" for help
+    ```
+
+    And starts the [__QuickJS JavaScript Engine__](TODO).
+
+1.  Ox64 Emulator runs our __Drag-n-Drop JavaScript App__...
+
+    ```text
     qjs > var ULEDIOC_SETALL, fd, ret;
     qjs > ULEDIOC_SETALL = 7427;
     7427
@@ -113,9 +120,16 @@ Here's the Emulator Demo that we can all play along at home...
       ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
       os.sleep(20000);
     }
+    ```
+
+    Which blinks the [__Simulated LED__](TODO) (GPIO 29, pic below)...
+
+    ```text
     bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
     bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
     ```
+
+_What just happened?_
 
 TODO
 
