@@ -277,8 +277,23 @@ forBlock[&#39;posix_open&#39;] = function (
 <p>TODO: <code>sleep</code> Clode Generator</p>
 </li>
 </ul>
+<p>TODO: Pic of Local Storage</p>
 <h1 id="transmit-javascript-via-local-storage"><a href="#transmit-javascript-via-local-storage">4 Transmit JavaScript via Local Storage</a></h1>
 <p><em>Blockly generates the JavaScript for our Blinky App… How did it appear in our Ox64 Emulator?</em></p>
+<p>When we click the <strong>“Run Emulator”</strong> button, our Blockly Website saves the Generated JavaScript to the Web Browser’s <a href="TODO"><strong>Local Storage</strong></a>: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L73-L86">index.ts</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Run on Ox64 Emulator
+function runEmulator() {
+  // Save the Generated JavaScript Code to LocalStorage
+  const code = javascriptGenerator.workspaceToCode(ws);
+  window.localStorage.setItem(&quot;runCode&quot;, code);
+
+  // Set the Timestamp for Optimistic Locking (later)
+  window.localStorage.setItem(&quot;runTimestamp&quot;, Date.now() + &quot;&quot;);
+
+  // Open the NuttX Emulator. Reuse the same tab.
+  window.open(&quot;https://lupyuen.github.io/nuttx-tinyemu/blockly/&quot;, &quot;Emulator&quot;);
+}
+</code></pre></div>
 <p>TODO</p>
 <h1 id="device-demo"><a href="#device-demo">5 Device Demo</a></h1>
 <p>TODO</p>
