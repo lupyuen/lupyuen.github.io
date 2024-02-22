@@ -230,7 +230,7 @@ TODO: Pic of Local Storage
 
 _Blockly generates the JavaScript for our Blinky App... How did it appear in our Ox64 Emulator?_
 
-When we click the __"Run Emulator"__ button, our Blockly Website saves the Generated JavaScript to the Web Browser's [__Local Storage__](TODO): [index.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L73-L86)
+When we click the __"Run Emulator"__ button, our Blockly Website saves the Generated JavaScript to the [__Local Storage__](TODO) in our Web Browser: [index.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L73-L86)
 
 ```javascript
 // Run on Ox64 Emulator
@@ -246,6 +246,35 @@ function runEmulator() {
   window.open("https://lupyuen.github.io/nuttx-tinyemu/blockly/", "Emulator");
 }
 ```
+
+__In Ox64 Emulator__: We fetch the Generated JavaScript from Local Storage: [jslinux.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L542-L554)
+
+```javascript
+// Fetch the Generated JavaScript from Local Storage.
+// Newlines become Carriage Returns.
+const code = window.localStorage.getItem("runCode")
+  .split("\n").join("\r")
+  .split("\r\r").join("\r");  // Merge multiple newlines
+
+// Append the Generated JavaScript to
+// the QuickJS Command 
+const cmd = [
+  `qjs`,
+  code,
+  ``
+].join("\r");
+
+// Send the command to the Emulator Console
+window.setTimeout(()=>{
+  send_command(cmd);
+}, 5000);  // Wait 5 seconds for NuttX and QuickJS to boot
+```
+
+[(__send_command__ is here)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L522-L542)
+
+And send it to the [__Ox64 Emulator Console__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L522-L542), character by character.
+
+Thanks to [__TinyEMU__](TODO) and [__Term.js__](TODO), everything works hunky dory!
 
 TODO
 
