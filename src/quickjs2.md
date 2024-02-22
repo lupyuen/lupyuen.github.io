@@ -54,13 +54,13 @@ TODO
 
 ![Running our Drag-n-Drop App on NuttX Emulator](https://lupyuen.github.io/images/quickjs2-emulator.png)
 
-TODO
+Read on to find out how we made it...
 
 ![NuttX App Builder with Blockly](https://lupyuen.github.io/images/quickjs2-blockly.png)
 
 # Emulator Demo
 
-Here's the Emulator Demo that we can play along at home...
+Here's the __Emulator Demo__ that we can play along at home...
 
 1.  Head over to this link...
 
@@ -101,7 +101,9 @@ Here's the Emulator Demo that we can play along at home...
     ```text
     NuttShell (NSH) NuttX-12.4.0-RC0
     nsh> qjs
+
     QuickJS - Type "\h" for help
+    qjs >
     ```
 
     And starts the [__QuickJS JavaScript Engine__](TODO).
@@ -125,17 +127,24 @@ Here's the Emulator Demo that we can play along at home...
     Which blinks the [__Simulated LED__](TODO) (GPIO 29, pic below)...
 
     ```text
-    bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-    bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+    bl808_gpiowrite:
+      regaddr=0x20000938,
+      set=0x1000000
+
+    bl808_gpiowrite:
+      regaddr=0x20000938,
+      clear=0x1000000
     ```
 
 _What just happened?_
+
+We drag-n-dropped a NuttX App that Blinks the LED. And tested it in our Web Browser, with the Ox64 Emulator!
 
 TODO
 
 ![Running our Drag-n-Drop App on NuttX Emulator](https://lupyuen.github.io/images/quickjs2-emulator.png)
 
-# Blockly Blocks
+# POSIX Blocks in Blockly
 
 TODO
 
