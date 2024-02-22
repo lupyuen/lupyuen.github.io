@@ -65,7 +65,7 @@
 
     <h1 class="title">(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way</h1>
     <nav id="TOC"><ul>
-<li><a href="#emulator-demo">1 Emulator Demo</a><ul></ul></li>
+<li><a href="#drag-n-drop-a-blinky-app">1 Drag-n-Drop a Blinky App</a><ul></ul></li>
 <li><a href="#posix-blocks-in-blockly">2 POSIX Blocks in Blockly</a><ul></ul></li>
 <li><a href="#blockly-code-generator">3 Blockly Code Generator</a><ul></ul></li>
 <li><a href="#local-storage">4 Local Storage</a><ul></ul></li>
@@ -131,13 +131,12 @@
 <p>Device Control: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API">Web Serial API</a> and <a href="TODO">Term.js</a> for controlling Ox64 over UART</p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/quickjs2-nuttx.jpg" alt="TODO" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/quickjs2-emulator.png" alt="Running our Drag-n-Drop App on NuttX Emulator" /></p>
+<p>TODO: (Pic below)</p>
 <p>Read on to find out how we made it…</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-nuttx.jpg" alt="TODO" /></p>
+<h1 id="drag-n-drop-a-blinky-app"><a href="#drag-n-drop-a-blinky-app">1 Drag-n-Drop a Blinky App</a></h1>
+<p>Here’s the <strong>Emulator Demo</strong> that we can play along at home (without Ox64 SBC)…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-blockly.png" alt="NuttX App Builder with Blockly" /></p>
-<h1 id="emulator-demo"><a href="#emulator-demo">1 Emulator Demo</a></h1>
-<p>Here’s the <strong>Emulator Demo</strong> that we can play along at home…</p>
 <ol>
 <li>
 <p>Head over to this link…</p>
@@ -211,6 +210,33 @@ bl808_gpiowrite:
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-emulator.png" alt="Running our Drag-n-Drop App on NuttX Emulator" /></p>
 <h1 id="posix-blocks-in-blockly"><a href="#posix-blocks-in-blockly">2 POSIX Blocks in Blockly</a></h1>
+<p><em>What’s POSIX? How are POSIX Functions used in our Blinky App?</em></p>
+<p>We call <a href="TODO"><strong>POSIX Functions</strong></a> to create Command-Line Apps in Linux, macOS and Windows.</p>
+<p><code>open</code>, <code>ioctl</code>, <code>sleep</code> and <code>close</code> are all POSIX Functions. And they’ll run on NuttX too!</p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Open the LED Device
+fd = os.open(&#39;/dev/userleds&#39;);
+
+// Flip the LED On and wait a while
+ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
+os.sleep(20000);
+
+// Close the LED Device
+os.close(fd);
+</code></pre></div>
+<p><em>How did we create the POSIX Blocks?</em></p>
+<p>Everything begins with <a href="https://developers.google.com/blockly/guides/get-started/get-the-code"><strong>Blockly</strong></a>, which defines the Blocks that we may drag-n-drop…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Create a Blockly Website in TypeScript
+npx @blockly/create-package \
+  app nuttx-blockly --typescript
+
+## Test our Blockly Website
+npm run start
+
+## Deploy to GitHub Pages
+npm run build \
+  &amp;&amp; rm -r docs \
+  &amp;&amp; mv dist docs
+</code></pre></div>
 <p>TODO</p>
 <h1 id="blockly-code-generator"><a href="#blockly-code-generator">3 Blockly Code Generator</a></h1>
 <p>TODO</p>
