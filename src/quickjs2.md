@@ -313,9 +313,9 @@ Well it gets complicated. If we have an [__Ox64 BL808 SBC__](https://www.hackste
 
     ![Selecting the Serial Port for Ox64 SBC](https://lupyuen.github.io/images/quickjs2-serial.png)
 
-1.  Power on our Ox64 SBC. The Web Serial Monitor waits for the __"nsh>"__ prompt...
+1.  Power on our Ox64 SBC. The Web Serial Monitor waits for the NuttX Shell __"nsh>"__ prompt...
 
-    ![TODO](https://lupyuen.github.io/images/quickjs2-wait.png)
+    ![Wait for NuttX Shell](https://lupyuen.github.io/images/quickjs2-wait.png)
 
 1.  Our Ox64 SBC boots NuttX...
 
@@ -462,7 +462,7 @@ Yeah we might switch to [__Zmodem__](https://github.com/nodesign/nuttx-apps/blob
 
 _We created fun things with Web Serial API and Term.js. Anything else we can make?_
 
-Thanks to Web Serial API (and Term.js), we can run __PureScript__ to parse the __Real-Time Logs__ from a NuttX Device (and NuttX Emulator)...
+Thanks to Web Serial API (and Term.js), we can run [__PureScript__](https://www.purescript.org/) to parse the [__Real-Time Logs__](https://github.com/lupyuen/nuttx-purescript-parser) from a NuttX Device (or NuttX Emulator)...
 
 All this in the Web Browser! Stay tuned for the next article.
 
