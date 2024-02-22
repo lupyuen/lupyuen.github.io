@@ -728,6 +728,8 @@ async function control_device() {
 }
 ```
 
+TODO
+
 ```javascript
 // Send a Command to serial port, character by character
 let send_str = "";
