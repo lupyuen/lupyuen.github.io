@@ -44,7 +44,7 @@ __Today 7 years later:__ How would we redo all this? With a bunch of Open Source
 
   (Controls Ox64 over UART)
 
-Read on to find out how we made this happen...
+This is how we gave MakeCode a wholesome wholesale makeover...
 
 ![TODO](https://lupyuen.github.io/images/quickjs2-nuttx.jpg)
 
