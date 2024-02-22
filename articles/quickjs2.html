@@ -67,8 +67,8 @@
     <nav id="TOC"><ul>
 <li><a href="#drag-n-drop-a-blinky-app">1 Drag-n-Drop a Blinky App</a><ul></ul></li>
 <li><a href="#posix-blocks-in-blockly">2 POSIX Blocks in Blockly</a><ul></ul></li>
-<li><a href="#blockly-code-generator">3 Blockly Code Generator</a><ul></ul></li>
-<li><a href="#local-storage">4 Local Storage</a><ul></ul></li>
+<li><a href="#code-generator-in-blockly">3 Code Generator in Blockly</a><ul></ul></li>
+<li><a href="#transmit-javascript-via-local-storage">4 Transmit JavaScript via Local Storage</a><ul></ul></li>
 <li><a href="#device-demo">5 Device Demo</a><ul></ul></li>
 <li><a href="#web-serial-api">6 Web Serial API</a><ul></ul></li>
 <li><a href="#create-the-blockly-project">7 Create the Blockly Project</a><ul></ul></li>
@@ -203,7 +203,9 @@ qjs &gt; for (var count = 0; count &lt; 20; count++) {
 bl808_gpiowrite:
   regaddr=0x20000938,
   clear=0x1000000
-</code></pre></div></li>
+</code></pre></div>
+<p>TODO: Watch the Demo on YouTube</p>
+</li>
 </ol>
 <p><em>What just happened?</em></p>
 <p>We drag-n-dropped a NuttX App that Blinks the LED. And tested it in our Web Browser, with the Ox64 Emulator!</p>
@@ -241,9 +243,42 @@ npm run build \
 <p>We added these <strong>POSIX Blocks</strong> to Blockly…</p>
 <p>TODO: Every Block</p>
 <p>TODO: Details</p>
-<h1 id="blockly-code-generator"><a href="#blockly-code-generator">3 Blockly Code Generator</a></h1>
-<p>TODO</p>
-<h1 id="local-storage"><a href="#local-storage">4 Local Storage</a></h1>
+<h1 id="code-generator-in-blockly"><a href="#code-generator-in-blockly">3 Code Generator in Blockly</a></h1>
+<p><em>We dragged the POSIX Blocks to our Blinky App… How did the JavaScript automagically appear?</em></p>
+<p>We created <strong>Code Generators</strong> in Blockly that will emit the JavaScript Code for each POSIX Block: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/generators/javascript.ts#L15-L25">javascript.ts</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Code Generator for POSIX `Open` Block
+forBlock[&#39;posix_open&#39;] = function (
+  block: Blockly.Block,             // Our Block
+  generator: Blockly.CodeGenerator  // Blockly Code Generator
+) {
+  // Fetch the Filename Parameter
+  // from the Block: &#39;/dev/userleds&#39;
+  const text = generator.valueToCode(block, &#39;FILENAME&#39;, Order.NONE)
+    || &quot;&#39;&#39;&quot;;  // Default to blank
+
+  // Generate the Function Call for the block:
+  // os.open(&#39;/dev/userleds&#39;)
+  const code = `os.open(${text})`;
+  return [code, Order.ATOMIC];
+};
+</code></pre></div>
+<p>We do this for every POSIX Block…</p>
+<ul>
+<li>
+<p>TODO: <code>open</code> Code Generator</p>
+</li>
+<li>
+<p>TODO: <code>close</code> Code Generator</p>
+</li>
+<li>
+<p>TODO: <code>ioctl</code> Code Generator</p>
+</li>
+<li>
+<p>TODO: <code>sleep</code> Clode Generator</p>
+</li>
+</ul>
+<h1 id="transmit-javascript-via-local-storage"><a href="#transmit-javascript-via-local-storage">4 Transmit JavaScript via Local Storage</a></h1>
+<p><em>Blockly generates the JavaScript for our Blinky App… How did it appear in our Ox64 Emulator?</em></p>
 <p>TODO</p>
 <h1 id="device-demo"><a href="#device-demo">5 Device Demo</a></h1>
 <p>TODO</p>
