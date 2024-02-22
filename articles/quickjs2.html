@@ -69,7 +69,7 @@
 <li><a href="#posix-blocks-in-blockly">2 POSIX Blocks in Blockly</a><ul></ul></li>
 <li><a href="#code-generator-in-blockly">3 Code Generator in Blockly</a><ul></ul></li>
 <li><a href="#transmit-javascript-via-local-storage">4 Transmit JavaScript via Local Storage</a><ul></ul></li>
-<li><a href="#device-demo">5 Device Demo</a><ul></ul></li>
+<li><a href="#blinky-on-a-real-ox64-sbc">5 Blinky on a Real Ox64 SBC</a><ul></ul></li>
 <li><a href="#web-serial-api">6 Web Serial API</a><ul></ul></li>
 <li><a href="#create-the-blockly-project">7 Create the Blockly Project</a><ul></ul></li>
 <li><a href="#send-a-command-to-nuttx-emulator">8 Send a Command to NuttX Emulator</a><ul></ul></li>
@@ -318,8 +318,67 @@ window.setTimeout(()=&gt;{
 <p>And send it to the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L522-L542"><strong>Ox64 Emulator Console</strong></a>, character by character.</p>
 <p>Thanks to <a href="TODO"><strong>TinyEMU</strong></a> and <a href="TODO"><strong>Term.js</strong></a>, everything works hunky dory!</p>
 <p>TODO</p>
-<h1 id="device-demo"><a href="#device-demo">5 Device Demo</a></h1>
+<h1 id="blinky-on-a-real-ox64-sbc"><a href="#blinky-on-a-real-ox64-sbc">5 Blinky on a Real Ox64 SBC</a></h1>
+<p><em>Will we do the same for a Real Ox64 SBC?</em></p>
+<p>Well it gets complicated. If we have an <a href="TODO"><strong>Ox64 BL808 SBC</strong></a>, here are the <strong>Demo Steps</strong>…</p>
+<ol>
+<li>
+<p>TODO: Flash Ox64, microSD, but don’t power up yet</p>
+</li>
+<li>
+<p>Head over to this link…</p>
+<p><a href="https://lupyuen.github.io/nuttx-blockly/"><strong>NuttX App Builder with Blockly</strong></a></p>
+</li>
+<li>
+<p>Click <strong>“Select Demo”</strong> &gt; <strong>“LED Blinky”</strong></p>
+<p><a href="https://youtu.be/-dG5ZSXELDc">(Or <strong>Drag-n-Drop the Blocks</strong> ourselves)</a></p>
+</li>
+<li>
+<p>Click <strong>“Run on Ox64 Device”</strong></p>
+</li>
+<li>
+<p>TODO: Click the “Connect” button to connect to our Ox64 BL808 SBC</p>
+</li>
+<li>
+<p>TODO: Power on our Ox64 SBC. The Web App waits for the “nsh&gt;” prompt.</p>
+</li>
+<li>
+<p>Our Ox64 SBC boots NuttX…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; qjs
+
+QuickJS - Type &quot;\h&quot; for help
+qjs &gt;
+</code></pre></div>
+<p>And starts the <a href="TODO"><strong>QuickJS JavaScript Engine</strong></a>.</p>
+</li>
+<li>
+<p>QuickJS runs our <strong>Blinky JavaScript App</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>qjs &gt; var ULEDIOC_SETALL, fd, ret;
+qjs &gt; ULEDIOC_SETALL = 7427;
+7427
+qjs &gt; fd = os.open(&#39;/dev/userleds&#39;);
+3
+qjs &gt; for (var count = 0; count &lt; 20; count++) {
+  ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
+  os.sleep(5000);
+  ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
+  os.sleep(5000);
+}
+</code></pre></div>
+<p>Which blinks the <a href="TODO"><strong>Real Ox64 LED</strong></a> (GPIO 29, pic below)…</p>
+<div class="example-wrap"><pre class="language-text"><code>bl808_gpiowrite:
+  regaddr=0x20000938,
+  set=0x1000000
+
+bl808_gpiowrite:
+  regaddr=0x20000938,
+  clear=0x1000000
+</code></pre></div></li>
+</ol>
 <p>TODO</p>
+<p><a href="https://youtu.be/lUhrLWvwizU">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-device.png" alt="Running our Drag-n-Drop App on Ox64 BL808 SBC" /></p>
 <h1 id="web-serial-api"><a href="#web-serial-api">6 Web Serial API</a></h1>
 <p>TODO</p>
 <h1 id="create-the-blockly-project"><a href="#create-the-blockly-project">7 Create the Blockly Project</a></h1>
