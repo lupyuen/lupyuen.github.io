@@ -66,7 +66,7 @@
     <h1 class="title">(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way</h1>
     <nav id="TOC"><ul>
 <li><a href="#emulator-demo">1 Emulator Demo</a><ul></ul></li>
-<li><a href="#blockly-blocks">2 Blockly Blocks</a><ul></ul></li>
+<li><a href="#posix-blocks-in-blockly">2 POSIX Blocks in Blockly</a><ul></ul></li>
 <li><a href="#blockly-code-generator">3 Blockly Code Generator</a><ul></ul></li>
 <li><a href="#local-storage">4 Local Storage</a><ul></ul></li>
 <li><a href="#device-demo">5 Device Demo</a><ul></ul></li>
@@ -134,10 +134,10 @@
 <p><img src="https://lupyuen.github.io/images/quickjs2-nuttx.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-emulator.png" alt="Running our Drag-n-Drop App on NuttX Emulator" /></p>
-<p>TODO</p>
+<p>Read on to find out how we made it…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-blockly.png" alt="NuttX App Builder with Blockly" /></p>
 <h1 id="emulator-demo"><a href="#emulator-demo">1 Emulator Demo</a></h1>
-<p>Here’s the Emulator Demo that we can play along at home…</p>
+<p>Here’s the <strong>Emulator Demo</strong> that we can play along at home…</p>
 <ol>
 <li>
 <p>Head over to this link…</p>
@@ -176,7 +176,9 @@ os.close(fd);
 <p>Our <a href="TODO"><strong>Emulated Ox64 SBC</strong></a> boots in the Web Browser…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; qjs
+
 QuickJS - Type &quot;\h&quot; for help
+qjs &gt;
 </code></pre></div>
 <p>And starts the <a href="TODO"><strong>QuickJS JavaScript Engine</strong></a>.</p>
 </li>
@@ -195,14 +197,20 @@ qjs &gt; for (var count = 0; count &lt; 20; count++) {
 }
 </code></pre></div>
 <p>Which blinks the <a href="TODO"><strong>Simulated LED</strong></a> (GPIO 29, pic below)…</p>
-<div class="example-wrap"><pre class="language-text"><code>bl808_gpiowrite: regaddr=0x20000938, set=0x1000000
-bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
+<div class="example-wrap"><pre class="language-text"><code>bl808_gpiowrite:
+  regaddr=0x20000938,
+  set=0x1000000
+
+bl808_gpiowrite:
+  regaddr=0x20000938,
+  clear=0x1000000
 </code></pre></div></li>
 </ol>
 <p><em>What just happened?</em></p>
+<p>We drag-n-dropped a NuttX App that Blinks the LED. And tested it in our Web Browser, with the Ox64 Emulator!</p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-emulator.png" alt="Running our Drag-n-Drop App on NuttX Emulator" /></p>
-<h1 id="blockly-blocks"><a href="#blockly-blocks">2 Blockly Blocks</a></h1>
+<h1 id="posix-blocks-in-blockly"><a href="#posix-blocks-in-blockly">2 POSIX Blocks in Blockly</a></h1>
 <p>TODO</p>
 <h1 id="blockly-code-generator"><a href="#blockly-code-generator">3 Blockly Code Generator</a></h1>
 <p>TODO</p>
