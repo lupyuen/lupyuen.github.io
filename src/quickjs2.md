@@ -224,9 +224,28 @@ We do this for every POSIX Block...
 
 - TODO: `sleep` Clode Generator
 
+TODO: Pic of Local Storage
+
 # Transmit JavaScript via Local Storage
 
 _Blockly generates the JavaScript for our Blinky App... How did it appear in our Ox64 Emulator?_
+
+When we click the __"Run Emulator"__ button, our Blockly Website saves the Generated JavaScript to the Web Browser's [__Local Storage__](TODO): [index.ts](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L73-L86)
+
+```javascript
+// Run on Ox64 Emulator
+function runEmulator() {
+  // Save the Generated JavaScript Code to LocalStorage
+  const code = javascriptGenerator.workspaceToCode(ws);
+  window.localStorage.setItem("runCode", code);
+
+  // Set the Timestamp for Optimistic Locking (later)
+  window.localStorage.setItem("runTimestamp", Date.now() + "");
+
+  // Open the NuttX Emulator. Reuse the same tab.
+  window.open("https://lupyuen.github.io/nuttx-tinyemu/blockly/", "Emulator");
+}
+```
 
 TODO
 
