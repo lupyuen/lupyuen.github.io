@@ -600,6 +600,9 @@ export const toolbox = {
 Then we __Build and Deploy__ our Blockly Website...
 
 ```bash
+## Download our Blockly Website
+git clone https://github.com/lupyuen/nuttx-blockly
+
 ## Test our Blockly Website
 cd nuttx-blockly
 npm run start
