@@ -42,7 +42,7 @@ __Today 7 years later:__ How would we redo all this? With a bunch of Open Source
 
 - Device Control: [__Web Serial API__](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API) with [__Term.js__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/term.js)
 
-  (Controls Ox64 over UART)
+  (Control Ox64 over UART)
 
 This is how we gave MakeCode a wholesome wholesale makeover...
 
@@ -132,7 +132,9 @@ Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)..
 
 _What just happened?_
 
-We drag-n-dropped a NuttX App that Blinks the LED. And our NuttX App runs automagically in our Web Browser, thanks to Ox64 Emulator!
+We drag-n-dropped a NuttX App that Blinks the LED.
+
+And our NuttX App runs automagically in our Web Browser, thanks to Ox64 Emulator!
 
 We go behind the scenes...
 
@@ -359,7 +361,7 @@ Well it gets complicated. If we have an [__Ox64 BL808 SBC__](https://www.hackste
 
     [(Watch the __Demo on YouTube__)](https://youtu.be/lUhrLWvwizU)
 
-TODO: What just happened?
+What just happened? Let's break it down...
 
 ![Blinking a Real LED on Ox64 SBC](https://lupyuen.github.io/images/nim-blink2.webp)
 
