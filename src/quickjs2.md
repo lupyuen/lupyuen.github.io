@@ -128,7 +128,7 @@ Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)..
       clear=0x1000000
     ```
 
-    TODO: Watch the Demo on YouTube
+    [(Watch the __Demo on YouTube__)](https://youtu.be/-dG5ZSXELDc?si=pAkGdtvUHW9qpjoG&t=88)
 
 _What just happened?_
 
@@ -361,7 +361,7 @@ Well it gets complicated. If we have an [__Ox64 BL808 SBC__](https://www.hackste
 
 TODO: What just happened?
 
-TODO: Pic of Real Ox64 LED
+![Blinking a Real LED on Ox64 SBC](https://lupyuen.github.io/images/nim-blink2.webp)
 
 # Control Ox64 via Web Serial API
 
