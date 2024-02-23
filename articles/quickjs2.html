@@ -129,7 +129,7 @@
 <p><img src="https://lupyuen.github.io/images/quickjs2-nuttx.jpg" alt="Blockly App Builder for NuttX" /></p>
 <h1 id="drag-n-drop-a-blinky-app"><a href="#drag-n-drop-a-blinky-app">1 Drag-n-Drop a Blinky App</a></h1>
 <p>Here’s the <strong>Emulator Demo</strong> that we can play along at home (without Ox64 SBC)…</p>
-<p><img src="https://lupyuen.github.io/images/quickjs2-blockly.png" alt="NuttX App Builder with Blockly" /></p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="NuttX App Builder with Blockly" /></p>
 <ol>
 <li>
 <p>Head over to this link…</p>
@@ -620,6 +620,7 @@ npm run build \
 </code></pre></div>
 <p>Remember to <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L35-L38"><strong>Disable the JavaScript Eval</strong></a>. (Because our Web Browser won’t like POSIX)</p>
 <p>Let’s talk about loading a Blockly App…</p>
+<p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="NuttX App Builder with Blockly" /></p>
 <h1 id="appendix-load-a-blockly-app"><a href="#appendix-load-a-blockly-app">9 Appendix: Load a Blockly App</a></h1>
 <p>In our Blockly Website, we provide the feature to load the <strong>Demo Blocks for a Blockly App</strong>…</p>
 <ul>
@@ -809,25 +810,25 @@ async function control_device() {
 <p>Here’s the implementation of <strong>send_command</strong>: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L675-L695">webserial.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Send a Command to serial port, character by character
 async function send_command(writer, cmd) {
-    if (cmd !== null) { send_str = cmd; }
-    if (send_str.length == 0) { return; }
+  if (cmd !== null) { send_str = cmd; }
+  if (send_str.length == 0) { return; }
 
-    // Get the next character
-    const ch = send_str.substring(0, 1);
-    send_str = send_str.substring(1);
+  // Get the next character
+  const ch = send_str.substring(0, 1);
+  send_str = send_str.substring(1);
 
-    // Slow down at the end of each line
-    const timeout = (ch === &quot;\r&quot;)
-        ? 3000
-        : 10;
+  // Slow down at the end of each line
+  const timeout = (ch === &quot;\r&quot;)
+    ? 3000
+    : 10;
 
-    // Send the character
-    await writer.write(ch);
+  // Send the character
+  await writer.write(ch);
 
-    // Wait a while before next character
-    window.setTimeout(()=&gt;{
-      send_command(writer, null);
-    }, timeout);
+  // Wait a while before next character
+  window.setTimeout(()=&gt;{
+    send_command(writer, null);
+  }, timeout);
 }
 
 // Command to be sent to Serial Port
