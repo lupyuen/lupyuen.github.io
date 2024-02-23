@@ -158,9 +158,9 @@ os.sleep(5000);
 os.close(fd);
 ```
 
-TODO: Pic of POSIX Blocks
+![POSIX Blocks in Blockly](https://lupyuen.github.io/images/quickjs2-blocks.png)
 
-_How did we create the POSIX Blocks?_
+_How did we create the POSIX Blocks? (Pic above)_
 
 Everything begins with [__Blockly__](https://developers.google.com/blockly/guides/get-started/get-the-code), which defines the Blocks that we may drag-n-drop...
 
@@ -181,7 +181,7 @@ npm run build \
 
 We added these __POSIX Blocks__ to Blockly...
 
-TODO: Every Block
+> ![POSIX Blocks in Blockly](https://lupyuen.github.io/images/quickjs2-posix.png)
 
 Which are explained here...
 
