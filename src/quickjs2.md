@@ -835,9 +835,11 @@ async function send_command(writer, cmd) {
 
     // Send the character
     await writer.write(ch);
+
+    // Wait a while before next character
     window.setTimeout(()=>{
       send_command(writer, null);
-    }, timeout);  // Wait a while before next character
+    }, timeout);
 }
 
 // Command to be sent to Serial Port
