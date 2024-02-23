@@ -52,7 +52,7 @@ This is how we gave MakeCode a wholesome wholesale makeover...
 
 Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)...
 
-![NuttX App Builder with Blockly](https://lupyuen.github.io/images/quickjs2-blockly.png)
+![NuttX App Builder with Blockly](https://lupyuen.github.io/images/quickjs2-title.png)
 
 1.  Head over to this link...
 
@@ -614,6 +614,8 @@ Remember to [__Disable the JavaScript Eval__](https://github.com/lupyuen/nuttx-b
 
 Let's talk about loading a Blockly App...
 
+![NuttX App Builder with Blockly](https://lupyuen.github.io/images/quickjs2-title.png)
+
 # Appendix: Load a Blockly App
 
 In our Blockly Website, we provide the feature to load the __Demo Blocks for a Blockly App__...
@@ -821,25 +823,25 @@ Here's the implementation of __send_command__: [webserial.js](https://github.com
 ```javascript
 // Send a Command to serial port, character by character
 async function send_command(writer, cmd) {
-    if (cmd !== null) { send_str = cmd; }
-    if (send_str.length == 0) { return; }
+  if (cmd !== null) { send_str = cmd; }
+  if (send_str.length == 0) { return; }
 
-    // Get the next character
-    const ch = send_str.substring(0, 1);
-    send_str = send_str.substring(1);
+  // Get the next character
+  const ch = send_str.substring(0, 1);
+  send_str = send_str.substring(1);
 
-    // Slow down at the end of each line
-    const timeout = (ch === "\r")
-        ? 3000
-        : 10;
+  // Slow down at the end of each line
+  const timeout = (ch === "\r")
+    ? 3000
+    : 10;
 
-    // Send the character
-    await writer.write(ch);
+  // Send the character
+  await writer.write(ch);
 
-    // Wait a while before next character
-    window.setTimeout(()=>{
-      send_command(writer, null);
-    }, timeout);
+  // Wait a while before next character
+  window.setTimeout(()=>{
+    send_command(writer, null);
+  }, timeout);
 }
 
 // Command to be sent to Serial Port
