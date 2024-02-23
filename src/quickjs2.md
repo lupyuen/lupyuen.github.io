@@ -38,7 +38,7 @@ __Today 7 years later:__ How would we redo all this? With a bunch of Open Source
 
 - C Compiler + Assembler: [__TCC WebAssembly for NuttX__](https://lupyuen.github.io/articles/tcc)
 
-  (Won't need this since we have JavaScript)
+  (Won't need this today since we have JavaScript)
 
 - Device Control: [__Web Serial API__](https://developer.chrome.com/docs/capabilities/serial) with [__Term.js__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/term.js)
 
