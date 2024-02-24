@@ -1,6 +1,6 @@
 # (Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way
 
-📝 _28 Feb 2024_
+📝 _25 Feb 2024_
 
 ![(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way](https://lupyuen.github.io/images/quickjs2-title.png)
 
@@ -481,7 +481,7 @@ All this in the Web Browser! Stay tuned for the next article.
 
 # What's Next
 
-TODO: So much has changed over the past 7 years! We gave __MakeCode App Builder__ a wholesome wholesale makeover (pic above)...
+So much has changed over the past 7 years! We gave __MakeCode App Builder__ a wholesome wholesale makeover (pic above)...
 
 - We swapped BBC micro:bit to a cheaper, $8 64-bit RISC-V Gadget...
 
@@ -506,6 +506,8 @@ TODO: So much has changed over the past 7 years! We gave __MakeCode App Builder_
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=39495477)
 
 -   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 

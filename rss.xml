@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way</title>
+            <link>https://lupyuen.github.io/articles/quickjs2</link>
+            <description><![CDATA[Remember Makecode? BBC micro:bit and its Drag-n-Drop App Builder? Let's give MakeCode a wholesome wholesale makeover... With Blockly, QuickJS JavaScript Engine, Apache NuttX RTOS and Ox64 BL808 64-bit RISC-V SBC]]></description>
+            <guid>https://lupyuen.github.io/articles/quickjs2</guid>
+            <pubDate>Sun, 25 Feb 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)</title>
             <link>https://lupyuen.github.io/articles/quickjs</link>
             <description><![CDATA[Can we run QuickJS JavaScript Engine on Apache NuttX RTOS? And Blink the LED on Ox64 BL808 RISC-V SBC... In 4 lines of JavaScript? Let’s do it!]]></description>
