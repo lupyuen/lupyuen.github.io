@@ -423,7 +423,7 @@ The code above pops up a prompt to __select a Serial Port__ and connect at 2 Mbp
 
 ![Selecting the Serial Port](https://lupyuen.github.io/images/quickjs2-serial.png)
 
-We're all set to Read and Write the Serial Port! First we need the __Reader and Writer Streams__...
+We're all set to Read and Write the Serial Port! First we need the __Reader and Writer Streams__: [webserial.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L627-L641)
 
 ```javascript
   // Prepare to Write to the Serial Port
@@ -437,7 +437,7 @@ We're all set to Read and Write the Serial Port! First we need the __Reader and 
   const reader = textDecoder.readable.getReader();
 ```
 
-Which we may __read and write__ like so...
+That we may __read and write__ like so: [webserial.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L641-L695)
 
 ```javascript
   // Read from the Serial Port
@@ -452,6 +452,8 @@ Which we may __read and write__ like so...
   // Send the QuickJS Command to Serial Port
   await writer.write("qjs\r");
 ```
+
+[(__term.write__ is in __Term.js__)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/term.js#L487-L1047)
 
 _But we need to wait for the "nsh>" prompt?_
 
@@ -679,6 +681,8 @@ localStorage.getItem("mainWorkspace");
 localStorage.setItem("mainWorkspace", `...`);
 ```
 
+[(__"mainWorkspace"__ is hardcoded here)](https://github.com/lupyuen/nuttx-blockly/blob/main/src/serialization.ts#L8-L10)
+
 ![Running our Drag-n-Drop App on Ox64 BL808 SBC](https://lupyuen.github.io/images/quickjs2-device.png)
 
 # Appendix: Control Ox64 via Web Serial API
@@ -687,7 +691,7 @@ Earlier we spoke about __controlling Ox64 SBC__ over the Web Serial API (pic bel
 
 - [__"Control Ox64 via Web Serial API"__](https://lupyuen.github.io/articles/quickjs2#control-ox64-via-web-serial-api)
 
-This is how we wait for the __NuttX Shell__ _("nsh>")_ before sending a JavaScript Command...
+This is how we wait for the __NuttX Shell__ _("nsh>")_ before sending a JavaScript Command: [webserial.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L612-L694)
 
 ```javascript
 // Control Ox64 over UART. Called by the "Connect" Button.
@@ -852,3 +856,5 @@ async function send_command(writer, cmd) {
 // Command to be sent to Serial Port
 let send_str = "";
 ```
+
+(Yeah it's timing-sensitive, we might drop characters if we send too quickly. Zmodem is probably the better way)
