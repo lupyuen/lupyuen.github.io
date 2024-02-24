@@ -4,9 +4,9 @@
 
 ![(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way](https://lupyuen.github.io/images/quickjs2-title.png)
 
-Remember Makecode? BBC micro:bit and its Drag-n-Drop App Builder?
+Remember MakeCode? BBC micro:bit and its Drag-n-Drop App Builder?
 
-[__MakeCode for BBC micro:bit__](https://www.sciencedirect.com/science/article/pii/S1383762118306088) is an awesome creation that's way ahead of its time (7 years ago!)
+[__MakeCode for BBC micro:bit__](https://www.microsoft.com/en-sg/makecode/teach/microbit?rtc=1) is an awesome creation that's way ahead of its time (7 years ago!)
 
 - [__TypeScript Compiler__](https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0008) in the Web Browser (in JavaScript!)
 
@@ -42,7 +42,7 @@ __Today 7 years later:__ How would we redo all this? With a bunch of Open Source
 
 - Device Control: [__Web Serial API__](https://developer.chrome.com/docs/capabilities/serial) with [__Term.js__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/term.js)
 
-  (Control Ox64 over UART)
+  (Control our Ox64 SBC over UART)
 
 This is how we gave MakeCode a wholesome wholesale makeover...
 
@@ -62,7 +62,7 @@ Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)..
 
     [(Or __Drag-n-Drop the Blocks__ ourselves)](https://youtu.be/-dG5ZSXELDc)
 
-1.  The __Blinky Demo Blocks__ produce this JavaScript (pic above)...
+1.  The __Blinky Demo Blocks__ produce this JavaScript...
 
     ```javascript
     // NuttX Command to flip the LED On and Off
@@ -85,6 +85,8 @@ Here's the __Emulator Demo__ that we can play along at home (without Ox64 SBC)..
     // Close the LED Device
     os.close(fd);
     ```
+
+    [(__ULEDIOC_SETALL__ sets the __LED State__)](https://lupyuen.github.io/articles/nim#blink-an-led)
 
 1.  Click __"Run on Ox64 Emulator"__
 
@@ -294,9 +296,9 @@ This will make it much quicker to load our JavaScript File on Ox64 Emulator.
 
 # Blinky on a Real Ox64 SBC
 
-_Will we do the same for a Real Ox64 SBC?_
+_Everything we saw earlier... Will it work for a Real Ox64 SBC?_
 
-Well it gets complicated. If we have an [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358), here are the __Demo Steps__...
+If we have an [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358), here are the __Demo Steps__...
 
 1.  Load our Ox64 SBC with __OpenSBI, U-Boot Bootloader, NuttX + QuickJS__ (on microSD). Don't power up yet...
 
@@ -395,7 +397,7 @@ We create a __HTML Button__ for "Connect": [index.html](https://github.com/lupyu
 </button>
 ```
 
-That calls our JavaScript Function to connect to a Serial Port: [webserial.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L611-L675)
+That calls our JavaScript Function to __connect to a Serial Port__: [webserial.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L611-L675)
 
 ```javascript
 // Control Ox64 over UART. Called by the "Connect" Button.
@@ -613,7 +615,7 @@ npm run build \
   && mv dist docs
 ```
 
-Remember to [__Disable the JavaScript Eval__](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L35-L38). (Because our Web Browser won't like POSIX)
+Remember to [__Disable the JavaScript Eval__](https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L35-L38). (Because our Web Browser won't do POSIX)
 
 Let's talk about loading a Blockly App...
 
