@@ -441,7 +441,7 @@ async function control_device() {
 </code></pre></div>
 <p>The code above pops up a prompt to <strong>select a Serial Port</strong> and connect at 2 Mbps…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-serial.png" alt="Selecting the Serial Port" /></p>
-<p>We’re all set to Read and Write the Serial Port! First we need the <strong>Reader and Writer Streams</strong>…</p>
+<p>We’re all set to Read and Write the Serial Port! First we need the <strong>Reader and Writer Streams</strong>: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L627-L641">webserial.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Prepare to Write to the Serial Port
   const textEncoder = new TextEncoderStream();
   const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
@@ -452,7 +452,7 @@ async function control_device() {
   const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
   const reader = textDecoder.readable.getReader();
 </code></pre></div>
-<p>Which we may <strong>read and write</strong> like so…</p>
+<p>That we may <strong>read and write</strong> like so: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L641-L695">webserial.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Read from the Serial Port
   const { data, done } = await reader.read();
 
@@ -465,6 +465,7 @@ async function control_device() {
   // Send the QuickJS Command to Serial Port
   await writer.write(&quot;qjs\r&quot;);
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/term.js#L487-L1047">(<strong>term.write</strong> is in <strong>Term.js</strong>)</a></p>
 <p><em>But we need to wait for the “nsh&gt;” prompt?</em></p>
 <p>Yep we have a loop that waits for the <strong>NuttX Shell</strong>, before sending any commands.</p>
 <p>Check the details in the Appendix…</p>
@@ -684,13 +685,14 @@ localStorage.getItem(&quot;mainWorkspace&quot;);
 // Change `...` to the JSON of the Blocks to be loaded.
 localStorage.setItem(&quot;mainWorkspace&quot;, `...`);
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/serialization.ts#L8-L10">(<strong>“mainWorkspace”</strong> is hardcoded here)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-device.png" alt="Running our Drag-n-Drop App on Ox64 BL808 SBC" /></p>
 <h1 id="appendix-control-ox64-via-web-serial-api"><a href="#appendix-control-ox64-via-web-serial-api">10 Appendix: Control Ox64 via Web Serial API</a></h1>
 <p>Earlier we spoke about <strong>controlling Ox64 SBC</strong> over the Web Serial API (pic below)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/quickjs2#control-ox64-via-web-serial-api"><strong>“Control Ox64 via Web Serial API”</strong></a></li>
 </ul>
-<p>This is how we wait for the <strong>NuttX Shell</strong> <em>(“nsh&gt;”)</em> before sending a JavaScript Command…</p>
+<p>This is how we wait for the <strong>NuttX Shell</strong> <em>(“nsh&gt;”)</em> before sending a JavaScript Command: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L612-L694">webserial.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART. Called by the &quot;Connect&quot; Button.
 // https://developer.chrome.com/docs/capabilities/serial
 async function control_device() {
@@ -839,6 +841,8 @@ async function send_command(writer, cmd) {
 // Command to be sent to Serial Port
 let send_str = &quot;&quot;;
 </code></pre></div>
+<p>(Yeah it’s timing-sensitive, we might drop characters if we send too quickly. Zmodem is probably the better way)</p>
+
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
