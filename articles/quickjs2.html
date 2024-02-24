@@ -77,8 +77,8 @@
 <li><a href="#appendix-control-ox64-via-web-serial-api">10 Appendix: Control Ox64 via Web Serial API</a><ul></ul></li>
 <li><a href="#appendix-transmit-javascript-to-ox64-sbc">11 Appendix: Transmit JavaScript to Ox64 SBC</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way" /></p>
-<p>Remember Makecode? BBC micro:bit and its Drag-n-Drop App Builder?</p>
-<p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088"><strong>MakeCode for BBC micro:bit</strong></a> is an awesome creation that’s way ahead of its time (7 years ago!)</p>
+<p>Remember MakeCode? BBC micro:bit and its Drag-n-Drop App Builder?</p>
+<p><a href="https://www.microsoft.com/en-sg/makecode/teach/microbit?rtc=1"><strong>MakeCode for BBC micro:bit</strong></a> is an awesome creation that’s way ahead of its time (7 years ago!)</p>
 <ul>
 <li>
 <p><a href="https://www.sciencedirect.com/science/article/pii/S1383762118306088#sec0008"><strong>TypeScript Compiler</strong></a> in the Web Browser (in JavaScript!)</p>
@@ -122,7 +122,7 @@
 </li>
 <li>
 <p>Device Control: <a href="https://developer.chrome.com/docs/capabilities/serial"><strong>Web Serial API</strong></a> with <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/term.js"><strong>Term.js</strong></a></p>
-<p>(Control Ox64 over UART)</p>
+<p>(Control our Ox64 SBC over UART)</p>
 </li>
 </ul>
 <p>This is how we gave MakeCode a wholesome wholesale makeover…</p>
@@ -140,7 +140,7 @@
 <p><a href="https://youtu.be/-dG5ZSXELDc">(Or <strong>Drag-n-Drop the Blocks</strong> ourselves)</a></p>
 </li>
 <li>
-<p>The <strong>Blinky Demo Blocks</strong> produce this JavaScript (pic above)…</p>
+<p>The <strong>Blinky Demo Blocks</strong> produce this JavaScript…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>// NuttX Command to flip the LED On and Off
 var ULEDIOC_SETALL, fd, ret;
 ULEDIOC_SETALL = 7427;
@@ -160,7 +160,9 @@ for (var count = 0; count &lt; 20; count++) {
 
 // Close the LED Device
 os.close(fd);
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/nim#blink-an-led">(<strong>ULEDIOC_SETALL</strong> sets the <strong>LED State</strong>)</a></p>
+</li>
 <li>
 <p>Click <strong>“Run on Ox64 Emulator”</strong></p>
 </li>
@@ -327,8 +329,8 @@ window.setTimeout(()=&gt;{
 <p>This will make it much quicker to load our JavaScript File on Ox64 Emulator.</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-device.png" alt="Running our Drag-n-Drop App on Ox64 BL808 SBC" /></p>
 <h1 id="blinky-on-a-real-ox64-sbc"><a href="#blinky-on-a-real-ox64-sbc">5 Blinky on a Real Ox64 SBC</a></h1>
-<p><em>Will we do the same for a Real Ox64 SBC?</em></p>
-<p>Well it gets complicated. If we have an <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 SBC</strong></a>, here are the <strong>Demo Steps</strong>…</p>
+<p><em>Everything we saw earlier… Will it work for a Real Ox64 SBC?</em></p>
+<p>If we have an <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 SBC</strong></a>, here are the <strong>Demo Steps</strong>…</p>
 <ol>
 <li>
 <p>Load our Ox64 SBC with <strong>OpenSBI, U-Boot Bootloader, NuttX + QuickJS</strong> (on microSD). Don’t power up yet…</p>
@@ -418,7 +420,7 @@ bl808_gpiowrite:
   Connect
 &lt;/button&gt;
 </code></pre></div>
-<p>That calls our JavaScript Function to connect to a Serial Port: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L611-L675">webserial.js</a></p>
+<p>That calls our JavaScript Function to <strong>connect to a Serial Port</strong>: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L611-L675">webserial.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART. Called by the &quot;Connect&quot; Button.
 // https://developer.chrome.com/docs/capabilities/serial
 async function control_device() {
@@ -621,7 +623,7 @@ npm run build \
   &amp;&amp; rm -r docs \
   &amp;&amp; mv dist docs
 </code></pre></div>
-<p>Remember to <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L35-L38"><strong>Disable the JavaScript Eval</strong></a>. (Because our Web Browser won’t like POSIX)</p>
+<p>Remember to <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L35-L38"><strong>Disable the JavaScript Eval</strong></a>. (Because our Web Browser won’t do POSIX)</p>
 <p>Let’s talk about loading a Blockly App…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="NuttX App Builder with Blockly" /></p>
 <h1 id="appendix-load-a-blockly-app"><a href="#appendix-load-a-blockly-app">9 Appendix: Load a Blockly App</a></h1>
