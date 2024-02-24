@@ -750,6 +750,8 @@ async function control_device() {
 }
 ```
 
+[(__term.write__ is in __Term.js__)](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/term.js#L487-L1047)
+
 Let's look inside __send_command__...
 
 ![Running our NuttX App on Ox64 SBC](https://lupyuen.github.io/images/quickjs2-nuttx3.jpg)

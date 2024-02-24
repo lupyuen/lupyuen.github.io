@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-02-25",
+      "website": "https://lupyuen.github.io/articles/quickjs2",
+      "summary": "Remember Makecode? BBC micro:bit and its Drag-n-Drop App Builder? Let's give MakeCode a wholesome wholesale makeover... With Blockly, QuickJS JavaScript Engine, Apache NuttX RTOS and Ox64 BL808 64-bit RISC-V SBC"
+    },
+    {
       "name": "QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-02-18",
