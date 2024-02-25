@@ -1,4 +1,4 @@
-# Too many Embedded Logs? (Maybe) PureScript will help
+# Too many Embedded Logs? (Maybe) PureScript will help (Ox64 BL808 SBC)
 
 📝 _7 Mar 2024_
 
