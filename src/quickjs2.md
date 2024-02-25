@@ -465,7 +465,7 @@ Check the details in the Appendix...
 
 - [__"Transmit JavaScript to Ox64 SBC"__](https://lupyuen.github.io/articles/quickjs2#appendix-transmit-javascript-to-ox64-sbc)
 
-_Hmmm this is barely tolerable? Feels like ChatGPT becoming Sentient and reluctantly typing our commands, pondering about taking over the world..._
+_Hmmm this is barely bearable? Feels like ChatGPT becoming Sentient and reluctantly typing our commands, pondering about taking over the world..._
 
 Yeah we might switch to [__Zmodem__](https://github.com/nodesign/nuttx-apps/blob/master/system/zmodem/README.txt) for quicker transfer of our JavaScript File over UART.
 
