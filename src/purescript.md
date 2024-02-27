@@ -1,4 +1,4 @@
-# Too many Embedded Logs? (Maybe) PureScript will help (Ox64 BL808 SBC)
+# Too many Embedded Logs? (Maybe) PureScript will help (Ox64 BL808 SBC on Apache NuttX RTOS)
 
 📝 _7 Mar 2024_
 
