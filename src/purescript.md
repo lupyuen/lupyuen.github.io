@@ -39,6 +39,8 @@ Install vscode extension
 It's 2024... Surely there's a better way to grok the log?
 Stack trace / mm log / elf loader 
 
+Concat "🎵 I never promised you a rose garden"
+
 TODO
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
