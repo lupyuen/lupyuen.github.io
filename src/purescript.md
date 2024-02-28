@@ -1,10 +1,20 @@
-# Too many Embedded Logs? (Maybe) PureScript will help (Ox64 BL808 SBC on Apache NuttX RTOS)
+# Too many Embedded Logs? PureScript might help (Ox64 BL808 SBC / Apache NuttX RTOS)
 
 📝 _7 Mar 2024_
 
 ![TODO](https://lupyuen.github.io/images/purescript-title.png)
 
-TODO
+Over the Lunar New Year holidays, we were porting [__QuickJS__](TODO) to [__Ox64 BL808 SBC__](TODO). And we hit a __Baffling Exception__ on [__Apache NuttX RTOS__](TODO)...
+
+TODO: Pic
+
+Which made us ponder our life choices...
+
+- Show Exception promimently without scroll back pages and pages of logs?
+
+- Explain the Exception
+
+- Analyse the Stack Trace
 
 [__Ox64 BL808 64-bit RISC-V SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358)
 
