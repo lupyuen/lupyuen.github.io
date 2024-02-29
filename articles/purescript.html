@@ -420,15 +420,15 @@ let termbuf = &quot;&quot;;
   8000a0e4
 &lt;/a&gt;
 </code></pre></div>
-<p>Which links our page that displays the <strong>NuttX Disassembly</strong> for the address: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1556-L1571">term.js</a></p>
+<p>Which links to our page that displays the <strong>NuttX Disassembly</strong> for the address: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1556-L1571">term.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// If `addr` is a valid address,
 // wrap it with the Disassembly URL:
 // &lt;a href=&quot;disassemble.html?addr=8000a0e4&quot; target=&quot;_blank&quot;&gt;8000a0e4&lt;/a&gt;
 // Otherwise return `addr`
 function disassemble(addr) {
 
-  // If this is an Unknown Address,
-  // return it without hyperlink
+  // If this is an Unknown Address:
+  // Return it without hyperlink
   const id = identifyAddress(addr).value0;
   if (id === undefined) { return addr; }
 
@@ -442,10 +442,10 @@ function disassemble(addr) {
   ].join(&quot;&quot;);
 }
 </code></pre></div>
-<p>But we do this only for <strong>Valid NuttX Addresses</strong>. (Because otherwise we’ll hyperlink to garbage)</p>
+<p>But we do this only for <strong>Valid NuttX Addresses</strong>. (Otherwise we’ll hyperlink to hot garbage)</p>
 <p>How will <strong>identifyAddress</strong> know if it’s a Valid NuttX Address? Coming right up…</p>
 <h1 id="identify-a-nuttx-address"><a href="#identify-a-nuttx-address">5 Identify a NuttX Address</a></h1>
-<p><em>Given a NuttX Address like 8000a0e4: How will we know whether it’s in NuttX Kernel or NuttX Apps? And whether it’s Code, Data, BSS or Heap?</em></p>
+<p><em>Given a NuttX Address like 8000a0e4: How will we know whether it’s in NuttX Kernel or NuttX App? And whether it’s Code, Data, BSS or Heap?</em></p>
 <p>Once Again: We get a little help from <strong>PureScript</strong> to match the Regex Patterns of <strong>Valid NuttX Addresses</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L55-L102">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- Given an Address: Identify the
 -- Origin (NuttX Kernel or App) and
@@ -467,14 +467,18 @@ identifyAddress addr
   -- Otherwise it&#39;s an Unknown Address
   | otherwise = Nothing
 </code></pre></div>
-<p><a href="TODO">(<strong>matches</strong> performs <strong>Regex Matching</strong>)</a></p>
+<p><a href="TODO">(<strong>matches</strong> does <strong>Regex Matching</strong>)</a></p>
 <p><a href="TODO">(Matching <strong>Addresses as Numbers</strong> instead of Strings)</a></p>
 <p><em>How does it work?</em></p>
-<p>In JavaScript we call it like this: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L44-L58">index.html</a></p>
+<p>This is how we <strong>Identify NuttX Addresses</strong> in JavaScript: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L44-L58">index.html</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// In JavaScript: Call PureScript to Identify a NuttX Address.
+import { identifyAddress } from &#39;./output/Main/index.js&#39;;
+
+// For NuttX Kernel Address:
 // Returns {value0: {origin: &quot;nuttx&quot;, type: {}}
 result = identifyAddress(&quot;502198ac&quot;);
 
+// For NuttX App Address:
 // Returns {value0: {origin: &quot;qjs&quot;, type: {}}
 result = identifyAddress(&quot;80064a28&quot;);
 
