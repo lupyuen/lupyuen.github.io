@@ -482,13 +482,15 @@ function disassemble(addr) {
 }
 ```
 
-How will __identifyAddress__ know if it's a valid NuttX Address? Coming right up...
+But we do this only for __Valid NuttX Addresses__. (Because otherwise we'll hyperlink to garbage)
+
+How will __identifyAddress__ know if it's a Valid NuttX Address? Coming right up...
 
 # Identify a NuttX Address
 
 _Given a NuttX Address like 8000a0e4: How will we know whether it's in NuttX Kernel or NuttX Apps? And whether it's Code, Data, BSS or Heap?_
 
-Once Again: We get a little help from __PureScript__: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L55-L102)
+Once Again: We get a little help from __PureScript__ to match the Regex Patterns of __Valid NuttX Addresses__: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L55-L102)
 
 ```purescript
 -- Given an Address: Identify the
@@ -514,15 +516,37 @@ identifyAddress addr
 
 [(__matches__ performs __Regex Matching__)](TODO)
 
+[(Matching __Addresses as Numbers__ instead of Strings)](TODO)
+
 _How does it work?_
 
-TODO: JavaScript
+In JavaScript we call it like this: [index.html](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L44-L58)
 
-_Tsk tsk so much Hard Coding?_
+```javascript
+// In JavaScript: Call PureScript to Identify a NuttX Address.
+// Returns {value0: {origin: "nuttx", type: {}}
+result = identifyAddress("502198ac");
 
-Our Rules are still evolving, we're not sure how the NuttX Log Parser will be used in future.
+// Returns {value0: {origin: "qjs", type: {}}
+result = identifyAddress("80064a28");
 
-That's why we need an [__Online PureScript Editor__](TODO) that will allow the Rules to be __tweaked and tested easily__ for other platforms.
+// Why is the `type` empty? That's because it's a
+// JavaScript Object that needs extra inspection.
+// This will return "Code" or "Data" or "BSS" or "Heap"...
+addressType = result.value0.type.constructor.name;
+
+// Unknown Address returns {}
+result = identifyAddress("0000000800203b88");
+
+// This will return "Nothing"
+resultType = result.constructor.name;
+```
+
+_Tsk tsk so much Hard Coding of Address Patterns?_
+
+Our __Troubleshooting Rules__ are still evolving, we're not sure how the NuttX Log Parser will be used in future.
+
+That's why we'll have an [__Online PureScript Compiler__](TODO) that will allow the Troubleshooting Rules to be __tweaked and tested easily__ across all NuttX Platforms.
 
 # Show NuttX Disassembly by Address
 
