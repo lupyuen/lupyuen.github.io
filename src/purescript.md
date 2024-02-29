@@ -44,60 +44,97 @@ In this article,
 
 TODO
 
+We begin with the smarty stuff...
+
 # Explain the RISC-V Exception
 
-TODO
+_How did we explain the RISC-V Exception?_
 
-We begin with the smarty stuff
+> "We hit a Load Page Fault. Our code at Code Address 8000a0e4 tried to access the Data Address 880203b88, which is Invalid"
 
-https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L51
+That's our message that explains the __RISC-V Exception__...
+
+- __MCAUSE 13__: Cause of Exception
+
+- __EPC `8000_A0E4`__: Exception Program Counter
+
+- __MTVAL `8_8020_3B88`__: Exception Value
+
+__In PureScript:__ This is how we compose the helpful message: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L51)
 
 ```purescript
--- Explain the NuttX Exception with mcause 13
+-- Explain the RISC-V Exception with mcause 13
 -- `<>` will concat 2 strings
 -- "🎵 I never promised you a rose garden"
+
 explainException 13 epc mtval =
   "We hit a Load Page Fault."
   <> " Our code at Code Address " <> epc
-  <> " tried to access the Data Address " <> mtval <> ", which is Invalid."
-```
-
-TODO
-
-```purescript
--- Explain the NuttX Exception with mcause 12
--- `<>` will concat 2 strings
-explainException 12 epc mtval =
-  "Instruction Page Fault at " <> epc <> ", " <> mtval
-
--- Explain the Other NuttX Exceptions, that are not matched with the above
-explainException mcause epc mtval =
-  "Unknown Exception: mcause=" <> show mcause <> ", epc=" <> epc <> ", mtval=" <> mtval
+  <> " tried to access the Data Address " <> mtval
+  <> ", which is Invalid."
 ```
 
 _Hello Marvin the Martian?_
 
 Yeah we'll meet some alien symbols in PureScript.
 
-'__`<>`__' _(Diamond Operator)_ will concatenate 2 strings.
+'__`<>`__' _(Diamond Operator)_ will __concatenate 2 strings__.
 
-(yummy) [__Curried Way__](https://en.wikipedia.org/wiki/Partial_application)
+We explain the other RISC-V Exceptions the same way...
+
+```purescript
+-- Explain the RISC-V Exception with mcause 12
+-- `<>` will concat 2 strings
+
+explainException 12 epc mtval =
+  "Instruction Page Fault at " <> epc <> ", " <> mtval
+
+-- Explain the Other RISC-V Exceptions,
+-- that are not matched with the above.
+-- `show` converts a Number to a String
+
+explainException mcause epc mtval =
+  "Unknown Exception: mcause=" <> show mcause <> ", epc=" <> epc <> ", mtval=" <> mtval
+```
+
+Which looks like a neat bunch of __Explain Rules__. (Similar to Prolog!)
+
+This thing about PureScript looks totally alien...
+
+```purescript
+-- Declare the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
+
+explainException ∷ 
+  Int       -- MCAUSE: Cause of Exception
+  → String  -- EPC: Exception Program Counter
+  → String  -- MTVAL: Exception Value
+  → String  -- Returns the Exception Explanation
+```
+
+But it works like a __Function Declaration__ in C.
+
+[(__VSCode__ will auto-generate it)](TODO)
+
+_How will we call this from JavaScript?_
+
+Inside our __Web Browser JavaScript__, this is how we call PureScript: [term.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1521-L1528)
 
 ```javascript
 // In JavaScript: Call PureScript via a Curried Function.
 // Returns "Code Address 8000a0e4 failed to access Data Address 880203b88"
-result = explainException(13)(`8000a0e4`)(`880203b88`);
+result = explainException(13)("8000a0e4")("880203b88");
 
 // Instead of the normal non-spicy Uncurried Way:
-// explainException(13, `8000a0e4`, `880203b88`)
+// explainException(13, "8000a0e4", "880203b88")
 ```
 
-Prolog
+Our JavaScript will call PureScript the (yummy) [__Curried Way__](https://en.wikipedia.org/wiki/Partial_application).
 
-```purescript
--- The next line declares the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
-explainException ∷ Int → String → String → String
-```
+(Because PureScript is a Functional Programming Language)
+
+_Why PureScript? Could've done all this in JavaScript..._
+
+TODO: Why
 
 # Parsing Apache NuttX RTOS Logs with PureScript
 
