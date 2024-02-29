@@ -140,7 +140,7 @@ PureScript looks like a neat way to express our __NuttX Troubleshooting Skills__
 
 Without getting stuck with the low-level procedural plumbing of JavaScript.
 
-TODO: Why
+Let's do a bit more PureScript...
 
 # Parsing Apache NuttX RTOS Logs with PureScript
 
