@@ -97,7 +97,7 @@ explainException mcause epc mtval =
   "Unknown Exception: mcause=" <> show mcause <> ", epc=" <> epc <> ", mtval=" <> mtval
 ```
 
-Which looks like a neat bunch of __Explain Rules__. (Similar to Prolog!)
+Which looks like a tidy bunch of __Explain Rules__. (Similar to Prolog!)
 
 This thing about PureScript looks totally alien...
 
@@ -132,7 +132,13 @@ Our JavaScript will call PureScript the (yummy) [__Curried Way__](https://en.wik
 
 (Because PureScript is a Functional Programming Language)
 
+![PureScript looks like a neat way to express our NuttX Troubleshooting Skills as high-level rules](https://lupyuen.github.io/images/purescript-explain.png)
+
 _Why PureScript? Could've done all this in JavaScript..._
+
+PureScript looks like a neat way to express our __NuttX Troubleshooting Skills__ as high-level rules...
+
+Without getting stuck with the low-level procedural plumbing of JavaScript.
 
 TODO: Why
 
