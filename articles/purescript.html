@@ -273,6 +273,7 @@ parseException = do
 <p>Finally we return the parsed <strong>MCAUSE</strong> (as integer), <strong>EPC</strong> (without prefix), <strong>MTVAL</strong> (without prefix)</p>
 <div class="example-wrap"><pre class="language-purescript"><code>  -- Return the parsed content.
   -- `pure` because we&#39;re in a `do` block that allows (Side) Effects
+  -- TODO: Return a ParseError instead of -1
   pure 
     {
       exception
