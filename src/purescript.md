@@ -105,10 +105,10 @@ This thing about PureScript looks totally alien...
 -- Declare the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
 
 explainException ::
-  Int       -- MCAUSE: Cause of Exception
-  → String  -- EPC: Exception Program Counter
-  → String  -- MTVAL: Exception Value
-  → String  -- Returns the Exception Explanation
+  Int        -- MCAUSE: Cause of Exception
+  -> String  -- EPC: Exception Program Counter
+  -> String  -- MTVAL: Exception Value
+  -> String  -- Returns the Exception Explanation
 ```
 
 But it works like a __Function Declaration__ in C.
@@ -117,10 +117,13 @@ But it works like a __Function Declaration__ in C.
 
 _How will we call this from JavaScript?_
 
-Inside our __Web Browser JavaScript__, this is how we call PureScript: [term.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1521-L1528)
+Inside our __Web Browser JavaScript__, this is how we call PureScript: [index.html](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L28-L33)
 
 ```javascript
-// In JavaScript: Call PureScript via a Curried Function.
+// In JavaScript: Import our PureScript Function
+import { explainException } from './output/Main/index.js';
+
+// Call PureScript via a Curried Function.
 // Returns "Code Address 8000a0e4 failed to access Data Address 880203b88"
 result = explainException(13)("8000a0e4")("880203b88");
 
@@ -130,7 +133,7 @@ result = explainException(13)("8000a0e4")("880203b88");
 
 Our JavaScript will call PureScript the (yummy) [__Curried Way__](https://en.wikipedia.org/wiki/Partial_application).
 
-(Because PureScript is a Functional Programming Language)
+(Because PureScript is a Functional Language)
 
 ![PureScript looks like a neat way to express our NuttX Troubleshooting Skills as high-level rules](https://lupyuen.github.io/images/purescript-explain.png)
 
@@ -191,9 +194,11 @@ As promised, meet our alien symbols...
 
 - __`void`__ means ignore the text
 
-- __`$ something something`__ is shortcut for...
+- __`$` `something` `something`__
 
-  __`( something something )`__
+  is shortcut for...
+
+  __`(` `something` `something` `)`__
 
 - __`<*`__ is the Delimiter between Patterns
 
@@ -213,7 +218,7 @@ Next comes the __Exception Message__, which we'll capture via a __Regular Expres
     <* skipSpaces 
 ```
 
-We do the same to capture __MCAUSE__ (as a String)...
+We do the same to capture __MCAUSE__ (as a String)
 
 ```purescript
   -- Skip `MCAUSE: `
@@ -227,7 +232,7 @@ We do the same to capture __MCAUSE__ (as a String)...
   mcauseStr <- regex "[0-9a-f]+" <* string "," <* skipSpaces
 ```
 
-And we capture __EPC__ and __MTVAL__ (with the Zero Prefix)...
+Then we capture __EPC__ and __MTVAL__ (with the Zero Prefix)
 
 ```purescript
   -- Skip `EPC: `
@@ -243,7 +248,7 @@ And we capture __EPC__ and __MTVAL__ (with the Zero Prefix)...
   mtvalWithPrefix <- regex "[0-9a-f]+"
 ```
 
-Finally we return the parsed __MCAUSE__ (as integer), __EPC__ (without prefix), __MTVAL__ (without prefix)...
+Finally we return the parsed __MCAUSE__ (as integer), __EPC__ (without prefix), __MTVAL__ (without prefix)
 
 ```purescript
   -- Return the parsed content.
@@ -265,11 +270,15 @@ Finally we return the parsed __MCAUSE__ (as integer), __EPC__ (without prefix), 
     }
 ```
 
+<span style="font-size:90%">
+
 [(__fromMaybe__ resolves an Optional Value)](https://pursuit.purescript.org/packages/purescript-maybe/docs/Data.Maybe#v:fromMaybe)
 
 [(__fromStringAs__ converts String to Integer)](https://pursuit.purescript.org/packages/purescript-integers/docs/Data.Int#v:fromStringAs)
 
 [(__stripPrefix__ removes the String Prefix)](https://pursuit.purescript.org/packages/purescript-strings/6.0.1/docs/Data.String#v:stripPrefix)
+
+</span>
 
 _fromMaybe looks weird?_
 
@@ -289,9 +298,51 @@ Is actually equivalent to the Bracket Bonanza...
 
 _Does it work with JavaScript?_
 
-Yep it does!
+Yep it does! This is how we __parse a RISC-V Exception__ in JavaScript: [index.html](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L17-L28)
 
-TODO: JavaScript
+```javascript
+// In JavaScript: Import our PureScript Parser
+import { parseException } from './output/Main/index.js';
+import * as StringParser_Parser from "./output/StringParser.Parser/index.js";
+
+// We'll parse this RISC-V Exception
+const exception = `riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000008000a0e4, MTVAL: 0000000880203b88`;
+
+// Call PureScript to parse the RISC-V Exception
+const result = StringParser_Parser
+  .runParser(parseException)(exception);
+```
+
+Which returns the __JSON Result__...
+
+```json
+{
+  "value0": {
+    "exception": "Load page fault",
+    "mcause":    13,
+    "epc":       "8000a0e4",
+    "mtval":     "0000000880203b88"
+  }
+}
+```
+
+And it works great with our [__RISC-V Exception Explainer__](TODO)!
+
+```javascript
+// In JavaScript: Import our Exception Explainer from PureScript
+import { explainException } from './output/Main/index.js';
+
+// Fetch the Parsed RISC-V Exception from above
+// TODO: Check if exception === undefined
+const exception = result.value0;
+
+// Explain the Parsed RISC-V Exception.
+// Returns "We hit a Load Page Fault. Our code at Code Address 8000a0e4 tried to access the Data Address 0000000880203b88, which is Invalid."
+const explain = explainException
+  (exception.mcause)
+  (exception.epc)
+  (exception.mtval);
+```
 
 # Parsing Apache NuttX RTOS Logs with PureScript
 
