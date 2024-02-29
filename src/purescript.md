@@ -10,7 +10,7 @@ TODO: Pic
 
 Which made us ponder (our life choices)...
 
-- Can we show the __RISC-V Exception__ promimently?
+- Can we show the __RISC-V Exception__ prominently?
 
   (Without scrolling back pages and pages of logs)
 
@@ -50,15 +50,23 @@ We begin with the smarty stuff...
 
 _How did we explain the RISC-V Exception?_
 
+<span style="font-size:90%">
+
 > "We hit a Load Page Fault. Our code at Code Address 8000a0e4 tried to access the Data Address 880203b88, which is Invalid"
 
+</span>
+
 That's our message that explains the __RISC-V Exception__...
+
+<span style="font-size:90%">
 
 - __MCAUSE 13__: Cause of Exception
 
 - __EPC `8000_A0E4`__: Exception Program Counter
 
 - __MTVAL `8_8020_3B88`__: Exception Value
+
+</span>
 
 __In PureScript:__ This is how we compose the helpful message: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L51)
 
@@ -149,7 +157,7 @@ Let's do a bit more PureScript...
 
 _How did we get the RISC-V Exception? MCAUSE, EPC, MTVAL?_
 
-We extracted the __RISC-V Exception__ from the NuttX Log...
+We auto-extracted the __RISC-V Exception__ from the NuttX Log...
 
 ```yaml
 riscv_exception:
@@ -260,11 +268,9 @@ Finally we return the parsed __MCAUSE__ (as integer), __EPC__ (without prefix), 
     , mcause:
         -1 `fromMaybe` -- If `mcauseStr` is not a valid hex, return -1
           fromStringAs hexadecimal mcauseStr -- Else return the hex value of `mcauseStr`
-
     , epc:
         epcWithPrefix `fromMaybe` -- If `epcWithPrefix` does not have prefix `00000000`, return it
           stripPrefix (Pattern "00000000") epcWithPrefix -- Else strip prefix `00000000` from `epc`
-
     , mtval:
         mtvalWithPrefix `fromMaybe` -- If `mtvalWithPrefix` does not have prefix `00000000`, return it
           stripPrefix (Pattern "00000000") mtvalWithPrefix -- Else strip prefix `00000000` from `mtval`
@@ -439,15 +445,29 @@ We do the same for the __Stack Dump__...
 let termbuf = "";
 ```
 
+[(__parseStackDump__ comes from PureScript)](TODO)
+
 _What's this function: disassemble?_
 
-TODO
+Instead of printing addresses plainly like `8000a0e4`, we show __Addresses as Hyperlinks__...
+
+```text
+<a href="disassemble.html?addr=8000a0e4" target="_blank">
+  8000a0e4
+</a>
+```
+
+Which links our page that displays the __NuttX Disassembly__ for the address: [term.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1556-L1571)
 
 ```javascript
-// If `addr` is a valid address, return the Disassembly URL:
+// If `addr` is a valid address,
+// wrap it with the Disassembly URL:
 // <a href="disassemble.html?addr=8000a0e4" target="_blank">8000a0e4</a>
 // Otherwise return `addr`
 function disassemble(addr) {
+
+  // If this is an Unknown Address,
+  // return it without hyperlink
   const id = identifyAddress(addr).value0;
   if (id === undefined) { return addr; }
 
@@ -462,74 +482,47 @@ function disassemble(addr) {
 }
 ```
 
-TODO
+How will __identifyAddress__ know if it's a valid NuttX Address? Coming right up...
 
 # Identify a NuttX Address
 
-TODO
+_Given a NuttX Address like 8000a0e4: How will we know whether it's in NuttX Kernel or NuttX Apps? And whether it's Code, Data, BSS or Heap?_
 
-_Given a NuttX Address like 80007028: How will we know whether it's in NuttX Kernel or NuttX Apps? And whether it's Code, Data, BSS or Heap?_
-
-This is how we identify a NuttX Address in PureScript: [src/Main.purs](src/Main.purs)
+Once Again: We get a little help from __PureScript__: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L55-L102)
 
 ```purescript
--- Given an Address, identify the Origin (NuttX Kernel or App) and Type (Code / Data / BSS / Heap)
-identifyAddress ∷ String → Maybe { origin ∷ String , type ∷ AddressType }
-
--- Address 502xxxxx comes from NuttX Kernel Code
--- Address 800xxxxx comes from NuttX App Code (QuickJS)
--- `|` works like `if ... else if`
--- "a `matches` b" is same as "(matches a b)"
--- `Just` returns an OK Value. `Nothing` returns No Value.
+-- Given an Address: Identify the
+-- Origin (NuttX Kernel or App) and
+-- Type (Code / Data / BSS / Heap)
 identifyAddress addr
-  | "502....." `matches` addr = Just { origin: "nuttx", type: Code }
-  | "800....." `matches` addr = Just { origin: "qjs",   type: Code }
+
+  -- `|` works like `if ... else if`
+  -- "a `matches` b" is same as "(matches a b)"
+  -- `Just` returns an OK Value. `Nothing` returns No Value.
+
+  -- Address 502xxxxx comes from NuttX Kernel Code
+  | "502....." `matches` addr =
+    Just { origin: "nuttx", type: Code }
+
+  -- Address 800xxxxx comes from NuttX App Code (QuickJS)
+  | "800....." `matches` addr =
+    Just { origin: "qjs",   type: Code }
+
+  -- Otherwise it's an Unknown Address
   | otherwise = Nothing
-
--- Address can point to Code, Data, BSS or Heap
-data AddressType = Code | Data | BSS | Heap
-
--- How to display an Address Type
-instance Show AddressType where
-  show Code = "Code"
-  show Data = "Data"
-  show BSS  = "BSS"
-  show Heap = "Heap"
-
--- Return True if the Address matches the Regex Pattern.
--- Pattern is assumed to match the Entire Address.
-matches ∷ String → String → Boolean
-
--- Match the Begin `^` and End `$` of the Address
--- `<>` will concat 2 strings
--- "a `unsafeRegex` b" is same as "(unsafeRegex a b)"
-matches pattern addr = 
-  let 
-    patternWrap = "^" <> pattern <> "$"
-  in
-    isJust $                            -- Is there a Match...
-      patternWrap `unsafeRegex` noFlags -- For our Regex Pattern (no special flags)
-        `match` addr                    -- Against the Address?
-
--- Test our code. Parse the NuttX Exception and NuttX Stack Dump. Explain the NuttX Exception.
--- `Effect` says that it will do Side Effects (printing to console)
--- `Unit` means that no value will be returned
--- The next line declares the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
-printResults :: Effect Unit
-printResults = do
-
-  -- NuttX Kernel: 0x5020_0000 to 0x5021_98ac
-  -- NuttX App (qjs): 0x8000_0000 to 0x8006_4a28
-  logShow $ identifyAddress "502198ac" -- (Just { origin: "nuttx", type: Code })
-  logShow $ identifyAddress "8000a0e4" -- (Just { origin: "qjs", type: Code })
-  logShow $ identifyAddress "0000000800203b88" -- Nothing
 ```
 
-_Tsk tsk so much Hard Coding..._
+[(__matches__ performs __Regex Matching__)](TODO)
+
+_How does it work?_
+
+TODO: JavaScript
+
+_Tsk tsk so much Hard Coding?_
 
 Our Rules are still evolving, we're not sure how the NuttX Log Parser will be used in future.
 
-That's why we need a PureScript Editor that will allow the Rules to be tweaked easily for other platforms...
+That's why we need an [__Online PureScript Editor__](TODO) that will allow the Rules to be __tweaked and tested easily__ for other platforms.
 
 # Show NuttX Disassembly by Address
 
