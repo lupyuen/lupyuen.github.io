@@ -158,7 +158,7 @@ explainException 12 epc mtval =
 explainException mcause epc mtval =
   &quot;Unknown Exception: mcause=&quot; &lt;&gt; show mcause &lt;&gt; &quot;, epc=&quot; &lt;&gt; epc &lt;&gt; &quot;, mtval=&quot; &lt;&gt; mtval
 </code></pre></div>
-<p>Which looks like a neat bunch of <strong>Explain Rules</strong>. (Similar to Prolog!)</p>
+<p>Which looks like a tidy bunch of <strong>Explain Rules</strong>. (Similar to Prolog!)</p>
 <p>This thing about PureScript looks totally alien…</p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- Declare the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
 
@@ -181,7 +181,10 @@ result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
 </code></pre></div>
 <p>Our JavaScript will call PureScript the (yummy) <a href="https://en.wikipedia.org/wiki/Partial_application"><strong>Curried Way</strong></a>.</p>
 <p>(Because PureScript is a Functional Programming Language)</p>
+<p><img src="https://lupyuen.github.io/images/purescript-explain.png" alt="PureScript looks like a neat way to express our NuttX Troubleshooting Skills as high-level rules" /></p>
 <p><em>Why PureScript? Could’ve done all this in JavaScript…</em></p>
+<p>PureScript looks like a neat way to express our <strong>NuttX Troubleshooting Skills</strong> as high-level rules…</p>
+<p>Without getting stuck with the low-level procedural plumbing of JavaScript.</p>
 <p>TODO: Why</p>
 <h1 id="parsing-apache-nuttx-rtos-logs-with-purescript"><a href="#parsing-apache-nuttx-rtos-logs-with-purescript">3 Parsing Apache NuttX RTOS Logs with PureScript</a></h1>
 <p>TODO</p>
