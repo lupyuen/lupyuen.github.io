@@ -552,9 +552,19 @@ Our __Troubleshooting Rules__ are still evolving, we're not sure how the NuttX L
 
 That's why we'll have an [__Online PureScript Compiler__](TODO) that will allow the Troubleshooting Rules to be __tweaked and tested easily__ across all NuttX Platforms.
 
-# Show NuttX Disassembly by Address
+# Disassemble NuttX Disassembly by Address
 
 TODO
+
+```bash
+$ ls nuttx-tinyemu/docs/purescript/qjs-chunk
+qjs-80001000.S
+qjs-80002000.S
+...
+qjs-80063000.S
+qjs-80064000.S
+qjs-80065000.S
+```
 
 _Given an Exception Address like 8000ad8a, can we show the NuttX Disassembly?_
 
