@@ -345,313 +345,124 @@ const explain = explainException
   (exception.mtval);
 ```
 
+TODO: [__Parse Stack Dump__](TODO)
+
 # Pass NuttX Logs to PureScript
 
 _PureScript will parse our RISC-V Exceptions and explain them... How to pass our NuttX Logs to PureScript?_
 
-TODO
+We're running [__NuttX Emulator__](TODO) inside our Web Browser.
 
-# Parsing Apache NuttX RTOS Logs with PureScript
-
-TODO
-
-In the Web Browser, we can get Real-Time Logs from NuttX Devices (Web Serial API) NuttX Emulator (Term.js)...
-
-What if we could Analyse the NuttX Logs in Real-Time? And show the results in the Web Browser?
-
-Like for [Stack Dumps](https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L168-L224), [ELF Loader Log](https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L1-L167), [Memory Manager Log](https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit#gid=0) (malloc / free)?
-
-Let's do it with PureScript, since Functional Languages are better for Parsing Text.
-
-And we'll support Online Scripting of our PureScript for Log Parsing, similar to [try.purescript.org](https://try.purescript.org/)
-
-(Also automate the [Stack Dump Analysis](https://nuttx.apache.org/docs/latest/guides/cortexmhardfaults.html#))
-
-(Here's a [NuttX Emulator that crashes](https://lupyuen.github.io/nuttx-tinyemu/purescript/). Guess why?)
-
-_Why not code all this in JavaScript instead of PureScript?_
-
-(1) NuttX Logs might appear differently over time. Good to have a quick way to patch our parser as the NuttX Logs change.
-
-(2) We need to implement high-level Declarative Rules that will interpret the parsed NuttX Logs. We might adjust the Rules over time.
-
-(FYI Parsing CSV in JavaScript [looks like this](https://github.com/Chevrotain/chevrotain/blob/master/examples/grammars/csv/csv.js))
-
-_Why PureScript instead of Haskell?_
-
-Right now our NuttX Logs are accessible in a Web Browser through JavaScript: NuttX Emulator (over WebAssembly) and NuttX Device (over Web Serial API).
-
-PureScript is probably easier to run in a Web Browser for processing the JavaScript Logs.
-
-[(Zephyr Stack Dumps are also complicated)](https://github.com/zephyrproject-rtos/zephyr/issues/4416)
-
-# Parse NuttX Stack Dump with PureScript
-
-TODO
-
-Let's parse the [NuttX Stack Dump](https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L168-L224)...
-
-```text
-[    6.242000] riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a
-[    6.242000] riscv_exception: PANIC!!! Exception = 000000000000000c
-[    6.242000] _assert: Current Version: NuttX  12.4.0 f8b0b06b978 Jan 29 2024 01:16:20 risc-v
-[    6.242000] _assert: Assertion failed panic: at file: common/riscv_exception.c:85 task: /system/bin/init process: /system/bin/init 0xc000001a
-[    6.242000] up_dump_register: EPC: 000000008000ad8a
-[    6.242000] up_dump_register: A0: 0000000000000000 A1: 00000000c0202010 A2: 0000000000000001 A3: 00000000c0202010
-[    6.242000] up_dump_register: A4: 00000000c0000000 A5: 0000000000000000 A6: 0000000000000000 A7: 0000000000000000
-[    6.242000] up_dump_register: T0: 0000000000000000 T1: 0000000000000000 T2: 0000000000000000 T3: 0000000000000000
-[    6.242000] up_dump_register: T4: 0000000000000000 T5: 0000000000000000 T6: 0000000000000000
-[    6.242000] up_dump_register: S0: 0000000000000000 S1: 0000000000000000 S2: 0000000000000000 S3: 0000000000000000
-[    6.242000] up_dump_register: S4: 0000000000000000 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
-[    6.242000] up_dump_register: S8: 0000000000000000 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
-[    6.242000] up_dump_register: SP: 00000000c0202800 FP: 0000000000000000 TP: 0000000000000000 RA: 000000008000ad8a
-[    6.242000] dump_stack: User Stack:
-[    6.242000] dump_stack:   base: 0xc0202040
-[    6.242000] dump_stack:   size: 00003008
-[    6.242000] dump_stack:     sp: 0xc0202800
-[    6.242000] stack_dump: 0xc02027e0: c0202010 00000000 00000001 00000000 00000000 00000000 8000ad8a 00000000
-[    6.242000] stack_dump: 0xc0202800: 00000000 00000000 0007e7f0 00000000 c0200208 00000000 c02001e8 00000000
-```
-
-Let's try this single line...
-
-```text
-[    6.242000] stack_dump: 0xc02027e0: c0202010 00000000 00000001 00000000 00000000 00000000 8000ad8a 00000000
-```
-
-Here's our parser in PureScript: [src/Main.purs](src/Main.purs)
-
-```purescript
--- Parse the NuttX Stack Dump.
--- The next line declares the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
-printResults :: Effect Unit
-printResults = do
-  doRunParser "parseStackDump" parseStackDump
-    "[    6.242000] stack_dump: 0xc02027e0: c0202010 00000000 00000001 00000000 00000000 00000000 8000ad8a 00000000"
-
--- Parse a line of NuttX Stack Dump.
--- Result: { addr: "c02027e0", timestamp: "6.242000", v1: "c0202010", v2: "00000000", v3: "00000001", v4: "00000000", v5: "00000000", v6: "00000000", v7: "8000ad8a", v8: "00000000" }
--- The next line declares the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
-parseStackDump ∷ Parser { addr ∷ String , timestamp ∷ String , v1 ∷ String , v2 ∷ String , v3 ∷ String , v4 ∷ String , v5 ∷ String , v6 ∷ String , v7 ∷ String , v8 ∷ String }
-parseStackDump = do
-
-  -- To parse the line: `[    6.242000] stack_dump: 0xc02027e0: c0202010 00000000 00000001 00000000 00000000 00000000 8000ad8a 00000000`
-  -- Skip `[    `
-  -- `void` means ignore the Text Captured
-  -- `$ something something` is shortcut for `( something something )`
-  -- `<*` is the Delimiter between Patterns
-  void $
-    string "["    -- Match the string `[`
-    <* skipSpaces -- Skip the following spaces
-
-  -- `timestamp` becomes `6.242000`
-  -- `<*` says when we should stop the Text Capture
-  timestamp <-
-    regex "[.0-9]+" 
-    <* string "]" 
-    <* skipSpaces
-
-  -- Skip `stack_dump: `
-  -- `void` means ignore the Text Captured
-  -- `$ something something` is shortcut for `( something something )`
-  -- `<*` is the Delimiter between Patterns
-  void $ string "stack_dump:" <* skipSpaces
-
-  -- `addr` becomes `c02027e0`
-  void $ string "0x"
-  addr <- regex "[0-9a-f]+" <* string ":" <* skipSpaces
-
-  -- `v1` becomes `c0202010`
-  -- `v2` becomes `00000000` and so on
-  v1 <- regex "[0-9a-f]+" <* skipSpaces
-  v2 <- regex "[0-9a-f]+" <* skipSpaces
-  v3 <- regex "[0-9a-f]+" <* skipSpaces
-  v4 <- regex "[0-9a-f]+" <* skipSpaces
-  v5 <- regex "[0-9a-f]+" <* skipSpaces
-  v6 <- regex "[0-9a-f]+" <* skipSpaces
-  v7 <- regex "[0-9a-f]+" <* skipSpaces
-  v8 <- regex "[0-9a-f]+" <* skipSpaces
-
-  -- Return the parsed content
-  -- `pure` because we're in a `do` block that allows Effects
-  pure
-    { timestamp
-    , addr
-    , v1
-    , v2
-    , v3
-    , v4
-    , v5
-    , v6
-    , v7
-    , v8
-    }
-```
-
-Result of parsing...
-
-```bash
-## We're parsing: [    6.242000] stack_dump: 0xc02027e0: c0202010 00000000 00000001 00000000 00000000 00000000 8000ad8a 00000000
-$ spago run
-[info] Build succeeded.
-(runParser) Parsing content with 'parseStackDump'
-Result: {
-  addr: "c02027e0", timestamp: "6.242000",
-  v1: "c0202010", v2: "00000000", v3: "00000001", v4: "00000000",
-  v5: "00000000", v6: "00000000", v7: "8000ad8a", v8: "00000000" }
-```
-
-Not that hard! We could have refactored the code to make it shorter. But we'll keep it long because it's easier to read.
-
-Works OK in JavaScript too: [index.html](index.html)
+We __intercept all logs__ emitted by the Emulator, with this JavaScript: [term.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L487-L511)
 
 ```javascript
-// Run parseStackDump
-const stackDump = `[    6.242000] stack_dump: 0xc02027e0: c0202010 00000000 00000001 00000000 00000000 00000000 8000ad8a 00000000`;
-const result = StringParser_Parser
-  .runParser
-  (parseStackDump)
-  (stackDump)
-  ;
-console.log({result});
+// When NuttX Emulator prints something
+// to the Terminal Output...
+Term.prototype.write = function(str) {
+
+  // Send it to our NuttX Log Parser
+  parseLog(str);
 ```
 
-Shows...
-
-```json
-{
-    "result": {
-        "value0": {
-            "timestamp": "6.242000",
-            "addr": "c02027e0",
-            "v1": "c0202010",
-            "v2": "00000000",
-            "v3": "00000001",
-            "v4": "00000000",
-            "v5": "00000000",
-            "v6": "00000000",
-            "v7": "8000ad8a",
-            "v8": "00000000"
-        }
-    }
-}
-```
-
-_What if the parsing fails?_
-
-We'll see `result.error`...
-
-```json
-{
-    "result": {
-        "value0": {
-            "pos": 0,
-            "error": "Expected '['."
-        }
-    }
-}
-```
-
-So we can run `parseStackDump` on every line of NuttX Log. And skip the lines with `result.error`
-
-TODO: Spot interesting addresses like 8000ad8a, c0202010
-
-# Parse NuttX Exception with PureScript
-
-TODO
-
-Let's parse the [NuttX Exception](https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L168-L224)...
-
-```text
-[    6.242000] riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a
-```
-
-Here's how we parse the NuttX Exception in PureScript: [src/Main.purs](src/Main.purs)
-
-```purescript
--- Parse the NuttX Exception.
--- Given this NuttX Exception: `riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a`
--- Result: { epc: "000000008000ad8a", exception: "Instruction page fault", mcause: 12, mtval: "000000008000ad8a" }
--- The next line declares the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
-parseException ∷ Parser { exception ∷ String, mcause :: Int, epc :: String, mtval :: String }
-parseException = do
-
-  -- To parse the line: `riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a`
-  -- Skip `riscv_exception: EXCEPTION: `
-  -- `void` means ignore the Text Captured
-  -- `$ something something` is shortcut for `( something something )`
-  -- `<*` is the Delimiter between Patterns
-  void $
-    string "riscv_exception:" -- Match the string `riscv_exception:`
-    <* skipSpaces             -- Skip the following spaces
-    <* string "EXCEPTION:"    -- Match the string `EXCEPTION:`
-    <* skipSpaces             -- Skip the following spaces
-
-  -- `exception` becomes `Instruction page fault`
-  -- `<*` says when we should stop the Text Capture
-  exception <- regex "[^.]+" 
-    <* string "." 
-    <* skipSpaces 
-
-  -- Skip `MCAUSE: `
-  -- `void` means ignore the Text Captured
-  -- `$ something something` is shortcut for `( something something )`
-  -- `<*` is the Delimiter between Patterns
-  void $ string "MCAUSE:" <* skipSpaces
-
-  -- `mcauseStr` becomes `000000000000000c`
-  -- We'll convert to integer later
-  mcauseStr <- regex "[0-9a-f]+" <* string "," <* skipSpaces
-
-  -- Skip `EPC: `
-  -- `epc` becomes `000000008000ad8a`
-  void $ string "EPC:" <* skipSpaces
-  epc <- regex "[0-9a-f]+" <* string "," <* skipSpaces
-
-  -- Skip `MTVAL: `
-  -- `mtval` becomes `000000008000ad8a`
-  void $ string "MTVAL:" <* skipSpaces
-  mtval <- regex "[0-9a-f]+"
-
-  -- Return the parsed content
-  -- `pure` because we're in a `do` block that allows (Side) Effects
-  pure 
-    {
-      exception
-    , mcause: -1 `fromMaybe`               -- If `mcauseStr` is not a valid hex, return -1
-        fromStringAs hexadecimal mcauseStr -- Else return the hex value of `mcauseStr`
-    , epc
-    , mtval
-    }
-```
-
-We can run it in Web Browser JavaScript: [index.html](index.html)
+Our JavaScript __parses NuttX Logs__ like this: [term.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1483-L1575)
 
 ```javascript
-  // Run parseException
-  const exception = `riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a`
-  const result1 = StringParser_Parser
-    .runParser
-    (parseException)
-    (exception)
+// Parse NuttX Logs with PureScript.
+// Assume `ch` is a single character for Terminal Output.
+// PureScript Parser is inited in `index.html`
+function parseLog(ch) {
+
+  // Omitted: Accumulate the characters into a line.
+  // Ignore Newlines and Carriage Returns
+  termbuf += ch;
+  ...
+  // Parse the RISC-V Exception
+  // TODO: Check for exception.error === undefined
+  const exception = StringParser_Parser
+    .runParser(parseException)(termbuf)
+    .value0;
+
+  // Explain the Exception and
+  // link to the Disassembly
+  const epc   = disassemble(exception.epc);
+  const mtval = disassemble(exception.mtval);
+  const exception_str = [
+    "Exception:" + "&nbsp;".repeat(1) + exception.exception,
+    "MCAUSE:"    + "&nbsp;".repeat(4) + exception.mcause,
+    "EPC:"       + "&nbsp;".repeat(7) + epc,
+    "MTVAL:"     + "&nbsp;".repeat(5) + mtval,
+  ].join("<br>");
+
+  // Display the Exception
+  const parser_output = document.getElementById("parser_output");
+  parser_output.innerHTML +=
+    `<p>${exception_str}</p>`;
+
+  // Explain the Exception
+  // and display it
+  const explain = explainException
+    (exception.mcause)(exception.epc)(exception.mtval);
+  parser_output.innerHTML +=
+    `<p>${explain}</p>`
+    .split(exception.epc, 2).join(epc)      // Link EPC to Disassembly
+    .split(exception.mtval, 2).join(mtval)  // Link MTVAL to Disassembly
     ;
-  console.log({result1});
 ```
 
-Which shows...
+Which calls PureScript to __parse the RISC-V Exception__ and explain it.
 
-```json
-{
-    "result1": {
-        "value0": {
-            "exception": "Instruction page fault",
-            "mcause": 12,
-            "epc": "000000008000ad8a",
-            "mtval": "000000008000ad8a"
-        }
-    }
+(We'll see __disassemble__ later)
+
+We do the same for the __Stack Dump__...
+
+```javascript
+  // Parse the Stack Dump and link to the Disassembly
+  // TODO: Check for stackDump.error === undefined
+  const stackDump = StringParser_Parser
+    .runParser(parseStackDump)(termbuf)
+    .value0;
+
+  // Display the Stack Dump
+  const str = [
+    stackDump.addr + ":",
+    disassemble(stackDump.v1), disassemble(stackDump.v2), disassemble(stackDump.v3), disassemble(stackDump.v4),
+    disassemble(stackDump.v5), disassemble(stackDump.v6), disassemble(stackDump.v7), disassemble(stackDump.v8),
+  ].join("&nbsp;&nbsp;");
+  parser_output.innerHTML +=
+    `<p>${str}</p>`;
+
+  // Reset the Line Buffer
+  termbuf = "";
+}
+
+// Buffer the last line of the Terminal Output
+let termbuf = "";
+```
+
+_What's this function: disassemble?_
+
+TODO
+
+```javascript
+// If `addr` is a valid address, return the Disassembly URL:
+// <a href="disassemble.html?addr=8000a0e4" target="_blank">8000a0e4</a>
+// Otherwise return `addr`
+function disassemble(addr) {
+  const id = identifyAddress(addr).value0;
+  if (id === undefined) { return addr; }
+
+  // Yep `addr` is a valid address.
+  // Wrap it with the Disassembly URL
+  const url = `disassemble.html?addr=${addr}`;
+  return [
+    `<a href="${url}" target="_blank">`,
+    addr,
+    `</a>`,
+  ].join("");
 }
 ```
+
+TODO
 
 # Explain NuttX Exception with PureScript
 
@@ -1438,15 +1249,43 @@ The JSON Response looks like this...
 }
 ```
 
-# What's Next
+# Parsing Apache NuttX RTOS Logs with PureScript
 
 TODO
 
-Hello Marvin the Martian?
+In the Web Browser, we can get Real-Time Logs from NuttX Devices (Web Serial API) NuttX Emulator (Term.js)...
 
-Yum curry...
+What if we could Analyse the NuttX Logs in Real-Time? And show the results in the Web Browser?
 
-Easier to understand 
+Like for [Stack Dumps](https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L168-L224), [ELF Loader Log](https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L1-L167), [Memory Manager Log](https://docs.google.com/spreadsheets/d/1g0-O2qdgjwNfSIxfayNzpUN8mmMyWFmRf2dMyQ9a8JI/edit#gid=0) (malloc / free)?
+
+Let's do it with PureScript, since Functional Languages are better for Parsing Text.
+
+And we'll support Online Scripting of our PureScript for Log Parsing, similar to [try.purescript.org](https://try.purescript.org/)
+
+(Also automate the [Stack Dump Analysis](https://nuttx.apache.org/docs/latest/guides/cortexmhardfaults.html#))
+
+(Here's a [NuttX Emulator that crashes](https://lupyuen.github.io/nuttx-tinyemu/purescript/). Guess why?)
+
+_Why not code all this in JavaScript instead of PureScript?_
+
+(1) NuttX Logs might appear differently over time. Good to have a quick way to patch our parser as the NuttX Logs change.
+
+(2) We need to implement high-level Declarative Rules that will interpret the parsed NuttX Logs. We might adjust the Rules over time.
+
+(FYI Parsing CSV in JavaScript [looks like this](https://github.com/Chevrotain/chevrotain/blob/master/examples/grammars/csv/csv.js))
+
+_Why PureScript instead of Haskell?_
+
+Right now our NuttX Logs are accessible in a Web Browser through JavaScript: NuttX Emulator (over WebAssembly) and NuttX Device (over Web Serial API).
+
+PureScript is probably easier to run in a Web Browser for processing the JavaScript Logs.
+
+[(Zephyr Stack Dumps are also complicated)](https://github.com/zephyrproject-rtos/zephyr/issues/4416)
+
+# What's Next
+
+TODO
 
 ```bash
 git clone TODO
@@ -1459,8 +1298,6 @@ Install vscode extension
 
 It's 2024... Surely there's a better way to grok the log?
 Stack trace / mm log / elf loader 
-
-Concat "🎵 I never promised you a rose garden"
 
 TODO
 
