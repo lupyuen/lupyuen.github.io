@@ -8,13 +8,21 @@ Over the Lunar New Year holidays, we were porting [__QuickJS__](TODO) to [__Ox64
 
 TODO: Pic
 
-Which made us ponder our life choices...
+Which made us ponder (our life choices)...
 
-- Show Exception promimently without scroll back pages and pages of logs?
+- Can we show the __RISC-V Exception__ promimently?
 
-- Explain the Exception
+  (Without scrolling back pages and pages of logs)
 
-- Analyse the Stack Trace
+- And __Explain the Exception__
+
+  (For folks new to RISC-V Exceptions)
+
+- Analyse the __Stack Dump__ and point out Interesting Addresses
+
+  (For Code, Data, BSS, Heap, ...)
+
+In this article, 
 
 [__Ox64 BL808 64-bit RISC-V SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358)
 
@@ -31,6 +39,65 @@ Which made us ponder our life choices...
 [(Try the Online Demo)](https://lupyuen.github.io/nuttx-tinyemu/purescript)
 
 [(Watch the Demo on YouTube)](https://youtu.be/9oBhy3P7pYc)
+
+# Demo Walkthrough
+
+TODO
+
+# Explain the RISC-V Exception
+
+TODO
+
+We begin with the smarty stuff
+
+https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L51
+
+```purescript
+-- Explain the NuttX Exception with mcause 13
+-- `<>` will concat 2 strings
+-- "🎵 I never promised you a rose garden"
+explainException 13 epc mtval =
+  "We hit a Load Page Fault."
+  <> " Our code at Code Address " <> epc
+  <> " tried to access the Data Address " <> mtval <> ", which is Invalid."
+```
+
+TODO
+
+```purescript
+-- Explain the NuttX Exception with mcause 12
+-- `<>` will concat 2 strings
+explainException 12 epc mtval =
+  "Instruction Page Fault at " <> epc <> ", " <> mtval
+
+-- Explain the Other NuttX Exceptions, that are not matched with the above
+explainException mcause epc mtval =
+  "Unknown Exception: mcause=" <> show mcause <> ", epc=" <> epc <> ", mtval=" <> mtval
+```
+
+_Hello Marvin the Martian?_
+
+Yeah we'll meet some alien symbols in PureScript.
+
+'__`<>`__' _(Diamond Operator)_ will concatenate 2 strings.
+
+(yummy) [__Curried Way__](https://en.wikipedia.org/wiki/Partial_application)
+
+```javascript
+// In JavaScript: Call PureScript via a Curried Function.
+// Returns "Code Address 8000a0e4 failed to access Data Address 880203b88"
+result = explainException(13)(`8000a0e4`)(`880203b88`);
+
+// Instead of the normal non-spicy Uncurried Way:
+// explainException(13, `8000a0e4`, `880203b88`)
+```
+
+Prolog
+
+```purescript
+-- The next line declares the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
+explainException ∷ Int → String → String → String
+```
 
 # Parsing Apache NuttX RTOS Logs with PureScript
 
