@@ -163,14 +163,14 @@ explainException mcause epc mtval =
 <p>This thing about PureScript looks totally alien…</p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- Declare the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
 
-explainException ∷ 
+explainException ::
   Int       -- MCAUSE: Cause of Exception
   → String  -- EPC: Exception Program Counter
   → String  -- MTVAL: Exception Value
   → String  -- Returns the Exception Explanation
 </code></pre></div>
 <p>But it works like a <strong>Function Declaration</strong> in C.</p>
-<p><a href="TODO">(<strong>VSCode</strong> will auto-generate it)</a></p>
+<p><a href="TODO">(<strong>VSCode</strong> will generate the <strong>Function Type</strong>)</a></p>
 <p><em>How will we call this from JavaScript?</em></p>
 <p>Inside our <strong>Web Browser JavaScript</strong>, this is how we call PureScript: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1521-L1528">term.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// In JavaScript: Call PureScript via a Curried Function.
@@ -188,72 +188,118 @@ result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
 <p>Without getting stuck with the low-level procedural plumbing of JavaScript.</p>
 <p>Let’s do a bit more PureScript…</p>
 <h1 id="parse-the-risc-v-exception"><a href="#parse-the-risc-v-exception">3 Parse the RISC-V Exception</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L127-L191">Main.purs</a></p>
-<div class="example-wrap"><pre class="language-purescript"><code>-- Parse the NuttX Exception.
--- Given this NuttX Exception: `riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a`
--- Result: { epc: &quot;8000ad8a&quot;, exception: &quot;Instruction page fault&quot;, mcause: 12, mtval: &quot;8000ad8a&quot; }
--- The next line declares the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
-parseException ∷ Parser { exception ∷ String, mcause :: Int, epc :: String, mtval :: String }
+<p><em>How did we get the RISC-V Exception? MCAUSE, EPC, MTVAL?</em></p>
+<p>We extracted the <strong>RISC-V Exception</strong> from the NuttX Log…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>riscv_exception:
+  EXCEPTION: Load page fault.
+  MCAUSE:    000000000000000d,
+  EPC:       000000008000a0e4,
+  MTVAL:     0000000880203b88
+</code></pre></div>
+<p>PureScript really shines for <strong>Parsing Text Strings</strong>. We walk through the steps: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L127-L191">Main.purs</a></p>
+<div class="example-wrap"><pre class="language-purescript"><code>-- Declare our Function to Parse the RISC-V Exception
+parseException :: Parser  -- We&#39;re creating a Parser...
+  {                       -- That accepts a String and returns...
+    exception  :: String  -- Exception: `Load page fault`
+  , mcause     :: Int     -- MCAUSE: 13
+  , epc        :: String  -- EPC: `8000a0e4`
+  , mtval      :: String  -- MTVAL: `0000000880203b88`
+  }
+</code></pre></div>
+<p>We’re about to create a <strong>PureScript String Parser</strong> that will accept a printed RISC-V Exception and return the MCAUSE, EPC and MTVAL.</p>
+<p><a href="TODO">(<strong>VSCode</strong> will generate the <strong>Function Type</strong>)</a></p>
+<p>This is how we write our <strong>Parsing Function</strong>…</p>
+<div class="example-wrap"><pre class="language-purescript"><code>-- To parse the line: `riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000008000a0e4, MTVAL: 0000000880203b88`
 parseException = do
 
-  -- To parse the line: `riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a`
   -- Skip `riscv_exception: EXCEPTION: `
-  -- `void` means ignore the Text Captured
-  -- `$ something something` is shortcut for `( something something )`
-  -- `&lt;*` is the Delimiter between Patterns
   void $
     string &quot;riscv_exception:&quot; -- Match the string `riscv_exception:`
     &lt;* skipSpaces             -- Skip the following spaces
     &lt;* string &quot;EXCEPTION:&quot;    -- Match the string `EXCEPTION:`
     &lt;* skipSpaces             -- Skip the following spaces
-
-  -- `exception` becomes `Instruction page fault`
+</code></pre></div>
+<p>As promised, meet our alien symbols…</p>
+<ul>
+<li>
+<p><strong><code>void</code></strong> means ignore the text</p>
+</li>
+<li>
+<p><strong><code>$ something something</code></strong> is shortcut for…</p>
+<p><strong><code>( something something )</code></strong></p>
+</li>
+<li>
+<p><strong><code>&lt;*</code></strong> is the Delimiter between Patterns</p>
+</li>
+</ul>
+<p>Which will skip the unnecessary prelude…</p>
+<div class="example-wrap"><pre class="language-text"><code>riscv_exception: EXCEPTION: 
+</code></pre></div>
+<p>Next comes the <strong>Exception Message</strong>, which we’ll capture via a <strong>Regular Expression</strong>…</p>
+<div class="example-wrap"><pre class="language-purescript"><code>  -- `exception` becomes `Load page fault`
   -- `&lt;*` says when we should stop the Text Capture
   exception &lt;- regex &quot;[^.]+&quot; 
     &lt;* string &quot;.&quot; 
     &lt;* skipSpaces 
-
-  -- Skip `MCAUSE: `
+</code></pre></div>
+<p>We do the same to capture <strong>MCAUSE</strong> (as a String)…</p>
+<div class="example-wrap"><pre class="language-purescript"><code>  -- Skip `MCAUSE: `
   -- `void` means ignore the Text Captured
   -- `$ something something` is shortcut for `( something something )`
   -- `&lt;*` is the Delimiter between Patterns
   void $ string &quot;MCAUSE:&quot; &lt;* skipSpaces
 
-  -- `mcauseStr` becomes `000000000000000c`
+  -- `mcauseStr` becomes `000000000000000d`
   -- We&#39;ll convert to integer later
   mcauseStr &lt;- regex &quot;[0-9a-f]+&quot; &lt;* string &quot;,&quot; &lt;* skipSpaces
-
-  -- Skip `EPC: `
-  -- `epcWithPrefix` becomes `000000008000ad8a`
+</code></pre></div>
+<p>And we capture <strong>EPC</strong> and <strong>MTVAL</strong> (with the Zero Prefix)…</p>
+<div class="example-wrap"><pre class="language-purescript"><code>  -- Skip `EPC: `
+  -- `epcWithPrefix` becomes `000000008000a0e4`
   -- We&#39;ll strip the prefix `00000000` later
   void $ string &quot;EPC:&quot; &lt;* skipSpaces
   epcWithPrefix &lt;- regex &quot;[0-9a-f]+&quot; &lt;* string &quot;,&quot; &lt;* skipSpaces
 
   -- Skip `MTVAL: `
-  -- `mtvalWithPrefix` becomes `000000008000ad8a`
-  -- We&#39;ll strip the prefix `00000000` later
+  -- `mtvalWithPrefix` becomes `0000000880203b88`
+  -- We might strip the zero prefix later
   void $ string &quot;MTVAL:&quot; &lt;* skipSpaces
   mtvalWithPrefix &lt;- regex &quot;[0-9a-f]+&quot;
-
-  -- Return the parsed content
+</code></pre></div>
+<p>Finally we return the parsed <strong>MCAUSE</strong> (as integer), <strong>EPC</strong> (without prefix), <strong>MTVAL</strong> (without prefix)…</p>
+<div class="example-wrap"><pre class="language-purescript"><code>  -- Return the parsed content.
   -- `pure` because we&#39;re in a `do` block that allows (Side) Effects
   pure 
     {
       exception
     , mcause:
         -1 `fromMaybe` -- If `mcauseStr` is not a valid hex, return -1
-        fromStringAs hexadecimal mcauseStr -- Else return the hex value of `mcauseStr`
+          fromStringAs hexadecimal mcauseStr -- Else return the hex value of `mcauseStr`
 
     , epc:
         epcWithPrefix `fromMaybe` -- If `epcWithPrefix` does not have prefix `00000000`, return it
-        stripPrefix (Pattern &quot;00000000&quot;) epcWithPrefix -- Else strip prefix `00000000` from `epc`
+          stripPrefix (Pattern &quot;00000000&quot;) epcWithPrefix -- Else strip prefix `00000000` from `epc`
 
     , mtval:
         mtvalWithPrefix `fromMaybe` -- If `mtvalWithPrefix` does not have prefix `00000000`, return it
-        stripPrefix (Pattern &quot;00000000&quot;) mtvalWithPrefix -- Else strip prefix `00000000` from `mtval`
+          stripPrefix (Pattern &quot;00000000&quot;) mtvalWithPrefix -- Else strip prefix `00000000` from `mtval`
     }
-</code></pre></div><h1 id="parsing-apache-nuttx-rtos-logs-with-purescript"><a href="#parsing-apache-nuttx-rtos-logs-with-purescript">4 Parsing Apache NuttX RTOS Logs with PureScript</a></h1>
+</code></pre></div>
+<p><a href="https://pursuit.purescript.org/packages/purescript-maybe/docs/Data.Maybe#v:fromMaybe">(<strong>fromMaybe</strong> resolves an Optional Value)</a></p>
+<p><a href="https://pursuit.purescript.org/packages/purescript-integers/docs/Data.Int#v:fromStringAs">(<strong>fromStringAs</strong> converts String to Integer)</a></p>
+<p><a href="https://pursuit.purescript.org/packages/purescript-strings/6.0.1/docs/Data.String#v:stripPrefix">(<strong>stripPrefix</strong> removes the String Prefix)</a></p>
+<p><em>fromMaybe looks weird?</em></p>
+<p>We tried to make our code “friendlier”…</p>
+<div class="example-wrap"><pre class="language-purescript"><code>a `fromMaybe` b
+</code></pre></div>
+<p>Is actually equivalent to the Bracket Bonanza…</p>
+<div class="example-wrap"><pre class="language-purescript"><code>(fromMaybe a b)
+</code></pre></div>
+<p>(Maybe we tried too hard)</p>
+<p><em>Does it work with JavaScript?</em></p>
+<p>Yep it does!</p>
+<p>TODO: JavaScript</p>
+<h1 id="parsing-apache-nuttx-rtos-logs-with-purescript"><a href="#parsing-apache-nuttx-rtos-logs-with-purescript">4 Parsing Apache NuttX RTOS Logs with PureScript</a></h1>
 <p>TODO</p>
 <p>In the Web Browser, we can get Real-Time Logs from NuttX Devices (Web Serial API) NuttX Emulator (Term.js)…</p>
 <p>What if we could Analyse the NuttX Logs in Real-Time? And show the results in the Web Browser?</p>
