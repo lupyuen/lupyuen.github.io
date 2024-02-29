@@ -82,7 +82,7 @@
 <p>Which made us ponder (our life choices)…</p>
 <ul>
 <li>
-<p>Can we show the <strong>RISC-V Exception</strong> promimently?</p>
+<p>Can we show the <strong>RISC-V Exception</strong> prominently?</p>
 <p>(Without scrolling back pages and pages of logs)</p>
 </li>
 <li>
@@ -108,10 +108,13 @@
 <p>We begin with the smarty stuff…</p>
 <h1 id="explain-the-risc-v-exception"><a href="#explain-the-risc-v-exception">2 Explain the RISC-V Exception</a></h1>
 <p><em>How did we explain the RISC-V Exception?</em></p>
+<span style="font-size:90%">
 <blockquote>
 <p>“We hit a Load Page Fault. Our code at Code Address 8000a0e4 tried to access the Data Address 880203b88, which is Invalid”</p>
 </blockquote>
+</span>
 <p>That’s our message that explains the <strong>RISC-V Exception</strong>…</p>
+<span style="font-size:90%">
 <ul>
 <li>
 <p><strong>MCAUSE 13</strong>: Cause of Exception</p>
@@ -123,6 +126,7 @@
 <p><strong>MTVAL <code>8_8020_3B88</code></strong>: Exception Value</p>
 </li>
 </ul>
+</span>
 <p><strong>In PureScript:</strong> This is how we compose the helpful message: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L51">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- Explain the RISC-V Exception with mcause 13
 -- `&lt;&gt;` will concat 2 strings
@@ -184,7 +188,7 @@ result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
 <p>Let’s do a bit more PureScript…</p>
 <h1 id="parse-the-risc-v-exception"><a href="#parse-the-risc-v-exception">3 Parse the RISC-V Exception</a></h1>
 <p><em>How did we get the RISC-V Exception? MCAUSE, EPC, MTVAL?</em></p>
-<p>We extracted the <strong>RISC-V Exception</strong> from the NuttX Log…</p>
+<p>We auto-extracted the <strong>RISC-V Exception</strong> from the NuttX Log…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>riscv_exception:
   EXCEPTION: Load page fault.
   MCAUSE:    000000000000000d,
@@ -272,11 +276,9 @@ parseException = do
     , mcause:
         -1 `fromMaybe` -- If `mcauseStr` is not a valid hex, return -1
           fromStringAs hexadecimal mcauseStr -- Else return the hex value of `mcauseStr`
-
     , epc:
         epcWithPrefix `fromMaybe` -- If `epcWithPrefix` does not have prefix `00000000`, return it
           stripPrefix (Pattern &quot;00000000&quot;) epcWithPrefix -- Else strip prefix `00000000` from `epc`
-
     , mtval:
         mtvalWithPrefix `fromMaybe` -- If `mtvalWithPrefix` does not have prefix `00000000`, return it
           stripPrefix (Pattern &quot;00000000&quot;) mtvalWithPrefix -- Else strip prefix `00000000` from `mtval`
@@ -411,12 +413,22 @@ function parseLog(ch) {
 // Buffer the last line of the Terminal Output
 let termbuf = &quot;&quot;;
 </code></pre></div>
+<p><a href="TODO">(<strong>parseStackDump</strong> comes from PureScript)</a></p>
 <p><em>What’s this function: disassemble?</em></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-javascript"><code>// If `addr` is a valid address, return the Disassembly URL:
+<p>Instead of printing addresses plainly like <code>8000a0e4</code>, we show <strong>Addresses as Hyperlinks</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;a href=&quot;disassemble.html?addr=8000a0e4&quot; target=&quot;_blank&quot;&gt;
+  8000a0e4
+&lt;/a&gt;
+</code></pre></div>
+<p>Which links our page that displays the <strong>NuttX Disassembly</strong> for the address: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1556-L1571">term.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// If `addr` is a valid address,
+// wrap it with the Disassembly URL:
 // &lt;a href=&quot;disassemble.html?addr=8000a0e4&quot; target=&quot;_blank&quot;&gt;8000a0e4&lt;/a&gt;
 // Otherwise return `addr`
 function disassemble(addr) {
+
+  // If this is an Unknown Address,
+  // return it without hyperlink
   const id = identifyAddress(addr).value0;
   if (id === undefined) { return addr; }
 
@@ -430,65 +442,36 @@ function disassemble(addr) {
   ].join(&quot;&quot;);
 }
 </code></pre></div>
-<p>TODO</p>
+<p>How will <strong>identifyAddress</strong> know if it’s a valid NuttX Address? Coming right up…</p>
 <h1 id="identify-a-nuttx-address"><a href="#identify-a-nuttx-address">5 Identify a NuttX Address</a></h1>
-<p>TODO</p>
-<p><em>Given a NuttX Address like 80007028: How will we know whether it’s in NuttX Kernel or NuttX Apps? And whether it’s Code, Data, BSS or Heap?</em></p>
-<p>This is how we identify a NuttX Address in PureScript: <a href="src/Main.purs">src/Main.purs</a></p>
-<div class="example-wrap"><pre class="language-purescript"><code>-- Given an Address, identify the Origin (NuttX Kernel or App) and Type (Code / Data / BSS / Heap)
-identifyAddress ∷ String → Maybe { origin ∷ String , type ∷ AddressType }
-
--- Address 502xxxxx comes from NuttX Kernel Code
--- Address 800xxxxx comes from NuttX App Code (QuickJS)
--- `|` works like `if ... else if`
--- &quot;a `matches` b&quot; is same as &quot;(matches a b)&quot;
--- `Just` returns an OK Value. `Nothing` returns No Value.
+<p><em>Given a NuttX Address like 8000a0e4: How will we know whether it’s in NuttX Kernel or NuttX Apps? And whether it’s Code, Data, BSS or Heap?</em></p>
+<p>Once Again: We get a little help from <strong>PureScript</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L55-L102">Main.purs</a></p>
+<div class="example-wrap"><pre class="language-purescript"><code>-- Given an Address: Identify the
+-- Origin (NuttX Kernel or App) and
+-- Type (Code / Data / BSS / Heap)
 identifyAddress addr
-  | &quot;502.....&quot; `matches` addr = Just { origin: &quot;nuttx&quot;, type: Code }
-  | &quot;800.....&quot; `matches` addr = Just { origin: &quot;qjs&quot;,   type: Code }
+
+  -- `|` works like `if ... else if`
+  -- &quot;a `matches` b&quot; is same as &quot;(matches a b)&quot;
+  -- `Just` returns an OK Value. `Nothing` returns No Value.
+
+  -- Address 502xxxxx comes from NuttX Kernel Code
+  | &quot;502.....&quot; `matches` addr =
+    Just { origin: &quot;nuttx&quot;, type: Code }
+
+  -- Address 800xxxxx comes from NuttX App Code (QuickJS)
+  | &quot;800.....&quot; `matches` addr =
+    Just { origin: &quot;qjs&quot;,   type: Code }
+
+  -- Otherwise it&#39;s an Unknown Address
   | otherwise = Nothing
-
--- Address can point to Code, Data, BSS or Heap
-data AddressType = Code | Data | BSS | Heap
-
--- How to display an Address Type
-instance Show AddressType where
-  show Code = &quot;Code&quot;
-  show Data = &quot;Data&quot;
-  show BSS  = &quot;BSS&quot;
-  show Heap = &quot;Heap&quot;
-
--- Return True if the Address matches the Regex Pattern.
--- Pattern is assumed to match the Entire Address.
-matches ∷ String → String → Boolean
-
--- Match the Begin `^` and End `$` of the Address
--- `&lt;&gt;` will concat 2 strings
--- &quot;a `unsafeRegex` b&quot; is same as &quot;(unsafeRegex a b)&quot;
-matches pattern addr = 
-  let 
-    patternWrap = &quot;^&quot; &lt;&gt; pattern &lt;&gt; &quot;$&quot;
-  in
-    isJust $                            -- Is there a Match...
-      patternWrap `unsafeRegex` noFlags -- For our Regex Pattern (no special flags)
-        `match` addr                    -- Against the Address?
-
--- Test our code. Parse the NuttX Exception and NuttX Stack Dump. Explain the NuttX Exception.
--- `Effect` says that it will do Side Effects (printing to console)
--- `Unit` means that no value will be returned
--- The next line declares the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
-printResults :: Effect Unit
-printResults = do
-
-  -- NuttX Kernel: 0x5020_0000 to 0x5021_98ac
-  -- NuttX App (qjs): 0x8000_0000 to 0x8006_4a28
-  logShow $ identifyAddress &quot;502198ac&quot; -- (Just { origin: &quot;nuttx&quot;, type: Code })
-  logShow $ identifyAddress &quot;8000a0e4&quot; -- (Just { origin: &quot;qjs&quot;, type: Code })
-  logShow $ identifyAddress &quot;0000000800203b88&quot; -- Nothing
 </code></pre></div>
-<p><em>Tsk tsk so much Hard Coding…</em></p>
+<p><a href="TODO">(<strong>matches</strong> performs <strong>Regex Matching</strong>)</a></p>
+<p><em>How does it work?</em></p>
+<p>TODO: JavaScript</p>
+<p><em>Tsk tsk so much Hard Coding?</em></p>
 <p>Our Rules are still evolving, we’re not sure how the NuttX Log Parser will be used in future.</p>
-<p>That’s why we need a PureScript Editor that will allow the Rules to be tweaked easily for other platforms…</p>
+<p>That’s why we need an <a href="TODO"><strong>Online PureScript Editor</strong></a> that will allow the Rules to be <strong>tweaked and tested easily</strong> for other platforms.</p>
 <h1 id="show-nuttx-disassembly-by-address"><a href="#show-nuttx-disassembly-by-address">6 Show NuttX Disassembly by Address</a></h1>
 <p>TODO</p>
 <p><em>Given an Exception Address like 8000ad8a, can we show the NuttX Disassembly?</em></p>
