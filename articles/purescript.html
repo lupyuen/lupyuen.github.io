@@ -130,7 +130,6 @@
 <p><strong>In PureScript:</strong> This is how we compose the helpful message: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L51">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- Explain the RISC-V Exception with mcause 13
 -- `&lt;&gt;` will concat 2 strings
--- &quot;🎵 I never promised you a rose garden&quot;
 
 explainException 13 epc mtval =
   &quot;We hit a Load Page Fault.&quot;
@@ -142,13 +141,14 @@ explainException 13 epc mtval =
 <p>Yeah we’ll meet some alien symbols in PureScript.</p>
 <p>‘<strong><code>&lt;&gt;</code></strong>’ <em>(Diamond Operator)</em> will <strong>concatenate 2 strings</strong>.</p>
 <p>We explain the other RISC-V Exceptions the same way…</p>
-<div class="example-wrap"><pre class="language-purescript"><code>-- Explain the RISC-V Exception with mcause 12
+<div class="example-wrap"><pre class="language-purescript"><code>-- TODO: Explain the RISC-V Exception with mcause 12
 -- `&lt;&gt;` will concat 2 strings
+-- &quot;🎵 I never promised you a rose garden&quot;
 
 explainException 12 epc mtval =
   &quot;Instruction Page Fault at &quot; &lt;&gt; epc &lt;&gt; &quot;, &quot; &lt;&gt; mtval
 
--- Explain the Other RISC-V Exceptions,
+-- TODO: Explain the Other RISC-V Exceptions,
 -- that are not matched with the above.
 -- `show` converts a Number to a String
 
@@ -157,7 +157,8 @@ explainException mcause epc mtval =
 </code></pre></div>
 <p>Which looks like a tidy bunch of <strong>Explain Rules</strong>. (Similar to Prolog!)</p>
 <p>This thing about PureScript looks totally alien…</p>
-<div class="example-wrap"><pre class="language-purescript"><code>-- Declare the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
+<div class="example-wrap"><pre class="language-purescript"><code>-- Declare the Function Type.
+-- We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
 
 explainException ::
   Int        -- MCAUSE: Cause of Exception
@@ -179,7 +180,7 @@ result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
 // Instead of the normal non-spicy Uncurried Way:
 // explainException(13, &quot;8000a0e4&quot;, &quot;880203b88&quot;)
 </code></pre></div>
-<p>Our JavaScript will call PureScript the (yummy) <a href="https://en.wikipedia.org/wiki/Partial_application"><strong>Curried Way</strong></a>.</p>
+<p>Our JavaScript will call PureScript the (yummy) <a href="https://javascript.info/currying-partials"><strong>Curried Way</strong></a>.</p>
 <p>(Because PureScript is a Functional Language)</p>
 <p><img src="https://lupyuen.github.io/images/purescript-explain.png" alt="PureScript looks like a neat way to express our NuttX Troubleshooting Skills as high-level rules" /></p>
 <p><em>Why PureScript? Could’ve done all this in JavaScript…</em></p>
@@ -362,8 +363,15 @@ function parseLog(ch) {
     .runParser(parseException)(termbuf)
     .value0;
 
-  // Link the Exception
-  // to the Disassembly
+  // Explain the Exception
+  const explain = explainException
+    (exception.mcause)
+    (exception.epc)
+    (exception.mtval);
+</code></pre></div>
+<p>Line by line, we pass the NuttX Logs to PureScript, to <strong>parse the RISC-V Exceptions</strong> and explain them.</p>
+<p>Then we display them…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>  // Link the Exception to the Disassembly
   const epc   = disassemble(exception.epc);
   const mtval = disassemble(exception.mtval);
   const exception_str = [
@@ -378,16 +386,12 @@ function parseLog(ch) {
   parser_output.innerHTML +=
     `&lt;p&gt;${exception_str}&lt;/p&gt;`;
 
-  // Explain the Exception
-  // and display it
-  const explain = explainException
-    (exception.mcause)(exception.epc)(exception.mtval);
+  // Display the Exception Explanation
   parser_output.innerHTML +=
     `&lt;p&gt;${explain}&lt;/p&gt;`
     .split(exception.epc,   2).join(epc)     // Link EPC to Disassembly
     .split(exception.mtval, 2).join(mtval);  // Link MTVAL to Disassembly
 </code></pre></div>
-<p>Which calls PureScript to <strong>parse the RISC-V Exception</strong> and explain it.</p>
 <p>(We’ll see <strong>disassemble</strong> later)</p>
 <p>We do the same for the <strong>Stack Dump</strong>…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Parse the Stack Dump and link to the Disassembly
@@ -492,7 +496,7 @@ result = identifyAddress(&quot;0000000800203b88&quot;);
 // This will return &quot;Nothing&quot;
 resultType = result.constructor.name;
 </code></pre></div>
-<p><em>Tsk tsk so much Hard Coding of Address Patterns?</em></p>
+<p><em>Tsk tsk we’re hard-coding Address Patterns?</em></p>
 <p>Our <strong>Troubleshooting Rules</strong> are still evolving, we’re not sure how the NuttX Log Parser will be used in future.</p>
 <p>That’s why we’ll have an <a href="TODO"><strong>Online PureScript Compiler</strong></a> that will allow the Troubleshooting Rules to be <strong>tweaked and tested easily</strong> across all NuttX Platforms.</p>
 <h1 id="disassemble-nuttx-by-address"><a href="#disassemble-nuttx-by-address">6 Disassemble NuttX by Address</a></h1>
