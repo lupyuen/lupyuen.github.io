@@ -334,7 +334,7 @@ And it works great with our [__RISC-V Exception Explainer__](TODO)!
 import { explainException } from './output/Main/index.js';
 
 // Fetch the Parsed RISC-V Exception from above
-// TODO: Check if exception === undefined
+// TODO: If the parsing failed, then exception === undefined
 const exception = result.value0;
 
 // Explain the Parsed RISC-V Exception.
@@ -344,6 +344,12 @@ const explain = explainException
   (exception.epc)
   (exception.mtval);
 ```
+
+# Pass NuttX Logs to PureScript
+
+_PureScript will parse our RISC-V Exceptions and explain them... How to pass our NuttX Logs to PureScript?_
+
+TODO
 
 # Parsing Apache NuttX RTOS Logs with PureScript
 
