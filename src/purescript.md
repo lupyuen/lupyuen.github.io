@@ -142,6 +142,78 @@ Without getting stuck with the low-level procedural plumbing of JavaScript.
 
 Let's do a bit more PureScript...
 
+# Parse the RISC-V Exception
+
+TODO
+
+[Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L127-L191)
+
+```purescript
+-- Parse the NuttX Exception.
+-- Given this NuttX Exception: `riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a`
+-- Result: { epc: "8000ad8a", exception: "Instruction page fault", mcause: 12, mtval: "8000ad8a" }
+-- The next line declares the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
+parseException ∷ Parser { exception ∷ String, mcause :: Int, epc :: String, mtval :: String }
+parseException = do
+
+  -- To parse the line: `riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a`
+  -- Skip `riscv_exception: EXCEPTION: `
+  -- `void` means ignore the Text Captured
+  -- `$ something something` is shortcut for `( something something )`
+  -- `<*` is the Delimiter between Patterns
+  void $
+    string "riscv_exception:" -- Match the string `riscv_exception:`
+    <* skipSpaces             -- Skip the following spaces
+    <* string "EXCEPTION:"    -- Match the string `EXCEPTION:`
+    <* skipSpaces             -- Skip the following spaces
+
+  -- `exception` becomes `Instruction page fault`
+  -- `<*` says when we should stop the Text Capture
+  exception <- regex "[^.]+" 
+    <* string "." 
+    <* skipSpaces 
+
+  -- Skip `MCAUSE: `
+  -- `void` means ignore the Text Captured
+  -- `$ something something` is shortcut for `( something something )`
+  -- `<*` is the Delimiter between Patterns
+  void $ string "MCAUSE:" <* skipSpaces
+
+  -- `mcauseStr` becomes `000000000000000c`
+  -- We'll convert to integer later
+  mcauseStr <- regex "[0-9a-f]+" <* string "," <* skipSpaces
+
+  -- Skip `EPC: `
+  -- `epcWithPrefix` becomes `000000008000ad8a`
+  -- We'll strip the prefix `00000000` later
+  void $ string "EPC:" <* skipSpaces
+  epcWithPrefix <- regex "[0-9a-f]+" <* string "," <* skipSpaces
+
+  -- Skip `MTVAL: `
+  -- `mtvalWithPrefix` becomes `000000008000ad8a`
+  -- We'll strip the prefix `00000000` later
+  void $ string "MTVAL:" <* skipSpaces
+  mtvalWithPrefix <- regex "[0-9a-f]+"
+
+  -- Return the parsed content
+  -- `pure` because we're in a `do` block that allows (Side) Effects
+  pure 
+    {
+      exception
+    , mcause:
+        -1 `fromMaybe` -- If `mcauseStr` is not a valid hex, return -1
+        fromStringAs hexadecimal mcauseStr -- Else return the hex value of `mcauseStr`
+
+    , epc:
+        epcWithPrefix `fromMaybe` -- If `epcWithPrefix` does not have prefix `00000000`, return it
+        stripPrefix (Pattern "00000000") epcWithPrefix -- Else strip prefix `00000000` from `epc`
+
+    , mtval:
+        mtvalWithPrefix `fromMaybe` -- If `mtvalWithPrefix` does not have prefix `00000000`, return it
+        stripPrefix (Pattern "00000000") mtvalWithPrefix -- Else strip prefix `00000000` from `mtval`
+    }
+```
+
 # Parsing Apache NuttX RTOS Logs with PureScript
 
 TODO
