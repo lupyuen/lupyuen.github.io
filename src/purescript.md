@@ -253,6 +253,7 @@ Finally we return the parsed __MCAUSE__ (as integer), __EPC__ (without prefix), 
 ```purescript
   -- Return the parsed content.
   -- `pure` because we're in a `do` block that allows (Side) Effects
+  -- TODO: Return a ParseError instead of -1
   pure 
     {
       exception
