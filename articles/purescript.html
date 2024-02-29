@@ -442,10 +442,11 @@ function disassemble(addr) {
   ].join(&quot;&quot;);
 }
 </code></pre></div>
-<p>How will <strong>identifyAddress</strong> know if it’s a valid NuttX Address? Coming right up…</p>
+<p>But we do this only for <strong>Valid NuttX Addresses</strong>. (Because otherwise we’ll hyperlink to garbage)</p>
+<p>How will <strong>identifyAddress</strong> know if it’s a Valid NuttX Address? Coming right up…</p>
 <h1 id="identify-a-nuttx-address"><a href="#identify-a-nuttx-address">5 Identify a NuttX Address</a></h1>
 <p><em>Given a NuttX Address like 8000a0e4: How will we know whether it’s in NuttX Kernel or NuttX Apps? And whether it’s Code, Data, BSS or Heap?</em></p>
-<p>Once Again: We get a little help from <strong>PureScript</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L55-L102">Main.purs</a></p>
+<p>Once Again: We get a little help from <strong>PureScript</strong> to match the Regex Patterns of <strong>Valid NuttX Addresses</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L55-L102">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- Given an Address: Identify the
 -- Origin (NuttX Kernel or App) and
 -- Type (Code / Data / BSS / Heap)
@@ -467,11 +468,30 @@ identifyAddress addr
   | otherwise = Nothing
 </code></pre></div>
 <p><a href="TODO">(<strong>matches</strong> performs <strong>Regex Matching</strong>)</a></p>
+<p><a href="TODO">(Matching <strong>Addresses as Numbers</strong> instead of Strings)</a></p>
 <p><em>How does it work?</em></p>
-<p>TODO: JavaScript</p>
-<p><em>Tsk tsk so much Hard Coding?</em></p>
-<p>Our Rules are still evolving, we’re not sure how the NuttX Log Parser will be used in future.</p>
-<p>That’s why we need an <a href="TODO"><strong>Online PureScript Editor</strong></a> that will allow the Rules to be <strong>tweaked and tested easily</strong> for other platforms.</p>
+<p>In JavaScript we call it like this: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L44-L58">index.html</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// In JavaScript: Call PureScript to Identify a NuttX Address.
+// Returns {value0: {origin: &quot;nuttx&quot;, type: {}}
+result = identifyAddress(&quot;502198ac&quot;);
+
+// Returns {value0: {origin: &quot;qjs&quot;, type: {}}
+result = identifyAddress(&quot;80064a28&quot;);
+
+// Why is the `type` empty? That&#39;s because it&#39;s a
+// JavaScript Object that needs extra inspection.
+// This will return &quot;Code&quot; or &quot;Data&quot; or &quot;BSS&quot; or &quot;Heap&quot;...
+addressType = result.value0.type.constructor.name;
+
+// Unknown Address returns {}
+result = identifyAddress(&quot;0000000800203b88&quot;);
+
+// This will return &quot;Nothing&quot;
+resultType = result.constructor.name;
+</code></pre></div>
+<p><em>Tsk tsk so much Hard Coding of Address Patterns?</em></p>
+<p>Our <strong>Troubleshooting Rules</strong> are still evolving, we’re not sure how the NuttX Log Parser will be used in future.</p>
+<p>That’s why we’ll have an <a href="TODO"><strong>Online PureScript Compiler</strong></a> that will allow the Troubleshooting Rules to be <strong>tweaked and tested easily</strong> across all NuttX Platforms.</p>
 <h1 id="show-nuttx-disassembly-by-address"><a href="#show-nuttx-disassembly-by-address">6 Show NuttX Disassembly by Address</a></h1>
 <p>TODO</p>
 <p><em>Given an Exception Address like 8000ad8a, can we show the NuttX Disassembly?</em></p>
