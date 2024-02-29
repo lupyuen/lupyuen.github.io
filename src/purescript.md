@@ -552,7 +552,7 @@ Our __Troubleshooting Rules__ are still evolving, we're not sure how the NuttX L
 
 That's why we'll have an [__Online PureScript Compiler__](TODO) that will allow the Troubleshooting Rules to be __tweaked and tested easily__ across all NuttX Platforms.
 
-# Disassemble NuttX Disassembly by Address
+# Disassemble NuttX by Address
 
 TODO
 
