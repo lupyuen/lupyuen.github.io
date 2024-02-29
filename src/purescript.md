@@ -388,15 +388,15 @@ function parseLog(ch) {
     .runParser(parseException)(termbuf)
     .value0;
 
-  // Explain the Exception and
-  // link to the Disassembly
+  // Link the Exception
+  // to the Disassembly
   const epc   = disassemble(exception.epc);
   const mtval = disassemble(exception.mtval);
   const exception_str = [
-    "Exception:" + "&nbsp;".repeat(1) + exception.exception,
-    "MCAUSE:"    + "&nbsp;".repeat(4) + exception.mcause,
-    "EPC:"       + "&nbsp;".repeat(7) + epc,
-    "MTVAL:"     + "&nbsp;".repeat(5) + mtval,
+    "Exception:" + exception.exception,
+    "MCAUSE:"    + exception.mcause,
+    "EPC:"       + epc,
+    "MTVAL:"     + mtval,
   ].join("<br>");
 
   // Display the Exception
@@ -410,9 +410,8 @@ function parseLog(ch) {
     (exception.mcause)(exception.epc)(exception.mtval);
   parser_output.innerHTML +=
     `<p>${explain}</p>`
-    .split(exception.epc, 2).join(epc)      // Link EPC to Disassembly
-    .split(exception.mtval, 2).join(mtval)  // Link MTVAL to Disassembly
-    ;
+    .split(exception.epc,   2).join(epc)     // Link EPC to Disassembly
+    .split(exception.mtval, 2).join(mtval);  // Link MTVAL to Disassembly
 ```
 
 Which calls PureScript to __parse the RISC-V Exception__ and explain it.
