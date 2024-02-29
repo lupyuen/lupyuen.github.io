@@ -73,7 +73,6 @@ __In PureScript:__ This is how we compose the helpful message: [Main.purs](https
 ```purescript
 -- Explain the RISC-V Exception with mcause 13
 -- `<>` will concat 2 strings
--- "🎵 I never promised you a rose garden"
 
 explainException 13 epc mtval =
   "We hit a Load Page Fault."
@@ -91,13 +90,14 @@ Yeah we'll meet some alien symbols in PureScript.
 We explain the other RISC-V Exceptions the same way...
 
 ```purescript
--- Explain the RISC-V Exception with mcause 12
+-- TODO: Explain the RISC-V Exception with mcause 12
 -- `<>` will concat 2 strings
+-- "🎵 I never promised you a rose garden"
 
 explainException 12 epc mtval =
   "Instruction Page Fault at " <> epc <> ", " <> mtval
 
--- Explain the Other RISC-V Exceptions,
+-- TODO: Explain the Other RISC-V Exceptions,
 -- that are not matched with the above.
 -- `show` converts a Number to a String
 
@@ -110,7 +110,8 @@ Which looks like a tidy bunch of __Explain Rules__. (Similar to Prolog!)
 This thing about PureScript looks totally alien...
 
 ```purescript
--- Declare the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
+-- Declare the Function Type.
+-- We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
 
 explainException ::
   Int        -- MCAUSE: Cause of Exception
@@ -139,7 +140,7 @@ result = explainException(13)("8000a0e4")("880203b88");
 // explainException(13, "8000a0e4", "880203b88")
 ```
 
-Our JavaScript will call PureScript the (yummy) [__Curried Way__](https://en.wikipedia.org/wiki/Partial_application).
+Our JavaScript will call PureScript the (yummy) [__Curried Way__](https://javascript.info/currying-partials).
 
 (Because PureScript is a Functional Language)
 
@@ -388,8 +389,19 @@ function parseLog(ch) {
     .runParser(parseException)(termbuf)
     .value0;
 
-  // Link the Exception
-  // to the Disassembly
+  // Explain the Exception
+  const explain = explainException
+    (exception.mcause)
+    (exception.epc)
+    (exception.mtval);
+```
+
+Line by line, we pass the NuttX Logs to PureScript, to __parse the RISC-V Exceptions__ and explain them.
+
+Then we display them...
+
+```javascript
+  // Link the Exception to the Disassembly
   const epc   = disassemble(exception.epc);
   const mtval = disassemble(exception.mtval);
   const exception_str = [
@@ -404,17 +416,12 @@ function parseLog(ch) {
   parser_output.innerHTML +=
     `<p>${exception_str}</p>`;
 
-  // Explain the Exception
-  // and display it
-  const explain = explainException
-    (exception.mcause)(exception.epc)(exception.mtval);
+  // Display the Exception Explanation
   parser_output.innerHTML +=
     `<p>${explain}</p>`
     .split(exception.epc,   2).join(epc)     // Link EPC to Disassembly
     .split(exception.mtval, 2).join(mtval);  // Link MTVAL to Disassembly
 ```
-
-Which calls PureScript to __parse the RISC-V Exception__ and explain it.
 
 (We'll see __disassemble__ later)
 
@@ -545,7 +552,7 @@ result = identifyAddress("0000000800203b88");
 resultType = result.constructor.name;
 ```
 
-_Tsk tsk so much Hard Coding of Address Patterns?_
+_Tsk tsk we're hard-coding Address Patterns?_
 
 Our __Troubleshooting Rules__ are still evolving, we're not sure how the NuttX Log Parser will be used in future.
 
