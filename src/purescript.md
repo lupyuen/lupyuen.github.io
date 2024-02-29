@@ -104,7 +104,7 @@ This thing about PureScript looks totally alien...
 ```purescript
 -- Declare the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
 
-explainException ∷ 
+explainException ::
   Int       -- MCAUSE: Cause of Exception
   → String  -- EPC: Exception Program Counter
   → String  -- MTVAL: Exception Value
@@ -113,7 +113,7 @@ explainException ∷
 
 But it works like a __Function Declaration__ in C.
 
-[(__VSCode__ will auto-generate it)](TODO)
+[(__VSCode__ will generate the __Function Type__)](TODO)
 
 _How will we call this from JavaScript?_
 
@@ -144,75 +144,154 @@ Let's do a bit more PureScript...
 
 # Parse the RISC-V Exception
 
-TODO
+_How did we get the RISC-V Exception? MCAUSE, EPC, MTVAL?_
 
-[Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L127-L191)
+We extracted the __RISC-V Exception__ from the NuttX Log...
+
+```yaml
+riscv_exception:
+  EXCEPTION: Load page fault.
+  MCAUSE:    000000000000000d,
+  EPC:       000000008000a0e4,
+  MTVAL:     0000000880203b88
+```
+
+PureScript really shines for __Parsing Text Strings__. We walk through the steps: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L127-L191)
 
 ```purescript
--- Parse the NuttX Exception.
--- Given this NuttX Exception: `riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a`
--- Result: { epc: "8000ad8a", exception: "Instruction page fault", mcause: 12, mtval: "8000ad8a" }
--- The next line declares the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
-parseException ∷ Parser { exception ∷ String, mcause :: Int, epc :: String, mtval :: String }
+-- Declare our Function to Parse the RISC-V Exception
+parseException :: Parser  -- We're creating a Parser...
+  {                       -- That accepts a String and returns...
+    exception  :: String  -- Exception: `Load page fault`
+  , mcause     :: Int     -- MCAUSE: 13
+  , epc        :: String  -- EPC: `8000a0e4`
+  , mtval      :: String  -- MTVAL: `0000000880203b88`
+  }
+```
+
+We're about to create a __PureScript String Parser__ that will accept a printed RISC-V Exception and return the MCAUSE, EPC and MTVAL.
+
+[(__VSCode__ will generate the __Function Type__)](TODO)
+
+This is how we write our __Parsing Function__...
+
+```purescript
+-- To parse the line: `riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000008000a0e4, MTVAL: 0000000880203b88`
 parseException = do
 
-  -- To parse the line: `riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000008000ad8a, MTVAL: 000000008000ad8a`
   -- Skip `riscv_exception: EXCEPTION: `
-  -- `void` means ignore the Text Captured
-  -- `$ something something` is shortcut for `( something something )`
-  -- `<*` is the Delimiter between Patterns
   void $
     string "riscv_exception:" -- Match the string `riscv_exception:`
     <* skipSpaces             -- Skip the following spaces
     <* string "EXCEPTION:"    -- Match the string `EXCEPTION:`
     <* skipSpaces             -- Skip the following spaces
+```
 
-  -- `exception` becomes `Instruction page fault`
+As promised, meet our alien symbols...
+
+- __`void`__ means ignore the text
+
+- __`$ something something`__ is shortcut for...
+
+  __`( something something )`__
+
+- __`<*`__ is the Delimiter between Patterns
+
+Which will skip the unnecessary prelude...
+
+```text
+riscv_exception: EXCEPTION: 
+```
+
+Next comes the __Exception Message__, which we'll capture via a __Regular Expression__...
+
+```purescript
+  -- `exception` becomes `Load page fault`
   -- `<*` says when we should stop the Text Capture
   exception <- regex "[^.]+" 
     <* string "." 
     <* skipSpaces 
+```
 
+We do the same to capture __MCAUSE__ (as a String)...
+
+```purescript
   -- Skip `MCAUSE: `
   -- `void` means ignore the Text Captured
   -- `$ something something` is shortcut for `( something something )`
   -- `<*` is the Delimiter between Patterns
   void $ string "MCAUSE:" <* skipSpaces
 
-  -- `mcauseStr` becomes `000000000000000c`
+  -- `mcauseStr` becomes `000000000000000d`
   -- We'll convert to integer later
   mcauseStr <- regex "[0-9a-f]+" <* string "," <* skipSpaces
+```
 
+And we capture __EPC__ and __MTVAL__ (with the Zero Prefix)...
+
+```purescript
   -- Skip `EPC: `
-  -- `epcWithPrefix` becomes `000000008000ad8a`
+  -- `epcWithPrefix` becomes `000000008000a0e4`
   -- We'll strip the prefix `00000000` later
   void $ string "EPC:" <* skipSpaces
   epcWithPrefix <- regex "[0-9a-f]+" <* string "," <* skipSpaces
 
   -- Skip `MTVAL: `
-  -- `mtvalWithPrefix` becomes `000000008000ad8a`
-  -- We'll strip the prefix `00000000` later
+  -- `mtvalWithPrefix` becomes `0000000880203b88`
+  -- We might strip the zero prefix later
   void $ string "MTVAL:" <* skipSpaces
   mtvalWithPrefix <- regex "[0-9a-f]+"
+```
 
-  -- Return the parsed content
+Finally we return the parsed __MCAUSE__ (as integer), __EPC__ (without prefix), __MTVAL__ (without prefix)...
+
+```purescript
+  -- Return the parsed content.
   -- `pure` because we're in a `do` block that allows (Side) Effects
   pure 
     {
       exception
     , mcause:
         -1 `fromMaybe` -- If `mcauseStr` is not a valid hex, return -1
-        fromStringAs hexadecimal mcauseStr -- Else return the hex value of `mcauseStr`
+          fromStringAs hexadecimal mcauseStr -- Else return the hex value of `mcauseStr`
 
     , epc:
         epcWithPrefix `fromMaybe` -- If `epcWithPrefix` does not have prefix `00000000`, return it
-        stripPrefix (Pattern "00000000") epcWithPrefix -- Else strip prefix `00000000` from `epc`
+          stripPrefix (Pattern "00000000") epcWithPrefix -- Else strip prefix `00000000` from `epc`
 
     , mtval:
         mtvalWithPrefix `fromMaybe` -- If `mtvalWithPrefix` does not have prefix `00000000`, return it
-        stripPrefix (Pattern "00000000") mtvalWithPrefix -- Else strip prefix `00000000` from `mtval`
+          stripPrefix (Pattern "00000000") mtvalWithPrefix -- Else strip prefix `00000000` from `mtval`
     }
 ```
+
+[(__fromMaybe__ resolves an Optional Value)](https://pursuit.purescript.org/packages/purescript-maybe/docs/Data.Maybe#v:fromMaybe)
+
+[(__fromStringAs__ converts String to Integer)](https://pursuit.purescript.org/packages/purescript-integers/docs/Data.Int#v:fromStringAs)
+
+[(__stripPrefix__ removes the String Prefix)](https://pursuit.purescript.org/packages/purescript-strings/6.0.1/docs/Data.String#v:stripPrefix)
+
+_fromMaybe looks weird?_
+
+We tried to make our code "friendlier"...
+
+```purescript
+a `fromMaybe` b
+```
+
+Is actually equivalent to the Bracket Bonanza...
+
+```purescript
+(fromMaybe a b)
+```
+
+(Maybe we tried too hard)
+
+_Does it work with JavaScript?_
+
+Yep it does!
+
+TODO: JavaScript
 
 # Parsing Apache NuttX RTOS Logs with PureScript
 
