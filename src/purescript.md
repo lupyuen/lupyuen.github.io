@@ -457,7 +457,7 @@ Instead of printing addresses plainly like `8000a0e4`, we show __Addresses as Hy
 </a>
 ```
 
-Which links our page that displays the __NuttX Disassembly__ for the address: [term.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1556-L1571)
+Which links to our page that displays the __NuttX Disassembly__ for the address: [term.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1556-L1571)
 
 ```javascript
 // If `addr` is a valid address,
@@ -466,8 +466,8 @@ Which links our page that displays the __NuttX Disassembly__ for the address: [t
 // Otherwise return `addr`
 function disassemble(addr) {
 
-  // If this is an Unknown Address,
-  // return it without hyperlink
+  // If this is an Unknown Address:
+  // Return it without hyperlink
   const id = identifyAddress(addr).value0;
   if (id === undefined) { return addr; }
 
@@ -482,13 +482,13 @@ function disassemble(addr) {
 }
 ```
 
-But we do this only for __Valid NuttX Addresses__. (Because otherwise we'll hyperlink to garbage)
+But we do this only for __Valid NuttX Addresses__. (Otherwise we'll hyperlink to hot garbage)
 
 How will __identifyAddress__ know if it's a Valid NuttX Address? Coming right up...
 
 # Identify a NuttX Address
 
-_Given a NuttX Address like 8000a0e4: How will we know whether it's in NuttX Kernel or NuttX Apps? And whether it's Code, Data, BSS or Heap?_
+_Given a NuttX Address like 8000a0e4: How will we know whether it's in NuttX Kernel or NuttX App? And whether it's Code, Data, BSS or Heap?_
 
 Once Again: We get a little help from __PureScript__ to match the Regex Patterns of __Valid NuttX Addresses__: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L55-L102)
 
@@ -514,19 +514,23 @@ identifyAddress addr
   | otherwise = Nothing
 ```
 
-[(__matches__ performs __Regex Matching__)](TODO)
+[(__matches__ does __Regex Matching__)](TODO)
 
 [(Matching __Addresses as Numbers__ instead of Strings)](TODO)
 
 _How does it work?_
 
-In JavaScript we call it like this: [index.html](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L44-L58)
+This is how we __Identify NuttX Addresses__ in JavaScript: [index.html](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L44-L58)
 
 ```javascript
 // In JavaScript: Call PureScript to Identify a NuttX Address.
+import { identifyAddress } from './output/Main/index.js';
+
+// For NuttX Kernel Address:
 // Returns {value0: {origin: "nuttx", type: {}}
 result = identifyAddress("502198ac");
 
+// For NuttX App Address:
 // Returns {value0: {origin: "qjs", type: {}}
 result = identifyAddress("80064a28");
 
