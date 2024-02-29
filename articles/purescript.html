@@ -164,16 +164,19 @@ explainException mcause epc mtval =
 <div class="example-wrap"><pre class="language-purescript"><code>-- Declare the Function Type. We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
 
 explainException ::
-  Int       -- MCAUSE: Cause of Exception
-  → String  -- EPC: Exception Program Counter
-  → String  -- MTVAL: Exception Value
-  → String  -- Returns the Exception Explanation
+  Int        -- MCAUSE: Cause of Exception
+  -&gt; String  -- EPC: Exception Program Counter
+  -&gt; String  -- MTVAL: Exception Value
+  -&gt; String  -- Returns the Exception Explanation
 </code></pre></div>
 <p>But it works like a <strong>Function Declaration</strong> in C.</p>
 <p><a href="TODO">(<strong>VSCode</strong> will generate the <strong>Function Type</strong>)</a></p>
 <p><em>How will we call this from JavaScript?</em></p>
-<p>Inside our <strong>Web Browser JavaScript</strong>, this is how we call PureScript: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1521-L1528">term.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>// In JavaScript: Call PureScript via a Curried Function.
+<p>Inside our <strong>Web Browser JavaScript</strong>, this is how we call PureScript: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L28-L33">index.html</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// In JavaScript: Import our PureScript Function
+import { explainException } from &#39;./output/Main/index.js&#39;;
+
+// Call PureScript via a Curried Function.
 // Returns &quot;Code Address 8000a0e4 failed to access Data Address 880203b88&quot;
 result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
 
@@ -181,7 +184,7 @@ result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
 // explainException(13, &quot;8000a0e4&quot;, &quot;880203b88&quot;)
 </code></pre></div>
 <p>Our JavaScript will call PureScript the (yummy) <a href="https://en.wikipedia.org/wiki/Partial_application"><strong>Curried Way</strong></a>.</p>
-<p>(Because PureScript is a Functional Programming Language)</p>
+<p>(Because PureScript is a Functional Language)</p>
 <p><img src="https://lupyuen.github.io/images/purescript-explain.png" alt="PureScript looks like a neat way to express our NuttX Troubleshooting Skills as high-level rules" /></p>
 <p><em>Why PureScript? Could’ve done all this in JavaScript…</em></p>
 <p>PureScript looks like a neat way to express our <strong>NuttX Troubleshooting Skills</strong> as high-level rules…</p>
@@ -225,8 +228,9 @@ parseException = do
 <p><strong><code>void</code></strong> means ignore the text</p>
 </li>
 <li>
-<p><strong><code>$ something something</code></strong> is shortcut for…</p>
-<p><strong><code>( something something )</code></strong></p>
+<p><strong><code>$</code> <code>something</code> <code>something</code></strong></p>
+<p>is shortcut for…</p>
+<p><strong><code>(</code> <code>something</code> <code>something</code> <code>)</code></strong></p>
 </li>
 <li>
 <p><strong><code>&lt;*</code></strong> is the Delimiter between Patterns</p>
@@ -242,7 +246,7 @@ parseException = do
     &lt;* string &quot;.&quot; 
     &lt;* skipSpaces 
 </code></pre></div>
-<p>We do the same to capture <strong>MCAUSE</strong> (as a String)…</p>
+<p>We do the same to capture <strong>MCAUSE</strong> (as a String)</p>
 <div class="example-wrap"><pre class="language-purescript"><code>  -- Skip `MCAUSE: `
   -- `void` means ignore the Text Captured
   -- `$ something something` is shortcut for `( something something )`
@@ -253,7 +257,7 @@ parseException = do
   -- We&#39;ll convert to integer later
   mcauseStr &lt;- regex &quot;[0-9a-f]+&quot; &lt;* string &quot;,&quot; &lt;* skipSpaces
 </code></pre></div>
-<p>And we capture <strong>EPC</strong> and <strong>MTVAL</strong> (with the Zero Prefix)…</p>
+<p>Then we capture <strong>EPC</strong> and <strong>MTVAL</strong> (with the Zero Prefix)</p>
 <div class="example-wrap"><pre class="language-purescript"><code>  -- Skip `EPC: `
   -- `epcWithPrefix` becomes `000000008000a0e4`
   -- We&#39;ll strip the prefix `00000000` later
@@ -266,7 +270,7 @@ parseException = do
   void $ string &quot;MTVAL:&quot; &lt;* skipSpaces
   mtvalWithPrefix &lt;- regex &quot;[0-9a-f]+&quot;
 </code></pre></div>
-<p>Finally we return the parsed <strong>MCAUSE</strong> (as integer), <strong>EPC</strong> (without prefix), <strong>MTVAL</strong> (without prefix)…</p>
+<p>Finally we return the parsed <strong>MCAUSE</strong> (as integer), <strong>EPC</strong> (without prefix), <strong>MTVAL</strong> (without prefix)</p>
 <div class="example-wrap"><pre class="language-purescript"><code>  -- Return the parsed content.
   -- `pure` because we&#39;re in a `do` block that allows (Side) Effects
   pure 
@@ -284,10 +288,11 @@ parseException = do
         mtvalWithPrefix `fromMaybe` -- If `mtvalWithPrefix` does not have prefix `00000000`, return it
           stripPrefix (Pattern &quot;00000000&quot;) mtvalWithPrefix -- Else strip prefix `00000000` from `mtval`
     }
-</code></pre></div>
+</code></pre></div><span style="font-size:90%">
 <p><a href="https://pursuit.purescript.org/packages/purescript-maybe/docs/Data.Maybe#v:fromMaybe">(<strong>fromMaybe</strong> resolves an Optional Value)</a></p>
 <p><a href="https://pursuit.purescript.org/packages/purescript-integers/docs/Data.Int#v:fromStringAs">(<strong>fromStringAs</strong> converts String to Integer)</a></p>
 <p><a href="https://pursuit.purescript.org/packages/purescript-strings/6.0.1/docs/Data.String#v:stripPrefix">(<strong>stripPrefix</strong> removes the String Prefix)</a></p>
+</span>
 <p><em>fromMaybe looks weird?</em></p>
 <p>We tried to make our code “friendlier”…</p>
 <div class="example-wrap"><pre class="language-purescript"><code>a `fromMaybe` b
@@ -297,9 +302,43 @@ parseException = do
 </code></pre></div>
 <p>(Maybe we tried too hard)</p>
 <p><em>Does it work with JavaScript?</em></p>
-<p>Yep it does!</p>
-<p>TODO: JavaScript</p>
-<h1 id="parsing-apache-nuttx-rtos-logs-with-purescript"><a href="#parsing-apache-nuttx-rtos-logs-with-purescript">4 Parsing Apache NuttX RTOS Logs with PureScript</a></h1>
+<p>Yep it does! This is how we <strong>parse a RISC-V Exception</strong> in JavaScript: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L17-L28">index.html</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// In JavaScript: Import our PureScript Parser
+import { parseException } from &#39;./output/Main/index.js&#39;;
+import * as StringParser_Parser from &quot;./output/StringParser.Parser/index.js&quot;;
+
+// We&#39;ll parse this RISC-V Exception
+const exception = `riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000008000a0e4, MTVAL: 0000000880203b88`;
+
+// Call PureScript to parse the RISC-V Exception
+const result = StringParser_Parser
+  .runParser(parseException)(exception);
+</code></pre></div>
+<p>Which returns the <strong>JSON Result</strong>…</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+  &quot;value0&quot;: {
+    &quot;exception&quot;: &quot;Load page fault&quot;,
+    &quot;mcause&quot;:    13,
+    &quot;epc&quot;:       &quot;8000a0e4&quot;,
+    &quot;mtval&quot;:     &quot;0000000880203b88&quot;
+  }
+}
+</code></pre></div>
+<p>And it works great with our <a href="TODO"><strong>RISC-V Exception Explainer</strong></a>!</p>
+<div class="example-wrap"><pre class="language-javascript"><code>// In JavaScript: Import our Exception Explainer from PureScript
+import { explainException } from &#39;./output/Main/index.js&#39;;
+
+// Fetch the Parsed RISC-V Exception from above
+// TODO: Check if exception === undefined
+const exception = result.value0;
+
+// Explain the Parsed RISC-V Exception.
+// Returns &quot;We hit a Load Page Fault. Our code at Code Address 8000a0e4 tried to access the Data Address 0000000880203b88, which is Invalid.&quot;
+const explain = explainException
+  (exception.mcause)
+  (exception.epc)
+  (exception.mtval);
+</code></pre></div><h1 id="parsing-apache-nuttx-rtos-logs-with-purescript"><a href="#parsing-apache-nuttx-rtos-logs-with-purescript">4 Parsing Apache NuttX RTOS Logs with PureScript</a></h1>
 <p>TODO</p>
 <p>In the Web Browser, we can get Real-Time Logs from NuttX Devices (Web Serial API) NuttX Emulator (Term.js)…</p>
 <p>What if we could Analyse the NuttX Logs in Real-Time? And show the results in the Web Browser?</p>
