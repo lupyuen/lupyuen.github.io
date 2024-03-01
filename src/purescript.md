@@ -22,7 +22,7 @@ Which made us ponder (our life choices)...
 
   (For folks new to RISC-V Exceptions)
 
-- Analyse the __Stack Dump__ and point out Interesting Addresses
+- Analyse the __Stack Dump__ to point out Interesting Addresses
 
   (For Code, Data, BSS, Heap, ...)
 
@@ -785,9 +785,9 @@ spago run
 ./run.sh
 ```
 
-([__run.sh__](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/run.sh) will rewrite the __JavaScript Imports__. See the next section)
+[__run.sh__](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/run.sh) will rewrite the __JavaScript Imports__. (See the next section)
 
-Install the [__PureScript IDE VSCode Extension__](https://marketplace.visualstudio.com/items?itemName=nwolverson.ide-purescript). Which will auto-generate the __Function Types__ when we click on the Suggested Type...
+Remember to install the [__PureScript IDE VSCode Extension__](https://marketplace.visualstudio.com/items?itemName=nwolverson.ide-purescript). It will auto-generate the __Function Types__ when we click on the Suggested Type...
 
 ![TODO](https://lupyuen.github.io/images/purescript-type.png)
 
