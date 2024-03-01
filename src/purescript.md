@@ -32,35 +32,49 @@ In this article,
 
 ![Parsing Apache NuttX RTOS Logs with PureScript](https://lupyuen.github.io/images/purescript-title.png)
 
+[_Watch the Demo on YouTube_](https://youtu.be/9oBhy3P7pYc)
+
 # Demo Walkthrough
 
-TODO
+To see our __NuttX Log Parser__ in action, we run the [__NuttX Emulator__](https://lupyuen.github.io/articles/tinyemu2) in a Web Browser. (Pic above)
 
-[__TinyEMU WebAssembly for NuttX__](https://lupyuen.github.io/articles/tinyemu2)
+Running inside the NuttX Emulator is the exact same __NuttX App (QuickJS)__ that crashed over the holidays...
 
-NuttX Emulator for Ox64 BL808 SBC
+1.  Head over to this link...
 
-Running the exact same NuttX App (QuickJS) that crashed
+    [__Emulator for Ox64 BL808 SBC__](https://lupyuen.github.io/nuttx-tinyemu/purescript)
 
-When QuickJS crashes, the NuttX Log Parser shows the RISC-V Exception Info
+1.  __Apache NuttX RTOS__ boots on the Ox64 Emulator...
 
-Followed by the Explanation of the RISC-V Exception
+    And starts our NuttX App: __QuickJS__
 
-Followed by the Stack Dump
+    Our NuttX App crashes with a __RISC-V Exception__
 
-NuttX Addresses are clickable
+1.  The NuttX Log Parser shows the __RISC-V Exception Info__...
 
-See the NuttX Disassembly
+    TODO: Pic
 
-Which links to the NuttX Source Code
+1.  Followed by the __Explanation of the Exception__...
 
-Watch the Demo on YouTube
+    TODO: Pic
 
-[(Try the __Online Demo__)](https://lupyuen.github.io/nuttx-tinyemu/purescript)
+1.  And the __Stack Dump__...
 
-[(Watch the __Demo on YouTube__)](https://youtu.be/9oBhy3P7pYc)
+    TODO: Pic
 
-We begin with the smarty stuff...
+1.  The __NuttX Addresses__ are clickable.
+
+    Clicking an address brings us to the __NuttX Disassembly__...
+
+    Which links to the __NuttX Source Code__. (Pic below)
+
+    [(Watch the __Demo on YouTube__)](https://youtu.be/9oBhy3P7pYc)
+
+How does it work? We begin with the smarty stuff...
+
+![NuttX Disassembly](https://lupyuen.github.io/images/purescript-disassembly.png)
+
+[_NuttX Disassembly for 8000_702A_](https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000702a)
 
 # Explain the RISC-V Exception
 
