@@ -342,10 +342,10 @@ const explain = explainException
 <p>We <strong>intercept all logs</strong> emitted by the Emulator, with this JavaScript: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L487-L511">term.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// When NuttX Emulator prints something
 // to the Terminal Output...
-Term.prototype.write = function(str) {
+Term.prototype.write = function(ch) {
 
   // Send it to our NuttX Log Parser
-  parseLog(str);
+  parseLog(ch);
 </code></pre></div>
 <p>Our JavaScript <strong>parses NuttX Logs</strong> like this: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1483-L1575">term.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Parse NuttX Logs with PureScript.
@@ -483,7 +483,7 @@ result = identifyAddress(&quot;502198ac&quot;);
 
 // For NuttX App Address:
 // Returns {value0: {origin: &quot;qjs&quot;, type: {}}
-result = identifyAddress(&quot;80064a28&quot;);
+result = identifyAddress(&quot;8000a0e4&quot;);
 
 // Why is the `type` empty? That&#39;s because it&#39;s a
 // JavaScript Object that needs extra inspection.
@@ -499,9 +499,13 @@ resultType = result.constructor.name;
 <p><em>Tsk tsk we’re hard-coding Address Patterns?</em></p>
 <p>Our <strong>Troubleshooting Rules</strong> are still evolving, we’re not sure how the NuttX Log Parser will be used in future.</p>
 <p>That’s why we’ll have an <a href="TODO"><strong>Online PureScript Compiler</strong></a> that will allow the Troubleshooting Rules to be <strong>tweaked and tested easily</strong> across all NuttX Platforms.</p>
+<p><img src="https://lupyuen.github.io/images/purescript-disassembly.png" alt="NuttX Disassembly" /></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000702a"><em>NuttX Disassembly for 8000_702A</em></a></p>
 <h1 id="disassemble-nuttx-by-address"><a href="#disassemble-nuttx-by-address">6 Disassemble NuttX by Address</a></h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ ls nuttx-tinyemu/docs/purescript/qjs-chunk
+<p><em>Given a NuttX Address like 8000a0e4: How shall we show the NuttX Disassembly?</em></p>
+<p>We chunked up the <strong>NuttX Disassembly</strong> into many many small files (by NuttX Address)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## 101 Chunked Files for the NuttX App Dissassembly (QuickJS)
+$ ls nuttx-tinyemu/docs/purescript/qjs-chunk
 qjs-80001000.S
 qjs-80002000.S
 ...
@@ -509,7 +513,21 @@ qjs-80063000.S
 qjs-80064000.S
 qjs-80065000.S
 </code></pre></div>
-<p><em>Given an Exception Address like 8000ad8a, can we show the NuttX Disassembly?</em></p>
+<p>So <code>8000a0e4</code> will appear in the file <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L171"><code>qjs-8000b000.S</code></a>…</p>
+<div class="example-wrap"><pre class="language-c"><code>/* NuttX Disassembly for 8000a0e4 */
+quickjs-nuttx/quickjs.c:2876
+  p = rt-&gt;atom_array[i];
+    8000a0e4:  6380  ld  s0,0(a5)
+</code></pre></div>
+<p>Which gets hyperlinked in our <a href="https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000a0e4"><strong>NuttX Log Display</strong></a> (pic above) whenever <code>8000a0e4</code> is shown…</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;a href=&quot;disassemble.html?addr=8000a0e4&quot; target=&quot;_blank&quot;&gt;
+  8000a0e4
+&lt;/a&gt;
+</code></pre></div>
+<p><em>What’s inside disassemble.html? (Pic above)</em></p>
+<p>TODO</p>
+<p><em>How to chunk?</em></p>
+<p>TODO</p>
 <p>We need to chunk nuttx.S (or qjs.S) by address: nuttx-8000ad90.S, nuttx-8000ae00.S, nuttx-8000b000.S, nuttx-80010000.S. And link to the NuttX Repo Source Code.</p>
 <p>Let’s chunk <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs.S">qjs.S</a>, the NuttX App Disassembly for QuickJS JavaScript Engine…</p>
 <ul>
@@ -679,10 +697,7 @@ async function run() {
 }
 
 run();
-</code></pre></div>
-<p>Try it here: https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000702a</p>
-<p><img src="https://lupyuen.github.io/images/purescript-disassembly.png" alt="NuttX Disassembly" /></p>
-<h1 id="todo"><a href="#todo">7 TODO</a></h1>
+</code></pre></div><h1 id="todo"><a href="#todo">7 TODO</a></h1>
 <p>TODO</p>
 <p>In the Web Browser, we can get Real-Time Logs from NuttX Devices (Web Serial API) NuttX Emulator (Term.js)…</p>
 <p>What if we could Analyse the NuttX Logs in Real-Time? And show the results in the Web Browser?</p>
