@@ -28,7 +28,17 @@ Which made us ponder (our life choices)...
 
 ![TODO](https://lupyuen.github.io/images/purescript-flow.jpg)
 
-TODO: In this article, 
+In this article, we create a __NuttX Log Parser__ that will...
+
+- Extract the __RISC-V Exception Details__
+
+- Interpret and __Explain the RISC-V Exception__
+
+- Hyperlink the __Stack Dump__ to NuttX Source Code and Disassembly
+
+And we'll do this in __PureScript__, the Functional Programming Language that compiles to JavaScript.
+
+(We'll see why in a moment)
 
 ![Parsing Apache NuttX RTOS Logs with PureScript](https://lupyuen.github.io/images/purescript-title.png)
 
