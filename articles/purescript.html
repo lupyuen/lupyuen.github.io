@@ -72,13 +72,15 @@
 <li><a href="#identify-a-nuttx-address">5 Identify a NuttX Address</a><ul></ul></li>
 <li><a href="#disassemble-nuttx-by-address">6 Disassemble NuttX by Address</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-purescript-parser-for-nuttx">8 Appendix: PureScript Parser for NuttX</a><ul></ul></li>
-<li><a href="#appendix-rewrite-the-javascript-imports">9 Appendix: Rewrite the JavaScript Imports</a><ul></ul></li>
-<li><a href="#appendix-online-purescript-compiler">10 Appendix: Online PureScript Compiler</a><ul></ul></li>
-<li><a href="#appendix-bigint-in-purescript">11 Appendix: BigInt in PureScript</a><ul></ul></li></ul></nav><p>📝 <em>7 Mar 2024</em></p>
+<li><a href="#appendix-nuttx-log-parser">8 Appendix: NuttX Log Parser</a><ul></ul></li>
+<li><a href="#appendix-rewrite-the-imports">9 Appendix: Rewrite the Imports</a><ul></ul></li>
+<li><a href="#appendix-bigint-in-purescript">10 Appendix: BigInt in PureScript</a><ul></ul></li>
+<li><a href="#appendix-online-purescript-compiler">11 Appendix: Online PureScript Compiler</a><ul></ul></li></ul></nav><p>📝 <em>7 Mar 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/purescript-title.png" alt="TODO" /></p>
-<p>Over the Lunar New Year holidays, we were porting <a href="TODO"><strong>QuickJS</strong></a> to <a href="TODO"><strong>Ox64 BL808 SBC</strong></a>. And we hit a <strong>Baffling Exception</strong> on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
-<p>TODO: Pic</p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/purescript"><em>Try the Online Demo</em></a></p>
+<p><a href="https://youtu.be/9oBhy3P7pYc"><em>Watch the Demo on YouTube</em></a></p>
+<p>Over the Lunar New Year holidays, we were porting <a href="https://lupyuen.github.io/articles/quickjs"><strong>QuickJS</strong></a> to <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 SBC</strong></a>. And we hit a <strong>Baffling Exception</strong> on <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>…</p>
+<p>TODO: Pic of exception</p>
 <p>Which made us ponder (our life choices)…</p>
 <ul>
 <li>
@@ -94,17 +96,23 @@
 <p>(For Code, Data, BSS, Heap, …)</p>
 </li>
 </ul>
+<p>TODO: Pic of flow</p>
 <p>In this article, </p>
-<p><a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 64-bit RISC-V SBC</strong></a></p>
-<p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/quickjs"><strong>QuickJS for NuttX</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/tinyemu2"><strong>TinyEMU WebAssembly for NuttX</strong></a></p>
-<p><a href="https://developer.chrome.com/docs/capabilities/serial"><strong>Web Serial API</strong></a> with <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/term.js"><strong>Term.js</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/purescript-title.png" alt="Parsing Apache NuttX RTOS Logs with PureScript" /></p>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/purescript">(Try the Online Demo)</a></p>
-<p><a href="https://youtu.be/9oBhy3P7pYc">(Watch the Demo on YouTube)</a></p>
 <h1 id="demo-walkthrough"><a href="#demo-walkthrough">1 Demo Walkthrough</a></h1>
 <p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/tinyemu2"><strong>TinyEMU WebAssembly for NuttX</strong></a></p>
+<p>NuttX Emulator for Ox64 BL808 SBC</p>
+<p>Running the exact same NuttX App (QuickJS) that crashed</p>
+<p>When QuickJS crashes, the NuttX Log Parser shows the RISC-V Exception Info</p>
+<p>Followed by the Explanation of the RISC-V Exception</p>
+<p>Followed by the Stack Dump</p>
+<p>NuttX Addresses are clickable</p>
+<p>See the NuttX Disassembly</p>
+<p>Which links to the NuttX Source Code</p>
+<p>Watch the Demo on YouTube</p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/purescript">(Try the <strong>Online Demo</strong>)</a></p>
+<p><a href="https://youtu.be/9oBhy3P7pYc">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>We begin with the smarty stuff…</p>
 <h1 id="explain-the-risc-v-exception"><a href="#explain-the-risc-v-exception">2 Explain the RISC-V Exception</a></h1>
 <p><em>How did we explain the RISC-V Exception?</em></p>
@@ -417,6 +425,10 @@ function parseLog(ch) {
 let termbuf = &quot;&quot;;
 </code></pre></div>
 <p><a href="TODO">(<strong>parseStackDump</strong> comes from PureScript)</a></p>
+<p><a href="TODO">(<strong>NuttX Emulator</strong> imports PureScript like this)</a></p>
+<p><em>Will this work for a Real NuttX Device?</em></p>
+<p>NuttX on Ox64 BL808 SBC runs in a Web Browser with <a href="TODO"><strong>Web Serial API and Term.js</strong></a>.</p>
+<p>We’ll intercept the NuttX Logs with Term.js, the exact same way as above.</p>
 <p><em>What’s this function: disassemble?</em></p>
 <p>Instead of printing addresses plainly like <code>8000a0e4</code>, we show <strong>Addresses as Hyperlinks</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>&lt;a href=&quot;disassemble.html?addr=8000a0e4&quot; target=&quot;_blank&quot;&gt;
@@ -611,9 +623,9 @@ Stack trace / mm log / elf loader </p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/purescript.md"><strong>lupyuen.github.io/src/purescript.md</strong></a></p>
-<h1 id="appendix-purescript-parser-for-nuttx"><a href="#appendix-purescript-parser-for-nuttx">8 Appendix: PureScript Parser for NuttX</a></h1>
-<p>If we wish to update the <strong>PureScript Parser for NuttX</strong>: This is how we download and build the code…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download the PureScript Parser for NuttX
+<h1 id="appendix-nuttx-log-parser"><a href="#appendix-nuttx-log-parser">8 Appendix: NuttX Log Parser</a></h1>
+<p>If we wish to update the <strong>NuttX Log Parser</strong> in PureScript: This is how we download and build the code…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Log Parser in PureScript
 git clone https://github.com/lupyuen/nuttx-purescript-parser
 cd nuttx-purescript-parser
 
@@ -630,8 +642,12 @@ spago run
 <p>(<a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/run.sh"><strong>run.sh</strong></a> will rewrite the <strong>JavaScript Imports</strong>. See the next section)</p>
 <p>Install the <a href="https://marketplace.visualstudio.com/items?itemName=nwolverson.ide-purescript"><strong>PureScript IDE VSCode Extension</strong></a>. Which will auto-generate the <strong>Function Types</strong> when we click on the Suggested Type…</p>
 <p><img src="https://lupyuen.github.io/images/purescript-type.png" alt="TODO" /></p>
-<h1 id="appendix-rewrite-the-javascript-imports"><a href="#appendix-rewrite-the-javascript-imports">9 Appendix: Rewrite the JavaScript Imports</a></h1>
-<p>In the JavaScript generated by PureScript, we point the <strong>PureScript Imports</strong> to <strong>compile.purescript.org</strong>, so we don’t need to deploy the imports: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/run.sh">run.sh</a></p>
+<h1 id="appendix-rewrite-the-imports"><a href="#appendix-rewrite-the-imports">9 Appendix: Rewrite the Imports</a></h1>
+<p>From the previous section, PureScript Compiler “<code>spago run</code>” generates the JavaScript for our NuttX Log Parser at…</p>
+<div class="example-wrap"><pre class="language-text"><code>output/Main/index.js
+output/&lt;Other JavaScript Modules&gt;
+</code></pre></div>
+<p>In the JavaScript generated by PureScript, we point the <strong>JavaScript Imports</strong> to <strong>compile.purescript.org</strong>, so we don’t need to deploy the Other JavaScript Modules: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Change:
 ##   import { ... } from &#39;./output/Main/index.js&#39;;
 ## To:
@@ -656,9 +672,37 @@ cat output/Main/index.js \
   | sed &#39;s/from \&quot;../from \&quot;https:\/\/compile.purescript.org\/output/&#39; \
   &gt;docs/index.js
 </code></pre></div>
+<p>This produces the <strong>Modified JavaScript</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/docs/index.js">docs/index.js</a></p>
+<p>Which gets published at <a href="https://lupyuen.github.io/nuttx-purescript-parser/index.js">nuttx-purescript-parser/index.js</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-purescript-parser/tree/main/docs">(See the <strong>Modified JavaScript</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/nuttx-purescript-parser/">(Run the <strong>Modified JavaScript</strong>)</a></p>
-<h1 id="appendix-online-purescript-compiler"><a href="#appendix-online-purescript-compiler">10 Appendix: Online PureScript Compiler</a></h1>
+<p><em>How is the Modified JavaScript imported by NuttX Emulator?</em></p>
+<p>NuttX Emulator imports the <strong>Modified JavaScript</strong> for NuttX Log Parser like this: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/index.html#L48-L61">index.html</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>&lt;script type=module&gt;
+  // Import the NuttX Log Parser
+  import { parseException, parseStackDump, explainException, identifyAddress } from &#39;https://lupyuen.github.io/nuttx-purescript-parser/index.js&#39;;
+  import * as StringParser_Parser from &quot;https://compile.purescript.org/output/StringParser.Parser/index.js&quot;;
+
+  // Allow other modules to access the PureScript Functions
+  window.StringParser_Parser = StringParser_Parser;
+  window.parseException   = parseException;
+  window.parseStackDump   = parseStackDump;
+  window.explainException = explainException;
+  window.identifyAddress  = identifyAddress;
+
+  // Call the PureScript Function
+  const result2 = explainException(12)(&#39;000000008000ad8a&#39;)(&#39;000000008000ad8a&#39;)
+</code></pre></div><h1 id="appendix-bigint-in-purescript"><a href="#appendix-bigint-in-purescript">10 Appendix: BigInt in PureScript</a></h1>
+<p><em>Why are we passing addresses in Text instead of Numbers? Like <code>&quot;8000ad8a&quot;</code></em></p>
+<p>That’s because <code>0x8000ad8a</code> is too big for <strong>PureScript Int</strong>, a signed 32-bit integer. PureScript Int is meant to interoperate with JavaScript Integer, which is also 32-bit.</p>
+<p><em>What about PureScript BigInt?</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>spago install bigints
+npm install big-integer
+</code></pre></div>
+<p>If we use <a href="https://pursuit.purescript.org/packages/purescript-bigints/docs/Data.BigInt"><strong>PureScript BigInt</strong></a>, then we need <a href="https://www.npmjs.com/package/big-integer"><strong>NPM big-integer</strong></a>.</p>
+<p>But NPM big-integer won’t run inside a Web Browser with Plain Old JavaScript. That’s why we’re passing addresses as Strings instead of Numbers.</p>
+<p>TODO: BigInt is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt"><strong>already supported</strong></a> by Web Browsers. Why do we need NPM big-integer?</p>
+<h1 id="appendix-online-purescript-compiler"><a href="#appendix-online-purescript-compiler">11 Appendix: Online PureScript Compiler</a></h1>
 <p><em>How will we allow the NuttX Troubleshooting Rules to be tweaked and tested easily across all NuttX Platforms?</em></p>
 <p>We made an <strong>Online PureScript Compiler</strong> that will let us modify and test the NuttX Troubleshooting Rules in a Web Browser…</p>
 <ul>
@@ -723,17 +767,7 @@ var bind = /* #__PURE__ */ Control_Bind.bind(StringParser_Parser.bindParser);
 var alt = /* #__PURE__ */ Control_Alt.alt(StringParser_Parser.altParser);
 var voidRight = /* #__PURE__ */ Data_Functor.voidRight(StringParser_Parser.functorParser);
 ...
-</code></pre></div><h1 id="appendix-bigint-in-purescript"><a href="#appendix-bigint-in-purescript">11 Appendix: BigInt in PureScript</a></h1>
-<p><em>Why are we passing addresses in Text instead of Numbers? Like <code>&quot;8000ad8a&quot;</code></em></p>
-<p>That’s because <code>0x8000ad8a</code> is too big for <strong>PureScript Int</strong>, a signed 32-bit integer. PureScript Int is meant to interoperate with JavaScript Integer, which is also 32-bit.</p>
-<p><em>What about PureScript BigInt?</em></p>
-<div class="example-wrap"><pre class="language-bash"><code>spago install bigints
-npm install big-integer
 </code></pre></div>
-<p>If we use <a href="https://pursuit.purescript.org/packages/purescript-bigints/docs/Data.BigInt"><strong>PureScript BigInt</strong></a>, then we need <a href="https://www.npmjs.com/package/big-integer"><strong>NPM big-integer</strong></a>.</p>
-<p>But NPM big-integer won’t run inside a Web Browser with Plain Old JavaScript. That’s why we’re passing addresses as Strings instead of Numbers.</p>
-<p>TODO: Isn’t BigInt <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt"><strong>already supported</strong></a> by Web Browsers?</p>
-
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
