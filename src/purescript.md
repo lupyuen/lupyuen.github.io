@@ -412,6 +412,8 @@ const explain = explainException
   (exception.mtval);
 ```
 
+Let's talk about log passing (and tossing)...
+
 ![Pass NuttX Logs to PureScript](https://lupyuen.github.io/images/purescript-flow4.jpg)
 
 # Pass NuttX Logs to PureScript
