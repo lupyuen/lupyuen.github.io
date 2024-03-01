@@ -569,7 +569,8 @@ _Given a NuttX Address like 8000a0e4: How shall we show the NuttX Disassembly?_
 We chunked up the __NuttX Disassembly__ into many many small files (by NuttX Address)...
 
 ```bash
-## 101 Chunked Files for the NuttX App Dissassembly (QuickJS)
+## NuttX App Dissassembly (QuickJS)
+## Chunked into 101 small files
 $ ls nuttx-tinyemu/docs/purescript/qjs-chunk
 qjs-80001000.S
 qjs-80002000.S
@@ -579,7 +580,7 @@ qjs-80064000.S
 qjs-80065000.S
 ```
 
-So `8000a0e4` will appear in the file [`qjs-8000b000.S`](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L171)...
+So __`8000a0e4`__ will appear in the file [__qjs-8000b000.S__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L171)
 
 ```c
 /* NuttX Disassembly for 8000a0e4 */
@@ -598,7 +599,29 @@ Which gets hyperlinked in our [__NuttX Log Display__](https://lupyuen.github.io/
 
 _What's inside disassemble.html? (Pic above)_
 
-TODO
+Given a __NuttX Address__ like __`8000a0e4`__...
+
+```text
+disassemble.html?addr=8000a0e4
+```
+
+[__disassemble.html__](TODO) will...
+
+1.  Fetch the Disassembly Chunk File: [__qjs-8000b000.S__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L171)
+
+1.  Search for address [__`8000a0e4`__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L171) in the file
+
+1.  Display 20 lines of [__NuttX Disassembly__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L151-L190) before and after the address
+
+1.  Hyperlink to the [__NuttX Source Code__](https://github.com/lupyuen/quickjs-nuttx/blob/master/quickjs.c#L2877)...
+
+    ```text
+    <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/quickjs.c#L2877" target="_blank">
+      quickjs-nuttx/quickjs.c:2877
+    </a>
+    ```
+
+    [(As explained here)](TODO)
 
 _How to chunk?_
 
