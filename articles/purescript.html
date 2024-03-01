@@ -773,25 +773,26 @@ Result: { addr: &quot;c02027e0&quot;, v1: &quot;c0202010&quot;, v2: &quot;000000
 </li>
 </ol>
 <p>If we wish to run the Online PureScript Compiler locally on our computer…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/lupyuen/nuttx-trypurescript
+<div class="example-wrap"><pre class="language-bash"><code>## Download the Online PureScript Compiler
+git clone https://github.com/lupyuen/nuttx-trypurescript
 cd nuttx-trypurescript
 cd client
 
-## Build and Test Locally:
-npm install
+## To Build and Test Locally:
 ## Produces `output` folder
 ## And `public/js/index.js`
-npm run serve:production
 ## Test at http://127.0.0.1:8080
+npm install
+npm run serve:production
 
-## Deploy to GitHub Pages:
+## To Deploy to GitHub Pages:
 rm -r ../docs
 cp -r public ../docs
-simple-http-server .. &amp;
-## Test at http://0.0.0.0:8000/docs/index.html
 
-## If we need `client.js` bundle:
-## npm run build:production
+## To Test Locally the GitHub Pages:
+## http://0.0.0.0:8000/docs/index.html
+cargo install simple-http-server
+simple-http-server .. &amp;
 </code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
