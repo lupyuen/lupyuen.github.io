@@ -886,7 +886,7 @@ But NPM big-integer won't run inside a Web Browser with Plain Old JavaScript. Th
 
 __TODO:__ BigInt is [__already supported__](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) by Web Browsers. Why do we need NPM big-integer?
 
-TODO: Pic of Online Compiler
+![Online PureScript Compiler](https://lupyuen.github.io/images/purescript-compiler.png)
 
 # Appendix: Online PureScript Compiler
 
