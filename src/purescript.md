@@ -48,7 +48,15 @@ Running inside the NuttX Emulator is the exact same __NuttX App (QuickJS)__ that
 
     And starts our NuttX App: __QuickJS__
 
-    Our NuttX App crashes with a __RISC-V Exception__
+    Our NuttX App crashes with a __RISC-V Exception__...
+
+    TODO: Pic of Terminal
+
+1.  The __Terminal Output__ at left shows pages and pages of logs.
+
+    (As seen by NuttX Devs today)
+
+    But something helpful appears at the right...
 
 1.  The NuttX Log Parser shows the __RISC-V Exception Info__...
 
@@ -843,7 +851,7 @@ TODO: Pic of Online Compiler
 
 _How will we allow the NuttX Troubleshooting Rules to be tweaked and tested easily across all NuttX Platforms?_
 
-The __Online PureScript Compiler__ that will let us modify and test the NuttX Troubleshooting Rules in a Web Browser (pic above)...
+The __Online PureScript Compiler__ will let us modify and test the NuttX Troubleshooting Rules in a Web Browser (pic above)...
 
 1.  Head over to our [__Online PureScript Compiler__](https://lupyuen.github.io/nuttx-trypurescript)
 
