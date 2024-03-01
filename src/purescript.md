@@ -890,9 +890,11 @@ The __Online PureScript Compiler__ will let us modify and test the NuttX Trouble
 
 1.  Head over to our [__Online PureScript Compiler__](https://lupyuen.github.io/nuttx-trypurescript?gist=1405685d6f847ea5d4d6302b196bb05e)
 
-    Which compiles our __NuttX Log Parser__.
+    Which compiles our __NuttX Log Parser__ (from PureScript to JavaScript)
 
-1.  Our NuttX Parser Output appears...
+1.  Our __NuttX Log Parser__ runs in the Web Browser.
+
+    And the output appears...
 
     ```text
     We hit a Load Page Fault. Our code at Code Address 8000a0e4 tried to access the Data Address 0000000880203b88, which is Invalid.
