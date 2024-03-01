@@ -178,7 +178,7 @@ explainException ::
 
 But it works like a __Function Declaration__ in C.
 
-[(__VSCode__ will generate the __Function Type__)](TODO)
+[(__VSCode__ will generate the declaration)](TODO)
 
 _How will we call this from JavaScript?_
 
@@ -279,7 +279,7 @@ Which will skip the unnecessary prelude...
 riscv_exception: EXCEPTION: 
 ```
 
-Next comes the __Exception Message__, which we'll capture via a __Regular Expression__ (plus an alien raygun)
+Next comes the __Exception Message__, which we'll capture via a __Regular Expression__ (and an alien raygun)
 
 ```purescript
   -- `exception` becomes `Load page fault`
@@ -521,7 +521,7 @@ _Will this work for a Real NuttX Device?_
 
 NuttX on Ox64 BL808 SBC runs in a Web Browser with [__Web Serial API and Term.js__](TODO).
 
-We'll intercept the NuttX Logs with Term.js, the exact same way as above.
+We'll intercept and parse the NuttX Logs in Term.js, the exact same way as above.
 
 _What's this function: disassemble?_
 
