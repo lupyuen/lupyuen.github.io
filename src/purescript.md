@@ -2,7 +2,7 @@
 
 📝 _7 Mar 2024_
 
-![TODO](https://lupyuen.github.io/images/purescript-title.png)
+![Parsing Apache NuttX RTOS Logs with PureScript](https://lupyuen.github.io/images/purescript-title.png)
 
 [_Try the Online Demo_](https://lupyuen.github.io/nuttx-tinyemu/purescript)
 
@@ -26,7 +26,7 @@ Which made us ponder (our life choices)...
 
   (For Code, Data, BSS, Heap, ...)
 
-![TODO](https://lupyuen.github.io/images/purescript-flow.jpg)
+![Parsing Apache NuttX RTOS Logs with PureScript (Overall Flow)](https://lupyuen.github.io/images/purescript-flow.jpg)
 
 In this article, we create a __NuttX Log Parser__ that will...
 
@@ -60,7 +60,7 @@ Inside the NuttX Emulator is the exact same __NuttX App (QuickJS)__ that crashed
 
     Our NuttX App crashes with a __RISC-V Exception__...
 
-    ![TODO](https://lupyuen.github.io/images/purescript-parse3.png)
+    ![NuttX App crashes with a RISC-V Exception](https://lupyuen.github.io/images/purescript-parse3.png)
 
 1.  The __Terminal Output__ at left shows pages and pages of logs.
 
@@ -68,15 +68,15 @@ Inside the NuttX Emulator is the exact same __NuttX App (QuickJS)__ that crashed
 
     But something helpful appears at the right...
 
-1.  The NuttX Log Parser shows the __RISC-V Exception Info__...
+1.  The NuttX Log Parser shows the __RISC-V Exception Info__
 
     Followed by the __Explanation of the Exception__...
 
-    ![TODO](https://lupyuen.github.io/images/purescript-parse4.png)
+    ![RISC-V Exception Info and Explanation](https://lupyuen.github.io/images/purescript-parse4.png)
 
 1.  And the __Stack Dump__...
 
-    ![TODO](https://lupyuen.github.io/images/purescript-parse5.png)
+    ![Stack Dump](https://lupyuen.github.io/images/purescript-parse5.png)
 
 1.  The __NuttX Addresses__ are clickable.
 
@@ -176,7 +176,7 @@ explainException ::
 
 But it works like a __Function Declaration__ in C.
 
-[(__VSCode__ will generate the declaration)](TODO)
+[(__VSCode__ will generate the declaration)](https://lupyuen.github.io/articles/purescript#appendix-nuttx-log-parser)
 
 _How will we call this from JavaScript?_
 
@@ -237,7 +237,7 @@ parseException :: Parser  -- We're creating a Parser...
   }
 ```
 
-[(__VSCode__ will generate the declaration)](TODO)
+[(__VSCode__ will generate the declaration)](https://lupyuen.github.io/articles/purescript#appendix-nuttx-log-parser)
 
 We're about to create a __PureScript String Parser__ that will accept a printed RISC-V Exception and return the MCAUSE, EPC and MTVAL.
 
@@ -394,7 +394,7 @@ Which returns the __JSON Result__...
 }
 ```
 
-And it works great with our [__RISC-V Exception Explainer__](TODO)!
+And it works great with our [__RISC-V Exception Explainer__](https://lupyuen.github.io/articles/purescript#explain-the-risc-v-exception)!
 
 ```javascript
 // In JavaScript: Import our Exception Explainer from PureScript
@@ -418,7 +418,7 @@ const explain = explainException
 
 _PureScript will parse our RISC-V Exceptions and explain them... How to pass our NuttX Logs to PureScript?_
 
-We're running [__NuttX Emulator__](TODO) inside our Web Browser.
+We're running [__NuttX Emulator__](https://lupyuen.github.io/articles/tinyemu2) inside our Web Browser.
 
 We __intercept all logs__ emitted by the Emulator, with this JavaScript: [term.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L487-L511)
 
@@ -513,15 +513,15 @@ let termbuf = "";
 
 <span style="font-size:90%">
 
-[(__parseStackDump__ comes from PureScript)](TODO)
+[(__parseStackDump__ comes from PureScript)](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L208-L275)
 
-[(__NuttX Emulator__ imports PureScript like this)](TODO)
+[(__NuttX Emulator__ imports PureScript like this)](https://lupyuen.github.io/articles/purescript#appendix-rewrite-the-imports)
 
 </span>
 
 _Will this work for a Real NuttX Device?_
 
-NuttX on Ox64 BL808 SBC runs in a Web Browser with [__Web Serial API and Term.js__](TODO).
+NuttX on Ox64 BL808 SBC runs in a Web Browser with [__Web Serial API and Term.js__](https://lupyuen.github.io/articles/quickjs2#control-ox64-via-web-serial-api).
 
 We'll intercept and parse the NuttX Logs in Term.js, the exact same way as above.
 
@@ -596,9 +596,9 @@ identifyAddress addr
 
 <span style="font-size:90%">
 
-[(__matches__ does __Regex Matching__)](TODO)
+[(__matches__ does __Regex Matching__)](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L84-L102)
 
-[(Matching __Addresses as Numbers__ instead of Strings)](TODO)
+[(__Addresses as Numbers__ instead of Strings)](https://lupyuen.github.io/articles/purescript#appendix-bigint-in-purescript)
 
 </span>
 
@@ -634,7 +634,7 @@ _Tsk tsk we're hard-coding Address Patterns?_
 
 Our __Troubleshooting Rules__ are still evolving, we're not sure how the NuttX Log Parser will be used in future.
 
-That's why we'll have an [__Online PureScript Compiler__](TODO) that will allow the Troubleshooting Rules to be __tweaked and tested easily__ across all NuttX Platforms.
+That's why we'll have an [__Online PureScript Compiler__](https://lupyuen.github.io/articles/purescript#appendix-online-purescript-compiler) that will allow the Troubleshooting Rules to be __tweaked and tested easily__ across all NuttX Platforms.
 
 ![NuttX Disassembly](https://lupyuen.github.io/images/purescript-disassembly.png)
 
@@ -685,7 +685,7 @@ Given a __NuttX Address__ like __`8000a0e4`__...
 disassemble.html?addr=8000a0e4
 ```
 
-[__disassemble.html__](TODO) will...
+[__disassemble.html__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/disassemble.js) will...
 
 1.  Fetch the Disassembly Chunk File: [__qjs-8000b000.S__](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L171)
 
@@ -701,7 +701,7 @@ disassemble.html?addr=8000a0e4
     </a>
     ```
 
-TODO: More about disassemble.html
+[(More about __disassemble.html__)](https://github.com/lupyuen/nuttx-purescript-parser#show-nuttx-disassembly-by-address)
 
 _How do we chunk a NuttX Dissassembly?_
 
@@ -718,6 +718,14 @@ We created a [__NuttX Disassembly Chunker__](https://github.com/lupyuen/nuttx-di
 We run the chunker like this...
 
 ```bash
+## Dump the NuttX Disassembly
+## for NuttX ELF qjs
+riscv64-unknown-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  $HOME/qjs \
+  >$HOME/qjs.S \
+  2>&1
+
 ## Chunk the NuttX Disassembly
 ## at $HOME/qjs.S into
 ## $HOME/qjs-chunk/qjs-80001000.S
@@ -737,7 +745,7 @@ cargo run -- $chunkpath $chunkbase
 
 [(See the __Disassembly Chunks__)](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/purescript/qjs-chunk)
 
-![TODO](https://lupyuen.github.io/images/purescript-flow.jpg)
+![Parsing Apache NuttX RTOS Logs with PureScript (Overall Flow)](https://lupyuen.github.io/images/purescript-flow.jpg)
 
 # What's Next
 
@@ -787,7 +795,7 @@ spago run
 
 Remember to install the [__PureScript IDE VSCode Extension__](https://marketplace.visualstudio.com/items?itemName=nwolverson.ide-purescript). It will auto-generate the __Function Types__ when we click on the Suggested Type...
 
-![TODO](https://lupyuen.github.io/images/purescript-type.png)
+![VSCode will auto-generate the Function Types when we click on the Suggested Type](https://lupyuen.github.io/images/purescript-type.png)
 
 # Appendix: Rewrite the Imports
 
