@@ -36,7 +36,7 @@ In this article, we create a __NuttX Log Parser__ that will...
 
 - Hyperlink the __Stack Dump__ to NuttX Source Code and Disassembly
 
-And we'll do this in __PureScript__, the Functional Programming Language that compiles to JavaScript.
+And we'll do this in [__PureScript__](https://www.purescript.org/), the Functional Programming Language that compiles to JavaScript.
 
 (We'll see why in a moment)
 
