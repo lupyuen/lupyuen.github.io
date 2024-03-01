@@ -96,13 +96,13 @@
 <p>(For Code, Data, BSS, Heap, …)</p>
 </li>
 </ul>
-<p>TODO: Pic of flow</p>
-<p>In this article, </p>
+<p><img src="https://lupyuen.github.io/images/purescript-flow.jpg" alt="TODO" /></p>
+<p>TODO: In this article, </p>
 <p><img src="https://lupyuen.github.io/images/purescript-title.png" alt="Parsing Apache NuttX RTOS Logs with PureScript" /></p>
 <p><a href="https://youtu.be/9oBhy3P7pYc"><em>Watch the Demo on YouTube</em></a></p>
 <h1 id="demo-walkthrough"><a href="#demo-walkthrough">1 Demo Walkthrough</a></h1>
 <p>To see our <strong>NuttX Log Parser</strong> in action, we run the <a href="https://lupyuen.github.io/articles/tinyemu2"><strong>NuttX Emulator</strong></a> in a Web Browser. (Pic above)</p>
-<p>Running inside the NuttX Emulator is the exact same <strong>NuttX App (QuickJS)</strong> that crashed over the holidays…</p>
+<p>Inside the NuttX Emulator is the exact same <strong>NuttX App (QuickJS)</strong> that crashed over the holidays…</p>
 <ol>
 <li>
 <p>Head over to this link…</p>
@@ -138,9 +138,14 @@
 <p><a href="https://youtu.be/9oBhy3P7pYc">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
 </ol>
-<p>How does it work? We begin with the smarty stuff…</p>
 <p><img src="https://lupyuen.github.io/images/purescript-disassembly.png" alt="NuttX Disassembly" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000702a"><em>NuttX Disassembly for 8000_702A</em></a></p>
+<p><em>What just happened?</em></p>
+<p>Our NuttX App crashed on NuttX RTOS, producing tons of logs.</p>
+<p>But thanks to the NuttX Log Parser, we extracted and interpreted the interesting bits: <strong>Exception Info, Exception Explanation</strong> and <strong>Stack Dump</strong>.</p>
+<p>(With hyperlinks to <strong>NuttX Disassembly</strong> and <strong>Source Code</strong>)</p>
+<p>How did we make it happen? We start with the smarty stuff…</p>
+<p>TODO: Pic of explain</p>
 <h1 id="explain-the-risc-v-exception"><a href="#explain-the-risc-v-exception">2 Explain the RISC-V Exception</a></h1>
 <p><em>How did we explain the RISC-V Exception?</em></p>
 <span style="font-size:90%">
@@ -222,6 +227,7 @@ result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
 <p>PureScript looks like a neat way to express our <strong>NuttX Troubleshooting Skills</strong> as high-level rules…</p>
 <p>Without getting stuck with the low-level procedural plumbing of JavaScript.</p>
 <p>Let’s do a bit more PureScript…</p>
+<p>TODO: Pic of parse</p>
 <h1 id="parse-the-risc-v-exception"><a href="#parse-the-risc-v-exception">3 Parse the RISC-V Exception</a></h1>
 <p><em>How did we get the RISC-V Exception? MCAUSE, EPC, MTVAL?</em></p>
 <p>We auto-extracted the <strong>RISC-V Exception</strong> from the NuttX Log…</p>
@@ -370,7 +376,7 @@ const explain = explainException
   (exception.epc)
   (exception.mtval);
 </code></pre></div>
-<p>TODO: <a href="TODO"><strong>Parse Stack Dump</strong></a></p>
+<p>TODO: Pic of passing logs</p>
 <h1 id="pass-nuttx-logs-to-purescript"><a href="#pass-nuttx-logs-to-purescript">4 Pass NuttX Logs to PureScript</a></h1>
 <p><em>PureScript will parse our RISC-V Exceptions and explain them… How to pass our NuttX Logs to PureScript?</em></p>
 <p>We’re running <a href="TODO"><strong>NuttX Emulator</strong></a> inside our Web Browser.</p>
@@ -486,6 +492,7 @@ function disassemble(addr) {
 </code></pre></div>
 <p>But we do this only for <strong>Valid NuttX Addresses</strong>. (Otherwise we’ll hyperlink to hot garbage)</p>
 <p>How will <strong>identifyAddress</strong> know if it’s a Valid NuttX Address? Coming right up…</p>
+<p>TODO: Pic of rules</p>
 <h1 id="identify-a-nuttx-address"><a href="#identify-a-nuttx-address">5 Identify a NuttX Address</a></h1>
 <p><em>Given a NuttX Address like 8000a0e4: How will we know whether it’s in NuttX Kernel or NuttX App? And whether it’s Code, Data, BSS or Heap?</em></p>
 <p>Once Again: We get a little help from <strong>PureScript</strong> to match the Regex Patterns of <strong>Valid NuttX Addresses</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L55-L102">Main.purs</a></p>
@@ -622,10 +629,8 @@ cd nuttx-disassembly-chunker
 cargo run -- $chunkpath $chunkbase
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/purescript/qjs-chunk">(See the <strong>Disassembly Chunks</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/purescript-flow.jpg" alt="TODO" /></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
-<p>TODO</p>
-<p>It’s 2024… Surely there’s a better way to grok the log?
-Stack trace / mm log / elf loader </p>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -650,6 +655,7 @@ Stack trace / mm log / elf loader </p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/purescript.md"><strong>lupyuen.github.io/src/purescript.md</strong></a></p>
+<p>TODO: Pic of Log Parser</p>
 <h1 id="appendix-nuttx-log-parser"><a href="#appendix-nuttx-log-parser">8 Appendix: NuttX Log Parser</a></h1>
 <p>If we wish to update the <strong>NuttX Log Parser</strong> in PureScript: This is how we download and build the code…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Log Parser in PureScript
