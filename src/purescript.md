@@ -60,7 +60,7 @@ Inside the NuttX Emulator is the exact same __NuttX App (QuickJS)__ that crashed
 
     Our NuttX App crashes with a __RISC-V Exception__...
 
-    TODO: Pic of Terminal
+    ![TODO](https://lupyuen.github.io/images/purescript-parse3.png)
 
 1.  The __Terminal Output__ at left shows pages and pages of logs.
 
@@ -70,15 +70,13 @@ Inside the NuttX Emulator is the exact same __NuttX App (QuickJS)__ that crashed
 
 1.  The NuttX Log Parser shows the __RISC-V Exception Info__...
 
-    TODO: Pic
+    Followed by the __Explanation of the Exception__...
 
-1.  Followed by the __Explanation of the Exception__...
-
-    TODO: Pic
+    ![TODO](https://lupyuen.github.io/images/purescript-parse4.png)
 
 1.  And the __Stack Dump__...
 
-    TODO: Pic
+    ![TODO](https://lupyuen.github.io/images/purescript-parse5.png)
 
 1.  The __NuttX Addresses__ are clickable.
 
