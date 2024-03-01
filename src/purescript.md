@@ -663,14 +663,7 @@ cargo run -- $chunkpath $chunkbase
 
 TODO
 
-```bash
-git clone TODO
-cd TODO
-code .
-## Open src/main TODO
-```
 
-Install vscode extension 
 
 It's 2024... Surely there's a better way to grok the log?
 Stack trace / mm log / elf loader 
@@ -698,6 +691,53 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Appendix: PureScript Parser for NuttX
 
 TODO
+
+```bash
+## Download the Source Code
+git clone https://github.com/lupyuen/nuttx-purescript-parser
+cd nuttx-purescript-parser
+
+## TODO: Edit src/Main.purs
+code .
+
+## Run the NuttX Log Parser
+spago run
+```
+
+https://github.com/lupyuen/nuttx-purescript-parser/blob/main/run.sh
+
+```bash
+#!/usr/bin/env bash
+
+set -e  #  Exit when any command fails
+set -x  #  Echo commands
+
+## Run our PureScript
+spago run
+
+## Change:
+##   import { main, doBoth, doRunParser, parseCSV, exampleContent2, parseException, parseStackDump, explainException } from './output/Main/index.js';
+## To:
+##   import { main, doBoth, doRunParser, parseCSV, exampleContent2, parseException, parseStackDump, explainException } from './index.js';
+## Change:
+##   import * as StringParser_Parser from "./output/StringParser.Parser/index.js";
+## To:
+##   import * as StringParser_Parser from "https://compile.purescript.org/output/StringParser.Parser/index.js";
+cat index.html \
+  | sed 's/output\/Main\///' \
+  | sed 's/.\/output\//https:\/\/compile.purescript.org\/output\//' \
+  >docs/index.html
+
+## Change:
+##   import * as Control_Alt from "../Control.Alt/index.js";
+## To:
+##   import * as Control_Alt from "https://compile.purescript.org/output/Control.Alt/index.js";
+cat output/Main/index.js \
+  | sed 's/from \"../from \"https:\/\/compile.purescript.org\/output/' \
+  >docs/index.js
+```
+
+Install vscode extension 
 
 # Appendix: Rewrite the JavaScript Imports
 
