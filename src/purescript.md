@@ -920,6 +920,8 @@ The __Online PureScript Compiler__ will let us modify and test the NuttX Trouble
 
 1.  __Future Plans:__ We'll copy the Generated JavaScript to NuttX Emulator. So we can run our Modified NuttX Log Parser on the Actual NuttX Logs.
 
+    The [__PureScript Compiler Web Service__](TODO) is super helpful for compiling our PureScript Code to JavaScript.
+
 If we wish to run the Online PureScript Compiler locally on our computer...
 
 ```bash
