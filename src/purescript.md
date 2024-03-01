@@ -243,7 +243,7 @@ parseException :: Parser  -- We're creating a Parser...
 
 We're about to create a __PureScript String Parser__ that will accept a printed RISC-V Exception and return the MCAUSE, EPC and MTVAL.
 
-This is how we write our __Parsing Function__...
+This is how we write our __Parsing Function__: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L127-L191)
 
 ```purescript
 -- To parse the line: `riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000008000a0e4, MTVAL: 0000000880203b88`
@@ -261,6 +261,8 @@ As promised, meet our alien symbols...
 
 - __`void`__ means ignore the text
 
+  (Similar to C)
+
 - __`$` `something` `something`__
 
   is shortcut for...
@@ -269,13 +271,15 @@ As promised, meet our alien symbols...
 
 - __`<*`__ is the Delimiter between Patterns
 
+  (Looks like an alien raygun)
+
 Which will skip the unnecessary prelude...
 
 ```text
 riscv_exception: EXCEPTION: 
 ```
 
-Next comes the __Exception Message__, which we'll capture via a __Regular Expression__...
+Next comes the __Exception Message__, which we'll capture via a __Regular Expression__ (plus an alien raygun)
 
 ```purescript
   -- `exception` becomes `Load page fault`
