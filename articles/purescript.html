@@ -259,8 +259,8 @@ parseException :: Parser  -- We&#39;re creating a Parser...
   , mtval      :: String  -- MTVAL: `0000000880203b88`
   }
 </code></pre></div>
+<p><a href="TODO">(<strong>VSCode</strong> will generate the declaration)</a></p>
 <p>We’re about to create a <strong>PureScript String Parser</strong> that will accept a printed RISC-V Exception and return the MCAUSE, EPC and MTVAL.</p>
-<p><a href="TODO">(<strong>VSCode</strong> will generate the <strong>Function Type</strong>)</a></p>
 <p>This is how we write our <strong>Parsing Function</strong>…</p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- To parse the line: `riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000008000a0e4, MTVAL: 0000000880203b88`
 parseException = do
