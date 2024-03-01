@@ -896,23 +896,24 @@ The __Online PureScript Compiler__ that will let us modify and test the NuttX Tr
 If we wish to run the Online PureScript Compiler locally on our computer...
 
 ```bash
+## Download the Online PureScript Compiler
 git clone https://github.com/lupyuen/nuttx-trypurescript
 cd nuttx-trypurescript
 cd client
 
-## Build and Test Locally:
-npm install
+## To Build and Test Locally:
 ## Produces `output` folder
 ## And `public/js/index.js`
-npm run serve:production
 ## Test at http://127.0.0.1:8080
+npm install
+npm run serve:production
 
-## Deploy to GitHub Pages:
+## To Deploy to GitHub Pages:
 rm -r ../docs
 cp -r public ../docs
-simple-http-server .. &
-## Test at http://0.0.0.0:8000/docs/index.html
 
-## If we need `client.js` bundle:
-## npm run build:production
+## To Test Locally the GitHub Pages:
+## http://0.0.0.0:8000/docs/index.html
+cargo install simple-http-server
+simple-http-server .. &
 ```
