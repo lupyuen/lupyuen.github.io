@@ -837,19 +837,63 @@ But NPM big-integer won't run inside a Web Browser with Plain Old JavaScript. Th
 
 TODO: BigInt is [__already supported__](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) by Web Browsers. Why do we need NPM big-integer?
 
+TODO: Pic of Online Compiler
+
 # Appendix: Online PureScript Compiler
 
 _How will we allow the NuttX Troubleshooting Rules to be tweaked and tested easily across all NuttX Platforms?_
 
-We made an __Online PureScript Compiler__ that will let us modify and test the NuttX Troubleshooting Rules in a Web Browser...
+The __Online PureScript Compiler__ that will let us modify and test the NuttX Troubleshooting Rules in a Web Browser (pic above)...
 
-- Try the [__Online PureScript Compiler__](https://lupyuen.github.io/nuttx-trypurescript)
+1.  Head over to our [__Online PureScript Compiler__](https://lupyuen.github.io/nuttx-trypurescript)
 
-- Watch the [__Demo on YouTube__](TODO)
+1.  Copy the Source Code of our __NuttX Log Parser__: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs)
 
-TODO: Deploy the NuttX Log Parser
+    Paste it into the Online PureScript Compiler.
 
-To run it locally on our computer...
+1.  Change...
+
+    ```purescript
+    main :: Effect Unit
+    main = printResults
+    ```
+
+    To this...
+
+    ```purescript
+    import TryPureScript (render, withConsole)
+    main :: Effect Unit
+    main = render =<< withConsole do
+      printResults
+    ```
+
+1.  Our NuttX Parser Output appears...
+
+    ```text
+    We hit a Load Page Fault. Our code at Code Address 8000a0e4 tried to access the Data Address 0000000880203b88, which is Invalid.
+    Instruction Page Fault at epc, mtval
+    Unknown Exception: mcause=0, epc=epc, mtval=mtval
+    (Just { origin: "nuttx", type: Code })
+    (Just { origin: "qjs", type: Code })
+    Nothing
+    (runParser) Parsing content with 'parseException'
+    Result: { epc: "8000ad8a", exception: "Instruction page fault", mcause: 12, mtval: "8000ad8a" }
+    -----
+    (runParser) Parsing content with 'parseStackDump'
+    Result: { addr: "c02027e0", v1: "c0202010", v2: "00000000", v3: "00000001", v4: "00000000", v5: "00000000", v6: "00000000", v7: "8000ad8a", v8: "00000000" }
+    -----
+    (runParser) Parsing content with 'parseStackDump'
+    Result: { addr: "c02027e0", v1: "c0202010", v2: "00000000", v3: "00000001", v4: "00000000", v5: "00000000", v6: "00000000", v7: "8000ad8a", v8: "00000000" }
+    -----
+    ```
+
+1.  Try tweaking the rules for __explainException__ and __identifyAddress__
+
+    The changes should take effect immediately.
+
+1.  __Future Plans:__ We'll copy the Generated JavaScript to NuttX Emulator. So we can run our Modified NuttX Log Parser on the Actual NuttX Logs.
+
+If we wish to run the Online PureScript Compiler locally on our computer...
 
 ```bash
 git clone https://github.com/lupyuen/nuttx-trypurescript
@@ -871,50 +915,4 @@ simple-http-server .. &
 
 ## If we need `client.js` bundle:
 ## npm run build:production
-```
-
-TODO
-
-Copy [src/Main.purs](src/Main.purs) to the PureScript Editor.
-
-```purescript
-main :: Effect Unit
-main = printResults
-```
-
-To this...
-
-```purescript
-import TryPureScript (render, withConsole)
-
-main :: Effect Unit
-main = render =<< withConsole do
-  printResults
-```
-
-Our NuttX Parser Output appears...
-
-```text
-Instruction Page Fault at epc, mtval
-Unknown Exception: mcause=0, epc=epc, mtval=mtval
-(runParser) Parsing content with 'parseException'
-Result: { epc: "000000008000ad8a", exception: "Instruction page fault", mcause: 12, mtval: "000000008000ad8a" }
------
-(runParser) Parsing content with 'parseStackDump'
-Result: { addr: "c02027e0", timestamp: "6.242000", v1: "c0202010", v2: "00000000", v3: "00000001", v4: "00000000", v5: "00000000", v6: "00000000", v7: "8000ad8a", v8: "00000000" }
------
-```
-
-The Generated Web Browser JavaScript looks like this...
-
-```html
-<script type="module">
-import * as Control_Alt from "https://compile.purescript.org/output/Control.Alt/index.js";
-import * as Control_Applicative from "https://compile.purescript.org/output/Control.Applicative/index.js";
-import * as Control_Apply from "https://compile.purescript.org/output/Control.Apply/index.js";
-...
-var bind = /* #__PURE__ */ Control_Bind.bind(StringParser_Parser.bindParser);
-var alt = /* #__PURE__ */ Control_Alt.alt(StringParser_Parser.altParser);
-var voidRight = /* #__PURE__ */ Data_Functor.voidRight(StringParser_Parser.functorParser);
-...
 ```
