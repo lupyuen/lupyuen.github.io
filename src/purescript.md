@@ -100,7 +100,7 @@ But thanks to the NuttX Log Parser, we extracted and interpreted the interesting
 
 How did we make it happen? We start with the smarty bits...
 
-TODO: Pic of explain
+![Explain the RISC-V Exception](https://lupyuen.github.io/images/purescript-flow2.jpg)
 
 # Explain the RISC-V Exception
 
@@ -210,7 +210,7 @@ Without getting stuck with the low-level procedural plumbing of JavaScript.
 
 Let's do a bit more PureScript...
 
-TODO: Pic of parse
+![Parse the RISC-V Exception](https://lupyuen.github.io/images/purescript-flow3.jpg)
 
 # Parse the RISC-V Exception
 
@@ -414,7 +414,7 @@ const explain = explainException
   (exception.mtval);
 ```
 
-TODO: Pic of passing logs
+![Pass NuttX Logs to PureScript](https://lupyuen.github.io/images/purescript-flow4.jpg)
 
 # Pass NuttX Logs to PureScript
 
@@ -566,7 +566,7 @@ But we do this only for __Valid NuttX Addresses__. (Otherwise we'll hyperlink to
 
 How will __identifyAddress__ know if it's a Valid NuttX Address? Coming right up...
 
-TODO: Pic of rules
+![Identify a NuttX Address](https://lupyuen.github.io/images/purescript-flow5.jpg)
 
 # Identify a NuttX Address
 
@@ -763,7 +763,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/purescript.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/purescript.md)
 
-TODO: Pic of Log Parser
+![NuttX Log Parser](https://lupyuen.github.io/images/purescript-flow6.jpg)
 
 # Appendix: NuttX Log Parser
 
