@@ -80,7 +80,7 @@
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/purescript"><em>Try the Online Demo</em></a></p>
 <p><a href="https://youtu.be/9oBhy3P7pYc"><em>Watch the Demo on YouTube</em></a></p>
 <p>Over the Lunar New Year holidays, we were porting <a href="https://lupyuen.github.io/articles/quickjs"><strong>QuickJS</strong></a> to <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 SBC</strong></a>. And we hit a <strong>Baffling Exception</strong> on <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>…</p>
-<p>TODO: Pic of exception</p>
+<p><img src="https://lupyuen.github.io/images/quickjs-stack.webp" alt="QuickJS crashes on Apache NuttX RTOS" /></p>
 <p>Which made us ponder (our life choices)…</p>
 <ul>
 <li>
@@ -152,12 +152,11 @@
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/purescript-disassembly.png" alt="NuttX Disassembly" /></p>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000702a"><em>NuttX Disassembly for 8000_702A</em></a></p>
 <p><em>What just happened?</em></p>
 <p>Our NuttX App crashed on NuttX RTOS, producing tons of logs.</p>
 <p>But thanks to the NuttX Log Parser, we extracted and interpreted the interesting bits: <strong>Exception Info, Exception Explanation</strong> and <strong>Stack Dump</strong>.</p>
 <p>(With hyperlinks to <strong>NuttX Disassembly</strong> and <strong>Source Code</strong>)</p>
-<p>How did we make it happen? We start with the smarty stuff…</p>
+<p>How did we make it happen? We start with the smarty bits…</p>
 <p>TODO: Pic of explain</p>
 <h1 id="explain-the-risc-v-exception"><a href="#explain-the-risc-v-exception">2 Explain the RISC-V Exception</a></h1>
 <p><em>How did we explain the RISC-V Exception?</em></p>
