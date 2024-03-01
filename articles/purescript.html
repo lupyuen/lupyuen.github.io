@@ -723,19 +723,56 @@ npm install big-integer
 <p>If we use <a href="https://pursuit.purescript.org/packages/purescript-bigints/docs/Data.BigInt"><strong>PureScript BigInt</strong></a>, then we need <a href="https://www.npmjs.com/package/big-integer"><strong>NPM big-integer</strong></a>.</p>
 <p>But NPM big-integer won’t run inside a Web Browser with Plain Old JavaScript. That’s why we’re passing addresses as Strings instead of Numbers.</p>
 <p>TODO: BigInt is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt"><strong>already supported</strong></a> by Web Browsers. Why do we need NPM big-integer?</p>
+<p>TODO: Pic of Online Compiler</p>
 <h1 id="appendix-online-purescript-compiler"><a href="#appendix-online-purescript-compiler">11 Appendix: Online PureScript Compiler</a></h1>
 <p><em>How will we allow the NuttX Troubleshooting Rules to be tweaked and tested easily across all NuttX Platforms?</em></p>
-<p>We made an <strong>Online PureScript Compiler</strong> that will let us modify and test the NuttX Troubleshooting Rules in a Web Browser…</p>
-<ul>
+<p>The <strong>Online PureScript Compiler</strong> that will let us modify and test the NuttX Troubleshooting Rules in a Web Browser (pic above)…</p>
+<ol>
 <li>
-<p>Try the <a href="https://lupyuen.github.io/nuttx-trypurescript"><strong>Online PureScript Compiler</strong></a></p>
+<p>Head over to our <a href="https://lupyuen.github.io/nuttx-trypurescript"><strong>Online PureScript Compiler</strong></a></p>
 </li>
 <li>
-<p>Watch the <a href="TODO"><strong>Demo on YouTube</strong></a></p>
+<p>Copy the Source Code of our <strong>NuttX Log Parser</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs">Main.purs</a></p>
+<p>Paste it into the Online PureScript Compiler.</p>
 </li>
-</ul>
-<p>TODO: Deploy the NuttX Log Parser</p>
-<p>To run it locally on our computer…</p>
+<li>
+<p>Change…</p>
+<div class="example-wrap"><pre class="language-purescript"><code>main :: Effect Unit
+main = printResults
+</code></pre></div>
+<p>To this…</p>
+<div class="example-wrap"><pre class="language-purescript"><code>import TryPureScript (render, withConsole)
+main :: Effect Unit
+main = render =&lt;&lt; withConsole do
+  printResults
+</code></pre></div></li>
+<li>
+<p>Our NuttX Parser Output appears…</p>
+<div class="example-wrap"><pre class="language-text"><code>We hit a Load Page Fault. Our code at Code Address 8000a0e4 tried to access the Data Address 0000000880203b88, which is Invalid.
+Instruction Page Fault at epc, mtval
+Unknown Exception: mcause=0, epc=epc, mtval=mtval
+(Just { origin: &quot;nuttx&quot;, type: Code })
+(Just { origin: &quot;qjs&quot;, type: Code })
+Nothing
+(runParser) Parsing content with &#39;parseException&#39;
+Result: { epc: &quot;8000ad8a&quot;, exception: &quot;Instruction page fault&quot;, mcause: 12, mtval: &quot;8000ad8a&quot; }
+-----
+(runParser) Parsing content with &#39;parseStackDump&#39;
+Result: { addr: &quot;c02027e0&quot;, v1: &quot;c0202010&quot;, v2: &quot;00000000&quot;, v3: &quot;00000001&quot;, v4: &quot;00000000&quot;, v5: &quot;00000000&quot;, v6: &quot;00000000&quot;, v7: &quot;8000ad8a&quot;, v8: &quot;00000000&quot; }
+-----
+(runParser) Parsing content with &#39;parseStackDump&#39;
+Result: { addr: &quot;c02027e0&quot;, v1: &quot;c0202010&quot;, v2: &quot;00000000&quot;, v3: &quot;00000001&quot;, v4: &quot;00000000&quot;, v5: &quot;00000000&quot;, v6: &quot;00000000&quot;, v7: &quot;8000ad8a&quot;, v8: &quot;00000000&quot; }
+-----
+</code></pre></div></li>
+<li>
+<p>Try tweaking the rules for <strong>explainException</strong> and <strong>identifyAddress</strong></p>
+<p>The changes should take effect immediately.</p>
+</li>
+<li>
+<p><strong>Future Plans:</strong> We’ll copy the Generated JavaScript to NuttX Emulator. So we can run our Modified NuttX Log Parser on the Actual NuttX Logs.</p>
+</li>
+</ol>
+<p>If we wish to run the Online PureScript Compiler locally on our computer…</p>
 <div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/lupyuen/nuttx-trypurescript
 cd nuttx-trypurescript
 cd client
@@ -755,39 +792,6 @@ simple-http-server .. &amp;
 
 ## If we need `client.js` bundle:
 ## npm run build:production
-</code></pre></div>
-<p>TODO</p>
-<p>Copy <a href="src/Main.purs">src/Main.purs</a> to the PureScript Editor.</p>
-<div class="example-wrap"><pre class="language-purescript"><code>main :: Effect Unit
-main = printResults
-</code></pre></div>
-<p>To this…</p>
-<div class="example-wrap"><pre class="language-purescript"><code>import TryPureScript (render, withConsole)
-
-main :: Effect Unit
-main = render =&lt;&lt; withConsole do
-  printResults
-</code></pre></div>
-<p>Our NuttX Parser Output appears…</p>
-<div class="example-wrap"><pre class="language-text"><code>Instruction Page Fault at epc, mtval
-Unknown Exception: mcause=0, epc=epc, mtval=mtval
-(runParser) Parsing content with &#39;parseException&#39;
-Result: { epc: &quot;000000008000ad8a&quot;, exception: &quot;Instruction page fault&quot;, mcause: 12, mtval: &quot;000000008000ad8a&quot; }
------
-(runParser) Parsing content with &#39;parseStackDump&#39;
-Result: { addr: &quot;c02027e0&quot;, timestamp: &quot;6.242000&quot;, v1: &quot;c0202010&quot;, v2: &quot;00000000&quot;, v3: &quot;00000001&quot;, v4: &quot;00000000&quot;, v5: &quot;00000000&quot;, v6: &quot;00000000&quot;, v7: &quot;8000ad8a&quot;, v8: &quot;00000000&quot; }
------
-</code></pre></div>
-<p>The Generated Web Browser JavaScript looks like this…</p>
-<div class="example-wrap"><pre class="language-html"><code>&lt;script type=&quot;module&quot;&gt;
-import * as Control_Alt from &quot;https://compile.purescript.org/output/Control.Alt/index.js&quot;;
-import * as Control_Applicative from &quot;https://compile.purescript.org/output/Control.Applicative/index.js&quot;;
-import * as Control_Apply from &quot;https://compile.purescript.org/output/Control.Apply/index.js&quot;;
-...
-var bind = /* #__PURE__ */ Control_Bind.bind(StringParser_Parser.bindParser);
-var alt = /* #__PURE__ */ Control_Alt.alt(StringParser_Parser.altParser);
-var voidRight = /* #__PURE__ */ Data_Functor.voidRight(StringParser_Parser.functorParser);
-...
 </code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
