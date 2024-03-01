@@ -239,9 +239,9 @@ parseException :: Parser  -- We're creating a Parser...
   }
 ```
 
-We're about to create a __PureScript String Parser__ that will accept a printed RISC-V Exception and return the MCAUSE, EPC and MTVAL.
+[(__VSCode__ will generate the declaration)](TODO)
 
-[(__VSCode__ will generate the __Function Type__)](TODO)
+We're about to create a __PureScript String Parser__ that will accept a printed RISC-V Exception and return the MCAUSE, EPC and MTVAL.
 
 This is how we write our __Parsing Function__...
 
