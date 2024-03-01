@@ -157,7 +157,7 @@
 <p>But thanks to the NuttX Log Parser, we extracted and interpreted the interesting bits: <strong>Exception Info, Exception Explanation</strong> and <strong>Stack Dump</strong>.</p>
 <p>(With hyperlinks to <strong>NuttX Disassembly</strong> and <strong>Source Code</strong>)</p>
 <p>How did we make it happen? We start with the smarty bits…</p>
-<p>TODO: Pic of explain</p>
+<p><img src="https://lupyuen.github.io/images/purescript-flow2.jpg" alt="Explain the RISC-V Exception" /></p>
 <h1 id="explain-the-risc-v-exception"><a href="#explain-the-risc-v-exception">2 Explain the RISC-V Exception</a></h1>
 <p><em>How did we explain the RISC-V Exception?</em></p>
 <span style="font-size:90%">
@@ -239,7 +239,7 @@ result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
 <p>PureScript looks like a neat way to express our <strong>NuttX Troubleshooting Skills</strong> as high-level rules…</p>
 <p>Without getting stuck with the low-level procedural plumbing of JavaScript.</p>
 <p>Let’s do a bit more PureScript…</p>
-<p>TODO: Pic of parse</p>
+<p><img src="https://lupyuen.github.io/images/purescript-flow3.jpg" alt="Parse the RISC-V Exception" /></p>
 <h1 id="parse-the-risc-v-exception"><a href="#parse-the-risc-v-exception">3 Parse the RISC-V Exception</a></h1>
 <p><em>How did we get the RISC-V Exception? MCAUSE, EPC, MTVAL?</em></p>
 <p>We auto-extracted the <strong>RISC-V Exception</strong> from the NuttX Log…</p>
@@ -390,7 +390,7 @@ const explain = explainException
   (exception.epc)
   (exception.mtval);
 </code></pre></div>
-<p>TODO: Pic of passing logs</p>
+<p><img src="https://lupyuen.github.io/images/purescript-flow4.jpg" alt="Pass NuttX Logs to PureScript" /></p>
 <h1 id="pass-nuttx-logs-to-purescript"><a href="#pass-nuttx-logs-to-purescript">4 Pass NuttX Logs to PureScript</a></h1>
 <p><em>PureScript will parse our RISC-V Exceptions and explain them… How to pass our NuttX Logs to PureScript?</em></p>
 <p>We’re running <a href="TODO"><strong>NuttX Emulator</strong></a> inside our Web Browser.</p>
@@ -507,7 +507,7 @@ function disassemble(addr) {
 </code></pre></div>
 <p>But we do this only for <strong>Valid NuttX Addresses</strong>. (Otherwise we’ll hyperlink to hot garbage)</p>
 <p>How will <strong>identifyAddress</strong> know if it’s a Valid NuttX Address? Coming right up…</p>
-<p>TODO: Pic of rules</p>
+<p><img src="https://lupyuen.github.io/images/purescript-flow5.jpg" alt="Identify a NuttX Address" /></p>
 <h1 id="identify-a-nuttx-address"><a href="#identify-a-nuttx-address">5 Identify a NuttX Address</a></h1>
 <p><em>Given a NuttX Address like 8000a0e4: How will we know if it’s in NuttX Kernel or NuttX App? And whether it’s Code, Data, BSS or Heap?</em></p>
 <p>Once Again: We get a little help from <strong>PureScript</strong> to match the Regex Patterns of <strong>Valid NuttX Addresses</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L55-L102">Main.purs</a></p>
@@ -671,7 +671,7 @@ cargo run -- $chunkpath $chunkbase
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/purescript.md"><strong>lupyuen.github.io/src/purescript.md</strong></a></p>
-<p>TODO: Pic of Log Parser</p>
+<p><img src="https://lupyuen.github.io/images/purescript-flow6.jpg" alt="NuttX Log Parser" /></p>
 <h1 id="appendix-nuttx-log-parser"><a href="#appendix-nuttx-log-parser">8 Appendix: NuttX Log Parser</a></h1>
 <p>If we wish to update the <strong>NuttX Log Parser</strong> in PureScript: This is how we download and build the code…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Log Parser in PureScript
