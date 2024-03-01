@@ -99,21 +99,42 @@
 <p>TODO: Pic of flow</p>
 <p>In this article, </p>
 <p><img src="https://lupyuen.github.io/images/purescript-title.png" alt="Parsing Apache NuttX RTOS Logs with PureScript" /></p>
+<p><a href="https://youtu.be/9oBhy3P7pYc"><em>Watch the Demo on YouTube</em></a></p>
 <h1 id="demo-walkthrough"><a href="#demo-walkthrough">1 Demo Walkthrough</a></h1>
-<p>TODO</p>
-<p><a href="https://lupyuen.github.io/articles/tinyemu2"><strong>TinyEMU WebAssembly for NuttX</strong></a></p>
-<p>NuttX Emulator for Ox64 BL808 SBC</p>
-<p>Running the exact same NuttX App (QuickJS) that crashed</p>
-<p>When QuickJS crashes, the NuttX Log Parser shows the RISC-V Exception Info</p>
-<p>Followed by the Explanation of the RISC-V Exception</p>
-<p>Followed by the Stack Dump</p>
-<p>NuttX Addresses are clickable</p>
-<p>See the NuttX Disassembly</p>
-<p>Which links to the NuttX Source Code</p>
-<p>Watch the Demo on YouTube</p>
-<p><a href="https://lupyuen.github.io/nuttx-tinyemu/purescript">(Try the <strong>Online Demo</strong>)</a></p>
+<p>To see our <strong>NuttX Log Parser</strong> in action, we run the <a href="https://lupyuen.github.io/articles/tinyemu2"><strong>NuttX Emulator</strong></a> in a Web Browser. (Pic above)</p>
+<p>Running inside the NuttX Emulator is the exact same <strong>NuttX App (QuickJS)</strong> that crashed over the holidays…</p>
+<ol>
+<li>
+<p>Head over to this link…</p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/purescript"><strong>Emulator for Ox64 BL808 SBC</strong></a></p>
+</li>
+<li>
+<p><strong>Apache NuttX RTOS</strong> boots on the Ox64 Emulator…</p>
+<p>And starts our NuttX App: <strong>QuickJS</strong></p>
+<p>Our NuttX App crashes with a <strong>RISC-V Exception</strong></p>
+</li>
+<li>
+<p>The NuttX Log Parser shows the <strong>RISC-V Exception Info</strong>…</p>
+<p>TODO: Pic</p>
+</li>
+<li>
+<p>Followed by the <strong>Explanation of the Exception</strong>…</p>
+<p>TODO: Pic</p>
+</li>
+<li>
+<p>And the <strong>Stack Dump</strong>…</p>
+<p>TODO: Pic</p>
+</li>
+<li>
+<p>The <strong>NuttX Addresses</strong> are clickable.</p>
+<p>Clicking an address brings us to the <strong>NuttX Disassembly</strong>…</p>
+<p>Which links to the <strong>NuttX Source Code</strong>. (Pic below)</p>
 <p><a href="https://youtu.be/9oBhy3P7pYc">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p>We begin with the smarty stuff…</p>
+</li>
+</ol>
+<p>How does it work? We begin with the smarty stuff…</p>
+<p><img src="https://lupyuen.github.io/images/purescript-disassembly.png" alt="NuttX Disassembly" /></p>
+<p><a href="https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000702a"><em>NuttX Disassembly for 8000_702A</em></a></p>
 <h1 id="explain-the-risc-v-exception"><a href="#explain-the-risc-v-exception">2 Explain the RISC-V Exception</a></h1>
 <p><em>How did we explain the RISC-V Exception?</em></p>
 <span style="font-size:90%">
