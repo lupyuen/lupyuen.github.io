@@ -26,9 +26,9 @@ Which made us ponder (our life choices)...
 
   (For Code, Data, BSS, Heap, ...)
 
-TODO: Pic of flow
+![TODO](https://lupyuen.github.io/images/purescript-flow.jpg)
 
-In this article, 
+TODO: In this article, 
 
 ![Parsing Apache NuttX RTOS Logs with PureScript](https://lupyuen.github.io/images/purescript-title.png)
 
@@ -38,7 +38,7 @@ In this article,
 
 To see our __NuttX Log Parser__ in action, we run the [__NuttX Emulator__](https://lupyuen.github.io/articles/tinyemu2) in a Web Browser. (Pic above)
 
-Running inside the NuttX Emulator is the exact same __NuttX App (QuickJS)__ that crashed over the holidays...
+Inside the NuttX Emulator is the exact same __NuttX App (QuickJS)__ that crashed over the holidays...
 
 1.  Head over to this link...
 
@@ -78,11 +78,21 @@ Running inside the NuttX Emulator is the exact same __NuttX App (QuickJS)__ that
 
     [(Watch the __Demo on YouTube__)](https://youtu.be/9oBhy3P7pYc)
 
-How does it work? We begin with the smarty stuff...
-
 ![NuttX Disassembly](https://lupyuen.github.io/images/purescript-disassembly.png)
 
 [_NuttX Disassembly for 8000_702A_](https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000702a)
+
+_What just happened?_
+
+Our NuttX App crashed on NuttX RTOS, producing tons of logs.
+
+But thanks to the NuttX Log Parser, we extracted and interpreted the interesting bits: __Exception Info, Exception Explanation__ and __Stack Dump__.
+
+(With hyperlinks to __NuttX Disassembly__ and __Source Code__)
+
+How did we make it happen? We start with the smarty stuff...
+
+TODO: Pic of explain
 
 # Explain the RISC-V Exception
 
@@ -191,6 +201,8 @@ PureScript looks like a neat way to express our __NuttX Troubleshooting Skills__
 Without getting stuck with the low-level procedural plumbing of JavaScript.
 
 Let's do a bit more PureScript...
+
+TODO: Pic of parse
 
 # Parse the RISC-V Exception
 
@@ -390,7 +402,7 @@ const explain = explainException
   (exception.mtval);
 ```
 
-TODO: [__Parse Stack Dump__](TODO)
+TODO: Pic of passing logs
 
 # Pass NuttX Logs to PureScript
 
@@ -537,6 +549,8 @@ function disassemble(addr) {
 But we do this only for __Valid NuttX Addresses__. (Otherwise we'll hyperlink to hot garbage)
 
 How will __identifyAddress__ know if it's a Valid NuttX Address? Coming right up...
+
+TODO: Pic of rules
 
 # Identify a NuttX Address
 
@@ -705,14 +719,9 @@ cargo run -- $chunkpath $chunkbase
 
 [(See the __Disassembly Chunks__)](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/purescript/qjs-chunk)
 
+![TODO](https://lupyuen.github.io/images/purescript-flow.jpg)
+
 # What's Next
-
-TODO
-
-
-
-It's 2024... Surely there's a better way to grok the log?
-Stack trace / mm log / elf loader 
 
 TODO
 
@@ -733,6 +742,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/purescript.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/purescript.md)
+
+TODO: Pic of Log Parser
 
 # Appendix: NuttX Log Parser
 
