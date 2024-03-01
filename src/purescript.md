@@ -10,7 +10,7 @@
 
 Over the Lunar New Year holidays, we were porting [__QuickJS__](https://lupyuen.github.io/articles/quickjs) to [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358). And we hit a __Baffling Exception__ on [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)...
 
-TODO: Pic of exception
+![QuickJS crashes on Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-stack.webp)
 
 Which made us ponder (our life choices)...
 
@@ -90,8 +90,6 @@ Inside the NuttX Emulator is the exact same __NuttX App (QuickJS)__ that crashed
 
 ![NuttX Disassembly](https://lupyuen.github.io/images/purescript-disassembly.png)
 
-[_NuttX Disassembly for 8000_702A_](https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000702a)
-
 _What just happened?_
 
 Our NuttX App crashed on NuttX RTOS, producing tons of logs.
@@ -100,7 +98,7 @@ But thanks to the NuttX Log Parser, we extracted and interpreted the interesting
 
 (With hyperlinks to __NuttX Disassembly__ and __Source Code__)
 
-How did we make it happen? We start with the smarty stuff...
+How did we make it happen? We start with the smarty bits...
 
 TODO: Pic of explain
 
