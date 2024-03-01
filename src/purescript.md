@@ -365,10 +365,10 @@ We __intercept all logs__ emitted by the Emulator, with this JavaScript: [term.j
 ```javascript
 // When NuttX Emulator prints something
 // to the Terminal Output...
-Term.prototype.write = function(str) {
+Term.prototype.write = function(ch) {
 
   // Send it to our NuttX Log Parser
-  parseLog(str);
+  parseLog(ch);
 ```
 
 Our JavaScript __parses NuttX Logs__ like this: [term.js](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1483-L1575)
@@ -538,7 +538,7 @@ result = identifyAddress("502198ac");
 
 // For NuttX App Address:
 // Returns {value0: {origin: "qjs", type: {}}
-result = identifyAddress("80064a28");
+result = identifyAddress("8000a0e4");
 
 // Why is the `type` empty? That's because it's a
 // JavaScript Object that needs extra inspection.
@@ -558,11 +558,18 @@ Our __Troubleshooting Rules__ are still evolving, we're not sure how the NuttX L
 
 That's why we'll have an [__Online PureScript Compiler__](TODO) that will allow the Troubleshooting Rules to be __tweaked and tested easily__ across all NuttX Platforms.
 
+![NuttX Disassembly](https://lupyuen.github.io/images/purescript-disassembly.png)
+
+[_NuttX Disassembly for 8000_702A_](https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000702a)
+
 # Disassemble NuttX by Address
 
-TODO
+_Given a NuttX Address like 8000a0e4: How shall we show the NuttX Disassembly?_
+
+We chunked up the __NuttX Disassembly__ into many many small files (by NuttX Address)...
 
 ```bash
+## 101 Chunked Files for the NuttX App Dissassembly (QuickJS)
 $ ls nuttx-tinyemu/docs/purescript/qjs-chunk
 qjs-80001000.S
 qjs-80002000.S
@@ -572,7 +579,30 @@ qjs-80064000.S
 qjs-80065000.S
 ```
 
-_Given an Exception Address like 8000ad8a, can we show the NuttX Disassembly?_
+So `8000a0e4` will appear in the file [`qjs-8000b000.S`](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L171)...
+
+```c
+/* NuttX Disassembly for 8000a0e4 */
+quickjs-nuttx/quickjs.c:2876
+  p = rt->atom_array[i];
+    8000a0e4:  6380  ld  s0,0(a5)
+```
+
+Which gets hyperlinked in our [__NuttX Log Display__](https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000a0e4) (pic above) whenever `8000a0e4` is shown...
+
+```text
+<a href="disassemble.html?addr=8000a0e4" target="_blank">
+  8000a0e4
+</a>
+```
+
+_What's inside disassemble.html? (Pic above)_
+
+TODO
+
+_How to chunk?_
+
+TODO
 
 We need to chunk nuttx.S (or qjs.S) by address: nuttx-8000ad90.S, nuttx-8000ae00.S, nuttx-8000b000.S, nuttx-80010000.S. And link to the NuttX Repo Source Code.
 
@@ -743,9 +773,6 @@ async function run() {
 run();
 ```
 
-Try it here: https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000702a
-
-![NuttX Disassembly](https://lupyuen.github.io/images/purescript-disassembly.png)
 
 # TODO
 
