@@ -749,7 +749,7 @@ cargo run -- $chunkpath $chunkbase
 
 # What's Next
 
-TODO
+TODO: [Solution is here](https://lupyuen.github.io/articles/quickjs#nuttx-stack-is-full-of-quickjs)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
