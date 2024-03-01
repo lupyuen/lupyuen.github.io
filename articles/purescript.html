@@ -261,7 +261,7 @@ parseException :: Parser  -- We&#39;re creating a Parser...
 </code></pre></div>
 <p><a href="TODO">(<strong>VSCode</strong> will generate the declaration)</a></p>
 <p>We’re about to create a <strong>PureScript String Parser</strong> that will accept a printed RISC-V Exception and return the MCAUSE, EPC and MTVAL.</p>
-<p>This is how we write our <strong>Parsing Function</strong>…</p>
+<p>This is how we write our <strong>Parsing Function</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L127-L191">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- To parse the line: `riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000008000a0e4, MTVAL: 0000000880203b88`
 parseException = do
 
@@ -276,6 +276,7 @@ parseException = do
 <ul>
 <li>
 <p><strong><code>void</code></strong> means ignore the text</p>
+<p>(Similar to C)</p>
 </li>
 <li>
 <p><strong><code>$</code> <code>something</code> <code>something</code></strong></p>
@@ -284,12 +285,13 @@ parseException = do
 </li>
 <li>
 <p><strong><code>&lt;*</code></strong> is the Delimiter between Patterns</p>
+<p>(Looks like an alien raygun)</p>
 </li>
 </ul>
 <p>Which will skip the unnecessary prelude…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_exception: EXCEPTION: 
 </code></pre></div>
-<p>Next comes the <strong>Exception Message</strong>, which we’ll capture via a <strong>Regular Expression</strong>…</p>
+<p>Next comes the <strong>Exception Message</strong>, which we’ll capture via a <strong>Regular Expression</strong> (plus an alien raygun)</p>
 <div class="example-wrap"><pre class="language-purescript"><code>  -- `exception` becomes `Load page fault`
   -- `&lt;*` says when we should stop the Text Capture
   exception &lt;- regex &quot;[^.]+&quot; 
