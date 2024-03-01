@@ -695,26 +695,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/purescript.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/purescript.md)
 
-# Appendix: BigInt in PureScript
+# Appendix: PureScript Parser for NuttX
 
 TODO
 
-_Why are we passing addresses in Text instead of Numbers? Like `8000ad8a`_
-
-That's because 0x8000ad8a is too big for PureScript Int, a signed 32-bit integer. PureScript Int is meant to interoperate with JavaScript Integer, which is also 32-bit.
-
-_What about PureScript BigInt?_
-
-```bash
-spago install bigints
-npm install big-integer
-```
-
-If we use [PureScript BigInt](https://pursuit.purescript.org/packages/purescript-bigints/7.0.1/docs/Data.BigInt#t:BigInt), then we need NPM big-integer.
-
-But NPM big-integer won't run inside a Web Browser with Plain Old JavaScript. That's why we're passing addresses as Strings instead of Numbers.
-
-# Appendix: Rewrite JavaScript Imports
+# Appendix: Rewrite the JavaScript Imports
 
 TODO
 
@@ -821,6 +806,21 @@ var voidRight = /* #__PURE__ */ Data_Functor.voidRight(StringParser_Parser.funct
 ...
 ```
 
-TODO: Where is Main Function?
+# Appendix: BigInt in PureScript
 
-TODO: Copy Generated JavaScript to NuttX Emulator
+TODO
+
+_Why are we passing addresses in Text instead of Numbers? Like `8000ad8a`_
+
+That's because 0x8000ad8a is too big for PureScript Int, a signed 32-bit integer. PureScript Int is meant to interoperate with JavaScript Integer, which is also 32-bit.
+
+_What about PureScript BigInt?_
+
+```bash
+spago install bigints
+npm install big-integer
+```
+
+If we use [PureScript BigInt](https://pursuit.purescript.org/packages/purescript-bigints/7.0.1/docs/Data.BigInt#t:BigInt), then we need NPM big-integer.
+
+But NPM big-integer won't run inside a Web Browser with Plain Old JavaScript. That's why we're passing addresses as Strings instead of Numbers.
