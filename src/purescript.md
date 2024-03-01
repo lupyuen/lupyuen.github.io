@@ -750,11 +750,17 @@ cat output/Main/index.js \
 
 # Appendix: Online PureScript Compiler
 
-TODO
+_How will we allow the NuttX Troubleshooting Rules to be tweaked and tested easily across all NuttX Platforms?_
 
-_How to build a PureScript Editor that will allow the Rules to be tweaked easily for other platforms?_
+We made an __Online PureScript Compiler__ that will let us modify and test the NuttX Troubleshooting Rules in a Web Browser...
 
-To run our PureScript Editor for NuttX...
+- Try the [__Online PureScript Compiler__](https://lupyuen.github.io/nuttx-trypurescript)
+
+- Watch the [__Demo on YouTube__](TODO)
+
+TODO: Deploy the NuttX Log Parser
+
+To run it locally on our computer...
 
 ```bash
 git clone https://github.com/lupyuen/nuttx-trypurescript
@@ -778,7 +784,7 @@ simple-http-server .. &
 ## npm run build:production
 ```
 
-Try it here: https://lupyuen.github.io/nuttx-trypurescript
+TODO
 
 Copy [src/Main.purs](src/Main.purs) to the PureScript Editor.
 
