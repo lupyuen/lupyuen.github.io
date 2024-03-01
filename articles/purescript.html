@@ -504,7 +504,8 @@ resultType = result.constructor.name;
 <h1 id="disassemble-nuttx-by-address"><a href="#disassemble-nuttx-by-address">6 Disassemble NuttX by Address</a></h1>
 <p><em>Given a NuttX Address like 8000a0e4: How shall we show the NuttX Disassembly?</em></p>
 <p>We chunked up the <strong>NuttX Disassembly</strong> into many many small files (by NuttX Address)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## 101 Chunked Files for the NuttX App Dissassembly (QuickJS)
+<div class="example-wrap"><pre class="language-bash"><code>## NuttX App Dissassembly (QuickJS)
+## Chunked into 101 small files
 $ ls nuttx-tinyemu/docs/purescript/qjs-chunk
 qjs-80001000.S
 qjs-80002000.S
@@ -513,7 +514,7 @@ qjs-80063000.S
 qjs-80064000.S
 qjs-80065000.S
 </code></pre></div>
-<p>So <code>8000a0e4</code> will appear in the file <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L171"><code>qjs-8000b000.S</code></a>…</p>
+<p>So <strong><code>8000a0e4</code></strong> will appear in the file <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L171"><strong>qjs-8000b000.S</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* NuttX Disassembly for 8000a0e4 */
 quickjs-nuttx/quickjs.c:2876
   p = rt-&gt;atom_array[i];
@@ -525,7 +526,29 @@ quickjs-nuttx/quickjs.c:2876
 &lt;/a&gt;
 </code></pre></div>
 <p><em>What’s inside disassemble.html? (Pic above)</em></p>
-<p>TODO</p>
+<p>Given a <strong>NuttX Address</strong> like <strong><code>8000a0e4</code></strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>disassemble.html?addr=8000a0e4
+</code></pre></div>
+<p><a href="TODO"><strong>disassemble.html</strong></a> will…</p>
+<ol>
+<li>
+<p>Fetch the Disassembly Chunk File: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L171"><strong>qjs-8000b000.S</strong></a></p>
+</li>
+<li>
+<p>Search for address <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L171"><strong><code>8000a0e4</code></strong></a> in the file</p>
+</li>
+<li>
+<p>Display 20 lines of <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L151-L190"><strong>NuttX Disassembly</strong></a> before and after the address</p>
+</li>
+<li>
+<p>Hyperlink to the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/quickjs.c#L2877"><strong>NuttX Source Code</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;a href=&quot;https://github.com/lupyuen/quickjs-nuttx/blob/master/quickjs.c#L2877&quot; target=&quot;_blank&quot;&gt;
+  quickjs-nuttx/quickjs.c:2877
+&lt;/a&gt;
+</code></pre></div>
+<p><a href="TODO">(As explained here)</a></p>
+</li>
+</ol>
 <p><em>How to chunk?</em></p>
 <p>TODO</p>
 <p>We need to chunk nuttx.S (or qjs.S) by address: nuttx-8000ad90.S, nuttx-8000ae00.S, nuttx-8000b000.S, nuttx-80010000.S. And link to the NuttX Repo Source Code.</p>
