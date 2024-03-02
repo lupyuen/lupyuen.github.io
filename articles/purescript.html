@@ -740,11 +740,12 @@ cat output/Main/index.js \
   | sed &#39;s/from \&quot;../from \&quot;https:\/\/compile.purescript.org\/output/&#39; \
   &gt;docs/index.js
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html">(<strong>index.html</strong> is our Test JavaScript)</a></p>
 <p>This produces the <strong>Modified JavaScript</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/docs/index.js">docs/index.js</a></p>
 <p>Which gets published at <a href="https://lupyuen.github.io/nuttx-purescript-parser/index.js">nuttx-purescript-parser/index.js</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-purescript-parser/tree/main/docs">(See the <strong>Modified JavaScript</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/nuttx-purescript-parser/">(Run the <strong>Modified JavaScript</strong>)</a></p>
-<p><em>How is the Modified JavaScript imported by NuttX Emulator?</em></p>
+<p><em>How is this JavaScript imported by NuttX Emulator?</em></p>
 <p>NuttX Emulator imports the <strong>Modified JavaScript</strong> for NuttX Log Parser like this: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/index.html#L48-L61">index.html</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>&lt;script type=module&gt;
   // Import the NuttX Log Parser
@@ -764,14 +765,15 @@ cat output/Main/index.js \
   const result2 = explainException(12)(&#39;000000008000ad8a&#39;)(&#39;000000008000ad8a&#39;)
 </code></pre></div><h1 id="appendix-bigint-in-purescript"><a href="#appendix-bigint-in-purescript">10 Appendix: BigInt in PureScript</a></h1>
 <p><em>Why are we passing addresses in Text instead of Numbers? Like <code>&quot;8000ad8a&quot;</code></em></p>
-<p>That’s because <code>0x8000ad8a</code> is too big for <strong>PureScript Int</strong>, a signed 32-bit integer. PureScript Int is meant to interoperate with JavaScript Integer, which is also 32-bit.</p>
+<p>That’s because <code>0x8000ad8a</code> is too big for <strong>PureScript Int</strong>, a signed 32-bit integer.</p>
+<p>PureScript Int is meant to interoperate with JavaScript Integer, which is also 32-bit.</p>
 <p><em>What about PureScript BigInt?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>spago install bigints
 npm install big-integer
 </code></pre></div>
 <p>If we use <a href="https://pursuit.purescript.org/packages/purescript-bigints/docs/Data.BigInt"><strong>PureScript BigInt</strong></a>, then we need <a href="https://www.npmjs.com/package/big-integer"><strong>NPM big-integer</strong></a>.</p>
 <p>But NPM big-integer won’t run inside a Web Browser with Plain Old JavaScript. That’s why we’re passing addresses as Strings instead of Numbers.</p>
-<p><strong>TODO:</strong> BigInt is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt"><strong>already supported</strong></a> by Web Browsers. Why do we need NPM big-integer?</p>
+<p><strong>TODO:</strong> BigInt is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt"><strong>already supported</strong></a> by Web Browsers. Do we really need NPM big-integer?</p>
 <p><img src="https://lupyuen.github.io/images/purescript-compiler.png" alt="Online PureScript Compiler" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-trypurescript?gist=1405685d6f847ea5d4d6302b196bb05e"><em>Try the Online PureScript Compiler</em></a></p>
 <h1 id="appendix-online-purescript-compiler"><a href="#appendix-online-purescript-compiler">11 Appendix: Online PureScript Compiler</a></h1>
@@ -783,8 +785,7 @@ npm install big-integer
 <p>Which compiles our <strong>NuttX Log Parser</strong> (from PureScript to JavaScript)</p>
 </li>
 <li>
-<p>Our <strong>NuttX Log Parser</strong> runs in the Web Browser.</p>
-<p>And the output appears…</p>
+<p>Our <strong>NuttX Log Parser</strong> runs in the Web Browser…</p>
 <div class="example-wrap"><pre class="language-text"><code>We hit a Load Page Fault. Our code at Code Address 8000a0e4 tried to access the Data Address 0000000880203b88, which is Invalid.
 Instruction Page Fault at epc, mtval
 Unknown Exception: mcause=0, epc=epc, mtval=mtval
