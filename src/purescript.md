@@ -751,7 +751,7 @@ _So what exactly caused our NuttX Crash Dump over the holidays? And made us pond
 
 Our [__NuttX Stack was Full!__](https://lupyuen.github.io/articles/quickjs#nuttx-stack-is-full-of-quickjs) There was a clear sign that we missed: The [__Loopy Stack Dump__](https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478) means that the NuttX Stack was obviously full.
 
-That's why we need a __Smarter Log Parser__ that will catch these common problems. And stop NuttX Devs from falling into these traps!
+That's why we need a __Smarter Log Parser__ that will catch these common problems. And stop NuttX Devs from falling into traps!
 
 ![Parsing Apache NuttX RTOS Logs with PureScript (Overall Flower)](https://lupyuen.github.io/images/purescript-flower.jpg)
 
