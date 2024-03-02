@@ -81,7 +81,7 @@
 <p><a href="https://youtu.be/9oBhy3P7pYc"><em>Watch the Demo on YouTube</em></a></p>
 <p>Over the Lunar New Year holidays, we were porting <a href="https://lupyuen.github.io/articles/quickjs"><strong>QuickJS</strong></a> to <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 SBC</strong></a>. And we hit a <a href="https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478"><strong>Baffling Crash Dump</strong></a> on <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-stack.webp" alt="QuickJS crashes on Apache NuttX RTOS" /></p>
-<p>Which made us ponder (our life choices)…</p>
+<p>Which made us ponder…</p>
 <ul>
 <li>
 <p>Can we show the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385"><strong>RISC-V Exception</strong></a> prominently?</p>
@@ -124,11 +124,11 @@
 <li>
 <p><strong>Apache NuttX RTOS</strong> boots on the Ox64 Emulator…</p>
 <p>And starts our NuttX App: <strong>QuickJS</strong></p>
-<p>Our NuttX App crashes with a <strong>RISC-V Exception</strong>…</p>
+<p>Our NuttX App crashes with a <a href="https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478"><strong>RISC-V Exception</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/purescript-parse3.png" alt="NuttX App crashes with a RISC-V Exception" /></p>
 </li>
 <li>
-<p>The <strong>Terminal Output</strong> at left shows pages and pages of logs.</p>
+<p>The <a href="https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478"><strong>Terminal Output</strong></a> at left shows pages and pages of logs.</p>
 <p>(As seen by NuttX Devs today)</p>
 <p>But something helpful appears at the right…</p>
 </li>
@@ -136,14 +136,12 @@
 <p>The NuttX Log Parser shows the <strong>RISC-V Exception Info</strong></p>
 <p>Followed by the <strong>Explanation of the Exception</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/purescript-parse4.png" alt="RISC-V Exception Info and Explanation" /></p>
-</li>
-<li>
 <p>And the <strong>Stack Dump</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/purescript-parse5.png" alt="Stack Dump" /></p>
 </li>
 <li>
 <p>The <strong>NuttX Addresses</strong> are clickable.</p>
-<p>Clicking an address brings us to the <strong>NuttX Disassembly</strong>…</p>
+<p>Clicking an address brings us to the <strong>NuttX Disassembly</strong></p>
 <p>Which links to the <strong>NuttX Source Code</strong>. (Pic below)</p>
 <p><a href="https://youtu.be/9oBhy3P7pYc">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
@@ -176,7 +174,7 @@
 </li>
 </ul>
 </span>
-<p><strong>In PureScript:</strong> This is how we compose the helpful message: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L51">Main.purs</a></p>
+<p><strong>In PureScript:</strong> This is how we compose the helpful message: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L55">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- Explain the RISC-V Exception with mcause 13
 -- `&lt;&gt;` will concat 2 strings
 
@@ -189,7 +187,7 @@ explainException 13 epc mtval =
 <p><em>Hello Marvin the Martian?</em></p>
 <p>Yeah we’ll meet some alien symbols in PureScript.</p>
 <p>‘<strong><code>&lt;&gt;</code></strong>’ <em>(Diamond Operator)</em> will <strong>concatenate 2 strings</strong>.</p>
-<p>We explain the other RISC-V Exceptions the same way…</p>
+<p>We explain the other RISC-V Exceptions the same way: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L46-L55">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- TODO: Explain the RISC-V Exception with mcause 12
 -- `&lt;&gt;` will concat 2 strings
 -- &quot;🎵 I never promised you a rose garden&quot;
@@ -205,7 +203,7 @@ explainException mcause epc mtval =
   &quot;Unknown Exception: mcause=&quot; &lt;&gt; show mcause &lt;&gt; &quot;, epc=&quot; &lt;&gt; epc &lt;&gt; &quot;, mtval=&quot; &lt;&gt; mtval
 </code></pre></div>
 <p>Which looks like a tidy bunch of <strong>Explain Rules</strong>. (Similar to Prolog!)</p>
-<p>This thing about PureScript looks totally alien…</p>
+<p>This thing about PureScript looks totally alien: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L38">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- Declare the Function Type.
 -- We can actually erase it, VSCode PureScript Extension will helpfully suggest it for us.
 
@@ -246,7 +244,7 @@ result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
   EPC:       000000008000a0e4,
   MTVAL:     0000000880203b88
 </code></pre></div>
-<p>PureScript really shines for <strong>Parsing Text Strings</strong>. We walk through the steps: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L127-L191">Main.purs</a></p>
+<p>PureScript really shines for <strong>Parsing Text Strings</strong>. We walk through the steps: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L136-L208">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- Declare our Function to Parse the RISC-V Exception
 parseException :: Parser  -- We&#39;re creating a Parser...
   {                       -- That accepts a String and returns...
@@ -258,7 +256,7 @@ parseException :: Parser  -- We&#39;re creating a Parser...
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/purescript#appendix-nuttx-log-parser">(<strong>VSCode</strong> will generate the declaration)</a></p>
 <p>We’re about to create a <strong>PureScript String Parser</strong> that will accept a printed RISC-V Exception and return the MCAUSE, EPC and MTVAL.</p>
-<p>This is how we write our <strong>Parsing Function</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L127-L191">Main.purs</a></p>
+<p>This is how we write our <strong>Parsing Function</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L148-L208">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- To parse the line: `riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000008000a0e4, MTVAL: 0000000880203b88`
 parseException = do
 
@@ -269,7 +267,7 @@ parseException = do
     &lt;* string &quot;EXCEPTION:&quot;    -- Match the string `EXCEPTION:`
     &lt;* skipSpaces             -- Skip the following spaces
 </code></pre></div>
-<p>As promised, meet our alien symbols…</p>
+<p>As promised, please meet our alien symbols…</p>
 <ul>
 <li>
 <p><strong><code>void</code></strong> means ignore the text</p>
@@ -423,7 +421,7 @@ function parseLog(ch) {
     (exception.mtval);
 </code></pre></div>
 <p>Line by line, we pass the NuttX Logs to PureScript, to <strong>parse the RISC-V Exceptions</strong> and explain them.</p>
-<p>Then we display them…</p>
+<p>Then we display everything…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Link the Exception to the Disassembly
   const epc   = disassemble(exception.epc);
   const mtval = disassemble(exception.mtval);
