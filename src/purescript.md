@@ -747,7 +747,7 @@ cargo run -- $chunkpath $chunkbase
 
 [(See the __Disassembly Chunks__)](https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/purescript/qjs-chunk)
 
-![Parsing Apache NuttX RTOS Logs with PureScript (Overall Flow)](https://lupyuen.github.io/images/purescript-flow.jpg)
+![Parsing Apache NuttX RTOS Logs with PureScript (Overall Flower)](https://lupyuen.github.io/images/purescript-flower.jpg)
 
 # What's Next
 
@@ -961,6 +961,8 @@ The __Online PureScript Compiler__ will let us modify and test the NuttX Trouble
     The [__PureScript Compiler Web Service__](https://github.com/lupyuen/nuttx-purescript-parser#compile-purescript-to-javascript-in-web-browser) is super helpful for compiling our PureScript Code to JavaScript, inside our Web Browser.
 
     [(See the __Generated JavaScript__)](https://github.com/lupyuen/nuttx-purescript-parser#purescript-editor-for-nuttx)
+
+![Parsing Apache NuttX RTOS Logs with PureScript (Overall Flowest)](https://lupyuen.github.io/images/purescript-flowest.jpg)
 
 If we wish to run the Online PureScript Compiler locally on our computer...
 
