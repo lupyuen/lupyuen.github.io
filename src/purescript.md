@@ -767,9 +767,9 @@ Troubleshooting NuttX Crash Dumps will become a little less painful... Thanks to
 
 - While hyperlinking the [__Stack Dump__](https://lupyuen.github.io/images/purescript-parse5.png) to NuttX Source Code and Disassembly
 
-- Though we need to __Codify our NuttX Expertise__ as Troubleshooting Rules
+- Though we still need to __Codify our NuttX Expertise__ as Troubleshooting Rules
 
-- Hopefully __PureScript__ will make it easier to express our skills across the NuttX Platforms
+- __PureScript__ might make it easier to capture our skills across NuttX Platforms
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
