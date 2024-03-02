@@ -651,7 +651,7 @@ cargo run -- $chunkpath $chunkbase
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/purescript/qjs-chunk">(See the <strong>Disassembly Chunks</strong>)</a></p>
 <p><em>So what exactly caused our NuttX Crash Dump over the holidays? And made us ponder our life choices?</em></p>
 <p>Our <a href="https://lupyuen.github.io/articles/quickjs#nuttx-stack-is-full-of-quickjs"><strong>NuttX Stack was Full!</strong></a> There was a clear sign that we missed: The <a href="https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478"><strong>Loopy Stack Dump</strong></a> means that the NuttX Stack was obviously full.</p>
-<p>That’s why we need a <strong>Smarter Log Parser</strong> that will catch these common problems. And stop NuttX Devs from falling into these traps!</p>
+<p>That’s why we need a <strong>Smarter Log Parser</strong> that will catch these common problems. And stop NuttX Devs from falling into traps!</p>
 <p><img src="https://lupyuen.github.io/images/purescript-flower.jpg" alt="Parsing Apache NuttX RTOS Logs with PureScript (Overall Flower)" /></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>Troubleshooting NuttX Crash Dumps will become a little less painful… Thanks to our new <strong>NuttX Log Parser</strong>!</p>
