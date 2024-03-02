@@ -194,9 +194,9 @@ result = explainException(13)("8000a0e4")("880203b88");
 // explainException(13, "8000a0e4", "880203b88")
 ```
 
-Our JavaScript will call PureScript the (yummy) [__Curried Way__](https://javascript.info/currying-partials).
+Our JavaScript will call PureScript the (yummy) [__Curried Way__](https://javascript.info/currying-partials), because PureScript is a Functional Language.
 
-(Because PureScript is a Functional Language)
+[(Try __PureScript Online__)](https://lupyuen.github.io/articles/purescript#appendix-online-purescript-compiler)
 
 ![PureScript looks like a neat way to express our NuttX Troubleshooting Skills as high-level rules](https://lupyuen.github.io/images/purescript-explain.png)
 
@@ -931,9 +931,26 @@ The __Online PureScript Compiler__ will let us modify and test the NuttX Trouble
     -----
     ```
 
-1.  Try tweaking the rules for __explainException__ and __identifyAddress__
+1.  Try tweaking the rules for __explainException__...
 
-    The changes should take effect immediately.
+    ```purescript
+    explainException 13 epc mtval =
+      "We hit a Load Page Fault."
+      <> " Our code at Code Address " <> epc
+      <> " tried to access the Data Address " <> mtval
+      <> ", which is Invalid."
+    ```
+
+    And __identifyAddress__...
+
+    ```purescript
+    identifyAddress addr
+      | "502....." `matches` addr = Just { origin: "nuttx", type: Code }
+      | "800....." `matches` addr = Just { origin: "qjs",   type: Code }
+      | otherwise = Nothing
+    ```
+
+    The changes will take effect immediately.
 
 1.  __Future Plans:__ We'll copy the Generated JavaScript to NuttX Emulator via [__JavaScript Local Storage__](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API).
 
