@@ -960,7 +960,7 @@ The __Online PureScript Compiler__ will let us modify and test the NuttX Trouble
 
     The [__PureScript Compiler Web Service__](https://github.com/lupyuen/nuttx-purescript-parser#compile-purescript-to-javascript-in-web-browser) is super helpful for compiling our PureScript Code to JavaScript, inside our Web Browser.
 
-    [(See the __Generated JavaScript__)](https://github.com/lupyuen/nuttx-purescript-parser#purescript-editor-for-nuttx)
+    [(See the __Generated JavaScript__)](https://gist.github.com/lupyuen/bf3ce6f2a2b59fe908031246e59e4a3e)
 
 ![Parsing Apache NuttX RTOS Logs with PureScript (Overall Flowest)](https://lupyuen.github.io/images/purescript-flowest.jpg)
 
