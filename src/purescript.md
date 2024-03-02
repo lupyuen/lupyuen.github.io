@@ -785,13 +785,19 @@ cd nuttx-purescript-parser
 ## Edit our code in `src/Main.purs`
 code .
 
-## Run the NuttX Log Parser
+## Build and Run the NuttX Log Parser
 spago run
 
 ## Deploy to GitHub Pages in `docs` folder
 ## https://lupyuen.github.io/nuttx-purescript-parser/
 ./run.sh
 ```
+
+__"`spago` `run`"__ will compile our NuttX Log Parser and generate...
+
+- [__output/Main/index.js__](https://github.com/lupyuen/nuttx-purescript-parser/releases/download/main-1/index.js)
+
+- [__output/\<Other JavaScript Modules\>__](https://github.com/lupyuen/nuttx-purescript-parser/releases/download/main-1/output.zip)
 
 [__run.sh__](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/run.sh) will rewrite the __JavaScript Imports__. (See the next section)
 
@@ -803,10 +809,9 @@ Remember to install the [__PureScript IDE VSCode Extension__](https://marketplac
 
 From the previous section, __PureScript Compiler "`spago` `run`"__ generates the JavaScript for our NuttX Log Parser at...
 
-```text
-output/Main/index.js
-output/<Other JavaScript Modules>
-```
+- [__output/Main/index.js__](https://github.com/lupyuen/nuttx-purescript-parser/releases/download/main-1/index.js)
+
+- [__output/\<Other JavaScript Modules\>__](https://github.com/lupyuen/nuttx-purescript-parser/releases/download/main-1/output.zip)
 
 Which means we need to deploy the __Other JavaScript Modules__. But there's a workaround...
 
@@ -933,6 +938,8 @@ The __Online PureScript Compiler__ will let us modify and test the NuttX Trouble
     So we can test our Modified NuttX Log Parser on the Actual NuttX Logs.
 
     The [__PureScript Compiler Web Service__](https://github.com/lupyuen/nuttx-purescript-parser#compile-purescript-to-javascript-in-web-browser) is super helpful for compiling our PureScript Code to JavaScript, inside our Web Browser.
+
+    [(See the __Generated JavaScript__)](https://github.com/lupyuen/nuttx-purescript-parser#purescript-editor-for-nuttx)
 
 If we wish to run the Online PureScript Compiler locally on our computer...
 
