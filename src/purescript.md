@@ -757,13 +757,19 @@ That's why we need a __Smarter Log Parser__ that will catch these common problem
 
 # What's Next
 
+TODO
+
 Troubleshooting NuttX Crash Dumps will become a little less painful... Thanks to our new __NuttX Log Parser__!
 
-TODO
+- We auto-extracted the [__RISC-V Exception Details__](https://lupyuen.github.io/images/purescript-parse4.png)
+
+- Interpreted and [__Explained the RISC-V Exception__](https://lupyuen.github.io/images/purescript-parse4.png)
+
+- While hyperlinking the [__Stack Dump__](https://lupyuen.github.io/images/purescript-parse5.png) to NuttX Source Code and Disassembly
 
 - Though we need to __Codify our NuttX Expertise__ as Troubleshooting Rules
 
-- Hopefully __PureScript__ will make it easier to express our NuttX Skills
+- Hopefully __PureScript__ will make it easier to express our skills across the NuttX Platforms
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
