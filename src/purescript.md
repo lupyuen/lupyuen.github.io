@@ -843,6 +843,8 @@ cat output/Main/index.js \
   >docs/index.js
 ```
 
+[(__index.html__ is our Test JavaScript)](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html)
+
 This produces the __Modified JavaScript__: [docs/index.js](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/docs/index.js)
 
 Which gets published at [nuttx-purescript-parser/index.js](https://lupyuen.github.io/nuttx-purescript-parser/index.js)
@@ -851,7 +853,7 @@ Which gets published at [nuttx-purescript-parser/index.js](https://lupyuen.githu
 
 [(Run the __Modified JavaScript__)](https://lupyuen.github.io/nuttx-purescript-parser/)
 
-_How is the Modified JavaScript imported by NuttX Emulator?_
+_How is this JavaScript imported by NuttX Emulator?_
 
 NuttX Emulator imports the __Modified JavaScript__ for NuttX Log Parser like this: [index.html](https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/index.html#L48-L61)
 
@@ -878,7 +880,9 @@ NuttX Emulator imports the __Modified JavaScript__ for NuttX Log Parser like thi
 
 _Why are we passing addresses in Text instead of Numbers? Like `"8000ad8a"`_
 
-That's because `0x8000ad8a` is too big for __PureScript Int__, a signed 32-bit integer. PureScript Int is meant to interoperate with JavaScript Integer, which is also 32-bit.
+That's because `0x8000ad8a` is too big for __PureScript Int__, a signed 32-bit integer.
+
+PureScript Int is meant to interoperate with JavaScript Integer, which is also 32-bit.
 
 _What about PureScript BigInt?_
 
@@ -891,7 +895,7 @@ If we use [__PureScript BigInt__](https://pursuit.purescript.org/packages/puresc
 
 But NPM big-integer won't run inside a Web Browser with Plain Old JavaScript. That's why we're passing addresses as Strings instead of Numbers.
 
-__TODO:__ BigInt is [__already supported__](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) by Web Browsers. Why do we need NPM big-integer?
+__TODO:__ BigInt is [__already supported__](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) by Web Browsers. Do we really need NPM big-integer?
 
 ![Online PureScript Compiler](https://lupyuen.github.io/images/purescript-compiler.png)
 
@@ -907,9 +911,7 @@ The __Online PureScript Compiler__ will let us modify and test the NuttX Trouble
 
     Which compiles our __NuttX Log Parser__ (from PureScript to JavaScript)
 
-1.  Our __NuttX Log Parser__ runs in the Web Browser.
-
-    And the output appears...
+1.  Our __NuttX Log Parser__ runs in the Web Browser...
 
     ```text
     We hit a Load Page Fault. Our code at Code Address 8000a0e4 tried to access the Data Address 0000000880203b88, which is Invalid.
