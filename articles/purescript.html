@@ -227,8 +227,8 @@ result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
 // Instead of the normal non-spicy Uncurried Way:
 // explainException(13, &quot;8000a0e4&quot;, &quot;880203b88&quot;)
 </code></pre></div>
-<p>Our JavaScript will call PureScript the (yummy) <a href="https://javascript.info/currying-partials"><strong>Curried Way</strong></a>.</p>
-<p>(Because PureScript is a Functional Language)</p>
+<p>Our JavaScript will call PureScript the (yummy) <a href="https://javascript.info/currying-partials"><strong>Curried Way</strong></a>, because PureScript is a Functional Language.</p>
+<p><a href="https://lupyuen.github.io/articles/purescript#appendix-online-purescript-compiler">(Try <strong>PureScript Online</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/purescript-explain.png" alt="PureScript looks like a neat way to express our NuttX Troubleshooting Skills as high-level rules" /></p>
 <p><em>Why PureScript? Could’ve done all this in JavaScript…</em></p>
 <p>PureScript looks like a neat way to express our <strong>NuttX Troubleshooting Skills</strong> as high-level rules…</p>
@@ -803,8 +803,20 @@ Result: { addr: &quot;c02027e0&quot;, v1: &quot;c0202010&quot;, v2: &quot;000000
 -----
 </code></pre></div></li>
 <li>
-<p>Try tweaking the rules for <strong>explainException</strong> and <strong>identifyAddress</strong></p>
-<p>The changes should take effect immediately.</p>
+<p>Try tweaking the rules for <strong>explainException</strong>…</p>
+<div class="example-wrap"><pre class="language-purescript"><code>explainException 13 epc mtval =
+  &quot;We hit a Load Page Fault.&quot;
+  &lt;&gt; &quot; Our code at Code Address &quot; &lt;&gt; epc
+  &lt;&gt; &quot; tried to access the Data Address &quot; &lt;&gt; mtval
+  &lt;&gt; &quot;, which is Invalid.&quot;
+</code></pre></div>
+<p>And <strong>identifyAddress</strong>…</p>
+<div class="example-wrap"><pre class="language-purescript"><code>identifyAddress addr
+  | &quot;502.....&quot; `matches` addr = Just { origin: &quot;nuttx&quot;, type: Code }
+  | &quot;800.....&quot; `matches` addr = Just { origin: &quot;qjs&quot;,   type: Code }
+  | otherwise = Nothing
+</code></pre></div>
+<p>The changes will take effect immediately.</p>
 </li>
 <li>
 <p><strong>Future Plans:</strong> We’ll copy the Generated JavaScript to NuttX Emulator via <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API"><strong>JavaScript Local Storage</strong></a>.</p>
