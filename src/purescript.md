@@ -761,7 +761,9 @@ Troubleshooting NuttX Crash Dumps will become a little less painful... Thanks to
 
 TODO
 
-Codify 
+- Though we need to __Codify our NuttX Expertise__ as Troubleshooting Rules
+
+- Hopefully __PureScript__ will make it easier to express our NuttX Skills
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
