@@ -952,6 +952,8 @@ The __Online PureScript Compiler__ will let us modify and test the NuttX Trouble
 
     The changes will take effect immediately.
 
+    [(Watch the __Demo on YouTube__)](https://youtu.be/wbycFBQho_E)
+
 1.  __Future Plans:__ We'll copy the Generated JavaScript to NuttX Emulator via [__JavaScript Local Storage__](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API).
 
     So we can test our Modified NuttX Log Parser on the Actual NuttX Logs.
