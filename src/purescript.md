@@ -8,21 +8,21 @@
 
 [_Watch the Demo on YouTube_](https://youtu.be/9oBhy3P7pYc)
 
-Over the Lunar New Year holidays, we were porting [__QuickJS__](https://lupyuen.github.io/articles/quickjs) to [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358). And we hit a __Baffling Exception__ on [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)...
+Over the Lunar New Year holidays, we were porting [__QuickJS__](https://lupyuen.github.io/articles/quickjs) to [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358). And we hit a [__Baffling Crash Dump__](https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478) on [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)...
 
 ![QuickJS crashes on Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-stack.webp)
 
 Which made us ponder (our life choices)...
 
-- Can we show the __RISC-V Exception__ prominently?
+- Can we show the [__RISC-V Exception__](https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385) prominently?
 
   (Without scrolling back pages and pages of logs)
 
-- And __Explain the Exception__
+- And [__Explain the Exception__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause)
 
   (For folks new to RISC-V Exceptions)
 
-- Analyse the __Stack Dump__ to point out Interesting Addresses
+- Analyse the [__Stack Dump__](https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5402-L5469) to point out Interesting Addresses
 
   (For Code, Data, BSS, Heap, ...)
 
@@ -30,11 +30,11 @@ Which made us ponder (our life choices)...
 
 In this article, we create a __NuttX Log Parser__ that will...
 
-- Extract the __RISC-V Exception Details__
+- Extract the [__RISC-V Exception Details__](https://lupyuen.github.io/images/purescript-parse4.png)
 
-- Interpret and __Explain the RISC-V Exception__
+- Interpret and [__Explain the RISC-V Exception__](https://lupyuen.github.io/images/purescript-parse4.png)
 
-- Hyperlink the __Stack Dump__ to NuttX Source Code and Disassembly
+- Hyperlink the [__Stack Dump__](https://lupyuen.github.io/images/purescript-parse5.png) to NuttX Source Code and Disassembly
 
 And we'll do this in [__PureScript__](https://www.purescript.org/), the Functional Programming Language that compiles to JavaScript.
 
@@ -889,6 +889,8 @@ But NPM big-integer won't run inside a Web Browser with Plain Old JavaScript. Th
 __TODO:__ BigInt is [__already supported__](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) by Web Browsers. Why do we need NPM big-integer?
 
 ![Online PureScript Compiler](https://lupyuen.github.io/images/purescript-compiler.png)
+
+[_Try the Online PureScript Compiler_](https://lupyuen.github.io/nuttx-trypurescript?gist=1405685d6f847ea5d4d6302b196bb05e)
 
 # Appendix: Online PureScript Compiler
 
