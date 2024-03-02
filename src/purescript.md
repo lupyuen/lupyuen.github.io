@@ -606,7 +606,7 @@ identifyAddress addr
 
 _How does it work?_
 
-This is how we __Identify NuttX Addresses__ in JavaScript: [index.html](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L44-L58)
+The code above is called by our JavaScript to __Identify NuttX Addresses__: [index.html](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L44-L58)
 
 ```javascript
 // In JavaScript: Call PureScript to Identify a NuttX Address.
