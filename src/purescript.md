@@ -12,7 +12,7 @@ Over the Lunar New Year holidays, we were porting [__QuickJS__](https://lupyuen.
 
 ![QuickJS crashes on Apache NuttX RTOS](https://lupyuen.github.io/images/quickjs-stack.webp)
 
-Which made us ponder (our life choices)...
+Which made us ponder...
 
 - Can we show the [__RISC-V Exception__](https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385) prominently?
 
@@ -58,11 +58,11 @@ Inside the NuttX Emulator is the exact same __NuttX App (QuickJS)__ that crashed
 
     And starts our NuttX App: __QuickJS__
 
-    Our NuttX App crashes with a __RISC-V Exception__...
+    Our NuttX App crashes with a [__RISC-V Exception__](https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478)...
 
     ![NuttX App crashes with a RISC-V Exception](https://lupyuen.github.io/images/purescript-parse3.png)
 
-1.  The __Terminal Output__ at left shows pages and pages of logs.
+1.  The [__Terminal Output__](https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478) at left shows pages and pages of logs.
 
     (As seen by NuttX Devs today)
 
@@ -74,13 +74,13 @@ Inside the NuttX Emulator is the exact same __NuttX App (QuickJS)__ that crashed
 
     ![RISC-V Exception Info and Explanation](https://lupyuen.github.io/images/purescript-parse4.png)
 
-1.  And the __Stack Dump__...
+    And the __Stack Dump__...
 
     ![Stack Dump](https://lupyuen.github.io/images/purescript-parse5.png)
 
 1.  The __NuttX Addresses__ are clickable.
 
-    Clicking an address brings us to the __NuttX Disassembly__...
+    Clicking an address brings us to the __NuttX Disassembly__
 
     Which links to the __NuttX Source Code__. (Pic below)
 
@@ -122,7 +122,7 @@ That's our message that explains the __RISC-V Exception__...
 
 </span>
 
-__In PureScript:__ This is how we compose the helpful message: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L51)
+__In PureScript:__ This is how we compose the helpful message: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L55)
 
 ```purescript
 -- Explain the RISC-V Exception with mcause 13
@@ -141,7 +141,7 @@ Yeah we'll meet some alien symbols in PureScript.
 
 '__`<>`__' _(Diamond Operator)_ will __concatenate 2 strings__.
 
-We explain the other RISC-V Exceptions the same way...
+We explain the other RISC-V Exceptions the same way: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L46-L55)
 
 ```purescript
 -- TODO: Explain the RISC-V Exception with mcause 12
@@ -161,7 +161,7 @@ explainException mcause epc mtval =
 
 Which looks like a tidy bunch of __Explain Rules__. (Similar to Prolog!)
 
-This thing about PureScript looks totally alien...
+This thing about PureScript looks totally alien: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L38)
 
 ```purescript
 -- Declare the Function Type.
@@ -224,7 +224,7 @@ riscv_exception:
   MTVAL:     0000000880203b88
 ```
 
-PureScript really shines for __Parsing Text Strings__. We walk through the steps: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L127-L191)
+PureScript really shines for __Parsing Text Strings__. We walk through the steps: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L136-L208)
 
 ```purescript
 -- Declare our Function to Parse the RISC-V Exception
@@ -241,7 +241,7 @@ parseException :: Parser  -- We're creating a Parser...
 
 We're about to create a __PureScript String Parser__ that will accept a printed RISC-V Exception and return the MCAUSE, EPC and MTVAL.
 
-This is how we write our __Parsing Function__: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L127-L191)
+This is how we write our __Parsing Function__: [Main.purs](https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L148-L208)
 
 ```purescript
 -- To parse the line: `riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000008000a0e4, MTVAL: 0000000880203b88`
@@ -255,7 +255,7 @@ parseException = do
     <* skipSpaces             -- Skip the following spaces
 ```
 
-As promised, meet our alien symbols...
+As promised, please meet our alien symbols...
 
 - __`void`__ means ignore the text
 
@@ -460,7 +460,7 @@ function parseLog(ch) {
 
 Line by line, we pass the NuttX Logs to PureScript, to __parse the RISC-V Exceptions__ and explain them.
 
-Then we display them...
+Then we display everything...
 
 ```javascript
   // Link the Exception to the Disassembly
