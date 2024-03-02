@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Too many Embedded Logs? PureScript might help (Ox64 BL808 SBC / Apache NuttX RTOS)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-03-03",
+      "website": "https://lupyuen.github.io/articles/purescript",
+      "summary": "Troubleshooting Crash Dumps for Apache NuttX RTOS will become a little less painful... Thanks to our new NuttX Log Parser! This is how we created with PureScript, a Real-Time Parser and Explainer for RISC-V Exceptions and Stack Dumps."
+    },
+    {
       "name": "(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-02-25",

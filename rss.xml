@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Too many Embedded Logs? PureScript might help (Ox64 BL808 SBC / Apache NuttX RTOS)</title>
+            <link>https://lupyuen.github.io/articles/purescript</link>
+            <description><![CDATA[Troubleshooting Crash Dumps for Apache NuttX RTOS will become a little less painful... Thanks to our new NuttX Log Parser! This is how we created with PureScript, a Real-Time Parser and Explainer for RISC-V Exceptions and Stack Dumps.]]></description>
+            <guid>https://lupyuen.github.io/articles/purescript</guid>
+            <pubDate>Sun, 03 Mar 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way</title>
             <link>https://lupyuen.github.io/articles/quickjs2</link>
             <description><![CDATA[Remember Makecode? BBC micro:bit and its Drag-n-Drop App Builder? Let's give MakeCode a wholesome wholesale makeover... With Blockly, QuickJS JavaScript Engine, Apache NuttX RTOS and Ox64 BL808 64-bit RISC-V SBC]]></description>

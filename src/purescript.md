@@ -1,6 +1,6 @@
 # Too many Embedded Logs? PureScript might help (Ox64 BL808 SBC / Apache NuttX RTOS)
 
-📝 _7 Mar 2024_
+📝 _3 Mar 2024_
 
 ![Parsing Apache NuttX RTOS Logs with PureScript](https://lupyuen.github.io/images/purescript-title.png)
 
@@ -757,8 +757,6 @@ That's why we need a __Smarter Log Parser__ that will catch these common problem
 
 # What's Next
 
-TODO
-
 Troubleshooting NuttX Crash Dumps will become a little less painful... Thanks to our new __NuttX Log Parser__!
 
 - We auto-extracted the [__RISC-V Exception Details__](https://lupyuen.github.io/images/purescript-parse4.png)
@@ -774,6 +772,8 @@ Troubleshooting NuttX Crash Dumps will become a little less painful... Thanks to
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=39576545)
 
 -   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 
