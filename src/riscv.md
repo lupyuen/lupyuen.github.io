@@ -32,10 +32,12 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
 1.  Download and install [__QEMU Emulator__](https://www.qemu.org/download/).
 
-    For macOS we may use __`brew`__...
-
     ```bash
+    ## For macOS:
     brew install qemu
+
+    ## For Debian and Ubuntu:
+    sudo apt install qemu-system-riscv64
     ```
 
 1.  Download __`nuttx`__ from the [__NuttX Release__](https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64)...
