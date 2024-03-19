@@ -183,7 +183,7 @@ if (fbmem == MAP_FAILED) { return; }
 <p><img src="https://lupyuen.github.io/images/fb-demo2.jpg" alt="Render Grey Screen" /></p>
 <h1 id="render-grey-screen"><a href="#render-grey-screen">3 Render Grey Screen</a></h1>
 <p><em>What’s the simplest thing we can do with our Framebuffer?</em></p>
-<p>Let’s fill the <strong>entire Framebuffer with Grey</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L541-L562">fb_main.c</a></p>
+<p>Let’s fill the <strong>entire Framebuffer with Grey</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/fb/examples/fb/fb_main.c#L541-L562">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill entire framebuffer with grey
 memset(        // Fill the buffer...
   fbmem,       // Framebuffer Address
@@ -192,7 +192,7 @@ memset(        // Fill the buffer...
 );
 </code></pre></div>
 <p>(We’ll explain in a while why this turns grey)</p>
-<p>After filling the Framebuffer, we <strong>refresh the display</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L548-L562">fb_main.c</a></p>
+<p>After filling the Framebuffer, we <strong>refresh the display</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/fb/examples/fb/fb_main.c#L548-L562">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Area to be refreshed
 struct fb_area_s area = {
   .x = 0,  // X Offset
@@ -239,7 +239,7 @@ close(fd);
 <p>(Alpha Channel looks redundant, but it will be used when we support Overlays)</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo3.jpg" alt="Render Blocks" /></p>
 <h1 id="render-blocks"><a href="#render-blocks">4 Render Blocks</a></h1>
-<p>This is how we render the <strong>Blue, Green and Red Blocks</strong> in the pic above: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L564-L601">fb_main.c</a></p>
+<p>This is how we render the <strong>Blue, Green and Red Blocks</strong> in the pic above: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/fb/examples/fb/fb_main.c#L564-L601">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill framebuffer with Blue, Green and Red Blocks
 uint32_t *fb = fbmem;  // Access framebuffer as 32-bit pixels
 const size_t fblen = pinfo.fblen / 4;  // 4 bytes per pixel
@@ -270,7 +270,7 @@ for (int i = 0; i &lt; fblen; i++) {
 <p>Everything is hunky dory for chunks of pixels! Let’s set individual pixels by row and column…</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo4.jpg" alt="Render Circle" /></p>
 <h1 id="render-circle"><a href="#render-circle">5 Render Circle</a></h1>
-<p>This is how we render the Green Circle in the pic above: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L603-L651">fb_main.c</a></p>
+<p>This is how we render the Green Circle in the pic above: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/fb/examples/fb/fb_main.c#L603-L651">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill framebuffer with Green Circle
 uint32_t *fb = fbmem;  // Access framebuffer as 32-bit pixels
 const size_t fblen = pinfo.fblen / 4;  // 4 bytes per pixel
@@ -648,7 +648,7 @@ static int pinephone_updatearea(
 <p><a href="https://news.ycombinator.com/item?id=34186806">(Commenters on Hacker News also think it’s a CPU Cache issue)</a></p>
 <p><em>Who calls pinephone_updatearea?</em></p>
 <p>After writing the pixels to the RAM Framebuffer, NuttX Apps will call <strong>ioctl(FBIO_UPDATE)</strong> to update the display.</p>
-<p>This triggers <strong>pinephone_updatearea</strong> in our NuttX Framebuffer Driver: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/pixel/examples/fb/fb_main.c#L265-L274">fb_main.c</a></p>
+<p>This triggers <strong>pinephone_updatearea</strong> in our NuttX Framebuffer Driver: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/pixel/examples/fb/fb_main.c#L265-L274">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Omitted: NuttX App writes pixels to RAM Framebuffer
 
 // Update the Framebuffer

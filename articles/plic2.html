@@ -486,7 +486,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <h2 id="pending-interrupts"><a href="#pending-interrupts">6.4 Pending Interrupts</a></h2>
 <p><em>What’s with the Pending Interrupts?</em></p>
 <p>Normally the Interrupt Claim Register is perfectly adequate for handling Interrupts.</p>
-<p>But if we’re really curious: PLIC has an <strong>Interrupt Pending</strong> Register (pic above) that will tell us which Interrupts are awaiting Claiming or Completion: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L62-L71">jh7110_irq.c</a></p>
+<p>But if we’re really curious: PLIC has an <strong>Interrupt Pending</strong> Register (pic above) that will tell us which Interrupts are awaiting Claiming or Completion: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L62-L71">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Check the Pending Interrupts...
 // Read PLIC_IP0: Interrupt Pending for interrupts 1 to 31
 uintptr_t ip0 = getreg32(0xe0001000);
@@ -497,7 +497,7 @@ if (ip0 &amp; (1 &lt;&lt; 20)) {
   val = 20;
 }
 </code></pre></div>
-<p>To tell PLIC we’re done: We <strong>clear the Individual Bits</strong> in the Interrupt Pending Register: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L94-L101">jh7110_irq.c</a></p>
+<p>To tell PLIC we’re done: We <strong>clear the Individual Bits</strong> in the Interrupt Pending Register: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L94-L101">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Clear the Pending Interrupts...
 // Set PLIC_IP0: Interrupt Pending for interrupts 1 to 31
 putreg32(0, 0xe0001000);
@@ -536,7 +536,7 @@ void up_irqinitialize(void) {
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L152-L172">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>Everything becomes zero! Why???</em></p>
 <p>Yeah this is totally baffling! And no Interrupts get fired, because <strong>Interrupt Priority 0 is NOT valid</strong>.</p>
-<p>Let’s set the Interrupt Priority specifically for <strong>RISC-V IRQ 20</strong> (UART3 Interrupt): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L444-L465">bl602_serial.c</a></p>
+<p>Let’s set the Interrupt Priority specifically for <strong>RISC-V IRQ 20</strong> (UART3 Interrupt): <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L444-L465">bl602_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Test the setting of PLIC Interrupt Priority
 // For RISC-V IRQ 20 only
 void test_interrupt_priority(void) {
@@ -618,7 +618,7 @@ nsh&gt;
 <p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Pending Interrupts" /></p>
 <h1 id="backup-plan"><a href="#backup-plan">9 Backup Plan</a></h1>
 <p><em>What’s our Backup Plan for Handling Interrupts?</em></p>
-<p>We can get the RISC-V IRQ Number by reading the <a href="https://lupyuen.github.io/articles/plic2#pending-interrupts"><strong>Interrupt Pending</strong></a> Register (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L62-L76">jh7110_irq.c</a></p>
+<p>We can get the RISC-V IRQ Number by reading the <a href="https://lupyuen.github.io/articles/plic2#pending-interrupts"><strong>Interrupt Pending</strong></a> Register (pic above): <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L62-L76">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// If Interrupt Claimed is 0...
 if (val == 0) {
   // Check the Pending Interrupts...
@@ -644,7 +644,7 @@ irq += val;
   irq=45
 </code></pre></div>
 <p>(<strong>NuttX IRQ 45</strong> means <strong>RISC-V IRQ 20</strong>)</p>
-<p>Don’t forget to <strong>clear the Pending Interrupts</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L94-L101">jh7110_irq.c</a></p>
+<p>Don’t forget to <strong>clear the Pending Interrupts</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L94-L101">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Clear the Pending Interrupts
 // TODO: Clear the Individual Bits instead of wiping out the Entire Register
 putreg32(0, 0xe0001000);  // PLIC_IP0: Interrupt Pending for interrupts 1 to 31
@@ -658,7 +658,7 @@ infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);
 // 0000  00 00 00 00 00 00 00 00                          ........        
 </code></pre></div>
 <p><em>Does it work for UART Input?</em></p>
-<p>Since we’ve correctly identified the IRQ Number, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105"><strong>riscv_dispatch_irq</strong></a> will (eventually) call <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L502-L540"><strong>bl808_receive</strong></a> to read the UART Input (pic below)…</p>
+<p>Since we’ve correctly identified the IRQ Number, <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105"><strong>riscv_dispatch_irq</strong></a> will (eventually) call <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L502-L540"><strong>bl808_receive</strong></a> to read the UART Input (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl808_receive: rxdata=-1
 bl808_receive: rxdata=0x0
 </code></pre></div>
@@ -666,7 +666,7 @@ bl808_receive: rxdata=0x0
 <p>Meanwhile we wrap up our story for today…</p>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L294-L325">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://youtu.be/VSTpsSJ_7L0">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64b-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-run.png" alt="NuttX boots OK on Ox64 BL808! But UART Input is null" /></p>
 <h1 id="all-things-considered"><a href="#all-things-considered">10 All Things Considered</a></h1>
 <p><em>Feels like we’re wading into murky greyish territory… Like Jaws meets Twilight Zone on the Beach?</em></p>
@@ -704,7 +704,7 @@ bl808_receive: rxdata=0x0
 <ol>
 <li>
 <p><em>Any clue what’s causing this?</em></p>
-<p><strong>Leaky Writes</strong> don’t seem to happen <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L298"><strong>before enabling the MMU</strong></a> (Memory Management Unit)…</p>
+<p><strong>Leaky Writes</strong> don’t seem to happen <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L282-L298"><strong>before enabling the MMU</strong></a> (Memory Management Unit)…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Before enabling Memory Mgmt Unit...
 bl808_mm_init: Test Interrupt Priority
 
@@ -723,7 +723,7 @@ bl808_kernel_mppings: map I/O regions
 </li>
 <li>
 <p><em>What if we configure the MMU differently?</em></p>
-<p>We moved the PLIC from <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L249-L258"><strong>Level 2 Page Tables</strong></a> up to <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L240-L245"><strong>Level 1</strong></a>…</p>
+<p>We moved the PLIC from <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L249-L258"><strong>Level 2 Page Tables</strong></a> up to <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L240-L245"><strong>Level 1</strong></a>…</p>
 <p>Same problem.</p>
 </li>
 <li>
@@ -743,7 +743,7 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 </li>
 <li>
 <p><em>Maybe the GCC Compiler didn’t generate the right code?</em></p>
-<p>We wrote <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L487-L531"><strong>RISC-V Assembly</strong></a>, disabling <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L531-L608"><strong>DCACHE / ICACHE</strong></a> and with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e76886a665fb9b8fe4f52c25e2f80877a62f415c/arch/risc-v/src/jh7110/bl602_serial.c#L446-L489"><strong>SFENCE</strong></a>.</p>
+<p>We wrote <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L487-L531"><strong>RISC-V Assembly</strong></a>, disabling <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/bl602_serial.c#L531-L608"><strong>DCACHE / ICACHE</strong></a> and with <a href="https://github.com/lupyuen2/wip-nuttx/blob/e76886a665fb9b8fe4f52c25e2f80877a62f415c/arch/risc-v/src/jh7110/bl602_serial.c#L446-L489"><strong>SFENCE</strong></a>.</p>
 <p>Still the same.</p>
 </li>
 <li>
@@ -912,11 +912,11 @@ static void bl808_uart_configure(const struct uart_config_s *config)
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
 git clone \
   --branch ox64b \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch ox64b \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Build NuttX
@@ -965,8 +965,8 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1">(See the <strong>Build Script</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64b-1">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64b-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk">(Why the <strong>64 KB Padding</strong>)</a></p>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
@@ -984,7 +984,7 @@ diskutil unmountDisk /dev/disk2
 <p>But the UART Input reads as null right now. (Pic above)</p>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325">(See the <strong>NuttX Log</strong>)</a></p>
 <p><a href="https://youtu.be/VSTpsSJ_7L0">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64b-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64b-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-draw.jpg" alt="Drawing the Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 
     

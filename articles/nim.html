@@ -110,7 +110,7 @@
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <h1 id="basic-nim-from-scratch"><a href="#basic-nim-from-scratch">1 Basic Nim from scratch</a></h1>
 <p><em>(3 languages in a title heh heh)</em></p>
-<p>This is the <strong>simplest Nim Program</strong> that will run on NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63">hello_nim_async.nim</a></p>
+<p>This is the <strong>simplest Nim Program</strong> that will run on NuttX: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63">hello_nim_async.nim</a></p>
 <div class="example-wrap"><pre class="language-nim"><code>## Main Function in Nim.
 ## Will be called by NuttX, so we export to C.
 proc hello_nim() {.exportc, cdecl.} =
@@ -137,7 +137,7 @@ proc hello_nim() {.exportc, cdecl.} =
 </li>
 </ul>
 <p><em>What if we forget to call GC_runOrc?</em></p>
-<p>Erm don’t! To make it unforgettable, we <a href="https://nim-lang.org/docs/manual.html#exception-handling-defer-statement"><strong><code>defer</code></strong></a> the Garbage Collection: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63">hello_nim_async.nim</a></p>
+<p>Erm don’t! To make it unforgettable, we <a href="https://nim-lang.org/docs/manual.html#exception-handling-defer-statement"><strong><code>defer</code></strong></a> the Garbage Collection: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63">hello_nim_async.nim</a></p>
 <div class="example-wrap"><pre class="language-nim"><code>## Main Function in Nim
 proc hello_nim() {.exportc, cdecl.} =
 
@@ -149,11 +149,11 @@ proc hello_nim() {.exportc, cdecl.} =
 </code></pre></div>
 <p><a href="https://nim-lang.org/docs/manual.html#exception-handling-defer-statement"><strong><code>defer</code></strong></a> ensures that the Garbage Collection <strong>will always happen</strong>, as soon as we return from the Main Function.</p>
 <p>Now we do something cool and enlightening…</p>
-<p>(<a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67"><strong>hello_nim</strong></a> is called by our C Program <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_main.c#L35-L42"><strong>hello_nim_main.c</strong></a>)</p>
+<p>(<a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67"><strong>hello_nim</strong></a> is called by our C Program <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_main.c#L35-L42"><strong>hello_nim_main.c</strong></a>)</p>
 <p><a href="https://news.ycombinator.com/item?id=38828619">(Should we call <strong>GC_runOrc</strong>?)</a></p>
 <p><img src="https://lupyuen.github.io/images/nim-code.jpg" alt="Blink an LED with Nim" /></p>
 <h1 id="blink-an-led"><a href="#blink-an-led">2 Blink an LED</a></h1>
-<p>This is how we <strong>blink an LED</strong> with Nim on NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L19-L50">hello_nim_async.nim</a></p>
+<p>This is how we <strong>blink an LED</strong> with Nim on NuttX: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L19-L50">hello_nim_async.nim</a></p>
 <div class="example-wrap"><pre class="language-nim"><code>## Blink the LED
 proc blink_led() =
 
@@ -199,7 +199,7 @@ proc blink_led() =
   echo &quot;Waiting...&quot;
   c_usleep(1000_000)
 </code></pre></div>
-<p>In our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67"><strong>Main Function</strong></a>: We call the above function <strong>20 times</strong> to blink our LED (pic below)…</p>
+<p>In our <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67"><strong>Main Function</strong></a>: We call the above function <strong>20 times</strong> to blink our LED (pic below)…</p>
 <div class="example-wrap"><pre class="language-nim"><code>## Main Function in Nim
 proc hello_nim() {.exportc, cdecl.} =
 
@@ -210,12 +210,12 @@ proc hello_nim() {.exportc, cdecl.} =
   for loop in 0..19:
     blink_led()
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85">(Looks mighty similar to the <strong>C Version</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85">(Looks mighty similar to the <strong>C Version</strong>)</a></p>
 <p>And we’re almost done! Nim needs to discover our NuttX Functions…</p>
 <p><img src="https://lupyuen.github.io/images/nim-blink2.jpg" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Nim blinks our LED" /></p>
 <h1 id="import-nuttx-functions"><a href="#import-nuttx-functions">3 Import NuttX Functions</a></h1>
 <p><em>How will Nim know about open, close, ioctl, usleep?</em></p>
-<p>We <strong>import the NuttX Functions</strong> from C into Nim: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L19">hello_nim_async.nim</a></p>
+<p>We <strong>import the NuttX Functions</strong> from C into Nim: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L19">hello_nim_async.nim</a></p>
 <div class="example-wrap"><pre class="language-nim"><code>## Import NuttX Functions from C.
 ## Based on https://github.com/nim-lang/Nim/blob/devel/lib/std/syncio.nim
 
@@ -391,13 +391,13 @@ Waiting...
 <p>That’s because <strong>Nim compiles to C</strong>. As far as NuttX is concerned…</p>
 <p>Nim looks like <strong>any other C Program!</strong></p>
 <p><em>Whoa! How is Nim compiled to C?</em></p>
-<p>Our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L37-L41"><strong>NuttX Makefile</strong></a> calls the Nim Compiler…</p>
+<p>Our <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L37-L41"><strong>NuttX Makefile</strong></a> calls the Nim Compiler…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile Nim to C
 export TOPDIR=$PWD/nuttx
 cd apps/examples/hello_nim
 nim c --header hello_nim_async.nim 
 </code></pre></div>
-<p>Nim Compiler compiles our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63"><strong>Nim Program</strong></a>…</p>
+<p>Nim Compiler compiles our <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63"><strong>Nim Program</strong></a>…</p>
 <div class="example-wrap"><pre class="language-nim"><code>## Nim Program that prints something
 proc hello_nim() {.exportc, cdecl.} =
   echo &quot;Hello Nim!&quot;
@@ -426,7 +426,7 @@ static const struct { NI cap; NIM_CHAR data[10+1]; } TM__1vqzGCGyH8jPEpAwiaNwvg_
 <p>Hence Nim Compiler has produced a <a href="https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L198-L203"><strong>perfectly valid C Program</strong></a>. That will compile with any C Compiler!</p>
 <p><em>How will NuttX compile this?</em></p>
 <p>Nim Compiler generates the code above into the <a href="https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar"><strong><code>.nimcache</code></strong></a> folder.</p>
-<p>Our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L31-L35"><strong>NuttX Makefile</strong></a> compiles everything inside <a href="https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar"><strong><code>.nimcache</code></strong></a> with the GCC Compiler…</p>
+<p>Our <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L31-L35"><strong>NuttX Makefile</strong></a> compiles everything inside <a href="https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar"><strong><code>.nimcache</code></strong></a> with the GCC Compiler…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile everything in the .nimcache folder
 NIMPATH = $(shell choosenim show path)
 CFLAGS += -I $(NIMPATH)/lib -I ../../.nimcache
@@ -440,7 +440,7 @@ CSRCS  += $(wildcard ../../.nimcache/*.c)
 <p><a href="https://github.com/nim-lang/Nim/pull/21372/files"><strong>Nim Support for NuttX</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/config.nims"><strong>Nim Configuration for NuttX: config.nims</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/config.nims"><strong>Nim Configuration for NuttX: config.nims</strong></a></p>
 </li>
 </ul>
 <p>Kudos to <a href="https://github.com/apache/nuttx-apps/pull/1597"><strong>centurysys</strong></a> and the Nim Community for making this possible!</p>
@@ -570,7 +570,7 @@ $ md 0x20000938 1
 </ul>
 <p>And we write the above values to <strong>GPIO 29 Register</strong> at <strong><code>0x2000</code> <code>0938</code></strong> (gpio_cfg29)</p>
 <p><em>How to flip the GPIO in our LED Driver?</em></p>
-<p>We do this in our <strong>NuttX LED Driver</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_userleds.c#L176-L209">bl808_userleds.c</a></p>
+<p>We do this in our <strong>NuttX LED Driver</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_userleds.c#L176-L209">bl808_userleds.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Flip the LEDs On and Off according to the LED Set
 // (Bit 0 = LED 0)
 void board_userled_all(uint32_t ledset) {
@@ -603,9 +603,9 @@ void board_userled_all(uint32_t ledset) {
 }
 </code></pre></div>
 <p>That’s how we created a barebones LED Driver for Ox64!</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_autoleds.c">(Remember to add the <strong>Auto LED Driver</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64">(And update the <strong>Board Kconfig</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_appinit.c#L167-L179">(And start our <strong>LED Driver</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_autoleds.c">(Remember to add the <strong>Auto LED Driver</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64">(And update the <strong>Board Kconfig</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_appinit.c#L167-L179">(And start our <strong>LED Driver</strong>)</a></p>
 <p><em>Ahem it looks a little messy…</em></p>
 <p>No Worries! Later we’ll replace the (awful) code above by the <strong>BL808 GPIO Driver</strong>. Which we’ll copy from <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c"><strong>NuttX for BL602</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Get the desired state of LED[i]
@@ -617,7 +617,7 @@ bl808_gpio_write(  // Write to the GPIO Output...
   val              // Flip it On or Off
 );
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/52">(See the <strong>Upcoming GPIO Driver</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/52">(See the <strong>Upcoming GPIO Driver</strong>)</a></p>
 <p><em>Anything else we patched?</em></p>
 <p>We fixed the <strong>NuttX Timer</strong> for Ox64 (otherwise we can’t blink)…</p>
 <ul>
@@ -685,23 +685,23 @@ bl808_gpio_write(  // Write to the GPIO Output...
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit)</strong> that has Minor Fixes for Nim…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-dd54e0076f30825f912248f2424460e3126c2a8f4e2880709f5c68af9342ddcf"><strong>nsh64/defconfig</strong></a>: NuttX Config for QEMU</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-dd54e0076f30825f912248f2424460e3126c2a8f4e2880709f5c68af9342ddcf"><strong>nsh64/defconfig</strong></a>: NuttX Config for QEMU</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-5905dc63d5fd592e0a1e25ab25783ae99e54180a7b98fb59f56a73dee79104e6"><strong>qemu_rv_autoleds.c</strong></a>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-5905dc63d5fd592e0a1e25ab25783ae99e54180a7b98fb59f56a73dee79104e6"><strong>qemu_rv_autoleds.c</strong></a>
 : Auto LED Driver for QEMU</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-a6fd389669ddef88302f00a34d401479886cb8983f7be58b32ba075699cb5bb8"><strong>qemu_rv_userleds.c</strong></a>: User LED Driver for QEMU</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-a6fd389669ddef88302f00a34d401479886cb8983f7be58b32ba075699cb5bb8"><strong>qemu_rv_userleds.c</strong></a>: User LED Driver for QEMU</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-beeaeb03fa5642002a542446c89251c9a7c5c1681cfe915387740ea0975e91b3"><strong>qemu_rv_appinit.c</strong></a>: Start LED Driver</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-beeaeb03fa5642002a542446c89251c9a7c5c1681cfe915387740ea0975e91b3"><strong>qemu_rv_appinit.c</strong></a>: Start LED Driver</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307"><strong>Makefile</strong></a>: Nimcache has moved 2 folders up</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307"><strong>Makefile</strong></a>: Nimcache has moved 2 folders up</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879"><strong>config.nims</strong></a>: Add support for 64-bit RISC-V</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879"><strong>config.nims</strong></a>: Add support for 64-bit RISC-V</p>
 </li>
 </ul>
 <p>First we install <a href="https://nim-lang.org/install_unix.html"><strong>Nim Compiler</strong></a> (only the Latest Dev Version supports NuttX)…</p>
@@ -724,11 +724,11 @@ nim -v
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
 git clone \
   --branch nim \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch nim \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Configure NuttX for QEMU RISC-V (64-bit)
@@ -792,25 +792,25 @@ Waiting...
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong> that has Minor Fixes for Nim…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078"><strong>nsh/defconfig</strong></a>: NuttX Config for Ox64</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078"><strong>nsh/defconfig</strong></a>: NuttX Config for Ox64</p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx"><strong>bl808_timerisr.c</strong></a>: RISC-V Timer for Ox64</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-efdf5ed87983905c7021de03a7add73932da529d4312b80f948eb199c256b170"><strong>bl808_autoleds.c</strong></a>: Auto LED Driver for Ox64</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-efdf5ed87983905c7021de03a7add73932da529d4312b80f948eb199c256b170"><strong>bl808_autoleds.c</strong></a>: Auto LED Driver for Ox64</p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/nim#led-driver-for-ox64"><strong>bl808_userleds.c</strong></a>: User LED Driver for Ox64</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-902a3cb106dc7153d030370077938ef28c9412d8b3434888fca8bbf1a1cfbd54"><strong>bl808_appinit.c</strong></a>: Start LED Driver for Ox64</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-902a3cb106dc7153d030370077938ef28c9412d8b3434888fca8bbf1a1cfbd54"><strong>bl808_appinit.c</strong></a>: Start LED Driver for Ox64</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307"><strong>Makefile</strong></a>: Nimcache has moved 2 folders up</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307"><strong>Makefile</strong></a>: Nimcache has moved 2 folders up</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879"><strong>config.nims</strong></a>: Add support for 64-bit RISC-V</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879"><strong>config.nims</strong></a>: Add support for 64-bit RISC-V</p>
 </li>
 </ul>
 <p>First we install <a href="https://nim-lang.org/install_unix.html"><strong>Nim Compiler</strong></a> (only the Latest Dev Version supports NuttX)…</p>
@@ -833,11 +833,11 @@ nim -v
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
 git clone \
   --branch nim \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch nim \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Configure NuttX for Ox64 BL808 RISC-V SBC
@@ -938,11 +938,11 @@ Waiting...
 <p>That’s because we haven’t implemented the <strong>RISC-V Timer</strong> for Ox64! We should call <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358#toc-bare-metal-experiments-8"><strong>OpenSBI Supervisor Binary Interface</strong></a> to handle the Timer…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee"><strong>Fix RISC-V Timer for Ox64</strong></a></p>
-<p>(Ignore <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-922834c58227800347b4486fa310c3570cd4014f200ac5ea0cd2e40764cefac4">riscv_mtimer.c</a>)</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee"><strong>Fix RISC-V Timer for Ox64</strong></a></p>
+<p>(Ignore <a href="https://github.com/lupyuen2/wip-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-922834c58227800347b4486fa310c3570cd4014f200ac5ea0cd2e40764cefac4">riscv_mtimer.c</a>)</p>
 </li>
 </ul>
-<p>We only need to change the <strong>Timer Initialisation</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L116">bl808_timerisr.c</a></p>
+<p>We only need to change the <strong>Timer Initialisation</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L116">bl808_timerisr.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Timer Frequency
 #define MTIMER_FREQ 1000000
 
@@ -954,7 +954,7 @@ void up_timer_initialize(void) {
   up_alarm_set_lowerhalf(lower);
 }
 </code></pre></div>
-<p>How it works: At startup, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L98-L116"><strong>up_timer_initialize</strong></a> (above) calls…</p>
+<p>How it works: At startup, <a href="https://github.com/lupyuen2/wip-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L98-L116"><strong>up_timer_initialize</strong></a> (above) calls…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mtimer.c#L318-L332"><strong>riscv_mtimer_initialize</strong></a> which calls…</p>
@@ -972,10 +972,10 @@ void up_timer_initialize(void) {
 <p>Which accesses the <strong>RISC-V System Timer</strong></p>
 </li>
 </ul>
-<p>Originally we set <strong>MTIMER_FREQ</strong> to <code>10000000</code>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
+<p>Originally we set <strong>MTIMER_FREQ</strong> to <code>10000000</code>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 10000000
 </code></pre></div>
-<p>But this causes the command <strong><code>sleep 1</code></strong> to pause for 10 seconds. So we divide the frequency by 10: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
+<p>But this causes the command <strong><code>sleep 1</code></strong> to pause for 10 seconds. So we divide the frequency by 10: <a href="https://github.com/lupyuen2/wip-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 1000000
 </code></pre></div>
 <p>Now the <strong><code>sleep</code></strong> command works correctly in NuttX Shell! Here’s the log (ignore the errors)…</p>

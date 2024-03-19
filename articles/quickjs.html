@@ -305,7 +305,7 @@ PID GRP PRI POLICY TYPE    NPX STATE EVENT      STACKBASE  SIZE USED FILLED  COM
 <p>(Because 2^16 = 64 KB)</p>
 </li>
 </ol>
-<p>Which becomes this in our <strong>NuttX Build Config</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078">ox64/nsh/defconfig</a></p>
+<p>Which becomes this in our <strong>NuttX Build Config</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078">ox64/nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Upsize the App Stack to 64 KB
 CONFIG_POSIX_SPAWN_DEFAULT_STACKSIZE=65536
 CONFIG_TLS_LOG2_MAXSTACK=16
@@ -386,20 +386,20 @@ qjs &gt; os.ioctl(100,2,3)
 <p>We test <strong>ioctl()</strong> on a Real Device with a Real LED: <strong>Ox64 BL808 RISC-V SBC</strong>. Right after these tweaks…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/8f75f3744f3964bd3ed0596421a93e59fb39cdd8"><strong>Add the GPIO Driver</strong></a>  for Ox64 BL808</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/8f75f3744f3964bd3ed0596421a93e59fb39cdd8"><strong>Add the GPIO Driver</strong></a>  for Ox64 BL808</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4f3996959132ca0d35874b7be3eef89d6bf7f351"><strong>Add the LED Driver</strong></a> for Ox64 BL808</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/4f3996959132ca0d35874b7be3eef89d6bf7f351"><strong>Add the LED Driver</strong></a> for Ox64 BL808</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048"><strong>Increase the App Stack Size</strong></a>  from 2 KB to 64 KB</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048"><strong>Increase the App Stack Size</strong></a>  from 2 KB to 64 KB</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226"><strong>Increase the RAM Disk Region</strong></a> from 16 MB to 40 MB</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226"><strong>Increase the RAM Disk Region</strong></a> from 16 MB to 40 MB</p>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#add-led-driver-to-nuttx-ox64-bl808-sbc">(Why we enlarge the <strong>RAM Disk Region</strong>)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3"><strong>Patch the <code>leds</code> app</strong></a> for testing LED Driver</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3"><strong>Patch the <code>leds</code> app</strong></a> for testing LED Driver</p>
 <p>(Because <strong>task_create()</strong> is missing from Kernel Mode)</p>
 </li>
 </ul>
@@ -453,13 +453,13 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <p>No worries, the exact same steps will work for <strong>QEMU Emulator</strong> (64-bit RISC-V)…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911"><strong>Add the LED Driver</strong></a> for QEMU</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911"><strong>Add the LED Driver</strong></a> for QEMU</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b"><strong>Increase the App Stack Size</strong></a>  from 2 KB to 64 KB</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b"><strong>Increase the App Stack Size</strong></a>  from 2 KB to 64 KB</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429"><strong>Patch the <code>leds</code> app</strong></a> for testing LED Driver</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429"><strong>Patch the <code>leds</code> app</strong></a> for testing LED Driver</p>
 </li>
 </ul>
 <p>When we download (or build) <strong>NuttX and QuickJS</strong>…</p>
@@ -517,7 +517,7 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 </span>
 <p><img src="https://lupyuen.github.io/images/quickjs-data.jpg" alt="QuickJS Data Size" /></p>
 <p><em>What about Heap Memory Size?</em></p>
-<p>Based on the NuttX Logs with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/Kconfig#L963-L988"><strong>Heap Logging Enabled</strong></a>…</p>
+<p>Based on the NuttX Logs with <a href="https://github.com/lupyuen2/wip-nuttx/blob/master/Kconfig#L963-L988"><strong>Heap Logging Enabled</strong></a>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/d2dbef1afef26ae4cc76719d7cac3740da5f3387/nuttx/qemu.log#L74-L2905"><strong>Heap Log: Without REPL</strong></a></p>
@@ -865,23 +865,23 @@ const uint8_t qjsc_repl[16280] = {
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit Kernel Mode)</strong> that has these updates…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911"><strong>Add the LED Driver</strong></a> for QEMU</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/1037eda906f11aef44f7670f8cc5a1c1d2141911"><strong>Add the LED Driver</strong></a> for QEMU</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b"><strong>Increase the App Stack Size</strong></a> from 2 KB to 64 KB</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/3b662696aff4b89e2b873a6b75d0006860fc9f7b"><strong>Increase the App Stack Size</strong></a> from 2 KB to 64 KB</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429"><strong>Patch the <code>leds</code> app</strong></a> for testing LED Driver</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/commit/45dbe5ce07239e7ca7dcb50cb0e55da151052429"><strong>Patch the <code>leds</code> app</strong></a> for testing LED Driver</p>
 </li>
 </ul>
-<p>We may download the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1"><strong>NuttX Binaries for QEMU</strong></a>…</p>
+<p>We may download the <a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/qemuled-1"><strong>NuttX Binaries for QEMU</strong></a>…</p>
 <ol>
 <li>
-<p>Download the NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/qemuled-1/nuttx"><strong><code>nuttx</code></strong></a></p>
+<p>Download the NuttX Kernel: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/qemuled-1/nuttx"><strong><code>nuttx</code></strong></a></p>
 <p>Copy to <strong><code>$HOME/nuttx/</code></strong></p>
 </li>
 <li>
-<p>Download the NuttX Apps: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/qemuled-1/apps-bin.zip"><strong><code>apps-bin.zip</code></strong></a></p>
+<p>Download the NuttX Apps: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/qemuled-1/apps-bin.zip"><strong><code>apps-bin.zip</code></strong></a></p>
 <p>Unzip and copy the files inside (not the folder) into <strong><code>$HOME/apps/bin/</code></strong></p>
 <p>(We should see <strong><code>$HOME/apps/bin/qjs</code></strong> and <strong><code>blink.js</code></strong>)</p>
 </li>
@@ -904,11 +904,11 @@ $ qemu-system-riscv64 \
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
 git clone \
   --branch qemuled \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch qemuled \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Configure NuttX for QEMU RISC-V (64-bit Kernel Mode)
@@ -934,8 +934,8 @@ make -j 8 import
 popd
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1">(See the <strong>Build Script</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/qemuled-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/qemuled-1">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/qemuled-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>This produces the NuttX ELF Image <strong><code>nuttx</code></strong> that we’ll boot on QEMU RISC-V Emulator in a while.</p>
 <p>But first: We build <strong>QuickJS for QEMU</strong>, which will produce <code>qjs</code> and <code>blink.sh</code> in the <code>apps/bin</code> folder…</p>
 <ul>
@@ -973,25 +973,25 @@ led=0, val=1
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong> that has these updates…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/8f75f3744f3964bd3ed0596421a93e59fb39cdd8"><strong>Add the GPIO Driver</strong></a>  for Ox64 BL808</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/8f75f3744f3964bd3ed0596421a93e59fb39cdd8"><strong>Add the GPIO Driver</strong></a>  for Ox64 BL808</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4f3996959132ca0d35874b7be3eef89d6bf7f351"><strong>Add the LED Driver</strong></a> for Ox64 BL808</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/4f3996959132ca0d35874b7be3eef89d6bf7f351"><strong>Add the LED Driver</strong></a> for Ox64 BL808</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048"><strong>Increase the App Stack Size</strong></a>  from 2 KB to 64 KB</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/904b95534298378d64b99c1f9e649f8bc27a8048"><strong>Increase the App Stack Size</strong></a>  from 2 KB to 64 KB</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226"><strong>Increase the RAM Disk Region</strong></a> from 16 MB to 40 MB</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/28453790d06c0282b85e5df98624f8fa1c0b2226"><strong>Increase the RAM Disk Region</strong></a> from 16 MB to 40 MB</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3"><strong>Patch the <code>leds</code> app</strong></a> for testing LED Driver</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/commit/66f1389c8d17eecdc5ef7baa62d13435bd053ee3"><strong>Patch the <code>leds</code> app</strong></a> for testing LED Driver</p>
 </li>
 </ul>
-<p>We may download the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1"><strong>NuttX Binaries for Ox64</strong></a>…</p>
+<p>We may download the <a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/gpio2-1"><strong>NuttX Binaries for Ox64</strong></a>…</p>
 <ol>
 <li>
-<p>Download the NuttX Image: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/gpio2-1/Image"><strong><code>Image</code></strong></a></p>
+<p>Download the NuttX Image: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/gpio2-1/Image"><strong><code>Image</code></strong></a></p>
 </li>
 <li>
 <p>Prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
@@ -1034,11 +1034,11 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
 git clone \
   --branch gpio2 \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch gpio2 \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Configure NuttX for Ox64 BL808 RISC-V SBC
@@ -1101,8 +1101,8 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1">(See the <strong>Build Script</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/gpio2-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/gpio2-1">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/gpio2-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>This produces the NuttX Image for Ox64: <strong><code>Image</code></strong></p>
 <p>Follow the <a href="https://lupyuen.github.io/articles/quickjs#appendix-build-nuttx-for-ox64"><strong>earlier instructions</strong></a> to copy <strong><code>Image</code></strong> to a Linux microSD, boot it on Ox64 and run QuickJS. (Pic below)</p>
 <p><a href="https://youtu.be/jv29M16CFJQ">(Watch the <strong>Demo on YouTube</strong>)</a></p>

@@ -138,7 +138,7 @@ static void u16550_putc(
 // Base Address 0x1000 0000
 *(volatile uint8_t *) 0x10000000 = &#39;A&#39;;
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159">(Previously here)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159">(Previously here)</a></p>
 <p>But strangely it loops forever waiting for the UART Port to be ready!</p>
 <p><em>What’s inside u16550_serialin?</em></p>
 <p>Remember we call <strong>u16550_serialin</strong> like this…</p>
@@ -439,7 +439,7 @@ make
 <p>Hence Kernel Mode is a lot more secure than the normal <strong>NuttX Flat Mode</strong>, which runs the Kernel and User Applications in the same Unprotected, Privileged Mode.</p>
 <p><a href="https://cwiki.apache.org/confluence/display/NUTTX/NuttX+Protected+Build">(More about <strong>Kernel Mode</strong>)</a></p>
 <p><em>Does it work?</em></p>
-<p>When we <code>grep</code> for <strong><code>csr</code> Instructions</strong> in the rebuilt NuttX Disassembly <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S"><strong>nuttx.S</strong></a>…</p>
+<p>When we <code>grep</code> for <strong><code>csr</code> Instructions</strong> in the rebuilt NuttX Disassembly <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/star64a-0.0.1/nuttx.S"><strong>nuttx.S</strong></a>…</p>
 <p>We see (nearly) all Machine-Mode <strong><code>m</code></strong> Registers replaced by Supervisor-Mode <strong><code>s</code></strong> Registers.</p>
 <p>No more problems with <a href="https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return"><strong>Critical Section</strong></a> yay!</p>
 <p>Let’s eliminate the remaining Machine-Mode Registers…</p>
@@ -551,9 +551,9 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <li><a href="https://lupyuen.github.io/articles/semihost"><strong>“Star64 JH7110 + NuttX RTOS: RISC-V Semihosting and Initial RAM Disk”</strong></a></li>
 </ul>
 <p><strong>TODO:</strong> Port <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210"><strong>up_mtimer_initialize</strong></a> to Star64</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/32/files">(See the <strong>Modified Files</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/32/files">(See the <strong>Modified Files</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/privilege-semihosting.jpg" alt="Semihosting on RISC-V NuttX" /></p>
 <p><a href="https://github.com/apache/nuttx/issues/9501"><em>Semihosting on RISC-V NuttX</em></a></p>
 <h1 id="other-risc-v-ports-of-nuttx"><a href="#other-risc-v-ports-of-nuttx">8 Other RISC-V Ports of NuttX</a></h1>

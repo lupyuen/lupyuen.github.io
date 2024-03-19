@@ -321,12 +321,12 @@ CONFIG_NSH_ARCHINIT=y
   0000006e &lt;main&gt;:
     int main(int argc, FAR char *argv[]) {
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64c-0.0.1/init.S">(Source)</a></p>
-<p>Yep it’s the Compiled ELF Executable of the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a>!</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/star64c-0.0.1/init.S">(Source)</a></p>
+<p>Yep it’s the Compiled ELF Executable of the <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a>!</p>
 <p>Now everything makes sense…</p>
 <ol>
 <li>
-<p>At Startup: NuttX tries to load <strong>/system/bin/init</strong> to start the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a></p>
+<p>At Startup: NuttX tries to load <strong>/system/bin/init</strong> to start the <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a></p>
 </li>
 <li>
 <p>But it Fails: Because <strong>/system/bin/init</strong> doesn’t exist in the Semihosting Filesystem on Star64!</p>
@@ -385,7 +385,7 @@ qemu-system-riscv64 \
 <p>But it’s an <strong>Initial</strong> RAM Disk. Which means there’s a Filesystem inside, preloaded with Files and Directories.</p>
 </li>
 </ul>
-<p>To modify NuttX QEMU to load an <strong>Initial RAM Disk</strong>, we define the address of the <strong>RAM Disk Memory</strong> in the Linker Script: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L20-L54">ld-kernel64.script</a></p>
+<p>To modify NuttX QEMU to load an <strong>Initial RAM Disk</strong>, we define the address of the <strong>RAM Disk Memory</strong> in the Linker Script: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L20-L54">ld-kernel64.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>MEMORY
 {
   ...
@@ -403,7 +403,7 @@ __ramdisk_size  = LENGTH(ramdisk);
 __ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
 </code></pre></div>
 <p>(<strong><code>0x8080</code> <code>0000</code></strong> is the next available RAM Address)</p>
-<p>At NuttX Startup, we <strong>mount the RAM Disk</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L83-L179">qemu_rv_appinit.c</a></p>
+<p>At NuttX Startup, we <strong>mount the RAM Disk</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L83-L179">qemu_rv_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Called at NuttX Startup
 void board_late_initialize(void) {
 
@@ -431,7 +431,7 @@ int mount_ramdisk(void) {
   // Omitted: Handle Errors
 </code></pre></div>
 <p>(More about ROMFS in a while)</p>
-<p>Before mounting, we copy the RAM Disk from <strong><code>0x8400</code> <code>0000</code></strong> to <strong>ramdisk_start</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280">qemu_rv_mm_init.c</a></p>
+<p>Before mounting, we copy the RAM Disk from <strong><code>0x8400</code> <code>0000</code></strong> to <strong>ramdisk_start</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280">qemu_rv_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void qemu_rv_kernel_mappings(void) {
   ...
   // Copy RAM Disk from 0x8400 0000 to
@@ -444,8 +444,8 @@ int mount_ramdisk(void) {
   );
 </code></pre></div>
 <p>(More about <strong><code>0x8400</code> <code>0000</code></strong> in a while)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L280-L287">(Somehow <strong>map_region</strong> crashes when we map the RAM Disk Memory)</a></p>
-<p>Things get really wonky when we exceed the bounds of the RAM Disk. So we <strong>validate the bounds</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/fs/romfs/fs_romfsutil.c#L79-L84">fs_romfsutil.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L280-L287">(Somehow <strong>map_region</strong> crashes when we map the RAM Disk Memory)</a></p>
+<p>Things get really wonky when we exceed the bounds of the RAM Disk. So we <strong>validate the bounds</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ramdisk/fs/romfs/fs_romfsutil.c#L79-L84">fs_romfsutil.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// While reading from RAM Disk...
 static uint32_t romfs_devread32(struct romfs_mountpt_s *rm, int ndx) {
 
@@ -456,7 +456,7 @@ static uint32_t romfs_devread32(struct romfs_mountpt_s *rm, int ndx) {
       __ramdisk_start + (size_t)__ramdisk_size
   );
 </code></pre></div>
-<p>Finally we configure NuttX QEMU to mount the <strong>Initial RAM Disk as ROMFS</strong> (instead of Semihosting): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig">knsh64/defconfig</a></p>
+<p>Finally we configure NuttX QEMU to mount the <strong>Initial RAM Disk as ROMFS</strong> (instead of Semihosting): <a href="https://github.com/lupyuen2/wip-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig">knsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_BOARDCTL_ROMDISK=y
 CONFIG_BOARD_LATE_INITIALIZE=y
 CONFIG_FS_ROMFS=y
@@ -472,7 +472,7 @@ CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
 <p><a href="https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-for-initial-ram-disk">(How we configured NuttX for RAM Disk)</a></p>
 <p>That’s it! These are the files that we modified in NuttX QEMU to load the Initial RAM Disk (without Semihosting)…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/33/files"><strong>Modified Files for NuttX QEMU with Initial RAM Disk</strong></a></li>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/pull/33/files"><strong>Modified Files for NuttX QEMU with Initial RAM Disk</strong></a></li>
 </ul>
 <p><em>What’s ROMFS?</em></p>
 <p><a href="https://en.wikipedia.org/wiki/Romfs"><strong>ROMFS</strong></a> is the <strong>Filesystem Format</strong> of our Initial RAM Disk. (It defines how the Files and Directories are stored in the RAM Disk)</p>
@@ -506,7 +506,7 @@ genromfs \
   -d ../apps/bin \
   -V &quot;NuttXBootVol&quot;
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ramdisk-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e">(See the <strong>Build Log</strong>)</a></p>
 <p><a href="https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html">(<strong>genromfs</strong> generates a <strong>ROM FS Filesystem</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem">(Inside a <strong>ROM FS Filesystem</strong>)</a></p>
@@ -514,7 +514,7 @@ genromfs \
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l initrd
 -rw-r--r--  1 7902208 initrd
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ramdisk-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>Finally we start QEMU and <strong>load our Initial RAM Disk</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start NuttX on QEMU
 ## with Initial RAM Disk `initrd`
@@ -546,7 +546,7 @@ NuttShell (NSH) NuttX-12.0.3
 nsh&gt; nx_start: CPU0: Beginning Idle Loop
 nsh&gt;
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1">(See the <strong>Run Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ramdisk-0.0.1">(See the <strong>Run Log</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3">(See the <strong>Detailed Run Log</strong>)</a></p>
 <p>We see <strong>exec_spawn</strong> warnings like this…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls -l /system/bin/init
@@ -564,22 +564,22 @@ nxposix_spawn_exec: ERROR: exec failed: 2
 <p>We modify NuttX Star64 with the exact same steps as <a href="https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk"><strong>NuttX QEMU with Initial RAM Disk</strong></a>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files"><strong>Modified Files for Initial RAM Disk on Star64</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/34/files"><strong>Modified Files for Initial RAM Disk on Star64</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files#diff-a663261ea6b68497baecd83562df554d2c7903261090bf627042860d90fb920f"><strong>qemu_rv_mm_init.c</strong></a>: Copy RAM Disk at Startup</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/34/files#diff-a663261ea6b68497baecd83562df554d2c7903261090bf627042860d90fb920f"><strong>qemu_rv_mm_init.c</strong></a>: Copy RAM Disk at Startup</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files#diff-beeaeb03fa5642002a542446c89251c9a7c5c1681cfe915387740ea0975e91b3"><strong>qemu_rv_appinit.c</strong></a>: Mount RAM Disk at Startup</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/34/files#diff-beeaeb03fa5642002a542446c89251c9a7c5c1681cfe915387740ea0975e91b3"><strong>qemu_rv_appinit.c</strong></a>: Mount RAM Disk at Startup</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files#diff-a1d53d0735749ccfb3072e986511d0b6cae6f7ce850d8c91195cc027201a0132"><strong>fs_romfsutil.c</strong></a>: Validate RAM Disk Bounds</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/34/files#diff-a1d53d0735749ccfb3072e986511d0b6cae6f7ce850d8c91195cc027201a0132"><strong>fs_romfsutil.c</strong></a>: Validate RAM Disk Bounds</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files#diff-fbe356a2692accfbf05c87b4b1a3ecb7275bf38d06f9ceb7730928249f15d605"><strong>ld-kernel64.script</strong></a>: Linker Script with RAM Disk Memory</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/34/files#diff-fbe356a2692accfbf05c87b4b1a3ecb7275bf38d06f9ceb7730928249f15d605"><strong>ld-kernel64.script</strong></a>: Linker Script with RAM Disk Memory</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files#diff-4018c37bf9b08236b37a84273281d5511d48596be9e0e4c0980d730aa95dbbe8"><strong>knsh64/defconfig</strong></a>: Build Configuration for RAM Disk</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/34/files#diff-4018c37bf9b08236b37a84273281d5511d48596be9e0e4c0980d730aa95dbbe8"><strong>knsh64/defconfig</strong></a>: Build Configuration for RAM Disk</p>
 <p><a href="https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-for-initial-ram-disk">(How we configured NuttX for RAM Disk)</a></p>
 </li>
 </ul>
@@ -611,7 +611,7 @@ __ramdisk_start = ORIGIN(ramdisk);
 __ramdisk_size  = LENGTH(ramdisk);
 __ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
 </code></pre></div>
-<p>The <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files"><strong>other modified files</strong></a> are the same as for NuttX QEMU with Initial RAM Disk.</p>
+<p>The <a href="https://github.com/lupyuen2/wip-nuttx/pull/34/files"><strong>other modified files</strong></a> are the same as for NuttX QEMU with Initial RAM Disk.</p>
 <p><a href="https://github.com/lupyuen/nuttx-star64#increase-ram-disk-limit">(How to increase the <strong>RAM Disk Limit</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-star64#memory-map-for-ram-disk">(NuttX Apps are limited to <strong>4 MB RAM</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-star64#increase-page-heap-size">(How to increase the <strong>Page Heap Size</strong>)</a></p>
@@ -636,7 +636,7 @@ cp nuttx.bin $HOME/tftproot/Image
 cp jh7110-star64-pine64.dtb $HOME/tftproot
 cp initrd $HOME/tftproot
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/ae59a840c94280ce8d618699278a0436">(See the <strong>Build Log</strong>)</a></p>
 <p><a href="https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html">(<strong>genromfs</strong> generates a <strong>ROM FS Filesystem</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem">(Inside a <strong>ROM FS Filesystem</strong>)</a></p>
@@ -644,7 +644,7 @@ cp initrd $HOME/tftproot
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l initrd
 -rw-r--r--  1 7930880 initrd
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>And we boot NuttX on Star64 over TFTP or a microSD Card…</p>
 <ul>
 <li>
@@ -671,7 +671,7 @@ nx_start_application: ret=3
 up_exit: TCB=0x404088d0 exiting
 nx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Output Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Output Log</strong>)</a></p>
 <p>So many questions (pic below)…</p>
 <ul>
 <li>
@@ -936,7 +936,7 @@ CONFIG_INIT_MOUNT_SOURCE=&quot;&quot;
 <p>The steps above will produce the updated Build Configuration Files…</p>
 <ul>
 <li>
-<p><strong>NuttX for QEMU:</strong> <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig"><strong>knsh64/defconfig</strong></a></p>
+<p><strong>NuttX for QEMU:</strong> <a href="https://github.com/lupyuen2/wip-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig"><strong>knsh64/defconfig</strong></a></p>
 </li>
 <li>
 <p><strong>NuttX for Star64:</strong> <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig"><strong>nsh/defconfig</strong></a></p>

@@ -725,7 +725,7 @@ riscv_exception: EXCEPTION: Store/AMO page fault.
   MTVAL:  80200000
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/84ceeb5bd4eed98d9d1a3cd83d712dab">(See the <strong>Complete Log</strong>)</a></p>
-<p>The Invalid Address <code>0x8020_0000</code> is the Virtual Address of the <strong>Dynamic Heap</strong> (<code>malloc</code>) for the <code>hello</code> app: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nuttx-12.4.0-RC0/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L20">boards/risc-v/bl808/ox64/configs/nsh/defconfig</a></p>
+<p>The Invalid Address <code>0x8020_0000</code> is the Virtual Address of the <strong>Dynamic Heap</strong> (<code>malloc</code>) for the <code>hello</code> app: <a href="https://github.com/lupyuen2/wip-nuttx/blob/nuttx-12.4.0-RC0/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L20">boards/risc-v/bl808/ox64/configs/nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX Config for Ox64
 CONFIG_ARCH_DATA_NPAGES=128
 CONFIG_ARCH_DATA_VBASE=0x80100000
@@ -805,7 +805,7 @@ asm volatile( \
 <p>(Looks similar to <strong>SYNC</strong> and <strong>SYNC.I</strong> from <a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf"><strong>C906 User Manual</strong></a>, Page 559)</p>
 </li>
 </ul>
-<p>This is how we <strong>Flush the MMU Cache</strong> for T-Head C906: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/bl808/bl808_mm_init.c#L299-L323">arch/risc-v/src/bl808/bl808_mm_init.c</a></p>
+<p>This is how we <strong>Flush the MMU Cache</strong> for T-Head C906: <a href="https://github.com/lupyuen2/wip-nuttx/blob/satp/arch/risc-v/src/bl808/bl808_mm_init.c#L299-L323">arch/risc-v/src/bl808/bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Flush the MMU Cache for T-Head C906.  Called by mmu_write_satp() after
 // updating the MMU SATP Register, when swapping MMU Page Tables.
 // This operation executes RISC-V Instructions that are specific to
@@ -820,7 +820,7 @@ void weak_function mmu_flush_cache(void) {
   );
 }
 </code></pre></div>
-<p><code>mmu_flush_cache</code> is called by <code>mmu_write_satp</code>, whenever the <strong>MMU SATP Register is updated</strong> (and the MMU Page Tables are swapped): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/common/riscv_mmu.h#L190-L221">arch/risc-v/src/common/riscv_mmu.h</a></p>
+<p><code>mmu_flush_cache</code> is called by <code>mmu_write_satp</code>, whenever the <strong>MMU SATP Register is updated</strong> (and the MMU Page Tables are swapped): <a href="https://github.com/lupyuen2/wip-nuttx/blob/satp/arch/risc-v/src/common/riscv_mmu.h#L190-L221">arch/risc-v/src/common/riscv_mmu.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Update the MMU SATP Register for swapping MMU Page Tables
 static inline void mmu_write_satp(uintptr_t reg) {
   __asm__ __volatile__ (
@@ -924,11 +924,11 @@ Virtual Address 0x80200000 maps to Physical Address 0x506a4000
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
 git clone \
   --branch ox64a \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch ox64a \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Build NuttX
@@ -977,8 +977,8 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1">(See the <strong>Build Script</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64a-1">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk">(Why the <strong>64 KB Padding</strong>)</a></p>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
@@ -992,7 +992,7 @@ diskutil unmountDisk /dev/disk2
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH). (Pic above)</p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525">(See the <strong>NuttX Log</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2int.jpg" alt="Level 2 Page Table for Interrupt Controller" /></p>
 <h1 id="appendix-fix-the-interrupt-controller"><a href="#appendix-fix-the-interrupt-controller">15 Appendix: Fix the Interrupt Controller</a></h1>
 <p><em>What’s wrong with the Interrupt Controller?</em></p>
@@ -1018,7 +1018,7 @@ diskutil unmountDisk /dev/disk2
 <tr><td style="text-align: left">User Heap</td><td style="text-align: center"><strong><code>0xC020_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em> <br> <em>(Each Page is 4 KB)</em></td></tr>
 </tbody></table>
 </div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L25-L38">(Source)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L25-L38">(Source)</a></p>
 <p>Which would <strong>collide with our Interrupt Controller</strong>!</p>
 <p><em>OK so we move our User Memory elsewhere?</em></p>
 <p>Yep that’s why we moved the User Memory from <strong><code>0xC000_0000</code></strong> to <strong><code>0x8000_0000</code></strong>…</p>

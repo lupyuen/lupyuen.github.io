@@ -136,8 +136,8 @@ $ riscv64-unknown-elf-objdump \
   &gt;hello.S \
   2&gt;&amp;1
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
-<p>Here’s the <strong>RISC-V Disassembly</strong> of our NuttX App: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S">hello.S</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p>Here’s the <strong>RISC-V Disassembly</strong> of our NuttX App: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/ox64a-1/hello.S">hello.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>## Omitted: _start() prepares for signals (sig_trampoline) and calls main()
 
 003e &lt;main&gt;:
@@ -426,7 +426,7 @@ enum {
 };
 </code></pre></div>
 <p>However it’s an Enum, <strong>numbered sequentially</strong> from 8 to 147-ish. We won’t literally see 63 in the NuttX Source Code.</p>
-<p>Then we lookup the <strong>Debug Info</strong> in the RISC-V Disassembly for NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/nuttx.S">nuttx.S</a></p>
+<p>Then we lookup the <strong>Debug Info</strong> in the RISC-V Disassembly for NuttX Kernel: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/ox64a-1/nuttx.S">nuttx.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>Abbrev Number: 6 (DW_TAG_enumerator)
   DW_AT_name        : SYS_write
   DW_AT_const_value : 63
@@ -903,7 +903,7 @@ void *bl808_copy_overlap(void *dest, const void *src, size_t count) {
 }
 </code></pre></div>
 <p><em>We’re sure that it works?</em></p>
-<p>We called <strong><code>verify_image</code></strong> to do a simple Integrity Check on <strong><code>initrd</code></strong>, before and after copying: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L236-L248">jh7110_start.c</a></p>
+<p>We called <strong><code>verify_image</code></strong> to do a simple Integrity Check on <strong><code>initrd</code></strong>, before and after copying: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L236-L248">jh7110_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Before Copy: Verify the RAM Disk Image to be copied
 verify_image(ramdisk_addr);
 
@@ -916,7 +916,7 @@ bl808_copy_overlap((void *)__ramdisk_start, ramdisk_addr, size);
 // After Copy: Verify the copied RAM Disk Image
 verify_image(__ramdisk_start);
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L248-L455">(<strong><code>verify_image</code></strong> searches for a specific byte)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L248-L455">(<strong><code>verify_image</code></strong> searches for a specific byte)</a></p>
 <p>That’s how we discovered that <strong><code>memcpy</code></strong> doesn’t work. And our <strong><code>bl808_copy_overlap</code></strong> works great for the Initial RAM Disk and NuttX Shell! (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L115-L323"><em>Ox64 boots to NuttX Shell</em></a></p>

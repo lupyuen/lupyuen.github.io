@@ -121,11 +121,11 @@
 <div class="example-wrap"><pre class="language-bash"><code>## Download WIP NuttX Source Code
 git clone \
   --branch ox64 \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch ox64 \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Build NuttX for Star64
@@ -249,7 +249,7 @@ sb  t1, 0x88(t0)
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address Offset)</a></p>
-<p>We insert the code above into our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L69-L87"><strong>NuttX Boot Code:</strong> jh7110_head.S</a></p>
+<p>We insert the code above into our <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L69-L87"><strong>NuttX Boot Code:</strong> jh7110_head.S</a></p>
 <p>And we see (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel...
 123
@@ -258,7 +258,7 @@ sb  t1, 0x88(t0)
 <p><a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L112-L115">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_head.S#L68-L70">(<strong>Boot Code</strong> has moved here)</a></p>
 <p><em>Anything else we changed in the NuttX Boot Code?</em></p>
-<p>OpenSBI boots on Ox64 with <a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L57"><strong>Hart ID 0</strong></a> (instead of 1). Which means we remove this adjustment for Hart ID: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93">jh7110_head.S</a></p>
+<p>OpenSBI boots on Ox64 with <a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L57"><strong>Hart ID 0</strong></a> (instead of 1). Which means we remove this adjustment for Hart ID: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93">jh7110_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* We assume that OpenSBI has passed Hart ID (value 1) in Register a0.
  * But NuttX expects Hart ID to start at 0, so we subtract 1.
  * Previously: addi a0, a0, -1 */
@@ -271,16 +271,16 @@ kernel_addr_r=0x50200000
 </code></pre></div>
 <p>Based on the Boot Address, we define these <strong>Memory Regions</strong> for NuttX…</p>
 <div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Region</strong></a></td><td style="text-align: center"><strong><code>0x0000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0x5000</code> <code>0000</code></strong></td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a></td><td style="text-align: center"><strong><code>0x5020</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a></td><td style="text-align: center"><strong><code>0x5040</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L25"><strong>Page Pool</strong></a></td><td style="text-align: center"><strong><code>0x5060</code> <code>0000</code></strong></td><td style="text-align: left">4 MB</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L26"><strong>RAM Disk</strong></a></td><td style="text-align: center"><strong><code>0x5060</code> <code>0000</code></strong></td><td style="text-align: left">16 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Region</strong></a></td><td style="text-align: center"><strong><code>0x0000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0x5000</code> <code>0000</code></strong></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a></td><td style="text-align: center"><strong><code>0x5020</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a></td><td style="text-align: center"><strong><code>0x5040</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L25"><strong>Page Pool</strong></a></td><td style="text-align: center"><strong><code>0x5060</code> <code>0000</code></strong></td><td style="text-align: left">4 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L26"><strong>RAM Disk</strong></a></td><td style="text-align: center"><strong><code>0x5060</code> <code>0000</code></strong></td><td style="text-align: left">16 MB</td></tr>
 </tbody></table>
 </div>
 <p>(<strong>Page Pool</strong> will be used by NuttX Apps)</p>
 <p>(<strong>RAM Disk</strong> will contain the NuttX Shell and Apps)</p>
-<p>We update the Memory Regions in the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27">ld.script</a></p>
+<p>We update the Memory Regions in the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27">ld.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>MEMORY
 {
   kflash (rx) :   ORIGIN = 0x50200000, LENGTH = 2048K /* w/ cache */
@@ -290,7 +290,7 @@ kernel_addr_r=0x50200000
 } /* TODO: Use up the entire 64 MB RAM */
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L20-L27">(Moved here)</a></p>
-<p>We make the same changes to the <strong>NuttX Build Configuration</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L31-L77">nsh/defconfig</a></p>
+<p>We make the same changes to the <strong>NuttX Build Configuration</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L31-L77">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_RAM_START=0x50200000
 CONFIG_RAM_SIZE=1048576
 CONFIG_ARCH_PGPOOL_PBASE=0x50600000
@@ -298,7 +298,7 @@ CONFIG_ARCH_PGPOOL_VBASE=0x50600000
 CONFIG_ARCH_PGPOOL_SIZE=4194304
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L23-L70">(Moved here)</a></p>
-<p>And we update the <strong>NuttX Memory Map</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
+<p>And we update the <strong>NuttX Memory Map</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the whole I/O Memory
 // with Virtual Address = Physical Address
 // TODO: Interrupt Controller is missing!
@@ -319,7 +319,7 @@ CONFIG_ARCH_PGPOOL_SIZE=4194304
 <p><em>How to fix the UART Driver so that NuttX can print things?</em></p>
 <p>NuttX is still running the JH7110 UART Driver (16550).</p>
 <p>To print to the Ox64 Serial Console, we make a quick patch to the <strong>NuttX UART Driver</strong>.</p>
-<p>For now, we hardcode the <strong>UART3 Base Address</strong> (from above) and Output FIFO Offset: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716">uart_16550.c</a></p>
+<p>For now, we hardcode the <strong>UART3 Base Address</strong> (from above) and Output FIFO Offset: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/drivers/serial/uart_16550.c#L1698-L1716">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Write one character to the UART
 void u16550_putc(FAR struct u16550_s *priv, int ch) {
 
@@ -333,7 +333,7 @@ void u16550_putc(FAR struct u16550_s *priv, int ch) {
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615">(Moved here)</a></p>
 <p>(Yeah the UART Buffer might overflow, we’ll fix later)</p>
-<p><strong>For Other UART Registers</strong>: We skip the reading and writing of the registers, because we’ll patch them later: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L604-L632">uart_16550.c</a></p>
+<p><strong>For Other UART Registers</strong>: We skip the reading and writing of the registers, because we’ll patch them later: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/drivers/serial/uart_16550.c#L604-L632">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Read from UART Register
 uart_datawidth_t u16550_serialin(FAR struct u16550_s *priv, int offset) {
   return 0;
@@ -345,7 +345,7 @@ void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_datawidth_t va
   // Commented out the rest
 }
 </code></pre></div>
-<p>And we won’t wait for <strong>UART Ready</strong>, since we don’t access the Line Control Register: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L633-L670">uart_16550.c</a></p>
+<p>And we won’t wait for <strong>UART Ready</strong>, since we don’t access the Line Control Register: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/drivers/serial/uart_16550.c#L633-L670">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Wait until UART is not busy. This is needed before writing to Line Control Register.
 // Otherwise we will get spurious interrupts on Synopsys DesignWare 8250.
 int u16550_wait(FAR struct u16550_s *priv) {
@@ -426,7 +426,7 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
   phandle = &lt;0x01&gt;;
 };
 </code></pre></div>
-<p>Based on the above, we change the <strong>PLIC Base Address</strong> for Ox64: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30">jh7110_memorymap.h</a></p>
+<p>Based on the above, we change the <strong>PLIC Base Address</strong> for Ox64: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30">jh7110_memorymap.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define JH7110_PLIC_BASE 0xe0000000ul
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/hardware/bl808_memorymap.h#L27-L32">(Moved here)</a></p>
@@ -456,7 +456,7 @@ _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_
 <p>Rightfully, NuttX should print a helpful <strong>RISC-V Exception Crash Dump</strong> with the offending Data Address. <a href="https://lupyuen.github.io/articles/ox2#fix-the-uart-driver">(Like this)</a></p>
 <p>But NuttX wasn’t terribly helpful for this RISC-V Exception. Very odd!</p>
 <p><em>Where did it crash?</em></p>
-<p>Based on our <a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121"><strong>Debug Log</strong></a>, NuttX crashes just before setting the PLIC: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
+<p>Based on our <a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121"><strong>Debug Log</strong></a>, NuttX crashes just before setting the PLIC: <a href="https://github.com/lupyuen2/wip-nuttx/blob/8f318c363c80e1d4f5788f3815009cb57b5ff298/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Interrupts
 void up_irqinitialize(void) {
   ...
@@ -478,7 +478,7 @@ void up_irqinitialize(void) {
 <p><em>Something doesn’t look right…</em></p>
 <p>Yeah in the code above, we attach the RISC-V Exception Handlers (<strong>riscv_exception_attach</strong>)…</p>
 <p>After the code has crashed! (<strong>putreg32</strong>)</p>
-<p>Hence we <strong>attach the Exception Handlers</strong> earlier: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
+<p>Hence we <strong>attach the Exception Handlers</strong> earlier: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L42-L85">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Interrupts
 void up_irqinitialize(void) {
   ...
@@ -515,7 +515,7 @@ EPC:    50207e6a
 MTVAL:  e0002100
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/85db0510712ba8c660e10f922d4564c9#file-ox64-nuttx5-log-L136-L161">(See the <strong>Complete Log</strong>)</a></p>
-<p>When we look up the NuttX Kernel Disassembly, the Exception Code Address <strong><code>0x5020</code> <code>7E6A</code></strong> (EPC) comes from our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L58-L64"><strong>PLIC Code</strong></a>…</p>
+<p>When we look up the NuttX Kernel Disassembly, the Exception Code Address <strong><code>0x5020</code> <code>7E6A</code></strong> (EPC) comes from our <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L58-L64"><strong>PLIC Code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
   putreg32(0x0, JH7110_PLIC_ENABLE1);
     50207e64: 700017b7  lui  a5,0x70001
@@ -528,7 +528,7 @@ MTVAL:  e0002100
 <p><img src="https://lupyuen.github.io/images/ox2-exception.png" alt="Store / AMO Page Fault Exception" /></p>
 <h1 id="add-plic-to-memory-map"><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a></h1>
 <p><em>But is 0xE000 2100 accessible?</em></p>
-<p>Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the <strong>Memory Map</strong>. This is how we fix it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
+<p>Ah we forgot to add the Platform-Level Interrupt Controller (PLIC) to the <strong>Memory Map</strong>. This is how we fix it: <a href="https://github.com/lupyuen2/wip-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the whole I/O Memory
 // with Virtual Address = Physical Address
 // (Includes PLIC)
@@ -554,7 +554,7 @@ MTVAL:  e0002104
 <p>But it crashes while accessing the PLIC at another <strong>Invalid Data Address: <code>0xE000</code> <code>2104</code></strong>. (Sigh)</p>
 <p><em>Ack! Enough with the PLIC already…</em></p>
 <p>Yeah we’ll fix PLIC later. The entire <a href="https://lupyuen.github.io/articles/ox2#appendix-uart-driver-for-ox64"><strong>UART Driver will be revamped</strong></a> anyway, including the UART Interrupt.</p>
-<p>For now, we <strong>disable the UART Interrupt</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958">uart_16550.c</a></p>
+<p>For now, we <strong>disable the UART Interrupt</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/drivers/serial/uart_16550.c#L902-L958">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Attach the UART Interrupt for Star64
 int u16550_attach(struct uart_dev_s *dev) {
   // Don&#39;t attach the interrupt
@@ -780,7 +780,7 @@ DEBUGASSERT(ret &gt;= 0);
 </ul>
 <p><em>How did we figure out the NuttX Boot Flow?</em></p>
 <p>It’s awfully tricky to follow the Boot Flow by reading the <strong>NuttX Source Code</strong>. (So many C Macros!)</p>
-<p>Instead we searched for Function Names in the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/bl808d-1/nuttx.S"><strong>NuttX Disassembly</strong></a>. Which has the C Macros completely expanded for us.</p>
+<p>Instead we searched for Function Names in the <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/bl808d-1/nuttx.S"><strong>NuttX Disassembly</strong></a>. Which has the C Macros completely expanded for us.</p>
 <h1 id="appendix-memory-map-for-ox64"><a href="#appendix-memory-map-for-ox64">11 Appendix: Memory Map for Ox64</a></h1>
 <p>Read the article…</p>
 <ul>
@@ -793,7 +793,7 @@ DEBUGASSERT(ret &gt;= 0);
 #define MMU_IO_BASE (0x00000000ul)
 #define MMU_IO_SIZE (0x50000000ul)
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">(Source)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">(Source)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L49-L57">(Moved here)</a></p>
 <p>Inside the BL808 SoC is the <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39"><strong>Sv39 Memory Management Unit (MMU)</strong></a> with 128 / 256 / 512 TLB table entries. (Same for Star64 JH7110)</p>
 <p>The MMU maps <strong>Virtual Memory Addresses</strong> to <strong>Physical Memory Addresses</strong>. And stops the NuttX Kernel from accessing Invalid Addresses.</p>
@@ -802,7 +802,7 @@ DEBUGASSERT(ret &gt;= 0);
 <p><a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">(MMU appears in <strong>OpenC906 User Manual</strong>, Page 50)</a></p>
 <p><em>But we forgot to add the PLIC to the Memory Map!</em></p>
 <p>The <a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong>Platform-Level Interrupt Controller (PLIC)</strong></a> is at <a href="https://lupyuen.github.io/articles/ox2#platform-level-interrupt-controller"><strong><code>0xE000</code> <code>0000</code></strong></a>.</p>
-<p>Let’s add the PLIC to the Memory Map: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
+<p>Let’s add the PLIC to the Memory Map: <a href="https://github.com/lupyuen2/wip-nuttx/blob/b244f85065ecc749599842088f35f1b190466429/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the whole I/O Memory
 // with Virtual Address = Physical Address
 // (Includes PLIC)
@@ -812,7 +812,7 @@ DEBUGASSERT(ret &gt;= 0);
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L49-L57">(Moved here)</a></p>
 <p><em>This doesn’t look right…</em></p>
-<p>Yeah when we substitute the above <strong>MMU_IO_BASE</strong> and <strong>MMU_IO_SIZE</strong> into the <strong>Memory Map</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259">jh7110_mm_init.c</a></p>
+<p>Yeah when we substitute the above <strong>MMU_IO_BASE</strong> and <strong>MMU_IO_SIZE</strong> into the <strong>Memory Map</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set up the Kernel MMU Memory Map
 void jh7110_kernel_mappings(void) {
   ...
@@ -822,13 +822,13 @@ void jh7110_kernel_mappings(void) {
   mmu_ln_map_region(1, PGT_L1_VBASE, MMU_IO_BASE, MMU_IO_BASE, MMU_IO_SIZE, MMU_IO_FLAGS);
 
   // Map the Kernel Code for L2/L3
-  // From https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27
+  // From https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27
   // KFLASH_START is 0x50200000
   // KFLASH_SIZE  is 2 MB
   map_region(KFLASH_START, KFLASH_START, KFLASH_SIZE, MMU_KTEXT_FLAGS);
 
   // Map the Kernel Data for L2/L3
-  // From https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27
+  // From https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27
   // KSRAM_START is 0x50400000
   // KSRAM_SIZE  is 2 MB
   map_region(KSRAM_START, KSRAM_START, KSRAM_SIZE, MMU_KDATA_FLAGS);
@@ -837,7 +837,7 @@ void jh7110_kernel_mappings(void) {
   mmu_ln_setentry(1, PGT_L1_VBASE, PGT_L2_PBASE, KFLASH_START, PTE_G);
 
   // Map the Page Pool for NuttX Apps
-  // From https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27
+  // From https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L27
   // PGPOOL_START is 0x50600000
   // PGPOOL_SIZE  is 4 MB + 16 MB (including RAM Disk)
   mmu_ln_map_region(2, PGT_L2_VBASE, PGPOOL_START, PGPOOL_START, PGPOOL_SIZE, MMU_KDATA_FLAGS);
@@ -846,10 +846,10 @@ void jh7110_kernel_mappings(void) {
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L220-L278">(Moved here)</a></p>
 <p>We see a problem with the <strong>Memory Map</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Region</strong></a></td><td style="text-align: center"><strong><code>0x0000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0xF000</code> <code>0000</code></strong></td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a></td><td style="text-align: center"><strong><code>0x5020</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a></td><td style="text-align: center"><strong><code>0x5040</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
-<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a></td><td style="text-align: center"><strong><code>0x5060</code> <code>0000</code></strong></td><td style="text-align: left">20 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Region</strong></a></td><td style="text-align: center"><strong><code>0x0000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0xF000</code> <code>0000</code></strong></td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L23"><strong>Kernel Code</strong></a></td><td style="text-align: center"><strong><code>0x5020</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L24"><strong>Kernel Data</strong></a></td><td style="text-align: center"><strong><code>0x5040</code> <code>0000</code></strong></td><td style="text-align: left">2 MB</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L25-L26"><strong>Page Pool</strong></a></td><td style="text-align: center"><strong><code>0x5060</code> <code>0000</code></strong></td><td style="text-align: left">20 MB</td></tr>
 </tbody></table>
 </div>
 <p>(<strong>Page Pool</strong> includes RAM Disk)</p>
@@ -862,7 +862,7 @@ void jh7110_kernel_mappings(void) {
 <tr><td style="text-align: left">PLIC</td><td style="text-align: center"><strong><code>0xE000</code> <code>0000</code></strong></td><td style="text-align: left">???</td></tr>
 </tbody></table>
 </div>
-<p>Also <a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89#file-ox64-nuttx13-log-L188-L189"><strong>NuttX Apps will fail</strong></a> because they run in the (Virtual) User Address Space at <strong><code>0xC000</code> <code>0000</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L26">nsh/defconfig</a></p>
+<p>Also <a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89#file-ox64-nuttx13-log-L188-L189"><strong>NuttX Apps will fail</strong></a> because they run in the (Virtual) User Address Space at <strong><code>0xC000</code> <code>0000</code></strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L17-L26">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_ARCH_TEXT_VBASE=0xC0000000
 CONFIG_ARCH_TEXT_NPAGES=128
 CONFIG_ARCH_DATA_VBASE=0xC0100000
@@ -913,7 +913,7 @@ Domain0 Next Arg1   : 0x51ff8000
 <p>We discover that BL808 UART works the <strong>same way as BL602</strong>!</p>
 <p>Thus we’ll simply copy the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX Driver for BL602 UART</strong></a> to Ox64.</p>
 <p><strong>UART Interrupts</strong> are mandatory: If UART Interrupts aren’t implemented, NuttX Shell (NSH) and NuttX Apps <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>won’t print anything</strong></a>.</p>
-<p>BL602 UART Driver has just been <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c"><strong>ported to Ox64</strong></a>! (Minus the UART Interrupts) Check our progress here…</p>
+<p>BL602 UART Driver has just been <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64a/arch/risc-v/src/jh7110/bl602_serial.c"><strong>ported to Ox64</strong></a>! (Minus the UART Interrupts) Check our progress here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/plic2"><strong>“RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)”</strong></a></li>
 </ul>
@@ -964,7 +964,7 @@ Domain0 Next Arg1   : 0x51ff8000
 <p>And we reuse the existing <strong>U-Boot Config</strong> on the microSD Card: <a href="https://github.com/openbouffalo/buildroot_bouffalo/blob/main/board/pine64/ox64/rootfs-overlay/boot/extlinux/extlinux.conf"><strong>extlinux/extlinux.conf</strong></a></p>
 <p>(Which might be more efficient for our Limited RAM)</p>
 <p><a href="https://github.com/openbouffalo/buildroot_bouffalo/wiki/U-Boot-Bootflow">(See the <strong>U-Boot Boot Flow</strong>)</a></p>
-<p><strong>TODO:</strong> Can we mount the File System directly from the <strong>NuttX Kernel Image in RAM</strong>? Without copying to the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L26"><strong>RAM Disk Memory Region</strong></a>?</p>
+<p><strong>TODO:</strong> Can we mount the File System directly from the <strong>NuttX Kernel Image in RAM</strong>? Without copying to the <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/scripts/ld.script#L26"><strong>RAM Disk Memory Region</strong></a>?</p>
 </li>
 </ol>
 <p>We’ll probably adopt the Second Method, since we are low on RAM. Like this…</p>

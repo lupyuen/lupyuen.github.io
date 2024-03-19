@@ -364,7 +364,7 @@ Bit[59] Sec - Trustable
 <tr><td style="text-align: left"><strong>SH: Shareable</strong></td><td style="text-align: left">Bit 60 is 1</td></tr>
 </tbody></table>
 </div>
-<p>For testing, we patched our MMU Code to set the <strong>Strong Order Bit</strong> in our Page Table Entries (pic above): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127">riscv_mmu.c</a></p>
+<p>For testing, we patched our MMU Code to set the <strong>Strong Order Bit</strong> in our Page Table Entries (pic above): <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127">riscv_mmu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set a Page Table Entry in a Page Table for the MMU
 void mmu_ln_setentry(
   uint32_t ptlevel,   // Level of Page Table: 1, 2 or 3 
@@ -426,7 +426,7 @@ map PLIC as Interrupt L2
 <p><strong>NOTE:</strong> T-Head MMU Flags (Strong Order / Shareable) are available only if OpenSBI has set the <a href="https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic"><strong>MAEE Bit in the MXSTATUS Register to 1</strong></a>. Otherwise the MMU will crash when we set the flags!</p>
 <p><strong>UPDATE:</strong> NuttX Mainline now supports <a href="https://github.com/apache/nuttx/pull/11365"><strong>T-Head C906 Memory Types</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946#file-ox64-nuttx-uart-ok-log-L25-L160">(See the <strong>Complete Log</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4e343153d996f7f7a9b2d8a79edf42cd3900d42e">(<strong>Shareable Bit</strong> doesn’t effect anything. We’re keeping it to be consistent with Linux)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/4e343153d996f7f7a9b2d8a79edf42cd3900d42e">(<strong>Shareable Bit</strong> doesn’t effect anything. We’re keeping it to be consistent with Linux)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
 <h1 id="it-works"><a href="#it-works">7 It Works!</a></h1>
 <p><em>What happens when we run our patched MMU code?</em></p>
@@ -589,11 +589,11 @@ Hello, World!!
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
 git clone \
   --branch ox64c \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch ox64c \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Build NuttX
@@ -641,8 +641,8 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64c-1">(See the <strong>Build Script</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64c-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64c-1">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64c-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk">(Why the <strong>64 KB Padding</strong>)</a></p>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot">(Remember to flash <strong>OpenSBI and U-Boot Bootloader</strong>)</a></p>
@@ -658,7 +658,7 @@ diskutil unmountDisk /dev/disk2
 <p>NuttX Commands will run OK in NuttX Shell. (Pic above)</p>
 <p><a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324">(See the <strong>NuttX Log</strong>)</a></p>
 <p><a href="https://youtu.be/l7Y36nTkr8c">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64c-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64c-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-beach.jpg" alt="Quick dip in the sea + Picnic on the beach … Really helps with NuttX + Ox64 troubleshooting! 👍" /></p>
 <p><em>Quick dip in the sea + Picnic on the beach… Really helps with NuttX + Ox64 troubleshooting!</em> 👍</p>
 

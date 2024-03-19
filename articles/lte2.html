@@ -164,8 +164,8 @@
 <p><a href="https://lupyuen.github.io/articles/lte#is-lte-modem-up"><strong>“Is LTE Modem Up?”</strong></a></p>
 </li>
 </ul>
-<p>Which we have implemented in NuttX as <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L138-L245"><strong>pinephone_modem_init</strong></a>.</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L211-L219">(<strong>pinephone_modem_init</strong> is called by <strong>pinephone_bringup</strong>)</a></p>
+<p>Which we have implemented in NuttX as <a href="https://github.com/lupyuen2/wip-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L138-L245"><strong>pinephone_modem_init</strong></a>.</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L211-L219">(<strong>pinephone_modem_init</strong> is called by <strong>pinephone_bringup</strong>)</a></p>
 <p>At <strong>NuttX Startup</strong>, we see this …</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel...
 Enable UART3 on PD0
@@ -185,15 +185,15 @@ Status=0
 NuttShell (NSH) NuttX-12.0.3
 nsh&gt; 
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L473-L562">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L473-L562">(See the Complete Log)</a></p>
 <p>Which says that PinePhone’s LTE Modem is up and <strong>accessible at Port UART3</strong>!</p>
 <p>Let’s send some AT Commands to UART3…</p>
 <p><img src="https://lupyuen.github.io/images/lte-run3a.png" alt="NuttX sends AT Commands to LTE Modem" /></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L630"><em>NuttX sends AT Commands to LTE Modem</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L630"><em>NuttX sends AT Commands to LTE Modem</em></a></p>
 <h1 id="send-at-commands"><a href="#send-at-commands">3 Send AT Commands</a></h1>
 <p><em>LTE Modem has started successfully at UART3…</em></p>
 <p><em>How will we send AT Commands to the modem?</em></p>
-<p>On NuttX, this is how we <strong>send an AT Command</strong> to the LTE Modem over UART3: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L69-L221">hello_main.c</a></p>
+<p>On NuttX, this is how we <strong>send an AT Command</strong> to the LTE Modem over UART3: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/modem/examples/hello/hello_main.c#L69-L221">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Open /dev/ttyS1 (UART3)
 int fd = open(&quot;/dev/ttyS1&quot;, O_RDWR);
 printf(&quot;Open /dev/ttyS1: fd=%d\n&quot;, fd);
@@ -280,7 +280,7 @@ OK
 <p>LTE Modem echoes our command “<strong><code>AT</code></strong>”…</p>
 <p>And responds to our command with  “<strong><code>OK</code></strong>”.</p>
 <p>Which means that our LTE Modem is running AT Commands all OK!</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L630">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L630">(See the Complete Log)</a></p>
 <p><em>The actual log looks kinda messy…</em></p>
 <p>Yeah we’ll talk about the proper AT Modem API in a while.</p>
 <p>First let’s check the network and make some phone calls…</p>
@@ -300,7 +300,7 @@ OK
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 75)</a></p>
 </li>
 </ul>
-<p>This is how we do it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L102-L143">hello_main.c</a></p>
+<p>This is how we do it: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/modem/examples/hello/hello_main.c#L102-L143">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Check the Network Status: AT+CREG?
 const char cmd[] = &quot;AT+CREG?\r&quot;;
 write(fd, cmd, strlen(cmd));
@@ -339,11 +339,11 @@ Response:
 <p>“<strong><code>+CREG: 0,1</code></strong>” says that the 4G LTE Network is ready.</p>
 <p>“<strong><code>SGP-M1</code></strong>” is the name of our 4G LTE Network Operator.</p>
 <p>We’re all set to make some calls!</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737">(See the Complete Log)</a></p>
 <p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="NuttX makes a Phone Call from PinePhone" /></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L683-L735"><em>NuttX makes a Phone Call from PinePhone</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L683-L735"><em>NuttX makes a Phone Call from PinePhone</em></a></p>
 <h1 id="outgoing-phone-call"><a href="#outgoing-phone-call">5 Outgoing Phone Call</a></h1>
-<p>In NuttX, this is how we dial a Phone Number to make an <strong>Outgoing Phone Call</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L438-L543">dial_number</a></p>
+<p>In NuttX, this is how we dial a Phone Number to make an <strong>Outgoing Phone Call</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/modem/examples/hello/hello_main.c#L438-L543">dial_number</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get Range of PCM Parameters for Digital Audio
 const char cmd[] = &quot;AT+QDAI=?\r&quot;;
 write(fd, cmd, strlen(cmd));
@@ -405,7 +405,7 @@ Command: ATH
 Response: OK
 </code></pre></div>
 <p>And the phone rings for the called Phone Number! (Pic above)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737">(See the Complete Log)</a></p>
 <p><em>But how will we talk to the called Phone Number?</em></p>
 <p>Aha! That’s why we need the “<strong><code>AT+QDAI</code></strong>” commands, for the <strong>PCM Digital Audio</strong> setup. We’re still working on it…</p>
 <ul>
@@ -413,7 +413,7 @@ Response: OK
 </ul>
 <p>Now we send an SMS Text Message…</p>
 <p><img src="https://lupyuen.github.io/images/lte2-sms.jpg" alt="NuttX sends an SMS in Text Mode" /></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L622-L659"><em>NuttX sends an SMS in Text Mode</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L622-L659"><em>NuttX sends an SMS in Text Mode</em></a></p>
 <h1 id="send-sms-in-text-mode"><a href="#send-sms-in-text-mode">6 Send SMS in Text Mode</a></h1>
 <p>To send an <strong>SMS Message</strong> (in Text Mode), use these AT Commands…</p>
 <ol>
@@ -451,7 +451,7 @@ Response: OK
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
 </li>
 </ol>
-<p>This is how we <strong>send an SMS</strong> (in Text Mode) with NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L223-L331">send_sms_text</a></p>
+<p>This is how we <strong>send an SMS</strong> (in Text Mode) with NuttX: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/modem/examples/hello/hello_main.c#L223-L331">send_sms_text</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Select Text Mode for SMS (instead of PDU Mode)
 const char cmd[] = &quot;AT+CMGF=1\r&quot;;
 write(fd, cmd, strlen(cmd));
@@ -525,12 +525,12 @@ Response:
 OK
 </code></pre></div>
 <p>And the SMS Message will be sent to the Phone Number! (Pic above)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L622-L659">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L622-L659">(See the Complete Log)</a></p>
 <p><em>What if we get Error 350?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 350
 </code></pre></div>
 <p>This means that the Telco’s <strong>SMS Centre has rejected</strong> our SMS Message.</p>
-<p>Check that the SMS Centre is correct <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L145-L163">(like this)</a>…</p>
+<p>Check that the SMS Centre is correct <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/modem/examples/hello/hello_main.c#L145-L163">(like this)</a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Get SMS Centre
 Command: AT+CSCA?
 Response:
@@ -623,7 +623,7 @@ const char cmd[] =
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
 </li>
 </ol>
-<p>Let’s look at the NuttX Code: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L333-L436">send_sms_pdu</a></p>
+<p>Let’s look at the NuttX Code: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/modem/examples/hello/hello_main.c#L333-L436">send_sms_pdu</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Select PDU Mode for SMS (instead of SMS Mode)
 const char cmd[] = &quot;AT+CMGF=0\r&quot;;
 write(fd, cmd, strlen(cmd));
@@ -691,7 +691,7 @@ Response:
 OK
 </code></pre></div>
 <p>And our SMS Message <strong>“Hello,Quectel!”</strong> appears at the destination Phone Number!</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681">(See the Complete Log)</a></p>
 <p><em>How to encode the SMS in PDU Format? What’s the PDU Length?</em></p>
 <p>The <strong>PDU Encoding for SMS</strong> is explained here…</p>
 <ul>
@@ -749,7 +749,7 @@ RING
 </code></pre></div>
 <p>Which is totally <strong>Asynchronous</strong>. And tricky to handle over UART.</p>
 <p><em>Any other UART problems with LTE Modem?</em></p>
-<p>Our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L621"><strong>UART Output</strong></a> looks all jumbled up because our NuttX App didn’t <strong>wait for the response</strong> of every AT Command…</p>
+<p>Our <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L621"><strong>UART Output</strong></a> looks all jumbled up because our NuttX App didn’t <strong>wait for the response</strong> of every AT Command…</p>
 <div><table><thead><tr><th style="text-align: left">NuttX App writes</th><th style="text-align: left">LTE Modem responds</th></tr></thead><tbody>
 <tr><td style="text-align: left"><code>AT</code></td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"></td><td style="text-align: left"><code>RDY</code></td></tr>
@@ -763,7 +763,7 @@ RING
 <tr><td style="text-align: left"></td><td style="text-align: left"><strong><code>AT+CREG?</code></strong> <br> <code>+CREG: 0,1</code> <br> <code>OK</code> <br> <em>(Oops CREG response is delayed!)</em></td></tr>
 </tbody></table>
 </div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L621">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L621">(See the Complete Log)</a></p>
 <p>Our NuttX App should have waited for the response of “<strong><code>AT+CREG</code></strong>”… Before sending “<strong><code>AT+COPS</code></strong>”!</p>
 <p><em>So we wait for OK or ERROR. Piece of cake right?</em></p>
 <p>But hold up! Remember that <strong>UART might drop characters</strong>…</p>

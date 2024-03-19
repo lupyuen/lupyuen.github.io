@@ -172,7 +172,7 @@ var/
 <li>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c"><strong>nuttx-apps/examples/lvglterm</strong></a></p>
 <p><a href="https://github.com/lupyuen/lvglterm">(How to compile LVGL Terminal)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.2">(Download the NuttX Image for PinePhone)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/nuttx-12.0.2">(Download the NuttX Image for PinePhone)</a></p>
 </li>
 </ul>
 <p>We begin by starting the NSH Task and piping a command to NSH Shell…</p>
@@ -288,7 +288,7 @@ sleep(1);
 <p>NSH Shell inherits our Standard I/O streams, which we’ve redirected to our NuttX Pipes.</p>
 <p>We’re ready to test this!</p>
 <h2 id="test-the-pipes"><a href="#test-the-pipes">2.4 Test the Pipes</a></h2>
-<p>Finally we add some <strong>Test Code</strong> to verify that everything works: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L292-L338">lvgldemo.c</a></p>
+<p>Finally we add some <strong>Test Code</strong> to verify that everything works: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L292-L338">lvgldemo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Send a command to NSH stdin
 const char cmd[] = &quot;ls\r&quot;;
 ret = write(   // Write to the stream...
@@ -326,7 +326,7 @@ nsh&gt; ls
  var/
 nsh&gt;
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L340-L390">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L340-L390">(See the Complete Log)</a></p>
 <p><em>What about NSH Error Output?</em></p>
 <p>Normally we do this to read the <strong>NSH Error Output</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Warning: This will block!
@@ -419,7 +419,7 @@ static bool has_input(
 <p>And if there’s nothing waiting to be read, <strong><code>has_input</code></strong> returns False (due to timeout)…</p>
 <div class="example-wrap"><pre class="language-text"><code>has_input: timeout: fd=8
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L403-L556">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L403-L556">(See the Complete Log)</a></p>
 <p>We’ve solved our problem of Blocking Reads from NSH Output, by polling for NSH Output!</p>
 <p>This polling for NSH Output needs to be done in an LVGL Timer, here’s why…</p>
 <p><img src="https://lupyuen.github.io/images/terminal-flow6.jpg" alt="Timer for LVGL Terminal" /></p>

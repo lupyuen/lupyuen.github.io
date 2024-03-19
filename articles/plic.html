@@ -125,11 +125,11 @@ nx_start_application: ret=3
 up_exit: TCB=0x404088d0 exiting
 nx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Output Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Output Log</strong>)</a></p>
 <p>But <strong>NuttX Shell</strong> doesn’t appear!</p>
 <p><em>Maybe NuttX Shell wasn’t started correctly?</em></p>
-<p>Let’s find out! When NuttX Apps (and NuttX Shell) print to the Serial Console (via <strong>printf</strong>), this function will be called in the NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a></p>
-<p>Thus we add Debug Logs to <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a>. Something interesting happens…</p>
+<p>Let’s find out! When NuttX Apps (and NuttX Shell) print to the Serial Console (via <strong>printf</strong>), this function will be called in the NuttX Kernel: <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a></p>
+<p>Thus we add Debug Logs to <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a>. Something interesting happens…</p>
 <div class="example-wrap"><pre class="language-text"><code>uart_write (0xc000a610):
 0000  0a 4e 75 74 74 53 68 65 6c 6c 20 28 4e 53 48 29  .NuttShell (NSH)
 0010  20 4e 75 74 74 58 2d 31 32 2e 30 2e 33 0a         NuttX-12.0.3.  
@@ -143,11 +143,11 @@ uart_write (0xc0015310):
 <p>This says that NuttX Shell is actually started, and trying to print something!</p>
 <p>Just that NuttX Shell <strong>couldn’t produce any Console Output</strong>.</p>
 <p><em>But we see other messages from NuttX Kernel!</em></p>
-<p>That’s because NuttX Kernel doesn’t call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> to print messages.</p>
-<p>Instead, NuttX Kernel calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1730-L1765"><strong>up_putc</strong></a>. Which calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1657-L1672"><strong>u16550_putc</strong></a> to write directly to the UART Output Register.</p>
+<p>That’s because NuttX Kernel doesn’t call <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> to print messages.</p>
+<p>Instead, NuttX Kernel calls <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1730-L1765"><strong>up_putc</strong></a>. Which calls <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1657-L1672"><strong>u16550_putc</strong></a> to write directly to the UART Output Register.</p>
 <p><em>So uart_write is a lot more sophisticated than up_putc?</em></p>
-<p>Yep NuttX Apps will (indirectly) call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> to do Serial I/O with <strong>Buffering and Interrupts</strong>.</p>
-<p>Somehow <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> is broken for all NuttX Apps on Star64.</p>
+<p>Yep NuttX Apps will (indirectly) call <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> to do Serial I/O with <strong>Buffering and Interrupts</strong>.</p>
+<p>Somehow <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> is broken for all NuttX Apps on Star64.</p>
 <p>Let’s find out why…</p>
 <p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="NuttX Star64 with Initial RAM Disk" /></p>
 <h1 id="serial-output-in-nuttx-qemu"><a href="#serial-output-in-nuttx-qemu">2 Serial Output in NuttX QEMU</a></h1>
@@ -166,8 +166,8 @@ work_start_lowpri: Starting low-priority kernel worker thread(s)
 nx_start_application: Starting init task: /system/bin/init
 up_exit: TCB=0x802088d0 exiting
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk2-0.0.1">(See the <strong>Complete Log</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk2-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ramdisk2-0.0.1">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ramdisk2-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_irq.c#L138-L180">(<strong>up_enable_irq</strong> is defined here)</a></p>
 <p>In the log above, NuttX QEMU enables UART Interrupts at <strong>NuttX IRQ 35</strong>. </p>
 <p>(Equivalent to <strong>RISC-V IRQ 10</strong>, with IRQ Offset of 25)</p>
@@ -193,37 +193,37 @@ $%&amp;riscv_doirq: irq=8
 ADEF
 FNFuFtFtFSFhFeFlFlF F(FNFSFHF)F FNFuFtFtFXF-F1F2F.F0F.F3F
 </code></pre></div>
-<p>This says that the NuttX Kernel calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> (print to Serial Console), which calls…</p>
-<p>[<code>A</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286"><strong>uart_putxmitchar</strong></a> (write to Serial Buffer), which calls…</p>
-<p>[<code>D</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> (print the Serial Buffer), which calls…</p>
-<p>[<code>E</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68"><strong>uart_txready</strong></a> (check for UART ready) and…</p>
-<p>[<code>F</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587"><strong>u16550_send</strong></a> (write to UART output)</p>
+<p>This says that the NuttX Kernel calls <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> (print to Serial Console), which calls…</p>
+<p>[<code>A</code>] <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286"><strong>uart_putxmitchar</strong></a> (write to Serial Buffer), which calls…</p>
+<p>[<code>D</code>] <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> (print the Serial Buffer), which calls…</p>
+<p>[<code>E</code>] <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68"><strong>uart_txready</strong></a> (check for UART ready) and…</p>
+<p>[<code>F</code>] <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587"><strong>u16550_send</strong></a> (write to UART output)</p>
 <p>And that’s what happens when a NuttX App prints to the Serial Console (via <strong>printf</strong>)…</p>
 <ol>
 <li>
 <p>NuttX App (in User Mode) makes a <strong>System Call</strong> to NuttX Kernel (in Supervisor Mode)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341">(<strong>uart_write</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341">(<strong>uart_write</strong>)</a></p>
 </li>
 <li>
 <p>NuttX Kernel writes the output to the <strong>Serial Buffer</strong></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286">(<strong>uart_putxmitchar</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286">(<strong>uart_putxmitchar</strong>)</a></p>
 </li>
 <li>
 <p>NuttX Kernel <strong>reads the Serial Buffer</strong>, one character at a time…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107">(<strong>uart_xmitchars</strong>)</a> </p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107">(<strong>uart_xmitchars</strong>)</a> </p>
 </li>
 <li>
 <p>If the <strong>UART Transmit Status</strong> is ready…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68">(<strong>uart_txready</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68">(<strong>uart_txready</strong>)</a></p>
 </li>
 <li>
 <p>Write the character to <strong>UART Output</strong></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587">(<strong>u16550_send</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587">(<strong>u16550_send</strong>)</a></p>
 </li>
 </ol>
 <p><em>What if UART Transmit Status is NOT ready?</em></p>
-<p>UART will trigger a <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1628"><strong>Transmit Ready Interrupt</strong></a> when it’s ready to transmit more data.</p>
-<p>When this happens, our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013"><strong>UART Interrupt Handler</strong></a> will call <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> to send the Serial Buffer.</p>
+<p>UART will trigger a <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1628"><strong>Transmit Ready Interrupt</strong></a> when it’s ready to transmit more data.</p>
+<p>When this happens, our <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013"><strong>UART Interrupt Handler</strong></a> will call <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> to send the Serial Buffer.</p>
 <p>(Which loops back to steps above)</p>
 <p>Now we do Serial Input…</p>
 <p><img src="https://lupyuen.github.io/images/plic-qemu.png" alt="Serial I/O in NuttX QEMU" /></p>
@@ -237,26 +237,26 @@ ADEFa
 $%&amp;
 riscv_doirq: irq=8
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk2-0.0.1">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ramdisk2-0.0.1">(See the <strong>Complete Log</strong>)</a></p>
 <p>That triggers a call to…</p>
 <ul>
 <li>
-<p>[<code>$</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk2/arch/risc-v/src/common/riscv_exception_common.S#L63-L189"><strong>exception_common</strong></a> (RISC-V Exception Handler) which calls…</p>
+<p>[<code>$</code>] <a href="https://github.com/lupyuen2/wip-nuttx/blob/ramdisk2/arch/risc-v/src/common/riscv_exception_common.S#L63-L189"><strong>exception_common</strong></a> (RISC-V Exception Handler) which calls…</p>
 </li>
 <li>
-<p>[<code>%^&amp;</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L51-L92"><strong>riscv_dispatch_irq</strong></a> (Dispatch QEMU Interrupt), which calls…</p>
+<p>[<code>%^&amp;</code>] <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_irq_dispatch.c#L51-L92"><strong>riscv_dispatch_irq</strong></a> (Dispatch QEMU Interrupt), which calls…</p>
 </li>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_doirq.c#L58-L131"><strong>riscv_doirq</strong></a> (Dispatch RISC-V Interrupt), which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/sched/irq/irq_dispatch.c#L112-L191"><strong>irq_dispatch</strong></a> (Dispatch NuttX Interrupt), which calls…</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/sched/irq/irq_dispatch.c#L112-L191"><strong>irq_dispatch</strong></a> (Dispatch NuttX Interrupt), which calls…</p>
 </li>
 <li>
-<p>[<code>#</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L918-L1004"><strong>u16550_interrupt</strong></a> (UART Interrupt Handler), which calls…</p>
+<p>[<code>#</code>] <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L918-L1004"><strong>u16550_interrupt</strong></a> (UART Interrupt Handler), which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L109-L270"><strong>uart_recvchars</strong></a> (write to Serial Receive Buffer)</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial_io.c#L109-L270"><strong>uart_recvchars</strong></a> (write to Serial Receive Buffer)</p>
 </li>
 </ul>
 <p>Looks complicated, but that’s how Serial I/O works with Buffering and Interrupts in NuttX!</p>
@@ -295,30 +295,30 @@ $%&amp;riscv_doirq: irq=8
 
 AAAAAD
 </code></pre></div>
-<p>From the <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>QEMU Log</strong></a>, we know that <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> (print to Serial Console) calls…</p>
+<p>From the <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>QEMU Log</strong></a>, we know that <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> (print to Serial Console) calls…</p>
 <ul>
 <li>
-<p>[<code>A</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286"><strong>uart_putxmitchar</strong></a> (write to Serial Buffer), which calls…</p>
+<p>[<code>A</code>] <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L150-L286"><strong>uart_putxmitchar</strong></a> (write to Serial Buffer), which calls…</p>
 </li>
 <li>
-<p>[<code>D</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> (print the Serial Buffer), but wait…</p>
+<p>[<code>D</code>] <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> (print the Serial Buffer), but wait…</p>
 </li>
 </ul>
 <p><em>Something looks different from QEMU?</em></p>
 <p>Yeah these are missing from the Star64 Log…</p>
 <ul>
 <li>
-<p>[<code>E</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68"><strong>uart_txready</strong></a> (check for UART ready) and…</p>
+<p>[<code>E</code>] <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial_io.c#L63-L68"><strong>uart_txready</strong></a> (check for UART ready) and…</p>
 </li>
 <li>
-<p>[<code>F</code>] <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587"><strong>u16550_send</strong></a> (write to UART output)</p>
+<p>[<code>F</code>] <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1572-L1587"><strong>u16550_send</strong></a> (write to UART output)</p>
 </li>
 </ul>
 <p>Which means that UART is <strong>NOT ready to transmit</strong>!</p>
 <p>(Hence we can’t write to UART Output)</p>
 <p><em>What happens next?</em></p>
-<p>We said earlier that UART will trigger a <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1628"><strong>Transmit Ready Interrupt</strong></a> when it’s ready to transmit more data.</p>
-<p>(Which triggers our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013"><strong>UART Interrupt Handler</strong></a> that calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> to send data)</p>
+<p>We said earlier that UART will trigger a <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1587-L1628"><strong>Transmit Ready Interrupt</strong></a> when it’s ready to transmit more data.</p>
+<p>(Which triggers our <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013"><strong>UART Interrupt Handler</strong></a> that calls <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107"><strong>uart_xmitchars</strong></a> to send data)</p>
 <p>But NuttX IRQ 57 is <strong>never triggered</strong> in the Star64 Log!</p>
 <p>Thus there’s our problem: NuttX on Star64 won’t print to the Serial Output because <strong>UART Interrupts are never triggered</strong>.</p>
 <p>(NuttX Star64 won’t respond to keypresses either)</p>
@@ -326,16 +326,16 @@ AAAAAD
 <p>We checked the Star64 <strong>Interrupt Settings</strong> and <strong>Memory Map</strong>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-09f20ae7a4a374d390f5f93d478e820039f86256f7cdcce609996c9f99c71501"><strong>irq.h</strong></a>: Map RISC-V IRQ to NuttX IRQ</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/35/files#diff-09f20ae7a4a374d390f5f93d478e820039f86256f7cdcce609996c9f99c71501"><strong>irq.h</strong></a>: Map RISC-V IRQ to NuttX IRQ</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-1d49cde8904f634c8963839554b7b626fd9083cf4205814b4e949630dc0a7dda"><strong>qemu_rv_memorymap.h</strong></a>: PLIC Address</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/35/files#diff-1d49cde8904f634c8963839554b7b626fd9083cf4205814b4e949630dc0a7dda"><strong>qemu_rv_memorymap.h</strong></a>: PLIC Address</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-0cb58f007c24e42ac3f868ec24239c5e1863ebbb72dfb995840bc9b80ad82723"><strong>board_memorymap.h</strong></a>: Memory Map</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/35/files#diff-0cb58f007c24e42ac3f868ec24239c5e1863ebbb72dfb995840bc9b80ad82723"><strong>board_memorymap.h</strong></a>: Memory Map</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-4018c37bf9b08236b37a84273281d5511d48596be9e0e4c0980d730aa95dbbe8"><strong>knsh64/defconfig</strong></a>: Memory Configuration</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/35/files#diff-4018c37bf9b08236b37a84273281d5511d48596be9e0e4c0980d730aa95dbbe8"><strong>knsh64/defconfig</strong></a>: Memory Configuration</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/u74_memory_map.html">(See the <strong>JH7110 U74 Memory Map</strong>)</a></p>
 </li>
 </ul>
@@ -386,13 +386,13 @@ dtc \
 <p>That’s a lot more than NuttX QEMU can handle. So we patched it…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-09f20ae7a4a374d390f5f93d478e820039f86256f7cdcce609996c9f99c71501"><strong>irq.h</strong></a>: Increase to 127 IRQs</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/35/files#diff-09f20ae7a4a374d390f5f93d478e820039f86256f7cdcce609996c9f99c71501"><strong>irq.h</strong></a>: Increase to 127 IRQs</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-4d2def434fc283670f9b60826a12a9396787759b45aa156a4b6764c1a73fb0e4"><strong>qemu_rv_irq.c</strong></a>: Initialise 127 IRQs</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/35/files#diff-4d2def434fc283670f9b60826a12a9396787759b45aa156a4b6764c1a73fb0e4"><strong>qemu_rv_irq.c</strong></a>: Initialise 127 IRQs</p>
 </li>
 </ul>
-<p>Though some parts are <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-4d2def434fc283670f9b60826a12a9396787759b45aa156a4b6764c1a73fb0e4"><strong>hardcoded to 64 IRQs</strong></a>. (Needs more fixing)</p>
+<p>Though some parts are <a href="https://github.com/lupyuen2/wip-nuttx/pull/35/files#diff-4d2def434fc283670f9b60826a12a9396787759b45aa156a4b6764c1a73fb0e4"><strong>hardcoded to 64 IRQs</strong></a>. (Needs more fixing)</p>
 <p>Let’s talk about the Interrupt Controller…</p>
 <p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller in JH7110 (U74) SoC" /></p>
 <h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">6 Platform-Level Interrupt Controller</a></h1>
@@ -505,7 +505,7 @@ dtc \
 #define QEMU_RV_PLIC_THRESHOLD (QEMU_RV_PLIC_BASE + 0x202000)
 #define QEMU_RV_PLIC_CLAIM     (QEMU_RV_PLIC_BASE + 0x202004)
 </code></pre></div>
-<p>FYI these are the earlier PLIC Settings for <strong>NuttX QEMU</strong> (which runs in Machine Mode): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L54-L60">qemu_rv_plic.h</a></p>
+<p>FYI these are the earlier PLIC Settings for <strong>NuttX QEMU</strong> (which runs in Machine Mode): <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/hardware/qemu_rv_plic.h#L54-L60">qemu_rv_plic.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Previously for NuttX QEMU:
 // #define QEMU_RV_PLIC_ENABLE1   (QEMU_RV_PLIC_BASE + 0x002080)
 // #define QEMU_RV_PLIC_ENABLE2   (QEMU_RV_PLIC_BASE + 0x002084)
@@ -700,9 +700,9 @@ Boot HART MEDELEG:
 <p>We fixed the <strong>PLIC Memory Map</strong> in NuttX…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/35/files#diff-913f48beaba6a00b5a78f5965892235c858ecc51e75e3c5b1f5905b6c9830f53"><strong>qemu_rv_plic.h: Fix PLIC Memory Map</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/35/files#diff-913f48beaba6a00b5a78f5965892235c858ecc51e75e3c5b1f5905b6c9830f53"><strong>qemu_rv_plic.h: Fix PLIC Memory Map</strong></a></p>
 <p>(Route Interrupts to Hart 1 in Supervisor Mode)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64d-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64d-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
 </ul>
 <p>Now we see UART Interrupts fired at <strong>NuttX IRQ 57</strong> (RISC-V IRQ 32) yay! </p>
@@ -728,22 +728,22 @@ $%^&amp;riscv_doirq: irq=57
 <p>Well we see Valid UART Interrupts for…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013"><strong>UART Transmit Ready</strong></a> (INTID_THRE)</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L1004-L1013"><strong>UART Transmit Ready</strong></a> (INTID_THRE)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L990-L1003"><strong>UART Input Received</strong></a> (INTID_RDA)</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L990-L1003"><strong>UART Input Received</strong></a> (INTID_RDA)</p>
 </li>
 </ul>
 <p>But most of the UART Interrupts are for…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L953-L967"><strong>UART Interrupt Status = 0</strong></a> (INTSTATUS)</li>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L953-L967"><strong>UART Interrupt Status = 0</strong></a> (INTSTATUS)</li>
 </ul>
 <p>Which means that we got interrupted…</p>
 <p><strong>FOR NO REASON AT ALL!!!</strong></p>
 <p><a href="https://lupyuen.github.io/articles/plic#appendix-fix-the-spurious-uart-interrupts">(<strong>UPDATE:</strong> We fixed the <strong>Spurious UART Interrupts</strong>!)</a></p>
 <p><em>Why? Maybe we should throttle the UART Interrupts?</em></p>
 <p>This definitely needs to be fixed, but for now we made a Quick Hack: <strong>Defer the Enabling of UART Interrupts</strong> till later.</p>
-<p>We comment out the UART Interrupt in <strong>u16550_attach</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L860-L871">uart_16550.c</a></p>
+<p>We comment out the UART Interrupt in <strong>u16550_attach</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L860-L871">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// When we attach to UART Interrupt...
 static int u16550_attach(struct uart_dev_s *dev) {
   ...
@@ -753,7 +753,7 @@ static int u16550_attach(struct uart_dev_s *dev) {
     // Changed this: Don&#39;t enable UART Interrupt yet
     // up_enable_irq(priv-&gt;irq);
 </code></pre></div>
-<p>And instead we enable the UART Interrupt in <strong>uart_write</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/serial.c#L1177-L1188">serial.c</a></p>
+<p>And instead we enable the UART Interrupt in <strong>uart_write</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L1177-L1188">serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static ssize_t uart_write(FAR struct file *filep, FAR const char *buffer, size_t buflen) {
   // Added this: Enable UART Interrupt
   // on the 4th print
@@ -796,11 +796,11 @@ system.........
 /.............................................................
 nsh&gt; 
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64d-0.0.1">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64d-0.0.1">(See the <strong>Complete Log</strong>)</a></p>
 <p>Yep NuttX Shell works OK on Star64!</p>
-<p>But it’s super slow. Each dot is <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>One Million Calls</strong></a> to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>! </p>
+<p>But it’s super slow. Each dot is <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>One Million Calls</strong></a> to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>! </p>
 <p><a href="https://lupyuen.github.io/articles/plic#appendix-fix-the-spurious-uart-interrupts">(<strong>UPDATE:</strong> We fixed the <strong>Spurious UART Interrupts</strong>!)</a></p>
-<p><em>Why is UART Interrupt triggered repeatedly with <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966">INTSTATUS = 0</a>?</em></p>
+<p><em>Why is UART Interrupt triggered repeatedly with <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966">INTSTATUS = 0</a>?</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/issues/18"><strong>Michael Engel</strong></a> says it’s a DesignWare UART issue…</p>
 <blockquote>
 <p>“The JH7110 uses a DesignWare UART component which has some “interesting” extra features. The spurious interrupts are probably caused by a busy interrupt generated by the UART (which is caused by writing the LCR when the chip is busy). If this interrupt is not cleared, you’ll end up in an interrupt storm.“</p>
@@ -817,7 +817,7 @@ nsh&gt;
 <p><em>We seem to be rushing?</em></p>
 <p>Well NuttX Star64 might get stale and out of sync with NuttX Mainline.</p>
 <p>We better chop chop hurry up and <a href="https://lupyuen.github.io/articles/pr"><strong>merge with NuttX Mainline</strong></a> soon!</p>
-<p>(So amazing that NuttX Apps and Context Switching are OK… Even though we haven’t implemented the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L200-L209"><strong>RISC-V Timer</strong></a>!)</p>
+<p>(So amazing that NuttX Apps and Context Switching are OK… Even though we haven’t implemented the <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L200-L209"><strong>RISC-V Timer</strong></a>!)</p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>NuttX on Star64 JH7110 RISC-V SBC is almost ready!</p>
 <ul>

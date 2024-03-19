@@ -256,7 +256,7 @@
 #define A64_USBOTG_HCOR_BASE (A64_USBOTG_HCCR_BASE + 0x10)
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/usb3#usb-enhanced-host-controller-interface">(EHCI Base Address is <strong><code>0x01C1</code> <code>B000</code></strong>)</a></p>
-<p>We start the USB EHCI Driver in the <strong>PinePhone Bringup Function</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/usb/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L208-L213">pinephone_bringup.c</a></p>
+<p>We start the USB EHCI Driver in the <strong>PinePhone Bringup Function</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/usb/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L208-L213">pinephone_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int pinephone_bringup(void) {
   ...
   // Start the USB EHCI Driver

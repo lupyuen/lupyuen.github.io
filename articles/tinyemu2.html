@@ -454,7 +454,7 @@ raise_exception2:
 <p><a href="https://gist.github.com/lupyuen/eac7ee6adac459c14b951d3db82efa8e#file-ox64-tinyemu-log-L223-L236">(See the <strong>Complete Log</strong>)</a></p>
 <p>We track down the offending Code Address: <strong><code>0x8000_19C6</code></strong></p>
 <p><em>Someplace in NuttX Kernel?</em></p>
-<p>This address comes from the Virtual Memory of a <strong>NuttX App</strong> (not the NuttX Kernel): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/heapcrash/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30">nsh/defconfig</a></p>
+<p>This address comes from the Virtual Memory of a <strong>NuttX App</strong> (not the NuttX Kernel): <a href="https://github.com/lupyuen2/wip-nuttx/blob/heapcrash/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Virtual Memory of NuttX Apps:
 ## Code, Data and Heap
 CONFIG_ARCH_TEXT_VBASE=0x80000000
