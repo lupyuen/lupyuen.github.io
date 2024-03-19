@@ -617,7 +617,7 @@ Earlier we talked about the steps to power up the __Display Subsystem__ and __Di
 
 - [__"Clocks and Resets for Display Controller"__](https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller)
 
-This is how we implement the steps in our __NuttX Display Driver__: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L290)
+This is how we implement the steps in our __NuttX Display Driver__: [jh7110_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L290)
 
 ```c
 // Power Up the Power Management Unit
@@ -723,7 +723,7 @@ But we have a problem with __Incomplete and Incorrect Docs__, see the next secti
 
 _Who starts our Display Driver?_
 
-At Startup, our NuttX Driver will be called from [__board_late_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L290).
+At Startup, our NuttX Driver will be called from [__board_late_initialize__](https://github.com/lupyuen2/wip-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L290).
 
 [(See the __NuttX Boot Sequence__)](https://lupyuen.github.io/articles/release#nuttx-startup-explained)
 
@@ -819,7 +819,7 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
 1.  [__Deassert the Resets__](https://lupyuen.github.io/articles/display3#u-boot-script-to-power-up-the-display-subsystem) for Video Output (Display Subsystem)
 
-1.  Verify that [__Video Output (Display Subsystem) is up__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L203-L207)
+1.  Verify that [__Video Output (Display Subsystem) is up__](https://github.com/lupyuen2/wip-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L203-L207)
 
 1.  [__Enable the Clocks__](https://lupyuen.github.io/articles/display3#clocks-and-resets-for-display-controller) for DC8200 Display Controller (HDMI)
 
@@ -870,7 +870,7 @@ The __JH7110 Display Driver (HDMI)__ that we create for NuttX (and other Operati
 
     Why is the [__HDMI Display Unstable__](https://github.com/starfive-tech/u-boot/commit/26a31fa6bc9debeb71df0a0f9a715ac8e46cff1c)?
 
-Our JH7110 Display Driver is partially implemented here: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
+Our JH7110 Display Driver is partially implemented here: [jh7110_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/hdmi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L136-L270)
 
 __TODO__: Implement the [__JH7110 I2C Driver__](https://doc-en.rvspace.org/VisionFive2/DG_I2C/JH7110_SDK/source_code_structure_i2c.html) (based on [__DesignWare I2C__](https://github.com/torvalds/linux/blob/master/drivers/i2c/busses/i2c-designware-core.h)) so we can control the PMIC. This NuttX I2C Driver might work: [__cxd56_i2c.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/cxd56xx/cxd56_i2c.c)
 

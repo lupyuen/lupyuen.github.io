@@ -1159,7 +1159,7 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
 -   __Touch Panel I2C SCK / SDA__ are at __TWI0 SCK / SDA__
 
-We have validated the following based on our [__Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355)...
+We have validated the following based on our [__Test Code__](https://github.com/lupyuen2/wip-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355)...
 
 -   __I2C Address__ is __0x5D__
 

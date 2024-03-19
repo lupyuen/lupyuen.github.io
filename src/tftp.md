@@ -168,9 +168,9 @@ _How to copy the Kernel to our TFTP Server?_
 
 We build __Apache NuttX RTOS__ with these steps...
 
-- [__"Apache NuttX RTOS for Star64"__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
+- [__"Apache NuttX RTOS for Star64"__](https://github.com/lupyuen2/wip-nuttx/releases/tag/star64-0.0.1)
 
-This produces the [__NuttX Kernel Image `nuttx.bin`__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx.bin) that we'll copy to our TFTP Folder...
+This produces the [__NuttX Kernel Image `nuttx.bin`__](https://github.com/lupyuen2/wip-nuttx/releases/download/star64-0.0.1/nuttx.bin) that we'll copy to our TFTP Folder...
 
 ```bash
 ## Copy NuttX Binary Image `nuttx.bin` to TFTP Folder

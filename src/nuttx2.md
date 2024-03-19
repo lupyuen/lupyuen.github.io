@@ -144,7 +144,7 @@ li  t1, 0x33
 sb  t1, 0(t0)
 ```
 
-[(Previously here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93)
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93)
 
 [(__`li`__ loads a Value into a Register)](https://lupyuen.github.io/articles/riscv#other-instructions)
 
@@ -294,7 +294,7 @@ SECTIONS
 
 _We're sure this is correct?_
 
-We check the __RISC-V Disassembly__ of our NuttX Kernel: [nuttx.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx.S)
+We check the __RISC-V Disassembly__ of our NuttX Kernel: [nuttx.S](https://github.com/lupyuen2/wip-nuttx/releases/download/star64-0.0.1/nuttx.S)
 
 ```text
 0000000040200000 <__start>:
@@ -328,13 +328,13 @@ Then we tweak it to __boot on Star64__ (and rebuild)...
 
 This produces the __NuttX ELF Image__ for Star64...
 
-- [__nuttx: NuttX ELF Image__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx)
+- [__nuttx: NuttX ELF Image__](https://github.com/lupyuen2/wip-nuttx/releases/download/star64-0.0.1/nuttx)
 
-- [See the __Build Steps__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
+- [See the __Build Steps__](https://github.com/lupyuen2/wip-nuttx/releases/tag/star64-0.0.1)
 
-- [See the __Modified Files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/31/files)
+- [See the __Modified Files__](https://github.com/lupyuen2/wip-nuttx/pull/31/files)
 
-- [See the __Build Outputs__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
+- [See the __Build Outputs__](https://github.com/lupyuen2/wip-nuttx/releases/tag/star64-0.0.1)
 
 _How to boot NuttX on microSD?_
 
@@ -429,7 +429,7 @@ _What's at `0x4020` `005C`?_
 
 _Why did it crash NuttX?_
 
-We look up our __NuttX RISC-V Disassembly nuttx.S__ and see this in our Boot Code: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103)
+We look up our __NuttX RISC-V Disassembly nuttx.S__ and see this in our Boot Code: [qemu_rv_head.S](https://github.com/lupyuen2/wip-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103)
 
 ```text
 nuttx/arch/risc-v/src/chip/qemu_rv_head.S:95
@@ -526,7 +526,7 @@ _How will NuttX get the Hart ID from OpenSBI?_
 
 Thankfully OpenSBI will pass the Hart ID to NuttX through [__Register A0__](https://lupyuen.github.io/articles/nuttx2#appendix-hart-id-from-opensbi).
 
-So this (overly-powerful) line in our [__NuttX Boot Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103)...
+So this (overly-powerful) line in our [__NuttX Boot Code__](https://github.com/lupyuen2/wip-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103)...
 
 ```text
 /* Load the Hart ID (CPU ID) */
@@ -589,11 +589,11 @@ Here's the updated NuttX Boot Code and our analysis...
 
 - [__NuttX in Supervisor Mode__](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode)
 
-- [See the __Build Steps__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
+- [See the __Build Steps__](https://github.com/lupyuen2/wip-nuttx/releases/tag/star64-0.0.1)
 
-- [See the __Modified Files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/31/files)
+- [See the __Modified Files__](https://github.com/lupyuen2/wip-nuttx/pull/31/files)
 
-- [See the __Build Outputs__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
+- [See the __Build Outputs__](https://github.com/lupyuen2/wip-nuttx/releases/tag/star64-0.0.1)
 
 _What happens when we run this?_
 
@@ -606,7 +606,7 @@ clk u5_dw_i2c_clk_apb already disabled
 123067
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
+[(Source)](https://github.com/lupyuen2/wip-nuttx/releases/tag/star64-0.0.1)
 
 Now we're smokin' hot...
 
@@ -956,7 +956,7 @@ _Why will we use NuttX Kernel Mode?_
 tools/configure.sh rv-virt:knsh64
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
+[(Source)](https://github.com/lupyuen2/wip-nuttx/releases/tag/star64-0.0.1)
 
 We use `rv-virt:knsh64` (NuttX Kernel Mode) instead of `rv-virt:nsh64` (NuttX Flat Mode) so that NuttX will run in __RISC-V Supervisor Mode__. (Instead of RISC-V Machine Mode)
 

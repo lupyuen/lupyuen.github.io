@@ -54,7 +54,7 @@ We begin by __creating our forks__ for the __`nuttx`__ and __`apps`__ repositori
 
     ![Create Branch](https://lupyuen.github.io/images/pr-branch.png)
 
-    [(I named my branch __`gic`__ for Generic Interrupt Controller)](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/gic)
+    [(I named my branch __`gic`__ for Generic Interrupt Controller)](https://github.com/lupyuen2/wip-nuttx/tree/gic)
 
 1.  Do the same for our __NuttX Apps Repository__
 
@@ -63,17 +63,17 @@ We begin by __creating our forks__ for the __`nuttx`__ and __`apps`__ repositori
 1.  Download the new branches of our __`nuttx`__ and __`apps`__ repositories...
 
     ```bash
-    ## Download the "gic" branch of "lupyuen2/wip-pinephone-nuttx"
+    ## Download the "gic" branch of "lupyuen2/wip-nuttx"
     ## TODO: Change the branch name and repo URLs
     mkdir nuttx
     cd nuttx
     git clone \
       --branch gic \
-      https://github.com/lupyuen2/wip-pinephone-nuttx \
+      https://github.com/lupyuen2/wip-nuttx \
       nuttx
     git clone \
       --branch gic \
-      https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+      https://github.com/lupyuen2/wip-nuttx-apps \
       apps
     ```
 

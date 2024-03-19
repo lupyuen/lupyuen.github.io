@@ -213,7 +213,7 @@ That's why we customised the __EHCI Register Addresses__ specially for PinePhone
 
 [(EHCI Base Address is __`0x01C1` `B000`__)](https://lupyuen.github.io/articles/usb3#usb-enhanced-host-controller-interface)
 
-We start the USB EHCI Driver in the __PinePhone Bringup Function__: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/usb/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L208-L213)
+We start the USB EHCI Driver in the __PinePhone Bringup Function__: [pinephone_bringup.c](https://github.com/lupyuen2/wip-nuttx/blob/usb/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L208-L213)
 
 ```c
 int pinephone_bringup(void) {

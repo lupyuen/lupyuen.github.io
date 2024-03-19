@@ -96,7 +96,7 @@ OpenSBI runs in [__RISC-V Machine Mode__](https://lupyuen.github.io/articles/pri
 
 _How to call OpenSBI from our code?_
 
-Suppose we're calling OpenSBI to print something to the [__Serial Console__](https://lupyuen.github.io/articles/linux#serial-console-on-star64) like so: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L154-L301)
+Suppose we're calling OpenSBI to print something to the [__Serial Console__](https://lupyuen.github.io/articles/linux#serial-console-on-star64) like so: [jh7110_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L154-L301)
 
 ```c
 // After NuttX Kernel boots on JH7110...
@@ -140,7 +140,7 @@ _What's this ecall to SBI?_
 
 Remember that OpenSBI runs in (super-privileged) __RISC-V Machine Mode__. And our code runs in (less-privileged) __RISC-V Supervisor Mode__.
 
-To jump from Supervisor Mode to Machine Mode, we execute the [__`ecall` RISC-V Instruction__](https://five-embeddev.com/quickref/instructions.html#-rv32--rv32) like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L406-L437)
+To jump from Supervisor Mode to Machine Mode, we execute the [__`ecall` RISC-V Instruction__](https://five-embeddev.com/quickref/instructions.html#-rv32--rv32) like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L406-L437)
 
 ```c
 // Make an `ecall` to OpenSBI. Based on
@@ -183,7 +183,7 @@ static struct sbiret sbi_ecall(
 }
 ```
 
-[(__sbiret__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L277-L284)
+[(__sbiret__ is defined here)](https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L277-L284)
 
 [(See the __RISC-V Disassembly__)](https://gist.github.com/lupyuen/4cd98a4075d5b528940095b39fd5b445)
 
@@ -209,7 +209,7 @@ Let's find out!
 
     Replace the contents of that file by this __Test Code__...
 
-    [__jh7110_appinit.c: OpenSBI Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c)
+    [__jh7110_appinit.c: OpenSBI Test Code__](https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c)
 
 1.  Rebuild the __NuttX Kernel__...
 
@@ -271,7 +271,7 @@ And this function [__prints a single character__](https://github.com/riscv-non-i
 
 - __Parameter 0:__ Character to be printed
 
-This is how we print to the __Debug Console__: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L301-L329)
+This is how we print to the __Debug Console__: [jh7110_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L301-L329)
 
 ```c
 // Print `456` to Debug Console as a String.
@@ -301,7 +301,7 @@ _info("debug_console_write_byte: value=%d, error=%d\n", sret.value, sret.error);
 // Omitted: Do the same, but print `8` and `9`
 ```
 
-But our Test Code fails with error [__NOT_SUPPORTED__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277) (pic above)...
+But our Test Code fails with error [__NOT_SUPPORTED__](https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L266-L277) (pic above)...
 
 ```text
 debug_console_write:
@@ -329,7 +329,7 @@ To get the [__SBI Spec Version__](https://github.com/riscv-non-isa/riscv-sbi-doc
 
 - __Function ID:__ 0 (SBI Spec Version)
 
-Like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L329-L335)
+Like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L329-L335)
 
 ```c
 // Get SBI Spec Version
@@ -396,7 +396,7 @@ SBI lets us [__Probe its Extensions__](https://github.com/riscv-non-isa/riscv-sb
 
 - __Parameter 0:__ Extension ID to be probed
 
-Like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L365-L375)
+Like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L365-L375)
 
 ```c
 // Probe SBI Extension: Base Extension
@@ -457,7 +457,7 @@ We call [__Hart State Management (HSM)__](https://github.com/riscv-non-isa/riscv
 
 [(Not to be confused with Hardware Security Module)](https://en.wikipedia.org/wiki/Hardware_security_module)
 
-Here's how: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L375-L383)
+Here's how: [jh7110_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L375-L383)
 
 ```c
 // For each Hart ID from 0 to 5...
@@ -537,7 +537,7 @@ Yep! OpenSBI supports [__System Reset__](https://github.com/riscv-non-isa/riscv-
 
 - __Warm Reboot__: "power cycle of main processor and parts of the system but not the entire system"
 
-Which we call like so: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L389-L403)
+Which we call like so: [jh7110_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L389-L403)
 
 ```c
 // System Reset: Shutdown
@@ -616,7 +616,7 @@ _NuttX / Linux Kernel runs in RISC-V Supervisor Mode (not Machine Mode)..._
 
 _How will it control the System Timer?_
 
-That's why OpenSBI provides the [__Set Timer__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0) function: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L383-L389)
+That's why OpenSBI provides the [__Set Timer__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0) function: [jh7110_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L383-L389)
 
 ```c
 // Set Timer
@@ -651,7 +651,7 @@ _Earlier we called OpenSBI to fetch the SBI Spec Version..._
 
 _What else can we fetch from OpenSBI?_
 
-We can snoop a whole bunch of [__System Info__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#4-base-extension-eid-0x10) like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L335-L365)
+We can snoop a whole bunch of [__System Info__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#4-base-extension-eid-0x10) like this: [jh7110_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L335-L365)
 
 ```c
 // Get SBI Implementation ID: EID 0x10, FID 1

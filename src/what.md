@@ -125,9 +125,9 @@ Let's make a __Bootable microSD__ that will start NuttX (in RAM) on our PinePhon
     Write the downloaded image to a microSD Card with
 [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
-1.  Download __`Image.gz`__ from the [__NuttX Release__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.2)...
+1.  Download __`Image.gz`__ from the [__NuttX Release__](https://github.com/lupyuen2/wip-nuttx/releases/tag/nuttx-12.0.2)...
 
-    [__Image.gz: NuttX Image for PinePhone__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.2/Image.gz)
+    [__Image.gz: NuttX Image for PinePhone__](https://github.com/lupyuen2/wip-nuttx/releases/download/nuttx-12.0.2/Image.gz)
 
     (If we prefer to __build NuttX__ ourselves: [__Follow these steps__](https://lupyuen.github.io/articles/lvgl2#appendix-build-apache-nuttx-rtos-for-pinephone))
 

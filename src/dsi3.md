@@ -613,7 +613,7 @@ Here's the __Test Log__ for our Zig Test Program running on NuttX and PinePhone.
 
 _What about Unit Testing? Can we test the MIPI DSI Driver without Zig?_
 
-Yep! Our MIPI DSI Driver simply writes values to a bunch of A64 Hardware Registers, like so: [a64_mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm64/src/a64/a64_mipi_dsi.c#L633-L646)
+Yep! Our MIPI DSI Driver simply writes values to a bunch of A64 Hardware Registers, like so: [a64_mipi_dsi.c](https://github.com/lupyuen2/wip-nuttx/blob/dsi/arch/arm64/src/a64/a64_mipi_dsi.c#L633-L646)
 
 ```c
 // DSI Configuration Register 1 (A31 Page 846)
@@ -1062,7 +1062,7 @@ To turn on the Display Backlight, we'll call PIO and PWM in our new __Board LCD 
 
 We'll convert the above Backlight Driver from Zig to C. Work-in-progress...
 
--   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
+-   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
 
 ## LCD Panel
 
@@ -1084,7 +1084,7 @@ Also we'll add the code to send the __Initialisation Commands__ to the ST7703 LC
 
 We're converting the above from Zig to C.  Work-in-progress...
 
--   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
+-   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
 
 ## Power Management Integrated Circuit
 
@@ -1102,5 +1102,5 @@ We'll control the PMIC over RSB in our new __Board LCD Driver__ for NuttX...
 
 We'll convert the above drivers from Zig to C. Work-in-progress for Reduced Serial Bus Driver and PMIC Driver...
 
--   [__arch/arm64/src/a64/a64_rsb.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb/arch/arm64/src/a64/a64_rsb.c)
--   [__boards/arm64/a64/pinephone/src/pinephone_pmic.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c)
+-   [__arch/arm64/src/a64/a64_rsb.c__](https://github.com/lupyuen2/wip-nuttx/blob/rsb/arch/arm64/src/a64/a64_rsb.c)
+-   [__boards/arm64/a64/pinephone/src/pinephone_pmic.c__](https://github.com/lupyuen2/wip-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c)

@@ -78,7 +78,7 @@ And we successfully printed to UART...
 *(volatile uint8_t *) 0x10000000 = 'A';
 ```
 
-[(Previously here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159)
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159)
 
 But strangely it loops forever waiting for the UART Port to be ready!
 
@@ -496,7 +496,7 @@ Hence Kernel Mode is a lot more secure than the normal __NuttX Flat Mode__, whic
 
 _Does it work?_
 
-When we `grep` for __`csr` Instructions__ in the rebuilt NuttX Disassembly [__nuttx.S__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S)...
+When we `grep` for __`csr` Instructions__ in the rebuilt NuttX Disassembly [__nuttx.S__](https://github.com/lupyuen2/wip-nuttx/releases/download/star64a-0.0.1/nuttx.S)...
 
 We see (nearly) all Machine-Mode __`m`__ Registers replaced by Supervisor-Mode __`s`__ Registers.
 
@@ -632,11 +632,11 @@ We'll find out why in the next article!
 
 __TODO:__ Port [__up_mtimer_initialize__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210) to Star64
 
-[(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/32/files)
+[(See the __Modified Files__)](https://github.com/lupyuen2/wip-nuttx/pull/32/files)
 
-[(See the __Build Steps__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1)
+[(See the __Build Steps__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/star64a-0.0.1)
 
-[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1)
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/star64a-0.0.1)
 
 ![Semihosting on RISC-V NuttX](https://lupyuen.github.io/images/privilege-semihosting.jpg)
 

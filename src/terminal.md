@@ -110,7 +110,7 @@ And eventually we'll understand the Source Code...
 
     [(How to compile LVGL Terminal)](https://github.com/lupyuen/lvglterm)
 
-    [(Download the NuttX Image for PinePhone)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.2)
+    [(Download the NuttX Image for PinePhone)](https://github.com/lupyuen2/wip-nuttx/releases/tag/nuttx-12.0.2)
 
 We begin by starting the NSH Task and piping a command to NSH Shell...
 
@@ -265,7 +265,7 @@ We're ready to test this!
 
 ## Test the Pipes
 
-Finally we add some __Test Code__ to verify that everything works: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L292-L338)
+Finally we add some __Test Code__ to verify that everything works: [lvgldemo.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L292-L338)
 
 ```c
 // Send a command to NSH stdin
@@ -314,7 +314,7 @@ nsh> ls
 nsh>
 ```
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L340-L390)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L340-L390)
 
 _What about NSH Error Output?_
 
@@ -440,7 +440,7 @@ And if there's nothing waiting to be read, __`has_input`__ returns False (due to
 has_input: timeout: fd=8
 ```
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L403-L556)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L403-L556)
 
 We've solved our problem of Blocking Reads from NSH Output, by polling for NSH Output!
 

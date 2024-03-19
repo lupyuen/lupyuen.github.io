@@ -116,7 +116,7 @@ We experimented with the Touch Panel (Bare Metal with NuttX) and discovered thes
 
     (Goodix GT917S Touch Panel)
 
-Based on the above settings, we wrote this __Test Code__ that runs in the NuttX Kernel: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355)
+Based on the above settings, we wrote this __Test Code__ that runs in the NuttX Kernel: [pinephone_bringup.c](https://github.com/lupyuen2/wip-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355)
 
 ```c
 // Read Product ID from Touch Panel over I2C
@@ -201,7 +201,7 @@ _How do we poll PH4?_
 
 We read PH4 as a __GPIO Input__. When we touch the Touch Panel, PH4 goes from __Low to High__.
 
-This is how we poll PH4: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L283-L317)
+This is how we poll PH4: [pinephone_bringup.c](https://github.com/lupyuen2/wip-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L283-L317)
 
 ```c
 // Test Touch Panel Interrupt by Polling as GPIO Input.
@@ -265,7 +265,7 @@ Thus our simple loop simulates an __Interrupt Handler__!
 
 _How do we open the I2C Port?_
 
-On NuttX, this is how we __open the I2C Port__ and pass it to the above loop: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L158-L170)
+On NuttX, this is how we __open the I2C Port__ and pass it to the above loop: [pinephone_bringup.c](https://github.com/lupyuen2/wip-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L158-L170)
 
 ```c
 // Open Allwinner A64 Port TWI0 for I2C
@@ -276,7 +276,7 @@ struct i2c_master_s *i2c =
 touch_panel_initialize(i2c);
 ```
 
-We insert this code at the end of the [__PinePhone Bringup Function__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L57-L175), so that NuttX Kernel will run it at the end of startup.
+We insert this code at the end of the [__PinePhone Bringup Function__](https://github.com/lupyuen2/wip-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L57-L175), so that NuttX Kernel will run it at the end of startup.
 
 (Yes it sounds hacky, but it's a simple way to do Kernel Experiments)
 
@@ -312,7 +312,7 @@ Based on the [__GT911 Reference Code__](https://github.com/DiveInEmbedded/GT911-
 
 (This won't support Multitouch, more about this later)
 
-Here is our code: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L338-L370)
+Here is our code: [pinephone_bringup.c](https://github.com/lupyuen2/wip-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L338-L370)
 
 ```c
 // I2C Registers for Touch Panel
@@ -363,9 +363,9 @@ static void touch_panel_read(
 }
 ```
 
-[(__touch_panel_i2c_read__ reads from the I2C Touch Panel)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L372-L415)
+[(__touch_panel_i2c_read__ reads from the I2C Touch Panel)](https://github.com/lupyuen2/wip-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L372-L415)
 
-[(__touch_panel_set_status__ sets the I2C Touch Panel Status)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L417-L447)
+[(__touch_panel_set_status__ sets the I2C Touch Panel Status)](https://github.com/lupyuen2/wip-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L417-L447)
 
 Let's run the code...
 
@@ -941,7 +941,7 @@ _Why the Duplicate Touch Points?_
 
 Right now we ignore __Duplicate Touch Points__, because we saw the Touch Panel generating duplicate points. [(See this)](https://gist.github.com/lupyuen/52bd626001f94e279c736979e074aac9)
 
-[(We added the logs here)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/touch2/graphics/lvgl/port/lv_port_touchpad.c#L83-L99)
+[(We added the logs here)](https://github.com/lupyuen2/wip-nuttx-apps/blob/touch2/graphics/lvgl/port/lv_port_touchpad.c#L83-L99)
 
 The Touch Panel seems to be producing __Touch Up Events__... Even though the 6-byte Touch Data looks identical for the Touch Down and Touch Up Events. [(See this)](https://gist.github.com/lupyuen/fc88153b915894dbdaefcb5a916232fe)
 
@@ -1039,7 +1039,7 @@ Earlier we said that PinePhone's Touch Panel fires an __interrupt at PH4__ when 
 
 -   [__"Goodix GT917S Touch Panel"__](https://lupyuen.github.io/articles/touch2#goodix-gt917s-touch-panel)
 
-This is how we attach our __Interrupt Handler__ to PH4 in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329)
+This is how we attach our __Interrupt Handler__ to PH4 in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329)
 
 ```c
 // Touch Panel Interrupt (CTP-INT) is at PH4
@@ -1188,7 +1188,7 @@ We could start a Background Thread that will be notified when the screen is touc
 
 Or we can run a simple loop that checks whether the __Interrupt Pending Flag is set__ by our Interrupt Handler.
 
-Let's test the simple way: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L293-L309)
+Let's test the simple way: [pinephone_bringup.c](https://github.com/lupyuen2/wip-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L293-L309)
 
 ```c
 // Poll for Touch Panel Interrupt
@@ -1325,7 +1325,7 @@ __NuttX will be overwhelmed__ handling Touch Input Interrupts 100% of the time. 
 
 _What if we limit the interrupts?_
 
-Previously we tried __throttling the interrupts__ from the Touch Panel. We __disable the Touch Panel Interrupt__ if we're still waiting for it to be processed: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/d535cee56c5a362db04ad0f69a13d4c16a47936d/drivers/input/gt9xx.c#L856-L870)
+Previously we tried __throttling the interrupts__ from the Touch Panel. We __disable the Touch Panel Interrupt__ if we're still waiting for it to be processed: [gt9xx.c](https://github.com/lupyuen2/wip-nuttx/blob/d535cee56c5a362db04ad0f69a13d4c16a47936d/drivers/input/gt9xx.c#L856-L870)
 
 ```c
 // Interrupt Handler for Touch Panel, with Throttling and Forwarding
@@ -1354,7 +1354,7 @@ _Is it OK to throttle interrupts?_
 
 Between calls to __`read()`__, our driver might __fail to detect__ some Touch Input Events.
 
-This happens because we throttle the Touch Panel Interrupts, and we re-enable them only when __`read()`__ is called. [(Like this)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/d535cee56c5a362db04ad0f69a13d4c16a47936d/drivers/input/gt9xx.c#L495-L500)
+This happens because we throttle the Touch Panel Interrupts, and we re-enable them only when __`read()`__ is called. [(Like this)](https://github.com/lupyuen2/wip-nuttx/blob/d535cee56c5a362db04ad0f69a13d4c16a47936d/drivers/input/gt9xx.c#L495-L500)
 
 Interrupts that fire before __`read()`__ will likely get ignored.
 

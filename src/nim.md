@@ -50,7 +50,7 @@ First we say hello to Nim...
 
 _(3 languages in a title heh heh)_
 
-This is the __simplest Nim Program__ that will run on NuttX: [hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63)
+This is the __simplest Nim Program__ that will run on NuttX: [hello_nim_async.nim](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63)
 
 ```nim
 ## Main Function in Nim.
@@ -80,7 +80,7 @@ And Nim works with [__Garbage Collection__](https://en.wikipedia.org/wiki/Garbag
 
 _What if we forget to call GC_runOrc?_
 
-Erm don't! To make it unforgettable, we [__`defer`__](https://nim-lang.org/docs/manual.html#exception-handling-defer-statement) the Garbage Collection: [hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63)
+Erm don't! To make it unforgettable, we [__`defer`__](https://nim-lang.org/docs/manual.html#exception-handling-defer-statement) the Garbage Collection: [hello_nim_async.nim](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63)
 
 ```nim
 ## Main Function in Nim
@@ -97,7 +97,7 @@ proc hello_nim() {.exportc, cdecl.} =
 
 Now we do something cool and enlightening...
 
-([__hello_nim__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67) is called by our C Program [__hello_nim_main.c__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_main.c#L35-L42))
+([__hello_nim__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67) is called by our C Program [__hello_nim_main.c__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_main.c#L35-L42))
 
 [(Should we call __GC_runOrc__?)](https://news.ycombinator.com/item?id=38828619)
 
@@ -105,7 +105,7 @@ Now we do something cool and enlightening...
 
 # Blink an LED
 
-This is how we __blink an LED__ with Nim on NuttX: [hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L19-L50)
+This is how we __blink an LED__ with Nim on NuttX: [hello_nim_async.nim](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L19-L50)
 
 ```nim
 ## Blink the LED
@@ -169,7 +169,7 @@ Finally we flip __LED 0 to Off__...
   c_usleep(1000_000)
 ```
 
-In our [__Main Function__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67): We call the above function __20 times__ to blink our LED (pic below)...
+In our [__Main Function__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67): We call the above function __20 times__ to blink our LED (pic below)...
 
 ```nim
 ## Main Function in Nim
@@ -183,7 +183,7 @@ proc hello_nim() {.exportc, cdecl.} =
     blink_led()
 ```
 
-[(Looks mighty similar to the __C Version__)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85)
+[(Looks mighty similar to the __C Version__)](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85)
 
 And we're almost done! Nim needs to discover our NuttX Functions...
 
@@ -193,7 +193,7 @@ And we're almost done! Nim needs to discover our NuttX Functions...
 
 _How will Nim know about open, close, ioctl, usleep?_
 
-We __import the NuttX Functions__ from C into Nim: [hello_nim_async.nim](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L19)
+We __import the NuttX Functions__ from C into Nim: [hello_nim_async.nim](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L1-L19)
 
 ```nim
 ## Import NuttX Functions from C.
@@ -406,7 +406,7 @@ Nim looks like __any other C Program!__
 
 _Whoa! How is Nim compiled to C?_
 
-Our [__NuttX Makefile__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L37-L41) calls the Nim Compiler...
+Our [__NuttX Makefile__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L37-L41) calls the Nim Compiler...
 
 ```bash
 ## Compile Nim to C
@@ -415,7 +415,7 @@ cd apps/examples/hello_nim
 nim c --header hello_nim_async.nim 
 ```
 
-Nim Compiler compiles our [__Nim Program__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63)...
+Nim Compiler compiles our [__Nim Program__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63)...
 
 ```nim
 ## Nim Program that prints something
@@ -455,7 +455,7 @@ _How will NuttX compile this?_
 
 Nim Compiler generates the code above into the [__`.nimcache`__](https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar) folder.
 
-Our [__NuttX Makefile__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L31-L35) compiles everything inside [__`.nimcache`__](https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar) with the GCC Compiler...
+Our [__NuttX Makefile__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/Makefile#L31-L35) compiles everything inside [__`.nimcache`__](https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar) with the GCC Compiler...
 
 ```bash
 ## Compile everything in the .nimcache folder
@@ -472,7 +472,7 @@ Yep! Nim Compiler is internally wired to __produce NuttX Code__ (that GCC will c
 
 - [__Nim Support for NuttX__](https://github.com/nim-lang/Nim/pull/21372/files)
 
-- [__Nim Configuration for NuttX: config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/nim/config.nims)
+- [__Nim Configuration for NuttX: config.nims__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/config.nims)
 
 Kudos to [__centurysys__](https://github.com/apache/nuttx-apps/pull/1597) and the Nim Community for making this possible!
 
@@ -606,7 +606,7 @@ And we write the above values to __GPIO 29 Register__ at __`0x2000` `0938`__ (gp
 
 _How to flip the GPIO in our LED Driver?_
 
-We do this in our __NuttX LED Driver__: [bl808_userleds.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_userleds.c#L176-L209)
+We do this in our __NuttX LED Driver__: [bl808_userleds.c](https://github.com/lupyuen2/wip-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_userleds.c#L176-L209)
 
 ```c
 // Flip the LEDs On and Off according to the LED Set
@@ -643,11 +643,11 @@ void board_userled_all(uint32_t ledset) {
 
 That's how we created a barebones LED Driver for Ox64!
 
-[(Remember to add the __Auto LED Driver__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_autoleds.c)
+[(Remember to add the __Auto LED Driver__)](https://github.com/lupyuen2/wip-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_autoleds.c)
 
-[(And update the __Board Kconfig__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64)
+[(And update the __Board Kconfig__)](https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64)
 
-[(And start our __LED Driver__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_appinit.c#L167-L179)
+[(And start our __LED Driver__)](https://github.com/lupyuen2/wip-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_appinit.c#L167-L179)
 
 _Ahem it looks a little messy..._
 
@@ -664,7 +664,7 @@ bl808_gpio_write(  // Write to the GPIO Output...
 );
 ```
 
-[(See the __Upcoming GPIO Driver__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/52)
+[(See the __Upcoming GPIO Driver__)](https://github.com/lupyuen2/wip-nuttx/pull/52)
 
 _Anything else we patched?_
 
@@ -724,18 +724,18 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for QEMU RISC-V (64-bit)__ that has Minor Fixes for Nim...
 
-- [__nsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-dd54e0076f30825f912248f2424460e3126c2a8f4e2880709f5c68af9342ddcf): NuttX Config for QEMU
+- [__nsh64/defconfig__](https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-dd54e0076f30825f912248f2424460e3126c2a8f4e2880709f5c68af9342ddcf): NuttX Config for QEMU
 
-- [__qemu_rv_autoleds.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-5905dc63d5fd592e0a1e25ab25783ae99e54180a7b98fb59f56a73dee79104e6)
+- [__qemu_rv_autoleds.c__](https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-5905dc63d5fd592e0a1e25ab25783ae99e54180a7b98fb59f56a73dee79104e6)
 : Auto LED Driver for QEMU
 
-- [__qemu_rv_userleds.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-a6fd389669ddef88302f00a34d401479886cb8983f7be58b32ba075699cb5bb8): User LED Driver for QEMU
+- [__qemu_rv_userleds.c__](https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-a6fd389669ddef88302f00a34d401479886cb8983f7be58b32ba075699cb5bb8): User LED Driver for QEMU
 
-- [__qemu_rv_appinit.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-beeaeb03fa5642002a542446c89251c9a7c5c1681cfe915387740ea0975e91b3): Start LED Driver
+- [__qemu_rv_appinit.c__](https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-beeaeb03fa5642002a542446c89251c9a7c5c1681cfe915387740ea0975e91b3): Start LED Driver
 
-- [__Makefile__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307): Nimcache has moved 2 folders up
+- [__Makefile__](https://github.com/lupyuen2/wip-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307): Nimcache has moved 2 folders up
 
-- [__config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879): Add support for 64-bit RISC-V
+- [__config.nims__](https://github.com/lupyuen2/wip-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879): Add support for 64-bit RISC-V
 
 First we install [__Nim Compiler__](https://nim-lang.org/install_unix.html) (only the Latest Dev Version supports NuttX)...
 
@@ -763,11 +763,11 @@ Then we download and build NuttX for __QEMU RISC-V (64-bit)__...
 ## Download the WIP NuttX Source Code
 git clone \
   --branch nim \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch nim \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Configure NuttX for QEMU RISC-V (64-bit)
@@ -854,19 +854,19 @@ Then rebuild and restart NuttX.
 
 In this article, we compiled a Work-In-Progress Version of __Apache NuttX RTOS for Ox64__ that has Minor Fixes for Nim...
 
-- [__nsh/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078): NuttX Config for Ox64
+- [__nsh/defconfig__](https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078): NuttX Config for Ox64
 
 - [__bl808_timerisr.c__](https://lupyuen.github.io/articles/nim#appendix-opensbi-timer-for-nuttx): RISC-V Timer for Ox64
 
-- [__bl808_autoleds.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-efdf5ed87983905c7021de03a7add73932da529d4312b80f948eb199c256b170): Auto LED Driver for Ox64
+- [__bl808_autoleds.c__](https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-efdf5ed87983905c7021de03a7add73932da529d4312b80f948eb199c256b170): Auto LED Driver for Ox64
 
 - [__bl808_userleds.c__](https://lupyuen.github.io/articles/nim#led-driver-for-ox64): User LED Driver for Ox64
 
-- [__bl808_appinit.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/47/files#diff-902a3cb106dc7153d030370077938ef28c9412d8b3434888fca8bbf1a1cfbd54): Start LED Driver for Ox64
+- [__bl808_appinit.c__](https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-902a3cb106dc7153d030370077938ef28c9412d8b3434888fca8bbf1a1cfbd54): Start LED Driver for Ox64
 
-- [__Makefile__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307): Nimcache has moved 2 folders up
+- [__Makefile__](https://github.com/lupyuen2/wip-nuttx-apps/pull/3/files#diff-7fb4194c7b9e7b17a2a650d4182f39fb0e932cc9bb566e9b580d22fa8a7b4307): Nimcache has moved 2 folders up
 
-- [__config.nims__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879): Add support for 64-bit RISC-V
+- [__config.nims__](https://github.com/lupyuen2/wip-nuttx-apps/pull/3/files#diff-be274e89063d9377278fad5fdcdd936e89d2f32efd7eb8eb8a6a83ac4c711879): Add support for 64-bit RISC-V
 
 First we install [__Nim Compiler__](https://nim-lang.org/install_unix.html) (only the Latest Dev Version supports NuttX)...
 
@@ -894,11 +894,11 @@ Then we download and build NuttX for __Ox64 BL808 SBC__...
 ## Download the WIP NuttX Source Code
 git clone \
   --branch nim \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch nim \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Configure NuttX for Ox64 BL808 RISC-V SBC
@@ -1029,11 +1029,11 @@ _The `sleep` command hangs in NuttX Shell. How to fix it?_
 
 That's because we haven't implemented the __RISC-V Timer__ for Ox64! We should call [__OpenSBI Supervisor Binary Interface__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358#toc-bare-metal-experiments-8) to handle the Timer...
 
-- [__Fix RISC-V Timer for Ox64__](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee)
+- [__Fix RISC-V Timer for Ox64__](https://github.com/lupyuen2/wip-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-535879ffd6d9fc8e7d84b37a88bdeb1609c4a90e3777150939a96bed18696aee)
 
-  (Ignore [riscv_mtimer.c](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-922834c58227800347b4486fa310c3570cd4014f200ac5ea0cd2e40764cefac4))
+  (Ignore [riscv_mtimer.c](https://github.com/lupyuen2/wip-nuttx/commit/57ea5f000636f739ac3cb8ea1e60936798f6c3a9#diff-922834c58227800347b4486fa310c3570cd4014f200ac5ea0cd2e40764cefac4))
 
-We only need to change the __Timer Initialisation__: [bl808_timerisr.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L116)
+We only need to change the __Timer Initialisation__: [bl808_timerisr.c](https://github.com/lupyuen2/wip-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L116)
 
 ```c
 // Timer Frequency
@@ -1048,7 +1048,7 @@ void up_timer_initialize(void) {
 }
 ```
 
-How it works: At startup, [__up_timer_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L98-L116) (above) calls...
+How it works: At startup, [__up_timer_initialize__](https://github.com/lupyuen2/wip-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L98-L116) (above) calls...
 
 - [__riscv_mtimer_initialize__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mtimer.c#L318-L332) which calls...
 
@@ -1060,13 +1060,13 @@ How it works: At startup, [__up_timer_initialize__](https://github.com/lupyuen2/
 
 - Which accesses the __RISC-V System Timer__
 
-Originally we set __MTIMER_FREQ__ to `10000000`: [bl808_timerisr.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48)
+Originally we set __MTIMER_FREQ__ to `10000000`: [bl808_timerisr.c](https://github.com/lupyuen2/wip-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48)
 
 ```c
 #define MTIMER_FREQ 10000000
 ```
 
-But this causes the command __`sleep 1`__ to pause for 10 seconds. So we divide the frequency by 10: [bl808_timerisr.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48)
+But this causes the command __`sleep 1`__ to pause for 10 seconds. So we divide the frequency by 10: [bl808_timerisr.c](https://github.com/lupyuen2/wip-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48)
 
 ```c
 #define MTIMER_FREQ 1000000

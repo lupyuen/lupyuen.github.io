@@ -850,7 +850,7 @@ riscv_exception: EXCEPTION: Store/AMO page fault.
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/84ceeb5bd4eed98d9d1a3cd83d712dab)
 
-The Invalid Address `0x8020_0000` is the Virtual Address of the __Dynamic Heap__ (`malloc`) for the `hello` app: [boards/risc-v/bl808/ox64/configs/nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/nuttx-12.4.0-RC0/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L20)
+The Invalid Address `0x8020_0000` is the Virtual Address of the __Dynamic Heap__ (`malloc`) for the `hello` app: [boards/risc-v/bl808/ox64/configs/nsh/defconfig](https://github.com/lupyuen2/wip-nuttx/blob/nuttx-12.4.0-RC0/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L20)
 
 ```bash
 ## NuttX Config for Ox64
@@ -942,7 +942,7 @@ We execute 2 RISC-V Instructions that are __specific to T-Head C906__...
 
   (Looks similar to __SYNC__ and __SYNC.I__ from [__C906 User Manual__](https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf), Page 559)
 
-This is how we __Flush the MMU Cache__ for T-Head C906: [arch/risc-v/src/bl808/bl808_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/bl808/bl808_mm_init.c#L299-L323)
+This is how we __Flush the MMU Cache__ for T-Head C906: [arch/risc-v/src/bl808/bl808_mm_init.c](https://github.com/lupyuen2/wip-nuttx/blob/satp/arch/risc-v/src/bl808/bl808_mm_init.c#L299-L323)
 
 ```c
 // Flush the MMU Cache for T-Head C906.  Called by mmu_write_satp() after
@@ -960,7 +960,7 @@ void weak_function mmu_flush_cache(void) {
 }
 ```
 
-`mmu_flush_cache` is called by `mmu_write_satp`, whenever the __MMU SATP Register is updated__ (and the MMU Page Tables are swapped): [arch/risc-v/src/common/riscv_mmu.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/satp/arch/risc-v/src/common/riscv_mmu.h#L190-L221)
+`mmu_flush_cache` is called by `mmu_write_satp`, whenever the __MMU SATP Register is updated__ (and the MMU Page Tables are swapped): [arch/risc-v/src/common/riscv_mmu.h](https://github.com/lupyuen2/wip-nuttx/blob/satp/arch/risc-v/src/common/riscv_mmu.h#L190-L221)
 
 ```c
 // Update the MMU SATP Register for swapping MMU Page Tables
@@ -1096,11 +1096,11 @@ This is how we download and build NuttX for Ox64 BL808 SBC...
 ## Download the WIP NuttX Source Code
 git clone \
   --branch ox64a \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch ox64a \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Build NuttX
@@ -1155,9 +1155,9 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
   >Image
 ```
 
-[(See the __Build Script__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
+[(See the __Build Script__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64a-1)
 
-[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64a-1)
 
 [(Why the __64 KB Padding__)](https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk)
 
@@ -1181,7 +1181,7 @@ Ox64 boots [__OpenSBI__](https://lupyuen.github.io/articles/sbi), which starts [
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525)
 
-[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64a-1)
 
 ![Level 2 Page Table for Interrupt Controller](https://lupyuen.github.io/images/mmu-l2int.jpg)
 
@@ -1215,7 +1215,7 @@ But there's another problem: Our __User Memory__ was originally assigned to __`0
 | User Data | __`0xC010_0000`__ | _(Max 128 Pages)_
 | User Heap | __`0xC020_0000`__ | _(Max 128 Pages)_ <br> _(Each Page is 4 KB)_
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L25-L38)
+[(Source)](https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L25-L38)
 
 Which would __collide with our Interrupt Controller__!
 

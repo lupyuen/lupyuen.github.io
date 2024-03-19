@@ -307,7 +307,7 @@ Earlier we spoke about PinePhone's __GPIO Pins__ that control the LTE Modem...
 
 This is how we control the GPIO Pins to __power up the LTE Modem__...
 
-1.  Program PinePhone's [__Power Management Integrated Circuit (PMIC)__](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit) to supply __3.3 V on DCDC1__ [(Like this)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340)
+1.  Program PinePhone's [__Power Management Integrated Circuit (PMIC)__](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit) to supply __3.3 V on DCDC1__ [(Like this)](https://github.com/lupyuen2/wip-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340)
 
     We skip this because __DCDC1 is already powered on__.
 
@@ -361,7 +361,7 @@ _We've seen the Power On Sequence for LTE Modem..._
 
 _How will we implement it in Apache NuttX RTOS?_
 
-This is how we implement the LTE Modem's __Power On Sequence__ in NuttX: [pinephone_modem.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L89-L132)
+This is how we implement the LTE Modem's __Power On Sequence__ in NuttX: [pinephone_modem.c](https://github.com/lupyuen2/wip-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L89-L132)
 
 ```c
 // Read PH9 to check LTE Modem Status
@@ -377,7 +377,7 @@ _info("Status=%d\n", a64_pio_read(STATUS));
 
 We begin by reading PH9 for the __LTE Modem Status__.
 
-Then we set PL7 to High to __power up the RF Transceiver and Baseband Processor__: [pinephone_modem.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L138-L245)
+Then we set PL7 to High to __power up the RF Transceiver and Baseband Processor__: [pinephone_modem.c](https://github.com/lupyuen2/wip-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L138-L245)
 
 ```c
 // Set PL7 to High to Power On LTE Modem (4G-PWR-BAT)
@@ -394,7 +394,7 @@ a64_pio_write(PWR_BAT, true);
 
 [(__a64_pio_write__ comes from A64 PIO Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L345-L389)
 
-[(__pinephone_modem_init__ is called by __pinephone_bringup__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L211-L219)
+[(__pinephone_modem_init__ is called by __pinephone_bringup__)](https://github.com/lupyuen2/wip-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L211-L219)
 
 We set PC4 to Low to __deassert the LTE Modem Reset__...
 
@@ -467,7 +467,7 @@ a64_pio_write(W_DISABLE, true);
 // Omitted: Print the status
 ```
 
-To wrap up, we wait for __LTE Modem Status to turn Low__: [pinephone_modem.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L89-L132)
+To wrap up, we wait for __LTE Modem Status to turn Low__: [pinephone_modem.c](https://github.com/lupyuen2/wip-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L89-L132)
 
 ```c
 // Poll for Modem Status until it becomes Low
@@ -489,7 +489,7 @@ Let's run this!
 
 ![NuttX starts LTE Modem](https://lupyuen.github.io/images/lte-run2.png)
 
-[_NuttX starts LTE Modem_](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
+[_NuttX starts LTE Modem_](https://github.com/lupyuen2/wip-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
 
 # Is LTE Modem Up?
 
@@ -507,7 +507,7 @@ Set PWR_BAT (PL7) to High
 Status=1
 ```
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
 
 Then it __deasserts the reset__ (PC4) and __wakes up the modem__ (PH7 and PB2)...
 
@@ -548,7 +548,7 @@ pinephone_modem_init: Status=0
 
 And the LTE Modem is up! (Roughly 6 seconds)
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
 
 This matches the __Power Up Sequence__ that we saw earlier...
 
@@ -594,7 +594,7 @@ The LTE Modem is connected to PinePhone (Allwinner A64) at these UART Ports (pic
 
     [(More about the UART Pins)](https://lupyuen.github.io/articles/lte#main-uart-interface)
 
-Thus we may __check UART3__ to see if the LTE Modem responds to [__AT Commands__](https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem): [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L69-L221)
+Thus we may __check UART3__ to see if the LTE Modem responds to [__AT Commands__](https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem): [hello_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/modem/examples/hello/hello_main.c#L69-L221)
 
 ```c
 // Open /dev/ttyS1 (UART3)
@@ -632,7 +632,7 @@ Watch what happens when we run it...
 
 ![Testing LTE Modem over UART](https://lupyuen.github.io/images/lte-run3a.png)
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
 
 Our NuttX App sends command "__`AT`__" to the LTE Modem over UART3...
 
@@ -692,7 +692,7 @@ And responds to our command with  "__`OK`__".
 
 Which means that our LTE Modem is running AT Commands all OK!
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
 
 _UART3 works with NuttX?_
 

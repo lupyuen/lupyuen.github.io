@@ -111,7 +111,7 @@ Thus TinyEMU will boot our NuttX Kernel at __`0x8000_0000`__. _(RAM_BASE_ADDR)_
 
 _And we set this Boot Address in NuttX?_
 
-Actually we don't! __NuttX for QEMU Emulator__ (64-bit RISC-V) is already configured to boot at __`0x8000_0000`__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L27)
+Actually we don't! __NuttX for QEMU Emulator__ (64-bit RISC-V) is already configured to boot at __`0x8000_0000`__: [ld.script](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L27)
 
 ```c
 /* NuttX boots at 0x80000000 */
@@ -257,7 +257,7 @@ _We're checking if NuttX is alive on TinyEMU..._
 
 _Can we print something in our NuttX Boot Code?_
 
-This will be a little delicate: Our NuttX Boot Code is in [__RISC-V Assembly__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S)!
+This will be a little delicate: Our NuttX Boot Code is in [__RISC-V Assembly__](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S)!
 
 (Because it's the first thing that runs when NuttX boots)
 
@@ -300,7 +300,7 @@ sd  t1, 0(t0)
 
 [(__`sd`__ stores a 64-bit Double-Word from a Register into an Address Offset)](https://five-embeddev.com/quickref/instructions.html#-rv64--load-and-store-instructions)
 
-Then we work it into our __NuttX Boot Code__: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L61)
+Then we work it into our __NuttX Boot Code__: [qemu_rv_head.S](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L61)
 
 _Does it work?_
 
@@ -325,7 +325,7 @@ _Can we fix the UART Driver so that NuttX can print things?_
 
 NuttX is still running on the __QEMU UART Driver__. (16550 UART)
 
-We make a quick patch so that we'll see something in TinyEMU's __HTIF Console__ (pic above): [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720)
+We make a quick patch so that we'll see something in TinyEMU's __HTIF Console__ (pic above): [uart_16550.c](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L1701-L1720)
 
 ```c
 // Write one character to the UART Driver
@@ -338,7 +338,7 @@ static void u16550_putc(FAR struct u16550_s *priv, int ch) {
 }
 ```
 
-We skip the reading and writing of other __UART Registers__ (because we'll patch them later): [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L604-L635)
+We skip the reading and writing of other __UART Registers__ (because we'll patch them later): [uart_16550.c](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L604-L635)
 
 ```c
 // Read UART Register
@@ -352,7 +352,7 @@ static inline void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_
 }
 ```
 
-And we won't wait for __UART Ready__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L635-L673)
+And we won't wait for __UART Ready__: [uart_16550.c](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/drivers/serial/uart_16550.c#L635-L673)
 
 ```c
 // Wait until UART is not busy
@@ -513,7 +513,7 @@ Previously we saw the __TinyEMU Config__ for VirtIO: [riscv_machine.c](https://g
 #define VIRTIO_IRQ       1
 ```
 
-We copy these VirtIO Settings to __NuttX QEMU__: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L41-L49)
+We copy these VirtIO Settings to __NuttX QEMU__: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L41-L49)
 
 ```c
 // VirtIO Settings in NuttX
@@ -549,11 +549,11 @@ This says...
 
 _How does it work?_
 
-At NuttX Startup: [__board_app_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L77-L123) calls...
+At NuttX Startup: [__board_app_initialize__](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L77-L123) calls...
 
-- [__qemu_virtio_register_mmio_devices__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L54-L73) (to register all VirtIO MMIO Devices) which calls...
+- [__qemu_virtio_register_mmio_devices__](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L54-L73) (to register all VirtIO MMIO Devices) which calls...
 
-- [__virtio_register_mmio_device__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L809-L932) (to register a VirtIO MMIO Device)
+- [__virtio_register_mmio_device__](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L809-L932) (to register a VirtIO MMIO Device)
 
 Next we create a VirtIO Queue and send some data...
 
@@ -565,7 +565,7 @@ Next we create a VirtIO Queue and send some data...
 
 _NuttX VirtIO + OpenAMP are talking OK to TinyEMU. What next?_
 
-To send data to VirtIO Console, we need a __VirtIO Queue__ (pic above): [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L869-L895)
+To send data to VirtIO Console, we need a __VirtIO Queue__ (pic above): [virtio-mmio.c](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L869-L895)
 
 ```c
 // At Startup: Init VirtIO Device
@@ -610,7 +610,7 @@ Now we have 2 VirtIO Queues: __Transmit and Receive__. Let's message them...
 
 ## Send the VirtIO Message
 
-To print something, we write to the __Transmit Queue__ (pic above): [virtio-mmio.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L895-L926)
+To print something, we write to the __Transmit Queue__ (pic above): [virtio-mmio.c](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/drivers/virtio/virtio-mmio.c#L895-L926)
 
 ```c
 // Send data to VirtIO Device
@@ -674,7 +674,7 @@ __Up Next:__ We configure NuttX to use the [__VirtIO Serial Driver__](https://gi
 
 - [__See the Demo Log__](https://gist.github.com/lupyuen/15a0a02a25722883f5f13e888566c36d#file-nuttx-tinyemu-build-log-L840-L1720)
 
-- [__Source Files for Demo__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
+- [__Source Files for Demo__](https://github.com/lupyuen2/wip-nuttx/pull/50/files)
 
   (Only 8 files modified!)
 
@@ -750,7 +750,7 @@ In this article we saw 2 Work-In-Progress versions of __NuttX for TinyEMU__...
 
   [(See the __Demo Log__)](https://gist.github.com/lupyuen/00f759dccf634a0f5a875796dbec1ad1#file-nuttx-tinyemu-build-log-L781-L842)
 
-  [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/51/files)
+  [(See the __Modified Files__)](https://github.com/lupyuen2/wip-nuttx/pull/51/files)
 
   [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.1)
 
@@ -760,7 +760,7 @@ In this article we saw 2 Work-In-Progress versions of __NuttX for TinyEMU__...
 
   [(See the __Demo Log__)](https://gist.github.com/lupyuen/15a0a02a25722883f5f13e888566c36d#file-nuttx-tinyemu-build-log-L840-L1720)
 
-  [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/50/files)
+  [(See the __Modified Files__)](https://github.com/lupyuen2/wip-nuttx/pull/50/files)
 
   [(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-tinyemu/releases/tag/v0.0.2)
 
@@ -772,11 +772,11 @@ Here are the steps to build both versions of NuttX for TinyEMU...
 ## Branch tinyemu2: Full Version
 git clone \
   --branch tinyemu2 \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch tinyemu2 \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Configure NuttX for TinyEMU (borrowed from 64-bit QEMU Flat Mode)
@@ -908,7 +908,7 @@ riscv64-unknown-elf-ld: nuttx/staging/libopenamp.a(io.o): in function `metal_io_
 nuttx/openamp/libmetal/lib/system/nuttx/io.c:99: undefined reference to `up_addrenv_va_to_pa'
 ```
 
-__up_addrenv_va_to_pa__ is defined in [drivers/misc/addrenv.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tinyemu/drivers/misc/addrenv.c#L89-L112)
+__up_addrenv_va_to_pa__ is defined in [drivers/misc/addrenv.c](https://github.com/lupyuen2/wip-nuttx/blob/tinyemu/drivers/misc/addrenv.c#L89-L112)
 
 _Right now we're running NuttX in Flat Mode. Can NuttX run in Kernel Mode on TinyEMU?_
 

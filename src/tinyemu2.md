@@ -482,7 +482,7 @@ We track down the offending Code Address: __`0x8000_19C6`__
 
 _Someplace in NuttX Kernel?_
 
-This address comes from the Virtual Memory of a __NuttX App__ (not the NuttX Kernel): [nsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/heapcrash/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30)
+This address comes from the Virtual Memory of a __NuttX App__ (not the NuttX Kernel): [nsh/defconfig](https://github.com/lupyuen2/wip-nuttx/blob/heapcrash/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L30)
 
 ```bash
 ## Virtual Memory of NuttX Apps:

@@ -146,7 +146,7 @@ Let's blast some pixels to the RAM Framebuffer...
 
 _What's the simplest thing we can do with our Framebuffer?_
 
-Let's fill the __entire Framebuffer with Grey__: [fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L541-L562)
+Let's fill the __entire Framebuffer with Grey__: [fb_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/fb/examples/fb/fb_main.c#L541-L562)
 
 ```c
 // Fill entire framebuffer with grey
@@ -159,7 +159,7 @@ memset(        // Fill the buffer...
 
 (We'll explain in a while why this turns grey)
 
-After filling the Framebuffer, we __refresh the display__: [fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L548-L562)
+After filling the Framebuffer, we __refresh the display__: [fb_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/fb/examples/fb/fb_main.c#L548-L562)
 
 ```c
 // Area to be refreshed
@@ -226,7 +226,7 @@ Let's do some colours...
 
 # Render Blocks
 
-This is how we render the __Blue, Green and Red Blocks__ in the pic above: [fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L564-L601)
+This is how we render the __Blue, Green and Red Blocks__ in the pic above: [fb_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/fb/examples/fb/fb_main.c#L564-L601)
 
 ```c
 // Fill framebuffer with Blue, Green and Red Blocks
@@ -263,7 +263,7 @@ Everything is hunky dory for chunks of pixels! Let's set individual pixels by ro
 
 # Render Circle
 
-This is how we render the Green Circle in the pic above: [fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L603-L651)
+This is how we render the Green Circle in the pic above: [fb_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/fb/examples/fb/fb_main.c#L603-L651)
 
 ```c
 // Fill framebuffer with Green Circle
@@ -747,7 +747,7 @@ _Who calls pinephone_updatearea?_
 
 After writing the pixels to the RAM Framebuffer, NuttX Apps will call __ioctl(FBIO_UPDATE)__ to update the display.
 
-This triggers __pinephone_updatearea__ in our NuttX Framebuffer Driver: [fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/pixel/examples/fb/fb_main.c#L265-L274)
+This triggers __pinephone_updatearea__ in our NuttX Framebuffer Driver: [fb_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/pixel/examples/fb/fb_main.c#L265-L274)
 
 ```c
 // Omitted: NuttX App writes pixels to RAM Framebuffer

@@ -370,7 +370,7 @@ _How will we enable it in our Page Table Entry?_
 | __SO: Strongly-Ordered__ | Bit 63 is 1 |
 | __SH: Shareable__ | Bit 60 is 1 |
 
-For testing, we patched our MMU Code to set the __Strong Order Bit__ in our Page Table Entries (pic above): [riscv_mmu.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127)
+For testing, we patched our MMU Code to set the __Strong Order Bit__ in our Page Table Entries (pic above): [riscv_mmu.c](https://github.com/lupyuen2/wip-nuttx/blob/ox64c/arch/risc-v/src/common/riscv_mmu.c#L100-L127)
 
 ```c
 // Set a Page Table Entry in a Page Table for the MMU
@@ -441,7 +441,7 @@ __UPDATE:__ NuttX Mainline now supports [__T-Head C906 Memory Types__](https://g
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946#file-ox64-nuttx-uart-ok-log-L25-L160)
 
-[(__Shareable Bit__ doesn't effect anything. We're keeping it to be consistent with Linux)](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/4e343153d996f7f7a9b2d8a79edf42cd3900d42e)
+[(__Shareable Bit__ doesn't effect anything. We're keeping it to be consistent with Linux)](https://github.com/lupyuen2/wip-nuttx/commit/4e343153d996f7f7a9b2d8a79edf42cd3900d42e)
 
 ![UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!](https://lupyuen.github.io/images/plic3-title.png)
 
@@ -629,11 +629,11 @@ This is how we download and build NuttX for Ox64 BL808 SBC...
 ## Download the WIP NuttX Source Code
 git clone \
   --branch ox64c \
-  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  https://github.com/lupyuen2/wip-nuttx \
   nuttx
 git clone \
   --branch ox64c \
-  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  https://github.com/lupyuen2/wip-nuttx-apps \
   apps
 
 ## Build NuttX
@@ -686,9 +686,9 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
   >Image
 ```
 
-[(See the __Build Script__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64c-1)
+[(See the __Build Script__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64c-1)
 
-[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64c-1)
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64c-1)
 
 [(Why the __64 KB Padding__)](https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk)
 
@@ -716,7 +716,7 @@ NuttX Commands will run OK in NuttX Shell. (Pic above)
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/l7Y36nTkr8c)
 
-[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64c-1)
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64c-1)
 
 ![Quick dip in the sea + Picnic on the beach ... Really helps with NuttX + Ox64 troubleshooting! 👍](https://lupyuen.github.io/images/plic3-beach.jpg)
 

@@ -72,7 +72,7 @@ Let's walk through the steps to __build NuttX for Star64__...
     $ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
     ```
 
-    This produces the NuttX Kernel [__nuttx.bin__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/nuttx.bin)
+    This produces the NuttX Kernel [__nuttx.bin__](https://github.com/lupyuen2/wip-nuttx/releases/download/jh7110c-1.0.0/nuttx.bin)
 
     [(Missing __`math.h`__? See this)](https://lupyuen.github.io/articles/release#appendix-missing-mathh)
 
@@ -87,7 +87,7 @@ Let's walk through the steps to __build NuttX for Star64__...
     $ genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
     ```
 
-    This generates the Initial RAM Disk [__initrd__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/initrd)
+    This generates the Initial RAM Disk [__initrd__](https://github.com/lupyuen2/wip-nuttx/releases/download/jh7110c-1.0.0/initrd)
 
     [(Inside a __ROM FS Filesystem__)](https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem)
 
@@ -120,9 +120,9 @@ Let's walk through the steps to __build NuttX for Star64__...
       ../
     ```
 
-    [(See the Build Outputs)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110c-1.0.0)
+    [(See the Build Outputs)](https://github.com/lupyuen2/wip-nuttx/releases/tag/jh7110c-1.0.0)
 
-    [(See the Build Steps)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/jh7110c-1.0.0)
+    [(See the Build Steps)](https://github.com/lupyuen2/wip-nuttx/releases/tag/jh7110c-1.0.0)
 
     [(See the Build Log)](https://gist.github.com/lupyuen/c6dc9aeec74d399029ebaf46ac16ef79)
 
@@ -144,11 +144,11 @@ _How do we create a Bootable microSD for NuttX?_
 
 From the previous section, we have...
 
-- NuttX Kernel: [__nuttx.bin__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/nuttx.bin)
+- NuttX Kernel: [__nuttx.bin__](https://github.com/lupyuen2/wip-nuttx/releases/download/jh7110c-1.0.0/nuttx.bin)
 
-- Initial RAM Disk: [__initrd__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/initrd)
+- Initial RAM Disk: [__initrd__](https://github.com/lupyuen2/wip-nuttx/releases/download/jh7110c-1.0.0/initrd)
 
-- Device Tree: [__jh7110-visionfive-v2.dtb__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/jh7110-visionfive-v2.dtb)
+- Device Tree: [__jh7110-visionfive-v2.dtb__](https://github.com/lupyuen2/wip-nuttx/releases/download/jh7110c-1.0.0/jh7110-visionfive-v2.dtb)
 
 Now we pack all 3 files into a __Flat Image Tree (FIT)__...
 
@@ -297,13 +297,13 @@ Finally the __Device Tree__ (not used by NuttX)...
   Loadables:    ramdisk
 ```
 
-This produces the Flat Image Tree [__starfiveu.fit__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/starfiveu.fit), which we'll copy later to a microSD Card.
+This produces the Flat Image Tree [__starfiveu.fit__](https://github.com/lupyuen2/wip-nuttx/releases/download/jh7110c-1.0.0/starfiveu.fit), which we'll copy later to a microSD Card.
 
 To prepare the microSD Card, download the microSD Image [__sdcard.img__](https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img) from [__StarFive VisionFive2 Software Releases__](https://github.com/starfive-tech/VisionFive2/releases).
 
 Write the downloaded image to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks). [(Or use __`dd`__)](https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6)
 
-Copy the file [__starfiveu.fit__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/jh7110c-1.0.0/starfiveu.fit) from above and overwrite the file on the microSD Card...
+Copy the file [__starfiveu.fit__](https://github.com/lupyuen2/wip-nuttx/releases/download/jh7110c-1.0.0/starfiveu.fit) from above and overwrite the file on the microSD Card...
 
 ```bash
 ## For macOS: Copy to microSD
@@ -586,13 +586,13 @@ _Seems we need to copy a bunch of source files across branches?_
 
 No sweat! Suppose we created a staging Pull Request in our own repo...
 
-- [github.com/lupyuen2/wip-pinephone-nuttx/pull/40](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40)
+- [github.com/lupyuen2/wip-nuttx/pull/40](https://github.com/lupyuen2/wip-nuttx/pull/40)
 
 This command produces a list of __Modified Files in our Pull Request__...
 
 ```bash
 ## TODO: Change this to your PR
-pr=https://github.com/lupyuen2/wip-pinephone-nuttx/pull/40
+pr=https://github.com/lupyuen2/wip-nuttx/pull/40
 curl -L $pr.diff \
   | grep "diff --git" \
   | sort \
@@ -668,7 +668,7 @@ CONFIG_DEBUG_SYMBOLS=y
 CONFIG_DEBUG_WARN=y
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64d/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L49-L69)
+[(Source)](https://github.com/lupyuen2/wip-nuttx/blob/star64d/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L49-L69)
 
 - __BINFMT__ is the Binary Loader, good for troubleshooting NuttX App ELF loading issues
 

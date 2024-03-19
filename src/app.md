@@ -65,9 +65,9 @@ $ riscv64-unknown-elf-objdump \
   2>&1
 ```
 
-[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ox64a-1)
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64a-1)
 
-Here's the __RISC-V Disassembly__ of our NuttX App: [hello.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/hello.S)
+Here's the __RISC-V Disassembly__ of our NuttX App: [hello.S](https://github.com/lupyuen2/wip-nuttx/releases/download/ox64a-1/hello.S)
 
 ```text
 ## Omitted: _start() prepares for signals (sig_trampoline) and calls main()
@@ -410,7 +410,7 @@ enum {
 
 However it's an Enum, __numbered sequentially__ from 8 to 147-ish. We won't literally see 63 in the NuttX Source Code.
 
-Then we lookup the __Debug Info__ in the RISC-V Disassembly for NuttX Kernel: [nuttx.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/ox64a-1/nuttx.S)
+Then we lookup the __Debug Info__ in the RISC-V Disassembly for NuttX Kernel: [nuttx.S](https://github.com/lupyuen2/wip-nuttx/releases/download/ox64a-1/nuttx.S)
 
 ```text
 Abbrev Number: 6 (DW_TAG_enumerator)
@@ -988,7 +988,7 @@ void *bl808_copy_overlap(void *dest, const void *src, size_t count) {
 
 _We're sure that it works?_
 
-We called __`verify_image`__ to do a simple Integrity Check on __`initrd`__, before and after copying: [jh7110_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L236-L248)
+We called __`verify_image`__ to do a simple Integrity Check on __`initrd`__, before and after copying: [jh7110_start.c](https://github.com/lupyuen2/wip-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L236-L248)
 
 ```c
 // Before Copy: Verify the RAM Disk Image to be copied
@@ -1004,7 +1004,7 @@ bl808_copy_overlap((void *)__ramdisk_start, ramdisk_addr, size);
 verify_image(__ramdisk_start);
 ```
 
-[(__`verify_image`__ searches for a specific byte)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L248-L455)
+[(__`verify_image`__ searches for a specific byte)](https://github.com/lupyuen2/wip-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L248-L455)
 
 That's how we discovered that __`memcpy`__ doesn't work. And our __`bl808_copy_overlap`__ works great for the Initial RAM Disk and NuttX Shell! (Pic below)
 
