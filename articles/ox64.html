@@ -148,7 +148,7 @@
 <p>In this article we begin with Linux, then explore NuttX…</p>
 <p><strong>NOTE:</strong> The steps here will work only with the <a href="https://pine64.com/product/128mb-ox64-sbc-available-on-december-2-2022/"><strong>128Mb (64KB) Version of Ox64</strong></a>, not the 16Mb Version that doesn’t support microSD</p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout.jpg" alt="Flashing UART vs Serial Console" /></p>
-<h1 id="flashing-uart-vs-serial-console"><a href="#flashing-uart-vs-serial-console">1 Flashing UART vs Serial Console</a></h1>
+<h1 id="flashing-uart-vs-serial-console"><a class="doc-anchor" href="#flashing-uart-vs-serial-console">§</a>1 Flashing UART vs Serial Console</h1>
 <p><em>We need to connect TWO UART Ports on Ox64? (Pic above)</em></p>
 <p>Yeah don’t confuse the <strong>2 UART Ports</strong> that we’ll connect on Ox64!</p>
 <p>Let’s give the 2 UART Ports distinctive names <a href="https://en.wikipedia.org/wiki/Migi_%26_Dali">(like Migi &amp; Dali)</a>…</p>
@@ -219,7 +219,7 @@
 <p>Yeah <strong>2 Mbps is hardcoded</strong> in Ox64 Linux. Switching to other Baud Rates will show garbled text.</p>
 <p>Thus our USB Serial Adapter must <strong>connect reliably to Ox64</strong> at 2 Mbps. Let’s test it…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
-<h1 id="test-the-usb-serial-adapter"><a href="#test-the-usb-serial-adapter">2 Test the USB Serial Adapter</a></h1>
+<h1 id="test-the-usb-serial-adapter"><a class="doc-anchor" href="#test-the-usb-serial-adapter">§</a>2 Test the USB Serial Adapter</h1>
 <p><strong>Warning:</strong> Some USB Serial Adapters <a href="https://wiki.pine64.org/wiki/Ox64#Compatible_UARTs_when_in_bootloader_mode"><strong>WON’T WORK!</strong></a></p>
 <p>Ox64 was tested OK with the <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>Pine64 Woodpecker CH340G</strong></a> USB Serial Adapter on macOS x64.</p>
 <p>Ox64 mandates 2 Mbps, which might be too fast for some USB Serial Adapters. (Like this <a href="https://www.lazada.sg/products/i2037772272-s11135131253.html"><strong>CP2102 Dongle</strong></a>, which shows garbled text at 2 Mbps)</p>
@@ -271,7 +271,7 @@ Ping!
 </ol>
 <p>Ox64 is ready for flashing!</p>
 <p><a href="https://www.linkedin.com/feed/update/urn:li:activity:7125857280952037376?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7125857280952037376%2C7125884844219281408%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287125884844219281408%2Curn%3Ali%3Aactivity%3A7125857280952037376%29">(<strong>Paul S</strong> explains why some USB Serial Adapters won’t work)</a></p>
-<h1 id="flash-opensbi-and-u-boot"><a href="#flash-opensbi-and-u-boot">3 Flash OpenSBI and U-Boot</a></h1>
+<h1 id="flash-opensbi-and-u-boot"><a class="doc-anchor" href="#flash-opensbi-and-u-boot">§</a>3 Flash OpenSBI and U-Boot</h1>
 <p><em>Our USB Serial Adapter works great at 2 Mbps. What next?</em></p>
 <p>Before booting Linux on Ox64, we flash…</p>
 <ul>
@@ -397,7 +397,7 @@ chmod +x BLDevCube-macos-x86_64
 </li>
 </ol>
 <p>Now we check our work…</p>
-<h1 id="verify-opensbi-and-u-boot"><a href="#verify-opensbi-and-u-boot">4 Verify OpenSBI and U-Boot</a></h1>
+<h1 id="verify-opensbi-and-u-boot"><a class="doc-anchor" href="#verify-opensbi-and-u-boot">§</a>4 Verify OpenSBI and U-Boot</h1>
 <p><em>Did we flash OpenSBI and U-Boot successfully?</em></p>
 <p>Let’s verify if the flashing was OK…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
@@ -468,7 +468,7 @@ Retry time exceeded; starting again
 </ol>
 <p>Let’s load Ox64 Linux into a microSD Card…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Ox64 Linux in a microSD Card" /></p>
-<h1 id="boot-linux-on-ox64"><a href="#boot-linux-on-ox64">5 Boot Linux on Ox64</a></h1>
+<h1 id="boot-linux-on-ox64"><a class="doc-anchor" href="#boot-linux-on-ox64">§</a>5 Boot Linux on Ox64</h1>
 <p>D0 Multimedia Core has been flashed with OpenSBI and U-Boot Bootloader. We’re ready to boot <strong>Linux on microSD</strong>!</p>
 <p>Based on the <a href="https://github.com/openbouffalo/buildroot_bouffalo#flashing-instructions"><strong>Official Flashing Instructions</strong></a>…</p>
 <ol>
@@ -597,7 +597,7 @@ Retry time exceeded; starting again
 <p>“This is not hardware specific, but flasher specific. With blisp, I was able to get faster flashing working, but this is Apple’s quirk. Or maybe not? Because FreeBSD need same quirks and exact buffer sizes as Apple.”</p>
 </blockquote>
 <p>Hopefully we can use <a href="https://github.com/pine64/blisp"><strong>blisp</strong></a> for flashing BL808 more reliably!</p>
-<h1 id="apache-nuttx-rtos-for-ox64"><a href="#apache-nuttx-rtos-for-ox64">6 Apache NuttX RTOS for Ox64</a></h1>
+<h1 id="apache-nuttx-rtos-for-ox64"><a class="doc-anchor" href="#apache-nuttx-rtos-for-ox64">§</a>6 Apache NuttX RTOS for Ox64</h1>
 <p>Read the article…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ox2"><strong>“RISC-V Ox64 BL808 SBC: Starting Apache NuttX RTOS”</strong></a></li>
@@ -685,7 +685,7 @@ Retry time exceeded; starting again
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/ox64-nuttx.png" alt="Booting Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>Thanks to the excellent work by the <a href="https://openbouffalo.org/index.php/Main_Page"><strong>OpenBouffalo Community</strong></a>, we have Linux booting smoothly (and swiftly) on <strong>Ox64 BL808 RISC-V SBC</strong>.</p>
 <p>And by studying their work, we have booted a tiny bit of <strong>Apache NuttX RTOS</strong> on Ox64 BL808! (Pic above)</p>
 <p>We’ll talk more about NuttX on Ox64 in the next article!</p>
@@ -726,7 +726,7 @@ Retry time exceeded; starting again
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ox64.md"><strong>lupyuen.github.io/src/ox64.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="My horrigible soldering of Ox64 BL808 😬" /></p>
 <p><em>My horrigible soldering of Ox64 BL808</em> 😬</p>
-<h1 id="appendix-linux-image-header"><a href="#appendix-linux-image-header">8 Appendix: Linux Image Header</a></h1>
+<h1 id="appendix-linux-image-header"><a class="doc-anchor" href="#appendix-linux-image-header">§</a>8 Appendix: Linux Image Header</h1>
 <p><em>Will Apache NuttX RTOS boot on Ox64 BL808?</em></p>
 <p>Let’s examine the <strong>Linux Kernel Image for Ox64</strong>, and we replicate the same format for NuttX. (Which is how we ported NuttX to 64-bit RISC-V Star64 JH7110 SBC)</p>
 <p>We download the <strong>Ox64 Binaries</strong>…</p>
@@ -823,7 +823,7 @@ d          96  extlinux
 <ul>
 <li><a href="https://github.com/lupyuen/nuttx-ox64#boot-apache-nuttx-rtos-on-ox64-bl808"><strong>“Boot Apache NuttX RTOS on Ox64 BL808”</strong></a></li>
 </ul>
-<h1 id="appendix-linux-device-tree"><a href="#appendix-linux-device-tree">9 Appendix: Linux Device Tree</a></h1>
+<h1 id="appendix-linux-device-tree"><a class="doc-anchor" href="#appendix-linux-device-tree">§</a>9 Appendix: Linux Device Tree</h1>
 <p><em>What’s inside the Linux Device Tree for Ox64?</em></p>
 <p><em>Anything that might help NuttX for Ox64?</em></p>
 <p>Let’s dump the <strong>Linux Device Tree for Ox64</strong>, based on the files that we have downloaded earlier…</p>
@@ -871,7 +871,7 @@ d          96  extlinux
 <p>NuttX will receive the <strong>Forwarded Peripheral Interrupts</strong> the same way, via the Mailbox.</p>
 <p>Let’s talk about the Forwarding of Peripheral Interrupts…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-cores.jpg" alt="Bouffalo Lab BL808 is a complex creature with 3 (Asymmetric) RISC-V Cores" /></p>
-<h1 id="appendix-peripheral-interrupts"><a href="#appendix-peripheral-interrupts">10 Appendix: Peripheral Interrupts</a></h1>
+<h1 id="appendix-peripheral-interrupts"><a class="doc-anchor" href="#appendix-peripheral-interrupts">§</a>10 Appendix: Peripheral Interrupts</h1>
 <p><em>What’s this forwarding of Peripheral Interrupts? (Pic above)</em></p>
 <p>From the <strong>M0 Wireless Core</strong>, we see this log by the OpenBouffalo Firmware <a href="https://github.com/openbouffalo/OBLFR/tree/master/apps/m0_lowload"><strong>m0_lowload</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting Mailbox Handlers

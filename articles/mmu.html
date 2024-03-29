@@ -130,7 +130,7 @@
 <p>(Apologies to my fellow CS Teachers)</p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
 <p><a href="https://wiki.pine64.org/wiki/Ox64"><em>Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)</em></a></p>
-<h1 id="memory-protection"><a href="#memory-protection">1 Memory Protection</a></h1>
+<h1 id="memory-protection"><a class="doc-anchor" href="#memory-protection">§</a>1 Memory Protection</h1>
 <p><em>What memory shall we protect on Ox64?</em></p>
 <p>Ox64 SBC needs the <strong>Memory Regions</strong> below to boot our Kernel.</p>
 <p>Today we configure the Sv39 MMU so that our <strong>Kernel can access these regions</strong> (and nothing else)…</p>
@@ -172,7 +172,7 @@
 </li>
 </ol>
 <p>We begin with the biggest chunk: I/O Memory…</p>
-<h1 id="huge-chunks-level-1"><a href="#huge-chunks-level-1">2 Huge Chunks: Level 1</a></h1>
+<h1 id="huge-chunks-level-1"><a class="doc-anchor" href="#huge-chunks-level-1">§</a>2 Huge Chunks: Level 1</h1>
 <p><strong>[ 1 GB per Huge Chunk ]</strong></p>
 <p><em>How will we protect the I/O Memory?</em></p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
@@ -284,7 +284,7 @@ mmu_ln_map_region(
 </ol>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table for Kernel" /></p>
 <p>Next we protect the Interrupt Controller…</p>
-<h1 id="medium-chunks-level-2"><a href="#medium-chunks-level-2">3 Medium Chunks: Level 2</a></h1>
+<h1 id="medium-chunks-level-2"><a class="doc-anchor" href="#medium-chunks-level-2">§</a>3 Medium Chunks: Level 2</h1>
 <p><strong>[ 2 MB per Medium Chunk ]</strong></p>
 <p><em>Our Interrupt Controller needs 256 MB of protection…</em></p>
 <p><em>Surely a Level 1 Chunk (1 GB) is too wasteful?</em></p>
@@ -347,7 +347,7 @@ mmu_ln_map_region(
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-plic-level-2">(See the <strong>NuttX L2 Log</strong>)</a></p>
 <p>We’re not done yet! Next we connect the Levels…</p>
-<h1 id="connect-level-1-to-level-2"><a href="#connect-level-1-to-level-2">4 Connect Level 1 to Level 2</a></h1>
+<h1 id="connect-level-1-to-level-2"><a class="doc-anchor" href="#connect-level-1-to-level-2">§</a>4 Connect Level 1 to Level 2</h1>
 <p><em>We’re done with the Level 2 Page Table for our Interrupt Controller…</em></p>
 <p><em>But Level 2 should talk back to Level 1 right?</em></p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
@@ -400,7 +400,7 @@ mmu_ln_setentry(
 </div>
 <p>Oh yeah: <strong>I/O Memory</strong>. When we bake everything together, things will look more complicated (and there’s more!)…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel.jpg" alt="Level 1 Page Table for Kernel" /></p>
-<h1 id="smaller-chunks-level-3"><a href="#smaller-chunks-level-3">5 Smaller Chunks: Level 3</a></h1>
+<h1 id="smaller-chunks-level-3"><a class="doc-anchor" href="#smaller-chunks-level-3">§</a>5 Smaller Chunks: Level 3</h1>
 <p><strong>[ 4 KB per Smaller Chunk ]</strong></p>
 <p><em>Level 2 Chunks (2 MB) are still mighty big… Is there anything smaller?</em></p>
 <p>Yep we have smaller (bite-size) <strong>Level 3 Chunks</strong> of <strong>4 KB</strong> each.</p>
@@ -463,7 +463,7 @@ map_region(
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-kernel-text-levels-2--3">(See the <strong>NuttX L2 and L3 Log</strong>)</a></p>
 <p>That’s because <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L158-L216"><strong>map_region</strong></a> calls a <a href="https://en.wikipedia.org/wiki/Slab_allocation"><strong>Slab Allocator</strong></a> to manage the Level 3 Page Table Entries.</p>
 <p>But internally it calls the same old functions: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153"><strong>mmu_ln_map_region</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L61-L107"><strong>mmu_ln_setentry</strong></a></p>
-<h1 id="connect-level-2-to-level-3"><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a></h1>
+<h1 id="connect-level-2-to-level-3"><a class="doc-anchor" href="#connect-level-2-to-level-3">§</a>6 Connect Level 2 to Level 3</h1>
 <p><em>Level 3 will talk back to Level 2 right?</em></p>
 <p>Correct! Finally we create a <strong>Level 2 Page Table</strong> for Kernel Code and Data…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
@@ -523,7 +523,7 @@ mmu_ln_setentry(
 <p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow">(Who calls <strong>mmu_ln_map_region</strong> and <strong>mmu_ln_setentry</strong> at startup)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525"><em>Ox64 boots to NuttX Shell</em></a></p>
-<h1 id="virtual-memory"><a href="#virtual-memory">7 Virtual Memory</a></h1>
+<h1 id="virtual-memory"><a class="doc-anchor" href="#virtual-memory">§</a>7 Virtual Memory</h1>
 <p>Earlier we talked about Sv39 MMU and <strong>Virtual Memory</strong>…</p>
 <blockquote>
 <p>Allow Applications to access chunks of “Imaginary Memory” at Exotic Addresses (<strong><code>0x8000_0000</code></strong>!)</p>
@@ -556,7 +556,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p>Nope! That’s the beauty of an MMU: We control <em>everything</em> that the Application can meddle with!</p>
 <p>Our Application will see only the assigned <strong>Virtual Addresses</strong>, not the actual Physical Addresses used by the Kernel.</p>
 <p>We watch NuttX do its magic…</p>
-<h1 id="user-level-3"><a href="#user-level-3">8 User Level 3</a></h1>
+<h1 id="user-level-3"><a class="doc-anchor" href="#user-level-3">§</a>8 User Level 3</h1>
 <p>Our Application (NuttX Shell) requires <strong>22 Pages of Virtual Memory</strong> for its User Code.</p>
 <p>NuttX populates the <strong>Level 3 Page Table</strong> for the User Code like so…</p>
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Level 3 Page Table for User" /></p>
@@ -572,7 +572,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p>We move up to Level 2…</p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3">(See the <strong>NuttX Virtual Memory Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2user.jpg" alt="Level 2 Page Table for User" /></p>
-<h1 id="user-levels-1-and-2"><a href="#user-levels-1-and-2">9 User Levels 1 and 2</a></h1>
+<h1 id="user-levels-1-and-2"><a class="doc-anchor" href="#user-levels-1-and-2">§</a>9 User Levels 1 and 2</h1>
 <p>NuttX populates the <strong>User Level 2</strong> Page Table (pic above) with the <strong>Physical Page Numbers</strong> (PPN) of the…</p>
 <ul>
 <li>
@@ -605,7 +605,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 <p><a href="https://github.com/lupyuen/nuttx-ox64#start-nuttx-apps-on-ox64-bl808">(Who populates the <strong>User Page Tables</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-user-code-data-and-heap-levels-1-2-3">(See the <strong>NuttX Virtual Memory Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-satp.jpg" alt="Kernel SATP vs User SATP" /></p>
-<h1 id="swap-the-satp-register"><a href="#swap-the-satp-register">10 Swap the SATP Register</a></h1>
+<h1 id="swap-the-satp-register"><a class="doc-anchor" href="#swap-the-satp-register">§</a>10 Swap the SATP Register</h1>
 <p><em>SATP Register looks different from the earlier one in the Kernel…</em></p>
 <p><em>Are there Multiple SATP Registers?</em></p>
 <p>We saw two different <strong>SATP Registers</strong>, each pointing to a different Level 1 Page Table…</p>
@@ -663,7 +663,7 @@ mmu_write_satp:
 </ul>
 <p><img src="https://lupyuen.github.io/images/mmu-boot2.jpg" alt="NuttX swaps the SATP Register" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L271-L304"><em>NuttX swaps the SATP Register</em></a></p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>I hope this article has been a <strong>tasty treat</strong> for understanding the inner workings of…</p>
 <ul>
 <li>
@@ -713,7 +713,7 @@ mmu_write_satp:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mmu.md"><strong>lupyuen.github.io/src/mmu.md</strong></a></p>
-<h1 id="appendix-flush-the-mmu-cache-for-t-head-c906"><a href="#appendix-flush-the-mmu-cache-for-t-head-c906">12 Appendix: Flush the MMU Cache for T-Head C906</a></h1>
+<h1 id="appendix-flush-the-mmu-cache-for-t-head-c906"><a class="doc-anchor" href="#appendix-flush-the-mmu-cache-for-t-head-c906">§</a>12 Appendix: Flush the MMU Cache for T-Head C906</h1>
 <p>Ox64 BL808 crashes with a <strong>Page Fault</strong> when we run <code>getprime</code> then <code>hello</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; getprime
 getprime took 0 msec
@@ -857,7 +857,7 @@ Virtual Address 0x80200000 maps to Physical Address 0x506a4000
 <p><a href="https://github.com/apache/nuttx/pull/11585">(See the <strong>Pull Request</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-address.jpg" alt="Virtual Address Translation Process (Page 82)" /></p>
 <p><a href="https://github.com/riscv/riscv-isa-manual/releases/download/Priv-v1.12/riscv-privileged-20211203.pdf"><em>Virtual Address Translation Process (Page 82)</em></a></p>
-<h1 id="appendix-address-translation"><a href="#appendix-address-translation">13 Appendix: Address Translation</a></h1>
+<h1 id="appendix-address-translation"><a class="doc-anchor" href="#appendix-address-translation">§</a>13 Appendix: Address Translation</h1>
 <p><em>How does Sv39 MMU translate a Virtual Address to Physical Address?</em></p>
 <p>Sv39 MMU translates a <strong>Virtual Address to Physical Address</strong> by traversing the Page Tables as described in…</p>
 <ul>
@@ -917,7 +917,7 @@ Virtual Address 0x80200000 maps to Physical Address 0x506a4000
 <p><a href="https://github.com/openbouffalo/OBLFR/blob/master/apps/d0_lowload/src/main.c#L44-L98">(See the Ox64 settings for <strong>Physical Memory Protection</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525"><em>Ox64 boots to NuttX Shell</em></a></p>
-<h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">14 Appendix: Build and Run NuttX</a></h1>
+<h1 id="appendix-build-and-run-nuttx"><a class="doc-anchor" href="#appendix-build-and-run-nuttx">§</a>14 Appendix: Build and Run NuttX</h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong>, with added <strong>MMU Logging</strong>.</p>
 <p>(Console Input is not yet supported)</p>
 <p>This is how we download and build NuttX for Ox64 BL808 SBC…</p>
@@ -994,7 +994,7 @@ diskutil unmountDisk /dev/disk2
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525">(See the <strong>NuttX Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-l2int.jpg" alt="Level 2 Page Table for Interrupt Controller" /></p>
-<h1 id="appendix-fix-the-interrupt-controller"><a href="#appendix-fix-the-interrupt-controller">15 Appendix: Fix the Interrupt Controller</a></h1>
+<h1 id="appendix-fix-the-interrupt-controller"><a class="doc-anchor" href="#appendix-fix-the-interrupt-controller">§</a>15 Appendix: Fix the Interrupt Controller</h1>
 <p><em>What’s wrong with the Interrupt Controller?</em></p>
 <p>Earlier we had difficulty configuring the Sv39 MMU for the Interrupt Controller at <strong><code>0xE000_0000</code></strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>

@@ -150,7 +150,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/auto2-pinedio2.jpg" alt="PineDio Stack BL604 connected to LoRa Antenna (swiped from the IoT Course I used to teach)" /></p>
 <p><em>PineDio Stack BL604 connected to LoRa Antenna (swiped from the IoT Course I used to teach)</em></p>
-<h1 id="testing-checkpoints"><a href="#testing-checkpoints">1 Testing Checkpoints</a></h1>
+<h1 id="testing-checkpoints"><a class="doc-anchor" href="#testing-checkpoints">§</a>1 Testing Checkpoints</h1>
 <p>Before we study the script, let’s break down the Automated Testing into a series of <strong>Testing Checkpoints</strong>.</p>
 <p>These are our success criteria for NuttX on PineDio Stack…</p>
 <ul>
@@ -176,7 +176,7 @@
 <p>To run the above tests automatically, let’s connect PineDio Stack to a <strong>Single-Board Computer</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/auto2-pinedio3a.jpg" alt="GPIO 8, Reset and Ground on PineDio Stack BL604" /></p>
 <p><em>GPIO 8, Reset and Ground on PineDio Stack BL604</em></p>
-<h1 id="connect-pinedio-stack-to-sbc"><a href="#connect-pinedio-stack-to-sbc">2 Connect PineDio Stack to SBC</a></h1>
+<h1 id="connect-pinedio-stack-to-sbc"><a class="doc-anchor" href="#connect-pinedio-stack-to-sbc">§</a>2 Connect PineDio Stack to SBC</h1>
 <p>Our <strong>Automated Testing Script</strong> runs on a Single-Board Computer (SBC) to…</p>
 <ul>
 <li>
@@ -212,7 +212,7 @@
 <p>(But since ST7789 Display and SX1262 LoRa Transceiver are connected to the same SPI Bus, it should be OK to test only the SX1262 Transceiver)</p>
 <p><img src="https://lupyuen.github.io/images/auto2-pinedio.jpg" alt="PineDio Stack BL604 connected to SBC" /></p>
 <p><em>PineDio Stack BL604 connected to SBC</em></p>
-<h1 id="run-automated-test"><a href="#run-automated-test">3 Run Automated Test</a></h1>
+<h1 id="run-automated-test"><a class="doc-anchor" href="#run-automated-test">§</a>3 Run Automated Test</h1>
 <p>To run the <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh"><strong>Automated Testing Script</strong></a> on our Single-Board Computer…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the GPIO and UART ports
 sudo usermod -a -G gpio    $USER
@@ -274,7 +274,7 @@ script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
 <p><em>Will this work over SSH?</em></p>
 <p>Yep we may run the Automated Test <strong>remotely over SSH</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ssh my-sbc remote-bl602/scripts/pinedio.sh
-</code></pre></div><h2 id="automated-nuttx-build"><a href="#automated-nuttx-build">3.1 Automated NuttX Build</a></h2>
+</code></pre></div><h2 id="automated-nuttx-build"><a class="doc-anchor" href="#automated-nuttx-build">§</a>3.1 Automated NuttX Build</h2>
 <p><em>How is NuttX for PineDio Stack built and published to GitHub Releases?</em></p>
 <p>Whenever we commit changes to the <a href="https://github.com/lupyuen/nuttx/tree/pinedio"><strong>NuttX Repo for PineDio Stack</strong></a>, GitHub Actions will trigger a new NuttX Build and <strong>publish the built firmware</strong> to GitHub Releases…</p>
 <ul>
@@ -305,7 +305,7 @@ echo &quot;$BUILD_PREFIX-$BUILD_DATE&quot; &gt;/tmp/release.tag
 <blockquote>
 <p><em>NuttX booting on PineDio Stack</em></p>
 </blockquote>
-<h1 id="nuttx-must-boot"><a href="#nuttx-must-boot">4 NuttX Must Boot</a></h1>
+<h1 id="nuttx-must-boot"><a class="doc-anchor" href="#nuttx-must-boot">§</a>4 NuttX Must Boot</h1>
 <p><em>(Checkpoint Alpha)</em></p>
 <p>Earlier we saw our Automated Testing Script downloading the NuttX Firmware from GitHub Releases.</p>
 <p>At the first checkpoint, our script <strong>flashes the NuttX Firmware</strong> to PineDio Stack…</p>
@@ -352,7 +352,7 @@ NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb
 <p>Yep NuttX has successfully booted on PineDio Stack! Let’s dive into our Automated Testing Script and see the implementation of the operations above.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX to PineDio Stack" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack"><em>Flashing NuttX to PineDio Stack</em></a></p>
-<h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a></h2>
+<h2 id="checkpoint-alpha"><a class="doc-anchor" href="#checkpoint-alpha">§</a>4.1 Checkpoint Alpha</h2>
 <p>Our script controls PineDio Stack through GPIO 5 and 6 on our SBC…</p>
 <ul>
 <li>
@@ -420,7 +420,7 @@ echo &quot;ls /dev&quot;  &gt;/dev/ttyUSB0 ; sleep 1
 <p>Let’s move on to the second checkpoint.</p>
 <p><img src="https://lupyuen.github.io/images/auto-stack.jpg" alt="NuttX Stack Trace" /></p>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-17"><em>NuttX Register and Stack Dump</em></a></p>
-<h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
+<h1 id="nuttx-must-not-crash"><a class="doc-anchor" href="#nuttx-must-not-crash">§</a>5 NuttX Must Not Crash</h1>
 <p><em>(Checkpoint Bravo)</em></p>
 <p><em>What happens when NuttX crashes during testing?</em></p>
 <p>NuttX shows a <strong>Register and Stack Dump</strong>, like the pic above…</p>
@@ -449,7 +449,7 @@ libs/libc/assert/lib_assert.c:37
 <p>And hopefully we can heal NuttX on PineDio Stack!</p>
 <p><img src="https://lupyuen.github.io/images/auto-stack3.png" alt="NuttX Crash Analysis" /></p>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-17"><em>NuttX Crash Analysis</em></a></p>
-<h2 id="checkpoint-bravo"><a href="#checkpoint-bravo">5.1 Checkpoint Bravo</a></h2>
+<h2 id="checkpoint-bravo"><a class="doc-anchor" href="#checkpoint-bravo">§</a>5.1 Checkpoint Bravo</h2>
 <p>Over to the implementation. Our script detects that NuttX has crashed when it sees the <strong>registerdump</strong> keyword: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Check whether BL602 has crashed
 set +e  ##  Don&#39;t exit when any command fails
@@ -498,7 +498,7 @@ done
 <p>(We should probably use a <strong>State Machine</strong> instead of a long chain of hacky “if-else” statements)</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-spi2.jpg" alt="Shared SPI Bus on PineDio Stack" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus"><em>Shared SPI Bus on PineDio Stack</em></a></p>
-<h1 id="spi-test"><a href="#spi-test">6 SPI Test</a></h1>
+<h1 id="spi-test"><a class="doc-anchor" href="#spi-test">§</a>6 SPI Test</h1>
 <p><em>(Checkpoint Charlie)</em></p>
 <p>PineDio Stack has a complex <strong>SPI Bus</strong> that’s shared by <strong>3 SPI Devices</strong> (pic above)…</p>
 <ul>
@@ -533,7 +533,7 @@ Error: SX1262 is NOT OK. Check the SPI connection
 </code></pre></div>
 <p>Then our script halts with an error.</p>
 <p>Let’s look at the implementation of the checkpoint.</p>
-<h2 id="checkpoint-charlie"><a href="#checkpoint-charlie">6.1 Checkpoint Charlie</a></h2>
+<h2 id="checkpoint-charlie"><a class="doc-anchor" href="#checkpoint-charlie">§</a>6.1 Checkpoint Charlie</h2>
 <p>Our script executes the SPI Test by sending the <strong>spi_test2</strong> command to PineDio Stack: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>echo &quot;spi_test2&quot; &gt;/dev/ttyUSB0 ; sleep 2
 </code></pre></div>
@@ -565,7 +565,7 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 <p>Testing the <strong>ST7789 Display</strong> will be more tricky because it needs visual inspection. If you have any ideas, lemme know!</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway" /></p>
 <p><a href="https://lupyuen.github.io/articles/lorawan3"><em>PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway</em></a></p>
-<h1 id="lorawan-test"><a href="#lorawan-test">7 LoRaWAN Test</a></h1>
+<h1 id="lorawan-test"><a class="doc-anchor" href="#lorawan-test">§</a>7 LoRaWAN Test</h1>
 <p><em>(Checkpoint Delta)</em></p>
 <p>Now comes the most complicated checkpoint: <strong>LoRaWAN Test</strong>.</p>
 <p>For this test our script shall do some wireless comms…</p>
@@ -665,7 +665,7 @@ CHANNEL MASK: 0003
 <div class="example-wrap"><pre class="language-text"><code>All OK! BL602 has successfully joined the LoRaWAN Network
 </code></pre></div>
 <p>Which means that GPIO Input / Ouput / Interrupt, SPI, ADC, Timers, Multithreading, Message Queues and Strong Random Number Generator are all working OK!</p>
-<h2 id="checkpoint-delta"><a href="#checkpoint-delta">7.1 Checkpoint Delta</a></h2>
+<h2 id="checkpoint-delta"><a class="doc-anchor" href="#checkpoint-delta">§</a>7.1 Checkpoint Delta</h2>
 <p>To run the LoRaWAN Test, our script sends the <strong>lorawan_test</strong> command to PineDio Stack: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Send the LoRaWAN Test Command
 echo &quot;lorawan_test&quot; &gt;/dev/ttyUSB0
@@ -733,7 +733,7 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 <p>But for now we’ll have to live with the inconvenience of identifying which specific feature could have caused the LoRaWAN Test to fail.</p>
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="LVGL Test App for testing the Touch Panel" /></p>
 <p><a href="https://lupyuen.github.io/articles/touch"><em>LVGL Test App for testing the Touch Panel</em></a></p>
-<h1 id="touch-panel-test"><a href="#touch-panel-test">8 Touch Panel Test</a></h1>
+<h1 id="touch-panel-test"><a class="doc-anchor" href="#touch-panel-test">§</a>8 Touch Panel Test</h1>
 <p><em>(Checkpoint Echo)</em></p>
 <p>For our final checkpoint we shall test…</p>
 <ul>
@@ -780,7 +780,7 @@ UP: id=0, touch=2, x=83, y=106
 <div class="example-wrap"><pre class="language-text"><code>All OK! BL604 has responded to touch
 </code></pre></div>
 <p>Yep PineDio Stack’s Touch Panel and I2C Bus are working OK!</p>
-<h2 id="checkpoint-echo"><a href="#checkpoint-echo">8.1 Checkpoint Echo</a></h2>
+<h2 id="checkpoint-echo"><a class="doc-anchor" href="#checkpoint-echo">§</a>8.1 Checkpoint Echo</h2>
 <p>The Touch Panel Test lives in a separate script: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh"><strong>pinedio2.sh</strong></a></p>
 <p>We <strong>launch the second script</strong> after completing the LoRaWAN Test: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Start the second script: pinedio2.sh
@@ -834,7 +834,7 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 <p>Or a <a href="https://www.seeedstudio.com/Grove-Servo.html"><strong>Servo Motor</strong></a> wrapped with an <a href="https://youtu.be/mb3zcacDGPc"><strong>Electrostatic Discharge Bag</strong></a>.</p>
 <p>Hope it fits inside our Automated Testing Enclosure: <a href="https://www.ikea.com/sg/en/p/ikea-365-food-container-with-lid-rectangular-plastic-s69276794/"><strong>IKEA 365+ 5.2L Food Container</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/auto2-box.jpg" alt="Our Automated Testing Enclosure: IKEA 365+ 5.2L Food Container" /></p>
-<h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
+<h1 id="upload-test-log"><a class="doc-anchor" href="#upload-test-log">§</a>9 Upload Test Log</h1>
 <p>The lesson we learnt from Alice, Bob and Chow: It’s super helpful to <strong>preserve the Automated Test Logs</strong> for every NuttX Release!</p>
 <ul>
 <li><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10"><strong>Automated Test Log for PineDio Stack</strong></a></li>
@@ -937,7 +937,7 @@ gh release edit \
 <p>That’s it for uploading the Automated Test Log to GitHub!</p>
 <p><img src="https://lupyuen.github.io/images/auto2-connect.jpg" alt="PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing" /></p>
 <p><em>PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing</em></p>
-<h1 id="merge-updates-from-nuttx"><a href="#merge-updates-from-nuttx">10 Merge Updates From NuttX</a></h1>
+<h1 id="merge-updates-from-nuttx"><a class="doc-anchor" href="#merge-updates-from-nuttx">§</a>10 Merge Updates From NuttX</h1>
 <p><em>Is PineDio Stack fully supported by NuttX Mainline?</em></p>
 <p>Not yet. Our fork of NuttX for PineDio Stack has <strong>Experimental Features</strong> that aren’t ready to be upstreamed into <a href="https://github.com/apache/nuttx"><strong>NuttX Mainline</strong></a>…</p>
 <ul>
@@ -983,7 +983,7 @@ gh release edit \
 </ul>
 <p>Ultimately the PineCone and PineDio Branches will have the <strong>exact same code</strong>, tested OK on PineCone and PineDio Stack. (With different build settings)</p>
 <p><img src="https://lupyuen.github.io/images/auto2-merge1.jpg" alt="Merge Updates From NuttX to PineDio Stack" /></p>
-<h2 id="pinecone-to-pinedio-stack"><a href="#pinecone-to-pinedio-stack">10.1 PineCone to PineDio Stack</a></h2>
+<h2 id="pinecone-to-pinedio-stack"><a class="doc-anchor" href="#pinecone-to-pinedio-stack">§</a>10.1 PineCone to PineDio Stack</h2>
 <p>The pic above shows how we <strong>merge the updates from NuttX Mainline</strong>  into the PineCone and PineDio Branches…</p>
 <ol>
 <li>
@@ -1010,7 +1010,7 @@ gh release edit \
 <p>That’s what we do today to keep PineCone and PineDio Branches in sync with NuttX Mainline.</p>
 <p>(We do the same for <a href="https://github.com/lupyuen/nuttx-apps"><strong>NuttX Apps</strong></a>, just before every merge of NuttX OS)</p>
 <p><img src="https://lupyuen.github.io/images/auto2-merge2.jpg" alt="Merge Updates From PineDio Stack to PineCone" /></p>
-<h2 id="pinedio-stack-to-pinecone"><a href="#pinedio-stack-to-pinecone">10.2 PineDio Stack to PineCone</a></h2>
+<h2 id="pinedio-stack-to-pinecone"><a class="doc-anchor" href="#pinedio-stack-to-pinecone">§</a>10.2 PineDio Stack to PineCone</h2>
 <p>Now Reverse Uno: The pic above shows how we <strong>merge the updates from PineDio Branch</strong> back to PineCone Branch (like when we add a new feature for PineDio Stack)…</p>
 <ol>
 <li>
@@ -1033,7 +1033,7 @@ gh release edit \
 <p>(We do the same for <a href="https://github.com/lupyuen/nuttx-apps"><strong>NuttX Apps</strong></a>, just before every merge of NuttX OS)</p>
 <p><img src="https://lupyuen.github.io/images/expander-title.jpg" alt="GPIO Expander for PineDio Stack" /></p>
 <p><a href="https://lupyuen.github.io/articles/expander"><em>GPIO Expander for PineDio Stack</em></a></p>
-<h2 id="merge-conflicts"><a href="#merge-conflicts">10.3 Merge Conflicts</a></h2>
+<h2 id="merge-conflicts"><a class="doc-anchor" href="#merge-conflicts">§</a>10.3 Merge Conflicts</h2>
 <p><em>Hol’ up… PineCone Branch merges updates from NuttX Mainline AND PineDio Branch? Won’t they clash?</em></p>
 <p>Yep maintaining the PineCone (Release) Branch is a delicate process…</p>
 <p>We need to assure <strong>peaceful coexistence</strong> of the features from both NuttX Mainline and PineDio Stack.</p>
@@ -1086,7 +1086,7 @@ gh release edit \
 <p><a href="https://gist.github.com/lupyuen/a6396ccbe9427087e73e5f29bf570eda">(How we resolve Merge Conflicts between NuttX Mainline and our Downstream Branch)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-inside5.jpg" alt="Inside PineDio Stack BL604" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2"><em>Inside PineDio Stack BL604</em></a></p>
-<h1 id="why-nuttx"><a href="#why-nuttx">11 Why NuttX</a></h1>
+<h1 id="why-nuttx"><a class="doc-anchor" href="#why-nuttx">§</a>11 Why NuttX</h1>
 <p><em>Wow looks like we’re doing Everything Everywhere All at Once / Daily / Fortnightly for NuttX on PineDio Stack! Why are we doing all this?</em></p>
 <p>PineDio Stack is the <strong>most complex IoT gadget</strong> I’ve seen… <a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment"><strong>All 23 GPIOs</strong></a> in use, some multiplexed!</p>
 <p>Thus we need a <strong>Common Framework</strong> to manage the complexity. And the framework shall be easily adopted by Alice, Bob, Chow and other devs worldwide to <strong>create Apps and Drivers</strong> for PineDio Stack.</p>
@@ -1110,7 +1110,7 @@ gh release edit \
 </li>
 </ul>
 <p>But we might face serious challenges creating complex firmware for PineDio Stack.</p>
-<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
 <p>I hope Alice, Bob and Chow will have a great time creating NuttX Drivers and Apps on PineDio Stack… And you too!</p>
 <p>Lemme know what you’re building with PineDio Stack!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -1133,7 +1133,7 @@ gh release edit \
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/auto2.md"><strong><code>lupyuen.github.io/src/auto2.md</code></strong></a></p>
-<h1 id="notes"><a href="#notes">13 Notes</a></h1>
+<h1 id="notes"><a class="doc-anchor" href="#notes">§</a>13 Notes</h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1519541046803271682"><strong>this Twitter Thread</strong></a></p>
@@ -1163,7 +1163,7 @@ cp .config boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig
 </ol>
 <p><img src="https://lupyuen.github.io/images/auto2-connect.jpg" alt="PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing" /></p>
 <p><em>PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing</em></p>
-<h1 id="appendix-select-usb-device"><a href="#appendix-select-usb-device">14 Appendix: Select USB Device</a></h1>
+<h1 id="appendix-select-usb-device"><a class="doc-anchor" href="#appendix-select-usb-device">§</a>14 Appendix: Select USB Device</h1>
 <p>When we connect both PineDio Stack BL604 and PineCone BL602 to our Single-Board Computer (pic above), we’ll see two USB Devices: <strong>/dev/ttyUSB0</strong> and <strong>/dev/ttyUSB1</strong></p>
 <p><em>How will we know which USB Device is for PineDio Stack and PineCone?</em></p>
 <p>Do this…</p>

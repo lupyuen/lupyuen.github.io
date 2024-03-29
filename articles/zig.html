@@ -93,7 +93,7 @@
 <p>Later below I’ll share my thoughts about <strong>Embedded Zig</strong> and how we might use Zig to maintain <strong>Complex IoT Apps</strong>. (Like for LoRa and LoRaWAN)</p>
 <p>I’m totally new to Zig, please bear with me as I wade through the water and start swimming in Zig! 🙏</p>
 <p><img src="https://lupyuen.github.io/images/zig-code1a.png" alt="Zig App bundled with Apache NuttX RTOS" /></p>
-<h1 id="zig-app"><a href="#zig-app">1 Zig App</a></h1>
+<h1 id="zig-app"><a class="doc-anchor" href="#zig-app">§</a>1 Zig App</h1>
 <p>Below is the <strong>barebones Zig App</strong> that’s bundled with Apache NuttX RTOS. We’ll run this on BL602: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig">hello_zig_main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Import the Zig Standard Library
 const std = @import(&quot;std&quot;);
@@ -120,14 +120,14 @@ pub export fn hello_zig_main(
 </code></pre></div>
 <p>Let’s dive into the Zig code.</p>
 <p><img src="https://lupyuen.github.io/images/book-zig.jpg" alt="Zig on BL602" /></p>
-<h2 id="import-standard-library"><a href="#import-standard-library">1.1 Import Standard Library</a></h2>
+<h2 id="import-standard-library"><a class="doc-anchor" href="#import-standard-library">§</a>1.1 Import Standard Library</h2>
 <p>We begin by importing the <a href="https://ziglang.org/documentation/master/#Zig-Standard-Library"><strong>Zig Standard Library</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Import the Zig Standard Library
 const std = @import(&quot;std&quot;);
 </code></pre></div>
 <p>Which has all kinds of <strong>Algos, Data Structures and Definitions</strong>.</p>
 <p><a href="https://ziglang.org/documentation/master/std/">(More about the Zig Standard Library)</a></p>
-<h2 id="import-printf"><a href="#import-printf">1.2 Import printf</a></h2>
+<h2 id="import-printf"><a class="doc-anchor" href="#import-printf">§</a>1.2 Import printf</h2>
 <p>Next we cross into the grey zone between <strong>Zig and C</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Import printf() from C
 pub extern fn printf(
@@ -149,7 +149,7 @@ pub extern fn printf(
 <p>(That’s because it’s Terminated by the Null Sentinel, not because of “The Matrix”)</p>
 <p><em>Why is the return type <code>c_int</code>?</em></p>
 <p>This says that <strong><code>printf()</code></strong> returns an <strong><code>int</code></strong> that’s compatible with C. <a href="https://ziglang.org/documentation/master/#Primitive-Types">(See this)</a></p>
-<h2 id="main-function"><a href="#main-function">1.3 Main Function</a></h2>
+<h2 id="main-function"><a class="doc-anchor" href="#main-function">§</a>1.3 Main Function</h2>
 <p>NuttX expects our Zig App to export a <strong>Main Function</strong> that follows the C Convention. So we so this in Zig…</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Main Function
 pub export fn hello_zig_main(
@@ -188,7 +188,7 @@ pub export fn hello_zig_main(
 <p>Our declaration for <strong><code>printf()</code></strong> specifies only one parameter: the <strong>Format String</strong>. So it’s good for printing one unformatted string.</p>
 <p><a href="https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers">(Here’s the full declaration)</a></p>
 <p><img src="https://lupyuen.github.io/images/zig-config1a.png" alt="Enable Zig App in NuttX" /></p>
-<h1 id="enable-zig-app"><a href="#enable-zig-app">2 Enable Zig App</a></h1>
+<h1 id="enable-zig-app"><a class="doc-anchor" href="#enable-zig-app">§</a>2 Enable Zig App</h1>
 <p>We’re ready to <strong>build our Zig App</strong> in NuttX! </p>
 <p>Follow these steps to <strong>download and configure NuttX</strong> for BL602…</p>
 <ul>
@@ -206,7 +206,7 @@ pub export fn hello_zig_main(
 <p>Save the configuration and exit menuconfig.</p>
 <p>Something interesting happens when we build NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/zig-build1a.png" alt="Build fails on NuttX" /></p>
-<h1 id="build-fails-on-nuttx"><a href="#build-fails-on-nuttx">3 Build Fails on NuttX</a></h1>
+<h1 id="build-fails-on-nuttx"><a class="doc-anchor" href="#build-fails-on-nuttx">§</a>3 Build Fails on NuttX</h1>
 <p>When we <strong>build NuttX</strong> with the Zig App…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make
 </code></pre></div>
@@ -218,7 +218,7 @@ undefined reference to `hello_zig_main&#39;
 <p><a href="https://gist.github.com/lupyuen/497c90b862aef48b57ff3124f2ea94d8">(Source)</a></p>
 <p>Which is probably due to some <strong>incomplete Build Rules</strong> in the NuttX Makefiles. <a href="https://github.com/apache/nuttx/issues/6219">(See this)</a></p>
 <p>But no worries! Let’s compile the Zig App ourselves and link it into the NuttX Firmware.</p>
-<h1 id="compile-zig-app"><a href="#compile-zig-app">4 Compile Zig App</a></h1>
+<h1 id="compile-zig-app"><a class="doc-anchor" href="#compile-zig-app">§</a>4 Compile Zig App</h1>
 <p>Follow these steps to install the <strong>Zig Compiler</strong>…</p>
 <ul>
 <li><a href="https://ziglang.org/learn/getting-started/"><strong>“Zig: Getting Started”</strong></a></li>
@@ -248,7 +248,7 @@ make
 <p>This generates a <strong>RISC-V Object File</strong> <code>hello_zig_main.o</code> that will be linked into our NuttX Firmware.</p>
 <p>Let’s talk about the Zig Target, which looks especially interesting for RISC-V…</p>
 <p><img src="https://lupyuen.github.io/images/zig-build3a.png" alt="Compile Zig App for BL602" /></p>
-<h1 id="zig-target"><a href="#zig-target">5 Zig Target</a></h1>
+<h1 id="zig-target"><a class="doc-anchor" href="#zig-target">§</a>5 Zig Target</h1>
 <p><em>Why is the Zig Target riscv32-freestanding-none?</em></p>
 <p>Zig Targets have the form “<em>(arch)(sub)</em>-<em>(os)</em>-<em>(abi)</em>”…</p>
 <ul>
@@ -303,7 +303,7 @@ zig build-obj \
 </ul>
 <p>Now comes another fun challenge, with a weird hack…</p>
 <p><img src="https://lupyuen.github.io/images/zig-build2a.png" alt="Floating-Point ABI issue" /></p>
-<h1 id="floating-point-abi"><a href="#floating-point-abi">6 Floating-Point ABI</a></h1>
+<h1 id="floating-point-abi"><a class="doc-anchor" href="#floating-point-abi">§</a>6 Floating-Point ABI</h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>When we <strong>link the Compiled Zig App</strong> with NuttX, we see this error (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Build NuttX to link the Zig Object from `hello.o`
@@ -344,7 +344,7 @@ File Attributes
 <p>GCC won’t let us link Object Files with <strong>different ABIs</strong>: Software Floating-Point vs Hardware Floating-Point!</p>
 <p>Let’s fix this with a quick hack…</p>
 <p>(Why did the Zig Compiler produce an Object File with Software Floating-Point ABI, when <code>sifive_e76</code> supports Hardware Floating-Point? <a href="https://www.reddit.com/r/Zig/comments/v2zgvh/comment/iavw5xp/?utm_source=share&amp;utm_medium=web2x&amp;context=3">See this</a>)</p>
-<h1 id="patch-elf-header"><a href="#patch-elf-header">7 Patch ELF Header</a></h1>
+<h1 id="patch-elf-header"><a class="doc-anchor" href="#patch-elf-header">§</a>7 Patch ELF Header</h1>
 <p>Earlier we discovered that the Zig Compiler generates an Object File with <strong>Software Floating-Point</strong> ABI (Application Binary Interface)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Dump the ABI for the compiled Zig app
 $ riscv64-unknown-elf-readelf -h -A hello_zig_main.o
@@ -403,7 +403,7 @@ cp hello_zig_main2.o hello_zig_main.o
 <p><a href="https://www.tutorialspoint.com/unix_commands/xxd.htm">(More about <code>xxd</code>)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jumperl.jpg" alt="Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><em>Pine64 PineCone BL602 RISC-V Board</em></a></p>
-<h1 id="zig-runs-ok"><a href="#zig-runs-ok">8 Zig Runs OK!</a></h1>
+<h1 id="zig-runs-ok"><a class="doc-anchor" href="#zig-runs-ok">§</a>8 Zig Runs OK!</h1>
 <p>We’re ready to link the <strong>Patched Object File</strong> with NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Copy the modified object file to NuttX and overwrite `hello_zig.o`
 ##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
@@ -436,7 +436,7 @@ Hello, Zig!
 <p>Let’s talk about building real-world Embedded and IoT Apps with Zig…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="Pine64 PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left) over SPI" /></p>
 <p><a href="https://lupyuen.github.io/articles/spi2"><em>Pine64 PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left) over SPI</em></a></p>
-<h1 id="embedded-zig"><a href="#embedded-zig">9 Embedded Zig</a></h1>
+<h1 id="embedded-zig"><a class="doc-anchor" href="#embedded-zig">§</a>9 Embedded Zig</h1>
 <p><em>Will Zig run on Bare Metal? Without an RTOS like NuttX?</em></p>
 <p>Yep it can! Check out this project that runs <strong>Bare Metal Zig</strong> on the HiFive1 RISC-V board…</p>
 <ul>
@@ -485,7 +485,7 @@ fn busyloop() void {
 <p>Aha! Here comes the really interesting thing about Zig, read on to find out…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="Pine64 PineDio Stack BL604 (left) talking LoRaWAN to RAKwireless WisGate (right)" /></p>
 <p><a href="https://lupyuen.github.io/articles/lorawan3"><em>Pine64 PineDio Stack BL604 (left) talking LoRaWAN to RAKwireless WisGate (right)</em></a></p>
-<h1 id="why-zig"><a href="#why-zig">10 Why Zig?</a></h1>
+<h1 id="why-zig"><a class="doc-anchor" href="#why-zig">§</a>10 Why Zig?</h1>
 <p><em>Why are we doing all this with Zig instead of C?</em></p>
 <p>Here’s why…</p>
 <blockquote>
@@ -545,7 +545,7 @@ fn busyloop() void {
 <ul>
 <li><a href="https://github.com/dreinharth/byway/blob/main/src/main.zig"><strong>dreinharth/byway (Wayland Compositor in Zig)</strong></a></li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>This has been a very quick experiment with Zig on RISC-V Microcontrollers… But it looks <strong>super promising!</strong></p>
 <p>In the coming weeks I’ll test Zig as a <strong>drop-in replacement for GCC.</strong> Let’s find out whether Zig will cure our headaches in <strong>maintaining Complex IoT Projects!</strong></p>
 <p>Check out the updates here…</p>
@@ -581,7 +581,7 @@ fn busyloop() void {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/zig.md"><strong><code>lupyuen.github.io/src/zig.md</code></strong></a></p>
-<h1 id="notes"><a href="#notes">12 Notes</a></h1>
+<h1 id="notes"><a class="doc-anchor" href="#notes">§</a>12 Notes</h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1529261120124354560"><strong>this Twitter Thread</strong></a></p>

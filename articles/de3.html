@@ -82,7 +82,7 @@
 <p>Let’s find out how our NuttX Display Driver will call A64 Display Engine to <strong>render graphics on PinePhone’s LCD Display</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Complete Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Complete Display Driver for PinePhone</em></a></p>
-<h1 id="allwinner-a64-display-engine"><a href="#allwinner-a64-display-engine">1 Allwinner A64 Display Engine</a></h1>
+<h1 id="allwinner-a64-display-engine"><a class="doc-anchor" href="#allwinner-a64-display-engine">§</a>1 Allwinner A64 Display Engine</h1>
 <p>Inside PinePhone’s Allwinner A64 SoC (pic above) is the <strong>A64 Display Engine</strong> that…</p>
 <ul>
 <li>
@@ -113,7 +113,7 @@
 </ul>
 <p>Today we’ll program it with the <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c"><strong>NuttX Kernel Driver</strong></a> for the Display Engine.</p>
 <p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="3 Framebuffers for 3 UI Channels" /></p>
-<h1 id="ui-channels"><a href="#ui-channels">2 UI Channels</a></h1>
+<h1 id="ui-channels"><a class="doc-anchor" href="#ui-channels">§</a>2 UI Channels</h1>
 <p>A64 Display Engine supports up to <strong>3 Framebuffers</strong> in RAM (pic above). Each pixel has <strong>32-bit ARGB 8888</strong> format.</p>
 <p>The Display Engine renders the 3 Framebuffer as <strong>3 UI Channels</strong>, blended together into the displayed image…</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Blending the UI Channels" /></p>
@@ -152,7 +152,7 @@ static uint32_t fb2[PANEL_WIDTH * PANEL_HEIGHT];
 </ul>
 <p>Let’s wrap the 3 Framebuffers (<strong>fb0</strong>, <strong>fb1</strong> and <strong>fb2</strong>) with the NuttX Framebuffer Interface…</p>
 <p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="PinePhone Framebuffer" /></p>
-<h1 id="nuttx-framebuffer"><a href="#nuttx-framebuffer">3 NuttX Framebuffer</a></h1>
+<h1 id="nuttx-framebuffer"><a class="doc-anchor" href="#nuttx-framebuffer">§</a>3 NuttX Framebuffer</h1>
 <p>NuttX expects our PinePhone Display Driver to provide a <a href="https://nuttx.apache.org/docs/latest/components/drivers/special/framebuffer.html"><strong>Framebuffer Interface</strong></a> for rendering graphics.</p>
 <p>Let’s define the <strong>NuttX Framebuffer</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89">test_a64_de.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// TODO: Run `make menuconfig`
@@ -248,7 +248,7 @@ static struct fb_overlayinfo_s overlayInfo[2] = {
 <p>Remember that Framebuffer 1 is <strong>600 pixels</strong> wide… But the PinePhone Screen is <strong>720 pixels</strong> wide.</p>
 <p>We use <strong>sarea</strong> to specify that Framebuffer 1 will be rendered <strong>52 pixels</strong> from the left (X Offset), <strong>52 pixels</strong> from the top (Y Offset). </p>
 <p>(So it will be centered horizontally)</p>
-<h1 id="render-framebuffers"><a href="#render-framebuffers">4 Render Framebuffers</a></h1>
+<h1 id="render-framebuffers"><a class="doc-anchor" href="#render-framebuffers">§</a>4 Render Framebuffers</h1>
 <p>We’ve defined the NuttX Framebuffers… Let’s <strong>render them with the Display Engine</strong>!</p>
 <p>We’ll walk through the steps…</p>
 <ol>
@@ -265,7 +265,7 @@ static struct fb_overlayinfo_s overlayInfo[2] = {
 <p>Enable Display Engine</p>
 </li>
 </ol>
-<h2 id="initialise-display-engine"><a href="#initialise-display-engine">4.1 Initialise Display Engine</a></h2>
+<h2 id="initialise-display-engine"><a class="doc-anchor" href="#initialise-display-engine">§</a>4.1 Initialise Display Engine</h2>
 <p>We begin by <strong>initialising the Display Engine</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Init Display Engine
 int ret = a64_de_init();
@@ -283,7 +283,7 @@ DEBUGASSERT(ret == OK);
 <p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">(How it works)</a></p>
 <p>We call <a href="https://lupyuen.github.io/articles/de3#appendix-calibrate-nuttx-delay"><strong>up_mdelay</strong></a> to wait 160 milliseconds. <a href="https://lupyuen.github.io/articles/de3#appendix-calibrate-nuttx-delay">(Explained here)</a></p>
 <p>Then we call <strong>pinephone_render_graphics</strong>…</p>
-<h2 id="initialise-ui-blender"><a href="#initialise-ui-blender">4.2 Initialise UI Blender</a></h2>
+<h2 id="initialise-ui-blender"><a class="doc-anchor" href="#initialise-ui-blender">§</a>4.2 Initialise UI Blender</h2>
 <p>Inside <strong>pinephone_render_graphics</strong>, we <strong>initialise the UI Blender</strong> that will blend our UI Channels into a single image: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L91-L157">test_a64_de.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Render graphics with A64 Display Engine
 int pinephone_render_graphics(void) {
@@ -294,7 +294,7 @@ int pinephone_render_graphics(void) {
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L655-L711">(<strong>a64_de_blender_init</strong> comes from our Display Engine Driver)</a></p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine">(How it works)</a></p>
-<h2 id="initialise-ui-channels"><a href="#initialise-ui-channels">4.3 Initialise UI Channels</a></h2>
+<h2 id="initialise-ui-channels"><a class="doc-anchor" href="#initialise-ui-channels">§</a>4.3 Initialise UI Channels</h2>
 <p>Next we <strong>initialise UI Channel 1</strong> with Framebuffer 0…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Init the Base UI Channel (Channel 1)
   ret = a64_de_ui_channel_init(
@@ -333,7 +333,7 @@ int pinephone_render_graphics(void) {
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L711-L927">(<strong>a64_de_ui_channel_init</strong> comes from our Display Engine Driver)</a></p>
 <p><a href="https://lupyuen.github.io/articles/de2#configure-framebuffer">(How it works)</a></p>
-<h2 id="enable-display-engine"><a href="#enable-display-engine">4.4 Enable Display Engine</a></h2>
+<h2 id="enable-display-engine"><a class="doc-anchor" href="#enable-display-engine">§</a>4.4 Enable Display Engine</h2>
 <p>Finally we <strong>enable the Display Engine</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set UI Blender Route, enable Blender Pipes
   // and apply the settings
@@ -353,7 +353,7 @@ int pinephone_render_graphics(void) {
 </code></pre></div>
 <p>Let’s do a simple Test Pattern…</p>
 <p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="3 Framebuffers for 3 UI Channels" /></p>
-<h1 id="test-pattern"><a href="#test-pattern">5 Test Pattern</a></h1>
+<h1 id="test-pattern"><a class="doc-anchor" href="#test-pattern">§</a>5 Test Pattern</h1>
 <p>We fill our 3 Framebuffers with a simple <strong>Test Pattern</strong> (pic above)…</p>
 <ul>
 <li>
@@ -472,7 +472,7 @@ ARM64_DMB(); ARM64_DSB(); ARM64_ISB();
 <p><a href="https://lupyuen.github.io/images/de3-title.jpg">(We’re still missing a row at the bottom of the circle)</a></p>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Complete Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Complete Display Driver for PinePhone</em></a></p>
-<h1 id="complete-display-driver"><a href="#complete-display-driver">6 Complete Display Driver</a></h1>
+<h1 id="complete-display-driver"><a class="doc-anchor" href="#complete-display-driver">§</a>6 Complete Display Driver</h1>
 <p><em>Are we done yet with our Display Driver for PinePhone?</em></p>
 <p>Not quite! PinePhone needs a <strong>super complex Display Driver</strong> that will handle 11 steps (pic above)…</p>
 <ul>
@@ -583,7 +583,7 @@ nsh&gt; hello 0
 </ul>
 <p>Let’s talk about the upcoming drivers that we’re adding to NuttX Kernel…</p>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
-<h1 id="upcoming-drivers"><a href="#upcoming-drivers">7 Upcoming Drivers</a></h1>
+<h1 id="upcoming-drivers"><a class="doc-anchor" href="#upcoming-drivers">§</a>7 Upcoming Drivers</h1>
 <p><em>Which bits of our NuttX Display Driver are still in Zig?</em></p>
 <p>These parts are still in Zig, <strong>pending conversion to C</strong>…</p>
 <ul>
@@ -638,7 +638,7 @@ nsh&gt; hello 0
 <li><a href="https://github.com/lupyuen2/wip-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c"><strong>boards/arm64/a64/pinephone/src/pinephone_display.c</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/de3-run.png" alt="Zig Test Program running on Apache NuttX RTOS for PinePhone" /></p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>Very soon the official NuttX Kernel will be rendering graphics on PinePhone’s LCD Display… Stay tuned for updates!</p>
 <p>Please check out the other articles on NuttX for PinePhone…</p>
 <ul>
@@ -673,7 +673,7 @@ nsh&gt; hello 0
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de3.md"><strong>lupyuen.github.io/src/de3.md</strong></a></p>
-<h1 id="appendix-calibrate-nuttx-delay"><a href="#appendix-calibrate-nuttx-delay">9 Appendix: Calibrate NuttX Delay</a></h1>
+<h1 id="appendix-calibrate-nuttx-delay"><a class="doc-anchor" href="#appendix-calibrate-nuttx-delay">§</a>9 Appendix: Calibrate NuttX Delay</h1>
 <p><em>Can we call sleep() or usleep() in our NuttX Display Driver?</em></p>
 <p>Sorry Nope! Most of our Display Driver code runs in the NuttX Kernel at startup.</p>
 <p>Calling <code>sleep()</code> or <code>usleep()</code> will <strong>crash the kernel</strong>…</p>

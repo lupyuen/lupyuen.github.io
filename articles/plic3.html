@@ -100,7 +100,7 @@
 <p>Here’s how we solved the baffling mystery…</p>
 <p><a href="https://youtu.be/l7Y36nTkr8c">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
-<h1 id="uart-interrupt"><a href="#uart-interrupt">1 UART Interrupt</a></h1>
+<h1 id="uart-interrupt"><a class="doc-anchor" href="#uart-interrupt">§</a>1 UART Interrupt</h1>
 <p><em>Sorry TLDR: What’s this PLIC? What’s Serial Console gotta do with it?</em></p>
 <p><a href="https://lupyuen.github.io/articles/plic2#platform-level-interrupt-controller"><strong>Platform-Level Interrupt Controller</strong></a> (PLIC) is the hardware inside our SBC that controls the forwarding of <strong>Peripheral Interrupts</strong> to our 64-bit RISC-V CPU.</p>
 <p>(Like Interrupts for <strong>UART</strong>, <strong>I2C</strong>, <strong>SPI</strong>, …)</p>
@@ -157,7 +157,7 @@
 <p>That’s the Textbook Recipe for PLIC, according to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic"><strong>Official RISC-V PLIC Spec</strong></a>. (If Julia Child wrote a PLIC Textbook)</p>
 <p>But it doesn’t work on Ox64 BL808 SBC and T-Head C906 Core…</p>
 <p><img src="https://lupyuen.github.io/images/plic3-trouble.jpg" alt="UART and PLIC Troubles on Ox64" /></p>
-<h1 id="uart-and-plic-troubles"><a href="#uart-and-plic-troubles">2 UART and PLIC Troubles</a></h1>
+<h1 id="uart-and-plic-troubles"><a class="doc-anchor" href="#uart-and-plic-troubles">§</a>2 UART and PLIC Troubles</h1>
 <p><em>What happens when we run the PLIC Recipe on Ox64?</em></p>
 <p>Absolute Disaster! (Pic above)</p>
 <ul>
@@ -182,7 +182,7 @@
 <p>Our troubles are all Seemingly Unrelated. However there’s actually only One Sinister Culprit causing all these headaches…</p>
 <p><img src="https://lupyuen.github.io/images/plic3-rx.png" alt="BL808 UART Receive Status (Page 405)" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><em>BL808 UART Receive Status (Page 405)</em></a></p>
-<h1 id="leaky-reads-in-uart"><a href="#leaky-reads-in-uart">3 Leaky Reads in UART</a></h1>
+<h1 id="leaky-reads-in-uart"><a class="doc-anchor" href="#leaky-reads-in-uart">§</a>3 Leaky Reads in UART</h1>
 <p><em>How to track down the culprit?</em></p>
 <p>We begin with the simplest bug: <a href="https://lupyuen.github.io/articles/plic2#backup-plan"><strong>UART Input</strong></a> is always Empty.</p>
 <p>In our <a href="https://lupyuen.github.io/articles/plic2#appendix-uart-driver-for-ox64"><strong>UART Driver</strong></a>, this is how we read the <strong>UART Input</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L502-L540">bl808_serial.c</a></p>
@@ -250,7 +250,7 @@ rx=0
 <p>Yep indeed we have Leaky Read + Leaky Write that are causing all our UART + PLIC woes.</p>
 <p>Things are looking mighty illogical and <em>incoherent</em>. Why oh why?</p>
 <p><img src="https://lupyuen.github.io/images/plic3-uart.jpg" alt="Leaky Reads in UART" /></p>
-<h1 id="t-head-errata"><a href="#t-head-errata">4 T-Head Errata</a></h1>
+<h1 id="t-head-errata"><a class="doc-anchor" href="#t-head-errata">§</a>4 T-Head Errata</h1>
 <p><em>But Linux runs OK on Ox64 BL808…</em></p>
 <p><em>Something special about Linux on T-Head C906?</em></p>
 <p>We search for <strong>“T-Head”</strong> in the <a href="https://github.com/torvalds/linux"><strong>Linux Kernel Repo</strong></a>. And we see this vital clue: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/errata_list.h#L69-L164">errata_list.h</a></p>
@@ -317,7 +317,7 @@ Bit[59] Sec - Trustable
 <p><strong>UPDATE:</strong> Shareable might support <a href="https://news.ycombinator.com/item?id=38587092#38591801"><strong>Strong Ordering across Multiple Cores</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-l1kernel2b.jpg" alt="Level 1 Page Table for Ox64 MMU" /></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#huge-chunks-level-1"><em>Level 1 Page Table for Ox64 MMU</em></a></p>
-<h1 id="memory-management-unit"><a href="#memory-management-unit">5 Memory Management Unit</a></h1>
+<h1 id="memory-management-unit"><a class="doc-anchor" href="#memory-management-unit">§</a>5 Memory Management Unit</h1>
 <p><em>Wow the soup gets too salty. What’s MMU?</em></p>
 <p><a href="https://lupyuen.github.io/articles/mmu"><strong>Memory Management Unit (MMU)</strong></a> is the hardware inside our SBC that does…</p>
 <ul>
@@ -356,7 +356,7 @@ Bit[59] Sec - Trustable
 </div>
 <p>We’ll set the <strong>SO and SH Bits</strong> in our Page Table Entries. Hopefully UART and PLIC won’t get mushed up no more…</p>
 <p><img src="https://lupyuen.github.io/images/plic3-mmu.jpg" alt="Enable Strong Order in Ox64 MMU" /></p>
-<h1 id="enable-strong-order"><a href="#enable-strong-order">6 Enable Strong Order</a></h1>
+<h1 id="enable-strong-order"><a class="doc-anchor" href="#enable-strong-order">§</a>6 Enable Strong Order</h1>
 <p><em>We need to set the Strong Order Bit…</em></p>
 <p><em>How will we enable it in our Page Table Entry?</em></p>
 <div><table><thead><tr><th style="text-align: left">Memory Attribute</th><th style="text-align: left">Page Table Entry</th></tr></thead><tbody>
@@ -428,7 +428,7 @@ map PLIC as Interrupt L2
 <p><a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946#file-ox64-nuttx-uart-ok-log-L25-L160">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/commit/4e343153d996f7f7a9b2d8a79edf42cd3900d42e">(<strong>Shareable Bit</strong> doesn’t effect anything. We’re keeping it to be consistent with Linux)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
-<h1 id="it-works"><a href="#it-works">7 It Works!</a></h1>
+<h1 id="it-works"><a class="doc-anchor" href="#it-works">§</a>7 It Works!</h1>
 <p><em>What happens when we run our patched MMU code?</em></p>
 <p>Our UART and PLIC Troubles are finally over!</p>
 <ul>
@@ -473,7 +473,7 @@ Hello, World!!
 <p><a href="https://youtu.be/l7Y36nTkr8c">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324#file-ox64-nuttx-uart-ok2-log-L127-L146">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-ox64.jpg" alt="We are hunky dory with Ox64 BL808 and T-Head C906 👍" /></p>
-<h1 id="lessons-learnt"><a href="#lessons-learnt">8 Lessons Learnt</a></h1>
+<h1 id="lessons-learnt"><a class="doc-anchor" href="#lessons-learnt">§</a>8 Lessons Learnt</h1>
 <p><em>Phew that was some quick intense debugging…</em></p>
 <p>Yeah we’re really fortunate to get NuttX RTOS running OK on Ox64. Couple of things that might have helped…</p>
 <ol>
@@ -524,7 +524,7 @@ Hello, World!!
 <p>As of Today: Yep <strong>RISC-V is indeed RISC-V</strong> on SiFive vs T-Head… Just beware of <a href="https://lupyuen.codeberg.page/articles/plic2.html#all-things-considered"><strong>C906 MMU</strong></a>, <a href="https://lupyuen.github.io/articles/plic2#all-things-considered"><strong>C906 PLIC</strong></a> and <a href="https://lupyuen.github.io/articles/plic3#t-head-errata"><strong>T-Head Errata</strong></a>!</p>
 <p><a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt">(<strong>New T-Head Cores</strong> will probably migrate to <strong>Svpbmt Extension</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-beach2.jpg" alt="Quick dip in the sea + Picnic on the beach … Really helps with NuttX + Ox64 troubleshooting! 👍" /></p>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>Thank you so much for reading my adventures of NuttX on Ox64… You’re my inspiration for solving this sticky mystery! 🙏</p>
 <ul>
 <li>
@@ -583,7 +583,7 @@ Hello, World!!
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic3.md"><strong>lupyuen.github.io/src/plic3.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
-<h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">10 Appendix: Build and Run NuttX</a></h1>
+<h1 id="appendix-build-and-run-nuttx"><a class="doc-anchor" href="#appendix-build-and-run-nuttx">§</a>10 Appendix: Build and Run NuttX</h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong>, with PLIC and Console Input working OK.</p>
 <p>This is how we download and build NuttX for Ox64 BL808 SBC…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code

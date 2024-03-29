@@ -103,7 +103,7 @@
 <p>Our journey down the PinePhone USB Rabbit Hole begins with a curious comment…</p>
 <p><img src="https://lupyuen.github.io/images/wayland-sd.jpg" alt="Quectel EG25-G LTE Modem inside PinePhone" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Modem"><em>Quectel EG25-G LTE Modem inside PinePhone</em></a></p>
-<h1 id="pinephone--nuttx--feature-phone"><a href="#pinephone--nuttx--feature-phone">1 PinePhone + NuttX = Feature Phone</a></h1>
+<h1 id="pinephone--nuttx--feature-phone"><a class="doc-anchor" href="#pinephone--nuttx--feature-phone">§</a>1 PinePhone + NuttX = Feature Phone</h1>
 <p><em>Now that NuttX can run Touchscreen Apps on PinePhone… What next?</em></p>
 <p>We might turn PinePhone on NuttX into a <strong>Feature Phone</strong>, thanks to an inspiring comment on YouTube…</p>
 <blockquote>
@@ -131,7 +131,7 @@
 <p>Let’s talk about PinePhone’s LTE Modem…</p>
 <p><img src="https://lupyuen.github.io/images/usb2-modem.jpg" alt="Quectel EG25-G LTE Modem" /></p>
 <p><a href="https://wiki.pine64.org/wiki/File:Quectel_EG25-G_LTE_Standard_Specification_V1.3.pdf"><em>Quectel EG25-G LTE Modem</em></a></p>
-<h1 id="quectel-eg25-g-lte-modem"><a href="#quectel-eg25-g-lte-modem">2 Quectel EG25-G LTE Modem</a></h1>
+<h1 id="quectel-eg25-g-lte-modem"><a class="doc-anchor" href="#quectel-eg25-g-lte-modem">§</a>2 Quectel EG25-G LTE Modem</h1>
 <p><em>What’s this LTE Modem?</em></p>
 <p>Check out the article…</p>
 <ul>
@@ -185,7 +185,7 @@
 <p><a href="https://lupyuen.github.io/articles/lte">(More about this)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)</em></a></p>
-<h1 id="lte-modem-talks-usb"><a href="#lte-modem-talks-usb">3 LTE Modem talks USB</a></h1>
+<h1 id="lte-modem-talks-usb"><a class="doc-anchor" href="#lte-modem-talks-usb">§</a>3 LTE Modem talks USB</h1>
 <p><em>How is the LTE Modem connected to PinePhone?</em></p>
 <p>Check out the article…</p>
 <ul>
@@ -277,7 +277,7 @@ Device Descriptor:
 <blockquote>
 <p><em>Sorry Elmo… Allwinner A64’s USB Controller isn’t documented</em></p>
 </blockquote>
-<h1 id="document-the-usb-controller"><a href="#document-the-usb-controller">4 Document the USB Controller</a></h1>
+<h1 id="document-the-usb-controller"><a class="doc-anchor" href="#document-the-usb-controller">§</a>4 Document the USB Controller</h1>
 <p><em>To turn PinePhone into a Feature Phone (Voice Calls and SMS only)…</em></p>
 <p><em>What NuttX Drivers would we need?</em></p>
 <p>We need a NuttX Driver for the PinePhone’s <a href="https://lupyuen.github.io/articles/usb2#quectel-eg25-g-lte-modem"><strong>Quectel LTE Modem</strong></a>… Which talks over <a href="https://lupyuen.github.io/articles/usb2#lte-modem-talks-usb"><strong>USB Serial</strong></a>.</p>
@@ -325,7 +325,7 @@ Device Descriptor:
 <p>Let’s find a Reference Driver for the Mentor Graphics USB Controller…</p>
 <p><img src="https://lupyuen.github.io/images/usb2-devicetree.png" alt="USB Controller in PinePhone Device Tree" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L647-L721"><em>USB Controller in PinePhone Device Tree</em></a></p>
-<h1 id="search-for-usb-driver"><a href="#search-for-usb-driver">5 Search for USB Driver</a></h1>
+<h1 id="search-for-usb-driver"><a class="doc-anchor" href="#search-for-usb-driver">§</a>5 Search for USB Driver</h1>
 <p><strong>UPDATE:</strong> There’s an easier way to build the PinePhone USB Driver…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb"><strong>Enhanced Host Controller Interface for USB</strong></a></li>
@@ -357,7 +357,7 @@ phy@1c19400 {
 allwinner,sun50i-a64-usb-phy
 </code></pre></div>
 <p>Which uncovers the Allwinner A64 USB Driver that we seek (for FreeBSD, NetBSD and Linux)…</p>
-<h1 id="freebsd-usb-driver"><a href="#freebsd-usb-driver">6 FreeBSD USB Driver</a></h1>
+<h1 id="freebsd-usb-driver"><a class="doc-anchor" href="#freebsd-usb-driver">§</a>6 FreeBSD USB Driver</h1>
 <p><em>We found a Reference Driver for Allwinner A64 USB Controller?</em></p>
 <p>Yep! Earlier we discovered the name of the Allwinner A64 USB Driver: <strong>“allwinner,sun8i-a33-musb”</strong></p>
 <p><a href="https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&amp;type=code&amp;l=C"><strong>GitHub Code Search</strong></a> says that the Allwinner A64 USB Driver for FreeBSD is…</p>
@@ -398,7 +398,7 @@ allwinner,sun50i-a64-usb-phy
 <p>But today we’ll study the FreeBSD Driver because it’s easier to read.</p>
 <p><img src="https://lupyuen.github.io/images/usb2-mentor.png" alt="Transmit Control Data as Host in Mentor Graphics USB Controller (Page 126)" /></p>
 <p><a href="https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf"><em>Transmit Control Data as Host in Mentor Graphics USB Controller (Page 126)</em></a></p>
-<h1 id="inside-the-freebsd-driver"><a href="#inside-the-freebsd-driver">7 Inside the FreeBSD Driver</a></h1>
+<h1 id="inside-the-freebsd-driver"><a class="doc-anchor" href="#inside-the-freebsd-driver">§</a>7 Inside the FreeBSD Driver</h1>
 <p><em>Do we copy the FreeBSD Driver into NuttX?</em></p>
 <p>Sorry that sounds mighty irresponsible… If we don’t understand the code! (Just like ChatGPT)</p>
 <p>Remember that the Allwinner A64 USB Controller is based on the <strong>design by Mentor Graphics</strong>…</p>
@@ -421,7 +421,7 @@ allwinner,sun50i-a64-usb-phy
 <p><img src="https://lupyuen.github.io/images/usb2-freebsd2.png" alt="Matching the FreeBSD Driver Code with the Mentor Graphics Doc" /></p>
 <p>Matching the FreeBSD Driver Code with the Mentor Graphics Doc will be an interesting educational exercise…</p>
 <p>Which we’ll cover in the next article!</p>
-<h1 id="usb-drivers-in-nuttx"><a href="#usb-drivers-in-nuttx">8 USB Drivers in NuttX</a></h1>
+<h1 id="usb-drivers-in-nuttx"><a class="doc-anchor" href="#usb-drivers-in-nuttx">§</a>8 USB Drivers in NuttX</h1>
 <p><strong>UPDATE:</strong> There’s an easier way to build the PinePhone USB Driver…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb"><strong>Enhanced Host Controller Interface for USB</strong></a></li>
@@ -460,7 +460,7 @@ allwinner,sun50i-a64-usb-phy
 </blockquote>
 <p><em>So our PinePhone USB Driver needs to implement this USB Enumeration?</em></p>
 <p>Yep! To prepare for our upcoming implementation of the PinePhone USB Driver, let’s look at the NuttX Driver for STM32 USB Controller…</p>
-<h1 id="stm32-usb-driver-for-nuttx"><a href="#stm32-usb-driver-for-nuttx">9 STM32 USB Driver for NuttX</a></h1>
+<h1 id="stm32-usb-driver-for-nuttx"><a class="doc-anchor" href="#stm32-usb-driver-for-nuttx">§</a>9 STM32 USB Driver for NuttX</h1>
 <p><strong>UPDATE:</strong> There’s an easier way to build the PinePhone USB Driver…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb"><strong>Enhanced Host Controller Interface for USB</strong></a></li>
@@ -528,7 +528,7 @@ allwinner,sun50i-a64-usb-phy
 <p>This will be super helpful as we port the Allwinner A64 USB Driver to NuttX.</p>
 <p><img src="https://lupyuen.github.io/images/usb2-stm.jpg" alt="stm32_ctrlout in NuttX looks similar to musbotg_host_ctrl_data_tx in FreeBSD" /></p>
 <p><em>stm32_ctrlout in NuttX looks similar to musbotg_host_ctrl_data_tx in FreeBSD</em></p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>Porting the PinePhone USB Driver to NuttX will be a super long journey… The FreeBSD driver has <a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c"><strong>4,000 lines of code</strong></a> 😲</p>
 <p><strong>UPDATE:</strong> There’s an easier way to build the PinePhone USB Driver…</p>
 <ul>
@@ -569,7 +569,7 @@ allwinner,sun50i-a64-usb-phy
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/usb2.md"><strong>lupyuen.github.io/src/usb2.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/usb2-ehci.png" alt="USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)</em></a></p>
-<h1 id="appendix-enhanced-host-controller-interface-for-usb"><a href="#appendix-enhanced-host-controller-interface-for-usb">11 Appendix: Enhanced Host Controller Interface for USB</a></h1>
+<h1 id="appendix-enhanced-host-controller-interface-for-usb"><a class="doc-anchor" href="#appendix-enhanced-host-controller-interface-for-usb">§</a>11 Appendix: Enhanced Host Controller Interface for USB</h1>
 <p>Read the article…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/usb3"><strong>“NuttX RTOS for PinePhone: Simpler USB with EHCI (Enhanced Host Controller Interface)”</strong></a></li>
@@ -723,7 +723,7 @@ usb@1c1b400 {
 <p>Stay tuned for updates!</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-pine64.jpg" alt="Pine64 PineDio LoRa Gateway (left) with PineDio LoRa Add-On Case (right)" /></p>
 <p><a href="https://pine64.com/product/pinephone-pinephone-pro-pindio-lora-add-on-case/"><em>Pine64 PineDio LoRa Gateway (left) with PineDio LoRa Add-On Case (right)</em></a></p>
-<h1 id="appendix-lora-communicator-for-pinephone-on-nuttx"><a href="#appendix-lora-communicator-for-pinephone-on-nuttx">12 Appendix: LoRa Communicator for PinePhone on NuttX</a></h1>
+<h1 id="appendix-lora-communicator-for-pinephone-on-nuttx"><a class="doc-anchor" href="#appendix-lora-communicator-for-pinephone-on-nuttx">§</a>12 Appendix: LoRa Communicator for PinePhone on NuttX</h1>
 <p>Earlier we talked about turning PinePhone on NuttX into a Feature Phone for <strong>Emergency Use</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>“PinePhone + NuttX = Feature Phone”</strong></a></li>

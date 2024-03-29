@@ -80,7 +80,7 @@
 <p>Let’s find out what’s inside our NuttX Kernel Driver for <strong>PinePhone’s LCD Panel</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="LCD Display on PinePhone Schematic (Page 2)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Display on PinePhone Schematic (Page 2)</em></a></p>
-<h1 id="xingbangda-xbd599-lcd-panel"><a href="#xingbangda-xbd599-lcd-panel">1 Xingbangda XBD599 LCD Panel</a></h1>
+<h1 id="xingbangda-xbd599-lcd-panel"><a class="doc-anchor" href="#xingbangda-xbd599-lcd-panel">§</a>1 Xingbangda XBD599 LCD Panel</h1>
 <p>The LCD Panel inside PinePhone is <a href="https://pine64.com/product/pinephone-5-99-lcd-panel-with-touch-screen/"><strong>Xingbangda XBD599</strong></a> <a href="https://web.archive.org/web/20221210083141/http://xingbangda.cn/">(兴邦达)</a> with…</p>
 <ul>
 <li>5.95-inch IPS Display</li>
@@ -122,7 +122,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/pio-backlight.png" alt="Backlight on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Backlight on PinePhone Schematic (Page 11)</em></a></p>
-<h1 id="lcd-panel-backlight"><a href="#lcd-panel-backlight">2 LCD Panel Backlight</a></h1>
+<h1 id="lcd-panel-backlight"><a class="doc-anchor" href="#lcd-panel-backlight">§</a>2 LCD Panel Backlight</h1>
 <p>First thing we do when booting PinePhone is to turn on the <strong>LCD Panel Backlight</strong>… Otherwise the LCD Display stays dark!</p>
 <p>The <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic (Page 11)</strong></a> says that the LCD Panel Backlight is controlled by two pins (pic above)…</p>
 <ul>
@@ -213,7 +213,7 @@ int pinephone_lcd_backlight_enable(
 <p>Now that the Backlight is on, let’s reset the LCD Panel and prepare for action…</p>
 <p><img src="https://lupyuen.github.io/images/de-reset.jpg" alt="LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)</em></a></p>
-<h1 id="reset-lcd-panel"><a href="#reset-lcd-panel">3 Reset LCD Panel</a></h1>
+<h1 id="reset-lcd-panel"><a class="doc-anchor" href="#reset-lcd-panel">§</a>3 Reset LCD Panel</h1>
 <p>At startup, we need to <strong>toggle the LCD Reset</strong> from Low to High in this specific sequence…</p>
 <ol>
 <li>
@@ -260,7 +260,7 @@ int pinephone_lcd_panel_reset(
 <p>And that’s how we reset the LCD Panel! Now we power on the LCD Panel…</p>
 <p><img src="https://lupyuen.github.io/images/de-pmic.png" alt="AXP803 PMIC on PinePhone Schematic (Page 3)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>AXP803 PMIC on PinePhone Schematic (Page 3)</em></a></p>
-<h1 id="power-on-lcd-panel"><a href="#power-on-lcd-panel">4 Power On LCD Panel</a></h1>
+<h1 id="power-on-lcd-panel"><a class="doc-anchor" href="#power-on-lcd-panel">§</a>4 Power On LCD Panel</h1>
 <p><em>How do we power on the LCD Panel?</em></p>
 <p>The LCD Panel won’t respond to our MIPI DSI Commands until <strong>we power it on</strong>.</p>
 <p>The <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic (Page 3)</strong></a> says that the MIPI DSI Port of the LCD Panel (DLDO2 / VCC-MIPI) is powered by…</p>
@@ -369,7 +369,7 @@ static int pmic_write(
 <p>Let’s move on to the ST7703 LCD Controller…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-connector.png" alt="MIPI DSI Connector on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>MIPI DSI Connector on PinePhone Schematic (Page 11)</em></a></p>
-<h1 id="initialise-lcd-controller"><a href="#initialise-lcd-controller">5 Initialise LCD Controller</a></h1>
+<h1 id="initialise-lcd-controller"><a class="doc-anchor" href="#initialise-lcd-controller">§</a>5 Initialise LCD Controller</h1>
 <p>We’ve done quite a bit on our LCD Panel…</p>
 <ol>
 <li>
@@ -461,7 +461,7 @@ static const struct pinephone_cmd_s g_pinephone_commands[] = {
 <p>We’re done with the initialisation of the ST7703 LCD Controller inside our LCD Panel! Let’s render something…</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Complete Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Complete Display Driver for PinePhone</em></a></p>
-<h1 id="render-lcd-display"><a href="#render-lcd-display">6 Render LCD Display</a></h1>
+<h1 id="render-lcd-display"><a class="doc-anchor" href="#render-lcd-display">§</a>6 Render LCD Display</h1>
 <p><em>So our LCD Driver will send MIPI DSI Commands to render graphics on PinePhone’s LCD Display?</em></p>
 <p>It gets complicated (pic above)…</p>
 <ul>
@@ -487,7 +487,7 @@ static const struct pinephone_cmd_s g_pinephone_commands[] = {
 <p>Let’s find out how the drivers are called at startup.</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Complete Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Complete Display Driver for PinePhone</em></a></p>
-<h1 id="complete-display-driver"><a href="#complete-display-driver">7 Complete Display Driver</a></h1>
+<h1 id="complete-display-driver"><a class="doc-anchor" href="#complete-display-driver">§</a>7 Complete Display Driver</h1>
 <p><em>How is our LCD Driver called at NuttX Startup?</em></p>
 <p>PinePhone needs a <strong>super complex Display Driver</strong> that will handle 11 steps at startup (pic above)…</p>
 <ul>
@@ -615,7 +615,7 @@ int up_fbinitialize(int display) {
 <p>And <a href="https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805"><strong>fb_register</strong></a> is called by <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93"><strong>pinephone_bringup</strong></a>, our Startup Function for PinePhone.</p>
 <p>Let’s talk about the Framebuffer Driver…</p>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Apache NuttX RTOS boots on PinePhone and renders a Test Pattern" /></p>
-<h1 id="framebuffer-driver"><a href="#framebuffer-driver">8 Framebuffer Driver</a></h1>
+<h1 id="framebuffer-driver"><a class="doc-anchor" href="#framebuffer-driver">§</a>8 Framebuffer Driver</h1>
 <p><em>NuttX Kernel calls our LCD Driver to render graphics…</em></p>
 <p><em>What about NuttX Apps?</em></p>
 <p>NuttX provides a <strong>Framebuffer Interface</strong> that will be called by NuttX Apps to render graphics…</p>
@@ -625,7 +625,7 @@ int up_fbinitialize(int display) {
 <p>We’ll talk about the <strong>Framebuffer Driver</strong> for PinePhone in the next article. (Pic below)</p>
 <p>Stay tuned!</p>
 <p><img src="https://lupyuen.github.io/images/fb-test2.jpg" alt="Framebuffer Driver for Apache NuttX RTOS on PinePhone" /></p>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>Thanks to our new <strong>PinePhone LCD Driver</strong>, Apache NuttX RTOS now boots with a Test Pattern!</p>
 <p>But we’re not done yet! In the next article we’ll talk about the <strong>Framebuffer Driver</strong> that will allow NuttX Apps to render graphics on PinePhone.</p>
 <p>Also we’ll investigate the mystery of the <a href="https://github.com/lupyuen/pinephone-nuttx#missing-pixels-in-pinephone-image"><strong>missing pixels</strong></a>. (Pic above)</p>

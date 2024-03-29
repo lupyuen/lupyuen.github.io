@@ -110,7 +110,7 @@
 <p>The analysis in this article will be super useful for creating our <strong>HDMI Driver for NuttX</strong> on Star64. (Pic below)</p>
 <p>And hopefully this article will be helpful for <strong>porting other Operating Systems</strong> to JH7110! <a href="https://adventurist.me/posts/00315"><strong>FreeBSD</strong></a>, <a href="https://discuss.haiku-os.org/t/progress-on-running-haiku-on-visionfive-2/13369"><strong>Haiku</strong></a>, <a href="https://github.com/zyedidia/multiplix"><strong>Multiplix</strong></a>, …</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-title.jpg" alt="Pine64 Star64 RISC-V SBC" /></p>
-<h1 id="dump-and-write-memory-with-u-boot-bootloader"><a href="#dump-and-write-memory-with-u-boot-bootloader">1 Dump and Write Memory with U-Boot Bootloader</a></h1>
+<h1 id="dump-and-write-memory-with-u-boot-bootloader"><a class="doc-anchor" href="#dump-and-write-memory-with-u-boot-bootloader">§</a>1 Dump and Write Memory with U-Boot Bootloader</h1>
 <p><em>Our Bootloader will Read AND Write any Memory?</em></p>
 <p>Yep! Inside our Star64 SBC is the powerful (maybe risky) <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> that will read and write JH7110 SoC Memory: <strong>RAM, ROM, even I/O Registers</strong>!</p>
 <p>(ROM is read-only of course)</p>
@@ -153,7 +153,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p>Moving to something more sophisticated: JH7110 Display Controller…</p>
 <p><img src="https://lupyuen.github.io/images/display3-memory.png" alt="JH7110 System Memory Map" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><em>JH7110 System Memory Map</em></a></p>
-<h1 id="dump-the-jh7110-display-controller"><a href="#dump-the-jh7110-display-controller">2 Dump the JH7110 Display Controller</a></h1>
+<h1 id="dump-the-jh7110-display-controller"><a class="doc-anchor" href="#dump-the-jh7110-display-controller">§</a>2 Dump the JH7110 Display Controller</h1>
 <p><em>Dumping the JH7110 Display Controller should work right?</em></p>
 <p>We’ll find out! Based on…</p>
 <ul>
@@ -202,7 +202,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p>To fix this, we tweak some registers and power up the Display Subsystem…</p>
 <p><img src="https://lupyuen.github.io/images/display2-vout_block_diagram18.png" alt="JH7110 Display Subsystem Block Diagram" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html"><em>JH7110 Display Subsystem Block Diagram</em></a></p>
-<h1 id="jh7110-power-management-unit"><a href="#jh7110-power-management-unit">3 JH7110 Power Management Unit</a></h1>
+<h1 id="jh7110-power-management-unit"><a class="doc-anchor" href="#jh7110-power-management-unit">§</a>3 JH7110 Power Management Unit</h1>
 <p><em>How to power up the Display Subsystem?</em></p>
 <p>From the pic above, the Display Subsystem is powered in the <strong>Video Output Power Domain (DOM_VOUT)</strong>.</p>
 <p>Which is powered by the JH7110 <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/overview_pm.html"><strong>Power Management Unit (PMU)</strong></a>…</p>
@@ -265,7 +265,7 @@ Usage: mw [.b, .w, .l, .q] address value [count]
 <p>We need more mods, for the Clock and Reset Signals…</p>
 <p><img src="https://lupyuen.github.io/images/display3-clock.png" alt="JH7110 Clock Structure" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_structure.html"><em>JH7110 Clock Structure</em></a></p>
-<h1 id="clocks-and-resets-for-display-subsystem"><a href="#clocks-and-resets-for-display-subsystem">4 Clocks and Resets for Display Subsystem</a></h1>
+<h1 id="clocks-and-resets-for-display-subsystem"><a class="doc-anchor" href="#clocks-and-resets-for-display-subsystem">§</a>4 Clocks and Resets for Display Subsystem</h1>
 <p><em>Display Subsystem (VOUT) is already powered up via the Power Management Unit (PMU)…</em></p>
 <p><em>Anything else we need to make it work?</em></p>
 <p>Always remember to enable the <strong>VOUT Clocks</strong> and deassert the <strong>VOUT Resets</strong>!</p>
@@ -360,7 +360,7 @@ mw 130200fc 0x80000000 1
 <p>Which means the Display Subsystem is alive yay!</p>
 <p><a href="https://lupyuen.github.io/articles/display3#clock-default">(<strong><code>0x295C</code> <code>000C</code></strong> defaults to <strong><code>0x0C</code></strong>, there’s a typo in the doc)</a></p>
 <p><img src="https://lupyuen.github.io/images/display3-title.png" alt="Star64 JH7110 Display Subsystem is alive!" /></p>
-<h1 id="u-boot-script-to-power-up-the-display-subsystem"><a href="#u-boot-script-to-power-up-the-display-subsystem">5 U-Boot Script to Power Up the Display Subsystem</a></h1>
+<h1 id="u-boot-script-to-power-up-the-display-subsystem"><a class="doc-anchor" href="#u-boot-script-to-power-up-the-display-subsystem">§</a>5 U-Boot Script to Power Up the Display Subsystem</h1>
 <p><em>Phew that’s a long list of U-Boot Commands. Can we automate this?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>## Power Up the PMU for Video Output (Display Subsystem)
 mw 1703000c 0x10 1
@@ -411,7 +411,7 @@ run video_on
 <p>Next we do the Display Controller…</p>
 <p><img src="https://lupyuen.github.io/images/display2-vout_clkrst18.png" alt="JH7110 Display Subsystem Clock and Reset" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html"><em>JH7110 Display Subsystem Clock and Reset</em></a></p>
-<h1 id="clocks-and-resets-for-display-controller"><a href="#clocks-and-resets-for-display-controller">6 Clocks and Resets for Display Controller</a></h1>
+<h1 id="clocks-and-resets-for-display-controller"><a class="doc-anchor" href="#clocks-and-resets-for-display-controller">§</a>6 Clocks and Resets for Display Controller</h1>
 <p><em>JH7110 Display Subsystem is already powered up…</em></p>
 <p><em>What about the Display Controller?</em></p>
 <p>Nope our <strong>DC8200 Display Controller</strong> (DC8200 AHB0) is stil invisible…</p>
@@ -498,7 +498,7 @@ run display_on
 <p><a href="https://github.com/lupyuen/nuttx-star64#read-the-star64-jh7110-display-controller-registers-with-u-boot-bootloader">(See the <strong>Output Log</strong>)</a></p>
 <p>One last thing: We verify the DC8200 Register Values…</p>
 <p><img src="https://lupyuen.github.io/images/display3-run.png" alt="DC8200 Display Controller is finally alive yay!" /></p>
-<h1 id="read-the-hardware-revision-and-chip-id"><a href="#read-the-hardware-revision-and-chip-id">7 Read the Hardware Revision and Chip ID</a></h1>
+<h1 id="read-the-hardware-revision-and-chip-id"><a class="doc-anchor" href="#read-the-hardware-revision-and-chip-id">§</a>7 Read the Hardware Revision and Chip ID</h1>
 <p><em>Are the DC8200 Register Values correct?</em></p>
 <p>According to the <a href="https://lupyuen.github.io/articles/display2#dc8200-display-hardware-driver"><strong>DC8200 Display Driver</strong></a>, we can sniff these Register Values from the DC8200 Display Controller…</p>
 <ul>
@@ -545,7 +545,7 @@ md 29400030 1
 </ul>
 <p>Our DC8200 Display Controller returns the correct Register Values yay!</p>
 <p>(Do we have a Date at <strong><code>0x2940</code> <code>0028</code></strong>? It reads “20210316”)</p>
-<h1 id="nuttx-display-driver-for-jh7110"><a href="#nuttx-display-driver-for-jh7110">8 NuttX Display Driver for JH7110</a></h1>
+<h1 id="nuttx-display-driver-for-jh7110"><a class="doc-anchor" href="#nuttx-display-driver-for-jh7110">§</a>8 NuttX Display Driver for JH7110</h1>
 <p><em>How will we create the NuttX Display Driver for JH7110?</em></p>
 <p>Earlier we talked about the steps to power up the <strong>Display Subsystem</strong> and <strong>Display Controller</strong>…</p>
 <ul>
@@ -643,7 +643,7 @@ nsh&gt;
 <p><a href="https://lupyuen.github.io/articles/release#nuttx-startup-explained">(See the <strong>NuttX Boot Sequence</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Official Display Driver for JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/display2"><em>Official Display Driver for JH7110</em></a></p>
-<h1 id="unsolved-mysteries"><a href="#unsolved-mysteries">9 Unsolved Mysteries</a></h1>
+<h1 id="unsolved-mysteries"><a class="doc-anchor" href="#unsolved-mysteries">§</a>9 Unsolved Mysteries</h1>
 <p><em>Are we done with our NuttX Display Driver?</em></p>
 <p>Not quite! We have a couple of challenges with <strong>Incomplete and Incorrect Docs</strong>…</p>
 <ol>
@@ -673,7 +673,7 @@ nsh&gt;
 </li>
 </ol>
 <p>Hopefully we’ll overcome these issues and complete our NuttX Display Driver!</p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>Today we did some cool things with U-Boot Bootloader on JH7110 SoC…</p>
 <ul>
 <li>
@@ -725,7 +725,7 @@ nsh&gt;
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display3.md"><strong>lupyuen.github.io/src/display3.md</strong></a></p>
-<h1 id="appendix-jh7110-display-driver"><a href="#appendix-jh7110-display-driver">11 Appendix: JH7110 Display Driver</a></h1>
+<h1 id="appendix-jh7110-display-driver"><a class="doc-anchor" href="#appendix-jh7110-display-driver">§</a>11 Appendix: JH7110 Display Driver</h1>
 <p>Based on everything we deciphered in this article and the previous one…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/display2"><strong>“RISC-V Star64 JH7110: Inside the Display Controller”</strong></a></li>
@@ -827,9 +827,9 @@ nsh&gt;
 <p>(Many Thanks to <a href="https://fosstodon.org/@Fishwaldo/110902984442385966"><strong>Justin / Fishwaldo</strong></a> for recommending the HDMI Driver from U-Boot Bootloader)</p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Official Display Driver for JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/display2"><em>Official Display Driver for JH7110</em></a></p>
-<h1 id="appendix-jh7110-display-controller-mysteries"><a href="#appendix-jh7110-display-controller-mysteries">12 Appendix: JH7110 Display Controller Mysteries</a></h1>
+<h1 id="appendix-jh7110-display-controller-mysteries"><a class="doc-anchor" href="#appendix-jh7110-display-controller-mysteries">§</a>12 Appendix: JH7110 Display Controller Mysteries</h1>
 <p>In this section we talk about the <strong>Missing, Mistaken and Mysterious</strong> things in the JH7110 Display Controller.</p>
-<h2 id="hdmi-output"><a href="#hdmi-output">12.1 HDMI Output</a></h2>
+<h2 id="hdmi-output"><a class="doc-anchor" href="#hdmi-output">§</a>12.1 HDMI Output</h2>
 <p>We spoke about our JH7110 Display Driver and a Bunch of Mystery Writes…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/display3#appendix-jh7110-display-driver"><strong>“JH7110 Display Driver”</strong></a></li>
@@ -852,7 +852,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p>Shall we match the Mystery Writes with the <a href="https://lupyuen.github.io/articles/display2"><strong>Official Linux Driver</strong></a>? (Pic above)</p>
 <p><img src="https://lupyuen.github.io/images/display3-reset.png" alt="Software_RESET_assert0_addr_assert_sel" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb"><em>Software_RESET_assert0_addr_assert_sel</em></a></p>
-<h2 id="vout-reset"><a href="#vout-reset">12.2 VOUT Reset</a></h2>
+<h2 id="vout-reset"><a class="doc-anchor" href="#vout-reset">§</a>12.2 VOUT Reset</h2>
 <p>DC8200 Reset Register <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_bkl_jjt_3sb"><em>Software_RESET_assert0_addr_assert_sel</em></a> is actually at <strong>Offset <code>0x48</code></strong>, Address <strong><code>0x295C</code> <code>0048</code></strong>.</p>
 <p>(Instead of Offset <code>0x38</code>, pic above)</p>
 <p><em>How did we figure out it’s at Offset <code>0x48</code>?</em></p>
@@ -869,7 +869,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p>Then we noticed that <strong>Offset <code>0x48</code></strong> is filled with “1” Bits: <strong><code>0xFFF</code></strong>. Thus we cleared the Reset Bits at Offset <code>0x48</code>, and it works!</p>
 <p><img src="https://lupyuen.github.io/images/display3-clock2.png" alt="Clock clk_u0_dc8200_clk_pix0" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb"><em>Clock clk_u0_dc8200_clk_pix0</em></a></p>
-<h2 id="clock-multiplexing"><a href="#clock-multiplexing">12.3 Clock Multiplexing</a></h2>
+<h2 id="clock-multiplexing"><a class="doc-anchor" href="#clock-multiplexing">§</a>12.3 Clock Multiplexing</h2>
 <p>How to set the Clock Source of <strong>u0_dc8200.clk_pix0</strong> to <strong>clk_dc8200_pix0</strong>?</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_xtz_dbp_jsb"><strong>clk_u0_dc8200_clk_pix0</strong></a> is at <strong>Offset <code>0x1C</code></strong> (Pic above)</p>
 <ul>
@@ -886,7 +886,7 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p>Can we read another Multiplexed Clock to figure out the valid values?</p>
 <p><img src="https://lupyuen.github.io/images/display3-clock3.png" alt="Clock clk_dc8200_pix0" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb"><em>Clock clk_dc8200_pix0</em></a></p>
-<h2 id="clock-rate"><a href="#clock-rate">12.4 Clock Rate</a></h2>
+<h2 id="clock-rate"><a class="doc-anchor" href="#clock-rate">§</a>12.4 Clock Rate</h2>
 <p>How to set the Clock Rate of <strong>dc8200_pix0</strong> to <strong>148.5 MHz</strong>? (HDMI Clock)</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_iby_5z4_jsb"><strong>clk_dc8200_pix0</strong></a> is at <strong>Offset <code>0x04</code></strong> (Pic above)</p>
 <ul>
@@ -900,12 +900,12 @@ writel(0x021c0780, priv-&gt;regs_hi+0x00001810);
 <p>What is the Input Frequency to the Clock? 307.2 MHz?</p>
 <p><img src="https://lupyuen.github.io/images/display3-typo.png" alt="Clock clk_tx_esc" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><em>Clock clk_tx_esc</em></a></p>
-<h2 id="clock-default"><a href="#clock-default">12.5 Clock Default</a></h2>
+<h2 id="clock-default"><a class="doc-anchor" href="#clock-default">§</a>12.5 Clock Default</h2>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/dom_vout_crg.html#dom_vout_crg__section_gwx_k1p_jsb"><strong>clk_tx_esc</strong></a> at <strong>Offset <code>0x0C</code></strong> (Address <strong><code>0x295C</code> <code>000C</code></strong>) should have default <strong><code>24'hc</code></strong>. (Equivalent to <strong><code>0x0C</code></strong>)</p>
 <p>There’s a typo in the doc, it shows default <strong><code>24'h12</code></strong> (Pic above)</p>
 <p><img src="https://lupyuen.github.io/images/display3-pmu.png" alt="PMU Function Description" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><em>PMU Function Description</em></a></p>
-<h2 id="pmu-software-encourage"><a href="#pmu-software-encourage">12.6 PMU Software Encourage</a></h2>
+<h2 id="pmu-software-encourage"><a class="doc-anchor" href="#pmu-software-encourage">§</a>12.6 PMU Software Encourage</h2>
 <p>From the <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/function_descript_pmu.html"><strong>Power Management Unit (PMU) Function Description</strong></a> (pic above)…</p>
 <blockquote>
 <p><strong>SW Encourage Turn-on Sequence</strong></p>

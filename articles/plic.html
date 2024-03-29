@@ -108,7 +108,7 @@
 <p>We’ll see later that <strong>NuttX Star64</strong> actually works fine! It’s just very very slooow because of the Spurious Interrupts.</p>
 <p><a href="https://lupyuen.github.io/articles/plic#appendix-fix-the-spurious-uart-interrupts">(<strong>UPDATE:</strong> We fixed the <strong>Spurious UART Interrupts</strong>!)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-title.jpg" alt="Star64 RISC-V SBC" /></p>
-<h1 id="no-console-output-from-nuttx-apps"><a href="#no-console-output-from-nuttx-apps">1 No Console Output from NuttX Apps</a></h1>
+<h1 id="no-console-output-from-nuttx-apps"><a class="doc-anchor" href="#no-console-output-from-nuttx-apps">§</a>1 No Console Output from NuttX Apps</h1>
 <p>At the end of <a href="https://lupyuen.github.io/articles/semihost"><strong>our previous article</strong></a>, NuttX seems to boot fine on Star64 (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 123067DFHBCI
@@ -150,7 +150,7 @@ uart_write (0xc0015310):
 <p>Somehow <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial.c#L1172-L1341"><strong>uart_write</strong></a> is broken for all NuttX Apps on Star64.</p>
 <p>Let’s find out why…</p>
 <p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="NuttX Star64 with Initial RAM Disk" /></p>
-<h1 id="serial-output-in-nuttx-qemu"><a href="#serial-output-in-nuttx-qemu">2 Serial Output in NuttX QEMU</a></h1>
+<h1 id="serial-output-in-nuttx-qemu"><a class="doc-anchor" href="#serial-output-in-nuttx-qemu">§</a>2 Serial Output in NuttX QEMU</h1>
 <p><em>What happens in NuttX Serial Output?</em></p>
 <p>To understand how NuttX Apps print to the Serial Console (via <strong>printf</strong>), we add Debug Logs to <strong>NuttX QEMU</strong> (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>ABC
@@ -227,7 +227,7 @@ FNFuFtFtFSFhFeFlFlF F(FNFSFHF)F FNFuFtFtFXF-F1F2F.F0F.F3F
 <p>(Which loops back to steps above)</p>
 <p>Now we do Serial Input…</p>
 <p><img src="https://lupyuen.github.io/images/plic-qemu.png" alt="Serial I/O in NuttX QEMU" /></p>
-<h1 id="serial-input-in-nuttx-qemu"><a href="#serial-input-in-nuttx-qemu">3 Serial Input in NuttX QEMU</a></h1>
+<h1 id="serial-input-in-nuttx-qemu"><a class="doc-anchor" href="#serial-input-in-nuttx-qemu">§</a>3 Serial Input in NuttX QEMU</h1>
 <p><em>What happens when we type something in NuttX QEMU?</em></p>
 <p>Typing something in the Serial Console will trigger a <strong>UART Interrupt</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$%^&amp;
@@ -273,7 +273,7 @@ riscv_doirq: irq=8
 </ul>
 <p>Now we compare the above QEMU Log with Star64…</p>
 <p><img src="https://lupyuen.github.io/images/plic-star64.png" alt="NuttX Star64 Debug Log" /></p>
-<h1 id="star64-vs-qemu-serial-io"><a href="#star64-vs-qemu-serial-io">4 Star64 vs QEMU Serial I/O</a></h1>
+<h1 id="star64-vs-qemu-serial-io"><a class="doc-anchor" href="#star64-vs-qemu-serial-io">§</a>4 Star64 vs QEMU Serial I/O</h1>
 <p><em>Earlier we said that NuttX Star64 couldn’t print to Serial Console. Why?</em></p>
 <p>Let’s observe the <strong>Star64 Debug Log</strong> (and compare with QEMU Log)…</p>
 <div class="example-wrap"><pre class="language-text"><code>up_enable_irq:
@@ -343,7 +343,7 @@ AAAAAD
 <p>Maybe we got the wrong UART IRQ Number? Let’s verify…</p>
 <p><img src="https://lupyuen.github.io/images/plic-interrupts.jpg" alt="Global Interrupts for JH7110" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html"><em>Global Interrupts for JH7110</em></a></p>
-<h1 id="jh7110-uart-interrupt"><a href="#jh7110-uart-interrupt">5 JH7110 UART Interrupt</a></h1>
+<h1 id="jh7110-uart-interrupt"><a class="doc-anchor" href="#jh7110-uart-interrupt">§</a>5 JH7110 UART Interrupt</h1>
 <p><em>Is the UART IRQ Number correct?</em></p>
 <p>From the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html"><strong>JH7110 UART Doc</strong></a>, the UART Interrupt is at <strong>RISC-V IRQ 32</strong>…</p>
 <p>Which becomes <strong>NuttX IRQ 57</strong>. (Offset by 25)</p>
@@ -395,7 +395,7 @@ dtc \
 <p>Though some parts are <a href="https://github.com/lupyuen2/wip-nuttx/pull/35/files#diff-4d2def434fc283670f9b60826a12a9396787759b45aa156a4b6764c1a73fb0e4"><strong>hardcoded to 64 IRQs</strong></a>. (Needs more fixing)</p>
 <p>Let’s talk about the Interrupt Controller…</p>
 <p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="Platform-Level Interrupt Controller in JH7110 (U74) SoC" /></p>
-<h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">6 Platform-Level Interrupt Controller</a></h1>
+<h1 id="platform-level-interrupt-controller"><a class="doc-anchor" href="#platform-level-interrupt-controller">§</a>6 Platform-Level Interrupt Controller</h1>
 <p><em>What’s this PLIC?</em></p>
 <p>Inside JH7110, the <strong>Platform-Level Interrupt Controller (PLIC)</strong> handles <strong>Global Interrupts</strong> (External Interrupts) that are triggered by Peripherals. (Like the UART Controller)</p>
 <ul>
@@ -425,7 +425,7 @@ dtc \
 <p>Yep, later we might add <strong>Harts 2 to 4</strong> when we boot NuttX on the other Application Cores.</p>
 <p>(But probably not Hart 0, since it’s a special limited Monitor Core)</p>
 <p>Let’s check our PLIC Code in NuttX…</p>
-<h2 id="memory-map"><a href="#memory-map">6.1 Memory Map</a></h2>
+<h2 id="memory-map"><a class="doc-anchor" href="#memory-map">§</a>6.1 Memory Map</h2>
 <p><em>How do we program the PLIC?</em></p>
 <p>We write to the PLIC Registers defined in the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a> (Page 193)…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">R/W</th><th style="text-align: left">Description</th></tr></thead><tbody>
@@ -524,7 +524,7 @@ dtc \
 <p>Which are correct in NuttX: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30-L32">jh7110_memorymap.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Base Address of PLIC
 #define QEMU_RV_PLIC_BASE  0x0c000000
-</code></pre></div><h2 id="initialise-interrupts"><a href="#initialise-interrupts">6.2 Initialise Interrupts</a></h2>
+</code></pre></div><h2 id="initialise-interrupts"><a class="doc-anchor" href="#initialise-interrupts">§</a>6.2 Initialise Interrupts</h2>
 <p>In NuttX, this is how we <strong>initialise the PLIC</strong> Interrupt Controller: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_irq.c#L41-L106">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialise Interrupts for Star64
 void up_irqinitialize(void) {
@@ -571,7 +571,7 @@ irqstate_t up_irq_enable(void) {
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L152-L157">(<strong>SET_CSR</strong> is defined here)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L140-L147">(<strong>READ_AND_SET_CSR</strong> is defined here)</a></p>
-<h2 id="enable-interrupts"><a href="#enable-interrupts">6.3 Enable Interrupts</a></h2>
+<h2 id="enable-interrupts"><a class="doc-anchor" href="#enable-interrupts">§</a>6.3 Enable Interrupts</h2>
 <p>To enable a specific External Interrupt (like for UART), we configure PLIC to forward the External Interrupt to <strong>Hart 1 in Supervisor Mode</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_irq.c#L138-L180">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the IRQ specified by &#39;irq&#39;
 void up_enable_irq(int irq) {
@@ -602,7 +602,7 @@ void up_enable_irq(int irq) {
 }
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L152-L157">(<strong>SET_CSR</strong> is defined here)</a></p>
-<h2 id="claim-and-complete-interrupts"><a href="#claim-and-complete-interrupts">6.4 Claim and Complete Interrupts</a></h2>
+<h2 id="claim-and-complete-interrupts"><a class="doc-anchor" href="#claim-and-complete-interrupts">§</a>6.4 Claim and Complete Interrupts</h2>
 <p>Remember that we service External Interrupts in 3 steps…</p>
 <ol>
 <li>
@@ -650,7 +650,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p><strong>TODO:</strong> Do we need to handle CLINT?</p>
 <p>Let’s check that the RISC-V Interrupts are delegated correctly…</p>
 <p><img src="https://lupyuen.github.io/images/plic-clint.jpg" alt="PLIC and CLINT in JH7110 (U74) SoC" /></p>
-<h1 id="delegate-machine-mode-interrupts-to-supervisor-mode"><a href="#delegate-machine-mode-interrupts-to-supervisor-mode">7 Delegate Machine-Mode Interrupts to Supervisor-Mode</a></h1>
+<h1 id="delegate-machine-mode-interrupts-to-supervisor-mode"><a class="doc-anchor" href="#delegate-machine-mode-interrupts-to-supervisor-mode">§</a>7 Delegate Machine-Mode Interrupts to Supervisor-Mode</h1>
 <p><em>Why do we delegate Interrupts?</em></p>
 <p>According to the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a> (Page 176)…</p>
 <blockquote>
@@ -694,7 +694,7 @@ Boot HART MEDELEG:
 <p>Thus we’re good! OpenSBI has <strong>correctly delegated External Interrupts</strong> from Machine Mode to Supervisor Mode. (For NuttX to handle)</p>
 <p>We’re finally ready to test the Fixed PLIC Code on Star64!</p>
 <p><img src="https://lupyuen.github.io/images/plic-nsh2.png" alt="NSH on Star64" /></p>
-<h1 id="spurious-uart-interrupts"><a href="#spurious-uart-interrupts">8 Spurious UART Interrupts</a></h1>
+<h1 id="spurious-uart-interrupts"><a class="doc-anchor" href="#spurious-uart-interrupts">§</a>8 Spurious UART Interrupts</h1>
 <p><em>After fixing the PLIC Code for Star64…</em></p>
 <p><em>Are UART Interrupts OK?</em></p>
 <p>We fixed the <strong>PLIC Memory Map</strong> in NuttX…</p>
@@ -818,7 +818,7 @@ nsh&gt;
 <p>Well NuttX Star64 might get stale and out of sync with NuttX Mainline.</p>
 <p>We better chop chop hurry up and <a href="https://lupyuen.github.io/articles/pr"><strong>merge with NuttX Mainline</strong></a> soon!</p>
 <p>(So amazing that NuttX Apps and Context Switching are OK… Even though we haven’t implemented the <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L200-L209"><strong>RISC-V Timer</strong></a>!)</p>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>NuttX on Star64 JH7110 RISC-V SBC is almost ready!</p>
 <ul>
 <li>
@@ -875,7 +875,7 @@ nsh&gt;
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic.md"><strong>lupyuen.github.io/src/plic.md</strong></a></p>
-<h1 id="appendix-fix-the-spurious-uart-interrupts"><a href="#appendix-fix-the-spurious-uart-interrupts">10 Appendix: Fix the Spurious UART Interrupts</a></h1>
+<h1 id="appendix-fix-the-spurious-uart-interrupts"><a class="doc-anchor" href="#appendix-fix-the-spurious-uart-interrupts">§</a>10 Appendix: Fix the Spurious UART Interrupts</h1>
 <p>Earlier we said that NuttX on JH7110 fires too many <strong>Spurious UART Interrupts</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/plic#spurious-uart-interrupts"><strong>“Spurious UART Interrupts”</strong></a></li>

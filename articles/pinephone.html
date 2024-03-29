@@ -100,7 +100,7 @@
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/pinephone-screen2.png" alt="PinePhone App with Zig and zgt" /></p>
 </blockquote>
-<h1 id="inside-the-app"><a href="#inside-the-app">1 Inside The App</a></h1>
+<h1 id="inside-the-app"><a class="doc-anchor" href="#inside-the-app">§</a>1 Inside The App</h1>
 <p>Let’s create a <strong>PinePhone App</strong> (pic above) that has 3 Widgets (UI Controls)…</p>
 <ul>
 <li>
@@ -120,7 +120,7 @@
 <p><a href="https://lupyuen.github.io/articles/pinephone#appendix-learning-zig">(If we’re keen to learn Zig, see this)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinephone-code1a.png" alt="Source Code for our app" /></p>
 <p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">(Source)</a></p>
-<h2 id="import-libraries"><a href="#import-libraries">1.1 Import Libraries</a></h2>
+<h2 id="import-libraries"><a class="doc-anchor" href="#import-libraries">§</a>1.1 Import Libraries</h2>
 <p>We begin by importing the <a href="https://github.com/zenith391/zgt"><strong>zgt GUI Library</strong></a> and <a href="https://ziglang.org/documentation/master/#Zig-Standard-Library"><strong>Zig Standard Library</strong></a> into our app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L1-L4">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Import the zgt library and Zig Standard Library
 const zgt = @import(&quot;zgt&quot;);
@@ -128,7 +128,7 @@ const std = @import(&quot;std&quot;);
 </code></pre></div>
 <p>The Zig Standard Library has all kinds of <strong>Algos, Data Structures and Definitions</strong>.</p>
 <p><a href="https://ziglang.org/documentation/master/std/">(More about the Zig Standard Library)</a></p>
-<h2 id="main-function"><a href="#main-function">1.2 Main Function</a></h2>
+<h2 id="main-function"><a class="doc-anchor" href="#main-function">§</a>1.2 Main Function</h2>
 <p>Next we define the <strong>Main Function</strong> for our app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L4-L13">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function for our app
 pub fn main() !void {
@@ -158,7 +158,7 @@ pub fn main() !void {
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/pinephone-screen2.png" alt="PinePhone App with Zig and zgt" /></p>
 </blockquote>
-<h2 id="set-the-widgets"><a href="#set-the-widgets">1.3 Set the Widgets</a></h2>
+<h2 id="set-the-widgets"><a class="doc-anchor" href="#set-the-widgets">§</a>1.3 Set the Widgets</h2>
 <p>Now we <strong>populate the Widgets</strong> (UI Controls) into our Window: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set the Window Contents
   try window.set(
@@ -216,7 +216,7 @@ zgt.Button(zgt.Button_Impl.Config {
 </code></pre></div>
 <p>Because the function <strong>zgt.Button</strong> expects a Struct of type <strong>zgt.Button_Impl.Config</strong>.</p>
 <p><a href="https://ziglearn.org/chapter-1/#anonymous-structs">(<strong>Anonymous Struct</strong> is the proper name for <code>.{ ... }</code>)</a></p>
-<h2 id="show-the-window"><a href="#show-the-window">1.4 Show the Window</a></h2>
+<h2 id="show-the-window"><a class="doc-anchor" href="#show-the-window">§</a>1.4 Show the Window</h2>
 <p>We set the Window Size and <strong>show the Window</strong>: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L36-L46">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Resize the Window (might not be correct for PinePhone)
   window.resize(800, 600);
@@ -234,7 +234,7 @@ zgt.Button(zgt.Button_Impl.Config {
 <p>Let’s talk about the Event Handling for our Buttons…</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-code2a.png" alt="Handle the Buttons" /></p>
 <p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">(Source)</a></p>
-<h2 id="handle-the-buttons"><a href="#handle-the-buttons">1.5 Handle the Buttons</a></h2>
+<h2 id="handle-the-buttons"><a class="doc-anchor" href="#handle-the-buttons">§</a>1.5 Handle the Buttons</h2>
 <p>Let’s <strong>print a message</strong> when the Buttons are clicked: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L46-L55">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// This function is called when the Buttons are clicked
 fn buttonClicked(button: *zgt.Button_Impl) !void {
@@ -270,7 +270,7 @@ zgt.Button(.{
 <p>And that’s the complete code for our PinePhone App!</p>
 <p><a href="https://www.gtk.org/docs/getting-started/hello-world">(For comparison, here’s a GTK app coded in C)</a></p>
 <p><a href="https://github.com/zenith391/zgt#usage">(Our PinePhone App is based on this zgt demo)</a></p>
-<h1 id="install-zig-compiler"><a href="#install-zig-compiler">2 Install Zig Compiler</a></h1>
+<h1 id="install-zig-compiler"><a class="doc-anchor" href="#install-zig-compiler">§</a>2 Install Zig Compiler</h1>
 <p>Let’s get ready to build our PinePhone App.</p>
 <p>On PinePhone, download the latest Zig Compiler <strong>zig-linux-aarch64</strong> from the <a href="https://ziglang.org/download"><strong>Zig Compiler Downloads</strong></a>, like so…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Zig Compiler
@@ -292,7 +292,7 @@ zig version
 <p>I tested the Zig Compiler with <strong>Manjaro Phosh</strong> on PinePhone (pic above).</p>
 <p>But it will probably work on <strong>any PinePhone distro</strong> since the Zig Compiler is a self-contained Arm64 Linux Binary.</p>
 <p><a href="https://twitter.com/techneo/status/1539510460726509568">(Zig Compiler works with Mobian on PinePhone too)</a></p>
-<h1 id="install-zigmod"><a href="#install-zigmod">3 Install Zigmod</a></h1>
+<h1 id="install-zigmod"><a class="doc-anchor" href="#install-zigmod">§</a>3 Install Zigmod</h1>
 <p>Download the latest Zigmod Package Manager <strong>zigmod-aarch64-linux</strong> from the <a href="https://github.com/nektro/zigmod/releases"><strong>Zigmod Releases</strong></a>, like so…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download Zigmod Package Manager
 curl -O -L https://github.com/nektro/zigmod/releases/download/r80/zigmod-aarch64-linux
@@ -307,7 +307,7 @@ mv zigmod-aarch64-linux zig-linux-aarch64-0.10.0-dev.2674+d980c6a38/zigmod
 zigmod
 </code></pre></div>
 <p>We’ll run Zigmod in the next step to install the dependencies for zgt Library.</p>
-<h1 id="build-the-app"><a href="#build-the-app">4 Build The App</a></h1>
+<h1 id="build-the-app"><a class="doc-anchor" href="#build-the-app">§</a>4 Build The App</h1>
 <p>To build our Zig App on PinePhone…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Source Code
 git clone --recursive https://github.com/lupyuen/zig-pinephone-gui
@@ -324,7 +324,7 @@ zig build
 <p><a href="https://gist.github.com/lupyuen/a44bc3faaf6d674d2b227aeb992ccfb8">(See the Build Log)</a></p>
 <p>If the build fails, check that the “<strong>gtk+-3.0</strong>” library is installed on PinePhone. <a href="https://github.com/zenith391/zgt/blob/master/build.zig#L9-L13">(Here’s why)</a></p>
 <p><a href="https://twitter.com/techneo/status/1539828828213616640">(Our app builds OK on Mobian after installing “gtk+-3.0”)</a></p>
-<h1 id="run-the-app"><a href="#run-the-app">5 Run The App</a></h1>
+<h1 id="run-the-app"><a class="doc-anchor" href="#run-the-app">§</a>5 Run The App</h1>
 <p>To run our Zig App on PinePhone, enter this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>zig-out/bin/zig-pinephone-gui
 </code></pre></div>
@@ -341,7 +341,7 @@ info: You clicked button with text Save
 <p>That’s because Zig is a compiled language, and our compiled app calls the GTK Library directly.</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-code3.jpg" alt="Source Code of our Zig App" /></p>
 <p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">(Source)</a></p>
-<h1 id="zig-outcomes"><a href="#zig-outcomes">6 Zig Outcomes</a></h1>
+<h1 id="zig-outcomes"><a class="doc-anchor" href="#zig-outcomes">§</a>6 Zig Outcomes</h1>
 <p><em>Have we gained anything by coding our app in Zig?</em></p>
 <p>If we compare our Zig App (pic above) with a typical GTK App in C…</p>
 <blockquote>
@@ -398,12 +398,12 @@ Unable to init server: Could not connect: Connection refused
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pinephone#appendix-zig-build-system"><strong>“Zig Build System”</strong></a></li>
 </ul>
-<h1 id="pinebook-pro"><a href="#pinebook-pro">7 Pinebook Pro</a></h1>
+<h1 id="pinebook-pro"><a class="doc-anchor" href="#pinebook-pro">§</a>7 Pinebook Pro</h1>
 <p><em>Will the Zig GUI App run on Arm64 laptops like Pinebook Pro?</em></p>
 <p>Yep! The same steps above will work on Pinebook Pro.</p>
 <p>Here’s our Zig GUI App running with Manjaro Xfce on Pinebook Pro…</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-pinebook.png" alt="Our app running with Manjaro Xfce on Pinebook Pro" /></p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>I hope this article has inspired you to create PinePhone apps in Zig!</p>
 <p>Check out the <strong>Sample Apps</strong> for zgt…</p>
 <ul>
@@ -461,7 +461,7 @@ Unable to init server: Could not connect: Connection refused
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinephone.md"><strong>lupyuen.github.io/src/pinephone.md</strong></a></p>
-<h1 id="notes"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes"><a class="doc-anchor" href="#notes">§</a>9 Notes</h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1539782929114484736"><strong>this Twitter Thread</strong></a></p>
@@ -471,7 +471,7 @@ Unable to init server: Could not connect: Connection refused
 <p><a href="https://sr.ht/~mil/Mepo/"><strong>“Mepo: Fast, simple, and hackable OSM map viewer for Linux”</strong></a></p>
 </li>
 </ol>
-<h1 id="appendix-learning-zig"><a href="#appendix-learning-zig">10 Appendix: Learning Zig</a></h1>
+<h1 id="appendix-learning-zig"><a class="doc-anchor" href="#appendix-learning-zig">§</a>10 Appendix: Learning Zig</h1>
 <p><em>How do we learn Zig?</em></p>
 <p>As of June 2022, Zig hasn’t reached version 1.0 so the docs are a little spotty. This is probably the best tutorial for Zig…</p>
 <ul>
@@ -506,7 +506,7 @@ Unable to init server: Could not connect: Connection refused
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pinephone-vscode.png" alt="VSCode Remote on PinePhone" /></p>
-<h1 id="appendix-vscode-remote"><a href="#appendix-vscode-remote">11 Appendix: VSCode Remote</a></h1>
+<h1 id="appendix-vscode-remote"><a class="doc-anchor" href="#appendix-vscode-remote">§</a>11 Appendix: VSCode Remote</h1>
 <p>For convenience, we may use <strong>VSCode Remote</strong> to edit source files and run commands remotely on PinePhone (pic above)…</p>
 <ul>
 <li><a href="https://code.visualstudio.com/docs/remote/remote-overview"><strong>VSCode Remote</strong></a></li>
@@ -519,7 +519,7 @@ Unable to init server: Could not connect: Connection refused
 <ul>
 <li><a href="https://github.com/ziglang/vscode-zig"><strong>Zig Extension for VSCode</strong></a></li>
 </ul>
-<h1 id="appendix-zig-handles-bad-pointers"><a href="#appendix-zig-handles-bad-pointers">12 Appendix: Zig Handles Bad Pointers</a></h1>
+<h1 id="appendix-zig-handles-bad-pointers"><a class="doc-anchor" href="#appendix-zig-handles-bad-pointers">§</a>12 Appendix: Zig Handles Bad Pointers</h1>
 <p><em>How does Zig handle bad pointers?</em></p>
 <p>Zig doesn’t validate pointers (like with a Borrow Checker) so it isn’t Memory Safe (yet)…</p>
 <ul>
@@ -593,7 +593,7 @@ zig/lib/std/start.zig:480:12: 0x217832 in std.start.main (zig-pinephone-gui)
 Aborted
 </code></pre></div>
 <p>Which will be super handy for troubleshooting our Zig App.</p>
-<h1 id="appendix-zig-build-system"><a href="#appendix-zig-build-system">13 Appendix: Zig Build System</a></h1>
+<h1 id="appendix-zig-build-system"><a class="doc-anchor" href="#appendix-zig-build-system">§</a>13 Appendix: Zig Build System</h1>
 <p><em>How does “<code>zig build</code>” build our Zig App?</em></p>
 <p>Instead of Makefiles, Zig has a <strong>Build System</strong> (essentially a tiny custom Zig program) that automates the build steps…</p>
 <ul>
@@ -651,7 +651,7 @@ pub fn build(b: *std.build.Builder) void {
         catch {};
 </code></pre></div>
 <p>To add the zgt GUI Library to our build.</p>
-<h1 id="appendix-gtk-backend-for-zgt"><a href="#appendix-gtk-backend-for-zgt">14 Appendix: GTK Backend for zgt</a></h1>
+<h1 id="appendix-gtk-backend-for-zgt"><a class="doc-anchor" href="#appendix-gtk-backend-for-zgt">§</a>14 Appendix: GTK Backend for zgt</h1>
 <p><em>zgt GUI Library works with GTK, Windows AND WebAssembly. How on earth does it achieve this incredible feat?</em></p>
 <p>Very cleverly! zgt includes <strong>multiple GUI Backends</strong>, one for each GUI Platform…</p>
 <ul>

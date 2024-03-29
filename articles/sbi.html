@@ -108,7 +108,7 @@
 <p>Right now we’re <strong>porting NuttX RTOS</strong> to the Star64 SBC.</p>
 <p>The experiments that we run today will be super helpful as we <strong>integrate NuttX with OpenSBI</strong> for System Timers, CPU Scheduling and other System Functions.</p>
 <p><img src="https://lupyuen.github.io/images/release-star64.jpg" alt="Pine64 Star64 RISC-V SBC" /></p>
-<h1 id="opensbi-supervisor-binary-interface"><a href="#opensbi-supervisor-binary-interface">1 OpenSBI Supervisor Binary Interface</a></h1>
+<h1 id="opensbi-supervisor-binary-interface"><a class="doc-anchor" href="#opensbi-supervisor-binary-interface">§</a>1 OpenSBI Supervisor Binary Interface</h1>
 <p><em>What’s this OpenSBI?</em></p>
 <p><a href="https://github.com/riscv-software-src/opensbi"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on our JH7110 RISC-V SBC…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
@@ -150,7 +150,7 @@ Runtime SBI Version       : 1.0
 <p>(NuttX Kernel, Linux Kernel and U-Boot Bootloader all run in Supervisor Mode)</p>
 <p>OpenSBI runs in <a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels"><strong>RISC-V Machine Mode</strong></a>, which has complete access to Low-Level System Features. That’s why we call OpenSBI from our code.</p>
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="OpenSBI runs in RISC-V Machine Mode" /></p>
-<h1 id="call-opensbi-from-nuttx"><a href="#call-opensbi-from-nuttx">2 Call OpenSBI from NuttX</a></h1>
+<h1 id="call-opensbi-from-nuttx"><a class="doc-anchor" href="#call-opensbi-from-nuttx">§</a>2 Call OpenSBI from NuttX</h1>
 <p><em>How to call OpenSBI from our code?</em></p>
 <p>Suppose we’re calling OpenSBI to print something to the <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Console</strong></a> like so: <a href="https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L154-L301">jh7110_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// After NuttX Kernel boots on JH7110...
@@ -238,7 +238,7 @@ static struct sbiret sbi_ecall(
 <p><a href="https://gist.github.com/lupyuen/4cd98a4075d5b528940095b39fd5b445">(See the <strong>RISC-V Disassembly</strong>)</a></p>
 <p>Now we run this on our SBC…</p>
 <p><img src="https://lupyuen.github.io/images/sbi-run2.png" alt="NuttX calls OpenSBI on Star64 JH7110 RISC-V SBC" /></p>
-<h1 id="run-nuttx-with-opensbi"><a href="#run-nuttx-with-opensbi">3 Run NuttX with OpenSBI</a></h1>
+<h1 id="run-nuttx-with-opensbi"><a class="doc-anchor" href="#run-nuttx-with-opensbi">§</a>3 Run NuttX with OpenSBI</h1>
 <p><em>Will our Test Code print correctly to the Serial Console?</em></p>
 <p>Let’s find out!</p>
 <ol>
@@ -277,7 +277,7 @@ nsh&gt;
 <p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L151-L157">(Source)</a></p>
 <p>Our OpenSBI Experiment works OK yay!</p>
 <p><img src="https://lupyuen.github.io/images/sbi-run3.png" alt="NuttX calls OpenSBI Debug Console on Star64 JH7110 RISC-V SBC" /></p>
-<h1 id="opensbi-debug-console"><a href="#opensbi-debug-console">4 OpenSBI Debug Console</a></h1>
+<h1 id="opensbi-debug-console"><a class="doc-anchor" href="#opensbi-debug-console">§</a>4 OpenSBI Debug Console</h1>
 <p><em>But that’s calling the Legacy Console Putchar Function…</em></p>
 <p><em>What about the newer Debug Console Functions?</em></p>
 <p>Yeah we called the Legacy Console Putchar Function, which is <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#5-legacy-extensions-eids-0x00---0x0f"><strong>expected to be deprecated</strong></a>.</p>
@@ -347,7 +347,7 @@ debug_console_write_byte:
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L156-L157">(Source)</a></p>
 <p>Why? Let’s find out…</p>
-<h1 id="read-the-sbi-version"><a href="#read-the-sbi-version">5 Read the SBI Version</a></h1>
+<h1 id="read-the-sbi-version"><a class="doc-anchor" href="#read-the-sbi-version">§</a>5 Read the SBI Version</h1>
 <p><em>We tried printing to Debug Console but failed…</em></p>
 <p><em>Maybe OpenSBI in our SBC doesn’t support Debug Console?</em></p>
 <p>Debug Console was introduced in <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc"><strong>SBI Spec Version 2.0</strong></a>.</p>
@@ -397,7 +397,7 @@ _info(&quot;get_spec_version: value=0x%x, error=%d\n&quot;, sret.value, sret.err
 <p>But let’s stick with SBI Version 1.0 for now.</p>
 <p><a href="https://github.com/riscv-software-src/opensbi/commit/cbdd86973901b6be2a1a2d3d6b54f3184fdf9a44">(Mainline OpenSBI now supports <strong>SBI 2.0 and Debug Console</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/sbi-title.png" alt="SBI v1.0 appears in the JH7110 OpenSBI Log" /></p>
-<h1 id="probe-the-sbi-extensions"><a href="#probe-the-sbi-extensions">6 Probe the SBI Extensions</a></h1>
+<h1 id="probe-the-sbi-extensions"><a class="doc-anchor" href="#probe-the-sbi-extensions">§</a>6 Probe the SBI Extensions</h1>
 <p><em>Bummer our SBC doesn’t support Debug Console…</em></p>
 <p><em>How to check if our SBC supports ANY specific feature?</em></p>
 <p>SBI lets us <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#44-function-probe-sbi-extension-fid-3"><strong>Probe its Extensions</strong></a> to discover the Supported SBI Extensions (like Debug Console)…</p>
@@ -449,7 +449,7 @@ probe_extension[0x4442434E]:
 </ul>
 <p>Thus we always <strong>Probe the Extensions</strong> before calling them!</p>
 <p><img src="https://lupyuen.github.io/images/sbi-run4.png" alt="NuttX calls OpenSBI Hart State Management on Star64 JH7110 RISC-V SBC" /></p>
-<h1 id="query-the-risc-v-cpus"><a href="#query-the-risc-v-cpus">7 Query the RISC-V CPUs</a></h1>
+<h1 id="query-the-risc-v-cpus"><a class="doc-anchor" href="#query-the-risc-v-cpus">§</a>7 Query the RISC-V CPUs</h1>
 <p><em>OK so OpenSBI can do trivial things…</em></p>
 <p><em>What about controlling the CPUs?</em></p>
 <p>Now we experiment with the <strong>RISC-V CPU Cores</strong> (“Hart” / Hardware Thread) in our SBC.</p>
@@ -531,7 +531,7 @@ hart_get_status[5]: value=0x0, error=-3
 <p>In future we’ll call these SBI Functions to start NuttX on Multiple CPUs.</p>
 <p><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#9-hart-state-management-extension-eid-0x48534d-hsm">(More about <strong>Hart States</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic-title.jpg" alt="5 RISC-V Cores in JH7110 SoC" /></p>
-<h1 id="shutdown-and-reboot-the-sbc"><a href="#shutdown-and-reboot-the-sbc">8 Shutdown and Reboot the SBC</a></h1>
+<h1 id="shutdown-and-reboot-the-sbc"><a class="doc-anchor" href="#shutdown-and-reboot-the-sbc">§</a>8 Shutdown and Reboot the SBC</h1>
 <p><em>OpenSBI looks mighty powerful. Can it control our ENTIRE SBC?</em></p>
 <p>Yep! OpenSBI supports <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#101-function-system-reset-fid-0"><strong>System Reset</strong></a> for…</p>
 <ul>
@@ -600,7 +600,7 @@ cannot read pmic power register
 </code></pre></div>
 <p>Thus VisionFive2 ships with a newer build of OpenSBI.</p>
 <p><img src="https://lupyuen.github.io/images/sbi-shutdown.png" alt="OpenSBI Shutdown on Star64 JH7110 RISC-V SBC" /></p>
-<h1 id="set-a-system-timer"><a href="#set-a-system-timer">9 Set a System Timer</a></h1>
+<h1 id="set-a-system-timer"><a class="doc-anchor" href="#set-a-system-timer">§</a>9 Set a System Timer</h1>
 <p><em>NuttX / Linux Kernel runs in RISC-V Supervisor Mode (not Machine Mode)…</em></p>
 <p><em>How will it control the System Timer?</em></p>
 <p>That’s why OpenSBI provides the <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#61-function-set-timer-fid-0"><strong>Set Timer</strong></a> function: <a href="https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L383-L389">jh7110_appinit.c</a></p>
@@ -622,7 +622,7 @@ sret = sbi_ecall(
 <p>But that’s because our SBC will <a href="https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/"><strong>trigger an interrupt</strong></a> when the System Timer expires.</p>
 <p>Someday NuttX will call this function to <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_sbi.c#L82-L108"><strong>set the System Timer</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/sbi-run5.png" alt="NuttX fetches OpenSBI System Info on Star64 JH7110 RISC-V SBC" /></p>
-<h1 id="fetch-the-system-info"><a href="#fetch-the-system-info">10 Fetch the System Info</a></h1>
+<h1 id="fetch-the-system-info"><a class="doc-anchor" href="#fetch-the-system-info">§</a>10 Fetch the System Info</h1>
 <p><em>Earlier we called OpenSBI to fetch the SBI Spec Version…</em></p>
 <p><em>What else can we fetch from OpenSBI?</em></p>
 <p>We can snoop a whole bunch of <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/v1.0.0/riscv-sbi.adoc#4-base-extension-eid-0x10"><strong>System Info</strong></a> like this: <a href="https://github.com/lupyuen2/wip-nuttx/blob/sbi/boards/risc-v/jh7110/star64/src/jh7110_appinit.c#L335-L365">jh7110_appinit.c</a></p>
@@ -671,7 +671,7 @@ get_mimpid: 0x4210427
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f5e609e32f68b59a2c33ba7f4022999d#file-star64-opensbi-log-L159-L163">(Source)</a></p>
 <p>The last 3 values are documented in the <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf"><strong>SiFive U74 Manual</strong></a>. (Pages 136 to 137)</p>
-<h1 id="integrate-opensbi-with-nuttx"><a href="#integrate-opensbi-with-nuttx">11 Integrate OpenSBI with NuttX</a></h1>
+<h1 id="integrate-opensbi-with-nuttx"><a class="doc-anchor" href="#integrate-opensbi-with-nuttx">§</a>11 Integrate OpenSBI with NuttX</h1>
 <p><em>Phew that’s plenty of OpenSBI Functions…</em></p>
 <p><em>How will NuttX use them?</em></p>
 <p>As we port <strong>Apache NuttX RTOS</strong> to Star64 JH7110 SBC, we shall call…</p>
@@ -706,7 +706,7 @@ get_mimpid: 0x4210427
 <p>Nope, only the <strong>NuttX Kernel</strong> is allowed to call OpenSBI.</p>
 <p>That’s because NuttX Apps run in <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>RISC-V User Mode</strong></a>. When NuttX Apps execute the <strong><code>ecall</code> Instruction</strong>, they will jump from User Mode to Supervisor Mode to execute <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>NuttX Kernel Functions</strong></a>. (Not OpenSBI Functions)</p>
 <p>Thus NuttX Apps are prevented from calling OpenSBI to meddle with CPUs, Timers and Interrupts. (Which should be meddled by the NuttX Kernel anyway)</p>
-<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
 <p>I hope this article has been helpful for learning about OpenSBI and how it works with Apache NuttX RTOS (and Linux)…</p>
 <ol>
 <li>

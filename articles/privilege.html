@@ -99,7 +99,7 @@
 <p>We begin with the simpler topic: UART…</p>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Star64 JH7110 SBC with Woodpecker USB Serial Adapter" /></p>
 <p><a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><em>Star64 JH7110 SBC with Woodpecker USB Serial Adapter</em></a></p>
-<h1 id="wait-forever-in-uart-transmit"><a href="#wait-forever-in-uart-transmit">1 Wait Forever in UART Transmit</a></h1>
+<h1 id="wait-forever-in-uart-transmit"><a class="doc-anchor" href="#wait-forever-in-uart-transmit">§</a>1 Wait Forever in UART Transmit</h1>
 <p>Here’s a fun quiz…</p>
 <p>This NuttX Kernel Code prints a character to the UART Port. Guess why it <strong>waits forever on Star64 JH7110</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Print a character to UART Port
@@ -175,7 +175,7 @@ static void u16550_putc(
 <p>Which we copied from <a href="https://lupyuen.github.io/articles/riscv"><strong>NuttX for QEMU Emulator</strong></a>.</p>
 <p><em>Ah but is 16550_REGINCR correct for Star64?</em></p>
 <p>Let’s find out…</p>
-<h1 id="uart-registers-are-spaced-differently"><a href="#uart-registers-are-spaced-differently">2 UART Registers are Spaced Differently</a></h1>
+<h1 id="uart-registers-are-spaced-differently"><a class="doc-anchor" href="#uart-registers-are-spaced-differently">§</a>2 UART Registers are Spaced Differently</h1>
 <p>Earlier we talked about the Address Increment between 16550 UART Registers (<strong>16550_REGINCR</strong>), which defaults to 1…</p>
 <div class="example-wrap"><pre class="language-text"><code>config 16550_REGINCR
   int &quot;Address increment between 16550 registers&quot;
@@ -264,7 +264,7 @@ nx_start: Entry
 <p><strong>Lesson Learnt:</strong> 8250 UARTs (and 16550) might work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)</p>
 <p>We move on to the tougher topic: Machine Mode vs Supervisor Mode…</p>
 <p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="UART Transmit works perfectly yay" /></p>
-<h1 id="critical-section-doesnt-return"><a href="#critical-section-doesnt-return">3 Critical Section Doesn’t Return</a></h1>
+<h1 id="critical-section-doesnt-return"><a class="doc-anchor" href="#critical-section-doesnt-return">§</a>3 Critical Section Doesn’t Return</h1>
 <p>We ran into another problem when printing to the UART Port…</p>
 <p>NuttX on Star64 gets stuck when we enter a <strong>Critical Section</strong>: <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1769-L1806">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print a character to the UART Port
@@ -320,7 +320,7 @@ csrrc a5, mstatus, a5
 <p>Effectively we’re <strong>disabling interrupts</strong>, so we won’t possibly switch to another thread.</p>
 <p>But we have a problem: NuttX can’t modify the <strong><code>mstatus</code></strong> Register, because of its Privilege Level…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
-<h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">4 RISC-V Privilege Levels</a></h1>
+<h1 id="risc-v-privilege-levels"><a class="doc-anchor" href="#risc-v-privilege-levels">§</a>4 RISC-V Privilege Levels</h1>
 <p><em>What’s this Privilege Level?</em></p>
 <p>RISC-V Machine Code runs at three <strong>Privilege Levels</strong>…</p>
 <ul>
@@ -358,7 +358,7 @@ csrrc a5, mstatus, a5
 <p>But QEMU doesn’t have this problem, because it runs NuttX in (super-powerful) <strong>Machine Mode</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege2.jpg" alt="NuttX QEMU runs in Machine Mode" /></p>
 <p>Let’s make it work for Star64…</p>
-<h1 id="risc-v-machine-mode-becomes-supervisor-mode"><a href="#risc-v-machine-mode-becomes-supervisor-mode">5 RISC-V Machine Mode becomes Supervisor Mode</a></h1>
+<h1 id="risc-v-machine-mode-becomes-supervisor-mode"><a class="doc-anchor" href="#risc-v-machine-mode-becomes-supervisor-mode">§</a>5 RISC-V Machine Mode becomes Supervisor Mode</h1>
 <p><em>Earlier we saw the <code>csrrc</code> instruction…</em></p>
 <p><em>From whence it came?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>// (Atomically) Read and Clear Bits
@@ -399,7 +399,7 @@ static inline irqstate_t up_irq_save(void) {
 <p>Yep! We need to enable <strong>ARCH_USE_S_MODE</strong>, so that NuttX will use <strong><code>sstatus</code></strong> (instead of <strong><code>mstatus</code></strong>)…</p>
 <p>Which is perfectly hunky dory for <strong>RISC-V Supervisor Mode</strong>!</p>
 <p>We dig around for the elusive (but essential) <strong>ARCH_USE_S_MODE</strong>…</p>
-<h1 id="nuttx-flat-mode-becomes-kernel-mode"><a href="#nuttx-flat-mode-becomes-kernel-mode">6 NuttX Flat Mode becomes Kernel Mode</a></h1>
+<h1 id="nuttx-flat-mode-becomes-kernel-mode"><a class="doc-anchor" href="#nuttx-flat-mode-becomes-kernel-mode">§</a>6 NuttX Flat Mode becomes Kernel Mode</h1>
 <p><em>How to enable ARCH_USE_S_MODE in NuttX?</em></p>
 <p>In the previous section we discovered that we should enable <strong>ARCH_USE_S_MODE</strong>, so that NuttX will run in <strong>RISC-V Supervisor Mode</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// If NuttX runs in Supervisor Mode...
@@ -444,7 +444,7 @@ make
 <p>No more problems with <a href="https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return"><strong>Critical Section</strong></a> yay!</p>
 <p>Let’s eliminate the remaining Machine-Mode Registers…</p>
 <p><img src="https://lupyuen.github.io/images/privilege-run2.png" alt="NuttX crashes due to a Semihosting Problem" /></p>
-<h1 id="initialise-risc-v-supervisor-mode"><a href="#initialise-risc-v-supervisor-mode">7 Initialise RISC-V Supervisor Mode</a></h1>
+<h1 id="initialise-risc-v-supervisor-mode"><a class="doc-anchor" href="#initialise-risc-v-supervisor-mode">§</a>7 Initialise RISC-V Supervisor Mode</h1>
 <p><em>We rebuilt NuttX from Flat Mode to Kernel Mode…</em></p>
 <p><em>Why does it still need RISC-V Machine-Mode Registers?</em></p>
 <p>NuttX accesses the RISC-V Machine-Mode Registers during <strong>NuttX Startup</strong>…</p>
@@ -556,7 +556,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/privilege-semihosting.jpg" alt="Semihosting on RISC-V NuttX" /></p>
 <p><a href="https://github.com/apache/nuttx/issues/9501"><em>Semihosting on RISC-V NuttX</em></a></p>
-<h1 id="other-risc-v-ports-of-nuttx"><a href="#other-risc-v-ports-of-nuttx">8 Other RISC-V Ports of NuttX</a></h1>
+<h1 id="other-risc-v-ports-of-nuttx"><a class="doc-anchor" href="#other-risc-v-ports-of-nuttx">§</a>8 Other RISC-V Ports of NuttX</h1>
 <p><em>Porting NuttX from QEMU to Star64 looks challenging…</em></p>
 <p><em>Are there other ports of NuttX for RISC-V?</em></p>
 <p>We found the following NuttX Ports that run in <strong>RISC-V Supervisor Mode with OpenSBI</strong>.</p>
@@ -593,7 +593,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <p><a href="https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/">(More about OpenSBI)</a></p>
 </li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>I hope we learnt a bit more about <strong>RISC-V and Star64 JH7110 SBC</strong> today…</p>
 <ul>
 <li>

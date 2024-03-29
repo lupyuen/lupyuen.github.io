@@ -101,7 +101,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/fb-run.png" alt="NuttX Framebuffer App running on PinePhone" /></p>
 <p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b"><em>NuttX Framebuffer App running on PinePhone</em></a></p>
-<h1 id="framebuffer-demo"><a href="#framebuffer-demo">1 Framebuffer Demo</a></h1>
+<h1 id="framebuffer-demo"><a class="doc-anchor" href="#framebuffer-demo">§</a>1 Framebuffer Demo</h1>
 <p>Our <strong>Demo Code</strong> for today comes (mostly) from this Example App…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c"><strong>NuttX Framebuffer Driver Example</strong></a></li>
@@ -125,7 +125,7 @@
 <div class="example-wrap"><pre class="language-bash"><code>make
 </code></pre></div>
 <p>Before we run the demo, let’s look at the code…</p>
-<h1 id="framebuffer-interface"><a href="#framebuffer-interface">2 Framebuffer Interface</a></h1>
+<h1 id="framebuffer-interface"><a class="doc-anchor" href="#framebuffer-interface">§</a>2 Framebuffer Interface</h1>
 <p><em>What’s inside the app?</em></p>
 <p>We begin with the <strong>Framebuffer Interface</strong> that NuttX provides to our apps for rendering graphics.</p>
 <p>To call the Framebuffer Interface, our app <strong>opens the Framebuffer Driver</strong> at <strong>/dev/fb0</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337">fb_main.c</a></p>
@@ -181,7 +181,7 @@ if (fbmem == MAP_FAILED) { return; }
 <p>This returns <strong>fbmem</strong>, a pointer to the RAM Framebuffer.</p>
 <p>Let’s blast some pixels to the RAM Framebuffer…</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo2.jpg" alt="Render Grey Screen" /></p>
-<h1 id="render-grey-screen"><a href="#render-grey-screen">3 Render Grey Screen</a></h1>
+<h1 id="render-grey-screen"><a class="doc-anchor" href="#render-grey-screen">§</a>3 Render Grey Screen</h1>
 <p><em>What’s the simplest thing we can do with our Framebuffer?</em></p>
 <p>Let’s fill the <strong>entire Framebuffer with Grey</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/fb/examples/fb/fb_main.c#L541-L562">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill entire framebuffer with grey
@@ -238,7 +238,7 @@ close(fd);
 <p>Let’s do some colours…</p>
 <p>(Alpha Channel looks redundant, but it will be used when we support Overlays)</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo3.jpg" alt="Render Blocks" /></p>
-<h1 id="render-blocks"><a href="#render-blocks">4 Render Blocks</a></h1>
+<h1 id="render-blocks"><a class="doc-anchor" href="#render-blocks">§</a>4 Render Blocks</h1>
 <p>This is how we render the <strong>Blue, Green and Red Blocks</strong> in the pic above: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/fb/examples/fb/fb_main.c#L564-L601">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill framebuffer with Blue, Green and Red Blocks
 uint32_t *fb = fbmem;  // Access framebuffer as 32-bit pixels
@@ -269,7 +269,7 @@ for (int i = 0; i &lt; fblen; i++) {
 </code></pre></div>
 <p>Everything is hunky dory for chunks of pixels! Let’s set individual pixels by row and column…</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo4.jpg" alt="Render Circle" /></p>
-<h1 id="render-circle"><a href="#render-circle">5 Render Circle</a></h1>
+<h1 id="render-circle"><a class="doc-anchor" href="#render-circle">§</a>5 Render Circle</h1>
 <p>This is how we render the Green Circle in the pic above: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/fb/examples/fb/fb_main.c#L603-L651">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill framebuffer with Green Circle
 uint32_t *fb = fbmem;  // Access framebuffer as 32-bit pixels
@@ -311,7 +311,7 @@ for (int y = 0; y &lt; height; y++) {
 </code></pre></div>
 <p>Yep we have full control over every single pixel! Let’s wrap up our demo with some mesmerising rectangles…</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo1.jpg" alt="Render Rectangles" /></p>
-<h1 id="render-rectangle"><a href="#render-rectangle">6 Render Rectangle</a></h1>
+<h1 id="render-rectangle"><a class="doc-anchor" href="#render-rectangle">§</a>6 Render Rectangle</h1>
 <p>When we run the <a href="https://lupyuen.github.io/articles/fb#framebuffer-demo"><strong>NuttX Framebuffer App</strong></a>, we’ll see a stack of Color Rectangles. (Pic above)</p>
 <p>We <strong>render each Rectangle</strong> like so: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L450-L469">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Rectangle to be rendered
@@ -333,7 +333,7 @@ draw_rect(&amp;state, &amp;area, color);
 <p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b">(See the Complete Log)</a></p>
 <p>And we’re all done with Circles and Rectangles on PinePhone! Let’s talk about Graphical User Interfaces…</p>
 <p><img src="https://lupyuen.github.io/images/fb-lvgl.jpg" alt="LVGL on NuttX on PinePhone" /></p>
-<h1 id="lvgl-graphics-library"><a href="#lvgl-graphics-library">7 LVGL Graphics Library</a></h1>
+<h1 id="lvgl-graphics-library"><a class="doc-anchor" href="#lvgl-graphics-library">§</a>7 LVGL Graphics Library</h1>
 <p><em>Rendering graphics pixel by pixel sounds tedious…</em></p>
 <p><em>Is there a simpler way to render Graphical User Interfaces?</em></p>
 <p>Yep just call the <a href="https://docs.lvgl.io/master/intro/index.html"><strong>LVGL Graphics Library</strong></a>! (Pic above)</p>
@@ -391,7 +391,7 @@ draw_rect(&amp;state, &amp;area, color);
 </li>
 </ul>
 <p>Now we talk about the internals of our Framebuffer Driver…</p>
-<h1 id="pinephone-framebuffer-driver"><a href="#pinephone-framebuffer-driver">8 PinePhone Framebuffer Driver</a></h1>
+<h1 id="pinephone-framebuffer-driver"><a class="doc-anchor" href="#pinephone-framebuffer-driver">§</a>8 PinePhone Framebuffer Driver</h1>
 <p><em>We’ve seen the Framebuffer Interface for NuttX Apps…</em></p>
 <p><em>What’s inside the Framebuffer Driver for PinePhone?</em></p>
 <p>Let’s talk about the <strong>internals of our Framebuffer Driver</strong> for PinePhone…</p>
@@ -408,7 +408,7 @@ draw_rect(&amp;state, &amp;area, color);
 </ul>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Complete Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Complete Display Driver for PinePhone</em></a></p>
-<h2 id="ram-framebuffer"><a href="#ram-framebuffer">8.1 RAM Framebuffer</a></h2>
+<h2 id="ram-framebuffer"><a class="doc-anchor" href="#ram-framebuffer">§</a>8.1 RAM Framebuffer</h2>
 <p>Inside PinePhone’s Allwinner A64 SoC are the <strong>Display Engine</strong> and <strong>Timing Controller TCON0</strong>. (Pic above)</p>
 <p>Display Engine and TCON0 will blast pixels from the <strong>RAM Framebuffer</strong> to the LCD Display, over Direct Memory Access (DMA).</p>
 <p><a href="https://lupyuen.github.io/articles/de3">(More about Display Engine and TCON0)</a></p>
@@ -454,7 +454,7 @@ static struct fb_planeinfo_s g_pinephone_plane = {
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L488-L505">(<strong>fb_planeinfo_s</strong> is defined here)</a></p>
 <p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="PinePhone Framebuffer" /></p>
-<h2 id="framebuffer-operations"><a href="#framebuffer-operations">8.2 Framebuffer Operations</a></h2>
+<h2 id="framebuffer-operations"><a class="doc-anchor" href="#framebuffer-operations">§</a>8.2 Framebuffer Operations</h2>
 <p>Our Framebuffer Driver supports these <strong>Framebuffer Operations</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L116-L131">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Vtable for Frame Buffer Operations
 static struct fb_vtable_s g_pinephone_vtable = {
@@ -486,7 +486,7 @@ static struct fb_vtable_s g_pinephone_vtable = {
 </li>
 </ul>
 <p>But before that we need to initialise the Framebuffer and return the Video Plane…</p>
-<h2 id="initialise-framebuffer"><a href="#initialise-framebuffer">8.3 Initialise Framebuffer</a></h2>
+<h2 id="initialise-framebuffer"><a class="doc-anchor" href="#initialise-framebuffer">§</a>8.3 Initialise Framebuffer</h2>
 <p>At Startup, NuttX Kernel calls <strong>up_fbinitialize</strong> to initialize the Framebuffer…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lcd#complete-display-driver"><strong>“Complete Display Driver”</strong></a></li>
@@ -499,7 +499,7 @@ static struct fb_vtable_s g_pinephone_vtable = {
 </li>
 </ul>
 <p>Then NuttX Kernel interrogates our Framebuffer Driver…</p>
-<h2 id="get-video-plane"><a href="#get-video-plane">8.4 Get Video Plane</a></h2>
+<h2 id="get-video-plane"><a class="doc-anchor" href="#get-video-plane">§</a>8.4 Get Video Plane</h2>
 <p>NuttX Kernel calls our Framebuffer Driver to discover the <strong>Framebuffer Operations</strong> supported by our driver.</p>
 <p>This is how we return the Framebuffer Operations: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L801-L833">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get the Framebuffer Object for the supported operations
@@ -514,7 +514,7 @@ struct fb_vtable_s *up_fbgetvplane(
 <p><a href="https://lupyuen.github.io/articles/fb#framebuffer-operations">(We’ve seen <strong>g_pinephone_vtable</strong> earlier)</a></p>
 <p>Now it gets interesting: NuttX Kernel and NuttX Apps will call the operations exposed by our Framebuffer Driver…</p>
 <p><img src="https://lupyuen.github.io/images/lcd-title.jpg" alt="Test Pattern on NuttX for PinePhone" /></p>
-<h2 id="get-video-info"><a href="#get-video-info">8.5 Get Video Info</a></h2>
+<h2 id="get-video-info"><a class="doc-anchor" href="#get-video-info">§</a>8.5 Get Video Info</h2>
 <p>Remember <strong>FBIOGET_VIDEOINFO</strong> for fetching the Framebuffer Characteristics?</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/fb#framebuffer-interface"><strong>“Framebuffer Interface”</strong></a></li>
@@ -550,7 +550,7 @@ static int pinephone_getvideoinfo(
 <p>Normally NuttX Kernel will erase our Framebuffer at startup. But with the logic above, our Test Pattern will be visible until the <strong>first app call</strong> to our Framebuffer Driver.</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L855-L978">(Test Pattern is rendered by <strong>pinephone_display_test_pattern</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93">(Which is called by <strong>pinephone_bringup</strong> at startup)</a></p>
-<h2 id="get-plane-info"><a href="#get-plane-info">8.6 Get Plane Info</a></h2>
+<h2 id="get-plane-info"><a class="doc-anchor" href="#get-plane-info">§</a>8.6 Get Plane Info</h2>
 <p>Earlier we’ve seen <strong>FBIOGET_PLANEINFO</strong> that fetches the RAM Framebuffer…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/fb#framebuffer-interface"><strong>“Framebuffer Interface”</strong></a></li>
@@ -569,7 +569,7 @@ static int pinephone_getplaneinfo(
 }
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/fb#ram-framebuffer">(We’ve seen <strong>g_pinephone_plane</strong> earlier)</a></p>
-<h2 id="update-area"><a href="#update-area">8.7 Update Area</a></h2>
+<h2 id="update-area"><a class="doc-anchor" href="#update-area">§</a>8.7 Update Area</h2>
 <p>The final operation <strong>updates the display</strong> when there’s a change to the Framebuffer: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Update the Display when there is a change to the Framebuffer
 // (ioctl Entrypoint: FBIO_UPDATE)
@@ -585,7 +585,7 @@ static int pinephone_updatearea(
 </ul>
 <p>The code inside looks totally baffling, but first let’s talk about a mysterious rendering problem…</p>
 <p><img src="https://lupyuen.github.io/images/fb-test2.jpg" alt="Missing Pixels in PinePhone Image" /></p>
-<h1 id="mystery-of-the-missing-pixels"><a href="#mystery-of-the-missing-pixels">9 Mystery of the Missing Pixels</a></h1>
+<h1 id="mystery-of-the-missing-pixels"><a class="doc-anchor" href="#mystery-of-the-missing-pixels">§</a>9 Mystery of the Missing Pixels</h1>
 <p>When we tested our Framebuffer Driver for the very first time, we discovered <strong>missing pixels</strong> in the rendered image (pic above)…</p>
 <ul>
 <li>
@@ -611,7 +611,7 @@ static int pinephone_updatearea(
 <p>Yeah there seems to be a lag between the writing of pixels to RAM Framebuffer, and the pushing of pixels to the display over DMA / Display Engine / Timing Controller TCON0.</p>
 <p>We found an unsatisfactory workaround for the lag in rendering pixels…</p>
 <p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="Fixed Missing Pixels in PinePhone Image" /></p>
-<h1 id="fix-missing-pixels"><a href="#fix-missing-pixels">10 Fix Missing Pixels</a></h1>
+<h1 id="fix-missing-pixels"><a class="doc-anchor" href="#fix-missing-pixels">§</a>10 Fix Missing Pixels</h1>
 <p>In the previous section we saw that there was a <strong>lag pushing pixels from the RAM Framebuffer</strong> to the PinePhone Display.</p>
 <p>(Over DMA / Display Engine / Timing Controller TCON0)</p>
 <p>Can we overcome this lag by <strong>copying the RAM Framebuffer to itself</strong>, forcing the display to refresh?</p>
@@ -666,7 +666,7 @@ static int pinephone_updatearea(
 <li><a href="https://github.com/lupyuen/pinephone-nuttx#fix-missing-pixels-in-pinephone-image"><strong>“Fix Missing Pixels in PinePhone Image”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/fb-lvgl2.jpg" alt="LVGL on NuttX on PinePhone" /></p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>Now that we can render Graphical User Interfaces with <a href="https://docs.lvgl.io/master/intro/index.html"><strong>LVGL Graphics Library</strong></a>… It’s time to build the <a href="https://lupyuen.github.io/articles/pio#touch-panel"><strong>NuttX Touch Input Driver</strong></a> for PinePhone!</p>
 <p>The NuttX Community is now adding support for <a href="https://github.com/apache/nuttx/pull/8009"><strong>I2C on Allwinner A64 SoC</strong></a>, which will be super helpful for our I2C Touch Input Driver. Stay Tuned!</p>
 <p>Please check out the other articles on NuttX for PinePhone…</p>

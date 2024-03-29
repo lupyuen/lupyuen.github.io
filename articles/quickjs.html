@@ -108,7 +108,7 @@ os.ioctl(fd, ULEDIOC_SETALL, 0);
 </ul>
 <p>QuickJS is perfect for Iterative, Interactive Experiments on NuttX! We go hands-on (fingers too)…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title2.png" alt="QuickJS JavaScript Engine in Ox64 NuttX Emulator" /></p>
-<h1 id="quickjs-on-nuttx-emulator"><a href="#quickjs-on-nuttx-emulator">1 QuickJS on NuttX Emulator</a></h1>
+<h1 id="quickjs-on-nuttx-emulator"><a class="doc-anchor" href="#quickjs-on-nuttx-emulator">§</a>1 QuickJS on NuttX Emulator</h1>
 <p>Click here to try <strong>QuickJS JavaScript Engine</strong> in NuttX Emulator (pic above)…</p>
 <ul>
 <li>
@@ -181,7 +181,7 @@ qjs &gt; os.ioctl(fd, ULEDIOC_SETALL, 0)
 <p>How did we make this happen? Read on to find out…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-expect.png" alt="Auto-Test QuickJS with Expect Scripting" /></p>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp"><em>Auto-Test QuickJS with Expect Scripting</em></a></p>
-<h1 id="build-quickjs-for-nuttx"><a href="#build-quickjs-for-nuttx">2 Build QuickJS for NuttX</a></h1>
+<h1 id="build-quickjs-for-nuttx"><a class="doc-anchor" href="#build-quickjs-for-nuttx">§</a>2 Build QuickJS for NuttX</h1>
 <p><em>QuickJS compiles OK for NuttX?</em></p>
 <p>Mostly. QuickJS compiles for NuttX <strong>with no code changes</strong>…</p>
 <ul>
@@ -257,7 +257,7 @@ expect {
 <p>Before the Auto-Test, we solve the Auto-Crash…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-stack.webp" alt="Loopy Stack Trace probably means Stack Full" /></p>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478"><em>Loopy Stack Trace probably means Stack Full</em></a></p>
-<h1 id="nuttx-stack-is-full-of-quickjs"><a href="#nuttx-stack-is-full-of-quickjs">3 NuttX Stack is Full of QuickJS</a></h1>
+<h1 id="nuttx-stack-is-full-of-quickjs"><a class="doc-anchor" href="#nuttx-stack-is-full-of-quickjs">§</a>3 NuttX Stack is Full of QuickJS</h1>
 <p><em>QuickJS builds OK for NuttX. Does it run?</em></p>
 <p>Sorry nope! QuickJS ran into <a href="https://github.com/lupyuen/quickjs-nuttx#quickjs-crashes-on-nuttx"><strong>Bizarre Crashes</strong></a> on NuttX (with looping Stack Traces, pic above)…</p>
 <ul>
@@ -314,7 +314,7 @@ CONFIG_TLS_LOG2_MAXSTACK=16
 <p><strong>Lesson Learnt:</strong> If the NuttX Stack Dump loops forever, we’re probably <strong>Out Of Stack Space</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-posix.png" alt="POSIX Functions in QuickJS" /></p>
 <p><a href="https://bellard.org/quickjs/quickjs.html#os-module"><em>POSIX Functions in QuickJS</em></a></p>
-<h1 id="add-ioctl-to-quickjs"><a href="#add-ioctl-to-quickjs">4 Add ioctl() to QuickJS</a></h1>
+<h1 id="add-ioctl-to-quickjs"><a class="doc-anchor" href="#add-ioctl-to-quickjs">§</a>4 Add ioctl() to QuickJS</h1>
 <p><em>ioctl() doesn’t appear in the QuickJS Docs? (Pic above)</em></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Flip On the NuttX LED
 const ULEDIOC_SETALL = 0x1d03;
@@ -381,7 +381,7 @@ qjs &gt; os.ioctl(100,2,3)
 </code></pre></div>
 <p>We test <strong>ioctl()</strong> on real hardware…</p>
 <p><img src="https://lupyuen.github.io/images/nim-wiring.webp" alt="Connect an LED to Ox64 SBC at GPIO 29, Pin 21" /></p>
-<h1 id="quickjs-blinks-the-led-on-ox64-sbc"><a href="#quickjs-blinks-the-led-on-ox64-sbc">5 QuickJS Blinks the LED on Ox64 SBC</a></h1>
+<h1 id="quickjs-blinks-the-led-on-ox64-sbc"><a class="doc-anchor" href="#quickjs-blinks-the-led-on-ox64-sbc">§</a>5 QuickJS Blinks the LED on Ox64 SBC</h1>
 <p><em>We added ioctl() to QuickJS. Does it work?</em></p>
 <p>We test <strong>ioctl()</strong> on a Real Device with a Real LED: <strong>Ox64 BL808 RISC-V SBC</strong>. Right after these tweaks…</p>
 <ul>
@@ -486,7 +486,7 @@ led=0, val=1
 <p><a href="https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-text.webp" alt="QuickJS Code Size rendered with linkermapviz" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/quickjs/linkermap"><em>QuickJS Code Size rendered with linkermapviz</em></a></p>
-<h1 id="how-small-is-quickjs"><a href="#how-small-is-quickjs">6 How Small is QuickJS</a></h1>
+<h1 id="how-small-is-quickjs"><a class="doc-anchor" href="#how-small-is-quickjs">§</a>6 How Small is QuickJS</h1>
 <p><em>Will QuickJS run on all kinds of NuttX Devices?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ riscv64-unknown-elf-size apps/bin/qjs
    text  data  bss     dec
@@ -556,7 +556,7 @@ linkermapviz &lt; quickjs-nuttx/nuttx/qjs-riscv.map
 <p><a href="https://github.com/lupyuen/quickjs-nuttx#full-linking-for-nuttx-apps">(About <strong>NuttX Full Linking</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title.webp" alt="QuickJS JavaScript Engine to Apache NuttX RTOS" /></p>
 <p><a href="https://youtu.be/AFDVceqQNRs"><em>Watch the Demo on YouTube</em></a></p>
-<h1 id="simulate-the-led-on-ox64-emulator"><a href="#simulate-the-led-on-ox64-emulator">7 Simulate the LED on Ox64 Emulator</a></h1>
+<h1 id="simulate-the-led-on-ox64-emulator"><a class="doc-anchor" href="#simulate-the-led-on-ox64-emulator">§</a>7 Simulate the LED on Ox64 Emulator</h1>
 <p><em>NuttX Emulator blinks a Simulated LED…</em></p>
 <p><em>How does it work? (Pic above, lower right)</em></p>
 <p>We modded <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>NuttX Emulator</strong></a> (in WebAssembly) to…</p>
@@ -637,7 +637,7 @@ Term.prototype.write = function(str) {
 <p><strong>Emulator Notifications</strong> won’t appear in the Emulator Console Output. (Because we suppressed them)</p>
 <p>We’ll see the Notifications in the <strong>JavaScript Console</strong>. (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-notify.png" alt="Notifications from NuttX Emulator appear in JavaScript Console" /></p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>Thanks to the <a href="https://github.com/bellard/quickjs"><strong>QuickJS Team</strong></a>, we have a fun new way to Experiment Interactively with NuttX Gadgets!</p>
 <ul>
 <li>
@@ -687,7 +687,7 @@ Term.prototype.write = function(str) {
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/quickjs.md"><strong>lupyuen.github.io/src/quickjs.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-expect.png" alt="Auto-Test QuickJS with Expect Scripting" /></p>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/qemu.exp"><em>Auto-Test QuickJS with Expect Scripting</em></a></p>
-<h1 id="appendix-build-quickjs-for-nuttx"><a href="#appendix-build-quickjs-for-nuttx">9 Appendix: Build QuickJS for NuttX</a></h1>
+<h1 id="appendix-build-quickjs-for-nuttx"><a class="doc-anchor" href="#appendix-build-quickjs-for-nuttx">§</a>9 Appendix: Build QuickJS for NuttX</h1>
 <p>Before building QuickJS: Build NuttX for <strong>QEMU or Ox64</strong>…</p>
 <ul>
 <li>
@@ -861,7 +861,7 @@ const uint8_t qjsc_repl[16280] = {
 <p>That’s why REPL and BigNum will require more Heap Memory, to execute the extra JavaScript Bytecode.</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-qemu.png" alt="QuickJS on NuttX QEMU" /></p>
 <p><a href="https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db"><em>QuickJS on NuttX QEMU</em></a></p>
-<h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">10 Appendix: Build NuttX for QEMU</a></h1>
+<h1 id="appendix-build-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-build-nuttx-for-qemu">§</a>10 Appendix: Build NuttX for QEMU</h1>
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for QEMU RISC-V (64-bit Kernel Mode)</strong> that has these updates…</p>
 <ul>
 <li>
@@ -969,7 +969,7 @@ led=0, val=1
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
 <p><img src="https://lupyuen.github.io/images/quickjs-title2.png" alt="QuickJS on NuttX Ox64" /></p>
 <p><a href="https://gist.github.com/lupyuen/f879aa3378aa1b0170a1d3ea2b0b9d67"><em>QuickJS on NuttX Ox64</em></a></p>
-<h1 id="appendix-build-nuttx-for-ox64"><a href="#appendix-build-nuttx-for-ox64">11 Appendix: Build NuttX for Ox64</a></h1>
+<h1 id="appendix-build-nuttx-for-ox64"><a class="doc-anchor" href="#appendix-build-nuttx-for-ox64">§</a>11 Appendix: Build NuttX for Ox64</h1>
 <p>In this article, we compiled a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong> that has these updates…</p>
 <ul>
 <li>

@@ -117,7 +117,7 @@
 </ul>
 <p>Today we’ll walk through the steps for <strong>connecting PineDio Stack to The Things Network</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-flow.jpg" alt="PineDio Stack BL604 talking to The Things Network via LoRaWAN Gateway" /></p>
-<h1 id="add-gateway-to-the-things-network"><a href="#add-gateway-to-the-things-network">1 Add Gateway to The Things Network</a></h1>
+<h1 id="add-gateway-to-the-things-network"><a class="doc-anchor" href="#add-gateway-to-the-things-network">§</a>1 Add Gateway to The Things Network</h1>
 <p>(<strong>Skip this chapter</strong> if you have The Things Network coverage… You’re so lucky! 👍)</p>
 <p>Sadly there’s no The Things Network coverage in my area. Lemme explain how I <strong>added my LoRaWAN Gateway</strong> (RAKWireless RAK7248) to The Things Network.</p>
 <p><img src="https://lupyuen.github.io/images/ttn-wisgate.png" alt="RAKwireless docs for The Things Network" /></p>
@@ -149,7 +149,7 @@
 </li>
 </ol>
 <p>Fill in the fields and click <strong>“<code>Create Gateway</code>”</strong></p>
-<h2 id="configure-gateway"><a href="#configure-gateway">1.1 Configure Gateway</a></h2>
+<h2 id="configure-gateway"><a class="doc-anchor" href="#configure-gateway">§</a>1.1 Configure Gateway</h2>
 <p>Take Note: This is missing from the RAKwireless docs…</p>
 <p>The Things Network has been upgraded recently and there’s no longer the option for <strong>“Legacy Packet Forwarder”</strong>. </p>
 <p>Instead we set the <strong>Server Address</strong> like so…</p>
@@ -210,7 +210,7 @@
 </li>
 </ol>
 <p><a href="https://www.thethingsnetwork.org/docs/the-things-stack/migrate-to-v3/migrate-gateways/">(More about Server Address)</a></p>
-<h2 id="gateway-is-up"><a href="#gateway-is-up">1.2 Gateway Is Up!</a></h2>
+<h2 id="gateway-is-up"><a class="doc-anchor" href="#gateway-is-up">§</a>1.2 Gateway Is Up!</h2>
 <p><em>How will we know if our Gateway is connected?</em></p>
 <p>In The Things Network, browse to our Gateway and click <strong>“<code>Live Data</code>”</strong> (in the left bar)</p>
 <p>We should see the <strong>Heartbeat Messages</strong> (Gateway Status) received from our Gateway…</p>
@@ -222,7 +222,7 @@
 <div class="example-wrap"><pre class="language-bash"><code>sudo tail /var/log/daemon.log
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/gateway#appendix-packet-forwarder-log">(See sample Packet Forwarder Log)</a></p>
-<h1 id="add-device-to-the-things-network"><a href="#add-device-to-the-things-network">2 Add Device to The Things Network</a></h1>
+<h1 id="add-device-to-the-things-network"><a class="doc-anchor" href="#add-device-to-the-things-network">§</a>2 Add Device to The Things Network</h1>
 <p>(If you skipped the previous chapter: Welcome back! We’ll need a <strong>free account</strong> on The Things Network: <a href="https://www.thethingsnetwork.org/"><strong>Click “Sign Up” here</strong></a>)</p>
 <p>Before sending data to The Things Network, we need to <strong>add a device</strong>…</p>
 <ol>
@@ -271,7 +271,7 @@
 <p>If you see <strong>“Message Integrity Code” Errors</strong> later, check the settings above for <strong>LoRaWAN Version</strong>.</p>
 <p><a href="https://www.thethingsindustries.com/docs/getting-started/migrating/major-changes/#lorawan-support">(More about legacy LoRaWAN support)</a></p>
 <p><img src="https://lupyuen.github.io/images/ttn-device4.png" alt="Legacy LoRaWAN Support" /></p>
-<h1 id="run-the-lorawan-firmware"><a href="#run-the-lorawan-firmware">3 Run the LoRaWAN Firmware</a></h1>
+<h1 id="run-the-lorawan-firmware"><a class="doc-anchor" href="#run-the-lorawan-firmware">§</a>3 Run the LoRaWAN Firmware</h1>
 <p>Now we build, flash and run the <strong>LoRaWAN Firmware</strong> for PineDio Stack!</p>
 <p>This is the <strong>Source Code</strong> for our LoRaWAN Firmware…</p>
 <ul>
@@ -311,7 +311,7 @@
 </ol>
 <p><a href="https://lupyuen.github.io/articles/lorawan">(Yep this is the same LoRaWAN Firmware that we ported from Apache Mynewt OS to BL602!)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="Tiny tasty treat… PineDio Stack BL604 RISC-V Board" /></p>
-<h1 id="join-device-to-the-things-network"><a href="#join-device-to-the-things-network">4 Join Device to The Things Network</a></h1>
+<h1 id="join-device-to-the-things-network"><a class="doc-anchor" href="#join-device-to-the-things-network">§</a>4 Join Device to The Things Network</h1>
 <p>Let’s <strong>join our PineDio Stack</strong> device to The Things Network!</p>
 <p>Because we’re doing <strong>Over-The-Air Activation</strong>, we need to join the network every time we boot our device.</p>
 <p>In The Things Network, browse to our <strong>Device</strong> and <strong>copy these values</strong> (needed for network activation)…</p>
@@ -333,7 +333,7 @@
 </code></pre></div>
 <p>Later we shall convert the comma-delimited values to <strong>colon-separated</strong> values…</p>
 <div class="example-wrap"><pre class="language-text"><code>0xAB:0xBA:0xDA:0xBA:...
-</code></pre></div><h2 id="join-commands"><a href="#join-commands">4.1 Join Commands</a></h2>
+</code></pre></div><h2 id="join-commands"><a class="doc-anchor" href="#join-commands">§</a>4.1 Join Commands</h2>
 <p>Head over to the <strong>Serial Terminal</strong> for PineDio Stack.</p>
 <p>At the PineDio Stack Command Prompt, enter these commands to <strong>join PineDio Stack to The Things Network</strong>…</p>
 <ol>
@@ -379,13 +379,13 @@
 </li>
 </ol>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network">(Source)</a></p>
-<h2 id="we-are-in"><a href="#we-are-in">4.2 We Are In!</a></h2>
+<h2 id="we-are-in"><a class="doc-anchor" href="#we-are-in">§</a>4.2 We Are In!</h2>
 <p>Head back to The Things Network.  Browse to our <strong>Application</strong> and click <strong>“<code>Live Data</code>”</strong> (in the left bar)</p>
 <p>We should see <strong>“Successfully Processed Join Request”</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-join2.png" alt="Application Live Data" /></p>
 <p>Yep our PineDio Stack has successfully joined The Things Network!</p>
 <p>If we see <strong>“Message Integrity Code” Errors</strong>, check the Device Settings. The <strong>LoRaWAN Version</strong> should be <strong>1.0.2 Rev B</strong>. </p>
-<h1 id="send-data-to-the-things-network"><a href="#send-data-to-the-things-network">5 Send Data to The Things Network</a></h1>
+<h1 id="send-data-to-the-things-network"><a class="doc-anchor" href="#send-data-to-the-things-network">§</a>5 Send Data to The Things Network</h1>
 <p>Finally we’re ready to send data from PineDio Stack to The Things Network!</p>
 <p>At the PineDio Stack Command Prompt, enter these commands…</p>
 <ol>
@@ -410,7 +410,7 @@
 <p>We should see <strong>5 bytes of <code>0x00</code></strong> received by The Things Network…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-send2.png" alt="Application Live Data" /></p>
 <p>And we’re done!</p>
-<h2 id="doing-better"><a href="#doing-better">5.1 Doing Better</a></h2>
+<h2 id="doing-better"><a class="doc-anchor" href="#doing-better">§</a>5.1 Doing Better</h2>
 <p><em>Sending 5 bytes of data to the network doesn’t sound particularly exciting?</em></p>
 <p>Yep we’re just getting started! </p>
 <p>In future articles we shall explore The Thing Network’s <strong>Cloud Integration</strong> features for processing our sensor data: MQTT, Webhooks, Storage, Downlinks, Payload Formatters, …</p>
@@ -436,7 +436,7 @@
 <li><a href="https://www.thethingsnetwork.org/docs/applications-and-integrations/"><strong>“The Things Network: Applications &amp; Integrations”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ttn-flow2.jpg" alt="Sending messages for free to The Things Network" /></p>
-<h1 id="the-things-network-coverage"><a href="#the-things-network-coverage">6 The Things Network Coverage</a></h1>
+<h1 id="the-things-network-coverage"><a class="doc-anchor" href="#the-things-network-coverage">§</a>6 The Things Network Coverage</h1>
 <p>Thanks to The Things Network, we’ve just sent a tiny message to the Cloud… <strong>For Free</strong>!</p>
 <p>(Assuming we have The Things Network coverage)</p>
 <p><em>How’s the coverage for The Things Network worldwide?</em></p>
@@ -453,7 +453,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan2-pine64.jpg" alt="PineDio Gateway, PinePhone Backplate and USB Adapter" /></p>
 <p><em>PineDio Gateway, PinePhone LoRa Backplate and LoRa USB Adapter</em></p>
-<h1 id="fair-use-of-the-things-network"><a href="#fair-use-of-the-things-network">7 Fair Use of The Things Network</a></h1>
+<h1 id="fair-use-of-the-things-network"><a class="doc-anchor" href="#fair-use-of-the-things-network">§</a>7 Fair Use of The Things Network</h1>
 <p><em>The Things Network is Free for Fair Use…</em></p>
 <p><em>How many messages can we send in an hour?</em></p>
 <p>Each device may transmit roughly <strong>10 tiny messages per hour</strong>.</p>
@@ -498,7 +498,7 @@
 </ul>
 <p>Select the <strong>Region</strong> (like US915), enter the <strong>Message Payload Size</strong> (say 12 bytes), look up the <strong>Data Rate</strong> (usually DR2) and our answer magically appears…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-airtime.png" alt="Airtime Calculator" /></p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>In the next article, PineDio Stack shall transmit <strong>Real-Time Sensor Data</strong> from a Temperature Sensor to The Things Network…</p>
 <ul>
 <li>
@@ -540,7 +540,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ttn.md"><code>lupyuen.github.io/src/ttn.md</code></a></p>
-<h1 id="notes"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes"><a class="doc-anchor" href="#notes">§</a>9 Notes</h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1438673926721134596">this Twitter Thread</a></li>
 </ol>

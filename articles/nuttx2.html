@@ -107,7 +107,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator" /></p>
-<h1 id="start-with-qemu-emulator"><a href="#start-with-qemu-emulator">1 Start with QEMU Emulator</a></h1>
+<h1 id="start-with-qemu-emulator"><a class="doc-anchor" href="#start-with-qemu-emulator">§</a>1 Start with QEMU Emulator</h1>
 <p>Earlier we successfully tested <strong>NuttX RTOS on QEMU Emulator</strong> for 64-bit RISC-V (pic above)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/riscv"><strong>“64-bit RISC-V with Apache NuttX Real-Time Operating System”</strong></a></li>
@@ -133,7 +133,7 @@
 <p>Our cooking begins…</p>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Star64 SBC with Woodpecker USB Serial Adapter" /></p>
 <p><a href="https://lupyuen.github.io/articles/linux"><em>Star64 with Woodpecker USB Serial Adapter</em></a></p>
-<h1 id="print-to-qemu-console"><a href="#print-to-qemu-console">2 Print to QEMU Console</a></h1>
+<h1 id="print-to-qemu-console"><a class="doc-anchor" href="#print-to-qemu-console">§</a>2 Print to QEMU Console</h1>
 <p><em>We’re printing to the Serial Console on QEMU Emulator…</em></p>
 <p><em>What’s the UART Controller in QEMU?</em></p>
 <p>We check the <strong>NuttX Build Configuration</strong> for QEMU: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
@@ -213,7 +213,7 @@ nsh&gt;
 <p>“<strong><code>123</code></strong>” is printed 8 times because QEMU is running with 8 CPUs.</p>
 <p>Now we sprinkle some Debug Logs on Star64…</p>
 <p><img src="https://lupyuen.github.io/images/riscv-print.png" alt="NuttX prints to QEMU Console" /></p>
-<h1 id="uart-controller-on-star64"><a href="#uart-controller-on-star64">3 UART Controller on Star64</a></h1>
+<h1 id="uart-controller-on-star64"><a class="doc-anchor" href="#uart-controller-on-star64">§</a>3 UART Controller on Star64</h1>
 <p><em>What’s the UART Controller in Star64?</em></p>
 <p>Star64 JH7110 uses the <strong>8250 UART Controller</strong>, according to…</p>
 <ul>
@@ -243,7 +243,7 @@ nsh&gt;
 <p>To boot NuttX on Star64, it needs a special ingredient…</p>
 <p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
 <p><a href="https://lupyuen.github.io/articles/star64#inside-the-kernel-image"><em>Kernel Header for RISC-V Armbian Linux</em></a></p>
-<h1 id="risc-v-linux-kernel-header"><a href="#risc-v-linux-kernel-header">4 RISC-V Linux Kernel Header</a></h1>
+<h1 id="risc-v-linux-kernel-header"><a class="doc-anchor" href="#risc-v-linux-kernel-header">§</a>4 RISC-V Linux Kernel Header</h1>
 <p><em>How will Star64 boot NuttX?</em></p>
 <p>Star64’s <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> will load NuttX Kernel into RAM and run it.</p>
 <p>But we need to embed the <strong>RISC-V Linux Kernel Header</strong> (and pretend we’re Linux)…</p>
@@ -276,7 +276,7 @@ real_start:
 <div class="example-wrap"><pre class="language-text"><code>.quad  0x200000  /* Image load offset from start of RAM */
 </code></pre></div>
 <p>That’s because our NuttX Kernel will start at RAM Address <strong><code>0x4020</code> <code>0000</code></strong>. Chew on it for a bit…</p>
-<h1 id="start-address-of-nuttx-kernel"><a href="#start-address-of-nuttx-kernel">5 Start Address of NuttX Kernel</a></h1>
+<h1 id="start-address-of-nuttx-kernel"><a class="doc-anchor" href="#start-address-of-nuttx-kernel">§</a>5 Start Address of NuttX Kernel</h1>
 <p><em>What’s this magical address <code>0x4020</code> <code>0000</code>?</em></p>
 <p>From previous articles, we saw that Star64’s U-Boot Bootloader will load Linux Kernels into RAM at Address <strong><code>0x4020</code> <code>0000</code></strong>…</p>
 <ul>
@@ -318,7 +318,7 @@ SECTIONS
 <p>The Start Address is indeed <strong><code>0x4020</code> <code>0000</code></strong>.</p>
 <p>Yep Looks Good To Us (YLGTU), we’re ready to serve it on Star64!</p>
 <p><img src="https://lupyuen.github.io/images/star64-nuttx.png" alt="Boot NuttX on Star64" /></p>
-<h1 id="boot-nuttx-on-star64"><a href="#boot-nuttx-on-star64">6 Boot NuttX on Star64</a></h1>
+<h1 id="boot-nuttx-on-star64"><a class="doc-anchor" href="#boot-nuttx-on-star64">§</a>6 Boot NuttX on Star64</h1>
 <p>We’re finally ready to <strong>boot NuttX on Star64</strong>! We compile <strong>NuttX for RISC-V QEMU</strong> with these steps…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><strong>“Build Apache NuttX RTOS for 64-bit RISC-V QEMU”</strong></a> </li>
@@ -416,7 +416,7 @@ reset not supported yet
 <p>Why did NuttX crash at <strong><code>0x4020</code> <code>005C</code></strong>? We percolate our code…</p>
 <p><img src="https://lupyuen.github.io/images/star64-exception.jpg" alt="Cody AI Assistant tries to explain our RISC-V Exception" /></p>
 <p><em>Cody AI Assistant tries to explain our RISC-V Exception</em></p>
-<h1 id="nuttx-fails-to-get-hart-id"><a href="#nuttx-fails-to-get-hart-id">7 NuttX Fails To Get Hart ID</a></h1>
+<h1 id="nuttx-fails-to-get-hart-id"><a class="doc-anchor" href="#nuttx-fails-to-get-hart-id">§</a>7 NuttX Fails To Get Hart ID</h1>
 <p><em>What’s at <code>0x4020</code> <code>005C</code>?</em></p>
 <p><em>Why did it crash NuttX?</em></p>
 <p>We look up our <strong>NuttX RISC-V Disassembly nuttx.S</strong> and see this in our Boot Code: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103">qemu_rv_head.S</a></p>
@@ -447,7 +447,7 @@ csrr a0, mhartid
 <p><em>But it worked perfectly on QEMU! Why did it fail?</em></p>
 <p>Ah that’s because something super spicy has changed on Star64: Our Privilege Level…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
-<h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">8 RISC-V Privilege Levels</a></h1>
+<h1 id="risc-v-privilege-levels"><a class="doc-anchor" href="#risc-v-privilege-levels">§</a>8 RISC-V Privilege Levels</h1>
 <p><em>What’s this Privilege Level?</em></p>
 <p>RISC-V Machine Code runs at three <strong>Privilege Levels</strong>…</p>
 <ul>
@@ -482,7 +482,7 @@ csrr a0, mhartid
 <p>NuttX needs to fetch the Hart ID with a different recipe…</p>
 <p><img src="https://lupyuen.github.io/images/star64-opensbi.jpg" alt="OpenSBI starts U-Boot Bootloader on Star64" /></p>
 <p><a href="https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface"><em>OpenSBI starts U-Boot Bootloader on Star64</em></a></p>
-<h1 id="downgrade-nuttx-to-supervisor-mode"><a href="#downgrade-nuttx-to-supervisor-mode">9 Downgrade NuttX to Supervisor Mode</a></h1>
+<h1 id="downgrade-nuttx-to-supervisor-mode"><a class="doc-anchor" href="#downgrade-nuttx-to-supervisor-mode">§</a>9 Downgrade NuttX to Supervisor Mode</h1>
 <p><em>OpenSBI runs in Machine Mode and reads the Hart ID (CPU ID)…</em></p>
 <p><em>How will NuttX get the Hart ID from OpenSBI?</em></p>
 <p>Thankfully OpenSBI will pass the Hart ID to NuttX through <a href="https://lupyuen.github.io/articles/nuttx2#appendix-hart-id-from-opensbi"><strong>Register A0</strong></a>.</p>
@@ -519,7 +519,7 @@ csrw  stvec, t0
 </ul>
 <p>Time to taste this…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-boot.png" alt="After fixing NuttX for Supervisor Mode" /></p>
-<h1 id="fix-the-nuttx-boot-code"><a href="#fix-the-nuttx-boot-code">10 Fix the NuttX Boot Code</a></h1>
+<h1 id="fix-the-nuttx-boot-code"><a class="doc-anchor" href="#fix-the-nuttx-boot-code">§</a>10 Fix the NuttX Boot Code</h1>
 <p>From the previous section, we identified these fixes to run our NuttX Boot Code in <strong>Supervisor Mode</strong>…</p>
 <ol>
 <li>
@@ -593,7 +593,7 @@ jal  x1, jh7110_start
 <li><a href="https://lupyuen.github.io/articles/privilege"><strong>“Star64 JH7110 + NuttX RTOS: RISC-V Privilege Levels and UART Registers”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/nuttx2-star64.jpg" alt="Pine64 Star64 64-bit RISC-V SBC" /></p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>I hope this has been an Educational Experience on booting a fresh new OS for a 64-bit RISC-V SBC…</p>
 <ul>
 <li>
@@ -646,7 +646,7 @@ jal  x1, jh7110_start
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nuttx2.md"><strong>lupyuen.github.io/src/nuttx2.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
-<h1 id="appendix-hart-id-from-opensbi"><a href="#appendix-hart-id-from-opensbi">12 Appendix: Hart ID from OpenSBI</a></h1>
+<h1 id="appendix-hart-id-from-opensbi"><a class="doc-anchor" href="#appendix-hart-id-from-opensbi">§</a>12 Appendix: Hart ID from OpenSBI</h1>
 <p><em>NuttX can’t read the <code>mhartid</code> CSR Register in Supervisor Mode…</em></p>
 <p><em>How to get the Hart ID from OpenSBI?</em></p>
 <p>NuttX failed to read the <strong><code>mhartid</code></strong> CSR Register because it’s a <strong>Machine-Mode Register</strong> (pic above)…</p>
@@ -728,7 +728,7 @@ csrw CSR_IP, zero
 </code></pre></div>
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/csr.h#L393-L446">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-boot.png" alt="After fixing NuttX for Supervisor Mode" /></p>
-<h1 id="appendix-nuttx-in-supervisor-mode"><a href="#appendix-nuttx-in-supervisor-mode">13 Appendix: NuttX in Supervisor Mode</a></h1>
+<h1 id="appendix-nuttx-in-supervisor-mode"><a class="doc-anchor" href="#appendix-nuttx-in-supervisor-mode">§</a>13 Appendix: NuttX in Supervisor Mode</h1>
 <p>Earlier we identified these fixes for the <a href="https://lupyuen.github.io/articles/nuttx2#downgrade-nuttx-to-supervisor-mode"><strong>NuttX Boot Code</strong></a> to run in Supervisor Mode…</p>
 <ol>
 <li>
@@ -836,7 +836,7 @@ csrw CSR_IP, zero
 <p>Note that we don’t load the Trap Vector Table, because we’ll use OpenSBI for Crash Logging.</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log">(Like when we hit Exceptions with <strong>Machine-Mode Instructions</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/riscv-build.png" alt="Building Apache NuttX RTOS in 4 minutes" /></p>
-<h1 id="appendix-nuttx-start-address"><a href="#appendix-nuttx-start-address">14 Appendix: NuttX Start Address</a></h1>
+<h1 id="appendix-nuttx-start-address"><a class="doc-anchor" href="#appendix-nuttx-start-address">§</a>14 Appendix: NuttX Start Address</h1>
 <p>Previously we changed the NuttX Start Address in <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L79-L80"><strong>nsh/defconfig</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53"><strong>ld.script</strong></a>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx2#start-address-of-nuttx-kernel"><strong>“Start Address of NuttX Kernel”</strong></a></li>
@@ -873,7 +873,7 @@ tools/configure.sh rv-virt:knsh64
 <p>We use <code>rv-virt:knsh64</code> (NuttX Kernel Mode) instead of <code>rv-virt:nsh64</code> (NuttX Flat Mode) so that NuttX will run in <strong>RISC-V Supervisor Mode</strong>. (Instead of RISC-V Machine Mode)</p>
 <p>More about this in the next article.</p>
 <p><img src="https://lupyuen.github.io/images/star64-nuttx.png" alt="Boot NuttX on Star64" /></p>
-<h1 id="appendix-nuttx-crash-log"><a href="#appendix-nuttx-crash-log">15 Appendix: NuttX Crash Log</a></h1>
+<h1 id="appendix-nuttx-crash-log"><a class="doc-anchor" href="#appendix-nuttx-crash-log">§</a>15 Appendix: NuttX Crash Log</h1>
 <p>Earlier we ran NuttX QEMU on Star64 (before fixing for <a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode"><strong>Supervisor Mode</strong></a>) and it crashed…</p>
 <ul>
 <li>

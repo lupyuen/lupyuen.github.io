@@ -114,7 +114,7 @@
 <p>Our analysis today will be super useful for creating our <strong>HDMI Driver for NuttX</strong> on Star64. (Pic below)</p>
 <p>And hopefully this article will be helpful for <strong>porting other Operating Systems</strong> to JH7110!</p>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Pine64 Star64 RISC-V SBC" /></p>
-<h1 id="jh7110-docs-and-source-code"><a href="#jh7110-docs-and-source-code">1 JH7110 Docs and Source Code</a></h1>
+<h1 id="jh7110-docs-and-source-code"><a class="doc-anchor" href="#jh7110-docs-and-source-code">§</a>1 JH7110 Docs and Source Code</h1>
 <p><em>What exactly is documented for JH7110 Display Controller?</em></p>
 <p>Officially these are the <strong>JH7110 Display Controller</strong> docs…</p>
 <ul>
@@ -175,7 +175,7 @@
 <p>We’ll decipher the Driver Source Code in a while.</p>
 <p><img src="https://lupyuen.github.io/images/display2-vout_block_diagram18.png" alt="JH7110 Display Subsystem Block Diagram" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/block_diagram_display.html"><em>JH7110 Display Subsystem Block Diagram</em></a></p>
-<h1 id="dc8200-display-controller"><a href="#dc8200-display-controller">2 DC8200 Display Controller</a></h1>
+<h1 id="dc8200-display-controller"><a class="doc-anchor" href="#dc8200-display-controller">§</a>2 DC8200 Display Controller</h1>
 <p><em>What’s this DC8200?</em></p>
 <p>From the pic above, we see that JH7110 uses a <strong>VeriSilicon DC8200 Dual Display Controller</strong> to drive these displays…</p>
 <ul>
@@ -247,12 +247,12 @@
 <p><a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/device_tree_config_display.html">(Source)</a></p>
 <p>Let’s dive into the Display Driver Code!</p>
 <p><img src="https://lupyuen.github.io/images/display2-title.jpg" alt="Display Driver for StarFive JH7110 SoC" /></p>
-<h1 id="dc8200-driver-for-direct-rendering-manager"><a href="#dc8200-driver-for-direct-rendering-manager">3 DC8200 Driver for Direct Rendering Manager</a></h1>
+<h1 id="dc8200-driver-for-direct-rendering-manager"><a class="doc-anchor" href="#dc8200-driver-for-direct-rendering-manager">§</a>3 DC8200 Driver for Direct Rendering Manager</h1>
 <p><em>What’s this DRM?</em></p>
 <p><a href="https://en.wikipedia.org/wiki/Direct_Rendering_Manager"><strong>Direct Rendering Manager (DRM)</strong></a> is the Linux Subsystem that talks to Display Controllers. (Like the DC8200 Display Controller in JH7110)</p>
 <p>The pic above shows the <strong>DC8200 Driver for DRM</strong> (top left). It works like a façade for the other DC8200 Driver Modules. (Rest of the pic)</p>
 <p>(Not to be confused with <a href="https://en.wikipedia.org/wiki/Digital_rights_management"><strong>the other DRM</strong></a>, which is also video-related)</p>
-<h2 id="drm-operations"><a href="#drm-operations">3.1 DRM Operations</a></h2>
+<h2 id="drm-operations"><a class="doc-anchor" href="#drm-operations">§</a>3.1 DRM Operations</h2>
 <p>The DRM Driver for DC8200 is named <strong>“starfive”</strong>. These are the <strong>DRM Operations</strong> supported by the driver: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L125-L143">vs_drv.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// DRM Driver for DC8200 Display Controller
 static struct drm_driver vs_drm_driver = {
@@ -280,7 +280,7 @@ static struct drm_driver vs_drm_driver = {
 <p><a href="https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Graphics_Execution_Manager">(<strong>Graphics Execution Manager “GEM”</strong> handles Memory Buffers)</a></p>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c">(<strong>vs_gem</strong> functions are here)</a></p>
 <p><img src="https://lupyuen.github.io/images/jh7110-display2.jpg" alt="DRM Sub-Drivers" /></p>
-<h2 id="drm-sub-drivers"><a href="#drm-sub-drivers">3.2 DRM Sub-Drivers</a></h2>
+<h2 id="drm-sub-drivers"><a class="doc-anchor" href="#drm-sub-drivers">§</a>3.2 DRM Sub-Drivers</h2>
 <p><em>Where are the fun bits of our Display Driver?</em></p>
 <p>Remember our DRM Driver is only a façade. Most of the work is done by the <strong>Sub-Drivers for DC8200</strong> (pic above): <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L301-L315">vs_drv.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Sub-Drivers for DC8200 Display Controller
@@ -316,7 +316,7 @@ static struct platform_driver *drm_sub_drivers[] = {
 </li>
 </ul>
 <p>That’s how the Sub-Drivers are started.</p>
-<h2 id="file-operations"><a href="#file-operations">3.3 File Operations</a></h2>
+<h2 id="file-operations"><a class="doc-anchor" href="#file-operations">§</a>3.3 File Operations</h2>
 <p><em>What’s inside fops?</em></p>
 <p><strong>fops</strong> defines the <strong>File Operations</strong> supported by our DRM Driver: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L54-L63">vs_drv.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// File Operations for DC8200 Display Controller
@@ -335,7 +335,7 @@ static const struct file_operations fops = {
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_gem.c#L546-L561">(<strong>vs_gem_mmap</strong> is defined here)</a></p>
 <p>Let’s talk about Display Drivers…</p>
 <p><img src="https://lupyuen.github.io/images/display2-steps.jpg" alt="Display Driver renders graphics to a Display Device" /></p>
-<h1 id="inside-the-display-driver"><a href="#inside-the-display-driver">4 Inside the Display Driver</a></h1>
+<h1 id="inside-the-display-driver"><a class="doc-anchor" href="#inside-the-display-driver">§</a>4 Inside the Display Driver</h1>
 <p><em>What’s inside a typical Display Driver?</em></p>
 <p><em>How does it talk to the Display Hardware?</em></p>
 <p>Before we dive too deep into our Driver Code, let’s talk about <strong>Display Drivers</strong> and how they control the <strong>Display Hardware</strong>.</p>
@@ -378,7 +378,7 @@ static const struct file_operations fops = {
 <p><a href="https://lupyuen.github.io/articles/de3">(Like for <strong>Allwinner A64</strong>)</a></p>
 <p>Heading back to our scheduled programming…</p>
 <p><img src="https://lupyuen.github.io/images/jh7110-display3.jpg" alt="DC8200 Display Controller Driver" /></p>
-<h1 id="dc8200-display-controller-driver"><a href="#dc8200-display-controller-driver">5 DC8200 Display Controller Driver</a></h1>
+<h1 id="dc8200-display-controller-driver"><a class="doc-anchor" href="#dc8200-display-controller-driver">§</a>5 DC8200 Display Controller Driver</h1>
 <p>The <strong>DC8200 Display Controller Driver</strong> (pic above) is called by the the DC8200 DRM Driver. The driver exposes the Display Functions for…</p>
 <ul>
 <li>
@@ -424,7 +424,7 @@ const struct component_ops dc_component_ops = {
 <p><em>That’s all for our Display Controller Driver?</em></p>
 <p>There’s more! We’ll come back to our Display Controller Driver for handling the Display Pipeline and Display Plane.</p>
 <p><img src="https://lupyuen.github.io/images/jh7110-display4.jpg" alt="DC8200 Display Hardware Driver" /></p>
-<h1 id="dc8200-display-hardware-driver"><a href="#dc8200-display-hardware-driver">6 DC8200 Display Hardware Driver</a></h1>
+<h1 id="dc8200-display-hardware-driver"><a class="doc-anchor" href="#dc8200-display-hardware-driver">§</a>6 DC8200 Display Hardware Driver</h1>
 <p><em>Now we do the exciting bit?</em></p>
 <p>Finally! The <strong>Display Hardware Driver</strong> (pic above) is called by the Display Controller Driver (previous section) to manipulate the Display Hardware Registers and…</p>
 <ul>
@@ -521,7 +521,7 @@ static const struct vs_dc_info dc_info[] = {
 <p><a href="https://doc-en.rvspace.org/VisionFive2/DG_Display/JH7110_SDK/block_diagram_display.html"><em>Block Diagram of DC8200 Display Controller</em></a></p>
 <p>Our Display Hardware Driver will do other fun things! Let’s talk about the Display Pipelines and Display Planes…</p>
 <p><img src="https://lupyuen.github.io/images/jh7110-display5a.jpg" alt="Setup Display Pipeline" /></p>
-<h1 id="setup-display-pipeline"><a href="#setup-display-pipeline">7 Setup Display Pipeline</a></h1>
+<h1 id="setup-display-pipeline"><a class="doc-anchor" href="#setup-display-pipeline">§</a>7 Setup Display Pipeline</h1>
 <p>Earlier we talked about <a href="https://lupyuen.github.io/articles/display2#inside-the-display-driver"><strong>Display Pipelines</strong></a> and how they…</p>
 <ul>
 <li>
@@ -602,7 +602,7 @@ static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
 <p><a href="https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display">(More about <strong>DRM Atomic Display</strong>)</a></p>
 <p>And that’s how we create a Display Pipeline! Now we commit the Display Pipeline…</p>
 <p><img src="https://lupyuen.github.io/images/jh7110-display5b.jpg" alt="Commit Display Pipeline" /></p>
-<h1 id="commit-display-pipeline"><a href="#commit-display-pipeline">8 Commit Display Pipeline</a></h1>
+<h1 id="commit-display-pipeline"><a class="doc-anchor" href="#commit-display-pipeline">§</a>8 Commit Display Pipeline</h1>
 <p><em>Why will we Commit a Display Pipeline?</em></p>
 <p>A Display Pipeline won’t render any pixels… Until we <strong>Commit the Display Pipeline</strong>! (Pic above)</p>
 <p>To Commit the Display Pipeline, the Linux Direct Rendering Manager (DRM) calls our Display Controller Driver at…</p>
@@ -645,7 +645,7 @@ static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
 <p>Which is called by the Linux <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/drm_atomic_helper.c#L2445-L2570"><strong>DRM Atomic Helper</strong></a>.</p>
 <p><a href="https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display">(More about <strong>DRM Atomic Display</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/jh7110-display6.jpg" alt="Update Display Plane" /></p>
-<h1 id="update-display-plane"><a href="#update-display-plane">9 Update Display Plane</a></h1>
+<h1 id="update-display-plane"><a class="doc-anchor" href="#update-display-plane">§</a>9 Update Display Plane</h1>
 <p>One last thing for today: How to <strong>Update the Display Plane</strong>. (Pic above)</p>
 <p>(A Display Plane is a Layer of Pixels / Framebuffer that will be blended into the final image by a Display Pipeline)</p>
 <p>Our Display Controller Driver exposes these <strong>Display Plane Functions</strong>: 
@@ -700,7 +700,7 @@ const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
 <p><a href="https://en.wikipedia.org/wiki/Direct_Rendering_Manager#Atomic_Display">(More about <strong>DRM Atomic Display</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/star64-plasma.jpg" alt="Yocto Linux with KDE Plasma on Star64 HDMI" /></p>
 <p><a href="https://lupyuen.github.io/articles/linux"><em>Yocto Linux with KDE Plasma on Star64 HDMI</em></a></p>
-<h1 id="unsolved-mysteries"><a href="#unsolved-mysteries">10 Unsolved Mysteries</a></h1>
+<h1 id="unsolved-mysteries"><a class="doc-anchor" href="#unsolved-mysteries">§</a>10 Unsolved Mysteries</h1>
 <p><em>We’re ready to build our NuttX Display Driver for JH7110?</em></p>
 <p>Not quite. We have a bit more to explore, like the <strong>HDMI Controller for JH7110</strong>…</p>
 <ul>
@@ -749,7 +749,7 @@ const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/display2-sketch.jpg" alt="Sketch of Display Driver for StarFive JH7110 SoC" /></p>
 </blockquote>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>Today we created a Detailed Doc that explains the Inner Workings of the <strong>JH7110 Display Controller</strong>…</p>
 <ul>
 <li>
@@ -807,7 +807,7 @@ const struct drm_plane_helper_funcs vs_plane_helper_funcs = {
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/jh7110-display7.jpg" alt="DC8200 Framebuffer Driver" /></p>
 </blockquote>
-<h1 id="appendix-dc8200-framebuffer-driver"><a href="#appendix-dc8200-framebuffer-driver">12 Appendix: DC8200 Framebuffer Driver</a></h1>
+<h1 id="appendix-dc8200-framebuffer-driver"><a class="doc-anchor" href="#appendix-dc8200-framebuffer-driver">§</a>12 Appendix: DC8200 Framebuffer Driver</h1>
 <p>At startup, <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c#L193-L271"><strong>vs_drm_bind</strong></a> (from our DRM Driver) calls <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L178-L191"><strong>vs_mode_config_init</strong></a> to register the Framebuffer Driver. (Pic above)</p>
 <p>The Framebuffer Driver exposes the following functions: <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L166-L172">vs_fb.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// DC8200 Framebuffer Functions
@@ -825,7 +825,7 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 <p>Framebuffer Formats are defined in <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_fb.c#L134-L139"><strong>vs_formats</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/display2-vout_clkrst18.png" alt="JH7110 Display Subsystem Clock and Reset" /></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/clock_n_reset_display.html"><em>JH7110 Display Subsystem Clock and Reset</em></a></p>
-<h1 id="appendix-jh7110-display-clock-and-reset"><a href="#appendix-jh7110-display-clock-and-reset">13 Appendix: JH7110 Display Clock and Reset</a></h1>
+<h1 id="appendix-jh7110-display-clock-and-reset"><a class="doc-anchor" href="#appendix-jh7110-display-clock-and-reset">§</a>13 Appendix: JH7110 Display Clock and Reset</h1>
 <p>Earlier we talked about our Display Controller Driver preparing the <strong>Clock and Reset Signals</strong>…</p>
 <ul>
 <li>
@@ -850,7 +850,7 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 <li><a href="https://lupyuen.github.io/articles/display3"><strong>“RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/jh7110-display3.jpg" alt="DC8200 Display Controller Driver" /></p>
-<h2 id="dc_bind"><a href="#dc_bind">13.1 dc_bind</a></h2>
+<h2 id="dc_bind"><a class="doc-anchor" href="#dc_bind">§</a>13.1 dc_bind</h2>
 <p>At startup, our DRM Driver calls our Display Controller Driver at <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a> to setup the <strong>Clock and Reset Signals</strong>. (Pic above)</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller-driver"><strong>“DC8200 Display Controller Driver”</strong></a></li>
@@ -890,7 +890,7 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/jh7110-display3.jpg" alt="DC8200 Display Controller Driver" /></p>
-<h2 id="dc_init"><a href="#dc_init">13.2 dc_init</a></h2>
+<h2 id="dc_init"><a class="doc-anchor" href="#dc_init">§</a>13.2 dc_init</h2>
 <p>At startup, our DRM Driver calls our Display Controller Driver at <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1421-L1573"><strong>dc_bind</strong></a>, which calls <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L644-L722"><strong>dc_init</strong></a> to setup the <strong>Clock and Reset Signals</strong>. (Pic above)</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/display2#dc8200-display-controller-driver"><strong>“DC8200 Display Controller Driver”</strong></a></li>
@@ -927,7 +927,7 @@ static const struct drm_mode_config_funcs vs_mode_config_funcs = {
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/jh7110-display5a.jpg" alt="Setup Display Pipeline" /></p>
-<h2 id="vs_dc_enable"><a href="#vs_dc_enable">13.3 vs_dc_enable</a></h2>
+<h2 id="vs_dc_enable"><a class="doc-anchor" href="#vs_dc_enable">§</a>13.3 vs_dc_enable</h2>
 <p>DRM <strong>creates the Display Pipeline</strong> (pic above) by calling our Display Controller Driver at <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L740-L827"><strong>vs_dc_enable</strong></a>, to prepare the Clock and Reset Signals…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/display2#setup-display-pipeline"><strong>“Setup Display Pipeline”</strong></a></li>

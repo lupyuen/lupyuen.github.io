@@ -123,7 +123,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/de-block1a.jpg" alt="Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)" /></p>
 <p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)</em></a></p>
-<h1 id="display-rendering-on-pinephone"><a href="#display-rendering-on-pinephone">1 Display Rendering on PinePhone</a></h1>
+<h1 id="display-rendering-on-pinephone"><a class="doc-anchor" href="#display-rendering-on-pinephone">§</a>1 Display Rendering on PinePhone</h1>
 <p><em>Suppose we’re building our own Operating System for PinePhone…</em></p>
 <p><em>How do we render graphics on the LCD Display?</em></p>
 <p>Rendering graphics directly to PinePhone Hardware (“Bare Metal”) is more complicated than we expect!</p>
@@ -163,7 +163,7 @@
 <p>Let’s look inside the Display Engine…</p>
 <p><img src="https://lupyuen.github.io/images/de-mixer1a.jpg" alt="Real-Time Mixer in A64 Display Engine (Page 22)" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf"><em>Real-Time Mixer in A64 Display Engine (Page 22)</em></a></p>
-<h1 id="display-engine-in-allwinner-a64"><a href="#display-engine-in-allwinner-a64">2 Display Engine in Allwinner A64</a></h1>
+<h1 id="display-engine-in-allwinner-a64"><a class="doc-anchor" href="#display-engine-in-allwinner-a64">§</a>2 Display Engine in Allwinner A64</h1>
 <p>Recall that Allwinner A64’s Display Engine is a <strong>Real-Time Mixer</strong> that handles real-time <strong>DMA, Overlay, Scaling and Blending</strong> of the Framebuffers…</p>
 <p>And the Display Engine pushes the output pixels to the <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>Timing Controller (TCON0)</strong></a> for display on PinePhone’s LCD Display.</p>
 <p>The pic above shows how the Display Engine mixes together <strong>3 UI Channels (Framebuffers)</strong> via DMA1, 2 and 3.</p>
@@ -191,7 +191,7 @@
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>DE2TCON_MUX</strong> at Page 26 says that Mixer 0 is for TCON0 MIPI DSI, Mixer 1 for TCON1 HDMI Output)</a></p>
 <p><img src="https://lupyuen.github.io/images/de-code1a.png" alt="Rendering simple Colour Blocks on the PinePhone Display" /></p>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L201-L214">(Source)</a></p>
-<h1 id="render-colours"><a href="#render-colours">3 Render Colours</a></h1>
+<h1 id="render-colours"><a class="doc-anchor" href="#render-colours">§</a>3 Render Colours</h1>
 <p><em>How do we program the A64 Display Engine to render graphics?</em></p>
 <p>Let’s begin by rendering simple <strong>Colour Blocks</strong> on the PinePhone Display…</p>
 <p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
@@ -270,7 +270,7 @@ display_commit(d);
 <p>In a while we’ll set the Alpha Channels for UI Channels 2 and 3. And the UI Channels will appear as semi-transparent overlays.</p>
 <p><img src="https://lupyuen.github.io/images/de-code3a.png" alt="Rendering Mandelbrot Set on PinePhone" /></p>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200">(Source)</a></p>
-<h1 id="render-mandelbrot-set"><a href="#render-mandelbrot-set">4 Render Mandelbrot Set</a></h1>
+<h1 id="render-mandelbrot-set"><a class="doc-anchor" href="#render-mandelbrot-set">§</a>4 Render Mandelbrot Set</h1>
 <p><em>Colour Blocks are so blah. Are we sure we can render every single pixel correctly?</em></p>
 <p>Let’s render something infinitely more detailed and sophisticated… <a href="https://en.wikipedia.org/wiki/Mandelbrot_set"><strong>Mandelbrot Set</strong></a>!</p>
 <p><img src="https://lupyuen.github.io/images/de-title.jpg" alt="Mandelbrot Set on PinePhone" /></p>
@@ -318,7 +318,7 @@ for (int y = 0; y &lt; 1440; y++) {
 <p>Yep we can render every single pixel precisely on PinePhone!</p>
 <p><img src="https://lupyuen.github.io/images/de-code4a.png" alt="Animating the Madelbrot Set" /></p>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L299-L334">(Source)</a></p>
-<h1 id="animate-madelbrot-set"><a href="#animate-madelbrot-set">5 Animate Madelbrot Set</a></h1>
+<h1 id="animate-madelbrot-set"><a class="doc-anchor" href="#animate-madelbrot-set">§</a>5 Animate Madelbrot Set</h1>
 <p><em>Earlier we said that updates to the Framebuffer are instantly pushed to PinePhone’s Display via DMA…</em></p>
 <p><em>Can we prove it?</em></p>
 <p>Yep let’s <strong>animate the Mandelbrot Set</strong> in our Framebuffer. And watch the updates appear instantly on PinePhone’s Display, thanks to <strong>Direct Memory Access (DMA)</strong>!</p>
@@ -389,7 +389,7 @@ for (;;) {
 <p>Subsequent updates to the Framebuffer will be automatically pushed to the display over DMA.</p>
 <p><img src="https://lupyuen.github.io/images/de-code5b.png" alt="Rendering a Square Overlay on PinePhone" /></p>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L215-L226">(Source)</a></p>
-<h1 id="render-square-overlay"><a href="#render-square-overlay">6 Render Square Overlay</a></h1>
+<h1 id="render-square-overlay"><a class="doc-anchor" href="#render-square-overlay">§</a>6 Render Square Overlay</h1>
 <p><em>Earlier we said that A64 Display Engine can render Framebuffers as Overlays. How can we do it?</em></p>
 <p>The pic below shows that A64 Display Engine can render <strong>3 Framebuffers (UI Channels)</strong> as overlays, via DMA1, 2 and 3…</p>
 <p><img src="https://lupyuen.github.io/images/de-mixer1a.jpg" alt="Real-Time Mixer in A64 Display Engine (Page 22)" /></p>
@@ -438,7 +438,7 @@ d-&gt;planes[1].dst_y    = 52;   // Dest Y Offset
 <p>Before we watch the outcome, let’s render another overlay…</p>
 <p><img src="https://lupyuen.github.io/images/de-code5c.png" alt="Rendering a Circle Overlay on PinePhone" /></p>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L226-L251">(Source)</a></p>
-<h1 id="render-circle-overlay"><a href="#render-circle-overlay">7 Render Circle Overlay</a></h1>
+<h1 id="render-circle-overlay"><a class="doc-anchor" href="#render-circle-overlay">§</a>7 Render Circle Overlay</h1>
 <p>Our PinePhone UI Overlay Sandwich has these goodies inside…</p>
 <ul>
 <li>
@@ -509,7 +509,7 @@ display_commit(d);
 <p>(Why the horizontal lines in the Blue Square and Green Circle?)</p>
 <p><img src="https://lupyuen.github.io/images/de-overlay.jpg" alt="Mandelbrot Set with Blue Square and Green Circle as Overlays" /></p>
 <p><em>Mandelbrot Set with Blue Square and Green Circle as Overlays</em></p>
-<h1 id="test-pinephone-display-engine"><a href="#test-pinephone-display-engine">8 Test PinePhone Display Engine</a></h1>
+<h1 id="test-pinephone-display-engine"><a class="doc-anchor" href="#test-pinephone-display-engine">§</a>8 Test PinePhone Display Engine</h1>
 <p><em>We’ve seen the Test Code for Display Engine… How do we run the code?</em></p>
 <p>To test the A64 Display Engine, we’ll boot <strong>Apache NuttX RTOS</strong> on PinePhone and run our Test App…</p>
 <ul>
@@ -574,7 +574,7 @@ Apply Settings
 <p>Let’s talk about the p-boot Display Code…</p>
 <p><img src="https://lupyuen.github.io/images/de-run.png" alt="Running p-boot Display Code on Apache NuttX RTOS with logging" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone"><em>Running p-boot Display Code on Apache NuttX RTOS with logging</em></a></p>
-<h1 id="p-boot-display-code"><a href="#p-boot-display-code">9 p-boot Display Code</a></h1>
+<h1 id="p-boot-display-code"><a class="doc-anchor" href="#p-boot-display-code">§</a>9 p-boot Display Code</h1>
 <p><em>About the code that controls A64 Display Engine… Where is <code>display_commit</code> defined?</em></p>
 <p><a href="https://megous.com/git/p-boot/tree/src/display.c#n2017"><strong><code>display_commit</code></strong></a> comes from the super-helpful <a href="https://xnux.eu/p-boot/"><strong>p-boot PinePhone Bootloader</strong></a> project, which runs directly on PinePhone Hardware. (“Bare Metal”)</p>
 <p>To test the A64 Display Engine on Apache NuttX RTOS, we borrowed these <a href="https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L135-L142"><strong>Source Files</strong></a> (relevant to the Display Engine) from p-boot…</p>
@@ -644,7 +644,7 @@ Channel 2: ...
 <p>This is very helpful as we create the NuttX Display Driver for PinePhone…</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Testing the NuttX Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi2"><em>Testing the NuttX Display Driver for PinePhone</em></a></p>
-<h1 id="nuttx-display-driver-for-pinephone"><a href="#nuttx-display-driver-for-pinephone">10 NuttX Display Driver for PinePhone</a></h1>
+<h1 id="nuttx-display-driver-for-pinephone"><a class="doc-anchor" href="#nuttx-display-driver-for-pinephone">§</a>10 NuttX Display Driver for PinePhone</h1>
 <p><em>Once again, why are we doing all this?</em></p>
 <p>We’re now porting <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> to PinePhone.</p>
 <p>Someday we hope to have a <strong>fully-functional PinePhone</strong> running on NuttX RTOS…</p>
@@ -705,7 +705,7 @@ Channel 2: ...
 <li><a href="https://lupyuen.github.io/articles/de2"><strong>“NuttX RTOS for PinePhone: Render Graphics in Zig”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/de-test.jpg" alt="Testing the A64 Display Engine on PinePhone" /></p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>I hope we learnt lots today about <strong>Display Rendering on PinePhone</strong>…</p>
 <ul>
 <li>
@@ -759,7 +759,7 @@ Please check out the other articles on NuttX for PinePhone…</p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de.md"><strong>lupyuen.github.io/src/de.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/de-block1a.jpg" alt="Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)" /></p>
 <p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)</em></a></p>
-<h1 id="appendix-overview-of-allwinner-a64-display-engine"><a href="#appendix-overview-of-allwinner-a64-display-engine">12 Appendix: Overview of Allwinner A64 Display Engine</a></h1>
+<h1 id="appendix-overview-of-allwinner-a64-display-engine"><a class="doc-anchor" href="#appendix-overview-of-allwinner-a64-display-engine">§</a>12 Appendix: Overview of Allwinner A64 Display Engine</h1>
 <p>The official doc for the <strong>Allwinner A64 Display Engine</strong> is here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf"><strong>Allwinner Display Engine 2.0 Specifications</strong></a></li>
@@ -887,7 +887,7 @@ Please check out the other articles on NuttX for PinePhone…</p>
 <li>Fancy Color Curvature Change (FCC)</li>
 <li>Dynamic Range Controller (DRC)</li>
 </ul>
-<h1 id="appendix-initialising-the-allwinner-a64-display-engine"><a href="#appendix-initialising-the-allwinner-a64-display-engine">13 Appendix: Initialising the Allwinner A64 Display Engine</a></h1>
+<h1 id="appendix-initialising-the-allwinner-a64-display-engine"><a class="doc-anchor" href="#appendix-initialising-the-allwinner-a64-display-engine">§</a>13 Appendix: Initialising the Allwinner A64 Display Engine</h1>
 <p><em>How do we initialise PinePhone’s Allwinner A64 Display Engine at startup?</em></p>
 <p>As deciphered from the following logs…</p>
 <ul>
@@ -1301,7 +1301,7 @@ Please check out the other articles on NuttX for PinePhone…</p>
 </ul>
 <p><img src="https://lupyuen.github.io/images/de-run.png" alt="Running p-boot Display Code on Apache NuttX RTOS with logging" /></p>
 <p><a href="https://lupyuen.github.io/articles/de#p-boot-display-code"><em>Running p-boot Display Code on Apache NuttX RTOS with logging</em></a></p>
-<h1 id="appendix-programming-the-allwinner-a64-display-engine"><a href="#appendix-programming-the-allwinner-a64-display-engine">14 Appendix: Programming the Allwinner A64 Display Engine</a></h1>
+<h1 id="appendix-programming-the-allwinner-a64-display-engine"><a class="doc-anchor" href="#appendix-programming-the-allwinner-a64-display-engine">§</a>14 Appendix: Programming the Allwinner A64 Display Engine</h1>
 <p>We’ve seen the <strong>Hardware Registers</strong> for the Allwinner A64 Display Engine…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/de#appendix-overview-of-allwinner-a64-display-engine"><strong>“Overview of Allwinner A64 Display Engine”</strong></a></li>
@@ -1636,7 +1636,7 @@ GLB DBuff: 0x110 0008 = 0x1 (DMB)
 </ul>
 <p><img src="https://lupyuen.github.io/images/de-block1a.jpg" alt="Allwinner A64 Timing Controller (TCON0)" /></p>
 <p><a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><em>Allwinner A64 Timing Controller (TCON0)</em></a></p>
-<h1 id="appendix-timing-controller-tcon0"><a href="#appendix-timing-controller-tcon0">15 Appendix: Timing Controller (TCON0)</a></h1>
+<h1 id="appendix-timing-controller-tcon0"><a class="doc-anchor" href="#appendix-timing-controller-tcon0">§</a>15 Appendix: Timing Controller (TCON0)</h1>
 <p>Earlier we talked about the sequence of steps that our Display Driver needs to follow…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver"><strong>“Sequence of Steps for PinePhone Display Driver”</strong></a></li>
@@ -1878,7 +1878,7 @@ setbits 0x1c0c000, 0x80000000 (DMB)
 </ul>
 <p><img src="https://lupyuen.github.io/images/pio-backlight.png" alt="PinePhone Display Backlight" /></p>
 <p><a href="https://lupyuen.github.io/articles/pio#pinephone-backlight"><em>PinePhone Display Backlight</em></a></p>
-<h1 id="appendix-display-backlight"><a href="#appendix-display-backlight">16 Appendix: Display Backlight</a></h1>
+<h1 id="appendix-display-backlight"><a class="doc-anchor" href="#appendix-display-backlight">§</a>16 Appendix: Display Backlight</h1>
 <p>Earlier we talked about the sequence of steps that our Display Driver needs to follow…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver"><strong>“Sequence of Steps for PinePhone Display Driver”</strong></a></li>
@@ -2003,7 +2003,7 @@ TODO: Set Bit 10 of PH_DATA (0x1c2090c)
 </ul>
 <p><img src="https://lupyuen.github.io/images/de-pmic.png" alt="AXP803 PMIC on PinePhone Schematic (Page 3)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>AXP803 PMIC on PinePhone Schematic (Page 3)</em></a></p>
-<h1 id="appendix-power-management-integrated-circuit"><a href="#appendix-power-management-integrated-circuit">17 Appendix: Power Management Integrated Circuit</a></h1>
+<h1 id="appendix-power-management-integrated-circuit"><a class="doc-anchor" href="#appendix-power-management-integrated-circuit">§</a>17 Appendix: Power Management Integrated Circuit</h1>
 <p>Earlier we talked about the sequence of steps that our Display Driver needs to follow…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver"><strong>“Sequence of Steps for PinePhone Display Driver”</strong></a></li>
@@ -2130,7 +2130,7 @@ udelay 15000
 </ul>
 <p><img src="https://lupyuen.github.io/images/de-reset.jpg" alt="LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)</em></a></p>
-<h1 id="appendix-reset-lcd-panel"><a href="#appendix-reset-lcd-panel">18 Appendix: Reset LCD Panel</a></h1>
+<h1 id="appendix-reset-lcd-panel"><a class="doc-anchor" href="#appendix-reset-lcd-panel">§</a>18 Appendix: Reset LCD Panel</h1>
 <p>Earlier we talked about the sequence of steps that our Display Driver needs to follow…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver"><strong>“Sequence of Steps for PinePhone Display Driver”</strong></a></li>
@@ -2228,7 +2228,7 @@ udelay 15000
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c"><strong>boards/arm64/a64/pinephone/src/pinephone_lcd.c</strong></a></li>
 </ul>
-<h1 id="appendix-reduced-serial-bus"><a href="#appendix-reduced-serial-bus">19 Appendix: Reduced Serial Bus</a></h1>
+<h1 id="appendix-reduced-serial-bus"><a class="doc-anchor" href="#appendix-reduced-serial-bus">§</a>19 Appendix: Reduced Serial Bus</h1>
 <p>PinePhone’s <strong>AXP803 Power Management Integrated Circuit</strong> (PMIC) is connected to Allwinner A64 via the <strong>Reduced Serial Bus</strong> (RSB)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit"><strong>“Power Management Integrated Circuit”</strong></a></li>
@@ -2355,7 +2355,7 @@ const RSBCMD_WR8 = 0x4E;
 <p>Wait for RSB Transaction</p>
 </li>
 </ul>
-<h2 id="read-from-rsb"><a href="#read-from-rsb">19.1 Read from RSB</a></h2>
+<h2 id="read-from-rsb"><a class="doc-anchor" href="#read-from-rsb">§</a>19.1 Read from RSB</h2>
 <p><strong>To read a byte</strong> from Reduced Serial Bus…</p>
 <ol>
 <li>
@@ -2426,7 +2426,7 @@ fn rsb_read(
   if (ret != 0) { return ret; }
   return getreg8(R_RSB_BASE_ADDRESS + RSB_DATA);
 }
-</code></pre></div><h2 id="write-to-rsb"><a href="#write-to-rsb">19.2 Write to RSB</a></h2>
+</code></pre></div><h2 id="write-to-rsb"><a class="doc-anchor" href="#write-to-rsb">§</a>19.2 Write to RSB</h2>
 <p><strong>To write a byte</strong> to Reduced Serial Bus…</p>
 <ol>
 <li>
@@ -2496,7 +2496,7 @@ fn rsb_write(
   putreg32(0x80,          R_RSB_BASE_ADDRESS + RSB_CTRL);  // TODO: DMB
   return rsb_wait_stat(&quot;Write RSB&quot;);
 }
-</code></pre></div><h2 id="wait-for-rsb-status"><a href="#wait-for-rsb-status">19.3 Wait for RSB Status</a></h2>
+</code></pre></div><h2 id="wait-for-rsb-status"><a class="doc-anchor" href="#wait-for-rsb-status">§</a>19.3 Wait for RSB Status</h2>
 <p><strong>To wait for status</strong> of Reduced Serial Bus…</p>
 <ol>
 <li>
@@ -2540,7 +2540,7 @@ fn rsb_wait_stat(
   debug(&quot;rsb_wait_stat Error ({s}): 0x{x}&quot;, .{ desc, reg });
   return -1;
 }
-</code></pre></div><h2 id="wait-for-rsb-transaction"><a href="#wait-for-rsb-transaction">19.4 Wait for RSB Transaction</a></h2>
+</code></pre></div><h2 id="wait-for-rsb-transaction"><a class="doc-anchor" href="#wait-for-rsb-transaction">§</a>19.4 Wait for RSB Transaction</h2>
 <p><strong>To wait for completion</strong> of Reduced Serial Bus Transaction…</p>
 <ol>
 <li>

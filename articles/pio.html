@@ -123,7 +123,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/pio-schematic.png" alt="LEDs on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LEDs on PinePhone Schematic (Page 11)</em></a></p>
-<h1 id="pinephone-schematic"><a href="#pinephone-schematic">1 PinePhone Schematic</a></h1>
+<h1 id="pinephone-schematic"><a class="doc-anchor" href="#pinephone-schematic">§</a>1 PinePhone Schematic</h1>
 <p>Let’s turn to Page 11 of the <strong>PinePhone Schematic</strong> to understand how the PinePhone LEDs are connected…</p>
 <ul>
 <li><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a></li>
@@ -169,7 +169,7 @@
 <p>Let’s talk about GPIOs…</p>
 <p><img src="https://lupyuen.github.io/images/pio-register1.png" alt="Allwinner A64 User Manual (Page 376)" /></p>
 <p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Allwinner A64 User Manual (Page 376)</em></a></p>
-<h1 id="allwinner-a64-port-controller"><a href="#allwinner-a64-port-controller">2 Allwinner A64 Port Controller</a></h1>
+<h1 id="allwinner-a64-port-controller"><a class="doc-anchor" href="#allwinner-a64-port-controller">§</a>2 Allwinner A64 Port Controller</h1>
 <p><em>How many GPIOs does PinePhone support?</em></p>
 <p>The Allwinner A64 SoC in PinePhone supports a whopping… <strong>103 GPIOs</strong>!</p>
 <p>All managed by A64’s <strong>Port Controller</strong>.</p>
@@ -183,7 +183,7 @@
 <p>How will we configure Port D? Let’s study the registers…</p>
 <p><img src="https://lupyuen.github.io/images/pio-register2.png" alt="Allwinner A64 User Manual (Page 376)" /></p>
 <p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Allwinner A64 User Manual (Page 376)</em></a></p>
-<h1 id="port-controller-registers"><a href="#port-controller-registers">3 Port Controller Registers</a></h1>
+<h1 id="port-controller-registers"><a class="doc-anchor" href="#port-controller-registers">§</a>3 Port Controller Registers</h1>
 <p>Page 376 of the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that the Port Controller’s <strong>Base Address</strong> is <strong><code>0x01C2</code> <code>0800</code></strong> (pic above)</p>
 <p>Which we define like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone 
@@ -212,7 +212,7 @@
 <p>But why <strong>PD_CFG2</strong> instead of PD_CFG0, 1 or 3? Find out next…</p>
 <p><img src="https://lupyuen.github.io/images/pio-register3.png" alt="Allwinner A64 User Manual (Page 387)" /></p>
 <p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Allwinner A64 User Manual (Page 387)</em></a></p>
-<h1 id="configure-gpio"><a href="#configure-gpio">4 Configure GPIO</a></h1>
+<h1 id="configure-gpio"><a class="doc-anchor" href="#configure-gpio">§</a>4 Configure GPIO</h1>
 <p>Remember our mission for today is to configure GPIOs <strong>PD18, 19 and 20</strong>.</p>
 <p>Page 387 of the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that all we need is <strong>PD_CFG2</strong> at Offset <strong><code>0x74</code></strong>. (Pic above)</p>
 <p><strong>PD_CFG2</strong> is a 32-bit Hardware Register. The bits that we need to twiddle are…</p>
@@ -278,7 +278,7 @@ static void test_led(void)
 <p>Now we set the GPIO Output…</p>
 <p><img src="https://lupyuen.github.io/images/pio-register4.png" alt="Allwinner A64 User Manual (Page 388)" /></p>
 <p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Allwinner A64 User Manual (Page 388)</em></a></p>
-<h1 id="set-gpio"><a href="#set-gpio">5 Set GPIO</a></h1>
+<h1 id="set-gpio"><a class="doc-anchor" href="#set-gpio">§</a>5 Set GPIO</h1>
 <p>Our final job for today: <strong>Set the GPIO Output</strong> for PD18, 19 and 20. So that we can blink the PinePhone LEDs!</p>
 <p>Page 388 of the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that we need to tweak Register <strong>PD_DATA</strong> at Offset <strong><code>0x7C</code></strong>. (Pic above)</p>
 <p>To set PD18, 19 and 20 to High, we set <strong>Bits 18, 19 and 20</strong> of PD_DATA to 1.</p>
@@ -316,7 +316,7 @@ static void test_led(void)
 <p>And we’re done lighting up the LEDs on PinePhone!</p>
 <p>Let’s test it on PinePhone…</p>
 <p><img src="https://lupyuen.github.io/images/pio-run1.png" alt="Booting NuttX on PinePhone" /></p>
-<h1 id="boot-nuttx-on-pinephone"><a href="#boot-nuttx-on-pinephone">6 Boot NuttX on PinePhone</a></h1>
+<h1 id="boot-nuttx-on-pinephone"><a class="doc-anchor" href="#boot-nuttx-on-pinephone">§</a>6 Boot NuttX on PinePhone</h1>
 <p>Now we shall boot <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> on PinePhone, and watch our C program light up the LEDs!</p>
 <p><em>Will it mess up our PinePhone?</em></p>
 <p>No worries, we shall boot NuttX safely with a <strong>microSD Card</strong>, we won’t touch the Linux Distro on PinePhone.</p>
@@ -370,7 +370,7 @@ pd_data_reg=0x1c0000
 <p>Yep we have successfully lit up the LEDs on PinePhone!</p>
 <p><img src="https://lupyuen.github.io/images/pio-backlight.png" alt="Backlight on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Backlight on PinePhone Schematic (Page 11)</em></a></p>
-<h1 id="pinephone-backlight"><a href="#pinephone-backlight">7 PinePhone Backlight</a></h1>
+<h1 id="pinephone-backlight"><a class="doc-anchor" href="#pinephone-backlight">§</a>7 PinePhone Backlight</h1>
 <p>Remember we said earlier that <strong>PinePhone’s Backlight</strong> is connected to <strong>GPIO PH10</strong>? (Pic above)</p>
 <p>To turn on the Backlight, we would need to tweak…</p>
 <ul>
@@ -436,7 +436,7 @@ ph_data_reg=0x400
 <p>And PinePhone’s Backlight lights up!</p>
 <p><strong>UPDATE:</strong> PWM also needs to be configured for Port PL10 <a href="https://lupyuen.github.io/articles/de#appendix-display-backlight">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/pio-run2.png" alt="Controlling PinePhone’s LEDs With BASIC" /></p>
-<h1 id="control-leds-with-basic"><a href="#control-leds-with-basic">8 Control LEDs With BASIC</a></h1>
+<h1 id="control-leds-with-basic"><a class="doc-anchor" href="#control-leds-with-basic">§</a>8 Control LEDs With BASIC</h1>
 <p><em>Is there a simpler, interactive way to experiment with PinePhone LEDs?</em></p>
 <p>The <a href="https://en.wikipedia.org/wiki/BASIC"><strong>BASIC Interpreter</strong></a> will let us flip the GPIOs (and LEDs) on the fly!</p>
 <p>To start the BASIC Interpreter in NuttX Shell, enter <strong>“<code>bas</code>”</strong>…</p>
@@ -505,7 +505,7 @@ pd_data_reg=0x1c0000
 </code></pre></div>
 <p>BASIC works great for quick, interactive experiments with PinePhone GPIOs and LEDs!</p>
 <p><img src="https://lupyuen.github.io/images/pio-title.webp" alt="Blinking the PinePhone LEDs with BASIC… On Apache NuttX RTOS" /></p>
-<h1 id="basic-blinks-the-leds"><a href="#basic-blinks-the-leds">9 BASIC Blinks The LEDs</a></h1>
+<h1 id="basic-blinks-the-leds"><a class="doc-anchor" href="#basic-blinks-the-leds">§</a>9 BASIC Blinks The LEDs</h1>
 <p><em>Isn’t BASIC a programming language? Surely we can do sophisticated stuff?</em></p>
 <p>Yep we can write <strong>BASIC Programs</strong> the old-school (Apple ][) way and run them on PinePhone!</p>
 <p>Paste these lines of BASIC Code into the BASIC Prompt…</p>
@@ -530,7 +530,7 @@ pd_data_reg=0x1c0000
 <p>When that happens, we shall access the PinePhone GPIOs through the protected <a href="https://lupyuen.github.io/articles/nuttx#gpio-driver"><strong>GPIO Driver</strong></a> in the NuttX Kernel.</p>
 <p><a href="https://lupyuen.github.io/articles/pio#appendix-enable-peek-and-poke-in-basic">(How we enabled <strong><code>peek</code></strong> and <strong><code>poke</code></strong> for the BASIC Interpreter)</a></p>
 <p><img src="https://lupyuen.github.io/images/pio-devicetree.png" alt="PinePhone’s Linux Device Tree" /></p>
-<h1 id="linux-device-tree"><a href="#linux-device-tree">10 Linux Device Tree</a></h1>
+<h1 id="linux-device-tree"><a class="doc-anchor" href="#linux-device-tree">§</a>10 Linux Device Tree</h1>
 <p><em>Is there another way to discover the PinePhone Hardware… Without browsing the PinePhone Schematic?</em></p>
 <p>Yep the <strong>Linux Device Tree</strong> describes everything about PinePhone Hardware in Text Format (pic above)…</p>
 <ul>
@@ -631,7 +631,7 @@ pd_data_reg=0x1c0000
 <p><a href="https://lupyuen.github.io/articles/de2"><strong>“NuttX RTOS for PinePhone: Render Graphics in Zig”</strong></a></p>
 </li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>Today we had fun with <strong><code>peek</code></strong> and <strong><code>poke</code></strong> while experimenting with PinePhone’s LEDs and GPIOs.</p>
 <p>Soon we shall create a <a href="https://lupyuen.github.io/articles/nuttx#gpio-driver"><strong>NuttX GPIO Driver</strong></a> that will access PinePhone’s GPIO Hardware in the NuttX Kernel.</p>
 <p>And eventually we shall build NuttX Drivers for PinePhone’s <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>LCD Display</strong></a> and <a href="https://lupyuen.github.io/articles/pio#touch-panel"><strong>Touch Panel</strong></a>!</p>
@@ -666,7 +666,7 @@ pd_data_reg=0x1c0000
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pio.md"><strong>lupyuen.github.io/src/pio.md</strong></a></p>
-<h1 id="appendix-enable-peek-and-poke-in-basic"><a href="#appendix-enable-peek-and-poke-in-basic">12 Appendix: Enable Peek and Poke in BASIC</a></h1>
+<h1 id="appendix-enable-peek-and-poke-in-basic"><a class="doc-anchor" href="#appendix-enable-peek-and-poke-in-basic">§</a>12 Appendix: Enable Peek and Poke in BASIC</h1>
 <p>Earlier we ran the <strong>BASIC Interpreter</strong> in NuttX RTOS to experiment with the PinePhone GPIOs and LEDs…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pio#control-leds-with-basic"><strong>“Control LEDs With BASIC”</strong></a></li>
@@ -707,7 +707,7 @@ int FS_memOutput(int address, int value)
 </code></pre></div>
 <p>Note that Memory Addresses are passed as 32-bit <strong><code>int</code></strong>, so some 64-bit addresses will not be accessible via <strong><code>peek</code></strong> and <strong><code>poke</code></strong>.</p>
 <p><img src="https://lupyuen.github.io/images/pio-devicetree.png" alt="PinePhone’s Linux Device Tree" /></p>
-<h1 id="appendix-pinephone-device-tree"><a href="#appendix-pinephone-device-tree">13 Appendix: PinePhone Device Tree</a></h1>
+<h1 id="appendix-pinephone-device-tree"><a class="doc-anchor" href="#appendix-pinephone-device-tree">§</a>13 Appendix: PinePhone Device Tree</h1>
 <p>The <strong>Linux Device Tree</strong> describes everything about PinePhone Hardware in Text Format.</p>
 <p>To access the PinePhone Hardware, the <strong>Linux Kernel</strong> refers to the Linux Device Tree. (Similar to the Windows Registry)</p>
 <p>So the Linux Device Tree will reveal all kinds of goodies about the PinePhone Hardware.</p>
@@ -740,7 +740,7 @@ dtc \
 <p>Below are the interesting bits from the PinePhone Linux Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts">sun50i-a64-pinephone-1.2.dts</a></p>
 <p><img src="https://lupyuen.github.io/images/pio-display.png" alt="Allwinner A64 User Manual (Page 498)" /></p>
 <p><em><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf">Allwinner A64 User Manual (Page 498)</a></em></p>
-<h2 id="lcd-controller-tcon0"><a href="#lcd-controller-tcon0">13.1 LCD Controller (TCON0)</a></h2>
+<h2 id="lcd-controller-tcon0"><a class="doc-anchor" href="#lcd-controller-tcon0">§</a>13.1 LCD Controller (TCON0)</h2>
 <p><strong>UPDATE:</strong> We have implemented the TCON0 Driver in Zig…</p>
 <ul>
 <li>
@@ -830,7 +830,7 @@ dtc \
 <p>The Linux Driver we seek shall be located at <a href="https://github.com/torvalds/linux/tree/master/drivers"><strong>github.com/torvalds/linux/drivers</strong></a>, concatenated with the File Path.</p>
 <p><img src="https://lupyuen.github.io/images/pio-tcon0.png" alt="Allwinner A64 User Manual (Page 500)" /></p>
 <p><em><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf">Allwinner A64 User Manual (Page 500)</a></em></p>
-<h2 id="mipi-dsi-interface"><a href="#mipi-dsi-interface">13.2 MIPI DSI Interface</a></h2>
+<h2 id="mipi-dsi-interface"><a class="doc-anchor" href="#mipi-dsi-interface">§</a>13.2 MIPI DSI Interface</h2>
 <p><strong>UPDATE:</strong> We have implemented the MIPI DSI Driver in Zig…</p>
 <ul>
 <li>
@@ -914,7 +914,7 @@ dtc \
 <p><a href="https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c"><strong>Zephyr Test for MIPI DSI</strong></a></p>
 </li>
 </ul>
-<h2 id="display-phy"><a href="#display-phy">13.3 Display PHY</a></h2>
+<h2 id="display-phy"><a class="doc-anchor" href="#display-phy">§</a>13.3 Display PHY</h2>
 <p><strong>UPDATE:</strong> We have implemented the MIPI DPHY Driver in Zig…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy"><strong>“Enable MIPI Display Physical Layer (DPHY)”</strong></a></li>
@@ -937,7 +937,7 @@ dtc \
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c"><strong>phy-sun6i-mipi-dphy.c</strong></a></li>
 </ul>
-<h2 id="display-engine"><a href="#display-engine">13.4 Display Engine</a></h2>
+<h2 id="display-engine"><a class="doc-anchor" href="#display-engine">§</a>13.4 Display Engine</h2>
 <p><strong>UPDATE:</strong> We have implemented the Display Engine Driver in Zig…</p>
 <ul>
 <li>
@@ -968,7 +968,7 @@ dtc \
 <ul>
 <li><a href="https://github.com/ARM-software/u-boot/blob/master/drivers/video/sunxi/sunxi_de2.c"><strong>sunxi_de2.c</strong></a></li>
 </ul>
-<h2 id="framebuffer"><a href="#framebuffer">13.5 Framebuffer</a></h2>
+<h2 id="framebuffer"><a class="doc-anchor" href="#framebuffer">§</a>13.5 Framebuffer</h2>
 <p>Check out the article…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/fb"><strong>“NuttX RTOS for PinePhone: Framebuffer”</strong></a></li>
@@ -984,7 +984,7 @@ dtc \
 <p>We might build a similar Framebuffer Device in NuttX for rendering graphics with the LVGL GUI Library.</p>
 <p><img src="https://lupyuen.github.io/images/touch2-schematic1.jpg" alt="Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)</em></a></p>
-<h2 id="touch-panel"><a href="#touch-panel">13.6 Touch Panel</a></h2>
+<h2 id="touch-panel"><a class="doc-anchor" href="#touch-panel">§</a>13.6 Touch Panel</h2>
 <p>Check out the article…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/touch2"><strong>“NuttX RTOS for PinePhone: Touch Panel”</strong></a></li>
@@ -1068,7 +1068,7 @@ dtc \
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx#pinephone-touch-panel"><strong>“PinePhone Touch Panel”</strong></a></li>
 </ul>
-<h2 id="video-codec"><a href="#video-codec">13.7 Video Codec</a></h2>
+<h2 id="video-codec"><a class="doc-anchor" href="#video-codec">§</a>13.7 Video Codec</h2>
 <p>PinePhone’s Linux Device Tree includes a <strong>Video Codec</strong> for A64’s Video Engine: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L539-L547">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>video-codec@1c0e000 {
   compatible = &quot;allwinner,sun50i-a64-video-engine&quot;;
@@ -1079,7 +1079,7 @@ dtc \
   interrupts = &lt;0x00 0x3a 0x04&gt;;
   allwinner,sram = &lt;0x28 0x01&gt;;
 };
-</code></pre></div><h2 id="gpu"><a href="#gpu">13.8 GPU</a></h2>
+</code></pre></div><h2 id="gpu"><a class="doc-anchor" href="#gpu">§</a>13.8 GPU</h2>
 <p>PinePhone’s Linux Device Tree talks about the <strong>GPU</strong> too: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1246-L1256">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>gpu@1c40000 {
   compatible = &quot;allwinner,sun50i-a64-mali\0arm,mali-400&quot;;
@@ -1092,7 +1092,7 @@ dtc \
   assigned-clocks = &lt;0x02 0x72&gt;;
   assigned-clock-rates = &lt;0x1dcd6500&gt;;
 };
-</code></pre></div><h2 id="deinterlace"><a href="#deinterlace">13.9 Deinterlace</a></h2>
+</code></pre></div><h2 id="deinterlace"><a class="doc-anchor" href="#deinterlace">§</a>13.9 Deinterlace</h2>
 <p>And this is probably for <strong>Deinterlacing Videos</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1369-L1378">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>deinterlace@1e00000 {
   compatible = &quot;allwinner,sun50i-a64-deinterlace\0allwinner,sun8i-h3-deinterlace&quot;;
@@ -1108,7 +1108,7 @@ dtc \
 <p>Which might not be necessary if we’re building a simple Display Driver.</p>
 <p><img src="https://lupyuen.github.io/images/pio-schematic.png" alt="LEDs on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LEDs on PinePhone Schematic (Page 11)</em></a></p>
-<h2 id="led"><a href="#led">13.10 LED</a></h2>
+<h2 id="led"><a class="doc-anchor" href="#led">§</a>13.10 LED</h2>
 <p>PinePhone’s Linux Device Tree describes the <strong>Red, Green and Blue LEDs</strong> like so: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1940-L1963">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>leds {
   compatible = &quot;gpio-leds&quot;;
@@ -1165,7 +1165,7 @@ dtc \
 <p>Hence the Device Tree matches the PinePhone Schematic.</p>
 <p><img src="https://lupyuen.github.io/images/pio-backlight.png" alt="Backlight on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Backlight on PinePhone Schematic (Page 11)</em></a></p>
-<h2 id="backlight-pwm"><a href="#backlight-pwm">13.11 Backlight PWM</a></h2>
+<h2 id="backlight-pwm"><a class="doc-anchor" href="#backlight-pwm">§</a>13.11 Backlight PWM</h2>
 <p><strong>UPDATE:</strong> We have implemented the Backlight Driver in Zig…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/de#appendix-display-backlight"><strong>“Display Backlight”</strong></a></li>

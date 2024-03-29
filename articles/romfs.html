@@ -108,7 +108,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/romfs-tcc.png" alt="TCC Compiler in WebAssembly with ROM FS" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs"><em>TCC Compiler in WebAssembly with ROM FS</em></a></p>
-<h1 id="c-compiler-in-our-web-browser"><a href="#c-compiler-in-our-web-browser">1 C Compiler in our Web Browser</a></h1>
+<h1 id="c-compiler-in-our-web-browser"><a class="doc-anchor" href="#c-compiler-in-our-web-browser">§</a>1 C Compiler in our Web Browser</h1>
 <p>Head over here to open <strong>TCC Compiler in our Web Browser</strong> (pic above)</p>
 <ul>
 <li>
@@ -165,7 +165,7 @@ Hello, World!!
 </ol>
 <p>And the message changes! We discuss the internals…</p>
 <p><img src="https://lupyuen.github.io/images/tcc-posix.jpg" alt="TCC Compiler in WebAssembly needs POSIX Functions" /></p>
-<h1 id="file-access-for-webassembly"><a href="#file-access-for-webassembly">2 File Access for WebAssembly</a></h1>
+<h1 id="file-access-for-webassembly"><a class="doc-anchor" href="#file-access-for-webassembly">§</a>2 File Access for WebAssembly</h1>
 <p><em>Something oddly liberating about our demo…</em></p>
 <p>TCC Compiler was created as a <strong>Command-Line App</strong> that calls the usual <a href="https://lupyuen.github.io/articles/tcc#posix-for-webassembly"><strong>POSIX Functions</strong></a> for File Access: <strong>open, read, write,</strong> …</p>
 <p>But WebAssembly runs in a Secure Sandbox. <a href="https://lupyuen.github.io/articles/tcc#file-input-and-output"><strong>No File Access</strong></a> allowed, sorry! (Like for C Header Files)</p>
@@ -193,7 +193,7 @@ void main(int argc, char *argv[]) {
 <p><img src="https://lupyuen.github.io/images/romfs-wasm.jpg" alt="TCC WebAssembly reading ROM FS Filesystem" /></p>
 </blockquote>
 <p>This is how we made it work…</p>
-<h1 id="rom-fs-filesystem"><a href="#rom-fs-filesystem">3 ROM FS Filesystem</a></h1>
+<h1 id="rom-fs-filesystem"><a class="doc-anchor" href="#rom-fs-filesystem">§</a>3 ROM FS Filesystem</h1>
 <p><em>What’s this ROM FS?</em></p>
 <p><a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS</strong></a> is a <strong>Read-Only Filesystem</strong> that runs entirely in memory.</p>
 <p>ROM FS is <strong>a lot simpler</strong> than Read-Write Filesystems (like FAT and EXT4). That’s why we run it inside TCC WebAssembly to host our C Header Files.</p>
@@ -228,7 +228,7 @@ const ROMFS_DATA = @embedFile(
 <p><a href="https://ziglang.org/documentation/master/#embedFile">(About <strong>@embedFile</strong>)</a></p>
 <p><strong>For Easier Updates</strong>: We should download <a href="https://lupyuen.github.io/articles/romfs#appendix-download-rom-fs"><strong><code>romfs.bin</code> from our Web Server</strong></a>. (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="NuttX Driver for ROM FS" /></p>
-<h1 id="nuttx-driver-for-rom-fs"><a href="#nuttx-driver-for-rom-fs">4 NuttX Driver for ROM FS</a></h1>
+<h1 id="nuttx-driver-for-rom-fs"><a class="doc-anchor" href="#nuttx-driver-for-rom-fs">§</a>4 NuttX Driver for ROM FS</h1>
 <p><em>Is there a ROM FS Driver in Zig?</em></p>
 <p>We looked around <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) and we found a <a href="https://github.com/apache/nuttx/blob/master/fs/romfs"><strong>ROM FS Driver</strong></a> (in C). It works well with Zig!</p>
 <p>Let’s walk through the steps to call the <strong>NuttX ROM FS Driver</strong> from Zig (pic above)…</p>
@@ -246,7 +246,7 @@ const ROMFS_DATA = @embedFile(
 <p>And <strong>Closing</strong> it</p>
 </li>
 </ul>
-<h2 id="mount-the-filesystem"><a href="#mount-the-filesystem">4.1 Mount the Filesystem</a></h2>
+<h2 id="mount-the-filesystem"><a class="doc-anchor" href="#mount-the-filesystem">§</a>4.1 Mount the Filesystem</h2>
 <p>This is how we <strong>Mount our ROM FS Filesystem</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L11-L45">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the NuttX ROM FS Driver
 const c = @cImport({
@@ -282,7 +282,7 @@ pub export fn compile_program(...) [*]const u8 {
 <p>That’s because it searches for a <a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem"><strong>Magic Number</strong></a> at the top of the filesystem.</p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L91-L98">(See the <strong>Mount Log</strong>)</a></p>
 <p><a href="https://en.wikipedia.org/wiki/I-mode">(Not to be confused with <strong>i-mode</strong>)</a></p>
-<h2 id="open-a-rom-fs-file"><a href="#open-a-rom-fs-file">4.2 Open a ROM FS File</a></h2>
+<h2 id="open-a-rom-fs-file"><a class="doc-anchor" href="#open-a-rom-fs-file">§</a>4.2 Open a ROM FS File</h2>
 <p>Next we <strong>Open a ROM FS File</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L127-L138">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Create the File Struct.
 // Link to the Mount Inode.
@@ -304,7 +304,7 @@ assert(ret2 &gt;= 0);
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/romfs-flow2.jpg" alt="POSIX Functions for ROM FS" /></p>
 </blockquote>
-<h2 id="read-a-rom-fs-file"><a href="#read-a-rom-fs-file">4.3 Read a ROM FS File</a></h2>
+<h2 id="read-a-rom-fs-file"><a class="doc-anchor" href="#read-a-rom-fs-file">§</a>4.3 Read a ROM FS File</h2>
 <p>Finally we <strong>Read and Close</strong> the ROM FS File: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L138-L157">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Read the ROM FS File, first 4 bytes
 var buf = std.mem.zeroes([4]u8);
@@ -337,7 +337,7 @@ romfs_close: Closing
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L102-L113">(See the <strong>Read Log</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/romfs#appendix-nuttx-rom-fs-driver">(About the <strong>ROM FS Driver</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
-<h1 id="inside-a-rom-fs-filesystem"><a href="#inside-a-rom-fs-filesystem">5 Inside a ROM FS Filesystem</a></h1>
+<h1 id="inside-a-rom-fs-filesystem"><a class="doc-anchor" href="#inside-a-rom-fs-filesystem">§</a>5 Inside a ROM FS Filesystem</h1>
 <p><em>Is a ROM FS Filesystem really so simple and embeddable?</em></p>
 <p>Seconds ago we bundled our C Header Files into a <strong>ROM FS Filesystem</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190">build.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu: Install `genromfs`
@@ -402,7 +402,7 @@ hexdump -C romfs.bin
 <p><strong><code>0xA42</code></strong> says that this is a <a href="https://github.com/apache/nuttx/blob/master/fs/romfs/fs_romfs.h#L61-L79"><strong>Regular File</strong></a>. (Type 2)</p>
 <p>We zoom out to TCC Compiler…</p>
 <p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="TCC calls ROM FS Driver" /></p>
-<h1 id="tcc-calls-rom-fs-driver"><a href="#tcc-calls-rom-fs-driver">6 TCC calls ROM FS Driver</a></h1>
+<h1 id="tcc-calls-rom-fs-driver"><a class="doc-anchor" href="#tcc-calls-rom-fs-driver">§</a>6 TCC calls ROM FS Driver</h1>
 <p><em>TCC Compiler expects POSIX Functions like open(), read(), close()…</em></p>
 <p><em>How will we connect them to ROM FS? (Pic above)</em></p>
 <p>This is how we implement <strong>POSIX <code>open()</code></strong> to open a C Header File (from ROM FS): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L166-L219">tcc-wasm.zig</a></p>
@@ -520,7 +520,7 @@ export fn close(fd: c_int) c_int {
 <p>It’s simpler than FAT and easier to embed in WebAssembly. Probably wiser to split the <a href="https://blog.setale.me/2022/06/27/Steam-Deck-and-Overlay-FS/"><strong>Immutable Filesystem</strong></a> (ROM FS) and Writeable Filesystem (Tmp FS).</p>
 <p>Seeking closure, we circle back to our very first demo…</p>
 <p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="Compile and Run NuttX Apps in the Web Browser" /></p>
-<h1 id="from-tcc-to-nuttx-emulator"><a href="#from-tcc-to-nuttx-emulator">7 From TCC to NuttX Emulator</a></h1>
+<h1 id="from-tcc-to-nuttx-emulator"><a class="doc-anchor" href="#from-tcc-to-nuttx-emulator">§</a>7 From TCC to NuttX Emulator</h1>
 <p><em>TCC compiles our C Program and sends it to NuttX Emulator… How does it work?</em></p>
 <p>Recall our Teleporting Magic Trick…</p>
 <ol>
@@ -638,7 +638,7 @@ void main(int argc, char *argv[]) {
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/tcc-nuttx.jpg" alt="Compile and Run NuttX Apps in the Web Browser" /></p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>Today we solved a hefty headache in our port of TCC Compiler to WebAssembly: <strong>Missing C Header Files</strong></p>
 <ul>
 <li>
@@ -689,7 +689,7 @@ void main(int argc, char *argv[]) {
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/romfs.md"><strong>lupyuen.github.io/src/romfs.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-tcc.png" alt="TCC Compiler in WebAssembly with ROM FS" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs"><em>TCC Compiler in WebAssembly with ROM FS</em></a></p>
-<h1 id="appendix-build-tcc-webassembly"><a href="#appendix-build-tcc-webassembly">9 Appendix: Build TCC WebAssembly</a></h1>
+<h1 id="appendix-build-tcc-webassembly"><a class="doc-anchor" href="#appendix-build-tcc-webassembly">§</a>9 Appendix: Build TCC WebAssembly</h1>
 <p>Follow these steps to <strong>Build and Test TCC WebAssembly</strong> (with ROM FS)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the ROMFS Branch of TCC Source Code.
 ## Configure the build for 64-bit RISC-V.
@@ -727,7 +727,7 @@ http://localhost:8000/romfs/index.html
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L94-L1454">(See the <strong>Node.js Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs">(See the <strong>Web Server Files</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="NuttX Driver for ROM FS" /></p>
-<h1 id="appendix-nuttx-rom-fs-driver"><a href="#appendix-nuttx-rom-fs-driver">10 Appendix: NuttX ROM FS Driver</a></h1>
+<h1 id="appendix-nuttx-rom-fs-driver"><a class="doc-anchor" href="#appendix-nuttx-rom-fs-driver">§</a>10 Appendix: NuttX ROM FS Driver</h1>
 <p><em>What did we change in the NuttX ROM FS Driver? (Pic above)</em></p>
 <p>Not much! We made minor tweaks to the <strong>NuttX ROM FS Driver</strong> and added a Build Script…</p>
 <ul>
@@ -788,7 +788,7 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/romfs-flow3.jpg" alt="NuttX Driver for ROM FS" /></p>
 </blockquote>
-<h1 id="appendix-download-rom-fs"><a href="#appendix-download-rom-fs">11 Appendix: Download ROM FS</a></h1>
+<h1 id="appendix-download-rom-fs"><a class="doc-anchor" href="#appendix-download-rom-fs">§</a>11 Appendix: Download ROM FS</h1>
 <p>In the previous section, our Zig Wrapper <strong>embeds <code>romfs.bin</code> inside WebAssembly</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/c2146f65cc8f338b8a3aaa4c2e88e550e82514ec/zig/tcc-wasm.zig#L993-L997">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Embed the ROM FS Filesystem.
 /// But what if we need to update it?
@@ -869,7 +869,7 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs">(See the <strong>Web Server Files</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/test.js#L62-L75">(Loading <strong><code>romfs.bin</code></strong> also works in <strong>Node.js</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX Apps make a System Call to print to the console" /></p>
-<h1 id="appendix-print-via-nuttx-system-call"><a href="#appendix-print-via-nuttx-system-call">12 Appendix: Print via NuttX System Call</a></h1>
+<h1 id="appendix-print-via-nuttx-system-call"><a class="doc-anchor" href="#appendix-print-via-nuttx-system-call">§</a>12 Appendix: Print via NuttX System Call</h1>
 <p><em>What’s inside <code>puts</code>?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler
 // with ROM FS
@@ -1017,7 +1017,7 @@ asm volatile (&quot;andi a2, a0, 0xffffffff&quot;);
 </code></pre></div>
 <p>Because <strong><code>0xFFFF_FFFF</code></strong> gets assembled to <strong><code>-1</code></strong>.</p>
 <p><em>Chotto matte</em> there’s more…</p>
-<h1 id="appendix-exit-via-nuttx-system-call"><a href="#appendix-exit-via-nuttx-system-call">13 Appendix: Exit via NuttX System Call</a></h1>
+<h1 id="appendix-exit-via-nuttx-system-call"><a class="doc-anchor" href="#appendix-exit-via-nuttx-system-call">§</a>13 Appendix: Exit via NuttX System Call</h1>
 <p><em>Tell me about <code>exit</code>…</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Demo Program for TCC Compiler
 // with ROM FS
@@ -1099,7 +1099,7 @@ inline uintptr_t sys_call1(
 <p>Nope sorry, we won’t do any more of this! Hand-crafting the NuttX System Calls in RISC-V Assembly was <a href="https://lupyuen.github.io/articles/romfs#appendix-print-via-nuttx-system-call"><strong>positively painful</strong></a>.</p>
 <p>(We’ll revisit this when the RISC-V Registers are hunky dory in TCC)</p>
 <p><img src="https://lupyuen.github.io/images/tcc-nuttx.jpg" alt="Compile and Run NuttX Apps in the Web Browser" /></p>
-<h1 id="appendix-patch-the-nuttx-emulator"><a href="#appendix-patch-the-nuttx-emulator">14 Appendix: Patch the NuttX Emulator</a></h1>
+<h1 id="appendix-patch-the-nuttx-emulator"><a class="doc-anchor" href="#appendix-patch-the-nuttx-emulator">§</a>14 Appendix: Patch the NuttX Emulator</h1>
 <p>Moments ago we saw <strong>RISC-V ELF <code>a.out</code></strong> teleport magically from TCC WebAssembly to NuttX Emulator (pic above)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/romfs#from-tcc-to-nuttx-emulator"><strong>“From TCC to NuttX Emulator”</strong></a></li>
@@ -1179,7 +1179,7 @@ void vm_start(...) {
 <p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/tcc">(See the <strong>Web Server Files</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/romfs-format1.jpg" alt="ROM FS Filesystem Header" /></p>
-<h1 id="appendix-rom-fs-filesystem"><a href="#appendix-rom-fs-filesystem">15 Appendix: ROM FS Filesystem</a></h1>
+<h1 id="appendix-rom-fs-filesystem"><a class="doc-anchor" href="#appendix-rom-fs-filesystem">§</a>15 Appendix: ROM FS Filesystem</h1>
 <p>A while ago we saw <strong><code>genromfs</code></strong> faithfully packing our C Header Files into a <strong>ROM FS Filesystem</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh#L182-L190">build.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu: Install `genromfs`
 sudo apt install genromfs

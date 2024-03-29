@@ -135,7 +135,7 @@
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h1 id="boot-nuttx"><a href="#boot-nuttx">1 Boot NuttX</a></h1>
+<h1 id="boot-nuttx"><a class="doc-anchor" href="#boot-nuttx">§</a>1 Boot NuttX</h1>
 <p>Follow the steps below to <strong>build, flash and run</strong> NuttX for BL602 and BL604…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></li>
@@ -155,7 +155,7 @@ nsh&gt;
 </ul>
 <p>Let’s test the Demo Apps.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Booting NuttX" /></p>
-<h1 id="hello-demo"><a href="#hello-demo">2 Hello Demo</a></h1>
+<h1 id="hello-demo"><a class="doc-anchor" href="#hello-demo">§</a>2 Hello Demo</h1>
 <p>In the <strong>NuttX Shell</strong>, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>hello
 </code></pre></div>
@@ -177,7 +177,7 @@ int main(int argc, FAR char *argv[])
 <p>That’s because NuttX is <strong>POSIX Compliant</strong>. It supports Linux features like <em>stdio, main()</em> and <em>printf().</em></p>
 <p>Let’s run the Timer Demo App.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-demo2.png" alt="Hello and Timer Demo Apps" /></p>
-<h1 id="timer-demo"><a href="#timer-demo">3 Timer Demo</a></h1>
+<h1 id="timer-demo"><a class="doc-anchor" href="#timer-demo">§</a>3 Timer Demo</h1>
 <p>In the <strong>NuttX Shell</strong>, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>timer
 </code></pre></div>
@@ -201,7 +201,7 @@ int main(int argc, FAR char *argv[])
 </ol>
 <p><em>open(), ioctl()</em> and <em>sigaction()</em> are common functions called by Linux Apps.</p>
 <p>NuttX Apps really look like Linux Apps!</p>
-<h1 id="configure-nuttx"><a href="#configure-nuttx">4 Configure NuttX</a></h1>
+<h1 id="configure-nuttx"><a class="doc-anchor" href="#configure-nuttx">§</a>4 Configure NuttX</h1>
 <p>Let’s get adventurous and <strong>add NuttX Commands</strong>…</p>
 <ul>
 <li>
@@ -221,7 +221,7 @@ int main(int argc, FAR char *argv[])
 <p>Let’s explore the options.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/configuring.html">(More about configuring NuttX)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-menu.png" alt="Top Menu" /></p>
-<h2 id="enable-help-and-ls"><a href="#enable-help-and-ls">4.1 Enable help and ls</a></h2>
+<h2 id="enable-help-and-ls"><a class="doc-anchor" href="#enable-help-and-ls">§</a>4.1 Enable help and ls</h2>
 <p>In <strong>menuconfig</strong>, select <strong>“Application Configuration”</strong>. (Pic above)</p>
 <p>Select <strong>“NSH Library”</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-menu10.png" alt="Application Configuration" /></p>
@@ -230,7 +230,7 @@ int main(int argc, FAR char *argv[])
 <p>Uncheck the boxes for <strong>“help”</strong> and <strong>“ls”</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-menu13a.png" alt="Disable Individual Commands" /></p>
 <p>“help” and “ls” are now enabled in NuttX Shell!</p>
-<h2 id="enable-gpio-driver"><a href="#enable-gpio-driver">4.2 Enable GPIO Driver</a></h2>
+<h2 id="enable-gpio-driver"><a class="doc-anchor" href="#enable-gpio-driver">§</a>4.2 Enable GPIO Driver</h2>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 <p>Select <strong>“Device Drivers”</strong>….</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-menu5.png" alt="Top Menu" /></p>
@@ -240,7 +240,7 @@ int main(int argc, FAR char *argv[])
 <p><img src="https://lupyuen.github.io/images/nuttx-menu7a.png" alt="IO Expander / GPIO Support" /></p>
 <p>This enables the <strong>GPIO Driver</strong> for NuttX.</p>
 <p>(If we don’t enable the GPIO Driver, NuttX won’t let us select the GPIO Demo App!)</p>
-<h2 id="enable-gpio-demo"><a href="#enable-gpio-demo">4.3 Enable GPIO Demo</a></h2>
+<h2 id="enable-gpio-demo"><a class="doc-anchor" href="#enable-gpio-demo">§</a>4.3 Enable GPIO Demo</h2>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 <p>Select <strong>“Application Configuration”</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-menu.png" alt="Top Menu" /></p>
@@ -260,7 +260,7 @@ int main(int argc, FAR char *argv[])
 <p>NuttX happens to use the same menuconfig (Kconfig) tools as Linux.</p>
 <p>Menuconfig generates a C Header File that contains the <strong>#define</strong> options. This header file is included for the NuttX Firmware Build.</p>
 <p>(Zephyr is another RTOS that uses menuconfig and Kconfig)</p>
-<h2 id="rebuild-nuttx"><a href="#rebuild-nuttx">4.4 Rebuild NuttX</a></h2>
+<h2 id="rebuild-nuttx"><a class="doc-anchor" href="#rebuild-nuttx">§</a>4.4 Rebuild NuttX</h2>
 <p><strong>Rebuild and copy</strong> the NuttX Firmware…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Rebuild NuttX
 make
@@ -279,7 +279,7 @@ cp nuttx.bin /mnt/c/blflash
 </li>
 </ul>
 <p>We’re ready to test the new commands!</p>
-<h1 id="gpio-demo"><a href="#gpio-demo">5 GPIO Demo</a></h1>
+<h1 id="gpio-demo"><a class="doc-anchor" href="#gpio-demo">§</a>5 GPIO Demo</h1>
 <p>Let’s run the new commands: <strong>“help”, “ls”</strong> and <strong>“gpio”</strong>.</p>
 <p>In the NuttX Shell, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>help
@@ -290,7 +290,7 @@ cp nuttx.bin /mnt/c/blflash
   ?  help  ls  uname
 Builtin Apps:
   timer  sh  getprime  hello  nsh  gpio
-</code></pre></div><h2 id="nuttx-devices"><a href="#nuttx-devices">5.1 NuttX Devices</a></h2>
+</code></pre></div><h2 id="nuttx-devices"><a class="doc-anchor" href="#nuttx-devices">§</a>5.1 NuttX Devices</h2>
 <p>Remember everything is a file in NuttX?</p>
 <p>Let’s list the <strong>Hardware Devices</strong> in NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ls /dev
@@ -335,7 +335,7 @@ Builtin Apps:
 </ul>
 <p>Let’s write to the GPIO Output at <strong>/dev/gpio1</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio.png" alt="gpio command" /></p>
-<h2 id="write-to-gpio"><a href="#write-to-gpio">5.2 Write to GPIO</a></h2>
+<h2 id="write-to-gpio"><a class="doc-anchor" href="#write-to-gpio">§</a>5.2 Write to GPIO</h2>
 <p>Enter this to set the <strong>GPIO Output</strong> to High…</p>
 <div class="example-wrap"><pre class="language-bash"><code>gpio -o 1 /dev/gpio1
 </code></pre></div>
@@ -350,7 +350,7 @@ Builtin Apps:
 <p>Not yet. We haven’t told NuttX which <strong>GPIO Pin</strong> our LED is connected to!</p>
 <p>Let’s learn how.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-pins2.png" alt="NuttX Pin Definitions" /></p>
-<h1 id="configure-pins"><a href="#configure-pins">6 Configure Pins</a></h1>
+<h1 id="configure-pins"><a class="doc-anchor" href="#configure-pins">§</a>6 Configure Pins</h1>
 <p><em>How do we define the Pin Numbers for GPIO, UART, PWM, I2C, SPI, …?</em></p>
 <p>We define the Pin Numbers in <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h"><strong>board.h</strong></a> (Pic above)</p>
 <p><strong>Note: Some pins on BL602 and BL604 may only be assigned to specific functions.</strong></p>
@@ -375,7 +375,7 @@ Builtin Apps:
 </code></pre></div>
 <p>Make sure the Pin Number isn’t used by another port!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#device-tree">(FreeRTOS on BL602 uses a Device Tree to assign the pins)</a></p>
-<h2 id="rerun-nuttx"><a href="#rerun-nuttx">6.1 Rerun NuttX</a></h2>
+<h2 id="rerun-nuttx"><a class="doc-anchor" href="#rerun-nuttx">§</a>6.1 Rerun NuttX</h2>
 <p><strong>Rebuild and copy</strong> the NuttX Firmware…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Rebuild NuttX
 make
@@ -394,7 +394,7 @@ cp nuttx.bin /mnt/c/blflash
 </li>
 </ul>
 <p>We’re ready to test the LED!</p>
-<h1 id="test-the-led"><a href="#test-the-led">7 Test the LED</a></h1>
+<h1 id="test-the-led"><a class="doc-anchor" href="#test-the-led">§</a>7 Test the LED</h1>
 <p>Let’s flip PineCone BL602’s <strong>LED on and off</strong>!</p>
 <p>The Blue LED is wired to GPIO 11 like so…</p>
 <ul>
@@ -440,7 +440,7 @@ cp nuttx.bin /mnt/c/blflash
 <p><a href="https://lupyuen.github.io/articles/nuttx#appendix-fix-gpio-output">(Got problems with GPIO? See these troubleshooting tips)</a></p>
 <p><a href="https://nuttx.apache.org/docs/latest/reference/os/led.html">(If we’re controlling LEDs, consider using NuttX’s LED Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio10a.png" alt="GPIO Demo App" /></p>
-<h1 id="gpio-driver"><a href="#gpio-driver">8 GPIO Driver</a></h1>
+<h1 id="gpio-driver"><a class="doc-anchor" href="#gpio-driver">§</a>8 GPIO Driver</h1>
 <p>Let’s look inside NuttX to understand how the <strong>GPIO Driver</strong> works.</p>
 <p>We start at the <strong>“gpio”</strong> command: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/gpio/gpio_main.c">gpio_main.c</a></p>
 <p>From the pic above we see that the <strong>“gpio”</strong> command calls…</p>
@@ -461,7 +461,7 @@ cp nuttx.bin /mnt/c/blflash
 <li><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/ioexpander/gpio.h"><strong>NuttX GPIO Interface</strong></a></li>
 </ul>
 <p>The <strong>“gpio”</strong> command works across all NuttX Platforms because it calls the common GPIO Interface.</p>
-<h2 id="gpio-interface"><a href="#gpio-interface">8.1 GPIO Interface</a></h2>
+<h2 id="gpio-interface"><a class="doc-anchor" href="#gpio-interface">§</a>8.1 GPIO Interface</h2>
 <p>Below is the implementation of the platform-independent <strong>GPIO Interface</strong> (ioctl): <a href="https://github.com/apache/nuttx/blob/master/drivers/ioexpander/gpio.c#L296-L337">gpio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Standard character driver ioctl method
 static int gpio_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
@@ -481,7 +481,7 @@ static int gpio_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
 </code></pre></div>
 <p>This is a <a href="https://nuttx.apache.org/docs/latest/components/drivers/character/index.html"><strong>Character Device Driver</strong></a> that handles each GPIO Driver Command (like GPIOC_WRITE).</p>
 <p>The driver calls the <strong>Board-Specific GPIO Driver</strong> to execute the command.</p>
-<h2 id="board-driver"><a href="#board-driver">8.2 Board Driver</a></h2>
+<h2 id="board-driver"><a class="doc-anchor" href="#board-driver">§</a>8.2 Board Driver</h2>
 <p><em>What’s a Board-Specific Driver?</em></p>
 <p>PineCone BL602 and PineDio Stack BL604 are two <strong>Dev Boards</strong> based on BL602 / BL604.</p>
 <p>Each Dev Board has <strong>hardware features that are specific</strong> to the board. Like LEDs connected on different GPIO Pins.</p>
@@ -504,7 +504,7 @@ static int gpout_write(FAR struct gpio_dev_s *dev, bool value)
 <p><strong>g_gpiooutputs</strong> maps the GPIO Device (like “/dev/gpio1”) to a <strong>GPIO Pin Set</strong>, which contains the <strong>GPIO Pin Number</strong>.</p>
 <p>(Which makes sense, because each board may map the Hardware Devices to different GPIO Pins)</p>
 <p>The Board-Specific Driver calls the <strong>BL602-Specific GPIO Driver</strong> to set the GPIO Output, passing the GPIO Pin Set.</p>
-<h2 id="bl602-driver"><a href="#bl602-driver">8.3 BL602 Driver</a></h2>
+<h2 id="bl602-driver"><a class="doc-anchor" href="#bl602-driver">§</a>8.3 BL602 Driver</h2>
 <p>The <strong>BL602-Specific GPIO Driver</strong> manipulates the BL602 Hardware Registers to perform GPIO Functions. </p>
 <p>(The driver is called by the Board-Specific Drivers for all BL602 boards)</p>
 <p>Here’s how the BL602-Specific GPIO Driver sets the <strong>GPIO Output</strong>:  <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209">bl602_gpio.c</a></p>
@@ -535,10 +535,10 @@ void bl602_gpiowrite(gpio_pinset_t pinset, bool value)
 <p><a href="https://lupyuen.github.io/articles/nuttx#appendix-fix-gpio-output">(Got problems with the GPIO Driver? See these troubleshooting tips)</a></p>
 <p>Let’s try out a fun freebie for NuttX… BASIC Interpreter!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-basic4.png" alt="Enable BASIC Interpreter" /></p>
-<h1 id="basic-interpreter"><a href="#basic-interpreter">9 BASIC Interpreter</a></h1>
+<h1 id="basic-interpreter"><a class="doc-anchor" href="#basic-interpreter">§</a>9 BASIC Interpreter</h1>
 <p>One of the best things about NuttX: It comes with many freebies… Like the <strong>BASIC Interpreter!</strong></p>
 <p>Let’s do some BASIC on BL602 NuttX…</p>
-<h2 id="enable-basic"><a href="#enable-basic">9.1 Enable BASIC</a></h2>
+<h2 id="enable-basic"><a class="doc-anchor" href="#enable-basic">§</a>9.1 Enable BASIC</h2>
 <ol>
 <li>
 <p>Configure our NuttX Build…</p>
@@ -568,7 +568,7 @@ void bl602_gpiowrite(gpio_pinset_t pinset, bool value)
 <p>Rebuild, reflash and rerun NuttX</p>
 </li>
 </ol>
-<h2 id="run-basic"><a href="#run-basic">9.2 Run BASIC</a></h2>
+<h2 id="run-basic"><a class="doc-anchor" href="#run-basic">§</a>9.2 Run BASIC</h2>
 <ol>
 <li>
 <p>In the NuttX Shell, enter…</p>
@@ -591,7 +591,7 @@ run
 </ol>
 <p><img src="https://lupyuen.github.io/images/nuttx-basic1.png" alt="BASIC Interpreter" /></p>
 <p>(Childhood Memories 🥲)</p>
-<h2 id="blink-the-led"><a href="#blink-the-led">9.3 Blink the LED</a></h2>
+<h2 id="blink-the-led"><a class="doc-anchor" href="#blink-the-led">§</a>9.3 Blink the LED</h2>
 <p>In the olden days we would “peek” and “poke” to <a href="http://myoldmac.net/FAQ/Apple-II_Peek_Poke_Call.html"><strong>light up pixels</strong></a> on our Apple ][… Let’s do the same for our <strong>BL602 LED!</strong></p>
 <ol>
 <li>
@@ -625,7 +625,7 @@ poke &amp;h40000188, &amp;h00
 <p>Yep it’s indeed possible to blink the LED in BASIC!</p>
 <p>(OK this code isn’t so legit… We ought to preserve the existing bits in the register, not overwrite them)</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-basic2a.png" alt="Blinking the LED in BASIC" /></p>
-<h1 id="why-nuttx"><a href="#why-nuttx">10 Why NuttX?</a></h1>
+<h1 id="why-nuttx"><a class="doc-anchor" href="#why-nuttx">§</a>10 Why NuttX?</h1>
 <p>Now that we understand NuttX inside out, let’s have a chat…</p>
 <p><em>I’m familiar with Embedded Coding on Arduino / STM32 / nRF52 / BL602. NuttX’s POSIX Interface looks very strange to me: open(), read(), ioctl(), …</em></p>
 <p>Well NuttX’s <strong>POSIX Interface</strong> might be a good thing for folks who are familiar with Linux and Single-Board Computers.</p>
@@ -644,7 +644,7 @@ poke &amp;h40000188, &amp;h00
 <p>More about this in the next section.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-rust.jpg" alt="Rust Embedded HAL" /></p>
 <p><a href="https://docs.rs/embedded-hal">(Source)</a></p>
-<h1 id="rust-on-nuttx"><a href="#rust-on-nuttx">11 Rust on NuttX</a></h1>
+<h1 id="rust-on-nuttx"><a class="doc-anchor" href="#rust-on-nuttx">§</a>11 Rust on NuttX</h1>
 <p><em>Does Rust provide a standard way to access the Hardware Functions on Microcontrollers?</em></p>
 <p>Yes! The Embedded Rust Community has created a <strong>Hardware Abstraction Layer (HAL)</strong> that supports all kinds of Microcontrollers…</p>
 <ul>
@@ -693,7 +693,7 @@ poke &amp;h40000188, &amp;h00
 </li>
 </ul>
 <p><a href="https://twitter.com/btashton/status/1463379162312306691">UPDATE: According to Brennan Ashton, Sony has worked on Rust for NuttX.</a></p>
-<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
 <p>I’m new to NuttX but I had lots of fun experimenting with it. I hope you’ll enjoy NuttX too!</p>
 <p>Here are some topics that I’ll explore in future articles…</p>
 <ul>
@@ -760,7 +760,7 @@ poke &amp;h40000188, &amp;h00
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nuttx.md"><code>lupyuen.github.io/src/nuttx.md</code></a></p>
-<h1 id="notes"><a href="#notes">13 Notes</a></h1>
+<h1 id="notes"><a class="doc-anchor" href="#notes">§</a>13 Notes</h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1460322823122014211">this Twitter Thread</a></p>
@@ -796,12 +796,12 @@ poke &amp;h40000188, &amp;h00
 <p>(Thanks to <a href="https://www.linkedin.com/feed/update/urn:li:activity:6868285202649772032?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6868285202649772032%2C6869001192320602112%29">Sara Monteiro</a> for the tip!)</p>
 </li>
 </ol>
-<h1 id="appendix-build-flash-and-run-nuttx"><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run NuttX</a></h1>
+<h1 id="appendix-build-flash-and-run-nuttx"><a class="doc-anchor" href="#appendix-build-flash-and-run-nuttx">§</a>14 Appendix: Build, Flash and Run NuttX</h1>
 <p>Below are the steps to <strong>build, flash and run</strong> NuttX on BL602 and BL604.</p>
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
-<h2 id="install-prerequisites"><a href="#install-prerequisites">14.1 Install Prerequisites</a></h2>
+<h2 id="install-prerequisites"><a class="doc-anchor" href="#install-prerequisites">§</a>14.1 Install Prerequisites</h2>
 <p>First we install the build prerequisites…</p>
 <ol>
 <li>
@@ -854,7 +854,7 @@ PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Darwin/bin:$PATH&quot;
 <p><strong>For ESP32</strong>: <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html">Instructions here</a></p>
 </li>
 </ol>
-<h2 id="build-nuttx"><a href="#build-nuttx">14.2 Build NuttX</a></h2>
+<h2 id="build-nuttx"><a class="doc-anchor" href="#build-nuttx">§</a>14.2 Build NuttX</h2>
 <p>Next we download and build NuttX…</p>
 <ol>
 <li>
@@ -923,7 +923,7 @@ cp nuttx.bin /mnt/c/blflash
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx"><a href="#flash-nuttx">14.3 Flash NuttX</a></h2>
+<h2 id="flash-nuttx"><a class="doc-anchor" href="#flash-nuttx">§</a>14.3 Flash NuttX</h2>
 <p>Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
 <li>
@@ -1000,7 +1000,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 <p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx"><a href="#run-nuttx">14.4 Run NuttX</a></h2>
+<h2 id="run-nuttx"><a class="doc-anchor" href="#run-nuttx">§</a>14.4 Run NuttX</h2>
 <p>Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
 <ol>
@@ -1051,7 +1051,7 @@ nsh&gt;
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
-<h1 id="appendix-nuttx-logging"><a href="#appendix-nuttx-logging">15 Appendix: NuttX Logging</a></h1>
+<h1 id="appendix-nuttx-logging"><a class="doc-anchor" href="#appendix-nuttx-logging">§</a>15 Appendix: NuttX Logging</h1>
 <p>Here are the steps to enable <strong>NuttX Logging</strong> for easier troubleshooting…</p>
 <ol>
 <li>
@@ -1146,7 +1146,7 @@ mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash
 </code></pre></div></li>
 </ol>
-<h1 id="appendix-fix-gpio-output"><a href="#appendix-fix-gpio-output">16 Appendix: Fix GPIO Output</a></h1>
+<h1 id="appendix-fix-gpio-output"><a class="doc-anchor" href="#appendix-fix-gpio-output">§</a>16 Appendix: Fix GPIO Output</h1>
 <p>This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx/pull/4876"><strong>riscv/bl602: Enable GPIO output</strong></a></li>
@@ -1170,7 +1170,7 @@ cp nuttx.bin /mnt/c/blflash
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-ledon.jpg" alt="LED On" /></p>
 </blockquote>
-<h2 id="observe-the-glitch"><a href="#observe-the-glitch">16.1 Observe the glitch</a></h2>
+<h2 id="observe-the-glitch"><a class="doc-anchor" href="#observe-the-glitch">§</a>16.1 Observe the glitch</h2>
 <p>We observe the GPIO Output Glitch on <strong>Pine64 PineCone BL602 Board.</strong> (Pic above)</p>
 <p>PineCone BL602 has a Blue LED connected on <strong>GPIO 11</strong>…</p>
 <ul>
@@ -1210,7 +1210,7 @@ Driver: /dev/gpio1
 <p>NuttX changes GPIO 11 from <strong>Low to High</strong> and back to Low.</p>
 <p>But the BL602 <strong>LED doesn’t blink</strong>. Let’s track down the glitch.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio4a.png" alt="Flipping GPIO 11 doesn’t blink the LED" /></p>
-<h2 id="trace-the-glitch"><a href="#trace-the-glitch">16.2 Trace the glitch</a></h2>
+<h2 id="trace-the-glitch"><a class="doc-anchor" href="#trace-the-glitch">§</a>16.2 Trace the glitch</h2>
 <p>To track down the glitch, we add debug logging to the BL602 GPIO Driver functions <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133"><strong>bl602_configgpio</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209"><strong>bl602_gpiowrite</strong></a>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/nuttx/commit/3b25611bdfd1ebd8097f3319053a25546ed39052"><strong>Debug GPIO Output</strong></a></li>
@@ -1241,7 +1241,7 @@ enable GPIO Output</strong> on GPIO 11.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio7a.png" alt="GPIO Output Enable Register is at 0x40000190" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010">(Source)</a></p>
 <p>Let’s update the GPIO Output Enable Register in NuttX.</p>
-<h2 id="fix-the-glitch"><a href="#fix-the-glitch">16.3 Fix the glitch</a></h2>
+<h2 id="fix-the-glitch"><a class="doc-anchor" href="#fix-the-glitch">§</a>16.3 Fix the glitch</h2>
 <p>We patch the <strong>bl602_configgpio</strong> function to update the GPIO Output Enable Register: <a href="https://github.com/lupyuen/nuttx/blob/gpio/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137">bl602_gpio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Existing function
 int bl602_configgpio(gpio_pinset_t cfgset)
@@ -1272,7 +1272,7 @@ int bl602_configgpio(gpio_pinset_t cfgset)
 </ul>
 <p>Let’s test the patch.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio8a.png" alt="Update the GPIO Output Enable Register" /></p>
-<h2 id="test-the-fix"><a href="#test-the-fix">16.4 Test the fix</a></h2>
+<h2 id="test-the-fix"><a class="doc-anchor" href="#test-the-fix">§</a>16.4 Test the fix</h2>
 <p>We rebuild and run the patched code.</p>
 <p>At startup, the Blue LED is <strong>On</strong> (because the default GPIO Output is Low)…</p>
 <blockquote>

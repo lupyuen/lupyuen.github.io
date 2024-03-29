@@ -89,7 +89,7 @@
 <p>(Powered by <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
 <p><a href="https://youtu.be/TdSJdiQFsv8">(Watch the <strong>Demo Video</strong> on YouTube)</a></p>
 <p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="Boot from Network with U-Boot and TFTP" /></p>
-<h1 id="boot-from-network"><a href="#boot-from-network">1 Boot From Network</a></h1>
+<h1 id="boot-from-network"><a class="doc-anchor" href="#boot-from-network">§</a>1 Boot From Network</h1>
 <p>The pic above shows our <strong>Grand Plan</strong> for today…</p>
 <ol start="0">
 <li>
@@ -131,7 +131,7 @@
 <p>Inside our SBC Flash Memory is the <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>. Which normally boots from MicroSD, but can be configured for <strong>Network Boot</strong>.</p>
 <p>Let’s find out how…</p>
 <p><img src="https://lupyuen.github.io/images/tftp-flow2.jpg" alt="TFTP Server" /></p>
-<h1 id="install-tftp-server"><a href="#install-tftp-server">2 Install TFTP Server</a></h1>
+<h1 id="install-tftp-server"><a class="doc-anchor" href="#install-tftp-server">§</a>2 Install TFTP Server</h1>
 <p><em>What’s this TFTP Server? (Pic above)</em></p>
 <p>That’s a simple program (running on our Computer) that handles the <a href="https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol"><strong>Trivial File Transfer Protocol (TFTP)</strong></a>.</p>
 <p>It dishes out files over the <strong>Local Network</strong> (via UDP not TCP), when requested by our SBC.</p>
@@ -197,7 +197,7 @@ tftp&gt; quit
 <p>But <strong><code>curl</code></strong> is so much simpler!</p>
 <p><img src="https://lupyuen.github.io/images/star64-armbian.png" alt="Armbian MicroSD for Star64" /></p>
 <p><a href="https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64"><em>Armbian MicroSD for Star64</em></a></p>
-<h1 id="copy-kernel-to-tftp-server"><a href="#copy-kernel-to-tftp-server">3 Copy Kernel to TFTP Server</a></h1>
+<h1 id="copy-kernel-to-tftp-server"><a class="doc-anchor" href="#copy-kernel-to-tftp-server">§</a>3 Copy Kernel to TFTP Server</h1>
 <p><em>How to copy the Kernel to our TFTP Server?</em></p>
 <p>We build <strong>Apache NuttX RTOS</strong> with these steps…</p>
 <ul>
@@ -250,7 +250,7 @@ curl -v tftp://192.168.x.x/initrd
 </code></pre></div>
 <p>Let’s test this…</p>
 <p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="Boot from Network with U-Boot and TFTP" /></p>
-<h1 id="test-u-boot-with-tftp"><a href="#test-u-boot-with-tftp">4 Test U-Boot with TFTP</a></h1>
+<h1 id="test-u-boot-with-tftp"><a class="doc-anchor" href="#test-u-boot-with-tftp">§</a>4 Test U-Boot with TFTP</h1>
 <p>We’re ready to test U-Boot Bootloader with TFTP!</p>
 <p>Connect Star64 to the <strong>Ethernet Wired Network</strong>. (Pic above)</p>
 <p>Connect to the <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Console</strong></a> and power up without a MicroSD Card.</p>
@@ -370,7 +370,7 @@ clk u5_dw_i2c_clk_apb already disabled
 123067DFAGHBC
 </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="Auto-Boot from Network, every time we power on" /></p>
-<h1 id="configure-u-boot-for-tftp"><a href="#configure-u-boot-for-tftp">5 Configure U-Boot for TFTP</a></h1>
+<h1 id="configure-u-boot-for-tftp"><a class="doc-anchor" href="#configure-u-boot-for-tftp">§</a>5 Configure U-Boot for TFTP</h1>
 <p><em>But can we Auto-Boot from Network, every time we power on?</em></p>
 <p>Sure can! The trick is to use the <strong>saveenv</strong> command, which will save the U-Boot Settings into the <strong>Internal Flash Memory</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Remember the TFTP Server IP.
@@ -489,7 +489,7 @@ fi
 </ul>
 <p><img src="https://lupyuen.github.io/images/tftp-home.png" alt="Home Assistant controls Google Home (and potentially Smart Plugs)" /></p>
 <p><a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d"><em>Home Assistant controls Google Home (and potentially Smart Plugs)</em></a></p>
-<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>With Network Boot running, we’re now ready for <strong>Automated Testing of Apache NuttX RTOS</strong> on Star64 SBC!</p>
 <p>(Though we might need a <strong>Smart Power Plug</strong> to reboot our SBC: <a href="https://www.ikea.com/sg/en/p/tradfri-control-outlet-kit-smart-10364797/"><strong>IKEA TRÅDFRI</strong></a> and <a href="https://www.ikea.com/sg/en/p/dirigera-hub-for-smart-products-white-smart-50503409/"><strong>DIRIGERA</strong></a> via <a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d"><strong>Home Assistant API</strong></a>)</p>
 <p>Porting NuttX to Star64 JH7110 becomes so much faster. Stay tuned for updates!</p>
@@ -523,7 +523,7 @@ fi
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tftp.md"><strong>lupyuen.github.io/src/tftp.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="Auto-Boot from Network, every time we power on" /></p>
-<h1 id="appendix-boot-script-for-u-boot-bootloader"><a href="#appendix-boot-script-for-u-boot-bootloader">7 Appendix: Boot Script for U-Boot Bootloader</a></h1>
+<h1 id="appendix-boot-script-for-u-boot-bootloader"><a class="doc-anchor" href="#appendix-boot-script-for-u-boot-bootloader">§</a>7 Appendix: Boot Script for U-Boot Bootloader</h1>
 <p><em>Earlier we saw boot_targets and bootcmd_tftp. How do they work?</em></p>
 <p>We talked about <strong>boot_targets</strong> and <strong>bootcmd_tftp</strong>…</p>
 <ul>
@@ -594,7 +594,7 @@ done
 </ol>
 <p>And that’s how U-Boot Bootloader boots NuttX (or Linux) over the Network at startup!</p>
 <p><strong>Note:</strong> Don’t use the special variable <strong>serverip</strong>, it will change after running <a href="https://lupyuen.github.io/articles/tftp#tftpboot-command"><strong>tftpboot</strong></a>!</p>
-<h2 id="boot-from-mmc0"><a href="#boot-from-mmc0">7.1 Boot from MMC0</a></h2>
+<h2 id="boot-from-mmc0"><a class="doc-anchor" href="#boot-from-mmc0">§</a>7.1 Boot from MMC0</h2>
 <p><em>What’s in bootcmd_mmc0?</em></p>
 <p><strong>bootcmd_mmc0</strong> tries to boot from MicroSD…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set Device Number
@@ -627,7 +627,7 @@ then
 fi
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
-<h2 id="boot-from-dhcp"><a href="#boot-from-dhcp">7.2 Boot from DHCP</a></h2>
+<h2 id="boot-from-dhcp"><a class="doc-anchor" href="#boot-from-dhcp">§</a>7.2 Boot from DHCP</h2>
 <p><em>What about bootcmd_dhcp?</em></p>
 <p><strong>bootcmd_dhcp</strong> tries to boot from DHCP+TFTP Combo Server.</p>
 <p>It assumes that the DHCP Server is also a TFTP Server.</p>
@@ -690,7 +690,7 @@ setenv efi_old_vci;
 <p><a href="https://lupyuen.github.io/articles/tftp#fdt-command">(<strong>fdt</strong> explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp#booti-command">(<strong>booti</strong> explained here)</a></p>
 <p>We used this as the template for our TFTP Boot Script <a href="https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp"><strong><strong>bootcmd_tftp</strong></strong></a>.</p>
-<h1 id="appendix-commands-for-u-boot-bootloader"><a href="#appendix-commands-for-u-boot-bootloader">8 Appendix: Commands for U-Boot Bootloader</a></h1>
+<h1 id="appendix-commands-for-u-boot-bootloader"><a class="doc-anchor" href="#appendix-commands-for-u-boot-bootloader">§</a>8 Appendix: Commands for U-Boot Bootloader</h1>
 <p>We talked about the <strong>U-Boot Bootloader</strong> in previous articles…</p>
 <ul>
 <li>
@@ -708,13 +708,13 @@ setenv efi_old_vci;
 </ul>
 <p>Below are the <strong>U-Boot Bootloader Commands</strong> mentioned in this article.</p>
 <p>We ran “help &lt;command&gt;” to explain the commands…</p>
-<h2 id="dhcp-command"><a href="#dhcp-command">8.1 dhcp Command</a></h2>
+<h2 id="dhcp-command"><a class="doc-anchor" href="#dhcp-command">§</a>8.1 dhcp Command</h2>
 <p><strong>dhcp</strong> - boot image via network using DHCP/TFTP protocol</p>
 <ul>
 <li><strong>dhcp</strong> [loadAddress] [[hostIPaddr:]bootfilename]</li>
 </ul>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L144-L150">(Source)</a></p>
-<h2 id="tftpboot-command"><a href="#tftpboot-command">8.2 tftpboot Command</a></h2>
+<h2 id="tftpboot-command"><a class="doc-anchor" href="#tftpboot-command">§</a>8.2 tftpboot Command</h2>
 <p><strong>tftpboot</strong> - boot image via network using TFTP protocol</p>
 <ul>
 <li><strong>tftpboot</strong> [loadAddress] [[hostIPaddr:]bootfilename]</li>
@@ -722,7 +722,7 @@ setenv efi_old_vci;
 <p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L61-L69">(Source)</a></p>
 <p>(Same as <strong>dhcp</strong> Command?)</p>
 <p><strong>Note:</strong> Don’t use the special variable <a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot"><strong>serverip</strong></a>, it will change after running <a href="https://lupyuen.github.io/articles/tftp#tftpboot-command"><strong>tftpboot</strong></a>!</p>
-<h2 id="booti-command"><a href="#booti-command">8.3 booti Command</a></h2>
+<h2 id="booti-command"><a class="doc-anchor" href="#booti-command">§</a>8.3 booti Command</h2>
 <p><strong>booti</strong> - boot Linux kernel ‘Image’ format from memory</p>
 <ul>
 <li>
@@ -742,7 +742,7 @@ without an initrd image, use a ‘-’ for the initrd argument.</p>
 </li>
 </ul>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L61-L69">(Source)</a></p>
-<h2 id="bootefi-command"><a href="#bootefi-command">8.4 bootefi Command</a></h2>
+<h2 id="bootefi-command"><a class="doc-anchor" href="#bootefi-command">§</a>8.4 bootefi Command</h2>
 <p><strong>bootefi</strong> - Boots an EFI payload from memory</p>
 <ul>
 <li>
@@ -768,7 +768,7 @@ No EFI system partition
 No UEFI binary known at 0x40200000
 </code></pre></div>
 <p>That’s why we call <a href="https://lupyuen.github.io/articles/tftp#booti-command"><strong>booti</strong></a> to boot NuttX.</p>
-<h2 id="fdt-command"><a href="#fdt-command">8.5 fdt Command</a></h2>
+<h2 id="fdt-command"><a class="doc-anchor" href="#fdt-command">§</a>8.5 fdt Command</h2>
 <p><strong>fdt</strong> - flattened device tree utility commands</p>
 <ul>
 <li>

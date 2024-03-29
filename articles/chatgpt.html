@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
 </code></pre></div>
 <p>(We added the annotations)</p>
 <p>Will it create a NuttX Task that starts NSH Shell? Let’s find out!</p>
-<h1 id="fix-the-code"><a href="#fix-the-code">1 Fix the Code</a></h1>
+<h1 id="fix-the-code"><a class="doc-anchor" href="#fix-the-code">§</a>1 Fix the Code</h1>
 <p>The code above <strong>won’t compile</strong> with NuttX…</p>
 <ul>
 <li>
@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
 }
 </code></pre></div>
 <p>Now we test this with QEMU…</p>
-<h1 id="build-and-run-nuttx"><a href="#build-and-run-nuttx">2 Build and Run NuttX</a></h1>
+<h1 id="build-and-run-nuttx"><a class="doc-anchor" href="#build-and-run-nuttx">§</a>2 Build and Run NuttX</h1>
 <p>Here are the steps to <strong>build NuttX RTOS</strong> and run it with the QEMU Emulator…</p>
 <ol>
 <li>
@@ -224,7 +224,7 @@ make menuconfig
 <p>When we’re done, press Ctrl-C to quit QEMU.</p>
 </li>
 </ol>
-<h1 id="nsh-fails-to-start"><a href="#nsh-fails-to-start">3 NSH Fails To Start</a></h1>
+<h1 id="nsh-fails-to-start"><a class="doc-anchor" href="#nsh-fails-to-start">§</a>3 NSH Fails To Start</h1>
 <p><em>What happens when we run <code>nshtask</code>?</em></p>
 <p>Our program tries to start a NuttX Task for NSH Shell. But it fails with an <strong><code>fopen</code></strong> error…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; nshtask
@@ -235,7 +235,7 @@ nsh: nsh: fopen failed: 2
 <p><em>Huh? What a weird error…</em></p>
 <p>That’s the <strong>same problem that stumped me</strong> the first time I created a NuttX Task!</p>
 <p>Here’s the solution…</p>
-<h1 id="fix-the-task-arguments"><a href="#fix-the-task-arguments">4 Fix the Task Arguments</a></h1>
+<h1 id="fix-the-task-arguments"><a class="doc-anchor" href="#fix-the-task-arguments">§</a>4 Fix the Task Arguments</h1>
 <p>Remember we passed <strong><code>argv</code></strong> from <strong><code>main()</code></strong> to <strong><code>task_create()</code></strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// argv comes from main()...
 int main(int argc, char *argv[]) {
@@ -290,7 +290,7 @@ int main(int argc, char *argv[]) {
 </code></pre></div>
 <p>Thus it seems ChatGPT is hitting the <strong>same newbie mistake</strong> as other NuttX Developers!</p>
 <p>(Which gets really frustrating if folks blindly copy the code suggested by ChatGPT)</p>
-<h1 id="nsh-function"><a href="#nsh-function">5 NSH Function</a></h1>
+<h1 id="nsh-function"><a class="doc-anchor" href="#nsh-function">§</a>5 NSH Function</h1>
 <p>There’s something odd about <strong><code>nsh_main</code></strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// nsh_main doesn&#39;t look right
 pid_t pid = task_create(
@@ -322,7 +322,7 @@ pid_t pid = task_create(
 <p><em>Why did ChatGPT suggest <code>nsh_main</code>?</em></p>
 <p>Maybe ChatGPT got “inspired” by past references to <strong><code>nsh_main</code></strong>?</p>
 <p><a href="https://github.com/search?q=%22int+nsh_main%28int+argc%2C+char+*argv%5B%5D%29%3B%22&amp;type=code&amp;l=C">(Like these)</a></p>
-<h1 id="correct-code"><a href="#correct-code">6 Correct Code</a></h1>
+<h1 id="correct-code"><a class="doc-anchor" href="#correct-code">§</a>6 Correct Code</h1>
 <p>This is the final corrected version that works: <a href="https://github.com/lupyuen/nshtask/blob/main/nshtask.c">nshtask.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Create a NuttX Task for NSH Shell
 #include &lt;stdio.h&gt;
@@ -394,7 +394,7 @@ if (ret &lt; 0) { _err(&quot;posix_spawn failed: %d\n&quot;, errno); return; }
 <p><a href="https://github.com/lupyuen/lvglterm/blob/main/README.md">(<strong>posix_spawn</strong> should be enabled in menuconfig)</a></p>
 </li>
 </ul>
-<h1 id="other-attempts"><a href="#other-attempts">7 Other Attempts</a></h1>
+<h1 id="other-attempts"><a class="doc-anchor" href="#other-attempts">§</a>7 Other Attempts</h1>
 <p><em>Can ChatGPT produce alternative answers to our question?</em></p>
 <p>Yep every time we ask ChatGPT the same question, it generates a different response.</p>
 <p>The first time we asked ChatGPT, it returned this strange program (that creates a NuttX Task literally)…</p>

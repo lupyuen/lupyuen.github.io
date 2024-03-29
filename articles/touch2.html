@@ -114,7 +114,7 @@
 <p>We begin with the internals of the Touch Panel…</p>
 <p><img src="https://lupyuen.github.io/images/touch2-schematic1.jpg" alt="Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)</em></a></p>
-<h1 id="goodix-gt917s-touch-panel"><a href="#goodix-gt917s-touch-panel">1 Goodix GT917S Touch Panel</a></h1>
+<h1 id="goodix-gt917s-touch-panel"><a class="doc-anchor" href="#goodix-gt917s-touch-panel">§</a>1 Goodix GT917S Touch Panel</h1>
 <p>Inside PinePhone is the <strong>Goodix GT917S Capacitive Touch Panel</strong> (CTP) that talks over I2C.</p>
 <p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> Pages 9 and 11 (pic above)…</p>
 <ul>
@@ -153,7 +153,7 @@
 <p>Let’s experiment with PinePhone’s Touch Panel to understand how it works…</p>
 <p><a href="https://patents.google.com/patent/US7663607B2/en">(I think Touch Panels are poorly documented because of Apple’s patent on Multitouch)</a></p>
 <p><img src="https://lupyuen.github.io/images/touch2-code2a.png" alt="Reading the Product ID from Touch Panel" /></p>
-<h1 id="read-the-product-id"><a href="#read-the-product-id">2 Read the Product ID</a></h1>
+<h1 id="read-the-product-id"><a class="doc-anchor" href="#read-the-product-id">§</a>2 Read the Product ID</h1>
 <p><em>What’s the simplest thing we can do with PinePhone’s Touch Panel?</em></p>
 <p>Let’s read the <strong>Product ID</strong> from the Touch Panel.</p>
 <p>We experimented with the Touch Panel (Bare Metal with NuttX) and discovered these <strong>I2C Settings</strong>…</p>
@@ -235,7 +235,7 @@ static void touch_panel_read(
 <p><em>How’s the code above called by NuttX Kernel?</em></p>
 <p>Read on to find out how we poll the Touch Panel and read the Product ID…</p>
 <p><img src="https://lupyuen.github.io/images/touch2-code1a.png" alt="Polling the Touch Panel" /></p>
-<h1 id="poll-the-touch-panel"><a href="#poll-the-touch-panel">3 Poll the Touch Panel</a></h1>
+<h1 id="poll-the-touch-panel"><a class="doc-anchor" href="#poll-the-touch-panel">§</a>3 Poll the Touch Panel</h1>
 <p><em>PinePhone’s Touch Panel will trigger interrupts right?</em></p>
 <p>To detect Touch Events, we’ll need to <strong>handle the interrupts</strong> triggered by Touch Panel.</p>
 <p>Based on our research, PinePhone’s <strong>Touch Panel Interrupt</strong> (CTP-INT) is connected at <strong>PH4</strong>.</p>
@@ -314,7 +314,7 @@ touch_panel_initialize(i2c);
 <p>(Yes it sounds hacky, but it’s a simple way to do Kernel Experiments)</p>
 <p>Now that we can poll our Touch Panel, let’s read a Touch Point!</p>
 <p><img src="https://lupyuen.github.io/images/touch2-code4a.png" alt="Reading a Touch Point" /></p>
-<h1 id="read-a-touch-point"><a href="#read-a-touch-point">4 Read a Touch Point</a></h1>
+<h1 id="read-a-touch-point"><a class="doc-anchor" href="#read-a-touch-point">§</a>4 Read a Touch Point</h1>
 <p><em>When the Touch Panel is touched, how do we read the Touch Coordinates?</em></p>
 <p>Based on the <a href="https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c"><strong>GT911 Reference Code</strong></a>, here are the steps to <strong>read a Touch Point</strong>…</p>
 <ol>
@@ -417,7 +417,7 @@ touch_panel_read: touch x=658, y=1369
 <p>Yep we can read the Touch Coordinates correctly, through polling! (But not so efficiently)</p>
 <p>Let’s handle interrupts from the Touch Panel…</p>
 <p><img src="https://lupyuen.github.io/images/touch2-code5a.png" alt="Attaching our Interrupt Handler" /></p>
-<h1 id="interrupt-handler-for-touch-panel"><a href="#interrupt-handler-for-touch-panel">5 Interrupt Handler for Touch Panel</a></h1>
+<h1 id="interrupt-handler-for-touch-panel"><a class="doc-anchor" href="#interrupt-handler-for-touch-panel">§</a>5 Interrupt Handler for Touch Panel</h1>
 <p><em>We’ve done polling with the Touch Panel…</em></p>
 <p><em>Can we handle interrupts from the Touch Panel?</em></p>
 <p>Earlier we’ve read the Touch Panel by polling… Which is easier but inefficient.</p>
@@ -431,7 +431,7 @@ touch_panel_read: touch x=658, y=1369
 <p>Not really, polling will work fine for now.</p>
 <p>In a while we’ll run the <strong>LVGL Demo App</strong>, which uses polling. (Instead of interrupts)</p>
 <p>Now we dive inside our NuttX Touch Panel Driver that will be called by NuttX Apps..</p>
-<h1 id="nuttx-touch-panel-driver"><a href="#nuttx-touch-panel-driver">6 NuttX Touch Panel Driver</a></h1>
+<h1 id="nuttx-touch-panel-driver"><a class="doc-anchor" href="#nuttx-touch-panel-driver">§</a>6 NuttX Touch Panel Driver</h1>
 <p><em>What’s inside our NuttX Touch Panel Driver for PinePhone?</em></p>
 <p>We took the code from above and wrapped it inside our <strong>NuttX Touch Panel Driver</strong> for PinePhone…</p>
 <ul>
@@ -489,7 +489,7 @@ DEBUGASSERT(ret == OK);
 <p>(Which is also an I2C Input Device)</p>
 <p>Let’s test our Touch Panel Driver with a NuttX App…</p>
 <p><img src="https://lupyuen.github.io/images/fb-lvgl3.jpg" alt="LVGL Demo App on PinePhone" /></p>
-<h1 id="lvgl-calls-our-driver"><a href="#lvgl-calls-our-driver">7 LVGL Calls Our Driver</a></h1>
+<h1 id="lvgl-calls-our-driver"><a class="doc-anchor" href="#lvgl-calls-our-driver">§</a>7 LVGL Calls Our Driver</h1>
 <p><em>Have we tested our driver with NuttX Apps?</em></p>
 <p>Our NuttX Touch Panel Driver works great with the <a href="https://github.com/lvgl/lvgl/tree/v8.3.3/demos/widgets"><strong>LVGL Demo App</strong></a>! (Pic above)</p>
 <ul>
@@ -633,7 +633,7 @@ while (1) {
 <p>Update the <strong>LVGL Display</strong></p>
 </li>
 </ul>
-<h1 id="driver-limitations"><a href="#driver-limitations">8 Driver Limitations</a></h1>
+<h1 id="driver-limitations"><a class="doc-anchor" href="#driver-limitations">§</a>8 Driver Limitations</h1>
 <p><em>Is there anything missing in our NuttX Touch Panel Driver for PinePhone?</em></p>
 <p>Yep our <strong>driver has limitations</strong>, since the Touch Panel Hardware is poorly documented…</p>
 <ol>
@@ -668,7 +668,7 @@ while (1) {
 <p>As we add more features to our Touch Panel Driver, we should reuse the <strong>Touchscreen Upper Half Driver</strong>: <a href="https://github.com/apache/nuttx/blob/master/drivers/input/touchscreen_upper.c">touchscreen_upper.c</a></p>
 </li>
 </ol>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>PinePhone on NuttX will soon support LVGL Touchscreen Apps!</p>
 <p>Now we need to tidy up the <a href="https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver"><strong>LVGL Demo App</strong></a> so that it’s more <strong>Touch-Friendly</strong> for a Phone Form Factor. We’ll talk more about this…</p>
 <ul>
@@ -705,7 +705,7 @@ while (1) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/touch2.md"><strong>lupyuen.github.io/src/touch2.md</strong></a></p>
-<h1 id="appendix-nuttx-touch-panel-driver-for-pinephone"><a href="#appendix-nuttx-touch-panel-driver-for-pinephone">10 Appendix: NuttX Touch Panel Driver for PinePhone</a></h1>
+<h1 id="appendix-nuttx-touch-panel-driver-for-pinephone"><a class="doc-anchor" href="#appendix-nuttx-touch-panel-driver-for-pinephone">§</a>10 Appendix: NuttX Touch Panel Driver for PinePhone</h1>
 <p><em>What’s inside our NuttX Touch Panel Driver for PinePhone?</em></p>
 <p>We took the code from above and wrapped it inside our <strong>NuttX Touch Panel Driver</strong> for PinePhone…</p>
 <ul>
@@ -741,7 +741,7 @@ DEBUGASSERT(ret == OK);
 <p>(Which is also an I2C Input Device)</p>
 <p><strong>UPDATE:</strong> We should reuse the <strong>Touchscreen Upper Half Driver</strong>: <a href="https://github.com/apache/nuttx/blob/master/drivers/input/touchscreen_upper.c">touchscreen_upper.c</a></p>
 <p>Let’s talk about the Touch Panel operations…</p>
-<h2 id="register-touch-panel-driver"><a href="#register-touch-panel-driver">10.1 Register Touch Panel Driver</a></h2>
+<h2 id="register-touch-panel-driver"><a class="doc-anchor" href="#register-touch-panel-driver">§</a>10.1 Register Touch Panel Driver</h2>
 <p>At startup, <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L155-L172"><strong>pinephone_bringup</strong></a> registers our Touch Panel Driver at <strong>/dev/input0</strong> by calling…</p>
 <ul>
 <li>
@@ -772,7 +772,7 @@ DEBUGASSERT(ret == OK);
 </li>
 </ol>
 <p>Now watch what happens when a NuttX App opens the Touch Panel…</p>
-<h2 id="open-the-touch-panel"><a href="#open-the-touch-panel">10.2 Open the Touch Panel</a></h2>
+<h2 id="open-the-touch-panel"><a class="doc-anchor" href="#open-the-touch-panel">§</a>10.2 Open the Touch Panel</h2>
 <p>When a NuttX App calls <strong><code>open()</code></strong> on <strong>/dev/input0</strong>, NuttX Kernel invokes this operation on our driver…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx/blob/master/drivers/input/gt9xx.c#L582-L669"><strong>gt9xx_open: Open the Touch Panel</strong></a></li>
@@ -798,7 +798,7 @@ DEBUGASSERT(ret == OK);
 <p>The <a href="https://github.com/apache/nuttx/blob/master/drivers/input/gt9xx.c#L582-L669"><strong>Actual Flow</strong></a> looks more complicated because we do <strong>Reference Counting</strong>.</p>
 <p>(We do the above steps only on the first call to <strong><code>open()</code></strong>)</p>
 <p>Let’s read some touch data…</p>
-<h2 id="read-a-touch-sample"><a href="#read-a-touch-sample">10.3 Read a Touch Sample</a></h2>
+<h2 id="read-a-touch-sample"><a class="doc-anchor" href="#read-a-touch-sample">§</a>10.3 Read a Touch Sample</h2>
 <p><em>What’s a Touch Sample?</em></p>
 <p>When a NuttX App reads data from our Touch Panel, the app passes a <strong>Touch Sample Struct</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Struct for Touch Sample
@@ -858,7 +858,7 @@ struct touch_point_s {
 <p>The Touch Panel seems to be producing <strong>Touch Up Events</strong>… Even though the 6-byte Touch Data looks identical for the Touch Down and Touch Up Events. <a href="https://gist.github.com/lupyuen/fc88153b915894dbdaefcb5a916232fe">(See this)</a></p>
 <p>Eventually we’ll have to decode the Touch Up Events. And then remove our <a href="https://lupyuen.github.io/articles/touch2#read-a-touch-sample"><strong>Simulated Touch Up Event</strong></a>.</p>
 <p>Let’s talk about the Interrupt Pending Flag…</p>
-<h2 id="interrupt-handler"><a href="#interrupt-handler">10.4 Interrupt Handler</a></h2>
+<h2 id="interrupt-handler"><a class="doc-anchor" href="#interrupt-handler">§</a>10.4 Interrupt Handler</h2>
 <p>This is our <strong>Interrupt Handler</strong> for Touch Panel Interrupts…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx/blob/master/drivers/input/gt9xx.c#L842-L883"><strong>gt9xx_isr_handler: Interrupt Handler</strong></a></li>
@@ -875,7 +875,7 @@ struct touch_point_s {
 </li>
 </ol>
 <p>Now we talk about the Poll Waiters…</p>
-<h2 id="setup-poll-for-touch-sample"><a href="#setup-poll-for-touch-sample">10.5 Setup Poll for Touch Sample</a></h2>
+<h2 id="setup-poll-for-touch-sample"><a class="doc-anchor" href="#setup-poll-for-touch-sample">§</a>10.5 Setup Poll for Touch Sample</h2>
 <p>A NuttX App calls <strong><code>poll()</code></strong> to set up (or tear down) a <strong>Poll for Touch Sample</strong>.</p>
 <p>This enables the app to suspend itself and <strong>block until a Touch Panel Interrupt</strong> has been triggered. (And there’s a Touch Point available)</p>
 <p>When an app calls <strong><code>poll()</code></strong>, the NuttX Kernel calls our driver at…</p>
@@ -897,7 +897,7 @@ struct touch_point_s {
 </li>
 </ol>
 <p><strong>For Poll Teardown</strong>: We unbind the Poll Setup</p>
-<h2 id="close-the-touch-panel"><a href="#close-the-touch-panel">10.6 Close the Touch Panel</a></h2>
+<h2 id="close-the-touch-panel"><a class="doc-anchor" href="#close-the-touch-panel">§</a>10.6 Close the Touch Panel</h2>
 <p>When a NuttX App calls <strong><code>close()</code></strong> on <strong>/dev/input0</strong>, NuttX Kernel invokes this operation on our driver…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx/blob/master/drivers/input/gt9xx.c#L669-L735"><strong>gt9xx_close: Close the Touch Panel</strong></a></li>
@@ -916,7 +916,7 @@ struct touch_point_s {
 <p>We do this only if the <strong>Reference Count</strong> decrements to 0.</p>
 <p>(Which indicates the final <strong><code>close()</code></strong> for our driver)</p>
 <p><img src="https://lupyuen.github.io/images/touch2-code5a.png" alt="Attaching our Interrupt Handler" /></p>
-<h1 id="appendix-interrupt-handler-for-touch-panel"><a href="#appendix-interrupt-handler-for-touch-panel">11 Appendix: Interrupt Handler for Touch Panel</a></h1>
+<h1 id="appendix-interrupt-handler-for-touch-panel"><a class="doc-anchor" href="#appendix-interrupt-handler-for-touch-panel">§</a>11 Appendix: Interrupt Handler for Touch Panel</h1>
 <p>Earlier we’ve read the Touch Panel by polling… Which is easier but inefficient.</p>
 <ul>
 <li>
@@ -932,7 +932,7 @@ struct touch_point_s {
 <p>Not really, polling will work fine for now.</p>
 <p>Earlier we saw that the <a href="https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver"><strong>LVGL Demo App</strong></a> runs OK because it uses polling. (Instead of interrupts)</p>
 <p>This section talks about our experiments with Touch Panel Interrupts…</p>
-<h2 id="attach-our-interrupt-handler"><a href="#attach-our-interrupt-handler">11.1 Attach our Interrupt Handler</a></h2>
+<h2 id="attach-our-interrupt-handler"><a class="doc-anchor" href="#attach-our-interrupt-handler">§</a>11.1 Attach our Interrupt Handler</h2>
 <p>Earlier we said that PinePhone’s Touch Panel fires an <strong>interrupt at PH4</strong> when it’s touched…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/touch2#goodix-gt917s-touch-panel"><strong>“Goodix GT917S Touch Panel”</strong></a></li>
@@ -1011,7 +1011,7 @@ static int touch_panel_interrupt(int irq, void *context, void *arg) {
 <p>Yep it’s perfectly OK, because <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L619-L649"><strong>up_putc</strong></a> simply writes to the UART Output Register.</p>
 <p>(It won’t trigger another interrupt)</p>
 <p><img src="https://lupyuen.github.io/images/touch2-code6a.png" alt="Handling Interrupts from Touch Panel" /></p>
-<h2 id="handle-interrupts-from-touch-panel"><a href="#handle-interrupts-from-touch-panel">11.2 Handle Interrupts from Touch Panel</a></h2>
+<h2 id="handle-interrupts-from-touch-panel"><a class="doc-anchor" href="#handle-interrupts-from-touch-panel">§</a>11.2 Handle Interrupts from Touch Panel</h2>
 <p>Here’s the actual Interrupt Handler in our Touch Panel Driver: <a href="https://github.com/apache/nuttx/blob/master/drivers/input/gt9xx.c#L842-L883">gt9xx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Interrupt Handler for Touch Panel
 static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
@@ -1047,7 +1047,7 @@ static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
 <p><a href="https://github.com/apache/nuttx/blob/master/drivers/input/gt9xx.c#L735-L842">(Thanks to <strong>gt9xx_poll</strong>)</a></p>
 <p>Let’s test our new and improved Interrupt Handler…</p>
 <p><img src="https://lupyuen.github.io/images/touch2-run3a.png" alt="Testing our Interrupt Handler" /></p>
-<h2 id="test-our-interrupt-handler"><a href="#test-our-interrupt-handler">11.3 Test our Interrupt Handler</a></h2>
+<h2 id="test-our-interrupt-handler"><a class="doc-anchor" href="#test-our-interrupt-handler">§</a>11.3 Test our Interrupt Handler</h2>
 <p><em>How do we test our Interrupt Handler?</em></p>
 <p>We could start a Background Thread that will be notified when the screen is touched…</p>
 <p>Or we can run a simple loop that checks whether the <strong>Interrupt Pending Flag is set</strong> by our Interrupt Handler.</p>
@@ -1087,7 +1087,7 @@ touch_panel_read: touch x=15, y=1394
 <p><a href="https://gist.github.com/lupyuen/91a37a4b54f75f7386374a30821dc1b2">(Source)</a></p>
 <p>The log shows that we’ve read the Touch Panel Status <strong><code>0x81</code></strong>, followed by the Touch Coordinates. Yep we’ve tested our Interrupt Handler successfully!</p>
 <p>But there’s a problem…</p>
-<h2 id="too-few-interrupts"><a href="#too-few-interrupts">11.4 Too Few Interrupts</a></h2>
+<h2 id="too-few-interrupts"><a class="doc-anchor" href="#too-few-interrupts">§</a>11.4 Too Few Interrupts</h2>
 <p><em>So Touch Panel Interrupts are working OK?</em></p>
 <p>There’s a problem: The Touch Panel only <strong>fires an interrupt once</strong>!</p>
 <p>It won’t trigger interrupts correctly when we touch the screen.</p>
@@ -1116,7 +1116,7 @@ gt9xx_i2c_read (0x40b1bab0):
 <p>Earlier we saw that the <a href="https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver"><strong>LVGL Demo App</strong></a> runs OK because it uses polling. (Instead of interrupts)</p>
 <p>But let’s consider an alternative setup (with too many interrupts)…</p>
 <p><img src="https://lupyuen.github.io/images/touch2-run2a.png" alt="Touch Panel triggers our Interrupt Handler Non-Stop" /></p>
-<h2 id="too-many-interrupts"><a href="#too-many-interrupts">11.5 Too Many Interrupts</a></h2>
+<h2 id="too-many-interrupts"><a class="doc-anchor" href="#too-many-interrupts">§</a>11.5 Too Many Interrupts</h2>
 <p><em>Why did we set the Interrupt Trigger to IRQ_TYPE_EDGE?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set Interrupt Priority in Generic Interrupt Controller v2
 arm64_gic_irq_set_priority(
@@ -1174,7 +1174,7 @@ static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
 <p><a href="https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683">(Why does Status <code>0x81</code> change to <code>0x80</code>, instead of 0?)</a></p>
 <p>Thus we need to stick with <strong>IRQ_TYPE_EDGE</strong> and figure out how to trigger interrupts correctly on Touch Input.</p>
 <p><a href="https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller">(Perhaps by studying the <strong>Generic Interrupt Controller</strong>)</a></p>
-<h2 id="interrupt-priority"><a href="#interrupt-priority">11.6 Interrupt Priority</a></h2>
+<h2 id="interrupt-priority"><a class="doc-anchor" href="#interrupt-priority">§</a>11.6 Interrupt Priority</h2>
 <p><em>Why did we set Interrupt Priority to 2?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set Interrupt Priority in Generic Interrupt Controller v2
 arm64_gic_irq_set_priority(

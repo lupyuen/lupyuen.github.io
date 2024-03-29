@@ -109,7 +109,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ox64-sbc.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
-<h1 id="inside-a-nuttx-app"><a href="#inside-a-nuttx-app">1 Inside a NuttX App</a></h1>
+<h1 id="inside-a-nuttx-app"><a class="doc-anchor" href="#inside-a-nuttx-app">§</a>1 Inside a NuttX App</h1>
 <p><em>What happens inside the simplest NuttX App?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// From https://github.com/apache/nuttx-apps/blob/master/examples/hello/hello_main.c#L36-L40
 int main(int argc, FAR char *argv[]) {
@@ -225,7 +225,7 @@ printf(
 <p>Then <strong>printf</strong> will appear in our RISC-V Disassembly.</p>
 <p>We circle back to <strong>write</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX App calls NuttX Kernel" /></p>
-<h1 id="nuttx-app-calls-nuttx-kernel"><a href="#nuttx-app-calls-nuttx-kernel">2 NuttX App calls NuttX Kernel</a></h1>
+<h1 id="nuttx-app-calls-nuttx-kernel"><a class="doc-anchor" href="#nuttx-app-calls-nuttx-kernel">§</a>2 NuttX App calls NuttX Kernel</h1>
 <p><em>Our app will print something to the console…</em></p>
 <p><em>But NuttX Apps can’t write directly to the Serial Device right?</em></p>
 <p>Nope! </p>
@@ -344,7 +344,7 @@ PROXY_write.c
 </code></pre></div>
 <p>Next we figure out how System Calls will work…</p>
 <p><img src="https://lupyuen.github.io/images/app-syscall2.jpg" alt="NuttX Kernel handles System Call" /></p>
-<h1 id="nuttx-kernel-handles-system-call"><a href="#nuttx-kernel-handles-system-call">3 NuttX Kernel handles System Call</a></h1>
+<h1 id="nuttx-kernel-handles-system-call"><a class="doc-anchor" href="#nuttx-kernel-handles-system-call">§</a>3 NuttX Kernel handles System Call</h1>
 <p><em>Our App makes an ecall to jump to NuttX Kernel (pic above)…</em></p>
 <p><em>What happens on the other side?</em></p>
 <p>Remember the Proxy Function from earlier? Now we do the exact opposite in our <strong>Stub Function</strong> (that runs in the Kernel)…</p>
@@ -439,7 +439,7 @@ enum {
 <p><a href="https://github.com/apache/nuttx/blob/master/syscall/syscall.csv#L209-L210">(Just add to <strong>NuttX System Calls</strong>)</a></p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">(As explained here)</a></p>
 <p><img src="https://lupyuen.github.io/images/app-title.png" alt="NuttX App calls NuttX Kernel" /></p>
-<h1 id="system-call-in-action"><a href="#system-call-in-action">4 System Call in Action</a></h1>
+<h1 id="system-call-in-action"><a class="doc-anchor" href="#system-call-in-action">§</a>4 System Call in Action</h1>
 <p><em>This looks complicated… It works right?</em></p>
 <p>Yep we have solid evidence, from <a href="https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx"><strong>NuttX for Ox64 BL808 SBC</strong></a>!</p>
 <p>Remember to enable <strong>System Call Logging</strong> in “<code>make menuconfig</code>”…</p>
@@ -512,7 +512,7 @@ riscv_swint: SWInt Return: 1e
 <p><a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17#file-ox64-nuttx-ecall-log-L563-L588">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Virtual Memory for NuttX App" /></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#virtual-memory"><em>Virtual Memory for NuttX App</em></a></p>
-<h1 id="kernel-accesses-app-memory"><a href="#kernel-accesses-app-memory">5 Kernel Accesses App Memory</a></h1>
+<h1 id="kernel-accesses-app-memory"><a class="doc-anchor" href="#kernel-accesses-app-memory">§</a>5 Kernel Accesses App Memory</h1>
 <p><em>NuttX Kernel prints the buffer at <code>0x8000_AD00</code>…</em></p>
 <p><em>It doesn’t look like a RAM Address?</em></p>
 <p>That’s a <strong>Virtual Memory Address</strong>…</p>
@@ -561,7 +561,7 @@ riscv_swint: SWInt Return: 1e
 <p>That’s why NuttX Kernel can access Virtual Memory (passed by NuttX Apps) at <strong><code>0x8000_0000</code></strong>!</p>
 <p><img src="https://lupyuen.github.io/images/app-flow.jpg" alt="Kernel Starts a NuttX App" /></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#kernel-starts-a-nuttx-app"><em>Clickable Version of NuttX Flow</em></a></p>
-<h1 id="kernel-starts-a-nuttx-app"><a href="#kernel-starts-a-nuttx-app">6 Kernel Starts a NuttX App</a></h1>
+<h1 id="kernel-starts-a-nuttx-app"><a class="doc-anchor" href="#kernel-starts-a-nuttx-app">§</a>6 Kernel Starts a NuttX App</h1>
 <p><em>Alrighty NuttX Apps can call NuttX Kernel…</em></p>
 <p><em>But how does NuttX Kernel start a NuttX App?</em></p>
 <p>Previously we walked through the <strong>Boot Sequence</strong> for NuttX…</p>
@@ -625,7 +625,7 @@ riscv_swint: SWInt Return: 1e
 <p><a href="https://github.com/lupyuen/nuttx-ox64#kernel-starts-a-nuttx-app">(<strong>Clickable Version</strong> of NuttX Flow)</a></p>
 <p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="Initial RAM Disk for Star64 JH7110" /></p>
 <p><a href="https://lupyuen.github.io/articles/semihost"><em>Initial RAM Disk for Star64 JH7110</em></a></p>
-<h1 id="initial-ram-disk"><a href="#initial-ram-disk">7 Initial RAM Disk</a></h1>
+<h1 id="initial-ram-disk"><a class="doc-anchor" href="#initial-ram-disk">§</a>7 Initial RAM Disk</h1>
 <p><em>OK we know how NuttX Kernel starts a NuttX App…</em></p>
 <p><em>But where are the NuttX Apps stored?</em></p>
 <p>Right now we’re working with the <strong>Early Port of NuttX</strong> to Ox64 BL808 SBC. We can’t access the File System in the microSD Card.</p>
@@ -690,7 +690,7 @@ cp Image &quot;/Volumes/NO NAME/&quot;
 <p>This is how we made it work…</p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/issues/24">(Ox64 can boot NuttX from <strong>Flash Memory</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/app-initrd.jpg" alt="Initial RAM Disk for Ox64" /></p>
-<h1 id="mount-the-initial-ram-disk"><a href="#mount-the-initial-ram-disk">8 Mount the Initial RAM Disk</a></h1>
+<h1 id="mount-the-initial-ram-disk"><a class="doc-anchor" href="#mount-the-initial-ram-disk">§</a>8 Mount the Initial RAM Disk</h1>
 <p><em>We appended the Initial RAM Disk to NuttX Kernel (pic above)…</em></p>
 <p><em>U-Boot Bootloader loads the NuttX Kernel + Initial RAM Disk into RAM…</em></p>
 <p><em>How in RAM will NuttX Kernel locate the Initial RAM Disk?</em></p>
@@ -795,7 +795,7 @@ elf_read: Read 64 bytes from offset 0
 <p><a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89#file-ox64-nuttx13-log-L114-L159">(See the <strong>Complete Log</strong>)</a></p>
 <p>Last thing for today: The mysterious 64 KB padding…</p>
 <p><img src="https://lupyuen.github.io/images/app-initrd2.jpg" alt="Initial RAM Disk for Ox64" /></p>
-<h1 id="pad-the-initial-ram-disk"><a href="#pad-the-initial-ram-disk">9 Pad the Initial RAM Disk</a></h1>
+<h1 id="pad-the-initial-ram-disk"><a class="doc-anchor" href="#pad-the-initial-ram-disk">§</a>9 Pad the Initial RAM Disk</h1>
 <p><em>Between NuttX Kernel and Initial RAM Disk…</em></p>
 <p><em>Why did we pad 64 KB of zeroes? (Pic above)</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Prepare a Padding with 64 KB of zeroes
@@ -920,7 +920,7 @@ verify_image(__ramdisk_start);
 <p>That’s how we discovered that <strong><code>memcpy</code></strong> doesn’t work. And our <strong><code>bl808_copy_overlap</code></strong> works great for the Initial RAM Disk and NuttX Shell! (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L115-L323"><em>Ox64 boots to NuttX Shell</em></a></p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>Like we said at the top of the article…</p>
 <blockquote>
 <p><em>“One can hide on the First of the Month… But not on the Fifteenth!”</em></p>

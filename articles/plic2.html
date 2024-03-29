@@ -122,7 +122,7 @@
 </ul>
 <p>We begin our story…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-sd.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
-<h1 id="platform-level-interrupt-controller"><a href="#platform-level-interrupt-controller">1 Platform-Level Interrupt Controller</a></h1>
+<h1 id="platform-level-interrupt-controller"><a class="doc-anchor" href="#platform-level-interrupt-controller">§</a>1 Platform-Level Interrupt Controller</h1>
 <p><em>What’s this PLIC?</em></p>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic"><strong>Platform-Level Interrupt Controller</strong></a> (PLIC) is the hardware inside our BL808 SoC that controls the forwarding of <strong>Peripheral Interrupts</strong> to our 64-bit RISC-V CPU.</p>
 <p>(Like the Interrupts for <strong>UART</strong>, <strong>I2C</strong>, <strong>SPI</strong>, …)</p>
@@ -151,7 +151,7 @@
 <p><a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">(PLIC is documented in <strong>C906 User Manual</strong>, Page 74)</a></p>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#plic">(See the <strong>Official PLIC Spec</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="BL808 Platform-Level Interrupt Controller" /></p>
-<h1 id="uart-interrupt"><a href="#uart-interrupt">2 UART Interrupt</a></h1>
+<h1 id="uart-interrupt"><a class="doc-anchor" href="#uart-interrupt">§</a>2 UART Interrupt</h1>
 <p><em>What’s the Interrupt Number for the Serial Console?</em></p>
 <p>To enable Text Input in the <strong>Ox64 Serial Console</strong>, we need the Interrupt Number for the <strong>UART Controller</strong>…</p>
 <ul>
@@ -185,7 +185,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/plic2-irq.jpg" alt="BL808 Reference Manual (Page 44)" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><em>BL808 Reference Manual (Page 44)</em></a></p>
-<h1 id="initialise-the-interrupts"><a href="#initialise-the-interrupts">3 Initialise the Interrupts</a></h1>
+<h1 id="initialise-the-interrupts"><a class="doc-anchor" href="#initialise-the-interrupts">§</a>3 Initialise the Interrupts</h1>
 <p><em>How shall we get started with PLIC?</em></p>
 <p>We walk through the steps to <strong>prepare the Platform-Level Interrupt Controller</strong> (PLIC) at startup…</p>
 <ol>
@@ -207,7 +207,7 @@
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/plic2-registers3a.jpg" alt="Disable Interrupts" /></p>
-<h2 id="disable-all-interrupts"><a href="#disable-all-interrupts">3.1 Disable all Interrupts</a></h2>
+<h2 id="disable-all-interrupts"><a class="doc-anchor" href="#disable-all-interrupts">§</a>3.1 Disable all Interrupts</h2>
 <p>We begin by <strong>disabling all Interrupts</strong> in PLIC.</p>
 <p>Writing 0 to the <strong>Interrupt Enable</strong> Register (pic above) will disable all PLIC Interrupts: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L41-L61">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Platform-Level Interrupt Controller
@@ -232,7 +232,7 @@ void up_irqinitialize(void) {
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/hardware/bl808_plic.h#L34-L49">(<strong>PLIC_ENABLE</strong> and other PLIC Offsets)</a></p>
 <p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow">(NuttX calls <strong>up_irqinitialize</strong> at startup)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5a.jpg" alt="Clear Interrupts" /></p>
-<h2 id="clear-the-interrupts"><a href="#clear-the-interrupts">3.2 Clear the Interrupts</a></h2>
+<h2 id="clear-the-interrupts"><a class="doc-anchor" href="#clear-the-interrupts">§</a>3.2 Clear the Interrupts</h2>
 <p>Next we <strong>Claim and Complete</strong> the Outstanding Interrupts, so they won’t bother us at startup (pic above): <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L62-L67">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Claim and Complete the Outstanding Interrupts
   // PLIC_CLAIM is 0xE020_1004
@@ -243,7 +243,7 @@ void up_irqinitialize(void) {
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L124-L132">(<strong>getreg32</strong> is defined here)</a></p>
 <p>(More about <strong>Claim and Complete</strong> in a while)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
-<h2 id="set-the-interrupt-priority"><a href="#set-the-interrupt-priority">3.3 Set the Interrupt Priority</a></h2>
+<h2 id="set-the-interrupt-priority"><a class="doc-anchor" href="#set-the-interrupt-priority">§</a>3.3 Set the Interrupt Priority</h2>
 <p>We initialise the <strong>Interrupt Priority</strong> of all Interrupts to 1 (pic above): <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L74-L83">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set Priority for all External Interrupts to 1 (Lowest)
   // NR_IRQS is 83 (TODO: BL808 only supports 82 Peripheral Interrupts)
@@ -268,7 +268,7 @@ void up_irqinitialize(void) {
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/plic2-registers2.jpg" alt="Set Interrupt Threshold" /></p>
-<h2 id="set-the-interrupt-threshold"><a href="#set-the-interrupt-threshold">3.4 Set the Interrupt Threshold</a></h2>
+<h2 id="set-the-interrupt-threshold"><a class="doc-anchor" href="#set-the-interrupt-threshold">§</a>3.4 Set the Interrupt Threshold</h2>
 <p>Finally we set the <strong>Interrupt Threshold</strong> to 0 (pic above): <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L83-L103">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set Interrupt Threshold to 0
   // (Permits all External Interrupts)
@@ -296,7 +296,7 @@ void up_irqinitialize(void) {
 </ul>
 <p>And we’re done initing the PLIC at startup!</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers3.jpg" alt="Enable Interrupt" /></p>
-<h1 id="enable-the-interrupt"><a href="#enable-the-interrupt">4 Enable the Interrupt</a></h1>
+<h1 id="enable-the-interrupt"><a class="doc-anchor" href="#enable-the-interrupt">§</a>4 Enable the Interrupt</h1>
 <p><em>Our Platform-Level Interrupt Controller (PLIC) is all ready for action…</em></p>
 <p><em>How will we enable Interrupts in PLIC?</em></p>
 <p>Suppose we’re enabling <strong>RISC-V IRQ 20</strong> for UART3 Interrupt.</p>
@@ -345,7 +345,7 @@ static int bl808_attach(struct uart_dev_s *dev) {
 <p>We’re halfway through our Grand Plan of <strong>PLIC Interrupts</strong>! (Steps 1, 2 and 3, pic below)</p>
 <p>We pause a moment to talk about Harts…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Registers for Platform-Level Interrupt Controller" /></p>
-<h1 id="hart-0-supervisor-mode"><a href="#hart-0-supervisor-mode">5 Hart 0, Supervisor Mode</a></h1>
+<h1 id="hart-0-supervisor-mode"><a class="doc-anchor" href="#hart-0-supervisor-mode">§</a>5 Hart 0, Supervisor Mode</h1>
 <p><em>The pic above: Why does it say “Hart 0, Supervisor Mode”?</em></p>
 <p><strong>“Hart”</strong> is a RISC-V CPU Core.</p>
 <p>(“Hardware Thread”)</p>
@@ -381,7 +381,7 @@ static int bl808_attach(struct uart_dev_s *dev) {
 <p>These are the <strong>Common PLIC Registers</strong>, shared across all Harts and RISC-V Modes.</p>
 <p>Heading back to our (interrupted) story…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers4.jpg" alt="Handle Interrupt" /></p>
-<h1 id="handle-the-interrupt"><a href="#handle-the-interrupt">6 Handle the Interrupt</a></h1>
+<h1 id="handle-the-interrupt"><a class="doc-anchor" href="#handle-the-interrupt">§</a>6 Handle the Interrupt</h1>
 <p><em>What happens when we press a key on the Serial Console? (Pic above)</em></p>
 <p><em>How will PLIC handle the UART Interrupt?</em></p>
 <p>This is how we <strong>handle an Interrupt</strong> with the Platform-Level Interrupt Controller (PLIC)…</p>
@@ -404,7 +404,7 @@ static int bl808_attach(struct uart_dev_s *dev) {
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Interrupt Claim Register" /></p>
-<h2 id="claim-the-interrupt"><a href="#claim-the-interrupt">6.1 Claim the Interrupt</a></h2>
+<h2 id="claim-the-interrupt"><a class="doc-anchor" href="#claim-the-interrupt">§</a>6.1 Claim the Interrupt</h2>
 <p><em>How will we know which RISC-V Interrupt has been fired?</em></p>
 <p>That’s why we have the <strong>Interrupt Claim</strong> Register! (Pic above)</p>
 <p>We read the Interrupt Claim Register to get the <strong>RISC-V IRQ Number</strong> that has been fired (20 for UART3): <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq_dispatch.c#L47-L66">bl808_irq.c</a></p>
@@ -436,7 +436,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p>We’re telling the PLIC: “Yes we <strong>acknowledge the Interrupt</strong>, but we’re not done yet!”</p>
 <p>In a while we shall Complete the Interrupt. (To tell PLIC we’re done)</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_exception_common.S#L63-L177">(<strong>riscv_dispatch_irq</strong> is called by the RISC-V Common Exception Handler)</a></p>
-<h2 id="dispatch-the-interrupt"><a href="#dispatch-the-interrupt">6.2 Dispatch the Interrupt</a></h2>
+<h2 id="dispatch-the-interrupt"><a class="doc-anchor" href="#dispatch-the-interrupt">§</a>6.2 Dispatch the Interrupt</h2>
 <p>We have Claimed the Interrupt. It’s time to do some work: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq_dispatch.c#L66-L75">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Omitted: Claim the Interrupt
   ...
@@ -455,7 +455,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p>For UART Interrupts: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_doirq.c#L58-L134"><strong>riscv_doirq</strong></a> will call <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L225"><strong>uart_interrupt</strong></a> to handle the keypress.</p>
 <p>(That’s because at startup, <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L275-L304"><strong>bl808_attach</strong></a> has registered <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L225"><strong>uart_interrupt</strong></a> as the UART Interrupt Handler)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Interrupt Claim Register" /></p>
-<h2 id="complete-the-interrupt"><a href="#complete-the-interrupt">6.3 Complete the Interrupt</a></h2>
+<h2 id="complete-the-interrupt"><a class="doc-anchor" href="#complete-the-interrupt">§</a>6.3 Complete the Interrupt</h2>
 <p>To tell PLIC we’re done, we write the RISC-V IRQ Number (20) back to the <strong>Interrupt Claim</strong> Register.</p>
 <p>(Yep the same one we read earlier! Pic above)</p>
 <p>This will <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#interrupt-completion"><strong>Complete the Interrupt</strong></a>, so PLIC can fire the next one: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq_dispatch.c#L75-L84">bl808_irq.c</a></p>
@@ -483,7 +483,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 </code></pre></div>
 <p>And that’s how we handle a PLIC Interrupt!</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Interrupt Pending Register" /></p>
-<h2 id="pending-interrupts"><a href="#pending-interrupts">6.4 Pending Interrupts</a></h2>
+<h2 id="pending-interrupts"><a class="doc-anchor" href="#pending-interrupts">§</a>6.4 Pending Interrupts</h2>
 <p><em>What’s with the Pending Interrupts?</em></p>
 <p>Normally the Interrupt Claim Register is perfectly adequate for handling Interrupts.</p>
 <p>But if we’re really curious: PLIC has an <strong>Interrupt Pending</strong> Register (pic above) that will tell us which Interrupts are awaiting Claiming or Completion: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L62-L71">jh7110_irq.c</a></p>
@@ -507,7 +507,7 @@ putreg32(0, 0xe0001000);
 <p>Once again, we don’t need really need this. We’ll stash this as our <strong>Backup Plan</strong> in case things go wrong.</p>
 <p>(Oh yes, things will go wrong in a while)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
-<h1 id="trouble-with-interrupt-priority"><a href="#trouble-with-interrupt-priority">7 Trouble with Interrupt Priority</a></h1>
+<h1 id="trouble-with-interrupt-priority"><a class="doc-anchor" href="#trouble-with-interrupt-priority">§</a>7 Trouble with Interrupt Priority</h1>
 <p><em>I sense a twist in our story…</em></p>
 <p>Earlier we initialised the <a href="https://lupyuen.github.io/articles/plic2#set-the-interrupt-priority"><strong>Interrupt Priorities to 1</strong></a> at startup (pic above): <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L74-L83">bl808_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the Platform-Level Interrupt Controller
@@ -583,7 +583,7 @@ PLIC Hart 0 S-Mode Interrupt Enable: After (0xe0002080):
 <p>Thus we have an unexplained problem of <strong>Leaky Writes</strong>, affecting the Interrupt Priority and Interrupt Enable Registers.</p>
 <p>Up Next: More worries…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-title.jpg" alt="Leaky Write for PLIC Interrupt Priority" /></p>
-<h1 id="more-trouble-with-interrupt-claim"><a href="#more-trouble-with-interrupt-claim">8 More Trouble with Interrupt Claim</a></h1>
+<h1 id="more-trouble-with-interrupt-claim"><a class="doc-anchor" href="#more-trouble-with-interrupt-claim">§</a>8 More Trouble with Interrupt Claim</h1>
 <p>We talked earlier about <a href="https://lupyuen.github.io/articles/plic2#handle-the-interrupt"><strong>Handling Interrupts</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Claim Interrupt" /></p>
 <p>And how we fetch the <strong>RISC-V IRQ Number</strong> from the <a href="https://lupyuen.github.io/articles/plic2#claim-the-interrupt"><strong>Interrupt Claim</strong></a> Register: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq_dispatch.c#L47-L66">bl808_irq.c</a></p>
@@ -616,7 +616,7 @@ nsh&gt;
 <p>Which means we can’t read the <strong>RISC-V IRQ Number</strong>!</p>
 <p>We activate our Backup Plan…</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Pending Interrupts" /></p>
-<h1 id="backup-plan"><a href="#backup-plan">9 Backup Plan</a></h1>
+<h1 id="backup-plan"><a class="doc-anchor" href="#backup-plan">§</a>9 Backup Plan</h1>
 <p><em>What’s our Backup Plan for Handling Interrupts?</em></p>
 <p>We can get the RISC-V IRQ Number by reading the <a href="https://lupyuen.github.io/articles/plic2#pending-interrupts"><strong>Interrupt Pending</strong></a> Register (pic above): <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L62-L76">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// If Interrupt Claimed is 0...
@@ -668,7 +668,7 @@ bl808_receive: rxdata=0x0
 <p><a href="https://youtu.be/VSTpsSJ_7L0">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64b-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-run.png" alt="NuttX boots OK on Ox64 BL808! But UART Input is null" /></p>
-<h1 id="all-things-considered"><a href="#all-things-considered">10 All Things Considered</a></h1>
+<h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>10 All Things Considered</h1>
 <p><em>Feels like we’re wading into murky greyish territory… Like Jaws meets Twilight Zone on the Beach?</em></p>
 <p>Yeah we said this <a href="https://lupyuen.github.io/articles/ox2#begin-with-star64-nuttx"><strong>last time</strong></a>, and it’s happening now…</p>
 <blockquote>
@@ -763,7 +763,7 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 <li><a href="https://lupyuen.github.io/articles/plic3"><strong>“Fixed the UART Interrupt and Platform-Level Interrupt Controller”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ox64-solder.jpg" alt="Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)" /></p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>Today we talked about <strong>Interrupting Chicken, Oxen</strong> and <strong>Ox64 BL808 RISC-V SBC</strong>…</p>
 <ul>
 <li>
@@ -822,7 +822,7 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/plic2.md"><strong>lupyuen.github.io/src/plic2.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout3.jpg" alt="Ox64 Serial Console" /></p>
-<h1 id="appendix-uart-driver-for-ox64"><a href="#appendix-uart-driver-for-ox64">12 Appendix: UART Driver for Ox64</a></h1>
+<h1 id="appendix-uart-driver-for-ox64"><a class="doc-anchor" href="#appendix-uart-driver-for-ox64">§</a>12 Appendix: UART Driver for Ox64</h1>
 <p><em>How did we create the NuttX UART Driver for Ox64 BL808?</em></p>
 <p>Today NuttX supports the 32-bit predecessor of BL808: <a href="https://github.com/apache/nuttx/tree/master/arch/risc-v/src/bl602"><strong>Bouffalo Lab BL602</strong></a>.</p>
 <p>When we compare these UARTs…</p>
@@ -905,7 +905,7 @@ static void bl808_uart_configure(const struct uart_config_s *config)
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L112-L325">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://youtu.be/VSTpsSJ_7L0">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic2-run.png" alt="NuttX boots OK on Ox64 BL808! But UART Input is null" /></p>
-<h1 id="appendix-build-and-run-nuttx"><a href="#appendix-build-and-run-nuttx">13 Appendix: Build and Run NuttX</a></h1>
+<h1 id="appendix-build-and-run-nuttx"><a class="doc-anchor" href="#appendix-build-and-run-nuttx">§</a>13 Appendix: Build and Run NuttX</h1>
 <p>In this article, we ran a Work-In-Progress Version of <strong>Apache NuttX RTOS for Ox64</strong>, with PLIC partially working.</p>
 <p>(Console Input is not yet fixed)</p>
 <p>This is how we download and build NuttX for Ox64 BL808 SBC…</p>

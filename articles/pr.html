@@ -89,7 +89,7 @@
 </ul>
 <p>Ready? Let’s dive in! (Like the fish)</p>
 <p><img src="https://lupyuen.github.io/images/pr-fork.png" alt="Create Fork" /></p>
-<h1 id="nuttx-repositories"><a href="#nuttx-repositories">1 NuttX Repositories</a></h1>
+<h1 id="nuttx-repositories"><a class="doc-anchor" href="#nuttx-repositories">§</a>1 NuttX Repositories</h1>
 <p>We begin by <strong>creating our forks</strong> for the <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> repositories…</p>
 <ol>
 <li>
@@ -138,7 +138,7 @@ git clone \
   apps
 </code></pre></div></li>
 </ol>
-<h1 id="build-and-test"><a href="#build-and-test">2 Build and Test</a></h1>
+<h1 id="build-and-test"><a class="doc-anchor" href="#build-and-test">§</a>2 Build and Test</h1>
 <p>We’re ready to code!</p>
 <ol>
 <li>
@@ -171,7 +171,7 @@ login attempt to https://ghcr.io/v2/
 failed with status: 503 Service Unavailable&quot;
 </code></pre></div></li>
 </ol>
-<h2 id="regression-test"><a href="#regression-test">2.1 Regression Test</a></h2>
+<h2 id="regression-test"><a class="doc-anchor" href="#regression-test">§</a>2.1 Regression Test</h2>
 <p><em>Will our modified code break other parts of NuttX?</em></p>
 <p>That’s why it’s good to run a <a href="https://en.wikipedia.org/wiki/Regression_testing"><strong>Regression Test</strong></a> (if feasible) to be sure that other parts of NuttX aren’t affected by our modified code.</p>
 <p>For our Pull Request…</p>
@@ -188,7 +188,7 @@ failed with status: 503 Service Unavailable&quot;
 <p><a href="https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65">(See the NuttX QEMU Log)</a></p>
 <p>Remember to capture the <strong>Output Log</strong>, we’ll add it to our Pull Request.</p>
 <p>(Yeah it will be hard to run a Regression Test if it requires hardware that we don’t have)</p>
-<h2 id="documentation"><a href="#documentation">2.2 Documentation</a></h2>
+<h2 id="documentation"><a class="doc-anchor" href="#documentation">§</a>2.2 Documentation</h2>
 <p>Please update the <strong>Documentation</strong>. The Documentation might be in a <strong>Text File</strong>…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/README.txt"><strong>nuttx/…/README.txt</strong></a></li>
@@ -205,7 +205,7 @@ failed with status: 503 Service Unavailable&quot;
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pr-nxstyle.jpg" alt="Check Coding Style with nxstyle" /></p>
-<h1 id="check-coding-style"><a href="#check-coding-style">3 Check Coding Style</a></h1>
+<h1 id="check-coding-style"><a class="doc-anchor" href="#check-coding-style">§</a>3 Check Coding Style</h1>
 <p>Our NuttX Code will follow this Coding Standard…</p>
 <ul>
 <li><a href="https://nuttx.apache.org/docs/latest/contributing/coding_style.html"><strong>“NuttX C Coding Standard”</strong></a></li>
@@ -301,7 +301,7 @@ int arm64_gic_initialize(void)
  *****************************/
 </code></pre></div>
 <p>After fixing, <strong>test our code</strong> one last time.</p>
-<h1 id="write-the-pull-request"><a href="#write-the-pull-request">4 Write the Pull Request</a></h1>
+<h1 id="write-the-pull-request"><a class="doc-anchor" href="#write-the-pull-request">§</a>4 Write the Pull Request</h1>
 <p>Our Pull Request will have…</p>
 <ol>
 <li>
@@ -327,7 +327,7 @@ int arm64_gic_initialize(void)
 <p><a href="https://github.com/apache/nuttx/pull/7692"><strong>“arch/arm64: Add support for PINE64 PinePhone”</strong></a></p>
 </li>
 </ul>
-<h2 id="title"><a href="#title">4.1 Title</a></h2>
+<h2 id="title"><a class="doc-anchor" href="#title">§</a>4.1 Title</h2>
 <p>Inside our Title is the <strong>NuttX Subsystem</strong> and <strong>One-Line Summary</strong>…</p>
 <blockquote>
 <p><em>“arch/arm64: Add support for Generic Interrupt Controller Version 2”</em></p>
@@ -343,7 +343,7 @@ int arm64_gic_initialize(void)
 </li>
 </ul>
 <p>We’ll add the following sections to the Markdown File…</p>
-<h2 id="summary"><a href="#summary">4.2 Summary</a></h2>
+<h2 id="summary"><a class="doc-anchor" href="#summary">§</a>4.2 Summary</h2>
 <p>In the Summary we write the <strong>purpose of the Pull Request</strong>…</p>
 <blockquote>
 <p><em>“This PR adds support for GIC Version 2, which is needed by Pine64 PinePhone.”</em></p>
@@ -370,7 +370,7 @@ int arm64_gic_initialize(void)
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
 </blockquote>
 <p>(Adding <strong>GPL Code</strong>? Please check with the NuttX Maintainers)</p>
-<h2 id="impact"><a href="#impact">4.3 Impact</a></h2>
+<h2 id="impact"><a class="doc-anchor" href="#impact">§</a>4.3 Impact</h2>
 <p>Under “Impact”, we write <strong>which parts of NuttX are affected</strong> by the Pull Request. </p>
 <p>(And which parts <em>won’t</em> be affected)</p>
 <blockquote>
@@ -382,7 +382,7 @@ int arm64_gic_initialize(void)
 <blockquote>
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
 </blockquote>
-<h2 id="testing"><a href="#testing">4.4 Testing</a></h2>
+<h2 id="testing"><a class="doc-anchor" href="#testing">§</a>4.4 Testing</h2>
 <p>Under “Testing”, we provide evidence that our Pull Request <strong>does what it’s supposed to do.</strong> We fill in the…</p>
 <ul>
 <li>
@@ -425,7 +425,7 @@ int arm64_gic_initialize(void)
 <p>(Because we can’t tell which way the train went… By staring at the track!)</p>
 <p>Now we tidy up our commits…</p>
 <p><img src="https://lupyuen.github.io/images/pr-squash1.png" alt="Squash Commits with GitHub Desktop" /></p>
-<h1 id="squash-the-commits"><a href="#squash-the-commits">5 Squash the Commits</a></h1>
+<h1 id="squash-the-commits"><a class="doc-anchor" href="#squash-the-commits">§</a>5 Squash the Commits</h1>
 <p><em>What’s this “squashing”?</em></p>
 <p>“Squashing” means we’re <strong>combining Multiple Commits</strong> into One Single Commit.</p>
 <p>Our <strong>Commit History</strong> can get awfully messy during development…</p>
@@ -493,7 +493,7 @@ int arm64_gic_initialize(void)
 <li><a href="https://github.com/k88hudson/git-flight-rules#i-need-to-combine-commits"><strong>“Flight rules for Git: I need to combine commits”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pr-walk.jpg" alt="Taking a long walk" /></p>
-<h1 id="meditate"><a href="#meditate">6 Meditate</a></h1>
+<h1 id="meditate"><a class="doc-anchor" href="#meditate">§</a>6 Meditate</h1>
 <p><strong>Breathe. Take a break.</strong></p>
 <p>We’re about to make <strong>NuttX History</strong>… Our changes will be recorded for posterity!</p>
 <p>Take a long walk and ponder…</p>
@@ -513,7 +513,7 @@ int arm64_gic_initialize(void)
 <p>That’s my motivation for <a href="https://github.com/apache/nuttx/pull/7692"><strong>porting NuttX to PINE64 PinePhone</strong></a>.</p>
 <p>But for now… Let’s finish our Pull Request!</p>
 <p><img src="https://lupyuen.github.io/images/pr-pullrequest1.png" alt="Submit the Pull Request" /></p>
-<h1 id="submit-the-pull-request"><a href="#submit-the-pull-request">7 Submit the Pull Request</a></h1>
+<h1 id="submit-the-pull-request"><a class="doc-anchor" href="#submit-the-pull-request">§</a>7 Submit the Pull Request</h1>
 <p>Finally it’s time to submit our Pull Request!</p>
 <ol>
 <li>
@@ -582,7 +582,7 @@ int arm64_gic_initialize(void)
 <p>Normally when the GitHub Actions build fails (not due to our code), I take a <a href="https://github.com/apache/nuttx/pulls"><strong>peek at other recent Pull Requests</strong></a>.</p>
 <p>If they didn’t fail the build, then it’s probably OK to Rebase with Master to force the Rebuild.</p>
 <p><img src="https://lupyuen.github.io/images/pr-update.png" alt="Pull Updates from NuttX Mainline" /></p>
-<h1 id="update-our-repositories"><a href="#update-our-repositories">8 Update Our Repositories</a></h1>
+<h1 id="update-our-repositories"><a class="doc-anchor" href="#update-our-repositories">§</a>8 Update Our Repositories</h1>
 <p>After our Pull Request has been merged into NuttX Mainline, <strong>pull the updates</strong> into our repositories…</p>
 <ol>
 <li>
@@ -628,7 +628,7 @@ int arm64_gic_initialize(void)
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pr#appendix-validate-nuttx-release"><strong>“Validate NuttX Release”</strong></a></li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>I hope this article will be helpful for folks contributing code to NuttX for the very first time.</p>
 <p>In the next article we’ll explain this complex Pull Request that adds a <strong>new SoC and new Board</strong> to NuttX. Stay Tuned!</p>
 <ul>
@@ -662,7 +662,7 @@ int arm64_gic_initialize(void)
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pr.md"><strong>lupyuen.github.io/src/pr.md</strong></a></p>
-<h1 id="notes"><a href="#notes">10 Notes</a></h1>
+<h1 id="notes"><a class="doc-anchor" href="#notes">§</a>10 Notes</h1>
 <ol>
 <li>
 <p>When we modify the <strong>Kconfig</strong> Configuration Files, remember to update the <strong>defconfig</strong> Configuration Files!</p>
@@ -750,7 +750,7 @@ etctmp.c
 <p><a href="https://lupyuen.github.io/articles/unicorn2"><strong>“(Clickable) Call Graph for Apache NuttX Real-Time Operating System”</strong></a></p>
 </li>
 </ol>
-<h1 id="appendix-validate-nuttx-release"><a href="#appendix-validate-nuttx-release">11 Appendix: Validate NuttX Release</a></h1>
+<h1 id="appendix-validate-nuttx-release"><a class="doc-anchor" href="#appendix-validate-nuttx-release">§</a>11 Appendix: Validate NuttX Release</h1>
 <p><em>For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, BL602, …</em></p>
 <p>NuttX needs to be <strong>tested on every device</strong>, and we need your help! 🙏</p>
 <p>Before every Official Release of NuttX, a <strong>Validation Request</strong> will be broadcast on the <a href="https://nuttx.apache.org/community/"><strong>NuttX Developers Mailing List</strong></a>…</p>

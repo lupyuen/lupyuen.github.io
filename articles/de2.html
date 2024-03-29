@@ -120,7 +120,7 @@ const len = framebuffer.len;
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="PinePhone Framebuffer" /></p>
-<h1 id="graphics-framebuffer"><a href="#graphics-framebuffer">1 Graphics Framebuffer</a></h1>
+<h1 id="graphics-framebuffer"><a class="doc-anchor" href="#graphics-framebuffer">§</a>1 Graphics Framebuffer</h1>
 <p>We begin with a <strong>Graphics Framebuffer</strong> that we’ll render on PinePhone’s 720 x 1440 display (pic above): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L653-L656">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Framebuffer of 720 x 1440 pixels
 var fb0 = std.mem.zeroes(  // Init to zeroes...
@@ -176,7 +176,7 @@ initUiChannel(
 </code></pre></div>
 <p>But first we paint some colours…</p>
 <p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
-<h1 id="fill-framebuffer"><a href="#fill-framebuffer">2 Fill Framebuffer</a></h1>
+<h1 id="fill-framebuffer"><a class="doc-anchor" href="#fill-framebuffer">§</a>2 Fill Framebuffer</h1>
 <p>This is how we <strong>fill the Framebuffer</strong> with Blue, Green and Red (pic above): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Fill Framebuffer with Blue, Green and Red
 var i: usize = 0;  // usize is similar to size_t
@@ -227,7 +227,7 @@ const videoInfo = c.fb_videoinfo_s {
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313">(<strong><code>fb_videoinfo_s</code></strong> comes from NuttX RTOS)</a></p>
 <p>We’ll test the Overlay Framebuffers later.</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender2.jpg" alt="TODO" /></p>
-<h1 id="configure-framebuffer"><a href="#configure-framebuffer">3 Configure Framebuffer</a></h1>
+<h1 id="configure-framebuffer"><a class="doc-anchor" href="#configure-framebuffer">§</a>3 Configure Framebuffer</h1>
 <p><em>How do we render the Framebuffer on PinePhone?</em></p>
 <p>Remember that we’re talking directly to PinePhone’s <strong>Display Hardware</strong> (“Bare Metal”), without any Display Driver. So this part might sound a little more complicated than we expect…</p>
 <p>To control PinePhone’s Display Hardware, we’ll set the Hardware Registers for the <a href="https://lupyuen.github.io/articles/de"><strong>Allwinner A64 Display Engine</strong></a> inside PinePhone. (Pic above)</p>
@@ -341,7 +341,7 @@ fn initUiChannel(
 <p><a href="https://ziglang.org/documentation/master/#comptime"><strong><code>comptime</code></strong></a> substitutes the Parameter Values at <strong>Compile-Time</strong>. (Somewhat like a C Macro)</p>
 <p>We’ll explain why in a while.</p>
 <p>Let’s look inside our function <strong><code>initUiChannel</code></strong>…</p>
-<h2 id="framebuffer-address"><a href="#framebuffer-address">3.1 Framebuffer Address</a></h2>
+<h2 id="framebuffer-address"><a class="doc-anchor" href="#framebuffer-address">§</a>3.1 Framebuffer Address</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_TOP_LADD</strong>, Page 104)</a></p>
 <p>The first Hardware Register we’ll set is the <strong>Framebuffer Address</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L455-L461">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_TOP_LADD (UI Overlay Top Field Memory Block Low Address)
@@ -412,7 +412,7 @@ comptime {
 <p><a href="https://ziglang.org/documentation/master/#comptime"><strong><code>comptime</code></strong></a> means that the Assertion Check is performed by the Zig Compiler at <strong>Compile-Time</strong>. (Instead of Runtime)</p>
 <p>This verification is super helpful as we create the new Display Driver for PinePhone.</p>
 <p>(We verify both <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L442-L454"><strong>Register Addresses and Values</strong></a> at Compile-Time. This becomes an <a href="https://qoto.org/@lupyuen/109306036122238530"><strong>“Executable Specification”</strong></a> of PinePhone’s Hardware)</p>
-<h2 id="framebuffer-pitch"><a href="#framebuffer-pitch">3.2 Framebuffer Pitch</a></h2>
+<h2 id="framebuffer-pitch"><a class="doc-anchor" href="#framebuffer-pitch">§</a>3.2 Framebuffer Pitch</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_PITCH</strong>, Page 104)</a></p>
 <p>Next we set the <strong>Framebuffer Pitch</strong> to the number of bytes per row (<code>720 * 4</code>): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L463-L468">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_PITCH (UI Overlay Memory Pitch)
@@ -425,7 +425,7 @@ putreg32(       // Write to Hardware Register...
   xres * 4,     // xres is 720
   OVL_UI_PITCH  // Address of Hardware Register
 );
-</code></pre></div><h2 id="framebuffer-size"><a href="#framebuffer-size">3.3 Framebuffer Size</a></h2>
+</code></pre></div><h2 id="framebuffer-size"><a class="doc-anchor" href="#framebuffer-size">§</a>3.3 Framebuffer Size</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_MBSIZE / OVL_UI_SIZE</strong>, Page 104 / 106)</a></p>
 <p>We set the <strong>Framebuffer Size</strong> with this rather odd formula…</p>
 <div class="example-wrap"><pre class="language-text"><code>(height - 1) &lt;&lt; 16 + (width - 1)
@@ -450,7 +450,7 @@ putreg32(height_width, OVL_UI_MBSIZE);
 
 const OVL_UI_SIZE = OVL_UI_BASE_ADDRESS + 0x88;
 putreg32(height_width, OVL_UI_SIZE);
-</code></pre></div><h2 id="framebuffer-coordinates"><a href="#framebuffer-coordinates">3.4 Framebuffer Coordinates</a></h2>
+</code></pre></div><h2 id="framebuffer-coordinates"><a class="doc-anchor" href="#framebuffer-coordinates">§</a>3.4 Framebuffer Coordinates</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_COOR</strong>, Page 104)</a></p>
 <p>Our Framebuffer will be rendered at X = 0, Y = 0. We set this in the <strong>Framebuffer Coordinates</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L486-L491">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_COOR (UI Overlay Memory Block Coordinate)
@@ -460,7 +460,7 @@ putreg32(height_width, OVL_UI_SIZE);
 
 const OVL_UI_COOR = OVL_UI_BASE_ADDRESS + 0x08;
 putreg32(0, OVL_UI_COOR);
-</code></pre></div><h2 id="framebuffer-attributes"><a href="#framebuffer-attributes">3.5 Framebuffer Attributes</a></h2>
+</code></pre></div><h2 id="framebuffer-attributes"><a class="doc-anchor" href="#framebuffer-attributes">§</a>3.5 Framebuffer Attributes</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_ATTR_CTL</strong>, Page 102)</a></p>
 <p>We set the <strong>Framebuffer Attributes</strong>…</p>
 <ul>
@@ -516,7 +516,7 @@ putreg32(attr, OVL_UI_ATTR_CTL);
 const LAY_ALPHA_MODE: u3 = 4 &lt;&lt; 1;
 </code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#packed-struct">(Zig also supports <strong>Packed Structs</strong> with Bit Fields)</a></p>
-<h2 id="disable-scaler"><a href="#disable-scaler">3.6 Disable Scaler</a></h2>
+<h2 id="disable-scaler"><a class="doc-anchor" href="#disable-scaler">§</a>3.6 Disable Scaler</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>UIS_CTRL_REG</strong>, Page 66)</a></p>
 <p>PinePhone’s A64 Display Engine includes a <strong>UI Scaler</strong> that will do Hardware Scaling of our Framebuffer. Let’s disable it: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L585-L593">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// UIS_CTRL_REG at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)
@@ -531,7 +531,7 @@ putreg32(0, UIS_CTRL_REG);
 <p>Let’s talk about PinePhone’s Blender…</p>
 <p>(Will PinePhone Blend? Yep for sure!)</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="TODO" /></p>
-<h1 id="configure-blender"><a href="#configure-blender">4 Configure Blender</a></h1>
+<h1 id="configure-blender"><a class="doc-anchor" href="#configure-blender">§</a>4 Configure Blender</h1>
 <p><em>What’s the Blender inside PinePhone?</em></p>
 <p>PinePhone’s A64 Display Engine supports <strong>3 Framebuffers</strong> (pic above). PinePhone’s Blender combines the 3 Framebuffers into a single image for display.</p>
 <p>Our job now is to <strong>configure the Blender</strong> so that it renders the Framebuffer correctly.</p>
@@ -564,7 +564,7 @@ putreg32(0, UIS_CTRL_REG);
 <p>(For Blender Pipe 0)</p>
 </li>
 </ol>
-<h2 id="output-size"><a href="#output-size">4.1 Output Size</a></h2>
+<h2 id="output-size"><a class="doc-anchor" href="#output-size">§</a>4.1 Output Size</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_SIZE / GLB_SIZE</strong>, Page 110 / 93)</a></p>
 <p>We set the <strong>Output Size</strong> of our Blender to 720 x 1440 with this odd formula (that we’ve seen earlier)…</p>
 <div class="example-wrap"><pre class="language-text"><code>(height - 1) &lt;&lt; 16 + (width - 1)
@@ -588,7 +588,7 @@ putreg32(height_width, BLD_SIZE);
 
 const GLB_SIZE = GLB_BASE_ADDRESS + 0x00C;
 putreg32(height_width, GLB_SIZE);
-</code></pre></div><h2 id="input-size"><a href="#input-size">4.2 Input Size</a></h2>
+</code></pre></div><h2 id="input-size"><a class="doc-anchor" href="#input-size">§</a>4.2 Input Size</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_ISIZE</strong>, Page 108)</a></p>
 <p>According to the pic above, we’re configuring <strong>Blender Pipe 0</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L524">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Set Blender Input Pipe to Pipe 0
@@ -605,7 +605,7 @@ const BLD_CH_ISIZE = BLD_BASE_ADDRESS + 0x008 + pipe * 0x10;
 putreg32(height_width, BLD_CH_ISIZE);
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/de2#output-size">(We’ve seen <strong><code>height_width</code></strong> earlier)</a></p>
-<h2 id="fill-color"><a href="#fill-color">4.3 Fill Color</a></h2>
+<h2 id="fill-color"><a class="doc-anchor" href="#fill-color">§</a>4.3 Fill Color</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_FILL_COLOR</strong>, Page 107)</a></p>
 <p>We set the <strong>Background Fill Color</strong> for the Blender to Opaque Black: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L526-L545">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// BLD_FILL_COLOR (Blender Fill Color)
@@ -627,7 +627,7 @@ const color = ALPHA
 
 const BLD_FILL_COLOR = BLD_BASE_ADDRESS + 0x004 + pipe * 0x10;
 putreg32(color, BLD_FILL_COLOR);
-</code></pre></div><h2 id="input-offset"><a href="#input-offset">4.4 Input Offset</a></h2>
+</code></pre></div><h2 id="input-offset"><a class="doc-anchor" href="#input-offset">§</a>4.4 Input Offset</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_OFFSET</strong>, Page 108)</a></p>
 <p>We set the <strong>Input Offset</strong> of the Blender to X = 0, Y = 0: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L547-L559">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// BLD_CH_OFFSET (Blender Input Memory Offset)
@@ -639,7 +639,7 @@ const offset =
   | xoffset;                    // xoffset is 0
 const BLD_CH_OFFSET = BLD_BASE_ADDRESS + 0x00C + pipe * 0x10;
 putreg32(offset, BLD_CH_OFFSET);
-</code></pre></div><h2 id="blender-attributes"><a href="#blender-attributes">4.5 Blender Attributes</a></h2>
+</code></pre></div><h2 id="blender-attributes"><a class="doc-anchor" href="#blender-attributes">§</a>4.5 Blender Attributes</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CTL</strong>, Page 110)</a></p>
 <p>We set these (mysterious) <strong>Blender Attributes</strong>…</p>
 <ul>
@@ -684,7 +684,7 @@ putreg32(blend, BLD_CTL);
 </code></pre></div>
 <p>We’re almost done with our Blender Configuration…</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender2.jpg" alt="TODO" /></p>
-<h2 id="enable-blender"><a href="#enable-blender">4.6 Enable Blender</a></h2>
+<h2 id="enable-blender"><a class="doc-anchor" href="#enable-blender">§</a>4.6 Enable Blender</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_RTCTL / BLD_FILL_COLOR_CTL / GLB_DBUFFER</strong>, Page 108 / 106 / 93)</a></p>
 <p>Finally we enable <strong>Blender Pipe 0</strong> (pic above): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L266-L297">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Set Blender Route
@@ -730,7 +730,7 @@ putreg32(DOUBLE_BUFFER_RDY, GLB_DBUFFER);  // TODO: DMB
 </code></pre></div>
 <p>And that’s all for rendering our Framebuffer!</p>
 <p><img src="https://lupyuen.github.io/images/de2-run1.png" alt="Testing our PinePhone Display Driver" /></p>
-<h1 id="test-pinephone-display-driver"><a href="#test-pinephone-display-driver">5 Test PinePhone Display Driver</a></h1>
+<h1 id="test-pinephone-display-driver"><a class="doc-anchor" href="#test-pinephone-display-driver">§</a>5 Test PinePhone Display Driver</h1>
 <p>We’re ready to test our Zig Display Driver on PinePhone!</p>
 <p>Follow these steps to <strong>download NuttX RTOS</strong> (with our Zig Driver inside) to a microSD Card…</p>
 <ul>
@@ -783,7 +783,7 @@ Apply Settings
 <p>That’s why we configured the Framebuffer for <strong>XRGB 8888</strong> instead of ARGB 8888. <a href="https://lupyuen.github.io/articles/de2#framebuffer-attributes">(See this)</a></p>
 <p>In a while we’ll render 2 Overlay Framebuffers configured for ARGB 8888. (To prove that the Alpha Channel really works!)</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Multiple Framebuffers" /></p>
-<h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">6 Multiple Framebuffers</a></h1>
+<h1 id="multiple-framebuffers"><a class="doc-anchor" href="#multiple-framebuffers">§</a>6 Multiple Framebuffers</h1>
 <p><em>Can we render Multiple Framebuffers?</em></p>
 <p>Yep PinePhone’s Display Hardware supports up to <strong>3 Framebuffers</strong> (pic above)…</p>
 <ul>
@@ -808,7 +808,7 @@ Apply Settings
 <p>Render the 2 Framebuffers as Overlays</p>
 </li>
 </ol>
-<h2 id="allocate-framebuffers"><a href="#allocate-framebuffers">6.1 Allocate Framebuffers</a></h2>
+<h2 id="allocate-framebuffers"><a class="doc-anchor" href="#allocate-framebuffers">§</a>6.1 Allocate Framebuffers</h2>
 <p>Earlier we have allocated the <a href="https://lupyuen.github.io/articles/de2#graphics-framebuffer"><strong>Base Framebuffer</strong></a>…</p>
 <ul>
 <li>
@@ -842,7 +842,7 @@ var fb2 = std.mem.zeroes(  // Init to zeroes...
 <p>Yep Framebuffer 1 doesn’t cover the screen completely, and it’s OK!</p>
 <p>Later we’ll set the X and Y Offsets of Framebuffer 1, to centre it horizontally.</p>
 <p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="Blue, Green, Red Blocks with Overlays" /></p>
-<h2 id="fill-framebuffers"><a href="#fill-framebuffers">6.2 Fill Framebuffers</a></h2>
+<h2 id="fill-framebuffers"><a class="doc-anchor" href="#fill-framebuffers">§</a>6.2 Fill Framebuffers</h2>
 <p>Let’s <strong>fill the pixels</strong> of the 2 Overlay Framebuffers (pic above)…</p>
 <ul>
 <li>
@@ -888,7 +888,7 @@ while (y &lt; 1440) : (y += 1) {
 </code></pre></div>
 <p>(<strong><code>0x8000_8000</code></strong> means Alpha = <code>0x80</code>, Green = <code>0x80</code>)</p>
 <p>Note that pixels outside the circle are filled with 0. (Transparent Black)</p>
-<h2 id="render-framebuffers"><a href="#render-framebuffers">6.3 Render Framebuffers</a></h2>
+<h2 id="render-framebuffers"><a class="doc-anchor" href="#render-framebuffers">§</a>6.3 Render Framebuffers</h2>
 <p>For our final step, we <strong>render all 3 Framebuffers</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L140-L170">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init the UI Blender for PinePhone&#39;s A64 Display Engine
 initUiBlender();
@@ -930,7 +930,7 @@ applySettings(channels);
 <p>We need this because we’re passing the arguments to <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L350-L594"><strong><code>initUiChannel</code></strong></a> as <strong><code>comptime</code></strong> Compile-Time Constants.</p>
 <p><a href="https://lupyuen.github.io/articles/de2#framebuffer-address">(As explained previously)</a></p>
 <p><img src="https://lupyuen.github.io/images/de2-test3.jpg" alt="Blue, Green, Red Blocks with Overlays" /></p>
-<h1 id="test-multiple-framebuffers"><a href="#test-multiple-framebuffers">7 Test Multiple Framebuffers</a></h1>
+<h1 id="test-multiple-framebuffers"><a class="doc-anchor" href="#test-multiple-framebuffers">§</a>7 Test Multiple Framebuffers</h1>
 <p>We’re ready for the final demo: <strong>Render Multiple Framebuffers</strong> with our Zig Driver on PinePhone!</p>
 <p>Follow the earlier steps to download <strong>Apache NuttX RTOS</strong> to a microSD Card and boot it on PinePhone…</p>
 <ul>
@@ -991,7 +991,7 @@ Apply Settings
 <p>The pixel data goes directly from the Framebuffers in RAM to PinePhone’s Display.</p>
 <p><a href="https://lupyuen.github.io/articles/de#animate-madelbrot-set">(Here’s the proof)</a></p>
 <p><img src="https://lupyuen.github.io/images/de-title.jpg" alt="PinePhone rendering Mandelbrot Set on Apache NuttX RTOS" /></p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>Today we’ve shown that it’s indeed possible to write a Zig Display Driver that talks directly to PinePhone’s Hardware to render graphics.</p>
 <p>(Bonus: Our Zig Driver includes an <a href="https://lupyuen.github.io/articles/de2#framebuffer-address"><strong>“Executable Specification”</strong></a> of PinePhone’s Display Hardware Registers, with their addresses and values!)</p>
 <p>The code we’ve seen today will eventually become the PinePhone Display Driver for <strong>Apache NuttX RTOS</strong>. Though some bits are still missing…</p>
@@ -1037,7 +1037,7 @@ Apply Settings
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de2.md"><strong>lupyuen.github.io/src/de2.md</strong></a></p>
-<h1 id="notes"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes"><a class="doc-anchor" href="#notes">§</a>9 Notes</h1>
 <ol>
 <li>
 <p>Sorry I took so long to merge the PinePhone code into NuttX Mainline… I wanted to be really sure that PinePhone is sufficiently stable on NuttX.</p>
@@ -1045,7 +1045,7 @@ Apply Settings
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Multiple Framebuffers" /></p>
-<h1 id="appendix-render-multiple-framebuffers"><a href="#appendix-render-multiple-framebuffers">10 Appendix: Render Multiple Framebuffers</a></h1>
+<h1 id="appendix-render-multiple-framebuffers"><a class="doc-anchor" href="#appendix-render-multiple-framebuffers">§</a>10 Appendix: Render Multiple Framebuffers</h1>
 <p>Earlier we’ve seen <strong><code>initUiChannel</code></strong> for rendering a single Framebuffer…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/de2#configure-framebuffer"><strong>“Configure Framebuffer”</strong></a></li>
@@ -1056,7 +1056,7 @@ Apply Settings
 </ul>
 <p>This Appendix explains the changes we made to render 3 Framebuffers. (Pic above)</p>
 <p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="Blue, Green, Red Blocks with Overlays" /></p>
-<h2 id="set-framebuffer-attributes"><a href="#set-framebuffer-attributes">10.1 Set Framebuffer Attributes</a></h2>
+<h2 id="set-framebuffer-attributes"><a class="doc-anchor" href="#set-framebuffer-attributes">§</a>10.1 Set Framebuffer Attributes</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_ATTR_CTL</strong>, Page 102)</a></p>
 <p>For <strong>Framebuffer Alpha</strong>: We configured Framebuffer 2 (Channel 3) to be <strong>Globally Semi-Transparent</strong>. (Global Alpha = <code>0x7F</code>)</p>
 <p>This means that the Global Alpha will be mixed with the Pixel Alpha. So the pixels will look extra faint for Framebuffer 2. (Green Circle, pic above)</p>
@@ -1102,7 +1102,7 @@ putreg32(attr, OVL_UI_ATTR_CTL);
 </code></pre></div>
 <p>Next we configure the Blender…</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Multiple Framebuffers" /></p>
-<h2 id="set-blender-route"><a href="#set-blender-route">10.2 Set Blender Route</a></h2>
+<h2 id="set-blender-route"><a class="doc-anchor" href="#set-blender-route">§</a>10.2 Set Blender Route</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_RTCTL</strong>, Page 108)</a></p>
 <p>Now that we render 3 Framebuffers instead of 1, we need to <strong>connect the Blender Pipes</strong> to their respective Framebuffers (Channels)…</p>
 <ul>
@@ -1150,7 +1150,7 @@ const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
 putreg32(route, BLD_CH_RTCTL);  // TODO: DMB
 </code></pre></div>
 <p>(<strong><code>channels</code></strong> is 3 when we render 3 Framebuffers)</p>
-<h2 id="enable-blender-pipes"><a href="#enable-blender-pipes">10.3 Enable Blender Pipes</a></h2>
+<h2 id="enable-blender-pipes"><a class="doc-anchor" href="#enable-blender-pipes">§</a>10.3 Enable Blender Pipes</h2>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_FILL_COLOR_CTL</strong>, Page 106)</a></p>
 <p>After connecting the Blender Pipes, we <strong>enable all 3 Blender Pipes</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Enable Blender Pipes
@@ -1189,7 +1189,7 @@ const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
 putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB
 </code></pre></div>
 <p>(<strong><code>channels</code></strong> is 3 when we render 3 Framebuffers)</p>
-<h1 id="appendix-upcoming-features-in-pinephone-display-driver"><a href="#appendix-upcoming-features-in-pinephone-display-driver">11 Appendix: Upcoming Features in PinePhone Display Driver</a></h1>
+<h1 id="appendix-upcoming-features-in-pinephone-display-driver"><a class="doc-anchor" href="#appendix-upcoming-features-in-pinephone-display-driver">§</a>11 Appendix: Upcoming Features in PinePhone Display Driver</h1>
 <p>We have completed in Zig three major chunks of PinePhone’s Display Driver…</p>
 <ul>
 <li>

@@ -107,7 +107,7 @@
 </ul>
 <p>We begin by making a Bootable microSD…</p>
 <p><img src="https://lupyuen.github.io/images/arm-jumpdrive.png" alt="PinePhone Jumpdrive on microSD" /></p>
-<h1 id="boot-nuttx-on-pinephone"><a href="#boot-nuttx-on-pinephone">1 Boot NuttX on PinePhone</a></h1>
+<h1 id="boot-nuttx-on-pinephone"><a class="doc-anchor" href="#boot-nuttx-on-pinephone">§</a>1 Boot NuttX on PinePhone</h1>
 <p>Let’s make a <strong>Bootable NuttX microSD</strong> that will start an LVGL Touchscreen App on our PinePhone…</p>
 <ol>
 <li>
@@ -145,7 +145,7 @@
 <p>Let’s find out how we made NuttX boot to LVGL…</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="PinePhone with USB Serial Debug Cable" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>PinePhone with USB Serial Debug Cable</em></a></p>
-<h1 id="boot-to-lvgl"><a href="#boot-to-lvgl">2 Boot to LVGL</a></h1>
+<h1 id="boot-to-lvgl"><a class="doc-anchor" href="#boot-to-lvgl">§</a>2 Boot to LVGL</h1>
 <p><em>How did we configure NuttX to boot an LVGL App?</em></p>
 <p>Normally NuttX boots to the <strong>NSH Shell</strong>. Which lets us execute Console Commands through a <a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><strong>USB Serial Debug Cable</strong></a>. (Pic above)</p>
 <p>But for today’s demo we configured NuttX to boot instead with the <strong>LVGL Demo App</strong>. In the NuttX Project Folder, we ran…</p>
@@ -180,7 +180,7 @@
 <p>The Default LVGL Demo is a little hard to use, let’s talk about it…</p>
 <p><img src="https://lupyuen.github.io/images/fb-lvgl3.jpg" alt="Default LVGL Widget Demo is not quite so Touch-Friendly" /></p>
 <p><em>Default LVGL Widget Demo is not quite so Touch-Friendly</em></p>
-<h1 id="touch-friendly-lvgl"><a href="#touch-friendly-lvgl">3 Touch-Friendly LVGL</a></h1>
+<h1 id="touch-friendly-lvgl"><a class="doc-anchor" href="#touch-friendly-lvgl">§</a>3 Touch-Friendly LVGL</h1>
 <p><em>Is there a problem with the LVGL Demo App?</em></p>
 <p>The pic above shows the LVGL Demo App with the Default Settings. The <strong>dense screen</strong> is a little hard to use with my thick shaky fingers…</p>
 <ul>
@@ -268,7 +268,7 @@ CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
 <p>Let’s take a peek at the other LVGL Demos…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-widget.jpg" alt="LVGL Widget Demo is Touch-Friendly now" /></p>
 <p><a href="https://www.youtube.com/watch?v=JQTh3VTTTkc"><em>LVGL Widget Demo is Touch-Friendly now</em></a></p>
-<h1 id="lvgl-demos"><a href="#lvgl-demos">4 LVGL Demos</a></h1>
+<h1 id="lvgl-demos"><a class="doc-anchor" href="#lvgl-demos">§</a>4 LVGL Demos</h1>
 <p><em>We’ve seen the LVGL Widget Demo. What about other demos?</em></p>
 <p>There are 5 LVGL Demos available in <strong><code>make</code> <code>menuconfig</code></strong>…</p>
 <ol>
@@ -311,7 +311,7 @@ CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
 <p>Which gives us some useful numbers…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-benchmark.jpg" alt="LVGL Benchmark Demo" /></p>
 <p><a href="https://www.youtube.com/watch?v=deBzb-VbHck"><em>LVGL Benchmark Demo</em></a></p>
-<h1 id="lvgl-performance"><a href="#lvgl-performance">5 LVGL Performance</a></h1>
+<h1 id="lvgl-performance"><a class="doc-anchor" href="#lvgl-performance">§</a>5 LVGL Performance</h1>
 <p><em>How well does LVGL perform on PinePhone?</em></p>
 <p>From the last video (pic above) we see the <a href="https://www.youtube.com/watch?v=deBzb-VbHck"><strong>LVGL Benchmark Numbers</strong></a>…</p>
 <ul>
@@ -348,7 +348,7 @@ CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
 <p>We’re finally ready to create our own LVGL App for PinePhone!</p>
 <p><img src="https://lupyuen.github.io/images/lvgl-code4a.jpg" alt="LVGL Programming in Zig" /></p>
 <p><a href="https://lupyuen.github.io/articles/lvgl"><em>LVGL Programming in Zig</em></a></p>
-<h1 id="create-a-touchscreen-app"><a href="#create-a-touchscreen-app">6 Create a Touchscreen App</a></h1>
+<h1 id="create-a-touchscreen-app"><a class="doc-anchor" href="#create-a-touchscreen-app">§</a>6 Create a Touchscreen App</h1>
 <p><em>We’ve seen the LVGL Demo Apps for PinePhone…</em></p>
 <p><em>Can we create our own Touchscreen App?</em></p>
 <p>Yep! Simplest way to create our own app: We take the <strong>LVGL Widget Demo</strong> and modify it.</p>
@@ -383,7 +383,7 @@ void lv_demo_widgets(void) {
 <p>This happens if our LVGL App <strong><code>lvgldemo</code></strong> fails to start.</p>
 <p>Check for Error Messages with a <a href="https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone"><strong>USB Serial Debug Cable</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-gallery.jpg" alt="NuttX on PinePhone in the wild" /></p>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>Now we can finally build and test NuttX Apps on PinePhone… All we need is a microSD Card!</p>
 <p>What will you create? Lemme know!</p>
 <p>Please check out the other articles on NuttX for PinePhone…</p>
@@ -418,7 +418,7 @@ void lv_demo_widgets(void) {
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl2.md"><strong>lupyuen.github.io/src/lvgl2.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="PinePhone with USB Serial Debug Cable" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>PinePhone with USB Serial Debug Cable</em></a></p>
-<h1 id="appendix-build-apache-nuttx-rtos-for-pinephone"><a href="#appendix-build-apache-nuttx-rtos-for-pinephone">8 Appendix: Build Apache NuttX RTOS for PinePhone</a></h1>
+<h1 id="appendix-build-apache-nuttx-rtos-for-pinephone"><a class="doc-anchor" href="#appendix-build-apache-nuttx-rtos-for-pinephone">§</a>8 Appendix: Build Apache NuttX RTOS for PinePhone</h1>
 <p>The easiest way to run Apache NuttX RTOS on PinePhone is to download the <strong>NuttX Image</strong> and boot it on PinePhone…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl2#boot-nuttx-on-pinephone"><strong>“Boot NuttX on PinePhone”</strong></a></li>
@@ -507,7 +507,7 @@ gzip Image
 </ol>
 <p>Follow the steps in the next section to boot the NuttX Image…</p>
 <p><img src="https://lupyuen.github.io/images/arm-jumpdrive.png" alt="PinePhone Jumpdrive on microSD" /></p>
-<h1 id="appendix-boot-apache-nuttx-rtos-on-pinephone"><a href="#appendix-boot-apache-nuttx-rtos-on-pinephone">9 Appendix: Boot Apache NuttX RTOS on PinePhone</a></h1>
+<h1 id="appendix-boot-apache-nuttx-rtos-on-pinephone"><a class="doc-anchor" href="#appendix-boot-apache-nuttx-rtos-on-pinephone">§</a>9 Appendix: Boot Apache NuttX RTOS on PinePhone</h1>
 <p><a href="https://youtu.be/kGI_0yK1vws">(Watch the Demo on YouTube)</a></p>
 <p>In the previous section we’ve built the NuttX Image <strong><code>Image.gz</code></strong>.</p>
 <p>Let’s <strong>boot the NuttX Image</strong> on PinePhone, assuming we have a <a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><strong>USB Serial Debug Cable</strong></a>…</p>

@@ -113,7 +113,7 @@
 <p>(We’ll see why in a moment)</p>
 <p><img src="https://lupyuen.github.io/images/purescript-title.png" alt="Parsing Apache NuttX RTOS Logs with PureScript" /></p>
 <p><a href="https://youtu.be/9oBhy3P7pYc"><em>Watch the Demo on YouTube</em></a></p>
-<h1 id="demo-walkthrough"><a href="#demo-walkthrough">1 Demo Walkthrough</a></h1>
+<h1 id="demo-walkthrough"><a class="doc-anchor" href="#demo-walkthrough">§</a>1 Demo Walkthrough</h1>
 <p>To see our <strong>NuttX Log Parser</strong> in action, we run the <a href="https://lupyuen.github.io/articles/tinyemu2"><strong>NuttX Emulator</strong></a> in a Web Browser. (Pic above)</p>
 <p>Inside the NuttX Emulator is the exact same <strong>NuttX App (QuickJS)</strong> that crashed over the holidays…</p>
 <ol>
@@ -153,7 +153,7 @@
 <p>(With hyperlinks to <strong>NuttX Disassembly</strong> and <strong>Source Code</strong>)</p>
 <p>How did we make it happen? We start with the smarty bits…</p>
 <p><img src="https://lupyuen.github.io/images/purescript-flow2.jpg" alt="Explain the RISC-V Exception" /></p>
-<h1 id="explain-the-risc-v-exception"><a href="#explain-the-risc-v-exception">2 Explain the RISC-V Exception</a></h1>
+<h1 id="explain-the-risc-v-exception"><a class="doc-anchor" href="#explain-the-risc-v-exception">§</a>2 Explain the RISC-V Exception</h1>
 <p><em>How did we explain the RISC-V Exception?</em></p>
 <span style="font-size:90%">
 <blockquote>
@@ -235,7 +235,7 @@ result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
 <p>Without getting stuck with the low-level procedural plumbing of JavaScript.</p>
 <p>Let’s do a bit more PureScript…</p>
 <p><img src="https://lupyuen.github.io/images/purescript-flow3.jpg" alt="Parse the RISC-V Exception" /></p>
-<h1 id="parse-the-risc-v-exception"><a href="#parse-the-risc-v-exception">3 Parse the RISC-V Exception</a></h1>
+<h1 id="parse-the-risc-v-exception"><a class="doc-anchor" href="#parse-the-risc-v-exception">§</a>3 Parse the RISC-V Exception</h1>
 <p><em>How did we get the RISC-V Exception? MCAUSE, EPC, MTVAL?</em></p>
 <p>We auto-extracted the <strong>RISC-V Exception</strong> from the NuttX Log…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>riscv_exception:
@@ -387,7 +387,7 @@ const explain = explainException
 </code></pre></div>
 <p>Let’s talk about log passing (and tossing)…</p>
 <p><img src="https://lupyuen.github.io/images/purescript-flow4.jpg" alt="Pass NuttX Logs to PureScript" /></p>
-<h1 id="pass-nuttx-logs-to-purescript"><a href="#pass-nuttx-logs-to-purescript">4 Pass NuttX Logs to PureScript</a></h1>
+<h1 id="pass-nuttx-logs-to-purescript"><a class="doc-anchor" href="#pass-nuttx-logs-to-purescript">§</a>4 Pass NuttX Logs to PureScript</h1>
 <p><em>PureScript will parse our RISC-V Exceptions and explain them… How to pass our NuttX Logs to PureScript?</em></p>
 <p>We’re running <a href="https://lupyuen.github.io/articles/tinyemu2"><strong>NuttX Emulator</strong></a> inside our Web Browser.</p>
 <p>We <strong>intercept all logs</strong> emitted by the Emulator, with this JavaScript: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L487-L511">term.js</a></p>
@@ -504,7 +504,7 @@ function disassemble(addr) {
 <p>But we do this only for <strong>Valid NuttX Addresses</strong>. (Otherwise we’ll hyperlink to hot garbage)</p>
 <p>How will <strong>identifyAddress</strong> know if it’s a Valid NuttX Address? Coming right up…</p>
 <p><img src="https://lupyuen.github.io/images/purescript-flow5.jpg" alt="Identify a NuttX Address" /></p>
-<h1 id="identify-a-nuttx-address"><a href="#identify-a-nuttx-address">5 Identify a NuttX Address</a></h1>
+<h1 id="identify-a-nuttx-address"><a class="doc-anchor" href="#identify-a-nuttx-address">§</a>5 Identify a NuttX Address</h1>
 <p><em>Given a NuttX Address like 8000a0e4: How will we know if it’s in NuttX Kernel or NuttX App? And whether it’s Code, Data, BSS or Heap?</em></p>
 <p>Once Again: We get a little help from <strong>PureScript</strong> to match the Regex Patterns of <strong>Valid NuttX Addresses</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L55-L102">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- Given an Address: Identify the
@@ -559,7 +559,7 @@ resultType = result.constructor.name;
 <p>That’s why we’ll have an <a href="https://lupyuen.github.io/articles/purescript#appendix-online-purescript-compiler"><strong>Online PureScript Compiler</strong></a> that will allow the Troubleshooting Rules to be <strong>tweaked and tested easily</strong> across all NuttX Platforms.</p>
 <p><img src="https://lupyuen.github.io/images/purescript-disassembly.png" alt="NuttX Disassembly" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000702a"><em>NuttX Disassembly for 8000_702A</em></a></p>
-<h1 id="disassemble-nuttx-by-address"><a href="#disassemble-nuttx-by-address">6 Disassemble NuttX by Address</a></h1>
+<h1 id="disassemble-nuttx-by-address"><a class="doc-anchor" href="#disassemble-nuttx-by-address">§</a>6 Disassemble NuttX by Address</h1>
 <p><em>Given a NuttX Address like 8000a0e4: How shall we show the NuttX Disassembly?</em></p>
 <p>We chunked up the <strong>NuttX Disassembly</strong> into many many small files (by NuttX Address)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX App Dissassembly (QuickJS)
@@ -653,7 +653,7 @@ cargo run -- $chunkpath $chunkbase
 <p>Our <a href="https://lupyuen.github.io/articles/quickjs#nuttx-stack-is-full-of-quickjs"><strong>NuttX Stack was Full!</strong></a> There was a clear sign that we missed: The <a href="https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478"><strong>Loopy Stack Dump</strong></a> means that the NuttX Stack was obviously full.</p>
 <p>That’s why we need a <strong>Smarter Log Parser</strong> that will catch these common problems. And stop NuttX Devs from falling into traps!</p>
 <p><img src="https://lupyuen.github.io/images/purescript-flower.jpg" alt="Parsing Apache NuttX RTOS Logs with PureScript (Overall Flower)" /></p>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>Troubleshooting NuttX Crash Dumps will become a little less painful… Thanks to our new <strong>NuttX Log Parser</strong>!</p>
 <ul>
 <li>
@@ -699,7 +699,7 @@ cargo run -- $chunkpath $chunkbase
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/purescript.md"><strong>lupyuen.github.io/src/purescript.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/purescript-flow6.jpg" alt="NuttX Log Parser" /></p>
-<h1 id="appendix-nuttx-log-parser"><a href="#appendix-nuttx-log-parser">8 Appendix: NuttX Log Parser</a></h1>
+<h1 id="appendix-nuttx-log-parser"><a class="doc-anchor" href="#appendix-nuttx-log-parser">§</a>8 Appendix: NuttX Log Parser</h1>
 <p>If we wish to update the <strong>NuttX Log Parser</strong> in PureScript: This is how we download and build the code…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Log Parser in PureScript
 git clone https://github.com/lupyuen/nuttx-purescript-parser
@@ -727,7 +727,7 @@ spago run
 <p><a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/run.sh"><strong>run.sh</strong></a> will rewrite the <strong>JavaScript Imports</strong>. (See the next section)</p>
 <p>Remember to install the <a href="https://marketplace.visualstudio.com/items?itemName=nwolverson.ide-purescript"><strong>PureScript IDE VSCode Extension</strong></a>. It will auto-generate the <strong>Function Types</strong> when we click on the Suggested Type…</p>
 <p><img src="https://lupyuen.github.io/images/purescript-type.png" alt="VSCode will auto-generate the Function Types when we click on the Suggested Type" /></p>
-<h1 id="appendix-rewrite-the-imports"><a href="#appendix-rewrite-the-imports">9 Appendix: Rewrite the Imports</a></h1>
+<h1 id="appendix-rewrite-the-imports"><a class="doc-anchor" href="#appendix-rewrite-the-imports">§</a>9 Appendix: Rewrite the Imports</h1>
 <p>From the previous section, <strong>PureScript Compiler “<code>spago</code> <code>run</code>”</strong> generates the JavaScript for our NuttX Log Parser at…</p>
 <ul>
 <li>
@@ -786,7 +786,7 @@ cat output/Main/index.js \
 
   // Call the PureScript Function
   const result2 = explainException(12)(&#39;000000008000ad8a&#39;)(&#39;000000008000ad8a&#39;)
-</code></pre></div><h1 id="appendix-bigint-in-purescript"><a href="#appendix-bigint-in-purescript">10 Appendix: BigInt in PureScript</a></h1>
+</code></pre></div><h1 id="appendix-bigint-in-purescript"><a class="doc-anchor" href="#appendix-bigint-in-purescript">§</a>10 Appendix: BigInt in PureScript</h1>
 <p><em>Why are we passing addresses in Text instead of Numbers? Like <code>&quot;8000ad8a&quot;</code></em></p>
 <p>That’s because <code>0x8000ad8a</code> is too big for <strong>PureScript Int</strong>, a signed 32-bit integer.</p>
 <p>PureScript Int is meant to interoperate with JavaScript Integer, which is also 32-bit.</p>
@@ -799,7 +799,7 @@ npm install big-integer
 <p><strong>TODO:</strong> BigInt is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt"><strong>already supported</strong></a> by Web Browsers. Do we really need NPM big-integer?</p>
 <p><img src="https://lupyuen.github.io/images/purescript-compiler.png" alt="Online PureScript Compiler" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-trypurescript?gist=1405685d6f847ea5d4d6302b196bb05e"><em>Try the Online PureScript Compiler</em></a></p>
-<h1 id="appendix-online-purescript-compiler"><a href="#appendix-online-purescript-compiler">11 Appendix: Online PureScript Compiler</a></h1>
+<h1 id="appendix-online-purescript-compiler"><a class="doc-anchor" href="#appendix-online-purescript-compiler">§</a>11 Appendix: Online PureScript Compiler</h1>
 <p><em>How will we allow the NuttX Troubleshooting Rules to be tweaked and tested easily across all NuttX Platforms?</em></p>
 <p>The <strong>Online PureScript Compiler</strong> will let us modify and test the NuttX Troubleshooting Rules in a Web Browser (pic above)…</p>
 <ol>

@@ -95,7 +95,7 @@
 <p>Let’s inspect the microSD Images…</p>
 <p><img src="https://lupyuen.github.io/images/star64-microsd.jpg" alt="“All we need is a microSD”" /></p>
 <p><em>“All we need is a microSD”</em></p>
-<h1 id="linux-images-for-star64"><a href="#linux-images-for-star64">1 Linux Images for Star64</a></h1>
+<h1 id="linux-images-for-star64"><a class="doc-anchor" href="#linux-images-for-star64">§</a>1 Linux Images for Star64</h1>
 <p>According to <a href="https://wiki.pine64.org/wiki/STAR64#Software_releases"><strong>Software Releases for Star64</strong></a>, we have these Linux Images…</p>
 <ul>
 <li>
@@ -126,7 +126,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/star64-armbian.png" alt="Armbian Image for Star64" /></p>
-<h1 id="armbian-image-for-star64"><a href="#armbian-image-for-star64">2 Armbian Image for Star64</a></h1>
+<h1 id="armbian-image-for-star64"><a class="doc-anchor" href="#armbian-image-for-star64">§</a>2 Armbian Image for Star64</h1>
 <p>We begin with the <a href="https://www.armbian.com/star64/"><strong>Armbian Image for Star64</strong></a>…</p>
 <ul>
 <li>
@@ -222,7 +222,7 @@ lrwxrwxrwx       24 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 </ol>
 <p>Let’s compare Armbian with Yocto…</p>
 <p><img src="https://lupyuen.github.io/images/star64-yocto.png" alt="Yocto Image for Star64" /></p>
-<h1 id="yocto-image-for-star64"><a href="#yocto-image-for-star64">3 Yocto Image for Star64</a></h1>
+<h1 id="yocto-image-for-star64"><a class="doc-anchor" href="#yocto-image-for-star64">§</a>3 Yocto Image for Star64</h1>
 <p>The <a href="https://github.com/Fishwaldo/meta-pine64"><strong>Yocto Image for Star64</strong></a> looks more complicated than Armbian (but it works)…</p>
 <ul>
 <li><a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2"><strong>star64-image-minimal 1.2</strong></a></li>
@@ -301,7 +301,7 @@ lrwxrwxrwx       17 fitImage -&gt; fitImage-5.15.107
 <p>But if we need to (for testing), flip the <a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#booting"><strong>DIP Switches</strong></a> and set GPIO 0 = High, GPIO 1 = Low.</p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes">(DIP Switch Labels are inverted: <strong>“ON”</strong> actually means <strong>“Low”</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/star64-opensbi.jpg" alt="U-Boot Bootloader Log" /></p>
-<h1 id="boot-nuttx-with-u-boot-bootloader"><a href="#boot-nuttx-with-u-boot-bootloader">4 Boot NuttX with U-Boot Bootloader</a></h1>
+<h1 id="boot-nuttx-with-u-boot-bootloader"><a class="doc-anchor" href="#boot-nuttx-with-u-boot-bootloader">§</a>4 Boot NuttX with U-Boot Bootloader</h1>
 <p><em>When we port NuttX RTOS to Star64…</em></p>
 <p><em>Will NuttX boot with Armbian or Yocto settings?</em></p>
 <p>Armbian looks simpler than Yocto, since it uses a plain Kernel Image File <strong>/boot/Image</strong>. </p>
@@ -322,7 +322,7 @@ lrwxrwxrwx       17 fitImage -&gt; fitImage-5.15.107
 </ul>
 <p>Let’s figure out the special File Format for <strong>/boot/Image</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
-<h1 id="inside-the-kernel-image"><a href="#inside-the-kernel-image">5 Inside the Kernel Image</a></h1>
+<h1 id="inside-the-kernel-image"><a class="doc-anchor" href="#inside-the-kernel-image">§</a>5 Inside the Kernel Image</h1>
 <p><em>What’s inside the Linux Kernel Image?</em></p>
 <p>Let’s look inside the <strong>Armbian Kernel Image</strong> at <strong>/boot/Image</strong>.</p>
 <p>(Which is sym-linked to <strong>/boot/vmlinuz-5.15.0-starfive2</strong>)</p>
@@ -351,7 +351,7 @@ u32 res3;                 /* Reserved for PE COFF offset */
 </ul>
 <p><em>Why does the pic show “MZ” at 0x0? Who is “MZ”?</em></p>
 <p>To solve the “MZ” Mystery, we decompile the Linux Kernel…</p>
-<h1 id="decompile-the-kernel-with-ghidra"><a href="#decompile-the-kernel-with-ghidra">6 Decompile the Kernel with Ghidra</a></h1>
+<h1 id="decompile-the-kernel-with-ghidra"><a class="doc-anchor" href="#decompile-the-kernel-with-ghidra">§</a>6 Decompile the Kernel with Ghidra</h1>
 <p><em>Can we actually see the RISC-V Code inside the Linux Kernel?</em></p>
 <p>Yep! Let’s decompile the Armbian Kernel with <a href="https://github.com/NationalSecurityAgency/ghidra"><strong>Ghidra</strong></a>, the popular tool for Reverse Engineering…</p>
 <ol>
@@ -406,7 +406,7 @@ j   FUN_402010c8
 <p>(Linux Kernel pretends to be a DOS File… NuttX Kernel pretends to be Linux. Hilarious!)</p>
 <p><img src="https://lupyuen.github.io/images/star64-plasma.jpg" alt="Yocto Linux with KDE Plasma on Star64" /></p>
 <p><a href="https://lupyuen.github.io/articles/linux#yocto-linux-with-kde-plasma"><em>Yocto Linux with KDE Plasma on Star64</em></a></p>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>Today we completed our Linux Homework… Without a Star64 SBC!</p>
 <ul>
 <li>
@@ -458,7 +458,7 @@ j   FUN_402010c8
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/star64.md"><strong>lupyuen.github.io/src/star64.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
-<h1 id="appendix-decode-the-risc-v-linux-header"><a href="#appendix-decode-the-risc-v-linux-header">8 Appendix: Decode the RISC-V Linux Header</a></h1>
+<h1 id="appendix-decode-the-risc-v-linux-header"><a class="doc-anchor" href="#appendix-decode-the-risc-v-linux-header">§</a>8 Appendix: Decode the RISC-V Linux Header</h1>
 <p><em>What’s inside the RISC-V Linux Header?</em></p>
 <p>Earlier we downloaded the <strong>Armbian Kernel Image</strong>…</p>
 <ul>

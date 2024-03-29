@@ -112,7 +112,7 @@
 <li><a href="https://lupyuen.github.io/articles/what"><strong>“NuttX RTOS for PinePhone: What is it?”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/terminal-flow.jpg" alt="Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS" /></p>
-<h1 id="lvgl-terminal-for-nuttx"><a href="#lvgl-terminal-for-nuttx">1 LVGL Terminal for NuttX</a></h1>
+<h1 id="lvgl-terminal-for-nuttx"><a class="doc-anchor" href="#lvgl-terminal-for-nuttx">§</a>1 LVGL Terminal for NuttX</h1>
 <p>Before we dive in, let’s walk through the internals of our <strong>LVGL Terminal App for NuttX</strong> (pic above)…</p>
 <ol>
 <li>
@@ -177,7 +177,7 @@ var/
 </ul>
 <p>We begin by starting the NSH Task and piping a command to NSH Shell…</p>
 <p><img src="https://lupyuen.github.io/images/terminal-flow2.jpg" alt="Pipe a Command to NSH Shell" /></p>
-<h1 id="pipe-a-command-to-nsh-shell"><a href="#pipe-a-command-to-nsh-shell">2 Pipe a Command to NSH Shell</a></h1>
+<h1 id="pipe-a-command-to-nsh-shell"><a class="doc-anchor" href="#pipe-a-command-to-nsh-shell">§</a>2 Pipe a Command to NSH Shell</h1>
 <p>Our Terminal App needs to…</p>
 <ul>
 <li>
@@ -196,7 +196,7 @@ var/
 <p>We’ll redirect the NSH Input and Output with <strong>NuttX Pipes</strong>.</p>
 <p>(Which will work like Linux Pipes)</p>
 <p>Let’s find out how…</p>
-<h2 id="create-the-pipes"><a href="#create-the-pipes">2.1 Create the Pipes</a></h2>
+<h2 id="create-the-pipes"><a class="doc-anchor" href="#create-the-pipes">§</a>2.1 Create the Pipes</h2>
 <p><em>How will we create the NuttX Pipes?</em></p>
 <p>This is how we <strong>create a NuttX Pipe</strong> for NSH Input: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L166-L189">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Create the NuttX Pipe for NSH Input
@@ -237,7 +237,7 @@ ret = pipe(nsh_stderr);
 if (ret &lt; 0) { _err(&quot;stderr pipe failed: %d\n&quot;, errno); return; }
 </code></pre></div>
 <p>There’s a reason why we call <strong><code>_err</code></strong> instead of <strong><code>printf</code></strong>, we’ll find out next…</p>
-<h2 id="connect-the-pipes"><a href="#connect-the-pipes">2.2 Connect the Pipes</a></h2>
+<h2 id="connect-the-pipes"><a class="doc-anchor" href="#connect-the-pipes">§</a>2.2 Connect the Pipes</h2>
 <p><em>How will we connect the pipes to NSH Shell?</em></p>
 <p>In a while we’ll start the NuttX Task for NSH Shell. But before that, we need some plumbing to <strong>connect the NuttX Pipes</strong>.</p>
 <p>First we close the streams for <strong>Standard Input, Output and Error</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L189-L201">lvglterm.c</a></p>
@@ -259,7 +259,7 @@ dup2(nsh_stderr[WRITE_PIPE], 2);  // Redirect stderr
 <p><em>So printf will no longer print to the NuttX Console?</em></p>
 <p>Exactly! That’s why we call <strong><code>_err</code></strong> and <strong><code>_info</code></strong> in this article.</p>
 <p>These functions are <strong>hardwired to the NuttX Console</strong>. They will continue to work after we have redirected the Standard I/O streams.</p>
-<h2 id="create-the-task"><a href="#create-the-task">2.3 Create the Task</a></h2>
+<h2 id="create-the-task"><a class="doc-anchor" href="#create-the-task">§</a>2.3 Create the Task</h2>
 <p>Our plumbing is done, let’s <strong>start the NuttX Task</strong> for NSH Shell: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L201-L216">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Task ID will be returned here
 pid_t pid;
@@ -287,7 +287,7 @@ sleep(1);
 <p><a href="https://github.com/lupyuen/lvglterm/blob/main/README.md">(<strong>posix_spawn</strong> should be enabled in menuconfig)</a></p>
 <p>NSH Shell inherits our Standard I/O streams, which we’ve redirected to our NuttX Pipes.</p>
 <p>We’re ready to test this!</p>
-<h2 id="test-the-pipes"><a href="#test-the-pipes">2.4 Test the Pipes</a></h2>
+<h2 id="test-the-pipes"><a class="doc-anchor" href="#test-the-pipes">§</a>2.4 Test the Pipes</h2>
 <p>Finally we add some <strong>Test Code</strong> to verify that everything works: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L292-L338">lvgldemo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Send a command to NSH stdin
 const char cmd[] = &quot;ls\r&quot;;
@@ -348,7 +348,7 @@ nsh&gt;
 <p>(Same for <strong><code>nsh_stdout</code></strong>)</p>
 <p>Instead let’s check if there’s NSH Output ready to be read. We do this by calling <strong><code>poll()</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/terminal-flow5.jpg" alt="Poll for NSH Output" /></p>
-<h1 id="poll-for-nsh-output"><a href="#poll-for-nsh-output">3 Poll for NSH Output</a></h1>
+<h1 id="poll-for-nsh-output"><a class="doc-anchor" href="#poll-for-nsh-output">§</a>3 Poll for NSH Output</h1>
 <p>In the previous section we started an NSH Shell that will execute NSH Commands that we pipe to it…</p>
 <p>But there’s a problem: Calling <strong><code>read()</code></strong> on <strong><code>nsh_stdout</code></strong> will block if there’s no NSH Output to be read.</p>
 <p>(We can’t block our LVGL App, since LVGL needs to handle User Interface Events periodically)</p>
@@ -423,7 +423,7 @@ static bool has_input(
 <p>We’ve solved our problem of Blocking Reads from NSH Output, by polling for NSH Output!</p>
 <p>This polling for NSH Output needs to be done in an LVGL Timer, here’s why…</p>
 <p><img src="https://lupyuen.github.io/images/terminal-flow6.jpg" alt="Timer for LVGL Terminal" /></p>
-<h1 id="timer-for-lvgl-terminal"><a href="#timer-for-lvgl-terminal">4 Timer for LVGL Terminal</a></h1>
+<h1 id="timer-for-lvgl-terminal"><a class="doc-anchor" href="#timer-for-lvgl-terminal">§</a>4 Timer for LVGL Terminal</h1>
 <p><em>How will we poll for NSH Output and display it?</em></p>
 <p>We started an NSH Shell that will execute NSH Commands that we pipe to it.</p>
 <p>Now we need to periodically <strong>poll for NSH Output</strong>, and write the output to the LVGL display.</p>
@@ -490,7 +490,7 @@ static void timer_callback(lv_timer_t *timer) {
 <p>For now, it’s simpler to run an LVGL Timer to poll for NSH Output.</p>
 <p>Now that our Background Processing is ready, let’s render the LVGL Widgets for our terminal…</p>
 <p><img src="https://lupyuen.github.io/images/terminal-flow3.jpg" alt="Render Terminal with LVGL Widgets" /></p>
-<h1 id="render-terminal-with-lvgl-widgets"><a href="#render-terminal-with-lvgl-widgets">5 Render Terminal with LVGL Widgets</a></h1>
+<h1 id="render-terminal-with-lvgl-widgets"><a class="doc-anchor" href="#render-terminal-with-lvgl-widgets">§</a>5 Render Terminal with LVGL Widgets</h1>
 <p><em>How will we render the Terminal with LVGL?</em></p>
 <p>Our Terminal will have 3 LVGL Widgets…</p>
 <ul>
@@ -601,7 +601,7 @@ static void create_widgets(void) {
 <p>Thus we have arranged our LVGL Widgets neatly, to fit any Screen Size!</p>
 <p>Note that we’re using the LVGL Default Font for all 3 LVGL Widgets. Which has a problem…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-terminal2.jpg" alt="Set Default Font to Monospace" /></p>
-<h1 id="set-terminal-font-to-monospace"><a href="#set-terminal-font-to-monospace">6 Set Terminal Font to Monospace</a></h1>
+<h1 id="set-terminal-font-to-monospace"><a class="doc-anchor" href="#set-terminal-font-to-monospace">§</a>6 Set Terminal Font to Monospace</h1>
 <p>Like any Terminal App, our LVGL Terminal looks nicer with a <a href="https://en.wikipedia.org/wiki/Monospaced_font"><strong>Monospaced Font</strong></a>. (Instead of a Proportional Font)</p>
 <p><em>So we change the Default LVGL Font to a Monospaced Font?</em></p>
 <p>But watch what happens if we change the LVGL Default Font from Montserrat 20 (Proportional) to <strong>UNSCII 16 (Monospaced)</strong>…</p>
@@ -631,7 +631,7 @@ lv_obj_add_style(input, &amp;terminal_style, 0);
 <p><img src="https://lupyuen.github.io/images/terminal-title.jpg" alt="Set Terminal Font to Monospace" /></p>
 <p>Let’s look at our Callback Function for NSH Input…</p>
 <p><img src="https://lupyuen.github.io/images/terminal-flow4.jpg" alt="Handle Input from LVGL Keyboard" /></p>
-<h1 id="handle-input-from-lvgl-keyboard"><a href="#handle-input-from-lvgl-keyboard">7 Handle Input from LVGL Keyboard</a></h1>
+<h1 id="handle-input-from-lvgl-keyboard"><a class="doc-anchor" href="#handle-input-from-lvgl-keyboard">§</a>7 Handle Input from LVGL Keyboard</h1>
 <p><em>How will we check if the Enter Key has been pressed?</em></p>
 <p>Remember earlier we <strong>registered a Callback Function</strong> for NSH Input Text Area, to detect the pressing of the Enter Key: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L284-L288">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Register the Callback Function for NSH Input
@@ -688,7 +688,7 @@ static void input_callback(lv_event_t *e) {
 <p>(The NSH Input Text is already terminated by a <a href="https://github.com/lupyuen/lvglterm/blob/f3e9e7f4d53e49303e8dbeaa2b8a8497699404a0/lvglterm.c#L518-L519"><strong>Newline Character <code>0x0A</code></strong></a>, which works fine with NSH Shell)</p>
 <p>The command runs in NSH Shell and produces some Output Text. Which is handled by our LVGL Timer Callback Function…</p>
 <p><img src="https://lupyuen.github.io/images/terminal-flow6.jpg" alt="Timer for LVGL Terminal" /></p>
-<h1 id="handle-output-from-nsh-shell"><a href="#handle-output-from-nsh-shell">8 Handle Output from NSH Shell</a></h1>
+<h1 id="handle-output-from-nsh-shell"><a class="doc-anchor" href="#handle-output-from-nsh-shell">§</a>8 Handle Output from NSH Shell</h1>
 <p>Earlier we’ve created an LVGL Timer that <strong>polls periodically for output</strong> generated by NSH Shell…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/terminal#timer-for-lvgl-terminal"><strong>“Timer for LVGL Terminal”</strong></a></li>
@@ -732,7 +732,7 @@ static void timer_callback(lv_timer_t *timer) {
 <p>Also we might have to change polling to <strong>Multithreaded Blocking</strong>.</p>
 <p>Which means we need Mutexes to lock the LVGL Widgets.</p>
 <p><img src="https://lupyuen.github.io/images/terminal-zig1.jpg" alt="LVGL Programming in Zig" /></p>
-<h1 id="lvgl-programming-in-zig"><a href="#lvgl-programming-in-zig">9 LVGL Programming in Zig</a></h1>
+<h1 id="lvgl-programming-in-zig"><a class="doc-anchor" href="#lvgl-programming-in-zig">§</a>9 LVGL Programming in Zig</h1>
 <p><em>As we add more features to our LVGL Terminal…</em></p>
 <p><em>Will it become too complex to extend and maintain?</em></p>
 <p>It might! That’s why we should consider coding our LVGL Terminal App in the <a href="https://ziglang.org/"><strong>Zig Programming Language</strong></a>.</p>
@@ -748,7 +748,7 @@ static void timer_callback(lv_timer_t *timer) {
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig#build-lvgl-zig-app">(More about this)</a></p>
 <p><img src="https://lupyuen.github.io/images/terminal-chatgpt.jpg" alt="Sorry ChatGPT… Please try harder" /></p>
 <p><a href="https://lupyuen.github.io/articles/chatgpt"><em>Sorry ChatGPT… Please try harder</em></a></p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>Now we can run NuttX Console Apps on PinePhone, without a Serial Cable!</p>
 <p>I hope this will make it a little easier to experiment with NuttX on PinePhone. Lemme know what you’re building!</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
@@ -784,7 +784,7 @@ static void timer_callback(lv_timer_t *timer) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/terminal.md"><strong>lupyuen.github.io/src/terminal.md</strong></a></p>
-<h1 id="notes"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes"><a class="doc-anchor" href="#notes">§</a>11 Notes</h1>
 <ol>
 <li>
 <p>NSH Architecture-Specific Initialization <strong>CONFIG_NSH_ARCHINIT</strong> should be disabled…</p>

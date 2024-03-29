@@ -101,7 +101,7 @@
 <p>We begin with the 4G LTE Modem inside PinePhone…</p>
 <p><img src="https://lupyuen.github.io/images/usb2-modem.jpg" alt="Quectel EG25-G LTE Modem" /></p>
 <p><a href="https://wiki.pine64.org/wiki/File:Quectel_EG25-G_LTE_Standard_Specification_V1.3.pdf"><em>Quectel EG25-G LTE Modem</em></a></p>
-<h1 id="quectel-eg25-g-lte-modem"><a href="#quectel-eg25-g-lte-modem">1 Quectel EG25-G LTE Modem</a></h1>
+<h1 id="quectel-eg25-g-lte-modem"><a class="doc-anchor" href="#quectel-eg25-g-lte-modem">§</a>1 Quectel EG25-G LTE Modem</h1>
 <p><em>What’s this LTE Modem?</em></p>
 <p>Inside PinePhone is the <a href="https://wiki.pine64.org/index.php/PinePhone#Modem"><strong>Quectel EG25-G LTE Modem</strong></a> for <a href="https://en.wikipedia.org/wiki/LTE_(telecommunication)"><strong>4G LTE</strong></a> Voice Calls, SMS and Mobile Data, plus GPS (pic above)…</p>
 <ul>
@@ -149,7 +149,7 @@
 <p>Let’s power up the LTE Modem in PinePhone…</p>
 <p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="Note: Power Key and Reset are High-Low Inverted for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/lte#power-on-lte-modem"><em>Note: Power Key and Reset are <strong>High-Low Inverted</strong> for PinePhone</em></a></p>
-<h1 id="start-lte-modem"><a href="#start-lte-modem">2 Start LTE Modem</a></h1>
+<h1 id="start-lte-modem"><a class="doc-anchor" href="#start-lte-modem">§</a>2 Start LTE Modem</h1>
 <p><em>Before sending AT Commands…</em></p>
 <p><em>How will we power up the LTE Modem?</em></p>
 <p>In the previous article we spoke about <strong>starting the LTE Modem</strong> with NuttX (pic above)…</p>
@@ -190,7 +190,7 @@ nsh&gt;
 <p>Let’s send some AT Commands to UART3…</p>
 <p><img src="https://lupyuen.github.io/images/lte-run3a.png" alt="NuttX sends AT Commands to LTE Modem" /></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L630"><em>NuttX sends AT Commands to LTE Modem</em></a></p>
-<h1 id="send-at-commands"><a href="#send-at-commands">3 Send AT Commands</a></h1>
+<h1 id="send-at-commands"><a class="doc-anchor" href="#send-at-commands">§</a>3 Send AT Commands</h1>
 <p><em>LTE Modem has started successfully at UART3…</em></p>
 <p><em>How will we send AT Commands to the modem?</em></p>
 <p>On NuttX, this is how we <strong>send an AT Command</strong> to the LTE Modem over UART3: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/modem/examples/hello/hello_main.c#L69-L221">hello_main.c</a></p>
@@ -284,7 +284,7 @@ OK
 <p><em>The actual log looks kinda messy…</em></p>
 <p>Yeah we’ll talk about the proper AT Modem API in a while.</p>
 <p>First let’s check the network and make some phone calls…</p>
-<h1 id="check-the-lte-network"><a href="#check-the-lte-network">4 Check the LTE Network</a></h1>
+<h1 id="check-the-lte-network"><a class="doc-anchor" href="#check-the-lte-network">§</a>4 Check the LTE Network</h1>
 <p><em>Before making a Phone Call…</em></p>
 <p><em>How to check if the 4G LTE Network is OK?</em></p>
 <p>To check if the LTE Modem has connected successfully to the 4G LTE Network, we send these AT Commands…</p>
@@ -342,7 +342,7 @@ Response:
 <p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737">(See the Complete Log)</a></p>
 <p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="NuttX makes a Phone Call from PinePhone" /></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L683-L735"><em>NuttX makes a Phone Call from PinePhone</em></a></p>
-<h1 id="outgoing-phone-call"><a href="#outgoing-phone-call">5 Outgoing Phone Call</a></h1>
+<h1 id="outgoing-phone-call"><a class="doc-anchor" href="#outgoing-phone-call">§</a>5 Outgoing Phone Call</h1>
 <p>In NuttX, this is how we dial a Phone Number to make an <strong>Outgoing Phone Call</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/modem/examples/hello/hello_main.c#L438-L543">dial_number</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get Range of PCM Parameters for Digital Audio
 const char cmd[] = &quot;AT+QDAI=?\r&quot;;
@@ -414,7 +414,7 @@ Response: OK
 <p>Now we send an SMS Text Message…</p>
 <p><img src="https://lupyuen.github.io/images/lte2-sms.jpg" alt="NuttX sends an SMS in Text Mode" /></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L622-L659"><em>NuttX sends an SMS in Text Mode</em></a></p>
-<h1 id="send-sms-in-text-mode"><a href="#send-sms-in-text-mode">6 Send SMS in Text Mode</a></h1>
+<h1 id="send-sms-in-text-mode"><a class="doc-anchor" href="#send-sms-in-text-mode">§</a>6 Send SMS in Text Mode</h1>
 <p>To send an <strong>SMS Message</strong> (in Text Mode), use these AT Commands…</p>
 <ol>
 <li>
@@ -543,7 +543,7 @@ Response:
 </ul>
 <p>There’s another way to send SMS…</p>
 <p><img src="https://lupyuen.github.io/images/lte2-pdu.jpg" alt="Send SMS in PDU Mode" /></p>
-<h1 id="send-sms-in-pdu-mode"><a href="#send-sms-in-pdu-mode">7 Send SMS in PDU Mode</a></h1>
+<h1 id="send-sms-in-pdu-mode"><a class="doc-anchor" href="#send-sms-in-pdu-mode">§</a>7 Send SMS in PDU Mode</h1>
 <p><em>Sending an SMS Message looks easy!</em></p>
 <p>Ah but there’s another (preferred and precise) way: <strong>PDU Mode</strong>.</p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40">(<strong>Protocol Data Unit</strong>, works like a Data Packet)</a></p>
@@ -709,7 +709,7 @@ OK
 <p>Check the docs above to verify the PDU Encoding for our SMS Message.</p>
 <p>Let’s find out why we prefer PDU Mode over Text Mode…</p>
 <p><a href="https://lupyuen.github.io/articles/lte2#send-sms-in-text-mode">(<strong>For Error 305:</strong> Check the SMSC and SIM)</a></p>
-<h1 id="sms-text-mode-vs-pdu-mode"><a href="#sms-text-mode-vs-pdu-mode">8 SMS Text Mode vs PDU Mode</a></h1>
+<h1 id="sms-text-mode-vs-pdu-mode"><a class="doc-anchor" href="#sms-text-mode-vs-pdu-mode">§</a>8 SMS Text Mode vs PDU Mode</h1>
 <p><em>Why send SMS in PDU Mode instead of Text Mode?</em></p>
 <p>Sending SMS Messages in Text Mode looks easier. But we <strong>should use PDU Mode</strong> instead. Here’s why…</p>
 <p><strong>Text Mode:</strong> This is how we send an SMS…</p>
@@ -732,7 +732,7 @@ AT+CMGS=41
 <div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 304
 </code></pre></div>
 <p>Our app should catch this error and resend.</p>
-<h1 id="at-modem-api"><a href="#at-modem-api">9 AT Modem API</a></h1>
+<h1 id="at-modem-api"><a class="doc-anchor" href="#at-modem-api">§</a>9 AT Modem API</h1>
 <p><em>What about receiving Phone Calls and SMS Messages?</em></p>
 <p>We handle <strong>Incoming Phone Calls and SMS</strong> like this…</p>
 <ul>
@@ -824,7 +824,7 @@ if (err = 0) {
 </li>
 </ul>
 <p>TODO: Disable UART2 and /dev/ttyS2 so that UART3 maps neatly to /dev/ttyS3. <a href="https://github.com/apache/nuttx/pull/9304#discussion_r1195862416">(See this)</a></p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>I hope this article was helpful for understanding the internals of Phone Calls and Text Messaging on PinePhone…</p>
 <ul>
 <li>
@@ -885,7 +885,7 @@ if (err = 0) {
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte2.md"><strong>lupyuen.github.io/src/lte2.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/lte-title3.jpg" alt="Ring Indicator is connected to GPIO Pin PL6" /></p>
 <p><a href="https://lupyuen.github.io/articles/lte#control-pins-for-lte-modem"><em>Ring Indicator is connected to GPIO Pin PL6</em></a></p>
-<h1 id="appendix-receive-phone-call-and-sms"><a href="#appendix-receive-phone-call-and-sms">11 Appendix: Receive Phone Call and SMS</a></h1>
+<h1 id="appendix-receive-phone-call-and-sms"><a class="doc-anchor" href="#appendix-receive-phone-call-and-sms">§</a>11 Appendix: Receive Phone Call and SMS</h1>
 <p><em>How do we receive Phone Calls and SMS Messages with the LTE Modem?</em></p>
 <p>We receive an <strong>Incoming Phone Call</strong> like this…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Notification for Incoming Voice Call
@@ -939,7 +939,7 @@ AT+QCFG=&quot;urc/ri/smsincoming&quot;
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&amp;EG2x&amp;EG9x&amp;EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf">(See “<strong><code>AT+QCFG=urc/ri</code></strong>”, Page 20)</a></p>
 <p><img src="https://lupyuen.github.io/images/lte-title4.jpg" alt="LTE Modem is connected to Port PCM0 for Digital Audio" /></p>
 <p><a href="https://lupyuen.github.io/articles/lte#control-pins-for-lte-modem"><em>LTE Modem is connected to Port PCM0 for Digital Audio</em></a></p>
-<h1 id="appendix-pcm-digital-audio"><a href="#appendix-pcm-digital-audio">12 Appendix: PCM Digital Audio</a></h1>
+<h1 id="appendix-pcm-digital-audio"><a class="doc-anchor" href="#appendix-pcm-digital-audio">§</a>12 Appendix: PCM Digital Audio</h1>
 <p><em>Earlier we made an Outgoing Voice Call…</em></p>
 <p><em>How will we talk to the called Phone Number?</em></p>
 <p>LTE Modem is connected to Allwinner A64 <strong>Port PCM0</strong> for the <strong>PCM Digital Audio</strong> Input and Output. (Pic above)</p>
@@ -1026,7 +1026,7 @@ Response: +QDAI: 1,1,0,1,0,0,1,1
 <p>A64 Ports HPOUT, MICIN1, MICIN2, EAROUT, LINEOUT are documented in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>, “Audio Codec”, Page 278.</p>
 <p>I hope this will get us started :-)</p>
 <p><a href="https://forum.pine64.org/showthread.php?tid=18353&amp;pid=118189#pid118189">(Kudos to <strong>WhiteHexagon</strong>)</a></p>
-<h1 id="appendix-troubleshoot-lte-ip-multimedia-subsystem"><a href="#appendix-troubleshoot-lte-ip-multimedia-subsystem">13 Appendix: Troubleshoot LTE IP Multimedia Subsystem</a></h1>
+<h1 id="appendix-troubleshoot-lte-ip-multimedia-subsystem"><a class="doc-anchor" href="#appendix-troubleshoot-lte-ip-multimedia-subsystem">§</a>13 Appendix: Troubleshoot LTE IP Multimedia Subsystem</h1>
 <p><em>What’s LTE IMS?</em></p>
 <p>An LTE Mobile Network handles <strong>Phone Calls and SMS Messages</strong> in two ways…</p>
 <ul>
@@ -1076,7 +1076,7 @@ AT+QCFG=&quot;ims&quot;,1
 <p>TODO: Run <code>AT+QCFG=&quot;ims&quot;</code> on both SIM Cards to show IMS state</p>
 <p>TODO: Run <code>AT+QCFG=&quot;ims&quot;,1</code> or <code>AT+QCFG=&quot;ims&quot;,2</code> to enable / disable IMS on both SIM Cards</p>
 <p>TODO: Fetch Mobile Operator and auto-enable / disable LTE IMS according to Mobile Operator</p>
-<h1 id="appendix-sms-pdu-format"><a href="#appendix-sms-pdu-format">14 Appendix: SMS PDU Format</a></h1>
+<h1 id="appendix-sms-pdu-format"><a class="doc-anchor" href="#appendix-sms-pdu-format">§</a>14 Appendix: SMS PDU Format</h1>
 <p><em>Earlier we saw this command for sending SMS in PDU Mode…</em></p>
 <p><em>What’s the PDU Length?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>// Send an SMS with PDU Length of 41 bytes (excluding SMSC)
@@ -1207,7 +1207,7 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 </li>
 </ul>
 <p>Let’s talk about the Message Text Encoding…</p>
-<h1 id="appendix-sms-pdu-message-encoding"><a href="#appendix-sms-pdu-message-encoding">15 Appendix: SMS PDU Message Encoding</a></h1>
+<h1 id="appendix-sms-pdu-message-encoding"><a class="doc-anchor" href="#appendix-sms-pdu-message-encoding">§</a>15 Appendix: SMS PDU Message Encoding</h1>
 <p><em>How do we encode the Message Text in PDU Mode?</em></p>
 <p>From the previous section we see that the Message Text is encoded with <strong>UCS2 Character Set</strong>…</p>
 <ul>

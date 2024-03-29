@@ -119,7 +119,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/dsi-pinetime.jpg" alt="PineTime Smartwatch" /></p>
 <p><em>PineTime Smartwatch with ST7789 Display Controller</em></p>
-<h1 id="from-pinetime-to-pinephone"><a href="#from-pinetime-to-pinephone">1 From PineTime To PinePhone</a></h1>
+<h1 id="from-pinetime-to-pinephone"><a class="doc-anchor" href="#from-pinetime-to-pinephone">§</a>1 From PineTime To PinePhone</h1>
 <p><em>Why PineTime Smartwatch? Is it really similar to PinePhone’s Display?</em></p>
 <p>Sounds unbelievable, but PineTime’s <strong>ST7789 Display Controller</strong> has plenty in common with PinePhone’s Display!</p>
 <p>(Think of PinePhone as a Super-Sized PineTime)</p>
@@ -152,7 +152,7 @@
 <p>OK great! To understand how PinePhone’s Display differs from PineTime, we begin with the schematic…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="LCD Display on PinePhone Schematic (Page 2)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Display on PinePhone Schematic (Page 2)</em></a></p>
-<h1 id="pinephone-schematic"><a href="#pinephone-schematic">2 PinePhone Schematic</a></h1>
+<h1 id="pinephone-schematic"><a class="doc-anchor" href="#pinephone-schematic">§</a>2 PinePhone Schematic</h1>
 <p>Let’s turn to Page 2 of the <strong>PinePhone Schematic</strong> to understand how PinePhone’s Display is connected…</p>
 <ul>
 <li><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a></li>
@@ -168,7 +168,7 @@
 <p>But if we’re seeking a gentler intro to DSI, please follow me to the next section…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-connector.png" alt="MIPI DSI Connector on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>MIPI DSI Connector on PinePhone Schematic (Page 11)</em></a></p>
-<h1 id="connector-for-mipi-dsi"><a href="#connector-for-mipi-dsi">3 Connector for MIPI DSI</a></h1>
+<h1 id="connector-for-mipi-dsi"><a class="doc-anchor" href="#connector-for-mipi-dsi">§</a>3 Connector for MIPI DSI</h1>
 <p><em>How shall we learn about MIPI DSI?</em></p>
 <p>We’ll learn plenty about MIPI DSI (Display Serial Interface)… Just by looking at <strong>PinePhone’s Connector for the LCD Display</strong>!</p>
 <p>Flip to Page 11 of the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> and we’ll see the <strong>MIPI DSI Connector</strong>. (Pic above)</p>
@@ -206,7 +206,7 @@
 <p>Let’s dig deeper into MIPI DSI…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-lcd.png" alt="Xingbangda XBD599 in PinePhone’s Linux Device Tree" /></p>
 <p><a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><em>Xingbangda XBD599 in PinePhone’s Linux Device Tree</em></a></p>
-<h1 id="xingbangda-xbd599-lcd-panel"><a href="#xingbangda-xbd599-lcd-panel">4 Xingbangda XBD599 LCD Panel</a></h1>
+<h1 id="xingbangda-xbd599-lcd-panel"><a class="doc-anchor" href="#xingbangda-xbd599-lcd-panel">§</a>4 Xingbangda XBD599 LCD Panel</h1>
 <p><em>What’s connected to this MIPI DSI Connector?</em></p>
 <p>The <a href="https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree"><strong>Linux Device Tree</strong></a> describes everything about PinePhone Hardware in a single text file. Let’s snoop around the Device Tree!</p>
 <p>First we follow these steps to dump PinePhone’s Linux Device Tree in text format…</p>
@@ -226,7 +226,7 @@
 <p>Let’s probe deeper…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-sitronix2.png" alt="PineTime (ST7789) vs PinePhone (ST7703)" /></p>
 <p><a href="https://www.sitronix.com.tw/en/products/aiot-device-ddi/"><em>PineTime (ST7789) vs PinePhone (ST7703)</em></a></p>
-<h1 id="sitronix-st7703-lcd-controller"><a href="#sitronix-st7703-lcd-controller">5 Sitronix ST7703 LCD Controller</a></h1>
+<h1 id="sitronix-st7703-lcd-controller"><a class="doc-anchor" href="#sitronix-st7703-lcd-controller">§</a>5 Sitronix ST7703 LCD Controller</h1>
 <p><em>Sitronix ST7703 sounds familiar?</em></p>
 <p>Yep Sitronix makes the LCD Controllers for BOTH PineTime and PinePhone!</p>
 <p>In fact they’re from the <a href="https://www.sitronix.com.tw/en/products/aiot-device-ddi/"><strong>same family</strong></a> of LCD Controllers. (ST7789 vs ST7703)</p>
@@ -241,7 +241,7 @@
 <p>PinePhone’s A64 SoC will <strong>pump a constant stream of pixels</strong> to refresh the display.</p>
 <p>(Just like an old CRT TV!)</p>
 <p>This pixel pumping is done by A64’s <a href="https://lupyuen.github.io/articles/pio#display-engine"><strong>Display Engine (DE)</strong></a> and <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>Timing Controller (TCON0)</strong></a>. We’ll come back to this.</p>
-<h1 id="initialise-lcd-controller"><a href="#initialise-lcd-controller">6 Initialise LCD Controller</a></h1>
+<h1 id="initialise-lcd-controller"><a class="doc-anchor" href="#initialise-lcd-controller">§</a>6 Initialise LCD Controller</h1>
 <p><em>What happens inside PinePhone’s ST7703 LCD Controller?</em></p>
 <p>Let’s figure out by looking at the initialisation of PinePhone’s ST7703 LCD Controller.</p>
 <p>Xingbangda has provided an <a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller"><strong>Initialisation Sequence</strong></a> of (magical) ST7703 Commands that we should send to the LCD Controller at startup…</p>
@@ -269,7 +269,7 @@
 <p>Which we’ll explain next…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-datatype.png" alt="MIPI DSI Display Command Set from A31 User Manual (Page 837)" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Display Command Set from A31 User Manual (Page 837)</em></a></p>
-<h1 id="display-command-set-for-mipi-dsi"><a href="#display-command-set-for-mipi-dsi">7 Display Command Set for MIPI DSI</a></h1>
+<h1 id="display-command-set-for-mipi-dsi"><a class="doc-anchor" href="#display-command-set-for-mipi-dsi">§</a>7 Display Command Set for MIPI DSI</h1>
 <p>MIPI Display Serial Interface (DSI) defines a standard list of commands for controlling the display: <strong>DSI Display Command Set (DCS)</strong>. (Pic above)</p>
 <p>To send the Initialisation Sequence to ST7703, we shall transmit the <strong>DCS Long Write</strong> command. (Data Type <code>0x39</code>)</p>
 <p>Which is described in the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>ST7703 Datasheet</strong></a> (page 19)…</p>
@@ -285,7 +285,7 @@
 <p>(Note: We might need to use <strong>DCS Short Write No Parameters</strong> <code>0x05</code> for single-byte ST7703 Commands, <strong>DCS Short Write 1 Parameter</strong> <code>0x15</code> for 2-byte ST7703 Commands. See the Appendix for details)</p>
 <p><img src="https://lupyuen.github.io/images/dsi-modes2.png" alt="DSI Video Mode from A31 User Manual (Page 841)" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf"><em>DSI Video Mode from A31 User Manual (Page 841)</em></a></p>
-<h1 id="video-mode-only-for-mipi-dsi"><a href="#video-mode-only-for-mipi-dsi">8 Video Mode Only for MIPI DSI</a></h1>
+<h1 id="video-mode-only-for-mipi-dsi"><a class="doc-anchor" href="#video-mode-only-for-mipi-dsi">§</a>8 Video Mode Only for MIPI DSI</h1>
 <p><em>What’s MIPI DSI Video Mode?</em></p>
 <p>MIPI Display Serial Interface (DSI) supports 2 modes of operation (pic above)…</p>
 <ul>
@@ -325,7 +325,7 @@
 <p>That’s why PinePhone’s Display doesn’t need a Data / Command Pin like PineTime.</p>
 <p><img src="https://lupyuen.github.io/images/dsi-registers2.png" alt="MIPI DSI Registers from A31 User Manual (Page 842)" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Registers from A31 User Manual (Page 842)</em></a></p>
-<h1 id="a64-registers-for-mipi-dsi"><a href="#a64-registers-for-mipi-dsi">9 A64 Registers for MIPI DSI</a></h1>
+<h1 id="a64-registers-for-mipi-dsi"><a class="doc-anchor" href="#a64-registers-for-mipi-dsi">§</a>9 A64 Registers for MIPI DSI</h1>
 <p><em>How shall we send a DCS Long Write command to PinePhone’s Display?</em></p>
 <p>To send a DCS Long Write command, we’ll set some Hardware Registers in A64’s <strong>MIPI DSI Controller</strong>.</p>
 <p><em>The MIPI DSI Registers are missing from the A64 docs!</em></p>
@@ -374,7 +374,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/dsi-control.png" alt="MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)</em></a></p>
-<h1 id="initialise-mipi-dsi"><a href="#initialise-mipi-dsi">10 Initialise MIPI DSI</a></h1>
+<h1 id="initialise-mipi-dsi"><a class="doc-anchor" href="#initialise-mipi-dsi">§</a>10 Initialise MIPI DSI</h1>
 <p>We said earlier that PinePhone’s ST7789 LCD Controller needs to run in <strong>DSI Video Mode</strong> (instead of DSI Command Mode)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#video-mode-only-for-mipi-dsi"><strong>“Video Mode Only for MIPI DSI”</strong></a></li>
@@ -422,7 +422,7 @@
 <p>Now that we have initialised A64 MIPI DSI, we’re ready to send our DCS Command…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-packet.png" alt="MIPI DSI Long Packet (Page 203)" /></p>
 <p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Long Packet (Page 203)</em></a></p>
-<h1 id="long-packet-for-mipi-dsi"><a href="#long-packet-for-mipi-dsi">11 Long Packet for MIPI DSI</a></h1>
+<h1 id="long-packet-for-mipi-dsi"><a class="doc-anchor" href="#long-packet-for-mipi-dsi">§</a>11 Long Packet for MIPI DSI</h1>
 <p>Earlier we talked about transmitting a <strong>DCS Long Write</strong> command (Data Type <code>0x39</code>) to ST7703 LCD Controller…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi"><strong>“Display Command Set for MIPI DSI”</strong></a></li>
@@ -471,7 +471,7 @@
 <p>(Page 32 of the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>ST7703 Datasheet</strong></a> also defines a <strong>Short Packet</strong> format, which is explained in the Appendix)</p>
 <p><img src="https://lupyuen.github.io/images/dsi-tx.png" alt="MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)</em></a></p>
-<h1 id="transmit-packet-over-mipi-dsi"><a href="#transmit-packet-over-mipi-dsi">12 Transmit Packet over MIPI DSI</a></h1>
+<h1 id="transmit-packet-over-mipi-dsi"><a class="doc-anchor" href="#transmit-packet-over-mipi-dsi">§</a>12 Transmit Packet over MIPI DSI</h1>
 <p>We’re finally ready to transmit the <strong>DCS Long Write</strong> command to ST7703 LCD Controller!</p>
 <p>We begin by setting the following bits to 1 in <strong>DSI_CMD_CTL_REG</strong> (DSI Low Power Control Register) at Offset <code>0x200</code>…</p>
 <ul>
@@ -547,7 +547,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/pio-display.png" alt="Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)</em></a></p>
-<h1 id="render-display"><a href="#render-display">13 Render Display</a></h1>
+<h1 id="render-display"><a class="doc-anchor" href="#render-display">§</a>13 Render Display</h1>
 <p><em>OK we have initialised the ST7703 display…</em></p>
 <p><em>What about rendering the display?</em></p>
 <p>Remember we said that the ST7703 LCD Controller is RAM-less? And thus we need to <strong>pump a constant stream of pixels</strong> to the display?</p>
@@ -585,7 +585,7 @@
 <p>We’ll find out soon in the next article!</p>
 <p><img src="https://lupyuen.github.io/images/serial-title.jpg" alt="Apache NuttX RTOS booting on PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/uboot"><em>Apache NuttX RTOS booting on PinePhone</em></a></p>
-<h1 id="nuttx-display-driver-for-pinephone"><a href="#nuttx-display-driver-for-pinephone">14 NuttX Display Driver for PinePhone</a></h1>
+<h1 id="nuttx-display-driver-for-pinephone"><a class="doc-anchor" href="#nuttx-display-driver-for-pinephone">§</a>14 NuttX Display Driver for PinePhone</h1>
 <p><em>Once again, why are we doing all this?</em></p>
 <p>We’re now porting <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> to PinePhone.</p>
 <p>But it will look awfully dull until we <strong>render something</strong> on PinePhone’s LCD Display!</p>
@@ -611,7 +611,7 @@
 <p>Stay Tuned for Updates!</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Inside our Complete Display Driver for PinePhone</em></a></p>
-<h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>15 What’s Next</h1>
 <p>I hope we learnt lots about PinePhone’s Display…</p>
 <ul>
 <li>
@@ -669,7 +669,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi.md"><strong>lupyuen.github.io/src/dsi.md</strong></a></p>
-<h1 id="notes"><a href="#notes">16 Notes</a></h1>
+<h1 id="notes"><a class="doc-anchor" href="#notes">§</a>16 Notes</h1>
 <ol>
 <li>
 <p>All writes to MIPI DSI Hardware Registers must use <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>Data Memory Barrier (DMB)</strong></a></p>
@@ -695,7 +695,7 @@
 </ol>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Inside our Complete Display Driver for PinePhone</em></a></p>
-<h1 id="appendix-sequence-of-steps-for-pinephone-display-driver"><a href="#appendix-sequence-of-steps-for-pinephone-display-driver">17 Appendix: Sequence of Steps for PinePhone Display Driver</a></h1>
+<h1 id="appendix-sequence-of-steps-for-pinephone-display-driver"><a class="doc-anchor" href="#appendix-sequence-of-steps-for-pinephone-display-driver">§</a>17 Appendix: Sequence of Steps for PinePhone Display Driver</h1>
 <p><em>Is there a specific sequence of steps for calling the Display Serial Interface, Display Engine and Timing Controller?</em></p>
 <p>To render graphics on PinePhone’s LCD Display, our Display Driver needs to follow these steps: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L175-L226">render.zig</a></p>
 <ol>
@@ -754,7 +754,7 @@
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175">(Implemented here)</a></p>
 </li>
 </ol>
-<h1 id="appendix-enable-mipi-dsi-block"><a href="#appendix-enable-mipi-dsi-block">18 Appendix: Enable MIPI DSI Block</a></h1>
+<h1 id="appendix-enable-mipi-dsi-block"><a class="doc-anchor" href="#appendix-enable-mipi-dsi-block">§</a>18 Appendix: Enable MIPI DSI Block</h1>
 <p>Earlier we talked about the sequence of steps that our Display Driver needs to follow…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver"><strong>“Sequence of Steps for PinePhone Display Driver”</strong></a></li>
@@ -1082,7 +1082,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy"><strong>“Enable MIPI DSI and D-PHY”</strong></a></li>
 </ul>
-<h1 id="appendix-start-mipi-dsi-hsc-and-hsd"><a href="#appendix-start-mipi-dsi-hsc-and-hsd">19 Appendix: Start MIPI DSI HSC and HSD</a></h1>
+<h1 id="appendix-start-mipi-dsi-hsc-and-hsd"><a class="doc-anchor" href="#appendix-start-mipi-dsi-hsc-and-hsd">§</a>19 Appendix: Start MIPI DSI HSC and HSD</h1>
 <p>Earlier we talked about the sequence of steps that our Display Driver needs to follow…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver"><strong>“Sequence of Steps for PinePhone Display Driver”</strong></a></li>
@@ -1163,7 +1163,7 @@ addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
 </ul>
 <p><img src="https://lupyuen.github.io/images/dsi-layer.png" alt="MIPI DSI Protocol Layers (Page 183)" /></p>
 <p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Protocol Layers (Page 183)</em></a></p>
-<h1 id="appendix-enable-mipi-display-physical-layer-dphy"><a href="#appendix-enable-mipi-display-physical-layer-dphy">20 Appendix: Enable MIPI Display Physical Layer (DPHY)</a></h1>
+<h1 id="appendix-enable-mipi-display-physical-layer-dphy"><a class="doc-anchor" href="#appendix-enable-mipi-display-physical-layer-dphy">§</a>20 Appendix: Enable MIPI Display Physical Layer (DPHY)</h1>
 <p>Earlier we talked about initialising the MIPI DSI Controller…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi"><strong>“Initialise MIPI DSI”</strong></a></li>
@@ -1315,7 +1315,7 @@ update_bits addr=0x1ca1054, mask=0xf000000, val=0xf000000 (DMB)
 </ul>
 <p><img src="https://lupyuen.github.io/images/dsi-short.png" alt="MIPI DSI Short Packet (Page 201)" /></p>
 <p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Short Packet (Page 201)</em></a></p>
-<h1 id="appendix-short-packet-for-mipi-dsi"><a href="#appendix-short-packet-for-mipi-dsi">21 Appendix: Short Packet for MIPI DSI</a></h1>
+<h1 id="appendix-short-packet-for-mipi-dsi"><a class="doc-anchor" href="#appendix-short-packet-for-mipi-dsi">§</a>21 Appendix: Short Packet for MIPI DSI</h1>
 <p>According to <a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><strong>BL808 Reference Manual</strong></a> (Page 201, pic above)…</p>
 <blockquote>
 <p>A <strong>Short Packet</strong> consists of 8-bit data identification (DI), two bytes of commands or data, and 8-bit ECC.</p>
@@ -1342,7 +1342,7 @@ update_bits addr=0x1ca1054, mask=0xf000000, val=0xf000000 (DMB)
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet"><strong>“Send MIPI DSI Packet”</strong></a></li>
 </ul>
-<h1 id="appendix-initialise-lcd-controller"><a href="#appendix-initialise-lcd-controller">22 Appendix: Initialise LCD Controller</a></h1>
+<h1 id="appendix-initialise-lcd-controller"><a class="doc-anchor" href="#appendix-initialise-lcd-controller">§</a>22 Appendix: Initialise LCD Controller</h1>
 <p>Earlier we talked about the sequence of steps that our Display Driver needs to follow…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver"><strong>“Sequence of Steps for PinePhone Display Driver”</strong></a></li>

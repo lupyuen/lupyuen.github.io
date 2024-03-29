@@ -127,7 +127,7 @@
 <p><a href="https://research.cs.queensu.ca/home/cordy/pub/downloads/tplus/Turing_Plus_Report.pdf">(Not to be confused with <strong>TTC Compiler</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tcc-web.png" alt="Online Demo of TCC Compiler in WebAssembly" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><em>Online Demo of TCC Compiler in WebAssembly</em></a></p>
-<h1 id="tcc-in-the-web-browser"><a href="#tcc-in-the-web-browser">1 TCC in the Web Browser</a></h1>
+<h1 id="tcc-in-the-web-browser"><a class="doc-anchor" href="#tcc-in-the-web-browser">§</a>1 TCC in the Web Browser</h1>
 <p>Click this link to try <strong>TCC Compiler in our Web Browser</strong> (pic above)</p>
 <ul>
 <li>
@@ -188,7 +188,7 @@ main():
 <p><a href="https://gist.github.com/lupyuen/ab8febefa9c649ad7c242ee3f7aaf974">(See the <strong>Entire Disassembly</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app">(About the <strong>RISC-V Instructions</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tcc-zig.jpg" alt="Zig Compiler compiles TCC Compiler to WebAssembly" /></p>
-<h1 id="zig-compiles-tcc-to-webassembly"><a href="#zig-compiles-tcc-to-webassembly">2 Zig compiles TCC to WebAssembly</a></h1>
+<h1 id="zig-compiles-tcc-to-webassembly"><a class="doc-anchor" href="#zig-compiles-tcc-to-webassembly">§</a>2 Zig compiles TCC to WebAssembly</h1>
 <p><em>Will Zig Compiler happily compile TCC to WebAssembly?</em></p>
 <p>Amazingly, yes! (Pic above)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Zig Compiler compiles TCC Compiler
@@ -299,7 +299,7 @@ pub export fn compile_program(
 <p>Later we’ll find a better way to express our outrage. (Instead of jumping around)</p>
 <p>We probe the Magical Bits inside our Zig Wrapper…</p>
 <p><img src="https://lupyuen.github.io/images/tcc-posix.jpg" alt="TCC Compiler in WebAssembly needs POSIX Functions" /></p>
-<h1 id="posix-for-webassembly"><a href="#posix-for-webassembly">3 POSIX for WebAssembly</a></h1>
+<h1 id="posix-for-webassembly"><a class="doc-anchor" href="#posix-for-webassembly">§</a>3 POSIX for WebAssembly</h1>
 <p><em>What’s this POSIX?</em></p>
 <p>TCC Compiler was created as a <strong>Command-Line App</strong>. So it calls the typical <a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX Functions</strong></a> like <strong>fopen, fprintf, strncpy, malloc,</strong> …</p>
 <p>But WebAssembly running in a Web Browser ain’t <strong>No Command Line</strong>! (Pic above)</p>
@@ -346,7 +346,7 @@ pub export fn fopen(_: c_int) c_int {
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/tcc-posix2.jpg" alt="File Input and Output are especially troubling for WebAssembly" /></p>
 </blockquote>
-<h1 id="file-input-and-output"><a href="#file-input-and-output">4 File Input and Output</a></h1>
+<h1 id="file-input-and-output"><a class="doc-anchor" href="#file-input-and-output">§</a>4 File Input and Output</h1>
 <p><em>Why no #include in TCC for WebAssembly? And no C Libraries?</em></p>
 <p>WebAssembly runs in a Secure Sandbox. <strong>No File Access</strong> allowed, sorry! (Like for Header and Library Files)</p>
 <p>That’s why our Zig Wrapper <strong>Emulates File Access</strong> for the bare minimum 2 files…</p>
@@ -403,7 +403,7 @@ var write_buflen: usize = 0;
 <li><a href="https://lupyuen.github.io/articles/romfs"><strong>“Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/tcc-format.jpg" alt="Our Zig Wrapper uses Pattern Matching to match the C Formats and substitute the Zig Equivalent" /></p>
-<h1 id="fearsome-fprintf-and-friends"><a href="#fearsome-fprintf-and-friends">5 Fearsome fprintf and Friends</a></h1>
+<h1 id="fearsome-fprintf-and-friends"><a class="doc-anchor" href="#fearsome-fprintf-and-friends">§</a>5 Fearsome fprintf and Friends</h1>
 <p><em>Why is fprintf particularly problematic?</em></p>
 <p>Here’s the fearsome thing about <strong>fprintf</strong> and friends: <strong>sprintf, snprintf, vsnprintf</strong>…</p>
 <ul>
@@ -483,7 +483,7 @@ const format_patterns = [_]FormatPattern{
 </ul>
 <p>(Funny how <strong>printf</strong> is the first thing we learn about C. Yet it’s incredibly difficult to implement!)</p>
 <p><img src="https://lupyuen.github.io/images/tcc-nuttx.jpg" alt="Compile and Run NuttX Apps in the Web Browser" /></p>
-<h1 id="test-with-apache-nuttx-rtos"><a href="#test-with-apache-nuttx-rtos">6 Test with Apache NuttX RTOS</a></h1>
+<h1 id="test-with-apache-nuttx-rtos"><a class="doc-anchor" href="#test-with-apache-nuttx-rtos">§</a>6 Test with Apache NuttX RTOS</h1>
 <p><em>TCC in WebAssembly has compiled our C Program to RISC-V ELF…</em></p>
 <p><em>Will the ELF run on NuttX?</em></p>
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> is a tiny operating system for 64-bit RISC-V that runs on <a href="https://www.qemu.org/docs/master/system/target-riscv.html"><strong>QEMU Emulator</strong></a>. (And many other devices)</p>
@@ -537,7 +537,7 @@ ssize_t write(
 <p>That’s the same NuttX System Call that <strong>printf</strong> executes internally.</p>
 <p>Final chance to say hello to NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/tcc-ecall.png" alt="TCC WebAssembly compiles a NuttX System Call" /></p>
-<h1 id="hello-nuttx"><a href="#hello-nuttx">7 Hello NuttX!</a></h1>
+<h1 id="hello-nuttx"><a class="doc-anchor" href="#hello-nuttx">§</a>7 Hello NuttX!</h1>
 <p><em>We’re making a System Call (ECALL) to NuttX Kernel to print something…</em></p>
 <p><em>How will we code this in C?</em></p>
 <p>We execute the <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>ECALL in RISC-V Assembly</strong></a> like this: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L52-L105">test-nuttx.js</a></p>
@@ -632,7 +632,7 @@ Hello, World!!
 to copy the RISC-V ELF <code>a.out</code> from TCC WebAssembly to NuttX Emulator… Then we patched <code>a.out</code> into the <a href="https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser"><strong>ROM FS Filesystem</strong></a> for NuttX Emulator. Nifty!</p>
 <p><img src="https://lupyuen.github.io/images/tcc-emu2.png" alt="NuttX App built in a Web Browser… Runs inside the Web Browser!" /></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#nuttx-app-runs-in-a-web-browser"><em>NuttX App built in a Web Browser… Runs inside the Web Browser!</em></a></p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>Check out the next article…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/romfs"><strong>“Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)”</strong></a></li>
@@ -688,7 +688,7 @@ to copy the RISC-V ELF <code>a.out</code> from TCC WebAssembly to NuttX Emulator
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tcc.md"><strong>lupyuen.github.io/src/tcc.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/tcc-web.png" alt="Online Demo of TCC Compiler in WebAssembly" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/"><em>Online Demo of TCC Compiler in WebAssembly</em></a></p>
-<h1 id="appendix-compile-tcc-with-zig"><a href="#appendix-compile-tcc-with-zig">9 Appendix: Compile TCC with Zig</a></h1>
+<h1 id="appendix-compile-tcc-with-zig"><a class="doc-anchor" href="#appendix-compile-tcc-with-zig">§</a>9 Appendix: Compile TCC with Zig</h1>
 <p>This is how we run <strong>Zig Compiler to compile TCC Compiler</strong> from C to WebAssembly (pic below)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the (slightly) Modified TCC Source Code.
 ## Configure the build for 64-bit RISC-V.
@@ -754,7 +754,7 @@ gcc \
 <p>And we copied above GCC Options to become our <a href="https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly"><strong>Zig Compiler Options</strong></a>.</p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tcc-zig.jpg" alt="Zig Compiler compiles TCC Compiler to WebAssembly" /></p>
-<h1 id="appendix-javascript-calls-tcc"><a href="#appendix-javascript-calls-tcc">10 Appendix: JavaScript calls TCC</a></h1>
+<h1 id="appendix-javascript-calls-tcc"><a class="doc-anchor" href="#appendix-javascript-calls-tcc">§</a>10 Appendix: JavaScript calls TCC</h1>
 <p>Previously we saw some <strong>JavaScript (Web Browser and Node.js)</strong> calling our TCC Compiler in WebAssembly (pic above)…</p>
 <ul>
 <li>
@@ -872,7 +872,7 @@ const ptr = wasm.instance.exports
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js">(Test Script for NuttX QEMU: <strong>test-nuttx.js</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/55a4d4cae26994aa673e6d8451716b27">(Test Log for NuttX QEMU: <strong>test-nuttx.log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tcc-format.jpg" alt="Our Zig Wrapper doing Pattern Matching for Formatting C Strings" /></p>
-<h1 id="appendix-pattern-matching"><a href="#appendix-pattern-matching">11 Appendix: Pattern Matching</a></h1>
+<h1 id="appendix-pattern-matching"><a class="doc-anchor" href="#appendix-pattern-matching">§</a>11 Appendix: Pattern Matching</h1>
 <p>A while back we saw our Zig Wrapper doing <strong>Pattern Matching</strong> for Formatting C Strings…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>“Fearsome fprintf and Friends”</strong></a></li>
@@ -1020,7 +1020,7 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
 <p><a href="https://gist.github.com/lupyuen/3e650bd6ad72b2e8ee8596858bc94f36">(See the <strong>Formatting Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#fix-the-varargs-functions">(Without <strong>comptime</strong>: Our code gets <strong>super tedious</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX Apps make a System Call to print to the console" /></p>
-<h1 id="appendix-nuttx-system-call"><a href="#appendix-nuttx-system-call">12 Appendix: NuttX System Call</a></h1>
+<h1 id="appendix-nuttx-system-call"><a class="doc-anchor" href="#appendix-nuttx-system-call">§</a>12 Appendix: NuttX System Call</h1>
 <p>Just now we saw a huge chunk of C Code that makes a <strong>NuttX System Call</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tcc#hello-nuttx"><strong>“Hello NuttX!”</strong></a></li>
@@ -1169,7 +1169,7 @@ for(;;) {}
 <p>We should call the NuttX System Call <strong><code>__exit</code></strong> to terminate peacefully.</p>
 <p><img src="https://lupyuen.github.io/images/tcc-demo.png" alt="Online Demo of Apache NuttX RTOS" /></p>
 <p><a href="https://nuttx.apache.org/demo/"><em>Online Demo of Apache NuttX RTOS</em></a></p>
-<h1 id="appendix-build-nuttx-for-qemu"><a href="#appendix-build-nuttx-for-qemu">13 Appendix: Build NuttX for QEMU</a></h1>
+<h1 id="appendix-build-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-build-nuttx-for-qemu">§</a>13 Appendix: Build NuttX for QEMU</h1>
 <p>Here are the steps to build and run <strong>NuttX for QEMU 64-bit RISC-V</strong> (Kernel Mode)</p>
 <ol>
 <li>
@@ -1250,7 +1250,7 @@ nsh&gt; a.out
 Hello, World!!
 </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/tcc-posix.jpg" alt="POSIX Functions aren’t supported for TCC in WebAssembly" /></p>
-<h1 id="appendix-missing-functions"><a href="#appendix-missing-functions">14 Appendix: Missing Functions</a></h1>
+<h1 id="appendix-missing-functions"><a class="doc-anchor" href="#appendix-missing-functions">§</a>14 Appendix: Missing Functions</h1>
 <p>Remember we said that POSIX Functions aren’t supported in WebAssembly? (Pic above)</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tcc#posix-for-webassembly"><strong>“POSIX for WebAssembly”</strong></a></li>

@@ -127,7 +127,7 @@
 </ul>
 <p>This is how we gave MakeCode a wholesome wholesale makeover…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-nuttx.jpg" alt="Blockly App Builder for NuttX" /></p>
-<h1 id="drag-n-drop-a-blinky-app"><a href="#drag-n-drop-a-blinky-app">1 Drag-n-Drop a Blinky App</a></h1>
+<h1 id="drag-n-drop-a-blinky-app"><a class="doc-anchor" href="#drag-n-drop-a-blinky-app">§</a>1 Drag-n-Drop a Blinky App</h1>
 <p>Here’s the <strong>Emulator Demo</strong> that we can play along at home (without Ox64 SBC)…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="NuttX App Builder with Blockly" /></p>
 <ol>
@@ -207,7 +207,7 @@ bl808_gpiowrite:
 <p>And our NuttX App runs automagically in our Web Browser, thanks to Ox64 Emulator!</p>
 <p>We go behind the scenes…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-emulator.png" alt="Running our Drag-n-Drop App on NuttX Emulator" /></p>
-<h1 id="posix-blocks-in-blockly"><a href="#posix-blocks-in-blockly">2 POSIX Blocks in Blockly</a></h1>
+<h1 id="posix-blocks-in-blockly"><a class="doc-anchor" href="#posix-blocks-in-blockly">§</a>2 POSIX Blocks in Blockly</h1>
 <p><em>What’s POSIX? How are POSIX Functions used in our Blinky App?</em></p>
 <p>We call <a href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX Functions</strong></a> to create Command-Line Apps in Linux, macOS and Windows.</p>
 <p><code>open</code>, <code>ioctl</code>, <code>sleep</code> and <code>close</code> are all POSIX Functions. And they’ll run on NuttX too!</p>
@@ -246,7 +246,7 @@ npm run build \
 <ul>
 <li><a href="https://lupyuen.github.io/articles/quickjs2#appendix-posix-blocks-in-blockly"><strong>“POSIX Blocks in Blockly”</strong></a></li>
 </ul>
-<h1 id="code-generator-in-blockly"><a href="#code-generator-in-blockly">3 Code Generator in Blockly</a></h1>
+<h1 id="code-generator-in-blockly"><a class="doc-anchor" href="#code-generator-in-blockly">§</a>3 Code Generator in Blockly</h1>
 <p><em>We dragged the POSIX Blocks to our Blinky App… How did the JavaScript automagically appear?</em></p>
 <p>We created <strong>Code Generators</strong> in Blockly that will emit the JavaScript Code for each POSIX Block: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/generators/javascript.ts#L15-L25">javascript.ts</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Code Generator for POSIX `Open` Block
@@ -284,7 +284,7 @@ forBlock[&#39;posix_open&#39;] = function (
 <p>Yep the QuickJS JavaScript Engine supports <a href="https://bellard.org/quickjs/quickjs.html#os-module"><strong>these POSIX Functions</strong></a>.</p>
 <p>And <a href="https://lupyuen.github.io/articles/quickjs#add-ioctl-to-quickjs"><strong>we added <code>ioctl</code></strong></a> to QuickJS.</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-nuttx2.jpg" alt="Running our NuttX App on Ox64 Emulator" /></p>
-<h1 id="transmit-javascript-via-local-storage"><a href="#transmit-javascript-via-local-storage">4 Transmit JavaScript via Local Storage</a></h1>
+<h1 id="transmit-javascript-via-local-storage"><a class="doc-anchor" href="#transmit-javascript-via-local-storage">§</a>4 Transmit JavaScript via Local Storage</h1>
 <p><em>Blockly generates the JavaScript for our Blinky App… How did it appear in our Ox64 Emulator?</em></p>
 <p>When we click <strong>“Run Emulator”</strong>, our Blockly Website saves the Generated JavaScript to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API"><strong>Local Storage</strong></a> in our Web Browser: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L73-L86">index.ts</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Run on Ox64 Emulator
@@ -328,7 +328,7 @@ window.setTimeout(()=&gt;{
 <p>Yeah we might inject our JavaScript File into the <a href="https://lupyuen.github.io/articles/romfs#from-tcc-to-nuttx-emulator"><strong>ROM FS Filesystem</strong></a> of Ox64 Emulator.</p>
 <p>This will make it much quicker to load our JavaScript File on Ox64 Emulator.</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-device.png" alt="Running our Drag-n-Drop App on Ox64 BL808 SBC" /></p>
-<h1 id="blinky-on-a-real-ox64-sbc"><a href="#blinky-on-a-real-ox64-sbc">5 Blinky on a Real Ox64 SBC</a></h1>
+<h1 id="blinky-on-a-real-ox64-sbc"><a class="doc-anchor" href="#blinky-on-a-real-ox64-sbc">§</a>5 Blinky on a Real Ox64 SBC</h1>
 <p><em>Everything we saw earlier… Will it work for a Real Ox64 SBC?</em></p>
 <p>If we have an <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 SBC</strong></a>, here are the <strong>Demo Steps</strong>…</p>
 <ol>
@@ -396,7 +396,7 @@ bl808_gpiowrite:
 </ol>
 <p>What just happened? We break it down…</p>
 <p><img src="https://lupyuen.github.io/images/nim-blink2.webp" alt="Blinking a Real LED on Ox64 SBC" /></p>
-<h1 id="control-ox64-via-web-serial-api"><a href="#control-ox64-via-web-serial-api">6 Control Ox64 via Web Serial API</a></h1>
+<h1 id="control-ox64-via-web-serial-api"><a class="doc-anchor" href="#control-ox64-via-web-serial-api">§</a>6 Control Ox64 via Web Serial API</h1>
 <p><em>Our Web Browser controls Ox64 SBC… How is that possible?</em></p>
 <p>With the <a href="https://developer.chrome.com/docs/capabilities/serial"><strong>Web Serial API</strong></a>, it’s OK to control any device that’s accessible over the <strong>Serial Port</strong>. But it’s only available…</p>
 <ul>
@@ -484,7 +484,7 @@ async function control_device() {
 <p>Thanks to Web Serial API (and Term.js), we can run <a href="https://www.purescript.org/"><strong>PureScript</strong></a> to parse the <a href="https://github.com/lupyuen/nuttx-purescript-parser"><strong>Real-Time Logs</strong></a> from a NuttX Device (or NuttX Emulator)…</p>
 <p>All this in the Web Browser! Stay tuned for the next article.</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-nuttx.jpg" alt="Blockly App Builder for NuttX" /></p>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>So much has changed over the past 7 years! We gave <strong>MakeCode App Builder</strong> a wholesome wholesale makeover (pic above)…</p>
 <ul>
 <li>
@@ -541,7 +541,7 @@ async function control_device() {
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/quickjs2.md"><strong>lupyuen.github.io/src/quickjs2.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-blocks.png" alt="POSIX Blocks in Blockly" /></p>
-<h1 id="appendix-posix-blocks-in-blockly"><a href="#appendix-posix-blocks-in-blockly">8 Appendix: POSIX Blocks in Blockly</a></h1>
+<h1 id="appendix-posix-blocks-in-blockly"><a class="doc-anchor" href="#appendix-posix-blocks-in-blockly">§</a>8 Appendix: POSIX Blocks in Blockly</h1>
 <p>Earlier we talked about adding <strong>POSIX Blocks</strong> to our Blockly Website (pic above)…</p>
 <ul>
 <li>
@@ -636,7 +636,7 @@ npm run build \
 <p>Remember to <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L35-L38"><strong>Disable the JavaScript Eval</strong></a>. (Because our Web Browser won’t do POSIX)</p>
 <p>Let’s talk about loading a Blockly App…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="NuttX App Builder with Blockly" /></p>
-<h1 id="appendix-load-a-blockly-app"><a href="#appendix-load-a-blockly-app">9 Appendix: Load a Blockly App</a></h1>
+<h1 id="appendix-load-a-blockly-app"><a class="doc-anchor" href="#appendix-load-a-blockly-app">§</a>9 Appendix: Load a Blockly App</h1>
 <p>In our Blockly Website, we provide the feature to load the <strong>Demo Blocks for a Blockly App</strong>…</p>
 <ul>
 <li>
@@ -696,7 +696,7 @@ localStorage.setItem(&quot;mainWorkspace&quot;, `...`);
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/serialization.ts#L8-L10">(<strong>“mainWorkspace”</strong> is hardcoded here)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-device.png" alt="Running our Drag-n-Drop App on Ox64 BL808 SBC" /></p>
-<h1 id="appendix-control-ox64-via-web-serial-api"><a href="#appendix-control-ox64-via-web-serial-api">10 Appendix: Control Ox64 via Web Serial API</a></h1>
+<h1 id="appendix-control-ox64-via-web-serial-api"><a class="doc-anchor" href="#appendix-control-ox64-via-web-serial-api">§</a>10 Appendix: Control Ox64 via Web Serial API</h1>
 <p>Earlier we spoke about <strong>controlling Ox64 SBC</strong> over the Web Serial API (pic below)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/quickjs2#control-ox64-via-web-serial-api"><strong>“Control Ox64 via Web Serial API”</strong></a></li>
@@ -760,7 +760,7 @@ async function control_device() {
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/term.js#L487-L1047">(<strong>term.write</strong> is in <strong>Term.js</strong>)</a></p>
 <p>Let’s look inside <strong>send_command</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-nuttx3.jpg" alt="Running our NuttX App on Ox64 SBC" /></p>
-<h1 id="appendix-transmit-javascript-to-ox64-sbc"><a href="#appendix-transmit-javascript-to-ox64-sbc">11 Appendix: Transmit JavaScript to Ox64 SBC</a></h1>
+<h1 id="appendix-transmit-javascript-to-ox64-sbc"><a class="doc-anchor" href="#appendix-transmit-javascript-to-ox64-sbc">§</a>11 Appendix: Transmit JavaScript to Ox64 SBC</h1>
 <p><em>How did Blockly pass the Generated JavaScript to Ox64 SBC?</em></p>
 <p>When we click <strong>“Run on Device”</strong>, our Blockly Website saves the Generated JavaScript to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API"><strong>Local Storage</strong></a> in our Web Browser: <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L86-L99">index.ts</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Run on Ox64 Device

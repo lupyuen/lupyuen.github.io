@@ -113,7 +113,7 @@
 </ul>
 <p><a href="https://youtu.be/6vQ-TXXojbQ">(Watch the <strong>Demo Video</strong> on YouTube)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-star64.jpg" alt="Star64 RISC-V SBC" /></p>
-<h1 id="build-nuttx-for-star64"><a href="#build-nuttx-for-star64">1 Build NuttX for Star64</a></h1>
+<h1 id="build-nuttx-for-star64"><a class="doc-anchor" href="#build-nuttx-for-star64">§</a>1 Build NuttX for Star64</h1>
 <p>Let’s walk through the steps to <strong>build NuttX for Star64</strong>…</p>
 <ol>
 <li>
@@ -191,7 +191,7 @@ $ riscv64-unknown-elf-objdump \
 <p>Now we create a Bootable microSD…</p>
 <p><img src="https://lupyuen.github.io/images/release-microsd.png" alt="NuttX goes into the FAT Partition on the microSD" /></p>
 <p><em>NuttX goes into the FAT Partition on the microSD</em></p>
-<h1 id="nuttx-in-a-bootable-microsd"><a href="#nuttx-in-a-bootable-microsd">2 NuttX in a Bootable microSD</a></h1>
+<h1 id="nuttx-in-a-bootable-microsd"><a class="doc-anchor" href="#nuttx-in-a-bootable-microsd">§</a>2 NuttX in a Bootable microSD</h1>
 <p><em>How do we create a Bootable microSD for NuttX?</em></p>
 <p>From the previous section, we have…</p>
 <ul>
@@ -348,7 +348,7 @@ diskutil unmountDisk /dev/disk2
 <p><a href="https://u-boot.readthedocs.io/en/latest/usage/fit/source_file_format.html">(More about <strong>Flat Image Tree</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/release#appendix-starfive-visionfive2-software-release">(How <strong>sdcard.img</strong> was created)</a></p>
 <p><img src="https://lupyuen.github.io/images/release-title.png" alt="Apache NuttX RTOS boots OK on Star64 JH7110 SBC" /></p>
-<h1 id="boot-nuttx-on-star64"><a href="#boot-nuttx-on-star64">3 Boot NuttX on Star64</a></h1>
+<h1 id="boot-nuttx-on-star64"><a class="doc-anchor" href="#boot-nuttx-on-star64">§</a>3 Boot NuttX on Star64</h1>
 <p>Connect Star64 to our computer with a <strong>USB Serial Adapter</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>“Serial Console on Star64”</strong></a></li>
@@ -362,7 +362,7 @@ NuttX boots on Star64 and <strong>NuttShell (nsh)</strong> appears in the Serial
 <p><a href="https://gist.github.com/lupyuen/eef8de0817ceed2072b2bacc925cdd96">(See the <strong>NuttX Log</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp"><strong>Booting NuttX over TFTP</strong></a> is also supported on Star64.</p>
 <p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="Booting NuttX over the Network with TFTP" /></p>
-<h1 id="nuttx-startup-explained"><a href="#nuttx-startup-explained">4 NuttX Startup Explained</a></h1>
+<h1 id="nuttx-startup-explained"><a class="doc-anchor" href="#nuttx-startup-explained">§</a>4 NuttX Startup Explained</h1>
 <p>Step by step, here’s everything that happens when NuttX boots on our SBC…</p>
 <p><img src="https://lupyuen.github.io/images/star64-opensbi.jpg" alt="OpenSBI and U-Boot Bootloader" /></p>
 <ol>
@@ -459,7 +459,7 @@ NuttX boots on Star64 and <strong>NuttShell (nsh)</strong> appears in the Serial
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/release-pr2.jpg" alt="Pull Request for NuttX Board" /></p>
-<h1 id="add-the-nuttx-arch-and-board"><a href="#add-the-nuttx-arch-and-board">5 Add the NuttX Arch and Board</a></h1>
+<h1 id="add-the-nuttx-arch-and-board"><a class="doc-anchor" href="#add-the-nuttx-arch-and-board">§</a>5 Add the NuttX Arch and Board</h1>
 <p><em>How did we add Star64 JH7110 to NuttX?</em></p>
 <p>When we add a new board to NuttX, we do it in 4 steps…</p>
 <ol>
@@ -481,7 +481,7 @@ NuttX boots on Star64 and <strong>NuttShell (nsh)</strong> appears in the Serial
 </li>
 </ol>
 <p>This is how we did it for Star64 SBC (with JH7110 SoC) in <strong>3 Pull Requests</strong>…</p>
-<h2 id="patch-the-nuttx-dependencies"><a href="#patch-the-nuttx-dependencies">5.1 Patch the NuttX Dependencies</a></h2>
+<h2 id="patch-the-nuttx-dependencies"><a class="doc-anchor" href="#patch-the-nuttx-dependencies">§</a>5.1 Patch the NuttX Dependencies</h2>
 <p>First we patch any <strong>NuttX Dependencies</strong> needed by Star64 JH7110. </p>
 <p>We discovered that JH7110 triggers too many <strong>spurious UART interrupts</strong>…</p>
 <ul>
@@ -494,7 +494,7 @@ NuttX boots on Star64 and <strong>NuttShell (nsh)</strong> appears in the Serial
 </ul>
 <p>Wait for the Pull Request to be merged. Then we add the NuttX Arch…</p>
 <p><a href="https://lupyuen.github.io/articles/pr">(How to submit a <strong>Pull Request</strong> for NuttX)</a></p>
-<h2 id="add-the-nuttx-arch"><a href="#add-the-nuttx-arch">5.2 Add the NuttX Arch</a></h2>
+<h2 id="add-the-nuttx-arch"><a class="doc-anchor" href="#add-the-nuttx-arch">§</a>5.2 Add the NuttX Arch</h2>
 <p>Next we submit the Pull Request that implements the support for JH7110 SoC as a <strong>NuttX Arch</strong>…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx/pull/10069"><strong>“arch/risc-v: Add support for StarFive JH7110 SoC”</strong></a></li>
@@ -537,7 +537,7 @@ endif
 <p><a href="https://github.com/apache/nuttx/pull/10069">(Description of each file)</a></p>
 </li>
 </ul>
-<h2 id="add-the-nuttx-board"><a href="#add-the-nuttx-board">5.3 Add the NuttX Board</a></h2>
+<h2 id="add-the-nuttx-board"><a class="doc-anchor" href="#add-the-nuttx-board">§</a>5.3 Add the NuttX Board</h2>
 <p>Finally we create the Pull Request that implements the support for Star64 SBC as a <strong>NuttX Board</strong>…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx/pull/10094"><strong>“boards/risc-v: Add support for PINE64 Star64 JH7110 SBC”</strong></a></li>
@@ -659,7 +659,7 @@ CONFIG_DEBUG_WARN=y
 </ul>
 <p>Before merging with NuttX Mainline, remember to remove the Debug Options for BINFMT, FS, MM and SCHED.</p>
 <p><img src="https://lupyuen.github.io/images/release-doc2.png" alt="JH7110 NuttX Arch" /></p>
-<h1 id="update-the-nuttx-docs"><a href="#update-the-nuttx-docs">6 Update the NuttX Docs</a></h1>
+<h1 id="update-the-nuttx-docs"><a class="doc-anchor" href="#update-the-nuttx-docs">§</a>6 Update the NuttX Docs</h1>
 <p>Earlier we created a Pull Request to <a href="https://lupyuen.github.io/articles/release#add-the-nuttx-board"><strong>add a new NuttX Board</strong></a>.</p>
 <p>In the same Pull Request, we update the <strong>NuttX Docs</strong> like so…</p>
 <p>Create a page for the <strong>JH7110 NuttX Arch</strong> (pic above)…</p>
@@ -708,7 +708,7 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
 </ul>
 <p>And now we’re ready to submit the Pull Request. That’s how we add a NuttX Arch and NuttX Board!</p>
 <p><img src="https://lupyuen.github.io/images/release-star64.jpg" alt="Testing Apache NuttX RTOS on Star64 JH7110 SBC" /></p>
-<h1 id="upcoming-features"><a href="#upcoming-features">7 Upcoming Features</a></h1>
+<h1 id="upcoming-features"><a class="doc-anchor" href="#upcoming-features">§</a>7 Upcoming Features</h1>
 <p><em>How will we create the missing drivers for Star64 JH7110?</em></p>
 <p>We welcome <a href="https://lupyuen.github.io/articles/pr"><strong>your contribution to NuttX</strong></a>!</p>
 <p>Based on the official docs…</p>
@@ -818,7 +818,7 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
 <p>We hope to test NuttX soon on the <a href="https://wiki.pine64.org/wiki/PineTab-V"><strong>PineTab-V RISC-V Tablet</strong></a>. Stay tuned for updates!</p>
 <p><strong>TODO:</strong> Fix the System Timer by calling OpenSBI, similar to <a href="https://github.com/apache/nuttx/pull/11472"><strong>Ox64 BL808</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/release-visionfive.jpg" alt="Apache NuttX RTOS boots OK on StarFive VisionFive2 SBC" /></p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>Today we finally have NuttX running on a <strong>Single-Board Computer</strong>: Star64 JH7110 SBC! (And StarFive VisionFive2, pic above)</p>
 <ul>
 <li>
@@ -867,7 +867,7 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/release.md"><strong>lupyuen.github.io/src/release.md</strong></a></p>
-<h1 id="appendix-missing-mathh"><a href="#appendix-missing-mathh">9 Appendix: Missing Math.h</a></h1>
+<h1 id="appendix-missing-mathh"><a class="doc-anchor" href="#appendix-missing-mathh">§</a>9 Appendix: Missing Math.h</h1>
 <p><em>Why did the NuttX Build fail with missing <code>math.h</code>?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>$ sudo apt install \
   gcc-riscv64-unknown-elf \
@@ -892,7 +892,7 @@ CONFIG_LIBM=y
 <p><a href="https://lists.apache.org/thread/1lzjphvlhr0b6b4tdq6k1l4rhy900h0z">(See this)</a></p>
 <p><a href="https://cwiki.apache.org/confluence/display/NUTTX/Integrating+with+Newlib">(More about <strong>CONFIG_LIBM</strong>)</a></p>
 <p><a href="https://github.com/KenDickey">(Thanks to <strong>Ken Dickey</strong> for the tip!)</a></p>
-<h1 id="appendix-starfive-visionfive2-software-release"><a href="#appendix-starfive-visionfive2-software-release">10 Appendix: StarFive VisionFive2 Software Release</a></h1>
+<h1 id="appendix-starfive-visionfive2-software-release"><a class="doc-anchor" href="#appendix-starfive-visionfive2-software-release">§</a>10 Appendix: StarFive VisionFive2 Software Release</h1>
 <p>The <strong>StarFive VisionFive2 Software Release</strong> was helpful for creating the Bootable microSD for NuttX.</p>
 <p>The Software Release includes an <strong>SD Card Image</strong> that boots OK on Star64…</p>
 <ul>
@@ -965,7 +965,7 @@ Password: starfive
 </code></pre></div>
 <p>Useful for creating our own SD Card Partitions!</p>
 <p>(We won’t need the <strong>spl</strong>, <strong>uboot</strong> and <strong>root</strong> partitions for NuttX)</p>
-<h1 id="appendix-uart-clock-for-jh7110"><a href="#appendix-uart-clock-for-jh7110">11 Appendix: UART Clock for JH7110</a></h1>
+<h1 id="appendix-uart-clock-for-jh7110"><a class="doc-anchor" href="#appendix-uart-clock-for-jh7110">§</a>11 Appendix: UART Clock for JH7110</h1>
 <p><em>How did we figure out the UART Clock for JH7110?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_CLOCK=23040000
 </code></pre></div>
