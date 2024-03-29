@@ -196,7 +196,7 @@
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-01-28",
       "website": "https://lupyuen.github.io/articles/tinyemu3",
-      "summary": "Every day we're auto-building Apache NuttX RTOS for Ox64 BL808 SBC... Can we test NuttX on Ox64 automatically after building? Let's find out!"
+      "summary": "Every day we're auto-building Apache NuttX RTOS for Ox64 BL808 SBC... Can we test NuttX on Ox64 Emulator automatically after building? Let's find out!"
     },
     {
       "name": "Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS",
