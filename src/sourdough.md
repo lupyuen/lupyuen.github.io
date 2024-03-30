@@ -30,7 +30,7 @@ Daily routine for __Sourdough Starter__, assuming that we bake every other day..
 
 -   __Every Other Morning:__ Sourdough Starter should double in height by morning, ready for dough-making. (Pic above)
 
-    Use 2 Rubber Bands to Halve the Starter. (Pic above)
+    Later we'll use __Half of the Starter__. Use 2 Rubber Bands to Halve the Starter. (Pic above)
 
 -   Wipe clean the inside of the Sourdough Jar whenever we discard Sourdough Starter
 
@@ -56,7 +56,7 @@ Add in this sequence to Bread Machine (pic above)...
 
     (Too much Baking Soda will taste soapy!)
 
--   1/2 of the __Wholemeal Sourdough Starter__, ripe (fed) from above
+-   Half of the __Wholemeal Sourdough Starter__ (from above)
 
     (Use 2 Rubber Bands to Halve the Starter)
 
