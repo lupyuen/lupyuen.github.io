@@ -1,132 +1,144 @@
 # Recipe for Wholemeal Sourdough with Bread Machine
 
-📝 _14 Jan 2024_
+📝 _30 Apr 2024_
 
-![Honey & Milk Sourdough](https://lupyuen.github.io/images/sourdough25.jpg)
+![Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough26.jpg)
 
-_Honey & Milk Sourdough_
+[(Adapted from __"The Sourdough Framework"__)](https://www.the-sourdough-framework.com/)
 
 # Wholemeal Sourdough Starter
 
-Daily routine for Sourdough Starter, assuming that we bake every other day...
+Daily routine for __Sourdough Starter__, assuming that we bake every other day...
 
--   Before Every Feeding: Pour away most of the Sourdough Starter. A tiny bit of Sourdough Starter is sufficient to chomp up the flour.
+![Wholemeal Sourdough Starter ready for baking](https://lupyuen.github.io/images/sourdough27.jpg)
 
--   Feed 2 times daily:
+-   __Before Every Feeding:__ Pour away most of the Sourdough Starter. A tiny bit of Sourdough Starter is sufficient to chomp up the flour.
 
-    -   1/4 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
+-   __Feed 2 times daily:__
+
+    -   1 cup __Superfine Wholegrain Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-superfine-wholegrain-flour/)
     
-    -   1/4 cup Boiled Water at Room Temperature. Consistency should be watery, so it's easier to pour away.
+    -   1/4 cup __Boiled Water__ at Room Temperature. Consistency should be like thick oatmeal, so it will rise better.
 
-    Except for the morning of dough-making, increase to:
+    Except for the __night before dough-making__, increase to:
 
-    -   3/4 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
+    -   2 cups __Superfine Wholegrain Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-superfine-wholegrain-flour/)
     
-    -   1/4 cup Boiled Water at Room Temperature. Consistency should be like thick oatmeal, so it will rise better.
+    -   1/2 cup __Boiled Water__ at Room Temperature. Consistency should be like thick oatmeal, so it will rise better.
 
 -   Stir the Sourdough Starter with a chopstick (the blunt end)
 
--   Every Other Afternoon / Evening: Sourdough Starter should double in height by afternoon / evening, ready for dough-making.
+-   __Every Other Morning:__ Sourdough Starter should double in height by morning, ready for dough-making. (Pic above)
 
-    [(See pic below)](https://lupyuen.github.io/images/sourdough2.jpg)
+    Use 2 Rubber Bands to Halve the Starter. (Pic above)
 
 -   Wipe clean the inside of the Sourdough Jar whenever we discard Sourdough Starter
 
-![Wholemeal Sourdough Starter](https://lupyuen.github.io/images/sourdough2.jpg)
+![Mix the dough](https://lupyuen.github.io/images/sourdough28.jpg)
 
-# Baking the Wholemeal Sourdough
+# Mix the Dough
 
-Every other afternoon / evening we prepare the dough for a One-Pound Loaf of Honey & Milk Sourdough Bread. (Baked the next morning)
+__Every Other Morning:__ we prepare the dough for a One-Pound Loaf of Sourdough Bread.
 
-Add in this sequence to Bread Machine...
+Add in this sequence to Bread Machine (pic above)...
 
--   1 tablespoon (14g) Cold Unsalted Butter (from fridge)
+-   1 tablespoon (14g) __Cold Unsalted Butter__ (from fridge)
 
--   1 tablespoon Honey
+-   1 cup __Boiled Water__ at Room Temperature
 
-    [(Or 1 stick of Ovaltine Instant Malt Drink Powder, 30g)](https://www.fairprice.com.sg/product/ovaltine-malt-drink-chocolate-820g-13058372)
+-   1/4 cup (60g) __Superfine Wholegrain Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-superfine-wholegrain-flour/)
 
--   1 tablespoon Full Cream Milk Powder 
+-   2 cups (240g) __Bread Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-bread-flour/)
 
--   3/4 cup Boiling Water (100 deg C)
+-   1/2 teaspoon (2.8g) __Salt__
 
-    Stir the Boiling Water to melt the butter and blend the honey (or Ovaltine) and milk.
+-   1/2 teaspoon __Baking Soda__ (to neutralise the sourness and give extra poofiness)
 
--   1 cup Wholemeal Sourdough Starter, ripe (fed) from above
+    (Too much Baking Soda will taste soapy!)
 
-    (Just add all the Sourdough Starter, leaving a little bit to regenerate)
+-   1/2 of the __Wholemeal Sourdough Starter__, ripe (fed) from above
 
--   2 cups (240g) Bread Flour
+    (Use 2 Rubber Bands to Halve the Starter)
 
--   1/2 teaspoon (2.8g) Salt
+![Knead the dough](https://lupyuen.github.io/images/sourdough29.jpg)
 
--   1/4 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness).
+# Knead the Dough
 
-    Too much Baking Soda will taste soapy!
+We will __knead the dough__ in the Bread Machine, move the Bread Bucket to a Cool Oven to __rise the dough__ (4.5 hours), then move the Bread Bucket back to the Bread Machine for __more rising and baking__. Here are the steps...
 
-![Honey & Milk Sourdough](https://lupyuen.github.io/images/sourdough25.jpg)
+1.  __To knead the dough:__ Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with __"Quick Baking"__ Cycle.
 
-We will knead the dough in the Bread Machine, move the Bread Bucket to a Cool Oven to rise the dough (3 hours), refrigerate overnight (slow rising), then move the Bread Bucket back to the Bread Machine for more rising and baking. Here are the steps...
+    (Which is the quickest way to knead)
 
-1.  To knead the dough, start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "Quick Baking" Cycle.
-
-    (This is the quickest way to knead)
-
-1.  If Necessary: Sprinkle Bread Flour or Water until dough becomes a Smooth and Creamy Ball. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
+1.  Sprinkle Bread Flour or Water until dough becomes a __Smooth and Creamy Ball__. (Pic above)
 
 1.  After the Kneading Step has completed, power off the Bread Machine
 
-1.  Remove the Paddle from the Bread Bucket. (Because otherwise the dough will rise, dislodge the Paddle, and Paddle gets stuck inside the bread)
+1.  __Remove the Paddle__ from the Bread Bucket. (Because otherwise the dough will rise, dislodge the Paddle, and Paddle gets stuck inside the bread)
 
     Here's how: Tilt the Bread Bucket to one side, scrape the dough off the Paddle with a wooden chopstick, remove the Paddle.
 
-1.  Inside the Bread Bucket: Wet our hands and [Stretch and Fold](https://www.theperfectloaf.com/how-to-stretch-and-fold-sourdough-bread-dough/) the dough one round: North, South, East, West
+1.  Inside the Bread Bucket: With dry hands, [__Stretch and Fold__](https://www.the-sourdough-framework.com/Wheatsourdough.html#stretch-and-folds) the dough one round: North, South, East, West
 
-    Seriously Stretch the dough with a Looooong Pull, before Each Folding. [Makes the bread super floofy!](https://qoto.org/@lupyuen/111763975783868661)
+    (Be careful not to expel the gas!)
 
-1.  Inside the Bread Bucket: Wet our hands and pat the dough until it becomes a Smooth and Creamy Ball. Scrape the dough away from the sides of the Bread Bucket.
+1.  Pat the dough and rotate the Bread Bucket, until it becomes a __Smooth and Creamy Lump__. Scrape the dough away from the sides of the Bread Bucket.
 
-    Smooth over any holes, make the dough airtight.
+    Smooth over any holes, make the dough airtight. (Pic below)
 
-1.  Place the Bread Bucket in a Cool Oven, and cover with a Dry Towel. [(Pic above)](https://lupyuen.github.io/images/sourdough25.jpg)
+![Stretch and fold the dough before rising](https://lupyuen.github.io/images/sourdough30.jpg)
 
-    Allow the dough to rise for 3 hours. The dough should reach almost the brim of the Bread Bucket.
+# Rise the Dough
 
-1.  While waiting 3 hours: Do 3 more rounds of [Stretch and Fold](https://www.theperfectloaf.com/how-to-stretch-and-fold-sourdough-bread-dough/) inside the Bread Bucket. (30 mins between each round of Stretch and Fold)
+1.  Place the Bread Bucket in a Cool Oven, and cover with a Dry Towel. (Pic above)
 
-    [Makes the bread super floofy!](https://qoto.org/@lupyuen/111763975783868661)
+    Allow the dough to rise for __2 hours__. The dough should reach __Half the Depth__ of the Bread Bucket. (Pic below)
 
-1.  Refrigerate overnight (9 hours) the whole Bread Bucket (covered with Dry Towel) for slow rising (yep it will still rise), before baking the next day.
+1.  Inside the Bread Bucket: With dry hands, [__Stretch and Fold__](https://www.the-sourdough-framework.com/Wheatsourdough.html#stretch-and-folds) the dough one round: North, South, East, West
 
-    (Not the freezer!)
+    (Be careful not to expel the gas!)
 
-__At the Next Morning (9am):__
+1.  Pat the dough and rotate the Bread Bucket, until it becomes a __Smooth and Creamy Lump__. Scrape the dough away from the sides of the Bread Bucket.
 
-1.  Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with "French Bread" Cycle (5 hour cycle) WITHOUT the Bread Bucket.
+    Smooth over any holes, make the dough airtight. (Pic below)
+
+1.  __Stop the Fermentation:__ Place Ice Packs inside the oven to stop the fermentation. (Pic below)
+
+    (Otherwise dough will become [__Overfermented, Sour and Gummy__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented))
+
+![Stretch and fold the dough while rising](https://lupyuen.github.io/images/sourdough31.jpg)
+
+# Bake the Dough
+
+1.  Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with __"French Bread"__ Cycle (5 hour cycle) WITHOUT the Bread Bucket.
 
     Bread Machine will try to knead without the Bread Bucket. And that's OK.
 
-1.  35 mins after starting "French Bread" Cycle: Bread Machine will stop kneading.
+1.  __1 hour__ after starting "French Bread" Cycle: __Stretch and fold__ like earlier. Pat and rotate the dough. Return to Cool Oven with Ice Packs.
 
-    Move the Bread Bucket from fridge into the Bread Machine.
+    (Notice the big bubbles)
 
-1.  "French Bread" Cycle will warm up and rise the dough for 3 hours.
+    ![Stretch and fold the dough one last time](https://lupyuen.github.io/images/sourdough32.jpg)
 
-    Then bake for 1.5 hours.
+1.  __2.5 hours__ after starting "French Bread" Cycle: __Move the Bread Bucket__ from Oven into the Bread Machine. (Pic below)
+
+1.  "French Bread" Cycle will __warm up and rise__ the dough for 1 hour. (Reaching the Notches in the Bread Bucket, pic below)
+
+    Then "French Bread" Cycle will bake for 1.5 hours. (Pic below)
 
     [(French Bread Mode is explained on Page 17)](https://www.zojirushi.com/servicesupport/manuals/manual_pdf/bb_hac10.pdf)
 
-1.  After Baking: Our loaf might get stuck to the Spindle in the Bread Bucket.
+1.  __After Baking:__ Our loaf might get stuck to the Spindle in the Bread Bucket.
 
     Turn the Spindle a few rounds, via the Bottom Exterior of Bread Bucket. (Very hot!)
 
     Our loaf will plop out from the Bread Bucket. Don't shake the Bread Bucket too hard, because the loaf will tear with a circular hole.
 
-Yep it's 8 hours plus fridge overnight 9 hours, instead of the normal 5-hour "French Bread" Mode! This gives the dough plenty of time to rise (12 hours), for the extra bubbly floofiness.
+Yep it's __5.5 hours rising__ plus __1.5 hours baking__, instead of the normal 5-hour "French Bread" Mode! This gives the dough plenty of time to rise, for the extra bubbly floofiness.
 
-[(Watch the Video on YouTube)](https://www.youtube.com/shorts/R7GI71rqUc8)
+But remember not to [__overferment__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented)!
 
-Adapted from [King Arthur Bread Machine Sourdough Recipe](https://www.kingarthurbaking.com/recipes/bread-machine-sourdough-bread-recipe) (Non-Wholemeal)
+![Bake the dough](https://lupyuen.github.io/images/sourdough33.jpg)
 
 # Okinawa Black Sugar Sourdough
 
@@ -152,7 +164,7 @@ During Kneading...
 
 -   Add 1/2 cup Raisins
 
--   Sprinkle a few teaspoons of [Superfine Wholegrain Flour](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html) until it looks like a smooth bump
+-   Sprinkle a few teaspoons of [Superfine Wholegrain Flour](https://www.primaflour.com/product-description/primaflour-superfine-wholegrain-flour/) until it looks like a smooth bump
 
     (Dough will not become a Ball because it's too wet and frothy)
 
