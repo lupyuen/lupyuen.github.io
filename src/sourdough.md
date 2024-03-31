@@ -1,10 +1,28 @@
 # Recipe for Wholemeal Sourdough with Bread Machine
 
-📝 _30 Apr 2024_
+📝 _31 Mar 2024_
 
 ![Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough26.jpg)
 
 [(Adapted from __"The Sourdough Framework"__)](https://www.the-sourdough-framework.com/)
+
+[(Watch the __Video on YouTube__)](https://www.youtube.com/shorts/6yqyACMUxOk)
+
+__Warning:__ Sorry the recipe below [__has issues__](https://masto.ai/@MKH/112185445371214202)...
+
+- Not Gonna Lie (NGL), the Baked Sourdough feels somewhat [__Gummy and Damp__](https://masto.ai/@MKH/112185445371214202)
+
+- Is it [__Overfermented__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented)? Or [__pH Level__](https://www.the-sourdough-framework.com/Wheatsourdough.html#bulk-fermentation) too acidic? Let's get a [__Food pH Meter__](https://shp.ee/1rt7sae) and verify!
+
+- Our Sourdough Dough should begin [__fermenting at pH 6.0__](https://www.the-sourdough-framework.com/Wheatsourdough.html#bulk-fermentation). Then shortly before baking it should have pH 4.0.
+
+- We'll hack the sourdough, __"be-new and improve"__ the recipe
+
+  (Normally we'll "debug" but Bugs and Food don't mix! And "troubleshoot" sounds a little... violent)
+
+- My deepest apologies to the folks who taste and test all my awful sourdough creations. Luv you!
+
+- TODO: Does the Food pH Meter help?
 
 # Wholemeal Sourdough Starter
 
