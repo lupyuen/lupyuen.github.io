@@ -41,7 +41,7 @@
         <item>
             <title>Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)</title>
             <link>https://lupyuen.github.io/articles/tinyemu3</link>
-            <description><![CDATA[Every day we're auto-building Apache NuttX RTOS for Ox64 BL808 SBC... Can we test NuttX on Ox64 automatically after building? Let's find out!]]></description>
+            <description><![CDATA[Every day we're auto-building Apache NuttX RTOS for Ox64 BL808 SBC... Can we test NuttX on Ox64 Emulator automatically after building? Let's find out!]]></description>
             <guid>https://lupyuen.github.io/articles/tinyemu3</guid>
             <pubDate>Sun, 28 Jan 2024 00:00:00 +0000</pubDate>
         </item>
@@ -1398,9 +1398,9 @@
         </item>
         <item>
             <title>Connect BBC micro:bit to Sigfox</title>
-            <link>https://web.archive.org/https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350</link>
+            <link>https://web.archive.org/web/20181107052846/https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350</link>
             <description><![CDATA[BBC micro:bit connected to the Sigfox IoT network is the perfect way to help kids understand how Sensors and Sensor Networks operate. The micro:bit is a good representation of a modern battery-powered sensor device, with ample processing power and support for most types of sensors. For education, Sigfox is likely the cheapest option today for experimenting with a city-wide sensor network.]]></description>
-            <guid>https://web.archive.org/https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350</guid>
+            <guid>https://web.archive.org/web/20181107052846/https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350</guid>
             <pubDate>Mon, 05 Nov 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
@@ -1412,30 +1412,30 @@
         </item>
         <item>
             <title>Connect STM32 Blue Pill to Sigfox</title>
-            <link>https://web.archive.org/https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1</link>
+            <link>https://web.archive.org/web/20181107040125/https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1</link>
             <description><![CDATA[STM32 “Blue Pill” microcontroller connected to a transceiver module for the Sigfox IoT network might be the best combination for low-power IoT devices right now.]]></description>
-            <guid>https://web.archive.org/https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1</guid>
+            <guid>https://web.archive.org/web/20181107040125/https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1</guid>
             <pubDate>Fri, 28 Sep 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Watch STM32 Blue Pill Juggle Two SPI Sensors With DMA</title>
-            <link>https://web.archive.org/https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869</link>
+            <link>https://web.archive.org/web/20190114162720/https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869</link>
             <description><![CDATA[This article that explains all that I have learnt about SPI ports, DMA and interrupts on the Blue Pill]]></description>
-            <guid>https://web.archive.org/https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869</guid>
+            <guid>https://web.archive.org/web/20190114162720/https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869</guid>
             <pubDate>Wed, 19 Sep 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Program Your First FPGA With GOWIN GW1N-4</title>
-            <link>https://web.archive.org/https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea</link>
+            <link>https://web.archive.org/web/20180929144643/https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea</link>
             <description><![CDATA[As we learn how to program the FPGA, we’ll soon realise that FPGA programming is really extraordinary, unlike any other kind of programming we have done before]]></description>
-            <guid>https://web.archive.org/https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea</guid>
+            <guid>https://web.archive.org/web/20180929144643/https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea</guid>
             <pubDate>Wed, 05 Sep 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Juggling STM32 Blue Pill For Arduino Jugglers</title>
-            <link>https://web.archive.org/https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808</link>
+            <link>https://web.archive.org/web/20181107052906/https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808</link>
             <description><![CDATA[Upsizing from Arduino Uno to a 32-bit STM microcontroller doesn’t have to be hard]]></description>
-            <guid>https://web.archive.org/https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808</guid>
+            <guid>https://web.archive.org/web/20181107052906/https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808</guid>
             <pubDate>Mon, 27 Aug 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
@@ -1447,9 +1447,9 @@
         </item>
         <item>
             <title>Juggling Arduino Sensors With cocoOS</title>
-            <link>https://web.archive.org/https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be</link>
+            <link>https://web.archive.org/web/20180813101011/https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be</link>
             <description><![CDATA[Juggle multiple Arduino sensors, using an open source library for cooperative processing: cocoOS]]></description>
-            <guid>https://web.archive.org/https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be</guid>
+            <guid>https://web.archive.org/web/20180813101011/https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be</guid>
             <pubDate>Sat, 11 Aug 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
@@ -1461,16 +1461,16 @@
         </item>
         <item>
             <title>Coding the STM32 Blue Pill with Rust and Visual Studio Code</title>
-            <link>https://web.archive.org/https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20</link>
+            <link>https://web.archive.org/web/20180809082010/https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20</link>
             <description><![CDATA[Let's learn Rust, a modern systems programming language that promotes safe, concurrent low-level coding]]></description>
-            <guid>https://web.archive.org/https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20</guid>
+            <guid>https://web.archive.org/web/20180809082010/https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20</guid>
             <pubDate>Tue, 10 Jul 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Making my first ever PCB with Seeed Fusion PCB assembly service</title>
-            <link>https://web.archive.org/https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3</link>
+            <link>https://web.archive.org/web/20181107053043/https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3</link>
             <description><![CDATA[Here’s the story of the first gadget that I have ever created, with help from the brilliant minds at Seeed in Shenzhen]]></description>
-            <guid>https://web.archive.org/https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3</guid>
+            <guid>https://web.archive.org/web/20181107053043/https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3</guid>
             <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
@@ -1489,9 +1489,9 @@
         </item>
         <item>
             <title>Multitasking on the Arduino with a Finite State Machine – And why you’ll need it for Sigfox Downlink</title>
-            <link>https://web.archive.org/https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e</link>
+            <link>https://web.archive.org/web/20180801172644/https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e</link>
             <description><![CDATA[How to implement a Finite State Machine on the Arduino Uno]]></description>
-            <guid>https://web.archive.org/https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e</guid>
+            <guid>https://web.archive.org/web/20180801172644/https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e</guid>
             <pubDate>Sun, 13 May 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
@@ -1503,9 +1503,9 @@
         </item>
         <item>
             <title>I Teach IoT. Here’s what you’ll learn</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0</link>
+            <link>https://web.archive.org/web/20180801172627/https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0</link>
             <description><![CDATA[Arduino, Low Power Networks, IoT Networks, IoT Analytics, ...]]></description>
-            <guid>https://web.archive.org/https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0</guid>
+            <guid>https://web.archive.org/web/20180801172627/https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0</guid>
             <pubDate>Tue, 24 Apr 2018 00:00:00 +0000</pubDate>
         </item>
         <item>

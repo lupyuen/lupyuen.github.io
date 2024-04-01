@@ -1553,7 +1553,7 @@
       "name": "Connect BBC micro:bit to Sigfox",
       "publisher": "Medium",
       "releaseDate": "2018-11-05",
-      "website": "https://web.archive.org/https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350",
+      "website": "https://web.archive.org/web/20181107052846/https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350",
       "summary": "BBC micro:bit connected to the Sigfox IoT network is the perfect way to help kids understand how Sensors and Sensor Networks operate. The micro:bit is a good representation of a modern battery-powered sensor device, with ample processing power and support for most types of sensors. For education, Sigfox is likely the cheapest option today for experimenting with a city-wide sensor network."
     },
     {
@@ -1567,28 +1567,28 @@
       "name": "Connect STM32 Blue Pill to Sigfox",
       "publisher": "Medium",
       "releaseDate": "2018-09-28",
-      "website": "https://web.archive.org/https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1",
+      "website": "https://web.archive.org/web/20181107040125/https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1",
       "summary": "STM32 “Blue Pill” microcontroller connected to a transceiver module for the Sigfox IoT network might be the best combination for low-power IoT devices right now."
     },
     {
       "name": "Watch STM32 Blue Pill Juggle Two SPI Sensors With DMA",
       "publisher": "Medium",
       "releaseDate": "2018-09-19",
-      "website": "https://web.archive.org/https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869",
+      "website": "https://web.archive.org/web/20190114162720/https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869",
       "summary": "This article that explains all that I have learnt about SPI ports, DMA and interrupts on the Blue Pill"
     },
     {
       "name": "Program Your First FPGA With GOWIN GW1N-4",
       "publisher": "Medium",
       "releaseDate": "2018-09-05",
-      "website": "https://web.archive.org/https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea",
+      "website": "https://web.archive.org/web/20180929144643/https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea",
       "summary": "As we learn how to program the FPGA, we’ll soon realise that FPGA programming is really extraordinary, unlike any other kind of programming we have done before"
     },
     {
       "name": "Juggling STM32 Blue Pill For Arduino Jugglers",
       "publisher": "Medium",
       "releaseDate": "2018-08-27",
-      "website": "https://web.archive.org/https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808",
+      "website": "https://web.archive.org/web/20181107052906/https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808",
       "summary": "Upsizing from Arduino Uno to a 32-bit STM microcontroller doesn’t have to be hard"
     },
     {
@@ -1602,7 +1602,7 @@
       "name": "Juggling Arduino Sensors With cocoOS",
       "publisher": "Medium",
       "releaseDate": "2018-08-11",
-      "website": "https://web.archive.org/https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be",
+      "website": "https://web.archive.org/web/20180813101011/https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be",
       "summary": "Juggle multiple Arduino sensors, using an open source library for cooperative processing: cocoOS"
     },
     {
@@ -1616,14 +1616,14 @@
       "name": "Coding the STM32 Blue Pill with Rust and Visual Studio Code",
       "publisher": "Medium",
       "releaseDate": "2018-07-10",
-      "website": "https://web.archive.org/https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20",
+      "website": "https://web.archive.org/web/20180809082010/https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20",
       "summary": "Let's learn Rust, a modern systems programming language that promotes safe, concurrent low-level coding"
     },
     {
       "name": "Making my first ever PCB with Seeed Fusion PCB assembly service",
       "publisher": "Medium",
       "releaseDate": "2018-07-05",
-      "website": "https://web.archive.org/https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3",
+      "website": "https://web.archive.org/web/20181107053043/https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3",
       "summary": "Here’s the story of the first gadget that I have ever created, with help from the brilliant minds at Seeed in Shenzhen"
     },
     {
@@ -1644,7 +1644,7 @@
       "name": "Multitasking on the Arduino with a Finite State Machine – And why you’ll need it for Sigfox Downlink",
       "publisher": "Medium",
       "releaseDate": "2018-05-13",
-      "website": "https://web.archive.org/https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e",
+      "website": "https://web.archive.org/web/20180801172644/https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e",
       "summary": "How to implement a Finite State Machine on the Arduino Uno"
     },
     {
@@ -1658,7 +1658,7 @@
       "name": "I Teach IoT. Here’s what you’ll learn",
       "publisher": "Medium",
       "releaseDate": "2018-04-24",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0",
+      "website": "https://web.archive.org/web/20180801172627/https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0",
       "summary": "Arduino, Low Power Networks, IoT Networks, IoT Analytics, ..."
     },
     {
