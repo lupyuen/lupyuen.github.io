@@ -378,7 +378,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 
 TODO: But why Double Float instead of Single Float? (Mmmm ice cream float)
 
-# Undefined Reference to core::panicking::panic
+# Panic is Undefined
 
 _What's this core::panicking::panic? Why is it undefined?_
 
@@ -473,7 +473,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/rust3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust3.md)
 
-# Appendix: Undefined Reference to core::panicking::panic
+# Appendix: Panic is Undefined
 
 TODO
 
