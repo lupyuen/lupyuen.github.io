@@ -167,7 +167,7 @@ Follow these steps to build Apache NuttX RTOS for 32-bit RISC-V QEMU, bundled wi
 
 # Boot NuttX on 32-bit RISC-V QEMU
 
-TODO
+This is how we boot NuttX on QEMU and run our Rust App...
 
 1.  Download and install [__QEMU Emulator__](https://www.qemu.org/download/).
 
@@ -253,8 +253,6 @@ TODO
 
 # How NuttX Builds Rust Apps
 
-TODO
-
 Let's watch how NuttX builds Rust Apps by calling `rustc`. (Instead of `cargo build`)
 
 Here's the NuttX Build Log...
@@ -329,7 +327,66 @@ total 112
 
 [(See the RISC-V Disassembly)](https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c)
 
+# Patch the ELF Header
+
+TODO
+
+If the GCC Linker fails with _"Can't link soft-float modules with double-float modules"_...
+
+```text
+$ make
+LD: nuttx
+riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
+  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o):
+  can't link soft-float modules with double-float modules
+riscv64-unknown-elf-ld: failed to merge target specific data of file
+  nuttx/staging/libapps.a
+  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
+```
+
+Then we patch the ELF Header like this and it should link correctly...
+
+```bash
+xxd -c 1 ../apps/examples/hello_rust/*hello_rust_1.o \
+  | sed 's/00000024: 00/00000024: 04/' \
+  | xxd -r -c 1 - /tmp/hello_rust_1.o
+cp /tmp/hello_rust_1.o ../apps/examples/hello_rust/*hello_rust_1.o
+make
+
+## Ignore the warnings:
+## riscv64-unknown-elf-ld: warning: nuttx/staging/libapps.a(hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o): 
+## mis-matched ISA version 2.1 for 'i' extension, the output version is 2.0
+```
+
+How did it work? We patched the ELF Header, changing it from Software Floating-Point to Double Precision Hardware Floating-Point...
+
+```bash
+## Before Patching: ELF Header says Software Floating-Point
+$ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
+  Flags: 0x0
+
+## After Patching: ELF Header says Double-Precision Hardware Floating-Point
+$ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
+  Flags: 0x4, double-float ABI
+```
+
+[(Similar to this, except we're doing Double-Float instead of Single-Float)](https://lupyuen.github.io/articles/zig#patch-elf-header)
+
+TODO: But why Double Float instead of Single Float? (Mmmm ice cream float)
+
 # Undefined Reference to core::panicking::panic
+
+_What's this core::panicking::panic? Why is it undefined?_
+
+TODO
+
+If the GCC Linker fails with the error _"undefined reference to core::panicking::panic"_, please apply this patch...
+
+[Add -O to RUSTFLAGS in Makefile](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/58c9ebee95626251dd1601476991cdfea7fcd190)
+
+Then rebuild: `make clean ; make`
+
+(If we still hit the same error, see the notes below)
 
 TODO
 
