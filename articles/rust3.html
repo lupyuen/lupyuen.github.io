@@ -66,7 +66,13 @@
     <h1 class="title">Rust Apps on Apache NuttX RTOS and QEMU RISC-V</h1>
     <nav id="TOC"><ul>
 <li><a href="#todo">1 TODO</a><ul></ul></li>
-<li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
+<li><a href="#running-a-rust-app-on-apache-nuttx-rtos-qemu-risc-v-32-bit">2 Running a Rust App on Apache NuttX RTOS (QEMU RISC-V 32-bit)</a><ul></ul></li>
+<li><a href="#build-nuttx-for-32-bit-risc-v-qemu">3 Build NuttX for 32-bit RISC-V QEMU</a><ul></ul></li>
+<li><a href="#boot-nuttx-on-32-bit-risc-v-qemu">4 Boot NuttX on 32-bit RISC-V QEMU</a><ul></ul></li>
+<li><a href="#how-nuttx-builds-rust-apps">5 How NuttX Builds Rust Apps</a><ul></ul></li>
+<li><a href="#undefined-reference-to-corepanickingpanic">6 Undefined Reference to core::panicking::panic</a><ul></ul></li>
+<li><a href="#rust-build-for-qemu-risc-v-64-bit">7 Rust Build for QEMU RISC-V 64-bit</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust3-title.png" alt="TODO" /></p>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
@@ -78,7 +84,297 @@
 <p>Giving in to our AI Overlords so soon?</p>
 <p>Borrow Checker and Cargo Clippy are AI all along!</p>
 <p>My biggest wish: Someone please create a higher level variant of Rust that will use some bits of AI to compile into the current low-level Rust </p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+<h1 id="running-a-rust-app-on-apache-nuttx-rtos-qemu-risc-v-32-bit"><a class="doc-anchor" href="#running-a-rust-app-on-apache-nuttx-rtos-qemu-risc-v-32-bit">§</a>2 Running a Rust App on Apache NuttX RTOS (QEMU RISC-V 32-bit)</h1>
+<p>Here are the steps to build NuttX for QEMU RISC-V (32-bit) and run the “Hello Rust” Demo App…</p>
+<p><img src="https://lupyuen.github.io/images/riscv-build.png" alt="Build Apache NuttX RTOS for 64-bit RISC-V QEMU" /></p>
+<h1 id="build-nuttx-for-32-bit-risc-v-qemu"><a class="doc-anchor" href="#build-nuttx-for-32-bit-risc-v-qemu">§</a>3 Build NuttX for 32-bit RISC-V QEMU</h1>
+<p>TODO</p>
+<ol>
+<li>
+<p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
+</li>
+<li>
+<p>Download the RISC-V Toolchain for <strong>riscv64-unknown-elf</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></p>
+</li>
+<li>
+<p>Download and configure NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone https://github.com/apache/nuttx nuttx
+git clone https://github.com/apache/nuttx-apps apps
+
+cd nuttx
+tools/configure.sh rv-virt:nsh
+make menuconfig
+</code></pre></div></li>
+<li>
+<p>In <strong>menuconfig</strong>, browse to “<strong>Device Drivers</strong> &gt; <strong>System Logging</strong>”</p>
+<p>Disable this option…</p>
+<div class="example-wrap"><pre class="language-text"><code>Prepend Timestamp to Syslog Message
+</code></pre></div></li>
+<li>
+<p>Browse to “<strong>Build Setup</strong> &gt; <strong>Debug Options</strong>”</p>
+<p>Select the following options…</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable Debug Features
+Enable Error Output
+Enable Warnings Output
+Enable Informational Debug Output
+Enable Debug Assertions
+Enable Debug Assertions Show Expression
+Scheduler Debug Features
+Scheduler Error Output
+Scheduler Warnings Output
+Scheduler Informational Output
+</code></pre></div></li>
+<li>
+<p>Browse to “<strong>Application Configuration</strong> &gt; <strong>Examples</strong>”</p>
+<p>Select “<strong>Hello Rust Example</strong>”</p>
+<p>Select it <strong>Twice</strong> so that “<strong><code>&lt;M&gt;</code></strong>” changes to “<strong><code>&lt;*&gt;</code></strong>”</p>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">(Source Code for Hello Rust)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/c1d9124347da02bbe0842c14ca99100a6b8f42b0">(Reading from Console Input)</a></p>
+</li>
+<li>
+<p>Save and exit <strong>menuconfig</strong>.</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/9ee00a20a2f8deab8e27a08cfbc1c7a7f948d5ed">(See the NuttX Config)</a></p>
+</li>
+<li>
+<p>Build the NuttX Project and dump the RISC-V Disassembly to <strong>nuttx.S</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>rustup target add riscv32i-unknown-none-elf
+
+make
+
+riscv64-unknown-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4">(See the Build Log)</a></p>
+<p>This produces the NuttX ELF Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator. (Next Section)</p>
+</li>
+<li>
+<p>If the GCC Linker fails with <em>“Can’t link soft-float modules with double-float modules”</em>…</p>
+<div class="example-wrap"><pre class="language-text"><code>$ make
+LD: nuttx
+riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
+  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o):
+  can&#39;t link soft-float modules with double-float modules
+riscv64-unknown-elf-ld: failed to merge target specific data of file
+  nuttx/staging/libapps.a
+  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
+</code></pre></div>
+<p>Then we patch the ELF Header like this and it should link correctly…</p>
+<div class="example-wrap"><pre class="language-bash"><code>xxd -c 1 ../apps/examples/hello_rust/*hello_rust_1.o \
+  | sed &#39;s/00000024: 00/00000024: 04/&#39; \
+  | xxd -r -c 1 - /tmp/hello_rust_1.o
+cp /tmp/hello_rust_1.o ../apps/examples/hello_rust/*hello_rust_1.o
+make
+
+## Ignore the warnings:
+## riscv64-unknown-elf-ld: warning: nuttx/staging/libapps.a(hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o): 
+## mis-matched ISA version 2.1 for &#39;i&#39; extension, the output version is 2.0
+</code></pre></div>
+<p>How did it work? We patched the ELF Header, changing it from Software Floating-Point to Double Precision Hardware Floating-Point…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Before Patching: ELF Header says Software Floating-Point
+$ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
+  Flags: 0x0
+
+## After Patching: ELF Header says Double-Precision Hardware Floating-Point
+$ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
+  Flags: 0x4, double-float ABI
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(Similar to this, except we’re doing Double-Float instead of Single-Float)</a></p>
+<p>TODO: Fix the Rust Build for NuttX</p>
+</li>
+<li>
+<p>If the GCC Linker fails with the error <em>“undefined reference to core::panicking::panic”</em>, please apply this patch…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/58c9ebee95626251dd1601476991cdfea7fcd190">Add -O to RUSTFLAGS in Makefile</a></p>
+<p>Then rebuild: <code>make clean ; make</code></p>
+<p>(If we still hit the same error, see the notes below)</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on RISC-V QEMU" /></p>
+<h1 id="boot-nuttx-on-32-bit-risc-v-qemu"><a class="doc-anchor" href="#boot-nuttx-on-32-bit-risc-v-qemu">§</a>4 Boot NuttX on 32-bit RISC-V QEMU</h1>
+<p>TODO</p>
+<ol>
+<li>
+<p>Download and install <a href="https://www.qemu.org/download/"><strong>QEMU Emulator</strong></a>.</p>
+<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
+brew install qemu
+
+## For Debian and Ubuntu:
+sudo apt install qemu-system-riscv32
+</code></pre></div></li>
+<li>
+<p>Start the <strong>QEMU RISC-V Emulator</strong> (32-bit) with the NuttX ELF Image <strong>nuttx</strong> from the previous section…</p>
+<div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv32 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv32 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+</code></pre></div></li>
+<li>
+<p>NuttX is now running in the QEMU Emulator! (Pic above)</p>
+<div class="example-wrap"><pre class="language-text"><code>uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+nx_start_application: Starting init thread
+
+NuttShell (NSH) NuttX-12.1.0-RC0
+nsh&gt; nx_start: CPU0: Beginning Idle Loop
+nsh&gt;
+</code></pre></div></li>
+<li>
+<p>Enter “<strong>hello_rust</strong>” to run the Rust Demo App</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_rust
+Hello, Rust!!
+</code></pre></div></li>
+<li>
+<p>Enter “<strong>help</strong>” to see the available commands…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; help
+help usage:  help [-v] [&lt;cmd&gt;]
+
+    .         break     dd        exit      ls        ps        source    umount
+    [         cat       df        false     mkdir     pwd       test      unset
+    ?         cd        dmesg     free      mkrd      rm        time      uptime
+    alias     cp        echo      help      mount     rmdir     true      usleep
+    unalias   cmp       env       hexdump   mv        set       truncate  xd
+    basename  dirname   exec      kill      printf    sleep     uname
+
+Builtin Apps:
+    nsh     ostest  sh
+</code></pre></div></li>
+<li>
+<p>NuttX works like a tiny version of Linux, so the commands will look familiar…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
+NuttX 12.1.0-RC0 275db39 Jun 16 2023 20:22:08 risc-v rv-virt
+
+nsh&gt; ls /dev
+/dev:
+console
+null
+ttyS0
+zero
+
+nsh&gt; ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK           STACK   USED  FILLED COMMAND
+    0     0   0 FIFO     Kthread N-- Ready              0000000000000000 002000 001224  61.2%  Idle Task
+    1     1 100 RR       Task    --- Running            0000000000000000 002992 002024  67.6%  nsh_main
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">(See the Complete Log)</a></p>
+</li>
+<li>
+<p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
+</li>
+</ol>
+<h1 id="how-nuttx-builds-rust-apps"><a class="doc-anchor" href="#how-nuttx-builds-rust-apps">§</a>5 How NuttX Builds Rust Apps</h1>
+<p>TODO</p>
+<p>Let’s watch how NuttX builds Rust Apps by calling <code>rustc</code>. (Instead of <code>cargo build</code>)</p>
+<p>Here’s the NuttX Build Log…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ make --trace
+
+## Compile `hello_rust_main.rs` to `hello_rust.o`
+rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv32i-unknown-none-elf \
+  -C panic=abort \
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust_main.rs...apps.examples.hello_rust.o
+
+## Copy `hello_rust.o` to `hello_rust_1.o` (Why?)
+cp \
+  hello_rust_main.rs...apps.examples.hello_rust.o \
+  hello_rust_main.rs...apps.examples.hello_rust_1.o
+
+## Omitted: Bundle `hello_rust_1.o`
+## into `staging/libapps.a`
+
+## Link `staging/libapps.a` into `nuttx`
+riscv64-unknown-elf-ld \
+  --entry=__start \
+  -melf32lriscv \
+  --gc-sections \
+  -nostdlib \
+  --cref \
+  -Map=nuttx/nuttx.map \
+  -Tboards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp  \
+  -L staging \
+  -L arch/risc-v/src/board  \
+  -o nuttx \
+  qemu_rv_head.o  \
+  --start-group \
+  -lsched \
+  -ldrivers \
+  -lboards \
+  -lc \
+  -lmm \
+  -larch \
+  -lm \
+  -lapps \
+  -lfs \
+  -lbinfmt \
+  -lboard riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin/bin/../lib/gcc/riscv64-unknown-elf/10.2.0/rv32imafdc/ilp32d/libgcc.a \
+  --end-group
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/1d79670339480baed19f4fa30266b945">(See the Detailed Build Log)</a></p>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/Application.mk#L164-L170">(Rust Build with <code>rustc</code> is defined here)</a></p>
+<p>Here are the Rust Object Files produced by the NuttX Build…</p>
+<div class="example-wrap"><pre class="language-text"><code>$ ls -l ../apps/examples/hello_rust     
+total 112
+-rw-r--r--  1   650 Jul 20  2023 Kconfig
+-rw-r--r--  1  1071 Jul 20  2023 Make.defs
+-rw-r--r--  1   141 Mar 17 09:44 Make.dep
+-rw-r--r--  1  1492 Mar 16 20:41 Makefile
+-rw-r--r--  1  3982 Mar 17 00:06 hello_rust_main.rs
+-rw-r--r--  1 13168 Mar 17 09:44 hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+-rw-r--r--  1 18240 Mar 17 09:54 hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c">(See the RISC-V Disassembly)</a></p>
+<h1 id="undefined-reference-to-corepanickingpanic"><a class="doc-anchor" href="#undefined-reference-to-corepanickingpanic">§</a>6 Undefined Reference to core::panicking::panic</h1>
+<p>TODO</p>
+<p>After adding <code>RUSTFLAGS=-O</code>, we might still hit Undefined <code>core::panicking::panic</code>. Here’s our Test Code that has 2 Potential Panics: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">hello_rust_main.rs</a></p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84">Converting usize to c_int</a> might panic (due to overflow)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">Divide by 0</a> will panic</p>
+</li>
+</ul>
+<p>If we omit <code>RUSTFLAGS=-O</code>: We see 2 Undefined <code>core::panicking::panic</code>…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c">RISC-V Disassembly: Without <code>RUSTFLAGS=-O</code></a></li>
+</ul>
+<p>But when we add <code>RUSTFLAGS=-O</code>: We still see 1 Undefined <code>core::panicking::panic</code> for the divide-by-zero…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/bec3bdd8379143a6046414d3ad2cc888">RISC-V Disassembly: With <code>RUSTFLAGS=-O</code></a></li>
+</ul>
+<p>Somehow the divide-by-zero panic refuses to link correctly. <a href="https://github.com/rust-lang/compiler-builtins/issues/79">Based on this discussion</a>, it seems that the Rust Core Library is compiled with LTO (Link-Time Optimisation), so it might still cause problems with our code, which doesn’t use LTO.</p>
+<p>TODO: If we call <code>cargo build</code> (instead of <code>rustc</code>), will it fix this LTO issue? How different is the <code>cargo build</code> Linker from GCC Linker?</p>
+<h1 id="rust-build-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#rust-build-for-qemu-risc-v-64-bit">§</a>7 Rust Build for QEMU RISC-V 64-bit</h1>
+<p>TODO: Rust Build fails for QEMU RISC-V 64-bit…</p>
+<div class="example-wrap"><pre class="language-text"><code>$ tools/configure.sh rv-virt:nsh64
+$ make menuconfig
+## TODO: Enable &quot;Hello Rust Example&quot;
+$ make
+
+RUSTC:  hello_rust_main.rs error: Error loading target specification: 
+  Could not find specification for target &quot;riscv64i-unknown-none-elf&quot;. 
+  Run `rustc --print target-list` for a list of built-in targets
+
+make[2]: *** [nuttx/apps/Application.mk:275: hello_rust_main.rs...nuttx.apps.examples.hello_rust.o] Error 1
+make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
+make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
+</code></pre></div>
+<p>TODO: Test the Rust Build for QEMU Arm32 and Arm64</p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
