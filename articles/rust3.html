@@ -73,7 +73,8 @@
 <li><a href="#patch-the-elf-header">6 Patch the ELF Header</a><ul></ul></li>
 <li><a href="#undefined-reference-to-corepanickingpanic">7 Undefined Reference to core::panicking::panic</a><ul></ul></li>
 <li><a href="#rust-build-for-qemu-risc-v-64-bit">8 Rust Build for QEMU RISC-V 64-bit</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-undefined-reference-to-corepanickingpanic">10 Appendix: Undefined Reference to core::panicking::panic</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust3-title.png" alt="TODO" /></p>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
@@ -380,22 +381,11 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>(If we still hit the same error, see the notes below)</p>
 <p>TODO</p>
 <p>After adding <code>RUSTFLAGS=-O</code>, we might still hit Undefined <code>core::panicking::panic</code>. Here’s our Test Code that has 2 Potential Panics: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">hello_rust_main.rs</a></p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84">Converting usize to c_int</a> might panic (due to overflow)</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">Divide by 0</a> will panic</p>
-</li>
-</ul>
+<p>TODO: See Appendix</p>
 <p>If we omit <code>RUSTFLAGS=-O</code>: We see 2 Undefined <code>core::panicking::panic</code>…</p>
-<ul>
-<li><a href="https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c">RISC-V Disassembly: Without <code>RUSTFLAGS=-O</code></a></li>
-</ul>
+<p>TODO: See Appendix</p>
 <p>But when we add <code>RUSTFLAGS=-O</code>: We still see 1 Undefined <code>core::panicking::panic</code> for the divide-by-zero…</p>
-<ul>
-<li><a href="https://gist.github.com/lupyuen/bec3bdd8379143a6046414d3ad2cc888">RISC-V Disassembly: With <code>RUSTFLAGS=-O</code></a></li>
-</ul>
+<p>TODO: See Appendix</p>
 <p>Somehow the divide-by-zero panic refuses to link correctly. <a href="https://github.com/rust-lang/compiler-builtins/issues/79">Based on this discussion</a>, it seems that the Rust Core Library is compiled with LTO (Link-Time Optimisation), so it might still cause problems with our code, which doesn’t use LTO.</p>
 <p>TODO: If we call <code>cargo build</code> (instead of <code>rustc</code>), will it fix this LTO issue? How different is the <code>cargo build</code> Linker from GCC Linker?</p>
 <h1 id="rust-build-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#rust-build-for-qemu-risc-v-64-bit">§</a>8 Rust Build for QEMU RISC-V 64-bit</h1>
@@ -439,6 +429,34 @@ make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust3.md"><strong>lupyuen.github.io/src/rust3.md</strong></a></p>
+<h1 id="appendix-undefined-reference-to-corepanickingpanic"><a class="doc-anchor" href="#appendix-undefined-reference-to-corepanickingpanic">§</a>10 Appendix: Undefined Reference to core::panicking::panic</h1>
+<p>TODO</p>
+<p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
+<p>TODO</p>
+<p>If the GCC Linker fails with the error <em>“undefined reference to core::panicking::panic”</em>, please apply this patch…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/58c9ebee95626251dd1601476991cdfea7fcd190">Add -O to RUSTFLAGS in Makefile</a></p>
+<p>Then rebuild: <code>make clean ; make</code></p>
+<p>(If we still hit the same error, see the notes below)</p>
+<p>TODO</p>
+<p>After adding <code>RUSTFLAGS=-O</code>, we might still hit Undefined <code>core::panicking::panic</code>. Here’s our Test Code that has 2 Potential Panics: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">hello_rust_main.rs</a></p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84">Converting usize to c_int</a> might panic (due to overflow)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">Divide by 0</a> will panic</p>
+</li>
+</ul>
+<p>If we omit <code>RUSTFLAGS=-O</code>: We see 2 Undefined <code>core::panicking::panic</code>…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c">RISC-V Disassembly: Without <code>RUSTFLAGS=-O</code></a></li>
+</ul>
+<p>But when we add <code>RUSTFLAGS=-O</code>: We still see 1 Undefined <code>core::panicking::panic</code> for the divide-by-zero…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/bec3bdd8379143a6046414d3ad2cc888">RISC-V Disassembly: With <code>RUSTFLAGS=-O</code></a></li>
+</ul>
+<p>Somehow the divide-by-zero panic refuses to link correctly. <a href="https://github.com/rust-lang/compiler-builtins/issues/79">Based on this discussion</a>, it seems that the Rust Core Library is compiled with LTO (Link-Time Optimisation), so it might still cause problems with our code, which doesn’t use LTO.</p>
+<p>TODO: If we call <code>cargo build</code> (instead of <code>rustc</code>), will it fix this LTO issue? How different is the <code>cargo build</code> Linker from GCC Linker?</p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
