@@ -26,6 +26,8 @@ Rust Compiler is almost Sentient, always commanding us Humans: "Please do this t
 
 My biggest wish: Someone please create a higher level variant of Rust that will use some bits of AI to compile into the current low-level Rust 
 
+PINE64 has kindly sponsored the Ox64 BL808 RISC-V SBCs that we'll be running to test the project.
+
 # Running a Rust App on Apache NuttX RTOS (QEMU RISC-V 32-bit)
 
 Here are the steps to build NuttX for QEMU RISC-V (32-bit) and run the "Hello Rust" Demo App...
