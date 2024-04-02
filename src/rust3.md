@@ -392,17 +392,15 @@ TODO
 
 After adding `RUSTFLAGS=-O`, we might still hit Undefined `core::panicking::panic`. Here's our Test Code that has 2 Potential Panics: [hello_rust_main.rs](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90)
 
-- [Converting usize to c_int](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84) might panic (due to overflow)
-
-- [Divide by 0](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90) will panic
+TODO: See Appendix
 
 If we omit `RUSTFLAGS=-O`: We see 2 Undefined `core::panicking::panic`...
 
-- [RISC-V Disassembly: Without `RUSTFLAGS=-O`](https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c)
+TODO: See Appendix
 
 But when we add `RUSTFLAGS=-O`: We still see 1 Undefined `core::panicking::panic` for the divide-by-zero...
 
-- [RISC-V Disassembly: With `RUSTFLAGS=-O`](https://gist.github.com/lupyuen/bec3bdd8379143a6046414d3ad2cc888)
+TODO: See Appendix
 
 Somehow the divide-by-zero panic refuses to link correctly. [Based on this discussion](https://github.com/rust-lang/compiler-builtins/issues/79), it seems that the Rust Core Library is compiled with LTO (Link-Time Optimisation), so it might still cause problems with our code, which doesn't use LTO.
 
@@ -450,3 +448,40 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/rust3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust3.md)
+
+# Appendix: Undefined Reference to core::panicking::panic
+
+TODO
+
+_What's this core::panicking::panic? Why is it undefined?_
+
+TODO
+
+If the GCC Linker fails with the error _"undefined reference to core::panicking::panic"_, please apply this patch...
+
+[Add -O to RUSTFLAGS in Makefile](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/58c9ebee95626251dd1601476991cdfea7fcd190)
+
+Then rebuild: `make clean ; make`
+
+(If we still hit the same error, see the notes below)
+
+TODO
+
+After adding `RUSTFLAGS=-O`, we might still hit Undefined `core::panicking::panic`. Here's our Test Code that has 2 Potential Panics: [hello_rust_main.rs](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90)
+
+- [Converting usize to c_int](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84) might panic (due to overflow)
+
+- [Divide by 0](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90) will panic
+
+If we omit `RUSTFLAGS=-O`: We see 2 Undefined `core::panicking::panic`...
+
+- [RISC-V Disassembly: Without `RUSTFLAGS=-O`](https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c)
+
+But when we add `RUSTFLAGS=-O`: We still see 1 Undefined `core::panicking::panic` for the divide-by-zero...
+
+- [RISC-V Disassembly: With `RUSTFLAGS=-O`](https://gist.github.com/lupyuen/bec3bdd8379143a6046414d3ad2cc888)
+
+Somehow the divide-by-zero panic refuses to link correctly. [Based on this discussion](https://github.com/rust-lang/compiler-builtins/issues/79), it seems that the Rust Core Library is compiled with LTO (Link-Time Optimisation), so it might still cause problems with our code, which doesn't use LTO.
+
+TODO: If we call `cargo build` (instead of `rustc`), will it fix this LTO issue? How different is the `cargo build` Linker from GCC Linker?
+
