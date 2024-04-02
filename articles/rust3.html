@@ -70,9 +70,10 @@
 <li><a href="#build-nuttx-for-32-bit-risc-v-qemu">3 Build NuttX for 32-bit RISC-V QEMU</a><ul></ul></li>
 <li><a href="#boot-nuttx-on-32-bit-risc-v-qemu">4 Boot NuttX on 32-bit RISC-V QEMU</a><ul></ul></li>
 <li><a href="#how-nuttx-builds-rust-apps">5 How NuttX Builds Rust Apps</a><ul></ul></li>
-<li><a href="#undefined-reference-to-corepanickingpanic">6 Undefined Reference to core::panicking::panic</a><ul></ul></li>
-<li><a href="#rust-build-for-qemu-risc-v-64-bit">7 Rust Build for QEMU RISC-V 64-bit</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
+<li><a href="#patch-the-elf-header">6 Patch the ELF Header</a><ul></ul></li>
+<li><a href="#undefined-reference-to-corepanickingpanic">7 Undefined Reference to core::panicking::panic</a><ul></ul></li>
+<li><a href="#rust-build-for-qemu-risc-v-64-bit">8 Rust Build for QEMU RISC-V 64-bit</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust3-title.png" alt="TODO" /></p>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
@@ -197,7 +198,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 </ol>
 <p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on RISC-V QEMU" /></p>
 <h1 id="boot-nuttx-on-32-bit-risc-v-qemu"><a class="doc-anchor" href="#boot-nuttx-on-32-bit-risc-v-qemu">§</a>4 Boot NuttX on 32-bit RISC-V QEMU</h1>
-<p>TODO</p>
+<p>This is how we boot NuttX on QEMU and run our Rust App…</p>
 <ol>
 <li>
 <p>Download and install <a href="https://www.qemu.org/download/"><strong>QEMU Emulator</strong></a>.</p>
@@ -272,7 +273,6 @@ nsh&gt; ps
 </li>
 </ol>
 <h1 id="how-nuttx-builds-rust-apps"><a class="doc-anchor" href="#how-nuttx-builds-rust-apps">§</a>5 How NuttX Builds Rust Apps</h1>
-<p>TODO</p>
 <p>Let’s watch how NuttX builds Rust Apps by calling <code>rustc</code>. (Instead of <code>cargo build</code>)</p>
 <p>Here’s the NuttX Build Log…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make --trace
@@ -337,7 +337,47 @@ total 112
 -rw-r--r--  1 18240 Mar 17 09:54 hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c">(See the RISC-V Disassembly)</a></p>
-<h1 id="undefined-reference-to-corepanickingpanic"><a class="doc-anchor" href="#undefined-reference-to-corepanickingpanic">§</a>6 Undefined Reference to core::panicking::panic</h1>
+<h1 id="patch-the-elf-header"><a class="doc-anchor" href="#patch-the-elf-header">§</a>6 Patch the ELF Header</h1>
+<p>TODO</p>
+<p>If the GCC Linker fails with <em>“Can’t link soft-float modules with double-float modules”</em>…</p>
+<div class="example-wrap"><pre class="language-text"><code>$ make
+LD: nuttx
+riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
+  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o):
+  can&#39;t link soft-float modules with double-float modules
+riscv64-unknown-elf-ld: failed to merge target specific data of file
+  nuttx/staging/libapps.a
+  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
+</code></pre></div>
+<p>Then we patch the ELF Header like this and it should link correctly…</p>
+<div class="example-wrap"><pre class="language-bash"><code>xxd -c 1 ../apps/examples/hello_rust/*hello_rust_1.o \
+  | sed &#39;s/00000024: 00/00000024: 04/&#39; \
+  | xxd -r -c 1 - /tmp/hello_rust_1.o
+cp /tmp/hello_rust_1.o ../apps/examples/hello_rust/*hello_rust_1.o
+make
+
+## Ignore the warnings:
+## riscv64-unknown-elf-ld: warning: nuttx/staging/libapps.a(hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o): 
+## mis-matched ISA version 2.1 for &#39;i&#39; extension, the output version is 2.0
+</code></pre></div>
+<p>How did it work? We patched the ELF Header, changing it from Software Floating-Point to Double Precision Hardware Floating-Point…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Before Patching: ELF Header says Software Floating-Point
+$ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
+  Flags: 0x0
+
+## After Patching: ELF Header says Double-Precision Hardware Floating-Point
+$ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
+  Flags: 0x4, double-float ABI
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(Similar to this, except we’re doing Double-Float instead of Single-Float)</a></p>
+<p>TODO: But why Double Float instead of Single Float? (Mmmm ice cream float)</p>
+<h1 id="undefined-reference-to-corepanickingpanic"><a class="doc-anchor" href="#undefined-reference-to-corepanickingpanic">§</a>7 Undefined Reference to core::panicking::panic</h1>
+<p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
+<p>TODO</p>
+<p>If the GCC Linker fails with the error <em>“undefined reference to core::panicking::panic”</em>, please apply this patch…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/58c9ebee95626251dd1601476991cdfea7fcd190">Add -O to RUSTFLAGS in Makefile</a></p>
+<p>Then rebuild: <code>make clean ; make</code></p>
+<p>(If we still hit the same error, see the notes below)</p>
 <p>TODO</p>
 <p>After adding <code>RUSTFLAGS=-O</code>, we might still hit Undefined <code>core::panicking::panic</code>. Here’s our Test Code that has 2 Potential Panics: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">hello_rust_main.rs</a></p>
 <ul>
@@ -358,7 +398,7 @@ total 112
 </ul>
 <p>Somehow the divide-by-zero panic refuses to link correctly. <a href="https://github.com/rust-lang/compiler-builtins/issues/79">Based on this discussion</a>, it seems that the Rust Core Library is compiled with LTO (Link-Time Optimisation), so it might still cause problems with our code, which doesn’t use LTO.</p>
 <p>TODO: If we call <code>cargo build</code> (instead of <code>rustc</code>), will it fix this LTO issue? How different is the <code>cargo build</code> Linker from GCC Linker?</p>
-<h1 id="rust-build-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#rust-build-for-qemu-risc-v-64-bit">§</a>7 Rust Build for QEMU RISC-V 64-bit</h1>
+<h1 id="rust-build-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#rust-build-for-qemu-risc-v-64-bit">§</a>8 Rust Build for QEMU RISC-V 64-bit</h1>
 <p>TODO: Rust Build fails for QEMU RISC-V 64-bit…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
@@ -374,7 +414,7 @@ make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
 make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 </code></pre></div>
 <p>TODO: Test the Rust Build for QEMU Arm32 and Arm64</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
