@@ -73,8 +73,9 @@
 <li><a href="#patch-the-elf-header">6 Patch the ELF Header</a><ul></ul></li>
 <li><a href="#undefined-reference-to-corepanickingpanic">7 Undefined Reference to core::panicking::panic</a><ul></ul></li>
 <li><a href="#rust-build-for-qemu-risc-v-64-bit">8 Rust Build for QEMU RISC-V 64-bit</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-undefined-reference-to-corepanickingpanic">10 Appendix: Undefined Reference to core::panicking::panic</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
+<li><a href="#standard-vs-embedded-rust">9 Standard vs Embedded Rust</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-undefined-reference-to-corepanickingpanic">11 Appendix: Undefined Reference to core::panicking::panic</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust3-title.png" alt="TODO" /></p>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
@@ -84,8 +85,8 @@
 <p>AI Tools</p>
 <p>Nim</p>
 <p><em>Giving in to our AI Overlords already?</em></p>
-<p>Borrow Checker and Cargo Clippy are AI all along!</p>
-<p>Rust Compiler is almost Sentient, telling us Humans: “Please do this to fix the build, you poopy nincompoop!”</p>
+<p>But Borrow Checker and Cargo Clippy are already so clever, they might as well be AI!</p>
+<p>Rust Compiler is almost Sentient, always commanding us Humans: “Please do this to fix the build, you poopy nincompoop!”</p>
 <p>My biggest wish: Someone please create a higher level variant of Rust that will use some bits of AI to compile into the current low-level Rust </p>
 <h1 id="running-a-rust-app-on-apache-nuttx-rtos-qemu-risc-v-32-bit"><a class="doc-anchor" href="#running-a-rust-app-on-apache-nuttx-rtos-qemu-risc-v-32-bit">§</a>2 Running a Rust App on Apache NuttX RTOS (QEMU RISC-V 32-bit)</h1>
 <p>Here are the steps to build NuttX for QEMU RISC-V (32-bit) and run the “Hello Rust” Demo App…</p>
@@ -405,7 +406,23 @@ make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
 make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 </code></pre></div>
 <p>TODO: Test the Rust Build for QEMU Arm32 and Arm64</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
+<h1 id="standard-vs-embedded-rust"><a class="doc-anchor" href="#standard-vs-embedded-rust">§</a>9 Standard vs Embedded Rust</h1>
+<p>TODO</p>
+<p>There are 2 “flavours” of Rust, depending on the Rust Libraries that we use:</p>
+<ul>
+<li>
+<p><a href="https://doc.rust-lang.org/std/">Rust Standard Library</a>: This is used by most Rust Apps on desktops and servers. Supports Heap Memory and the Rust Equivalent of POSIX Calls. </p>
+</li>
+<li>
+<p><a href="https://doc.rust-lang.org/core/index.html">Rust Core Library</a> (<code>no_std</code>): Barebones Rust Library that runs on Bare Metal, used by Rust Embedded Apps. Calls minimal libc functions, doesn’t support Heap Memory and POSIX. </p>
+</li>
+</ul>
+<p>The malloc() that you mentioned: It’s called by the <strong>Rust Standard Library</strong>. <a href="https://github.com/rust-lang/rust/blob/c8813ddd6d2602ae5473752031fd16ba70a6e4a7/library/std/src/sys/pal/unix/alloc.rs#L14">(Like this)</a></p>
+<p>For Kernel Dev <a href="https://rust-for-linux.com/third-party-crates#introduction:~:text=Some%20of%20those%20open%2Dsource%20libraries%20are%20potentially%20usable%20in%20the%20kernel%20because%20they%20only%20depend%20on%20core%20and%20alloc%20(rather%20than%20std)%2C%20or%20because%20they%20only%20provide%20macro%20facilities.">(like Linux)</a>: We’ll use the <strong>Rust Core Library</strong>. Which doesn’t support Heap Memory and doesn’t need malloc().</p>
+<p>But most Kernel Drivers will need Kernel Heap. That’s why Linux Kernel also supports the <a href="https://doc.rust-lang.org/alloc/#"><code>alloc</code> Rust Library / Crate</a>. To implement Rust <code>alloc</code>, Linux Kernel calls krealloc() to allocate Kernel Heap. <a href="https://github.com/torvalds/linux/blob/741e9d668aa50c91e4f681511ce0e408d55dd7ce/rust/kernel/allocator.rs#L46">(Like this)</a></p>
+<p>For NuttX Kernel: We’ll implement Rust <code>alloc</code> by calling kmm_malloc().</p>
+<p>Since we’re calling Rust Core Library in the Kernel, we won’t touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we’ll have to build the Rust Library ourselves. <a href="https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/">(Here’s the Rust Library for Linux Kernel)</a></p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -430,7 +447,7 @@ make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust3.md"><strong>lupyuen.github.io/src/rust3.md</strong></a></p>
-<h1 id="appendix-undefined-reference-to-corepanickingpanic"><a class="doc-anchor" href="#appendix-undefined-reference-to-corepanickingpanic">§</a>10 Appendix: Undefined Reference to core::panicking::panic</h1>
+<h1 id="appendix-undefined-reference-to-corepanickingpanic"><a class="doc-anchor" href="#appendix-undefined-reference-to-corepanickingpanic">§</a>11 Appendix: Undefined Reference to core::panicking::panic</h1>
 <p>TODO</p>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
 <p>TODO</p>
