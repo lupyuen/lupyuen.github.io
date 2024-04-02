@@ -71,11 +71,11 @@
 <li><a href="#boot-nuttx-on-32-bit-risc-v-qemu">4 Boot NuttX on 32-bit RISC-V QEMU</a><ul></ul></li>
 <li><a href="#how-nuttx-builds-rust-apps">5 How NuttX Builds Rust Apps</a><ul></ul></li>
 <li><a href="#patch-the-elf-header">6 Patch the ELF Header</a><ul></ul></li>
-<li><a href="#undefined-reference-to-corepanickingpanic">7 Undefined Reference to core::panicking::panic</a><ul></ul></li>
+<li><a href="#panic-is-undefined">7 Panic is Undefined</a><ul></ul></li>
 <li><a href="#rust-build-for-qemu-risc-v-64-bit">8 Rust Build for QEMU RISC-V 64-bit</a><ul></ul></li>
 <li><a href="#standard-vs-embedded-rust">9 Standard vs Embedded Rust</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-undefined-reference-to-corepanickingpanic">11 Appendix: Undefined Reference to core::panicking::panic</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
+<li><a href="#appendix-panic-is-undefined">11 Appendix: Panic is Undefined</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust3-title.png" alt="TODO" /></p>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
@@ -375,7 +375,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(Similar to this, except we’re doing Double-Float instead of Single-Float)</a></p>
 <p>TODO: But why Double Float instead of Single Float? (Mmmm ice cream float)</p>
-<h1 id="undefined-reference-to-corepanickingpanic"><a class="doc-anchor" href="#undefined-reference-to-corepanickingpanic">§</a>7 Undefined Reference to core::panicking::panic</h1>
+<h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
 <p>TODO</p>
 <p>If the GCC Linker fails with the error <em>“undefined reference to core::panicking::panic”</em>, please apply this patch…</p>
@@ -448,7 +448,7 @@ make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust3.md"><strong>lupyuen.github.io/src/rust3.md</strong></a></p>
-<h1 id="appendix-undefined-reference-to-corepanickingpanic"><a class="doc-anchor" href="#appendix-undefined-reference-to-corepanickingpanic">§</a>11 Appendix: Undefined Reference to core::panicking::panic</h1>
+<h1 id="appendix-panic-is-undefined"><a class="doc-anchor" href="#appendix-panic-is-undefined">§</a>11 Appendix: Panic is Undefined</h1>
 <p>TODO</p>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
 <p>TODO</p>
