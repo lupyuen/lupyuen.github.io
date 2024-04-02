@@ -20,9 +20,9 @@ Nim
 
 _Giving in to our AI Overlords already?_
 
-Borrow Checker and Cargo Clippy are AI all along!
+But Borrow Checker and Cargo Clippy are already so clever, they might as well be AI!
 
-Rust Compiler is almost Sentient, telling us Humans: "Please do this to fix the build, you poopy nincompoop!"
+Rust Compiler is almost Sentient, always commanding us Humans: "Please do this to fix the build, you poopy nincompoop!"
 
 My biggest wish: Someone please create a higher level variant of Rust that will use some bits of AI to compile into the current low-level Rust 
 
@@ -428,6 +428,26 @@ make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 ```
 
 TODO: Test the Rust Build for QEMU Arm32 and Arm64
+
+# Standard vs Embedded Rust
+
+TODO
+
+There are 2 "flavours" of Rust, depending on the Rust Libraries that we use:
+
+- [Rust Standard Library](https://doc.rust-lang.org/std/): This is used by most Rust Apps on desktops and servers. Supports Heap Memory and the Rust Equivalent of POSIX Calls. 
+
+- [Rust Core Library](https://doc.rust-lang.org/core/index.html) (`no_std`): Barebones Rust Library that runs on Bare Metal, used by Rust Embedded Apps. Calls minimal libc functions, doesn't support Heap Memory and POSIX. 
+
+The malloc() that you mentioned: It's called by the __Rust Standard Library__. [(Like this)](https://github.com/rust-lang/rust/blob/c8813ddd6d2602ae5473752031fd16ba70a6e4a7/library/std/src/sys/pal/unix/alloc.rs#L14)
+
+For Kernel Dev [(like Linux)](https://rust-for-linux.com/third-party-crates#introduction:~:text=Some%20of%20those%20open%2Dsource%20libraries%20are%20potentially%20usable%20in%20the%20kernel%20because%20they%20only%20depend%20on%20core%20and%20alloc%20(rather%20than%20std)%2C%20or%20because%20they%20only%20provide%20macro%20facilities.): We'll use the __Rust Core Library__. Which doesn't support Heap Memory and doesn't need malloc().
+
+But most Kernel Drivers will need Kernel Heap. That's why Linux Kernel also supports the [`alloc` Rust Library / Crate](https://doc.rust-lang.org/alloc/#). To implement Rust `alloc`, Linux Kernel calls krealloc() to allocate Kernel Heap. [(Like this)](https://github.com/torvalds/linux/blob/741e9d668aa50c91e4f681511ce0e408d55dd7ce/rust/kernel/allocator.rs#L46)
+
+For NuttX Kernel: We'll implement Rust `alloc` by calling kmm_malloc().
+
+Since we're calling Rust Core Library in the Kernel, we won't touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we'll have to build the Rust Library ourselves. [(Here's the Rust Library for Linux Kernel)](https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/)
 
 # What's Next
 
