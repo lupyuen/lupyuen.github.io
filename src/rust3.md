@@ -32,7 +32,7 @@ Here are the steps to build NuttX for QEMU RISC-V (32-bit) and run the "Hello Ru
 
 # Build NuttX for 32-bit RISC-V QEMU
 
-TODO
+Follow these steps to build Apache NuttX RTOS for 32-bit RISC-V QEMU, bundled with our Rust App...
 
 1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
 
