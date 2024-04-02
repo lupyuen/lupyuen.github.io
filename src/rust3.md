@@ -28,15 +28,11 @@ My biggest wish: Someone please create a higher level variant of Rust that will 
 
 PINE64 has kindly sponsored the Ox64 BL808 RISC-V SBCs that we'll be running to test the project.
 
-# Running a Rust App on Apache NuttX RTOS (QEMU RISC-V 32-bit)
-
-Here are the steps to build NuttX for QEMU RISC-V (32-bit) and run the "Hello Rust" Demo App...
-
 ![Build Apache NuttX RTOS for 64-bit RISC-V QEMU](https://lupyuen.github.io/images/riscv-build.png)
 
 # Build NuttX for 32-bit RISC-V QEMU
 
-Follow these steps to build Apache NuttX RTOS for 32-bit RISC-V QEMU, bundled with our Rust App...
+Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled with our "Hello Rust" Demo App...
 
 1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
 
