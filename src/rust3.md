@@ -22,7 +22,7 @@ _Giving in to our AI Overlords already?_
 
 Borrow Checker and Cargo Clippy are AI all along!
 
-Rust Compiler is almost Sentient, telling us Humans: "Please do this to fix the bug, you poopy nincompoop!"
+Rust Compiler is almost Sentient, telling us Humans: "Please do this to fix the build, you poopy nincompoop!"
 
 My biggest wish: Someone please create a higher level variant of Rust that will use some bits of AI to compile into the current low-level Rust 
 
