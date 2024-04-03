@@ -409,31 +409,25 @@ TODO
 
 TODO If TODO overflows TODO, our Rust App will panic and halt.
 
-To implement the panic, Rust Compiler inserts a call to the Core Function _core::panicking::panic_.
+To implement the panic, Rust Compiler inserts a call to the Core Function _core::panicking::panic_. (Which comes from the [__Rust Core Library__](TODO))
 
-TODO: Rushabh has implemented [Add -O to RUSTFLAGS in Makefile](https://github.com/apache/nuttx-apps/pull/2333)
+_And the Panic Function is missing somehow?_
 
-If the GCC Linker fails with the error _"undefined reference to core::panicking::panic"_, please apply this patch...
+Yeah Rushabh has implemented a fix for the Undefined Panic Function...
 
-Then rebuild: `make clean ; make`
+- [__Add `-O` to `RUSTFLAGS` in Makefile__](https://github.com/apache/nuttx-apps/pull/2333)
 
-(If we still hit the same error, see the notes below)
+But when we add __Another Point of Panic__: We see the Undefined Panic Error again...
 
-TODO
+- TODO: Appendix
 
-After adding `RUSTFLAGS=-O`, we might still hit Undefined `core::panicking::panic`. Here's our Test Code that has 2 Potential Panics: [hello_rust_main.rs](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90)
+_What's causing this Undefined Panic Function?_
 
-TODO: See Appendix
+According to [__this discussion__](https://github.com/rust-lang/compiler-builtins/issues/79), the Rust Core Library is compiled with __Link-Time Optimisation (LTO)__. (Including the Panic Function)
 
-If we omit `RUSTFLAGS=-O`: We see 2 Undefined `core::panicking::panic`...
+But we're linking it into our NuttX Firmware with GCC Linker, with __LTO Disabled__. Which causes the Missing Panic Function.
 
-TODO: See Appendix
-
-But when we add `RUSTFLAGS=-O`: We still see 1 Undefined `core::panicking::panic` for the divide-by-zero...
-
-TODO: See Appendix
-
-Somehow the divide-by-zero panic refuses to link correctly. [Based on this discussion](https://github.com/rust-lang/compiler-builtins/issues/79), it seems that the Rust Core Library is compiled with LTO (Link-Time Optimisation), so it might still cause problems with our code, which doesn't use LTO.
+We'll explore more of this in GSoC!
 
 TODO: If we call `cargo build` (instead of `rustc`), will it fix this LTO issue? How different is the `cargo build` Linker from GCC Linker?
 
