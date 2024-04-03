@@ -468,7 +468,7 @@ TODO: GSoC Project Report, Draft Driver
 
     For now we'll walk the __Middle Way__...
 
-    - __Lay the groundwork__ for future integration of Rust Drivers into NuttX Kernel
+    - __Lay the Groundwork__ for Future Integration of Rust Drivers into NuttX Kernel
 
     - Observe the Rust Development in [__Linux Kernel__](https://rust-for-linux.com/). And adapt the Best Practices for NuttX Kernel.
 
