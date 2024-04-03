@@ -454,7 +454,7 @@ _But why Soft-Float instead of Double-Float? (Mmmm ice cream float)_
 
 Yeah patching the ELF Header is a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)
 
-We'll investigate this during GSoC. (Incorrect Rust Target maybe?)
+We'll investigate this during GSoC. (Incorrect [__Rust Target__](TODO) maybe?)
 
 # Panic is Undefined
 
@@ -502,7 +502,9 @@ We'll explore more of this in GSoC!
 
 # Standard vs Embedded Rust
 
-TODO: malloc()?
+_What is [no_std]? Will Rust call C Standard Library, like for malloc()?_
+
+TODO: Earlier we saw __`[no_std]`__
 
 There are 2 "flavours" of Rust, depending on the Rust Libraries that we use:
 
@@ -528,11 +530,11 @@ TODO: GSoC Project Report, Draft Driver
 
     Yeah it's tough work but it needs to be done...
 
-    — Some folks think it's the right time to explore [__Memory-Safe Programming in Rust__](TODO)
+    — Some folks are urging us to explore [__Memory-Safe Programming in Rust__](TODO)
 
-    — Devs among us might already be coding __Rust Apps and Rust Drivers__ for NuttX? (We know of one Corporate User of NuttX that's very keen on Rust)
+    — NuttX Devs among us might already be coding __Rust Apps and Rust Drivers__ for NuttX? (We know of one Corporate User of NuttX that's very keen on Rust)
 
-    — So we're helpfully drafting the __Standards and Guidelines__ for folks already coding Rust in NuttX
+    — So we're helpfully drafting the [__Standards and Guidelines__](https://github.com/apache/nuttx/issues/11907) for folks already coding Rust in NuttX
 
 1.  _Learning Rust looks difficult. Any other way to write Memory-Safe Apps?_
 
@@ -556,7 +558,7 @@ TODO: GSoC Project Report, Draft Driver
 
     Ouch we're trapped between a Rock and... Another Rusty Rock!
 
-    — __NuttX Kernel Devs__ are concerned about the __extra complexity__ that Rust Drivers add to the Kernel Build
+    — __NuttX Devs__ are concerned about the [__extra complexity__](https://lists.apache.org/thread/q09w8p6pm683rvzvrwdwv4cf0bbqmfg2) that Rust Drivers add to the Kernel Build
 
     — __Rust Community__ is probably thinking we're __not doing enough__ to promote Memory-Safe Coding in NuttX Kernel
 
