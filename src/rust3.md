@@ -480,7 +480,7 @@ Rushabh has implemented a fix for the Undefined Panic Function...
 
 - [__Add `-O` to `RUSTFLAGS` in Makefile__](https://github.com/apache/nuttx-apps/pull/2333)
 
-But when we add __Another Point of Panic__: We see the Undefined Panic Error again...
+But when we add __Another Point of Panic__: We see the Undefined Panic Error again (sigh)...
 
 - TODO: Appendix
 
@@ -496,7 +496,7 @@ Normally we run __`cargo build`__ to build Embedded Rust Apps. And it handles LT
 
 But NuttX calls __`rustc`__ to compile Rust Apps, and links them with GCC Linker. Which doesn't seem to support LTO.
 
-We'll explore more of this in GSoC!
+We'll sort this out in GSoC!
 
 [(Why NuttX calls `rustc` instead of `cargo build`)](https://github.com/apache/nuttx/pull/5566)
 
@@ -508,7 +508,7 @@ Earlier we saw __`[no_std]`__ inside our [__Rust App__](TODO).
 
 There are 2 "flavours" of Rust, depending on the Rust Libraries that we use:
 
-- [__Rust Standard Library__](https://doc.rust-lang.org/std/): This is used by most Rust Apps on desktops and servers.
+- [__Rust Standard Library__](https://doc.rust-lang.org/std/): This is used by most Rust Apps on Desktops and Servers.
 
   Supports Heap Memory and the Rust Equivalent of POSIX Calls. 
 
@@ -530,7 +530,7 @@ __For NuttX Kernel:__ We'll implement Rust __`alloc`__ by calling _kmm_malloc()_
 
 _Anything else we need for Rust in NuttX Kernel?_
 
-Since we're calling Rust Core Library in the Kernel, we won't touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we'll have to __create the Rust Library__ ourselves.
+Since we're calling __Rust Core Library__ in NuttX Kernel, we won't touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we'll have to __create the Rust Library__ ourselves.
 
 [(See the Rust Library for __Linux Kernel__)](https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/)
 
@@ -540,19 +540,19 @@ TODO: GSoC Project Report, Draft Driver
 
 1.  _Why are we doing all this?_
 
-    Yeah it's tough work but it needs to be done...
+    Yeah it's tough work but it needs to be done because...
 
     — Some folks are urging us to explore [__Memory-Safe Programming in Rust__](TODO)
 
     — NuttX Devs among us might already be coding __Rust Apps and Rust Drivers__ for NuttX? (We know of one Corporate User of NuttX that's very keen on Rust)
 
-    — So we're helpfully drafting the [__Standards and Guidelines__](https://github.com/apache/nuttx/issues/11907) for folks already coding Rust in NuttX
+    — Hence we're helpfully drafting the [__Standards and Guidelines__](https://github.com/apache/nuttx/issues/11907) for folks already coding Rust in NuttX
 
 1.  _Learning Rust looks kinda hard. Any other way to write Memory-Safe Apps?_
 
-    If we're familiar with Python, check out the [__Nim Programming Language__](TODO).
+    If we're familiar with Python: Check out the [__Nim Programming Language__](TODO).
 
-    [__Zig Programming Language__](TODO) is safer than C and easier to learn, but not quite Memory-Safe like Rust.
+    [__Zig Programming Language__](TODO) is safer than C and easier to learn. But not quite Memory-Safe like Rust.
 
     [__AI Tools__](https://gist.github.com/lupyuen/10ce1aeff7f6a743c374aa7c1931525b) might be helpful for coding the difficult bits of Rust: ChatGPT, GitHub Copilot, Google Gemini, ...
 
@@ -578,7 +578,7 @@ TODO: GSoC Project Report, Draft Driver
 
     — __Lay the Groundwork__ for Future Integration of Rust Drivers into NuttX Kernel
 
-    — Observe the Rust Development in [__Linux Kernel__](https://rust-for-linux.com/). And adapt the Best Practices for NuttX Kernel.
+    — Observe the Rust Development in [__Linux Kernel__](https://rust-for-linux.com/) and [__Zephyr OS__](https://github.com/zephyrproject-rtos/zephyr/issues/65837). Then adapt the Best Practices for NuttX Kernel.
 
 # What's Next
 
