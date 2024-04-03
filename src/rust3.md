@@ -397,11 +397,23 @@ We'll investigate this during GSoC. (Incorrect Rust Target maybe?)
 
 _What's this core::panicking::panic? Why is it undefined?_
 
+```text
+TODO: Undefined reference to core::panicking::panic
+```
+
+Suppose we're reading Console Input in our Rust App...
+
+```rust
 TODO
+```
+
+TODO If TODO overflows TODO, our Rust App will panic and halt.
+
+To implement the panic, Rust Compiler inserts a call to the Core Function _core::panicking::panic_.
+
+TODO: Rushabh has implemented [Add -O to RUSTFLAGS in Makefile](https://github.com/apache/nuttx-apps/pull/2333)
 
 If the GCC Linker fails with the error _"undefined reference to core::panicking::panic"_, please apply this patch...
-
-[Add -O to RUSTFLAGS in Makefile](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/58c9ebee95626251dd1601476991cdfea7fcd190)
 
 Then rebuild: `make clean ; make`
 
