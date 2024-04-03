@@ -398,9 +398,15 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>We’ll investigate this during GSoC. (Incorrect Rust Target maybe?)</p>
 <h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
-<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>TODO: Undefined reference to core::panicking::panic
+</code></pre></div>
+<p>Suppose we’re reading Console Input in our Rust App…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO</code></pre></div>
+<p>TODO If TODO overflows TODO, our Rust App will panic and halt.</p>
+<p>To implement the panic, Rust Compiler inserts a call to the Core Function <em>core::panicking::panic</em>.</p>
+<p>TODO: Rushabh has implemented <a href="https://github.com/apache/nuttx-apps/pull/2333">Add -O to RUSTFLAGS in Makefile</a></p>
 <p>If the GCC Linker fails with the error <em>“undefined reference to core::panicking::panic”</em>, please apply this patch…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/58c9ebee95626251dd1601476991cdfea7fcd190">Add -O to RUSTFLAGS in Makefile</a></p>
 <p>Then rebuild: <code>make clean ; make</code></p>
 <p>(If we still hit the same error, see the notes below)</p>
 <p>TODO</p>
