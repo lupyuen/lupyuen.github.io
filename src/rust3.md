@@ -22,6 +22,67 @@ PINE64 has kindly sponsored the Ox64 BL808 RISC-V SBCs for testing Rust Apps on 
 
 TODO
 
+[hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
+
+```rust
+// main() function not needed
+#![no_main]
+
+// Use Rust Core Library (instead of Rust Standard Library)
+#![no_std]
+
+// Import printf() from C into Rust
+extern "C" {
+
+  // Accept a Format String with Optional Arguments, return an `int`
+  pub fn printf(format: *const u8, ...) -> i32;
+}
+
+// Main Function exported by Rust to C.
+// Don't mangle the Function Name.
+#[no_mangle]
+pub extern "C" fn hello_rust_main(
+  _argc: i32,              // Equivalent to `int argc`
+  _argv: *const *const u8  // Equivalent to `char **argv`
+) -> i32 {                 // Returns `int`
+
+  // Calling a C Function might have Unsafe consequences
+  unsafe {
+
+    // Print something
+    printf(                 // Call printf() with...
+      b"Hello, Rust!!\n\0"  // Byte String terminated by null
+        as *const u8        // Cast as `const char *`
+    );
+  }
+
+  // Exit with status 0
+  0
+}
+```
+
+(We'll explain __`[no_std]`__ in a while)
+
+TODO
+
+```rust
+// Import PanicInfo for Panic Handler
+use core::panic::PanicInfo;
+
+// Handle a Rust Panic. Needed for [no_std]
+#[panic_handler]
+fn panic(
+  _panic: &PanicInfo<'_>  // Receives the Panic Info and Stack Trace
+) -> ! {                  // Never returns
+
+  // TODO: Print the Panic Info and Stack Trace
+  // For now, we loop forever
+  loop {}
+}
+```
+
+TODO: GSoC Panic
+
 ![Build Apache NuttX RTOS for 64-bit RISC-V QEMU](https://lupyuen.github.io/images/riscv-build.png)
 
 # Build NuttX for 32-bit RISC-V QEMU
