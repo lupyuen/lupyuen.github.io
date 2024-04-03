@@ -394,8 +394,8 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(We had a similar issue with <strong>Zig Compiler</strong>)</a></p>
 <p><em>But why Soft-Float instead of Double-Float? (Mmmm ice cream float)</em></p>
-<p>Yeah it’s a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)</p>
-<p>We’ll investigate this during GSoC.</p>
+<p>Yeah patching the ELF Header is a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)</p>
+<p>We’ll investigate this during GSoC. (Incorrect Rust Target maybe?)</p>
 <h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
 <p>TODO</p>
