@@ -327,9 +327,7 @@ total 112
 
 # Software vs Hardware Floating Point
 
-TODO
-
-If the GCC Linker fails with _"Can't link soft-float modules with double-float modules"_...
+_What's this error? "Can't link soft-float modules with double-float modules"_
 
 ```text
 $ make
@@ -342,19 +340,32 @@ riscv64-unknown-elf-ld: failed to merge target specific data of file
   (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
 ```
 
-Then we patch the ELF Header like this and it should link correctly...
+GCC Linker fail to link our Rust Object File (__hello_rust_1.o__) into our NuttX Firmware because...
+
+- Rust Object File __hello_rust_1.o__ was compiled with __Software Floating-Point__ ("soft-float")
+
+- But NuttX Firmware was compiled with __Double Precision Hardware Floating-Point__ ("double-float")
+
+The two are incompatible, and the GCC Linking fails.
+
+_How to fix this?_
+
+For now we __Patch the ELF Header__ of our Rust Object File. And NuttX Firmware will link correctly...
 
 ```bash
+## Patch ELF Header from Soft-Float to Double-Float
 xxd -c 1 ../apps/examples/hello_rust/*hello_rust_1.o \
   | sed 's/00000024: 00/00000024: 04/' \
   | xxd -r -c 1 - /tmp/hello_rust_1.o
 cp /tmp/hello_rust_1.o ../apps/examples/hello_rust/*hello_rust_1.o
 make
 
-## Ignore the warnings:
+## NuttX links OK. Ignore these warnings: (why?)
 ## riscv64-unknown-elf-ld: warning: nuttx/staging/libapps.a(hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o): 
 ## mis-matched ISA version 2.1 for 'i' extension, the output version is 2.0
 ```
+
+TODO
 
 How did it work? We patched the ELF Header, changing it from Software Floating-Point to Double Precision Hardware Floating-Point...
 
