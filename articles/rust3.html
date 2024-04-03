@@ -407,7 +407,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>TODO If TODO overflows TODO, our Rust App will panic and halt.</p>
 <p>To implement the panic, Rust Compiler inserts a call to the Core Function <em>core::panicking::panic</em>. (Which comes from the <a href="TODO"><strong>Rust Core Library</strong></a>)</p>
 <p><em>And the Panic Function is missing somehow?</em></p>
-<p>Yeah Rushabh has implemented a fix for the Undefined Panic Function…</p>
+<p>Rushabh has implemented a fix for the Undefined Panic Function…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx-apps/pull/2333"><strong>Add <code>-O</code> to <code>RUSTFLAGS</code> in Makefile</strong></a></li>
 </ul>
@@ -445,18 +445,9 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <li>
 <p><em>Why are we doing all this?</em></p>
 <p>Yeah it’s tough work but it needs to be done…</p>
-<ul>
-<li>
-<p>Some folks think it’s the right time to explore <a href="TODO"><strong>Memory-Safe Programming in Rust</strong></a></p>
-</li>
-<li>
-<p>Devs among us might already be coding <strong>Rust Apps and Rust Drivers</strong> for NuttX?</p>
-<p>(We know of one Corporate User of NuttX that’s very keen on Rust)</p>
-</li>
-<li>
-<p>So we’re helpfully drafting the <strong>Standards and Guidelines</strong> for folks already coding Rust in NuttX</p>
-</li>
-</ul>
+<p>— Some folks think it’s the right time to explore <a href="TODO"><strong>Memory-Safe Programming in Rust</strong></a></p>
+<p>— Devs among us might already be coding <strong>Rust Apps and Rust Drivers</strong> for NuttX? (We know of one Corporate User of NuttX that’s very keen on Rust)</p>
+<p>— So we’re helpfully drafting the <strong>Standards and Guidelines</strong> for folks already coding Rust in NuttX</p>
 </li>
 <li>
 <p><em>Learning Rust looks difficult. Any other way to write Memory-Safe Apps?</em></p>
@@ -474,23 +465,11 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <li>
 <p><em>Apparently there’s some Resistance to Rust Drivers inside NuttX Kernel?</em></p>
 <p>Ouch we’re trapped between a Rock and… Another Rusty Rock!</p>
-<ul>
-<li>
-<p><strong>NuttX Kernel Devs</strong> are concerned about the <strong>extra complexity</strong> that Rust Drivers add to the Kernel Build</p>
-</li>
-<li>
-<p><strong>Rust Community</strong> is probably thinking we’re <strong>not doing enough</strong> to promote Memory-Safe Coding in NuttX Kernel</p>
-</li>
-</ul>
+<p>— <strong>NuttX Kernel Devs</strong> are concerned about the <strong>extra complexity</strong> that Rust Drivers add to the Kernel Build</p>
+<p>— <strong>Rust Community</strong> is probably thinking we’re <strong>not doing enough</strong> to promote Memory-Safe Coding in NuttX Kernel</p>
 <p>For now we’ll walk the <strong>Middle Way</strong>…</p>
-<ul>
-<li>
-<p><strong>Lay the Groundwork</strong> for Future Integration of Rust Drivers into NuttX Kernel</p>
-</li>
-<li>
-<p>Observe the Rust Development in <a href="https://rust-for-linux.com/"><strong>Linux Kernel</strong></a>. And adapt the Best Practices for NuttX Kernel.</p>
-</li>
-</ul>
+<p>— <strong>Lay the Groundwork</strong> for Future Integration of Rust Drivers into NuttX Kernel</p>
+<p>— Observe the Rust Development in <a href="https://rust-for-linux.com/"><strong>Linux Kernel</strong></a>. And adapt the Best Practices for NuttX Kernel.</p>
 </li>
 </ol>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
