@@ -458,11 +458,11 @@ TODO: GSoC Project Report, Draft Driver
 
     (My Biggest Wish: Someone please create a Higher-Level variant of Rust that will use bits of AI to compile into the current Low-Level Rust)
 
-1.  _Apparently there's some Resistance to Rust for NuttX Kernel Devs?_
+1.  _Apparently there's some Resistance to Rust Drivers inside NuttX Kernel?_
 
     Ouch we're trapped between a Rock and... Another Rusty Rock!
 
-    - __NuttX Kernel Devs__ are concerned about the __extra complexity__ that Rust adds to the Kernel Build
+    - __NuttX Kernel Devs__ are concerned about the __extra complexity__ that Rust Drivers add to the Kernel Build
 
     - __Rust Community__ is probably thinking we're __not doing enough__ to promote Memory-Safe Coding in NuttX Kernel
 
