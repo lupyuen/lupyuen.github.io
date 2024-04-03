@@ -406,7 +406,7 @@ TODO: If we call `cargo build` (instead of `rustc`), will it fix this LTO issue?
 
 # Standard vs Embedded Rust
 
-TODO
+TODO: malloc()?
 
 There are 2 "flavours" of Rust, depending on the Rust Libraries that we use:
 
@@ -430,13 +430,15 @@ TODO: GSoC Project Report, Draft Driver
 
 1.  _Why are we doing all this?_
 
+    Yeah it's tough work but it needs to be done...
+
     - Some folks think it's the right time to explore [__Memory-Safe Programming in Rust__](TODO)
 
     - Devs among us might already be coding __Rust Apps and Rust Drivers__ for NuttX?
 
-      (I know of one Corporate User of NuttX that's very keen on Rust)
+      (We know of one Corporate User of NuttX that's very keen on Rust)
 
-    - We're now creating the __Guidelines (and Standardisation)__ for the folks already coding Rust in NuttX
+    - So we're helpfully drafting the __Standards and Guidelines__ for folks already coding Rust in NuttX
 
 1.  _Learning Rust looks difficult. Any other way to write Memory-Safe Apps?_
 
@@ -460,7 +462,15 @@ TODO: GSoC Project Report, Draft Driver
 
     Ouch we're trapped between a Rock and... Another Rusty Rock!
 
-    TODO: Middle Way 
+    - __NuttX Kernel Devs__ are concerned about the __extra complexity__ that Rust adds to the Kernel Build
+
+    - __Rust Community__ is probably thinking we're __not doing enough__ to promote Memory-Safe Coding in NuttX Kernel
+
+    For now we'll walk the __Middle Way__...
+
+    - __Lay the groundwork__ for future integration of Rust Drivers into NuttX Kernel
+
+    - Observe the Rust Development in __Linux Kernel__. And adapt the best practices for NuttX Kernel.
 
 # What's Next
 
