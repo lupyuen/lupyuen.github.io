@@ -404,19 +404,20 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO</code></pre></div>
 <p>TODO If TODO overflows TODO, our Rust App will panic and halt.</p>
-<p>To implement the panic, Rust Compiler inserts a call to the Core Function <em>core::panicking::panic</em>.</p>
-<p>TODO: Rushabh has implemented <a href="https://github.com/apache/nuttx-apps/pull/2333">Add -O to RUSTFLAGS in Makefile</a></p>
-<p>If the GCC Linker fails with the error <em>“undefined reference to core::panicking::panic”</em>, please apply this patch…</p>
-<p>Then rebuild: <code>make clean ; make</code></p>
-<p>(If we still hit the same error, see the notes below)</p>
-<p>TODO</p>
-<p>After adding <code>RUSTFLAGS=-O</code>, we might still hit Undefined <code>core::panicking::panic</code>. Here’s our Test Code that has 2 Potential Panics: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">hello_rust_main.rs</a></p>
-<p>TODO: See Appendix</p>
-<p>If we omit <code>RUSTFLAGS=-O</code>: We see 2 Undefined <code>core::panicking::panic</code>…</p>
-<p>TODO: See Appendix</p>
-<p>But when we add <code>RUSTFLAGS=-O</code>: We still see 1 Undefined <code>core::panicking::panic</code> for the divide-by-zero…</p>
-<p>TODO: See Appendix</p>
-<p>Somehow the divide-by-zero panic refuses to link correctly. <a href="https://github.com/rust-lang/compiler-builtins/issues/79">Based on this discussion</a>, it seems that the Rust Core Library is compiled with LTO (Link-Time Optimisation), so it might still cause problems with our code, which doesn’t use LTO.</p>
+<p>To implement the panic, Rust Compiler inserts a call to the Core Function <em>core::panicking::panic</em>. (Which comes from the <a href="TODO"><strong>Rust Core Library</strong></a>)</p>
+<p><em>And the Panic Function is missing somehow?</em></p>
+<p>Yeah Rushabh has implemented a fix for the Undefined Panic Function…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx-apps/pull/2333"><strong>Add <code>-O</code> to <code>RUSTFLAGS</code> in Makefile</strong></a></li>
+</ul>
+<p>But when we add <strong>Another Point of Panic</strong>: We see the Undefined Panic Error again…</p>
+<ul>
+<li>TODO: Appendix</li>
+</ul>
+<p><em>What’s causing this Undefined Panic Function?</em></p>
+<p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <strong>Link-Time Optimisation (LTO)</strong>. (Including the Panic Function)</p>
+<p>But we’re linking it into our NuttX Firmware with GCC Linker, with <strong>LTO Disabled</strong>. Which causes the Missing Panic Function.</p>
+<p>We’ll explore more of this in GSoC!</p>
 <p>TODO: If we call <code>cargo build</code> (instead of <code>rustc</code>), will it fix this LTO issue? How different is the <code>cargo build</code> Linker from GCC Linker?</p>
 <h1 id="standard-vs-embedded-rust"><a class="doc-anchor" href="#standard-vs-embedded-rust">§</a>8 Standard vs Embedded Rust</h1>
 <p>TODO: malloc()?</p>
