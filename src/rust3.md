@@ -309,6 +309,8 @@ riscv64-unknown-elf-ld \
 
 [(Rust Build with `rustc` is defined here)](https://github.com/apache/nuttx-apps/blob/master/Application.mk#L164-L170)
 
+[(Why NuttX calls `rustc` instead of `cargo build`)](https://github.com/apache/nuttx/pull/5566)
+
 Here are the Rust Object Files produced by the NuttX Build...
 
 ```text
@@ -427,9 +429,15 @@ According to [__this discussion__](https://github.com/rust-lang/compiler-builtin
 
 But we're linking it into our NuttX Firmware with GCC Linker, with __LTO Disabled__. Which causes the Missing Panic Function.
 
+_How is this different from typical Rust Builds?_
+
+Normally we run __`cargo build`__ to build Embedded Rust Apps. And it handles LTO correctly.
+
+But NuttX calls __`rustc`__ to compile Rust Apps, and links them with GCC Linker. Which doesn't seem to support LTO.
+
 We'll explore more of this in GSoC!
 
-TODO: If we call `cargo build` (instead of `rustc`), will it fix this LTO issue? How different is the `cargo build` Linker from GCC Linker?
+[(Why NuttX calls `rustc` instead of `cargo build`)](https://github.com/apache/nuttx/pull/5566)
 
 # Standard vs Embedded Rust
 
