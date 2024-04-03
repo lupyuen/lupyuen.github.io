@@ -16,7 +16,7 @@ Workaround
 
 How we plan to fix them in GSoC
 
-PINE64 has kindly sponsored the Ox64 BL808 RISC-V SBCs that we'll be running to test the project.
+PINE64 has kindly sponsored the Ox64 BL808 RISC-V SBCs for testing Rust Apps on NuttX.
 
 # Our Rust App
 
@@ -404,27 +404,6 @@ Somehow the divide-by-zero panic refuses to link correctly. [Based on this discu
 
 TODO: If we call `cargo build` (instead of `rustc`), will it fix this LTO issue? How different is the `cargo build` Linker from GCC Linker?
 
-# Rust Build for QEMU RISC-V 64-bit
-
-TODO: Rust Build fails for QEMU RISC-V 64-bit...
-
-```text
-$ tools/configure.sh rv-virt:nsh64
-$ make menuconfig
-## TODO: Enable "Hello Rust Example"
-$ make
-
-RUSTC:  hello_rust_main.rs error: Error loading target specification: 
-  Could not find specification for target "riscv64i-unknown-none-elf". 
-  Run `rustc --print target-list` for a list of built-in targets
-
-make[2]: *** [nuttx/apps/Application.mk:275: hello_rust_main.rs...nuttx.apps.examples.hello_rust.o] Error 1
-make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
-make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
-```
-
-TODO: Test the Rust Build for QEMU Arm32 and Arm64
-
 # Standard vs Embedded Rust
 
 TODO
@@ -445,37 +424,43 @@ For NuttX Kernel: We'll implement Rust `alloc` by calling kmm_malloc().
 
 Since we're calling Rust Core Library in the Kernel, we won't touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we'll have to build the Rust Library ourselves. [(Here's the Rust Library for Linux Kernel)](https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/)
 
+TODO: GSoC Project Report, Draft Driver
+
 # All Things Considered
 
-TODO
+1.  _Why are we doing all this?_
 
-_Why are we doing all this?_
+    - Some folks think it's the right time to explore [__Memory-Safe Programming in Rust__](TODO)
 
-1.  Some folks think now is the right time to explore Memory-Safe Programming in Rust
+    - Devs among us might already be coding __Rust Apps and Rust Drivers__ for NuttX?
 
-1.  Devs among us might already be coding Rust Apps and Rust Drivers for NuttX?
+      (I know of one Corporate User of NuttX that's very keen on Rust)
 
-    (I know of one Corporate User of NuttX that's very keen on Rust)
+    - We're now creating the __Guidelines (and Standardisation)__ for the folks already coding Rust in NuttX
 
-1.  This doc serves as the Guidelines (and Standardisation) for the folks already coding Rust in NuttX
+1.  _Learning Rust looks difficult. Any other way to write Memory-Safe Apps?_
 
-TODO: Nim, Zig
+    If we're familiar with Python, check out the [__Nim Programming Language__](TODO).
 
-Ouch we're trapped between a Rock and... Another Rusty Rock?
+    [__Zig Programming Language__](TODO) is safer than C and easier to learn, but not quite Memory-Safe like Rust.
 
-Middle Way 
+    [__AI Tools__](https://gist.github.com/lupyuen/10ce1aeff7f6a743c374aa7c1931525b) might be helpful for coding the difficult bits of Rust: ChatGPT, GitHub Copilot, Google Gemini, ...
 
-AI Tools
+    (We'll validate this during GSoC)
 
-Nim
+1.  _Giving in to our AI Overlords already?_
 
-_Giving in to our AI Overlords already?_
+    But Rust Devs are familiar with smarty tools. [__Borrow Checker__](TODO) and [__Cargo Clippy__](TODO) are already so clever, they might as well be AI!
 
-But Borrow Checker and Cargo Clippy are already so clever, they might as well be AI!
+    And Rust Compiler is almost Sentient, always commanding us Humans: _"Please do this to fix the build, you poopy nincompoop!"_
 
-Rust Compiler is almost Sentient, always commanding us Humans: "Please do this to fix the build, you poopy nincompoop!"
+    (My Biggest Wish: Someone please create a Higher-Level variant of Rust that will use bits of AI to compile into the current Low-Level Rust)
 
-My biggest wish: Someone please create a higher level variant of Rust that will use some bits of AI to compile into the current low-level Rust 
+1.  _Apparently there's some Resistance to Rust for NuttX Kernel Devs?_
+
+    Ouch we're trapped between a Rock and... Another Rusty Rock!
+
+    TODO: Middle Way 
 
 # What's Next
 
@@ -535,3 +520,23 @@ Somehow the divide-by-zero panic refuses to link correctly. [Based on this discu
 
 TODO: If we call `cargo build` (instead of `rustc`), will it fix this LTO issue? How different is the `cargo build` Linker from GCC Linker?
 
+# Appendix: Rust Build for QEMU RISC-V 64-bit
+
+TODO: Rust Build fails for QEMU RISC-V 64-bit...
+
+```text
+$ tools/configure.sh rv-virt:nsh64
+$ make menuconfig
+## TODO: Enable "Hello Rust Example"
+$ make
+
+RUSTC:  hello_rust_main.rs error: Error loading target specification: 
+  Could not find specification for target "riscv64i-unknown-none-elf". 
+  Run `rustc --print target-list` for a list of built-in targets
+
+make[2]: *** [nuttx/apps/Application.mk:275: hello_rust_main.rs...nuttx.apps.examples.hello_rust.o] Error 1
+make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
+make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
+```
+
+TODO: Test the Rust Build for QEMU Arm32 and Arm64
