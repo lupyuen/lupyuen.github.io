@@ -564,7 +564,7 @@ TODO: GSoC Project Report, Draft Driver
 
     And Rust Compiler is almost Sentient, always commanding us Humans: _"Please do this to fix the build, you poopy nincompoop!"_
 
-    (My Biggest Wish: Someone please create a Higher-Level variant of Rust that will use bits of AI to compile into the current Low-Level Rust)
+    (My Biggest Wish: Someone please create a __Higher-Level Dialect__ of Rust that will use bits of AI to compile into the current Low-Level Rust)
 
 1.  _Apparently there's some Resistance to Rust Drivers inside NuttX Kernel?_
 
@@ -574,7 +574,7 @@ TODO: GSoC Project Report, Draft Driver
 
     — __Rust Community__ is probably thinking we're __not doing enough__ to promote Memory-Safe Coding in NuttX Kernel
 
-    For now we'll walk the __Middle Way__...
+    For now we walk the __Middle Way__...
 
     — __Lay the Groundwork__ for Future Integration of Rust Drivers into NuttX Kernel
 
