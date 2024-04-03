@@ -6,27 +6,21 @@
 
 TODO
 
-# TODO
+My mentee [__Rushabh Gala__](https://github.com/apache/nuttx/issues/11907) and I are anxiously awaiting the results of the [__Google Summer of Code__](TODO) (GSoC) Project Selection. While waiting, we explain the current steps for running barebones Rust Apps on Apache NuttX RTOS (and the challenges we faced)...
 
-My mentee Rushabh Gala and I are anxiously awaiting the results of the GSoC Project Selection. While waiting, we explain the current steps for running barebones Rust Apps on Apache NuttX RTOS (and the challenges we faced)...
+Running Rust Apps on NuttX today
 
-Ouch we're trapped between a Rock and... Another Rusty Rock?
+Limitations
 
-Middle Way 
+Workaround
 
-AI Tools
-
-Nim
-
-_Giving in to our AI Overlords already?_
-
-But Borrow Checker and Cargo Clippy are already so clever, they might as well be AI!
-
-Rust Compiler is almost Sentient, always commanding us Humans: "Please do this to fix the build, you poopy nincompoop!"
-
-My biggest wish: Someone please create a higher level variant of Rust that will use some bits of AI to compile into the current low-level Rust 
+How we plan to fix them in GSoC
 
 PINE64 has kindly sponsored the Ox64 BL808 RISC-V SBCs that we'll be running to test the project.
+
+# Our Rust App
+
+TODO
 
 ![Build Apache NuttX RTOS for 64-bit RISC-V QEMU](https://lupyuen.github.io/images/riscv-build.png)
 
@@ -251,6 +245,10 @@ This is how we boot NuttX on QEMU and run our Rust App...
 
 1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
+# Console Input in Rust
+
+TODO
+
 # How NuttX Builds Rust Apps
 
 Let's watch how NuttX builds Rust Apps by calling `rustc`. (Instead of `cargo build`)
@@ -327,7 +325,7 @@ total 112
 
 [(See the RISC-V Disassembly)](https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c)
 
-# Patch the ELF Header
+# Software vs Hardware Floating Point
 
 TODO
 
@@ -446,6 +444,38 @@ But most Kernel Drivers will need Kernel Heap. That's why Linux Kernel also supp
 For NuttX Kernel: We'll implement Rust `alloc` by calling kmm_malloc().
 
 Since we're calling Rust Core Library in the Kernel, we won't touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we'll have to build the Rust Library ourselves. [(Here's the Rust Library for Linux Kernel)](https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/)
+
+# All Things Considered
+
+TODO
+
+_Why are we doing all this?_
+
+1.  Some folks think now is the right time to explore Memory-Safe Programming in Rust
+
+1.  Devs among us might already be coding Rust Apps and Rust Drivers for NuttX?
+
+    (I know of one Corporate User of NuttX that's very keen on Rust)
+
+1.  This doc serves as the Guidelines (and Standardisation) for the folks already coding Rust in NuttX
+
+TODO: Nim, Zig
+
+Ouch we're trapped between a Rock and... Another Rusty Rock?
+
+Middle Way 
+
+AI Tools
+
+Nim
+
+_Giving in to our AI Overlords already?_
+
+But Borrow Checker and Cargo Clippy are already so clever, they might as well be AI!
+
+Rust Compiler is almost Sentient, always commanding us Humans: "Please do this to fix the build, you poopy nincompoop!"
+
+My biggest wish: Someone please create a higher level variant of Rust that will use some bits of AI to compile into the current low-level Rust 
 
 # What's Next
 
