@@ -340,9 +340,9 @@ riscv64-unknown-elf-ld: failed to merge target specific data of file
   (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
 ```
 
-GCC Linker fail to link our Rust Object File (__hello_rust_1.o__) into our NuttX Firmware because...
+GCC Linker failed to link the Compiled Rust Binary (__hello_rust_1.o__) into our NuttX Firmware because...
 
-- Rust Object File __hello_rust_1.o__ was compiled with __Software Floating-Point__ ("soft-float")
+- Rust Binary __hello_rust_1.o__ was compiled with __Software Floating-Point__ ("soft-float")
 
 - But NuttX Firmware was compiled with __Double Precision Hardware Floating-Point__ ("double-float")
 
