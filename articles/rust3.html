@@ -327,6 +327,7 @@ riscv64-unknown-elf-ld \
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/1d79670339480baed19f4fa30266b945">(See the Detailed Build Log)</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/Application.mk#L164-L170">(Rust Build with <code>rustc</code> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <code>rustc</code> instead of <code>cargo build</code>)</a></p>
 <p>Here are the Rust Object Files produced by the NuttX Build…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l ../apps/examples/hello_rust     
 total 112
@@ -417,8 +418,11 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p><em>What’s causing this Undefined Panic Function?</em></p>
 <p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <strong>Link-Time Optimisation (LTO)</strong>. (Including the Panic Function)</p>
 <p>But we’re linking it into our NuttX Firmware with GCC Linker, with <strong>LTO Disabled</strong>. Which causes the Missing Panic Function.</p>
+<p><em>How is this different from typical Rust Builds?</em></p>
+<p>Normally we run <strong><code>cargo build</code></strong> to build Embedded Rust Apps. And it handles LTO correctly.</p>
+<p>But NuttX calls <strong><code>rustc</code></strong> to compile Rust Apps, and links them with GCC Linker. Which doesn’t seem to support LTO.</p>
 <p>We’ll explore more of this in GSoC!</p>
-<p>TODO: If we call <code>cargo build</code> (instead of <code>rustc</code>), will it fix this LTO issue? How different is the <code>cargo build</code> Linker from GCC Linker?</p>
+<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <code>rustc</code> instead of <code>cargo build</code>)</a></p>
 <h1 id="standard-vs-embedded-rust"><a class="doc-anchor" href="#standard-vs-embedded-rust">§</a>8 Standard vs Embedded Rust</h1>
 <p>TODO: malloc()?</p>
 <p>There are 2 “flavours” of Rust, depending on the Rust Libraries that we use:</p>
