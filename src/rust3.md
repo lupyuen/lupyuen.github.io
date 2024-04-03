@@ -325,7 +325,7 @@ total 112
 
 [(See the RISC-V Disassembly)](https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c)
 
-# Software vs Hardware Floating Point
+# Software vs Hardware Floating-Point
 
 _What's this error? "Can't link soft-float modules with double-float modules"_
 
@@ -365,9 +365,15 @@ make
 ## mis-matched ISA version 2.1 for 'i' extension, the output version is 2.0
 ```
 
-TODO
+_What exactly are we patching in the ELF Header?_
 
-How did it work? We patched the ELF Header, changing it from Software Floating-Point to Double Precision Hardware Floating-Point...
+Inside the [__ELF Header__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header) of an Object File: There's a Flag (at Offset __`0x24`__) that says whether it was compiled for...
+
+- __Software Floating-Point:__ Flags = 0, or...
+
+- __Double-Precision Hardware Floating-Point:__ Flags = 4
+
+We modified the Flag in the ELF Header...
 
 ```bash
 ## Before Patching: ELF Header says Software Floating-Point
@@ -379,9 +385,13 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
   Flags: 0x4, double-float ABI
 ```
 
-[(Similar to this, except we're doing Double-Float instead of Single-Float)](https://lupyuen.github.io/articles/zig#patch-elf-header)
+[(We had a similar issue with __Zig Compiler__)](https://lupyuen.github.io/articles/zig#patch-elf-header)
 
-TODO: But why Double Float instead of Single Float? (Mmmm ice cream float)
+_But why Soft-Float instead of Double-Float? (Mmmm ice cream float)_
+
+Yeah it's a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)
+
+We'll investigate this during GSoC.
 
 # Panic is Undefined
 
