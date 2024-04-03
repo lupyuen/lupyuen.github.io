@@ -504,23 +504,35 @@ We'll explore more of this in GSoC!
 
 _What is [no_std]? Will Rust call C Standard Library, like for malloc()?_
 
-TODO: Earlier we saw __`[no_std]`__
+Earlier we saw __`[no_std]`__ inside our [__Rust App__](TODO).
 
 There are 2 "flavours" of Rust, depending on the Rust Libraries that we use:
 
-- [Rust Standard Library](https://doc.rust-lang.org/std/): This is used by most Rust Apps on desktops and servers. Supports Heap Memory and the Rust Equivalent of POSIX Calls. 
+- [__Rust Standard Library__](https://doc.rust-lang.org/std/): This is used by most Rust Apps on desktops and servers.
 
-- [Rust Core Library](https://doc.rust-lang.org/core/index.html) (`no_std`): Barebones Rust Library that runs on Bare Metal, used by Rust Embedded Apps. Calls minimal libc functions, doesn't support Heap Memory and POSIX. 
+  Supports Heap Memory and the Rust Equivalent of POSIX Calls. 
 
-The malloc() that you mentioned: It's called by the __Rust Standard Library__. [(Like this)](https://github.com/rust-lang/rust/blob/c8813ddd6d2602ae5473752031fd16ba70a6e4a7/library/std/src/sys/pal/unix/alloc.rs#L14)
+- [__Rust Core Library__](https://doc.rust-lang.org/core/index.html) `[no_std]`: Barebones Rust Library that runs on Bare Metal, used by Rust Embedded Apps.
 
-For Kernel Dev [(like Linux)](https://rust-for-linux.com/third-party-crates#introduction:~:text=Some%20of%20those%20open%2Dsource%20libraries%20are%20potentially%20usable%20in%20the%20kernel%20because%20they%20only%20depend%20on%20core%20and%20alloc%20(rather%20than%20std)%2C%20or%20because%20they%20only%20provide%20macro%20facilities.): We'll use the __Rust Core Library__. Which doesn't support Heap Memory and doesn't need malloc().
+  Calls [__minimal functions__](https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c#file-hello_rust_1-s-L187) in C Standard Library. Doesn't support Heap Memory and POSIX.
 
-But most Kernel Drivers will need Kernel Heap. That's why Linux Kernel also supports the [`alloc` Rust Library / Crate](https://doc.rust-lang.org/alloc/#). To implement Rust `alloc`, Linux Kernel calls krealloc() to allocate Kernel Heap. [(Like this)](https://github.com/torvalds/linux/blob/741e9d668aa50c91e4f681511ce0e408d55dd7ce/rust/kernel/allocator.rs#L46)
+The _malloc()_ that we mentioned: It's called by the __Rust Standard Library__. [(Like this)](https://github.com/rust-lang/rust/blob/c8813ddd6d2602ae5473752031fd16ba70a6e4a7/library/std/src/sys/pal/unix/alloc.rs#L14)
 
-For NuttX Kernel: We'll implement Rust `alloc` by calling kmm_malloc().
+_What about Rust Drivers for NuttX Kernel?_
 
-Since we're calling Rust Core Library in the Kernel, we won't touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we'll have to build the Rust Library ourselves. [(Here's the Rust Library for Linux Kernel)](https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/)
+__For Kernel Dev__ [(like __Linux__)](https://rust-for-linux.com/third-party-crates#introduction:~:text=Some%20of%20those%20open%2Dsource%20libraries%20are%20potentially%20usable%20in%20the%20kernel%20because%20they%20only%20depend%20on%20core%20and%20alloc%20(rather%20than%20std)%2C%20or%20because%20they%20only%20provide%20macro%20facilities.): We'll use the __Rust Core Library__. Which doesn't support Heap Memory and doesn't need _malloc()_.
+
+_But most Kernel Drivers will need Kernel Heap!_
+
+That's why Linux Kernel supports the [__`alloc` Rust Library / Crate__](https://doc.rust-lang.org/alloc/#) for Heap Memory. To implement Rust __`alloc`__, Linux Kernel calls _krealloc()_ to allocate Kernel Heap. [(Like this)](https://github.com/torvalds/linux/blob/741e9d668aa50c91e4f681511ce0e408d55dd7ce/rust/kernel/allocator.rs#L46)
+
+__For NuttX Kernel:__ We'll implement Rust __`alloc`__ by calling _kmm_malloc()_.
+
+_Anything else we need for Rust in NuttX Kernel?_
+
+Since we're calling Rust Core Library in the Kernel, we won't touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we'll have to __create the Rust Library__ ourselves.
+
+[(See the Rust Library for __Linux Kernel__)](https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/)
 
 TODO: GSoC Project Report, Draft Driver
 
@@ -536,7 +548,7 @@ TODO: GSoC Project Report, Draft Driver
 
     — So we're helpfully drafting the [__Standards and Guidelines__](https://github.com/apache/nuttx/issues/11907) for folks already coding Rust in NuttX
 
-1.  _Learning Rust looks difficult. Any other way to write Memory-Safe Apps?_
+1.  _Learning Rust looks kinda hard. Any other way to write Memory-Safe Apps?_
 
     If we're familiar with Python, check out the [__Nim Programming Language__](TODO).
 
