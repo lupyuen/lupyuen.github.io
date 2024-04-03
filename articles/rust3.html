@@ -65,29 +65,28 @@
 
     <h1 class="title">Rust Apps on Apache NuttX RTOS and QEMU RISC-V</h1>
     <nav id="TOC"><ul>
-<li><a href="#todo">1 TODO</a><ul></ul></li>
+<li><a href="#our-rust-app">1 Our Rust App</a><ul></ul></li>
 <li><a href="#build-nuttx-for-32-bit-risc-v-qemu">2 Build NuttX for 32-bit RISC-V QEMU</a><ul></ul></li>
 <li><a href="#boot-nuttx-on-32-bit-risc-v-qemu">3 Boot NuttX on 32-bit RISC-V QEMU</a><ul></ul></li>
-<li><a href="#how-nuttx-builds-rust-apps">4 How NuttX Builds Rust Apps</a><ul></ul></li>
-<li><a href="#patch-the-elf-header">5 Patch the ELF Header</a><ul></ul></li>
-<li><a href="#panic-is-undefined">6 Panic is Undefined</a><ul></ul></li>
-<li><a href="#rust-build-for-qemu-risc-v-64-bit">7 Rust Build for QEMU RISC-V 64-bit</a><ul></ul></li>
-<li><a href="#standard-vs-embedded-rust">8 Standard vs Embedded Rust</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-panic-is-undefined">10 Appendix: Panic is Undefined</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
+<li><a href="#console-input-in-rust">4 Console Input in Rust</a><ul></ul></li>
+<li><a href="#how-nuttx-builds-rust-apps">5 How NuttX Builds Rust Apps</a><ul></ul></li>
+<li><a href="#software-vs-hardware-floating-point">6 Software vs Hardware Floating Point</a><ul></ul></li>
+<li><a href="#panic-is-undefined">7 Panic is Undefined</a><ul></ul></li>
+<li><a href="#rust-build-for-qemu-risc-v-64-bit">8 Rust Build for QEMU RISC-V 64-bit</a><ul></ul></li>
+<li><a href="#standard-vs-embedded-rust">9 Standard vs Embedded Rust</a><ul></ul></li>
+<li><a href="#all-things-considered">10 All Things Considered</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-panic-is-undefined">12 Appendix: Panic is Undefined</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust3-title.png" alt="TODO" /></p>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
-<p>My mentee Rushabh Gala and I are anxiously awaiting the results of the GSoC Project Selection. While waiting, we explain the current steps for running barebones Rust Apps on Apache NuttX RTOS (and the challenges we faced)…</p>
-<p>Ouch we’re trapped between a Rock and… Another Rusty Rock?</p>
-<p>Middle Way </p>
-<p>AI Tools</p>
-<p>Nim</p>
-<p><em>Giving in to our AI Overlords already?</em></p>
-<p>But Borrow Checker and Cargo Clippy are already so clever, they might as well be AI!</p>
-<p>Rust Compiler is almost Sentient, always commanding us Humans: “Please do this to fix the build, you poopy nincompoop!”</p>
-<p>My biggest wish: Someone please create a higher level variant of Rust that will use some bits of AI to compile into the current low-level Rust </p>
+<p>My mentee <a href="https://github.com/apache/nuttx/issues/11907"><strong>Rushabh Gala</strong></a> and I are anxiously awaiting the results of the <a href="TODO"><strong>Google Summer of Code</strong></a> (GSoC) Project Selection. While waiting, we explain the current steps for running barebones Rust Apps on Apache NuttX RTOS (and the challenges we faced)…</p>
+<p>Running Rust Apps on NuttX today</p>
+<p>Limitations</p>
+<p>Workaround</p>
+<p>How we plan to fix them in GSoC</p>
 <p>PINE64 has kindly sponsored the Ox64 BL808 RISC-V SBCs that we’ll be running to test the project.</p>
+<h1 id="our-rust-app"><a class="doc-anchor" href="#our-rust-app">§</a>1 Our Rust App</h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/riscv-build.png" alt="Build Apache NuttX RTOS for 64-bit RISC-V QEMU" /></p>
 <h1 id="build-nuttx-for-32-bit-risc-v-qemu"><a class="doc-anchor" href="#build-nuttx-for-32-bit-risc-v-qemu">§</a>2 Build NuttX for 32-bit RISC-V QEMU</h1>
 <p>Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled with our “Hello Rust” Demo App…</p>
@@ -273,7 +272,9 @@ nsh&gt; ps
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
 </li>
 </ol>
-<h1 id="how-nuttx-builds-rust-apps"><a class="doc-anchor" href="#how-nuttx-builds-rust-apps">§</a>4 How NuttX Builds Rust Apps</h1>
+<h1 id="console-input-in-rust"><a class="doc-anchor" href="#console-input-in-rust">§</a>4 Console Input in Rust</h1>
+<p>TODO</p>
+<h1 id="how-nuttx-builds-rust-apps"><a class="doc-anchor" href="#how-nuttx-builds-rust-apps">§</a>5 How NuttX Builds Rust Apps</h1>
 <p>Let’s watch how NuttX builds Rust Apps by calling <code>rustc</code>. (Instead of <code>cargo build</code>)</p>
 <p>Here’s the NuttX Build Log…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make --trace
@@ -338,7 +339,7 @@ total 112
 -rw-r--r--  1 18240 Mar 17 09:54 hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c">(See the RISC-V Disassembly)</a></p>
-<h1 id="patch-the-elf-header"><a class="doc-anchor" href="#patch-the-elf-header">§</a>5 Patch the ELF Header</h1>
+<h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>6 Software vs Hardware Floating Point</h1>
 <p>TODO</p>
 <p>If the GCC Linker fails with <em>“Can’t link soft-float modules with double-float modules”</em>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ make
@@ -372,7 +373,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(Similar to this, except we’re doing Double-Float instead of Single-Float)</a></p>
 <p>TODO: But why Double Float instead of Single Float? (Mmmm ice cream float)</p>
-<h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>6 Panic is Undefined</h1>
+<h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
 <p>TODO</p>
 <p>If the GCC Linker fails with the error <em>“undefined reference to core::panicking::panic”</em>, please apply this patch…</p>
@@ -388,7 +389,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>TODO: See Appendix</p>
 <p>Somehow the divide-by-zero panic refuses to link correctly. <a href="https://github.com/rust-lang/compiler-builtins/issues/79">Based on this discussion</a>, it seems that the Rust Core Library is compiled with LTO (Link-Time Optimisation), so it might still cause problems with our code, which doesn’t use LTO.</p>
 <p>TODO: If we call <code>cargo build</code> (instead of <code>rustc</code>), will it fix this LTO issue? How different is the <code>cargo build</code> Linker from GCC Linker?</p>
-<h1 id="rust-build-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#rust-build-for-qemu-risc-v-64-bit">§</a>7 Rust Build for QEMU RISC-V 64-bit</h1>
+<h1 id="rust-build-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#rust-build-for-qemu-risc-v-64-bit">§</a>8 Rust Build for QEMU RISC-V 64-bit</h1>
 <p>TODO: Rust Build fails for QEMU RISC-V 64-bit…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
@@ -404,7 +405,7 @@ make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
 make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 </code></pre></div>
 <p>TODO: Test the Rust Build for QEMU Arm32 and Arm64</p>
-<h1 id="standard-vs-embedded-rust"><a class="doc-anchor" href="#standard-vs-embedded-rust">§</a>8 Standard vs Embedded Rust</h1>
+<h1 id="standard-vs-embedded-rust"><a class="doc-anchor" href="#standard-vs-embedded-rust">§</a>9 Standard vs Embedded Rust</h1>
 <p>TODO</p>
 <p>There are 2 “flavours” of Rust, depending on the Rust Libraries that we use:</p>
 <ul>
@@ -420,7 +421,31 @@ make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 <p>But most Kernel Drivers will need Kernel Heap. That’s why Linux Kernel also supports the <a href="https://doc.rust-lang.org/alloc/#"><code>alloc</code> Rust Library / Crate</a>. To implement Rust <code>alloc</code>, Linux Kernel calls krealloc() to allocate Kernel Heap. <a href="https://github.com/torvalds/linux/blob/741e9d668aa50c91e4f681511ce0e408d55dd7ce/rust/kernel/allocator.rs#L46">(Like this)</a></p>
 <p>For NuttX Kernel: We’ll implement Rust <code>alloc</code> by calling kmm_malloc().</p>
 <p>Since we’re calling Rust Core Library in the Kernel, we won’t touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we’ll have to build the Rust Library ourselves. <a href="https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/">(Here’s the Rust Library for Linux Kernel)</a></p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
+<h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>10 All Things Considered</h1>
+<p>TODO</p>
+<p><em>Why are we doing all this?</em></p>
+<ol>
+<li>
+<p>Some folks think now is the right time to explore Memory-Safe Programming in Rust</p>
+</li>
+<li>
+<p>Devs among us might already be coding Rust Apps and Rust Drivers for NuttX?</p>
+<p>(I know of one Corporate User of NuttX that’s very keen on Rust)</p>
+</li>
+<li>
+<p>This doc serves as the Guidelines (and Standardisation) for the folks already coding Rust in NuttX</p>
+</li>
+</ol>
+<p>TODO: Nim, Zig</p>
+<p>Ouch we’re trapped between a Rock and… Another Rusty Rock?</p>
+<p>Middle Way </p>
+<p>AI Tools</p>
+<p>Nim</p>
+<p><em>Giving in to our AI Overlords already?</em></p>
+<p>But Borrow Checker and Cargo Clippy are already so clever, they might as well be AI!</p>
+<p>Rust Compiler is almost Sentient, always commanding us Humans: “Please do this to fix the build, you poopy nincompoop!”</p>
+<p>My biggest wish: Someone please create a higher level variant of Rust that will use some bits of AI to compile into the current low-level Rust </p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -445,7 +470,7 @@ make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust3.md"><strong>lupyuen.github.io/src/rust3.md</strong></a></p>
-<h1 id="appendix-panic-is-undefined"><a class="doc-anchor" href="#appendix-panic-is-undefined">§</a>10 Appendix: Panic is Undefined</h1>
+<h1 id="appendix-panic-is-undefined"><a class="doc-anchor" href="#appendix-panic-is-undefined">§</a>12 Appendix: Panic is Undefined</h1>
 <p>TODO</p>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
 <p>TODO</p>
