@@ -87,6 +87,59 @@
 <p>PINE64 has kindly sponsored the Ox64 BL808 RISC-V SBCs for testing Rust Apps on NuttX.</p>
 <h1 id="our-rust-app"><a class="doc-anchor" href="#our-rust-app">§</a>1 Our Rust App</h1>
 <p>TODO</p>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// main() function not needed
+</span><span class="attr">#![no_main]
+
+</span><span class="comment">// Use Rust Core Library (instead of Rust Standard Library)
+</span><span class="attr">#![no_std]
+
+</span><span class="comment">// Import printf() from C into Rust
+</span><span class="kw">extern </span><span class="string">"C" </span>{
+
+  <span class="comment">// Accept a Format String with Optional Arguments, return an `int`
+  </span><span class="kw">pub fn </span>printf(format: <span class="kw-2">*const </span>u8, ...) -&gt; i32;
+}
+
+<span class="comment">// Main Function exported by Rust to C.
+// Don't mangle the Function Name.
+</span><span class="attr">#[no_mangle]
+</span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(
+  _argc: i32,              <span class="comment">// Equivalent to `int argc`
+  </span>_argv: <span class="kw-2">*const *const </span>u8  <span class="comment">// Equivalent to `char **argv`
+</span>) -&gt; i32 {                 <span class="comment">// Returns `int`
+
+  // Calling a C Function might have Unsafe consequences
+  </span><span class="kw">unsafe </span>{
+
+    <span class="comment">// Print something
+    </span>printf(                 <span class="comment">// Call printf() with...
+      </span><span class="string">b"Hello, Rust!!\n\0"  </span><span class="comment">// Byte String terminated by null
+        </span><span class="kw">as </span><span class="kw-2">*const </span>u8        <span class="comment">// Cast as `const char *`
+    </span>);
+  }
+
+  <span class="comment">// Exit with status 0
+  </span><span class="number">0
+</span>}</code></pre></div>
+<p>(We’ll explain <strong><code>[no_std]</code></strong> in a while)</p>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Import PanicInfo for Panic Handler
+</span><span class="kw">use </span>core::panic::PanicInfo;
+
+<span class="comment">// Handle a Rust Panic. Needed for [no_std]
+</span><span class="attr">#[panic_handler]
+</span><span class="kw">fn </span>panic(
+  _panic: <span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;  <span class="comment">// Receives the Panic Info and Stack Trace
+</span>) -&gt; ! {                  <span class="comment">// Never returns
+
+  // TODO: Print the Panic Info and Stack Trace
+  // For now, we loop forever
+  </span><span class="kw">loop </span>{}
+}</code></pre></div>
+<p>TODO: GSoC Panic</p>
 <p><img src="https://lupyuen.github.io/images/riscv-build.png" alt="Build Apache NuttX RTOS for 64-bit RISC-V QEMU" /></p>
 <h1 id="build-nuttx-for-32-bit-risc-v-qemu"><a class="doc-anchor" href="#build-nuttx-for-32-bit-risc-v-qemu">§</a>2 Build NuttX for 32-bit RISC-V QEMU</h1>
 <p>Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled with our “Hello Rust” Demo App…</p>
