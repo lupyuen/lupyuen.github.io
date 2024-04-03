@@ -340,8 +340,7 @@ total 112
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c">(See the RISC-V Disassembly)</a></p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>6 Software vs Hardware Floating Point</h1>
-<p>TODO</p>
-<p>If the GCC Linker fails with <em>“Can’t link soft-float modules with double-float modules”</em>…</p>
+<p><em>What’s this error? “Can’t link soft-float modules with double-float modules”</em></p>
 <div class="example-wrap"><pre class="language-text"><code>$ make
 LD: nuttx
 riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
@@ -351,17 +350,30 @@ riscv64-unknown-elf-ld: failed to merge target specific data of file
   nuttx/staging/libapps.a
   (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
 </code></pre></div>
-<p>Then we patch the ELF Header like this and it should link correctly…</p>
-<div class="example-wrap"><pre class="language-bash"><code>xxd -c 1 ../apps/examples/hello_rust/*hello_rust_1.o \
+<p>GCC Linker fail to link our Rust Object File (<strong>hello_rust_1.o</strong>) into our NuttX Firmware because…</p>
+<ul>
+<li>
+<p>Rust Object File <strong>hello_rust_1.o</strong> was compiled with <strong>Software Floating-Point</strong> (“soft-float”)</p>
+</li>
+<li>
+<p>But NuttX Firmware was compiled with <strong>Double Precision Hardware Floating-Point</strong> (“double-float”)</p>
+</li>
+</ul>
+<p>The two are incompatible, and the GCC Linking fails.</p>
+<p><em>How to fix this?</em></p>
+<p>For now we <strong>Patch the ELF Header</strong> of our Rust Object File. And NuttX Firmware will link correctly…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Patch ELF Header from Soft-Float to Double-Float
+xxd -c 1 ../apps/examples/hello_rust/*hello_rust_1.o \
   | sed &#39;s/00000024: 00/00000024: 04/&#39; \
   | xxd -r -c 1 - /tmp/hello_rust_1.o
 cp /tmp/hello_rust_1.o ../apps/examples/hello_rust/*hello_rust_1.o
 make
 
-## Ignore the warnings:
+## NuttX links OK. Ignore these warnings: (why?)
 ## riscv64-unknown-elf-ld: warning: nuttx/staging/libapps.a(hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o): 
 ## mis-matched ISA version 2.1 for &#39;i&#39; extension, the output version is 2.0
 </code></pre></div>
+<p>TODO</p>
 <p>How did it work? We patched the ELF Header, changing it from Software Floating-Point to Double Precision Hardware Floating-Point…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Before Patching: ELF Header says Software Floating-Point
 $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
