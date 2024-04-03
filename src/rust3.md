@@ -415,7 +415,7 @@ To implement the panic, Rust Compiler inserts a call to the Core Function _core:
 
 _And the Panic Function is missing somehow?_
 
-Yeah Rushabh has implemented a fix for the Undefined Panic Function...
+Rushabh has implemented a fix for the Undefined Panic Function...
 
 - [__Add `-O` to `RUSTFLAGS` in Makefile__](https://github.com/apache/nuttx-apps/pull/2333)
 
@@ -467,13 +467,11 @@ TODO: GSoC Project Report, Draft Driver
 
     Yeah it's tough work but it needs to be done...
 
-    - Some folks think it's the right time to explore [__Memory-Safe Programming in Rust__](TODO)
+    — Some folks think it's the right time to explore [__Memory-Safe Programming in Rust__](TODO)
 
-    - Devs among us might already be coding __Rust Apps and Rust Drivers__ for NuttX?
+    — Devs among us might already be coding __Rust Apps and Rust Drivers__ for NuttX? (We know of one Corporate User of NuttX that's very keen on Rust)
 
-      (We know of one Corporate User of NuttX that's very keen on Rust)
-
-    - So we're helpfully drafting the __Standards and Guidelines__ for folks already coding Rust in NuttX
+    — So we're helpfully drafting the __Standards and Guidelines__ for folks already coding Rust in NuttX
 
 1.  _Learning Rust looks difficult. Any other way to write Memory-Safe Apps?_
 
@@ -497,15 +495,15 @@ TODO: GSoC Project Report, Draft Driver
 
     Ouch we're trapped between a Rock and... Another Rusty Rock!
 
-    - __NuttX Kernel Devs__ are concerned about the __extra complexity__ that Rust Drivers add to the Kernel Build
+    — __NuttX Kernel Devs__ are concerned about the __extra complexity__ that Rust Drivers add to the Kernel Build
 
-    - __Rust Community__ is probably thinking we're __not doing enough__ to promote Memory-Safe Coding in NuttX Kernel
+    — __Rust Community__ is probably thinking we're __not doing enough__ to promote Memory-Safe Coding in NuttX Kernel
 
     For now we'll walk the __Middle Way__...
 
-    - __Lay the Groundwork__ for Future Integration of Rust Drivers into NuttX Kernel
+    — __Lay the Groundwork__ for Future Integration of Rust Drivers into NuttX Kernel
 
-    - Observe the Rust Development in [__Linux Kernel__](https://rust-for-linux.com/). And adapt the Best Practices for NuttX Kernel.
+    — Observe the Rust Development in [__Linux Kernel__](https://rust-for-linux.com/). And adapt the Best Practices for NuttX Kernel.
 
 # What's Next
 
