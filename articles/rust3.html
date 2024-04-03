@@ -449,7 +449,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(We had a similar issue with <strong>Zig Compiler</strong>)</a></p>
 <p><em>But why Soft-Float instead of Double-Float? (Mmmm ice cream float)</em></p>
 <p>Yeah patching the ELF Header is a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)</p>
-<p>We’ll investigate this during GSoC. (Incorrect Rust Target maybe?)</p>
+<p>We’ll investigate this during GSoC. (Incorrect <a href="TODO"><strong>Rust Target</strong></a> maybe?)</p>
 <h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>TODO: Undefined reference to core::panicking::panic
@@ -477,7 +477,8 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>We’ll explore more of this in GSoC!</p>
 <p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <code>rustc</code> instead of <code>cargo build</code>)</a></p>
 <h1 id="standard-vs-embedded-rust"><a class="doc-anchor" href="#standard-vs-embedded-rust">§</a>8 Standard vs Embedded Rust</h1>
-<p>TODO: malloc()?</p>
+<p><em>What is [no_std]? Will Rust call C Standard Library, like for malloc()?</em></p>
+<p>TODO: Earlier we saw <strong><code>[no_std]</code></strong></p>
 <p>There are 2 “flavours” of Rust, depending on the Rust Libraries that we use:</p>
 <ul>
 <li>
@@ -498,9 +499,9 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <li>
 <p><em>Why are we doing all this?</em></p>
 <p>Yeah it’s tough work but it needs to be done…</p>
-<p>— Some folks think it’s the right time to explore <a href="TODO"><strong>Memory-Safe Programming in Rust</strong></a></p>
-<p>— Devs among us might already be coding <strong>Rust Apps and Rust Drivers</strong> for NuttX? (We know of one Corporate User of NuttX that’s very keen on Rust)</p>
-<p>— So we’re helpfully drafting the <strong>Standards and Guidelines</strong> for folks already coding Rust in NuttX</p>
+<p>— Some folks are urging us to explore <a href="TODO"><strong>Memory-Safe Programming in Rust</strong></a></p>
+<p>— NuttX Devs among us might already be coding <strong>Rust Apps and Rust Drivers</strong> for NuttX? (We know of one Corporate User of NuttX that’s very keen on Rust)</p>
+<p>— So we’re helpfully drafting the <a href="https://github.com/apache/nuttx/issues/11907"><strong>Standards and Guidelines</strong></a> for folks already coding Rust in NuttX</p>
 </li>
 <li>
 <p><em>Learning Rust looks difficult. Any other way to write Memory-Safe Apps?</em></p>
@@ -518,7 +519,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <li>
 <p><em>Apparently there’s some Resistance to Rust Drivers inside NuttX Kernel?</em></p>
 <p>Ouch we’re trapped between a Rock and… Another Rusty Rock!</p>
-<p>— <strong>NuttX Kernel Devs</strong> are concerned about the <strong>extra complexity</strong> that Rust Drivers add to the Kernel Build</p>
+<p>— <strong>NuttX Devs</strong> are concerned about the <a href="https://lists.apache.org/thread/q09w8p6pm683rvzvrwdwv4cf0bbqmfg2"><strong>extra complexity</strong></a> that Rust Drivers add to the Kernel Build</p>
 <p>— <strong>Rust Community</strong> is probably thinking we’re <strong>not doing enough</strong> to promote Memory-Safe Coding in NuttX Kernel</p>
 <p>For now we’ll walk the <strong>Middle Way</strong>…</p>
 <p>— <strong>Lay the Groundwork</strong> for Future Integration of Rust Drivers into NuttX Kernel</p>
