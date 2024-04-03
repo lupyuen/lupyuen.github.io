@@ -70,7 +70,7 @@
 <li><a href="#boot-nuttx-on-32-bit-risc-v-qemu">3 Boot NuttX on 32-bit RISC-V QEMU</a><ul></ul></li>
 <li><a href="#console-input-in-rust">4 Console Input in Rust</a><ul></ul></li>
 <li><a href="#how-nuttx-builds-rust-apps">5 How NuttX Builds Rust Apps</a><ul></ul></li>
-<li><a href="#software-vs-hardware-floating-point">6 Software vs Hardware Floating Point</a><ul></ul></li>
+<li><a href="#software-vs-hardware-floating-point">6 Software vs Hardware Floating-Point</a><ul></ul></li>
 <li><a href="#panic-is-undefined">7 Panic is Undefined</a><ul></ul></li>
 <li><a href="#standard-vs-embedded-rust">8 Standard vs Embedded Rust</a><ul></ul></li>
 <li><a href="#all-things-considered">9 All Things Considered</a><ul></ul></li>
@@ -339,7 +339,7 @@ total 112
 -rw-r--r--  1 18240 Mar 17 09:54 hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c">(See the RISC-V Disassembly)</a></p>
-<h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>6 Software vs Hardware Floating Point</h1>
+<h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>6 Software vs Hardware Floating-Point</h1>
 <p><em>What’s this error? “Can’t link soft-float modules with double-float modules”</em></p>
 <div class="example-wrap"><pre class="language-text"><code>$ make
 LD: nuttx
@@ -373,8 +373,17 @@ make
 ## riscv64-unknown-elf-ld: warning: nuttx/staging/libapps.a(hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o): 
 ## mis-matched ISA version 2.1 for &#39;i&#39; extension, the output version is 2.0
 </code></pre></div>
-<p>TODO</p>
-<p>How did it work? We patched the ELF Header, changing it from Software Floating-Point to Double Precision Hardware Floating-Point…</p>
+<p><em>What exactly are we patching in the ELF Header?</em></p>
+<p>Inside the <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header"><strong>ELF Header</strong></a> of an Object File: There’s a Flag (at Offset <strong><code>0x24</code></strong>) that says whether it was compiled for…</p>
+<ul>
+<li>
+<p><strong>Software Floating-Point:</strong> Flags = 0, or…</p>
+</li>
+<li>
+<p><strong>Double-Precision Hardware Floating-Point:</strong> Flags = 4</p>
+</li>
+</ul>
+<p>We modified the Flag in the ELF Header…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Before Patching: ELF Header says Software Floating-Point
 $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
   Flags: 0x0
@@ -383,8 +392,10 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
   Flags: 0x4, double-float ABI
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(Similar to this, except we’re doing Double-Float instead of Single-Float)</a></p>
-<p>TODO: But why Double Float instead of Single Float? (Mmmm ice cream float)</p>
+<p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(We had a similar issue with <strong>Zig Compiler</strong>)</a></p>
+<p><em>But why Soft-Float instead of Double-Float? (Mmmm ice cream float)</em></p>
+<p>Yeah it’s a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)</p>
+<p>We’ll investigate this during GSoC.</p>
 <h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
 <p>TODO</p>
