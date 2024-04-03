@@ -389,9 +389,9 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 
 _But why Soft-Float instead of Double-Float? (Mmmm ice cream float)_
 
-Yeah it's a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)
+Yeah patching the ELF Header is a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)
 
-We'll investigate this during GSoC.
+We'll investigate this during GSoC. (Incorrect Rust Target maybe?)
 
 # Panic is Undefined
 
