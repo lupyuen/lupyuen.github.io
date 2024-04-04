@@ -33,9 +33,10 @@ TODO
 
 // Import printf() from C into Rust
 extern "C" {
-
-  // Accept a Format String with Optional Arguments, return an `int`
-  pub fn printf(format: *const u8, ...) -> i32;
+  pub fn printf(
+    format: *const u8,  // Equivalent to `const char *`
+    ...                 // Optional Arguments
+  ) -> i32;             // Returns `int`
 }
 
 // Main Function exported by Rust to C.
@@ -48,8 +49,6 @@ pub extern "C" fn hello_rust_main(
 
   // Calling a C Function might have Unsafe consequences
   unsafe {
-
-    // Print something
     printf(                 // Call printf() with...
       b"Hello, Rust!!\n\0"  // Byte String terminated by null
         as *const u8        // Cast as `const char *`
@@ -66,7 +65,7 @@ pub extern "C" fn hello_rust_main(
 TODO
 
 ```rust
-// Import PanicInfo for Panic Handler
+// Import the Panic Info for our Panic Handler
 use core::panic::PanicInfo;
 
 // Handle a Rust Panic. Needed for [no_std]
@@ -141,10 +140,8 @@ Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled 
     
     Select it __Twice__ so that "__`<M>`__" changes to "__`<*>`__"
     
-    [(Source Code for Hello Rust)](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
+    [(Source Code for __Hello Rust__)](TODO)
     
-    [(Reading from Console Input)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/c1d9124347da02bbe0842c14ca99100a6b8f42b0)
-
 1.  Save and exit __menuconfig__.
 
     [(See the NuttX Config)](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/9ee00a20a2f8deab8e27a08cfbc1c7a7f948d5ed)
@@ -152,10 +149,13 @@ Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled 
 1.  Build the NuttX Project and dump the RISC-V Disassembly to __nuttx.S__...
 
     ```bash
+    ## Add the Rust Target for RISC-V 32-bit
     rustup target add riscv32i-unknown-none-elf
 
+    ## Build the NuttX Project
     make
 
+    ## Dump the NuttX Disassembly to `nuttx.S`
     riscv64-unknown-elf-objdump \
       -t -S --demangle --line-numbers --wide \
       nuttx \
@@ -188,35 +188,11 @@ Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled 
       | xxd -r -c 1 - /tmp/hello_rust_1.o
     cp /tmp/hello_rust_1.o ../apps/examples/hello_rust/*hello_rust_1.o
     make
-    
-    ## Ignore the warnings:
-    ## riscv64-unknown-elf-ld: warning: nuttx/staging/libapps.a(hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o): 
-    ## mis-matched ISA version 2.1 for 'i' extension, the output version is 2.0
     ```
 
-    How did it work? We patched the ELF Header, changing it from Software Floating-Point to Double Precision Hardware Floating-Point...
+    (We'll come back to this)
 
-    ```bash
-    ## Before Patching: ELF Header says Software Floating-Point
-    $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
-      Flags: 0x0
-  
-    ## After Patching: ELF Header says Double-Precision Hardware Floating-Point
-    $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
-      Flags: 0x4, double-float ABI
-    ```
-
-    [(Similar to this, except we're doing Double-Float instead of Single-Float)](https://lupyuen.github.io/articles/zig#patch-elf-header)
-    
-    TODO: Fix the Rust Build for NuttX
-
-1.  If the GCC Linker fails with the error _"undefined reference to core::panicking::panic"_, please apply this patch...
-
-    [Add -O to RUSTFLAGS in Makefile](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/58c9ebee95626251dd1601476991cdfea7fcd190)
-
-    Then rebuild: `make clean ; make`
-    
-    (If we still hit the same error, see the notes below)
+    We're ready to boot NuttX...
 
 ![Apache NuttX RTOS on RISC-V QEMU](https://lupyuen.github.io/images/riscv-title.png)
 
@@ -336,12 +312,12 @@ pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
   unsafe {
 
     // Standard Input comes from https://github.com/apache/nuttx/blob/master/include/stdio.h#L64-L68
-    let stdin: *mut c_void =
-      lib_get_stream(0);  // Init to Stream 0 (stdin)
+    let stdin: *mut c_void =  // Equivalent to `void *`
+      lib_get_stream(0);      // Init to Stream 0 (stdin)
 
-    // Input Buffer with 256 chars, including terminating null
-    let mut buf: [c_char; 256] =
-      [0; 256];  // Init with nulls
+    // Input Buffer with 256 chars (including terminating null)
+    let mut buf: [c_char; 256] =  // Input Buffer is Mutable (will change)
+      [0; 256];                   // Init with nulls
 
     // Read a line from Standard Input
     if !fgets(
@@ -437,8 +413,8 @@ total 112
 -rw-r--r--  1   141 Mar 17 09:44 Make.dep
 -rw-r--r--  1  1492 Mar 16 20:41 Makefile
 -rw-r--r--  1  3982 Mar 17 00:06 hello_rust_main.rs
--rw-r--r--  1 13168 Mar 17 09:44 hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
--rw-r--r--  1 18240 Mar 17 09:54 hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o
+-rw-r--r--  1 13168 Mar 17 09:44 hello_rust_main.rs...apps.examples.hello_rust.o
+-rw-r--r--  1 18240 Mar 17 09:54 hello_rust_main.rs...apps.examples.hello_rust_1.o
 ```
 
 [(See the RISC-V Disassembly)](https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c)
