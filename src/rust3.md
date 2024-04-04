@@ -20,7 +20,7 @@ Thanks to [__PINE64__](TODO), the sponsor of [__Ox64 BL808__](TODO) RISC-V SBCs 
 
 # Rust App for NuttX
 
-TODO: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
+Below is the __"Hello Rust"__ Demo App that's bundled with Apache NuttX RTOS: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
 
 ```rust
 // main() function not needed
@@ -38,7 +38,11 @@ extern "C" {
 }                       // TODO: Standardise `i32` as `c_int`
 ```
 
-TODO: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
+(We'll explain __`[no_std]`__ in a while)
+
+The code above imports the _printf()_ function from C into Rust.
+
+This is how we call it in Rust: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
 
 ```rust
 // Main Function exported by Rust to C.
@@ -62,9 +66,7 @@ pub extern "C" fn hello_rust_main(
 }
 ```
 
-(We'll explain __`[no_std]`__ in a while)
-
-TODO
+To build the Rust App, we need to provide a __Panic Handler__: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
 
 ```rust
 // Import the Panic Info for our Panic Handler
@@ -82,7 +84,9 @@ fn panic(
 }
 ```
 
-TODO: GSoC Panic
+Which doesn't do much right now. We'll create a proper Panic Handler during GSoC.
+
+(More about Rust Panic in a while)
 
 ![Build Apache NuttX RTOS for 64-bit RISC-V QEMU](https://lupyuen.github.io/images/riscv-build.png)
 
@@ -148,7 +152,7 @@ Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled 
 
     [(See the __NuttX Config__)](https://github.com/lupyuen2/wip-pinephone-nuttx/commit/9ee00a20a2f8deab8e27a08cfbc1c7a7f948d5ed)
 
-1.  Build the NuttX Project and dump the RISC-V Disassembly to __nuttx.S__...
+1.  Build the NuttX Project and dump the RISC-V Disassembly to __nuttx.S__ (for easier troubleshooting)...
 
     ```bash
     ## Add the Rust Target for RISC-V 32-bit (Soft-Float)
@@ -182,7 +186,7 @@ Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled 
       (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
     ```
 
-    Then we patch the ELF Header like this and it should link correctly...
+    Then we patch the __ELF Header__ like this, and it should link correctly...
 
     ```bash
     xxd -c 1 ../apps/examples/hello_rust/*hello_rust_1.o \
@@ -202,7 +206,7 @@ Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled 
 
 This is how we boot NuttX on QEMU and run our Rust App...
 
-1.  Download and install [__QEMU Emulator__](https://www.qemu.org/download/).
+1.  Download and install [__QEMU Emulator__](https://www.qemu.org/download/)...
 
     ```bash
     ## For macOS:
@@ -237,7 +241,7 @@ This is how we boot NuttX on QEMU and run our Rust App...
     nsh>
     ```
     
-1.  Enter "__hello_rust__" to run the Rust Demo App  
+1.  Enter "__hello_rust__" to run our Rust Demo App (which prints something)
 
     ```text
     nsh> hello_rust
@@ -280,7 +284,7 @@ This is how we boot NuttX on QEMU and run our Rust App...
         1     1 100 RR       Task    --- Running            0000000000000000 002992 002024  67.6%  nsh_main
     ```
 
-    [(See the Complete Log)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
 
 1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
@@ -307,7 +311,9 @@ extern "C" {
 }
 ```
 
-TODO: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs)
+The code above imports the _fgets()_ function from C into Rust.
+
+Calling _fgets()_ is a little more complicated: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs)
 
 ```rust
 // Main Function exported by Rust to C
@@ -327,8 +333,8 @@ pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
 
     // Read a line from Standard Input
     if !fgets(
-      &mut buf[0],       // Buffer
-      buf.len() as i32,  // Size
+      &mut buf[0],       // Input Buffer
+      buf.len() as i32,  // Buffer Size
       stdin              // Standard Input
     ).is_null() {        // Catch the Input Error
 
@@ -345,24 +351,24 @@ pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
 // Omitted: Panic Handler
 ```
 
-TODO: This is getting a little dangerous, the Input Buffer might overflow if we're not careful!
+This is getting a little dangerous... The __Input Buffer might Overflow__ if we're not careful with the Parameters!
 
 ```rust
 // Read a line from Standard Input
 fgets(
-  &mut buf[0],       // Buffer
-  buf.len() as i32,  // Size
+  &mut buf[0],       // Input Buffer
+  buf.len() as i32,  // Buffer Size
   stdin              // Standard Input
 );
 ```
 
-Makes us wonder: _"Hmmm the fgets() buffer size... Does it include the terminating null?"_
+Which makes us ponder about __Memory Safety__: _"Hmmm the fgets() buffer size... Does it include the terminating null?"_
 
 (Yep it does!)
 
 _What about Rust? How does it safely handle Console Input?_
 
-TODO: [Standard Input in Rust](https://doc.rust-lang.org/std/io/fn.stdin.html)
+Reading the [__Standard Input in Rust__](https://doc.rust-lang.org/std/io/fn.stdin.html) looks simpler and safer...
 
 ```rust
 // Allocate an Input Buffer from Heap Memory
@@ -372,9 +378,13 @@ let mut buffer = String::new();
 io::stdin().read_line(&mut buffer)?;
 ```
 
-TODO: Heap Memory
+But this won't work on NuttX because...
 
-TODO: Standard Input not available
+- __Rust Standard Input__ _io::stdin()_ isn't supported on Embedded Platforms
+
+- __Dynamic Strings and Heap Memory__ won't work on Embedded Platforms either
+
+We'll talk more about this.
 
 # How NuttX Compiles Rust Apps
 
@@ -546,7 +556,7 @@ riscv64-unknown-elf-ld:
   undefined reference to `core::panicking::panic'
 ```
 
-Suppose we're reading Console Input in our Rust App: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs)
+Suppose we're reading __Console Input__ in our Rust App: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs)
 
 ```rust
 // Input Buffer with 256 chars (including terminating null)
@@ -579,15 +589,15 @@ But when we add __Another Point of Panic__: We see the Undefined Panic Error aga
 
 _What's causing this Undefined Panic Function?_
 
-According to [__this discussion__](https://github.com/rust-lang/compiler-builtins/issues/79), the Rust Core Library is compiled with __Link-Time Optimisation (LTO)__. (Including the Panic Function)
+According to [__this discussion__](https://github.com/rust-lang/compiler-builtins/issues/79), the Rust Core Library is compiled with [__Link-Time Optimisation (LTO)__](TODO). (Including the Panic Function)
 
 But we're linking it into our NuttX Firmware with GCC Linker, with __LTO Disabled__. Which causes the Missing Panic Function.
 
 _How is this different from typical Rust Builds?_
 
-Normally we run __`cargo build`__ to build Embedded Rust Apps. And it handles LTO correctly.
+Normally we run [__`cargo build`__](TODO) to build Embedded Rust Apps. And it handles LTO correctly.
 
-But NuttX calls __`rustc`__ to compile Rust Apps, and links them with GCC Linker. Which doesn't seem to support LTO.
+But NuttX calls [__`rustc`__](TODO) to compile Rust Apps, and links them with GCC Linker. Which doesn't seem to support LTO.
 
 We'll sort this out in GSoC!
 
