@@ -65,18 +65,18 @@
 
     <h1 class="title">Rust Apps on Apache NuttX RTOS and QEMU RISC-V</h1>
     <nav id="TOC"><ul>
-<li><a href="#our-rust-app">1 Our Rust App</a><ul></ul></li>
-<li><a href="#build-nuttx-for-32-bit-risc-v-qemu">2 Build NuttX for 32-bit RISC-V QEMU</a><ul></ul></li>
-<li><a href="#boot-nuttx-on-32-bit-risc-v-qemu">3 Boot NuttX on 32-bit RISC-V QEMU</a><ul></ul></li>
+<li><a href="#rust-app-for-nuttx">1 Rust App for NuttX</a><ul></ul></li>
+<li><a href="#build-nuttx-for-qemu-risc-v">2 Build NuttX for QEMU RISC-V</a><ul></ul></li>
+<li><a href="#run-nuttx-on-qemu-risc-v">3 Run NuttX on QEMU RISC-V</a><ul></ul></li>
 <li><a href="#console-input-in-rust">4 Console Input in Rust</a><ul></ul></li>
-<li><a href="#how-nuttx-builds-rust-apps">5 How NuttX Builds Rust Apps</a><ul></ul></li>
+<li><a href="#how-nuttx-compiles-rust-apps">5 How NuttX Compiles Rust Apps</a><ul></ul></li>
 <li><a href="#software-vs-hardware-floating-point">6 Software vs Hardware Floating-Point</a><ul></ul></li>
 <li><a href="#panic-is-undefined">7 Panic is Undefined</a><ul></ul></li>
 <li><a href="#standard-vs-embedded-rust">8 Standard vs Embedded Rust</a><ul></ul></li>
 <li><a href="#all-things-considered">9 All Things Considered</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-panic-is-undefined">11 Appendix: Panic is Undefined</a><ul></ul></li>
-<li><a href="#appendix-rust-build-for-qemu-risc-v-64-bit">12 Appendix: Rust Build for QEMU RISC-V 64-bit</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
+<li><a href="#appendix-rust-build-for-64-bit-risc-v">12 Appendix: Rust Build for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust3-title.png" alt="TODO" /></p>
 <p>TODO</p>
 <p>My mentee <a href="https://github.com/apache/nuttx/issues/11907"><strong>Rushabh Gala</strong></a> and I are anxiously awaiting the results of the <a href="TODO"><strong>Google Summer of Code</strong></a> (GSoC) Project Selection. While waiting, we explain the current steps for running barebones Rust Apps on Apache NuttX RTOS (and the challenges we faced)…</p>
@@ -85,7 +85,7 @@
 <p>Workaround</p>
 <p>How we plan to fix them in GSoC</p>
 <p>PINE64 has kindly sponsored the Ox64 BL808 RISC-V SBCs for testing Rust Apps on NuttX.</p>
-<h1 id="our-rust-app"><a class="doc-anchor" href="#our-rust-app">§</a>1 Our Rust App</h1>
+<h1 id="rust-app-for-nuttx"><a class="doc-anchor" href="#rust-app-for-nuttx">§</a>1 Rust App for NuttX</h1>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
@@ -141,7 +141,7 @@
 }</code></pre></div>
 <p>TODO: GSoC Panic</p>
 <p><img src="https://lupyuen.github.io/images/riscv-build.png" alt="Build Apache NuttX RTOS for 64-bit RISC-V QEMU" /></p>
-<h1 id="build-nuttx-for-32-bit-risc-v-qemu"><a class="doc-anchor" href="#build-nuttx-for-32-bit-risc-v-qemu">§</a>2 Build NuttX for 32-bit RISC-V QEMU</h1>
+<h1 id="build-nuttx-for-qemu-risc-v"><a class="doc-anchor" href="#build-nuttx-for-qemu-risc-v">§</a>2 Build NuttX for QEMU RISC-V</h1>
 <p>Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled with our “Hello Rust” Demo App…</p>
 <ol>
 <li>
@@ -250,7 +250,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on RISC-V QEMU" /></p>
-<h1 id="boot-nuttx-on-32-bit-risc-v-qemu"><a class="doc-anchor" href="#boot-nuttx-on-32-bit-risc-v-qemu">§</a>3 Boot NuttX on 32-bit RISC-V QEMU</h1>
+<h1 id="run-nuttx-on-qemu-risc-v"><a class="doc-anchor" href="#run-nuttx-on-qemu-risc-v">§</a>3 Run NuttX on QEMU RISC-V</h1>
 <p>This is how we boot NuttX on QEMU and run our Rust App…</p>
 <ol>
 <li>
@@ -326,8 +326,60 @@ nsh&gt; ps
 </li>
 </ol>
 <h1 id="console-input-in-rust"><a class="doc-anchor" href="#console-input-in-rust">§</a>4 Console Input in Rust</h1>
-<p>TODO</p>
-<h1 id="how-nuttx-builds-rust-apps"><a class="doc-anchor" href="#how-nuttx-builds-rust-apps">§</a>5 How NuttX Builds Rust Apps</h1>
+<p><em>What about Console Input?</em></p>
+<p>This is how we read <strong>Console Input</strong> in Rust: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/c1d9124347da02bbe0842c14ca99100a6b8f42b0/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// main() function not needed. Use Rust Core Library.
+</span><span class="attr">#![no_main]
+#![no_std]
+
+</span><span class="comment">// Import Functions from C into Rust
+// TODO: core::ffi
+</span><span class="kw">extern </span><span class="string">"C" </span>{
+  <span class="kw">pub fn </span>printf(format: <span class="kw-2">*const </span>u8, ...) -&gt; i32;
+  <span class="kw">pub fn </span>puts(s: <span class="kw-2">*const </span>core::ffi::c_char) -&gt; core::ffi::c_int;
+  <span class="kw">pub fn </span>fgets(
+    buf: <span class="kw-2">*mut </span>core::ffi::c_char,
+    n: core::ffi::c_int,
+    stream: <span class="kw-2">*mut </span>core::ffi::c_void
+  ) -&gt; <span class="kw-2">*mut </span>core::ffi::c_char;
+  <span class="kw">pub fn </span>lib_get_stream(fd: core::ffi::c_int) -&gt; <span class="kw-2">*mut </span>core::ffi::c_void;
+}
+
+<span class="attr">#[no_mangle]
+</span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(_argc: i32, _argv: <span class="kw-2">*const *const </span>u8) -&gt; i32 {
+
+  <span class="comment">// Receive some text from Standard Input and print it
+  </span><span class="kw">unsafe </span>{
+
+    <span class="comment">// Standard Input comes from https://github.com/apache/nuttx/blob/master/include/stdio.h#L64-L68
+    </span><span class="kw">let </span>stdin: <span class="kw-2">*mut </span>core::ffi::c_void = <span class="comment">// TODO: core::ffi
+      </span>lib_get_stream(<span class="number">0</span>);  <span class="comment">// Init to Stream 0 (stdin)
+
+    // Input Buffer with 256 chars, including terminating null
+    </span><span class="kw">let </span><span class="kw-2">mut </span>buf: [core::ffi::c_char; <span class="number">256</span>] = <span class="comment">// TODO: core::ffi
+      </span>[<span class="number">0</span>; <span class="number">256</span>];  <span class="comment">// Init with nulls
+
+    // Read a line from Standard Input
+    </span><span class="kw">if </span>!fgets(
+      <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],       <span class="comment">// Buffer
+      </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Size
+      </span>stdin              <span class="comment">// Standard Input
+    </span>).is_null() {        <span class="comment">// Catch input error
+
+      // Print the line
+      </span>printf(<span class="string">b"You entered...\n\0" </span><span class="kw">as </span><span class="kw-2">*const </span>u8);
+      puts(<span class="kw-2">&amp;</span>buf[<span class="number">0</span>]);
+    }
+  }
+
+  <span class="comment">// Exit with status 0
+  </span><span class="number">0
+</span>}
+
+<span class="comment">// Omitted: Panic Handler</span></code></pre></div>
+<p>TODO: This is getting a little dangerous, the Input Buffer might overflow if we’re not careful!</p>
+<h1 id="how-nuttx-compiles-rust-apps"><a class="doc-anchor" href="#how-nuttx-compiles-rust-apps">§</a>5 How NuttX Compiles Rust Apps</h1>
 <p>Let’s watch how NuttX builds Rust Apps by calling <code>rustc</code>. (Instead of <code>cargo build</code>)</p>
 <p>Here’s the NuttX Build Log…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make --trace
@@ -520,14 +572,14 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p><em>Giving in to our AI Overlords already?</em></p>
 <p>But Rust Devs are familiar with smarty tools. <a href="TODO"><strong>Borrow Checker</strong></a> and <a href="TODO"><strong>Cargo Clippy</strong></a> are already so clever, they might as well be AI!</p>
 <p>And Rust Compiler is almost Sentient, always commanding us Humans: <em>“Please do this to fix the build, you poopy nincompoop!”</em></p>
-<p>(My Biggest Wish: Someone please create a Higher-Level variant of Rust that will use bits of AI to compile into the current Low-Level Rust)</p>
+<p>(My Biggest Wish: Someone please create a <strong>Higher-Level Dialect</strong> of Rust that will use bits of AI to compile into the current Low-Level Rust)</p>
 </li>
 <li>
 <p><em>Apparently there’s some Resistance to Rust Drivers inside NuttX Kernel?</em></p>
 <p>Ouch we’re trapped between a Rock and… Another Rusty Rock!</p>
 <p>— <strong>NuttX Devs</strong> are concerned about the <a href="https://lists.apache.org/thread/q09w8p6pm683rvzvrwdwv4cf0bbqmfg2"><strong>extra complexity</strong></a> that Rust Drivers add to the Kernel Build</p>
 <p>— <strong>Rust Community</strong> is probably thinking we’re <strong>not doing enough</strong> to promote Memory-Safe Coding in NuttX Kernel</p>
-<p>For now we’ll walk the <strong>Middle Way</strong>…</p>
+<p>For now we walk the <strong>Middle Way</strong>…</p>
 <p>— <strong>Lay the Groundwork</strong> for Future Integration of Rust Drivers into NuttX Kernel</p>
 <p>— Observe the Rust Development in <a href="https://rust-for-linux.com/"><strong>Linux Kernel</strong></a> and <a href="https://github.com/zephyrproject-rtos/zephyr/issues/65837"><strong>Zephyr OS</strong></a>. Then adapt the Best Practices for NuttX Kernel.</p>
 </li>
@@ -585,7 +637,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 </ul>
 <p>Somehow the divide-by-zero panic refuses to link correctly. <a href="https://github.com/rust-lang/compiler-builtins/issues/79">Based on this discussion</a>, it seems that the Rust Core Library is compiled with LTO (Link-Time Optimisation), so it might still cause problems with our code, which doesn’t use LTO.</p>
 <p>TODO: If we call <code>cargo build</code> (instead of <code>rustc</code>), will it fix this LTO issue? How different is the <code>cargo build</code> Linker from GCC Linker?</p>
-<h1 id="appendix-rust-build-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#appendix-rust-build-for-qemu-risc-v-64-bit">§</a>12 Appendix: Rust Build for QEMU RISC-V 64-bit</h1>
+<h1 id="appendix-rust-build-for-64-bit-risc-v"><a class="doc-anchor" href="#appendix-rust-build-for-64-bit-risc-v">§</a>12 Appendix: Rust Build for 64-bit RISC-V</h1>
 <p>TODO: Rust Build fails for QEMU RISC-V 64-bit…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
