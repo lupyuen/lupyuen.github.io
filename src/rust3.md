@@ -571,7 +571,7 @@ fgets(
 );
 ```
 
-__`buf.len()`__ is an __Unsigned Integer__ (4 bytes). When we cast it as a __Signed Integer__, it might overflow.
+_buf.len()_ is an __Unsigned Integer__ (4 bytes). When we cast it as a __Signed Integer__, it might overflow.
 
 When __Integer Overflow__ happens, our Rust App will __Panic and Halt__.
 
