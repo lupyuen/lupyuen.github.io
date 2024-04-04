@@ -79,15 +79,24 @@
 <li><a href="#appendix-rust-build-for-64-bit-risc-v">12 Appendix: Rust Build for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust3-title.png" alt="TODO" /></p>
 <p>TODO</p>
-<p>My mentee <a href="https://github.com/apache/nuttx/issues/11907"><strong>Rushabh Gala</strong></a> and I are anxiously awaiting the results of the <a href="TODO"><strong>Google Summer of Code</strong></a> (GSoC) Project Selection. While waiting, we explain the current steps for running barebones Rust Apps on Apache NuttX RTOS (and the challenges we faced)…</p>
-<p>Running Rust Apps on NuttX today</p>
-<p>Limitations</p>
-<p>Workaround</p>
-<p>How we plan to fix them in GSoC</p>
-<p>PINE64 has kindly sponsored the Ox64 BL808 RISC-V SBCs for testing Rust Apps on NuttX.</p>
+<p>My mentee <a href="https://github.com/apache/nuttx/issues/11907"><strong>Rushabh Gala</strong></a> and I are anxiously awaiting the results of the <a href="TODO"><strong>Google Summer of Code</strong></a> (GSoC) Project Selection. While waiting, we explain the current steps for running barebones <strong>Rust Apps</strong> on <a href="TODO"><strong>Apache NuttX RTOS</strong></a> (and the challenges we faced)…</p>
+<ul>
+<li>
+<p>TODO: Running Rust Apps on NuttX today</p>
+</li>
+<li>
+<p>TODO: Limitations</p>
+</li>
+<li>
+<p>TODO: Workaround</p>
+</li>
+<li>
+<p>TODO: How we plan to fix them in GSoC</p>
+</li>
+</ul>
+<p>Thanks to <a href="TODO"><strong>PINE64</strong></a> for sponsoring the <a href="TODO"><strong>Ox64 BL808</strong></a> RISC-V SBCs for GSoC Project Testing!</p>
 <h1 id="rust-app-for-nuttx"><a class="doc-anchor" href="#rust-app-for-nuttx">§</a>1 Rust App for NuttX</h1>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>TODO: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// main() function not needed
 </span><span class="attr">#![no_main]
@@ -101,9 +110,10 @@
     format: <span class="kw-2">*const </span>u8,  <span class="comment">// Equivalent to `const char *`
     </span>...                 <span class="comment">// Optional Arguments
   </span>) -&gt; i32;             <span class="comment">// Returns `int`
-</span>}
+</span>}</code></pre></div>
+<p>TODO: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
-<span class="comment">// Main Function exported by Rust to C.
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Main Function exported by Rust to C.
 // Don't mangle the Function Name.
 </span><span class="attr">#[no_mangle]
 </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(
@@ -189,11 +199,11 @@ Scheduler Informational Output
 </li>
 <li>
 <p>Save and exit <strong>menuconfig</strong>.</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/9ee00a20a2f8deab8e27a08cfbc1c7a7f948d5ed">(See the NuttX Config)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/9ee00a20a2f8deab8e27a08cfbc1c7a7f948d5ed">(See the <strong>NuttX Config</strong>)</a></p>
 </li>
 <li>
 <p>Build the NuttX Project and dump the RISC-V Disassembly to <strong>nuttx.S</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Add the Rust Target for RISC-V 32-bit
+<div class="example-wrap"><pre class="language-bash"><code>## Add the Rust Target for RISC-V 32-bit (Soft-Float)
 rustup target add riscv32i-unknown-none-elf
 
 ## Build the NuttX Project
@@ -206,7 +216,7 @@ riscv64-unknown-elf-objdump \
   &gt;nuttx.S \
   2&gt;&amp;1
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4">(See the Build Log)</a></p>
+<p><a href="https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4">(See the <strong>Build Log</strong>)</a></p>
 <p>This produces the NuttX ELF Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator. (Next Section)</p>
 </li>
 <li>
@@ -324,9 +334,10 @@ nsh&gt; ps
   <span class="kw">pub fn </span>puts(s: <span class="kw-2">*const </span>c_char) -&gt; c_int;
   <span class="kw">pub fn </span>fgets(buf: <span class="kw-2">*mut </span>c_char, n: c_int, stream: <span class="kw-2">*mut </span>c_void) -&gt; <span class="kw-2">*mut </span>c_char;
   <span class="kw">pub fn </span>lib_get_stream(fd: c_int) -&gt; <span class="kw-2">*mut </span>c_void;
-}
+}</code></pre></div>
+<p>TODO: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
-<span class="comment">// Main Function exported by Rust to C
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Main Function exported by Rust to C
 </span><span class="attr">#[no_mangle]
 </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(_argc: i32, _argv: <span class="kw-2">*const *const </span>u8) -&gt; i32 {
 
@@ -361,11 +372,13 @@ nsh&gt; ps
 <span class="comment">// Omitted: Panic Handler</span></code></pre></div>
 <p>TODO: This is getting a little dangerous, the Input Buffer might overflow if we’re not careful!</p>
 <h1 id="how-nuttx-compiles-rust-apps"><a class="doc-anchor" href="#how-nuttx-compiles-rust-apps">§</a>5 How NuttX Compiles Rust Apps</h1>
-<p>Let’s watch how NuttX builds Rust Apps by calling <code>rustc</code>. (Instead of <code>cargo build</code>)</p>
-<p>Here’s the NuttX Build Log…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ make --trace
+<p>Let’s watch how NuttX builds Rust Apps by calling <strong><code>rustc</code></strong>. (Instead of <strong><code>cargo build</code></strong>)</p>
+<p>Here’s the <strong>NuttX Build Log</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build the NuttX Project with Tracing Enabled
+$ make --trace
 
 ## Compile `hello_rust_main.rs` to `hello_rust.o`
+## for Rust Target: RISC-V 32-bit (Soft-Float)
 rustc \
   --edition 2021 \
   --emit obj \
@@ -382,7 +395,7 @@ cp \
   hello_rust_main.rs...apps.examples.hello_rust_1.o
 
 ## Omitted: Bundle `hello_rust_1.o`
-## into `staging/libapps.a`
+## into library `staging/libapps.a`
 
 ## Link `staging/libapps.a` into `nuttx`
 riscv64-unknown-elf-ld \
@@ -411,10 +424,10 @@ riscv64-unknown-elf-ld \
   -lboard riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin/bin/../lib/gcc/riscv64-unknown-elf/10.2.0/rv32imafdc/ilp32d/libgcc.a \
   --end-group
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/1d79670339480baed19f4fa30266b945">(See the Detailed Build Log)</a></p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/Application.mk#L164-L170">(Rust Build with <code>rustc</code> is defined here)</a></p>
-<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <code>rustc</code> instead of <code>cargo build</code>)</a></p>
-<p>Here are the Rust Object Files produced by the NuttX Build…</p>
+<p><a href="https://gist.github.com/lupyuen/1d79670339480baed19f4fa30266b945">(See the <strong>Detailed Build Log</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/Application.mk#L164-L170">(<strong>Rust Build</strong> with <strong><code>rustc</code></strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo build</code></strong>)</a></p>
+<p>Here are the <strong>Rust Binaries</strong> produced by the NuttX Build…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l ../apps/examples/hello_rust     
 total 112
 -rw-r--r--  1   650 Jul 20  2023 Kconfig
@@ -425,7 +438,8 @@ total 112
 -rw-r--r--  1 13168 Mar 17 09:44 hello_rust_main.rs...apps.examples.hello_rust.o
 -rw-r--r--  1 18240 Mar 17 09:54 hello_rust_main.rs...apps.examples.hello_rust_1.o
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c">(See the RISC-V Disassembly)</a></p>
+<p><a href="https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c">(See the <strong>RISC-V Disassembly</strong>)</a></p>
+<p>We hit some hiccups in our Rust Build…</p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>6 Software vs Hardware Floating-Point</h1>
 <p><em>What’s this error? “Can’t link soft-float modules with double-float modules”</em></p>
 <div class="example-wrap"><pre class="language-text"><code>$ make
@@ -433,6 +447,7 @@ LD: nuttx
 riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
   (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o):
   can&#39;t link soft-float modules with double-float modules
+
 riscv64-unknown-elf-ld: failed to merge target specific data of file
   nuttx/staging/libapps.a
   (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
@@ -440,13 +455,15 @@ riscv64-unknown-elf-ld: failed to merge target specific data of file
 <p>GCC Linker failed to link the Compiled Rust Binary (<strong>hello_rust_1.o</strong>) into our NuttX Firmware because…</p>
 <ul>
 <li>
-<p>Rust Binary <strong>hello_rust_1.o</strong> was compiled with <strong>Software Floating-Point</strong> (“soft-float”)</p>
+<p>Rust Binary <strong>hello_rust_1.o</strong> was compiled with…</p>
+<p><strong>Software Floating-Point</strong> <em>(“soft-float”)</em></p>
 </li>
 <li>
-<p>But NuttX Firmware was compiled with <strong>Double Precision Hardware Floating-Point</strong> (“double-float”)</p>
+<p>But NuttX Firmware was compiled with…</p>
+<p><strong>Double Precision Hardware Floating-Point</strong> <em>(“double-float”)</em></p>
 </li>
 </ul>
-<p>The two are incompatible, and the GCC Linking fails.</p>
+<p>The two are incompatible. And the GCC Linking fails.</p>
 <p><em>How to fix this?</em></p>
 <p>For now we <strong>Patch the ELF Header</strong> of our Rust Object File. And NuttX Firmware will link correctly…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Patch ELF Header from Soft-Float to Double-Float
@@ -470,7 +487,7 @@ make
 <p><strong>Double-Precision Hardware Floating-Point:</strong> Flags = 4</p>
 </li>
 </ul>
-<p>We modified the Flag in the ELF Header…</p>
+<p>We modified the Flag in the ELF Header so that it says <strong>Double-Float</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Before Patching: ELF Header says Software Floating-Point
 $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
   Flags: 0x0
@@ -479,6 +496,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
   Flags: 0x4, double-float ABI
 </code></pre></div>
+<p>And it links correctly!</p>
 <p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(We had a similar issue with <strong>Zig Compiler</strong>)</a></p>
 <p><em>But why Soft-Float instead of Double-Float? (Mmmm ice cream float)</em></p>
 <p>Yeah patching the ELF Header is a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)</p>
@@ -553,7 +571,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p><em>Giving in to our AI Overlords already?</em></p>
 <p>But Rust Devs are familiar with smarty tools. <a href="TODO"><strong>Borrow Checker</strong></a> and <a href="TODO"><strong>Cargo Clippy</strong></a> are already so clever, they might as well be AI!</p>
 <p>And Rust Compiler is almost Sentient, always commanding us Humans: <em>“Please do this to fix the build, you poopy nincompoop!”</em></p>
-<p>(My Biggest Wish: Someone please create a <strong>Higher-Level Dialect</strong> of Rust that will use bits of AI to compile into the current Low-Level Rust)</p>
+<p>(My Biggest Wish: Someone please create a <strong>Higher-Level Dialect</strong> of Rust that will use bits of AI to compile into the present Low-Level Rust. Which might simplify Lifetimes, Box, Rc, Arc, RefCell, Fn, dyn, …)</p>
 </li>
 <li>
 <p><em>Apparently there’s some Resistance to Rust Drivers inside NuttX Kernel?</em></p>
