@@ -568,8 +568,8 @@ riscv64-unknown-elf-ld:
 <p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <a href="TODO"><strong>Link-Time Optimisation (LTO)</strong></a>. (Including the Panic Function)</p>
 <p>But we’re linking it into our NuttX Firmware with GCC Linker, with <strong>LTO Disabled</strong>. Which causes the Missing Panic Function.</p>
 <p><em>How is this different from typical Rust Builds?</em></p>
-<p>Normally we run <a href="TODO"><strong><code>cargo build</code></strong></a> to build Embedded Rust Apps. And it handles LTO correctly.</p>
-<p>But NuttX calls <a href="TODO"><strong><code>rustc</code></strong></a> to compile Rust Apps, and links them with GCC Linker. Which doesn’t seem to support LTO.</p>
+<p>Normally we run <a href="TODO"><strong><code>cargo build</code></strong></a> to compile our Embedded Rust Apps. And it handles LTO correctly.</p>
+<p>But NuttX calls <a href="TODO"><strong><code>rustc</code></strong></a> to compile Rust Apps, then calls <strong>GCC Linker</strong> to link into our NuttX Firmware. Which doesn’t seem to support LTO.</p>
 <p>We’ll sort this out in GSoC!</p>
 <p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo build</code></strong>)</a></p>
 <h1 id="standard-vs-embedded-rust"><a class="doc-anchor" href="#standard-vs-embedded-rust">§</a>8 Standard vs Embedded Rust</h1>
