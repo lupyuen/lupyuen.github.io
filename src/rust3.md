@@ -18,7 +18,7 @@ How we plan to fix them in GSoC
 
 PINE64 has kindly sponsored the Ox64 BL808 RISC-V SBCs for testing Rust Apps on NuttX.
 
-# Our Rust App
+# Rust App for NuttX
 
 TODO
 
@@ -85,7 +85,7 @@ TODO: GSoC Panic
 
 ![Build Apache NuttX RTOS for 64-bit RISC-V QEMU](https://lupyuen.github.io/images/riscv-build.png)
 
-# Build NuttX for 32-bit RISC-V QEMU
+# Build NuttX for QEMU RISC-V
 
 Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled with our "Hello Rust" Demo App...
 
@@ -220,7 +220,7 @@ Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled 
 
 ![Apache NuttX RTOS on RISC-V QEMU](https://lupyuen.github.io/images/riscv-title.png)
 
-# Boot NuttX on 32-bit RISC-V QEMU
+# Run NuttX on QEMU RISC-V
 
 This is how we boot NuttX on QEMU and run our Rust App...
 
@@ -308,9 +308,65 @@ This is how we boot NuttX on QEMU and run our Rust App...
 
 # Console Input in Rust
 
-TODO
+_What about Console Input?_
 
-# How NuttX Builds Rust Apps
+This is how we read __Console Input__ in Rust: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/c1d9124347da02bbe0842c14ca99100a6b8f42b0/examples/hello_rust/hello_rust_main.rs)
+
+```rust
+// main() function not needed. Use Rust Core Library.
+#![no_main]
+#![no_std]
+
+// Import Functions from C into Rust
+// TODO: core::ffi
+extern "C" {
+  pub fn printf(format: *const u8, ...) -> i32;
+  pub fn puts(s: *const core::ffi::c_char) -> core::ffi::c_int;
+  pub fn fgets(
+    buf: *mut core::ffi::c_char,
+    n: core::ffi::c_int,
+    stream: *mut core::ffi::c_void
+  ) -> *mut core::ffi::c_char;
+  pub fn lib_get_stream(fd: core::ffi::c_int) -> *mut core::ffi::c_void;
+}
+
+#[no_mangle]
+pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
+
+  // Receive some text from Standard Input and print it
+  unsafe {
+
+    // Standard Input comes from https://github.com/apache/nuttx/blob/master/include/stdio.h#L64-L68
+    let stdin: *mut core::ffi::c_void = // TODO: core::ffi
+      lib_get_stream(0);  // Init to Stream 0 (stdin)
+
+    // Input Buffer with 256 chars, including terminating null
+    let mut buf: [core::ffi::c_char; 256] = // TODO: core::ffi
+      [0; 256];  // Init with nulls
+
+    // Read a line from Standard Input
+    if !fgets(
+      &mut buf[0],       // Buffer
+      buf.len() as i32,  // Size
+      stdin              // Standard Input
+    ).is_null() {        // Catch input error
+
+      // Print the line
+      printf(b"You entered...\n\0" as *const u8);
+      puts(&buf[0]);
+    }
+  }
+
+  // Exit with status 0
+  0
+}
+
+// Omitted: Panic Handler
+```
+
+TODO: This is getting a little dangerous, the Input Buffer might overflow if we're not careful!
+
+# How NuttX Compiles Rust Apps
 
 Let's watch how NuttX builds Rust Apps by calling `rustc`. (Instead of `cargo build`)
 
@@ -638,7 +694,7 @@ Somehow the divide-by-zero panic refuses to link correctly. [Based on this discu
 
 TODO: If we call `cargo build` (instead of `rustc`), will it fix this LTO issue? How different is the `cargo build` Linker from GCC Linker?
 
-# Appendix: Rust Build for QEMU RISC-V 64-bit
+# Appendix: Rust Build for 64-bit RISC-V
 
 TODO: Rust Build fails for QEMU RISC-V 64-bit...
 
