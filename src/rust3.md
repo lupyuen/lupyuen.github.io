@@ -288,6 +288,14 @@ This is how we boot NuttX on QEMU and run our Rust App...
 
 1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
+_What about QEMU for 64-bit RISC-V?_
+
+Sorry Rust Apps won't build correctly on NuttX for 64-bit RISC-V...
+
+- TODO
+
+We'll fix this in GSoC and test it on Ox64 BL808 SBC.
+
 # Console Input in Rust
 
 _What about Console Input?_
