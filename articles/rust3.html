@@ -446,7 +446,7 @@ riscv64-unknown-elf-ld \
 <p><a href="https://gist.github.com/lupyuen/1d79670339480baed19f4fa30266b945">(See the <strong>Detailed Build Log</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/Application.mk#L164-L170">(<strong>Rust Build</strong> with <strong><code>rustc</code></strong> is defined here)</a></p>
 <p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo build</code></strong>)</a></p>
-<p>Here are the <strong>Rust Binaries</strong> produced by the NuttX Build…</p>
+<p>Here are the <strong>Rust Binaries</strong> produced by the NuttX Build (which will be linked into the NuttX Firmware)…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l ../apps/examples/hello_rust     
 total 112
 -rw-r--r--  1   650 Jul 20  2023 Kconfig
@@ -522,12 +522,27 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>We’ll investigate this during GSoC. (Incorrect <a href="TODO"><strong>Rust Target</strong></a> maybe?)</p>
 <h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
-<div class="example-wrap"><pre class="language-text"><code>TODO: Undefined reference to core::panicking::panic
-</code></pre></div>
-<p>Suppose we’re reading Console Input in our Rust App…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO</code></pre></div>
-<p>TODO If TODO overflows TODO, our Rust App will panic and halt.</p>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>$ make
+riscv64-unknown-elf-ld:
+  nuttx/staging/libapps.a(hello_rust_main.rs...apps.examples.hello_rust_1.o):
+  <span class="kw">in </span>function `no symbol<span class="string">':
+  </span>apps/examples/hello_rust/hello_rust_main.rs:<span class="number">90</span>:
+  undefined reference to `core::panicking::panic<span class="string">'</span></code></pre></div>
+<p>Suppose we’re reading Console Input in our Rust App: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Input Buffer with 256 chars (including terminating null)
+</span><span class="kw">let </span><span class="kw-2">mut </span>buf: [c_char; <span class="number">256</span>] =  <span class="comment">// Input Buffer is Mutable (will change)
+  </span>[<span class="number">0</span>; <span class="number">256</span>];                   <span class="comment">// Init with nulls
+
+// Read a line from Standard Input
+</span>fgets(
+  <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],       <span class="comment">// Buffer
+  </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Size (cast to Signed Integer)
+  </span>stdin              <span class="comment">// Standard Input
+</span>);</code></pre></div>
+<p><strong><code>buf.len()</code></strong> is an <strong>Unsigned Integer</strong> (4 bytes). When we cast it as a <strong>Signed Integer</strong>, it might overflow.</p>
+<p>When <strong>Integer Overflow</strong> happens, our Rust App will <strong>Panic and Halt</strong>.</p>
 <p>To implement the panic, Rust Compiler inserts a call to the Core Function <em>core::panicking::panic</em>. (Which comes from the <a href="TODO"><strong>Rust Core Library</strong></a>)</p>
 <p><em>And the Panic Function is missing somehow?</em></p>
 <p>Rushabh has implemented a fix for the Undefined Panic Function…</p>
