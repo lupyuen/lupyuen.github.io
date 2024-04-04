@@ -595,9 +595,9 @@ But we're linking it into our NuttX Firmware with GCC Linker, with __LTO Disable
 
 _How is this different from typical Rust Builds?_
 
-Normally we run [__`cargo build`__](TODO) to build Embedded Rust Apps. And it handles LTO correctly.
+Normally we run [__`cargo build`__](TODO) to compile our Embedded Rust Apps. And it handles LTO correctly.
 
-But NuttX calls [__`rustc`__](TODO) to compile Rust Apps, and links them with GCC Linker. Which doesn't seem to support LTO.
+But NuttX calls [__`rustc`__](TODO) to compile Rust Apps, then calls __GCC Linker__ to link into our NuttX Firmware. Which doesn't seem to support LTO.
 
 We'll sort this out in GSoC!
 
