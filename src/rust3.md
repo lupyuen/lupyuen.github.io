@@ -440,7 +440,7 @@ riscv64-unknown-elf-ld \
 
 [(Why NuttX calls __`rustc`__ instead of __`cargo build`__)](https://github.com/apache/nuttx/pull/5566)
 
-Here are the __Rust Binaries__ produced by the NuttX Build...
+Here are the __Rust Binaries__ produced by the NuttX Build (which will be linked into the NuttX Firmware)...
 
 ```text
 $ ls -l ../apps/examples/hello_rust     
@@ -537,17 +537,33 @@ We'll investigate this during GSoC. (Incorrect [__Rust Target__](TODO) maybe?)
 
 _What's this core::panicking::panic? Why is it undefined?_
 
-```text
-TODO: Undefined reference to core::panicking::panic
+```
+$ make
+riscv64-unknown-elf-ld:
+  nuttx/staging/libapps.a(hello_rust_main.rs...apps.examples.hello_rust_1.o):
+  in function `no symbol':
+  apps/examples/hello_rust/hello_rust_main.rs:90:
+  undefined reference to `core::panicking::panic'
 ```
 
-Suppose we're reading Console Input in our Rust App...
+Suppose we're reading Console Input in our Rust App: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs)
 
 ```rust
-TODO
+// Input Buffer with 256 chars (including terminating null)
+let mut buf: [c_char; 256] =  // Input Buffer is Mutable (will change)
+  [0; 256];                   // Init with nulls
+
+// Read a line from Standard Input
+fgets(
+  &mut buf[0],       // Buffer
+  buf.len() as i32,  // Size (cast to Signed Integer)
+  stdin              // Standard Input
+);
 ```
 
-TODO If TODO overflows TODO, our Rust App will panic and halt.
+__`buf.len()`__ is an __Unsigned Integer__ (4 bytes). When we cast it as a __Signed Integer__, it might overflow.
+
+When __Integer Overflow__ happens, our Rust App will __Panic and Halt__.
 
 To implement the panic, Rust Compiler inserts a call to the Core Function _core::panicking::panic_. (Which comes from the [__Rust Core Library__](TODO))
 
