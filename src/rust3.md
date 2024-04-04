@@ -310,26 +310,25 @@ This is how we boot NuttX on QEMU and run our Rust App...
 
 _What about Console Input?_
 
-This is how we read __Console Input__ in Rust: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/c1d9124347da02bbe0842c14ca99100a6b8f42b0/examples/hello_rust/hello_rust_main.rs)
+This is how we read __Console Input__ in Rust: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs)
 
 ```rust
 // main() function not needed. Use Rust Core Library.
 #![no_main]
 #![no_std]
 
-// Import Functions from C into Rust
-// TODO: core::ffi
+// Import the Types for C Interop
+use core::ffi::{ c_char, c_int, c_void };
+
+// Import the Functions from C into Rust
 extern "C" {
   pub fn printf(format: *const u8, ...) -> i32;
-  pub fn puts(s: *const core::ffi::c_char) -> core::ffi::c_int;
-  pub fn fgets(
-    buf: *mut core::ffi::c_char,
-    n: core::ffi::c_int,
-    stream: *mut core::ffi::c_void
-  ) -> *mut core::ffi::c_char;
-  pub fn lib_get_stream(fd: core::ffi::c_int) -> *mut core::ffi::c_void;
+  pub fn puts(s: *const c_char) -> c_int;
+  pub fn fgets(buf: *mut c_char, n: c_int, stream: *mut c_void) -> *mut c_char;
+  pub fn lib_get_stream(fd: c_int) -> *mut c_void;
 }
 
+// Main Function exported by Rust to C
 #[no_mangle]
 pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
 
@@ -337,11 +336,11 @@ pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
   unsafe {
 
     // Standard Input comes from https://github.com/apache/nuttx/blob/master/include/stdio.h#L64-L68
-    let stdin: *mut core::ffi::c_void = // TODO: core::ffi
+    let stdin: *mut c_void =
       lib_get_stream(0);  // Init to Stream 0 (stdin)
 
     // Input Buffer with 256 chars, including terminating null
-    let mut buf: [core::ffi::c_char; 256] = // TODO: core::ffi
+    let mut buf: [c_char; 256] =
       [0; 256];  // Init with nulls
 
     // Read a line from Standard Input
@@ -349,7 +348,7 @@ pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
       &mut buf[0],       // Buffer
       buf.len() as i32,  // Size
       stdin              // Standard Input
-    ).is_null() {        // Catch input error
+    ).is_null() {        // Catch the Input Error
 
       // Print the line
       printf(b"You entered...\n\0" as *const u8);
