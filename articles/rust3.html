@@ -464,7 +464,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <ul>
 <li><a href="https://github.com/apache/nuttx-apps/pull/2333"><strong>Add <code>-O</code> to <code>RUSTFLAGS</code> in Makefile</strong></a></li>
 </ul>
-<p>But when we add <strong>Another Point of Panic</strong>: We see the Undefined Panic Error again…</p>
+<p>But when we add <strong>Another Point of Panic</strong>: We see the Undefined Panic Error again (sigh)…</p>
 <ul>
 <li>TODO: Appendix</li>
 </ul>
@@ -474,7 +474,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p><em>How is this different from typical Rust Builds?</em></p>
 <p>Normally we run <strong><code>cargo build</code></strong> to build Embedded Rust Apps. And it handles LTO correctly.</p>
 <p>But NuttX calls <strong><code>rustc</code></strong> to compile Rust Apps, and links them with GCC Linker. Which doesn’t seem to support LTO.</p>
-<p>We’ll explore more of this in GSoC!</p>
+<p>We’ll sort this out in GSoC!</p>
 <p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <code>rustc</code> instead of <code>cargo build</code>)</a></p>
 <h1 id="standard-vs-embedded-rust"><a class="doc-anchor" href="#standard-vs-embedded-rust">§</a>8 Standard vs Embedded Rust</h1>
 <p><em>What is [no_std]? Will Rust call C Standard Library, like for malloc()?</em></p>
@@ -482,7 +482,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>There are 2 “flavours” of Rust, depending on the Rust Libraries that we use:</p>
 <ul>
 <li>
-<p><a href="https://doc.rust-lang.org/std/"><strong>Rust Standard Library</strong></a>: This is used by most Rust Apps on desktops and servers.</p>
+<p><a href="https://doc.rust-lang.org/std/"><strong>Rust Standard Library</strong></a>: This is used by most Rust Apps on Desktops and Servers.</p>
 <p>Supports Heap Memory and the Rust Equivalent of POSIX Calls. </p>
 </li>
 <li>
@@ -497,22 +497,22 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>That’s why Linux Kernel supports the <a href="https://doc.rust-lang.org/alloc/#"><strong><code>alloc</code> Rust Library / Crate</strong></a> for Heap Memory. To implement Rust <strong><code>alloc</code></strong>, Linux Kernel calls <em>krealloc()</em> to allocate Kernel Heap. <a href="https://github.com/torvalds/linux/blob/741e9d668aa50c91e4f681511ce0e408d55dd7ce/rust/kernel/allocator.rs#L46">(Like this)</a></p>
 <p><strong>For NuttX Kernel:</strong> We’ll implement Rust <strong><code>alloc</code></strong> by calling <em>kmm_malloc()</em>.</p>
 <p><em>Anything else we need for Rust in NuttX Kernel?</em></p>
-<p>Since we’re calling Rust Core Library in the Kernel, we won’t touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we’ll have to <strong>create the Rust Library</strong> ourselves.</p>
+<p>Since we’re calling <strong>Rust Core Library</strong> in NuttX Kernel, we won’t touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we’ll have to <strong>create the Rust Library</strong> ourselves.</p>
 <p><a href="https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/">(See the Rust Library for <strong>Linux Kernel</strong>)</a></p>
 <p>TODO: GSoC Project Report, Draft Driver</p>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>9 All Things Considered</h1>
 <ol>
 <li>
 <p><em>Why are we doing all this?</em></p>
-<p>Yeah it’s tough work but it needs to be done…</p>
+<p>Yeah it’s tough work but it needs to be done because…</p>
 <p>— Some folks are urging us to explore <a href="TODO"><strong>Memory-Safe Programming in Rust</strong></a></p>
 <p>— NuttX Devs among us might already be coding <strong>Rust Apps and Rust Drivers</strong> for NuttX? (We know of one Corporate User of NuttX that’s very keen on Rust)</p>
-<p>— So we’re helpfully drafting the <a href="https://github.com/apache/nuttx/issues/11907"><strong>Standards and Guidelines</strong></a> for folks already coding Rust in NuttX</p>
+<p>— Hence we’re helpfully drafting the <a href="https://github.com/apache/nuttx/issues/11907"><strong>Standards and Guidelines</strong></a> for folks already coding Rust in NuttX</p>
 </li>
 <li>
 <p><em>Learning Rust looks kinda hard. Any other way to write Memory-Safe Apps?</em></p>
-<p>If we’re familiar with Python, check out the <a href="TODO"><strong>Nim Programming Language</strong></a>.</p>
-<p><a href="TODO"><strong>Zig Programming Language</strong></a> is safer than C and easier to learn, but not quite Memory-Safe like Rust.</p>
+<p>If we’re familiar with Python: Check out the <a href="TODO"><strong>Nim Programming Language</strong></a>.</p>
+<p><a href="TODO"><strong>Zig Programming Language</strong></a> is safer than C and easier to learn. But not quite Memory-Safe like Rust.</p>
 <p><a href="https://gist.github.com/lupyuen/10ce1aeff7f6a743c374aa7c1931525b"><strong>AI Tools</strong></a> might be helpful for coding the difficult bits of Rust: ChatGPT, GitHub Copilot, Google Gemini, …</p>
 <p>(We’ll validate this during GSoC)</p>
 </li>
@@ -529,7 +529,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>— <strong>Rust Community</strong> is probably thinking we’re <strong>not doing enough</strong> to promote Memory-Safe Coding in NuttX Kernel</p>
 <p>For now we’ll walk the <strong>Middle Way</strong>…</p>
 <p>— <strong>Lay the Groundwork</strong> for Future Integration of Rust Drivers into NuttX Kernel</p>
-<p>— Observe the Rust Development in <a href="https://rust-for-linux.com/"><strong>Linux Kernel</strong></a>. And adapt the Best Practices for NuttX Kernel.</p>
+<p>— Observe the Rust Development in <a href="https://rust-for-linux.com/"><strong>Linux Kernel</strong></a> and <a href="https://github.com/zephyrproject-rtos/zephyr/issues/65837"><strong>Zephyr OS</strong></a>. Then adapt the Best Practices for NuttX Kernel.</p>
 </li>
 </ol>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
