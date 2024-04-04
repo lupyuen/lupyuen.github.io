@@ -552,7 +552,7 @@ riscv64-unknown-elf-ld:
   </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Size (cast to Signed Integer)
   </span>stdin              <span class="comment">// Standard Input
 </span>);</code></pre></div>
-<p><strong><code>buf.len()</code></strong> is an <strong>Unsigned Integer</strong> (4 bytes). When we cast it as a <strong>Signed Integer</strong>, it might overflow.</p>
+<p><em>buf.len()</em> is an <strong>Unsigned Integer</strong> (4 bytes). When we cast it as a <strong>Signed Integer</strong>, it might overflow.</p>
 <p>When <strong>Integer Overflow</strong> happens, our Rust App will <strong>Panic and Halt</strong>.</p>
 <p>To implement the panic, Rust Compiler inserts a call to the Core Function <em>core::panicking::panic</em>. (Which comes from the <a href="TODO"><strong>Rust Core Library</strong></a>)</p>
 <p><em>And the Panic Function is missing somehow?</em></p>
