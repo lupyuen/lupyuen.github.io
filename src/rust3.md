@@ -2,7 +2,7 @@
 
 📝 _10 Apr 2024_
 
-![TODO](https://lupyuen.github.io/images/rust3-title.png)
+![Rust Apps on Apache NuttX RTOS and QEMU RISC-V](https://lupyuen.github.io/images/rust3-title.png)
 
 TODO
 
@@ -35,7 +35,7 @@ extern "C" {
     format: *const u8,  // Equivalent to `const char *`
     ...                 // Optional Arguments
   ) -> i32;             // Returns `int`
-}
+}                       // TODO: Standardise `i32` as `c_int`
 ```
 
 TODO: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
@@ -196,7 +196,7 @@ Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled 
 
     We're ready to boot NuttX...
 
-![Apache NuttX RTOS on RISC-V QEMU](https://lupyuen.github.io/images/riscv-title.png)
+![Rust Apps on Apache NuttX RTOS and QEMU RISC-V](https://lupyuen.github.io/images/rust3-title.png)
 
 # Run NuttX on QEMU RISC-V
 
@@ -347,6 +347,35 @@ pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
 
 TODO: This is getting a little dangerous, the Input Buffer might overflow if we're not careful!
 
+```rust
+// Read a line from Standard Input
+fgets(
+  &mut buf[0],       // Buffer
+  buf.len() as i32,  // Size
+  stdin              // Standard Input
+);
+```
+
+Makes us wonder: _"Hmmm the fgets() buffer size... Does it include the terminating null?"_
+
+(Yep it does!)
+
+_What about Rust? How does it safely handle Console Input?_
+
+TODO: [Standard Input in Rust](https://doc.rust-lang.org/std/io/fn.stdin.html)
+
+```rust
+// Allocate an Input Buffer from Heap Memory
+let mut buffer = String::new();
+
+// Read a line from Standard Input
+io::stdin().read_line(&mut buffer)?;
+```
+
+TODO: Heap Memory
+
+TODO: Standard Input not available
+
 # How NuttX Compiles Rust Apps
 
 Let's watch how NuttX builds Rust Apps by calling __`rustc`__. (Instead of __`cargo build`__)
@@ -427,7 +456,7 @@ total 112
 
 [(See the __RISC-V Disassembly__)](https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c)
 
-We hit some hiccups in our Rust Build...
+Let's talk about the hiccups in our Rust Build...
 
 # Software vs Hardware Floating-Point
 
