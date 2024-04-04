@@ -96,7 +96,7 @@
 </ul>
 <p>Thanks to <a href="TODO"><strong>PINE64</strong></a>, the sponsor of <a href="TODO"><strong>Ox64 BL808</strong></a> RISC-V SBCs for our GSoC Project Testing!</p>
 <h1 id="rust-app-for-nuttx"><a class="doc-anchor" href="#rust-app-for-nuttx">§</a>1 Rust App for NuttX</h1>
-<p>TODO: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>Below is the <strong>“Hello Rust”</strong> Demo App that’s bundled with Apache NuttX RTOS: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// main() function not needed
 </span><span class="attr">#![no_main]
@@ -111,7 +111,9 @@
     </span>...                 <span class="comment">// Optional Arguments
   </span>) -&gt; i32;             <span class="comment">// Returns `int`
 </span>}                       <span class="comment">// TODO: Standardise `i32` as `c_int`</span></code></pre></div>
-<p>TODO: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>(We’ll explain <strong><code>[no_std]</code></strong> in a while)</p>
+<p>The code above imports the <em>printf()</em> function from C into Rust.</p>
+<p>This is how we call it in Rust: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Main Function exported by Rust to C.
 // Don't mangle the Function Name.
@@ -132,8 +134,7 @@
   <span class="comment">// Exit with status 0
   </span><span class="number">0
 </span>}</code></pre></div>
-<p>(We’ll explain <strong><code>[no_std]</code></strong> in a while)</p>
-<p>TODO</p>
+<p>To build the Rust App, we need to provide a <strong>Panic Handler</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Import the Panic Info for our Panic Handler
 </span><span class="kw">use </span>core::panic::PanicInfo;
@@ -148,7 +149,8 @@
   // For now, we loop forever
   </span><span class="kw">loop </span>{}
 }</code></pre></div>
-<p>TODO: GSoC Panic</p>
+<p>Which doesn’t do much right now. We’ll create a proper Panic Handler during GSoC.</p>
+<p>(More about Rust Panic in a while)</p>
 <p><img src="https://lupyuen.github.io/images/riscv-build.png" alt="Build Apache NuttX RTOS for 64-bit RISC-V QEMU" /></p>
 <h1 id="build-nuttx-for-qemu-risc-v"><a class="doc-anchor" href="#build-nuttx-for-qemu-risc-v">§</a>2 Build NuttX for QEMU RISC-V</h1>
 <p>Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled with our “Hello Rust” Demo App…</p>
@@ -202,7 +204,7 @@ Scheduler Informational Output
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/commit/9ee00a20a2f8deab8e27a08cfbc1c7a7f948d5ed">(See the <strong>NuttX Config</strong>)</a></p>
 </li>
 <li>
-<p>Build the NuttX Project and dump the RISC-V Disassembly to <strong>nuttx.S</strong>…</p>
+<p>Build the NuttX Project and dump the RISC-V Disassembly to <strong>nuttx.S</strong> (for easier troubleshooting)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Add the Rust Target for RISC-V 32-bit (Soft-Float)
 rustup target add riscv32i-unknown-none-elf
 
@@ -230,7 +232,7 @@ riscv64-unknown-elf-ld: failed to merge target specific data of file
   nuttx/staging/libapps.a
   (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
 </code></pre></div>
-<p>Then we patch the ELF Header like this and it should link correctly…</p>
+<p>Then we patch the <strong>ELF Header</strong> like this, and it should link correctly…</p>
 <div class="example-wrap"><pre class="language-bash"><code>xxd -c 1 ../apps/examples/hello_rust/*hello_rust_1.o \
   | sed &#39;s/00000024: 00/00000024: 04/&#39; \
   | xxd -r -c 1 - /tmp/hello_rust_1.o
@@ -246,7 +248,7 @@ make
 <p>This is how we boot NuttX on QEMU and run our Rust App…</p>
 <ol>
 <li>
-<p>Download and install <a href="https://www.qemu.org/download/"><strong>QEMU Emulator</strong></a>.</p>
+<p>Download and install <a href="https://www.qemu.org/download/"><strong>QEMU Emulator</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS:
 brew install qemu
 
@@ -275,7 +277,7 @@ nsh&gt; nx_start: CPU0: Beginning Idle Loop
 nsh&gt;
 </code></pre></div></li>
 <li>
-<p>Enter “<strong>hello_rust</strong>” to run the Rust Demo App</p>
+<p>Enter “<strong>hello_rust</strong>” to run our Rust Demo App (which prints something)</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_rust
 Hello, Rust!!
 </code></pre></div></li>
@@ -311,7 +313,7 @@ nsh&gt; ps
     0     0   0 FIFO     Kthread N-- Ready              0000000000000000 002000 001224  61.2%  Idle Task
     1     1 100 RR       Task    --- Running            0000000000000000 002992 002024  67.6%  nsh_main
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">(See the Complete Log)</a></p>
+<p><a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 <li>
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
@@ -335,7 +337,8 @@ nsh&gt; ps
   <span class="kw">pub fn </span>fgets(buf: <span class="kw-2">*mut </span>c_char, n: c_int, stream: <span class="kw-2">*mut </span>c_void) -&gt; <span class="kw-2">*mut </span>c_char;
   <span class="kw">pub fn </span>lib_get_stream(fd: c_int) -&gt; <span class="kw-2">*mut </span>c_void;
 }</code></pre></div>
-<p>TODO: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>The code above imports the <em>fgets()</em> function from C into Rust.</p>
+<p>Calling <em>fgets()</em> is a little more complicated: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Main Function exported by Rust to C
 </span><span class="attr">#[no_mangle]
@@ -354,8 +357,8 @@ nsh&gt; ps
 
     // Read a line from Standard Input
     </span><span class="kw">if </span>!fgets(
-      <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],       <span class="comment">// Buffer
-      </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Size
+      <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],       <span class="comment">// Input Buffer
+      </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Buffer Size
       </span>stdin              <span class="comment">// Standard Input
     </span>).is_null() {        <span class="comment">// Catch the Input Error
 
@@ -370,26 +373,34 @@ nsh&gt; ps
 </span>}
 
 <span class="comment">// Omitted: Panic Handler</span></code></pre></div>
-<p>TODO: This is getting a little dangerous, the Input Buffer might overflow if we’re not careful!</p>
+<p>This is getting a little dangerous… The <strong>Input Buffer might Overflow</strong> if we’re not careful with the Parameters!</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Read a line from Standard Input
 </span>fgets(
-  <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],       <span class="comment">// Buffer
-  </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Size
+  <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],       <span class="comment">// Input Buffer
+  </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Buffer Size
   </span>stdin              <span class="comment">// Standard Input
 </span>);</code></pre></div>
-<p>Makes us wonder: <em>“Hmmm the fgets() buffer size… Does it include the terminating null?”</em></p>
+<p>Which makes us ponder about <strong>Memory Safety</strong>: <em>“Hmmm the fgets() buffer size… Does it include the terminating null?”</em></p>
 <p>(Yep it does!)</p>
 <p><em>What about Rust? How does it safely handle Console Input?</em></p>
-<p>TODO: <a href="https://doc.rust-lang.org/std/io/fn.stdin.html">Standard Input in Rust</a></p>
+<p>Reading the <a href="https://doc.rust-lang.org/std/io/fn.stdin.html"><strong>Standard Input in Rust</strong></a> looks simpler and safer…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Allocate an Input Buffer from Heap Memory
 </span><span class="kw">let </span><span class="kw-2">mut </span>buffer = String::new();
 
 <span class="comment">// Read a line from Standard Input
 </span>io::stdin().read_line(<span class="kw-2">&amp;mut </span>buffer)<span class="question-mark">?</span>;</code></pre></div>
-<p>TODO: Heap Memory</p>
-<p>TODO: Standard Input not available</p>
+<p>But this won’t work on NuttX because…</p>
+<ul>
+<li>
+<p><strong>Rust Standard Input</strong> <em>io::stdin()</em> isn’t supported on Embedded Platforms</p>
+</li>
+<li>
+<p><strong>Dynamic Strings and Heap Memory</strong> won’t work on Embedded Platforms either</p>
+</li>
+</ul>
+<p>We’ll talk more about this.</p>
 <h1 id="how-nuttx-compiles-rust-apps"><a class="doc-anchor" href="#how-nuttx-compiles-rust-apps">§</a>5 How NuttX Compiles Rust Apps</h1>
 <p>Let’s watch how NuttX builds Rust Apps by calling <strong><code>rustc</code></strong>. (Instead of <strong><code>cargo build</code></strong>)</p>
 <p>Here’s the <strong>NuttX Build Log</strong>…</p>
@@ -529,7 +540,7 @@ riscv64-unknown-elf-ld:
   <span class="kw">in </span>function `no symbol<span class="string">':
   </span>apps/examples/hello_rust/hello_rust_main.rs:<span class="number">90</span>:
   undefined reference to `core::panicking::panic<span class="string">'</span></code></pre></div>
-<p>Suppose we’re reading Console Input in our Rust App: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>Suppose we’re reading <strong>Console Input</strong> in our Rust App: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Input Buffer with 256 chars (including terminating null)
 </span><span class="kw">let </span><span class="kw-2">mut </span>buf: [c_char; <span class="number">256</span>] =  <span class="comment">// Input Buffer is Mutable (will change)
@@ -554,11 +565,11 @@ riscv64-unknown-elf-ld:
 <li>TODO: Appendix</li>
 </ul>
 <p><em>What’s causing this Undefined Panic Function?</em></p>
-<p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <strong>Link-Time Optimisation (LTO)</strong>. (Including the Panic Function)</p>
+<p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <a href="TODO"><strong>Link-Time Optimisation (LTO)</strong></a>. (Including the Panic Function)</p>
 <p>But we’re linking it into our NuttX Firmware with GCC Linker, with <strong>LTO Disabled</strong>. Which causes the Missing Panic Function.</p>
 <p><em>How is this different from typical Rust Builds?</em></p>
-<p>Normally we run <strong><code>cargo build</code></strong> to build Embedded Rust Apps. And it handles LTO correctly.</p>
-<p>But NuttX calls <strong><code>rustc</code></strong> to compile Rust Apps, and links them with GCC Linker. Which doesn’t seem to support LTO.</p>
+<p>Normally we run <a href="TODO"><strong><code>cargo build</code></strong></a> to build Embedded Rust Apps. And it handles LTO correctly.</p>
+<p>But NuttX calls <a href="TODO"><strong><code>rustc</code></strong></a> to compile Rust Apps, and links them with GCC Linker. Which doesn’t seem to support LTO.</p>
 <p>We’ll sort this out in GSoC!</p>
 <p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo build</code></strong>)</a></p>
 <h1 id="standard-vs-embedded-rust"><a class="doc-anchor" href="#standard-vs-embedded-rust">§</a>8 Standard vs Embedded Rust</h1>
