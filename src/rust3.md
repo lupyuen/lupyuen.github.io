@@ -16,7 +16,7 @@ My mentee [__Rushabh Gala__](https://github.com/apache/nuttx/issues/11907) and I
 
 - TODO: How we plan to fix them in GSoC
 
-Thanks to [__PINE64__](TODO) for sponsoring the [__Ox64 BL808__](TODO) RISC-V SBCs for GSoC Project Testing!
+Thanks to [__PINE64__](TODO), the sponsor of [__Ox64 BL808__](TODO) RISC-V SBCs for our GSoC Project Testing!
 
 # Rust App for NuttX
 
@@ -232,7 +232,7 @@ This is how we boot NuttX on QEMU and run our Rust App...
     uart_register: Registering /dev/ttyS0
     nx_start_application: Starting init thread
 
-    NuttShell (NSH) NuttX-12.1.0-RC0
+    TODO: NuttShell (NSH) NuttX-12.1.0-RC0
     nsh> nx_start: CPU0: Beginning Idle Loop
     nsh>
     ```
@@ -265,7 +265,7 @@ This is how we boot NuttX on QEMU and run our Rust App...
 
     ```text
     nsh> uname -a
-    NuttX 12.1.0-RC0 275db39 Jun 16 2023 20:22:08 risc-v rv-virt
+    TODO: NuttX 12.1.0-RC0 275db39 Jun 16 2023 20:22:08 risc-v rv-virt
 
     nsh> ls /dev
     /dev:
@@ -445,9 +445,9 @@ riscv64-unknown-elf-ld: failed to merge target specific data of file
   (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
 ```
 
-GCC Linker failed to link the Compiled Rust Binary (__hello_rust_1.o__) into our NuttX Firmware because...
+GCC Linker failed to link the __Compiled Rust Binary__ _(hello_rust_1.o)_ into our NuttX Firmware because...
 
-- Rust Binary __hello_rust_1.o__ was compiled with...
+- Rust Binary _hello_rust_1.o_ was compiled with...
 
   __Software Floating-Point__ _("soft-float")_
 
@@ -482,7 +482,7 @@ Inside the [__ELF Header__](https://en.wikipedia.org/wiki/Executable_and_Linkabl
 
 - __Double-Precision Hardware Floating-Point:__ Flags = 4
 
-We modified the Flag in the ELF Header so that it says __Double-Float__...
+We __modified the Flag__ in the ELF Header so that it says __Double-Float__...
 
 ```bash
 ## Before Patching: ELF Header says Software Floating-Point
@@ -546,7 +546,7 @@ But NuttX calls __`rustc`__ to compile Rust Apps, and links them with GCC Linker
 
 We'll sort this out in GSoC!
 
-[(Why NuttX calls `rustc` instead of `cargo build`)](https://github.com/apache/nuttx/pull/5566)
+[(Why NuttX calls __`rustc`__ instead of __`cargo build`__)](https://github.com/apache/nuttx/pull/5566)
 
 # Standard vs Embedded Rust
 
@@ -614,7 +614,7 @@ TODO: GSoC Project Report, Draft Driver
 
     (My Biggest Wish: Someone please create a __Higher-Level Dialect__ of Rust that will use bits of AI to compile into the present Low-Level Rust. Which might simplify Lifetimes, Box, Rc, Arc, RefCell, Fn, dyn, ...)
 
-1.  _Apparently there's some Resistance to Rust Drivers inside NuttX Kernel?_
+1.  _There's some Resistance to Rust Drivers inside NuttX Kernel?_
 
     Ouch we're trapped between a Rock and... Another Rusty Rock!
 
