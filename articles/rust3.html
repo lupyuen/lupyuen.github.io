@@ -97,10 +97,11 @@
 
 </span><span class="comment">// Import printf() from C into Rust
 </span><span class="kw">extern </span><span class="string">"C" </span>{
-
-  <span class="comment">// Accept a Format String with Optional Arguments, return an `int`
-  </span><span class="kw">pub fn </span>printf(format: <span class="kw-2">*const </span>u8, ...) -&gt; i32;
-}
+  <span class="kw">pub fn </span>printf(
+    format: <span class="kw-2">*const </span>u8,  <span class="comment">// Equivalent to `const char *`
+    </span>...                 <span class="comment">// Optional Arguments
+  </span>) -&gt; i32;             <span class="comment">// Returns `int`
+</span>}
 
 <span class="comment">// Main Function exported by Rust to C.
 // Don't mangle the Function Name.
@@ -112,9 +113,7 @@
 
   // Calling a C Function might have Unsafe consequences
   </span><span class="kw">unsafe </span>{
-
-    <span class="comment">// Print something
-    </span>printf(                 <span class="comment">// Call printf() with...
+    printf(                 <span class="comment">// Call printf() with...
       </span><span class="string">b"Hello, Rust!!\n\0"  </span><span class="comment">// Byte String terminated by null
         </span><span class="kw">as </span><span class="kw-2">*const </span>u8        <span class="comment">// Cast as `const char *`
     </span>);
@@ -126,7 +125,7 @@
 <p>(We’ll explain <strong><code>[no_std]</code></strong> in a while)</p>
 <p>TODO</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Import PanicInfo for Panic Handler
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Import the Panic Info for our Panic Handler
 </span><span class="kw">use </span>core::panic::PanicInfo;
 
 <span class="comment">// Handle a Rust Panic. Needed for [no_std]
@@ -186,8 +185,7 @@ Scheduler Informational Output
 <p>Browse to “<strong>Application Configuration</strong> &gt; <strong>Examples</strong>”</p>
 <p>Select “<strong>Hello Rust Example</strong>”</p>
 <p>Select it <strong>Twice</strong> so that “<strong><code>&lt;M&gt;</code></strong>” changes to “<strong><code>&lt;*&gt;</code></strong>”</p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">(Source Code for Hello Rust)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/c1d9124347da02bbe0842c14ca99100a6b8f42b0">(Reading from Console Input)</a></p>
+<p><a href="TODO">(Source Code for <strong>Hello Rust</strong>)</a></p>
 </li>
 <li>
 <p>Save and exit <strong>menuconfig</strong>.</p>
@@ -195,10 +193,13 @@ Scheduler Informational Output
 </li>
 <li>
 <p>Build the NuttX Project and dump the RISC-V Disassembly to <strong>nuttx.S</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>rustup target add riscv32i-unknown-none-elf
+<div class="example-wrap"><pre class="language-bash"><code>## Add the Rust Target for RISC-V 32-bit
+rustup target add riscv32i-unknown-none-elf
 
+## Build the NuttX Project
 make
 
+## Dump the NuttX Disassembly to `nuttx.S`
 riscv64-unknown-elf-objdump \
   -t -S --demangle --line-numbers --wide \
   nuttx \
@@ -225,28 +226,9 @@ riscv64-unknown-elf-ld: failed to merge target specific data of file
   | xxd -r -c 1 - /tmp/hello_rust_1.o
 cp /tmp/hello_rust_1.o ../apps/examples/hello_rust/*hello_rust_1.o
 make
-
-## Ignore the warnings:
-## riscv64-unknown-elf-ld: warning: nuttx/staging/libapps.a(hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o): 
-## mis-matched ISA version 2.1 for &#39;i&#39; extension, the output version is 2.0
 </code></pre></div>
-<p>How did it work? We patched the ELF Header, changing it from Software Floating-Point to Double Precision Hardware Floating-Point…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Before Patching: ELF Header says Software Floating-Point
-$ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
-  Flags: 0x0
-
-## After Patching: ELF Header says Double-Precision Hardware Floating-Point
-$ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
-  Flags: 0x4, double-float ABI
-</code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(Similar to this, except we’re doing Double-Float instead of Single-Float)</a></p>
-<p>TODO: Fix the Rust Build for NuttX</p>
-</li>
-<li>
-<p>If the GCC Linker fails with the error <em>“undefined reference to core::panicking::panic”</em>, please apply this patch…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/58c9ebee95626251dd1601476991cdfea7fcd190">Add -O to RUSTFLAGS in Makefile</a></p>
-<p>Then rebuild: <code>make clean ; make</code></p>
-<p>(If we still hit the same error, see the notes below)</p>
+<p>(We’ll come back to this)</p>
+<p>We’re ready to boot NuttX…</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on RISC-V QEMU" /></p>
@@ -352,12 +334,12 @@ nsh&gt; ps
   </span><span class="kw">unsafe </span>{
 
     <span class="comment">// Standard Input comes from https://github.com/apache/nuttx/blob/master/include/stdio.h#L64-L68
-    </span><span class="kw">let </span>stdin: <span class="kw-2">*mut </span>c_void =
-      lib_get_stream(<span class="number">0</span>);  <span class="comment">// Init to Stream 0 (stdin)
+    </span><span class="kw">let </span>stdin: <span class="kw-2">*mut </span>c_void =  <span class="comment">// Equivalent to `void *`
+      </span>lib_get_stream(<span class="number">0</span>);      <span class="comment">// Init to Stream 0 (stdin)
 
-    // Input Buffer with 256 chars, including terminating null
-    </span><span class="kw">let </span><span class="kw-2">mut </span>buf: [c_char; <span class="number">256</span>] =
-      [<span class="number">0</span>; <span class="number">256</span>];  <span class="comment">// Init with nulls
+    // Input Buffer with 256 chars (including terminating null)
+    </span><span class="kw">let </span><span class="kw-2">mut </span>buf: [c_char; <span class="number">256</span>] =  <span class="comment">// Input Buffer is Mutable (will change)
+      </span>[<span class="number">0</span>; <span class="number">256</span>];                   <span class="comment">// Init with nulls
 
     // Read a line from Standard Input
     </span><span class="kw">if </span>!fgets(
@@ -440,8 +422,8 @@ total 112
 -rw-r--r--  1   141 Mar 17 09:44 Make.dep
 -rw-r--r--  1  1492 Mar 16 20:41 Makefile
 -rw-r--r--  1  3982 Mar 17 00:06 hello_rust_main.rs
--rw-r--r--  1 13168 Mar 17 09:44 hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
--rw-r--r--  1 18240 Mar 17 09:54 hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o
+-rw-r--r--  1 13168 Mar 17 09:44 hello_rust_main.rs...apps.examples.hello_rust.o
+-rw-r--r--  1 18240 Mar 17 09:54 hello_rust_main.rs...apps.examples.hello_rust_1.o
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c">(See the RISC-V Disassembly)</a></p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>6 Software vs Hardware Floating-Point</h1>
