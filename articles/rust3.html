@@ -327,45 +327,44 @@ nsh&gt; ps
 </ol>
 <h1 id="console-input-in-rust"><a class="doc-anchor" href="#console-input-in-rust">§</a>4 Console Input in Rust</h1>
 <p><em>What about Console Input?</em></p>
-<p>This is how we read <strong>Console Input</strong> in Rust: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/c1d9124347da02bbe0842c14ca99100a6b8f42b0/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>This is how we read <strong>Console Input</strong> in Rust: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// main() function not needed. Use Rust Core Library.
 </span><span class="attr">#![no_main]
 #![no_std]
 
-</span><span class="comment">// Import Functions from C into Rust
-// TODO: core::ffi
+</span><span class="comment">// Import the Types for C Interop
+</span><span class="kw">use </span>core::ffi::{ c_char, c_int, c_void };
+
+<span class="comment">// Import the Functions from C into Rust
 </span><span class="kw">extern </span><span class="string">"C" </span>{
   <span class="kw">pub fn </span>printf(format: <span class="kw-2">*const </span>u8, ...) -&gt; i32;
-  <span class="kw">pub fn </span>puts(s: <span class="kw-2">*const </span>core::ffi::c_char) -&gt; core::ffi::c_int;
-  <span class="kw">pub fn </span>fgets(
-    buf: <span class="kw-2">*mut </span>core::ffi::c_char,
-    n: core::ffi::c_int,
-    stream: <span class="kw-2">*mut </span>core::ffi::c_void
-  ) -&gt; <span class="kw-2">*mut </span>core::ffi::c_char;
-  <span class="kw">pub fn </span>lib_get_stream(fd: core::ffi::c_int) -&gt; <span class="kw-2">*mut </span>core::ffi::c_void;
+  <span class="kw">pub fn </span>puts(s: <span class="kw-2">*const </span>c_char) -&gt; c_int;
+  <span class="kw">pub fn </span>fgets(buf: <span class="kw-2">*mut </span>c_char, n: c_int, stream: <span class="kw-2">*mut </span>c_void) -&gt; <span class="kw-2">*mut </span>c_char;
+  <span class="kw">pub fn </span>lib_get_stream(fd: c_int) -&gt; <span class="kw-2">*mut </span>c_void;
 }
 
-<span class="attr">#[no_mangle]
+<span class="comment">// Main Function exported by Rust to C
+</span><span class="attr">#[no_mangle]
 </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(_argc: i32, _argv: <span class="kw-2">*const *const </span>u8) -&gt; i32 {
 
   <span class="comment">// Receive some text from Standard Input and print it
   </span><span class="kw">unsafe </span>{
 
     <span class="comment">// Standard Input comes from https://github.com/apache/nuttx/blob/master/include/stdio.h#L64-L68
-    </span><span class="kw">let </span>stdin: <span class="kw-2">*mut </span>core::ffi::c_void = <span class="comment">// TODO: core::ffi
-      </span>lib_get_stream(<span class="number">0</span>);  <span class="comment">// Init to Stream 0 (stdin)
+    </span><span class="kw">let </span>stdin: <span class="kw-2">*mut </span>c_void =
+      lib_get_stream(<span class="number">0</span>);  <span class="comment">// Init to Stream 0 (stdin)
 
     // Input Buffer with 256 chars, including terminating null
-    </span><span class="kw">let </span><span class="kw-2">mut </span>buf: [core::ffi::c_char; <span class="number">256</span>] = <span class="comment">// TODO: core::ffi
-      </span>[<span class="number">0</span>; <span class="number">256</span>];  <span class="comment">// Init with nulls
+    </span><span class="kw">let </span><span class="kw-2">mut </span>buf: [c_char; <span class="number">256</span>] =
+      [<span class="number">0</span>; <span class="number">256</span>];  <span class="comment">// Init with nulls
 
     // Read a line from Standard Input
     </span><span class="kw">if </span>!fgets(
       <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],       <span class="comment">// Buffer
       </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Size
       </span>stdin              <span class="comment">// Standard Input
-    </span>).is_null() {        <span class="comment">// Catch input error
+    </span>).is_null() {        <span class="comment">// Catch the Input Error
 
       // Print the line
       </span>printf(<span class="string">b"You entered...\n\0" </span><span class="kw">as </span><span class="kw-2">*const </span>u8);
