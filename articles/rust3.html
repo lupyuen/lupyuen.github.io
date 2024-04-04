@@ -94,7 +94,7 @@
 <p>TODO: How we plan to fix them in GSoC</p>
 </li>
 </ul>
-<p>Thanks to <a href="TODO"><strong>PINE64</strong></a> for sponsoring the <a href="TODO"><strong>Ox64 BL808</strong></a> RISC-V SBCs for GSoC Project Testing!</p>
+<p>Thanks to <a href="TODO"><strong>PINE64</strong></a>, the sponsor of <a href="TODO"><strong>Ox64 BL808</strong></a> RISC-V SBCs for our GSoC Project Testing!</p>
 <h1 id="rust-app-for-nuttx"><a class="doc-anchor" href="#rust-app-for-nuttx">§</a>1 Rust App for NuttX</h1>
 <p>TODO: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
@@ -270,7 +270,7 @@ sudo apt install qemu-system-riscv32
 uart_register: Registering /dev/ttyS0
 nx_start_application: Starting init thread
 
-NuttShell (NSH) NuttX-12.1.0-RC0
+TODO: NuttShell (NSH) NuttX-12.1.0-RC0
 nsh&gt; nx_start: CPU0: Beginning Idle Loop
 nsh&gt;
 </code></pre></div></li>
@@ -297,7 +297,7 @@ Builtin Apps:
 <li>
 <p>NuttX works like a tiny version of Linux, so the commands will look familiar…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
-NuttX 12.1.0-RC0 275db39 Jun 16 2023 20:22:08 risc-v rv-virt
+TODO: NuttX 12.1.0-RC0 275db39 Jun 16 2023 20:22:08 risc-v rv-virt
 
 nsh&gt; ls /dev
 /dev:
@@ -452,10 +452,10 @@ riscv64-unknown-elf-ld: failed to merge target specific data of file
   nuttx/staging/libapps.a
   (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
 </code></pre></div>
-<p>GCC Linker failed to link the Compiled Rust Binary (<strong>hello_rust_1.o</strong>) into our NuttX Firmware because…</p>
+<p>GCC Linker failed to link the <strong>Compiled Rust Binary</strong> <em>(hello_rust_1.o)</em> into our NuttX Firmware because…</p>
 <ul>
 <li>
-<p>Rust Binary <strong>hello_rust_1.o</strong> was compiled with…</p>
+<p>Rust Binary <em>hello_rust_1.o</em> was compiled with…</p>
 <p><strong>Software Floating-Point</strong> <em>(“soft-float”)</em></p>
 </li>
 <li>
@@ -487,7 +487,7 @@ make
 <p><strong>Double-Precision Hardware Floating-Point:</strong> Flags = 4</p>
 </li>
 </ul>
-<p>We modified the Flag in the ELF Header so that it says <strong>Double-Float</strong>…</p>
+<p>We <strong>modified the Flag</strong> in the ELF Header so that it says <strong>Double-Float</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Before Patching: ELF Header says Software Floating-Point
 $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
   Flags: 0x0
@@ -526,7 +526,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>Normally we run <strong><code>cargo build</code></strong> to build Embedded Rust Apps. And it handles LTO correctly.</p>
 <p>But NuttX calls <strong><code>rustc</code></strong> to compile Rust Apps, and links them with GCC Linker. Which doesn’t seem to support LTO.</p>
 <p>We’ll sort this out in GSoC!</p>
-<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <code>rustc</code> instead of <code>cargo build</code>)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo build</code></strong>)</a></p>
 <h1 id="standard-vs-embedded-rust"><a class="doc-anchor" href="#standard-vs-embedded-rust">§</a>8 Standard vs Embedded Rust</h1>
 <p><em>What is [no_std]? Will Rust call C Standard Library, like for malloc()?</em></p>
 <p>Earlier we saw <strong><code>[no_std]</code></strong> inside our <a href="TODO"><strong>Rust App</strong></a>.</p>
@@ -574,7 +574,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>(My Biggest Wish: Someone please create a <strong>Higher-Level Dialect</strong> of Rust that will use bits of AI to compile into the present Low-Level Rust. Which might simplify Lifetimes, Box, Rc, Arc, RefCell, Fn, dyn, …)</p>
 </li>
 <li>
-<p><em>Apparently there’s some Resistance to Rust Drivers inside NuttX Kernel?</em></p>
+<p><em>There’s some Resistance to Rust Drivers inside NuttX Kernel?</em></p>
 <p>Ouch we’re trapped between a Rock and… Another Rusty Rock!</p>
 <p>— <strong>NuttX Devs</strong> are concerned about the <a href="https://lists.apache.org/thread/q09w8p6pm683rvzvrwdwv4cf0bbqmfg2"><strong>extra complexity</strong></a> that Rust Drivers add to the Kernel Build</p>
 <p>— <strong>Rust Community</strong> is probably thinking we’re <strong>not doing enough</strong> to promote Memory-Safe Coding in NuttX Kernel</p>
