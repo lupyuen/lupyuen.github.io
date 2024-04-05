@@ -461,7 +461,7 @@ total 112
 
 We step back and talk about the hiccups in our Rust Build...
 
-![TODO](https://lupyuen.github.io/images/rust3-float.png)
+![Can't link soft-float modules with double-float modules](https://lupyuen.github.io/images/rust3-float.png)
 
 # Software vs Hardware Floating-Point
 
@@ -536,9 +536,9 @@ _But why Soft-Float instead of Double-Float? (Mmmm ice cream float)_
 
 Yeah patching the ELF Header is a Bad Hack! During GSoC we'll investigate why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)
 
-(Incorrect [__Rust Target__](TODO) maybe? But _riscv32gc-unknown-none-elf_ requires a [__Custom Target__](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)!)
+(Incorrect [__Rust Target__](https://lupyuen.github.io/articles/rust3#how-nuttx-compiles-rust-apps) maybe? But _riscv32gc-unknown-none-elf_ requires a [__Custom Target__](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)!)
 
-![TODO](https://lupyuen.github.io/images/rust3-panic.png)
+![Undefined reference to core::panicking::panic](https://lupyuen.github.io/images/rust3-panic.png)
 
 # Panic is Undefined
 
@@ -574,7 +574,7 @@ When __Integer Overflow__ happens, our Rust App will __Panic and Halt__.
 
 To implement the panic, Rust Compiler inserts a call to the Core Function _core::panicking::panic_.
 
-(Which comes from the [__Rust Core Library__](TODO))
+(Which comes from the [__Rust Core Library__](https://doc.rust-lang.org/core/index.html))
 
 _And the Panic Function is missing somehow?_
 
@@ -584,13 +584,13 @@ Rushabh has implemented a fix for the Undefined Panic Function...
 
 But when we add __Another Point of Panic__: We see the Undefined Panic Error again (sigh)...
 
-- TODO: Appendix
+- [__"Panic is Undefined"__](https://lupyuen.github.io/articles/rust3#appendix-panic-is-undefined)
 
 _What's causing this Undefined Panic Function?_
 
-According to [__this discussion__](https://github.com/rust-lang/compiler-builtins/issues/79), the Rust Core Library is compiled with [__Link-Time Optimisation (LTO)__](TODO). (Including the Panic Function)
+According to [__this discussion__](https://github.com/rust-lang/compiler-builtins/issues/79), the Rust Core Library is compiled with [__Link-Time Optimisation (LTO)__](https://nnethercote.github.io/perf-book/build-configuration.html#link-time-optimization). (Including the Panic Function)
 
-But we're linking it into our NuttX Firmware with GCC Linker, with __LTO Disabled__. Which causes the Missing Panic Function.
+But we're linking it into our NuttX Firmware with GCC Linker, with [__LTO Disabled__](https://johnysswlab.com/link-time-optimizations-new-way-to-do-compiler-optimizations/) (by default). Which causes the Missing Panic Function.
 
 _How is this different from typical Rust Builds?_
 
@@ -610,7 +610,7 @@ We'll sort this out in GSoC!
 
 _What is [no_std]? Will Rust call C Standard Library, like for malloc()?_
 
-Earlier we saw __`[no_std]`__ inside our [__Rust App__](TODO).
+Earlier we saw __`[no_std]`__ inside our [__Rust App__](https://lupyuen.github.io/articles/rust3#rust-app-for-nuttx).
 
 There are 2 "flavours" of Rust, depending on the Rust Libraries that we use:
 
@@ -642,7 +642,7 @@ Since we're calling __Rust Core Library__ in NuttX Kernel, we won't touch any PO
 
 TODO: GSoC Project Report, Draft Driver
 
-![TODO](https://lupyuen.github.io/images/rust3-ideas.jpg)
+![GSoC 2024 Ideas](https://lupyuen.github.io/images/rust3-ideas.jpg)
 
 # All Things Considered
 
@@ -650,7 +650,7 @@ TODO: GSoC Project Report, Draft Driver
 
     Yeah it's tough work but it needs to be done because...
 
-    — Some folks are urging us to explore [__Memory-Safe Programming in Rust__](TODO)
+    — Some folks are urging us to explore [__Memory-Safe Programming in Rust__](https://www.whitehouse.gov/oncd/briefing-room/2024/02/26/press-release-technical-report/)
 
     — NuttX Devs among us might already be coding __Rust Apps and Rust Drivers__ for NuttX? (We know of one Corporate User of NuttX that's very keen on Rust)
 
@@ -658,9 +658,9 @@ TODO: GSoC Project Report, Draft Driver
 
 1.  _Learning Rust looks kinda hard. Any other way to write Memory-Safe Apps?_
 
-    If we're familiar with Python: Check out the [__Nim Programming Language__](TODO).
+    If we're familiar with Python: Check out the [__Nim Programming Language__](https://lupyuen.github.io/articles/nim).
 
-    [__Zig Programming Language__](TODO) is safer than C and easier to learn. But not quite Memory-Safe like Rust.
+    [__Zig Programming Language__](https://lupyuen.github.io/articles/sensor) is safer than C and easier to learn. But not quite Memory-Safe like Rust.
 
     [__AI Tools__](https://gist.github.com/lupyuen/10ce1aeff7f6a743c374aa7c1931525b) might be helpful for coding the difficult bits of Rust: ChatGPT, GitHub Copilot, Google Gemini, ...
 
@@ -668,7 +668,7 @@ TODO: GSoC Project Report, Draft Driver
 
 1.  _Giving in to our AI Overlords already?_
 
-    But Rust Devs are familiar with smarty tools. [__Borrow Checker__](TODO) and [__Cargo Clippy__](TODO) are already so clever, they might as well be AI!
+    But Rust Devs are familiar with smarty tools. [__Borrow Checker__](https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#the-borrow-checker) and [__Cargo Clippy__](https://doc.rust-lang.org/clippy/index.html) are already so clever, they might as well be AI!
 
     And Rust Compiler is almost Sentient, always commanding us Humans: _"Please do this to fix the build, you poopy nincompoop!"_
 
@@ -688,7 +688,7 @@ TODO: GSoC Project Report, Draft Driver
 
     — Observe the Rust Development in [__Linux Kernel__](https://rust-for-linux.com/) and [__Zephyr OS__](https://github.com/zephyrproject-rtos/zephyr/issues/65837). Then adapt the Best Practices for NuttX Kernel.
 
-![TODO](https://lupyuen.github.io/images/rust3-gsoc.png)
+![GSoC Proposals for NuttX](https://lupyuen.github.io/images/rust3-gsoc.png)
 
 # What's Next
 
@@ -712,7 +712,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/rust3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust3.md)
 
-![TODO](https://lupyuen.github.io/images/rust3-panic.png)
+![Undefined reference to core::panicking::panic](https://lupyuen.github.io/images/rust3-panic.png)
 
 # Appendix: Panic is Undefined
 
@@ -729,7 +729,7 @@ riscv64-unknown-elf-ld:
 
 Earlier we spoke about the Undefined Panic Function...
 
-- TODO
+- [__"Panic is Undefined"__](https://lupyuen.github.io/articles/rust3#panic-is-undefined)
 
 Which Rushabh has fixed with this patch...
 
@@ -805,7 +805,7 @@ riscv64-unknown-elf-ld:
 
 _What's causing this Undefined Panic Function?_
 
-According to [__this discussion__](https://github.com/rust-lang/compiler-builtins/issues/79), the Rust Core Library is compiled with [__Link-Time Optimisation (LTO)__](TODO). (Including the Panic Function)
+According to [__this discussion__](https://github.com/rust-lang/compiler-builtins/issues/79), the Rust Core Library is compiled with [__Link-Time Optimisation (LTO)__](https://nnethercote.github.io/perf-book/build-configuration.html#link-time-optimization). (Including the Panic Function)
 
 But we're linking it into our NuttX Firmware with GCC Linker, with [__LTO Disabled__](https://johnysswlab.com/link-time-optimizations-new-way-to-do-compiler-optimizations/) (by default). Which causes the Missing Panic Function.
 
