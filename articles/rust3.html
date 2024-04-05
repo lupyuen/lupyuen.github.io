@@ -465,7 +465,7 @@ total 112
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c">(See the <strong>RISC-V Disassembly</strong>)</a></p>
 <p>We step back and talk about the hiccups in our Rust Build…</p>
-<p><img src="https://lupyuen.github.io/images/rust3-float.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust3-float.png" alt="Can’t link soft-float modules with double-float modules" /></p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>6 Software vs Hardware Floating-Point</h1>
 <p><em>What’s this error? “Can’t link soft-float modules with double-float modules”</em></p>
 <div class="example-wrap"><pre class="language-text"><code>$ make
@@ -526,8 +526,8 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(We had a similar issue with <strong>Zig Compiler</strong>)</a></p>
 <p><em>But why Soft-Float instead of Double-Float? (Mmmm ice cream float)</em></p>
 <p>Yeah patching the ELF Header is a Bad Hack! During GSoC we’ll investigate why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)</p>
-<p>(Incorrect <a href="TODO"><strong>Rust Target</strong></a> maybe? But <em>riscv32gc-unknown-none-elf</em> requires a <a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602"><strong>Custom Target</strong></a>!)</p>
-<p><img src="https://lupyuen.github.io/images/rust3-panic.png" alt="TODO" /></p>
+<p>(Incorrect <a href="https://lupyuen.github.io/articles/rust3#how-nuttx-compiles-rust-apps"><strong>Rust Target</strong></a> maybe? But <em>riscv32gc-unknown-none-elf</em> requires a <a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602"><strong>Custom Target</strong></a>!)</p>
+<p><img src="https://lupyuen.github.io/images/rust3-panic.png" alt="Undefined reference to core::panicking::panic" /></p>
 <h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make
@@ -552,7 +552,7 @@ riscv64-unknown-elf-ld:
 <p><em>buf.len()</em> is an <strong>Unsigned Integer</strong> (4 bytes). When we cast it as a <strong>Signed Integer</strong>, it might overflow.</p>
 <p>When <strong>Integer Overflow</strong> happens, our Rust App will <strong>Panic and Halt</strong>.</p>
 <p>To implement the panic, Rust Compiler inserts a call to the Core Function <em>core::panicking::panic</em>.</p>
-<p>(Which comes from the <a href="TODO"><strong>Rust Core Library</strong></a>)</p>
+<p>(Which comes from the <a href="https://doc.rust-lang.org/core/index.html"><strong>Rust Core Library</strong></a>)</p>
 <p><em>And the Panic Function is missing somehow?</em></p>
 <p>Rushabh has implemented a fix for the Undefined Panic Function…</p>
 <ul>
@@ -560,11 +560,11 @@ riscv64-unknown-elf-ld:
 </ul>
 <p>But when we add <strong>Another Point of Panic</strong>: We see the Undefined Panic Error again (sigh)…</p>
 <ul>
-<li>TODO: Appendix</li>
+<li><a href="https://lupyuen.github.io/articles/rust3#appendix-panic-is-undefined"><strong>“Panic is Undefined”</strong></a></li>
 </ul>
 <p><em>What’s causing this Undefined Panic Function?</em></p>
-<p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <a href="TODO"><strong>Link-Time Optimisation (LTO)</strong></a>. (Including the Panic Function)</p>
-<p>But we’re linking it into our NuttX Firmware with GCC Linker, with <strong>LTO Disabled</strong>. Which causes the Missing Panic Function.</p>
+<p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <a href="https://nnethercote.github.io/perf-book/build-configuration.html#link-time-optimization"><strong>Link-Time Optimisation (LTO)</strong></a>. (Including the Panic Function)</p>
+<p>But we’re linking it into our NuttX Firmware with GCC Linker, with <a href="https://johnysswlab.com/link-time-optimizations-new-way-to-do-compiler-optimizations/"><strong>LTO Disabled</strong></a> (by default). Which causes the Missing Panic Function.</p>
 <p><em>How is this different from typical Rust Builds?</em></p>
 <p>Normally we run <a href="https://doc.rust-lang.org/cargo/commands/cargo-build.html"><strong><code>cargo</code> <code>build</code></strong></a> to compile our Embedded Rust Apps. And it handles LTO correctly.</p>
 <p>But NuttX calls <a href="https://doc.rust-lang.org/rustc/what-is-rustc.html"><strong><code>rustc</code></strong></a> to compile Rust Apps, then calls <strong>GCC Linker</strong> to link into our NuttX Firmware. Which doesn’t seem to support LTO.</p>
@@ -578,7 +578,7 @@ riscv64-unknown-elf-ld:
 </blockquote>
 <h1 id="standard-vs-embedded-rust"><a class="doc-anchor" href="#standard-vs-embedded-rust">§</a>8 Standard vs Embedded Rust</h1>
 <p><em>What is [no_std]? Will Rust call C Standard Library, like for malloc()?</em></p>
-<p>Earlier we saw <strong><code>[no_std]</code></strong> inside our <a href="TODO"><strong>Rust App</strong></a>.</p>
+<p>Earlier we saw <strong><code>[no_std]</code></strong> inside our <a href="https://lupyuen.github.io/articles/rust3#rust-app-for-nuttx"><strong>Rust App</strong></a>.</p>
 <p>There are 2 “flavours” of Rust, depending on the Rust Libraries that we use:</p>
 <ul>
 <li>
@@ -600,26 +600,26 @@ riscv64-unknown-elf-ld:
 <p>Since we’re calling <strong>Rust Core Library</strong> in NuttX Kernel, we won’t touch any POSIX Application Interfaces. Thus if we need to support the Kernel Equivalent of Errno (and other Global State), we’ll have to <strong>create the Rust Library</strong> ourselves.</p>
 <p><a href="https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/">(See the Rust Library for <strong>Linux Kernel</strong>)</a></p>
 <p>TODO: GSoC Project Report, Draft Driver</p>
-<p><img src="https://lupyuen.github.io/images/rust3-ideas.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust3-ideas.jpg" alt="GSoC 2024 Ideas" /></p>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>9 All Things Considered</h1>
 <ol>
 <li>
 <p><em>Why are we doing all this?</em></p>
 <p>Yeah it’s tough work but it needs to be done because…</p>
-<p>— Some folks are urging us to explore <a href="TODO"><strong>Memory-Safe Programming in Rust</strong></a></p>
+<p>— Some folks are urging us to explore <a href="https://www.whitehouse.gov/oncd/briefing-room/2024/02/26/press-release-technical-report/"><strong>Memory-Safe Programming in Rust</strong></a></p>
 <p>— NuttX Devs among us might already be coding <strong>Rust Apps and Rust Drivers</strong> for NuttX? (We know of one Corporate User of NuttX that’s very keen on Rust)</p>
 <p>— Hence we’re helpfully drafting the <a href="https://github.com/apache/nuttx/issues/11907"><strong>Standards and Guidelines</strong></a> for folks already coding Rust in NuttX</p>
 </li>
 <li>
 <p><em>Learning Rust looks kinda hard. Any other way to write Memory-Safe Apps?</em></p>
-<p>If we’re familiar with Python: Check out the <a href="TODO"><strong>Nim Programming Language</strong></a>.</p>
-<p><a href="TODO"><strong>Zig Programming Language</strong></a> is safer than C and easier to learn. But not quite Memory-Safe like Rust.</p>
+<p>If we’re familiar with Python: Check out the <a href="https://lupyuen.github.io/articles/nim"><strong>Nim Programming Language</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/sensor"><strong>Zig Programming Language</strong></a> is safer than C and easier to learn. But not quite Memory-Safe like Rust.</p>
 <p><a href="https://gist.github.com/lupyuen/10ce1aeff7f6a743c374aa7c1931525b"><strong>AI Tools</strong></a> might be helpful for coding the difficult bits of Rust: ChatGPT, GitHub Copilot, Google Gemini, …</p>
 <p>(We’ll validate this during GSoC)</p>
 </li>
 <li>
 <p><em>Giving in to our AI Overlords already?</em></p>
-<p>But Rust Devs are familiar with smarty tools. <a href="TODO"><strong>Borrow Checker</strong></a> and <a href="TODO"><strong>Cargo Clippy</strong></a> are already so clever, they might as well be AI!</p>
+<p>But Rust Devs are familiar with smarty tools. <a href="https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#the-borrow-checker"><strong>Borrow Checker</strong></a> and <a href="https://doc.rust-lang.org/clippy/index.html"><strong>Cargo Clippy</strong></a> are already so clever, they might as well be AI!</p>
 <p>And Rust Compiler is almost Sentient, always commanding us Humans: <em>“Please do this to fix the build, you poopy nincompoop!”</em></p>
 <p>(My Biggest Wish: Someone please create a <strong>Higher-Level Dialect</strong> of Rust that will use bits of AI to compile into the present Low-Level Rust. Which might simplify Generics, Lifetimes, Box, Rc, Arc, RefCell, Fn*, dyn, async, …)</p>
 </li>
@@ -633,7 +633,7 @@ riscv64-unknown-elf-ld:
 <p>— Observe the Rust Development in <a href="https://rust-for-linux.com/"><strong>Linux Kernel</strong></a> and <a href="https://github.com/zephyrproject-rtos/zephyr/issues/65837"><strong>Zephyr OS</strong></a>. Then adapt the Best Practices for NuttX Kernel.</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/rust3-gsoc.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust3-gsoc.png" alt="GSoC Proposals for NuttX" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -659,7 +659,7 @@ riscv64-unknown-elf-ld:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust3.md"><strong>lupyuen.github.io/src/rust3.md</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/rust3-panic.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust3-panic.png" alt="Undefined reference to core::panicking::panic" /></p>
 <h1 id="appendix-panic-is-undefined"><a class="doc-anchor" href="#appendix-panic-is-undefined">§</a>11 Appendix: Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make
@@ -671,7 +671,7 @@ riscv64-unknown-elf-ld:
 </code></pre></div>
 <p>Earlier we spoke about the Undefined Panic Function…</p>
 <ul>
-<li>TODO</li>
+<li><a href="https://lupyuen.github.io/articles/rust3#panic-is-undefined"><strong>“Panic is Undefined”</strong></a></li>
 </ul>
 <p>Which Rushabh has fixed with this patch…</p>
 <ul>
@@ -732,7 +732,7 @@ riscv64-unknown-elf-ld:
   undefined reference to `core::panicking::panic&#39;
 </code></pre></div>
 <p><em>What’s causing this Undefined Panic Function?</em></p>
-<p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <a href="TODO"><strong>Link-Time Optimisation (LTO)</strong></a>. (Including the Panic Function)</p>
+<p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <a href="https://nnethercote.github.io/perf-book/build-configuration.html#link-time-optimization"><strong>Link-Time Optimisation (LTO)</strong></a>. (Including the Panic Function)</p>
 <p>But we’re linking it into our NuttX Firmware with GCC Linker, with <a href="https://johnysswlab.com/link-time-optimizations-new-way-to-do-compiler-optimizations/"><strong>LTO Disabled</strong></a> (by default). Which causes the Missing Panic Function.</p>
 <p><em>How is this different from typical Rust Builds?</em></p>
 <p>Normally we run <a href="https://doc.rust-lang.org/cargo/commands/cargo-build.html"><strong><code>cargo</code> <code>build</code></strong></a> to compile our Embedded Rust Apps. And it handles LTO correctly.</p>
