@@ -353,7 +353,7 @@ fgets(
 );
 ```
 
-Which makes us ponder about [__Memory Safety__](TODO): _"Hmmm the fgets() buffer size... Does it include the terminating null?"_
+Which makes us ponder about [__Memory Safety__](https://en.m.wikipedia.org/wiki/Memory_safety): _"Hmmm the fgets() buffer size... Does it include the terminating null?"_
 
 [(Yep it does!)](https://man.archlinux.org/man/fgets.3p.en)
 
@@ -534,9 +534,7 @@ And it links correctly!
 
 _But why Soft-Float instead of Double-Float? (Mmmm ice cream float)_
 
-Yeah patching the ELF Header is a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)
-
-We'll investigate this during GSoC.
+Yeah patching the ELF Header is a Bad Hack! During GSoC we'll investigate why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)
 
 (Incorrect [__Rust Target__](TODO) maybe? But _riscv32gc-unknown-none-elf_ requires a [__Custom Target__](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)!)
 
@@ -574,7 +572,9 @@ _buf.len()_ is an __Unsigned Integer__ (4 bytes). When we cast it as a __Signed 
 
 When __Integer Overflow__ happens, our Rust App will __Panic and Halt__.
 
-To implement the panic, Rust Compiler inserts a call to the Core Function _core::panicking::panic_. (Which comes from the [__Rust Core Library__](TODO))
+To implement the panic, Rust Compiler inserts a call to the Core Function _core::panicking::panic_.
+
+(Which comes from the [__Rust Core Library__](TODO))
 
 _And the Panic Function is missing somehow?_
 
@@ -602,9 +602,9 @@ We'll sort this out in GSoC!
 
 [(Why NuttX calls __`rustc`__ instead of __`cargo build`__)](https://github.com/apache/nuttx/pull/5566)
 
-> ![TODO](https://lupyuen.github.io/images/rust3-nostd.jpg)
+> ![The Embedded Rust Book](https://lupyuen.github.io/images/rust3-nostd.jpg)
 
-> TODO
+> [_The Embedded Rust Book_](https://docs.rust-embedded.org/book/intro/no-std.html)
 
 # Standard vs Embedded Rust
 
@@ -765,7 +765,7 @@ Here's our Test Code that has 2 Potential Panics: [hello_rust_main.rs](https://g
 
 _What happens when we compile this?_
 
-__If we omit `RUSTFLAGS=-O`__: We see 2 Undefined Panic Functions...
+__If we omit `RUSTFLAGS=-O`__: We see Two Undefined Panic Functions...
 
 ```rust
 apps/examples/hello_rust/hello_rust_main.rs:84
@@ -781,7 +781,7 @@ apps/examples/hello_rust/hello_rust_main.rs:90
 
 [(See the __RISC-V Disassembly__)](https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c#file-hello_rust_1-s-L301-L352)
 
-__After we add `RUSTFLAGS=-O`__: We still see 1 Undefined Panic Function for the divide-by-zero...
+__After we add `RUSTFLAGS=-O`__: We still see One Undefined Panic Function for the divide-by-zero...
 
 ```rust
 apps/examples/hello_rust/hello_rust_main.rs:90
@@ -807,7 +807,7 @@ _What's causing this Undefined Panic Function?_
 
 According to [__this discussion__](https://github.com/rust-lang/compiler-builtins/issues/79), the Rust Core Library is compiled with [__Link-Time Optimisation (LTO)__](TODO). (Including the Panic Function)
 
-But we're linking it into our NuttX Firmware with GCC Linker, with __LTO Disabled__. Which causes the Missing Panic Function.
+But we're linking it into our NuttX Firmware with GCC Linker, with [__LTO Disabled__](https://johnysswlab.com/link-time-optimizations-new-way-to-do-compiler-optimizations/) (by default). Which causes the Missing Panic Function.
 
 _How is this different from typical Rust Builds?_
 
