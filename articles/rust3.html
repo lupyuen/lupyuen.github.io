@@ -244,12 +244,11 @@ cp /tmp/hello_rust_1.o ../apps/examples/hello_rust/*hello_rust_1.o
 make
 </code></pre></div>
 <p>(We’ll come back to this)</p>
-<p>We’re ready to boot NuttX…</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/rust3-title.png" alt="Rust Apps on Apache NuttX RTOS and QEMU RISC-V" /></p>
 <h1 id="run-nuttx-on-qemu-risc-v"><a class="doc-anchor" href="#run-nuttx-on-qemu-risc-v">§</a>3 Run NuttX on QEMU RISC-V</h1>
-<p>This is how we boot NuttX on QEMU and run our Rust App…</p>
+<p>We’re ready to <strong>boot NuttX on QEMU Emulator</strong> and run our Rust App!</p>
 <ol>
 <li>
 <p>Download and install <a href="https://www.qemu.org/download/"><strong>QEMU Emulator</strong></a>…</p>
@@ -330,7 +329,7 @@ nsh&gt; ps
 </ul>
 <p>We’ll fix this in GSoC and test it on Ox64 BL808 SBC.</p>
 <h1 id="console-input-in-rust"><a class="doc-anchor" href="#console-input-in-rust">§</a>4 Console Input in Rust</h1>
-<p><em>What about Console Input?</em></p>
+<p><em>We’ve done Console Output. How about Console Input?</em></p>
 <p>This is how we read <strong>Console Input</strong> in Rust: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// main() function not needed. Use Rust Core Library.
@@ -383,7 +382,7 @@ nsh&gt; ps
 </span>}
 
 <span class="comment">// Omitted: Panic Handler</span></code></pre></div>
-<p>This is getting a little dangerous… The <strong>Input Buffer might Overflow</strong> if we’re not careful with the Parameters!</p>
+<p>This gets a bit dangerous… The <strong>Input Buffer might Overflow</strong> if we’re not careful with the Parameters!</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Read a line from Standard Input
 </span>fgets(
@@ -413,8 +412,7 @@ nsh&gt; ps
 <p>We’ll talk more about this.</p>
 <h1 id="how-nuttx-compiles-rust-apps"><a class="doc-anchor" href="#how-nuttx-compiles-rust-apps">§</a>5 How NuttX Compiles Rust Apps</h1>
 <p><em>What happens when we compile our Rust App?</em></p>
-<p>Let’s watch how NuttX builds Rust Apps by calling <a href="TODO"><strong><code>rustc</code></strong></a>. (Instead of the usual <a href="TODO"><strong><code>cargo build</code></strong></a>)</p>
-<p>We observe the <strong>NuttX Build Log</strong>…</p>
+<p>Watch how NuttX builds Rust Apps by calling <a href="TODO"><strong><code>rustc</code></strong></a>. (Instead of the usual <a href="TODO"><strong><code>cargo build</code></strong></a>)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the NuttX Project with Tracing Enabled
 $ make --trace
 
