@@ -539,13 +539,13 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>We’ll investigate this during GSoC. (Incorrect <a href="TODO"><strong>Rust Target</strong></a> maybe?)</p>
 <h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>$ make
+<div class="example-wrap"><pre class="language-bash"><code>$ make
 riscv64-unknown-elf-ld:
   nuttx/staging/libapps.a(hello_rust_main.rs...apps.examples.hello_rust_1.o):
-  <span class="kw">in </span>function `no symbol<span class="string">':
-  </span>apps/examples/hello_rust/hello_rust_main.rs:<span class="number">90</span>:
-  undefined reference to `core::panicking::panic<span class="string">'</span></code></pre></div>
+  in function `no symbol&#39;:
+  apps/examples/hello_rust/hello_rust_main.rs:90:
+  undefined reference to `core::panicking::panic&#39;
+</code></pre></div>
 <p>Suppose we’re reading <strong>Console Input</strong> in our Rust App: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Input Buffer with 256 chars (including terminating null)
@@ -622,10 +622,10 @@ riscv64-unknown-elf-ld:
 <p><em>Giving in to our AI Overlords already?</em></p>
 <p>But Rust Devs are familiar with smarty tools. <a href="TODO"><strong>Borrow Checker</strong></a> and <a href="TODO"><strong>Cargo Clippy</strong></a> are already so clever, they might as well be AI!</p>
 <p>And Rust Compiler is almost Sentient, always commanding us Humans: <em>“Please do this to fix the build, you poopy nincompoop!”</em></p>
-<p>(My Biggest Wish: Someone please create a <strong>Higher-Level Dialect</strong> of Rust that will use bits of AI to compile into the present Low-Level Rust. Which might simplify Lifetimes, Box, Rc, Arc, RefCell, Fn, dyn, …)</p>
+<p>(My Biggest Wish: Someone please create a <strong>Higher-Level Dialect</strong> of Rust that will use bits of AI to compile into the present Low-Level Rust. Which might simplify Generics, Lifetimes, Box, Rc, Arc, RefCell, Fn*, dyn, async, …)</p>
 </li>
 <li>
-<p><em>There’s some Resistance to Rust Drivers inside NuttX Kernel?</em></p>
+<p><em>Will there be Resistance to Rust Drivers inside NuttX Kernel?</em></p>
 <p>Ouch we’re trapped between a Rock and… Another Rusty Rock!</p>
 <p>— <strong>NuttX Devs</strong> are concerned about the <a href="https://lists.apache.org/thread/q09w8p6pm683rvzvrwdwv4cf0bbqmfg2"><strong>extra complexity</strong></a> that Rust Drivers add to the Kernel Build</p>
 <p>— <strong>Rust Community</strong> is probably thinking we’re <strong>not doing enough</strong> to promote Memory-Safe Coding in NuttX Kernel</p>
@@ -660,36 +660,88 @@ riscv64-unknown-elf-ld:
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust3.md"><strong>lupyuen.github.io/src/rust3.md</strong></a></p>
 <h1 id="appendix-panic-is-undefined"><a class="doc-anchor" href="#appendix-panic-is-undefined">§</a>11 Appendix: Panic is Undefined</h1>
-<p>TODO</p>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
-<p>TODO</p>
-<p>If the GCC Linker fails with the error <em>“undefined reference to core::panicking::panic”</em>, please apply this patch…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/58c9ebee95626251dd1601476991cdfea7fcd190">Add -O to RUSTFLAGS in Makefile</a></p>
-<p>Then rebuild: <code>make clean ; make</code></p>
-<p>(If we still hit the same error, see the notes below)</p>
-<p>TODO</p>
-<p>After adding <code>RUSTFLAGS=-O</code>, we might still hit Undefined <code>core::panicking::panic</code>. Here’s our Test Code that has 2 Potential Panics: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">hello_rust_main.rs</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>$ make
+riscv64-unknown-elf-ld:
+  nuttx/staging/libapps.a(hello_rust_main.rs...apps.examples.hello_rust_1.o):
+  in function `no symbol&#39;:
+  apps/examples/hello_rust/hello_rust_main.rs:90:
+  undefined reference to `core::panicking::panic&#39;
+</code></pre></div>
+<p>Earlier we spoke about the Undefined Panic Function…</p>
 <ul>
+<li>TODO</li>
+</ul>
+<p>Which Rushabh has fixed with this patch…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx-apps/pull/2333"><strong>Add <code>-O</code> to <code>RUSTFLAGS</code> in Makefile</strong></a></li>
+</ul>
+<p>But watch what happens when we add <strong>Another Point of Panic</strong>…</p>
+<p>Here’s our Test Code that has 2 Potential Panics: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">hello_rust_main.rs</a></p>
+<ol>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84">Converting usize to c_int</a> might panic (due to overflow)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84"><strong>Converting Unsigned Int to Signed Int</strong></a> might panic (due to <strong>Integer Overflow</strong>)</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Input Buffer with 256 chars (including terminating null)
+</span><span class="kw">let </span><span class="kw-2">mut </span>buf: [c_char; <span class="number">256</span>] =  <span class="comment">// Input Buffer is Mutable (will change)
+  </span>[<span class="number">0</span>; <span class="number">256</span>];                   <span class="comment">// Init with nulls
+
+// Read a line from Standard Input
+</span>fgets(
+  <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],       <span class="comment">// Buffer
+  // This might Panic due to Integer Overflow!
+  </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Unsigned Size cast to Signed Integer
+  </span>stdin              <span class="comment">// Standard Input
+</span>);</code></pre></div>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">Divide by 0</a> will panic</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90"><strong>Divide by Zero</strong></a> will also panic</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Buffer might begin with null
+// Which causes Divide by Zero
+</span><span class="kw">let </span>i = <span class="number">1 </span>/ buf[<span class="number">0</span>];</code></pre></div>
 </li>
-</ul>
-<p>If we omit <code>RUSTFLAGS=-O</code>: We see 2 Undefined <code>core::panicking::panic</code>…</p>
-<ul>
-<li><a href="https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c">RISC-V Disassembly: Without <code>RUSTFLAGS=-O</code></a></li>
-</ul>
-<p>But when we add <code>RUSTFLAGS=-O</code>: We still see 1 Undefined <code>core::panicking::panic</code> for the divide-by-zero…</p>
-<ul>
-<li><a href="https://gist.github.com/lupyuen/bec3bdd8379143a6046414d3ad2cc888">RISC-V Disassembly: With <code>RUSTFLAGS=-O</code></a></li>
-</ul>
-<p>Somehow the divide-by-zero panic refuses to link correctly. <a href="https://github.com/rust-lang/compiler-builtins/issues/79">Based on this discussion</a>, it seems that the Rust Core Library is compiled with LTO (Link-Time Optimisation), so it might still cause problems with our code, which doesn’t use LTO.</p>
-<p>TODO: If we call <code>cargo build</code> (instead of <code>rustc</code>), will it fix this LTO issue? How different is the <code>cargo build</code> Linker from GCC Linker?</p>
+</ol>
+<p><em>What happens when we compile this?</em></p>
+<p><strong>If we omit <code>RUSTFLAGS=-O</code></strong>: We see 2 Undefined Panic Functions…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>apps/examples/hello_rust/hello_rust_main.rs:<span class="number">84
+  </span>buf.len() <span class="kw">as </span>i32 - <span class="number">1</span>,  <span class="comment">// Might Overflow
+    </span>a0: <span class="number">00000097         </span>auipc ra,<span class="number">0x0
+    </span>a0: R_RISCV_CALL_PLT core::panicking::panic
+
+apps/examples/hello_rust/hello_rust_main.rs:<span class="number">90
+  </span><span class="kw">let </span>i = <span class="number">1 </span>/ buf[<span class="number">0</span>];  <span class="comment">// Might Divide by Zero
+    </span><span class="number">108</span>: <span class="number">00000097         </span>auipc ra,<span class="number">0x0
+    108</span>: R_RISCV_CALL_PLT core::panicking::panic</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c#file-hello_rust_1-s-L301-L352">(See the <strong>RISC-V Disassembly</strong>)</a></p>
+<p><strong>After we add <code>RUSTFLAGS=-O</code></strong>: We still see 1 Undefined Panic Function for the divide-by-zero…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>apps/examples/hello_rust/hello_rust_main.rs:<span class="number">90
+  </span><span class="kw">let </span>i = <span class="number">1 </span>/ buf[<span class="number">0</span>];  <span class="comment">// Might Divide by Zero
+    </span>d0: <span class="number">00000097         </span>auipc ra,<span class="number">0x0 
+    </span>d0: R_RISCV_CALL_PLT core::panicking::panic</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/bec3bdd8379143a6046414d3ad2cc888#file-hello_rust_1-s-L287-L294">(See the <strong>RISC-V Disassembly</strong>)</a></p>
+<p>Which leads to the Undefined Panic Error again (sigh)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ make
+riscv64-unknown-elf-ld:
+  nuttx/staging/libapps.a(hello_rust_main.rs...apps.examples.hello_rust_1.o):
+  in function `no symbol&#39;:
+  apps/examples/hello_rust/hello_rust_main.rs:90:
+  undefined reference to `core::panicking::panic&#39;
+</code></pre></div>
+<p><em>What’s causing this Undefined Panic Function?</em></p>
+<p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <a href="TODO"><strong>Link-Time Optimisation (LTO)</strong></a>. (Including the Panic Function)</p>
+<p>But we’re linking it into our NuttX Firmware with GCC Linker, with <strong>LTO Disabled</strong>. Which causes the Missing Panic Function.</p>
+<p><em>How is this different from typical Rust Builds?</em></p>
+<p>Normally we run <a href="TODO"><strong><code>cargo build</code></strong></a> to compile our Embedded Rust Apps. And it handles LTO correctly.</p>
+<p>But NuttX calls <a href="TODO"><strong><code>rustc</code></strong></a> to compile Rust Apps, then calls <strong>GCC Linker</strong> to link into our NuttX Firmware. Which doesn’t seem to support LTO.</p>
+<p>We’ll sort this out in GSoC!</p>
+<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo build</code></strong>)</a></p>
 <h1 id="appendix-rust-build-for-64-bit-risc-v"><a class="doc-anchor" href="#appendix-rust-build-for-64-bit-risc-v">§</a>12 Appendix: Rust Build for 64-bit RISC-V</h1>
-<p>TODO: Rust Build fails for QEMU RISC-V 64-bit…</p>
-<div class="example-wrap"><pre class="language-text"><code>$ tools/configure.sh rv-virt:nsh64
+<p><em>We tested Rust Apps on QEMU for 32-bit RISC-V. What about 64-bit RISC-V?</em></p>
+<p>Sorry Rust Apps won’t build correctly on NuttX for 64-bit RISC-V…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
 ## TODO: Enable &quot;Hello Rust Example&quot;
 $ make
@@ -702,7 +754,8 @@ make[2]: *** [nuttx/apps/Application.mk:275: hello_rust_main.rs...nuttx.apps.exa
 make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
 make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 </code></pre></div>
-<p>TODO: Test the Rust Build for QEMU Arm32 and Arm64</p>
+<p>We’ll fix this in GSoC and test it on Ox64 BL808 SBC.</p>
+<p>TODO: Test on QEMU Arm32 and Arm64</p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
