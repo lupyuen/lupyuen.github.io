@@ -377,6 +377,8 @@ But this won't work on NuttX because...
 
 We'll talk more about this.
 
+TODO: Rust Wrapper / Rustix
+
 ![How NuttX Compiles Rust Apps](https://lupyuen.github.io/images/rust3-build.png)
 
 # How NuttX Compiles Rust Apps
@@ -640,7 +642,7 @@ Since we're calling __Rust Core Library__ in NuttX Kernel, we won't touch any PO
 
 [(See the Rust Library for __Linux Kernel__)](https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/)
 
-TODO: GSoC Project Report, Draft Driver
+(GSoC Project Report will prescribe a Simple LED Driver for NuttX Kernel)
 
 ![GSoC 2024 Ideas](https://lupyuen.github.io/images/rust3-ideas.jpg)
 
