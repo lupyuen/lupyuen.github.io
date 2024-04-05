@@ -574,9 +574,7 @@ fgets(
 );
 ```
 
-_buf.len()_ is an __Unsigned Integer__ (4 bytes). When we cast it as a __Signed Integer__, it might overflow.
-
-When __Integer Overflow__ happens, our Rust App will __Panic and Halt__.
+_"buf.len() - 1"_ might underflow. When __Integer Underflow__ happens, our Rust App will __Panic and Halt__.
 
 To implement the panic, Rust Compiler inserts a call to the Core Function _core::panicking::panic_.
 
@@ -759,7 +757,7 @@ But watch what happens when we add __Another Point of Panic__...
 
 Here's our Test Code that has 2 Potential Panics: [hello_rust_main.rs](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90)
 
-1.  [__Converting Unsigned Int to Signed Int__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84) might panic (due to __Integer Overflow__)
+1.  [__Buffer Length__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84) might panic (due to __Integer Underflow__)
 
     ```rust
     // Input Buffer with 256 chars (including terminating null)
@@ -769,7 +767,7 @@ Here's our Test Code that has 2 Potential Panics: [hello_rust_main.rs](https://g
     // Read a line from Standard Input
     fgets(
       &mut buf[0],           // Buffer
-      // This might Panic due to Integer Overflow!
+      // This might Panic due to Integer Underflow!
       buf.len() as i32 - 1,  // Unsigned Size cast to Signed Integer
       stdin                  // Standard Input
     );
@@ -789,7 +787,7 @@ __If we omit `RUSTFLAGS=-O`__: We see Two Undefined Panic Functions...
 
 ```rust
 apps/examples/hello_rust/hello_rust_main.rs:84
-  buf.len() as i32 - 1,  // Might Overflow
+  buf.len() as i32 - 1,  // Might Underflow
     a0: 00000097         auipc ra,0x0
     a0: R_RISCV_CALL_PLT core::panicking::panic
 
