@@ -232,16 +232,11 @@ We're ready to __boot NuttX on QEMU Emulator__ and run our Rust App!
 1.  NuttX is now running in the QEMU Emulator! (Pic above)
 
     ```text
-    uart_register: Registering /dev/console
-    uart_register: Registering /dev/ttyS0
-    nx_start_application: Starting init thread
-
-    TODO: NuttShell (NSH) NuttX-12.1.0-RC0
-    nsh> nx_start: CPU0: Beginning Idle Loop
+    NuttShell (NSH) NuttX-12.4.0-RC0
     nsh>
     ```
     
-1.  Enter "__hello_rust__" to run our Rust Demo App (which prints something)
+1.  Enter "__hello_rust__" to run our Rust Demo App (which will print something)
 
     ```text
     nsh> hello_rust
@@ -254,37 +249,19 @@ We're ready to __boot NuttX on QEMU Emulator__ and run our Rust App!
     nsh> help
     help usage:  help [-v] [<cmd>]
 
-        .         break     dd        exit      ls        ps        source    umount
-        [         cat       df        false     mkdir     pwd       test      unset
-        ?         cd        dmesg     free      mkrd      rm        time      uptime
-        alias     cp        echo      help      mount     rmdir     true      usleep
-        unalias   cmp       env       hexdump   mv        set       truncate  xd
-        basename  dirname   exec      kill      printf    sleep     uname
+        .           cp          exit        mkdir       rmdir       umount      
+        [           cmp         expr        mkrd        set         unset       
+        ?           dirname     false       mount       sleep       uptime      
+        alias       dd          fdinfo      mv          source      usleep      
+        unalias     df          free        pidof       test        xd          
+        basename    dmesg       help        printf      time        
+        break       echo        hexdump     ps          true        
+        cat         env         kill        pwd         truncate    
+        cd          exec        ls          rm          uname       
 
     Builtin Apps:
-        nsh     ostest  sh
+        hello         hello_rust    nsh           ostest        sh       
     ```
-
-1.  NuttX works like a tiny version of Linux, so the commands will look familiar...
-
-    ```text
-    nsh> uname -a
-    TODO: NuttX 12.1.0-RC0 275db39 Jun 16 2023 20:22:08 risc-v rv-virt
-
-    nsh> ls /dev
-    /dev:
-    console
-    null
-    ttyS0
-    zero
-
-    nsh> ps
-      PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK           STACK   USED  FILLED COMMAND
-        0     0   0 FIFO     Kthread N-- Ready              0000000000000000 002000 001224  61.2%  Idle Task
-        1     1 100 RR       Task    --- Running            0000000000000000 002992 002024  67.6%  nsh_main
-    ```
-
-    [(See the __Complete Log__)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
 
 1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
 
@@ -610,6 +587,10 @@ But NuttX calls [__`rustc`__](TODO) to compile Rust Apps, then calls __GCC Linke
 We'll sort this out in GSoC!
 
 [(Why NuttX calls __`rustc`__ instead of __`cargo build`__)](https://github.com/apache/nuttx/pull/5566)
+
+> ![TODO](https://lupyuen.github.io/images/rust3-nostd.jpg)
+
+> TODO
 
 # Standard vs Embedded Rust
 
