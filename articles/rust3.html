@@ -387,9 +387,9 @@ nsh&gt; ps
   </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Buffer Size
   </span>stdin              <span class="comment">// Standard Input
 </span>);</code></pre></div>
-<p>Which makes us ponder about <strong>Memory Safety</strong>: <em>“Hmmm the fgets() buffer size… Does it include the terminating null?”</em></p>
-<p>(Yep it does!)</p>
-<p><em>What about Rust? How does it safely handle Console Input?</em></p>
+<p>Which makes us ponder about <a href="TODO"><strong>Memory Safety</strong></a>: <em>“Hmmm the fgets() buffer size… Does it include the terminating null?”</em></p>
+<p><a href="https://man.archlinux.org/man/fgets.3p.en">(Yep it does!)</a></p>
+<p><em>What about Rust? Does it safely handle Console Input?</em></p>
 <p>Reading the <a href="https://doc.rust-lang.org/std/io/fn.stdin.html"><strong>Standard Input in Rust</strong></a> looks simpler and safer…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Allocate an Input Buffer from Heap Memory
