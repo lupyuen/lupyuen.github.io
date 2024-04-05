@@ -755,7 +755,7 @@ Which Rushabh has fixed with this patch...
 
 But watch what happens when we add __Another Point of Panic__...
 
-Here's our Test Code that has 2 Potential Panics: [hello_rust_main.rs](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90)
+Below is our Test Code that has __Two Potential Panics__: [hello_rust_main.rs](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90)
 
 1.  [__Buffer Length__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84) might panic (due to __Integer Underflow__)
 
