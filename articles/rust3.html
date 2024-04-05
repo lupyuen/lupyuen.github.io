@@ -558,8 +558,7 @@ riscv64-unknown-elf-ld:
   </span>buf.len() <span class="kw">as </span>i32 - <span class="number">1</span>,  <span class="comment">// Size (cast to Signed Integer)
   </span>stdin                  <span class="comment">// Standard Input
 </span>);</code></pre></div>
-<p><em>buf.len()</em> is an <strong>Unsigned Integer</strong> (4 bytes). When we cast it as a <strong>Signed Integer</strong>, it might overflow.</p>
-<p>When <strong>Integer Overflow</strong> happens, our Rust App will <strong>Panic and Halt</strong>.</p>
+<p><em>“buf.len() - 1”</em> might underflow. When <strong>Integer Underflow</strong> happens, our Rust App will <strong>Panic and Halt</strong>.</p>
 <p>To implement the panic, Rust Compiler inserts a call to the Core Function <em>core::panicking::panic</em>.</p>
 <p>(Which comes from the <a href="https://doc.rust-lang.org/core/index.html"><strong>Rust Core Library</strong></a>)</p>
 <p><em>And the Panic Function is missing somehow?</em></p>
@@ -713,7 +712,7 @@ riscv64-unknown-elf-ld:
 <p>Here’s our Test Code that has 2 Potential Panics: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">hello_rust_main.rs</a></p>
 <ol>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84"><strong>Converting Unsigned Int to Signed Int</strong></a> might panic (due to <strong>Integer Overflow</strong>)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84"><strong>Buffer Length</strong></a> might panic (due to <strong>Integer Underflow</strong>)</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Input Buffer with 256 chars (including terminating null)
 </span><span class="kw">let </span><span class="kw-2">mut </span>buf: [c_char; <span class="number">256</span>] =  <span class="comment">// Input Buffer is Mutable (will change)
@@ -722,7 +721,7 @@ riscv64-unknown-elf-ld:
 // Read a line from Standard Input
 </span>fgets(
   <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],           <span class="comment">// Buffer
-  // This might Panic due to Integer Overflow!
+  // This might Panic due to Integer Underflow!
   </span>buf.len() <span class="kw">as </span>i32 - <span class="number">1</span>,  <span class="comment">// Unsigned Size cast to Signed Integer
   </span>stdin                  <span class="comment">// Standard Input
 </span>);</code></pre></div>
@@ -739,7 +738,7 @@ riscv64-unknown-elf-ld:
 <p><strong>If we omit <code>RUSTFLAGS=-O</code></strong>: We see Two Undefined Panic Functions…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>apps/examples/hello_rust/hello_rust_main.rs:<span class="number">84
-  </span>buf.len() <span class="kw">as </span>i32 - <span class="number">1</span>,  <span class="comment">// Might Overflow
+  </span>buf.len() <span class="kw">as </span>i32 - <span class="number">1</span>,  <span class="comment">// Might Underflow
     </span>a0: <span class="number">00000097         </span>auipc ra,<span class="number">0x0
     </span>a0: R_RISCV_CALL_PLT core::panicking::panic
 
