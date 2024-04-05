@@ -96,7 +96,7 @@
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/ox64-cores.jpg" alt="Bouffalo Lab BL808 is a complex creature with 3 (Asymmetric) RISC-V Cores" /></p>
-<p><a href="https://wiki.pine64.org/wiki/Ox64"><strong>Pine64 Ox64 (128Mb)</strong></a> is the development board for BL808C. (Pic below)</p>
+<p><a href="https://pine64.org/documentation/Ox64/"><strong>Pine64 Ox64 (128Mb)</strong></a> is the development board for BL808C. (Pic below)</p>
 <p><strong>BL808C</strong> supports MIPI CSI Cameras but not MIPI DSI Displays.</p>
 <p>(Maybe someday we’ll see BL808D for MIPI DSI Displays)</p>
 <p><em>Is Ox64 an SBC? Or an MCU Board?</em></p>
@@ -220,7 +220,7 @@
 <p>Thus our USB Serial Adapter must <strong>connect reliably to Ox64</strong> at 2 Mbps. Let’s test it…</p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout2.jpg" alt="Flashing UART" /></p>
 <h1 id="test-the-usb-serial-adapter"><a class="doc-anchor" href="#test-the-usb-serial-adapter">§</a>2 Test the USB Serial Adapter</h1>
-<p><strong>Warning:</strong> Some USB Serial Adapters <a href="https://wiki.pine64.org/wiki/Ox64#Compatible_UARTs_when_in_bootloader_mode"><strong>WON’T WORK!</strong></a></p>
+<p><strong>Warning:</strong> Some USB Serial Adapters <a href="https://pine64.org/documentation/Ox64/Further_information/Compatible_UARTs/"><strong>WON’T WORK!</strong></a></p>
 <p>Ox64 was tested OK with the <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>Pine64 Woodpecker CH340G</strong></a> USB Serial Adapter on macOS x64.</p>
 <p>Ox64 mandates 2 Mbps, which might be too fast for some USB Serial Adapters. (Like this <a href="https://www.lazada.sg/products/i2037772272-s11135131253.html"><strong>CP2102 Dongle</strong></a>, which shows garbled text at 2 Mbps)</p>
 <p>To test our USB Serial Adapter…</p>
@@ -253,7 +253,7 @@ Pong!
 Ping!
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/7a55d7ad358b9ed01bf1e78c50b3d27c">(Source)</a></p>
-<p><strong>If the text appears garbled:</strong> Try a different USB Serial Adapter. <a href="https://wiki.pine64.org/wiki/Ox64#Compatible_UARTs_when_in_bootloader_mode">(Like these)</a></p>
+<p><strong>If the text appears garbled:</strong> Try a different USB Serial Adapter. <a href="https://pine64.org/documentation/Ox64/Further_information/Compatible_UARTs/">(Like these)</a></p>
 <p><a href="https://gist.github.com/lupyuen/43676407bbced733e65566879e18732b">(<strong>Pre-Production Ox64</strong> looks different)</a></p>
 </li>
 <li>
@@ -326,7 +326,7 @@ Ping!
 <li>
 <p>We’ll run <strong>Bouffalo Lab DevCube</strong> for Flashing Ox64.</p>
 <p>Which supports <strong>Ubuntu x64, macOS and Windows</strong> only.</p>
-<p>(How to flash BL808 on Arm64 SBCs and Pinebook Pro? Sigh. See <a href="https://wiki.pine64.org/wiki/Ox64#Alternative:_Open-Source_Flashing"><strong>bflb-iot-tool</strong> / <strong>bflb-mcu-tool</strong></a>)</p>
+<p>(How to flash BL808 on Arm64 SBCs and Pinebook Pro? Sigh. See <a href="https://pine64.org/documentation/Ox64/Software/Flashing/#download_flashing_tools"><strong>bflb-iot-tool</strong> / <strong>bflb-mcu-tool</strong></a>)</p>
 </li>
 <li>
 <p>Download <strong>BL DevCube 1.8.3</strong> from…</p>
