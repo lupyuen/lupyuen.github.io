@@ -103,7 +103,7 @@
 </li>
 </ul>
 <p>Thanks to <a href="https://pine64.org/"><strong>PINE64</strong></a>, the sponsor of <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Ox64 BL808</strong></a> RISC-V SBCs for our GSoC Project Testing!</p>
-<p><img src="https://lupyuen.github.io/images/rust3-output.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust3-output.png" alt="Rust App for NuttX" /></p>
 <h1 id="rust-app-for-nuttx"><a class="doc-anchor" href="#rust-app-for-nuttx">§</a>1 Rust App for NuttX</h1>
 <p>Below is the <strong>“Hello Rust”</strong> Demo App that’s bundled with Apache NuttX RTOS: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
@@ -206,7 +206,7 @@ Scheduler Informational Output
 <p>Browse to “<strong>Application Configuration</strong> &gt; <strong>Examples</strong>”</p>
 <p>Select “<strong>Hello Rust Example</strong>”</p>
 <p>Select it <strong>Twice</strong> so that “<strong><code>&lt;M&gt;</code></strong>” changes to “<strong><code>&lt;*&gt;</code></strong>”</p>
-<p><a href="TODO">(Source Code for <strong>Hello Rust</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/rust3#rust-app-for-nuttx">(Source Code for <strong>Hello Rust</strong>)</a></p>
 </li>
 <li>
 <p>Save and exit <strong>menuconfig</strong>.</p>
@@ -309,10 +309,10 @@ Builtin Apps:
 <p><em>What about QEMU for 64-bit RISC-V?</em></p>
 <p>Sorry Rust Apps won’t build correctly on NuttX for 64-bit RISC-V…</p>
 <ul>
-<li>TODO</li>
+<li><a href="https://lupyuen.github.io/articles/rust3#appendix-rust-build-for-64-bit-risc-v"><strong>“Rust Build for 64-bit RISC-V”</strong></a></li>
 </ul>
 <p>We’ll fix this in GSoC and test it on Ox64 BL808 SBC.</p>
-<p><img src="https://lupyuen.github.io/images/rust3-input.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust3-input.png" alt="Console Input in Rust" /></p>
 <h1 id="console-input-in-rust"><a class="doc-anchor" href="#console-input-in-rust">§</a>4 Console Input in Rust</h1>
 <p><em>We’ve done Console Output. How about Console Input?</em></p>
 <p>This is how we read <strong>Console Input</strong> in Rust: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
@@ -395,10 +395,10 @@ Builtin Apps:
 </li>
 </ul>
 <p>We’ll talk more about this.</p>
-<p><img src="https://lupyuen.github.io/images/rust3-build.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust3-build.png" alt="How NuttX Compiles Rust Apps" /></p>
 <h1 id="how-nuttx-compiles-rust-apps"><a class="doc-anchor" href="#how-nuttx-compiles-rust-apps">§</a>5 How NuttX Compiles Rust Apps</h1>
 <p><em>What happens when we compile our Rust App?</em></p>
-<p>Watch how NuttX builds Rust Apps by calling <a href="TODO"><strong><code>rustc</code></strong></a>. (Instead of the usual <a href="TODO"><strong><code>cargo build</code></strong></a>)</p>
+<p>Watch how NuttX builds Rust Apps by calling <a href="https://doc.rust-lang.org/rustc/what-is-rustc.html"><strong><code>rustc</code></strong></a>. (Instead of the usual <a href="https://doc.rust-lang.org/cargo/commands/cargo-build.html"><strong><code>cargo</code> <code>build</code></strong></a>)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the NuttX Project with Tracing Enabled
 $ make --trace
 
@@ -451,7 +451,7 @@ riscv64-unknown-elf-ld \
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/1d79670339480baed19f4fa30266b945">(See the <strong>Detailed Build Log</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/Application.mk#L164-L170">(<strong>Rust Build</strong> with <strong><code>rustc</code></strong> is defined here)</a></p>
-<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo build</code></strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo</code> <code>build</code></strong>)</a></p>
 <p>Here are the <strong>Rust Binaries</strong> produced by the NuttX Build (which will be linked into the NuttX Firmware)…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l ../apps/examples/hello_rust     
 total 112
@@ -566,10 +566,10 @@ riscv64-unknown-elf-ld:
 <p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <a href="TODO"><strong>Link-Time Optimisation (LTO)</strong></a>. (Including the Panic Function)</p>
 <p>But we’re linking it into our NuttX Firmware with GCC Linker, with <strong>LTO Disabled</strong>. Which causes the Missing Panic Function.</p>
 <p><em>How is this different from typical Rust Builds?</em></p>
-<p>Normally we run <a href="TODO"><strong><code>cargo build</code></strong></a> to compile our Embedded Rust Apps. And it handles LTO correctly.</p>
-<p>But NuttX calls <a href="TODO"><strong><code>rustc</code></strong></a> to compile Rust Apps, then calls <strong>GCC Linker</strong> to link into our NuttX Firmware. Which doesn’t seem to support LTO.</p>
+<p>Normally we run <a href="https://doc.rust-lang.org/cargo/commands/cargo-build.html"><strong><code>cargo</code> <code>build</code></strong></a> to compile our Embedded Rust Apps. And it handles LTO correctly.</p>
+<p>But NuttX calls <a href="https://doc.rust-lang.org/rustc/what-is-rustc.html"><strong><code>rustc</code></strong></a> to compile Rust Apps, then calls <strong>GCC Linker</strong> to link into our NuttX Firmware. Which doesn’t seem to support LTO.</p>
 <p>We’ll sort this out in GSoC!</p>
-<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo build</code></strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo</code> <code>build</code></strong>)</a></p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/rust3-nostd.jpg" alt="The Embedded Rust Book" /></p>
 </blockquote>
@@ -735,10 +735,10 @@ riscv64-unknown-elf-ld:
 <p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <a href="TODO"><strong>Link-Time Optimisation (LTO)</strong></a>. (Including the Panic Function)</p>
 <p>But we’re linking it into our NuttX Firmware with GCC Linker, with <a href="https://johnysswlab.com/link-time-optimizations-new-way-to-do-compiler-optimizations/"><strong>LTO Disabled</strong></a> (by default). Which causes the Missing Panic Function.</p>
 <p><em>How is this different from typical Rust Builds?</em></p>
-<p>Normally we run <a href="TODO"><strong><code>cargo build</code></strong></a> to compile our Embedded Rust Apps. And it handles LTO correctly.</p>
-<p>But NuttX calls <a href="TODO"><strong><code>rustc</code></strong></a> to compile Rust Apps, then calls <strong>GCC Linker</strong> to link into our NuttX Firmware. Which doesn’t seem to support LTO.</p>
+<p>Normally we run <a href="https://doc.rust-lang.org/cargo/commands/cargo-build.html"><strong><code>cargo</code> <code>build</code></strong></a> to compile our Embedded Rust Apps. And it handles LTO correctly.</p>
+<p>But NuttX calls <a href="https://doc.rust-lang.org/rustc/what-is-rustc.html"><strong><code>rustc</code></strong></a> to compile Rust Apps, then calls <strong>GCC Linker</strong> to link into our NuttX Firmware. Which doesn’t seem to support LTO.</p>
 <p>We’ll sort this out in GSoC!</p>
-<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo build</code></strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo</code> <code>build</code></strong>)</a></p>
 <h1 id="appendix-rust-build-for-64-bit-risc-v"><a class="doc-anchor" href="#appendix-rust-build-for-64-bit-risc-v">§</a>12 Appendix: Rust Build for 64-bit RISC-V</h1>
 <p><em>We tested Rust Apps on QEMU for 32-bit RISC-V. What about 64-bit RISC-V?</em></p>
 <p>Sorry Rust Apps won’t build correctly on NuttX for 64-bit RISC-V…</p>
