@@ -94,7 +94,7 @@
 <p>TODO: How we plan to fix them in </p>
 </li>
 <li>
-<p>Why we’re doing all this for Google Summer of Code</p>
+<p>Why we’re doing all this for <strong>Google Summer of Code</strong></p>
 </li>
 </ul>
 <p>Thanks to <a href="TODO"><strong>PINE64</strong></a>, the sponsor of <a href="TODO"><strong>Ox64 BL808</strong></a> RISC-V SBCs for our GSoC Project Testing!</p>
@@ -137,7 +137,7 @@
   <span class="comment">// Exit with status 0
   </span><span class="number">0
 </span>}</code></pre></div>
-<p>To build the Rust App, we need to provide a <strong>Panic Handler</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>Rust needs us to provide a <strong>Panic Handler</strong>. We write a simple one: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Import the Panic Info for our Panic Handler
 </span><span class="kw">use </span>core::panic::PanicInfo;
@@ -153,7 +153,6 @@
   </span><span class="kw">loop </span>{}
 }</code></pre></div>
 <p>Which doesn’t do much right now. We’ll create a proper Panic Handler during GSoC.</p>
-<p>(More about Rust Panic in a while)</p>
 <p><img src="https://lupyuen.github.io/images/riscv-build.png" alt="Build Apache NuttX RTOS for 64-bit RISC-V QEMU" /></p>
 <h1 id="build-nuttx-for-qemu-risc-v"><a class="doc-anchor" href="#build-nuttx-for-qemu-risc-v">§</a>2 Build NuttX for QEMU RISC-V</h1>
 <p><em>How to compile our Rust App?</em></p>
@@ -602,7 +601,7 @@ riscv64-unknown-elf-ld:
 <p>That’s why Linux Kernel supports the <a href="https://doc.rust-lang.org/alloc/#"><strong><code>alloc</code> Rust Library / Crate</strong></a> for Heap Memory. To implement Rust <strong><code>alloc</code></strong>, Linux Kernel calls <em>krealloc()</em> to allocate Kernel Heap. <a href="https://github.com/torvalds/linux/blob/741e9d668aa50c91e4f681511ce0e408d55dd7ce/rust/kernel/allocator.rs#L46">(Like this)</a></p>
 <p><strong>For NuttX Kernel:</strong> We’ll implement Rust <strong><code>alloc</code></strong> by calling <em>kmm_malloc()</em>.</p>
 <p><em>Anything else we need for Rust in NuttX Kernel?</em></p>
-<p>Since we’re calling <strong>Rust Core Library</strong> in NuttX Kernel, we won’t touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we’ll have to <strong>create the Rust Library</strong> ourselves.</p>
+<p>Since we’re calling <strong>Rust Core Library</strong> in NuttX Kernel, we won’t touch any POSIX Application Interfaces. Thus if we need to support the Kernel Equivalent of Errno (and other Global State), we’ll have to <strong>create the Rust Library</strong> ourselves.</p>
 <p><a href="https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/">(See the Rust Library for <strong>Linux Kernel</strong>)</a></p>
 <p>TODO: GSoC Project Report, Draft Driver</p>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>9 All Things Considered</h1>
@@ -757,6 +756,8 @@ make[2]: *** [nuttx/apps/Application.mk:275: hello_rust_main.rs...nuttx.apps.exa
 make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
 make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 </code></pre></div>
+<p>Which says that <em>riscv64i-unknown-none-elf</em> isn’t a valid Rust Target.</p>
+<p>(Should be <em>riscv64gc-unknown-none-elf</em> instead)</p>
 <p>We’ll fix this in GSoC and test it on Ox64 BL808 SBC.</p>
 <p>TODO: Test on QEMU Arm32 and Arm64</p>
 
