@@ -638,6 +638,8 @@ Since we're calling __Rust Core Library__ in NuttX Kernel, we won't touch any PO
 
 TODO: GSoC Project Report, Draft Driver
 
+![TODO](https://lupyuen.github.io/images/rust3-ideas.jpg)
+
 # All Things Considered
 
 1.  _Why are we doing all this?_
