@@ -16,7 +16,7 @@ My mentee [__Rushabh Gala__](https://github.com/apache/nuttx/issues/11907) and I
 
 - TODO: How we plan to fix them in 
 
-- Why we're doing all this for Google Summer of Code
+- Why we're doing all this for __Google Summer of Code__
 
 Thanks to [__PINE64__](TODO), the sponsor of [__Ox64 BL808__](TODO) RISC-V SBCs for our GSoC Project Testing!
 
@@ -68,7 +68,7 @@ pub extern "C" fn hello_rust_main(
 }
 ```
 
-To build the Rust App, we need to provide a __Panic Handler__: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
+Rust needs us to provide a __Panic Handler__. We write a simple one: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
 
 ```rust
 // Import the Panic Info for our Panic Handler
@@ -87,8 +87,6 @@ fn panic(
 ```
 
 Which doesn't do much right now. We'll create a proper Panic Handler during GSoC.
-
-(More about Rust Panic in a while)
 
 ![Build Apache NuttX RTOS for 64-bit RISC-V QEMU](https://lupyuen.github.io/images/riscv-build.png)
 
@@ -643,7 +641,7 @@ __For NuttX Kernel:__ We'll implement Rust __`alloc`__ by calling _kmm_malloc()_
 
 _Anything else we need for Rust in NuttX Kernel?_
 
-Since we're calling __Rust Core Library__ in NuttX Kernel, we won't touch any POSIX Application Interfaces. So if we need to support the Kernel Equivalent of Errno (and other Global State), we'll have to __create the Rust Library__ ourselves.
+Since we're calling __Rust Core Library__ in NuttX Kernel, we won't touch any POSIX Application Interfaces. Thus if we need to support the Kernel Equivalent of Errno (and other Global State), we'll have to __create the Rust Library__ ourselves.
 
 [(See the Rust Library for __Linux Kernel__)](https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/)
 
@@ -840,6 +838,10 @@ make[2]: *** [nuttx/apps/Application.mk:275: hello_rust_main.rs...nuttx.apps.exa
 make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
 make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 ```
+
+Which says that _riscv64i-unknown-none-elf_ isn't a valid Rust Target.
+
+(Should be _riscv64gc-unknown-none-elf_ instead)
 
 We'll fix this in GSoC and test it on Ox64 BL808 SBC.
 
