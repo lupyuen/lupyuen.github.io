@@ -94,7 +94,9 @@ Which doesn't do much right now. We'll create a proper Panic Handler during GSoC
 
 # Build NuttX for QEMU RISC-V
 
-Follow these steps to build Apache NuttX RTOS for QEMU RISC-V (32-bit), bundled with our "Hello Rust" Demo App...
+_How to compile our Rust App?_
+
+Follow these steps to build Apache NuttX RTOS for __QEMU RISC-V (32-bit)__, bundled with our "Hello Rust" Demo App...
 
 1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
 
@@ -398,9 +400,11 @@ We'll talk more about this.
 
 # How NuttX Compiles Rust Apps
 
-Let's watch how NuttX builds Rust Apps by calling __`rustc`__. (Instead of __`cargo build`__)
+_What happens when we compile our Rust App?_
 
-Here's the __NuttX Build Log__...
+Let's watch how NuttX builds Rust Apps by calling [__`rustc`__](TODO). (Instead of the usual [__`cargo build`__](TODO))
+
+We observe the __NuttX Build Log__...
 
 ```bash
 ## Build the NuttX Project with Tracing Enabled
@@ -476,7 +480,7 @@ total 112
 
 [(See the __RISC-V Disassembly__)](https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c)
 
-Let's talk about the hiccups in our Rust Build...
+We step back and talk about the hiccups in our Rust Build...
 
 # Software vs Hardware Floating-Point
 
