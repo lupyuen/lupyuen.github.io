@@ -555,7 +555,7 @@ We'll investigate this during GSoC. (Incorrect [__Rust Target__](TODO) maybe?)
 
 _What's this core::panicking::panic? Why is it undefined?_
 
-```
+```bash
 $ make
 riscv64-unknown-elf-ld:
   nuttx/staging/libapps.a(hello_rust_main.rs...apps.examples.hello_rust_1.o):
@@ -675,9 +675,9 @@ TODO: GSoC Project Report, Draft Driver
 
     And Rust Compiler is almost Sentient, always commanding us Humans: _"Please do this to fix the build, you poopy nincompoop!"_
 
-    (My Biggest Wish: Someone please create a __Higher-Level Dialect__ of Rust that will use bits of AI to compile into the present Low-Level Rust. Which might simplify Lifetimes, Box, Rc, Arc, RefCell, Fn, dyn, ...)
+    (My Biggest Wish: Someone please create a __Higher-Level Dialect__ of Rust that will use bits of AI to compile into the present Low-Level Rust. Which might simplify Generics, Lifetimes, Box, Rc, Arc, RefCell, Fn*, dyn, async, ...)
 
-1.  _There's some Resistance to Rust Drivers inside NuttX Kernel?_
+1.  _Will there be Resistance to Rust Drivers inside NuttX Kernel?_
 
     Ouch we're trapped between a Rock and... Another Rusty Rock!
 
@@ -715,45 +715,116 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Panic is Undefined
 
-TODO
-
 _What's this core::panicking::panic? Why is it undefined?_
 
-TODO
+```bash
+$ make
+riscv64-unknown-elf-ld:
+  nuttx/staging/libapps.a(hello_rust_main.rs...apps.examples.hello_rust_1.o):
+  in function `no symbol':
+  apps/examples/hello_rust/hello_rust_main.rs:90:
+  undefined reference to `core::panicking::panic'
+```
 
-If the GCC Linker fails with the error _"undefined reference to core::panicking::panic"_, please apply this patch...
+Earlier we spoke about the Undefined Panic Function...
 
-[Add -O to RUSTFLAGS in Makefile](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/commit/58c9ebee95626251dd1601476991cdfea7fcd190)
+- TODO
 
-Then rebuild: `make clean ; make`
+Which Rushabh has fixed with this patch...
 
-(If we still hit the same error, see the notes below)
+- [__Add `-O` to `RUSTFLAGS` in Makefile__](https://github.com/apache/nuttx-apps/pull/2333)
 
-TODO
+But watch what happens when we add __Another Point of Panic__...
 
-After adding `RUSTFLAGS=-O`, we might still hit Undefined `core::panicking::panic`. Here's our Test Code that has 2 Potential Panics: [hello_rust_main.rs](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90)
+Here's our Test Code that has 2 Potential Panics: [hello_rust_main.rs](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90)
 
-- [Converting usize to c_int](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84) might panic (due to overflow)
+1.  [__Converting Unsigned Int to Signed Int__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84) might panic (due to __Integer Overflow__)
 
-- [Divide by 0](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90) will panic
+    ```rust
+    // Input Buffer with 256 chars (including terminating null)
+    let mut buf: [c_char; 256] =  // Input Buffer is Mutable (will change)
+      [0; 256];                   // Init with nulls
 
-If we omit `RUSTFLAGS=-O`: We see 2 Undefined `core::panicking::panic`...
+    // Read a line from Standard Input
+    fgets(
+      &mut buf[0],       // Buffer
+      // This might Panic due to Integer Overflow!
+      buf.len() as i32,  // Unsigned Size cast to Signed Integer
+      stdin              // Standard Input
+    );
+    ```
 
-- [RISC-V Disassembly: Without `RUSTFLAGS=-O`](https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c)
+1.  [__Divide by Zero__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90) will also panic
 
-But when we add `RUSTFLAGS=-O`: We still see 1 Undefined `core::panicking::panic` for the divide-by-zero...
+    ```rust
+    // Buffer might begin with null
+    // Which causes Divide by Zero
+    let i = 1 / buf[0];
+    ```
 
-- [RISC-V Disassembly: With `RUSTFLAGS=-O`](https://gist.github.com/lupyuen/bec3bdd8379143a6046414d3ad2cc888)
+_What happens when we compile this?_
 
-Somehow the divide-by-zero panic refuses to link correctly. [Based on this discussion](https://github.com/rust-lang/compiler-builtins/issues/79), it seems that the Rust Core Library is compiled with LTO (Link-Time Optimisation), so it might still cause problems with our code, which doesn't use LTO.
+__If we omit `RUSTFLAGS=-O`__: We see 2 Undefined Panic Functions...
 
-TODO: If we call `cargo build` (instead of `rustc`), will it fix this LTO issue? How different is the `cargo build` Linker from GCC Linker?
+```rust
+apps/examples/hello_rust/hello_rust_main.rs:84
+  buf.len() as i32 - 1,  // Might Overflow
+    a0: 00000097         auipc ra,0x0
+    a0: R_RISCV_CALL_PLT core::panicking::panic
+
+apps/examples/hello_rust/hello_rust_main.rs:90
+  let i = 1 / buf[0];  // Might Divide by Zero
+    108: 00000097         auipc ra,0x0
+    108: R_RISCV_CALL_PLT core::panicking::panic
+```
+
+[(See the __RISC-V Disassembly__)](https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c#file-hello_rust_1-s-L301-L352)
+
+__After we add `RUSTFLAGS=-O`__: We still see 1 Undefined Panic Function for the divide-by-zero...
+
+```rust
+apps/examples/hello_rust/hello_rust_main.rs:90
+  let i = 1 / buf[0];  // Might Divide by Zero
+    d0: 00000097         auipc ra,0x0 
+    d0: R_RISCV_CALL_PLT core::panicking::panic
+```
+
+[(See the __RISC-V Disassembly__)](https://gist.github.com/lupyuen/bec3bdd8379143a6046414d3ad2cc888#file-hello_rust_1-s-L287-L294)
+
+Which leads to the Undefined Panic Error again (sigh)...
+
+```bash
+$ make
+riscv64-unknown-elf-ld:
+  nuttx/staging/libapps.a(hello_rust_main.rs...apps.examples.hello_rust_1.o):
+  in function `no symbol':
+  apps/examples/hello_rust/hello_rust_main.rs:90:
+  undefined reference to `core::panicking::panic'
+```
+
+_What's causing this Undefined Panic Function?_
+
+According to [__this discussion__](https://github.com/rust-lang/compiler-builtins/issues/79), the Rust Core Library is compiled with [__Link-Time Optimisation (LTO)__](TODO). (Including the Panic Function)
+
+But we're linking it into our NuttX Firmware with GCC Linker, with __LTO Disabled__. Which causes the Missing Panic Function.
+
+_How is this different from typical Rust Builds?_
+
+Normally we run [__`cargo build`__](TODO) to compile our Embedded Rust Apps. And it handles LTO correctly.
+
+But NuttX calls [__`rustc`__](TODO) to compile Rust Apps, then calls __GCC Linker__ to link into our NuttX Firmware. Which doesn't seem to support LTO.
+
+We'll sort this out in GSoC!
+
+[(Why NuttX calls __`rustc`__ instead of __`cargo build`__)](https://github.com/apache/nuttx/pull/5566)
 
 # Appendix: Rust Build for 64-bit RISC-V
 
-TODO: Rust Build fails for QEMU RISC-V 64-bit...
+_We tested Rust Apps on QEMU for 32-bit RISC-V. What about 64-bit RISC-V?_
 
-```text
+Sorry Rust Apps won't build correctly on NuttX for 64-bit RISC-V...
+
+```bash
 $ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
 ## TODO: Enable "Hello Rust Example"
@@ -768,4 +839,6 @@ make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
 make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 ```
 
-TODO: Test the Rust Build for QEMU Arm32 and Arm64
+We'll fix this in GSoC and test it on Ox64 BL808 SBC.
+
+TODO: Test on QEMU Arm32 and Arm64
