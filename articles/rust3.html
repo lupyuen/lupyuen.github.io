@@ -526,7 +526,8 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(We had a similar issue with <strong>Zig Compiler</strong>)</a></p>
 <p><em>But why Soft-Float instead of Double-Float? (Mmmm ice cream float)</em></p>
 <p>Yeah patching the ELF Header is a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)</p>
-<p>We’ll investigate this during GSoC. (Incorrect <a href="TODO"><strong>Rust Target</strong></a> maybe?)</p>
+<p>We’ll investigate this during GSoC.</p>
+<p>(Incorrect <a href="TODO"><strong>Rust Target</strong></a> maybe? But <em>riscv32gc-unknown-none-elf</em> requires a <a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602"><strong>Custom Target</strong></a>!)</p>
 <p><img src="https://lupyuen.github.io/images/rust3-panic.png" alt="TODO" /></p>
 <h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
@@ -537,7 +538,7 @@ riscv64-unknown-elf-ld:
   apps/examples/hello_rust/hello_rust_main.rs:90:
   undefined reference to `core::panicking::panic&#39;
 </code></pre></div>
-<p>Suppose we’re reading <strong>Console Input</strong> in our Rust App: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>Suppose we’re reading <strong>Console Input</strong> in our Rust App: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L81-L86">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Input Buffer with 256 chars (including terminating null)
 </span><span class="kw">let </span><span class="kw-2">mut </span>buf: [c_char; <span class="number">256</span>] =  <span class="comment">// Input Buffer is Mutable (will change)
@@ -545,9 +546,9 @@ riscv64-unknown-elf-ld:
 
 // Read a line from Standard Input
 </span>fgets(
-  <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],       <span class="comment">// Buffer
-  </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Size (cast to Signed Integer)
-  </span>stdin              <span class="comment">// Standard Input
+  <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],           <span class="comment">// Buffer
+  </span>buf.len() <span class="kw">as </span>i32 - <span class="number">1</span>,  <span class="comment">// Size (cast to Signed Integer)
+  </span>stdin                  <span class="comment">// Standard Input
 </span>);</code></pre></div>
 <p><em>buf.len()</em> is an <strong>Unsigned Integer</strong> (4 bytes). When we cast it as a <strong>Signed Integer</strong>, it might overflow.</p>
 <p>When <strong>Integer Overflow</strong> happens, our Rust App will <strong>Panic and Halt</strong>.</p>
@@ -688,10 +689,10 @@ riscv64-unknown-elf-ld:
 
 // Read a line from Standard Input
 </span>fgets(
-  <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],       <span class="comment">// Buffer
+  <span class="kw-2">&amp;mut </span>buf[<span class="number">0</span>],           <span class="comment">// Buffer
   // This might Panic due to Integer Overflow!
-  </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Unsigned Size cast to Signed Integer
-  </span>stdin              <span class="comment">// Standard Input
+  </span>buf.len() <span class="kw">as </span>i32 - <span class="number">1</span>,  <span class="comment">// Unsigned Size cast to Signed Integer
+  </span>stdin                  <span class="comment">// Standard Input
 </span>);</code></pre></div>
 </li>
 <li>
