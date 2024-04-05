@@ -4,17 +4,19 @@
 
 ![Rust Apps on Apache NuttX RTOS and QEMU RISC-V](https://lupyuen.github.io/images/rust3-title.png)
 
-TODO
-
 My mentee [__Rushabh Gala__](https://github.com/apache/nuttx/issues/11907) and I are anxiously awaiting the results of the [__Google Summer of Code__](TODO) (GSoC) Project Selection. While waiting, we explain the current steps for running barebones __Rust Apps__ on [__Apache NuttX RTOS__](TODO) (and the challenges we faced)...
 
-- TODO: Running Rust Apps on NuttX today
+- How we compile __Rust Apps for NuttX__
 
-- TODO: Limitations
+- Running NuttX and Rust Apps on __QEMU RISC-V Emulator__
 
-- TODO: Workaround
+- __Console Input and Output__ for Rust on NuttX
 
-- TODO: How we plan to fix them in 
+- __Software vs Hardware Floating-Point__ and why it's a problem
+
+- Linking Issues with the __Rust Panic Handler__
+
+- __Standard vs Embedded Rust__ and why it matters
 
 - Why we're doing all this for __Google Summer of Code__
 
