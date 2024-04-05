@@ -20,6 +20,8 @@ My mentee [__Rushabh Gala__](https://github.com/apache/nuttx/issues/11907) and I
 
 Thanks to [__PINE64__](TODO), the sponsor of [__Ox64 BL808__](TODO) RISC-V SBCs for our GSoC Project Testing!
 
+![TODO](https://lupyuen.github.io/images/rust3-output.png)
+
 # Rust App for NuttX
 
 Below is the __"Hello Rust"__ Demo App that's bundled with Apache NuttX RTOS: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
@@ -273,6 +275,8 @@ Sorry Rust Apps won't build correctly on NuttX for 64-bit RISC-V...
 
 We'll fix this in GSoC and test it on Ox64 BL808 SBC.
 
+![TODO](https://lupyuen.github.io/images/rust3-input.png)
+
 # Console Input in Rust
 
 _We've done Console Output. How about Console Input?_
@@ -371,6 +375,8 @@ But this won't work on NuttX because...
 
 We'll talk more about this.
 
+![TODO](https://lupyuen.github.io/images/rust3-build.png)
+
 # How NuttX Compiles Rust Apps
 
 _What happens when we compile our Rust App?_
@@ -453,6 +459,8 @@ total 112
 
 We step back and talk about the hiccups in our Rust Build...
 
+![TODO](https://lupyuen.github.io/images/rust3-float.png)
+
 # Software vs Hardware Floating-Point
 
 _What's this error? "Can't link soft-float modules with double-float modules"_
@@ -527,6 +535,8 @@ _But why Soft-Float instead of Double-Float? (Mmmm ice cream float)_
 Yeah patching the ELF Header is a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)
 
 We'll investigate this during GSoC. (Incorrect [__Rust Target__](TODO) maybe?)
+
+![TODO](https://lupyuen.github.io/images/rust3-panic.png)
 
 # Panic is Undefined
 
@@ -672,6 +682,8 @@ TODO: GSoC Project Report, Draft Driver
 
     — Observe the Rust Development in [__Linux Kernel__](https://rust-for-linux.com/) and [__Zephyr OS__](https://github.com/zephyrproject-rtos/zephyr/issues/65837). Then adapt the Best Practices for NuttX Kernel.
 
+![TODO](https://lupyuen.github.io/images/rust3-gsoc.png)
+
 # What's Next
 
 TODO
@@ -693,6 +705,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/rust3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust3.md)
+
+![TODO](https://lupyuen.github.io/images/rust3-panic.png)
 
 # Appendix: Panic is Undefined
 
