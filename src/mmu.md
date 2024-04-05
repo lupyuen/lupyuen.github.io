@@ -28,7 +28,7 @@ Actually [__Sv39 Memory Management Unit__](https://five-embeddev.com/riscv-isa-m
 
   (Based on __StarFive JH7110 SoC__)
 
-In this article, we find out __how Sv39 MMU works__ on a simple barebones SBC: [__Pine64 Ox64 64-bit RISC-V SBC__](https://wiki.pine64.org/wiki/Ox64). (Pic below)
+In this article, we find out __how Sv39 MMU works__ on a simple barebones SBC: [__Pine64 Ox64 64-bit RISC-V SBC__](https://pine64.org/documentation/Ox64/). (Pic below)
 
 (Powered by [__Bouffalo Lab BL808 SoC__](https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf))
 
@@ -60,7 +60,7 @@ Let's learn things a little differently! This article will read (and look) like 
 
 ![Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)](https://lupyuen.github.io/images/ox64-solder.jpg)
 
-[_Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)_](https://wiki.pine64.org/wiki/Ox64)
+[_Pine64 Ox64 64-bit RISC-V SBC (Sorry for my substandard soldering)_](https://pine64.org/documentation/Ox64/)
 
 # Memory Protection
 

@@ -6,7 +6,7 @@
 
 Happy New Year! 2024 is here and we're running [__Apache NuttX RTOS__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (Real-Time Operating System) on Single-Board Computers with __plenty of RAM__...
 
-Like [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBC with __64 MB RAM!__ (Pic below)
+Like [__Pine64 Ox64 BL808__](https://pine64.org/documentation/Ox64/) RISC-V SBC with __64 MB RAM!__ (Pic below)
 
 _How will we use the Plentiful RAM?_
 

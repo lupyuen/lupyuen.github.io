@@ -4,7 +4,7 @@
 
 ![UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!](https://lupyuen.github.io/images/plic3-title.png)
 
-Last week we walked through the __Serial Console__ for [__Pine64 Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) 64-bit RISC-V Single-Board Computer (pic below)...
+Last week we walked through the __Serial Console__ for [__Pine64 Ox64 BL808__](https://pine64.org/documentation/Ox64/) 64-bit RISC-V Single-Board Computer (pic below)...
 
 -   [__"UART Interrupt and Platform-Level Interrupt Controller"__](https://lupyuen.github.io/articles/plic2)
 

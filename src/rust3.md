@@ -4,7 +4,7 @@
 
 ![Rust Apps on Apache NuttX RTOS and QEMU RISC-V](https://lupyuen.github.io/images/rust3-title.png)
 
-My mentee [__Rushabh Gala__](https://github.com/apache/nuttx/issues/11907) and I are anxiously awaiting the results of the [__Google Summer of Code__](TODO) (GSoC) Project Selection. While waiting, we explain the current steps for running barebones __Rust Apps__ on [__Apache NuttX RTOS__](TODO) (and the challenges we faced)...
+My mentee [__Rushabh Gala__](https://github.com/apache/nuttx/issues/11907) and I are anxiously awaiting the results of the [__Google Summer of Code__](https://summerofcode.withgoogle.com/) (GSoC) Project Selection. While waiting, we explain the current steps for running barebones __Rust Apps__ on [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) (and the challenges we faced)...
 
 - How we compile __Rust Apps for NuttX__
 
@@ -20,7 +20,7 @@ My mentee [__Rushabh Gala__](https://github.com/apache/nuttx/issues/11907) and I
 
 - Why we're doing all this for __Google Summer of Code__
 
-Thanks to [__PINE64__](TODO), the sponsor of [__Ox64 BL808__](TODO) RISC-V SBCs for our GSoC Project Testing!
+Thanks to [__PINE64__](https://pine64.org/), the sponsor of [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBCs for our GSoC Project Testing!
 
 ![TODO](https://lupyuen.github.io/images/rust3-output.png)
 

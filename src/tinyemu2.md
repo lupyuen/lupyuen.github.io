@@ -10,7 +10,7 @@
 
 _In olden times we had Computer Games (plus Operating Systems) on 5.25-inch __Floppy Disks__. And we'd boot the Floppy Disks (clackety-clack) on __Apple II Computers__ with 64 KB RAM._
 
-Today (40 years later) we boot __microSD Cards__ (clickety-click) on [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V Single-Board Computers with 64 MB RAM. (Pic below)
+Today (40 years later) we boot __microSD Cards__ (clickety-click) on [__Ox64 BL808__](https://pine64.org/documentation/Ox64/) RISC-V Single-Board Computers with 64 MB RAM. (Pic below)
 
 _What if we could turn it into a_ [__Virtual Ox64 SBC__](https://lupyuen.github.io/nuttx-tinyemu/smode) _that boots in our_ [__Web Browser__](https://lupyuen.github.io/nuttx-tinyemu/smode)? _(Pic above) Exactly like an_ [__Emulated Apple II__](https://www.scullinsteel.com/apple2/#dos33master)!
 
