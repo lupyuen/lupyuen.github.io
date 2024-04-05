@@ -14,7 +14,9 @@ My mentee [__Rushabh Gala__](https://github.com/apache/nuttx/issues/11907) and I
 
 - TODO: Workaround
 
-- TODO: How we plan to fix them in GSoC
+- TODO: How we plan to fix them in 
+
+- Why we're doing all this for Google Summer of Code
 
 Thanks to [__PINE64__](TODO), the sponsor of [__Ox64 BL808__](TODO) RISC-V SBCs for our GSoC Project Testing!
 
