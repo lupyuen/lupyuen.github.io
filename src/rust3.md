@@ -370,11 +370,11 @@ fgets(
 );
 ```
 
-Which makes us ponder about __Memory Safety__: _"Hmmm the fgets() buffer size... Does it include the terminating null?"_
+Which makes us ponder about [__Memory Safety__](TODO): _"Hmmm the fgets() buffer size... Does it include the terminating null?"_
 
-(Yep it does!)
+[(Yep it does!)](https://man.archlinux.org/man/fgets.3p.en)
 
-_What about Rust? How does it safely handle Console Input?_
+_What about Rust? Does it safely handle Console Input?_
 
 Reading the [__Standard Input in Rust__](https://doc.rust-lang.org/std/io/fn.stdin.html) looks simpler and safer...
 
