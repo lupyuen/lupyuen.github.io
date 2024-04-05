@@ -353,9 +353,7 @@ fgets(
 );
 ```
 
-Which makes us ponder about [__Memory Safety__](https://en.m.wikipedia.org/wiki/Memory_safety): _"Hmmm the fgets() buffer size... Does it include the terminating null?"_
-
-[(Yep it does!)](https://man.archlinux.org/man/fgets.3p.en)
+Which makes us ponder about [__Memory Safety__](https://en.m.wikipedia.org/wiki/Memory_safety): _"Hmmm the fgets() buffer size... Does it include the terminating null?"_ [(Yep it does!)](https://man.archlinux.org/man/fgets.3p.en)
 
 _What about Rust? Does it safely handle Console Input?_
 
@@ -375,9 +373,15 @@ But this won't work on NuttX because...
 
 - __Dynamic Strings and Heap Memory__ won't work on Embedded Platforms either
 
-We'll talk more about this.
+_Bummer. How to do I/O safely on NuttX?_
 
-TODO: Rust Wrapper / Rustix
+During GSoC we shall...
+
+- Create __Rust Wrappers__ that will safely call NuttX POSIX Functions: _open(), close(), ioctl(), ..._
+
+- Which will support [__Simple Strings__](https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/str/struct.CString.html) via _malloc()_
+
+[__Rustix Project__](https://github.com/bytecodealliance/rustix/tree/nuttx) tried to provide [__Comprehensive Rust Wrappers__](https://www.youtube.com/watch?v=JTJW6kOqf9I) for NuttX POSIX. Sadly the [__project has stalled__](https://github.com/bytecodealliance/rustix/commits/nuttx/). We'll implement simpler, lighter wrappers instead.
 
 ![How NuttX Compiles Rust Apps](https://lupyuen.github.io/images/rust3-build.png)
 
@@ -461,7 +465,7 @@ total 112
 
 [(See the __RISC-V Disassembly__)](https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c)
 
-We step back and talk about the hiccups in our Rust Build...
+Now that we understand the Rust Build, let's talk about the hiccups...
 
 ![Can't link soft-float modules with double-float modules](https://lupyuen.github.io/images/rust3-float.png)
 
@@ -642,7 +646,7 @@ Since we're calling __Rust Core Library__ in NuttX Kernel, we won't touch any PO
 
 [(See the Rust Library for __Linux Kernel__)](https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/)
 
-(GSoC Project Report will prescribe a Simple LED Driver for NuttX Kernel)
+(GSoC Project Report will talk about a __Simple LED Driver__ in Rust for NuttX Kernel)
 
 ![GSoC 2024 Ideas](https://lupyuen.github.io/images/rust3-ideas.jpg)
 
@@ -695,6 +699,20 @@ Since we're calling __Rust Core Library__ in NuttX Kernel, we won't touch any PO
 # What's Next
 
 TODO
+
+- TODO: How we compile __Rust Apps for NuttX__
+
+- TODO: Running NuttX and Rust Apps on __QEMU RISC-V Emulator__
+
+- TODO: __Console Input and Output__ for Rust on NuttX
+
+- TODO: __Software vs Hardware Floating-Point__ and why it's a problem
+
+- TODO: Linking Issues with the __Rust Panic Handler__
+
+- TODO: __Standard vs Embedded Rust__ and why it matters
+
+- TODO: Why we're doing all this for __Google Summer of Code__
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
