@@ -536,7 +536,9 @@ _But why Soft-Float instead of Double-Float? (Mmmm ice cream float)_
 
 Yeah patching the ELF Header is a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)
 
-We'll investigate this during GSoC. (Incorrect [__Rust Target__](TODO) maybe?)
+We'll investigate this during GSoC.
+
+(Incorrect [__Rust Target__](TODO) maybe? But _riscv32gc-unknown-none-elf_ requires a [__Custom Target__](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)!)
 
 ![TODO](https://lupyuen.github.io/images/rust3-panic.png)
 
@@ -553,7 +555,7 @@ riscv64-unknown-elf-ld:
   undefined reference to `core::panicking::panic'
 ```
 
-Suppose we're reading __Console Input__ in our Rust App: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs)
+Suppose we're reading __Console Input__ in our Rust App: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L81-L86)
 
 ```rust
 // Input Buffer with 256 chars (including terminating null)
@@ -562,9 +564,9 @@ let mut buf: [c_char; 256] =  // Input Buffer is Mutable (will change)
 
 // Read a line from Standard Input
 fgets(
-  &mut buf[0],       // Buffer
-  buf.len() as i32,  // Size (cast to Signed Integer)
-  stdin              // Standard Input
+  &mut buf[0],           // Buffer
+  buf.len() as i32 - 1,  // Size (cast to Signed Integer)
+  stdin                  // Standard Input
 );
 ```
 
@@ -746,10 +748,10 @@ Here's our Test Code that has 2 Potential Panics: [hello_rust_main.rs](https://g
 
     // Read a line from Standard Input
     fgets(
-      &mut buf[0],       // Buffer
+      &mut buf[0],           // Buffer
       // This might Panic due to Integer Overflow!
-      buf.len() as i32,  // Unsigned Size cast to Signed Integer
-      stdin              // Standard Input
+      buf.len() as i32 - 1,  // Unsigned Size cast to Signed Integer
+      stdin                  // Standard Input
     );
     ```
 
