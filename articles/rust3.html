@@ -375,8 +375,7 @@ Builtin Apps:
   </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Buffer Size
   </span>stdin              <span class="comment">// Standard Input
 </span>);</code></pre></div>
-<p>Which makes us ponder about <a href="https://en.m.wikipedia.org/wiki/Memory_safety"><strong>Memory Safety</strong></a>: <em>“Hmmm the fgets() buffer size… Does it include the terminating null?”</em></p>
-<p><a href="https://man.archlinux.org/man/fgets.3p.en">(Yep it does!)</a></p>
+<p>Which makes us ponder about <a href="https://en.m.wikipedia.org/wiki/Memory_safety"><strong>Memory Safety</strong></a>: <em>“Hmmm the fgets() buffer size… Does it include the terminating null?”</em> <a href="https://man.archlinux.org/man/fgets.3p.en">(Yep it does!)</a></p>
 <p><em>What about Rust? Does it safely handle Console Input?</em></p>
 <p>Reading the <a href="https://doc.rust-lang.org/std/io/fn.stdin.html"><strong>Standard Input in Rust</strong></a> looks simpler and safer…</p>
 
@@ -394,8 +393,17 @@ Builtin Apps:
 <p><strong>Dynamic Strings and Heap Memory</strong> won’t work on Embedded Platforms either</p>
 </li>
 </ul>
-<p>We’ll talk more about this.</p>
-<p>TODO: Rust Wrapper / Rustix</p>
+<p><em>Bummer. How to do I/O safely on NuttX?</em></p>
+<p>During GSoC we shall…</p>
+<ul>
+<li>
+<p>Create <strong>Rust Wrappers</strong> that will safely call NuttX POSIX Functions: <em>open(), close(), ioctl(), …</em></p>
+</li>
+<li>
+<p>Which will support <a href="https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/str/struct.CString.html"><strong>Simple Strings</strong></a> via <em>malloc()</em></p>
+</li>
+</ul>
+<p><a href="https://github.com/bytecodealliance/rustix/tree/nuttx"><strong>Rustix Project</strong></a> tried to provide <a href="https://www.youtube.com/watch?v=JTJW6kOqf9I"><strong>Comprehensive Rust Wrappers</strong></a> for NuttX POSIX. Sadly the <a href="https://github.com/bytecodealliance/rustix/commits/nuttx/"><strong>project has stalled</strong></a>. We’ll implement simpler, lighter wrappers instead.</p>
 <p><img src="https://lupyuen.github.io/images/rust3-build.png" alt="How NuttX Compiles Rust Apps" /></p>
 <h1 id="how-nuttx-compiles-rust-apps"><a class="doc-anchor" href="#how-nuttx-compiles-rust-apps">§</a>5 How NuttX Compiles Rust Apps</h1>
 <p><em>What happens when we compile our Rust App?</em></p>
@@ -465,7 +473,7 @@ total 112
 -rw-r--r--  1 18240 Mar 17 09:54 hello_rust_main.rs...apps.examples.hello_rust_1.o
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c">(See the <strong>RISC-V Disassembly</strong>)</a></p>
-<p>We step back and talk about the hiccups in our Rust Build…</p>
+<p>Now that we understand the Rust Build, let’s talk about the hiccups…</p>
 <p><img src="https://lupyuen.github.io/images/rust3-float.png" alt="Can’t link soft-float modules with double-float modules" /></p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>6 Software vs Hardware Floating-Point</h1>
 <p><em>What’s this error? “Can’t link soft-float modules with double-float modules”</em></p>
@@ -600,7 +608,7 @@ riscv64-unknown-elf-ld:
 <p><em>Anything else we need for Rust in NuttX Kernel?</em></p>
 <p>Since we’re calling <strong>Rust Core Library</strong> in NuttX Kernel, we won’t touch any POSIX Application Interfaces. Thus if we need to support the Kernel Equivalent of Errno (and other Global State), we’ll have to <strong>create the Rust Library</strong> ourselves.</p>
 <p><a href="https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/">(See the Rust Library for <strong>Linux Kernel</strong>)</a></p>
-<p>(GSoC Project Report will prescribe a Simple LED Driver for NuttX Kernel)</p>
+<p>(GSoC Project Report will talk about a <strong>Simple LED Driver</strong> in Rust for NuttX Kernel)</p>
 <p><img src="https://lupyuen.github.io/images/rust3-ideas.jpg" alt="GSoC 2024 Ideas" /></p>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>9 All Things Considered</h1>
 <ol>
@@ -637,6 +645,29 @@ riscv64-unknown-elf-ld:
 <p><img src="https://lupyuen.github.io/images/rust3-gsoc.png" alt="GSoC Proposals for NuttX" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>TODO</p>
+<ul>
+<li>
+<p>TODO: How we compile <strong>Rust Apps for NuttX</strong></p>
+</li>
+<li>
+<p>TODO: Running NuttX and Rust Apps on <strong>QEMU RISC-V Emulator</strong></p>
+</li>
+<li>
+<p>TODO: <strong>Console Input and Output</strong> for Rust on NuttX</p>
+</li>
+<li>
+<p>TODO: <strong>Software vs Hardware Floating-Point</strong> and why it’s a problem</p>
+</li>
+<li>
+<p>TODO: Linking Issues with the <strong>Rust Panic Handler</strong></p>
+</li>
+<li>
+<p>TODO: <strong>Standard vs Embedded Rust</strong> and why it matters</p>
+</li>
+<li>
+<p>TODO: Why we’re doing all this for <strong>Google Summer of Code</strong></p>
+</li>
+</ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
