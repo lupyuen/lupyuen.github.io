@@ -473,7 +473,7 @@ total 112
 -rw-r--r--  1 18240 Mar 17 09:54 hello_rust_main.rs...apps.examples.hello_rust_1.o
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c">(See the <strong>RISC-V Disassembly</strong>)</a></p>
-<p>Now that we understand the Rust Build, let’s talk about the hiccups…</p>
+<p>Now that we understand the build, let’s talk about the hiccups…</p>
 <p><img src="https://lupyuen.github.io/images/rust3-float.png" alt="Can’t link soft-float modules with double-float modules" /></p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>6 Software vs Hardware Floating-Point</h1>
 <p><em>What’s this error? “Can’t link soft-float modules with double-float modules”</em></p>
@@ -608,7 +608,7 @@ riscv64-unknown-elf-ld:
 <p><em>Anything else we need for Rust in NuttX Kernel?</em></p>
 <p>Since we’re calling <strong>Rust Core Library</strong> in NuttX Kernel, we won’t touch any POSIX Application Interfaces. Thus if we need to support the Kernel Equivalent of Errno (and other Global State), we’ll have to <strong>create the Rust Library</strong> ourselves.</p>
 <p><a href="https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/">(See the Rust Library for <strong>Linux Kernel</strong>)</a></p>
-<p>(GSoC Project Report will talk about a <strong>Simple LED Driver</strong> in Rust for NuttX Kernel)</p>
+<p>(GSoC Project Report will discuss a <strong>Simple LED Driver</strong> in Rust for NuttX Kernel)</p>
 <p><img src="https://lupyuen.github.io/images/rust3-ideas.jpg" alt="GSoC 2024 Ideas" /></p>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>9 All Things Considered</h1>
 <ol>
