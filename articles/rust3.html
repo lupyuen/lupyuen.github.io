@@ -395,6 +395,7 @@ Builtin Apps:
 </li>
 </ul>
 <p>We’ll talk more about this.</p>
+<p>TODO: Rust Wrapper / Rustix</p>
 <p><img src="https://lupyuen.github.io/images/rust3-build.png" alt="How NuttX Compiles Rust Apps" /></p>
 <h1 id="how-nuttx-compiles-rust-apps"><a class="doc-anchor" href="#how-nuttx-compiles-rust-apps">§</a>5 How NuttX Compiles Rust Apps</h1>
 <p><em>What happens when we compile our Rust App?</em></p>
@@ -599,7 +600,7 @@ riscv64-unknown-elf-ld:
 <p><em>Anything else we need for Rust in NuttX Kernel?</em></p>
 <p>Since we’re calling <strong>Rust Core Library</strong> in NuttX Kernel, we won’t touch any POSIX Application Interfaces. Thus if we need to support the Kernel Equivalent of Errno (and other Global State), we’ll have to <strong>create the Rust Library</strong> ourselves.</p>
 <p><a href="https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/">(See the Rust Library for <strong>Linux Kernel</strong>)</a></p>
-<p>TODO: GSoC Project Report, Draft Driver</p>
+<p>(GSoC Project Report will prescribe a Simple LED Driver for NuttX Kernel)</p>
 <p><img src="https://lupyuen.github.io/images/rust3-ideas.jpg" alt="GSoC 2024 Ideas" /></p>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>9 All Things Considered</h1>
 <ol>
