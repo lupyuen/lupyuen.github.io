@@ -22,7 +22,7 @@ My mentee [__Rushabh Gala__](https://github.com/apache/nuttx/issues/11907) and I
 
 Thanks to [__PINE64__](https://pine64.org/), the sponsor of [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBCs for our GSoC Project Testing!
 
-![TODO](https://lupyuen.github.io/images/rust3-output.png)
+![Rust App for NuttX](https://lupyuen.github.io/images/rust3-output.png)
 
 # Rust App for NuttX
 
@@ -152,7 +152,7 @@ Follow these steps to build Apache NuttX RTOS for __QEMU RISC-V (32-bit)__, bund
     
     Select it __Twice__ so that "__`<M>`__" changes to "__`<*>`__"
     
-    [(Source Code for __Hello Rust__)](TODO)
+    [(Source Code for __Hello Rust__)](https://lupyuen.github.io/articles/rust3#rust-app-for-nuttx)
     
 1.  Save and exit __menuconfig__.
 
@@ -273,11 +273,11 @@ _What about QEMU for 64-bit RISC-V?_
 
 Sorry Rust Apps won't build correctly on NuttX for 64-bit RISC-V...
 
-- TODO
+- [__"Rust Build for 64-bit RISC-V"__](https://lupyuen.github.io/articles/rust3#appendix-rust-build-for-64-bit-risc-v)
 
 We'll fix this in GSoC and test it on Ox64 BL808 SBC.
 
-![TODO](https://lupyuen.github.io/images/rust3-input.png)
+![Console Input in Rust](https://lupyuen.github.io/images/rust3-input.png)
 
 # Console Input in Rust
 
@@ -377,13 +377,13 @@ But this won't work on NuttX because...
 
 We'll talk more about this.
 
-![TODO](https://lupyuen.github.io/images/rust3-build.png)
+![How NuttX Compiles Rust Apps](https://lupyuen.github.io/images/rust3-build.png)
 
 # How NuttX Compiles Rust Apps
 
 _What happens when we compile our Rust App?_
 
-Watch how NuttX builds Rust Apps by calling [__`rustc`__](TODO). (Instead of the usual [__`cargo build`__](TODO))
+Watch how NuttX builds Rust Apps by calling [__`rustc`__](https://doc.rust-lang.org/rustc/what-is-rustc.html). (Instead of the usual [__`cargo` `build`__](https://doc.rust-lang.org/cargo/commands/cargo-build.html))
 
 ```bash
 ## Build the NuttX Project with Tracing Enabled
@@ -441,7 +441,7 @@ riscv64-unknown-elf-ld \
 
 [(__Rust Build__ with __`rustc`__ is defined here)](https://github.com/apache/nuttx-apps/blob/master/Application.mk#L164-L170)
 
-[(Why NuttX calls __`rustc`__ instead of __`cargo build`__)](https://github.com/apache/nuttx/pull/5566)
+[(Why NuttX calls __`rustc`__ instead of __`cargo` `build`__)](https://github.com/apache/nuttx/pull/5566)
 
 Here are the __Rust Binaries__ produced by the NuttX Build (which will be linked into the NuttX Firmware)...
 
@@ -594,13 +594,13 @@ But we're linking it into our NuttX Firmware with GCC Linker, with __LTO Disable
 
 _How is this different from typical Rust Builds?_
 
-Normally we run [__`cargo build`__](TODO) to compile our Embedded Rust Apps. And it handles LTO correctly.
+Normally we run [__`cargo` `build`__](https://doc.rust-lang.org/cargo/commands/cargo-build.html) to compile our Embedded Rust Apps. And it handles LTO correctly.
 
-But NuttX calls [__`rustc`__](TODO) to compile Rust Apps, then calls __GCC Linker__ to link into our NuttX Firmware. Which doesn't seem to support LTO.
+But NuttX calls [__`rustc`__](https://doc.rust-lang.org/rustc/what-is-rustc.html) to compile Rust Apps, then calls __GCC Linker__ to link into our NuttX Firmware. Which doesn't seem to support LTO.
 
 We'll sort this out in GSoC!
 
-[(Why NuttX calls __`rustc`__ instead of __`cargo build`__)](https://github.com/apache/nuttx/pull/5566)
+[(Why NuttX calls __`rustc`__ instead of __`cargo` `build`__)](https://github.com/apache/nuttx/pull/5566)
 
 > ![The Embedded Rust Book](https://lupyuen.github.io/images/rust3-nostd.jpg)
 
@@ -811,13 +811,13 @@ But we're linking it into our NuttX Firmware with GCC Linker, with [__LTO Disabl
 
 _How is this different from typical Rust Builds?_
 
-Normally we run [__`cargo build`__](TODO) to compile our Embedded Rust Apps. And it handles LTO correctly.
+Normally we run [__`cargo` `build`__](https://doc.rust-lang.org/cargo/commands/cargo-build.html) to compile our Embedded Rust Apps. And it handles LTO correctly.
 
-But NuttX calls [__`rustc`__](TODO) to compile Rust Apps, then calls __GCC Linker__ to link into our NuttX Firmware. Which doesn't seem to support LTO.
+But NuttX calls [__`rustc`__](https://doc.rust-lang.org/rustc/what-is-rustc.html) to compile Rust Apps, then calls __GCC Linker__ to link into our NuttX Firmware. Which doesn't seem to support LTO.
 
 We'll sort this out in GSoC!
 
-[(Why NuttX calls __`rustc`__ instead of __`cargo build`__)](https://github.com/apache/nuttx/pull/5566)
+[(Why NuttX calls __`rustc`__ instead of __`cargo` `build`__)](https://github.com/apache/nuttx/pull/5566)
 
 # Appendix: Rust Build for 64-bit RISC-V
 
