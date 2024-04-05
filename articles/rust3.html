@@ -375,7 +375,7 @@ Builtin Apps:
   </span>buf.len() <span class="kw">as </span>i32,  <span class="comment">// Buffer Size
   </span>stdin              <span class="comment">// Standard Input
 </span>);</code></pre></div>
-<p>Which makes us ponder about <a href="TODO"><strong>Memory Safety</strong></a>: <em>“Hmmm the fgets() buffer size… Does it include the terminating null?”</em></p>
+<p>Which makes us ponder about <a href="https://en.m.wikipedia.org/wiki/Memory_safety"><strong>Memory Safety</strong></a>: <em>“Hmmm the fgets() buffer size… Does it include the terminating null?”</em></p>
 <p><a href="https://man.archlinux.org/man/fgets.3p.en">(Yep it does!)</a></p>
 <p><em>What about Rust? Does it safely handle Console Input?</em></p>
 <p>Reading the <a href="https://doc.rust-lang.org/std/io/fn.stdin.html"><strong>Standard Input in Rust</strong></a> looks simpler and safer…</p>
@@ -525,8 +525,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>And it links correctly!</p>
 <p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(We had a similar issue with <strong>Zig Compiler</strong>)</a></p>
 <p><em>But why Soft-Float instead of Double-Float? (Mmmm ice cream float)</em></p>
-<p>Yeah patching the ELF Header is a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)</p>
-<p>We’ll investigate this during GSoC.</p>
+<p>Yeah patching the ELF Header is a Bad Hack! During GSoC we’ll investigate why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)</p>
 <p>(Incorrect <a href="TODO"><strong>Rust Target</strong></a> maybe? But <em>riscv32gc-unknown-none-elf</em> requires a <a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602"><strong>Custom Target</strong></a>!)</p>
 <p><img src="https://lupyuen.github.io/images/rust3-panic.png" alt="TODO" /></p>
 <h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
@@ -552,7 +551,8 @@ riscv64-unknown-elf-ld:
 </span>);</code></pre></div>
 <p><em>buf.len()</em> is an <strong>Unsigned Integer</strong> (4 bytes). When we cast it as a <strong>Signed Integer</strong>, it might overflow.</p>
 <p>When <strong>Integer Overflow</strong> happens, our Rust App will <strong>Panic and Halt</strong>.</p>
-<p>To implement the panic, Rust Compiler inserts a call to the Core Function <em>core::panicking::panic</em>. (Which comes from the <a href="TODO"><strong>Rust Core Library</strong></a>)</p>
+<p>To implement the panic, Rust Compiler inserts a call to the Core Function <em>core::panicking::panic</em>.</p>
+<p>(Which comes from the <a href="TODO"><strong>Rust Core Library</strong></a>)</p>
 <p><em>And the Panic Function is missing somehow?</em></p>
 <p>Rushabh has implemented a fix for the Undefined Panic Function…</p>
 <ul>
@@ -571,10 +571,10 @@ riscv64-unknown-elf-ld:
 <p>We’ll sort this out in GSoC!</p>
 <p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo build</code></strong>)</a></p>
 <blockquote>
-<p><img src="https://lupyuen.github.io/images/rust3-nostd.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust3-nostd.jpg" alt="The Embedded Rust Book" /></p>
 </blockquote>
 <blockquote>
-<p>TODO</p>
+<p><a href="https://docs.rust-embedded.org/book/intro/no-std.html"><em>The Embedded Rust Book</em></a></p>
 </blockquote>
 <h1 id="standard-vs-embedded-rust"><a class="doc-anchor" href="#standard-vs-embedded-rust">§</a>8 Standard vs Embedded Rust</h1>
 <p><em>What is [no_std]? Will Rust call C Standard Library, like for malloc()?</em></p>
@@ -704,7 +704,7 @@ riscv64-unknown-elf-ld:
 </li>
 </ol>
 <p><em>What happens when we compile this?</em></p>
-<p><strong>If we omit <code>RUSTFLAGS=-O</code></strong>: We see 2 Undefined Panic Functions…</p>
+<p><strong>If we omit <code>RUSTFLAGS=-O</code></strong>: We see Two Undefined Panic Functions…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>apps/examples/hello_rust/hello_rust_main.rs:<span class="number">84
   </span>buf.len() <span class="kw">as </span>i32 - <span class="number">1</span>,  <span class="comment">// Might Overflow
@@ -716,7 +716,7 @@ apps/examples/hello_rust/hello_rust_main.rs:<span class="number">90
     </span><span class="number">108</span>: <span class="number">00000097         </span>auipc ra,<span class="number">0x0
     108</span>: R_RISCV_CALL_PLT core::panicking::panic</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c#file-hello_rust_1-s-L301-L352">(See the <strong>RISC-V Disassembly</strong>)</a></p>
-<p><strong>After we add <code>RUSTFLAGS=-O</code></strong>: We still see 1 Undefined Panic Function for the divide-by-zero…</p>
+<p><strong>After we add <code>RUSTFLAGS=-O</code></strong>: We still see One Undefined Panic Function for the divide-by-zero…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>apps/examples/hello_rust/hello_rust_main.rs:<span class="number">90
   </span><span class="kw">let </span>i = <span class="number">1 </span>/ buf[<span class="number">0</span>];  <span class="comment">// Might Divide by Zero
@@ -733,7 +733,7 @@ riscv64-unknown-elf-ld:
 </code></pre></div>
 <p><em>What’s causing this Undefined Panic Function?</em></p>
 <p>According to <a href="https://github.com/rust-lang/compiler-builtins/issues/79"><strong>this discussion</strong></a>, the Rust Core Library is compiled with <a href="TODO"><strong>Link-Time Optimisation (LTO)</strong></a>. (Including the Panic Function)</p>
-<p>But we’re linking it into our NuttX Firmware with GCC Linker, with <strong>LTO Disabled</strong>. Which causes the Missing Panic Function.</p>
+<p>But we’re linking it into our NuttX Firmware with GCC Linker, with <a href="https://johnysswlab.com/link-time-optimizations-new-way-to-do-compiler-optimizations/"><strong>LTO Disabled</strong></a> (by default). Which causes the Missing Panic Function.</p>
 <p><em>How is this different from typical Rust Builds?</em></p>
 <p>Normally we run <a href="TODO"><strong><code>cargo build</code></strong></a> to compile our Embedded Rust Apps. And it handles LTO correctly.</p>
 <p>But NuttX calls <a href="TODO"><strong><code>rustc</code></strong></a> to compile Rust Apps, then calls <strong>GCC Linker</strong> to link into our NuttX Firmware. Which doesn’t seem to support LTO.</p>
