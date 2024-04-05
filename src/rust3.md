@@ -202,13 +202,11 @@ Follow these steps to build Apache NuttX RTOS for __QEMU RISC-V (32-bit)__, bund
 
     (We'll come back to this)
 
-    We're ready to boot NuttX...
-
 ![Rust Apps on Apache NuttX RTOS and QEMU RISC-V](https://lupyuen.github.io/images/rust3-title.png)
 
 # Run NuttX on QEMU RISC-V
 
-This is how we boot NuttX on QEMU and run our Rust App...
+We're ready to __boot NuttX on QEMU Emulator__ and run our Rust App!
 
 1.  Download and install [__QEMU Emulator__](https://www.qemu.org/download/)...
 
@@ -302,7 +300,7 @@ We'll fix this in GSoC and test it on Ox64 BL808 SBC.
 
 # Console Input in Rust
 
-_What about Console Input?_
+_We've done Console Output. How about Console Input?_
 
 This is how we read __Console Input__ in Rust: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs)
 
@@ -363,7 +361,7 @@ pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
 // Omitted: Panic Handler
 ```
 
-This is getting a little dangerous... The __Input Buffer might Overflow__ if we're not careful with the Parameters!
+This gets a bit dangerous... The __Input Buffer might Overflow__ if we're not careful with the Parameters!
 
 ```rust
 // Read a line from Standard Input
@@ -402,9 +400,7 @@ We'll talk more about this.
 
 _What happens when we compile our Rust App?_
 
-Let's watch how NuttX builds Rust Apps by calling [__`rustc`__](TODO). (Instead of the usual [__`cargo build`__](TODO))
-
-We observe the __NuttX Build Log__...
+Watch how NuttX builds Rust Apps by calling [__`rustc`__](TODO). (Instead of the usual [__`cargo build`__](TODO))
 
 ```bash
 ## Build the NuttX Project with Tracing Enabled
