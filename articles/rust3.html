@@ -98,6 +98,7 @@
 </li>
 </ul>
 <p>Thanks to <a href="TODO"><strong>PINE64</strong></a>, the sponsor of <a href="TODO"><strong>Ox64 BL808</strong></a> RISC-V SBCs for our GSoC Project Testing!</p>
+<p><img src="https://lupyuen.github.io/images/rust3-output.png" alt="TODO" /></p>
 <h1 id="rust-app-for-nuttx"><a class="doc-anchor" href="#rust-app-for-nuttx">§</a>1 Rust App for NuttX</h1>
 <p>Below is the <strong>“Hello Rust”</strong> Demo App that’s bundled with Apache NuttX RTOS: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
 
@@ -306,6 +307,7 @@ Builtin Apps:
 <li>TODO</li>
 </ul>
 <p>We’ll fix this in GSoC and test it on Ox64 BL808 SBC.</p>
+<p><img src="https://lupyuen.github.io/images/rust3-input.png" alt="TODO" /></p>
 <h1 id="console-input-in-rust"><a class="doc-anchor" href="#console-input-in-rust">§</a>4 Console Input in Rust</h1>
 <p><em>We’ve done Console Output. How about Console Input?</em></p>
 <p>This is how we read <strong>Console Input</strong> in Rust: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
@@ -388,6 +390,7 @@ Builtin Apps:
 </li>
 </ul>
 <p>We’ll talk more about this.</p>
+<p><img src="https://lupyuen.github.io/images/rust3-build.png" alt="TODO" /></p>
 <h1 id="how-nuttx-compiles-rust-apps"><a class="doc-anchor" href="#how-nuttx-compiles-rust-apps">§</a>5 How NuttX Compiles Rust Apps</h1>
 <p><em>What happens when we compile our Rust App?</em></p>
 <p>Watch how NuttX builds Rust Apps by calling <a href="TODO"><strong><code>rustc</code></strong></a>. (Instead of the usual <a href="TODO"><strong><code>cargo build</code></strong></a>)</p>
@@ -457,6 +460,7 @@ total 112
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c">(See the <strong>RISC-V Disassembly</strong>)</a></p>
 <p>We step back and talk about the hiccups in our Rust Build…</p>
+<p><img src="https://lupyuen.github.io/images/rust3-float.png" alt="TODO" /></p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>6 Software vs Hardware Floating-Point</h1>
 <p><em>What’s this error? “Can’t link soft-float modules with double-float modules”</em></p>
 <div class="example-wrap"><pre class="language-text"><code>$ make
@@ -518,6 +522,7 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p><em>But why Soft-Float instead of Double-Float? (Mmmm ice cream float)</em></p>
 <p>Yeah patching the ELF Header is a bad hack, we need to understand why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)</p>
 <p>We’ll investigate this during GSoC. (Incorrect <a href="TODO"><strong>Rust Target</strong></a> maybe?)</p>
+<p><img src="https://lupyuen.github.io/images/rust3-panic.png" alt="TODO" /></p>
 <h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make
@@ -621,6 +626,7 @@ riscv64-unknown-elf-ld:
 <p>— Observe the Rust Development in <a href="https://rust-for-linux.com/"><strong>Linux Kernel</strong></a> and <a href="https://github.com/zephyrproject-rtos/zephyr/issues/65837"><strong>Zephyr OS</strong></a>. Then adapt the Best Practices for NuttX Kernel.</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/rust3-gsoc.png" alt="TODO" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -646,6 +652,7 @@ riscv64-unknown-elf-ld:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust3.md"><strong>lupyuen.github.io/src/rust3.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/rust3-panic.png" alt="TODO" /></p>
 <h1 id="appendix-panic-is-undefined"><a class="doc-anchor" href="#appendix-panic-is-undefined">§</a>11 Appendix: Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make
