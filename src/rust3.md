@@ -658,7 +658,7 @@ Since we're calling __Rust Core Library__ in NuttX Kernel, we won't touch any PO
 
     — Some folks are urging us to explore [__Memory-Safe Programming in Rust__](https://www.whitehouse.gov/oncd/briefing-room/2024/02/26/press-release-technical-report/)
 
-    — NuttX Devs among us might already be coding __Rust Apps and Rust Drivers__ for NuttX? (We know of one Corporate User of NuttX that's very keen on Rust)
+    — NuttX Devs among us might already be coding __Rust Apps and Rust Drivers__ for NuttX? (We know of one Corporate User of NuttX that's super keen on Rust)
 
     — Hence we're helpfully drafting the [__Standards and Guidelines__](https://github.com/apache/nuttx/issues/11907) for folks already coding Rust in NuttX
 
