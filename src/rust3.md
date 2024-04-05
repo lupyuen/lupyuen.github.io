@@ -465,7 +465,7 @@ total 112
 
 [(See the __RISC-V Disassembly__)](https://gist.github.com/lupyuen/76b8680a58793571db67082bcca2e86c)
 
-Now that we understand the Rust Build, let's talk about the hiccups...
+Now that we understand the build, let's talk about the hiccups...
 
 ![Can't link soft-float modules with double-float modules](https://lupyuen.github.io/images/rust3-float.png)
 
@@ -646,7 +646,7 @@ Since we're calling __Rust Core Library__ in NuttX Kernel, we won't touch any PO
 
 [(See the Rust Library for __Linux Kernel__)](https://rust-for-linux.github.io/docs/v6.8-rc3/kernel/)
 
-(GSoC Project Report will talk about a __Simple LED Driver__ in Rust for NuttX Kernel)
+(GSoC Project Report will discuss a __Simple LED Driver__ in Rust for NuttX Kernel)
 
 ![GSoC 2024 Ideas](https://lupyuen.github.io/images/rust3-ideas.jpg)
 
