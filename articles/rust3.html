@@ -709,7 +709,7 @@ riscv64-unknown-elf-ld:
 <li><a href="https://github.com/apache/nuttx-apps/pull/2333"><strong>Add <code>-O</code> to <code>RUSTFLAGS</code> in Makefile</strong></a></li>
 </ul>
 <p>But watch what happens when we add <strong>Another Point of Panic</strong>…</p>
-<p>Here’s our Test Code that has 2 Potential Panics: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">hello_rust_main.rs</a></p>
+<p>Below is our Test Code that has <strong>Two Potential Panics</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">hello_rust_main.rs</a></p>
 <ol>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84"><strong>Buffer Length</strong></a> might panic (due to <strong>Integer Underflow</strong>)</p>
