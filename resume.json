@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Rust Apps on Apache NuttX RTOS and QEMU RISC-V",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-04-07",
+      "website": "https://lupyuen.github.io/articles/rust3",
+      "summary": "Here's how we run Rust Apps on Apache NuttX RTOS and QEMU RISC-V Emulator."
+    },
+    {
       "name": "Too many Embedded Logs? PureScript might help (Ox64 BL808 SBC / Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-03-03",

@@ -1,6 +1,6 @@
 # Rust Apps on Apache NuttX RTOS and QEMU RISC-V
 
-📝 _10 Apr 2024_
+📝 _7 Apr 2024_
 
 ![Rust Apps on Apache NuttX RTOS and QEMU RISC-V](https://lupyuen.github.io/images/rust3-title.png)
 
@@ -20,13 +20,13 @@ My mentee [__Rushabh Gala__](https://github.com/apache/nuttx/issues/11907) and I
 
 - Why we're doing all this for __Google Summer of Code__
 
-Thanks to [__PINE64__](https://pine64.org/), the sponsor of [__Ox64 BL808__](https://wiki.pine64.org/wiki/Ox64) RISC-V SBCs for our GSoC Project Testing!
+Thanks to [__PINE64__](https://pine64.org/), the sponsor of [__Ox64 BL808__](https://pine64.org/documentation/Ox64/) RISC-V SBCs for our GSoC Project Testing!
 
 ![Rust App for NuttX](https://lupyuen.github.io/images/rust3-output.png)
 
 # Rust App for NuttX
 
-Below is the __"Hello Rust"__ Demo App that's bundled with Apache NuttX RTOS: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
+Below is the __"Hello Rust"__ Demo App that's bundled with Apache NuttX RTOS: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L20-L41)
 
 ```rust
 // main() function not needed
@@ -48,7 +48,7 @@ extern "C" {
 
 The code above imports the _printf()_ function from C into Rust.
 
-This is how we call it in Rust: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
+This is how we call it in Rust: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L54-L74)
 
 ```rust
 // Main Function exported by Rust to C.
@@ -72,7 +72,7 @@ pub extern "C" fn hello_rust_main(
 }
 ```
 
-Rust needs us to provide a __Panic Handler__. We write a simple one: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs)
+Rust expects us to provide a __Panic Handler__. We write a simple one: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L27-L54)
 
 ```rust
 // Import the Panic Info for our Panic Handler
@@ -179,7 +179,7 @@ Follow these steps to build Apache NuttX RTOS for __QEMU RISC-V (32-bit)__, bund
 
     This produces the NuttX ELF Image __nuttx__ that we may boot on QEMU RISC-V Emulator. (Next Section)
 
-1.  If the GCC Linker fails with _"Can't link soft-float modules with double-float modules"_...
+1.  If the GCC Linker fails with _"Can't link soft-float modules with double-float modules"_
 
     ```text
     $ make
@@ -247,6 +247,8 @@ We're ready to __boot NuttX on QEMU Emulator__ and run our Rust App!
     Hello, Rust!!
     ```
 
+    [(See the __NuttX Log__)](https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384)
+
 1.  Enter "__help__" to see the available commands...
 
     ```text
@@ -283,7 +285,7 @@ We'll fix this in GSoC and test it on Ox64 BL808 SBC.
 
 _We've done Console Output. How about Console Input?_
 
-This is how we read __Console Input__ in Rust: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs)
+This is how we read __Console Input__ in Rust: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs#L20-L49)
 
 ```rust
 // main() function not needed. Use Rust Core Library.
@@ -304,7 +306,7 @@ extern "C" {
 
 The code above imports the _fgets()_ function from C into Rust.
 
-Calling _fgets()_ is a little more complicated: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs)
+Calling _fgets()_ is a little more complicated: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs#L66-L95)
 
 ```rust
 // Main Function exported by Rust to C
@@ -473,7 +475,7 @@ Now that we understand the build, let's talk about the hiccups...
 
 _What's this error? "Can't link soft-float modules with double-float modules"_
 
-```text
+```bash
 $ make
 LD: nuttx
 riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
@@ -606,7 +608,7 @@ We'll sort this out in GSoC!
 
 [(Why NuttX calls __`rustc`__ instead of __`cargo` `build`__)](https://github.com/apache/nuttx/pull/5566)
 
-(Which means we can't import Rust Crates from __`crates.io`__!)
+(Which means we can't import Rust Crates from [__`crates.io`__](https://crates.io/)!)
 
 > ![The Embedded Rust Book](https://lupyuen.github.io/images/rust3-nostd.jpg)
 
@@ -702,13 +704,13 @@ Coming This Summer: Plenty to be done for __Rust Apps on Apache NuttX RTOS__!
 
 - Compiling __Rust Apps for NuttX__ works mostly OK, but could be improved
 
-- NuttX and Rust Apps run OK on __QEMU 32-bit RISC-V Emulator__, though somewhat broken on 64-bit RISC-V (like Ox64 BL808 SBC)
+- Rust Apps run OK on __QEMU 32-bit RISC-V Emulator__, though somewhat broken on 64-bit RISC-V (like Ox64 BL808 SBC)
 
-- __Software vs Hardware Floating-Point__ becomes a problem for 32-bit and 64-bit RISC-V Platforms, we should remove the awful patching hack
+- __Software vs Hardware Floating-Point__ becomes a problem for 32-bit and 64-bit RISC-V Platforms, we should remove the awful patchy hack
 
 - __Link-Time Optimisation__ causes Linking Issues with the Rust Panic Handler
 
-- Simple __Console Input / Output__ works fine for Rust on NuttX. We'll explore safer ways to call NuttX POSIX Functions.
+- __Console Input / Output__ works fine for Rust on NuttX. We'll explore safer ways to call NuttX POSIX Functions.
 
 - All this will happen during __Google Summer of Code__!
 
@@ -755,7 +757,7 @@ Which Rushabh has fixed with this patch...
 
 But watch what happens when we add __Another Point of Panic__...
 
-Below is our Test Code that has __Two Potential Panics__: [hello_rust_main.rs](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90)
+Below is our Test Code that has __Two Potential Panics__: [hello_rust_main.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L70-L103)
 
 1.  [__Buffer Length__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84) might panic. [(Why?)](https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c#file-hello_rust_1-s-L301-L310)
 
@@ -837,7 +839,7 @@ We'll sort this out in GSoC!
 
 [(Why NuttX calls __`rustc`__ instead of __`cargo` `build`__)](https://github.com/apache/nuttx/pull/5566)
 
-(Which means we can't import Rust Crates from __`crates.io`__!)
+(Which means we can't import Rust Crates from [__`crates.io`__](https://crates.io/)!)
 
 # Appendix: Rust Build for 64-bit RISC-V
 
