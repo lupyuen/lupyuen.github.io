@@ -702,7 +702,7 @@ Coming This Summer: Plenty to be done for __Rust Apps on Apache NuttX RTOS__!
 
 - Compiling __Rust Apps for NuttX__ works mostly OK, but could be improved
 
-- NuttX and Rust Apps run OK on __QEMU 32-bit RISC-V Emulator__, though we need to fix for 64-bit RISC-V (like Ox64 BL808 SBC)
+- NuttX and Rust Apps run OK on __QEMU 32-bit RISC-V Emulator__, though somewhat broken on 64-bit RISC-V (like Ox64 BL808 SBC)
 
 - __Software vs Hardware Floating-Point__ becomes a problem for 32-bit and 64-bit RISC-V Platforms, we should remove the awful patching hack
 
