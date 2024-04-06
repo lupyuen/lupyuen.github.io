@@ -578,6 +578,7 @@ riscv64-unknown-elf-ld:
 <p>But NuttX calls <a href="https://doc.rust-lang.org/rustc/what-is-rustc.html"><strong><code>rustc</code></strong></a> to compile Rust Apps, then calls <strong>GCC Linker</strong> to link into our NuttX Firmware. Which doesn’t seem to support LTO.</p>
 <p>We’ll sort this out in GSoC!</p>
 <p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo</code> <code>build</code></strong>)</a></p>
+<p>(Which means we can’t import Rust Crates from <strong><code>crates.io</code></strong>!)</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/rust3-nostd.jpg" alt="The Embedded Rust Book" /></p>
 </blockquote>
@@ -770,6 +771,7 @@ riscv64-unknown-elf-ld:
 <p>But NuttX calls <a href="https://doc.rust-lang.org/rustc/what-is-rustc.html"><strong><code>rustc</code></strong></a> to compile Rust Apps, then calls <strong>GCC Linker</strong> to link into our NuttX Firmware. Which doesn’t seem to support LTO.</p>
 <p>We’ll sort this out in GSoC!</p>
 <p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo</code> <code>build</code></strong>)</a></p>
+<p>(Which means we can’t import Rust Crates from <strong><code>crates.io</code></strong>!)</p>
 <h1 id="appendix-rust-build-for-64-bit-risc-v"><a class="doc-anchor" href="#appendix-rust-build-for-64-bit-risc-v">§</a>12 Appendix: Rust Build for 64-bit RISC-V</h1>
 <p><em>We tested Rust Apps on QEMU for 32-bit RISC-V. What about 64-bit RISC-V?</em></p>
 <p>Sorry Rust Apps won’t build correctly on NuttX for 64-bit RISC-V…</p>
