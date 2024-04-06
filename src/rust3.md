@@ -698,21 +698,19 @@ Since we're calling __Rust Core Library__ in NuttX Kernel, we won't touch any PO
 
 # What's Next
 
-TODO
+Coming This Summer: Plenty to be done for __Rust Apps on Apache NuttX RTOS__!
 
-- TODO: How we compile __Rust Apps for NuttX__
+- Compiling __Rust Apps for NuttX__ works mostly OK, but could be improved
 
-- TODO: Running NuttX and Rust Apps on __QEMU RISC-V Emulator__
+- NuttX and Rust Apps run OK on __QEMU 32-bit RISC-V Emulator__, though we need to fix for 64-bit RISC-V (like Ox64 BL808 SBC)
 
-- TODO: __Console Input and Output__ for Rust on NuttX
+- __Software vs Hardware Floating-Point__ becomes a problem for 32-bit and 64-bit RISC-V Platforms, we should remove the awful patching hack
 
-- TODO: __Software vs Hardware Floating-Point__ and why it's a problem
+- __Link-Time Optimisation__ causes Linking Issues with the Rust Panic Handler
 
-- TODO: Linking Issues with the __Rust Panic Handler__
+- Simple __Console Input / Output__ works fine for Rust on NuttX. We'll explore safer ways to call NuttX POSIX Functions.
 
-- TODO: __Standard vs Embedded Rust__ and why it matters
-
-- TODO: Why we're doing all this for __Google Summer of Code__
+- All this will happen during __Google Summer of Code__!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
