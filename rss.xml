@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Rust Apps on Apache NuttX RTOS and QEMU RISC-V</title>
+            <link>https://lupyuen.github.io/articles/rust3</link>
+            <description><![CDATA[Here's how we run Rust Apps on Apache NuttX RTOS and QEMU RISC-V Emulator.]]></description>
+            <guid>https://lupyuen.github.io/articles/rust3</guid>
+            <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Too many Embedded Logs? PureScript might help (Ox64 BL808 SBC / Apache NuttX RTOS)</title>
             <link>https://lupyuen.github.io/articles/purescript</link>
             <description><![CDATA[Troubleshooting Crash Dumps for Apache NuttX RTOS will become a little less painful... Thanks to our new NuttX Log Parser! This is how we created with PureScript, a Real-Time Parser and Explainer for RISC-V Exceptions and Stack Dumps.]]></description>
