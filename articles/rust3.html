@@ -12,10 +12,10 @@
     content="Rust Apps on Apache NuttX RTOS and QEMU RISC-V" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Here's how we run Rust Apps on Apache NuttX RTOS and QEMU RISC-V Emulator"
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Here's how we run Rust Apps on Apache NuttX RTOS and QEMU RISC-V Emulator">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/rust3-title.png">
 <meta property="og:type" 
@@ -644,28 +644,25 @@ riscv64-unknown-elf-ld:
 </ol>
 <p><img src="https://lupyuen.github.io/images/rust3-gsoc.png" alt="GSoC Proposals for NuttX" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
-<p>TODO</p>
+<p>Coming This Summer: Plenty to be done for <strong>Rust Apps on Apache NuttX RTOS</strong>!</p>
 <ul>
 <li>
-<p>TODO: How we compile <strong>Rust Apps for NuttX</strong></p>
+<p>Compiling <strong>Rust Apps for NuttX</strong> works mostly OK, but could be improved</p>
 </li>
 <li>
-<p>TODO: Running NuttX and Rust Apps on <strong>QEMU RISC-V Emulator</strong></p>
+<p>NuttX and Rust Apps run OK on <strong>QEMU 32-bit RISC-V Emulator</strong>, though we need to fix for 64-bit RISC-V (like Ox64 BL808 SBC)</p>
 </li>
 <li>
-<p>TODO: <strong>Console Input and Output</strong> for Rust on NuttX</p>
+<p><strong>Software vs Hardware Floating-Point</strong> becomes a problem for 32-bit and 64-bit RISC-V Platforms, we should remove the awful patching hack</p>
 </li>
 <li>
-<p>TODO: <strong>Software vs Hardware Floating-Point</strong> and why it’s a problem</p>
+<p><strong>Link-Time Optimisation</strong> causes Linking Issues with the Rust Panic Handler</p>
 </li>
 <li>
-<p>TODO: Linking Issues with the <strong>Rust Panic Handler</strong></p>
+<p>Simple <strong>Console Input / Output</strong> works fine for Rust on NuttX. We’ll explore safer ways to call NuttX POSIX Functions.</p>
 </li>
 <li>
-<p>TODO: <strong>Standard vs Embedded Rust</strong> and why it matters</p>
-</li>
-<li>
-<p>TODO: Why we’re doing all this for <strong>Google Summer of Code</strong></p>
+<p>All this will happen during <strong>Google Summer of Code</strong>!</p>
 </li>
 </ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
