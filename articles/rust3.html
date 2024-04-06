@@ -76,7 +76,7 @@
 <li><a href="#all-things-considered">9 All Things Considered</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-panic-is-undefined">11 Appendix: Panic is Undefined</a><ul></ul></li>
-<li><a href="#appendix-rust-build-for-64-bit-risc-v">12 Appendix: Rust Build for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>10 Apr 2024</em></p>
+<li><a href="#appendix-rust-build-for-64-bit-risc-v">12 Appendix: Rust Build for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>7 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust3-title.png" alt="Rust Apps on Apache NuttX RTOS and QEMU RISC-V" /></p>
 <p>My mentee <a href="https://github.com/apache/nuttx/issues/11907"><strong>Rushabh Gala</strong></a> and I are anxiously awaiting the results of the <a href="https://summerofcode.withgoogle.com/"><strong>Google Summer of Code</strong></a> (GSoC) Project Selection. While waiting, we explain the current steps for running barebones <strong>Rust Apps</strong> on <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> (and the challenges we faced)…</p>
 <ul>
@@ -102,10 +102,10 @@
 <p>Why we’re doing all this for <strong>Google Summer of Code</strong></p>
 </li>
 </ul>
-<p>Thanks to <a href="https://pine64.org/"><strong>PINE64</strong></a>, the sponsor of <a href="https://wiki.pine64.org/wiki/Ox64"><strong>Ox64 BL808</strong></a> RISC-V SBCs for our GSoC Project Testing!</p>
+<p>Thanks to <a href="https://pine64.org/"><strong>PINE64</strong></a>, the sponsor of <a href="https://pine64.org/documentation/Ox64/"><strong>Ox64 BL808</strong></a> RISC-V SBCs for our GSoC Project Testing!</p>
 <p><img src="https://lupyuen.github.io/images/rust3-output.png" alt="Rust App for NuttX" /></p>
 <h1 id="rust-app-for-nuttx"><a class="doc-anchor" href="#rust-app-for-nuttx">§</a>1 Rust App for NuttX</h1>
-<p>Below is the <strong>“Hello Rust”</strong> Demo App that’s bundled with Apache NuttX RTOS: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>Below is the <strong>“Hello Rust”</strong> Demo App that’s bundled with Apache NuttX RTOS: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L20-L41">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// main() function not needed
 </span><span class="attr">#![no_main]
@@ -122,7 +122,7 @@
 </span>}                       <span class="comment">// TODO: Standardise `i32` as `c_int`</span></code></pre></div>
 <p>(We’ll explain <strong><code>[no_std]</code></strong> in a while)</p>
 <p>The code above imports the <em>printf()</em> function from C into Rust.</p>
-<p>This is how we call it in Rust: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>This is how we call it in Rust: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L54-L74">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Main Function exported by Rust to C.
 // Don't mangle the Function Name.
@@ -143,7 +143,7 @@
   <span class="comment">// Exit with status 0
   </span><span class="number">0
 </span>}</code></pre></div>
-<p>Rust needs us to provide a <strong>Panic Handler</strong>. We write a simple one: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>Rust expects us to provide a <strong>Panic Handler</strong>. We write a simple one: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L27-L54">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Import the Panic Info for our Panic Handler
 </span><span class="kw">use </span>core::panic::PanicInfo;
@@ -231,7 +231,7 @@ riscv64-unknown-elf-objdump \
 <p>This produces the NuttX ELF Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator. (Next Section)</p>
 </li>
 <li>
-<p>If the GCC Linker fails with <em>“Can’t link soft-float modules with double-float modules”</em>…</p>
+<p>If the GCC Linker fails with <em>“Can’t link soft-float modules with double-float modules”</em></p>
 <div class="example-wrap"><pre class="language-text"><code>$ make
 LD: nuttx
 riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
@@ -283,7 +283,9 @@ nsh&gt;
 <p>Enter “<strong>hello_rust</strong>” to run our Rust Demo App (which will print something)</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_rust
 Hello, Rust!!
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384">(See the <strong>NuttX Log</strong>)</a></p>
+</li>
 <li>
 <p>Enter “<strong>help</strong>” to see the available commands…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; help
@@ -315,7 +317,7 @@ Builtin Apps:
 <p><img src="https://lupyuen.github.io/images/rust3-input.png" alt="Console Input in Rust" /></p>
 <h1 id="console-input-in-rust"><a class="doc-anchor" href="#console-input-in-rust">§</a>4 Console Input in Rust</h1>
 <p><em>We’ve done Console Output. How about Console Input?</em></p>
-<p>This is how we read <strong>Console Input</strong> in Rust: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>This is how we read <strong>Console Input</strong> in Rust: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs#L20-L49">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// main() function not needed. Use Rust Core Library.
 </span><span class="attr">#![no_main]
@@ -332,7 +334,7 @@ Builtin Apps:
   <span class="kw">pub fn </span>lib_get_stream(fd: c_int) -&gt; <span class="kw-2">*mut </span>c_void;
 }</code></pre></div>
 <p>The code above imports the <em>fgets()</em> function from C into Rust.</p>
-<p>Calling <em>fgets()</em> is a little more complicated: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs">hello_rust_main.rs</a></p>
+<p>Calling <em>fgets()</em> is a little more complicated: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust/examples/hello_rust/hello_rust_main.rs#L66-L95">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Main Function exported by Rust to C
 </span><span class="attr">#[no_mangle]
@@ -477,7 +479,7 @@ total 112
 <p><img src="https://lupyuen.github.io/images/rust3-float.png" alt="Can’t link soft-float modules with double-float modules" /></p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>6 Software vs Hardware Floating-Point</h1>
 <p><em>What’s this error? “Can’t link soft-float modules with double-float modules”</em></p>
-<div class="example-wrap"><pre class="language-text"><code>$ make
+<div class="example-wrap"><pre class="language-bash"><code>$ make
 LD: nuttx
 riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
   (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o):
@@ -578,7 +580,7 @@ riscv64-unknown-elf-ld:
 <p>But NuttX calls <a href="https://doc.rust-lang.org/rustc/what-is-rustc.html"><strong><code>rustc</code></strong></a> to compile Rust Apps, then calls <strong>GCC Linker</strong> to link into our NuttX Firmware. Which doesn’t seem to support LTO.</p>
 <p>We’ll sort this out in GSoC!</p>
 <p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo</code> <code>build</code></strong>)</a></p>
-<p>(Which means we can’t import Rust Crates from <strong><code>crates.io</code></strong>!)</p>
+<p>(Which means we can’t import Rust Crates from <a href="https://crates.io/"><strong><code>crates.io</code></strong></a>!)</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/rust3-nostd.jpg" alt="The Embedded Rust Book" /></p>
 </blockquote>
@@ -650,16 +652,16 @@ riscv64-unknown-elf-ld:
 <p>Compiling <strong>Rust Apps for NuttX</strong> works mostly OK, but could be improved</p>
 </li>
 <li>
-<p>NuttX and Rust Apps run OK on <strong>QEMU 32-bit RISC-V Emulator</strong>, though somewhat broken on 64-bit RISC-V (like Ox64 BL808 SBC)</p>
+<p>Rust Apps run OK on <strong>QEMU 32-bit RISC-V Emulator</strong>, though somewhat broken on 64-bit RISC-V (like Ox64 BL808 SBC)</p>
 </li>
 <li>
-<p><strong>Software vs Hardware Floating-Point</strong> becomes a problem for 32-bit and 64-bit RISC-V Platforms, we should remove the awful patching hack</p>
+<p><strong>Software vs Hardware Floating-Point</strong> becomes a problem for 32-bit and 64-bit RISC-V Platforms, we should remove the awful patchy hack</p>
 </li>
 <li>
 <p><strong>Link-Time Optimisation</strong> causes Linking Issues with the Rust Panic Handler</p>
 </li>
 <li>
-<p>Simple <strong>Console Input / Output</strong> works fine for Rust on NuttX. We’ll explore safer ways to call NuttX POSIX Functions.</p>
+<p><strong>Console Input / Output</strong> works fine for Rust on NuttX. We’ll explore safer ways to call NuttX POSIX Functions.</p>
 </li>
 <li>
 <p>All this will happen during <strong>Google Summer of Code</strong>!</p>
@@ -707,7 +709,7 @@ riscv64-unknown-elf-ld:
 <li><a href="https://github.com/apache/nuttx-apps/pull/2333"><strong>Add <code>-O</code> to <code>RUSTFLAGS</code> in Makefile</strong></a></li>
 </ul>
 <p>But watch what happens when we add <strong>Another Point of Panic</strong>…</p>
-<p>Below is our Test Code that has <strong>Two Potential Panics</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90">hello_rust_main.rs</a></p>
+<p>Below is our Test Code that has <strong>Two Potential Panics</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L70-L103">hello_rust_main.rs</a></p>
 <ol>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L84"><strong>Buffer Length</strong></a> might panic. <a href="https://gist.github.com/lupyuen/ac2b43f2e31ecf0d972dcf5fed8d5e4c#file-hello_rust_1-s-L301-L310">(Why?)</a></p>
@@ -768,7 +770,7 @@ riscv64-unknown-elf-ld:
 <p>But NuttX calls <a href="https://doc.rust-lang.org/rustc/what-is-rustc.html"><strong><code>rustc</code></strong></a> to compile Rust Apps, then calls <strong>GCC Linker</strong> to link into our NuttX Firmware. Which doesn’t seem to support LTO.</p>
 <p>We’ll sort this out in GSoC!</p>
 <p><a href="https://github.com/apache/nuttx/pull/5566">(Why NuttX calls <strong><code>rustc</code></strong> instead of <strong><code>cargo</code> <code>build</code></strong>)</a></p>
-<p>(Which means we can’t import Rust Crates from <strong><code>crates.io</code></strong>!)</p>
+<p>(Which means we can’t import Rust Crates from <a href="https://crates.io/"><strong><code>crates.io</code></strong></a>!)</p>
 <h1 id="appendix-rust-build-for-64-bit-risc-v"><a class="doc-anchor" href="#appendix-rust-build-for-64-bit-risc-v">§</a>12 Appendix: Rust Build for 64-bit RISC-V</h1>
 <p><em>We tested Rust Apps on QEMU for 32-bit RISC-V. What about 64-bit RISC-V?</em></p>
 <p>Sorry Rust Apps won’t build correctly on NuttX for 64-bit RISC-V…</p>
