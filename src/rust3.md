@@ -606,6 +606,8 @@ We'll sort this out in GSoC!
 
 [(Why NuttX calls __`rustc`__ instead of __`cargo` `build`__)](https://github.com/apache/nuttx/pull/5566)
 
+(Which means we can't import Rust Crates from __`crates.io`__!)
+
 > ![The Embedded Rust Book](https://lupyuen.github.io/images/rust3-nostd.jpg)
 
 > [_The Embedded Rust Book_](https://docs.rust-embedded.org/book/intro/no-std.html)
@@ -836,6 +838,8 @@ But NuttX calls [__`rustc`__](https://doc.rust-lang.org/rustc/what-is-rustc.html
 We'll sort this out in GSoC!
 
 [(Why NuttX calls __`rustc`__ instead of __`cargo` `build`__)](https://github.com/apache/nuttx/pull/5566)
+
+(Which means we can't import Rust Crates from __`crates.io`__!)
 
 # Appendix: Rust Build for 64-bit RISC-V
 
