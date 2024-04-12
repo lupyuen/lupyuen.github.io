@@ -65,14 +65,72 @@
 
     <h1 class="title">Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#rust-custom-target-for-qemu-risc-v-on-apache-nuttx-rtos">1 Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS</a><ul></ul></li>
-<li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>22 Apr 2024</em></p>
+<li><a href="#software-vs-hardware-floating-point">1 Software vs Hardware Floating-Point</a><ul></ul></li>
+<li><a href="#rust-build-for-64-bit-risc-v">2 Rust Build for 64-bit RISC-V</a><ul></ul></li>
+<li><a href="#rust-custom-target-for-qemu-risc-v-on-apache-nuttx-rtos">3 Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS</a><ul></ul></li>
+<li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>22 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust4-title.jpg" alt="Rust Apps on Apache NuttX RTOS and QEMU RISC-V" /></p>
 <div style="text-align: center">
 <p><a href="https://github.com/Swordfish90/cool-retro-term"><em>Thanks to cool-retro-term!</em></a></p>
 </div>
+<p>Last article we were compiling <a href="TODO"><strong>Rust Apps</strong></a> for <a href="TODO"><strong>Apache NuttX RTOS</strong></a> (QEMU RISC-V 32-bit). And we hit a <strong>baffling error</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ make
+riscv64-unknown-elf-ld: libapps.a
+  hello_rust_1.o:
+  can&#39;t link soft-float modules with double-float modules
+</code></pre></div>
+<p>Let’s solve the problem! We dive inside the internals of <strong>C-to-Rust Interop</strong>…</p>
+<ul>
+<li>
+<p>Rust compiles for <strong>Soft-Float</strong>, but NuttX expects <strong>Double-Float</strong></p>
+<p>(Software vs Hardware Floating-Point)</p>
+</li>
+<li>
+<p>But Rust <strong>doesn’t support Double-Float</strong> (by default)</p>
+</li>
+<li>
+<p>So we create a <strong>Rust Custom Target</strong> for Double-Float</p>
+</li>
+<li>
+<p>Rebuild the <strong>Rust Core Library</strong> for Double-Float</p>
+</li>
+<li>
+<p>And our Rust App <strong>builds OK with NuttX</strong>!</p>
+</li>
+</ul>
+<p>TODO: Pic of double float vs soft float </p>
+<h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>1 Software vs Hardware Floating-Point</h1>
 <p>TODO</p>
-<h1 id="rust-custom-target-for-qemu-risc-v-on-apache-nuttx-rtos"><a class="doc-anchor" href="#rust-custom-target-for-qemu-risc-v-on-apache-nuttx-rtos">§</a>1 Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS</h1>
+<p>Compile nuttx</p>
+<p>Hello.c</p>
+<p>Target</p>
+<p>Rustc</p>
+<p>Oops we have a problem </p>
+<p>Never the twain shall meet!</p>
+<p>Elf header</p>
+<p>Change rust to double float </p>
+<h1 id="rust-build-for-64-bit-risc-v"><a class="doc-anchor" href="#rust-build-for-64-bit-risc-v">§</a>2 Rust Build for 64-bit RISC-V</h1>
+<p>TODO</p>
+<p><strong>Exercise for the Reader:</strong> Last article we TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh rv-virt:nsh64
+$ make menuconfig
+## TODO: Enable &quot;Hello Rust Example&quot;
+$ make
+
+RUSTC:  hello_rust_main.rs error: Error loading target specification: 
+  Could not find specification for target &quot;riscv64i-unknown-none-elf&quot;. 
+  Run `rustc --print target-list` for a list of built-in targets
+
+make[2]: *** [nuttx/apps/Application.mk:275: hello_rust.o] Error 1
+make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
+make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
+</code></pre></div>
+<p>Which says that <em>riscv64i-unknown-none-elf</em> isn’t a valid Rust Target.</p>
+<p>(Should be <em>riscv64gc-unknown-none-elf</em> instead)</p>
+<p>Fix the build?
+Custom Target?
+(10 points)</p>
+<h1 id="rust-custom-target-for-qemu-risc-v-on-apache-nuttx-rtos"><a class="doc-anchor" href="#rust-custom-target-for-qemu-risc-v-on-apache-nuttx-rtos">§</a>3 Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS</h1>
 <p>TODO</p>
 <p>We have a problem compiling <a href="https://lupyuen.github.io/articles/rust3#software-vs-hardware-floating-point">Rust Apps for QEMU RISC-V 32-bit</a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make
@@ -435,7 +493,7 @@ Caused by:
     ilp32 ilp32d ilp32e ilp32f lp64 lp64d lp64f
 </code></pre></div>
 <p><a href="https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5">(As explained here)</a></p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>4 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
