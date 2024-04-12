@@ -10,7 +10,79 @@
 
 </div>
 
+Last article we were compiling [__Rust Apps__](TODO) for [__Apache NuttX RTOS__](TODO) (QEMU RISC-V 32-bit). And we hit a __baffling error__...
+
+```bash
+$ make
+riscv64-unknown-elf-ld: libapps.a
+  hello_rust_1.o:
+  can't link soft-float modules with double-float modules
+```
+
+Let's solve the problem! We dive inside the internals of __C-to-Rust Interop__...
+
+- Rust compiles for __Soft-Float__, but NuttX expects __Double-Float__
+
+  (Software vs Hardware Floating-Point)
+
+- But Rust __doesn't support Double-Float__ (by default)
+
+- So we create a __Rust Custom Target__ for Double-Float
+
+- Rebuild the __Rust Core Library__ for Double-Float
+
+- And our Rust App __builds OK with NuttX__!
+
+TODO: Pic of double float vs soft float 
+
+# Software vs Hardware Floating-Point
+
 TODO
+
+Compile nuttx
+
+Hello.c
+
+Target
+
+Rustc
+
+Oops we have a problem 
+
+Never the twain shall meet!
+
+Elf header
+
+Change rust to double float 
+
+# Rust Build for 64-bit RISC-V
+
+TODO
+
+__Exercise for the Reader:__ Last article we TODO
+
+```bash
+$ tools/configure.sh rv-virt:nsh64
+$ make menuconfig
+## TODO: Enable "Hello Rust Example"
+$ make
+
+RUSTC:  hello_rust_main.rs error: Error loading target specification: 
+  Could not find specification for target "riscv64i-unknown-none-elf". 
+  Run `rustc --print target-list` for a list of built-in targets
+
+make[2]: *** [nuttx/apps/Application.mk:275: hello_rust.o] Error 1
+make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
+make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
+```
+
+Which says that _riscv64i-unknown-none-elf_ isn't a valid Rust Target.
+
+(Should be _riscv64gc-unknown-none-elf_ instead)
+
+Fix the build?
+Custom Target?
+(10 points)
 
 # Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS
 
