@@ -1,6 +1,6 @@
 # Recipe for Wholemeal Sourdough with Bread Machine
 
-📝 _31 Mar 2024_
+📝 _12 Apr 2024_
 
 ![Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough26.jpg)
 
@@ -8,9 +8,9 @@
 
 [(Watch the __Video on YouTube__)](https://www.youtube.com/shorts/6yqyACMUxOk)
 
-__Warning:__ Sorry the recipe below [__has issues__](https://masto.ai/@MKH/112185445371214202)...
+__Warning:__ Sorry the recipe below has issues...
 
-- Not Gonna Lie (NGL), the Baked Sourdough feels somewhat [__Gummy and Damp__](https://masto.ai/@MKH/112185445371214202)
+- Not Gonna Lie ("NGL") the Baked Sourdough feels somewhat Gummy and Damp
 
 - Is it [__Overfermented__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented)? Or [__pH Level__](https://www.the-sourdough-framework.com/Wheatsourdough.html#bulk-fermentation) too acidic? Let's get a [__Food pH Meter__](https://shp.ee/1rt7sae) and verify!
 
@@ -20,9 +20,13 @@ __Warning:__ Sorry the recipe below [__has issues__](https://masto.ai/@MKH/11218
 
   (Normally we'll "debug" but Bugs and Food don't mix! And "troubleshoot" sounds a little... violent)
 
+- This recipe is less gummy: 2/3 cup water, 2.5 cups bread flour, no wholegrain flour, no baking soda. Rise slowly over 8 hours, chill in fridge overnight.
+
 - My deepest apologies to the folks who taste and test all my awful sourdough creations. Luv you!
 
 - TODO: Does the Food pH Meter help?
+
+![Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough34.jpg)
 
 # Wholemeal Sourdough Starter
 
