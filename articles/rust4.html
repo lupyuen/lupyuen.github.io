@@ -65,10 +65,377 @@
 
     <h1 class="title">Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>22 Apr 2024</em></p>
+<li><a href="#rust-custom-target-for-qemu-risc-v-on-apache-nuttx-rtos">1 Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS</a><ul></ul></li>
+<li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>22 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust4-title.jpg" alt="Rust Apps on Apache NuttX RTOS and QEMU RISC-V" /></p>
+<div style="text-align: center">
+<p><a href="https://github.com/Swordfish90/cool-retro-term"><em>Thanks to cool-retro-term!</em></a></p>
+</div>
 <p>TODO</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>1 What’s Next</h1>
+<h1 id="rust-custom-target-for-qemu-risc-v-on-apache-nuttx-rtos"><a class="doc-anchor" href="#rust-custom-target-for-qemu-risc-v-on-apache-nuttx-rtos">§</a>1 Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS</h1>
+<p>TODO</p>
+<p>We have a problem compiling <a href="https://lupyuen.github.io/articles/rust3#software-vs-hardware-floating-point">Rust Apps for QEMU RISC-V 32-bit</a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ make
+LD: nuttx
+riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
+  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o):
+  can&#39;t link soft-float modules with double-float modules
+
+riscv64-unknown-elf-ld: failed to merge target specific data of file
+  nuttx/staging/libapps.a
+  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
+</code></pre></div>
+<p>That’s because <a href="https://lupyuen.github.io/articles/rust3#how-nuttx-compiles-rust-apps">NuttX builds Rust Apps</a> for <code>riscv32i-unknown-none-elf</code> (Software Floating-Point)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile `hello_rust_main.rs` to `hello_rust.o`
+## for Rust Target: RISC-V 32-bit (Soft-Float)
+rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv32i-unknown-none-elf \
+  -C panic=abort \
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust_main.rs...apps.examples.hello_rust.o
+</code></pre></div>
+<p>But the rest of NuttX is Double-Precision Hardware Floating-Point!</p>
+<p>(<code>-march=rv32imafdc -mabi=ilp32d</code>)</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ make --trace
+...
+riscv64-unknown-elf-gcc \
+  -c \
+  -fno-common \
+  -Wall \
+  -Wstrict-prototypes \
+  -Wshadow \
+  -Wundef \
+  -Wno-attributes \
+  -Wno-unknown-pragmas \
+  -Wno-psabi \
+  -Os \
+  -fno-strict-aliasing \
+  -fomit-frame-pointer \
+  -ffunction-sections \
+  -fdata-sections \
+  -g \
+  -march=rv32imafdc \
+  -mabi=ilp32d \
+  -isystem nuttx/include \
+  -D__NuttX__ \
+  -DNDEBUG  \
+  -pipe \
+  -I &quot;apps/include&quot; \
+  -Dmain=hello_main \
+  hello_main.c \
+  -o  hello_main.c...apps.examples.hello.o \
+</code></pre></div>
+<p><em>Does Rust support Double-Precision Hardware Floating-Point?</em></p>
+<p>We’re looking for a Rust Target like <code>riscv32gc-unknown-none-elf</code>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ rustup target list | grep riscv
+riscv32i-unknown-none-elf
+riscv32imac-unknown-none-elf
+riscv32imc-unknown-none-elf
+riscv64gc-unknown-linux-gnu
+riscv64gc-unknown-none-elf
+riscv64imac-unknown-none-elf
+</code></pre></div>
+<p>But nope it’s not supported! So we create a Rust Custom Target for <code>riscv32gc-unknown-none-elf</code>…</p>
+<ul>
+<li><a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html">Custom Target for Rust</a></li>
+</ul>
+<p>Let’s dump the Rust Targets <code>riscv32i</code> and <code>riscv64gc</code> to compare…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ rustc \
+  +nightly \
+  -Z unstable-options \
+  --print target-spec-json \
+  --target riscv32i-unknown-none-elf
+
+{
+  &quot;arch&quot;: &quot;riscv32&quot;,
+  &quot;atomic-cas&quot;: false,
+  &quot;cpu&quot;: &quot;generic-rv32&quot;,
+  &quot;data-layout&quot;: &quot;e-m:e-p:32:32-i64:64-n32-S128&quot;,
+  &quot;eh-frame-header&quot;: false,
+  &quot;emit-debug-gdb-scripts&quot;: false,
+  &quot;is-builtin&quot;: true,
+  &quot;linker&quot;: &quot;rust-lld&quot;,
+  &quot;linker-flavor&quot;: &quot;ld.lld&quot;,
+  &quot;llvm-target&quot;: &quot;riscv32&quot;,
+  &quot;max-atomic-width&quot;: 0,
+  &quot;panic-strategy&quot;: &quot;abort&quot;,
+  &quot;relocation-model&quot;: &quot;static&quot;,
+  &quot;target-pointer-width&quot;: &quot;32&quot;
+}
+
+$ rustc \
+  +nightly \
+  -Z unstable-options \
+  --print target-spec-json \
+  --target riscv64gc-unknown-none-elf  
+
+{
+  &quot;arch&quot;: &quot;riscv64&quot;,
+  &quot;code-model&quot;: &quot;medium&quot;,
+  &quot;cpu&quot;: &quot;generic-rv64&quot;,
+  &quot;data-layout&quot;: &quot;e-m:e-p:64:64-i64:64-i128:128-n32:64-S128&quot;,
+  &quot;eh-frame-header&quot;: false,
+  &quot;emit-debug-gdb-scripts&quot;: false,
+  &quot;features&quot;: &quot;+m,+a,+f,+d,+c&quot;,
+  &quot;is-builtin&quot;: true,
+  &quot;linker&quot;: &quot;rust-lld&quot;,
+  &quot;linker-flavor&quot;: &quot;ld.lld&quot;,
+  &quot;llvm-abiname&quot;: &quot;lp64d&quot;,
+  &quot;llvm-target&quot;: &quot;riscv64&quot;,
+  &quot;max-atomic-width&quot;: 64,
+  &quot;panic-strategy&quot;: &quot;abort&quot;,
+  &quot;relocation-model&quot;: &quot;static&quot;,
+  &quot;supported-sanitizers&quot;: [
+    &quot;kernel-address&quot;
+  ],
+  &quot;target-pointer-width&quot;: &quot;64&quot;
+}
+</code></pre></div>
+<p>Based on the above, we create our Rust Custom Target: <a href="riscv32gc-unknown-none-elf.json">riscv32gc-unknown-none-elf.json</a></p>
+<div class="example-wrap"><pre class="language-json"><code>{
+  &quot;arch&quot;: &quot;riscv32&quot;,
+  &quot;cpu&quot;: &quot;generic-rv32&quot;,
+  &quot;data-layout&quot;: &quot;e-m:e-p:32:32-i64:64-n32-S128&quot;,
+  &quot;eh-frame-header&quot;: false,
+  &quot;emit-debug-gdb-scripts&quot;: false,
+  &quot;features&quot;: &quot;+m,+a,+f,+d,+c&quot;,
+  &quot;linker&quot;: &quot;rust-lld&quot;,
+  &quot;linker-flavor&quot;: &quot;ld.lld&quot;,
+  &quot;llvm-abiname&quot;: &quot;ilp32d&quot;,
+  &quot;llvm-target&quot;: &quot;riscv32&quot;,
+  &quot;max-atomic-width&quot;: 0,
+  &quot;panic-strategy&quot;: &quot;abort&quot;,
+  &quot;relocation-model&quot;: &quot;static&quot;,
+  &quot;target-pointer-width&quot;: &quot;32&quot;
+}
+</code></pre></div>
+<p>Which is based on <code>riscv32i</code> with these changes…</p>
+<ul>
+<li>
+<p>Removed <code>&quot;atomic-cas&quot;: false</code></p>
+</li>
+<li>
+<p>Added <code>&quot;features&quot;: &quot;+m,+a,+f,+d,+c&quot;</code></p>
+</li>
+<li>
+<p>Removed <code>&quot;is-builtin&quot;: true</code></p>
+</li>
+<li>
+<p>Added <code>&quot;llvm-abiname&quot;: &quot;ilp32d&quot;</code></p>
+<p>(<code>ilp32d</code> comes from <code>make --trace</code> above)</p>
+<p><a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602">(More about <code>llvm-abiname</code>)</a></p>
+</li>
+</ul>
+<p>Now we build the Rust Core Library for <code>riscv32gc</code>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Verify our Custom Target
+rustc \
+  --print cfg \
+  --target riscv32gc-unknown-none-elf.json
+
+## Build the Rust Core Library for `riscv32gc`
+## Ignore the error: `app already exists`
+cargo new app
+pushd app
+cargo clean
+## Ignore the error: `can&#39;t find crate for std`
+cargo build \
+  -Zbuild-std=core,alloc \
+  --target ../riscv32gc-unknown-none-elf.json
+popd
+</code></pre></div>
+<p>We rebuild our Rust App with the new Rust Custom Target (linked to our Rust Core Library)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile our Rust App.
+## Changed the target to riscv32gc-unknown-none-elf.json
+rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv32gc-unknown-none-elf.json \
+  -C panic=abort \
+  -O \
+  ../apps/examples/hello_rust/hello_rust_main.rs \
+  -o ../apps/examples/hello_rust/*hello_rust.o \
+  \
+  -C incremental=app/target/riscv32gc-unknown-none-elf/debug/incremental \
+  -L dependency=app/target/riscv32gc-unknown-none-elf/debug/deps \
+  -L dependency=app/target/debug/deps \
+  --extern noprelude:alloc=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-*.rlib` \
+  --extern noprelude:compiler_builtins=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-*.rlib` \
+  --extern noprelude:core=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-*.rlib` \
+  -Z unstable-options
+
+## Dump the ELF Header. Should show:
+## Flags: 0x5, RVC, double-float ABI
+riscv64-unknown-elf-readelf \
+  -h -A \
+  ../apps/examples/hello_rust/*hello_rust.o
+
+## NuttX should link and execute correctly now
+cp \
+  ../apps/examples/hello_rust/*hello_rust.o \
+  ../apps/examples/hello_rust/*hello_rust_1.o
+
+pushd ../nuttx
+make
+qemu-system-riscv32 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv32 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+popd
+</code></pre></div>
+<p>And it works!</p>
+<p><em>Our Rust App links OK! Has the ELF Header changed?</em></p>
+<p>Yep the ELF Header has changed from Soft-Float to Double-Float…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Before Custom Target
+$ riscv64-unknown-elf-readelf \
+  -h -A \
+  ../apps/examples/hello_rust/*hello_rust_1.o
+
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2&#39;s complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           RISC-V
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          10240 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           40 (bytes)
+  Number of section headers:         29
+  Section header string table index: 1
+Attribute Section: riscv
+File Attributes
+  Tag_RISCV_stack_align: 16-bytes
+  Tag_RISCV_arch: &quot;rv32i2p1&quot;
+
+## After Custom Target
+$ riscv64-unknown-elf-readelf \
+  -h -A \
+  ../apps/examples/hello_rust/*hello_rust.o
+
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2&#39;s complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           RISC-V
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          10352 (bytes into file)
+  Flags:                             0x5, RVC, double-float ABI
+  Size of this header:               52 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           40 (bytes)
+  Number of section headers:         29
+  Section header string table index: 1
+Attribute Section: riscv
+File Attributes
+  Tag_RISCV_stack_align: 16-bytes
+  Tag_RISCV_arch: &quot;rv32i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0&quot;
+
+## Which looks similar to other C Binaries
+$ riscv64-unknown-elf-readelf \
+  -h -A \
+  ../apps/examples/hello/*hello.o                 
+
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2&#39;s complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           RISC-V
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          3776 (bytes into file)
+  Flags:                             0x5, RVC, double-float ABI
+  Size of this header:               52 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           40 (bytes)
+  Number of section headers:         26
+  Section header string table index: 25
+Attribute Section: riscv
+File Attributes
+  Tag_RISCV_stack_align: 16-bytes
+  Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0&quot;
+</code></pre></div>
+<p><em>How did we figure out the rustc options?</em></p>
+<p><code>cargo build</code> will call <code>rustc</code> with a whole bunch of options.</p>
+<p>We ran <code>cargo build -v</code> to dump the <code>rustc</code> options that were used to compile a Rust App with our Custom Rust Core Library for <code>riscv32gc</code>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ cargo build -v \
+  -Zbuild-std=core,alloc \
+  --target ../riscv32gc-unknown-none-elf.json
+
+   Compiling compiler_builtins v0.1.101
+   Compiling core v0.0.0 ($HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/core)
+     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name build_script_build --edition=2018 $HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/compiler_builtins-0.1.101/build.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 -C split-debuginfo=unpacked --cfg &#39;feature=&quot;compiler-builtins&quot;&#39; --cfg &#39;feature=&quot;core&quot;&#39; --cfg &#39;feature=&quot;default&quot;&#39; --cfg &#39;feature=&quot;rustc-dep-of-std&quot;&#39; -C metadata=9bd0bac7535b33a8 -C extra-filename=-9bd0bac7535b33a8 --out-dir $HOME/riscv/nuttx-rust-app/app/target/debug/build/compiler_builtins-9bd0bac7535b33a8 -Z force-unstable-if-unmarked -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --cap-lints allow`
+     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name core --edition=2021 $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/core/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 -C metadata=d271c6ebb87f9b41 -C extra-filename=-d271c6ebb87f9b41 --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -Z force-unstable-if-unmarked -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --cap-lints allow`
+     Running `$HOME/riscv/nuttx-rust-app/app/target/debug/build/compiler_builtins-9bd0bac7535b33a8/build-script-build`
+   Compiling rustc-std-workspace-core v1.99.0 ($HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/rustc-std-workspace-core)
+     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name rustc_std_workspace_core --edition=2021 $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/rustc-std-workspace-core/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 -C metadata=52e0df2b2cc19b6e -C extra-filename=-52e0df2b2cc19b6e --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -Z force-unstable-if-unmarked -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --extern core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rmeta --cap-lints allow`
+     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name compiler_builtins --edition=2018 $HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/compiler_builtins-0.1.101/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 --cfg &#39;feature=&quot;compiler-builtins&quot;&#39; --cfg &#39;feature=&quot;core&quot;&#39; --cfg &#39;feature=&quot;default&quot;&#39; --cfg &#39;feature=&quot;rustc-dep-of-std&quot;&#39; -C metadata=cd0d33c2bd30ca51 -C extra-filename=-cd0d33c2bd30ca51 --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -Z force-unstable-if-unmarked -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --extern core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/librustc_std_workspace_core-52e0df2b2cc19b6e.rmeta --cap-lints allow --cfg &#39;feature=&quot;unstable&quot;&#39; --cfg &#39;feature=&quot;mem&quot;&#39;`
+   Compiling alloc v0.0.0 ($HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/alloc)
+     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name alloc --edition=2021 $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 -C metadata=5d7bc2e4f3c29e08 -C extra-filename=-5d7bc2e4f3c29e08 --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -Z force-unstable-if-unmarked -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --extern compiler_builtins=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-cd0d33c2bd30ca51.rmeta --extern core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rmeta --cap-lints allow`
+   Compiling app v0.1.0 ($HOME/riscv/nuttx-rust-app/app)
+     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name app --edition=2021 src/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 -C metadata=1ff442e6481e1397 -C extra-filename=-1ff442e6481e1397 --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -C incremental=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/incremental -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --extern &#39;noprelude:alloc=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-5d7bc2e4f3c29e08.rlib&#39; --extern &#39;noprelude:compiler_builtins=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-cd0d33c2bd30ca51.rlib&#39; --extern &#39;noprelude:core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rlib&#39; -Z unstable-options`
+error[E0463]: can&#39;t find crate for `std`
+  |
+  = note: the `riscv32gc-unknown-none-elf` target may not support the standard library
+  = note: `std` is required by `app` because it does not declare `#![no_std]`
+  = help: consider building the standard library from source with `cargo build -Zbuild-std`
+
+error: cannot find macro `println` in this scope
+ --&gt; src/main.rs:2:5
+  |
+2 |     println!(&quot;Hello, world!&quot;);
+  |     ^^^^^^^
+
+error: `#[panic_handler]` function required, but not found
+
+For more information about this error, try `rustc --explain E0463`.
+error: could not compile `app` (bin &quot;app&quot;) due to 3 previous errors
+
+Caused by:
+  process didn&#39;t exit successfully: `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name app --edition=2021 src/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 -C metadata=1ff442e6481e1397 -C extra-filename=-1ff442e6481e1397 --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -C incremental=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/incremental -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --extern &#39;noprelude:alloc=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-5d7bc2e4f3c29e08.rlib&#39; --extern &#39;noprelude:compiler_builtins=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-cd0d33c2bd30ca51.rlib&#39; --extern &#39;noprelude:core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rlib&#39; -Z unstable-options` (exit status: 1)
+</code></pre></div>
+<p>This Rust Compiler Issue might be relevant…</p>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/issues/65024">Allow building for hard-float targets in RISC-V</a></li>
+</ul>
+<p><em>How to see the Targets supported by GCC?</em></p>
+<p>Like this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ riscv64-unknown-elf-gcc --target-help
+
+  Supported ABIs (for use with the -mabi= option):
+    ilp32 ilp32d ilp32e ilp32f lp64 lp64d lp64f
+</code></pre></div>
+<p><a href="https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5">(As explained here)</a></p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
