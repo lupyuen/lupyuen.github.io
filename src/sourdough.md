@@ -162,6 +162,22 @@ But remember not to [__overferment__](https://www.the-sourdough-framework.com/Tr
 
 ![Bake the dough](https://lupyuen.github.io/images/sourdough33.jpg)
 
+# pH and Temperature Readings
+
+| Time | pH | degC | Comment |
+|------|----|------|---------|
+| 630am | | | Prepare starter, cold day
+| 230pm | 3.7 | 26.5 | Starter ready
+| 300pm | 5.1 | 27.6 | After mixing dough
+| 520pm | 4.8 | 27.1 | Stretch and fold
+| 620pm | 4.5 | 26.9 | Stretch and fold
+| 720pm | 4.2 | 28.1 | Stretch and fold
+| 815pm | 4.0 | 28.5 | Stretch and fold
+| 910pm | 3.9 | 27.7 | Stretch and fold
+| 1010pm | | | Chill overnight in fridge
+
+Total 7 hours of rising
+
 # Okinawa Black Sugar Sourdough
 
 ![Okinawa Black Sugar Sourdough](https://lupyuen.github.io/images/sourdough22.jpg)
