@@ -55,6 +55,32 @@ Elf header
 
 Change rust to double float 
 
+# Double-Floating Rust
+
+TODO
+
+Change Rust target
+
+Nope doesn't work
+
+Here are the targets
+
+Need custom target
+
+Gcc targets
+
+# Custom Target for Rust
+
+TODO
+
+# Build the Rust Core Library
+
+TODO
+
+# NuttX Links OK with Rust
+
+TODO
+
 # Rust Build for 64-bit RISC-V
 
 TODO
