@@ -78,6 +78,8 @@ Add in this sequence to Bread Machine (pic above)...
 
 ![Knead the dough](https://lupyuen.github.io/images/sourdough29.jpg)
 
+_(TODO: Actually the dough is dryer, firmer, rounder than the pic above. Dryer dough is easier to manage, less risk of overfermentation)_
+
 # Knead the Dough
 
 We will __knead the dough__ in the Bread Machine, move the Bread Bucket to a Cool Oven to __rise the dough__ (4.5 hours), then move the Bread Bucket back to the Bread Machine for __more rising and baking__. Here are the steps...
@@ -104,6 +106,8 @@ We will __knead the dough__ in the Bread Machine, move the Bread Bucket to a Coo
 
 ![Stretch and fold the dough before rising](https://lupyuen.github.io/images/sourdough30.jpg)
 
+_(TODO: Actually the dough is dryer, firmer, rounder than the pic above. Dryer dough is easier to manage, less risk of overfermentation)_
+
 # Rise the Dough
 
 1.  Place the Bread Bucket in a Cool Oven, and cover with a Dry Towel. (Pic above)
@@ -123,6 +127,8 @@ We will __knead the dough__ in the Bread Machine, move the Bread Bucket to a Coo
     (Otherwise dough will become [__Overfermented, Sour and Gummy__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented))
 
 ![Stretch and fold the dough while rising](https://lupyuen.github.io/images/sourdough31.jpg)
+
+_(TODO: Actually the dough is dryer, firmer, rounder than the pic above. Dryer dough is easier to manage, less risk of overfermentation)_
 
 # Bake the Dough
 
