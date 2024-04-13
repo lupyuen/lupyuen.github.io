@@ -24,7 +24,7 @@ __Warning:__ Sorry the recipe below has issues...
 
 - My deepest apologies to the folks who taste and test all my awful sourdough creations. Luv you!
 
-- TODO: Does the Food pH Meter help?
+- TODO: See the [__pH and Temperature Readings__](https://lupyuen.github.io/articles/sourdough#ph-and-temperature-readings). Does the Food pH Meter help?
 
 ![Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough34.jpg)
 
