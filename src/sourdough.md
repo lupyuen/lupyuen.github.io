@@ -165,7 +165,7 @@ But remember not to [__overferment__](https://www.the-sourdough-framework.com/Tr
 # pH and Temperature Readings
 
 | Time | pH | degC | Comment |
-|------|----|------|---------|
+|:----:|:--:|:----:|:--------|
 | 630am | | | Prepare starter, cold day
 | 230pm | 3.7 | 26.5 | Starter ready
 | 300pm | 5.1 | 27.6 | After mixing dough
@@ -174,7 +174,7 @@ But remember not to [__overferment__](https://www.the-sourdough-framework.com/Tr
 | 720pm | 4.2 | 28.1 | Stretch and fold
 | 815pm | 4.0 | 28.5 | Stretch and fold
 | 910pm | 3.9 | 27.7 | Stretch and fold
-| 1010pm | | | Chill overnight in fridge
+| 1000pm | | | Chill overnight in fridge
 
 Total 7 hours of rising
 
