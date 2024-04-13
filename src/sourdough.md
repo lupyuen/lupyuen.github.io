@@ -38,15 +38,15 @@ Daily routine for __Sourdough Starter__, assuming that we bake every other day..
 
 -   __Feed 2 times daily:__
 
-    -   1 cup __Superfine Wholegrain Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-superfine-wholegrain-flour/)
+    -   1/2 cup __Superfine Wholegrain Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-superfine-wholegrain-flour/)
     
     -   1/4 cup __Boiled Water__ at Room Temperature. Consistency should be like thick oatmeal, so it will rise better.
 
     Except for the __night before dough-making__, increase to:
 
-    -   2 cups __Superfine Wholegrain Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-superfine-wholegrain-flour/)
+    -   3/4 cups __Superfine Wholegrain Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-superfine-wholegrain-flour/)
     
-    -   1/2 cup __Boiled Water__ at Room Temperature. Consistency should be like thick oatmeal, so it will rise better.
+    -   1/4 cup __Boiled Water__ at Room Temperature. Consistency should be like thick oatmeal, so it will rise better.
 
 -   Stir the Sourdough Starter with a chopstick (the blunt end)
 
@@ -66,17 +66,11 @@ Add in this sequence to Bread Machine (pic above)...
 
 -   1 tablespoon (14g) __Cold Unsalted Butter__ (from fridge)
 
--   1 cup __Boiled Water__ at Room Temperature
+-   2/3 cup __Boiled Water__ at Room Temperature
 
--   1/4 cup (60g) __Superfine Wholegrain Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-superfine-wholegrain-flour/)
-
--   2 cups (240g) __Bread Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-bread-flour/)
+-   2.5 cups (318g) __Bread Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-bread-flour/)
 
 -   1/2 teaspoon (2.8g) __Salt__
-
--   1/2 teaspoon __Baking Soda__ (to neutralise the sourness and give extra poofiness)
-
-    (Too much Baking Soda will taste soapy!)
 
 -   Half of the __Wholemeal Sourdough Starter__ (from above)
 
