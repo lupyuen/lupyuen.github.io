@@ -55,66 +55,6 @@ Elf header
 
 Change rust to double float 
 
-# Double-Floating Rust
-
-TODO
-
-Change Rust target
-
-Nope doesn't work
-
-Here are the targets
-
-Need custom target
-
-Gcc targets
-
-# Custom Target for Rust
-
-TODO
-
-# Build the Rust Core Library
-
-TODO
-
-# NuttX Links OK with Rust
-
-TODO
-
-How would Linux Kernel handle these uncommon targets?
-
-# Rust Build for 64-bit RISC-V
-
-TODO
-
-__Exercise for the Reader:__ Last article we TODO
-
-```bash
-$ tools/configure.sh rv-virt:nsh64
-$ make menuconfig
-## TODO: Enable "Hello Rust Example"
-$ make
-
-RUSTC:  hello_rust_main.rs error: Error loading target specification: 
-  Could not find specification for target "riscv64i-unknown-none-elf". 
-  Run `rustc --print target-list` for a list of built-in targets
-
-make[2]: *** [nuttx/apps/Application.mk:275: hello_rust.o] Error 1
-make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
-make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
-```
-
-Which says that _riscv64i-unknown-none-elf_ isn't a valid Rust Target.
-
-(Should be _riscv64gc-unknown-none-elf_ instead)
-
-Fix the build?
-Custom Target?
-(10 points)
-
-# Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS
-
-TODO
 
 We have a problem compiling [Rust Apps for QEMU RISC-V 32-bit](https://lupyuen.github.io/articles/rust3#software-vs-hardware-floating-point)...
 
@@ -181,6 +121,20 @@ riscv64-unknown-elf-gcc \
   -o  hello_main.c...apps.examples.hello.o \
 ```
 
+# Double-Floating Rust
+
+TODO
+
+Change Rust target
+
+Nope doesn't work
+
+Here are the targets
+
+Need custom target
+
+Gcc targets
+
 _Does Rust support Double-Precision Hardware Floating-Point?_
 
 We're looking for a Rust Target like `riscv32gc-unknown-none-elf`...
@@ -198,6 +152,25 @@ riscv64imac-unknown-none-elf
 But nope it's not supported! So we create a Rust Custom Target for `riscv32gc-unknown-none-elf`...
 
 - [Custom Target for Rust](https://docs.rust-embedded.org/embedonomicon/custom-target.html)
+
+
+_How to see the Targets supported by GCC?_
+
+Like this...
+
+```bash
+$ riscv64-unknown-elf-gcc --target-help
+
+  Supported ABIs (for use with the -mabi= option):
+    ilp32 ilp32d ilp32e ilp32f lp64 lp64d lp64f
+```
+
+[(As explained here)](https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5)
+
+# Custom Target for Rust
+
+TODO
+
 
 Let's dump the Rust Targets `riscv32i` and `riscv64gc` to compare...
 
@@ -289,6 +262,12 @@ Which is based on `riscv32i` with these changes...
 
   [(More about `llvm-abiname`)](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)
 
+
+# Build the Rust Core Library
+
+TODO
+
+
 Now we build the Rust Core Library for `riscv32gc`...
 
 ```bash
@@ -357,6 +336,11 @@ popd
 ```
 
 And it works!
+
+# NuttX Links OK with Rust
+
+TODO
+
 
 _Our Rust App links OK! Has the ELF Header changed?_
 
@@ -454,6 +438,68 @@ File Attributes
   Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
 ```
 
+How would Linux Kernel handle these uncommon targets?
+
+This Rust Compiler Issue might be relevant...
+
+- [Allow building for hard-float targets in RISC-V](https://github.com/rust-lang/rust/issues/65024)
+
+
+# Rust Build for 64-bit RISC-V
+
+TODO
+
+__Exercise for the Reader:__ Last article we TODO
+
+```bash
+$ tools/configure.sh rv-virt:nsh64
+$ make menuconfig
+## TODO: Enable "Hello Rust Example"
+$ make
+
+RUSTC:  hello_rust_main.rs error: Error loading target specification: 
+  Could not find specification for target "riscv64i-unknown-none-elf". 
+  Run `rustc --print target-list` for a list of built-in targets
+
+make[2]: *** [nuttx/apps/Application.mk:275: hello_rust.o] Error 1
+make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
+make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
+```
+
+Which says that _riscv64i-unknown-none-elf_ isn't a valid Rust Target.
+
+(Should be _riscv64gc-unknown-none-elf_ instead)
+
+Fix the build?
+Custom Target?
+(10 points)
+
+# What's Next
+
+TODO
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
+
+-   [__My Other Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
+
+-   [__Older Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/rust4.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust4.md)
+
+# Appendix: Rust Compiler Options
+
+TODO
+
 _How did we figure out the rustc options?_
 
 `cargo build` will call `rustc` with a whole bunch of options.
@@ -497,42 +543,3 @@ error: could not compile `app` (bin "app") due to 3 previous errors
 Caused by:
   process didn't exit successfully: `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name app --edition=2021 src/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 -C metadata=1ff442e6481e1397 -C extra-filename=-1ff442e6481e1397 --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -C incremental=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/incremental -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --extern 'noprelude:alloc=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-5d7bc2e4f3c29e08.rlib' --extern 'noprelude:compiler_builtins=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-cd0d33c2bd30ca51.rlib' --extern 'noprelude:core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rlib' -Z unstable-options` (exit status: 1)
 ```
-
-This Rust Compiler Issue might be relevant...
-
-- [Allow building for hard-float targets in RISC-V](https://github.com/rust-lang/rust/issues/65024)
-
-_How to see the Targets supported by GCC?_
-
-Like this...
-
-```bash
-$ riscv64-unknown-elf-gcc --target-help
-
-  Supported ABIs (for use with the -mabi= option):
-    ilp32 ilp32d ilp32e ilp32f lp64 lp64d lp64f
-```
-
-[(As explained here)](https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5)
-
-# What's Next
-
-TODO
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "Apache NuttX RTOS for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
-
--   [__My Other Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
-
--   [__Older Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/rust4.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust4.md)
