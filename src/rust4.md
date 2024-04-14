@@ -81,6 +81,8 @@ TODO
 
 TODO
 
+How would Linux Kernel handle these uncommon targets?
+
 # Rust Build for 64-bit RISC-V
 
 TODO
