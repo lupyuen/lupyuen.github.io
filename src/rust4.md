@@ -96,20 +96,40 @@ rustc \
 
 Watch closely as we compare __GCC Compiler__ with __Rust Compiler__...
 
+<span style="font-size:90%">
+
 | GCC Compiler | Rust Compiler |
 |--------------|---------------|
 | _riscv64-unknown-elf-gcc_ <br> &nbsp;&nbsp;&nbsp;&nbsp; _hello_main.c_ | _rustc_ <br> &nbsp;&nbsp;&nbsp;&nbsp; _hello_rust_main.rs_
 | _-march_ <br> &nbsp;&nbsp;&nbsp;&nbsp;__rv32imafdc__ | _--target_ <br> &nbsp;&nbsp;&nbsp;__riscv32i-unknown-none-elf__
 | _-mabi_ <br> &nbsp;&nbsp;&nbsp;&nbsp;__ilp32d__
 
-_Oops we have a problem..._
+</span>
 
-TODO: Never the twain shall meet!
+_Hmmm something different about the Floats..._
 
-TODO: Elf header
+Yep GCC supports (Double-Precision) __Hardware Floating-Point__...
+
+Rust Compiler only supports __Software Floating-Point__!
+
+<span style="font-size:90%">
+
+| GCC Compiler | Rust Compiler |
+|--------------|---------------|
+| __rv32imafdc__ | __riscv32i__ |
+| - __I__: Integer | - __I__: Integer |
+| - __F__: Single Hard-Float | _(Soft-Float)_ |
+| - __D__: Double Hard-Float | _(Soft-Float)_ |
+
+</span>
+
+And that's why GCC Linker won't link them together!
+
+To verify, we dump the __ELF Headers__ for GCC and Rust Compiler Outputs...
 
 ```bash
-## ELF Header for Hello C
+## ELF Header for GCC Output:
+## Double-Precision Hardware Floating-Point
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello/*hello.o                 
@@ -139,7 +159,8 @@ File Attributes
   Tag_RISCV_stack_align: 16-bytes
   Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
 
-## ELF Header for Hello Rust
+## ELF Header for Rust Compiler Output
+## Software Floating-Point
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
