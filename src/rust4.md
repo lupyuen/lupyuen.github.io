@@ -39,52 +39,7 @@ TODO: Pic of double float vs soft float
 
 TODO
 
-Compile nuttx
-
-Hello.c
-
-Target
-
-Rustc
-
-Oops we have a problem 
-
-Never the twain shall meet!
-
-Elf header
-
-Change rust to double float 
-
-
-We have a problem compiling [Rust Apps for QEMU RISC-V 32-bit](https://lupyuen.github.io/articles/rust3#software-vs-hardware-floating-point)...
-
-```bash
-$ make
-LD: nuttx
-riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
-  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o):
-  can't link soft-float modules with double-float modules
-
-riscv64-unknown-elf-ld: failed to merge target specific data of file
-  nuttx/staging/libapps.a
-  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
-```
-
-That's because [NuttX builds Rust Apps](https://lupyuen.github.io/articles/rust3#how-nuttx-compiles-rust-apps) for `riscv32i-unknown-none-elf` (Software Floating-Point)...
-
-```bash
-## Compile `hello_rust_main.rs` to `hello_rust.o`
-## for Rust Target: RISC-V 32-bit (Soft-Float)
-rustc \
-  --edition 2021 \
-  --emit obj \
-  -g \
-  --target riscv32i-unknown-none-elf \
-  -C panic=abort \
-  -O \
-  hello_rust_main.rs \
-  -o hello_rust_main.rs...apps.examples.hello_rust.o
-```
+TODO: Compile nuttx, Hello.c
 
 But the rest of NuttX is Double-Precision Hardware Floating-Point!
 
@@ -118,8 +73,121 @@ riscv64-unknown-elf-gcc \
   -I "apps/include" \
   -Dmain=hello_main \
   hello_main.c \
-  -o  hello_main.c...apps.examples.hello.o \
+  -o  hello_main.c...apps.examples.hello.o
 ```
+
+TODO: Target, Rustc
+
+That's because [NuttX builds Rust Apps](https://lupyuen.github.io/articles/rust3#how-nuttx-compiles-rust-apps) for `riscv32i-unknown-none-elf` (Software Floating-Point)...
+
+```bash
+## Compile `hello_rust_main.rs` to `hello_rust.o`
+## for Rust Target: RISC-V 32-bit (Soft-Float)
+rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv32i-unknown-none-elf \
+  -C panic=abort \
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust_main.rs...apps.examples.hello_rust.o
+```
+
+Watch closely as we compare __GCC Compiler__ with __Rust Compiler__...
+
+| GCC Compiler | Rust Compiler |
+|--------------|---------------|
+| _riscv64-unknown-elf-gcc_ | _rustc_
+| _hello_main.c_ | _hello_rust_main.rs_
+| _-march_ __rv32imafdc__ | _--target_ __riscv32i-unknown-none-elf__
+| _-mabi_ __ilp32d__ _..._ | _..._
+
+_Oops we have a problem..._
+
+TODO: Never the twain shall meet!
+
+TODO: Elf header
+
+```bash
+## ELF Header for Hello C
+$ riscv64-unknown-elf-readelf \
+  --file-header --arch-specific \
+  ../apps/examples/hello/*hello.o                 
+
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           RISC-V
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          3776 (bytes into file)
+  Flags:                             0x5, RVC, double-float ABI
+  Size of this header:               52 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           40 (bytes)
+  Number of section headers:         26
+  Section header string table index: 25
+Attribute Section: riscv
+File Attributes
+  Tag_RISCV_stack_align: 16-bytes
+  Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
+
+## ELF Header for Hello Rust
+$ riscv64-unknown-elf-readelf \
+  --file-header --arch-specific \
+  ../apps/examples/hello_rust/*hello_rust.o
+
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           RISC-V
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          10240 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           40 (bytes)
+  Number of section headers:         29
+  Section header string table index: 1
+Attribute Section: riscv
+File Attributes
+  Tag_RISCV_stack_align: 16-bytes
+  Tag_RISCV_arch: "rv32i2p1"
+```
+
+Change rust to double float 
+
+
+We have a problem compiling [Rust Apps for QEMU RISC-V 32-bit](https://lupyuen.github.io/articles/rust3#software-vs-hardware-floating-point)...
+
+```bash
+$ make
+LD: nuttx
+riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
+  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o):
+  can't link soft-float modules with double-float modules
+
+riscv64-unknown-elf-ld: failed to merge target specific data of file
+  nuttx/staging/libapps.a
+  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
+```
+
 
 TODO: Pic of Rust Won't Double-Float
 
@@ -316,7 +384,7 @@ rustc \
 ## Dump the ELF Header. Should show:
 ## Flags: 0x5, RVC, double-float ABI
 riscv64-unknown-elf-readelf \
-  -h -A \
+  --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
 
 ## NuttX should link and execute correctly now
@@ -351,7 +419,7 @@ Yep the ELF Header has changed from Soft-Float to Double-Float...
 ```bash
 ## Before Custom Target
 $ riscv64-unknown-elf-readelf \
-  -h -A \
+  --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust_1.o
 
 ELF Header:
@@ -381,7 +449,7 @@ File Attributes
 
 ## After Custom Target
 $ riscv64-unknown-elf-readelf \
-  -h -A \
+  --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
 
 ELF Header:
@@ -411,7 +479,7 @@ File Attributes
 
 ## Which looks similar to other C Binaries
 $ riscv64-unknown-elf-readelf \
-  -h -A \
+  --file-header --arch-specific \
   ../apps/examples/hello/*hello.o                 
 
 ELF Header:
