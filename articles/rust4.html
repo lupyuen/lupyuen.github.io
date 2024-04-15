@@ -152,16 +152,28 @@ rustc \
   -o hello_rust_main.rs...apps.examples.hello_rust.o
 </code></pre></div>
 <p>Watch closely as we compare <strong>GCC Compiler</strong> with <strong>Rust Compiler</strong>…</p>
+<span style="font-size:90%">
 <div><table><thead><tr><th>GCC Compiler</th><th>Rust Compiler</th></tr></thead><tbody>
 <tr><td><em>riscv64-unknown-elf-gcc</em> <br>      <em>hello_main.c</em></td><td><em>rustc</em> <br>      <em>hello_rust_main.rs</em></td></tr>
 <tr><td><em>-march</em> <br>     <strong>rv32imafdc</strong></td><td><em>–target</em> <br>    <strong>riscv32i-unknown-none-elf</strong></td></tr>
 <tr><td><em>-mabi</em> <br>     <strong>ilp32d</strong></td><td></td></tr>
 </tbody></table>
-</div>
-<p><em>Oops we have a problem…</em></p>
-<p>TODO: Never the twain shall meet!</p>
-<p>TODO: Elf header</p>
-<div class="example-wrap"><pre class="language-bash"><code>## ELF Header for Hello C
+</div></span>
+<p><em>Hmmm something different about the Floats…</em></p>
+<p>Yep GCC supports (Double-Precision) <strong>Hardware Floating-Point</strong>…</p>
+<p>Rust Compiler only supports <strong>Software Floating-Point</strong>!</p>
+<span style="font-size:90%">
+<div><table><thead><tr><th>GCC Compiler</th><th>Rust Compiler</th></tr></thead><tbody>
+<tr><td><strong>rv32imafdc</strong></td><td><strong>riscv32i</strong></td></tr>
+<tr><td>- <strong>I</strong>: Integer</td><td>- <strong>I</strong>: Integer</td></tr>
+<tr><td>- <strong>F</strong>: Single Hard-Float</td><td><em>(Soft-Float)</em></td></tr>
+<tr><td>- <strong>D</strong>: Double Hard-Float</td><td><em>(Soft-Float)</em></td></tr>
+</tbody></table>
+</div></span>
+<p>And that’s why GCC Linker won’t link them together!</p>
+<p>To verify, we dump the <strong>ELF Headers</strong> for GCC and Rust Compiler Outputs…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## ELF Header for GCC Output:
+## Double-Precision Hardware Floating-Point
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello/*hello.o                 
@@ -191,7 +203,8 @@ File Attributes
   Tag_RISCV_stack_align: 16-bytes
   Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0&quot;
 
-## ELF Header for Hello Rust
+## ELF Header for Rust Compiler Output
+## Software Floating-Point
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
