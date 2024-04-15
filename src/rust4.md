@@ -123,7 +123,7 @@ Rust Compiler only supports __Software Floating-Point__!
 
 </span>
 
-And that's why GCC Linker won't link them together!
+And that's why GCC Linker won't link the binaries!
 
 To verify, we dump the __ELF Headers__ for GCC and Rust Compiler Outputs...
 
@@ -193,7 +193,6 @@ File Attributes
 
 Change rust to double float 
 
-
 We have a problem compiling [Rust Apps for QEMU RISC-V 32-bit](https://lupyuen.github.io/articles/rust3#software-vs-hardware-floating-point)...
 
 ```bash
@@ -207,7 +206,6 @@ riscv64-unknown-elf-ld: failed to merge target specific data of file
   nuttx/staging/libapps.a
   (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
 ```
-
 
 TODO: Pic of Rust Won't Double-Float
 
@@ -257,10 +255,11 @@ $ riscv64-unknown-elf-gcc --target-help
 
 [(As explained here)](https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5)
 
+TODO: Pic of Custom Target for Rust
+
 # Custom Target for Rust
 
 TODO
-
 
 Let's dump the Rust Targets `riscv32i` and `riscv64gc` to compare...
 
@@ -352,11 +351,11 @@ Which is based on `riscv32i` with these changes...
 
   [(More about `llvm-abiname`)](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)
 
+TODO: Pic of Rust Core Library
 
 # Build the Rust Core Library
 
 TODO
-
 
 Now we build the Rust Core Library for `riscv32gc`...
 
