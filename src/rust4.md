@@ -121,7 +121,9 @@ riscv64-unknown-elf-gcc \
   -o  hello_main.c...apps.examples.hello.o \
 ```
 
-# Double-Floating Rust
+TODO: Pic of Rust Won't Double-Float
+
+# Rust Won't Double-Float
 
 TODO
 
