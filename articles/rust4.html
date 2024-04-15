@@ -105,38 +105,7 @@ riscv64-unknown-elf-ld: libapps.a
 <p>TODO: Pic of double float vs soft float </p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>1 Software vs Hardware Floating-Point</h1>
 <p>TODO</p>
-<p>Compile nuttx</p>
-<p>Hello.c</p>
-<p>Target</p>
-<p>Rustc</p>
-<p>Oops we have a problem </p>
-<p>Never the twain shall meet!</p>
-<p>Elf header</p>
-<p>Change rust to double float </p>
-<p>We have a problem compiling <a href="https://lupyuen.github.io/articles/rust3#software-vs-hardware-floating-point">Rust Apps for QEMU RISC-V 32-bit</a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ make
-LD: nuttx
-riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
-  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o):
-  can&#39;t link soft-float modules with double-float modules
-
-riscv64-unknown-elf-ld: failed to merge target specific data of file
-  nuttx/staging/libapps.a
-  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
-</code></pre></div>
-<p>That’s because <a href="https://lupyuen.github.io/articles/rust3#how-nuttx-compiles-rust-apps">NuttX builds Rust Apps</a> for <code>riscv32i-unknown-none-elf</code> (Software Floating-Point)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Compile `hello_rust_main.rs` to `hello_rust.o`
-## for Rust Target: RISC-V 32-bit (Soft-Float)
-rustc \
-  --edition 2021 \
-  --emit obj \
-  -g \
-  --target riscv32i-unknown-none-elf \
-  -C panic=abort \
-  -O \
-  hello_rust_main.rs \
-  -o hello_rust_main.rs...apps.examples.hello_rust.o
-</code></pre></div>
+<p>TODO: Compile nuttx, Hello.c</p>
 <p>But the rest of NuttX is Double-Precision Hardware Floating-Point!</p>
 <p>(<code>-march=rv32imafdc -mabi=ilp32d</code>)</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make --trace
@@ -166,7 +135,104 @@ riscv64-unknown-elf-gcc \
   -I &quot;apps/include&quot; \
   -Dmain=hello_main \
   hello_main.c \
-  -o  hello_main.c...apps.examples.hello.o \
+  -o  hello_main.c...apps.examples.hello.o
+</code></pre></div>
+<p>TODO: Target, Rustc</p>
+<p>That’s because <a href="https://lupyuen.github.io/articles/rust3#how-nuttx-compiles-rust-apps">NuttX builds Rust Apps</a> for <code>riscv32i-unknown-none-elf</code> (Software Floating-Point)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile `hello_rust_main.rs` to `hello_rust.o`
+## for Rust Target: RISC-V 32-bit (Soft-Float)
+rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv32i-unknown-none-elf \
+  -C panic=abort \
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust_main.rs...apps.examples.hello_rust.o
+</code></pre></div>
+<p>Watch closely as we compare <strong>GCC Compiler</strong> with <strong>Rust Compiler</strong>…</p>
+<div><table><thead><tr><th>GCC Compiler</th><th>Rust Compiler</th></tr></thead><tbody>
+<tr><td><em>riscv64-unknown-elf-gcc</em></td><td><em>rustc</em></td></tr>
+<tr><td><em>hello_main.c</em></td><td><em>hello_rust_main.rs</em></td></tr>
+<tr><td><em>-march</em> <strong>rv32imafdc</strong></td><td><em>–target</em> <strong>riscv32i-unknown-none-elf</strong></td></tr>
+<tr><td><em>-mabi</em> <strong>ilp32d</strong> <em>…</em></td><td><em>…</em></td></tr>
+</tbody></table>
+</div>
+<p><em>Oops we have a problem…</em></p>
+<p>TODO: Never the twain shall meet!</p>
+<p>TODO: Elf header</p>
+<div class="example-wrap"><pre class="language-bash"><code>## ELF Header for Hello C
+$ riscv64-unknown-elf-readelf \
+  --file-header --arch-specific \
+  ../apps/examples/hello/*hello.o                 
+
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2&#39;s complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           RISC-V
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          3776 (bytes into file)
+  Flags:                             0x5, RVC, double-float ABI
+  Size of this header:               52 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           40 (bytes)
+  Number of section headers:         26
+  Section header string table index: 25
+Attribute Section: riscv
+File Attributes
+  Tag_RISCV_stack_align: 16-bytes
+  Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0&quot;
+
+## ELF Header for Hello Rust
+$ riscv64-unknown-elf-readelf \
+  --file-header --arch-specific \
+  ../apps/examples/hello_rust/*hello_rust.o
+
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2&#39;s complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           RISC-V
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          10240 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           40 (bytes)
+  Number of section headers:         29
+  Section header string table index: 1
+Attribute Section: riscv
+File Attributes
+  Tag_RISCV_stack_align: 16-bytes
+  Tag_RISCV_arch: &quot;rv32i2p1&quot;
+</code></pre></div>
+<p>Change rust to double float </p>
+<p>We have a problem compiling <a href="https://lupyuen.github.io/articles/rust3#software-vs-hardware-floating-point">Rust Apps for QEMU RISC-V 32-bit</a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ make
+LD: nuttx
+riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
+  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o):
+  can&#39;t link soft-float modules with double-float modules
+
+riscv64-unknown-elf-ld: failed to merge target specific data of file
+  nuttx/staging/libapps.a
+  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
 </code></pre></div>
 <p>TODO: Pic of Rust Won’t Double-Float</p>
 <h1 id="rust-wont-double-float"><a class="doc-anchor" href="#rust-wont-double-float">§</a>2 Rust Won’t Double-Float</h1>
@@ -330,7 +396,7 @@ rustc \
 ## Dump the ELF Header. Should show:
 ## Flags: 0x5, RVC, double-float ABI
 riscv64-unknown-elf-readelf \
-  -h -A \
+  --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
 
 ## NuttX should link and execute correctly now
@@ -357,7 +423,7 @@ popd
 <p>Yep the ELF Header has changed from Soft-Float to Double-Float…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Before Custom Target
 $ riscv64-unknown-elf-readelf \
-  -h -A \
+  --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust_1.o
 
 ELF Header:
@@ -387,7 +453,7 @@ File Attributes
 
 ## After Custom Target
 $ riscv64-unknown-elf-readelf \
-  -h -A \
+  --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
 
 ELF Header:
@@ -417,7 +483,7 @@ File Attributes
 
 ## Which looks similar to other C Binaries
 $ riscv64-unknown-elf-readelf \
-  -h -A \
+  --file-header --arch-specific \
   ../apps/examples/hello/*hello.o                 
 
 ELF Header:
