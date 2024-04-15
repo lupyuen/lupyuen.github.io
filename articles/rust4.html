@@ -170,7 +170,7 @@ rustc \
 <tr><td>- <strong>D</strong>: Double Hard-Float</td><td><em>(Soft-Float)</em></td></tr>
 </tbody></table>
 </div></span>
-<p>And that’s why GCC Linker won’t link them together!</p>
+<p>And that’s why GCC Linker won’t link the binaries!</p>
 <p>To verify, we dump the <strong>ELF Headers</strong> for GCC and Rust Compiler Outputs…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## ELF Header for GCC Output:
 ## Double-Precision Hardware Floating-Point
@@ -276,6 +276,7 @@ riscv64imac-unknown-none-elf
     ilp32 ilp32d ilp32e ilp32f lp64 lp64d lp64f
 </code></pre></div>
 <p><a href="https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5">(As explained here)</a></p>
+<p>TODO: Pic of Custom Target for Rust</p>
 <h1 id="custom-target-for-rust"><a class="doc-anchor" href="#custom-target-for-rust">§</a>3 Custom Target for Rust</h1>
 <p>TODO</p>
 <p>Let’s dump the Rust Targets <code>riscv32i</code> and <code>riscv64gc</code> to compare…</p>
@@ -365,6 +366,7 @@ $ rustc \
 <p><a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602">(More about <code>llvm-abiname</code>)</a></p>
 </li>
 </ul>
+<p>TODO: Pic of Rust Core Library</p>
 <h1 id="build-the-rust-core-library"><a class="doc-anchor" href="#build-the-rust-core-library">§</a>4 Build the Rust Core Library</h1>
 <p>TODO</p>
 <p>Now we build the Rust Core Library for <code>riscv32gc</code>…</p>
