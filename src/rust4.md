@@ -98,10 +98,9 @@ Watch closely as we compare __GCC Compiler__ with __Rust Compiler__...
 
 | GCC Compiler | Rust Compiler |
 |--------------|---------------|
-| _riscv64-unknown-elf-gcc_ | _rustc_
-| _hello_main.c_ | _hello_rust_main.rs_
-| _-march_ __rv32imafdc__ | _--target_ __riscv32i-unknown-none-elf__
-| _-mabi_ __ilp32d__ _..._ | _..._
+| _riscv64-unknown-elf-gcc_ <br> &nbsp;&nbsp;&nbsp;&nbsp; _hello_main.c_ | _rustc_ <br> &nbsp;&nbsp;&nbsp;&nbsp; _hello_rust_main.rs_
+| _-march_ <br> &nbsp;&nbsp;&nbsp;&nbsp;__rv32imafdc__ | _--target_ <br> &nbsp;&nbsp;&nbsp;__riscv32i-unknown-none-elf__
+| _-mabi_ <br> &nbsp;&nbsp;&nbsp;&nbsp;__ilp32d__
 
 _Oops we have a problem..._
 
