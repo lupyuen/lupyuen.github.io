@@ -134,6 +134,8 @@ Rust Compiler only supports __Software Floating-Point__!
 
 And that's why GCC Linker won't link the binaries!
 
+TODO: Pic of GCC Linker Fail
+
 To verify, we dump the __ELF Headers__ for GCC and Rust Compiler Outputs...
 
 ```bash
@@ -434,6 +436,8 @@ popd
 ```
 
 And it works!
+
+![NuttX Links OK with Rust](https://lupyuen.github.io/images/rust4-flow.jpg)
 
 # NuttX Links OK with Rust
 
