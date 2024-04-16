@@ -117,6 +117,8 @@ riscv64-unknown-elf-ld: libapps.a
 ## GCC compiles `hello_main.c` to `hello.o`
 ## for RISC-V 32-bit (Double-Float)
 riscv64-unknown-elf-gcc \
+  -march=rv32imafdc \
+  -mabi=ilp32d \
   -c \
   -fno-common \
   -Wall \
@@ -132,8 +134,6 @@ riscv64-unknown-elf-gcc \
   -ffunction-sections \
   -fdata-sections \
   -g \
-  -march=rv32imafdc \
-  -mabi=ilp32d \
   -isystem nuttx/include \
   -D__NuttX__ \
   -DNDEBUG  \
@@ -149,10 +149,10 @@ riscv64-unknown-elf-gcc \
 ## Rust Compiler compiles `hello_rust_main.rs` to `hello_rust.o`
 ## for RISC-V 32-bit (Soft-Float)
 rustc \
+  --target riscv32i-unknown-none-elf \
   --edition 2021 \
   --emit obj \
   -g \
-  --target riscv32i-unknown-none-elf \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
@@ -212,7 +212,7 @@ File Attributes
   Tag_RISCV_stack_align: 16-bytes
   Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0&quot;
 
-## ELF Header for Rust Compiler Output
+## ELF Header for Rust Compiler Output:
 ## Software Floating-Point
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
@@ -243,29 +243,33 @@ File Attributes
   Tag_RISCV_stack_align: 16-bytes
   Tag_RISCV_arch: &quot;rv32i2p1&quot;
 </code></pre></div>
-<p>TODO: Change rust to double float </p>
-<p>TODO: We have a problem compiling <a href="https://lupyuen.github.io/articles/rust3#software-vs-hardware-floating-point">Rust Apps for QEMU RISC-V 32-bit</a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ make
-LD: nuttx
-riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
-  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o):
-  can&#39;t link soft-float modules with double-float modules
-
-riscv64-unknown-elf-ld: failed to merge target specific data of file
-  nuttx/staging/libapps.a
-  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
-</code></pre></div>
+<p>Indeed we have a problem: Double-Float and Soft-Float won’t mix! Let’s fix this…</p>
 <p>TODO: Pic of Rust Won’t Double-Float</p>
 <h1 id="rust-wont-double-float"><a class="doc-anchor" href="#rust-wont-double-float">§</a>2 Rust Won’t Double-Float</h1>
-<p>TODO</p>
-<p>Change Rust target</p>
-<p>Nope doesn’t work</p>
-<p>Here are the targets</p>
-<p>Need custom target</p>
-<p>Gcc targets</p>
-<p><em>Does Rust support Double-Precision Hardware Floating-Point?</em></p>
-<p>We’re looking for a Rust Target like <code>riscv32gc-unknown-none-elf</code>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ rustup target list | grep riscv
+<p><em>What if we ask Rust Compiler to compile for Double-Float?</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile `hello_rust_main.rs` to `hello_rust.o`
+## for Double-Precision Hardware Floating-Point
+rustc \
+  --target riscv32gc-unknown-none-elf \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  -C panic=abort \
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust.o
+</code></pre></div>
+<p>TODO: Explain riscv32gc</p>
+<p>Nope sorry it won’t work…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Error loading target specification: 
+  Could not find specification for target &quot;riscv32gc-unknown-none-elf&quot;. 
+  Run `rustc --print target-list` for a list of built-in targets
+</code></pre></div>
+<p>That’s because <em>riscv32gc</em> isn’t a <strong>Predefined Rust Target</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## List the Predefined Rust Targets for RISC-V.
+## Nope no riscv32gc!
+$ rustup target list | grep riscv
+
 riscv32i-unknown-none-elf
 riscv32imac-unknown-none-elf
 riscv32imc-unknown-none-elf
@@ -273,21 +277,37 @@ riscv64gc-unknown-linux-gnu
 riscv64gc-unknown-none-elf
 riscv64imac-unknown-none-elf
 </code></pre></div>
+<p>But we can create a <strong>Custom Rust Target</strong> for <em>riscv32gc</em>. Coming up next section!</p>
+<p><em>Won’t GCC Compiler have the same problem with Double-Float?</em></p>
+<p>When we list the <strong>Predefined GCC Targets</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## List the Predefined Targets for GCC RISC-V
+## ABI means Application Binary Interface
+$ riscv64-unknown-elf-gcc --target-help
+
+Supported ABIs (for use with the -mabi= option):
+  ilp32 ilp32d ilp32e ilp32f lp64 lp64d lp64f
+</code></pre></div>
+<p>We see that <strong>GCC supports Double-Float</strong>: <strong><code>ilp32d</code></strong></p>
+<ul>
+<li><strong><code>ilp32</code></strong>: <strong>32-bit</strong> Int, Long and Pointer</li>
+<li><strong><code>d</code></strong>: <strong>Double-Precision</strong> Hardware Floating-Point</li>
+</ul>
+<p>That’s why we saw <strong><code>ilp32d</code></strong> earlier…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## GCC compiles `hello_main.c` to `hello.o`
+## for RISC-V 32-bit (Double-Float)
+riscv64-unknown-elf-gcc \
+  -march=rv32imafdc \
+  -mabi=ilp32d \
+  ...
+</code></pre></div>
+<p><a href="https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5">(More about <strong>Application Binary Interfaces</strong>)</a></p>
+<p>TODO: Pic of Custom Target for Rust</p>
+<h1 id="custom-target-for-rust"><a class="doc-anchor" href="#custom-target-for-rust">§</a>3 Custom Target for Rust</h1>
+<p>TODO</p>
 <p>But nope it’s not supported! So we create a Rust Custom Target for <code>riscv32gc-unknown-none-elf</code>…</p>
 <ul>
 <li><a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html">Custom Target for Rust</a></li>
 </ul>
-<p><em>How to see the Targets supported by GCC?</em></p>
-<p>Like this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ riscv64-unknown-elf-gcc --target-help
-
-  Supported ABIs (for use with the -mabi= option):
-    ilp32 ilp32d ilp32e ilp32f lp64 lp64d lp64f
-</code></pre></div>
-<p><a href="https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5">(As explained here)</a></p>
-<p>TODO: Pic of Custom Target for Rust</p>
-<h1 id="custom-target-for-rust"><a class="doc-anchor" href="#custom-target-for-rust">§</a>3 Custom Target for Rust</h1>
-<p>TODO</p>
 <p>Let’s dump the Rust Targets <code>riscv32i</code> and <code>riscv64gc</code> to compare…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustc \
   +nightly \
@@ -399,10 +419,10 @@ popd
 <div class="example-wrap"><pre class="language-bash"><code>## Compile our Rust App.
 ## Changed the target to riscv32gc-unknown-none-elf.json
 rustc \
+  --target riscv32gc-unknown-none-elf.json \
   --edition 2021 \
   --emit obj \
   -g \
-  --target riscv32gc-unknown-none-elf.json \
   -C panic=abort \
   -O \
   ../apps/examples/hello_rust/hello_rust_main.rs \
