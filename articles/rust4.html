@@ -179,6 +179,7 @@ rustc \
 </tbody></table>
 </div></span>
 <p>And that’s why GCC Linker won’t link the binaries!</p>
+<p>TODO: Pic of GCC Linker Fail</p>
 <p>To verify, we dump the <strong>ELF Headers</strong> for GCC and Rust Compiler Outputs…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## ELF Header for GCC Output:
 ## Double-Precision Hardware Floating-Point
@@ -439,6 +440,7 @@ qemu-system-riscv32 \
 popd
 </code></pre></div>
 <p>And it works!</p>
+<p><img src="https://lupyuen.github.io/images/rust4-flow.jpg" alt="NuttX Links OK with Rust" /></p>
 <h1 id="nuttx-links-ok-with-rust"><a class="doc-anchor" href="#nuttx-links-ok-with-rust">§</a>5 NuttX Links OK with Rust</h1>
 <p>TODO</p>
 <p><em>Our Rust App links OK! Has the ELF Header changed?</em></p>
