@@ -208,7 +208,13 @@ TODO: Pic of Rust Won't Double-Float
 
 # Rust Won't Double-Float
 
-_What if we ask Rust Compiler to compile for Double-Float?_
+_What if we ask Rust Compiler to compile for Double-Float: RV32IMAFDC?_
+
+[__QEMU RISC-V__](https://www.qemu.org/docs/master/system/riscv/virt.html) offically supports [__`riscv32gc`__](https://www.qemu.org/docs/master/system/riscv/virt.html).
+
+[("__`gc`__" in "__`riscv32gc`__" denotes __IMAFDC__)](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
+
+We could do this...
 
 ```bash
 ## Compile `hello_rust_main.rs` to `hello_rust.o`
@@ -224,8 +230,6 @@ rustc \
   -o hello_rust.o
 ```
 
-TODO: Explain riscv32gc
-
 Nope sorry it won't work...
 
 ```bash
@@ -234,7 +238,7 @@ Error loading target specification:
   Run `rustc --print target-list` for a list of built-in targets
 ```
 
-That's because _riscv32gc_ isn't a __Predefined Rust Target__...
+That's because __`riscv32gc`__ isn't a __Predefined Rust Target__...
 
 ```bash
 ## List the Predefined Rust Targets for RISC-V.
@@ -249,14 +253,14 @@ riscv64gc-unknown-none-elf
 riscv64imac-unknown-none-elf
 ```
 
-But we can create a __Custom Rust Target__ for _riscv32gc_. Coming up next section!
+But we can create a __Custom Rust Target__ for __`riscv32gc`__. Coming up next section!
 
 _Won't GCC Compiler have the same problem with Double-Float?_
 
 When we list the __Predefined GCC Targets__...
 
 ```bash
-## List the Predefined Targets for GCC RISC-V
+## List the Predefined Targets for GCC RISC-V.
 ## ABI means Application Binary Interface
 $ riscv64-unknown-elf-gcc --target-help
 
@@ -271,8 +275,7 @@ We see that __GCC supports Double-Float__: __`ilp32d`__
 That's why we saw __`ilp32d`__ earlier...
 
 ```bash
-## GCC compiles `hello_main.c` to `hello.o`
-## for RISC-V 32-bit (Double-Float)
+## GCC compiles for RISC-V 32-bit (Double-Float)
 riscv64-unknown-elf-gcc \
   -march=rv32imafdc \
   -mabi=ilp32d \
@@ -285,15 +288,15 @@ TODO: Pic of Custom Target for Rust
 
 # Custom Target for Rust
 
-TODO
+_To compile Rust for Double-Float, we need a Custom Target: riscv32gc_
 
-But nope it's not supported! So we create a Rust Custom Target for `riscv32gc-unknown-none-elf`...
+_How to create the Custom Target?_
 
-- [Custom Target for Rust](https://docs.rust-embedded.org/embedonomicon/custom-target.html)
-
-Let's dump the Rust Targets `riscv32i` and `riscv64gc` to compare...
+According to the [__Official Rust Docs__](https://docs.rust-embedded.org/embedonomicon/custom-target.html), we dump a Predefined Rust Target: __`riscv32i`__ 
 
 ```bash
+## Dump the Predefined Rust Target:
+## riscv32i (32-bit RISC-V with Soft-Float)
 $ rustc \
   +nightly \
   -Z unstable-options \
@@ -301,22 +304,30 @@ $ rustc \
   --target riscv32i-unknown-none-elf
 
 {
-  "arch": "riscv32",
-  "atomic-cas": false,
-  "cpu": "generic-rv32",
+  "arch":        "riscv32",
+  "atomic-cas":  false,
+  "cpu":         "generic-rv32",
   "data-layout": "e-m:e-p:32:32-i64:64-n32-S128",
-  "eh-frame-header": false,
+  "eh-frame-header":        false,
   "emit-debug-gdb-scripts": false,
-  "is-builtin": true,
-  "linker": "rust-lld",
-  "linker-flavor": "ld.lld",
-  "llvm-target": "riscv32",
-  "max-atomic-width": 0,
-  "panic-strategy": "abort",
-  "relocation-model": "static",
+  "is-builtin":             true,
+  "linker":         "rust-lld",
+  "linker-flavor":  "ld.lld",
+  "llvm-target":    "riscv32",
+  "max-atomic-width":     0,
+  "panic-strategy":       "abort",
+  "relocation-model":     "static",
   "target-pointer-width": "32"
 }
+```
 
+That's the Rust Definition of __`riscv32i`__: 32-bit RISC-V with Soft-Float.
+
+We do the same for __`riscv64gc`__: 64-bit RISC-V with Double-Float...
+
+```bash
+## Dump the Predefined Rust Target:
+## riscv64gc (64-bit RISC-V with Hard-Float)
 $ rustc \
   +nightly \
   -Z unstable-options \
@@ -324,62 +335,87 @@ $ rustc \
   --target riscv64gc-unknown-none-elf  
 
 {
-  "arch": "riscv64",
-  "code-model": "medium",
-  "cpu": "generic-rv64",
+  "arch":        "riscv64",
+  "code-model":  "medium",
+  "cpu":         "generic-rv64",
   "data-layout": "e-m:e-p:64:64-i64:64-i128:128-n32:64-S128",
-  "eh-frame-header": false,
+  "eh-frame-header":        false,
   "emit-debug-gdb-scripts": false,
-  "features": "+m,+a,+f,+d,+c",
-  "is-builtin": true,
-  "linker": "rust-lld",
+  "features":      "+m,+a,+f,+d,+c",
+  "is-builtin":    true,
+  "linker":        "rust-lld",
   "linker-flavor": "ld.lld",
-  "llvm-abiname": "lp64d",
-  "llvm-target": "riscv64",
-  "max-atomic-width": 64,
-  "panic-strategy": "abort",
-  "relocation-model": "static",
-  "supported-sanitizers": [
-    "kernel-address"
-  ],
+  "llvm-abiname":  "lp64d",
+  "llvm-target":   "riscv64",
+  "max-atomic-width":     64,
+  "panic-strategy":       "abort",
+  "relocation-model":     "static",
+  "supported-sanitizers": [ "kernel-address" ],
   "target-pointer-width": "64"
 }
 ```
 
-Based on the above, we create our Rust Custom Target: [riscv32gc-unknown-none-elf.json](riscv32gc-unknown-none-elf.json)
+_We need to mash the Two Targets into a New Target?_
+
+Exactly! Based on the above, we create our __Rust Custom Target__: [_riscv32gc-unknown-none-elf.json_](https://github.com/lupyuen/nuttx-rust-app/blob/main/riscv32gc-unknown-none-elf.json)
 
 ```json
 {
-  "arch": "riscv32",
-  "cpu": "generic-rv32",
+  "arch":        "riscv32",
+  "cpu":         "generic-rv32",
   "data-layout": "e-m:e-p:32:32-i64:64-n32-S128",
-  "eh-frame-header": false,
+  "eh-frame-header":        false,
   "emit-debug-gdb-scripts": false,
-  "features": "+m,+a,+f,+d,+c",
-  "linker": "rust-lld",
+  "features":      "+m,+a,+f,+d,+c",
+  "linker":        "rust-lld",
   "linker-flavor": "ld.lld",
-  "llvm-abiname": "ilp32d",
-  "llvm-target": "riscv32",
-  "max-atomic-width": 0,
-  "panic-strategy": "abort",
-  "relocation-model": "static",
+  "llvm-abiname":  "ilp32d",
+  "llvm-target":   "riscv32",
+  "max-atomic-width":     0,
+  "panic-strategy":       "abort",
+  "relocation-model":     "static",
   "target-pointer-width": "32"
 }
 ```
 
-Which is based on `riscv32i` with these changes...
+Which is [__`riscv32i`__](TODO) plus these changes...
 
-- Removed `"atomic-cas": false`
+- Removed __`"is-builtin": true`__
 
-- Added `"features": "+m,+a,+f,+d,+c"`
+  TODO
 
-- Removed `"is-builtin": true`
+- Removed __`"atomic-cas": false`__
 
-- Added `"llvm-abiname": "ilp32d"`
+  TODO
 
-  (`ilp32d` comes from `make --trace` above)
+- Added __`"features": "+m,+a,+f,+d,+c"`__
 
-  [(More about `llvm-abiname`)](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)
+  TODO
+
+- Added __`"llvm-abiname": "ilp32d"`__
+
+  (__`ilp32d`__ comes from __`make --trace`__ above)
+
+  [(More about __`llvm-abiname`__)](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)
+
+Once Again: This is how we splice the Two Predefined Targets to create our Custom Target __`riscv32gc`__...
+
+<span style="font-size:90%">
+
+| | riscv32i | riscv64gc | riscv32gc |
+|-|----------|-----------|-----------|
+| _arch_          | __riscv32__ | riscv64 | __riscv32__
+| _atomic-cas_    | false | |
+| _cpu_           | __generic-rv32__ | generic-rv64 | __generic-rv32__
+| _data-layout_   | __e-m:e-p:32...__ | e-m:e-p:64... | __e-m:e-p:32...__
+| _features_      | | __+m,+a,+f,+d,+c__ | __+m,+a,+f,+d,+c__
+| _is-builtin_    | true | true |
+| _llvm-abiname_  | | lp64d | ilp32d
+| _llvm-target_   | __riscv32__ | riscv64 | __riscv32__
+| _max-atomic-width_     | | 64 | 0
+| _target-pointer-width_ | __32__ | 64 | __32__
+
+</span>
 
 TODO: Pic of Rust Core Library
 
