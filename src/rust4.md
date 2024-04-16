@@ -134,7 +134,7 @@ Rust Compiler only supports __Software Floating-Point__!
 
 And that's why GCC Linker won't link the binaries!
 
-TODO: Pic of GCC Linker Fail
+![Double-Float vs Soft-Float: GCC Linker won't link the binaries](https://lupyuen.github.io/images/rust4-flow2.jpg)
 
 To verify, we dump the __ELF Headers__ for GCC and Rust Compiler Outputs...
 
