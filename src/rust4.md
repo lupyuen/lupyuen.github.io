@@ -56,6 +56,8 @@ $ make --trace
 ## GCC compiles `hello_main.c` to `hello.o`
 ## for RISC-V 32-bit (Double-Float)
 riscv64-unknown-elf-gcc \
+  -march=rv32imafdc \
+  -mabi=ilp32d \
   -c \
   -fno-common \
   -Wall \
@@ -71,8 +73,6 @@ riscv64-unknown-elf-gcc \
   -ffunction-sections \
   -fdata-sections \
   -g \
-  -march=rv32imafdc \
-  -mabi=ilp32d \
   -isystem nuttx/include \
   -D__NuttX__ \
   -DNDEBUG  \
@@ -91,10 +91,10 @@ $ make --trace
 ## Rust Compiler compiles `hello_rust_main.rs` to `hello_rust.o`
 ## for RISC-V 32-bit (Soft-Float)
 rustc \
+  --target riscv32i-unknown-none-elf \
   --edition 2021 \
   --emit obj \
   -g \
-  --target riscv32i-unknown-none-elf \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
@@ -170,7 +170,7 @@ File Attributes
   Tag_RISCV_stack_align: 16-bytes
   Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
 
-## ELF Header for Rust Compiler Output
+## ELF Header for Rust Compiler Output:
 ## Software Floating-Point
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
@@ -202,44 +202,45 @@ File Attributes
   Tag_RISCV_arch: "rv32i2p1"
 ```
 
-TODO: Change rust to double float 
-
-TODO: We have a problem compiling [Rust Apps for QEMU RISC-V 32-bit](https://lupyuen.github.io/articles/rust3#software-vs-hardware-floating-point)...
-
-```bash
-$ make
-LD: nuttx
-riscv64-unknown-elf-ld: nuttx/nuttx/staging/libapps.a
-  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o):
-  can't link soft-float modules with double-float modules
-
-riscv64-unknown-elf-ld: failed to merge target specific data of file
-  nuttx/staging/libapps.a
-  (hello_rust_main.rs...nuttx.apps.examples.hello_rust_1.o)
-```
+Indeed we have a problem: Double-Float and Soft-Float won't mix! Let's fix this...
 
 TODO: Pic of Rust Won't Double-Float
 
 # Rust Won't Double-Float
 
-TODO
-
-Change Rust target
-
-Nope doesn't work
-
-Here are the targets
-
-Need custom target
-
-Gcc targets
-
-_Does Rust support Double-Precision Hardware Floating-Point?_
-
-We're looking for a Rust Target like `riscv32gc-unknown-none-elf`...
+_What if we ask Rust Compiler to compile for Double-Float?_
 
 ```bash
+## Compile `hello_rust_main.rs` to `hello_rust.o`
+## for Double-Precision Hardware Floating-Point
+rustc \
+  --target riscv32gc-unknown-none-elf \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  -C panic=abort \
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust.o
+```
+
+TODO: Explain riscv32gc
+
+Nope sorry it won't work...
+
+```bash
+Error loading target specification: 
+  Could not find specification for target "riscv32gc-unknown-none-elf". 
+  Run `rustc --print target-list` for a list of built-in targets
+```
+
+That's because _riscv32gc_ isn't a __Predefined Rust Target__...
+
+```bash
+## List the Predefined Rust Targets for RISC-V.
+## Nope no riscv32gc!
 $ rustup target list | grep riscv
+
 riscv32i-unknown-none-elf
 riscv32imac-unknown-none-elf
 riscv32imc-unknown-none-elf
@@ -248,29 +249,47 @@ riscv64gc-unknown-none-elf
 riscv64imac-unknown-none-elf
 ```
 
-But nope it's not supported! So we create a Rust Custom Target for `riscv32gc-unknown-none-elf`...
+But we can create a __Custom Rust Target__ for _riscv32gc_. Coming up next section!
 
-- [Custom Target for Rust](https://docs.rust-embedded.org/embedonomicon/custom-target.html)
+_Won't GCC Compiler have the same problem with Double-Float?_
 
-
-_How to see the Targets supported by GCC?_
-
-Like this...
+When we list the __Predefined GCC Targets__...
 
 ```bash
+## List the Predefined Targets for GCC RISC-V
+## ABI means Application Binary Interface
 $ riscv64-unknown-elf-gcc --target-help
 
-  Supported ABIs (for use with the -mabi= option):
-    ilp32 ilp32d ilp32e ilp32f lp64 lp64d lp64f
+Supported ABIs (for use with the -mabi= option):
+  ilp32 ilp32d ilp32e ilp32f lp64 lp64d lp64f
 ```
 
-[(As explained here)](https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5)
+We see that __GCC supports Double-Float__: __`ilp32d`__
+- __`ilp32`__: __32-bit__ Int, Long and Pointer
+- __`d`__: __Double-Precision__ Hardware Floating-Point
+
+That's why we saw __`ilp32d`__ earlier...
+
+```bash
+## GCC compiles `hello_main.c` to `hello.o`
+## for RISC-V 32-bit (Double-Float)
+riscv64-unknown-elf-gcc \
+  -march=rv32imafdc \
+  -mabi=ilp32d \
+  ...
+```
+
+[(More about __Application Binary Interfaces__)](https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5)
 
 TODO: Pic of Custom Target for Rust
 
 # Custom Target for Rust
 
 TODO
+
+But nope it's not supported! So we create a Rust Custom Target for `riscv32gc-unknown-none-elf`...
+
+- [Custom Target for Rust](https://docs.rust-embedded.org/embedonomicon/custom-target.html)
 
 Let's dump the Rust Targets `riscv32i` and `riscv64gc` to compare...
 
@@ -394,10 +413,10 @@ We rebuild our Rust App with the new Rust Custom Target (linked to our Rust Core
 ## Compile our Rust App.
 ## Changed the target to riscv32gc-unknown-none-elf.json
 rustc \
+  --target riscv32gc-unknown-none-elf.json \
   --edition 2021 \
   --emit obj \
   -g \
-  --target riscv32gc-unknown-none-elf.json \
   -C panic=abort \
   -O \
   ../apps/examples/hello_rust/hello_rust_main.rs \
