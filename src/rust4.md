@@ -37,7 +37,7 @@ Let's solve the problem! We dive inside the internals of __C-to-Rust Interop__..
 
 # Software vs Hardware Floating-Point
 
-_What's causing our NuttX Build to fail?_
+_What's causing our NuttX Build to fail? (Pic above)_
 
 ```bash
 $ make
@@ -101,9 +101,11 @@ rustc \
   -o hello_rust_main.rs...apps.examples.hello_rust.o
 ```
 
+![Double-Float vs Soft-Float: GCC Linker won't link the binaries](https://lupyuen.github.io/images/rust4-flow2b.jpg)
+
 _Is there a problem?_
 
-Watch closely as we compare __GCC Compiler__ with __Rust Compiler__...
+Watch closely as we compare __GCC Compiler__ with __Rust Compiler__ (pic above)...
 
 <span style="font-size:90%">
 
@@ -784,9 +786,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/rust4.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust4.md)
 
+> ![Building our Rust App](https://lupyuen.github.io/images/rust4-flow1b.jpg)
+
 # Appendix: Rust Compiler Options
 
-_How did we figure out the rustc options?_
+_How did we get the Rust Compiler Options?_
 
 Earlier we saw the [__Rust Compiler Options__](TODO) for building our Rust App (with Rust Core Library for __`riscv32gc`__)...
 
