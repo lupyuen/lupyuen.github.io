@@ -105,49 +105,34 @@ riscv64-unknown-elf-ld: libapps.a
 <p><img src="https://lupyuen.github.io/images/rust4-flow2a.jpg" alt="Double-Float vs Soft-Float: GCC Linker won’t link the binaries" /></p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>1 Software vs Hardware Floating-Point</h1>
 <p><em>What’s causing our NuttX Build to fail? (Pic above)</em></p>
-<div class="example-wrap"><pre class="language-bash"><code>$ make
+<div class="example-wrap"><pre class="language-bash"><code>TODO: configure.sh
+$ make
 riscv64-unknown-elf-ld: libapps.a
   hello_rust_1.o:
   can&#39;t link soft-float modules with double-float modules
 </code></pre></div>
-<p><strong>GCC Linker</strong> failed because it couldn’t link the NuttX Binaries with the Rust Binaries. Here’s why…</p>
-<p>NuttX Build calls <strong>GCC Compiler</strong> to compile our C Modules…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ make --trace
+<p><strong>GCC Linker</strong> failed because it couldn’t link the NuttX Binaries with the Rust Binaries. </p>
+<p>Here’s Why: NuttX Build calls <strong>GCC Compiler</strong> to compile our C Modules…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Firmware with Tracing Enabled
+$ make --trace
 ...
 ## GCC compiles `hello_main.c` to `hello.o`
-## for RISC-V 32-bit (Double-Float)
+## for RISC-V 32-bit with Double-Float
 riscv64-unknown-elf-gcc \
   -march=rv32imafdc \
   -mabi=ilp32d \
   -c \
-  -fno-common \
-  -Wall \
-  -Wstrict-prototypes \
-  -Wshadow \
-  -Wundef \
-  -Wno-attributes \
-  -Wno-unknown-pragmas \
-  -Wno-psabi \
-  -Os \
-  -fno-strict-aliasing \
-  -fomit-frame-pointer \
-  -ffunction-sections \
-  -fdata-sections \
-  -g \
-  -isystem nuttx/include \
-  -D__NuttX__ \
-  -DNDEBUG  \
-  -pipe \
-  -I &quot;apps/include&quot; \
-  -Dmain=hello_main \
   hello_main.c \
-  -o hello_main.c...apps.examples.hello.o
+  -o ...hello.o \
+  ...
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/7e68b69d0d5879f77b1404ae2db6fb9d">(See the <strong>GCC Options</strong>)</a></p>
 <p>Then NuttX Build calls <strong>Rust Compiler</strong> to compile our Rust App…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ make --trace
+<div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Firmware with Tracing Enabled
+$ make --trace
 ...
 ## Rust Compiler compiles `hello_rust_main.rs` to `hello_rust.o`
-## for RISC-V 32-bit (Soft-Float)
+## for RISC-V 32-bit with Soft-Float
 rustc \
   --target riscv32i-unknown-none-elf \
   --edition 2021 \
@@ -156,94 +141,52 @@ rustc \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
-  -o hello_rust_main.rs...apps.examples.hello_rust.o
+  -o ...hello_rust.o
 </code></pre></div>
+<p>Which looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/rust4-flow2b.jpg" alt="Double-Float vs Soft-Float: GCC Linker won’t link the binaries" /></p>
 <p><em>Is there a problem?</em></p>
 <p>Watch closely as we compare <strong>GCC Compiler</strong> with <strong>Rust Compiler</strong> (pic above)…</p>
 <span style="font-size:90%">
-<div><table><thead><tr><th>GCC Compiler</th><th>Rust Compiler</th></tr></thead><tbody>
-<tr><td><em>riscv64-unknown-elf-gcc</em> <br>      <em>hello_main.c</em></td><td><em>rustc</em> <br>      <em>hello_rust_main.rs</em></td></tr>
-<tr><td><em>-march</em> <br>     <strong>rv32imafdc</strong></td><td><em>–target</em> <br>    <strong>riscv32i-unknown-none-elf</strong></td></tr>
-<tr><td><em>-mabi</em> <br>     <strong>ilp32d</strong></td><td></td></tr>
+<div><table><thead><tr><th style="text-align: left">GCC Compiler</th><th style="text-align: left">Rust Compiler</th></tr></thead><tbody>
+<tr><td style="text-align: left"><em>riscv64-unknown-elf-gcc</em> <br>      <em>hello_main.c</em></td><td style="text-align: left"><em>rustc</em> <br>      <em>hello_rust_main.rs</em></td></tr>
+<tr><td style="text-align: left"><em>-march</em> <br>     <strong>rv32imafdc</strong></td><td style="text-align: left"><em>–target</em> <br>    <strong>riscv32i-unknown-none-elf</strong></td></tr>
+<tr><td style="text-align: left"><em>-mabi</em> <br>     <strong>ilp32d</strong></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div></span>
 <p><em>Hmmm something different about the Floats…</em></p>
-<p>Yep GCC supports (Double-Precision) <strong>Hardware Floating-Point</strong>…</p>
-<p>Rust Compiler only supports <strong>Software Floating-Point</strong>!</p>
+<p>Yep GCC compiles for (Double-Precision) <strong>Hardware Floating-Point</strong>…</p>
+<p>But Rust Compiler uses <strong>Software Floating-Point</strong>!</p>
 <span style="font-size:90%">
-<div><table><thead><tr><th>GCC Compiler</th><th>Rust Compiler</th></tr></thead><tbody>
-<tr><td><strong>rv32imafdc</strong></td><td><strong>riscv32i</strong></td></tr>
-<tr><td>- <strong>I</strong>: Integer</td><td>- <strong>I</strong>: Integer</td></tr>
-<tr><td>- <strong>F</strong>: Single Hard-Float</td><td><em>(Soft-Float)</em></td></tr>
-<tr><td>- <strong>D</strong>: Double Hard-Float</td><td><em>(Soft-Float)</em></td></tr>
+<div><table><thead><tr><th style="text-align: left">GCC Compiler</th><th style="text-align: left">Rust Compiler</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>rv32imafdc</strong></td><td style="text-align: left"><strong>riscv32i</strong></td></tr>
+<tr><td style="text-align: left">- <strong>I</strong>: Integer</td><td style="text-align: left">- <strong>I</strong>: Integer</td></tr>
+<tr><td style="text-align: left">- <strong>F</strong>: Single Hard-Float</td><td style="text-align: left"><em>(Default is Soft-Float)</em></td></tr>
+<tr><td style="text-align: left">- <strong>D</strong>: Double Hard-Float</td><td style="text-align: left"><em>(Default is Soft-Float)</em></td></tr>
 </tbody></table>
 </div></span>
-<p>And that’s why GCC Linker won’t link the binaries!</p>
+<p>And that’s why GCC Linker <strong>won’t link the binaries</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/rust4-flow2.jpg" alt="Double-Float vs Soft-Float: GCC Linker won’t link the binaries" /></p>
-<p>To verify, we dump the <strong>ELF Headers</strong> for GCC and Rust Compiler Outputs…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## ELF Header for GCC Output:
-## Double-Precision Hardware Floating-Point
+<p>To verify, we dump the ELF Header for <strong>GCC Compiler Output</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Dump the ELF Header for GCC Output
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello/*hello.o                 
 
-ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
-  Class:                             ELF32
-  Data:                              2&#39;s complement, little endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              REL (Relocatable file)
-  Machine:                           RISC-V
-  Version:                           0x1
-  Entry point address:               0x0
-  Start of program headers:          0 (bytes into file)
-  Start of section headers:          3776 (bytes into file)
-  Flags:                             0x5, RVC, double-float ABI
-  Size of this header:               52 (bytes)
-  Size of program headers:           0 (bytes)
-  Number of program headers:         0
-  Size of section headers:           40 (bytes)
-  Number of section headers:         26
-  Section header string table index: 25
-Attribute Section: riscv
-File Attributes
-  Tag_RISCV_stack_align: 16-bytes
-  Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0&quot;
-
-## ELF Header for Rust Compiler Output:
-## Software Floating-Point
+## GCC Compiler Output is Double-Precision Hardware Floating-Point
+Flags: 0x5, RVC, double-float ABI
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/d8b4f793cd463230393326cef7dbedbe">(See the <strong>GCC ELF Header</strong>)</a></p>
+<p>And the ELF Header for <strong>Rust Compiler Output</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Dump the ELF Header for Rust Compiler Output
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
 
-ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
-  Class:                             ELF32
-  Data:                              2&#39;s complement, little endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              REL (Relocatable file)
-  Machine:                           RISC-V
-  Version:                           0x1
-  Entry point address:               0x0
-  Start of program headers:          0 (bytes into file)
-  Start of section headers:          10240 (bytes into file)
-  Flags:                             0x0
-  Size of this header:               52 (bytes)
-  Size of program headers:           0 (bytes)
-  Number of program headers:         0
-  Size of section headers:           40 (bytes)
-  Number of section headers:         29
-  Section header string table index: 1
-Attribute Section: riscv
-File Attributes
-  Tag_RISCV_stack_align: 16-bytes
-  Tag_RISCV_arch: &quot;rv32i2p1&quot;
+## Rust Compiler Output is Software Floating-Point
+Flags: 0x0
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/413830fed9cdb2b02d5f9d0d062beb3e">(See the <strong>Rust ELF Header</strong>)</a></p>
 <p>Indeed we have a problem: Double-Float and Soft-Float won’t mix! Let’s fix this…</p>
 <p><img src="https://lupyuen.github.io/images/rust4-flow3.jpg" alt="Rust Won’t Double-Float" /></p>
 <h1 id="rust-wont-double-float"><a class="doc-anchor" href="#rust-wont-double-float">§</a>2 Rust Won’t Double-Float</h1>
@@ -537,104 +480,8 @@ $ riscv64-unknown-elf-readelf \
 ## We have Double-Float `riscv32gc` yay!
 Flags: 0x5, RVC, double-float ABI
 </code></pre></div>
-<p><a href="TODO">(See the <strong>ELF Header</strong>)</a></p>
-<p>TODO: Move to gist</p>
-<div class="example-wrap"><pre class="language-bash"><code>## ELF Header for GCC Output:
-## Double-Precision Hardware Floating-Point
-$ riscv64-unknown-elf-readelf \
-  --file-header --arch-specific \
-  ../apps/examples/hello/*hello.o                 
-
-ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
-  Class:                             ELF32
-  Data:                              2&#39;s complement, little endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              REL (Relocatable file)
-  Machine:                           RISC-V
-  Version:                           0x1
-  Entry point address:               0x0
-  Start of program headers:          0 (bytes into file)
-  Start of section headers:          3776 (bytes into file)
-  Flags:                             0x5, RVC, double-float ABI
-  Size of this header:               52 (bytes)
-  Size of program headers:           0 (bytes)
-  Number of program headers:         0
-  Size of section headers:           40 (bytes)
-  Number of section headers:         26
-  Section header string table index: 25
-Attribute Section: riscv
-File Attributes
-  Tag_RISCV_stack_align: 16-bytes
-  Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0&quot;
-
-## [Before Custom Rust Target]
-## ELF Header for Rust Compiler Output:
-## Software Floating-Point
-$ riscv64-unknown-elf-readelf \
-  --file-header --arch-specific \
-  ../apps/examples/hello_rust/*hello_rust_1.o
-
-ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
-  Class:                             ELF32
-  Data:                              2&#39;s complement, little endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              REL (Relocatable file)
-  Machine:                           RISC-V
-  Version:                           0x1
-  Entry point address:               0x0
-  Start of program headers:          0 (bytes into file)
-  Start of section headers:          10240 (bytes into file)
-  Flags:                             0x0
-  Size of this header:               52 (bytes)
-  Size of program headers:           0 (bytes)
-  Number of program headers:         0
-  Size of section headers:           40 (bytes)
-  Number of section headers:         29
-  Section header string table index: 1
-Attribute Section: riscv
-File Attributes
-  Tag_RISCV_stack_align: 16-bytes
-  Tag_RISCV_arch: &quot;rv32i2p1&quot;
-
-## [After Custom Rust Target]
-## ELF Header for Rust Compiler Output:
-## Double-Precision Hardware Floating-Point
-$ riscv64-unknown-elf-readelf \
-  --file-header --arch-specific \
-  ../apps/examples/hello_rust/*hello_rust.o
-
-ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
-  Class:                             ELF32
-  Data:                              2&#39;s complement, little endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              REL (Relocatable file)
-  Machine:                           RISC-V
-  Version:                           0x1
-  Entry point address:               0x0
-  Start of program headers:          0 (bytes into file)
-  Start of section headers:          10352 (bytes into file)
-  Flags:                             0x5, RVC, double-float ABI
-  Size of this header:               52 (bytes)
-  Size of program headers:           0 (bytes)
-  Number of program headers:         0
-  Size of section headers:           40 (bytes)
-  Number of section headers:         29
-  Section header string table index: 1
-Attribute Section: riscv
-File Attributes
-  Tag_RISCV_stack_align: 16-bytes
-  Tag_RISCV_arch: &quot;rv32i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0&quot;
-</code></pre></div>
-<p><em>How did we get the rustc options?</em></p>
+<p><a href="https://gist.github.com/lupyuen/e7cdef603bdb16fbc82c2bf940b5d2d8">(See the <strong>ELF Header</strong>)</a></p>
+<p><em>How did we get the Rust Compiler Options?</em></p>
 <p>TODO: <code>cargo build</code> will call <code>rustc</code> with a whole bunch of options.</p>
 <p>We ran <code>cargo build -v</code> to dump the <code>rustc</code> options that were used to compile a Rust App with our Custom Rust Core Library for <code>riscv32gc</code>…</p>
 <ul>
