@@ -536,7 +536,40 @@ Flags: 0x5, RVC, double-float ABI
 </code></pre></div>
 <p><a href="TODO">(See the <strong>ELF Header</strong>)</a></p>
 <p>TODO: Move to gist</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Before Custom Target
+<div class="example-wrap"><pre class="language-bash"><code>## ELF Header for GCC Output:
+## Double-Precision Hardware Floating-Point
+$ riscv64-unknown-elf-readelf \
+  --file-header --arch-specific \
+  ../apps/examples/hello/*hello.o                 
+
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2&#39;s complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           RISC-V
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          3776 (bytes into file)
+  Flags:                             0x5, RVC, double-float ABI
+  Size of this header:               52 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           40 (bytes)
+  Number of section headers:         26
+  Section header string table index: 25
+Attribute Section: riscv
+File Attributes
+  Tag_RISCV_stack_align: 16-bytes
+  Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0&quot;
+
+## [Before Custom Rust Target]
+## ELF Header for Rust Compiler Output:
+## Software Floating-Point
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust_1.o
@@ -566,7 +599,9 @@ File Attributes
   Tag_RISCV_stack_align: 16-bytes
   Tag_RISCV_arch: &quot;rv32i2p1&quot;
 
-## After Custom Target
+## [After Custom Rust Target]
+## ELF Header for Rust Compiler Output:
+## Double-Precision Hardware Floating-Point
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
@@ -595,36 +630,6 @@ Attribute Section: riscv
 File Attributes
   Tag_RISCV_stack_align: 16-bytes
   Tag_RISCV_arch: &quot;rv32i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0&quot;
-
-## Which looks similar to other C Binaries
-$ riscv64-unknown-elf-readelf \
-  --file-header --arch-specific \
-  ../apps/examples/hello/*hello.o                 
-
-ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
-  Class:                             ELF32
-  Data:                              2&#39;s complement, little endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              REL (Relocatable file)
-  Machine:                           RISC-V
-  Version:                           0x1
-  Entry point address:               0x0
-  Start of program headers:          0 (bytes into file)
-  Start of section headers:          3776 (bytes into file)
-  Flags:                             0x5, RVC, double-float ABI
-  Size of this header:               52 (bytes)
-  Size of program headers:           0 (bytes)
-  Number of program headers:         0
-  Size of section headers:           40 (bytes)
-  Number of section headers:         26
-  Section header string table index: 25
-Attribute Section: riscv
-File Attributes
-  Tag_RISCV_stack_align: 16-bytes
-  Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0&quot;
 </code></pre></div>
 <p><em>How did we get the rustc options?</em></p>
 <p>TODO: <code>cargo build</code> will call <code>rustc</code> with a whole bunch of options.</p>
@@ -672,11 +677,10 @@ Hello, Rust!!
 ## Exit QEMU: Press `Ctrl-A` then `x`
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384">(See the <strong>NuttX Log</strong>)</a></p>
-<p>TODO: How would Linux Kernel handle these uncommon targets?</p>
-<p>TODO: This Rust Compiler Issue might be relevant…</p>
-<ul>
-<li><a href="https://github.com/rust-lang/rust/issues/65024">Allow building for hard-float targets in RISC-V</a></li>
-</ul>
+<p><em>Phew that’s a lot of work to build a tiny Rust App!</em></p>
+<p>Yeah. And integrating this into the <strong>NuttX Makefiles</strong> will be challenging.</p>
+<p>(How would <strong>Linux Kernel</strong> handle Custom Rust Targets?)</p>
+<p>TODO: <a href="https://github.com/rust-lang/rust/issues/65024">Allow building for hard-float targets in RISC-V</a></p>
 <p><img src="https://lupyuen.github.io/images/rust4-title.jpg" alt="Rust Apps on Apache NuttX RTOS and QEMU RISC-V" /></p>
 <h1 id="rust-build-for-64-bit-risc-v"><a class="doc-anchor" href="#rust-build-for-64-bit-risc-v">§</a>6 Rust Build for 64-bit RISC-V</h1>
 <p>TODO</p>
