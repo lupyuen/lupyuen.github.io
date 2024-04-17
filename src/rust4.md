@@ -475,7 +475,8 @@ rustc \
   --print cfg \
   --target riscv32gc-unknown-none-elf.json
 
-## Create a Rust App. If it exists, erase the binaries.
+## `cargo build` requires a Rust Project, so we create an empty one.
+## If the Rust Project exists, erase the binaries.
 ## Ignore the error: `app already exists`
 cargo new app
 pushd app
@@ -553,57 +554,9 @@ $ riscv64-unknown-elf-readelf \
 Flags: 0x5, RVC, double-float ABI
 ```
 
-_How did we get the rustc options?_
+[(See the __ELF Header__)](TODO)
 
-TODO: `cargo build` will call `rustc` with a whole bunch of options.
-
-We ran `cargo build -v` to dump the `rustc` options that were used to compile a Rust App with our Custom Rust Core Library for `riscv32gc`...
-
-- TODO
-
-![NuttX Links OK with Rust](https://lupyuen.github.io/images/rust4-flow.jpg)
-
-# NuttX Links OK with Rust
-
-_Is our NuttX Build hunky dory now?_
-
-TODO
-
-```bash
-## NuttX should link and execute correctly now.
-## TODO: Change `../apps` to the NuttX Apps Folder
-cp \
-  ../apps/examples/hello_rust/*hello_rust.o \
-  ../apps/examples/hello_rust/*hello_rust_1.o
-
-## TODO: Change `../nuttx` to the NuttX Kernel Folder
-pushd ../nuttx
-make
-popd
-```
-
-TODO
-
-```bash
-## Boot NuttX in QEMU RISC-V (32-bit)
-## TODO: Change `../nuttx` to the NuttX Kernel Folder
-pushd ../nuttx
-qemu-system-riscv32 \
-  -semihosting \
-  -M virt,aclint=on \
-  -cpu rv32 \
-  -smp 8 \
-  -bios none \
-  -kernel nuttx \
-  -nographic
-popd
-```
-
-And it works!
-
-_Our Rust App links OK! Has the ELF Header changed?_
-
-Yep the ELF Header has changed from Soft-Float to Double-Float...
+TODO: Move to gist
 
 ```bash
 ## Before Custom Target
@@ -697,12 +650,75 @@ File Attributes
   Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
 ```
 
-How would Linux Kernel handle these uncommon targets?
+_How did we get the rustc options?_
 
-This Rust Compiler Issue might be relevant...
+TODO: `cargo build` will call `rustc` with a whole bunch of options.
+
+We ran `cargo build -v` to dump the `rustc` options that were used to compile a Rust App with our Custom Rust Core Library for `riscv32gc`...
+
+- TODO
+
+![NuttX Links OK with Rust](https://lupyuen.github.io/images/rust4-flow.jpg)
+
+# NuttX Links OK with Rust
+
+_We've compiled our Rust App with Double-Float riscv32gc..._
+
+_Is our NuttX Build hunky dory now?_
+
+Yep __NuttX builds OK now__, GCC Compiler and Rust Compiler are harmonised to Double-Float...
+
+```bash
+## Copy the Rust Binary that will be linked with NuttX
+## TODO: Change `../apps` to the NuttX Apps Folder
+cp \
+  ../apps/examples/hello_rust/*hello_rust.o \
+  ../apps/examples/hello_rust/*hello_rust_1.o
+
+## NuttX should link correctly now.
+## TODO: Change `../nuttx` to the NuttX Kernel Folder
+pushd ../nuttx
+make
+popd
+```
+
+We boot __NuttX in QEMU Emulator__ for 32-bit RISC-V...
+
+```bash
+## Boot NuttX in QEMU RISC-V (32-bit)
+## TODO: Change `../nuttx` to the NuttX Kernel Folder
+pushd ../nuttx
+qemu-system-riscv32 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv32 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+popd
+```
+
+Our __Rust App__ works wonderfully on NuttX! (Pic below)
+
+```bash
+NuttShell (NSH) NuttX-12.4.0-RC0
+
+nsh> hello_rust
+Hello, Rust!!
+
+## Exit QEMU: Press `Ctrl-A` then `x`
+```
+
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384)
+
+TODO: How would Linux Kernel handle these uncommon targets?
+
+TODO: This Rust Compiler Issue might be relevant...
 
 - [Allow building for hard-float targets in RISC-V](https://github.com/rust-lang/rust/issues/65024)
 
+![Rust Apps on Apache NuttX RTOS and QEMU RISC-V](https://lupyuen.github.io/images/rust4-title.jpg)
 
 # Rust Build for 64-bit RISC-V
 
