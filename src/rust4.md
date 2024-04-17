@@ -33,7 +33,7 @@ Let's solve the problem! We dive inside the internals of __C-to-Rust Interop__..
 
 - And our Rust App __builds OK with NuttX__!
 
-TODO: Pic of double float vs soft float 
+![Double-Float vs Soft-Float: GCC Linker won't link the binaries](https://lupyuen.github.io/images/rust4-flow2a.jpg)
 
 # Software vs Hardware Floating-Point
 
@@ -238,10 +238,10 @@ Error loading target specification:
   Run `rustc --print target-list` for a list of built-in targets
 ```
 
-That's because __`riscv32gc`__ isn't a __Predefined Rust Target__...
+That's because __`riscv32gc`__ isn't a __Built-In Rust Target__...
 
 ```bash
-## List the Predefined Rust Targets for RISC-V.
+## List the Built-In Rust Targets for RISC-V.
 ## Nope no riscv32gc!
 $ rustup target list | grep riscv
 
@@ -257,10 +257,10 @@ But we can create a __Custom Rust Target__ for __`riscv32gc`__. Coming up next s
 
 _Won't GCC Compiler have the same problem with Double-Float?_
 
-When we list the __Predefined GCC Targets__...
+When we list the __Built-In GCC Targets__...
 
 ```bash
-## List the Predefined Targets for GCC RISC-V.
+## List the Built-In Targets for GCC RISC-V.
 ## ABI means Application Binary Interface
 $ riscv64-unknown-elf-gcc --target-help
 
@@ -284,7 +284,7 @@ riscv64-unknown-elf-gcc \
 
 [(More about __Application Binary Interfaces__)](https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5)
 
-TODO: Pic of Custom Target for Rust
+![Custom Target for Rust](https://lupyuen.github.io/images/rust4-flow1a.jpg)
 
 # Custom Target for Rust
 
@@ -294,7 +294,7 @@ _How to create the Custom Target?_
 
 According to the [__Official Rust Docs__](https://docs.rust-embedded.org/embedonomicon/custom-target.html), we shall...
 
-- Copy from a __Predefined Rust Target__
+- Copy from a __Built-In Rust Target__
 
   (Like __`riscv32i`__)
 
@@ -302,10 +302,10 @@ According to the [__Official Rust Docs__](https://docs.rust-embedded.org/embedon
 
   (Which becomes __`riscv32gc`__)
 
-This is how we dump a Predefined Rust Target: [__`riscv32i`__](TODO)
+This is how we dump a Built-In Rust Target: [__`riscv32i`__](TODO)
 
 ```bash
-## Dump the Predefined Rust Target:
+## Dump the Built-In Rust Target:
 ## riscv32i (32-bit RISC-V with Soft-Float)
 $ rustc \
   +nightly \
@@ -336,7 +336,7 @@ That's the Rust Definition of [__`riscv32i`__](TODO): 32-bit RISC-V with Soft-Fl
 We do the same for [__`riscv64gc`__](TODO): 64-bit RISC-V with Double-Float...
 
 ```bash
-## Dump the Predefined Rust Target:
+## Dump the Built-In Rust Target:
 ## riscv64gc (64-bit RISC-V with Hard-Float)
 $ rustc \
   +nightly \
@@ -392,11 +392,11 @@ Which is [__`riscv32i`__](TODO) plus these changes...
 
 - Remove _"is-builtin": true_
 
-  TODO
+  (It's a __Custom Target__, not Built-In)
 
 - Remove _"atomic-cas": false_
 
-  TODO
+  [(We support __Atomic Compare-And-Swap__)](https://en.m.wikipedia.org/wiki/Compare-and-swap)
 
 - Add _"features": "+m,+a,+f,+d,+c"_
 
@@ -408,7 +408,7 @@ Which is [__`riscv32i`__](TODO) plus these changes...
 
   [(More about __`llvm-abiname`__)](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)
 
-Once Again: Here's how we splice the Two Predefined Targets to create our Custom Target __`riscv32gc`__...
+Once Again: Here's how we splice the Two Built-In Targets to create our Custom Target __`riscv32gc`__...
 
 <span style="font-size:80%">
 
@@ -427,7 +427,7 @@ Once Again: Here's how we splice the Two Predefined Targets to create our Custom
 
 </span>
 
-TODO: Pic of Rust Core Library
+> ![Build the Rust Core Library](https://lupyuen.github.io/images/rust4-flow1b.jpg)
 
 # Build the Rust Core Library
 
@@ -753,8 +753,14 @@ Which says that _riscv64i-unknown-none-elf_ isn't a valid Rust Target.
 (Should be _riscv64gc-unknown-none-elf_ instead)
 
 Fix the build?
+
 Custom Target?
-(10 points)
+
+Hint: Answer is printed in this article somewhere 
+
+[10 points]
+
+Will it run on Ox64?
 
 # What's Next
 
@@ -824,6 +830,8 @@ We switched it to __`cargo build -v`__, which will dump the __`rustc`__ options.
 
 Hence we see the options that will compile a Rust App with our Rust Core Library for __`riscv32gc`__...
 
+(TODO: Will these options change in future versions of __`cargo`__?)
+
 ```bash
 ## Build the Rust Core Library for `riscv32gc`
 ## And the Empty Rust Project for `riscv32gc`
@@ -839,7 +847,8 @@ $ cargo build -v \
 
      Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
        --crate-name build_script_build
-       --edition=2018 $HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/compiler_builtins-0.1.101/build.rs
+       --edition=2018 
+       $HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/compiler_builtins-0.1.101/build.rs
        --error-format=json
        --json=diagnostic-rendered-ansi,artifacts,future-incompat
        --diagnostic-width=94
@@ -863,7 +872,8 @@ $ cargo build -v \
 
      Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
        --crate-name core
-       --edition=2021 $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/core/src/lib.rs
+       --edition=2021 
+       $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/core/src/lib.rs
        --error-format=json
        --json=diagnostic-rendered-ansi,artifacts,future-incompat
        --diagnostic-width=94
@@ -888,7 +898,8 @@ $ cargo build -v \
 
      Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
        --crate-name rustc_std_workspace_core
-       --edition=2021 $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/rustc-std-workspace-core/lib.rs
+       --edition=2021 
+       $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/rustc-std-workspace-core/lib.rs
        --error-format=json
        --json=diagnostic-rendered-ansi,artifacts,future-incompat
        --diagnostic-width=94
@@ -910,7 +921,8 @@ $ cargo build -v \
 
      Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
        --crate-name compiler_builtins
-       --edition=2018 $HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/compiler_builtins-0.1.101/src/lib.rs
+       --edition=2018 
+       $HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/compiler_builtins-0.1.101/src/lib.rs
        --error-format=json
        --json=diagnostic-rendered-ansi,artifacts,future-incompat
        --diagnostic-width=94
@@ -941,7 +953,8 @@ $ cargo build -v \
 
      Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
        --crate-name alloc
-       --edition=2021 $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/lib.rs
+       --edition=2021 
+       $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/lib.rs
        --error-format=json
        --json=diagnostic-rendered-ansi,artifacts,future-incompat
        --diagnostic-width=94
@@ -967,7 +980,8 @@ $ cargo build -v \
 
      Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
        --crate-name app
-       --edition=2021 src/main.rs
+       --edition=2021
+       src/main.rs
        --error-format=json
        --json=diagnostic-rendered-ansi,artifacts,future-incompat
        --diagnostic-width=94
