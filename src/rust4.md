@@ -204,11 +204,11 @@ File Attributes
 
 Indeed we have a problem: Double-Float and Soft-Float won't mix! Let's fix this...
 
-TODO: Pic of Rust Won't Double-Float
+![Rust Won't Double-Float](https://lupyuen.github.io/images/rust4-flow3.jpg)
 
 # Rust Won't Double-Float
 
-_What if we ask Rust Compiler to compile for Double-Float: RV32IMAFDC?_
+_What if we ask Rust Compiler to compile for Double-Float? RV32IMAFDC (Pic above)_
 
 [__QEMU RISC-V__](https://www.qemu.org/docs/master/system/riscv/virt.html) offically supports [__`riscv32gc`__](https://www.qemu.org/docs/master/system/riscv/virt.html).
 
