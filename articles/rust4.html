@@ -431,7 +431,7 @@ $ rustc \
 <h1 id="build-the-rust-core-library"><a class="doc-anchor" href="#build-the-rust-core-library">§</a>4 Build the Rust Core Library</h1>
 <p><em>We’re ready to rebuild with Double-Float?</em></p>
 <p>Not quite, we’re not done with the <strong>System Library</strong>!</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Rust Compiler fails to build with our Custom Target `riscv32gc`
+<div class="example-wrap"><pre class="language-bash"><code>## Rust Compiler fails to compile with our Custom Target `riscv32gc`
 $ rustc \
   --target riscv32gc-unknown-none-elf.json \
   --edition 2021 \
@@ -442,6 +442,7 @@ $ rustc \
   hello_rust_main.rs \
   -o hello_rust.o
 
+## That&#39;s because Rust Core Library for `riscv32gc` is missing
 error[E0463]: can&#39;t find crate for `core`
 </code></pre></div>
 <p>Why? Remember…</p>
