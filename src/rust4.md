@@ -410,7 +410,7 @@ Which is [__`riscv32i`__](TODO) plus these changes...
 
 Once Again: This is how we splice the Two Predefined Targets to create our Custom Target __`riscv32gc`__...
 
-<span style="font-size:90%">
+<span style="font-size:80%">
 
 | | [riscv32i](TODO) | [riscv64gc](TODO) | [riscv32gc](TODO) |
 |-|:--------:|:---------:|:---------:|
@@ -443,27 +443,33 @@ Not quite, we're not done with the __System Library__! Remember...
 
   Only when it has the [__Rust Core Library__](TODO) for Double-Float!
 
-TODO
+_And the Rust Core Library comes from?_
 
-Now we build the Rust Core Library for `riscv32gc`...
+We call Rust Compiler to build the __Rust Core Library__ for Double-Float __`riscv32gc`__...
 
 ```bash
-## Verify our Custom Target
+## TODO: Download our Custom Target
+
+## Verify our Custom Target, make sure it's OK
 rustc \
   --print cfg \
   --target riscv32gc-unknown-none-elf.json
 
-## Build the Rust Core Library for `riscv32gc`
+## We create a Rust App and clear it.
 ## Ignore the error: `app already exists`
 cargo new app
 pushd app
 cargo clean
+
+## Build the Rust Core Library for `riscv32gc`
 ## Ignore the error: `can't find crate for std`
 cargo build \
   -Zbuild-std=core,alloc \
   --target ../riscv32gc-unknown-none-elf.json
 popd
 ```
+
+TODO
 
 We rebuild our Rust App with the new Rust Custom Target (linked to our Rust Core Library)...
 
