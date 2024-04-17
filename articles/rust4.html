@@ -244,9 +244,9 @@ File Attributes
   Tag_RISCV_arch: &quot;rv32i2p1&quot;
 </code></pre></div>
 <p>Indeed we have a problem: Double-Float and Soft-Float won’t mix! Let’s fix this…</p>
-<p>TODO: Pic of Rust Won’t Double-Float</p>
+<p><img src="https://lupyuen.github.io/images/rust4-flow3.jpg" alt="Rust Won’t Double-Float" /></p>
 <h1 id="rust-wont-double-float"><a class="doc-anchor" href="#rust-wont-double-float">§</a>2 Rust Won’t Double-Float</h1>
-<p><em>What if we ask Rust Compiler to compile for Double-Float: RV32IMAFDC?</em></p>
+<p><em>What if we ask Rust Compiler to compile for Double-Float? RV32IMAFDC (Pic above)</em></p>
 <p><a href="https://www.qemu.org/docs/master/system/riscv/virt.html"><strong>QEMU RISC-V</strong></a> offically supports <a href="https://www.qemu.org/docs/master/system/riscv/virt.html"><strong><code>riscv32gc</code></strong></a>.</p>
 <p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(“<strong><code>gc</code></strong>” in “<strong><code>riscv32gc</code></strong>” denotes <strong>IMAFDC</strong>)</a></p>
 <p>We could do this…</p>
