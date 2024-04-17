@@ -292,7 +292,17 @@ _To compile Rust for Double-Float, we need a Custom Target: riscv32gc_
 
 _How to create the Custom Target?_
 
-According to the [__Official Rust Docs__](https://docs.rust-embedded.org/embedonomicon/custom-target.html), we dump a Predefined Rust Target: __`riscv32i`__ 
+According to the [__Official Rust Docs__](https://docs.rust-embedded.org/embedonomicon/custom-target.html), we shall...
+
+- Copy from a __Predefined Rust Target__
+
+  (Like __`riscv32i`__)
+
+- Tweak it to fit our __Custom Rust Target__
+
+  (Which becomes __`riscv32gc`__)
+
+This is how we dump a Predefined Rust Target: __`riscv32i`__ 
 
 ```bash
 ## Dump the Predefined Rust Target:
@@ -380,19 +390,19 @@ Exactly! Based on the above, we create our __Rust Custom Target__: [_riscv32gc-u
 
 Which is [__`riscv32i`__](TODO) plus these changes...
 
-- Removed __`"is-builtin": true`__
+- Remove _`"is-builtin": true`_
 
   TODO
 
-- Removed __`"atomic-cas": false`__
+- Remove _`"atomic-cas": false`_
 
   TODO
 
-- Added __`"features": "+m,+a,+f,+d,+c"`__
+- Add _`"features": "+m,+a,+f,+d,+c"`_
 
   TODO
 
-- Added __`"llvm-abiname": "ilp32d"`__
+- Add _`"llvm-abiname": "ilp32d"`_
 
   (__`ilp32d`__ comes from __`make --trace`__ above)
 
@@ -402,8 +412,8 @@ Once Again: This is how we splice the Two Predefined Targets to create our Custo
 
 <span style="font-size:90%">
 
-| | riscv32i | riscv64gc | riscv32gc |
-|-|----------|-----------|-----------|
+| | [riscv32i](TODO) | [riscv64gc](TODO) | [riscv32gc](TODO) |
+|-|:--------:|:---------:|:---------:|
 | _arch_          | __riscv32__ | riscv64 | __riscv32__
 | _atomic-cas_    | false | |
 | _cpu_           | __generic-rv32__ | generic-rv64 | __generic-rv32__
@@ -420,6 +430,18 @@ Once Again: This is how we splice the Two Predefined Targets to create our Custo
 TODO: Pic of Rust Core Library
 
 # Build the Rust Core Library
+
+_We're ready to rebuild with Double-Float?_
+
+Not quite, we're not done with the __System Library__! Remember...
+
+- __GCC Compiler__ supports Double-Float...
+
+  Because it's bundled with __C Standard Library__ for Double-Float, thus...
+
+- __Rust Compiler__ will support Double-Float...
+
+  Only when it has the [__Rust Core Library__](TODO) for Double-Float!
 
 TODO
 
