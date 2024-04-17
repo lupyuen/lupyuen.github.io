@@ -515,7 +515,7 @@ rustc_std_workspace_core-3cc5bcc9f701a6e7.d
 Now we're ready to __rebuild our Rust App__ with the Custom Target (linked to our Rust Core Library)...
 
 ```bash
-## Compile our Rust App.
+## Compile our Rust App with Rust Core Library for `riscv32gc`
 ## We changed the Target to `riscv32gc-unknown-none-elf.json`
 ## TODO: Change `../apps` to the NuttX Apps Folder
 rustc \
@@ -671,7 +671,7 @@ _We've compiled our Rust App with Double-Float riscv32gc..._
 
 _Is our NuttX Build hunky dory now?_
 
-Yep __NuttX builds OK now__, GCC Compiler and Rust Compiler are harmonised to Double-Float...
+Yep __NuttX builds OK now__! GCC Compiler and Rust Compiler are harmonised to Double-Float...
 
 ```bash
 ## Copy the Rust Binary that will be linked with NuttX
@@ -717,7 +717,7 @@ Hello, Rust!!
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384)
 
-_Phew that's a lot of work to build a tiny Rust App!_
+_Phew so much work to build a tiny Rust App!_
 
 Yeah. And integrating this into the __NuttX Makefiles__ will be challenging.
 
@@ -780,31 +780,215 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Rust Compiler Options
 
-TODO
-
 _How did we figure out the rustc options?_
 
-`cargo build` will call `rustc` with a whole bunch of options.
-
-We ran `cargo build -v` to dump the `rustc` options that were used to compile a Rust App with our Custom Rust Core Library for `riscv32gc`...
+Earlier we saw the [__Rust Compiler Options__](TODO) for building our Rust App (with Rust Core Library for __`riscv32gc`__)...
 
 ```bash
+## Compile our Rust App with Rust Core Library for `riscv32gc`
+## We changed the Target to `riscv32gc-unknown-none-elf.json`
+## TODO: Change `../apps` to the NuttX Apps Folder
+rustc \
+  --target riscv32gc-unknown-none-elf.json \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  -C panic=abort \
+  -O \
+  ../apps/examples/hello_rust/hello_rust_main.rs \
+  -o ../apps/examples/hello_rust/*hello_rust.o \
+  \
+  -C incremental=app/target/riscv32gc-unknown-none-elf/debug/incremental \
+  -L dependency=app/target/riscv32gc-unknown-none-elf/debug/deps \
+  -L dependency=app/target/debug/deps \
+  --extern noprelude:alloc=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-*.rlib` \
+  --extern noprelude:compiler_builtins=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-*.rlib` \
+  --extern noprelude:core=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-*.rlib` \
+  -Z unstable-options
+```
+
+We copied the above options from __`cargo build -v`__, here's how...
+
+Remember Earlier: We ran [__`cargo build`__](TODO) to compile the [__Rust Core Library__](TODO)...
+
+```bash
+## Build the Rust Core Library for `riscv32gc`
+$ cargo build \
+  -Zbuild-std=core,alloc \
+  --target ../riscv32gc-unknown-none-elf.json
+```
+
+__`cargo build`__ will call __`rustc`__ with a whole bunch of options.
+
+We switched it to __`cargo build -v`__, which will dump the __`rustc`__ options.
+
+Hence we see the options that will compile a Rust App with our Rust Core Library for __`riscv32gc`__...
+
+```bash
+## Build the Rust Core Library for `riscv32gc`
+## And the Empty Rust Project for `riscv32gc`
+## `-v` will dump the `rustc` options
 $ cargo build -v \
   -Zbuild-std=core,alloc \
   --target ../riscv32gc-unknown-none-elf.json
 
    Compiling compiler_builtins v0.1.101
    Compiling core v0.0.0 ($HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/core)
-     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name build_script_build --edition=2018 $HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/compiler_builtins-0.1.101/build.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 -C split-debuginfo=unpacked --cfg 'feature="compiler-builtins"' --cfg 'feature="core"' --cfg 'feature="default"' --cfg 'feature="rustc-dep-of-std"' -C metadata=9bd0bac7535b33a8 -C extra-filename=-9bd0bac7535b33a8 --out-dir $HOME/riscv/nuttx-rust-app/app/target/debug/build/compiler_builtins-9bd0bac7535b33a8 -Z force-unstable-if-unmarked -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --cap-lints allow`
-     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name core --edition=2021 $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/core/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 -C metadata=d271c6ebb87f9b41 -C extra-filename=-d271c6ebb87f9b41 --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -Z force-unstable-if-unmarked -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --cap-lints allow`
+
+     ## Generate the Rust Build Script for `riscv32gc`
+
+     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
+       --crate-name build_script_build
+       --edition=2018 $HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/compiler_builtins-0.1.101/build.rs
+       --error-format=json
+       --json=diagnostic-rendered-ansi,artifacts,future-incompat
+       --diagnostic-width=94
+       --crate-type bin
+       --emit=dep-info,link
+       -C embed-bitcode=no
+       -C debuginfo=2
+       -C split-debuginfo=unpacked
+       --cfg 'feature="compiler-builtins"'
+       --cfg 'feature="core"'
+       --cfg 'feature="default"'
+       --cfg 'feature="rustc-dep-of-std"'
+       -C metadata=9bd0bac7535b33a8
+       -C extra-filename=-9bd0bac7535b33a8
+       --out-dir $HOME/riscv/nuttx-rust-app/app/target/debug/build/compiler_builtins-9bd0bac7535b33a8
+       -Z force-unstable-if-unmarked
+       -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps
+       --cap-lints allow`
+
+     ## Build the Rust Core Library for `riscv32gc`
+
+     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
+       --crate-name core
+       --edition=2021 $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/core/src/lib.rs
+       --error-format=json
+       --json=diagnostic-rendered-ansi,artifacts,future-incompat
+       --diagnostic-width=94
+       --crate-type lib
+       --emit=dep-info,metadata,link
+       -C embed-bitcode=no
+       -C debuginfo=2
+       -C metadata=d271c6ebb87f9b41
+       -C extra-filename=-d271c6ebb87f9b41
+       --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps
+       --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json
+       -Z force-unstable-if-unmarked
+       -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps
+       -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps
+       --cap-lints allow`
+
      Running `$HOME/riscv/nuttx-rust-app/app/target/debug/build/compiler_builtins-9bd0bac7535b33a8/build-script-build`
+     
    Compiling rustc-std-workspace-core v1.99.0 ($HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/rustc-std-workspace-core)
-     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name rustc_std_workspace_core --edition=2021 $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/rustc-std-workspace-core/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 -C metadata=52e0df2b2cc19b6e -C extra-filename=-52e0df2b2cc19b6e --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -Z force-unstable-if-unmarked -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --extern core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rmeta --cap-lints allow`
-     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name compiler_builtins --edition=2018 $HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/compiler_builtins-0.1.101/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 --cfg 'feature="compiler-builtins"' --cfg 'feature="core"' --cfg 'feature="default"' --cfg 'feature="rustc-dep-of-std"' -C metadata=cd0d33c2bd30ca51 -C extra-filename=-cd0d33c2bd30ca51 --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -Z force-unstable-if-unmarked -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --extern core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/librustc_std_workspace_core-52e0df2b2cc19b6e.rmeta --cap-lints allow --cfg 'feature="unstable"' --cfg 'feature="mem"'`
+
+     ## Build the Rust Workspace Core for `riscv32gc`
+
+     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
+       --crate-name rustc_std_workspace_core
+       --edition=2021 $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/rustc-std-workspace-core/lib.rs
+       --error-format=json
+       --json=diagnostic-rendered-ansi,artifacts,future-incompat
+       --diagnostic-width=94
+       --crate-type lib
+       --emit=dep-info,metadata,link
+       -C embed-bitcode=no
+       -C debuginfo=2
+       -C metadata=52e0df2b2cc19b6e
+       -C extra-filename=-52e0df2b2cc19b6e
+       --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps
+       --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json
+       -Z force-unstable-if-unmarked
+       -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps
+       -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps
+       --extern core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rmeta
+       --cap-lints allow`
+
+     ## Build the Rust Compiler Builtins for `riscv32gc`
+
+     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
+       --crate-name compiler_builtins
+       --edition=2018 $HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/compiler_builtins-0.1.101/src/lib.rs
+       --error-format=json
+       --json=diagnostic-rendered-ansi,artifacts,future-incompat
+       --diagnostic-width=94
+       --crate-type lib
+       --emit=dep-info,metadata,link
+       -C embed-bitcode=no
+       -C debuginfo=2
+       --cfg 'feature="compiler-builtins"'
+       --cfg 'feature="core"'
+       --cfg 'feature="default"'
+       --cfg 'feature="rustc-dep-of-std"'
+       -C metadata=cd0d33c2bd30ca51
+       -C extra-filename=-cd0d33c2bd30ca51
+       --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps
+       --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json
+       -Z force-unstable-if-unmarked
+       -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps
+       -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps
+       --extern core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/librustc_std_workspace_core-52e0df2b2cc19b6e.rmeta
+       --cap-lints allow
+       --cfg 'feature="unstable"'
+       --cfg 'feature="mem"'`
+
    Compiling alloc v0.0.0 ($HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/alloc)
-     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name alloc --edition=2021 $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 -C metadata=5d7bc2e4f3c29e08 -C extra-filename=-5d7bc2e4f3c29e08 --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -Z force-unstable-if-unmarked -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --extern compiler_builtins=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-cd0d33c2bd30ca51.rmeta --extern core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rmeta --cap-lints allow`
+
+     ## Build the Rust Alloc Library for `riscv32gc`
+     ## Which will support Heap Memory in future
+
+     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
+       --crate-name alloc
+       --edition=2021 $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/lib.rs
+       --error-format=json
+       --json=diagnostic-rendered-ansi,artifacts,future-incompat
+       --diagnostic-width=94
+       --crate-type lib
+       --emit=dep-info,metadata,link
+       -C embed-bitcode=no
+       -C debuginfo=2
+       -C metadata=5d7bc2e4f3c29e08
+       -C extra-filename=-5d7bc2e4f3c29e08
+       --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps
+       --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json
+       -Z force-unstable-if-unmarked
+       -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps
+       -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps
+       --extern compiler_builtins=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-cd0d33c2bd30ca51.rmeta
+       --extern core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rmeta
+       --cap-lints allow`
+
    Compiling app v0.1.0 ($HOME/riscv/nuttx-rust-app/app)
-     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name app --edition=2021 src/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 -C metadata=1ff442e6481e1397 -C extra-filename=-1ff442e6481e1397 --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -C incremental=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/incremental -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --extern 'noprelude:alloc=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-5d7bc2e4f3c29e08.rlib' --extern 'noprelude:compiler_builtins=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-cd0d33c2bd30ca51.rlib' --extern 'noprelude:core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rlib' -Z unstable-options`
+
+     ## Compile our Empty Rust Project with Rust Core Library for `riscv32gc`
+     ## These are the options that we copied...
+
+     Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
+       --crate-name app
+       --edition=2021 src/main.rs
+       --error-format=json
+       --json=diagnostic-rendered-ansi,artifacts,future-incompat
+       --diagnostic-width=94
+       --crate-type bin
+       --emit=dep-info,link
+       -C embed-bitcode=no
+       -C debuginfo=2
+       -C metadata=1ff442e6481e1397
+       -C extra-filename=-1ff442e6481e1397
+       --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps
+       --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json
+       -C incremental=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/incremental
+       -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps
+       -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps
+       --extern 'noprelude:alloc=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-5d7bc2e4f3c29e08.rlib'
+       --extern 'noprelude:compiler_builtins=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-cd0d33c2bd30ca51.rlib'
+       --extern 'noprelude:core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rlib'
+       -Z unstable-options`
+
+## Ignore this error. Rust Standard Library and `println` won't work for `riscv32gc`
+
 error[E0463]: can't find crate for `std`
   |
   = note: the `riscv32gc-unknown-none-elf` target may not support the standard library
