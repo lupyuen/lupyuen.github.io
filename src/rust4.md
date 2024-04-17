@@ -534,22 +534,26 @@ rustc \
   -Z unstable-options
 ```
 
-TODO
+(We'll talk about the loooong options)
+
+_Are we Double-Floating yet?_
+
+Yep we have a __Yummy Double-Float__ with 2 scoops of ice cream!
 
 ```bash
-## Dump the ELF Header. Should show:
-## Flags: 0x5, RVC, double-float ABI
+## Dump the ELF Header of our Compiled Rust App
 ## TODO: Change `../apps` to the NuttX Apps Folder
-riscv64-unknown-elf-readelf \
+$ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
+
+## We have Double-Float `riscv32gc` yay!
+Flags: 0x5, RVC, double-float ABI
 ```
 
-TODO
+_How did we get the rustc options?_
 
-_How did we figure out the rustc options?_
-
-`cargo build` will call `rustc` with a whole bunch of options.
+TODO: `cargo build` will call `rustc` with a whole bunch of options.
 
 We ran `cargo build -v` to dump the `rustc` options that were used to compile a Rust App with our Custom Rust Core Library for `riscv32gc`...
 
@@ -559,8 +563,7 @@ We ran `cargo build -v` to dump the `rustc` options that were used to compile a 
 
 # NuttX Links OK with Rust
 
-TODO
-
+_Is our NuttX Build hunky dory now?_
 
 TODO
 
