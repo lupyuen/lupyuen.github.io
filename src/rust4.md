@@ -302,7 +302,7 @@ According to the [__Official Rust Docs__](https://docs.rust-embedded.org/embedon
 
   (Which becomes __`riscv32gc`__)
 
-This is how we dump a Predefined Rust Target: __`riscv32i`__ 
+This is how we dump a Predefined Rust Target: [__`riscv32i`__](TODO)
 
 ```bash
 ## Dump the Predefined Rust Target:
@@ -331,9 +331,9 @@ $ rustc \
 }
 ```
 
-That's the Rust Definition of __`riscv32i`__: 32-bit RISC-V with Soft-Float.
+That's the Rust Definition of [__`riscv32i`__](TODO): 32-bit RISC-V with Soft-Float.
 
-We do the same for __`riscv64gc`__: 64-bit RISC-V with Double-Float...
+We do the same for [__`riscv64gc`__](TODO): 64-bit RISC-V with Double-Float...
 
 ```bash
 ## Dump the Predefined Rust Target:
@@ -436,6 +436,7 @@ _We're ready to rebuild with Double-Float?_
 Not quite, we're not done with the __System Library__!
 
 ```bash
+## Rust Compiler fails to build with our Custom Target `riscv32gc`
 $ rustc \
   --target riscv32gc-unknown-none-elf.json \
   --edition 2021 \
