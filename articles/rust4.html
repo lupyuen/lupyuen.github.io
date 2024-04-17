@@ -395,24 +395,24 @@ $ rustc \
 <p>Which is <a href="TODO"><strong><code>riscv32i</code></strong></a> plus these changes…</p>
 <ul>
 <li>
-<p>Remove <em><code>&quot;is-builtin&quot;: true</code></em></p>
+<p>Remove <em>“is-builtin”: true</em></p>
 <p>TODO</p>
 </li>
 <li>
-<p>Remove <em><code>&quot;atomic-cas&quot;: false</code></em></p>
+<p>Remove <em>“atomic-cas”: false</em></p>
 <p>TODO</p>
 </li>
 <li>
-<p>Add <em><code>&quot;features&quot;: &quot;+m,+a,+f,+d,+c&quot;</code></em></p>
+<p>Add <em>“features”: “+m,+a,+f,+d,+c”</em></p>
 <p>TODO</p>
 </li>
 <li>
-<p>Add <em><code>&quot;llvm-abiname&quot;: &quot;ilp32d&quot;</code></em></p>
+<p>Add <em>“llvm-abiname”: “ilp32d”</em></p>
 <p>(<strong><code>ilp32d</code></strong> comes from <strong><code>make --trace</code></strong> above)</p>
 <p><a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602">(More about <strong><code>llvm-abiname</code></strong>)</a></p>
 </li>
 </ul>
-<p>Once Again: This is how we splice the Two Predefined Targets to create our Custom Target <strong><code>riscv32gc</code></strong>…</p>
+<p>Once Again: Here’s how we splice the Two Predefined Targets to create our Custom Target <strong><code>riscv32gc</code></strong>…</p>
 <span style="font-size:80%">
 <div><table><thead><tr><th></th><th style="text-align: center"><a href="TODO">riscv32i</a></th><th style="text-align: center"><a href="TODO">riscv64gc</a></th><th style="text-align: center"><a href="TODO">riscv32gc</a></th></tr></thead><tbody>
 <tr><td><em>arch</em></td><td style="text-align: center"><strong>riscv32</strong></td><td style="text-align: center">riscv64</td><td style="text-align: center"><strong>riscv32</strong></td></tr>
@@ -430,7 +430,20 @@ $ rustc \
 <p>TODO: Pic of Rust Core Library</p>
 <h1 id="build-the-rust-core-library"><a class="doc-anchor" href="#build-the-rust-core-library">§</a>4 Build the Rust Core Library</h1>
 <p><em>We’re ready to rebuild with Double-Float?</em></p>
-<p>Not quite, we’re not done with the <strong>System Library</strong>! Remember…</p>
+<p>Not quite, we’re not done with the <strong>System Library</strong>!</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ rustc \
+  --target riscv32gc-unknown-none-elf.json \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  -C panic=abort \
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust.o
+
+error[E0463]: can&#39;t find crate for `core`
+</code></pre></div>
+<p>Why? Remember…</p>
 <ul>
 <li>
 <p><strong>GCC Compiler</strong> supports Double-Float…</p>
@@ -443,30 +456,51 @@ $ rustc \
 </ul>
 <p><em>And the Rust Core Library comes from?</em></p>
 <p>We call Rust Compiler to build the <strong>Rust Core Library</strong> for Double-Float <strong><code>riscv32gc</code></strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Download our Custom Target
+<div class="example-wrap"><pre class="language-bash"><code>## Download our Custom Target for `riscv32gc`
+rm -r riscv32gc-unknown-none-elf.json
+wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
 
 ## Verify our Custom Target, make sure it&#39;s OK
 rustc \
   --print cfg \
   --target riscv32gc-unknown-none-elf.json
 
-## We create a Rust App and clear it.
+## Create a Rust App. If it exists, erase the binaries.
 ## Ignore the error: `app already exists`
 cargo new app
 pushd app
 cargo clean
 
 ## Build the Rust Core Library for `riscv32gc`
+## Include the `alloc` library, which will support Heap Memory in future.
 ## Ignore the error: `can&#39;t find crate for std`
 cargo build \
   -Zbuild-std=core,alloc \
   --target ../riscv32gc-unknown-none-elf.json
 popd
 </code></pre></div>
-<p>TODO</p>
-<p>We rebuild our Rust App with the new Rust Custom Target (linked to our Rust Core Library)…</p>
+<p><strong>Rust Core Library</strong> for Double-Float <strong><code>riscv32gc</code></strong> is done!</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Show the Rust Core Library for `riscv32gc`
+$ ls app/target/riscv32gc-unknown-none-elf/debug/deps 
+
+alloc-254848389e7e2c53.d
+app-cf88b81a5fca23b3.d
+compiler_builtins-d5922d64507adf16.d
+core-ec2ec78e26b8c830.d
+liballoc-254848389e7e2c53.rlib
+liballoc-254848389e7e2c53.rmeta
+libcompiler_builtins-d5922d64507adf16.rlib
+libcompiler_builtins-d5922d64507adf16.rmeta
+libcore-ec2ec78e26b8c830.rlib
+libcore-ec2ec78e26b8c830.rmeta
+librustc_std_workspace_core-3cc5bcc9f701a6e7.rlib
+librustc_std_workspace_core-3cc5bcc9f701a6e7.rmeta
+rustc_std_workspace_core-3cc5bcc9f701a6e7.d
+</code></pre></div>
+<p>Now we’re ready to <strong>rebuild our Rust App</strong> with the Custom Target (linked to our Rust Core Library)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile our Rust App.
-## Changed the target to riscv32gc-unknown-none-elf.json
+## We changed the Target to `riscv32gc-unknown-none-elf.json`
+## TODO: Change `../apps` to the NuttX Apps Folder
 rustc \
   --target riscv32gc-unknown-none-elf.json \
   --edition 2021 \
@@ -484,20 +518,41 @@ rustc \
   --extern noprelude:compiler_builtins=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-*.rlib` \
   --extern noprelude:core=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-*.rlib` \
   -Z unstable-options
-
-## Dump the ELF Header. Should show:
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Dump the ELF Header. Should show:
 ## Flags: 0x5, RVC, double-float ABI
+## TODO: Change `../apps` to the NuttX Apps Folder
 riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
-
-## NuttX should link and execute correctly now
+</code></pre></div>
+<p>TODO</p>
+<p><em>How did we figure out the rustc options?</em></p>
+<p><code>cargo build</code> will call <code>rustc</code> with a whole bunch of options.</p>
+<p>We ran <code>cargo build -v</code> to dump the <code>rustc</code> options that were used to compile a Rust App with our Custom Rust Core Library for <code>riscv32gc</code>…</p>
+<ul>
+<li>TODO</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/rust4-flow.jpg" alt="NuttX Links OK with Rust" /></p>
+<h1 id="nuttx-links-ok-with-rust"><a class="doc-anchor" href="#nuttx-links-ok-with-rust">§</a>5 NuttX Links OK with Rust</h1>
+<p>TODO</p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>## NuttX should link and execute correctly now.
+## TODO: Change `../apps` to the NuttX Apps Folder
 cp \
   ../apps/examples/hello_rust/*hello_rust.o \
   ../apps/examples/hello_rust/*hello_rust_1.o
 
+## TODO: Change `../nuttx` to the NuttX Kernel Folder
 pushd ../nuttx
 make
+popd
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in QEMU RISC-V (32-bit)
+## TODO: Change `../nuttx` to the NuttX Kernel Folder
+pushd ../nuttx
 qemu-system-riscv32 \
   -semihosting \
   -M virt,aclint=on \
@@ -509,9 +564,6 @@ qemu-system-riscv32 \
 popd
 </code></pre></div>
 <p>And it works!</p>
-<p><img src="https://lupyuen.github.io/images/rust4-flow.jpg" alt="NuttX Links OK with Rust" /></p>
-<h1 id="nuttx-links-ok-with-rust"><a class="doc-anchor" href="#nuttx-links-ok-with-rust">§</a>5 NuttX Links OK with Rust</h1>
-<p>TODO</p>
 <p><em>Our Rust App links OK! Has the ELF Header changed?</em></p>
 <p>Yep the ELF Header has changed from Soft-Float to Double-Float…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Before Custom Target
