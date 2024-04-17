@@ -559,7 +559,40 @@ Flags: 0x5, RVC, double-float ABI
 TODO: Move to gist
 
 ```bash
-## Before Custom Target
+## ELF Header for GCC Output:
+## Double-Precision Hardware Floating-Point
+$ riscv64-unknown-elf-readelf \
+  --file-header --arch-specific \
+  ../apps/examples/hello/*hello.o                 
+
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           RISC-V
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          3776 (bytes into file)
+  Flags:                             0x5, RVC, double-float ABI
+  Size of this header:               52 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           40 (bytes)
+  Number of section headers:         26
+  Section header string table index: 25
+Attribute Section: riscv
+File Attributes
+  Tag_RISCV_stack_align: 16-bytes
+  Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
+
+## [Before Custom Rust Target]
+## ELF Header for Rust Compiler Output:
+## Software Floating-Point
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust_1.o
@@ -589,7 +622,9 @@ File Attributes
   Tag_RISCV_stack_align: 16-bytes
   Tag_RISCV_arch: "rv32i2p1"
 
-## After Custom Target
+## [After Custom Rust Target]
+## ELF Header for Rust Compiler Output:
+## Double-Precision Hardware Floating-Point
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
@@ -618,36 +653,6 @@ Attribute Section: riscv
 File Attributes
   Tag_RISCV_stack_align: 16-bytes
   Tag_RISCV_arch: "rv32i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0"
-
-## Which looks similar to other C Binaries
-$ riscv64-unknown-elf-readelf \
-  --file-header --arch-specific \
-  ../apps/examples/hello/*hello.o                 
-
-ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
-  Class:                             ELF32
-  Data:                              2's complement, little endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              REL (Relocatable file)
-  Machine:                           RISC-V
-  Version:                           0x1
-  Entry point address:               0x0
-  Start of program headers:          0 (bytes into file)
-  Start of section headers:          3776 (bytes into file)
-  Flags:                             0x5, RVC, double-float ABI
-  Size of this header:               52 (bytes)
-  Size of program headers:           0 (bytes)
-  Number of program headers:         0
-  Size of section headers:           40 (bytes)
-  Number of section headers:         26
-  Section header string table index: 25
-Attribute Section: riscv
-File Attributes
-  Tag_RISCV_stack_align: 16-bytes
-  Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
 ```
 
 _How did we get the rustc options?_
@@ -712,11 +717,13 @@ Hello, Rust!!
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384)
 
-TODO: How would Linux Kernel handle these uncommon targets?
+_Phew that's a lot of work to build a tiny Rust App!_
 
-TODO: This Rust Compiler Issue might be relevant...
+Yeah. And integrating this into the __NuttX Makefiles__ will be challenging.
 
-- [Allow building for hard-float targets in RISC-V](https://github.com/rust-lang/rust/issues/65024)
+(How would __Linux Kernel__ handle Custom Rust Targets?)
+
+TODO: [Allow building for hard-float targets in RISC-V](https://github.com/rust-lang/rust/issues/65024)
 
 ![Rust Apps on Apache NuttX RTOS and QEMU RISC-V](https://lupyuen.github.io/images/rust4-title.jpg)
 
