@@ -306,7 +306,18 @@ riscv64-unknown-elf-gcc \
 <h1 id="custom-target-for-rust"><a class="doc-anchor" href="#custom-target-for-rust">§</a>3 Custom Target for Rust</h1>
 <p><em>To compile Rust for Double-Float, we need a Custom Target: riscv32gc</em></p>
 <p><em>How to create the Custom Target?</em></p>
-<p>According to the <a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html"><strong>Official Rust Docs</strong></a>, we dump a Predefined Rust Target: <strong><code>riscv32i</code></strong> </p>
+<p>According to the <a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html"><strong>Official Rust Docs</strong></a>, we shall…</p>
+<ul>
+<li>
+<p>Copy from a <strong>Predefined Rust Target</strong></p>
+<p>(Like <strong><code>riscv32i</code></strong>)</p>
+</li>
+<li>
+<p>Tweak it to fit our <strong>Custom Rust Target</strong></p>
+<p>(Which becomes <strong><code>riscv32gc</code></strong>)</p>
+</li>
+</ul>
+<p>This is how we dump a Predefined Rust Target: <strong><code>riscv32i</code></strong> </p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the Predefined Rust Target:
 ## riscv32i (32-bit RISC-V with Soft-Float)
 $ rustc \
@@ -384,40 +395,52 @@ $ rustc \
 <p>Which is <a href="TODO"><strong><code>riscv32i</code></strong></a> plus these changes…</p>
 <ul>
 <li>
-<p>Removed <strong><code>&quot;is-builtin&quot;: true</code></strong></p>
+<p>Remove <em><code>&quot;is-builtin&quot;: true</code></em></p>
 <p>TODO</p>
 </li>
 <li>
-<p>Removed <strong><code>&quot;atomic-cas&quot;: false</code></strong></p>
+<p>Remove <em><code>&quot;atomic-cas&quot;: false</code></em></p>
 <p>TODO</p>
 </li>
 <li>
-<p>Added <strong><code>&quot;features&quot;: &quot;+m,+a,+f,+d,+c&quot;</code></strong></p>
+<p>Add <em><code>&quot;features&quot;: &quot;+m,+a,+f,+d,+c&quot;</code></em></p>
 <p>TODO</p>
 </li>
 <li>
-<p>Added <strong><code>&quot;llvm-abiname&quot;: &quot;ilp32d&quot;</code></strong></p>
+<p>Add <em><code>&quot;llvm-abiname&quot;: &quot;ilp32d&quot;</code></em></p>
 <p>(<strong><code>ilp32d</code></strong> comes from <strong><code>make --trace</code></strong> above)</p>
 <p><a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602">(More about <strong><code>llvm-abiname</code></strong>)</a></p>
 </li>
 </ul>
 <p>Once Again: This is how we splice the Two Predefined Targets to create our Custom Target <strong><code>riscv32gc</code></strong>…</p>
 <span style="font-size:90%">
-<div><table><thead><tr><th></th><th>riscv32i</th><th>riscv64gc</th><th>riscv32gc</th></tr></thead><tbody>
-<tr><td><em>arch</em></td><td><strong>riscv32</strong></td><td>riscv64</td><td><strong>riscv32</strong></td></tr>
-<tr><td><em>atomic-cas</em></td><td>false</td><td></td><td></td></tr>
-<tr><td><em>cpu</em></td><td><strong>generic-rv32</strong></td><td>generic-rv64</td><td><strong>generic-rv32</strong></td></tr>
-<tr><td><em>data-layout</em></td><td><strong>e-m:e-p:32…</strong></td><td>e-m:e-p:64…</td><td><strong>e-m:e-p:32…</strong></td></tr>
-<tr><td><em>features</em></td><td></td><td><strong>+m,+a,+f,+d,+c</strong></td><td><strong>+m,+a,+f,+d,+c</strong></td></tr>
-<tr><td><em>is-builtin</em></td><td>true</td><td>true</td><td></td></tr>
-<tr><td><em>llvm-abiname</em></td><td></td><td>lp64d</td><td>ilp32d</td></tr>
-<tr><td><em>llvm-target</em></td><td><strong>riscv32</strong></td><td>riscv64</td><td><strong>riscv32</strong></td></tr>
-<tr><td><em>max-atomic-width</em></td><td></td><td>64</td><td>0</td></tr>
-<tr><td><em>target-pointer-width</em></td><td><strong>32</strong></td><td>64</td><td><strong>32</strong></td></tr>
+<div><table><thead><tr><th></th><th style="text-align: center"><a href="TODO">riscv32i</a></th><th style="text-align: center"><a href="TODO">riscv64gc</a></th><th style="text-align: center"><a href="TODO">riscv32gc</a></th></tr></thead><tbody>
+<tr><td><em>arch</em></td><td style="text-align: center"><strong>riscv32</strong></td><td style="text-align: center">riscv64</td><td style="text-align: center"><strong>riscv32</strong></td></tr>
+<tr><td><em>atomic-cas</em></td><td style="text-align: center">false</td><td style="text-align: center"></td><td style="text-align: center"></td></tr>
+<tr><td><em>cpu</em></td><td style="text-align: center"><strong>generic-rv32</strong></td><td style="text-align: center">generic-rv64</td><td style="text-align: center"><strong>generic-rv32</strong></td></tr>
+<tr><td><em>data-layout</em></td><td style="text-align: center"><strong>e-m:e-p:32…</strong></td><td style="text-align: center">e-m:e-p:64…</td><td style="text-align: center"><strong>e-m:e-p:32…</strong></td></tr>
+<tr><td><em>features</em></td><td style="text-align: center"></td><td style="text-align: center"><strong>+m,+a,+f,+d,+c</strong></td><td style="text-align: center"><strong>+m,+a,+f,+d,+c</strong></td></tr>
+<tr><td><em>is-builtin</em></td><td style="text-align: center">true</td><td style="text-align: center">true</td><td style="text-align: center"></td></tr>
+<tr><td><em>llvm-abiname</em></td><td style="text-align: center"></td><td style="text-align: center">lp64d</td><td style="text-align: center">ilp32d</td></tr>
+<tr><td><em>llvm-target</em></td><td style="text-align: center"><strong>riscv32</strong></td><td style="text-align: center">riscv64</td><td style="text-align: center"><strong>riscv32</strong></td></tr>
+<tr><td><em>max-atomic-width</em></td><td style="text-align: center"></td><td style="text-align: center">64</td><td style="text-align: center">0</td></tr>
+<tr><td><em>target-pointer-width</em></td><td style="text-align: center"><strong>32</strong></td><td style="text-align: center">64</td><td style="text-align: center"><strong>32</strong></td></tr>
 </tbody></table>
 </div></span>
 <p>TODO: Pic of Rust Core Library</p>
 <h1 id="build-the-rust-core-library"><a class="doc-anchor" href="#build-the-rust-core-library">§</a>4 Build the Rust Core Library</h1>
+<p><em>We’re ready to rebuild with Double-Float?</em></p>
+<p>Not quite, we’re not done with the <strong>System Library</strong>! Remember…</p>
+<ul>
+<li>
+<p><strong>GCC Compiler</strong> supports Double-Float…</p>
+<p>Because it’s bundled with <strong>C Standard Library</strong> for Double-Float, thus…</p>
+</li>
+<li>
+<p><strong>Rust Compiler</strong> will support Double-Float…</p>
+<p>Only when it has the <a href="TODO"><strong>Rust Core Library</strong></a> for Double-Float!</p>
+</li>
+</ul>
 <p>TODO</p>
 <p>Now we build the Rust Core Library for <code>riscv32gc</code>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Verify our Custom Target
