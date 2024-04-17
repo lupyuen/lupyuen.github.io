@@ -467,7 +467,8 @@ rustc \
   --print cfg \
   --target riscv32gc-unknown-none-elf.json
 
-## Create a Rust App. If it exists, erase the binaries.
+## `cargo build` requires a Rust Project, so we create an empty one.
+## If the Rust Project exists, erase the binaries.
 ## Ignore the error: `app already exists`
 cargo new app
 pushd app
@@ -533,44 +534,8 @@ $ riscv64-unknown-elf-readelf \
 ## We have Double-Float `riscv32gc` yay!
 Flags: 0x5, RVC, double-float ABI
 </code></pre></div>
-<p><em>How did we get the rustc options?</em></p>
-<p>TODO: <code>cargo build</code> will call <code>rustc</code> with a whole bunch of options.</p>
-<p>We ran <code>cargo build -v</code> to dump the <code>rustc</code> options that were used to compile a Rust App with our Custom Rust Core Library for <code>riscv32gc</code>…</p>
-<ul>
-<li>TODO</li>
-</ul>
-<p><img src="https://lupyuen.github.io/images/rust4-flow.jpg" alt="NuttX Links OK with Rust" /></p>
-<h1 id="nuttx-links-ok-with-rust"><a class="doc-anchor" href="#nuttx-links-ok-with-rust">§</a>5 NuttX Links OK with Rust</h1>
-<p><em>Is our NuttX Build hunky dory now?</em></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>## NuttX should link and execute correctly now.
-## TODO: Change `../apps` to the NuttX Apps Folder
-cp \
-  ../apps/examples/hello_rust/*hello_rust.o \
-  ../apps/examples/hello_rust/*hello_rust_1.o
-
-## TODO: Change `../nuttx` to the NuttX Kernel Folder
-pushd ../nuttx
-make
-popd
-</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in QEMU RISC-V (32-bit)
-## TODO: Change `../nuttx` to the NuttX Kernel Folder
-pushd ../nuttx
-qemu-system-riscv32 \
-  -semihosting \
-  -M virt,aclint=on \
-  -cpu rv32 \
-  -smp 8 \
-  -bios none \
-  -kernel nuttx \
-  -nographic
-popd
-</code></pre></div>
-<p>And it works!</p>
-<p><em>Our Rust App links OK! Has the ELF Header changed?</em></p>
-<p>Yep the ELF Header has changed from Soft-Float to Double-Float…</p>
+<p><a href="TODO">(See the <strong>ELF Header</strong>)</a></p>
+<p>TODO: Move to gist</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Before Custom Target
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
@@ -661,11 +626,58 @@ File Attributes
   Tag_RISCV_stack_align: 16-bytes
   Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_d2p0_c2p0&quot;
 </code></pre></div>
-<p>How would Linux Kernel handle these uncommon targets?</p>
-<p>This Rust Compiler Issue might be relevant…</p>
+<p><em>How did we get the rustc options?</em></p>
+<p>TODO: <code>cargo build</code> will call <code>rustc</code> with a whole bunch of options.</p>
+<p>We ran <code>cargo build -v</code> to dump the <code>rustc</code> options that were used to compile a Rust App with our Custom Rust Core Library for <code>riscv32gc</code>…</p>
+<ul>
+<li>TODO</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/rust4-flow.jpg" alt="NuttX Links OK with Rust" /></p>
+<h1 id="nuttx-links-ok-with-rust"><a class="doc-anchor" href="#nuttx-links-ok-with-rust">§</a>5 NuttX Links OK with Rust</h1>
+<p><em>We’ve compiled our Rust App with Double-Float riscv32gc…</em></p>
+<p><em>Is our NuttX Build hunky dory now?</em></p>
+<p>Yep <strong>NuttX builds OK now</strong>, GCC Compiler and Rust Compiler are harmonised to Double-Float…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy the Rust Binary that will be linked with NuttX
+## TODO: Change `../apps` to the NuttX Apps Folder
+cp \
+  ../apps/examples/hello_rust/*hello_rust.o \
+  ../apps/examples/hello_rust/*hello_rust_1.o
+
+## NuttX should link correctly now.
+## TODO: Change `../nuttx` to the NuttX Kernel Folder
+pushd ../nuttx
+make
+popd
+</code></pre></div>
+<p>We boot <strong>NuttX in QEMU Emulator</strong> for 32-bit RISC-V…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in QEMU RISC-V (32-bit)
+## TODO: Change `../nuttx` to the NuttX Kernel Folder
+pushd ../nuttx
+qemu-system-riscv32 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv32 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+popd
+</code></pre></div>
+<p>Our <strong>Rust App</strong> works wonderfully on NuttX! (Pic below)</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0-RC0
+
+nsh&gt; hello_rust
+Hello, Rust!!
+
+## Exit QEMU: Press `Ctrl-A` then `x`
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384">(See the <strong>NuttX Log</strong>)</a></p>
+<p>TODO: How would Linux Kernel handle these uncommon targets?</p>
+<p>TODO: This Rust Compiler Issue might be relevant…</p>
 <ul>
 <li><a href="https://github.com/rust-lang/rust/issues/65024">Allow building for hard-float targets in RISC-V</a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/rust4-title.jpg" alt="Rust Apps on Apache NuttX RTOS and QEMU RISC-V" /></p>
 <h1 id="rust-build-for-64-bit-risc-v"><a class="doc-anchor" href="#rust-build-for-64-bit-risc-v">§</a>6 Rust Build for 64-bit RISC-V</h1>
 <p>TODO</p>
 <p><strong>Exercise for the Reader:</strong> Last article we TODO</p>
