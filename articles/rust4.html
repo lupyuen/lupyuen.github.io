@@ -104,7 +104,7 @@ riscv64-unknown-elf-ld: libapps.a
 </ul>
 <p><img src="https://lupyuen.github.io/images/rust4-flow2a.jpg" alt="Double-Float vs Soft-Float: GCC Linker won’t link the binaries" /></p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>1 Software vs Hardware Floating-Point</h1>
-<p><em>What’s causing our NuttX Build to fail?</em></p>
+<p><em>What’s causing our NuttX Build to fail? (Pic above)</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make
 riscv64-unknown-elf-ld: libapps.a
   hello_rust_1.o:
@@ -158,8 +158,9 @@ rustc \
   hello_rust_main.rs \
   -o hello_rust_main.rs...apps.examples.hello_rust.o
 </code></pre></div>
+<p><img src="https://lupyuen.github.io/images/rust4-flow2b.jpg" alt="Double-Float vs Soft-Float: GCC Linker won’t link the binaries" /></p>
 <p><em>Is there a problem?</em></p>
-<p>Watch closely as we compare <strong>GCC Compiler</strong> with <strong>Rust Compiler</strong>…</p>
+<p>Watch closely as we compare <strong>GCC Compiler</strong> with <strong>Rust Compiler</strong> (pic above)…</p>
 <span style="font-size:90%">
 <div><table><thead><tr><th>GCC Compiler</th><th>Rust Compiler</th></tr></thead><tbody>
 <tr><td><em>riscv64-unknown-elf-gcc</em> <br>      <em>hello_main.c</em></td><td><em>rustc</em> <br>      <em>hello_rust_main.rs</em></td></tr>
@@ -732,8 +733,11 @@ make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust4.md"><strong>lupyuen.github.io/src/rust4.md</strong></a></p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/rust4-flow1b.jpg" alt="Building our Rust App" /></p>
+</blockquote>
 <h1 id="appendix-rust-compiler-options"><a class="doc-anchor" href="#appendix-rust-compiler-options">§</a>8 Appendix: Rust Compiler Options</h1>
-<p><em>How did we figure out the rustc options?</em></p>
+<p><em>How did we get the Rust Compiler Options?</em></p>
 <p>Earlier we saw the <a href="TODO"><strong>Rust Compiler Options</strong></a> for building our Rust App (with Rust Core Library for <strong><code>riscv32gc</code></strong>)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile our Rust App with Rust Core Library for `riscv32gc`
 ## We changed the Target to `riscv32gc-unknown-none-elf.json`
