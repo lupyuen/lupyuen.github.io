@@ -436,7 +436,7 @@ _We're ready to rebuild with Double-Float?_
 Not quite, we're not done with the __System Library__!
 
 ```bash
-## Rust Compiler fails to build with our Custom Target `riscv32gc`
+## Rust Compiler fails to compile with our Custom Target `riscv32gc`
 $ rustc \
   --target riscv32gc-unknown-none-elf.json \
   --edition 2021 \
@@ -447,6 +447,7 @@ $ rustc \
   hello_rust_main.rs \
   -o hello_rust.o
 
+## That's because Rust Core Library for `riscv32gc` is missing
 error[E0463]: can't find crate for `core`
 ```
 
