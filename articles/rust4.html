@@ -519,24 +519,27 @@ rustc \
   --extern noprelude:core=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-*.rlib` \
   -Z unstable-options
 </code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Dump the ELF Header. Should show:
-## Flags: 0x5, RVC, double-float ABI
+<p>(We’ll talk about the loooong options)</p>
+<p><em>Are we Double-Floating yet?</em></p>
+<p>Yep we have a <strong>Yummy Double-Float</strong> with 2 scoops of ice cream!</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Dump the ELF Header of our Compiled Rust App
 ## TODO: Change `../apps` to the NuttX Apps Folder
-riscv64-unknown-elf-readelf \
+$ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
+
+## We have Double-Float `riscv32gc` yay!
+Flags: 0x5, RVC, double-float ABI
 </code></pre></div>
-<p>TODO</p>
-<p><em>How did we figure out the rustc options?</em></p>
-<p><code>cargo build</code> will call <code>rustc</code> with a whole bunch of options.</p>
+<p><em>How did we get the rustc options?</em></p>
+<p>TODO: <code>cargo build</code> will call <code>rustc</code> with a whole bunch of options.</p>
 <p>We ran <code>cargo build -v</code> to dump the <code>rustc</code> options that were used to compile a Rust App with our Custom Rust Core Library for <code>riscv32gc</code>…</p>
 <ul>
 <li>TODO</li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/rust4-flow.jpg" alt="NuttX Links OK with Rust" /></p>
 <h1 id="nuttx-links-ok-with-rust"><a class="doc-anchor" href="#nuttx-links-ok-with-rust">§</a>5 NuttX Links OK with Rust</h1>
-<p>TODO</p>
+<p><em>Is our NuttX Build hunky dory now?</em></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX should link and execute correctly now.
 ## TODO: Change `../apps` to the NuttX Apps Folder
