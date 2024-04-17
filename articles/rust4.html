@@ -413,7 +413,7 @@ $ rustc \
 </li>
 </ul>
 <p>Once Again: This is how we splice the Two Predefined Targets to create our Custom Target <strong><code>riscv32gc</code></strong>…</p>
-<span style="font-size:90%">
+<span style="font-size:80%">
 <div><table><thead><tr><th></th><th style="text-align: center"><a href="TODO">riscv32i</a></th><th style="text-align: center"><a href="TODO">riscv64gc</a></th><th style="text-align: center"><a href="TODO">riscv32gc</a></th></tr></thead><tbody>
 <tr><td><em>arch</em></td><td style="text-align: center"><strong>riscv32</strong></td><td style="text-align: center">riscv64</td><td style="text-align: center"><strong>riscv32</strong></td></tr>
 <tr><td><em>atomic-cas</em></td><td style="text-align: center">false</td><td style="text-align: center"></td><td style="text-align: center"></td></tr>
@@ -441,24 +441,29 @@ $ rustc \
 <p>Only when it has the <a href="TODO"><strong>Rust Core Library</strong></a> for Double-Float!</p>
 </li>
 </ul>
-<p>TODO</p>
-<p>Now we build the Rust Core Library for <code>riscv32gc</code>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Verify our Custom Target
+<p><em>And the Rust Core Library comes from?</em></p>
+<p>We call Rust Compiler to build the <strong>Rust Core Library</strong> for Double-Float <strong><code>riscv32gc</code></strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Download our Custom Target
+
+## Verify our Custom Target, make sure it&#39;s OK
 rustc \
   --print cfg \
   --target riscv32gc-unknown-none-elf.json
 
-## Build the Rust Core Library for `riscv32gc`
+## We create a Rust App and clear it.
 ## Ignore the error: `app already exists`
 cargo new app
 pushd app
 cargo clean
+
+## Build the Rust Core Library for `riscv32gc`
 ## Ignore the error: `can&#39;t find crate for std`
 cargo build \
   -Zbuild-std=core,alloc \
   --target ../riscv32gc-unknown-none-elf.json
 popd
 </code></pre></div>
+<p>TODO</p>
 <p>We rebuild our Rust App with the new Rust Custom Target (linked to our Rust Core Library)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile our Rust App.
 ## Changed the target to riscv32gc-unknown-none-elf.json
