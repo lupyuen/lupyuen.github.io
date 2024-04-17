@@ -390,25 +390,25 @@ Exactly! Based on the above, we create our __Rust Custom Target__: [_riscv32gc-u
 
 Which is [__`riscv32i`__](TODO) plus these changes...
 
-- Remove _`"is-builtin": true`_
+- Remove _"is-builtin": true_
 
   TODO
 
-- Remove _`"atomic-cas": false`_
+- Remove _"atomic-cas": false_
 
   TODO
 
-- Add _`"features": "+m,+a,+f,+d,+c"`_
+- Add _"features": "+m,+a,+f,+d,+c"_
 
   TODO
 
-- Add _`"llvm-abiname": "ilp32d"`_
+- Add _"llvm-abiname": "ilp32d"_
 
   (__`ilp32d`__ comes from __`make --trace`__ above)
 
   [(More about __`llvm-abiname`__)](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)
 
-Once Again: This is how we splice the Two Predefined Targets to create our Custom Target __`riscv32gc`__...
+Once Again: Here's how we splice the Two Predefined Targets to create our Custom Target __`riscv32gc`__...
 
 <span style="font-size:80%">
 
@@ -433,7 +433,23 @@ TODO: Pic of Rust Core Library
 
 _We're ready to rebuild with Double-Float?_
 
-Not quite, we're not done with the __System Library__! Remember...
+Not quite, we're not done with the __System Library__!
+
+```bash
+$ rustc \
+  --target riscv32gc-unknown-none-elf.json \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  -C panic=abort \
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust.o
+
+error[E0463]: can't find crate for `core`
+```
+
+Why? Remember...
 
 - __GCC Compiler__ supports Double-Float...
 
@@ -448,20 +464,23 @@ _And the Rust Core Library comes from?_
 We call Rust Compiler to build the __Rust Core Library__ for Double-Float __`riscv32gc`__...
 
 ```bash
-## TODO: Download our Custom Target
+## Download our Custom Target for `riscv32gc`
+rm -r riscv32gc-unknown-none-elf.json
+wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
 
 ## Verify our Custom Target, make sure it's OK
 rustc \
   --print cfg \
   --target riscv32gc-unknown-none-elf.json
 
-## We create a Rust App and clear it.
+## Create a Rust App. If it exists, erase the binaries.
 ## Ignore the error: `app already exists`
 cargo new app
 pushd app
 cargo clean
 
 ## Build the Rust Core Library for `riscv32gc`
+## Include the `alloc` library, which will support Heap Memory in future.
 ## Ignore the error: `can't find crate for std`
 cargo build \
   -Zbuild-std=core,alloc \
@@ -469,13 +488,33 @@ cargo build \
 popd
 ```
 
-TODO
+__Rust Core Library__ for Double-Float __`riscv32gc`__ is done!
 
-We rebuild our Rust App with the new Rust Custom Target (linked to our Rust Core Library)...
+```bash
+## Show the Rust Core Library for `riscv32gc`
+$ ls app/target/riscv32gc-unknown-none-elf/debug/deps 
+
+alloc-254848389e7e2c53.d
+app-cf88b81a5fca23b3.d
+compiler_builtins-d5922d64507adf16.d
+core-ec2ec78e26b8c830.d
+liballoc-254848389e7e2c53.rlib
+liballoc-254848389e7e2c53.rmeta
+libcompiler_builtins-d5922d64507adf16.rlib
+libcompiler_builtins-d5922d64507adf16.rmeta
+libcore-ec2ec78e26b8c830.rlib
+libcore-ec2ec78e26b8c830.rmeta
+librustc_std_workspace_core-3cc5bcc9f701a6e7.rlib
+librustc_std_workspace_core-3cc5bcc9f701a6e7.rmeta
+rustc_std_workspace_core-3cc5bcc9f701a6e7.d
+```
+
+Now we're ready to __rebuild our Rust App__ with the Custom Target (linked to our Rust Core Library)...
 
 ```bash
 ## Compile our Rust App.
-## Changed the target to riscv32gc-unknown-none-elf.json
+## We changed the Target to `riscv32gc-unknown-none-elf.json`
+## TODO: Change `../apps` to the NuttX Apps Folder
 rustc \
   --target riscv32gc-unknown-none-elf.json \
   --edition 2021 \
@@ -493,20 +532,57 @@ rustc \
   --extern noprelude:compiler_builtins=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-*.rlib` \
   --extern noprelude:core=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-*.rlib` \
   -Z unstable-options
+```
 
+TODO
+
+```bash
 ## Dump the ELF Header. Should show:
 ## Flags: 0x5, RVC, double-float ABI
+## TODO: Change `../apps` to the NuttX Apps Folder
 riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
+```
 
-## NuttX should link and execute correctly now
+TODO
+
+_How did we figure out the rustc options?_
+
+`cargo build` will call `rustc` with a whole bunch of options.
+
+We ran `cargo build -v` to dump the `rustc` options that were used to compile a Rust App with our Custom Rust Core Library for `riscv32gc`...
+
+- TODO
+
+![NuttX Links OK with Rust](https://lupyuen.github.io/images/rust4-flow.jpg)
+
+# NuttX Links OK with Rust
+
+TODO
+
+
+TODO
+
+```bash
+## NuttX should link and execute correctly now.
+## TODO: Change `../apps` to the NuttX Apps Folder
 cp \
   ../apps/examples/hello_rust/*hello_rust.o \
   ../apps/examples/hello_rust/*hello_rust_1.o
 
+## TODO: Change `../nuttx` to the NuttX Kernel Folder
 pushd ../nuttx
 make
+popd
+```
+
+TODO
+
+```bash
+## Boot NuttX in QEMU RISC-V (32-bit)
+## TODO: Change `../nuttx` to the NuttX Kernel Folder
+pushd ../nuttx
 qemu-system-riscv32 \
   -semihosting \
   -M virt,aclint=on \
@@ -519,13 +595,6 @@ popd
 ```
 
 And it works!
-
-![NuttX Links OK with Rust](https://lupyuen.github.io/images/rust4-flow.jpg)
-
-# NuttX Links OK with Rust
-
-TODO
-
 
 _Our Rust App links OK! Has the ELF Header changed?_
 
