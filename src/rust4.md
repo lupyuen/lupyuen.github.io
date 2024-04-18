@@ -162,11 +162,13 @@ Indeed we have a problem: Double-Float and Soft-Float won't mix! Let's fix this.
 
 _What if we ask Rust Compiler to compile for Double-Float? RV32IMAFDC (Pic above)_
 
-[__QEMU RISC-V__](https://www.qemu.org/docs/master/system/riscv/virt.html) offically supports [__`riscv32gc`__](https://www.qemu.org/docs/master/system/riscv/virt.html).
+Let's harmonise Rust Compiler with GCC Compiler...
 
-[("__`gc`__" in "__`riscv32gc`__" denotes __IMAFDC__)](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
+- [__QEMU RISC-V__](https://www.qemu.org/docs/master/system/riscv/virt.html) offically supports [__`riscv32gc`__](https://www.qemu.org/docs/master/system/riscv/virt.html)
 
-We could do this...
+- "__`gc`__" in "__`riscv32gc`__" denotes [__IMAFDC__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
+
+So we could do this...
 
 ```bash
 ## Compile `hello_rust_main.rs` to `hello_rust.o`
