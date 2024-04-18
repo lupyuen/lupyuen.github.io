@@ -10,7 +10,7 @@
 
 </div>
 
-Last article we were compiling [__Rust Apps__](TODO) for [__Apache NuttX RTOS__](TODO) (QEMU RISC-V 32-bit). And we hit a __baffling error__...
+Last article we were compiling [__Rust Apps__](https://lupyuen.github.io/articles/rust3) for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) (QEMU Emulator, 32-bit RISC-V). And we hit a __baffling error__...
 
 ```bash
 $ make
@@ -37,7 +37,7 @@ Let's solve the problem! We dive inside the internals of __C-to-Rust Interop__..
 
 # Software vs Hardware Floating-Point
 
-_What caused our NuttX Build to fail? (Pic above)_
+_Why did our NuttX Build fail? (Pic above)_
 
 ```bash
 ## Download the NuttX Source Code
@@ -46,7 +46,7 @@ $ cd nuttx
 $ git clone https://github.com/apache/nuttx nuttx
 $ git clone https://github.com/apache/nuttx-apps apps
 
-## Configure the NuttX Project
+## Configure NuttX for QEMU RISC-V 32-bit
 $ cd nuttx
 $ tools/configure.sh rv-virt:nsh
 $ make menuconfig
@@ -59,7 +59,7 @@ riscv64-unknown-elf-ld: libapps.a
   can't link soft-float modules with double-float modules
 ```
 
-[(See the __Complete Steps__)](TODO)
+[(See the __Complete Steps__)](https://lupyuen.github.io/articles/rust3#build-nuttx-for-qemu-risc-v)
 
 __GCC Linker__ failed because it couldn't link the NuttX Binaries with the Rust Binaries. 
 
@@ -121,9 +121,11 @@ Watch closely as we compare __GCC Compiler__ with __Rust Compiler__ (pic above).
 
 _Hmmm the Floats look different..._
 
-Yep GCC compiles for (Double-Precision) __Hardware Floating-Point__...
+GCC compiles for (Double-Precision) __Hardware Floating-Point__...
 
-But Rust Compiler uses __Software Floating-Point__!
+But Rust Compiler uses __Software Floating-Point__.
+
+That's why GCC Linker __won't link the binaries__!
 
 <span style="font-size:90%">
 
@@ -135,8 +137,6 @@ But Rust Compiler uses __Software Floating-Point__!
 | - __D__: Double Hard-Float | _(Default is Soft-Float)_ |
 
 </span>
-
-And that's why GCC Linker __won't link the binaries__!
 
 ![Double-Float vs Soft-Float: GCC Linker won't link the binaries](https://lupyuen.github.io/images/rust4-flow2.jpg)
 
@@ -274,7 +274,7 @@ According to the [__Official Rust Docs__](https://docs.rust-embedded.org/embedon
 
   (Which becomes __`riscv32gc`__)
 
-This is how we dump a Built-In Rust Target: [__`riscv32i`__](TODO)
+This is how we dump a Built-In Rust Target: [__`riscv32i`__](https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a889bc0a833)
 
 ```bash
 ## Dump the Built-In Rust Target:
@@ -303,13 +303,13 @@ $ rustc \
 }
 ```
 
-That's the Rust Definition of [__`riscv32i`__](TODO): __32-bit__ RISC-V with __Soft-Float__.
+That's the Rust Definition of [__`riscv32i`__](https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a889bc0a833): __32-bit__ RISC-V with __Soft-Float__.
 
-We do the same for [__`riscv64gc`__](TODO): __64-bit__ RISC-V with __Double-Float__...
+We do the same for [__`riscv64gc`__](https://gist.github.com/lupyuen/9f269598bda11215832bd91a592d00a2): __64-bit__ RISC-V with __Double-Float__...
 
 ```bash
 ## Dump the Built-In Rust Target:
-## riscv64gc (64-bit RISC-V with Hard-Float)
+## riscv64gc (64-bit RISC-V with Double-Float)
 $ rustc \
   +nightly \
   -Z unstable-options \
@@ -362,7 +362,7 @@ Exactly! Based on the above, we create our __Rust Custom Target__: [_riscv32gc-u
 }
 ```
 
-Which is [__`riscv32i`__](TODO) plus these changes...
+Which is [__`riscv32i`__](https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a889bc0a833) plus these changes...
 
 - Remove _"is-builtin": true_
 
@@ -386,7 +386,7 @@ Once Again: We spliced the Two Built-In Targets to make Custom Target __`riscv32
 
 <span style="font-size:80%">
 
-| | [riscv32i](TODO) <br> _(Built-In)_ | [riscv64gc](TODO) <br> _(Built-In)_ | [riscv32gc](TODO) <br> _(Custom)_ |
+| | [riscv32i](https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a889bc0a833) <br> _(Built-In)_ | [riscv64gc](https://gist.github.com/lupyuen/9f269598bda11215832bd91a592d00a2) <br> _(Built-In)_ | [riscv32gc](https://github.com/lupyuen/nuttx-rust-app/blob/main/riscv32gc-unknown-none-elf.json) <br> _(Custom)_ |
 |-|:--------:|:---------:|:---------:|
 | _arch_          | __riscv32__ | riscv64 | __riscv32__
 | _atomic-cas_    | false | |
@@ -433,7 +433,7 @@ Why? Remember...
 
 - Thus __Rust Compiler__ will support Double-Float...
 
-  Only when it has the [__Rust Core Library__](TODO) for Double-Float
+  Only when it has the [__Rust Core Library__](https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust) for Double-Float
 
 _And the Rust Core Library comes from?_
 
@@ -544,7 +544,7 @@ _rustc vs cargo build: What's the diff?_
 
 - __`cargo build`__ wraps around __`rustc`__ for Multi-Step Builds
 
-  [(Like for __Rust Core Library__)](TODO)
+  [(Like for __Rust Core Library__)](https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust)
 
 We could have called __`rustc`__ for building the Rust Core Library. But it will be a bunch of steps with [__many many options__](TODO).
 
@@ -606,7 +606,7 @@ _Phew so much work to build a tiny Rust App?_
 
 Yeah. And integrating this into the __NuttX Makefiles__ will be challenging.
 
-(How would [__Linux Kernel__](TODO) handle Custom Rust Targets?)
+(How would [__Linux Kernel__](https://rust-for-linux.com/) handle Custom Rust Targets?)
 
 TODO: [Allow building for hard-float targets in RISC-V](https://github.com/rust-lang/rust/issues/65024)
 
@@ -654,7 +654,7 @@ __Exercise for the Reader:__
 
     <hr>
 
-1.  Will it run on [__Ox64 BL808 SBC__](TODO)?
+1.  Will it run on [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358)?
 
     _[10 points]_
 
@@ -721,7 +721,7 @@ rustc \
 
 We copied the above options from __`cargo build -v`__, here's how...
 
-Remember we ran [__`cargo build`__](TODO) to compile the [__Rust Core Library__](TODO)?
+Remember we ran [__`cargo build`__](TODO) to compile the [__Rust Core Library__](https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust)?
 
 ```bash
 ## Download our Custom Target for `riscv32gc`
