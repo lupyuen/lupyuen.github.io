@@ -508,6 +508,12 @@ Flags: 0x5, RVC, double-float ABI
 
 [(See the __ELF Header__)](https://gist.github.com/lupyuen/e7cdef603bdb16fbc82c2bf940b5d2d8)
 
+_How did we get the Rust Compiler Options?_
+
+We copied the above options from __`cargo build -v`__...
+
+- TODO
+
 _rustc vs cargo build: What's the diff?_
 
 - __`rustc`__ is the Rust Compiler that compiles Rust Programs to Rust Binaries
@@ -518,13 +524,7 @@ _rustc vs cargo build: What's the diff?_
 
   [(Like for __Rust Core Library__)](TODO)
 
-TODO: Why rustc for NuttX
-
-_How did we get the Rust Compiler Options?_
-
-We copied the above options from __`cargo build -v`__, here's how...
-
-- TODO
+We could have called __`rustc`__ for building the Rust Core Library. But it will be a bunch of steps with [__many many options__](TODO).
 
 ![NuttX Links OK with Rust](https://lupyuen.github.io/images/rust4-flow.jpg)
 
