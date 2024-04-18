@@ -339,7 +339,8 @@ $ rustc \
   &quot;target-pointer-width&quot;: &quot;64&quot;
 }
 </code></pre></div>
-<p><em>We need to mash the Two Targets into a New Target?</em></p>
+<p>Which has more goodies inside: <em>features, llvm-abiname, …</em></p>
+<p><em>Will we mash the Two Targets into a New Target?</em></p>
 <p>Exactly! Based on the above, we create our <strong>Rust Custom Target</strong>: <a href="https://github.com/lupyuen/nuttx-rust-app/blob/main/riscv32gc-unknown-none-elf.json"><em>riscv32gc-unknown-none-elf.json</em></a></p>
 <div class="example-wrap"><pre class="language-json"><code>{
   &quot;arch&quot;:        &quot;riscv32&quot;,
