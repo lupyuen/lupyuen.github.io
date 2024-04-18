@@ -86,7 +86,7 @@ riscv64-unknown-elf-ld: libapps.a
 <p>Let’s solve the problem! We dive inside the internals of <strong>C-to-Rust Interop</strong>…</p>
 <ul>
 <li>
-<p>Rust compiles for <strong>Soft-Float</strong>, but NuttX expects <strong>Double-Float</strong></p>
+<p>Rust compiles for <strong>Soft-Float</strong>, NuttX expects <strong>Double-Float</strong></p>
 <p>(Software vs Hardware Floating-Point)</p>
 </li>
 <li>
@@ -428,7 +428,7 @@ error[E0463]: can&#39;t find crate for `core`
 <p><em>And the Rust Core Library comes from?</em></p>
 <p>We call Rust Compiler to build the <strong>Rust Core Library</strong> for Double-Float <strong><code>riscv32gc</code></strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download our Custom Target for `riscv32gc`
-rm -r riscv32gc-unknown-none-elf.json
+rm -f riscv32gc-unknown-none-elf.json
 wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
 
 ## Verify our Custom Target, make sure it&#39;s OK
@@ -663,15 +663,42 @@ rustc \
 </code></pre></div>
 <p>We copied the above options from <strong><code>cargo build -v</code></strong>, here’s how…</p>
 <p>Remember we ran <a href="TODO"><strong><code>cargo build</code></strong></a> to compile the <a href="TODO"><strong>Rust Core Library</strong></a>?</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Build the Rust Core Library for `riscv32gc`
-$ cargo build \
+<div class="example-wrap"><pre class="language-bash"><code>## Download our Custom Target for `riscv32gc`
+rm -f riscv32gc-unknown-none-elf.json
+wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
+
+## Verify our Custom Target, make sure it&#39;s OK
+rustc \
+  --print cfg \
+  --target riscv32gc-unknown-none-elf.json
+
+## `cargo build` requires a Rust Project, so we create an empty one.
+## If the Rust Project exists, erase the binaries.
+## Ignore the error: `app already exists`
+cargo new app
+pushd app
+cargo clean
+
+## Build the Rust Core Library for `riscv32gc`
+## Include the `alloc` library, which will support Heap Memory in future.
+## Ignore the error: `can&#39;t find crate for std`
+cargo build \
   -Zbuild-std=core,alloc \
   --target ../riscv32gc-unknown-none-elf.json
+popd
 </code></pre></div>
+<ul>
+<li>
 <p><strong><code>cargo build</code></strong> will call <strong><code>rustc</code></strong> with a whole bunch of options.</p>
+</li>
+<li>
 <p>We switched it to <strong><code>cargo build -v</code></strong>, which will dump the <strong><code>rustc</code></strong> options.</p>
+</li>
+<li>
 <p>Hence we see the options that will compile a Rust App with our Rust Core Library for <strong><code>riscv32gc</code></strong>…</p>
 <p>(TODO: Will these options change in future versions of <strong><code>cargo</code></strong>?)</p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Rust Core Library for `riscv32gc`
 ## And the Empty Rust Project for `riscv32gc`
 ## `-v` will dump the `rustc` options
