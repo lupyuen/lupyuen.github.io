@@ -508,11 +508,21 @@ Flags: 0x5, RVC, double-float ABI
 
 [(See the __ELF Header__)](https://gist.github.com/lupyuen/e7cdef603bdb16fbc82c2bf940b5d2d8)
 
+_rustc vs cargo build: What's the diff?_
+
+- __`rustc`__ is the Rust Compiler that compiles Rust Programs to Rust Binaries
+
+  (Works like GCC Compiler)
+
+- __`cargo build`__ wraps around __`rustc`__ for Multi-Step Builds
+
+  [(Like for __Rust Core Library__)](TODO)
+
+TODO: Why rustc for NuttX
+
 _How did we get the Rust Compiler Options?_
 
-TODO: `cargo build` will call `rustc` with a whole bunch of options.
-
-We ran `cargo build -v` to dump the `rustc` options that were used to compile a Rust App with our Custom Rust Core Library for `riscv32gc`...
+We copied the above options from __`cargo build -v`__, here's how...
 
 - TODO
 
@@ -641,9 +651,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Rust Compiler Options
 
-_How did we get the Rust Compiler Options?_
+_How did we get the Rust Compiler Options for riscv32gc?_
 
-Earlier we saw the [__Rust Compiler Options__](TODO) for building our Rust App (with Rust Core Library for __`riscv32gc`__)...
+Earlier we compiled our Rust App with Rust Core Library for __`riscv32gc`__...
+
+- TODO
+
+And we saw these __Rust Compiler Options__...
 
 ```bash
 ## Compile our Rust App with Rust Core Library for `riscv32gc`
