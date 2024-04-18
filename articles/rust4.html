@@ -481,9 +481,20 @@ $ riscv64-unknown-elf-readelf \
 Flags: 0x5, RVC, double-float ABI
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/e7cdef603bdb16fbc82c2bf940b5d2d8">(See the <strong>ELF Header</strong>)</a></p>
+<p><em>rustc vs cargo build: What’s the diff?</em></p>
+<ul>
+<li>
+<p><strong><code>rustc</code></strong> is the Rust Compiler that compiles Rust Programs to Rust Binaries</p>
+<p>(Works like GCC Compiler)</p>
+</li>
+<li>
+<p><strong><code>cargo build</code></strong> wraps around <strong><code>rustc</code></strong> for Multi-Step Builds</p>
+<p><a href="TODO">(Like for <strong>Rust Core Library</strong>)</a></p>
+</li>
+</ul>
+<p>TODO: Why rustc for NuttX</p>
 <p><em>How did we get the Rust Compiler Options?</em></p>
-<p>TODO: <code>cargo build</code> will call <code>rustc</code> with a whole bunch of options.</p>
-<p>We ran <code>cargo build -v</code> to dump the <code>rustc</code> options that were used to compile a Rust App with our Custom Rust Core Library for <code>riscv32gc</code>…</p>
+<p>We copied the above options from <strong><code>cargo build -v</code></strong>, here’s how…</p>
 <ul>
 <li>TODO</li>
 </ul>
@@ -584,8 +595,12 @@ make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 <p><img src="https://lupyuen.github.io/images/rust4-flow1b.jpg" alt="Building our Rust App" /></p>
 </blockquote>
 <h1 id="appendix-rust-compiler-options"><a class="doc-anchor" href="#appendix-rust-compiler-options">§</a>8 Appendix: Rust Compiler Options</h1>
-<p><em>How did we get the Rust Compiler Options?</em></p>
-<p>Earlier we saw the <a href="TODO"><strong>Rust Compiler Options</strong></a> for building our Rust App (with Rust Core Library for <strong><code>riscv32gc</code></strong>)…</p>
+<p><em>How did we get the Rust Compiler Options for riscv32gc?</em></p>
+<p>Earlier we compiled our Rust App with Rust Core Library for <strong><code>riscv32gc</code></strong>…</p>
+<ul>
+<li>TODO</li>
+</ul>
+<p>And we saw these <strong>Rust Compiler Options</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile our Rust App with Rust Core Library for `riscv32gc`
 ## We changed the Target to `riscv32gc-unknown-none-elf.json`
 ## TODO: Change `../apps` to the NuttX Apps Folder
