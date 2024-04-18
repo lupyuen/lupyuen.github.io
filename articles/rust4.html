@@ -167,7 +167,7 @@ rustc \
 <tr><td style="text-align: left"><em>-mabi</em> <br>     <strong>ilp32d</strong></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div></span>
-<p><em>Hmmm something different about the Floats…</em></p>
+<p><em>Hmmm the Floats look different…</em></p>
 <p>Yep GCC compiles for (Double-Precision) <strong>Hardware Floating-Point</strong>…</p>
 <p>But Rust Compiler uses <strong>Software Floating-Point</strong>!</p>
 <span style="font-size:90%">
@@ -213,7 +213,7 @@ Flags: 0x0
 <p>“<strong><code>gc</code></strong>” in “<strong><code>riscv32gc</code></strong>” denotes <a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions"><strong>IMAFDC</strong></a></p>
 </li>
 </ul>
-<p>So we could do this…</p>
+<p>Hence we could do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile `hello_rust_main.rs` to `hello_rust.o`
 ## for Double-Precision Hardware Floating-Point
 rustc \
@@ -226,7 +226,7 @@ rustc \
   hello_rust_main.rs \
   -o hello_rust.o
 </code></pre></div>
-<p>Nope sorry it won’t work…</p>
+<p>Sorry nope it <strong>won’t work</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Error loading target specification: 
   Could not find specification for target &quot;riscv32gc-unknown-none-elf&quot;. 
   Run `rustc --print target-list` for a list of built-in targets
@@ -243,7 +243,8 @@ riscv64gc-unknown-linux-gnu
 riscv64gc-unknown-none-elf
 riscv64imac-unknown-none-elf
 </code></pre></div>
-<p>But we can create a <strong>Custom Rust Target</strong> for <strong><code>riscv32gc</code></strong>. Coming up next section!</p>
+<p>But we can create a <strong>Custom Rust Target</strong> for <strong><code>riscv32gc</code></strong>.</p>
+<p>(Coming up next section)</p>
 <p><em>Won’t GCC Compiler have the same problem with Double-Float?</em></p>
 <p>When we list the <strong>Built-In GCC Targets</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## List the Built-In Targets for GCC RISC-V.
@@ -265,6 +266,7 @@ riscv64-unknown-elf-gcc \
   -mabi=ilp32d \
   ...
 </code></pre></div>
+<p>We’ll make something similar for Rust Compiler…</p>
 <p><a href="https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5">(More about <strong>Application Binary Interfaces</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/rust4-flow1a.jpg" alt="Custom Target for Rust" /></p>
 <h1 id="custom-target-for-rust"><a class="doc-anchor" href="#custom-target-for-rust">§</a>3 Custom Target for Rust</h1>
@@ -307,8 +309,8 @@ $ rustc \
   &quot;target-pointer-width&quot;: &quot;32&quot;
 }
 </code></pre></div>
-<p>That’s the Rust Definition of <a href="TODO"><strong><code>riscv32i</code></strong></a>: 32-bit RISC-V with Soft-Float.</p>
-<p>We do the same for <a href="TODO"><strong><code>riscv64gc</code></strong></a>: 64-bit RISC-V with Double-Float…</p>
+<p>That’s the Rust Definition of <a href="TODO"><strong><code>riscv32i</code></strong></a>: <strong>32-bit</strong> RISC-V with <strong>Soft-Float</strong>.</p>
+<p>We do the same for <a href="TODO"><strong><code>riscv64gc</code></strong></a>: <strong>64-bit</strong> RISC-V with <strong>Double-Float</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the Built-In Rust Target:
 ## riscv64gc (64-bit RISC-V with Hard-Float)
 $ rustc \
@@ -368,7 +370,7 @@ $ rustc \
 </li>
 <li>
 <p>Add <em>“features”: “+m,+a,+f,+d,+c”</em></p>
-<p>TODO</p>
+<p><a href="TODO">(Because we need <strong>IMAFDC</strong>)</a></p>
 </li>
 <li>
 <p>Add <em>“llvm-abiname”: “ilp32d”</em></p>
@@ -376,9 +378,9 @@ $ rustc \
 <p><a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602">(More about <strong><code>llvm-abiname</code></strong>)</a></p>
 </li>
 </ul>
-<p>Once Again: Here’s how we splice the Two Built-In Targets to create our Custom Target <strong><code>riscv32gc</code></strong>…</p>
+<p>Once Again: We spliced the Two Built-In Targets to make Custom Target <strong><code>riscv32gc</code></strong>…</p>
 <span style="font-size:80%">
-<div><table><thead><tr><th></th><th style="text-align: center"><a href="TODO">riscv32i</a></th><th style="text-align: center"><a href="TODO">riscv64gc</a></th><th style="text-align: center"><a href="TODO">riscv32gc</a></th></tr></thead><tbody>
+<div><table><thead><tr><th></th><th style="text-align: center"><a href="TODO">riscv32i</a> <br> <em>(Built-In)</em></th><th style="text-align: center"><a href="TODO">riscv64gc</a> <br> <em>(Built-In)</em></th><th style="text-align: center"><a href="TODO">riscv32gc</a> <br> <em>(Custom)</em></th></tr></thead><tbody>
 <tr><td><em>arch</em></td><td style="text-align: center"><strong>riscv32</strong></td><td style="text-align: center">riscv64</td><td style="text-align: center"><strong>riscv32</strong></td></tr>
 <tr><td><em>atomic-cas</em></td><td style="text-align: center">false</td><td style="text-align: center"></td><td style="text-align: center"></td></tr>
 <tr><td><em>cpu</em></td><td style="text-align: center"><strong>generic-rv32</strong></td><td style="text-align: center">generic-rv64</td><td style="text-align: center"><strong>generic-rv32</strong></td></tr>
@@ -395,8 +397,8 @@ $ rustc \
 <p><img src="https://lupyuen.github.io/images/rust4-flow1b.jpg" alt="Build the Rust Core Library" /></p>
 </blockquote>
 <h1 id="build-the-rust-core-library"><a class="doc-anchor" href="#build-the-rust-core-library">§</a>4 Build the Rust Core Library</h1>
-<p><em>We’re ready to rebuild with Double-Float?</em></p>
-<p>Not quite, we’re not done with the <strong>System Library</strong>!</p>
+<p><em>Are we ready to rebuild with Double-Float?</em></p>
+<p>Not quite, we’re not done with the <strong>System Library</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Rust Compiler fails to compile with our Custom Target `riscv32gc`
 $ rustc \
   --target riscv32gc-unknown-none-elf.json \
@@ -415,11 +417,11 @@ error[E0463]: can&#39;t find crate for `core`
 <ul>
 <li>
 <p><strong>GCC Compiler</strong> supports Double-Float…</p>
-<p>Because it’s bundled with <strong>C Standard Library</strong> for Double-Float, thus…</p>
+<p>Because it’s bundled with <strong>C Standard Library</strong> for Double-Float</p>
 </li>
 <li>
-<p><strong>Rust Compiler</strong> will support Double-Float…</p>
-<p>Only when it has the <a href="TODO"><strong>Rust Core Library</strong></a> for Double-Float!</p>
+<p>Thus <strong>Rust Compiler</strong> will support Double-Float…</p>
+<p>Only when it has the <a href="TODO"><strong>Rust Core Library</strong></a> for Double-Float</p>
 </li>
 </ul>
 <p><em>And the Rust Core Library comes from?</em></p>
@@ -466,7 +468,7 @@ librustc_std_workspace_core-3cc5bcc9f701a6e7.rlib
 librustc_std_workspace_core-3cc5bcc9f701a6e7.rmeta
 rustc_std_workspace_core-3cc5bcc9f701a6e7.d
 </code></pre></div>
-<p>Now we’re ready to <strong>rebuild our Rust App</strong> with the Custom Target (linked to our Rust Core Library)…</p>
+<p>Now we <strong>rebuild our Rust App</strong> with the Custom Target (linked to our Rust Core Library)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile our Rust App with Rust Core Library for `riscv32gc`
 ## We changed the Target to `riscv32gc-unknown-none-elf.json`
 ## TODO: Change `../apps` to the NuttX Apps Folder
@@ -490,7 +492,7 @@ rustc \
 </code></pre></div>
 <p>(We’ll talk about the loooong options)</p>
 <p><em>Are we Double-Floating yet?</em></p>
-<p>Yep we have a <strong>Yummy Double-Float</strong> with 2 scoops of ice cream!</p>
+<p>Yep we have a <strong>Yummy Double-Float</strong> with 2 scoops of ice cream…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the ELF Header of our Compiled Rust App
 ## TODO: Change `../apps` to the NuttX Apps Folder
 $ riscv64-unknown-elf-readelf \
@@ -654,7 +656,7 @@ rustc \
   -Z unstable-options
 </code></pre></div>
 <p>We copied the above options from <strong><code>cargo build -v</code></strong>, here’s how…</p>
-<p>Remember Earlier: We ran <a href="TODO"><strong><code>cargo build</code></strong></a> to compile the <a href="TODO"><strong>Rust Core Library</strong></a>…</p>
+<p>Remember we ran <a href="TODO"><strong><code>cargo build</code></strong></a> to compile the <a href="TODO"><strong>Rust Core Library</strong></a>?</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Rust Core Library for `riscv32gc`
 $ cargo build \
   -Zbuild-std=core,alloc \
