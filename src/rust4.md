@@ -602,11 +602,11 @@ Hello, Rust!!
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384)
 
-_Phew so much work to build a tiny Rust App!_
+_Phew so much work to build a tiny Rust App?_
 
 Yeah. And integrating this into the __NuttX Makefiles__ will be challenging.
 
-(How would __Linux Kernel__ handle Custom Rust Targets?)
+(How would [__Linux Kernel__](TODO) handle Custom Rust Targets?)
 
 TODO: [Allow building for hard-float targets in RISC-V](https://github.com/rust-lang/rust/issues/65024)
 
@@ -638,9 +638,13 @@ __Exercise for the Reader:__
 
     _[10 points]_
 
+    <hr>
+
 1.  How should we __Fix the Build__?
     
     _[10 points]_
+
+    <hr>
 
 1.  Do we need a __Custom Target__?
 
@@ -648,9 +652,13 @@ __Exercise for the Reader:__
 
     _[10 points]_
 
+    <hr>
+
 1.  Will it run on __Ox64 BL808 SBC__?
 
     _[10 points]_
+
+    <hr>
 
 # What's Next
 
