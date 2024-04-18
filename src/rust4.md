@@ -21,7 +21,7 @@ riscv64-unknown-elf-ld: libapps.a
 
 Let's solve the problem! We dive inside the internals of __C-to-Rust Interop__...
 
-- Rust compiles for __Soft-Float__, but NuttX expects __Double-Float__
+- Rust compiles for __Soft-Float__, NuttX expects __Double-Float__
 
   (Software vs Hardware Floating-Point)
 
@@ -441,7 +441,7 @@ We call Rust Compiler to build the __Rust Core Library__ for Double-Float __`ris
 
 ```bash
 ## Download our Custom Target for `riscv32gc`
-rm -r riscv32gc-unknown-none-elf.json
+rm -f riscv32gc-unknown-none-elf.json
 wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
 
 ## Verify our Custom Target, make sure it's OK
@@ -724,19 +724,38 @@ We copied the above options from __`cargo build -v`__, here's how...
 Remember we ran [__`cargo build`__](TODO) to compile the [__Rust Core Library__](TODO)?
 
 ```bash
+## Download our Custom Target for `riscv32gc`
+rm -f riscv32gc-unknown-none-elf.json
+wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
+
+## Verify our Custom Target, make sure it's OK
+rustc \
+  --print cfg \
+  --target riscv32gc-unknown-none-elf.json
+
+## `cargo build` requires a Rust Project, so we create an empty one.
+## If the Rust Project exists, erase the binaries.
+## Ignore the error: `app already exists`
+cargo new app
+pushd app
+cargo clean
+
 ## Build the Rust Core Library for `riscv32gc`
-$ cargo build \
+## Include the `alloc` library, which will support Heap Memory in future.
+## Ignore the error: `can't find crate for std`
+cargo build \
   -Zbuild-std=core,alloc \
   --target ../riscv32gc-unknown-none-elf.json
+popd
 ```
 
-__`cargo build`__ will call __`rustc`__ with a whole bunch of options.
+- __`cargo build`__ will call __`rustc`__ with a whole bunch of options.
 
-We switched it to __`cargo build -v`__, which will dump the __`rustc`__ options.
+- We switched it to __`cargo build -v`__, which will dump the __`rustc`__ options.
 
-Hence we see the options that will compile a Rust App with our Rust Core Library for __`riscv32gc`__...
+- Hence we see the options that will compile a Rust App with our Rust Core Library for __`riscv32gc`__...
 
-(TODO: Will these options change in future versions of __`cargo`__?)
+  (TODO: Will these options change in future versions of __`cargo`__?)
 
 ```bash
 ## Build the Rust Core Library for `riscv32gc`
