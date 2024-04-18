@@ -37,15 +37,29 @@ Let's solve the problem! We dive inside the internals of __C-to-Rust Interop__..
 
 # Software vs Hardware Floating-Point
 
-_What's causing our NuttX Build to fail? (Pic above)_
+_What caused our NuttX Build to fail? (Pic above)_
 
 ```bash
-TODO: configure.sh
+## Download the NuttX Source Code
+$ mkdir nuttx
+$ cd nuttx
+$ git clone https://github.com/apache/nuttx nuttx
+$ git clone https://github.com/apache/nuttx-apps apps
+
+## Configure the NuttX Project
+$ cd nuttx
+$ tools/configure.sh rv-virt:nsh
+$ make menuconfig
+## TODO: Enable "Hello Rust Example"
+
+## Build NuttX bundled with the Rust App
 $ make
 riscv64-unknown-elf-ld: libapps.a
   hello_rust_1.o:
   can't link soft-float modules with double-float modules
 ```
+
+[(See the __Complete Steps__)](TODO)
 
 __GCC Linker__ failed because it couldn't link the NuttX Binaries with the Rust Binaries. 
 
@@ -350,7 +364,7 @@ Which is [__`riscv32i`__](TODO) plus these changes...
 
 - Remove _"atomic-cas": false_
 
-  [(We support __Atomic Compare-And-Swap__)](https://en.m.wikipedia.org/wiki/Compare-and-swap)
+  [(Enable __Atomic Compare-And-Swap__)](https://en.m.wikipedia.org/wiki/Compare-and-swap)
 
 - Add _"features": "+m,+a,+f,+d,+c"_
 
@@ -532,7 +546,7 @@ We could have called __`rustc`__ for building the Rust Core Library. But it will
 
 # NuttX Links OK with Rust
 
-_We've compiled our Rust App with Double-Float riscv32gc..._
+_We compiled our Rust App with Double-Float riscv32gc..._
 
 _Is our NuttX Build hunky dory now?_
 
@@ -594,11 +608,10 @@ TODO: [Allow building for hard-float targets in RISC-V](https://github.com/rust-
 
 # Rust Build for 64-bit RISC-V
 
-TODO
-
-__Exercise for the Reader:__ Last article we TODO
+From 32-bit to 64-bit: Last article we tried compiling our Rust App for __64-bit RISC-V QEMU__...
 
 ```bash
+## Build NuttX for QEMU RISC-V 64-bit 
 $ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
 ## TODO: Enable "Hello Rust Example"
@@ -607,25 +620,31 @@ $ make
 RUSTC:  hello_rust_main.rs error: Error loading target specification: 
   Could not find specification for target "riscv64i-unknown-none-elf". 
   Run `rustc --print target-list` for a list of built-in targets
-
-make[2]: *** [nuttx/apps/Application.mk:275: hello_rust.o] Error 1
-make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
-make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 ```
 
-Which says that _riscv64i-unknown-none-elf_ isn't a valid Rust Target.
+But Rust Compiler says that __`riscv64i`__ isn't a valid Rust Target for 64-bit RISC-V.
 
-(Should be _riscv64gc-unknown-none-elf_ instead)
+__Exercise for the Reader:__
 
-Fix the build?
+1.  Is __`riscv64i`__ the correct target for QEMU?
 
-Custom Target?
+    [(__Hint:__ See this)](TODO)
 
-Hint: Answer is printed in this article somewhere 
+    _[10 points]_
 
-[10 points]
+1.  How should we __Fix the Build__?
+    
+    _[10 points]_
 
-Will it run on Ox64?
+1.  Do we need a __Custom Target__?
+
+    (__Hint:__ Answer is printed in this article somewhere)
+
+    _[10 points]_
+
+1.  Will it run on __Ox64 BL808 SBC__?
+
+    _[10 points]_
 
 # What's Next
 
