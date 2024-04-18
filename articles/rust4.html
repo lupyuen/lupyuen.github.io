@@ -12,10 +12,10 @@
     content="Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Our Rust App compiles for Software Floating-Point, but Apache NuttX RTOS expects Hardware Floating-Point... Let's fix this with a Rust Custom Target for QEMU RISC-V"
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Our Rust App compiles for Software Floating-Point, but Apache NuttX RTOS expects Hardware Floating-Point... Let's fix this with a Rust Custom Target for QEMU RISC-V">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/rust4-title.jpg">
 <meta property="og:type" 
@@ -77,7 +77,7 @@
 <div style="text-align: center">
 <p><a href="https://github.com/Swordfish90/cool-retro-term"><em>Thanks to cool-retro-term!</em></a></p>
 </div>
-<p>Last article we were compiling <a href="TODO"><strong>Rust Apps</strong></a> for <a href="TODO"><strong>Apache NuttX RTOS</strong></a> (QEMU RISC-V 32-bit). And we hit a <strong>baffling error</strong>…</p>
+<p>Last article we were compiling <a href="https://lupyuen.github.io/articles/rust3"><strong>Rust Apps</strong></a> for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> (QEMU Emulator, 32-bit RISC-V). And we hit a <strong>baffling error</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make
 riscv64-unknown-elf-ld: libapps.a
   hello_rust_1.o:
@@ -104,14 +104,14 @@ riscv64-unknown-elf-ld: libapps.a
 </ul>
 <p><img src="https://lupyuen.github.io/images/rust4-flow2a.jpg" alt="Double-Float vs Soft-Float: GCC Linker won’t link the binaries" /></p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>1 Software vs Hardware Floating-Point</h1>
-<p><em>What caused our NuttX Build to fail? (Pic above)</em></p>
+<p><em>Why did our NuttX Build fail? (Pic above)</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Source Code
 $ mkdir nuttx
 $ cd nuttx
 $ git clone https://github.com/apache/nuttx nuttx
 $ git clone https://github.com/apache/nuttx-apps apps
 
-## Configure the NuttX Project
+## Configure NuttX for QEMU RISC-V 32-bit
 $ cd nuttx
 $ tools/configure.sh rv-virt:nsh
 $ make menuconfig
@@ -123,7 +123,7 @@ riscv64-unknown-elf-ld: libapps.a
   hello_rust_1.o:
   can&#39;t link soft-float modules with double-float modules
 </code></pre></div>
-<p><a href="TODO">(See the <strong>Complete Steps</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/rust3#build-nuttx-for-qemu-risc-v">(See the <strong>Complete Steps</strong>)</a></p>
 <p><strong>GCC Linker</strong> failed because it couldn’t link the NuttX Binaries with the Rust Binaries. </p>
 <p>Here’s Why: NuttX Build calls <strong>GCC Compiler</strong> to compile our C Modules…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Firmware with Tracing Enabled
@@ -168,8 +168,9 @@ rustc \
 </tbody></table>
 </div></span>
 <p><em>Hmmm the Floats look different…</em></p>
-<p>Yep GCC compiles for (Double-Precision) <strong>Hardware Floating-Point</strong>…</p>
-<p>But Rust Compiler uses <strong>Software Floating-Point</strong>!</p>
+<p>GCC compiles for (Double-Precision) <strong>Hardware Floating-Point</strong>…</p>
+<p>But Rust Compiler uses <strong>Software Floating-Point</strong>.</p>
+<p>That’s why GCC Linker <strong>won’t link the binaries</strong>!</p>
 <span style="font-size:90%">
 <div><table><thead><tr><th style="text-align: left">GCC Compiler</th><th style="text-align: left">Rust Compiler</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>rv32imafdc</strong></td><td style="text-align: left"><strong>riscv32i</strong></td></tr>
@@ -178,7 +179,6 @@ rustc \
 <tr><td style="text-align: left">- <strong>D</strong>: Double Hard-Float</td><td style="text-align: left"><em>(Default is Soft-Float)</em></td></tr>
 </tbody></table>
 </div></span>
-<p>And that’s why GCC Linker <strong>won’t link the binaries</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/rust4-flow2.jpg" alt="Double-Float vs Soft-Float: GCC Linker won’t link the binaries" /></p>
 <p>To verify, we dump the ELF Header for <strong>GCC Compiler Output</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the ELF Header for GCC Output
@@ -283,7 +283,7 @@ riscv64-unknown-elf-gcc \
 <p>(Which becomes <strong><code>riscv32gc</code></strong>)</p>
 </li>
 </ul>
-<p>This is how we dump a Built-In Rust Target: <a href="TODO"><strong><code>riscv32i</code></strong></a></p>
+<p>This is how we dump a Built-In Rust Target: <a href="https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a889bc0a833"><strong><code>riscv32i</code></strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the Built-In Rust Target:
 ## riscv32i (32-bit RISC-V with Soft-Float)
 $ rustc \
@@ -309,10 +309,10 @@ $ rustc \
   &quot;target-pointer-width&quot;: &quot;32&quot;
 }
 </code></pre></div>
-<p>That’s the Rust Definition of <a href="TODO"><strong><code>riscv32i</code></strong></a>: <strong>32-bit</strong> RISC-V with <strong>Soft-Float</strong>.</p>
-<p>We do the same for <a href="TODO"><strong><code>riscv64gc</code></strong></a>: <strong>64-bit</strong> RISC-V with <strong>Double-Float</strong>…</p>
+<p>That’s the Rust Definition of <a href="https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a889bc0a833"><strong><code>riscv32i</code></strong></a>: <strong>32-bit</strong> RISC-V with <strong>Soft-Float</strong>.</p>
+<p>We do the same for <a href="https://gist.github.com/lupyuen/9f269598bda11215832bd91a592d00a2"><strong><code>riscv64gc</code></strong></a>: <strong>64-bit</strong> RISC-V with <strong>Double-Float</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the Built-In Rust Target:
-## riscv64gc (64-bit RISC-V with Hard-Float)
+## riscv64gc (64-bit RISC-V with Double-Float)
 $ rustc \
   +nightly \
   -Z unstable-options \
@@ -359,7 +359,7 @@ $ rustc \
   &quot;target-pointer-width&quot;: &quot;32&quot;
 }
 </code></pre></div>
-<p>Which is <a href="TODO"><strong><code>riscv32i</code></strong></a> plus these changes…</p>
+<p>Which is <a href="https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a889bc0a833"><strong><code>riscv32i</code></strong></a> plus these changes…</p>
 <ul>
 <li>
 <p>Remove <em>“is-builtin”: true</em></p>
@@ -381,7 +381,7 @@ $ rustc \
 </ul>
 <p>Once Again: We spliced the Two Built-In Targets to make Custom Target <strong><code>riscv32gc</code></strong>…</p>
 <span style="font-size:80%">
-<div><table><thead><tr><th></th><th style="text-align: center"><a href="TODO">riscv32i</a> <br> <em>(Built-In)</em></th><th style="text-align: center"><a href="TODO">riscv64gc</a> <br> <em>(Built-In)</em></th><th style="text-align: center"><a href="TODO">riscv32gc</a> <br> <em>(Custom)</em></th></tr></thead><tbody>
+<div><table><thead><tr><th></th><th style="text-align: center"><a href="https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a889bc0a833">riscv32i</a> <br> <em>(Built-In)</em></th><th style="text-align: center"><a href="https://gist.github.com/lupyuen/9f269598bda11215832bd91a592d00a2">riscv64gc</a> <br> <em>(Built-In)</em></th><th style="text-align: center"><a href="https://github.com/lupyuen/nuttx-rust-app/blob/main/riscv32gc-unknown-none-elf.json">riscv32gc</a> <br> <em>(Custom)</em></th></tr></thead><tbody>
 <tr><td><em>arch</em></td><td style="text-align: center"><strong>riscv32</strong></td><td style="text-align: center">riscv64</td><td style="text-align: center"><strong>riscv32</strong></td></tr>
 <tr><td><em>atomic-cas</em></td><td style="text-align: center">false</td><td style="text-align: center"></td><td style="text-align: center"></td></tr>
 <tr><td><em>cpu</em></td><td style="text-align: center"><strong>generic-rv32</strong></td><td style="text-align: center">generic-rv64</td><td style="text-align: center"><strong>generic-rv32</strong></td></tr>
@@ -422,7 +422,7 @@ error[E0463]: can&#39;t find crate for `core`
 </li>
 <li>
 <p>Thus <strong>Rust Compiler</strong> will support Double-Float…</p>
-<p>Only when it has the <a href="TODO"><strong>Rust Core Library</strong></a> for Double-Float</p>
+<p>Only when it has the <a href="https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust"><strong>Rust Core Library</strong></a> for Double-Float</p>
 </li>
 </ul>
 <p><em>And the Rust Core Library comes from?</em></p>
@@ -517,7 +517,7 @@ Flags: 0x5, RVC, double-float ABI
 </li>
 <li>
 <p><strong><code>cargo build</code></strong> wraps around <strong><code>rustc</code></strong> for Multi-Step Builds</p>
-<p><a href="TODO">(Like for <strong>Rust Core Library</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust">(Like for <strong>Rust Core Library</strong>)</a></p>
 </li>
 </ul>
 <p>We could have called <strong><code>rustc</code></strong> for building the Rust Core Library. But it will be a bunch of steps with <a href="TODO"><strong>many many options</strong></a>.</p>
@@ -563,7 +563,7 @@ Hello, Rust!!
 <p><a href="https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384">(See the <strong>NuttX Log</strong>)</a></p>
 <p><em>Phew so much work to build a tiny Rust App?</em></p>
 <p>Yeah. And integrating this into the <strong>NuttX Makefiles</strong> will be challenging.</p>
-<p>(How would <a href="TODO"><strong>Linux Kernel</strong></a> handle Custom Rust Targets?)</p>
+<p>(How would <a href="https://rust-for-linux.com/"><strong>Linux Kernel</strong></a> handle Custom Rust Targets?)</p>
 <p>TODO: <a href="https://github.com/rust-lang/rust/issues/65024">Allow building for hard-float targets in RISC-V</a></p>
 <p><img src="https://lupyuen.github.io/images/rust4-title.jpg" alt="Rust Apps on Apache NuttX RTOS and QEMU RISC-V" /></p>
 <h1 id="rust-build-for-64-bit-risc-v"><a class="doc-anchor" href="#rust-build-for-64-bit-risc-v">§</a>6 Rust Build for 64-bit RISC-V</h1>
@@ -599,7 +599,7 @@ RUSTC:  hello_rust_main.rs error: Error loading target specification:
 <hr>
 </li>
 <li>
-<p>Will it run on <a href="TODO"><strong>Ox64 BL808 SBC</strong></a>?</p>
+<p>Will it run on <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 SBC</strong></a>?</p>
 <p><em>[10 points]</em></p>
 <hr>
 </li>
@@ -662,7 +662,7 @@ rustc \
   -Z unstable-options
 </code></pre></div>
 <p>We copied the above options from <strong><code>cargo build -v</code></strong>, here’s how…</p>
-<p>Remember we ran <a href="TODO"><strong><code>cargo build</code></strong></a> to compile the <a href="TODO"><strong>Rust Core Library</strong></a>?</p>
+<p>Remember we ran <a href="TODO"><strong><code>cargo build</code></strong></a> to compile the <a href="https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust"><strong>Rust Core Library</strong></a>?</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download our Custom Target for `riscv32gc`
 rm -f riscv32gc-unknown-none-elf.json
 wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
