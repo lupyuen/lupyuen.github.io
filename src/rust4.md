@@ -119,7 +119,7 @@ Watch closely as we compare __GCC Compiler__ with __Rust Compiler__ (pic above).
 
 </span>
 
-_Hmmm something different about the Floats..._
+_Hmmm the Floats look different..._
 
 Yep GCC compiles for (Double-Precision) __Hardware Floating-Point__...
 
@@ -182,7 +182,7 @@ Let's harmonise Rust Compiler with GCC Compiler...
 
 - "__`gc`__" in "__`riscv32gc`__" denotes [__IMAFDC__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
 
-So we could do this...
+Hence we could do this...
 
 ```bash
 ## Compile `hello_rust_main.rs` to `hello_rust.o`
@@ -198,7 +198,7 @@ rustc \
   -o hello_rust.o
 ```
 
-Nope sorry it won't work...
+Sorry nope it __won't work__...
 
 ```bash
 Error loading target specification: 
@@ -221,7 +221,9 @@ riscv64gc-unknown-none-elf
 riscv64imac-unknown-none-elf
 ```
 
-But we can create a __Custom Rust Target__ for __`riscv32gc`__. Coming up next section!
+But we can create a __Custom Rust Target__ for __`riscv32gc`__.
+
+(Coming up next section)
 
 _Won't GCC Compiler have the same problem with Double-Float?_
 
@@ -249,6 +251,8 @@ riscv64-unknown-elf-gcc \
   -mabi=ilp32d \
   ...
 ```
+
+We'll make something similar for Rust Compiler...
 
 [(More about __Application Binary Interfaces__)](https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5)
 
@@ -299,9 +303,9 @@ $ rustc \
 }
 ```
 
-That's the Rust Definition of [__`riscv32i`__](TODO): 32-bit RISC-V with Soft-Float.
+That's the Rust Definition of [__`riscv32i`__](TODO): __32-bit__ RISC-V with __Soft-Float__.
 
-We do the same for [__`riscv64gc`__](TODO): 64-bit RISC-V with Double-Float...
+We do the same for [__`riscv64gc`__](TODO): __64-bit__ RISC-V with __Double-Float__...
 
 ```bash
 ## Dump the Built-In Rust Target:
@@ -368,7 +372,7 @@ Which is [__`riscv32i`__](TODO) plus these changes...
 
 - Add _"features": "+m,+a,+f,+d,+c"_
 
-  TODO
+  [(Because we need __IMAFDC__)](TODO)
 
 - Add _"llvm-abiname": "ilp32d"_
 
@@ -376,11 +380,11 @@ Which is [__`riscv32i`__](TODO) plus these changes...
 
   [(More about __`llvm-abiname`__)](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)
 
-Once Again: Here's how we splice the Two Built-In Targets to create our Custom Target __`riscv32gc`__...
+Once Again: We spliced the Two Built-In Targets to make Custom Target __`riscv32gc`__...
 
 <span style="font-size:80%">
 
-| | [riscv32i](TODO) | [riscv64gc](TODO) | [riscv32gc](TODO) |
+| | [riscv32i](TODO) <br> _(Built-In)_ | [riscv64gc](TODO) <br> _(Built-In)_ | [riscv32gc](TODO) <br> _(Custom)_ |
 |-|:--------:|:---------:|:---------:|
 | _arch_          | __riscv32__ | riscv64 | __riscv32__
 | _atomic-cas_    | false | |
@@ -399,9 +403,9 @@ Once Again: Here's how we splice the Two Built-In Targets to create our Custom T
 
 # Build the Rust Core Library
 
-_We're ready to rebuild with Double-Float?_
+_Are we ready to rebuild with Double-Float?_
 
-Not quite, we're not done with the __System Library__!
+Not quite, we're not done with the __System Library__...
 
 ```bash
 ## Rust Compiler fails to compile with our Custom Target `riscv32gc`
@@ -423,11 +427,11 @@ Why? Remember...
 
 - __GCC Compiler__ supports Double-Float...
 
-  Because it's bundled with __C Standard Library__ for Double-Float, thus...
+  Because it's bundled with __C Standard Library__ for Double-Float
 
-- __Rust Compiler__ will support Double-Float...
+- Thus __Rust Compiler__ will support Double-Float...
 
-  Only when it has the [__Rust Core Library__](TODO) for Double-Float!
+  Only when it has the [__Rust Core Library__](TODO) for Double-Float
 
 _And the Rust Core Library comes from?_
 
@@ -480,7 +484,7 @@ librustc_std_workspace_core-3cc5bcc9f701a6e7.rmeta
 rustc_std_workspace_core-3cc5bcc9f701a6e7.d
 ```
 
-Now we're ready to __rebuild our Rust App__ with the Custom Target (linked to our Rust Core Library)...
+Now we __rebuild our Rust App__ with the Custom Target (linked to our Rust Core Library)...
 
 ```bash
 ## Compile our Rust App with Rust Core Library for `riscv32gc`
@@ -509,7 +513,7 @@ rustc \
 
 _Are we Double-Floating yet?_
 
-Yep we have a __Yummy Double-Float__ with 2 scoops of ice cream!
+Yep we have a __Yummy Double-Float__ with 2 scoops of ice cream...
 
 ```bash
 ## Dump the ELF Header of our Compiled Rust App
@@ -705,7 +709,7 @@ rustc \
 
 We copied the above options from __`cargo build -v`__, here's how...
 
-Remember Earlier: We ran [__`cargo build`__](TODO) to compile the [__Rust Core Library__](TODO)...
+Remember we ran [__`cargo build`__](TODO) to compile the [__Rust Core Library__](TODO)?
 
 ```bash
 ## Build the Rust Core Library for `riscv32gc`
