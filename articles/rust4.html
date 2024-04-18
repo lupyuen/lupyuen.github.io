@@ -191,9 +191,16 @@ Flags: 0x0
 <p><img src="https://lupyuen.github.io/images/rust4-flow3.jpg" alt="Rust Won’t Double-Float" /></p>
 <h1 id="rust-wont-double-float"><a class="doc-anchor" href="#rust-wont-double-float">§</a>2 Rust Won’t Double-Float</h1>
 <p><em>What if we ask Rust Compiler to compile for Double-Float? RV32IMAFDC (Pic above)</em></p>
-<p><a href="https://www.qemu.org/docs/master/system/riscv/virt.html"><strong>QEMU RISC-V</strong></a> offically supports <a href="https://www.qemu.org/docs/master/system/riscv/virt.html"><strong><code>riscv32gc</code></strong></a>.</p>
-<p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(“<strong><code>gc</code></strong>” in “<strong><code>riscv32gc</code></strong>” denotes <strong>IMAFDC</strong>)</a></p>
-<p>We could do this…</p>
+<p>Let’s harmonise Rust Compiler with GCC Compiler…</p>
+<ul>
+<li>
+<p><a href="https://www.qemu.org/docs/master/system/riscv/virt.html"><strong>QEMU RISC-V</strong></a> offically supports <a href="https://www.qemu.org/docs/master/system/riscv/virt.html"><strong><code>riscv32gc</code></strong></a></p>
+</li>
+<li>
+<p>“<strong><code>gc</code></strong>” in “<strong><code>riscv32gc</code></strong>” denotes <a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions"><strong>IMAFDC</strong></a></p>
+</li>
+</ul>
+<p>So we could do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile `hello_rust_main.rs` to `hello_rust.o`
 ## for Double-Precision Hardware Floating-Point
 rustc \
