@@ -654,15 +654,17 @@ __Exercise for the Reader:__
 
     <hr>
 
-1.  Will it run on __Ox64 BL808 SBC__?
+1.  Will it run on [__Ox64 BL808 SBC__](TODO)?
 
     _[10 points]_
 
     <hr>
 
+![NuttX Links OK with Rust](https://lupyuen.github.io/images/rust4-flow.jpg)
+
 # What's Next
 
-TODO
+TODO: Today we learnt a bit more about C-to-Rust Interop
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
