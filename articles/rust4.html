@@ -481,6 +481,11 @@ $ riscv64-unknown-elf-readelf \
 Flags: 0x5, RVC, double-float ABI
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/e7cdef603bdb16fbc82c2bf940b5d2d8">(See the <strong>ELF Header</strong>)</a></p>
+<p><em>How did we get the Rust Compiler Options?</em></p>
+<p>We copied the above options from <strong><code>cargo build -v</code></strong>…</p>
+<ul>
+<li>TODO</li>
+</ul>
 <p><em>rustc vs cargo build: What’s the diff?</em></p>
 <ul>
 <li>
@@ -492,12 +497,7 @@ Flags: 0x5, RVC, double-float ABI
 <p><a href="TODO">(Like for <strong>Rust Core Library</strong>)</a></p>
 </li>
 </ul>
-<p>TODO: Why rustc for NuttX</p>
-<p><em>How did we get the Rust Compiler Options?</em></p>
-<p>We copied the above options from <strong><code>cargo build -v</code></strong>, here’s how…</p>
-<ul>
-<li>TODO</li>
-</ul>
+<p>We could have called <strong><code>rustc</code></strong> for building the Rust Core Library. But it will be a bunch of steps with <a href="TODO"><strong>many many options</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/rust4-flow.jpg" alt="NuttX Links OK with Rust" /></p>
 <h1 id="nuttx-links-ok-with-rust"><a class="doc-anchor" href="#nuttx-links-ok-with-rust">§</a>5 NuttX Links OK with Rust</h1>
 <p><em>We’ve compiled our Rust App with Double-Float riscv32gc…</em></p>
