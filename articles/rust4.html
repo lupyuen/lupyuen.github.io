@@ -104,13 +104,26 @@ riscv64-unknown-elf-ld: libapps.a
 </ul>
 <p><img src="https://lupyuen.github.io/images/rust4-flow2a.jpg" alt="Double-Float vs Soft-Float: GCC Linker won’t link the binaries" /></p>
 <h1 id="software-vs-hardware-floating-point"><a class="doc-anchor" href="#software-vs-hardware-floating-point">§</a>1 Software vs Hardware Floating-Point</h1>
-<p><em>What’s causing our NuttX Build to fail? (Pic above)</em></p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO: configure.sh
+<p><em>What caused our NuttX Build to fail? (Pic above)</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Source Code
+$ mkdir nuttx
+$ cd nuttx
+$ git clone https://github.com/apache/nuttx nuttx
+$ git clone https://github.com/apache/nuttx-apps apps
+
+## Configure the NuttX Project
+$ cd nuttx
+$ tools/configure.sh rv-virt:nsh
+$ make menuconfig
+## TODO: Enable &quot;Hello Rust Example&quot;
+
+## Build NuttX bundled with the Rust App
 $ make
 riscv64-unknown-elf-ld: libapps.a
   hello_rust_1.o:
   can&#39;t link soft-float modules with double-float modules
 </code></pre></div>
+<p><a href="TODO">(See the <strong>Complete Steps</strong>)</a></p>
 <p><strong>GCC Linker</strong> failed because it couldn’t link the NuttX Binaries with the Rust Binaries. </p>
 <p>Here’s Why: NuttX Build calls <strong>GCC Compiler</strong> to compile our C Modules…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Firmware with Tracing Enabled
@@ -351,7 +364,7 @@ $ rustc \
 </li>
 <li>
 <p>Remove <em>“atomic-cas”: false</em></p>
-<p><a href="https://en.m.wikipedia.org/wiki/Compare-and-swap">(We support <strong>Atomic Compare-And-Swap</strong>)</a></p>
+<p><a href="https://en.m.wikipedia.org/wiki/Compare-and-swap">(Enable <strong>Atomic Compare-And-Swap</strong>)</a></p>
 </li>
 <li>
 <p>Add <em>“features”: “+m,+a,+f,+d,+c”</em></p>
@@ -507,7 +520,7 @@ Flags: 0x5, RVC, double-float ABI
 <p>We could have called <strong><code>rustc</code></strong> for building the Rust Core Library. But it will be a bunch of steps with <a href="TODO"><strong>many many options</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/rust4-flow.jpg" alt="NuttX Links OK with Rust" /></p>
 <h1 id="nuttx-links-ok-with-rust"><a class="doc-anchor" href="#nuttx-links-ok-with-rust">§</a>5 NuttX Links OK with Rust</h1>
-<p><em>We’ve compiled our Rust App with Double-Float riscv32gc…</em></p>
+<p><em>We compiled our Rust App with Double-Float riscv32gc…</em></p>
 <p><em>Is our NuttX Build hunky dory now?</em></p>
 <p>Yep <strong>NuttX builds OK now</strong>! GCC Compiler and Rust Compiler are harmonised to Double-Float…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy the Rust Binary that will be linked with NuttX
@@ -551,9 +564,9 @@ Hello, Rust!!
 <p>TODO: <a href="https://github.com/rust-lang/rust/issues/65024">Allow building for hard-float targets in RISC-V</a></p>
 <p><img src="https://lupyuen.github.io/images/rust4-title.jpg" alt="Rust Apps on Apache NuttX RTOS and QEMU RISC-V" /></p>
 <h1 id="rust-build-for-64-bit-risc-v"><a class="doc-anchor" href="#rust-build-for-64-bit-risc-v">§</a>6 Rust Build for 64-bit RISC-V</h1>
-<p>TODO</p>
-<p><strong>Exercise for the Reader:</strong> Last article we TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh rv-virt:nsh64
+<p>From 32-bit to 64-bit: Last article we tried compiling our Rust App for <strong>64-bit RISC-V QEMU</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build NuttX for QEMU RISC-V 64-bit 
+$ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
 ## TODO: Enable &quot;Hello Rust Example&quot;
 $ make
@@ -561,18 +574,29 @@ $ make
 RUSTC:  hello_rust_main.rs error: Error loading target specification: 
   Could not find specification for target &quot;riscv64i-unknown-none-elf&quot;. 
   Run `rustc --print target-list` for a list of built-in targets
-
-make[2]: *** [nuttx/apps/Application.mk:275: hello_rust.o] Error 1
-make[1]: *** [Makefile:51: nuttx/apps/examples/hello_rust_all] Error 2
-make: *** [tools/LibTargets.mk:232: nuttx/apps/libapps.a] Error 2
 </code></pre></div>
-<p>Which says that <em>riscv64i-unknown-none-elf</em> isn’t a valid Rust Target.</p>
-<p>(Should be <em>riscv64gc-unknown-none-elf</em> instead)</p>
-<p>Fix the build?</p>
-<p>Custom Target?</p>
-<p>Hint: Answer is printed in this article somewhere </p>
-<p>[10 points]</p>
-<p>Will it run on Ox64?</p>
+<p>But Rust Compiler says that <strong><code>riscv64i</code></strong> isn’t a valid Rust Target for 64-bit RISC-V.</p>
+<p><strong>Exercise for the Reader:</strong></p>
+<ol>
+<li>
+<p>Is <strong><code>riscv64i</code></strong> the correct target for QEMU?</p>
+<p><a href="TODO">(<strong>Hint:</strong> See this)</a></p>
+<p><em>[10 points]</em></p>
+</li>
+<li>
+<p>How should we <strong>Fix the Build</strong>?</p>
+<p><em>[10 points]</em></p>
+</li>
+<li>
+<p>Do we need a <strong>Custom Target</strong>?</p>
+<p>(<strong>Hint:</strong> Answer is printed in this article somewhere)</p>
+<p><em>[10 points]</em></p>
+</li>
+<li>
+<p>Will it run on <strong>Ox64 BL808 SBC</strong>?</p>
+<p><em>[10 points]</em></p>
+</li>
+</ol>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
