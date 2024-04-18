@@ -337,7 +337,9 @@ $ rustc \
 }
 ```
 
-_We need to mash the Two Targets into a New Target?_
+Which has more goodies inside: _features, llvm-abiname, ..._
+
+_Will we mash the Two Targets into a New Target?_
 
 Exactly! Based on the above, we create our __Rust Custom Target__: [_riscv32gc-unknown-none-elf.json_](https://github.com/lupyuen/nuttx-rust-app/blob/main/riscv32gc-unknown-none-elf.json)
 
