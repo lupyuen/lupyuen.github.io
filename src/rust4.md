@@ -223,7 +223,7 @@ riscv64gc-unknown-none-elf
 riscv64imac-unknown-none-elf
 ```
 
-But we can create a __Custom Rust Target__ for __`riscv32gc`__.
+But we can create a [__Custom Rust Target__](https://docs.rust-embedded.org/embedonomicon/custom-target.html) for __`riscv32gc`__.
 
 (Coming up next section)
 
@@ -341,7 +341,7 @@ $ rustc \
 
 Which has more goodies inside: _features, llvm-abiname, ..._
 
-_Will we mash the Two Targets into a New Target?_
+_We're mashing the Two Targets into a New Target?_
 
 Exactly! Based on the above, we create our __Rust Custom Target__: [_riscv32gc-unknown-none-elf.json_](https://github.com/lupyuen/nuttx-rust-app/blob/main/riscv32gc-unknown-none-elf.json)
 
@@ -384,7 +384,7 @@ Which is [__`riscv32i`__](https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a
 
   [(More about __`llvm-abiname`__)](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)
 
-Once Again: We spliced the Two Built-In Targets to make Custom Target __`riscv32gc`__...
+In Summary: We spliced Two Built-In Targets into Custom Target __`riscv32gc`__...
 
 <span style="font-size:80%">
 
@@ -577,6 +577,12 @@ popd
 We boot __NuttX in QEMU Emulator__ for 32-bit RISC-V...
 
 ```bash
+## For macOS:
+brew install qemu
+
+## For Debian and Ubuntu:
+sudo apt install qemu-system-riscv32
+
 ## Boot NuttX in QEMU RISC-V (32-bit)
 ## TODO: Change `../nuttx` to the NuttX Kernel Folder
 pushd ../nuttx
@@ -616,7 +622,7 @@ TODO: [Allow building for hard-float targets in RISC-V](https://github.com/rust-
 
 # Rust Build for 64-bit RISC-V
 
-From 32-bit to 64-bit: Last article we tried compiling our Rust App for __64-bit RISC-V QEMU__...
+From 32-bit to 64-bit: We tried compiling our Rust App for __64-bit RISC-V QEMU__...
 
 ```bash
 ## Build NuttX for QEMU RISC-V 64-bit 
@@ -723,7 +729,7 @@ rustc \
 
 The above options were copied from __`cargo build -v`__, here's how...
 
-Remember we ran [__`cargo build`__](TODO) to compile the [__Rust Core Library__](https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust)?
+Remember we ran [__`cargo build`__](https://lupyuen.github.io/articles/rust4#build-the-rust-core-library) to compile the [__Rust Core Library__](https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust)?
 
 ```bash
 ## Download our Custom Target for `riscv32gc`
@@ -903,7 +909,7 @@ $ cargo build -v \
    Compiling app v0.1.0 ($HOME/riscv/nuttx-rust-app/app)
 
      ## Compile our Empty Rust Project with Rust Core Library for `riscv32gc`
-     ## These are the options that we copied...
+     ## These are the options that we copied into NuttX Build...
 
      Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
        --crate-name app
