@@ -339,7 +339,7 @@ $ rustc \
 }
 ```
 
-Which has more goodies inside: _features, llvm-abiname, ..._
+Which has more goodies inside: features, llvm-abiname, ...
 
 _We're mashing the Two Targets into a New Target?_
 
@@ -380,7 +380,7 @@ Which is [__`riscv32i`__](https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a
 
 - Add _"llvm-abiname": "ilp32d"_
 
-  [(__`ilp32d`__ comes from __`make --trace`__)](https://lupyuen.github.io/articles/rust4#software-vs-hardware-floating-point)
+  [(__`ilp32d`__ comes from __`make` `--trace`__)](https://lupyuen.github.io/articles/rust4#software-vs-hardware-floating-point)
 
   [(More about __`llvm-abiname`__)](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)
 
@@ -672,7 +672,19 @@ __Exercise for the Reader:__
 
 # What's Next
 
-TODO: Today we learnt a bit more about C-to-Rust Interop
+Today we learnt a bit more about __C-to-Rust Interop__ (pic above)...
+
+- TODO: Rust compiles for __Soft-Float__, NuttX expects __Double-Float__
+
+  (Software vs Hardware Floating-Point)
+
+- TODO: But Rust __doesn't support Double-Float__ (by default)
+
+- TODO: So we create a __Rust Custom Target__ for Double-Float
+
+- TODO: Rebuild the __Rust Core Library__ for Double-Float
+
+- TODO: And our Rust App __builds OK with NuttX__!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
