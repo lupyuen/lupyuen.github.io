@@ -245,7 +245,7 @@ riscv64gc-unknown-linux-gnu
 riscv64gc-unknown-none-elf
 riscv64imac-unknown-none-elf
 </code></pre></div>
-<p>But we can create a <strong>Custom Rust Target</strong> for <strong><code>riscv32gc</code></strong>.</p>
+<p>But we can create a <a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html"><strong>Custom Rust Target</strong></a> for <strong><code>riscv32gc</code></strong>.</p>
 <p>(Coming up next section)</p>
 <p><em>Won’t GCC Compiler have the same problem with Double-Float?</em></p>
 <p>When we list the <strong>Built-In GCC Targets</strong>…</p>
@@ -342,7 +342,7 @@ $ rustc \
 }
 </code></pre></div>
 <p>Which has more goodies inside: <em>features, llvm-abiname, …</em></p>
-<p><em>Will we mash the Two Targets into a New Target?</em></p>
+<p><em>We’re mashing the Two Targets into a New Target?</em></p>
 <p>Exactly! Based on the above, we create our <strong>Rust Custom Target</strong>: <a href="https://github.com/lupyuen/nuttx-rust-app/blob/main/riscv32gc-unknown-none-elf.json"><em>riscv32gc-unknown-none-elf.json</em></a></p>
 <div class="example-wrap"><pre class="language-json"><code>{
   &quot;arch&quot;:        &quot;riscv32&quot;,
@@ -381,7 +381,7 @@ $ rustc \
 <p><a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602">(More about <strong><code>llvm-abiname</code></strong>)</a></p>
 </li>
 </ul>
-<p>Once Again: We spliced the Two Built-In Targets to make Custom Target <strong><code>riscv32gc</code></strong>…</p>
+<p>In Summary: We spliced Two Built-In Targets into Custom Target <strong><code>riscv32gc</code></strong>…</p>
 <span style="font-size:80%">
 <div><table><thead><tr><th></th><th style="text-align: center"><a href="https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a889bc0a833">riscv32i</a> <br> <em>(Built-In)</em></th><th style="text-align: center"><a href="https://gist.github.com/lupyuen/9f269598bda11215832bd91a592d00a2">riscv64gc</a> <br> <em>(Built-In)</em></th><th style="text-align: center"><a href="https://github.com/lupyuen/nuttx-rust-app/blob/main/riscv32gc-unknown-none-elf.json">riscv32gc</a> <br> <em>(Custom)</em></th></tr></thead><tbody>
 <tr><td><em>arch</em></td><td style="text-align: center"><strong>riscv32</strong></td><td style="text-align: center">riscv64</td><td style="text-align: center"><strong>riscv32</strong></td></tr>
@@ -541,7 +541,13 @@ make
 popd
 </code></pre></div>
 <p>We boot <strong>NuttX in QEMU Emulator</strong> for 32-bit RISC-V…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in QEMU RISC-V (32-bit)
+<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
+brew install qemu
+
+## For Debian and Ubuntu:
+sudo apt install qemu-system-riscv32
+
+## Boot NuttX in QEMU RISC-V (32-bit)
 ## TODO: Change `../nuttx` to the NuttX Kernel Folder
 pushd ../nuttx
 qemu-system-riscv32 \
@@ -569,7 +575,7 @@ Hello, Rust!!
 <p>TODO: <a href="https://github.com/rust-lang/rust/issues/65024">Allow building for hard-float targets in RISC-V</a></p>
 <p><img src="https://lupyuen.github.io/images/rust4-title.jpg" alt="Rust Apps on Apache NuttX RTOS and QEMU RISC-V" /></p>
 <h1 id="rust-build-for-64-bit-risc-v"><a class="doc-anchor" href="#rust-build-for-64-bit-risc-v">§</a>6 Rust Build for 64-bit RISC-V</h1>
-<p>From 32-bit to 64-bit: Last article we tried compiling our Rust App for <strong>64-bit RISC-V QEMU</strong>…</p>
+<p>From 32-bit to 64-bit: We tried compiling our Rust App for <strong>64-bit RISC-V QEMU</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX for QEMU RISC-V 64-bit 
 $ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
@@ -664,7 +670,7 @@ rustc \
   -Z unstable-options
 </code></pre></div>
 <p>The above options were copied from <strong><code>cargo build -v</code></strong>, here’s how…</p>
-<p>Remember we ran <a href="TODO"><strong><code>cargo build</code></strong></a> to compile the <a href="https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust"><strong>Rust Core Library</strong></a>?</p>
+<p>Remember we ran <a href="https://lupyuen.github.io/articles/rust4#build-the-rust-core-library"><strong><code>cargo build</code></strong></a> to compile the <a href="https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust"><strong>Rust Core Library</strong></a>?</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download our Custom Target for `riscv32gc`
 rm -f riscv32gc-unknown-none-elf.json
 wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
@@ -844,7 +850,7 @@ $ cargo build -v \
    Compiling app v0.1.0 ($HOME/riscv/nuttx-rust-app/app)
 
      ## Compile our Empty Rust Project with Rust Core Library for `riscv32gc`
-     ## These are the options that we copied...
+     ## These are the options that we copied into NuttX Build...
 
      Running `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc
        --crate-name app
