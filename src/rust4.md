@@ -534,7 +534,7 @@ Flags: 0x5, RVC, double-float ABI
 
 _How did we get the Rust Compiler Options?_
 
-We copied the above options from __`cargo build -v`__...
+We copied the above options from __`cargo` `build` `-v`__...
 
 - [__"Rust Compiler Options"__](https://lupyuen.github.io/articles/rust4#appendix-rust-compiler-options)
 
@@ -544,7 +544,7 @@ _rustc vs cargo build: What's the diff?_
 
   (Works like GCC Compiler)
 
-- __`cargo build`__ wraps around __`rustc`__ for Multi-Step Builds
+- __`cargo` `build`__ wraps around __`rustc`__ for Multi-Step Builds
 
   [(Like for __Rust Core Library__)](https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust)
 
@@ -727,9 +727,9 @@ rustc \
   -Z unstable-options
 ```
 
-The above options were copied from __`cargo build -v`__, here's how...
+The above options were copied from __`cargo` `build` `-v`__, here's how...
 
-Remember we ran [__`cargo build`__](https://lupyuen.github.io/articles/rust4#build-the-rust-core-library) to compile the [__Rust Core Library__](https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust)?
+Remember we ran [__`cargo` `build`__](https://lupyuen.github.io/articles/rust4#build-the-rust-core-library) to compile the [__Rust Core Library__](https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust)?
 
 ```bash
 ## Download our Custom Target for `riscv32gc`
@@ -757,9 +757,9 @@ cargo build \
 popd
 ```
 
-- __`cargo build`__ will call __`rustc`__ with a whole bunch of options.
+- __`cargo` `build`__ will call __`rustc`__ with a whole bunch of options.
 
-- We switched it to __`cargo build -v`__, which will dump the __`rustc`__ options.
+- We switched it to __`cargo` `build` `-v`__, which will dump the __`rustc`__ options.
 
 - Hence we see the options that will compile a Rust App with our Rust Core Library for __`riscv32gc`__...
 
