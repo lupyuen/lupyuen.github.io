@@ -10,7 +10,7 @@
 
 </div>
 
-Last article we were compiling [__Rust Apps__](https://lupyuen.github.io/articles/rust3) for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) (QEMU Emulator, 32-bit RISC-V). And we hit a __baffling error__...
+Last article we were compiling [__Rust Apps__](https://lupyuen.github.io/articles/rust3) for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) (QEMU Emulator, RISC-V 32-bit). And we hit a __baffling error__...
 
 ```bash
 $ make
@@ -123,9 +123,9 @@ _Hmmm the Floats look different..._
 
 GCC compiles for (Double-Precision) __Hardware Floating-Point__...
 
-But Rust Compiler uses __Software Floating-Point__.
+But Rust Compiler emits __Software Floating-Point__.
 
-That's why GCC Linker __won't link the binaries__!
+That's why GCC Linker __won't link the binaries__: Hard-Float vs Soft-Float!
 
 <span style="font-size:90%">
 
@@ -140,7 +140,7 @@ That's why GCC Linker __won't link the binaries__!
 
 ![Double-Float vs Soft-Float: GCC Linker won't link the binaries](https://lupyuen.github.io/images/rust4-flow2.jpg)
 
-To verify, we dump the ELF Header for __GCC Compiler Output__...
+To verify, we dump the [__ELF Header__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header) for __GCC Compiler Output__...
 
 ```bash
 ## Dump the ELF Header for GCC Output
@@ -148,7 +148,8 @@ $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello/*hello.o                 
 
-## GCC Compiler Output is Double-Precision Hardware Floating-Point
+## GCC Compiler Output is
+## Double-Precision Hardware Floating-Point
 Flags: 0x5, RVC, double-float ABI
 ```
 
@@ -162,7 +163,8 @@ $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
 
-## Rust Compiler Output is Software Floating-Point
+## Rust Compiler Output is
+## Software Floating-Point
 Flags: 0x0
 ```
 
@@ -209,10 +211,10 @@ Error loading target specification:
 That's because __`riscv32gc`__ isn't a __Built-In Rust Target__...
 
 ```bash
-## List the Built-In Rust Targets for RISC-V.
-## Nope no riscv32gc!
+## List the Built-In Rust Targets for RISC-V
 $ rustup target list | grep riscv
 
+## Nope no riscv32gc!
 riscv32i-unknown-none-elf
 riscv32imac-unknown-none-elf
 riscv32imc-unknown-none-elf
@@ -254,7 +256,7 @@ riscv64-unknown-elf-gcc \
 
 We'll make something similar for Rust Compiler...
 
-[(More about __Application Binary Interfaces__)](https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5)
+[(More about __Application Binary Interface__)](https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5)
 
 ![Custom Target for Rust](https://lupyuen.github.io/images/rust4-flow1a.jpg)
 
