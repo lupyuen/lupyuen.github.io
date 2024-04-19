@@ -180,7 +180,9 @@ _What if we ask Rust Compiler to compile for Double-Float? RV32IMAFDC (Pic above
 
 Let's harmonise Rust Compiler with GCC Compiler...
 
-- [__QEMU RISC-V__](https://www.qemu.org/docs/master/system/riscv/virt.html) offically supports [__`riscv32gc`__](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices)
+- Our Build Target is [__QEMU Emulator__](https://www.qemu.org/docs/master/system/riscv/virt.html)
+
+- Which offically supports [__`riscv32gc`__](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices)
 
 - "__`gc`__" in "__`riscv32gc`__" denotes [__IMAFDC__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
 
