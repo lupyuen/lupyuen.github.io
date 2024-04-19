@@ -507,7 +507,7 @@ Flags: 0x5, RVC, double-float ABI
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/e7cdef603bdb16fbc82c2bf940b5d2d8">(See the <strong>ELF Header</strong>)</a></p>
 <p><em>How did we get the Rust Compiler Options?</em></p>
-<p>We copied the above options from <strong><code>cargo build -v</code></strong>…</p>
+<p>We copied the above options from <strong><code>cargo</code> <code>build</code> <code>-v</code></strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust4#appendix-rust-compiler-options"><strong>“Rust Compiler Options”</strong></a></li>
 </ul>
@@ -518,7 +518,7 @@ Flags: 0x5, RVC, double-float ABI
 <p>(Works like GCC Compiler)</p>
 </li>
 <li>
-<p><strong><code>cargo build</code></strong> wraps around <strong><code>rustc</code></strong> for Multi-Step Builds</p>
+<p><strong><code>cargo</code> <code>build</code></strong> wraps around <strong><code>rustc</code></strong> for Multi-Step Builds</p>
 <p><a href="https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust">(Like for <strong>Rust Core Library</strong>)</a></p>
 </li>
 </ul>
@@ -669,8 +669,8 @@ rustc \
   --extern noprelude:core=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-*.rlib` \
   -Z unstable-options
 </code></pre></div>
-<p>The above options were copied from <strong><code>cargo build -v</code></strong>, here’s how…</p>
-<p>Remember we ran <a href="https://lupyuen.github.io/articles/rust4#build-the-rust-core-library"><strong><code>cargo build</code></strong></a> to compile the <a href="https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust"><strong>Rust Core Library</strong></a>?</p>
+<p>The above options were copied from <strong><code>cargo</code> <code>build</code> <code>-v</code></strong>, here’s how…</p>
+<p>Remember we ran <a href="https://lupyuen.github.io/articles/rust4#build-the-rust-core-library"><strong><code>cargo</code> <code>build</code></strong></a> to compile the <a href="https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust"><strong>Rust Core Library</strong></a>?</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download our Custom Target for `riscv32gc`
 rm -f riscv32gc-unknown-none-elf.json
 wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
@@ -697,10 +697,10 @@ popd
 </code></pre></div>
 <ul>
 <li>
-<p><strong><code>cargo build</code></strong> will call <strong><code>rustc</code></strong> with a whole bunch of options.</p>
+<p><strong><code>cargo</code> <code>build</code></strong> will call <strong><code>rustc</code></strong> with a whole bunch of options.</p>
 </li>
 <li>
-<p>We switched it to <strong><code>cargo build -v</code></strong>, which will dump the <strong><code>rustc</code></strong> options.</p>
+<p>We switched it to <strong><code>cargo</code> <code>build</code> <code>-v</code></strong>, which will dump the <strong><code>rustc</code></strong> options.</p>
 </li>
 <li>
 <p>Hence we see the options that will compile a Rust App with our Rust Core Library for <strong><code>riscv32gc</code></strong>…</p>
