@@ -178,7 +178,7 @@ _What if we ask Rust Compiler to compile for Double-Float? RV32IMAFDC (Pic above
 
 Let's harmonise Rust Compiler with GCC Compiler...
 
-- [__QEMU RISC-V__](https://www.qemu.org/docs/master/system/riscv/virt.html) offically supports [__`riscv32gc`__](https://www.qemu.org/docs/master/system/riscv/virt.html)
+- [__QEMU RISC-V__](https://www.qemu.org/docs/master/system/riscv/virt.html) offically supports [__`riscv32gc`__](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices)
 
 - "__`gc`__" in "__`riscv32gc`__" denotes [__IMAFDC__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
 
@@ -374,11 +374,11 @@ Which is [__`riscv32i`__](https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a
 
 - Add _"features": "+m,+a,+f,+d,+c"_
 
-  [(Because we need __IMAFDC__)](TODO)
+  [(Because we need __IMAFDC__)](https://lupyuen.github.io/articles/rust4#software-vs-hardware-floating-point)
 
 - Add _"llvm-abiname": "ilp32d"_
 
-  (__`ilp32d`__ comes from __`make --trace`__ above)
+  [(__`ilp32d`__ comes from __`make --trace`__)](https://lupyuen.github.io/articles/rust4#software-vs-hardware-floating-point)
 
   [(More about __`llvm-abiname`__)](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)
 
@@ -534,7 +534,7 @@ _How did we get the Rust Compiler Options?_
 
 We copied the above options from __`cargo build -v`__...
 
-- TODO
+- [__"Rust Compiler Options"__](https://lupyuen.github.io/articles/rust4#appendix-rust-compiler-options)
 
 _rustc vs cargo build: What's the diff?_
 
@@ -546,7 +546,7 @@ _rustc vs cargo build: What's the diff?_
 
   [(Like for __Rust Core Library__)](https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust)
 
-We could have called __`rustc`__ for building the Rust Core Library. But it will be a bunch of steps with [__many many options__](TODO).
+We could have called __`rustc`__ for building the Rust Core Library. But it will be a bunch of steps with [__many many options__](https://lupyuen.github.io/articles/rust4#appendix-rust-compiler-options).
 
 ![NuttX Links OK with Rust](https://lupyuen.github.io/images/rust4-flow.jpg)
 
@@ -634,7 +634,7 @@ __Exercise for the Reader:__
 
 1.  Is __`riscv64i`__ the correct target for QEMU?
 
-    [(__Hint:__ See this)](TODO)
+    [(__Hint:__ See this)](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices)
 
     _[10 points]_
 
@@ -692,7 +692,7 @@ _How did we get the Rust Compiler Options for riscv32gc?_
 
 Earlier we compiled our Rust App with Rust Core Library for __`riscv32gc`__...
 
-- TODO
+- [__"Build the Rust Core Library"__](https://lupyuen.github.io/articles/rust4#build-the-rust-core-library)
 
 And we saw these __Rust Compiler Options__...
 
@@ -719,7 +719,7 @@ rustc \
   -Z unstable-options
 ```
 
-We copied the above options from __`cargo build -v`__, here's how...
+The above options were copied from __`cargo build -v`__, here's how...
 
 Remember we ran [__`cargo build`__](TODO) to compile the [__Rust Core Library__](https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust)?
 
