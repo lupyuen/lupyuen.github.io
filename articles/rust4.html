@@ -77,7 +77,7 @@
 <div style="text-align: center">
 <p><a href="https://github.com/Swordfish90/cool-retro-term"><em>Thanks to cool-retro-term!</em></a></p>
 </div>
-<p>Last article we were compiling <a href="https://lupyuen.github.io/articles/rust3"><strong>Rust Apps</strong></a> for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> (QEMU Emulator, 32-bit RISC-V). And we hit a <strong>baffling error</strong>…</p>
+<p>Last article we were compiling <a href="https://lupyuen.github.io/articles/rust3"><strong>Rust Apps</strong></a> for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> (QEMU Emulator, RISC-V 32-bit). And we hit a <strong>baffling error</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make
 riscv64-unknown-elf-ld: libapps.a
   hello_rust_1.o:
@@ -169,8 +169,8 @@ rustc \
 </div></span>
 <p><em>Hmmm the Floats look different…</em></p>
 <p>GCC compiles for (Double-Precision) <strong>Hardware Floating-Point</strong>…</p>
-<p>But Rust Compiler uses <strong>Software Floating-Point</strong>.</p>
-<p>That’s why GCC Linker <strong>won’t link the binaries</strong>!</p>
+<p>But Rust Compiler emits <strong>Software Floating-Point</strong>.</p>
+<p>That’s why GCC Linker <strong>won’t link the binaries</strong>: Hard-Float vs Soft-Float!</p>
 <span style="font-size:90%">
 <div><table><thead><tr><th style="text-align: left">GCC Compiler</th><th style="text-align: left">Rust Compiler</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>rv32imafdc</strong></td><td style="text-align: left"><strong>riscv32i</strong></td></tr>
@@ -180,13 +180,14 @@ rustc \
 </tbody></table>
 </div></span>
 <p><img src="https://lupyuen.github.io/images/rust4-flow2.jpg" alt="Double-Float vs Soft-Float: GCC Linker won’t link the binaries" /></p>
-<p>To verify, we dump the ELF Header for <strong>GCC Compiler Output</strong>…</p>
+<p>To verify, we dump the <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header"><strong>ELF Header</strong></a> for <strong>GCC Compiler Output</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the ELF Header for GCC Output
 $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello/*hello.o                 
 
-## GCC Compiler Output is Double-Precision Hardware Floating-Point
+## GCC Compiler Output is
+## Double-Precision Hardware Floating-Point
 Flags: 0x5, RVC, double-float ABI
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/d8b4f793cd463230393326cef7dbedbe">(See the <strong>GCC ELF Header</strong>)</a></p>
@@ -196,7 +197,8 @@ $ riscv64-unknown-elf-readelf \
   --file-header --arch-specific \
   ../apps/examples/hello_rust/*hello_rust.o
 
-## Rust Compiler Output is Software Floating-Point
+## Rust Compiler Output is
+## Software Floating-Point
 Flags: 0x0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/413830fed9cdb2b02d5f9d0d062beb3e">(See the <strong>Rust ELF Header</strong>)</a></p>
@@ -232,10 +234,10 @@ rustc \
   Run `rustc --print target-list` for a list of built-in targets
 </code></pre></div>
 <p>That’s because <strong><code>riscv32gc</code></strong> isn’t a <strong>Built-In Rust Target</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## List the Built-In Rust Targets for RISC-V.
-## Nope no riscv32gc!
+<div class="example-wrap"><pre class="language-bash"><code>## List the Built-In Rust Targets for RISC-V
 $ rustup target list | grep riscv
 
+## Nope no riscv32gc!
 riscv32i-unknown-none-elf
 riscv32imac-unknown-none-elf
 riscv32imc-unknown-none-elf
@@ -267,7 +269,7 @@ riscv64-unknown-elf-gcc \
   ...
 </code></pre></div>
 <p>We’ll make something similar for Rust Compiler…</p>
-<p><a href="https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5">(More about <strong>Application Binary Interfaces</strong>)</a></p>
+<p><a href="https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5">(More about <strong>Application Binary Interface</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/rust4-flow1a.jpg" alt="Custom Target for Rust" /></p>
 <h1 id="custom-target-for-rust"><a class="doc-anchor" href="#custom-target-for-rust">§</a>3 Custom Target for Rust</h1>
 <p><em>To compile Rust for Double-Float, we need a Custom Target: riscv32gc</em></p>
