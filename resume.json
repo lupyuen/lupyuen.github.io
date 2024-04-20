@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-04-21",
+      "website": "https://lupyuen.github.io/articles/rust4",
+      "summary": "Our Rust App compiles for Software Floating-Point, but Apache NuttX RTOS expects Hardware Floating-Point... Let's fix this with a Rust Custom Target for QEMU RISC-V"
+    },
+    {
       "name": "Rust Apps on Apache NuttX RTOS and QEMU RISC-V",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-04-07",

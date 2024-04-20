@@ -1,6 +1,6 @@
 # Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS
 
-📝 _22 Apr 2024_
+📝 _21 Apr 2024_
 
 ![Rust Apps on Apache NuttX RTOS and QEMU RISC-V](https://lupyuen.github.io/images/rust4-title.jpg)
 
