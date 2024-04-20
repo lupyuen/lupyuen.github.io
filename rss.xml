@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS</title>
+            <link>https://lupyuen.github.io/articles/rust4</link>
+            <description><![CDATA[Our Rust App compiles for Software Floating-Point, but Apache NuttX RTOS expects Hardware Floating-Point... Let's fix this with a Rust Custom Target for QEMU RISC-V]]></description>
+            <guid>https://lupyuen.github.io/articles/rust4</guid>
+            <pubDate>Sun, 21 Apr 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Rust Apps on Apache NuttX RTOS and QEMU RISC-V</title>
             <link>https://lupyuen.github.io/articles/rust3</link>
             <description><![CDATA[Here's how we run Rust Apps on Apache NuttX RTOS and QEMU RISC-V Emulator.]]></description>
