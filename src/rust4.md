@@ -618,7 +618,7 @@ Yeah. And integrating this into the __NuttX Makefiles__ will be challenging.
 
 (How would [__Linux Kernel__](https://rust-for-linux.com/) handle Custom Rust Targets?)
 
-TODO: [Allow building for hard-float targets in RISC-V](https://github.com/rust-lang/rust/issues/65024)
+[(More about __Hard-Float Targets__ in RISC-V)](https://github.com/rust-lang/rust/issues/65024)
 
 ![Rust Apps on Apache NuttX RTOS and QEMU RISC-V](https://lupyuen.github.io/images/rust4-title.jpg)
 
