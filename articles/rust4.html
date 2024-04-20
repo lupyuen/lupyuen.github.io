@@ -620,20 +620,24 @@ RUSTC:  hello_rust_main.rs error: Error loading target specification:
 <p>Today we learnt a bit more about <strong>C-to-Rust Interop</strong> (pic above)…</p>
 <ul>
 <li>
-<p>TODO: Rust compiles for <strong>Soft-Float</strong>, NuttX expects <strong>Double-Float</strong></p>
+<p>NuttX failed to link our Rust App because Rust compiles for <strong>Soft-Float</strong>, NuttX expects <strong>Double-Float</strong></p>
 <p>(Software vs Hardware Floating-Point)</p>
 </li>
 <li>
-<p>TODO: But Rust <strong>doesn’t support Double-Float</strong> (by default)</p>
+<p>But Rust <strong>doesn’t support Double-Float</strong></p>
+<p>(Built-In Target doesn’t exist for 32-bit RISC-V)</p>
 </li>
 <li>
-<p>TODO: So we create a <strong>Rust Custom Target</strong> for Double-Float</p>
+<p>So we created a <strong>Rust Custom Target</strong> for Double-Float: RISCV32GC</p>
+<p>(By mashing up RISCV32I and RISCV64GC)</p>
 </li>
 <li>
-<p>TODO: Rebuild the <strong>Rust Core Library</strong> for Double-Float</p>
+<p>We rebuilt the <strong>Rust Core Library</strong> for Double-Float</p>
+<p>(With <strong><code>cargo</code> <code>build</code></strong>)</p>
 </li>
 <li>
-<p>TODO: And our Rust App <strong>builds OK with NuttX</strong>!</p>
+<p>And our Rust App <strong>builds OK with NuttX</strong></p>
+<p>(Runs perfectly on QEMU Emulator for RISC-V)</p>
 </li>
 </ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
