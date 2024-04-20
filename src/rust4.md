@@ -676,17 +676,25 @@ __Exercise for the Reader:__
 
 Today we learnt a bit more about __C-to-Rust Interop__ (pic above)...
 
-- TODO: Rust compiles for __Soft-Float__, NuttX expects __Double-Float__
+- NuttX failed to link our Rust App because Rust compiles for __Soft-Float__, NuttX expects __Double-Float__
 
   (Software vs Hardware Floating-Point)
 
-- TODO: But Rust __doesn't support Double-Float__ (by default)
+- But Rust __doesn't support Double-Float__
 
-- TODO: So we create a __Rust Custom Target__ for Double-Float
+  (Built-In Target doesn't exist for 32-bit RISC-V)
 
-- TODO: Rebuild the __Rust Core Library__ for Double-Float
+- So we created a __Rust Custom Target__ for Double-Float: RISCV32GC
 
-- TODO: And our Rust App __builds OK with NuttX__!
+  (By mashing up RISCV32I and RISCV64GC)
+
+- We rebuilt the __Rust Core Library__ for Double-Float
+
+  (With __`cargo` `build`__)
+
+- And our Rust App __builds OK with NuttX__
+
+  (Runs perfectly on QEMU Emulator for RISC-V)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
