@@ -542,9 +542,9 @@ And it links correctly!
 
 _But why Soft-Float instead of Double-Float? (Mmmm ice cream float)_
 
-Yeah patching the ELF Header is a Bad Hack! During GSoC we'll investigate why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)
+Yeah patching the ELF Header is a Bad Hack! Here's the complete analysis and proper solution...
 
-(Incorrect [__Rust Target__](https://lupyuen.github.io/articles/rust3#how-nuttx-compiles-rust-apps) maybe? But _riscv32gc-unknown-none-elf_ requires a [__Custom Target__](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)!)
+- [__"Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rust4)
 
 ![Undefined reference to core::panicking::panic](https://lupyuen.github.io/images/rust3-panic.png)
 
@@ -713,6 +713,10 @@ Coming This Summer: Plenty to be done for __Rust Apps on Apache NuttX RTOS__!
 - __Console Input / Output__ works fine for Rust on NuttX. We'll explore safer ways to call NuttX POSIX Functions.
 
 - All this will happen during __Google Summer of Code__!
+
+Check out the next article...
+
+- [__"Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rust4)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
