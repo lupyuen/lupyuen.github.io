@@ -536,8 +536,10 @@ $ riscv64-unknown-elf-readelf -h -A ../apps/examples/hello_rust/*hello_rust_1.o
 <p>And it links correctly!</p>
 <p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(We had a similar issue with <strong>Zig Compiler</strong>)</a></p>
 <p><em>But why Soft-Float instead of Double-Float? (Mmmm ice cream float)</em></p>
-<p>Yeah patching the ELF Header is a Bad Hack! During GSoC we’ll investigate why Rust Compiler produced binaries with Soft-Float. (Instead of Double-Float)</p>
-<p>(Incorrect <a href="https://lupyuen.github.io/articles/rust3#how-nuttx-compiles-rust-apps"><strong>Rust Target</strong></a> maybe? But <em>riscv32gc-unknown-none-elf</em> requires a <a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602"><strong>Custom Target</strong></a>!)</p>
+<p>Yeah patching the ELF Header is a Bad Hack! Here’s the complete analysis and proper solution…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rust4"><strong>“Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/rust3-panic.png" alt="Undefined reference to core::panicking::panic" /></p>
 <h1 id="panic-is-undefined"><a class="doc-anchor" href="#panic-is-undefined">§</a>7 Panic is Undefined</h1>
 <p><em>What’s this core::panicking::panic? Why is it undefined?</em></p>
@@ -666,6 +668,10 @@ riscv64-unknown-elf-ld:
 <li>
 <p>All this will happen during <strong>Google Summer of Code</strong>!</p>
 </li>
+</ul>
+<p>Check out the next article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rust4"><strong>“Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS”</strong></a></li>
 </ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
