@@ -12,11 +12,11 @@
 
 TODO
 
+Will Rust Apps run on a 64-bit RISC-V SBC, like Ox64 BL808? Let's find out!
+
 # Rust Apps won't compile for QEMU RISC-V 64-bit
 
 TODO
-
-Will Rust Apps run on a 64-bit RISC-V SBC, like Ox64 BL808? Let's find out!
 
 First we test on QEMU RISC-V 64-bit...
 
@@ -272,6 +272,10 @@ nsh>
 
 Which fails because the main() function is missing!
 
+# TODO
+
+TODO
+
 So we change this in hello_rust_main.rs...
 
 ```rust
@@ -328,6 +332,10 @@ nsh>
 ```
 
 [(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
+
+# TODO
+
+TODO
 
 Our Rust App also works OK on a real Ox64 BL808 SBC!
 
