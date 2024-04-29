@@ -68,15 +68,17 @@
 <li><a href="#rust-apps-wont-compile-for-qemu-risc-v-64-bit">1 Rust Apps won’t compile for QEMU RISC-V 64-bit</a><ul></ul></li>
 <li><a href="#change-riscv64i-to-riscv64gc">2 Change riscv64i to riscv64gc</a><ul></ul></li>
 <li><a href="#rust-apps-on-ox64-bl808-sbc">3 Rust Apps on Ox64 BL808 SBC</a><ul></ul></li>
-<li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 May 2024</em></p>
+<li><a href="#todo">4 TODO</a><ul></ul></li>
+<li><a href="#todo-1">5 TODO</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust5-title.jpg" alt="Rust Apps on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS" /></p>
 <div style="text-align: center">
 <p><a href="https://github.com/Swordfish90/cool-retro-term"><em>Thanks to cool-retro-term!</em></a></p>
 </div>
 <p>TODO</p>
+<p>Will Rust Apps run on a 64-bit RISC-V SBC, like Ox64 BL808? Let’s find out!</p>
 <h1 id="rust-apps-wont-compile-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#rust-apps-wont-compile-for-qemu-risc-v-64-bit">§</a>1 Rust Apps won’t compile for QEMU RISC-V 64-bit</h1>
 <p>TODO</p>
-<p>Will Rust Apps run on a 64-bit RISC-V SBC, like Ox64 BL808? Let’s find out!</p>
 <p>First we test on QEMU RISC-V 64-bit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
@@ -301,6 +303,8 @@ nsh&gt;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(root-riscv64.cfg is here)</a></p>
 <p>Which fails because the main() function is missing!</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>4 TODO</h1>
+<p>TODO</p>
 <p>So we change this in hello_rust_main.rs…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(_argc: i32, _argv: <span class="kw-2">*const *const </span>u8) -&gt; i32 {</code></pre></div>
@@ -348,6 +352,8 @@ nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh&gt; 
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(root-riscv64.cfg is here)</a></p>
+<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>5 TODO</h1>
+<p>TODO</p>
 <p>Our Rust App also works OK on a real Ox64 BL808 SBC!</p>
 <p>https://gist.github.com/lupyuen/7fabbffd16f22914b299ced3723b9b9b</p>
 <div class="example-wrap"><pre class="language-bash"><code>Enter choice: 1:.Pine64 0X64 Kernel
@@ -389,7 +395,7 @@ You entered...
 
 nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh&gt; 
-</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>4 What’s Next</h1>
+</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
