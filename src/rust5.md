@@ -84,93 +84,129 @@ fn panic(
 
 # Compile for QEMU 64-bit RISC-V
 
-First we test on QEMU 64-bit RISC-V...
+First we test on QEMU Emulator...
 
-Follow the steps below to compile Apache NuttX RTOS for QEMU 64-bit RISC-V...
+1.  Follow these steps to build __NuttX for QEMU Emulator__...
 
-- TODO
+    TODO
 
-```bash
-$ tools/configure.sh rv-virt:nsh64
-$ make menuconfig
-## TODO: Enable "Hello Rust" Example App
-## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig
-$ make --trace
+1.  __If we Enable Build Tracing:__ We'll see...
 
-## Compile "hello_main.c" with GCC Compiler
-riscv64-unknown-elf-gcc \
-  -c \
-  -fno-common \
-  -Wall \
-  -Wstrict-prototypes \
-  -Wshadow \
-  -Wundef \
-  -Wno-attributes \
-  -Wno-unknown-pragmas \
-  -Wno-psabi \
-  -Os \
-  -fno-strict-aliasing \
-  -fomit-frame-pointer \
-  -ffunction-sections \
-  -fdata-sections \
-  -g \
-  -mcmodel=medany \
-  -march=rv64imafdc \
-  -mabi=lp64d \
-  -isystem /Users/Luppy/riscv/nuttx/include \
-  -D__NuttX__ \
-  -DNDEBUG  \
-  -pipe \
-  -I "/Users/Luppy/riscv/apps/include" \
-  -Dmain=hello_main  hello_main.c \
-  -o  hello_main.c.Users.Luppy.riscv.apps.examples.hello.o
+    ```bash
+    $ make --trace
 
-## Compile "hello_rust_main.rs" with Rust Compiler
-rustc \
-  --edition 2021 \
-  --emit obj \
-  -g \
-  --target riscv64i-unknown-none-elf \
-  -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
-```
+    ## Compile "hello_main.c" with GCC Compiler
+    riscv64-unknown-elf-gcc \
+      -c \
+      -fno-common \
+      -Wall \
+      -Wstrict-prototypes \
+      -Wshadow \
+      -Wundef \
+      -Wno-attributes \
+      -Wno-unknown-pragmas \
+      -Wno-psabi \
+      -Os \
+      -fno-strict-aliasing \
+      -fomit-frame-pointer \
+      -ffunction-sections \
+      -fdata-sections \
+      -g \
+      -mcmodel=medany \
+      -march=rv64imafdc \
+      -mabi=lp64d \
+      -isystem /Users/Luppy/riscv/nuttx/include \
+      -D__NuttX__ \
+      -DNDEBUG  \
+      -pipe \
+      -I "/Users/Luppy/riscv/apps/include" \
+      -Dmain=hello_main  hello_main.c \
+      -o  hello_main.c.Users.Luppy.riscv.apps.examples.hello.o
+
+    ## Compile "hello_rust_main.rs" with Rust Compiler
+    rustc \
+      --edition 2021 \
+      --emit obj \
+      -g \
+      --target riscv64i-unknown-none-elf \
+      -C panic=abort \
+      -O   hello_rust_main.rs \
+      -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+    ```
+
+1.  __If the build fails__ with ???
+
+    TODO
+
+
+    Let's change riscv64i to riscv64gc...
+
+    ```bash
+    $ rustup target add riscv64gc-unknown-none-elf
+    $ pushd ../apps/examples/hello_rust 
+    $ rustc \
+      --edition 2021 \
+      --emit obj \
+      -g \
+      --target riscv64gc-unknown-none-elf \
+      -C panic=abort \
+      -O   hello_rust_main.rs \
+      -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+    $ popd
+    $ make
+    ```
+
+    TODO: Fix the path of hello_rust.o
+
+    ```bash
+    $ a=$(basename ~/ox64/apps/examples/hello/*.o)
+    $ b=`
+      echo $a \
+      | sed "s/hello_main.c/hello_rust_main.rs/" \
+      | sed "s/hello.o/hello_rust.o/"
+      `
+    $ echo $b
+    hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+    ```
+
+    TODO: Test on Linux
+
+# Test on QEMU 64-bit RISC-V
 
 TODO
 
-For building our Rust App: Let's change riscv64i to riscv64gc...
+And our Rust App runs OK on QEMU 64-bit RISC-V yay!
 
 ```bash
-$ rustup target add riscv64gc-unknown-none-elf
-$ pushd ../apps/examples/hello_rust 
-$ rustc \
-  --edition 2021 \
-  --emit obj \
-  -g \
-  --target riscv64gc-unknown-none-elf \
-  -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
-$ popd
-$ make
-```
+$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
+ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+nx_start_application: Starting init thread
+task_spawn: name=nsh_main entry=0x8000745c file_actions=0 attr=0x8003d798 argv=0x8003d790
+nxtask_activate: nsh_main pid=1,TCB=0x8003e820
 
-TODO: Fix the path of hello_rust.o
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> nx_start: CPU0: Beginning Idle Loop
 
-```bash
-$ a=$(basename ~/ox64/apps/examples/hello/*.o)
-$ b=`
-  echo $a \
-  | sed "s/hello_main.c/hello_rust_main.rs/" \
-  | sed "s/hello.o/hello_rust.o/"
-  `
-$ echo $b
-hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+nsh> hello_rust
+posix_spawn: pid=0x8003f734 path=hello_rust file_actions=0x8003f738 attr=0x8003f740 argv=0x8003f838
+nxposix_spawn_exec: ERROR: exec failed: 2
+task_spawn: name=hello_rust entry=0x80018622 file_actions=0x8003f738 attr=0x8003f740 argv=0x8003f840
+spawn_execattrs: Setting policy=2 priority=100 for pid=2
+nxtask_activate: hello_rust pid=2,TCB=0x8003fda0
+Hello, Rust!!
+abcd
+You entered...
+abcd
+
+nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
+nsh> 
 ```
 
 # Change riscv64i to riscv64gc
 
-TODO
+TODO: What's this error?
 
 ```bash
 ## Compile "hello_rust_main.rs" with Rust Compiler
@@ -231,38 +267,7 @@ $ make
 
 TODO: Fix the path of hello_rust.o
 
-# Test on QEMU 64-bit RISC-V
 
-TODO
-
-And our Rust App runs OK on QEMU 64-bit RISC-V yay!
-
-```bash
-$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
-ABCnx_start: Entry
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-nx_start_application: Starting init thread
-task_spawn: name=nsh_main entry=0x8000745c file_actions=0 attr=0x8003d798 argv=0x8003d790
-nxtask_activate: nsh_main pid=1,TCB=0x8003e820
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> nx_start: CPU0: Beginning Idle Loop
-
-nsh> hello_rust
-posix_spawn: pid=0x8003f734 path=hello_rust file_actions=0x8003f738 attr=0x8003f740 argv=0x8003f838
-nxposix_spawn_exec: ERROR: exec failed: 2
-task_spawn: name=hello_rust entry=0x80018622 file_actions=0x8003f738 attr=0x8003f740 argv=0x8003f840
-spawn_execattrs: Setting policy=2 priority=100 for pid=2
-nxtask_activate: hello_rust pid=2,TCB=0x8003fda0
-Hello, Rust!!
-abcd
-You entered...
-abcd
-
-nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
-nsh> 
-```
 
 ![Rust Apps on Apache NuttX RTOS and Ox64 BL808 SBC](https://lupyuen.github.io/images/rust5-title.jpg)
 
