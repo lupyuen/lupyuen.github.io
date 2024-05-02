@@ -386,55 +386,6 @@ _What happens if we don't change it?_
 
 TODO
 
-# Run Rust App on Ox64 Emulator
-
-TODO
-
-Now our Rust App runs OK on Ox64 BL808 Emulator!
-
-```bash
-+ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
-+ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
-TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-virtio_console_init
-Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
-Patched SYNC.S (Ensure that all Cache Operations are completed) at 0x5020099e
-Found ECALL (Start System Timer) at 0x5020bfac
-Patched RDTIME (Read System Time) at 0x5020bfb2
-elf_len=0
-virtio_console_resize_event
-ABCnx_start: Entry
-uart_register: Registering /dev/console
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nxtask_activate: lpwork pid=1,TCB=0x50409110
-nxtask_activate: AppBringUp pid=2,TCB=0x50409710
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-nxtask_activate: /system/bin/init pid=3,TCB=0x5040b730
-nxtask_exit: AppBringUp pid=2,TCB=0x50409710
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> nx_start: CPU0: Beginning Idle Loop
-
-nsh> hello_rust
-posix_spawn: pid=0x80202968 path=hello_rust file_actions=0x80202970 attr=0x80202978 argv=0x80202a18
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 1: Undefined symbol[0] has no name: -3
-nxtask_activate: hello_rust pid=6,TCB=0x50409790
-Hello, Rust!!
-Hello Ox64!
-You entered...
-Hello Ox64!
-
-nxtask_exit: hello_rust pid=6,TCB=0x50409790
-nsh> 
-```
-
-[(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
-
 # Run Rust App on Ox64 SBC
 
 TODO
@@ -637,11 +588,89 @@ $ popd
 $ make import
 ```
 
+# Appendix: Run Rust App on Ox64 Emulator
+
+TODO
+
+Now our Rust App runs OK on Ox64 BL808 Emulator!
+
+```bash
++ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
++ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+virtio_console_init
+Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
+Patched SYNC.S (Ensure that all Cache Operations are completed) at 0x5020099e
+Found ECALL (Start System Timer) at 0x5020bfac
+Patched RDTIME (Read System Time) at 0x5020bfb2
+elf_len=0
+virtio_console_resize_event
+ABCnx_start: Entry
+uart_register: Registering /dev/console
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nxtask_activate: lpwork pid=1,TCB=0x50409110
+nxtask_activate: AppBringUp pid=2,TCB=0x50409710
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nxtask_activate: /system/bin/init pid=3,TCB=0x5040b730
+nxtask_exit: AppBringUp pid=2,TCB=0x50409710
+
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> nx_start: CPU0: Beginning Idle Loop
+
+nsh> hello_rust
+posix_spawn: pid=0x80202968 path=hello_rust file_actions=0x80202970 attr=0x80202978 argv=0x80202a18
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 1: Undefined symbol[0] has no name: -3
+nxtask_activate: hello_rust pid=6,TCB=0x50409790
+Hello, Rust!!
+Hello Ox64!
+You entered...
+Hello Ox64!
+
+nxtask_exit: hello_rust pid=6,TCB=0x50409790
+nsh> 
+```
+
+[(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
+
 # Appendix: Main Function is Missing
 
 TODO
 
 We test it with [Ox64 BL808 Emulator](https://lupyuen.github.io/articles/tinyemu3)...
+
+```bash
++ riscv64-unknown-elf-objdump --syms --source --reloc --demangle --line-numbers --wide --debugging nuttx
++ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
++ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> hello_rust
+nsh: hello_rust: command not found
+```
+
+_Huh? Why is hello_rust not found?_
+
+To find out, we [Enable Logging for Binary Loader and Scheduler](https://github.com/lupyuen2/wip-nuttx/commit/dca29d561f44c4749c067b8304dc898b1c6c6e0c)...
+
+```bash
+CONFIG_DEBUG_BINFMT=y
+CONFIG_DEBUG_BINFMT_ERROR=y
+CONFIG_DEBUG_BINFMT_WARN=y
+CONFIG_DEBUG_SCHED=y
+CONFIG_DEBUG_SCHED_ERROR=y
+CONFIG_DEBUG_SCHED_INFO=y
+CONFIG_DEBUG_SCHED_WARN=y
+```
+
+[(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
+
+Now it tells us why it failed...
 
 ```bash
 + riscv64-unknown-elf-objdump --syms --source --reloc --demangle --line-numbers --wide --debugging nuttx
