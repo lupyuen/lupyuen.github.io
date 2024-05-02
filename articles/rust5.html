@@ -67,8 +67,8 @@
     <nav id="TOC"><ul>
 <li><a href="#rust-app-for-nuttx">1 Rust App for NuttX</a><ul></ul></li>
 <li><a href="#compile-for-qemu-64-bit-risc-v">2 Compile for QEMU 64-bit RISC-V</a><ul></ul></li>
-<li><a href="#change-riscv64i-to-riscv64gc">3 Change riscv64i to riscv64gc</a><ul></ul></li>
-<li><a href="#test-on-qemu-64-bit-risc-v">4 Test on QEMU 64-bit RISC-V</a><ul></ul></li>
+<li><a href="#test-on-qemu-64-bit-risc-v">3 Test on QEMU 64-bit RISC-V</a><ul></ul></li>
+<li><a href="#change-riscv64i-to-riscv64gc">4 Change riscv64i to riscv64gc</a><ul></ul></li>
 <li><a href="#compile-rust-app-for-ox64-sbc">5 Compile Rust App for Ox64 SBC</a><ul></ul></li>
 <li><a href="#main-function-is-missing">6 Main Function is Missing</a><ul></ul></li>
 <li><a href="#change-main-function">7 Change Main Function</a><ul></ul></li>
@@ -139,16 +139,15 @@
   </span><span class="kw">loop </span>{}
 }</code></pre></div>
 <h1 id="compile-for-qemu-64-bit-risc-v"><a class="doc-anchor" href="#compile-for-qemu-64-bit-risc-v">§</a>2 Compile for QEMU 64-bit RISC-V</h1>
-<p>First we test on QEMU 64-bit RISC-V…</p>
-<p>Follow the steps below to compile Apache NuttX RTOS for QEMU 64-bit RISC-V…</p>
-<ul>
-<li>TODO</li>
-</ul>
-<div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh rv-virt:nsh64
-$ make menuconfig
-## TODO: Enable &quot;Hello Rust&quot; Example App
-## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig
-$ make --trace
+<p>First we test on QEMU Emulator…</p>
+<ol>
+<li>
+<p>Follow these steps to build <strong>NuttX for QEMU Emulator</strong>…</p>
+<p>TODO</p>
+</li>
+<li>
+<p><strong>If we Enable Build Tracing:</strong> We’ll see…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ make --trace
 
 ## Compile &quot;hello_main.c&quot; with GCC Compiler
 riscv64-unknown-elf-gcc \
@@ -187,9 +186,11 @@ rustc \
   -C panic=abort \
   -O   hello_rust_main.rs \
   -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
-</code></pre></div>
+</code></pre></div></li>
+<li>
+<p><strong>If the build fails</strong> with ???</p>
 <p>TODO</p>
-<p>For building our Rust App: Let’s change riscv64i to riscv64gc…</p>
+<p>Let’s change riscv64i to riscv64gc…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 $ rustc \
@@ -212,8 +213,39 @@ $ b=`
   `
 $ echo $b
 hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
-</code></pre></div><h1 id="change-riscv64i-to-riscv64gc"><a class="doc-anchor" href="#change-riscv64i-to-riscv64gc">§</a>3 Change riscv64i to riscv64gc</h1>
+</code></pre></div>
+<p>TODO: Test on Linux</p>
+</li>
+</ol>
+<h1 id="test-on-qemu-64-bit-risc-v"><a class="doc-anchor" href="#test-on-qemu-64-bit-risc-v">§</a>3 Test on QEMU 64-bit RISC-V</h1>
 <p>TODO</p>
+<p>And our Rust App runs OK on QEMU 64-bit RISC-V yay!</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
+ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+nx_start_application: Starting init thread
+task_spawn: name=nsh_main entry=0x8000745c file_actions=0 attr=0x8003d798 argv=0x8003d790
+nxtask_activate: nsh_main pid=1,TCB=0x8003e820
+
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; nx_start: CPU0: Beginning Idle Loop
+
+nsh&gt; hello_rust
+posix_spawn: pid=0x8003f734 path=hello_rust file_actions=0x8003f738 attr=0x8003f740 argv=0x8003f838
+nxposix_spawn_exec: ERROR: exec failed: 2
+task_spawn: name=hello_rust entry=0x80018622 file_actions=0x8003f738 attr=0x8003f740 argv=0x8003f840
+spawn_execattrs: Setting policy=2 priority=100 for pid=2
+nxtask_activate: hello_rust pid=2,TCB=0x8003fda0
+Hello, Rust!!
+abcd
+You entered...
+abcd
+
+nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
+nsh&gt; 
+</code></pre></div><h1 id="change-riscv64i-to-riscv64gc"><a class="doc-anchor" href="#change-riscv64i-to-riscv64gc">§</a>4 Change riscv64i to riscv64gc</h1>
+<p>TODO: What’s this error?</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile &quot;hello_rust_main.rs&quot; with Rust Compiler
 rustc \
   --edition 2021 \
@@ -266,34 +298,6 @@ $ popd
 $ make
 </code></pre></div>
 <p>TODO: Fix the path of hello_rust.o</p>
-<h1 id="test-on-qemu-64-bit-risc-v"><a class="doc-anchor" href="#test-on-qemu-64-bit-risc-v">§</a>4 Test on QEMU 64-bit RISC-V</h1>
-<p>TODO</p>
-<p>And our Rust App runs OK on QEMU 64-bit RISC-V yay!</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
-ABCnx_start: Entry
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-nx_start_application: Starting init thread
-task_spawn: name=nsh_main entry=0x8000745c file_actions=0 attr=0x8003d798 argv=0x8003d790
-nxtask_activate: nsh_main pid=1,TCB=0x8003e820
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; nx_start: CPU0: Beginning Idle Loop
-
-nsh&gt; hello_rust
-posix_spawn: pid=0x8003f734 path=hello_rust file_actions=0x8003f738 attr=0x8003f740 argv=0x8003f838
-nxposix_spawn_exec: ERROR: exec failed: 2
-task_spawn: name=hello_rust entry=0x80018622 file_actions=0x8003f738 attr=0x8003f740 argv=0x8003f840
-spawn_execattrs: Setting policy=2 priority=100 for pid=2
-nxtask_activate: hello_rust pid=2,TCB=0x8003fda0
-Hello, Rust!!
-abcd
-You entered...
-abcd
-
-nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
-nsh&gt; 
-</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rust5-title.jpg" alt="Rust Apps on Apache NuttX RTOS and Ox64 BL808 SBC" /></p>
 <h1 id="compile-rust-app-for-ox64-sbc"><a class="doc-anchor" href="#compile-rust-app-for-ox64-sbc">§</a>5 Compile Rust App for Ox64 SBC</h1>
 <p>TODO</p>
