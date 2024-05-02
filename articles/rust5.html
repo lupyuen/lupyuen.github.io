@@ -66,11 +66,11 @@
     <h1 class="title">Rust Apps on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
 <li><a href="#rust-app-for-nuttx">1 Rust App for NuttX</a><ul></ul></li>
-<li><a href="#rust-app-wont-compile-for-qemu-risc-v-64-bit">2 Rust App won’t compile for QEMU RISC-V 64-bit</a><ul></ul></li>
+<li><a href="#compile-rust-app-for-qemu-risc-v-64-bit">2 Compile Rust App for QEMU RISC-V 64-bit</a><ul></ul></li>
 <li><a href="#change-riscv64i-to-riscv64gc">3 Change riscv64i to riscv64gc</a><ul></ul></li>
 <li><a href="#test-on-qemu-risc-v-64-bit">4 Test on QEMU RISC-V 64-bit</a><ul></ul></li>
-<li><a href="#compile-rust-app-for-ox64-bl808-sbc">5 Compile Rust App for Ox64 BL808 SBC</a><ul></ul></li>
-<li><a href="#rust-app-wont-compile-for-ox64-sbc">6 Rust App won’t compile for Ox64 SBC</a><ul></ul></li>
+<li><a href="#compile-rust-app-for-ox64-sbc">5 Compile Rust App for Ox64 SBC</a><ul></ul></li>
+<li><a href="#main-function-is-missing">6 Main Function is Missing</a><ul></ul></li>
 <li><a href="#change-main-function">7 Change Main Function</a><ul></ul></li>
 <li><a href="#run-rust-app-on-ox64-emulator">8 Run Rust App on Ox64 Emulator</a><ul></ul></li>
 <li><a href="#run-rust-app-on-ox64-sbc">9 Run Rust App on Ox64 SBC</a><ul></ul></li>
@@ -136,7 +136,7 @@
   // For now, we loop forever
   </span><span class="kw">loop </span>{}
 }</code></pre></div>
-<h1 id="rust-app-wont-compile-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#rust-app-wont-compile-for-qemu-risc-v-64-bit">§</a>2 Rust App won’t compile for QEMU RISC-V 64-bit</h1>
+<h1 id="compile-rust-app-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#compile-rust-app-for-qemu-risc-v-64-bit">§</a>2 Compile Rust App for QEMU RISC-V 64-bit</h1>
 <p>TODO</p>
 <p>First we test on QEMU RISC-V 64-bit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh rv-virt:nsh64
@@ -256,7 +256,7 @@ nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
 nsh&gt; 
 </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rust5-title.jpg" alt="Rust Apps on Apache NuttX RTOS and Ox64 BL808 SBC" /></p>
-<h1 id="compile-rust-app-for-ox64-bl808-sbc"><a class="doc-anchor" href="#compile-rust-app-for-ox64-bl808-sbc">§</a>5 Compile Rust App for Ox64 BL808 SBC</h1>
+<h1 id="compile-rust-app-for-ox64-sbc"><a class="doc-anchor" href="#compile-rust-app-for-ox64-sbc">§</a>5 Compile Rust App for Ox64 SBC</h1>
 <p>TODO</p>
 <p>Let’s do the same for Ox64 BL808 SBC…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh ox64:nsh
@@ -321,7 +321,7 @@ $ popd
 $ make import
 </code></pre></div>
 <p>TODO: Fix the path of hello_rust.o</p>
-<h1 id="rust-app-wont-compile-for-ox64-sbc"><a class="doc-anchor" href="#rust-app-wont-compile-for-ox64-sbc">§</a>6 Rust App won’t compile for Ox64 SBC</h1>
+<h1 id="main-function-is-missing"><a class="doc-anchor" href="#main-function-is-missing">§</a>6 Main Function is Missing</h1>
 <p>We test it with <a href="https://lupyuen.github.io/articles/tinyemu3">Ox64 BL808 Emulator</a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>+ riscv64-unknown-elf-objdump --syms --source --reloc --demangle --line-numbers --wide --debugging nuttx
 + cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
