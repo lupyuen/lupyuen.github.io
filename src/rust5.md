@@ -82,11 +82,11 @@ fn panic(
 }
 ```
 
-# Compile for QEMU RISC-V 64-bit
+# Compile for QEMU 64-bit RISC-V
 
-First we test on QEMU RISC-V 64-bit...
+First we test on QEMU 64-bit RISC-V...
 
-Follow the steps below to compile Apache NuttX RTOS for QEMU RISC-V 64-bit...
+Follow the steps below to compile Apache NuttX RTOS for QEMU 64-bit RISC-V...
 
 - TODO
 
@@ -187,11 +187,11 @@ $ make
 
 TODO: Fix the path of hello_rust.o
 
-# Test on QEMU RISC-V 64-bit
+# Test on QEMU 64-bit RISC-V
 
 TODO
 
-And our Rust App runs OK on QEMU RISC-V 64-bit yay!
+And our Rust App runs OK on QEMU 64-bit RISC-V yay!
 
 ```bash
 $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
@@ -483,11 +483,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/rust5.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust5.md)
 
-# Appendix: Build NuttX for QEMU RISC-V 64-bit
+# Appendix: Build NuttX for QEMU 64-bit RISC-V
 
 TODO
 
-First we test on QEMU RISC-V 64-bit...
+First we test on QEMU 64-bit RISC-V...
 
 ```bash
 $ tools/configure.sh rv-virt:nsh64
