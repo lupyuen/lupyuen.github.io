@@ -205,7 +205,7 @@ nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
 nsh> 
 ```
 
-# Change riscv64i to riscv64gc
+# Rust Target is Incorrect
 
 _Why did our Rust Build fail with this error?_
 
@@ -389,13 +389,24 @@ nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh> 
 ```
 
-# Main Function and Makefile Target
+# Flat Mode vs Kernel Mode
 
 TODO: Earlier we saw 2 workarounds for our Ox64 Build...
 
 Ox64 Apps are a little more complicated then QEMU Apps
 
 Fix them in GSoC
+
+QEMU Flat Mode
+- NuttX Apps are Statically Linked into NuttX Kernel
+- No Memory Protection between Apps and Kernel
+- Everything runs in RISC-V Machine Mode
+
+Ox64 Kernel Mode
+- NuttX Apps are separate ELF Files
+- Apps and Kernel live in Protected Memory Regions
+- Kernel runs in RISC-V Supervisor Mode
+- Apps run in RISC-V User Mode
 
 # What's Next
 
