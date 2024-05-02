@@ -82,7 +82,7 @@ fn panic(
 }
 ```
 
-# Rust Apps won't compile for QEMU RISC-V 64-bit
+# Rust App won't compile for QEMU RISC-V 64-bit
 
 TODO
 
@@ -185,6 +185,10 @@ $ make
 
 TODO: Fix the path of hello_rust.o
 
+# Test on QEMU RISC-V 64-bit
+
+TODO
+
 And our Rust App runs OK on QEMU RISC-V 64-bit yay!
 
 ```bash
@@ -214,13 +218,11 @@ nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
 nsh> 
 ```
 
-# Rust Apps on Ox64 BL808 SBC
-
-TODO
-
 ![Rust Apps on Apache NuttX RTOS and Ox64 BL808 SBC](https://lupyuen.github.io/images/rust5-title.jpg)
 
-[_Thanks to cool-retro-term!_](https://github.com/Swordfish90/cool-retro-term)
+# Compile Rust App for Ox64 BL808 SBC
+
+TODO
 
 Let's do the same for Ox64 BL808 SBC...
 
@@ -292,6 +294,8 @@ $ make import
 
 TODO: Fix the path of hello_rust.o
 
+# Rust App won't compile for Ox64 SBC
+
 We test it with [Ox64 BL808 Emulator](https://lupyuen.github.io/articles/tinyemu3)...
 
 ```bash
@@ -340,7 +344,7 @@ nsh>
 
 Which fails because the main() function is missing!
 
-# TODO
+# Change Main Function
 
 TODO
 
@@ -355,6 +359,10 @@ To this...
 ```rust
 pub extern "C" fn main(_argc: i32, _argv: *const *const u8) -> i32 {
 ```
+
+# Run Rust App on Ox64 Emulator
+
+TODO
 
 Now our Rust App runs OK on Ox64 BL808 Emulator!
 
@@ -401,13 +409,13 @@ nsh>
 
 [(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
 
-# TODO
+# Run Rust App on Ox64 SBC
 
 TODO
 
 Our Rust App also works OK on a real Ox64 BL808 SBC!
 
-https://gist.github.com/lupyuen/7fabbffd16f22914b299ced3723b9b9b
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/7fabbffd16f22914b299ced3723b9b9b)
 
 ```bash
 Enter choice: 1:.Pine64 0X64 Kernel
