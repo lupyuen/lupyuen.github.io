@@ -84,9 +84,11 @@ fn panic(
 
 # Compile for QEMU RISC-V 64-bit
 
-TODO
-
 First we test on QEMU RISC-V 64-bit...
+
+Follow the steps below to compile Apache NuttX RTOS for QEMU RISC-V 64-bit...
+
+- TODO
 
 ```bash
 $ tools/configure.sh rv-virt:nsh64
@@ -480,3 +482,133 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/rust5.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust5.md)
+
+# Appendix: Build NuttX for QEMU RISC-V 64-bit
+
+TODO
+
+First we test on QEMU RISC-V 64-bit...
+
+```bash
+$ tools/configure.sh rv-virt:nsh64
+$ make menuconfig
+## TODO: Enable "Hello Rust" Example App
+## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig
+$ make --trace
+
+## Compile "hello_main.c" with GCC Compiler
+riscv64-unknown-elf-gcc \
+  -c \
+  -fno-common \
+  -Wall \
+  -Wstrict-prototypes \
+  -Wshadow \
+  -Wundef \
+  -Wno-attributes \
+  -Wno-unknown-pragmas \
+  -Wno-psabi \
+  -Os \
+  -fno-strict-aliasing \
+  -fomit-frame-pointer \
+  -ffunction-sections \
+  -fdata-sections \
+  -g \
+  -mcmodel=medany \
+  -march=rv64imafdc \
+  -mabi=lp64d \
+  -isystem /Users/Luppy/riscv/nuttx/include \
+  -D__NuttX__ \
+  -DNDEBUG  \
+  -pipe \
+  -I "/Users/Luppy/riscv/apps/include" \
+  -Dmain=hello_main  hello_main.c \
+  -o  hello_main.c.Users.Luppy.riscv.apps.examples.hello.o
+
+## Compile "hello_rust_main.rs" with Rust Compiler
+rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv64i-unknown-none-elf \
+  -C panic=abort \
+  -O   hello_rust_main.rs \
+  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+
+error: Error loading target specification: Could not find specification for target "riscv64i-unknown-none-elf". Run `rustc --print target-list` for a list of built-in targets
+
+make[2]: *** [/Users/Luppy/riscv/apps/Application.mk:275: hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o] Error 1
+make[1]: *** [Makefile:51: /Users/Luppy/riscv/apps/examples/hello_rust_all] Error 2
+make: *** [tools/LibTargets.mk:232: /Users/Luppy/riscv/apps/libapps.a] Error 2
+```
+
+# Appendix: Build NuttX for Ox64 SBC
+
+TODO
+
+Let's do the same for Ox64 BL808 SBC...
+
+```bash
+$ tools/configure.sh ox64:nsh
+$ make menuconfig
+## TODO: Enable "Hello Rust" Example App
+## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/bl808/ox64/configs/nsh/defconfig
+$ make
+$ make --trace export
+$ pushd ../apps
+$ make --trace import
+
+riscv64-unknown-elf-gcc \
+  -c \
+  -fno-common \
+  -Wall \
+  -Wstrict-prototypes \
+  -Wshadow \
+  -Wundef \
+  -Wno-attributes \
+  -Wno-unknown-pragmas \
+  -Wno-psabi \
+  -fno-common \
+  -pipe  \
+  -Os \
+  -fno-strict-aliasing \
+  -fomit-frame-pointer \
+  -ffunction-sections \
+  -fdata-sections \
+  -g \
+  -mcmodel=medany \
+  -march=rv64imafdc \
+  -mabi=lp64d \
+  -isystem /Users/Luppy/ox64/apps/import/include \
+  -isystem /Users/Luppy/ox64/apps/import/include \
+  -D__NuttX__  \
+  -I "/Users/Luppy/ox64/apps/include"   hello_main.c \
+  -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o
+
+Makefile:52: target '/Users/Luppy/ox64/apps/examples/hello_rust_install' does not exist
+make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR="/Users/Luppy/ox64/apps"
+make[3]: Entering directory '/Users/Luppy/ox64/apps/examples/hello_rust'
+make[3]: *** No rule to make target 'hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o', needed by '/Users/Luppy/ox64/apps/bin/hello_rust'.  Stop.
+make[3]: Leaving directory '/Users/Luppy/ox64/apps/examples/hello_rust'
+make[2]: *** [Makefile:52: /Users/Luppy/ox64/apps/examples/hello_rust_install] Error 2
+make[2]: Leaving directory '/Users/Luppy/ox64/apps'
+make[1]: *** [Makefile:78: .import] Error 2
+make[1]: Leaving directory '/Users/Luppy/ox64/apps'
+make: *** [Makefile:84: import] Error 2
+```
+
+Like QEMU, we change riscv64i to riscv64gc...
+
+```bash
+$ rustup target add riscv64gc-unknown-none-elf
+$ pushd ../apps/examples/hello_rust 
+$ rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv64gc-unknown-none-elf \
+  -C panic=abort \
+  -O   hello_rust_main.rs \
+  -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+$ popd
+$ make import
+```
