@@ -74,7 +74,9 @@
 <li><a href="#change-main-function">7 Change Main Function</a><ul></ul></li>
 <li><a href="#run-rust-app-on-ox64-emulator">8 Run Rust App on Ox64 Emulator</a><ul></ul></li>
 <li><a href="#run-rust-app-on-ox64-sbc">9 Run Rust App on Ox64 SBC</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 May 2024</em></p>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-qemu-risc-v-64-bit">11 Appendix: Build NuttX for QEMU RISC-V 64-bit</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-ox64-sbc">12 Appendix: Build NuttX for Ox64 SBC</a><ul></ul></li></ul></nav><p>📝 <em>7 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust5-title.jpg" alt="Rust Apps on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS" /></p>
 <div style="text-align: center">
 <p><a href="https://github.com/Swordfish90/cool-retro-term"><em>Thanks to cool-retro-term!</em></a></p>
@@ -137,8 +139,11 @@
   </span><span class="kw">loop </span>{}
 }</code></pre></div>
 <h1 id="compile-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#compile-for-qemu-risc-v-64-bit">§</a>2 Compile for QEMU RISC-V 64-bit</h1>
-<p>TODO</p>
 <p>First we test on QEMU RISC-V 64-bit…</p>
+<p>Follow the steps below to compile Apache NuttX RTOS for QEMU RISC-V 64-bit…</p>
+<ul>
+<li>TODO</li>
+</ul>
 <div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
 ## TODO: Enable &quot;Hello Rust&quot; Example App
@@ -484,7 +489,122 @@ nsh&gt;
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust5.md"><strong>lupyuen.github.io/src/rust5.md</strong></a></p>
+<h1 id="appendix-build-nuttx-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#appendix-build-nuttx-for-qemu-risc-v-64-bit">§</a>11 Appendix: Build NuttX for QEMU RISC-V 64-bit</h1>
+<p>TODO</p>
+<p>First we test on QEMU RISC-V 64-bit…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh rv-virt:nsh64
+$ make menuconfig
+## TODO: Enable &quot;Hello Rust&quot; Example App
+## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig
+$ make --trace
 
+## Compile &quot;hello_main.c&quot; with GCC Compiler
+riscv64-unknown-elf-gcc \
+  -c \
+  -fno-common \
+  -Wall \
+  -Wstrict-prototypes \
+  -Wshadow \
+  -Wundef \
+  -Wno-attributes \
+  -Wno-unknown-pragmas \
+  -Wno-psabi \
+  -Os \
+  -fno-strict-aliasing \
+  -fomit-frame-pointer \
+  -ffunction-sections \
+  -fdata-sections \
+  -g \
+  -mcmodel=medany \
+  -march=rv64imafdc \
+  -mabi=lp64d \
+  -isystem /Users/Luppy/riscv/nuttx/include \
+  -D__NuttX__ \
+  -DNDEBUG  \
+  -pipe \
+  -I &quot;/Users/Luppy/riscv/apps/include&quot; \
+  -Dmain=hello_main  hello_main.c \
+  -o  hello_main.c.Users.Luppy.riscv.apps.examples.hello.o
+
+## Compile &quot;hello_rust_main.rs&quot; with Rust Compiler
+rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv64i-unknown-none-elf \
+  -C panic=abort \
+  -O   hello_rust_main.rs \
+  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+
+error: Error loading target specification: Could not find specification for target &quot;riscv64i-unknown-none-elf&quot;. Run `rustc --print target-list` for a list of built-in targets
+
+make[2]: *** [/Users/Luppy/riscv/apps/Application.mk:275: hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o] Error 1
+make[1]: *** [Makefile:51: /Users/Luppy/riscv/apps/examples/hello_rust_all] Error 2
+make: *** [tools/LibTargets.mk:232: /Users/Luppy/riscv/apps/libapps.a] Error 2
+</code></pre></div><h1 id="appendix-build-nuttx-for-ox64-sbc"><a class="doc-anchor" href="#appendix-build-nuttx-for-ox64-sbc">§</a>12 Appendix: Build NuttX for Ox64 SBC</h1>
+<p>TODO</p>
+<p>Let’s do the same for Ox64 BL808 SBC…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh ox64:nsh
+$ make menuconfig
+## TODO: Enable &quot;Hello Rust&quot; Example App
+## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/bl808/ox64/configs/nsh/defconfig
+$ make
+$ make --trace export
+$ pushd ../apps
+$ make --trace import
+
+riscv64-unknown-elf-gcc \
+  -c \
+  -fno-common \
+  -Wall \
+  -Wstrict-prototypes \
+  -Wshadow \
+  -Wundef \
+  -Wno-attributes \
+  -Wno-unknown-pragmas \
+  -Wno-psabi \
+  -fno-common \
+  -pipe  \
+  -Os \
+  -fno-strict-aliasing \
+  -fomit-frame-pointer \
+  -ffunction-sections \
+  -fdata-sections \
+  -g \
+  -mcmodel=medany \
+  -march=rv64imafdc \
+  -mabi=lp64d \
+  -isystem /Users/Luppy/ox64/apps/import/include \
+  -isystem /Users/Luppy/ox64/apps/import/include \
+  -D__NuttX__  \
+  -I &quot;/Users/Luppy/ox64/apps/include&quot;   hello_main.c \
+  -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o
+
+Makefile:52: target &#39;/Users/Luppy/ox64/apps/examples/hello_rust_install&#39; does not exist
+make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR=&quot;/Users/Luppy/ox64/apps&quot;
+make[3]: Entering directory &#39;/Users/Luppy/ox64/apps/examples/hello_rust&#39;
+make[3]: *** No rule to make target &#39;hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o&#39;, needed by &#39;/Users/Luppy/ox64/apps/bin/hello_rust&#39;.  Stop.
+make[3]: Leaving directory &#39;/Users/Luppy/ox64/apps/examples/hello_rust&#39;
+make[2]: *** [Makefile:52: /Users/Luppy/ox64/apps/examples/hello_rust_install] Error 2
+make[2]: Leaving directory &#39;/Users/Luppy/ox64/apps&#39;
+make[1]: *** [Makefile:78: .import] Error 2
+make[1]: Leaving directory &#39;/Users/Luppy/ox64/apps&#39;
+make: *** [Makefile:84: import] Error 2
+</code></pre></div>
+<p>Like QEMU, we change riscv64i to riscv64gc…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
+$ pushd ../apps/examples/hello_rust 
+$ rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv64gc-unknown-none-elf \
+  -C panic=abort \
+  -O   hello_rust_main.rs \
+  -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+$ popd
+$ make import
+</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
