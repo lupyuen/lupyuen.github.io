@@ -175,8 +175,9 @@ riscv64-unknown-elf-gcc \
   -DNDEBUG  \
   -pipe \
   -I &quot;/Users/Luppy/riscv/apps/include&quot; \
-  -Dmain=hello_main  hello_main.c \
-  -o  hello_main.c.Users.Luppy.riscv.apps.examples.hello.o
+  -Dmain=hello_main \
+  hello_main.c \
+  -o hello_main.c.Users.Luppy.riscv.apps.examples.hello.o
 
 ## Compile &quot;hello_rust_main.rs&quot; with Rust Compiler
 rustc \
@@ -185,13 +186,14 @@ rustc \
   -g \
   --target riscv64i-unknown-none-elf \
   -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
 </code></pre></div></li>
 <li>
 <p><strong>If the build fails</strong> with this error…</p>
 <p><em>“Could not find specification for target riscv64i-unknown-none-elf”</em></p>
-<p>Then we run this…</p>
+<p>Then our <strong>Rust Target</strong> is incorrect! We run this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 $ rustc \
@@ -200,8 +202,9 @@ $ rustc \
   -g \
   --target riscv64gc-unknown-none-elf \
   -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
 $ popd
 $ make
 </code></pre></div>
@@ -248,10 +251,12 @@ nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
 nsh&gt; 
 </code></pre></div><h1 id="rust-target-is-incorrect"><a class="doc-anchor" href="#rust-target-is-incorrect">§</a>4 Rust Target is Incorrect</h1>
 <p><em>Why did our Rust Build fail with this error?</em></p>
-<div class="example-wrap"><pre class="language-bash"><code>Could not find specification for target
-&quot;riscv64i-unknown-none-elf&quot;.
+<div class="example-wrap"><pre class="language-bash"><code>$ rustc hello_rust_main.rs --target riscv64i-unknown-none-elf ...
+
+Could not find specification for target
+  &quot;riscv64i-unknown-none-elf&quot;
 Run `rustc --print target-list`
-for a list of built-in targets
+  for a list of built-in targets
 </code></pre></div>
 <p>Rust Compiler says that <strong><code>riscv64i</code></strong> isn’t a valid <strong>Rust Target</strong> for 64-bit RISC-V.</p>
 <p><em>Is riscv64i the correct target for QEMU?</em></p>
@@ -268,8 +273,9 @@ $ rustc \
   -g \
   --target riscv64gc-unknown-none-elf \
   -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
 $ popd
 $ make
 </code></pre></div>
@@ -293,7 +299,7 @@ $ make
 <p>To this…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>main(...)</code></pre></div>
-<p>TODO: Why?</p>
+<p>(We’ll come back to this)</p>
 </li>
 <li>
 <p><strong>If we Enable Build Tracing:</strong> We’ll see…</p>
@@ -327,9 +333,9 @@ riscv64-unknown-elf-gcc \
   -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o
 </code></pre></div></li>
 <li>
-<p><strong>If the build fails</strong> with this error…</p>
+<p><strong>If the Build Fails</strong> with this error…</p>
 <p><em>“target hello_rust_install does not exist”</em></p>
-<p>Then we run this…</p>
+<p>Then our <strong>Makefile Target</strong> is missing! We run this…</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
@@ -339,13 +345,14 @@ $ rustc \
   -g \
   --target riscv64gc-unknown-none-elf \
   -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
 $ popd
 $ make import
 </code></pre></div>
 <p>TODO: Fix the path of hello_rust.o</p>
-<p>TODO: Why</p>
+<p>(We’ll come back to this)</p>
 </li>
 </ol>
 <h1 id="run-rust-app-on-ox64-sbc"><a class="doc-anchor" href="#run-rust-app-on-ox64-sbc">§</a>6 Run Rust App on Ox64 SBC</h1>
@@ -393,21 +400,35 @@ nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh&gt; 
 </code></pre></div><h1 id="flat-mode-vs-kernel-mode"><a class="doc-anchor" href="#flat-mode-vs-kernel-mode">§</a>7 Flat Mode vs Kernel Mode</h1>
 <p>TODO: Earlier we saw 2 workarounds for our Ox64 Build…</p>
+<ul>
+<li>
+<p>Main Function</p>
+</li>
+<li>
+<p>Makefile Target</p>
+</li>
+</ul>
 <p>Ox64 Apps are a little more complicated then QEMU Apps</p>
 <p>Fix them in GSoC</p>
-<p>QEMU Flat Mode</p>
+<p>NuttX QEMU: Flat Mode</p>
 <ul>
 <li>NuttX Apps are Statically Linked into NuttX Kernel</li>
+<li>Main Functions for Apps are named <em>hello_main()</em>, <em>hello_rust_main()</em>, …</li>
 <li>No Memory Protection between Apps and Kernel</li>
 <li>Everything runs in RISC-V Machine Mode</li>
+<li>A little easier to troubleshoot</li>
 </ul>
-<p>Ox64 Kernel Mode</p>
+<p>NuttX Ox64: Kernel Mode</p>
 <ul>
 <li>NuttX Apps are separate ELF Files</li>
+<li>Main Functions for Apps are all named <em>main()</em></li>
 <li>Apps and Kernel live in Protected Memory Regions</li>
 <li>Kernel runs in RISC-V Supervisor Mode</li>
 <li>Apps run in RISC-V User Mode</li>
+<li>More realistic for Actual Hardware</li>
 </ul>
+<p>-Dmain=hello_main</p>
+<p>QEMU Kernel mode</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -477,8 +498,9 @@ rustc \
   -g \
   --target riscv64i-unknown-none-elf \
   -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
 
 error: Error loading target specification: Could not find specification for target &quot;riscv64i-unknown-none-elf&quot;. Run `rustc --print target-list` for a list of built-in targets
 
@@ -521,7 +543,8 @@ riscv64-unknown-elf-gcc \
   -isystem /Users/Luppy/ox64/apps/import/include \
   -isystem /Users/Luppy/ox64/apps/import/include \
   -D__NuttX__  \
-  -I &quot;/Users/Luppy/ox64/apps/include&quot;   hello_main.c \
+  -I &quot;/Users/Luppy/ox64/apps/include&quot; \
+  hello_main.c \
   -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o
 
 Makefile:52: target &#39;/Users/Luppy/ox64/apps/examples/hello_rust_install&#39; does not exist
@@ -544,8 +567,9 @@ $ rustc \
   -g \
   --target riscv64gc-unknown-none-elf \
   -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
 $ popd
 $ make import
 </code></pre></div><h1 id="appendix-run-nuttx-on-ox64-emulator"><a class="doc-anchor" href="#appendix-run-nuttx-on-ox64-emulator">§</a>11 Appendix: Run NuttX on Ox64 Emulator</h1>
@@ -688,8 +712,9 @@ $ rustc \
   -g \
   --target riscv64gc-unknown-none-elf \
   -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+  -O \
+  hello_rust_main.rs \
+  -o hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
 $ popd
 $ make import
 </code></pre></div>
