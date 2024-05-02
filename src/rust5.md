@@ -14,6 +14,72 @@ TODO
 
 Will Rust Apps run on a 64-bit RISC-V SBC, like Ox64 BL808? Let's find out!
 
+# Rust App for NuttX
+
+Below is the simplest Rust App for Apache NuttX RTOS. We'll run this on Ox64 BL808 SBC: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L20-L41)
+
+```rust
+// main() function not needed
+#![no_main]
+
+// Use Rust Core Library (instead of Rust Standard Library)
+#![no_std]
+
+// Import printf() from C into Rust
+extern "C" {
+  pub fn printf(
+    format: *const u8,  // Equivalent to `const char *`
+    ...                 // Optional Arguments
+  ) -> i32;             // Returns `int`
+}                       // TODO: Standardise `i32` as `c_int`
+```
+
+TODO: (We'll explain __`[no_std]`__ in a while)
+
+The code above imports the _printf()_ function from C into Rust.
+
+This is how we call it in Rust: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L54-L74)
+
+```rust
+// Main Function exported by Rust to C.
+// Don't mangle the Function Name.
+#[no_mangle]
+pub extern "C" fn hello_rust_main(
+  _argc: i32,              // Equivalent to `int argc`
+  _argv: *const *const u8  // Equivalent to `char **argv`
+) -> i32 {                 // Returns `int`
+
+  // Calling a C Function might have Unsafe consequences
+  unsafe {
+    printf(                 // Call printf() with...
+      b"Hello, Rust!!\n\0"  // Byte String terminated by null
+        as *const u8        // Cast as `const char *`
+    );
+  }
+
+  // Exit with status 0
+  0
+}
+```
+
+Rust expects us to provide a __Panic Handler__. We write a simple one: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L27-L54)
+
+```rust
+// Import the Panic Info for our Panic Handler
+use core::panic::PanicInfo;
+
+// Handle a Rust Panic. Needed for [no_std]
+#[panic_handler]
+fn panic(
+  _panic: &PanicInfo<'_>  // Receives the Panic Info and Stack Trace
+) -> ! {                  // Never returns
+
+  // TODO: Print the Panic Info and Stack Trace
+  // For now, we loop forever
+  loop {}
+}
+```
+
 # Rust Apps won't compile for QEMU RISC-V 64-bit
 
 TODO
