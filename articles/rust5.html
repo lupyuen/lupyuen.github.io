@@ -65,19 +65,74 @@
 
     <h1 class="title">Rust Apps on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#rust-apps-wont-compile-for-qemu-risc-v-64-bit">1 Rust Apps won’t compile for QEMU RISC-V 64-bit</a><ul></ul></li>
-<li><a href="#change-riscv64i-to-riscv64gc">2 Change riscv64i to riscv64gc</a><ul></ul></li>
-<li><a href="#rust-apps-on-ox64-bl808-sbc">3 Rust Apps on Ox64 BL808 SBC</a><ul></ul></li>
-<li><a href="#todo">4 TODO</a><ul></ul></li>
-<li><a href="#todo-1">5 TODO</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 May 2024</em></p>
+<li><a href="#rust-app-for-nuttx">1 Rust App for NuttX</a><ul></ul></li>
+<li><a href="#rust-apps-wont-compile-for-qemu-risc-v-64-bit">2 Rust Apps won’t compile for QEMU RISC-V 64-bit</a><ul></ul></li>
+<li><a href="#change-riscv64i-to-riscv64gc">3 Change riscv64i to riscv64gc</a><ul></ul></li>
+<li><a href="#rust-apps-on-ox64-bl808-sbc">4 Rust Apps on Ox64 BL808 SBC</a><ul></ul></li>
+<li><a href="#todo">5 TODO</a><ul></ul></li>
+<li><a href="#todo-1">6 TODO</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust5-title.jpg" alt="Rust Apps on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS" /></p>
 <div style="text-align: center">
 <p><a href="https://github.com/Swordfish90/cool-retro-term"><em>Thanks to cool-retro-term!</em></a></p>
 </div>
 <p>TODO</p>
 <p>Will Rust Apps run on a 64-bit RISC-V SBC, like Ox64 BL808? Let’s find out!</p>
-<h1 id="rust-apps-wont-compile-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#rust-apps-wont-compile-for-qemu-risc-v-64-bit">§</a>1 Rust Apps won’t compile for QEMU RISC-V 64-bit</h1>
+<h1 id="rust-app-for-nuttx"><a class="doc-anchor" href="#rust-app-for-nuttx">§</a>1 Rust App for NuttX</h1>
+<p>Below is the simplest Rust App for Apache NuttX RTOS. We’ll run this on Ox64 BL808 SBC: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L20-L41">hello_rust_main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// main() function not needed
+</span><span class="attr">#![no_main]
+
+</span><span class="comment">// Use Rust Core Library (instead of Rust Standard Library)
+</span><span class="attr">#![no_std]
+
+</span><span class="comment">// Import printf() from C into Rust
+</span><span class="kw">extern </span><span class="string">"C" </span>{
+  <span class="kw">pub fn </span>printf(
+    format: <span class="kw-2">*const </span>u8,  <span class="comment">// Equivalent to `const char *`
+    </span>...                 <span class="comment">// Optional Arguments
+  </span>) -&gt; i32;             <span class="comment">// Returns `int`
+</span>}                       <span class="comment">// TODO: Standardise `i32` as `c_int`</span></code></pre></div>
+<p>TODO: (We’ll explain <strong><code>[no_std]</code></strong> in a while)</p>
+<p>The code above imports the <em>printf()</em> function from C into Rust.</p>
+<p>This is how we call it in Rust: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L54-L74">hello_rust_main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Main Function exported by Rust to C.
+// Don't mangle the Function Name.
+</span><span class="attr">#[no_mangle]
+</span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(
+  _argc: i32,              <span class="comment">// Equivalent to `int argc`
+  </span>_argv: <span class="kw-2">*const *const </span>u8  <span class="comment">// Equivalent to `char **argv`
+</span>) -&gt; i32 {                 <span class="comment">// Returns `int`
+
+  // Calling a C Function might have Unsafe consequences
+  </span><span class="kw">unsafe </span>{
+    printf(                 <span class="comment">// Call printf() with...
+      </span><span class="string">b"Hello, Rust!!\n\0"  </span><span class="comment">// Byte String terminated by null
+        </span><span class="kw">as </span><span class="kw-2">*const </span>u8        <span class="comment">// Cast as `const char *`
+    </span>);
+  }
+
+  <span class="comment">// Exit with status 0
+  </span><span class="number">0
+</span>}</code></pre></div>
+<p>Rust expects us to provide a <strong>Panic Handler</strong>. We write a simple one: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L27-L54">hello_rust_main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Import the Panic Info for our Panic Handler
+</span><span class="kw">use </span>core::panic::PanicInfo;
+
+<span class="comment">// Handle a Rust Panic. Needed for [no_std]
+</span><span class="attr">#[panic_handler]
+</span><span class="kw">fn </span>panic(
+  _panic: <span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;  <span class="comment">// Receives the Panic Info and Stack Trace
+</span>) -&gt; ! {                  <span class="comment">// Never returns
+
+  // TODO: Print the Panic Info and Stack Trace
+  // For now, we loop forever
+  </span><span class="kw">loop </span>{}
+}</code></pre></div>
+<h1 id="rust-apps-wont-compile-for-qemu-risc-v-64-bit"><a class="doc-anchor" href="#rust-apps-wont-compile-for-qemu-risc-v-64-bit">§</a>2 Rust Apps won’t compile for QEMU RISC-V 64-bit</h1>
 <p>TODO</p>
 <p>First we test on QEMU RISC-V 64-bit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh rv-virt:nsh64
@@ -149,7 +204,7 @@ make: *** [tools/LibTargets.mk:232: /Users/Luppy/riscv/apps/libapps.a] Error 2
 </li>
 </ol>
 <p>Let’s fix this!</p>
-<h1 id="change-riscv64i-to-riscv64gc"><a class="doc-anchor" href="#change-riscv64i-to-riscv64gc">§</a>2 Change riscv64i to riscv64gc</h1>
+<h1 id="change-riscv64i-to-riscv64gc"><a class="doc-anchor" href="#change-riscv64i-to-riscv64gc">§</a>3 Change riscv64i to riscv64gc</h1>
 <p>TODO</p>
 <p><em>Is <strong><code>riscv64i</code></strong> the correct target for QEMU?</em></p>
 <p>Nope <a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices">QEMU supports riscv64gc</a>!</p>
@@ -193,7 +248,7 @@ abcd
 
 nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
 nsh&gt; 
-</code></pre></div><h1 id="rust-apps-on-ox64-bl808-sbc"><a class="doc-anchor" href="#rust-apps-on-ox64-bl808-sbc">§</a>3 Rust Apps on Ox64 BL808 SBC</h1>
+</code></pre></div><h1 id="rust-apps-on-ox64-bl808-sbc"><a class="doc-anchor" href="#rust-apps-on-ox64-bl808-sbc">§</a>4 Rust Apps on Ox64 BL808 SBC</h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rust5-title.jpg" alt="Rust Apps on Apache NuttX RTOS and Ox64 BL808 SBC" /></p>
 <p><a href="https://github.com/Swordfish90/cool-retro-term"><em>Thanks to cool-retro-term!</em></a></p>
@@ -303,7 +358,7 @@ nsh&gt;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(root-riscv64.cfg is here)</a></p>
 <p>Which fails because the main() function is missing!</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>4 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>5 TODO</h1>
 <p>TODO</p>
 <p>So we change this in hello_rust_main.rs…</p>
 
@@ -352,7 +407,7 @@ nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh&gt; 
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(root-riscv64.cfg is here)</a></p>
-<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>5 TODO</h1>
+<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>6 TODO</h1>
 <p>TODO</p>
 <p>Our Rust App also works OK on a real Ox64 BL808 SBC!</p>
 <p>https://gist.github.com/lupyuen/7fabbffd16f22914b299ced3723b9b9b</p>
@@ -395,7 +450,7 @@ You entered...
 
 nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh&gt; 
-</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
+</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
