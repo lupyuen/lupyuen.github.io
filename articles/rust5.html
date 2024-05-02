@@ -399,34 +399,58 @@ You entered...
 nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh&gt; 
 </code></pre></div><h1 id="flat-mode-vs-kernel-mode"><a class="doc-anchor" href="#flat-mode-vs-kernel-mode">§</a>7 Flat Mode vs Kernel Mode</h1>
-<p>TODO: Earlier we saw 2 workarounds for our Ox64 Build…</p>
+<p><em>Why the funny fixes for NuttX Ox64?</em></p>
+<p>Earlier we saw 2 workarounds for our Ox64 Build…</p>
 <ul>
 <li>
-<p>Main Function</p>
+<p>We renamed the <strong>Main Function</strong></p>
 </li>
 <li>
-<p>Makefile Target</p>
+<p>We fixed the <strong>Makefile Target</strong></p>
 </li>
 </ul>
-<p>Ox64 Apps are a little more complicated then QEMU Apps</p>
+<p>That’s because <strong>Ox64 Apps</strong> are a little more complicated than <strong>QEMU Apps</strong>…</p>
+<p><strong>NuttX QEMU</strong> runs in <strong>Flat Mode</strong> (pic above)</p>
+<ul>
+<li>
+<p>NuttX Apps are <strong>Statically Linked</strong> into NuttX Kernel</p>
+</li>
+<li>
+<p><strong>Main Functions</strong> for Apps are named <em>hello_main()</em>, <em>hello_rust_main()</em>, …</p>
+</li>
+<li>
+<p><strong>No Memory Protection</strong> between Apps and Kernel</p>
+</li>
+<li>
+<p>Everything runs in <strong>RISC-V Machine Mode</strong></p>
+</li>
+<li>
+<p>A little easier to troubleshoot</p>
+</li>
+</ul>
+<p><strong>NuttX Ox64</strong> runs in <strong>Kernel Mode</strong> (pic below)</p>
+<ul>
+<li>
+<p>NuttX Apps are <strong>Separate ELF Files</strong></p>
+</li>
+<li>
+<p><strong>Main Functions</strong> for Apps are all named <em>main()</em></p>
+</li>
+<li>
+<p>Apps and Kernel live in <strong>Protected Memory Regions</strong></p>
+</li>
+<li>
+<p>Kernel runs in <strong>RISC-V Supervisor Mode</strong></p>
+</li>
+<li>
+<p>Apps run in <strong>RISC-V User Mode</strong></p>
+</li>
+<li>
+<p>More realistic for Actual Hardware</p>
+</li>
+</ul>
+<p>TODO: (More about Kernel Mode)</p>
 <p>Fix them in GSoC</p>
-<p>NuttX QEMU: Flat Mode</p>
-<ul>
-<li>NuttX Apps are Statically Linked into NuttX Kernel</li>
-<li>Main Functions for Apps are named <em>hello_main()</em>, <em>hello_rust_main()</em>, …</li>
-<li>No Memory Protection between Apps and Kernel</li>
-<li>Everything runs in RISC-V Machine Mode</li>
-<li>A little easier to troubleshoot</li>
-</ul>
-<p>NuttX Ox64: Kernel Mode</p>
-<ul>
-<li>NuttX Apps are separate ELF Files</li>
-<li>Main Functions for Apps are all named <em>main()</em></li>
-<li>Apps and Kernel live in Protected Memory Regions</li>
-<li>Kernel runs in RISC-V Supervisor Mode</li>
-<li>Apps run in RISC-V User Mode</li>
-<li>More realistic for Actual Hardware</li>
-</ul>
 <p>-Dmain=hello_main</p>
 <p>QEMU Kernel mode</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
