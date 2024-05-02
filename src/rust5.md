@@ -134,10 +134,9 @@ First we test on QEMU Emulator...
       -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
     ```
 
-1.  __If the build fails__ with ???
+1.  __If the build fails__ with _"Could not find specification for target riscv64i-unknown-none-elf"_...
 
     TODO
-
 
     Let's change riscv64i to riscv64gc...
 
@@ -206,49 +205,28 @@ nsh>
 
 # Change riscv64i to riscv64gc
 
-TODO: What's this error?
+_Why did our Rust Build fail with this error?_
 
 ```bash
-## Compile "hello_rust_main.rs" with Rust Compiler
-rustc \
-  --edition 2021 \
-  --emit obj \
-  -g \
-  --target riscv64i-unknown-none-elf \
-  -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
-
-error: Error loading target specification: Could not find specification for target "riscv64i-unknown-none-elf". Run `rustc --print target-list` for a list of built-in targets
-
-make[2]: *** [/Users/Luppy/riscv/apps/Application.mk:275: hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o] Error 1
-make[1]: *** [Makefile:51: /Users/Luppy/riscv/apps/examples/hello_rust_all] Error 2
-make: *** [tools/LibTargets.mk:232: /Users/Luppy/riscv/apps/libapps.a] Error 2
+Could not find specification for target
+"riscv64i-unknown-none-elf".
+Run `rustc --print target-list`
+for a list of built-in targets
 ```
 
-But it fails! Rust Compiler says that __`riscv64i`__ isn't a valid Rust Target for 64-bit RISC-V.
+Rust Compiler says that __`riscv64i`__ isn't a valid __Rust Target__ for 64-bit RISC-V.
 
-So many questions...
+_Is riscv64i the correct target for QEMU?_
 
-1.  Is __`riscv64i`__ the correct target for QEMU?
+Remember earlier we called GCC Compiler and Rust Compiler?
 
-    [(__Hint:__ See this)](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices)
+TODO
 
-1.  How should we __Fix the Build__?
-    
-1.  Do we need a __Custom Target__?
+GCC Compiler compiles for rv64imafdc, but Rust Compiler is compiling for riscv64i!
 
-    (__Hint:__ Answer is printed above somewhere)
+TODO
 
-1.  Will it run on [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358)?
-
-Let's fix this!
-
-_Is __`riscv64i`__ the correct target for QEMU?_
-
-Nope [QEMU supports riscv64gc](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices)!
-
-For building our Rust App: Let's change riscv64i to riscv64gc...
+Let's harmonise Rust Compiler with GCC Compiler: We'll select rv64gc, since it's closest to rv64imafdc...
 
 ```bash
 $ rustup target add riscv64gc-unknown-none-elf
@@ -267,11 +245,13 @@ $ make
 
 TODO: Fix the path of hello_rust.o
 
+This fixes our build. For now!
 
-
-![Rust Apps on Apache NuttX RTOS and Ox64 BL808 SBC](https://lupyuen.github.io/images/rust5-title.jpg)
+[(QEMU supports riscv64gc)](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices)!
 
 # Compile Rust App for Ox64 SBC
+
+_Rust Apps run OK for QEMU RISC-V. What about Ox64 BL808 SBC?_
 
 TODO
 
@@ -458,7 +438,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/rust5.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust5.md)
 
-# Appendix: Build NuttX for QEMU 64-bit RISC-V
+# Appendix: Build NuttX for QEMU
 
 TODO
 
@@ -588,7 +568,7 @@ $ popd
 $ make import
 ```
 
-# Appendix: Run Rust App on Ox64 Emulator
+# Appendix: Run NuttX on Ox64 Emulator
 
 TODO
 
