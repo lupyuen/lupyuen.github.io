@@ -16,7 +16,9 @@ Will Rust Apps run on a 64-bit RISC-V SBC, like Ox64 BL808? Let's find out!
 
 # Rust App for NuttX
 
-Below is the simplest Rust App for Apache NuttX RTOS. We'll run this on Ox64 BL808 SBC: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L20-L41)
+Below is the __Simplest Rust App__ that will run on Apache NuttX RTOS. We'll test it on Ox64 BL808 SBC.
+
+We begin with the __Rust Declarations__: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L20-L41)
 
 ```rust
 // main() function not needed
