@@ -134,6 +134,54 @@ rustc \
   -C panic=abort \
   -O   hello_rust_main.rs \
   -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+```
+
+TODO
+
+For building our Rust App: Let's change riscv64i to riscv64gc...
+
+```bash
+$ rustup target add riscv64gc-unknown-none-elf
+$ pushd ../apps/examples/hello_rust 
+$ rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv64gc-unknown-none-elf \
+  -C panic=abort \
+  -O   hello_rust_main.rs \
+  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+$ popd
+$ make
+```
+
+TODO: Fix the path of hello_rust.o
+
+```bash
+$ a=$(basename ~/ox64/apps/examples/hello/*.o)
+$ b=`
+  echo $a \
+  | sed "s/hello_main.c/hello_rust_main.rs/" \
+  | sed "s/hello.o/hello_rust.o/"
+  `
+$ echo $b
+hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+```
+
+# Change riscv64i to riscv64gc
+
+TODO
+
+```bash
+## Compile "hello_rust_main.rs" with Rust Compiler
+rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv64i-unknown-none-elf \
+  -C panic=abort \
+  -O   hello_rust_main.rs \
+  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
 
 error: Error loading target specification: Could not find specification for target "riscv64i-unknown-none-elf". Run `rustc --print target-list` for a list of built-in targets
 
@@ -159,10 +207,6 @@ So many questions...
 1.  Will it run on [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358)?
 
 Let's fix this!
-
-# Change riscv64i to riscv64gc
-
-TODO
 
 _Is __`riscv64i`__ the correct target for QEMU?_
 
