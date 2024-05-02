@@ -71,11 +71,11 @@
 <li><a href="#change-riscv64i-to-riscv64gc">4 Change riscv64i to riscv64gc</a><ul></ul></li>
 <li><a href="#compile-rust-app-for-ox64-sbc">5 Compile Rust App for Ox64 SBC</a><ul></ul></li>
 <li><a href="#change-main-function">6 Change Main Function</a><ul></ul></li>
-<li><a href="#run-rust-app-on-ox64-emulator">7 Run Rust App on Ox64 Emulator</a><ul></ul></li>
-<li><a href="#run-rust-app-on-ox64-sbc">8 Run Rust App on Ox64 SBC</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-qemu-64-bit-risc-v">10 Appendix: Build NuttX for QEMU 64-bit RISC-V</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-ox64-sbc">11 Appendix: Build NuttX for Ox64 SBC</a><ul></ul></li>
+<li><a href="#run-rust-app-on-ox64-sbc">7 Run Rust App on Ox64 SBC</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-qemu-64-bit-risc-v">9 Appendix: Build NuttX for QEMU 64-bit RISC-V</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-ox64-sbc">10 Appendix: Build NuttX for Ox64 SBC</a><ul></ul></li>
+<li><a href="#appendix-run-rust-app-on-ox64-emulator">11 Appendix: Run Rust App on Ox64 Emulator</a><ul></ul></li>
 <li><a href="#appendix-main-function-is-missing">12 Appendix: Main Function is Missing</a><ul></ul></li></ul></nav><p>📝 <em>7 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust5-title.jpg" alt="Rust Apps on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS" /></p>
 <div style="text-align: center">
@@ -389,50 +389,7 @@ $ make import
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>main(_argc: i32, _argv: <span class="kw-2">*const *const </span>u8) -&gt; i32 {</code></pre></div>
 <p><em>What happens if we don’t change it?</em></p>
 <p>TODO</p>
-<h1 id="run-rust-app-on-ox64-emulator"><a class="doc-anchor" href="#run-rust-app-on-ox64-emulator">§</a>7 Run Rust App on Ox64 Emulator</h1>
-<p>TODO</p>
-<p>Now our Rust App runs OK on Ox64 BL808 Emulator!</p>
-<div class="example-wrap"><pre class="language-bash"><code>+ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
-+ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
-TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-virtio_console_init
-Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
-Patched SYNC.S (Ensure that all Cache Operations are completed) at 0x5020099e
-Found ECALL (Start System Timer) at 0x5020bfac
-Patched RDTIME (Read System Time) at 0x5020bfb2
-elf_len=0
-virtio_console_resize_event
-ABCnx_start: Entry
-uart_register: Registering /dev/console
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nxtask_activate: lpwork pid=1,TCB=0x50409110
-nxtask_activate: AppBringUp pid=2,TCB=0x50409710
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-nxtask_activate: /system/bin/init pid=3,TCB=0x5040b730
-nxtask_exit: AppBringUp pid=2,TCB=0x50409710
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; nx_start: CPU0: Beginning Idle Loop
-
-nsh&gt; hello_rust
-posix_spawn: pid=0x80202968 path=hello_rust file_actions=0x80202970 attr=0x80202978 argv=0x80202a18
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 1: Undefined symbol[0] has no name: -3
-nxtask_activate: hello_rust pid=6,TCB=0x50409790
-Hello, Rust!!
-Hello Ox64!
-You entered...
-Hello Ox64!
-
-nxtask_exit: hello_rust pid=6,TCB=0x50409790
-nsh&gt; 
-</code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(root-riscv64.cfg is here)</a></p>
-<h1 id="run-rust-app-on-ox64-sbc"><a class="doc-anchor" href="#run-rust-app-on-ox64-sbc">§</a>8 Run Rust App on Ox64 SBC</h1>
+<h1 id="run-rust-app-on-ox64-sbc"><a class="doc-anchor" href="#run-rust-app-on-ox64-sbc">§</a>7 Run Rust App on Ox64 SBC</h1>
 <p>TODO</p>
 <p>Our Rust App also works OK on a real Ox64 BL808 SBC!</p>
 <p><a href="https://gist.github.com/lupyuen/7fabbffd16f22914b299ced3723b9b9b">(See the <strong>Complete Log</strong>)</a></p>
@@ -475,7 +432,7 @@ You entered...
 
 nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh&gt; 
-</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
+</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -500,7 +457,7 @@ nsh&gt;
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust5.md"><strong>lupyuen.github.io/src/rust5.md</strong></a></p>
-<h1 id="appendix-build-nuttx-for-qemu-64-bit-risc-v"><a class="doc-anchor" href="#appendix-build-nuttx-for-qemu-64-bit-risc-v">§</a>10 Appendix: Build NuttX for QEMU 64-bit RISC-V</h1>
+<h1 id="appendix-build-nuttx-for-qemu-64-bit-risc-v"><a class="doc-anchor" href="#appendix-build-nuttx-for-qemu-64-bit-risc-v">§</a>9 Appendix: Build NuttX for QEMU 64-bit RISC-V</h1>
 <p>TODO</p>
 <p>First we test on QEMU 64-bit RISC-V…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh rv-virt:nsh64
@@ -552,7 +509,7 @@ error: Error loading target specification: Could not find specification for targ
 make[2]: *** [/Users/Luppy/riscv/apps/Application.mk:275: hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o] Error 1
 make[1]: *** [Makefile:51: /Users/Luppy/riscv/apps/examples/hello_rust_all] Error 2
 make: *** [tools/LibTargets.mk:232: /Users/Luppy/riscv/apps/libapps.a] Error 2
-</code></pre></div><h1 id="appendix-build-nuttx-for-ox64-sbc"><a class="doc-anchor" href="#appendix-build-nuttx-for-ox64-sbc">§</a>11 Appendix: Build NuttX for Ox64 SBC</h1>
+</code></pre></div><h1 id="appendix-build-nuttx-for-ox64-sbc"><a class="doc-anchor" href="#appendix-build-nuttx-for-ox64-sbc">§</a>10 Appendix: Build NuttX for Ox64 SBC</h1>
 <p>TODO</p>
 <p>Let’s do the same for Ox64 BL808 SBC…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh ox64:nsh
@@ -615,9 +572,73 @@ $ rustc \
   -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
 $ popd
 $ make import
-</code></pre></div><h1 id="appendix-main-function-is-missing"><a class="doc-anchor" href="#appendix-main-function-is-missing">§</a>12 Appendix: Main Function is Missing</h1>
+</code></pre></div><h1 id="appendix-run-rust-app-on-ox64-emulator"><a class="doc-anchor" href="#appendix-run-rust-app-on-ox64-emulator">§</a>11 Appendix: Run Rust App on Ox64 Emulator</h1>
+<p>TODO</p>
+<p>Now our Rust App runs OK on Ox64 BL808 Emulator!</p>
+<div class="example-wrap"><pre class="language-bash"><code>+ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
++ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+virtio_console_init
+Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
+Patched SYNC.S (Ensure that all Cache Operations are completed) at 0x5020099e
+Found ECALL (Start System Timer) at 0x5020bfac
+Patched RDTIME (Read System Time) at 0x5020bfb2
+elf_len=0
+virtio_console_resize_event
+ABCnx_start: Entry
+uart_register: Registering /dev/console
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nxtask_activate: lpwork pid=1,TCB=0x50409110
+nxtask_activate: AppBringUp pid=2,TCB=0x50409710
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nxtask_activate: /system/bin/init pid=3,TCB=0x5040b730
+nxtask_exit: AppBringUp pid=2,TCB=0x50409710
+
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; nx_start: CPU0: Beginning Idle Loop
+
+nsh&gt; hello_rust
+posix_spawn: pid=0x80202968 path=hello_rust file_actions=0x80202970 attr=0x80202978 argv=0x80202a18
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 1: Undefined symbol[0] has no name: -3
+nxtask_activate: hello_rust pid=6,TCB=0x50409790
+Hello, Rust!!
+Hello Ox64!
+You entered...
+Hello Ox64!
+
+nxtask_exit: hello_rust pid=6,TCB=0x50409790
+nsh&gt; 
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(root-riscv64.cfg is here)</a></p>
+<h1 id="appendix-main-function-is-missing"><a class="doc-anchor" href="#appendix-main-function-is-missing">§</a>12 Appendix: Main Function is Missing</h1>
 <p>TODO</p>
 <p>We test it with <a href="https://lupyuen.github.io/articles/tinyemu3">Ox64 BL808 Emulator</a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>+ riscv64-unknown-elf-objdump --syms --source --reloc --demangle --line-numbers --wide --debugging nuttx
++ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
++ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; hello_rust
+nsh: hello_rust: command not found
+</code></pre></div>
+<p><em>Huh? Why is hello_rust not found?</em></p>
+<p>To find out, we <a href="https://github.com/lupyuen2/wip-nuttx/commit/dca29d561f44c4749c067b8304dc898b1c6c6e0c">Enable Logging for Binary Loader and Scheduler</a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_DEBUG_BINFMT=y
+CONFIG_DEBUG_BINFMT_ERROR=y
+CONFIG_DEBUG_BINFMT_WARN=y
+CONFIG_DEBUG_SCHED=y
+CONFIG_DEBUG_SCHED_ERROR=y
+CONFIG_DEBUG_SCHED_INFO=y
+CONFIG_DEBUG_SCHED_WARN=y
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(root-riscv64.cfg is here)</a></p>
+<p>Now it tells us why it failed…</p>
 <div class="example-wrap"><pre class="language-bash"><code>+ riscv64-unknown-elf-objdump --syms --source --reloc --demangle --line-numbers --wide --debugging nuttx
 + cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
 + /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
