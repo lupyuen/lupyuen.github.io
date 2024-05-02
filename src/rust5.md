@@ -398,30 +398,45 @@ nsh>
 
 # Flat Mode vs Kernel Mode
 
-TODO: Earlier we saw 2 workarounds for our Ox64 Build...
+_Why the funny fixes for NuttX Ox64?_
 
-- Main Function
+Earlier we saw 2 workarounds for our Ox64 Build...
 
-- Makefile Target
+- We renamed the __Main Function__
 
-Ox64 Apps are a little more complicated then QEMU Apps
+- We fixed the __Makefile Target__
 
-Fix them in GSoC
+That's because __Ox64 Apps__ are a little more complicated than __QEMU Apps__...
 
-NuttX QEMU: Flat Mode
-- NuttX Apps are Statically Linked into NuttX Kernel
-- Main Functions for Apps are named _hello_main()_, _hello_rust_main()_, ...
-- No Memory Protection between Apps and Kernel
-- Everything runs in RISC-V Machine Mode
+__NuttX QEMU__ runs in __Flat Mode__ (pic above)
+
+- NuttX Apps are __Statically Linked__ into NuttX Kernel
+
+- __Main Functions__ for Apps are named _hello_main()_, _hello_rust_main()_, ...
+
+- __No Memory Protection__ between Apps and Kernel
+
+- Everything runs in __RISC-V Machine Mode__
+
 - A little easier to troubleshoot
 
-NuttX Ox64: Kernel Mode
-- NuttX Apps are separate ELF Files
-- Main Functions for Apps are all named _main()_
-- Apps and Kernel live in Protected Memory Regions
-- Kernel runs in RISC-V Supervisor Mode
-- Apps run in RISC-V User Mode
+__NuttX Ox64__ runs in __Kernel Mode__ (pic below)
+
+- NuttX Apps are __Separate ELF Files__
+
+- __Main Functions__ for Apps are all named _main()_
+
+- Apps and Kernel live in __Protected Memory Regions__
+
+- Kernel runs in __RISC-V Supervisor Mode__
+
+- Apps run in __RISC-V User Mode__
+
 - More realistic for Actual Hardware
+
+TODO: (More about Kernel Mode)
+
+Fix them in GSoC
 
 -Dmain=hello_main
 
