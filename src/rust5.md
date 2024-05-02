@@ -389,9 +389,13 @@ nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh> 
 ```
 
-# Makefile Target and Main Function
+# Main Function and Makefile Target
 
 TODO: Earlier we saw 2 workarounds for our Ox64 Build...
+
+Ox64 Apps are a little more complicated then QEMU Apps
+
+Fix them in GSoC
 
 # What's Next
 
@@ -594,42 +598,6 @@ nsh>
 
 [(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
 
-# Appendix: Makefile Target is Missing
-
-TODO
-
-```bash
-Makefile:52: target '/Users/Luppy/ox64/apps/examples/hello_rust_install' does not exist
-make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR="/Users/Luppy/ox64/apps"
-make[3]: Entering directory '/Users/Luppy/ox64/apps/examples/hello_rust'
-make[3]: *** No rule to make target 'hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o', needed by '/Users/Luppy/ox64/apps/bin/hello_rust'.  Stop.
-make[3]: Leaving directory '/Users/Luppy/ox64/apps/examples/hello_rust'
-make[2]: *** [Makefile:52: /Users/Luppy/ox64/apps/examples/hello_rust_install] Error 2
-make[2]: Leaving directory '/Users/Luppy/ox64/apps'
-make[1]: *** [Makefile:78: .import] Error 2
-make[1]: Leaving directory '/Users/Luppy/ox64/apps'
-make: *** [Makefile:84: import] Error 2
-```
-
-Like QEMU, we change riscv64i to riscv64gc...
-
-```bash
-$ rustup target add riscv64gc-unknown-none-elf
-$ pushd ../apps/examples/hello_rust 
-$ rustc \
-  --edition 2021 \
-  --emit obj \
-  -g \
-  --target riscv64gc-unknown-none-elf \
-  -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
-$ popd
-$ make import
-```
-
-TODO: Fix the path of hello_rust.o
-
 # Appendix: Main Function is Missing
 
 TODO
@@ -716,15 +684,51 @@ TODO: Why?
 So we change this in hello_rust_main.rs...
 
 ```rust
-pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
+pub extern "C" fn hello_rust_main(...)
 ```
 
 To this...
 
 ```rust
-pub extern "C" fn main(_argc: i32, _argv: *const *const u8) -> i32 {
+pub extern "C" fn main(...)
 ```
 
 _What happens if we don't change it?_
 
 TODO
+
+# Appendix: Makefile Target is Missing
+
+TODO
+
+```bash
+Makefile:52: target '/Users/Luppy/ox64/apps/examples/hello_rust_install' does not exist
+make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR="/Users/Luppy/ox64/apps"
+make[3]: Entering directory '/Users/Luppy/ox64/apps/examples/hello_rust'
+make[3]: *** No rule to make target 'hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o', needed by '/Users/Luppy/ox64/apps/bin/hello_rust'.  Stop.
+make[3]: Leaving directory '/Users/Luppy/ox64/apps/examples/hello_rust'
+make[2]: *** [Makefile:52: /Users/Luppy/ox64/apps/examples/hello_rust_install] Error 2
+make[2]: Leaving directory '/Users/Luppy/ox64/apps'
+make[1]: *** [Makefile:78: .import] Error 2
+make[1]: Leaving directory '/Users/Luppy/ox64/apps'
+make: *** [Makefile:84: import] Error 2
+```
+
+Like QEMU, we change riscv64i to riscv64gc...
+
+```bash
+$ rustup target add riscv64gc-unknown-none-elf
+$ pushd ../apps/examples/hello_rust 
+$ rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv64gc-unknown-none-elf \
+  -C panic=abort \
+  -O   hello_rust_main.rs \
+  -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+$ popd
+$ make import
+```
+
+TODO: Fix the path of hello_rust.o
