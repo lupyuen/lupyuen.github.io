@@ -277,127 +277,98 @@ TODO
 
 Let's do the same for Ox64 BL808 SBC...
 
-```bash
-$ tools/configure.sh ox64:nsh
-$ make menuconfig
-## TODO: Enable "Hello Rust" Example App
-## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/bl808/ox64/configs/nsh/defconfig
-$ make
-$ make --trace export
-$ pushd ../apps
-$ make --trace import
+1.  Follow these steps to build __NuttX for Ox64__...
 
-riscv64-unknown-elf-gcc \
-  -c \
-  -fno-common \
-  -Wall \
-  -Wstrict-prototypes \
-  -Wshadow \
-  -Wundef \
-  -Wno-attributes \
-  -Wno-unknown-pragmas \
-  -Wno-psabi \
-  -fno-common \
-  -pipe  \
-  -Os \
-  -fno-strict-aliasing \
-  -fomit-frame-pointer \
-  -ffunction-sections \
-  -fdata-sections \
-  -g \
-  -mcmodel=medany \
-  -march=rv64imafdc \
-  -mabi=lp64d \
-  -isystem /Users/Luppy/ox64/apps/import/include \
-  -isystem /Users/Luppy/ox64/apps/import/include \
-  -D__NuttX__  \
-  -I "/Users/Luppy/ox64/apps/include"   hello_main.c \
-  -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o
+    TODO
 
-Makefile:52: target '/Users/Luppy/ox64/apps/examples/hello_rust_install' does not exist
-make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR="/Users/Luppy/ox64/apps"
-make[3]: Entering directory '/Users/Luppy/ox64/apps/examples/hello_rust'
-make[3]: *** No rule to make target 'hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o', needed by '/Users/Luppy/ox64/apps/bin/hello_rust'.  Stop.
-make[3]: Leaving directory '/Users/Luppy/ox64/apps/examples/hello_rust'
-make[2]: *** [Makefile:52: /Users/Luppy/ox64/apps/examples/hello_rust_install] Error 2
-make[2]: Leaving directory '/Users/Luppy/ox64/apps'
-make[1]: *** [Makefile:78: .import] Error 2
-make[1]: Leaving directory '/Users/Luppy/ox64/apps'
-make: *** [Makefile:84: import] Error 2
-```
+1.  __If we Enable Build Tracing:__ We'll see...
 
-Like QEMU, we change riscv64i to riscv64gc...
+    ```bash
+    $ make --trace import
 
-```bash
-$ rustup target add riscv64gc-unknown-none-elf
-$ pushd ../apps/examples/hello_rust 
-$ rustc \
-  --edition 2021 \
-  --emit obj \
-  -g \
-  --target riscv64gc-unknown-none-elf \
-  -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
-$ popd
-$ make import
-```
+    riscv64-unknown-elf-gcc \
+      -c \
+      -fno-common \
+      -Wall \
+      -Wstrict-prototypes \
+      -Wshadow \
+      -Wundef \
+      -Wno-attributes \
+      -Wno-unknown-pragmas \
+      -Wno-psabi \
+      -fno-common \
+      -pipe  \
+      -Os \
+      -fno-strict-aliasing \
+      -fomit-frame-pointer \
+      -ffunction-sections \
+      -fdata-sections \
+      -g \
+      -mcmodel=medany \
+      -march=rv64imafdc \
+      -mabi=lp64d \
+      -isystem /Users/Luppy/ox64/apps/import/include \
+      -isystem /Users/Luppy/ox64/apps/import/include \
+      -D__NuttX__  \
+      -I "/Users/Luppy/ox64/apps/include"   hello_main.c \
+      -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o
+    ```
 
-TODO: Fix the path of hello_rust.o
+1.  __If the build fails__ with ???
 
-# Main Function is Missing
+    TODO
 
-We test it with [Ox64 BL808 Emulator](https://lupyuen.github.io/articles/tinyemu3)...
+    ```bash
+    Makefile:52: target '/Users/Luppy/ox64/apps/examples/hello_rust_install' does not exist
+    make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR="/Users/Luppy/ox64/apps"
+    make[3]: Entering directory '/Users/Luppy/ox64/apps/examples/hello_rust'
+    make[3]: *** No rule to make target 'hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o', needed by '/Users/Luppy/ox64/apps/bin/hello_rust'.  Stop.
+    make[3]: Leaving directory '/Users/Luppy/ox64/apps/examples/hello_rust'
+    make[2]: *** [Makefile:52: /Users/Luppy/ox64/apps/examples/hello_rust_install] Error 2
+    make[2]: Leaving directory '/Users/Luppy/ox64/apps'
+    make[1]: *** [Makefile:78: .import] Error 2
+    make[1]: Leaving directory '/Users/Luppy/ox64/apps'
+    make: *** [Makefile:84: import] Error 2
+    ```
 
-```bash
-+ riscv64-unknown-elf-objdump --syms --source --reloc --demangle --line-numbers --wide --debugging nuttx
-+ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
-+ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
-TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-virtio_console_init
-Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
-Patched SYNC.S (Ensure that all Cache Operations are completed) at 0x5020099e
-Found ECALL (Start System Timer) at 0x5020bfac
-Patched RDTIME (Read System Time) at 0x5020bfb2
-elf_len=0
-virtio_console_resize_event
-ABCnx_start: Entry
-uart_register: Registering /dev/console
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nxtask_activate: lpwork pid=1,TCB=0x50409110
-nxtask_activate: AppBringUp pid=2,TCB=0x50409710
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-nxtask_activate: /system/bin/init pid=3,TCB=0x5040b730
-nxtask_exit: AppBringUp pid=2,TCB=0x50409710
+    Like QEMU, we change riscv64i to riscv64gc...
 
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> nx_start: CPU0: Beginning Idle Loop
+    ```bash
+    $ rustup target add riscv64gc-unknown-none-elf
+    $ pushd ../apps/examples/hello_rust 
+    $ rustc \
+      --edition 2021 \
+      --emit obj \
+      -g \
+      --target riscv64gc-unknown-none-elf \
+      -C panic=abort \
+      -O   hello_rust_main.rs \
+      -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+    $ popd
+    $ make import
+    ```
 
-nsh> 
-nsh> hello_rust
-posix_spawn: pid=0x80202968 path=hello_rust file_actions=0x80202970 attr=0x80202978 argv=0x80202a18
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 1: Undefined symbol[0] has no name: -3
-elf_symvalue: SHN_UNDEF: Exported symbol "main" not found
-elf_relocateadd: Section 2 reloc 4: Failed to get value of symbol[7684]: -2
-elf_loadbinary: Failed to bind symbols program binary: -2
-exec_internal: ERROR: Failed to load program 'hello_rust': -2
-nxposix_spawn_exec: ERROR: exec failed: 2
-nsh: hello_rust: command not found
-nsh> 
-```
+    TODO: Fix the path of hello_rust.o
 
-[(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
+    TODO: We'll come back to this
 
-Which fails because the main() function is missing!
+1.  TODO: Fix Main Function
+
+    We change this in hello_rust_main.rs...
+
+    ```rust
+    pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
+    ```
+
+    To this...
+
+    ```rust
+    pub extern "C" fn main(_argc: i32, _argv: *const *const u8) -> i32 {
+    ```
 
 # Change Main Function
 
-TODO
+TODO: Why?
 
 So we change this in hello_rust_main.rs...
 
@@ -410,6 +381,10 @@ To this...
 ```rust
 pub extern "C" fn main(_argc: i32, _argv: *const *const u8) -> i32 {
 ```
+
+_What happens if we don't change it?_
+
+TODO
 
 # Run Rust App on Ox64 Emulator
 
@@ -661,3 +636,55 @@ $ rustc \
 $ popd
 $ make import
 ```
+
+# Appendix: Main Function is Missing
+
+TODO
+
+We test it with [Ox64 BL808 Emulator](https://lupyuen.github.io/articles/tinyemu3)...
+
+```bash
++ riscv64-unknown-elf-objdump --syms --source --reloc --demangle --line-numbers --wide --debugging nuttx
++ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
++ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+virtio_console_init
+Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
+Patched SYNC.S (Ensure that all Cache Operations are completed) at 0x5020099e
+Found ECALL (Start System Timer) at 0x5020bfac
+Patched RDTIME (Read System Time) at 0x5020bfb2
+elf_len=0
+virtio_console_resize_event
+ABCnx_start: Entry
+uart_register: Registering /dev/console
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nxtask_activate: lpwork pid=1,TCB=0x50409110
+nxtask_activate: AppBringUp pid=2,TCB=0x50409710
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nxtask_activate: /system/bin/init pid=3,TCB=0x5040b730
+nxtask_exit: AppBringUp pid=2,TCB=0x50409710
+
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> nx_start: CPU0: Beginning Idle Loop
+
+nsh> 
+nsh> hello_rust
+posix_spawn: pid=0x80202968 path=hello_rust file_actions=0x80202970 attr=0x80202978 argv=0x80202a18
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 1: Undefined symbol[0] has no name: -3
+elf_symvalue: SHN_UNDEF: Exported symbol "main" not found
+elf_relocateadd: Section 2 reloc 4: Failed to get value of symbol[7684]: -2
+elf_loadbinary: Failed to bind symbols program binary: -2
+exec_internal: ERROR: Failed to load program 'hello_rust': -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+nsh: hello_rust: command not found
+nsh> 
+```
+
+[(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
+
+Which fails because the main() function is missing!
