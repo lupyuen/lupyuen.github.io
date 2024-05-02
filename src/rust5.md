@@ -82,7 +82,7 @@ fn panic(
 }
 ```
 
-# Rust App won't compile for QEMU RISC-V 64-bit
+# Compile Rust App for QEMU RISC-V 64-bit
 
 TODO
 
@@ -220,7 +220,7 @@ nsh>
 
 ![Rust Apps on Apache NuttX RTOS and Ox64 BL808 SBC](https://lupyuen.github.io/images/rust5-title.jpg)
 
-# Compile Rust App for Ox64 BL808 SBC
+# Compile Rust App for Ox64 SBC
 
 TODO
 
@@ -294,7 +294,7 @@ $ make import
 
 TODO: Fix the path of hello_rust.o
 
-# Rust App won't compile for Ox64 SBC
+# Main Function is Missing
 
 We test it with [Ox64 BL808 Emulator](https://lupyuen.github.io/articles/tinyemu3)...
 
