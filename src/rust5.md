@@ -134,11 +134,11 @@ First we test on QEMU Emulator...
       -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
     ```
 
-1.  __If the build fails__ with _"Could not find specification for target riscv64i-unknown-none-elf"_...
+1.  __If the build fails__ with this error...
 
-    TODO
+    _"Could not find specification for target riscv64i-unknown-none-elf"_
 
-    Let's change riscv64i to riscv64gc...
+    Then we run this...
 
     ```bash
     $ rustup target add riscv64gc-unknown-none-elf
@@ -169,6 +169,8 @@ First we test on QEMU Emulator...
     ```
 
     TODO: Test on Linux
+
+    (We'll come back to this)
 
 # Test on QEMU 64-bit RISC-V
 
@@ -247,7 +249,7 @@ TODO: Fix the path of hello_rust.o
 
 This fixes our build. For now!
 
-[(QEMU supports riscv64gc)](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices)!
+[(QEMU supports riscv64gc)](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices)
 
 # Compile Rust App for Ox64 SBC
 
@@ -260,6 +262,22 @@ Let's do the same for Ox64 BL808 SBC...
 1.  Follow these steps to build __NuttX for Ox64__...
 
     TODO
+
+1.  Remember to __Rename the Main Function__...
+
+    We change this in hello_rust_main.rs...
+
+    ```rust
+    pub extern "C" fn hello_rust_main(...)
+    ```
+
+    To this...
+
+    ```rust
+    pub extern "C" fn main(...)
+    ```
+
+    TODO: Why?
 
 1.  __If we Enable Build Tracing:__ We'll see...
 
@@ -294,24 +312,13 @@ Let's do the same for Ox64 BL808 SBC...
       -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o
     ```
 
-1.  __If the build fails__ with ???
+1.  __If the build fails__ with this error...
+
+    _"target hello_rust_install does not exist"_
+
+    Then we run this...
 
     TODO
-
-    ```bash
-    Makefile:52: target '/Users/Luppy/ox64/apps/examples/hello_rust_install' does not exist
-    make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR="/Users/Luppy/ox64/apps"
-    make[3]: Entering directory '/Users/Luppy/ox64/apps/examples/hello_rust'
-    make[3]: *** No rule to make target 'hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o', needed by '/Users/Luppy/ox64/apps/bin/hello_rust'.  Stop.
-    make[3]: Leaving directory '/Users/Luppy/ox64/apps/examples/hello_rust'
-    make[2]: *** [Makefile:52: /Users/Luppy/ox64/apps/examples/hello_rust_install] Error 2
-    make[2]: Leaving directory '/Users/Luppy/ox64/apps'
-    make[1]: *** [Makefile:78: .import] Error 2
-    make[1]: Leaving directory '/Users/Luppy/ox64/apps'
-    make: *** [Makefile:84: import] Error 2
-    ```
-
-    Like QEMU, we change riscv64i to riscv64gc...
 
     ```bash
     $ rustup target add riscv64gc-unknown-none-elf
@@ -330,41 +337,7 @@ Let's do the same for Ox64 BL808 SBC...
 
     TODO: Fix the path of hello_rust.o
 
-    TODO: We'll come back to this
-
-1.  TODO: Fix Main Function
-
-    We change this in hello_rust_main.rs...
-
-    ```rust
-    pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
-    ```
-
-    To this...
-
-    ```rust
-    pub extern "C" fn main(_argc: i32, _argv: *const *const u8) -> i32 {
-    ```
-
-# Change Main Function
-
-TODO: Why?
-
-So we change this in hello_rust_main.rs...
-
-```rust
-pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
-```
-
-To this...
-
-```rust
-pub extern "C" fn main(_argc: i32, _argv: *const *const u8) -> i32 {
-```
-
-_What happens if we don't change it?_
-
-TODO
+    TODO: Why
 
 # Run Rust App on Ox64 SBC
 
@@ -415,6 +388,10 @@ You entered...
 nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh> 
 ```
+
+# Makefile Target and Main Function
+
+TODO: Earlier we saw 2 workarounds for our Ox64 Build...
 
 # What's Next
 
@@ -617,6 +594,42 @@ nsh>
 
 [(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
 
+# Appendix: Makefile Target is Missing
+
+TODO
+
+```bash
+Makefile:52: target '/Users/Luppy/ox64/apps/examples/hello_rust_install' does not exist
+make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR="/Users/Luppy/ox64/apps"
+make[3]: Entering directory '/Users/Luppy/ox64/apps/examples/hello_rust'
+make[3]: *** No rule to make target 'hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o', needed by '/Users/Luppy/ox64/apps/bin/hello_rust'.  Stop.
+make[3]: Leaving directory '/Users/Luppy/ox64/apps/examples/hello_rust'
+make[2]: *** [Makefile:52: /Users/Luppy/ox64/apps/examples/hello_rust_install] Error 2
+make[2]: Leaving directory '/Users/Luppy/ox64/apps'
+make[1]: *** [Makefile:78: .import] Error 2
+make[1]: Leaving directory '/Users/Luppy/ox64/apps'
+make: *** [Makefile:84: import] Error 2
+```
+
+Like QEMU, we change riscv64i to riscv64gc...
+
+```bash
+$ rustup target add riscv64gc-unknown-none-elf
+$ pushd ../apps/examples/hello_rust 
+$ rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv64gc-unknown-none-elf \
+  -C panic=abort \
+  -O   hello_rust_main.rs \
+  -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+$ popd
+$ make import
+```
+
+TODO: Fix the path of hello_rust.o
+
 # Appendix: Main Function is Missing
 
 TODO
@@ -697,3 +710,21 @@ nsh>
 [(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
 
 Which fails because the main() function is missing!
+
+TODO: Why?
+
+So we change this in hello_rust_main.rs...
+
+```rust
+pub extern "C" fn hello_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
+```
+
+To this...
+
+```rust
+pub extern "C" fn main(_argc: i32, _argv: *const *const u8) -> i32 {
+```
+
+_What happens if we don't change it?_
+
+TODO
