@@ -73,9 +73,9 @@
 <li><a href="#change-main-function">6 Change Main Function</a><ul></ul></li>
 <li><a href="#run-rust-app-on-ox64-sbc">7 Run Rust App on Ox64 SBC</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-qemu-64-bit-risc-v">9 Appendix: Build NuttX for QEMU 64-bit RISC-V</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-qemu">9 Appendix: Build NuttX for QEMU</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-ox64-sbc">10 Appendix: Build NuttX for Ox64 SBC</a><ul></ul></li>
-<li><a href="#appendix-run-rust-app-on-ox64-emulator">11 Appendix: Run Rust App on Ox64 Emulator</a><ul></ul></li>
+<li><a href="#appendix-run-nuttx-on-ox64-emulator">11 Appendix: Run NuttX on Ox64 Emulator</a><ul></ul></li>
 <li><a href="#appendix-main-function-is-missing">12 Appendix: Main Function is Missing</a><ul></ul></li></ul></nav><p>📝 <em>7 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust5-title.jpg" alt="Rust Apps on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS" /></p>
 <div style="text-align: center">
@@ -188,7 +188,7 @@ rustc \
   -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
 </code></pre></div></li>
 <li>
-<p><strong>If the build fails</strong> with ???</p>
+<p><strong>If the build fails</strong> with <em>“Could not find specification for target riscv64i-unknown-none-elf”</em>…</p>
 <p>TODO</p>
 <p>Let’s change riscv64i to riscv64gc…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
@@ -245,45 +245,19 @@ abcd
 nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
 nsh&gt; 
 </code></pre></div><h1 id="change-riscv64i-to-riscv64gc"><a class="doc-anchor" href="#change-riscv64i-to-riscv64gc">§</a>4 Change riscv64i to riscv64gc</h1>
-<p>TODO: What’s this error?</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Compile &quot;hello_rust_main.rs&quot; with Rust Compiler
-rustc \
-  --edition 2021 \
-  --emit obj \
-  -g \
-  --target riscv64i-unknown-none-elf \
-  -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
-
-error: Error loading target specification: Could not find specification for target &quot;riscv64i-unknown-none-elf&quot;. Run `rustc --print target-list` for a list of built-in targets
-
-make[2]: *** [/Users/Luppy/riscv/apps/Application.mk:275: hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o] Error 1
-make[1]: *** [Makefile:51: /Users/Luppy/riscv/apps/examples/hello_rust_all] Error 2
-make: *** [tools/LibTargets.mk:232: /Users/Luppy/riscv/apps/libapps.a] Error 2
+<p><em>Why did our Rust Build fail with this error?</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>Could not find specification for target
+&quot;riscv64i-unknown-none-elf&quot;.
+Run `rustc --print target-list`
+for a list of built-in targets
 </code></pre></div>
-<p>But it fails! Rust Compiler says that <strong><code>riscv64i</code></strong> isn’t a valid Rust Target for 64-bit RISC-V.</p>
-<p>So many questions…</p>
-<ol>
-<li>
-<p>Is <strong><code>riscv64i</code></strong> the correct target for QEMU?</p>
-<p><a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices">(<strong>Hint:</strong> See this)</a></p>
-</li>
-<li>
-<p>How should we <strong>Fix the Build</strong>?</p>
-</li>
-<li>
-<p>Do we need a <strong>Custom Target</strong>?</p>
-<p>(<strong>Hint:</strong> Answer is printed above somewhere)</p>
-</li>
-<li>
-<p>Will it run on <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 SBC</strong></a>?</p>
-</li>
-</ol>
-<p>Let’s fix this!</p>
-<p><em>Is <strong><code>riscv64i</code></strong> the correct target for QEMU?</em></p>
-<p>Nope <a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices">QEMU supports riscv64gc</a>!</p>
-<p>For building our Rust App: Let’s change riscv64i to riscv64gc…</p>
+<p>Rust Compiler says that <strong><code>riscv64i</code></strong> isn’t a valid <strong>Rust Target</strong> for 64-bit RISC-V.</p>
+<p><em>Is riscv64i the correct target for QEMU?</em></p>
+<p>Remember earlier we called GCC Compiler and Rust Compiler?</p>
+<p>TODO</p>
+<p>GCC Compiler compiles for rv64imafdc, but Rust Compiler is compiling for riscv64i!</p>
+<p>TODO</p>
+<p>Let’s harmonise Rust Compiler with GCC Compiler: We’ll select rv64gc, since it’s closest to rv64imafdc…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 $ rustc \
@@ -298,8 +272,10 @@ $ popd
 $ make
 </code></pre></div>
 <p>TODO: Fix the path of hello_rust.o</p>
-<p><img src="https://lupyuen.github.io/images/rust5-title.jpg" alt="Rust Apps on Apache NuttX RTOS and Ox64 BL808 SBC" /></p>
+<p>This fixes our build. For now!</p>
+<p><a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices">(QEMU supports riscv64gc)</a>!</p>
 <h1 id="compile-rust-app-for-ox64-sbc"><a class="doc-anchor" href="#compile-rust-app-for-ox64-sbc">§</a>5 Compile Rust App for Ox64 SBC</h1>
+<p><em>Rust Apps run OK for QEMU RISC-V. What about Ox64 BL808 SBC?</em></p>
 <p>TODO</p>
 <p>Let’s do the same for Ox64 BL808 SBC…</p>
 <ol>
@@ -457,7 +433,7 @@ nsh&gt;
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust5.md"><strong>lupyuen.github.io/src/rust5.md</strong></a></p>
-<h1 id="appendix-build-nuttx-for-qemu-64-bit-risc-v"><a class="doc-anchor" href="#appendix-build-nuttx-for-qemu-64-bit-risc-v">§</a>9 Appendix: Build NuttX for QEMU 64-bit RISC-V</h1>
+<h1 id="appendix-build-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-build-nuttx-for-qemu">§</a>9 Appendix: Build NuttX for QEMU</h1>
 <p>TODO</p>
 <p>First we test on QEMU 64-bit RISC-V…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh rv-virt:nsh64
@@ -572,7 +548,7 @@ $ rustc \
   -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
 $ popd
 $ make import
-</code></pre></div><h1 id="appendix-run-rust-app-on-ox64-emulator"><a class="doc-anchor" href="#appendix-run-rust-app-on-ox64-emulator">§</a>11 Appendix: Run Rust App on Ox64 Emulator</h1>
+</code></pre></div><h1 id="appendix-run-nuttx-on-ox64-emulator"><a class="doc-anchor" href="#appendix-run-nuttx-on-ox64-emulator">§</a>11 Appendix: Run NuttX on Ox64 Emulator</h1>
 <p>TODO</p>
 <p>Now our Rust App runs OK on Ox64 BL808 Emulator!</p>
 <div class="example-wrap"><pre class="language-bash"><code>+ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
