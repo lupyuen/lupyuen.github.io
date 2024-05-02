@@ -187,6 +187,42 @@ rustc \
   -C panic=abort \
   -O   hello_rust_main.rs \
   -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+</code></pre></div>
+<p>TODO</p>
+<p>For building our Rust App: Let’s change riscv64i to riscv64gc…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
+$ pushd ../apps/examples/hello_rust 
+$ rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv64gc-unknown-none-elf \
+  -C panic=abort \
+  -O   hello_rust_main.rs \
+  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+$ popd
+$ make
+</code></pre></div>
+<p>TODO: Fix the path of hello_rust.o</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ a=$(basename ~/ox64/apps/examples/hello/*.o)
+$ b=`
+  echo $a \
+  | sed &quot;s/hello_main.c/hello_rust_main.rs/&quot; \
+  | sed &quot;s/hello.o/hello_rust.o/&quot;
+  `
+$ echo $b
+hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+</code></pre></div><h1 id="change-riscv64i-to-riscv64gc"><a class="doc-anchor" href="#change-riscv64i-to-riscv64gc">§</a>3 Change riscv64i to riscv64gc</h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile &quot;hello_rust_main.rs&quot; with Rust Compiler
+rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv64i-unknown-none-elf \
+  -C panic=abort \
+  -O   hello_rust_main.rs \
+  -o  hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
 
 error: Error loading target specification: Could not find specification for target &quot;riscv64i-unknown-none-elf&quot;. Run `rustc --print target-list` for a list of built-in targets
 
@@ -213,8 +249,6 @@ make: *** [tools/LibTargets.mk:232: /Users/Luppy/riscv/apps/libapps.a] Error 2
 </li>
 </ol>
 <p>Let’s fix this!</p>
-<h1 id="change-riscv64i-to-riscv64gc"><a class="doc-anchor" href="#change-riscv64i-to-riscv64gc">§</a>3 Change riscv64i to riscv64gc</h1>
-<p>TODO</p>
 <p><em>Is <strong><code>riscv64i</code></strong> the correct target for QEMU?</em></p>
 <p>Nope <a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices">QEMU supports riscv64gc</a>!</p>
 <p>For building our Rust App: Let’s change riscv64i to riscv64gc…</p>
