@@ -71,13 +71,13 @@
 <li><a href="#change-riscv64i-to-riscv64gc">4 Change riscv64i to riscv64gc</a><ul></ul></li>
 <li><a href="#compile-rust-app-for-ox64-sbc">5 Compile Rust App for Ox64 SBC</a><ul></ul></li>
 <li><a href="#run-rust-app-on-ox64-sbc">6 Run Rust App on Ox64 SBC</a><ul></ul></li>
-<li><a href="#makefile-target-and-main-function">7 Makefile Target and Main Function</a><ul></ul></li>
+<li><a href="#main-function-and-makefile-target">7 Main Function and Makefile Target</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-qemu">9 Appendix: Build NuttX for QEMU</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-ox64-sbc">10 Appendix: Build NuttX for Ox64 SBC</a><ul></ul></li>
 <li><a href="#appendix-run-nuttx-on-ox64-emulator">11 Appendix: Run NuttX on Ox64 Emulator</a><ul></ul></li>
-<li><a href="#appendix-makefile-target-is-missing">12 Appendix: Makefile Target is Missing</a><ul></ul></li>
-<li><a href="#appendix-main-function-is-missing">13 Appendix: Main Function is Missing</a><ul></ul></li></ul></nav><p>📝 <em>7 May 2024</em></p>
+<li><a href="#appendix-main-function-is-missing">12 Appendix: Main Function is Missing</a><ul></ul></li>
+<li><a href="#appendix-makefile-target-is-missing">13 Appendix: Makefile Target is Missing</a><ul></ul></li></ul></nav><p>📝 <em>7 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust5-title.jpg" alt="Rust Apps on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS" /></p>
 <div style="text-align: center">
 <p><a href="https://github.com/Swordfish90/cool-retro-term"><em>Thanks to cool-retro-term!</em></a></p>
@@ -391,8 +391,10 @@ You entered...
 
 nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh&gt; 
-</code></pre></div><h1 id="makefile-target-and-main-function"><a class="doc-anchor" href="#makefile-target-and-main-function">§</a>7 Makefile Target and Main Function</h1>
+</code></pre></div><h1 id="main-function-and-makefile-target"><a class="doc-anchor" href="#main-function-and-makefile-target">§</a>7 Main Function and Makefile Target</h1>
 <p>TODO: Earlier we saw 2 workarounds for our Ox64 Build…</p>
+<p>Ox64 Apps are a little more complicated then QEMU Apps</p>
+<p>Fix them in GSoC</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -576,35 +578,7 @@ nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh&gt; 
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(root-riscv64.cfg is here)</a></p>
-<h1 id="appendix-makefile-target-is-missing"><a class="doc-anchor" href="#appendix-makefile-target-is-missing">§</a>12 Appendix: Makefile Target is Missing</h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>Makefile:52: target &#39;/Users/Luppy/ox64/apps/examples/hello_rust_install&#39; does not exist
-make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR=&quot;/Users/Luppy/ox64/apps&quot;
-make[3]: Entering directory &#39;/Users/Luppy/ox64/apps/examples/hello_rust&#39;
-make[3]: *** No rule to make target &#39;hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o&#39;, needed by &#39;/Users/Luppy/ox64/apps/bin/hello_rust&#39;.  Stop.
-make[3]: Leaving directory &#39;/Users/Luppy/ox64/apps/examples/hello_rust&#39;
-make[2]: *** [Makefile:52: /Users/Luppy/ox64/apps/examples/hello_rust_install] Error 2
-make[2]: Leaving directory &#39;/Users/Luppy/ox64/apps&#39;
-make[1]: *** [Makefile:78: .import] Error 2
-make[1]: Leaving directory &#39;/Users/Luppy/ox64/apps&#39;
-make: *** [Makefile:84: import] Error 2
-</code></pre></div>
-<p>Like QEMU, we change riscv64i to riscv64gc…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
-$ pushd ../apps/examples/hello_rust 
-$ rustc \
-  --edition 2021 \
-  --emit obj \
-  -g \
-  --target riscv64gc-unknown-none-elf \
-  -C panic=abort \
-  -O   hello_rust_main.rs \
-  -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
-$ popd
-$ make import
-</code></pre></div>
-<p>TODO: Fix the path of hello_rust.o</p>
-<h1 id="appendix-main-function-is-missing"><a class="doc-anchor" href="#appendix-main-function-is-missing">§</a>13 Appendix: Main Function is Missing</h1>
+<h1 id="appendix-main-function-is-missing"><a class="doc-anchor" href="#appendix-main-function-is-missing">§</a>12 Appendix: Main Function is Missing</h1>
 <p>TODO</p>
 <p>We test it with <a href="https://lupyuen.github.io/articles/tinyemu3">Ox64 BL808 Emulator</a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>+ riscv64-unknown-elf-objdump --syms --source --reloc --demangle --line-numbers --wide --debugging nuttx
@@ -673,12 +647,40 @@ nsh&gt;
 <p>TODO: Why?</p>
 <p>So we change this in hello_rust_main.rs…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(_argc: i32, _argv: <span class="kw-2">*const *const </span>u8) -&gt; i32 {</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(...)</code></pre></div>
 <p>To this…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>main(_argc: i32, _argv: <span class="kw-2">*const *const </span>u8) -&gt; i32 {</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>main(...)</code></pre></div>
 <p><em>What happens if we don’t change it?</em></p>
 <p>TODO</p>
+<h1 id="appendix-makefile-target-is-missing"><a class="doc-anchor" href="#appendix-makefile-target-is-missing">§</a>13 Appendix: Makefile Target is Missing</h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>Makefile:52: target &#39;/Users/Luppy/ox64/apps/examples/hello_rust_install&#39; does not exist
+make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR=&quot;/Users/Luppy/ox64/apps&quot;
+make[3]: Entering directory &#39;/Users/Luppy/ox64/apps/examples/hello_rust&#39;
+make[3]: *** No rule to make target &#39;hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o&#39;, needed by &#39;/Users/Luppy/ox64/apps/bin/hello_rust&#39;.  Stop.
+make[3]: Leaving directory &#39;/Users/Luppy/ox64/apps/examples/hello_rust&#39;
+make[2]: *** [Makefile:52: /Users/Luppy/ox64/apps/examples/hello_rust_install] Error 2
+make[2]: Leaving directory &#39;/Users/Luppy/ox64/apps&#39;
+make[1]: *** [Makefile:78: .import] Error 2
+make[1]: Leaving directory &#39;/Users/Luppy/ox64/apps&#39;
+make: *** [Makefile:84: import] Error 2
+</code></pre></div>
+<p>Like QEMU, we change riscv64i to riscv64gc…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
+$ pushd ../apps/examples/hello_rust 
+$ rustc \
+  --edition 2021 \
+  --emit obj \
+  -g \
+  --target riscv64gc-unknown-none-elf \
+  -C panic=abort \
+  -O   hello_rust_main.rs \
+  -o  hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+$ popd
+$ make import
+</code></pre></div>
+<p>TODO: Fix the path of hello_rust.o</p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
