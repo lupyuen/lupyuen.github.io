@@ -10,9 +10,9 @@
 
 </div>
 
-TODO
+TODO: Will Rust Apps run on a 64-bit RISC-V SBC, like Ox64 BL808? Let's find out!
 
-Will Rust Apps run on a 64-bit RISC-V SBC, like Ox64 BL808? Let's find out!
+TODO: Bare Metal?
 
 # Rust App for NuttX
 
@@ -82,7 +82,7 @@ fn panic(
 }
 ```
 
-# Compile Rust App for QEMU RISC-V 64-bit
+# Compile for QEMU RISC-V 64-bit
 
 TODO
 
