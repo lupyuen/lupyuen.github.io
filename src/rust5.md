@@ -225,15 +225,32 @@ Rust Compiler says that __`riscv64i`__ isn't a valid __Rust Target__ for 64-bit 
 
 _Is riscv64i the correct target for QEMU?_
 
-Remember earlier we called GCC Compiler and Rust Compiler?
+Remember earlier we saw __GCC Compiler__ and __Rust Compiler__?
 
-TODO
+<span style="font-size:90%">
 
-GCC Compiler compiles for rv64imafdc, but Rust Compiler is compiling for riscv64i!
+| GCC Compiler | Rust Compiler |
+|:-------------|:--------------|
+| _riscv64-unknown-elf-gcc_ <br> &nbsp;&nbsp;&nbsp;&nbsp; _hello_main.c_ | _rustc_ <br> &nbsp;&nbsp;&nbsp;&nbsp; _hello_rust_main.rs_
+| _-march_ <br> &nbsp;&nbsp;&nbsp;&nbsp;__rv64imafdc__ | _--target_ <br> &nbsp;&nbsp;&nbsp;__riscv64i-unknown-none-elf__
+| _-mabi_ <br> &nbsp;&nbsp;&nbsp;&nbsp;__lp64d__
 
-TODO
+</span>
 
-Let's harmonise Rust Compiler with GCC Compiler: We'll select rv64gc, since it's closest to rv64imafdc...
+GCC Compiler compiles for __Hardware Floating-Point__, but Rust Compiler is compiling for __Software Floating-Point__!
+
+<span style="font-size:90%">
+
+| GCC Compiler | Rust Compiler |
+|:-------------|:--------------|
+| __rv64imafdc__ | __riscv64i__ |
+| - __I__: Integer | - __I__: Integer |
+| - __F__: Single Hard-Float | _(Default is Soft-Float)_ |
+| - __D__: Double Hard-Float | _(Default is Soft-Float)_ |
+
+</span>
+
+Let's harmonise Rust Compiler with GCC Compiler: We'll select __`rv64gc`__, since it's closest to __Hardware Floating-Point__...
 
 ```bash
 $ rustup target add riscv64gc-unknown-none-elf
@@ -255,35 +272,35 @@ TODO: Fix the path of hello_rust.o
 
 This fixes our build. For now!
 
-[(QEMU supports riscv64gc)](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices)
+([__QEMU__](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices) officially supports [__`rv64gc`__](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices))
+
+("__`gc`__" in "__`rv64gc`__" denotes [__IMAFDC__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions))
 
 # Compile Rust App for Ox64 SBC
 
-_Rust Apps run OK for QEMU RISC-V. What about Ox64 BL808 SBC?_
+_Our Rust App runs OK on QEMU RISC-V. What about Ox64 BL808 SBC?_
 
-TODO
-
-Let's do the same for Ox64 BL808 SBC...
+Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
 
 1.  Follow these steps to build __NuttX for Ox64__...
 
     TODO
 
-1.  Remember to __Rename the Main Function__...
+1.  Remember to __Rename the Main Function__.
 
-    We change this in hello_rust_main.rs...
+    Look for this line in [__hello_rust_main.rs__](TODO)...
 
     ```rust
     pub extern "C" fn hello_rust_main(...)
     ```
 
-    To this...
+    And change to this...
 
     ```rust
     pub extern "C" fn main(...)
     ```
 
-    (We'll come back to this)
+    (We'll explain why)
 
 1.  __If we Enable Build Tracing:__ We'll see...
 
