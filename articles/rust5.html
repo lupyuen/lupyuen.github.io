@@ -143,12 +143,13 @@
 <p>Before testing on a Real RISC-V SBC, let’s test on <strong>QEMU Emulator for RISC-V</strong> (64-bit)…</p>
 <ol>
 <li>
-<p>Follow these steps to build <strong>NuttX for QEMU Emulator</strong> (64-bit)…</p>
+<p>Follow these steps to build <strong>NuttX for QEMU Emulator</strong> (64-bit RISC-V)…</p>
 <p>TODO</p>
 </li>
 <li>
 <p><strong>If we Enable Build Tracing:</strong> We’ll see…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ make --trace
+<div class="example-wrap"><pre class="language-bash"><code>## Build NuttX with Tracing Enabled
+$ make --trace
 
 ## Compile &quot;hello_main.c&quot; with GCC Compiler
 riscv64-unknown-elf-gcc \
@@ -258,9 +259,20 @@ Could not find specification for target
 Run `rustc --print target-list`
   for a list of built-in targets
 </code></pre></div>
-<p>Rust Compiler says that <strong><code>riscv64i</code></strong> isn’t a valid <strong>Rust Target</strong> for 64-bit RISC-V.</p>
+<p>Rust Compiler says that <strong><code>riscv64i</code></strong> isn’t a valid <strong>Rust Target</strong> for 64-bit RISC-V…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## List the Built-In Rust Targets for RISC-V
+$ rustup target list | grep riscv
+
+## Nope no riscv64i!
+riscv32i-unknown-none-elf
+riscv32imac-unknown-none-elf
+riscv32imc-unknown-none-elf
+riscv64gc-unknown-linux-gnu
+riscv64gc-unknown-none-elf
+riscv64imac-unknown-none-elf
+</code></pre></div>
 <p><em>Is riscv64i the correct target for QEMU?</em></p>
-<p>Remember earlier we saw <strong>GCC Compiler</strong> and <strong>Rust Compiler</strong>?</p>
+<p>Remember earlier we saw <strong>GCC Compiler</strong> and <strong>Rust Compiler</strong>…</p>
 <span style="font-size:90%">
 <div><table><thead><tr><th style="text-align: left">GCC Compiler</th><th style="text-align: left">Rust Compiler</th></tr></thead><tbody>
 <tr><td style="text-align: left"><em>riscv64-unknown-elf-gcc</em> <br>      <em>hello_main.c</em></td><td style="text-align: left"><em>rustc</em> <br>      <em>hello_rust_main.rs</em></td></tr>
@@ -268,7 +280,7 @@ Run `rustc --print target-list`
 <tr><td style="text-align: left"><em>-mabi</em> <br>     <strong>lp64d</strong></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div></span>
-<p>GCC Compiler uses <strong>Hardware Floating-Point</strong>, but Rust Compiler emits <strong>Software Floating-Point</strong>!</p>
+<p>From above we see that GCC Compiler uses <strong>Hardware Floating-Point</strong>, but Rust Compiler chose <strong>Software Floating-Point</strong>!</p>
 <span style="font-size:90%">
 <div><table><thead><tr><th style="text-align: left">GCC Compiler</th><th style="text-align: left">Rust Compiler</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>rv64imafdc</strong></td><td style="text-align: left"><strong>riscv64i</strong></td></tr>
@@ -316,7 +328,8 @@ $ make
 </li>
 <li>
 <p><strong>If we Enable Build Tracing:</strong> We’ll see…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ make --trace import
+<div class="example-wrap"><pre class="language-bash"><code>## Build NuttX with Tracing Enabled
+$ make --trace import
 
 riscv64-unknown-elf-gcc \
   -c \
@@ -498,6 +511,8 @@ nsh&gt;
 $ make menuconfig
 ## TODO: Enable &quot;Hello Rust&quot; Example App
 ## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig
+
+## Build NuttX with Tracing Enabled
 $ make --trace
 
 ## Compile &quot;hello_main.c&quot; with GCC Compiler
@@ -552,8 +567,12 @@ $ make menuconfig
 ## TODO: Enable &quot;Hello Rust&quot; Example App
 ## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/bl808/ox64/configs/nsh/defconfig
 $ make
+
+## Build NuttX with Tracing Enabled
 $ make --trace export
 $ pushd ../apps
+
+## Build NuttX with Tracing Enabled
 $ make --trace import
 
 riscv64-unknown-elf-gcc \
