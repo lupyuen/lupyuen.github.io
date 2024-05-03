@@ -150,25 +150,25 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__.
     Then our __Rust Target__ is incorrect. We run this...
 
     ```bash
+    ## Add the Rust Target for 64-bit RISC-V Hard-Float
     $ rustup target add riscv64gc-unknown-none-elf
     $ pushd ../apps/examples/hello_rust 
 
     ## `$hello` becomes `hello_main.c.Users.Luppy.riscv.apps.examples.hello.o`
-    $ hello=$(basename ../hello/*hello.o)
-
     ## `$hello_rust` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o`
+    ## `$hello_rust_1` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o`
+    $ hello=$(basename ../hello/*hello.o)
     $ hello_rust=`
       echo $hello \
       | sed "s/hello_main.c/hello_rust_main.rs/" \
       | sed "s/hello.o/hello_rust.o/"
       `
-
-    ## `$hello_rust_1` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o`
     $ hello_rust_1=`
       echo $hello_rust \
       | sed "s/hello_rust.o/hello_rust_1.o/"
       `
 
+    ## Compile our Rust App for 64-bit RISC-V Hard-Float
     $ rustc \
       --target riscv64gc-unknown-none-elf \
       --edition 2021 \
@@ -179,6 +179,8 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__.
       hello_rust_main.rs \
       -o $hello_rust
     $ cp $hello_rust $hello_rust_1
+
+    ## Return to NuttX Folder and complete the build
     $ popd
     $ make
     ```
