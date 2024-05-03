@@ -428,6 +428,8 @@ nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh> 
 ```
 
+![NuttX Flat Mode](https://lupyuen.github.io/images/rust5-flat.jpg)
+
 # NuttX Flat Mode vs Kernel Mode
 
 _Why the funny fixes for NuttX Ox64?_
@@ -467,6 +469,8 @@ __NuttX Ox64__ runs in __Kernel Mode__ (pic below)
 - More realistic for Actual Hardware
 
 TODO: (More about Kernel Mode)
+
+![NuttX Kernel Mode](https://lupyuen.github.io/images/rust5-kernel.jpg)
 
 Fix them in GSoC
 
