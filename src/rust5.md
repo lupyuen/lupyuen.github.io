@@ -86,13 +86,14 @@ fn panic(
 
 Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__ (64-bit)...
 
-1.  Follow these steps to build __NuttX for QEMU Emulator__ (64-bit)...
+1.  Follow these steps to build __NuttX for QEMU Emulator__ (64-bit RISC-V)...
 
     TODO
 
 1.  __If we Enable Build Tracing:__ We'll see...
 
     ```bash
+    ## Build NuttX with Tracing Enabled
     $ make --trace
 
     ## Compile "hello_main.c" with GCC Compiler
@@ -221,11 +222,24 @@ Run `rustc --print target-list`
   for a list of built-in targets
 ```
 
-Rust Compiler says that __`riscv64i`__ isn't a valid __Rust Target__ for 64-bit RISC-V.
+Rust Compiler says that __`riscv64i`__ isn't a valid __Rust Target__ for 64-bit RISC-V...
+
+```bash
+## List the Built-In Rust Targets for RISC-V
+$ rustup target list | grep riscv
+
+## Nope no riscv64i!
+riscv32i-unknown-none-elf
+riscv32imac-unknown-none-elf
+riscv32imc-unknown-none-elf
+riscv64gc-unknown-linux-gnu
+riscv64gc-unknown-none-elf
+riscv64imac-unknown-none-elf
+```
 
 _Is riscv64i the correct target for QEMU?_
 
-Remember earlier we saw __GCC Compiler__ and __Rust Compiler__?
+Remember earlier we saw __GCC Compiler__ and __Rust Compiler__...
 
 <span style="font-size:90%">
 
@@ -237,7 +251,7 @@ Remember earlier we saw __GCC Compiler__ and __Rust Compiler__?
 
 </span>
 
-GCC Compiler uses __Hardware Floating-Point__, but Rust Compiler emits __Software Floating-Point__!
+From above we see that GCC Compiler uses __Hardware Floating-Point__, but Rust Compiler chose __Software Floating-Point__!
 
 <span style="font-size:90%">
 
@@ -305,6 +319,7 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
 1.  __If we Enable Build Tracing:__ We'll see...
 
     ```bash
+    ## Build NuttX with Tracing Enabled
     $ make --trace import
 
     riscv64-unknown-elf-gcc \
@@ -492,6 +507,8 @@ $ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
 ## TODO: Enable "Hello Rust" Example App
 ## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig
+
+## Build NuttX with Tracing Enabled
 $ make --trace
 
 ## Compile "hello_main.c" with GCC Compiler
@@ -552,8 +569,12 @@ $ make menuconfig
 ## TODO: Enable "Hello Rust" Example App
 ## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/bl808/ox64/configs/nsh/defconfig
 $ make
+
+## Build NuttX with Tracing Enabled
 $ make --trace export
 $ pushd ../apps
+
+## Build NuttX with Tracing Enabled
 $ make --trace import
 
 riscv64-unknown-elf-gcc \
