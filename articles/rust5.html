@@ -260,11 +260,24 @@ Run `rustc --print target-list`
 </code></pre></div>
 <p>Rust Compiler says that <strong><code>riscv64i</code></strong> isn’t a valid <strong>Rust Target</strong> for 64-bit RISC-V.</p>
 <p><em>Is riscv64i the correct target for QEMU?</em></p>
-<p>Remember earlier we called GCC Compiler and Rust Compiler?</p>
-<p>TODO</p>
-<p>GCC Compiler compiles for rv64imafdc, but Rust Compiler is compiling for riscv64i!</p>
-<p>TODO</p>
-<p>Let’s harmonise Rust Compiler with GCC Compiler: We’ll select rv64gc, since it’s closest to rv64imafdc…</p>
+<p>Remember earlier we saw <strong>GCC Compiler</strong> and <strong>Rust Compiler</strong>?</p>
+<span style="font-size:90%">
+<div><table><thead><tr><th style="text-align: left">GCC Compiler</th><th style="text-align: left">Rust Compiler</th></tr></thead><tbody>
+<tr><td style="text-align: left"><em>riscv64-unknown-elf-gcc</em> <br>      <em>hello_main.c</em></td><td style="text-align: left"><em>rustc</em> <br>      <em>hello_rust_main.rs</em></td></tr>
+<tr><td style="text-align: left"><em>-march</em> <br>     <strong>rv64imafdc</strong></td><td style="text-align: left"><em>–target</em> <br>    <strong>riscv64i-unknown-none-elf</strong></td></tr>
+<tr><td style="text-align: left"><em>-mabi</em> <br>     <strong>lp64d</strong></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div></span>
+<p>GCC Compiler compiles for <strong>Hardware Floating-Point</strong>, but Rust Compiler is compiling for <strong>Software Floating-Point</strong>!</p>
+<span style="font-size:90%">
+<div><table><thead><tr><th style="text-align: left">GCC Compiler</th><th style="text-align: left">Rust Compiler</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>rv64imafdc</strong></td><td style="text-align: left"><strong>riscv64i</strong></td></tr>
+<tr><td style="text-align: left">- <strong>I</strong>: Integer</td><td style="text-align: left">- <strong>I</strong>: Integer</td></tr>
+<tr><td style="text-align: left">- <strong>F</strong>: Single Hard-Float</td><td style="text-align: left"><em>(Default is Soft-Float)</em></td></tr>
+<tr><td style="text-align: left">- <strong>D</strong>: Double Hard-Float</td><td style="text-align: left"><em>(Default is Soft-Float)</em></td></tr>
+</tbody></table>
+</div></span>
+<p>Let’s harmonise Rust Compiler with GCC Compiler: We’ll select <strong><code>rv64gc</code></strong>, since it’s closest to <strong>Hardware Floating-Point</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 $ rustc \
@@ -281,25 +294,25 @@ $ make
 </code></pre></div>
 <p>TODO: Fix the path of hello_rust.o</p>
 <p>This fixes our build. For now!</p>
-<p><a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices">(QEMU supports riscv64gc)</a></p>
+<p>(<a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices"><strong>QEMU</strong></a> officially supports <a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices"><strong><code>rv64gc</code></strong></a>)</p>
+<p>(“<strong><code>gc</code></strong>” in “<strong><code>rv64gc</code></strong>” denotes <a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions"><strong>IMAFDC</strong></a>)</p>
 <h1 id="compile-rust-app-for-ox64-sbc"><a class="doc-anchor" href="#compile-rust-app-for-ox64-sbc">§</a>5 Compile Rust App for Ox64 SBC</h1>
-<p><em>Rust Apps run OK for QEMU RISC-V. What about Ox64 BL808 SBC?</em></p>
-<p>TODO</p>
-<p>Let’s do the same for Ox64 BL808 SBC…</p>
+<p><em>Our Rust App runs OK on QEMU RISC-V. What about Ox64 BL808 SBC?</em></p>
+<p>Let’s compile our Rust App for <strong>Ox64 BL808 RISC-V SBC</strong> (also 64-bit)…</p>
 <ol>
 <li>
 <p>Follow these steps to build <strong>NuttX for Ox64</strong>…</p>
 <p>TODO</p>
 </li>
 <li>
-<p>Remember to <strong>Rename the Main Function</strong>…</p>
-<p>We change this in hello_rust_main.rs…</p>
+<p>Remember to <strong>Rename the Main Function</strong>.</p>
+<p>Look for this line in <a href="TODO"><strong>hello_rust_main.rs</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(...)</code></pre></div>
-<p>To this…</p>
+<p>And change to this…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>main(...)</code></pre></div>
-<p>(We’ll come back to this)</p>
+<p>(We’ll explain why)</p>
 </li>
 <li>
 <p><strong>If we Enable Build Tracing:</strong> We’ll see…</p>
