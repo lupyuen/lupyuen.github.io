@@ -545,8 +545,6 @@ Fix them in GSoC
 
 TODO: Appendix
 
--Dmain=hello_main
-
 _Can we run NuttX QEMU in Kernel Mode?_
 
 TODO: Kernel Mode
@@ -591,7 +589,7 @@ Follow these steps to build __NuttX for QEMU Emulator__ (64-bit RISC-V)...
     
     [__"Download Toolchain for 64-bit RISC-V"__](https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v)
 
-1.  Download and configure NuttX for QEMU RISC-V 64-bit...
+1.  Download and configure NuttX for __QEMU RISC-V 64-bit__...
 
     ```bash
     mkdir nuttx
@@ -686,7 +684,7 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
     
     [__"Download Toolchain for 64-bit RISC-V"__](https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v)
 
-1.  Download and configure NuttX for Ox64 BL808 SBC...
+1.  Download and configure NuttX for __Ox64 BL808 SBC__...
 
     ```bash
     mkdir nuttx
@@ -740,7 +738,7 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
 
     TODO
 
-1.  TODO: Build the NuttX Project...
+1.  Build the NuttX Project...
 
     ```bash
     ## Add the Rust Target for RISC-V 64-bit (Hard-Float)
@@ -767,7 +765,7 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
 
     [(See the __Build Log__)](https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79)
 
-1.  TODO: Export the NuttX Kernel Interface...
+1.  Export the __NuttX Kernel Interface__...
 
     ```bash
     ## Export the NuttX Kernel Interface
@@ -778,7 +776,7 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
 
     [(See the __Build Log__)](https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79)
 
-1.  TODO: Build the NuttX Apps...
+1.  Build the __NuttX Apps__...
 
     ```bash
     ## Build the NuttX Apps
@@ -797,7 +795,7 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
 
     [(See the __Build Log__)](https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79)
 
-1.  TODO: __Complete the NuttX Build__...
+1.  __Complete the NuttX Build__...
 
     ```bash
     ## Return to the NuttX Folder
@@ -828,7 +826,7 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
 
 # Appendix: Run NuttX on Ox64 Emulator
 
-Our Rust App runs OK on Ox64 BL808 Emulator, here's how...
+This is how we test our Rust App on __Ox64 BL808 Emulator__...
 
 TODO: Build Ox64 Emulator
 
@@ -910,6 +908,7 @@ _Huh? Why is hello_rust not found?_
 To find out, we [__Enable Logging for Binary Loader and Scheduler__](https://github.com/lupyuen2/wip-nuttx/commit/dca29d561f44c4749c067b8304dc898b1c6c6e0c)...
 
 ```bash
+## Enable Logging for Binary Loader and Scheduler
 CONFIG_DEBUG_BINFMT=y
 CONFIG_DEBUG_BINFMT_ERROR=y
 CONFIG_DEBUG_BINFMT_WARN=y
@@ -991,6 +990,8 @@ nsh> hello_rust
 Hello, Rust!!
 ```
 
+TODO: -Dmain=hello_main
+
 # Appendix: Makefile Target is Missing
 
 _Why is the Makefile Target missing for Ox64?_
@@ -1035,3 +1036,9 @@ $ make import
 ```
 
 TODO: Fix the path of hello_rust.o
+
+[(See the __Build Log__)](https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79)
+
+Complete the NuttX Build according to [__the instructions here__](TODO).
+
+This produces __`Image`__, containing the NuttX Kernel + NuttX Apps. Which we'll boot on Ox64 SBC.
