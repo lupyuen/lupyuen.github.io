@@ -188,7 +188,7 @@ TODO: Pic of QEMU
 
 # Test on QEMU 64-bit RISC-V
 
-We're ready to __boot NuttX on QEMU Emulator__ and run our Rust App!
+We're ready to boot __NuttX on QEMU Emulator__ and run our Rust App!
 
 1.  Download and install [__QEMU Emulator__](https://www.qemu.org/download/)...
 
@@ -227,7 +227,7 @@ We're ready to __boot NuttX on QEMU Emulator__ and run our Rust App!
     Hello, Rust!!
     ```
 
-    TODO: [(See the __NuttX Log__)](https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384)
+    [(See the __NuttX Log__)](https://gist.github.com/lupyuen/7403b78ae9b1a1cf411cfe39235efe49)
 
 1.  Enter "__help__" to see the available commands...
 
@@ -250,35 +250,6 @@ We're ready to __boot NuttX on QEMU Emulator__ and run our Rust App!
     ```
 
 1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
-
-TODO
-
-```bash
-$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
-ABCnx_start: Entry
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-nx_start_application: Starting init thread
-task_spawn: name=nsh_main entry=0x8000745c file_actions=0 attr=0x8003d798 argv=0x8003d790
-nxtask_activate: nsh_main pid=1,TCB=0x8003e820
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> nx_start: CPU0: Beginning Idle Loop
-
-nsh> hello_rust
-posix_spawn: pid=0x8003f734 path=hello_rust file_actions=0x8003f738 attr=0x8003f740 argv=0x8003f838
-nxposix_spawn_exec: ERROR: exec failed: 2
-task_spawn: name=hello_rust entry=0x80018622 file_actions=0x8003f738 attr=0x8003f740 argv=0x8003f840
-spawn_execattrs: Setting policy=2 priority=100 for pid=2
-nxtask_activate: hello_rust pid=2,TCB=0x8003fda0
-Hello, Rust!!
-abcd
-You entered...
-abcd
-
-nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
-nsh> 
-```
 
 ![TODO](https://lupyuen.github.io/images/rust5-flow3.jpg)
 
@@ -358,6 +329,8 @@ $ make
 ```
 
 TODO: Fix the path of hello_rust.o
+
+[(See the __Build Log__)](https://gist.github.com/lupyuen/acb19827f55d91bca96ef76ddd778b71)
 
 This fixes our build. For now! (Pic below)
 
