@@ -98,6 +98,8 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__ 
 
     ## Compile "hello_main.c" with GCC Compiler
     riscv64-unknown-elf-gcc \
+      -march=rv64imafdc \
+      -mabi=lp64d \
       -c \
       -fno-common \
       -Wall \
@@ -114,8 +116,6 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__ 
       -fdata-sections \
       -g \
       -mcmodel=medany \
-      -march=rv64imafdc \
-      -mabi=lp64d \
       -isystem /Users/Luppy/riscv/nuttx/include \
       -D__NuttX__ \
       -DNDEBUG  \
@@ -127,10 +127,10 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__ 
 
     ## Compile "hello_rust_main.rs" with Rust Compiler
     rustc \
+      --target riscv64i-unknown-none-elf \
       --edition 2021 \
       --emit obj \
       -g \
-      --target riscv64i-unknown-none-elf \
       -C panic=abort \
       -O \
       hello_rust_main.rs \
@@ -147,10 +147,10 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__ 
     $ rustup target add riscv64gc-unknown-none-elf
     $ pushd ../apps/examples/hello_rust 
     $ rustc \
+      --target riscv64gc-unknown-none-elf \
       --edition 2021 \
       --emit obj \
       -g \
-      --target riscv64gc-unknown-none-elf \
       -C panic=abort \
       -O \
       hello_rust_main.rs \
@@ -222,7 +222,7 @@ Run `rustc --print target-list`
   for a list of built-in targets
 ```
 
-Rust Compiler says that __`riscv64i`__ isn't a valid __Rust Target__ for 64-bit RISC-V...
+Rust Compiler says that [__`riscv64i`__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions) isn't a valid __Rust Target__ for 64-bit RISC-V...
 
 ```bash
 ## List the Built-In Rust Targets for RISC-V
@@ -251,7 +251,7 @@ Remember earlier we saw __GCC Compiler__ and __Rust Compiler__...
 
 </span>
 
-From above we see that GCC Compiler uses __Hardware Floating-Point__, but Rust Compiler chose __Software Floating-Point__!
+From above we see that GCC Compiler uses __Hardware Floating-Point__, but Rust Compiler somehow selected __Software Floating-Point__!
 
 <span style="font-size:90%">
 
@@ -270,10 +270,10 @@ Let's harmonise Rust Compiler with GCC Compiler: We select [__`rv64gc`__](https:
 $ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 $ rustc \
+  --target riscv64gc-unknown-none-elf \
   --edition 2021 \
   --emit obj \
   -g \
-  --target riscv64gc-unknown-none-elf \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
@@ -323,6 +323,8 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
     $ make --trace import
 
     riscv64-unknown-elf-gcc \
+      -march=rv64imafdc \
+      -mabi=lp64d \
       -c \
       -fno-common \
       -Wall \
@@ -341,8 +343,6 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
       -fdata-sections \
       -g \
       -mcmodel=medany \
-      -march=rv64imafdc \
-      -mabi=lp64d \
       -isystem /Users/Luppy/ox64/apps/import/include \
       -isystem /Users/Luppy/ox64/apps/import/include \
       -D__NuttX__  \
@@ -362,10 +362,10 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
     $ rustup target add riscv64gc-unknown-none-elf
     $ pushd ../apps/examples/hello_rust 
     $ rustc \
+      --target riscv64gc-unknown-none-elf \
       --edition 2021 \
       --emit obj \
       -g \
-      --target riscv64gc-unknown-none-elf \
       -C panic=abort \
       -O \
       hello_rust_main.rs \
@@ -432,7 +432,7 @@ nsh>
 
 _Why the funny fixes for NuttX Ox64?_
 
-Earlier we saw 2 workarounds for our Ox64 Build...
+Earlier we saw 2 workarounds for our Ox64 NuttX Build...
 
 - We renamed the __Main Function__
 
@@ -470,9 +470,13 @@ TODO: (More about Kernel Mode)
 
 Fix them in GSoC
 
+TODO: Appendix
+
 -Dmain=hello_main
 
-QEMU Kernel mode
+_Can we run NuttX QEMU in Kernel Mode?_
+
+TODO
 
 # What's Next
 
@@ -513,6 +517,8 @@ $ make --trace
 
 ## Compile "hello_main.c" with GCC Compiler
 riscv64-unknown-elf-gcc \
+  -march=rv64imafdc \
+  -mabi=lp64d \
   -c \
   -fno-common \
   -Wall \
@@ -529,8 +535,6 @@ riscv64-unknown-elf-gcc \
   -fdata-sections \
   -g \
   -mcmodel=medany \
-  -march=rv64imafdc \
-  -mabi=lp64d \
   -isystem /Users/Luppy/riscv/nuttx/include \
   -D__NuttX__ \
   -DNDEBUG  \
@@ -541,10 +545,10 @@ riscv64-unknown-elf-gcc \
 
 ## Compile "hello_rust_main.rs" with Rust Compiler
 rustc \
+  --target riscv64i-unknown-none-elf \
   --edition 2021 \
   --emit obj \
   -g \
-  --target riscv64i-unknown-none-elf \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
@@ -578,6 +582,8 @@ $ pushd ../apps
 $ make --trace import
 
 riscv64-unknown-elf-gcc \
+  -march=rv64imafdc \
+  -mabi=lp64d \
   -c \
   -fno-common \
   -Wall \
@@ -596,8 +602,6 @@ riscv64-unknown-elf-gcc \
   -fdata-sections \
   -g \
   -mcmodel=medany \
-  -march=rv64imafdc \
-  -mabi=lp64d \
   -isystem /Users/Luppy/ox64/apps/import/include \
   -isystem /Users/Luppy/ox64/apps/import/include \
   -D__NuttX__  \
@@ -623,10 +627,10 @@ Like QEMU, we change riscv64i to riscv64gc...
 $ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 $ rustc \
+  --target riscv64gc-unknown-none-elf \
   --edition 2021 \
   --emit obj \
   -g \
-  --target riscv64gc-unknown-none-elf \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
@@ -806,10 +810,10 @@ Like QEMU, we change riscv64i to riscv64gc...
 $ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 $ rustc \
+  --target riscv64gc-unknown-none-elf \
   --edition 2021 \
   --emit obj \
   -g \
-  --target riscv64gc-unknown-none-elf \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
