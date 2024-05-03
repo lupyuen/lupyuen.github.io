@@ -84,6 +84,7 @@
 </div>
 <p>TODO: Will Rust Apps run on a 64-bit RISC-V SBC, like Ox64 BL808? Let’s find out!</p>
 <p>TODO: Bare Metal?</p>
+<p>TODO: Pic of Ox64 Board</p>
 <h1 id="rust-app-for-nuttx"><a class="doc-anchor" href="#rust-app-for-nuttx">§</a>1 Rust App for NuttX</h1>
 <p>Below is the <strong>Simplest Rust App</strong> that will run on Apache NuttX RTOS. We’ll test it on Ox64 BL808 SBC.</p>
 <p>We begin with the <strong>Rust Declarations</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L20-L41">hello_rust_main.rs</a></p>
@@ -140,7 +141,7 @@
   </span><span class="kw">loop </span>{}
 }</code></pre></div>
 <h1 id="compile-for-qemu-64-bit-risc-v"><a class="doc-anchor" href="#compile-for-qemu-64-bit-risc-v">§</a>2 Compile for QEMU 64-bit RISC-V</h1>
-<p>Before testing on a Real RISC-V SBC, let’s test on <strong>QEMU Emulator for RISC-V</strong> (64-bit)…</p>
+<p>Before testing on a Real RISC-V SBC, let’s test on <strong>QEMU Emulator for RISC-V</strong>…</p>
 <ol>
 <li>
 <p>Follow these steps to build <strong>NuttX for QEMU Emulator</strong> (64-bit RISC-V)…</p>
@@ -192,9 +193,9 @@ rustc \
   -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
 </code></pre></div></li>
 <li>
-<p><strong>If the build fails</strong> with this error…</p>
+<p><strong>If the Build Fails:</strong></p>
 <p><em>“Could not find specification for target riscv64i-unknown-none-elf”</em></p>
-<p>Then our <strong>Rust Target</strong> is incorrect! We run this…</p>
+<p>Then our <strong>Rust Target</strong> is incorrect. We run this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 $ rustc \
@@ -210,6 +211,7 @@ $ popd
 $ make
 </code></pre></div>
 <p>TODO: Fix the path of hello_rust.o</p>
+<p>TODO: Test on Linux</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ a=$(basename ~/ox64/apps/examples/hello/*.o)
 $ b=`
   echo $a \
@@ -219,13 +221,70 @@ $ b=`
 $ echo $b
 hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
 </code></pre></div>
-<p>TODO: Test on Linux</p>
 <p>(We’ll come back to this)</p>
 </li>
+<li>
+<p>This produces the NuttX ELF Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator.</p>
+</li>
 </ol>
+<p>TODO: Pic of QEMU</p>
 <h1 id="test-on-qemu-64-bit-risc-v"><a class="doc-anchor" href="#test-on-qemu-64-bit-risc-v">§</a>3 Test on QEMU 64-bit RISC-V</h1>
+<p>We’re ready to <strong>boot NuttX on QEMU Emulator</strong> and run our Rust App!</p>
+<ol>
+<li>
+<p>Download and install <a href="https://www.qemu.org/download/"><strong>QEMU Emulator</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
+brew install qemu
+
+## For Debian and Ubuntu:
+sudo apt install qemu-system-riscv64
+</code></pre></div></li>
+<li>
+<p>Start the <strong>QEMU RISC-V Emulator</strong> (64-bit) with the NuttX ELF Image <strong>nuttx</strong> from the previous section…</p>
+<div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv32 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+</code></pre></div></li>
+<li>
+<p>NuttX is now running in the QEMU Emulator! (Pic above)</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt;
+</code></pre></div></li>
+<li>
+<p>Enter “<strong>hello_rust</strong>” to run our Rust Demo App (which will print something)</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_rust
+Hello, Rust!!
+</code></pre></div>
+<p>TODO: <a href="https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384">(See the <strong>NuttX Log</strong>)</a></p>
+</li>
+<li>
+<p>Enter “<strong>help</strong>” to see the available commands…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; help
+help usage:  help [-v] [&lt;cmd&gt;]
+
+    .           cp          exit        mkdir       rmdir       umount      
+    [           cmp         expr        mkrd        set         unset       
+    ?           dirname     false       mount       sleep       uptime      
+    alias       dd          fdinfo      mv          source      usleep      
+    unalias     df          free        pidof       test        xd          
+    basename    dmesg       help        printf      time        
+    break       echo        hexdump     ps          true        
+    cat         env         kill        pwd         truncate    
+    cd          exec        ls          rm          uname       
+
+Builtin Apps:
+    hello         hello_rust    nsh           ostest        sh       
+</code></pre></div></li>
+<li>
+<p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
+</li>
+</ol>
 <p>TODO</p>
-<p>And our Rust App runs OK on QEMU 64-bit RISC-V yay!</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
 ABCnx_start: Entry
 uart_register: Registering /dev/console
@@ -250,7 +309,9 @@ abcd
 
 nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
 nsh&gt; 
-</code></pre></div><h1 id="rust-target-is-incorrect"><a class="doc-anchor" href="#rust-target-is-incorrect">§</a>4 Rust Target is Incorrect</h1>
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/rust5-flow3.jpg" alt="TODO" /></p>
+<h1 id="rust-target-is-incorrect"><a class="doc-anchor" href="#rust-target-is-incorrect">§</a>4 Rust Target is Incorrect</h1>
 <p><em>Why did our Rust Build fail with this error?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustc hello_rust_main.rs --target riscv64i-unknown-none-elf ...
 
@@ -259,7 +320,7 @@ Could not find specification for target
 Run `rustc --print target-list`
   for a list of built-in targets
 </code></pre></div>
-<p>Rust Compiler says that <a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions"><strong><code>riscv64i</code></strong></a> isn’t a valid <strong>Rust Target</strong> for 64-bit RISC-V…</p>
+<p>Rust Compiler doesn’t recognise <a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions"><strong><code>riscv64i</code></strong></a> as a valid <strong>Rust Target</strong> for 64-bit RISC-V…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## List the Built-In Rust Targets for RISC-V
 $ rustup target list | grep riscv
 
@@ -280,7 +341,7 @@ riscv64imac-unknown-none-elf
 <tr><td style="text-align: left"><em>-mabi</em> <br>     <strong>lp64d</strong></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div></span>
-<p>From above we see that GCC Compiler uses <strong>Hardware Floating-Point</strong>, but Rust Compiler somehow selected <strong>Software Floating-Point</strong>!</p>
+<p>From above we see that GCC Compiler uses <strong>Hardware Floating-Point</strong>, but Rust Compiler somehow selected <strong>Software Floating-Point</strong>! (Pic above)</p>
 <span style="font-size:90%">
 <div><table><thead><tr><th style="text-align: left">GCC Compiler</th><th style="text-align: left">Rust Compiler</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>rv64imafdc</strong></td><td style="text-align: left"><strong>riscv64i</strong></td></tr>
@@ -305,9 +366,10 @@ $ popd
 $ make
 </code></pre></div>
 <p>TODO: Fix the path of hello_rust.o</p>
-<p>This fixes our build. For now!</p>
+<p>This fixes our build. For now! (Pic below)</p>
 <p>(<a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices"><strong>QEMU</strong></a> officially supports <a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices"><strong><code>rv64gc</code></strong></a>)</p>
 <p>(“<strong><code>gc</code></strong>” in “<strong><code>rv64gc</code></strong>” denotes <a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions"><strong>IMAFDC</strong></a>)</p>
+<p><img src="https://lupyuen.github.io/images/rust5-flow.jpg" alt="TODO" /></p>
 <h1 id="compile-rust-app-for-ox64-sbc"><a class="doc-anchor" href="#compile-rust-app-for-ox64-sbc">§</a>5 Compile Rust App for Ox64 SBC</h1>
 <p><em>Our Rust App runs OK on QEMU RISC-V. What about Ox64 BL808 SBC?</em></p>
 <p>Let’s compile our Rust App for <strong>Ox64 BL808 RISC-V SBC</strong> (also 64-bit)…</p>
@@ -321,10 +383,10 @@ $ make
 <p>Look for this line in <a href="TODO"><strong>hello_rust_main.rs</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(...)</code></pre></div>
-<p>And change to this…</p>
+<p>And rename the function to this…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>main(...)</code></pre></div>
-<p>(We’ll explain why)</p>
+<p>(We’ll see why)</p>
 </li>
 <li>
 <p><strong>If we Enable Build Tracing:</strong> We’ll see…</p>
@@ -359,9 +421,9 @@ riscv64-unknown-elf-gcc \
   -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o
 </code></pre></div></li>
 <li>
-<p><strong>If the Build Fails</strong> with this error…</p>
+<p><strong>If the Build Fails:</strong></p>
 <p><em>“target hello_rust_install does not exist”</em></p>
-<p>Then our <strong>Makefile Target</strong> is missing! We run this…</p>
+<p>Then our <strong>Makefile Target</strong> is missing. We run this…</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
@@ -380,11 +442,30 @@ $ make import
 <p>TODO: Fix the path of hello_rust.o</p>
 <p>(We’ll come back to this)</p>
 </li>
+<li>
+<p>This produces the NuttX <strong>Image</strong> that we may boot on Ox64 SBC.</p>
+</li>
 </ol>
+<p>TODO: Pic of Ox64 Console</p>
 <h1 id="run-rust-app-on-ox64-sbc"><a class="doc-anchor" href="#run-rust-app-on-ox64-sbc">§</a>6 Run Rust App on Ox64 SBC</h1>
+<p>Follow these steps to boot NuttX on Ox64 SBC and run our Rust App…</p>
 <p>TODO</p>
-<p>Our Rust App also works OK on a real Ox64 BL808 SBC!</p>
-<p><a href="https://gist.github.com/lupyuen/7fabbffd16f22914b299ced3723b9b9b">(See the <strong>Complete Log</strong>)</a></p>
+<ol>
+<li>
+<p>NuttX is now running on Ox64 SBC! (Pic above)</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt;
+</code></pre></div></li>
+<li>
+<p>Enter “<strong>hello_rust</strong>” to run our Rust Demo App (which will print something)</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_rust
+Hello, Rust!!
+</code></pre></div>
+<p>TODO: <a href="https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384">(See the <strong>NuttX Log</strong>)</a></p>
+</li>
+</ol>
+<p>Yep Rust Apps will run OK on Ox64 BL808 RISC-V SBC!</p>
+<p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>Enter choice: 1:.Pine64 0X64 Kernel
 Retrieving file: /extlinux/../Image
 append: root=PARTLABEL=rootfs rootwait rw rootfstype=ext4 console=ttyS0,2000000 loglevel=8 earlyextlinux/../bl808-pine64-ox64.dt## Flattened Device Tree blob at 51ff8000
@@ -485,6 +566,7 @@ nsh&gt;
 <p>-Dmain=hello_main</p>
 <p><em>Can we run NuttX QEMU in Kernel Mode?</em></p>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rust5-flow.jpg" alt="TODO" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
