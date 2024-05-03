@@ -152,6 +152,23 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__.
     ```bash
     $ rustup target add riscv64gc-unknown-none-elf
     $ pushd ../apps/examples/hello_rust 
+
+    ## `$hello` becomes `hello_main.c.Users.Luppy.riscv.apps.examples.hello.o`
+    $ hello=$(basename ../hello/*hello.o)
+
+    ## `$hello_rust` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o`
+    $ hello_rust=`
+      echo $hello \
+      | sed "s/hello_main.c/hello_rust_main.rs/" \
+      | sed "s/hello.o/hello_rust.o/"
+      `
+
+    ## `$hello_rust_1` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o`
+    $ hello_rust_1=`
+      echo $hello_rust \
+      | sed "s/hello_rust.o/hello_rust_1.o/"
+      `
+
     $ rustc \
       --target riscv64gc-unknown-none-elf \
       --edition 2021 \
@@ -160,24 +177,10 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__.
       -C panic=abort \
       -O \
       hello_rust_main.rs \
-      -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+      -o $hello_rust
+    $ cp $hello_rust $hello_rust_1
     $ popd
     $ make
-    ```
-
-    TODO: Fix the path of hello_rust.o
-
-    TODO: Test on Linux
-
-    ```bash
-    $ a=$(basename ~/ox64/apps/examples/hello/*.o)
-    $ b=`
-      echo $a \
-      | sed "s/hello_main.c/hello_rust_main.rs/" \
-      | sed "s/hello.o/hello_rust.o/"
-      `
-    $ echo $b
-    hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
     ```
 
     (We'll come back to this)
@@ -324,6 +327,7 @@ $ rustc \
   -O \
   hello_rust_main.rs \
   -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+## TODO: Copy hello_rust.o to hello_rust_1.o
 $ popd
 $ make
 ```
@@ -422,6 +426,7 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
       -O \
       hello_rust_main.rs \
       -o hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+    ## TODO: Copy hello_rust.o to hello_rust_1.o
     $ popd
     $ make import
     ```
@@ -1004,6 +1009,7 @@ $ rustc \
   -O \
   hello_rust_main.rs \
   -o hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+## TODO: Copy hello_rust.o to hello_rust_1.o
 $ popd
 $ make import
 ```
