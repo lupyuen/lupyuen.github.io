@@ -232,7 +232,7 @@ hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
 </ol>
 <p>TODO: Pic of QEMU</p>
 <h1 id="test-on-qemu-64-bit-risc-v"><a class="doc-anchor" href="#test-on-qemu-64-bit-risc-v">§</a>3 Test on QEMU 64-bit RISC-V</h1>
-<p>We’re ready to <strong>boot NuttX on QEMU Emulator</strong> and run our Rust App!</p>
+<p>We’re ready to boot <strong>NuttX on QEMU Emulator</strong> and run our Rust App!</p>
 <ol>
 <li>
 <p>Download and install <a href="https://www.qemu.org/download/"><strong>QEMU Emulator</strong></a>…</p>
@@ -263,7 +263,7 @@ nsh&gt;
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_rust
 Hello, Rust!!
 </code></pre></div>
-<p>TODO: <a href="https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384">(See the <strong>NuttX Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/7403b78ae9b1a1cf411cfe39235efe49">(See the <strong>NuttX Log</strong>)</a></p>
 </li>
 <li>
 <p>Enter “<strong>help</strong>” to see the available commands…</p>
@@ -287,32 +287,6 @@ Builtin Apps:
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
 </li>
 </ol>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
-ABCnx_start: Entry
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-nx_start_application: Starting init thread
-task_spawn: name=nsh_main entry=0x8000745c file_actions=0 attr=0x8003d798 argv=0x8003d790
-nxtask_activate: nsh_main pid=1,TCB=0x8003e820
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; nx_start: CPU0: Beginning Idle Loop
-
-nsh&gt; hello_rust
-posix_spawn: pid=0x8003f734 path=hello_rust file_actions=0x8003f738 attr=0x8003f740 argv=0x8003f838
-nxposix_spawn_exec: ERROR: exec failed: 2
-task_spawn: name=hello_rust entry=0x80018622 file_actions=0x8003f738 attr=0x8003f740 argv=0x8003f840
-spawn_execattrs: Setting policy=2 priority=100 for pid=2
-nxtask_activate: hello_rust pid=2,TCB=0x8003fda0
-Hello, Rust!!
-abcd
-You entered...
-abcd
-
-nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
-nsh&gt; 
-</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rust5-flow3.jpg" alt="TODO" /></p>
 <h1 id="rust-target-is-incorrect"><a class="doc-anchor" href="#rust-target-is-incorrect">§</a>4 Rust Target is Incorrect</h1>
 <p><em>Earlier we saw this error. Why did our Rust Build fail?</em></p>
@@ -370,6 +344,7 @@ $ popd
 $ make
 </code></pre></div>
 <p>TODO: Fix the path of hello_rust.o</p>
+<p><a href="https://gist.github.com/lupyuen/acb19827f55d91bca96ef76ddd778b71">(See the <strong>Build Log</strong>)</a></p>
 <p>This fixes our build. For now! (Pic below)</p>
 <p>(<a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices"><strong>QEMU</strong></a> officially supports <a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices"><strong><code>rv64gc</code></strong></a>)</p>
 <p>(“<strong><code>gc</code></strong>” in “<strong><code>rv64gc</code></strong>” denotes <a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions"><strong>IMAFDC</strong></a>)</p>
