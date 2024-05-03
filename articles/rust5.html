@@ -541,7 +541,6 @@ Hello, Rust!!
 <p>That’s why the fixes for Ox64 are more complex than QEMU.</p>
 <p>Fix them in GSoC</p>
 <p>TODO: Appendix</p>
-<p>-Dmain=hello_main</p>
 <p><em>Can we run NuttX QEMU in Kernel Mode?</em></p>
 <p>TODO: Kernel Mode</p>
 <p>TODO: Rust Blinky</p>
@@ -584,7 +583,7 @@ Hello, Rust!!
 <p><a href="https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></p>
 </li>
 <li>
-<p>Download and configure NuttX for QEMU RISC-V 64-bit…</p>
+<p>Download and configure NuttX for <strong>QEMU RISC-V 64-bit</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone https://github.com/apache/nuttx nuttx
@@ -664,7 +663,7 @@ riscv64-unknown-elf-objdump \
 <p><a href="https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></p>
 </li>
 <li>
-<p>Download and configure NuttX for Ox64 BL808 SBC…</p>
+<p>Download and configure NuttX for <strong>Ox64 BL808 SBC</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone https://github.com/apache/nuttx nuttx
@@ -708,7 +707,7 @@ Scheduler Informational Output
 <p>TODO</p>
 </li>
 <li>
-<p>TODO: Build the NuttX Project…</p>
+<p>Build the NuttX Project…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Add the Rust Target for RISC-V 64-bit (Hard-Float)
 rustup target add riscv64gc-unknown-none-elf
 
@@ -733,7 +732,7 @@ riscv64-unknown-elf-objdump \
 <p><a href="https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79">(See the <strong>Build Log</strong>)</a></p>
 </li>
 <li>
-<p>TODO: Export the NuttX Kernel Interface…</p>
+<p>Export the <strong>NuttX Kernel Interface</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Export the NuttX Kernel Interface
 make -j 8 export
 pushd ../apps
@@ -742,7 +741,7 @@ pushd ../apps
 <p><a href="https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79">(See the <strong>Build Log</strong>)</a></p>
 </li>
 <li>
-<p>TODO: Build the NuttX Apps…</p>
+<p>Build the <strong>NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the NuttX Apps
 make -j 8 import
 </code></pre></div>
@@ -756,7 +755,7 @@ make -j 8 import
 <p><a href="https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79">(See the <strong>Build Log</strong>)</a></p>
 </li>
 <li>
-<p>TODO: <strong>Complete the NuttX Build</strong>…</p>
+<p><strong>Complete the NuttX Build</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Return to the NuttX Folder
 popd
 
@@ -783,7 +782,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 </li>
 </ol>
 <h1 id="appendix-run-nuttx-on-ox64-emulator"><a class="doc-anchor" href="#appendix-run-nuttx-on-ox64-emulator">§</a>11 Appendix: Run NuttX on Ox64 Emulator</h1>
-<p>Our Rust App runs OK on Ox64 BL808 Emulator, here’s how…</p>
+<p>This is how we test our Rust App on <strong>Ox64 BL808 Emulator</strong>…</p>
 <p>TODO: Build Ox64 Emulator</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ temu root-riscv64.cfg
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
@@ -844,7 +843,8 @@ nsh: hello_rust: command not found
 <p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(<strong>root-riscv64.cfg</strong> is here)</a></p>
 <p><em>Huh? Why is hello_rust not found?</em></p>
 <p>To find out, we <a href="https://github.com/lupyuen2/wip-nuttx/commit/dca29d561f44c4749c067b8304dc898b1c6c6e0c"><strong>Enable Logging for Binary Loader and Scheduler</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_DEBUG_BINFMT=y
+<div class="example-wrap"><pre class="language-bash"><code>## Enable Logging for Binary Loader and Scheduler
+CONFIG_DEBUG_BINFMT=y
 CONFIG_DEBUG_BINFMT_ERROR=y
 CONFIG_DEBUG_BINFMT_WARN=y
 CONFIG_DEBUG_SCHED=y
@@ -908,7 +908,9 @@ nsh&gt;
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; hello_rust
 Hello, Rust!!
-</code></pre></div><h1 id="appendix-makefile-target-is-missing"><a class="doc-anchor" href="#appendix-makefile-target-is-missing">§</a>13 Appendix: Makefile Target is Missing</h1>
+</code></pre></div>
+<p>TODO: -Dmain=hello_main</p>
+<h1 id="appendix-makefile-target-is-missing"><a class="doc-anchor" href="#appendix-makefile-target-is-missing">§</a>13 Appendix: Makefile Target is Missing</h1>
 <p><em>Why is the Makefile Target missing for Ox64?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make import
 
@@ -944,6 +946,9 @@ $ popd
 $ make import
 </code></pre></div>
 <p>TODO: Fix the path of hello_rust.o</p>
+<p><a href="https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79">(See the <strong>Build Log</strong>)</a></p>
+<p>Complete the NuttX Build according to <a href="TODO"><strong>the instructions here</strong></a>.</p>
+<p>This produces <strong><code>Image</code></strong>, containing the NuttX Kernel + NuttX Apps. Which we’ll boot on Ox64 SBC.</p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
