@@ -822,7 +822,7 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
 
 1.  TODO: Rename Main Function
 
-1.  TODO: Build the NuttX Project and dump the RISC-V Disassembly to __nuttx.S__ (for easier troubleshooting)...
+1.  TODO: Build the NuttX Project...
 
     ```bash
     ## Add the Rust Target for RISC-V 64-bit (Hard-Float)
@@ -831,15 +831,53 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
     ## Build the NuttX Project
     make
 
-    ## Dump the NuttX Disassembly to `nuttx.S`
+    ## Export the NuttX Kernel
+    ## to `nuttx.bin`
+    riscv64-unknown-elf-objcopy \
+      -O binary \
+      nuttx \
+      nuttx.bin
+
+    ## Dump the disassembly to nuttx.S
     riscv64-unknown-elf-objdump \
-      -t -S --demangle --line-numbers --wide \
+      --syms --source --reloc --demangle --line-numbers --wide \
+      --debugging \
       nuttx \
       >nuttx.S \
       2>&1
+
+    ## Build the Apps Filesystem
+    make -j 8 export
+    pushd ../apps
+    ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
     ```
 
 1.  TODO: Makefile Target
+
+1.  TODO: Complete the build...
+
+    ```bash
+    make -j 8 import
+    popd
+
+    ## Generate the Initial RAM Disk `initrd`
+    ## in ROMFS Filesystem Format
+    ## from the Apps Filesystem `../apps/bin`
+    ## and label it `NuttXBootVol`
+    genromfs \
+      -f initrd \
+      -d ../apps/bin \
+      -V "NuttXBootVol"
+
+    ## Prepare a Padding with 64 KB of zeroes
+    head -c 65536 /dev/zero >/tmp/nuttx.pad
+
+    ## Append Padding and Initial RAM Disk to NuttX Kernel
+    cat nuttx.bin /tmp/nuttx.pad initrd \
+      >Image
+    ```
+
+This produces the NuttX Image for Ox64: __`Image`__
 
 TODO
 
