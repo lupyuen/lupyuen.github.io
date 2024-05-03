@@ -961,8 +961,7 @@ Our Rust App runs OK on Ox64 BL808 Emulator, here's how...
 TODO: Build Ox64 Emulator
 
 ```bash
-+ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
-+ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
+$ temu root-riscv64.cfg
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
 virtio_console_init
 Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
@@ -1001,18 +1000,16 @@ nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh> 
 ```
 
-[(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
+[(__root-riscv64.cfg__ is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
 
 # Appendix: Main Function is Missing
 
-TODO
+_Why did we rename the Main Function?_
 
-We test it with [Ox64 BL808 Emulator](https://lupyuen.github.io/articles/tinyemu3)...
+Watch what happens if we don't rename the Main Function. Let's test with [__Ox64 BL808 Emulator__](https://lupyuen.github.io/articles/tinyemu3)...
 
 ```bash
-+ riscv64-unknown-elf-objdump --syms --source --reloc --demangle --line-numbers --wide --debugging nuttx
-+ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
-+ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
+$ temu root-riscv64.cfg
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
 
 NuttShell (NSH) NuttX-12.4.0-RC0
@@ -1020,9 +1017,11 @@ nsh> hello_rust
 nsh: hello_rust: command not found
 ```
 
+[(__root-riscv64.cfg__ is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
+
 _Huh? Why is hello_rust not found?_
 
-To find out, we [Enable Logging for Binary Loader and Scheduler](https://github.com/lupyuen2/wip-nuttx/commit/dca29d561f44c4749c067b8304dc898b1c6c6e0c)...
+To find out, we [__Enable Logging for Binary Loader and Scheduler__](https://github.com/lupyuen2/wip-nuttx/commit/dca29d561f44c4749c067b8304dc898b1c6c6e0c)...
 
 ```bash
 CONFIG_DEBUG_BINFMT=y
@@ -1034,14 +1033,10 @@ CONFIG_DEBUG_SCHED_INFO=y
 CONFIG_DEBUG_SCHED_WARN=y
 ```
 
-[(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
-
 Now it tells us why it failed...
 
 ```bash
-+ riscv64-unknown-elf-objdump --syms --source --reloc --demangle --line-numbers --wide --debugging nuttx
-+ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
-+ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
+$ temu root-riscv64.cfg
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
 virtio_console_init
 Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
@@ -1080,13 +1075,11 @@ nsh: hello_rust: command not found
 nsh> 
 ```
 
-[(root-riscv64.cfg is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
-
-Which fails because the main() function is missing!
+It failed because the __main()__ function is missing!
 
 TODO: Why?
 
-So we change this in hello_rust_main.rs...
+So we change this line in [__hello_rust_main.rs__](TODO)...
 
 ```rust
 pub extern "C" fn hello_rust_main(...)
@@ -1098,11 +1091,17 @@ To this...
 pub extern "C" fn main(...)
 ```
 
-_What happens if we don't change it?_
+And it works!
 
-TODO
+```text
+NuttShell (NSH) NuttX-12.4.0-RC0
+nsh> hello_rust
+Hello, Rust!!
+```
 
 # Appendix: Makefile Target is Missing
+
+_Why is the Makefile Target missing for Ox64?_
 
 TODO
 
