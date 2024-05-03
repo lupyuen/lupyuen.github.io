@@ -472,6 +472,8 @@ TODO: (More about Kernel Mode)
 
 ![NuttX Kernel Mode](https://lupyuen.github.io/images/rust5-kernel.jpg)
 
+That's why the fixes for Ox64 are more complex than QEMU.
+
 Fix them in GSoC
 
 TODO: Appendix
