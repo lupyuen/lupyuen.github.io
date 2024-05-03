@@ -791,24 +791,59 @@ Scheduler Informational Output
 <p>TODO: Rename Main Function</p>
 </li>
 <li>
-<p>TODO: Build the NuttX Project and dump the RISC-V Disassembly to <strong>nuttx.S</strong> (for easier troubleshooting)…</p>
+<p>TODO: Build the NuttX Project…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Add the Rust Target for RISC-V 64-bit (Hard-Float)
 rustup target add riscv64gc-unknown-none-elf
 
 ## Build the NuttX Project
 make
 
-## Dump the NuttX Disassembly to `nuttx.S`
+## Export the NuttX Kernel
+## to `nuttx.bin`
+riscv64-unknown-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
+
+## Dump the disassembly to nuttx.S
 riscv64-unknown-elf-objdump \
-  -t -S --demangle --line-numbers --wide \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
   nuttx \
   &gt;nuttx.S \
   2&gt;&amp;1
+
+## Build the Apps Filesystem
+make -j 8 export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
 </code></pre></div></li>
 <li>
 <p>TODO: Makefile Target</p>
 </li>
+<li>
+<p>TODO: Complete the build…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make -j 8 import
+popd
+
+## Generate the Initial RAM Disk `initrd`
+## in ROMFS Filesystem Format
+## from the Apps Filesystem `../apps/bin`
+## and label it `NuttXBootVol`
+genromfs \
+  -f initrd \
+  -d ../apps/bin \
+  -V &quot;NuttXBootVol&quot;
+
+## Prepare a Padding with 64 KB of zeroes
+head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
+
+## Append Padding and Initial RAM Disk to NuttX Kernel
+cat nuttx.bin /tmp/nuttx.pad initrd \
+  &gt;Image
+</code></pre></div></li>
 </ol>
+<p>This produces the NuttX Image for Ox64: <strong><code>Image</code></strong></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>TODO: git clone
 $ tools/configure.sh ox64:nsh
