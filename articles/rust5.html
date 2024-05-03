@@ -86,7 +86,7 @@
 <p>TODO: Bare Metal?</p>
 <p>TODO: Pic of Ox64 Board</p>
 <h1 id="rust-app-for-nuttx"><a class="doc-anchor" href="#rust-app-for-nuttx">§</a>1 Rust App for NuttX</h1>
-<p>Below is the <strong>Simplest Rust App</strong> that will run on Apache NuttX RTOS. We’ll test it on Ox64 BL808 SBC.</p>
+<p>Below is the <strong>Simplest Rust App</strong> that will run on Apache NuttX RTOS.</p>
 <p>We begin with the <strong>Rust Declarations</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L20-L41">hello_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// main() function not needed
@@ -140,6 +140,7 @@
   // For now, we loop forever
   </span><span class="kw">loop </span>{}
 }</code></pre></div>
+<p>That’s all for our barebones app! Now we compile it…</p>
 <h1 id="compile-for-qemu-64-bit-risc-v"><a class="doc-anchor" href="#compile-for-qemu-64-bit-risc-v">§</a>2 Compile for QEMU 64-bit RISC-V</h1>
 <p>Before testing on a Real RISC-V SBC, let’s test on <strong>QEMU Emulator for RISC-V</strong>…</p>
 <ol>
@@ -224,7 +225,7 @@ hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
 <p>(We’ll come back to this)</p>
 </li>
 <li>
-<p>This produces the NuttX ELF Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator.</p>
+<p>This produces the NuttX ELF Image <strong><code>nuttx</code></strong> that we’ll boot on QEMU RISC-V Emulator.</p>
 </li>
 </ol>
 <p>TODO: Pic of QEMU</p>
@@ -240,7 +241,7 @@ brew install qemu
 sudo apt install qemu-system-riscv64
 </code></pre></div></li>
 <li>
-<p>Start the <strong>QEMU RISC-V Emulator</strong> (64-bit) with the NuttX ELF Image <strong>nuttx</strong> from the previous section…</p>
+<p>Start the <strong>QEMU RISC-V Emulator</strong> (64-bit) with the NuttX ELF Image <strong><code>nuttx</code></strong> from the previous section…</p>
 <div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
@@ -312,7 +313,7 @@ nsh&gt;
 </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rust5-flow3.jpg" alt="TODO" /></p>
 <h1 id="rust-target-is-incorrect"><a class="doc-anchor" href="#rust-target-is-incorrect">§</a>4 Rust Target is Incorrect</h1>
-<p><em>Why did our Rust Build fail with this error?</em></p>
+<p><em>Earlier we saw this error. Why did our Rust Build fail?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustc hello_rust_main.rs --target riscv64i-unknown-none-elf ...
 
 Could not find specification for target
@@ -443,7 +444,10 @@ $ make import
 <p>(We’ll come back to this)</p>
 </li>
 <li>
-<p>This produces the NuttX <strong>Image</strong> that we may boot on Ox64 SBC.</p>
+<p>TODO: Bundle Image</p>
+</li>
+<li>
+<p>This produces <strong><code>Image</code></strong>, containing the NuttX Kernel + NuttX Apps. Which we’ll boot on Ox64 SBC.</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/rust5-title.jpg" alt="Rust App on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS" /></p>
@@ -510,14 +514,14 @@ nsh&gt;
 <h1 id="nuttx-flat-mode-vs-kernel-mode"><a class="doc-anchor" href="#nuttx-flat-mode-vs-kernel-mode">§</a>7 NuttX Flat Mode vs Kernel Mode</h1>
 <p><em>Why the funny fixes for NuttX Ox64?</em></p>
 <p>Earlier we saw 2 workarounds for our Ox64 NuttX Build…</p>
-<ul>
+<ol>
 <li>
 <p>We renamed the <strong>Main Function</strong></p>
 </li>
 <li>
 <p>We fixed the <strong>Makefile Target</strong></p>
 </li>
-</ul>
+</ol>
 <p>That’s because <strong>Ox64 Apps</strong> are a little more complicated than <strong>QEMU Apps</strong>…</p>
 <p><strong>NuttX QEMU</strong> runs in <strong>Flat Mode</strong> (pic above)</p>
 <ul>
@@ -565,7 +569,8 @@ nsh&gt;
 <p>TODO: Appendix</p>
 <p>-Dmain=hello_main</p>
 <p><em>Can we run NuttX QEMU in Kernel Mode?</em></p>
-<p>TODO</p>
+<p>TODO: Kernel Mode</p>
+<p>TODO: Rust Blinky</p>
 <p><img src="https://lupyuen.github.io/images/rust5-flow.jpg" alt="TODO" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
