@@ -201,6 +201,23 @@ rustc \
 <p>Then our <strong>Rust Target</strong> is incorrect. We run this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
+
+## `$hello` becomes `hello_main.c.Users.Luppy.riscv.apps.examples.hello.o`
+$ hello=$(basename ../hello/*hello.o)
+
+## `$hello_rust` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o`
+$ hello_rust=`
+  echo $hello \
+  | sed &quot;s/hello_main.c/hello_rust_main.rs/&quot; \
+  | sed &quot;s/hello.o/hello_rust.o/&quot;
+  `
+
+## `$hello_rust_1` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o`
+$ hello_rust_1=`
+  echo $hello_rust \
+  | sed &quot;s/hello_rust.o/hello_rust_1.o/&quot;
+  `
+
 $ rustc \
   --target riscv64gc-unknown-none-elf \
   --edition 2021 \
@@ -209,20 +226,10 @@ $ rustc \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
-  -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+  -o $hello_rust
+$ cp $hello_rust $hello_rust_1
 $ popd
 $ make
-</code></pre></div>
-<p>TODO: Fix the path of hello_rust.o</p>
-<p>TODO: Test on Linux</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ a=$(basename ~/ox64/apps/examples/hello/*.o)
-$ b=`
-  echo $a \
-  | sed &quot;s/hello_main.c/hello_rust_main.rs/&quot; \
-  | sed &quot;s/hello.o/hello_rust.o/&quot;
-  `
-$ echo $b
-hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
 </code></pre></div>
 <p>(We’ll come back to this)</p>
 </li>
@@ -340,6 +347,7 @@ $ rustc \
   -O \
   hello_rust_main.rs \
   -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+## TODO: Copy hello_rust.o to hello_rust_1.o
 $ popd
 $ make
 </code></pre></div>
@@ -417,6 +425,7 @@ $ rustc \
   -O \
   hello_rust_main.rs \
   -o hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+## TODO: Copy hello_rust.o to hello_rust_1.o
 $ popd
 $ make import
 </code></pre></div>
@@ -917,6 +926,7 @@ $ rustc \
   -O \
   hello_rust_main.rs \
   -o hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
+## TODO: Copy hello_rust.o to hello_rust_1.o
 $ popd
 $ make import
 </code></pre></div>
