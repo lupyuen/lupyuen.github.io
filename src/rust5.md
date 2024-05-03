@@ -459,9 +459,17 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
 
 # Run Rust App on Ox64 SBC
 
-Follow these steps to boot NuttX on Ox64 SBC and run our Rust App...
+Follow these steps to boot __NuttX on Ox64 SBC__ and run our Rust App...
 
-TODO
+1.  Flash [__OpenSBI and U-Boot Bootloader__](https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot) to Ox64
+
+1.  Prepare a __Linux microSD__ for Ox64 as described [__in the previous article__](https://lupyuen.github.io/articles/ox64)
+
+1.  Copy the __`Image`__ file from the previous section.
+
+    Overwrite the __`Image`__ in the Linux microSD.
+
+1.  Insert the [__microSD into Ox64__](https://lupyuen.github.io/images/ox64-sd.jpg) and power up Ox64
 
 1.  NuttX is now running on Ox64 SBC! (Pic above)
 
@@ -613,6 +621,85 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Follow these steps to build __NuttX for QEMU Emulator__ (64-bit RISC-V)...
 
+1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
+
+    [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+1.  Download the RISC-V Toolchain for __riscv64-unknown-elf__...
+    
+    [__"Download Toolchain for 64-bit RISC-V"__](https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v)
+
+1.  Download and configure NuttX for QEMU RISC-V 64-bit...
+
+    ```bash
+    mkdir nuttx
+    cd nuttx
+    git clone https://github.com/apache/nuttx nuttx
+    git clone https://github.com/apache/nuttx-apps apps
+
+    cd nuttx
+    tools/configure.sh rv-virt:nsh64
+    make menuconfig
+    ```
+
+1.  In __menuconfig__, browse to "__Device Drivers__ > __System Logging__"
+
+    Disable this option...
+    
+    ```text
+    Prepend Timestamp to Syslog Message
+    ```
+
+1.  Browse to "__Build Setup__ > __Debug Options__"
+
+    Select the following options...
+
+    ```text
+    Enable Debug Features
+    Enable Error Output
+    Enable Warnings Output
+    Enable Informational Debug Output
+    Enable Debug Assertions
+    Enable Debug Assertions Show Expression
+    Scheduler Debug Features
+    Scheduler Error Output
+    Scheduler Warnings Output
+    Scheduler Informational Output
+    ```
+
+1.  Browse to "__Application Configuration__ > __Examples__"
+
+    Select "__Hello Rust Example__"
+    
+    Select it __Twice__ so that "__`<M>`__" changes to "__`<*>`__"
+    
+    [(Source Code for __Hello Rust__)](https://lupyuen.github.io/articles/rust3#rust-app-for-nuttx)
+    
+1.  Save and exit __menuconfig__.
+
+    [(See the __NuttX Config__)](https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig)
+
+1.  TODO: Build the NuttX Project and dump the RISC-V Disassembly to __nuttx.S__ (for easier troubleshooting)...
+
+    ```bash
+    ## Add the Rust Target for RISC-V 64-bit (Hard-Float)
+    rustup target add riscv64gc-unknown-none-elf
+
+    ## Build the NuttX Project
+    make
+
+    ## Dump the NuttX Disassembly to `nuttx.S`
+    riscv64-unknown-elf-objdump \
+      -t -S --demangle --line-numbers --wide \
+      nuttx \
+      >nuttx.S \
+      2>&1
+    ```
+    
+    This produces the NuttX ELF Image __`nuttx`__ that we may boot on QEMU RISC-V Emulator.
+
+1.  TODO: Rust Target
+
 TODO
 
 ```bash
@@ -674,6 +761,85 @@ make: *** [tools/LibTargets.mk:232: /Users/Luppy/riscv/apps/libapps.a] Error 2
 # Appendix: Build NuttX for Ox64 SBC
 
 Follow these steps to build __NuttX for Ox64 BL808 SBC__...
+
+1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
+
+    [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+1.  Download the RISC-V Toolchain for __riscv64-unknown-elf__...
+    
+    [__"Download Toolchain for 64-bit RISC-V"__](https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v)
+
+1.  Download and configure NuttX for Ox64 BL808 SBC...
+
+    ```bash
+    mkdir nuttx
+    cd nuttx
+    git clone https://github.com/apache/nuttx nuttx
+    git clone https://github.com/apache/nuttx-apps apps
+
+    cd nuttx
+    tools/configure.sh ox64:nsh
+    make menuconfig
+    ```
+
+1.  In __menuconfig__, browse to "__Device Drivers__ > __System Logging__"
+
+    Disable this option...
+    
+    ```text
+    Prepend Timestamp to Syslog Message
+    ```
+
+1.  Browse to "__Build Setup__ > __Debug Options__"
+
+    Select the following options...
+
+    ```text
+    Enable Debug Features
+    Enable Error Output
+    Enable Warnings Output
+    Enable Informational Debug Output
+    Enable Debug Assertions
+    Enable Debug Assertions Show Expression
+    Scheduler Debug Features
+    Scheduler Error Output
+    Scheduler Warnings Output
+    Scheduler Informational Output
+    ```
+
+1.  Browse to "__Application Configuration__ > __Examples__"
+
+    Select "__Hello Rust Example__"
+    
+    Select it __Twice__ so that "__`<M>`__" changes to "__`<*>`__"
+    
+    [(Source Code for __Hello Rust__)](https://lupyuen.github.io/articles/rust3#rust-app-for-nuttx)
+    
+1.  Save and exit __menuconfig__.
+
+    [(See the __NuttX Config__)](https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/bl808/ox64/configs/nsh/defconfig)
+
+1.  TODO: Rename Main Function
+
+1.  TODO: Build the NuttX Project and dump the RISC-V Disassembly to __nuttx.S__ (for easier troubleshooting)...
+
+    ```bash
+    ## Add the Rust Target for RISC-V 64-bit (Hard-Float)
+    rustup target add riscv64gc-unknown-none-elf
+
+    ## Build the NuttX Project
+    make
+
+    ## Dump the NuttX Disassembly to `nuttx.S`
+    riscv64-unknown-elf-objdump \
+      -t -S --demangle --line-numbers --wide \
+      nuttx \
+      >nuttx.S \
+      2>&1
+    ```
+
+1.  TODO: Makefile Target
 
 TODO
 
