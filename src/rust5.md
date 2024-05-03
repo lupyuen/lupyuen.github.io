@@ -14,6 +14,8 @@ TODO: Will Rust Apps run on a 64-bit RISC-V SBC, like Ox64 BL808? Let's find out
 
 TODO: Bare Metal?
 
+TODO: Pic of Ox64 Board
+
 # Rust App for NuttX
 
 Below is the __Simplest Rust App__ that will run on Apache NuttX RTOS. We'll test it on Ox64 BL808 SBC.
@@ -84,7 +86,7 @@ fn panic(
 
 # Compile for QEMU 64-bit RISC-V
 
-Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__ (64-bit)...
+Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__...
 
 1.  Follow these steps to build __NuttX for QEMU Emulator__ (64-bit RISC-V)...
 
@@ -137,11 +139,11 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__ 
       -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
     ```
 
-1.  __If the build fails__ with this error...
+1.  __If the Build Fails:__
 
     _"Could not find specification for target riscv64i-unknown-none-elf"_
 
-    Then our __Rust Target__ is incorrect! We run this...
+    Then our __Rust Target__ is incorrect. We run this...
 
     ```bash
     $ rustup target add riscv64gc-unknown-none-elf
@@ -161,6 +163,8 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__ 
 
     TODO: Fix the path of hello_rust.o
 
+    TODO: Test on Linux
+
     ```bash
     $ a=$(basename ~/ox64/apps/examples/hello/*.o)
     $ b=`
@@ -172,15 +176,78 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__ 
     hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
     ```
 
-    TODO: Test on Linux
-
     (We'll come back to this)
+
+1.  This produces the NuttX ELF Image __nuttx__ that we may boot on QEMU RISC-V Emulator.
+
+TODO: Pic of QEMU
 
 # Test on QEMU 64-bit RISC-V
 
-TODO
+We're ready to __boot NuttX on QEMU Emulator__ and run our Rust App!
 
-And our Rust App runs OK on QEMU 64-bit RISC-V yay!
+1.  Download and install [__QEMU Emulator__](https://www.qemu.org/download/)...
+
+    ```bash
+    ## For macOS:
+    brew install qemu
+
+    ## For Debian and Ubuntu:
+    sudo apt install qemu-system-riscv64
+    ```
+
+1.  Start the __QEMU RISC-V Emulator__ (64-bit) with the NuttX ELF Image __nuttx__ from the previous section...
+
+    ```bash
+    qemu-system-riscv64 \
+      -semihosting \
+      -M virt,aclint=on \
+      -cpu rv32 \
+      -smp 8 \
+      -bios none \
+      -kernel nuttx \
+      -nographic
+    ```
+
+1.  NuttX is now running in the QEMU Emulator! (Pic above)
+
+    ```text
+    NuttShell (NSH) NuttX-12.4.0-RC0
+    nsh>
+    ```
+    
+1.  Enter "__hello_rust__" to run our Rust Demo App (which will print something)
+
+    ```text
+    nsh> hello_rust
+    Hello, Rust!!
+    ```
+
+    TODO: [(See the __NuttX Log__)](https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384)
+
+1.  Enter "__help__" to see the available commands...
+
+    ```text
+    nsh> help
+    help usage:  help [-v] [<cmd>]
+
+        .           cp          exit        mkdir       rmdir       umount      
+        [           cmp         expr        mkrd        set         unset       
+        ?           dirname     false       mount       sleep       uptime      
+        alias       dd          fdinfo      mv          source      usleep      
+        unalias     df          free        pidof       test        xd          
+        basename    dmesg       help        printf      time        
+        break       echo        hexdump     ps          true        
+        cat         env         kill        pwd         truncate    
+        cd          exec        ls          rm          uname       
+
+    Builtin Apps:
+        hello         hello_rust    nsh           ostest        sh       
+    ```
+
+1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
+
+TODO
 
 ```bash
 $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
@@ -209,6 +276,8 @@ nxtask_exit: hello_rust pid=2,TCB=0x8003fda0
 nsh> 
 ```
 
+![TODO](https://lupyuen.github.io/images/rust5-flow3.jpg)
+
 # Rust Target is Incorrect
 
 _Why did our Rust Build fail with this error?_
@@ -222,7 +291,7 @@ Run `rustc --print target-list`
   for a list of built-in targets
 ```
 
-Rust Compiler says that [__`riscv64i`__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions) isn't a valid __Rust Target__ for 64-bit RISC-V...
+Rust Compiler doesn't recognise [__`riscv64i`__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions) as a valid __Rust Target__ for 64-bit RISC-V...
 
 ```bash
 ## List the Built-In Rust Targets for RISC-V
@@ -251,7 +320,7 @@ Remember earlier we saw __GCC Compiler__ and __Rust Compiler__...
 
 </span>
 
-From above we see that GCC Compiler uses __Hardware Floating-Point__, but Rust Compiler somehow selected __Software Floating-Point__!
+From above we see that GCC Compiler uses __Hardware Floating-Point__, but Rust Compiler somehow selected __Software Floating-Point__! (Pic above)
 
 <span style="font-size:90%">
 
@@ -284,11 +353,13 @@ $ make
 
 TODO: Fix the path of hello_rust.o
 
-This fixes our build. For now!
+This fixes our build. For now! (Pic below)
 
 ([__QEMU__](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices) officially supports [__`rv64gc`__](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices))
 
 ("__`gc`__" in "__`rv64gc`__" denotes [__IMAFDC__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions))
+
+![TODO](https://lupyuen.github.io/images/rust5-flow.jpg)
 
 # Compile Rust App for Ox64 SBC
 
@@ -308,13 +379,13 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
     pub extern "C" fn hello_rust_main(...)
     ```
 
-    And change to this...
+    And rename the function to this...
 
     ```rust
     pub extern "C" fn main(...)
     ```
 
-    (We'll explain why)
+    (We'll see why)
 
 1.  __If we Enable Build Tracing:__ We'll see...
 
@@ -350,11 +421,11 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
       -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o
     ```
 
-1.  __If the Build Fails__ with this error...
+1.  __If the Build Fails:__
 
     _"target hello_rust_install does not exist"_
 
-    Then our __Makefile Target__ is missing! We run this...
+    Then our __Makefile Target__ is missing. We run this...
 
     TODO
 
@@ -378,13 +449,35 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
 
     (We'll come back to this)
 
+1.  This produces the NuttX __Image__ that we may boot on Ox64 SBC.
+
+TODO: Pic of Ox64 Console
+
 # Run Rust App on Ox64 SBC
+
+Follow these steps to boot NuttX on Ox64 SBC and run our Rust App...
 
 TODO
 
-Our Rust App also works OK on a real Ox64 BL808 SBC!
+1.  NuttX is now running on Ox64 SBC! (Pic above)
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/7fabbffd16f22914b299ced3723b9b9b)
+    ```text
+    NuttShell (NSH) NuttX-12.4.0-RC0
+    nsh>
+    ```
+    
+1.  Enter "__hello_rust__" to run our Rust Demo App (which will print something)
+
+    ```text
+    nsh> hello_rust
+    Hello, Rust!!
+    ```
+
+    TODO: [(See the __NuttX Log__)](https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384)
+
+Yep Rust Apps will run OK on Ox64 BL808 RISC-V SBC!
+
+TODO
 
 ```bash
 Enter choice: 1:.Pine64 0X64 Kernel
@@ -483,6 +576,8 @@ TODO: Appendix
 _Can we run NuttX QEMU in Kernel Mode?_
 
 TODO
+
+![TODO](https://lupyuen.github.io/images/rust5-flow.jpg)
 
 # What's Next
 
