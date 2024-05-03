@@ -84,9 +84,9 @@ fn panic(
 
 # Compile for QEMU 64-bit RISC-V
 
-First we test on QEMU Emulator...
+Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__ (64-bit)...
 
-1.  Follow these steps to build __NuttX for QEMU Emulator__...
+1.  Follow these steps to build __NuttX for QEMU Emulator__ (64-bit)...
 
     TODO
 
@@ -237,7 +237,7 @@ Remember earlier we saw __GCC Compiler__ and __Rust Compiler__?
 
 </span>
 
-GCC Compiler compiles for __Hardware Floating-Point__, but Rust Compiler is compiling for __Software Floating-Point__!
+GCC Compiler uses __Hardware Floating-Point__, but Rust Compiler emits __Software Floating-Point__!
 
 <span style="font-size:90%">
 
@@ -250,7 +250,7 @@ GCC Compiler compiles for __Hardware Floating-Point__, but Rust Compiler is comp
 
 </span>
 
-Let's harmonise Rust Compiler with GCC Compiler: We'll select __`rv64gc`__, since it's closest to __Hardware Floating-Point__...
+Let's harmonise Rust Compiler with GCC Compiler: We select [__`rv64gc`__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions), since it's closest to [__Hardware Floating-Point__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)...
 
 ```bash
 $ rustup target add riscv64gc-unknown-none-elf
@@ -413,7 +413,7 @@ nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh> 
 ```
 
-# Flat Mode vs Kernel Mode
+# NuttX Flat Mode vs Kernel Mode
 
 _Why the funny fixes for NuttX Ox64?_
 
