@@ -915,8 +915,7 @@ $ make import
 </code></pre></div><h1 id="appendix-run-nuttx-on-ox64-emulator"><a class="doc-anchor" href="#appendix-run-nuttx-on-ox64-emulator">§</a>11 Appendix: Run NuttX on Ox64 Emulator</h1>
 <p>Our Rust App runs OK on Ox64 BL808 Emulator, here’s how…</p>
 <p>TODO: Build Ox64 Emulator</p>
-<div class="example-wrap"><pre class="language-bash"><code>+ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
-+ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
+<div class="example-wrap"><pre class="language-bash"><code>$ temu root-riscv64.cfg
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
 virtio_console_init
 Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
@@ -954,21 +953,20 @@ Hello Ox64!
 nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh&gt; 
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(root-riscv64.cfg is here)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(<strong>root-riscv64.cfg</strong> is here)</a></p>
 <h1 id="appendix-main-function-is-missing"><a class="doc-anchor" href="#appendix-main-function-is-missing">§</a>12 Appendix: Main Function is Missing</h1>
-<p>TODO</p>
-<p>We test it with <a href="https://lupyuen.github.io/articles/tinyemu3">Ox64 BL808 Emulator</a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>+ riscv64-unknown-elf-objdump --syms --source --reloc --demangle --line-numbers --wide --debugging nuttx
-+ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
-+ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
+<p><em>Why did we rename the Main Function?</em></p>
+<p>Watch what happens if we don’t rename the Main Function. Let’s test with <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>Ox64 BL808 Emulator</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ temu root-riscv64.cfg
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
 
 NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; hello_rust
 nsh: hello_rust: command not found
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(<strong>root-riscv64.cfg</strong> is here)</a></p>
 <p><em>Huh? Why is hello_rust not found?</em></p>
-<p>To find out, we <a href="https://github.com/lupyuen2/wip-nuttx/commit/dca29d561f44c4749c067b8304dc898b1c6c6e0c">Enable Logging for Binary Loader and Scheduler</a>…</p>
+<p>To find out, we <a href="https://github.com/lupyuen2/wip-nuttx/commit/dca29d561f44c4749c067b8304dc898b1c6c6e0c"><strong>Enable Logging for Binary Loader and Scheduler</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_DEBUG_BINFMT=y
 CONFIG_DEBUG_BINFMT_ERROR=y
 CONFIG_DEBUG_BINFMT_WARN=y
@@ -977,11 +975,8 @@ CONFIG_DEBUG_SCHED_ERROR=y
 CONFIG_DEBUG_SCHED_INFO=y
 CONFIG_DEBUG_SCHED_WARN=y
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(root-riscv64.cfg is here)</a></p>
 <p>Now it tells us why it failed…</p>
-<div class="example-wrap"><pre class="language-bash"><code>+ riscv64-unknown-elf-objdump --syms --source --reloc --demangle --line-numbers --wide --debugging nuttx
-+ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
-+ /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
+<div class="example-wrap"><pre class="language-bash"><code>$ temu root-riscv64.cfg
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
 virtio_console_init
 Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
@@ -1019,18 +1014,20 @@ nxposix_spawn_exec: ERROR: exec failed: 2
 nsh: hello_rust: command not found
 nsh&gt; 
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(root-riscv64.cfg is here)</a></p>
-<p>Which fails because the main() function is missing!</p>
+<p>It failed because the <strong>main()</strong> function is missing!</p>
 <p>TODO: Why?</p>
-<p>So we change this in hello_rust_main.rs…</p>
+<p>So we change this line in <a href="TODO"><strong>hello_rust_main.rs</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(...)</code></pre></div>
 <p>To this…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>main(...)</code></pre></div>
-<p><em>What happens if we don’t change it?</em></p>
-<p>TODO</p>
-<h1 id="appendix-makefile-target-is-missing"><a class="doc-anchor" href="#appendix-makefile-target-is-missing">§</a>13 Appendix: Makefile Target is Missing</h1>
+<p>And it works!</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
+nsh&gt; hello_rust
+Hello, Rust!!
+</code></pre></div><h1 id="appendix-makefile-target-is-missing"><a class="doc-anchor" href="#appendix-makefile-target-is-missing">§</a>13 Appendix: Makefile Target is Missing</h1>
+<p><em>Why is the Makefile Target missing for Ox64?</em></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>Makefile:52: target &#39;/Users/Luppy/ox64/apps/examples/hello_rust_install&#39; does not exist
 make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR=&quot;/Users/Luppy/ox64/apps&quot;
