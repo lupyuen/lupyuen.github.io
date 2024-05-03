@@ -2,7 +2,7 @@
 
 📝 _7 May 2024_
 
-![Rust Apps on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS](https://lupyuen.github.io/images/rust5-title.jpg)
+![Rust App on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS](https://lupyuen.github.io/images/rust5-title.jpg)
 
 <div style="text-align: center">
 
@@ -451,7 +451,7 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
 
 1.  This produces the NuttX __Image__ that we may boot on Ox64 SBC.
 
-TODO: Pic of Ox64 Console
+![Rust App on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS](https://lupyuen.github.io/images/rust5-title.jpg)
 
 # Run Rust App on Ox64 SBC
 
