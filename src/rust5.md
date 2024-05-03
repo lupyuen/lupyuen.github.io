@@ -38,7 +38,7 @@ extern "C" {
 }                       // TODO: Standardise `i32` as `c_int`
 ```
 
-TODO: (We'll explain __`[no_std]`__ in a while)
+[(Why we use __`[no_std]`__)](TODO)
 
 The code above imports the _printf()_ function from C into Rust.
 
@@ -202,7 +202,7 @@ We're ready to __boot NuttX on QEMU Emulator__ and run our Rust App!
     qemu-system-riscv64 \
       -semihosting \
       -M virt,aclint=on \
-      -cpu rv32 \
+      -cpu rv64 \
       -smp 8 \
       -bios none \
       -kernel nuttx \
@@ -601,13 +601,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/rust5.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust5.md)
 
+![TODO](https://lupyuen.github.io/images/rust5-flow.jpg)
+
 # Appendix: Build NuttX for QEMU
+
+Follow these steps to build __NuttX for QEMU Emulator__ (64-bit RISC-V)...
 
 TODO
 
-First we test on QEMU 64-bit RISC-V...
-
 ```bash
+TODO: git clone
 $ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
 ## TODO: Enable "Hello Rust" Example App
@@ -664,11 +667,12 @@ make: *** [tools/LibTargets.mk:232: /Users/Luppy/riscv/apps/libapps.a] Error 2
 
 # Appendix: Build NuttX for Ox64 SBC
 
+Follow these steps to build __NuttX for Ox64 BL808 SBC__...
+
 TODO
 
-Let's do the same for Ox64 BL808 SBC...
-
 ```bash
+TODO: git clone
 $ tools/configure.sh ox64:nsh
 $ make menuconfig
 ## TODO: Enable "Hello Rust" Example App
@@ -742,9 +746,9 @@ $ make import
 
 # Appendix: Run NuttX on Ox64 Emulator
 
-TODO
+Our Rust App runs OK on Ox64 BL808 Emulator, here's how...
 
-Now our Rust App runs OK on Ox64 BL808 Emulator!
+TODO: Build Ox64 Emulator
 
 ```bash
 + cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
