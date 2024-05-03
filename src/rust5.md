@@ -141,6 +141,8 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__.
       -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
     ```
 
+    [(See the __Build Log__)](https://gist.github.com/lupyuen/acb19827f55d91bca96ef76ddd778b71)
+
 1.  __If the Build Fails:__
 
     _"Could not find specification for target riscv64i-unknown-none-elf"_
@@ -293,6 +295,8 @@ Run `rustc --print target-list`
   for a list of built-in targets
 ```
 
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/acb19827f55d91bca96ef76ddd778b71)
+
 Rust Compiler doesn't recognise [__`riscv64i`__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions) as a valid __Rust Target__ for 64-bit RISC-V...
 
 ```bash
@@ -423,6 +427,8 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
       -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o
     ```
 
+    [(See the __Build Log__)](https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79)
+
 1.  __If the Build Fails:__
 
     _"target hello_rust_install does not exist"_
@@ -451,9 +457,9 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
 
     (We'll come back to this)
 
-1.  TODO: Bundle Image
+1.  Complete the NuttX Build according to [__the instructions here__](TODO).
 
-1.  This produces __`Image`__, containing the NuttX Kernel + NuttX Apps. Which we'll boot on Ox64 SBC.
+    This produces __`Image`__, containing the NuttX Kernel + NuttX Apps. Which we'll boot on Ox64 SBC.
 
 ![Rust App on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS](https://lupyuen.github.io/images/rust5-title.jpg)
 
@@ -485,53 +491,9 @@ Follow these steps to boot __NuttX on Ox64 SBC__ and run our Rust App...
     Hello, Rust!!
     ```
 
-    TODO: [(See the __NuttX Log__)](https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384)
+    Yep our Rust App works great on Ox64 BL808 RISC-V SBC!
 
-Yep Rust Apps will run OK on Ox64 BL808 RISC-V SBC!
-
-TODO
-
-```bash
-Enter choice: 1:.Pine64 0X64 Kernel
-Retrieving file: /extlinux/../Image
-append: root=PARTLABEL=rootfs rootwait rw rootfstype=ext4 console=ttyS0,2000000 loglevel=8 earlyextlinux/../bl808-pine64-ox64.dt## Flattened Device Tree blob at 51ff8000
-   Booting using the fdt blob at 0x51ff8000
-Working  51ff8000
-   Loading Device Tree to 0000000053f22000, end 0000000053f25fab ... OK
-Working FDT set to 53f22000
-
-Starting kernel ...
-
-ABCnx_start: Entry
-uart_register: Registering /dev/console
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nxtask_activate: lpwork pid=1,TCB=0x50409110
-nxtask_activate: AppBringUp pid=2,TCB=0x50409710
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-nxtask_activate: /system/bin/init pid=3,TCB=0x5040b730
-nxtask_exit: AppBringUp pid=2,TCB=0x50409710
-
-NuttShell (NSH) NuttX-12.4.0-RC0
-nsh> nx_start: CPU0: Beginning Idle Loop
-
-nsh> 
-nsh> hello_rust
-posix_spawn: pid=0x80202968 path=hello_rust file_actions=0x80202970 attr=0x80202978 argv=0x80202a18
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 1: Undefined symbol[0] has no name: -3
-nxtask_activate: hello_rust pid=6,TCB=0x50409790
-Hello, Rust!!
-
-You entered...
-
-
-nxtask_exit: hello_rust pid=6,TCB=0x50409790
-nsh> 
-```
+    [(See the __NuttX Log__)](https://gist.github.com/lupyuen/dc9cc8f985b44d90ff6079ffda86f815)
 
 ![NuttX Flat Mode](https://lupyuen.github.io/images/rust5-flat.jpg)
 
@@ -695,11 +657,9 @@ Follow these steps to build __NuttX for QEMU Emulator__ (64-bit RISC-V)...
       >nuttx.S \
       2>&1
     ```
+
+    [(See the __Build Log__)](https://gist.github.com/lupyuen/acb19827f55d91bca96ef76ddd778b71)
     
-1.  This produces the NuttX ELF Image __`nuttx`__ that we may boot on QEMU RISC-V Emulator...
-
-    TODO
-
 1.  __If the Build Fails:__
 
     _"Could not find specification for target riscv64i-unknown-none-elf"_
@@ -708,68 +668,11 @@ Follow these steps to build __NuttX for QEMU Emulator__ (64-bit RISC-V)...
 
     TODO
 
-TODO
+    [(See the __Build Log__)](https://gist.github.com/lupyuen/acb19827f55d91bca96ef76ddd778b71)
 
-```bash
-$ mkdir nuttx
-$ cd nuttx
-$ git clone https://github.com/apache/nuttx nuttx
-$ git clone https://github.com/apache/nuttx-apps apps
-$ cd nuttx
+1.  This produces the NuttX ELF Image __`nuttx`__ that we may boot on QEMU RISC-V Emulator...
 
-$ tools/configure.sh rv-virt:nsh64
-$ make menuconfig
-## TODO: Enable "Hello Rust" Example App
-## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig
-
-## Build NuttX with Tracing Enabled
-$ make --trace
-
-## Compile "hello_main.c" with GCC Compiler
-riscv64-unknown-elf-gcc \
-  -march=rv64imafdc \
-  -mabi=lp64d \
-  -c \
-  -fno-common \
-  -Wall \
-  -Wstrict-prototypes \
-  -Wshadow \
-  -Wundef \
-  -Wno-attributes \
-  -Wno-unknown-pragmas \
-  -Wno-psabi \
-  -Os \
-  -fno-strict-aliasing \
-  -fomit-frame-pointer \
-  -ffunction-sections \
-  -fdata-sections \
-  -g \
-  -mcmodel=medany \
-  -isystem /Users/Luppy/riscv/nuttx/include \
-  -D__NuttX__ \
-  -DNDEBUG  \
-  -pipe \
-  -I "/Users/Luppy/riscv/apps/include" \
-  -Dmain=hello_main  hello_main.c \
-  -o  hello_main.c.Users.Luppy.riscv.apps.examples.hello.o
-
-## Compile "hello_rust_main.rs" with Rust Compiler
-rustc \
-  --target riscv64i-unknown-none-elf \
-  --edition 2021 \
-  --emit obj \
-  -g \
-  -C panic=abort \
-  -O \
-  hello_rust_main.rs \
-  -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
-
-error: Error loading target specification: Could not find specification for target "riscv64i-unknown-none-elf". Run `rustc --print target-list` for a list of built-in targets
-
-make[2]: *** [/Users/Luppy/riscv/apps/Application.mk:275: hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o] Error 1
-make[1]: *** [Makefile:51: /Users/Luppy/riscv/apps/examples/hello_rust_all] Error 2
-make: *** [tools/LibTargets.mk:232: /Users/Luppy/riscv/apps/libapps.a] Error 2
-```
+    TODO
 
 # Appendix: Build NuttX for Ox64 SBC
 
@@ -860,6 +763,9 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
       nuttx \
       >nuttx.S \
       2>&1
+    ```
+
+    [(See the __Build Log__)](https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79)
 
 1.  TODO: Export the NuttX Kernel Interface...
 
@@ -870,12 +776,16 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
     ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
     ```
 
+    [(See the __Build Log__)](https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79)
+
 1.  TODO: Build the NuttX Apps...
 
     ```bash
     ## Build the NuttX Apps
     make -j 8 import
     ```
+
+    [(See the __Build Log__)](https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79)
 
 1.  __If the Build Fails:__
 
@@ -885,7 +795,9 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
 
     TODO
 
-1.  TODO: Complete the NuttX Build...
+    [(See the __Build Log__)](https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79)
+
+1.  TODO: __Complete the NuttX Build__...
 
     ```bash
     ## Return to the NuttX Folder
@@ -913,86 +825,6 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
     Copy it to MicroSD and boot on Ox64...
 
     TODO
-
-TODO
-
-```bash
-$ mkdir nuttx
-$ cd nuttx
-$ git clone https://github.com/apache/nuttx nuttx
-$ git clone https://github.com/apache/nuttx-apps apps
-$ cd nuttx
-
-$ tools/configure.sh ox64:nsh
-$ make menuconfig
-## TODO: Enable "Hello Rust" Example App
-## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/bl808/ox64/configs/nsh/defconfig
-$ make
-
-## Build NuttX with Tracing Enabled
-$ make --trace export
-$ pushd ../apps
-
-## Build NuttX with Tracing Enabled
-$ make --trace import
-
-riscv64-unknown-elf-gcc \
-  -march=rv64imafdc \
-  -mabi=lp64d \
-  -c \
-  -fno-common \
-  -Wall \
-  -Wstrict-prototypes \
-  -Wshadow \
-  -Wundef \
-  -Wno-attributes \
-  -Wno-unknown-pragmas \
-  -Wno-psabi \
-  -fno-common \
-  -pipe  \
-  -Os \
-  -fno-strict-aliasing \
-  -fomit-frame-pointer \
-  -ffunction-sections \
-  -fdata-sections \
-  -g \
-  -mcmodel=medany \
-  -isystem /Users/Luppy/ox64/apps/import/include \
-  -isystem /Users/Luppy/ox64/apps/import/include \
-  -D__NuttX__  \
-  -I "/Users/Luppy/ox64/apps/include" \
-  hello_main.c \
-  -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o
-
-Makefile:52: target '/Users/Luppy/ox64/apps/examples/hello_rust_install' does not exist
-make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR="/Users/Luppy/ox64/apps"
-make[3]: Entering directory '/Users/Luppy/ox64/apps/examples/hello_rust'
-make[3]: *** No rule to make target 'hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o', needed by '/Users/Luppy/ox64/apps/bin/hello_rust'.  Stop.
-make[3]: Leaving directory '/Users/Luppy/ox64/apps/examples/hello_rust'
-make[2]: *** [Makefile:52: /Users/Luppy/ox64/apps/examples/hello_rust_install] Error 2
-make[2]: Leaving directory '/Users/Luppy/ox64/apps'
-make[1]: *** [Makefile:78: .import] Error 2
-make[1]: Leaving directory '/Users/Luppy/ox64/apps'
-make: *** [Makefile:84: import] Error 2
-```
-
-Like QEMU, we change riscv64i to riscv64gc...
-
-```bash
-$ rustup target add riscv64gc-unknown-none-elf
-$ pushd ../apps/examples/hello_rust 
-$ rustc \
-  --target riscv64gc-unknown-none-elf \
-  --edition 2021 \
-  --emit obj \
-  -g \
-  -C panic=abort \
-  -O \
-  hello_rust_main.rs \
-  -o hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
-$ popd
-$ make import
-```
 
 # Appendix: Run NuttX on Ox64 Emulator
 
@@ -1041,6 +873,8 @@ nsh>
 ```
 
 [(__root-riscv64.cfg__ is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/4cf0cb2fa1c288b6d28aeeff3a4f3ac1)
 
 # Appendix: Main Function is Missing
 
@@ -1127,6 +961,8 @@ nsh: hello_rust: command not found
 nsh> 
 ```
 
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/fff863ed18e71992cbff3a644615ef69)
+
 It failed because the __main()__ function is missing!
 
 As explained earlier: NuttX Apps for Ox64 are more complex (than QEMU) because they are compiled as separate ELF Files...
@@ -1173,6 +1009,8 @@ make[1]: *** [Makefile:78: .import] Error 2
 make[1]: Leaving directory '/Users/Luppy/ox64/apps'
 make: *** [Makefile:84: import] Error 2
 ```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79)
 
 As explained earlier: NuttX Apps for Ox64 are more complex (than QEMU) because they are compiled as separate ELF Files...
 
