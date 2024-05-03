@@ -102,7 +102,7 @@
     </span>...                 <span class="comment">// Optional Arguments
   </span>) -&gt; i32;             <span class="comment">// Returns `int`
 </span>}                       <span class="comment">// TODO: Standardise `i32` as `c_int`</span></code></pre></div>
-<p>TODO: (We’ll explain <strong><code>[no_std]</code></strong> in a while)</p>
+<p><a href="TODO">(Why we use <strong><code>[no_std]</code></strong>)</a></p>
 <p>The code above imports the <em>printf()</em> function from C into Rust.</p>
 <p>This is how we call it in Rust: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L54-L74">hello_rust_main.rs</a></p>
 
@@ -244,7 +244,7 @@ sudo apt install qemu-system-riscv64
 <div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
-  -cpu rv32 \
+  -cpu rv64 \
   -smp 8 \
   -bios none \
   -kernel nuttx \
@@ -592,10 +592,12 @@ nsh&gt;
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust5.md"><strong>lupyuen.github.io/src/rust5.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/rust5-flow.jpg" alt="TODO" /></p>
 <h1 id="appendix-build-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-build-nuttx-for-qemu">§</a>9 Appendix: Build NuttX for QEMU</h1>
+<p>Follow these steps to build <strong>NuttX for QEMU Emulator</strong> (64-bit RISC-V)…</p>
 <p>TODO</p>
-<p>First we test on QEMU 64-bit RISC-V…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh rv-virt:nsh64
+<div class="example-wrap"><pre class="language-bash"><code>TODO: git clone
+$ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
 ## TODO: Enable &quot;Hello Rust&quot; Example App
 ## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig
@@ -648,9 +650,10 @@ make[2]: *** [/Users/Luppy/riscv/apps/Application.mk:275: hello_rust_main.rs.Use
 make[1]: *** [Makefile:51: /Users/Luppy/riscv/apps/examples/hello_rust_all] Error 2
 make: *** [tools/LibTargets.mk:232: /Users/Luppy/riscv/apps/libapps.a] Error 2
 </code></pre></div><h1 id="appendix-build-nuttx-for-ox64-sbc"><a class="doc-anchor" href="#appendix-build-nuttx-for-ox64-sbc">§</a>10 Appendix: Build NuttX for Ox64 SBC</h1>
+<p>Follow these steps to build <strong>NuttX for Ox64 BL808 SBC</strong>…</p>
 <p>TODO</p>
-<p>Let’s do the same for Ox64 BL808 SBC…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ tools/configure.sh ox64:nsh
+<div class="example-wrap"><pre class="language-bash"><code>TODO: git clone
+$ tools/configure.sh ox64:nsh
 $ make menuconfig
 ## TODO: Enable &quot;Hello Rust&quot; Example App
 ## https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/bl808/ox64/configs/nsh/defconfig
@@ -717,8 +720,8 @@ $ rustc \
 $ popd
 $ make import
 </code></pre></div><h1 id="appendix-run-nuttx-on-ox64-emulator"><a class="doc-anchor" href="#appendix-run-nuttx-on-ox64-emulator">§</a>11 Appendix: Run NuttX on Ox64 Emulator</h1>
-<p>TODO</p>
-<p>Now our Rust App runs OK on Ox64 BL808 Emulator!</p>
+<p>Our Rust App runs OK on Ox64 BL808 Emulator, here’s how…</p>
+<p>TODO: Build Ox64 Emulator</p>
 <div class="example-wrap"><pre class="language-bash"><code>+ cp /Users/Luppy/riscv/nuttx-tinyemu/docs/quickjs/root-riscv64.cfg .
 + /Users/Luppy/riscv/ox64-tinyemu/temu root-riscv64.cfg
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
