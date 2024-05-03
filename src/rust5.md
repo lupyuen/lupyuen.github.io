@@ -18,7 +18,7 @@ TODO: Pic of Ox64 Board
 
 # Rust App for NuttX
 
-Below is the __Simplest Rust App__ that will run on Apache NuttX RTOS. We'll test it on Ox64 BL808 SBC.
+Below is the __Simplest Rust App__ that will run on Apache NuttX RTOS.
 
 We begin with the __Rust Declarations__: [hello_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L20-L41)
 
@@ -83,6 +83,8 @@ fn panic(
   loop {}
 }
 ```
+
+That's all for our barebones app! Now we compile it...
 
 # Compile for QEMU 64-bit RISC-V
 
@@ -178,7 +180,7 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__.
 
     (We'll come back to this)
 
-1.  This produces the NuttX ELF Image __nuttx__ that we may boot on QEMU RISC-V Emulator.
+1.  This produces the NuttX ELF Image __`nuttx`__ that we'll boot on QEMU RISC-V Emulator.
 
 TODO: Pic of QEMU
 
@@ -196,7 +198,7 @@ We're ready to __boot NuttX on QEMU Emulator__ and run our Rust App!
     sudo apt install qemu-system-riscv64
     ```
 
-1.  Start the __QEMU RISC-V Emulator__ (64-bit) with the NuttX ELF Image __nuttx__ from the previous section...
+1.  Start the __QEMU RISC-V Emulator__ (64-bit) with the NuttX ELF Image __`nuttx`__ from the previous section...
 
     ```bash
     qemu-system-riscv64 \
@@ -280,7 +282,7 @@ nsh>
 
 # Rust Target is Incorrect
 
-_Why did our Rust Build fail with this error?_
+_Earlier we saw this error. Why did our Rust Build fail?_
 
 ```bash
 $ rustc hello_rust_main.rs --target riscv64i-unknown-none-elf ...
@@ -449,7 +451,9 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
 
     (We'll come back to this)
 
-1.  This produces the NuttX __Image__ that we may boot on Ox64 SBC.
+1.  TODO: Bundle Image
+
+1.  This produces __`Image`__, containing the NuttX Kernel + NuttX Apps. Which we'll boot on Ox64 SBC.
 
 ![Rust App on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS](https://lupyuen.github.io/images/rust5-title.jpg)
 
@@ -529,9 +533,9 @@ _Why the funny fixes for NuttX Ox64?_
 
 Earlier we saw 2 workarounds for our Ox64 NuttX Build...
 
-- We renamed the __Main Function__
+1. We renamed the __Main Function__
 
-- We fixed the __Makefile Target__
+1. We fixed the __Makefile Target__
 
 That's because __Ox64 Apps__ are a little more complicated than __QEMU Apps__...
 
@@ -575,7 +579,9 @@ TODO: Appendix
 
 _Can we run NuttX QEMU in Kernel Mode?_
 
-TODO
+TODO: Kernel Mode
+
+TODO: Rust Blinky
 
 ![TODO](https://lupyuen.github.io/images/rust5-flow.jpg)
 
