@@ -679,7 +679,7 @@ Follow these steps to build __NuttX for QEMU Emulator__ (64-bit RISC-V)...
 
     [(See the __NuttX Config__)](https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig)
 
-1.  TODO: Build the NuttX Project and dump the RISC-V Disassembly to __nuttx.S__ (for easier troubleshooting)...
+1.  Build the NuttX Project and dump the RISC-V Disassembly to __`nuttx.S`__ (for easier troubleshooting)...
 
     ```bash
     ## Add the Rust Target for RISC-V 64-bit (Hard-Float)
@@ -696,14 +696,27 @@ Follow these steps to build __NuttX for QEMU Emulator__ (64-bit RISC-V)...
       2>&1
     ```
     
-    This produces the NuttX ELF Image __`nuttx`__ that we may boot on QEMU RISC-V Emulator.
+1.  This produces the NuttX ELF Image __`nuttx`__ that we may boot on QEMU RISC-V Emulator...
 
-1.  TODO: Rust Target
+    TODO
+
+1.  __If the Build Fails:__
+
+    _"Could not find specification for target riscv64i-unknown-none-elf"_
+
+    Then our __Rust Target__ is incorrect. We run this...
+
+    TODO
 
 TODO
 
 ```bash
-TODO: git clone
+$ mkdir nuttx
+$ cd nuttx
+$ git clone https://github.com/apache/nuttx nuttx
+$ git clone https://github.com/apache/nuttx-apps apps
+$ cd nuttx
+
 $ tools/configure.sh rv-virt:nsh64
 $ make menuconfig
 ## TODO: Enable "Hello Rust" Example App
@@ -820,7 +833,9 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
 
     [(See the __NuttX Config__)](https://github.com/lupyuen2/wip-nuttx/blob/rust/boards/risc-v/bl808/ox64/configs/nsh/defconfig)
 
-1.  TODO: Rename Main Function
+1.  Rename the __Main Function__ of our Rust App...
+
+    TODO
 
 1.  TODO: Build the NuttX Project...
 
@@ -846,18 +861,34 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
       >nuttx.S \
       2>&1
 
-    ## Build the Apps Filesystem
+1.  TODO: Export the NuttX Kernel Interface...
+
+    ```bash
+    ## Export the NuttX Kernel Interface
     make -j 8 export
     pushd ../apps
     ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
     ```
 
-1.  TODO: Makefile Target
-
-1.  TODO: Complete the build...
+1.  TODO: Build the NuttX Apps...
 
     ```bash
+    ## Build the NuttX Apps
     make -j 8 import
+    ```
+
+1.  __If the Build Fails:__
+
+    _"target hello_rust_install does not exist"_
+
+    Then our __Makefile Target__ is missing. We run this...
+
+    TODO
+
+1.  TODO: Complete the NuttX Build...
+
+    ```bash
+    ## Return to the NuttX Folder
     popd
 
     ## Generate the Initial RAM Disk `initrd`
@@ -877,12 +908,21 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
       >Image
     ```
 
-This produces the NuttX Image for Ox64: __`Image`__
+1.  This produces the NuttX Image for Ox64: __`Image`__
+
+    Copy it to MicroSD and boot on Ox64...
+
+    TODO
 
 TODO
 
 ```bash
-TODO: git clone
+$ mkdir nuttx
+$ cd nuttx
+$ git clone https://github.com/apache/nuttx nuttx
+$ git clone https://github.com/apache/nuttx-apps apps
+$ cd nuttx
+
 $ tools/configure.sh ox64:nsh
 $ make menuconfig
 ## TODO: Enable "Hello Rust" Example App
@@ -1006,6 +1046,18 @@ nsh>
 
 _Why did we rename the Main Function?_
 
+We changed this line in [__hello_rust_main.rs__](TODO)...
+
+```rust
+pub extern "C" fn hello_rust_main(...)
+```
+
+To this...
+
+```rust
+pub extern "C" fn main(...)
+```
+
 Watch what happens if we don't rename the Main Function. Let's test with [__Ox64 BL808 Emulator__](https://lupyuen.github.io/articles/tinyemu3)...
 
 ```bash
@@ -1077,9 +1129,13 @@ nsh>
 
 It failed because the __main()__ function is missing!
 
-TODO: Why?
+As explained earlier: NuttX Apps for Ox64 are more complex (than QEMU) because they are compiled as separate ELF Files...
 
-So we change this line in [__hello_rust_main.rs__](TODO)...
+- TODO
+
+Somehow the NuttX Makefiles won't produce the correct Main Function for Rust ELF Files.
+
+Thus we change this line in [__hello_rust_main.rs__](TODO)...
 
 ```rust
 pub extern "C" fn hello_rust_main(...)
@@ -1091,7 +1147,7 @@ To this...
 pub extern "C" fn main(...)
 ```
 
-And it works!
+We rebuild NuttX. And it works!
 
 ```text
 NuttShell (NSH) NuttX-12.4.0-RC0
@@ -1103,9 +1159,9 @@ Hello, Rust!!
 
 _Why is the Makefile Target missing for Ox64?_
 
-TODO
-
 ```bash
+$ make import
+
 Makefile:52: target '/Users/Luppy/ox64/apps/examples/hello_rust_install' does not exist
 make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR="/Users/Luppy/ox64/apps"
 make[3]: Entering directory '/Users/Luppy/ox64/apps/examples/hello_rust'
@@ -1118,7 +1174,11 @@ make[1]: Leaving directory '/Users/Luppy/ox64/apps'
 make: *** [Makefile:84: import] Error 2
 ```
 
-Like QEMU, we change riscv64i to riscv64gc...
+As explained earlier: NuttX Apps for Ox64 are more complex (than QEMU) because they are compiled as separate ELF Files...
+
+- TODO
+
+Somehow the NuttX Makefiles won't build Rust ELF Files correctly. Thus we build ourselves...
 
 ```bash
 $ rustup target add riscv64gc-unknown-none-elf
