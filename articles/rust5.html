@@ -71,7 +71,7 @@
 <li><a href="#rust-target-is-incorrect">4 Rust Target is Incorrect</a><ul></ul></li>
 <li><a href="#compile-rust-app-for-ox64-sbc">5 Compile Rust App for Ox64 SBC</a><ul></ul></li>
 <li><a href="#run-rust-app-on-ox64-sbc">6 Run Rust App on Ox64 SBC</a><ul></ul></li>
-<li><a href="#flat-mode-vs-kernel-mode">7 Flat Mode vs Kernel Mode</a><ul></ul></li>
+<li><a href="#nuttx-flat-mode-vs-kernel-mode">7 NuttX Flat Mode vs Kernel Mode</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-qemu">9 Appendix: Build NuttX for QEMU</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-ox64-sbc">10 Appendix: Build NuttX for Ox64 SBC</a><ul></ul></li>
@@ -140,10 +140,10 @@
   </span><span class="kw">loop </span>{}
 }</code></pre></div>
 <h1 id="compile-for-qemu-64-bit-risc-v"><a class="doc-anchor" href="#compile-for-qemu-64-bit-risc-v">§</a>2 Compile for QEMU 64-bit RISC-V</h1>
-<p>First we test on QEMU Emulator…</p>
+<p>Before testing on a Real RISC-V SBC, let’s test on <strong>QEMU Emulator for RISC-V</strong> (64-bit)…</p>
 <ol>
 <li>
-<p>Follow these steps to build <strong>NuttX for QEMU Emulator</strong>…</p>
+<p>Follow these steps to build <strong>NuttX for QEMU Emulator</strong> (64-bit)…</p>
 <p>TODO</p>
 </li>
 <li>
@@ -268,7 +268,7 @@ Run `rustc --print target-list`
 <tr><td style="text-align: left"><em>-mabi</em> <br>     <strong>lp64d</strong></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div></span>
-<p>GCC Compiler compiles for <strong>Hardware Floating-Point</strong>, but Rust Compiler is compiling for <strong>Software Floating-Point</strong>!</p>
+<p>GCC Compiler uses <strong>Hardware Floating-Point</strong>, but Rust Compiler emits <strong>Software Floating-Point</strong>!</p>
 <span style="font-size:90%">
 <div><table><thead><tr><th style="text-align: left">GCC Compiler</th><th style="text-align: left">Rust Compiler</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>rv64imafdc</strong></td><td style="text-align: left"><strong>riscv64i</strong></td></tr>
@@ -277,7 +277,7 @@ Run `rustc --print target-list`
 <tr><td style="text-align: left">- <strong>D</strong>: Double Hard-Float</td><td style="text-align: left"><em>(Default is Soft-Float)</em></td></tr>
 </tbody></table>
 </div></span>
-<p>Let’s harmonise Rust Compiler with GCC Compiler: We’ll select <strong><code>rv64gc</code></strong>, since it’s closest to <strong>Hardware Floating-Point</strong>…</p>
+<p>Let’s harmonise Rust Compiler with GCC Compiler: We select <a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions"><strong><code>rv64gc</code></strong></a>, since it’s closest to <a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions"><strong>Hardware Floating-Point</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 $ rustc \
@@ -411,7 +411,7 @@ You entered...
 
 nxtask_exit: hello_rust pid=6,TCB=0x50409790
 nsh&gt; 
-</code></pre></div><h1 id="flat-mode-vs-kernel-mode"><a class="doc-anchor" href="#flat-mode-vs-kernel-mode">§</a>7 Flat Mode vs Kernel Mode</h1>
+</code></pre></div><h1 id="nuttx-flat-mode-vs-kernel-mode"><a class="doc-anchor" href="#nuttx-flat-mode-vs-kernel-mode">§</a>7 NuttX Flat Mode vs Kernel Mode</h1>
 <p><em>Why the funny fixes for NuttX Ox64?</em></p>
 <p>Earlier we saw 2 workarounds for our Ox64 Build…</p>
 <ul>
