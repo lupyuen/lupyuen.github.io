@@ -1,6 +1,6 @@
 # Rust Apps on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS
 
-📝 _7 May 2024_
+📝 _5 May 2024_
 
 ![Rust App on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS](https://lupyuen.github.io/images/rust5-title.jpg)
 
