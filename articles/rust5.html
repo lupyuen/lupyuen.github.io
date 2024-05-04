@@ -338,8 +338,25 @@ riscv64imac-unknown-none-elf
 </tbody></table>
 </div></span>
 <p>Let’s harmonise Rust Compiler with GCC Compiler: We select <a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions"><strong><code>rv64gc</code></strong></a>, since it’s closest to <a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions"><strong>Hardware Floating-Point</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
+<div class="example-wrap"><pre class="language-bash"><code>## Add the Rust Target for 64-bit RISC-V Hard-Float
+$ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
+
+## `$hello` becomes `hello_main.c.Users.Luppy.riscv.apps.examples.hello.o`
+## `$hello_rust` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o`
+## `$hello_rust_1` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o`
+$ hello=$(basename ../hello/*hello.o)
+$ hello_rust=`
+  echo $hello \
+  | sed &quot;s/hello_main.c/hello_rust_main.rs/&quot; \
+  | sed &quot;s/hello.o/hello_rust.o/&quot;
+  `
+$ hello_rust_1=`
+  echo $hello_rust \
+  | sed &quot;s/hello_rust.o/hello_rust_1.o/&quot;
+  `
+
+## Compile our Rust App for 64-bit RISC-V Hard-Float
 $ rustc \
   --target riscv64gc-unknown-none-elf \
   --edition 2021 \
@@ -348,12 +365,13 @@ $ rustc \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
-  -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
-## TODO: Copy hello_rust.o to hello_rust_1.o
+  -o $hello_rust
+$ cp $hello_rust $hello_rust_1
+
+## Return to NuttX Folder and complete the build
 $ popd
 $ make
 </code></pre></div>
-<p>TODO: Fix the path of hello_rust.o</p>
 <p><a href="https://gist.github.com/lupyuen/acb19827f55d91bca96ef76ddd778b71">(See the <strong>Build Log</strong>)</a></p>
 <p>This fixes our build. For now! (Pic below)</p>
 <p>(<a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices"><strong>QEMU</strong></a> officially supports <a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices"><strong><code>rv64gc</code></strong></a>)</p>
@@ -415,9 +433,21 @@ riscv64-unknown-elf-gcc \
 <p><strong>If the Build Fails:</strong></p>
 <p><em>“target hello_rust_install does not exist”</em></p>
 <p>Then our <strong>Makefile Target</strong> is missing. We run this…</p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ rustup target add riscv64gc-unknown-none-elf
+<div class="example-wrap"><pre class="language-bash"><code>## Assume the Current Folder is NuttX Apps Folder.
+## Add the Rust Target for 64-bit RISC-V Hard-Float
+$ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
+
+## `$hello` becomes `hello_main.c.Users.Luppy.riscv.apps.examples.hello.o`
+## `$hello_rust` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o`
+$ hello=$(basename ../hello/*hello.o)
+$ hello_rust=`
+  echo $hello \
+  | sed &quot;s/hello_main.c/hello_rust_main.rs/&quot; \
+  | sed &quot;s/hello.o/hello_rust.o/&quot;
+  `
+
+## Compile our Rust App for 64-bit RISC-V Hard-Float
 $ rustc \
   --target riscv64gc-unknown-none-elf \
   --edition 2021 \
@@ -426,12 +456,12 @@ $ rustc \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
-  -o hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
-## TODO: Copy hello_rust.o to hello_rust_1.o
+  -o $hello_rust
+
+## Return to NuttX Apps Folder and build the NuttX Apps
 $ popd
 $ make import
 </code></pre></div>
-<p>TODO: Fix the path of hello_rust.o</p>
 <p>(We’ll come back to this)</p>
 </li>
 <li>
