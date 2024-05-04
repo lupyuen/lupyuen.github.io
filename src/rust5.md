@@ -575,7 +575,7 @@ qemu-system-riscv64 \
 
 # What's Next
 
-Yep indeed, Rust Apps will run OK on a __64-bit RISC-V SBC__. Like __Ox64 BL808 SBC__!
+Yep indeed, Rust Apps will run hunky dory on a __64-bit RISC-V SBC__. Like __Ox64 BL808 SBC__!
 
 - We took a __Barebones Rust App__ _("Hello World!")_
 
