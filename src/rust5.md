@@ -10,11 +10,23 @@
 
 </div>
 
-TODO: Will Rust Apps run on a 64-bit RISC-V SBC, like Ox64 BL808? Let's find out!
+Will Rust Apps run on a __64-bit RISC-V SBC__? Like [__Ox64 BL808 SBC__](https://pine64.org/documentation/Ox64/)? (Pic below)
 
-TODO: Bare Metal?
+Let's find out!
 
-TODO: Pic of Ox64 Board
+- We take a __Barebones Rust App__ _("Hello World!")_
+
+- Compile it for __QEMU RISC-V Emulator__ (64-bit)
+
+- Run it on QEMU Emulator with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)
+
+- Do the same on __Ox64 BL808 SBC__ (via MicroSD)
+
+- We'll discuss the __Quirky Workarounds__
+
+- Because NuttX Apps work differently in __Kernel Mode vs Flat Mode__
+
+![My horrigible soldering of Ox64 BL808 😬](https://lupyuen.github.io/images/ox64-solder.jpg)
 
 # Rust App for NuttX
 
@@ -104,7 +116,7 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__.
     riscv64-unknown-elf-gcc \
       -march=rv64imafdc \
       -mabi=lp64d \
-      -c 
+      -c \
       -Dmain=hello_main \
       hello_main.c \
       -o hello_main.c.Users.Luppy.riscv.apps.examples.hello.o \
@@ -515,7 +527,7 @@ __NuttX Ox64__ runs in __Kernel Mode__ (pic below)
 
 - More realistic for Actual Hardware
 
-TODO: (More about Kernel Mode)
+  [(More about __NuttX Apps in Kernel Mode__)](https://lupyuen.github.io/articles/app)
 
 ![NuttX Kernel Mode](https://lupyuen.github.io/images/rust5-kernel.jpg)
 
@@ -534,24 +546,50 @@ _Can we run NuttX QEMU in Kernel Mode?_
 Yep we can switch _"rv-virt:nsh64"_ to _"rv-virt:knsh64"_. Like this...
 
 ```bash
-$ git clone https://github.com/apache/nuttx nuttx
-$ git clone https://github.com/apache/nuttx-apps apps
-$ cd nuttx
-$ ./tools/configure.sh rv-virt:knsh64
-$ make
-$ make export
-$ pushd ../apps
-$ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
-$ make import
-$ popd
-$ qemu-system-riscv64 -nographic -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx
+## Download NuttX
+git clone https://github.com/apache/nuttx nuttx
+git clone https://github.com/apache/nuttx-apps apps
+
+## Configure NuttX for Kernel Mode (instead of Flat Mode)
+cd nuttx
+./tools/configure.sh rv-virt:knsh64
+
+## Build the NuttX Kernel
+make
+make export
+
+## Build the NuttX Apps
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make import
+popd
+
+## Boot NuttX in Kernel Mode (instead of Flat Mode)
+qemu-system-riscv64 \
+  -nographic -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 -kernel nuttx
 ```
 
 ![Compile our Rust App for 64-bit RISC-V Hard-Float](https://lupyuen.github.io/images/rust5-flow.jpg)
 
 # What's Next
 
-TODO
+Yep indeed, Rust Apps will run OK on a __64-bit RISC-V SBC__. Like __Ox64 BL808 SBC__!
+
+- We took a __Barebones Rust App__ _("Hello World!")_
+
+- Compiled it for __QEMU RISC-V Emulator__ (64-bit)
+
+- Ran it on QEMU Emulator with __Apache NuttX RTOS__
+
+- We did the same on __Ox64 BL808 SBC__ (via MicroSD)
+
+- Though we did some __Quirky Workarounds__
+
+- Because NuttX Apps work differently in __Kernel Mode vs Flat Mode__
+
+- We'll see more Rust Apps on RISC-V, for [__Google Summer of Code__](https://summerofcode.withgoogle.com/programs/2024/projects/6XD00y5S)!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -853,7 +891,7 @@ nsh> hello_rust
 Hello, Rust!!
 ```
 
-[(__root-riscv64.cfg__ is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
+[(__nuttx.cfg__ is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4cf0cb2fa1c288b6d28aeeff3a4f3ac1)
 
@@ -895,7 +933,7 @@ nsh> hello_rust
 nsh: hello_rust: command not found
 ```
 
-[(__root-riscv64.cfg__ is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
+[(__nuttx.cfg__ is here)](https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg)
 
 _Huh? Why is hello_rust not found?_
 
@@ -962,7 +1000,28 @@ nsh> hello_rust
 Hello, Rust!!
 ```
 
-TODO: -Dmain=hello_main
+_Won't Flat Mode have the same Main Function problem as Kernel Mode?_
+
+Remember earlier we saw this...
+
+```bash
+## Build NuttX with Tracing Enabled
+$ make --trace
+
+## Compile "hello_main.c" with GCC Compiler
+riscv64-unknown-elf-gcc \
+  -march=rv64imafdc \
+  -mabi=lp64d \
+  -c \
+  -Dmain=hello_main \
+  hello_main.c \
+  -o hello_main.c.Users.Luppy.riscv.apps.examples.hello.o \
+  ...
+```
+
+Which works because it renames the Main Function: _"-Dmain=hello_main"_
+
+Sadly we can't do this in Rust. We'll seek a solution in [__Google Summer of Code__](https://summerofcode.withgoogle.com/programs/2024/projects/6XD00y5S)!
 
 # Appendix: Makefile Target is Missing
 
