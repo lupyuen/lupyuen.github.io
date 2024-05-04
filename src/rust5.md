@@ -585,7 +585,7 @@ Yep indeed, Rust Apps will run hunky dory on a __64-bit RISC-V SBC__. Like __Ox6
 
 - We did the same on __Ox64 BL808 SBC__ (via MicroSD)
 
-- Though we did some __Quirky Workarounds__
+- Though we used some __Quirky Workarounds__
 
 - Because NuttX Apps work differently in __Kernel Mode vs Flat Mode__
 
