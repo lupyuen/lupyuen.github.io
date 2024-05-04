@@ -102,7 +102,7 @@
     </span>...                 <span class="comment">// Optional Arguments
   </span>) -&gt; i32;             <span class="comment">// Returns `int`
 </span>}                       <span class="comment">// TODO: Standardise `i32` as `c_int`</span></code></pre></div>
-<p><a href="TODO">(Why we use <strong><code>[no_std]</code></strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust">(Why we use <strong><code>[no_std]</code></strong>)</a></p>
 <p>The code above imports the <em>printf()</em> function from C into Rust.</p>
 <p>This is how we call it in Rust: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs#L54-L74">hello_rust_main.rs</a></p>
 
@@ -146,7 +146,7 @@
 <ol>
 <li>
 <p>Follow these steps to build <strong>NuttX for QEMU Emulator</strong> (64-bit RISC-V)…</p>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/rust5#appendix-build-nuttx-for-qemu"><strong>“Build NuttX for QEMU”</strong></a></p>
 </li>
 <li>
 <p><strong>If we Enable Build Tracing:</strong> We’ll see…</p>
@@ -296,7 +296,7 @@ Builtin Apps:
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/rust5-flow3.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust5-flow3.jpg" alt="Rust Target is Incorrect" /></p>
 <h1 id="rust-target-is-incorrect"><a class="doc-anchor" href="#rust-target-is-incorrect">§</a>4 Rust Target is Incorrect</h1>
 <p><em>Earlier we saw this error. Why did our Rust Build fail?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ rustc hello_rust_main.rs --target riscv64i-unknown-none-elf ...
@@ -376,21 +376,23 @@ $ make
 <p>This fixes our build. For now! (Pic below)</p>
 <p>(<a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices"><strong>QEMU</strong></a> officially supports <a href="https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices"><strong><code>rv64gc</code></strong></a>)</p>
 <p>(“<strong><code>gc</code></strong>” in “<strong><code>rv64gc</code></strong>” denotes <a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions"><strong>IMAFDC</strong></a>)</p>
-<p><img src="https://lupyuen.github.io/images/rust5-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust5-flow.jpg" alt="Compile our Rust App for 64-bit RISC-V Hard-Float" /></p>
 <h1 id="compile-rust-app-for-ox64-sbc"><a class="doc-anchor" href="#compile-rust-app-for-ox64-sbc">§</a>5 Compile Rust App for Ox64 SBC</h1>
 <p><em>Our Rust App runs OK on QEMU RISC-V. What about Ox64 BL808 SBC?</em></p>
 <p>Let’s compile our Rust App for <strong>Ox64 BL808 RISC-V SBC</strong> (also 64-bit)…</p>
 <ol>
 <li>
 <p>Follow these steps to build <strong>NuttX for Ox64</strong>…</p>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/rust5#appendix-build-nuttx-for-ox64-sbc"><strong>“Build NuttX for Ox64 SBC”</strong></a></p>
 </li>
 <li>
-<p>Remember to <strong>Rename the Main Function</strong>.</p>
-<p>Look for this line in <a href="TODO"><strong>hello_rust_main.rs</strong></a>…</p>
+<p>Remember to <strong>Rename the Main Function</strong>. Edit this file…</p>
+<div class="example-wrap"><pre class="language-bash"><code>apps/examples/hello_rust/hello_rust_main.rs
+</code></pre></div>
+<p>Look for this line in <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs"><strong>hello_rust_main.rs</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(...)</code></pre></div>
-<p>And rename the function to this…</p>
+<p>And rename the function to…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>main(...)</code></pre></div>
 <p>(We’ll see why)</p>
@@ -465,7 +467,7 @@ $ make import
 <p>(We’ll come back to this)</p>
 </li>
 <li>
-<p>Complete the NuttX Build according to <a href="TODO"><strong>the instructions here</strong></a>.</p>
+<p>Complete the NuttX Build according to <a href="https://lupyuen.github.io/articles/rust5#appendix-build-nuttx-for-ox64-sbc"><strong>the instructions here</strong></a>.</p>
 <p>This produces <strong><code>Image</code></strong>, containing the NuttX Kernel + NuttX Apps. Which we’ll boot on Ox64 SBC.</p>
 </li>
 </ol>
@@ -560,7 +562,7 @@ Hello, Rust!!
 <p><em>Can we run NuttX QEMU in Kernel Mode?</em></p>
 <p>TODO: Kernel Mode</p>
 <p>TODO: Rust Blinky</p>
-<p><img src="https://lupyuen.github.io/images/rust5-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust5-flow.jpg" alt="Compile our Rust App for 64-bit RISC-V Hard-Float" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -586,7 +588,7 @@ Hello, Rust!!
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust5.md"><strong>lupyuen.github.io/src/rust5.md</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/rust5-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust5-flow.jpg" alt="Compile our Rust App for 64-bit RISC-V Hard-Float" /></p>
 <h1 id="appendix-build-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-build-nuttx-for-qemu">§</a>9 Appendix: Build NuttX for QEMU</h1>
 <p>Follow these steps to build <strong>NuttX for QEMU Emulator</strong> (64-bit RISC-V)…</p>
 <ol>
@@ -658,13 +660,13 @@ riscv64-unknown-elf-objdump \
 <li>
 <p><strong>If the Build Fails:</strong></p>
 <p><em>“Could not find specification for target riscv64i-unknown-none-elf”</em></p>
-<p>Then our <strong>Rust Target</strong> is incorrect. We run this…</p>
-<p>TODO</p>
+<p>Then our <strong>Rust Target</strong> is incorrect. We fix it like this…</p>
+<p><a href="https://lupyuen.github.io/articles/rust5#rust-target-is-incorrect"><strong>“Rust Target is Incorrect”</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/acb19827f55d91bca96ef76ddd778b71">(See the <strong>Build Log</strong>)</a></p>
 </li>
 <li>
 <p>This produces the NuttX ELF Image <strong><code>nuttx</code></strong> that we may boot on QEMU RISC-V Emulator…</p>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/rust5#test-on-qemu-64-bit-risc-v"><strong>“Test on QEMU 64-bit RISC-V”</strong></a></p>
 </li>
 </ol>
 <h1 id="appendix-build-nuttx-for-ox64-sbc"><a class="doc-anchor" href="#appendix-build-nuttx-for-ox64-sbc">§</a>10 Appendix: Build NuttX for Ox64 SBC</h1>
@@ -720,7 +722,7 @@ Scheduler Informational Output
 </li>
 <li>
 <p>Rename the <strong>Main Function</strong> of our Rust App…</p>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/rust5#appendix-main-function-is-missing"><strong>“Main Function is Missing”</strong></a></p>
 </li>
 <li>
 <p>Build the NuttX Project…</p>
@@ -766,8 +768,8 @@ make -j 8 import
 <li>
 <p><strong>If the Build Fails:</strong></p>
 <p><em>“target hello_rust_install does not exist”</em></p>
-<p>Then our <strong>Makefile Target</strong> is missing. We run this…</p>
-<p>TODO</p>
+<p>Then our <strong>Makefile Target</strong> is missing. We fix it like this…</p>
+<p><a href="https://lupyuen.github.io/articles/rust5#appendix-makefile-target-is-missing"><strong>“Makefile Target is Missing”</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79">(See the <strong>Build Log</strong>)</a></p>
 </li>
 <li>
@@ -793,14 +795,28 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 </code></pre></div></li>
 <li>
 <p>This produces the NuttX Image for Ox64: <strong><code>Image</code></strong></p>
-<p>Copy it to MicroSD and boot on Ox64…</p>
-<p>TODO</p>
+<p>Copy it to MicroSD and boot on Ox64 SBC…</p>
+<p><a href="https://lupyuen.github.io/articles/rust5#run-rust-app-on-ox64-sbc"><strong>“Run Rust App on Ox64 SBC”</strong></a></p>
+<p>Or run it on Ox64 Emulator…</p>
+<p><a href="https://lupyuen.github.io/articles/rust5#appendix-run-nuttx-on-ox64-emulator"><strong>“Run NuttX on Ox64 Emulator”</strong></a></p>
 </li>
 </ol>
 <h1 id="appendix-run-nuttx-on-ox64-emulator"><a class="doc-anchor" href="#appendix-run-nuttx-on-ox64-emulator">§</a>11 Appendix: Run NuttX on Ox64 Emulator</h1>
-<p>This is how we test our Rust App on <strong>Ox64 BL808 Emulator</strong>…</p>
-<p>TODO: Build Ox64 Emulator</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ temu root-riscv64.cfg
+<p>This is how we boot NuttX and test our Rust App on <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>Ox64 BL808 Emulator</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build Ox64 Emulator
+## https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml
+$ sudo apt -y install \
+  expect libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev wget
+$ git clone https://github.com/lupyuen/ox64-tinyemu
+$ pushd ox64-tinyemu
+$ make
+$ cp temu ..
+$ popd
+
+## Run Ox64 Emulator. Assume `Image` is in the Curent Folder.
+$ wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg
+$ ./temu nuttx.cfg
+
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
 virtio_console_init
 Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
@@ -842,16 +858,24 @@ nsh&gt;
 <p><a href="https://gist.github.com/lupyuen/4cf0cb2fa1c288b6d28aeeff3a4f3ac1">(See the <strong>Complete Log</strong>)</a></p>
 <h1 id="appendix-main-function-is-missing"><a class="doc-anchor" href="#appendix-main-function-is-missing">§</a>12 Appendix: Main Function is Missing</h1>
 <p><em>Why did we rename the Main Function?</em></p>
-<p>We changed this line in <a href="TODO"><strong>hello_rust_main.rs</strong></a>…</p>
+<p>Earlier we modified this file…</p>
+<div class="example-wrap"><pre class="language-bash"><code>apps/examples/hello_rust/hello_rust_main.rs
+</code></pre></div>
+<p>By changing this line in <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs"><strong>hello_rust_main.rs</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(...)</code></pre></div>
 <p>To this…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>main(...)</code></pre></div>
-<p>Watch what happens if we don’t rename the Main Function. Let’s test with <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>Ox64 BL808 Emulator</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ temu root-riscv64.cfg
-TinyEMU Emulator for Ox64 BL808 RISC-V SBC
+<p>But why? Watch what happens if we don’t rename the Main Function. Let’s test with <a href="https://lupyuen.github.io/articles/rust5#appendix-run-nuttx-on-ox64-emulator"><strong>Ox64 BL808 Emulator</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Omitted: Build Ox64 Emulator
+## https://lupyuen.github.io/articles/rust5#appendix-run-nuttx-on-ox64-emulator
 
+## Run Ox64 Emulator. Assume `Image` is in the Curent Folder.
+$ wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg
+$ ./temu nuttx.cfg
+
+TinyEMU Emulator for Ox64 BL808 RISC-V SBC
 NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; hello_rust
 nsh: hello_rust: command not found
@@ -869,7 +893,10 @@ CONFIG_DEBUG_SCHED_INFO=y
 CONFIG_DEBUG_SCHED_WARN=y
 </code></pre></div>
 <p>Now it tells us why it failed…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ temu root-riscv64.cfg
+<div class="example-wrap"><pre class="language-bash"><code>## Run Ox64 Emulator. Assume `Image` is in the Curent Folder.
+$ wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg
+$ ./temu nuttx.cfg
+
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
 virtio_console_init
 Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
@@ -909,18 +936,20 @@ nsh&gt;
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/fff863ed18e71992cbff3a644615ef69">(See the <strong>Complete Log</strong>)</a></p>
 <p>It failed because the <strong>main()</strong> function is missing!</p>
-<p>As explained earlier: NuttX Apps for Ox64 are more complex (than QEMU) because they are compiled as separate ELF Files…</p>
+<p>As explained earlier: NuttX Apps for Ox64 are more complex (than QEMU) because they are compiled as <strong>Separate ELF Files</strong>…</p>
 <ul>
-<li>TODO</li>
+<li><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode"><strong>“NuttX Flat Mode vs Kernel Mode”</strong></a></li>
 </ul>
-<p>Somehow the NuttX Makefiles won’t produce the correct Main Function for Rust ELF Files.</p>
-<p>Thus we change this line in <a href="TODO"><strong>hello_rust_main.rs</strong></a>…</p>
+<p>Somehow the NuttX Makefiles won’t produce the correct Main Function for Rust ELF Files. Thus we edit this file…</p>
+<div class="example-wrap"><pre class="language-bash"><code>apps/examples/hello_rust/hello_rust_main.rs
+</code></pre></div>
+<p>Change this line in <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs"><strong>hello_rust_main.rs</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_main(...)</code></pre></div>
 <p>To this…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>main(...)</code></pre></div>
-<p>We rebuild NuttX. And it works!</p>
+<p>Then we rebuild NuttX. And it works!</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; hello_rust
 Hello, Rust!!
@@ -942,11 +971,11 @@ make[1]: Leaving directory &#39;/Users/Luppy/ox64/apps&#39;
 make: *** [Makefile:84: import] Error 2
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79">(See the <strong>Complete Log</strong>)</a></p>
-<p>As explained earlier: NuttX Apps for Ox64 are more complex (than QEMU) because they are compiled as separate ELF Files…</p>
+<p>As explained earlier: NuttX Apps for Ox64 are more complex (than QEMU) because they are compiled as <strong>Separate ELF Files</strong>…</p>
 <ul>
-<li>TODO</li>
+<li><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode"><strong>“NuttX Flat Mode vs Kernel Mode”</strong></a></li>
 </ul>
-<p>Somehow the NuttX Makefiles won’t build Rust ELF Files correctly. Thus we build ourselves…</p>
+<p>Somehow the NuttX Makefiles won’t produce Rust ELF Files correctly. Thus we build ourselves…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Assume the Current Folder is NuttX Apps Folder.
 ## Add the Rust Target for 64-bit RISC-V Hard-Float
 $ rustup target add riscv64gc-unknown-none-elf
@@ -977,8 +1006,15 @@ $ popd
 $ make import
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79">(See the <strong>Build Log</strong>)</a></p>
-<p>Complete the NuttX Build according to <a href="TODO"><strong>the instructions here</strong></a>.</p>
-<p>This produces <strong><code>Image</code></strong>, containing the NuttX Kernel + NuttX Apps. Which we’ll boot on Ox64 SBC.</p>
+<p>Complete the NuttX Build according to <a href="https://lupyuen.github.io/articles/rust5#appendix-build-nuttx-for-ox64-sbc"><strong>the instructions here</strong></a>.</p>
+<p>This produces <strong><code>Image</code></strong>, containing the NuttX Kernel + NuttX Apps. Which we’ll boot on Ox64 SBC…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rust5#run-rust-app-on-ox64-sbc"><strong>“Run Rust App on Ox64 SBC”</strong></a></li>
+</ul>
+<p>Or run on Ox64 Emulator…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rust5#appendix-run-nuttx-on-ox64-emulator"><strong>“Run NuttX on Ox64 Emulator”</strong></a></li>
+</ul>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
