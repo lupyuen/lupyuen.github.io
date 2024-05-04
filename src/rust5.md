@@ -1027,8 +1027,21 @@ As explained earlier: NuttX Apps for Ox64 are more complex (than QEMU) because t
 Somehow the NuttX Makefiles won't build Rust ELF Files correctly. Thus we build ourselves...
 
 ```bash
+## Assume the Current Folder is NuttX Apps Folder.
+## Add the Rust Target for 64-bit RISC-V Hard-Float
 $ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
+
+## `$hello` becomes `hello_main.c.Users.Luppy.riscv.apps.examples.hello.o`
+## `$hello_rust` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o`
+$ hello=$(basename ../hello/*hello.o)
+$ hello_rust=`
+  echo $hello \
+  | sed "s/hello_main.c/hello_rust_main.rs/" \
+  | sed "s/hello.o/hello_rust.o/"
+  `
+
+## Compile our Rust App for 64-bit RISC-V Hard-Float
 $ rustc \
   --target riscv64gc-unknown-none-elf \
   --edition 2021 \
@@ -1037,13 +1050,12 @@ $ rustc \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
-  -o hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
-## TODO: Copy hello_rust.o to hello_rust_1.o
+  -o $hello_rust
+
+## Return to NuttX Apps Folder and build the NuttX Apps
 $ popd
 $ make import
 ```
-
-TODO: Fix the path of hello_rust.o
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79)
 
