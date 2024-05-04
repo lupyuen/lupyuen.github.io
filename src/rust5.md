@@ -182,7 +182,7 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__.
 
 1.  This produces the NuttX ELF Image __`nuttx`__ that we'll boot on QEMU RISC-V Emulator.
 
-TODO: Pic of QEMU
+![Rust App on QEMU 64-bit RISC-V and Apache NuttX RTOS](https://lupyuen.github.io/images/rust5-qemu.jpg)
 
 # Test on QEMU 64-bit RISC-V
 
