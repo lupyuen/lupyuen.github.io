@@ -157,30 +157,11 @@ $ make --trace
 riscv64-unknown-elf-gcc \
   -march=rv64imafdc \
   -mabi=lp64d \
-  -c \
-  -fno-common \
-  -Wall \
-  -Wstrict-prototypes \
-  -Wshadow \
-  -Wundef \
-  -Wno-attributes \
-  -Wno-unknown-pragmas \
-  -Wno-psabi \
-  -Os \
-  -fno-strict-aliasing \
-  -fomit-frame-pointer \
-  -ffunction-sections \
-  -fdata-sections \
-  -g \
-  -mcmodel=medany \
-  -isystem /Users/Luppy/riscv/nuttx/include \
-  -D__NuttX__ \
-  -DNDEBUG  \
-  -pipe \
-  -I &quot;/Users/Luppy/riscv/apps/include&quot; \
+  -c 
   -Dmain=hello_main \
   hello_main.c \
-  -o hello_main.c.Users.Luppy.riscv.apps.examples.hello.o
+  -o hello_main.c.Users.Luppy.riscv.apps.examples.hello.o \
+  ...
 
 ## Compile &quot;hello_rust_main.rs&quot; with Rust Compiler
 rustc \
@@ -402,32 +383,16 @@ $ make
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX with Tracing Enabled
 $ make --trace import
 
+## Compile &quot;hello_main.c&quot; with GCC Compiler
 riscv64-unknown-elf-gcc \
   -march=rv64imafdc \
   -mabi=lp64d \
   -c \
-  -fno-common \
-  -Wall \
-  -Wstrict-prototypes \
-  -Wshadow \
-  -Wundef \
-  -Wno-attributes \
-  -Wno-unknown-pragmas \
-  -Wno-psabi \
-  -fno-common \
-  -pipe  \
-  -Os \
-  -fno-strict-aliasing \
-  -fomit-frame-pointer \
-  -ffunction-sections \
-  -fdata-sections \
-  -g \
-  -mcmodel=medany \
-  -isystem /Users/Luppy/ox64/apps/import/include \
-  -isystem /Users/Luppy/ox64/apps/import/include \
-  -D__NuttX__  \
-  -I &quot;/Users/Luppy/ox64/apps/include&quot;   hello_main.c \
-  -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o
+  hello_main.c \
+  -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o \
+  ...
+
+## But &quot;hello_rust_main.rs&quot; won&#39;t get compiled by Rust Compiler!
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79">(See the <strong>Build Log</strong>)</a></p>
 </li>
@@ -501,6 +466,10 @@ Hello, Rust!!
 <p>Yep our Rust App works great on Ox64 BL808 RISC-V SBC!</p>
 <p><a href="https://gist.github.com/lupyuen/dc9cc8f985b44d90ff6079ffda86f815">(See the <strong>NuttX Log</strong>)</a></p>
 </li>
+<li>
+<p>If we don’t have an Ox64 SBC: The <strong>Ox64 Emulator</strong> works OK too…</p>
+<p><a href="https://lupyuen.github.io/articles/rust5#appendix-run-nuttx-on-ox64-emulator"><strong>“Run NuttX on Ox64 Emulator”</strong></a></p>
+</li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/rust5-flat.jpg" alt="NuttX Flat Mode" /></p>
 <h1 id="nuttx-flat-mode-vs-kernel-mode"><a class="doc-anchor" href="#nuttx-flat-mode-vs-kernel-mode">§</a>7 NuttX Flat Mode vs Kernel Mode</h1>
@@ -556,12 +525,31 @@ Hello, Rust!!
 </ul>
 <p>TODO: (More about Kernel Mode)</p>
 <p><img src="https://lupyuen.github.io/images/rust5-kernel.jpg" alt="NuttX Kernel Mode" /></p>
-<p>That’s why the fixes for Ox64 are more complex than QEMU.</p>
-<p>Fix them in GSoC</p>
-<p>TODO: Appendix</p>
+<p>That’s why the <strong>Rust Build for Ox64</strong> (Kernel Mode) is more complex than QEMU (Flat Mode). We’ll fix these issues in <a href="https://summerofcode.withgoogle.com/programs/2024/projects/6XD00y5S"><strong>Google Summer of Code</strong></a>!</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/rust5#appendix-main-function-is-missing"><strong>“Main Function is Missing”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/rust5#appendix-makefile-target-is-missing"><strong>“Makefile Target is Missing”</strong></a></p>
+</li>
+</ul>
+<p><em>What about Complex Rust Apps? Will they run on Ox64 SBC?</em></p>
+<p>We’ll do an LED Blinky App in Rust. Also in <a href="https://summerofcode.withgoogle.com/programs/2024/projects/6XD00y5S"><strong>Google Summer of Code</strong></a>!</p>
 <p><em>Can we run NuttX QEMU in Kernel Mode?</em></p>
-<p>TODO: Kernel Mode</p>
-<p>TODO: Rust Blinky</p>
+<p>Yep we can switch <em>“rv-virt:nsh64”</em> to <em>“rv-virt:knsh64”</em>. Like this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ git clone https://github.com/apache/nuttx nuttx
+$ git clone https://github.com/apache/nuttx-apps apps
+$ cd nuttx
+$ ./tools/configure.sh rv-virt:knsh64
+$ make
+$ make export
+$ pushd ../apps
+$ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+$ make import
+$ popd
+$ qemu-system-riscv64 -nographic -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rust5-flow.jpg" alt="Compile our Rust App for 64-bit RISC-V Hard-Float" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
@@ -802,6 +790,10 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 </li>
 </ol>
 <h1 id="appendix-run-nuttx-on-ox64-emulator"><a class="doc-anchor" href="#appendix-run-nuttx-on-ox64-emulator">§</a>11 Appendix: Run NuttX on Ox64 Emulator</h1>
+<p>Earlier we compiled NuttX for Ox64…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rust5#appendix-build-nuttx-for-ox64-sbc"><strong>“Build NuttX for Ox64 SBC”</strong></a></li>
+</ul>
 <p>This is how we boot NuttX and test our Rust App on <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>Ox64 BL808 Emulator</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build Ox64 Emulator
 ## https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64-test.yml
@@ -818,41 +810,9 @@ $ wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg
 $ ./temu nuttx.cfg
 
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-virtio_console_init
-Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
-Patched SYNC.S (Ensure that all Cache Operations are completed) at 0x5020099e
-Found ECALL (Start System Timer) at 0x5020bfac
-Patched RDTIME (Read System Time) at 0x5020bfb2
-elf_len=0
-virtio_console_resize_event
-ABCnx_start: Entry
-uart_register: Registering /dev/console
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nxtask_activate: lpwork pid=1,TCB=0x50409110
-nxtask_activate: AppBringUp pid=2,TCB=0x50409710
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-nxtask_activate: /system/bin/init pid=3,TCB=0x5040b730
-nxtask_exit: AppBringUp pid=2,TCB=0x50409710
-
 NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; nx_start: CPU0: Beginning Idle Loop
-
 nsh&gt; hello_rust
-posix_spawn: pid=0x80202968 path=hello_rust file_actions=0x80202970 attr=0x80202978 argv=0x80202a18
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 1: Undefined symbol[0] has no name: -3
-nxtask_activate: hello_rust pid=6,TCB=0x50409790
 Hello, Rust!!
-Hello Ox64!
-You entered...
-Hello Ox64!
-
-nxtask_exit: hello_rust pid=6,TCB=0x50409790
-nsh&gt; 
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(<strong>root-riscv64.cfg</strong> is here)</a></p>
 <p><a href="https://gist.github.com/lupyuen/4cf0cb2fa1c288b6d28aeeff3a4f3ac1">(See the <strong>Complete Log</strong>)</a></p>
@@ -898,41 +858,12 @@ $ wget https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg
 $ ./temu nuttx.cfg
 
 TinyEMU Emulator for Ox64 BL808 RISC-V SBC
-virtio_console_init
-Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x5020099a
-Patched SYNC.S (Ensure that all Cache Operations are completed) at 0x5020099e
-Found ECALL (Start System Timer) at 0x5020bfac
-Patched RDTIME (Read System Time) at 0x5020bfb2
-elf_len=0
-virtio_console_resize_event
-ABCnx_start: Entry
-uart_register: Registering /dev/console
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nxtask_activate: lpwork pid=1,TCB=0x50409110
-nxtask_activate: AppBringUp pid=2,TCB=0x50409710
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-nxtask_activate: /system/bin/init pid=3,TCB=0x5040b730
-nxtask_exit: AppBringUp pid=2,TCB=0x50409710
-
 NuttShell (NSH) NuttX-12.4.0-RC0
-nsh&gt; nx_start: CPU0: Beginning Idle Loop
-
-nsh&gt; 
 nsh&gt; hello_rust
-posix_spawn: pid=0x80202968 path=hello_rust file_actions=0x80202970 attr=0x80202978 argv=0x80202a18
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 1: Undefined symbol[0] has no name: -3
+
 elf_symvalue: SHN_UNDEF: Exported symbol &quot;main&quot; not found
-elf_relocateadd: Section 2 reloc 4: Failed to get value of symbol[7684]: -2
-elf_loadbinary: Failed to bind symbols program binary: -2
 exec_internal: ERROR: Failed to load program &#39;hello_rust&#39;: -2
-nxposix_spawn_exec: ERROR: exec failed: 2
 nsh: hello_rust: command not found
-nsh&gt; 
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/fff863ed18e71992cbff3a644615ef69">(See the <strong>Complete Log</strong>)</a></p>
 <p>It failed because the <strong>main()</strong> function is missing!</p>
@@ -940,7 +871,7 @@ nsh&gt;
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode"><strong>“NuttX Flat Mode vs Kernel Mode”</strong></a></li>
 </ul>
-<p>Somehow the NuttX Makefiles won’t produce the correct Main Function for Rust ELF Files. Thus we edit this file…</p>
+<p>Somehow the NuttX Makefiles won’t emit the correct Main Function for Rust ELF Files. Thus we edit this file…</p>
 <div class="example-wrap"><pre class="language-bash"><code>apps/examples/hello_rust/hello_rust_main.rs
 </code></pre></div>
 <p>Change this line in <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello_rust/hello_rust_main.rs"><strong>hello_rust_main.rs</strong></a>…</p>
@@ -960,15 +891,7 @@ Hello, Rust!!
 <div class="example-wrap"><pre class="language-bash"><code>$ make import
 
 Makefile:52: target &#39;/Users/Luppy/ox64/apps/examples/hello_rust_install&#39; does not exist
-make -C /Users/Luppy/ox64/apps/examples/hello_rust install APPDIR=&quot;/Users/Luppy/ox64/apps&quot;
-make[3]: Entering directory &#39;/Users/Luppy/ox64/apps/examples/hello_rust&#39;
 make[3]: *** No rule to make target &#39;hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o&#39;, needed by &#39;/Users/Luppy/ox64/apps/bin/hello_rust&#39;.  Stop.
-make[3]: Leaving directory &#39;/Users/Luppy/ox64/apps/examples/hello_rust&#39;
-make[2]: *** [Makefile:52: /Users/Luppy/ox64/apps/examples/hello_rust_install] Error 2
-make[2]: Leaving directory &#39;/Users/Luppy/ox64/apps&#39;
-make[1]: *** [Makefile:78: .import] Error 2
-make[1]: Leaving directory &#39;/Users/Luppy/ox64/apps&#39;
-make: *** [Makefile:84: import] Error 2
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79">(See the <strong>Complete Log</strong>)</a></p>
 <p>As explained earlier: NuttX Apps for Ox64 are more complex (than QEMU) because they are compiled as <strong>Separate ELF Files</strong>…</p>
