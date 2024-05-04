@@ -318,8 +318,25 @@ From above we see that GCC Compiler uses __Hardware Floating-Point__, but Rust C
 Let's harmonise Rust Compiler with GCC Compiler: We select [__`rv64gc`__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions), since it's closest to [__Hardware Floating-Point__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)...
 
 ```bash
+## Add the Rust Target for 64-bit RISC-V Hard-Float
 $ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
+
+## `$hello` becomes `hello_main.c.Users.Luppy.riscv.apps.examples.hello.o`
+## `$hello_rust` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o`
+## `$hello_rust_1` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o`
+$ hello=$(basename ../hello/*hello.o)
+$ hello_rust=`
+  echo $hello \
+  | sed "s/hello_main.c/hello_rust_main.rs/" \
+  | sed "s/hello.o/hello_rust.o/"
+  `
+$ hello_rust_1=`
+  echo $hello_rust \
+  | sed "s/hello_rust.o/hello_rust_1.o/"
+  `
+
+## Compile our Rust App for 64-bit RISC-V Hard-Float
 $ rustc \
   --target riscv64gc-unknown-none-elf \
   --edition 2021 \
@@ -328,13 +345,13 @@ $ rustc \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
-  -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
-## TODO: Copy hello_rust.o to hello_rust_1.o
+  -o $hello_rust
+$ cp $hello_rust $hello_rust_1
+
+## Return to NuttX Folder and complete the build
 $ popd
 $ make
 ```
-
-TODO: Fix the path of hello_rust.o
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/acb19827f55d91bca96ef76ddd778b71)
 
@@ -414,11 +431,22 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
 
     Then our __Makefile Target__ is missing. We run this...
 
-    TODO
-
     ```bash
+    ## Assume the Current Folder is NuttX Apps Folder.
+    ## Add the Rust Target for 64-bit RISC-V Hard-Float
     $ rustup target add riscv64gc-unknown-none-elf
     $ pushd ../apps/examples/hello_rust 
+
+    ## `$hello` becomes `hello_main.c.Users.Luppy.riscv.apps.examples.hello.o`
+    ## `$hello_rust` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o`
+    $ hello=$(basename ../hello/*hello.o)
+    $ hello_rust=`
+      echo $hello \
+      | sed "s/hello_main.c/hello_rust_main.rs/" \
+      | sed "s/hello.o/hello_rust.o/"
+      `
+
+    ## Compile our Rust App for 64-bit RISC-V Hard-Float
     $ rustc \
       --target riscv64gc-unknown-none-elf \
       --edition 2021 \
@@ -427,13 +455,12 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
       -C panic=abort \
       -O \
       hello_rust_main.rs \
-      -o hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o
-    ## TODO: Copy hello_rust.o to hello_rust_1.o
+      -o $hello_rust
+
+    ## Return to NuttX Apps Folder and build the NuttX Apps
     $ popd
     $ make import
     ```
-
-    TODO: Fix the path of hello_rust.o
 
     (We'll come back to this)
 
