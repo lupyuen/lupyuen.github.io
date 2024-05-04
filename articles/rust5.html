@@ -180,7 +180,7 @@ riscv64-unknown-elf-gcc \
   -c \
   -Dmain=hello_main \
   hello_main.c \
-  -o hello_main.c.Users.Luppy.riscv.apps.examples.hello.o \
+  -o hello_main.c...apps.examples.hello.o \
   ...
 
 ## Compile &quot;hello_rust_main.rs&quot; with Rust Compiler
@@ -192,7 +192,7 @@ rustc \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
-  -o hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o
+  -o hello_rust_main.rs...apps.examples.hello_rust.o
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/acb19827f55d91bca96ef76ddd778b71">(See the <strong>Build Log</strong>)</a></p>
 </li>
@@ -204,9 +204,9 @@ rustc \
 $ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 
-## `$hello` becomes `hello_main.c.Users.Luppy.riscv.apps.examples.hello.o`
-## `$hello_rust` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o`
-## `$hello_rust_1` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o`
+## `$hello` becomes `hello_main.c...apps.examples.hello.o`
+## `$hello_rust` becomes `hello_rust_main.rs...apps.examples.hello_rust.o`
+## `$hello_rust_1` becomes `hello_rust_main.rs...apps.examples.hello_rust_1.o`
 $ hello=$(basename ../hello/*hello.o)
 $ hello_rust=`
   echo $hello \
@@ -343,9 +343,9 @@ riscv64imac-unknown-none-elf
 $ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 
-## `$hello` becomes `hello_main.c.Users.Luppy.riscv.apps.examples.hello.o`
-## `$hello_rust` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o`
-## `$hello_rust_1` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust_1.o`
+## `$hello` becomes `hello_main.c...apps.examples.hello.o`
+## `$hello_rust` becomes `hello_rust_main.rs...apps.examples.hello_rust.o`
+## `$hello_rust_1` becomes `hello_rust_main.rs...apps.examples.hello_rust_1.o`
 $ hello=$(basename ../hello/*hello.o)
 $ hello_rust=`
   echo $hello \
@@ -409,7 +409,7 @@ riscv64-unknown-elf-gcc \
   -mabi=lp64d \
   -c \
   hello_main.c \
-  -o  hello_main.c.Users.Luppy.ox64.apps.examples.hello.o \
+  -o  hello_main.c...apps.examples.hello.o \
   ...
 
 ## But &quot;hello_rust_main.rs&quot; won&#39;t get compiled by Rust Compiler!
@@ -425,8 +425,8 @@ riscv64-unknown-elf-gcc \
 $ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 
-## `$hello` becomes `hello_main.c.Users.Luppy.riscv.apps.examples.hello.o`
-## `$hello_rust` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o`
+## `$hello` becomes `hello_main.c...apps.examples.hello.o`
+## `$hello_rust` becomes `hello_rust_main.rs...apps.examples.hello_rust.o`
 $ hello=$(basename ../hello/*hello.o)
 $ hello_rust=`
   echo $hello \
@@ -952,17 +952,17 @@ riscv64-unknown-elf-gcc \
   -c \
   -Dmain=hello_main \
   hello_main.c \
-  -o hello_main.c.Users.Luppy.riscv.apps.examples.hello.o \
+  -o hello_main.c...apps.examples.hello.o \
   ...
 </code></pre></div>
-<p>Which works because it renames the Main Function: <em>“-Dmain=hello_main”</em></p>
+<p>Which works because GCC Compiler renames the Main Function: <em>“-Dmain=hello_main”</em></p>
 <p>Sadly we can’t do this in Rust. We’ll seek a solution in <a href="https://summerofcode.withgoogle.com/programs/2024/projects/6XD00y5S"><strong>Google Summer of Code</strong></a>!</p>
 <h1 id="appendix-makefile-target-is-missing"><a class="doc-anchor" href="#appendix-makefile-target-is-missing">§</a>13 Appendix: Makefile Target is Missing</h1>
 <p><em>Why is the Makefile Target missing for Ox64?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make import
 
-Makefile:52: target &#39;/Users/Luppy/ox64/apps/examples/hello_rust_install&#39; does not exist
-make[3]: *** No rule to make target &#39;hello_rust_main.rs.Users.Luppy.ox64.apps.examples.hello_rust.o&#39;, needed by &#39;/Users/Luppy/ox64/apps/bin/hello_rust&#39;.  Stop.
+Makefile:52: target &#39;apps/examples/hello_rust_install&#39; does not exist
+make[3]: *** No rule to make target &#39;hello_rust_main.rs...apps.examples.hello_rust.o&#39;, needed by &#39;apps/bin/hello_rust&#39;.  Stop.
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4970e1a36b3aac8a0ae10ca522adca79">(See the <strong>Complete Log</strong>)</a></p>
 <p>As explained earlier: NuttX Apps for Ox64 are more complex (than QEMU) because they are compiled as <strong>Separate ELF Files</strong>…</p>
@@ -975,8 +975,8 @@ make[3]: *** No rule to make target &#39;hello_rust_main.rs.Users.Luppy.ox64.app
 $ rustup target add riscv64gc-unknown-none-elf
 $ pushd ../apps/examples/hello_rust 
 
-## `$hello` becomes `hello_main.c.Users.Luppy.riscv.apps.examples.hello.o`
-## `$hello_rust` becomes `hello_rust_main.rs.Users.Luppy.riscv.apps.examples.hello_rust.o`
+## `$hello` becomes `hello_main.c...apps.examples.hello.o`
+## `$hello_rust` becomes `hello_rust_main.rs...apps.examples.hello_rust.o`
 $ hello=$(basename ../hello/*hello.o)
 $ hello_rust=`
   echo $hello \
