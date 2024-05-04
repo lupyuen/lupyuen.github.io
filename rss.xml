@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Rust Apps on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS</title>
+            <link>https://lupyuen.github.io/articles/rust5</link>
+            <description><![CDATA[Will Rust Apps run on a 64-bit RISC-V SBC? Like Ox64 BL808 SBC? Let's find out with Apache NuttX RTOS!]]></description>
+            <guid>https://lupyuen.github.io/articles/rust5</guid>
+            <pubDate>Sun, 05 May 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS</title>
             <link>https://lupyuen.github.io/articles/rust4</link>
             <description><![CDATA[Our Rust App compiles for Software Floating-Point, but Apache NuttX RTOS expects Hardware Floating-Point... Let's fix this with a Rust Custom Target for QEMU RISC-V]]></description>
