@@ -65,10 +65,1129 @@
 
     <h1 class="title">Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>22 May 2024</em></p>
+<li><a href="#todo">1 TODO</a><ul></ul></li>
+<li><a href="#boot-milk-v-duo-s-without-microsd">2 Boot Milk-V Duo S without MicroSD</a><ul></ul></li>
+<li><a href="#boot-linux-on-milk-v-duo-s">3 Boot Linux on Milk-V Duo S</a><ul></ul></li>
+<li><a href="#boot-milk-v-duo-s-over-tftp">4 Boot Milk-V Duo S over TFTP</a><ul></ul></li>
+<li><a href="#uart-controller-for-sg2000">5 UART Controller for SG2000</a><ul></ul></li>
+<li><a href="#print-to-sg2000-uart-in-risc-v-assembly">6 Print to SG2000 UART in RISC-V Assembly</a><ul></ul></li>
+<li><a href="#build-apache-nuttx-rtos-for-milk-v-duo-s">7 Build Apache NuttX RTOS for Milk-V Duo S</a><ul></ul></li>
+<li><a href="#apache-nuttx-rtos-boots-a-tiny-bit-on-milk-v-duo-s">8 Apache NuttX RTOS boots a tiny bit on Milk-V Duo S</a><ul></ul></li>
+<li><a href="#set-the-nuttx-memory-map-for-sg2000">9 Set the NuttX Memory Map for SG2000</a><ul></ul></li>
+<li><a href="#disable-the-plic-interrupt-controller">10 Disable the PLIC Interrupt Controller</a><ul></ul></li>
+<li><a href="#select-the-nuttx-driver-for-16550-uart">11 Select the NuttX Driver for 16550 UART</a><ul></ul></li>
+<li><a href="#enable-logging-for-nuttx-scheduler-and-binary-loader">12 Enable Logging for NuttX Scheduler and Binary Loader</a><ul></ul></li>
+<li><a href="#nuttx-crash-dump-on-sg2000">13 NuttX Crash Dump on SG2000</a><ul></ul></li>
+<li><a href="#nuttx-kernel-boots-ok-on-sg2000">14 NuttX Kernel Boots OK on SG2000</a><ul></ul></li>
+<li><a href="#dump-the-sg2000-linux-device-tree">15 Dump the SG2000 Linux Device Tree</a><ul></ul></li>
+<li><a href="#interrupt-controller-for-sg2000">16 Interrupt Controller for SG2000</a><ul></ul></li>
+<li><a href="#fix-the-plic-interrupt-controller-for-sg2000">17 Fix the PLIC Interrupt Controller for SG2000</a><ul></ul></li>
+<li><a href="#nuttx-shell-runs-ok-on-sg2000">18 NuttX Shell runs OK on SG2000</a><ul></ul></li>
+<li><a href="#u-boot-commands-for-milk-v-duo-s">19 U-Boot Commands for Milk-V Duo S</a><ul></ul></li>
+<li><a href="#whats-next">20 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>22 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>1 What’s Next</h1>
+<p>TODO: <a href="https://www.youtube.com/watch?v=pPNDiC5NLqM">(Watch the Demo on YouTube)</a></p>
+<p>TODO</p>
+<p>64-bit RISC-V Sophgo SG2000 SoC … Will it boot Apache NuttX RTOS? 🤔 (T-Head C906 / Milk-V Duo S)</p>
+<ul>
+<li>
+<p><a href="https://www.cnx-software.com/2024/02/07/sophgo-sg2000-sg2002-ai-soc-features-risc-v-arm-8051-cores-android-linux-freertos/">SG2000 Overview</a></p>
+</li>
+<li>
+<p><a href="https://github.com/sophgo/sophgo-doc/releases">SG2000 Reference Manual</a></p>
+</li>
+</ul>
+<p>Let’s find out!</p>
+<p><em>Is this a sponsored review?</em></p>
+<p>I was given a Milk-V Duo S, and I bought another. So it cancels out, I guess?</p>
+<p><em>Why are we doing all this?</em></p>
+<ol>
+<li>
+<p>We hear that there will be plenty of interesting new SBCs based on Sophgo SG2000 and SG2002. Perfect for NuttX!</p>
+</li>
+<li>
+<p>NuttX has been ported from QEMU RISC-V to Star64 JH7110 to Ox64 BL808 and now Sophgo SG2000. Let’s find the most efficient way to port NuttX to new RISC-V Devices!</p>
+</li>
+</ol>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
+<p>10 days
+Something strangely satisfying about NuttX on RISC-V… We finished the port in only 10 days! 🎉</p>
+<p>All Things Considered
+crash and burn out</p>
+<p>SG2000 Emulator</p>
+<p>Legacy qemu -&gt; star64 -&gt; ox64 -&gt; sg2000</p>
+<p>Keep away from pet hamster </p>
+<p>If our pet hamster flipped the switch and our board stopped booting correctly….it will be mighty frustrating!</p>
+<h1 id="boot-milk-v-duo-s-without-microsd"><a class="doc-anchor" href="#boot-milk-v-duo-s-without-microsd">§</a>2 Boot Milk-V Duo S without MicroSD</h1>
+<p>TODO</p>
+<p>Connect our USB UART Dongle like so…</p>
+<p>https://milkv.io/docs/duo/getting-started/duos</p>
+<p><img src="https://lupyuen.github.io/images/sg2000-board.jpg" alt="Milk-V Duo S" /></p>
+<p>USB UART Dongle must be <a href="http://sun-light.com.sg/index.php?route=product/product&amp;product_id=2367">CP2102</a>, it doesn’t like <a href="https://pine64.com/product/serial-console-woodpecker-edition/">CH340G</a> 😬</p>
+<p>Flip the switch so it’s set to “RV” (RISC-V) instead of “Arm”…</p>
+<p><img src="https://lupyuen.github.io/images/sg2000-switch.jpg" alt="Switch to “RV” (RISC-V) instead of “Arm”" /></p>
+<p>Power up via the USB-C Port. We should see in RISC-V Mode…</p>
+<p>https://gist.github.com/lupyuen/a7c3af98be36dcd5cc5b45f5aadc5d16</p>
+<div class="example-wrap"><pre class="language-bash"><code>C.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000. E:bm_emmc_send_cmd_without_data CMD: 1 INT_STAT: 0x E:bm_emmc_send_cmd_without_data CMD: 0 INT_STAT: 0x E:eMMC init failed, 3
+ E:eMMC initializing failed
+PS. E:bm_emmc_send_cmd_without_data CMD: 6 INT_STAT: 0x E:load param1 (-5)
+ E:Boot failed (8).
+ E:RESET:plat/mars/platform.c:114
+WD.C.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000. E:bm_emmc_send_cmd_without_data CMD: 1 INT_STAT: 0x E:bm_emmc_send_cmd_without_data CMD: 0 INT_STAT: 0x E:eMMC init failed, 3
+ E:eMMC initializing failed
+</code></pre></div>
+<p>If we see <code>B.SCS</code> instead of <code>C.SCS</code>…</p>
+<p>https://gist.github.com/lupyuen/d55b77a51ee8b258d6d1c0799770742a</p>
+<div class="example-wrap"><pre class="language-bash"><code>B.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000.
+</code></pre></div>
+<p>Nope we’re in Arm Mode! Flip the switch back to RISC-V!</p>
+<p><a href="https://pine64.com/product/serial-console-woodpecker-edition/">If we use CH340G</a> (instead of <a href="http://sun-light.com.sg/index.php?route=product/product&amp;product_id=2367">CP2102</a>): UART Output will be garbled (happens on Linux and macOS, maybe Windows too)…</p>
+<p>https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5</p>
+<p>Milk-V Duo S doesn’t ship with U-Boot Bootloader preinstalled in Flash Memory. We’ll need U-Boot on MicroSD…</p>
+<h1 id="boot-linux-on-milk-v-duo-s"><a class="doc-anchor" href="#boot-linux-on-milk-v-duo-s">§</a>3 Boot Linux on Milk-V Duo S</h1>
+<p>TODO</p>
+<p>Let’s boot Linux on MicroSD…</p>
+<p>https://github.com/Fishwaldo/sophgo-sg200x-debian/releases</p>
+<p>We pick the Latest Release for Milk-V Duo S…</p>
+<p>https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ brew install lz4
+$ lz4 ~/Downloads/duos_sd.img.lz4
+## TODO: Write duos_sd.img to MicroSD with Balena Etcher
+
+→ ls -l /Volumes/boot
+total 17488
+-rwxrwxrwx  1 Luppy  staff  3494900 Apr 24 11:33 System.map-5.10.4-20240329-1+
+-rwxrwxrwx  1 Luppy  staff   125534 Apr 24 11:33 config-5.10.4-20240329-1+
+drwxrwxrwx  1 Luppy  staff     2048 Apr 24 11:33 extlinux
+drwxrwxrwx  1 Luppy  staff     2048 Apr 24 11:33 fdt
+-rwxrwxrwx  1 Luppy  staff   388608 Apr 24 11:33 fip.bin
+-rwxrwxrwx  1 Luppy  staff  4937389 Apr 24 11:33 vmlinuz-5.10.4-20240329-1+
+
+→ ls -l /Volumes/boot/extlinux
+total 4
+-rwxrwxrwx  1 Luppy  staff  749 Apr 24 11:33 extlinux.conf
+
+→ ls -l /Volumes/boot/fdt
+total 4
+drwxrwxrwx  1 Luppy  staff  2048 Apr 24 11:33 linux-image-duos-5.10.4-20240329-1+
+
+→ ls -l /Volumes/boot/fdt/linux-image-duos-5.10.4-20240329-1+
+total 44
+-rwxrwxrwx  1 Luppy  staff  21575 Apr 24 11:33 cv181x_milkv_duos_sd.dtb
+</code></pre></div>
+<p>Here’s the Boot Config…</p>
+<div class="example-wrap"><pre class="language-bash"><code>→ cat /Volumes/boot/extlinux/extlinux.conf
+## /boot/extlinux/extlinux.conf
+##
+## IMPORTANT WARNING
+##
+## The configuration of this file is generated automatically.
+## Do not edit this file manually, use: u-boot-update
+
+default l0
+menu title U-Boot menu
+prompt 1
+timeout 50
+
+
+label l0
+  menu label Debian GNU/Linux trixie/sid 5.10.4-20240329-1+
+  linux /vmlinuz-5.10.4-20240329-1+
+
+  fdtdir /fdt/linux-image-duos-5.10.4-20240329-1+/
+
+  append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw
+
+label l0r
+  menu label Debian GNU/Linux trixie/sid 5.10.4-20240329-1+ (rescue target)
+  linux /vmlinuz-5.10.4-20240329-1+
+
+  fdtdir /fdt/linux-image-duos-5.10.4-20240329-1+/
+  append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw single
+</code></pre></div>
+<p>Yep Linux boots OK on Milk-V Duo S! (Together with OpenSBI and U-Boot Bootloader)</p>
+<p>https://gist.github.com/lupyuen/01d409b7bde9607a96cd4d460e53330a</p>
+<div class="example-wrap"><pre class="language-bash"><code>OpenSBI v0.9
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | &#39;_ \ / _ \ &#39;_ \ \___ \|  _ &lt; | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+
+Platform Name             : Milk-V DuoS
+Platform Features         : mfdeleg
+Platform HART Count       : 1
+Platform IPI Device       : clint
+Platform Timer Device     : clint
+Platform Console Device   : uart8250
+Platform HSM Device       : ---
+Platform SysReset Device  : ---
+Firmware Base             : 0x80000000
+Firmware Size             : 132 KB
+Runtime SBI Version       : 0.3
+
+Domain0 Name              : root
+Domain0 Boot HART         : 0
+Domain0 HARTs             : 0*
+Domain0 Region00          : 0x0000000074000000-0x000000007400ffff (I)
+Domain0 Region01          : 0x0000000080000000-0x000000008003ffff ()
+Domain0 Region02          : 0x0000000000000000-0xffffffffffffffff (R,W,X)
+Domain0 Next Address      : 0x0000000080200020
+Domain0 Next Arg1         : 0x0000000080080000
+Domain0 Next Mode         : S-mode
+Domain0 SysReset          : yes
+
+Boot HART ID              : 0
+Boot HART Domain          : root
+Boot HART ISA             : rv64imafdcvsux
+Boot HART Features        : scounteren,mcounteren,time
+Boot HART PMP Count       : 16
+Boot HART PMP Granularity : 4096
+Boot HART PMP Address Bits: 38
+Boot HART MHPM Count      : 8
+Boot HART MHPM Count      : 8
+Boot HART MIDELEG         : 0x0000000000000222
+Boot HART MEDELEG         : 0x000000000000b109
+...
+Debian GNU/Linux trixie/sid duos ttyS0
+duos login: 
+</code></pre></div>
+<p>Let’s dump the U-Boot Config…</p>
+<p>https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2</p>
+<div class="example-wrap"><pre class="language-bash"><code>U-Boot 2021.10-ga57aa1f2-dirty (May 07 2024 - 08:13:12 +0000) cvitek_cv181x
+DRAM:  510 MiB
+gd-&gt;relocaddr=0x9fbc6000. offset=0x1f9c6000
+set_rtc_register_for_power
+MMC:   cv-sd@4310000: 0, wifi-sd@4320000: 1
+Loading Environment from FAT... mmc1 : finished tuning, code:53
+OK
+In:    serial
+Out:   serial
+Err:   serial
+Net:   
+Warning: ethernet@4070000 (eth0) using random MAC address - 0a:fa:e9:48:cc:c1
+eth0: ethernet@4070000
+Hit any key to stop autoboot:  0
+
+cv181x_c906# printenv
+arch=riscv
+baudrate=115200
+board=mars
+board_name=mars
+boot_a_script=load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${prefix}${script}; source ${scriptaddr}
+boot_efi_binary=load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_r} efi/boot/bootriscv64.efi; if fdt addr ${fdt_addr_r}; then bootefi ${kernel_addr_r} ${fdt_addr_r};else bootefi ${kernel_addr_r} ${fdtcontroladdr};fi
+boot_efi_bootmgr=if fdt addr ${fdt_addr_r}; then bootefi bootmgr ${fdt_addr_r};else bootefi bootmgr;fi
+boot_extlinux=sysboot ${devtype} ${devnum}:${distro_bootpart} any ${scriptaddr} ${prefix}${boot_syslinux_conf}
+boot_prefixes=/ /boot/
+boot_script_dhcp=boot.scr.uimg
+boot_scripts=boot.scr.uimg boot.scr
+boot_syslinux_conf=extlinux/extlinux.conf
+boot_targets=mmc0 dhcp pxe 
+bootcmd=run distro_bootcmd || run sdboot || run sdbootauto
+bootcmd_dhcp=devtype=dhcp; if dhcp ${scriptaddr} ${boot_script_dhcp}; then source ${scriptaddr}; fi;setenv efi_fdtfile ${fdtfile}; setenv efi_old_vci ${bootp_vci};setenv efi_old_arch ${bootp_arch};setenv bootp_vci PXEClient:Arch:00027:UNDI:003000;setenv bootp_arch 0x1b;if dhcp ${kernel_addr_r}; then tftpboot ${fdt_addr_r} dtb/${efi_fdtfile};if fdt addr ${fdt_addr_r}; then bootefi ${kernel_addr_r} ${fdt_addr_r}; else bootefi ${kernel_addr_r} ${fdtcontroladdr};fi;fi;setenv bootp_vci ${efi_old_vci};setenv bootp_arch ${efi_old_arch};setenv efi_fdtfile;setenv efi_old_arch;setenv efi_old_vci;
+bootcmd_mmc0=devnum=0; run mmc_boot
+bootcmd_pxe=dhcp; if pxe get; then pxe boot; fi
+bootdelay=1
+consoledev=ttyS0
+cpu=generic
+distro_bootcmd=for target in ${boot_targets}; do run bootcmd_${target}; done
+efi_dtb_prefixes=/ /dtb/ /dtb/current/
+fdt_addr_r=0x81200000
+fdtcontroladdr=9f27f810
+fdtfile=cv181x_milkv_duos_sd.dtb
+fdtoverlay_addr_r=0x81300000
+gatewayip=192.168.0.11
+ipaddr=192.168.0.3
+kernel_addr_r=0x80200000
+kernel_comp_addr_r=0x81800000
+kernel_comp_size=0x1000000
+load_efi_dtb=load ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} ${prefix}${efi_fdtfile}
+mmc_boot=if mmc dev ${devnum}; then devtype=mmc; run scan_dev_for_boot_part; fi
+netdev=eth0
+netmask=255.255.255.0
+othbootargs=earlycon=sbi riscv.fwsz=0x80000   loglevel=9
+pxefile_addr_r=0x81400000
+ramdisk_addr_r=0x84000000
+root=root=/dev/mmcblk0p2 rootwait rw
+scan_dev_for_boot=echo Scanning ${devtype} ${devnum}:${distro_bootpart}...; for prefix in ${boot_prefixes}; do run scan_dev_for_extlinux; run scan_dev_for_scripts; done;run scan_dev_for_efi;
+scan_dev_for_boot_part=part list ${devtype} ${devnum} -bootable devplist; env exists devplist || setenv devplist 1; for distro_bootpart in ${devplist}; do if fstype ${devtype} ${devnum}:${distro_bootpart} bootfstype; then run scan_dev_for_boot; fi; done; setenv devplist
+scan_dev_for_efi=setenv efi_fdtfile ${fdtfile}; for prefix in ${efi_dtb_prefixes}; do if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${efi_fdtfile}; then run load_efi_dtb; fi;done;run boot_efi_bootmgr;if test -e ${devtype} ${devnum}:${distro_bootpart} efi/boot/bootriscv64.efi; then echo Found EFI removable media binary efi/boot/bootriscv64.efi; run boot_efi_binary; echo EFI LOAD FAILED: continuing...; fi; setenv efi_fdtfile
+scan_dev_for_extlinux=if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${boot_syslinux_conf}; then echo Found ${prefix}${boot_syslinux_conf}; run boot_extlinux; echo SCRIPT FAILED: continuing...; fi
+scan_dev_for_scripts=for script in ${boot_scripts}; do if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${script}; then echo Found U-Boot script ${prefix}${script}; run boot_a_script; echo SCRIPT FAILED: continuing...; fi; done
+scriptaddr=0x81500000
+sdboot=setenv bootargs ${reserved_mem} ${root} ${mtdparts} console=$consoledev,$baudrate $othbootargs;echo Boot from SD dev ${sddev} ...;mmc dev ${sddev} &amp;&amp; fatload mmc ${sddev} ${uImage_addr} boot.sd;if test $? -eq 0; then bootm ${uImage_addr}#config-cv181x_milkv_duos_sd;fi;
+sdbootauto=cvi_sd_boot;setenv bootargs ${reserved_mem} ${root} ${mtdparts} console=$consoledev,$baudrate $othbootargs;echo Boot from SD dev ${sddev} auto ...;mmc dev ${sddev} &amp;&amp; fatload mmc ${sddev} ${uImage_addr} boot.sd;if test $? -eq 0; then bootm ${uImage_addr}#config-cv181x_milkv_duos_sd;fi;
+sddev=0
+serverip=192.168.56.101
+stderr=serial
+stdin=serial
+stdout=serial
+uImage_addr=0x81800000
+update_addr=0x9fe00000
+vendor=cvitek
+Environment size: 4333/131068 bytes
+</code></pre></div>
+<p>Aha Ethernet Driver is available in U-Boot. Which means we can boot NuttX over TFTP yay!</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ net list
+
+eth0 : ethernet@4070000 00:00:00:00:00:00 active
+</code></pre></div>
+<p>(See below for the U-Boot Commands)</p>
+<p>Here’s another Linux Image: https://github.com/logicethos/Milk-V_Duo_Linux2SD</p>
+<h1 id="boot-milk-v-duo-s-over-tftp"><a class="doc-anchor" href="#boot-milk-v-duo-s-over-tftp">§</a>4 Boot Milk-V Duo S over TFTP</h1>
+<p>We’ll port NuttX by booting over TFTP, but let’s test TFTP first. Here are the steps to boot Milk-V Duo S over TFTP…</p>
+<p>https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Set the U-Boot TFTP Server
+setenv tftp_server 192.168.31.10
+printenv tftp_server
+
+## If Initial RAM Disk is needed (like for Linux)...
+## Set the RAM Disk Size (assume the max)
+## setenv ramdisk_size 0x1000000
+## printenv ramdisk_size
+
+## Save the U-Boot Config for future reboots
+saveenv
+</code></pre></div>
+<p>We load the NuttX Image over TFTP…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Fetch the IP Address over DHCP
+## Load the NuttX Image from TFTP Server
+## kernel_addr_r=0x80200000
+## tftp_server=192.168.x.x
+dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
+
+## Load the Device Tree from TFTP Server
+## fdt_addr_r=0x81200000
+## TODO: Fix the Device Tree, it&#39;s not needed by NuttX
+tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+
+## Set the RAM Address of Device Tree
+## fdt_addr_r=0x81200000
+## TODO: Fix the Device Tree, it&#39;s not needed by NuttX
+fdt addr ${fdt_addr_r}
+
+## If Initial RAM Disk is needed...
+## Load the Intial RAM Disk from TFTP Server
+## ramdisk_addr_r=0x81600000
+## tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
+
+## Boot the NuttX Image with the Device Tree
+## kernel_addr_r=0x80200000
+## fdt_addr_r=0x81200000
+## TODO: Fix the Device Tree, it&#39;s not needed by NuttX
+booti ${kernel_addr_r} - ${fdt_addr_r}
+
+## For Linux: We need the RAM Disk Address
+## ramdisk_addr_r=0x81600000
+## ramdisk_size=0x1000000
+## booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+</code></pre></div>
+<p>Which becomes this, mashed up in a single line…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX Image over TFTP
+dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
+</code></pre></div>
+<p>Now we automate the TFTP Booting for future reboots…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Add the Boot Command for TFTP
+setenv bootcmd_tftp &#39;dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}&#39;
+## Check that it&#39;s correct
+printenv bootcmd_tftp
+## Save it for future reboots
+saveenv
+
+## Test the Boot Command for TFTP, then reboot
+run bootcmd_tftp
+
+## Remember the Original Boot Targets
+setenv orig_boot_targets &quot;$boot_targets&quot;
+## Should show `mmc0 dhcp pxe`
+printenv orig_boot_targets
+## Save it for future reboots
+saveenv
+
+## Prepend TFTP to the Boot Targets
+setenv boot_targets &quot;tftp $boot_targets&quot;
+## Should show `tftp mmc0 dhcp pxe`
+printenv boot_targets
+## Save it for future reboots
+saveenv
+</code></pre></div>
+<p><em>What happens when we run it at the U-Boot Command Prompt?</em></p>
+<p>This happens…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ setenv tftp_server 192.168.31.10
+$ printenv tftp_server
+tftp_server=192.168.31.10
+
+$ setenv ramdisk_size 0x1000000
+$ printenv ramdisk_size
+ramdisk_size=0x1000000
+
+$ dhcp ${kernel_addr_r} ${tftp_server}:Image
+Speed: 100, full duplex
+BOOTP broadcast 1
+BOOTP broadcast 2
+*** Unhandled DHCP Option in OFFER/ACK: 43
+*** Unhandled DHCP Option in OFFER/ACK: 43
+DHCP client bound to address 192.168.31.47 (550 ms)
+Using ethernet@4070000 device
+TFTP from server 192.168.31.10; our IP address is 192.168.31.47
+Filename &#39;Image&#39;.
+Load address: 0x80200000
+Loading: #################################################################
+. 1.2 MiB/s
+done
+Bytes transferred = 2097800 (200288 hex)
+
+$ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+Speed: 100, full duplex
+Using ethernet@4070000 device
+TFTP from server 192.168.31.10; our IP address is 192.168.31.47
+Filename &#39;jh7110-star64-pine64.dtb&#39;.
+Load address: 0x81200000
+Loading: ####
+. 1.1 MiB/s
+done
+Bytes transferred = 50235 (c43b hex)
+
+$ fdt addr ${fdt_addr_r}
+
+$ booti ${kernel_addr_r} - ${fdt_addr_r}
+## Flattened Device Tree blob at 81200000
+   Booting using the fdt blob at 0x81200000
+   Loading Ramdisk to 9e27f000, end 9f27f000 ... OK
+   Loading Device Tree to 000000009e26f000, end 000000009e27e43a ... OK
+
+Starting kernel ...
+</code></pre></div>
+<p>NuttX Kernel hangs, but that’s OK! We haven’t modified NuttX Kernel for SG2000 yet. Let’s print something…</p>
+<h1 id="uart-controller-for-sg2000"><a class="doc-anchor" href="#uart-controller-for-sg2000">§</a>5 UART Controller for SG2000</h1>
+<p>TODO</p>
+<p>According to the <a href="https://github.com/sophgo/sophgo-doc/releases">SG2000 Reference Manual</a>, the UART Controller Base Addresses are…</p>
+<div><table><thead><tr><th>GPIO Module</th><th>Base Address</th></tr></thead><tbody>
+<tr><td>UART0</td><td>0x04140000</td></tr>
+<tr><td>UART1</td><td>0x04150000</td></tr>
+<tr><td>UART2</td><td>0x04160000</td></tr>
+<tr><td>UART3</td><td>0x04170000</td></tr>
+<tr><td>UART4</td><td>0x041C0000</td></tr>
+<tr><td>RTCSYS_UART</td><td>0x05022000</td></tr>
+</tbody></table>
+</div>
+<p>We’ll print to UART0 in NuttX.</p>
+<p><em>What UART Controller is inside SG2000 / Milk-V Duo S?</em></p>
+<p>According to the OpenSBI Log above: The UART Controller is <code>uart8250</code>.</p>
+<p>Which is supported by NuttX yay!</p>
+<p>Let’s modify the NuttX Boot Code to write to the UART Output Register. We’ll do this in RISC-V Assembly…</p>
+<h1 id="print-to-sg2000-uart-in-risc-v-assembly"><a class="doc-anchor" href="#print-to-sg2000-uart-in-risc-v-assembly">§</a>6 Print to SG2000 UART in RISC-V Assembly</h1>
+<p>TODO</p>
+<p>Here’s how we print to 8250 UART in RISC-V Assembly…</p>
+<p>https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console</p>
+<p>From the previous section: SG2000 UART0 Controller is at 0x04140000. We’ll write to that address, to print something to Serial Console.</p>
+<p>We insert this RISC-V Assembly at the top of the NuttX Boot Code…</p>
+<p>https://github.com/lupyuen2/wip-nuttx/blob/sg2000/arch/risc-v/src/bl808/bl808_head.S#L70-L89</p>
+<div class="example-wrap"><pre class="language-c"><code>/* RISC-V Boot Code for Apache NuttX RTOS */
+real_start:
+
+  /* Print `123` to UART */
+  /* Load UART Base Address to Register t0 */
+  li  t0, 0x04140000
+
+  /* Load `1` to Register t1 */
+  li  t1, 0x31
+  /* Store byte from Register t1 to UART Base Address, Offset 0 */
+  sb  t1, 0(t0)
+
+  /* Load `2` to Register t1 */
+  li  t1, 0x32
+  /* Store byte from Register t1 to UART Base Address, Offset 0 */
+  sb  t1, 0(t0)
+
+  /* Load `3` to Register t1 */
+  li  t1, 0x33
+  /* Store byte from Register t1 to UART Base Address, Offset 0 */
+  sb  t1, 0(t0)
+</code></pre></div>
+<p>Which will print <code>123</code> when NuttX boots. Let’s build and test this!</p>
+<h1 id="build-apache-nuttx-rtos-for-milk-v-duo-s"><a class="doc-anchor" href="#build-apache-nuttx-rtos-for-milk-v-duo-s">§</a>7 Build Apache NuttX RTOS for Milk-V Duo S</h1>
+<p>TODO</p>
+<p>Follow these steps to build (work-in-progress) Apache NuttX RTOS for SG2000 / Milk-V Duo S…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Set PATH
+export PATH=&quot;$HOME/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin/bin:$PATH&quot;
+
+set -e  #  Exit when any command fails
+set -x  #  Echo commands
+
+## Build NuttX
+function build_nuttx {
+
+  ## Go to NuttX Folder
+  pushd ../nuttx
+
+  ## Build NuttX
+  make -j 8
+
+  ## Return to previous folder
+  popd
+}
+
+## Build Apps Filesystem
+function build_apps {
+
+  ## Go to NuttX Folder
+  pushd ../nuttx
+
+  ## Build Apps Filesystem
+  make -j 8 export
+  pushd ../apps
+  ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+  make -j 8 import
+  popd
+
+  ## Return to previous folder
+  popd
+}
+
+## Download WIP NuttX for SG2000 (based on Ox64 BL808)
+git clone --branch sg2000 \
+  https://github.com/lupyuen2/wip-nuttx \
+  nuttx
+git clone --branch sg2000 \
+  https://github.com/lupyuen2/wip-nuttx-apps \
+  apps
+cd nuttx
+
+## Pull updates
+git pull &amp;&amp; git status &amp;&amp; hash1=`git rev-parse HEAD`
+pushd ../apps
+git pull &amp;&amp; git status &amp;&amp; hash2=`git rev-parse HEAD`
+popd
+echo NuttX Source: https://github.com/apache/nuttx/tree/$hash1 &gt;nuttx.hash
+echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$hash2 &gt;&gt;nuttx.hash
+
+## Show the version of GCC
+riscv64-unknown-elf-gcc -v
+
+## Configure build
+tools/configure.sh ox64:nsh
+
+## Build NuttX
+build_nuttx
+
+## Build Apps Filesystem
+build_apps
+
+## Generate Initial RAM Disk
+genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
+
+## Show the size
+riscv64-unknown-elf-size nuttx
+
+## Export the Binary Image to `nuttx.bin`
+riscv64-unknown-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
+
+## Prepare a Padding with 64 KB of zeroes
+head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
+
+## Append Padding and Initial RAM Disk to NuttX Kernel
+cat nuttx.bin /tmp/nuttx.pad initrd \
+  &gt;Image
+
+## Copy the config
+cp .config nuttx.config
+
+## Dump the disassembly to nuttx.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
+
+## Dump the init disassembly to init.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/bin/init \
+  &gt;init.S \
+  2&gt;&amp;1
+
+## Dump the hello disassembly to hello.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/bin/hello \
+  &gt;hello.S \
+  2&gt;&amp;1
+
+## Copy NuttX Image to TFTP Server
+scp Image tftpserver:/tftpboot/Image-sg2000
+ssh tftpserver ls -l /tftpboot/Image-sg2000
+</code></pre></div>
+<p>We have copied the NuttX Image to our TFTP Server. Let’s boot this on Milk-V Duo S…</p>
+<h1 id="apache-nuttx-rtos-boots-a-tiny-bit-on-milk-v-duo-s"><a class="doc-anchor" href="#apache-nuttx-rtos-boots-a-tiny-bit-on-milk-v-duo-s">§</a>8 Apache NuttX RTOS boots a tiny bit on Milk-V Duo S</h1>
+<p>TODO</p>
+<p>Earlier we have…</p>
+<ul>
+<li>
+<p>Inserted the RISC-V Boot Code to print <code>123</code> (at NuttX Startup)</p>
+</li>
+<li>
+<p>Compiled Apache NuttX RTOS for Milk-V Duo S</p>
+</li>
+<li>
+<p>Copied the NuttX Image to our TFTP Server</p>
+</li>
+</ul>
+<p>Let’s boot NuttX over TFTP, with a little help from U-Boot Bootloader! Run these commands at the U-Boot Command Prompt…</p>
+<p>https://gist.github.com/lupyuen/78b54326daf0894a2c23ab6d2c03456d</p>
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Change to your TFTP Server IP Address
+$ setenv tftp_server 192.168.31.10
+
+## Download NuttX Image from TFTP Server
+$ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
+Speed: 100, full duplex
+BOOTP broadcast 1
+BOOTP broadcast 2
+*** Unhandled DHCP Option in OFFER/ACK: 43
+*** Unhandled DHCP Option in OFFER/ACK: 43
+DHCP client bound to address 192.168.31.243 (424 ms)
+Using ethernet@4070000 device
+TFTP from server 192.168.31.10; our IP address is 192.168.31.243
+Filename &#39;Image-sg2000&#39;.
+Load address: 0x80200000
+Loading: #################################################################
+. 1.2 MiB/s
+done
+Bytes transferred = 14195281 (d89a51 hex)
+
+## TODO: NuttX doesn&#39;t need the Device Tree. Remove this.
+$ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+Speed: 100, full duplex
+Using ethernet@4070000 device
+TFTP from server 192.168.31.10; our IP address is 192.168.31.243
+Filename &#39;jh7110-star64-pine64.dtb&#39;.
+Load address: 0x81200000
+Loading: ####
+. 1.2 MiB/s
+done
+Bytes transferred = 50235 (c43b hex)
+
+## TODO: NuttX doesn&#39;t need the Device Tree. Remove this.
+$ fdt addr ${fdt_addr_r}
+
+## Boot NuttX from RAM. RAM Disk Address must be `-`!
+$ booti ${kernel_addr_r} - ${fdt_addr_r}
+
+## For Linux: We need the RAM Disk Address
+## booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+</code></pre></div>
+<p>NuttX boots a tiny bit, and prints <code>123</code> yay!</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX from RAM
+$ booti ${kernel_addr_r} - ${fdt_addr_r}
+
+## Flattened Device Tree blob at 81200000
+Booting using the fdt blob at 0x81200000
+Loading Ramdisk to 9fe00000, end 9fe00000 ... OK
+Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
+
+Starting kernel ...
+123
+</code></pre></div>
+<p>Our NuttX Boot Code is actually running on SG2000 / Milk-V Duo S!</p>
+<p>Coming up…</p>
+<ol>
+<li>
+<p>Fix the Boot Address of NuttX, so the rest of NuttX can start</p>
+</li>
+<li>
+<p>Configure the 16550 UART Driver for NuttX, so can see the Console Output</p>
+</li>
+</ol>
+<p>TODO: Can we run <code>expect</code> with <code>screen</code> to automate the testing of NuttX on SG2000?</p>
+<p>TODO: If we prefer to boot NuttX with MicroSD instead of TFTP, try this <a href="https://www.tindie.com/products/badgerdnl/sdwire-usb-c-sd-card-reader-sd-mux/">MicroSD Multiplexer (USB / FTDI)</a></p>
+<h1 id="set-the-nuttx-memory-map-for-sg2000"><a class="doc-anchor" href="#set-the-nuttx-memory-map-for-sg2000">§</a>9 Set the NuttX Memory Map for SG2000</h1>
+<p>TODO</p>
+<p>From the U-Boot Bootloader Config above: We see that SG2000 boots at this address…</p>
+<div class="example-wrap"><pre class="language-bash"><code>kernel_addr_r=0x80200000
+</code></pre></div>
+<p>Thus we define the NuttX Memory Map for SG2000 like so…</p>
+<p>https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2</p>
+<p>NuttX Kernel will boot at 0x8020_0000, NuttX Apps will run at Virtual Address 0xC000_0000.</p>
+<p>Here’s the NuttX Config: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078">boards/risc-v/bl808/ox64/configs/nsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Kernel RAM
+CONFIG_RAM_START=0x80200000
+CONFIG_RAM_SIZE=1048576
+
+## Kernel Paged Pool (Allocated to NuttX Apps)
+CONFIG_ARCH_PGPOOL_PBASE=0x80600000
+CONFIG_ARCH_PGPOOL_VBASE=0x80600000
+CONFIG_ARCH_PGPOOL_SIZE=4194304
+
+## Virtual Memory for NuttX App Code
+CONFIG_ARCH_TEXT_VBASE=0xC0000000
+CONFIG_ARCH_TEXT_NPAGES=128
+
+## Virtual Memory for NuttX App Data
+CONFIG_ARCH_DATA_VBASE=0xC0100000
+CONFIG_ARCH_DATA_NPAGES=128
+
+## Virtual Memory for NuttX App Heap
+CONFIG_ARCH_HEAP_VBASE=0xC0200000
+CONFIG_ARCH_HEAP_NPAGES=128
+</code></pre></div>
+<p>And here’s the NuttX Linker Script: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-769e7c2389b298f666c84b92f36d3c42fa852fda61dbf20b93e603df98b7bd37">boards/risc-v/bl808/ox64/scripts/ld.script</a></p>
+<div class="example-wrap"><pre class="language-c"><code>MEMORY {
+    kflash (rx) : ORIGIN = 0x80200000, LENGTH = 2048K   /* w/ cache */
+    ksram (rwx) : ORIGIN = 0x80400000, LENGTH = 2048K   /* w/ cache */
+    pgram (rwx) : ORIGIN = 0x80600000, LENGTH = 4096K   /* w/ cache */
+    ramdisk (rwx) : ORIGIN = 0x80A00000, LENGTH = 16M   /* w/ cache */
+}
+...
+SECTIONS {
+  . = 0x80200000;
+</code></pre></div><h1 id="disable-the-plic-interrupt-controller"><a class="doc-anchor" href="#disable-the-plic-interrupt-controller">§</a>10 Disable the PLIC Interrupt Controller</h1>
+<p>TODO</p>
+<p>Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a Platform-Level Interrupt Controller (PLIC). For now, let’s disable PLIC in NuttX…</p>
+<p>https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b93ec4</p>
+<p>Later we’ll dump the SG2000 Linux Device Tree to understand the Interrupt Controller.</p>
+<h1 id="select-the-nuttx-driver-for-16550-uart"><a class="doc-anchor" href="#select-the-nuttx-driver-for-16550-uart">§</a>11 Select the NuttX Driver for 16550 UART</h1>
+<p>TODO</p>
+<p>From the OpenSBI Log above: We see that SG2000 operates with a 8250 UART Controller.</p>
+<p>Thus we select the NuttX Driver for 16550 UART, which is compatible with 8250…</p>
+<p>https://github.com/lupyuen2/wip-nuttx/commit/8f8831d15d6ddc913e6dd1c6c49fb0067640f6ec</p>
+<p>Here’s the NuttX Config: <a href="https://github.com/lupyuen2/wip-nuttx/commit/8f8831d15d6ddc913e6dd1c6c49fb0067640f6ec#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078">boards/risc-v/bl808/ox64/configs/nsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_ADDRWIDTH=0
+CONFIG_16550_REGINCR=4
+CONFIG_16550_UART0=y
+CONFIG_16550_UART0_BASE=0x04140000
+CONFIG_16550_UART0_CLOCK=23040000
+CONFIG_16550_UART0_SERIAL_CONSOLE=y
+CONFIG_16550_UART=y
+CONFIG_16550_WAIT_LCR=y
+CONFIG_SERIAL_UART_ARCH_MMIO=y
+</code></pre></div>
+<p>Don’t update the NuttX Config File directly! We ran <code>make menuconfig</code> to generate the above file…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Update NuttX Config
+make menuconfig \
+  &amp;&amp; make savedefconfig \
+  &amp;&amp; grep -v CONFIG_HOST defconfig \
+  &gt;boards/risc-v/bl808/ox64/configs/nsh/defconfig
+</code></pre></div>
+<p>To find the menuconfig settings: Press “<code>/</code>” and enter  the name of the setting, like “16550_ADDRWIDTH”. This ensures that the Kconfig Dependencies are correctly updated.</p>
+<p><em>How did we get IRQ 69 for UART?</em></p>
+<p>https://github.com/lupyuen2/wip-nuttx/commit/122c717447f81c310a4fb082101213ad338dfb0e</p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_IRQ=69
+</code></pre></div>
+<p>We saw this in the <a href="https://github.com/sophgo/sophgo-doc/releases">SG2000 Reference Manual</a>…</p>
+<blockquote>
+<p>3.1 Interrupt Subsystem</p>
+</blockquote>
+<blockquote>
+<p>Table 3.2: Interrupt number and Interrupt source mapping for Master RISCV C906 @ 1.0Ghz</p>
+</blockquote>
+<blockquote>
+<p>Int #44: UART0</p>
+</blockquote>
+<p>Linx Device Tree also says UART0 IRQ is 44 (0x2C)…</p>
+<div class="example-wrap"><pre class="language-c"><code>serial@04140000 {
+  compatible = &quot;snps,dw-apb-uart&quot;;
+  reg = &lt;0x00 0x4140000 0x00 0x1000&gt;;
+  clock-frequency = &lt;0x17d7840&gt;;
+  reg-shift = &lt;0x02&gt;;
+  reg-io-width = &lt;0x04&gt;;
+  status = &quot;okay&quot;;
+  interrupts = &lt;0x2c 0x04&gt;;
+  interrupt-parent = &lt;0x04&gt;;
+};
+</code></pre></div>
+<p>Thus we compute <a href="https://lupyuen.github.io/articles/plic2#uart-interrupt">NuttX IRQ</a> = 25 + RISC-V IRQ = 69</p>
+<p>TODO: Fix the UART Clock: 16550_UART0_CLOCK</p>
+<h1 id="enable-logging-for-nuttx-scheduler-and-binary-loader"><a class="doc-anchor" href="#enable-logging-for-nuttx-scheduler-and-binary-loader">§</a>12 Enable Logging for NuttX Scheduler and Binary Loader</h1>
+<p>TODO</p>
+<p>For easier troubleshooting: We enable the Logging for NuttX Scheduler and Binary Loader…</p>
+<p>https://github.com/lupyuen2/wip-nuttx/commit/4cee79630359f6b31fc9fa40f31bb476c8bc4d47</p>
+<p>Here’s the NuttX Config: <a href="https://github.com/lupyuen2/wip-nuttx/commit/4cee79630359f6b31fc9fa40f31bb476c8bc4d47#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078">boards/risc-v/bl808/ox64/configs/nsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_DEBUG_BINFMT=y
+CONFIG_DEBUG_BINFMT_ERROR=y
+CONFIG_DEBUG_BINFMT_WARN=y
+CONFIG_DEBUG_SCHED=y
+CONFIG_DEBUG_SCHED_ERROR=y
+CONFIG_DEBUG_SCHED_INFO=y
+CONFIG_DEBUG_SCHED_WARN=y
+</code></pre></div>
+<p>Remember: Always use <code>make menuconfig</code> to update the settings!</p>
+<h1 id="nuttx-crash-dump-on-sg2000"><a class="doc-anchor" href="#nuttx-crash-dump-on-sg2000">§</a>13 NuttX Crash Dump on SG2000</h1>
+<p>TODO</p>
+<p>We apply the fixes above. Now NuttX boots some more on RISC-V SG2000 SoC / Milk-V Duo S. And shows our very first NuttX Crash Dump yay!</p>
+<p>https://gist.github.com/lupyuen/594f0df20d39001bac171412d594d517</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Flattened Device Tree blob at 81200000
+   Booting using the fdt blob at 0x81200000
+   Loading Ramdisk to 9fe00000, end 9fe00000 ... OK
+   Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
+
+Starting kernel ...
+
+123ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nxtask_activate: lpwork pid=1,TCB=0x80408130
+nxtask_activate: AppBringUp pid=2,TCB=0x80408740
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+_assert: Current Version: NuttX  12.4.0 f37a380-dirty May  7 2024 10:31:33 risc-v
+_assert: Assertion failed 0x17 == (insn &amp; 0x7F): at file: machine/risc-v/arch_elf.c:494 task: AppBringUp process: Kernel 0x80200f34
+up_dump_register: EPC: 000000008021087a
+up_dump_register: A0: 0000000080401b70 A1: 00000000000001ee A2: 0000000080228ef8 A3: 0000000000000000
+up_dump_register: A4: 0000000000000017 A5: 0000000000000002 A6: 000000000000ab9c A7: fffffffffffffff8
+up_dump_register: T0: 000000000000002e T1: 0000000000000007 T2: 00000000000001ff T3: 000000008040c3fc
+up_dump_register: T4: 000000008040c3f0 T5: 0000000000000009 T6: 000000000000002a
+up_dump_register: S0: 0000000000000000 S1: 0000000080408740 S2: 0000000000000017 S3: 0000000000000000
+up_dump_register: S4: 0000000080228ef8 S5: 0000000080228de8 S6: 0000000080401e10 S7: 8000000201842022
+up_dump_register: S8: 00000000000001ee S9: 000000008040b9a0 S10: 0000000000000070 S11: 000000008040b990
+up_dump_register: SP: 000000008040c330 FP: 0000000000000000 TP: 0000000000000000 RA: 000000008021087a
+dump_stack: User Stack:
+dump_stack:   base: 0x8040c030
+dump_stack:   size: 00002000
+dump_stack:     sp: 0x8040c330
+</code></pre></div>
+<p><em>What’s this Assertion Failure?</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>_assert: Assertion failed 0x17 == (insn &amp; 0x7F):
+at file: machine/risc-v/arch_elf.c:494
+task: AppBringUp process: Kernel 0x80200f34
+</code></pre></div>
+<p>Oops we goofed and used the wrong U-Boot Command…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Nope! This won&#39;t work for NuttX. RAM Disk Address must be `-`!
+setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ;
+tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ;
+booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+</code></pre></div>
+<p>Which overwrites the NuttX Image in RAM. Watch what happens when we use the correct U-Boot Command…</p>
+<h1 id="nuttx-kernel-boots-ok-on-sg2000"><a class="doc-anchor" href="#nuttx-kernel-boots-ok-on-sg2000">§</a>14 NuttX Kernel Boots OK on SG2000</h1>
+<p>TODO</p>
+<p>Here’s the correct U-Boot Command…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## This works OK for NuttX. RAM Disk Address must be `-`!
+setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ;
+tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; 
+booti ${kernel_addr_r} - ${fdt_addr_r}
+</code></pre></div>
+<p>NuttX Kernel boots OK on SG2000 yay!</p>
+<p>https://gist.github.com/lupyuen/aaa0a6646490d45e5cd99b781cbe59f8</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Flattened Device Tree blob at 81200000
+   Booting using the fdt blob at 0x81200000
+   Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
+
+Starting kernel ...
+
+123ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nxtask_activate: lpwork pid=1,TCB=0x80408130
+nxtask_activate: AppBringUp pid=2,TCB=0x80408740
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nxtask_activate: /system/bin/init pid=3,TCB=0x80409140
+nxtask_exit: AppBringUp pid=2,TCB=0x80408740
+</code></pre></div>
+<p><a href="https://www.youtube.com/watch?v=pPNDiC5NLqM">(Watch the Demo on YouTube)</a></p>
+<p><em>But where’s the NuttX Shell?</em></p>
+<p>We won’t see the NuttX Shell until we fix the Interrupt Controller for SG2000. Which is NOT documented!</p>
+<p>Let’s sniff around and find out how it works…</p>
+<h1 id="dump-the-sg2000-linux-device-tree"><a class="doc-anchor" href="#dump-the-sg2000-linux-device-tree">§</a>15 Dump the SG2000 Linux Device Tree</h1>
+<p>TODO</p>
+<p>Let’s dump the SG2000 Linux Device Tree to understand the Interrupt Controller.</p>
+<p>From the SG2000 Debian Release: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases</p>
+<p>We pick the Latest Release for Milk-V Duo S: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4</p>
+<p>We copy out the SG2000 Device Tree Binary: <a href="cv181x_milkv_duos_sd.dtb">cv181x_milkv_duos_sd.dtb</a></p>
+<p>And convert it to Device Tree Source: <a href="cv181x_milkv_duos_sd.dts">cv181x_milkv_duos_sd.dts</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Convert the SG2000 Device Tree
+dtc \
+  -o cv181x_milkv_duos_sd.dts \
+  -O dts \
+  -I dtb \
+  cv181x_milkv_duos_sd.dtb
+</code></pre></div><h1 id="interrupt-controller-for-sg2000"><a class="doc-anchor" href="#interrupt-controller-for-sg2000">§</a>16 Interrupt Controller for SG2000</h1>
+<p>TODO</p>
+<p>We dumped the SG2000 Linux Device Tree. Let’s extract the Interrupt Controller to understand it.</p>
+<p>Based on the SG2000 Device Tree: <a href="cv181x_milkv_duos_sd.dts">cv181x_milkv_duos_sd.dts</a></p>
+<div class="example-wrap"><pre class="language-c"><code>cpus {
+  #address-cells = &lt;0x01&gt;;
+  #size-cells = &lt;0x00&gt;;
+  timebase-frequency = &lt;0x17d7840&gt;;
+
+  cpu-map {
+
+    cluster0 {
+
+      core0 {
+        cpu = &lt;0x01&gt;;
+      };
+    };
+  };
+
+  cpu@0 {
+    device_type = &quot;cpu&quot;;
+    reg = &lt;0x00&gt;;
+    status = &quot;okay&quot;;
+    compatible = &quot;riscv&quot;;
+    riscv,isa = &quot;rv64imafdvcsu&quot;;
+    mmu-type = &quot;riscv,sv39&quot;;
+    clock-frequency = &lt;0x17d7840&gt;;
+
+    interrupt-controller {
+      #interrupt-cells = &lt;0x01&gt;;
+      interrupt-controller;
+      compatible = &quot;riscv,cpu-intc&quot;;
+      phandle = &lt;0x16&gt;;
+    };
+  };
+};
+
+soc {
+  #address-cells = &lt;0x02&gt;;
+  #size-cells = &lt;0x02&gt;;
+  compatible = &quot;simple-bus&quot;;
+  ranges;
+
+  interrupt-controller@70000000 {
+    riscv,ndev = &lt;0x65&gt;;
+    riscv,max-priority = &lt;0x07&gt;;
+    reg-names = &quot;control&quot;;
+    reg = &lt;0x00 0x70000000 0x00 0x4000000&gt;;
+    interrupts-extended = &lt;0x16 0xffffffff 0x16 0x09&gt;;
+    interrupt-controller;
+    compatible = &quot;riscv,plic0&quot;;
+    #interrupt-cells = &lt;0x02&gt;;
+    #address-cells = &lt;0x00&gt;;
+    phandle = &lt;0x04&gt;;
+  };
+
+  clint@74000000 {
+    interrupts-extended = &lt;0x16 0x03 0x16 0x07&gt;;
+    reg = &lt;0x00 0x74000000 0x00 0x10000&gt;;
+    compatible = &quot;riscv,clint0&quot;;
+    clint,has-no-64bit-mmio;
+  };
+};
+</code></pre></div>
+<p>We see that PLIC is at 0x7000_0000, CLINT at 0x7400_0000. Let’s implement this in NuttX…</p>
+<h1 id="fix-the-plic-interrupt-controller-for-sg2000"><a class="doc-anchor" href="#fix-the-plic-interrupt-controller-for-sg2000">§</a>17 Fix the PLIC Interrupt Controller for SG2000</h1>
+<p>TODO</p>
+<p>Based on the PLIC Address from above: We fix the PLIC Interrupt Controller for SG2000…</p>
+<p>https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6</p>
+<p>Now we see a bit more NuttX…</p>
+<p>https://gist.github.com/lupyuen/922e6379375fbc5d775d1e83cac4deb5</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+
+123ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nxtask_activate: lpwork pid=1,TCB=0x80409130
+nxtask_activate: AppBringUp pid=2,TCB=0x80409740
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nxtask_activate: /system/bin/init pid=3,TCB=0x8040b730
+nxtask_exit: AppBringUp pid=2,TCB=0x80409740
+
+Nuttnx_start: CPU0: Beginning Idle Loop
+</code></pre></div>
+<p><em>Why did it stop?</em></p>
+<p>Duh we set the wrong UART0 IRQ! Here’s the fix…</p>
+<p>https://github.com/lupyuen2/wip-nuttx/commit/122c717447f81c310a4fb082101213ad338dfb0e</p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_IRQ=69
+</code></pre></div>
+<p><em>How did we get IRQ 69 for UART?</em></p>
+<p>We saw this in the <a href="https://github.com/sophgo/sophgo-doc/releases">SG2000 Reference Manual</a>…</p>
+<blockquote>
+<p>3.1 Interrupt Subsystem</p>
+</blockquote>
+<blockquote>
+<p>Table 3.2: Interrupt number and Interrupt source mapping for Master RISCV C906 @ 1.0Ghz</p>
+</blockquote>
+<blockquote>
+<p>Int #44: UART0</p>
+</blockquote>
+<p>Linx Device Tree also says UART0 IRQ is 44 (0x2C)…</p>
+<div class="example-wrap"><pre class="language-c"><code>serial@04140000 {
+  compatible = &quot;snps,dw-apb-uart&quot;;
+  reg = &lt;0x00 0x4140000 0x00 0x1000&gt;;
+  clock-frequency = &lt;0x17d7840&gt;;
+  reg-shift = &lt;0x02&gt;;
+  reg-io-width = &lt;0x04&gt;;
+  status = &quot;okay&quot;;
+  interrupts = &lt;0x2c 0x04&gt;;
+  interrupt-parent = &lt;0x04&gt;;
+};
+</code></pre></div>
+<p>Thus we compute <a href="https://lupyuen.github.io/articles/plic2#uart-interrupt">NuttX IRQ</a> = 25 + RISC-V IRQ = 69</p>
+<h1 id="nuttx-shell-runs-ok-on-sg2000"><a class="doc-anchor" href="#nuttx-shell-runs-ok-on-sg2000">§</a>18 NuttX Shell runs OK on SG2000</h1>
+<p>TODO</p>
+<p>After fixing the Interrupt Controller and UART Interrupt: NuttX Kernel now boots all the way to NuttX Shell yay!</p>
+<p>https://gist.github.com/lupyuen/b778986ba87c18067cd993b92c673634</p>
+<div class="example-wrap"><pre class="language-bash"><code>Starting kernel ...
+
+123ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nxtask_activate: lpwork pid=1,TCB=0x80409130
+nxtask_activate: AppBringUp pid=2,TCB=0x80409740
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nxtask_activate: /system/bin/init pid=3,TCB=0x8040b730
+nxtask_exit: AppBringUp pid=2,TCB=0x80409740
+
+NuttShell (NSH) NuttX-12.4.0
+nsh&gt; nx_start: CPU0: Beginning Idle Loop
+ls
+posix_spawn: pid=0xc0202968 path=ls file_actions=0xc0202970 attr=0xc0202978 argv=0xc0202a18
+exec_internal: ERROR: Failed to load program &#39;ls&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+/:
+ dev/
+ proc/
+ system/
+nsh&gt; 
+nsh&gt; uname -a
+posix_spawn: pid=0xc0202968 path=uname file_actions=0xc0202970 attr=0xc0202978 argv=0xc0202a18
+exec_internal: ERROR: Failed to load program &#39;uname&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+NuttX 12.4.0 122c717 May  8 2024 18:13:30 risc-v ox64
+nsh&gt; 
+nsh&gt; free
+posix_spawn: pid=0xc0202968 path=free file_actions=0xc0202970 attr=0xc0202978 argv=0xc0202a18
+exec_internal: ERROR: Failed to load program &#39;free&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+                 total       used       free    maxused    maxfree  nused  nfree
+      Kmem:    2065400      14296    2051104      76632    2049392     36      3
+      Page:   20971520     647168   20324352   20324352
+nsh&gt; 
+nsh&gt; ls /dev
+posix_spawn: pid=0xc0202968 path=ls file_actions=0xc0202970 attr=0xc0202978 argv=0xc0202a18
+exec_internal: ERROR: Failed to load program &#39;ls&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+/dev:
+ console
+ null
+ ram0
+ ttyS0
+ zero
+nsh&gt; 
+nsh&gt; 
+</code></pre></div>
+<p>NuttX OSTest works great too!</p>
+<p>https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f</p>
+<h1 id="u-boot-commands-for-milk-v-duo-s"><a class="doc-anchor" href="#u-boot-commands-for-milk-v-duo-s">§</a>19 U-Boot Commands for Milk-V Duo S</h1>
+<p>TODO</p>
+<p>Here are the U-Boot Commands available for Milk-V Duo S…</p>
+<p>https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2</p>
+<div class="example-wrap"><pre class="language-bash"><code>cv181x_c906# help
+
+?         - alias for &#39;help&#39;
+base      - print or set address offset
+bdinfo    - print Board Info structure
+blkcache  - block cache diagnostics and control
+boot      - boot default, i.e., run &#39;bootcmd&#39;
+bootd     - boot default, i.e., run &#39;bootcmd&#39;
+bootefi   - Boots an EFI payload from memory
+bootelf   - Boot from an ELF image in memory
+booti     - boot Linux kernel &#39;Image&#39; format from memory
+bootm     - boot application image from memory
+bootp     - boot image via network using BOOTP/TFTP protocol
+bootvx    - Boot vxWorks from an ELF image
+cmp       - memory compare
+cp        - memory copy
+cpu       - display information about CPUs
+cvi_sd_boot- boot from SD card
+cvi_update- cvi_update [eth, sd, usb]- check boot status and update if necessary
+
+cvi_utask - bootloader control block command
+dcache    - enable or disable data cache
+dhcp      - boot image via network using DHCP/TFTP protocol
+echo      - echo args to console
+efuser    - Read efuse
+efuser_dump- Read/Dump efuse
+efusew    - Write efuse
+efusew_word- Write word to efuse
+env       - environment handling commands
+erase     - erase FLASH memory
+exit      - exit script
+ext2load  - load binary file from a Ext2 filesystem
+ext2ls    - list files in a directory (default /)
+ext4load  - load binary file from a Ext4 filesystem
+ext4ls    - list files in a directory (default /)
+ext4size  - determine a file&#39;s size
+false     - do nothing, unsuccessfully
+fatinfo   - print information about filesystem
+fatload   - load binary file from a dos filesystem
+fatls     - list files in a directory (default /)
+fatmkdir  - create a directory
+fatrm     - delete a file
+fatsize   - determine a file&#39;s size
+fatwrite  - write file into a dos filesystem
+fdt       - flattened device tree utility commands
+flinfo    - print FLASH memory information
+fstype    - Look up a filesystem type
+fstypes   - List supported filesystem types
+go        - start application at address &#39;addr&#39;
+help      - print command description/usage
+icache    - enable or disable instruction cache
+iminfo    - print header information for application image
+ln        - Create a symbolic link
+load      - load binary file from a filesystem
+loadb     - load binary file over serial line (kermit mode)
+loadx     - load binary file over serial line (xmodem mode)
+loady     - load binary file over serial line (ymodem mode)
+loop      - infinite loop on address range
+ls        - list files in a directory (default /)
+md        - memory display
+mdio      - MDIO utility commands
+mii       - MII utility commands
+mm        - memory modify (auto-incrementing address)
+mmc       - MMC sub system
+mmcinfo   - display MMC info
+mw        - memory write (fill)
+net       - NET sub-system
+nfs       - boot image via network using NFS protocol
+nm        - memory modify (constant address)
+panic     - Panic with optional message
+part      - disk partition related commands
+ping      - send ICMP ECHO_REQUEST to network host
+printenv  - print environment variables
+protect   - enable or disable FLASH write protection
+pxe       - commands to get and boot from pxe files
+random    - fill memory with random pattern
+reset     - Perform RESET of the CPU
+run       - run commands in an environment variable
+save      - save file to a filesystem
+saveenv   - save environment variables to persistent storage
+setenv    - set environment variables
+setexpr   - set environment variable as the result of eval expression
+showvar   - print local hushshell variables
+size      - determine a file&#39;s size
+sleep     - delay execution for some time
+source    - run script from memory
+sysboot   - command to get and boot from syslinux files
+test      - minimal test like /bin/sh
+tftpboot  - boot image via network using TFTP protocol
+true      - do nothing, successfully
+version   - print monitor, compiler and linker version
+</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>20 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
