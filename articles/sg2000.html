@@ -66,26 +66,25 @@
     <h1 class="title">Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)</h1>
     <nav id="TOC"><ul>
 <li><a href="#sophgo-sg2000-risc-v-soc">1 Sophgo SG2000 RISC-V SoC</a><ul></ul></li>
-<li><a href="#todo">2 TODO</a><ul></ul></li>
-<li><a href="#boot-milk-v-duo-s-without-microsd">3 Boot Milk-V Duo S without MicroSD</a><ul></ul></li>
-<li><a href="#boot-linux-on-milk-v-duo-s">4 Boot Linux on Milk-V Duo S</a><ul></ul></li>
-<li><a href="#boot-milk-v-duo-s-over-tftp">5 Boot Milk-V Duo S over TFTP</a><ul></ul></li>
-<li><a href="#uart-controller-for-sg2000">6 UART Controller for SG2000</a><ul></ul></li>
-<li><a href="#print-to-sg2000-uart-in-risc-v-assembly">7 Print to SG2000 UART in RISC-V Assembly</a><ul></ul></li>
-<li><a href="#build-apache-nuttx-rtos-for-milk-v-duo-s">8 Build Apache NuttX RTOS for Milk-V Duo S</a><ul></ul></li>
-<li><a href="#apache-nuttx-rtos-boots-a-tiny-bit-on-milk-v-duo-s">9 Apache NuttX RTOS boots a tiny bit on Milk-V Duo S</a><ul></ul></li>
-<li><a href="#set-the-nuttx-memory-map-for-sg2000">10 Set the NuttX Memory Map for SG2000</a><ul></ul></li>
-<li><a href="#disable-the-plic-interrupt-controller">11 Disable the PLIC Interrupt Controller</a><ul></ul></li>
-<li><a href="#select-the-nuttx-driver-for-16550-uart">12 Select the NuttX Driver for 16550 UART</a><ul></ul></li>
-<li><a href="#enable-logging-for-nuttx-scheduler-and-binary-loader">13 Enable Logging for NuttX Scheduler and Binary Loader</a><ul></ul></li>
-<li><a href="#nuttx-crash-dump-on-sg2000">14 NuttX Crash Dump on SG2000</a><ul></ul></li>
-<li><a href="#nuttx-kernel-boots-ok-on-sg2000">15 NuttX Kernel Boots OK on SG2000</a><ul></ul></li>
-<li><a href="#dump-the-sg2000-linux-device-tree">16 Dump the SG2000 Linux Device Tree</a><ul></ul></li>
-<li><a href="#interrupt-controller-for-sg2000">17 Interrupt Controller for SG2000</a><ul></ul></li>
-<li><a href="#fix-the-plic-interrupt-controller-for-sg2000">18 Fix the PLIC Interrupt Controller for SG2000</a><ul></ul></li>
-<li><a href="#nuttx-shell-runs-ok-on-sg2000">19 NuttX Shell runs OK on SG2000</a><ul></ul></li>
-<li><a href="#u-boot-commands-for-milk-v-duo-s">20 U-Boot Commands for Milk-V Duo S</a><ul></ul></li>
-<li><a href="#whats-next">21 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>22 May 2024</em></p>
+<li><a href="#boot-milk-v-duo-s-without-microsd">2 Boot Milk-V Duo S without MicroSD</a><ul></ul></li>
+<li><a href="#boot-linux-on-milk-v-duo-s">3 Boot Linux on Milk-V Duo S</a><ul></ul></li>
+<li><a href="#boot-milk-v-duo-s-over-tftp">4 Boot Milk-V Duo S over TFTP</a><ul></ul></li>
+<li><a href="#uart-controller-for-sg2000">5 UART Controller for SG2000</a><ul></ul></li>
+<li><a href="#print-to-sg2000-uart-in-risc-v-assembly">6 Print to SG2000 UART in RISC-V Assembly</a><ul></ul></li>
+<li><a href="#build-apache-nuttx-rtos-for-milk-v-duo-s">7 Build Apache NuttX RTOS for Milk-V Duo S</a><ul></ul></li>
+<li><a href="#apache-nuttx-rtos-boots-a-tiny-bit-on-milk-v-duo-s">8 Apache NuttX RTOS boots a tiny bit on Milk-V Duo S</a><ul></ul></li>
+<li><a href="#set-the-nuttx-memory-map-for-sg2000">9 Set the NuttX Memory Map for SG2000</a><ul></ul></li>
+<li><a href="#disable-the-plic-interrupt-controller">10 Disable the PLIC Interrupt Controller</a><ul></ul></li>
+<li><a href="#select-the-nuttx-driver-for-16550-uart">11 Select the NuttX Driver for 16550 UART</a><ul></ul></li>
+<li><a href="#enable-logging-for-nuttx-scheduler-and-binary-loader">12 Enable Logging for NuttX Scheduler and Binary Loader</a><ul></ul></li>
+<li><a href="#nuttx-crash-dump-on-sg2000">13 NuttX Crash Dump on SG2000</a><ul></ul></li>
+<li><a href="#nuttx-kernel-boots-ok-on-sg2000">14 NuttX Kernel Boots OK on SG2000</a><ul></ul></li>
+<li><a href="#dump-the-sg2000-linux-device-tree">15 Dump the SG2000 Linux Device Tree</a><ul></ul></li>
+<li><a href="#interrupt-controller-for-sg2000">16 Interrupt Controller for SG2000</a><ul></ul></li>
+<li><a href="#fix-the-plic-interrupt-controller-for-sg2000">17 Fix the PLIC Interrupt Controller for SG2000</a><ul></ul></li>
+<li><a href="#nuttx-shell-runs-ok-on-sg2000">18 NuttX Shell runs OK on SG2000</a><ul></ul></li>
+<li><a href="#u-boot-commands-for-milk-v-duo-s">19 U-Boot Commands for Milk-V Duo S</a><ul></ul></li>
+<li><a href="#whats-next">20 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>22 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>64-bit RISC-V Sophgo SG2000 SoC … Will it boot Apache NuttX RTOS? 🤔 (T-Head C906 / Milk-V Duo S)</p>
@@ -135,39 +134,32 @@
 <p><em>Whoa RISC-V AND Arm CPUs in a single SoC?</em></p>
 <p>Actually there’s a <strong>Hardware Switch</strong> that selects the Main CPU: <strong>RISC-V OR Arm</strong>.</p>
 <p>(Don’t let yer pet hamster flip it… It will get super frustrating!)</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>2 TODO</h1>
-<p>All Things Considered
-crash and burn out</p>
-<p>SG2000 Emulator</p>
-<p>Legacy qemu -&gt; star64 -&gt; ox64 -&gt; sg2000</p>
-<p>TODO</p>
-<h1 id="boot-milk-v-duo-s-without-microsd"><a class="doc-anchor" href="#boot-milk-v-duo-s-without-microsd">§</a>3 Boot Milk-V Duo S without MicroSD</h1>
-<p>TODO</p>
-<p>Connect our USB UART Dongle like so…</p>
-<p>https://milkv.io/docs/duo/getting-started/duos</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-board.jpg" alt="Milk-V Duo S" /></p>
-<p>USB UART Dongle must be <a href="http://sun-light.com.sg/index.php?route=product/product&amp;product_id=2367">CP2102</a>, it doesn’t like <a href="https://pine64.com/product/serial-console-woodpecker-edition/">CH340G</a> 😬</p>
-<p>Flip the switch so it’s set to “RV” (RISC-V) instead of “Arm”…</p>
+<h1 id="boot-milk-v-duo-s-without-microsd"><a class="doc-anchor" href="#boot-milk-v-duo-s-without-microsd">§</a>2 Boot Milk-V Duo S without MicroSD</h1>
+<p><em>What happens if we boot Milk-V Duo S? Fresh from the box?</em></p>
+<p>Connect our <strong>USB UART Dongle</strong> according to <a href="https://milkv.io/docs/duo/getting-started/duos#uart-serial-console"><strong>the instructions</strong></a> (pic above)…</p>
+<div><table><thead><tr><th style="text-align: center">Milk-V Duo S</th><th style="text-align: center">USB UART</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>GND</strong> (Pin 6)</td><td style="text-align: center"><strong>GND</strong></td></tr>
+<tr><td style="text-align: center"><strong>TX</strong> (Pin 8)</td><td style="text-align: center"><strong>RX</strong></td></tr>
+<tr><td style="text-align: center"><strong>RX</strong> (Pin 10)</td><td style="text-align: center"><strong>TX</strong></td></tr>
+</tbody></table>
+</div>
+<p>USB UART Dongle must be <a href="http://sun-light.com.sg/index.php?route=product/product&amp;product_id=2367"><strong>CP2102</strong></a>, it doesn’t like <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>CH340</strong></a> 😬</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-switch.jpg" alt="Switch to “RV” (RISC-V) instead of “Arm”" /></p>
-<p>Power up via the USB-C Port. We should see in RISC-V Mode…</p>
-<p><a href="https://gist.github.com/lupyuen/a7c3af98be36dcd5cc5b45f5aadc5d16">(See the <strong>Complete Log</strong>)</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>C.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000. E:bm_emmc_send_cmd_without_data CMD: 1 INT_STAT: 0x E:bm_emmc_send_cmd_without_data CMD: 0 INT_STAT: 0x E:eMMC init failed, 3
- E:eMMC initializing failed
-PS. E:bm_emmc_send_cmd_without_data CMD: 6 INT_STAT: 0x E:load param1 (-5)
- E:Boot failed (8).
- E:RESET:plat/mars/platform.c:114
-WD.C.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000. E:bm_emmc_send_cmd_without_data CMD: 1 INT_STAT: 0x E:bm_emmc_send_cmd_without_data CMD: 0 INT_STAT: 0x E:eMMC init failed, 3
- E:eMMC initializing failed
+<p>Flip the Switch so it’s set to “<strong><code>RV</code></strong>” (RISC-V) instead of “<strong><code>Arm</code></strong>”. (Pic above)</p>
+<p>Power up the board via the <strong>USB-C Port</strong>. Connect to the USB UART at <strong>115.2 kbps</strong>.</p>
+<p>Milk-V Duo S <a href="https://gist.github.com/lupyuen/a7c3af98be36dcd5cc5b45f5aadc5d16"><strong>won’t boot</strong></a> because it doesn’t ship with <strong>U-Boot Bootloader</strong> in Flash Memory…</p>
+<div class="example-wrap"><pre class="language-bash"><code>C.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000. 
+E:eMMC initializing failed
+E:Boot failed
 </code></pre></div>
-<p>If we see <code>B.SCS</code> instead of <code>C.SCS</code>…</p>
-<p><a href="https://gist.github.com/lupyuen/d55b77a51ee8b258d6d1c0799770742a">(See the <strong>Complete Log</strong>)</a></p>
+<p>We’ll need U-Boot on MicroSD. (Next section)</p>
+<p>If we see <a href="https://gist.github.com/lupyuen/d55b77a51ee8b258d6d1c0799770742a">“<strong><code>B.SCS</code></strong>”</a> instead of “<strong><code>C.SCS</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-bash"><code>B.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000.
 </code></pre></div>
-<p>Nope we’re in Arm Mode! Flip the switch back to RISC-V!</p>
-<p><a href="https://pine64.com/product/serial-console-woodpecker-edition/">If we use CH340G</a> (instead of <a href="http://sun-light.com.sg/index.php?route=product/product&amp;product_id=2367">CP2102</a>): UART Output will be garbled (happens on Linux and macOS, maybe Windows too)…</p>
-<p><a href="https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5">(See the <strong>Complete Log</strong>)</a></p>
-<p>Milk-V Duo S doesn’t ship with U-Boot Bootloader preinstalled in Flash Memory. We’ll need U-Boot on MicroSD…</p>
-<h1 id="boot-linux-on-milk-v-duo-s"><a class="doc-anchor" href="#boot-linux-on-milk-v-duo-s">§</a>4 Boot Linux on Milk-V Duo S</h1>
+<p>Nope we’re in Arm Mode… Flip the switch back to RISC-V!</p>
+<p><a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>If we use CH340</strong></a> (instead of CP2102): UART Output will be <a href="https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5"><strong>hopelessly garbled</strong></a>.</p>
+<h1 id="boot-linux-on-milk-v-duo-s"><a class="doc-anchor" href="#boot-linux-on-milk-v-duo-s">§</a>3 Boot Linux on Milk-V Duo S</h1>
 <p>TODO</p>
 <p>Let’s boot Linux on MicroSD…</p>
 <p>https://github.com/Fishwaldo/sophgo-sg200x-debian/releases</p>
@@ -360,7 +352,7 @@ eth0 : ethernet@4070000 00:00:00:00:00:00 active
 </code></pre></div>
 <p>(See below for the U-Boot Commands)</p>
 <p>Here’s another Linux Image: https://github.com/logicethos/Milk-V_Duo_Linux2SD</p>
-<h1 id="boot-milk-v-duo-s-over-tftp"><a class="doc-anchor" href="#boot-milk-v-duo-s-over-tftp">§</a>5 Boot Milk-V Duo S over TFTP</h1>
+<h1 id="boot-milk-v-duo-s-over-tftp"><a class="doc-anchor" href="#boot-milk-v-duo-s-over-tftp">§</a>4 Boot Milk-V Duo S over TFTP</h1>
 <p>We’ll port NuttX by booting over TFTP, but let’s test TFTP first. Here are the steps to boot Milk-V Duo S over TFTP…</p>
 <p>https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the U-Boot TFTP Server
@@ -485,7 +477,7 @@ $ booti ${kernel_addr_r} - ${fdt_addr_r}
 Starting kernel ...
 </code></pre></div>
 <p>NuttX Kernel hangs, but that’s OK! We haven’t modified NuttX Kernel for SG2000 yet. Let’s print something…</p>
-<h1 id="uart-controller-for-sg2000"><a class="doc-anchor" href="#uart-controller-for-sg2000">§</a>6 UART Controller for SG2000</h1>
+<h1 id="uart-controller-for-sg2000"><a class="doc-anchor" href="#uart-controller-for-sg2000">§</a>5 UART Controller for SG2000</h1>
 <p>TODO</p>
 <p>According to the <a href="https://github.com/sophgo/sophgo-doc/releases">SG2000 Reference Manual</a>, the UART Controller Base Addresses are…</p>
 <div><table><thead><tr><th>GPIO Module</th><th>Base Address</th></tr></thead><tbody>
@@ -502,7 +494,7 @@ Starting kernel ...
 <p>According to the OpenSBI Log above: The UART Controller is <code>uart8250</code>.</p>
 <p>Which is supported by NuttX yay!</p>
 <p>Let’s modify the NuttX Boot Code to write to the UART Output Register. We’ll do this in RISC-V Assembly…</p>
-<h1 id="print-to-sg2000-uart-in-risc-v-assembly"><a class="doc-anchor" href="#print-to-sg2000-uart-in-risc-v-assembly">§</a>7 Print to SG2000 UART in RISC-V Assembly</h1>
+<h1 id="print-to-sg2000-uart-in-risc-v-assembly"><a class="doc-anchor" href="#print-to-sg2000-uart-in-risc-v-assembly">§</a>6 Print to SG2000 UART in RISC-V Assembly</h1>
 <p>TODO</p>
 <p>Here’s how we print to 8250 UART in RISC-V Assembly…</p>
 <p>https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console</p>
@@ -532,7 +524,7 @@ real_start:
   sb  t1, 0(t0)
 </code></pre></div>
 <p>Which will print <code>123</code> when NuttX boots. Let’s build and test this!</p>
-<h1 id="build-apache-nuttx-rtos-for-milk-v-duo-s"><a class="doc-anchor" href="#build-apache-nuttx-rtos-for-milk-v-duo-s">§</a>8 Build Apache NuttX RTOS for Milk-V Duo S</h1>
+<h1 id="build-apache-nuttx-rtos-for-milk-v-duo-s"><a class="doc-anchor" href="#build-apache-nuttx-rtos-for-milk-v-duo-s">§</a>7 Build Apache NuttX RTOS for Milk-V Duo S</h1>
 <p>TODO</p>
 <p>Follow these steps to build (work-in-progress) Apache NuttX RTOS for SG2000 / Milk-V Duo S…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## TODO: Set PATH
@@ -651,7 +643,7 @@ scp Image tftpserver:/tftpboot/Image-sg2000
 ssh tftpserver ls -l /tftpboot/Image-sg2000
 </code></pre></div>
 <p>We have copied the NuttX Image to our TFTP Server. Let’s boot this on Milk-V Duo S…</p>
-<h1 id="apache-nuttx-rtos-boots-a-tiny-bit-on-milk-v-duo-s"><a class="doc-anchor" href="#apache-nuttx-rtos-boots-a-tiny-bit-on-milk-v-duo-s">§</a>9 Apache NuttX RTOS boots a tiny bit on Milk-V Duo S</h1>
+<h1 id="apache-nuttx-rtos-boots-a-tiny-bit-on-milk-v-duo-s"><a class="doc-anchor" href="#apache-nuttx-rtos-boots-a-tiny-bit-on-milk-v-duo-s">§</a>8 Apache NuttX RTOS boots a tiny bit on Milk-V Duo S</h1>
 <p>TODO</p>
 <p>Earlier we have…</p>
 <ul>
@@ -732,7 +724,7 @@ Starting kernel ...
 </ol>
 <p>TODO: Can we run <code>expect</code> with <code>screen</code> to automate the testing of NuttX on SG2000?</p>
 <p>TODO: If we prefer to boot NuttX with MicroSD instead of TFTP, try this <a href="https://www.tindie.com/products/badgerdnl/sdwire-usb-c-sd-card-reader-sd-mux/">MicroSD Multiplexer (USB / FTDI)</a></p>
-<h1 id="set-the-nuttx-memory-map-for-sg2000"><a class="doc-anchor" href="#set-the-nuttx-memory-map-for-sg2000">§</a>10 Set the NuttX Memory Map for SG2000</h1>
+<h1 id="set-the-nuttx-memory-map-for-sg2000"><a class="doc-anchor" href="#set-the-nuttx-memory-map-for-sg2000">§</a>9 Set the NuttX Memory Map for SG2000</h1>
 <p>TODO</p>
 <p>From the U-Boot Bootloader Config above: We see that SG2000 boots at this address…</p>
 <div class="example-wrap"><pre class="language-bash"><code>kernel_addr_r=0x80200000
@@ -772,12 +764,12 @@ CONFIG_ARCH_HEAP_NPAGES=128
 ...
 SECTIONS {
   . = 0x80200000;
-</code></pre></div><h1 id="disable-the-plic-interrupt-controller"><a class="doc-anchor" href="#disable-the-plic-interrupt-controller">§</a>11 Disable the PLIC Interrupt Controller</h1>
+</code></pre></div><h1 id="disable-the-plic-interrupt-controller"><a class="doc-anchor" href="#disable-the-plic-interrupt-controller">§</a>10 Disable the PLIC Interrupt Controller</h1>
 <p>TODO</p>
 <p>Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a Platform-Level Interrupt Controller (PLIC). For now, let’s disable PLIC in NuttX…</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b93ec4">Disable the PLIC Interrupt Controller</a></p>
 <p>Later we’ll dump the SG2000 Linux Device Tree to understand the Interrupt Controller.</p>
-<h1 id="select-the-nuttx-driver-for-16550-uart"><a class="doc-anchor" href="#select-the-nuttx-driver-for-16550-uart">§</a>12 Select the NuttX Driver for 16550 UART</h1>
+<h1 id="select-the-nuttx-driver-for-16550-uart"><a class="doc-anchor" href="#select-the-nuttx-driver-for-16550-uart">§</a>11 Select the NuttX Driver for 16550 UART</h1>
 <p>TODO</p>
 <p>From the OpenSBI Log above: We see that SG2000 operates with a 8250 UART Controller.</p>
 <p>Thus we select the NuttX Driver for 16550 UART, which is compatible with 8250…</p>
@@ -829,7 +821,7 @@ make menuconfig \
 </code></pre></div>
 <p>Thus we compute <a href="https://lupyuen.github.io/articles/plic2#uart-interrupt">NuttX IRQ</a> = 25 + RISC-V IRQ = 69</p>
 <p>TODO: Fix the UART Clock: 16550_UART0_CLOCK</p>
-<h1 id="enable-logging-for-nuttx-scheduler-and-binary-loader"><a class="doc-anchor" href="#enable-logging-for-nuttx-scheduler-and-binary-loader">§</a>13 Enable Logging for NuttX Scheduler and Binary Loader</h1>
+<h1 id="enable-logging-for-nuttx-scheduler-and-binary-loader"><a class="doc-anchor" href="#enable-logging-for-nuttx-scheduler-and-binary-loader">§</a>12 Enable Logging for NuttX Scheduler and Binary Loader</h1>
 <p>TODO</p>
 <p>For easier troubleshooting: We enable the Logging for NuttX Scheduler and Binary Loader…</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/commit/4cee79630359f6b31fc9fa40f31bb476c8bc4d47">Enable Logging for Scheduler and Binary Loader</a></p>
@@ -843,7 +835,7 @@ CONFIG_DEBUG_SCHED_INFO=y
 CONFIG_DEBUG_SCHED_WARN=y
 </code></pre></div>
 <p>Remember: Always use <code>make menuconfig</code> to update the settings!</p>
-<h1 id="nuttx-crash-dump-on-sg2000"><a class="doc-anchor" href="#nuttx-crash-dump-on-sg2000">§</a>14 NuttX Crash Dump on SG2000</h1>
+<h1 id="nuttx-crash-dump-on-sg2000"><a class="doc-anchor" href="#nuttx-crash-dump-on-sg2000">§</a>13 NuttX Crash Dump on SG2000</h1>
 <p>TODO</p>
 <p>We apply the fixes above. Now NuttX boots some more on RISC-V SG2000 SoC / Milk-V Duo S. And shows our very first NuttX Crash Dump yay!</p>
 <p><a href="https://gist.github.com/lupyuen/594f0df20d39001bac171412d594d517">(See the <strong>Complete Log</strong>)</a></p>
@@ -892,7 +884,7 @@ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_
 booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 </code></pre></div>
 <p>Which overwrites the NuttX Image in RAM. Watch what happens when we use the correct U-Boot Command…</p>
-<h1 id="nuttx-kernel-boots-ok-on-sg2000"><a class="doc-anchor" href="#nuttx-kernel-boots-ok-on-sg2000">§</a>15 NuttX Kernel Boots OK on SG2000</h1>
+<h1 id="nuttx-kernel-boots-ok-on-sg2000"><a class="doc-anchor" href="#nuttx-kernel-boots-ok-on-sg2000">§</a>14 NuttX Kernel Boots OK on SG2000</h1>
 <p>TODO</p>
 <p>Here’s the correct U-Boot Command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## This works OK for NuttX. RAM Disk Address must be `-`!
@@ -925,7 +917,7 @@ nxtask_exit: AppBringUp pid=2,TCB=0x80408740
 <p><em>But where’s the NuttX Shell?</em></p>
 <p>We won’t see the NuttX Shell until we fix the Interrupt Controller for SG2000. Which is NOT documented!</p>
 <p>Let’s sniff around and find out how it works…</p>
-<h1 id="dump-the-sg2000-linux-device-tree"><a class="doc-anchor" href="#dump-the-sg2000-linux-device-tree">§</a>16 Dump the SG2000 Linux Device Tree</h1>
+<h1 id="dump-the-sg2000-linux-device-tree"><a class="doc-anchor" href="#dump-the-sg2000-linux-device-tree">§</a>15 Dump the SG2000 Linux Device Tree</h1>
 <p>TODO</p>
 <p>Let’s dump the SG2000 Linux Device Tree to understand the Interrupt Controller.</p>
 <p>From the SG2000 Debian Release: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases</p>
@@ -938,7 +930,7 @@ dtc \
   -O dts \
   -I dtb \
   cv181x_milkv_duos_sd.dtb
-</code></pre></div><h1 id="interrupt-controller-for-sg2000"><a class="doc-anchor" href="#interrupt-controller-for-sg2000">§</a>17 Interrupt Controller for SG2000</h1>
+</code></pre></div><h1 id="interrupt-controller-for-sg2000"><a class="doc-anchor" href="#interrupt-controller-for-sg2000">§</a>16 Interrupt Controller for SG2000</h1>
 <p>TODO</p>
 <p>We dumped the SG2000 Linux Device Tree. Let’s extract the Interrupt Controller to understand it.</p>
 <p>Based on the SG2000 Device Tree: <a href="cv181x_milkv_duos_sd.dts">cv181x_milkv_duos_sd.dts</a></p>
@@ -1003,7 +995,7 @@ soc {
 };
 </code></pre></div>
 <p>We see that PLIC is at 0x7000_0000, CLINT at 0x7400_0000. Let’s implement this in NuttX…</p>
-<h1 id="fix-the-plic-interrupt-controller-for-sg2000"><a class="doc-anchor" href="#fix-the-plic-interrupt-controller-for-sg2000">§</a>18 Fix the PLIC Interrupt Controller for SG2000</h1>
+<h1 id="fix-the-plic-interrupt-controller-for-sg2000"><a class="doc-anchor" href="#fix-the-plic-interrupt-controller-for-sg2000">§</a>17 Fix the PLIC Interrupt Controller for SG2000</h1>
 <p>TODO</p>
 <p>Based on the PLIC Address from above: We fix the PLIC Interrupt Controller for SG2000…</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6">Fix the PLIC Interrupt Controller for SG2000</a></p>
@@ -1055,7 +1047,7 @@ Nuttnx_start: CPU0: Beginning Idle Loop
 };
 </code></pre></div>
 <p>Thus we compute <a href="https://lupyuen.github.io/articles/plic2#uart-interrupt">NuttX IRQ</a> = 25 + RISC-V IRQ = 69</p>
-<h1 id="nuttx-shell-runs-ok-on-sg2000"><a class="doc-anchor" href="#nuttx-shell-runs-ok-on-sg2000">§</a>19 NuttX Shell runs OK on SG2000</h1>
+<h1 id="nuttx-shell-runs-ok-on-sg2000"><a class="doc-anchor" href="#nuttx-shell-runs-ok-on-sg2000">§</a>18 NuttX Shell runs OK on SG2000</h1>
 <p>TODO</p>
 <p>After fixing the Interrupt Controller and UART Interrupt: NuttX Kernel now boots all the way to NuttX Shell yay!</p>
 <p><a href="https://gist.github.com/lupyuen/b778986ba87c18067cd993b92c673634">(See the <strong>Complete Log</strong>)</a></p>
@@ -1114,7 +1106,7 @@ nsh&gt;
 </code></pre></div>
 <p>NuttX OSTest works great too!</p>
 <p><a href="https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f">(See the <strong>Complete Log</strong>)</a></p>
-<h1 id="u-boot-commands-for-milk-v-duo-s"><a class="doc-anchor" href="#u-boot-commands-for-milk-v-duo-s">§</a>20 U-Boot Commands for Milk-V Duo S</h1>
+<h1 id="u-boot-commands-for-milk-v-duo-s"><a class="doc-anchor" href="#u-boot-commands-for-milk-v-duo-s">§</a>19 U-Boot Commands for Milk-V Duo S</h1>
 <p>TODO</p>
 <p>Here are the U-Boot Commands available for Milk-V Duo S…</p>
 <p><a href="https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2">(See the <strong>Complete Log</strong>)</a></p>
@@ -1209,8 +1201,12 @@ test      - minimal test like /bin/sh
 tftpboot  - boot image via network using TFTP protocol
 true      - do nothing, successfully
 version   - print monitor, compiler and linker version
-</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>21 What’s Next</h1>
+</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>20 What’s Next</h1>
 <p>TODO</p>
+<p>All Things Considered
+crash and burn out</p>
+<p>SG2000 Emulator</p>
+<p>Legacy qemu -&gt; star64 -&gt; ox64 -&gt; sg2000</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
