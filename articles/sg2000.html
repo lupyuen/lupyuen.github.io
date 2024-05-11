@@ -160,17 +160,28 @@ E:Boot failed
 <p>Nope we’re in Arm Mode… Flip the switch back to RISC-V!</p>
 <p><a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>If we use CH340</strong></a> (instead of CP2102): UART Output will be <a href="https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5"><strong>hopelessly garbled</strong></a>.</p>
 <h1 id="boot-linux-on-milk-v-duo-s"><a class="doc-anchor" href="#boot-linux-on-milk-v-duo-s">§</a>3 Boot Linux on Milk-V Duo S</h1>
-<p>TODO</p>
-<p>Let’s boot Linux on MicroSD…</p>
-<p>https://github.com/Fishwaldo/sophgo-sg200x-debian/releases</p>
-<p>We pick the Latest Release for Milk-V Duo S…</p>
-<p><a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4">duos_sd.img.lz4</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>$ brew install lz4
-$ lz4 ~/Downloads/duos_sd.img.lz4
-## TODO: Write duos_sd.img to MicroSD with Balena Etcher
+<p><em>Milk-V Duo S won’t boot without MicroSD. How now?</em></p>
+<p>Let’s boot <strong>Linux on MicroSD</strong>, thanks to the awesome work by <a href="https://github.com/Fishwaldo"><strong>Justin Hammond</strong></a> (Fishwaldo)…</p>
+<ul>
+<li><a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases"><strong>Debian Images for Sophgo SG2000</strong></a></li>
+</ul>
+<p>We download the Latest Release for <strong>Milk-V Duo S</strong> (SG2000)…</p>
+<ul>
+<li><a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4"><strong>duos_sd.img.lz4</strong></a></li>
+</ul>
+<div class="example-wrap"><pre class="language-bash"><code>## For Linux
+$ sudo apt install lz4
 
-→ ls -l /Volumes/boot
-total 17488
+## For macOS
+$ brew install lz4
+
+## Uncompress the download to get `duos_sd.img`
+$ lz4 duos_sd.img.lz4
+
+## TODO: Write `duos_sd.img` to MicroSD with Balena Etcher
+
+## Here are the MicroSD Files
+$ ls -l /Volumes/boot
 -rwxrwxrwx  1 Luppy  staff  3494900 Apr 24 11:33 System.map-5.10.4-20240329-1+
 -rwxrwxrwx  1 Luppy  staff   125534 Apr 24 11:33 config-5.10.4-20240329-1+
 drwxrwxrwx  1 Luppy  staff     2048 Apr 24 11:33 extlinux
@@ -178,20 +189,16 @@ drwxrwxrwx  1 Luppy  staff     2048 Apr 24 11:33 fdt
 -rwxrwxrwx  1 Luppy  staff   388608 Apr 24 11:33 fip.bin
 -rwxrwxrwx  1 Luppy  staff  4937389 Apr 24 11:33 vmlinuz-5.10.4-20240329-1+
 
-→ ls -l /Volumes/boot/extlinux
-total 4
+## U-Boot Bootloader Configuration
+$ ls -l /Volumes/boot/extlinux
 -rwxrwxrwx  1 Luppy  staff  749 Apr 24 11:33 extlinux.conf
 
-→ ls -l /Volumes/boot/fdt
-total 4
-drwxrwxrwx  1 Luppy  staff  2048 Apr 24 11:33 linux-image-duos-5.10.4-20240329-1+
-
-→ ls -l /Volumes/boot/fdt/linux-image-duos-5.10.4-20240329-1+
-total 44
+## Linux Device Tree for SG2000
+$ ls -l /Volumes/boot/fdt/linux-image-duos-5.10.4-20240329-1+
 -rwxrwxrwx  1 Luppy  staff  21575 Apr 24 11:33 cv181x_milkv_duos_sd.dtb
 </code></pre></div>
-<p>Here’s the Boot Config…</p>
-<div class="example-wrap"><pre class="language-bash"><code>→ cat /Volumes/boot/extlinux/extlinux.conf
+<p>We peek at the <strong>U-Boot Bootloader Config</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ cat /Volumes/boot/extlinux/extlinux.conf
 ## /boot/extlinux/extlinux.conf
 ##
 ## IMPORTANT WARNING
@@ -220,6 +227,7 @@ label l0r
   fdtdir /fdt/linux-image-duos-5.10.4-20240329-1+/
   append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw single
 </code></pre></div>
+<p>TODO</p>
 <p>Yep Linux boots OK on Milk-V Duo S! (Together with OpenSBI and U-Boot Bootloader)</p>
 <p><a href="https://gist.github.com/lupyuen/01d409b7bde9607a96cd4d460e53330a">(See the <strong>Complete Log</strong>)</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>OpenSBI v0.9
