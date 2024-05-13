@@ -337,8 +337,7 @@ active
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp"><strong>“Configure U-Boot for TFTP”</strong></a></li>
 </ul>
-<p>TODO</p>
-<p>We’ll port NuttX by booting over TFTP, but let’s test TFTP first. Here are the steps to boot Milk-V Duo S over TFTP…</p>
+<p>At the <strong>U-Boot Command Prompt</strong>: We configure our <strong>TFTP Server</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the U-Boot TFTP Server
 ## TODO: Change to your TFTP Server
 setenv tftp_server 192.168.31.10
@@ -350,7 +349,7 @@ setenv tftp_server 192.168.31.10
 ## Save the U-Boot Config for future reboots
 saveenv
 </code></pre></div>
-<p>We load the NuttX Image over TFTP…</p>
+<p>Then we load the <strong>NuttX Image</strong> into RAM over TFTP…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Fetch the IP Address over DHCP
 ## Load the NuttX Image from TFTP Server
 ## kernel_addr_r=0x80200000
@@ -371,8 +370,9 @@ fdt addr ${fdt_addr_r}
 ## Load the Intial RAM Disk from TFTP Server
 ## ramdisk_addr_r=0x81600000
 ## tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
-
-## Boot the NuttX Image with the Device Tree
+</code></pre></div>
+<p>And we boot <strong>NuttX from RAM</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Boot the NuttX Image with the Device Tree
 ## kernel_addr_r=0x80200000
 ## fdt_addr_r=0x81200000
 ## TODO: Fix the Device Tree, it&#39;s not needed by NuttX
@@ -383,15 +383,25 @@ booti ${kernel_addr_r} - ${fdt_addr_r}
 ## ramdisk_size=0x1000000
 ## booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 </code></pre></div>
-<p>Which becomes this, mashed up in a single line…</p>
+<p>Or mashed up in a single line…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX Image over TFTP
 dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
 </code></pre></div>
-<p>Now we automate the TFTP Booting for future reboots…</p>
+<p><em>What happens when we boot NuttX?</em></p>
+<p>Absolutely nothing!</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ booti ${kernel_addr_r} - ${fdt_addr_r}
+   Booting using the fdt blob at 0x81200000
+   Loading Ramdisk to 9e27f000, end 9f27f000 ... OK
+   Loading Device Tree to 000000009e26f000, end 000000009e27e43a ... OK
+
+Starting kernel ...
+</code></pre></div>
+<p>But that’s OK, we haven’t modified NuttX Kernel for SG2000. Let’s print something in the next section.</p>
+<p><em>We type these U-Boot Commands EVERY TIME we boot?</em></p>
+<p>We can automate this! Just do this once, and <strong>NuttX will Auto-Boot</strong> whenever we power up…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Add the Boot Command for TFTP
 setenv bootcmd_tftp &#39;dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}&#39;
-## Check that it&#39;s correct
-printenv bootcmd_tftp
+
 ## Save it for future reboots
 saveenv
 
@@ -400,67 +410,13 @@ run bootcmd_tftp
 
 ## Remember the Original Boot Targets
 setenv orig_boot_targets &quot;$boot_targets&quot;
-## Should show `mmc0 dhcp pxe`
-printenv orig_boot_targets
-## Save it for future reboots
-saveenv
 
 ## Prepend TFTP to the Boot Targets
 setenv boot_targets &quot;tftp $boot_targets&quot;
-## Should show `tftp mmc0 dhcp pxe`
-printenv boot_targets
+
 ## Save it for future reboots
 saveenv
-</code></pre></div>
-<p><em>What happens when we run it at the U-Boot Command Prompt?</em></p>
-<p>This happens…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ setenv tftp_server 192.168.31.10
-$ printenv tftp_server
-tftp_server=192.168.31.10
-
-$ setenv ramdisk_size 0x1000000
-$ printenv ramdisk_size
-ramdisk_size=0x1000000
-
-$ dhcp ${kernel_addr_r} ${tftp_server}:Image
-Speed: 100, full duplex
-BOOTP broadcast 1
-BOOTP broadcast 2
-*** Unhandled DHCP Option in OFFER/ACK: 43
-*** Unhandled DHCP Option in OFFER/ACK: 43
-DHCP client bound to address 192.168.31.47 (550 ms)
-Using ethernet@4070000 device
-TFTP from server 192.168.31.10; our IP address is 192.168.31.47
-Filename &#39;Image&#39;.
-Load address: 0x80200000
-Loading: #################################################################
-. 1.2 MiB/s
-done
-Bytes transferred = 2097800 (200288 hex)
-
-$ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
-Speed: 100, full duplex
-Using ethernet@4070000 device
-TFTP from server 192.168.31.10; our IP address is 192.168.31.47
-Filename &#39;jh7110-star64-pine64.dtb&#39;.
-Load address: 0x81200000
-Loading: ####
-. 1.1 MiB/s
-done
-Bytes transferred = 50235 (c43b hex)
-
-$ fdt addr ${fdt_addr_r}
-
-$ booti ${kernel_addr_r} - ${fdt_addr_r}
-## Flattened Device Tree blob at 81200000
-   Booting using the fdt blob at 0x81200000
-   Loading Ramdisk to 9e27f000, end 9f27f000 ... OK
-   Loading Device Tree to 000000009e26f000, end 000000009e27e43a ... OK
-
-Starting kernel ...
-</code></pre></div>
-<p>NuttX Kernel hangs, but that’s OK! We haven’t modified NuttX Kernel for SG2000 yet. Let’s print something…</p>
-<h1 id="uart-controller-for-sg2000"><a class="doc-anchor" href="#uart-controller-for-sg2000">§</a>7 UART Controller for SG2000</h1>
+</code></pre></div><h1 id="uart-controller-for-sg2000"><a class="doc-anchor" href="#uart-controller-for-sg2000">§</a>7 UART Controller for SG2000</h1>
 <p>TODO</p>
 <p>According to the <a href="https://github.com/sophgo/sophgo-doc/releases">SG2000 Reference Manual</a>, the UART Controller Base Addresses are…</p>
 <div><table><thead><tr><th>GPIO Module</th><th>Base Address</th></tr></thead><tbody>
