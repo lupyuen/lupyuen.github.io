@@ -79,11 +79,11 @@
 <li><a href="#select-the-nuttx-driver-for-16550-uart">12 Select the NuttX Driver for 16550 UART</a><ul></ul></li>
 <li><a href="#enable-logging-for-nuttx-scheduler-and-binary-loader">13 Enable Logging for NuttX Scheduler and Binary Loader</a><ul></ul></li>
 <li><a href="#nuttx-crash-dump-on-sg2000">14 NuttX Crash Dump on SG2000</a><ul></ul></li>
-<li><a href="#nuttx-kernel-boots-ok-on-sg2000">15 NuttX Kernel Boots OK on SG2000</a><ul></ul></li>
+<li><a href="#nuttx-kernel-boots-ok">15 NuttX Kernel Boots OK</a><ul></ul></li>
 <li><a href="#dump-the-sg2000-linux-device-tree">16 Dump the SG2000 Linux Device Tree</a><ul></ul></li>
 <li><a href="#interrupt-controller-for-sg2000">17 Interrupt Controller for SG2000</a><ul></ul></li>
 <li><a href="#fix-the-plic-interrupt-controller-for-sg2000">18 Fix the PLIC Interrupt Controller for SG2000</a><ul></ul></li>
-<li><a href="#nuttx-shell-runs-ok-on-sg2000">19 NuttX Shell runs OK on SG2000</a><ul></ul></li>
+<li><a href="#nuttx-shell-runs-ok-on-sg2000">19 NuttX Shell runs OK on SG2000!</a><ul></ul></li>
 <li><a href="#u-boot-commands-for-milk-v-duo-s">20 U-Boot Commands for Milk-V Duo S</a><ul></ul></li>
 <li><a href="#whats-next">21 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-sg2000">22 Appendix: Build NuttX for SG2000</a><ul></ul></li></ul></nav><p>📝 <em>22 May 2024</em></p>
@@ -673,8 +673,26 @@ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_
 booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 </code></pre></div>
 <p>Which overwrites the NuttX Image in RAM. Watch what happens when we use the correct U-Boot Command…</p>
-<h1 id="nuttx-kernel-boots-ok-on-sg2000"><a class="doc-anchor" href="#nuttx-kernel-boots-ok-on-sg2000">§</a>15 NuttX Kernel Boots OK on SG2000</h1>
+<h1 id="nuttx-kernel-boots-ok"><a class="doc-anchor" href="#nuttx-kernel-boots-ok">§</a>15 NuttX Kernel Boots OK</h1>
+<p><em>NuttX Kernel prints “123”. What about the rest?</em></p>
 <p>TODO</p>
+<ul>
+<li>
+<p>Set the NuttX Memory Map for SG2000</p>
+</li>
+<li>
+<p>Disable the PLIC Interrupt Controller</p>
+</li>
+<li>
+<p>Select the NuttX Driver for 16550 UART</p>
+</li>
+<li>
+<p>Enable Logging for NuttX Scheduler and Binary Loader</p>
+</li>
+<li>
+<p>NuttX Crash Dump on SG2000</p>
+</li>
+</ul>
 <p>Here’s the correct U-Boot Command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## This works OK for NuttX. RAM Disk Address must be `-`!
 setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ;
@@ -836,8 +854,19 @@ Nuttnx_start: CPU0: Beginning Idle Loop
 };
 </code></pre></div>
 <p>Thus we compute <a href="https://lupyuen.github.io/articles/plic2#uart-interrupt">NuttX IRQ</a> = 25 + RISC-V IRQ = 69</p>
-<h1 id="nuttx-shell-runs-ok-on-sg2000"><a class="doc-anchor" href="#nuttx-shell-runs-ok-on-sg2000">§</a>19 NuttX Shell runs OK on SG2000</h1>
+<h1 id="nuttx-shell-runs-ok-on-sg2000"><a class="doc-anchor" href="#nuttx-shell-runs-ok-on-sg2000">§</a>19 NuttX Shell runs OK on SG2000!</h1>
 <p>TODO</p>
+<ul>
+<li>
+<p>Dump the SG2000 Linux Device Tree</p>
+</li>
+<li>
+<p>Interrupt Controller for SG2000</p>
+</li>
+<li>
+<p>Fix the PLIC Interrupt Controller for SG2000</p>
+</li>
+</ul>
 <p>After fixing the Interrupt Controller and UART Interrupt: NuttX Kernel now boots all the way to NuttX Shell yay!</p>
 <p><a href="https://gist.github.com/lupyuen/b778986ba87c18067cd993b92c673634">(See the <strong>Complete Log</strong>)</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>Starting kernel ...
