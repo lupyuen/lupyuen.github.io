@@ -69,7 +69,7 @@
 <li><a href="#boot-without-microsd">2 Boot Without MicroSD</a><ul></ul></li>
 <li><a href="#download-the-linux-microsd">3 Download the Linux MicroSD</a><ul></ul></li>
 <li><a href="#boot-the-linux-microsd">4 Boot the Linux MicroSD</a><ul></ul></li>
-<li><a href="#u-boot-bootloader-settings">5 U-Boot Bootloader Settings</a><ul></ul></li>
+<li><a href="#settings-for-u-boot-bootloader">5 Settings for U-Boot Bootloader</a><ul></ul></li>
 <li><a href="#boot-milk-v-duo-s-over-tftp">6 Boot Milk-V Duo S over TFTP</a><ul></ul></li>
 <li><a href="#uart-controller-for-sg2000">7 UART Controller for SG2000</a><ul></ul></li>
 <li><a href="#print-to-sg2000-uart-in-risc-v-assembly">8 Print to SG2000 UART in RISC-V Assembly</a><ul></ul></li>
@@ -230,59 +230,34 @@ label l0r
   append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw single
 </code></pre></div>
 <p>(With a minor tweak, we can boot NuttX RTOS!)</p>
+<p>TODO: Pic of OpenSBI</p>
 <h1 id="boot-the-linux-microsd"><a class="doc-anchor" href="#boot-the-linux-microsd">§</a>4 Boot the Linux MicroSD</h1>
 <p><em>Linux on MicroSD: Does it boot on Milk-V Duo S?</em></p>
 <p>Yep Linux boots OK on Milk-V Duo S!</p>
-<p>First we see <a href="TOD"><strong>OpenSBI (Supervisor Binary Interface)</strong></a>…</p>
+<p>First we see <a href="TODO"><strong>OpenSBI (Supervisor Binary Interface)</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>OpenSBI v0.9
-   ____                    _____ ____ _____
-  / __ \                  / ____|  _ \_   _|
- | |  | |_ __   ___ _ __ | (___ | |_) || |
- | |  | | &#39;_ \ / _ \ &#39;_ \ \___ \|  _ &lt; | |
- | |__| | |_) |  __/ | | |____) | |_) || |_
-  \____/| .__/ \___|_| |_|_____/|____/_____|
-        | |
-        |_|
-
 Platform Name             : Milk-V DuoS
 Platform Features         : mfdeleg
 Platform HART Count       : 1
-Platform IPI Device       : clint
-Platform Timer Device     : clint
 Platform Console Device   : uart8250
-Platform HSM Device       : ---
-Platform SysReset Device  : ---
 Firmware Base             : 0x80000000
 Firmware Size             : 132 KB
 Runtime SBI Version       : 0.3
 
-Domain0 Name              : root
-Domain0 Boot HART         : 0
-Domain0 HARTs             : 0*
 Domain0 Region00          : 0x0000000074000000-0x000000007400ffff (I)
 Domain0 Region01          : 0x0000000080000000-0x000000008003ffff ()
 Domain0 Region02          : 0x0000000000000000-0xffffffffffffffff (R,W,X)
-Domain0 Next Address      : 0x0000000080200020
-Domain0 Next Arg1         : 0x0000000080080000
-Domain0 Next Mode         : S-mode
-Domain0 SysReset          : yes
-
-Boot HART ID              : 0
-Boot HART Domain          : root
 Boot HART ISA             : rv64imafdcvsux
 Boot HART Features        : scounteren,mcounteren,time
-Boot HART PMP Count       : 16
-Boot HART PMP Granularity : 4096
-Boot HART PMP Address Bits: 38
-Boot HART MHPM Count      : 8
-Boot HART MHPM Count      : 8
 Boot HART MIDELEG         : 0x0000000000000222
 Boot HART MEDELEG         : 0x000000000000b109
+
+## OpenSBI boots at 0x8000_0000.
+## 0x7400_0000 looks interesting! We&#39;ll come back to this
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/01d409b7bde9607a96cd4d460e53330a">(See the <strong>Complete Log</strong>)</a></p>
 <p>Followed by the <strong>U-Boot Bootloader</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>U-Boot 2021.10-ga57aa1f2-dirty (Apr 24 2024 - 11:24:46 +0000) cvitek_cv181x
-
 DRAM:  510 MiB
 gd-&gt;relocaddr=0x9fbc7000. offset=0x1f9c7000
 set_rtc_register_for_power
@@ -325,7 +300,7 @@ Debian GNU/Linux trixie/sid duos ttyS0
 duos login: 
 </code></pre></div>
 <p>TODO</p>
-<h1 id="u-boot-bootloader-settings"><a class="doc-anchor" href="#u-boot-bootloader-settings">§</a>5 U-Boot Bootloader Settings</h1>
+<h1 id="settings-for-u-boot-bootloader"><a class="doc-anchor" href="#settings-for-u-boot-bootloader">§</a>5 Settings for U-Boot Bootloader</h1>
 <p>TODO</p>
 <p>Let’s dump the U-Boot Config…</p>
 <p><a href="https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2">(See the <strong>Complete Log</strong>)</a></p>
