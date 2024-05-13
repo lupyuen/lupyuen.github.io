@@ -244,18 +244,16 @@ Found /extlinux/extlinux.conf
 ## U-Boot Menu
 1:.Debian GNU/Linux trixie/sid 5.10.4-20240329-1+
 2:.Debian GNU/Linux trixie/sid 5.10.4-20240329-1+ (rescue target)
-Enter choice: 1:.Debian GNU/Linux trixie/sid 5.10.4-20240329-1+
+Enter choice: 1
 
 ## U-Boot boots Debian Linux
 Retrieving file: /vmlinuz-5.10.4-20240329-1+
-append: root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw
 Retrieving file: /fdt/linux-image-duos-5.10.4-20240329-1+/cv181x_milkv_duos_sd.dtb
 Booting using the fdt blob at 0x81200000
-Loading Device Tree to 000000009f275000, end 000000009f27d446 ... OK
 </code></pre></div>
 <p>Finally we see <strong>Debian Linux</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Starting kernel ...
-Linux version 5.10.4-20240329-1+ (root@3abcc283c6ba) (riscv64-unknown-linux-musl-gcc (Xuantie-900 linux-5.10.4 musl gcc Toolchain V2.6.1 B-20220906) 10.2.0, GNU ld (GNU Binutils) 2.35) #1 PREEMPT Wed Apr 24 11:26:16 UTC 2024
+Linux version 5.10.4-20240329-1+ (root@3abcc283c6ba) (riscv64-unknown-linux-musl-gcc (Xuantie-900 linux-5.10.4 musl gcc Toolchain V2.6.1 B-20220906) 10.2.0, GNU ld (GNU Binutils) 2.35)
 ...
 Debian GNU/Linux trixie/sid duos ttyS0
 duos login: 
@@ -377,18 +375,19 @@ setenv boot_targets &quot;tftp $boot_targets&quot;
 ## Save it for future reboots
 saveenv
 </code></pre></div><h1 id="uart-controller-for-sg2000"><a class="doc-anchor" href="#uart-controller-for-sg2000">§</a>7 UART Controller for SG2000</h1>
-<p><em>How will NuttX print something to the Serial Console?</em></p>
-<p>According to the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>SG2000 Reference Manual</strong></a>: The <strong>UART Controller</strong> is at these Base Addresses…</p>
-<div><table><thead><tr><th>GPIO Module</th><th>Base Address</th></tr></thead><tbody>
-<tr><td>UART0</td><td>0x04140000</td></tr>
-<tr><td>UART1</td><td>0x04150000</td></tr>
-<tr><td>UART2</td><td>0x04160000</td></tr>
-<tr><td>UART3</td><td>0x04170000</td></tr>
-<tr><td>UART4</td><td>0x041C0000</td></tr>
-<tr><td>RTCSYS_UART</td><td>0x05022000</td></tr>
+<p><em>How will NuttX print to the Serial Console?</em></p>
+<p>First we track down the <strong>UART Controller</strong> for SG2000.</p>
+<p>From <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>SG2000 Reference Manual</strong></a> (Page TODO): The UART Controller is at these Base Addresses…</p>
+<div><table><thead><tr><th style="text-align: center">UART Module</th><th style="text-align: center">Base Address</th></tr></thead><tbody>
+<tr><td style="text-align: center">UART0</td><td style="text-align: center"><code>0x0414_0000</code></td></tr>
+<tr><td style="text-align: center">UART1</td><td style="text-align: center"><code>0x0415_0000</code></td></tr>
+<tr><td style="text-align: center">UART2</td><td style="text-align: center"><code>0x0416_0000</code></td></tr>
+<tr><td style="text-align: center">UART3</td><td style="text-align: center"><code>0x0417_0000</code></td></tr>
+<tr><td style="text-align: center">UART4</td><td style="text-align: center"><code>0x041C_0000</code></td></tr>
+<tr><td style="text-align: center">RTCSYS_UART</td><td style="text-align: center"><code>0x0502_2000</code></td></tr>
 </tbody></table>
 </div>
-<p>We’ll print to UART0 in NuttX.</p>
+<p>We’ll print to UART0 in NuttX: <code>0x0414_0000</code></p>
 <p><em>What UART Controller is inside SG2000?</em></p>
 <p>According to <a href="TODO"><strong>OpenSBI Log</strong></a>: The UART Controller is <strong><code>uart8250</code></strong>.</p>
 <p>Which is supported by NuttX yay! We mod the NuttX Boot Code to print something…</p>
@@ -431,87 +430,19 @@ real_start:
 ## TODO: Change `tftpserver` and `tftpboot` to our TFTP Server and Path
 scp Image tftpserver:/tftpboot/Image-sg2000
 </code></pre></div>
-<p>We have copied the NuttX Image to our TFTP Server. Let’s boot this on Milk-V Duo S…</p>
-<p>TODO</p>
-<p>Earlier we have…</p>
-<ul>
-<li>
-<p>Inserted the RISC-V Boot Code to print <code>123</code> (at NuttX Startup)</p>
-</li>
-<li>
-<p>Compiled Apache NuttX RTOS for Milk-V Duo S</p>
-</li>
-<li>
-<p>Copied the NuttX Image to our TFTP Server</p>
-</li>
-</ul>
-<p>Let’s boot NuttX over TFTP, with a little help from U-Boot Bootloader! Run these commands at the U-Boot Command Prompt…</p>
-<p><a href="https://gist.github.com/lupyuen/78b54326daf0894a2c23ab6d2c03456d">(See the <strong>Complete Log</strong>)</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Change to your TFTP Server IP Address
-$ setenv tftp_server 192.168.31.10
-
-## Download NuttX Image from TFTP Server
+<p>To boot NuttX: We run these commands at the <strong>U-Boot Command Prompt</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image into RAM
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
-Speed: 100, full duplex
-BOOTP broadcast 1
-BOOTP broadcast 2
-*** Unhandled DHCP Option in OFFER/ACK: 43
-*** Unhandled DHCP Option in OFFER/ACK: 43
-DHCP client bound to address 192.168.31.243 (424 ms)
-Using ethernet@4070000 device
-TFTP from server 192.168.31.10; our IP address is 192.168.31.243
-Filename &#39;Image-sg2000&#39;.
-Load address: 0x80200000
-Loading: #################################################################
-. 1.2 MiB/s
-done
-Bytes transferred = 14195281 (d89a51 hex)
 
-## TODO: NuttX doesn&#39;t need the Device Tree. Remove this.
-$ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
-Speed: 100, full duplex
-Using ethernet@4070000 device
-TFTP from server 192.168.31.10; our IP address is 192.168.31.243
-Filename &#39;jh7110-star64-pine64.dtb&#39;.
-Load address: 0x81200000
-Loading: ####
-. 1.2 MiB/s
-done
-Bytes transferred = 50235 (c43b hex)
-
-## TODO: NuttX doesn&#39;t need the Device Tree. Remove this.
-$ fdt addr ${fdt_addr_r}
-
-## Boot NuttX from RAM. RAM Disk Address must be `-`!
+## Boot NuttX from RAM
 $ booti ${kernel_addr_r} - ${fdt_addr_r}
-
-## For Linux: We need the RAM Disk Address
-## booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
-</code></pre></div>
-<p>NuttX boots a tiny bit, and prints <code>123</code> yay!</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX from RAM
-$ booti ${kernel_addr_r} - ${fdt_addr_r}
-
-## Flattened Device Tree blob at 81200000
-Booting using the fdt blob at 0x81200000
-Loading Ramdisk to 9fe00000, end 9fe00000 ... OK
-Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
 
 Starting kernel ...
 123
 </code></pre></div>
-<p>Our NuttX Boot Code is actually running on SG2000 / Milk-V Duo S!</p>
-<p>Coming up…</p>
-<ol>
-<li>
-<p>Fix the Boot Address of NuttX, so the rest of NuttX can start</p>
-</li>
-<li>
-<p>Configure the 16550 UART Driver for NuttX, so can see the Console Output</p>
-</li>
-</ol>
-<p>TODO: Can we run <code>expect</code> with <code>screen</code> to automate the testing of NuttX on SG2000?</p>
-<p>TODO: If we prefer to boot NuttX with MicroSD instead of TFTP, try this <a href="https://www.tindie.com/products/badgerdnl/sdwire-usb-c-sd-card-reader-sd-mux/">MicroSD Multiplexer (USB / FTDI)</a></p>
+<p>NuttX boots a tiny bit, and prints “<strong><code>123</code></strong>” yay!</p>
+<p>Our NuttX Boot Code is actually running on SG2000 and Milk-V Duo S!</p>
+<p><a href="https://gist.github.com/lupyuen/78b54326daf0894a2c23ab6d2c03456d">(See the <strong>Complete Log</strong>)</a></p>
 <p>TODO: Pic of NuttX Kernel</p>
 <h1 id="nuttx-kernel-boots-ok"><a class="doc-anchor" href="#nuttx-kernel-boots-ok">§</a>10 NuttX Kernel Boots OK</h1>
 <p><em>NuttX Kernel prints “123”. What about the rest?</em></p>
