@@ -417,8 +417,8 @@ setenv boot_targets &quot;tftp $boot_targets&quot;
 ## Save it for future reboots
 saveenv
 </code></pre></div><h1 id="uart-controller-for-sg2000"><a class="doc-anchor" href="#uart-controller-for-sg2000">§</a>7 UART Controller for SG2000</h1>
-<p>TODO</p>
-<p>According to the <a href="https://github.com/sophgo/sophgo-doc/releases">SG2000 Reference Manual</a>, the UART Controller Base Addresses are…</p>
+<p><em>How will NuttX print something to the Serial Console?</em></p>
+<p>According to the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>SG2000 Reference Manual</strong></a>: The <strong>UART Controller</strong> is at these Base Addresses…</p>
 <div><table><thead><tr><th>GPIO Module</th><th>Base Address</th></tr></thead><tbody>
 <tr><td>UART0</td><td>0x04140000</td></tr>
 <tr><td>UART1</td><td>0x04150000</td></tr>
@@ -430,10 +430,10 @@ saveenv
 </div>
 <p>We’ll print to UART0 in NuttX.</p>
 <p><em>What UART Controller is inside SG2000 / Milk-V Duo S?</em></p>
-<p>According to the OpenSBI Log above: The UART Controller is <code>uart8250</code>.</p>
-<p>Which is supported by NuttX yay!</p>
-<p>Let’s modify the NuttX Boot Code to write to the UART Output Register. We’ll do this in RISC-V Assembly…</p>
+<p>According to the OpenSBI Log above: The UART Controller is <strong><code>uart8250</code></strong>.</p>
+<p>Which is supported by NuttX yay! We mod the NuttX Boot Code to print something…</p>
 <h1 id="print-to-sg2000-uart-in-risc-v-assembly"><a class="doc-anchor" href="#print-to-sg2000-uart-in-risc-v-assembly">§</a>8 Print to SG2000 UART in RISC-V Assembly</h1>
+<p><em>We printing in RISC-V Assembly? Why not C?</em></p>
 <p>TODO</p>
 <p>Here’s how we print to 8250 UART in RISC-V Assembly…</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console"><strong>“Print to QEMU Console”</strong></a></p>
