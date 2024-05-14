@@ -560,59 +560,26 @@ dtc \
 <p>After fixing the Interrupt Controller and UART Interrupt: NuttX Kernel now boots all the way to NuttX Shell yay!</p>
 <p><a href="https://gist.github.com/lupyuen/b778986ba87c18067cd993b92c673634">(See the <strong>Complete Log</strong>)</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>Starting kernel ...
-
-123ABCnx_start: Entry
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nxtask_activate: lpwork pid=1,TCB=0x80409130
-nxtask_activate: AppBringUp pid=2,TCB=0x80409740
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-nxtask_activate: /system/bin/init pid=3,TCB=0x8040b730
-nxtask_exit: AppBringUp pid=2,TCB=0x80409740
-
 NuttShell (NSH) NuttX-12.4.0
-nsh&gt; nx_start: CPU0: Beginning Idle Loop
-ls
-posix_spawn: pid=0xc0202968 path=ls file_actions=0xc0202970 attr=0xc0202978 argv=0xc0202a18
-exec_internal: ERROR: Failed to load program &#39;ls&#39;: -2
-nxposix_spawn_exec: ERROR: exec failed: 2
+
+nsh&gt; uname -a
+NuttX 12.4.0 122c717 May  8 2024 18:13:30 risc-v ox64
+
+nsh&gt; ls
 /:
  dev/
  proc/
  system/
-nsh&gt; 
-nsh&gt; uname -a
-posix_spawn: pid=0xc0202968 path=uname file_actions=0xc0202970 attr=0xc0202978 argv=0xc0202a18
-exec_internal: ERROR: Failed to load program &#39;uname&#39;: -2
-nxposix_spawn_exec: ERROR: exec failed: 2
-NuttX 12.4.0 122c717 May  8 2024 18:13:30 risc-v ox64
-nsh&gt; 
-nsh&gt; free
-posix_spawn: pid=0xc0202968 path=free file_actions=0xc0202970 attr=0xc0202978 argv=0xc0202a18
-exec_internal: ERROR: Failed to load program &#39;free&#39;: -2
-nxposix_spawn_exec: ERROR: exec failed: 2
-                 total       used       free    maxused    maxfree  nused  nfree
-      Kmem:    2065400      14296    2051104      76632    2049392     36      3
-      Page:   20971520     647168   20324352   20324352
-nsh&gt; 
+
 nsh&gt; ls /dev
-posix_spawn: pid=0xc0202968 path=ls file_actions=0xc0202970 attr=0xc0202978 argv=0xc0202a18
-exec_internal: ERROR: Failed to load program &#39;ls&#39;: -2
-nxposix_spawn_exec: ERROR: exec failed: 2
 /dev:
  console
  null
  ram0
  ttyS0
  zero
-nsh&gt; 
-nsh&gt; 
 </code></pre></div>
-<p>NuttX OSTest works great too!</p>
+<p>TODO: NuttX OSTest works great too!</p>
 <p><a href="https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f">(See the <strong>Complete Log</strong>)</a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
 <p>TODO</p>
@@ -776,14 +743,15 @@ ssh tftpserver ls -l /tftpboot/Image-sg2000
 <h1 id="appendix-port-nuttx-to-sg2000"><a class="doc-anchor" href="#appendix-port-nuttx-to-sg2000">§</a>14 Appendix: Port NuttX to SG2000</h1>
 <p>TODO</p>
 <h2 id="set-the-nuttx-memory-map-for-sg2000"><a class="doc-anchor" href="#set-the-nuttx-memory-map-for-sg2000">§</a>14.1 Set the NuttX Memory Map for SG2000</h2>
-<p>TODO</p>
-<p>From the U-Boot Bootloader Config above: We see that SG2000 boots at this address…</p>
+<p>From <a href="TODO"><strong>U-Boot Bootloader Settings</strong></a>: We see that SG2000 boots at this address…</p>
 <div class="example-wrap"><pre class="language-bash"><code>kernel_addr_r=0x80200000
 </code></pre></div>
-<p>Thus we define the NuttX Memory Map for SG2000 like so…</p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2">Set the NuttX Memory Map for SG2000</a></p>
-<p>NuttX Kernel will boot at 0x8020_0000, NuttX Apps will run at Virtual Address 0xC000_0000.</p>
-<p>Here’s the NuttX Config: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078">boards/risc-v/bl808/ox64/configs/nsh/defconfig</a></p>
+<p>Thus we define the <strong>NuttX Memory Map</strong> for SG2000 like so…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2"><strong>Set the NuttX Memory Map for SG2000</strong></a></li>
+</ul>
+<p>NuttX Kernel will boot at <strong><code>0x8020_0000</code></strong>, NuttX Apps will run at Virtual Address <strong><code>0xC000_0000</code></strong>.</p>
+<p>Here’s the NuttX Config: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Kernel RAM
 CONFIG_RAM_START=0x80200000
 CONFIG_RAM_SIZE=1048576
@@ -805,7 +773,7 @@ CONFIG_ARCH_DATA_NPAGES=128
 CONFIG_ARCH_HEAP_VBASE=0xC0200000
 CONFIG_ARCH_HEAP_NPAGES=128
 </code></pre></div>
-<p>And here’s the NuttX Linker Script: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-769e7c2389b298f666c84b92f36d3c42fa852fda61dbf20b93e603df98b7bd37">boards/risc-v/bl808/ox64/scripts/ld.script</a></p>
+<p>And here’s the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-769e7c2389b298f666c84b92f36d3c42fa852fda61dbf20b93e603df98b7bd37">ld.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>MEMORY {
     kflash (rx) : ORIGIN = 0x80200000, LENGTH = 2048K   /* w/ cache */
     ksram (rwx) : ORIGIN = 0x80400000, LENGTH = 2048K   /* w/ cache */
