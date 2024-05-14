@@ -80,7 +80,7 @@
 <li><a href="#appendix-build-nuttx-for-sg2000">13 Appendix: Build NuttX for SG2000</a><ul></ul></li>
 <li><a href="#appendix-port-nuttx-to-sg2000">14 Appendix: Port NuttX to SG2000</a><ul>
 <li><a href="#nuttx-memory-map">14.1 NuttX Memory Map</a><ul></ul></li>
-<li><a href="#disable-the-interrupt-controller">14.2 Disable the Interrupt Controller</a><ul></ul></li>
+<li><a href="#disable-interrupt-controller">14.2 Disable Interrupt Controller</a><ul></ul></li>
 <li><a href="#select-the-16550-uart-driver">14.3 Select the 16550 UART Driver</a><ul></ul></li>
 <li><a href="#enable-logging-for-scheduler">14.4 Enable Logging for Scheduler</a><ul></ul></li>
 <li><a href="#dump-the-linux-device-tree">14.5 Dump the Linux Device Tree</a><ul></ul></li>
@@ -741,7 +741,11 @@ ssh tftpserver ls -l /tftpboot/Image-sg2000
 <p>We have copied the NuttX Image to our TFTP Server. Let’s boot this on Milk-V Duo S…</p>
 <p>TODO</p>
 <h1 id="appendix-port-nuttx-to-sg2000"><a class="doc-anchor" href="#appendix-port-nuttx-to-sg2000">§</a>14 Appendix: Port NuttX to SG2000</h1>
-<p>TODO</p>
+<p><em>How did we port NuttX to SG2000?</em></p>
+<p>We started with NuttX for <a href="TODO"><strong>Ox64 BL808 RISC-V SBC</strong></a>. Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S!</p>
+<p>This chapter explains the minor tweaks that we made.</p>
+<p><em>Why did we start with NuttX for Ox64?</em></p>
+<p>TODO: C906, Cache, VM</p>
 <h2 id="nuttx-memory-map"><a class="doc-anchor" href="#nuttx-memory-map">§</a>14.1 NuttX Memory Map</h2>
 <p>From <a href="TODO"><strong>U-Boot Bootloader Settings</strong></a>: We see that SG2000 boots at this address…</p>
 <div class="example-wrap"><pre class="language-bash"><code>kernel_addr_r=0x80200000
@@ -783,7 +787,7 @@ CONFIG_ARCH_HEAP_NPAGES=128
 ...
 SECTIONS {
   . = 0x80200000;
-</code></pre></div><h2 id="disable-the-interrupt-controller"><a class="doc-anchor" href="#disable-the-interrupt-controller">§</a>14.2 Disable the Interrupt Controller</h2>
+</code></pre></div><h2 id="disable-interrupt-controller"><a class="doc-anchor" href="#disable-interrupt-controller">§</a>14.2 Disable Interrupt Controller</h2>
 <p>Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a <a href="TODO"><strong>Platform-Level Interrupt Controller (PLIC)</strong></a>. But PLIC isn’t documented for SG2000.</p>
 <p>For now, let’s disable PLIC in NuttX…</p>
 <ul>
