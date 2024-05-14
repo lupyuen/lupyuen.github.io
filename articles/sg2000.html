@@ -162,6 +162,7 @@ E:Boot failed
 </code></pre></div>
 <p>Nope we’re in Arm Mode… Flip the switch back to RISC-V!</p>
 <p><a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>If we use CH340</strong></a> (instead of CP2102): UART Output will be <a href="https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5"><strong>gloriously garbled</strong></a>.</p>
+<p>TODO: Pic of Debian Image</p>
 <h1 id="download-the-linux-microsd"><a class="doc-anchor" href="#download-the-linux-microsd">§</a>3 Download the Linux MicroSD</h1>
 <p><em>Milk-V Duo S won’t boot without MicroSD. How now?</em></p>
 <p>Let’s boot <strong>Linux on MicroSD</strong>, thanks to the awesome work by <a href="https://github.com/Fishwaldo"><strong>Justin Hammond</strong></a> (Fishwaldo)…</p>
@@ -262,6 +263,7 @@ Debian GNU/Linux trixie/sid duos ttyS0
 duos login: 
 </code></pre></div>
 <p>TODO</p>
+<p>TODO: Pic of U-Boot</p>
 <h1 id="settings-for-u-boot-bootloader"><a class="doc-anchor" href="#settings-for-u-boot-bootloader">§</a>5 Settings for U-Boot Bootloader</h1>
 <p>TODO</p>
 <p>Let’s dump the U-Boot Config…</p>
@@ -272,9 +274,8 @@ Hit any key to stop autoboot:  0
 cv181x_c906# 
 </code></pre></div>
 <p>Enter <strong><code>printenv</code></strong> to dump the U-Boot Settings…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ printenv
-fdt_addr_r=0x81200000
-fdtoverlay_addr_r=0x81300000
+<div class="example-wrap"><pre class="language-bash"><code>## U-Boot Settings
+$ printenv
 kernel_addr_r=0x80200000
 kernel_comp_addr_r=0x81800000
 kernel_comp_size=0x1000000
@@ -284,7 +285,7 @@ update_addr=0x9fe00000
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2#file-milkv-duo-s-uboot-log-L189-L246">(See the <strong>U-Boot Settings</strong>)</a></p>
 <p><strong><code>kernel_addr_r</code></strong> says that U-Boot will load Linux Kernel into RAM at Address <strong><code>0x8020_0000</code></strong>. (We’ll set this in NuttX)</p>
-<p>And the <strong>Ethernet Driver</strong> is fully operational in U-Boot. Which means we can boot <strong>NuttX over the Network</strong> yay! (TFTP)</p>
+<p>And the <strong>Ethernet Driver</strong> is fully operational in U-Boot. Which means we can boot <strong>NuttX over the Network</strong> (TFTP)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ net list
 eth0: ethernet@4070000
 00:00:00:00:00:00
@@ -377,7 +378,9 @@ setenv boot_targets &quot;tftp $boot_targets&quot;
 
 ## Save it for future reboots
 saveenv
-</code></pre></div><h1 id="uart-controller-for-sg2000"><a class="doc-anchor" href="#uart-controller-for-sg2000">§</a>7 UART Controller for SG2000</h1>
+</code></pre></div>
+<p>TODO: Pic of UART Controller</p>
+<h1 id="uart-controller-for-sg2000"><a class="doc-anchor" href="#uart-controller-for-sg2000">§</a>7 UART Controller for SG2000</h1>
 <p><em>How will NuttX print to the Serial Console?</em></p>
 <p>First we track down the <strong>UART Controller</strong> for SG2000.</p>
 <p>From <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>SG2000 Reference Manual</strong></a> (Page TODO): The UART Controller is at these Base Addresses…</p>
@@ -393,7 +396,7 @@ saveenv
 <p>We’ll print to UART0 in NuttX: <code>0x0414_0000</code></p>
 <p><em>What UART Controller is inside SG2000?</em></p>
 <p>According to <a href="TODO"><strong>OpenSBI Log</strong></a>: The UART Controller is <strong><code>uart8250</code></strong>.</p>
-<p>Which is supported by NuttX yay! We mod the NuttX Boot Code to print something…</p>
+<p>Which is supported by NuttX. We mod the NuttX Boot Code to print something…</p>
 <h1 id="print-to-uart-in-risc-v-assembly"><a class="doc-anchor" href="#print-to-uart-in-risc-v-assembly">§</a>8 Print to UART in RISC-V Assembly</h1>
 <p><em>We’re printing in RISC-V Assembly? Why not C?</em></p>
 <p>That’s because the very first thing that boots is the NuttX Boot Code in <strong>RISC-V Assembly</strong>. Which we’ll modify like this…</p>
@@ -601,7 +604,7 @@ riscv_exception:
   MTVAL:     0000000000000000
   Segmentation fault in PID 7: ostest
 </code></pre></div>
-<p>Sadly we’re hitting a <strong>Load Access Fault</strong>, needs troubleshooting.</p>
+<p>Sadly we’re hitting a RISC-V Exception: <strong>Load Access Fault</strong>. Needs more troubleshooting sigh.</p>
 <p><a href="https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f">(See the <strong>Complete Log</strong>)</a></p>
 <p>TODO: Pic of Milk-V Duo S Box</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
@@ -846,7 +849,7 @@ make menuconfig \
   &amp;&amp; grep -v CONFIG_HOST defconfig \
   &gt;boards/risc-v/bl808/ox64/configs/nsh/defconfig
 </code></pre></div>
-<p>To find the menuconfig settings: Press “<strong><code>/</code></strong>” and enter the name of the setting, like “16550_ADDRWIDTH”. This ensures that the Kconfig Dependencies are correctly updated.</p>
+<p><strong>To Find Menuconfig Settings:</strong> Press “<strong><code>/</code></strong>” and enter the name of the setting, like <em>“16550_ADDRWIDTH”</em>. This ensures that the Kconfig Dependencies are correctly updated.</p>
 <p><em>How did we get IRQ 69 for UART?</em></p>
 <p>We set IRQ 69 for UART0…</p>
 <ul>
@@ -865,7 +868,7 @@ make menuconfig \
 <blockquote>
 <p>Int #44: UART0</p>
 </blockquote>
-<p><strong>Linux Device Tree</strong> also says UART0 IRQ is 44 (<code>0x2C</code>)</p>
+<p><strong>Linux Device Tree</strong> also says UART0 IRQ is <strong>44 (<code>0x2C</code>)</strong></p>
 <div class="example-wrap"><pre class="language-c"><code>serial@04140000 {
   compatible = &quot;snps,dw-apb-uart&quot;;
   reg = &lt;0x00 0x4140000 0x00 0x1000&gt;;
@@ -877,8 +880,8 @@ make menuconfig \
   interrupt-parent = &lt;0x04&gt;;
 };
 </code></pre></div>
-<p>Thus we compute <a href="https://lupyuen.github.io/articles/plic2#uart-interrupt">NuttX IRQ</a> = 25 + RISC-V IRQ = 69</p>
-<p>TODO: Fix the UART Clock: <strong>16550_UART0_CLOCK</strong></p>
+<p>Thus we compute <a href="https://lupyuen.github.io/articles/plic2#uart-interrupt"><strong>NuttX IRQ</strong></a> = 25 + RISC-V IRQ = 69</p>
+<p>TODO: Fix the UART Clock: <em>16550_UART0_CLOCK</em></p>
 <h2 id="enable-logging-for-scheduler"><a class="doc-anchor" href="#enable-logging-for-scheduler">§</a>14.4 Enable Logging for Scheduler</h2>
 <p>For easier troubleshooting: We enable Logging for <strong>NuttX Scheduler and Binary Loader</strong>…</p>
 <ul>
@@ -913,77 +916,40 @@ dtc \
   -I dtb \
   cv181x_milkv_duos_sd.dtb
 </code></pre></div>
-<p>We look inside…</p>
+<p>We go inside the Device Tree…</p>
 <h2 id="interrupt-controller-for-sg2000"><a class="doc-anchor" href="#interrupt-controller-for-sg2000">§</a>14.6 Interrupt Controller for SG2000</h2>
 <p>Earlier we dumped the <strong>Linux Device Tree</strong> for SG2000. Let’s snoop the Interrupt Controller to understand it.</p>
 <p>Based on the <strong>SG2000 Device Tree</strong>: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts">cv181x_milkv_duos_sd.dts</a></p>
-<div class="example-wrap"><pre class="language-c"><code>cpus {
-  #address-cells = &lt;0x01&gt;;
-  #size-cells = &lt;0x00&gt;;
-  timebase-frequency = &lt;0x17d7840&gt;;
-
-  cpu-map {
-    cluster0 {
-      core0 {
-        cpu = &lt;0x01&gt;;
-      };
-    };
-  };
-
-  cpu@0 {
-    device_type = &quot;cpu&quot;;
-    reg = &lt;0x00&gt;;
-    status = &quot;okay&quot;;
-    compatible = &quot;riscv&quot;;
-    riscv,isa = &quot;rv64imafdvcsu&quot;;
-    mmu-type = &quot;riscv,sv39&quot;;
-    clock-frequency = &lt;0x17d7840&gt;;
-
-    interrupt-controller {
-      #interrupt-cells = &lt;0x01&gt;;
-      interrupt-controller;
-      compatible = &quot;riscv,cpu-intc&quot;;
-      phandle = &lt;0x16&gt;;
-    };
-  };
+<div class="example-wrap"><pre class="language-c"><code>// PLIC Interrupt Controller for External Interrupts
+interrupt-controller@70000000 {
+  riscv,ndev = &lt;0x65&gt;;
+  riscv,max-priority = &lt;0x07&gt;;
+  reg-names = &quot;control&quot;;
+  reg = &lt;0x00 0x70000000 0x00 0x4000000&gt;;
+  interrupts-extended = &lt;0x16 0xffffffff 0x16 0x09&gt;;
+  interrupt-controller;
+  compatible = &quot;riscv,plic0&quot;;
+  #interrupt-cells = &lt;0x02&gt;;
+  #address-cells = &lt;0x00&gt;;
+  phandle = &lt;0x04&gt;;
 };
 
-soc {
-  #address-cells = &lt;0x02&gt;;
-  #size-cells = &lt;0x02&gt;;
-  compatible = &quot;simple-bus&quot;;
-  ranges;
-
-  interrupt-controller@70000000 {
-    riscv,ndev = &lt;0x65&gt;;
-    riscv,max-priority = &lt;0x07&gt;;
-    reg-names = &quot;control&quot;;
-    reg = &lt;0x00 0x70000000 0x00 0x4000000&gt;;
-    interrupts-extended = &lt;0x16 0xffffffff 0x16 0x09&gt;;
-    interrupt-controller;
-    compatible = &quot;riscv,plic0&quot;;
-    #interrupt-cells = &lt;0x02&gt;;
-    #address-cells = &lt;0x00&gt;;
-    phandle = &lt;0x04&gt;;
-  };
-
-  clint@74000000 {
-    interrupts-extended = &lt;0x16 0x03 0x16 0x07&gt;;
-    reg = &lt;0x00 0x74000000 0x00 0x10000&gt;;
-    compatible = &quot;riscv,clint0&quot;;
-    clint,has-no-64bit-mmio;
-  };
+// CLINT Interrupt Controller for Internal Interrupts
+clint@74000000 {
+  interrupts-extended = &lt;0x16 0x03 0x16 0x07&gt;;
+  reg = &lt;0x00 0x74000000 0x00 0x10000&gt;;
+  compatible = &quot;riscv,clint0&quot;;
+  clint,has-no-64bit-mmio;
 };
 </code></pre></div>
-<p>We see that PLIC is at <strong><code>0x7000_0000</code></strong>, CLINT at <strong><code>0x7400_0000</code></strong>. Let’s implement this in NuttX…</p>
+<p>We see that PLIC (External Interrupts) is at <strong><code>0x7000_0000</code></strong>, CLINT (Internal Interrupts) at <strong><code>0x7400_0000</code></strong>. Let’s implement this in NuttX…</p>
 <h2 id="fix-the-nuttx-driver-for-plic"><a class="doc-anchor" href="#fix-the-nuttx-driver-for-plic">§</a>14.7 Fix the NuttX Driver for PLIC</h2>
 <p>Based on the SG2000 PLIC Address from above: We fix the <strong>PLIC Interrupt Controller</strong> for SG2000…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6"><strong>Fix the PLIC Interrupt Controller for SG2000</strong></a></li>
 </ul>
 <p>Now we see a bit more NuttX…</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-
+<div class="example-wrap"><pre class="language-bash"><code>Starting kernel ...
 123ABCnx_start: Entry
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
@@ -1002,36 +968,12 @@ Nuttnx_start: CPU0: Beginning Idle Loop
 <p><a href="https://gist.github.com/lupyuen/922e6379375fbc5d775d1e83cac4deb5">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>Why did it stop?</em></p>
 <p>Duh we set the wrong UART0 IRQ! Here’s the fix…</p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/122c717447f81c310a4fb082101213ad338dfb0e">Set UART0 IRQ to 69 (25 + 44)</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_IRQ=69
-</code></pre></div>
-<p><em>How did we get IRQ 69 for UART?</em></p>
-<p>We saw this in the <a href="https://github.com/sophgo/sophgo-doc/releases">SG2000 Reference Manual</a>…</p>
-<blockquote>
-<p>3.1 Interrupt Subsystem</p>
-</blockquote>
-<blockquote>
-<p>Table 3.2: Interrupt number and Interrupt source mapping for Master RISCV C906 @ 1.0Ghz</p>
-</blockquote>
-<blockquote>
-<p>Int #44: UART0</p>
-</blockquote>
-<p>Linx Device Tree also says UART0 IRQ is 44 (0x2C)…</p>
-<div class="example-wrap"><pre class="language-c"><code>serial@04140000 {
-  compatible = &quot;snps,dw-apb-uart&quot;;
-  reg = &lt;0x00 0x4140000 0x00 0x1000&gt;;
-  clock-frequency = &lt;0x17d7840&gt;;
-  reg-shift = &lt;0x02&gt;;
-  reg-io-width = &lt;0x04&gt;;
-  status = &quot;okay&quot;;
-  interrupts = &lt;0x2c 0x04&gt;;
-  interrupt-parent = &lt;0x04&gt;;
-};
-</code></pre></div>
-<p>Thus we compute <a href="https://lupyuen.github.io/articles/plic2#uart-interrupt">NuttX IRQ</a> = 25 + RISC-V IRQ = 69</p>
+<ul>
+<li>TODO</li>
+</ul>
 <h2 id="nuttx-crash-dump"><a class="doc-anchor" href="#nuttx-crash-dump">§</a>14.8 NuttX Crash Dump</h2>
-<p>TODO</p>
-<p>We apply the fixes above. Now NuttX boots some more on RISC-V SG2000 SoC / Milk-V Duo S. And shows our very first NuttX Crash Dump yay!</p>
+<p><em>What happens when something goes wrong in NuttX?</em></p>
+<p>We’ll see a <strong>NuttX Crash Dump</strong>, like so…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Booting using the fdt blob at 0x81200000
 Loading Ramdisk to 9fe00000, end 9fe00000 ... OK
 Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
@@ -1070,21 +1012,18 @@ dump_stack:     sp: 0x8040c330
 at file: machine/risc-v/arch_elf.c:494
 task: AppBringUp process: Kernel 0x80200f34
 </code></pre></div>
-<p>Oops we goofed and used the wrong U-Boot Command…</p>
+<p>Oops we goofed and used the <strong>Wrong U-Boot Command</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Nope! This won&#39;t work for NuttX. RAM Disk Address must be `-`!
 setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ;
 tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ;
 booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 </code></pre></div>
-<p>Which overwrites the NuttX Image in RAM. Watch what happens when we use the correct U-Boot Command…</p>
+<p>Which overwrites the NuttX Image in RAM. Here’s the <strong>Correct U-Boot Command</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## This works OK for NuttX. RAM Disk Address must be `-`!
 setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ;
 tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; 
 booti ${kernel_addr_r} - ${fdt_addr_r}
 </code></pre></div>
-<p>NuttX now boots correctly yay!</p>
-<p>TODO</p>
-
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
