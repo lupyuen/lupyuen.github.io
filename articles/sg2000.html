@@ -262,11 +262,11 @@ Linux version 5.10.4-20240329-1+ (root@3abcc283c6ba) (riscv64-unknown-linux-musl
 Debian GNU/Linux trixie/sid duos ttyS0
 duos login: 
 </code></pre></div>
-<p>TODO</p>
+<p>Moving on to NuttX…</p>
 <p>TODO: Pic of U-Boot</p>
 <h1 id="settings-for-u-boot-bootloader"><a class="doc-anchor" href="#settings-for-u-boot-bootloader">§</a>5 Settings for U-Boot Bootloader</h1>
-<p>TODO</p>
-<p>Let’s dump the U-Boot Config…</p>
+<p><em>How will we boot NuttX?</em></p>
+<p>We seek guidance from the <strong>U-Boot Bootloader</strong>.</p>
 <p>As we power on Milk-V Duo S, hit Enter a few times to see the <strong>U-Boot Command Prompt</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>U-Boot 2021.10-ga57aa1f2-dirty (May 07 2024 - 08:13:12 +0000) cvitek_cv181x
 Loading Environment from FAT... mmc1 : finished tuning, code:53
@@ -285,13 +285,14 @@ update_addr=0x9fe00000
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2#file-milkv-duo-s-uboot-log-L189-L246">(See the <strong>U-Boot Settings</strong>)</a></p>
 <p><strong><code>kernel_addr_r</code></strong> says that U-Boot will load Linux Kernel into RAM at Address <strong><code>0x8020_0000</code></strong>. (We’ll set this in NuttX)</p>
-<p>And the <strong>Ethernet Driver</strong> is fully operational in U-Boot. Which means we can boot <strong>NuttX over the Network</strong> (TFTP)…</p>
+<p>And the <strong>Ethernet Driver</strong> is fully operational in U-Boot. Which means we can boot <strong>NuttX over the Network</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ net list
 eth0: ethernet@4070000
 00:00:00:00:00:00
 active
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2#file-milkv-duo-s-uboot-log-L99-L188">(See the <strong>U-Boot Commands</strong>)</a></p>
+<p>Let’s do it…</p>
 <p>TODO: Pic of TFTP</p>
 <h1 id="boot-nuttx-over-tftp"><a class="doc-anchor" href="#boot-nuttx-over-tftp">§</a>6 Boot NuttX over TFTP</h1>
 <p><em>What’s the quickest way to port NuttX?</em></p>
@@ -333,6 +334,7 @@ fdt addr ${fdt_addr_r}
 ## ramdisk_addr_r=0x81600000
 ## tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/Image">(<strong>Image-sg2000</strong> is here)</a></p>
 <p>And we boot <strong>NuttX from RAM</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot the NuttX Image with the Device Tree
 ## kernel_addr_r=0x80200000
@@ -398,7 +400,7 @@ saveenv
 <p>According to <a href="TODO"><strong>OpenSBI Log</strong></a>: The UART Controller is <strong><code>uart8250</code></strong>.</p>
 <p>Which is supported by NuttX. We mod the NuttX Boot Code to print something…</p>
 <h1 id="print-to-uart-in-risc-v-assembly"><a class="doc-anchor" href="#print-to-uart-in-risc-v-assembly">§</a>8 Print to UART in RISC-V Assembly</h1>
-<p><em>We’re printing in RISC-V Assembly? Why not C?</em></p>
+<p><em>Printing in RISC-V Assembly? Why not C?</em></p>
 <p>That’s because the very first thing that boots is the NuttX Boot Code in <strong>RISC-V Assembly</strong>. Which we’ll modify like this…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console"><strong>“Print to QEMU Console”</strong></a></li>
@@ -430,15 +432,18 @@ real_start:
 <h1 id="nuttx-boots-a-tiny-bit"><a class="doc-anchor" href="#nuttx-boots-a-tiny-bit">§</a>9 NuttX Boots A Tiny Bit</h1>
 <p>Follow these steps to build <strong>Apache NuttX RTOS</strong> for SG2000 and Milk-V Duo S…</p>
 <ul>
-<li>TODO</li>
+<li>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/sg2000-1">(See the <strong>Build Outputs</strong>)</a></p>
+</li>
 </ul>
-<p>This produces the NuttX Image file: <strong><code>Image</code></strong>. Which we copy to our <strong>TFTP Server</strong>…</p>
+<p>This produces the NuttX Image file: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/Image"><strong><code>Image</code></strong></a>. Which we copy to our <strong>TFTP Server</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to TFTP Server
 ## TODO: Change `tftpserver` and `tftpboot` to our TFTP Server and Path
 scp Image \
   tftpserver:/tftpboot/Image-sg2000
 </code></pre></div>
-<p>To boot NuttX: We run these commands at the <strong>U-Boot Command Prompt</strong>…</p>
+<p>To Boot NuttX: Run these commands at the <strong>U-Boot Command Prompt</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image into RAM
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 
@@ -448,7 +453,7 @@ $ booti ${kernel_addr_r} - ${fdt_addr_r}
 Starting kernel ...
 123
 </code></pre></div>
-<p>See “<strong><code>123</code></strong>”? That’s evidence that our NuttX Boot Code <strong>is actually running</strong> on SG2000 and Milk-V Duo S! We port some more…</p>
+<p>See the “<strong><code>123</code></strong>”? That’s evidence that our NuttX Boot Code <strong>is actually running</strong> on SG2000 and Milk-V Duo S! We port some more…</p>
 <p><a href="https://gist.github.com/lupyuen/78b54326daf0894a2c23ab6d2c03456d">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-kernel.png" alt="TODO" /></p>
 <h1 id="nuttx-kernel-boots-ok"><a class="doc-anchor" href="#nuttx-kernel-boots-ok">§</a>10 NuttX Kernel Boots OK</h1>
@@ -502,7 +507,7 @@ CONFIG_DEBUG_SCHED_WARN=y
 <p><a href="TODO">(Explained here)</a></p>
 </li>
 </ol>
-<p>After applying the above fixes: <strong>NuttX Kernel</strong> boots successfully!</p>
+<p>After applying the above fixes: <strong>NuttX Kernel</strong> boots successfully! (Pic above)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image into RAM
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 
@@ -565,7 +570,7 @@ dtc \
 <p><a href="TODO">(Explained here)</a></p>
 </li>
 </ol>
-<p>After fixing the Interrupt Controller and UART Interrupts: NuttX Kernel boots all the way to <strong>NuttX Shell</strong>!</p>
+<p>After fixing the Interrupt Controller and UART Interrupts: NuttX Kernel boots all the way to <strong>NuttX Shell</strong>! (Pic above)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image into RAM
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 
@@ -646,14 +651,10 @@ riscv_exception:
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/sg2000.md"><strong>lupyuen.github.io/src/sg2000.md</strong></a></p>
 <h1 id="appendix-build-nuttx-for-sg2000"><a class="doc-anchor" href="#appendix-build-nuttx-for-sg2000">§</a>13 Appendix: Build NuttX for SG2000</h1>
-<p>TODO: https://github.com/lupyuen2/wip-nuttx/releases/tag/sg2000-1</p>
 <p>In this article we took NuttX for <a href="TODO"><strong>Ox64 BL808 RISC-V SBC</strong></a>. Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S!</p>
 <p>TODO</p>
 <p>Follow these steps to build (work-in-progress) Apache NuttX RTOS for <strong>SG2000 and Milk-V Duo S</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Set PATH
-export PATH=&quot;$HOME/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin/bin:$PATH&quot;
-
-set -e  #  Exit when any command fails
+<div class="example-wrap"><pre class="language-bash"><code>set -e  #  Exit when any command fails
 set -x  #  Echo commands
 
 ## Build NuttX
@@ -765,12 +766,12 @@ riscv64-unknown-elf-objdump \
 scp Image tftpserver:/tftpboot/Image-sg2000
 ssh tftpserver ls -l /tftpboot/Image-sg2000
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/sg2000-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>We have copied the NuttX Image to our TFTP Server. Let’s boot this on Milk-V Duo S…</p>
 <p>TODO</p>
 <h1 id="appendix-port-nuttx-to-sg2000"><a class="doc-anchor" href="#appendix-port-nuttx-to-sg2000">§</a>14 Appendix: Port NuttX to SG2000</h1>
 <p><em>How did we port NuttX to SG2000?</em></p>
-<p>We started with NuttX for <a href="TODO"><strong>Ox64 BL808 RISC-V SBC</strong></a>. Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S!</p>
-<p>This chapter explains the minor tweaks that we made.</p>
+<p>We started with NuttX for <a href="TODO"><strong>Ox64 BL808 RISC-V SBC</strong></a>. Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S! This chapter explains the minor tweaks that we made.</p>
 <p><em>Why did we start with NuttX for Ox64?</em></p>
 <p>That’s because Ox64 BL808 runs on the same RISC-V Core as SG2000: <a href="TODO"><strong>T-Head C906</strong></a>.</p>
 <p><em>What about the T-Head Extensions for C906?</em></p>
