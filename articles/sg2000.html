@@ -215,21 +215,21 @@ label l0
 <p>Yep Linux boots OK on Milk-V Duo S!</p>
 <p>First we see <a href="TODO"><strong>OpenSBI (Supervisor Binary Interface)</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>OpenSBI v0.9
-Platform Name             : Milk-V DuoS
-Platform Features         : mfdeleg
-Platform HART Count       : 1
-Platform Console Device   : uart8250
-Firmware Base             : 0x80000000
-Firmware Size             : 132 KB
-Runtime SBI Version       : 0.3
+Platform Name       : Milk-V DuoS
+Platform Features   : mfdeleg
+Platform HART Count : 1
+Platform Console Device : uart8250
+Firmware Base       : 0x8000_0000
+Firmware Size       : 132 KB
+Runtime SBI Version : 0.3
 
-Domain0 Region00          : 0x0000000074000000-0x000000007400ffff (I)
-Domain0 Region01          : 0x0000000080000000-0x000000008003ffff ()
-Domain0 Region02          : 0x0000000000000000-0xffffffffffffffff (R,W,X)
-Boot HART ISA             : rv64imafdcvsux
-Boot HART Features        : scounteren,mcounteren,time
-Boot HART MIDELEG         : 0x0000000000000222
-Boot HART MEDELEG         : 0x000000000000b109
+Domain0 Region00 : 0x7400_0000-0x7400_ffff (I)
+Domain0 Region01 : 0x8000_0000-0x8003_ffff ()
+Domain0 Region02 : 0x0-0xffff_ffff_ffff_ffff (R,W,X)
+Boot HART ISA      : rv64imafdcvsux
+Boot HART Features : scounteren,mcounteren,time
+Boot HART MIDELEG  : 0x0000000000000222
+Boot HART MEDELEG  : 0x000000000000b109
 
 ## OpenSBI boots at 0x8000_0000.
 ## 0x7400_0000 looks interesting! We&#39;ll come back to this
@@ -349,10 +349,10 @@ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tft
 <p><em>What happens when we boot NuttX?</em></p>
 <p>Absolutely nothing!</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ booti ${kernel_addr_r} - ${fdt_addr_r}
-   Booting using the fdt blob at 0x81200000
-   Loading Ramdisk to 9e27f000, end 9f27f000 ... OK
-   Loading Device Tree to 000000009e26f000, end 000000009e27e43a ... OK
 
+Booting using the fdt blob at 0x81200000
+Loading Ramdisk to 9e27f000, end 9f27f000 ... OK
+Loading Device Tree to 000000009e26f000, end 000000009e27e43a ... OK
 Starting kernel ...
 </code></pre></div>
 <p>But that’s OK, we haven’t modified NuttX Kernel for SG2000. Let’s print something in the next section.</p>
@@ -497,13 +497,13 @@ CONFIG_DEBUG_SCHED_WARN=y
 </li>
 </ol>
 <p>NuttX Kernel boots OK on SG2000 yay!</p>
-<p><a href="https://gist.github.com/lupyuen/aaa0a6646490d45e5cd99b781cbe59f8">(See the <strong>Complete Log</strong>)</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Flattened Device Tree blob at 81200000
-   Booting using the fdt blob at 0x81200000
-   Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
+<div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image into RAM
+$ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
+
+## Boot NuttX from RAM
+$ booti ${kernel_addr_r} - ${fdt_addr_r}
 
 Starting kernel ...
-
 123ABCnx_start: Entry
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
@@ -517,13 +517,15 @@ elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
 nxtask_activate: /system/bin/init pid=3,TCB=0x80409140
 nxtask_exit: AppBringUp pid=2,TCB=0x80408740
 </code></pre></div>
-<p><a href="https://www.youtube.com/watch?v=pPNDiC5NLqM">(Watch the Demo on YouTube)</a></p>
 <p>One last thing and we’re done…</p>
+<p><a href="https://gist.github.com/lupyuen/aaa0a6646490d45e5cd99b781cbe59f8">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://www.youtube.com/watch?v=pPNDiC5NLqM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>TODO: Pic of NuttX Shell</p>
 <h1 id="nuttx-shell-too"><a class="doc-anchor" href="#nuttx-shell-too">§</a>11 NuttX Shell Too!</h1>
 <p><em>But where’s the NuttX Shell?</em></p>
-<p>We won’t see the NuttX Shell until we fix the Interrupt Controller for SG2000. Which is NOT documented!</p>
-<p>Let’s sniff around and find out how it works…</p>
+<p>We won’t see the NuttX Shell until we fix the <strong>Interrupt Controller</strong> for SG2000. Which is NOT documented!</p>
+<p>That’s because NuttX Shell requires <a href="TODO"><strong>UART Input Interrupts</strong></a> AND <a href="TODO"><strong>UART Output Interrupts</strong></a>, to operate properly.</p>
+<p>Let’s sniff around and find out how the Interrupt Controller works…</p>
 <ol>
 <li>
 <p>We dumped the <a href="TODO"><strong>Linux Device Tree</strong></a> for SG2000…</p>
@@ -557,9 +559,14 @@ dtc \
 <p><a href="TODO">(Explained here)</a></p>
 </li>
 </ol>
-<p>After fixing the Interrupt Controller and UART Interrupt: NuttX Kernel now boots all the way to NuttX Shell yay!</p>
-<p><a href="https://gist.github.com/lupyuen/b778986ba87c18067cd993b92c673634">(See the <strong>Complete Log</strong>)</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>Starting kernel ...
+<p>After fixing the Interrupt Controller and UART Interrupt: NuttX Kernel now boots all the way to <strong>NuttX Shell</strong> yay!</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image into RAM
+$ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
+
+## Boot NuttX from RAM
+$ booti ${kernel_addr_r} - ${fdt_addr_r}
+
+Starting kernel ...
 NuttShell (NSH) NuttX-12.4.0
 
 nsh&gt; uname -a
@@ -579,6 +586,7 @@ nsh&gt; ls /dev
  ttyS0
  zero
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/b778986ba87c18067cd993b92c673634">(See the <strong>Complete Log</strong>)</a></p>
 <p>TODO: NuttX OSTest works great too!</p>
 <p><a href="https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f">(See the <strong>Complete Log</strong>)</a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
@@ -620,9 +628,9 @@ nsh&gt; ls /dev
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/sg2000.md"><strong>lupyuen.github.io/src/sg2000.md</strong></a></p>
 <h1 id="appendix-build-nuttx-for-sg2000"><a class="doc-anchor" href="#appendix-build-nuttx-for-sg2000">§</a>13 Appendix: Build NuttX for SG2000</h1>
+<p>In this article we took NuttX for <a href="TODO"><strong>Ox64 BL808 RISC-V SBC</strong></a>. Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S!</p>
 <p>TODO</p>
-<p>Work-in-progress with the following patches…</p>
-<p>Follow these steps to build (work-in-progress) Apache NuttX RTOS for SG2000 / Milk-V Duo S…</p>
+<p>Follow these steps to build (work-in-progress) Apache NuttX RTOS for <strong>SG2000 and Milk-V Duo S</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## TODO: Set PATH
 export PATH=&quot;$HOME/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin/bin:$PATH&quot;
 
@@ -747,7 +755,7 @@ ssh tftpserver ls -l /tftpboot/Image-sg2000
 <p><em>Why did we start with NuttX for Ox64?</em></p>
 <p>That’s because Ox64 BL808 runs on the same RISC-V Core as SG2000: <a href="TODO"><strong>T-Head C906</strong></a>.</p>
 <p><em>What about the T-Head Extensions for C906?</em></p>
-<p>Yep we copied (unchanged) the <strong>T-Head Extensions for C906</strong> from Ox64 BL808 to SG2000. And they work great on SG2000…</p>
+<p>Yep we copied (unchanged) the <strong>T-Head Extensions for C906</strong> from Ox64 BL808 to SG2000. And they work hunky dory on SG2000…</p>
 <p>TODO: Cache, VM</p>
 <p>Let’s talk about the tweaks…</p>
 <h2 id="nuttx-memory-map"><a class="doc-anchor" href="#nuttx-memory-map">§</a>14.1 NuttX Memory Map</h2>
@@ -783,10 +791,10 @@ CONFIG_ARCH_HEAP_NPAGES=128
 </code></pre></div>
 <p>And here’s the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-769e7c2389b298f666c84b92f36d3c42fa852fda61dbf20b93e603df98b7bd37">ld.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>MEMORY {
-    kflash (rx) : ORIGIN = 0x80200000, LENGTH = 2048K   /* w/ cache */
-    ksram (rwx) : ORIGIN = 0x80400000, LENGTH = 2048K   /* w/ cache */
-    pgram (rwx) : ORIGIN = 0x80600000, LENGTH = 4096K   /* w/ cache */
-    ramdisk (rwx) : ORIGIN = 0x80A00000, LENGTH = 16M   /* w/ cache */
+  kflash (rx) : ORIGIN = 0x80200000, LENGTH = 2048K   /* w/ cache */
+  ksram (rwx) : ORIGIN = 0x80400000, LENGTH = 2048K   /* w/ cache */
+  pgram (rwx) : ORIGIN = 0x80600000, LENGTH = 4096K   /* w/ cache */
+  ramdisk (rwx) : ORIGIN = 0x80A00000, LENGTH = 16M   /* w/ cache */
 }
 ...
 SECTIONS {
@@ -871,31 +879,35 @@ CONFIG_DEBUG_SCHED_WARN=y
 </code></pre></div>
 <p>Remember: Always use <strong><code>make menuconfig</code></strong> to update the settings!</p>
 <h2 id="dump-the-linux-device-tree"><a class="doc-anchor" href="#dump-the-linux-device-tree">§</a>14.5 Dump the Linux Device Tree</h2>
-<p>TODO</p>
-<p>Let’s dump the SG2000 Linux Device Tree to understand the Interrupt Controller.</p>
-<p>From the SG2000 Debian Release: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases</p>
-<p>We pick the Latest Release for Milk-V Duo S: <a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4">duos_sd.img.lz4</a></p>
-<p>We copy out the SG2000 Device Tree Binary: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dtb">cv181x_milkv_duos_sd.dtb</a></p>
-<p>And convert it to Device Tree Source: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts">cv181x_milkv_duos_sd.dts</a></p>
+<p>To understand the Interrupt Controller: Let’s dump the <strong>Linux Device Tree</strong> for SG2000.</p>
+<p>From the SG2000 Debian Release, thanks to <a href="https://github.com/Fishwaldo"><strong>Justin Hammond</strong></a> (Fishwaldo)…</p>
+<ul>
+<li><a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases"><strong>Debian Images for Sophgo SG2000</strong></a></li>
+</ul>
+<p>We download the Latest Release for <strong>Milk-V Duo S</strong> (SG2000)…</p>
+<ul>
+<li><a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4"><strong>duos_sd.img.lz4</strong></a></li>
+</ul>
+<p>We copy out the SG2000 <strong>Device Tree Binary</strong>: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dtb">cv181x_milkv_duos_sd.dtb</a></p>
+<p>And convert it to <strong>Device Tree Source</strong>: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts">cv181x_milkv_duos_sd.dts</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Convert the SG2000 Device Tree
 dtc \
   -o cv181x_milkv_duos_sd.dts \
   -O dts \
   -I dtb \
   cv181x_milkv_duos_sd.dtb
-</code></pre></div><h2 id="interrupt-controller-for-sg2000"><a class="doc-anchor" href="#interrupt-controller-for-sg2000">§</a>14.6 Interrupt Controller for SG2000</h2>
-<p>TODO</p>
-<p>We dumped the SG2000 Linux Device Tree. Let’s extract the Interrupt Controller to understand it.</p>
-<p>Based on the SG2000 Device Tree: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts">cv181x_milkv_duos_sd.dts</a></p>
+</code></pre></div>
+<p>We look inside…</p>
+<h2 id="interrupt-controller-for-sg2000"><a class="doc-anchor" href="#interrupt-controller-for-sg2000">§</a>14.6 Interrupt Controller for SG2000</h2>
+<p>Earlier we dumped the <strong>Linux Device Tree</strong> for SG2000. Let’s snoop the Interrupt Controller to understand it.</p>
+<p>Based on the <strong>SG2000 Device Tree</strong>: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts">cv181x_milkv_duos_sd.dts</a></p>
 <div class="example-wrap"><pre class="language-c"><code>cpus {
   #address-cells = &lt;0x01&gt;;
   #size-cells = &lt;0x00&gt;;
   timebase-frequency = &lt;0x17d7840&gt;;
 
   cpu-map {
-
     cluster0 {
-
       core0 {
         cpu = &lt;0x01&gt;;
       };
@@ -947,13 +959,13 @@ soc {
   };
 };
 </code></pre></div>
-<p>We see that PLIC is at 0x7000_0000, CLINT at 0x7400_0000. Let’s implement this in NuttX…</p>
+<p>We see that PLIC is at <strong><code>0x7000_0000</code></strong>, CLINT at <strong><code>0x7400_0000</code></strong>. Let’s implement this in NuttX…</p>
 <h2 id="fix-the-nuttx-driver-for-plic"><a class="doc-anchor" href="#fix-the-nuttx-driver-for-plic">§</a>14.7 Fix the NuttX Driver for PLIC</h2>
-<p>TODO</p>
-<p>Based on the PLIC Address from above: We fix the PLIC Interrupt Controller for SG2000…</p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6">Fix the PLIC Interrupt Controller for SG2000</a></p>
+<p>Based on the SG2000 PLIC Address from above: We fix the <strong>PLIC Interrupt Controller</strong> for SG2000…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6"><strong>Fix the PLIC Interrupt Controller for SG2000</strong></a></li>
+</ul>
 <p>Now we see a bit more NuttX…</p>
-<p><a href="https://gist.github.com/lupyuen/922e6379375fbc5d775d1e83cac4deb5">(See the <strong>Complete Log</strong>)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 
 123ABCnx_start: Entry
@@ -971,6 +983,7 @@ nxtask_exit: AppBringUp pid=2,TCB=0x80409740
 
 Nuttnx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/922e6379375fbc5d775d1e83cac4deb5">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>Why did it stop?</em></p>
 <p>Duh we set the wrong UART0 IRQ! Here’s the fix…</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/commit/122c717447f81c310a4fb082101213ad338dfb0e">Set UART0 IRQ to 69 (25 + 44)</a></p>
@@ -1003,12 +1016,9 @@ Nuttnx_start: CPU0: Beginning Idle Loop
 <h2 id="nuttx-crash-dump"><a class="doc-anchor" href="#nuttx-crash-dump">§</a>14.8 NuttX Crash Dump</h2>
 <p>TODO</p>
 <p>We apply the fixes above. Now NuttX boots some more on RISC-V SG2000 SoC / Milk-V Duo S. And shows our very first NuttX Crash Dump yay!</p>
-<p><a href="https://gist.github.com/lupyuen/594f0df20d39001bac171412d594d517">(See the <strong>Complete Log</strong>)</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Flattened Device Tree blob at 81200000
-   Booting using the fdt blob at 0x81200000
-   Loading Ramdisk to 9fe00000, end 9fe00000 ... OK
-   Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
-
+<div class="example-wrap"><pre class="language-bash"><code>Booting using the fdt blob at 0x81200000
+Loading Ramdisk to 9fe00000, end 9fe00000 ... OK
+Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
 Starting kernel ...
 
 123ABCnx_start: Entry
@@ -1021,6 +1031,7 @@ nx_start_application: Starting init task: /system/bin/init
 elf_symname: Symbol has no name
 elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
 elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+
 _assert: Current Version: NuttX  12.4.0 f37a380-dirty May  7 2024 10:31:33 risc-v
 _assert: Assertion failed 0x17 == (insn &amp; 0x7F): at file: machine/risc-v/arch_elf.c:494 task: AppBringUp process: Kernel 0x80200f34
 up_dump_register: EPC: 000000008021087a
@@ -1037,6 +1048,7 @@ dump_stack:   base: 0x8040c030
 dump_stack:   size: 00002000
 dump_stack:     sp: 0x8040c330
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/594f0df20d39001bac171412d594d517">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>What’s this Assertion Failure?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>_assert: Assertion failed 0x17 == (insn &amp; 0x7F):
 at file: machine/risc-v/arch_elf.c:494
@@ -1054,6 +1066,7 @@ setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg
 tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; 
 booti ${kernel_addr_r} - ${fdt_addr_r}
 </code></pre></div>
+<p>NuttX now boots correctly yay!</p>
 <p>TODO</p>
 
     
