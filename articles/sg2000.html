@@ -79,14 +79,14 @@
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-sg2000">13 Appendix: Build NuttX for SG2000</a><ul></ul></li>
 <li><a href="#appendix-port-nuttx-to-sg2000">14 Appendix: Port NuttX to SG2000</a><ul>
-<li><a href="#set-the-nuttx-memory-map-for-sg2000">14.1 Set the NuttX Memory Map for SG2000</a><ul></ul></li>
-<li><a href="#disable-the-plic-interrupt-controller">14.2 Disable the PLIC Interrupt Controller</a><ul></ul></li>
-<li><a href="#select-the-nuttx-driver-for-16550-uart">14.3 Select the NuttX Driver for 16550 UART</a><ul></ul></li>
-<li><a href="#enable-logging-for-nuttx-scheduler">14.4 Enable Logging for NuttX Scheduler</a><ul></ul></li>
-<li><a href="#dump-the-sg2000-linux-device-tree">14.5 Dump the SG2000 Linux Device Tree</a><ul></ul></li>
+<li><a href="#nuttx-memory-map">14.1 NuttX Memory Map</a><ul></ul></li>
+<li><a href="#disable-the-interrupt-controller">14.2 Disable the Interrupt Controller</a><ul></ul></li>
+<li><a href="#select-the-16550-uart-driver">14.3 Select the 16550 UART Driver</a><ul></ul></li>
+<li><a href="#enable-logging-for-scheduler">14.4 Enable Logging for Scheduler</a><ul></ul></li>
+<li><a href="#dump-the-linux-device-tree">14.5 Dump the Linux Device Tree</a><ul></ul></li>
 <li><a href="#interrupt-controller-for-sg2000">14.6 Interrupt Controller for SG2000</a><ul></ul></li>
 <li><a href="#fix-the-nuttx-driver-for-plic">14.7 Fix the NuttX Driver for PLIC</a><ul></ul></li>
-<li><a href="#nuttx-crash-dump-on-sg2000">14.8 NuttX Crash Dump on SG2000</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 May 2024</em></p>
+<li><a href="#nuttx-crash-dump">14.8 NuttX Crash Dump</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>64-bit RISC-V Sophgo SG2000 SoC … Will it boot Apache NuttX RTOS? 🤔 (T-Head C906 / Milk-V Duo S)</p>
@@ -550,7 +550,7 @@ dtc \
 <p><a href="TODO">(Explained here)</a></p>
 </li>
 <li>
-<p>And fixed the <a href="TODO"><strong>NuttX Driver</strong></a> for PLIC Interrupts: <a href="https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6#diff-8fffa570a48f8f10004d9da8d4c671d34336f6c4b8dcfc2bd72275d8cda4ac04">arch/risc-v/src/bl808/hardware/bl808_memorymap.h</a></p>
+<p>And fixed the <a href="TODO"><strong>NuttX Driver</strong></a> for PLIC Interrupts: <a href="https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6#diff-8fffa570a48f8f10004d9da8d4c671d34336f6c4b8dcfc2bd72275d8cda4ac04">bl808_memorymap.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Base Address of PLIC Interrupt Controller
 #define BL808_PLIC_BASE 0x70000000ul
 </code></pre></div>
@@ -742,7 +742,7 @@ ssh tftpserver ls -l /tftpboot/Image-sg2000
 <p>TODO</p>
 <h1 id="appendix-port-nuttx-to-sg2000"><a class="doc-anchor" href="#appendix-port-nuttx-to-sg2000">§</a>14 Appendix: Port NuttX to SG2000</h1>
 <p>TODO</p>
-<h2 id="set-the-nuttx-memory-map-for-sg2000"><a class="doc-anchor" href="#set-the-nuttx-memory-map-for-sg2000">§</a>14.1 Set the NuttX Memory Map for SG2000</h2>
+<h2 id="nuttx-memory-map"><a class="doc-anchor" href="#nuttx-memory-map">§</a>14.1 NuttX Memory Map</h2>
 <p>From <a href="TODO"><strong>U-Boot Bootloader Settings</strong></a>: We see that SG2000 boots at this address…</p>
 <div class="example-wrap"><pre class="language-bash"><code>kernel_addr_r=0x80200000
 </code></pre></div>
@@ -783,14 +783,14 @@ CONFIG_ARCH_HEAP_NPAGES=128
 ...
 SECTIONS {
   . = 0x80200000;
-</code></pre></div><h2 id="disable-the-plic-interrupt-controller"><a class="doc-anchor" href="#disable-the-plic-interrupt-controller">§</a>14.2 Disable the PLIC Interrupt Controller</h2>
+</code></pre></div><h2 id="disable-the-interrupt-controller"><a class="doc-anchor" href="#disable-the-interrupt-controller">§</a>14.2 Disable the Interrupt Controller</h2>
 <p>Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a <a href="TODO"><strong>Platform-Level Interrupt Controller (PLIC)</strong></a>. But PLIC isn’t documented for SG2000.</p>
 <p>For now, let’s disable PLIC in NuttX…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b93ec4"><strong>Disable the PLIC Interrupt Controller</strong></a></li>
 </ul>
 <p>Later we’ll dump the SG2000 Linux Device Tree to understand the Interrupt Controller.</p>
-<h2 id="select-the-nuttx-driver-for-16550-uart"><a class="doc-anchor" href="#select-the-nuttx-driver-for-16550-uart">§</a>14.3 Select the NuttX Driver for 16550 UART</h2>
+<h2 id="select-the-16550-uart-driver"><a class="doc-anchor" href="#select-the-16550-uart-driver">§</a>14.3 Select the 16550 UART Driver</h2>
 <p>From <a href="TODO"><strong>OpenSBI Log</strong></a>: We see that SG2000 operates with a <strong>8250 UART Controller</strong>.</p>
 <p>Thus we select the NuttX Driver for <strong>16550 UART</strong>, which is compatible with 8250…</p>
 <ul>
@@ -847,7 +847,7 @@ make menuconfig \
 </code></pre></div>
 <p>Thus we compute <a href="https://lupyuen.github.io/articles/plic2#uart-interrupt">NuttX IRQ</a> = 25 + RISC-V IRQ = 69</p>
 <p>TODO: Fix the UART Clock: <strong>16550_UART0_CLOCK</strong></p>
-<h2 id="enable-logging-for-nuttx-scheduler"><a class="doc-anchor" href="#enable-logging-for-nuttx-scheduler">§</a>14.4 Enable Logging for NuttX Scheduler</h2>
+<h2 id="enable-logging-for-scheduler"><a class="doc-anchor" href="#enable-logging-for-scheduler">§</a>14.4 Enable Logging for Scheduler</h2>
 <p>For easier troubleshooting: We enable Logging for <strong>NuttX Scheduler and Binary Loader</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/commit/4cee79630359f6b31fc9fa40f31bb476c8bc4d47"><strong>Enable Logging for Scheduler and Binary Loader</strong></a></li>
@@ -862,7 +862,7 @@ CONFIG_DEBUG_SCHED_INFO=y
 CONFIG_DEBUG_SCHED_WARN=y
 </code></pre></div>
 <p>Remember: Always use <strong><code>make menuconfig</code></strong> to update the settings!</p>
-<h2 id="dump-the-sg2000-linux-device-tree"><a class="doc-anchor" href="#dump-the-sg2000-linux-device-tree">§</a>14.5 Dump the SG2000 Linux Device Tree</h2>
+<h2 id="dump-the-linux-device-tree"><a class="doc-anchor" href="#dump-the-linux-device-tree">§</a>14.5 Dump the Linux Device Tree</h2>
 <p>TODO</p>
 <p>Let’s dump the SG2000 Linux Device Tree to understand the Interrupt Controller.</p>
 <p>From the SG2000 Debian Release: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases</p>
@@ -992,7 +992,7 @@ Nuttnx_start: CPU0: Beginning Idle Loop
 };
 </code></pre></div>
 <p>Thus we compute <a href="https://lupyuen.github.io/articles/plic2#uart-interrupt">NuttX IRQ</a> = 25 + RISC-V IRQ = 69</p>
-<h2 id="nuttx-crash-dump-on-sg2000"><a class="doc-anchor" href="#nuttx-crash-dump-on-sg2000">§</a>14.8 NuttX Crash Dump on SG2000</h2>
+<h2 id="nuttx-crash-dump"><a class="doc-anchor" href="#nuttx-crash-dump">§</a>14.8 NuttX Crash Dump</h2>
 <p>TODO</p>
 <p>We apply the fixes above. Now NuttX boots some more on RISC-V SG2000 SoC / Milk-V Duo S. And shows our very first NuttX Crash Dump yay!</p>
 <p><a href="https://gist.github.com/lupyuen/594f0df20d39001bac171412d594d517">(See the <strong>Complete Log</strong>)</a></p>
