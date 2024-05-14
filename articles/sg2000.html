@@ -745,7 +745,11 @@ ssh tftpserver ls -l /tftpboot/Image-sg2000
 <p>We started with NuttX for <a href="TODO"><strong>Ox64 BL808 RISC-V SBC</strong></a>. Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S!</p>
 <p>This chapter explains the minor tweaks that we made.</p>
 <p><em>Why did we start with NuttX for Ox64?</em></p>
-<p>TODO: C906, Cache, VM</p>
+<p>That’s because Ox64 BL808 runs on the same RISC-V Core as SG2000: <a href="TODO"><strong>T-Head C906</strong></a>.</p>
+<p><em>What about the T-Head Extensions for C906?</em></p>
+<p>Yep we copied (unchanged) the <strong>T-Head Extensions for C906</strong> from Ox64 BL808 to SG2000. And they work great on SG2000…</p>
+<p>TODO: Cache, VM</p>
+<p>Let’s talk about the tweaks…</p>
 <h2 id="nuttx-memory-map"><a class="doc-anchor" href="#nuttx-memory-map">§</a>14.1 NuttX Memory Map</h2>
 <p>From <a href="TODO"><strong>U-Boot Bootloader Settings</strong></a>: We see that SG2000 boots at this address…</p>
 <div class="example-wrap"><pre class="language-bash"><code>kernel_addr_r=0x80200000
