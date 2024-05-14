@@ -425,13 +425,15 @@ real_start:
 </code></pre></div>
 <p>Our code will print “<strong><code>123</code></strong>” when NuttX boots. We test this…</p>
 <h1 id="nuttx-boots-a-tiny-bit"><a class="doc-anchor" href="#nuttx-boots-a-tiny-bit">§</a>9 NuttX Boots A Tiny Bit</h1>
-<p>TODO</p>
-<p>Follow these steps to build (work-in-progress) Apache NuttX RTOS for SG2000 and Milk-V Duo S…</p>
-<p>TODO</p>
+<p>Follow these steps to build <strong>Apache NuttX RTOS</strong> for SG2000 and Milk-V Duo S…</p>
+<ul>
+<li>TODO</li>
+</ul>
 <p>This produces the NuttX Image file: <strong><code>Image</code></strong>. Which we copy to our <strong>TFTP Server</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to TFTP Server
 ## TODO: Change `tftpserver` and `tftpboot` to our TFTP Server and Path
-scp Image tftpserver:/tftpboot/Image-sg2000
+scp Image \
+  tftpserver:/tftpboot/Image-sg2000
 </code></pre></div>
 <p>To boot NuttX: We run these commands at the <strong>U-Boot Command Prompt</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image into RAM
@@ -443,8 +445,7 @@ $ booti ${kernel_addr_r} - ${fdt_addr_r}
 Starting kernel ...
 123
 </code></pre></div>
-<p>NuttX boots a tiny bit, and prints “<strong><code>123</code></strong>” yay!</p>
-<p>Our NuttX Boot Code is actually running on SG2000 and Milk-V Duo S!</p>
+<p>See “<strong><code>123</code></strong>”? That’s evidence that our NuttX Boot Code <strong>is actually running</strong> on SG2000 and Milk-V Duo S! We port some more…</p>
 <p><a href="https://gist.github.com/lupyuen/78b54326daf0894a2c23ab6d2c03456d">(See the <strong>Complete Log</strong>)</a></p>
 <p>TODO: Pic of NuttX Kernel</p>
 <h1 id="nuttx-kernel-boots-ok"><a class="doc-anchor" href="#nuttx-kernel-boots-ok">§</a>10 NuttX Kernel Boots OK</h1>
@@ -498,7 +499,7 @@ CONFIG_DEBUG_SCHED_WARN=y
 <p><a href="TODO">(Explained here)</a></p>
 </li>
 </ol>
-<p>NuttX Kernel boots OK on SG2000 yay!</p>
+<p>After applying the above fixes: <strong>NuttX Kernel</strong> boots successfully!</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image into RAM
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 
@@ -561,7 +562,7 @@ dtc \
 <p><a href="TODO">(Explained here)</a></p>
 </li>
 </ol>
-<p>After fixing the Interrupt Controller and UART Interrupt: NuttX Kernel now boots all the way to <strong>NuttX Shell</strong> yay!</p>
+<p>After fixing the Interrupt Controller and UART Interrupts: NuttX Kernel boots all the way to <strong>NuttX Shell</strong>!</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image into RAM
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 
@@ -589,7 +590,18 @@ nsh&gt; ls /dev
  zero
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b778986ba87c18067cd993b92c673634">(See the <strong>Complete Log</strong>)</a></p>
-<p>TODO: NuttX OSTest works great too!</p>
+<p><em>What about the rest of NuttX?</em></p>
+<p><a href="TODO"><strong>NuttX OSTest</strong></a> is the perfect way to test everything in NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; ostest
+user_main: mutex test
+riscv_exception:
+  EXCEPTION: Load access fault
+  MCAUSE:    5
+  EPC:       802189ce
+  MTVAL:     0000000000000000
+  Segmentation fault in PID 7: ostest
+</code></pre></div>
+<p>Sadly we’re hitting a <strong>Load Access Fault</strong>, needs troubleshooting.</p>
 <p><a href="https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f">(See the <strong>Complete Log</strong>)</a></p>
 <p>TODO: Pic of Milk-V Duo S Box</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
