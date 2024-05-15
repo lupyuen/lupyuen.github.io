@@ -89,16 +89,16 @@
 <li><a href="#nuttx-crash-dump">14.8 NuttX Crash Dump</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-title.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
 <p>Soon we’ll see many new 64-bit RISC-V SBCs based on the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>Sophgo SG2000 RISC-V SoC</strong></a>.</p>
-<p>Will they work with <a href="TODO"><strong>Apache NuttX RTOS</strong></a>? Let’s find out!</p>
+<p>Will they work with <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>? Let’s find out!</p>
 <ul>
 <li>
-<p>We boot Linux on <a href="TODO"><strong>Milk-V Duo S</strong></a> (SG2000 inside)</p>
+<p>We boot Linux on <a href="https://milkv.io/docs/duo/getting-started/duos"><strong>Milk-V Duo S</strong></a> (with SG2000)</p>
 </li>
 <li>
-<p>Peek inside <a href="TODO"><strong>SG2000 Linux</strong></a> and observe how it boots</p>
+<p>Peek inside <a href="https://github.com/Fishwaldo/sophgo-sg200x-debian"><strong>SG2000 Linux</strong></a> and observe how it boots</p>
 </li>
 <li>
-<p>Then we take <a href="TODO"><strong>NuttX for RISC-V</strong></a> (Ox64 BL808)</p>
+<p>Then we take <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>NuttX for RISC-V</strong></a> (Ox64 BL808)</p>
 </li>
 <li>
 <p>Tweak NuttX to <strong>boot on SG2000</strong></p>
@@ -107,7 +107,7 @@
 <p>Fix the (undocumented) <strong>Interrupt Controller</strong></p>
 </li>
 <li>
-<p>And Milk-V Duo S gets a fully-functional <strong>NuttX Shell</strong>!</p>
+<p>And Milk-V Duo S boots to a fully-functional <strong>NuttX Shell</strong>!</p>
 </li>
 </ul>
 <p>Something strangely satisfying about <strong>NuttX on RISC-V</strong>… We finished the port in <strong>Only 10 Days</strong> 🎉</p>
@@ -682,6 +682,7 @@ riscv_exception:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/sg2000.md"><strong>lupyuen.github.io/src/sg2000.md</strong></a></p>
+<p>TODO: Pic of NuttX Build</p>
 <h1 id="appendix-build-nuttx-for-sg2000"><a class="doc-anchor" href="#appendix-build-nuttx-for-sg2000">§</a>13 Appendix: Build NuttX for SG2000</h1>
 <p>In this article we took NuttX for <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 RISC-V SBC</strong></a>. Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S!</p>
 <ol>
