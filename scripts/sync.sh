@@ -87,6 +87,7 @@ function sync_folder() {
     # generate_article lte2 ; exit
 
     # Commit the modified files
+    git pull
     git status
     git add .
     git commit --all --message="Sync from lupyuen.github.io"
