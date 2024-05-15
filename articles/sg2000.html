@@ -88,7 +88,7 @@
 <li><a href="#fix-the-nuttx-driver-for-plic">14.7 Fix the NuttX Driver for PLIC</a><ul></ul></li>
 <li><a href="#nuttx-crash-dump">14.8 NuttX Crash Dump</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-title.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
-<p>TODO</p>
+<p>TODO: Intro</p>
 <p>64-bit RISC-V Sophgo SG2000 SoC … Will it boot Apache NuttX RTOS? 🤔 (T-Head C906 / Milk-V Duo S)</p>
 <ul>
 <li><a href="https://www.cnx-software.com/2024/02/07/sophgo-sg2000-sg2002-ai-soc-features-risc-v-arm-8051-cores-android-linux-freertos/">SG2000 Overview</a></li>
@@ -606,9 +606,14 @@ riscv_exception:
 </code></pre></div>
 <p>Sadly we’re hitting a RISC-V Exception: <strong>Load Access Fault</strong>. Needs more troubleshooting sigh.</p>
 <p><a href="https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f">(See the <strong>Complete Log</strong>)</a></p>
+<p><em>What happens exactly when NuttX boots on SG2000?</em></p>
+<p>Exactly the same as NuttX booting on Ox64 BL808 SBC…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow"><strong>“NuttX Boot Flow”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/sg2000-box.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
-<p>TODO</p>
+<p>TODO: Conclusion</p>
 <p>Up Next…</p>
 <ol>
 <li>
@@ -778,6 +783,15 @@ ssh tftpserver ls -l /tftpboot/Image-sg2000
 <p>Then follow these steps to boot NuttX on Milk-V Duo S…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>“Boot NuttX over TFTP”</strong></a></li>
+</ul>
+<p><em>Why the RAM Disk? Isn’t NuttX an RTOS?</em></p>
+<p>SG2000 uses a RAM Disk because it runs in <strong>NuttX Kernel Mode</strong> (instead of the typical Flat Mode). This means we can do <strong>Memory Protection</strong> and <strong>Virtual Memory</strong> for Apps. But it also means we need to bundle the <strong>NuttX Apps as ELF Files</strong>, hence the RAM Disk…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/app"><strong>“NuttX Apps and Initial RAM Disk”</strong></a></li>
+</ul>
+<p>Most of the NuttX Platforms run on <strong>NuttX Flat Mode</strong>, which has NuttX Apps Statically-Linked into the NuttX Kernel. It works well for Small MCUs, but probably inadequate for larger SoCs like SG2000…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode"><strong>“NuttX Flat Mode vs Kernel Mode”</strong></a></li>
 </ul>
 <h1 id="appendix-port-nuttx-to-sg2000"><a class="doc-anchor" href="#appendix-port-nuttx-to-sg2000">§</a>14 Appendix: Port NuttX to SG2000</h1>
 <p><em>How did we port NuttX to SG2000?</em></p>
