@@ -12,10 +12,10 @@
     content="Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Soon we'll see many new 64-bit RISC-V SBCs based on the Sophgo SG2000 RISC-V SoC. Will they work with Apache NuttX RTOS? Let's find out!"
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Soon we'll see many new 64-bit RISC-V SBCs based on the Sophgo SG2000 RISC-V SoC. Will they work with Apache NuttX RTOS? Let's find out!">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/sg2000-title.jpg">
 <meta property="og:type" 
@@ -86,20 +86,32 @@
 <li><a href="#dump-the-linux-device-tree">14.5 Dump the Linux Device Tree</a><ul></ul></li>
 <li><a href="#interrupt-controller-for-sg2000">14.6 Interrupt Controller for SG2000</a><ul></ul></li>
 <li><a href="#fix-the-nuttx-driver-for-plic">14.7 Fix the NuttX Driver for PLIC</a><ul></ul></li>
-<li><a href="#nuttx-crash-dump">14.8 NuttX Crash Dump</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 May 2024</em></p>
+<li><a href="#nuttx-crash-dump">14.8 NuttX Crash Dump</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-title.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
-<p>TODO: Intro</p>
-<p>64-bit RISC-V Sophgo SG2000 SoC … Will it boot Apache NuttX RTOS? 🤔 (T-Head C906 / Milk-V Duo S)</p>
+<p>Soon we’ll see many new 64-bit RISC-V SBCs based on the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>Sophgo SG2000 RISC-V SoC</strong></a>.</p>
+<p>Will they work with <a href="TODO"><strong>Apache NuttX RTOS</strong></a>? Let’s find out!</p>
 <ul>
-<li><a href="https://www.cnx-software.com/2024/02/07/sophgo-sg2000-sg2002-ai-soc-features-risc-v-arm-8051-cores-android-linux-freertos/">SG2000 Overview</a></li>
+<li>
+<p>We boot Linux on <a href="TODO"><strong>Milk-V Duo S</strong></a> (SG2000 inside)</p>
+</li>
+<li>
+<p>Peek inside <a href="TODO"><strong>SG2000 Linux</strong></a> and observe how it boots</p>
+</li>
+<li>
+<p>Then we take <a href="TODO"><strong>NuttX for RISC-V</strong></a> (Ox64 BL808)</p>
+</li>
+<li>
+<p>Tweak NuttX to <strong>boot on SG2000</strong></p>
+</li>
+<li>
+<p>Fix the (undocumented) <strong>Interrupt Controller</strong></p>
+</li>
+<li>
+<p>And Milk-V Duo S gets a fully-functional <strong>NuttX Shell</strong>!</p>
+</li>
 </ul>
-<p>Let’s find out!</p>
-<p>Something strangely satisfying about NuttX on RISC-V… We finished the port in only 10 days! 🎉</p>
-<p><a href="https://github.com/sophgo/sophgo-doc/releases">(See the <strong>SG2000 Reference Manual</strong>)</a></p>
-<p><em>Is this a sponsored review?</em></p>
-<p>I was given a Milk-V Duo S, and I bought another. So it cancels out, I guess?</p>
-<p><em>Why are we doing all this?</em></p>
-<p>We hear that there will be plenty of interesting new SBCs based on Sophgo SG2000 and SG2002. Perfect for NuttX!</p>
+<p>Something strangely satisfying about <strong>NuttX on RISC-V</strong>… We finished the port in <strong>Only 10 Days</strong> 🎉</p>
+<p>(Is this a sponsored review? I was given a Milk-V Duo S, and I bought another. So it cancels out, I guess?)</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-soc.jpg" alt="Sophgo SG2000 RISC-V SoC" /></p>
 <h1 id="sophgo-sg2000-risc-v-soc"><a class="doc-anchor" href="#sophgo-sg2000-risc-v-soc">§</a>1 Sophgo SG2000 RISC-V SoC</h1>
 <p><strong>Sophgo SG2000 SoC</strong> has a fascinating mix of 64-bit RISC-V Cores (Arm too)…</p>
@@ -611,6 +623,29 @@ riscv_exception:
 <p><img src="https://lupyuen.github.io/images/sg2000-box.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
 <p>TODO: Conclusion</p>
+<p>Soon we’ll see many new 64-bit RISC-V SBCs based on the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>Sophgo SG2000 RISC-V SoC</strong></a>.</p>
+<p>Will they work with <a href="TODO"><strong>Apache NuttX RTOS</strong></a>? Let’s find out!</p>
+<ul>
+<li>
+<p>We boot Linux on <a href="TODO"><strong>Milk-V Duo S</strong></a> (SG2000 inside)</p>
+</li>
+<li>
+<p>Peek inside <a href="TODO"><strong>SG2000 Linux</strong></a> and observe how it boots</p>
+</li>
+<li>
+<p>Then we take <a href="TODO"><strong>NuttX for RISC-V</strong></a> (Ox64 BL808)</p>
+</li>
+<li>
+<p>Tweak NuttX to <strong>boot on SG2000</strong></p>
+</li>
+<li>
+<p>Fix the (undocumented) <strong>Interrupt Controller</strong></p>
+</li>
+<li>
+<p>And Milk-V Duo S gets a fully-functional <strong>NuttX Shell</strong>!</p>
+</li>
+</ul>
+<p>Something strangely satisfying about <strong>NuttX on RISC-V</strong>… We finished the port in <strong>Only 10 Days</strong> 🎉</p>
 <p>Up Next…</p>
 <ol>
 <li>
