@@ -910,7 +910,8 @@ make menuconfig \
 };
 </code></pre></div>
 <p>Thus we compute <a href="https://lupyuen.github.io/articles/plic2#uart-interrupt"><strong>NuttX IRQ</strong></a> = 25 + RISC-V IRQ = 69</p>
-<p>TODO: Fix the UART Clock: <em>16550_UART0_CLOCK</em></p>
+<p>(We should fix the UART Clock: <em>16550_UART0_CLOCK</em>)</p>
+<p><img src="https://lupyuen.github.io/images/plic2-bl808a.jpg" alt="TODO: UART IRQ" /></p>
 <h2 id="enable-logging-for-scheduler"><a class="doc-anchor" href="#enable-logging-for-scheduler">§</a>14.3 Enable Logging for Scheduler</h2>
 <p>For easier troubleshooting: We enable Logging for <strong>NuttX Scheduler and Binary Loader</strong>…</p>
 <ul>
@@ -926,6 +927,7 @@ CONFIG_DEBUG_SCHED_INFO=y
 CONFIG_DEBUG_SCHED_WARN=y
 </code></pre></div>
 <p>Remember: Always use <strong><code>make menuconfig</code></strong> to update the settings!</p>
+<p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="TODO: Platform-Level Interrupt Controller" /></p>
 <h2 id="disable-interrupt-controller"><a class="doc-anchor" href="#disable-interrupt-controller">§</a>14.4 Disable Interrupt Controller</h2>
 <p>Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a <a href="https://lupyuen.github.io/articles/plic2"><strong>Platform-Level Interrupt Controller (PLIC)</strong></a>. But PLIC isn’t documented for SG2000.</p>
 <p>For now, let’s disable PLIC in NuttX…</p>
