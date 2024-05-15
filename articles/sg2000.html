@@ -95,17 +95,11 @@
 </ul>
 <p>Let’s find out!</p>
 <p>Something strangely satisfying about NuttX on RISC-V… We finished the port in only 10 days! 🎉</p>
+<p><a href="https://github.com/sophgo/sophgo-doc/releases">(See the <strong>SG2000 Reference Manual</strong>)</a></p>
 <p><em>Is this a sponsored review?</em></p>
 <p>I was given a Milk-V Duo S, and I bought another. So it cancels out, I guess?</p>
 <p><em>Why are we doing all this?</em></p>
-<ol>
-<li>
 <p>We hear that there will be plenty of interesting new SBCs based on Sophgo SG2000 and SG2002. Perfect for NuttX!</p>
-</li>
-<li>
-<p>NuttX has been ported from QEMU RISC-V to Star64 JH7110 to Ox64 BL808 and now Sophgo SG2000. Let’s find the most efficient way to port NuttX to new RISC-V Devices!</p>
-</li>
-</ol>
 <p><img src="https://lupyuen.github.io/images/sg2000-soc.jpg" alt="Sophgo SG2000 RISC-V SoC" /></p>
 <h1 id="sophgo-sg2000-risc-v-soc"><a class="doc-anchor" href="#sophgo-sg2000-risc-v-soc">§</a>1 Sophgo SG2000 RISC-V SoC</h1>
 <p><strong>Sophgo SG2000 SoC</strong> has a fascinating mix of 64-bit RISC-V Cores (Arm too)…</p>
@@ -927,7 +921,6 @@ CONFIG_DEBUG_SCHED_INFO=y
 CONFIG_DEBUG_SCHED_WARN=y
 </code></pre></div>
 <p>Remember: Always use <strong><code>make menuconfig</code></strong> to update the settings!</p>
-<p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="TODO: Platform-Level Interrupt Controller" /></p>
 <h2 id="disable-interrupt-controller"><a class="doc-anchor" href="#disable-interrupt-controller">§</a>14.4 Disable Interrupt Controller</h2>
 <p>Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a <a href="https://lupyuen.github.io/articles/plic2"><strong>Platform-Level Interrupt Controller (PLIC)</strong></a>. But PLIC isn’t documented for SG2000.</p>
 <p>For now, let’s disable PLIC in NuttX…</p>
@@ -981,6 +974,7 @@ clint@74000000 {
 };
 </code></pre></div>
 <p>We see that PLIC (External Interrupts) is at <strong><code>0x7000_0000</code></strong>, CLINT (Internal Interrupts) at <strong><code>0x7400_0000</code></strong>. Let’s implement this in NuttX…</p>
+<p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="TODO: Platform-Level Interrupt Controller" /></p>
 <h2 id="fix-the-nuttx-driver-for-plic"><a class="doc-anchor" href="#fix-the-nuttx-driver-for-plic">§</a>14.7 Fix the NuttX Driver for PLIC</h2>
 <p>Based on the SG2000 PLIC Address from above: We fix the <strong>PLIC Interrupt Controller</strong> for SG2000…</p>
 <ul>
