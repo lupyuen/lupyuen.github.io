@@ -151,7 +151,7 @@ __`genromfs`__ will helpfully pack our C Header Files into a ROM FS Filesystem: 
 sudo apt install genromfs
 
 ## For macOS: Install `genromfs`
-brew install genromfs
+brew install px4/px4/genromfs
 
 ## Bundle the `romfs` folder into
 ## ROM FS Filesystem `romfs.bin`
@@ -332,7 +332,7 @@ Seconds ago we bundled our C Header Files into a __ROM FS Filesystem__: [build.s
 sudo apt install genromfs
 
 ## For macOS: Install `genromfs`
-brew install genromfs
+brew install px4/px4/genromfs
 
 ## Bundle the `romfs` folder into
 ## ROM FS Filesystem `romfs.bin`
@@ -1311,7 +1311,7 @@ A while ago we saw __`genromfs`__ faithfully packing our C Header Files into a _
 sudo apt install genromfs
 
 ## For macOS: Install `genromfs`
-brew install genromfs
+brew install px4/px4/genromfs
 
 ## Bundle the `romfs` folder into
 ## ROM FS Filesystem `romfs.bin`
