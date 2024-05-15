@@ -390,7 +390,7 @@ saveenv
 <p><em>What UART Controller is inside SG2000?</em></p>
 <p>According to <a href="https://lupyuen.github.io/articles/sg2000#boot-the-linux-microsd"><strong>OpenSBI Log</strong></a>: The UART Controller is <strong><code>uart8250</code></strong>.</p>
 <p>Which is supported by NuttX. We mod the NuttX Boot Code to print something…</p>
-<p><img src="https://lupyuen.github.io/images/sg2000-boot-png" alt="Print to UART in RISC-V Assembly" /></p>
+<p><img src="https://lupyuen.github.io/images/sg2000-boot.png" alt="Print to UART in RISC-V Assembly" /></p>
 <h1 id="print-to-uart-in-risc-v-assembly"><a class="doc-anchor" href="#print-to-uart-in-risc-v-assembly">§</a>8 Print to UART in RISC-V Assembly</h1>
 <p><em>Printing in RISC-V Assembly? Why not C?</em></p>
 <p>That’s because the very first thing that boots is the NuttX Boot Code in <strong>RISC-V Assembly</strong>. Which we’ll modify like this…</p>
