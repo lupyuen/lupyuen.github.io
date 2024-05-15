@@ -6,7 +6,13 @@ set -x  #  Echo all commands.
 
 # Generate HTML and PDF
 scripts/gen-resume-html.sh
-scripts/gen-resume-pdf.sh
+
+# scripts/gen-resume-pdf.sh
+# TODO: Fix this error:
+# node:internal/child_process:421
+# throw new ErrnoException(err, 'spawn');
+# Error: spawn Unknown system error -86
+# at ChildProcess.spawn (node:internal/child_process:421:11)
 
 # Fix HTML formatting by expanding all sections:
 # Change
