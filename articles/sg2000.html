@@ -260,7 +260,7 @@ Debian GNU/Linux trixie/sid duos ttyS0
 duos login: 
 </code></pre></div>
 <p>Moving on to NuttX…</p>
-<p>TODO: Pic of U-Boot</p>
+<p><img src="https://lupyuen.github.io/images/app-initrd.jpg" alt="TODO: U-Boot Bootloader" /></p>
 <h1 id="settings-for-u-boot-bootloader"><a class="doc-anchor" href="#settings-for-u-boot-bootloader">§</a>5 Settings for U-Boot Bootloader</h1>
 <p><em>How will we boot NuttX?</em></p>
 <p>We seek guidance from the <strong>U-Boot Bootloader</strong>.</p>
@@ -396,6 +396,7 @@ saveenv
 <p><em>What UART Controller is inside SG2000?</em></p>
 <p>According to <a href="https://lupyuen.github.io/articles/sg2000#boot-the-linux-microsd"><strong>OpenSBI Log</strong></a>: The UART Controller is <strong><code>uart8250</code></strong>.</p>
 <p>Which is supported by NuttX. We mod the NuttX Boot Code to print something…</p>
+<p><img src="https://lupyuen.github.io/images/sg2000-boot-png" alt="Print to UART in RISC-V Assembly" /></p>
 <h1 id="print-to-uart-in-risc-v-assembly"><a class="doc-anchor" href="#print-to-uart-in-risc-v-assembly">§</a>8 Print to UART in RISC-V Assembly</h1>
 <p><em>Printing in RISC-V Assembly? Why not C?</em></p>
 <p>That’s because the very first thing that boots is the NuttX Boot Code in <strong>RISC-V Assembly</strong>. Which we’ll modify like this…</p>
@@ -786,6 +787,7 @@ ssh tftpserver ls -l /tftpboot/Image-sg2000
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>“Boot NuttX over TFTP”</strong></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Virtual Memory for NuttX Apps" /></p>
 <p><em>Why the RAM Disk? Isn’t NuttX an RTOS?</em></p>
 <p>SG2000 uses a RAM Disk because it runs in <strong>NuttX Kernel Mode</strong> (instead of the typical Flat Mode). This means we can do <strong>Memory Protection</strong> and <strong>Virtual Memory</strong> for Apps. But it also means we need to bundle the <strong>NuttX Apps as ELF Files</strong>, hence the RAM Disk…</p>
 <ul>
