@@ -304,6 +304,7 @@ active
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp"><strong>“Configure U-Boot for TFTP”</strong></a></li>
 </ul>
+<p>Follow the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a> to install our TFTP Server.</p>
 <p>At the <strong>U-Boot Command Prompt</strong>: We configure our <strong>TFTP Server</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the U-Boot TFTP Server
 ## TODO: Change to your TFTP Server
@@ -615,7 +616,9 @@ riscv_exception:
 </code></pre></div>
 <p>Sadly we’re hitting a RISC-V Exception: <strong>Load Access Fault</strong>. Needs more troubleshooting sigh.</p>
 <p><a href="https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f">(See the <strong>Complete Log</strong>)</a></p>
-<p>TODO: Pic of Boot Flow</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/ox2-flow.jpg" alt="TODO: NuttX Boot Flow" /></p>
+</blockquote>
 <p><em>What happens exactly when NuttX boots on SG2000?</em></p>
 <p>Exact same thing as NuttX booting on Ox64 BL808 SBC (pic above)…</p>
 <ul>
@@ -708,6 +711,15 @@ riscv_exception:
 </li>
 </ol>
 <p>Follow these steps to build (work-in-progress) Apache NuttX RTOS for <strong>SG2000 and Milk-V Duo S</strong>…</p>
+<p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></li>
+</ul>
+<p>Download the RISC-V Toolchain for <strong>riscv64-unknown-elf</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></li>
+</ul>
+<p>Then Download and Build NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>set -e  #  Exit when any command fails
 set -x  #  Echo commands
 
@@ -821,6 +833,7 @@ scp Image tftpserver:/tftpboot/Image-sg2000
 ssh tftpserver ls -l /tftpboot/Image-sg2000
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/sg2000-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p>The steps above assume that we have installed our TFTP Server, according to the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a>.</p>
 <p>Then follow these steps to boot NuttX on Milk-V Duo S…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>“Boot NuttX over TFTP”</strong></a></li>
@@ -835,7 +848,7 @@ ssh tftpserver ls -l /tftpboot/Image-sg2000
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode"><strong>“NuttX Flat Mode vs Kernel Mode”</strong></a></li>
 </ul>
-<p>TODO: Pic of Commits</p>
+<p><img src="https://lupyuen.github.io/images/sg2000-commits.jpg" alt="Porting NuttX to SG2000" /></p>
 <h1 id="appendix-port-nuttx-to-sg2000"><a class="doc-anchor" href="#appendix-port-nuttx-to-sg2000">§</a>14 Appendix: Port NuttX to SG2000</h1>
 <p><em>How did we port NuttX to SG2000?</em></p>
 <p>We started with NuttX for <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 RISC-V SBC</strong></a>. Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S! This chapter explains the minor tweaks that we made.</p>
