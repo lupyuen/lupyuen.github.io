@@ -111,7 +111,7 @@
 </li>
 </ul>
 <p>Something strangely satisfying about <strong>NuttX on RISC-V</strong>… We finished the port in <strong>Only 10 Days</strong> 🎉</p>
-<p><em>(Is this a sponsored review? I was given a Milk-V Duo S, and I bought another. So it cancels out, I guess?)</em></p>
+<p><em>(Is this a sponsored review? I was given a Milk-V Duo S, and I bought another. So it cancels out I guess?)</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-soc.jpg" alt="Sophgo SG2000 RISC-V SoC" /></p>
 <h1 id="sophgo-sg2000-risc-v-soc"><a class="doc-anchor" href="#sophgo-sg2000-risc-v-soc">§</a>1 Sophgo SG2000 RISC-V SoC</h1>
 <p><strong>Sophgo SG2000 SoC</strong> has a fascinating mix of 64-bit RISC-V Cores (Arm too)…</p>
@@ -138,7 +138,7 @@
 <p><em>Whoa RISC-V AND Arm CPUs in a single SoC?</em></p>
 <p>Actually there’s a <strong>Physical Switch</strong> that selects the Main CPU: <strong>RISC-V OR Arm</strong>.</p>
 <p>Don’t let yer pet hamster flip it… It will get super frustrating!</p>
-<p>(<a href="https://sophon.ai/"><strong>Sophgo</strong></a> refers to <a href="https://three-body-problem.fandom.com/wiki/Sophon"><strong>3 Body</strong></a>?)</p>
+<p>(<a href="https://sophon.ai/"><strong>Sophgo</strong></a> / <em>sophon.ai</em> refers to <a href="https://three-body-problem.fandom.com/wiki/Sophon"><strong>3 Body</strong></a>?)</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-board.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
 <h1 id="boot-without-microsd"><a class="doc-anchor" href="#boot-without-microsd">§</a>2 Boot Without MicroSD</h1>
 <p><em>What happens if we boot Milk-V Duo S? Fresh from the box?</em></p>
@@ -159,7 +159,7 @@ E:eMMC initializing failed
 E:Boot failed
 E:RESET:plat/mars/platform.c:114
 </code></pre></div>
-<p>We’ll need U-Boot on MicroSD. (Next section)</p>
+<p>We’ll need U-Boot on MicroSD, in the next section.</p>
 <p><a href="https://github.com/milkv-duo/fsbl/blob/milkv/plat/sg200x/platform.c">(<strong>platform.c</strong> might be here)</a></p>
 <p>If we see <a href="https://gist.github.com/lupyuen/d55b77a51ee8b258d6d1c0799770742a">“<strong><code>B.SCS</code></strong>”</a> instead of “<strong><code>C.SCS</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-bash"><code>B.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000.
@@ -189,7 +189,7 @@ $ brew install lz4
 ## Uncompress the download to get `duos_sd.img`
 $ lz4 duos_sd.img.lz4
 </code></pre></div>
-<p>Write <strong><code>duos_sd.img</code></strong> to a MicroSD Card. Use <a href="https://etcher.balena.io"><strong>Balena Etcher</strong></a>, <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a> or <a href="https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6"><strong><code>dd</code></strong></a>.</p>
+<p>And write <strong><code>duos_sd.img</code></strong> to a MicroSD Card. Use <a href="https://etcher.balena.io"><strong>Balena Etcher</strong></a>, <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a> or <a href="https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6"><strong><code>dd</code></strong></a>.</p>
 <p>We’ll see these <strong>MicroSD Files</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## MicroSD Root Folder
 $ ls -l /Volumes/boot
@@ -216,7 +216,7 @@ linux  /vmlinuz-5.10.4-20240329-1+
 fdtdir /fdt/linux-image-duos-5.10.4-20240329-1+/
 append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw
 </code></pre></div>
-<p>With a tiny tweak, we can boot NuttX RTOS.</p>
+<p>With a tiny tweak, this will boot NuttX RTOS.</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-sbi.jpg" alt="OpenSBI and U-Boot Bootloader" /></p>
 <h1 id="boot-the-linux-microsd"><a class="doc-anchor" href="#boot-the-linux-microsd">§</a>4 Boot the Linux MicroSD</h1>
 <p><em>Linux on MicroSD: Will it boot on Milk-V Duo S?</em></p>
@@ -267,7 +267,7 @@ Linux version 5.10.4-20240329-1+ (root@3abcc283c6ba) (riscv64-unknown-linux-musl
 Debian GNU/Linux trixie/sid duos ttyS0
 duos login: 
 </code></pre></div>
-<p>Moving on to NuttX…</p>
+<p>Hopping from Linux to NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-uboot.jpg" alt="U-Boot Bootloader" /></p>
 <h1 id="settings-for-u-boot-bootloader"><a class="doc-anchor" href="#settings-for-u-boot-bootloader">§</a>5 Settings for U-Boot Bootloader</h1>
 <p><em>How will we boot NuttX?</em></p>
@@ -300,13 +300,14 @@ active
 <p><a href="https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2#file-milkv-duo-s-uboot-log-L99-L188">(See the <strong>U-Boot Commands</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-tftp.jpg" alt="Boot NuttX over TFTP" /></p>
 <h1 id="boot-nuttx-over-tftp"><a class="doc-anchor" href="#boot-nuttx-over-tftp">§</a>6 Boot NuttX over TFTP</h1>
-<p><em>What’s the quickest way to port NuttX?</em></p>
+<p><em>What’s the quickest way to port NuttX to SG2000?</em></p>
 <p>Like Linux, we could <strong>copy NuttX to MicroSD</strong>, insert into Milk-V Duo S and power up. <a href="https://www.tindie.com/products/badgerdnl/sdwire-usb-c-sd-card-reader-sd-mux/"><strong>Again and again and again</strong></a>…</p>
-<p>But there’s a quicker way: Boot <strong>NuttX over the Network</strong>, thanks to U-Boot Bootloader and TFTP (Trivial File Transfer Protocol)</p>
+<p>But there’s a quicker way: Boot <strong>NuttX over the Network</strong>, thanks to U-Boot Bootloader and <strong>TFTP (Trivial File Transfer Protocol)</strong></p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp"><strong>“Configure U-Boot for TFTP”</strong></a></li>
 </ul>
-<p>Follow the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a> to install our TFTP Server.</p>
+<p>Follow the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a> to install our TFTP Server. Copy these files to our TFTP Server…</p>
+<p>TODO: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/Image">(<strong>Image-sg2000</strong> is here)</a></p>
 <p>At the <strong>U-Boot Command Prompt</strong>: We configure our <strong>TFTP Server</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the U-Boot TFTP Server
 ## TODO: Change to your TFTP Server
@@ -340,7 +341,6 @@ fdt addr ${fdt_addr_r}
 ## ramdisk_addr_r=0x81600000
 ## tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/Image">(<strong>Image-sg2000</strong> is here)</a></p>
 <p>And we boot <strong>NuttX from RAM</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot the NuttX Image with the Device Tree
 ## kernel_addr_r=0x80200000
@@ -363,9 +363,9 @@ Loading Ramdisk to 9e27f000, end 9f27f000 ... OK
 Loading Device Tree to 9e26f000, end 9e27e43a ... OK
 Starting kernel ...
 </code></pre></div>
-<p>But that’s OK, we haven’t modified NuttX Kernel for SG2000. We’ll print something in the next section.</p>
+<p>But that’s OK, we haven’t modified NuttX Kernel for SG2000. We’ll print something in a while.</p>
 <p><em>We type these commands EVERY TIME we boot?</em></p>
-<p>We can automate this: Just do this once, and <strong>NuttX will Auto-Boot</strong> whenever we power up…</p>
+<p>We can automate: Just do this once, and <strong>NuttX will Auto-Boot</strong> whenever we power up…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Add the Boot Command for TFTP
 setenv bootcmd_tftp &#39;dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}&#39;
 
@@ -390,10 +390,9 @@ saveenv
 <h1 id="uart-controller-for-sg2000"><a class="doc-anchor" href="#uart-controller-for-sg2000">§</a>7 UART Controller for SG2000</h1>
 <p><em>How will NuttX print to the Serial Console?</em></p>
 <p>First we track down the <strong>UART Controller</strong> for SG2000.</p>
-<p>From <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>SG2000 Reference Manual</strong></a> (Page 638): The UART Controller is at these Base Addresses.</p>
-<p>We’ll print to UART0 in NuttX: <strong><code>0x0414_0000</code></strong></p>
+<p>From <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>SG2000 Reference Manual</strong></a> (Page 638): The UART Controller is at these Base Addresses (we’ll talk to <strong>UART0</strong>)</p>
 <div><table><thead><tr><th style="text-align: center">UART Module</th><th style="text-align: center">Base Address</th></tr></thead><tbody>
-<tr><td style="text-align: center">UART0</td><td style="text-align: center"><code>0x0414_0000</code></td></tr>
+<tr><td style="text-align: center"><strong>UART0</strong></td><td style="text-align: center"><strong><code>0x0414_0000</code></strong></td></tr>
 <tr><td style="text-align: center">UART1</td><td style="text-align: center"><code>0x0415_0000</code></td></tr>
 <tr><td style="text-align: center">UART2</td><td style="text-align: center"><code>0x0416_0000</code></td></tr>
 <tr><td style="text-align: center">UART3</td><td style="text-align: center"><code>0x0417_0000</code></td></tr>
@@ -434,6 +433,8 @@ real_start:
   /* Store byte from Register t1 to UART Base Address, Offset 0 */
   sb  t1, 0(t0)
 </code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address)</a></p>
 <p>Our code will print “<strong><code>123</code></strong>” when NuttX boots. We test this…</p>
 <h1 id="nuttx-boots-a-tiny-bit"><a class="doc-anchor" href="#nuttx-boots-a-tiny-bit">§</a>9 NuttX Boots A Tiny Bit</h1>
 <p>Follow these steps to build <strong>Apache NuttX RTOS</strong> for SG2000 and Milk-V Duo S…</p>
@@ -541,8 +542,8 @@ nxtask_exit: AppBringUp pid=2,TCB=0x80408740
 <h1 id="nuttx-shell-too"><a class="doc-anchor" href="#nuttx-shell-too">§</a>11 NuttX Shell Too!</h1>
 <p><em>NuttX Kernel boots OK. Where’s the NuttX Shell?</em></p>
 <p>We won’t see the NuttX Shell until we fix the <strong>Interrupt Controller</strong> for SG2000. Which is NOT documented. (Sigh)</p>
-<p>That’s because NuttX Shell requires <a href="https://lupyuen.github.io/articles/plic#serial-input-in-nuttx-qemu"><strong>UART Input Interrupts</strong></a> AND <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>UART Output Interrupts</strong></a>, to operate properly.</p>
-<p>We sniff around and find out how the Interrupt Controller works…</p>
+<p>That’s because NuttX Shell requires <a href="https://lupyuen.github.io/articles/plic#serial-input-in-nuttx-qemu"><strong>UART Input Interrupts</strong></a> AND <a href="https://lupyuen.github.io/articles/plic#serial-output-in-nuttx-qemu"><strong>UART Output Interrupts</strong></a>, to support Console Input / Output.</p>
+<p>Thus we sniff around and find out how the Interrupt Controller works.</p>
 <ol>
 <li>
 <p>We dumped the <a href="https://lupyuen.github.io/articles/sg2000#dump-the-linux-device-tree"><strong>Linux Device Tree</strong></a> for SG2000…</p>
@@ -625,7 +626,7 @@ riscv_exception:
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow"><strong>“NuttX Boot Flow”</strong></a></p>
-<p><a href="https://gist.github.com/lupyuen/cb14b278d2749fc83d3709f5d1f604e4">(<strong>AI</strong> might help?)</a></p>
+<p><a href="https://gist.github.com/lupyuen/cb14b278d2749fc83d3709f5d1f604e4">(<strong>AI</strong> might explain it better?)</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/sg2000-box.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
@@ -666,8 +667,8 @@ riscv_exception:
 <p><a href="TODO">(Similar to <strong>TinyEMU for Ox64</strong>)</a></p>
 </li>
 <li>
-<p>Someday we might run NuttX on the SG2000 Co-Processor!</p>
-<p>(Also SG2002 and its upsized TPU)</p>
+<p>Someday we might run NuttX on the <strong>SG2000 Co-Processor</strong></p>
+<p>(Also SG2002 with its upsized TPU / NPU)</p>
 </li>
 <li>
 <p>Join me online at the <a href="TODO"><strong>Apache NuttX International Workshop</strong></a></p>
@@ -987,9 +988,9 @@ make menuconfig \
 </ul>
 <p>We download the Latest Release for <strong>Milk-V Duo S</strong> (SG2000)…</p>
 <ul>
-<li><a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4"><strong>duos_sd.img.lz4</strong></a></li>
+<li><a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4"><strong>Latest Release: duos_sd.img.lz4</strong></a></li>
 </ul>
-<p>We copy out the SG2000 <strong>Device Tree Binary</strong>: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dtb">cv181x_milkv_duos_sd.dtb</a></p>
+<p>Copy out the SG2000 <strong>Device Tree Binary</strong>: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dtb">cv181x_milkv_duos_sd.dtb</a></p>
 <p>And convert it to <strong>Device Tree Source</strong>: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts">cv181x_milkv_duos_sd.dts</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Convert the SG2000 Device Tree
 dtc \
