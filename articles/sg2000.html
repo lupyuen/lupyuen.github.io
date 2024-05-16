@@ -375,10 +375,10 @@ saveenv
 ## Test the Boot Command for TFTP, then reboot
 run bootcmd_tftp
 
-## Remember the Original Boot Targets
+## Remember the Original Boot Targets: `mmc0 dhcp pxe`
 setenv orig_boot_targets &quot;$boot_targets&quot;
 
-## Prepend TFTP to the Boot Targets
+## Prepend TFTP to the Boot Targets: `tftp mmc0 dhcp pxe`
 setenv boot_targets &quot;tftp $boot_targets&quot;
 
 ## Save it for future reboots
