@@ -617,7 +617,7 @@ riscv_exception:
 <p>Sadly we’re hitting a RISC-V Exception: <strong>Load Access Fault</strong>. Needs more troubleshooting sigh.</p>
 <p><a href="https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f">(See the <strong>Complete Log</strong>)</a></p>
 <blockquote>
-<p><img src="https://lupyuen.github.io/images/sg2000-boot.jpg" alt="TODO: NuttX Boot Flow" /></p>
+<p><img src="https://lupyuen.github.io/images/sg2000-boot.jpg" alt="NuttX Boot Flow" /></p>
 </blockquote>
 <p><em>What happens exactly when NuttX boots on SG2000?</em></p>
 <p>Exact same thing as NuttX booting on Ox64 BL808 SBC (pic above)…</p>
@@ -836,7 +836,10 @@ ssh tftpserver ls -l /tftpboot/Image-sg2000
 <p>The steps above assume that we have installed our TFTP Server, according to the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a>.</p>
 <p>Then follow these steps to boot NuttX on Milk-V Duo S…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>“Boot NuttX over TFTP”</strong></a></li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>“Boot NuttX over TFTP”</strong></a></p>
+<p>(How to boot from MicroSD instead of TFTP?)</p>
+</li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Virtual Memory for NuttX Apps" /></p>
 <p><em>Why the RAM Disk? Isn’t NuttX an RTOS?</em></p>
@@ -851,7 +854,7 @@ ssh tftpserver ls -l /tftpboot/Image-sg2000
 <p><img src="https://lupyuen.github.io/images/sg2000-commits.jpg" alt="Porting NuttX to SG2000" /></p>
 <h1 id="appendix-port-nuttx-to-sg2000"><a class="doc-anchor" href="#appendix-port-nuttx-to-sg2000">§</a>14 Appendix: Port NuttX to SG2000</h1>
 <p><em>How did we port NuttX to SG2000?</em></p>
-<p>We started with NuttX for <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 RISC-V SBC</strong></a>. Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S! This chapter explains the minor tweaks that we made.</p>
+<p>We started with NuttX for <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 RISC-V SBC</strong></a>. Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S! This chapter explains the minor tweaks that we made. (Pic above)</p>
 <p><em>Why did we start with NuttX for Ox64?</em></p>
 <p>That’s because Ox64 BL808 runs on the same RISC-V Core as SG2000: <a href="https://github.com/T-head-Semi/openc906/blob/main/doc/openc906%20datasheet.pdf"><strong>T-Head C906</strong></a>.</p>
 <p><em>What about the T-Head Extensions for C906?</em></p>
@@ -966,7 +969,7 @@ make menuconfig \
 <p>(We should fix the UART Clock: <em>16550_UART0_CLOCK</em>)</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-memory.jpg" alt="Whither PLIC?" /></p>
 <h2 id="disable-interrupt-controller"><a class="doc-anchor" href="#disable-interrupt-controller">§</a>14.3 Disable Interrupt Controller</h2>
-<p>Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a <a href="https://lupyuen.github.io/articles/plic2"><strong>Platform-Level Interrupt Controller (PLIC)</strong></a>. But PLIC isn’t documented for SG2000.</p>
+<p>Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a <a href="https://lupyuen.github.io/articles/plic2"><strong>Platform-Level Interrupt Controller (PLIC)</strong></a>. But PLIC isn’t documented for SG2000. (Pic above sigh)</p>
 <p>For now, let’s disable PLIC in NuttX…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b93ec4"><strong>Disable the PLIC Interrupt Controller</strong></a></li>
