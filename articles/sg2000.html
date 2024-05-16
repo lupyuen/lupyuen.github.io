@@ -307,7 +307,14 @@ active
 <li><a href="https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp"><strong>“Configure U-Boot for TFTP”</strong></a></li>
 </ul>
 <p>Follow the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a> to install our TFTP Server. Copy these files to our TFTP Server…</p>
-<p>TODO: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/Image">(<strong>Image-sg2000</strong> is here)</a></p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/Image-sg2000"><strong>NuttX Image: Image-sg2000</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb"><strong>Device Tree: cv181x_milkv_duos_sd.dtb</strong></a></p>
+</li>
+</ul>
 <p>At the <strong>U-Boot Command Prompt</strong>: We configure our <strong>TFTP Server</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the U-Boot TFTP Server
 ## TODO: Change to your TFTP Server
@@ -329,7 +336,7 @@ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 ## Load the Device Tree from TFTP Server
 ## fdt_addr_r=0x81200000
 ## TODO: Fix the Device Tree, it&#39;s not needed by NuttX
-tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb
 
 ## Set the RAM Address of Device Tree
 ## fdt_addr_r=0x81200000
@@ -356,7 +363,7 @@ booti ${kernel_addr_r} - ${fdt_addr_r}
 <p><em>What happens when we boot NuttX?</em></p>
 <p>Absolutely nothing…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX over TFTP, mashed up in a single line...
-$ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
+$ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
 
 Booting using the fdt blob at 0x81200000
 Loading Ramdisk to 9e27f000, end 9f27f000 ... OK
@@ -367,7 +374,7 @@ Starting kernel ...
 <p><em>We type these commands EVERY TIME we boot?</em></p>
 <p>We can automate: Just do this once, and <strong>NuttX will Auto-Boot</strong> whenever we power up…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Add the Boot Command for TFTP
-setenv bootcmd_tftp &#39;dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}&#39;
+setenv bootcmd_tftp &#39;dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}&#39;
 
 ## Save it for future reboots
 saveenv
@@ -444,15 +451,20 @@ real_start:
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/sg2000-1">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
 </ul>
-<p>This produces the NuttX Image File: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/Image"><strong><code>Image</code></strong></a>. Which we copy to our <strong>TFTP Server</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to TFTP Server
+<p>This produces the NuttX Image File: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/Image-sg2000"><strong><code>Image-sg2000</code></strong></a>. Which we copy to our <strong>TFTP Server</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image and Device Tree to TFTP Server
 ## TODO: Change `tftpserver` and `tftpboot` to our TFTP Server and Path
-scp Image \
+scp Image-sg2000 \
   tftpserver:/tftpboot/Image-sg2000
+scp cv181x_milkv_duos_sd.dtb \
+  tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb">(<strong>cv181x_milkv_duos_sd.dtb</strong> is here)</a></p>
 <p>To Boot NuttX: Run these commands at the <strong>U-Boot Command Prompt</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image into RAM
+<div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image and Device Tree into RAM
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
+$ tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb
+$ fdt addr ${fdt_addr_r}
 
 ## Boot NuttX from RAM
 $ booti ${kernel_addr_r} - ${fdt_addr_r}
@@ -515,8 +527,10 @@ CONFIG_DEBUG_SCHED_WARN=y
 </li>
 </ol>
 <p>After applying the above fixes: <strong>NuttX Kernel</strong> boots successfully! (Pic above)</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image into RAM
+<div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image and Device Tree into RAM
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
+$ tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb
+$ fdt addr ${fdt_addr_r}
 
 ## Boot NuttX from RAM
 $ booti ${kernel_addr_r} - ${fdt_addr_r}
@@ -578,8 +592,10 @@ dtc \
 </li>
 </ol>
 <p>After fixing the Interrupt Controller and UART Interrupts: NuttX Kernel boots all the way to <strong>NuttX Shell</strong>! (Pic above)</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image into RAM
+<div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image and Device Tree into RAM
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
+$ tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb
+$ fdt addr ${fdt_addr_r}
 
 ## Boot NuttX from RAM
 $ booti ${kernel_addr_r} - ${fdt_addr_r}
@@ -833,9 +849,10 @@ riscv64-unknown-elf-objdump \
   &gt;hello.S \
   2&gt;&amp;1
 
-## Copy NuttX Image to TFTP Server
-scp Image tftpserver:/tftpboot/Image-sg2000
-ssh tftpserver ls -l /tftpboot/Image-sg2000
+## Copy NuttX Image and Device Tree to TFTP Server
+cp Image Image-sg2000
+scp Image-sg2000 tftpserver:/tftpboot/Image-sg2000
+scp cv181x_milkv_duos_sd.dtb tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/sg2000-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>The steps above assume that we have installed our TFTP Server, according to the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a>.</p>
@@ -1114,13 +1131,13 @@ task: AppBringUp process: Kernel 0x80200f34
 <p>Oops we goofed and used the <strong>Wrong U-Boot Command</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Nope! This won&#39;t work for NuttX. RAM Disk Address must be `-`!
 setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ;
-tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ;
+tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb ; fdt addr ${fdt_addr_r} ;
 booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 </code></pre></div>
 <p>Which overwrites the NuttX Image in RAM. Here’s the <strong>Correct U-Boot Command</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## This works OK for NuttX. RAM Disk Address must be `-`!
 setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ;
-tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; 
+tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb ; fdt addr ${fdt_addr_r} ; 
 booti ${kernel_addr_r} - ${fdt_addr_r}
 </code></pre></div>
     
