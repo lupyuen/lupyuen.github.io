@@ -180,10 +180,10 @@ E:RESET:plat/mars/platform.c:114
 <li><a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4"><strong>Latest Release: duos_sd.img.lz4</strong></a></li>
 </ul>
 <p>Uncompress the Debian Image…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For Linux
+<div class="example-wrap"><pre class="language-bash"><code>## For Linux:
 $ sudo apt install lz4
 
-## For macOS
+## For macOS:
 $ brew install lz4
 
 ## Uncompress the download to get `duos_sd.img`
@@ -591,7 +591,7 @@ dtc \
 <p><a href="https://lupyuen.github.io/articles/sg2000#fix-the-nuttx-driver-for-plic">(Explained here)</a></p>
 </li>
 </ol>
-<p>After fixing the Interrupt Controller and UART Interrupts: NuttX Kernel boots all the way to <strong>NuttX Shell</strong>! (Pic above)</p>
+<p>After fixing the Interrupt Controller and UART Interrupts: Our <a href="https://lupyuen.github.io/articles/sg2000#appendix-build-nuttx-for-sg2000"><strong>Final NuttX Image</strong></a> boots all the way to <strong>NuttX Shell</strong>! (Pic above)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image and Device Tree into RAM
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 $ tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb
@@ -647,26 +647,25 @@ riscv_exception:
 </ul>
 <p><img src="https://lupyuen.github.io/images/sg2000-box.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
-<p>We’re eagerly awaiting the new 64-bit RISC-V SBCs based on the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>Sophgo SG2000 RISC-V SoC</strong></a>. Meanwhile we have done our prep…</p>
-<p>TODO: Will they work with <a href="TODO"><strong>Apache NuttX RTOS</strong></a>?</p>
+<p>We’re eagerly awaiting the new 64-bit RISC-V SBCs based on the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>Sophgo SG2000 RISC-V SoC</strong></a>. Meanwhile we’ve done our prep…</p>
 <ul>
 <li>
-<p>We boot Linux on <a href="TODO"><strong>Milk-V Duo S</strong></a> (SG2000 inside)</p>
+<p>We tested Linux on <strong>Milk-V Duo S</strong> (SG2000 inside)</p>
 </li>
 <li>
-<p>Peek inside <a href="TODO"><strong>SG2000 Linux</strong></a> and observe how it boots</p>
+<p>And observed how <strong>SG2000 Linux</strong> boots</p>
 </li>
 <li>
-<p>Then we take <a href="TODO"><strong>NuttX for RISC-V</strong></a> (Ox64 BL808)</p>
+<p>Then we took <strong>NuttX for Ox64 BL808</strong></p>
 </li>
 <li>
-<p>Tweak NuttX Kernel to <strong>boot on SG2000</strong></p>
+<p>Tweaked the NuttX Kernel to <strong>boot on SG2000</strong></p>
 </li>
 <li>
-<p>Fix the (undocumented) <strong>Interrupt Controller</strong></p>
+<p>Also fixed the (undocumented) <strong>Interrupt Controller</strong></p>
 </li>
 <li>
-<p>And Milk-V Duo S gets a fully-functional <strong>NuttX Shell</strong></p>
+<p>Milk-V Duo S now boots to a fully-functional <strong>NuttX Shell</strong></p>
 </li>
 <li>
 <p>Something strangely super satisfying about <strong>NuttX on SG2000</strong>… We finished the port in <strong>Only 10 Days</strong> 🎉</p>
@@ -676,18 +675,18 @@ riscv_exception:
 <ol>
 <li>
 <p>We’ll Upstream SG2000 to <strong>NuttX Mainline</strong></p>
-<p>(So others may contribute)</p>
+<p>(So others may contribute their code)</p>
 </li>
 <li>
 <p>Create an <strong>SG2000 Emulator</strong> for easier testing</p>
-<p><a href="TODO">(Similar to <strong>TinyEMU for Ox64</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/tinyemu3">(Similar to <strong>TinyEMU for Ox64</strong>)</a></p>
 </li>
 <li>
 <p>Someday we might run NuttX on the <strong>SG2000 Co-Processor</strong></p>
 <p>(Also SG2002 with its upsized TPU / NPU)</p>
 </li>
 <li>
-<p>Join me online at the <a href="TODO"><strong>Apache NuttX International Workshop</strong></a></p>
+<p>Join me online at the <a href="https://events.nuttx.apache.org/"><strong>Apache NuttX International Workshop</strong></a></p>
 <p>(We’ll Q&amp;A about Ox64 BL808 and SG2000)</p>
 </li>
 </ol>
@@ -849,7 +848,8 @@ riscv64-unknown-elf-objdump \
   &gt;hello.S \
   2&gt;&amp;1
 
-## Copy NuttX Image and Device Tree to TFTP Server
+## Copy NuttX Image and Device Tree to TFTP Server.
+## Device Tree from here: https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb
 cp Image Image-sg2000
 scp Image-sg2000 tftpserver:/tftpboot/Image-sg2000
 scp cv181x_milkv_duos_sd.dtb tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
@@ -967,13 +967,13 @@ make menuconfig \
 </ul>
 <p>That’s because the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>SG2000 Reference Manual</strong></a> (Page 13) says…</p>
 <blockquote>
-<p><strong>3.1 Interrupt Subsystem</strong></p>
+<p><em><strong>3.1 Interrupt Subsystem</strong></em></p>
 </blockquote>
 <blockquote>
-<p>Table 3.2: Interrupt number and Interrupt source mapping for Master RISCV C906 @ 1.0Ghz</p>
+<p><em><strong>Table 3.2:</strong> Interrupt number and Interrupt source mapping for Master RISCV C906 @ 1.0Ghz</em></p>
 </blockquote>
 <blockquote>
-<p>Int #44: UART0</p>
+<p><em><strong>Int #44:</strong> UART0</em></p>
 </blockquote>
 <p><a href="https://lupyuen.github.io/articles/sg2000#dump-the-linux-device-tree"><strong>Linux Device Tree</strong></a> also says UART0 IRQ is <strong>44 (<code>0x2C</code>)</strong></p>
 <div class="example-wrap"><pre class="language-c"><code>serial@04140000 {
@@ -1042,10 +1042,10 @@ clint@74000000 {
   clint,has-no-64bit-mmio;
 };
 </code></pre></div>
-<p>We see that PLIC (External Interrupts) is at <strong><code>0x7000_0000</code></strong>, CLINT (Internal Interrupts) at <strong><code>0x7400_0000</code></strong>. This is how we implement in NuttX…</p>
+<p>We see that PLIC (External Interrupts) is at <strong><code>0x7000_0000</code></strong>, CLINT (Internal Interrupts) at <strong><code>0x7400_0000</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-plic.jpg" alt="Platform-Level Interrupt Controller" /></p>
 <h2 id="fix-the-nuttx-driver-for-plic"><a class="doc-anchor" href="#fix-the-nuttx-driver-for-plic">§</a>14.6 Fix the NuttX Driver for PLIC</h2>
-<p>Based on the SG2000 PLIC Address from above: We fix the <a href="https://lupyuen.github.io/articles/plic2"><strong>Platform-Level Interrupt Controller (PLIC)</strong></a> for SG2000…</p>
+<p>Based on the PLIC Address from above: We fix the <a href="https://lupyuen.github.io/articles/plic2"><strong>Platform-Level Interrupt Controller (PLIC)</strong></a> for SG2000…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6"><strong>Fix the PLIC Interrupt Controller for SG2000</strong></a></li>
 </ul>
