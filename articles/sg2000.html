@@ -410,7 +410,7 @@ saveenv
 <p><em>What UART Controller is inside SG2000?</em></p>
 <p>According to <a href="https://lupyuen.github.io/articles/sg2000#boot-the-linux-microsd"><strong>OpenSBI Log</strong></a>: The UART Controller is <strong><code>uart8250</code></strong>.</p>
 <p>Which is supported by NuttX. We mod the NuttX Boot Code to print something…</p>
-<p><img src="https://lupyuen.github.io/images/sg2000-boot.png" alt="Print to UART in RISC-V Assembly" /></p>
+<p><img src="https://lupyuen.github.io/images/sg2000-boot2.jpg" alt="Print to UART in RISC-V Assembly" /></p>
 <h1 id="print-to-uart-in-risc-v-assembly"><a class="doc-anchor" href="#print-to-uart-in-risc-v-assembly">§</a>8 Print to UART in RISC-V Assembly</h1>
 <p><em>Printing in RISC-V Assembly? Why not C?</em></p>
 <p>That’s because the very first thing that boots is the NuttX Boot Code in <strong>RISC-V Assembly</strong>. Which we’ll modify like this…</p>
@@ -474,7 +474,7 @@ Starting kernel ...
 </code></pre></div>
 <p>See the “<strong><code>123</code></strong>”? That’s proof that our NuttX Boot Code <strong>is actually running</strong> on SG2000 and Milk-V Duo S. We port some more…</p>
 <p><a href="https://gist.github.com/lupyuen/78b54326daf0894a2c23ab6d2c03456d">(See the <strong>Complete Log</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/sg2000-kernel.png" alt="NuttX Kernel Boots OK" /></p>
+<p><img src="https://lupyuen.github.io/images/sg2000-kernel.jpg" alt="NuttX Kernel Boots OK" /></p>
 <h1 id="nuttx-kernel-boots-ok"><a class="doc-anchor" href="#nuttx-kernel-boots-ok">§</a>10 NuttX Kernel Boots OK</h1>
 <p><em>NuttX Kernel prints “123”. What about the rest?</em></p>
 <p>More mods for <strong>NuttX Kernel</strong>…</p>
@@ -552,7 +552,7 @@ nxtask_exit: AppBringUp pid=2,TCB=0x80408740
 <p>One last thing and we’re done…</p>
 <p><a href="https://gist.github.com/lupyuen/aaa0a6646490d45e5cd99b781cbe59f8">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://www.youtube.com/watch?v=pPNDiC5NLqM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/sg2000-nsh.png" alt="NuttX Kernel boots all the way to NuttX Shell" /></p>
+<p><img src="https://lupyuen.github.io/images/sg2000-nsh.jpg" alt="NuttX Kernel boots all the way to NuttX Shell" /></p>
 <h1 id="nuttx-shell-too"><a class="doc-anchor" href="#nuttx-shell-too">§</a>11 NuttX Shell Too!</h1>
 <p><em>NuttX Kernel boots OK. Where’s the NuttX Shell?</em></p>
 <p>We won’t see the NuttX Shell until we fix the <strong>Interrupt Controller</strong> for SG2000. Which is NOT documented. (Sigh)</p>
@@ -714,7 +714,7 @@ riscv_exception:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/sg2000.md"><strong>lupyuen.github.io/src/sg2000.md</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/sg2000-build.png" alt="Build NuttX for SG2000" /></p>
+<p><img src="https://lupyuen.github.io/images/sg2000-build.jpg" alt="Build NuttX for SG2000" /></p>
 <h1 id="appendix-build-nuttx-for-sg2000"><a class="doc-anchor" href="#appendix-build-nuttx-for-sg2000">§</a>13 Appendix: Build NuttX for SG2000</h1>
 <p>In this article we took NuttX for <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 RISC-V SBC</strong></a>. Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S…</p>
 <ol>
