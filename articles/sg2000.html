@@ -735,12 +735,21 @@ riscv_exception:
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></li>
 </ul>
-<p>Download the RISC-V Toolchain for <strong>riscv64-unknown-elf</strong>…</p>
+<p>Download the RISC-V Toolchain for <strong>riscv64-unknown-elf</strong> (SiFive) or <strong>riscv-none-elf</strong> (xPack)…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></p>
+<p><em>OR</em></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v"><strong>“xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V”</strong></a></p>
+</li>
 </ul>
 <p>Then Download and Build NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>set -e  #  Exit when any command fails
+<div class="example-wrap"><pre class="language-bash"><code>## For xPack Toolchain:
+## Change all `riscv64-unknown-elf` to `riscv-none-elf`
+
+set -e  #  Exit when any command fails
 set -x  #  Echo commands
 
 ## Build NuttX
