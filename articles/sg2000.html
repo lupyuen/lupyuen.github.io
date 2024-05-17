@@ -647,7 +647,7 @@ riscv_exception:
 </ul>
 <p><img src="https://lupyuen.github.io/images/sg2000-box.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
-<p>We’re eagerly awaiting the new 64-bit RISC-V SBCs based on the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>Sophgo SG2000 RISC-V SoC</strong></a>. Meanwhile we’ve done our prep…</p>
+<p>We’re eagerly awaiting the new 64-bit RISC-V SBCs based on the <strong>Sophgo SG2000 RISC-V SoC</strong>. Meanwhile we’re all prepped and ready…</p>
 <ul>
 <li>
 <p>We tested Linux on <strong>Milk-V Duo S</strong> (SG2000 inside)</p>
@@ -682,8 +682,8 @@ riscv_exception:
 <p><a href="https://lupyuen.github.io/articles/tinyemu3">(Similar to <strong>TinyEMU for Ox64</strong>)</a></p>
 </li>
 <li>
-<p>Someday we might run NuttX on the <strong>SG2000 Co-Processor</strong></p>
-<p>(Also SG2002 with its upsized TPU / NPU)</p>
+<p>We might run NuttX on the <strong>SG2000 Co-Processor</strong></p>
+<p>(Plus SG2002 with its upsized TPU / NPU)</p>
 </li>
 <li>
 <p>Join me online at the <a href="https://events.nuttx.apache.org/"><strong>Apache NuttX International Workshop</strong></a></p>
@@ -802,22 +802,22 @@ echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$hash2 &gt;&gt;nuttx.
 ## Show the version of GCC
 riscv64-unknown-elf-gcc -v
 
-## Configure build
+## Configure the build
 tools/configure.sh ox64:nsh
 
-## Build NuttX
+## Build the NuttX Kernel
 build_nuttx
 
-## Build Apps Filesystem
+## Build the Apps Filesystem
 build_apps
 
-## Generate Initial RAM Disk
+## Generate the Initial RAM Disk
 genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
 
-## Show the size
+## Show the NuttX Kernel Size
 riscv64-unknown-elf-size nuttx
 
-## Export the Binary Image to `nuttx.bin`
+## Export the Kernel Binary Image to `nuttx.bin`
 riscv64-unknown-elf-objcopy \
   -O binary \
   nuttx \
@@ -826,14 +826,14 @@ riscv64-unknown-elf-objcopy \
 ## Prepare a Padding with 64 KB of zeroes
 head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 
-## Append Padding and Initial RAM Disk to NuttX Kernel
+## Append the Padding and Initial RAM Disk to NuttX Kernel
 cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 
-## Copy the config
+## Copy the NuttX Config
 cp .config nuttx.config
 
-## Dump the disassembly to nuttx.S
+## Dump the NuttX Kernel Disassembly to nuttx.S
 riscv64-unknown-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
@@ -841,7 +841,7 @@ riscv64-unknown-elf-objdump \
   &gt;nuttx.S \
   2&gt;&amp;1
 
-## Dump the init disassembly to init.S
+## Dump the NuttX Shell Disassembly to init.S
 riscv64-unknown-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
@@ -849,7 +849,7 @@ riscv64-unknown-elf-objdump \
   &gt;init.S \
   2&gt;&amp;1
 
-## Dump the hello disassembly to hello.S
+## Dump the Hello Disassembly to hello.S
 riscv64-unknown-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
@@ -857,14 +857,14 @@ riscv64-unknown-elf-objdump \
   &gt;hello.S \
   2&gt;&amp;1
 
-## Copy NuttX Image and Device Tree to TFTP Server.
-## Device Tree from here: https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb
+## Copy the NuttX Image and Device Tree to our TFTP Server.
+## Device Tree is here: https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb
 cp Image Image-sg2000
 scp Image-sg2000 tftpserver:/tftpboot/Image-sg2000
 scp cv181x_milkv_duos_sd.dtb tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/sg2000-1">(See the <strong>Build Outputs</strong>)</a></p>
-<p>The steps above assume that we have installed our TFTP Server, according to the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a>.</p>
+<p>The steps above assume that we’ve installed our TFTP Server, according to the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a>.</p>
 <p>Then follow these steps to boot NuttX on Milk-V Duo S…</p>
 <ul>
 <li>
@@ -874,11 +874,13 @@ scp cv181x_milkv_duos_sd.dtb tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
 </ul>
 <p><img src="https://lupyuen.github.io/images/mmu-l3user.jpg" alt="Virtual Memory for NuttX Apps" /></p>
 <p><em>Why the RAM Disk? Isn’t NuttX an RTOS?</em></p>
-<p>SG2000 uses a RAM Disk because it runs in <strong>NuttX Kernel Mode</strong> (instead of the typical Flat Mode). This means we can do <strong>Memory Protection</strong> and <strong>Virtual Memory</strong> for Apps. But it also means we need to bundle the <strong>NuttX Apps as ELF Files</strong>, hence the RAM Disk…</p>
+<p>SG2000 uses a RAM Disk because it runs in <strong>NuttX Kernel Mode</strong> (instead of the typical Flat Mode). This means we can do <strong>Memory Protection</strong> and <strong>Virtual Memory</strong> for Apps. (Pic above)</p>
+<p>But it also means we need to bundle the <strong>NuttX Apps as ELF Files</strong>, hence the RAM Disk…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/app"><strong>“NuttX Apps and Initial RAM Disk”</strong></a></li>
 </ul>
-<p>Most of the NuttX Platforms run on <strong>NuttX Flat Mode</strong>, which has NuttX Apps Statically-Linked into the NuttX Kernel. It works well for Small MCUs, but probably inadequate for larger SoCs like SG2000…</p>
+<p>Most of the NuttX Platforms run on <strong>NuttX Flat Mode</strong>, which has NuttX Apps Statically-Linked into the NuttX Kernel.</p>
+<p>NuttX Flat Mode works well for Small Microcontrollers. But SG2000 and other SoCs will need the more sophisticated <strong>NuttX Kernel Mode</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode"><strong>“NuttX Flat Mode vs Kernel Mode”</strong></a></li>
 </ul>
@@ -910,10 +912,12 @@ scp cv181x_milkv_duos_sd.dtb tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
 <p>NuttX Kernel will boot at <strong><code>0x8020_0000</code></strong>, NuttX Apps will run at Virtual Address <strong><code>0xC000_0000</code></strong>.</p>
 <p>Here’s the NuttX Config: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Kernel RAM
+## TODO: Fix the size
 CONFIG_RAM_START=0x80200000
 CONFIG_RAM_SIZE=1048576
 
 ## Kernel Paged Pool (Allocated to NuttX Apps)
+## TODO: Fix the size
 CONFIG_ARCH_PGPOOL_PBASE=0x80600000
 CONFIG_ARCH_PGPOOL_VBASE=0x80600000
 CONFIG_ARCH_PGPOOL_SIZE=4194304
@@ -931,7 +935,8 @@ CONFIG_ARCH_HEAP_VBASE=0xC0200000
 CONFIG_ARCH_HEAP_NPAGES=128
 </code></pre></div>
 <p>And here’s the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-769e7c2389b298f666c84b92f36d3c42fa852fda61dbf20b93e603df98b7bd37">ld.script</a></p>
-<div class="example-wrap"><pre class="language-c"><code>MEMORY {
+<div class="example-wrap"><pre class="language-c"><code>/* TODO: Fix the size */
+MEMORY {
   kflash (rx) : ORIGIN = 0x80200000, LENGTH = 2048K   /* w/ cache */
   ksram (rwx) : ORIGIN = 0x80400000, LENGTH = 2048K   /* w/ cache */
   pgram (rwx) : ORIGIN = 0x80600000, LENGTH = 4096K   /* w/ cache */
@@ -1001,14 +1006,14 @@ make menuconfig \
 <p><img src="https://lupyuen.github.io/images/sg2000-memory.jpg" alt="Whither PLIC?" /></p>
 <h2 id="disable-interrupt-controller"><a class="doc-anchor" href="#disable-interrupt-controller">§</a>14.3 Disable Interrupt Controller</h2>
 <p>Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a <a href="https://lupyuen.github.io/articles/plic2"><strong>Platform-Level Interrupt Controller (PLIC)</strong></a>. But PLIC isn’t documented for SG2000. (Pic above sigh)</p>
-<p>For now, we disable PLIC in NuttX…</p>
+<p>Initially we disable PLIC in NuttX…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b93ec4"><strong>Disable the PLIC Interrupt Controller</strong></a></li>
 </ul>
 <p>Later we’ll dump the SG2000 Linux Device Tree to understand the Interrupt Controller.</p>
 <h2 id="dump-the-linux-device-tree"><a class="doc-anchor" href="#dump-the-linux-device-tree">§</a>14.4 Dump the Linux Device Tree</h2>
 <p>To understand the Interrupt Controller: We dump the <strong>Linux Device Tree</strong> for SG2000.</p>
-<p>From the SG2000 Debian Release, thanks to <a href="https://github.com/Fishwaldo"><strong>Justin Hammond</strong></a> (Fishwaldo)…</p>
+<p>Based on the SG2000 Debian Image, thanks to <a href="https://github.com/Fishwaldo"><strong>Justin Hammond</strong></a> (Fishwaldo)…</p>
 <ul>
 <li><a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases"><strong>Debian Images for Sophgo SG2000</strong></a></li>
 </ul>
@@ -1016,7 +1021,7 @@ make menuconfig \
 <ul>
 <li><a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4"><strong>Latest Release: duos_sd.img.lz4</strong></a></li>
 </ul>
-<p>Copy out the SG2000 <strong>Device Tree Binary</strong>: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dtb">cv181x_milkv_duos_sd.dtb</a></p>
+<p>Then copy out the SG2000 <strong>Device Tree Binary</strong>: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dtb">cv181x_milkv_duos_sd.dtb</a></p>
 <p>And convert it to <strong>Device Tree Source</strong>: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts">cv181x_milkv_duos_sd.dts</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Convert the SG2000 Device Tree
 dtc \
