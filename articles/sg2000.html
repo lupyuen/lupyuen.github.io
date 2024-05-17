@@ -208,7 +208,7 @@ $ ls -l /Volumes/boot/extlinux
 $ ls -l /Volumes/boot/fdt/linux-image-duos-5.10.4-20240329-1+
 -rwx 21575 cv181x_milkv_duos_sd.dtb
 </code></pre></div>
-<p>We peek at the <strong>U-Boot Bootloader Config</strong>…</p>
+<p>We peek at the <strong>U-Boot Bootloader Config</strong> (which will boot NuttX with a tiny tweak)</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cat /Volumes/boot/extlinux/extlinux.conf
 ...
 menu label Debian GNU/Linux trixie/sid 5.10.4-20240329-1+
@@ -216,7 +216,7 @@ linux  /vmlinuz-5.10.4-20240329-1+
 fdtdir /fdt/linux-image-duos-5.10.4-20240329-1+/
 append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw
 </code></pre></div>
-<p>With a tiny tweak, this will boot NuttX RTOS.</p>
+<p>Watch what happens when we boot the MicroSD…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-sbi.jpg" alt="OpenSBI and U-Boot Bootloader" /></p>
 <h1 id="boot-the-linux-microsd"><a class="doc-anchor" href="#boot-the-linux-microsd">§</a>4 Boot the Linux MicroSD</h1>
 <p><em>Linux on MicroSD: Will it boot on Milk-V Duo S?</em></p>
@@ -413,7 +413,7 @@ saveenv
 <p><img src="https://lupyuen.github.io/images/sg2000-boot2.jpg" alt="Print to UART in RISC-V Assembly" /></p>
 <h1 id="print-to-uart-in-risc-v-assembly"><a class="doc-anchor" href="#print-to-uart-in-risc-v-assembly">§</a>8 Print to UART in RISC-V Assembly</h1>
 <p><em>Printing in RISC-V Assembly? Why not C?</em></p>
-<p>That’s because the very first thing that boots is the NuttX Boot Code in <strong>RISC-V Assembly</strong>. Which we’ll modify like this…</p>
+<p>That’s because the very first thing that boots is the NuttX Boot Code in <strong>RISC-V Assembly</strong> (instead of C)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console"><strong>“Print to QEMU Console”</strong></a></li>
 </ul>
@@ -571,7 +571,7 @@ dtc \
 <p><a href="https://lupyuen.github.io/articles/sg2000#dump-the-linux-device-tree">(Explained here)</a></p>
 </li>
 <li>
-<p>Snooped the <a href="https://lupyuen.github.io/articles/sg2000#interrupt-controller-for-sg2000"><strong>PLIC Interrupt Controller</strong></a> in the Device Tree: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts">cv181x_milkv_duos_sd.dts</a></p>
+<p>Snooped the <a href="https://lupyuen.github.io/articles/sg2000#interrupt-controller-for-sg2000"><strong>PLIC Interrupt Controller</strong></a> in the Device Tree: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts#L1021-L1034">cv181x_milkv_duos_sd.dts</a></p>
 <div class="example-wrap"><pre class="language-c"><code>interrupt-controller@70000000 {
   riscv,ndev = &lt;0x65&gt;;
   riscv,max-priority = &lt;0x07&gt;;
@@ -1027,8 +1027,7 @@ dtc \
 </code></pre></div>
 <p>We go inside the Device Tree…</p>
 <h2 id="interrupt-controller-for-sg2000"><a class="doc-anchor" href="#interrupt-controller-for-sg2000">§</a>14.5 Interrupt Controller for SG2000</h2>
-<p>Earlier we dumped the <strong>Linux Device Tree</strong> for SG2000. We snoop inside to understand the Interrupt Controller…</p>
-<p>Based on the <strong>SG2000 Device Tree</strong>: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts">cv181x_milkv_duos_sd.dts</a></p>
+<p>Earlier we dumped the <strong>Linux Device Tree</strong> for SG2000. We snoop inside to understand the Interrupt Controller: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts#L1021-L1042">cv181x_milkv_duos_sd.dts</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PLIC Interrupt Controller for External Interrupts
 interrupt-controller@70000000 {
   riscv,ndev = &lt;0x65&gt;;
