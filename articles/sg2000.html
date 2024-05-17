@@ -220,8 +220,7 @@ append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 root
 <p><img src="https://lupyuen.github.io/images/sg2000-sbi.jpg" alt="OpenSBI and U-Boot Bootloader" /></p>
 <h1 id="boot-the-linux-microsd"><a class="doc-anchor" href="#boot-the-linux-microsd">§</a>4 Boot the Linux MicroSD</h1>
 <p><em>Linux on MicroSD: Will it boot on Milk-V Duo S?</em></p>
-<p>Yep Linux boots OK on Milk-V Duo S.</p>
-<p>First we see <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI (Supervisor Binary Interface)</strong></a>…</p>
+<p>Yep Linux boots OK. First we see <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI (Supervisor Binary Interface)</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>OpenSBI v0.9
 Platform Name       : Milk-V DuoS
 Platform Features   : mfdeleg
@@ -243,7 +242,7 @@ Boot HART MEDELEG  : 0xb109
 ## 0x7400_0000 looks interesting! We&#39;ll come back to this
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/01d409b7bde9607a96cd4d460e53330a">(See the <strong>Complete Log</strong>)</a></p>
-<p>Followed by the <strong>U-Boot Bootloader</strong>…</p>
+<p>Followed by the <a href="https://docs.u-boot.org/en/latest/index.html"><strong>U-Boot Bootloader</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## U-Boot Boots
 U-Boot 2021.10-ga57aa1f2-dirty (Apr 24 2024 - 11:24:46 +0000) cvitek_cv181x
 Hit any key to stop autoboot:  0 
@@ -268,7 +267,7 @@ Debian GNU/Linux trixie/sid duos ttyS0
 duos login: 
 </code></pre></div>
 <p>Linux works great, we hop over to NuttX…</p>
-<p><a href="https://en.sophgo.com/about-us/index.html">(<strong>Cvitek</strong> is the earlier name for Sophgo / Sophon)</a></p>
+<p><a href="https://en.sophgo.com/about-us/index.html">(<strong>Cvitek</strong> is the old name of Sophgo / Sophon)</a></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-uboot.jpg" alt="U-Boot Bootloader" /></p>
 <h1 id="settings-for-u-boot-bootloader"><a class="doc-anchor" href="#settings-for-u-boot-bootloader">§</a>5 Settings for U-Boot Bootloader</h1>
 <p><em>How will we boot NuttX?</em></p>
