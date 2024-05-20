@@ -210,6 +210,13 @@ make
 cp temu ..
 popd
 </code></pre></div>
+<p><strong>For macOS:</strong> We need extra steps…</p>
+<div class="example-wrap"><pre class="language-bash"><code>brew install openssl sdl2
+make \
+  CFLAGS=&quot;-I$(brew --prefix)/opt/openssl/include -I$(brew --prefix)/opt/sdl2/include&quot; \
+  LDFLAGS=&quot;-L$(brew --prefix)/opt/openssl/lib -L$(brew --prefix)/opt/sdl2/lib&quot; \
+  CONFIG_MACOS=y
+</code></pre></div>
 <p>Next we download the <a href="https://github.com/lupyuen/nuttx-ox64#nuttx-automated-daily-build-for-ox64"><strong>Daily NuttX Build</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Location of Daily NuttX Builds
 ## `outputs.date` looks like `2024-01-25`

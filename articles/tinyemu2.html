@@ -122,7 +122,10 @@ make
 
 ## For macOS:
 brew install openssl sdl2
-make CFLAGS=-I$(brew --prefix)/opt/openssl/include LDFLAGS=-L$(brew --prefix)/opt/openssl/lib CONFIG_MACOS=y
+make \
+  CFLAGS=&quot;-I$(brew --prefix)/opt/openssl/include -I$(brew --prefix)/opt/sdl2/include&quot; \
+  LDFLAGS=&quot;-L$(brew --prefix)/opt/openssl/lib -L$(brew --prefix)/opt/sdl2/lib&quot; \
+  CONFIG_MACOS=y
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/.github/workflows/ci.yml">(See the <strong>Build Script</strong>)</a></p>
 <p><em>What about TinyEMU for the Web Browser?</em></p>

@@ -874,7 +874,13 @@ Hello, Rust!!
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/raw/main/nuttx.cfg">(<strong>nuttx.cfg</strong> is here)</a></p>
 <p><a href="https://gist.github.com/lupyuen/4cf0cb2fa1c288b6d28aeeff3a4f3ac1">(See the <strong>Complete Log</strong>)</a></p>
-<h1 id="appendix-main-function-is-missing"><a class="doc-anchor" href="#appendix-main-function-is-missing">§</a>12 Appendix: Main Function is Missing</h1>
+<p><strong>For macOS:</strong> We need extra steps…</p>
+<div class="example-wrap"><pre class="language-bash"><code>brew install openssl sdl2
+make \
+  CFLAGS=&quot;-I$(brew --prefix)/opt/openssl/include -I$(brew --prefix)/opt/sdl2/include&quot; \
+  LDFLAGS=&quot;-L$(brew --prefix)/opt/openssl/lib -L$(brew --prefix)/opt/sdl2/lib&quot; \
+  CONFIG_MACOS=y
+</code></pre></div><h1 id="appendix-main-function-is-missing"><a class="doc-anchor" href="#appendix-main-function-is-missing">§</a>12 Appendix: Main Function is Missing</h1>
 <p><em>Why did we rename the Main Function?</em></p>
 <p>Earlier we modified this file…</p>
 <div class="example-wrap"><pre class="language-bash"><code>apps/examples/hello_rust/hello_rust_main.rs
