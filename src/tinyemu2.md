@@ -540,11 +540,13 @@ Let's find out! We compile __TinyEMU to WebAssembly__ with [__Emscripten__](http
 cd $HOME
 git clone https://github.com/lupyuen/nuttx-tinyemu
 
-## Compile TinyEMU into WebAssembly
-## with Emscripten
+## Compile TinyEMU into WebAssembly with Emscripten
+## For macOS: brew install emscripten
 sudo apt install emscripten
 cd $HOME/ox64-tinyemu
 make -f Makefile.js
+
+## TODO: `--memory-init-file` is no longer supported
 
 ## Copy the generated JavaScript and
 ## WebAssembly to our Web Server
