@@ -179,6 +179,16 @@ cp temu ..
 popd
 ```
 
+__For macOS:__ We need extra steps...
+
+```bash
+brew install openssl sdl2
+make \
+  CFLAGS="-I$(brew --prefix)/opt/openssl/include -I$(brew --prefix)/opt/sdl2/include" \
+  LDFLAGS="-L$(brew --prefix)/opt/openssl/lib -L$(brew --prefix)/opt/sdl2/lib" \
+  CONFIG_MACOS=y
+```
+
 Next we download the [__Daily NuttX Build__](https://github.com/lupyuen/nuttx-ox64#nuttx-automated-daily-build-for-ox64)...
 
 ```bash

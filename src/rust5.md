@@ -897,6 +897,16 @@ Hello, Rust!!
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4cf0cb2fa1c288b6d28aeeff3a4f3ac1)
 
+__For macOS:__ We need extra steps...
+
+```bash
+brew install openssl sdl2
+make \
+  CFLAGS="-I$(brew --prefix)/opt/openssl/include -I$(brew --prefix)/opt/sdl2/include" \
+  LDFLAGS="-L$(brew --prefix)/opt/openssl/lib -L$(brew --prefix)/opt/sdl2/lib" \
+  CONFIG_MACOS=y
+```
+
 # Appendix: Main Function is Missing
 
 _Why did we rename the Main Function?_

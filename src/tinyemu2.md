@@ -61,7 +61,10 @@ make
 
 ## For macOS:
 brew install openssl sdl2
-make CFLAGS=-I$(brew --prefix)/opt/openssl/include LDFLAGS=-L$(brew --prefix)/opt/openssl/lib CONFIG_MACOS=y
+make \
+  CFLAGS="-I$(brew --prefix)/opt/openssl/include -I$(brew --prefix)/opt/sdl2/include" \
+  LDFLAGS="-L$(brew --prefix)/opt/openssl/lib -L$(brew --prefix)/opt/sdl2/lib" \
+  CONFIG_MACOS=y
 ```
 
 [(See the __Build Script__)](https://github.com/lupyuen/ox64-tinyemu/blob/main/.github/workflows/ci.yml)
