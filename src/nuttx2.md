@@ -152,12 +152,12 @@ sb  t1, 0(t0)
 
 When we start QEMU Emulator, our RISC-V Assembly prints "__`123`__" to the QEMU Console (pic below)...
 
-```text
+```bash
+## Remove `-bios none` for newer versions of NuttX
 $ qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic

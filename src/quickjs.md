@@ -188,11 +188,11 @@ Thankfully we have __Automated Testing__ with an Expect Script (pic above): [qem
 set send_slow {1 0.001}
 
 ## Start NuttX on QEMU Emulator
+## Remove `-bios none` for newer versions of NuttX
 spawn qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic
@@ -450,9 +450,10 @@ When we download (or build) __NuttX and QuickJS__...
 
 QuickJS blinks a __Simulated LED__ on NuttX QEMU...
 
-```text
+```bash
 ## Start NuttX on QEMU
-$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
+## Remove `-bios none` for newer versions of NuttX
+$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -bios none -kernel nuttx -nographic
 
 ## Run our Blinky JavaScript with QuickJS
 NuttShell (NSH) NuttX-12.4.0-RC0
@@ -924,11 +925,12 @@ We may download the [__NuttX Binaries for QEMU__](https://github.com/lupyuen2/wi
         -semihosting \
         -M virt,aclint=on \
         -cpu rv64 \
-        -smp 8 \
         -bios none \
         -kernel nuttx \
         -nographic
     ```
+
+    (Remove __`-bios none`__ for newer versions of NuttX)
 
     [(See the __NuttX Log__)](https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db)
 
@@ -988,11 +990,12 @@ qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic
 ```
+
+(Remove __`-bios none`__ for newer versions of NuttX)
 
 At the NuttX Prompt, enter...
 
@@ -1005,7 +1008,8 @@ qjs --std /system/bin/blink.js
 QuickJS runs our Blinky JavaScript and blinks a __Simulated LED__...
 
 ```text
-$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
+## Remove `-bios none` for newer versions of NuttX
+$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -bios none -kernel nuttx -nographic
 
 NuttShell (NSH) NuttX-12.4.0-RC0
 nsh> qjs --std /system/bin/blink.js

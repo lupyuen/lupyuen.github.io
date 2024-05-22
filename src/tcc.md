@@ -504,11 +504,11 @@ Then we boot NuttX and run __`a.out`__...
 
 ```bash
 ## Boot NuttX on QEMU 64-bit RISC-V
+## Remove __`-bios none`__ for newer versions of NuttX
 $ qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic
@@ -1364,11 +1364,11 @@ brew install qemu
 sudo apt install qemu-system-riscv64
 
 ## Boot NuttX on QEMU 64-bit RISC-V
+## Remove `-bios none` for newer versions of NuttX
 qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic
