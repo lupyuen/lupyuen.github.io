@@ -592,7 +592,6 @@ qemu-system-riscv32 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv32 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic

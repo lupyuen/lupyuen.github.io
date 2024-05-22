@@ -227,7 +227,6 @@ We're ready to __boot NuttX on QEMU Emulator__ and run our Rust App!
       -semihosting \
       -M virt,aclint=on \
       -cpu rv32 \
-      -smp 8 \
       -bios none \
       -kernel nuttx \
       -nographic

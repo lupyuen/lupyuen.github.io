@@ -53,7 +53,6 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
       -semihosting \
       -M virt,aclint=on \
       -cpu rv64 \
-      -smp 8 \
       -bios none \
       -kernel nuttx \
       -nographic
@@ -131,7 +130,6 @@ _Earlier we ran this command. What does it mean?_
 qemu-system-riscv64 \
   -kernel nuttx \
   -cpu rv64 \
-  -smp 8 \
   -M virt,aclint=on \
   -semihosting \
   -bios none \
@@ -143,8 +141,6 @@ The above command starts the [__QEMU Emulator for RISC-V__](https://www.qemu.org
 - Kernel Image: __nuttx__ 
 
 - CPU: [__64-bit RISC-V__](https://www.qemu.org/docs/master/system/target-riscv.html)
-
-- Symmetric Multiprocessing: __8 CPU Cores__
 
 - Machine: [__Generic Virtual Platform (virt)__](https://www.qemu.org/docs/master/system/riscv/virt.html)
 

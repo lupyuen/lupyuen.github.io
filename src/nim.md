@@ -269,7 +269,6 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
       -semihosting \
       -M virt,aclint=on \
       -cpu rv64 \
-      -smp 8 \
       -bios none \
       -kernel nuttx \
       -nographic
@@ -802,7 +801,6 @@ qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic

@@ -353,7 +353,6 @@ That's why we __Enable Semihosting__ when we run NuttX on QEMU...
 qemu-system-riscv64 \
   -kernel nuttx \
   -cpu rv64 \
-  -smp 8 \
   -M virt,aclint=on \
   -semihosting \
   -bios none \
@@ -361,6 +360,8 @@ qemu-system-riscv64 \
 ```
 
 [(Source)](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)
+
+(Remove __`-bios none`__ for newer versions of NuttX)
 
 So that NuttX can access the __Apps Filesystem__ (from previous section) as a Semihosting Filesystem! (Pic above)
 
@@ -584,7 +585,6 @@ qemu-system-riscv64 \
   -kernel nuttx \
   -initrd initrd \
   -cpu rv64 \
-  -smp 8 \
   -M virt,aclint=on \
   -semihosting \
   -bios none \
@@ -592,6 +592,8 @@ qemu-system-riscv64 \
 ```
 
 [(Source)](https://www.qemu.org/docs/master/system/riscv/virt.html#running-linux-kernel)
+
+(Remove __`-bios none`__ for newer versions of NuttX)
 
 And NuttX QEMU boots OK with our Initial RAM Disk yay! (Ignore the warnings)
 
@@ -1074,13 +1076,14 @@ qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -initrd initrd \
   -nographic \
   -trace "*"
 ```
+
+(Remove __`-bios none`__ for newer versions of NuttX)
 
 In the QEMU Command above, we load the Initial RAM Disk __initrd__.
 
@@ -1115,11 +1118,11 @@ To dump the Device Tree for RISC-V QEMU, we specify __`dumpdtb`__...
 
 ```bash
 ## Dump Device Tree for RISC-V QEMU
+## Remove `-bios none` for newer versions of NuttX
 qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on,dumpdtb=qemu-riscv64.dtb \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic
