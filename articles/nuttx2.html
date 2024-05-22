@@ -197,11 +197,11 @@ sb  t1, 0(t0)
 <p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address)</a></p>
 <p>When we start QEMU Emulator, our RISC-V Assembly prints “<strong><code>123</code></strong>” to the QEMU Console (pic below)…</p>
-<div class="example-wrap"><pre class="language-text"><code>$ qemu-system-riscv64 \
+<div class="example-wrap"><pre class="language-bash"><code>## Remove `-bios none` for newer versions of NuttX
+$ qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic

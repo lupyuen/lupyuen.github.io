@@ -232,11 +232,11 @@ qjs &gt; os.ioctl(fd, ULEDIOC_SETALL, 0)
 set send_slow {1 0.001}
 
 ## Start NuttX on QEMU Emulator
+## Remove `-bios none` for newer versions of NuttX
 spawn qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic
@@ -472,8 +472,9 @@ bl808_gpiowrite: regaddr=0x20000938, clear=0x1000000
 </li>
 </ul>
 <p>QuickJS blinks a <strong>Simulated LED</strong> on NuttX QEMU…</p>
-<div class="example-wrap"><pre class="language-text"><code>## Start NuttX on QEMU
-$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
+<div class="example-wrap"><pre class="language-bash"><code>## Start NuttX on QEMU
+## Remove `-bios none` for newer versions of NuttX
+$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -bios none -kernel nuttx -nographic
 
 ## Run our Blinky JavaScript with QuickJS
 NuttShell (NSH) NuttX-12.4.0-RC0
@@ -892,11 +893,11 @@ $ qemu-system-riscv64 \
     -semihosting \
     -M virt,aclint=on \
     -cpu rv64 \
-    -smp 8 \
     -bios none \
     -kernel nuttx \
     -nographic
 </code></pre></div>
+<p>(Remove <strong><code>-bios none</code></strong> for newer versions of NuttX)</p>
 <p><a href="https://gist.github.com/lupyuen/a3d2a491112eaf5810edc1fa355606db">(See the <strong>NuttX Log</strong>)</a></p>
 </li>
 </ol>
@@ -947,17 +948,18 @@ qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic
 </code></pre></div>
+<p>(Remove <strong><code>-bios none</code></strong> for newer versions of NuttX)</p>
 <p>At the NuttX Prompt, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>qjs --std /system/bin/blink.js
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/nuttx/blink.js">(See the <strong>Blinky JavaScript</strong>)</a></p>
 <p>QuickJS runs our Blinky JavaScript and blinks a <strong>Simulated LED</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
+<div class="example-wrap"><pre class="language-text"><code>## Remove `-bios none` for newer versions of NuttX
+$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -bios none -kernel nuttx -nographic
 
 NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; qjs --std /system/bin/blink.js
