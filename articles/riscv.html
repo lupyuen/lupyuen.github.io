@@ -125,7 +125,6 @@ sudo apt install qemu-system-riscv64
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic
@@ -190,7 +189,6 @@ nsh&gt; ps
 <div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
   -kernel nuttx \
   -cpu rv64 \
-  -smp 8 \
   -M virt,aclint=on \
   -semihosting \
   -bios none \
@@ -203,9 +201,6 @@ nsh&gt; ps
 </li>
 <li>
 <p>CPU: <a href="https://www.qemu.org/docs/master/system/target-riscv.html"><strong>64-bit RISC-V</strong></a></p>
-</li>
-<li>
-<p>Symmetric Multiprocessing: <strong>8 CPU Cores</strong></p>
 </li>
 <li>
 <p>Machine: <a href="https://www.qemu.org/docs/master/system/riscv/virt.html"><strong>Generic Virtual Platform (virt)</strong></a></p>

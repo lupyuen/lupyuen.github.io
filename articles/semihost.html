@@ -345,13 +345,13 @@ CONFIG_NSH_ARCHINIT=y
 qemu-system-riscv64 \
   -kernel nuttx \
   -cpu rv64 \
-  -smp 8 \
   -M virt,aclint=on \
   -semihosting \
   -bios none \
   -nographic
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v">(Source)</a></p>
+<p>(Remove <strong><code>-bios none</code></strong> for newer versions of NuttX)</p>
 <p>So that NuttX can access the <strong>Apps Filesystem</strong> (from previous section) as a Semihosting Filesystem! (Pic above)</p>
 <p><a href="https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/">(More about <strong>RISC-V Semihosting</strong>)</a></p>
 <p><a href="https://github.com/riscv-software-src/riscv-semihosting/blob/main/riscv-semihosting-spec.adoc">(See the <strong>Semihosting Spec</strong>)</a></p>
@@ -522,13 +522,13 @@ qemu-system-riscv64 \
   -kernel nuttx \
   -initrd initrd \
   -cpu rv64 \
-  -smp 8 \
   -M virt,aclint=on \
   -semihosting \
   -bios none \
   -nographic
 </code></pre></div>
 <p><a href="https://www.qemu.org/docs/master/system/riscv/virt.html#running-linux-kernel">(Source)</a></p>
+<p>(Remove <strong><code>-bios none</code></strong> for newer versions of NuttX)</p>
 <p>And NuttX QEMU boots OK with our Initial RAM Disk yay! (Ignore the warnings)</p>
 <div class="example-wrap"><pre class="language-text"><code>ABC
 nx_start: Entry
@@ -952,13 +952,13 @@ qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -initrd initrd \
   -nographic \
   -trace &quot;*&quot;
 </code></pre></div>
+<p>(Remove <strong><code>-bios none</code></strong> for newer versions of NuttX)</p>
 <p>In the QEMU Command above, we load the Initial RAM Disk <strong>initrd</strong>.</p>
 <p>To discover the RAM Address of the Initial RAM Disk, we check the <strong>QEMU Trace Log</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>resettablloader_write_rom nuttx
@@ -982,11 +982,11 @@ loader_write_rom fdt:
 <h1 id="appendix-device-tree-for-risc-v-qemu"><a class="doc-anchor" href="#appendix-device-tree-for-risc-v-qemu">§</a>13 Appendix: Device Tree for RISC-V QEMU</h1>
 <p>To dump the Device Tree for RISC-V QEMU, we specify <strong><code>dumpdtb</code></strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump Device Tree for RISC-V QEMU
+## Remove `-bios none` for newer versions of NuttX
 qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on,dumpdtb=qemu-riscv64.dtb \
   -cpu rv64 \
-  -smp 8 \
   -bios none \
   -kernel nuttx \
   -nographic
