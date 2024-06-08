@@ -113,6 +113,8 @@ Before testing on a Real RISC-V SBC, let's test on __QEMU Emulator for RISC-V__.
     $ make --trace
 
     ## Compile "hello_main.c" with GCC Compiler
+    ## For xPack Toolchain:
+    ## Change all `riscv64-unknown-elf` to `riscv-none-elf`
     riscv64-unknown-elf-gcc \
       -march=rv64imafdc \
       -mabi=lp64d \
@@ -392,6 +394,8 @@ Let's compile our Rust App for __Ox64 BL808 RISC-V SBC__ (also 64-bit)...
     $ make --trace import
 
     ## Compile "hello_main.c" with GCC Compiler
+    ## For xPack Toolchain:
+    ## Change all `riscv64-unknown-elf` to `riscv-none-elf`
     riscv64-unknown-elf-gcc \
       -march=rv64imafdc \
       -mabi=lp64d \
@@ -684,6 +688,8 @@ Follow these steps to build __NuttX for QEMU Emulator__ (64-bit RISC-V)...
     make
 
     ## Dump the NuttX Disassembly to `nuttx.S`
+    ## For xPack Toolchain:
+    ## Change all `riscv64-unknown-elf` to `riscv-none-elf`
     riscv64-unknown-elf-objdump \
       -t -S --demangle --line-numbers --wide \
       nuttx \
@@ -784,12 +790,16 @@ Follow these steps to build __NuttX for Ox64 BL808 SBC__...
 
     ## Export the NuttX Kernel
     ## to `nuttx.bin`
+    ## For xPack Toolchain:
+    ## Change all `riscv64-unknown-elf` to `riscv-none-elf`
     riscv64-unknown-elf-objcopy \
       -O binary \
       nuttx \
       nuttx.bin
 
     ## Dump the disassembly to nuttx.S
+    ## For xPack Toolchain:
+    ## Change all `riscv64-unknown-elf` to `riscv-none-elf`
     riscv64-unknown-elf-objdump \
       --syms --source --reloc --demangle --line-numbers --wide \
       --debugging \
@@ -1020,6 +1030,8 @@ Remember earlier we saw this...
 $ make --trace
 
 ## Compile "hello_main.c" with GCC Compiler
+## For xPack Toolchain:
+## Change all `riscv64-unknown-elf` to `riscv-none-elf`
 riscv64-unknown-elf-gcc \
   -march=rv64imafdc \
   -mabi=lp64d \
