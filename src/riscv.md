@@ -848,46 +848,47 @@ Please download the __xPack Toolchain__ from the next section...
 
 # Appendix: xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V
 
-In the previous section we use the __64-bit RISC-V Toolchain__ from SiFive Freedom Tools. But the toolchain won't work on __Arm64 Linux__. (Like Raspberry Pi and Pinebook Pro)
-
-To build NuttX on an Arm64 Linux computer, we use a different toolchain: [__xPack GNU RISC-V Embedded GCC__](https://xpack.github.io/dev-tools/riscv-none-elf-gcc/install/)
+To build NuttX on Linux, macOS or Windows, we download the toolchain for [__xPack GNU RISC-V Embedded GCC__](https://xpack.github.io/dev-tools/riscv-none-elf-gcc/install/). Here are the steps...
 
 ```bash
 ## Install Toolchain for RISC-V Target: xPack GNU RISC-V Embedded GCC
 ## Based on https://xpack.github.io/dev-tools/riscv-none-elf-gcc/install/
-## For Arm64 Target (PinePhone): https://xpack.github.io/dev-tools/aarch64-none-elf-gcc/
 
-~ $ sudo apt -y remove \
+$ sudo apt -y remove \
   gcc-riscv64-unknown-elf \
   binutils-riscv64-unknown-elf \
   picolibc-riscv64-unknown-elf
 
-~ $ ls /usr/bin/riscv*
+$ ls /usr/bin/riscv*
 ls: cannot access '/usr/bin/riscv*': No such file or directory
 
-~ $ wget https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v12.3.0-1/xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
-~ $ tar xf xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
-~ $ export PATH=$PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin:$PATH
+## Browse the xPack Releases here:
+## https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/v12.3.0-1
+## For Linux x64: Change `arm64` below to `x64`
+$ wget https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v12.3.0-1/xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
+$ tar xf xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
+$ export PATH=$PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin:$PATH
 
-~ $ riscv-none-elf-gcc -v
+$ riscv-none-elf-gcc -v
 gcc version 12.3.0 (xPack GNU RISC-V Embedded GCC aarch64)
 
 ## Build NuttX, based on...
 ## https://lupyuen.github.io/articles/release#build-nuttx-for-star64
 ## https://github.com/lupyuen/nuttx-star64/blob/main/.github/workflows/star64.yml
 
-~ $ mkdir nuttx
-~ $ cd nuttx
-~/nuttx $ git clone https://github.com/apache/nuttx.git nuttx
-~/nuttx $ git clone https://github.com/apache/nuttx-apps apps
-~/nuttx $ cd nuttx
+$ mkdir nuttx
+$ cd nuttx
+$ git clone https://github.com/apache/nuttx.git nuttx
+$ git clone https://github.com/apache/nuttx-apps apps
+$ cd nuttx
 
 ## Build NuttX for Star64 JH7110 SBC (or VisionFive2 SBC)
 ## To build NuttX for QEMU: Change "star64:nsh" to "rv-virt:nsh64"
+## To build NuttX for Ox64: Change "star64:nsh" to "ox64:nsh"
 
-~/nuttx/nuttx $ make distclean
-~/nuttx/nuttx $ tools/configure.sh star64:nsh
-~/nuttx/nuttx $ make
+$ make distclean
+$ tools/configure.sh star64:nsh
+$ make
 LD: nuttx
 CP: nuttx.hex
 ```
