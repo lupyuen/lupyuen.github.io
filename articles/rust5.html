@@ -174,6 +174,8 @@
 $ make --trace
 
 ## Compile &quot;hello_main.c&quot; with GCC Compiler
+## For xPack Toolchain:
+## Change all `riscv64-unknown-elf` to `riscv-none-elf`
 riscv64-unknown-elf-gcc \
   -march=rv64imafdc \
   -mabi=lp64d \
@@ -403,6 +405,8 @@ $ make
 $ make --trace import
 
 ## Compile &quot;hello_main.c&quot; with GCC Compiler
+## For xPack Toolchain:
+## Change all `riscv64-unknown-elf` to `riscv-none-elf`
 riscv64-unknown-elf-gcc \
   -march=rv64imafdc \
   -mabi=lp64d \
@@ -694,6 +698,8 @@ rustup target add riscv64gc-unknown-none-elf
 make
 
 ## Dump the NuttX Disassembly to `nuttx.S`
+## For xPack Toolchain:
+## Change all `riscv64-unknown-elf` to `riscv-none-elf`
 riscv64-unknown-elf-objdump \
   -t -S --demangle --line-numbers --wide \
   nuttx \
@@ -779,12 +785,16 @@ make
 
 ## Export the NuttX Kernel
 ## to `nuttx.bin`
+## For xPack Toolchain:
+## Change all `riscv64-unknown-elf` to `riscv-none-elf`
 riscv64-unknown-elf-objcopy \
   -O binary \
   nuttx \
   nuttx.bin
 
 ## Dump the disassembly to nuttx.S
+## For xPack Toolchain:
+## Change all `riscv64-unknown-elf` to `riscv-none-elf`
 riscv64-unknown-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
@@ -954,6 +964,8 @@ Hello, Rust!!
 $ make --trace
 
 ## Compile &quot;hello_main.c&quot; with GCC Compiler
+## For xPack Toolchain:
+## Change all `riscv64-unknown-elf` to `riscv-none-elf`
 riscv64-unknown-elf-gcc \
   -march=rv64imafdc \
   -mabi=lp64d \
