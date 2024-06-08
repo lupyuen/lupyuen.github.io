@@ -901,6 +901,8 @@ Remember to add the xPack Toolchain to the __`PATH`__ Environment Variable...
 xpack-riscv-none-elf-gcc-12.3.0-1/bin
 ```
 
+xPack names the binaries differently differently from other toolchains. Everywhere we see __`riscv64-unknown-elf`__, please change to __`riscv-none-elf`__.
+
 xPack Toolchain works OK with __Math Functions__ on JH7110: [__Source Code__](https://gist.github.com/lupyuen/63bd510d7e45ceebe7443c78ed31c6c8) / [__Output Log__](https://gist.github.com/lupyuen/9bdb1f5478318631d0480f03f6041d83) / [__ELF Symbols__](https://gist.github.com/lupyuen/24f440e14349b2ed56d1784867156378)
 
 _What about Alpine Linux and Debian Linux Containers?_
