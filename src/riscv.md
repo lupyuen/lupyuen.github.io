@@ -842,37 +842,9 @@ The __RISC-V Options__ are...
 
 # Appendix: Download Toolchain for 64-bit RISC-V
 
-Follow these steps to download the __64-bit RISC-V Toolchain__ (SiFive Freedom Tools) for building Apache NuttX RTOS on Linux, macOS or Windows...
+__UPDATE:__ We don't recommend [__SiFive Freedom Tools__](https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0) for building Apache NuttX RTOS on Linux, macOS or Windows. (Since it's outdated)
 
-1.  Download the [__riscv64-unknown-elf RISC-V Toolchain__](https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0) for Linux, macOS or Windows...
-
-    -   [__Ubuntu x64 Linux__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz)
-
-    -   [__CentOS x64 Linux__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz)
-
-    -   [__macOS__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz)
-
-    -   [__Windows MinGW__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip)
-
-    -   [__Arm64 Linux__](https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v) (Raspberry Pi, Pinebook Pro)
-
-    -   [__Alpine / Debian Linux Containers__](https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v) (for VSCode)
-
-1.  Extract the Downloaded Toolchain
-
-1.  Add the Extracted Toolchain to the __`PATH`__ Environment Variable...
-
-    ```text
-    riscv64-unknown-elf-toolchain-.../bin
-    ```
-
-1.  Check the RISC-V Toolchain...
-
-    ```bash
-    riscv64-unknown-elf-gcc -v
-    ```
-
-__For Arm64 Linux__ (Raspberry Pi, Pinebook Pro): See the next section...
+Please download the __xPack Toolchain__ from the next section...
 
 # Appendix: xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V
 
