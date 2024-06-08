@@ -803,43 +803,45 @@ riscv64-unknown-elf-objdump \
 <p><strong>UPDATE:</strong> We don’t recommend <a href="https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0"><strong>SiFive Freedom Tools</strong></a> for building Apache NuttX RTOS on Linux, macOS or Windows. (Since it’s outdated)</p>
 <p>Please download the <strong>xPack Toolchain</strong> from the next section…</p>
 <h1 id="appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v"><a class="doc-anchor" href="#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v">§</a>12 Appendix: xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V</h1>
-<p>In the previous section we use the <strong>64-bit RISC-V Toolchain</strong> from SiFive Freedom Tools. But the toolchain won’t work on <strong>Arm64 Linux</strong>. (Like Raspberry Pi and Pinebook Pro)</p>
-<p>To build NuttX on an Arm64 Linux computer, we use a different toolchain: <a href="https://xpack.github.io/dev-tools/riscv-none-elf-gcc/install/"><strong>xPack GNU RISC-V Embedded GCC</strong></a></p>
+<p>To build NuttX on Linux, macOS or Windows, we download the toolchain for <a href="https://xpack.github.io/dev-tools/riscv-none-elf-gcc/install/"><strong>xPack GNU RISC-V Embedded GCC</strong></a>. Here are the steps…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install Toolchain for RISC-V Target: xPack GNU RISC-V Embedded GCC
 ## Based on https://xpack.github.io/dev-tools/riscv-none-elf-gcc/install/
-## For Arm64 Target (PinePhone): https://xpack.github.io/dev-tools/aarch64-none-elf-gcc/
 
-~ $ sudo apt -y remove \
+$ sudo apt -y remove \
   gcc-riscv64-unknown-elf \
   binutils-riscv64-unknown-elf \
   picolibc-riscv64-unknown-elf
 
-~ $ ls /usr/bin/riscv*
+$ ls /usr/bin/riscv*
 ls: cannot access &#39;/usr/bin/riscv*&#39;: No such file or directory
 
-~ $ wget https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v12.3.0-1/xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
-~ $ tar xf xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
-~ $ export PATH=$PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin:$PATH
+## Browse the xPack Releases here:
+## https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/v12.3.0-1
+## For Linux x64: Change `arm64` below to `x64`
+$ wget https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v12.3.0-1/xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
+$ tar xf xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
+$ export PATH=$PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin:$PATH
 
-~ $ riscv-none-elf-gcc -v
+$ riscv-none-elf-gcc -v
 gcc version 12.3.0 (xPack GNU RISC-V Embedded GCC aarch64)
 
 ## Build NuttX, based on...
 ## https://lupyuen.github.io/articles/release#build-nuttx-for-star64
 ## https://github.com/lupyuen/nuttx-star64/blob/main/.github/workflows/star64.yml
 
-~ $ mkdir nuttx
-~ $ cd nuttx
-~/nuttx $ git clone https://github.com/apache/nuttx.git nuttx
-~/nuttx $ git clone https://github.com/apache/nuttx-apps apps
-~/nuttx $ cd nuttx
+$ mkdir nuttx
+$ cd nuttx
+$ git clone https://github.com/apache/nuttx.git nuttx
+$ git clone https://github.com/apache/nuttx-apps apps
+$ cd nuttx
 
 ## Build NuttX for Star64 JH7110 SBC (or VisionFive2 SBC)
 ## To build NuttX for QEMU: Change &quot;star64:nsh&quot; to &quot;rv-virt:nsh64&quot;
+## To build NuttX for Ox64: Change &quot;star64:nsh&quot; to &quot;ox64:nsh&quot;
 
-~/nuttx/nuttx $ make distclean
-~/nuttx/nuttx $ tools/configure.sh star64:nsh
-~/nuttx/nuttx $ make
+$ make distclean
+$ tools/configure.sh star64:nsh
+$ make
 LD: nuttx
 CP: nuttx.hex
 </code></pre></div>
