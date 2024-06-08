@@ -849,6 +849,7 @@ CP: nuttx.hex
 <p>Remember to add the xPack Toolchain to the <strong><code>PATH</code></strong> Environment Variable…</p>
 <div class="example-wrap"><pre class="language-text"><code>xpack-riscv-none-elf-gcc-12.3.0-1/bin
 </code></pre></div>
+<p>xPack names the binaries differently differently from other toolchains. Everywhere we see <strong><code>riscv64-unknown-elf</code></strong>, please change to <strong><code>riscv-none-elf</code></strong>.</p>
 <p>xPack Toolchain works OK with <strong>Math Functions</strong> on JH7110: <a href="https://gist.github.com/lupyuen/63bd510d7e45ceebe7443c78ed31c6c8"><strong>Source Code</strong></a> / <a href="https://gist.github.com/lupyuen/9bdb1f5478318631d0480f03f6041d83"><strong>Output Log</strong></a> / <a href="https://gist.github.com/lupyuen/24f440e14349b2ed56d1784867156378"><strong>ELF Symbols</strong></a></p>
 <p><em>What about Alpine Linux and Debian Linux Containers?</em></p>
 <p>Yep xPack Toolchain also works with <strong>Alpine and Debian Linux Containers</strong> (like for VSCode)…</p>
