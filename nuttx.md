@@ -2,7 +2,7 @@
 
 Join me at [__NuttX International Workshop 2024__](https://events.nuttx.apache.org/)! (13-14 Jun 2024)
 
-# TinyEMU RISC-V Emulator for Apache NuttX RTOS 
+## TinyEMU RISC-V Emulator for Apache NuttX RTOS 
 
 [__Presentation Video (30 mins)__](https://drive.google.com/file/d/1K3o_VuNRXb3Jkn9ys880C3sfew95Mm6R/view?usp=drive_link)
 
@@ -14,7 +14,7 @@ TinyEMU uses VirtIO for Console Input and Output. We'll talk about the VirtIO Dr
 
 We explain how created the Emulator for Ox64 SBC, based on TinyEMU Emulator. And how we run it for Daily Automated Testing of NuttX for Ox64.
 
-# Adventures of Ox64 BL808 RISC-V SBC with Apache NuttX RTOS
+## Adventures of Ox64 BL808 RISC-V SBC with Apache NuttX RTOS
 
 [__Presentation Video (36 mins)__](https://drive.google.com/file/d/1qmzrW0A8EW9kNXHFl1jQKL2lbT6MaW4S/view?usp=drive_link)
 
@@ -24,7 +24,7 @@ We ported Apache NuttX RTOS to PINE64's Ox64 BL808 64-bit Single-Board Computer.
 
 In this presentation we explain how we used the Ox64 Emulator in our experiments with WebAssembly and NuttX: (1) Testing the TCC RISC-V Compiler in WebAssembly (2) Porting the QuickJS JavaScript Engine to NuttX (3) Creating a Drag-n-Drop App Builder for NuttX
 
-# Analysis of Real-Time Logs for Apache NuttX RTOS with PureScript
+## Analysis of Real-Time Logs for Apache NuttX RTOS with PureScript
 
 [__Presentation Video (32 mins)__](https://drive.google.com/file/d/1us9teePtHEcDwYR_gWR31pIqCx7HVl3s/view?usp=drive_link)
 
