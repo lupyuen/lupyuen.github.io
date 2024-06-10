@@ -1,3 +1,41 @@
+# Lup's Presentation Slides for NuttX International Workshop 2024
+
+Join me at [__NuttX International Workshop 2024__](https://events.nuttx.apache.org/)! (13-14 Jun 2024)
+
+# TinyEMU RISC-V Emulator for Apache NuttX RTOS 
+
+[__Presentation Video__](https://drive.google.com/file/d/1nskDhYWV9XY-c-dwHtINGKHw2yeNKn2G/view?usp=drive_link)
+
+[__Google Slides__](https://docs.google.com/presentation/d/1O5Na_aOmcLRJt75INGIoIk2uZSWXsEZjmY1jvHVUwkc/edit#slide=id.g2df2b84bdd7_0_22)
+
+What if we could boot and test Apache NuttX RTOS inside a Web Browser? This presentation explains how we created a NuttX Emulator in WebAssembly, based on TinyEMU RISC-V Emulator.
+
+TinyEMU uses VirtIO for Console Input and Output. We'll talk about the VirtIO Drivers and OpenAMP Library in NuttX, and how we integrated them with TinyEMU.
+
+We explain how created the Emulator for Ox64 SBC, based on TinyEMU Emulator. And how we run it for Daily Automated Testing of NuttX for Ox64.
+
+# Adventures of Ox64 BL808 RISC-V SBC with Apache NuttX RTOS
+
+[__Presentation Video__](https://drive.google.com/file/d/1iv5N8tUPxaWSjehJfo6-TRP7PCm-9fmw/view?usp=drive_link)
+
+[__Google Slides__](https://docs.google.com/presentation/d/1aMQ3EEB_uV_wiDBj1bUWdXaO4irlxrUFWQwhEErVU30/edit#slide=id.g2df6b0b84c4_0_203)
+
+We ported Apache NuttX RTOS to PINE64's Ox64 BL808 64-bit Single-Board Computer. And we created an Emulator for Ox64 SBC that runs in the Web Browser, thanks to TinyEMU RISC-V Emulator. Today we run Daily Automated Testing of NuttX on the Ox64 Emulator.
+
+In this presentation we explain how we used the Ox64 Emulator in our experiments with WebAssembly and NuttX: (1) Testing the TCC RISC-V Compiler in WebAssembly (2) Porting the QuickJS JavaScript Engine to NuttX (3) Creating a Drag-n-Drop App Builder for NuttX
+
+# Analysis of Real-Time Logs for Apache NuttX RTOS with PureScript
+
+[__Presentation Video__](https://drive.google.com/file/d/1uzZY1ONQALUyL45MaC1uCXIBbPjbC5ti/view?usp=drive_link)
+
+[__Google Slides__](https://docs.google.com/presentation/d/12jxNXjiJC0cHOveey1y2KPuhZ2AxO9sTT9yxICrpXeo/edit#slide=id.g2e018b359f4_0_0)
+
+Today we can get Real-Time Logs from our RISC-V Devices: Ox64 SBC (Web Serial API) and Ox64 Emulator (Term.js). What if we could analyse the RISC-V Logs in Real-Time? And show the results in the Web Browser?
+
+Let's do it with PureScript, the Functional Language that compiles to JavaScript. We'll also support Online Scripting of PureScript for Log Parsing.
+
+Can we enhance the NuttX Developer Experience with Functional Programming Tools like PureScript? Or newer hardware like Ox64 SBC? Let's chat about this.
+
 # Lup's Presentation Slides for NuttX International Workshop 2023
 
 Join me at [__NuttX International Workshop 2023__](https://events.nuttx.apache.org/)! (29-30 Sep 2023)
