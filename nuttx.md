@@ -4,7 +4,7 @@ Join me at [__NuttX International Workshop 2024__](https://events.nuttx.apache.o
 
 # TinyEMU RISC-V Emulator for Apache NuttX RTOS 
 
-[__Presentation Video__](https://drive.google.com/file/d/1nskDhYWV9XY-c-dwHtINGKHw2yeNKn2G/view?usp=drive_link)
+[__Presentation Video__](https://drive.google.com/file/d/1K3o_VuNRXb3Jkn9ys880C3sfew95Mm6R/view?usp=drive_link)
 
 [__Google Slides__](https://docs.google.com/presentation/d/1O5Na_aOmcLRJt75INGIoIk2uZSWXsEZjmY1jvHVUwkc/edit#slide=id.g2df2b84bdd7_0_22)
 
@@ -16,7 +16,7 @@ We explain how created the Emulator for Ox64 SBC, based on TinyEMU Emulator. And
 
 # Adventures of Ox64 BL808 RISC-V SBC with Apache NuttX RTOS
 
-[__Presentation Video__](https://drive.google.com/file/d/1iv5N8tUPxaWSjehJfo6-TRP7PCm-9fmw/view?usp=drive_link)
+[__Presentation Video__](https://drive.google.com/file/d/1qmzrW0A8EW9kNXHFl1jQKL2lbT6MaW4S/view?usp=drive_link)
 
 [__Google Slides__](https://docs.google.com/presentation/d/1aMQ3EEB_uV_wiDBj1bUWdXaO4irlxrUFWQwhEErVU30/edit#slide=id.g2df6b0b84c4_0_203)
 
@@ -26,7 +26,7 @@ In this presentation we explain how we used the Ox64 Emulator in our experiments
 
 # Analysis of Real-Time Logs for Apache NuttX RTOS with PureScript
 
-[__Presentation Video__](https://drive.google.com/file/d/1uzZY1ONQALUyL45MaC1uCXIBbPjbC5ti/view?usp=drive_link)
+[__Presentation Video__](https://drive.google.com/file/d/1us9teePtHEcDwYR_gWR31pIqCx7HVl3s/view?usp=drive_link)
 
 [__Google Slides__](https://docs.google.com/presentation/d/12jxNXjiJC0cHOveey1y2KPuhZ2AxO9sTT9yxICrpXeo/edit#slide=id.g2e018b359f4_0_0)
 
