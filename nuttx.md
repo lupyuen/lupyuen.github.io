@@ -40,7 +40,9 @@ Today we can get Real-Time Logs from our RISC-V Devices: Ox64 SBC (Web Serial AP
 
 Let's do it with PureScript, the Functional Language that compiles to JavaScript. We'll also support Online Scripting of PureScript for Log Parsing.
 
-Can we enhance the NuttX Developer Experience with Functional Programming Tools like PureScript? Or newer hardware like Ox64 SBC? Let's chat about this.
+Can we enhance the NuttX Developer Experience with Functional Programming Tools like PureScript? Or newer hardware like PINE64 Ox64 SBC and Sophgo SG2000 / Milk-V Duo S? Let's chat about this.
+
+<hr>
 
 # Lup's Presentation Slides for NuttX International Workshop 2023
 
