@@ -8,6 +8,8 @@ Join me at [__NuttX International Workshop 2024__](https://events.nuttx.apache.o
 
 [__PDF Slides__](https://drive.google.com/file/d/1X1Px3C8m44t_RU2NejHP2l3v81QP0Nfb/view?usp=drive_link)
 
+[__PDF Transcript__](https://drive.google.com/file/d/1qUpQ5YUUPJzOTauKATK83Ij9fY1WfvvG/view?usp=drive_link)
+
 [__Google Slides__](https://docs.google.com/presentation/d/1O5Na_aOmcLRJt75INGIoIk2uZSWXsEZjmY1jvHVUwkc/edit#slide=id.g2df2b84bdd7_0_22)
 
 What if we could boot and test Apache NuttX RTOS inside a Web Browser? This presentation explains how we created a NuttX Emulator in WebAssembly, based on TinyEMU RISC-V Emulator.
@@ -22,6 +24,8 @@ We explain how created the Emulator for Ox64 SBC, based on TinyEMU Emulator. And
 
 [__PDF Slides__](https://drive.google.com/file/d/1N68q_70pzsuS37wxsSYkAtrSl_lycErJ/view?usp=drive_link)
 
+[__PDF Transcript__](https://drive.google.com/file/d/1dhyUYCiUTWmMVllu4JNHJjfFYWjtP5Rc/view?usp=drive_link)
+
 [__Google Slides__](https://docs.google.com/presentation/d/1aMQ3EEB_uV_wiDBj1bUWdXaO4irlxrUFWQwhEErVU30/edit#slide=id.g2df6b0b84c4_0_203)
 
 We ported Apache NuttX RTOS to PINE64's Ox64 BL808 64-bit Single-Board Computer. And we created an Emulator for Ox64 SBC that runs in the Web Browser, thanks to TinyEMU RISC-V Emulator. Today we run Daily Automated Testing of NuttX on the Ox64 Emulator.
@@ -33,6 +37,8 @@ In this presentation we explain how we used the Ox64 Emulator in our experiments
 [__Presentation Video (32 mins)__](https://drive.google.com/file/d/1us9teePtHEcDwYR_gWR31pIqCx7HVl3s/view?usp=drive_link)
 
 [__PDF Slides__](https://drive.google.com/file/d/1HphWWLS3maR46MvDxd-32e6paEZpPosX/view?usp=drive_link)
+
+[__PDF Transcript__](https://drive.google.com/file/d/1KWHgKPN1ZhcUDh5j41E2PwUgZ4pYLuGG/view?usp=drive_link)
 
 [__Google Slides__](https://docs.google.com/presentation/d/12jxNXjiJC0cHOveey1y2KPuhZ2AxO9sTT9yxICrpXeo/edit#slide=id.g2e018b359f4_0_0)
 
