@@ -36,7 +36,7 @@ In this presentation we explain how we used the Ox64 Emulator in our experiments
 
 [__Google Slides__](https://docs.google.com/presentation/d/12jxNXjiJC0cHOveey1y2KPuhZ2AxO9sTT9yxICrpXeo/edit#slide=id.g2e018b359f4_0_0)
 
-Today we can get Real-Time Logs from our RISC-V Devices: Ox64 SBC (Web Serial API) and Ox64 Emulator (Term.js). What if we could analyse the RISC-V Logs in Real-Time? And show the results in the Web Browser?
+Today we can get Real-Time NuttX Logs from our RISC-V Devices: Ox64 SBC (Web Serial API) and Ox64 Emulator (Term.js). What if we could analyse the RISC-V Logs in Real-Time? And show the results in the Web Browser?
 
 Let's do it with PureScript, the Functional Language that compiles to JavaScript. We'll also support Online Scripting of PureScript for Log Parsing.
 
