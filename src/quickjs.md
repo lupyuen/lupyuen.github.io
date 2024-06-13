@@ -520,7 +520,7 @@ Here are the sizes of QuickJS and its options...
 
 _What about Heap Memory Size?_
 
-Based on the NuttX Logs with [__Heap Logging Enabled__](https://github.com/lupyuen2/wip-nuttx/blob/master/Kconfig#L963-L988)...
+Based on the NuttX Logs with [__Heap Logging Enabled__](https://github.com/lupyuen2/wip-nuttx/blob/master/Kconfig#L963-L988): _"Build Setup > Debug Options > Enable Debug Features > Memory Manager Debug Features > Info Output"_
 
 - [__Heap Log: Without REPL__](https://github.com/lupyuen/quickjs-nuttx/blob/d2dbef1afef26ae4cc76719d7cac3740da5f3387/nuttx/qemu.log#L74-L2905)
 
