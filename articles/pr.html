@@ -204,6 +204,16 @@ failed with status: 503 Service Unavailable&quot;
 <p><a href="https://gist.github.com/lupyuen/c061ac688f430ef11a1c60e0b284a1fe">(See the Log)</a></p>
 </li>
 </ul>
+<p><strong>For macOS:</strong> We may need to use “<strong>brew install pipenv</strong>” instead of “<strong>pip install pipenv</strong>”. And we may need “<strong>pip install setuptools</strong>” to fix <em>“No module named pkg_resources”</em>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Docs on macOS
+cd nuttx/Documentation
+brew install pipenv
+pipenv install
+pipenv shell
+pip install setuptools
+make html
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/eeae419776fba2b59502fcce05bb1859">(See the Log)</a></p>
 <p><img src="https://lupyuen.github.io/images/pr-nxstyle.jpg" alt="Check Coding Style with nxstyle" /></p>
 <h1 id="check-coding-style"><a class="doc-anchor" href="#check-coding-style">§</a>3 Check Coding Style</h1>
 <p>Our NuttX Code will follow this Coding Standard…</p>
