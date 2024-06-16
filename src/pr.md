@@ -174,6 +174,7 @@ brew install pipenv
 pipenv install
 pipenv shell
 pip install setuptools
+rm -r _build
 make html
 ```
 
