@@ -152,7 +152,9 @@
 <p>USB UART Dongle must be <a href="http://sun-light.com.sg/index.php?route=product/product&amp;product_id=2367"><strong>CP2102</strong></a>, it doesn’t like <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>CH340</strong></a> 😬</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-switch.jpg" alt="Switch to “RV” (RISC-V) instead of “Arm”" /></p>
 <p>Flip the Switch so it’s set to “<strong><code>RV</code></strong>” (RISC-V) instead of “<strong><code>Arm</code></strong>”. (Pic above)</p>
-<p>Power up the board via the <strong>USB-C Port</strong>. Connect to the USB UART at <strong>115.2 kbps</strong>.</p>
+<p>Power up the board via the <strong>USB-C Port</strong>. Connect to the USB UART at <strong>115.2 kbps</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200
+</code></pre></div>
 <p>Milk-V Duo S <a href="https://gist.github.com/lupyuen/a7c3af98be36dcd5cc5b45f5aadc5d16"><strong>won’t boot</strong></a> because it doesn’t ship with <strong>U-Boot Bootloader</strong> in Flash Memory…</p>
 <div class="example-wrap"><pre class="language-bash"><code>C.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000. 
 E:eMMC initializing failed
