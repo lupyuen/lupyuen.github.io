@@ -974,9 +974,9 @@ Password: starfive
 <div class="example-wrap"><pre class="language-c"><code>uint32_t dlm = u16550_serialin(priv, UART_DLM_OFFSET);
 uint32_t dll = u16550_serialin(priv, UART_DLL_OFFSET);
 </code></pre></div>
-<p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L817-L851">(We capture DLM and DLL only when DLAB=1)</a></p>
-<p>(Be careful to print only when DLAB=0)</p>
-<p>According to our log, DLM is 0 and DLL is 13. Which means..</p>
+<p><a href="https://gist.github.com/lupyuen/4df6624c9691149099f177a18618e6a7#file-uart_16550-c-L84-L90">(We capture DLM and DLL only when DLAB=1)</a></p>
+<p><a href="https://gist.github.com/lupyuen/4df6624c9691149099f177a18618e6a7#file-uart_16550-c-L142-L146">(Be careful to print only when DLAB=0)</a></p>
+<p><a href="https://gist.github.com/lupyuen/4df6624c9691149099f177a18618e6a7#file-uart_16550-c-L1"><strong>According to our log</strong></a>, DLM is 0 and DLL is 13. Which means..</p>
 <div class="example-wrap"><pre class="language-text"><code>dlm =  0 = (div &gt;&gt; 8)
 dll = 13 = (div &amp; 0xff)
 </code></pre></div>
