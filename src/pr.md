@@ -165,6 +165,20 @@ To update the Official NuttX Docs, follow the instructions here...
 
     [(See the Log)](https://gist.github.com/lupyuen/c061ac688f430ef11a1c60e0b284a1fe)
 
+__For macOS:__ We may need to use "__brew install pipenv__" instead of "__pip install pipenv__". And we may need "__pip install setuptools__" to fix _"No module named pkg_resources"_...
+
+```bash
+## Build NuttX Docs on macOS
+cd nuttx/Documentation
+brew install pipenv
+pipenv install
+pipenv shell
+pip install setuptools
+make html
+```
+
+[(See the Log)](https://gist.github.com/lupyuen/eeae419776fba2b59502fcce05bb1859)
+
 ![Check Coding Style with nxstyle](https://lupyuen.github.io/images/pr-nxstyle.jpg)
 
 # Check Coding Style
