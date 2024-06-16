@@ -1005,11 +1005,11 @@ uint32_t dlm = u16550_serialin(priv, UART_DLM_OFFSET);
 uint32_t dll = u16550_serialin(priv, UART_DLL_OFFSET);
 ```
 
-[(We capture DLM and DLL only when DLAB=1)](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L817-L851)
+[(We capture DLM and DLL only when DLAB=1)](https://gist.github.com/lupyuen/4df6624c9691149099f177a18618e6a7#file-uart_16550-c-L84-L90)
 
-(Be careful to print only when DLAB=0)
+[(Be careful to print only when DLAB=0)](https://gist.github.com/lupyuen/4df6624c9691149099f177a18618e6a7#file-uart_16550-c-L142-L146)
 
-According to our log, DLM is 0 and DLL is 13. Which means..
+[__According to our log__](https://gist.github.com/lupyuen/4df6624c9691149099f177a18618e6a7#file-uart_16550-c-L1), DLM is 0 and DLL is 13. Which means..
 
 ```text
 dlm =  0 = (div >> 8)
