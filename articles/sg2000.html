@@ -86,7 +86,8 @@
 <li><a href="#interrupt-controller-for-sg2000">14.5 Interrupt Controller for SG2000</a><ul></ul></li>
 <li><a href="#fix-the-nuttx-driver-for-plic">14.6 Fix the NuttX Driver for PLIC</a><ul></ul></li>
 <li><a href="#enable-logging-for-scheduler">14.7 Enable Logging for Scheduler</a><ul></ul></li>
-<li><a href="#nuttx-crash-dump">14.8 NuttX Crash Dump</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 May 2024</em></p>
+<li><a href="#nuttx-crash-dump">14.8 NuttX Crash Dump</a><ul></ul></li></ul></li>
+<li><a href="#appendix-nuttx-mainline-now-supports-sg2000">15 Appendix: NuttX Mainline now supports SG2000!</a><ul></ul></li></ul></nav><p>📝 <em>19 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-title.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
 <p>Soon we’ll see many new 64-bit RISC-V SBCs based on the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>Sophgo SG2000 RISC-V SoC</strong></a>.</p>
 <p>Will they work with <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>? (Real-Time Operating System) Let’s find out…</p>
@@ -1160,6 +1161,110 @@ setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg
 tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb ; fdt addr ${fdt_addr_r} ; 
 booti ${kernel_addr_r} - ${fdt_addr_r}
 </code></pre></div>
+<p><img src="https://lupyuen.github.io/images/sg2000-pr.jpg" alt="NuttX Mainline now supports SG2000" /></p>
+<h1 id="appendix-nuttx-mainline-now-supports-sg2000"><a class="doc-anchor" href="#appendix-nuttx-mainline-now-supports-sg2000">§</a>15 Appendix: NuttX Mainline now supports SG2000!</h1>
+<p>Sophgo SG2000 SoC and Milk-V Duo S SBC are now officially supported by <strong>Apache NuttX Mainline</strong>! 🎉</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/nuttx/pull/12506"><strong>arch/risc-v: Add support for SOPHGO SG2000 SoC</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/pull/12510"><strong>boards/risc-v: Add support for Milk-V Duo S SBC</strong></a></p>
+</li>
+</ul>
+<p><em>How did we prepare the Pull Requests for NuttX Mainline?</em></p>
+<p>In this article we discussed the Modified Code for SG2000. We took the Modified Code and staged the changes into our NuttX Repo here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/pull/57/files"><strong>Modified Code: NuttX for SG2000</strong></a></li>
+</ul>
+<p>Next we create <a href="https://github.com/lupyuen2/wip-nuttx/tree/sg2000a"><strong>a new branch</strong></a>. Inside the new branch: We copy the <strong>NuttX Source Folders</strong> for BL808 / Ox64, and paste the folders as SG2000 / Duo S…</p>
+<ol>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/f70c3e7024ba39fda808a835419e21ddac7bfa00">“Copy and rename BL808 to SG2000”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/8225b764bda81e0c7f7db3698754d11185a9ea57">“Copy and rename Ox64 to DuoS”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/6af7a01482545d8b2a4025980253e1e914f15433">“Copy and rename BL808 Include to SG2000 Include”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/b5ef76b8c893e7cdd461dbee9c5124542d8c497d">“Rename BL808 AppInit to SG2000 AppInit”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/810672b47070c4848c36bf72a752354d2e456120">“Remove BL808 UART from SG2000”</a></p>
+</li>
+</ol>
+<p>Remember our <strong>Modified Code for SG2000</strong>? We copy the Modified Code into our new NuttX Source Folders (for SG2000 and Duo S)…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/fa9e319032decea8241cd25b3ae77a86ef132746">“Copy changes from sg2000 branch to sg2000a”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/2886da6837862fad46cbaf96c672bc168cdd7b38">“Disable Binary Loader Debug and Scheduler Debug”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/f12ad97561958e2449082faffcbf4836b70e2f84">“Fix SG2000 IRQ”</a></p>
+</li>
+</ul>
+<p>We create a new <strong>NuttX SoC (Arch) for SG2000</strong>. And a new NuttX Board for Milk-V Duo S…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/commit/527029c94c9cafa44d2afa248f2e11ad1dda508f">“Add Arch for SG2000. Add Board for Milk-V Duo S.”</a></li>
+</ul>
+<p>We compute the <a href="https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110"><strong>UART Clock Frequency</strong></a> for SG2000 and configure it in NuttX…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/7a7d5e53be1ebb93ed90541859e18af694a5b64d">“Set UART Clock to 24883200”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/deff18c8776b14da6359b7498e159c81fb147771">“Restore setting of UART Divisor”</a></p>
+</li>
+</ul>
+<p>Then we goofed and realise that NSH Shell won’t wait for commands to complete! (NSH Shell returns immediately) We restore the NuttX Configuration to <strong>wait for processes</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/commit/db2a0327b747e18bcc2876d4cd4d6bed9982f07c">“Enable SCHED_HAVE_PARENT and SCHED_WAITPID”</a></li>
+</ul>
+<p><strong>sleep()</strong> wasn’t sleeping with the right duration. Thus we adjust the <strong>RISC-V Timer Frequency</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/commit/bb4906c976e44a05237f91944844cd1c68ef5d5b">“Set MTIMER_FREQ to 25000000”</a></li>
+</ul>
+<p>We enable <strong>RAW_BINARY</strong> so that NuttX Build will generate <strong><code>nuttx.bin</code></strong> (otherwise we need to generate it ourselves)…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/commit/1af8f07daf73fced40293dc37480b3dca1c0ad61">“Enable CONFIG_RAW_BINARY to generate nuttx.bin”</a></li>
+</ul>
+<p>We added the <strong>NuttX Documentation</strong> for SG2000 and Duo S…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/150643ecbfd5e897b3b216c63272c5de8d864cae">“Add Arch and Board Docs”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/a7b2b8e074d1e9ad92d6624ddcac7d82a3a63e39">“Fix Arch and Board Docs”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/c67903426e23aa001791edb65505fed03bc20245">“Update Arch and Board Docs”</a></p>
+</li>
+</ul>
+<p>During PR Review: We realised that <strong><code>duos</code></strong> wasn’t a distinctive name. Hence we renamed it to <strong><code>milkv_duos</code></strong></p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/11fe99366cbf1f46737ab2baee40a37ee0c0b7d3">“Rename duos to milkv_duos”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/218ccd843af0b80c92a79dc9d68956dc9d24b3bf">“Rename Board and Doc Folders for duos to milkv_duos”</a></p>
+</li>
+</ul>
+<p>And finally we made it to NuttX Mainline!</p>
+<p><em>NuttX Mainline changes every day. Can we be sure that NuttX will always run OK on SG2000?</em></p>
+<p>That’s why we <strong>Build NuttX for SG2000</strong> every day at GitHub Actions. And we test the Daily Build on a <strong>Real Milk-V Duo S SBC</strong>!</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000#nuttx-automated-daily-build-for-sg2000"><strong>Automated Daily Build: NuttX for SG2000</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/autotest-nuttx-sg2000"><strong>Automated Daily Testing: NuttX for SG2000</strong></a></p>
+</li>
+</ul>
+
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
