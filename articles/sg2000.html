@@ -89,7 +89,7 @@
 <li><a href="#enable-logging-for-scheduler">15.7 Enable Logging for Scheduler</a><ul></ul></li>
 <li><a href="#nuttx-crash-dump">15.8 NuttX Crash Dump</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-title.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
-<p><a href="https://lupyuen.github.io/articles/sg2000#appendix-nuttx-mainline-now-supports-sg2000"><strong>UPDATE: NuttX Mainline now supports SG2000!</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/sg2000#appendix-nuttx-mainline-now-supports-sg2000"><strong>UPDATE: NuttX Mainline now supports SG2000 and Milk-V Duo S!</strong></a></p>
 <p>Soon we’ll see many new 64-bit RISC-V SBCs based on the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>Sophgo SG2000 RISC-V SoC</strong></a>.</p>
 <p>Will they work with <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>? (Real-Time Operating System) Let’s find out…</p>
 <ul>
@@ -680,7 +680,7 @@ riscv_exception:
 <li>
 <p>We’ll Upstream SG2000 to <strong>NuttX Mainline</strong></p>
 <p>(So others may contribute their code)</p>
-<p><a href="https://lupyuen.github.io/articles/sg2000#appendix-nuttx-mainline-now-supports-sg2000"><strong>UPDATE: NuttX Mainline now supports SG2000!</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/sg2000#appendix-nuttx-mainline-now-supports-sg2000"><strong>UPDATE: NuttX Mainline now supports SG2000 and Milk-V Duo S!</strong></a></p>
 </li>
 <li>
 <p>Create an <strong>SG2000 Emulator</strong> for easier testing</p>
@@ -725,6 +725,9 @@ riscv_exception:
 <h1 id="appendix-nuttx-mainline-now-supports-sg2000"><a class="doc-anchor" href="#appendix-nuttx-mainline-now-supports-sg2000">§</a>13 Appendix: NuttX Mainline now supports SG2000!</h1>
 <p>Sophgo SG2000 SoC and Milk-V Duo S SBC are now officially supported by <strong>Apache NuttX Mainline</strong>! 🎉</p>
 <ul>
+<li>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/sg2000/boards/milkv_duos/index.html"><strong>Official NuttX Docs: Milk-V Duo S</strong></a></p>
+</li>
 <li>
 <p><a href="https://github.com/apache/nuttx/pull/12506"><strong>arch/risc-v: Add support for SOPHGO SG2000 SoC</strong></a></p>
 </li>
@@ -841,65 +844,22 @@ riscv_exception:
 <p><a href="https://lupyuen.github.io/articles/sg2000#fix-the-nuttx-driver-for-plic"><strong>“Fix the NuttX Driver for PLIC”</strong></a></p>
 </li>
 </ol>
-<p>Follow these steps to build (work-in-progress) Apache NuttX RTOS for <strong>SG2000 and Milk-V Duo S</strong>…</p>
+<p>Follow these steps to build Apache NuttX RTOS (Mainline) for <strong>SG2000 and Milk-V Duo S</strong>, based on the <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/sg2000/boards/milkv_duos/index.html"><strong>Official NuttX Docs</strong></a>…</p>
 <p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></li>
 </ul>
-<p>Download the RISC-V Toolchain for <strong>riscv64-unknown-elf</strong> (SiFive) or <strong>riscv-none-elf</strong> (xPack)…</p>
+<p>Download the RISC-V Toolchain for <strong>riscv-none-elf</strong> (xPack)…</p>
 <ul>
-<li>
-<p><a href="https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></p>
-<p><em>OR</em></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v"><strong>“xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V”</strong></a></p>
-</li>
+<li><a href="https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v"><strong>“xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V”</strong></a></li>
 </ul>
 <p>Then Download and Build NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For xPack Toolchain:
-## Change all `riscv64-unknown-elf` to `riscv-none-elf`
-
-set -e  #  Exit when any command fails
+<div class="example-wrap"><pre class="language-bash"><code>set -e  #  Exit when any command fails
 set -x  #  Echo commands
 
-## Build NuttX
-function build_nuttx {
-
-  ## Go to NuttX Folder
-  pushd ../nuttx
-
-  ## Build NuttX
-  make -j 8
-
-  ## Return to previous folder
-  popd
-}
-
-## Build Apps Filesystem
-function build_apps {
-
-  ## Go to NuttX Folder
-  pushd ../nuttx
-
-  ## Build Apps Filesystem
-  make -j 8 export
-  pushd ../apps
-  ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
-  make -j 8 import
-  popd
-
-  ## Return to previous folder
-  popd
-}
-
-## Download WIP NuttX for SG2000 (based on Ox64 BL808)
-git clone --branch sg2000 \
-  https://github.com/lupyuen2/wip-nuttx \
-  nuttx
-git clone --branch sg2000 \
-  https://github.com/lupyuen2/wip-nuttx-apps \
-  apps
+## Download the Source Code for NuttX Kernel and NuttX Apps
+git clone https://github.com/apache/incubator-nuttx nuttx
+git clone https://github.com/apache/incubator-nuttx-apps apps
 cd nuttx
 
 ## Pull updates
@@ -911,70 +871,68 @@ echo NuttX Source: https://github.com/apache/nuttx/tree/$hash1 &gt;nuttx.hash
 echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$hash2 &gt;&gt;nuttx.hash
 
 ## Show the version of GCC
-riscv64-unknown-elf-gcc -v
+riscv-none-elf-gcc -v
 
 ## Configure the build
-tools/configure.sh ox64:nsh
+tools/configure.sh milkv_duos:nsh
 
-## Build the NuttX Kernel
-build_nuttx
+## Preserve the build config
+cp .config nuttx.config
+
+## Run the build
+make
 
 ## Build the Apps Filesystem
-build_apps
+make export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make import
+popd
 
 ## Generate the Initial RAM Disk
 genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
 
-## Show the NuttX Kernel Size
-riscv64-unknown-elf-size nuttx
-
-## Export the Kernel Binary Image to `nuttx.bin`
-riscv64-unknown-elf-objcopy \
-  -O binary \
-  nuttx \
-  nuttx.bin
-
 ## Prepare a Padding with 64 KB of zeroes
 head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 
-## Append the Padding and Initial RAM Disk to NuttX Kernel
+## Append the Padding and Initial RAM Disk to the NuttX Kernel
 cat nuttx.bin /tmp/nuttx.pad initrd \
-  &gt;Image
+  &gt;Image-sg2000
 
-## Copy the NuttX Config
-cp .config nuttx.config
+## Copy the NuttX Image and Device Tree to our TFTP Server
+wget https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb
+scp Image-sg2000 tftpserver:/tftpboot/Image-sg2000
+scp cv181x_milkv_duos_sd.dtb tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
 
-## Dump the NuttX Kernel Disassembly to nuttx.S
-riscv64-unknown-elf-objdump \
+## [For Debugging Only] Show the size
+riscv-none-elf-size nuttx
+
+## [For Debugging Only] Dump the NuttX Kernel disassembly to nuttx.S
+riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
   nuttx \
   &gt;nuttx.S \
   2&gt;&amp;1
 
-## Dump the NuttX Shell Disassembly to init.S
-riscv64-unknown-elf-objdump \
+## [For Debugging Only] Dump the NSH Shell disassembly to init.S
+riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
   ../apps/bin/init \
   &gt;init.S \
   2&gt;&amp;1
 
-## Dump the Hello Disassembly to hello.S
-riscv64-unknown-elf-objdump \
+## [For Debugging Only] Dump the Hello App disassembly to hello.S
+riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
   ../apps/bin/hello \
   &gt;hello.S \
   2&gt;&amp;1
-
-## Copy the NuttX Image and Device Tree to our TFTP Server.
-## Device Tree is here: https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb
-cp Image Image-sg2000
-scp Image-sg2000 tftpserver:/tftpboot/Image-sg2000
-scp cv181x_milkv_duos_sd.dtb tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/sg2000-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000.yml#L25-L119">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2024-06-18">(See the <strong>Build Outputs</strong>)</a></p>
 <p>The steps above assume that we’ve installed our TFTP Server, according to the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a>.</p>
 <p>Then follow these steps to boot NuttX on Milk-V Duo S…</p>
 <ul>
