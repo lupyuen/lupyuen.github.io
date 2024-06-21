@@ -69,14 +69,29 @@
 <li><a href="#download-the-daily-build">2 Download the Daily Build</a><ul></ul></li>
 <li><a href="#automated-test-script">3 Automated Test Script</a><ul></ul></li>
 <li><a href="#upload-the-test-log">4 Upload the Test Log</a><ul></ul></li>
-<li><a href="#automated-testing-of-apache-nuttx-rtos-on-sophgo-sg2000-soc--milk-v-duo-s-sbc">5 Automated Testing of Apache NuttX RTOS on Sophgo SG2000 SoC / Milk-V Duo S SBC</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Jun 2024</em></p>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Jun 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-title.jpg" alt="TODO" /></p>
 <p>Last week we upstreamed Milk-V Duo S SBC to Apache NuttX RTOS.</p>
 <p>(Based on Sophgo SG2000 RISC-V SoC)</p>
 <p>But NuttX Mainline <a href="https://github.com/apache/nuttx/commits/master/"><strong>changes every day</strong></a>.</p>
 <p>Can we be sure that Milk-V Duo S won’t suffer <strong>“Software Bit Rot”</strong>? And fail to boot NuttX someday?</p>
 <p>Let’s do <strong>Daily Automated Testing</strong> for NuttX on a Milk-V Duo S. Yep on the Actual Physical SBC!</p>
+<p>TODO</p>
+<ol>
+<li>
+<p>Download the <a href="https://github.com/lupyuen/nuttx-sg2000#nuttx-automated-daily-build-for-sg2000">Automated Daily Build</a> to TFTP Server</p>
+</li>
+<li>
+<p>Power on our SBC with an <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000#control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant">IKEA Smart Power Plug via Home Assistant</a></p>
+</li>
+<li>
+<p>Our SBC boots the Daily Build over TFTP</p>
+</li>
+<li>
+<p>Capture the Automated Testing Log and write to the Release Notes</p>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000/tags">(See the <strong>Automated Test Logs</strong>)</a></p>
+</li>
+</ol>
 <p>TODO: Pic of SBC</p>
 <h1 id="control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant"><a class="doc-anchor" href="#control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant">§</a>1 Control our SBC with an IKEA Smart Power Plug and Home Assistant</h1>
 <p>Toughest Thing about our Daily Exercise: <strong>Automagically Powering Up</strong> our SBC.</p>
@@ -153,7 +168,7 @@ curl \
 </code></pre></div>
 <p><em>Doesn’t the USB UART Adapter supply a tiny bit of power to our SBC?</em></p>
 <p>Yeah enough power to light up the SBC, but not enough to power up the SBC totally.</p>
-<p>Thus our SBC will glow at night, even though the power is off. (I drape a hand towel so it won’t bother my sleep)</p>
+<p>Thus our SBC will <strong>glow errily red at night</strong>, even though the power is off. (I drape a hand towel so it won’t haunt my sleep)</p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-title.jpg" alt="Power On our SBC from our Automated Test Script" /></p>
 <h1 id="download-the-daily-build"><a class="doc-anchor" href="#download-the-daily-build">§</a>2 Download the Daily Build</h1>
 <p><em>What will we boot and test on our SBC?</em></p>
@@ -182,10 +197,10 @@ script /tmp/test.log \
   nuttx.exp
 </code></pre></div>
 <p><em>We’re using a TFTP Server?</em></p>
-<p>Yep we’ll boot the NuttX Image that’s copied to our <a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>TFTP Server</strong></a>.</p>
-<p>This requires a <a href="https://lupyuen.github.io/articles/sg2000#download-the-linux-microsd"><strong>MicroSD Card with U-Boot Bootloader</strong></a>. And some special <a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>U-Boot Commands for TFTP</strong></a>.</p>
-<p>(That will run automatically because of <strong><code>saveenv</code></strong>)</p>
-<p>See <strong>nuttx.exp</strong> from above? Let’s talk about the Automated Test Script…</p>
+<p>Yep our SBC will boot the NuttX Image that’s copied to our <a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>TFTP Server</strong></a>.</p>
+<p>Our SBC needs a <a href="https://lupyuen.github.io/articles/sg2000#download-the-linux-microsd"><strong>MicroSD Card with U-Boot Bootloader</strong></a>. And some special <a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>U-Boot Commands for TFTP</strong></a>.</p>
+<p>(That will run automatically thanks to <strong><code>saveenv</code></strong>)</p>
+<p>See the <strong>nuttx.exp</strong> from above? Let’s talk about the Automated Test Script…</p>
 <h1 id="automated-test-script"><a class="doc-anchor" href="#automated-test-script">§</a>3 Automated Test Script</h1>
 <p><em>What’s inside our Automated Test Script: nuttx.exp?</em></p>
 <p>This is an <a href="https://linux.die.net/man/1/expect"><strong>Expect Tcl Script</strong></a> that will send NuttX Commands over the USB Serial Port to our SBC: <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/nuttx.exp">nuttx.exp</a></p>
@@ -234,7 +249,7 @@ expect {
   }
 }
 </code></pre></div>
-<p><strong>OSTest</strong> will run a whole bunch of NuttX Tests, exercising everything thoroughly and vetting our fitness.</p>
+<p><a href="TODO"><strong>OSTest</strong></a> will run a whole bunch of NuttX Tests, thoroughly exercising everything and vetting our physical proficiency.</p>
 <p>TODO: Pic of Test Log</p>
 <h1 id="upload-the-test-log"><a class="doc-anchor" href="#upload-the-test-log">§</a>4 Upload the Test Log</h1>
 <p><em>OK but where’s the evidence of our Daily Test?</em></p>
@@ -264,7 +279,7 @@ ostest_main: Exiting with status 0
 ===== Test OK
 </code></pre></div>
 <p><em>Whoa that’s plenty of logs. How did they get there?</em></p>
-<p>We ran a script to <strong>Upload the Test Log</strong> into the GitHub Release Notes: <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/upload.sh">upload.sh</a></p>
+<p>We ran a script to <strong>Upload the Test Log</strong> into the GitHub Release Notes: <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/upload.sh#L66-L74">upload.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Upload the Test Log to the
 ## GitHub Release Notes.
 ## `release.tag` looks like `nuttx-sg2000-2024-06-21`
@@ -274,27 +289,11 @@ gh release edit \
   --repo lupyuen/nuttx-sg2000
 </code></pre></div>
 <p><em>We run all these scripts every day?</em></p>
-<p>Actually we run the scripts <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/task.sh#L54-L66"><strong>every 10 minutes</strong></a>, waiting for the latest Daily Build.</p>
-<h1 id="automated-testing-of-apache-nuttx-rtos-on-sophgo-sg2000-soc--milk-v-duo-s-sbc"><a class="doc-anchor" href="#automated-testing-of-apache-nuttx-rtos-on-sophgo-sg2000-soc--milk-v-duo-s-sbc">§</a>5 Automated Testing of Apache NuttX RTOS on Sophgo SG2000 SoC / Milk-V Duo S SBC</h1>
-<p>TODO</p>
-<p>We are now running Daily Automated Testing of <a href="https://github.com/lupyuen/nuttx-sg2000">Apache NuttX RTOS</a> on a Real Milk-V Duo S SBC (Sophgo SG2000 SoC)…</p>
-<ol>
-<li>
-<p>Download the <a href="https://github.com/lupyuen/nuttx-sg2000#nuttx-automated-daily-build-for-sg2000">Automated Daily Build</a> to TFTP Server</p>
-</li>
-<li>
-<p>Power on our SBC with an <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000#control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant">IKEA Smart Power Plug via Home Assistant</a></p>
-</li>
-<li>
-<p>Our SBC boots the Daily Build over TFTP</p>
-</li>
-<li>
-<p>Capture the Automated Testing Log and write to the Release Notes</p>
-</li>
-</ol>
-<p>Like this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Run the Daily Automated Testing
-script /tmp/release.log scripts/test.sh
+<p>Actually we run the scripts <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/task.sh#L54-L66"><strong>every 10 minutes</strong></a>, waiting for the <a href="https://github.com/lupyuen/nuttx-sg2000#nuttx-automated-daily-build-for-sg2000"><strong>Latest Daily Build</strong></a>.</p>
+<p>Which triggers our Smart Power Plug and Automated Test Script.</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Run the Daily Automated Test
+script /tmp/release.log \
+  scripts/test.sh
 
 ## Upload the Test Log to GitHub Release Notes
 scripts/upload.sh
@@ -302,18 +301,11 @@ scripts/upload.sh
 ## OR: Do this to run the Automated Test automatically whenever there&#39;s a Daily Build
 scripts/task.sh
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-sg2000/releases">(See the Automated Test Logs)</a></p>
-<p>Here are the Automated Testing Scripts…</p>
-<ul>
-<li>Automated Task: <a href="scripts/task.sh">task.sh</a></li>
-<li>Test NuttX on SBC: <a href="scripts/test.sh">test.sh</a></li>
-<li>Upload Test Log: <a href="scripts/upload.sh">upload.sh</a></li>
-<li>Expect Script: <a href="scripts/nuttx.exp">nuttx.exp</a></li>
-</ul>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
-<p>TODO</p>
-<p><em>Why not run the Daily Automated Test on a Software Emulator? (Instead of Real Hardware)</em></p>
-<p>Oh yes we’re doing that too! Please join me in the next article on <strong>SG2000 Emulator</strong>.</p>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000/tags">(See the <strong>Automated Test Logs</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts">(See the <strong>Automated Test Scripts</strong>)</a></p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
+<p><em>OK thanks but why not run the Daily Automated Test on a Software Emulator? (Instead of Real Hardware)</em></p>
+<p>Oh yes we’re <a href="https://github.com/lupyuen2/sg2000-emulator"><strong>doing that too</strong></a>! Please join me in the next article on <strong>SG2000 Emulator</strong>.</p>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
