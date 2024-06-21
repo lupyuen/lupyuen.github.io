@@ -531,7 +531,7 @@ Check out the solution here...
 
 With Network Boot running, we're now ready for __Automated Testing of Apache NuttX RTOS__ on Star64 SBC!
 
-(Though we might need a __Smart Power Plug__ to reboot our SBC: [__IKEA TRÅDFRI__](https://www.ikea.com/sg/en/p/tradfri-control-outlet-kit-smart-10364797/) and [__DIRIGERA__](https://www.ikea.com/sg/en/p/dirigera-hub-for-smart-products-white-smart-50503409/) via [__Home Assistant API__](https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d))
+[(With a __Smart Power Plug__ and __Home Assistant__ to reboot our SBC)](https://github.com/lupyuen2/autotest-nuttx-sg2000#control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant)
 
 Porting NuttX to Star64 JH7110 becomes so much faster. Stay tuned for updates!
 
