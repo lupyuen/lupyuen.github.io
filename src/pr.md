@@ -4,6 +4,8 @@
 
 ![Typical Pull Request for Apache NuttX RTOS](https://lupyuen.github.io/images/pr-title.jpg)
 
+[__(Watch the Video on YouTube)__](https://youtu.be/p6ly3EBhtpo?si=ArHLgnu5JWLb5FtW)
+
 This article explains how I prepared my Pull Requests for submission to [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html). So if we're contributing code to NuttX, just follow these steps and things will (probably) go Hunky Dory!
 
 (Like the fish)
@@ -615,6 +617,8 @@ If they didn't fail the build, then it's probably OK to Rebase with Master to fo
 ![Pull Updates from NuttX Mainline](https://lupyuen.github.io/images/pr-update.png)
 
 # Update Our Repositories
+
+[__(Watch the Video on YouTube)__](https://youtu.be/p6ly3EBhtpo?si=ArHLgnu5JWLb5FtW)
 
 After our Pull Request has been merged into NuttX Mainline, __pull the updates__ into our repositories...
 
