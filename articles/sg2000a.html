@@ -77,7 +77,7 @@
 <p>TODO: Pic of SBC</p>
 <h1 id="control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant"><a class="doc-anchor" href="#control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant">§</a>1 Control our SBC with an IKEA Smart Power Plug and Home Assistant</h1>
 <p>Toughest Thing about our Daily Exercise: <strong>Automagically Powering Up</strong> our SBC.</p>
-<p>We hiked to our neighbourhood IKEA Store and bought…</p>
+<p>We hike to our neighbourhood IKEA Store and buy…</p>
 <ul>
 <li>
 <p><a href="https://www.ikea.com/gb/en/p/tretakt-plug-with-remote-control-smart-30569726/"><strong>IKEA TRETAKT Smart Power Plug</strong></a></p>
@@ -88,23 +88,26 @@
 <p>(Which talks Ethernet, not WiFi!)</p>
 </li>
 </ul>
-<p><em>How did we power on and off our SG2000 SBC? Automagically?</em></p>
-<p>We added the Smart Power Plug to the IKEA Home Smart App like this…</p>
+<p>We add the Smart Power Plug to the <a href="https://www.ikea.com/sg/en/customer-service/product-support/smart-home-dirigera-hub/"><strong>IKEA Home Smart App</strong></a>. And we name it <strong>“SG2000 Power”</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-ikea.jpg" alt="IKEA Smart Power Plug in IKEA Home Smart App" /></p>
 <p><em>But IKEA doesn’t provide a Public API for their gadgets!</em></p>
-<p>Yeah sigh. That’s why we…</p>
+<p>Yeah our script can’t directly control the power plug sigh. That’s why we…</p>
 <ol>
 <li>
-<p>Add IKEA Smart Power Plug to <a href="https://www.ikea.com/nl/en/customer-service/knowledge/articles/c916g4b0-c602-4g65-9c4e-b40f801g43dc.html">Google Assistant</a></p>
+<p>Add the IKEA Smart Power Plug to <a href="https://www.ikea.com/nl/en/customer-service/knowledge/articles/c916g4b0-c602-4g65-9c4e-b40f801g43dc.html"><strong>Google Assistant</strong></a></p>
+<p>(On our Android Phone)</p>
 </li>
 <li>
-<p>And control the IKEA Smart Power Plug via the <a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d">Google Assistant SDK</a></p>
+<p>Eventually control the IKEA Smart Power Plug via the <a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d"><strong>Google Assistant SDK</strong></a></p>
+<p>(Which sounds kinda tedious)</p>
 </li>
 <li>
-<p>By running Home Assistant with <a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d">Google Assistant SDK</a></p>
+<p>So instead we connect <a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d"><strong>Home Assistant</strong></a> to Google Assistant SDK</p>
+<p>(Just point and click yay!)</p>
 </li>
 <li>
-<p>For macOS: We run <a href="https://gist.github.com/lupyuen/03a7cc8702085c70893e157d8c3ca3f8">Home Assistant in a Docker Container (Rancher Desktop)</a></p>
+<p><strong>For macOS:</strong> We run Home Assistant in a <a href="https://gist.github.com/lupyuen/03a7cc8702085c70893e157d8c3ca3f8"><strong>Docker Container</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/03a7cc8702085c70893e157d8c3ca3f8"><strong>(Rancher Desktop)</strong></a></p>
 </li>
 </ol>
 <p><em>How will Home Assistant control Google Assistant to control our Smart Power Plug?</em></p>
