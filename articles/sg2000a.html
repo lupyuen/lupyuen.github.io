@@ -91,7 +91,7 @@
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/tags">(See the <strong>Automated Test Logs</strong>)</a></p>
 </li>
 </ol>
-<p>TODO: Pic of SBC</p>
+<p><img src="https://lupyuen.github.io/images/sg2000-title.jpg" alt="Milk-V Duo S RISC-V SBC" /></p>
 <h1 id="ikea-smart-power-plug"><a class="doc-anchor" href="#ikea-smart-power-plug">§</a>1 IKEA Smart Power Plug</h1>
 <p>Toughest Thing about our Daily Exercise: <strong>Automagically Powering Up</strong> our SBC.</p>
 <p>We hike to our neighbourhood IKEA Store and buy…</p>
@@ -205,6 +205,7 @@ script /tmp/test.log \
 <p>Our SBC needs a <a href="https://lupyuen.github.io/articles/sg2000#download-the-linux-microsd"><strong>MicroSD Card with U-Boot Bootloader</strong></a>. And some special <a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>U-Boot Commands for TFTP</strong></a>.</p>
 <p>(That will run automatically thanks to <strong><code>saveenv</code></strong>)</p>
 <p>See the <strong>nuttx.exp</strong> from above? Let’s talk about the Automated Test Script…</p>
+<p><img src="https://lupyuen.github.io/images/sg2000a-flow2.jpg" alt="Expect Script for Testing NuttX over a USB Serial Port " /></p>
 <h1 id="automated-test-script"><a class="doc-anchor" href="#automated-test-script">§</a>4 Automated Test Script</h1>
 <p><em>What’s inside our Automated Test Script: nuttx.exp?</em></p>
 <p>This is an <a href="https://linux.die.net/man/1/expect"><strong>Expect Tcl Script</strong></a> that will send NuttX Commands over the USB Serial Port to our SBC: <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/nuttx.exp">nuttx.exp</a></p>
@@ -254,7 +255,7 @@ expect {
 }
 </code></pre></div>
 <p><a href="TODO"><strong>OSTest</strong></a> will run a whole bunch of NuttX Tests, thoroughly exercising everything and vetting our physical proficiency.</p>
-<p>TODO: Pic of Test Log</p>
+<p><img src="https://lupyuen.github.io/images/sg2000a-log.jpg" alt="Automated Test Log uploaded to GitHub Release Notes" /></p>
 <h1 id="upload-the-test-log"><a class="doc-anchor" href="#upload-the-test-log">§</a>5 Upload the Test Log</h1>
 <p><em>OK but where’s the evidence of our Daily Test?</em></p>
 <p>Every day, everything gets meticulously recorded into the <a href="https://github.com/lupyuen/nuttx-sg2000/tags"><strong>GitHub Release Notes</strong></a>…</p>
@@ -311,7 +312,6 @@ scripts/task.sh
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p><em>OK thanks but why not run the Daily Automated Test on a Software Emulator? (Instead of Real Hardware)</em></p>
 <p>Oh yes we’re <a href="https://github.com/lupyuen2/sg2000-emulator"><strong>doing that too</strong></a>! Please join me in the next article on <strong>SG2000 Emulator</strong>.</p>
-<p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
