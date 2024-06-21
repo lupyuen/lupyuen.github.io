@@ -66,8 +66,9 @@
     <h1 class="title">Daily Automated Testing for Milk-V Duo S RISC-V SBC (IKEA TRETAKT / Apache NuttX RTOS)</h1>
     <nav id="TOC"><ul>
 <li><a href="#control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant">1 Control our SBC with an IKEA Smart Power Plug and Home Assistant</a><ul></ul></li>
-<li><a href="#automated-testing-of-apache-nuttx-rtos-on-sophgo-sg2000-soc--milk-v-duo-s-sbc">2 Automated Testing of Apache NuttX RTOS on Sophgo SG2000 SoC / Milk-V Duo S SBC</a><ul></ul></li>
-<li><a href="#whats-next">3 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Jun 2024</em></p>
+<li><a href="#todo">2 TODO</a><ul></ul></li>
+<li><a href="#automated-testing-of-apache-nuttx-rtos-on-sophgo-sg2000-soc--milk-v-duo-s-sbc">3 Automated Testing of Apache NuttX RTOS on Sophgo SG2000 SoC / Milk-V Duo S SBC</a><ul></ul></li>
+<li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Jun 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-title.jpg" alt="TODO" /></p>
 <p>Last week we upstreamed Milk-V Duo S SBC to Apache NuttX RTOS.</p>
 <p>(Based on Sophgo SG2000 RISC-V SoC)</p>
@@ -122,11 +123,12 @@
 <p><img src="https://lupyuen.github.io/images/sg2000a-ha4.png" alt="Create an Automation in Home Assistant" /></p>
 <p><em>But how do we Power On our SBC from our Automated Test Script?</em></p>
 <p>We call the <a href="https://developers.home-assistant.io/docs/api/rest/"><strong>Home Assistant REST API</strong></a> with a <a href="https://community.home-assistant.io/t/how-to-get-long-lived-access-token/162159/5"><strong>Long-Lived Access Token</strong></a>, to trigger our Automation: <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/test.sh#L54-L80">test.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
-## token=xxxx
-. $HOME/home-assistant-token.sh
+<div class="example-wrap"><pre class="language-bash"><code>## Long-Lived Access Token from
+## http://localhost:8123/profile/security
+token=xxxx
 
-echo &quot;----- Power Off the SBC&quot;
+## Power Off the SBC:
+## Trigger the Automation &quot;sg2000_power_off&quot;
 curl \
   -X POST \
   -H &quot;Authorization: Bearer $token&quot; \
@@ -134,7 +136,8 @@ curl \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.sg2000_power_off&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger
 
-echo &quot;----- Power On the SBC&quot;
+## Power On the SBC:
+## Trigger the Automation &quot;sg2000_power_on&quot;
 curl \
   -X POST \
   -H &quot;Authorization: Bearer $token&quot; \
@@ -146,7 +149,10 @@ curl \
 <p>Yeah enough power to light up the SBC, but not enough to power up the SBC totally.</p>
 <p>Thus our SBC will glow at night, even though the power is off. (I drape a hand towel so it won’t bother my sleep)</p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-title.jpg" alt="Power On our SBC from our Automated Test Script" /></p>
-<h1 id="automated-testing-of-apache-nuttx-rtos-on-sophgo-sg2000-soc--milk-v-duo-s-sbc"><a class="doc-anchor" href="#automated-testing-of-apache-nuttx-rtos-on-sophgo-sg2000-soc--milk-v-duo-s-sbc">§</a>2 Automated Testing of Apache NuttX RTOS on Sophgo SG2000 SoC / Milk-V Duo S SBC</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>2 TODO</h1>
+<p>Daily Build</p>
+<p>Check every 10 mins</p>
+<h1 id="automated-testing-of-apache-nuttx-rtos-on-sophgo-sg2000-soc--milk-v-duo-s-sbc"><a class="doc-anchor" href="#automated-testing-of-apache-nuttx-rtos-on-sophgo-sg2000-soc--milk-v-duo-s-sbc">§</a>3 Automated Testing of Apache NuttX RTOS on Sophgo SG2000 SoC / Milk-V Duo S SBC</h1>
 <p>TODO</p>
 <p>We are now running Daily Automated Testing of <a href="https://github.com/lupyuen/nuttx-sg2000">Apache NuttX RTOS</a> on a Real Milk-V Duo S SBC (Sophgo SG2000 SoC)…</p>
 <ol>
@@ -181,7 +187,7 @@ scripts/task.sh
 <li>Upload Test Log: <a href="scripts/upload.sh">upload.sh</a></li>
 <li>Expect Script: <a href="scripts/nuttx.exp">nuttx.exp</a></li>
 </ul>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>3 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>4 What’s Next</h1>
 <p>TODO</p>
 <p><em>Why not run the Daily Automated Test on a Software Emulator? (Instead of Real Hardware)</em></p>
 <p>Oh yes we’re doing that too! Please join me in the next article on <strong>SG2000 Emulator</strong>.</p>
