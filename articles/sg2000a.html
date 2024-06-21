@@ -98,11 +98,11 @@
 <p>(On our Android Phone)</p>
 </li>
 <li>
-<p>Eventually control the IKEA Smart Power Plug via the <a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d"><strong>Google Assistant SDK</strong></a></p>
+<p>Eventually we control the IKEA Smart Power Plug via the <a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d"><strong>Google Assistant SDK</strong></a></p>
 <p>(Which sounds kinda tedious)</p>
 </li>
 <li>
-<p>So instead we connect <a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d"><strong>Home Assistant</strong></a> to Google Assistant SDK</p>
+<p>So instead we control Google Assistant SDK with <a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d"><strong>Home Assistant</strong></a></p>
 <p>(Just point and click yay!)</p>
 </li>
 <li>
@@ -111,16 +111,17 @@
 </li>
 </ol>
 <p><em>How will Home Assistant control Google Assistant to control our Smart Power Plug?</em></p>
-<p>Assume we have added the Smart Power Plug to Google Assistant, and named the Smart Power Plug as “SG2000 Power”. We create an Automation in Home Assistant…</p>
+<p>Assume we have added the <a href="https://www.ikea.com/nl/en/customer-service/knowledge/articles/c916g4b0-c602-4g65-9c4e-b40f801g43dc.html"><strong>Smart Power Plug</strong></a> to Google Assistant, and named the Smart Power Plug as <strong>“SG2000 Power”</strong>.</p>
+<p>We create an <strong>Automation</strong> in Home Assistant…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-ha1.jpg" alt="Create an Automation in Home Assistant" /></p>
-<p>Inside our Automation: Add an Action…</p>
+<p>Inside our Automation: Add an <strong>Action</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-ha2.jpg" alt="Create an Automation in Home Assistant" /></p>
-<p>Select the Google Assistant SDK. Enter the command: “SG2000 Power On”…</p>
+<p>Select the <a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d"><strong>Google Assistant SDK</strong></a>. Enter the command: <strong>“SG2000 Power On”</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-ha3.jpg" alt="Create an Automation in Home Assistant" /></p>
-<p>Save it as an Automation named “SG2000 Power On”…</p>
+<p>Save it as an Automation named <strong>“SG2000 Power On”</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-ha4.png" alt="Create an Automation in Home Assistant" /></p>
 <p><em>But how do we Power On our SBC from our Automated Test Script?</em></p>
-<p>We call the <a href="https://developers.home-assistant.io/docs/api/rest/">Home Assistant REST API</a> with a Home Assistant Long-Lived Token: <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/test.sh#L54-L80">test.sh</a></p>
+<p>We call the <a href="https://developers.home-assistant.io/docs/api/rest/"><strong>Home Assistant REST API</strong></a> with a <a href="https://community.home-assistant.io/t/how-to-get-long-lived-access-token/162159/5"><strong>Long-Lived Access Token</strong></a>, to trigger our Automation: <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/test.sh#L54-L80">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
 ## token=xxxx
 . $HOME/home-assistant-token.sh
