@@ -523,9 +523,9 @@ Check out the solution here...
 
 -   [__"Strange Workaround for TFTP Timeout in U-Boot Bootloader (Star64 JH7110 RISC-V SBC)"__](https://lupyuen.github.io/articles/tftp2)
 
-![Home Assistant controls Google Home (and potentially Smart Plugs)](https://lupyuen.github.io/images/tftp-home.png)
+![Home Assistant controls our Smart Power Plug)](https://lupyuen.github.io/images/tftp-home.png)
 
-[_Home Assistant controls Google Home (and potentially Smart Plugs)_](https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d)
+[_Home Assistant controls our Smart Power Plug_](https://github.com/lupyuen2/autotest-nuttx-sg2000#control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant)
 
 # What's Next
 
