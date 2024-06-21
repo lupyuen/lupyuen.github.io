@@ -131,6 +131,7 @@
 <p><a href="https://gist.github.com/lupyuen/03a7cc8702085c70893e157d8c3ca3f8"><strong>(Rancher Desktop)</strong></a></p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/sg2000a-flow.jpg" alt="Controlling an IKEA Smart Power Plug with Home Assistant" /></p>
 <h1 id="call-the-home-assistant-api"><a class="doc-anchor" href="#call-the-home-assistant-api">§</a>2 Call the Home Assistant API</h1>
 <p><em>How will Home Assistant control Google Assistant to control our Smart Power Plug?</em></p>
 <p>Assume we’ve added the <a href="https://www.ikea.com/nl/en/customer-service/knowledge/articles/c916g4b0-c602-4g65-9c4e-b40f801g43dc.html"><strong>Smart Power Plug</strong></a> to Google Assistant. And named the Smart Power Plug as <strong>“SG2000 Power”</strong>.</p>
@@ -141,7 +142,9 @@
 <p>Select the <a href="https://gist.github.com/lupyuen/01cff0d4ca225984ca8fd0d999d7c76d"><strong>Google Assistant SDK</strong></a>. Enter the command: <strong>“SG2000 Power On”</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-ha3.jpg" alt="Create an Automation in Home Assistant" /></p>
 <p>Save it as an Automation named <strong>“SG2000 Power On”</strong>…</p>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/sg2000a-ha4.png" alt="Create an Automation in Home Assistant" /></p>
+</blockquote>
 <p><em>But how do we Power On our SBC from our Automated Test Script?</em></p>
 <p>We call the <a href="https://developers.home-assistant.io/docs/api/rest/"><strong>Home Assistant REST API</strong></a> with a <a href="https://community.home-assistant.io/t/how-to-get-long-lived-access-token/162159/5"><strong>Long-Lived Access Token</strong></a>, to trigger our Automation: <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/test.sh#L54-L80">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Long-Lived Access Token from
@@ -304,6 +307,7 @@ scripts/task.sh
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/tags">(See the <strong>Automated Test Logs</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts">(See the <strong>Automated Test Scripts</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/sg2000a-flow.jpg" alt="Controlling an IKEA Smart Power Plug with Home Assistant" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p><em>OK thanks but why not run the Daily Automated Test on a Software Emulator? (Instead of Real Hardware)</em></p>
 <p>Oh yes we’re <a href="https://github.com/lupyuen2/sg2000-emulator"><strong>doing that too</strong></a>! Please join me in the next article on <strong>SG2000 Emulator</strong>.</p>
