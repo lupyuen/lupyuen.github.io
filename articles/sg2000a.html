@@ -65,11 +65,12 @@
 
     <h1 class="title">Daily Automated Testing for Milk-V Duo S RISC-V SBC (IKEA TRETAKT / Apache NuttX RTOS)</h1>
     <nav id="TOC"><ul>
-<li><a href="#control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant">1 Control our SBC with an IKEA Smart Power Plug and Home Assistant</a><ul></ul></li>
-<li><a href="#download-the-daily-build">2 Download the Daily Build</a><ul></ul></li>
-<li><a href="#automated-test-script">3 Automated Test Script</a><ul></ul></li>
-<li><a href="#upload-the-test-log">4 Upload the Test Log</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Jun 2024</em></p>
+<li><a href="#ikea-smart-power-plug">1 IKEA Smart Power Plug</a><ul></ul></li>
+<li><a href="#call-the-home-assistant-api">2 Call the Home Assistant API</a><ul></ul></li>
+<li><a href="#download-the-daily-build">3 Download the Daily Build</a><ul></ul></li>
+<li><a href="#automated-test-script">4 Automated Test Script</a><ul></ul></li>
+<li><a href="#upload-the-test-log">5 Upload the Test Log</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Jun 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-title.jpg" alt="TODO" /></p>
 <p>Last week we upstreamed <a href="TODO"><strong>Milk-V Duo S SBC</strong></a> to <a href="TODO"><strong>Apache NuttX RTOS</strong></a>. (Based on <a href="TODO"><strong>Sophgo SG2000 RISC-V SoC</strong></a>)</p>
 <p>But NuttX Mainline <a href="https://github.com/apache/nuttx/commits/master/"><strong>changes every day</strong></a>. Will Milk-V Duo S suffer <strong>“Software Bit Rot”</strong>? And fail to boot NuttX someday?</p>
@@ -91,7 +92,7 @@
 </li>
 </ol>
 <p>TODO: Pic of SBC</p>
-<h1 id="control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant"><a class="doc-anchor" href="#control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant">§</a>1 Control our SBC with an IKEA Smart Power Plug and Home Assistant</h1>
+<h1 id="ikea-smart-power-plug"><a class="doc-anchor" href="#ikea-smart-power-plug">§</a>1 IKEA Smart Power Plug</h1>
 <p>Toughest Thing about our Daily Exercise: <strong>Automagically Powering Up</strong> our SBC.</p>
 <p>We hike to our neighbourhood IKEA Store and buy…</p>
 <ul>
@@ -130,6 +131,7 @@
 <p><a href="https://gist.github.com/lupyuen/03a7cc8702085c70893e157d8c3ca3f8"><strong>(Rancher Desktop)</strong></a></p>
 </li>
 </ol>
+<h1 id="call-the-home-assistant-api"><a class="doc-anchor" href="#call-the-home-assistant-api">§</a>2 Call the Home Assistant API</h1>
 <p><em>How will Home Assistant control Google Assistant to control our Smart Power Plug?</em></p>
 <p>Assume we’ve added the <a href="https://www.ikea.com/nl/en/customer-service/knowledge/articles/c916g4b0-c602-4g65-9c4e-b40f801g43dc.html"><strong>Smart Power Plug</strong></a> to Google Assistant. And named the Smart Power Plug as <strong>“SG2000 Power”</strong>.</p>
 <p>We create an <strong>Automation</strong> in Home Assistant…</p>
@@ -169,7 +171,7 @@ curl \
 <p>Thus our SBC will <strong>glow errily red at night</strong>, even though the power is off. (I drape a hand towel so it won’t haunt my sleep)</p>
 <p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/task.sh#L55-L71">(Or maybe we power up <strong>Another SBC</strong> to test Our SBC)</a></p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-title.jpg" alt="Power On our SBC from our Automated Test Script" /></p>
-<h1 id="download-the-daily-build"><a class="doc-anchor" href="#download-the-daily-build">§</a>2 Download the Daily Build</h1>
+<h1 id="download-the-daily-build"><a class="doc-anchor" href="#download-the-daily-build">§</a>3 Download the Daily Build</h1>
 <p><em>What will we boot and test on our SBC?</em></p>
 <p>We’ll download the <a href="https://github.com/lupyuen/nuttx-sg2000#nuttx-automated-daily-build-for-sg2000"><strong>Daily Build of NuttX Mainline</strong></a> (for Milk-V Duo S): <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/test.sh#L6-L83">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Build Prefix is &quot;nuttx-sg2000&quot;
@@ -200,7 +202,7 @@ script /tmp/test.log \
 <p>Our SBC needs a <a href="https://lupyuen.github.io/articles/sg2000#download-the-linux-microsd"><strong>MicroSD Card with U-Boot Bootloader</strong></a>. And some special <a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>U-Boot Commands for TFTP</strong></a>.</p>
 <p>(That will run automatically thanks to <strong><code>saveenv</code></strong>)</p>
 <p>See the <strong>nuttx.exp</strong> from above? Let’s talk about the Automated Test Script…</p>
-<h1 id="automated-test-script"><a class="doc-anchor" href="#automated-test-script">§</a>3 Automated Test Script</h1>
+<h1 id="automated-test-script"><a class="doc-anchor" href="#automated-test-script">§</a>4 Automated Test Script</h1>
 <p><em>What’s inside our Automated Test Script: nuttx.exp?</em></p>
 <p>This is an <a href="https://linux.die.net/man/1/expect"><strong>Expect Tcl Script</strong></a> that will send NuttX Commands over the USB Serial Port to our SBC: <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/nuttx.exp">nuttx.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
@@ -250,7 +252,7 @@ expect {
 </code></pre></div>
 <p><a href="TODO"><strong>OSTest</strong></a> will run a whole bunch of NuttX Tests, thoroughly exercising everything and vetting our physical proficiency.</p>
 <p>TODO: Pic of Test Log</p>
-<h1 id="upload-the-test-log"><a class="doc-anchor" href="#upload-the-test-log">§</a>4 Upload the Test Log</h1>
+<h1 id="upload-the-test-log"><a class="doc-anchor" href="#upload-the-test-log">§</a>5 Upload the Test Log</h1>
 <p><em>OK but where’s the evidence of our Daily Test?</em></p>
 <p>Every day, everything gets meticulously recorded into the <a href="https://github.com/lupyuen/nuttx-sg2000/tags"><strong>GitHub Release Notes</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the latest NuttX Build for 2024-06-21
@@ -302,7 +304,7 @@ scripts/task.sh
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/tags">(See the <strong>Automated Test Logs</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts">(See the <strong>Automated Test Scripts</strong>)</a></p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p><em>OK thanks but why not run the Daily Automated Test on a Software Emulator? (Instead of Real Hardware)</em></p>
 <p>Oh yes we’re <a href="https://github.com/lupyuen2/sg2000-emulator"><strong>doing that too</strong></a>! Please join me in the next article on <strong>SG2000 Emulator</strong>.</p>
 <p>TODO</p>
