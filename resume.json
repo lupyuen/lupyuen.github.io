@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Daily Automated Testing for Milk-V Duo S RISC-V SBC (IKEA TRETAKT / Apache NuttX RTOS)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-06-23",
+      "website": "https://lupyuen.github.io/articles/sg2000a",
+      "summary": "Last week we upstreamed Milk-V Duo S SBC to Apache NuttX RTOS. (Based on Sophgo SG2000 RISC-V SoC) But NuttX Mainline changes every day. Will Milk-V Duo S suffer “Software Bit Rot”? And fail to boot NuttX someday? Let’s do Daily Automated Testing for NuttX on a Milk-V Duo S SBC, controlled by an IKEA Smart Power Plug with Home Assistant API."
+    },
+    {
       "name": "Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-05-19",
