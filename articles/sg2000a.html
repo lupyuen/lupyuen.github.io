@@ -70,9 +70,9 @@
 <li><a href="#download-the-daily-build">3 Download the Daily Build</a><ul></ul></li>
 <li><a href="#automated-test-script">4 Automated Test Script</a><ul></ul></li>
 <li><a href="#upload-the-test-log">5 Upload the Test Log</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Jun 2024</em></p>
-<p><img src="https://lupyuen.github.io/images/sg2000a-title.jpg" alt="TODO" /></p>
-<p>Last week we upstreamed <a href="TODO"><strong>Milk-V Duo S SBC</strong></a> (pic below) to <a href="TODO"><strong>Apache NuttX RTOS</strong></a>. (Based on <a href="TODO"><strong>Sophgo SG2000 RISC-V SoC</strong></a>)</p>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Jun 2024</em></p>
+<p><img src="https://lupyuen.github.io/images/sg2000a-title.jpg" alt="Daily Automated Testing for Milk-V Duo S RISC-V SBC (IKEA TRETAKT / Apache NuttX RTOS)" /></p>
+<p>Last week we upstreamed <a href="https://lupyuen.github.io/articles/sg2000"><strong>Milk-V Duo S SBC</strong></a> (pic below) to <a href="https://lupyuen.github.io/articles/sg2000#appendix-nuttx-mainline-now-supports-sg2000"><strong>Apache NuttX RTOS</strong></a>. (Based on <a href="https://lupyuen.github.io/articles/sg2000#sophgo-sg2000-risc-v-soc"><strong>Sophgo SG2000 RISC-V SoC</strong></a>)</p>
 <p>But NuttX Mainline <a href="https://github.com/apache/nuttx/commits/master/"><strong>changes every day</strong></a>. Will Milk-V Duo S suffer <strong>“Software Bit Rot”</strong>? And fail to boot NuttX someday?</p>
 <p>Let’s do <strong>Daily Automated Testing</strong> for NuttX on a Milk-V Duo S. Yep on the Actual Physical SBC! Our script shall…</p>
 <ul>
@@ -257,7 +257,7 @@ expect {
   }
 }
 </code></pre></div>
-<p><a href="TODO"><strong>OSTest</strong></a> will run a whole bunch of NuttX Tests, thoroughly exercising everything and vetting our physical proficiency.</p>
+<p><a href="https://lupyuen.github.io/articles/tinyemu3#daily-automated-testing"><strong>OSTest</strong></a> will run a whole bunch of NuttX Tests, thoroughly exercising everything and vetting our physical proficiency.</p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-log.jpg" alt="Automated Test Log uploaded to GitHub Release Notes" /></p>
 <h1 id="upload-the-test-log"><a class="doc-anchor" href="#upload-the-test-log">§</a>5 Upload the Test Log</h1>
 <p><em>OK but where’s the evidence of our Daily Test?</em></p>
