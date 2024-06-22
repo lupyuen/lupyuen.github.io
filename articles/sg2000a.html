@@ -74,24 +74,26 @@
 <p><img src="https://lupyuen.github.io/images/sg2000a-title.jpg" alt="TODO" /></p>
 <p>Last week we upstreamed <a href="TODO"><strong>Milk-V Duo S SBC</strong></a> (pic below) to <a href="TODO"><strong>Apache NuttX RTOS</strong></a>. (Based on <a href="TODO"><strong>Sophgo SG2000 RISC-V SoC</strong></a>)</p>
 <p>But NuttX Mainline <a href="https://github.com/apache/nuttx/commits/master/"><strong>changes every day</strong></a>. Will Milk-V Duo S suffer <strong>“Software Bit Rot”</strong>? And fail to boot NuttX someday?</p>
-<p>Let’s do <strong>Daily Automated Testing</strong> for NuttX on a Milk-V Duo S. Yep on the Actual Physical SBC!</p>
-<p>TODO</p>
-<ol>
+<p>Let’s do <strong>Daily Automated Testing</strong> for NuttX on a Milk-V Duo S. Yep on the Actual Physical SBC! Our script shall…</p>
+<ul>
 <li>
-<p>Download the <a href="https://github.com/lupyuen/nuttx-sg2000#nuttx-automated-daily-build-for-sg2000">Automated Daily Build</a> to TFTP Server</p>
+<p>Download the <strong>Daily Automated Build</strong></p>
+<p>(To our TFTP Server)</p>
 </li>
 <li>
-<p>Power on our SBC with an <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000#control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant">IKEA Smart Power Plug via Home Assistant</a></p>
+<p>Power on our SBC with an <strong>IKEA Smart Power Plug</strong></p>
+<p>(Via the Home Assistant API)</p>
 </li>
 <li>
-<p>Our SBC boots the Daily Build over TFTP</p>
+<p>Which will boot <strong>NuttX Mainline</strong> on our SBC</p>
+<p>(Thanks to TFTP)</p>
 </li>
 <li>
-<p>Capture the Automated Testing Log and write to the Release Notes</p>
+<p>And upload the <strong>NuttX Test Log</strong> as GitHub Release Notes</p>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/tags">(See the <strong>Automated Test Logs</strong>)</a></p>
 <p><a href="https://youtu.be/iTOwfPCpXDc">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
-</ol>
+</ul>
 <p><img src="https://lupyuen.github.io/images/sg2000-title.jpg" alt="Milk-V Duo S RISC-V SBC" /></p>
 <h1 id="ikea-smart-power-plug"><a class="doc-anchor" href="#ikea-smart-power-plug">§</a>1 IKEA Smart Power Plug</h1>
 <p>Toughest Thing about our Daily Exercise: <strong>Automagically Powering Up</strong> our SBC.</p>
