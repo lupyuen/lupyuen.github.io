@@ -174,7 +174,7 @@ curl \
 </code></pre></div>
 <p><em>Doesn’t the USB UART Adapter supply a tiny bit of power to our SBC?</em></p>
 <p>Yeah enough power to light up the SBC, but not enough to power up the SBC totally.</p>
-<p>Thus our SBC will <strong>glow errily red at night</strong>, even though the power is off. (I drape a hand towel so it won’t haunt my sleep)</p>
+<p>Thus our SBC will <strong>glow red (errily) at night</strong>, even though the power is off. (I drape a hand towel so it won’t haunt my sleep)</p>
 <p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/task.sh#L55-L71">(Or maybe we power up <strong>Another SBC</strong> to test Our SBC)</a></p>
 <p><img src="https://lupyuen.github.io/images/sg2000a-title.jpg" alt="Power On our SBC from our Automated Test Script" /></p>
 <h1 id="download-the-daily-build"><a class="doc-anchor" href="#download-the-daily-build">§</a>3 Download the Daily Build</h1>
@@ -261,30 +261,30 @@ expect {
 <p><img src="https://lupyuen.github.io/images/sg2000a-log.jpg" alt="Automated Test Log uploaded to GitHub Release Notes" /></p>
 <h1 id="upload-the-test-log"><a class="doc-anchor" href="#upload-the-test-log">§</a>5 Upload the Test Log</h1>
 <p><em>OK but where’s the evidence of our Daily Test?</em></p>
-<p>Every day, everything gets meticulously recorded into the <a href="https://github.com/lupyuen/nuttx-sg2000/tags"><strong>GitHub Release Notes</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download the latest NuttX Build for 2024-06-21
+<p>Every day, everything gets meticulously recorded into the <a href="https://github.com/lupyuen/nuttx-sg2000/tags"><strong>GitHub Release Notes</strong></a>. Looking like this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>== Download the latest NuttX Build for 2024-06-21
 + wget -q https://github.com/lupyuen/nuttx-sg2000/releases/download/nuttx-sg2000-2024-06-21/nuttx.zip -O /tmp/nuttx.zip
 
-## Commit Hash for NuttX Kernel and NuttX Apps
+== Commit Hash for NuttX Kernel and NuttX Apps
 NuttX Kernel:
   https://github.com/apache/nuttx/tree/769e65ef8e9e5600c172b8579775164c201e532a
 NuttX Apps:
   https://github.com/apache/nuttx-apps/tree/bc68d954ad01ab28f57fab167a3f0c08cead24cc
 
-## Copy NuttX Image to TFTP Server
+== Copy NuttX Image to TFTP Server
 + scp /tmp/Image tftpserver:/tftpboot/Image-sg2000
 
-## Start NuttX Kernel
+== Start NuttX Kernel
 NuttShell (NSH) NuttX-12.5.1
 nsh&gt; uname -a
 NuttX 12.5.1 769e65ef8e Jun 21 2024 00:13:08 risc-v milkv_duos
 
-## Run NuttX OSTest
+== Run NuttX OSTest
 nsh&gt; ostest
 ...
 user_main: Exiting
 ostest_main: Exiting with status 0
-===== Test OK
+== Test OK
 </code></pre></div>
 <p><em>Whoa that’s plenty of logs. How did they get there?</em></p>
 <p>We ran a script to <strong>Upload the Test Log</strong> into the GitHub Release Notes: <a href="https://github.com/lupyuen2/autotest-nuttx-sg2000/blob/main/scripts/upload.sh#L66-L74">upload.sh</a></p>
