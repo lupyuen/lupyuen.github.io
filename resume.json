@@ -164,6 +164,48 @@
       "summary": "Last week we upstreamed Milk-V Duo S SBC to Apache NuttX RTOS. (Based on Sophgo SG2000 RISC-V SoC) But NuttX Mainline changes every day. Will Milk-V Duo S suffer “Software Bit Rot”? And fail to boot NuttX someday? Let’s do Daily Automated Testing for NuttX on a Milk-V Duo S SBC, controlled by an IKEA Smart Power Plug with Home Assistant API."
     },
     {
+      "name": "(Slides) TinyEMU RISC-V Emulator for Apache NuttX RTOS",
+      "publisher": "NuttX International Workshop 2024",
+      "releaseDate": "2023-06-13",
+      "website": "https://lupyuen.github.io/nuttx#tinyemu-risc-v-emulator-for-apache-nuttx-rtos",
+      "summary": "What if we could boot and test Apache NuttX RTOS inside a Web Browser? This presentation explains how we created a NuttX Emulator in WebAssembly, based on TinyEMU RISC-V Emulator."
+    },
+    {
+      "name": "(Video) TinyEMU RISC-V Emulator for Apache NuttX RTOS",
+      "publisher": "NuttX International Workshop 2024",
+      "releaseDate": "2023-06-13",
+      "website": "https://youtu.be/JlEo3lfi0CU",
+      "summary": "What if we could boot and test Apache NuttX RTOS inside a Web Browser? This presentation explains how we created a NuttX Emulator in WebAssembly, based on TinyEMU RISC-V Emulator."
+    },
+    {
+      "name": "(Slides) Adventures of Ox64 BL808 RISC-V SBC with Apache NuttX RTOS",
+      "publisher": "NuttX International Workshop 2024",
+      "releaseDate": "2023-06-13",
+      "website": "https://lupyuen.github.io/nuttx#adventures-of-ox64-bl808-risc-v-sbc-with-apache-nuttx-rtos",
+      "summary": "We ported Apache NuttX RTOS to PINE64’s Ox64 BL808 64-bit Single-Board Computer. And we created an Emulator for Ox64 SBC that runs in the Web Browser, thanks to TinyEMU RISC-V Emulator. Today we run Daily Automated Testing of NuttX on the Ox64 Emulator. In this presentation we explain how we used the Ox64 Emulator in our experiments with WebAssembly and NuttX: (1) Testing the TCC RISC-V Compiler in WebAssembly (2) Porting the QuickJS JavaScript Engine to NuttX (3) Creating a Drag-n-Drop App Builder for NuttX"
+    },
+    {
+      "name": "(Video) Adventures of Ox64 BL808 RISC-V SBC with Apache NuttX RTOS",
+      "publisher": "NuttX International Workshop 2024",
+      "releaseDate": "2023-06-13",
+      "website": "https://youtu.be/Eoy-X4ouuLI",
+      "summary": "We ported Apache NuttX RTOS to PINE64’s Ox64 BL808 64-bit Single-Board Computer. And we created an Emulator for Ox64 SBC that runs in the Web Browser, thanks to TinyEMU RISC-V Emulator. Today we run Daily Automated Testing of NuttX on the Ox64 Emulator. In this presentation we explain how we used the Ox64 Emulator in our experiments with WebAssembly and NuttX: (1) Testing the TCC RISC-V Compiler in WebAssembly (2) Porting the QuickJS JavaScript Engine to NuttX (3) Creating a Drag-n-Drop App Builder for NuttX"
+    },
+    {
+      "name": "(Slides) Analysis of Real-Time Logs for Apache NuttX RTOS with PureScript",
+      "publisher": "NuttX International Workshop 2024",
+      "releaseDate": "2023-06-13",
+      "website": "https://lupyuen.github.io/nuttx#analysis-of-real-time-logs-for-apache-nuttx-rtos-with-purescript",
+      "summary": "Today we can get Real-Time NuttX Logs from our RISC-V Devices: Ox64 SBC (Web Serial API) and Ox64 Emulator (Term.js). What if we could analyse the RISC-V Logs in Real-Time? And show the results in the Web Browser? Let’s do it with PureScript, the Functional Language that compiles to JavaScript. We’ll also support Online Scripting of PureScript for Log Parsing. Can we enhance the NuttX Developer Experience with Functional Programming Tools like PureScript? Or newer hardware like PINE64 Ox64 SBC and Sophgo SG2000 / Milk-V Duo S? Let’s chat about this."
+    },
+    {
+      "name": "(Video) Analysis of Real-Time Logs for Apache NuttX RTOS with PureScript",
+      "publisher": "NuttX International Workshop 2024",
+      "releaseDate": "2023-06-13",
+      "website": "https://youtu.be/d09SNQye2tc",
+      "summary": "Today we can get Real-Time NuttX Logs from our RISC-V Devices: Ox64 SBC (Web Serial API) and Ox64 Emulator (Term.js). What if we could analyse the RISC-V Logs in Real-Time? And show the results in the Web Browser? Let’s do it with PureScript, the Functional Language that compiles to JavaScript. We’ll also support Online Scripting of PureScript for Log Parsing. Can we enhance the NuttX Developer Experience with Functional Programming Tools like PureScript? Or newer hardware like PINE64 Ox64 SBC and Sophgo SG2000 / Milk-V Duo S? Let’s chat about this."
+    },
+    {
       "name": "Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-05-19",
