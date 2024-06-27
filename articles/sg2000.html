@@ -444,6 +444,7 @@ real_start:
   /* Store byte from Register t1 to UART Base Address, Offset 0 */
   sb  t1, 0(t0)
 </code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/sg2000/sg2000_head.S#L69-L73">(Moved here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address)</a></p>
 <p>Our code will print “<strong><code>123</code></strong>” when NuttX boots. We test this…</p>
@@ -489,6 +490,7 @@ Starting kernel ...
 CONFIG_RAM_START=0x80200000
 CONFIG_RAM_SIZE=1048576
 </code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig#L76-L77">(Moved here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sg2000#nuttx-memory-map">(Explained here)</a></p>
 </li>
 <li>
@@ -499,6 +501,7 @@ CONFIG_RAM_SIZE=1048576
 SECTIONS {
   . = 0x80200000;
 </code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/scripts/ld.script#L20-L54">(Moved here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sg2000#nuttx-memory-map">(Explained here)</a></p>
 </li>
 <li>
@@ -511,6 +514,7 @@ CONFIG_16550_UART=y
 CONFIG_16550_WAIT_LCR=y
 CONFIG_SERIAL_UART_ARCH_MMIO=y
 </code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig#L10-L18">(Moved here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sg2000#select-the-16550-uart-driver">(Explained here)</a></p>
 </li>
 <li>
@@ -592,6 +596,7 @@ dtc \
 <div class="example-wrap"><pre class="language-c"><code>// Base Address of PLIC Interrupt Controller
 #define BL808_PLIC_BASE 0x70000000ul
 </code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/sg2000/hardware/sg2000_memorymap.h#L27-L32">(Moved here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sg2000#fix-the-nuttx-driver-for-plic">(Explained here)</a></p>
 </li>
 </ol>
@@ -1007,6 +1012,7 @@ CONFIG_ARCH_DATA_NPAGES=128
 CONFIG_ARCH_HEAP_VBASE=0xC0200000
 CONFIG_ARCH_HEAP_NPAGES=128
 </code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig">(Moved here)</a></p>
 <p>And here’s the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-769e7c2389b298f666c84b92f36d3c42fa852fda61dbf20b93e603df98b7bd37">ld.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* TODO: Fix the size */
 MEMORY {
@@ -1018,7 +1024,9 @@ MEMORY {
 ...
 SECTIONS {
   . = 0x80200000;
-</code></pre></div><h2 id="select-the-16550-uart-driver"><a class="doc-anchor" href="#select-the-16550-uart-driver">§</a>15.2 Select the 16550 UART Driver</h2>
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/scripts/ld.script#L20-L54">(Moved here)</a></p>
+<h2 id="select-the-16550-uart-driver"><a class="doc-anchor" href="#select-the-16550-uart-driver">§</a>15.2 Select the 16550 UART Driver</h2>
 <p>From <a href="https://lupyuen.github.io/articles/sg2000#settings-for-u-boot-bootloader"><strong>OpenSBI Log</strong></a>: We see that SG2000 runs with a <strong>8250 UART Controller</strong>.</p>
 <p>Thus we select the NuttX Driver for <strong>16550 UART</strong>, which is compatible with 8250…</p>
 <ul>
@@ -1035,6 +1043,7 @@ CONFIG_16550_UART=y
 CONFIG_16550_WAIT_LCR=y
 CONFIG_SERIAL_UART_ARCH_MMIO=y
 </code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig#L10-L18">(Moved here)</a></p>
 <p>Don’t update the NuttX Config File directly! We ran <strong><code>make menuconfig</code></strong> to generate the above file…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Update NuttX Config
 make menuconfig \
@@ -1050,7 +1059,9 @@ make menuconfig \
 <li>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/commit/122c717447f81c310a4fb082101213ad338dfb0e"><strong>Set UART0 IRQ to 69 (25 + 44)</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_IRQ=69
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig#L10-L18">(Moved here)</a></p>
+</li>
 </ul>
 <p>That’s because the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>SG2000 Reference Manual</strong></a> (Page 13) says…</p>
 <blockquote>
