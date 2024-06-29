@@ -460,9 +460,10 @@ real_start:
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/sg2000-1">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
 </ul>
-<p>This produces the NuttX Image File: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/Image-sg2000"><strong><code>Image-sg2000</code></strong></a>. Which we copy to our <strong>TFTP Server</strong>…</p>
+<p>This produces the NuttX Image File: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/Image-sg2000"><strong><code>Image</code></strong></a>. Which we copy to our <strong>TFTP Server</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image and Device Tree to TFTP Server
 ## TODO: Change `tftpserver` and `tftpboot` to our TFTP Server and Path
+cp Image Image-sg2000
 scp Image-sg2000 \
   tftpserver:/tftpboot/Image-sg2000
 scp cv181x_milkv_duos_sd.dtb \
@@ -760,9 +761,7 @@ $ lz4 duos_sd.img.lz4
 <p>And write <strong><code>duos_sd.img</code></strong> to a MicroSD Card. Use <a href="https://etcher.balena.io"><strong>Balena Etcher</strong></a>, <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a> or <a href="https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6"><strong><code>dd</code></strong></a>.</p>
 <p>Insert the MicroSD Card into Oz64, but don’t power up yet…</p>
 <h2 id="download-the-nuttx-image"><a class="doc-anchor" href="#download-the-nuttx-image">§</a>13.2 Download the NuttX Image</h2>
-<p>TODO</p>
-<h2 id="boot-nuttx-over-tftp-1"><a class="doc-anchor" href="#boot-nuttx-over-tftp-1">§</a>13.3 Boot NuttX over TFTP</h2>
-<p>Follow the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a> to install our TFTP Server. Copy these files to our TFTP Server…</p>
+<p>TODO: Daily build</p>
 <ul>
 <li>
 <p>TODO: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/Image-sg2000"><strong>NuttX Image: Image-sg2000</strong></a></p>
@@ -771,6 +770,18 @@ $ lz4 duos_sd.img.lz4
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb"><strong>Device Tree: cv181x_milkv_duos_sd.dtb</strong></a></p>
 </li>
 </ul>
+<p>TODO: Or build ourselves</p>
+<h2 id="boot-nuttx-over-tftp-1"><a class="doc-anchor" href="#boot-nuttx-over-tftp-1">§</a>13.3 Boot NuttX over TFTP</h2>
+<p>Follow the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a> to install our TFTP Server. </p>
+<p>Copy the <strong>NuttX Image</strong> and <strong>Device Tree</strong> (previous section) to our TFTP Server…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image and Device Tree to TFTP Server
+## TODO: Change `tftpserver` and `tftpboot` to our TFTP Server and Path
+cp Image Image-sg2000
+scp Image-sg2000 \
+  tftpserver:/tftpboot/Image-sg2000
+scp cv181x_milkv_duos_sd.dtb \
+  tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
+</code></pre></div>
 <p>When Oz64 boots, press Enter to reveal the <strong>U-Boot Command Prompt</strong>. Enter these commands to <strong>Auto-Boot NuttX</strong> on Oz64…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the U-Boot TFTP Server
 ## TODO: Change to your TFTP Server
@@ -967,9 +978,10 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 
 ## Append the Padding and Initial RAM Disk to the NuttX Kernel
 cat nuttx.bin /tmp/nuttx.pad initrd \
-  &gt;Image-sg2000
+  &gt;Image
 
 ## Copy the NuttX Image and Device Tree to our TFTP Server
+cp Image Image-sg2000
 wget https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb
 scp Image-sg2000 tftpserver:/tftpboot/Image-sg2000
 scp cv181x_milkv_duos_sd.dtb tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
