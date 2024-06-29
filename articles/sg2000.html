@@ -777,13 +777,14 @@ $ lz4 duos_sd.img.lz4
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/tags"><strong>Daily Build: NuttX for SG2000</strong></a></p>
 <p>(Skip the Special Builds <strong>“special-sg2000”</strong>)</p>
+<p><a href="https://lupyuen.github.io/articles/sg2000#appendix-build-nuttx-for-sg2000">(Or <strong>Build NuttX</strong> ourselves)</a></p>
 </li>
 </ul>
 <p>And download the Oz64 Device Tree…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb"><strong>Device Tree: cv181x_milkv_duos_sd.dtb</strong></a></li>
 </ul>
-<p>TODO: Or build ourselves</p>
+<p>We’ll copy them to our TFTP Server…</p>
 <h2 id="boot-nuttx-over-tftp-1"><a class="doc-anchor" href="#boot-nuttx-over-tftp-1">§</a>13.4 Boot NuttX over TFTP</h2>
 <p>Follow the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a> to install our TFTP Server. </p>
 <p>Copy the <strong>NuttX Image</strong> and <strong>Device Tree</strong> (previous section) to our TFTP Server…</p>
@@ -815,7 +816,7 @@ setenv boot_targets &quot;tftp $boot_targets&quot;
 ## Save it for future reboots
 saveenv
 </code></pre></div>
-<p>Reboot our Oz64 SBC. NuttX now auto-boots on Oz64 whenever we power on…</p>
+<p>Reboot our Oz64 SBC. NuttX now <strong>auto-boots on Oz64</strong> whenever we power on…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Starting kernel ...
 NuttShell (NSH) NuttX-12.4.0
 
