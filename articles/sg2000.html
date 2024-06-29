@@ -772,20 +772,16 @@ $ lz4 duos_sd.img.lz4
 <p>And write <strong><code>duos_sd.img</code></strong> to a MicroSD Card. Use <a href="https://etcher.balena.io"><strong>Balena Etcher</strong></a>, <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a> or <a href="https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6"><strong><code>dd</code></strong></a>.</p>
 <p>Insert the MicroSD Card into Oz64, but don’t power up yet…</p>
 <h2 id="download-the-nuttx-image"><a class="doc-anchor" href="#download-the-nuttx-image">§</a>13.3 Download the NuttX Image</h2>
-<p>TODO: Daily build</p>
-<p>NuttX for SG2000 is now built automatically every day via GitHub Actions.</p>
-<p>The Daily Releases are available here…</p>
+<p>Download the NuttX Image File <strong><code>Image</code></strong> from the Latest Daily Build of <strong>NuttX for SG2000</strong></p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-sg2000/tags"><strong>nuttx-sg2000/releases</strong></a></p>
-<p>(Skip the Special Builds)</p>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000/tags"><strong>Daily Build: NuttX for SG2000</strong></a></p>
+<p>(Skip the Special Builds <strong>“special-sg2000”</strong>)</p>
 </li>
-<li>
-<p>TODO: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/Image-sg2000"><strong>NuttX Image: Image-sg2000</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb"><strong>Device Tree: cv181x_milkv_duos_sd.dtb</strong></a></p>
-</li>
+</ul>
+<p>And download the Oz64 Device Tree…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb"><strong>Device Tree: cv181x_milkv_duos_sd.dtb</strong></a></li>
 </ul>
 <p>TODO: Or build ourselves</p>
 <h2 id="boot-nuttx-over-tftp-1"><a class="doc-anchor" href="#boot-nuttx-over-tftp-1">§</a>13.4 Boot NuttX over TFTP</h2>
@@ -802,7 +798,7 @@ scp cv181x_milkv_duos_sd.dtb \
 <p>Power up the board via the <strong>Oz64 Power Adapter</strong>. Connect to the USB UART at <strong>115.2 kbps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200
 </code></pre></div>
-<p>When Oz64 boots, press Enter to reveal the <strong>U-Boot Command Prompt</strong>. Enter these commands to <strong>Auto-Boot NuttX</strong> on Oz64…</p>
+<p>When Oz64 boots, press Enter to reveal the <strong>U-Boot Command Prompt</strong>. Enter these commands to configure U-Boot to <strong>Auto-Boot NuttX</strong> on Oz64…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the U-Boot TFTP Server
 ## TODO: Change to your TFTP Server
 setenv tftp_server 192.168.31.10
@@ -828,6 +824,7 @@ NuttX 12.4.0 122c717 May  8 2024 18:13:30 risc-v ox64
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/issues/1">(What about <strong>Static IP</strong>?)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/issues/1#issuecomment-2114415245">(How to <strong>Undo Auto-Boot</strong>)</a></p>
+<p><strong>TODO:</strong> Boot NuttX on MicroSD</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-pr.jpg" alt="NuttX Mainline now supports SG2000" /></p>
 <h1 id="appendix-nuttx-mainline-now-supports-sg2000"><a class="doc-anchor" href="#appendix-nuttx-mainline-now-supports-sg2000">§</a>14 Appendix: NuttX Mainline now supports SG2000!</h1>
 <p>Sophgo SG2000 SoC, Milk-V Duo S SBC and Pine64 Oz64 SBC are now officially supported by <strong>Apache NuttX Mainline</strong>! 🎉</p>
