@@ -742,8 +742,8 @@ riscv_exception:
 <p>Yep <a href="https://pine64.org/documentation/Oz64/"><strong>Pine64 Oz64 SBC</strong></a> is supported by NuttX Mainline! (Pic above)</p>
 <p>Just follow the exact same instructions that we covered earlier…</p>
 <h2 id="connect-our-usb-uart-adapter"><a class="doc-anchor" href="#connect-our-usb-uart-adapter">§</a>13.1 Connect our USB UART Adapter</h2>
-<p>Connect our <strong>USB UART Dongle</strong> according to <a href="https://milkv.io/docs/duo/getting-started/duos#uart-serial-console"><strong>the instructions</strong></a> (pic above)…</p>
-<div><table><thead><tr><th style="text-align: center">Milk-V Duo S</th><th style="text-align: center">USB UART</th></tr></thead><tbody>
+<p>Connect our <strong>USB UART Dongle</strong> to Oz64 SBC…</p>
+<div><table><thead><tr><th style="text-align: center">Oz64 SBC</th><th style="text-align: center">USB UART</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>GND</strong> (Pin 6)</td><td style="text-align: center"><strong>GND</strong></td></tr>
 <tr><td style="text-align: center"><strong>TX</strong> (Pin 8)</td><td style="text-align: center"><strong>RX</strong></td></tr>
 <tr><td style="text-align: center"><strong>RX</strong> (Pin 10)</td><td style="text-align: center"><strong>TX</strong></td></tr>
@@ -751,7 +751,7 @@ riscv_exception:
 </div>
 <p>USB UART Dongle must be <a href="http://sun-light.com.sg/index.php?route=product/product&amp;product_id=2367"><strong>CP2102</strong></a>, it doesn’t like <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>CH340</strong></a> </p>
 <h2 id="download-the-linux-microsd-1"><a class="doc-anchor" href="#download-the-linux-microsd-1">§</a>13.2 Download the Linux MicroSD</h2>
-<p>Here’s the Linux MicroSD created by <a href="https://github.com/Fishwaldo"><strong>Justin Hammond</strong></a> (Fishwaldo)…</p>
+<p>Based on the Linux MicroSD created by <a href="https://github.com/Fishwaldo"><strong>Justin Hammond</strong></a> (Fishwaldo)…</p>
 <ul>
 <li><a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases"><strong>Debian Image for Sophgo SG2000</strong></a></li>
 </ul>
@@ -772,7 +772,7 @@ $ lz4 duos_sd.img.lz4
 <p>And write <strong><code>duos_sd.img</code></strong> to a MicroSD Card. Use <a href="https://etcher.balena.io"><strong>Balena Etcher</strong></a>, <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a> or <a href="https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6"><strong><code>dd</code></strong></a>.</p>
 <p>Insert the MicroSD Card into Oz64, but don’t power up yet…</p>
 <h2 id="download-the-nuttx-image"><a class="doc-anchor" href="#download-the-nuttx-image">§</a>13.3 Download the NuttX Image</h2>
-<p>Download the NuttX Image File <strong><code>Image</code></strong> from the Latest Daily Build of <strong>NuttX for SG2000</strong></p>
+<p>Download the NuttX Image File <strong><code>Image</code></strong> from the Latest Daily Build of <strong>NuttX for SG2000</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/tags"><strong>Daily Build: NuttX for SG2000</strong></a></p>
@@ -799,7 +799,8 @@ scp cv181x_milkv_duos_sd.dtb \
 <p>Power up the board via the <strong>Oz64 Power Adapter</strong>. Connect to the USB UART at <strong>115.2 kbps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200
 </code></pre></div>
-<p>When Oz64 boots, press Enter to reveal the <strong>U-Boot Command Prompt</strong>. Enter these commands to configure U-Boot to <strong>Auto-Boot NuttX</strong> on Oz64…</p>
+<p>When Oz64 boots, press Enter to reveal the <strong>U-Boot Command Prompt</strong>.</p>
+<p>Enter these commands to configure U-Boot to <strong>Auto-Boot NuttX</strong> on Oz64…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the U-Boot TFTP Server
 ## TODO: Change to your TFTP Server
 setenv tftp_server 192.168.31.10
@@ -816,7 +817,7 @@ setenv boot_targets &quot;tftp $boot_targets&quot;
 ## Save it for future reboots
 saveenv
 </code></pre></div>
-<p>Reboot our Oz64 SBC. NuttX now <strong>auto-boots on Oz64</strong> whenever we power on…</p>
+<p>Power-off and power-on our SBC. NuttX now <strong>auto-boots on Oz64</strong> whenever we power-on…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Starting kernel ...
 NuttShell (NSH) NuttX-12.4.0
 
