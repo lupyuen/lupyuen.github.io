@@ -95,7 +95,7 @@
 <li><a href="#nuttx-crash-dump">16.8 NuttX Crash Dump</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-title.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
 <p><a href="https://lupyuen.github.io/articles/sg2000#appendix-nuttx-mainline-now-supports-sg2000"><strong>UPDATE: NuttX Mainline now supports SG2000 and Milk-V Duo S!</strong></a></p>
-<p>Soon we’ll see many new 64-bit RISC-V SBCs based on the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>Sophgo SG2000 RISC-V SoC</strong></a>.</p>
+<p>Soon we’ll see many new <a href="https://lupyuen.github.io/articles/sg2000#appendix-apache-nuttx-rtos-for-pine64-oz64-sbc"><strong>64-bit RISC-V SBCs</strong></a> based on the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>Sophgo SG2000 RISC-V SoC</strong></a>.</p>
 <p>Will they work with <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>? (Real-Time Operating System) Let’s find out…</p>
 <ul>
 <li>
@@ -935,7 +935,11 @@ NuttX 12.4.0 122c717 May  8 2024 18:13:30 risc-v ox64
 </ul>
 <p><img src="https://lupyuen.github.io/images/sg2000-build.jpg" alt="Build NuttX for SG2000" /></p>
 <h1 id="appendix-build-nuttx-for-sg2000"><a class="doc-anchor" href="#appendix-build-nuttx-for-sg2000">§</a>15 Appendix: Build NuttX for SG2000</h1>
-<p>TODO: Daily build</p>
+<p>We may download the NuttX Image File <strong><code>Image</code></strong> from the Latest Daily Build of <strong>NuttX for SG2000</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-sg2000/tags"><strong>Daily Build: NuttX for SG2000</strong></a></li>
+</ul>
+<p>If we prefer to build NuttX ourselves, please read on…</p>
 <p>In this article we took NuttX for <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Ox64 BL808 RISC-V SBC</strong></a>. Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S…</p>
 <ol>
 <li>
