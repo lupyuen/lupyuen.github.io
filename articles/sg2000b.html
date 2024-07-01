@@ -142,6 +142,8 @@ static void copy_bios(...) {
   // `auipc t0, RAM_BASE_ADDR`
   // `RAM_BASE_ADDR` is 0x80000000
   q[0] = 0x297 + RAM_BASE_ADDR - 0x1000;
+
+  // Later: Jump to Register T0
 </code></pre></div>
 <p>To load the <strong>RAM Base Address</strong> into Register T0: TinyEMU tries to assemble this RISC-V Instruction (into our Boot Code)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>auipc t0, 0x80200000
@@ -154,26 +156,44 @@ Error: value of 0000080200000000 too large
   for field of 4 bytes at 0000000000000000
 </code></pre></div>
 <p>Aha <em>0x80200000</em> is too big to assemble as an <strong><code>auipc</code> Address!</strong></p>
+<p><em>But 0x80200000 is a perfectly valid address?</em></p>
+<p>Remember that RISC-V is a <strong>RISC Platform</strong> after all. Some operations won’t fit into 4 bytes of Machine Code.</p>
+<p>We upsize to 8 bytes of Machine Code…</p>
 <h1 id="change-auipc-to-li-in-boot-code"><a class="doc-anchor" href="#change-auipc-to-li-in-boot-code">§</a>3 Change <code>auipc</code> to <code>li</code> in Boot Code</h1>
-<p>TODO</p>
-<p>So we load 0x80200000 into Register t0 in another way: <code>li</code></p>
+<p>We load <em>0x80200000</em> into Register t0 in another way, with the <strong><code>li</code> Instruction</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>li  t0, 0x80200000
 </code></pre></div>
-<p><a href="https://riscvasm.lucasteske.dev/#">RISC-V Online Assembler</a> produces…</p>
-<div class="example-wrap"><pre class="language-bash"><code>   0:	4010029b          	addiw	t0,zero,1025
-   4:	01529293          	slli	t0,t0,0x15
+<p>When we feed this above into <a href="https://riscvasm.lucasteske.dev/#"><strong>RISC-V Online Assembler</strong></a>, we see the resulting (8-byte) <strong>Machine Code</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>4010029b  addiw  t0, zero, 1025
+01529293  slli   t0, t0,   0x15
 </code></pre></div>
-<p>We copy this into our TinyEMU Boot Code…</p>
-<p><a href="https://github.com/lupyuen2/sg2000-emulator/commit/b2d5cf63c5d6d1d0d4eafa5d400216d1f76a6e21">Change auipc t0, 0x80200000 to li t0, 0x80200000</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// `li  t0, 0x80200000` gets assembled to:
-// 4010029b addiw t0,zero,1025
-// 01529293 slli  t0,t0,0x15
-q[pc++] = 0x4010029b; // addiw t0,zero,1025
-q[pc++] = 0x01529293; // slli  t0,t0,0x15
+<p>That’s because <strong><code>li</code></strong> is a Pseudo-Instruction that expands into two RISC-V Instructions…</p>
+<ul>
+<li>
+<p><strong><code>addiw</code></strong>: Add zero to <code>1025</code> and store into T0</p>
+</li>
+<li>
+<p><strong><code>slli</code></strong>: Shift-Left T0 by <code>0x15</code> bits</p>
+</li>
+<li>
+<p>Producing: <code>1025</code> &lt;&lt; <code>0x15</code> = <code>0x8020_0000</code></p>
+</li>
+</ul>
+<p>Thus we copy the above Machine Code into our TinyEMU Boot Code: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/b2d5cf63c5d6d1d0d4eafa5d400216d1f76a6e21">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Init the TinyEMU Boot Code
+static void copy_bios(...) {
+  ...
+  // Load `RAM_BASE_ADDR` into Register T0:
+  // `li  t0, 0x80200000`
+  // Which is assembled as...
+  q[pc++] = 0x4010029b;  // addiw t0, zero, 1025
+  q[pc++] = 0x01529293;  // slli  t0, t0,   0x15
 
-// Previously: q[pc++] = 0x297 + RAM_BASE_ADDR - 0x1000; /* auipc t0, jump_addr */
-// Which fails because RAM_BASE_ADDR is too big for auipc
+  // TODO: Remove the hardcoding of 0x80200000
 </code></pre></div>
+<p>Our Emulator now boots NuttX correctly at <em>0x80200000</em>!</p>
+<h1 id="fix-the-uart-output"><a class="doc-anchor" href="#fix-the-uart-output">§</a>4 Fix the UART Output</h1>
+<p>TODO</p>
 <p>And it hangs (instead of crashing). Some progress!</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg
 TinyEMU Emulator for Sophgo SG2000 SoC
@@ -184,7 +204,7 @@ Found ECALL (Start System Timer) at 0x8020b2c6
 Patched RDTIME (Read System Time) at 0x8020b2cc
 elf_len=0
 virtio_console_resize_event
-</code></pre></div><h1 id="fix-the-uart-output"><a class="doc-anchor" href="#fix-the-uart-output">§</a>4 Fix the UART Output</h1>
+</code></pre></div>
 <p>TODO</p>
 <p>We fix the UART Output Registers: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/fd6e5333ef6f89b452901d6e580d8387e9da2573">Update UART Output Register and UART Status Register</a></p>
 <p>Now we see NSH Shell yay!</p>
