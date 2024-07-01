@@ -77,9 +77,8 @@
 <li><a href="#tinyemu-supports-only-32-irqs">10 TinyEMU Supports only 32 IRQs</a><ul></ul></li>
 <li><a href="#increase-tinyemu-irqs-from-32-to-64">11 Increase TinyEMU IRQs from 32 to 64</a><ul></ul></li>
 <li><a href="#pending-irq-loops-forever">12 Pending IRQ Loops Forever</a><ul></ul></li>
-<li><a href="#emulate-the-uart-interrupt">13 Emulate the UART Interrupt</a><ul></ul></li>
-<li><a href="#clear-the-uart-interrupt">14 Clear the UART Interrupt</a><ul></ul></li>
-<li><a href="#whats-next">15 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jul 2024</em></p>
+<li><a href="#clear-the-uart-interrupt">13 Clear the UART Interrupt</a><ul></ul></li>
+<li><a href="#whats-next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jul 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-title.jpg" alt="TODO" /></p>
 <p>TODO: Read the article</p>
 <p>TODO: Watch the presentation</p>
@@ -114,12 +113,13 @@ make
 ## Boot TinyEMU with NuttX for SG2000
 cd $HOME/nuttx
 wget https://raw.githubusercontent.com/lupyuen/nuttx-sg2000/main/nuttx.cfg
-$HOME/sg2000/sg2000-emulator/temu nuttx.cfg
+sg2000-emulator/temu nuttx.cfg
 </code></pre></div>
 <p>Our Emulator crashes at a strange address…</p>
 <h1 id="auipc-overflow-in-boot-code"><a class="doc-anchor" href="#auipc-overflow-in-boot-code">§</a>2 <code>auipc</code> Overflow in Boot Code</h1>
 <p>When we <strong>Boot our Emulator</strong> with SG2000 NuttX, it crashes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg
+
 TinyEMU Emulator for Sophgo SG2000 SoC
 raise_exception2:
   cause=1
@@ -197,6 +197,7 @@ static void copy_bios(...) {
 <h1 id="emulate-the-16550-uart-controller"><a class="doc-anchor" href="#emulate-the-16550-uart-controller">§</a>4 Emulate the 16550 UART Controller</h1>
 <p><em>Nothing appears when we boot NuttX?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg
+
 TinyEMU Emulator for Sophgo SG2000 SoC
 (...crickets...)
 </code></pre></div>
@@ -240,10 +241,26 @@ bool u16550_txready(struct uart_dev_s *dev) {
 <p>This is the bit in <strong>UART_LSR</strong> that will indicate whether Transmit FIFO is Empty</p>
 </li>
 </ul>
-<p>Let’s emulate the UART Registers in TinyEMU…</p>
+<p>Let’s emulate the above in TinyEMU…</p>
 <h1 id="16550-registers-for-uart-output"><a class="doc-anchor" href="#16550-registers-for-uart-output">§</a>5 16550 Registers for UART Output</h1>
-<p>TODO</p>
-<p>We fix the UART Output Registers: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/fd6e5333ef6f89b452901d6e580d8387e9da2573">Update UART Output Register and UART Status Register</a></p>
+<p><em>How will we emulate the 16550 UART Registers in TinyEMU?</em></p>
+<p>When TinyEMU needs to Read or Write a Memory Address, it will call the functions below.</p>
+<p>This is how we <strong>Intercept the Memory Writes</strong> to emulate the <strong>UART Output Register</strong> (Transmit Holding): <a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_cpu.c#L536-L550">riscv_cpu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// TinyEMU calls this function to execute Memory Writes
+int target_write_slow(...) {
+  ...
+  // If TinyEMU is writing to this address...
+  switch(paddr) {
+
+    // Address is UART Transmit Holding Register
+    case UART0_BASE_ADDR + UART_THR_OFFSET:
+
+      // Print the character that&#39;s written by NuttX
+      char buf[1] = { val };
+      print_console(NULL, buf, 1);
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_cpu.c#L395-L411">(<strong>UART Addresses</strong> are here)</a></p>
+<p>And this is how we <strong>Intercept the Memory Reads</strong> to emulate the <strong>UART Status Register</strong> (Line Status): <a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_cpu.c#L390-L420">riscv_cpu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// TinyEMU calls this function to execute Memory Reads
 int target_read_slow(...) {
   ...
@@ -251,7 +268,7 @@ int target_read_slow(...) {
   switch(paddr) {
 
     // Address is UART Line Status Register
-    case UART0_BASE_ADDR + UART_LSR_OFFSET: {
+    case UART0_BASE_ADDR + UART_LSR_OFFSET:
 
       // Always tell NuttX that
       // Transmit Holding Register is Empty
@@ -262,54 +279,111 @@ int target_read_slow(...) {
       if (read_input() != 0) {
         ret |= UART_LSR_DR;
       }
-      break;
-    }
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_cpu.c#L395-L411">(<strong>UART Addresses</strong> are here)</a></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>// TinyEMU calls this function to execute Memory Writes
-int target_write_slow(...) {
-  ...
-  // If TinyEMU is writing to this address...
-  switch(paddr) {
+<p>(More about UART Input in a while)</p>
+<p><em>What happens when we run this?</em></p>
+<p>Now we see the NuttX Shell yay!</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg 
 
-    // Address is UART Transmit Holding Register
-    case UART0_BASE_ADDR + UART_THR_OFFSET: {
-
-      // Print the character that&#39;s written by NuttX
-      char buf[1] = { val };
-      print_console(NULL, buf, 1);
-      break;
-    }
-</code></pre></div>
-<p><a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_cpu.c#L395-L411">(<strong>UART Addresses</strong> are here)</a></p>
-<p>Now we see NSH Shell yay!</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ $HOME/sg2000/sg2000-emulator/temu nuttx.cfg 
-...
 TinyEMU Emulator for Sophgo SG2000 SoC
-virtio_console_init
-Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x80200a28
-Patched SYNC.S (Ensure that all Cache Operations are completed) at 0x80200a2c
-Found ECALL (Start System Timer) at 0x8020b2c6
-Patched RDTIME (Read System Time) at 0x8020b2cc
-elf_len=0
-virtio_console_resize_event
-ABC
 NuttShell (NSH) NuttX-12.5.1
 nsh&gt;
 </code></pre></div>
+<p>Next we fix the UART Input…</p>
+<h1 id="16550-registers-for-uart-input"><a class="doc-anchor" href="#16550-registers-for-uart-input">§</a>6 16550 Registers for UART Input</h1>
+<p>TODO</p>
+<p><em>How does the NuttX 16550 UART Driver use UART_IIR_OFFSET and UART_MSR_OFFSET?</em></p>
+<p>The NuttX 16550 UART Driver reads UART_IIR_OFFSET and UART_MSR_OFFSET to handle UART Interrupts: <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L979-L1082">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static int u16550_interrupt(int irq, FAR void *context, FAR void *arg) {
+  ...
+  /* Loop until there are no characters to be transferred or,
+   * until we have been looping for a long time.
+   */
+
+  for (passes = 0; passes &lt; 256; passes++)
+    {
+      /* Get the current UART status and check for loop
+       * termination conditions
+       */
+
+      status = u16550_serialin(priv, UART_IIR_OFFSET);
+
+      /* The UART_IIR_INTSTATUS bit should be zero if there are pending
+       * interrupts
+       */
+
+      if ((status &amp; UART_IIR_INTSTATUS) != 0)
+        {
+          /* Break out of the loop when there is no longer a
+           * pending interrupt
+           */
+
+          break;
+        }
+
+      /* Handle the interrupt by its interrupt ID field */
+
+      switch (status &amp; UART_IIR_INTID_MASK)
+        {
+          /* Handle incoming, receive bytes (with or without timeout) */
+
+          case UART_IIR_INTID_RDA:
+            {
+              uart_recvchars(dev);
+              break;
+            }
+</code></pre></div>
+<p>Thus we need to emulate the UART Interrupt. To Receive Data…</p>
+<ul>
+<li>
+<p>UART Register UART_IIR: Should return UART_IIR_INTID_RDA (data available)</p>
+<p>Then it should return UART_IIR_INTSTATUS (no more data)</p>
+</li>
+<li>
+<p>UART Register UART_LSR: Should return UART_LSR_DR (data available)</p>
+<p>Then it should return 0 (no more data)</p>
+</li>
+<li>
+<p>UART Register UART_RBR: Should return the input data</p>
+</li>
+</ul>
+<p>We emulate the UART Interrupt like this: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/ce3562e4d7efe53b52a1b945850f08d93630d4d2">Emulate UART Interrupt: UART_LSR, UART_IIR, UART_RBR</a></p>
+<p>Now we see…</p>
+<div class="example-wrap"><pre class="language-bash"><code>plic_set_irq: irq_num=44, state=1
+plic_update_mip: set_mip, pending=0x80000000000, served=0x0
+plic_read: offset=0x201004
+plic_update_mip: reset_mip, pending=0x80000000000, served=0x80000000000
+plic_read: pending irq=0x2c
+
+read UART_IIR_OFFSET
+read UART_RBR_OFFSET
+read UART_IIR_OFFSET
+
+plic_write: offset=0x201004, val=0x2c
+plic_update_mip: set_mip, pending=0x80000000000, served=0x0
+plic_read: offset=0x201004
+plic_update_mip: reset_mip, pending=0x80000000000, served=0x80000000000
+plic_read: pending irq=0x2c
+
+read UART_IIR_OFFSET
+plic_write: offset=0x201004, val=0x2c
+plic_update_mip: set_mip, pending=0x80000000000, served=0x0
+plic_read: offset=0x201004
+plic_update_mip: reset_mip, pending=0x80000000000, served=0x80000000000
+plic_read: pending irq=0x2c
+read UART_IIR_OFFSET
+</code></pre></div><h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>7 Fix the UART Interrupt</h1>
+<p>TODO</p>
 <p>When we press a key, NuttX triggers an expected interrupt…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ $HOME/sg2000/sg2000-emulator/temu nuttx.cfg 
+<div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg 
 ...
 NuttShell (NSH) NuttX-12.5.1
 nsh&gt; irq_unexpected_isr: ERROR irq: 45
 _assert: Current Version: NuttX  12.5.1 218ccd843a Jun 18 2024 22:14:46 risc-v
 _assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_Task process: Kernel 0x8020110c
 up_dump_register: EPC: 000000008021432a
-</code></pre></div><h1 id="16550-registers-for-uart-input"><a class="doc-anchor" href="#16550-registers-for-uart-input">§</a>6 16550 Registers for UART Input</h1>
-<p>TODO</p>
-<h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>7 Fix the UART Interrupt</h1>
-<p>TODO</p>
+</code></pre></div>
 <p>Now we fix the UART Input and UART Interrupt. Based on the NuttX Config…</p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_IRQ=69
 </code></pre></div>
@@ -318,14 +392,14 @@ up_dump_register: EPC: 000000008021432a
 <div class="example-wrap"><pre class="language-c"><code>#define VIRTIO_IRQ       44  // UART0 IRQ
 </code></pre></div>
 <p>But when we press a key: TinyEMU crashes with a Segmentation Fault…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ $HOME/sg2000/sg2000-emulator/temu nuttx.cfg    
+<div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg    
 ...
 NuttShell (NSH) NuttX-12.5.1
-nsh&gt; [1]    94499 segmentation fault  $HOME/sg2000/sg2000-emulator/temu nuttx.cfg
+nsh&gt; [1]    94499 segmentation fault  sg2000-emulator/temu nuttx.cfg
 </code></pre></div><h1 id="uart-input-causes-segmentation-fault"><a class="doc-anchor" href="#uart-input-causes-segmentation-fault">§</a>8 UART Input causes Segmentation Fault</h1>
 <p>TODO</p>
 <p>We debug with <code>lldb</code> (because <code>gdb</code> is not available for macOS Arm64)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ lldb $HOME/sg2000/sg2000-emulator/temu nuttx.cfg 
+<div class="example-wrap"><pre class="language-bash"><code>$ lldb sg2000-emulator/temu nuttx.cfg 
 (lldb) target create &quot;/Users/luppy/sg2000/sg2000-emulator/temu&quot;
 Current executable set to &#39;/Users/luppy/sg2000/sg2000-emulator/temu&#39; (arm64).
 (lldb) settings set -- target.run-args  &quot;nuttx.cfg&quot;
@@ -357,7 +431,7 @@ Target 0: (temu) stopped.
 <li><a href="https://github.com/lupyuen2/sg2000-emulator/commit/af768df81fc349562565d638e359aca6127c9267">Disable GCC Optimisation</a></li>
 </ul>
 <p>Now it makes more sense!</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ lldb $HOME/sg2000/sg2000-emulator/temu nuttx.cfg 
+<div class="example-wrap"><pre class="language-bash"><code>$ lldb sg2000-emulator/temu nuttx.cfg 
 ...
 NuttShell (NSH) NuttX-12.5.1
 Process 1595 stopped
@@ -669,141 +743,7 @@ target_read_slow: invalid physical address 0x0000000004140018
 #define UART_DLM_OFFSET        (CONFIG_16550_REGINCR*UART_IER_INCR)
 </code></pre></div>
 <p>TODO: Check the NuttX 16550 UART Driver for UART_DLM_OFFSET and UART_DLM_OFFSET</p>
-<h1 id="emulate-the-uart-interrupt"><a class="doc-anchor" href="#emulate-the-uart-interrupt">§</a>13 Emulate the UART Interrupt</h1>
-<p>TODO</p>
-<p><em>How does the NuttX 16550 UART Driver use UART_IIR_OFFSET, UART_FCR_OFFSET and UART_MSR_OFFSET?</em></p>
-<p>The NuttX 16550 UART Driver reads UART_IIR_OFFSET and UART_MSR_OFFSET to handle UART Interrupts: <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L979-L1082">uart_16550.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static int u16550_interrupt(int irq, FAR void *context, FAR void *arg)
-{
-  FAR struct uart_dev_s *dev = (struct uart_dev_s *)arg;
-  FAR struct u16550_s *priv;
-  uint32_t status;
-  int passes;
-
-  DEBUGASSERT(dev != NULL &amp;&amp; dev-&gt;priv != NULL);
-  priv = (FAR struct u16550_s *)dev-&gt;priv;
-
-  /* Loop until there are no characters to be transferred or,
-   * until we have been looping for a long time.
-   */
-
-  for (passes = 0; passes &lt; 256; passes++)
-    {
-      /* Get the current UART status and check for loop
-       * termination conditions
-       */
-
-      status = u16550_serialin(priv, UART_IIR_OFFSET);
-
-      /* The UART_IIR_INTSTATUS bit should be zero if there are pending
-       * interrupts
-       */
-
-      if ((status &amp; UART_IIR_INTSTATUS) != 0)
-        {
-          /* Break out of the loop when there is no longer a
-           * pending interrupt
-           */
-
-          break;
-        }
-
-      /* Handle the interrupt by its interrupt ID field */
-
-      switch (status &amp; UART_IIR_INTID_MASK)
-        {
-          /* Handle incoming, receive bytes (with or without timeout) */
-
-          case UART_IIR_INTID_RDA:
-          case UART_IIR_INTID_CTI:
-            {
-              uart_recvchars(dev);
-              break;
-            }
-
-          /* Handle outgoing, transmit bytes */
-
-          case UART_IIR_INTID_THRE:
-            {
-              uart_xmitchars(dev);
-              break;
-            }
-
-          /* Just clear modem status interrupts (UART1 only) */
-
-          case UART_IIR_INTID_MSI:
-            {
-              /* Read the modem status register (MSR) to clear */
-
-              status = u16550_serialin(priv, UART_MSR_OFFSET);
-              sinfo(&quot;MSR: %02&quot;PRIx32&quot;\n&quot;, status);
-              break;
-            }
-
-          /* Just clear any line status interrupts */
-
-          case UART_IIR_INTID_RLS:
-            {
-              /* Read the line status register (LSR) to clear */
-
-              status = u16550_serialin(priv, UART_LSR_OFFSET);
-              sinfo(&quot;LSR: %02&quot;PRIx32&quot;\n&quot;, status);
-              break;
-            }
-
-          /* There should be no other values */
-
-          default:
-            {
-              serr(&quot;ERROR: Unexpected IIR: %02&quot;PRIx32&quot;\n&quot;, status);
-              break;
-            }
-        }
-    }
-
-  return OK;
-}
-</code></pre></div>
-<p>Thus we need to emulate the UART Interrupt. To Receive Data…</p>
-<ul>
-<li>
-<p>UART Register UART_IIR: Should return UART_IIR_INTID_RDA (data available)</p>
-<p>Then it should return UART_IIR_INTSTATUS (no more data)</p>
-</li>
-<li>
-<p>UART Register UART_LSR: Should return UART_LSR_DR (data available)</p>
-<p>Then it should return 0 (no more data)</p>
-</li>
-<li>
-<p>UART Register UART_RBR: Should return the input data</p>
-</li>
-</ul>
-<p>We emulate the UART Interrupt like this: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/ce3562e4d7efe53b52a1b945850f08d93630d4d2">Emulate UART Interrupt: UART_LSR, UART_IIR, UART_RBR</a></p>
-<p>Now we see…</p>
-<div class="example-wrap"><pre class="language-bash"><code>plic_set_irq: irq_num=44, state=1
-plic_update_mip: set_mip, pending=0x80000000000, served=0x0
-plic_read: offset=0x201004
-plic_update_mip: reset_mip, pending=0x80000000000, served=0x80000000000
-plic_read: pending irq=0x2c
-
-read UART_IIR_OFFSET
-read UART_RBR_OFFSET
-read UART_IIR_OFFSET
-
-plic_write: offset=0x201004, val=0x2c
-plic_update_mip: set_mip, pending=0x80000000000, served=0x0
-plic_read: offset=0x201004
-plic_update_mip: reset_mip, pending=0x80000000000, served=0x80000000000
-plic_read: pending irq=0x2c
-
-read UART_IIR_OFFSET
-plic_write: offset=0x201004, val=0x2c
-plic_update_mip: set_mip, pending=0x80000000000, served=0x0
-plic_read: offset=0x201004
-plic_update_mip: reset_mip, pending=0x80000000000, served=0x80000000000
-plic_read: pending irq=0x2c
-read UART_IIR_OFFSET
-</code></pre></div><h1 id="clear-the-uart-interrupt"><a class="doc-anchor" href="#clear-the-uart-interrupt">§</a>14 Clear the UART Interrupt</h1>
+<h1 id="clear-the-uart-interrupt"><a class="doc-anchor" href="#clear-the-uart-interrupt">§</a>13 Clear the UART Interrupt</h1>
 <p>TODO</p>
 <p><em>Why is pending IRQ looping forever?</em></p>
 <p>That’s because we forgot to clear the UART Interrupt duh!</p>
@@ -831,7 +771,7 @@ nsh&gt;
 <p>Yeah probably because SG2000 runs on <a href="https://github.com/lupyuen2/wip-nuttx/commit/bb4906c976e44a05237f91944844cd1c68ef5d5b">MTIMER_FREQ of 25000000</a>.</p>
 <p>When we execute <code>sleep 10</code>, it completes in 25 seconds. We might need to adjust the TinyEMU System Timer.</p>
 <p>(CPU-bound operations like <code>getprime</code> won’t have this timing delay)</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>15 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
