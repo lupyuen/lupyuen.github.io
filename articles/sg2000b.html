@@ -65,7 +65,7 @@
 
     <h1 class="title">RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)</h1>
     <nav id="TOC"><ul>
-<li><a href="#emulate-sophgo-sg2000-soc--milk-v-duo-s-sbc-with-tinyemu-risc-v-emulator">1 Emulate Sophgo SG2000 SoC / Milk-V Duo S SBC with TinyEMU RISC-V Emulator</a><ul></ul></li>
+<li><a href="#update-the-memory-map">1 Update the Memory Map</a><ul></ul></li>
 <li><a href="#auipc-overflow-in-boot-code">2 <code>auipc</code> Overflow in Boot Code</a><ul></ul></li>
 <li><a href="#change-auipc-to-li-in-boot-code">3 Change <code>auipc</code> to <code>li</code> in Boot Code</a><ul></ul></li>
 <li><a href="#fix-the-uart-output">4 Fix the UART Output</a><ul></ul></li>
@@ -79,17 +79,18 @@
 <li><a href="#clear-the-uart-interrupt">12 Clear the UART Interrupt</a><ul></ul></li>
 <li><a href="#whats-next">13 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jul 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-title.jpg" alt="TODO" /></p>
-<p>TODO</p>
-<p>https://github.com/lupyuen2/sg2000-emulator</p>
-<h1 id="emulate-sophgo-sg2000-soc--milk-v-duo-s-sbc-with-tinyemu-risc-v-emulator"><a class="doc-anchor" href="#emulate-sophgo-sg2000-soc--milk-v-duo-s-sbc-with-tinyemu-risc-v-emulator">§</a>1 Emulate Sophgo SG2000 SoC / Milk-V Duo S SBC with TinyEMU RISC-V Emulator</h1>
-<p>TODO</p>
+<p>TODO: Read the article</p>
+<p>TODO: Watch the presentation</p>
+<p><a href="https://github.com/lupyuen2/sg2000-emulator">sg2000-emulator</a></p>
 <p>Let’s create a Software Emulator for Sophgo SG2000 SoC and Milk-V Duo S SBC! It runs every day for our <a href="https://github.com/lupyuen/nuttx-sg2000#nuttx-automated-daily-build-for-sg2000">Daily Automated Testing</a> of Apache NuttX RTOS for SG2000.</p>
-<p>We begin with the <a href="https://lupyuen.github.io/articles/tinyemu3">TinyEMU RISC-V Emulator</a> for Ox64 BL808 SBC. And we tweak it for SG2000.</p>
-<p>We update the System Memory Map for SG2000…</p>
-<p><a href="https://github.com/lupyuen2/sg2000-emulator/commit/d36190c63c1db116a206a26f3bc27dfacf5c8298">Update RAM Base Addr, CLINT Addr, PLIC Addr</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define RAM_BASE_ADDR  0x80200000ul
-#define CLINT_BASE_ADDR 0x74000000ul  // TODO: Unused
-#define PLIC_BASE_ADDR 0x70000000ul
+<h1 id="update-the-memory-map"><a class="doc-anchor" href="#update-the-memory-map">§</a>1 Update the Memory Map</h1>
+<p>We begin with the <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>TinyEMU RISC-V Emulator</strong></a> for Ox64 BL808 SBC. And we tweak it for SG2000.</p>
+<p>This is how we update the <strong>RISC-V Memory Map</strong> for SG2000: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/d36190c63c1db116a206a26f3bc27dfacf5c8298">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Base Addresss of System RAM, Core Local Interrupt Controller (unused)
+// And Platform-Level Interrupt Controller
+#define RAM_BASE_ADDR   0x80200000ul
+#define CLINT_BASE_ADDR 0x74000000ul
+#define PLIC_BASE_ADDR  0x70000000ul
 </code></pre></div>
 <p>Then build and run TinyEMU…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build TinyEMU for macOS
@@ -113,52 +114,46 @@ cd $HOME/nuttx
 wget https://raw.githubusercontent.com/lupyuen/nuttx-sg2000/main/nuttx.cfg
 $HOME/sg2000/sg2000-emulator/temu nuttx.cfg
 </code></pre></div>
-<p>This is how we fix the rest of the emulator…</p>
+<p>Our Emulator crashes at a strange address…</p>
 <h1 id="auipc-overflow-in-boot-code"><a class="doc-anchor" href="#auipc-overflow-in-boot-code">§</a>2 <code>auipc</code> Overflow in Boot Code</h1>
-<p>TODO</p>
-<p>When we boot TinyEMU with SG2000 NuttX, it crashes…</p>
+<p>When we <strong>Boot our Emulator</strong> with SG2000 NuttX, it crashes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg
 TinyEMU Emulator for Sophgo SG2000 SoC
-virtio_console_init
-Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x80200a28
-Patched SYNC.S (Ensure that all Cache Operations are completed) at 0x80200a2c
-Found ECALL (Start System Timer) at 0x8020b2c6
-Patched RDTIME (Read System Time) at 0x8020b2cc
-elf_len=0
-virtio_console_resize_event
-raise_exception2: cause=1, tval=0xffffffff80200000, pc=0xffffffff80200000
-pc =ffffffff80200000 ra =0000000000000000 sp =0000000000000000 gp =0000000000000000
-tp =0000000000000000 t0 =ffffffff80200000 t1 =0000000000000000 t2 =0000000000000000
-s0 =0000000000000000 s1 =0000000000000000 a0 =0000000000000000 a1 =0000000000001040
-a2 =0000000000000000 a3 =0000000000000000 a4 =0000000000000000 a5 =0000000000040800
-a6 =0000000000000000 a7 =0000000000000000 s2 =0000000000000000 s3 =0000000000000000
-s4 =0000000000000000 s5 =0000000000000000 s6 =0000000000000000 s7 =0000000000000000
-s8 =0000000000000000 s9 =0000000000000000 s10=0000000000000000 s11=0000000000000000
-t3 =0000000000000000 t4 =0000000000000000 t5 =0000000000000000 t6 =0000000000000000
-priv=S mstatus=0000000a00040080 cycles=19
- mideleg=0000000000000222 mie=0000000000000000 mip=00000000000000a0
-tinyemu: Illegal instruction, quitting: pc=0x0, instruction=0x0
+raise_exception2:
+  cause=1
+  tval= 0xffffffff_80200000
+  pc=   0xffffffff_80200000
+
+tinyemu:
+  Illegal instruction, quitting
 </code></pre></div>
-<p>0xffffffff80200000 looks sus, it seems related to RAM Base Address 0x80200000. We check the TinyEMU Boot Code: <a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_machine.c#L967-L970">riscv_machine.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static void copy_bios(...) {
-...
-  // TinyEMU Boot Code
+<p><em>What just happened?</em></p>
+<p>Our Emulator tried to execute the code at MTVAL <em>0xffffffff_80200000</em>. And crashed because it’s <strong>not a valid address!</strong></p>
+<p><em>0xffffffff_80200000</em> looks sus, it seems related to <strong>RAM Base Address</strong> <em>0x80200000</em>.</p>
+<p><em>Our Emulator is booting the wrong address?</em></p>
+<p>We check the <strong>Original TinyEMU</strong> Boot Code: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L857-L861">riscv_machine.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Init the TinyEMU Boot Code
+static void copy_bios(...) {
+  ...
+  // `q` points to the Boot Code
   q = (uint32_t *)(ram_ptr + 0x1000);
 
-  // Load RAM Base Address into Register T0:
-  // auipc t0, RAM_BASE_ADDR
+  // Load `RAM_BASE_ADDR` into Register T0:
+  // `auipc t0, RAM_BASE_ADDR`
+  // `RAM_BASE_ADDR` is 0x80000000
   q[0] = 0x297 + RAM_BASE_ADDR - 0x1000;
 </code></pre></div>
-<p>Maybe auipc has a problem? We run the <a href="https://riscvasm.lucasteske.dev/#">RISC-V Online Assembler</a></p>
-<p>We try to assemble the TinyEMU Boot Code (for loading the RAM Base Address 0x80200000)…</p>
+<p>To load the <strong>RAM Base Address</strong> into Register T0: TinyEMU tries to assemble this RISC-V Instruction (into our Boot Code)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>auipc t0, 0x80200000
 </code></pre></div>
-<p>But it produces this error…</p>
-<div class="example-wrap"><pre class="language-bash"><code>file.s: Assembler messages:
-file.s:3: Error: lui expression not in range 0..1048575
-file.s:3: Error: value of 0000080200000000 too large for field of 4 bytes at 0000000000000000
+<p><em>Maybe auipc has a problem?</em></p>
+<p>We verify with the <a href="https://riscvasm.lucasteske.dev/#"><strong>RISC-V Online Assembler</strong></a>.</p>
+<p>When we assemble the <strong><code>auipc</code></strong> instruction above, the Online Assembler fails with an error…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>Error: lui expression not in range 0..1048575
+Error: value of 0000080200000000 too large
+  for field of 4 bytes at 0000000000000000
 </code></pre></div>
-<p>0x80200000 is too big to assemble into the auipc address!</p>
+<p>Aha <em>0x80200000</em> is too big to assemble as an <strong><code>auipc</code> Address!</strong></p>
 <h1 id="change-auipc-to-li-in-boot-code"><a class="doc-anchor" href="#change-auipc-to-li-in-boot-code">§</a>3 Change <code>auipc</code> to <code>li</code> in Boot Code</h1>
 <p>TODO</p>
 <p>So we load 0x80200000 into Register t0 in another way: <code>li</code></p>
