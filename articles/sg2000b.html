@@ -68,7 +68,7 @@
 <li><a href="#update-the-memory-map">1 Update the Memory Map</a><ul></ul></li>
 <li><a href="#auipc-overflow-in-boot-code">2 <code>auipc</code> Overflow in Boot Code</a><ul></ul></li>
 <li><a href="#change-auipc-to-li-in-boot-code">3 Change <code>auipc</code> to <code>li</code> in Boot Code</a><ul></ul></li>
-<li><a href="#fix-the-uart-output">4 Fix the UART Output</a><ul></ul></li>
+<li><a href="#emulate-the-16550-uart-controller">4 Emulate the 16550 UART Controller</a><ul></ul></li>
 <li><a href="#fix-the-uart-interrupt">5 Fix the UART Interrupt</a><ul></ul></li>
 <li><a href="#uart-input-causes-segmentation-fault">6 UART Input causes Segmentation Fault</a><ul></ul></li>
 <li><a href="#irq-isnt-initialised">7 IRQ Isn’t Initialised</a><ul></ul></li>
@@ -192,19 +192,52 @@ static void copy_bios(...) {
   // TODO: Remove the hardcoding of 0x80200000
 </code></pre></div>
 <p>Our Emulator now boots NuttX correctly at <em>0x80200000</em>!</p>
-<h1 id="fix-the-uart-output"><a class="doc-anchor" href="#fix-the-uart-output">§</a>4 Fix the UART Output</h1>
-<p>TODO</p>
-<p>And it hangs (instead of crashing). Some progress!</p>
+<h1 id="emulate-the-16550-uart-controller"><a class="doc-anchor" href="#emulate-the-16550-uart-controller">§</a>4 Emulate the 16550 UART Controller</h1>
+<p><em>Nothing appears when we boot NuttX?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg
 TinyEMU Emulator for Sophgo SG2000 SoC
-virtio_console_init
-Patched DCACHE.IALL (Invalidate all Page Table Entries in the D-Cache) at 0x80200a28
-Patched SYNC.S (Ensure that all Cache Operations are completed) at 0x80200a2c
-Found ECALL (Start System Timer) at 0x8020b2c6
-Patched RDTIME (Read System Time) at 0x8020b2cc
-elf_len=0
-virtio_console_resize_event
+(...crickets...)
 </code></pre></div>
+<p>That’s because we haven’t emulated the <strong>16550 UART Controller</strong> in TinyEMU!</p>
+<p>To figure out what’s needed, we refer to the <strong>16550 UART Driver</strong> in NuttX: <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1602-L1671">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// To send one byte to UART Output...
+void u16550_send(struct uart_dev_s *dev, int ch) {
+  ...
+  // We write the byte to the 16550 UART Register...
+  u16550_serialout(
+    priv,             // UART Device
+    UART_THR_OFFSET,  // UART Register: Transmit Holding Register (THR)
+    ch                // Byte to be sent
+  );
+}
+
+// To check if the UART Transmit FIFO is ready...
+static bool u16550_txready(struct uart_dev_s *dev) {
+  ...
+  // We read the 16550 UART Register...
+  return ((
+    u16550_serialin(
+      priv,            // UART Device
+      UART_LSR_OFFSET  // UART Register: Line Status Register (LSR)
+    ) &amp; UART_LSR_THRE  // And check the THRE Bit (Transmit Holding Register Empty)
+  ) != 0);
+}
+</code></pre></div>
+<p>Which says that…</p>
+<ul>
+<li>
+<p><strong>UART_THR</strong>: Transmit Holding Register</p>
+<p>Will receive the byte that NuttX is transmitting</p>
+</li>
+<li>
+<p><strong>UART_LSR</strong>: Line Status Register</p>
+<p>Will be read by NuttX to check if the Transmit FIFO is Empty</p>
+</li>
+<li>
+<p><strong>UART_LSR_THRE</strong>: Transmit Holding Register Empty</p>
+<p>This is the bit in <strong>UART_LSR</strong> that will indicate whether Transmit FIFO is Empty</p>
+</li>
+</ul>
 <p>TODO</p>
 <p>We fix the UART Output Registers: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/fd6e5333ef6f89b452901d6e580d8387e9da2573">Update UART Output Register and UART Status Register</a></p>
 <p>Now we see NSH Shell yay!</p>
