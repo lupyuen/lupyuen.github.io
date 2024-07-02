@@ -71,14 +71,11 @@
 <li><a href="#emulate-the-16550-uart-controller">4 Emulate the 16550 UART Controller</a><ul></ul></li>
 <li><a href="#emulate-the-uart-output-registers">5 Emulate the UART Output Registers</a><ul></ul></li>
 <li><a href="#emulate-the-uart-input-registers">6 Emulate the UART Input Registers</a><ul></ul></li>
-<li><a href="#fix-the-uart-interrupt">7 Fix the UART Interrupt</a><ul></ul></li>
-<li><a href="#uart-input-causes-segmentation-fault">8 UART Input causes Segmentation Fault</a><ul></ul></li>
-<li><a href="#irq-isnt-initialised">9 IRQ Isn’t Initialised</a><ul></ul></li>
-<li><a href="#tinyemu-supports-only-32-irqs">10 TinyEMU Supports only 32 IRQs</a><ul></ul></li>
-<li><a href="#increase-tinyemu-irqs-from-32-to-64">11 Increase TinyEMU IRQs from 32 to 64</a><ul></ul></li>
-<li><a href="#pending-irq-loops-forever">12 Pending IRQ Loops Forever</a><ul></ul></li>
-<li><a href="#clear-the-uart-interrupt">13 Clear the UART Interrupt</a><ul></ul></li>
-<li><a href="#whats-next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jul 2024</em></p>
+<li><a href="#uart-input-triggers-segfault">7 UART Input triggers SegFault</a><ul></ul></li>
+<li><a href="#increase-tinyemu-irqs-from-32-to-64">8 Increase TinyEMU IRQs from 32 to 64</a><ul></ul></li>
+<li><a href="#pending-irq-loops-forever">9 Pending IRQ Loops Forever</a><ul></ul></li>
+<li><a href="#clear-the-uart-interrupt">10 Clear the UART Interrupt</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jul 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-title.jpg" alt="TODO" /></p>
 <p>TODO: Read the article</p>
 <p>TODO: Watch the presentation</p>
@@ -377,301 +374,26 @@ int target_read_slow(...) {
 </code></pre></div>
 <p><em>What about UART_LSR? (Line Status Register)</em></p>
 <p>Check out our earlier implementation of <a href="TODO"><strong>target_read_slow</strong></a></p>
-<p>TODO</p>
-<p>Now we see…</p>
-<div class="example-wrap"><pre class="language-bash"><code>plic_set_irq: irq_num=44, state=1
-plic_update_mip: set_mip, pending=0x80000000000, served=0x0
-plic_read: offset=0x201004
-plic_update_mip: reset_mip, pending=0x80000000000, served=0x80000000000
-plic_read: pending irq=0x2c
+<h1 id="uart-input-triggers-segfault"><a class="doc-anchor" href="#uart-input-triggers-segfault">§</a>7 UART Input triggers SegFault</h1>
+<p><em>So UART Input is all hunky dory?</em></p>
+<p>Not quite. When we press a key: TinyEMU crashes with a <strong>Segmentation Fault</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg    
 
-read UART_IIR_OFFSET
-read UART_RBR_OFFSET
-read UART_IIR_OFFSET
-
-plic_write: offset=0x201004, val=0x2c
-plic_update_mip: set_mip, pending=0x80000000000, served=0x0
-plic_read: offset=0x201004
-plic_update_mip: reset_mip, pending=0x80000000000, served=0x80000000000
-plic_read: pending irq=0x2c
-
-read UART_IIR_OFFSET
-plic_write: offset=0x201004, val=0x2c
-plic_update_mip: set_mip, pending=0x80000000000, served=0x0
-plic_read: offset=0x201004
-plic_update_mip: reset_mip, pending=0x80000000000, served=0x80000000000
-plic_read: pending irq=0x2c
-read UART_IIR_OFFSET
-</code></pre></div><h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>7 Fix the UART Interrupt</h1>
-<p>TODO</p>
-<p>When we press a key, NuttX triggers an expected interrupt…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg 
-...
 NuttShell (NSH) NuttX-12.5.1
-nsh&gt; irq_unexpected_isr: ERROR irq: 45
-_assert: Current Version: NuttX  12.5.1 218ccd843a Jun 18 2024 22:14:46 risc-v
-_assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_Task process: Kernel 0x8020110c
-up_dump_register: EPC: 000000008021432a
+nsh&gt; 
+[1] segmentation fault
 </code></pre></div>
-<p>Now we fix the UART Input and UART Interrupt. Based on the NuttX Config…</p>
+<p><em>Is the Interrupt Number for UART correct?</em></p>
+<p>Based on the <a href="TODO"><strong>NuttX Config</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_IRQ=69
 </code></pre></div>
+<p>TODO</p>
 <p>Since NuttX IRQ Offset is 25, so Actual RISC-V IRQ is 69 - 25 = 44 (as confirmed by the SG2000 Reference Manual)…</p>
 <p><a href="https://github.com/lupyuen2/sg2000-emulator/commit/643c25cada46289539e31579616e7afbf108c3ae">Set VIRTIO_IRQ to 44</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define VIRTIO_IRQ       44  // UART0 IRQ
-</code></pre></div>
-<p>But when we press a key: TinyEMU crashes with a Segmentation Fault…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg    
-...
-NuttShell (NSH) NuttX-12.5.1
-nsh&gt; [1]    94499 segmentation fault  sg2000-emulator/temu nuttx.cfg
-</code></pre></div><h1 id="uart-input-causes-segmentation-fault"><a class="doc-anchor" href="#uart-input-causes-segmentation-fault">§</a>8 UART Input causes Segmentation Fault</h1>
+<div class="example-wrap"><pre class="language-c"><code>#define VIRTIO_IRQ 44  // UART0 IRQ
+</code></pre></div><h1 id="increase-tinyemu-irqs-from-32-to-64"><a class="doc-anchor" href="#increase-tinyemu-irqs-from-32-to-64">§</a>8 Increase TinyEMU IRQs from 32 to 64</h1>
 <p>TODO</p>
-<p>We debug with <code>lldb</code> (because <code>gdb</code> is not available for macOS Arm64)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ lldb sg2000-emulator/temu nuttx.cfg 
-(lldb) target create &quot;/Users/luppy/sg2000/sg2000-emulator/temu&quot;
-Current executable set to &#39;/Users/luppy/sg2000/sg2000-emulator/temu&#39; (arm64).
-(lldb) settings set -- target.run-args  &quot;nuttx.cfg&quot;
-(lldb) r
-Process 90245 launched: &#39;/Users/luppy/sg2000/sg2000-emulator/temu&#39; (arm64)
-...
-NuttShell (NSH) NuttX-12.5.1
-Process 90245 stopped
-* thread #1, queue = &#39;com.apple.main-thread&#39;, stop reason = EXC_BAD_ACCESS (code=1, address=0x0)
-    frame #0: 0x0000000000000000
-error: memory read failed for 0x0
-Target 0: (temu) stopped.
-(lldb) bt
-* thread #1, queue = &#39;com.apple.main-thread&#39;, stop reason = EXC_BAD_ACCESS (code=1, address=0x0)
-  * frame #0: 0x0000000000000000
-    frame #1: 0x000000010000b978 temu`virt_machine_run(m=0x000000013461b2a0) at temu.c:598:17 [opt]
-    frame #2: 0x000000010000be6c temu`main(argc=&lt;unavailable&gt;, argv=&lt;unavailable&gt;) at temu.c:845:9 [opt]
-    frame #3: 0x0000000197a4e0e0 dyld`start + 2360
-(lldb) 
-</code></pre></div>
-<p>Which is at…</p>
-<div class="example-wrap"><pre class="language-c"><code>void virt_machine_run(VirtMachine *m) {
-  ...    
-  virtio_console_write_data(m-&gt;console_dev, buf, ret);
-</code></pre></div>
-<p>Why did TinyEMU crash? This doesn’t make sense, <code>m</code> is non-null!</p>
-<p>Maybe it’s already optimised? Let’s disable GCC Optimisation…</p>
-<ul>
-<li><a href="https://github.com/lupyuen2/sg2000-emulator/commit/af768df81fc349562565d638e359aca6127c9267">Disable GCC Optimisation</a></li>
-</ul>
-<p>Now it makes more sense!</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ lldb sg2000-emulator/temu nuttx.cfg 
-...
-NuttShell (NSH) NuttX-12.5.1
-Process 1595 stopped
-* thread #1, queue = &#39;com.apple.main-thread&#39;, stop reason = EXC_BAD_ACCESS (code=1, address=0x0)
-    frame #0: 0x0000000000000000
-error: memory read failed for 0x0
-Target 0: (temu) stopped.
-(lldb) bt
-* thread #1, queue = &#39;com.apple.main-thread&#39;, stop reason = EXC_BAD_ACCESS (code=1, address=0x0)
-  * frame #0: 0x0000000000000000
-    frame #1: 0x0000000100002604 temu`set_irq(irq=0x000000013a607b08, level=1) at iomem.h:145:5
-    frame #2: 0x00000001000025a4 temu`virtio_console_write_data(s=0x000000013d604080, buf=&quot;a&quot;, buf_len=1) at virtio.c:1346:5
-    frame #3: 0x000000010000fd2c temu`virt_machine_run(m=0x000000013a607680) at temu.c:598:17
-    frame #4: 0x00000001000105cc temu`main(argc=2, argv=0x000000016fdff080) at temu.c:845:9
-    frame #5: 0x0000000197a4e0e0 dyld`start + 2360
-</code></pre></div>
-<p>Which crashes here…</p>
-<div class="example-wrap"><pre class="language-c"><code>static inline void set_irq(IRQSignal *irq, int level) {
-  irq-&gt;set_irq(irq-&gt;opaque, irq-&gt;irq_num, level);
-}
-</code></pre></div>
-<p>Which means <code>irq-&gt;set_irq</code> is null! (Rightfully it should be set to <code>plic_set_irq</code>)</p>
-<h1 id="irq-isnt-initialised"><a class="doc-anchor" href="#irq-isnt-initialised">§</a>9 IRQ Isn’t Initialised</h1>
-<p>TODO</p>
-<p><em>Why is <code>irq-&gt;set_irq</code> set to null?</em></p>
-<p>We verify with an Assertion Check: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/4a8652a70ff16b85ab16108686916a75505e4ef6">irq-&gt;set_irq is null!</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.5.1
-nsh&gt; Assertion failed: (irq-&gt;set_irq != NULL), function set_irq, file iomem.h, line 145.
-Process 15262 stopped
-* thread #1, queue = &#39;com.apple.main-thread&#39;, stop reason = hit program assert
-    frame #4: 0x000000010000249c temu`set_irq(irq=0x000000014271a478, level=1) at iomem.h:145:5
-   142 
-   143  static inline void set_irq(IRQSignal *irq, int level)
-   144  {
--&gt; 145      assert(irq-&gt;set_irq != NULL); //// TODO
-   146      irq-&gt;set_irq(irq-&gt;opaque, irq-&gt;irq_num, level);
-   147  }
-   148 
-Target 0: (temu) stopped.
-(lldb) bt
-* thread #1, queue = &#39;com.apple.main-thread&#39;, stop reason = hit program assert
-    frame #0: 0x0000000197d9ea60 libsystem_kernel.dylib`__pthread_kill + 8
-    frame #1: 0x0000000197dd6c20 libsystem_pthread.dylib`pthread_kill + 288
-    frame #2: 0x0000000197ce3a30 libsystem_c.dylib`abort + 180
-    frame #3: 0x0000000197ce2d20 libsystem_c.dylib`__assert_rtn + 284
-  * frame #4: 0x000000010000249c temu`set_irq(irq=0x000000014271a478, level=1) at iomem.h:145:5
-    frame #5: 0x0000000100002418 temu`virtio_console_write_data(s=0x0000000142719980, buf=&quot;a\xc0\xedE&quot;, buf_len=1) at virtio.c:1346:5
-    frame #6: 0x000000010000fc30 temu`virt_machine_run(m=0x0000000142719ff0) at temu.c:598:17
-    frame #7: 0x00000001000104d0 temu`main(argc=2, argv=0x000000016fdff080) at temu.c:845:9
-    frame #8: 0x0000000197a4e0e0 dyld`start + 2360
-</code></pre></div>
-<p>We <a href="https://lldb.llvm.org/use/map.html">inspect the variables</a> in LLDB…</p>
-<div class="example-wrap"><pre class="language-bash"><code>frame #4: 0x000000010000249c temu`set_irq(irq=0x000000014271a478, level=1) at iomem.h:145:5
-   142 
-   143  static inline void set_irq(IRQSignal *irq, int level)
-   144  {
--&gt; 145      assert(irq-&gt;set_irq != NULL); //// TODO
-   146      irq-&gt;set_irq(irq-&gt;opaque, irq-&gt;irq_num, level);
-   147  }
-   148 
-(lldb) frame variable
-(IRQSignal *) irq = 0x000000014271a478
-(int) level = 1
-(lldb) p *irq
-(IRQSignal) {
-  set_irq = 0x0000000000000000
-  opaque = 0x0000000000000000
-  irq_num = 0
-}
-</code></pre></div>
-<p><code>irq</code> is all empty! Where does <code>irq</code> come from? We step up the Call Stack…</p>
-<div class="example-wrap"><pre class="language-bash"><code>(lldb) up
-frame #5: 0x0000000100002418 temu`virtio_console_write_data(s=0x0000000142719980, buf=&quot;a\xc0\xedE&quot;, buf_len=1) at virtio.c:1346:5
-   1343     _info(&quot;[%c]\n&quot;, buf[0]); ////
-   1344     set_input(buf[0]);
-   1345     s-&gt;int_status |= 1;
--&gt; 1346     set_irq(s-&gt;irq, 1);
-   1347
-   1348 #ifdef NOTUSED
-   1349     int queue_idx = 0;
-(lldb) frame variable
-(VIRTIODevice *) s = 0x0000000142719980
-(const uint8_t *) buf = 0x000000016fdfeae8 &quot;a\xc0\xedE&quot;
-(int) buf_len = 1
-
-(lldb) p *s
-(VIRTIODevice) {
-  mem_map = 0x000000014380fc00
-  mem_range = 0x000000014380fe60
-  pci_dev = NULL
-  irq = 0x000000014271a478
-  get_ram_ptr = 0x00000001000065dc (temu`virtio_mmio_get_ram_ptr at virtio.c:193)
-  debug = 0
-  int_status = 1
-  status = 0
-  device_features_sel = 0
-  queue_sel = 0
-  queue = {
-    [0] = {
-      ready = 0
-      num = 16
-      last_avail_idx = 0
-      desc_addr = 0
-      avail_addr = 0
-      used_addr = 0
-      manual_recv = YES
-    }
-    [1] = {
-      ready = 0
-      num = 16
-      last_avail_idx = 0
-      desc_addr = 0
-      avail_addr = 0
-      used_addr = 0
-      manual_recv = NO
-    }
-    [2] = {
-      ready = 0
-      num = 16
-      last_avail_idx = 0
-      desc_addr = 0
-      avail_addr = 0
-      used_addr = 0
-      manual_recv = NO
-    }
-    [3] = {
-      ready = 0
-      num = 16
-      last_avail_idx = 0
-      desc_addr = 0
-      avail_addr = 0
-      used_addr = 0
-      manual_recv = NO
-    }
-    [4] = {
-      ready = 0
-      num = 16
-      last_avail_idx = 0
-      desc_addr = 0
-      avail_addr = 0
-      used_addr = 0
-      manual_recv = NO
-    }
-    [5] = {
-      ready = 0
-      num = 16
-      last_avail_idx = 0
-      desc_addr = 0
-      avail_addr = 0
-      used_addr = 0
-      manual_recv = NO
-    }
-    [6] = {
-      ready = 0
-      num = 16
-      last_avail_idx = 0
-      desc_addr = 0
-      avail_addr = 0
-      used_addr = 0
-      manual_recv = NO
-    }
-    [7] = {
-      ready = 0
-      num = 16
-      last_avail_idx = 0
-      desc_addr = 0
-      avail_addr = 0
-      used_addr = 0
-      manual_recv = NO
-    }
-  }
-  device_id = 3
-  vendor_id = 65535
-  device_features = 1
-  device_recv = 0x00000001000025cc (temu`virtio_console_recv_request at virtio.c:1278)
-  config_write = 0x0000000000000000
-  config_space_size = 4
-  config_space = &quot;P\0\U00000019&quot;
-}
-</code></pre></div>
-<p>This says that <code>s</code> is a <code>virtio_console</code>.</p>
-<h1 id="tinyemu-supports-only-32-irqs"><a class="doc-anchor" href="#tinyemu-supports-only-32-irqs">§</a>10 TinyEMU Supports only 32 IRQs</h1>
-<p>TODO</p>
-<p>Why is <code>s-&gt;irq</code> empty? We step up the Call Stack…</p>
-<div class="example-wrap"><pre class="language-bash"><code>(lldb) up
-frame #6: 0x000000010000fc30 temu`virt_machine_run(m=0x0000000142719ff0) at temu.c:598:17
-   595              len = min_int(len, sizeof(buf));
-   596              ret = m-&gt;console-&gt;read_data(m-&gt;console-&gt;opaque, buf, len);
-   597              if (ret &gt; 0) {
--&gt; 598                  virtio_console_write_data(m-&gt;console_dev, buf, ret);
-   599              }
-   600          }
-   601  #endif
-(lldb) p *m
-(VirtMachine) {
-  vmc = 0x0000000100080620
-  net = NULL
-  console_dev = 0x0000000142719980
-  console = 0x0000000142719510
-  fb_dev = NULL
-}
-</code></pre></div>
-<p><code>s-&gt;irq</code> comes from <code>m-&gt;console_dev</code>.</p>
-<p><em>Why is <code>console_dev</code> not properly inited?</em></p>
-<p>From earlier: UART0 is at RISC-V IRQ 44. But we discover that TinyEMU supports only 32 IRQs!</p>
-<div class="example-wrap"><pre class="language-c"><code>static VirtMachine *riscv_machine_init(const VirtMachineParams *p) {
-  for(i = 1; i &lt; 32; i++) {
-    irq_init(&amp;s-&gt;plic_irq[i], plic_set_irq, s, i);
-  }
-</code></pre></div><h1 id="increase-tinyemu-irqs-from-32-to-64"><a class="doc-anchor" href="#increase-tinyemu-irqs-from-32-to-64">§</a>11 Increase TinyEMU IRQs from 32 to 64</h1>
-<p>TODO</p>
+<p>After <a href="TODO"><strong>lots of headscratching</strong></a></p>
 <p>So we increase the IRQs from 32 to 256: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/c6ce6bdbbdaf7585ce18f77b2b2f25a2317914be">Increase the IRQs from 32 to 256</a></p>
 <p>(256 IRQs is too many, as we shall soon see)</p>
 <p>Now we see something different when we press a key!</p>
@@ -712,7 +434,7 @@ plic_read: offset=0x201004
 plic_update_mip: reset_mip, pending=0x80000000000, served=0x80000000000
 plic_read: pending irq=0x2c
 plic_write: offset=0x201004, val=0x2c
-</code></pre></div><h1 id="pending-irq-loops-forever"><a class="doc-anchor" href="#pending-irq-loops-forever">§</a>12 Pending IRQ Loops Forever</h1>
+</code></pre></div><h1 id="pending-irq-loops-forever"><a class="doc-anchor" href="#pending-irq-loops-forever">§</a>9 Pending IRQ Loops Forever</h1>
 <p>TODO</p>
 <p><em>Why does Pending IRQ loop forever? Maybe because we haven’t cleared the UART Interrupt?</em></p>
 <p>To find out why, we trace the reads and writes to UART Registers: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/1f4b79bc9d276e1ca6371e60d0c9d25a53f7fa80">Log the invalid memory accesses</a></p>
@@ -772,7 +494,7 @@ target_read_slow: invalid physical address 0x0000000004140018
 #define UART_DLM_OFFSET        (CONFIG_16550_REGINCR*UART_IER_INCR)
 </code></pre></div>
 <p>TODO: Check the NuttX 16550 UART Driver for UART_DLM_OFFSET and UART_DLM_OFFSET</p>
-<h1 id="clear-the-uart-interrupt"><a class="doc-anchor" href="#clear-the-uart-interrupt">§</a>13 Clear the UART Interrupt</h1>
+<h1 id="clear-the-uart-interrupt"><a class="doc-anchor" href="#clear-the-uart-interrupt">§</a>10 Clear the UART Interrupt</h1>
 <p>TODO</p>
 <p><em>Why is pending IRQ looping forever?</em></p>
 <p>That’s because we forgot to clear the UART Interrupt duh!</p>
@@ -800,7 +522,7 @@ nsh&gt;
 <p>Yeah probably because SG2000 runs on <a href="https://github.com/lupyuen2/wip-nuttx/commit/bb4906c976e44a05237f91944844cd1c68ef5d5b">MTIMER_FREQ of 25000000</a>.</p>
 <p>When we execute <code>sleep 10</code>, it completes in 25 seconds. We might need to adjust the TinyEMU System Timer.</p>
 <p>(CPU-bound operations like <code>getprime</code> won’t have this timing delay)</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO: GPIO</p>
 <p>TODO: SoC Makers please provide an Emulator!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
