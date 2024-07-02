@@ -430,7 +430,25 @@ nsh&gt;
 <p>(CPU-bound operations like <code>getprime</code> won’t have this timing delay)</p>
 <h1 id="emulate-the-sg2000-peripherals"><a class="doc-anchor" href="#emulate-the-sg2000-peripherals">§</a>9 Emulate the SG2000 Peripherals</h1>
 <p>TODO: GPIO</p>
-<h1 id="daily-automated-testing"><a class="doc-anchor" href="#daily-automated-testing">§</a>10 Daily Automated Testing</h1>
+<p>Based on the <a href="TODO"><strong>SG2000 Reference Manual</strong></a>: We will probably do this…</p>
+<p><a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_cpu.c#L551-L562">riscv_cpu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// GPIO0 0x03020000
+// GPIO_SWPORTA_DR 0x000 Port A data register
+// XGPIOA[1] is Bit 1
+
+  // TODO: GPIO Output: Send an Emulator Notification to the Console: {&quot;nuttxemu&quot;:{&quot;gpio29&quot;:1}}
+  case 0x20000938: {  // GPIO 29
+      // Check if the Output Bit is Off or On
+      #define reg_gpio_xx_o 24
+      #define reg_gpio_xx_i 28
+      const char b =
+          ((val &amp; (1 &lt;&lt; reg_gpio_xx_o)) == 0)
+          ? &#39;0&#39; : &#39;1&#39;;
+      char notify[] = &quot;{\&quot;nuttxemu\&quot;:{\&quot;gpio29\&quot;:0}}\r\n&quot;;
+      notify[strlen(notify) - 5] = b;
+      print_console(NULL, notify, strlen(notify));
+  }
+</code></pre></div><h1 id="daily-automated-testing"><a class="doc-anchor" href="#daily-automated-testing">§</a>10 Daily Automated Testing</h1>
 <p>TODO: Real SBC</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO: SoC Makers please provide an Emulator!</p>
