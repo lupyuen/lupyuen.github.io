@@ -70,15 +70,16 @@
 <li><a href="#change-auipc-to-li-in-boot-code">3 Change <code>auipc</code> to <code>li</code> in Boot Code</a><ul></ul></li>
 <li><a href="#emulate-the-16550-uart-controller">4 Emulate the 16550 UART Controller</a><ul></ul></li>
 <li><a href="#emulate-the-uart-output-registers">5 Emulate the UART Output Registers</a><ul></ul></li>
-<li><a href="#emulate-the-uart-input-registers">6 Emulate the UART Input Registers</a><ul></ul></li>
-<li><a href="#fix-the-uart-interrupt">7 Fix the UART Interrupt</a><ul></ul></li>
-<li><a href="#uart-input-causes-segmentation-fault">8 UART Input causes Segmentation Fault</a><ul></ul></li>
-<li><a href="#irq-isnt-initialised">9 IRQ Isn’t Initialised</a><ul></ul></li>
-<li><a href="#tinyemu-supports-only-32-irqs">10 TinyEMU Supports only 32 IRQs</a><ul></ul></li>
-<li><a href="#increase-tinyemu-irqs-from-32-to-64">11 Increase TinyEMU IRQs from 32 to 64</a><ul></ul></li>
-<li><a href="#pending-irq-loops-forever">12 Pending IRQ Loops Forever</a><ul></ul></li>
-<li><a href="#clear-the-uart-interrupt">13 Clear the UART Interrupt</a><ul></ul></li>
-<li><a href="#whats-next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jul 2024</em></p>
+<li><a href="#fix-the-uart-input">6 Fix the UART Input</a><ul></ul></li>
+<li><a href="#emulate-the-uart-input-registers">7 Emulate the UART Input Registers</a><ul></ul></li>
+<li><a href="#fix-the-uart-interrupt">8 Fix the UART Interrupt</a><ul></ul></li>
+<li><a href="#uart-input-causes-segmentation-fault">9 UART Input causes Segmentation Fault</a><ul></ul></li>
+<li><a href="#irq-isnt-initialised">10 IRQ Isn’t Initialised</a><ul></ul></li>
+<li><a href="#tinyemu-supports-only-32-irqs">11 TinyEMU Supports only 32 IRQs</a><ul></ul></li>
+<li><a href="#increase-tinyemu-irqs-from-32-to-64">12 Increase TinyEMU IRQs from 32 to 64</a><ul></ul></li>
+<li><a href="#pending-irq-loops-forever">13 Pending IRQ Loops Forever</a><ul></ul></li>
+<li><a href="#clear-the-uart-interrupt">14 Clear the UART Interrupt</a><ul></ul></li>
+<li><a href="#whats-next">15 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jul 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-title.jpg" alt="TODO" /></p>
 <p>TODO: Read the article</p>
 <p>TODO: Watch the presentation</p>
@@ -291,10 +292,11 @@ NuttShell (NSH) NuttX-12.5.1
 nsh&gt;
 </code></pre></div>
 <p>Next we fix the UART Input…</p>
-<h1 id="emulate-the-uart-input-registers"><a class="doc-anchor" href="#emulate-the-uart-input-registers">§</a>6 Emulate the UART Input Registers</h1>
+<h1 id="fix-the-uart-input"><a class="doc-anchor" href="#fix-the-uart-input">§</a>6 Fix the UART Input</h1>
 <p>TODO</p>
 <p><em>How does the NuttX 16550 UART Driver use UART_IIR_OFFSET and UART_MSR_OFFSET?</em></p>
-<p>The NuttX 16550 UART Driver reads UART_IIR_OFFSET and UART_MSR_OFFSET to handle UART Interrupts: <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L979-L1082">uart_16550.c</a></p>
+<p>The NuttX 16550 UART Driver reads UART_IIR_OFFSET and UART_MSR_OFFSET to handle UART Interrupts: </p>
+<p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L979-L1282">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX Interrupt Handler for 16550 UART
 int u16550_interrupt(int irq, FAR void *context, FAR void *arg) {
   ...
@@ -315,21 +317,39 @@ int u16550_interrupt(int irq, FAR void *context, FAR void *arg) {
       case UART_IIR_INTID_RDA:
         uart_recvchars(dev);
         break;
+  ...
+}
+
+// Receive one character from UART.
+// Called by the above Interrupt Handler.
+int u16550_receive(struct uart_dev_s *dev, unsigned int *status) {
+  ...
+  // Return the Line Status and Receive Buffer
+  *status = u16550_serialin(priv, UART_LSR_OFFSET);
+  rbr     = u16550_serialin(priv, UART_RBR_OFFSET);
+  return rbr;
+}
 </code></pre></div>
-<p>Thus we need to emulate the UART Interrupt. To Receive Data…</p>
+<p>Which says that…</p>
 <ul>
 <li>
-<p>UART Register UART_IIR: Should return UART_IIR_INTID_RDA (data available)</p>
-<p>Then it should return UART_IIR_INTSTATUS (no more data)</p>
+<p><strong>UART_IIR</strong>: Interrupt ID Register</p>
+<p>Should return <strong>INTID_RDA</strong> (data available)</p>
+<p>Followed by <strong>IIR_INTSTATUS</strong> (no more data)</p>
 </li>
 <li>
-<p>UART Register UART_LSR: Should return UART_LSR_DR (data available)</p>
-<p>Then it should return 0 (no more data)</p>
+<p><strong>UART_LSR</strong>: Line Status Register</p>
+<p>Should return <strong>LSR_DR</strong> (data available)</p>
+<p>Followed by 0 (no more data)</p>
 </li>
 <li>
-<p>UART Register UART_RBR: Should return the input data</p>
+<p><strong>UART_RBR</strong>: Receiver Buffer Register</p>
+<p>Should return the UART Input Data</p>
 </li>
 </ul>
+<p>TODO</p>
+<h1 id="emulate-the-uart-input-registers"><a class="doc-anchor" href="#emulate-the-uart-input-registers">§</a>7 Emulate the UART Input Registers</h1>
+<p>TODO</p>
 <p>We emulate the UART Interrupt like this: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/ce3562e4d7efe53b52a1b945850f08d93630d4d2">Emulate UART Interrupt: UART_LSR, UART_IIR, UART_RBR</a></p>
 <p>Now we see…</p>
 <div class="example-wrap"><pre class="language-bash"><code>plic_set_irq: irq_num=44, state=1
@@ -355,7 +375,7 @@ plic_read: offset=0x201004
 plic_update_mip: reset_mip, pending=0x80000000000, served=0x80000000000
 plic_read: pending irq=0x2c
 read UART_IIR_OFFSET
-</code></pre></div><h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>7 Fix the UART Interrupt</h1>
+</code></pre></div><h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>8 Fix the UART Interrupt</h1>
 <p>TODO</p>
 <p>When we press a key, NuttX triggers an expected interrupt…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg 
@@ -378,7 +398,7 @@ up_dump_register: EPC: 000000008021432a
 ...
 NuttShell (NSH) NuttX-12.5.1
 nsh&gt; [1]    94499 segmentation fault  sg2000-emulator/temu nuttx.cfg
-</code></pre></div><h1 id="uart-input-causes-segmentation-fault"><a class="doc-anchor" href="#uart-input-causes-segmentation-fault">§</a>8 UART Input causes Segmentation Fault</h1>
+</code></pre></div><h1 id="uart-input-causes-segmentation-fault"><a class="doc-anchor" href="#uart-input-causes-segmentation-fault">§</a>9 UART Input causes Segmentation Fault</h1>
 <p>TODO</p>
 <p>We debug with <code>lldb</code> (because <code>gdb</code> is not available for macOS Arm64)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ lldb sg2000-emulator/temu nuttx.cfg 
@@ -436,7 +456,7 @@ Target 0: (temu) stopped.
 }
 </code></pre></div>
 <p>Which means <code>irq-&gt;set_irq</code> is null! (Rightfully it should be set to <code>plic_set_irq</code>)</p>
-<h1 id="irq-isnt-initialised"><a class="doc-anchor" href="#irq-isnt-initialised">§</a>9 IRQ Isn’t Initialised</h1>
+<h1 id="irq-isnt-initialised"><a class="doc-anchor" href="#irq-isnt-initialised">§</a>10 IRQ Isn’t Initialised</h1>
 <p>TODO</p>
 <p><em>Why is <code>irq-&gt;set_irq</code> set to null?</em></p>
 <p>We verify with an Assertion Check: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/4a8652a70ff16b85ab16108686916a75505e4ef6">irq-&gt;set_irq is null!</a></p>
@@ -595,7 +615,7 @@ frame #5: 0x0000000100002418 temu`virtio_console_write_data(s=0x0000000142719980
 }
 </code></pre></div>
 <p>This says that <code>s</code> is a <code>virtio_console</code>.</p>
-<h1 id="tinyemu-supports-only-32-irqs"><a class="doc-anchor" href="#tinyemu-supports-only-32-irqs">§</a>10 TinyEMU Supports only 32 IRQs</h1>
+<h1 id="tinyemu-supports-only-32-irqs"><a class="doc-anchor" href="#tinyemu-supports-only-32-irqs">§</a>11 TinyEMU Supports only 32 IRQs</h1>
 <p>TODO</p>
 <p>Why is <code>s-&gt;irq</code> empty? We step up the Call Stack…</p>
 <div class="example-wrap"><pre class="language-bash"><code>(lldb) up
@@ -623,7 +643,7 @@ frame #6: 0x000000010000fc30 temu`virt_machine_run(m=0x0000000142719ff0) at temu
   for(i = 1; i &lt; 32; i++) {
     irq_init(&amp;s-&gt;plic_irq[i], plic_set_irq, s, i);
   }
-</code></pre></div><h1 id="increase-tinyemu-irqs-from-32-to-64"><a class="doc-anchor" href="#increase-tinyemu-irqs-from-32-to-64">§</a>11 Increase TinyEMU IRQs from 32 to 64</h1>
+</code></pre></div><h1 id="increase-tinyemu-irqs-from-32-to-64"><a class="doc-anchor" href="#increase-tinyemu-irqs-from-32-to-64">§</a>12 Increase TinyEMU IRQs from 32 to 64</h1>
 <p>TODO</p>
 <p>So we increase the IRQs from 32 to 256: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/c6ce6bdbbdaf7585ce18f77b2b2f25a2317914be">Increase the IRQs from 32 to 256</a></p>
 <p>(256 IRQs is too many, as we shall soon see)</p>
@@ -665,7 +685,7 @@ plic_read: offset=0x201004
 plic_update_mip: reset_mip, pending=0x80000000000, served=0x80000000000
 plic_read: pending irq=0x2c
 plic_write: offset=0x201004, val=0x2c
-</code></pre></div><h1 id="pending-irq-loops-forever"><a class="doc-anchor" href="#pending-irq-loops-forever">§</a>12 Pending IRQ Loops Forever</h1>
+</code></pre></div><h1 id="pending-irq-loops-forever"><a class="doc-anchor" href="#pending-irq-loops-forever">§</a>13 Pending IRQ Loops Forever</h1>
 <p>TODO</p>
 <p><em>Why does Pending IRQ loop forever? Maybe because we haven’t cleared the UART Interrupt?</em></p>
 <p>To find out why, we trace the reads and writes to UART Registers: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/1f4b79bc9d276e1ca6371e60d0c9d25a53f7fa80">Log the invalid memory accesses</a></p>
@@ -725,7 +745,7 @@ target_read_slow: invalid physical address 0x0000000004140018
 #define UART_DLM_OFFSET        (CONFIG_16550_REGINCR*UART_IER_INCR)
 </code></pre></div>
 <p>TODO: Check the NuttX 16550 UART Driver for UART_DLM_OFFSET and UART_DLM_OFFSET</p>
-<h1 id="clear-the-uart-interrupt"><a class="doc-anchor" href="#clear-the-uart-interrupt">§</a>13 Clear the UART Interrupt</h1>
+<h1 id="clear-the-uart-interrupt"><a class="doc-anchor" href="#clear-the-uart-interrupt">§</a>14 Clear the UART Interrupt</h1>
 <p>TODO</p>
 <p><em>Why is pending IRQ looping forever?</em></p>
 <p>That’s because we forgot to clear the UART Interrupt duh!</p>
@@ -753,7 +773,7 @@ nsh&gt;
 <p>Yeah probably because SG2000 runs on <a href="https://github.com/lupyuen2/wip-nuttx/commit/bb4906c976e44a05237f91944844cd1c68ef5d5b">MTIMER_FREQ of 25000000</a>.</p>
 <p>When we execute <code>sleep 10</code>, it completes in 25 seconds. We might need to adjust the TinyEMU System Timer.</p>
 <p>(CPU-bound operations like <code>getprime</code> won’t have this timing delay)</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>15 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
