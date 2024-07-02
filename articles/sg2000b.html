@@ -295,44 +295,26 @@ nsh&gt;
 <p>TODO</p>
 <p><em>How does the NuttX 16550 UART Driver use UART_IIR_OFFSET and UART_MSR_OFFSET?</em></p>
 <p>The NuttX 16550 UART Driver reads UART_IIR_OFFSET and UART_MSR_OFFSET to handle UART Interrupts: <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L979-L1082">uart_16550.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static int u16550_interrupt(int irq, FAR void *context, FAR void *arg) {
+<div class="example-wrap"><pre class="language-c"><code>// NuttX Interrupt Handler for 16550 UART
+int u16550_interrupt(int irq, FAR void *context, FAR void *arg) {
   ...
-  /* Loop until there are no characters to be transferred or,
-   * until we have been looping for a long time.
-   */
+  // Loop until no characters to be transferred
+  for (passes = 0; passes &lt; 256; passes++) {
 
-  for (passes = 0; passes &lt; 256; passes++)
-    {
-      /* Get the current UART status and check for loop
-       * termination conditions
-       */
+    // Get the current UART Status
+    status = u16550_serialin(priv, UART_IIR_OFFSET);
 
-      status = u16550_serialin(priv, UART_IIR_OFFSET);
+    // If no Pending Interrupts, exit
+    if ((status &amp; UART_IIR_INTSTATUS) != 0) { break; }
 
-      /* The UART_IIR_INTSTATUS bit should be zero if there are pending
-       * interrupts
-       */
+    // Handle the UART Interrupt
+    switch (status &amp; UART_IIR_INTID_MASK) {
 
-      if ((status &amp; UART_IIR_INTSTATUS) != 0)
-        {
-          /* Break out of the loop when there is no longer a
-           * pending interrupt
-           */
-
-          break;
-        }
-
-      /* Handle the interrupt by its interrupt ID field */
-
-      switch (status &amp; UART_IIR_INTID_MASK)
-        {
-          /* Handle incoming, receive bytes (with or without timeout) */
-
-          case UART_IIR_INTID_RDA:
-            {
-              uart_recvchars(dev);
-              break;
-            }
+      // If UART Input is available,
+      // receive the Input Data
+      case UART_IIR_INTID_RDA:
+        uart_recvchars(dev);
+        break;
 </code></pre></div>
 <p>Thus we need to emulate the UART Interrupt. To Receive Data…</p>
 <ul>
