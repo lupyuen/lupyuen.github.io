@@ -69,8 +69,8 @@
 <li><a href="#auipc-overflow-in-boot-code">2 <code>auipc</code> Overflow in Boot Code</a><ul></ul></li>
 <li><a href="#change-auipc-to-li-in-boot-code">3 Change <code>auipc</code> to <code>li</code> in Boot Code</a><ul></ul></li>
 <li><a href="#emulate-the-16550-uart-controller">4 Emulate the 16550 UART Controller</a><ul></ul></li>
-<li><a href="#16550-registers-for-uart-output">5 16550 Registers for UART Output</a><ul></ul></li>
-<li><a href="#16550-registers-for-uart-input">6 16550 Registers for UART Input</a><ul></ul></li>
+<li><a href="#emulate-the-uart-output-registers">5 Emulate the UART Output Registers</a><ul></ul></li>
+<li><a href="#emulate-the-uart-input-registers">6 Emulate the UART Input Registers</a><ul></ul></li>
 <li><a href="#fix-the-uart-interrupt">7 Fix the UART Interrupt</a><ul></ul></li>
 <li><a href="#uart-input-causes-segmentation-fault">8 UART Input causes Segmentation Fault</a><ul></ul></li>
 <li><a href="#irq-isnt-initialised">9 IRQ Isn’t Initialised</a><ul></ul></li>
@@ -242,7 +242,7 @@ bool u16550_txready(struct uart_dev_s *dev) {
 </li>
 </ul>
 <p>Let’s emulate the above in TinyEMU…</p>
-<h1 id="16550-registers-for-uart-output"><a class="doc-anchor" href="#16550-registers-for-uart-output">§</a>5 16550 Registers for UART Output</h1>
+<h1 id="emulate-the-uart-output-registers"><a class="doc-anchor" href="#emulate-the-uart-output-registers">§</a>5 Emulate the UART Output Registers</h1>
 <p><em>How will we emulate the 16550 UART Registers in TinyEMU?</em></p>
 <p>When TinyEMU needs to Read or Write a Memory Address, it will call the functions below.</p>
 <p>This is how we <strong>Intercept the Memory Writes</strong> to emulate the <strong>UART Output Register</strong> (Transmit Holding): <a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_cpu.c#L536-L550">riscv_cpu.c</a></p>
@@ -291,7 +291,7 @@ NuttShell (NSH) NuttX-12.5.1
 nsh&gt;
 </code></pre></div>
 <p>Next we fix the UART Input…</p>
-<h1 id="16550-registers-for-uart-input"><a class="doc-anchor" href="#16550-registers-for-uart-input">§</a>6 16550 Registers for UART Input</h1>
+<h1 id="emulate-the-uart-input-registers"><a class="doc-anchor" href="#emulate-the-uart-input-registers">§</a>6 Emulate the UART Input Registers</h1>
 <p>TODO</p>
 <p><em>How does the NuttX 16550 UART Driver use UART_IIR_OFFSET and UART_MSR_OFFSET?</em></p>
 <p>The NuttX 16550 UART Driver reads UART_IIR_OFFSET and UART_MSR_OFFSET to handle UART Interrupts: <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L979-L1082">uart_16550.c</a></p>
