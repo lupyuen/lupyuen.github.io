@@ -350,6 +350,37 @@ int u16550_receive(struct uart_dev_s *dev, unsigned int *status) {
 <p>TODO</p>
 <h1 id="emulate-the-uart-input-registers"><a class="doc-anchor" href="#emulate-the-uart-input-registers">§</a>7 Emulate the UART Input Registers</h1>
 <p>TODO</p>
+<p>https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_cpu.c#L421-L444</p>
+<div class="example-wrap"><pre class="language-c"><code>// TinyEMU calls this function to execute Memory Reads
+int target_read_slow(...) {
+  ...
+  // If TinyEMU is reading from this address...
+  switch(paddr) {
+
+    // Address is UART Interrupt ID Register
+    case UART0_BASE_ADDR + UART_IIR_OFFSET:
+
+      // If the Input Buffer is Empty:
+      // Then Receive Data is NOT Available
+      if (read_input() == 0) {
+          ret = UART_IIR_INTSTATUS;
+      } else {
+          // Otherwise Receive Data is Available
+          ret = UART_IIR_INTID_RDA;
+      }
+      break;
+
+    // Address is UART Receive Buffer Register
+    case UART0_BASE_ADDR + UART_RBR_OFFSET:
+
+      // Return the Input Buffer
+      ret = read_input();
+
+      // Clear the Input Buffer and UART Interrupt
+      set_input(0);
+      virtio_ack_irq(NULL);
+      break;
+</code></pre></div>
 <p>We emulate the UART Interrupt like this: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/ce3562e4d7efe53b52a1b945850f08d93630d4d2">Emulate UART Interrupt: UART_LSR, UART_IIR, UART_RBR</a></p>
 <p>Now we see…</p>
 <div class="example-wrap"><pre class="language-bash"><code>plic_set_irq: irq_num=44, state=1
