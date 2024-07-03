@@ -431,10 +431,11 @@ CONFIG_16550_UART0_IRQ=69
 <div class="example-wrap"><pre class="language-c"><code>#define VIRTIO_IRQ 44  // UART0 IRQ
 </code></pre></div></li>
 </ul>
-<p>Something sinister is wrecking our rojak…</p>
+<p>Something seriously sinister is wrecking our rojak…</p>
 <p>TODO: Pic of TinyEMU IRQs</p>
 <h1 id="increase-tinyemu-irqs-from-32-to-64"><a class="doc-anchor" href="#increase-tinyemu-irqs-from-32-to-64">§</a>8 Increase TinyEMU IRQs from 32 to 64</h1>
 <p>After <a href="TODO"><strong>lots of headscratching</strong></a>: We discover that TinyEMU supports only <strong>32 RISC-V External Interrupts</strong>… Which is too few for our UART Controller! (IRQ 44)</p>
+<p>TODO: 32 IRQs in TinyEMU</p>
 <p>So we increase the TinyEMU IRQs from 32 to 64…</p>
 <ul>
 <li>
