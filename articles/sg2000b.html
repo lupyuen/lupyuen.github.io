@@ -387,8 +387,9 @@ int target_read_slow(...) {
       virtio_ack_irq(NULL);
       break;
 </code></pre></div>
+<p><a href="TODO">(<strong>virtio_ack_irq</strong> is here)</a></p>
 <p><em>What about UART_LSR? (Line Status Register)</em></p>
-<p>Check out our earlier implementation of <a href="TODO"><strong>target_read_slow</strong></a></p>
+<p>Check out our earlier implementation of <a href="TODO"><strong>target_read_slow</strong></a>.</p>
 <h1 id="uart-input-triggers-segfault"><a class="doc-anchor" href="#uart-input-triggers-segfault">§</a>7 UART Input triggers SegFault</h1>
 <p><em>So UART Input is all hunky dory?</em></p>
 <p>Not quite. When we press a key: TinyEMU crashes with a <strong>Segmentation Fault</strong>…</p>
