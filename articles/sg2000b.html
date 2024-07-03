@@ -458,6 +458,7 @@ int target_write_slow(...) {
     case 0x03020000: 
 
       // Check if GPIOA1 is Off or On (Bit 1)
+      // `val` is the value written by NuttX to 0x03020000
       const uint8_t gpio = 1;
       const uint32_t mask = (1 &lt;&lt; gpio);
       const char b =
@@ -474,7 +475,68 @@ int target_write_slow(...) {
 <p><strong><code>nuttxemu</code></strong> will be printed on the TinyEMU Console to notify the caller that GPIOA1 is set to On or Off.</p>
 <p>When we run TinyEMU in a Web Browser (via WebAssembly), our Web Browser can intercept this notification and visualise a <a href="TODO"><strong>Simulated LED on GPIOA1</strong></a>.</p>
 <h1 id="daily-automated-testing"><a class="doc-anchor" href="#daily-automated-testing">§</a>10 Daily Automated Testing</h1>
-<p>TODO: Real SBC</p>
+<p><em>Why are we doing all this?</em></p>
+<ol>
+<li>
+<p>SG2000 Emulator will be helpful for testing <strong>NuttX Drivers and App</strong>, without a Real SBC</p>
+</li>
+<li>
+<p>We’re running SG2000 Emulator for <strong>Daily Automated Testing</strong> at GitHub Actions: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000-test.yml">sg2000-test.yml</a></p>
+</li>
+</ol>
+<div class="example-wrap"><pre class="language-bash"><code>## Checkout the Source Files
+git clone https://github.com/lupyuen2/sg2000-emulator
+
+## Build the SG2000 Emulator
+cd sg2000-emulator
+make
+cp temu ..
+
+## Download the NuttX Daily Build and Test Script
+wget https://github.com/lupyuen/nuttx-sg2000/releases/download/nuttx-sg2000-$date/Image
+wget https://github.com/lupyuen/nuttx-sg2000/releases/download/nuttx-sg2000-$date/nuttx.hash
+wget https://github.com/lupyuen/nuttx-sg2000/raw/main/nuttx.cfg
+wget https://github.com/lupyuen/nuttx-sg2000/raw/main/nuttx.exp
+
+## Run the NuttX Test
+chmod +x nuttx.exp
+./nuttx.exp
+</code></pre></div>
+<p>Which calls this <strong>Expect Script</strong> to execute <strong>OSTest</strong> (and validate everything in NuttX): <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/nuttx.exp">nuttx.exp</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
+## Expect Script for Testing NuttX with SG2000 Emulator
+
+## Wait at most 300 seconds
+set timeout 300
+
+## For every 1 character sent, wait 0.01 milliseconds
+set send_slow {1 0.01}
+
+## Start the SG2000 Emulator
+spawn ./temu nuttx.cfg
+
+## Wait for the prompt and enter `uname -a`
+expect &quot;nsh&gt; &quot;
+send -s &quot;uname -a\r&quot;
+
+## Wait for the prompt and enter `ostest`
+expect &quot;nsh&gt; &quot;
+send -s &quot;ostest\r&quot;
+
+## Check the response...
+expect {
+  ## If we see this message, exit normally
+  &quot;ostest_main: Exiting with status 0&quot; { exit 0 }
+
+  ## If timeout, exit with an error
+  timeout { exit 1 }
+}
+</code></pre></div>
+<p><em>Isn’t it safer to run Daily Tests on a Real SG2000 SBC?</em></p>
+<p>Oh yes we’re doing it too! Check out the article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/sg2000a"><strong>“Daily Automated Testing for Milk-V Duo S RISC-V SBC (IKEA TRETAKT / Apache NuttX RTOS)”</strong></a></li>
+</ul>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO: SoC Makers please provide an Emulator!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
