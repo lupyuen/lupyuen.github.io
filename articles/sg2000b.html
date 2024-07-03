@@ -75,10 +75,18 @@
 <li><a href="#increase-tinyemu-irqs-from-32-to-64">8 Increase TinyEMU IRQs from 32 to 64</a><ul></ul></li>
 <li><a href="#emulate-the-sg2000-peripherals">9 Emulate the SG2000 Peripherals</a><ul></ul></li>
 <li><a href="#daily-automated-testing">10 Daily Automated Testing</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jul 2024</em></p>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jul 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-title.jpg" alt="TODO" /></p>
+<p>Recently we created a RISC-V Emulator for <strong>Ox64 BL808 SBC</strong>. We built it by customising <strong>TinyEMU RISC-V Emulator</strong> (not the small flightless bird)</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/tinyemu3"><strong>“Automated Testing with Ox64 BL808 Emulator”</strong></a></p>
+</li>
+<li>
+<p><a href="https://youtu.be/JlEo3lfi0CU"><strong>Watch the Presentation (YouTube)</strong></a></p>
+</li>
+</ul>
 <p>TODO: Read the article</p>
-<p>TODO: Watch the presentation</p>
 <p><a href="https://github.com/lupyuen2/sg2000-emulator">sg2000-emulator</a></p>
 <p>Let’s create a Software Emulator for Sophgo SG2000 SoC and Milk-V Duo S SBC! It runs every day for our <a href="https://github.com/lupyuen/nuttx-sg2000#nuttx-automated-daily-build-for-sg2000">Daily Automated Testing</a> of Apache NuttX RTOS for SG2000.</p>
 <h1 id="update-the-memory-map"><a class="doc-anchor" href="#update-the-memory-map">§</a>1 Update the Memory Map</h1>
@@ -435,27 +443,35 @@ nsh&gt;
 <p>When we execute <code>sleep 10</code>, it completes in 25 seconds. We might need to adjust the TinyEMU System Timer.</p>
 <p>(CPU-bound operations like <code>getprime</code> won’t have this timing delay)</p>
 <h1 id="emulate-the-sg2000-peripherals"><a class="doc-anchor" href="#emulate-the-sg2000-peripherals">§</a>9 Emulate the SG2000 Peripherals</h1>
-<p>TODO: GPIO</p>
-<p>Based on the <a href="TODO"><strong>SG2000 Reference Manual</strong></a>: We will probably do this…</p>
-<p><a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_cpu.c#L551-L562">riscv_cpu.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// GPIO0 0x03020000
-// GPIO_SWPORTA_DR 0x000 Port A data register
-// XGPIOA[1] is Bit 1
+<p><em>Our SG2000 Emulator looks incomplete?</em></p>
+<p>Yeah we need to emulate the <strong>SG2000 Peripherals!</strong> GPIO, I2C, SPI, …</p>
+<p>Based on the <a href="TODO"><strong>SG2000 Reference Manual</strong></a>: We will probably emulate GPIO like this: <a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_cpu.c#L551-L562">riscv_cpu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// TinyEMU calls this function to execute Memory Writes
+int target_write_slow(...) {
+  ...
+  // If TinyEMU is writing to this address...
+  switch(paddr) {
 
-  // TODO: GPIO Output: Send an Emulator Notification to the Console: {&quot;nuttxemu&quot;:{&quot;gpio29&quot;:1}}
-  case 0x20000938: {  // GPIO 29
-      // Check if the Output Bit is Off or On
-      #define reg_gpio_xx_o 24
-      #define reg_gpio_xx_i 28
+    // Address is GPIOA Base Address
+    // with Offset 0 (GPIO_SWPORTA_DR)
+    case 0x03020000: 
+
+      // Check if GPIOA1 is Off or On (Bit 1)
+      const uint8_t gpio = 1;
+      const uint32_t mask = (1 &lt;&lt; gpio);
       const char b =
-          ((val &amp; (1 &lt;&lt; reg_gpio_xx_o)) == 0)
-          ? &#39;0&#39; : &#39;1&#39;;
-      char notify[] = &quot;{\&quot;nuttxemu\&quot;:{\&quot;gpio29\&quot;:0}}\r\n&quot;;
+        ((val &amp; mask) == 0)
+        ? &#39;0&#39; : &#39;1&#39;;
+
+      // Send an Emulator Notification to the Console: 
+      // {&quot;nuttxemu&quot;:{&quot;gpioa1&quot;:1}}
+      char notify[] = &quot;{\&quot;nuttxemu\&quot;:{\&quot;gpioa1\&quot;:0}}\r\n&quot;;
       notify[strlen(notify) - 5] = b;
       print_console(NULL, notify, strlen(notify));
-  }
 </code></pre></div>
-<p>TODO: Why nuttxemu</p>
+<p><em>What’s this nuttxemu?</em></p>
+<p><strong><code>nuttxemu</code></strong> will be printed on the TinyEMU Console to notify the caller that GPIOA1 is set to On or Off.</p>
+<p>When we run TinyEMU in a Web Browser (via WebAssembly), our Web Browser can intercept this notification and visualise a <a href="TODO"><strong>Simulated LED on GPIOA1</strong></a>.</p>
 <h1 id="daily-automated-testing"><a class="doc-anchor" href="#daily-automated-testing">§</a>10 Daily Automated Testing</h1>
 <p>TODO: Real SBC</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
