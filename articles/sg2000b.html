@@ -405,15 +405,33 @@ NuttShell (NSH) NuttX-12.5.1
 nsh&gt; 
 [1] segmentation fault
 </code></pre></div>
-<p><em>Is the Interrupt Number for UART correct?</em></p>
-<p>Based on the <a href="TODO"><strong>NuttX Config</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_IRQ=69
+<p><em>Maybe we got the Wrong Interrupt Number for UART?</em></p>
+<p>We check our <a href="TODO"><strong>NuttX Config</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## NuttX IRQ for UART0 is 69
+CONFIG_16550_UART0_IRQ=69
 </code></pre></div>
-<p>TODO</p>
-<p>Since NuttX IRQ Offset is 25, so Actual RISC-V IRQ is 69 - 25 = 44 (as confirmed by the SG2000 Reference Manual)…</p>
-<p><a href="https://github.com/lupyuen2/sg2000-emulator/commit/643c25cada46289539e31579616e7afbf108c3ae">Set VIRTIO_IRQ to 44</a></p>
+<ul>
+<li>
+<p><a href="TODO"><strong>NuttX IRQ Offset</strong></a> is <strong>25</strong></p>
+</li>
+<li>
+<p>Which means <strong>Actual RISC-V IRQ</strong> is 69 - 25 = <strong>44</strong></p>
+</li>
+<li>
+<p>Which matches the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>SG2000 Reference Manual</strong></a> (Page 13)…</p>
+<blockquote>
+<p><em><strong>3.1 Interrupt Subsystem</strong></em></p>
+</blockquote>
+<blockquote>
+<p><em><strong>Int #44:</strong> UART0</em></p>
+</blockquote>
+</li>
+<li>
+<p>And matches the <strong>VirtIO IRQ</strong> in TinyEMU: <a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_machine.c#L146-L158">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define VIRTIO_IRQ 44  // UART0 IRQ
-</code></pre></div>
+</code></pre></div></li>
+</ul>
+<p>Something sinister is wrecking our rojak…</p>
 <p>TODO: Pic of TinyEMU IRQs</p>
 <h1 id="increase-tinyemu-irqs-from-32-to-64"><a class="doc-anchor" href="#increase-tinyemu-irqs-from-32-to-64">§</a>8 Increase TinyEMU IRQs from 32 to 64</h1>
 <p>After <a href="TODO"><strong>lots of headscratching</strong></a>: We discover that TinyEMU supports only <strong>32 RISC-V External Interrupts</strong>… Which is too few for our UART Controller! (IRQ 44)</p>
