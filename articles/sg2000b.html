@@ -193,7 +193,9 @@ static void copy_bios(...) {
 <p>Our Emulator now boots NuttX correctly at <em>0x80200000</em>!</p>
 <p>TODO: Pic of Supervisor Mode</p>
 <p><em>So TinyEMU will jump directly to 0x80200000?</em></p>
-<p>TODO: MRET from Machine Mode to Supervisor Mode</p>
+<p>Not quite. TinyEMU boots in <strong>RISC-V Machine Mode</strong>, but NuttX expects to boot in <a href="TODO"><strong>RISC-V Supervisor Mode</strong></a>!</p>
+<p>That’s why we customised the TinyEMU Boot Code, so that it jumps from Machine Mode to Supervisor Mode via the <a href="TODO"><strong>MRET Instruction</strong></a>.</p>
+<p>(Which will start NuttX at <em>0x80200000</em>)</p>
 <h1 id="emulate-the-16550-uart-controller"><a class="doc-anchor" href="#emulate-the-16550-uart-controller">§</a>4 Emulate the 16550 UART Controller</h1>
 <p><em>Nothing appears when we boot NuttX?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg
