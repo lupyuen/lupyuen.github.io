@@ -543,22 +543,23 @@ int target_write_slow(...) {
 <p>We’re running SG2000 Emulator for <strong>Daily Automated Testing</strong> at GitHub Actions (pic above): <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000-test.yml">sg2000-test.yml</a></p>
 </li>
 </ol>
-<div class="example-wrap"><pre class="language-bash"><code>## Checkout the Source Files
+<div class="example-wrap"><pre class="language-bash"><code>## Build the SG2000 Emulator
 git clone https://github.com/lupyuen2/sg2000-emulator
-
-## Build the SG2000 Emulator
 cd sg2000-emulator
 make
 
-## Download the NuttX Daily Build and Test Script
+## Download the NuttX Daily Build for SG2000
 date=2024-07-04
 repo=https://github.com/lupyuen/nuttx-sg2000
-wget $repo/releases/download/nuttx-sg2000-$date/Image
-wget $repo/releases/download/nuttx-sg2000-$date/nuttx.hash
+release=$repo/releases/download/nuttx-sg2000-$date
+wget $release/Image
+wget $release/nuttx.hash
+
+## Download the NuttX Test Script
 wget $repo/raw/main/nuttx.cfg
 wget $repo/raw/main/nuttx.exp
 
-## Run the NuttX Test
+## Run the NuttX Test Script
 chmod +x nuttx.exp
 ./nuttx.exp
 </code></pre></div>
@@ -592,6 +593,7 @@ expect {
   timeout { exit 1 }
 }
 </code></pre></div>
+<p><a href="TODO">(See the <strong>Test Log</strong>)</a></p>
 <p><em>What about QEMU Emulator?</em></p>
 <p><strong>QEMU Emulator</strong> is way too complex to customise for SG2000. Instead we’re running QEMU Emulator for <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh64.yml"><strong>Daily Testing of NuttX QEMU</strong></a>.</p>
 <p>(Also based on <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh64.yml"><strong>GitHub Actions</strong></a> with <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-nsh64.exp"><strong>Expect Scripting</strong></a>)</p>
