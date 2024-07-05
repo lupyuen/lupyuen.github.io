@@ -137,7 +137,7 @@ $HOME/sg2000-emulator/temu nuttx.cfg
 <p>Our Emulator crashes at a strange address…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-crash.png" alt="TODO" /></p>
 <h1 id="auipc-overflow-in-boot-code"><a class="doc-anchor" href="#auipc-overflow-in-boot-code">§</a>2 <code>auipc</code> Overflow in Boot Code</h1>
-<p>When we <strong>Boot our Emulator</strong> with SG2000 NuttX, it crashes…</p>
+<p>When we <strong>Boot our Emulator</strong> with SG2000 NuttX, it crashes (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg
 
 TinyEMU Emulator for Sophgo SG2000 SoC
@@ -172,7 +172,7 @@ static void copy_bios(...) {
 </code></pre></div>
 <p><em>Maybe auipc has a problem?</em></p>
 <p>We verify with the <a href="https://riscvasm.lucasteske.dev/#"><strong>RISC-V Online Assembler</strong></a>.</p>
-<p>When we assemble the <strong><code>auipc</code></strong> instruction above, the Online Assembler fails with an error…</p>
+<p>When we assemble the <strong><code>auipc</code></strong> instruction above, the Online Assembler fails with an error (pic below)…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>Error: lui expression not in range 0..1048575
 Error: value of 0000080200000000 too large
   for field of 4 bytes at 0000000000000000
@@ -181,7 +181,7 @@ Error: value of 0000080200000000 too large
 <p><em>But 0x80200000 is a perfectly valid address?</em></p>
 <p>Remember that RISC-V is a <strong>RISC Platform</strong> after all. Some operations won’t fit into 4 bytes of Machine Code.</p>
 <p>We upsize to 8 bytes of Machine Code…</p>
-<p>TODO: Pic of RISC-V Online Assembler</p>
+<p><img src="https://lupyuen.github.io/images/sg2000b-asm1.png" alt="TODO" /></p>
 <h1 id="change-auipc-to-li-in-boot-code"><a class="doc-anchor" href="#change-auipc-to-li-in-boot-code">§</a>3 Change <code>auipc</code> to <code>li</code> in Boot Code</h1>
 <p>We load <em>0x80200000</em> into Register t0 in another way, with the <strong><code>li</code> Instruction</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>li  t0, 0x80200000
