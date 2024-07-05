@@ -100,7 +100,8 @@
 </ol>
 <p>TODO: <a href="https://github.com/lupyuen2/sg2000-emulator">sg2000-emulator</a></p>
 <p>TODO: Let’s create a Software Emulator for Sophgo SG2000 SoC and Milk-V Duo S SBC! It runs every day for our <a href="https://github.com/lupyuen/nuttx-sg2000#nuttx-automated-daily-build-for-sg2000">Daily Automated Testing</a> of Apache NuttX RTOS for SG2000.</p>
-<p>TODO: Pic of Memory Map</p>
+<p><img src="https://lupyuen.github.io/images/sg2000b-memory.png" alt="TODO" /></p>
+<p><a href="TODO"><em>SG2000 Reference Manual (Page 17)</em></a></p>
 <h1 id="update-the-memory-map"><a class="doc-anchor" href="#update-the-memory-map">§</a>1 Update the Memory Map</h1>
 <p>We begin with the <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>TinyEMU RISC-V Emulator</strong></a> for Ox64 BL808 SBC. And we tweak it for SG2000.</p>
 <p>This is how we update the <strong>RISC-V Memory Map</strong> for SG2000: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/d36190c63c1db116a206a26f3bc27dfacf5c8298">riscv_machine.c</a></p>
@@ -110,6 +111,8 @@
 #define CLINT_BASE_ADDR 0x74000000ul
 #define PLIC_BASE_ADDR  0x70000000ul
 </code></pre></div>
+<p><a href="TODO">(NuttX boots at <strong><code>0x8020_0000</code></strong>)</a></p>
+<p><a href="TODO">(Interrupt Controller is at <strong><code>0x7000_0000</code></strong>)</a></p>
 <p>Then we build and run TinyEMU…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build SG2000 Emulator for macOS
 ## For Linux: See https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000-test.yml#L29-L45
@@ -134,10 +137,10 @@ cd $HOME/nuttx
 wget https://raw.githubusercontent.com/lupyuen/nuttx-sg2000/main/nuttx.cfg
 $HOME/sg2000-emulator/temu nuttx.cfg
 </code></pre></div>
-<p>Our Emulator crashes at a strange address…</p>
+<p>Watch what happens when we run this…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-crash.png" alt="TODO" /></p>
 <h1 id="auipc-overflow-in-boot-code"><a class="doc-anchor" href="#auipc-overflow-in-boot-code">§</a>2 <code>auipc</code> Overflow in Boot Code</h1>
-<p>When we <strong>Boot our Emulator</strong> with SG2000 NuttX, it crashes (pic above)…</p>
+<p>When we boot <strong>NuttX on TinyEMU</strong>, it crashes at a curious location (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg
 
 TinyEMU Emulator for Sophgo SG2000 SoC
@@ -215,12 +218,12 @@ static void copy_bios(...) {
   // TODO: Remove the hardcoding of 0x80200000
 </code></pre></div>
 <p>Our Emulator now boots NuttX correctly at <em>0x80200000</em>!</p>
-<p>TODO: Pic of Supervisor Mode</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow2.jpg" alt="TODO" /></p>
 <p><em>So TinyEMU will jump directly to 0x80200000?</em></p>
-<p>Not quite. TinyEMU boots in <strong>RISC-V Machine Mode</strong>, but NuttX expects to boot in <a href="TODO"><strong>RISC-V Supervisor Mode</strong></a>!</p>
-<p>That’s why we customised the TinyEMU Boot Code, so that it jumps from Machine Mode to Supervisor Mode via the <a href="TODO"><strong>MRET Instruction</strong></a>.</p>
+<p>Not quite. TinyEMU boots in <strong>RISC-V Machine Mode</strong>, but NuttX expects to boot in <a href="TODO"><strong>RISC-V Supervisor Mode</strong></a>! (Pic above)</p>
+<p>That’s why we customised the TinyEMU Boot Code, so that it jumps from Machine Mode to Supervisor Mode via the <a href="TODO"><strong>MRET Instruction</strong></a>. (Pic below)</p>
 <p>(Which will start NuttX at <em>0x80200000</em>)</p>
-<p>TODO: Pic of UART Emulator</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TODO" /></p>
 <h1 id="emulate-the-16550-uart-controller"><a class="doc-anchor" href="#emulate-the-16550-uart-controller">§</a>4 Emulate the 16550 UART Controller</h1>
 <p><em>Nothing appears when we boot NuttX?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg
@@ -269,7 +272,7 @@ bool u16550_txready(struct uart_dev_s *dev) {
 </li>
 </ul>
 <p>Let’s emulate the above in TinyEMU…</p>
-<p>TODO: Pic of UART Output Registers</p>
+<p><img src="https://lupyuen.github.io/images/tinyemu2-uart.jpg" alt="TODO" /></p>
 <h1 id="emulate-the-uart-output-registers"><a class="doc-anchor" href="#emulate-the-uart-output-registers">§</a>5 Emulate the UART Output Registers</h1>
 <p><em>How will we emulate the 16550 UART Registers in TinyEMU?</em></p>
 <p>When TinyEMU needs to Read or Write a Memory Address, it will call the functions below.</p>
@@ -319,7 +322,12 @@ NuttShell (NSH) NuttX-12.5.1
 nsh&gt;
 </code></pre></div>
 <p>Next we fix the UART Input…</p>
-<p>TODO: Pic of UART Input Registers</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/sg2000b-input.png" alt="TODO" /></p>
+</blockquote>
+<blockquote>
+<p><a href="TODO"><em>SG2000 Reference Manual (Page 636)</em></a></p>
+</blockquote>
 <h1 id="emulate-the-uart-input-registers"><a class="doc-anchor" href="#emulate-the-uart-input-registers">§</a>6 Emulate the UART Input Registers</h1>
 <p><em>What about UART Input? How to emulate the UART Registers?</em></p>
 <p>Again we refer to the <strong>NuttX Driver</strong> for 16550 UART, to discover the inner workings of UART Input: <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L979-L1282">uart_16550.c</a></p>
@@ -356,7 +364,7 @@ int u16550_receive(struct uart_dev_s *dev, unsigned int *status) {
   return rbr;
 }
 </code></pre></div>
-<p>Which says that…</p>
+<p>Which says that (pic above)…</p>
 <ul>
 <li>
 <p><strong>UART_IIR</strong>: Interrupt ID Register</p>
@@ -482,7 +490,7 @@ nsh&gt;
 <p>Yeah probably because SG2000 runs on <a href="https://github.com/lupyuen2/wip-nuttx/commit/bb4906c976e44a05237f91944844cd1c68ef5d5b">MTIMER_FREQ of 25000000</a>.</p>
 <p>When we execute <code>sleep 10</code>, it completes in 25 seconds. We might need to adjust the TinyEMU System Timer.</p>
 <p>(CPU-bound operations like <code>getprime</code> won’t have this timing delay)</p>
-<p>TODO: Pic of Simulated LED</p>
+<p><img src="https://lupyuen.github.io/images/quickjs-led.jpg" alt="TODO" /></p>
 <h1 id="emulate-the-sg2000-peripherals"><a class="doc-anchor" href="#emulate-the-sg2000-peripherals">§</a>9 Emulate the SG2000 Peripherals</h1>
 <p><em>Our SG2000 Emulator looks incomplete?</em></p>
 <p>Yeah we need to emulate the <strong>SG2000 Peripherals!</strong> GPIO, I2C, SPI, …</p>
@@ -514,7 +522,7 @@ int target_write_slow(...) {
 <p><em>What’s this nuttxemu?</em></p>
 <p><strong><code>nuttxemu</code></strong> will be printed on the TinyEMU Console to notify the caller that GPIOA1 is set to On or Off.</p>
 <p>When we run TinyEMU in a Web Browser (via WebAssembly), our Web Browser can intercept this notification and visualise a <a href="TODO"><strong>Simulated LED on GPIOA1</strong></a>.</p>
-<p>TODO: Pic of Daily Automated Testing</p>
+<p><img src="https://lupyuen.github.io/images/sg2000b-test.png" alt="TODO" /></p>
 <h1 id="daily-automated-testing"><a class="doc-anchor" href="#daily-automated-testing">§</a>10 Daily Automated Testing</h1>
 <p><em>Why are we doing all this?</em></p>
 <ol>
