@@ -574,6 +574,9 @@ expect {
   timeout { exit 1 }
 }
 </code></pre></div>
+<p><em>What about QEMU Emulator?</em></p>
+<p><strong>QEMU Emulator</strong> is way to complex to customise for SG2000. Instead we’re running QEMU Emulator for <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh64.yml"><strong>Daily Testing of NuttX QEMU</strong></a>.</p>
+<p>(Also based on <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh64.yml"><strong>GitHub Actions</strong></a> with <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-nsh64.exp"><strong>Expect Scripting</strong></a>)</p>
 <p><em>Isn’t it safer to run Daily Tests on a Real SG2000 SBC?</em></p>
 <p>Oh yes we’re doing it too! (Pic below) Check out the article…</p>
 <ul>
