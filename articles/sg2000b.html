@@ -72,7 +72,7 @@
 <li><a href="#emulate-the-uart-output-registers">5 Emulate the UART Output Registers</a><ul></ul></li>
 <li><a href="#emulate-the-uart-input-registers">6 Emulate the UART Input Registers</a><ul></ul></li>
 <li><a href="#uart-input-triggers-segfault">7 UART Input triggers SegFault</a><ul></ul></li>
-<li><a href="#increase-tinyemu-irqs-from-32-to-64">8 Increase TinyEMU IRQs from 32 to 64</a><ul></ul></li>
+<li><a href="#increase-tinyemu-interrupts-to-64">8 Increase TinyEMU Interrupts to 64</a><ul></ul></li>
 <li><a href="#emulate-the-sg2000-peripherals">9 Emulate the SG2000 Peripherals</a><ul></ul></li>
 <li><a href="#daily-automated-testing">10 Daily Automated Testing</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jul 2024</em></p>
@@ -453,7 +453,7 @@ CONFIG_16550_UART0_IRQ=69
 </ul>
 <p>Something seriously sinister is wrecking our rojak…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-irq.png" alt="TODO" /></p>
-<h1 id="increase-tinyemu-irqs-from-32-to-64"><a class="doc-anchor" href="#increase-tinyemu-irqs-from-32-to-64">§</a>8 Increase TinyEMU IRQs from 32 to 64</h1>
+<h1 id="increase-tinyemu-interrupts-to-64"><a class="doc-anchor" href="#increase-tinyemu-interrupts-to-64">§</a>8 Increase TinyEMU Interrupts to 64</h1>
 <p>After <a href="TODO"><strong>lots of headscratching</strong></a>: We discover that TinyEMU supports only <strong>32 RISC-V External Interrupts</strong>… Which is too few for our UART Controller! (IRQ 44)</p>
 <p>Here’s the original definition in TinyEMU: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L42-L66">riscv_machine.c</a></p>
 <p>TODO</p>
