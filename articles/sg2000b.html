@@ -116,27 +116,25 @@
 ## For Linux: See https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000-test.yml#L29-L45
 cd $HOME
 git clone https://github.com/lupyuen2/sg2000-emulator
-cd $HOME/sg2000-emulator
-make clean
+cd sg2000-emulator
 make \
   CFLAGS=&quot;-I$(brew --prefix)/opt/openssl/include -I$(brew --prefix)/opt/sdl2/include&quot; \
   LDFLAGS=&quot;-L$(brew --prefix)/opt/openssl/lib -L$(brew --prefix)/opt/sdl2/lib&quot; \
   CONFIG_MACOS=y
 
 ## Build NuttX for SG2000
-## https://lupyuen.github.io/articles/sg2000#appendix-build-nuttx-for-sg2000
 cd $HOME/nuttx
 tools/configure.sh milkv_duos:nsh
 make
-## Omitted: Create the `Image` file for SG2000 NuttX
+## Omitted: Create the NuttX Image
+## See https://lupyuen.github.io/articles/sg2000#appendix-build-nuttx-for-sg2000
 
 ## Boot TinyEMU with NuttX for SG2000
-cd $HOME/nuttx
 wget https://raw.githubusercontent.com/lupyuen/nuttx-sg2000/main/nuttx.cfg
 $HOME/sg2000-emulator/temu nuttx.cfg
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/nuttx.cfg">(<strong>nuttx.cfg</strong> points to the NuttX Image)</a></p>
-<p>Something baffling happens when we run this…</p>
+<p>Something baffling appears when we run this…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-crash.png" alt="TODO" /></p>
 <h1 id="auipc-overflow-in-boot-code"><a class="doc-anchor" href="#auipc-overflow-in-boot-code">§</a>2 <code>auipc</code> Overflow in Boot Code</h1>
 <p>When we boot <strong>NuttX on TinyEMU</strong>, it crashes at a curious location (pic above)…</p>
@@ -153,7 +151,7 @@ tinyemu:
 </code></pre></div>
 <p><em>What just happened?</em></p>
 <p>Our Emulator tried to execute the code at MTVAL <em>0xffffffff_80200000</em>. And crashed because it’s <strong>not a valid address!</strong></p>
-<p><em>0xffffffff_80200000</em> looks sus, it seems related to <strong>RAM Base Address</strong> <em>0x80200000</em>.</p>
+<p>The Effy Address looks sus, it seems related to <strong>RAM Base Address</strong>: <em>0x80200000</em></p>
 <p><em>Our Emulator is booting the wrong address?</em></p>
 <p>Apparently. We check the <strong>Original TinyEMU</strong> Boot Code: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L857-L861">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the TinyEMU Boot Code
