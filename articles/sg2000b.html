@@ -103,7 +103,7 @@
 <p><img src="https://lupyuen.github.io/images/sg2000b-memory.png" alt="TODO" /></p>
 <p><a href="TODO"><em>SG2000 Reference Manual (Page 17)</em></a></p>
 <h1 id="update-the-memory-map"><a class="doc-anchor" href="#update-the-memory-map">§</a>1 Update the Memory Map</h1>
-<p>We begin with the <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>TinyEMU RISC-V Emulator</strong></a> for Ox64 BL808 SBC. And we tweak it for SG2000.</p>
+<p>We begin with the <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>TinyEMU RISC-V Emulator</strong></a> for Ox64 BL808 SBC, and we tweak it for <strong>Sophgo SG2000 SoC</strong>.</p>
 <p>This is how we update the <strong>RISC-V Memory Map</strong> for SG2000: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/d36190c63c1db116a206a26f3bc27dfacf5c8298">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Base Addresss of System RAM, Core Local Interrupt Controller (unused)
 // And Platform-Level Interrupt Controller
@@ -137,7 +137,8 @@ cd $HOME/nuttx
 wget https://raw.githubusercontent.com/lupyuen/nuttx-sg2000/main/nuttx.cfg
 $HOME/sg2000-emulator/temu nuttx.cfg
 </code></pre></div>
-<p>Watch what happens when we run this…</p>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/nuttx.cfg">(<strong>nuttx.cfg</strong> points to the NuttX Image)</a></p>
+<p>Something baffling happens when we run this…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-crash.png" alt="TODO" /></p>
 <h1 id="auipc-overflow-in-boot-code"><a class="doc-anchor" href="#auipc-overflow-in-boot-code">§</a>2 <code>auipc</code> Overflow in Boot Code</h1>
 <p>When we boot <strong>NuttX on TinyEMU</strong>, it crashes at a curious location (pic above)…</p>
@@ -156,7 +157,7 @@ tinyemu:
 <p>Our Emulator tried to execute the code at MTVAL <em>0xffffffff_80200000</em>. And crashed because it’s <strong>not a valid address!</strong></p>
 <p><em>0xffffffff_80200000</em> looks sus, it seems related to <strong>RAM Base Address</strong> <em>0x80200000</em>.</p>
 <p><em>Our Emulator is booting the wrong address?</em></p>
-<p>We check the <strong>Original TinyEMU</strong> Boot Code: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L857-L861">riscv_machine.c</a></p>
+<p>Apparently. We check the <strong>Original TinyEMU</strong> Boot Code: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L857-L861">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the TinyEMU Boot Code
 static void copy_bios(...) {
   ...
@@ -186,10 +187,11 @@ Error: value of 0000080200000000 too large
 <p>We upsize to 8 bytes of Machine Code…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-asm1.png" alt="TODO" /></p>
 <h1 id="change-auipc-to-li-in-boot-code"><a class="doc-anchor" href="#change-auipc-to-li-in-boot-code">§</a>3 Change <code>auipc</code> to <code>li</code> in Boot Code</h1>
-<p>We load <em>0x8020_0000</em> into Register t0 in another way, with the <strong><code>li</code> Instruction</strong>…</p>
+<p><em>How else can we load 0x8020_0000 into Register T0?</em></p>
+<p>Instead of <strong><code>aupic</code></strong> (which has size limits), we load our RAM Base Address with the <strong><code>li</code> Instruction</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>li  t0, 0x80200000
 </code></pre></div>
-<p>When we feed this above into <a href="https://riscvasm.lucasteske.dev/#"><strong>RISC-V Online Assembler</strong></a>, we see the resulting (8-byte) <strong>Machine Code</strong>…</p>
+<p>When we feed the above into <a href="https://riscvasm.lucasteske.dev/#"><strong>RISC-V Online Assembler</strong></a>, we see the resulting (8-byte) <strong>Machine Code</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>4010029b  addiw  t0, zero, 1025
 01529293  slli   t0, t0,   0x15
 </code></pre></div>
@@ -202,7 +204,7 @@ Error: value of 0000080200000000 too large
 <p><strong><code>slli</code></strong>: Shift-Left T0 by <code>0x15</code> bits</p>
 </li>
 <li>
-<p>Producing: <code>1025</code> &lt;&lt; <code>0x15</code> = <code>0x8020_0000</code></p>
+<p>Producing: <code>1025</code> &lt;&lt; <code>0x15</code> = <strong><code>0x8020_0000</code></strong></p>
 </li>
 </ul>
 <p>Thus we copy the above Machine Code into our TinyEMU Boot Code: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/b2d5cf63c5d6d1d0d4eafa5d400216d1f76a6e21">riscv_machine.c</a></p>
@@ -264,14 +266,14 @@ bool u16550_txready(struct uart_dev_s *dev) {
 </li>
 <li>
 <p><strong>UART_LSR</strong>: Line Status Register</p>
-<p>Will be read by NuttX to check if the Transmit FIFO is Empty</p>
+<p>Will be read by NuttX to check if the Transmit FIFO is Ready</p>
 </li>
 <li>
 <p><strong>UART_LSR_THRE</strong>: Transmit Holding Register Empty</p>
-<p>This is the bit in <strong>UART_LSR</strong> that will indicate whether Transmit FIFO is Empty</p>
+<p>This is the bit in <strong>UART_LSR</strong> that will indicate whether Transmit FIFO is Ready</p>
 </li>
 </ul>
-<p>Let’s emulate the above in TinyEMU…</p>
+<p>Let’s fix this in TinyEMU…</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-uart.jpg" alt="TODO" /></p>
 <h1 id="emulate-the-uart-output-registers"><a class="doc-anchor" href="#emulate-the-uart-output-registers">§</a>5 Emulate the UART Output Registers</h1>
 <p><em>How will we emulate the 16550 UART Registers in TinyEMU?</em></p>
@@ -321,9 +323,9 @@ TinyEMU Emulator for Sophgo SG2000 SoC
 NuttShell (NSH) NuttX-12.5.1
 nsh&gt;
 </code></pre></div>
-<p>Next we fix the UART Input…</p>
+<p>NuttX Shell won’t accept input, let’s fix it…</p>
 <blockquote>
-<p><img src="https://lupyuen.github.io/images/sg2000b-input.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/sg2000b-input.png" alt="SG2000 Reference Manual (Page 636)" /></p>
 </blockquote>
 <blockquote>
 <p><a href="TODO"><em>SG2000 Reference Manual (Page 636)</em></a></p>
@@ -425,17 +427,18 @@ NuttShell (NSH) NuttX-12.5.1
 nsh&gt; 
 [1] segmentation fault
 </code></pre></div>
-<p><em>Maybe we got the Wrong Interrupt Number for UART?</em></p>
-<p>We check our <a href="TODO"><strong>NuttX Config</strong></a>…</p>
+<p><em>Maybe we got the Wrong Interrupt Number?</em></p>
+<p>We check our <a href="TODO"><strong>NuttX Config</strong></a> for UART Interrupt…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX IRQ for UART0 is 69
 CONFIG_16550_UART0_IRQ=69
 </code></pre></div>
+<p>Which says…</p>
 <ul>
 <li>
 <p><a href="TODO"><strong>NuttX IRQ Offset</strong></a> is <strong>25</strong></p>
 </li>
 <li>
-<p>Which means <strong>Actual RISC-V IRQ</strong> is 69 - 25 = <strong>44</strong></p>
+<p>Hence <strong>RISC-V IRQ</strong> is 69 - 25 = <strong>44</strong></p>
 </li>
 <li>
 <p>Which matches the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>SG2000 Reference Manual</strong></a> (Page 13)…</p>
@@ -450,7 +453,7 @@ CONFIG_16550_UART0_IRQ=69
 <p>Something seriously sinister is wrecking our rojak…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-irq.png" alt="TODO" /></p>
 <h1 id="increase-tinyemu-interrupts-to-64"><a class="doc-anchor" href="#increase-tinyemu-interrupts-to-64">§</a>8 Increase TinyEMU Interrupts to 64</h1>
-<p>After <a href="TODO"><strong>lots of headscratching</strong></a>: We discover that TinyEMU supports only <strong>32 RISC-V External Interrupts</strong>… Which is too few for our UART Controller! (IRQ 44)</p>
+<p>After <a href="TODO"><strong>lots of headscratching</strong></a>: We discover that TinyEMU supports only <strong>32 RISC-V External Interrupts</strong>. Which is too few for our UART Controller! (IRQ 44)</p>
 <p>Here’s the original definition in TinyEMU: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L42-L66">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// TinyEMU defines the RISC-V Virtual Machine
 typedef struct RISCVMachine {
@@ -463,7 +466,7 @@ typedef struct RISCVMachine {
   ...
 } RISCVMachine;
 </code></pre></div>
-<p>So we increase the TinyEMU IRQs from 32 to 64…</p>
+<p>Therefore we increase the number of TinyEMU Interrupts <strong>from 32 to 64</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen2/sg2000-emulator/commit/c6ce6bdbbdaf7585ce18f77b2b2f25a2317914be"><strong>Increase the IRQs from 32 to MAX_IRQ</strong></a></p>
@@ -475,7 +478,7 @@ typedef struct RISCVMachine {
 <p><a href="https://github.com/lupyuen2/sg2000-emulator/commit/78ac3ad75f1ec0b54f5bee10488731c7a21fb9ea"><strong>Increase the IRQ Size from 32-bit to 64-bit</strong></a></p>
 </li>
 </ul>
-<p>Finally it works OK yay!</p>
+<p>Finally NuttX Shell runs OK yay!</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg
 
 TinyEMU Emulator for Sophgo SG2000 SoC
@@ -487,21 +490,23 @@ Patched RDTIME (Read System Time) at 0x8020b2cc
 elf_len=0
 virtio_console_resize_event
 ABC
+
 NuttShell (NSH) NuttX-12.5.1
 nsh&gt; uname -a
 NuttX 12.5.1 50fadb93f2 Jun 18 2024 09:20:31 risc-v milkv_duos
 nsh&gt; 
 </code></pre></div>
+<p><a href="TODO">(<strong>Complete Log</strong> is here)</a></p>
 <p><a href="https://gist.github.com/lupyuen/ac80b426f67ad38f6a59ae563b0ecb9f">(<strong>OSTest</strong> works OK too)</a></p>
 <p><em>SG2000 Emulator seems slower than Ox64 BL808 Emulator?</em></p>
-<p>Yeah probably because SG2000 runs on <a href="https://github.com/lupyuen2/wip-nuttx/commit/bb4906c976e44a05237f91944844cd1c68ef5d5b">MTIMER_FREQ of 25000000</a>.</p>
-<p>When we execute <code>sleep 10</code>, it completes in 25 seconds. We might need to adjust the TinyEMU System Timer.</p>
-<p>(CPU-bound operations like <code>getprime</code> won’t have this timing delay)</p>
+<p>Yeah probably because SG2000 runs on <a href="https://github.com/lupyuen2/wip-nuttx/commit/bb4906c976e44a05237f91944844cd1c68ef5d5b"><strong>MTIMER Frequency of 25 MHz</strong></a>.</p>
+<p>When we execute <strong><code>sleep 10</code></strong>, it completes in 25 seconds. We might need to adjust the TinyEMU System Timer.</p>
+<p>(CPU-bound Operations like <strong><code>getprime</code></strong> won’t have this timing delay)</p>
 <p><img src="https://lupyuen.github.io/images/quickjs-led.jpg" alt="TODO" /></p>
 <h1 id="emulate-the-sg2000-peripherals"><a class="doc-anchor" href="#emulate-the-sg2000-peripherals">§</a>9 Emulate the SG2000 Peripherals</h1>
-<p><em>Our SG2000 Emulator looks incomplete?</em></p>
-<p>Yeah we need to emulate the <strong>SG2000 Peripherals!</strong> GPIO, I2C, SPI, …</p>
-<p>Based on the <a href="TODO"><strong>SG2000 Reference Manual</strong></a>: We will probably emulate GPIO like this: <a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_cpu.c#L551-L562">riscv_cpu.c</a></p>
+<p><em>Where’s the rest of our SG2000 Emulator?</em></p>
+<p>Yeah we need to emulate the <strong>SG2000 Peripherals:</strong> GPIO, I2C, SPI, …</p>
+<p>Based on the <a href="TODO"><strong>SG2000 Reference Manual</strong></a>: We’ll probably emulate <strong>SG2000 GPIO Controller</strong> like this: <a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_cpu.c#L551-L562">riscv_cpu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// TinyEMU calls this function to execute Memory Writes
 int target_write_slow(...) {
   ...
@@ -528,7 +533,7 @@ int target_write_slow(...) {
 </code></pre></div>
 <p><em>What’s this nuttxemu?</em></p>
 <p><strong><code>nuttxemu</code></strong> will be printed on the TinyEMU Console to notify the caller that GPIOA1 is set to On or Off.</p>
-<p>When we run TinyEMU in a Web Browser (via WebAssembly), our Web Browser can intercept this notification and visualise a <a href="TODO"><strong>Simulated LED on GPIOA1</strong></a>.</p>
+<p>When we run TinyEMU in a Web Browser (via WebAssembly), our Web Browser can intercept this notification and visualise a <a href="TODO"><strong>Simulated LED on GPIOA1</strong></a>. (Pic above)</p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-test.png" alt="TODO" /></p>
 <h1 id="daily-automated-testing"><a class="doc-anchor" href="#daily-automated-testing">§</a>10 Daily Automated Testing</h1>
 <p><em>Why are we doing all this?</em></p>
@@ -537,7 +542,7 @@ int target_write_slow(...) {
 <p>SG2000 Emulator will be helpful for testing <strong>NuttX Drivers and App</strong>, without a Real SBC</p>
 </li>
 <li>
-<p>We’re running SG2000 Emulator for <strong>Daily Automated Testing</strong> at GitHub Actions: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000-test.yml">sg2000-test.yml</a></p>
+<p>We’re running SG2000 Emulator for <strong>Daily Automated Testing</strong> at GitHub Actions (pic above): <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000-test.yml">sg2000-test.yml</a></p>
 </li>
 </ol>
 <div class="example-wrap"><pre class="language-bash"><code>## Checkout the Source Files
@@ -559,7 +564,7 @@ wget $repo/raw/main/nuttx.exp
 chmod +x nuttx.exp
 ./nuttx.exp
 </code></pre></div>
-<p>Which calls this <strong>Expect Script</strong> to execute <strong>OSTest</strong> (and validate everything in NuttX): <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/nuttx.exp">nuttx.exp</a></p>
+<p>Which calls this <strong>Expect Script</strong> to execute <a href="TODO"><strong>OSTest</strong></a> (and verify that everything is hunky dory): <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/nuttx.exp">nuttx.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
 ## Expect Script for Testing NuttX with SG2000 Emulator
 
