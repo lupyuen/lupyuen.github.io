@@ -100,6 +100,7 @@
 </ol>
 <p>TODO: <a href="https://github.com/lupyuen2/sg2000-emulator">sg2000-emulator</a></p>
 <p>TODO: Let’s create a Software Emulator for Sophgo SG2000 SoC and Milk-V Duo S SBC! It runs every day for our <a href="https://github.com/lupyuen/nuttx-sg2000#nuttx-automated-daily-build-for-sg2000">Daily Automated Testing</a> of Apache NuttX RTOS for SG2000.</p>
+<p>TODO: Pic of Memory Map</p>
 <h1 id="update-the-memory-map"><a class="doc-anchor" href="#update-the-memory-map">§</a>1 Update the Memory Map</h1>
 <p>We begin with the <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>TinyEMU RISC-V Emulator</strong></a> for Ox64 BL808 SBC. And we tweak it for SG2000.</p>
 <p>This is how we update the <strong>RISC-V Memory Map</strong> for SG2000: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/d36190c63c1db116a206a26f3bc27dfacf5c8298">riscv_machine.c</a></p>
@@ -133,8 +134,8 @@ cd $HOME/nuttx
 wget https://raw.githubusercontent.com/lupyuen/nuttx-sg2000/main/nuttx.cfg
 $HOME/sg2000-emulator/temu nuttx.cfg
 </code></pre></div>
-<p>TODO: Pic of crash</p>
 <p>Our Emulator crashes at a strange address…</p>
+<p>TODO: Pic of crash</p>
 <h1 id="auipc-overflow-in-boot-code"><a class="doc-anchor" href="#auipc-overflow-in-boot-code">§</a>2 <code>auipc</code> Overflow in Boot Code</h1>
 <p>When we <strong>Boot our Emulator</strong> with SG2000 NuttX, it crashes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg
