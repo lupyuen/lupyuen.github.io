@@ -452,10 +452,35 @@ CONFIG_16550_UART0_IRQ=69
 </code></pre></div></li>
 </ul>
 <p>Something seriously sinister is wrecking our rojak…</p>
-<p>TODO: Pic of TinyEMU IRQs</p>
+<p><img src="https://lupyuen.github.io/images/sg2000b-irq.png" alt="TODO" /></p>
 <h1 id="increase-tinyemu-irqs-from-32-to-64"><a class="doc-anchor" href="#increase-tinyemu-irqs-from-32-to-64">§</a>8 Increase TinyEMU IRQs from 32 to 64</h1>
 <p>After <a href="TODO"><strong>lots of headscratching</strong></a>: We discover that TinyEMU supports only <strong>32 RISC-V External Interrupts</strong>… Which is too few for our UART Controller! (IRQ 44)</p>
-<p>TODO: 32 IRQs in TinyEMU</p>
+<p>Here’s the original definition in TinyEMU: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L42-L66">riscv_machine.c</a></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>/* RISCV machine */
+
+typedef struct RISCVMachine {
+  VirtMachine common;
+  PhysMemoryMap *mem_map;
+  int max_xlen;
+  RISCVCPUState *cpu_state;
+  uint64_t ram_size;
+  /* RTC */
+  BOOL rtc_real_time;
+  uint64_t rtc_start_time;
+  uint64_t timecmp;
+  /* PLIC */
+  uint32_t plic_pending_irq, plic_served_irq;
+  IRQSignal plic_irq[32]; /* IRQ 0 is not used */
+  /* HTIF */
+  uint64_t htif_tohost, htif_fromhost;
+
+  VIRTIODevice *keyboard_dev;
+  VIRTIODevice *mouse_dev;
+
+  int virtio_count;
+} RISCVMachine;
+</code></pre></div>
 <p>So we increase the TinyEMU IRQs from 32 to 64…</p>
 <ul>
 <li>
