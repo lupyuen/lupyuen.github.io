@@ -180,13 +180,13 @@ static void copy_bios(...) {
 Error: value of 0000080200000000 too large
   for field of 4 bytes at 0000000000000000
 </code></pre></div>
-<p>Aha <em>0x80200000</em> is too big to assemble as an <strong><code>auipc</code> Address!</strong></p>
-<p><em>But 0x80200000 is a perfectly valid address?</em></p>
+<p>Aha <em>0x8020_0000</em> is too big to assemble as an <strong><code>auipc</code> Address!</strong></p>
+<p><em>But 0x8020_0000 is a perfectly valid address?</em></p>
 <p>Remember that RISC-V is a <strong>RISC Platform</strong> after all. Some operations won’t fit into 4 bytes of Machine Code.</p>
 <p>We upsize to 8 bytes of Machine Code…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-asm1.png" alt="TODO" /></p>
 <h1 id="change-auipc-to-li-in-boot-code"><a class="doc-anchor" href="#change-auipc-to-li-in-boot-code">§</a>3 Change <code>auipc</code> to <code>li</code> in Boot Code</h1>
-<p>We load <em>0x80200000</em> into Register t0 in another way, with the <strong><code>li</code> Instruction</strong>…</p>
+<p>We load <em>0x8020_0000</em> into Register t0 in another way, with the <strong><code>li</code> Instruction</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>li  t0, 0x80200000
 </code></pre></div>
 <p>When we feed this above into <a href="https://riscvasm.lucasteske.dev/#"><strong>RISC-V Online Assembler</strong></a>, we see the resulting (8-byte) <strong>Machine Code</strong>…</p>
@@ -217,19 +217,19 @@ static void copy_bios(...) {
 
   // TODO: Remove the hardcoding of 0x80200000
 </code></pre></div>
-<p>Our Emulator now boots NuttX correctly at <em>0x80200000</em>!</p>
+<p>Our Emulator now boots NuttX correctly at <em>0x8020_0000</em>!</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow2.jpg" alt="TODO" /></p>
-<p><em>So TinyEMU will jump directly to 0x80200000?</em></p>
+<p><em>So TinyEMU will jump directly to 0x8020_0000?</em></p>
 <p>Not quite. TinyEMU boots in <strong>RISC-V Machine Mode</strong>, but NuttX expects to boot in <a href="TODO"><strong>RISC-V Supervisor Mode</strong></a>! (Pic above)</p>
 <p>That’s why we customised the TinyEMU Boot Code, so that it jumps from Machine Mode to Supervisor Mode via the <a href="TODO"><strong>MRET Instruction</strong></a>. (Pic below)</p>
-<p>(Which will start NuttX at <em>0x80200000</em>)</p>
+<p>(Which will start NuttX at <em>0x8020_0000</em>)</p>
 <p><img src="https://lupyuen.github.io/images/tinyemu2-flow3.jpg" alt="TODO" /></p>
 <h1 id="emulate-the-16550-uart-controller"><a class="doc-anchor" href="#emulate-the-16550-uart-controller">§</a>4 Emulate the 16550 UART Controller</h1>
 <p><em>Nothing appears when we boot NuttX?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sg2000-emulator/temu nuttx.cfg
 
 TinyEMU Emulator for Sophgo SG2000 SoC
-(...crickets...)
+[...crickets...]
 </code></pre></div>
 <p>That’s because we haven’t emulated the <strong>16550 UART Controller</strong> in TinyEMU!</p>
 <p>To figure out what’s needed, we refer to the <strong>16550 UART Driver</strong> in NuttX: <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1602-L1671">uart_16550.c</a></p>
@@ -439,12 +439,8 @@ CONFIG_16550_UART0_IRQ=69
 </li>
 <li>
 <p>Which matches the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>SG2000 Reference Manual</strong></a> (Page 13)…</p>
-<blockquote>
-<p><em><strong>3.1 Interrupt Subsystem</strong></em></p>
-</blockquote>
-<blockquote>
-<p><em><strong>Int #44:</strong> UART0</em></p>
-</blockquote>
+<p><em>“<strong>3.1 Interrupt Subsystem</strong>”</em></p>
+<p><em>“<strong>Int #44:</strong> UART0”</em></p>
 </li>
 <li>
 <p>And matches the <strong>VirtIO IRQ</strong> in TinyEMU: <a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_machine.c#L146-L158">riscv_machine.c</a></p>
@@ -456,29 +452,15 @@ CONFIG_16550_UART0_IRQ=69
 <h1 id="increase-tinyemu-interrupts-to-64"><a class="doc-anchor" href="#increase-tinyemu-interrupts-to-64">§</a>8 Increase TinyEMU Interrupts to 64</h1>
 <p>After <a href="TODO"><strong>lots of headscratching</strong></a>: We discover that TinyEMU supports only <strong>32 RISC-V External Interrupts</strong>… Which is too few for our UART Controller! (IRQ 44)</p>
 <p>Here’s the original definition in TinyEMU: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L42-L66">riscv_machine.c</a></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>/* RISCV machine */
-
+<div class="example-wrap"><pre class="language-c"><code>// TinyEMU defines the RISC-V Virtual Machine
 typedef struct RISCVMachine {
-  VirtMachine common;
-  PhysMemoryMap *mem_map;
-  int max_xlen;
-  RISCVCPUState *cpu_state;
-  uint64_t ram_size;
-  /* RTC */
-  BOOL rtc_real_time;
-  uint64_t rtc_start_time;
-  uint64_t timecmp;
-  /* PLIC */
-  uint32_t plic_pending_irq, plic_served_irq;
-  IRQSignal plic_irq[32]; /* IRQ 0 is not used */
-  /* HTIF */
-  uint64_t htif_tohost, htif_fromhost;
-
-  VIRTIODevice *keyboard_dev;
-  VIRTIODevice *mouse_dev;
-
-  int virtio_count;
+  ...
+  // Platform-Level Interrupt Controller:
+  // Only 32 External RISC-V Interrupts!
+  uint32_t plic_pending_irq;  // 32 Pending Interrupts
+  uint32_t plic_served_irq;   // 32 Served Interrupts
+  IRQSignal plic_irq[32];     // 32 Interrupt Signals
+  ...
 } RISCVMachine;
 </code></pre></div>
 <p>So we increase the TinyEMU IRQs from 32 to 64…</p>
