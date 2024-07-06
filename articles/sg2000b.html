@@ -95,7 +95,22 @@
 <p>Update the <strong>RISC-V Memory Map</strong> to match Sophgo SG2000 SoC</p>
 </li>
 <li>
-<p>TODO: <a href="https://github.com/lupyuen2/sg2000-emulator">sg2000-emulator</a></p>
+<p>Fix the <strong><code>auipc</code> Overflow</strong> in TinyEMU Boot Code</p>
+</li>
+<li>
+<p>We emulate the <strong>16550 UART Controller</strong></p>
+</li>
+<li>
+<p>By intercepting Reads and Writes to the <strong>UART I/O Registers</strong></p>
+</li>
+<li>
+<p>But TinyEMU supports only <strong>32 Interrupts</strong>, we bump up to 64</p>
+</li>
+<li>
+<p>Eventually we’ll emulate <strong>SG2000 Peripherals</strong> like GPIO</p>
+</li>
+<li>
+<p>Right now it’s good enough for <strong>Daily Automated Testing</strong> of NuttX for SG2000</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/sg2000b-memory.png" alt="SG2000 Reference Manual (Page 17)" /></p>
@@ -111,7 +126,7 @@
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sg2000#nuttx-memory-map">(NuttX boots at <strong><code>0x8020_0000</code></strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sg2000#interrupt-controller-for-sg2000">(Interrupt Controller is at <strong><code>0x7000_0000</code></strong>)</a></p>
-<p>Then we build and run TinyEMU…</p>
+<p>Then we build and run <a href="https://github.com/lupyuen2/sg2000-emulator"><strong>TinyEMU Emulator for SG2000</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build SG2000 Emulator for macOS
 ## For Linux: See https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000-test.yml#L29-L45
 cd $HOME
@@ -163,7 +178,7 @@ void copy_bios(...) {
 
   // Load `RAM_BASE_ADDR` into Register T0:
   // `auipc t0, RAM_BASE_ADDR`
-  // `RAM_BASE_ADDR` is 0x80000000
+  // `RAM_BASE_ADDR` is 0x80200000
   q[0] = 0x297 + RAM_BASE_ADDR - 0x1000;
 
   // Later: Jump to Register T0
