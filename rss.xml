@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)</title>
+            <link>https://lupyuen.github.io/articles/sg2000b</link>
+            <description><![CDATA[Earlier this year we made a RISC-V Emulator for Ox64 BL808 SBC, thanks to our customised TinyEMU RISC-V Emulator. (Not the small flightless bird) Now that NuttX supports Sophgo SG2000 SoC: Let's create a similar emulator for Pine64 Oz64 SBC and Milk-V Duo S!]]></description>
+            <guid>https://lupyuen.github.io/articles/sg2000b</guid>
+            <pubDate>Sun, 07 Jul 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Daily Automated Testing for Milk-V Duo S RISC-V SBC (IKEA TRETAKT / Apache NuttX RTOS)</title>
             <link>https://lupyuen.github.io/articles/sg2000a</link>
             <description><![CDATA[Last week we upstreamed Milk-V Duo S SBC to Apache NuttX RTOS. (Based on Sophgo SG2000 RISC-V SoC) But NuttX Mainline changes every day. Will Milk-V Duo S suffer “Software Bit Rot”? And fail to boot NuttX someday? Let’s do Daily Automated Testing for NuttX on a Milk-V Duo S SBC, controlled by an IKEA Smart Power Plug with Home Assistant API.]]></description>
