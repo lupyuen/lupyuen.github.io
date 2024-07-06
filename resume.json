@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-07-07",
+      "website": "https://lupyuen.github.io/articles/sg2000b",
+      "summary": "Earlier this year we made a RISC-V Emulator for Ox64 BL808 SBC, thanks to our customised TinyEMU RISC-V Emulator. (Not the small flightless bird) Now that NuttX supports Sophgo SG2000 SoC: Let's create a similar emulator for Pine64 Oz64 SBC and Milk-V Duo S!"
+    },
+    {
       "name": "Daily Automated Testing for Milk-V Duo S RISC-V SBC (IKEA TRETAKT / Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-06-23",
