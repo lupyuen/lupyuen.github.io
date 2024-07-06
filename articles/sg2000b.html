@@ -492,7 +492,7 @@ nsh&gt; uname -a
 NuttX 12.5.1 50fadb93f2 Jun 18 2024 09:20:31 risc-v milkv_duos
 nsh&gt; 
 </code></pre></div>
-<p><a href="TODO">(<strong>Complete Log</strong> is here)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000-test.yml">(<strong>Complete Log</strong> is here)</a></p>
 <p><a href="https://gist.github.com/lupyuen/ac80b426f67ad38f6a59ae563b0ecb9f">(<strong>OSTest</strong> works OK too)</a></p>
 <p><em>SG2000 Emulator seems slower than Ox64 BL808 Emulator?</em></p>
 <p>Yeah probably because SG2000 runs on <a href="https://github.com/lupyuen2/wip-nuttx/commit/bb4906c976e44a05237f91944844cd1c68ef5d5b"><strong>MTIMER Frequency of 25 MHz</strong></a>.</p>
@@ -529,7 +529,7 @@ int target_write_slow(...) {
 </code></pre></div>
 <p><em>What’s this nuttxemu?</em></p>
 <p><strong><code>nuttxemu</code></strong> will be printed on the TinyEMU Console to notify the caller that GPIOA1 is set to On or Off.</p>
-<p>When we run TinyEMU in a Web Browser (via WebAssembly), our Web Browser can intercept this notification and visualise a <a href="TODO"><strong>Simulated LED on GPIOA1</strong></a>. (Pic above)</p>
+<p>When we run TinyEMU in a Web Browser (via WebAssembly), our Web Browser can intercept this notification and visualise a <a href="https://lupyuen.github.io/articles/quickjs#simulate-the-led-on-ox64-emulator"><strong>Simulated LED on GPIOA1</strong></a>. (Pic above)</p>
 <p><img src="https://lupyuen.github.io/images/sg2000b-test.png" alt="We’re running SG2000 Emulator for Daily Automated Testing at GitHub Actions" /></p>
 <h1 id="daily-automated-testing"><a class="doc-anchor" href="#daily-automated-testing">§</a>10 Daily Automated Testing</h1>
 <p><em>Why are we doing all this?</em></p>
@@ -561,7 +561,7 @@ wget $repo/raw/main/nuttx.exp
 chmod +x nuttx.exp
 ./nuttx.exp
 </code></pre></div>
-<p>Which calls this <strong>Expect Script</strong> to execute <a href="TODO"><strong>OSTest</strong></a> (and verify that everything is hunky dory): <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/nuttx.exp">nuttx.exp</a></p>
+<p>Which calls this <strong>Expect Script</strong> to execute <a href="https://lupyuen.github.io/articles/tinyemu3#daily-automated-testing"><strong>OSTest</strong></a> (and verify that everything is hunky dory): <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/nuttx.exp">nuttx.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
 ## Expect Script for Testing NuttX with SG2000 Emulator
 
@@ -591,7 +591,7 @@ expect {
   timeout { exit 1 }
 }
 </code></pre></div>
-<p><a href="TODO">(See the <strong>Test Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000-test.yml">(See the <strong>Automated Test Log</strong>)</a></p>
 <p><em>What about QEMU Emulator?</em></p>
 <p><strong>QEMU Emulator</strong> is way too complex to customise for SG2000. Instead we’re running QEMU Emulator for <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh64.yml"><strong>Daily Testing of NuttX QEMU</strong></a>.</p>
 <p>(Also based on <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh64.yml"><strong>GitHub Actions</strong></a> with <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-nsh64.exp"><strong>Expect Scripting</strong></a>)</p>
