@@ -77,7 +77,7 @@
 <li><a href="#daily-automated-testing">10 Daily Automated Testing</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jul 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-oz64.jpg" alt="Pine64 Oz64 SBC running on Sophgo SG2000 SoC" /></p>
-<p>Earlier this year we made a RISC-V Emulator for <strong>Ox64 BL808 SBC</strong>. We run it every day for testing <a href="TODO"><strong>Apache NuttX RTOS</strong></a>, thanks to our customised <strong>TinyEMU RISC-V Emulator</strong> (not the small flightless bird)…</p>
+<p>Earlier this year we made a RISC-V Emulator for <strong>Ox64 BL808 SBC</strong>. Every day we run it for testing the daily build of <a href="TODO"><strong>Apache NuttX RTOS</strong></a>, thanks to our customised <strong>TinyEMU RISC-V Emulator</strong> (not the small flightless bird)…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/tinyemu3"><strong>“Automated Testing with Ox64 BL808 Emulator”</strong></a></p>
@@ -130,6 +130,7 @@ make
 ## See https://lupyuen.github.io/articles/sg2000#appendix-build-nuttx-for-sg2000
 
 ## Boot TinyEMU with NuttX for SG2000
+## To Exit TinyEMU: Ctrl-A x
 wget https://raw.githubusercontent.com/lupyuen/nuttx-sg2000/main/nuttx.cfg
 $HOME/sg2000-emulator/temu nuttx.cfg
 </code></pre></div>
@@ -155,7 +156,7 @@ tinyemu:
 <p><em>Our Emulator is booting the wrong address?</em></p>
 <p>Apparently. We check the <strong>Original TinyEMU</strong> Boot Code: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L857-L861">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the TinyEMU Boot Code
-static void copy_bios(...) {
+void copy_bios(...) {
   ...
   // `q` points to the Boot Code
   q = (uint32_t *)(ram_ptr + 0x1000);
@@ -205,7 +206,7 @@ Error: value of 0000080200000000 too large
 </ul>
 <p>Thus we copy the above Machine Code into our TinyEMU Boot Code: <a href="https://github.com/lupyuen2/sg2000-emulator/commit/b2d5cf63c5d6d1d0d4eafa5d400216d1f76a6e21">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the TinyEMU Boot Code
-static void copy_bios(...) {
+void copy_bios(...) {
   ...
   // Load `RAM_BASE_ADDR` into Register T0:
   // `li  t0, 0x80200000`
@@ -424,17 +425,15 @@ nsh&gt;
 [1] segmentation fault
 </code></pre></div>
 <p><em>Maybe we got the Wrong Interrupt Number?</em></p>
-<p>We check our <a href="TODO"><strong>NuttX Config</strong></a> for UART Interrupt…</p>
+<p>We check our <a href="TODO"><strong>NuttX Config</strong></a> for UART Interrupt: <a href="TODO">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX IRQ for UART0 is 69
 CONFIG_16550_UART0_IRQ=69
 </code></pre></div>
 <p>Which says…</p>
 <ul>
 <li>
-<p><a href="TODO"><strong>NuttX IRQ Offset</strong></a> is <strong>25</strong></p>
-</li>
-<li>
-<p>Hence <strong>RISC-V IRQ</strong> is 69 - 25 = <strong>44</strong></p>
+<p><strong>RISC-V IRQ</strong> is 69 - 25 = <strong>44</strong></p>
+<p><a href="TODO">(25 is the <strong>NuttX IRQ Offset</strong>)</a></p>
 </li>
 <li>
 <p>Which matches the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>SG2000 Reference Manual</strong></a> (Page 13)…</p>
@@ -443,11 +442,12 @@ CONFIG_16550_UART0_IRQ=69
 </li>
 <li>
 <p>And matches the <strong>VirtIO IRQ</strong> in TinyEMU: <a href="https://github.com/lupyuen2/sg2000-emulator/blob/main/riscv_machine.c#L146-L158">riscv_machine.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define VIRTIO_IRQ 44  // UART0 IRQ
+<div class="example-wrap"><pre class="language-c"><code>// UART0 IRQ becomes VirtIO IRQ for TinyEMU
+#define VIRTIO_IRQ 44
 </code></pre></div></li>
 </ul>
 <p>Something seriously sinister is wrecking our rojak…</p>
-<p><img src="https://lupyuen.github.io/images/sg2000b-irq.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/sg2000b-irq.jpg" alt="TODO" /></p>
 <h1 id="increase-tinyemu-interrupts-to-64"><a class="doc-anchor" href="#increase-tinyemu-interrupts-to-64">§</a>8 Increase TinyEMU Interrupts to 64</h1>
 <p>After <a href="TODO"><strong>lots of headscratching</strong></a>: We discover that TinyEMU supports only <strong>32 RISC-V External Interrupts</strong>. Which is too few for our UART Controller! (IRQ 44)</p>
 <p>Here’s the original definition in TinyEMU: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L42-L66">riscv_machine.c</a></p>
