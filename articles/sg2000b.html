@@ -509,6 +509,7 @@ nsh&gt;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000-test.yml">(<strong>Complete Log</strong> is here)</a></p>
 <p><a href="https://gist.github.com/lupyuen/ac80b426f67ad38f6a59ae563b0ecb9f">(<strong>OSTest</strong> works OK too)</a></p>
+<p><a href="https://lupyuen.github.io/articles/tinyemu3#emulate-the-system-timer">(Why we <strong>Patch the Image</strong>)</a></p>
 <p><em>SG2000 Emulator seems slower than Ox64 BL808 Emulator?</em></p>
 <p>Yeah probably because SG2000 runs on <a href="https://github.com/lupyuen2/wip-nuttx/commit/bb4906c976e44a05237f91944844cd1c68ef5d5b"><strong>MTIMER Frequency of 25 MHz</strong></a>.</p>
 <p>When we execute <strong><code>sleep 10</code></strong>, it completes in 25 seconds. We might need to adjust the TinyEMU System Timer.</p>
@@ -608,7 +609,7 @@ expect {
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000-test.yml">(See the <strong>Automated Test Log</strong>)</a></p>
 <p><em>What about QEMU Emulator?</em></p>
-<p><strong>QEMU Emulator</strong> is way too complex to customise for SG2000. Instead we’re running QEMU Emulator for <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh64.yml"><strong>Daily Testing of NuttX QEMU</strong></a>.</p>
+<p><strong>QEMU Emulator</strong> is <a href="https://github.com/espressif/qemu"><strong>way too complex</strong></a> to customise for SG2000. Instead we’re running QEMU Emulator for <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh64.yml"><strong>Daily Testing of NuttX QEMU</strong></a>.</p>
 <p>(Also based on <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh64.yml"><strong>GitHub Actions</strong></a> with <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-nsh64.exp"><strong>Expect Scripting</strong></a>)</p>
 <p><em>Isn’t it safer to run Daily Tests on a Real SG2000 SBC?</em></p>
 <p>Oh yes we’re doing it too! (Pic below) Check out the article…</p>
