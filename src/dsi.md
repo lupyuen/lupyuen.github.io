@@ -726,6 +726,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Does this mean that all DCS Commands are sent over all 4 DSI Data Lanes? (Instead of DSI Lane 0 only)
 
+    __UPDATE:__ At Startup, DCS Commands are sent over DSI Lane 0. After Startup, Pixel Data is sent over Multiple DSI Data Lanes in Video Mode. Which means the Pixel Data is pushed as a continuous stream of Video Pixels, instead of plotting every pixel command by command.
+
 1.  Can we __receive data__ from ST7703?
 
     [(See this)](https://www.reddit.com/r/PINE64official/comments/xsteb3/comment/iqostm5/?utm_source=share&utm_medium=web2x&context=3)
