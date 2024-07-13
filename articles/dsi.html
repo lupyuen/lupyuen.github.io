@@ -687,6 +687,7 @@
 <li>
 <p>ST7703 always runs in <strong>DSI Video Mode</strong> (instead of Command Mode).</p>
 <p>Does this mean that all DCS Commands are sent over all 4 DSI Data Lanes? (Instead of DSI Lane 0 only)</p>
+<p><strong>UPDATE:</strong> At Startup, DCS Commands are sent over DSI Lane 0. After Startup, Pixel Data is sent over Multiple DSI Data Lanes in Video Mode. Which means the Pixel Data is pushed as a continuous stream of Video Pixels, instead of plotting every pixel command by command.</p>
 </li>
 <li>
 <p>Can we <strong>receive data</strong> from ST7703?</p>
