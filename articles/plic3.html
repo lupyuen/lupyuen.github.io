@@ -615,7 +615,7 @@ map_region(KSRAM_START, KSRAM_START, KSRAM_SIZE,
 mmu_ln_map_region(2, PGT_L2_VBASE, PGPOOL_START, PGPOOL_START, PGPOOL_SIZE,
   MMU_KDATA_FLAGS | MMU_THEAD_PMA_FLAGS);
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/67">(See the <strong>Pull Request for Ox64 and SG2000</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/12722">(See the <strong>Pull Request for Ox64 and SG2000</strong>)</a></p>
 <p><em>What about User Text and Data? For NuttX Apps?</em></p>
 <p>Yep they need to be explicitly cached too!</p>
 <p>This is how we cache the <strong>User Text and Data</strong>, by passing <strong>MMU_THEAD_PMA_FLAGS</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/benchmark4/arch/risc-v/src/common/riscv_addrenv.c#L302-L305">riscv_addrenv.c</a></p>
