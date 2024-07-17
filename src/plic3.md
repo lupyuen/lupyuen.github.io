@@ -659,7 +659,7 @@ mmu_ln_map_region(2, PGT_L2_VBASE, PGPOOL_START, PGPOOL_START, PGPOOL_SIZE,
   MMU_KDATA_FLAGS | MMU_THEAD_PMA_FLAGS);
 ```
 
-[(See the __Pull Request for Ox64 and SG2000__)](https://github.com/lupyuen2/wip-nuttx/pull/67)
+[(See the __Pull Request for Ox64 and SG2000__)](https://github.com/apache/nuttx/pull/12722)
 
 _What about User Text and Data? For NuttX Apps?_
 
