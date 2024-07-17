@@ -433,6 +433,12 @@ map PLIC as Interrupt L2
   // "0x9000..." means Strong Order (Bit 63) and Shareable (Bit 60) are set
 ```
 
+_If we don't specify MMU Caching for T-Head C906... Is MMU Caching enabled by default?_
+
+Nope, we need to __explicitly enable MMU Caching__ ourselves! Otherwise Memory Accesses (Kernel and Apps) will become [__really slooooow__](https://github.com/apache/nuttx/issues/12696)...
+
+- [__"MMU Caching for T-Head C906"__](https://lupyuen.github.io/articles/plic3#appendix-mmu-caching-for-t-head-c906)
+
 We test our patched code...
 
 __NOTE:__ T-Head MMU Flags (Strong Order / Shareable) are available only if OpenSBI has set the [__MAEE Bit in the MXSTATUS Register to 1__](https://github.com/lupyuen/nuttx-ox64#strangeness-in-ox64-bl808-plic). Otherwise the MMU will crash when we set the flags!
@@ -627,14 +633,16 @@ According to [__Linux Kernel__](https://github.com/torvalds/linux/blob/master/ar
 
 ```c
 // T-Head C906 MMU Extensions
-#define MMU_THEAD_SHAREABLE    (1ul << 60)
-#define MMU_THEAD_BUFFERABLE   (1ul << 61)
-#define MMU_THEAD_CACHEABLE    (1ul << 62)
+#define MMU_THEAD_SHAREABLE  (1ul << 60)
+#define MMU_THEAD_BUFFERABLE (1ul << 61)
+#define MMU_THEAD_CACHEABLE  (1ul << 62)
 
-// T-Head C906 MMU requires Kernel Memory to be explicitly cached
-#define MMU_THEAD_PMA_FLAGS    (MMU_THEAD_SHAREABLE | \
-                                MMU_THEAD_BUFFERABLE | \
-                                MMU_THEAD_CACHEABLE)
+// T-Head C906 MMU requires Kernel Memory
+// to be explicitly cached with these flags
+#define MMU_THEAD_PMA_FLAGS \
+  (MMU_THEAD_SHAREABLE | \
+   MMU_THEAD_BUFFERABLE | \
+   MMU_THEAD_CACHEABLE)
 ```
 
 Then we cache the __Kernel Text, Data and Heap__, by passing  __MMU_THEAD_PMA_FLAGS__: [bl808_mm_init.c](https://github.com/lupyuen2/wip-nuttx/blob/benchmark5/arch/risc-v/src/bl808/bl808_mm_init.c#L268-L290)
@@ -642,16 +650,42 @@ Then we cache the __Kernel Text, Data and Heap__, by passing  __MMU_THEAD_PMA_FL
 ```c
 // Cache the Kernel Text, Data and Page Pool
 map_region(KFLASH_START, KFLASH_START, KFLASH_SIZE,
-            MMU_KTEXT_FLAGS | MMU_THEAD_PMA_FLAGS);
+  MMU_KTEXT_FLAGS | MMU_THEAD_PMA_FLAGS);
+
 map_region(KSRAM_START, KSRAM_START, KSRAM_SIZE,
-            MMU_KDATA_FLAGS | MMU_THEAD_PMA_FLAGS);
+  MMU_KDATA_FLAGS | MMU_THEAD_PMA_FLAGS);
+
 mmu_ln_map_region(2, PGT_L2_VBASE, PGPOOL_START, PGPOOL_START, PGPOOL_SIZE,
-                  MMU_KDATA_FLAGS | MMU_THEAD_PMA_FLAGS);
+  MMU_KDATA_FLAGS | MMU_THEAD_PMA_FLAGS);
 ```
 
-[(See the __Pull Request__)](https://github.com/lupyuen2/wip-nuttx/pull/67)
+[(See the __Pull Request for Ox64 and SG2000__)](https://github.com/lupyuen2/wip-nuttx/pull/67)
 
-TODO
+_What about User Text and Data? For NuttX Apps?_
+
+Yep they need to be explicitly cached too!
+
+This is how we cache the __User Text and Data__, by passing __MMU_THEAD_PMA_FLAGS__: [riscv_addrenv.c](https://github.com/lupyuen2/wip-nuttx/blob/benchmark4/arch/risc-v/src/common/riscv_addrenv.c#L302-L305)
+
+```c
+// For NuttX Apps: Map the Virtual Address
+// to the Physical Address
+// and cache the User Memory Space
+mmu_ln_setentry(ptlevel + 1, ptlast, paddr, vaddr,
+  mmuflags | MMU_THEAD_PMA_FLAGS);
+```
+
+[(See the __Pull Request for Ox64 and SG2000__)](https://github.com/lupyuen2/wip-nuttx/pull/66/files)
+
+_Does MMU Caching affect NuttX Performance?_
+
+Really it does!
+
+- SG2000 CoreMark __without MMU Caching:__ __`21`__
+
+- SG2000 CoreMark __with MMU Caching__: __`2,422`__
+
+  [(More about this)](https://github.com/apache/nuttx/issues/12696#issuecomment-2232279326)
 
 ![UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!](https://lupyuen.github.io/images/plic3-title.png)
 
