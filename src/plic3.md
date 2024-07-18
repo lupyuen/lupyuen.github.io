@@ -702,7 +702,7 @@ int up_addrenv_create(...) {
   ret = create_region(addrenv, heapbase, heapsize, UDATA_ALLFLAGS);
 ```
 
-[(See the __Pull Request for Ox64 and SG2000__)](https://github.com/lupyuen2/wip-nuttx/pull/69)
+[(See the __Pull Request for Ox64 and SG2000__)](https://github.com/apache/nuttx/pull/12727)
 
 _Why specify the Upper 32 Bits for Extra MMU Flags? Why not Upper 5 Bits?_
 
