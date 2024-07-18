@@ -629,7 +629,7 @@ _If we don't specify MMU Caching for T-Head C906... Is MMU Caching enabled by de
 
 Nope, we need to __explicitly enable MMU Caching__ ourselves! Otherwise Memory Accesses (Kernel and Apps) will become [__really slooooow__](https://github.com/apache/nuttx/issues/12696).
 
-According to [__Linux Kernel__](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L124-L140), this is how we define the __Cache Flags for T-Head C906__: [bl808_mm_init.c](https://github.com/lupyuen2/wip-nuttx/blob/benchmark5/arch/risc-v/src/bl808/bl808_mm_init.c#L42-L60)
+According to [__Linux Kernel__](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L124-L140), this is how we define the __Cache Flags for T-Head C906__: [bl808_mm_init.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L42-L60)
 
 ```c
 // T-Head C906 MMU Extensions
@@ -645,7 +645,7 @@ According to [__Linux Kernel__](https://github.com/torvalds/linux/blob/master/ar
    MMU_THEAD_CACHEABLE)
 ```
 
-Then we cache the __Kernel Text, Data and Heap__, by passing  __MMU_THEAD_PMA_FLAGS__: [bl808_mm_init.c](https://github.com/lupyuen2/wip-nuttx/blob/benchmark5/arch/risc-v/src/bl808/bl808_mm_init.c#L268-L290)
+Then we cache the __Kernel Text, Data and Heap__, by passing  __MMU_THEAD_PMA_FLAGS__: [bl808_mm_init.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L268-L290)
 
 ```c
 // Cache the Kernel Text, Data and Page Pool
@@ -665,17 +665,54 @@ _What about User Text and Data? For NuttX Apps?_
 
 Yep they need to be explicitly cached too!
 
-This is how we cache the __User Text and Data__, by passing __MMU_THEAD_PMA_FLAGS__: [riscv_addrenv.c](https://github.com/lupyuen2/wip-nuttx/blob/benchmark4/arch/risc-v/src/common/riscv_addrenv.c#L302-L305)
+This is how we cache the __User Text and Data__, by setting the __Extra MMU Flags__ in NuttX Config: [nsh/defconfig](https://github.com/lupyuen2/wip-nuttx/blob/benchmark7/boards/risc-v/bl808/ox64/configs/nsh/defconfig)
 
-```c
-// For NuttX Apps: Map the Virtual Address
-// to the Physical Address
-// and cache the User Memory Space
-mmu_ln_setentry(ptlevel + 1, ptlast, paddr, vaddr,
-  mmuflags | MMU_THEAD_PMA_FLAGS);
+```bash
+## Upper 32 bits of the Extra MMU flags for User Data and Heap.
+## Used for Svpbmt and T-Head MMU. 0x70000000 enables the 
+## Shareable, Bufferable and Cacheable flags for T-Head MMU.
+CONFIG_ARCH_MMU_UDATA_EXTRAFLAGS=0x70000000
+
+## Same as above, but for User Text
+CONFIG_ARCH_MMU_UTEXT_EXTRAFLAGS=0x70000000
 ```
 
-[(See the __Pull Request for Ox64 and SG2000__)](https://github.com/lupyuen2/wip-nuttx/pull/66/files)
+(Note that `0x70000000 << 32` becomes __MMU_THEAD_PMA_FLAGS__)
+
+Then NuttX Kernel __injects the Extra MMU Flags__ into the MMU Page Tables for User Text, Data and Heap: [riscv_addrenv.c](https://github.com/lupyuen2/wip-nuttx/blob/benchmark7/arch/risc-v/src/common/riscv_addrenv.c#L93-L481)
+
+```c
+// Inject the Extra MMU Flags for User Text and Data (Svpbmt / T-Head MMU)
+#define UTEXT_EXTRAFLAGS ((uint64_t)CONFIG_ARCH_MMU_UTEXT_EXTRAFLAGS << 32)
+#define UDATA_EXTRAFLAGS ((uint64_t)CONFIG_ARCH_MMU_UDATA_EXTRAFLAGS << 32)
+#define UTEXT_ALLFLAGS (MMU_UTEXT_FLAGS | UTEXT_EXTRAFLAGS)
+#define UDATA_ALLFLAGS (MMU_UDATA_FLAGS | UDATA_EXTRAFLAGS)
+
+// When we create the Address Environment for a New User Task...
+int up_addrenv_create(...) {
+  ...
+  // Map the Reserved Area, User Text, User Data and User Heap
+  // injected with our Extra MMU Flags
+  ret = create_region(addrenv, resvbase, resvsize, UDATA_ALLFLAGS);
+  ...
+  ret = create_region(addrenv, textbase, textsize, UTEXT_ALLFLAGS);
+  ...
+  ret = create_region(addrenv, database, datasize, UDATA_ALLFLAGS);
+  ...
+  ret = create_region(addrenv, heapbase, heapsize, UDATA_ALLFLAGS);
+```
+
+[(See the __Pull Request for Ox64 and SG2000__)](https://github.com/lupyuen2/wip-nuttx/pull/69)
+
+_Why specify the Upper 32 Bits for Extra MMU Flags? Why not Upper 5 Bits?_
+
+Well we need to handle (non-standard) T-Head MMU Flags and (standard) Svpbmt MMU Flags. According to [__Linux Kernel__](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L112-L140)...
+
+- __T-Head MMU Flags__ are in __Bits 59 to 63__ (upper 5 bits)
+
+- __Svpbmt MMU Flags__ are in __Bits 61 and 62__ (upper 3 bits)
+
+Since T-Head and Svpbmt disagree on the MMU Bits (and we may have more MMU Bits in future), let's take the Upper 32 Bits.
 
 _Does MMU Caching affect NuttX Performance?_
 
