@@ -704,6 +704,10 @@ int up_addrenv_create(...) {
 
 [(See the __Pull Request for Ox64 and SG2000__)](https://github.com/apache/nuttx/pull/12727)
 
+__UPDATE:__ Sorry I'm in a distracted state right now, I can't redo the above Pull Request because my top priority is Google Summer of Code for the next 4 weeks.
+
+If someone would like to redo the above Pull Request on my behalf... Thank you so much! 🙏
+
 _Why specify the Upper 32 Bits for Extra MMU Flags? Why not Upper 5 Bits?_
 
 Well we need to handle (non-standard) T-Head MMU Flags and (standard) Svpbmt MMU Flags. According to [__Linux Kernel__](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L112-L140)...
