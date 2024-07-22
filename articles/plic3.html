@@ -649,6 +649,8 @@ int up_addrenv_create(...) {
   ret = create_region(addrenv, heapbase, heapsize, UDATA_ALLFLAGS);
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/12727">(See the <strong>Pull Request for Ox64 and SG2000</strong>)</a></p>
+<p><strong>UPDATE:</strong> Sorry I’m in a distracted state right now, I can’t redo the above Pull Request because my top priority is Google Summer of Code for the next 4 weeks.</p>
+<p>If someone would like to redo the above Pull Request on my behalf… Thank you so much! 🙏</p>
 <p><em>Why specify the Upper 32 Bits for Extra MMU Flags? Why not Upper 5 Bits?</em></p>
 <p>Well we need to handle (non-standard) T-Head MMU Flags and (standard) Svpbmt MMU Flags. According to <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L112-L140"><strong>Linux Kernel</strong></a>…</p>
 <ul>
