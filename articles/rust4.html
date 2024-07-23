@@ -72,7 +72,8 @@
 <li><a href="#nuttx-links-ok-with-rust">5 NuttX Links OK with Rust</a><ul></ul></li>
 <li><a href="#rust-build-for-64-bit-risc-v">6 Rust Build for 64-bit RISC-V</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-rust-compiler-options">8 Appendix: Rust Compiler Options</a><ul></ul></li></ul></nav><p>📝 <em>21 Apr 2024</em></p>
+<li><a href="#appendix-build-nuttx-for-qemu">8 Appendix: Build NuttX for QEMU</a><ul></ul></li>
+<li><a href="#appendix-rust-compiler-options">9 Appendix: Rust Compiler Options</a><ul></ul></li></ul></nav><p>📝 <em>21 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust4-title.jpg" alt="Rust Apps on Apache NuttX RTOS and QEMU RISC-V" /></p>
 <div style="text-align: center">
 <p><a href="https://github.com/Swordfish90/cool-retro-term"><em>Thanks to cool-retro-term!</em></a></p>
@@ -665,10 +666,153 @@ RUSTC:  hello_rust_main.rs error: Error loading target specification:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust4.md"><strong>lupyuen.github.io/src/rust4.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/rust4-flow.jpg" alt="Build NuttX for QEMU with Rust App" /></p>
+<h1 id="appendix-build-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-build-nuttx-for-qemu">§</a>8 Appendix: Build NuttX for QEMU</h1>
+<p>Follow these steps to build <strong>NuttX for QEMU Emulator</strong> (32-bit RISC-V) bundled with our <strong>Rust App</strong> (pic above)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
+#  Build NuttX for QEMU RISC-V 32-bit with Rust App
+
+## TODO: Set PATH
+export PATH=&quot;$HOME/xpack-riscv-none-elf-gcc-13.2.0-2/bin:$PATH&quot;
+
+set -e  #  Exit when any command fails
+set -x  #  Echo commands
+
+## Build NuttX
+function build_nuttx {
+
+  ## Go to NuttX Folder
+  pushd ../nuttx
+
+  ## Build NuttX
+  make -j 8
+
+  ## Return to previous folder
+  popd
+}
+
+## Build Rust App for QEMU RISC-V 32-bit with Rust Custom Target
+function build_rust_riscv32 {
+
+  ## Go to NuttX Folder
+  pushd ../nuttx
+
+  ## Download our Custom Target for `riscv32gc`
+  rm -f riscv32gc-unknown-none-elf.json
+  wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
+
+  ## Custom Target needs Nightly Build of Rust Compiler
+  rustup override set nightly
+  rustup component add rust-src --toolchain nightly
+
+  ## Verify our Custom Target, make sure it&#39;s OK
+  rustc \
+    --print cfg \
+    --target riscv32gc-unknown-none-elf.json
+
+  ## `cargo build` requires a Rust Project, so we create an empty one.
+  ## If the Rust Project exists, erase the binaries.
+  ## Ignore the error: `app already exists`
+  cargo new app || true
+
+  ## Build the Rust Core Library for `riscv32gc`
+  ## Include the `alloc` library, which will support Heap Memory in future.
+  ## Ignore the error: `can&#39;t find crate for std`
+  pushd app
+  cargo build \
+    -Zbuild-std=core,alloc \
+    --target ../riscv32gc-unknown-none-elf.json \
+    || true
+  popd
+
+  ## Compile our Rust App with Rust Core Library for `riscv32gc`
+  ## We changed the Target to `riscv32gc-unknown-none-elf.json`
+  rustc \
+    --target riscv32gc-unknown-none-elf.json \
+    --edition 2021 \
+    --emit obj \
+    -g \
+    -C panic=abort \
+    -O \
+    ../apps/examples/hello_rust/hello_rust_main.rs \
+    -o ../apps/examples/hello_rust/*hello_rust.o \
+    \
+    -C incremental=app/target/riscv32gc-unknown-none-elf/debug/incremental \
+    -L dependency=app/target/riscv32gc-unknown-none-elf/debug/deps \
+    -L dependency=app/target/debug/deps \
+    --extern noprelude:alloc=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-*.rlib` \
+    --extern noprelude:compiler_builtins=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-*.rlib` \
+    --extern noprelude:core=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-*.rlib` \
+    -Z unstable-options
+
+  ## NuttX Build need us to copy hello_rust.o to hello_rust_1.o
+  cp \
+    ../apps/examples/hello_rust/*hello_rust.o \
+    ../apps/examples/hello_rust/*hello_rust_1.o
+
+  ## Return to previous folder
+  popd
+}
+
+## Configure build
+make distclean || true
+tools/configure.sh rv-virt:leds || true
+
+## Enable Hello Rust App
+kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST
+
+## Update the Kconfig Dependencies
+make olddefconfig
+
+## Build NuttX with Rust Apps
+build_nuttx || true
+build_rust_riscv32
+
+## Build NuttX
+build_nuttx
+
+## Show the size
+riscv-none-elf-size nuttx
+
+## Export the Binary Image to nuttx.bin
+riscv-none-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
+
+## Copy the config
+cp .config nuttx.config
+
+## Dump the NuttX Kernel Disassembly to nuttx.S
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
+
+## Dump the Rust App Disassembly to hello_rust_1.S
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/examples/hello_rust/*1.o \
+  &gt;hello_rust_1.S \
+  2&gt;&amp;1
+
+## Start the emulator
+qemu-system-riscv32 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv32 \
+  -kernel nuttx \
+  -nographic \
+  -bios none \
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/69da35a027cf780680944010b4a85fe7">(See the <strong>Build Script</strong>)</a></p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/rust4-flow1b.jpg" alt="Building our Rust App" /></p>
 </blockquote>
-<h1 id="appendix-rust-compiler-options"><a class="doc-anchor" href="#appendix-rust-compiler-options">§</a>8 Appendix: Rust Compiler Options</h1>
+<h1 id="appendix-rust-compiler-options"><a class="doc-anchor" href="#appendix-rust-compiler-options">§</a>9 Appendix: Rust Compiler Options</h1>
 <p><em>How did we get the Rust Compiler Options for riscv32gc?</em></p>
 <p>Earlier we compiled our Rust App with Rust Core Library for <strong><code>riscv32gc</code></strong>…</p>
 <ul>
