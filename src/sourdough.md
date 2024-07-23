@@ -66,6 +66,8 @@ Add in this sequence to Bread Bucket (pic above)...
 
 -   1 stick (21g) [__Unisoy Soy Matcha Powder__](https://www.unisoy.com.sg/unisoy-gold-nutritious-soy-matcha)
 
+    Inside Bread Bucket: Stir the powder with a spoon to dissolve.
+
 -   1.5 cups __Bread Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-bread-flour/)
 
 -   All of the __Wholemeal Sourdough Starter__ (from above)
