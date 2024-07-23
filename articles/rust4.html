@@ -769,11 +769,13 @@ kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST
 ## Update the Kconfig Dependencies
 make olddefconfig
 
-## Build NuttX with Rust Apps
+## Build NuttX. Ignore the error: `can&#39;t link soft-float modules with double-float modules`
 build_nuttx || true
+
+## Build the Rust App with Custom Target
 build_rust_riscv32
 
-## Build NuttX
+## Link the Rust App with NuttX
 build_nuttx
 
 ## Show the size
