@@ -437,26 +437,30 @@ error[E0463]: can&#39;t find crate for `core`
 rm -f riscv32gc-unknown-none-elf.json
 wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
 
+## Custom Target needs Nightly Build of Rust Compiler
+rustup override set nightly
+rustup component add rust-src --toolchain nightly
+
 ## Verify our Custom Target, make sure it&#39;s OK
 rustc \
   --print cfg \
   --target riscv32gc-unknown-none-elf.json
 
 ## `cargo build` requires a Rust Project, so we create an empty one.
-## If the Rust Project exists, erase the binaries.
 ## Ignore the error: `app already exists`
-cargo new app
-pushd app
-cargo clean
+cargo new app || true
 
 ## Build the Rust Core Library for `riscv32gc`
 ## Include the `alloc` library, which will support Heap Memory in future.
 ## Ignore the error: `can&#39;t find crate for std`
+pushd app
 cargo build \
   -Zbuild-std=core,alloc \
-  --target ../riscv32gc-unknown-none-elf.json
+  --target ../riscv32gc-unknown-none-elf.json \
+  || true
 popd
 </code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/rust4#appendix-build-nuttx-for-qemu">(See the <strong>Build Script</strong>)</a></p>
 <p><strong>Rust Core Library</strong> for Double-Float <strong><code>riscv32gc</code></strong> is done!</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Show the Rust Core Library for `riscv32gc`
 $ ls app/target/riscv32gc-unknown-none-elf/debug/deps 
@@ -497,6 +501,7 @@ rustc \
   --extern noprelude:core=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-*.rlib` \
   -Z unstable-options
 </code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/rust4#appendix-build-nuttx-for-qemu">(See the <strong>Build Script</strong>)</a></p>
 <p>(We’ll talk about the loooong options)</p>
 <p><em>Are we Double-Floating yet?</em></p>
 <p>Yep we have a <strong>Yummy Double-Float</strong> with 2 scoops of ice cream…</p>
@@ -544,6 +549,7 @@ pushd ../nuttx
 make
 popd
 </code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/rust4#appendix-build-nuttx-for-qemu">(See the <strong>Build Script</strong>)</a></p>
 <p>We boot <strong>NuttX in QEMU Emulator</strong> for 32-bit RISC-V…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS:
 brew install qemu
@@ -754,11 +760,11 @@ function build_rust_riscv32 {
   popd
 }
 
-## Configure build
-make distclean || true
-tools/configure.sh rv-virt:leds || true
+## Configure the NuttX Build
+make distclean
+tools/configure.sh rv-virt:nsh
 
-## Enable Hello Rust App
+## Enable the Hello Rust App
 kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST
 
 ## Update the Kconfig Dependencies
