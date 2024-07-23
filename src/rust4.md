@@ -773,7 +773,6 @@ function build_rust_riscv32 {
     --target riscv32gc-unknown-none-elf.json
 
   ## `cargo build` requires a Rust Project, so we create an empty one.
-  ## If the Rust Project exists, erase the binaries.
   ## Ignore the error: `app already exists`
   cargo new app || true
 
@@ -868,7 +867,7 @@ qemu-system-riscv32 \
   -cpu rv32 \
   -kernel nuttx \
   -nographic \
-  -bios none \
+  -bios none
 ```
 
 [(See the __Build Script__)](https://gist.github.com/lupyuen/69da35a027cf780680944010b4a85fe7)
@@ -917,24 +916,27 @@ Remember we ran [__`cargo` `build`__](https://lupyuen.github.io/articles/rust4#b
 rm -f riscv32gc-unknown-none-elf.json
 wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
 
+## Custom Target needs Nightly Build of Rust Compiler
+rustup override set nightly
+rustup component add rust-src --toolchain nightly
+
 ## Verify our Custom Target, make sure it's OK
 rustc \
   --print cfg \
   --target riscv32gc-unknown-none-elf.json
 
 ## `cargo build` requires a Rust Project, so we create an empty one.
-## If the Rust Project exists, erase the binaries.
 ## Ignore the error: `app already exists`
-cargo new app
-pushd app
-cargo clean
+cargo new app || true
 
 ## Build the Rust Core Library for `riscv32gc`
 ## Include the `alloc` library, which will support Heap Memory in future.
 ## Ignore the error: `can't find crate for std`
+pushd app
 cargo build \
   -Zbuild-std=core,alloc \
-  --target ../riscv32gc-unknown-none-elf.json
+  --target ../riscv32gc-unknown-none-elf.json \
+  || true
 popd
 ```
 
