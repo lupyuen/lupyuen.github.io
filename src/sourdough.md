@@ -22,7 +22,7 @@ __Warning:__ We're still tweaking the recipe below for Hot and Humid Singapore..
 
 - See below for the [__pH and Temperature Readings__](https://lupyuen.github.io/articles/sourdough#ph-and-temperature-readings)
 
-![Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough34.jpg)
+![Food pH Meter](https://lupyuen.github.io/images/sourdough34.jpg)
 
 # Wholemeal Sourdough Starter
 
@@ -64,7 +64,7 @@ Add in this sequence to Bread Bucket (pic above)...
 
     Inside Bread Bucket: Crush Butter into small bits with a spoon.
 
--   1 stick (21g) __Unisoy Soy Matcha Powder__
+-   1 stick (21g) [__Unisoy Soy Matcha Powder__](https://www.unisoy.com.sg/unisoy-gold-nutritious-soy-matcha)
 
 -   1.5 cups __Bread Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-bread-flour/)
 
@@ -90,7 +90,7 @@ We will __knead the dough__ in the Bread Machine, move the Bread Bucket to the F
 
     Here's how: Tilt the Bread Bucket to one side, scrape the dough off the Paddle with a wooden chopstick, remove the Paddle.
 
-1.  Inside the Bread Bucket: With dry hands (dusted with some bread flour), [__Stretch and Fold__](https://www.the-sourdough-framework.com/Wheatsourdough.html#stretch-and-folds) the dough one round: North, South, East, West
+1.  Inside the Bread Bucket: With dry hands (dusted with Bread Flour), [__Stretch and Fold__](https://www.the-sourdough-framework.com/Wheatsourdough.html#stretch-and-folds) the dough one round: North, South, East, West
 
     (Be careful not to expel the gas!)
 
@@ -112,7 +112,7 @@ _(TODO: Actually the dough is dryer, firmer, rounder than the pic above. Dryer d
 
     Rise for 1 hour.
 
-1.  Inside the Bread Bucket: With dry hands (dusted with some bread flour), [__Stretch and Fold__](https://www.the-sourdough-framework.com/Wheatsourdough.html#stretch-and-folds) the dough one round: North, South, East, West
+1.  Inside the Bread Bucket: With dry hands (dusted with Bread Flour), [__Stretch and Fold__](https://www.the-sourdough-framework.com/Wheatsourdough.html#stretch-and-folds) the dough one round: North, South, East, West
 
     (Be careful not to expel the gas!)
 
@@ -130,19 +130,23 @@ _(TODO: Actually the dough is dryer, firmer, rounder than the pic above. Dryer d
 
 1.  Why alternate Fridge and Oven? In Hot and Humid Singapore: This seems to prevent our dough from getting [__Overfermented, Sour and Gummy__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented))
 
+![Bake the dough](https://lupyuen.github.io/images/sourdough36.jpg)
+
 # Bake the Dough
+
+On the Morning of Baking...
 
 1.  Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with __"French Bread"__ Cycle (5 hour cycle) WITHOUT the Bread Bucket.
 
     Bread Machine will try to knead without the Bread Bucket. And that's OK.
 
-1.  __3 hours__ after starting "French Bread" Cycle: __Move the Bread Bucket__ from Fridge into the Bread Machine. (Pic below)
+1.  __3 hours__ after starting "French Bread" Cycle: __Move the Bread Bucket__ from Fridge into the Bread Machine. (Pic above)
 
     Yes the dough will be cold, slightly frozen.
 
 1.  "French Bread" Cycle will __warm up and rise__ the dough for 1/2 hour.
 
-    Then "French Bread" Cycle will bake for 1.5 hours. (Pic below)
+    Then "French Bread" Cycle will bake for 1.5 hours. (Pic above)
 
     [(French Bread Mode is explained on Page 17)](https://www.zojirushi.com/servicesupport/manuals/manual_pdf/bb_hac10.pdf)
 
@@ -156,13 +160,13 @@ Yep it's __8 hours rising__ plus __1.5 hours baking__, instead of the normal 5-h
 
 But remember not to [__overferment__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented)!
 
-![Bake the dough](https://lupyuen.github.io/images/sourdough36.jpg)
+![Food pH Meter](https://lupyuen.github.io/images/sourdough34.jpg)
 
 # pH and Temperature Readings
 
-A [__Food pH Meter__](https://shp.ee/1rt7sae) is super helpful!
+A [__Food pH Meter__](https://shp.ee/1rt7sae) is super helpful! (Pic above)
 
-We should target to End the Fermentation at __pH 3.9__, while maintaining Temperature at __25 deg C__ to prevent [__Overfermentation__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented)...
+To prevent [__Overfermentation__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented): We target to End the Fermentation at __pH 3.9__, while maintaining Temperature at __25 deg C__ ...
 
 | Time | pH | degC | Comment |
 |:----:|:--:|:----:|:--------|
