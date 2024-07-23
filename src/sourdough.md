@@ -1,30 +1,26 @@
 # Recipe for Wholemeal Sourdough with Bread Machine
 
-📝 _12 Apr 2024_
+📝 _23 Jul 2024_
 
-![Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough26.jpg)
+![Matcha Soy Sourdough](https://lupyuen.github.io/images/sourdough35.jpg)
 
 [(Adapted from __"The Sourdough Framework"__)](https://www.the-sourdough-framework.com/)
 
 [(Watch the __Video on YouTube__)](https://www.youtube.com/shorts/6yqyACMUxOk)
 
-__Warning:__ Sorry the recipe below has issues...
-
-- Not Gonna Lie ("NGL") the Baked Sourdough feels somewhat Gummy and Damp
+__Warning:__ We're still tweaking the recipe below for Hot and Humid Singapore...
 
 - Is it [__Overfermented__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented)? Or [__pH Level__](https://www.the-sourdough-framework.com/Wheatsourdough.html#bulk-fermentation) too acidic? Let's get a [__Food pH Meter__](https://shp.ee/1rt7sae) and verify!
 
 - Our Sourdough Dough should begin [__fermenting at pH 6.0__](https://www.the-sourdough-framework.com/Wheatsourdough.html#bulk-fermentation). Then shortly before baking it should have pH 4.0.
 
-- We'll hack the sourdough, __"be-new and improve"__ the recipe
+- We're still hacking the sourdough, __"be-new and improve"__ the recipe with a pH Meter
 
   (Normally we'll "debug" but Bugs and Food don't mix! And "troubleshoot" sounds a little... violent)
 
-- This recipe is less gummy: 2/3 cup water, 2.5 cups bread flour, no wholegrain flour, no baking soda. Rise slowly over 8 hours, chill in fridge overnight.
-
 - My deepest apologies to the folks who taste and test all my awful sourdough creations. Luv you!
 
-- TODO: See the [__pH and Temperature Readings__](https://lupyuen.github.io/articles/sourdough#ph-and-temperature-readings). Does the Food pH Meter help?
+- See below for the [__pH and Temperature Readings__](https://lupyuen.github.io/articles/sourdough#ph-and-temperature-readings)
 
 ![Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough34.jpg)
 
@@ -42,17 +38,15 @@ Daily routine for __Sourdough Starter__, assuming that we bake every other day..
     
     -   1/4 cup __Boiled Water__ at Room Temperature. Consistency should be like thick oatmeal, so it will rise better.
 
-    Except for the __night before dough-making__, increase to:
+    Except for the __morning of dough-making__, increase to:
 
     -   3/4 cups __Superfine Wholegrain Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-superfine-wholegrain-flour/)
     
-    -   1/4 cup __Boiled Water__ at Room Temperature. Consistency should be like thick oatmeal, so it will rise better.
+    -   1/2 cup __Boiled Water__ at Room Temperature. Consistency should be like thick oatmeal, so it will rise better.
 
 -   Stir the Sourdough Starter with a chopstick (the blunt end)
 
--   __Every Other Morning:__ Sourdough Starter should double in height by morning, ready for dough-making. (Pic above)
-
-    Later we'll use __Half of the Starter__. Use 2 Rubber Bands to Halve the Starter. (Pic above)
+-   __Every Other Afternoon:__ Sourdough Starter should double in height by afternoon, ready for dough-making. (Pic above)
 
 -   Wipe clean the inside of the Sourdough Jar whenever we discard Sourdough Starter
 
@@ -60,21 +54,21 @@ Daily routine for __Sourdough Starter__, assuming that we bake every other day..
 
 # Mix the Dough
 
-__Every Other Morning:__ we prepare the dough for a One-Pound Loaf of Sourdough Bread.
+__Every Other After:__ we prepare the dough for a Half-Pound Loaf of Sourdough Bread.
 
-Add in this sequence to Bread Machine (pic above)...
+Add in this sequence to Bread Bucket (pic above)...
 
--   1 tablespoon (14g) __Cold Unsalted Butter__ (from fridge)
+-   1/2 cup __Boiled Water__ at Room Temperature
 
--   2/3 cup __Boiled Water__ at Room Temperature
+-   1 tablespoon (14g) __Cold Salted Butter__ (from fridge)
 
--   2.5 cups (318g) __Bread Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-bread-flour/)
+    Inside Bread Bucket: Crush Butter into small bits with a spoon.
 
--   1/2 teaspoon (2.8g) __Salt__
+-   1 stick (21g) __Unisoy Soy Matcha Powder__
 
--   Half of the __Wholemeal Sourdough Starter__ (from above)
+-   1.5 cups __Bread Flour__ [(Prima)](https://www.primaflour.com/product-description/primaflour-bread-flour/)
 
-    (Use 2 Rubber Bands to Halve the Starter)
+-   All of the __Wholemeal Sourdough Starter__ (from above)
 
 ![Knead the dough](https://lupyuen.github.io/images/sourdough29.jpg)
 
@@ -82,7 +76,7 @@ _(TODO: Actually the dough is dryer, firmer, rounder than the pic above. Dryer d
 
 # Knead the Dough
 
-We will __knead the dough__ in the Bread Machine, move the Bread Bucket to a Cool Oven to __rise the dough__ (4.5 hours), then move the Bread Bucket back to the Bread Machine for __more rising and baking__. Here are the steps...
+We will __knead the dough__ in the Bread Machine, move the Bread Bucket to the Fridge and Cool Oven to __rise the dough__, cool overnight in Fridge, then move the Bread Bucket back to the Bread Machine for __more rising and baking__. Here are the steps...
 
 1.  __To knead the dough:__ Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.com/app/product/bbhac) with __"Quick Baking"__ Cycle.
 
@@ -96,7 +90,7 @@ We will __knead the dough__ in the Bread Machine, move the Bread Bucket to a Coo
 
     Here's how: Tilt the Bread Bucket to one side, scrape the dough off the Paddle with a wooden chopstick, remove the Paddle.
 
-1.  Inside the Bread Bucket: With dry hands, [__Stretch and Fold__](https://www.the-sourdough-framework.com/Wheatsourdough.html#stretch-and-folds) the dough one round: North, South, East, West
+1.  Inside the Bread Bucket: With dry hands (dusted with some bread flour), [__Stretch and Fold__](https://www.the-sourdough-framework.com/Wheatsourdough.html#stretch-and-folds) the dough one round: North, South, East, West
 
     (Be careful not to expel the gas!)
 
@@ -110,11 +104,15 @@ _(TODO: Actually the dough is dryer, firmer, rounder than the pic above. Dryer d
 
 # Rise the Dough
 
+1.  Place the Bread Bucket in the Fridge (not the freezer!), and cover with a Dry Towel. 
+
+    Rest for 1 hour.
+
 1.  Place the Bread Bucket in a Cool Oven, and cover with a Dry Towel. (Pic above)
 
-    Allow the dough to rise for __2 hours__. The dough should reach __Half the Depth__ of the Bread Bucket. (Pic below)
+    Rise for 1 hour.
 
-1.  Inside the Bread Bucket: With dry hands, [__Stretch and Fold__](https://www.the-sourdough-framework.com/Wheatsourdough.html#stretch-and-folds) the dough one round: North, South, East, West
+1.  Inside the Bread Bucket: With dry hands (dusted with some bread flour), [__Stretch and Fold__](https://www.the-sourdough-framework.com/Wheatsourdough.html#stretch-and-folds) the dough one round: North, South, East, West
 
     (Be careful not to expel the gas!)
 
@@ -122,13 +120,15 @@ _(TODO: Actually the dough is dryer, firmer, rounder than the pic above. Dryer d
 
     Smooth over any holes, make the dough airtight. (Pic below)
 
-1.  __Stop the Fermentation:__ Place Ice Packs inside the oven to stop the fermentation. (Pic below)
+1.  Cool in Fridge for 1 hour, rise in Cool Oven for 1 hour, Stretch and Fold.
 
-    (Otherwise dough will become [__Overfermented, Sour and Gummy__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented))
+    Repeat this for a total of __4 times__.
 
-![Stretch and fold the dough while rising](https://lupyuen.github.io/images/sourdough31.jpg)
+1.  Chill the Bread Bucket in the __Fridge overnight__.
 
-_(TODO: Actually the dough is dryer, firmer, rounder than the pic above. Dryer dough is easier to manage, less risk of overfermentation)_
+    We'll bake in the morning.
+
+1.  Why alternate Fridge and Oven? In Hot and Humid Singapore: This seems to prevent our dough from getting [__Overfermented, Sour and Gummy__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented))
 
 # Bake the Dough
 
@@ -136,15 +136,11 @@ _(TODO: Actually the dough is dryer, firmer, rounder than the pic above. Dryer d
 
     Bread Machine will try to knead without the Bread Bucket. And that's OK.
 
-1.  __1 hour__ after starting "French Bread" Cycle: __Stretch and fold__ like earlier. Pat and rotate the dough. Return to Cool Oven with Ice Packs.
+1.  __3 hours__ after starting "French Bread" Cycle: __Move the Bread Bucket__ from Fridge into the Bread Machine. (Pic below)
 
-    (Notice the big bubbles)
+    Yes the dough will be cold, slightly frozen.
 
-    ![Stretch and fold the dough one last time](https://lupyuen.github.io/images/sourdough32.jpg)
-
-1.  __2.5 hours__ after starting "French Bread" Cycle: __Move the Bread Bucket__ from Oven into the Bread Machine. (Pic below)
-
-1.  "French Bread" Cycle will __warm up and rise__ the dough for 1 hour. (Reaching the Notches in the Bread Bucket, pic below)
+1.  "French Bread" Cycle will __warm up and rise__ the dough for 1/2 hour.
 
     Then "French Bread" Cycle will bake for 1.5 hours. (Pic below)
 
@@ -156,13 +152,17 @@ _(TODO: Actually the dough is dryer, firmer, rounder than the pic above. Dryer d
 
     Our loaf will plop out from the Bread Bucket. Don't shake the Bread Bucket too hard, because the loaf will tear with a circular hole.
 
-Yep it's __5.5 hours rising__ plus __1.5 hours baking__, instead of the normal 5-hour "French Bread" Mode! This gives the dough plenty of time to rise, for the extra bubbly floofiness.
+Yep it's __8 hours rising__ plus __1.5 hours baking__, instead of the normal 5-hour "French Bread" Mode! This gives the dough plenty of time to rise, for the extra bubbly floofiness.
 
 But remember not to [__overferment__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented)!
 
-![Bake the dough](https://lupyuen.github.io/images/sourdough33.jpg)
+![Bake the dough](https://lupyuen.github.io/images/sourdough36.jpg)
 
 # pH and Temperature Readings
+
+A [__Food pH Meter__](https://shp.ee/1rt7sae) is super helpful!
+
+We should target to End the Fermentation at __pH 3.9__, while maintaining Temperature at __25 deg C__ to prevent [__Overfermentation__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented)...
 
 | Time | pH | degC | Comment |
 |:----:|:--:|:----:|:--------|
@@ -176,7 +176,7 @@ But remember not to [__overferment__](https://www.the-sourdough-framework.com/Tr
 | 910pm | 3.9 | 27.7 | Stretch and fold
 | 1000pm | | | Chill overnight in fridge
 
-Total 7 hours of rising
+(Captured based on an earlier recipe with Ice Packs in Oven)
 
 # Okinawa Black Sugar Sourdough
 
