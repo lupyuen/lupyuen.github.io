@@ -448,26 +448,31 @@ We call Rust Compiler to build the __Rust Core Library__ for Double-Float __`ris
 rm -f riscv32gc-unknown-none-elf.json
 wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
 
+## Custom Target needs Nightly Build of Rust Compiler
+rustup override set nightly
+rustup component add rust-src --toolchain nightly
+
 ## Verify our Custom Target, make sure it's OK
 rustc \
   --print cfg \
   --target riscv32gc-unknown-none-elf.json
 
 ## `cargo build` requires a Rust Project, so we create an empty one.
-## If the Rust Project exists, erase the binaries.
 ## Ignore the error: `app already exists`
-cargo new app
-pushd app
-cargo clean
+cargo new app || true
 
 ## Build the Rust Core Library for `riscv32gc`
 ## Include the `alloc` library, which will support Heap Memory in future.
 ## Ignore the error: `can't find crate for std`
+pushd app
 cargo build \
   -Zbuild-std=core,alloc \
-  --target ../riscv32gc-unknown-none-elf.json
+  --target ../riscv32gc-unknown-none-elf.json \
+  || true
 popd
 ```
+
+[(See the __Build Script__)](https://lupyuen.github.io/articles/rust4#appendix-build-nuttx-for-qemu)
 
 __Rust Core Library__ for Double-Float __`riscv32gc`__ is done!
 
@@ -514,6 +519,8 @@ rustc \
   --extern noprelude:core=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-*.rlib` \
   -Z unstable-options
 ```
+
+[(See the __Build Script__)](https://lupyuen.github.io/articles/rust4#appendix-build-nuttx-for-qemu)
 
 (We'll talk about the loooong options)
 
@@ -575,6 +582,8 @@ pushd ../nuttx
 make
 popd
 ```
+
+[(See the __Build Script__)](https://lupyuen.github.io/articles/rust4#appendix-build-nuttx-for-qemu)
 
 We boot __NuttX in QEMU Emulator__ for 32-bit RISC-V...
 
@@ -807,11 +816,11 @@ function build_rust_riscv32 {
   popd
 }
 
-## Configure build
-make distclean || true
-tools/configure.sh rv-virt:leds || true
+## Configure the NuttX Build
+make distclean
+tools/configure.sh rv-virt:nsh
 
-## Enable Hello Rust App
+## Enable the Hello Rust App
 kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST
 
 ## Update the Kconfig Dependencies
