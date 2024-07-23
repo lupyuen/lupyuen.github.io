@@ -620,6 +620,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Follow these steps to build __NuttX for QEMU Emulator__ (64-bit RISC-V)...
 
+[(See the __Build Script__)](https://gist.github.com/lupyuen/e0aaed0310a7b84f5ad7896e6827a968)
+
 1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
 
     [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
@@ -696,6 +698,8 @@ Follow these steps to build __NuttX for QEMU Emulator__ (64-bit RISC-V)...
       >nuttx.S \
       2>&1
     ```
+
+    [(See the __Build Script__)](https://gist.github.com/lupyuen/e0aaed0310a7b84f5ad7896e6827a968)
 
     [(See the __Build Log__)](https://gist.github.com/lupyuen/acb19827f55d91bca96ef76ddd778b71)
     
