@@ -140,11 +140,13 @@ On the Morning of Baking...
 
     Bread Machine will try to knead without the Bread Bucket. And that's OK.
 
-1.  __3 hours__ after starting "French Bread" Cycle: __Move the Bread Bucket__ from Fridge into the Bread Machine. (Pic above)
+1.  __Three Hours__ after starting "French Bread" Cycle: __Move the Bread Bucket__ from Fridge into the Bread Machine. (Pic above)
 
     Yes the dough will be cold, slightly frozen.
 
 1.  "French Bread" Cycle will __warm up and rise__ the dough for 1/2 hour.
+
+    Poke some holes in the Cool Firm Dough with a knife.
 
     Then "French Bread" Cycle will bake for 1.5 hours. (Pic above)
 
@@ -156,7 +158,9 @@ On the Morning of Baking...
 
     Our loaf will plop out from the Bread Bucket. Don't shake the Bread Bucket too hard, because the loaf will tear with a circular hole.
 
-Yep it's __8 hours rising__ plus __1.5 hours baking__, instead of the normal 5-hour "French Bread" Mode! This gives the dough plenty of time to rise, for the extra bubbly floofiness.
+![Bake the dough](https://lupyuen.github.io/images/sourdough37.jpg)
+
+Yep it's __8 hours rising__ plus __1.5 hours baking__, instead of the normal 5-hour "French Bread" Mode! This gives the dough plenty of time to rise, for the extra bubbly floofiness. (Pic above)
 
 But remember not to [__overferment__](https://www.the-sourdough-framework.com/Troubleshooting.html#overfermented)!
 
