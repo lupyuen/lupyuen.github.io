@@ -715,6 +715,155 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/rust4.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust4.md)
 
+![Build NuttX for QEMU with Rust App](https://lupyuen.github.io/images/rust4-flow.jpg)
+
+# Appendix: Build NuttX for QEMU
+
+Follow these steps to build __NuttX for QEMU Emulator__ (32-bit RISC-V) bundled with our __Rust App__ (pic above)...
+
+```bash
+#!/usr/bin/env bash
+#  Build NuttX for QEMU RISC-V 32-bit with Rust App
+
+## TODO: Set PATH
+export PATH="$HOME/xpack-riscv-none-elf-gcc-13.2.0-2/bin:$PATH"
+
+set -e  #  Exit when any command fails
+set -x  #  Echo commands
+
+## Build NuttX
+function build_nuttx {
+
+  ## Go to NuttX Folder
+  pushd ../nuttx
+
+  ## Build NuttX
+  make -j 8
+
+  ## Return to previous folder
+  popd
+}
+
+## Build Rust App for QEMU RISC-V 32-bit with Rust Custom Target
+function build_rust_riscv32 {
+
+  ## Go to NuttX Folder
+  pushd ../nuttx
+
+  ## Download our Custom Target for `riscv32gc`
+  rm -f riscv32gc-unknown-none-elf.json
+  wget https://raw.githubusercontent.com/lupyuen/nuttx-rust-app/main/riscv32gc-unknown-none-elf.json
+
+  ## Custom Target needs Nightly Build of Rust Compiler
+  rustup override set nightly
+  rustup component add rust-src --toolchain nightly
+
+  ## Verify our Custom Target, make sure it's OK
+  rustc \
+    --print cfg \
+    --target riscv32gc-unknown-none-elf.json
+
+  ## `cargo build` requires a Rust Project, so we create an empty one.
+  ## If the Rust Project exists, erase the binaries.
+  ## Ignore the error: `app already exists`
+  cargo new app || true
+
+  ## Build the Rust Core Library for `riscv32gc`
+  ## Include the `alloc` library, which will support Heap Memory in future.
+  ## Ignore the error: `can't find crate for std`
+  pushd app
+  cargo build \
+    -Zbuild-std=core,alloc \
+    --target ../riscv32gc-unknown-none-elf.json \
+    || true
+  popd
+
+  ## Compile our Rust App with Rust Core Library for `riscv32gc`
+  ## We changed the Target to `riscv32gc-unknown-none-elf.json`
+  rustc \
+    --target riscv32gc-unknown-none-elf.json \
+    --edition 2021 \
+    --emit obj \
+    -g \
+    -C panic=abort \
+    -O \
+    ../apps/examples/hello_rust/hello_rust_main.rs \
+    -o ../apps/examples/hello_rust/*hello_rust.o \
+    \
+    -C incremental=app/target/riscv32gc-unknown-none-elf/debug/incremental \
+    -L dependency=app/target/riscv32gc-unknown-none-elf/debug/deps \
+    -L dependency=app/target/debug/deps \
+    --extern noprelude:alloc=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-*.rlib` \
+    --extern noprelude:compiler_builtins=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-*.rlib` \
+    --extern noprelude:core=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-*.rlib` \
+    -Z unstable-options
+
+  ## NuttX Build need us to copy hello_rust.o to hello_rust_1.o
+  cp \
+    ../apps/examples/hello_rust/*hello_rust.o \
+    ../apps/examples/hello_rust/*hello_rust_1.o
+
+  ## Return to previous folder
+  popd
+}
+
+## Configure build
+make distclean || true
+tools/configure.sh rv-virt:leds || true
+
+## Enable Hello Rust App
+kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST
+
+## Update the Kconfig Dependencies
+make olddefconfig
+
+## Build NuttX with Rust Apps
+build_nuttx || true
+build_rust_riscv32
+
+## Build NuttX
+build_nuttx
+
+## Show the size
+riscv-none-elf-size nuttx
+
+## Export the Binary Image to nuttx.bin
+riscv-none-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
+
+## Copy the config
+cp .config nuttx.config
+
+## Dump the NuttX Kernel Disassembly to nuttx.S
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  >nuttx.S \
+  2>&1
+
+## Dump the Rust App Disassembly to hello_rust_1.S
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/examples/hello_rust/*1.o \
+  >hello_rust_1.S \
+  2>&1
+
+## Start the emulator
+qemu-system-riscv32 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv32 \
+  -kernel nuttx \
+  -nographic \
+  -bios none \
+```
+
+[(See the __Build Script__)](https://gist.github.com/lupyuen/69da35a027cf780680944010b4a85fe7)
+
 > ![Building our Rust App](https://lupyuen.github.io/images/rust4-flow1b.jpg)
 
 # Appendix: Rust Compiler Options
