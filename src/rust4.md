@@ -458,8 +458,8 @@ rustc \
   --target riscv32gc-unknown-none-elf.json
 
 ## `cargo build` requires a Rust Project, so we create an empty one.
-## Ignore the error: `app already exists`
-cargo new app || true
+rm -rf app
+cargo new app
 
 ## Build the Rust Core Library for `riscv32gc`
 ## Include the `alloc` library, which will support Heap Memory in future.
@@ -773,8 +773,8 @@ function build_rust_riscv32 {
     --target riscv32gc-unknown-none-elf.json
 
   ## `cargo build` requires a Rust Project, so we create an empty one.
-  ## Ignore the error: `app already exists`
-  cargo new app || true
+  rm -rf app
+  cargo new app
 
   ## Build the Rust Core Library for `riscv32gc`
   ## Include the `alloc` library, which will support Heap Memory in future.
@@ -928,8 +928,8 @@ rustc \
   --target riscv32gc-unknown-none-elf.json
 
 ## `cargo build` requires a Rust Project, so we create an empty one.
-## Ignore the error: `app already exists`
-cargo new app || true
+rm -rf app
+cargo new app
 
 ## Build the Rust Core Library for `riscv32gc`
 ## Include the `alloc` library, which will support Heap Memory in future.
