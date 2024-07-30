@@ -766,7 +766,7 @@ etctmp.c
 </ol>
 <h1 id="appendix-build-nuttx-with-cmake"><a class="doc-anchor" href="#appendix-build-nuttx-with-cmake">§</a>11 Appendix: Build NuttX with CMake</h1>
 <p><em>Why did our Pull Request fail with this CMake Error?</em></p>
-<div class="example-wrap"><pre class="language-bash"><code>Cmake in present: rv-virt/smp
+<div class="example-wrap"><pre class="language-yaml"><code>Cmake in present: rv-virt/smp
 riscv-none-elf-gcc CMakeFiles/nuttx.dir/empty.c.obj -o nuttx ...
 riscv_createstack.c: undefined reference to board_autoled_on
 collect2: error: ld returned 1 exit status
@@ -801,9 +801,41 @@ cmake --build build
 </code></pre></div>
 <p><em>But why did CMake fail?</em></p>
 <p>Probably because the CMake Makefiles are <strong>out of sync</strong> with the GNU Make Makefiles.</p>
+<p>Suppose we have a <strong>GNU Make Makefile</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/src/Makefile">rv-virt/src/Makefile</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Always compile `qemu_rv_appinit.c`
+CSRCS = qemu_rv_appinit.c
+
+## If `CONFIG_ARCH_LEDS` is Enabled:
+## Compile `qemu_rv_autoleds.c`
+ifeq ($(CONFIG_ARCH_LEDS),y)
+  CSRCS += qemu_rv_autoleds.c
+endif
+
+## If `CONFIG_USERLED` is Enabled:
+## Compile `qemu_rv_userleds.c`
+ifeq ($(CONFIG_USERLED),y)
+  CSRCS += qemu_rv_userleds.c
+endif
+</code></pre></div>
+<p>Note that it checks the Kconfig Options <strong>CONFIG_ARCH_LEDS</strong> and <strong>CONFIG_USERLED</strong>. And optionally compiles <strong>qemu_rv_autoleds.c</strong> and <strong>qemu_rv_userleds.c</strong>.</p>
+<p>We need to <strong>Sync the Build Rules</strong> into the CMake Makefile like so: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/src/CMakeLists.txt">rv-virt/src/CMakeLists.txt</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Always compile `qemu_rv_appinit.c`
+set(SRCS qemu_rv_appinit.c)
+
+## If `CONFIG_ARCH_LEDS` is Enabled:
+## Compile `qemu_rv_autoleds.c`
+if(CONFIG_ARCH_LEDS)
+  list(APPEND SRCS qemu_rv_autoleds.c)
+endif()
+
+## If `CONFIG_USERLED` is Enabled:
+## Compile `qemu_rv_userleds.c`
+if(CONFIG_USERLED)
+  list(APPEND SRCS qemu_rv_userleds.c)
+endif()
+</code></pre></div>
+<p>This will ensure that the Build Rules are consistent across the GNU Make Makefiles and CMake Makefiles. <a href="https://github.com/apache/nuttx/pull/12762/files#diff-bae223efa0f0ca8d345bef6373514be02c79bdfa8da568b2029fd54e3d268e34">(Like this)</a></p>
 <p>TODO</p>
-<p>The <code>defconfig</code> newlines are fixed and <code>CMakeLists.txt</code> has been updated. The build is now OK for <code>rv-virt:smp</code> and <code>smp64</code>. Thanks!</p>
-<p><a href="https://github.com/apache/nuttx/pull/12762/files#diff-bae223efa0f0ca8d345bef6373514be02c79bdfa8da568b2029fd54e3d268e34">nuttx/pull/12762</a></p>
 <p><a href="https://github.com/apache/nuttx/actions/runs/10093621571/job/27909785064?pr=12762">nuttx/actions/runs/10093621571</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>====================================================================================
 Configuration/Tool: rv-virt/leds64
