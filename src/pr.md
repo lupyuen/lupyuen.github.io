@@ -808,6 +808,76 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"(Clickable) Call Graph for Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/unicorn2)
 
+# Appendix: Build NuttX with CMake
+
+TODO
+
+
+The `defconfig` newlines are fixed and `CMakeLists.txt` has been updated. The build is now OK for `rv-virt:smp` and `smp64`. Thanks!
+
+[Compiling with CMake](https://nuttx.apache.org/docs/latest/quickstart/compiling_cmake.html)
+
+```bash
+brew install cmake
+brew install ninja
+pipenv install
+pipenv shell
+pip install kconfiglib
+cmake -B build -DBOARD_CONFIG=rv-virt:smp -GNinja
+cmake --build build
+```
+
+[nuttx/pull/12762](https://github.com/apache/nuttx/pull/12762/files#diff-bae223efa0f0ca8d345bef6373514be02c79bdfa8da568b2029fd54e3d268e34)
+
+[nuttx/actions/runs/10093621571](https://github.com/apache/nuttx/actions/runs/10093621571/job/27909785064?pr=12762)
+
+```bash
+====================================================================================
+Configuration/Tool: rv-virt/leds64
+2024-07-25 13:16:11
+------------------------------------------------------------------------------------
+  Cleaning...
+  Configuring...
+  Building NuttX...
+riscv-none-elf-ld: warning: /github/workspace/sources/nuttx/nuttx has a LOAD segment with RWX permissions
+  Normalize rv-virt/leds64
+75c75
+< CONFIG_USERLED_LOWER=y
+\ No newline at end of file
+---
+> CONFIG_USERLED_LOWER=y
+Saving the new configuration file
+HEAD detached at pull/12762/merge
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   boards/risc-v/qemu-rv/rv-virt/configs/leds64/defconfig
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+[nuttx/pull/12762](https://github.com/apache/nuttx/pull/12762#issuecomment-2250656302)
+
+```bash
+$ ./tools/refresh.sh --silent rv-virt:leds64
+  Normalize rv-virt:leds64
+75c75
+< CONFIG_USERLED_LOWER=y
+\ No newline at end of file
+---
+> CONFIG_USERLED_LOWER=y
+Saving the new configuration file
+
+$ ./tools/refresh.sh --silent rv-virt:leds
+  Normalize rv-virt:leds
+71c71
+< CONFIG_USERLED_LOWER=y
+\ No newline at end of file
+---
+> CONFIG_USERLED_LOWER=y
+Saving the new configuration file
+```
+
 # Appendix: Validate NuttX Release
 
 _For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, BL602, ..._
