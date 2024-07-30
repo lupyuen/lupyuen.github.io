@@ -99,6 +99,8 @@ We're ready to code!
 
 1.  __Modify the code__ in __`nuttx`__ and __`apps`__ to implement our awesome new feature.
 
+    [(Be careful with __CMake and CMakeLists.txt__)](https://lupyuen.github.io/articles/pr#appendix-build-nuttx-with-cmake)
+
 1.  __Build and test__ the modified code.
 
     [(I configured `F1` in VSCode to run this __Build Script__)](https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7)
@@ -568,6 +570,8 @@ Finally it's time to submit our Pull Request!
 
 1.  __Fix any errors__ in the Automated Checks
 
+    [(Watch out for __CMake and Ninja__ errors)](https://lupyuen.github.io/articles/pr#appendix-build-nuttx-with-cmake)
+
 1.  Wait for the NuttX Team to __review and comment__ on our Pull Request.
 
     This might take a while (due to the time zones)... Grab a coffee and standby for fixes!
@@ -810,7 +814,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build NuttX with CMake
 
-_Why did our Pull Request fail with this CMake Error?_
+_Why did our NuttX Pull Request fail with this CMake Error?_
 
 ```yaml
 Cmake in present: rv-virt/smp
@@ -898,6 +902,8 @@ endif()
 ```
 
 This will ensure that the Build Rules are consistent across the GNU Make Makefiles and CMake Makefiles. [(Like this)](https://github.com/apache/nuttx/pull/12762/files#diff-bae223efa0f0ca8d345bef6373514be02c79bdfa8da568b2029fd54e3d268e34)
+
+# Appendix: NuttX Configuration Files
 
 TODO
 
