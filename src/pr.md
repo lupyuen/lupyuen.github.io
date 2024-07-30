@@ -810,22 +810,57 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build NuttX with CMake
 
-TODO
-
-
-The `defconfig` newlines are fixed and `CMakeLists.txt` has been updated. The build is now OK for `rv-virt:smp` and `smp64`. Thanks!
-
-[Compiling with CMake](https://nuttx.apache.org/docs/latest/quickstart/compiling_cmake.html)
+_Why did our Pull Request fail with this CMake Error?_
 
 ```bash
-brew install cmake
-brew install ninja
+Cmake in present: rv-virt/smp
+riscv-none-elf-gcc CMakeFiles/nuttx.dir/empty.c.obj -o nuttx ...
+riscv_createstack.c: undefined reference to board_autoled_on
+collect2: error: ld returned 1 exit status
+ninja: build stopped: subcommand failed.
+```
+
+[(Source)](https://github.com/apache/nuttx/actions/runs/10093621571/job/27909785064?pr=12762)
+
+That's because the NuttX Automated Check (Continuous Integration with GitHub Actions) runs __CMake on some NuttX Configurations!__
+
+(Instead of the usual GNU Make)
+
+_What's this CMake?_
+
+CMake is the __Alternative Build System__ for NuttX. We build __NuttX with CMake__ like this...
+
+- [__"Compiling with CMake"__](https://nuttx.apache.org/docs/latest/quickstart/compiling_cmake.html)
+
+```bash
+## For macOS:
+brew install cmake ninja
+
+## For Ubuntu:
+sudo apt install cmake ninja
+
+## Build NuttX for QEMU RISC-V SMP `rv-virt:smp`
+## with CMake and Ninja
 pipenv install
 pipenv shell
 pip install kconfiglib
-cmake -B build -DBOARD_CONFIG=rv-virt:smp -GNinja
+cmake \
+  -B build \
+  -DBOARD_CONFIG=rv-virt:smp \
+  -GNinja
 cmake --build build
+
+## Note: No more `tools/configure.sh` and `make`!
 ```
+
+_But why did CMake fail?_
+
+Probably because the CMake Makefiles are __out of sync__ with the GNU Make Makefiles.
+
+TODO
+
+The `defconfig` newlines are fixed and `CMakeLists.txt` has been updated. The build is now OK for `rv-virt:smp` and `smp64`. Thanks!
+
 
 [nuttx/pull/12762](https://github.com/apache/nuttx/pull/12762/files#diff-bae223efa0f0ca8d345bef6373514be02c79bdfa8da568b2029fd54e3d268e34)
 
