@@ -80,7 +80,8 @@
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#notes">10 Notes</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-with-cmake">11 Appendix: Build NuttX with CMake</a><ul></ul></li>
-<li><a href="#appendix-validate-nuttx-release">12 Appendix: Validate NuttX Release</a><ul></ul></li></ul></nav><p>📝 <em>28 Nov 2022</em></p>
+<li><a href="#appendix-nuttx-configuration-files">12 Appendix: NuttX Configuration Files</a><ul></ul></li>
+<li><a href="#appendix-validate-nuttx-release">13 Appendix: Validate NuttX Release</a><ul></ul></li></ul></nav><p>📝 <em>28 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pr-title.jpg" alt="Typical Pull Request for Apache NuttX RTOS" /></p>
 <p><a href="https://youtu.be/p6ly3EBhtpo?si=ArHLgnu5JWLb5FtW"><strong>(Watch the Video on YouTube)</strong></a></p>
 <p>This article explains how I prepared my Pull Requests for submission to <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>. So if we’re contributing code to NuttX, just follow these steps and things will (probably) go Hunky Dory!</p>
@@ -154,6 +155,7 @@ git clone \
 </li>
 <li>
 <p><strong>Modify the code</strong> in <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> to implement our awesome new feature.</p>
+<p><a href="https://lupyuen.github.io/articles/pr#appendix-build-nuttx-with-cmake">(Be careful with <strong>CMake and CMakeLists.txt</strong>)</a></p>
 </li>
 <li>
 <p><strong>Build and test</strong> the modified code.</p>
@@ -553,6 +555,7 @@ int arm64_gic_initialize(void)
 </li>
 <li>
 <p><strong>Fix any errors</strong> in the Automated Checks</p>
+<p><a href="https://lupyuen.github.io/articles/pr#appendix-build-nuttx-with-cmake">(Watch out for <strong>CMake and Ninja</strong> errors)</a></p>
 </li>
 <li>
 <p>Wait for the NuttX Team to <strong>review and comment</strong> on our Pull Request.</p>
@@ -765,7 +768,7 @@ etctmp.c
 </li>
 </ol>
 <h1 id="appendix-build-nuttx-with-cmake"><a class="doc-anchor" href="#appendix-build-nuttx-with-cmake">§</a>11 Appendix: Build NuttX with CMake</h1>
-<p><em>Why did our Pull Request fail with this CMake Error?</em></p>
+<p><em>Why did our NuttX Pull Request fail with this CMake Error?</em></p>
 <div class="example-wrap"><pre class="language-yaml"><code>Cmake in present: rv-virt/smp
 riscv-none-elf-gcc CMakeFiles/nuttx.dir/empty.c.obj -o nuttx ...
 riscv_createstack.c: undefined reference to board_autoled_on
@@ -835,6 +838,7 @@ if(CONFIG_USERLED)
 endif()
 </code></pre></div>
 <p>This will ensure that the Build Rules are consistent across the GNU Make Makefiles and CMake Makefiles. <a href="https://github.com/apache/nuttx/pull/12762/files#diff-bae223efa0f0ca8d345bef6373514be02c79bdfa8da568b2029fd54e3d268e34">(Like this)</a></p>
+<h1 id="appendix-nuttx-configuration-files"><a class="doc-anchor" href="#appendix-nuttx-configuration-files">§</a>12 Appendix: NuttX Configuration Files</h1>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/actions/runs/10093621571/job/27909785064?pr=12762">nuttx/actions/runs/10093621571</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>====================================================================================
@@ -878,7 +882,7 @@ $ ./tools/refresh.sh --silent rv-virt:leds
 ---
 &gt; CONFIG_USERLED_LOWER=y
 Saving the new configuration file
-</code></pre></div><h1 id="appendix-validate-nuttx-release"><a class="doc-anchor" href="#appendix-validate-nuttx-release">§</a>12 Appendix: Validate NuttX Release</h1>
+</code></pre></div><h1 id="appendix-validate-nuttx-release"><a class="doc-anchor" href="#appendix-validate-nuttx-release">§</a>13 Appendix: Validate NuttX Release</h1>
 <p><em>For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, BL602, …</em></p>
 <p>NuttX needs to be <strong>tested on every device</strong>, and we need your help! 🙏</p>
 <p>Before every Official Release of NuttX, a <strong>Validation Request</strong> will be broadcast on the <a href="https://nuttx.apache.org/community/"><strong>NuttX Developers Mailing List</strong></a>…</p>
