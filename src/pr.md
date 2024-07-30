@@ -812,7 +812,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _Why did our Pull Request fail with this CMake Error?_
 
-```bash
+```yaml
 Cmake in present: rv-virt/smp
 riscv-none-elf-gcc CMakeFiles/nuttx.dir/empty.c.obj -o nuttx ...
 riscv_createstack.c: undefined reference to board_autoled_on
@@ -857,12 +857,49 @@ _But why did CMake fail?_
 
 Probably because the CMake Makefiles are __out of sync__ with the GNU Make Makefiles.
 
+Suppose we have a __GNU Make Makefile__: [rv-virt/src/Makefile](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/src/Makefile)
+
+```bash
+## Always compile `qemu_rv_appinit.c`
+CSRCS = qemu_rv_appinit.c
+
+## If `CONFIG_ARCH_LEDS` is Enabled:
+## Compile `qemu_rv_autoleds.c`
+ifeq ($(CONFIG_ARCH_LEDS),y)
+  CSRCS += qemu_rv_autoleds.c
+endif
+
+## If `CONFIG_USERLED` is Enabled:
+## Compile `qemu_rv_userleds.c`
+ifeq ($(CONFIG_USERLED),y)
+  CSRCS += qemu_rv_userleds.c
+endif
+```
+
+Note that it checks the Kconfig Options __CONFIG_ARCH_LEDS__ and __CONFIG_USERLED__. And optionally compiles __qemu_rv_autoleds.c__ and __qemu_rv_userleds.c__.
+
+We need to __Sync the Build Rules__ into the CMake Makefile like so: [rv-virt/src/CMakeLists.txt](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/src/CMakeLists.txt)
+
+```bash
+## Always compile `qemu_rv_appinit.c`
+set(SRCS qemu_rv_appinit.c)
+
+## If `CONFIG_ARCH_LEDS` is Enabled:
+## Compile `qemu_rv_autoleds.c`
+if(CONFIG_ARCH_LEDS)
+  list(APPEND SRCS qemu_rv_autoleds.c)
+endif()
+
+## If `CONFIG_USERLED` is Enabled:
+## Compile `qemu_rv_userleds.c`
+if(CONFIG_USERLED)
+  list(APPEND SRCS qemu_rv_userleds.c)
+endif()
+```
+
+This will ensure that the Build Rules are consistent across the GNU Make Makefiles and CMake Makefiles. [(Like this)](https://github.com/apache/nuttx/pull/12762/files#diff-bae223efa0f0ca8d345bef6373514be02c79bdfa8da568b2029fd54e3d268e34)
+
 TODO
-
-The `defconfig` newlines are fixed and `CMakeLists.txt` has been updated. The build is now OK for `rv-virt:smp` and `smp64`. Thanks!
-
-
-[nuttx/pull/12762](https://github.com/apache/nuttx/pull/12762/files#diff-bae223efa0f0ca8d345bef6373514be02c79bdfa8da568b2029fd54e3d268e34)
 
 [nuttx/actions/runs/10093621571](https://github.com/apache/nuttx/actions/runs/10093621571/job/27909785064?pr=12762)
 
