@@ -79,7 +79,8 @@
 <li><a href="#update-our-repositories">8 Update Our Repositories</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#notes">10 Notes</a><ul></ul></li>
-<li><a href="#appendix-validate-nuttx-release">11 Appendix: Validate NuttX Release</a><ul></ul></li></ul></nav><p>📝 <em>28 Nov 2022</em></p>
+<li><a href="#appendix-build-nuttx-with-cmake">11 Appendix: Build NuttX with CMake</a><ul></ul></li>
+<li><a href="#appendix-validate-nuttx-release">12 Appendix: Validate NuttX Release</a><ul></ul></li></ul></nav><p>📝 <em>28 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pr-title.jpg" alt="Typical Pull Request for Apache NuttX RTOS" /></p>
 <p><a href="https://youtu.be/p6ly3EBhtpo?si=ArHLgnu5JWLb5FtW"><strong>(Watch the Video on YouTube)</strong></a></p>
 <p>This article explains how I prepared my Pull Requests for submission to <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>. So if we’re contributing code to NuttX, just follow these steps and things will (probably) go Hunky Dory!</p>
@@ -763,7 +764,62 @@ etctmp.c
 <p><a href="https://lupyuen.github.io/articles/unicorn2"><strong>“(Clickable) Call Graph for Apache NuttX Real-Time Operating System”</strong></a></p>
 </li>
 </ol>
-<h1 id="appendix-validate-nuttx-release"><a class="doc-anchor" href="#appendix-validate-nuttx-release">§</a>11 Appendix: Validate NuttX Release</h1>
+<h1 id="appendix-build-nuttx-with-cmake"><a class="doc-anchor" href="#appendix-build-nuttx-with-cmake">§</a>11 Appendix: Build NuttX with CMake</h1>
+<p>TODO</p>
+<p>The <code>defconfig</code> newlines are fixed and <code>CMakeLists.txt</code> has been updated. The build is now OK for <code>rv-virt:smp</code> and <code>smp64</code>. Thanks!</p>
+<p><a href="https://nuttx.apache.org/docs/latest/quickstart/compiling_cmake.html">Compiling with CMake</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>brew install cmake
+brew install ninja
+pipenv install
+pipenv shell
+pip install kconfiglib
+cmake -B build -DBOARD_CONFIG=rv-virt:smp -GNinja
+cmake --build build
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/pull/12762/files#diff-bae223efa0f0ca8d345bef6373514be02c79bdfa8da568b2029fd54e3d268e34">nuttx/pull/12762</a></p>
+<p><a href="https://github.com/apache/nuttx/actions/runs/10093621571/job/27909785064?pr=12762">nuttx/actions/runs/10093621571</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>====================================================================================
+Configuration/Tool: rv-virt/leds64
+2024-07-25 13:16:11
+------------------------------------------------------------------------------------
+  Cleaning...
+  Configuring...
+  Building NuttX...
+riscv-none-elf-ld: warning: /github/workspace/sources/nuttx/nuttx has a LOAD segment with RWX permissions
+  Normalize rv-virt/leds64
+75c75
+&lt; CONFIG_USERLED_LOWER=y
+\ No newline at end of file
+---
+&gt; CONFIG_USERLED_LOWER=y
+Saving the new configuration file
+HEAD detached at pull/12762/merge
+Changes not staged for commit:
+  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+  (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+	modified:   boards/risc-v/qemu-rv/rv-virt/configs/leds64/defconfig
+
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/pull/12762#issuecomment-2250656302">nuttx/pull/12762</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>$ ./tools/refresh.sh --silent rv-virt:leds64
+  Normalize rv-virt:leds64
+75c75
+&lt; CONFIG_USERLED_LOWER=y
+\ No newline at end of file
+---
+&gt; CONFIG_USERLED_LOWER=y
+Saving the new configuration file
+
+$ ./tools/refresh.sh --silent rv-virt:leds
+  Normalize rv-virt:leds
+71c71
+&lt; CONFIG_USERLED_LOWER=y
+\ No newline at end of file
+---
+&gt; CONFIG_USERLED_LOWER=y
+Saving the new configuration file
+</code></pre></div><h1 id="appendix-validate-nuttx-release"><a class="doc-anchor" href="#appendix-validate-nuttx-release">§</a>12 Appendix: Validate NuttX Release</h1>
 <p><em>For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, BL602, …</em></p>
 <p>NuttX needs to be <strong>tested on every device</strong>, and we need your help! 🙏</p>
 <p>Before every Official Release of NuttX, a <strong>Validation Request</strong> will be broadcast on the <a href="https://nuttx.apache.org/community/"><strong>NuttX Developers Mailing List</strong></a>…</p>
