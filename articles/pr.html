@@ -156,6 +156,7 @@ git clone \
 <li>
 <p><strong>Modify the code</strong> in <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> to implement our awesome new feature.</p>
 <p><a href="https://lupyuen.github.io/articles/pr#appendix-build-nuttx-with-cmake">(Be careful with <strong>CMake and CMakeLists.txt</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/pr#appendix-nuttx-configuration-files">(Also watch out for <strong>NuttX Config defconfig</strong>)</a></p>
 </li>
 <li>
 <p><strong>Build and test</strong> the modified code.</p>
@@ -556,6 +557,7 @@ int arm64_gic_initialize(void)
 <li>
 <p><strong>Fix any errors</strong> in the Automated Checks</p>
 <p><a href="https://lupyuen.github.io/articles/pr#appendix-build-nuttx-with-cmake">(Watch out for <strong>CMake and Ninja</strong> errors)</a></p>
+<p><a href="https://lupyuen.github.io/articles/pr#appendix-nuttx-configuration-files">(Fixing the <strong>NuttX Config defconfig</strong> errors)</a></p>
 </li>
 <li>
 <p>Wait for the NuttX Team to <strong>review and comment</strong> on our Pull Request.</p>
@@ -682,76 +684,6 @@ int arm64_gic_initialize(void)
 <h1 id="notes"><a class="doc-anchor" href="#notes">§</a>10 Notes</h1>
 <ol>
 <li>
-<p>When we modify the <strong>Kconfig</strong> Configuration Files, remember to update the <strong>defconfig</strong> Configuration Files!</p>
-<p><a href="https://github.com/apache/nuttx/pull/9243#issuecomment-1542918859">(Like this)</a></p>
-<p>What happens if we forget to update <strong>defconfig</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: pinephone/sensor
-Building NuttX...
-Normalize pinephone/sensor
-71d70
-&lt; CONFIG_UART1_SERIAL_CONSOLE=y
-Saving the new configuration file
-HEAD detached at pull/9243/merge
-Changes not staged for commit:
-(use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
-(use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
-    modified:   boards/arm64/a64/pinephone/configs/sensor/defconfig
-</code></pre></div>
-<p><a href="https://github.com/apache/nuttx/pull/9243#issuecomment-1542918859">(Source)</a></p>
-</li>
-<li>
-<p>How do we create a new <strong>defconfig</strong>?</p>
-<p>In the “<strong>nuttx/nuttx</strong>” folder, run this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make savedefconfig
-</code></pre></div>
-<p>This creates the file <strong>defconfig</strong> that contains the changed settings.</p>
-<p>Copy the <strong>defconfig</strong> file to the new <strong>config</strong> subfolder…</p>
-<div class="example-wrap"><pre class="language-bash"><code>mkdir boards/&lt;archname&gt;/&lt;chipname&gt;/&lt;boardname&gt;/config/&lt;mynewcustomconfig&gt;
-
-mv defconfig boards/&lt;archname&gt;/&lt;chipname&gt;/&lt;boardname&gt;/config/&lt;mynewcustomconfig&gt;/
-</code></pre></div>
-<p><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html">(Thanks to <strong>Alan C. Assis</strong> for the tip!)</a></p>
-</li>
-<li>
-<p>Some Default Settings in <strong>.config</strong> are missing from <strong>defconfig</strong>. Can we copy them ourselves to <strong>defconfig</strong>?</p>
-<p>Sorry it won’t work. Suppose we copy these Default UART3 Settings from <strong>.config</strong> to <strong>defconfig</strong> (to hard-code the UART3 Baud Rate)…</p>
-<div class="example-wrap"><pre class="language-text"><code>CONFIG_UART3_BAUD=115200
-CONFIG_UART3_BITS=8
-CONFIG_UART3_PARITY=0
-CONFIG_UART3_2STOP=0
-</code></pre></div>
-<p>The “Linux (Other)” Build will fail with this error…</p>
-<div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: pinephone/modem
-Building NuttX...
-Normalize pinephone/modem
-69,72d68
-&lt; CONFIG_UART3_BAUD=115200
-&lt; CONFIG_UART3_BITS=8
-&lt; CONFIG_UART3_PARITY=0
-&lt; CONFIG_UART3_2STOP=0
-Saving the new configuration file
-HEAD detached at pull/9304/merge
-Changes not staged for commit:
-(use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
-(use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
-    modified:   boards/arm64/a64/pinephone/configs/modem/defconfig
-</code></pre></div>
-<p><a href="https://github.com/apache/nuttx/actions/runs/4997328093/jobs/8951602341">(Source)</a></p>
-<p>Thus we can’t copy any Default Settings in <strong>.config</strong> to <strong>defconfig</strong>.</p>
-</li>
-<li>
-<p>If the auto-build fails with <strong>“Untracked etctmp”</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>HEAD detached at pull/11379/merge
-Untracked files: (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
-boards/risc-v/k230/canmv230/src/etctmp.c
-boards/risc-v/k230/canmv230/src/etctmp/
-</code></pre></div>
-<p><a href="https://github.com/apache/nuttx/actions/runs/7203675079/job/19625255417?pr=11379">(Source)</a></p>
-<p>Check that we have added “<strong>etctmp</strong>” to the <strong>Board-Specific Git Ignore</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/src/.gitignore">boards/risc-v/jh7110/star64/src/.gitignore</a></p>
-<div class="example-wrap"><pre class="language-text"><code>etctmp
-etctmp.c
-</code></pre></div></li>
-<li>
 <p>Here’s an excellent guide for the <strong>Git Command Line</strong>…</p>
 <p><a href="https://github.com/k88hudson/git-flight-rules"><strong>“Flight rules for Git”</strong></a></p>
 </li>
@@ -842,49 +774,107 @@ endif()
 </code></pre></div>
 <p>This will ensure that the Build Rules are consistent across the GNU Make Makefiles and CMake Makefiles. <a href="https://github.com/apache/nuttx/pull/12762/files#diff-bae223efa0f0ca8d345bef6373514be02c79bdfa8da568b2029fd54e3d268e34">(Like this)</a></p>
 <h1 id="appendix-nuttx-configuration-files"><a class="doc-anchor" href="#appendix-nuttx-configuration-files">§</a>12 Appendix: NuttX Configuration Files</h1>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/actions/runs/10093621571/job/27909785064?pr=12762">nuttx/actions/runs/10093621571</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>====================================================================================
-Configuration/Tool: rv-virt/leds64
-2024-07-25 13:16:11
-------------------------------------------------------------------------------------
-  Cleaning...
-  Configuring...
-  Building NuttX...
-riscv-none-elf-ld: warning: /github/workspace/sources/nuttx/nuttx has a LOAD segment with RWX permissions
-  Normalize rv-virt/leds64
-75c75
-&lt; CONFIG_USERLED_LOWER=y
-\ No newline at end of file
----
-&gt; CONFIG_USERLED_LOWER=y
+<p><em>Why did our NuttX Pull Request fail with this defconfig error?</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>Normalize rv-virt/leds64
 Saving the new configuration file
 HEAD detached at pull/12762/merge
 Changes not staged for commit:
   (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
   (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
-	modified:   boards/risc-v/qemu-rv/rv-virt/configs/leds64/defconfig
-
-no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+  modified:   boards/risc-v/qemu-rv/rv-virt/configs/leds64/defconfig
+  no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
 </code></pre></div>
-<p><a href="https://github.com/apache/nuttx/pull/12762#issuecomment-2250656302">nuttx/pull/12762</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>$ ./tools/refresh.sh --silent rv-virt:leds64
+<p><a href="https://github.com/apache/nuttx/actions/runs/10093621571/job/27909785064?pr=12762">(Source)</a></p>
+<p>This means that the NuttX Configuration File for <strong>rv-virt:leds64</strong> has a problem, like a Missing Newline.</p>
+<p>To fix it, run <strong>tools/refresh.sh</strong>: <a href="https://github.com/apache/nuttx/pull/12762#issuecomment-2250656302">nuttx/pull/12762</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Normalize the `defconfig` for `rv-virt:leds64`
+$ cd nuttx
+$ tools/refresh.sh --silent rv-virt:leds64
   Normalize rv-virt:leds64
-75c75
-&lt; CONFIG_USERLED_LOWER=y
-\ No newline at end of file
----
-&gt; CONFIG_USERLED_LOWER=y
-Saving the new configuration file
+  &lt; CONFIG_USERLED_LOWER=y
+  \ No newline at end of file
+  ---
+  &gt; CONFIG_USERLED_LOWER=y
+  Saving the new configuration file
 
-$ ./tools/refresh.sh --silent rv-virt:leds
-  Normalize rv-virt:leds
-71c71
-&lt; CONFIG_USERLED_LOWER=y
-\ No newline at end of file
----
-&gt; CONFIG_USERLED_LOWER=y
+## Remember to commit the updated `defconfig`!
+$ git status
+  modified: boards/risc-v/qemu-rv/rv-virt/configs/leds64/defconfig
+</code></pre></div>
+<p><strong>refresh.sh</strong> will also fix Kconfig Options that are misplaced…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## `CONFIG_USERLED_LOWER` is misplaced in `rv-virt:leds64`
+## Remember to commit the updated `defconfig`!
+$ tools/refresh.sh --silent rv-virt:leds64
+  Normalize rv-virt:leds64
+  74d73
+  &lt; CONFIG_USERLED_LOWER=y
+  75a75
+  &gt; CONFIG_USERLED_LOWER=y
+  Saving the new configuration file
+</code></pre></div>
+<p><em>What else will cause defconfig errors?</em></p>
+<p>When we modify the <strong>Kconfig</strong> Configuration Files, remember to update the <strong>defconfig</strong> Configuration Files! <a href="https://github.com/apache/nuttx/pull/9243#issuecomment-1542918859">(Like this)</a></p>
+<p>If we forget to update <strong>defconfig</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: pinephone/sensor
+Building NuttX...
+Normalize pinephone/sensor
+71d70
+&lt; CONFIG_UART1_SERIAL_CONSOLE=y
 Saving the new configuration file
+HEAD detached at pull/9243/merge
+Changes not staged for commit:
+(use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+(use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+    modified:   boards/arm64/a64/pinephone/configs/sensor/defconfig
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/pull/9243#issuecomment-1542918859">(Source)</a></p>
+<p><em>How to create a new defconfig?</em></p>
+<p>To <strong>Create or Update a defconfig</strong>, do this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Change this to your
+## `boards/&lt;archname&gt;/&lt;chipname&gt;/&lt;boardname&gt;/config/&lt;configname&gt;`
+cd nuttx
+mkdir -p boards/risc-v/bl808/ox64/configs/nsh
+
+## Create or Update the NuttX Config
+make menuconfig \
+  &amp;&amp; make savedefconfig \
+  &amp;&amp; grep -v CONFIG_HOST defconfig \
+  &gt;boards/risc-v/bl808/ox64/configs/nsh/defconfig
+</code></pre></div>
+<p><em>Some Default Settings in .config are missing from defconfig. Can we copy them ourselves to defconfig?</em></p>
+<p>Sorry it won’t work. Suppose we copy these Default UART3 Settings from <strong>.config</strong> to <strong>defconfig</strong> (to hard-code the UART3 Baud Rate)…</p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_UART3_BAUD=115200
+CONFIG_UART3_BITS=8
+CONFIG_UART3_PARITY=0
+CONFIG_UART3_2STOP=0
+</code></pre></div>
+<p>The Auto-Build will fail with the error below. Thus we can’t copy any Default Settings in <strong>.config</strong> to <strong>defconfig</strong>.</p>
+<div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: pinephone/modem
+Building NuttX...
+Normalize pinephone/modem
+69,72d68
+&lt; CONFIG_UART3_BAUD=115200
+&lt; CONFIG_UART3_BITS=8
+&lt; CONFIG_UART3_PARITY=0
+&lt; CONFIG_UART3_2STOP=0
+Saving the new configuration file
+HEAD detached at pull/9304/merge
+Changes not staged for commit:
+(use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+(use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+    modified:   boards/arm64/a64/pinephone/configs/modem/defconfig
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/actions/runs/4997328093/jobs/8951602341">(Source)</a></p>
+<p><em>What if the auto-build fails with “Untracked etctmp”?</em></p>
+<div class="example-wrap"><pre class="language-text"><code>HEAD detached at pull/11379/merge
+Untracked files: (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+boards/risc-v/k230/canmv230/src/etctmp.c
+boards/risc-v/k230/canmv230/src/etctmp/
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/actions/runs/7203675079/job/19625255417?pr=11379">(Source)</a></p>
+<p>Check that we’ve added “<strong>etctmp</strong>” to the <strong>Board-Specific Git Ignore</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/src/.gitignore">boards/risc-v/jh7110/star64/src/.gitignore</a></p>
+<div class="example-wrap"><pre class="language-text"><code>etctmp
+etctmp.c
 </code></pre></div><h1 id="appendix-validate-nuttx-release"><a class="doc-anchor" href="#appendix-validate-nuttx-release">§</a>13 Appendix: Validate NuttX Release</h1>
 <p><em>For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, BL602, …</em></p>
 <p>NuttX needs to be <strong>tested on every device</strong>, and we need your help! 🙏</p>
