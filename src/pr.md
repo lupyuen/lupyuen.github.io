@@ -843,8 +843,7 @@ brew install pipenv cmake ninja
 ## For Ubuntu: Install Build Tools
 sudo apt install pipenv cmake ninja-build
 
-## Build NuttX for QEMU RISC-V SMP `rv-virt:smp`
-## with CMake and Ninja
+## Configure NuttX for QEMU RISC-V SMP `rv-virt:smp`
 cd nuttx
 pipenv install
 pipenv shell
@@ -853,6 +852,9 @@ cmake \
   -B build \
   -DBOARD_CONFIG=rv-virt:smp \
   -GNinja
+
+## Build NuttX for QEMU RISC-V SMP
+## with CMake and Ninja
 cmake --build build
 
 ## Note: No more `tools/configure.sh` and `make`!
