@@ -837,14 +837,15 @@ CMake is the __Alternative Build System__ for NuttX. We build __NuttX with CMake
 - [__"Compiling with CMake"__](https://nuttx.apache.org/docs/latest/quickstart/compiling_cmake.html)
 
 ```bash
-## For macOS:
-brew install cmake ninja
+## For macOS: Install Build Tools
+brew install pipenv cmake ninja
 
-## For Ubuntu:
-sudo apt install cmake ninja
+## For Ubuntu: Install Build Tools
+sudo apt install pipenv cmake ninja-build
 
 ## Build NuttX for QEMU RISC-V SMP `rv-virt:smp`
 ## with CMake and Ninja
+cd nuttx
 pipenv install
 pipenv shell
 pip install kconfiglib
