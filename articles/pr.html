@@ -783,14 +783,15 @@ ninja: build stopped: subcommand failed.
 <ul>
 <li><a href="https://nuttx.apache.org/docs/latest/quickstart/compiling_cmake.html"><strong>“Compiling with CMake”</strong></a></li>
 </ul>
-<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
-brew install cmake ninja
+<div class="example-wrap"><pre class="language-bash"><code>## For macOS: Install Build Tools
+brew install pipenv cmake ninja
 
-## For Ubuntu:
-sudo apt install cmake ninja
+## For Ubuntu: Install Build Tools
+sudo apt install pipenv cmake ninja-build
 
 ## Build NuttX for QEMU RISC-V SMP `rv-virt:smp`
 ## with CMake and Ninja
+cd nuttx
 pipenv install
 pipenv shell
 pip install kconfiglib
