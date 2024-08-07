@@ -1054,6 +1054,7 @@ root@?:/tools# exit
 # ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
 </code></pre></div>
 <p>Why <strong>risc-v-02.dat</strong>? That’s because we’re running the <a href="https://github.com/apache/nuttx/actions/runs/10263378328/job/28416251531?pr=12849"><strong>“Linux (risc-v-02)”</strong></a> build. Which will build the Second Batch of RISC-V Targets, including <code>rv-virt:*</code> (QEMU RISC-V).</p>
+<p>(Why <strong>cibuild.sh</strong>? See the next section)</p>
 <p>We will see…</p>
 <div class="example-wrap"><pre class="language-text"><code>+ /root/nuttx/tools/testbuild.sh -A -N -R -j 2 -e &#39;-Wno-cpp -Werror&#39; testlist/risc-v-02.dat
 ====================================================================================
@@ -1067,8 +1068,6 @@ Configuration/Tool: hifive1-revb/nsh
 <p>Exactly like <a href="https://github.com/apache/nuttx/actions/runs/10263378328/job/28416251531?pr=12849"><strong>NuttX CI in GitHub Actions</strong></a>!</p>
 <p>Finally we see our Rust Build completing successfully in our Docker Container yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: rv-virt/leds64_rust
-2024-08-06 17:07:29
-------------------------------------------------------------------------------------
   Cleaning...
   Configuring...
   Building NuttX...
@@ -1077,6 +1076,30 @@ riscv-none-elf-ld: warning: /root/nuttx/nuttx has a LOAD segment with RWX permis
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/23da1272aaf55f7fe37bc6ab5fe94401">(See the <strong>Docker Log</strong>)</a></p>
 <p>And that’s how we test a NuttX CI Docker Image on Arm64 macOS.</p>
+<p><em>What happens if the CI Build fails?</em></p>
+<p>Suppose we forget to add the Rust Target into the Docker Image. We’ll see an error like this…</p>
+<div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: rv-virt/leds64_rust
+  Cleaning...
+  Configuring...
+  Building NuttX...
+error[E0463]: can&#39;t find crate for `core`
+  |
+  = note: the `riscv64gc-unknown-none-elf` target may not be installed
+  = help: consider downloading the target with `rustup target add riscv64gc-unknown-none-elf`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0463`.
+make[2]: *** [/root/apps/Application.mk:293: leds_rust_main.rs.root.apps.examples.leds_rust.o] Error 1
+make[2]: Target &#39;all&#39; not remade because of errors.
+make[1]: *** [Makefile:51: /root/apps/examples/leds_rust_all] Error 2
+make[1]: Target &#39;all&#39; not remade because of errors.
+make: *** [tools/LibTargets.mk:232: /root/apps/libapps.a] Error 2
+make: Target &#39;all&#39; not remade because of errors.
+/root/nuttx/tools/testbuild.sh: line 378: /root/nuttx/../nuttx/nuttx.manifest: No such file or directory
+  Normalize rv-virt/leds64_rust
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/f90f57306ac984d7c617e4b177b77d0a#file-nuttx-ci-docker-fail-log-L1056-L1077">(See the <strong>Docker Log</strong>)</a></p>
 <p>(Based on <a href="https://acassis.wordpress.com/2023/01/21/how-i-create-a-docker-image-for-nuttx/"><strong>“Create a Docker Image for NuttX”</strong></a>)</p>
 <h1 id="appendix-downloading-the-docker-image-for-nuttx-ci"><a class="doc-anchor" href="#appendix-downloading-the-docker-image-for-nuttx-ci">§</a>15 Appendix: Downloading the Docker Image for NuttX CI</h1>
 <p><strong>To Download the Docker Image for NuttX CI:</strong> This works only if we’re on x64 Linux…</p>
