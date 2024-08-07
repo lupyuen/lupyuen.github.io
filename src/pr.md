@@ -1033,6 +1033,8 @@ Why are we doing this? Suppose we need to tweak the NuttX CI Docker Image (for C
 rustup target add riscv64gc-unknown-none-elf
 ```
 
+[(Source)](https://github.com/apache/nuttx/pull/12858/files#diff-a4a1b8c80e9671130b6ea4bafc8eeb126cddf3d157c019083d322c98cb765f37)
+
 We need to test our Modified CI Docker Image. But if we're on __Arm64 macOS__: Sorry we can't download the CI Docker Image, we need to build ourselves! (Skip to the next section if we're on x64 Linux)
 
 Here's how we created our __CI Docker Image__ and Custom Dockerfile: [tools/ci/docker/linux/Dockerfile](https://github.com/lupyuen2/wip-nuttx/commit/a4c52e10bee3d6dfc6b02347fc0687c99512953f)
