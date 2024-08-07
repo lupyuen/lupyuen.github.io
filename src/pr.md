@@ -1023,3 +1023,268 @@ The [__NuttX Validation Instructions__](https://cwiki.apache.org/confluence/disp
     Then enter "__trust__" and "__5__"
 
 -   The file "__DISCLAIMER-WIP__" no longer exists in the __nuttx__ and __apps__ folders
+
+# Appendix: Building the Docker Image for NuttX CI
+
+Why are we doing this? Suppose we need to tweak the NuttX CI Docker Image (for Continuous Integration), like to [__install a Rust Target for a RISC-V Build__](https://github.com/apache/nuttx-apps/pull/2462#issuecomment-2270074541)...
+
+```bash
+## Install the Rust Target for QEMU RISC-V 64-bit
+rustup target add riscv64gc-unknown-none-elf
+```
+
+We need to test our Modified CI Docker Image. But if we're on __Arm64 macOS__: Sorry we can't download the CI Docker Image, we need to build ourselves! (Skip to the next section if we're on x64 Linux)
+
+Here's how we created our __CI Docker Image__ and Custom Dockerfile: [tools/ci/docker/linux/Dockerfile](https://github.com/lupyuen2/wip-nuttx/commit/a4c52e10bee3d6dfc6b02347fc0687c99512953f)
+
+Install [__Rancher Desktop__](https://rancherdesktop.io/). In Rancher Desktop, click "Settings"...
+- Set "__Container Engine__" to "__dockerd (moby)__"
+- Under "__Kubernetes__", uncheck "__Enable Kubernetes__"
+
+Then we build the __Docker Image__...
+
+```bash
+$ cd nuttx/tools/ci/docker/linux
+$ docker build -t nuttx:v1 .
+```
+
+[(See the __Docker Log__)](https://gist.github.com/lupyuen/23da1272aaf55f7fe37bc6ab5fe94401)
+
+If we see...
+
+```text
+76.31 error: Cannot download gmp-6.1.0.tar.bz2 from ftp://gcc.gnu.org/pub/gcc/infrastructure/
+```
+
+Then GNU Server might be busy. Try again later and it works!
+
+But __i386 packages__ are missing (because we're hosting Docker on Arm64 macOS)...
+
+```text
+ > [stage-12  5/50] RUN apt-get update -qq && DEBIAN_FRONTEND="noninteractive" TZ=Etc/UTC apt-get install -y -qq --no-install-recommends   -o APT::Immediate-Configure=0   avr-libc   ccache   clang   clang-tidy   g++-12-multilib   gcc-avr   gcc-12-multilib   genromfs   gettext   git   lib32z1-dev   libasound2-dev libasound2-dev:i386   libc6-dev-i386   libcurl4-openssl-dev   libmp3lame-dev:i386   libmad0-dev:i386   libncurses5-dev   libpulse-dev libpulse-dev:i386   libpython2.7   libtinfo5   libusb-1.0-0-dev libusb-1.0-0-dev:i386   libv4l-dev libv4l-dev:i386   libx11-dev libx11-dev:i386   libxext-dev libxext-dev:i386   linux-headers-generic   linux-libc-dev:i386   ninja-build   npm   qemu-system-arm   qemu-system-misc   python3   python3-pip   python-is-python3   u-boot-tools   unzip   wget   xxd   file   tclsh   && rm -rf /var/lib/apt/lists/*:
+15.03 E: Failed to fetch http://ports.ubuntu.com/ubuntu-ports/dists/jammy/universe/binary-i386/Packages  404  Not Found [IP: 185.125.190.39 80]
+15.03 E: Failed to fetch http://ports.ubuntu.com/ubuntu-ports/dists/jammy-updates/multiverse/binary-i386/Packages  404  Not Found [IP: 185.125.190.39 80]
+15.03 E: Failed to fetch http://ports.ubuntu.com/ubuntu-ports/dists/jammy-backports/universe/binary-i386/Packages  404  Not Found [IP: 185.125.190.39 80]
+15.03 E: Failed to fetch http://ports.ubuntu.com/ubuntu-ports/dists/jammy-security/main/binary-i386/Packages  404  Not Found [IP: 185.125.190.39 80]
+15.03 E: Some index files failed to download. They have been ignored, or old ones used instead.
+```
+
+We don't need the i386 packages. So we comment out everything in Dockerfile except NuttX Build Tools, RISC-V Toolchain and Rust Toolchain:
+
+- [tools/ci/docker/linux/Dockerfile](https://github.com/lupyuen2/wip-nuttx/commit/a4c52e10bee3d6dfc6b02347fc0687c99512953f)
+
+Make sure __RISC-V Toolchain__ is for Arm64 (not x64)...
+
+```text
+# Download the latest RISCV GCC toolchain prebuilt by xPack
+RUN mkdir riscv-none-elf-gcc && \
+  curl -s -L "https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v13.2.0-2/xpack-riscv-none-elf-gcc-13.2.0-2-linux-arm64.tar.gz" \
+  | tar -C riscv-none-elf-gcc --strip-components 1 -xz
+```
+
+__If RISC-V Toolchain fails:__ Try again...
+
+```text
+ => ERROR [nuttx-toolchain-riscv 1/1] RUN mkdir riscv-none-elf-gcc &&    195.2s
+------                                                                          
+ > [nuttx-toolchain-riscv 1/1] RUN mkdir riscv-none-elf-gcc &&   curl -s -L "https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v13.2.0-2/xpack-riscv-none-elf-gcc-13.2.0-2-linux-arm64.tar.gz"   | tar -C riscv-none-elf-gcc --strip-components 1 -xz:
+195.2 
+195.2 gzip: stdin: unexpected end of file
+195.2 tar: Unexpected EOF in archive
+195.2 tar: Unexpected EOF in archive
+195.2 tar: Error is not recoverable: exiting now
+------
+```
+
+__zap__ seems to fail for Arm64. So we comment out zap in Dockerfile...
+
+```text
+39.86 npm ERR! code 1
+39.86 npm ERR! path /tools/zap/node_modules/canvas
+39.86 npm ERR! command failed
+39.86 npm ERR! command sh -c node-pre-gyp install --fallback-to-build --update-binary
+39.86 npm ERR! Failed to execute '/usr/bin/node /usr/share/nodejs/node-gyp/bin/node-gyp.js configure --fallback-to-build --update-binary --module=/tools/zap/node_modules/canvas/build/Release/canvas.node --module_name=canvas --module_path=/tools/zap/node_modules/canvas/build/Release --napi_version=8 --node_abi_napi=napi --napi_build_version=0 --node_napi_label=node-v72' (1)
+39.86 npm ERR! node-pre-gyp info it worked if it ends with ok
+39.86 npm ERR! node-pre-gyp info using node-pre-gyp@1.0.10
+39.86 npm ERR! node-pre-gyp info using node@12.22.9 | linux | arm64
+39.86 npm ERR! node-pre-gyp http GET https://github.com/Automattic/node-canvas/releases/download/v2.11.2/canvas-v2.11.2-node-v72-linux-glibc-arm64.tar.gz
+39.86 npm ERR! node-pre-gyp ERR! install response status 404 Not Found on https://github.com/Automattic/node-canvas/releases/download/v2.11.2/canvas-v2.11.2-node-v72-linux-glibc-arm64.tar.gz 
+39.86 npm ERR! node-pre-gyp WARN Pre-built binaries not installable for canvas@2.11.2 and node@12.22.9 (node-v72 ABI, glibc) (falling back to source compile with node-gyp) 
+```
+
+And we're done!
+
+```text
+ => [stage-4 27/33] COPY --from=nuttx-tools /tools/bloaty/ bloaty/         1.8s
+ => [stage-4 28/33] COPY --from=nuttx-tools /tools/kconfig-frontends/ kco  0.0s
+ => [stage-4 29/33] COPY --from=nuttx-tools /tools/rust/ /tools/rust/      3.0s
+ => [stage-4 30/33] COPY --from=nuttx-toolchain-riscv /tools/riscv-none-e  5.1s
+ => [stage-4 31/33] RUN mkdir -p /tools/gn                                 0.2s
+ => [stage-4 32/33] COPY --from=nuttx-tools /tools/gn/gn/out/gn /tools/gn  0.0s
+ => [stage-4 33/33] RUN mkdir -p /tools/ccache/bin &&   ln -sf `which cca  0.3s
+ => exporting to image                                                    15.0s
+ => => exporting layers                                                   15.0s
+ => => writing image sha256:27da351829f15ecf1dd333cc43b864045d462a595f512  0.0s
+ => => naming to docker.io/library/nuttx:v1                                0.0s
+```
+
+After the above fixes, here's our __Custom Dockerfile__ for NuttX CI + RISC-V + Rust (that works on Arm64 macOS)...
+
+- [tools/ci/docker/linux/Dockerfile](https://github.com/lupyuen2/wip-nuttx/commit/a4c52e10bee3d6dfc6b02347fc0687c99512953f)
+
+We check the __Docker Image__ and RISC-V Toolchain...
+
+```text
+$ docker images
+REPOSITORY  TAG   IMAGE ID       CREATED              SIZE
+nuttx       v1    27da351829f1   About a minute ago   7.09GB
+
+$ docker run -it nuttx:v1 /bin/bash 
+
+root@?:/tools# uname -a
+Linux 6d5db4f6b835 6.6.14-0-virt #1-Alpine SMP Fri, 26 Jan 2024 11:08:07 +0000 aarch64 aarch64 aarch64 GNU/Linux
+
+root@?:/tools# riscv-none-elf-gcc -v       
+gcc version 13.2.0 (xPack GNU RISC-V Embedded GCC aarch64) 
+
+root@?:/tools# rustc --version
+rustc 1.80.0 (051478957 2024-07-21)
+
+root@?:/tools# rustup --version
+rustup 1.27.1 (54dd3d00f 2024-04-24)
+
+root@?:/tools# rustup toolchain list
+stable-aarch64-unknown-linux-gnu (default)
+
+root@?:/tools# rustup target list
+aarch64-unknown-linux-gnu (installed)
+riscv64gc-unknown-none-elf (installed)
+thumbv6m-none-eabi (installed)
+thumbv7m-none-eabi (installed)
+
+root@?:/tools# exit
+```
+
+Looks hunky dory! We download the __NuttX Source Files__ and start the build...
+
+```text
+$ docker run -it nuttx:v1 /bin/bash 
+# cd
+# pwd
+/root
+# git clone https://github.com/apache/nuttx
+# git clone https://github.com/apache/nuttx-apps apps
+# cd nuttx/tools/ci
+# ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
+```
+
+Why __risc-v-02.dat__? That's because we're running the [__"Linux (risc-v-02)"__](https://github.com/apache/nuttx/actions/runs/10263378328/job/28416251531?pr=12849) build. Which will build the Second Batch of RISC-V Targets, including `rv-virt:*` (QEMU RISC-V).
+
+We will see...
+
+```text
++ /root/nuttx/tools/testbuild.sh -A -N -R -j 2 -e '-Wno-cpp -Werror' testlist/risc-v-02.dat
+====================================================================================
+Configuration/Tool: hifive1-revb/nsh
+2024-08-06 16:06:08
+------------------------------------------------------------------------------------
+  Cleaning...
+  Configuring...
+  Building NuttX...
+```
+
+Exactly like [__NuttX CI in GitHub Actions__](https://github.com/apache/nuttx/actions/runs/10263378328/job/28416251531?pr=12849)!
+
+Finally we see our Rust Build completing successfully in our Docker Container yay!
+
+```text
+Configuration/Tool: rv-virt/leds64_rust
+2024-08-06 17:07:29
+------------------------------------------------------------------------------------
+  Cleaning...
+  Configuring...
+  Building NuttX...
+riscv-none-elf-ld: warning: /root/nuttx/nuttx has a LOAD segment with RWX permissions
+  Normalize rv-virt/leds64_rust
+```
+
+[(See the __Docker Log__)](https://gist.github.com/lupyuen/23da1272aaf55f7fe37bc6ab5fe94401)
+
+And that's how we test a NuttX CI Docker Image on Arm64 macOS.
+
+(Based on [__"Create a Docker Image for NuttX"__](https://acassis.wordpress.com/2023/01/21/how-i-create-a-docker-image-for-nuttx/))
+
+# Appendix: Downloading the Docker Image for NuttX CI
+
+__To Download the Docker Image for NuttX CI:__ This works only if we're on x64 Linux...
+
+```bash
+$ sudo apt install podman-docker
+$ docker pull \
+    ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
+```
+
+If we see: `no matching manifest for linux/arm64/v8 in the manifest list entries`: Nope sorry we're not on x64 Linux, we can't download the image!
+
+After downloading the image, run the steps above to start the Docker Container, download the NuttX Source Files and start the build.
+
+Here's are some interesting things we observed from [__NuttX CI__](https://github.com/apache/nuttx/actions/runs/10263378328/job/28395177537?pr=12849
+)...
+
+```bash
+## Run the CI Build for RISC-V Targets
+./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
+
+## Which calls Test Build for RISC-V Targets
+/github/workspace/sources/nuttx/tools/testbuild.sh -A -N -R -j 4 -e '-Wno-cpp -Werror' testlist/risc-v-02.dat
+
+## Run the Docker Container for NuttX CI
+/usr/bin/docker run \
+ --name ghcrioapachenuttxapachenuttxcilinux_ba895b \
+ --label bbeb86 \
+ --workdir /github/workspace \
+ --rm \
+ -e "DOCKER_BUILDKIT" \
+ -e "nuttx_sha" \
+ -e "BLOBDIR" \
+ -e "INPUT_RUN" \
+ -e "HOME" \
+ -e "GITHUB_JOB" \
+ -e "GITHUB_REF" \
+ -e "GITHUB_SHA" \
+ -e "GITHUB_REPOSITORY" \
+ -e "GITHUB_REPOSITORY_OWNER" \
+ -e "GITHUB_REPOSITORY_OWNER_ID" \
+ -e "GITHUB_RUN_ID" \
+ -e "GITHUB_RUN_NUMBER" \
+ -e "GITHUB_RETENTION_DAYS" \
+ -e "GITHUB_RUN_ATTEMPT" \
+ -e "GITHUB_REPOSITORY_ID" \
+ -e "GITHUB_ACTOR_ID" \
+ -e "GITHUB_ACTOR" \
+ -e "GITHUB_TRIGGERING_ACTOR" \
+ -e "GITHUB_WORKFLOW" \
+ -e "GITHUB_HEAD_REF" \
+ -e "GITHUB_BASE_REF" \
+ -e "GITHUB_EVENT_NAME" \
+ -e "GITHUB_SERVER_URL" \
+ -e "GITHUB_API_URL" \
+ -e "GITHUB_GRAPHQL_URL" \
+ -e "GITHUB_REF_NAME" \
+ -e "GITHUB_REF_PROTECTED" \
+ -e "GITHUB_REF_TYPE" \
+ -e "GITHUB_WORKFLOW_REF" \
+ -e "GITHUB_WORKFLOW_SHA" \
+ -e "GITHUB_WORKSPACE" \
+ -e "GITHUB_ACTION" \
+ -e "GITHUB_EVENT_PATH" \
+ -e "GITHUB_ACTION_REPOSITORY" \
+ -e "GITHUB_ACTION_REF" \
+ -e "GITHUB_PATH" \
+ -e "GITHUB_ENV" \
+ -e "GITHUB_STEP_SUMMARY" \
+ -e "GITHUB_STATE" \
+ -e "GITHUB_OUTPUT" \
+ -e "RUNNER_OS" \
+ -e ""
+```
