@@ -1180,6 +1180,8 @@ $ docker run -it nuttx:v1 /bin/bash
 
 Why __risc-v-02.dat__? That's because we're running the [__"Linux (risc-v-02)"__](https://github.com/apache/nuttx/actions/runs/10263378328/job/28416251531?pr=12849) build. Which will build the Second Batch of RISC-V Targets, including `rv-virt:*` (QEMU RISC-V).
 
+(Why __cibuild.sh__? See the next section)
+
 We will see...
 
 ```text
@@ -1199,8 +1201,6 @@ Finally we see our Rust Build completing successfully in our Docker Container ya
 
 ```text
 Configuration/Tool: rv-virt/leds64_rust
-2024-08-06 17:07:29
-------------------------------------------------------------------------------------
   Cleaning...
   Configuring...
   Building NuttX...
@@ -1211,6 +1211,35 @@ riscv-none-elf-ld: warning: /root/nuttx/nuttx has a LOAD segment with RWX permis
 [(See the __Docker Log__)](https://gist.github.com/lupyuen/23da1272aaf55f7fe37bc6ab5fe94401)
 
 And that's how we test a NuttX CI Docker Image on Arm64 macOS.
+
+_What happens if the CI Build fails?_
+
+Suppose we forget to add the Rust Target into the Docker Image. We'll see an error like this...
+
+```text
+Configuration/Tool: rv-virt/leds64_rust
+  Cleaning...
+  Configuring...
+  Building NuttX...
+error[E0463]: can't find crate for `core`
+  |
+  = note: the `riscv64gc-unknown-none-elf` target may not be installed
+  = help: consider downloading the target with `rustup target add riscv64gc-unknown-none-elf`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0463`.
+make[2]: *** [/root/apps/Application.mk:293: leds_rust_main.rs.root.apps.examples.leds_rust.o] Error 1
+make[2]: Target 'all' not remade because of errors.
+make[1]: *** [Makefile:51: /root/apps/examples/leds_rust_all] Error 2
+make[1]: Target 'all' not remade because of errors.
+make: *** [tools/LibTargets.mk:232: /root/apps/libapps.a] Error 2
+make: Target 'all' not remade because of errors.
+/root/nuttx/tools/testbuild.sh: line 378: /root/nuttx/../nuttx/nuttx.manifest: No such file or directory
+  Normalize rv-virt/leds64_rust
+```
+
+[(See the __Docker Log__)](https://gist.github.com/lupyuen/f90f57306ac984d7c617e4b177b77d0a#file-nuttx-ci-docker-fail-log-L1056-L1077)
 
 (Based on [__"Create a Docker Image for NuttX"__](https://acassis.wordpress.com/2023/01/21/how-i-create-a-docker-image-for-nuttx/))
 
