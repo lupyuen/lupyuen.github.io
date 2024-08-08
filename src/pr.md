@@ -958,6 +958,8 @@ etctmp
 etctmp.c
 ```
 
+[(NuttX CI validates the Config Files by calling __cibuild.sh__)](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci)
+
 # Appendix: Validate NuttX Release
 
 _For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, BL602, ..._
