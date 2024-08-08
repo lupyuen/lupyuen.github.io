@@ -1251,7 +1251,7 @@ make: Target 'all' not remade because of errors.
 
 _What about testing a Single Config?_
 
-Just do it the usual NuttX way...
+Just do it the normal NuttX way...
 
 ```text
 $ docker run -it nuttx:v1 /bin/bash 
