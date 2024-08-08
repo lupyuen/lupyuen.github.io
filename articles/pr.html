@@ -1140,6 +1140,7 @@ $ cd nuttx/tools/ci
 $ ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
 </code></pre></div>
 <p>Why <strong>cibuild.sh</strong>? We got it from the <a href="https://github.com/apache/nuttx/actions/runs/10263378328/job/28395177537?pr=12849"><strong>NuttX CI Log</strong></a>…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L163">(<strong>cibuild.sh</strong> is called by <strong>.github/workflows/build.yml</strong>)</a></p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/tools/index.html#testbuild-sh">(<strong>testbuild.sh</strong> is explained here)</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run the CI Build for RISC-V Targets
 ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
