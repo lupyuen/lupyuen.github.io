@@ -1284,8 +1284,10 @@ $ docker run -it nuttx:v1 /bin/bash
 # ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
 ```
 
-Here's are some interesting things we observed from [__NuttX CI__](https://github.com/apache/nuttx/actions/runs/10263378328/job/28395177537?pr=12849
+Why __cibuild.sh__? We got it from the [__NuttX CI Log__](https://github.com/apache/nuttx/actions/runs/10263378328/job/28395177537?pr=12849
 )...
+
+[(__testbuild.sh__ is explained here)](https://nuttx.apache.org/docs/latest/components/tools/index.html#testbuild-sh)
 
 ```bash
 ## Run the CI Build for RISC-V Targets
