@@ -1249,6 +1249,20 @@ make: Target 'all' not remade because of errors.
 
 [(See the __Docker Log__)](https://gist.github.com/lupyuen/f90f57306ac984d7c617e4b177b77d0a#file-nuttx-ci-docker-fail-log-L1056-L1077)
 
+_What about testing a Single Config?_
+
+Just do it the usual NuttX way...
+
+```text
+$ docker run -it nuttx:v1 /bin/bash 
+# cd
+# git clone https://github.com/apache/nuttx
+# git clone https://github.com/apache/nuttx-apps apps
+# cd nuttx
+# tools/configure.sh rv-virt:leds64_rust
+# make
+```
+
 (Based on [__"Create a Docker Image for NuttX"__](https://acassis.wordpress.com/2023/01/21/how-i-create-a-docker-image-for-nuttx/))
 
 # Appendix: Downloading the Docker Image for NuttX CI
@@ -1296,6 +1310,17 @@ $ cd nuttx/tools/ci
 $ ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
 ```
 
+Or for a Single Config...
+
+```text
+$ cd
+$ git clone https://github.com/apache/nuttx
+$ git clone https://github.com/apache/nuttx-apps apps
+$ cd nuttx
+$ tools/configure.sh rv-virt:leds64_rust
+$ make
+```
+
 Why __cibuild.sh__? We got it from the [__NuttX CI Log__](https://github.com/apache/nuttx/actions/runs/10263378328/job/28395177537?pr=12849
 )...
 
@@ -1305,10 +1330,14 @@ Why __cibuild.sh__? We got it from the [__NuttX CI Log__](https://github.com/apa
 
 ```bash
 ## Run the CI Build for RISC-V Targets
-./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
+./cibuild.sh -c -A -N -R \
+  testlist/risc-v-02.dat
 
 ## Which calls Test Build for RISC-V Targets
-/github/workspace/sources/nuttx/tools/testbuild.sh -A -N -R -j 4 -e '-Wno-cpp -Werror' testlist/risc-v-02.dat
+/github/workspace/sources/nuttx/tools/testbuild.sh -A -N -R \
+  -j 4 \
+  -e '-Wno-cpp -Werror' \
+  testlist/risc-v-02.dat
 
 ## Run the Docker Container for NuttX CI
 /usr/bin/docker run \
