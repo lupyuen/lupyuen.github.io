@@ -163,6 +163,7 @@ git clone \
 <li>
 <p><strong>Build and test</strong> the modified code.</p>
 <p><a href="https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7">(I configured <code>F1</code> in VSCode to run this <strong>Build Script</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci">(Testing the <strong>Docker Image for NuttX CI</strong>)</a></p>
 </li>
 <li>
 <p>Capture the <strong>Output Log</strong> and save it as a <a href="https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1"><strong>GitHub Gist</strong></a>…</p>
@@ -934,7 +935,7 @@ gpg --import KEYS
 </li>
 </ul>
 <h1 id="appendix-building-the-docker-image-for-nuttx-ci"><a class="doc-anchor" href="#appendix-building-the-docker-image-for-nuttx-ci">§</a>14 Appendix: Building the Docker Image for NuttX CI</h1>
-<p>Why are we doing this? Suppose we need to tweak the NuttX CI Docker Image (for Continuous Integration), like to <a href="https://github.com/apache/nuttx-apps/pull/2462#issuecomment-2270074541"><strong>install a Rust Target for a RISC-V Build</strong></a>…</p>
+<p>Why are we doing this? Suppose we need to tweak the NuttX CI Docker Image (for Continuous Integration), like to <a href="https://github.com/apache/nuttx/pull/12858"><strong>install a Rust Target for a RISC-V Build</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install the Rust Target for QEMU RISC-V 64-bit
 rustup target add riscv64gc-unknown-none-elf
 </code></pre></div>
@@ -1076,6 +1077,7 @@ riscv-none-elf-ld: warning: /root/nuttx/nuttx has a LOAD segment with RWX permis
   Normalize rv-virt/leds64_rust
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/23da1272aaf55f7fe37bc6ab5fe94401">(See the <strong>Docker Log</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/12858">(See the <strong>Pull Request</strong>)</a></p>
 <p>And that’s how we test a NuttX CI Docker Image on Arm64 macOS.</p>
 <p><em>What happens if the CI Build fails?</em></p>
 <p>Suppose we forget to add the Rust Target into the Docker Image. We’ll see an error like this…</p>
