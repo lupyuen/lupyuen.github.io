@@ -1108,13 +1108,14 @@ make: Target &#39;all&#39; not remade because of errors.
 $ cd nuttx/tools/ci/docker/linux
 $ docker build -t nuttx:v1 .
 </code></pre></div>
+<p>(Takes a few hours to complete. Unless we trim down the Dockerfile, as explained in the previous section)</p>
 <p>Or we can <strong>Download the Docker Image</strong> for NuttX CI and tweak it (for testing). This works only if we’re on x64 Linux…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sudo apt install podman-docker
 $ docker pull \
     ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
 </code></pre></div>
 <p>If we see <em>“No matching manifest for linux/arm64/v8”</em>: Nope sorry we’re not on x64 Linux, we can’t download and run the Docker Image!</p>
-<p>After downloading the Docker Image, run the steps from the previous section to start the Docker Container, download the NuttX Source Files and start the build.</p>
+<p>After building or downloading the Docker Image: Run the steps from the previous section to start the Docker Container, download the NuttX Source Files and start the build.</p>
 <div class="example-wrap"><pre class="language-text"><code>$ docker run -it nuttx:v1 /bin/bash 
 # cd
 # pwd
