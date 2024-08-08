@@ -107,6 +107,8 @@ We're ready to code!
 
     [(I configured `F1` in VSCode to run this __Build Script__)](https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7)
 
+    [(Testing the __Docker Image for NuttX CI__)](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci)
+
 1.  Capture the __Output Log__ and save it as a [__GitHub Gist__](https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1)...
 
     [__"NuttX QEMU Log for Generic Interrupt Controller"__](https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1)
@@ -1026,7 +1028,7 @@ The [__NuttX Validation Instructions__](https://cwiki.apache.org/confluence/disp
 
 # Appendix: Building the Docker Image for NuttX CI
 
-Why are we doing this? Suppose we need to tweak the NuttX CI Docker Image (for Continuous Integration), like to [__install a Rust Target for a RISC-V Build__](https://github.com/apache/nuttx-apps/pull/2462#issuecomment-2270074541)...
+Why are we doing this? Suppose we need to tweak the NuttX CI Docker Image (for Continuous Integration), like to [__install a Rust Target for a RISC-V Build__](https://github.com/apache/nuttx/pull/12858)...
 
 ```bash
 ## Install the Rust Target for QEMU RISC-V 64-bit
@@ -1211,6 +1213,8 @@ riscv-none-elf-ld: warning: /root/nuttx/nuttx has a LOAD segment with RWX permis
 ```
 
 [(See the __Docker Log__)](https://gist.github.com/lupyuen/23da1272aaf55f7fe37bc6ab5fe94401)
+
+[(See the __Pull Request__)](https://github.com/apache/nuttx/pull/12858)
 
 And that's how we test a NuttX CI Docker Image on Arm64 macOS.
 
