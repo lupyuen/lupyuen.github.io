@@ -1299,6 +1299,8 @@ $ ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
 Why __cibuild.sh__? We got it from the [__NuttX CI Log__](https://github.com/apache/nuttx/actions/runs/10263378328/job/28395177537?pr=12849
 )...
 
+[(__cibuild.sh__ is called by __.github/workflows/build.yml__)](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L163)
+
 [(__testbuild.sh__ is explained here)](https://nuttx.apache.org/docs/latest/components/tools/index.html#testbuild-sh)
 
 ```bash
