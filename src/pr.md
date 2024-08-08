@@ -1255,6 +1255,8 @@ $ cd nuttx/tools/ci/docker/linux
 $ docker build -t nuttx:v1 .
 ```
 
+(Takes a few hours to complete. Unless we trim down the Dockerfile, as explained in the previous section)
+
 Or we can __Download the Docker Image__ for NuttX CI and tweak it (for testing). This works only if we're on x64 Linux...
 
 ```bash
@@ -1265,7 +1267,7 @@ $ docker pull \
 
 If we see _"No matching manifest for linux/arm64/v8"_: Nope sorry we're not on x64 Linux, we can't download and run the Docker Image!
 
-After downloading the Docker Image, run the steps from the previous section to start the Docker Container, download the NuttX Source Files and start the build.
+After building or downloading the Docker Image: Run the steps from the previous section to start the Docker Container, download the NuttX Source Files and start the build.
 
 ```text
 $ docker run -it nuttx:v1 /bin/bash 
