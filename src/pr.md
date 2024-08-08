@@ -1247,7 +1247,15 @@ make: Target 'all' not remade because of errors.
 
 # Appendix: Downloading the Docker Image for NuttX CI
 
-__To Download the Docker Image for NuttX CI:__ This works only if we're on x64 Linux...
+__If we're on x64 Linux:__ We can __Build the Docker Image__ for NuttX CI, without any changes to the Dockerfile...
+
+```bash
+$ sudo apt install podman-docker
+$ cd nuttx/tools/ci/docker/linux
+$ docker build -t nuttx:v1 .
+```
+
+Or we can __Download the Docker Image__ for NuttX CI and tweak it (for testing). This works only if we're on x64 Linux...
 
 ```bash
 $ sudo apt install podman-docker
@@ -1255,9 +1263,20 @@ $ docker pull \
     ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
 ```
 
-If we see: `no matching manifest for linux/arm64/v8 in the manifest list entries`: Nope sorry we're not on x64 Linux, we can't download the image!
+If we see _"No matching manifest for linux/arm64/v8"_: Nope sorry we're not on x64 Linux, we can't download and run the Docker Image!
 
-After downloading the image, run the steps above to start the Docker Container, download the NuttX Source Files and start the build.
+After downloading the Docker Image, run the steps from the previous section to start the Docker Container, download the NuttX Source Files and start the build.
+
+```text
+$ docker run -it nuttx:v1 /bin/bash 
+# cd
+# pwd
+/root
+# git clone https://github.com/apache/nuttx
+# git clone https://github.com/apache/nuttx-apps apps
+# cd nuttx/tools/ci
+# ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
+```
 
 Here's are some interesting things we observed from [__NuttX CI__](https://github.com/apache/nuttx/actions/runs/10263378328/job/28395177537?pr=12849
 )...
