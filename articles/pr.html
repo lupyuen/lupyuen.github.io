@@ -1103,13 +1103,27 @@ make: Target &#39;all&#39; not remade because of errors.
 <p><a href="https://gist.github.com/lupyuen/f90f57306ac984d7c617e4b177b77d0a#file-nuttx-ci-docker-fail-log-L1056-L1077">(See the <strong>Docker Log</strong>)</a></p>
 <p>(Based on <a href="https://acassis.wordpress.com/2023/01/21/how-i-create-a-docker-image-for-nuttx/"><strong>“Create a Docker Image for NuttX”</strong></a>)</p>
 <h1 id="appendix-downloading-the-docker-image-for-nuttx-ci"><a class="doc-anchor" href="#appendix-downloading-the-docker-image-for-nuttx-ci">§</a>15 Appendix: Downloading the Docker Image for NuttX CI</h1>
-<p><strong>To Download the Docker Image for NuttX CI:</strong> This works only if we’re on x64 Linux…</p>
+<p><strong>If we’re on x64 Linux:</strong> We can <strong>Build the Docker Image</strong> for NuttX CI, without any changes to the Dockerfile…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ sudo apt install podman-docker
+$ cd nuttx/tools/ci/docker/linux
+$ docker build -t nuttx:v1 .
+</code></pre></div>
+<p>Or we can <strong>Download the Docker Image</strong> for NuttX CI and tweak it (for testing). This works only if we’re on x64 Linux…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sudo apt install podman-docker
 $ docker pull \
     ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
 </code></pre></div>
-<p>If we see: <code>no matching manifest for linux/arm64/v8 in the manifest list entries</code>: Nope sorry we’re not on x64 Linux, we can’t download the image!</p>
-<p>After downloading the image, run the steps above to start the Docker Container, download the NuttX Source Files and start the build.</p>
+<p>If we see <em>“No matching manifest for linux/arm64/v8”</em>: Nope sorry we’re not on x64 Linux, we can’t download and run the Docker Image!</p>
+<p>After downloading the Docker Image, run the steps from the previous section to start the Docker Container, download the NuttX Source Files and start the build.</p>
+<div class="example-wrap"><pre class="language-text"><code>$ docker run -it nuttx:v1 /bin/bash 
+# cd
+# pwd
+/root
+# git clone https://github.com/apache/nuttx
+# git clone https://github.com/apache/nuttx-apps apps
+# cd nuttx/tools/ci
+# ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
+</code></pre></div>
 <p>Here’s are some interesting things we observed from <a href="https://github.com/apache/nuttx/actions/runs/10263378328/job/28395177537?pr=12849"><strong>NuttX CI</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run the CI Build for RISC-V Targets
 ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
