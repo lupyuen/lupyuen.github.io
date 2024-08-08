@@ -1269,21 +1269,31 @@ Or we can __Download the Docker Image__ for NuttX CI and tweak it (for testing).
 $ sudo apt install podman-docker
 $ docker pull \
     ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
+$ docker images
+REPOSITORY                                  TAG         IMAGE ID      CREATED         SIZE
+ghcr.io/apache/nuttx/apache-nuttx-ci-linux  latest      60a6cdc2c7cc  5 hours ago     15.9 GB
 ```
 
 If we see _"No matching manifest for linux/arm64/v8"_: Nope sorry we're not on x64 Linux, we can't download and run the Docker Image!
 
-After building or downloading the Docker Image: Run the steps from the previous section to start the Docker Container, download the NuttX Source Files and start the build.
+After building or downloading the Docker Image: Run these steps (from previous section) to start the Docker Container, download the NuttX Source Files and start the build...
 
 ```text
+## If we built the Docker Image ourselves:
 $ docker run -it nuttx:v1 /bin/bash 
-# cd
-# pwd
+
+## If we downloaded the Docker Image:
+$ docker run -it ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest /bin/bash 
+
+## Inside Docker Container:
+## Download the NuttX Source Files and start the build
+$ cd
+$ pwd
 /root
-# git clone https://github.com/apache/nuttx
-# git clone https://github.com/apache/nuttx-apps apps
-# cd nuttx/tools/ci
-# ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
+$ git clone https://github.com/apache/nuttx
+$ git clone https://github.com/apache/nuttx-apps apps
+$ cd nuttx/tools/ci
+$ ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
 ```
 
 Why __cibuild.sh__? We got it from the [__NuttX CI Log__](https://github.com/apache/nuttx/actions/runs/10263378328/job/28395177537?pr=12849
