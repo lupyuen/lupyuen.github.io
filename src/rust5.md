@@ -254,6 +254,14 @@ We're ready to boot __NuttX on QEMU Emulator__ and run our Rust App!
 
 # Rust Target is Incorrect
 
+__UPDATE:__ We have fixed the Rust Target for QEMU 64-bit RISC-V...
+
+- [__"Fix the Rust and D Builds for QEMU RISC-V"__](https://github.com/apache/nuttx/pull/12854)
+
+- [__"Add Rust Target for QEMU RISC-V 64-bit"__](https://github.com/apache/nuttx/pull/12858)
+
+- [__"Add Build Config for leds64_rust"__](https://github.com/apache/nuttx/pull/12862)
+
 _Earlier we saw this error. Why did our Rust Build fail?_
 
 ```bash
