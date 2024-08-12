@@ -30,6 +30,8 @@ TODO
 
 [app/src/main.rs](https://github.com/lupyuen/nuttx-rust-app/blob/main/app/src/main.rs)
 
+[examples/leds_rust/leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
+
 ```rust
 // Comment out these lines for testing with Rust Standard Library 
 // #![no_main]
