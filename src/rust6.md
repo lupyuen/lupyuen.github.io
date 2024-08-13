@@ -120,6 +120,18 @@ Our NuttX App becomes a little safer with the [__Question Mark Operator__](https
 
 (Rust Compiler will warn us if we forget the Question Mark)
 
+_But usleep and close are still unsafe?_
+
+```rust
+// Wait a while
+unsafe { usleep(500_000); }
+...
+// Close the LED Device
+unsafe { close(fd); }
+```
+
+Yeah there's not much point in wrapping __usleep__ and __close__? Since we don't check the Return Values.
+
 # Runs on Linux / macOS / Windows
 
 _Will our NuttX App actually run on Linux, macOS and Windows?_
@@ -130,7 +142,7 @@ _Will our NuttX App actually run on Linux, macOS and Windows?_
 #![no_std]   // For NuttX Only: Use Rust Core Library (instead of Rust Standard Library)
 ```
 
-Yep indeed! Just comment out the above lines and run on __Linux / macOS / Windows__:
+Yep indeed! Just comment out the above lines and run on __Linux / macOS / Windows (WSL)__:
 
 ```bash
 $ git clone https://github.com/lupyuen/nuttx-rust-app
@@ -148,9 +160,20 @@ This greatly simplifies our NuttX App Development: We could (potentially) compil
 
 # Main Function
 
-_We've seen the LED Blinky code in rust_main. Who calls rust_main?_
+_We saw the LED Blinky code in rust_main. Who calls rust_main?_
 
-TODO: Main Function
+Remember that __rust_main__ returns a __Result Type__...
+
+```rust
+// `rust_main` accepts the args from NuttX Shell
+// And returns a Result Code (int) or Error Code (int)
+fn rust_main(_argc: i32, _argv: *const *const u8)
+  -> Result<i32, i32> { ... }
+```
+
+But NuttX expects us to provide a Main Function named __leds_rust_main__. And it shall return an __Integer Result__. (Not a Result Type)
+
+Thus we create an __leds_rust_main__ function that calls __rust_main__ and returns the right result...
 
 ```rust
 // For NuttX: This will be called by NuttX Shell
@@ -162,12 +185,13 @@ pub extern "C" fn leds_rust_main(argc: i32, argv: *const *const u8)  // Args fro
   // Call the program logic in Rust Main
   let res = rust_main(argc, argv);
 
-  // If Rust Main returns an error, print it
+  // If Rust Main returns an error, print it.
+  // We won't wrap `printf`, because it needs VarArgs.
   if let Err(e) = res {
     unsafe { printf(b"ERROR: rust_main() failed with error %d\n\0" as *const u8, e); }
-    e
+    e  // Return the Error Code
   } else {
-    0
+    0  // Or return the Result Code 0
   }
 }
 ```
