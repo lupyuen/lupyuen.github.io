@@ -66,11 +66,12 @@
     <h1 class="title">Early Days of Rust Apps on Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
 <li><a href="#blink-the-led">1 Blink The LED</a><ul></ul></li>
-<li><a href="#error-handling">2 Error Handling</a><ul></ul></li>
+<li><a href="#handle-errors">2 Handle Errors</a><ul></ul></li>
 <li><a href="#runs-on-linux--macos--windows">3 Runs on Linux / macOS / Windows</a><ul></ul></li>
 <li><a href="#main-function">4 Main Function</a><ul></ul></li>
 <li><a href="#panic-handler">5 Panic Handler</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
+<li><a href="#no-crates-in-nuttx">6 No Crates in NuttX</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust6-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>My student Rushabh Gala has successfully completed </p>
@@ -164,7 +165,7 @@
 </span><span class="kw">mod </span>nuttx;
 <span class="kw">use </span>nuttx::<span class="kw-2">*</span>;</code></pre></div>
 <p>And yes this code runs on Linux, macOS and Windows! We’ll come back to this.</p>
-<h1 id="error-handling"><a class="doc-anchor" href="#error-handling">§</a>2 Error Handling</h1>
+<h1 id="handle-errors"><a class="doc-anchor" href="#handle-errors">§</a>2 Handle Errors</h1>
 <p><em>Why the funny question mark?</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = safe_open(  <span class="comment">// Open the LED Device...
@@ -200,6 +201,7 @@ ERROR: rust_main() failed with error -1
 </code></pre></div>
 <p>Which fails (as expected) because <em>“/dev/userleds”</em> doesn’t exist on Linux / macOS / Windows.</p>
 <p>This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our <strong>Local Computer</strong>, before testing on NuttX!</p>
+<p>(<strong>Rust Analyzer</strong> won’t work inside NuttX Projects)</p>
 <h1 id="main-function"><a class="doc-anchor" href="#main-function">§</a>4 Main Function</h1>
 <p><em>We saw the LED Blinky code in rust_main. Who calls rust_main?</em></p>
 <p>Remember that <strong>rust_main</strong> returns a <strong>Result Type</strong>…</p>
@@ -240,7 +242,8 @@ ERROR: rust_main() failed with error -1
   </span>leds_rust_main(<span class="number">0</span>, core::ptr::null());
 }</code></pre></div>
 <h1 id="panic-handler"><a class="doc-anchor" href="#panic-handler">§</a>5 Panic Handler</h1>
-<p>TODO: Panic Handler</p>
+<p><em>Anything else specific to NuttX?</em></p>
+<p>Yep NuttX Apps run on the <a href="TODO"><strong>Rust Core Library</strong></a> (no_std) and require a <strong>Panic Handler</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For NuttX Only: Import the Panic Type
 </span><span class="attr">#[cfg(target_os = <span class="string">"none"</span>)]
@@ -255,23 +258,29 @@ ERROR: rust_main() failed with error -1
 </span><span class="kw">fn </span>panic(_panic: <span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;) -&gt; ! {
   <span class="kw">loop </span>{}
 }</code></pre></div>
-<p>TODO: Sorry <strong>cfg</strong> won’t work for <strong>no_main</strong> and <strong>no_std</strong></p>
-<p>TODO: Run locally</p>
-<p>TODO: Test locally</p>
+<p>(Sorry <strong>cfg</strong> won’t work for <strong>no_main</strong> and <strong>no_std</strong>)</p>
+<h1 id="no-crates-in-nuttx"><a class="doc-anchor" href="#no-crates-in-nuttx">§</a>6 No Crates in NuttX</h1>
+<p><em>We’re coding Rust in a strange way. Why not use crates and cargo?</em></p>
+<p>Ah that’s because NuttX <a href="TODO"><strong>doesn’t support Rust Crates</strong></a>! We can’t use <strong>cargo</strong> either, NuttX Build calls <strong>rustc</strong> directly…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Configure the NuttX Project
+## for QEMU RISC-V 64-bit including Rust
+$ tools/configure.sh rv-virt:leds64_rust
+
+## Build the NuttX Project
+## Which calls `rustc`
+$ make
+</code></pre></div>
+<p>Which complicates our coding of NuttX Rust Apps. That’s why we hope to test them on <a href="TODO"><strong>Linux / macOS / Windows</strong></a>.</p>
 <p>TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)</p>
-<p>TODO: Safe Wrapper</p>
 <p>TODO: safe_puts buffer size</p>
-<p>TODO: Error Handling</p>
 <p>TODO: QEMU LED Driver</p>
 <p>TODO: Ox64, Kernel Mode</p>
 <p>TODO: QEMU 32-bit</p>
 <p>TODO: Auto test at GitHub Actions</p>
 <p>TODO: leds_rust daily test</p>
 <p>TODO: Docker Container</p>
-<p>TODO: Hard to test on local computer, Rust Analyser won’t work</p>
-<p>TODO: Unsafe printf, usleep, close</p>
 <p>TODO: Managed File Descriptors</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
