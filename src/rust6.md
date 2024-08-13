@@ -318,6 +318,8 @@ TODO: leds_rust daily test
 
 _Anything else we're testing daily?_
 
+To be clear whether it's our Rust App failing vs NuttX QEMU failing:
+
 TODO: Distinguish QEMU vs Rust failure 
 
 # What's Next
