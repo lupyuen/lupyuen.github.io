@@ -254,6 +254,10 @@ $ make
 
 Which complicates our coding of NuttX Rust Apps. That's why we hope to test them on [__Linux / macOS / Windows__](TODO).
 
+# LED Drivers for NuttX
+
+_12 weeks of GSoC: What else have we implemented?_
+
 TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)
 
 TODO: safe_puts buffer size
