@@ -43,17 +43,7 @@ We have fixed the Rust Target for QEMU 64-bit RISC-V...
    [GitHub Actions Workflow](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml)
 
 
-```bash
-$ git clone https://github.com/lupyuen/nuttx-rust-app
-$ cd nuttx-rust-app/
-$ cd app
-$ cargo run
-Hello, Rust!!
-Opening /dev/userleds
-ERROR: rust_main() failed with error -1
-```
-
-# TODO
+# Blink The LED
 
 TODO
 
@@ -95,7 +85,7 @@ They are safer versions of __open__ and __ioctl__ from our [__NuttX Module__](TO
 
 - Imports __usleep__ and __close__ from C
 
-- Plus the NuttX Constants __O_WRONLY__ and __ULEDIOC_SETALL__
+- Plus the NuttX Constants: __O_WRONLY__ and __ULEDIOC_SETALL__
 
 We import the __NuttX Module__ like so...
 
@@ -108,6 +98,43 @@ We import the __NuttX Module__ like so...
 mod nuttx;
 use nuttx::*;
 ```
+
+And yes this code runs on Linux, macOS and Windows! We'll come back to this.
+
+# Error Handling
+
+_Why the funny question mark?_
+
+```rust
+let fd = safe_open(  // Open the LED Device...
+  "/dev/userleds",   // Device Path
+  O_WRONLY           // Open for Write-Only
+) ?;                 // Quit on error
+```
+
+Normally in C we check the __Result Value__ at every call to __open__ and __ioctl__... Now with __safe_open__ and __safe_ioctl__, Rust does the checking for us!
+
+If something goes wrong, the code above will exit the function with an __Error Value__. (Like if _"/dev/userleds"_ doesn't exist)
+
+The [__Question Mark Operator__](https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html) makes our code safer, by auto-checking the Result Value of NuttX System Calls.
+
+(Rust Compiler will warn us if we forget the Question Mark)
+
+# Runs on Linux / macOS / Windows
+
+TODO
+
+```bash
+$ git clone https://github.com/lupyuen/nuttx-rust-app
+$ cd nuttx-rust-app/
+$ cd app
+$ cargo run
+Hello, Rust!!
+Opening /dev/userleds
+ERROR: rust_main() failed with error -1
+```
+
+# Main Function
 
 TODO: Main Function
 
@@ -175,7 +202,15 @@ TODO: Error Handling
 
 TODO: QEMU LED Driver
 
-TODO: Ox64 
+TODO: Ox64, Kernel Mode
+
+TODO: QEMU 32-bit
+
+TODO: Auto test at GitHub Actions
+
+TODO: leds_rust daily test
+
+TODO: Docker Container
 
 TODO: Hard to test on local computer, Rust Analyser won't work
 
