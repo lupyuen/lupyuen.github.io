@@ -84,6 +84,8 @@ fn rust_main(_argc: i32, _argv: *const *const u8)  // Args from NuttX Shell
 }
 ```
 
+compare with C
+
 _Where are safe_open and safe_ioctl defined?_
 
 TODO
