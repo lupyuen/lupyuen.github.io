@@ -111,7 +111,14 @@
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml">GitHub Actions Workflow</a></p>
 </li>
 </ol>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
+<div class="example-wrap"><pre class="language-bash"><code>$ git clone https://github.com/lupyuen/nuttx-rust-app
+$ cd nuttx-rust-app/
+$ cd app
+$ cargo run
+Hello, Rust!!
+Opening /dev/userleds
+ERROR: rust_main() failed with error -1
+</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/nuttx-rust-app/blob/main/app/src/main.rs">app/src/main.rs</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">examples/leds_rust/leds_rust_main.rs</a></p>
@@ -181,6 +188,10 @@
 </span><span class="kw">fn </span>main() {
   leds_rust_main(<span class="number">0</span>, core::ptr::null());
 }</code></pre></div>
+<p>TODO: Safe Wrapper</p>
+<p>TODO: QEMU LED Driver</p>
+<p>TODO: Ox64 </p>
+<p>TODO: Hard to test on local computer, Rust Analyser won’t work</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
