@@ -63,79 +63,89 @@ TODO
 
 ```rust
 // Comment out these lines for testing with Rust Standard Library 
-// #![no_main]
-// #![no_std]
+#![no_main]  // No Main Function
+#![no_std]   // Use Rust Core Library (instead of Rust Standard Library)
 
+// Import the NuttX Module
 mod nuttx;
+use nuttx::*;
 
+// For NuttX Only: Import the Panic Info
 #[cfg(target_os = "none")]
 use core::{
   panic::PanicInfo,
   result::Result::{self, Err, Ok},
 };
-use nuttx::*;
 
-// Panic Handler (needed for [no_std] compilation)
+// For NuttX Only: Define the Panic Handler for [no_std]
 #[cfg(target_os = "none")]  // For NuttX
 #[panic_handler]
 fn panic(_panic: &PanicInfo<'_>) -> ! {
   loop {}
 }
 
+// Main Program Logic. Called by `leds_rust_main`
 fn rust_main(_argc: i32, _argv: *const *const u8) -> Result<i32, i32> {
+
+  // Open the LED Device
   safe_puts("Hello, Rust!!");
-
-  safe_puts("Opening /dev/userleds");
   let fd = safe_open("/dev/userleds", O_WRONLY)?;
-  safe_puts("Set LED 1 to 1");
 
+  // Flip LED 1 to On
   safe_ioctl(fd, ULEDIOC_SETALL, 1)?;
-  safe_puts("Sleeping...");
-  unsafe {
-    usleep(500_000);
-  }
+  unsafe { usleep(500_000); }
 
-  safe_puts("Set LED 1 to 0");
+  // Flip LED 1 to Off
   safe_ioctl(fd, ULEDIOC_SETALL, 0)?;
-  unsafe {
-    close(fd);
-  }
+  unsafe { close(fd); }
   Ok(0)
 }
 
+// For NuttX: This will be called by NuttX Shell
+// For Linux / macOS / Windows: This wil be called by `main`
 #[no_mangle]
 pub extern "C" fn leds_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
-  // Call the program logic in Rust Main
+
+// Call the program logic in Rust Main
   let res = rust_main(0, core::ptr::null());
 
   // If Rust Main returns an error, print it
   if let Err(e) = res {
-    unsafe {
-      printf(
-        b"ERROR: rust_main() failed with error %d\n\0" as *const u8,
-        e,
-      );
-    }
+    unsafe { printf(b"ERROR: rust_main() failed with error %d\n\0" as *const u8, e); }
     e
   } else {
     0
   }
 }
 
-// For Testing Locally
+// For Testing on Linux / macOS / Windows: Define the Main Function
 #[cfg(not(target_os = "none"))]
 fn main() {
   leds_rust_main(0, core::ptr::null());
 }
 ```
 
+TODO: Run locally
+
+TODO: Test locally
+
+TODO: No Crates!
+
 TODO: Safe Wrapper
+
+TODO: safe_puts buffer size
+
+TODO: Error Handling
 
 TODO: QEMU LED Driver
 
 TODO: Ox64 
 
 TODO: Hard to test on local computer, Rust Analyser won't work
+
+TODO: Unsafe printf, usleep, close
+
+TODO: 
 
 # What's Next
 
