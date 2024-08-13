@@ -120,6 +120,8 @@ Our NuttX App becomes a little safer with the [__Question Mark Operator__](https
 
 (Rust Compiler will warn us if we forget the Question Mark)
 
+TODO: safe_puts buffer size
+
 TODO: Managed File Descriptors
 
 _But usleep and close are still unsafe?_
@@ -294,9 +296,9 @@ Yeah it's possible that our Rust App will someday __fail to build or execute__ c
 
     (Because NuttX is mostly in C, not Rust)
 
-That's why we updated the __Continuous Integration__ workflow for NuttX...
+That's why we extended the __Continuous Integration__ workflow for NuttX...
 
-Every NuttX Pull Request will trigger a rebuild of our [__Rust Blinky App__](TODO). If anything breaks, we'll find out right away!
+Every NuttX Pull Request will now trigger a rebuild of our [__Rust Blinky App__](TODO). If anything breaks, we'll find out right away!
 
 TODO: Docker Container
 
@@ -305,10 +307,6 @@ _What if the Rust Blinky App fails to execute correctly?_
 TODO: Auto test at GitHub Actions
 
 TODO: leds_rust daily test
-
-# TODO
-
-TODO: safe_puts buffer size
 
 # What's Next
 
