@@ -4,25 +4,17 @@
 
 ![TODO](https://lupyuen.github.io/images/rust6-title.jpg)
 
-My student [__Rushabh Gala__](TODO) has successfully completed his project for [__Google Summer of Code__](TODO)
+My student [__Rushabh Gala__](TODO) has just completed his project for [__Google Summer of Code__](TODO). Rushabh has created safer __Rust Apps__ for __Apache NuttX RTOS__...
+
+- TODO: Final Report
+
+- TODO: Midterm Report
+
+- TODO: NuttX Workshop Presentation 
+
+In this article we revisit Rushabh's contributions to NuttX... 
 
 TODO
-
-Final Report
-
-Midterm Report
-
-NuttX Workshop Presentation 
-
-In this article we look at the challenges and (partial) solutions 
-
-We have fixed the Rust Target for QEMU 64-bit RISC-V...
-
-- [__"Fix the Rust and D Builds for QEMU RISC-V"__](https://github.com/apache/nuttx/pull/12854)
-
-- [__"Add Rust Target for QEMU RISC-V 64-bit"__](https://github.com/apache/nuttx/pull/12858)
-
-- [__"Add Build Config for leds64_rust"__](https://github.com/apache/nuttx/pull/12862)
 
 1. Super interesting new development: Some folks in the NuttX Community are working with the Rust Project, adding NuttX as an official platform for Rust Standard Library! [(See this)](https://lists.apache.org/thread/oqx7p3vb4dcgko4mm2f0vqgqnkorn49p)
 
@@ -266,7 +258,9 @@ TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)
 
 _12 weeks of GSoC: What else have we implemented?_
 
-Remember we're blinking the LED? We tested it on Real Hardware: [__Ox64 BL808 SBC__](TODO). Which required us to create the GPIO and LED Drivers for Ox64 SBC...
+Remember our Blinky NuttX App in Rust? Well a NuttX App ain't really a NuttX App... Unless it runs __on Real Hardware__!
+
+We tested our Rust Blinky App on [__Ox64 BL808 SBC__](TODO). Which required us to create the __GPIO and LED Drivers__ for Ox64 SBC...
 
 - TODO: GPIO Driver for Ox64 SBC
 
@@ -302,7 +296,19 @@ That's why we extended the __Continuous Integration__ workflow for NuttX...
 
 Every NuttX Pull Request will now trigger a rebuild of our [__Rust Blinky App__](TODO). If anything breaks, we'll find out right away!
 
-TODO: Docker Container
+- [__"Fix the Rust and D Builds for QEMU RISC-V"__](https://github.com/apache/nuttx/pull/12854)
+
+- [__"Add Rust Target for QEMU RISC-V 64-bit"__](https://github.com/apache/nuttx/pull/12858)
+
+- [__"Add Build Config for leds64_rust"__](https://github.com/apache/nuttx/pull/12862)
+
+_Why so complicated?_
+
+That's because the NuttX Continuous Integration runs inside a __Docker Container__. Which requires delicate updates...
+
+- TODO: Building the Docker Container
+
+- TODO: Downloading the Docker Container
 
 _What if the Rust Blinky App fails to execute correctly?_
 
