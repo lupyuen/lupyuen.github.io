@@ -4,9 +4,9 @@
 
 ![TODO](https://lupyuen.github.io/images/rust6-title.jpg)
 
-TODO
+My student [__Rushabh Gala__](TODO) has successfully completed his project for [__Google Summer of Code__](TODO)
 
-My student Rushabh Gala has successfully completed 
+TODO
 
 Final Report
 
@@ -119,6 +119,8 @@ If something goes wrong, the code above will exit the function with an __Error V
 Our NuttX App becomes a little safer with the [__Question Mark Operator__](https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html), by auto-checking the results of System Calls.
 
 (Rust Compiler will warn us if we forget the Question Mark)
+
+TODO: Managed File Descriptors
 
 _But usleep and close are still unsafe?_
 
@@ -254,27 +256,59 @@ $ make
 
 Which complicates our coding of NuttX Rust Apps. That's why we hope to test them on [__Linux / macOS / Windows__](TODO).
 
+TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)
+
 # LED Drivers for NuttX
 
 _12 weeks of GSoC: What else have we implemented?_
 
-TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)
+Remember we're blinking the LED? We tested it on Real Hardware: [__Ox64 BL808 SBC__](TODO). Which required us to create the GPIO and LED Drivers for Ox64 SBC...
 
-TODO: safe_puts buffer size
+- TODO: GPIO Driver for Ox64 SBC
 
-TODO: QEMU LED Driver
+- TODO: LED Driver for Ox64 SBC
 
 TODO: Ox64, Kernel Mode
 
+_What about folks without Ox64 SBC?_
+
+We created the LED Driver for __QEMU RISC-V Emulator__, which will blink a Simulated LED on NuttX...
+
+- TODO: QEMU LED Driver
+
+Everyone can run the __Rust Blinky App__ (from above) and reproduce the exact same results.
+
 TODO: QEMU 32-bit
+
+# Daily Build and Test
+
+_Our Rust Blinky App: Will it break someday?_
+
+Yeah it's possible that our Rust App will someday __fail to build or execute__ correctly...
+
+1.  __Rust Compiler__ might change and break our app
+
+    (Since we're not calling it the __cargo__ way)
+
+1.  __NuttX Makefiles__ might cause problems for Rust Apps
+
+    (Because NuttX is mostly in C, not Rust)
+
+That's why we updated the __Continuous Integration__ workflow for NuttX...
+
+Every NuttX Pull Request will trigger a rebuild of our [__Rust Blinky App__](TODO). If anything breaks, we'll find out right away!
+
+TODO: Docker Container
+
+_What if the Rust Blinky App fails to execute correctly?_
 
 TODO: Auto test at GitHub Actions
 
 TODO: leds_rust daily test
 
-TODO: Docker Container
+# TODO
 
-TODO: Managed File Descriptors
+TODO: safe_puts buffer size
 
 # What's Next
 
