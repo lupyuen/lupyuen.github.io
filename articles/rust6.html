@@ -120,12 +120,11 @@ Opening /dev/userleds
 ERROR: rust_main() failed with error -1
 </code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/nuttx-rust-app/blob/main/app/src/main.rs">app/src/main.rs</a></p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">examples/leds_rust/leds_rust_main.rs</a></p>
+<p>This is how we <strong>Blink an LED</strong> in a NuttX Rust App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">examples/leds_rust/leds_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Main Program Logic. Called by `leds_rust_main`
 </span><span class="kw">fn </span>rust_main(_argc: i32, _argv: <span class="kw-2">*const *const </span>u8)  <span class="comment">// Args from NuttX Shell
-  </span>-&gt; <span class="prelude-ty">Result</span>&lt;i32, i32&gt; {  <span class="comment">// Returns a Result Code (int) or Error Code (int)
+  </span>-&gt; <span class="prelude-ty">Result</span>&lt;i32, i32&gt; {  <span class="comment">// Return a Result Code (int) or Error Code (int)
 
   // Open the LED Device
   </span>safe_puts(<span class="string">"Hello, Rust!!"</span>);
@@ -142,9 +141,23 @@ ERROR: rust_main() failed with error -1
   <span class="comment">// Return successfully with result 0
   </span><span class="prelude-val">Ok</span>(<span class="number">0</span>)
 }</code></pre></div>
-<p>compare with C</p>
-<p><em>Where are safe_open and safe_ioctl defined?</em></p>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/nuttx-rust-app/blob/main/app/src/main.rs">(<strong>Mirrored here:</strong> nuttx-rust-app/app/src/main.rs)</a></p>
+<p>Looks mighty similar to the <a href="TODO"><strong>C Version</strong></a>!</p>
+<p>(But with simpler Error Handling than C, we’ll talk more)</p>
+<p><em>What are safe_open and safe_ioctl?</em></p>
+<p>They are safer versions of <strong>open</strong> and <strong>ioctl</strong> from our <a href="TODO"><strong>NuttX Module</strong></a>, which…</p>
+<ul>
+<li>
+<p>Defines the Safe Wrappers: <strong><code>safe_*</code></strong></p>
+</li>
+<li>
+<p>Imports <strong>usleep</strong> and <strong>close</strong> from C</p>
+</li>
+<li>
+<p>Plus the NuttX Constants <strong>O_WRONLY</strong> and <strong>ULEDIOC_SETALL</strong></p>
+</li>
+</ul>
+<p>We import the <strong>NuttX Module</strong> like so…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Comment out these lines for testing on Linux / macOS / Windows
 </span><span class="attr">#![no_main]  </span><span class="comment">// For NuttX Only: No Main Function
@@ -153,28 +166,13 @@ ERROR: rust_main() failed with error -1
 // Import the NuttX Module
 </span><span class="kw">mod </span>nuttx;
 <span class="kw">use </span>nuttx::<span class="kw-2">*</span>;</code></pre></div>
-<p>TODO: Panic Handler</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For NuttX Only: Import the Panic Type
-</span><span class="attr">#[cfg(target_os = <span class="string">"none"</span>)]
-</span><span class="kw">use </span>core::{
-  panic::PanicInfo,
-  result::Result::{<span class="self">self</span>, <span class="prelude-val">Err</span>, <span class="prelude-val">Ok</span>},
-};
-
-<span class="comment">// For NuttX Only: Define the Panic Handler for `no_std`
-</span><span class="attr">#[cfg(target_os = <span class="string">"none"</span>)]  </span><span class="comment">// For NuttX
-</span><span class="attr">#[panic_handler]
-</span><span class="kw">fn </span>panic(_panic: <span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;) -&gt; ! {
-  <span class="kw">loop </span>{}
-}</code></pre></div>
 <p>TODO: Main Function</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For NuttX: This will be called by NuttX Shell
 // For Linux / macOS / Windows: This wil be called by `main`
 </span><span class="attr">#[no_mangle]
 </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>leds_rust_main(argc: i32, argv: <span class="kw-2">*const *const </span>u8)  <span class="comment">// Args from NuttX Shell
-  </span>-&gt; i32 {  <span class="comment">// Returns a Result Code (0) or Error Code (negative)
+  </span>-&gt; i32 {  <span class="comment">// Return a Result Code (0) or Error Code (negative)
 
   // Call the program logic in Rust Main
   </span><span class="kw">let </span>res = rust_main(argc, argv);
@@ -196,9 +194,24 @@ ERROR: rust_main() failed with error -1
   <span class="comment">// Call Rust Main without args
   </span>leds_rust_main(<span class="number">0</span>, core::ptr::null());
 }</code></pre></div>
+<p>TODO: Panic Handler</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For NuttX Only: Import the Panic Type
+</span><span class="attr">#[cfg(target_os = <span class="string">"none"</span>)]
+</span><span class="kw">use </span>core::{
+  panic::PanicInfo,
+  result::Result::{<span class="self">self</span>, <span class="prelude-val">Err</span>, <span class="prelude-val">Ok</span>},
+};
+
+<span class="comment">// For NuttX Only: Define the Panic Handler for `no_std`
+</span><span class="attr">#[cfg(target_os = <span class="string">"none"</span>)]  </span><span class="comment">// For NuttX
+</span><span class="attr">#[panic_handler]
+</span><span class="kw">fn </span>panic(_panic: <span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;) -&gt; ! {
+  <span class="kw">loop </span>{}
+}</code></pre></div>
 <p>TODO: Run locally</p>
 <p>TODO: Test locally</p>
-<p>TODO: No Crates!</p>
+<p>TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)</p>
 <p>TODO: Safe Wrapper</p>
 <p>TODO: safe_puts buffer size</p>
 <p>TODO: Error Handling</p>
@@ -206,7 +219,7 @@ ERROR: rust_main() failed with error -1
 <p>TODO: Ox64 </p>
 <p>TODO: Hard to test on local computer, Rust Analyser won’t work</p>
 <p>TODO: Unsafe printf, usleep, close</p>
-<p>TODO: </p>
+<p>TODO: Managed File Descriptors</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
