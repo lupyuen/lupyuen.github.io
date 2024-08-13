@@ -61,31 +61,11 @@ TODO
 
 [examples/leds_rust/leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
 
+
 ```rust
-// Comment out these lines for testing on Linux / macOS / Windows
-#![no_main]  // For NuttX Only: No Main Function
-#![no_std]   // For NuttX Only: Use Rust Core Library (instead of Rust Standard Library)
-
-// Import the NuttX Module
-mod nuttx;
-use nuttx::*;
-
-// For NuttX Only: Import the Panic Type
-#[cfg(target_os = "none")]
-use core::{
-  panic::PanicInfo,
-  result::Result::{self, Err, Ok},
-};
-
-// For NuttX Only: Define the Panic Handler for `no_std`
-#[cfg(target_os = "none")]  // For NuttX
-#[panic_handler]
-fn panic(_panic: &PanicInfo<'_>) -> ! {
-  loop {}
-}
-
 // Main Program Logic. Called by `leds_rust_main`
-fn rust_main(_argc: i32, _argv: *const *const u8) -> Result<i32, i32> {
+fn rust_main(_argc: i32, _argv: *const *const u8)  // Args from NuttX Shell
+  -> Result<i32, i32> {  // Returns a Result Code (int) or Error Code (int)
 
   // Open the LED Device
   safe_puts("Hello, Rust!!");
@@ -102,13 +82,49 @@ fn rust_main(_argc: i32, _argv: *const *const u8) -> Result<i32, i32> {
   // Return successfully with result 0
   Ok(0)
 }
+```
 
+_Where are safe_open and safe_ioctl defined?_
+
+TODO
+
+```rust
+// Comment out these lines for testing on Linux / macOS / Windows
+#![no_main]  // For NuttX Only: No Main Function
+#![no_std]   // For NuttX Only: Use Rust Core Library (instead of Rust Standard Library)
+
+// Import the NuttX Module
+mod nuttx;
+use nuttx::*;
+```
+
+TODO: Panic Handler
+
+```rust
+// For NuttX Only: Import the Panic Type
+#[cfg(target_os = "none")]
+use core::{
+  panic::PanicInfo,
+  result::Result::{self, Err, Ok},
+};
+
+// For NuttX Only: Define the Panic Handler for `no_std`
+#[cfg(target_os = "none")]  // For NuttX
+#[panic_handler]
+fn panic(_panic: &PanicInfo<'_>) -> ! {
+  loop {}
+}
+```
+
+TODO: Main Function
+
+```rust
 // For NuttX: This will be called by NuttX Shell
 // For Linux / macOS / Windows: This wil be called by `main`
 #[no_mangle]
 pub extern "C" fn leds_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
 
-// Call the program logic in Rust Main
+  // Call the program logic in Rust Main
   let res = rust_main(0, core::ptr::null());
 
   // If Rust Main returns an error, print it
@@ -119,7 +135,11 @@ pub extern "C" fn leds_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
     0
   }
 }
+```
 
+TODO: Main Function for Linux / macOS / Windows
+
+```rust
 // For Linux / macOS / Windows: Define the Main Function
 #[cfg(not(target_os = "none"))]
 fn main() {
