@@ -206,7 +206,7 @@ ERROR: rust_main() failed with error -1
 </code></pre></div>
 <p>Which fails (as expected) because <em>“/dev/userleds”</em> doesn’t exist on Linux / macOS / Windows.</p>
 <p>This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our <strong>Local Computer</strong>, before testing on NuttX!</p>
-<p>(<strong>Rust Analyzer</strong> won’t work inside NuttX Projects)</p>
+<p>(<strong>Rust Analyzer</strong> won’t work inside NuttX Projects sigh)</p>
 <h1 id="main-function"><a class="doc-anchor" href="#main-function">§</a>4 Main Function</h1>
 <p><em>We saw the LED Blinky code in rust_main. Who calls rust_main?</em></p>
 <p>Remember that <strong>rust_main</strong> returns a <strong>Result Type</strong>…</p>
