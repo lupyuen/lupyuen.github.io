@@ -148,7 +148,7 @@ _Will our NuttX App actually run on Linux, macOS and Windows?_
 #![no_std]   // For NuttX Only: Use Rust Core Library (instead of Rust Standard Library)
 ```
 
-Yep indeed! Just comment out the above lines and run on __Linux / macOS / Windows (WSL)__:
+Yep indeed! Just comment out the above lines and run our Rust Blinky App on __Linux / macOS / Windows__ (WSL)...
 
 ```bash
 $ git clone https://github.com/lupyuen/nuttx-rust-app
