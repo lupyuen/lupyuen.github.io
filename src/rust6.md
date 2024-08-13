@@ -101,7 +101,7 @@ use nuttx::*;
 
 And yes this code runs on Linux, macOS and Windows! We'll come back to this.
 
-# Error Handling
+# Handle Errors
 
 _Why the funny question mark?_
 
@@ -158,6 +158,8 @@ Which fails (as expected) because _"/dev/userleds"_ doesn't exist on Linux / mac
 
 This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our __Local Computer__, before testing on NuttX!
 
+(__Rust Analyzer__ won't work inside NuttX Projects)
+
 # Main Function
 
 _We saw the LED Blinky code in rust_main. Who calls rust_main?_
@@ -212,7 +214,9 @@ fn main() {
 
 # Panic Handler
 
-TODO: Panic Handler
+_Anything else specific to NuttX?_
+
+Yep NuttX Apps run on the [__Rust Core Library__](TODO) (no_std) and require a __Panic Handler__...
 
 ```rust
 // For NuttX Only: Import the Panic Type
@@ -230,19 +234,29 @@ fn panic(_panic: &PanicInfo<'_>) -> ! {
 }
 ```
 
-TODO: Sorry __cfg__ won't work for __no_main__ and __no_std__
+(Sorry __cfg__ won't work for __no_main__ and __no_std__)
 
-TODO: Run locally
+# No Crates in NuttX
 
-TODO: Test locally
+_We're coding Rust in a strange way. Why not use crates and cargo?_
+
+Ah that's because NuttX [__doesn't support Rust Crates__](TODO)! We can't use __cargo__ either, NuttX Build calls __rustc__ directly...
+
+```bash
+## Configure the NuttX Project
+## for QEMU RISC-V 64-bit including Rust
+$ tools/configure.sh rv-virt:leds64_rust
+
+## Build the NuttX Project
+## Which calls `rustc`
+$ make
+```
+
+Which complicates our coding of NuttX Rust Apps. That's why we hope to test them on [__Linux / macOS / Windows__](TODO).
 
 TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)
 
-TODO: Safe Wrapper
-
 TODO: safe_puts buffer size
-
-TODO: Error Handling
 
 TODO: QEMU LED Driver
 
@@ -255,10 +269,6 @@ TODO: Auto test at GitHub Actions
 TODO: leds_rust daily test
 
 TODO: Docker Container
-
-TODO: Hard to test on local computer, Rust Analyser won't work
-
-TODO: Unsafe printf, usleep, close
 
 TODO: Managed File Descriptors
 
