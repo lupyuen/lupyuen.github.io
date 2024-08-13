@@ -112,7 +112,7 @@ let fd = safe_open(  // Open the LED Device...
 ) ?;                 // Quit on error
 ```
 
-Normally in C we check the [__Result Value__](TODO) at every call to __open__ and __ioctl__... Now with __safe_open__ and __safe_ioctl__, Rust does the checking for us!
+Remember in C we check the [__Result Value__](TODO) at every call to __open__ and __ioctl__... Now with __safe_open__ and __safe_ioctl__, Rust does the checking for us!
 
 If something goes wrong, the code above will exit the function with an __Error Value__. (Like if _"/dev/userleds"_ doesn't exist)
 
@@ -122,11 +122,19 @@ Our NuttX App becomes a little safer with the [__Question Mark Operator__](https
 
 # Runs on Linux / macOS / Windows
 
-TODO
+_Will our NuttX App actually run on Linux, macOS and Windows?_
+
+```rust
+// Comment out these lines for testing on Linux / macOS / Windows
+#![no_main]  // For NuttX Only: No Main Function
+#![no_std]   // For NuttX Only: Use Rust Core Library (instead of Rust Standard Library)
+```
+
+Yep indeed! Just comment out the above lines and run on __Linux / macOS / Windows__:
 
 ```bash
 $ git clone https://github.com/lupyuen/nuttx-rust-app
-$ cd nuttx-rust-app/
+$ cd nuttx-rust-app
 $ cd app
 $ cargo run
 Hello, Rust!!
@@ -134,7 +142,13 @@ Opening /dev/userleds
 ERROR: rust_main() failed with error -1
 ```
 
+Which fails (as expected) because _"/dev/userleds"_ doesn't exist on Linux / macOS / Windows.
+
+This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our __Local Computer__, before testing on NuttX!
+
 # Main Function
+
+_We've seen the LED Blinky code in rust_main. Who calls rust_main?_
 
 TODO: Main Function
 
