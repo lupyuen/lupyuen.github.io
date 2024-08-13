@@ -62,9 +62,9 @@ TODO
 [examples/leds_rust/leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
 
 ```rust
-// Comment out these lines for testing with Rust Standard Library 
-#![no_main]  // No Main Function
-#![no_std]   // Use Rust Core Library (instead of Rust Standard Library)
+// Comment out these lines for testing on Linux / macOS / Windows
+#![no_main]  // For NuttX Only: No Main Function
+#![no_std]   // For NuttX Only: Use Rust Core Library (instead of Rust Standard Library)
 
 // Import the NuttX Module
 mod nuttx;
@@ -98,6 +98,8 @@ fn rust_main(_argc: i32, _argv: *const *const u8) -> Result<i32, i32> {
   // Flip LED 1 to Off
   safe_ioctl(fd, ULEDIOC_SETALL, 0)?;
   unsafe { close(fd); }
+
+  // Return successfully with result 0
   Ok(0)
 }
 
