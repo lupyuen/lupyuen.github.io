@@ -65,8 +65,11 @@
 
     <h1 class="title">Early Days of Rust Apps on Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#todo">1 TODO</a><ul></ul></li>
-<li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
+<li><a href="#blink-the-led">1 Blink The LED</a><ul></ul></li>
+<li><a href="#error-handling">2 Error Handling</a><ul></ul></li>
+<li><a href="#runs-on-linux--macos--windows">3 Runs on Linux / macOS / Windows</a><ul></ul></li>
+<li><a href="#main-function">4 Main Function</a><ul></ul></li>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust6-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>My student Rushabh Gala has successfully completed </p>
@@ -111,14 +114,7 @@
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml">GitHub Actions Workflow</a></p>
 </li>
 </ol>
-<div class="example-wrap"><pre class="language-bash"><code>$ git clone https://github.com/lupyuen/nuttx-rust-app
-$ cd nuttx-rust-app/
-$ cd app
-$ cargo run
-Hello, Rust!!
-Opening /dev/userleds
-ERROR: rust_main() failed with error -1
-</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
+<h1 id="blink-the-led"><a class="doc-anchor" href="#blink-the-led">§</a>1 Blink The LED</h1>
 <p>TODO</p>
 <p>This is how we <strong>Blink the LED</strong> in a NuttX Rust App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">examples/leds_rust/leds_rust_main.rs</a></p>
 
@@ -154,7 +150,7 @@ ERROR: rust_main() failed with error -1
 <p>Imports <strong>usleep</strong> and <strong>close</strong> from C</p>
 </li>
 <li>
-<p>Plus the NuttX Constants <strong>O_WRONLY</strong> and <strong>ULEDIOC_SETALL</strong></p>
+<p>Plus the NuttX Constants: <strong>O_WRONLY</strong> and <strong>ULEDIOC_SETALL</strong></p>
 </li>
 </ul>
 <p>We import the <strong>NuttX Module</strong> like so…</p>
@@ -166,6 +162,28 @@ ERROR: rust_main() failed with error -1
 // Import the NuttX Module
 </span><span class="kw">mod </span>nuttx;
 <span class="kw">use </span>nuttx::<span class="kw-2">*</span>;</code></pre></div>
+<p>And yes this code runs on Linux, macOS and Windows! We’ll come back to this.</p>
+<h1 id="error-handling"><a class="doc-anchor" href="#error-handling">§</a>2 Error Handling</h1>
+<p><em>Why the funny question mark?</em></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = safe_open(  <span class="comment">// Open the LED Device...
+  </span><span class="string">"/dev/userleds"</span>,   <span class="comment">// Device Path
+  </span>O_WRONLY           <span class="comment">// Open for Write-Only
+</span>) <span class="question-mark">?</span>;                 <span class="comment">// Quit on error</span></code></pre></div>
+<p>Normally in C we check the <strong>Result Value</strong> at every call to <strong>open</strong> and <strong>ioctl</strong>… Now with <strong>safe_open</strong> and <strong>safe_ioctl</strong>, Rust does the checking for us!</p>
+<p>If something goes wrong, the code above will exit the function with an <strong>Error Value</strong>. (Like if <em>“/dev/userleds”</em> doesn’t exist)</p>
+<p>The <a href="https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html"><strong>Question Mark Operator</strong></a> makes our code safer, by auto-checking the Result Value of NuttX System Calls.</p>
+<p>(Rust Compiler will warn us if we forget the Question Mark)</p>
+<h1 id="runs-on-linux--macos--windows"><a class="doc-anchor" href="#runs-on-linux--macos--windows">§</a>3 Runs on Linux / macOS / Windows</h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ git clone https://github.com/lupyuen/nuttx-rust-app
+$ cd nuttx-rust-app/
+$ cd app
+$ cargo run
+Hello, Rust!!
+Opening /dev/userleds
+ERROR: rust_main() failed with error -1
+</code></pre></div><h1 id="main-function"><a class="doc-anchor" href="#main-function">§</a>4 Main Function</h1>
 <p>TODO: Main Function</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For NuttX: This will be called by NuttX Shell
@@ -216,11 +234,15 @@ ERROR: rust_main() failed with error -1
 <p>TODO: safe_puts buffer size</p>
 <p>TODO: Error Handling</p>
 <p>TODO: QEMU LED Driver</p>
-<p>TODO: Ox64 </p>
+<p>TODO: Ox64, Kernel Mode</p>
+<p>TODO: QEMU 32-bit</p>
+<p>TODO: Auto test at GitHub Actions</p>
+<p>TODO: leds_rust daily test</p>
+<p>TODO: Docker Container</p>
 <p>TODO: Hard to test on local computer, Rust Analyser won’t work</p>
 <p>TODO: Unsafe printf, usleep, close</p>
 <p>TODO: Managed File Descriptors</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
