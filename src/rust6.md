@@ -57,7 +57,7 @@ ERROR: rust_main() failed with error -1
 
 TODO
 
-This is how we __Blink an LED__ in a NuttX Rust App: [examples/leds_rust/leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
+This is how we __Blink the LED__ in a NuttX Rust App: [examples/leds_rust/leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
 
 ```rust
 // Main Program Logic. Called by `leds_rust_main`
