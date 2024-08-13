@@ -196,7 +196,9 @@ pub extern "C" fn leds_rust_main(argc: i32, argv: *const *const u8)  // Args fro
 }
 ```
 
-TODO: Main Function for Linux / macOS / Windows
+_What about Linux / macOS / Windows?_
+
+They expect us to provide a __main__ function. Thus we do this...
 
 ```rust
 // For Linux / macOS / Windows: Define the Main Function
@@ -207,6 +209,8 @@ fn main() {
   leds_rust_main(0, core::ptr::null());
 }
 ```
+
+# Panic Handler
 
 TODO: Panic Handler
 
@@ -219,12 +223,14 @@ use core::{
 };
 
 // For NuttX Only: Define the Panic Handler for `no_std`
-#[cfg(target_os = "none")]  // For NuttX
+#[cfg(target_os = "none")]
 #[panic_handler]
 fn panic(_panic: &PanicInfo<'_>) -> ! {
   loop {}
 }
 ```
+
+TODO: Sorry __cfg__ won't work for __no_main__ and __no_std__
 
 TODO: Run locally
 
