@@ -188,7 +188,7 @@
 </span><span class="kw">unsafe </span>{ close(fd); }</code></pre></div>
 <p>Yeah there’s not much point in wrapping <strong>usleep</strong> and <strong>close</strong>? Since we don’t check the Return Values.</p>
 <p><em>Can we auto-close the File Descriptor when it goes out of scope?</em></p>
-<p>TODO: Managed File Descriptors</p>
+<p>Probably, if we had <a href="TODO"><strong>Managed File Descriptors</strong></a>? But that’s way beyond the size and scale of GSoC.</p>
 <h1 id="runs-on-linux--macos--windows"><a class="doc-anchor" href="#runs-on-linux--macos--windows">§</a>3 Runs on Linux / macOS / Windows</h1>
 <p><em>Will our NuttX App actually run on Linux, macOS and Windows?</em></p>
 
