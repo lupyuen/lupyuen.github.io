@@ -69,14 +69,14 @@ fn rust_main(_argc: i32, _argv: *const *const u8)  // Args from NuttX Shell
 
   // Open the LED Device
   safe_puts("Hello, Rust!!");
-  let fd = safe_open("/dev/userleds", O_WRONLY)?;  // Quit on error
+  let fd = safe_open("/dev/userleds", O_WRONLY) ?;  // Quit on error
 
   // Flip LED 1 to On
-  safe_ioctl(fd, ULEDIOC_SETALL, 1)?;  // Quit on error
+  safe_ioctl(fd, ULEDIOC_SETALL, 1) ?;  // Quit on error
   unsafe { usleep(500_000); }
 
   // Flip LED 1 to Off
-  safe_ioctl(fd, ULEDIOC_SETALL, 0)?;  // Quit on error
+  safe_ioctl(fd, ULEDIOC_SETALL, 0) ?;  // Quit on error
   unsafe { close(fd); }
 
   // Return successfully with result 0
@@ -122,10 +122,11 @@ TODO: Main Function
 // For NuttX: This will be called by NuttX Shell
 // For Linux / macOS / Windows: This wil be called by `main`
 #[no_mangle]
-pub extern "C" fn leds_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
+pub extern "C" fn leds_rust_main(argc: i32, argv: *const *const u8)  // Args from NuttX Shell
+  -> i32 {  // Returns a Result Code (0) or Error Code (negative)
 
   // Call the program logic in Rust Main
-  let res = rust_main(0, core::ptr::null());
+  let res = rust_main(argc, argv);
 
   // If Rust Main returns an error, print it
   if let Err(e) = res {
@@ -143,6 +144,8 @@ TODO: Main Function for Linux / macOS / Windows
 // For Linux / macOS / Windows: Define the Main Function
 #[cfg(not(target_os = "none"))]
 fn main() {
+
+  // Call Rust Main without args
   leds_rust_main(0, core::ptr::null());
 }
 ```
