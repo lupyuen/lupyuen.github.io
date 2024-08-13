@@ -89,14 +89,14 @@ fn rust_main(_argc: i32, _argv: *const *const u8) -> Result<i32, i32> {
 
   // Open the LED Device
   safe_puts("Hello, Rust!!");
-  let fd = safe_open("/dev/userleds", O_WRONLY)?;
+  let fd = safe_open("/dev/userleds", O_WRONLY)?;  // Quit on error
 
   // Flip LED 1 to On
-  safe_ioctl(fd, ULEDIOC_SETALL, 1)?;
+  safe_ioctl(fd, ULEDIOC_SETALL, 1)?;  // Quit on error
   unsafe { usleep(500_000); }
 
   // Flip LED 1 to Off
-  safe_ioctl(fd, ULEDIOC_SETALL, 0)?;
+  safe_ioctl(fd, ULEDIOC_SETALL, 0)?;  // Quit on error
   unsafe { close(fd); }
 
   // Return successfully with result 0
