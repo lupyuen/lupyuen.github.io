@@ -179,7 +179,6 @@
 <p>Our NuttX App becomes a little safer with the <a href="https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html"><strong>Question Mark Operator</strong></a>, by auto-checking the results of System Calls.</p>
 <p>(Rust Compiler will warn us if we forget the Question Mark)</p>
 <p>TODO: safe_puts buffer size</p>
-<p>TODO: Managed File Descriptors</p>
 <p><em>But usleep and close are still unsafe?</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Wait a while
@@ -188,6 +187,8 @@
 <span class="comment">// Close the LED Device
 </span><span class="kw">unsafe </span>{ close(fd); }</code></pre></div>
 <p>Yeah there’s not much point in wrapping <strong>usleep</strong> and <strong>close</strong>? Since we don’t check the Return Values.</p>
+<p><em>Can we auto-close the File Descriptor when it goes out of scope?</em></p>
+<p>TODO: Managed File Descriptors</p>
 <h1 id="runs-on-linux--macos--windows"><a class="doc-anchor" href="#runs-on-linux--macos--windows">§</a>3 Runs on Linux / macOS / Windows</h1>
 <p><em>Will our NuttX App actually run on Linux, macOS and Windows?</em></p>
 
