@@ -70,14 +70,14 @@ TODO
 mod nuttx;
 use nuttx::*;
 
-// For NuttX Only: Import the Panic Info
+// For NuttX Only: Import the Panic Type
 #[cfg(target_os = "none")]
 use core::{
   panic::PanicInfo,
   result::Result::{self, Err, Ok},
 };
 
-// For NuttX Only: Define the Panic Handler for [no_std]
+// For NuttX Only: Define the Panic Handler for `no_std`
 #[cfg(target_os = "none")]  // For NuttX
 #[panic_handler]
 fn panic(_panic: &PanicInfo<'_>) -> ! {
@@ -118,7 +118,7 @@ pub extern "C" fn leds_rust_main(_argc: i32, _argv: *const *const u8) -> i32 {
   }
 }
 
-// For Testing on Linux / macOS / Windows: Define the Main Function
+// For Linux / macOS / Windows: Define the Main Function
 #[cfg(not(target_os = "none"))]
 fn main() {
   leds_rust_main(0, core::ptr::null());
