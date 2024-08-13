@@ -164,7 +164,7 @@ Which fails (as expected) because _"/dev/userleds"_ doesn't exist on Linux / mac
 
 This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our __Local Computer__, before testing on NuttX!
 
-(__Rust Analyzer__ won't work inside NuttX Projects)
+(__Rust Analyzer__ won't work inside NuttX Projects sigh)
 
 # Main Function
 
