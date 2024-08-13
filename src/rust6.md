@@ -12,7 +12,7 @@ My student [__Rushabh Gala__](TODO) has just completed his project for [__Google
 
 - TODO: NuttX Workshop Presentation 
 
-In this article we revisit Rushabh's contributions to NuttX... 
+In this article we walk through Rushabh's contributions. And understand how we're evolving Rust Apps for NuttX...
 
 TODO
 
@@ -315,6 +315,10 @@ _What if the Rust Blinky App fails to execute correctly?_
 TODO: Auto test at GitHub Actions
 
 TODO: leds_rust daily test
+
+_Anything else we're testing daily?_
+
+TODO: Distinguish QEMU vs Rust failure 
 
 # What's Next
 
