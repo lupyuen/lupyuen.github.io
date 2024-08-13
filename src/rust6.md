@@ -310,7 +310,9 @@ That's because the NuttX Continuous Integration runs inside a __Docker Container
 
 - TODO: Downloading the Docker Container
 
-_What if the Rust Blinky App fails to execute correctly?_
+TODO: simtest hello_rust
+
+_Will we know if the Rust Blinky App fails to execute correctly?_
 
 TODO: Auto test at GitHub Actions
 
