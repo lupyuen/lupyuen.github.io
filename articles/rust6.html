@@ -170,20 +170,29 @@
   </span><span class="string">"/dev/userleds"</span>,   <span class="comment">// Device Path
   </span>O_WRONLY           <span class="comment">// Open for Write-Only
 </span>) <span class="question-mark">?</span>;                 <span class="comment">// Quit on error</span></code></pre></div>
-<p>Normally in C we check the <a href="TODO"><strong>Result Value</strong></a> at every call to <strong>open</strong> and <strong>ioctl</strong>… Now with <strong>safe_open</strong> and <strong>safe_ioctl</strong>, Rust does the checking for us!</p>
+<p>Remember in C we check the <a href="TODO"><strong>Result Value</strong></a> at every call to <strong>open</strong> and <strong>ioctl</strong>… Now with <strong>safe_open</strong> and <strong>safe_ioctl</strong>, Rust does the checking for us!</p>
 <p>If something goes wrong, the code above will exit the function with an <strong>Error Value</strong>. (Like if <em>“/dev/userleds”</em> doesn’t exist)</p>
 <p>Our NuttX App becomes a little safer with the <a href="https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html"><strong>Question Mark Operator</strong></a>, by auto-checking the results of System Calls.</p>
 <p>(Rust Compiler will warn us if we forget the Question Mark)</p>
 <h1 id="runs-on-linux--macos--windows"><a class="doc-anchor" href="#runs-on-linux--macos--windows">§</a>3 Runs on Linux / macOS / Windows</h1>
-<p>TODO</p>
+<p><em>Will our NuttX App actually run on Linux, macOS and Windows?</em></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Comment out these lines for testing on Linux / macOS / Windows
+</span><span class="attr">#![no_main]  </span><span class="comment">// For NuttX Only: No Main Function
+</span><span class="attr">#![no_std]   </span><span class="comment">// For NuttX Only: Use Rust Core Library (instead of Rust Standard Library)</span></code></pre></div>
+<p>Yep indeed! Just comment out the above lines and run on <strong>Linux / macOS / Windows</strong>:</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ git clone https://github.com/lupyuen/nuttx-rust-app
-$ cd nuttx-rust-app/
+$ cd nuttx-rust-app
 $ cd app
 $ cargo run
 Hello, Rust!!
 Opening /dev/userleds
 ERROR: rust_main() failed with error -1
-</code></pre></div><h1 id="main-function"><a class="doc-anchor" href="#main-function">§</a>4 Main Function</h1>
+</code></pre></div>
+<p>Which fails (as expected) because <em>“/dev/userleds”</em> doesn’t exist on Linux / macOS / Windows.</p>
+<p>This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our <strong>Local Computer</strong>, before testing on NuttX!</p>
+<h1 id="main-function"><a class="doc-anchor" href="#main-function">§</a>4 Main Function</h1>
+<p><em>We’ve seen the LED Blinky code in rust_main. Who calls rust_main?</em></p>
 <p>TODO: Main Function</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For NuttX: This will be called by NuttX Shell
