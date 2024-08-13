@@ -69,7 +69,8 @@
 <li><a href="#error-handling">2 Error Handling</a><ul></ul></li>
 <li><a href="#runs-on-linux--macos--windows">3 Runs on Linux / macOS / Windows</a><ul></ul></li>
 <li><a href="#main-function">4 Main Function</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
+<li><a href="#panic-handler">5 Panic Handler</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust6-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>My student Rushabh Gala has successfully completed </p>
@@ -228,7 +229,8 @@ ERROR: rust_main() failed with error -1
     <span class="number">0  </span><span class="comment">// Or return the Result Code 0
   </span>}
 }</code></pre></div>
-<p>TODO: Main Function for Linux / macOS / Windows</p>
+<p><em>What about Linux / macOS / Windows?</em></p>
+<p>They expect us to provide a <strong>main</strong> function. Thus we do this…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For Linux / macOS / Windows: Define the Main Function
 </span><span class="attr">#[cfg(not(target_os = <span class="string">"none"</span>))]
@@ -237,6 +239,7 @@ ERROR: rust_main() failed with error -1
   <span class="comment">// Call Rust Main without args
   </span>leds_rust_main(<span class="number">0</span>, core::ptr::null());
 }</code></pre></div>
+<h1 id="panic-handler"><a class="doc-anchor" href="#panic-handler">§</a>5 Panic Handler</h1>
 <p>TODO: Panic Handler</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For NuttX Only: Import the Panic Type
@@ -247,11 +250,12 @@ ERROR: rust_main() failed with error -1
 };
 
 <span class="comment">// For NuttX Only: Define the Panic Handler for `no_std`
-</span><span class="attr">#[cfg(target_os = <span class="string">"none"</span>)]  </span><span class="comment">// For NuttX
-</span><span class="attr">#[panic_handler]
+</span><span class="attr">#[cfg(target_os = <span class="string">"none"</span>)]
+#[panic_handler]
 </span><span class="kw">fn </span>panic(_panic: <span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;) -&gt; ! {
   <span class="kw">loop </span>{}
 }</code></pre></div>
+<p>TODO: Sorry <strong>cfg</strong> won’t work for <strong>no_main</strong> and <strong>no_std</strong></p>
 <p>TODO: Run locally</p>
 <p>TODO: Test locally</p>
 <p>TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)</p>
@@ -267,7 +271,7 @@ ERROR: rust_main() failed with error -1
 <p>TODO: Hard to test on local computer, Rust Analyser won’t work</p>
 <p>TODO: Unsafe printf, usleep, close</p>
 <p>TODO: Managed File Descriptors</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
