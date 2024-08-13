@@ -112,11 +112,11 @@ let fd = safe_open(  // Open the LED Device...
 ) ?;                 // Quit on error
 ```
 
-Normally in C we check the __Result Value__ at every call to __open__ and __ioctl__... Now with __safe_open__ and __safe_ioctl__, Rust does the checking for us!
+Normally in C we check the [__Result Value__](TODO) at every call to __open__ and __ioctl__... Now with __safe_open__ and __safe_ioctl__, Rust does the checking for us!
 
 If something goes wrong, the code above will exit the function with an __Error Value__. (Like if _"/dev/userleds"_ doesn't exist)
 
-The [__Question Mark Operator__](https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html) makes our code safer, by auto-checking the Result Value of NuttX System Calls.
+Our NuttX App becomes a little safer with the [__Question Mark Operator__](https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html), by auto-checking the results of System Calls.
 
 (Rust Compiler will warn us if we forget the Question Mark)
 
