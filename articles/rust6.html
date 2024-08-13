@@ -123,9 +123,9 @@ ERROR: rust_main() failed with error -1
 <p><a href="https://github.com/lupyuen/nuttx-rust-app/blob/main/app/src/main.rs">app/src/main.rs</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">examples/leds_rust/leds_rust_main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Comment out these lines for testing with Rust Standard Library 
-</span><span class="attr">#![no_main]  </span><span class="comment">// No Main Function
-</span><span class="attr">#![no_std]   </span><span class="comment">// Use Rust Core Library (instead of Rust Standard Library)
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Comment out these lines for testing on Linux / macOS / Windows
+</span><span class="attr">#![no_main]  </span><span class="comment">// For NuttX Only: No Main Function
+</span><span class="attr">#![no_std]   </span><span class="comment">// For NuttX Only: Use Rust Core Library (instead of Rust Standard Library)
 
 // Import the NuttX Module
 </span><span class="kw">mod </span>nuttx;
@@ -159,7 +159,9 @@ ERROR: rust_main() failed with error -1
   <span class="comment">// Flip LED 1 to Off
   </span>safe_ioctl(fd, ULEDIOC_SETALL, <span class="number">0</span>)<span class="question-mark">?</span>;
   <span class="kw">unsafe </span>{ close(fd); }
-  <span class="prelude-val">Ok</span>(<span class="number">0</span>)
+
+  <span class="comment">// Return successfully with result 0
+  </span><span class="prelude-val">Ok</span>(<span class="number">0</span>)
 }
 
 <span class="comment">// For NuttX: This will be called by NuttX Shell
