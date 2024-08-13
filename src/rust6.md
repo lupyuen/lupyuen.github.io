@@ -57,15 +57,12 @@ ERROR: rust_main() failed with error -1
 
 TODO
 
-[app/src/main.rs](https://github.com/lupyuen/nuttx-rust-app/blob/main/app/src/main.rs)
-
-[examples/leds_rust/leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
-
+This is how we __Blink an LED__ in a NuttX Rust App: [examples/leds_rust/leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
 
 ```rust
 // Main Program Logic. Called by `leds_rust_main`
 fn rust_main(_argc: i32, _argv: *const *const u8)  // Args from NuttX Shell
-  -> Result<i32, i32> {  // Returns a Result Code (int) or Error Code (int)
+  -> Result<i32, i32> {  // Return a Result Code (int) or Error Code (int)
 
   // Open the LED Device
   safe_puts("Hello, Rust!!");
@@ -84,11 +81,23 @@ fn rust_main(_argc: i32, _argv: *const *const u8)  // Args from NuttX Shell
 }
 ```
 
-compare with C
+[(__Mirrored here:__ nuttx-rust-app/app/src/main.rs)](https://github.com/lupyuen/nuttx-rust-app/blob/main/app/src/main.rs)
 
-_Where are safe_open and safe_ioctl defined?_
+Looks mighty similar to the [__C Version__](TODO)!
 
-TODO
+(But with simpler Error Handling than C, we'll talk more)
+
+_What are safe_open and safe_ioctl?_
+
+They are safer versions of __open__ and __ioctl__ from our [__NuttX Module__](TODO), which...
+
+- Defines the Safe Wrappers: __`safe_*`__
+
+- Imports __usleep__ and __close__ from C
+
+- Plus the NuttX Constants __O_WRONLY__ and __ULEDIOC_SETALL__
+
+We import the __NuttX Module__ like so...
 
 ```rust
 // Comment out these lines for testing on Linux / macOS / Windows
@@ -100,24 +109,6 @@ mod nuttx;
 use nuttx::*;
 ```
 
-TODO: Panic Handler
-
-```rust
-// For NuttX Only: Import the Panic Type
-#[cfg(target_os = "none")]
-use core::{
-  panic::PanicInfo,
-  result::Result::{self, Err, Ok},
-};
-
-// For NuttX Only: Define the Panic Handler for `no_std`
-#[cfg(target_os = "none")]  // For NuttX
-#[panic_handler]
-fn panic(_panic: &PanicInfo<'_>) -> ! {
-  loop {}
-}
-```
-
 TODO: Main Function
 
 ```rust
@@ -125,7 +116,7 @@ TODO: Main Function
 // For Linux / macOS / Windows: This wil be called by `main`
 #[no_mangle]
 pub extern "C" fn leds_rust_main(argc: i32, argv: *const *const u8)  // Args from NuttX Shell
-  -> i32 {  // Returns a Result Code (0) or Error Code (negative)
+  -> i32 {  // Return a Result Code (0) or Error Code (negative)
 
   // Call the program logic in Rust Main
   let res = rust_main(argc, argv);
@@ -152,11 +143,29 @@ fn main() {
 }
 ```
 
+TODO: Panic Handler
+
+```rust
+// For NuttX Only: Import the Panic Type
+#[cfg(target_os = "none")]
+use core::{
+  panic::PanicInfo,
+  result::Result::{self, Err, Ok},
+};
+
+// For NuttX Only: Define the Panic Handler for `no_std`
+#[cfg(target_os = "none")]  // For NuttX
+#[panic_handler]
+fn panic(_panic: &PanicInfo<'_>) -> ! {
+  loop {}
+}
+```
+
 TODO: Run locally
 
 TODO: Test locally
 
-TODO: No Crates!
+TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)
 
 TODO: Safe Wrapper
 
@@ -172,7 +181,7 @@ TODO: Hard to test on local computer, Rust Analyser won't work
 
 TODO: Unsafe printf, usleep, close
 
-TODO: 
+TODO: Managed File Descriptors
 
 # What's Next
 
