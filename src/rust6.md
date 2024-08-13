@@ -122,8 +122,6 @@ Our NuttX App becomes a little safer with the [__Question Mark Operator__](https
 
 TODO: safe_puts buffer size
 
-TODO: Managed File Descriptors
-
 _But usleep and close are still unsafe?_
 
 ```rust
@@ -135,6 +133,10 @@ unsafe { close(fd); }
 ```
 
 Yeah there's not much point in wrapping __usleep__ and __close__? Since we don't check the Return Values.
+
+_Can we auto-close the File Descriptor when it goes out of scope?_
+
+TODO: Managed File Descriptors
 
 # Runs on Linux / macOS / Windows
 
