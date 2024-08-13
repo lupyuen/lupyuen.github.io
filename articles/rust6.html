@@ -170,9 +170,9 @@
   </span><span class="string">"/dev/userleds"</span>,   <span class="comment">// Device Path
   </span>O_WRONLY           <span class="comment">// Open for Write-Only
 </span>) <span class="question-mark">?</span>;                 <span class="comment">// Quit on error</span></code></pre></div>
-<p>Normally in C we check the <strong>Result Value</strong> at every call to <strong>open</strong> and <strong>ioctl</strong>… Now with <strong>safe_open</strong> and <strong>safe_ioctl</strong>, Rust does the checking for us!</p>
+<p>Normally in C we check the <a href="TODO"><strong>Result Value</strong></a> at every call to <strong>open</strong> and <strong>ioctl</strong>… Now with <strong>safe_open</strong> and <strong>safe_ioctl</strong>, Rust does the checking for us!</p>
 <p>If something goes wrong, the code above will exit the function with an <strong>Error Value</strong>. (Like if <em>“/dev/userleds”</em> doesn’t exist)</p>
-<p>The <a href="https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html"><strong>Question Mark Operator</strong></a> makes our code safer, by auto-checking the Result Value of NuttX System Calls.</p>
+<p>Our NuttX App becomes a little safer with the <a href="https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html"><strong>Question Mark Operator</strong></a>, by auto-checking the results of System Calls.</p>
 <p>(Rust Compiler will warn us if we forget the Question Mark)</p>
 <h1 id="runs-on-linux--macos--windows"><a class="doc-anchor" href="#runs-on-linux--macos--windows">§</a>3 Runs on Linux / macOS / Windows</h1>
 <p>TODO</p>
