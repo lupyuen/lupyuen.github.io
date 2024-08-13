@@ -1170,55 +1170,75 @@ $ make
   -e &#39;-Wno-cpp -Werror&#39; \
   testlist/risc-v-02.dat
 
-## Run the Docker Container for NuttX CI
+## Which runs inside the Docker Container for NuttX CI
 /usr/bin/docker run \
- --name ghcrioapachenuttxapachenuttxcilinux_ba895b \
- --label bbeb86 \
- --workdir /github/workspace \
- --rm \
- -e &quot;DOCKER_BUILDKIT&quot; \
- -e &quot;nuttx_sha&quot; \
- -e &quot;BLOBDIR&quot; \
- -e &quot;INPUT_RUN&quot; \
- -e &quot;HOME&quot; \
- -e &quot;GITHUB_JOB&quot; \
- -e &quot;GITHUB_REF&quot; \
- -e &quot;GITHUB_SHA&quot; \
- -e &quot;GITHUB_REPOSITORY&quot; \
- -e &quot;GITHUB_REPOSITORY_OWNER&quot; \
- -e &quot;GITHUB_REPOSITORY_OWNER_ID&quot; \
- -e &quot;GITHUB_RUN_ID&quot; \
- -e &quot;GITHUB_RUN_NUMBER&quot; \
- -e &quot;GITHUB_RETENTION_DAYS&quot; \
- -e &quot;GITHUB_RUN_ATTEMPT&quot; \
- -e &quot;GITHUB_REPOSITORY_ID&quot; \
- -e &quot;GITHUB_ACTOR_ID&quot; \
- -e &quot;GITHUB_ACTOR&quot; \
- -e &quot;GITHUB_TRIGGERING_ACTOR&quot; \
- -e &quot;GITHUB_WORKFLOW&quot; \
- -e &quot;GITHUB_HEAD_REF&quot; \
- -e &quot;GITHUB_BASE_REF&quot; \
- -e &quot;GITHUB_EVENT_NAME&quot; \
- -e &quot;GITHUB_SERVER_URL&quot; \
- -e &quot;GITHUB_API_URL&quot; \
- -e &quot;GITHUB_GRAPHQL_URL&quot; \
- -e &quot;GITHUB_REF_NAME&quot; \
- -e &quot;GITHUB_REF_PROTECTED&quot; \
- -e &quot;GITHUB_REF_TYPE&quot; \
- -e &quot;GITHUB_WORKFLOW_REF&quot; \
- -e &quot;GITHUB_WORKFLOW_SHA&quot; \
- -e &quot;GITHUB_WORKSPACE&quot; \
- -e &quot;GITHUB_ACTION&quot; \
- -e &quot;GITHUB_EVENT_PATH&quot; \
- -e &quot;GITHUB_ACTION_REPOSITORY&quot; \
- -e &quot;GITHUB_ACTION_REF&quot; \
- -e &quot;GITHUB_PATH&quot; \
- -e &quot;GITHUB_ENV&quot; \
- -e &quot;GITHUB_STEP_SUMMARY&quot; \
- -e &quot;GITHUB_STATE&quot; \
- -e &quot;GITHUB_OUTPUT&quot; \
- -e &quot;RUNNER_OS&quot; \
- -e &quot;&quot;
+  --name ghcrioapachenuttxapachenuttxcilinux_ba895b \
+  --label bbeb86 \
+  --workdir /github/workspace \
+  --rm \
+  -e &quot;DOCKER_BUILDKIT&quot; \
+  -e &quot;nuttx_sha&quot; \
+  -e &quot;BLOBDIR&quot; \
+  -e &quot;INPUT_RUN&quot; \
+  -e &quot;HOME&quot; \
+  -e &quot;GITHUB_JOB&quot; \
+  -e &quot;GITHUB_REF&quot; \
+  -e &quot;GITHUB_SHA&quot; \
+  -e &quot;GITHUB_REPOSITORY&quot; \
+  -e &quot;GITHUB_REPOSITORY_OWNER&quot; \
+  -e &quot;GITHUB_REPOSITORY_OWNER_ID&quot; \
+  -e &quot;GITHUB_RUN_ID&quot; \
+  -e &quot;GITHUB_RUN_NUMBER&quot; \
+  -e &quot;GITHUB_RETENTION_DAYS&quot; \
+  -e &quot;GITHUB_RUN_ATTEMPT&quot; \
+  -e &quot;GITHUB_REPOSITORY_ID&quot; \
+  -e &quot;GITHUB_ACTOR_ID&quot; \
+  -e &quot;GITHUB_ACTOR&quot; \
+  -e &quot;GITHUB_TRIGGERING_ACTOR&quot; \
+  -e &quot;GITHUB_WORKFLOW&quot; \
+  -e &quot;GITHUB_HEAD_REF&quot; \
+  -e &quot;GITHUB_BASE_REF&quot; \
+  -e &quot;GITHUB_EVENT_NAME&quot; \
+  -e &quot;GITHUB_SERVER_URL&quot; \
+  -e &quot;GITHUB_API_URL&quot; \
+  -e &quot;GITHUB_GRAPHQL_URL&quot; \
+  -e &quot;GITHUB_REF_NAME&quot; \
+  -e &quot;GITHUB_REF_PROTECTED&quot; \
+  -e &quot;GITHUB_REF_TYPE&quot; \
+  -e &quot;GITHUB_WORKFLOW_REF&quot; \
+  -e &quot;GITHUB_WORKFLOW_SHA&quot; \
+  -e &quot;GITHUB_WORKSPACE&quot; \
+  -e &quot;GITHUB_ACTION&quot; \
+  -e &quot;GITHUB_EVENT_PATH&quot; \
+  -e &quot;GITHUB_ACTION_REPOSITORY&quot; \
+  -e &quot;GITHUB_ACTION_REF&quot; \
+  -e &quot;GITHUB_PATH&quot; \
+  -e &quot;GITHUB_ENV&quot; \
+  -e &quot;GITHUB_STEP_SUMMARY&quot; \
+  -e &quot;GITHUB_STATE&quot; \
+  -e &quot;GITHUB_OUTPUT&quot; \
+  -e &quot;RUNNER_OS&quot; \
+  -e &quot;RUNNER_ARCH&quot; \
+  -e &quot;RUNNER_NAME&quot; \
+  -e &quot;RUNNER_ENVIRONMENT&quot; \
+  -e &quot;RUNNER_TOOL_CACHE&quot; \
+  -e &quot;RUNNER_TEMP&quot; \
+  -e &quot;RUNNER_WORKSPACE&quot; \
+  -e &quot;ACTIONS_RUNTIME_URL&quot; \
+  -e &quot;ACTIONS_RUNTIME_TOKEN&quot; \
+  -e &quot;ACTIONS_CACHE_URL&quot; \
+  -e &quot;ACTIONS_RESULTS_URL&quot; \
+  -e GITHUB_ACTIONS=true \
+  -e CI=true \
+  -v &quot;/var/run/docker.sock&quot;:&quot;/var/run/docker.sock&quot; \
+  -v &quot;/home/runner/work/_temp/_github_home&quot;:&quot;/github/home&quot; \
+  -v &quot;/home/runner/work/_temp/_github_workflow&quot;:&quot;/github/workflow&quot; \
+  -v &quot;/home/runner/work/_temp/_runner_file_commands&quot;:&quot;/github/file_commands&quot; \
+  -v &quot;/home/runner/work/nuttx/nuttx&quot;:&quot;/github/workspace&quot; \
+  ghcr.io/apache/nuttx/apache-nuttx-ci-linux  \
+  &quot;/bin/bash&quot; \
+  &quot;-ce&quot; \
+  &quot;echo \&quot;::add-matcher::sources/nuttx/.github/gcc.json\&quot;
 </code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
