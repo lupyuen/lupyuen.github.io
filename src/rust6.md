@@ -42,6 +42,17 @@ We have fixed the Rust Target for QEMU 64-bit RISC-V...
    
    [GitHub Actions Workflow](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml)
 
+
+```bash
+$ git clone https://github.com/lupyuen/nuttx-rust-app
+$ cd nuttx-rust-app/
+$ cd app
+$ cargo run
+Hello, Rust!!
+Opening /dev/userleds
+ERROR: rust_main() failed with error -1
+```
+
 # TODO
 
 TODO
@@ -117,6 +128,14 @@ fn main() {
   leds_rust_main(0, core::ptr::null());
 }
 ```
+
+TODO: Safe Wrapper
+
+TODO: QEMU LED Driver
+
+TODO: Ox64 
+
+TODO: Hard to test on local computer, Rust Analyser won't work
 
 # What's Next
 
