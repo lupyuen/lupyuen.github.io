@@ -136,7 +136,7 @@ Yeah there's not much point in wrapping __usleep__ and __close__? Since we don't
 
 _Can we auto-close the File Descriptor when it goes out of scope?_
 
-TODO: Managed File Descriptors
+Probably, if we had [__Managed File Descriptors__](TODO)? But that's way beyond the size and scale of GSoC.
 
 # Runs on Linux / macOS / Windows
 
