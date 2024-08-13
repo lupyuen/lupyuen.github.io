@@ -150,15 +150,15 @@ ERROR: rust_main() failed with error -1
 
   <span class="comment">// Open the LED Device
   </span>safe_puts(<span class="string">"Hello, Rust!!"</span>);
-  <span class="kw">let </span>fd = safe_open(<span class="string">"/dev/userleds"</span>, O_WRONLY)<span class="question-mark">?</span>;
+  <span class="kw">let </span>fd = safe_open(<span class="string">"/dev/userleds"</span>, O_WRONLY)<span class="question-mark">?</span>;  <span class="comment">// Quit on error
 
-  <span class="comment">// Flip LED 1 to On
-  </span>safe_ioctl(fd, ULEDIOC_SETALL, <span class="number">1</span>)<span class="question-mark">?</span>;
-  <span class="kw">unsafe </span>{ usleep(<span class="number">500_000</span>); }
+  // Flip LED 1 to On
+  </span>safe_ioctl(fd, ULEDIOC_SETALL, <span class="number">1</span>)<span class="question-mark">?</span>;  <span class="comment">// Quit on error
+  </span><span class="kw">unsafe </span>{ usleep(<span class="number">500_000</span>); }
 
   <span class="comment">// Flip LED 1 to Off
-  </span>safe_ioctl(fd, ULEDIOC_SETALL, <span class="number">0</span>)<span class="question-mark">?</span>;
-  <span class="kw">unsafe </span>{ close(fd); }
+  </span>safe_ioctl(fd, ULEDIOC_SETALL, <span class="number">0</span>)<span class="question-mark">?</span>;  <span class="comment">// Quit on error
+  </span><span class="kw">unsafe </span>{ close(fd); }
 
   <span class="comment">// Return successfully with result 0
   </span><span class="prelude-val">Ok</span>(<span class="number">0</span>)
