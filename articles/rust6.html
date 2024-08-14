@@ -73,7 +73,8 @@
 <li><a href="#no-crates-in-nuttx">6 No Crates in NuttX</a><ul></ul></li>
 <li><a href="#led-drivers-for-nuttx">7 LED Drivers for NuttX</a><ul></ul></li>
 <li><a href="#daily-build-and-test">8 Daily Build and Test</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
+<li><a href="#all-things-considered">9 All Things Considered</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust6-title.jpg" alt="TODO" /></p>
 <p>My student <a href="TODO"><strong>Rushabh Gala</strong></a> has just completed his project for <a href="TODO"><strong>Google Summer of Code</strong></a>. Rushabh has created safer <strong>Rust Apps</strong> for <strong>Apache NuttX RTOS</strong>…</p>
 <ul>
@@ -88,34 +89,8 @@
 </li>
 </ul>
 <p>In this article we walk through Rushabh’s contributions. And understand how we’re evolving Rust Apps for NuttX…</p>
-<p>TODO</p>
-<ol>
-<li>
-<p>Super interesting new development: Some folks in the NuttX Community are working with the Rust Project, adding NuttX as an official platform for Rust Standard Library! <a href="https://lists.apache.org/thread/oqx7p3vb4dcgko4mm2f0vqgqnkorn49p">(See this)</a></p>
-<p>This might take some time to complete, because supporting NuttX in the Rust Standard Library will require lots of coding and testing. So our Project Report is still relevant, it will be the “Interim Way” to build Rust Apps for NuttX. And we have to demonstrate how Rust Apps can be built and tested with Rust Core Library, without <code>cargo</code>. (Exactly what we’re doing now)</p>
-</li>
-<li>
-<p><strong>[Updated 11 Aug]</strong> “What’s left to do”: Here are the outstanding items for the project, which I have just completed. We fixed the Rust Build for QEMU 64-bit RISC-V, and added it to the NuttX Continuous Integration (at GitHub Actions)…</p>
-<ul>
-<li>
-<p><a href="https://github.com/apache/nuttx/pull/12854"><strong>“Fix the Rust and D Builds for QEMU RISC-V”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/apache/nuttx/pull/12858"><strong>“Add Rust Target for QEMU RISC-V 64-bit”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/apache/nuttx/pull/12862"><strong>“Add Build Config for leds64_rust”</strong></a></p>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>[Updated 12 Aug]</strong> We’re now building and testing <code>leds_rust</code> every daily at GitHub Actions. We will be notified if the Rust Build breaks or if the Rust Execution fails in future.</p>
-<p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml">Test Log</a></p>
-<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml">GitHub Actions Workflow</a></p>
-</li>
-</ol>
+<p>TODO: Updating the docker image for CI</p>
 <h1 id="blink-the-led"><a class="doc-anchor" href="#blink-the-led">§</a>1 Blink The LED</h1>
-<p>TODO</p>
 <p>This is how we <strong>Blink the LED</strong> in a NuttX Rust App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">examples/leds_rust/leds_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Main Program Logic. Called by `leds_rust_main`
@@ -184,7 +159,7 @@
 </span><span class="kw">unsafe </span>{ close(fd); }</code></pre></div>
 <p>Yeah there’s not much point in wrapping <strong>usleep</strong> and <strong>close</strong>? Since we don’t check the Return Values.</p>
 <p><em>Can we auto-close the File Descriptor when it goes out of scope?</em></p>
-<p>Probably, if we had <a href="TODO"><strong>Managed File Descriptors</strong></a>? But that’s way beyond the size and scale of GSoC.</p>
+<p>Probably, if we had <a href="TODO"><strong>Managed File Descriptors</strong></a>? But that’s way beyond the size, scope and scale of GSoC.</p>
 <h1 id="runs-on-linux--macos--windows"><a class="doc-anchor" href="#runs-on-linux--macos--windows">§</a>3 Runs on Linux / macOS / Windows</h1>
 <p><em>Will our NuttX App actually run on Linux, macOS and Windows?</em></p>
 
@@ -320,7 +295,7 @@ $ make
 </li>
 </ul>
 <p><em>Why so complicated?</em></p>
-<p>That’s because the NuttX Continuous Integration runs inside a <strong>Docker Container</strong>. Which requires delicate updates…</p>
+<p>That’s because the NuttX Continuous Integration runs inside a <strong>Docker Container</strong>. Which requires delicate modding…</p>
 <ul>
 <li>
 <p>TODO: Building the Docker Container</p>
@@ -333,12 +308,31 @@ $ make
 <p><em>Will we know if the Rust Blinky App fails to execute correctly?</em></p>
 <p>TODO: Auto test at GitHub Actions</p>
 <p>TODO: leds_rust daily test</p>
+<ol>
+<li>
+<p><strong>[Updated 12 Aug]</strong> We’re now building and testing <code>leds_rust</code> every daily at GitHub Actions. We will be notified if the Rust Build breaks or if the Rust Execution fails in future.</p>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml">Test Log</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml">GitHub Actions Workflow</a></p>
+</li>
+</ol>
 <p><em>Anything else we’re testing daily?</em></p>
 <p>To be clear whether it’s our Rust App failing vs NuttX QEMU failing:</p>
 <p>TODO: Distinguish QEMU vs Rust failure </p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
+<h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>9 All Things Considered</h1>
+<p><em>Wow that’s plenty of coding for 12 weeks of GSoC!</em></p>
+<p>Indeed, we tracked all Coding Tasks in our <a href="TODO"><strong>GSoC Task Spreadsheet</strong></a>. (Google Sheets)</p>
+<p>And we recorded Daily Chat Logs in the <strong>NuttX Discord Channel</strong>.</p>
+<p><em>Will Rust officially support NuttX?</em></p>
+<p>Yep someday! NuttX Community is now adding NuttX as <a href="https://lists.apache.org/thread/oqx7p3vb4dcgko4mm2f0vqgqnkorn49p"><strong>Tier 3 Target</strong></a> to Rust.</p>
+<p><a href="https://github.com/rust-lang/rust/pull/127755">(And it’s approved!)</a></p>
+<p><em>Everything in this article… Becomes redundant?</em></p>
+<p>TODO</p>
+<p>Safe Wrappers as prescribed in this article </p>
+<p>This might take some time to complete, because supporting NuttX in the Rust Standard Library will require lots of coding and testing. So our Project Report is still relevant, it will be the “Interim Way” to build Rust Apps for NuttX. And we have to demonstrate how Rust Apps can be built and tested with Rust Core Library, without <code>cargo</code>. (Exactly what we’re doing now)</p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
+<p>Special Thanks to <strong>Mr Rushabh Gala</strong>: Sorry it’s my first GSoC, I could have done better 🙏</p>
 <ul>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
