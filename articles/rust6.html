@@ -559,22 +559,22 @@ exit 0
 <p><strong>NuttX for QEMU RISC-V</strong> comes in Multiple Flavours, we test 4 of the popular flavours every day…</p>
 <ul>
 <li>
-<p><strong>32-bit RISC-V, Flat Build: <code>rv-virt:nsh</code></strong></p>
+<p><strong>32-bit RISC-V, Flat Build: <br> <code>rv-virt:nsh</code></strong></p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh.yml">qemu-riscv-nsh.yml</a></p>
 <p>TODO: GitHub Actions Workflow / Test Log</p>
 </li>
 <li>
-<p><strong>32-bit RISC-V, Kernel Build: <code>rv-virt:knsh</code></strong></p>
+<p><strong>32-bit RISC-V, Kernel Build: <br> <code>rv-virt:knsh</code></strong></p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh.yml">qemu-riscv-knsh.yml</a></p>
 <p>TODO</p>
 </li>
 <li>
-<p><strong>64-bit RISC-V, Flat Build: <code>rv-virt:nsh64</code></strong></p>
+<p><strong>64-bit RISC-V, Flat Build: <br> <code>rv-virt:nsh64</code></strong></p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh64.yml">qemu-riscv-nsh64.yml</a></p>
 <p>TODO</p>
 </li>
 <li>
-<p><strong>64-bit RISC-V, Kernel Build: <code>rv-virt:knsh64</code></strong></p>
+<p><strong>64-bit RISC-V, Kernel Build: <br> <code>rv-virt:knsh64</code></strong></p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh64.yml">qemu-riscv-knsh64.yml</a></p>
 <p>TODO</p>
 </li>
@@ -669,19 +669,24 @@ expect {
 <p>Yeah OSTest for <strong>64-bit QEMU RISC-V</strong> fails on GitHub Actions, wonder why…</p>
 <ul>
 <li>
-<p><strong>64-bit RISC-V Flat Build</strong> <code>rv-virt:nsh64</code> crashes with…</p>
+<p><strong>64-bit RISC-V Flat Build <br> <code>rv-virt:nsh64</code></strong> crashes with…</p>
 <p><em>“fpu_test: Started task FPU#1  / riscv_exception: Illegal instruction”</em></p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh64.yml#L2">(GitHub Actions Workflow)</a></p>
 </li>
 <li>
-<p><strong>64-bit RISC-V Kernel Build</strong> <code>rv-virt:knsh64</code> hangs at…</p>
+<p><strong>64-bit RISC-V Kernel Build <br> <code>rv-virt:knsh64</code></strong> hangs at…</p>
 <p><em>“ostest_main: Started user_main”</em></p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml#L2">(GitHub Actions Workflow)</a></p>
 </li>
 </ul>
 <p>That’s why I run a script on my Home Computer to download the 64-bit Daily Builds and <strong>run OSTest locally</strong>…</p>
 <p>TODO: 64-bit Flat Build (rv-virt:nsh64): <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08">qemu-riscv-nsh64-2024-08-08</a></p>
-<p>TODO: Task Script / Test Script / Upload Script / Sample Log</p>
+<ul>
+<li>Task Script</li>
+<li>Test Script</li>
+<li>Upload Script</li>
+<li>Sample Log</li>
+</ul>
 <p>TODO: 64-bit Kernel Build (rv-virt:knsh64): <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08">qemu-riscv-knsh64-2024-08-08</a></p>
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh">task-nsh64.sh</a></p>
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh">test-nsh64.sh</a></p>
