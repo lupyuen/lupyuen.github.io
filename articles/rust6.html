@@ -116,7 +116,7 @@
   </span><span class="prelude-val">Ok</span>(<span class="number">0</span>)
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-rust-app/blob/main/app/src/main.rs">(<strong>Mirrored here:</strong> nuttx-rust-app/app/src/main.rs)</a></p>
-<p>Looks mighty similar to the <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85"><strong>C Version</strong></a>! But with simpler Error Handling than C. (We’ll talk more)</p>
+<p>Our Rust Blinky App looks mighty similar to the <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85"><strong>C Version</strong></a>! But with simpler Error Handling than C. (We’ll talk more)</p>
 <p><em>What are safe_open and safe_ioctl?</em></p>
 <p>They are safer versions of <strong>open</strong> and <strong>ioctl</strong> from our <a href="TODO"><strong>NuttX Module</strong></a>. Inside the NuttX Module we…</p>
 <ul>
@@ -305,23 +305,25 @@ $ make
 <h1 id="led-drivers-for-nuttx"><a class="doc-anchor" href="#led-drivers-for-nuttx">§</a>8 LED Drivers for NuttX</h1>
 <p><em>12 weeks of GSoC: What else have we implemented?</em></p>
 <p>Remember our Blinky NuttX App in Rust? Well a NuttX App ain’t really a NuttX App… Unless it runs <strong>on Real Hardware</strong>!</p>
-<p>We tested our Rust Blinky App on <a href="TODO"><strong>Ox64 BL808 SBC</strong></a>. Which required us to create the <strong>GPIO and LED Drivers</strong> for Ox64 SBC…</p>
+<p>We tested our Rust Blinky App on <a href="TODO"><strong>Ox64 BL808 SBC</strong></a>. Which needs us to create the <strong>GPIO and LED Drivers</strong> for Ox64 SBC…</p>
 <ul>
 <li>
-<p>TODO: GPIO Driver for Ox64 SBC</p>
+<p><a href="https://github.com/apache/nuttx/pull/12571"><strong>“Add GPIO Driver for BL808”</strong></a></p>
 </li>
 <li>
-<p>TODO: LED Driver for Ox64 SBC</p>
+<p><a href="https://github.com/apache/nuttx/pull/12614"><strong>“Add LED Driver for Ox64”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/rust5#appendix-main-function-is-missing">(NuttX Ox64 needs <strong>leds_rust_main</strong> to be renamed as <strong>main</strong>)</a></p>
 </li>
 </ul>
-<p>TODO: Ox64, Kernel Mode</p>
 <p><em>What about folks without Ox64 SBC?</em></p>
-<p>We created the LED Driver for <strong>QEMU RISC-V Emulator</strong>, which will blink a Simulated LED on NuttX…</p>
+<p>We created the LED Driver for <strong>QEMU RISC-V Emulator</strong>, which will blink a Simulated LED on NuttX.</p>
+<p>Everyone can run the <strong>Rust Blinky App</strong> (from above) and reproduce the exact same results, thanks to the QEMU LED Driver…</p>
 <ul>
-<li>TODO: QEMU LED Driver</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/pull/12762"><strong>“Add LED Driver for QEMU RISC-V”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/rust4#custom-target-for-rust">(<strong>QEMU RISC-V 32-bit</strong> needs a <strong>Custom Rust Target</strong>)</a></p>
+</li>
 </ul>
-<p>Everyone can run the <strong>Rust Blinky App</strong> (from above) and reproduce the exact same results.</p>
-<p>TODO: QEMU 32-bit</p>
 <h1 id="daily-build-and-test"><a class="doc-anchor" href="#daily-build-and-test">§</a>9 Daily Build and Test</h1>
 <p><em>Our Rust Blinky App: Will it break someday?</em></p>
 <p>Yeah it’s possible that our Rust App will someday <strong>fail to build or execute</strong> correctly…</p>
@@ -356,17 +358,19 @@ $ make
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/pr#appendix-downloading-the-docker-image-for-nuttx-ci"><strong>“Downloading the Docker Image for NuttX CI”</strong></a></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/boards/sim/sim/sim/configs/rust/defconfig#L27">(NuttX CI also compiles <strong>hello_rust</strong> for NuttX Simulator)</a></p>
 </li>
 </ul>
+<p>NuttX CI also compiles <strong>hello_rust</strong> for <a href="https://github.com/apache/nuttx/blob/master/boards/sim/sim/sim/configs/rust/defconfig#L27"><strong>NuttX Simulator</strong></a>. But it doesn’t need a Special Rust Target for the Docker Image.</p>
 <p><em>Will we know if the Rust Blinky App fails to execute correctly?</em></p>
-<p>TODO: Auto test at GitHub Actions</p>
-<p>TODO: leds_rust daily test</p>
-<p>TODO: Appendix</p>
+<p>Every day through <strong>GitHub Actions</strong>: We’re testing the Rust Blinky App on QEMU RISC-V Emulator. If Rust Blinky fails to execute (or produces the wrong output), GitHub Actions will notify us…</p>
+<ul>
+<li>TODO: Appendix</li>
+</ul>
 <p><em>Anything else we’re testing daily?</em></p>
-<p>To be clear whether it’s our Rust App failing vs NuttX QEMU failing:</p>
-<p>TODO: Distinguish QEMU vs Rust failure </p>
-<p>TODO: Appendix</p>
+<p>If something goes wrong: We need to be clear whether it’s our Rust App Failing vs <strong>NuttX QEMU Failing</strong>. That’s why also test NuttX QEMU every day at GitHub Actions…</p>
+<ul>
+<li>TODO: Appendix</li>
+</ul>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>10 All Things Considered</h1>
 <p><em>Wow that’s plenty of coding for 12 weeks of GSoC!</em></p>
 <p>Indeed, we tracked all Coding Tasks in our <a href="TODO"><strong>GSoC Task Spreadsheet</strong></a>. And we recorded Daily Updates in the <a href="https://discord.gg/eAz5QudKSQ"><strong>NuttX Discord Channel</strong></a>.</p>
