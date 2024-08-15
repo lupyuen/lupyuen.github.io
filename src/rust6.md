@@ -377,13 +377,13 @@ _Will we know if the Rust Blinky App fails to execute correctly?_
 
 Every day through __GitHub Actions__: We're testing the Rust Blinky App on QEMU RISC-V Emulator. If Rust Blinky fails to execute (or produces the wrong output), GitHub Actions will notify us...
 
-- TODO: Appendix
+- [__"Daily Test of Rust Blinky"__](https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-rust-blinky)
 
 _Anything else we're testing daily?_
 
-If something goes wrong: We need to be clear whether it's our Rust App Failing vs __NuttX QEMU Failing__. That's why also test NuttX QEMU every day at GitHub Actions...
+If something goes wrong: We need to be clear whether it's our Rust App Failing vs __NuttX QEMU Failing__. That's why we also test NuttX QEMU every day at GitHub Actions...
 
-- TODO: Appendix
+- [__"Daily Test of NuttX QEMU RISC-V"__](https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-nuttx-qemu-risc-v)
 
 # All Things Considered 
 
@@ -427,25 +427,161 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/rust6.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust6.md)
 
+TODO: Pic of QEMU
+
 # Appendix: Daily Test of Rust Blinky
 
-TODO
+Earlier we said that our Rust Blinky App might someday [__fail to build or execute__](TODO) correctly. That's why we...
 
-We're now building and testing `leds_rust` every daily at GitHub Actions. We will be notified if the Rust Build breaks or if the Rust Execution fails in future.
+- [__Trigger a Rebuild__](TODO) of our Rust Blinky App on every NuttX Pull Request
 
-[Test Log](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml)
+- __Run and Test__ our Rust Blinky App every day at GitHub Actions
 
-[GitHub Actions Workflow](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml)
+If anything breaks, we'll find out right away!
+
+_How to test our app with GitHub Actions?_
+
+__Every day at GitHub Actions:__ We boot NuttX on QEMU RISC-V (64-bit) and verify the output of "__`leds_rust`__" (pic above)
+
+```bash
+## Start the QEMU Emulator for 64-bit RISC-V
+$ spawn qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+## Run `leds_rust` and verify the output
+NuttShell (NSH) NuttX-12.6.0-RC1
+nsh> leds_rust
+Hello, Rust!!
+Opening /dev/userleds
+
+Set LED 1 to 1
+board_userled: LED 1 set to 1
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+Sleeping...
+
+Set LED 1 to 0
+board_userled: LED 1 set to 0
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+```
+
+[(See the __GitHub Actions Log__)](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml)
+
+Here's the __GitHub Actions Workflow__ to build and run Rust Blinky: [qemu-riscv-leds64-rust.yml](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml)
+
+```bash
+## Download the Source Code for NuttX Kernel and Apps
+git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
+cd nuttx
+
+## Install the Rust Target for QEMU RISC-V 64-bit
+rustup target add riscv64gc-unknown-none-elf
+
+## Configure the NuttX Build: QEMU RISC-V 64-bit with LED Driver and Rust
+tools/configure.sh rv-virt:leds64_rust
+
+## Build the NuttX Kernel. Ignore the warning: `nuttx has a LOAD segment with RWX permissions`
+make
+
+## Install QEMU Emulator for RISC-V
+sudo apt install qemu-system-riscv64
+
+## Test NuttX and Rust Blinky with our Expect Script
+wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-leds64-rust.exp
+chmod +x qemu-riscv-leds64-rust.exp
+./qemu-riscv-leds64-rust.exp
+```
+
+Which calls our __Expect Script__ to test Rust Blinky: [qemu-riscv-leds64-rust.exp](https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-leds64-rust.exp)
+
+```bash
+#!/usr/bin/expect
+## Expect Script for Testing NuttX with QEMU Emulator
+
+## Wait at most 10 seconds
+set timeout 10
+
+## For every 1 character sent, wait 0.01 milliseconds
+set send_slow {1 0.01}
+
+## Start the QEMU Emulator for 64-bit RISC-V
+spawn qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+## Wait for the prompt and enter `leds_rust`
+expect "nsh> "
+send -s "leds_rust\r"
+
+## Check the response: LEDs 1, 2 and 3 should be Off
+expect "board_userled: LED 1 set to 0"
+expect "board_userled: LED 2 set to 0"
+expect {
+  ## If we see this message, continue normally
+  "board_userled: LED 3 set to 0" {}
+
+  ## If timeout, exit with an error
+  ## And rerminate the session: Ctrl-A x
+  timeout { 
+    send "\x01x"
+    puts "\n===== Error: Test Failed\n"
+    exit 1 
+  }
+}
+
+## Terminate the session: Ctrl-A x
+send "\x01x"
+puts "\n===== Test OK\n"
+exit 0 
+```
+
+But our test is incomplete: We need to know if NuttX on QEMU is really OK...
 
 # Appendix: Daily Test of NuttX QEMU RISC-V
 
+If something goes wrong with __Rust Blinky__: We need to be clear whether it's our Rust App Failing vs __NuttX QEMU Failing__. That's why we also test NuttX QEMU every day at GitHub Actions.
+
+__NuttX for QEMU RISC-V__ comes in Multiple Flavours, we test 4 of the popular flavours every day...
+
+- __32-bit RISC-V, Flat Build: `rv-virt:nsh`__
+
+  [qemu-riscv-nsh.yml](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh.yml)
+
+  TODO: GitHub Actions Workflow / Test Log
+
+- __32-bit RISC-V, Kernel Build: `rv-virt:knsh`__
+
+  [qemu-riscv-knsh.yml](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh.yml)
+
+  TODO
+
+- __64-bit RISC-V, Flat Build: `rv-virt:nsh64`__
+
+  [qemu-riscv-nsh64.yml](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh64.yml)
+
+  TODO
+
+- __64-bit RISC-V, Kernel Build: `rv-virt:knsh64`__
+
+  [qemu-riscv-knsh64.yml](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh64.yml)
+
+  TODO
+
+
+_What's inside the GitHub Actions Workflow?_
+
 TODO
-
-(1) OSTest for 32-bit QEMU RISC-V runs OK on GitHub Actions:
-
-32-bit Flat Build (rv-virt:nsh): [qemu-riscv-nsh.yml](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh.yml)
-
-32-bit Kernel Build (rv-virt:knsh32): [qemu-riscv-knsh32.yml](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh32.yml)
 
 (2) But OSTest for 64-bit QEMU RISC-V fails on GitHub Actions (wonder why):
 
