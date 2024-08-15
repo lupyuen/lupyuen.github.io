@@ -700,6 +700,8 @@ That's why I run a script on my Home Computer to download the 64-bit Daily Build
 
 TODO: 64-bit Flat Build (rv-virt:nsh64): [qemu-riscv-nsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08)
 
+TODO: Task Script / Test Script / Upload Script / Sample Log
+
 TODO: 64-bit Kernel Build (rv-virt:knsh64): [qemu-riscv-knsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08)
 
 TODO: [task-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh)
@@ -707,3 +709,8 @@ TODO: [task-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/ta
 TODO: [test-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
 
 TODO: [upload-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh)
+
+_What's inside the scripts?_
+
+TODO
+
