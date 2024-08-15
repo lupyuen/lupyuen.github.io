@@ -503,7 +503,7 @@ Which calls our __Expect Script__ to test Rust Blinky: [qemu-riscv-leds64-rust.e
 
 ```bash
 #!/usr/bin/expect
-## Expect Script for Testing NuttX with QEMU Emulator
+## Expect Script for Testing NuttX Rust Blinky with QEMU Emulator
 
 ## Wait at most 10 seconds
 set timeout 10
@@ -631,8 +631,8 @@ Which calls our __Expect Script__ to boot NuttX and run OSTest: [qemu-riscv-nsh.
 #!/usr/bin/expect
 ## Expect Script for Testing NuttX with QEMU Emulator
 
-## Wait at most 10 seconds
-set timeout 10
+## Wait at most 300 seconds
+set timeout 300
 
 ## For every 1 character sent, wait 0.01 milliseconds
 set send_slow {1 0.01}
@@ -674,9 +674,9 @@ But there's a problem: OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions
 
 # Appendix: NuttX QEMU RISC-V fails on GitHub Actions
 
-_But we have problems?_
-
 TODO
+
+_But we have problems?_
 
 Yeah OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions (wonder why)
 
