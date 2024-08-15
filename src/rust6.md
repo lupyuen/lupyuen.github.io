@@ -16,8 +16,6 @@ In this article we walk through Rushabh's contributions. And understand how we'r
 
 TODO: Updating the docker image for CI
 
-TODO: Pic of QEMU
-
 # Blink The LED
 
 This is how we __Blink the LED__ in a NuttX Rust App: [examples/leds_rust/leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
@@ -58,7 +56,7 @@ They are safer versions of __open__ and __ioctl__ from our [__NuttX Module__](TO
 
 - Import __usleep__ and __close__ from C
 
-- Plu the NuttX Constants: __O_WRONLY__ and __ULEDIOC_SETALL__
+- Plus the NuttX Constants: __O_WRONLY__ and __ULEDIOC_SETALL__
 
 We import the __NuttX Module__ into our Rust App like so...
 
@@ -72,9 +70,69 @@ mod nuttx;
 use nuttx::*;
 ```
 
-And yes this code runs on Linux, macOS and Windows! We'll come back to this.
+And yes this code runs on Linux, macOS and Windows! We'll come back to this. First we test on QEMU...
 
-TODO: Run on QEMU
+TODO: Pic of QEMU
+
+# Test on QEMU RISC-V
+
+To test Rust Blinky on __QEMU RISC-V Emulator__, follow these steps...
+
+```bash
+## Install the Rust Target for QEMU RISC-V 64-bit
+rustup target add riscv64gc-unknown-none-elf
+
+## Install QEMU Emulator for RISC-V
+sudo apt install qemu-system-riscv64  ## For Linux
+brew install qemu  ## For macOS
+
+## Download the Source Code for NuttX Kernel and Apps
+git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
+cd nuttx
+
+## Configure the NuttX Build: QEMU RISC-V 64-bit with LED Driver and Rust
+tools/configure.sh rv-virt:leds64_rust
+
+## Build the NuttX Kernel. Ignore the warning: `nuttx has a LOAD segment with RWX permissions`
+make
+
+## Boot the NuttX Kernel in QEMU RISC-V 64-bit
+qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+```
+
+[(See the __Build Script__)](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml)
+
+
+At the NSH Prompt: Enter "__`leds_rust`__" (pic above)
+
+```text
+NuttShell (NSH) NuttX-12.6.0-RC1
+nsh> leds_rust
+Hello, Rust!!
+Opening /dev/userleds
+
+Set LED 1 to 1
+board_userled: LED 1 set to 1
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+Sleeping...
+
+Set LED 1 to 0
+board_userled: LED 1 set to 0
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+```
+
+[(See the __NuttX Log__)](https://github.com/lupyuen/nuttx-riscv64/actions/runs/10396419763/job/28790386663)
+
+Rust blinks our Simulated LED on QEMU!
 
 ![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-title.jpg)
 
@@ -357,6 +415,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/rust6.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust6.md)
 
+# Appendix: Daily Test of Rust Blinky
+
+TODO
+
+We're now building and testing `leds_rust` every daily at GitHub Actions. We will be notified if the Rust Build breaks or if the Rust Execution fails in future.
+
+[Test Log](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml)
+
+[GitHub Actions Workflow](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml)
+
 # Appendix: Daily Test of NuttX QEMU RISC-V
 
 TODO
@@ -385,12 +453,3 @@ TODO
 
 So we might still need a Local Computer to run some of the QEMU RISC-V tests.
 
-# Appendix: Daily Test of Rust Blinky
-
-TODO
-
-We're now building and testing `leds_rust` every daily at GitHub Actions. We will be notified if the Rust Build breaks or if the Rust Execution fails in future.
-
-[Test Log](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml)
-
-[GitHub Actions Workflow](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml)
