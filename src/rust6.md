@@ -2,7 +2,7 @@
 
 📝 _19 Aug 2024_
 
-![TODO](https://lupyuen.github.io/images/rust6-title.jpg)
+![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-title.jpg)
 
 My student [__Rushabh Gala__](TODO) has just completed his project for [__Google Summer of Code__](TODO). Rushabh has created safer __Rust Apps__ for __Apache NuttX RTOS__...
 
@@ -52,15 +52,15 @@ Looks mighty similar to the [__C Version__](TODO)!
 
 _What are safe_open and safe_ioctl?_
 
-They are safer versions of __open__ and __ioctl__ from our [__NuttX Module__](TODO), which...
+They are safer versions of __open__ and __ioctl__ from our [__NuttX Module__](TODO). Inside the NuttX Module we...
 
-- Defines the Safe Wrappers: __`safe_*`__
+- Define the Safe Wrappers: __`safe_*`__
 
-- Imports __usleep__ and __close__ from C
+- Import __usleep__ and __close__ from C
 
-- Plus the NuttX Constants: __O_WRONLY__ and __ULEDIOC_SETALL__
+- Plu the NuttX Constants: __O_WRONLY__ and __ULEDIOC_SETALL__
 
-We import the __NuttX Module__ like so...
+We import the __NuttX Module__ into our Rust App like so...
 
 ```rust
 // Comment out these lines for testing on Linux / macOS / Windows
@@ -76,7 +76,7 @@ And yes this code runs on Linux, macOS and Windows! We'll come back to this.
 
 TODO: Run on QEMU
 
-![TODO](https://lupyuen.github.io/images/rust6-title.jpg)
+![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-title.jpg)
 
 # Handle Errors
 
@@ -113,7 +113,7 @@ Yeah there's not much point in wrapping __usleep__ and __close__? Since we don't
 
 _Can we auto-close the File Descriptor when it goes out of scope?_
 
-Probably, if we had [__Managed File Descriptors__](TODO)? But that's way beyond the size, scope and scale of GSoC.
+Probably, if we do [__Managed File Descriptors__](https://docs.rs/rustix/latest/rustix/fd/struct.OwnedFd.html)? But that's way beyond the size, scope and scale of GSoC.
 
 TODO: Pic of cargo run
 
@@ -291,13 +291,13 @@ Every NuttX Pull Request will now trigger a rebuild of our [__Rust Blinky App__]
 
 _Why so complicated?_
 
-That's because the NuttX Continuous Integration runs inside a __Docker Container__. Which requires delicate modding...
+That's because the NuttX Continuous Integration (CI) runs inside a __Docker Container__. Which requires delicate modding...
 
-- TODO: Building the Docker Container
+- [__"Building the Docker Image for NuttX CI"__](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci)
 
-- TODO: Downloading the Docker Container
+- [__"Downloading the Docker Image for NuttX CI"__](https://lupyuen.github.io/articles/pr#appendix-downloading-the-docker-image-for-nuttx-ci)
 
-TODO: simtest hello_rust
+  [(NuttX CI also compiles __hello_rust__ for NuttX Simulator)](https://github.com/apache/nuttx/blob/master/boards/sim/sim/sim/configs/rust/defconfig#L27)
 
 _Will we know if the Rust Blinky App fails to execute correctly?_
 
@@ -305,17 +305,15 @@ TODO: Auto test at GitHub Actions
 
 TODO: leds_rust daily test
 
-1. __[Updated 12 Aug]__ We're now building and testing `leds_rust` every daily at GitHub Actions. We will be notified if the Rust Build breaks or if the Rust Execution fails in future.
-
-   [Test Log](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml)
-   
-   [GitHub Actions Workflow](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml)
+TODO: Appendix
 
 _Anything else we're testing daily?_
 
 To be clear whether it's our Rust App failing vs NuttX QEMU failing:
 
 TODO: Distinguish QEMU vs Rust failure 
+
+TODO: Appendix
 
 # All Things Considered 
 
@@ -358,3 +356,41 @@ Special Thanks to __Mr Rushabh Gala__: Sorry it’s my first GSoC, I could have 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/rust6.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust6.md)
+
+# Appendix: Daily Test of NuttX QEMU RISC-V
+
+TODO
+
+(1) OSTest for 32-bit QEMU RISC-V runs OK on GitHub Actions:
+
+32-bit Flat Build (rv-virt:nsh): [qemu-riscv-nsh.yml](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh.yml)
+
+32-bit Kernel Build (rv-virt:knsh32): [qemu-riscv-knsh32.yml](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh32.yml)
+
+(2) But OSTest for 64-bit QEMU RISC-V fails on GitHub Actions (wonder why):
+
+64-bit Flat Build (rv-virt:nsh64) crashes with: "fpu_test: Started task FPU#1  / riscv_exception: Illegal instruction"
+
+[qemu-riscv-nsh64.yml](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh64.yml#L2)
+
+64-bit Kernel Build (rv-virt:knsh64) hangs at: "ostest_main: Started user_main"
+
+[qemu-riscv-knsh64.yml](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml#L2)
+
+(3) That's why I run a script on my Home Computer to download the 64-bit Daily Builds and run OSTest locally:
+
+64-bit Flat Build (rv-virt:nsh64): [qemu-riscv-nsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08)
+
+64-bit Kernel Build (rv-virt:knsh64): [qemu-riscv-knsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08)
+
+So we might still need a Local Computer to run some of the QEMU RISC-V tests.
+
+# Appendix: Daily Test of Rust Blinky
+
+TODO
+
+We're now building and testing `leds_rust` every daily at GitHub Actions. We will be notified if the Rust Build breaks or if the Rust Execution fails in future.
+
+[Test Log](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml)
+
+[GitHub Actions Workflow](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml)
