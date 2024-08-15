@@ -556,25 +556,25 @@ If something goes wrong with __Rust Blinky__: We need to be clear whether it's o
 
 __NuttX for QEMU RISC-V__ comes in Multiple Flavours, we test 4 of the popular flavours every day...
 
-- __32-bit RISC-V, Flat Build: `rv-virt:nsh`__
+- __32-bit RISC-V, Flat Build: <br> `rv-virt:nsh`__
 
   [qemu-riscv-nsh.yml](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh.yml)
 
   TODO: GitHub Actions Workflow / Test Log
 
-- __32-bit RISC-V, Kernel Build: `rv-virt:knsh`__
+- __32-bit RISC-V, Kernel Build: <br> `rv-virt:knsh`__
 
   [qemu-riscv-knsh.yml](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh.yml)
 
   TODO
 
-- __64-bit RISC-V, Flat Build: `rv-virt:nsh64`__
+- __64-bit RISC-V, Flat Build: <br> `rv-virt:nsh64`__
 
   [qemu-riscv-nsh64.yml](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh64.yml)
 
   TODO
 
-- __64-bit RISC-V, Kernel Build: `rv-virt:knsh64`__
+- __64-bit RISC-V, Kernel Build: <br> `rv-virt:knsh64`__
 
   [qemu-riscv-knsh64.yml](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh64.yml)
 
@@ -684,13 +684,13 @@ _But we have problems?_
 
 Yeah OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions, wonder why...
 
-- __64-bit RISC-V Flat Build__ `rv-virt:nsh64` crashes with...
+- __64-bit RISC-V Flat Build <br> `rv-virt:nsh64`__ crashes with...
 
   _"fpu_test: Started task FPU#1  / riscv_exception: Illegal instruction"_
 
   [(GitHub Actions Workflow)](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh64.yml#L2)
 
-- __64-bit RISC-V Kernel Build__ `rv-virt:knsh64` hangs at...
+- __64-bit RISC-V Kernel Build <br> `rv-virt:knsh64`__ hangs at...
 
   _"ostest_main: Started user_main"_
 
@@ -700,7 +700,10 @@ That's why I run a script on my Home Computer to download the 64-bit Daily Build
 
 TODO: 64-bit Flat Build (rv-virt:nsh64): [qemu-riscv-nsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08)
 
-TODO: Task Script / Test Script / Upload Script / Sample Log
+- Task Script
+- Test Script
+- Upload Script
+- Sample Log
 
 TODO: 64-bit Kernel Build (rv-virt:knsh64): [qemu-riscv-knsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08)
 
