@@ -66,11 +66,11 @@
     <h1 class="title">Early Days of Rust Apps on Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
 <li><a href="#blink-the-led">1 Blink The LED</a><ul></ul></li>
-<li><a href="#test-on-qemu-risc-v">2 Test on QEMU RISC-V</a><ul></ul></li>
-<li><a href="#handle-errors">3 Handle Errors</a><ul></ul></li>
+<li><a href="#test-on-qemu-emulator">2 Test on QEMU Emulator</a><ul></ul></li>
+<li><a href="#handle-the-errors">3 Handle The Errors</a><ul></ul></li>
 <li><a href="#runs-on-linux--macos--windows">4 Runs on Linux / macOS / Windows</a><ul></ul></li>
-<li><a href="#main-function">5 Main Function</a><ul></ul></li>
-<li><a href="#panic-handler">6 Panic Handler</a><ul></ul></li>
+<li><a href="#main-function-for-rust">5 Main Function for Rust</a><ul></ul></li>
+<li><a href="#panic-handler-for-rust">6 Panic Handler for Rust</a><ul></ul></li>
 <li><a href="#no-crates-in-nuttx">7 No Crates in NuttX</a><ul></ul></li>
 <li><a href="#led-drivers-for-nuttx">8 LED Drivers for NuttX</a><ul></ul></li>
 <li><a href="#daily-build-and-test">9 Daily Build and Test</a><ul></ul></li>
@@ -94,7 +94,7 @@
 <p>In this article we walk through Rushabh’s contributions. And understand how we’re evolving Rust Apps for NuttX…</p>
 <p>TODO: Updating the docker image for CI</p>
 <h1 id="blink-the-led"><a class="doc-anchor" href="#blink-the-led">§</a>1 Blink The LED</h1>
-<p>This is how we <strong>Blink the LED</strong> in a NuttX Rust App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">examples/leds_rust/leds_rust_main.rs</a></p>
+<p>This is how we <strong>Blink the LED</strong> in a NuttX Rust App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">leds_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Main Program Logic. Called by `leds_rust_main`
 </span><span class="kw">fn </span>rust_main(_argc: i32, _argv: <span class="kw-2">*const *const </span>u8)  <span class="comment">// Args from NuttX Shell
@@ -116,8 +116,7 @@
   </span><span class="prelude-val">Ok</span>(<span class="number">0</span>)
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-rust-app/blob/main/app/src/main.rs">(<strong>Mirrored here:</strong> nuttx-rust-app/app/src/main.rs)</a></p>
-<p>Looks mighty similar to the <a href="TODO"><strong>C Version</strong></a>!</p>
-<p>(But with simpler Error Handling than C, we’ll talk more)</p>
+<p>Looks mighty similar to the <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85"><strong>C Version</strong></a>! But with simpler Error Handling than C. (We’ll talk more)</p>
 <p><em>What are safe_open and safe_ioctl?</em></p>
 <p>They are safer versions of <strong>open</strong> and <strong>ioctl</strong> from our <a href="TODO"><strong>NuttX Module</strong></a>. Inside the NuttX Module we…</p>
 <ul>
@@ -142,7 +141,7 @@
 <span class="kw">use </span>nuttx::<span class="kw-2">*</span>;</code></pre></div>
 <p>And yes this code runs on Linux, macOS and Windows! We’ll come back to this. First we test on QEMU…</p>
 <p>TODO: Pic of QEMU</p>
-<h1 id="test-on-qemu-risc-v"><a class="doc-anchor" href="#test-on-qemu-risc-v">§</a>2 Test on QEMU RISC-V</h1>
+<h1 id="test-on-qemu-emulator"><a class="doc-anchor" href="#test-on-qemu-emulator">§</a>2 Test on QEMU Emulator</h1>
 <p>To test Rust Blinky on <strong>QEMU RISC-V Emulator</strong>, follow these steps…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install the Rust Target for QEMU RISC-V 64-bit
 rustup target add riscv64gc-unknown-none-elf
@@ -190,9 +189,9 @@ board_userled: LED 2 set to 0
 board_userled: LED 3 set to 0
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/runs/10396419763/job/28790386663">(See the <strong>NuttX Log</strong>)</a></p>
-<p>Rust blinks our Simulated LED on QEMU!</p>
+<p>Rust blinks our Simulated LED on NuttX QEMU!</p>
 <p><img src="https://lupyuen.github.io/images/rust6-title.jpg" alt="Blinking the NuttX LED in Rust" /></p>
-<h1 id="handle-errors"><a class="doc-anchor" href="#handle-errors">§</a>3 Handle Errors</h1>
+<h1 id="handle-the-errors"><a class="doc-anchor" href="#handle-the-errors">§</a>3 Handle The Errors</h1>
 <p><em>Why the funny question mark? (Pic above)</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = safe_open(  <span class="comment">// Open the LED Device...
@@ -233,7 +232,7 @@ ERROR: rust_main() failed with error -1
 <p>Which fails (as expected) because <em>“/dev/userleds”</em> doesn’t exist on Linux / macOS / Windows. (Pic above)</p>
 <p>This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our <strong>Local Computer</strong>, before testing on NuttX!</p>
 <p>(<strong>Rust Analyzer</strong> won’t work inside NuttX Projects sigh)</p>
-<h1 id="main-function"><a class="doc-anchor" href="#main-function">§</a>5 Main Function</h1>
+<h1 id="main-function-for-rust"><a class="doc-anchor" href="#main-function-for-rust">§</a>5 Main Function for Rust</h1>
 <p><em>We saw the LED Blinky code in rust_main. Who calls rust_main?</em></p>
 <p>Remember that <strong>rust_main</strong> returns a <strong>Result Type</strong>…</p>
 
@@ -272,7 +271,7 @@ ERROR: rust_main() failed with error -1
   <span class="comment">// Call Rust Main without args
   </span>leds_rust_main(<span class="number">0</span>, core::ptr::null());
 }</code></pre></div>
-<h1 id="panic-handler"><a class="doc-anchor" href="#panic-handler">§</a>6 Panic Handler</h1>
+<h1 id="panic-handler-for-rust"><a class="doc-anchor" href="#panic-handler-for-rust">§</a>6 Panic Handler for Rust</h1>
 <p><em>Anything else specific to NuttX?</em></p>
 <p>Yep NuttX Apps run on the <a href="TODO"><strong>Rust Core Library</strong></a> (no_std) and require a <strong>Panic Handler</strong>…</p>
 
