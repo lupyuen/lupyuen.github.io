@@ -1,6 +1,6 @@
 # Early Days of Rust Apps on Apache NuttX RTOS
 
-📝 _19 Aug 2024_
+📝 _26 Aug 2024_
 
 ![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-title.jpg)
 
@@ -12,9 +12,27 @@ My student [__Rushabh Gala__](TODO) has just completed his project for [__Google
 
 - TODO: NuttX Workshop Presentation 
 
-In this article we walk through Rushabh's contributions. And understand how we're evolving Rust Apps for NuttX...
+In this article we walk through Rushabh's contributions. And understand how we're evolving __Rust Apps for NuttX__...
 
-TODO: Updating the docker image for CI
+- __Blinking the LED__ in Rust
+
+- Testing on __QEMU RISC-V Emulator__
+
+- __Handling Errors__ returned by NuttX
+
+- TODO: Runs on Linux / macOS / Window
+
+- TODO: Main Function
+
+- TODO: Panic Handler
+
+- TODO: No Crates in NuttX
+
+- TODO: LED Drivers for NuttX
+
+- TODO: Daily Build and Test
+
+- TODO: Updating the docker image for CI
 
 # Blink The LED
 
@@ -134,7 +152,7 @@ Rust blinks our Simulated LED on NuttX QEMU!
 
 ![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-title.jpg)
 
-# Handle The Errors
+# Handle Errors Safely
 
 _Why the funny question mark? (Pic above)_
 
