@@ -67,7 +67,7 @@
     <nav id="TOC"><ul>
 <li><a href="#blink-the-led">1 Blink The LED</a><ul></ul></li>
 <li><a href="#test-on-qemu-emulator">2 Test on QEMU Emulator</a><ul></ul></li>
-<li><a href="#handle-the-errors">3 Handle The Errors</a><ul></ul></li>
+<li><a href="#handle-errors-safely">3 Handle Errors Safely</a><ul></ul></li>
 <li><a href="#runs-on-linux--macos--windows">4 Runs on Linux / macOS / Windows</a><ul></ul></li>
 <li><a href="#main-function-for-rust">5 Main Function for Rust</a><ul></ul></li>
 <li><a href="#panic-handler-for-rust">6 Panic Handler for Rust</a><ul></ul></li>
@@ -77,7 +77,7 @@
 <li><a href="#all-things-considered">10 All Things Considered</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-daily-test-of-rust-blinky">12 Appendix: Daily Test of Rust Blinky</a><ul></ul></li>
-<li><a href="#appendix-daily-test-of-nuttx-qemu-risc-v">13 Appendix: Daily Test of NuttX QEMU RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
+<li><a href="#appendix-daily-test-of-nuttx-qemu-risc-v">13 Appendix: Daily Test of NuttX QEMU RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>26 Aug 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust6-title.jpg" alt="Blinking the NuttX LED in Rust" /></p>
 <p>My student <a href="TODO"><strong>Rushabh Gala</strong></a> has just completed his project for <a href="TODO"><strong>Google Summer of Code</strong></a>. Rushabh has created safer <strong>Rust Apps</strong> for <strong>Apache NuttX RTOS</strong>…</p>
 <ul>
@@ -91,8 +91,39 @@
 <p>TODO: NuttX Workshop Presentation </p>
 </li>
 </ul>
-<p>In this article we walk through Rushabh’s contributions. And understand how we’re evolving Rust Apps for NuttX…</p>
+<p>In this article we walk through Rushabh’s contributions. And understand how we’re evolving <strong>Rust Apps for NuttX</strong>…</p>
+<ul>
+<li>
+<p><strong>Blinking the LED</strong> in Rust</p>
+</li>
+<li>
+<p>Testing on <strong>QEMU RISC-V Emulator</strong></p>
+</li>
+<li>
+<p><strong>Handling Errors</strong> returned by NuttX</p>
+</li>
+<li>
+<p>TODO: Runs on Linux / macOS / Window</p>
+</li>
+<li>
+<p>TODO: Main Function</p>
+</li>
+<li>
+<p>TODO: Panic Handler</p>
+</li>
+<li>
+<p>TODO: No Crates in NuttX</p>
+</li>
+<li>
+<p>TODO: LED Drivers for NuttX</p>
+</li>
+<li>
+<p>TODO: Daily Build and Test</p>
+</li>
+<li>
 <p>TODO: Updating the docker image for CI</p>
+</li>
+</ul>
 <h1 id="blink-the-led"><a class="doc-anchor" href="#blink-the-led">§</a>1 Blink The LED</h1>
 <p>This is how we <strong>Blink the LED</strong> in a NuttX Rust App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">leds_rust_main.rs</a></p>
 
@@ -191,7 +222,7 @@ board_userled: LED 3 set to 0
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/runs/10396419763/job/28790386663">(See the <strong>NuttX Log</strong>)</a></p>
 <p>Rust blinks our Simulated LED on NuttX QEMU!</p>
 <p><img src="https://lupyuen.github.io/images/rust6-title.jpg" alt="Blinking the NuttX LED in Rust" /></p>
-<h1 id="handle-the-errors"><a class="doc-anchor" href="#handle-the-errors">§</a>3 Handle The Errors</h1>
+<h1 id="handle-errors-safely"><a class="doc-anchor" href="#handle-errors-safely">§</a>3 Handle Errors Safely</h1>
 <p><em>Why the funny question mark? (Pic above)</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = safe_open(  <span class="comment">// Open the LED Device...
