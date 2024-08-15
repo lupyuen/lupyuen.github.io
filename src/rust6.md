@@ -715,167 +715,129 @@ TODO: [upload-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/
 
 _What's inside the scripts?_
 
-TODO
-
-TODO: [task-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh)
+Inside our __Task Script__: We wait for the 64-bit __NuttX Daily Build__ to be published as a GitHub Release: [task-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh)
 
 ```bash
-## Background Task for Automated Testing of Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
+## Background Task: Automated Testing of Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
 export BUILD_PREFIX=qemu-riscv-nsh64
 
-## Wait for GitHub Release, then test NuttX on SBC
-function test_nuttx {
-
-  ## If NuttX Build already downloaded, quit
-  local date=$1
-  NUTTX_ZIP=/tmp/$BUILD_PREFIX-$date-nuttx.zip
-  if [ -e $NUTTX_ZIP ] 
-  then
-    return
-  fi
-
-  echo "----- Download the NuttX Build"
-  wget -q \
-    https://github.com/lupyuen/nuttx-riscv64/releases/download/$BUILD_PREFIX-$date/nuttx.zip \
-    -O $NUTTX_ZIP \
-    || true
-
-  ## If build doesn't exist, quit
-  FILESIZE=$(wc -c $NUTTX_ZIP | cut -d/ -f1)
-  if [ "$FILESIZE" -eq "0" ]; then
-    rm $NUTTX_ZIP
-    return
-  fi
-
-  echo "----- Run the NuttX Test"
-  $SCRIPT_DIR/test-nsh64.sh \
-    | tee /tmp/release-$BUILD_PREFIX.log \
-    2>&1
-
-  ## Trim to first 100000 bytes
-  head -c 100000 /tmp/release-$BUILD_PREFIX.log \
-    >/tmp/release2-$BUILD_PREFIX.log
-  mv /tmp/release2-$BUILD_PREFIX.log \
-    /tmp/release-$BUILD_PREFIX.log
-
-  echo "----- Upload the Test Log"
-  $SCRIPT_DIR/upload-nsh64.sh \
-    /tmp/release-$BUILD_PREFIX.tag \
-    /tmp/release-$BUILD_PREFIX.log
-
-  echo test_nuttx OK!
-}
-
-## If Build Date is specified: Run once and quit
-if [ "$BUILD_DATE" != '' ]; then
-  test_nuttx $BUILD_DATE
-  exit
-fi
-
-## Wait for GitHub Release, then test NuttX on SBC
+## Wait for GitHub Release, then test NuttX
 for (( ; ; ))
 do
-  ## Default Build Date is today (YYYY-MM-DD)
+  ## Build Date is today (YYYY-MM-DD)
   BUILD_DATE=$(date +'%Y-%m-%d')
   test_nuttx $BUILD_DATE
 
   ## Wait a while
-  date
   sleep 600
 done
-echo Done!
+
+## Wait for GitHub Release, then test NuttX on SBC
+function test_nuttx {
+  ...
+  ## Download the NuttX Build
+  local date=$1
+  NUTTX_ZIP=/tmp/$BUILD_PREFIX-$date-nuttx.zip
+  wget -q \
+    https://github.com/lupyuen/nuttx-riscv64/releases/download/$BUILD_PREFIX-$date/nuttx.zip \
+    -O $NUTTX_ZIP
+  ...
+  ## Run the NuttX Test
+  test-nsh64.sh \
+    >/tmp/release-$BUILD_PREFIX.log \
+    2>&1
+  ...
+  ## Upload the Test Log
+  upload-nsh64.sh \
+    /tmp/release-$BUILD_PREFIX.tag \
+    /tmp/release-$BUILD_PREFIX.log
+}
 ```
 
-TODO: [test-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
+And call our __Test Script__ to boot NuttX on QEMU and run __OSTest__: [test-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
 
 ```bash
-#!/usr/bin/env bash
-## Automated Testing of Automated Testing of Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
+## Test Script: Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
+BUILD_PREFIX=qemu-riscv-nsh64
 
-set -e  ##  Exit when any command fails
-set -x  ##  Echo commands
+## Build Date is today (YYYY-MM-DD)
+BUILD_DATE=$(date +'%Y-%m-%d')
 
-##  Default Build Prefix
-if [ "$BUILD_PREFIX" == '' ]; then
-    export BUILD_PREFIX=qemu-riscv-nsh64
-fi
-
-##  Default Build Date is today (YYYY-MM-DD)
-if [ "$BUILD_DATE" == '' ]; then
-    export BUILD_DATE=$(date +'%Y-%m-%d')
-fi
-
-rm -rf /tmp/$BUILD_PREFIX
-mkdir /tmp/$BUILD_PREFIX
-cd /tmp/$BUILD_PREFIX
-
-set +x  ##  Disable echo
-echo "----- Download the latest NuttX build for $BUILD_DATE"
-set -x  ##  Enable echo
+## Download the latest NuttX build
 wget -q https://github.com/lupyuen/nuttx-riscv64/releases/download/$BUILD_PREFIX-$BUILD_DATE/nuttx.zip
 unzip -o nuttx.zip
-set +x  ##  Disable echo
 
-## Print the Commit Hashes
-if [ -f nuttx.hash ]; then
-    cat nuttx.hash
-fi
-
-##  Write the Release Tag for populating the Release Log later
+## Write the Release Tag for populating the GitHub Release Notes later
 echo "$BUILD_PREFIX-$BUILD_DATE" >/tmp/release-$BUILD_PREFIX.tag
 
-script=qemu-riscv-nsh64
-wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/$script.exp
-chmod +x $script.exp
-ls -l
-cat nuttx.hash
-qemu-system-riscv64 --version
-./$script.exp
+## Boot NuttX on QEMU and run OSTest
+wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-nsh64.exp
+chmod +x qemu-riscv-nsh64.exp
+./qemu-riscv-nsh64.exp
 ```
 
-TODO: [upload-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh)
+[(__qemu-riscv-nsh64.exp__ is here)](TODO)
+
+Finally our Task Script calls our __Upload Script__, to upload the Test Log into the __GitHub Release Notes__: [upload-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh)
 
 ```bash
-#!/usr/bin/env bash
-## Automated Testing of Automated Testing of Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
+## Upload Test Log to GitHub Release Notes of Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
+## Parameters: Release Tag, Test Log
+repo=lupyuen/nuttx-riscv64
+tag=$1
+log=$2
 
-set -e  ##  Exit when any command fails
-set -x  ##  Echo commands
+## Preserve the Auto-Generated GitHub Release Notes.
+## Fetch the current GitHub Release Notes and extract the body text.
+gh release view \
+  `cat $tag` \
+  --json body \
+  --jq '.body' \
+  --repo $repo \
+  >/tmp/upload-nsh64.old
 
-##  Default Build Prefix
-if [ "$BUILD_PREFIX" == '' ]; then
-    export BUILD_PREFIX=qemu-riscv-nsh64
+## Find the position of the Previous Test Log, starting with "```"
+cat /tmp/upload-nsh64.old \
+  | grep '```' --max-count=1 --byte-offset \
+  | sed 's/:.*//g' \
+  >/tmp/upload-nsh64-previous-log.txt
+prev=`cat /tmp/upload-nsh64-previous-log.txt`
+
+## If Previous Test Log exists, discard it
+if [ "$prev" != '' ]; then
+  cat /tmp/upload-nsh64.old \
+    | head --bytes=$prev \
+    >>/tmp/upload-nsh64.log
+else
+  ## Else copy the entire Release Notes
+  cat /tmp/upload-nsh64.old \
+    >>/tmp/upload-nsh64.log
+  echo "" >>/tmp/upload-nsh64.log
 fi
 
-##  Default Build Date is today (YYYY-MM-DD)
-if [ "$BUILD_DATE" == '' ]; then
-    export BUILD_DATE=$(date +'%Y-%m-%d')
-fi
+## Show the Test Status
+grep "^===== " $log \
+  | colrm 1 6 \
+  >>/tmp/upload-nsh64.log
 
-rm -rf /tmp/$BUILD_PREFIX
-mkdir /tmp/$BUILD_PREFIX
-cd /tmp/$BUILD_PREFIX
+## Enquote the Test Log without Carriage Return and Terminal Control Characters.
+## The long pattern for sed doesn't work on macOS.
+echo '```text' >>/tmp/upload-nsh64.log
+cat $log \
+  | tr -d '\r' \
+  | tr -d '\r' \
+  | sed 's/\x08/ /g' \
+  | sed 's/\x1B(B//g' \
+  | sed 's/\x1B\[K//g' \
+  | sed 's/\x1B[<=>]//g' \
+  | sed 's/\x1B\[[0-9:;<=>?]*[!]*[A-Za-z]//g' \
+  | sed 's/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;<=>?]*[-!"#$%&'"'"'()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g' \
+  >>/tmp/upload-nsh64.log
+echo '```' >>/tmp/upload-nsh64.log
 
-set +x  ##  Disable echo
-echo "----- Download the latest NuttX build for $BUILD_DATE"
-set -x  ##  Enable echo
-wget -q https://github.com/lupyuen/nuttx-riscv64/releases/download/$BUILD_PREFIX-$BUILD_DATE/nuttx.zip
-unzip -o nuttx.zip
-set +x  ##  Disable echo
-
-## Print the Commit Hashes
-if [ -f nuttx.hash ]; then
-    cat nuttx.hash
-fi
-
-##  Write the Release Tag for populating the Release Log later
-echo "$BUILD_PREFIX-$BUILD_DATE" >/tmp/release-$BUILD_PREFIX.tag
-
-script=qemu-riscv-nsh64
-wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/$script.exp
-chmod +x $script.exp
-ls -l
-cat nuttx.hash
-qemu-system-riscv64 --version
-./$script.exp
+## Upload the Test Log to the GitHub Release Notes
+gh release edit \
+  `cat $tag` \
+  --notes-file /tmp/upload-nsh64.log \
+  --repo $repo
 ```
