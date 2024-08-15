@@ -44,7 +44,7 @@ fn rust_main(_argc: i32, _argv: *const *const u8)  // Args from NuttX Shell
 
 [(__Mirrored here:__ nuttx-rust-app/app/src/main.rs)](https://github.com/lupyuen/nuttx-rust-app/blob/main/app/src/main.rs)
 
-Looks mighty similar to the [__C Version__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85)! But with simpler Error Handling than C. (We'll talk more)
+Our Rust Blinky App looks mighty similar to the [__C Version__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85)! But with simpler Error Handling than C. (We'll talk more)
 
 _What are safe_open and safe_ioctl?_
 
@@ -303,23 +303,23 @@ _12 weeks of GSoC: What else have we implemented?_
 
 Remember our Blinky NuttX App in Rust? Well a NuttX App ain't really a NuttX App... Unless it runs __on Real Hardware__!
 
-We tested our Rust Blinky App on [__Ox64 BL808 SBC__](TODO). Which required us to create the __GPIO and LED Drivers__ for Ox64 SBC...
+We tested our Rust Blinky App on [__Ox64 BL808 SBC__](TODO). Which needs us to create the __GPIO and LED Drivers__ for Ox64 SBC...
 
-- TODO: GPIO Driver for Ox64 SBC
+- [__"Add GPIO Driver for BL808"__](https://github.com/apache/nuttx/pull/12571)
 
-- TODO: LED Driver for Ox64 SBC
+- [__"Add LED Driver for Ox64"__](https://github.com/apache/nuttx/pull/12614)
 
-TODO: Ox64, Kernel Mode
+  [(NuttX Ox64 needs __leds_rust_main__ to be renamed as __main__)](https://lupyuen.github.io/articles/rust5#appendix-main-function-is-missing)
 
 _What about folks without Ox64 SBC?_
 
-We created the LED Driver for __QEMU RISC-V Emulator__, which will blink a Simulated LED on NuttX...
+We created the LED Driver for __QEMU RISC-V Emulator__, which will blink a Simulated LED on NuttX.
 
-- TODO: QEMU LED Driver
+Everyone can run the __Rust Blinky App__ (from above) and reproduce the exact same results, thanks to the QEMU LED Driver...
 
-Everyone can run the __Rust Blinky App__ (from above) and reproduce the exact same results.
+- [__"Add LED Driver for QEMU RISC-V"__](https://github.com/apache/nuttx/pull/12762)
 
-TODO: QEMU 32-bit
+  [(__QEMU RISC-V 32-bit__ needs a __Custom Rust Target__)](https://lupyuen.github.io/articles/rust4#custom-target-for-rust)
 
 # Daily Build and Test
 
@@ -353,23 +353,19 @@ That's because the NuttX Continuous Integration (CI) runs inside a __Docker Cont
 
 - [__"Downloading the Docker Image for NuttX CI"__](https://lupyuen.github.io/articles/pr#appendix-downloading-the-docker-image-for-nuttx-ci)
 
-  [(NuttX CI also compiles __hello_rust__ for NuttX Simulator)](https://github.com/apache/nuttx/blob/master/boards/sim/sim/sim/configs/rust/defconfig#L27)
+NuttX CI also compiles __hello_rust__ for [__NuttX Simulator__](https://github.com/apache/nuttx/blob/master/boards/sim/sim/sim/configs/rust/defconfig#L27). But it doesn't need a Special Rust Target for the Docker Image.
 
 _Will we know if the Rust Blinky App fails to execute correctly?_
 
-TODO: Auto test at GitHub Actions
+Every day through __GitHub Actions__: We're testing the Rust Blinky App on QEMU RISC-V Emulator. If Rust Blinky fails to execute (or produces the wrong output), GitHub Actions will notify us...
 
-TODO: leds_rust daily test
-
-TODO: Appendix
+- TODO: Appendix
 
 _Anything else we're testing daily?_
 
-To be clear whether it's our Rust App failing vs NuttX QEMU failing:
+If something goes wrong: We need to be clear whether it's our Rust App Failing vs __NuttX QEMU Failing__. That's why also test NuttX QEMU every day at GitHub Actions...
 
-TODO: Distinguish QEMU vs Rust failure 
-
-TODO: Appendix
+- TODO: Appendix
 
 # All Things Considered 
 
