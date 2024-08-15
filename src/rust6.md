@@ -581,9 +581,104 @@ __NuttX for QEMU RISC-V__ comes in Multiple Flavours, we test 4 of the popular f
 
 _What's inside the GitHub Actions Workflow?_
 
+__Every day at GitHub Actions:__ We boot NuttX on QEMU RISC-V and verify the output of OSTest...
+
+```bash
+## Start the QEMU Emulator for 32-bit RISC-V
+$ spawn qemu-system-riscv32 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv32 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+## Run `ostest` and verify the output
+NuttShell (NSH) NuttX-12.6.0-RC1
+nsh> ostest
+...
+ostest_main: Exiting with status 0
+```
+
+[(See the __GitHub Actions Log__)](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh.yml)
+
+Here's the __GitHub Actions Workflow__ to build and run NuttX QEMU RISC-V (32-bit): [qemu-riscv-nsh.yml](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh.yml)
+
+```bash
+## Download the Source Code for NuttX Kernel and Apps
+git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
+cd nuttx
+
+## Configure the NuttX Build: QEMU RISC-V 32-bit (Flat Build)
+tools/configure.sh rv-virt:nsh
+
+## Build the NuttX Kernel. Ignore the warning: `nuttx has a LOAD segment with RWX permissions`
+make
+
+## Install QEMU Emulator for RISC-V (32-bit)
+sudo apt install qemu-system-riscv32
+
+## Test NuttX and OSTest with our Expect Script
+wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-nsh.exp
+chmod +x qemu-riscv-nsh.exp
+./qemu-riscv-nsh.exp
+```
+
+Which calls our __Expect Script__ to boot NuttX and run OSTest: [qemu-riscv-nsh.exp](https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-nsh.exp)
+
+```bash
+#!/usr/bin/expect
+## Expect Script for Testing NuttX with QEMU Emulator
+
+## Wait at most 10 seconds
+set timeout 10
+
+## For every 1 character sent, wait 0.01 milliseconds
+set send_slow {1 0.01}
+
+## Start the QEMU Emulator for 32-bit RISC-V
+spawn qemu-system-riscv32 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv32 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+## Wait for the prompt and enter `ostest`
+expect "nsh> "
+send -s "ostest\r"
+
+## Check the response...
+expect {
+  ## If we see this message, exit normally
+  "ostest_main: Exiting with status 0" { 
+    ## Terminate the session: Ctrl-A x
+    send "\x01x"
+    puts "\n===== Test OK\n"
+    exit 0 
+  }
+
+  ## If timeout, exit with an error
+  timeout { 
+    ## Terminate the session: Ctrl-A x
+    send "\x01x"
+    puts "\n===== Error: Test Failed\n"
+    exit 1 
+  }
+}
+```
+
+But there's a problem: OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions...
+
+# Appendix: NuttX QEMU RISC-V fails on GitHub Actions
+
+_But we have problems?_
+
 TODO
 
-(2) But OSTest for 64-bit QEMU RISC-V fails on GitHub Actions (wonder why):
+Yeah OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions (wonder why)
 
 64-bit Flat Build (rv-virt:nsh64) crashes with: "fpu_test: Started task FPU#1  / riscv_exception: Illegal instruction"
 
@@ -601,3 +696,8 @@ TODO
 
 So we might still need a Local Computer to run some of the QEMU RISC-V tests.
 
+[task-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh)
+
+[test-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
+
+[upload-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh)
