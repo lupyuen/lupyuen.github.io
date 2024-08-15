@@ -66,17 +66,18 @@
     <h1 class="title">Early Days of Rust Apps on Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
 <li><a href="#blink-the-led">1 Blink The LED</a><ul></ul></li>
-<li><a href="#handle-errors">2 Handle Errors</a><ul></ul></li>
-<li><a href="#runs-on-linux--macos--windows">3 Runs on Linux / macOS / Windows</a><ul></ul></li>
-<li><a href="#main-function">4 Main Function</a><ul></ul></li>
-<li><a href="#panic-handler">5 Panic Handler</a><ul></ul></li>
-<li><a href="#no-crates-in-nuttx">6 No Crates in NuttX</a><ul></ul></li>
-<li><a href="#led-drivers-for-nuttx">7 LED Drivers for NuttX</a><ul></ul></li>
-<li><a href="#daily-build-and-test">8 Daily Build and Test</a><ul></ul></li>
-<li><a href="#all-things-considered">9 All Things Considered</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-daily-test-of-nuttx-qemu-risc-v">11 Appendix: Daily Test of NuttX QEMU RISC-V</a><ul></ul></li>
-<li><a href="#appendix-daily-test-of-rust-blinky">12 Appendix: Daily Test of Rust Blinky</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
+<li><a href="#test-on-qemu-risc-v">2 Test on QEMU RISC-V</a><ul></ul></li>
+<li><a href="#handle-errors">3 Handle Errors</a><ul></ul></li>
+<li><a href="#runs-on-linux--macos--windows">4 Runs on Linux / macOS / Windows</a><ul></ul></li>
+<li><a href="#main-function">5 Main Function</a><ul></ul></li>
+<li><a href="#panic-handler">6 Panic Handler</a><ul></ul></li>
+<li><a href="#no-crates-in-nuttx">7 No Crates in NuttX</a><ul></ul></li>
+<li><a href="#led-drivers-for-nuttx">8 LED Drivers for NuttX</a><ul></ul></li>
+<li><a href="#daily-build-and-test">9 Daily Build and Test</a><ul></ul></li>
+<li><a href="#all-things-considered">10 All Things Considered</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-daily-test-of-rust-blinky">12 Appendix: Daily Test of Rust Blinky</a><ul></ul></li>
+<li><a href="#appendix-daily-test-of-nuttx-qemu-risc-v">13 Appendix: Daily Test of NuttX QEMU RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust6-title.jpg" alt="Blinking the NuttX LED in Rust" /></p>
 <p>My student <a href="TODO"><strong>Rushabh Gala</strong></a> has just completed his project for <a href="TODO"><strong>Google Summer of Code</strong></a>. Rushabh has created safer <strong>Rust Apps</strong> for <strong>Apache NuttX RTOS</strong>…</p>
 <ul>
@@ -92,7 +93,6 @@
 </ul>
 <p>In this article we walk through Rushabh’s contributions. And understand how we’re evolving Rust Apps for NuttX…</p>
 <p>TODO: Updating the docker image for CI</p>
-<p>TODO: Pic of QEMU</p>
 <h1 id="blink-the-led"><a class="doc-anchor" href="#blink-the-led">§</a>1 Blink The LED</h1>
 <p>This is how we <strong>Blink the LED</strong> in a NuttX Rust App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">examples/leds_rust/leds_rust_main.rs</a></p>
 
@@ -128,7 +128,7 @@
 <p>Import <strong>usleep</strong> and <strong>close</strong> from C</p>
 </li>
 <li>
-<p>Plu the NuttX Constants: <strong>O_WRONLY</strong> and <strong>ULEDIOC_SETALL</strong></p>
+<p>Plus the NuttX Constants: <strong>O_WRONLY</strong> and <strong>ULEDIOC_SETALL</strong></p>
 </li>
 </ul>
 <p>We import the <strong>NuttX Module</strong> into our Rust App like so…</p>
@@ -140,10 +140,59 @@
 // Import the NuttX Module
 </span><span class="kw">mod </span>nuttx;
 <span class="kw">use </span>nuttx::<span class="kw-2">*</span>;</code></pre></div>
-<p>And yes this code runs on Linux, macOS and Windows! We’ll come back to this.</p>
-<p>TODO: Run on QEMU</p>
+<p>And yes this code runs on Linux, macOS and Windows! We’ll come back to this. First we test on QEMU…</p>
+<p>TODO: Pic of QEMU</p>
+<h1 id="test-on-qemu-risc-v"><a class="doc-anchor" href="#test-on-qemu-risc-v">§</a>2 Test on QEMU RISC-V</h1>
+<p>To test Rust Blinky on <strong>QEMU RISC-V Emulator</strong>, follow these steps…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Install the Rust Target for QEMU RISC-V 64-bit
+rustup target add riscv64gc-unknown-none-elf
+
+## Install QEMU Emulator for RISC-V
+sudo apt install qemu-system-riscv64  ## For Linux
+brew install qemu  ## For macOS
+
+## Download the Source Code for NuttX Kernel and Apps
+git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
+cd nuttx
+
+## Configure the NuttX Build: QEMU RISC-V 64-bit with LED Driver and Rust
+tools/configure.sh rv-virt:leds64_rust
+
+## Build the NuttX Kernel. Ignore the warning: `nuttx has a LOAD segment with RWX permissions`
+make
+
+## Boot the NuttX Kernel in QEMU RISC-V 64-bit
+qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml">(See the <strong>Build Script</strong>)</a></p>
+<p>At the NSH Prompt: Enter “<strong><code>leds_rust</code></strong>” (pic above)</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.6.0-RC1
+nsh&gt; leds_rust
+Hello, Rust!!
+Opening /dev/userleds
+
+Set LED 1 to 1
+board_userled: LED 1 set to 1
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+Sleeping...
+
+Set LED 1 to 0
+board_userled: LED 1 set to 0
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/runs/10396419763/job/28790386663">(See the <strong>NuttX Log</strong>)</a></p>
+<p>Rust blinks our Simulated LED on QEMU!</p>
 <p><img src="https://lupyuen.github.io/images/rust6-title.jpg" alt="Blinking the NuttX LED in Rust" /></p>
-<h1 id="handle-errors"><a class="doc-anchor" href="#handle-errors">§</a>2 Handle Errors</h1>
+<h1 id="handle-errors"><a class="doc-anchor" href="#handle-errors">§</a>3 Handle Errors</h1>
 <p><em>Why the funny question mark? (Pic above)</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = safe_open(  <span class="comment">// Open the LED Device...
@@ -166,7 +215,7 @@
 <p><em>Can we auto-close the File Descriptor when it goes out of scope?</em></p>
 <p>Probably, if we do <a href="https://docs.rs/rustix/latest/rustix/fd/struct.OwnedFd.html"><strong>Managed File Descriptors</strong></a>? But that’s way beyond the size, scope and scale of GSoC.</p>
 <p>TODO: Pic of cargo run</p>
-<h1 id="runs-on-linux--macos--windows"><a class="doc-anchor" href="#runs-on-linux--macos--windows">§</a>3 Runs on Linux / macOS / Windows</h1>
+<h1 id="runs-on-linux--macos--windows"><a class="doc-anchor" href="#runs-on-linux--macos--windows">§</a>4 Runs on Linux / macOS / Windows</h1>
 <p><em>Will our NuttX App actually run on Linux, macOS and Windows?</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Comment out these lines for testing on Linux / macOS / Windows
@@ -184,7 +233,7 @@ ERROR: rust_main() failed with error -1
 <p>Which fails (as expected) because <em>“/dev/userleds”</em> doesn’t exist on Linux / macOS / Windows. (Pic above)</p>
 <p>This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our <strong>Local Computer</strong>, before testing on NuttX!</p>
 <p>(<strong>Rust Analyzer</strong> won’t work inside NuttX Projects sigh)</p>
-<h1 id="main-function"><a class="doc-anchor" href="#main-function">§</a>4 Main Function</h1>
+<h1 id="main-function"><a class="doc-anchor" href="#main-function">§</a>5 Main Function</h1>
 <p><em>We saw the LED Blinky code in rust_main. Who calls rust_main?</em></p>
 <p>Remember that <strong>rust_main</strong> returns a <strong>Result Type</strong>…</p>
 
@@ -223,7 +272,7 @@ ERROR: rust_main() failed with error -1
   <span class="comment">// Call Rust Main without args
   </span>leds_rust_main(<span class="number">0</span>, core::ptr::null());
 }</code></pre></div>
-<h1 id="panic-handler"><a class="doc-anchor" href="#panic-handler">§</a>5 Panic Handler</h1>
+<h1 id="panic-handler"><a class="doc-anchor" href="#panic-handler">§</a>6 Panic Handler</h1>
 <p><em>Anything else specific to NuttX?</em></p>
 <p>Yep NuttX Apps run on the <a href="TODO"><strong>Rust Core Library</strong></a> (no_std) and require a <strong>Panic Handler</strong>…</p>
 
@@ -241,7 +290,7 @@ ERROR: rust_main() failed with error -1
   <span class="kw">loop </span>{}
 }</code></pre></div>
 <p>(Sorry <strong>cfg</strong> won’t work for <strong>no_main</strong> and <strong>no_std</strong>)</p>
-<h1 id="no-crates-in-nuttx"><a class="doc-anchor" href="#no-crates-in-nuttx">§</a>6 No Crates in NuttX</h1>
+<h1 id="no-crates-in-nuttx"><a class="doc-anchor" href="#no-crates-in-nuttx">§</a>7 No Crates in NuttX</h1>
 <p><em>We’re coding Rust in a strange way. Why not use crates and cargo?</em></p>
 <p>Ah that’s because NuttX <a href="TODO"><strong>doesn’t support Rust Crates</strong></a>! We can’t use <strong>cargo</strong> either, NuttX Build calls <strong>rustc</strong> directly…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Configure the NuttX Project
@@ -254,7 +303,7 @@ $ make
 </code></pre></div>
 <p>Which complicates our coding of NuttX Rust Apps. That’s why we hope to test them on <a href="TODO"><strong>Linux / macOS / Windows</strong></a>.</p>
 <p>TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)</p>
-<h1 id="led-drivers-for-nuttx"><a class="doc-anchor" href="#led-drivers-for-nuttx">§</a>7 LED Drivers for NuttX</h1>
+<h1 id="led-drivers-for-nuttx"><a class="doc-anchor" href="#led-drivers-for-nuttx">§</a>8 LED Drivers for NuttX</h1>
 <p><em>12 weeks of GSoC: What else have we implemented?</em></p>
 <p>Remember our Blinky NuttX App in Rust? Well a NuttX App ain’t really a NuttX App… Unless it runs <strong>on Real Hardware</strong>!</p>
 <p>We tested our Rust Blinky App on <a href="TODO"><strong>Ox64 BL808 SBC</strong></a>. Which required us to create the <strong>GPIO and LED Drivers</strong> for Ox64 SBC…</p>
@@ -274,7 +323,7 @@ $ make
 </ul>
 <p>Everyone can run the <strong>Rust Blinky App</strong> (from above) and reproduce the exact same results.</p>
 <p>TODO: QEMU 32-bit</p>
-<h1 id="daily-build-and-test"><a class="doc-anchor" href="#daily-build-and-test">§</a>8 Daily Build and Test</h1>
+<h1 id="daily-build-and-test"><a class="doc-anchor" href="#daily-build-and-test">§</a>9 Daily Build and Test</h1>
 <p><em>Our Rust Blinky App: Will it break someday?</em></p>
 <p>Yeah it’s possible that our Rust App will someday <strong>fail to build or execute</strong> correctly…</p>
 <ol>
@@ -319,7 +368,7 @@ $ make
 <p>To be clear whether it’s our Rust App failing vs NuttX QEMU failing:</p>
 <p>TODO: Distinguish QEMU vs Rust failure </p>
 <p>TODO: Appendix</p>
-<h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>9 All Things Considered</h1>
+<h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>10 All Things Considered</h1>
 <p><em>Wow that’s plenty of coding for 12 weeks of GSoC!</em></p>
 <p>Indeed, we tracked all Coding Tasks in our <a href="TODO"><strong>GSoC Task Spreadsheet</strong></a>. And we recorded Daily Updates in the <a href="https://discord.gg/eAz5QudKSQ"><strong>NuttX Discord Channel</strong></a>.</p>
 <p><em>Will Rust officially support NuttX?</em></p>
@@ -327,7 +376,7 @@ $ make
 <p><em>Everything in this article… Becomes redundant?</em></p>
 <p>Soon we will have lots of Coding and Testing to implement NuttX as Tier 3 Target that works with the <strong>Rust Standard Library</strong>.</p>
 <p>In the meantime, we can call <strong>NuttX Safe Wrappers</strong> (prescribed in this article) to build Rust Apps for NuttX, the Interim Way.</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <p>Special Thanks to <strong>Mr Rushabh Gala</strong>: Sorry it’s my first GSoC, I could have done better, I’m grateful for your patience and understanding 🙏</p>
@@ -356,7 +405,12 @@ $ make
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust6.md"><strong>lupyuen.github.io/src/rust6.md</strong></a></p>
-<h1 id="appendix-daily-test-of-nuttx-qemu-risc-v"><a class="doc-anchor" href="#appendix-daily-test-of-nuttx-qemu-risc-v">§</a>11 Appendix: Daily Test of NuttX QEMU RISC-V</h1>
+<h1 id="appendix-daily-test-of-rust-blinky"><a class="doc-anchor" href="#appendix-daily-test-of-rust-blinky">§</a>12 Appendix: Daily Test of Rust Blinky</h1>
+<p>TODO</p>
+<p>We’re now building and testing <code>leds_rust</code> every daily at GitHub Actions. We will be notified if the Rust Build breaks or if the Rust Execution fails in future.</p>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml">Test Log</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml">GitHub Actions Workflow</a></p>
+<h1 id="appendix-daily-test-of-nuttx-qemu-risc-v"><a class="doc-anchor" href="#appendix-daily-test-of-nuttx-qemu-risc-v">§</a>13 Appendix: Daily Test of NuttX QEMU RISC-V</h1>
 <p>TODO</p>
 <p>(1) OSTest for 32-bit QEMU RISC-V runs OK on GitHub Actions:</p>
 <p>32-bit Flat Build (rv-virt:nsh): <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh.yml">qemu-riscv-nsh.yml</a></p>
@@ -370,11 +424,6 @@ $ make
 <p>64-bit Flat Build (rv-virt:nsh64): <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08">qemu-riscv-nsh64-2024-08-08</a></p>
 <p>64-bit Kernel Build (rv-virt:knsh64): <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08">qemu-riscv-knsh64-2024-08-08</a></p>
 <p>So we might still need a Local Computer to run some of the QEMU RISC-V tests.</p>
-<h1 id="appendix-daily-test-of-rust-blinky"><a class="doc-anchor" href="#appendix-daily-test-of-rust-blinky">§</a>12 Appendix: Daily Test of Rust Blinky</h1>
-<p>TODO</p>
-<p>We’re now building and testing <code>leds_rust</code> every daily at GitHub Actions. We will be notified if the Rust Build breaks or if the Rust Execution fails in future.</p>
-<p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml">Test Log</a></p>
-<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml">GitHub Actions Workflow</a></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
