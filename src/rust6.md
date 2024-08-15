@@ -385,6 +385,8 @@ If something goes wrong: We need to be clear whether it's our Rust App Failing v
 
 - [__"Daily Test of NuttX QEMU RISC-V"__](https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-nuttx-qemu-risc-v)
 
+- [__"NuttX QEMU RISC-V fails on GitHub Actions"__](https://lupyuen.github.io/articles/rust6#appendix-nuttx-qemu-risc-v-fails-on-github-actions)
+
 # All Things Considered 
 
 _Wow that's plenty of coding for 12 weeks of GSoC!_
@@ -674,30 +676,34 @@ But there's a problem: OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions
 
 # Appendix: NuttX QEMU RISC-V fails on GitHub Actions
 
-TODO
+__Every day at GitHub Actions:__ We boot NuttX on __QEMU RISC-V Emulator__ (32-bit and 64-bit) and test it with [__OSTest__](TODO)...
+
+- [__"Daily Test of NuttX QEMU RISC-V"__](https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-nuttx-qemu-risc-v)
 
 _But we have problems?_
 
-Yeah OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions (wonder why)
+Yeah OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions, wonder why...
 
-64-bit Flat Build (rv-virt:nsh64) crashes with: "fpu_test: Started task FPU#1  / riscv_exception: Illegal instruction"
+- __64-bit RISC-V Flat Build__ `rv-virt:nsh64` crashes with...
 
-[qemu-riscv-nsh64.yml](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh64.yml#L2)
+  _"fpu_test: Started task FPU#1  / riscv_exception: Illegal instruction"_
 
-64-bit Kernel Build (rv-virt:knsh64) hangs at: "ostest_main: Started user_main"
+  [(GitHub Actions Workflow)](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh64.yml#L2)
 
-[qemu-riscv-knsh64.yml](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml#L2)
+- __64-bit RISC-V Kernel Build__ `rv-virt:knsh64` hangs at...
 
-(3) That's why I run a script on my Home Computer to download the 64-bit Daily Builds and run OSTest locally:
+  _"ostest_main: Started user_main"_
 
-64-bit Flat Build (rv-virt:nsh64): [qemu-riscv-nsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08)
+  [(GitHub Actions Workflow)](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml#L2)
 
-64-bit Kernel Build (rv-virt:knsh64): [qemu-riscv-knsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08)
+That's why I run a script on my Home Computer to download the 64-bit Daily Builds and __run OSTest locally__...
 
-So we might still need a Local Computer to run some of the QEMU RISC-V tests.
+TODO: 64-bit Flat Build (rv-virt:nsh64): [qemu-riscv-nsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08)
 
-[task-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh)
+TODO: 64-bit Kernel Build (rv-virt:knsh64): [qemu-riscv-knsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08)
 
-[test-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
+TODO: [task-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh)
 
-[upload-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh)
+TODO: [test-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
+
+TODO: [upload-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh)
