@@ -329,13 +329,9 @@ The NuttX Community is now adding NuttX as [__Tier 3 Target__](https://lists.apa
 
 _Everything in this article... Becomes redundant?_
 
-We need lots of Coding and Testing to implement NuttX as Tier 3 Target that works with the __Rust Standard Library__.
+Soon we will have lots of Coding and Testing to implement NuttX as Tier 3 Target that works with the __Rust Standard Library__.
 
-TODO
-
-Safe Wrappers as prescribed in this article 
-
-So our Project Report is still relevant, it will be the "Interim Way" to build Rust Apps for NuttX. And we have to demonstrate how Rust Apps can be built and tested with Rust Core Library, without `cargo`. (Exactly what we're doing now)
+In the meantime, we can call __NuttX Safe Wrappers__ (prescribed in this article) to build Rust Apps for NuttX, the Interim Way.
 
 # What's Next
 
@@ -343,7 +339,7 @@ TODO
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
-Special Thanks to __Mr Rushabh Gala__: Sorry it’s my first GSoC, I could have done better 🙏
+Special Thanks to __Mr Rushabh Gala__: Sorry it’s my first GSoC, I could have done better, I'm grateful for your patience and understanding 🙏
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
