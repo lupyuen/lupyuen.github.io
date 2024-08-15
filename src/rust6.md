@@ -717,3 +717,165 @@ _What's inside the scripts?_
 
 TODO
 
+TODO: [task-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh)
+
+```bash
+## Background Task for Automated Testing of Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
+export BUILD_PREFIX=qemu-riscv-nsh64
+
+## Wait for GitHub Release, then test NuttX on SBC
+function test_nuttx {
+
+  ## If NuttX Build already downloaded, quit
+  local date=$1
+  NUTTX_ZIP=/tmp/$BUILD_PREFIX-$date-nuttx.zip
+  if [ -e $NUTTX_ZIP ] 
+  then
+    return
+  fi
+
+  echo "----- Download the NuttX Build"
+  wget -q \
+    https://github.com/lupyuen/nuttx-riscv64/releases/download/$BUILD_PREFIX-$date/nuttx.zip \
+    -O $NUTTX_ZIP \
+    || true
+
+  ## If build doesn't exist, quit
+  FILESIZE=$(wc -c $NUTTX_ZIP | cut -d/ -f1)
+  if [ "$FILESIZE" -eq "0" ]; then
+    rm $NUTTX_ZIP
+    return
+  fi
+
+  echo "----- Run the NuttX Test"
+  $SCRIPT_DIR/test-nsh64.sh \
+    | tee /tmp/release-$BUILD_PREFIX.log \
+    2>&1
+
+  ## Trim to first 100000 bytes
+  head -c 100000 /tmp/release-$BUILD_PREFIX.log \
+    >/tmp/release2-$BUILD_PREFIX.log
+  mv /tmp/release2-$BUILD_PREFIX.log \
+    /tmp/release-$BUILD_PREFIX.log
+
+  echo "----- Upload the Test Log"
+  $SCRIPT_DIR/upload-nsh64.sh \
+    /tmp/release-$BUILD_PREFIX.tag \
+    /tmp/release-$BUILD_PREFIX.log
+
+  echo test_nuttx OK!
+}
+
+## If Build Date is specified: Run once and quit
+if [ "$BUILD_DATE" != '' ]; then
+  test_nuttx $BUILD_DATE
+  exit
+fi
+
+## Wait for GitHub Release, then test NuttX on SBC
+for (( ; ; ))
+do
+  ## Default Build Date is today (YYYY-MM-DD)
+  BUILD_DATE=$(date +'%Y-%m-%d')
+  test_nuttx $BUILD_DATE
+
+  ## Wait a while
+  date
+  sleep 600
+done
+echo Done!
+```
+
+TODO: [test-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
+
+```bash
+#!/usr/bin/env bash
+## Automated Testing of Automated Testing of Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
+
+set -e  ##  Exit when any command fails
+set -x  ##  Echo commands
+
+##  Default Build Prefix
+if [ "$BUILD_PREFIX" == '' ]; then
+    export BUILD_PREFIX=qemu-riscv-nsh64
+fi
+
+##  Default Build Date is today (YYYY-MM-DD)
+if [ "$BUILD_DATE" == '' ]; then
+    export BUILD_DATE=$(date +'%Y-%m-%d')
+fi
+
+rm -rf /tmp/$BUILD_PREFIX
+mkdir /tmp/$BUILD_PREFIX
+cd /tmp/$BUILD_PREFIX
+
+set +x  ##  Disable echo
+echo "----- Download the latest NuttX build for $BUILD_DATE"
+set -x  ##  Enable echo
+wget -q https://github.com/lupyuen/nuttx-riscv64/releases/download/$BUILD_PREFIX-$BUILD_DATE/nuttx.zip
+unzip -o nuttx.zip
+set +x  ##  Disable echo
+
+## Print the Commit Hashes
+if [ -f nuttx.hash ]; then
+    cat nuttx.hash
+fi
+
+##  Write the Release Tag for populating the Release Log later
+echo "$BUILD_PREFIX-$BUILD_DATE" >/tmp/release-$BUILD_PREFIX.tag
+
+script=qemu-riscv-nsh64
+wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/$script.exp
+chmod +x $script.exp
+ls -l
+cat nuttx.hash
+qemu-system-riscv64 --version
+./$script.exp
+```
+
+TODO: [upload-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh)
+
+```bash
+#!/usr/bin/env bash
+## Automated Testing of Automated Testing of Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
+
+set -e  ##  Exit when any command fails
+set -x  ##  Echo commands
+
+##  Default Build Prefix
+if [ "$BUILD_PREFIX" == '' ]; then
+    export BUILD_PREFIX=qemu-riscv-nsh64
+fi
+
+##  Default Build Date is today (YYYY-MM-DD)
+if [ "$BUILD_DATE" == '' ]; then
+    export BUILD_DATE=$(date +'%Y-%m-%d')
+fi
+
+rm -rf /tmp/$BUILD_PREFIX
+mkdir /tmp/$BUILD_PREFIX
+cd /tmp/$BUILD_PREFIX
+
+set +x  ##  Disable echo
+echo "----- Download the latest NuttX build for $BUILD_DATE"
+set -x  ##  Enable echo
+wget -q https://github.com/lupyuen/nuttx-riscv64/releases/download/$BUILD_PREFIX-$BUILD_DATE/nuttx.zip
+unzip -o nuttx.zip
+set +x  ##  Disable echo
+
+## Print the Commit Hashes
+if [ -f nuttx.hash ]; then
+    cat nuttx.hash
+fi
+
+##  Write the Release Tag for populating the Release Log later
+echo "$BUILD_PREFIX-$BUILD_DATE" >/tmp/release-$BUILD_PREFIX.tag
+
+script=qemu-riscv-nsh64
+wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/$script.exp
+chmod +x $script.exp
+ls -l
+cat nuttx.hash
+qemu-system-riscv64 --version
+./$script.exp
+```
