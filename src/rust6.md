@@ -16,6 +16,8 @@ In this article we walk through Rushabh's contributions. And understand how we'r
 
 TODO: Updating the docker image for CI
 
+TODO: Pic of QEMU
+
 # Blink The LED
 
 This is how we __Blink the LED__ in a NuttX Rust App: [examples/leds_rust/leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
@@ -72,9 +74,13 @@ use nuttx::*;
 
 And yes this code runs on Linux, macOS and Windows! We'll come back to this.
 
+TODO: Run on QEMU
+
+![TODO](https://lupyuen.github.io/images/rust6-title.jpg)
+
 # Handle Errors
 
-_Why the funny question mark?_
+_Why the funny question mark? (Pic above)_
 
 ```rust
 let fd = safe_open(  // Open the LED Device...
@@ -109,6 +115,8 @@ _Can we auto-close the File Descriptor when it goes out of scope?_
 
 Probably, if we had [__Managed File Descriptors__](TODO)? But that's way beyond the size, scope and scale of GSoC.
 
+TODO: Pic of cargo run
+
 # Runs on Linux / macOS / Windows
 
 _Will our NuttX App actually run on Linux, macOS and Windows?_
@@ -131,7 +139,7 @@ Opening /dev/userleds
 ERROR: rust_main() failed with error -1
 ```
 
-Which fails (as expected) because _"/dev/userleds"_ doesn't exist on Linux / macOS / Windows.
+Which fails (as expected) because _"/dev/userleds"_ doesn't exist on Linux / macOS / Windows. (Pic above)
 
 This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our __Local Computer__, before testing on NuttX!
 
@@ -313,23 +321,21 @@ TODO: Distinguish QEMU vs Rust failure
 
 _Wow that's plenty of coding for 12 weeks of GSoC!_
 
-Indeed, we tracked all Coding Tasks in our [__GSoC Task Spreadsheet__](TODO). (Google Sheets)
-
-And we recorded Daily Chat Logs in the __NuttX Discord Channel__.
+Indeed, we tracked all Coding Tasks in our [__GSoC Task Spreadsheet__](TODO). And we recorded Daily Updates in the [__NuttX Discord Channel__](https://discord.gg/eAz5QudKSQ).
 
 _Will Rust officially support NuttX?_
 
-Yep someday! NuttX Community is now adding NuttX as [__Tier 3 Target__](https://lists.apache.org/thread/oqx7p3vb4dcgko4mm2f0vqgqnkorn49p) to Rust.
-
-[(And it's approved!)](https://github.com/rust-lang/rust/pull/127755)
+The NuttX Community is now adding NuttX as [__Tier 3 Target__](https://lists.apache.org/thread/oqx7p3vb4dcgko4mm2f0vqgqnkorn49p) to Rust. [(And it's __approved__!)](https://github.com/rust-lang/rust/pull/127755)
 
 _Everything in this article... Becomes redundant?_
+
+We need lots of Coding and Testing to implement NuttX as Tier 3 Target that works with the __Rust Standard Library__.
 
 TODO
 
 Safe Wrappers as prescribed in this article 
 
-This might take some time to complete, because supporting NuttX in the Rust Standard Library will require lots of coding and testing. So our Project Report is still relevant, it will be the "Interim Way" to build Rust Apps for NuttX. And we have to demonstrate how Rust Apps can be built and tested with Rust Core Library, without `cargo`. (Exactly what we're doing now)
+So our Project Report is still relevant, it will be the "Interim Way" to build Rust Apps for NuttX. And we have to demonstrate how Rust Apps can be built and tested with Rust Core Library, without `cargo`. (Exactly what we're doing now)
 
 # What's Next
 
