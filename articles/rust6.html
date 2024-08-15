@@ -506,7 +506,7 @@ chmod +x qemu-riscv-leds64-rust.exp
 </code></pre></div>
 <p>Which calls our <strong>Expect Script</strong> to test Rust Blinky: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-leds64-rust.exp">qemu-riscv-leds64-rust.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
-## Expect Script for Testing NuttX with QEMU Emulator
+## Expect Script for Testing NuttX Rust Blinky with QEMU Emulator
 
 ## Wait at most 10 seconds
 set timeout 10
@@ -616,8 +616,8 @@ chmod +x qemu-riscv-nsh.exp
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
 ## Expect Script for Testing NuttX with QEMU Emulator
 
-## Wait at most 10 seconds
-set timeout 10
+## Wait at most 300 seconds
+set timeout 300
 
 ## For every 1 character sent, wait 0.01 milliseconds
 set send_slow {1 0.01}
@@ -656,8 +656,8 @@ expect {
 </code></pre></div>
 <p>But there’s a problem: OSTest for <strong>64-bit QEMU RISC-V</strong> fails on GitHub Actions…</p>
 <h1 id="appendix-nuttx-qemu-risc-v-fails-on-github-actions"><a class="doc-anchor" href="#appendix-nuttx-qemu-risc-v-fails-on-github-actions">§</a>14 Appendix: NuttX QEMU RISC-V fails on GitHub Actions</h1>
-<p><em>But we have problems?</em></p>
 <p>TODO</p>
+<p><em>But we have problems?</em></p>
 <p>Yeah OSTest for <strong>64-bit QEMU RISC-V</strong> fails on GitHub Actions (wonder why)</p>
 <p>64-bit Flat Build (rv-virt:nsh64) crashes with: “fpu_test: Started task FPU#1  / riscv_exception: Illegal instruction”</p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh64.yml#L2">qemu-riscv-nsh64.yml</a></p>
