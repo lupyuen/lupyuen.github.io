@@ -18,7 +18,7 @@ TODO: Updating the docker image for CI
 
 # Blink The LED
 
-This is how we __Blink the LED__ in a NuttX Rust App: [examples/leds_rust/leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
+This is how we __Blink the LED__ in a NuttX Rust App: [leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
 
 ```rust
 // Main Program Logic. Called by `leds_rust_main`
@@ -44,9 +44,7 @@ fn rust_main(_argc: i32, _argv: *const *const u8)  // Args from NuttX Shell
 
 [(__Mirrored here:__ nuttx-rust-app/app/src/main.rs)](https://github.com/lupyuen/nuttx-rust-app/blob/main/app/src/main.rs)
 
-Looks mighty similar to the [__C Version__](TODO)!
-
-(But with simpler Error Handling than C, we'll talk more)
+Looks mighty similar to the [__C Version__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85)! But with simpler Error Handling than C. (We'll talk more)
 
 _What are safe_open and safe_ioctl?_
 
@@ -74,7 +72,7 @@ And yes this code runs on Linux, macOS and Windows! We'll come back to this. Fir
 
 TODO: Pic of QEMU
 
-# Test on QEMU RISC-V
+# Test on QEMU Emulator
 
 To test Rust Blinky on __QEMU RISC-V Emulator__, follow these steps...
 
@@ -132,11 +130,11 @@ board_userled: LED 3 set to 0
 
 [(See the __NuttX Log__)](https://github.com/lupyuen/nuttx-riscv64/actions/runs/10396419763/job/28790386663)
 
-Rust blinks our Simulated LED on QEMU!
+Rust blinks our Simulated LED on NuttX QEMU!
 
 ![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-title.jpg)
 
-# Handle Errors
+# Handle The Errors
 
 _Why the funny question mark? (Pic above)_
 
@@ -203,7 +201,7 @@ This greatly simplifies our NuttX App Development: We could (potentially) compil
 
 (__Rust Analyzer__ won't work inside NuttX Projects sigh)
 
-# Main Function
+# Main Function for Rust
 
 _We saw the LED Blinky code in rust_main. Who calls rust_main?_
 
@@ -255,7 +253,7 @@ fn main() {
 }
 ```
 
-# Panic Handler
+# Panic Handler for Rust
 
 _Anything else specific to NuttX?_
 
