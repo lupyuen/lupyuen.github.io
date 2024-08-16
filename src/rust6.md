@@ -596,7 +596,7 @@ __NuttX for QEMU RISC-V__ comes in Multiple Flavours, we test 4 of the popular f
 
   [GitHub Actions Workflow](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml) / [Test Log](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh64.yml)
 
-  [(About __Flat Build__ and __Kernel Build__)](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode)
+  [(About __Flat Build__ vs __Kernel Build__)](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode)
 
 _What's inside the GitHub Actions Workflow?_
 
@@ -715,7 +715,7 @@ Yeah OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions, wonder why...
 
   [(GitHub Actions Workflow)](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml#L2)
 
-  [(About __Flat Build__ and __Kernel Build__)](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode)
+  [(About __Flat Build__ vs __Kernel Build__)](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode)
 
 That's why I run a script on my Home Computer to download the 64-bit Daily Builds and __run OSTest locally__ (pic above)
 
