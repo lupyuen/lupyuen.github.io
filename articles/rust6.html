@@ -125,7 +125,7 @@
 <p>TODO: Updating the docker image for CI</p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/rust6-flow2.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-flow2.jpg" alt="Blinking the NuttX LED in Rust" /></p>
 <h1 id="blink-the-led"><a class="doc-anchor" href="#blink-the-led">§</a>1 Blink The LED</h1>
 <p>This is how we <strong>Blink the LED</strong> in a NuttX Rust App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">leds_rust_main.rs</a></p>
 
@@ -173,7 +173,7 @@
 </span><span class="kw">mod </span>nuttx;
 <span class="kw">use </span>nuttx::<span class="kw-2">*</span>;</code></pre></div>
 <p>And yes this code runs on Linux, macOS and Windows! We’ll come back to this. First we test on QEMU…</p>
-<p><img src="https://lupyuen.github.io/images/rust6-qemu.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-qemu.jpg" alt="Testing Rust Blinky on QEMU Emulator" /></p>
 <h1 id="test-on-qemu-emulator"><a class="doc-anchor" href="#test-on-qemu-emulator">§</a>2 Test on QEMU Emulator</h1>
 <p>To test Rust Blinky on <strong>QEMU RISC-V Emulator</strong>, follow these steps…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install the Rust Target for QEMU RISC-V 64-bit
@@ -246,7 +246,7 @@ board_userled: LED 3 set to 0
 <p>Yeah there’s not much point in wrapping <strong>usleep</strong> and <strong>close</strong>? Since we don’t check the Return Values.</p>
 <p><em>Can we auto-close the File Descriptor when it goes out of scope?</em></p>
 <p>Probably, if we do <a href="https://docs.rs/rustix/latest/rustix/fd/struct.OwnedFd.html"><strong>Managed File Descriptors</strong></a>? But that’s way beyond the size, scope and scale of GSoC.</p>
-<p><img src="https://lupyuen.github.io/images/rust6-cargo.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-cargo.jpg" alt="Run Rust Blinky on Linux / macOS / Windows" /></p>
 <h1 id="runs-on-linux--macos--windows"><a class="doc-anchor" href="#runs-on-linux--macos--windows">§</a>4 Runs on Linux / macOS / Windows</h1>
 <p><em>Will our NuttX App actually run on Linux, macOS and Windows?</em></p>
 
@@ -265,7 +265,7 @@ ERROR: rust_main() failed with error -1
 <p>Which fails (as expected) because <em>“/dev/userleds”</em> doesn’t exist on Linux / macOS / Windows. (Pic above)</p>
 <p>This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our <strong>Local Computer</strong>, before testing on NuttX!</p>
 <p>(<strong>Rust Analyzer</strong> won’t work inside NuttX Projects sigh)</p>
-<p><img src="https://lupyuen.github.io/images/rust6-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-flow.jpg" alt="Blinking the NuttX LED in Rust" /></p>
 <h1 id="main-function-for-rust"><a class="doc-anchor" href="#main-function-for-rust">§</a>5 Main Function for Rust</h1>
 <p><em>We saw the LED Blinky code in rust_main. Who calls rust_main?</em></p>
 <p>Remember that <strong>rust_main</strong> returns a <strong>Result Type</strong>…</p>
@@ -295,7 +295,7 @@ ERROR: rust_main() failed with error -1
     <span class="number">0  </span><span class="comment">// Or return the Result Code 0
   </span>}
 }</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/rust6-flow3.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-flow3.jpg" alt="Main Function for Rust Blinky" /></p>
 <p><em>What about Linux / macOS / Windows?</em></p>
 <p>They expect us to provide a <strong>main</strong> function. Thus we do this…</p>
 
@@ -306,7 +306,7 @@ ERROR: rust_main() failed with error -1
   <span class="comment">// Call Rust Main without args
   </span>leds_rust_main(<span class="number">0</span>, core::ptr::null());
 }</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/rust6-flow4.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-flow4.jpg" alt="Panic Handler for Rust Blinky App" /></p>
 <h1 id="panic-handler-for-rust"><a class="doc-anchor" href="#panic-handler-for-rust">§</a>6 Panic Handler for Rust</h1>
 <p><em>Anything else specific to NuttX?</em></p>
 <p>Yep NuttX Apps run on the <a href="TODO"><strong>Rust Core Library</strong></a> (no_std) and require a <strong>Panic Handler</strong>…</p>
@@ -325,7 +325,7 @@ ERROR: rust_main() failed with error -1
   <span class="kw">loop </span>{}
 }</code></pre></div>
 <p>(Sorry <strong>cfg</strong> won’t work for <strong>no_main</strong> and <strong>no_std</strong>)</p>
-<p><img src="https://lupyuen.github.io/images/rust6-flow5.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-flow5.jpg" alt="No Crates allowed in NuttX" /></p>
 <h1 id="no-crates-in-nuttx"><a class="doc-anchor" href="#no-crates-in-nuttx">§</a>7 No Crates in NuttX</h1>
 <p><em>We’re coding Rust in a strange way. Why not use crates and cargo?</em></p>
 <p>Ah that’s because NuttX <a href="TODO"><strong>doesn’t support Rust Crates</strong></a>! We can’t use <strong>cargo</strong> either, NuttX Build calls <strong>rustc</strong> directly…</p>
@@ -339,7 +339,7 @@ $ make
 </code></pre></div>
 <p>Which complicates our coding of NuttX Rust Apps. That’s why we hope to test them on <a href="TODO"><strong>Linux / macOS / Windows</strong></a>.</p>
 <p>TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)</p>
-<p><img src="https://lupyuen.github.io/images/rust6-ox64.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-ox64.jpg" alt="Testing Rust Blinky on Ox64 BL808 SBC" /></p>
 <h1 id="led-drivers-for-nuttx"><a class="doc-anchor" href="#led-drivers-for-nuttx">§</a>8 LED Drivers for NuttX</h1>
 <p><em>12 weeks of GSoC: What else have we implemented?</em></p>
 <p>Remember our Blinky NuttX App in Rust? Well a NuttX App ain’t really a NuttX App… Unless it runs <strong>on Real Hardware</strong>!</p>
@@ -353,7 +353,7 @@ $ make
 <p><a href="https://lupyuen.github.io/articles/rust5#appendix-main-function-is-missing">(NuttX Ox64 needs <strong>leds_rust_main</strong> to be renamed as <strong>main</strong>)</a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/rust6-flow6.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-flow6.jpg" alt="NuttX LED Drivers for QEMU RISC-V Emulator and Ox64 BL808 SBC" /></p>
 <p><em>What about folks without Ox64 SBC?</em></p>
 <p>We created the LED Driver for <strong>QEMU RISC-V Emulator</strong>, which will blink a Simulated LED on NuttX. (Pic above)</p>
 <p>Everyone can run the <strong>Rust Blinky App</strong> (from above) and reproduce the exact same results, thanks to the QEMU LED Driver…</p>
@@ -363,7 +363,7 @@ $ make
 <p><a href="https://lupyuen.github.io/articles/rust4#custom-target-for-rust">(<strong>QEMU RISC-V 32-bit</strong> needs a <strong>Custom Rust Target</strong>)</a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/rust6-daily.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-daily.png" alt="Daily Build and Test of Rust Blinky App at GitHub Actions" /></p>
 <h1 id="daily-build-and-test"><a class="doc-anchor" href="#daily-build-and-test">§</a>9 Daily Build and Test</h1>
 <p><em>Our Rust Blinky App: Will it break someday?</em></p>
 <p>Yeah it’s possible that our Rust App will someday <strong>fail to build or execute</strong> correctly…</p>
@@ -417,7 +417,7 @@ $ make
 <p><a href="https://lupyuen.github.io/articles/rust6#appendix-nuttx-qemu-risc-v-fails-on-github-actions"><strong>“NuttX QEMU RISC-V fails on GitHub Actions”</strong></a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/rust6-target.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-target.jpg" alt="Adding NuttX as Tier 3 Target to Rust" /></p>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>10 All Things Considered</h1>
 <p><em>Wow that’s plenty of coding for 12 weeks of GSoC!</em></p>
 <p>Indeed, we tracked all Coding Tasks in our <a href="TODO"><strong>GSoC Task Spreadsheet</strong></a>. And we recorded Daily Updates in the <a href="https://discord.gg/eAz5QudKSQ"><strong>NuttX Discord Channel</strong></a>.</p>
@@ -426,7 +426,7 @@ $ make
 <p><em>Everything in this article… Becomes redundant?</em></p>
 <p>Soon we will have lots of Coding and Testing to implement NuttX as Tier 3 Target that works with the <strong>Rust Standard Library</strong>.</p>
 <p>In the meantime, we can call <strong>NuttX Safe Wrappers</strong> (prescribed in this article) to build Rust Apps for NuttX, the Interim Way.</p>
-<p><img src="https://lupyuen.github.io/images/rust6-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-flow.jpg" alt="Blinking the NuttX LED in Rust" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -456,7 +456,7 @@ $ make
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust6.md"><strong>lupyuen.github.io/src/rust6.md</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/rust6-qemu.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-qemu.jpg" alt="Testing Rust Blinky on QEMU Emulator" /></p>
 <h1 id="appendix-daily-test-of-rust-blinky"><a class="doc-anchor" href="#appendix-daily-test-of-rust-blinky">§</a>12 Appendix: Daily Test of Rust Blinky</h1>
 <p>Earlier we said that our Rust Blinky App might someday <a href="TODO"><strong>fail to build or execute</strong></a> correctly. That’s why we…</p>
 <ul>
@@ -565,30 +565,26 @@ puts &quot;\n===== Test OK\n&quot;
 exit 0 
 </code></pre></div>
 <p>But our test is incomplete: We need to know if NuttX on QEMU is really OK…</p>
-<p><img src="https://lupyuen.github.io/images/rust6-daily.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-daily.png" alt="Daily Build and Test of Rust Blinky App at GitHub Actions" /></p>
 <h1 id="appendix-daily-test-of-nuttx-qemu-risc-v"><a class="doc-anchor" href="#appendix-daily-test-of-nuttx-qemu-risc-v">§</a>13 Appendix: Daily Test of NuttX QEMU RISC-V</h1>
 <p>If something goes wrong with <strong>Rust Blinky</strong>: We need to be clear whether it’s our Rust App Failing vs <strong>NuttX QEMU Failing</strong>. That’s why we also test NuttX QEMU every day at GitHub Actions. (Pic above)</p>
 <p><strong>NuttX for QEMU RISC-V</strong> comes in Multiple Flavours, we test 4 of the popular flavours every day…</p>
 <ul>
 <li>
 <p><strong>32-bit RISC-V, Flat Build: <br> <code>rv-virt:nsh</code></strong></p>
-<p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh.yml">qemu-riscv-nsh.yml</a></p>
-<p>TODO: GitHub Actions Workflow / Test Log</p>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh.yml">GitHub Actions Workflow</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh.yml">Test Log</a></p>
 </li>
 <li>
 <p><strong>32-bit RISC-V, Kernel Build: <br> <code>rv-virt:knsh</code></strong></p>
-<p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh.yml">qemu-riscv-knsh.yml</a></p>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh.yml">GitHub Actions Workflow</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh.yml">Test Log</a></p>
 </li>
 <li>
 <p><strong>64-bit RISC-V, Flat Build: <br> <code>rv-virt:nsh64</code></strong></p>
-<p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh64.yml">qemu-riscv-nsh64.yml</a></p>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh64.yml">GitHub Actions Workflow</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh64.yml">Test Log</a></p>
 </li>
 <li>
 <p><strong>64-bit RISC-V, Kernel Build: <br> <code>rv-virt:knsh64</code></strong></p>
-<p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh64.yml">qemu-riscv-knsh64.yml</a></p>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml">GitHub Actions Workflow</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh64.yml">Test Log</a></p>
 </li>
 </ul>
 <p><em>What’s inside the GitHub Actions Workflow?</em></p>
@@ -672,7 +668,7 @@ expect {
 }
 </code></pre></div>
 <p>But there’s a problem: OSTest for <strong>64-bit QEMU RISC-V</strong> fails on GitHub Actions…</p>
-<p><img src="https://lupyuen.github.io/images/rust6-task.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust6-task.jpg" alt="Running a script on my Home Computer to download the 64-bit Daily Builds and run OSTest locally" /></p>
 <h1 id="appendix-nuttx-qemu-risc-v-fails-on-github-actions"><a class="doc-anchor" href="#appendix-nuttx-qemu-risc-v-fails-on-github-actions">§</a>14 Appendix: NuttX QEMU RISC-V fails on GitHub Actions</h1>
 <p><strong>Every day at GitHub Actions:</strong> We boot NuttX on <strong>QEMU RISC-V Emulator</strong> (32-bit and 64-bit) and test it with <a href="TODO"><strong>OSTest</strong></a>…</p>
 <ul>
