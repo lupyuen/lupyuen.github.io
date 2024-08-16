@@ -261,6 +261,8 @@ pub extern "C" fn leds_rust_main(argc: i32, argv: *const *const u8)  // Args fro
 }
 ```
 
+![TODO](https://lupyuen.github.io/images/rust6-flow3.jpg)
+
 _What about Linux / macOS / Windows?_
 
 They expect us to provide a __main__ function. Thus we do this...
@@ -339,9 +341,11 @@ We tested our Rust Blinky App on [__Ox64 BL808 SBC__](TODO) (pic above). Which n
 
   [(NuttX Ox64 needs __leds_rust_main__ to be renamed as __main__)](https://lupyuen.github.io/articles/rust5#appendix-main-function-is-missing)
 
+![TODO](https://lupyuen.github.io/images/rust6-flow6.jpg)
+
 _What about folks without Ox64 SBC?_
 
-We created the LED Driver for __QEMU RISC-V Emulator__, which will blink a Simulated LED on NuttX.
+We created the LED Driver for __QEMU RISC-V Emulator__, which will blink a Simulated LED on NuttX. (Pic above)
 
 Everyone can run the __Rust Blinky App__ (from above) and reproduce the exact same results, thanks to the QEMU LED Driver...
 
