@@ -585,7 +585,7 @@ exit 0
 <li>
 <p><strong>64-bit RISC-V, Kernel Build: <br> <code>rv-virt:knsh64</code></strong></p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml">GitHub Actions Workflow</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh64.yml">Test Log</a></p>
-<p><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode">(About <strong>Flat Build</strong> and <strong>Kernel Build</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode">(About <strong>Flat Build</strong> vs <strong>Kernel Build</strong>)</a></p>
 </li>
 </ul>
 <p><em>What’s inside the GitHub Actions Workflow?</em></p>
@@ -687,24 +687,20 @@ expect {
 <p><strong>64-bit RISC-V Kernel Build <br> <code>rv-virt:knsh64</code></strong> hangs at…</p>
 <p><em>“ostest_main: Started user_main”</em></p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml#L2">(GitHub Actions Workflow)</a></p>
-<p><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode">(About <strong>Flat Build</strong> and <strong>Kernel Build</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode">(About <strong>Flat Build</strong> vs <strong>Kernel Build</strong>)</a></p>
 </li>
 </ul>
 <p>That’s why I run a script on my Home Computer to download the 64-bit Daily Builds and <strong>run OSTest locally</strong> (pic above)</p>
 <ul>
 <li>
 <p><strong>64-bit RISC-V Flat Build <br> <code>rv-virt:nsh64</code></strong></p>
-<ul>
-<li><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh">Task Script</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh">Test Script</a></li>
-<li><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh">Upload Script</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08">Sample Log</a></li>
-</ul>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh">Task Script</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh">Test Script</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh">Upload Script</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08">Sample Log</a></p>
 </li>
 <li>
 <p><strong>64-bit RISC-V Kernel Build <br> <code>rv-virt:knsh64</code></strong></p>
-<ul>
-<li><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-knsh64.sh">Task Script</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-knsh64.sh">Test Script</a></li>
-<li><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-knsh64.sh">Upload Script</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08">Sample Log</a></li>
-</ul>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-knsh64.sh">Task Script</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-knsh64.sh">Test Script</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-knsh64.sh">Upload Script</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08">Sample Log</a></p>
 </li>
 </ul>
 <p><em>What’s inside the scripts?</em></p>
