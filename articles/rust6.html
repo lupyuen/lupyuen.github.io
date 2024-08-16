@@ -585,6 +585,7 @@ exit 0
 <li>
 <p><strong>64-bit RISC-V, Kernel Build: <br> <code>rv-virt:knsh64</code></strong></p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml">GitHub Actions Workflow</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh64.yml">Test Log</a></p>
+<p><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode">(About <strong>Flat Build</strong> and <strong>Kernel Build</strong>)</a></p>
 </li>
 </ul>
 <p><em>What’s inside the GitHub Actions Workflow?</em></p>
@@ -686,20 +687,26 @@ expect {
 <p><strong>64-bit RISC-V Kernel Build <br> <code>rv-virt:knsh64</code></strong> hangs at…</p>
 <p><em>“ostest_main: Started user_main”</em></p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml#L2">(GitHub Actions Workflow)</a></p>
+<p><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode">(About <strong>Flat Build</strong> and <strong>Kernel Build</strong>)</a></p>
 </li>
 </ul>
 <p>That’s why I run a script on my Home Computer to download the 64-bit Daily Builds and <strong>run OSTest locally</strong> (pic above)</p>
-<p>TODO: 64-bit Flat Build (rv-virt:nsh64): <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08">qemu-riscv-nsh64-2024-08-08</a></p>
 <ul>
-<li>Task Script</li>
-<li>Test Script</li>
-<li>Upload Script</li>
-<li>Sample Log</li>
+<li>
+<p><strong>64-bit RISC-V Flat Build <br> <code>rv-virt:nsh64</code></strong></p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh">Task Script</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh">Test Script</a></li>
+<li><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh">Upload Script</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08">Sample Log</a></li>
 </ul>
-<p>TODO: 64-bit Kernel Build (rv-virt:knsh64): <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08">qemu-riscv-knsh64-2024-08-08</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh">task-nsh64.sh</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh">test-nsh64.sh</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh">upload-nsh64.sh</a></p>
+</li>
+<li>
+<p><strong>64-bit RISC-V Kernel Build <br> <code>rv-virt:knsh64</code></strong></p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-knsh64.sh">Task Script</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-knsh64.sh">Test Script</a></li>
+<li><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-knsh64.sh">Upload Script</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08">Sample Log</a></li>
+</ul>
+</li>
+</ul>
 <p><em>What’s inside the scripts?</em></p>
 <p>Inside our <strong>Task Script</strong>: We wait for the 64-bit <strong>NuttX Daily Build</strong> to be published as a GitHub Release: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh">task-nsh64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Background Task: Automated Testing of Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
@@ -756,7 +763,7 @@ wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-nsh
 chmod +x qemu-riscv-nsh64.exp
 ./qemu-riscv-nsh64.exp
 </code></pre></div>
-<p><a href="TODO">(<strong>qemu-riscv-nsh64.exp</strong> is here)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-nsh64.exp">(<strong>qemu-riscv-nsh64.exp</strong> is here)</a></p>
 <p>Finally our Task Script calls our <strong>Upload Script</strong>, to upload the Test Log into the <strong>GitHub Release Notes</strong>: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh">upload-nsh64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Upload Test Log to GitHub Release Notes of Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
 ## Parameters: Release Tag, Test Log
