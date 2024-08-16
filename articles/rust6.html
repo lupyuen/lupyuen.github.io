@@ -125,6 +125,7 @@
 <p>TODO: Updating the docker image for CI</p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/rust6-flow2.jpg" alt="TODO" /></p>
 <h1 id="blink-the-led"><a class="doc-anchor" href="#blink-the-led">§</a>1 Blink The LED</h1>
 <p>This is how we <strong>Blink the LED</strong> in a NuttX Rust App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">leds_rust_main.rs</a></p>
 
@@ -264,6 +265,7 @@ ERROR: rust_main() failed with error -1
 <p>Which fails (as expected) because <em>“/dev/userleds”</em> doesn’t exist on Linux / macOS / Windows. (Pic above)</p>
 <p>This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our <strong>Local Computer</strong>, before testing on NuttX!</p>
 <p>(<strong>Rust Analyzer</strong> won’t work inside NuttX Projects sigh)</p>
+<p><img src="https://lupyuen.github.io/images/rust6-flow.jpg" alt="TODO" /></p>
 <h1 id="main-function-for-rust"><a class="doc-anchor" href="#main-function-for-rust">§</a>5 Main Function for Rust</h1>
 <p><em>We saw the LED Blinky code in rust_main. Who calls rust_main?</em></p>
 <p>Remember that <strong>rust_main</strong> returns a <strong>Result Type</strong>…</p>
@@ -303,6 +305,7 @@ ERROR: rust_main() failed with error -1
   <span class="comment">// Call Rust Main without args
   </span>leds_rust_main(<span class="number">0</span>, core::ptr::null());
 }</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/rust6-flow4.jpg" alt="TODO" /></p>
 <h1 id="panic-handler-for-rust"><a class="doc-anchor" href="#panic-handler-for-rust">§</a>6 Panic Handler for Rust</h1>
 <p><em>Anything else specific to NuttX?</em></p>
 <p>Yep NuttX Apps run on the <a href="TODO"><strong>Rust Core Library</strong></a> (no_std) and require a <strong>Panic Handler</strong>…</p>
@@ -321,6 +324,7 @@ ERROR: rust_main() failed with error -1
   <span class="kw">loop </span>{}
 }</code></pre></div>
 <p>(Sorry <strong>cfg</strong> won’t work for <strong>no_main</strong> and <strong>no_std</strong>)</p>
+<p><img src="https://lupyuen.github.io/images/rust6-flow5.jpg" alt="TODO" /></p>
 <h1 id="no-crates-in-nuttx"><a class="doc-anchor" href="#no-crates-in-nuttx">§</a>7 No Crates in NuttX</h1>
 <p><em>We’re coding Rust in a strange way. Why not use crates and cargo?</em></p>
 <p>Ah that’s because NuttX <a href="TODO"><strong>doesn’t support Rust Crates</strong></a>! We can’t use <strong>cargo</strong> either, NuttX Build calls <strong>rustc</strong> directly…</p>
@@ -420,6 +424,7 @@ $ make
 <p><em>Everything in this article… Becomes redundant?</em></p>
 <p>Soon we will have lots of Coding and Testing to implement NuttX as Tier 3 Target that works with the <strong>Rust Standard Library</strong>.</p>
 <p>In the meantime, we can call <strong>NuttX Safe Wrappers</strong> (prescribed in this article) to build Rust Apps for NuttX, the Interim Way.</p>
+<p><img src="https://lupyuen.github.io/images/rust6-flow.jpg" alt="TODO" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
