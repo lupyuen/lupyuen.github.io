@@ -315,13 +315,15 @@ Which complicates our coding of NuttX Rust Apps. That's why we hope to test them
 
 TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)
 
+![TODO](https://lupyuen.github.io/images/rust6-ox64.jpg)
+
 # LED Drivers for NuttX
 
 _12 weeks of GSoC: What else have we implemented?_
 
 Remember our Blinky NuttX App in Rust? Well a NuttX App ain't really a NuttX App... Unless it runs __on Real Hardware__!
 
-We tested our Rust Blinky App on [__Ox64 BL808 SBC__](TODO). Which needs us to create the __GPIO and LED Drivers__ for Ox64 SBC...
+We tested our Rust Blinky App on [__Ox64 BL808 SBC__](TODO) (pic above). Which needs us to create the __GPIO and LED Drivers__ for Ox64 SBC...
 
 - [__"Add GPIO Driver for BL808"__](https://github.com/apache/nuttx/pull/12571)
 
@@ -338,6 +340,8 @@ Everyone can run the __Rust Blinky App__ (from above) and reproduce the exact sa
 - [__"Add LED Driver for QEMU RISC-V"__](https://github.com/apache/nuttx/pull/12762)
 
   [(__QEMU RISC-V 32-bit__ needs a __Custom Rust Target__)](https://lupyuen.github.io/articles/rust4#custom-target-for-rust)
+
+![TODO](https://lupyuen.github.io/images/rust6-daily.png)
 
 # Daily Build and Test
 
@@ -375,7 +379,9 @@ NuttX CI also compiles __hello_rust__ for [__NuttX Simulator__](https://github.c
 
 _Will we know if the Rust Blinky App fails to execute correctly?_
 
-Every day through __GitHub Actions__: We're testing the Rust Blinky App on QEMU RISC-V Emulator. If Rust Blinky fails to execute (or produces the wrong output), GitHub Actions will notify us...
+Every day through __GitHub Actions__: We're testing the Rust Blinky App on QEMU RISC-V Emulator. (Pic above)
+
+If Rust Blinky fails to execute (or produces the wrong output), GitHub Actions will notify us...
 
 - [__"Daily Test of Rust Blinky"__](https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-rust-blinky)
 
@@ -387,6 +393,8 @@ If something goes wrong: We need to be clear whether it's our Rust App Failing v
 
 - [__"NuttX QEMU RISC-V fails on GitHub Actions"__](https://lupyuen.github.io/articles/rust6#appendix-nuttx-qemu-risc-v-fails-on-github-actions)
 
+![TODO](https://lupyuen.github.io/images/rust6-target.jpg)
+
 # All Things Considered 
 
 _Wow that's plenty of coding for 12 weeks of GSoC!_
@@ -395,7 +403,7 @@ Indeed, we tracked all Coding Tasks in our [__GSoC Task Spreadsheet__](TODO). An
 
 _Will Rust officially support NuttX?_
 
-The NuttX Community is now adding NuttX as [__Tier 3 Target__](https://lists.apache.org/thread/oqx7p3vb4dcgko4mm2f0vqgqnkorn49p) to Rust. [(And it's __approved__!)](https://github.com/rust-lang/rust/pull/127755)
+The NuttX Community is now adding NuttX as [__Tier 3 Target__](https://lists.apache.org/thread/oqx7p3vb4dcgko4mm2f0vqgqnkorn49p) to Rust. [(And it's __approved__! Pic above)](https://github.com/rust-lang/rust/pull/127755)
 
 _Everything in this article... Becomes redundant?_
 
@@ -475,7 +483,7 @@ board_userled: LED 3 set to 0
 
 [(See the __GitHub Actions Log__)](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml)
 
-Here's the __GitHub Actions Workflow__ to build and run Rust Blinky: [qemu-riscv-leds64-rust.yml](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml)
+Here's the __GitHub Actions Workflow__ (pic below) to build and run Rust Blinky: [qemu-riscv-leds64-rust.yml](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml)
 
 ```bash
 ## Download the Source Code for NuttX Kernel and Apps
@@ -550,9 +558,11 @@ exit 0
 
 But our test is incomplete: We need to know if NuttX on QEMU is really OK...
 
+![TODO](https://lupyuen.github.io/images/rust6-daily.png)
+
 # Appendix: Daily Test of NuttX QEMU RISC-V
 
-If something goes wrong with __Rust Blinky__: We need to be clear whether it's our Rust App Failing vs __NuttX QEMU Failing__. That's why we also test NuttX QEMU every day at GitHub Actions.
+If something goes wrong with __Rust Blinky__: We need to be clear whether it's our Rust App Failing vs __NuttX QEMU Failing__. That's why we also test NuttX QEMU every day at GitHub Actions. (Pic above)
 
 __NuttX for QEMU RISC-V__ comes in Multiple Flavours, we test 4 of the popular flavours every day...
 
@@ -674,6 +684,8 @@ expect {
 
 But there's a problem: OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions...
 
+![TODO](https://lupyuen.github.io/images/rust6-task.jpg)
+
 # Appendix: NuttX QEMU RISC-V fails on GitHub Actions
 
 __Every day at GitHub Actions:__ We boot NuttX on __QEMU RISC-V Emulator__ (32-bit and 64-bit) and test it with [__OSTest__](TODO)...
@@ -696,7 +708,7 @@ Yeah OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions, wonder why...
 
   [(GitHub Actions Workflow)](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml#L2)
 
-That's why I run a script on my Home Computer to download the 64-bit Daily Builds and __run OSTest locally__...
+That's why I run a script on my Home Computer to download the 64-bit Daily Builds and __run OSTest locally__ (pic above)
 
 TODO: 64-bit Flat Build (rv-virt:nsh64): [qemu-riscv-nsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08)
 
