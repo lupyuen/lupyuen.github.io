@@ -721,13 +721,15 @@ That's why I run a script on my Home Computer to download the 64-bit Daily Build
 
 - __64-bit RISC-V Flat Build <br> `rv-virt:nsh64`__
 
-  - [Task Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh) / [Test Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
-  - [Upload Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh) / [Sample Log](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08)
+  [Task Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh) / [Test Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
+
+  [Upload Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh) / [Sample Log](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08)
 
 - __64-bit RISC-V Kernel Build <br> `rv-virt:knsh64`__
 
-  - [Task Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-knsh64.sh) / [Test Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-knsh64.sh)
-  - [Upload Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-knsh64.sh) / [Sample Log](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08)
+  [Task Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-knsh64.sh) / [Test Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-knsh64.sh)
+
+  [Upload Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-knsh64.sh) / [Sample Log](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08)
 
 _What's inside the scripts?_
 
