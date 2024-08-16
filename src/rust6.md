@@ -88,7 +88,7 @@ use nuttx::*;
 
 And yes this code runs on Linux, macOS and Windows! We'll come back to this. First we test on QEMU...
 
-TODO: Pic of QEMU
+![TODO](https://lupyuen.github.io/images/rust6-qemu.jpg)
 
 # Test on QEMU Emulator
 
@@ -189,7 +189,7 @@ _Can we auto-close the File Descriptor when it goes out of scope?_
 
 Probably, if we do [__Managed File Descriptors__](https://docs.rs/rustix/latest/rustix/fd/struct.OwnedFd.html)? But that's way beyond the size, scope and scale of GSoC.
 
-TODO: Pic of cargo run
+![TODO](https://lupyuen.github.io/images/rust6-cargo.jpg)
 
 # Runs on Linux / macOS / Windows
 
@@ -429,7 +429,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/rust6.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust6.md)
 
-TODO: Pic of QEMU
+![TODO](https://lupyuen.github.io/images/rust6-qemu.jpg)
 
 # Appendix: Daily Test of Rust Blinky
 
