@@ -172,7 +172,7 @@
 </span><span class="kw">mod </span>nuttx;
 <span class="kw">use </span>nuttx::<span class="kw-2">*</span>;</code></pre></div>
 <p>And yes this code runs on Linux, macOS and Windows! We’ll come back to this. First we test on QEMU…</p>
-<p>TODO: Pic of QEMU</p>
+<p><img src="https://lupyuen.github.io/images/rust6-qemu.jpg" alt="TODO" /></p>
 <h1 id="test-on-qemu-emulator"><a class="doc-anchor" href="#test-on-qemu-emulator">§</a>2 Test on QEMU Emulator</h1>
 <p>To test Rust Blinky on <strong>QEMU RISC-V Emulator</strong>, follow these steps…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install the Rust Target for QEMU RISC-V 64-bit
@@ -245,7 +245,7 @@ board_userled: LED 3 set to 0
 <p>Yeah there’s not much point in wrapping <strong>usleep</strong> and <strong>close</strong>? Since we don’t check the Return Values.</p>
 <p><em>Can we auto-close the File Descriptor when it goes out of scope?</em></p>
 <p>Probably, if we do <a href="https://docs.rs/rustix/latest/rustix/fd/struct.OwnedFd.html"><strong>Managed File Descriptors</strong></a>? But that’s way beyond the size, scope and scale of GSoC.</p>
-<p>TODO: Pic of cargo run</p>
+<p><img src="https://lupyuen.github.io/images/rust6-cargo.jpg" alt="TODO" /></p>
 <h1 id="runs-on-linux--macos--windows"><a class="doc-anchor" href="#runs-on-linux--macos--windows">§</a>4 Runs on Linux / macOS / Windows</h1>
 <p><em>Will our NuttX App actually run on Linux, macOS and Windows?</em></p>
 
@@ -445,7 +445,7 @@ $ make
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust6.md"><strong>lupyuen.github.io/src/rust6.md</strong></a></p>
-<p>TODO: Pic of QEMU</p>
+<p><img src="https://lupyuen.github.io/images/rust6-qemu.jpg" alt="TODO" /></p>
 <h1 id="appendix-daily-test-of-rust-blinky"><a class="doc-anchor" href="#appendix-daily-test-of-rust-blinky">§</a>12 Appendix: Daily Test of Rust Blinky</h1>
 <p>Earlier we said that our Rust Blinky App might someday <a href="TODO"><strong>fail to build or execute</strong></a> correctly. That’s why we…</p>
 <ul>
