@@ -4,7 +4,7 @@
 
 ![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-title.jpg)
 
-My student [__Rushabh Gala__](TODO) has just completed his project for [__Google Summer of Code__](TODO). Rushabh has created safer __Rust Apps__ for __Apache NuttX RTOS__...
+My student [__Rushabh Gala__](https://github.com/rushabhvg) has just completed his project for [__Google Summer of Code__](https://summerofcode.withgoogle.com/). Rushabh has created safer __Rust Apps__ for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)...
 
 - TODO: Final Report
 
@@ -68,7 +68,7 @@ Our Rust Blinky App looks mighty similar to the [__C Version__](https://github.c
 
 _What are safe_open and safe_ioctl?_
 
-They are safer versions of __open__ and __ioctl__ from our [__NuttX Module__](TODO). Inside the NuttX Module we...
+They are safer versions of __open__ and __ioctl__ from our [__NuttX Module__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs). Inside the NuttX Module we...
 
 - Define the Safe Wrappers: __`safe_*`__
 
@@ -165,7 +165,7 @@ let fd = safe_open(  // Open the LED Device...
 ) ?;                 // Quit on error
 ```
 
-Remember in C we check the [__Result Value__](TODO) at every call to __open__ and __ioctl__... Now with __safe_open__ and __safe_ioctl__, Rust does the checking for us!
+Remember in C we check the [__Result Value__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L46-L64) at every call to __open__ and __ioctl__... Now with __safe_open__ and __safe_ioctl__, Rust does the checking for us!
 
 If something goes wrong, the code above will exit the function with an __Error Value__. (Like if _"/dev/userleds"_ doesn't exist)
 
@@ -283,7 +283,7 @@ fn main() {
 
 _Anything else specific to NuttX?_
 
-Yep NuttX Apps run on the [__Rust Core Library__](TODO) (no_std) and require a __Panic Handler__...
+Yep NuttX Apps run on the [__Rust Core Library__](https://doc.rust-lang.org/core/) (no_std) and require a [__Panic Handler__](https://doc.rust-lang.org/nomicon/panic-handler.html)...
 
 ```rust
 // For NuttX Only: Import the Panic Type
@@ -309,7 +309,7 @@ fn panic(_panic: &PanicInfo<'_>) -> ! {
 
 _We're coding Rust in a strange way. Why not use crates and cargo?_
 
-Ah that's because NuttX [__doesn't support Rust Crates__](TODO)! We can't use __cargo__ either, NuttX Build calls __rustc__ directly...
+Ah that's because NuttX [__doesn't support Rust Crates__](https://github.com/apache/nuttx/pull/5566#issuecomment-1046963430)! We can't use __cargo__ either, NuttX Build calls __rustc__ directly...
 
 ```bash
 ## Configure the NuttX Project
@@ -321,7 +321,7 @@ $ tools/configure.sh rv-virt:leds64_rust
 $ make
 ```
 
-Which complicates our coding of NuttX Rust Apps. That's why we hope to test them on [__Linux / macOS / Windows__](TODO).
+Which complicates our coding of NuttX Rust Apps. That's why we hope to test them on [__Linux / macOS / Windows__](https://lupyuen.github.io/articles/rust6#runs-on-linux--macos--windows).
 
 TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)
 
@@ -333,7 +333,7 @@ _12 weeks of GSoC: What else have we implemented?_
 
 Remember our Blinky NuttX App in Rust? Well a NuttX App ain't really a NuttX App... Unless it runs __on Real Hardware__!
 
-We tested our Rust Blinky App on [__Ox64 BL808 SBC__](TODO) (pic above). Which needs us to create the __GPIO and LED Drivers__ for Ox64 SBC...
+We tested our Rust Blinky App on [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (pic above). Which needs us to create the __GPIO and LED Drivers__ for Ox64 SBC...
 
 - [__"Add GPIO Driver for BL808"__](https://github.com/apache/nuttx/pull/12571)
 
@@ -371,7 +371,7 @@ Yeah it's possible that our Rust App will someday __fail to build or execute__ c
 
 That's why we extended the __Continuous Integration__ workflow for NuttX...
 
-Every NuttX Pull Request will now trigger a rebuild of our [__Rust Blinky App__](TODO). If anything breaks, we'll find out right away!
+Every NuttX Pull Request will now trigger a rebuild of our [__Rust Blinky App__](https://lupyuen.github.io/articles/rust6#blink-the-led). If anything breaks, we'll find out right away!
 
 - [__"Fix the Rust and D Builds for QEMU RISC-V"__](https://github.com/apache/nuttx/pull/12854)
 
@@ -411,7 +411,7 @@ If something goes wrong: We need to be clear whether it's our Rust App Failing v
 
 _Wow that's plenty of coding for 12 weeks of GSoC!_
 
-Indeed, we tracked all Coding Tasks in our [__GSoC Task Spreadsheet__](TODO). And we recorded Daily Updates in the [__NuttX Discord Channel__](https://discord.gg/eAz5QudKSQ).
+Indeed, we tracked all Coding Tasks in our [__GSoC Task Spreadsheet__](https://docs.google.com/spreadsheets/d/1NzaS7gp2eYhegSA1DsH5Zw-o0tShqL-ewvVhoSSR0UQ/edit?usp=drive_link). And we recorded Daily Updates in the [__NuttX Discord Channel__](https://discord.gg/eAz5QudKSQ).
 
 _Will Rust officially support NuttX?_
 
@@ -427,7 +427,7 @@ In the meantime, we can call __NuttX Safe Wrappers__ (prescribed in this article
 
 # What's Next
 
-TODO
+TODO: What's Next
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -455,9 +455,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Daily Test of Rust Blinky
 
-Earlier we said that our Rust Blinky App might someday [__fail to build or execute__](TODO) correctly. That's why we...
+Earlier we said that our Rust Blinky App might someday [__fail to build or execute__](https://lupyuen.github.io/articles/rust6#daily-build-and-test) correctly. That's why we...
 
-- [__Trigger a Rebuild__](TODO) of our Rust Blinky App on every NuttX Pull Request
+- [__Trigger a Rebuild__](https://lupyuen.github.io/articles/rust6#daily-build-and-test) of our Rust Blinky App on every NuttX Pull Request
 
 - __Run and Test__ our Rust Blinky App every day at GitHub Actions
 
@@ -695,7 +695,7 @@ But there's a problem: OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions
 
 # Appendix: NuttX QEMU RISC-V fails on GitHub Actions
 
-__Every day at GitHub Actions:__ We boot NuttX on __QEMU RISC-V Emulator__ (32-bit and 64-bit) and test it with [__OSTest__](TODO)...
+__Every day at GitHub Actions:__ We boot NuttX on __QEMU RISC-V Emulator__ (32-bit and 64-bit) and test it with [__OSTest__](https://lupyuen.github.io/articles/tinyemu3#daily-automated-testing)...
 
 - [__"Daily Test of NuttX QEMU RISC-V"__](https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-nuttx-qemu-risc-v)
 
