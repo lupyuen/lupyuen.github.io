@@ -34,6 +34,8 @@ In this article we walk through Rushabh's contributions. And understand how we'r
 
 - TODO: Updating the docker image for CI
 
+![TODO](https://lupyuen.github.io/images/rust6-flow2.jpg)
+
 # Blink The LED
 
 This is how we __Blink the LED__ in a NuttX Rust App: [leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
@@ -219,6 +221,8 @@ This greatly simplifies our NuttX App Development: We could (potentially) compil
 
 (__Rust Analyzer__ won't work inside NuttX Projects sigh)
 
+![TODO](https://lupyuen.github.io/images/rust6-flow.jpg)
+
 # Main Function for Rust
 
 _We saw the LED Blinky code in rust_main. Who calls rust_main?_
@@ -271,6 +275,8 @@ fn main() {
 }
 ```
 
+![TODO](https://lupyuen.github.io/images/rust6-flow4.jpg)
+
 # Panic Handler for Rust
 
 _Anything else specific to NuttX?_
@@ -294,6 +300,8 @@ fn panic(_panic: &PanicInfo<'_>) -> ! {
 ```
 
 (Sorry __cfg__ won't work for __no_main__ and __no_std__)
+
+![TODO](https://lupyuen.github.io/images/rust6-flow5.jpg)
 
 # No Crates in NuttX
 
@@ -410,6 +418,8 @@ _Everything in this article... Becomes redundant?_
 Soon we will have lots of Coding and Testing to implement NuttX as Tier 3 Target that works with the __Rust Standard Library__.
 
 In the meantime, we can call __NuttX Safe Wrappers__ (prescribed in this article) to build Rust Apps for NuttX, the Interim Way.
+
+![TODO](https://lupyuen.github.io/images/rust6-flow.jpg)
 
 # What's Next
 
