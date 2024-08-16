@@ -596,6 +596,8 @@ __NuttX for QEMU RISC-V__ comes in Multiple Flavours, we test 4 of the popular f
 
   [GitHub Actions Workflow](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml) / [Test Log](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh64.yml)
 
+  [(About __Flat Build__ and __Kernel Build__)](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode)
+
 _What's inside the GitHub Actions Workflow?_
 
 __Every day at GitHub Actions:__ We boot NuttX on QEMU RISC-V and verify the output of OSTest...
@@ -713,22 +715,19 @@ Yeah OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions, wonder why...
 
   [(GitHub Actions Workflow)](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml#L2)
 
+  [(About __Flat Build__ and __Kernel Build__)](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode)
+
 That's why I run a script on my Home Computer to download the 64-bit Daily Builds and __run OSTest locally__ (pic above)
 
-TODO: 64-bit Flat Build (rv-virt:nsh64): [qemu-riscv-nsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08)
+- __64-bit RISC-V Flat Build <br> `rv-virt:nsh64`__
 
-- Task Script
-- Test Script
-- Upload Script
-- Sample Log
+  - [Task Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh) / [Test Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
+  - [Upload Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh) / [Sample Log](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08)
 
-TODO: 64-bit Kernel Build (rv-virt:knsh64): [qemu-riscv-knsh64-2024-08-08](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08)
+- __64-bit RISC-V Kernel Build <br> `rv-virt:knsh64`__
 
-TODO: [task-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-nsh64.sh)
-
-TODO: [test-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
-
-TODO: [upload-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh)
+  - [Task Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/task-knsh64.sh) / [Test Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-knsh64.sh)
+  - [Upload Script](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-knsh64.sh) / [Sample Log](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2024-08-08)
 
 _What's inside the scripts?_
 
@@ -793,7 +792,7 @@ chmod +x qemu-riscv-nsh64.exp
 ./qemu-riscv-nsh64.exp
 ```
 
-[(__qemu-riscv-nsh64.exp__ is here)](TODO)
+[(__qemu-riscv-nsh64.exp__ is here)](https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-nsh64.exp)
 
 Finally our Task Script calls our __Upload Script__, to upload the Test Log into the __GitHub Release Notes__: [upload-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh)
 
