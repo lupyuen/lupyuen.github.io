@@ -334,10 +334,11 @@ $ make
 </code></pre></div>
 <p>Which complicates our coding of NuttX Rust Apps. That’s why we hope to test them on <a href="TODO"><strong>Linux / macOS / Windows</strong></a>.</p>
 <p>TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)</p>
+<p><img src="https://lupyuen.github.io/images/rust6-ox64.jpg" alt="TODO" /></p>
 <h1 id="led-drivers-for-nuttx"><a class="doc-anchor" href="#led-drivers-for-nuttx">§</a>8 LED Drivers for NuttX</h1>
 <p><em>12 weeks of GSoC: What else have we implemented?</em></p>
 <p>Remember our Blinky NuttX App in Rust? Well a NuttX App ain’t really a NuttX App… Unless it runs <strong>on Real Hardware</strong>!</p>
-<p>We tested our Rust Blinky App on <a href="TODO"><strong>Ox64 BL808 SBC</strong></a>. Which needs us to create the <strong>GPIO and LED Drivers</strong> for Ox64 SBC…</p>
+<p>We tested our Rust Blinky App on <a href="TODO"><strong>Ox64 BL808 SBC</strong></a> (pic above). Which needs us to create the <strong>GPIO and LED Drivers</strong> for Ox64 SBC…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx/pull/12571"><strong>“Add GPIO Driver for BL808”</strong></a></p>
@@ -356,6 +357,7 @@ $ make
 <p><a href="https://lupyuen.github.io/articles/rust4#custom-target-for-rust">(<strong>QEMU RISC-V 32-bit</strong> needs a <strong>Custom Rust Target</strong>)</a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/rust6-daily.png" alt="TODO" /></p>
 <h1 id="daily-build-and-test"><a class="doc-anchor" href="#daily-build-and-test">§</a>9 Daily Build and Test</h1>
 <p><em>Our Rust Blinky App: Will it break someday?</em></p>
 <p>Yeah it’s possible that our Rust App will someday <strong>fail to build or execute</strong> correctly…</p>
@@ -394,7 +396,8 @@ $ make
 </ul>
 <p>NuttX CI also compiles <strong>hello_rust</strong> for <a href="https://github.com/apache/nuttx/blob/master/boards/sim/sim/sim/configs/rust/defconfig#L27"><strong>NuttX Simulator</strong></a>. But it doesn’t need a Special Rust Target for the Docker Image.</p>
 <p><em>Will we know if the Rust Blinky App fails to execute correctly?</em></p>
-<p>Every day through <strong>GitHub Actions</strong>: We’re testing the Rust Blinky App on QEMU RISC-V Emulator. If Rust Blinky fails to execute (or produces the wrong output), GitHub Actions will notify us…</p>
+<p>Every day through <strong>GitHub Actions</strong>: We’re testing the Rust Blinky App on QEMU RISC-V Emulator. (Pic above)</p>
+<p>If Rust Blinky fails to execute (or produces the wrong output), GitHub Actions will notify us…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-rust-blinky"><strong>“Daily Test of Rust Blinky”</strong></a></li>
 </ul>
@@ -408,11 +411,12 @@ $ make
 <p><a href="https://lupyuen.github.io/articles/rust6#appendix-nuttx-qemu-risc-v-fails-on-github-actions"><strong>“NuttX QEMU RISC-V fails on GitHub Actions”</strong></a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/rust6-target.jpg" alt="TODO" /></p>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>10 All Things Considered</h1>
 <p><em>Wow that’s plenty of coding for 12 weeks of GSoC!</em></p>
 <p>Indeed, we tracked all Coding Tasks in our <a href="TODO"><strong>GSoC Task Spreadsheet</strong></a>. And we recorded Daily Updates in the <a href="https://discord.gg/eAz5QudKSQ"><strong>NuttX Discord Channel</strong></a>.</p>
 <p><em>Will Rust officially support NuttX?</em></p>
-<p>The NuttX Community is now adding NuttX as <a href="https://lists.apache.org/thread/oqx7p3vb4dcgko4mm2f0vqgqnkorn49p"><strong>Tier 3 Target</strong></a> to Rust. <a href="https://github.com/rust-lang/rust/pull/127755">(And it’s <strong>approved</strong>!)</a></p>
+<p>The NuttX Community is now adding NuttX as <a href="https://lists.apache.org/thread/oqx7p3vb4dcgko4mm2f0vqgqnkorn49p"><strong>Tier 3 Target</strong></a> to Rust. <a href="https://github.com/rust-lang/rust/pull/127755">(And it’s <strong>approved</strong>! Pic above)</a></p>
 <p><em>Everything in this article… Becomes redundant?</em></p>
 <p>Soon we will have lots of Coding and Testing to implement NuttX as Tier 3 Target that works with the <strong>Rust Standard Library</strong>.</p>
 <p>In the meantime, we can call <strong>NuttX Safe Wrappers</strong> (prescribed in this article) to build Rust Apps for NuttX, the Interim Way.</p>
@@ -486,7 +490,7 @@ board_userled: LED 2 set to 0
 board_userled: LED 3 set to 0
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml">(See the <strong>GitHub Actions Log</strong>)</a></p>
-<p>Here’s the <strong>GitHub Actions Workflow</strong> to build and run Rust Blinky: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml">qemu-riscv-leds64-rust.yml</a></p>
+<p>Here’s the <strong>GitHub Actions Workflow</strong> (pic below) to build and run Rust Blinky: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml">qemu-riscv-leds64-rust.yml</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Source Code for NuttX Kernel and Apps
 git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
@@ -554,8 +558,9 @@ puts &quot;\n===== Test OK\n&quot;
 exit 0 
 </code></pre></div>
 <p>But our test is incomplete: We need to know if NuttX on QEMU is really OK…</p>
+<p><img src="https://lupyuen.github.io/images/rust6-daily.png" alt="TODO" /></p>
 <h1 id="appendix-daily-test-of-nuttx-qemu-risc-v"><a class="doc-anchor" href="#appendix-daily-test-of-nuttx-qemu-risc-v">§</a>13 Appendix: Daily Test of NuttX QEMU RISC-V</h1>
-<p>If something goes wrong with <strong>Rust Blinky</strong>: We need to be clear whether it’s our Rust App Failing vs <strong>NuttX QEMU Failing</strong>. That’s why we also test NuttX QEMU every day at GitHub Actions.</p>
+<p>If something goes wrong with <strong>Rust Blinky</strong>: We need to be clear whether it’s our Rust App Failing vs <strong>NuttX QEMU Failing</strong>. That’s why we also test NuttX QEMU every day at GitHub Actions. (Pic above)</p>
 <p><strong>NuttX for QEMU RISC-V</strong> comes in Multiple Flavours, we test 4 of the popular flavours every day…</p>
 <ul>
 <li>
@@ -660,6 +665,7 @@ expect {
 }
 </code></pre></div>
 <p>But there’s a problem: OSTest for <strong>64-bit QEMU RISC-V</strong> fails on GitHub Actions…</p>
+<p><img src="https://lupyuen.github.io/images/rust6-task.jpg" alt="TODO" /></p>
 <h1 id="appendix-nuttx-qemu-risc-v-fails-on-github-actions"><a class="doc-anchor" href="#appendix-nuttx-qemu-risc-v-fails-on-github-actions">§</a>14 Appendix: NuttX QEMU RISC-V fails on GitHub Actions</h1>
 <p><strong>Every day at GitHub Actions:</strong> We boot NuttX on <strong>QEMU RISC-V Emulator</strong> (32-bit and 64-bit) and test it with <a href="TODO"><strong>OSTest</strong></a>…</p>
 <ul>
@@ -679,7 +685,7 @@ expect {
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml#L2">(GitHub Actions Workflow)</a></p>
 </li>
 </ul>
-<p>That’s why I run a script on my Home Computer to download the 64-bit Daily Builds and <strong>run OSTest locally</strong>…</p>
+<p>That’s why I run a script on my Home Computer to download the 64-bit Daily Builds and <strong>run OSTest locally</strong> (pic above)</p>
 <p>TODO: 64-bit Flat Build (rv-virt:nsh64): <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2024-08-08">qemu-riscv-nsh64-2024-08-08</a></p>
 <ul>
 <li>Task Script</li>
