@@ -295,6 +295,7 @@ ERROR: rust_main() failed with error -1
     <span class="number">0  </span><span class="comment">// Or return the Result Code 0
   </span>}
 }</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/rust6-flow3.jpg" alt="TODO" /></p>
 <p><em>What about Linux / macOS / Windows?</em></p>
 <p>They expect us to provide a <strong>main</strong> function. Thus we do this…</p>
 
@@ -352,8 +353,9 @@ $ make
 <p><a href="https://lupyuen.github.io/articles/rust5#appendix-main-function-is-missing">(NuttX Ox64 needs <strong>leds_rust_main</strong> to be renamed as <strong>main</strong>)</a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/rust6-flow6.jpg" alt="TODO" /></p>
 <p><em>What about folks without Ox64 SBC?</em></p>
-<p>We created the LED Driver for <strong>QEMU RISC-V Emulator</strong>, which will blink a Simulated LED on NuttX.</p>
+<p>We created the LED Driver for <strong>QEMU RISC-V Emulator</strong>, which will blink a Simulated LED on NuttX. (Pic above)</p>
 <p>Everyone can run the <strong>Rust Blinky App</strong> (from above) and reproduce the exact same results, thanks to the QEMU LED Driver…</p>
 <ul>
 <li>
