@@ -4,7 +4,7 @@
 
 ![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-title.jpg)
 
-My student [__Rushabh Gala__](https://github.com/rushabhvg) has just completed his project for [__Google Summer of Code__](https://summerofcode.withgoogle.com/). Rushabh has created safer __Rust Apps__ for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)...
+My student [__Rushabh Gala__](https://github.com/rushabhvg) has just completed his project for [__Google Summer of Code__](https://summerofcode.withgoogle.com/). Rushabh has created __Safer Rust Apps__ for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)...
 
 - [__GSoC Final Report__](TODO)
 
@@ -36,7 +36,7 @@ In this article we walk through Rushabh's contributions. And understand how we'r
 
 # Blink The LED
 
-This is how we __Blink the LED__ in a NuttX Rust App: [leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs)
+This is how we __Blink the LED__ in a NuttX Rust App: [leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs#L59-L91)
 
 ```rust
 // Main Program Logic. Called by `leds_rust_main`
@@ -74,7 +74,7 @@ They are safer versions of __open__ and __ioctl__, from our [__NuttX Module__](h
 
 - Plus the NuttX Constants: [__O_WRONLY__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L41-L51) and [__ULEDIOC_SETALL__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L41-L51)
 
-We import the __NuttX Module__ into our Rust App like so...
+We import the __NuttX Module__ into our Rust App like so: [leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs#L20-L45)
 
 ```rust
 // Comment out these lines for testing on Linux / macOS / Windows
@@ -86,7 +86,7 @@ mod nuttx;
 use nuttx::*;
 ```
 
-And yes this code runs on Linux, macOS and Windows! We'll come back to this. First we test on QEMU...
+And yes this code runs on Linux, macOS and Windows! We'll come back to this, first we test on QEMU...
 
 ![Testing Rust Blinky on QEMU Emulator](https://lupyuen.github.io/images/rust6-qemu.jpg)
 
@@ -146,9 +146,9 @@ board_userled: LED 2 set to 0
 board_userled: LED 3 set to 0
 ```
 
-[(See the __NuttX Log__)](https://github.com/lupyuen/nuttx-riscv64/actions/runs/10396419763/job/28790386663)
+Rust blinks our Simulated LED on NuttX QEMU! Let's head back inside the code...
 
-Rust blinks our Simulated LED on NuttX QEMU!
+[(See the __NuttX Log__)](https://github.com/lupyuen/nuttx-riscv64/actions/runs/10396419763/job/28790386663)
 
 ![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-title.jpg)
 
@@ -171,8 +171,6 @@ Our NuttX App becomes a little safer with the [__Question Mark Operator__](https
 
 (Rust Compiler __will warn us__ if we forget the Question Mark)
 
-(__safe_puts__ has a limited [__Buffer Size__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L104-L119))
-
 _But usleep and close are still unsafe?_
 
 ```rust
@@ -185,9 +183,11 @@ unsafe { close(fd); }
 
 Yeah there's not much point in wrapping __usleep__ and __close__? Since we don't check the Return Values.
 
+(__safe_puts__ has a limited [__Buffer Size__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L104-L119))
+
 _Can we auto-close the File Descriptor when it goes out of scope?_
 
-Probably, if we do [__Managed File Descriptors__](https://docs.rs/rustix/latest/rustix/fd/struct.OwnedFd.html)? But that's way beyond the size, scope and scale of GSoC.
+Probably, if we do [__Managed File Descriptors__](https://docs.rs/rustix/latest/rustix/fd/struct.OwnedFd.html). But that's way beyond the size, scope and scale of GSoC.
 
 ![Run Rust Blinky on Linux / macOS / Windows](https://lupyuen.github.io/images/rust6-cargo.jpg)
 
@@ -201,7 +201,7 @@ _Will our NuttX App actually run on Linux, macOS and Windows?_
 #![no_std]   // For NuttX Only: Use Rust Core Library (instead of Rust Standard Library)
 ```
 
-Yep indeed! Just comment out the above lines and run our Rust Blinky App on __Linux / macOS / Windows__ (WSL)...
+Yep indeed! Just comment out the above lines and our Rust Blinky App will run on __Linux / macOS / Windows__ (WSL)...
 
 ```bash
 $ git clone https://github.com/lupyuen/nuttx-rust-app
@@ -213,7 +213,7 @@ Opening /dev/userleds
 ERROR: rust_main() failed with error -1
 ```
 
-Which fails (as expected) because _"/dev/userleds"_ doesn't exist on Linux / macOS / Windows. (Pic above)
+Though it fails (as expected) because _"/dev/userleds"_ doesn't exist on Linux / macOS / Windows. (Pic above)
 
 This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our __Local Computer__, before testing on NuttX!
 
@@ -225,7 +225,7 @@ This greatly simplifies our NuttX App Development: We could (potentially) compil
 
 _We saw the LED Blinky code in rust_main. Who calls rust_main?_
 
-Remember that __rust_main__ returns a __Result Type__...
+Remember that __rust_main__ returns a __Result Type__: [leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs#L59-L91)
 
 ```rust
 // `rust_main` accepts the args from NuttX Shell
@@ -236,7 +236,7 @@ fn rust_main(_argc: i32, _argv: *const *const u8)
 
 But NuttX expects us to provide a Main Function named __leds_rust_main__. And it shall return an __Integer Result__. (Not a Result Type)
 
-Thus we create an __leds_rust_main__ function that calls __rust_main__ and returns the right result...
+Thus we create an __leds_rust_main__ function that calls __rust_main__ (pic above) and returns the right result: [leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs#L91-L120)
 
 ```rust
 // For NuttX: This will be called by NuttX Shell
@@ -259,19 +259,23 @@ pub extern "C" fn leds_rust_main(argc: i32, argv: *const *const u8)  // Args fro
 }
 ```
 
-![Main Function for Rust Blinky](https://lupyuen.github.io/images/rust6-flow3.jpg)
-
 _What about Linux / macOS / Windows?_
 
-They expect us to provide a __main__ function. Thus we do this...
+They expect us to provide a __main__ function...
+
+![Main Function for Rust Blinky](https://lupyuen.github.io/images/rust6-flow3.jpg)
+
+Thus we do this: [leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs#L120-L128)
 
 ```rust
 // For Linux / macOS / Windows: Define the Main Function
 #[cfg(not(target_os = "none"))]
 fn main() {
-
   // Call Rust Main without args
-  leds_rust_main(0, core::ptr::null());
+  leds_rust_main(
+    0,                 // argc: Zero Args
+    core::ptr::null()  // argv: Null Pointer
+  );
 }
 ```
 
@@ -281,7 +285,9 @@ fn main() {
 
 _Anything else specific to NuttX?_
 
-Yep NuttX Apps run on the [__Rust Core Library__](https://doc.rust-lang.org/core/) (no_std) and require a [__Panic Handler__](https://doc.rust-lang.org/nomicon/panic-handler.html)...
+Yep NuttX Apps run on the [__Rust Core Library__](https://doc.rust-lang.org/core/) (no_std) and require a [__Panic Handler__](https://doc.rust-lang.org/nomicon/panic-handler.html).
+
+That's why we need this: [leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs#L29-L59)
 
 ```rust
 // For NuttX Only: Import the Panic Type
@@ -307,7 +313,7 @@ fn panic(_panic: &PanicInfo<'_>) -> ! {
 
 _We're coding Rust in a strange way. Why not use crates and cargo?_
 
-Ah that's because NuttX [__doesn't support Rust Crates__](https://github.com/apache/nuttx/pull/5566#issuecomment-1046963430)! We can't use __cargo__ either, NuttX Build calls __rustc__ directly...
+Ah that's because NuttX [__doesn't support Rust Crates__](https://github.com/apache/nuttx/pull/5566#issuecomment-1046963430)! We can't use __cargo__ either, NuttX Build will call __rustc__ directly...
 
 ```bash
 ## Configure the NuttX Project
@@ -321,9 +327,11 @@ $ make
 
 Which complicates our coding of NuttX Rust Apps. That's why we hope to test them on [__Linux / macOS / Windows__](https://lupyuen.github.io/articles/rust6#runs-on-linux--macos--windows).
 
-(__NuttX Module__ should probably live in a Common Source Folder)
+(__NuttX Module nuttx.rs__ should probably live in a Common Source Folder)
 
-![Testing Rust Blinky on Ox64 BL808 SBC](https://lupyuen.github.io/images/rust6-ox64.jpg)
+![Rust Blinky on Ox64 BL808 SBC](https://lupyuen.github.io/images/rust6-ox64.jpg)
+
+[_Rust Blinky on Ox64 BL808 SBC_](https://youtube.com/shorts/t6nxVZWS0Js?feature=share)
 
 # LED Drivers for NuttX
 
@@ -331,7 +339,7 @@ _12 weeks of GSoC: What else have we implemented?_
 
 Remember our Blinky NuttX App in Rust? Well a NuttX App ain't really a NuttX App... Unless it runs __on Real Hardware__!
 
-We tested our Rust Blinky App on [__Ox64 BL808 SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (pic above). Which needs us to create the __GPIO and LED Drivers__ for Ox64 SBC...
+We tested our Rust Blinky App on [__Ox64 BL808 RISC-V SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358) (pic above). Which needs us to create the __GPIO and LED Drivers__ for Ox64 SBC...
 
 - [__"Add GPIO Driver for BL808"__](https://github.com/apache/nuttx/pull/12571)
 
@@ -385,7 +393,7 @@ That's because the NuttX Continuous Integration (CI) runs inside a __Docker Cont
 
 - [__"Downloading the Docker Image for NuttX CI"__](https://lupyuen.github.io/articles/pr#appendix-downloading-the-docker-image-for-nuttx-ci)
 
-NuttX CI also compiles __hello_rust__ for [__NuttX Simulator__](https://github.com/apache/nuttx/blob/master/boards/sim/sim/sim/configs/rust/defconfig#L27). But it doesn't need a Special Rust Target for the Docker Image.
+NuttX CI also compiles __hello_rust__ for [__NuttX Simulator__](https://github.com/apache/nuttx/blob/master/boards/sim/sim/sim/configs/rust/defconfig#L27). Though it's simpler and doesn't need a Special Rust Target for the Docker Image.
 
 _Will we know if the Rust Blinky App fails to execute correctly?_
 
@@ -413,13 +421,13 @@ Indeed, we tracked all Coding Tasks in our [__GSoC Task Spreadsheet__](https://d
 
 _Will Rust officially support NuttX?_
 
-The NuttX Community is now adding NuttX as [__Tier 3 Target__](https://lists.apache.org/thread/oqx7p3vb4dcgko4mm2f0vqgqnkorn49p) to Rust. [(And it's __approved__! Pic above)](https://github.com/rust-lang/rust/pull/127755)
+The NuttX Community is now prepping NuttX as [__Tier 3 Target__](https://lists.apache.org/thread/oqx7p3vb4dcgko4mm2f0vqgqnkorn49p) to Rust. [(First step is __approved__! Pic above)](https://github.com/rust-lang/rust/pull/127755)
 
 _Everything in this article... Becomes redundant?_
 
-Soon we will have lots of Coding and Testing to implement NuttX as Tier 3 Target that works with the __Rust Standard Library__.
+Soon we'll have lots of Coding and Testing to implement NuttX as Tier 3 Target, that works with the [__Rust Standard Library__](https://doc.rust-lang.org/std/index.html).
 
-In the meantime, we can call __NuttX Safe Wrappers__ (prescribed in this article) to build Rust Apps for NuttX, the Interim Way.
+Meanwhile, we can call [__NuttX Safe Wrappers__](https://lupyuen.github.io/articles/rust6#handle-errors-safely) (prescribed in this article) to build Rust Apps for NuttX, the Interim Way.
 
 ![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-flow.jpg)
 
@@ -576,7 +584,7 @@ But our test is incomplete: We need to know if NuttX on QEMU is really OK...
 
 If something goes wrong with __Rust Blinky__: We need to be clear whether it's our Rust App Failing vs __NuttX QEMU Failing__. That's why we also test NuttX QEMU every day at GitHub Actions. (Pic above)
 
-__NuttX for QEMU RISC-V__ comes in Multiple Flavours, we test 4 of the popular flavours every day...
+__NuttX for QEMU RISC-V__ comes in Multiple Flavours, we test four of the popular flavours every day...
 
 - __32-bit RISC-V, Flat Build: <br> `rv-virt:nsh`__
 
@@ -598,7 +606,7 @@ __NuttX for QEMU RISC-V__ comes in Multiple Flavours, we test 4 of the popular f
 
 _What's inside the GitHub Actions Workflow?_
 
-__Every day at GitHub Actions:__ We boot NuttX on QEMU RISC-V and verify the output of OSTest...
+__Every day at GitHub Actions:__ We boot NuttX on QEMU RISC-V and verify the output of [__OSTest__](https://lupyuen.github.io/articles/tinyemu3#daily-automated-testing)...
 
 ```bash
 ## Start the QEMU Emulator for 32-bit RISC-V
@@ -642,7 +650,7 @@ chmod +x qemu-riscv-nsh.exp
 ./qemu-riscv-nsh.exp
 ```
 
-Which calls our __Expect Script__ to boot NuttX and run OSTest: [qemu-riscv-nsh.exp](https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-nsh.exp)
+Which calls our __Expect Script__ to boot NuttX and run [__OSTest__](https://lupyuen.github.io/articles/tinyemu3#daily-automated-testing): [qemu-riscv-nsh.exp](https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-nsh.exp)
 
 ```bash
 #!/usr/bin/expect
@@ -770,7 +778,7 @@ function test_nuttx {
 }
 ```
 
-And call our __Test Script__ to boot NuttX on QEMU and run __OSTest__: [test-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
+Then we call our __Test Script__ to boot NuttX on QEMU and verify the output of [__OSTest__](https://lupyuen.github.io/articles/tinyemu3#daily-automated-testing): [test-nsh64.sh](https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh)
 
 ```bash
 ## Test Script: Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
