@@ -6,9 +6,9 @@
 
 My student [__Rushabh Gala__](https://github.com/rushabhvg) has just completed his project for [__Google Summer of Code__](https://summerofcode.withgoogle.com/). Rushabh has created __Safer Rust Apps__ for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)...
 
-- [__GSoC Final Report__](TODO)
+- [__GSoC Final Report__](https://rushabhvg.github.io/articles/end_report)
 
-- [__GSoC Midterm Report__](TODO)
+- [__GSoC Midterm Report__](https://rushabhvg.github.io/articles/mid_term_blog_post)
 
 - [__NuttX Workshop Presentation__](https://youtu.be/dFOodFieo4M?si=r4-MZWQwKnvqVv3h)
 
@@ -149,6 +149,8 @@ board_userled: LED 3 set to 0
 Rust blinks our Simulated LED on NuttX QEMU! Let's head back inside the code...
 
 [(See the __NuttX Log__)](https://github.com/lupyuen/nuttx-riscv64/actions/runs/10396419763/job/28790386663)
+
+[(QEMU RISC-V 32-bit needs a __Custom Rust Target__)](https://lupyuen.github.io/articles/rust4#custom-target-for-rust)
 
 ![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-title.jpg)
 
@@ -325,7 +327,7 @@ $ tools/configure.sh rv-virt:leds64_rust
 $ make
 ```
 
-Which complicates our coding of NuttX Rust Apps. That's why we hope to test them on [__Linux / macOS / Windows__](https://lupyuen.github.io/articles/rust6#runs-on-linux--macos--windows).
+Which complicates our coding of NuttX Rust Apps. That's why we hope to test them first on [__Linux / macOS / Windows__](https://lupyuen.github.io/articles/rust6#runs-on-linux--macos--windows).
 
 (__NuttX Module nuttx.rs__ should probably live in a Common Source Folder)
 
@@ -356,8 +358,6 @@ We created the LED Driver for __QEMU RISC-V Emulator__, which will blink a Simul
 Everyone can run the __Rust Blinky App__ (from above) and reproduce the exact same results, thanks to the QEMU LED Driver...
 
 - [__"Add LED Driver for QEMU RISC-V"__](https://github.com/apache/nuttx/pull/12762)
-
-  [(__QEMU RISC-V 32-bit__ needs a __Custom Rust Target__)](https://lupyuen.github.io/articles/rust4#custom-target-for-rust)
 
 ![Daily Build and Test of Rust Blinky App at GitHub Actions](https://lupyuen.github.io/images/rust6-daily.png)
 
