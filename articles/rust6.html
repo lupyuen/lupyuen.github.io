@@ -83,10 +83,10 @@
 <p>My student <a href="https://github.com/rushabhvg"><strong>Rushabh Gala</strong></a> has just completed his project for <a href="https://summerofcode.withgoogle.com/"><strong>Google Summer of Code</strong></a>. Rushabh has created <strong>Safer Rust Apps</strong> for <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a>…</p>
 <ul>
 <li>
-<p><a href="TODO"><strong>GSoC Final Report</strong></a></p>
+<p><a href="https://rushabhvg.github.io/articles/end_report"><strong>GSoC Final Report</strong></a></p>
 </li>
 <li>
-<p><a href="TODO"><strong>GSoC Midterm Report</strong></a></p>
+<p><a href="https://rushabhvg.github.io/articles/mid_term_blog_post"><strong>GSoC Midterm Report</strong></a></p>
 </li>
 <li>
 <p><a href="https://youtu.be/dFOodFieo4M?si=r4-MZWQwKnvqVv3h"><strong>NuttX Workshop Presentation</strong></a></p>
@@ -220,6 +220,7 @@ board_userled: LED 3 set to 0
 </code></pre></div>
 <p>Rust blinks our Simulated LED on NuttX QEMU! Let’s head back inside the code…</p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/runs/10396419763/job/28790386663">(See the <strong>NuttX Log</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/rust4#custom-target-for-rust">(QEMU RISC-V 32-bit needs a <strong>Custom Rust Target</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/rust6-title.jpg" alt="Blinking the NuttX LED in Rust" /></p>
 <h1 id="handle-errors-safely"><a class="doc-anchor" href="#handle-errors-safely">§</a>3 Handle Errors Safely</h1>
 <p><em>Why the funny question mark? (Pic above)</em></p>
@@ -338,7 +339,7 @@ $ tools/configure.sh rv-virt:leds64_rust
 ## Which calls `rustc`
 $ make
 </code></pre></div>
-<p>Which complicates our coding of NuttX Rust Apps. That’s why we hope to test them on <a href="https://lupyuen.github.io/articles/rust6#runs-on-linux--macos--windows"><strong>Linux / macOS / Windows</strong></a>.</p>
+<p>Which complicates our coding of NuttX Rust Apps. That’s why we hope to test them first on <a href="https://lupyuen.github.io/articles/rust6#runs-on-linux--macos--windows"><strong>Linux / macOS / Windows</strong></a>.</p>
 <p>(<strong>NuttX Module nuttx.rs</strong> should probably live in a Common Source Folder)</p>
 <p><img src="https://lupyuen.github.io/images/rust6-ox64.jpg" alt="Rust Blinky on Ox64 BL808 SBC" /></p>
 <p><a href="https://youtube.com/shorts/t6nxVZWS0Js?feature=share"><em>Rust Blinky on Ox64 BL808 SBC</em></a></p>
@@ -360,10 +361,7 @@ $ make
 <p>We created the LED Driver for <strong>QEMU RISC-V Emulator</strong>, which will blink a Simulated LED on NuttX. (Pic above)</p>
 <p>Everyone can run the <strong>Rust Blinky App</strong> (from above) and reproduce the exact same results, thanks to the QEMU LED Driver…</p>
 <ul>
-<li>
-<p><a href="https://github.com/apache/nuttx/pull/12762"><strong>“Add LED Driver for QEMU RISC-V”</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/rust4#custom-target-for-rust">(<strong>QEMU RISC-V 32-bit</strong> needs a <strong>Custom Rust Target</strong>)</a></p>
-</li>
+<li><a href="https://github.com/apache/nuttx/pull/12762"><strong>“Add LED Driver for QEMU RISC-V”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/rust6-daily.png" alt="Daily Build and Test of Rust Blinky App at GitHub Actions" /></p>
 <h1 id="daily-build-and-test"><a class="doc-anchor" href="#daily-build-and-test">§</a>9 Daily Build and Test</h1>
