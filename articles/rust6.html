@@ -83,48 +83,45 @@
 <p>My student <a href="https://github.com/rushabhvg"><strong>Rushabh Gala</strong></a> has just completed his project for <a href="https://summerofcode.withgoogle.com/"><strong>Google Summer of Code</strong></a>. Rushabh has created safer <strong>Rust Apps</strong> for <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a>…</p>
 <ul>
 <li>
-<p>TODO: Final Report</p>
+<p><a href="TODO"><strong>GSoC Final Report</strong></a></p>
 </li>
 <li>
-<p>TODO: Midterm Report</p>
+<p><a href="TODO"><strong>GSoC Midterm Report</strong></a></p>
 </li>
 <li>
-<p>TODO: NuttX Workshop Presentation </p>
+<p><a href="https://youtu.be/dFOodFieo4M?si=r4-MZWQwKnvqVv3h"><strong>NuttX Workshop Presentation</strong></a></p>
 </li>
 </ul>
 <p>In this article we walk through Rushabh’s contributions. And understand how we’re evolving <strong>Rust Apps for NuttX</strong>…</p>
-<ul>
+<ol>
 <li>
 <p><strong>Blinking the LED</strong> in Rust</p>
-</li>
-<li>
-<p>Testing on <strong>QEMU RISC-V Emulator</strong></p>
 </li>
 <li>
 <p><strong>Handling Errors</strong> returned by NuttX</p>
 </li>
 <li>
-<p>TODO: Runs on Linux / macOS / Window</p>
+<p>Testing on <strong>QEMU RISC-V Emulator</strong></p>
 </li>
 <li>
-<p>TODO: Main Function</p>
+<p>And maybe <strong>Linux / macOS / Window</strong></p>
 </li>
 <li>
-<p>TODO: Panic Handler</p>
+<p>But <strong>No Crates Allowed</strong> in NuttX!</p>
 </li>
 <li>
-<p>TODO: No Crates in NuttX</p>
+<p>Be wary of the <strong>Main Function</strong> and <strong>Panic Handler</strong></p>
 </li>
 <li>
-<p>TODO: LED Drivers for NuttX</p>
+<p>We created <strong>LED Drivers</strong> for QEMU and Ox64 BL808 SBC</p>
 </li>
 <li>
-<p>TODO: Daily Build and Test</p>
+<p>And we’re running <strong>Daily Build and Test</strong> of our Rust App</p>
 </li>
 <li>
-<p>TODO: Updating the docker image for CI</p>
+<p>Thanks to our <strong>Updated Docker Image</strong> for Continuous Integration</p>
 </li>
-</ul>
+</ol>
 <p><img src="https://lupyuen.github.io/images/rust6-flow2.jpg" alt="Blinking the NuttX LED in Rust" /></p>
 <h1 id="blink-the-led"><a class="doc-anchor" href="#blink-the-led">§</a>1 Blink The LED</h1>
 <p>This is how we <strong>Blink the LED</strong> in a NuttX Rust App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs">leds_rust_main.rs</a></p>
@@ -151,16 +148,16 @@
 <p><a href="https://github.com/lupyuen/nuttx-rust-app/blob/main/app/src/main.rs">(<strong>Mirrored here:</strong> nuttx-rust-app/app/src/main.rs)</a></p>
 <p>Our Rust Blinky App looks mighty similar to the <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85"><strong>C Version</strong></a>! But with simpler Error Handling than C. (We’ll talk more)</p>
 <p><em>What are safe_open and safe_ioctl?</em></p>
-<p>They are safer versions of <strong>open</strong> and <strong>ioctl</strong> from our <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs"><strong>NuttX Module</strong></a>. Inside the NuttX Module we…</p>
+<p>They are safer versions of <strong>open</strong> and <strong>ioctl</strong>, from our <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs"><strong>NuttX Module</strong></a>. Inside the NuttX Module we…</p>
 <ul>
 <li>
-<p>Define the Safe Wrappers: <strong><code>safe_*</code></strong></p>
+<p>Define the Safe Wrappers: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L69-L119"><strong><code>safe_*</code></strong></a></p>
 </li>
 <li>
-<p>Import <strong>usleep</strong> and <strong>close</strong> from C</p>
+<p>Import <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L28-L41"><strong>usleep</strong></a> and <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L28-L41"><strong>close</strong></a> from C</p>
 </li>
 <li>
-<p>Plus the NuttX Constants: <strong>O_WRONLY</strong> and <strong>ULEDIOC_SETALL</strong></p>
+<p>Plus the NuttX Constants: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L41-L51"><strong>O_WRONLY</strong></a> and <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L41-L51"><strong>ULEDIOC_SETALL</strong></a></p>
 </li>
 </ul>
 <p>We import the <strong>NuttX Module</strong> into our Rust App like so…</p>
@@ -234,8 +231,8 @@ board_userled: LED 3 set to 0
 <p>Remember in C we check the <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L46-L64"><strong>Result Value</strong></a> at every call to <strong>open</strong> and <strong>ioctl</strong>… Now with <strong>safe_open</strong> and <strong>safe_ioctl</strong>, Rust does the checking for us!</p>
 <p>If something goes wrong, the code above will exit the function with an <strong>Error Value</strong>. (Like if <em>“/dev/userleds”</em> doesn’t exist)</p>
 <p>Our NuttX App becomes a little safer with the <a href="https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html"><strong>Question Mark Operator</strong></a>, by auto-checking the results of System Calls.</p>
-<p>(Rust Compiler will warn us if we forget the Question Mark)</p>
-<p>TODO: safe_puts buffer size</p>
+<p>(Rust Compiler <strong>will warn us</strong> if we forget the Question Mark)</p>
+<p>(<strong>safe_puts</strong> has a limited <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L104-L119"><strong>Buffer Size</strong></a>)</p>
 <p><em>But usleep and close are still unsafe?</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Wait a while
@@ -338,7 +335,7 @@ $ tools/configure.sh rv-virt:leds64_rust
 $ make
 </code></pre></div>
 <p>Which complicates our coding of NuttX Rust Apps. That’s why we hope to test them on <a href="https://lupyuen.github.io/articles/rust6#runs-on-linux--macos--windows"><strong>Linux / macOS / Windows</strong></a>.</p>
-<p>TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)</p>
+<p>(<strong>NuttX Module</strong> should probably live in a Common Source Folder)</p>
 <p><img src="https://lupyuen.github.io/images/rust6-ox64.jpg" alt="Testing Rust Blinky on Ox64 BL808 SBC" /></p>
 <h1 id="led-drivers-for-nuttx"><a class="doc-anchor" href="#led-drivers-for-nuttx">§</a>8 LED Drivers for NuttX</h1>
 <p><em>12 weeks of GSoC: What else have we implemented?</em></p>
@@ -428,7 +425,7 @@ $ make
 <p>In the meantime, we can call <strong>NuttX Safe Wrappers</strong> (prescribed in this article) to build Rust Apps for NuttX, the Interim Way.</p>
 <p><img src="https://lupyuen.github.io/images/rust6-flow.jpg" alt="Blinking the NuttX LED in Rust" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
-<p>TODO: What’s Next</p>
+<p>TODO: Early days</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <p>Special Thanks to <strong>Mr Rushabh Gala</strong>: Sorry it’s my first GSoC, I could have done better, I’m grateful for your patience and understanding 🙏</p>
 <ul>
