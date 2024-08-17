@@ -6,33 +6,31 @@
 
 My student [__Rushabh Gala__](https://github.com/rushabhvg) has just completed his project for [__Google Summer of Code__](https://summerofcode.withgoogle.com/). Rushabh has created safer __Rust Apps__ for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)...
 
-- TODO: Final Report
+- [__GSoC Final Report__](TODO)
 
-- TODO: Midterm Report
+- [__GSoC Midterm Report__](TODO)
 
-- TODO: NuttX Workshop Presentation 
+- [__NuttX Workshop Presentation__](https://youtu.be/dFOodFieo4M?si=r4-MZWQwKnvqVv3h)
 
 In this article we walk through Rushabh's contributions. And understand how we're evolving __Rust Apps for NuttX__...
 
-- __Blinking the LED__ in Rust
+1.  __Blinking the LED__ in Rust
 
-- Testing on __QEMU RISC-V Emulator__
+1.  __Handling Errors__ returned by NuttX
 
-- __Handling Errors__ returned by NuttX
+1.  Testing on __QEMU RISC-V Emulator__
 
-- TODO: Runs on Linux / macOS / Window
+1.  And maybe __Linux / macOS / Window__
 
-- TODO: Main Function
+1.  But __No Crates Allowed__ in NuttX!
 
-- TODO: Panic Handler
+1.  Be wary of the __Main Function__ and __Panic Handler__
 
-- TODO: No Crates in NuttX
+1.  We created __LED Drivers__ for QEMU and Ox64 BL808 SBC
 
-- TODO: LED Drivers for NuttX
+1.  And we're running __Daily Build and Test__ of our Rust App
 
-- TODO: Daily Build and Test
-
-- TODO: Updating the docker image for CI
+1.  Thanks to our __Updated Docker Image__ for Continuous Integration
 
 ![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-flow2.jpg)
 
@@ -68,13 +66,13 @@ Our Rust Blinky App looks mighty similar to the [__C Version__](https://github.c
 
 _What are safe_open and safe_ioctl?_
 
-They are safer versions of __open__ and __ioctl__ from our [__NuttX Module__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs). Inside the NuttX Module we...
+They are safer versions of __open__ and __ioctl__, from our [__NuttX Module__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs). Inside the NuttX Module we...
 
-- Define the Safe Wrappers: __`safe_*`__
+- Define the Safe Wrappers: [__`safe_*`__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L69-L119)
 
-- Import __usleep__ and __close__ from C
+- Import [__usleep__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L28-L41) and [__close__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L28-L41) from C
 
-- Plus the NuttX Constants: __O_WRONLY__ and __ULEDIOC_SETALL__
+- Plus the NuttX Constants: [__O_WRONLY__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L41-L51) and [__ULEDIOC_SETALL__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L41-L51)
 
 We import the __NuttX Module__ into our Rust App like so...
 
@@ -171,9 +169,9 @@ If something goes wrong, the code above will exit the function with an __Error V
 
 Our NuttX App becomes a little safer with the [__Question Mark Operator__](https://doc.rust-lang.org/rust-by-example/std/result/question_mark.html), by auto-checking the results of System Calls.
 
-(Rust Compiler will warn us if we forget the Question Mark)
+(Rust Compiler __will warn us__ if we forget the Question Mark)
 
-TODO: safe_puts buffer size
+(__safe_puts__ has a limited [__Buffer Size__](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/nuttx.rs#L104-L119))
 
 _But usleep and close are still unsafe?_
 
@@ -323,7 +321,7 @@ $ make
 
 Which complicates our coding of NuttX Rust Apps. That's why we hope to test them on [__Linux / macOS / Windows__](https://lupyuen.github.io/articles/rust6#runs-on-linux--macos--windows).
 
-TODO: No Crates! Need to embed NuttX Module in every Rust App (common folder?)
+(__NuttX Module__ should probably live in a Common Source Folder)
 
 ![Testing Rust Blinky on Ox64 BL808 SBC](https://lupyuen.github.io/images/rust6-ox64.jpg)
 
@@ -427,7 +425,7 @@ In the meantime, we can call __NuttX Safe Wrappers__ (prescribed in this article
 
 # What's Next
 
-TODO: What's Next
+TODO: Early days
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
