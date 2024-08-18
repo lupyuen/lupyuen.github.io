@@ -95,6 +95,12 @@ And yes this code runs on Linux, macOS and Windows! We'll come back to this, fir
 To test Rust Blinky on __QEMU RISC-V Emulator__, follow these steps...
 
 ```bash
+## TODO: Install the NuttX Build Prerequisites, skip the RISC-V Toolchain
+## https://lupyuen.github.io/articles/nuttx#install-prerequisites
+
+## TODO: Download the xPack Toolchain for RISC-V
+## https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v
+
 ## Install the Rust Target for QEMU RISC-V 64-bit
 rustup target add riscv64gc-unknown-none-elf
 
