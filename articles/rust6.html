@@ -104,7 +104,7 @@
 <p>Testing on <strong>QEMU RISC-V Emulator</strong></p>
 </li>
 <li>
-<p>And maybe <strong>Linux / macOS / Window</strong></p>
+<p>And maybe <strong>Linux / macOS / Windows</strong></p>
 </li>
 <li>
 <p>But <strong>No Crates Allowed</strong> in NuttX!</p>
@@ -429,8 +429,33 @@ $ make
 <p>Meanwhile, we can call <a href="https://lupyuen.github.io/articles/rust6#handle-errors-safely"><strong>NuttX Safe Wrappers</strong></a> (prescribed in this article) to build Rust Apps for NuttX, the Interim Way.</p>
 <p><img src="https://lupyuen.github.io/images/rust6-flow.jpg" alt="Blinking the NuttX LED in Rust" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
-<p>TODO: These are the Early Days of Rust Apps on Apache NuttX RTOS. We talked about…</p>
-<p>TODO: <a href="https://rust-for-linux.com/third-party-crates"><strong>Rust for Linux Kernel</strong></a></p>
+<p>These are the <strong>Early Days of Rust Apps</strong> on Apache NuttX RTOS. We talked about…</p>
+<ul>
+<li>
+<p><strong>Blinking the LED</strong> in Rust</p>
+<p><strong>Handling Errors</strong> returned by NuttX</p>
+</li>
+<li>
+<p>Testing on <strong>QEMU RISC-V Emulator</strong></p>
+<p>And possibly <strong>Linux / macOS / Windows</strong></p>
+</li>
+<li>
+<p>But NuttX <strong>Won’t Allow Any Crates</strong>!</p>
+<p>(Someday it might allow some crates, similar to <a href="https://rust-for-linux.com/third-party-crates"><strong>Rust for Linux Kernel</strong></a>)</p>
+</li>
+<li>
+<p>Be wary of the <strong>Main Function</strong> and <strong>Panic Handler</strong>!</p>
+<p>(Things work differently on NuttX vs Linux / macOS / Windows)</p>
+</li>
+<li>
+<p>Check out the <strong>LED Drivers</strong> we created</p>
+<p>(For testing QEMU Emulator and Ox64 BL808 SBC)</p>
+</li>
+<li>
+<p>We’re running <strong>Daily Build and Test</strong> of our Rust App</p>
+<p>Based on our <strong>Updated Docker Image</strong> for Continuous Integration</p>
+</li>
+</ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <p>Special Thanks to <strong>Mr Rushabh Gala</strong>: Sorry it’s my first GSoC, I could have done better, I’m grateful for your patience and understanding 🙏</p>
 <ul>
