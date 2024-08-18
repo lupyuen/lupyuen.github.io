@@ -272,7 +272,7 @@ ERROR: rust_main() failed with error -1
 <p><img src="https://lupyuen.github.io/images/rust6-flow.jpg" alt="Blinking the NuttX LED in Rust" /></p>
 <h1 id="main-function-for-rust"><a class="doc-anchor" href="#main-function-for-rust">§</a>5 Main Function for Rust</h1>
 <p><em>We saw the LED Blinky code in rust_main. Who calls rust_main?</em></p>
-<p>Remember that <strong>rust_main</strong> returns a <strong>Result Type</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs#L59-L91">leds_rust_main.rs</a></p>
+<p>Remember that <strong>rust_main</strong> returns a <a href="https://doc.rust-lang.org/rust-by-example/error/result.html"><strong>Result Type</strong></a>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs#L59-L91">leds_rust_main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// `rust_main` accepts the args from NuttX Shell
 // And returns a Result Code (int) or Error Code (int)
