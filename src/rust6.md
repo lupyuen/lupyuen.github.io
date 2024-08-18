@@ -233,7 +233,7 @@ This greatly simplifies our NuttX App Development: We could (potentially) compil
 
 _We saw the LED Blinky code in rust_main. Who calls rust_main?_
 
-Remember that __rust_main__ returns a __Result Type__: [leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs#L59-L91)
+Remember that __rust_main__ returns a [__Result Type__](https://doc.rust-lang.org/rust-by-example/error/result.html): [leds_rust_main.rs](https://github.com/apache/nuttx-apps/blob/master/examples/leds_rust/leds_rust_main.rs#L59-L91)
 
 ```rust
 // `rust_main` accepts the args from NuttX Shell
