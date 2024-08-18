@@ -465,7 +465,7 @@ These are the __Early Days of Rust Apps__ on Apache NuttX RTOS. We talked about.
 
 - We're running __Daily Build and Test__ of our Rust App
 
-  (Based on our __Updated Docker Image__ for Continuous Integration)
+  (With our __Updated Docker Image__ for Continuous Integration)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
