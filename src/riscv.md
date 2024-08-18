@@ -862,15 +862,13 @@ $ sudo apt -y remove \
 $ ls /usr/bin/riscv*
 ls: cannot access '/usr/bin/riscv*': No such file or directory
 
-## Browse the xPack Releases here:
-## https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/v12.3.0-1
-## For Linux x64: Change `arm64` below to `x64`
-$ wget https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v12.3.0-1/xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
-$ tar xf xpack-riscv-none-elf-gcc-12.3.0-1-linux-arm64.tar.gz
-$ export PATH=$PWD/xpack-riscv-none-elf-gcc-12.3.0-1/bin:$PATH
-
+## Install xPack GCC Toolchain for RISC-V (Linux x64)
+## https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases
+$ wget https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v13.2.0-2/xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
+$ tar xf xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
+$ export PATH=$PWD/xpack-riscv-none-elf-gcc-13.2.0-2/bin:$PATH
 $ riscv-none-elf-gcc -v
-gcc version 12.3.0 (xPack GNU RISC-V Embedded GCC aarch64)
+gcc version 13.2.0 (xPack GNU RISC-V Embedded GCC x86_64)
 
 ## Build NuttX, based on...
 ## https://lupyuen.github.io/articles/release#build-nuttx-for-star64
