@@ -20,7 +20,7 @@ In this article we walk through Rushabh's contributions. And understand how we'r
 
 1.  Testing on __QEMU RISC-V Emulator__
 
-1.  And maybe __Linux / macOS / Window__
+1.  And maybe __Linux / macOS / Windows__
 
 1.  But __No Crates Allowed__ in NuttX!
 
@@ -435,9 +435,31 @@ Meanwhile, we can call [__NuttX Safe Wrappers__](https://lupyuen.github.io/artic
 
 # What's Next
 
-TODO: These are the Early Days of Rust Apps on Apache NuttX RTOS. We talked about...
+These are the __Early Days of Rust Apps__ on Apache NuttX RTOS. We talked about...
 
-TODO: [__Rust for Linux Kernel__](https://rust-for-linux.com/third-party-crates)
+- __Blinking the LED__ in Rust
+
+  __Handling Errors__ returned by NuttX
+
+- Testing on __QEMU RISC-V Emulator__
+
+  And possibly __Linux / macOS / Windows__
+
+- But NuttX __Won't Allow Any Crates__!
+
+  (Someday it might allow some crates, similar to [__Rust for Linux Kernel__](https://rust-for-linux.com/third-party-crates))
+
+- Be wary of the __Main Function__ and __Panic Handler__!
+
+  (Things work differently on NuttX vs Linux / macOS / Windows)
+
+- Check out the __LED Drivers__ we created
+
+  (For testing QEMU Emulator and Ox64 BL808 SBC)
+
+- We're running __Daily Build and Test__ of our Rust App
+
+  Based on our __Updated Docker Image__ for Continuous Integration
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
