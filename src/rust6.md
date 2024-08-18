@@ -331,6 +331,8 @@ Which complicates our coding of NuttX Rust Apps. That's why we hope to test them
 
 (__NuttX Module nuttx.rs__ should probably live in a Common Source Folder)
 
+(Maybe NuttX will allow some crates, similar to [__Rust for Linux Kernel__](https://rust-for-linux.com/third-party-crates))
+
 ![Rust Blinky on Ox64 BL808 SBC](https://lupyuen.github.io/images/rust6-ox64.jpg)
 
 [_Rust Blinky on Ox64 BL808 SBC_](https://youtube.com/shorts/t6nxVZWS0Js?feature=share)
@@ -433,7 +435,9 @@ Meanwhile, we can call [__NuttX Safe Wrappers__](https://lupyuen.github.io/artic
 
 # What's Next
 
-TODO: Early days
+TODO: These are the Early Days of Rust Apps on Apache NuttX RTOS. We talked about...
+
+TODO: [__Rust for Linux Kernel__](https://rust-for-linux.com/third-party-crates)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
