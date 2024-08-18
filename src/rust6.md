@@ -453,11 +453,11 @@ These are the __Early Days of Rust Apps__ on Apache NuttX RTOS. We talked about.
 
 - But NuttX __Won't Allow Any Crates__!
 
-  (Someday it might allow some crates, similar to [__Rust for Linux Kernel__](https://rust-for-linux.com/third-party-crates))
+  (Someday it might? Similar to [__Rust for Linux Kernel__](https://rust-for-linux.com/third-party-crates))
 
 - Be wary of the __Main Function__ and __Panic Handler__!
 
-  (Things work differently on NuttX vs Linux / macOS / Windows)
+  (NuttX works differently from Linux / macOS / Windows)
 
 - Check out the __LED Drivers__ we created
 
@@ -465,7 +465,7 @@ These are the __Early Days of Rust Apps__ on Apache NuttX RTOS. We talked about.
 
 - We're running __Daily Build and Test__ of our Rust App
 
-  Based on our __Updated Docker Image__ for Continuous Integration
+  (Based on our __Updated Docker Image__ for Continuous Integration)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
