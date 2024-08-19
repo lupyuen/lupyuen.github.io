@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Early Days of Rust Apps on Apache NuttX RTOS",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-08-19",
+      "website": "https://lupyuen.github.io/articles/rust6",
+      "summary": "My student Rushabh Gala has just completed his project for Google Summer of Code, on creating Safer Rust Apps for Apache NuttX RTOS. In this article we walk through Rushabh’s contributions, and understand how we’re evolving Rust Apps for NuttX."
+    },
+    {
       "name": "RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-07-07",

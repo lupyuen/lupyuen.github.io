@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Early Days of Rust Apps on Apache NuttX RTOS</title>
+            <link>https://lupyuen.github.io/articles/rust6</link>
+            <description><![CDATA[My student Rushabh Gala has just completed his project for Google Summer of Code, on creating Safer Rust Apps for Apache NuttX RTOS. In this article we walk through Rushabh’s contributions, and understand how we’re evolving Rust Apps for NuttX.]]></description>
+            <guid>https://lupyuen.github.io/articles/rust6</guid>
+            <pubDate>Mon, 19 Aug 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)</title>
             <link>https://lupyuen.github.io/articles/sg2000b</link>
             <description><![CDATA[Earlier this year we made a RISC-V Emulator for Ox64 BL808 SBC, thanks to our customised TinyEMU RISC-V Emulator. (Not the small flightless bird) Now that NuttX supports Sophgo SG2000 SoC: Let's create a similar emulator for Pine64 Oz64 SBC and Milk-V Duo S!]]></description>
