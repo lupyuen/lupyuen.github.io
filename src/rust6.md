@@ -433,7 +433,7 @@ The NuttX Community is now prepping NuttX as [__Tier 3 Target__](https://lists.a
 
 _Everything in this article... Becomes redundant?_
 
-Soon we'll have lots of Coding and Testing to implement NuttX as Tier 3 Target, that works with the [__Rust Standard Library__](https://doc.rust-lang.org/std/index.html).
+Soon we'll have lots of [__Coding and Testing__](https://github.com/apache/nuttx-apps/pull/2487) to implement NuttX as Tier 3 Target, that works with the [__Rust Standard Library__](https://doc.rust-lang.org/std/index.html).
 
 Meanwhile, we can call [__NuttX Safe Wrappers__](https://lupyuen.github.io/articles/rust6#handle-errors-safely) (prescribed in this article) to build Rust Apps for NuttX, the Interim Way.
 
