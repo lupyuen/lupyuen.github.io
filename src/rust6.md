@@ -473,6 +473,8 @@ Special Thanks to __Mr Rushabh Gala__: Sorry it’s my first GSoC, I could have 
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=41289120)
+
 -   [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://github.com/lupyuen/nuttx-sg2000)
 
 -   [__My Other Project: "NuttX for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
