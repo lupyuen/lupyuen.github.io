@@ -1,6 +1,6 @@
 # Early Days of Rust Apps on Apache NuttX RTOS
 
-📝 _26 Aug 2024_
+📝 _19 Aug 2024_
 
 ![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-title.jpg)
 
