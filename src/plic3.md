@@ -665,58 +665,49 @@ _What about User Text and Data? For NuttX Apps?_
 
 Yep they need to be explicitly cached too!
 
-This is how we cache the __User Text and Data__, by setting the __Extra MMU Flags__ in NuttX Config: [nsh/defconfig](https://github.com/lupyuen2/wip-nuttx/blob/benchmark7/boards/risc-v/bl808/ox64/configs/nsh/defconfig)
-
-```bash
-## Upper 32 bits of the Extra MMU flags for User Data and Heap.
-## Used for Svpbmt and T-Head MMU. 0x70000000 enables the 
-## Shareable, Bufferable and Cacheable flags for T-Head MMU.
-CONFIG_ARCH_MMU_UDATA_EXTRAFLAGS=0x70000000
-
-## Same as above, but for User Text
-CONFIG_ARCH_MMU_UTEXT_EXTRAFLAGS=0x70000000
-```
-
-(Note that `0x70000000 << 32` becomes __MMU_THEAD_PMA_FLAGS__)
-
-Then NuttX Kernel __injects the Extra MMU Flags__ into the MMU Page Tables for User Text, Data and Heap: [riscv_addrenv.c](https://github.com/lupyuen2/wip-nuttx/blob/benchmark7/arch/risc-v/src/common/riscv_addrenv.c#L93-L481)
+This is how we cache the __User Text and Data__, by setting the __Extra MMU Flags__: [arch/risc-v/src/common/riscv_mmu.h](https://github.com/apache/nuttx/pull/13199/files#diff-78622512908e92ef607e2792a0728277b9a2fa5686413f735d64723ff7053308)
 
 ```c
-// Inject the Extra MMU Flags for User Text and Data (Svpbmt / T-Head MMU)
-#define UTEXT_EXTRAFLAGS ((uint64_t)CONFIG_ARCH_MMU_UTEXT_EXTRAFLAGS << 32)
-#define UDATA_EXTRAFLAGS ((uint64_t)CONFIG_ARCH_MMU_UDATA_EXTRAFLAGS << 32)
-#define UTEXT_ALLFLAGS (MMU_UTEXT_FLAGS | UTEXT_EXTRAFLAGS)
-#define UDATA_ALLFLAGS (MMU_UDATA_FLAGS | UDATA_EXTRAFLAGS)
+// T-Head MMU needs Text and Data to be Shareable, Bufferable, Cacheable
+#ifdef CONFIG_ARCH_MMU_EXT_THEAD
+#  define PTE_SEC         (1UL << 59) /* Security */
+#  define PTE_SHARE       (1UL << 60) /* Shareable */
+#  define PTE_BUF         (1UL << 61) /* Bufferable */
+#  define PTE_CACHE       (1UL << 62) /* Cacheable */
+#  define PTE_SO          (1UL << 63) /* Strong Order */
 
-// When we create the Address Environment for a New User Task...
-int up_addrenv_create(...) {
-  ...
-  // Map the Reserved Area, User Text, User Data and User Heap
-  // injected with our Extra MMU Flags
-  ret = create_region(addrenv, resvbase, resvsize, UDATA_ALLFLAGS);
-  ...
-  ret = create_region(addrenv, textbase, textsize, UTEXT_ALLFLAGS);
-  ...
-  ret = create_region(addrenv, database, datasize, UDATA_ALLFLAGS);
-  ...
-  ret = create_region(addrenv, heapbase, heapsize, UDATA_ALLFLAGS);
+#  define EXT_UTEXT_FLAGS (PTE_SHARE | PTE_BUF | PTE_CACHE)
+#  define EXT_UDATA_FLAGS (PTE_SHARE | PTE_BUF | PTE_CACHE)
+#else
+#  define EXT_UTEXT_FLAGS (0)
+#  define EXT_UDATA_FLAGS (0)
+#endif
+
+// Flags for user FLASH (RX) and user RAM (RW)
+#define MMU_UTEXT_FLAGS (PTE_R | PTE_X | PTE_U | EXT_UTEXT_FLAGS)
+#define MMU_UDATA_FLAGS (PTE_R | PTE_W | PTE_U | EXT_UDATA_FLAGS)
 ```
 
-[(See the __Pull Request for Ox64 and SG2000__)](https://github.com/apache/nuttx/pull/12727)
+Then we enable __ARCH_MMU_EXT_THEAD__ for SG2000 and BL808: [arch/risc-v/Kconfig](https://github.com/apache/nuttx/pull/13199/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
 
-__UPDATE:__ Sorry I'm in a distracted state right now, I can't redo the above Pull Request because my top priority is Google Summer of Code for the next 4 weeks.
+```yaml
+config ARCH_CHIP_SG2000
+	bool "SOPHGO SG2000"
+	select ARCH_MMU_TYPE_SV39
+	select ARCH_MMU_EXT_THEAD
+```
 
-If someone would like to redo the above Pull Request on my behalf... Thank you so much! 🙏
+[(See the __Pull Request for SG2000__)](https://github.com/apache/nuttx/pull/13199)
 
-_Why specify the Upper 32 Bits for Extra MMU Flags? Why not Upper 5 Bits?_
+_Will we have issues with MMU Flags: T-Head vs Svpbmt?_
 
-Well we need to handle (non-standard) T-Head MMU Flags and (standard) Svpbmt MMU Flags. According to [__Linux Kernel__](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L112-L140)...
+Well eventually we need to handle (non-standard) T-Head MMU Flags and (standard) Svpbmt MMU Flags. According to [__Linux Kernel__](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L112-L140)...
 
 - __T-Head MMU Flags__ are in __Bits 59 to 63__ (upper 5 bits)
 
 - __Svpbmt MMU Flags__ are in __Bits 61 and 62__ (upper 3 bits)
 
-Since T-Head and Svpbmt disagree on the MMU Bits (and we may have more MMU Bits in future), let's take the Upper 32 Bits.
+T-Head and Svpbmt disagree on the MMU Bits. (And we may have more MMU Bits in future)
 
 _Does MMU Caching affect NuttX Performance?_
 
