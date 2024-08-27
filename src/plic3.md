@@ -688,6 +688,8 @@ This is how we cache the __User Text and Data__, by setting the __Extra MMU Flag
 #define MMU_UDATA_FLAGS (PTE_R | PTE_W | PTE_U | EXT_UDATA_FLAGS)
 ```
 
+[(__MMU_UTEXT_FLAGS__ and __MMU_UDATA_FLAGS__ are called by __up_addrenv_create__)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_addrenv.c#L429-L465)
+
 Then we enable __ARCH_MMU_EXT_THEAD__ for SG2000 and BL808: [arch/risc-v/Kconfig](https://github.com/apache/nuttx/pull/13199/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
 
 ```yaml
