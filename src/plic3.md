@@ -688,7 +688,7 @@ This is how we cache the __User Text and Data__, by setting the __Extra MMU Flag
 #define MMU_UDATA_FLAGS (PTE_R | PTE_W | PTE_U | EXT_UDATA_FLAGS)
 ```
 
-[(__MMU_UTEXT_FLAGS__ and __MMU_UDATA_FLAGS__ are called by __up_addrenv_create__)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_addrenv.c#L429-L465)
+[(__MMU_UTEXT_FLAGS__ and __MMU_UDATA_FLAGS__ are used by __up_addrenv_create__ to configure the User Text, Data and Heap)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_addrenv.c#L429-L465)
 
 Then we enable __ARCH_MMU_EXT_THEAD__ for SG2000 and BL808: [arch/risc-v/Kconfig](https://github.com/apache/nuttx/pull/13199/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
 
@@ -701,16 +701,6 @@ config ARCH_CHIP_SG2000
 
 [(See the __Pull Request for SG2000__)](https://github.com/apache/nuttx/pull/13199)
 
-_Will we have issues with MMU Flags: T-Head vs Svpbmt?_
-
-Well eventually we need to handle (non-standard) T-Head MMU Flags and (standard) Svpbmt MMU Flags. According to [__Linux Kernel__](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L112-L140)...
-
-- __T-Head MMU Flags__ are in __Bits 59 to 63__ (upper 5 bits)
-
-- __Svpbmt MMU Flags__ are in __Bits 61 and 62__ (upper 3 bits)
-
-T-Head and Svpbmt disagree on the MMU Bits. (And we may have more MMU Bits in future)
-
 _Does MMU Caching affect NuttX Performance?_
 
 Really it does!
@@ -720,6 +710,18 @@ Really it does!
 - SG2000 CoreMark __with MMU Caching__: __`2,422`__
 
   [(More about this)](https://github.com/apache/nuttx/issues/12696#issuecomment-2232279326)
+
+_Will we have issues with MMU Flags: T-Head vs Svpbmt?_
+
+Well eventually we need to handle (non-standard) T-Head MMU Flags and (standard) Svpbmt MMU Flags. According to [__Linux Kernel__](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L112-L140)...
+
+- __T-Head MMU Flags__ are in __Bits 59 to 63__ (upper 5 bits)
+
+- __Svpbmt MMU Flags__ are in __Bits 61 and 62__ (upper 3 bits)
+
+T-Head and Svpbmt __disagree on the MMU Bits__. (And we may have more MMU Bits in future)
+
+Thankfully Svpbmt already __caches by default__ (because PMA=0). So we can ignore Svpbmt for now.
 
 ![UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!](https://lupyuen.github.io/images/plic3-title.png)
 
