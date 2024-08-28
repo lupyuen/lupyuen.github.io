@@ -694,12 +694,17 @@ Then we enable __ARCH_MMU_EXT_THEAD__ for SG2000 and BL808: [arch/risc-v/Kconfig
 
 ```yaml
 config ARCH_CHIP_SG2000
-	bool "SOPHGO SG2000"
+	select ARCH_MMU_TYPE_SV39
+	select ARCH_MMU_EXT_THEAD
+	...
+config ARCH_CHIP_BL808
 	select ARCH_MMU_TYPE_SV39
 	select ARCH_MMU_EXT_THEAD
 ```
 
 [(See the __Pull Request for SG2000__)](https://github.com/apache/nuttx/pull/13199)
+
+[(See the __Pull Request for BL808__)](https://github.com/apache/nuttx/pull/13208)
 
 _Does MMU Caching affect NuttX Performance?_
 
