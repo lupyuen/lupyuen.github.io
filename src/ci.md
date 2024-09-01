@@ -11,11 +11,13 @@ TODO
 TODO
 
 
-Head over to GitHub Actions > Build: https://github.com/apache/nuttx/actions/workflows/build.yml
+Head over to GitHub Actions > Workflows > Build: https://github.com/apache/nuttx/actions/workflows/build.yml
 
 Click one of the jobs: https://github.com/apache/nuttx/actions/runs/10552464655
 
 Click `Linux (arm-01)` > Run Builds
+
+Build NuttX Config
 
 ```text
  ====================================================================================
@@ -35,8 +37,6 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 ------------------------------------------------------------------------------------
 ```
 
-Build NuttX Config
-
 Other Configs
 
 ```text
@@ -52,7 +52,19 @@ cmake
 
 Python Test
 
+Other Arm Configs: arm-02, arm-03, ...
+
+RISC-V Configs: riscv-01, ...
+
+Sim Configs: sim-01, ...
+
+Xtensa Configs: xtensa-01, ...
+
+macOS and Windows (msys2)
+
 TODO: Docker Pull
+
+TODO: Fetch-Source then Download Source Artifact
 
 # Running NuttX CI with Self-Hosted Runners
 
