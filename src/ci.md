@@ -6,6 +6,16 @@
 
 TODO
 
+# Inside the Continuous Integration
+
+TODO
+
+arm-01
+
+cmake
+
+Python Test
+
 # Running NuttX CI with Self-Hosted Runners
 
 TODO
