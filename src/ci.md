@@ -10,11 +10,49 @@ TODO
 
 TODO
 
-arm-01
+
+Head over to GitHub Actions > Build: https://github.com/apache/nuttx/actions/workflows/build.yml
+
+Click one of the jobs: https://github.com/apache/nuttx/actions/runs/10552464655
+
+Click `Linux (arm-01)` > Run Builds
+
+```text
+ ====================================================================================
+Configuration/Tool: pcduino-a10/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+2024-08-26 02:30:55
+------------------------------------------------------------------------------------
+  Cleaning...
+  Configuring...
+  Disabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  Enabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  Building NuttX...
+arm-none-eabi-ld: warning: /github/workspace/sources/nuttx/nuttx has a LOAD segment with RWX permissions
+  Normalize pcduino-a10/nsh
+====================================================================================
+Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+2024-08-26 02:31:40
+------------------------------------------------------------------------------------
+```
+
+Build NuttX Config
+
+Other Configs
+
+```text
+Configuration/Tool: beaglebone-black/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+Configuration/Tool: at32f437-mini/eth,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+Configuration/Tool: at32f437-mini/sdcard,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+Configuration/Tool: at32f437-mini/systemview,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+...
+```
 
 cmake
 
 Python Test
+
+TODO: Docker Pull
 
 # Running NuttX CI with Self-Hosted Runners
 
