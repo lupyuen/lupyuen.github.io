@@ -78,9 +78,37 @@
 <p>TODO</p>
 <h1 id="inside-the-continuous-integration"><a class="doc-anchor" href="#inside-the-continuous-integration">§</a>1 Inside the Continuous Integration</h1>
 <p>TODO</p>
-<p>arm-01</p>
+<p>Head over to GitHub Actions &gt; Build: https://github.com/apache/nuttx/actions/workflows/build.yml</p>
+<p>Click one of the jobs: https://github.com/apache/nuttx/actions/runs/10552464655</p>
+<p>Click <code>Linux (arm-01)</code> &gt; Run Builds</p>
+<div class="example-wrap"><pre class="language-text"><code> ====================================================================================
+Configuration/Tool: pcduino-a10/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+2024-08-26 02:30:55
+------------------------------------------------------------------------------------
+  Cleaning...
+  Configuring...
+  Disabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  Enabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  Building NuttX...
+arm-none-eabi-ld: warning: /github/workspace/sources/nuttx/nuttx has a LOAD segment with RWX permissions
+  Normalize pcduino-a10/nsh
+====================================================================================
+Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+2024-08-26 02:31:40
+------------------------------------------------------------------------------------
+</code></pre></div>
+<p>Build NuttX Config</p>
+<p>Other Configs</p>
+<div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: beaglebone-black/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+Configuration/Tool: at32f437-mini/eth,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+Configuration/Tool: at32f437-mini/sdcard,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+Configuration/Tool: at32f437-mini/systemview,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+...
+</code></pre></div>
 <p>cmake</p>
 <p>Python Test</p>
+<p>TODO: Docker Pull</p>
 <h1 id="running-nuttx-ci-with-self-hosted-runners"><a class="doc-anchor" href="#running-nuttx-ci-with-self-hosted-runners">§</a>2 Running NuttX CI with Self-Hosted Runners</h1>
 <p>TODO</p>
 <p>Let’s test NuttX CI with Self-Hosted Runners on macOS Arm64 and Ubuntu x64:</p>
