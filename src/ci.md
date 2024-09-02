@@ -190,6 +190,8 @@ _What about macOS on Arm64?_
 
 TODO: Most of the [Linux Builds](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) won't work on macOS Arm64 because they need Docker on Linux x64 
 
+We'll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS...
+
 # Fetch Source on macOS Arm64
 
 TODO: Fetch Source will work fine on Linux x64
@@ -232,146 +234,6 @@ _So NuttX CI works better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 
 
   Unless: We create a Linux Arm64 Docker Image for NuttX CI? Like for [Compiling RISC-V Platforms](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci)?
 
-
-# Ubuntu x64 Runner In Action
-
-TODO
-
-__macOS Arm64 with UTM Emulation:__
-
-On a powerful Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with 32 CPUs and 4 GB RAM (we don't need much RAM)
-
-![Screenshot 2024-08-29 at 10 08 07 PM](https://github.com/user-attachments/assets/5ff0d94e-4a04-4cf4-8f0a-8e0ee9d1cd59)
-
-![Screenshot 2024-08-29 at 10 08 25 PM](https://github.com/user-attachments/assets/3a162236-9c14-4615-b9c7-c3a90ef7293c)
-
-Ubuntu Disk Space in UTM VM needs to be big enough for NuttX Docker Image:
-
-```text
-user@ubuntu-emu-arm64:~$ neofetch
-            .-/+oossssoo+/-.               user@ubuntu-emu-arm64
-        `:+ssssssssssssssssss+:`           ---------------------
-      -+ssssssssssssssssssyyssss+-         OS: Ubuntu 24.04.1 LTS x86_64
-    .ossssssssssssssssssdMMMNysssso.       Host: KVM/QEMU (Standard PC (Q35 + ICH9, 2009) pc-q35-7.2)
-   /ssssssssssshdmmNNmmyNMMMMhssssss/      Kernel: 6.8.0-41-generic
-  +ssssssssshmydMMMMMMMNddddyssssssss+     Uptime: 1 min
- /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/    Packages: 1546 (dpkg), 10 (snap)
-.ssssssssdMMMNhsssssssssshNMMMdssssssss.   Shell: bash 5.2.21
-+sssshhhyNMMNyssssssssssssyNMMMysssssss+   Resolution: 1280x800
-ossyNMMMNyMMhsssssssssssssshmmmhssssssso   Terminal: /dev/pts/1
-ossyNMMMNyMMhsssssssssssssshmmmhssssssso   CPU: Intel i7 9xx (Nehalem i7, IBRS update) (16) @ 1.000GHz
-+sssshhhyNMMNyssssssssssssyNMMMysssssss+   GPU: 00:02.0 Red Hat, Inc. Virtio 1.0 GPU
-.ssssssssdMMMNhsssssssssshNMMMdssssssss.   Memory: 1153MiB / 3907MiB
- /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/
-  +sssssssssdmydMMMMMMMMddddyssssssss+
-   /ssssssssssshdmNNNNmyNMMMMhssssss/
-    .ossssssssssssssssssdMMMNysssso.
-      -+sssssssssssssssssyyyssss+-
-        `:+ssssssssssssssssss+:`
-            .-/+oossssoo+/-.
-
-user@ubuntu-emu-arm64:~$ df -H
-Filesystem      Size  Used Avail Use% Mounted on
-tmpfs           410M  1.7M  409M   1% /run
-/dev/sda2        67G   31G   33G  49% /
-tmpfs           2.1G     0  2.1G   0% /dev/shm
-tmpfs           5.3M  8.2k  5.3M   1% /run/lock
-efivarfs        263k   57k  201k  23% /sys/firmware/efi/efivars
-/dev/sda1       1.2G  6.5M  1.2G   1% /boot/efi
-tmpfs           410M  115k  410M   1% /run/user/1000
-```
-
-During `Download Source Artifact`: GitHub seems to be throttling the download (total 700 MB over 25 mins)
-
-![Screenshot 2024-08-29 at 2 09 11 PM](https://github.com/user-attachments/assets/585bc261-bc39-4be4-8515-85894254aace)
-
-During `Run Builds`: CPU hits 100%
-
-![Screenshot 2024-08-29 at 4 56 06 PM](https://github.com/user-attachments/assets/60d4d3eb-d075-49c9-b3ac-bcfa74150668)
-
-Note: Don't leave System Monitor running, it consumes quite a bit of CPU!
-
-Why emulate 32 CPUs? That's because we want to max out the macOS Arm64 CPU Utilisation. Here's our chance to watch Mac Mini run smokin' hot!
-
-![Screenshot 2024-08-30 at 4 14 05 PM](https://github.com/user-attachments/assets/bfd51e51-1bee-49c2-88a3-01698d51d8a4)
-
-![Screenshot 2024-08-30 at 4 14 20 PM](https://github.com/user-attachments/assets/a9dab4fd-a59f-4348-a3f7-397973797288)
-
-![Screenshot 2024-08-29 at 10 43 39 PM](https://github.com/user-attachments/assets/0ea9f33e-1e6f-412a-8f56-6f40dee7f699)
-
-Here's how it runs:
-
-```text
-user@ubuntu-emu-arm64:~$ cd actions-runner/
-user@ubuntu-emu-arm64:~/actions-runner$ sudo rm -rf _work/runner-nuttx
-[sudo] password for user: 
-user@ubuntu-emu-arm64:~/actions-runner$ df -H
-Filesystem      Size  Used Avail Use% Mounted on
-tmpfs           410M  1.7M  408M   1% /run
-/dev/sda2        67G   28G   35G  45% /
-tmpfs           2.1G     0  2.1G   0% /dev/shm
-tmpfs           5.3M  8.2k  5.3M   1% /run/lock
-efivarfs        263k  130k  128k  51% /sys/firmware/efi/efivars
-/dev/sda1       1.2G  6.5M  1.2G   1% /boot/efi
-tmpfs           410M  119k  410M   1% /run/user/1000
-user@ubuntu-emu-arm64:~/actions-runner$ ./run.sh 
-
-\u221a Connected to GitHub
-Current runner version: '2.319.1'
-2024-08-30 02:33:17Z: Listening for Jobs
-2024-08-30 02:33:23Z: Running job: Linux (arm-04)
-2024-08-30 06:47:38Z: Job Linux (arm-04) completed with result: Succeeded
-2024-08-30 06:47:43Z: Running job: Linux (arm-01)
-```
-
-Runner Options:
-
-```text
-$ ./run.sh --help
-Commands:
- ./config.sh         Configures the runner
- ./config.sh remove  Unconfigures the runner
- ./run.sh            Runs the runner interactively. Does not require any options.
-
-Options:
- --help     Prints the help for each command
- --version  Prints the runner version
- --commit   Prints the runner commit
- --check    Check the runner's network connectivity with GitHub server
-
-Config Options:
- --unattended           Disable interactive prompts for missing arguments. Defaults will be used for missing options
- --url string           Repository to add the runner to. Required if unattended
- --token string         Registration token. Required if unattended
- --name string          Name of the runner to configure (default ubuntu-emu-arm64)
- --runnergroup string   Name of the runner group to add this runner to (defaults to the default runner group)
- --labels string        Custom labels that will be added to the runner. This option is mandatory if --no-default-labels is used.
- --no-default-labels    Disables adding the default labels: 'self-hosted,Linux,X64'
- --local                Removes the runner config files from your local machine. Used as an option to the remove command
- --work string          Relative runner work directory (default _work)
- --replace              Replace any existing runner with the same name (default false)
- --pat                  GitHub personal access token with repo scope. Used for checking network connectivity when executing `./run.sh --check`
- --disableupdate        Disable self-hosted runner automatic update to the latest released version`
- --ephemeral            Configure the runner to only take one job and then let the service un-configure the runner after the job finishes (default false)
-
-Examples:
- Check GitHub server network connectivity:
-  ./run.sh --check --url <url> --pat <pat>
- Configure a runner non-interactively:
-  ./config.sh --unattended --url <url> --token <token>
- Configure a runner non-interactively, replacing any existing runner with the same name:
-  ./config.sh --unattended --url <url> --token <token> --replace [--name <name>]
- Configure a runner non-interactively with three extra labels:
-  ./config.sh --unattended --url <url> --token <token> --labels L1,L2,L3
-Runner listener exit with 0 return code, stop the service, no retry needed.
-Exiting runner...
-```
-
-__MacBook Pro x64 with Ubuntu:__
-
-Ubuntu CPU on MacBook Pro hits 100% when running the Linux Build for NuttX CI: [Build for arm-02](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343)
-
-![linux-build](https://github.com/user-attachments/assets/2e2861bc-6af0-48f4-b3a1-d0083cd23155)
 
 # What's Next
 
@@ -532,3 +394,147 @@ TODO
   /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found
   ```
   TODO: Do we change the toolchain from x64 to Arm64?
+
+# Appendix: Ubuntu x64 Runner In Action
+
+TODO
+
+## Intel PC with Ubuntu x64
+
+TODO
+
+Our 10-year-old MacBook Pro (Intel i7) hits 100% when running the Linux Build for NuttX CI: [Build for arm-02](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343)
+
+![linux-build](https://github.com/user-attachments/assets/2e2861bc-6af0-48f4-b3a1-d0083cd23155)
+
+## macOS Arm64 with UTM Emulator
+
+TODO
+
+On a powerful Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with 32 CPUs and 4 GB RAM (we don't need much RAM)
+
+![Screenshot 2024-08-29 at 10 08 07 PM](https://github.com/user-attachments/assets/5ff0d94e-4a04-4cf4-8f0a-8e0ee9d1cd59)
+
+![Screenshot 2024-08-29 at 10 08 25 PM](https://github.com/user-attachments/assets/3a162236-9c14-4615-b9c7-c3a90ef7293c)
+
+Ubuntu Disk Space in UTM VM needs to be big enough for NuttX Docker Image:
+
+```text
+user@ubuntu-emu-arm64:~$ neofetch
+            .-/+oossssoo+/-.               user@ubuntu-emu-arm64
+        `:+ssssssssssssssssss+:`           ---------------------
+      -+ssssssssssssssssssyyssss+-         OS: Ubuntu 24.04.1 LTS x86_64
+    .ossssssssssssssssssdMMMNysssso.       Host: KVM/QEMU (Standard PC (Q35 + ICH9, 2009) pc-q35-7.2)
+   /ssssssssssshdmmNNmmyNMMMMhssssss/      Kernel: 6.8.0-41-generic
+  +ssssssssshmydMMMMMMMNddddyssssssss+     Uptime: 1 min
+ /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/    Packages: 1546 (dpkg), 10 (snap)
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.   Shell: bash 5.2.21
++sssshhhyNMMNyssssssssssssyNMMMysssssss+   Resolution: 1280x800
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso   Terminal: /dev/pts/1
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso   CPU: Intel i7 9xx (Nehalem i7, IBRS update) (16) @ 1.000GHz
++sssshhhyNMMNyssssssssssssyNMMMysssssss+   GPU: 00:02.0 Red Hat, Inc. Virtio 1.0 GPU
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.   Memory: 1153MiB / 3907MiB
+ /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/
+  +sssssssssdmydMMMMMMMMddddyssssssss+
+   /ssssssssssshdmNNNNmyNMMMMhssssss/
+    .ossssssssssssssssssdMMMNysssso.
+      -+sssssssssssssssssyyyssss+-
+        `:+ssssssssssssssssss+:`
+            .-/+oossssoo+/-.
+
+user@ubuntu-emu-arm64:~$ df -H
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           410M  1.7M  409M   1% /run
+/dev/sda2        67G   31G   33G  49% /
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           5.3M  8.2k  5.3M   1% /run/lock
+efivarfs        263k   57k  201k  23% /sys/firmware/efi/efivars
+/dev/sda1       1.2G  6.5M  1.2G   1% /boot/efi
+tmpfs           410M  115k  410M   1% /run/user/1000
+```
+
+During `Download Source Artifact`: GitHub seems to be throttling the download (total 700 MB over 25 mins)
+
+![Screenshot 2024-08-29 at 2 09 11 PM](https://github.com/user-attachments/assets/585bc261-bc39-4be4-8515-85894254aace)
+
+During `Run Builds`: CPU hits 100%
+
+![Screenshot 2024-08-29 at 4 56 06 PM](https://github.com/user-attachments/assets/60d4d3eb-d075-49c9-b3ac-bcfa74150668)
+
+Note: Don't leave System Monitor running, it consumes quite a bit of CPU!
+
+Why emulate 32 CPUs? That's because we want to max out the macOS Arm64 CPU Utilisation. Here's our chance to watch Mac Mini run smokin' hot!
+
+![Screenshot 2024-08-30 at 4 14 05 PM](https://github.com/user-attachments/assets/bfd51e51-1bee-49c2-88a3-01698d51d8a4)
+
+![Screenshot 2024-08-30 at 4 14 20 PM](https://github.com/user-attachments/assets/a9dab4fd-a59f-4348-a3f7-397973797288)
+
+![Screenshot 2024-08-29 at 10 43 39 PM](https://github.com/user-attachments/assets/0ea9f33e-1e6f-412a-8f56-6f40dee7f699)
+
+Here's how it runs:
+
+```text
+user@ubuntu-emu-arm64:~$ cd actions-runner/
+user@ubuntu-emu-arm64:~/actions-runner$ sudo rm -rf _work/runner-nuttx
+[sudo] password for user: 
+user@ubuntu-emu-arm64:~/actions-runner$ df -H
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           410M  1.7M  408M   1% /run
+/dev/sda2        67G   28G   35G  45% /
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           5.3M  8.2k  5.3M   1% /run/lock
+efivarfs        263k  130k  128k  51% /sys/firmware/efi/efivars
+/dev/sda1       1.2G  6.5M  1.2G   1% /boot/efi
+tmpfs           410M  119k  410M   1% /run/user/1000
+user@ubuntu-emu-arm64:~/actions-runner$ ./run.sh 
+
+\u221a Connected to GitHub
+Current runner version: '2.319.1'
+2024-08-30 02:33:17Z: Listening for Jobs
+2024-08-30 02:33:23Z: Running job: Linux (arm-04)
+2024-08-30 06:47:38Z: Job Linux (arm-04) completed with result: Succeeded
+2024-08-30 06:47:43Z: Running job: Linux (arm-01)
+```
+
+Runner Options:
+
+```text
+$ ./run.sh --help
+Commands:
+ ./config.sh         Configures the runner
+ ./config.sh remove  Unconfigures the runner
+ ./run.sh            Runs the runner interactively. Does not require any options.
+
+Options:
+ --help     Prints the help for each command
+ --version  Prints the runner version
+ --commit   Prints the runner commit
+ --check    Check the runner's network connectivity with GitHub server
+
+Config Options:
+ --unattended           Disable interactive prompts for missing arguments. Defaults will be used for missing options
+ --url string           Repository to add the runner to. Required if unattended
+ --token string         Registration token. Required if unattended
+ --name string          Name of the runner to configure (default ubuntu-emu-arm64)
+ --runnergroup string   Name of the runner group to add this runner to (defaults to the default runner group)
+ --labels string        Custom labels that will be added to the runner. This option is mandatory if --no-default-labels is used.
+ --no-default-labels    Disables adding the default labels: 'self-hosted,Linux,X64'
+ --local                Removes the runner config files from your local machine. Used as an option to the remove command
+ --work string          Relative runner work directory (default _work)
+ --replace              Replace any existing runner with the same name (default false)
+ --pat                  GitHub personal access token with repo scope. Used for checking network connectivity when executing `./run.sh --check`
+ --disableupdate        Disable self-hosted runner automatic update to the latest released version`
+ --ephemeral            Configure the runner to only take one job and then let the service un-configure the runner after the job finishes (default false)
+
+Examples:
+ Check GitHub server network connectivity:
+  ./run.sh --check --url <url> --pat <pat>
+ Configure a runner non-interactively:
+  ./config.sh --unattended --url <url> --token <token>
+ Configure a runner non-interactively, replacing any existing runner with the same name:
+  ./config.sh --unattended --url <url> --token <token> --replace [--name <name>]
+ Configure a runner non-interactively with three extra labels:
+  ./config.sh --unattended --url <url> --token <token> --labels L1,L2,L3
+Runner listener exit with 0 return code, stop the service, no retry needed.
+Exiting runner...
+```
