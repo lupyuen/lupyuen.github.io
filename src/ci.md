@@ -15,7 +15,7 @@ Head over to GitHub Actions > Workflows > Build: https://github.com/apache/nuttx
 
 Click one of the jobs: https://github.com/apache/nuttx/actions/runs/10552464655
 
-Click `Linux (arm-01)` > Run Builds
+Click `Linux (arm-01)` > Run Builds: https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816
 
 Build NuttX Config
 
@@ -59,6 +59,8 @@ RISC-V Configs: riscv-01, ...
 Sim Configs: sim-01, ...
 
 Xtensa Configs: xtensa-01, ...
+
+Linux Other: Arm64, AVR, i486, PIC32, ...
 
 macOS and Windows (msys2)
 
