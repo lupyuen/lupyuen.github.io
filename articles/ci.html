@@ -128,16 +128,33 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 <h1 id="self-hosted-runners"><a class="doc-anchor" href="#self-hosted-runners">§</a>2 Self-Hosted Runners</h1>
 <p>Let’s experiment with <strong>Self-Hosted Runners</strong> to cut costs. We run them on two computers…</p>
 <ul>
-<li><strong>Mac Mini</strong> on macOS (Apple Silicon M2 Pro)</li>
-<li><strong>Older PC</strong> on Ubuntu x64 (Intel i7)</li>
-<li>With plenty of <strong>Internet Bandwidth</strong> (Downlink 650 Mbps, Uplink 560 Mbps)</li>
-<li>TODO: <a href="http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3">Fibre To The Home</a></li>
+<li>
+<p><strong>Mac Mini</strong> on macOS Arm64 (Apple Silicon M2 Pro)</p>
+</li>
+<li>
+<p><strong>Older PC</strong> on Ubuntu x64 (Intel i7)</p>
+</li>
+<li>
+<p>With plenty of <strong>Internet Bandwidth</strong> (Downlink 650 Mbps, Uplink 560 Mbps)</p>
+</li>
+<li>
+<p>TODO: <a href="http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3">Fibre To The Home</a></p>
+</li>
 </ul>
 <p>TODO</p>
 <ul>
-<li>
-<p><a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners">Follow these instructions</a> to install Self-Hosted Runners for macOS Arm64 and Linux x64</p>
-</li>
+<li><a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners">Follow these instructions</a> to install Self-Hosted Runners for macOS Arm64 and Linux x64</li>
+</ul>
+<p>https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721</p>
+<div class="example-wrap"><pre class="language-text"><code>Linux:
+  needs:   Fetch-Source
+  runs-on: ubuntu-latest
+</code></pre></div>
+<p>Change <code>runs-on</code> to…</p>
+<div class="example-wrap"><pre class="language-text"><code>  runs-on: [self-hosted, Linux, X64]
+</code></pre></div>
+<p>TODO: Fetch-Source on Arm64</p>
+<ul>
 <li>
 <p>See below for the fixes for macOS Arm64 and Linux x64</p>
 </li>
