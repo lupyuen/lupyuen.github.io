@@ -6,16 +6,29 @@
 
 TODO
 
-# Inside the Continuous Integration
+# Continuous Integration for NuttX
 
-TODO
+_Why do we need Continuous Integration?_
 
+Suppose we [__Submit a Pull Request__](TODO) for NuttX. We need to be sure that our Modified Code won't break the Existing Builds in NuttX.
+
+That's why our Pull Request will trigger the __Continuous Integration Workflow__, to recompile NuttX for __All Hardware Platforms__.
+
+(__??? Builds__ across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)
+
+TODO: Isn't this a little excessive? But we don't know which platforms are impacted!
+
+_What happens inside the Continuous Integration?_
 
 Head over to GitHub Actions > Workflows > Build: https://github.com/apache/nuttx/actions/workflows/build.yml
+
+TODO: Pic above
 
 Click one of the jobs: https://github.com/apache/nuttx/actions/runs/10552464655
 
 Click `Linux (arm-01)` > Run Builds: https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816
+
+TODO: Pic
 
 Build NuttX Config
 
