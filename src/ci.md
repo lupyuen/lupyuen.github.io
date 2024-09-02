@@ -161,7 +161,7 @@ Listening for Jobs
 Running job: TODO
 ```
 
-# CI Build for NuttX
+# Running the Runners
 
 TODO
 
@@ -169,30 +169,30 @@ _Our Self-Hosted Runners: Do they work for NuttX CI Builds?_
 
 Here's the result: https://github.com/lupyuen3/runner-nuttx/actions
 
-- Docker Engine [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29344966455):
-  ```text
-  permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post "http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&tag=latest": dial unix /var/run/docker.sock: connect: permission denied
-   ```
+And [it works yay](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343)! (2 hours on a 10-year-old MacBook Pro with Intel i7)
 
-  We apply [this Docker Fix](https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue). 
+TODO: Pic of Ubuntu Runner
 
-  And [it works yay](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343)! (2 hours on a 10-year-old MacBook Pro with Core i7)
-
-- Docker Website will throttle our downloading of Docker Images. If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.
+__Docker Hub__ will throttle our downloading of Docker Images. If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.
 
 _Can we guesstimate the time to run a CI Build?_
 
 Just browse the GitHub Actions Log for the CI Build. See the Line Numbers? Every NuttX CI Build will have roughly 1,000 lines of log (by sheer coincidence). We can use this to guess the CI Build Duration.
 
-- TODO: Most of the [Linux Builds](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) won't work on macOS Arm64 because they need Docker on Linux x64 
+TODO: Podman Docker on Linux x64 [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677). Might be a [problem with Podman](https://github.com/containers/podman/discussions/14238).
 
-- TODO: Podman Docker on Linux x64 [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677). Might be a [problem with Podman](https://github.com/containers/podman/discussions/14238).
-  ```text
-  Writing manifest to image destination
-  Error: statfs /var/run/docker.sock: permission denied
-  ```
+```text
+Writing manifest to image destination
+Error: statfs /var/run/docker.sock: permission denied
+```
+
+_What about macOS on Arm64?_
+
+TODO: Most of the [Linux Builds](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) won't work on macOS Arm64 because they need Docker on Linux x64 
 
 # Fetch Source on macOS Arm64
+
+TODO: Fetch Source will work fine on Linux x64
 
 TODO: [`Fetch-Source`](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486) works OK on macOS Arm64
 
@@ -232,44 +232,6 @@ _So NuttX CI works better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 
 
   Unless: We create a Linux Arm64 Docker Image for NuttX CI? Like for [Compiling RISC-V Platforms](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci)?
 
-# Fixes for Ubuntu x64
-
-TODO
-
-```bash
-## TODO: Install Docker Engine: https://docs.docker.com/engine/install/ubuntu/
-## TODO: Apply this fix: https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue
-## Note: podman won't work
-
-## NuttX CI needs to save files in `/github`, so we create it
-## TODO: How to give each runner its own `/github` folder? Do we mount in Docker?
-mkdir -p $HOME/github/home
-mkdir -p $HOME/github/workspace
-sudo ln -s $HOME/github /github
-ls -l /github/home
-
-## TODO: Clean up after every job, then restart the runner
-sudo rm -rf $HOME/actions-runner/_work/runner-nuttx
-cd $HOME/actions-runner
-./run.sh
-
-## TODO: In case of timeout after 6 hours:
-## Restart the Ubuntu Machine, because the tasks are still running in background!
-```
-
-# Fixes for macOS Arm64
-
-TODO
-
-```bash
-sudo mkdir /Users/runner
-sudo chown $USER /Users/runner
-sudo chgrp staff /Users/runner
-ls -ld /Users/runner
-
-## Maybe need pip?
-brew install python
-```
 
 # Ubuntu x64 Runner In Action
 
@@ -434,6 +396,53 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/ci.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md)
+
+# Appendix: Fixes for Ubuntu x64
+
+TODO
+
+```bash
+## TODO: Install Docker Engine: https://docs.docker.com/engine/install/ubuntu/
+## TODO: Apply this fix: https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue
+## Note: podman won't work
+
+## NuttX CI needs to save files in `/github`, so we create it
+## TODO: How to give each runner its own `/github` folder? Do we mount in Docker?
+mkdir -p $HOME/github/home
+mkdir -p $HOME/github/workspace
+sudo ln -s $HOME/github /github
+ls -l /github/home
+
+## TODO: Clean up after every job, then restart the runner
+sudo rm -rf $HOME/actions-runner/_work/runner-nuttx
+cd $HOME/actions-runner
+./run.sh
+
+## TODO: In case of timeout after 6 hours:
+## Restart the Ubuntu Machine, because the tasks are still running in background!
+```
+
+TODO: Docker Engine [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29344966455):
+
+```text
+permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post "http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&tag=latest": dial unix /var/run/docker.sock: connect: permission denied
+  ```
+
+We apply [this Docker Fix](https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue). 
+
+# Appendix: Fixes for macOS Arm64
+
+TODO
+
+```bash
+sudo mkdir /Users/runner
+sudo chown $USER /Users/runner
+sudo chgrp staff /Users/runner
+ls -ld /Users/runner
+
+## Maybe need pip?
+brew install python
+```
 
 # Appendix: Documentation Build for NuttX
 
