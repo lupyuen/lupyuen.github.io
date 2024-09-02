@@ -105,9 +105,9 @@ TODO: Self-Hosted Runners
 
 Let's experiment with __Self-Hosted Runners__ to cut costs. We run them on two computers...
 
-- __Mac Mini__ on macOS Arm64 (Apple Silicon M2 Pro)
-
 - __Older PC__ on Ubuntu x64 (Intel i7)
+
+- __Newer Mac Mini__ on macOS Arm64 (Apple Silicon M2 Pro)
 
 - With plenty of __Internet Bandwidth__ (Downlink 650 Mbps, Uplink 560 Mbps)
 - TODO: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
@@ -125,7 +125,8 @@ TODO: Throttled by GitHub and Docker Hub
 
 Look for this code in the GitHub Actions Worklow: [.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
 
-```text
+```yaml
+## Linux Build runs on GitHub Runners
 Linux:
   needs:   Fetch-Source
   runs-on: ubuntu-latest
@@ -133,15 +134,32 @@ Linux:
 
 Change `runs-on` to...
 
-```text
+```yaml
+  ## Linux Build now runs on Self-Hosted Runners (Linux x64)
   runs-on: [self-hosted, Linux, X64]
 ```
-TODO: Fetch-Source on Arm64
 
-We modified the GitHub Workflow Files, to use Self-Hosted Runners:
-- https://github.com/lupyuen3/runner-nuttx/pull/1/files
+TODO
 
+```bash
+## Configure our Self-Hosted Runner for Linux x64
+$ ./config.sh --url YOUR_REPO --token YOUR_TOKEN
+Enter the name of the runner group: <Press Enter>
+Enter the name of runner: <Press Enter>
+This runner will have the following labels:
+  'self-hosted', 'Linux', 'X64'
+Enter any additional labels: <Press Enter>
+Enter name of work folder: <Press Enter>
 
+## For macOS on Arm64: Runner Labels will be
+## 'self-hosted', 'macOS', 'ARM64'
+
+## Start our Self-Hosted Runner
+$ ./run.sh
+Current runner version: '2.319.1'
+Listening for Jobs
+Running job: TODO
+```
 
 # CI Build for NuttX
 
@@ -150,8 +168,6 @@ TODO
 _Our Self-Hosted Runners: Do they work for NuttX CI Builds?_
 
 Here's the result: https://github.com/lupyuen3/runner-nuttx/actions
-
-- [`Fetch Source`](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486) works OK on macOS Arm64
 
 - Most of the [Linux Builds](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) won't work on macOS Arm64 because they need Docker on Linux x64 
 
@@ -206,60 +222,25 @@ _Can we guesstimate the time to run a CI Build?_
 
 Just browse the GitHub Actions Log for the CI Build. See the Line Numbers? Every NuttX CI Build will have roughly 1,000 lines of log (by sheer coincidence). We can use this to guess the CI Build Duration.
 
-# Documentation Build for NuttX
+# Fetch Source on macOS Arm64
 
-TODO
+TODO: [`Fetch-Source`](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486) works OK on macOS Arm64
 
-_Does it work for Documentation Build?_
+[.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
 
-- [`Documentation`](https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml) on macOS Arm64: [Hangs at setup-python](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677) because it prompts for password:
-  ```text
-  Run actions/setup-python@v5
-  Installed versions
-  Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:9) was not found in the local cache
-  Version 3.8 is available for downloading
-  Download from "https://github.com/actions/python-versions/releases/download/3.8.10-887[9](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:10)978422/python-3.8.10-darwin-arm64.tar.gz"
-  Extract downloaded archive
-  /usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
-  Execute installation script
-  Check if Python hostedtoolcache folder exist...
-  Install Python binaries from prebuilt package
-  ```
-  And it won't work on macOS because it needs `apt`: [workflows/doc.yml](https://github.com/lupyuen3/runner-nuttx/blob/master/.github/workflows/doc.yml#L34-L40)
-  ```yaml
-      - name: Install LaTeX packages
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y \
-            texlive-latex-recommended texlive-fonts-recommended \
-            texlive-latex-base texlive-latex-extra latexmk texlive-luatex \
-            fonts-freefont-otf xindy
-  ```
+```yaml
+## Fetch-Source runs on GitHub Runners
+jobs:
+  Fetch-Source:
+    runs-on: ubuntu-latest
+```
 
-- [`Documentation`](https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml) on Linux Arm64:  [Fails at setup-python](https://github.com/lupyuen3/runner-nuttx/actions/runs/10590973119/job/29347607289)
-  ```text
-  Run actions/setup-python@v5
-  Installed versions
-  Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10590973119/job/29347607289#step:3:9) was not found in the local cache
-  Error: The version '3.8' with architecture 'arm64' was not found for Debian 12.
-  The list of all available versions can be found here: https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
-  ```
-  So we comment out `setup-python`. Then it fails with [pip3 not found](https://github.com/lupyuen3/runner-nuttx/actions/runs/10593895809/job/29356477035):
-  ```text
-  pip3: command not found
-  ```
-  TODO: Switch to pipenv
+Change `runs-on` to...
 
-- [`Documentation`](https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml) on Linux x64: [Fails with rmdir error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125174/job/29348045745)
-  ```text
-  Copying '/home/luppy/.gitconfig' to '/home/luppy/actions-runner/_work/_temp/8c370e2f-3f8f-4e01-b8f2-1ccb301640a1/.gitconfig'
-  Temporarily overriding HOME='/home/luppy/actions-runner/_work/_temp/8c370e2f-3f8f-4e01-b8f2-1ccb301640a1' before making global git config changes
-  Adding repository directory to the temporary git global config as a safe directory
-  /usr/bin/git config --global --add safe.directory /home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx
-  Deleting the contents of '/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx'
-  Error: File was unable to be removed Error: EACCES: permission denied, rmdir '/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx/buildartifacts/at32f437-mini'
-  ```
-  TODO: Check the rmdir directory
+```yaml
+    ## Fetch-Source now runs on Self-Hosted Runners (macOS Arm64)
+    runs-on: [self-hosted, macOS, ARM64]
+```
 
 # UTM Emulator for macOS Arm64
 
@@ -483,3 +464,58 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (an
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/ci.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md)
+
+# Appendix: Documentation Build for NuttX
+
+TODO
+
+_Does it work for Documentation Build?_
+
+- [`Documentation`](https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml) on macOS Arm64: [Hangs at setup-python](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677) because it prompts for password:
+  ```text
+  Run actions/setup-python@v5
+  Installed versions
+  Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:9) was not found in the local cache
+  Version 3.8 is available for downloading
+  Download from "https://github.com/actions/python-versions/releases/download/3.8.10-887[9](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:10)978422/python-3.8.10-darwin-arm64.tar.gz"
+  Extract downloaded archive
+  /usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
+  Execute installation script
+  Check if Python hostedtoolcache folder exist...
+  Install Python binaries from prebuilt package
+  ```
+  And it won't work on macOS because it needs `apt`: [workflows/doc.yml](https://github.com/lupyuen3/runner-nuttx/blob/master/.github/workflows/doc.yml#L34-L40)
+  ```yaml
+      - name: Install LaTeX packages
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            texlive-latex-recommended texlive-fonts-recommended \
+            texlive-latex-base texlive-latex-extra latexmk texlive-luatex \
+            fonts-freefont-otf xindy
+  ```
+
+- [`Documentation`](https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml) on Linux Arm64:  [Fails at setup-python](https://github.com/lupyuen3/runner-nuttx/actions/runs/10590973119/job/29347607289)
+  ```text
+  Run actions/setup-python@v5
+  Installed versions
+  Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10590973119/job/29347607289#step:3:9) was not found in the local cache
+  Error: The version '3.8' with architecture 'arm64' was not found for Debian 12.
+  The list of all available versions can be found here: https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
+  ```
+  So we comment out `setup-python`. Then it fails with [pip3 not found](https://github.com/lupyuen3/runner-nuttx/actions/runs/10593895809/job/29356477035):
+  ```text
+  pip3: command not found
+  ```
+  TODO: Switch to pipenv
+
+- [`Documentation`](https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml) on Linux x64: [Fails with rmdir error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125174/job/29348045745)
+  ```text
+  Copying '/home/luppy/.gitconfig' to '/home/luppy/actions-runner/_work/_temp/8c370e2f-3f8f-4e01-b8f2-1ccb301640a1/.gitconfig'
+  Temporarily overriding HOME='/home/luppy/actions-runner/_work/_temp/8c370e2f-3f8f-4e01-b8f2-1ccb301640a1' before making global git config changes
+  Adding repository directory to the temporary git global config as a safe directory
+  /usr/bin/git config --global --add safe.directory /home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx
+  Deleting the contents of '/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx'
+  Error: File was unable to be removed Error: EACCES: permission denied, rmdir '/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx/buildartifacts/at32f437-mini'
+  ```
+  TODO: Check the rmdir directory
