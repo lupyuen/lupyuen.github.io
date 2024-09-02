@@ -6,6 +6,22 @@
 
 TODO
 
+Why are we doing this?
+
+- In case we need to reduce [GitHub Hosting Costs](https://docs.google.com/spreadsheets/d/1gY0VrSJvouXwDIclspQCFoBcoHhNCbGicNoVJRhJ-h4/edit?gid=0#gid=0). Or if we need to run the NuttX CI privately.
+
+- It's a great way to understand the Internals of NuttX CI!
+
+- Why is NuttX CI so heavy? That's because for every PR, it compiles every single NuttX Build Config: Arm, RISC-V, Simulator. (Hosting charges won't be cheap)
+
+TODO: We might need a quicker way to "fail fast" and prevent other CI Jobs from running? Which will reduce the number of Runners?
+
+TODO: What if we could start earlier the CI Jobs that are impacted by the Modified Code in the PR? So if I modify something for Ox64 BL808 SBC, it should start the CI Job for `ox64:nsh`. If it fails, then don't bother with the rest of the Arm / RISC-V / Simulator jobs.
+
+TODO: Suppose we need to throttle our GitHub Runners from 36 Runners down to 25 Runners (and cut costs). What would be the impact on NuttX CI Duration? Are there any tools for modeling the queueing duration? 
+
+TODO: Pic of GitHub Actions > Workflows > Build
+
 # Continuous Integration for NuttX
 
 _Why do we need Continuous Integration?_
@@ -100,7 +116,14 @@ TODO
 
 - [Follow these instructions](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners) to install Self-Hosted Runners for macOS Arm64 and Linux x64
 
-https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721
+- See below for the fixes for macOS Arm64 and Linux x64
+
+- Security Concerns: How to be sure that Self-Hosted Runners will run only approved scripts and commands?
+  (Right now I have disabled external users from triggering GitHub Actions on my repo)
+
+- Shut down the runners when we're done with testing
+
+[.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
 
 ```text
 Linux:
@@ -113,29 +136,12 @@ Change `runs-on` to...
 ```text
   runs-on: [self-hosted, Linux, X64]
 ```
-
 TODO: Fetch-Source on Arm64
-
-- See below for the fixes for macOS Arm64 and Linux x64
-
-- Security Concerns: How to be sure that Self-Hosted Runners will run only approved scripts and commands?
-  (Right now I have disabled external users from triggering GitHub Actions on my repo)
-
-- Shut down the runners when we're done with testing
 
 We modified the GitHub Workflow Files, to use Self-Hosted Runners:
 - https://github.com/lupyuen3/runner-nuttx/pull/1/files
 
-Why are we doing this?
-- In case we need to reduce [GitHub Hosting Costs](https://docs.google.com/spreadsheets/d/1gY0VrSJvouXwDIclspQCFoBcoHhNCbGicNoVJRhJ-h4/edit?gid=0#gid=0). Or if we need to run the NuttX CI privately.
-- It's a great way to understand the Internals of NuttX CI!
-- Why is NuttX CI so heavy? That's because for every PR, it compiles every single NuttX Build Config: Arm, RISC-V, Simulator. (Hosting charges won't be cheap)
 
-TODO: We might need a quicker way to "fail fast" and prevent other CI Jobs from running? Which will reduce the number of Runners?
-
-TODO: What if we could start earlier the CI Jobs that are impacted by the Modified Code in the PR? So if I modify something for Ox64 BL808 SBC, it should start the CI Job for `ox64:nsh`. If it fails, then don't bother with the rest of the Arm / RISC-V / Simulator jobs.
-
-TODO: Suppose we need to throttle our GitHub Runners from 36 Runners down to 25 Runners (and cut costs). What would be the impact on NuttX CI Duration? Are there any tools for modeling the queueing duration? 
 
 # CI Build for NuttX
 
