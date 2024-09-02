@@ -70,12 +70,14 @@
 <li><a href="#running-the-runners">3 Running the Runners</a><ul></ul></li>
 <li><a href="#fetch-source-on-macos-arm64">4 Fetch Source on macOS Arm64</a><ul></ul></li>
 <li><a href="#utm-emulator-for-macos-arm64">5 UTM Emulator for macOS Arm64</a><ul></ul></li>
-<li><a href="#ubuntu-x64-runner-in-action">6 Ubuntu x64 Runner In Action</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-fixes-for-ubuntu-x64">8 Appendix: Fixes for Ubuntu x64</a><ul></ul></li>
-<li><a href="#appendix-fixes-for-macos-arm64">9 Appendix: Fixes for macOS Arm64</a><ul></ul></li>
-<li><a href="#appendix-documentation-build-for-nuttx">10 Appendix: Documentation Build for NuttX</a><ul></ul></li>
-<li><a href="#appendix-nuttx-ci-for-macos">11 Appendix: NuttX CI for macOS</a><ul></ul></li></ul></nav><p>📝 <em>19 Sep 2024</em></p>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-fixes-for-ubuntu-x64">7 Appendix: Fixes for Ubuntu x64</a><ul></ul></li>
+<li><a href="#appendix-fixes-for-macos-arm64">8 Appendix: Fixes for macOS Arm64</a><ul></ul></li>
+<li><a href="#appendix-documentation-build-for-nuttx">9 Appendix: Documentation Build for NuttX</a><ul></ul></li>
+<li><a href="#appendix-nuttx-ci-for-macos">10 Appendix: NuttX CI for macOS</a><ul></ul></li>
+<li><a href="#appendix-ubuntu-x64-runner-in-action">11 Appendix: Ubuntu x64 Runner In Action</a><ul>
+<li><a href="#intel-pc-with-ubuntu-x64">11.1 Intel PC with Ubuntu x64</a><ul></ul></li>
+<li><a href="#macos-arm64-with-utm-emulator">11.2 macOS Arm64 with UTM Emulator</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 Sep 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>Why are we doing this?</p>
@@ -218,6 +220,7 @@ Error: statfs /var/run/docker.sock: permission denied
 </code></pre></div>
 <p><em>What about macOS on Arm64?</em></p>
 <p>TODO: Most of the <a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml">Linux Builds</a> won’t work on macOS Arm64 because they need Docker on Linux x64 </p>
+<p>We’ll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS…</p>
 <h1 id="fetch-source-on-macos-arm64"><a class="doc-anchor" href="#fetch-source-on-macos-arm64">§</a>4 Fetch Source on macOS Arm64</h1>
 <p>TODO: Fetch Source will work fine on Linux x64</p>
 <p>TODO: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486"><code>Fetch-Source</code></a> works OK on macOS Arm64</p>
@@ -246,9 +249,158 @@ jobs:
 <p>Unless: We create a Linux Arm64 Docker Image for NuttX CI? Like for <a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci">Compiling RISC-V Platforms</a>?</p>
 </li>
 </ul>
-<h1 id="ubuntu-x64-runner-in-action"><a class="doc-anchor" href="#ubuntu-x64-runner-in-action">§</a>6 Ubuntu x64 Runner In Action</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
-<p><strong>macOS Arm64 with UTM Emulation:</strong></p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Other Project: “NuttX for Ox64 BL808”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>Older Project: “NuttX for Star64 JH7110”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md"><strong>lupyuen.github.io/src/ci.md</strong></a></p>
+<h1 id="appendix-fixes-for-ubuntu-x64"><a class="doc-anchor" href="#appendix-fixes-for-ubuntu-x64">§</a>7 Appendix: Fixes for Ubuntu x64</h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Install Docker Engine: https://docs.docker.com/engine/install/ubuntu/
+## TODO: Apply this fix: https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue
+## Note: podman won&#39;t work
+
+## NuttX CI needs to save files in `/github`, so we create it
+## TODO: How to give each runner its own `/github` folder? Do we mount in Docker?
+mkdir -p $HOME/github/home
+mkdir -p $HOME/github/workspace
+sudo ln -s $HOME/github /github
+ls -l /github/home
+
+## TODO: Clean up after every job, then restart the runner
+sudo rm -rf $HOME/actions-runner/_work/runner-nuttx
+cd $HOME/actions-runner
+./run.sh
+
+## TODO: In case of timeout after 6 hours:
+## Restart the Ubuntu Machine, because the tasks are still running in background!
+</code></pre></div>
+<p>TODO: Docker Engine <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29344966455">fails with this error</a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post &quot;http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&amp;tag=latest&quot;: dial unix /var/run/docker.sock: connect: permission denied
+</code></pre></div>
+<p>We apply <a href="https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue">this Docker Fix</a>. </p>
+<h1 id="appendix-fixes-for-macos-arm64"><a class="doc-anchor" href="#appendix-fixes-for-macos-arm64">§</a>8 Appendix: Fixes for macOS Arm64</h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo mkdir /Users/runner
+sudo chown $USER /Users/runner
+sudo chgrp staff /Users/runner
+ls -ld /Users/runner
+
+## Maybe need pip?
+brew install python
+</code></pre></div><h1 id="appendix-documentation-build-for-nuttx"><a class="doc-anchor" href="#appendix-documentation-build-for-nuttx">§</a>9 Appendix: Documentation Build for NuttX</h1>
+<p>TODO</p>
+<p><em>Does it work for Documentation Build?</em></p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml"><code>Documentation</code></a> on macOS Arm64: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677">Hangs at setup-python</a> because it prompts for password:</p>
+<div class="example-wrap"><pre class="language-text"><code>Run actions/setup-python@v5
+Installed versions
+Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:9) was not found in the local cache
+Version 3.8 is available for downloading
+Download from &quot;https://github.com/actions/python-versions/releases/download/3.8.10-887[9](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:10)978422/python-3.8.10-darwin-arm64.tar.gz&quot;
+Extract downloaded archive
+/usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
+Execute installation script
+Check if Python hostedtoolcache folder exist...
+Install Python binaries from prebuilt package
+</code></pre></div>
+<p>And it won’t work on macOS because it needs <code>apt</code>: <a href="https://github.com/lupyuen3/runner-nuttx/blob/master/.github/workflows/doc.yml#L34-L40">workflows/doc.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>    - name: Install LaTeX packages
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y \
+          texlive-latex-recommended texlive-fonts-recommended \
+          texlive-latex-base texlive-latex-extra latexmk texlive-luatex \
+          fonts-freefont-otf xindy
+</code></pre></div></li>
+<li>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml"><code>Documentation</code></a> on Linux Arm64:  <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10590973119/job/29347607289">Fails at setup-python</a></p>
+<div class="example-wrap"><pre class="language-text"><code>Run actions/setup-python@v5
+Installed versions
+Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10590973119/job/29347607289#step:3:9) was not found in the local cache
+Error: The version &#39;3.8&#39; with architecture &#39;arm64&#39; was not found for Debian 12.
+The list of all available versions can be found here: https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
+</code></pre></div>
+<p>So we comment out <code>setup-python</code>. Then it fails with <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10593895809/job/29356477035">pip3 not found</a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>pip3: command not found
+</code></pre></div>
+<p>TODO: Switch to pipenv</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml"><code>Documentation</code></a> on Linux x64: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125174/job/29348045745">Fails with rmdir error</a></p>
+<div class="example-wrap"><pre class="language-text"><code>Copying &#39;/home/luppy/.gitconfig&#39; to &#39;/home/luppy/actions-runner/_work/_temp/8c370e2f-3f8f-4e01-b8f2-1ccb301640a1/.gitconfig&#39;
+Temporarily overriding HOME=&#39;/home/luppy/actions-runner/_work/_temp/8c370e2f-3f8f-4e01-b8f2-1ccb301640a1&#39; before making global git config changes
+Adding repository directory to the temporary git global config as a safe directory
+/usr/bin/git config --global --add safe.directory /home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx
+Deleting the contents of &#39;/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx&#39;
+Error: File was unable to be removed Error: EACCES: permission denied, rmdir &#39;/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx/buildartifacts/at32f437-mini&#39;
+</code></pre></div>
+<p>TODO: Check the rmdir directory</p>
+</li>
+</ul>
+<h1 id="appendix-nuttx-ci-for-macos"><a class="doc-anchor" href="#appendix-nuttx-ci-for-macos">§</a>10 Appendix: NuttX CI for macOS</h1>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml"><code>Build macOS (macos / sim-01 / sim-02)</code></a> on macOS Arm64: <code>setup-python</code> will <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343630883">hang because it’s prompting for password</a>. So we comment out <code>setup-python</code>.</p>
+<div class="example-wrap"><pre class="language-text"><code>Run actions/setup-python@v5
+Installed versions
+Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:9) was not found in the local cache
+Version 3.8 is available for downloading
+Download from &quot;https://github.com/actions/python-versions/releases/download/3.8.10-887[9](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:10)978422/python-3.8.10-darwin-arm64.tar.gz&quot;
+Extract downloaded archive
+/usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
+Execute installation script
+Check if Python hostedtoolcache folder exist...
+Install Python binaries from prebuilt package
+</code></pre></div>
+<p>Then it fails while <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349061179">downloading the toolchain</a></p>
+<div class="example-wrap"><pre class="language-text"><code>+ wget --quiet https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
++ xz -d arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
+xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected end of input
+</code></pre></div>
+<p>Retry and it <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29359739769">fails at objcopy sigh</a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>+ rm -f /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
++ ln -s /usr/local/opt/binutils/bin/objcopy /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
++ command objcopy --version
++ objcopy --version
+/Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found
+</code></pre></div>
+<p>TODO: Do we change the toolchain from x64 to Arm64?</p>
+</li>
+</ul>
+<h1 id="appendix-ubuntu-x64-runner-in-action"><a class="doc-anchor" href="#appendix-ubuntu-x64-runner-in-action">§</a>11 Appendix: Ubuntu x64 Runner In Action</h1>
+<p>TODO</p>
+<h2 id="intel-pc-with-ubuntu-x64"><a class="doc-anchor" href="#intel-pc-with-ubuntu-x64">§</a>11.1 Intel PC with Ubuntu x64</h2>
+<p>TODO</p>
+<p>Our 10-year-old MacBook Pro (Intel i7) hits 100% when running the Linux Build for NuttX CI: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343">Build for arm-02</a></p>
+<p><img src="https://github.com/user-attachments/assets/2e2861bc-6af0-48f4-b3a1-d0083cd23155" alt="linux-build" /></p>
+<h2 id="macos-arm64-with-utm-emulator"><a class="doc-anchor" href="#macos-arm64-with-utm-emulator">§</a>11.2 macOS Arm64 with UTM Emulator</h2>
+<p>TODO</p>
 <p>On a powerful Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with 32 CPUs and 4 GB RAM (we don’t need much RAM)</p>
 <p><img src="https://github.com/user-attachments/assets/5ff0d94e-4a04-4cf4-8f0a-8e0ee9d1cd59" alt="Screenshot 2024-08-29 at 10 08 07 PM" /></p>
 <p><img src="https://github.com/user-attachments/assets/3a162236-9c14-4615-b9c7-c3a90ef7293c" alt="Screenshot 2024-08-29 at 10 08 25 PM" /></p>
@@ -356,154 +508,6 @@ Examples:
 Runner listener exit with 0 return code, stop the service, no retry needed.
 Exiting runner...
 </code></pre></div>
-<p><strong>MacBook Pro x64 with Ubuntu:</strong></p>
-<p>Ubuntu CPU on MacBook Pro hits 100% when running the Linux Build for NuttX CI: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343">Build for arm-02</a></p>
-<p><img src="https://github.com/user-attachments/assets/2e2861bc-6af0-48f4-b3a1-d0083cd23155" alt="linux-build" /></p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
-<p>TODO</p>
-<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
-<ul>
-<li>
-<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Other Project: “NuttX for Ox64 BL808”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>Older Project: “NuttX for Star64 JH7110”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
-</li>
-</ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md"><strong>lupyuen.github.io/src/ci.md</strong></a></p>
-<h1 id="appendix-fixes-for-ubuntu-x64"><a class="doc-anchor" href="#appendix-fixes-for-ubuntu-x64">§</a>8 Appendix: Fixes for Ubuntu x64</h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Install Docker Engine: https://docs.docker.com/engine/install/ubuntu/
-## TODO: Apply this fix: https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue
-## Note: podman won&#39;t work
-
-## NuttX CI needs to save files in `/github`, so we create it
-## TODO: How to give each runner its own `/github` folder? Do we mount in Docker?
-mkdir -p $HOME/github/home
-mkdir -p $HOME/github/workspace
-sudo ln -s $HOME/github /github
-ls -l /github/home
-
-## TODO: Clean up after every job, then restart the runner
-sudo rm -rf $HOME/actions-runner/_work/runner-nuttx
-cd $HOME/actions-runner
-./run.sh
-
-## TODO: In case of timeout after 6 hours:
-## Restart the Ubuntu Machine, because the tasks are still running in background!
-</code></pre></div>
-<p>TODO: Docker Engine <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29344966455">fails with this error</a>:</p>
-<div class="example-wrap"><pre class="language-text"><code>permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post &quot;http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&amp;tag=latest&quot;: dial unix /var/run/docker.sock: connect: permission denied
-</code></pre></div>
-<p>We apply <a href="https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue">this Docker Fix</a>. </p>
-<h1 id="appendix-fixes-for-macos-arm64"><a class="doc-anchor" href="#appendix-fixes-for-macos-arm64">§</a>9 Appendix: Fixes for macOS Arm64</h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo mkdir /Users/runner
-sudo chown $USER /Users/runner
-sudo chgrp staff /Users/runner
-ls -ld /Users/runner
-
-## Maybe need pip?
-brew install python
-</code></pre></div><h1 id="appendix-documentation-build-for-nuttx"><a class="doc-anchor" href="#appendix-documentation-build-for-nuttx">§</a>10 Appendix: Documentation Build for NuttX</h1>
-<p>TODO</p>
-<p><em>Does it work for Documentation Build?</em></p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml"><code>Documentation</code></a> on macOS Arm64: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677">Hangs at setup-python</a> because it prompts for password:</p>
-<div class="example-wrap"><pre class="language-text"><code>Run actions/setup-python@v5
-Installed versions
-Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:9) was not found in the local cache
-Version 3.8 is available for downloading
-Download from &quot;https://github.com/actions/python-versions/releases/download/3.8.10-887[9](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:10)978422/python-3.8.10-darwin-arm64.tar.gz&quot;
-Extract downloaded archive
-/usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
-Execute installation script
-Check if Python hostedtoolcache folder exist...
-Install Python binaries from prebuilt package
-</code></pre></div>
-<p>And it won’t work on macOS because it needs <code>apt</code>: <a href="https://github.com/lupyuen3/runner-nuttx/blob/master/.github/workflows/doc.yml#L34-L40">workflows/doc.yml</a></p>
-<div class="example-wrap"><pre class="language-yaml"><code>    - name: Install LaTeX packages
-      run: |
-        sudo apt-get update -y
-        sudo apt-get install -y \
-          texlive-latex-recommended texlive-fonts-recommended \
-          texlive-latex-base texlive-latex-extra latexmk texlive-luatex \
-          fonts-freefont-otf xindy
-</code></pre></div></li>
-<li>
-<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml"><code>Documentation</code></a> on Linux Arm64:  <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10590973119/job/29347607289">Fails at setup-python</a></p>
-<div class="example-wrap"><pre class="language-text"><code>Run actions/setup-python@v5
-Installed versions
-Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10590973119/job/29347607289#step:3:9) was not found in the local cache
-Error: The version &#39;3.8&#39; with architecture &#39;arm64&#39; was not found for Debian 12.
-The list of all available versions can be found here: https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
-</code></pre></div>
-<p>So we comment out <code>setup-python</code>. Then it fails with <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10593895809/job/29356477035">pip3 not found</a>:</p>
-<div class="example-wrap"><pre class="language-text"><code>pip3: command not found
-</code></pre></div>
-<p>TODO: Switch to pipenv</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml"><code>Documentation</code></a> on Linux x64: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125174/job/29348045745">Fails with rmdir error</a></p>
-<div class="example-wrap"><pre class="language-text"><code>Copying &#39;/home/luppy/.gitconfig&#39; to &#39;/home/luppy/actions-runner/_work/_temp/8c370e2f-3f8f-4e01-b8f2-1ccb301640a1/.gitconfig&#39;
-Temporarily overriding HOME=&#39;/home/luppy/actions-runner/_work/_temp/8c370e2f-3f8f-4e01-b8f2-1ccb301640a1&#39; before making global git config changes
-Adding repository directory to the temporary git global config as a safe directory
-/usr/bin/git config --global --add safe.directory /home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx
-Deleting the contents of &#39;/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx&#39;
-Error: File was unable to be removed Error: EACCES: permission denied, rmdir &#39;/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx/buildartifacts/at32f437-mini&#39;
-</code></pre></div>
-<p>TODO: Check the rmdir directory</p>
-</li>
-</ul>
-<h1 id="appendix-nuttx-ci-for-macos"><a class="doc-anchor" href="#appendix-nuttx-ci-for-macos">§</a>11 Appendix: NuttX CI for macOS</h1>
-<p>TODO</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml"><code>Build macOS (macos / sim-01 / sim-02)</code></a> on macOS Arm64: <code>setup-python</code> will <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343630883">hang because it’s prompting for password</a>. So we comment out <code>setup-python</code>.</p>
-<div class="example-wrap"><pre class="language-text"><code>Run actions/setup-python@v5
-Installed versions
-Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:9) was not found in the local cache
-Version 3.8 is available for downloading
-Download from &quot;https://github.com/actions/python-versions/releases/download/3.8.10-887[9](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:10)978422/python-3.8.10-darwin-arm64.tar.gz&quot;
-Extract downloaded archive
-/usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
-Execute installation script
-Check if Python hostedtoolcache folder exist...
-Install Python binaries from prebuilt package
-</code></pre></div>
-<p>Then it fails while <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349061179">downloading the toolchain</a></p>
-<div class="example-wrap"><pre class="language-text"><code>+ wget --quiet https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
-+ xz -d arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
-xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected end of input
-</code></pre></div>
-<p>Retry and it <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29359739769">fails at objcopy sigh</a>:</p>
-<div class="example-wrap"><pre class="language-text"><code>+ rm -f /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
-+ ln -s /usr/local/opt/binutils/bin/objcopy /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
-+ command objcopy --version
-+ objcopy --version
-/Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found
-</code></pre></div>
-<p>TODO: Do we change the toolchain from x64 to Arm64?</p>
-</li>
-</ul>
-
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
