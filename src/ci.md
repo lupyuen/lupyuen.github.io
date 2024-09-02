@@ -88,14 +88,33 @@ TODO: Self-Hosted Runners
 # Self-Hosted Runners
 
 Let's experiment with __Self-Hosted Runners__ to cut costs. We run them on two computers...
-- __Mac Mini__ on macOS (Apple Silicon M2 Pro)
+
+- __Mac Mini__ on macOS Arm64 (Apple Silicon M2 Pro)
+
 - __Older PC__ on Ubuntu x64 (Intel i7)
+
 - With plenty of __Internet Bandwidth__ (Downlink 650 Mbps, Uplink 560 Mbps)
 - TODO: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
 
 TODO
 
 - [Follow these instructions](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners) to install Self-Hosted Runners for macOS Arm64 and Linux x64
+
+https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721
+
+```text
+Linux:
+  needs:   Fetch-Source
+  runs-on: ubuntu-latest
+```
+
+Change `runs-on` to...
+
+```text
+  runs-on: [self-hosted, Linux, X64]
+```
+
+TODO: Fetch-Source on Arm64
 
 - See below for the fixes for macOS Arm64 and Linux x64
 
