@@ -97,7 +97,7 @@ TODO: Docker Pull
 
 TODO: Fetch-Source then Download Source Artifact
 
-TODO: Every day we're running ??? Runners. And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
+TODO: On some days we're hitting a max of ??? Full-Time Runners. And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
 
 TODO: Self-Hosted Runners
 
