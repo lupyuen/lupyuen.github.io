@@ -81,19 +81,28 @@ TODO: Docker Pull
 
 TODO: Fetch-Source then Download Source Artifact
 
-# Running NuttX CI with Self-Hosted Runners
+TODO: Every day we're running ??? Runners. And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
+
+TODO: Self-Hosted Runners
+
+# Self-Hosted Runners
+
+Let's experiment with __Self-Hosted Runners__ to cut costs. We run them on two computers...
+- __Mac Mini__ on macOS (Apple Silicon M2 Pro)
+- __Older PC__ on Ubuntu x64 (Intel i7)
+- With plenty of __Internet Bandwidth__ (Downlink 650 Mbps, Uplink 560 Mbps)
+- TODO: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
 
 TODO
 
-Let's test NuttX CI with Self-Hosted Runners on macOS Arm64 and Ubuntu x64:
-- I have a super powerful Mac Mini Arm64 that's under utilised
-- And an old MacBook Pro on Ubuntu x64 (24.04 LTS)
-- Plenty of bandwidth at home: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3) with Downlink 650 Mbps, Uplink 560 Mbps
 - [Follow these instructions](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners) to install Self-Hosted Runners for macOS Arm64 and Linux x64
-- Start a few instances of each runner. Each instance needs its own `actions-runner` folder. TODO: How to handle `/github`?
+
 - See below for the fixes for macOS Arm64 and Linux x64
+
 - Security Concerns: How to be sure that Self-Hosted Runners will run only approved scripts and commands?
   (Right now I have disabled external users from triggering GitHub Actions on my repo)
+
+- Shut down the runners when we're done with testing
 
 We modified the GitHub Workflow Files, to use Self-Hosted Runners:
 - https://github.com/lupyuen3/runner-nuttx/pull/1/files
