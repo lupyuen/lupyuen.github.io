@@ -169,15 +169,7 @@ _Our Self-Hosted Runners: Do they work for NuttX CI Builds?_
 
 Here's the result: https://github.com/lupyuen3/runner-nuttx/actions
 
-- Most of the [Linux Builds](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) won't work on macOS Arm64 because they need Docker on Linux x64 
-
-- Podman Docker on Linux x64 [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677). Might be a [problem with Podman](https://github.com/containers/podman/discussions/14238).
-  ```text
-  Writing manifest to image destination
-  Error: statfs /var/run/docker.sock: permission denied
-  ```
-
-- Retested with Docker Engine, which [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29344966455):
+- Docker Engine [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29344966455):
   ```text
   permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post "http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&tag=latest": dial unix /var/run/docker.sock: connect: permission denied
    ```
@@ -188,39 +180,17 @@ Here's the result: https://github.com/lupyuen3/runner-nuttx/actions
 
 - Docker Website will throttle our downloading of Docker Images. If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.
 
-- [`Build macOS (macos / sim-01 / sim-02)`](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) on macOS Arm64: `setup-python` will [hang because it's prompting for password](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343630883). So we comment out `setup-python`.
-
-  ```text
-  Run actions/setup-python@v5
-  Installed versions
-  Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:9) was not found in the local cache
-  Version 3.8 is available for downloading
-  Download from "https://github.com/actions/python-versions/releases/download/3.8.10-887[9](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:10)978422/python-3.8.10-darwin-arm64.tar.gz"
-  Extract downloaded archive
-  /usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
-  Execute installation script
-  Check if Python hostedtoolcache folder exist...
-  Install Python binaries from prebuilt package
-  ```
-  Then it fails while [downloading the toolchain](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349061179)
-  ```text
-  + wget --quiet https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
-  + xz -d arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
-  xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected end of input
-  ```
-  Retry and it [fails at objcopy sigh](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29359739769):
-  ```text
-  + rm -f /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
-  + ln -s /usr/local/opt/binutils/bin/objcopy /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
-  + command objcopy --version
-  + objcopy --version
-  /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found
-  ```
-  TODO: Do we change the toolchain from x64 to Arm64?
-
 _Can we guesstimate the time to run a CI Build?_
 
 Just browse the GitHub Actions Log for the CI Build. See the Line Numbers? Every NuttX CI Build will have roughly 1,000 lines of log (by sheer coincidence). We can use this to guess the CI Build Duration.
+
+- TODO: Most of the [Linux Builds](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) won't work on macOS Arm64 because they need Docker on Linux x64 
+
+- TODO: Podman Docker on Linux x64 [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677). Might be a [problem with Podman](https://github.com/containers/podman/discussions/14238).
+  ```text
+  Writing manifest to image destination
+  Error: statfs /var/run/docker.sock: permission denied
+  ```
 
 # Fetch Source on macOS Arm64
 
@@ -519,3 +489,37 @@ _Does it work for Documentation Build?_
   Error: File was unable to be removed Error: EACCES: permission denied, rmdir '/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx/buildartifacts/at32f437-mini'
   ```
   TODO: Check the rmdir directory
+
+# Appendix: NuttX CI for macOS
+
+TODO
+
+- [`Build macOS (macos / sim-01 / sim-02)`](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) on macOS Arm64: `setup-python` will [hang because it's prompting for password](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343630883). So we comment out `setup-python`.
+
+  ```text
+  Run actions/setup-python@v5
+  Installed versions
+  Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:9) was not found in the local cache
+  Version 3.8 is available for downloading
+  Download from "https://github.com/actions/python-versions/releases/download/3.8.10-887[9](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:10)978422/python-3.8.10-darwin-arm64.tar.gz"
+  Extract downloaded archive
+  /usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
+  Execute installation script
+  Check if Python hostedtoolcache folder exist...
+  Install Python binaries from prebuilt package
+  ```
+  Then it fails while [downloading the toolchain](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349061179)
+  ```text
+  + wget --quiet https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
+  + xz -d arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
+  xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected end of input
+  ```
+  Retry and it [fails at objcopy sigh](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29359739769):
+  ```text
+  + rm -f /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
+  + ln -s /usr/local/opt/binutils/bin/objcopy /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
+  + command objcopy --version
+  + objcopy --version
+  /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found
+  ```
+  TODO: Do we change the toolchain from x64 to Arm64?
