@@ -76,6 +76,22 @@
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Sep 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
+<p>Why are we doing this?</p>
+<ul>
+<li>
+<p>In case we need to reduce <a href="https://docs.google.com/spreadsheets/d/1gY0VrSJvouXwDIclspQCFoBcoHhNCbGicNoVJRhJ-h4/edit?gid=0#gid=0">GitHub Hosting Costs</a>. Or if we need to run the NuttX CI privately.</p>
+</li>
+<li>
+<p>It’s a great way to understand the Internals of NuttX CI!</p>
+</li>
+<li>
+<p>Why is NuttX CI so heavy? That’s because for every PR, it compiles every single NuttX Build Config: Arm, RISC-V, Simulator. (Hosting charges won’t be cheap)</p>
+</li>
+</ul>
+<p>TODO: We might need a quicker way to “fail fast” and prevent other CI Jobs from running? Which will reduce the number of Runners?</p>
+<p>TODO: What if we could start earlier the CI Jobs that are impacted by the Modified Code in the PR? So if I modify something for Ox64 BL808 SBC, it should start the CI Job for <code>ox64:nsh</code>. If it fails, then don’t bother with the rest of the Arm / RISC-V / Simulator jobs.</p>
+<p>TODO: Suppose we need to throttle our GitHub Runners from 36 Runners down to 25 Runners (and cut costs). What would be the impact on NuttX CI Duration? Are there any tools for modeling the queueing duration? </p>
+<p>TODO: Pic of GitHub Actions &gt; Workflows &gt; Build</p>
 <h1 id="continuous-integration-for-nuttx"><a class="doc-anchor" href="#continuous-integration-for-nuttx">§</a>1 Continuous Integration for NuttX</h1>
 <p><em>Why do we need Continuous Integration?</em></p>
 <p>Suppose we <a href="TODO"><strong>Submit a Pull Request</strong></a> for NuttX. We need to be sure that our Modified Code won’t break the Existing Builds in NuttX.</p>
@@ -143,18 +159,9 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 </ul>
 <p>TODO</p>
 <ul>
-<li><a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners">Follow these instructions</a> to install Self-Hosted Runners for macOS Arm64 and Linux x64</li>
-</ul>
-<p>https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721</p>
-<div class="example-wrap"><pre class="language-text"><code>Linux:
-  needs:   Fetch-Source
-  runs-on: ubuntu-latest
-</code></pre></div>
-<p>Change <code>runs-on</code> to…</p>
-<div class="example-wrap"><pre class="language-text"><code>  runs-on: [self-hosted, Linux, X64]
-</code></pre></div>
-<p>TODO: Fetch-Source on Arm64</p>
-<ul>
+<li>
+<p><a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners">Follow these instructions</a> to install Self-Hosted Runners for macOS Arm64 and Linux x64</p>
+</li>
 <li>
 <p>See below for the fixes for macOS Arm64 and Linux x64</p>
 </li>
@@ -166,19 +173,19 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 <p>Shut down the runners when we’re done with testing</p>
 </li>
 </ul>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721">.github/workflows/build.yml</a></p>
+<div class="example-wrap"><pre class="language-text"><code>Linux:
+  needs:   Fetch-Source
+  runs-on: ubuntu-latest
+</code></pre></div>
+<p>Change <code>runs-on</code> to…</p>
+<div class="example-wrap"><pre class="language-text"><code>  runs-on: [self-hosted, Linux, X64]
+</code></pre></div>
+<p>TODO: Fetch-Source on Arm64</p>
 <p>We modified the GitHub Workflow Files, to use Self-Hosted Runners:</p>
 <ul>
 <li>https://github.com/lupyuen3/runner-nuttx/pull/1/files</li>
 </ul>
-<p>Why are we doing this?</p>
-<ul>
-<li>In case we need to reduce <a href="https://docs.google.com/spreadsheets/d/1gY0VrSJvouXwDIclspQCFoBcoHhNCbGicNoVJRhJ-h4/edit?gid=0#gid=0">GitHub Hosting Costs</a>. Or if we need to run the NuttX CI privately.</li>
-<li>It’s a great way to understand the Internals of NuttX CI!</li>
-<li>Why is NuttX CI so heavy? That’s because for every PR, it compiles every single NuttX Build Config: Arm, RISC-V, Simulator. (Hosting charges won’t be cheap)</li>
-</ul>
-<p>TODO: We might need a quicker way to “fail fast” and prevent other CI Jobs from running? Which will reduce the number of Runners?</p>
-<p>TODO: What if we could start earlier the CI Jobs that are impacted by the Modified Code in the PR? So if I modify something for Ox64 BL808 SBC, it should start the CI Job for <code>ox64:nsh</code>. If it fails, then don’t bother with the rest of the Arm / RISC-V / Simulator jobs.</p>
-<p>TODO: Suppose we need to throttle our GitHub Runners from 36 Runners down to 25 Runners (and cut costs). What would be the impact on NuttX CI Duration? Are there any tools for modeling the queueing duration? </p>
 <h1 id="ci-build-for-nuttx"><a class="doc-anchor" href="#ci-build-for-nuttx">§</a>3 CI Build for NuttX</h1>
 <p>TODO</p>
 <p><em>Our Self-Hosted Runners: Do they work for NuttX CI Builds?</em></p>
