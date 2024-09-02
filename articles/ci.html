@@ -66,7 +66,7 @@
     <h1 class="title">Self-Hosted Runners for Continuous Integration (Apache NuttX RTOS)</h1>
     <nav id="TOC"><ul>
 <li><a href="#continuous-integration-for-nuttx">1 Continuous Integration for NuttX</a><ul></ul></li>
-<li><a href="#running-nuttx-ci-with-self-hosted-runners">2 Running NuttX CI with Self-Hosted Runners</a><ul></ul></li>
+<li><a href="#self-hosted-runners">2 Self-Hosted Runners</a><ul></ul></li>
 <li><a href="#ci-build-for-nuttx">3 CI Build for NuttX</a><ul></ul></li>
 <li><a href="#documentation-build-for-nuttx">4 Documentation Build for NuttX</a><ul></ul></li>
 <li><a href="#utm-emulator-for-macos-arm64">5 UTM Emulator for macOS Arm64</a><ul></ul></li>
@@ -123,18 +123,31 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 <p>macOS and Windows (msys2)</p>
 <p>TODO: Docker Pull</p>
 <p>TODO: Fetch-Source then Download Source Artifact</p>
-<h1 id="running-nuttx-ci-with-self-hosted-runners"><a class="doc-anchor" href="#running-nuttx-ci-with-self-hosted-runners">§</a>2 Running NuttX CI with Self-Hosted Runners</h1>
-<p>TODO</p>
-<p>Let’s test NuttX CI with Self-Hosted Runners on macOS Arm64 and Ubuntu x64:</p>
+<p>TODO: Every day we’re running ??? Runners. And <a href="https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners"><strong>they ain’t cheap</strong></a>!</p>
+<p>TODO: Self-Hosted Runners</p>
+<h1 id="self-hosted-runners"><a class="doc-anchor" href="#self-hosted-runners">§</a>2 Self-Hosted Runners</h1>
+<p>Let’s experiment with <strong>Self-Hosted Runners</strong> to cut costs. We run them on two computers…</p>
 <ul>
-<li>I have a super powerful Mac Mini Arm64 that’s under utilised</li>
-<li>And an old MacBook Pro on Ubuntu x64 (24.04 LTS)</li>
-<li>Plenty of bandwidth at home: <a href="http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3">Fibre To The Home</a> with Downlink 650 Mbps, Uplink 560 Mbps</li>
-<li><a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners">Follow these instructions</a> to install Self-Hosted Runners for macOS Arm64 and Linux x64</li>
-<li>Start a few instances of each runner. Each instance needs its own <code>actions-runner</code> folder. TODO: How to handle <code>/github</code>?</li>
-<li>See below for the fixes for macOS Arm64 and Linux x64</li>
-<li>Security Concerns: How to be sure that Self-Hosted Runners will run only approved scripts and commands?
-(Right now I have disabled external users from triggering GitHub Actions on my repo)</li>
+<li><strong>Mac Mini</strong> on macOS (Apple Silicon M2 Pro)</li>
+<li><strong>Older PC</strong> on Ubuntu x64 (Intel i7)</li>
+<li>With plenty of <strong>Internet Bandwidth</strong> (Downlink 650 Mbps, Uplink 560 Mbps)</li>
+<li>TODO: <a href="http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3">Fibre To The Home</a></li>
+</ul>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners">Follow these instructions</a> to install Self-Hosted Runners for macOS Arm64 and Linux x64</p>
+</li>
+<li>
+<p>See below for the fixes for macOS Arm64 and Linux x64</p>
+</li>
+<li>
+<p>Security Concerns: How to be sure that Self-Hosted Runners will run only approved scripts and commands?
+(Right now I have disabled external users from triggering GitHub Actions on my repo)</p>
+</li>
+<li>
+<p>Shut down the runners when we’re done with testing</p>
+</li>
 </ul>
 <p>We modified the GitHub Workflow Files, to use Self-Hosted Runners:</p>
 <ul>
