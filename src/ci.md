@@ -101,6 +101,8 @@ TODO: On some days we're hitting a max of ??? Full-Time Runners. And [__they ain
 
 TODO: Self-Hosted Runners
 
+TODO: every PR will trigger 24 CI Jobs concurrently (each with its own Runner, lasting 30-90 mins)
+
 # Self-Hosted Runners
 
 Let's experiment with __Self-Hosted Runners__ to cut costs. We run them on two computers...
