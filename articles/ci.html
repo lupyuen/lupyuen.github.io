@@ -65,7 +65,7 @@
 
     <h1 class="title">Self-Hosted Runners for Continuous Integration (Apache NuttX RTOS)</h1>
     <nav id="TOC"><ul>
-<li><a href="#inside-the-continuous-integration">1 Inside the Continuous Integration</a><ul></ul></li>
+<li><a href="#continuous-integration-for-nuttx">1 Continuous Integration for NuttX</a><ul></ul></li>
 <li><a href="#running-nuttx-ci-with-self-hosted-runners">2 Running NuttX CI with Self-Hosted Runners</a><ul></ul></li>
 <li><a href="#ci-build-for-nuttx">3 CI Build for NuttX</a><ul></ul></li>
 <li><a href="#documentation-build-for-nuttx">4 Documentation Build for NuttX</a><ul></ul></li>
@@ -76,11 +76,18 @@
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Sep 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
-<h1 id="inside-the-continuous-integration"><a class="doc-anchor" href="#inside-the-continuous-integration">§</a>1 Inside the Continuous Integration</h1>
-<p>TODO</p>
+<h1 id="continuous-integration-for-nuttx"><a class="doc-anchor" href="#continuous-integration-for-nuttx">§</a>1 Continuous Integration for NuttX</h1>
+<p><em>Why do we need Continuous Integration?</em></p>
+<p>Suppose we <a href="TODO"><strong>Submit a Pull Request</strong></a> for NuttX. We need to be sure that our Modified Code won’t break the Existing Builds in NuttX.</p>
+<p>That’s why our Pull Request will trigger the <strong>Continuous Integration Workflow</strong>, to recompile NuttX for <strong>All Hardware Platforms</strong>.</p>
+<p>(<strong>??? Builds</strong> across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)</p>
+<p>TODO: Isn’t this a little excessive? But we don’t know which platforms are impacted!</p>
+<p><em>What happens inside the Continuous Integration?</em></p>
 <p>Head over to GitHub Actions &gt; Workflows &gt; Build: https://github.com/apache/nuttx/actions/workflows/build.yml</p>
+<p>TODO: Pic above</p>
 <p>Click one of the jobs: https://github.com/apache/nuttx/actions/runs/10552464655</p>
 <p>Click <code>Linux (arm-01)</code> &gt; Run Builds: https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816</p>
+<p>TODO: Pic</p>
 <p>Build NuttX Config</p>
 <div class="example-wrap"><pre class="language-text"><code> ====================================================================================
 Configuration/Tool: pcduino-a10/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
