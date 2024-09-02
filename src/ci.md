@@ -112,7 +112,7 @@ Let's experiment with __Self-Hosted Runners__ to cut costs. We run them on two c
 - With plenty of __Internet Bandwidth__ (Downlink 650 Mbps, Uplink 560 Mbps)
 - TODO: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
 
-TODO
+TODO: Throttled by GitHub and Docker Hub
 
 - [Follow these instructions](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners) to install Self-Hosted Runners for macOS Arm64 and Linux x64
 
@@ -123,7 +123,7 @@ TODO
 
 - Shut down the runners when we're done with testing
 
-[.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
+Look for this code in the GitHub Actions Worklow: [.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
 
 ```text
 Linux:
