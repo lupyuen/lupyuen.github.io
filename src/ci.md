@@ -116,9 +116,9 @@ Let's experiment with __Self-Hosted Runners__ to cut costs. We run them on two c
 
 TODO: Throttled by GitHub and Docker Hub
 
-- [Follow these instructions](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners) to install Self-Hosted Runners for macOS Arm64 and Linux x64
+- [Follow these instructions](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners) to install Self-Hosted Runners for Linux x64 and macOS Arm64
 
-- See below for the fixes for macOS Arm64 and Linux x64
+- See below for the fixes for Linux x64 and macOS Arm64
 
 - Security Concerns: How to be sure that Self-Hosted Runners will run only approved scripts and commands?
   (Right now I have disabled external users from triggering GitHub Actions on my repo)
