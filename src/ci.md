@@ -93,17 +93,25 @@ Linux Other: Arm64, AVR, i486, PIC32, ...
 
 macOS and Windows (msys2)
 
-TODO: Docker Pull
-
-TODO: Fetch-Source then Download Source Artifact
-
 TODO: On some days we're hitting a max of ??? Full-Time Runners. And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
 
-TODO: Self-Hosted Runners
+TODO: Switch to Self-Hosted Runners
+
+# One Thousand Build Targets
 
 TODO: every PR will trigger 24 CI Jobs concurrently (each with its own Runner, lasting 30-90 mins per job)
 
 TODO: The 24 CI Jobs above will recompile 1,594 Build Targets from scratch. Here's the [complete list of Build Targets](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
+
+TODO: Reduce to 15 concurrent
+
+TODO: We could review the Build Targets above and decide which targets should be excluded? Or reprioritised to run earlier / later?
+
+TODO: Or we could run all 1,594 builds only when the PR is Approved? So we can save on Build Times for the Submission / Resubmission of the PR? Thanks!
+
+TODO: Fetch-Source then Download Source Artifact
+
+TODO: Docker Pull
 
 # Self-Hosted Runners
 
