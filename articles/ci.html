@@ -146,8 +146,7 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 <p>TODO: On some days we’re hitting a max of ??? Full-Time Runners. And <a href="https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners"><strong>they ain’t cheap</strong></a>!</p>
 <p>TODO: Self-Hosted Runners</p>
 <p>TODO: every PR will trigger 24 CI Jobs concurrently (each with its own Runner, lasting 30-90 mins per job)</p>
-<p>TODO: The 24 CI Jobs above will recompile 1,594 Build Targets from scratch. Here’s the complete list of Build Targets:
-https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0</p>
+<p>TODO: The 24 CI Jobs above will recompile 1,594 Build Targets from scratch. Here’s the <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">complete list of Build Targets</a></p>
 <h1 id="self-hosted-runners"><a class="doc-anchor" href="#self-hosted-runners">§</a>2 Self-Hosted Runners</h1>
 <p>Let’s experiment with <strong>Self-Hosted Runners</strong> to cut costs. We run them on two computers…</p>
 <ul>
@@ -225,6 +224,7 @@ Error: statfs /var/run/docker.sock: permission denied
 <p>TODO: Most of the <a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml">Linux Builds</a> won’t work on macOS Arm64 because they need Docker on Linux x64 </p>
 <p>We’ll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS…</p>
 <h1 id="fetch-source-on-macos-arm64"><a class="doc-anchor" href="#fetch-source-on-macos-arm64">§</a>4 Fetch Source on macOS Arm64</h1>
+<p><em>We haven’t invoked the Runners for macOS Arm64?</em></p>
 <p>TODO: Fetch Source will work fine on Linux x64</p>
 <p>TODO: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486"><code>Fetch-Source</code></a> works OK on macOS Arm64</p>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721">.github/workflows/build.yml</a></p>
