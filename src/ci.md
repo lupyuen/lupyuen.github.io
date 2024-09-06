@@ -103,8 +103,7 @@ TODO: Self-Hosted Runners
 
 TODO: every PR will trigger 24 CI Jobs concurrently (each with its own Runner, lasting 30-90 mins per job)
 
-TODO: The 24 CI Jobs above will recompile 1,594 Build Targets from scratch. Here's the complete list of Build Targets:
-https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0
+TODO: The 24 CI Jobs above will recompile 1,594 Build Targets from scratch. Here's the [complete list of Build Targets](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
 
 # Self-Hosted Runners
 
@@ -198,6 +197,8 @@ TODO: Most of the [Linux Builds](https://github.com/lupyuen3/runner-nuttx/action
 We'll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS...
 
 # Fetch Source on macOS Arm64
+
+_We haven't invoked the Runners for macOS Arm64?_
 
 TODO: Fetch Source will work fine on Linux x64
 
