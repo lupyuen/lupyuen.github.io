@@ -135,23 +135,21 @@ Here's the [__complete list of Build Targets__](https://docs.google.com/spreadsh
 
 _Is this a problem?_
 
-The 24 Build Jobs will run in parallel, which needs __24 GitHub Runners__.
+Every single Pull Request will execute 24 Build Jobs in parallel. 
 
-And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
-
-TODO: Switch to Self-Hosted Runners
-
-TODO: Isn't this a little excessive? But we don't know which platforms are impacted!
+Which needs __24 GitHub Runners__ per Pull Request. And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
 
 TODO: Reduce to 15 concurrent
 
-TODO: We could review the Build Targets above and decide which targets should be excluded? Or reprioritised to run earlier / later?
+(Perhaps we could review the Build Targets above and decide which targets should be excluded? Or reprioritised to run earlier / later?)
 
-TODO: Or we could run all 1,594 builds only when the PR is Approved? So we can save on Build Times for the Submission / Resubmission of the PR? Thanks!
+(Or we could run all 1,594 builds only when the PR is Approved? So we can save on Build Times for the Submission / Resubmission of the PR?)
 
-TODO: Fetch-Source then Download Source Artifact
+_Isn't this a little excessive?_
 
-TODO: Docker Pull
+TODO: But we don't know which platforms are impacted!
+
+TODO: Switch to Self-Hosted Runners
 
 # Self-Hosted Runners
 
@@ -243,6 +241,10 @@ _What about macOS on Arm64?_
 TODO: Most of the [Linux Builds](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) won't work on macOS Arm64 because they need Docker on Linux x64 
 
 We'll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS...
+
+TODO: Fetch-Source then Download Source Artifact
+
+TODO: Docker Pull
 
 # Fetch Source on macOS Arm64
 
