@@ -32,8 +32,6 @@ That's why our Pull Request will trigger the __Continuous Integration Workflow__
 
 (__1,594 Builds__ across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)
 
-TODO: Isn't this a little excessive? But we don't know which platforms are impacted!
-
 _What happens inside the Continuous Integration?_
 
 Head over to the [__NuttX Repository__](TODO) and click [__GitHub Actions > Workflows > Build__](https://github.com/apache/nuttx/actions/workflows/build.yml)
@@ -87,7 +85,7 @@ Each __NuttX Build__ will be a...
 
 _What about other NuttX Targets? Arm64, RISC-V, Xtensa, ..._
 
-Every Pull Request will trigger __24 Jobs for Continuous Integration__, all executing concurrently...
+Every Pull Request will trigger __24 Jobs for Continuous Integration__, all compiling concurrently...
 
 - __Arm32 Targets:__ arm-01, arm-02, arm-03, ...
 
@@ -101,14 +99,17 @@ Every Pull Request will trigger __24 Jobs for Continuous Integration__, all exec
 
 - __macOS and Windows__ (msys2)
 
-TODO: each with its own Runner, lasting 30-90 mins per job
+Each of the above 24 jobs will run for __30 minutes to 2 hours__. After 2 hours, we'll know for sure whether our Modified Code will break any NuttX Build!
+
+TODO: each with its own Runner, lasting 30-120 mins per job
 
 TODO: On some days we're hitting a max of ??? Full-Time Runners. And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
 
 TODO: Switch to Self-Hosted Runners
 
-# One Thousand Build Targets
+TODO: Isn't this a little excessive? But we don't know which platforms are impacted!
 
+# One Thousand Build Targets
 
 TODO: The 24 CI Jobs above will recompile 1,594 Build Targets from scratch. Here's the [complete list of Build Targets](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
 
