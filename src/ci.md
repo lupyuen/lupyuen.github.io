@@ -101,17 +101,47 @@ Every Pull Request will trigger __24 Jobs for Continuous Integration__, all comp
 
 Each of the above 24 jobs will run for __30 minutes to 2 hours__. After 2 hours, we'll know for sure whether our Modified Code will break any NuttX Build!
 
-TODO: each with its own Runner, lasting 30-120 mins per job
+# One Thousand Build Targets
+
+_Each of the 24 jobs above will run up to 2 hours. Why?_
+
+That's because the 24 Build Jobs will __recompile 1,594 NuttX Targets__ from scratch!
+
+Here's the [__complete list of Build Targets__](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)...
+
+- __Arm32:__ TODO targets
+
+  (arm-01 to arm-TODO)
+
+- __RISC-V:__ TODO targets
+
+  (riscv-01, riscv-02)
+
+- __Xtensa:__ TODO targets
+
+  (xtensa-01, xtensa-02)
+
+- __Simulator:__ TODO targets
+
+  (sim-01, TODO)
+
+- __Others:__ TODO targets
+
+  (TODO)
+
+- __macOS and Windows:__ TODO targets
+
+  (TODO)
+
+_Is this a problem?_
+
+TODO
 
 TODO: On some days we're hitting a max of ??? Full-Time Runners. And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
 
 TODO: Switch to Self-Hosted Runners
 
 TODO: Isn't this a little excessive? But we don't know which platforms are impacted!
-
-# One Thousand Build Targets
-
-TODO: The 24 CI Jobs above will recompile 1,594 Build Targets from scratch. Here's the [complete list of Build Targets](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
 
 TODO: Reduce to 15 concurrent
 
