@@ -99,17 +99,17 @@
 <p>TODO: Pic of GitHub Actions &gt; Workflows &gt; Build</p>
 <h1 id="continuous-integration-for-nuttx"><a class="doc-anchor" href="#continuous-integration-for-nuttx">§</a>1 Continuous Integration for NuttX</h1>
 <p><em>Why do we need Continuous Integration?</em></p>
-<p>Suppose we <a href="TODO"><strong>Submit a Pull Request</strong></a> for NuttX. We need to be sure that our Modified Code won’t break the Existing Builds in NuttX.</p>
+<p>Suppose we <a href="https://lupyuen.github.io/articles/pr"><strong>Submit a Pull Request</strong></a> for NuttX. We need to be sure that our Modified Code won’t break the Existing Builds in NuttX.</p>
 <p>That’s why our Pull Request will trigger the <strong>Continuous Integration Workflow</strong>, to recompile NuttX for <strong>All Hardware Platforms</strong>.</p>
 <p>(<strong>1,594 Builds</strong> across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)</p>
 <p>TODO: Isn’t this a little excessive? But we don’t know which platforms are impacted!</p>
 <p><em>What happens inside the Continuous Integration?</em></p>
-<p>Head over to GitHub Actions &gt; Workflows &gt; Build: https://github.com/apache/nuttx/actions/workflows/build.yml</p>
+<p>Head over to the <a href="TODO"><strong>NuttX Repository</strong></a> and click <a href="https://github.com/apache/nuttx/actions/workflows/build.yml"><strong>GitHub Actions &gt; Workflows &gt; Build</strong></a></p>
 <p>TODO: Pic above</p>
 <p>Click one of the jobs: https://github.com/apache/nuttx/actions/runs/10552464655</p>
-<p>Click <code>Linux (arm-01)</code> &gt; Run Builds: https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816</p>
+<p>Click <strong>Linux (arm-01) &gt; Run Builds</strong>: https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816</p>
 <p>TODO: Pic</p>
-<p>Build NuttX Config</p>
+<p>We’ll see this <strong>NuttX Build for Arm32</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code> ====================================================================================
 Configuration/Tool: pcduino-a10/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 2024-08-26 02:30:55
@@ -126,7 +126,7 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 2024-08-26 02:31:40
 ------------------------------------------------------------------------------------
 </code></pre></div>
-<p>Other Configs</p>
+<p>Followed by <strong>More Builds for Arm32</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: beaglebone-black/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 Configuration/Tool: at32f437-mini/eth,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 Configuration/Tool: at32f437-mini/sdcard,CONFIG_ARM_TOOLCHAIN_GNU_EABI
@@ -134,18 +134,44 @@ Configuration/Tool: at32f437-mini/systemview,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 ...
 </code></pre></div>
-<p>cmake</p>
-<p>Python Test</p>
-<p>Other Arm Configs: arm-02, arm-03, …</p>
-<p>RISC-V Configs: riscv-01, …</p>
-<p>Sim Configs: sim-01, …</p>
-<p>Xtensa Configs: xtensa-01, …</p>
-<p>Linux Other: Arm64, AVR, i486, PIC32, …</p>
-<p>macOS and Windows (msys2)</p>
+<p>Each <strong>NuttX Build</strong> will be a…</p>
+<ul>
+<li>
+<p>Regular <a href="TODO"><strong>NuttX Make</strong></a></p>
+</li>
+<li>
+<p>Or a <a href="TODO"><strong>NuttX CMake</strong></a></p>
+</li>
+<li>
+<p>Or a <a href="TODO"><strong>Python Test</strong></a></p>
+</li>
+</ul>
+<p><em>What about other NuttX Targets? Arm64, RISC-V, Xtensa, …</em></p>
+<p>Every Pull Request will trigger <strong>24 Jobs for Continuous Integration</strong>, all executing concurrently…</p>
+<ul>
+<li>
+<p><strong>Arm32 Targets:</strong> arm-01, arm-02, arm-03, …</p>
+</li>
+<li>
+<p><strong>RISC-V Targets:</strong> riscv-01, …</p>
+</li>
+<li>
+<p><strong>Xtensa Targets:</strong> xtensa-01, …</p>
+</li>
+<li>
+<p><strong>Simulator Targets:</strong> sim-01, …</p>
+</li>
+<li>
+<p><strong>Other Targets</strong> (Arm64, AVR, i486, …)</p>
+</li>
+<li>
+<p><strong>macOS and Windows</strong> (msys2)</p>
+</li>
+</ul>
+<p>TODO: each with its own Runner, lasting 30-90 mins per job</p>
 <p>TODO: On some days we’re hitting a max of ??? Full-Time Runners. And <a href="https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners"><strong>they ain’t cheap</strong></a>!</p>
 <p>TODO: Switch to Self-Hosted Runners</p>
 <h1 id="one-thousand-build-targets"><a class="doc-anchor" href="#one-thousand-build-targets">§</a>2 One Thousand Build Targets</h1>
-<p>TODO: every PR will trigger 24 CI Jobs concurrently (each with its own Runner, lasting 30-90 mins per job)</p>
 <p>TODO: The 24 CI Jobs above will recompile 1,594 Build Targets from scratch. Here’s the <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">complete list of Build Targets</a></p>
 <p>TODO: Reduce to 15 concurrent</p>
 <p>TODO: We could review the Build Targets above and decide which targets should be excluded? Or reprioritised to run earlier / later?</p>
