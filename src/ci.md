@@ -139,6 +139,8 @@ Every single Pull Request will execute 24 Build Jobs in parallel.
 
 Which needs __24 GitHub Runners__ per Pull Request. And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
 
+TODO: Pic of NuttX Stats
+
 TODO: Reduce to 15 concurrent
 
 (Perhaps we could review the Build Targets above and decide which targets should be excluded? Or reprioritised to run earlier / later?)
@@ -153,14 +155,15 @@ TODO: Switch to Self-Hosted Runners
 
 # Self-Hosted Runners
 
-Let's experiment with __Self-Hosted Runners__ to cut costs. We run them on two computers...
+Let's experiment with __Self-Hosted Runners__ to understand what's happening inside NuttX Continous Integration. We run them on two computers...
 
-- __Older PC__ on Ubuntu x64 (Intel i7)
+- __Older PC__ on Ubuntu x64 (Intel i7, 3.7 GHz)
 
-- __Newer Mac Mini__ on macOS Arm64 (Apple Silicon M2 Pro)
+- __Newer Mac Mini__ on macOS Arm64 (Apple Silicon, M2 Pro)
 
 - With plenty of __Internet Bandwidth__ (Downlink 650 Mbps, Uplink 560 Mbps)
-- TODO: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
+
+TODO: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
 
 TODO: Throttled by GitHub and Docker Hub
 
