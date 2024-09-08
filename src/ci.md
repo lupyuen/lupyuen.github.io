@@ -111,33 +111,33 @@ Here's the [__complete list of Build Targets__](https://docs.google.com/spreadsh
 
 - __Arm32:__ TODO targets
 
-  (arm-01 to arm-TODO)
+  _(arm-01 to arm-TODO)_
 
 - __RISC-V:__ TODO targets
 
-  (riscv-01, riscv-02)
+  _(riscv-01, riscv-02)_
 
 - __Xtensa:__ TODO targets
 
-  (xtensa-01, xtensa-02)
+  _(xtensa-01, xtensa-02)_
 
 - __Simulator:__ TODO targets
 
-  (sim-01, TODO)
+  _(sim-01, TODO)_
 
 - __Others:__ TODO targets
 
-  (TODO)
+  _(TODO)_
 
 - __macOS and Windows:__ TODO targets
 
-  (TODO)
+  _(TODO)_
 
 _Is this a problem?_
 
-TODO
+The 24 Build Jobs will run in parallel, which needs __24 GitHub Runners__.
 
-TODO: On some days we're hitting a max of ??? Full-Time Runners. And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
+And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
 
 TODO: Switch to Self-Hosted Runners
 
