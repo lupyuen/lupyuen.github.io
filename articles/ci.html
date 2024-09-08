@@ -102,7 +102,6 @@
 <p>Suppose we <a href="https://lupyuen.github.io/articles/pr"><strong>Submit a Pull Request</strong></a> for NuttX. We need to be sure that our Modified Code won’t break the Existing Builds in NuttX.</p>
 <p>That’s why our Pull Request will trigger the <strong>Continuous Integration Workflow</strong>, to recompile NuttX for <strong>All Hardware Platforms</strong>.</p>
 <p>(<strong>1,594 Builds</strong> across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)</p>
-<p>TODO: Isn’t this a little excessive? But we don’t know which platforms are impacted!</p>
 <p><em>What happens inside the Continuous Integration?</em></p>
 <p>Head over to the <a href="TODO"><strong>NuttX Repository</strong></a> and click <a href="https://github.com/apache/nuttx/actions/workflows/build.yml"><strong>GitHub Actions &gt; Workflows &gt; Build</strong></a></p>
 <p>TODO: Pic above</p>
@@ -147,7 +146,7 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 </li>
 </ul>
 <p><em>What about other NuttX Targets? Arm64, RISC-V, Xtensa, …</em></p>
-<p>Every Pull Request will trigger <strong>24 Jobs for Continuous Integration</strong>, all executing concurrently…</p>
+<p>Every Pull Request will trigger <strong>24 Jobs for Continuous Integration</strong>, all compiling concurrently…</p>
 <ul>
 <li>
 <p><strong>Arm32 Targets:</strong> arm-01, arm-02, arm-03, …</p>
@@ -168,9 +167,11 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 <p><strong>macOS and Windows</strong> (msys2)</p>
 </li>
 </ul>
-<p>TODO: each with its own Runner, lasting 30-90 mins per job</p>
+<p>Each of the above 24 jobs will run for <strong>30 minutes to 2 hours</strong>. After 2 hours, we’ll know for sure whether our Modified Code will break any NuttX Build!</p>
+<p>TODO: each with its own Runner, lasting 30-120 mins per job</p>
 <p>TODO: On some days we’re hitting a max of ??? Full-Time Runners. And <a href="https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners"><strong>they ain’t cheap</strong></a>!</p>
 <p>TODO: Switch to Self-Hosted Runners</p>
+<p>TODO: Isn’t this a little excessive? But we don’t know which platforms are impacted!</p>
 <h1 id="one-thousand-build-targets"><a class="doc-anchor" href="#one-thousand-build-targets">§</a>2 One Thousand Build Targets</h1>
 <p>TODO: The 24 CI Jobs above will recompile 1,594 Build Targets from scratch. Here’s the <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">complete list of Build Targets</a></p>
 <p>TODO: Reduce to 15 concurrent</p>
