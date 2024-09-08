@@ -201,6 +201,7 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 <p><em>Is this a problem?</em></p>
 <p>Every single Pull Request will execute 24 Build Jobs in parallel. </p>
 <p>Which needs <strong>24 GitHub Runners</strong> per Pull Request. And <a href="https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners"><strong>they ain’t cheap</strong></a>!</p>
+<p>TODO: Pic of NuttX Stats</p>
 <p>TODO: Reduce to 15 concurrent</p>
 <p>(Perhaps we could review the Build Targets above and decide which targets should be excluded? Or reprioritised to run earlier / later?)</p>
 <p>(Or we could run all 1,594 builds only when the PR is Approved? So we can save on Build Times for the Submission / Resubmission of the PR?)</p>
@@ -208,21 +209,19 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 <p>TODO: But we don’t know which platforms are impacted!</p>
 <p>TODO: Switch to Self-Hosted Runners</p>
 <h1 id="self-hosted-runners"><a class="doc-anchor" href="#self-hosted-runners">§</a>3 Self-Hosted Runners</h1>
-<p>Let’s experiment with <strong>Self-Hosted Runners</strong> to cut costs. We run them on two computers…</p>
+<p>Let’s experiment with <strong>Self-Hosted Runners</strong> to understand what’s happening inside NuttX Continous Integration. We run them on two computers…</p>
 <ul>
 <li>
-<p><strong>Older PC</strong> on Ubuntu x64 (Intel i7)</p>
+<p><strong>Older PC</strong> on Ubuntu x64 (Intel i7, 3.7 GHz)</p>
 </li>
 <li>
-<p><strong>Newer Mac Mini</strong> on macOS Arm64 (Apple Silicon M2 Pro)</p>
+<p><strong>Newer Mac Mini</strong> on macOS Arm64 (Apple Silicon, M2 Pro)</p>
 </li>
 <li>
 <p>With plenty of <strong>Internet Bandwidth</strong> (Downlink 650 Mbps, Uplink 560 Mbps)</p>
 </li>
-<li>
-<p>TODO: <a href="http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3">Fibre To The Home</a></p>
-</li>
 </ul>
+<p>TODO: <a href="http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3">Fibre To The Home</a></p>
 <p>TODO: Throttled by GitHub and Docker Hub</p>
 <ul>
 <li>
