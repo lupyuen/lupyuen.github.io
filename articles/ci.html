@@ -168,12 +168,41 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 </li>
 </ul>
 <p>Each of the above 24 jobs will run for <strong>30 minutes to 2 hours</strong>. After 2 hours, we’ll know for sure whether our Modified Code will break any NuttX Build!</p>
-<p>TODO: each with its own Runner, lasting 30-120 mins per job</p>
+<h1 id="one-thousand-build-targets"><a class="doc-anchor" href="#one-thousand-build-targets">§</a>2 One Thousand Build Targets</h1>
+<p><em>Each of the 24 jobs above will run up to 2 hours. Why?</em></p>
+<p>That’s because the 24 Build Jobs will <strong>recompile 1,594 NuttX Targets</strong> from scratch!</p>
+<p>Here’s the <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0"><strong>complete list of Build Targets</strong></a>…</p>
+<ul>
+<li>
+<p><strong>Arm32:</strong> TODO targets</p>
+<p>(arm-01 to arm-TODO)</p>
+</li>
+<li>
+<p><strong>RISC-V:</strong> TODO targets</p>
+<p>(riscv-01, riscv-02)</p>
+</li>
+<li>
+<p><strong>Xtensa:</strong> TODO targets</p>
+<p>(xtensa-01, xtensa-02)</p>
+</li>
+<li>
+<p><strong>Simulator:</strong> TODO targets</p>
+<p>(sim-01, TODO)</p>
+</li>
+<li>
+<p><strong>Others:</strong> TODO targets</p>
+<p>(TODO)</p>
+</li>
+<li>
+<p><strong>macOS and Windows:</strong> TODO targets</p>
+<p>(TODO)</p>
+</li>
+</ul>
+<p><em>Is this a problem?</em></p>
+<p>TODO</p>
 <p>TODO: On some days we’re hitting a max of ??? Full-Time Runners. And <a href="https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners"><strong>they ain’t cheap</strong></a>!</p>
 <p>TODO: Switch to Self-Hosted Runners</p>
 <p>TODO: Isn’t this a little excessive? But we don’t know which platforms are impacted!</p>
-<h1 id="one-thousand-build-targets"><a class="doc-anchor" href="#one-thousand-build-targets">§</a>2 One Thousand Build Targets</h1>
-<p>TODO: The 24 CI Jobs above will recompile 1,594 Build Targets from scratch. Here’s the <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">complete list of Build Targets</a></p>
 <p>TODO: Reduce to 15 concurrent</p>
 <p>TODO: We could review the Build Targets above and decide which targets should be excluded? Or reprioritised to run earlier / later?</p>
 <p>TODO: Or we could run all 1,594 builds only when the PR is Approved? So we can save on Build Times for the Submission / Resubmission of the PR? Thanks!</p>
