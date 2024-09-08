@@ -155,7 +155,7 @@ TODO: Switch to Self-Hosted Runners
 
 # Self-Hosted Runners
 
-Let's experiment with __Self-Hosted Runners__ to understand what's happening inside NuttX Continous Integration. We run them on two computers...
+Let's experiment with __Self-Hosted Runners__ to understand what's happens inside NuttX Continous Integration. We run them on two computers...
 
 - __Older PC__ on Ubuntu x64 (Intel i7, 3.7 GHz)
 
