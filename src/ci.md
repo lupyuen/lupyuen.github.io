@@ -30,7 +30,7 @@ Suppose we [__Submit a Pull Request__](TODO) for NuttX. We need to be sure that 
 
 That's why our Pull Request will trigger the __Continuous Integration Workflow__, to recompile NuttX for __All Hardware Platforms__.
 
-(__??? Builds__ across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)
+(__1,594 Builds__ across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)
 
 TODO: Isn't this a little excessive? But we don't know which platforms are impacted!
 
