@@ -26,7 +26,7 @@ TODO: Pic of GitHub Actions > Workflows > Build
 
 _Why do we need Continuous Integration?_
 
-Suppose we [__Submit a Pull Request__](TODO) for NuttX. We need to be sure that our Modified Code won't break the Existing Builds in NuttX.
+Suppose we [__Submit a Pull Request__](https://lupyuen.github.io/articles/pr) for NuttX. We need to be sure that our Modified Code won't break the Existing Builds in NuttX.
 
 That's why our Pull Request will trigger the __Continuous Integration Workflow__, to recompile NuttX for __All Hardware Platforms__.
 
@@ -36,17 +36,17 @@ TODO: Isn't this a little excessive? But we don't know which platforms are impac
 
 _What happens inside the Continuous Integration?_
 
-Head over to GitHub Actions > Workflows > Build: https://github.com/apache/nuttx/actions/workflows/build.yml
+Head over to the [__NuttX Repository__](TODO) and click [__GitHub Actions > Workflows > Build__](https://github.com/apache/nuttx/actions/workflows/build.yml)
 
 TODO: Pic above
 
 Click one of the jobs: https://github.com/apache/nuttx/actions/runs/10552464655
 
-Click `Linux (arm-01)` > Run Builds: https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816
+Click __Linux (arm-01) > Run Builds__: https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816
 
 TODO: Pic
 
-Build NuttX Config
+We'll see this __NuttX Build for Arm32__...
 
 ```text
  ====================================================================================
@@ -66,7 +66,7 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 ------------------------------------------------------------------------------------
 ```
 
-Other Configs
+Followed by __More Builds for Arm32__...
 
 ```text
 Configuration/Tool: beaglebone-black/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
@@ -77,21 +77,31 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 ...
 ```
 
-cmake
+Each __NuttX Build__ will be a...
 
-Python Test
+- Regular [__NuttX Make__](TODO)
 
-Other Arm Configs: arm-02, arm-03, ...
+- Or a [__NuttX CMake__](TODO)
 
-RISC-V Configs: riscv-01, ...
+- Or a [__Python Test__](TODO)
 
-Sim Configs: sim-01, ...
+_What about other NuttX Targets? Arm64, RISC-V, Xtensa, ..._
 
-Xtensa Configs: xtensa-01, ...
+Every Pull Request will trigger __24 Jobs for Continuous Integration__, all executing concurrently...
 
-Linux Other: Arm64, AVR, i486, PIC32, ...
+- __Arm32 Targets:__ arm-01, arm-02, arm-03, ...
 
-macOS and Windows (msys2)
+- __RISC-V Targets:__ riscv-01, ...
+
+- __Xtensa Targets:__ xtensa-01, ...
+
+- __Simulator Targets:__ sim-01, ...
+
+- __Other Targets__ (Arm64, AVR, i486, ...)
+
+- __macOS and Windows__ (msys2)
+
+TODO: each with its own Runner, lasting 30-90 mins per job
 
 TODO: On some days we're hitting a max of ??? Full-Time Runners. And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
 
@@ -99,7 +109,6 @@ TODO: Switch to Self-Hosted Runners
 
 # One Thousand Build Targets
 
-TODO: every PR will trigger 24 CI Jobs concurrently (each with its own Runner, lasting 30-90 mins per job)
 
 TODO: The 24 CI Jobs above will recompile 1,594 Build Targets from scratch. Here's the [complete list of Build Targets](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
 
