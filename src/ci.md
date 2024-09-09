@@ -58,20 +58,16 @@ Configuration/Tool: pcduino-a10/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
   Building NuttX...
 arm-none-eabi-ld: warning: /github/workspace/sources/nuttx/nuttx has a LOAD segment with RWX permissions
   Normalize pcduino-a10/nsh
-====================================================================================
-Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
-2024-08-26 02:31:40
-------------------------------------------------------------------------------------
 ```
 
-Followed by __More Builds for Arm32__...
+Followed by many more Arm32 builds...
 
 ```text
-Configuration/Tool: beaglebone-black/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
-Configuration/Tool: at32f437-mini/eth,CONFIG_ARM_TOOLCHAIN_GNU_EABI
-Configuration/Tool: at32f437-mini/sdcard,CONFIG_ARM_TOOLCHAIN_GNU_EABI
-Configuration/Tool: at32f437-mini/systemview,CONFIG_ARM_TOOLCHAIN_GNU_EABI
-Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+Config: beaglebone-black/nsh
+Config: at32f437-mini/eth
+Config: at32f437-mini/sdcard
+Config: at32f437-mini/systemview
+Config: at32f437-mini/rtc
 ...
 ```
 
@@ -293,7 +289,9 @@ Then it zips up the Source Code and passes the Zipped Source Code to the NuttX B
 
 _Anything else we can run on macOS Arm64?_
 
-TODO: Other macOS Builds
+TODO: Appendix Other macOS Builds
+
+TODO: Appendix Doc Build
 
 # UTM Emulator for macOS Arm64
 
@@ -305,7 +303,9 @@ TODO: Configure UTM
 
 Here's macOS Arm64 __emulating Ubuntu x64__ (24.04.1 LTS) with 4GB RAM...
 
-- [__Build for arm-01__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29503152279) (Incomplete, timeout after 6 hours)
+- [__Build for arm-01__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29503152279)
+
+  _(Incomplete. Timeout after 6 hours sigh)_
 
 - [__Build for arm-02__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29508376208)
 
@@ -327,6 +327,7 @@ TODO But Then: It becomes a Linux Arm64 Runner, not a Linux x64 Runner. Which wo
 
 TODO: Unless: We create a Linux Arm64 Docker Image for NuttX CI? Like for [Compiling RISC-V Platforms](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci)?
 
+TODO: We'll chat about this in [__NuttX Discord Channel__](https://discord.com/channels/716091708336504884/1280436444141453313).
 
 # What's Next
 
