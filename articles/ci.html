@@ -290,14 +290,15 @@ Running job: TODO
 </ul>
 <p>TODO: And this is happening in spite of our super-fast <a href="http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3">Fibre To The Home</a></p>
 <p>TODO: Pic of fibre</p>
+<p>TODO: Fetch-Source then Download Source Artifact</p>
+<p>TODO: Docker Pull</p>
 <p><em>Can we guesstimate the time to run a Build Job?</em></p>
 <p>Just browse the <strong>GitHub Actions Log</strong> for the Build Job. See the <strong>Line Numbers</strong>?</p>
 <p>Every Build Job will have roughly <strong>1,000 Lines of Log</strong> (by sheer coincidence). We can use this to guess the Job Duration.</p>
 <p><em>What about macOS on Arm64?</em></p>
-<p>TODO: Most of the <a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml">Linux Builds</a> won’t work on macOS Arm64 because they need Docker on Linux x64 </p>
+<p>Sadly the <a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml"><strong>Linux Builds</strong></a> won’t run on macOS Arm64 because they need <strong>Docker on Linux x64</strong>…</p>
+<p>TODO: Docker Articles</p>
 <p>We’ll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS…</p>
-<p>TODO: Fetch-Source then Download Source Artifact</p>
-<p>TODO: Docker Pull</p>
 <h1 id="fetch-source-on-macos-arm64"><a class="doc-anchor" href="#fetch-source-on-macos-arm64">§</a>5 Fetch Source on macOS Arm64</h1>
 <p><em>We haven’t invoked the Runners for macOS Arm64?</em></p>
 <p>TODO: Fetch Source will work fine on Linux x64</p>
