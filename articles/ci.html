@@ -220,12 +220,6 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 <li>
 <p>With plenty of <strong>Internet Bandwidth</strong> (Downlink 650 Mbps, Uplink 560 Mbps)</p>
 </li>
-<li>
-<p>TODO: <a href="http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3">Fibre To The Home</a></p>
-</li>
-<li>
-<p>TODO: Throttled by GitHub and Docker Hub</p>
-</li>
 </ul>
 <p>Look for this code in our <strong>GitHub Actions Worklow</strong>: <a href="https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721">.github/workflows/build.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Linux Build runs on GitHub Runners
@@ -278,18 +272,19 @@ Running job: TODO
 </li>
 </ul>
 <h1 id="running-the-runners"><a class="doc-anchor" href="#running-the-runners">§</a>4 Running the Runners</h1>
-<p>TODO</p>
-<p><em>Our Self-Hosted Runners: Do they work for NuttX CI Builds?</em></p>
-<p>Here’s the result: https://github.com/lupyuen3/runner-nuttx/actions</p>
-<p>And <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343">it works yay</a>! (2 hours on a 10-year-old MacBook Pro with Intel i7)</p>
+<p><em>Our Self-Hosted Runners: Do they work for NuttX Builds?</em></p>
+<p>Check out <a href="https://github.com/lupyuen3/runner-nuttx/actions"><strong>the result here</strong></a>.</p>
+<p>Yep <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343"><strong>it works yay</strong></a>! That’s <strong>2 hours</strong> on a 10-year-old MacBook Pro with Intel i7.</p>
+<p>(Compare that with <strong>GitHub Runners</strong>, which will take <a href="TODO"><strong>TODO mins</strong></a>)</p>
 <p>TODO: Pic of Ubuntu Runner</p>
+<p><em>Do we need a faster PC?</em></p>
+<p>Not necessarily?</p>
+<p>TODO: <a href="http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3">Fibre To The Home</a></p>
+<p>TODO: Throttled by GitHub and Docker Hub</p>
 <p><strong>Docker Hub</strong> will throttle our downloading of Docker Images. If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.</p>
-<p><em>Can we guesstimate the time to run a CI Build?</em></p>
-<p>Just browse the GitHub Actions Log for the CI Build. See the Line Numbers? Every NuttX CI Build will have roughly 1,000 lines of log (by sheer coincidence). We can use this to guess the CI Build Duration.</p>
-<p>TODO: Podman Docker on Linux x64 <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677">fails with this error</a>. Might be a <a href="https://github.com/containers/podman/discussions/14238">problem with Podman</a>.</p>
-<div class="example-wrap"><pre class="language-text"><code>Writing manifest to image destination
-Error: statfs /var/run/docker.sock: permission denied
-</code></pre></div>
+<p><em>Can we guesstimate the time to run a Build Job?</em></p>
+<p>Just browse the <strong>GitHub Actions Log</strong> for the Build Job. See the <strong>Line Numbers</strong>?</p>
+<p>Every Build Job will have roughly <strong>1,000 Lines of Log</strong> (by sheer coincidence). We can use this to guess the Job Duration.</p>
 <p><em>What about macOS on Arm64?</em></p>
 <p>TODO: Most of the <a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml">Linux Builds</a> won’t work on macOS Arm64 because they need Docker on Linux x64 </p>
 <p>We’ll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS…</p>
@@ -377,7 +372,10 @@ cd $HOME/actions-runner
 <div class="example-wrap"><pre class="language-text"><code>permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post &quot;http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&amp;tag=latest&quot;: dial unix /var/run/docker.sock: connect: permission denied
 </code></pre></div>
 <p>We apply <a href="https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue">this Docker Fix</a>. </p>
-<h1 id="appendix-fixes-for-macos-arm64"><a class="doc-anchor" href="#appendix-fixes-for-macos-arm64">§</a>9 Appendix: Fixes for macOS Arm64</h1>
+<p>TODO: Podman Docker on Linux x64 <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677">fails with this error</a>. Might be a <a href="https://github.com/containers/podman/discussions/14238">problem with Podman</a>.</p>
+<div class="example-wrap"><pre class="language-text"><code>Writing manifest to image destination
+Error: statfs /var/run/docker.sock: permission denied
+</code></pre></div><h1 id="appendix-fixes-for-macos-arm64"><a class="doc-anchor" href="#appendix-fixes-for-macos-arm64">§</a>9 Appendix: Fixes for macOS Arm64</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo mkdir /Users/runner
 sudo chown $USER /Users/runner
