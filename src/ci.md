@@ -155,7 +155,7 @@ TODO: Switch to Self-Hosted Runners
 
 # Self-Hosted Runners
 
-Let's experiment with __Self-Hosted Runners__ to understand what's happens inside NuttX Continous Integration. We run them on two computers...
+We experiment with __Self-Hosted Runners__ to understand what's happens inside NuttX Continous Integration. We run them on two computers...
 
 - __Older PC__ on Ubuntu x64 (Intel i7, 3.7 GHz)
 
@@ -166,12 +166,6 @@ Let's experiment with __Self-Hosted Runners__ to understand what's happens insid
 - TODO: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
 
 - TODO: Throttled by GitHub and Docker Hub
-
-Install __Self-Hosted Runners__ for Linux x64 and macOS Arm64...
-
-- [__Follow these instructions__](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners)
-
-- [__Apply these Fixes__](TODO) for Linux x64 and macOS Arm64
 
 Look for this code in our __GitHub Actions Worklow__: [.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
 
@@ -189,7 +183,13 @@ Change __`runs-on`__ to...
   runs-on: [self-hosted, Linux, X64]
 ```
 
-TODO
+Install __Self-Hosted Runners__ for Linux x64 and macOS Arm64...
+
+- [__Follow these Instructions__](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners) from GitHub
+
+- [__Apply these Fixes__](TODO) for Linux x64 and macOS Arm64
+
+They will run like this...
 
 ```bash
 ## Configure our Self-Hosted Runner for Linux x64
