@@ -220,31 +220,29 @@ Configuration/Tool: at32f437-mini/rtc,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 <li>
 <p>With plenty of <strong>Internet Bandwidth</strong> (Downlink 650 Mbps, Uplink 560 Mbps)</p>
 </li>
-</ul>
+<li>
 <p>TODO: <a href="http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3">Fibre To The Home</a></p>
+</li>
+<li>
 <p>TODO: Throttled by GitHub and Docker Hub</p>
+</li>
+</ul>
+<p>Install <strong>Self-Hosted Runners</strong> for Linux x64 and macOS Arm64…</p>
 <ul>
 <li>
-<p><a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners">Follow these instructions</a> to install Self-Hosted Runners for Linux x64 and macOS Arm64</p>
+<p><a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners"><strong>Follow these instructions</strong></a></p>
 </li>
 <li>
-<p>See below for the fixes for Linux x64 and macOS Arm64</p>
-</li>
-<li>
-<p>Security Concerns: How to be sure that Self-Hosted Runners will run only approved scripts and commands?
-(Right now I have disabled external users from triggering GitHub Actions on my repo)</p>
-</li>
-<li>
-<p>Shut down the runners when we’re done with testing</p>
+<p><a href="TODO"><strong>Apply these Fixes</strong></a> for Linux x64 and macOS Arm64</p>
 </li>
 </ul>
-<p>Look for this code in the GitHub Actions Worklow: <a href="https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721">.github/workflows/build.yml</a></p>
+<p>Look for this code in our <strong>GitHub Actions Worklow</strong>: <a href="https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721">.github/workflows/build.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Linux Build runs on GitHub Runners
 Linux:
   needs:   Fetch-Source
   runs-on: ubuntu-latest
 </code></pre></div>
-<p>Change <code>runs-on</code> to…</p>
+<p>Change <strong><code>runs-on</code></strong> to…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>  ## Linux Build now runs on Self-Hosted Runners (Linux x64)
   runs-on: [self-hosted, Linux, X64]
 </code></pre></div>
@@ -266,7 +264,20 @@ $ ./run.sh
 Current runner version: &#39;2.319.1&#39;
 Listening for Jobs
 Running job: TODO
-</code></pre></div><h1 id="running-the-runners"><a class="doc-anchor" href="#running-the-runners">§</a>4 Running the Runners</h1>
+</code></pre></div>
+<p>Beware of <a href="TODO"><strong>Security Concerns</strong></a>!</p>
+<ul>
+<li>
+<p>Ensure that Self-Hosted Runners will run only <strong>Approved Scripts and Commands</strong></p>
+</li>
+<li>
+<p>Remember to <strong>Disable External Users</strong> from triggering GitHub Actions on our repo</p>
+</li>
+<li>
+<p><strong>Shut Down the Runners</strong> when we’re done with testing</p>
+</li>
+</ul>
+<h1 id="running-the-runners"><a class="doc-anchor" href="#running-the-runners">§</a>4 Running the Runners</h1>
 <p>TODO</p>
 <p><em>Our Self-Hosted Runners: Do they work for NuttX CI Builds?</em></p>
 <p>Here’s the result: https://github.com/lupyuen3/runner-nuttx/actions</p>
