@@ -263,9 +263,7 @@ We'll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on 
 
 _We haven't invoked the Runners for macOS Arm64?_
 
-[__`Fetch-Source`__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486) works OK on macOS Arm64
-
-TODO: But not the Build Jobs
+[__`Fetch-Source`__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486) works OK on macOS Arm64. Let's try it now.
 
 Head over to our NuttX Repo and update the __GitHub Actions Workflow__: [.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
 
@@ -283,7 +281,15 @@ Change __`runs-on`__ to...
     runs-on: [self-hosted, macOS, ARM64]
 ```
 
-TODO: Result
+TODO: [__`Fetch-Source`__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486) works OK!
+
+TODO: Pic of fetch source
+
+_How is Fetch Source used?_
+
+__Fetch Source__ happens before any NuttX Build. It checks out the Source Code from the NuttX Kernel and NuttX Apps Repos.
+
+Then it zips up the Source Code and passes the Zipped Source Code to the NuttX Builds.
 
 # UTM Emulator for macOS Arm64
 
