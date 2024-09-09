@@ -320,10 +320,27 @@ jobs:
 <p><em>Anything else we can run on macOS Arm64?</em></p>
 <p>TODO: Other macOS Builds</p>
 <h1 id="utm-emulator-for-macos-arm64"><a class="doc-anchor" href="#utm-emulator-for-macos-arm64">§</a>6 UTM Emulator for macOS Arm64</h1>
-<p><em>So NuttX CI works better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 more useful?</em></p>
-<p>Let’s test <a href="https://mac.getutm.app/"><strong>UTM Emulator for macOS Arm64</strong></a>, to emulate Ubuntu x64. (Spoilers: It’s really slow!)</p>
-<p>Here’s our Emulated Ubuntu x64 24.04.1 LTS with 4GB RAM: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29503152279">Build for arm-01</a>, <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29508376208">Build for arm-02</a>, <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29428211466">Build for arm-03</a>, <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29456380032">Build for arm-04</a></p>
-<p>Does it work? Yes! How many hours? 4 hours! (Instead of 33 mins when hosted at GitHub)</p>
+<p><em>So NuttX Builds run better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 more useful?</em></p>
+<p>Let’s test <a href="https://mac.getutm.app/"><strong>UTM Emulator for macOS Arm64</strong></a>, to emulate Ubuntu x64. (Spoiler: It’s really slow!)</p>
+<p>TODO: Configure UTM</p>
+<p>Here’s our Emulated Ubuntu x64 24.04.1 LTS with 4GB RAM:</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29503152279"><strong>Build for arm-01</strong></a> (incomplete)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29508376208"><strong>Build for arm-02</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29428211466"><strong>Build for arm-03</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29456380032"><strong>Build for arm-04</strong></a></p>
+</li>
+</ul>
+<p>Does UTM Emulator work for NuttX Docker Builds? Yeah kinda.</p>
+<p>But how long to build? <strong>4 hours!</strong></p>
+<p>(Instead of <strong>33 mins</strong> for GitHub Runners)</p>
 <p>TODO: Do we run multiple Virtual Machines in macOS UTM?</p>
 <ul>
 <li>
