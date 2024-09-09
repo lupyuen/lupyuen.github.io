@@ -301,8 +301,7 @@ Running job: TODO
 <p>We’ll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS…</p>
 <h1 id="fetch-source-on-macos-arm64"><a class="doc-anchor" href="#fetch-source-on-macos-arm64">§</a>5 Fetch Source on macOS Arm64</h1>
 <p><em>We haven’t invoked the Runners for macOS Arm64?</em></p>
-<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486"><strong><code>Fetch-Source</code></strong></a> works OK on macOS Arm64</p>
-<p>TODO: But not the Build Jobs</p>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486"><strong><code>Fetch-Source</code></strong></a> works OK on macOS Arm64. Let’s try it now.</p>
 <p>Head over to our NuttX Repo and update the <strong>GitHub Actions Workflow</strong>: <a href="https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721">.github/workflows/build.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Fetch-Source runs on GitHub Runners
 jobs:
@@ -313,7 +312,11 @@ jobs:
 <div class="example-wrap"><pre class="language-yaml"><code>    ## Fetch-Source now runs on Self-Hosted Runners (macOS Arm64)
     runs-on: [self-hosted, macOS, ARM64]
 </code></pre></div>
-<p>TODO: Result</p>
+<p>TODO: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486"><strong><code>Fetch-Source</code></strong></a> works OK!</p>
+<p>TODO: Pic of fetch source</p>
+<p><em>How is Fetch Source used?</em></p>
+<p><strong>Fetch Source</strong> happens before any NuttX Build. It checks out the Source Code from the NuttX Kernel and NuttX Apps Repos.</p>
+<p>Then it zips up the Source Code and passes the Zipped Source Code to the NuttX Builds.</p>
 <h1 id="utm-emulator-for-macos-arm64"><a class="doc-anchor" href="#utm-emulator-for-macos-arm64">§</a>6 UTM Emulator for macOS Arm64</h1>
 <p>TODO</p>
 <p><em>So NuttX CI works better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 more useful?</em></p>
