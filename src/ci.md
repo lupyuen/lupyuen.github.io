@@ -303,9 +303,9 @@ Let's test [__UTM Emulator for macOS Arm64__](https://mac.getutm.app/), to emula
 
 TODO: Configure UTM
 
-Here's our Emulated Ubuntu x64 24.04.1 LTS with 4GB RAM:
+Here's macOS Arm64 __emulating Ubuntu x64__ (24.04.1 LTS) with 4GB RAM...
 
-- [__Build for arm-01__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29503152279) (incomplete)
+- [__Build for arm-01__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29503152279) (Incomplete, timeout after 6 hours)
 
 - [__Build for arm-02__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29508376208)
 
@@ -319,13 +319,13 @@ But how long to build? __4 hours!__
 
 (Instead of __33 mins__ for GitHub Runners)
 
-TODO: Do we run multiple Virtual Machines in macOS UTM?
+TODO: Timeout
 
-- Alternatively: Running a Self-Hosted Runner inside a Docker Container (Rancher Desktop) on macOS Arm64
+TODO: Alternatively: Running a Self-Hosted Runner inside a Docker Container (Rancher Desktop) on macOS Arm64
 
-  But Then: It becomes a Linux Arm64 Runner, not a Linux x64 Runner. Which won't work with our current NuttX CI Docker Image, which is x64 only.
+TODO But Then: It becomes a Linux Arm64 Runner, not a Linux x64 Runner. Which won't work with our current NuttX CI Docker Image, which is x64 only.
 
-  Unless: We create a Linux Arm64 Docker Image for NuttX CI? Like for [Compiling RISC-V Platforms](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci)?
+TODO: Unless: We create a Linux Arm64 Docker Image for NuttX CI? Like for [Compiling RISC-V Platforms](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci)?
 
 
 # What's Next
