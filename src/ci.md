@@ -155,7 +155,7 @@ We experiment with __Self-Hosted Runners__ to understand what's happens inside N
 
 - __Older PC__ on Ubuntu x64 (Intel i7, 3.7 GHz)
 
-- __Newer Mac Mini__ on macOS Arm64 (Apple Silicon, M2 Pro)
+- __Newer Mac Mini__ on macOS Arm64 (M2 Pro)
 
 - With plenty of __Internet Bandwidth__ (Downlink 650 Mbps, Uplink 560 Mbps)
 
