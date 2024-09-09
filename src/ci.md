@@ -163,10 +163,6 @@ We experiment with __Self-Hosted Runners__ to understand what's happens inside N
 
 - With plenty of __Internet Bandwidth__ (Downlink 650 Mbps, Uplink 560 Mbps)
 
-- TODO: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
-
-- TODO: Throttled by GitHub and Docker Hub
-
 Look for this code in our __GitHub Actions Worklow__: [.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
 
 ```yaml
@@ -221,28 +217,31 @@ Beware of [__Security Concerns__](TODO)!
 
 # Running the Runners
 
-TODO
+_Our Self-Hosted Runners: Do they work for NuttX Builds?_
 
-_Our Self-Hosted Runners: Do they work for NuttX CI Builds?_
+Check out [__the result here__](https://github.com/lupyuen3/runner-nuttx/actions).
 
-Here's the result: https://github.com/lupyuen3/runner-nuttx/actions
+Yep [__it works yay__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343)! That's __2 hours__ on a 10-year-old MacBook Pro with Intel i7.
 
-And [it works yay](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343)! (2 hours on a 10-year-old MacBook Pro with Intel i7)
+(Compare that with __GitHub Runners__, which will take [__TODO mins__](TODO))
 
 TODO: Pic of Ubuntu Runner
 
+_Do we need a faster PC?_
+
+Not necessarily?
+
+TODO: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
+
+TODO: Throttled by GitHub and Docker Hub
+
 __Docker Hub__ will throttle our downloading of Docker Images. If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.
 
-_Can we guesstimate the time to run a CI Build?_
+_Can we guesstimate the time to run a Build Job?_
 
-Just browse the GitHub Actions Log for the CI Build. See the Line Numbers? Every NuttX CI Build will have roughly 1,000 lines of log (by sheer coincidence). We can use this to guess the CI Build Duration.
+Just browse the __GitHub Actions Log__ for the Build Job. See the __Line Numbers__?
 
-TODO: Podman Docker on Linux x64 [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677). Might be a [problem with Podman](https://github.com/containers/podman/discussions/14238).
-
-```text
-Writing manifest to image destination
-Error: statfs /var/run/docker.sock: permission denied
-```
+Every Build Job will have roughly __1,000 Lines of Log__ (by sheer coincidence). We can use this to guess the Job Duration.
 
 _What about macOS on Arm64?_
 
@@ -355,6 +354,13 @@ permission denied while trying to connect to the Docker daemon socket at unix://
   ```
 
 We apply [this Docker Fix](https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue). 
+
+TODO: Podman Docker on Linux x64 [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677). Might be a [problem with Podman](https://github.com/containers/podman/discussions/14238).
+
+```text
+Writing manifest to image destination
+Error: statfs /var/run/docker.sock: permission denied
+```
 
 # Appendix: Fixes for macOS Arm64
 
