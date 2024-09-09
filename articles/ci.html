@@ -318,15 +318,12 @@ jobs:
 <p><strong>Fetch Source</strong> happens before any NuttX Build. It checks out the Source Code from the NuttX Kernel and NuttX Apps Repos.</p>
 <p>Then it zips up the Source Code and passes the Zipped Source Code to the NuttX Builds.</p>
 <h1 id="utm-emulator-for-macos-arm64"><a class="doc-anchor" href="#utm-emulator-for-macos-arm64">§</a>6 UTM Emulator for macOS Arm64</h1>
-<p>TODO</p>
 <p><em>So NuttX CI works better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 more useful?</em></p>
-<ul>
-<li>
-<p>Now testing <a href="https://mac.getutm.app/">UTM Emulator for macOS Arm64</a>, to emulate Ubuntu x64 (because my MacBook Pro x64 is running too hot and slow). </p>
+<p>Let’s test <a href="https://mac.getutm.app/"><strong>UTM Emulator for macOS Arm64</strong></a>, to emulate Ubuntu x64. (Spoilers: It’s really slow!)</p>
 <p>Here’s our Emulated Ubuntu x64 24.04.1 LTS with 4GB RAM: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29503152279">Build for arm-01</a>, <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29508376208">Build for arm-02</a>, <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29428211466">Build for arm-03</a>, <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29456380032">Build for arm-04</a></p>
 <p>Does it work? Yes! How many hours? 4 hours! (Instead of 33 mins when hosted at GitHub)</p>
 <p>TODO: Do we run multiple Virtual Machines in macOS UTM?</p>
-</li>
+<ul>
 <li>
 <p>Alternatively: Running a Self-Hosted Runner inside a Docker Container (Rancher Desktop) on macOS Arm64</p>
 <p>But Then: It becomes a Linux Arm64 Runner, not a Linux x64 Runner. Which won’t work with our current NuttX CI Docker Image, which is x64 only.</p>
