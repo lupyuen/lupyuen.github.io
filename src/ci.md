@@ -229,13 +229,17 @@ TODO: Pic of Ubuntu Runner
 
 _Do we need a faster PC?_
 
-Not necessarily?
+Not necessarily? We see some __Network Throttling__ for our Self-Hosted Runners...
 
-TODO: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
+- TODO: GitHub Download Source takes ???  mins
 
-TODO: Throttled by GitHub and Docker Hub
+  (Compare with ??? mins for GitHub Runners)
 
-__Docker Hub__ will throttle our downloading of Docker Images. If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.
+- __Docker Hub__ will throttle our downloading of Docker Images. If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.
+
+TODO: And this is happening in spite of our super-fast [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
+
+TODO: Pic of fibre
 
 _Can we guesstimate the time to run a Build Job?_
 
