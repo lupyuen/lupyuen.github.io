@@ -301,18 +301,20 @@ Running job: TODO
 <p>We’ll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS…</p>
 <h1 id="fetch-source-on-macos-arm64"><a class="doc-anchor" href="#fetch-source-on-macos-arm64">§</a>5 Fetch Source on macOS Arm64</h1>
 <p><em>We haven’t invoked the Runners for macOS Arm64?</em></p>
-<p>TODO: Fetch Source will work fine on Linux x64</p>
-<p>TODO: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486"><code>Fetch-Source</code></a> works OK on macOS Arm64</p>
-<p><a href="https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721">.github/workflows/build.yml</a></p>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486"><strong><code>Fetch-Source</code></strong></a> works OK on macOS Arm64</p>
+<p>TODO: But not the Build Jobs</p>
+<p>Head over to our NuttX Repo and update the <strong>GitHub Actions Workflow</strong>: <a href="https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721">.github/workflows/build.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Fetch-Source runs on GitHub Runners
 jobs:
   Fetch-Source:
     runs-on: ubuntu-latest
 </code></pre></div>
-<p>Change <code>runs-on</code> to…</p>
+<p>Change <strong><code>runs-on</code></strong> to…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    ## Fetch-Source now runs on Self-Hosted Runners (macOS Arm64)
     runs-on: [self-hosted, macOS, ARM64]
-</code></pre></div><h1 id="utm-emulator-for-macos-arm64"><a class="doc-anchor" href="#utm-emulator-for-macos-arm64">§</a>6 UTM Emulator for macOS Arm64</h1>
+</code></pre></div>
+<p>TODO: Result</p>
+<h1 id="utm-emulator-for-macos-arm64"><a class="doc-anchor" href="#utm-emulator-for-macos-arm64">§</a>6 UTM Emulator for macOS Arm64</h1>
 <p>TODO</p>
 <p><em>So NuttX CI works better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 more useful?</em></p>
 <ul>
