@@ -278,10 +278,18 @@ Running job: TODO
 <p>(Compare that with <strong>GitHub Runners</strong>, which will take <a href="TODO"><strong>TODO mins</strong></a>)</p>
 <p>TODO: Pic of Ubuntu Runner</p>
 <p><em>Do we need a faster PC?</em></p>
-<p>Not necessarily?</p>
-<p>TODO: <a href="http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3">Fibre To The Home</a></p>
-<p>TODO: Throttled by GitHub and Docker Hub</p>
+<p>Not necessarily? We see some <strong>Network Throttling</strong> for our Self-Hosted Runners…</p>
+<ul>
+<li>
+<p>TODO: GitHub Download Source takes ???  mins</p>
+<p>(Compare with ??? mins for GitHub Runners)</p>
+</li>
+<li>
 <p><strong>Docker Hub</strong> will throttle our downloading of Docker Images. If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.</p>
+</li>
+</ul>
+<p>TODO: And this is happening in spite of our super-fast <a href="http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3">Fibre To The Home</a></p>
+<p>TODO: Pic of fibre</p>
 <p><em>Can we guesstimate the time to run a Build Job?</em></p>
 <p>Just browse the <strong>GitHub Actions Log</strong> for the Build Job. See the <strong>Line Numbers</strong>?</p>
 <p>Every Build Job will have roughly <strong>1,000 Lines of Log</strong> (by sheer coincidence). We can use this to guess the Job Duration.</p>
