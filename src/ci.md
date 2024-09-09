@@ -163,20 +163,17 @@ Let's experiment with __Self-Hosted Runners__ to understand what's happens insid
 
 - With plenty of __Internet Bandwidth__ (Downlink 650 Mbps, Uplink 560 Mbps)
 
-TODO: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
+- TODO: [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
 
-TODO: Throttled by GitHub and Docker Hub
+- TODO: Throttled by GitHub and Docker Hub
 
-- [Follow these instructions](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners) to install Self-Hosted Runners for Linux x64 and macOS Arm64
+Install __Self-Hosted Runners__ for Linux x64 and macOS Arm64...
 
-- See below for the fixes for Linux x64 and macOS Arm64
+- [__Follow these instructions__](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners)
 
-- Security Concerns: How to be sure that Self-Hosted Runners will run only approved scripts and commands?
-  (Right now I have disabled external users from triggering GitHub Actions on my repo)
+- [__Apply these Fixes__](TODO) for Linux x64 and macOS Arm64
 
-- Shut down the runners when we're done with testing
-
-Look for this code in the GitHub Actions Worklow: [.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
+Look for this code in our __GitHub Actions Worklow__: [.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
 
 ```yaml
 ## Linux Build runs on GitHub Runners
@@ -185,7 +182,7 @@ Linux:
   runs-on: ubuntu-latest
 ```
 
-Change `runs-on` to...
+Change __`runs-on`__ to...
 
 ```yaml
   ## Linux Build now runs on Self-Hosted Runners (Linux x64)
@@ -213,6 +210,14 @@ Current runner version: '2.319.1'
 Listening for Jobs
 Running job: TODO
 ```
+
+Beware of [__Security Concerns__](TODO)!
+
+- Ensure that Self-Hosted Runners will run only __Approved Scripts and Commands__
+
+- Remember to __Disable External Users__ from triggering GitHub Actions on our repo
+
+- __Shut Down the Runners__ when we're done with testing
 
 # Running the Runners
 
