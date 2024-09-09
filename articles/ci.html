@@ -323,10 +323,10 @@ jobs:
 <p><em>So NuttX Builds run better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 more useful?</em></p>
 <p>Let’s test <a href="https://mac.getutm.app/"><strong>UTM Emulator for macOS Arm64</strong></a>, to emulate Ubuntu x64. (Spoiler: It’s really slow!)</p>
 <p>TODO: Configure UTM</p>
-<p>Here’s our Emulated Ubuntu x64 24.04.1 LTS with 4GB RAM:</p>
+<p>Here’s macOS Arm64 <strong>emulating Ubuntu x64</strong> (24.04.1 LTS) with 4GB RAM…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29503152279"><strong>Build for arm-01</strong></a> (incomplete)</p>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29503152279"><strong>Build for arm-01</strong></a> (Incomplete, timeout after 6 hours)</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29508376208"><strong>Build for arm-02</strong></a></p>
@@ -341,14 +341,10 @@ jobs:
 <p>Does UTM Emulator work for NuttX Docker Builds? Yeah kinda.</p>
 <p>But how long to build? <strong>4 hours!</strong></p>
 <p>(Instead of <strong>33 mins</strong> for GitHub Runners)</p>
-<p>TODO: Do we run multiple Virtual Machines in macOS UTM?</p>
-<ul>
-<li>
-<p>Alternatively: Running a Self-Hosted Runner inside a Docker Container (Rancher Desktop) on macOS Arm64</p>
-<p>But Then: It becomes a Linux Arm64 Runner, not a Linux x64 Runner. Which won’t work with our current NuttX CI Docker Image, which is x64 only.</p>
-<p>Unless: We create a Linux Arm64 Docker Image for NuttX CI? Like for <a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci">Compiling RISC-V Platforms</a>?</p>
-</li>
-</ul>
+<p>TODO: Timeout</p>
+<p>TODO: Alternatively: Running a Self-Hosted Runner inside a Docker Container (Rancher Desktop) on macOS Arm64</p>
+<p>TODO But Then: It becomes a Linux Arm64 Runner, not a Linux x64 Runner. Which won’t work with our current NuttX CI Docker Image, which is x64 only.</p>
+<p>TODO: Unless: We create a Linux Arm64 Docker Image for NuttX CI? Like for <a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci">Compiling RISC-V Platforms</a>?</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
