@@ -227,11 +227,15 @@ _Do we need a faster PC?_
 
 Not necessarily? We see some __Network Throttling__ for our Self-Hosted Runners...
 
+- __Docker Hub__ will throttle our downloading of Docker Images. If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.
+
 - TODO: GitHub Download Source takes ???  mins
 
   (Compare with ??? mins for GitHub Runners)
 
-- __Docker Hub__ will throttle our downloading of Docker Images. If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.
+  During `Download Source Artifact`: GitHub seems to be throttling the download (total 700 MB over 25 mins)
+
+  ![Screenshot 2024-08-29 at 2 09 11 PM](https://github.com/user-attachments/assets/585bc261-bc39-4be4-8515-85894254aace)
 
 TODO: And this is happening in spite of our super-fast [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
 
@@ -299,7 +303,59 @@ _So NuttX Builds run better with a huge x64 Ubuntu PC. Can we make macOS on Arm6
 
 Let's test [__UTM Emulator for macOS Arm64__](https://mac.getutm.app/), to emulate Ubuntu x64. (Spoiler: It's really slow!)
 
-TODO: Configure UTM
+On a super duper Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with __32 CPUs and 4 GB RAM__ (because we don't need much RAM)
+
+![Screenshot 2024-08-29 at 10 08 07 PM](https://github.com/user-attachments/assets/5ff0d94e-4a04-4cf4-8f0a-8e0ee9d1cd59)
+
+Remember to __Force Multicore__ and bump up the __JIT Cache__...
+
+![Screenshot 2024-08-29 at 10 08 25 PM](https://github.com/user-attachments/assets/3a162236-9c14-4615-b9c7-c3a90ef7293c)
+
+__Ubuntu Disk Space__ in the UTM Virtual Machine needs to be big enough for NuttX Docker Image...
+
+```text
+$ neofetch
+OS:     Ubuntu 24.04.1 LTS x86_64
+Host:   KVM/QEMU (Standard PC (Q35 + ICH9, 2009) pc-q35-7.2)
+Kernel: 6.8.0-41-generic
+CPU:    Intel i7 9xx (Nehalem i7, IBRS update) (16) @ 1.000GHz
+GPU:    00:02.0 Red Hat, Inc. Virtio 1.0 GPU
+Memory: 1153MiB / 3907MiB
+
+$ df -H
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           410M  1.7M  409M   1% /run
+/dev/sda2        67G   31G   33G  49% /
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           5.3M  8.2k  5.3M   1% /run/lock
+efivarfs        263k   57k  201k  23% /sys/firmware/efi/efivars
+/dev/sda1       1.2G  6.5M  1.2G   1% /boot/efi
+tmpfs           410M  115k  410M   1% /run/user/1000
+
+$ cd actions-runner
+$ ./run.sh 
+
+Connected to GitHub
+Current runner version: '2.319.1'
+2024-08-30 02:33:17Z: Listening for Jobs
+2024-08-30 02:33:23Z: Running job: Linux (arm-04)
+2024-08-30 06:47:38Z: Job Linux (arm-04) completed with result: Succeeded
+2024-08-30 06:47:43Z: Running job: Linux (arm-01)
+```
+
+During `Run Builds`: CPU hits 100%
+
+![Screenshot 2024-08-29 at 4 56 06 PM](https://github.com/user-attachments/assets/60d4d3eb-d075-49c9-b3ac-bcfa74150668)
+
+(Don't leave System Monitor running, it consumes quite a bit of CPU!)
+
+__Why emulate 32 CPUs?__ That's because we want to max out the macOS Arm64 CPU Utilisation. Our chance to watch Mac Mini run smokin' hot!
+
+![Screenshot 2024-08-30 at 4 14 05 PM](https://github.com/user-attachments/assets/bfd51e51-1bee-49c2-88a3-01698d51d8a4)
+
+![Screenshot 2024-08-30 at 4 14 20 PM](https://github.com/user-attachments/assets/a9dab4fd-a59f-4348-a3f7-397973797288)
+
+![Screenshot 2024-08-29 at 10 43 39 PM](https://github.com/user-attachments/assets/0ea9f33e-1e6f-412a-8f56-6f40dee7f699)
 
 Here's macOS Arm64 __emulating Ubuntu x64__ (24.04.1 LTS) with 4GB RAM...
 
