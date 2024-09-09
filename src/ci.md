@@ -297,13 +297,27 @@ TODO: Other macOS Builds
 
 # UTM Emulator for macOS Arm64
 
-_So NuttX CI works better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 more useful?_
+_So NuttX Builds run better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 more useful?_
 
-Let's test [__UTM Emulator for macOS Arm64__](https://mac.getutm.app/), to emulate Ubuntu x64. (Spoilers: It's really slow!)
+Let's test [__UTM Emulator for macOS Arm64__](https://mac.getutm.app/), to emulate Ubuntu x64. (Spoiler: It's really slow!)
 
-Here's our Emulated Ubuntu x64 24.04.1 LTS with 4GB RAM: [Build for arm-01](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29503152279), [Build for arm-02](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29508376208), [Build for arm-03](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29428211466), [Build for arm-04](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29456380032)
+TODO: Configure UTM
 
-Does it work? Yes! How many hours? 4 hours! (Instead of 33 mins when hosted at GitHub)
+Here's our Emulated Ubuntu x64 24.04.1 LTS with 4GB RAM:
+
+- [__Build for arm-01__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29503152279) (incomplete)
+
+- [__Build for arm-02__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29508376208)
+
+- [__Build for arm-03__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29428211466)
+
+- [__Build for arm-04__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29456380032)
+
+Does UTM Emulator work for NuttX Docker Builds? Yeah kinda.
+
+But how long to build? __4 hours!__
+
+(Instead of __33 mins__ for GitHub Runners)
 
 TODO: Do we run multiple Virtual Machines in macOS UTM?
 
