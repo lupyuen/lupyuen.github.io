@@ -38,9 +38,9 @@ Head over to the [__NuttX Repository__](TODO) and click [__GitHub Actions > Work
 
 TODO: Pic above
 
-Click one of the jobs: https://github.com/apache/nuttx/actions/runs/10552464655
+Click [__one of the jobs__](https://github.com/apache/nuttx/actions/runs/10552464655)
 
-Click __Linux (arm-01) > Run Builds__: https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816
+Click [__Linux (arm-01) > Run Builds__](https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816)
 
 TODO: Pic
 
