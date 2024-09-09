@@ -241,6 +241,10 @@ TODO: And this is happening in spite of our super-fast [Fibre To The Home](http:
 
 TODO: Pic of fibre
 
+TODO: Fetch-Source then Download Source Artifact
+
+TODO: Docker Pull
+
 _Can we guesstimate the time to run a Build Job?_
 
 Just browse the __GitHub Actions Log__ for the Build Job. See the __Line Numbers__?
@@ -249,13 +253,11 @@ Every Build Job will have roughly __1,000 Lines of Log__ (by sheer coincidence).
 
 _What about macOS on Arm64?_
 
-TODO: Most of the [Linux Builds](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) won't work on macOS Arm64 because they need Docker on Linux x64 
+Sadly the [__Linux Builds__](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) won't run on macOS Arm64 because they need __Docker on Linux x64__...
+
+TODO: Docker Articles
 
 We'll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS...
-
-TODO: Fetch-Source then Download Source Artifact
-
-TODO: Docker Pull
 
 # Fetch Source on macOS Arm64
 
