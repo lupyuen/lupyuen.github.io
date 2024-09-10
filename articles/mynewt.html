@@ -95,7 +95,7 @@
 <li><a href="#task-settings">20.2 Task Settings</a><ul></ul></li></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/mynewt-title.png" alt="Debugging Mynewt Firmware with VSCode" /></p>
 <p><em>Debugging Mynewt Firmware with VSCode</em></p>
 <p>📝 <em>21 Dec 2020</em></p>
-<p>Our journey so far… </p>
+<p>Our journey so far…</p>
 <ol>
 <li>
 <p>We took a quick peek at <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a>…</p>
@@ -273,7 +273,7 @@ bsp.flash_map:
             offset:  0x22013000
             size:    1kB    # 0x400
 </code></pre></div>
-<p>Remember that we’re loading our firmware into Cache Memory (instead of Flash Memory) and we’re not using the Bootloader. </p>
+<p>Remember that we’re loading our firmware into Cache Memory (instead of Flash Memory) and we’re not using the Bootloader.</p>
 <p>That’s why we allocate most of the Cache Memory to the Active Firmware Image (located at the start of Cache Memory).</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        ## User areas.
         ## (Not Used) Reboot Log
@@ -547,7 +547,7 @@ repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10:
 fatal error: mcu/fe310.h: No such file or directory
 #include &quot;mcu/fe310.h&quot;
 </code></pre></div>
-<p>This error shows that <code>rv32imac</code>, the RISC-V support in Mynewt, is dependent on SiFive FE310. Which looks really odd. </p>
+<p>This error shows that <code>rv32imac</code>, the RISC-V support in Mynewt, is dependent on SiFive FE310. Which looks really odd.</p>
 <p>(Probably done that way because FE310 is the only RISC-V Microcontroller supported by Mynewt)</p>
 <p>We work around this problem by creating Stub Files like these…</p>
 <ul>
@@ -691,7 +691,7 @@ objsize
 <h2 id="terminating-openocd"><a class="doc-anchor" href="#terminating-openocd">§</a>14.2 Terminating OpenOCD</h2>
 <p>Before we start a new debugging session with <strong><code>Run → Start Debugging</code></strong>…</p>
 <p><em>We must always click <strong><code>Terminal → Run Build Task</code></strong> first!</em></p>
-<p>That’s because stopping the debugger will leave OpenOCD running (and locking up the connection to PineCone). </p>
+<p>That’s because stopping the debugger will leave OpenOCD running (and locking up the connection to PineCone).</p>
 <p>Clicking <strong><code>Run Build Task</code></strong> will terminate the OpenOCD task, so that the next debugging session can restart OpenOCD successfully.</p>
 <p>For Windows: Sorry we need to terminate the OpenOCD task manually with the Task Manager.</p>
 <p>In case of OpenOCD problems, check the OpenOCD log file…</p>
@@ -765,7 +765,7 @@ objsize
 <p><a href="https://lupyuen.github.io/articles/rust"><strong>UPDATE:</strong> We have a new way to create Rust Firmware with BL602 IoT SDK and flash to BL602 Flash Memory over UART, check this out</a></p>
 <p><a href="https://github.com/9names/bl602-rust-example"><strong>UPDATE:</strong> Check out this Rust Firmware that runs in Flash Memory instead of Cache Memory</a></p>
 <p><em>Why did we load our Mynewt Firmware (and Rust Firmware) to Cache Memory instead of Flash Memory?</em></p>
-<p>Because OpenOCD couldn’t load our Mynewt Firmware (and Rust Firmware) into Flash Memory. </p>
+<p>Because OpenOCD couldn’t load our Mynewt Firmware (and Rust Firmware) into Flash Memory.</p>
 <p>(Probably because of Flash Protection. Or because writing to BL602 Flash Memory hasn’t been implemented in OpenOCD.)</p>
 <p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&amp;GDB/en">BL602 OpenOCD with JTAG doesn’t support loading firmware into Flash Memory. See the BL602 OpenOCD Docs</a></p>
 <p><em>What happens when we use <code>blflash</code> to load our firmware to Flash Memory?</em></p>
@@ -876,7 +876,7 @@ newt target set pinecone_app build_profile=debug
 </ul>
 <h1 id="appendix-vscode-settings"><a class="doc-anchor" href="#appendix-vscode-settings">§</a>20 Appendix: VSCode Settings</h1><h2 id="debugger-settings"><a class="doc-anchor" href="#debugger-settings">§</a>20.1 Debugger Settings</h2>
 <p>The VSCode Debugger Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/launch.json"><code>.vscode/launch.json</code></a></p>
-<p>This file defines… </p>
+<p>This file defines…</p>
 <ul>
 <li>
 <p>Firmware Path (<code>target</code>)</p>

@@ -151,7 +151,7 @@
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_drv.c"><strong>vs_drv.c</strong></a> - Driver for Direct Rendering Manager</p>
 </li>
 <li>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c"><strong>vs_crtc.c</strong></a> - Display Pipeline </p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_crtc.c"><strong>vs_crtc.c</strong></a> - Display Pipeline</p>
 </li>
 <li>
 <p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_plane.c"><strong>vs_plane.c</strong></a> - Display Plane</p>
@@ -648,7 +648,7 @@ static const struct drm_crtc_helper_funcs vs_crtc_helper_funcs = {
 <h1 id="update-display-plane"><a class="doc-anchor" href="#update-display-plane">§</a>9 Update Display Plane</h1>
 <p>One last thing for today: How to <strong>Update the Display Plane</strong>. (Pic above)</p>
 <p>(A Display Plane is a Layer of Pixels / Framebuffer that will be blended into the final image by a Display Pipeline)</p>
-<p>Our Display Controller Driver exposes these <strong>Display Plane Functions</strong>: 
+<p>Our Display Controller Driver exposes these <strong>Display Plane Functions</strong>:
 <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1410-L1414">vs_dc.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Display Plane Functions for DC8200
 static const struct vs_plane_funcs dc_plane_funcs = {
@@ -664,7 +664,7 @@ static const struct vs_plane_funcs dc_plane_funcs = {
 <p>Which calls…</p>
 <ol>
 <li><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1153-L1196"><strong>update_plane</strong></a> (Update Plane)</li>
-<li><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1198-L1220"><strong>update_qos</strong></a> (Update QoS) </li>
+<li><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1198-L1220"><strong>update_qos</strong></a> (Update QoS)</li>
 <li><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc.c#L1241-L1260"><strong>update_cursor_plane</strong></a> (Update Cursor Plane)</li>
 </ol>
 <p><em>What’s inside update_plane?</em></p>
@@ -677,7 +677,7 @@ static const struct vs_plane_funcs dc_plane_funcs = {
 <li>Set the <strong>Start and End Position</strong> (X and Y)</li>
 <li>Set the <strong>Blending Alpha and Mode</strong></li>
 <li>Set the <strong>Colour Management</strong></li>
-<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399"><strong>dc_hw_update_plane</strong></a> </li>
+<li>Call <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399"><strong>dc_hw_update_plane</strong></a></li>
 </ol>
 <p>Then <a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1368-L1399"><strong>dc_hw_update_plane</strong></a> (from our Display Hardware Driver) will…</p>
 <ol>

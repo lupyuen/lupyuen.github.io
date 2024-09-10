@@ -101,7 +101,7 @@
 </ul>
 <p><a href="https://lupyuen.github.io/articles/lvgl#zig-outcomes">(Spoiler: Answers are Yes, Maybe, Somewhat)</a></p>
 <p><img src="https://lupyuen.github.io/images/lvgl-code1a.jpg" alt="LVGL App in C" /></p>
-<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148">(Source)</a> </p>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148">(Source)</a></p>
 <h1 id="lvgl-app-in-c"><a class="doc-anchor" href="#lvgl-app-in-c">§</a>1 LVGL App in C</h1>
 <p>We begin with a barebones <strong>LVGL App in C</strong> that renders a line of text…</p>
 <ul>
@@ -150,7 +150,7 @@
   // Omitted: LVGL Canvas (we&#39;ll find out why)
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148">(Source)</a> </p>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148">(Source)</a></p>
 <p><a href="https://docs.lvgl.io/7.11/widgets/label.html#">(Docs for LVGL Label)</a></p>
 <p>In a while we shall convert this LVGL App to Zig.</p>
 <p><em>What if we’re not familiar with Zig?</em></p>
@@ -1147,7 +1147,7 @@ ginfo(&quot;%&quot; PRIu32 &quot; px refreshed in %&quot; PRIu32 &quot; ms\n&quo
 <p><strong>lvgltest_main</strong>: Main Function</p>
 </li>
 <li>
-<p><strong>create_widgets</strong>: Create Widgets Function </p>
+<p><strong>create_widgets</strong>: Create Widgets Function</p>
 </li>
 </ul>
 <p>The Auto-Translated Zig code shows…</p>
@@ -1496,7 +1496,7 @@ $ jq &#39;.types[137]&#39; lvgltest-analysis.json
 <h2 id="object-oriented-wrapper-for-lvgl"><a class="doc-anchor" href="#object-oriented-wrapper-for-lvgl">§</a>18.1 Object-Oriented Wrapper for LVGL</h2>
 <p><em>Is LVGL really Object-Oriented?</em></p>
 <p>Yep the LVGL API is actually <strong>Object-Oriented</strong> since it uses Inheritance.</p>
-<p>All LVGL Widgets (Labels, Buttons, etc) have the same Base Type: <strong>lv_obj_t</strong>. </p>
+<p>All LVGL Widgets (Labels, Buttons, etc) have the same Base Type: <strong>lv_obj_t</strong>.</p>
 <p>But some LVGL Functions will work only for <strong>specific Widgets</strong>, whereas some LVGL Functions will work on <strong>any Widget</strong>…</p>
 <ul>
 <li>

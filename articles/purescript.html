@@ -787,7 +787,7 @@ cat output/Main/index.js \
   // Call the PureScript Function
   const result2 = explainException(12)(&#39;000000008000ad8a&#39;)(&#39;000000008000ad8a&#39;)
 </code></pre></div><h1 id="appendix-bigint-in-purescript"><a class="doc-anchor" href="#appendix-bigint-in-purescript">§</a>10 Appendix: BigInt in PureScript</h1>
-<p><em>Why are we passing addresses in Text instead of Numbers? Like <code>&quot;8000ad8a&quot;</code></em></p>
+<p><em>Why are we passing addresses in Text instead of Numbers? Like <code>"8000ad8a"</code></em></p>
 <p>That’s because <code>0x8000ad8a</code> is too big for <strong>PureScript Int</strong>, a signed 32-bit integer.</p>
 <p>PureScript Int is meant to interoperate with JavaScript Integer, which is also 32-bit.</p>
 <p><em>What about PureScript BigInt?</em></p>

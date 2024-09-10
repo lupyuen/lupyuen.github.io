@@ -355,7 +355,7 @@ heapless = &quot;0.6.1&quot;
 <h1 id="rust-on-bl602-iot-sdk"><a class="doc-anchor" href="#rust-on-bl602-iot-sdk">§</a>4 Rust on BL602 IoT SDK</h1>
 <p>Our Rust Firmware accesses the BL602 serial port, GPIO pin and system timer by calling the <strong>BL602 IoT SDK</strong>. (Imported from C into Rust)</p>
 <p><img src="https://lupyuen.github.io/images/rust-arch.png" alt="Rust on BL602 IoT SDK" /></p>
-<p>Strictly speaking this isn’t <a href="https://docs.rust-embedded.org/book/"><strong>Embedded Rust</strong></a>, because we’re not running Rust directly on Bare Metal (BL602 Hardware). </p>
+<p>Strictly speaking this isn’t <a href="https://docs.rust-embedded.org/book/"><strong>Embedded Rust</strong></a>, because we’re not running Rust directly on Bare Metal (BL602 Hardware).</p>
 <p>Instead we’re running <strong>Rust on top of an Embedded Operating System</strong> (BL602 IoT SDK + FreeRTOS). It’s similar to running Rust on Linux / macOS / Windows.</p>
 <p>That’s why we compile our Rust code into a <strong>static library</strong> that will be linked into the BL602 Firmware. See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18"><code>rust/Cargo.toml</code></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Build this module as a Rust library, 
@@ -614,11 +614,11 @@ blflash flash c:\blflash\sdk_app_lora.bin --port COM5
 <div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
 </code></pre></div></li>
 <li>
-<p><strong>For Windows:</strong> </p>
+<p><strong>For Windows:</strong></p>
 <p>Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 </li>
 <li>
-<p><strong>Alternatively:</strong> </p>
+<p><strong>Alternatively:</strong></p>
 <p>Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
 </li>
@@ -866,7 +866,7 @@ riscv32imc-unknown-none-elf
 <p><img src="https://lupyuen.github.io/images/rust-flow.png" alt="Graphical Flow Programming with Rete.js" /></p>
 <h2 id="but-why-c"><a class="doc-anchor" href="#but-why-c">§</a>11.3 But Why C?</h2>
 <p><em>But seriously… Why are we still coding BL602 Firmware in C? Why not code everything in Rust?</em></p>
-<p>Because <strong>some BL602 features work better in C</strong> than in Rust. </p>
+<p>Because <strong>some BL602 features work better in C</strong> than in Rust.</p>
 <p>Like <strong>SPI with DMA</strong>, which is useful for SPI displays that require high-bandwidth data transfer.</p>
 <p><a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access">More about BL602 SPI with DMA</a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>

@@ -382,7 +382,7 @@ int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme
 <p><img src="https://lupyuen.github.io/images/wifi-connect5.png" alt="bl_send_sm_connect_req" /></p>
 <h2 id="send-request-to-lmac"><a class="doc-anchor" href="#send-request-to-lmac">§</a>2.3 Send request to LMAC</h2>
 <p><em>What is LMAC?</em></p>
-<p><strong>Lower Medium Access Control (LMAC)</strong> is the firmware that runs <strong>inside the BL602 WiFi Radio Hardware</strong> and executes the WiFi Radio functions. </p>
+<p><strong>Lower Medium Access Control (LMAC)</strong> is the firmware that runs <strong>inside the BL602 WiFi Radio Hardware</strong> and executes the WiFi Radio functions.</p>
 <p>(Like sending and receiving WiFi Packets)</p>
 <p>To connect to a WiFi Access Point, we <strong>pass the Connection Parameters to LMAC</strong> by calling <strong><code>bl_send_sm_connect_req</code></strong>, defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804"><code>bl_msg_tx.c</code></a> …</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Forward the Connection Parameters to the LMAC
@@ -760,7 +760,7 @@ LAB_230059f6:
     _DAT_44b08198 = ptVar9;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_access.h">(They don’t appear in this list either)</a></p>
-<p>The function performs some <strong>Assertion Checks</strong>. </p>
+<p>The function performs some <strong>Assertion Checks</strong>.</p>
 <p>The Assertion Failure Messages may be helpful for deciphering the decompiled code…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Assertion Checks
     line = 0x23c;
@@ -790,7 +790,7 @@ LAB_230059f6:
 </code></pre></div>
 <p><em>Is the original source code for <code>txl_payload_handle_backup</code> really so long?</em></p>
 <p>Likely not. The C Compiler optimises the firmware code by inlining some functions.</p>
-<p>When we decompile the firmware, the inlined code appears embedded inside the calling functions. </p>
+<p>When we decompile the firmware, the inlined code appears embedded inside the calling functions.</p>
 <p>(That’s why we see so much repetition in the decompiled code)</p>
 <p>Let’s talk about RivieraWaves…</p>
 <p><img src="https://lupyuen.github.io/images/wifi-schedule3.png" alt="RivieraWaves in AliOS" /></p>
@@ -1123,7 +1123,7 @@ grep --line-number \
 <p><a href="https://github.com/search?q=phy_init+phy_hw_set_channel&amp;type=code">GitHub Code Search for <code>phy_init</code> and <code>phy_hw_set_channel</code></a></p>
 </li>
 </ol>
-<p>Remember to check GitHub Search when doing any Reverse Engineering! 👍 </p>
+<p>Remember to check GitHub Search when doing any Reverse Engineering! 👍</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>This has been a thrilling journey… Many Thanks to the contributors of the <a href="https://github.com/pine64/bl602-re"><strong>Pine64 BL602 Reverse Engineering Project</strong></a> for inspiring this article!</p>
 <p>Today we’ve done some Reverse Engineering for the purpose of <strong>Education</strong>… Just to understand how BL602 sends and receives WiFi Packets.</p>

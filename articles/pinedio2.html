@@ -240,7 +240,7 @@ cp nuttx.bin /mnt/c/blflash
 <p><a href="https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack"><strong>Improvised Reset Button</strong></a> (lower left): We connect a Jumper Cable (to the I2C Port) to restart PineDio Stack during flashing and testing</p>
 </li>
 <li>
-<p><strong>LoRa Antenna</strong> (bottom): Connect an antenna here if we’re testing LoRa </p>
+<p><strong>LoRa Antenna</strong> (bottom): Connect an antenna here if we’re testing LoRa</p>
 </li>
 <li>
 <p><strong>WiFi / Bluetooth LE Antenna</strong> (right): Connect an antenna here if we’re testing WiFi or Bluetooth LE</p>
@@ -1348,7 +1348,7 @@ CBOR Output: 11 bytes
 <p>Here’s how we modded the SPI Driver for PineDio Stack…</p>
 <h2 id="spi-device-id"><a class="doc-anchor" href="#spi-device-id">§</a>16.1 SPI Device ID</h2>
 <p><em>What’s the SPI Device ID in the table above?</em></p>
-<p>We identify each SPI Device with a unique <strong>SPI Device ID</strong>. </p>
+<p>We identify each SPI Device with a unique <strong>SPI Device ID</strong>.</p>
 <p>NuttX passes the Device ID when it calls <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453"><strong>bl602_spi_select</strong></a>. We’ll use this to flip the right Chip Select Pin for the SPI Device.</p>
 <p><em>How did we get the SPI Device IDs?</em></p>
 <p>NuttX auto-assigns <code>0x40000</code> as the SPI Device ID for the ST7789 Display. <a href="https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/spi/spi.h#L459">(See this)</a></p>
@@ -1665,11 +1665,11 @@ monitor_cb: 57600 px refreshed in 1110 ms
 <p>BL602 / BL604 talks to ST7789 Display at <strong>SPI Mode 1 or Mode 3</strong>, depending on whether <strong>MISO / MOSI are swapped</strong>…</p>
 <ul>
 <li>
-<p>If MISO / MOSI are <strong>NOT Swapped</strong>: </p>
+<p>If MISO / MOSI are <strong>NOT Swapped</strong>:</p>
 <p>Use <strong>SPI Mode 1</strong></p>
 </li>
 <li>
-<p>If MISO / MOSI are <strong>Swapped</strong>: </p>
+<p>If MISO / MOSI are <strong>Swapped</strong>:</p>
 <p>Use <strong>SPI Mode 3</strong></p>
 </li>
 </ul>

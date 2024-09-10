@@ -183,7 +183,7 @@ Config: at32f437-mini/rtc
 </li>
 </ul>
 <p><em>Is this a problem?</em></p>
-<p>Every single Pull Request will execute 24 Build Jobs in parallel. </p>
+<p>Every single Pull Request will execute 24 Build Jobs in parallel.</p>
 <p>Which needs <strong>24 GitHub Runners</strong> per Pull Request. And <a href="https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners"><strong>they ain’t cheap</strong></a>!</p>
 <p>TODO: Pic of NuttX Stats</p>
 <h1 id="self-hosted-runners"><a class="doc-anchor" href="#self-hosted-runners">§</a>2 Self-Hosted Runners</h1>
@@ -317,7 +317,7 @@ jobs:
 <h1 id="utm-emulator-for-macos-arm64"><a class="doc-anchor" href="#utm-emulator-for-macos-arm64">§</a>5 UTM Emulator for macOS Arm64</h1>
 <p><em>So NuttX Builds run better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 more useful?</em></p>
 <p>Let’s test <a href="https://mac.getutm.app/"><strong>UTM Emulator for macOS Arm64</strong></a>, to emulate Ubuntu x64. (Spoiler: It’s really slow!)</p>
-<p>On a super duper Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with <strong>32 CPUs and 4 GB RAM</strong> (because we don’t need much RAM)</p>
+<p>On a super-duper Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with <strong>32 CPUs and 4 GB RAM</strong> (because we don’t need much RAM)</p>
 <p><img src="https://github.com/user-attachments/assets/5ff0d94e-4a04-4cf4-8f0a-8e0ee9d1cd59" alt="Screenshot 2024-08-29 at 10 08 07 PM" /></p>
 <p>Remember to <strong>Force Multicore</strong> and bump up the <strong>JIT Cache</strong>…</p>
 <p><img src="https://github.com/user-attachments/assets/3a162236-9c14-4615-b9c7-c3a90ef7293c" alt="Screenshot 2024-08-29 at 10 08 25 PM" /></p>
@@ -381,7 +381,7 @@ Current runner version: &#39;2.319.1&#39;
 <p>Unless we create a Linux Arm64 Docker Image? Like for <a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci"><strong>Compiling RISC-V Platforms</strong></a>.</p>
 <p>We’ll chat about this in <a href="https://discord.com/channels/716091708336504884/1280436444141453313"><strong>NuttX Discord Channel</strong></a>.</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
-<p>According to ASF Policy: We should reduce to <strong>15 Concurrent Runners</strong>…</p>
+<p>According to <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Policy</strong></a>: We should reduce to <strong>15 Concurrent GitHub Runners</strong>. How?</p>
 <ol>
 <li>
 <p>We could review the <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0"><strong>1,594 Build Targets</strong></a> and decide which targets should be excluded. Or reprioritised to run earlier / later.</p>
@@ -401,7 +401,7 @@ Current runner version: &#39;2.319.1&#39;
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md"><strong>lupyuen.github.io/src/ci.md</strong></a></p>
 <h1 id="appendix-fixes-for-ubuntu-x64"><a class="doc-anchor" href="#appendix-fixes-for-ubuntu-x64">§</a>7 Appendix: Fixes for Ubuntu x64</h1>
-<p>TODO</p>
+<p>To run the Self-Hosted Runners on Ubuntu x64, we need these fixes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## TODO: Install Docker Engine: https://docs.docker.com/engine/install/ubuntu/
 ## TODO: Apply this fix: https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue
 ## Note: podman won&#39;t work
@@ -421,26 +421,23 @@ cd $HOME/actions-runner
 ## TODO: In case of timeout after 6 hours:
 ## Restart the Ubuntu Machine, because the tasks are still running in background!
 </code></pre></div>
-<p>TODO: Docker Engine <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29344966455">fails with this error</a>:</p>
-<div class="example-wrap"><pre class="language-text"><code>permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post &quot;http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&amp;tag=latest&quot;: dial unix /var/run/docker.sock: connect: permission denied
-</code></pre></div>
-<p>We apply <a href="https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue">this Docker Fix</a>. </p>
-<p>TODO: Podman Docker on Linux x64 <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677">fails with this error</a>. Might be a <a href="https://github.com/containers/podman/discussions/14238">problem with Podman</a>.</p>
+<p><em>Why Docker Engine? Not Podman Docker?</em></p>
+<p>Podman Docker on Linux x64 <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677">fails with this error</a>. Might be a <a href="https://github.com/containers/podman/discussions/14238">problem with Podman</a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Writing manifest to image destination
 Error: statfs /var/run/docker.sock: permission denied
-</code></pre></div><h1 id="appendix-fixes-for-macos-arm64"><a class="doc-anchor" href="#appendix-fixes-for-macos-arm64">§</a>8 Appendix: Fixes for macOS Arm64</h1>
-<p>TODO</p>
+</code></pre></div>
+<p>Docker Engine <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29344966455">fails with a similar error</a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post &quot;http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&amp;tag=latest&quot;: dial unix /var/run/docker.sock: connect: permission denied
+</code></pre></div>
+<p>That’s why we apply <a href="https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue">this Docker Fix</a>.</p>
+<h1 id="appendix-fixes-for-macos-arm64"><a class="doc-anchor" href="#appendix-fixes-for-macos-arm64">§</a>8 Appendix: Fixes for macOS Arm64</h1>
+<p>To run the Self-Hosted Runners on macOS Arm64, we need these fixes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo mkdir /Users/runner
 sudo chown $USER /Users/runner
 sudo chgrp staff /Users/runner
 ls -ld /Users/runner
-
-## Maybe need pip?
-brew install python
 </code></pre></div><h1 id="appendix-nuttx-ci-for-macos"><a class="doc-anchor" href="#appendix-nuttx-ci-for-macos">§</a>9 Appendix: NuttX CI for macOS</h1>
-<p>TODO</p>
-<ul>
-<li>
+<p>We have challenges running NuttX CI on macOS Arm64…</p>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml"><code>Build macOS (macos / sim-01 / sim-02)</code></a> on macOS Arm64: <code>setup-python</code> will <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343630883">hang because it’s prompting for password</a>. So we comment out <code>setup-python</code>.</p>
 <div class="example-wrap"><pre class="language-text"><code>Run actions/setup-python@v5
 Installed versions
@@ -453,7 +450,7 @@ Execute installation script
 Check if Python hostedtoolcache folder exist...
 Install Python binaries from prebuilt package
 </code></pre></div>
-<p>Then it fails while <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349061179">downloading the toolchain</a></p>
+<p>Then it fails while <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349061179">downloading the toolchain</a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>+ wget --quiet https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
 + xz -d arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
 xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected end of input
@@ -465,12 +462,9 @@ xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected e
 + objcopy --version
 /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found
 </code></pre></div>
-<p>TODO: Do we change the toolchain from x64 to Arm64?</p>
-</li>
-</ul>
+<p><strong>TODO:</strong> Do we change the toolchain from x64 to Arm64?</p>
 <h1 id="appendix-documentation-build-for-nuttx"><a class="doc-anchor" href="#appendix-documentation-build-for-nuttx">§</a>10 Appendix: Documentation Build for NuttX</h1>
-<p>TODO</p>
-<p><em>Does it work for Documentation Build?</em></p>
+<p><em>Our Self-Hosted Runners: Do they work for Documentation Build?</em></p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml"><code>Documentation</code></a> on macOS Arm64: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677">Hangs at setup-python</a> because it prompts for password:</p>
@@ -505,7 +499,7 @@ The list of all available versions can be found here: https://raw.githubusercont
 <p>So we comment out <code>setup-python</code>. Then it fails with <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10593895809/job/29356477035">pip3 not found</a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>pip3: command not found
 </code></pre></div>
-<p>TODO: Switch to pipenv</p>
+<p><strong>TODO:</strong> Switch to pipenv</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml"><code>Documentation</code></a> on Linux x64: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125174/job/29348045745">Fails with rmdir error</a></p>
@@ -516,21 +510,31 @@ Adding repository directory to the temporary git global config as a safe directo
 Deleting the contents of &#39;/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx&#39;
 Error: File was unable to be removed Error: EACCES: permission denied, rmdir &#39;/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx/buildartifacts/at32f437-mini&#39;
 </code></pre></div>
-<p>TODO: Check the rmdir directory</p>
+<p><strong>TODO:</strong> Check the rmdir directory</p>
 </li>
 </ul>
 <h1 id="appendix-ubuntu-x64-runner-in-action"><a class="doc-anchor" href="#appendix-ubuntu-x64-runner-in-action">§</a>11 Appendix: Ubuntu x64 Runner In Action</h1>
-<p>TODO</p>
+<p>Let’s watch the Ubuntu x64 Runner in action…</p>
+<ul>
+<li>
+<p>On an Intel PC</p>
+</li>
+<li>
+<p>On macOS Arm64 with UTM Emulator</p>
+</li>
+</ul>
 <h2 id="intel-pc-with-ubuntu-x64"><a class="doc-anchor" href="#intel-pc-with-ubuntu-x64">§</a>11.1 Intel PC with Ubuntu x64</h2>
-<p>TODO</p>
-<p>Our 10-year-old MacBook Pro (Intel i7) hits 100% when running the Linux Build for NuttX CI: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343">Build for arm-02</a></p>
+<p>Our 10-year-old MacBook Pro (Intel i7) hits 100% when running the Linux Build for NuttX CI. But it works!</p>
+<ul>
+<li><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343"><strong>Build for arm-02</strong></a></li>
+</ul>
 <p><img src="https://github.com/user-attachments/assets/2e2861bc-6af0-48f4-b3a1-d0083cd23155" alt="linux-build" /></p>
 <h2 id="macos-arm64-with-utm-emulator"><a class="doc-anchor" href="#macos-arm64-with-utm-emulator">§</a>11.2 macOS Arm64 with UTM Emulator</h2>
-<p>TODO</p>
-<p>On a powerful Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with 32 CPUs and 4 GB RAM (we don’t need much RAM)</p>
+<p>On a super-duper Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with <strong>32 CPUs and 4 GB RAM</strong> (because we don’t need much RAM)</p>
 <p><img src="https://github.com/user-attachments/assets/5ff0d94e-4a04-4cf4-8f0a-8e0ee9d1cd59" alt="Screenshot 2024-08-29 at 10 08 07 PM" /></p>
+<p>Remember to <strong>Force Multicore</strong> and bump up the <strong>JIT Cache</strong>…</p>
 <p><img src="https://github.com/user-attachments/assets/3a162236-9c14-4615-b9c7-c3a90ef7293c" alt="Screenshot 2024-08-29 at 10 08 25 PM" /></p>
-<p>Ubuntu Disk Space in UTM VM needs to be big enough for NuttX Docker Image:</p>
+<p><strong>Ubuntu Disk Space</strong> in the UTM Virtual Machine needs to be big enough for NuttX Docker Image…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ neofetch
             .-/+oossssoo+/-.               user@ubuntu-emu-arm64
         `:+ssssssssssssssssss+:`           ---------------------
@@ -568,6 +572,7 @@ tmpfs           410M  115k  410M   1% /run/user/1000
 <p>During <code>Run Builds</code>: CPU hits 100%</p>
 <p><img src="https://github.com/user-attachments/assets/60d4d3eb-d075-49c9-b3ac-bcfa74150668" alt="Screenshot 2024-08-29 at 4 56 06 PM" /></p>
 <p>Note: Don’t leave System Monitor running, it consumes quite a bit of CPU!</p>
+<p>If the CI Job doesn’t complete in <strong>6 hours</strong>: GitHub will cancel it! So we should give it as much CPU as possible.</p>
 <p>Why emulate 32 CPUs? That’s because we want to max out the macOS Arm64 CPU Utilisation. Here’s our chance to watch Mac Mini run smokin’ hot!</p>
 <p><img src="https://github.com/user-attachments/assets/bfd51e51-1bee-49c2-88a3-01698d51d8a4" alt="Screenshot 2024-08-30 at 4 14 05 PM" /></p>
 <p><img src="https://github.com/user-attachments/assets/a9dab4fd-a59f-4348-a3f7-397973797288" alt="Screenshot 2024-08-30 at 4 14 20 PM" /></p>
@@ -593,7 +598,7 @@ Current runner version: &#39;2.319.1&#39;
 2024-08-30 06:47:38Z: Job Linux (arm-04) completed with result: Succeeded
 2024-08-30 06:47:43Z: Running job: Linux (arm-01)
 </code></pre></div>
-<p>Runner Options:</p>
+<p>Here are the Runner Options:</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ./run.sh --help
 Commands:
  ./config.sh         Configures the runner

@@ -104,7 +104,7 @@
 </ol>
 <p>(The two connectors are slightly different, so we won’t connect the wrong antenna)</p>
 <p>The GPS Antenna will be used when we connect WisGate to The Things Network (the worldwide free-access LoRaWAN network).</p>
-<p>WisGate D4H is shipped with the open-source <strong>ChirpStack LoRaWAN stack</strong>, preinstalled in the microSD card. </p>
+<p>WisGate D4H is shipped with the open-source <strong>ChirpStack LoRaWAN stack</strong>, preinstalled in the microSD card.</p>
 <p>(Yep please don’t peel off the sticky tape and insert your own microSD card)</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-hw2.jpg" alt="microSD Slot on WisGate D4H" /></p>
 <p><em>microSD Slot on WisGate D4H</em></p>
@@ -170,7 +170,7 @@
 <p>To download the source code, enter this at the command prompt…</p>
 <div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/lupyuen/wisblock-lorawan
 </code></pre></div>
-<p>Note that the program requires the <a href="https://github.com/beegee-tokyo/SX126x-Arduino"><strong><code>SX126x-Arduino</code></strong></a> Library version <strong>2.0.0 or later</strong>. </p>
+<p>Note that the program requires the <a href="https://github.com/beegee-tokyo/SX126x-Arduino"><strong><code>SX126x-Arduino</code></strong></a> Library version <strong>2.0.0 or later</strong>.</p>
 <p>With PlatformIO, we set the <code>SX126x-Arduino</code> version in <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/platformio.ini"><code>platformio.ini</code></a> like so…</p>
 <div class="example-wrap"><pre class="language-text"><code>lib_deps = beegee-tokyo/SX126x-Arduino@^2.0.0
 </code></pre></div>
@@ -296,7 +296,7 @@ void lorawan_has_joined_handler(void) {
   //  Request for a different LoRaWAN Device Class, if necessary
   lmh_error_status ret = lmh_class_request(g_CurrentClass);
 </code></pre></div>
-<p>Here we switch to the desired <strong>LoRaWAN Device Class</strong> (A, B or C) if necessary. </p>
+<p>Here we switch to the desired <strong>LoRaWAN Device Class</strong> (A, B or C) if necessary.</p>
 <p><strong>Class A</strong> is the most basic Device Class (for simple LoRaWAN sensors). <strong>Classes B and C</strong> are more sophisticated.</p>
 <p>We have configured our LoRaWAN Client for <strong>Class A</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>DeviceClass_t g_CurrentClass = CLASS_A;
@@ -439,7 +439,7 @@ OnRadioRxDone =&gt; FRAME_TYPE_JOIN_ACCEPT
 OTAA Mode, Network Joined!
 </code></pre></div>
 <p>The LoRaWAN Spec says we don’t open the Second Receive Window if we receive a packet in the First Receive Window.</p>
-<p>So… We’re good! </p>
+<p>So… We’re good!</p>
 </li>
 <li>
 <p>20 seconds later we <strong>transmit our first data packet</strong> (“<code>Hello!</code>”)…</p>

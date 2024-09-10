@@ -312,7 +312,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 </ul>
 <h2 id="transmit-lora-packet"><a class="doc-anchor" href="#transmit-lora-packet">§</a>2.4 Transmit LoRa Packet</h2>
 <p>(<strong>Note on LoRa vs LoRaWAN:</strong> Our LoRaWAN Driver calls the LoRa Driver to transmit LoRa Packets, when we run the <code>las_join</code> and <code>las_app_tx</code> commands. Skip this section if we’re using LoRaWAN to transmit data.)</p>
-<p>To transmit a LoRa Packet, the <code>send_message</code> command in our Demo Firmware calls <code>send_once</code> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L214-L219"><code>demo.c</code></a> … </p>
+<p>To transmit a LoRa Packet, the <code>send_message</code> command in our Demo Firmware calls <code>send_once</code> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L214-L219"><code>demo.c</code></a> …</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to send a LoRa message. Assume that the LoRa Transceiver driver has been initialised.
 static void send_message(char *buf, int len, int argc, char **argv) {
   //  Send the &quot;PING&quot; message
@@ -1022,7 +1022,7 @@ blflash flash c:\blflash\sdk_app_lorawan.bin --port COM5
 <p><a href="https://lupyuen.github.io/articles/lora2#event-queue">(<code>create_task</code> is explained here)</a></p>
 </li>
 <li>
-<p>Then we <strong>initialise our LoRaWAN Driver</strong>. </p>
+<p>Then we <strong>initialise our LoRaWAN Driver</strong>.</p>
 <p>Enter this command…</p>
 <div class="example-wrap"><pre class="language-text"><code>init_lorawan
 </code></pre></div>
@@ -1412,7 +1412,7 @@ header = get_pbuf_header(
     sizeof(struct lora_pkt_info)  //  Size of LoRaWAN Packet Header
 );
 </code></pre></div>
-<p><code>pbuf</code> Packet Buffers have an unusual <strong>Sliding Payload Pointer</strong> for extracting the header. </p>
+<p><code>pbuf</code> Packet Buffers have an unusual <strong>Sliding Payload Pointer</strong> for extracting the header.</p>
 <p>Here’s how we implement <code>get_pbuf_header</code> in <a href="https://github.com/lupyuen/lorawan/blob/main/src/pbuf_queue.c#L165-L197"><code>pbuf_queue.c</code></a> …</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Return the pbuf Packet Buffer header
 void *
@@ -1457,7 +1457,7 @@ get_pbuf_header(
 <p>Mynewt’s LoRaWAN Driver uses <a href="https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html#mqueue"><strong>Mqueues</strong></a> to enqueue packets for processing.</p>
 <p>The Lightweight IP Stack doesn’t have the equivalent of Mqueues, so we build our own <strong>Packet Buffer Queues</strong>.</p>
 <p>A <strong><code>pbuf_queue</code></strong> Packet Buffer Queue is a <strong>First-In First-Out List of Packet Buffers</strong>. It supports these operations…</p>
-<p>From <a href="https://github.com/lupyuen/lorawan/blob/main/src/pbuf_queue.c#L210-L322"><code>pbuf_queue.c</code></a> </p>
+<p>From <a href="https://github.com/lupyuen/lorawan/blob/main/src/pbuf_queue.c#L210-L322"><code>pbuf_queue.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Initializes a pbuf_queue.  A pbuf_queue is a queue of pbufs that ties to a
 //  particular task&#39;s event queue.  pbuf_queues form a helper API around a common
 //  paradigm: wait on an event queue until at least one packet is available,

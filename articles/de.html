@@ -834,11 +834,11 @@ Please check out the other articles on NuttX for PinePhone…</p>
 <p><strong>DE RT-MIXER1</strong> has 2 Channels (DE Offset <strong><code>0x20</code> <code>0000</code></strong>, <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">DE Page 23</a>)</p>
 <ul>
 <li>
-<p><strong>Channel 0</strong> for Video </p>
+<p><strong>Channel 0</strong> for Video</p>
 <p>(DMA0, Video Overlay, Video Scaler)</p>
 </li>
 <li>
-<p><strong>Channel 1</strong> for UI </p>
+<p><strong>Channel 1</strong> for UI</p>
 <p>(DMA1, UI Overlay, UI Scaler, UI Blender)</p>
 </li>
 </ul>
@@ -892,7 +892,7 @@ Please check out the other articles on NuttX for PinePhone…</p>
 <p>As deciphered from the following logs…</p>
 <ul>
 <li>
-<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init"><strong><code>de2_init</code> Log</strong></a> </p>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init"><strong><code>de2_init</code> Log</strong></a></p>
 <p>(Captured from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1871"><strong>p-boot <code>de2_init</code></strong></a>)</p>
 </li>
 <li>
@@ -1148,7 +1148,7 @@ Please check out the other articles on NuttX for PinePhone…</p>
 </li>
 <li>
 <p><strong>UIS_CTRL_REG</strong> at UI_SCALER1(CH1) Offset 0</p>
-<p>EN (Bit 0) = 0 (Disable UI Scaler) </p>
+<p>EN (Bit 0) = 0 (Disable UI Scaler)</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 66, <code>0x114</code> <code>0000</code>)</a></p>
 </li>
 <li>
@@ -1364,7 +1364,7 @@ BLD Premultiply: 0x110 1084 = 0x0
 <li>
 <p><strong>UIS_CTRL_REG</strong> at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)</p>
 <p>Set to 0 (Disable UI Scaler)</p>
-<p>EN (Bit 0) = 0 (Disable UI Scaler) </p>
+<p>EN (Bit 0) = 0 (Disable UI Scaler)</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 66, <code>0x114</code> <code>0000</code> / <code>0x115</code> <code>0000</code> / <code>0x116</code> <code>0000</code>)</a></p>
 </li>
 <li>
@@ -1495,7 +1495,7 @@ GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)
 <p><strong>Set Blender Input Pipe</strong> (N = Pipe Number, from 0 to 2 for Channels 1 to 3)</p>
 <ul>
 <li>
-<p><strong>BLD_CH_ISIZE</strong> (Blender Input Memory Size) at BLD Offset <code>0x008</code> + <code>N*0x10</code> (N=0,1,2,3,4) </p>
+<p><strong>BLD_CH_ISIZE</strong> (Blender Input Memory Size) at BLD Offset <code>0x008</code> + <code>N*0x10</code> (N=0,1,2,3,4)</p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 108, <code>0x110 1008</code> / <code>0x110 1018</code> / <code>0x110 1028</code>)</a></p>
 </li>
@@ -1555,7 +1555,7 @@ BLD Pipe Mode:   0x110 1098 = 0x301 0301
 <li>
 <p><strong>UIS_CTRL_REG</strong> at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)</p>
 <p>Set to 0 (Disable UI Scaler)</p>
-<p>EN (Bit 0) = 0 (Disable UI Scaler) </p>
+<p>EN (Bit 0) = 0 (Disable UI Scaler)</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 66, <code>0x114</code> <code>0000</code> / <code>0x115</code> <code>0000</code> / <code>0x116</code> <code>0000</code>)</a></p>
 </li>
 </ul>
@@ -1754,7 +1754,7 @@ udelay 100
 </ul>
 <p><strong>TCON1_IO_TRI_REG</strong>: TCON0 Offset <code>0xf4</code></p>
 <ul>
-<li>Set to <code>0xffff</code> <code>ffff</code> to Enable TCON1 Tristate Output </li>
+<li>Set to <code>0xffff</code> <code>ffff</code> to Enable TCON1 Tristate Output</li>
 </ul>
 <p>Note: <strong>TCON1_IO_TRI_REG</strong> is actually in TCON0 Address Range, not in TCON1 Address Range as stated in A64 User Manual</p>
 <div class="example-wrap"><pre class="language-text"><code>Set all io lines to tristate
@@ -2258,39 +2258,39 @@ udelay 15000
 </li>
 <li>
 <p><strong>RSB Clock Control Register</strong> (RSB_CCR)</p>
-<p>(RSB Offset <strong><code>0x0004</code></strong>) </p>
+<p>(RSB Offset <strong><code>0x0004</code></strong>)</p>
 </li>
 <li>
 <p><strong>RSB Interrupt Enable Register</strong> (RSB_INTE)</p>
-<p>(RSB Offset <strong><code>0x0008</code></strong>) </p>
+<p>(RSB Offset <strong><code>0x0008</code></strong>)</p>
 </li>
 <li>
 <p><strong>RSB Status Register</strong> (RSB_STAT)</p>
-<p>(RSB Offset <strong><code>0x000c</code></strong>) </p>
+<p>(RSB Offset <strong><code>0x000c</code></strong>)</p>
 </li>
 <li>
 <p><strong>RSB Address Register</strong> (RSB_AR)</p>
-<p>(RSB Offset <strong><code>0x0010</code></strong>) </p>
+<p>(RSB Offset <strong><code>0x0010</code></strong>)</p>
 </li>
 <li>
 <p><strong>RSB Data Buffer Register</strong> (RSB_DATA)</p>
-<p>(RSB Offset <strong><code>0x001c</code></strong>) </p>
+<p>(RSB Offset <strong><code>0x001c</code></strong>)</p>
 </li>
 <li>
 <p><strong>RSB Line Control register</strong> (RSB_LCR)</p>
-<p>(RSB Offset <strong><code>0x0024</code></strong>) </p>
+<p>(RSB Offset <strong><code>0x0024</code></strong>)</p>
 </li>
 <li>
 <p><strong>RSB Device Mode Control Register</strong> (RSB_DMCR)</p>
-<p>(RSB Offset <strong><code>0x0028</code></strong>) </p>
+<p>(RSB Offset <strong><code>0x0028</code></strong>)</p>
 </li>
 <li>
 <p><strong>RSB Command Register</strong> (RSB_CMD)</p>
-<p>(RSB Offset <strong><code>0x002C</code></strong>) </p>
+<p>(RSB Offset <strong><code>0x002C</code></strong>)</p>
 </li>
 <li>
 <p><strong>RSB Device Address Register</strong> (RSB_DAR)</p>
-<p>(RSB Offset <strong><code>0x0030</code></strong>) </p>
+<p>(RSB Offset <strong><code>0x0030</code></strong>)</p>
 </li>
 </ul>
 <p>Here’s our implementation in Zig: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L48-L68">pmic.zig</a></p>
@@ -2514,7 +2514,7 @@ if (ret != 0) {
 <li>
 <p><strong>RSB Status Register</strong> (RSB_STAT) <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf">(A80 Page 924)</a></p>
 <ul>
-<li>At RSB Offset <strong><code>0x000c</code></strong> </li>
+<li>At RSB Offset <strong><code>0x000c</code></strong></li>
 <li>If <strong>TRANS_OVER</strong> (Bit 0) is 1, then RSB Transfer has completed without error</li>
 </ul>
 <div class="example-wrap"><pre class="language-zig"><code>const reg = getreg32(R_RSB_BASE_ADDRESS + RSB_STAT);

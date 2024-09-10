@@ -169,7 +169,7 @@ up_exit: TCB=0x802088d0 exiting
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ramdisk2-0.0.1">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ramdisk2-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_irq.c#L138-L180">(<strong>up_enable_irq</strong> is defined here)</a></p>
-<p>In the log above, NuttX QEMU enables UART Interrupts at <strong>NuttX IRQ 35</strong>. </p>
+<p>In the log above, NuttX QEMU enables UART Interrupts at <strong>NuttX IRQ 35</strong>.</p>
 <p>(Equivalent to <strong>RISC-V IRQ 10</strong>, with IRQ Offset of 25)</p>
 <p>Then <strong>NuttX Shell</strong> runs in QEMU…</p>
 <div class="example-wrap"><pre class="language-text"><code>$%&amp;riscv_doirq: irq=8
@@ -210,7 +210,7 @@ FNFuFtFtFSFhFeFlFlF F(FNFSFHF)F FNFuFtFtFXF-F1F2F.F0F.F3F
 </li>
 <li>
 <p>NuttX Kernel <strong>reads the Serial Buffer</strong>, one character at a time…</p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107">(<strong>uart_xmitchars</strong>)</a> </p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/serial_io.c#L42-L107">(<strong>uart_xmitchars</strong>)</a></p>
 </li>
 <li>
 <p>If the <strong>UART Transmit Status</strong> is ready…</p>
@@ -382,7 +382,7 @@ dtc \
 <div class="example-wrap"><pre class="language-text"><code>RISC-V IRQ = Global Interrupt Number + 5
 </code></pre></div>
 <p><em>Maybe IRQ 32 is too high? (QEMU UART IRQ is only 10)</em></p>
-<p>The doc on <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html"><strong>JH7110 Interrupt Connections</strong></a> says that Global Interrupts are numbered <strong>0 to 126</strong>. (127 total interrupts) </p>
+<p>The doc on <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/interrupt_connections.html"><strong>JH7110 Interrupt Connections</strong></a> says that Global Interrupts are numbered <strong>0 to 126</strong>. (127 total interrupts)</p>
 <p>That’s a lot more than NuttX QEMU can handle. So we patched it…</p>
 <ul>
 <li>
@@ -645,7 +645,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   return regs;
 }
 </code></pre></div>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_doirq.c#L58-L131">(<strong>riscv_doirq</strong> is defined here)</a> </p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_doirq.c#L58-L131">(<strong>riscv_doirq</strong> is defined here)</a></p>
 <p>There’s also a <strong>Core-Local Interruptor (CLINT)</strong> <a href="https://starfivetech.com/uploads/u74mc_core_complex_manual_21G1.pdf">(Page 185)</a> that handles Software Interrupt and Timer Interrupt. But we won’t cover it today. (Pic below)</p>
 <p><strong>TODO:</strong> Do we need to handle CLINT?</p>
 <p>Let’s check that the RISC-V Interrupts are delegated correctly…</p>
@@ -705,7 +705,7 @@ Boot HART MEDELEG:
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64d-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
 </ul>
-<p>Now we see UART Interrupts fired at <strong>NuttX IRQ 57</strong> (RISC-V IRQ 32) yay! </p>
+<p>Now we see UART Interrupts fired at <strong>NuttX IRQ 57</strong> (RISC-V IRQ 32) yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 up_enable_irq: irq=57, extirq=32, RISCV_IRQ_EXT=25
@@ -798,7 +798,7 @@ nsh&gt;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64d-0.0.1">(See the <strong>Complete Log</strong>)</a></p>
 <p>Yep NuttX Shell works OK on Star64!</p>
-<p>But it’s super slow. Each dot is <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>One Million Calls</strong></a> to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>! </p>
+<p>But it’s super slow. Each dot is <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>One Million Calls</strong></a> to the UART Interrupt Handler, with UART Interrupt Status <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966"><strong>INTSTATUS = 0</strong></a>!</p>
 <p><a href="https://lupyuen.github.io/articles/plic#appendix-fix-the-spurious-uart-interrupts">(<strong>UPDATE:</strong> We fixed the <strong>Spurious UART Interrupts</strong>!)</a></p>
 <p><em>Why is UART Interrupt triggered repeatedly with <a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/drivers/serial/uart_16550.c#L954-L966">INTSTATUS = 0</a>?</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/issues/18"><strong>Michael Engel</strong></a> says it’s a DesignWare UART issue…</p>

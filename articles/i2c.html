@@ -103,7 +103,7 @@
 <li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">13 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li>
 <li><a href="#appendix-test-bme280-with-bus-pirate">14 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
 <p><strong><a href="https://lupyuen.github.io/articles/pinecone">PineCone BL602</a> (<a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics">and Pinenut</a>)</strong> is an awesome RISC-V Microcontroller Board with WiFi and Bluetooth LE Networking.</p>
-<p>But to turn PineCone BL602 into an <strong>IoT Gadget</strong> we need one more thing… </p>
+<p>But to turn PineCone BL602 into an <strong>IoT Gadget</strong> we need one more thing…</p>
 <p><strong>An I2C Sensor!</strong></p>
 <p>Today we shall connect PineCone / Pinenut / Any BL602 Board to an I2C Sensor and read some data.</p>
 <p>We shall also discover a feature that’s unique to BL602: <strong>I2C Register Addresses</strong></p>
@@ -123,7 +123,7 @@
 <p>BL602’s I2C HAL is packaged as two levels…</p>
 <ol>
 <li>
-<p><strong>Low Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></strong>: This runs on BL602 Bare Metal. </p>
+<p><strong>Low Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></strong>: This runs on BL602 Bare Metal.</p>
 <p>The Low Level HAL manipulates the BL602 I2C Registers directly to perform I2C functions.</p>
 </li>
 <li>
@@ -136,7 +136,7 @@
 <p>Today we shall use the <strong>Low Level I2C HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></strong> because…</p>
 <ul>
 <li>
-<p>The Low Level I2C HAL is <strong>simpler to understand</strong>. </p>
+<p>The Low Level I2C HAL is <strong>simpler to understand</strong>.</p>
 <p>We’ll learn all about the BL602 I2C Hardware by calling the Low Level HAL Functions.</p>
 </li>
 <li>
@@ -181,7 +181,7 @@
 <p>BME280 has an I2C Register, <strong>Chip ID, at Register <code>0xD0</code></strong></p>
 </li>
 <li>
-<p>Reading the Chip ID Register will give us the <strong>Chip ID value <code>0x60</code></strong> </p>
+<p>Reading the Chip ID Register will give us the <strong>Chip ID value <code>0x60</code></strong></p>
 <p>(<code>0x60</code> identifies the chip as BME280. For BMP280 the Chip ID is <code>0x58</code>)</p>
 </li>
 </ol>
@@ -283,7 +283,7 @@ static i2c_msg_t read_msg;    //  Message for reading I2C Data
 static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 int data_len = 1;             //  Bytes to be read
 </code></pre></div>
-<p>First we define <code>read_msg</code> as a static I2C Message. </p>
+<p>First we define <code>read_msg</code> as a static I2C Message.</p>
 <p>The data returned by our BME280 Sensor shall be stored in the static buffer <code>read_buf</code>.</p>
 <h2 id="set-i2c-operation-and-buffer"><a class="doc-anchor" href="#set-i2c-operation-and-buffer">§</a>4.2 Set I2C Operation and Buffer</h2><div class="example-wrap"><pre class="language-c"><code>//  Set the I2C operation    
 read_msg.i2cx   = 0;            //  I2C Port
@@ -701,7 +701,7 @@ i2c_start_read           : Start reading I2C data
 i2c_stop_read            : Stop reading I2C data
 </code></pre></div></li>
 <li>
-<p>First we <strong>initialise our I2C Port</strong>. </p>
+<p>First we <strong>initialise our I2C Port</strong>.</p>
 <p>Enter this command…</p>
 <div class="example-wrap"><pre class="language-text"><code>i2c_init
 </code></pre></div>
@@ -1031,11 +1031,11 @@ msg: Store/AMO access fault
 <p>This means that Bus Pirate will initiate two I2C Transactions, indicated by <strong><code>[ ... ]</code></strong></p>
 <ol>
 <li>
-<p><strong>In the First I2C Transaction:</strong> Bus Pirate sends <strong><code>0xEE</code></strong> to indicate a Write Transaction (for address <code>0x77</code>). </p>
+<p><strong>In the First I2C Transaction:</strong> Bus Pirate sends <strong><code>0xEE</code></strong> to indicate a Write Transaction (for address <code>0x77</code>).</p>
 <p>Then it sends the I2C Register to be read: <strong><code>0xD0</code></strong> (Chip ID)</p>
 </li>
 <li>
-<p><strong>In the Second I2C Transaction:</strong> Bus Pirate sends <strong><code>0xEF</code></strong> to indicate a Read Transaction (for address <code>0x77</code>). </p>
+<p><strong>In the Second I2C Transaction:</strong> Bus Pirate sends <strong><code>0xEF</code></strong> to indicate a Read Transaction (for address <code>0x77</code>).</p>
 <p>BME280 returns the value of the Chip ID Register, indicated by <strong><code>r</code></strong></p>
 </li>
 </ol>

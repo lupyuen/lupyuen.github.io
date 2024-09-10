@@ -125,7 +125,7 @@ riscv64-unknown-elf-ld: libapps.a
   can&#39;t link soft-float modules with double-float modules
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/rust3#build-nuttx-for-qemu-risc-v">(See the <strong>Complete Steps</strong>)</a></p>
-<p><strong>GCC Linker</strong> failed because it couldn’t link the NuttX Binaries with the Rust Binaries. </p>
+<p><strong>GCC Linker</strong> failed because it couldn’t link the NuttX Binaries with the Rust Binaries.</p>
 <p>Here’s Why: NuttX Build calls <strong>GCC Compiler</strong> to compile our C Modules…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Firmware with Tracing Enabled
 $ make --trace

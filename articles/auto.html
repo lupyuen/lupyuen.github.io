@@ -101,7 +101,7 @@
 <p>Suppose we’re <strong>testing embedded firmware</strong> on the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a>.  And the firmware changes <strong>every day</strong> (due to Daily Updates from upstream).</p>
 <p>Instead of flipping a jumper, restarting the board, flashing over UART, restarting again, repeating every day…</p>
 <p>Is there a way to <strong>Automatically Flash and Test</strong> the Daily Updates?</p>
-<p>Yes we can, by connecting BL602 to a <strong>Linux Single-Board Computer</strong>! </p>
+<p>Yes we can, by connecting BL602 to a <strong>Linux Single-Board Computer</strong>!</p>
 <p>Today we shall create a Linux Script that will…</p>
 <ul>
 <li>
@@ -464,7 +464,7 @@ nsh&gt;
 <p>But that’s OK, we’ll see LoRaWAN in action when we test the Release Build of NuttX.</p>
 <div class="example-wrap"><pre class="language-text"><code>===== Boot OK
 </code></pre></div>
-<p>Our script <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L113-L134"><strong>analyses the output</strong></a> and determines that NuttX has booted successfully. </p>
+<p>Our script <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L113-L134"><strong>analyses the output</strong></a> and determines that NuttX has booted successfully.</p>
 <p>We’re done with the <strong>simplest scenario</strong> for Auto Flash and Test! Now we have a quick and nifty way to discover if Today’s Upstream Build of NuttX boots OK on BL602.</p>
 <p><a href="https://github.com/lupyuen/nuttx/releases">(I run the script every day to check the stability of the BL602 build)</a></p>
 <p><img src="https://lupyuen.github.io/images/auto-remote.jpg" alt="Flash &amp; Test NuttX on BL602… Remotely from a Phone!" /></p>

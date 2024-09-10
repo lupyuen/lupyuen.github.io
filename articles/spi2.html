@@ -419,7 +419,7 @@ static ssize_t spi_test_driver_read(
 #define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE0) /* SPI Mode 0: CPOL=0,CPHA=0 */
 #endif /* CONFIG_BL602_SPI0 */
 </code></pre></div>
-<p>BL602 uses <strong>SPI Mode 1</strong> (instead of Mode 0) because of an <strong>SPI Mode Quirk</strong> in BL602. </p>
+<p>BL602 uses <strong>SPI Mode 1</strong> (instead of Mode 0) because of an <strong>SPI Mode Quirk</strong> in BL602.</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk">(More about the SPI Mode Quirk)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver4.png" alt="Register SPI Test Driver at startup" /></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617">(Source)</a></p>
@@ -728,7 +728,7 @@ int bytes_read = read(fd, rx_data, sizeof(rx_data));
 assert(bytes_read == sizeof(get_status));
 </code></pre></div>
 <p>(We’ll explain <strong>get_status</strong> in the next section)</p>
-<p>Finally we set our <strong>GPIO Output / Chip Select</strong> to High… </p>
+<p>Finally we set our <strong>GPIO Output / Chip Select</strong> to High…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Set SPI Chip Select to High */
 
 ret = ioctl(cs, GPIOC_WRITE, 1);
@@ -919,7 +919,7 @@ SX1262 Register 8 is 0x80
 <p>(Yep multiple devices on the same SPI Bus)</p>
 <p>Let’s test NuttX with PineDio Stack BL604 and its <strong>onboard SX1262</strong>! Here are the innards…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
-<p>Before testing, remember to connect the <strong>LoRa Antenna</strong>… </p>
+<p>Before testing, remember to connect the <strong>LoRa Antenna</strong>…</p>
 <p>(So we don’t fry the SX1262 Transceiver as we charge up the Power Amplifier)</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio10a.jpg" alt="PineDio Stack BL604 with Antenna" /></p>
 <h2 id="pin-definitions"><a class="doc-anchor" href="#pin-definitions">§</a>9.1 Pin Definitions</h2>
@@ -973,7 +973,7 @@ SX1262 Register 8 is 0x80
 </li>
 <li>
 <p>Edit the <strong>Pin Definitions</strong> as shown above…</p>
-<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">boards/risc-v/bl602/bl602evb/include/board.h</a> </p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">boards/risc-v/bl602/bl602evb/include/board.h</a></p>
 </li>
 <li>
 <p>Build, flash and run the NuttX Firmware…</p>
@@ -1095,7 +1095,7 @@ SX1262 Register 8 is 0x80
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig
 </code></pre></div></li>
 <li>
-<p>Select <strong>“System Type”</strong> → <strong>“BL602 Peripheral Support”</strong> </p>
+<p>Select <strong>“System Type”</strong> → <strong>“BL602 Peripheral Support”</strong></p>
 </li>
 <li>
 <p>Enable <strong>“DMA”</strong></p>
@@ -1235,7 +1235,7 @@ make menuconfig
 <p>Next we enable SPI logging for easier troubleshooting…</p>
 <ol>
 <li>
-<p>In <strong>menuconfig</strong>, select <strong>“Build Setup”</strong> → <strong>“Debug Options”</strong> </p>
+<p>In <strong>menuconfig</strong>, select <strong>“Build Setup”</strong> → <strong>“Debug Options”</strong></p>
 </li>
 <li>
 <p>Check the boxes for the following…</p>
@@ -1272,7 +1272,7 @@ SPI Informational Output
 <ol>
 <li>
 <p>Browse to the <strong>Board Folder</strong>…</p>
-<p><strong>For BL602:</strong> <a href="https://github.com/lupyuen/nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src"><strong>nuttx/nuttx/boards/ risc-v/bl602/bl602evb</strong></a> </p>
+<p><strong>For BL602:</strong> <a href="https://github.com/lupyuen/nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src"><strong>nuttx/nuttx/boards/ risc-v/bl602/bl602evb</strong></a></p>
 <p><strong>For ESP32:</strong> <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src"><strong>nuttx/nuttx/boards/ xtensa/esp32/esp32-devkitc</strong></a></p>
 <p>(Change “esp32-devkitc” to our ESP32 board)</p>
 </li>
@@ -1751,7 +1751,7 @@ static ssize_t spi_test_driver_write(
 <p><img src="https://lupyuen.github.io/images/spi2-interface5.png" alt="File Struct contains a Private Pointer to the SPI Driver (spi_driver_s)" /></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/master/drivers/spi/spi_driver.c#L112-L147">(Source)</a></p>
 <h2 id="spi-driver"><a class="doc-anchor" href="#spi-driver">§</a>16.4 SPI Driver</h2>
-<p>The <strong>SPI Driver</strong> (spi_driver_s) contains the <strong>SPI Device</strong> (spi_dev_s)… </p>
+<p>The <strong>SPI Driver</strong> (spi_driver_s) contains the <strong>SPI Device</strong> (spi_dev_s)…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-interface6.png" alt="SPI Driver (spi_driver_s) contains the SPI Device (spi_dev_s)" /></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/master/drivers/spi/spi_driver.c#L55-L65">(Source)</a></p>
 <p>Which is what we need for calling the <strong>SPI Interface</strong>!</p>
