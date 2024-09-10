@@ -73,8 +73,8 @@
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-fixes-for-ubuntu-x64">7 Appendix: Fixes for Ubuntu x64</a><ul></ul></li>
 <li><a href="#appendix-fixes-for-macos-arm64">8 Appendix: Fixes for macOS Arm64</a><ul></ul></li>
-<li><a href="#appendix-documentation-build-for-nuttx">9 Appendix: Documentation Build for NuttX</a><ul></ul></li>
-<li><a href="#appendix-nuttx-ci-for-macos">10 Appendix: NuttX CI for macOS</a><ul></ul></li>
+<li><a href="#appendix-nuttx-ci-for-macos">9 Appendix: NuttX CI for macOS</a><ul></ul></li>
+<li><a href="#appendix-documentation-build-for-nuttx">10 Appendix: Documentation Build for NuttX</a><ul></ul></li>
 <li><a href="#appendix-ubuntu-x64-runner-in-action">11 Appendix: Ubuntu x64 Runner In Action</a><ul>
 <li><a href="#intel-pc-with-ubuntu-x64">11.1 Intel PC with Ubuntu x64</a><ul></ul></li>
 <li><a href="#macos-arm64-with-utm-emulator">11.2 macOS Arm64 with UTM Emulator</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>11 Sep 2024</em></p>
@@ -82,9 +82,9 @@
 <p><em>Why do we need Continuous Integration?</em></p>
 <p>Suppose we <a href="https://lupyuen.github.io/articles/pr"><strong>Submit a Pull Request</strong></a> for NuttX. We need to be sure that our Modified Code won’t break the Existing Builds in NuttX.</p>
 <p>That’s why our Pull Request will trigger the <strong>Continuous Integration Workflow</strong>, to recompile NuttX for <strong>All Hardware Platforms</strong>.</p>
-<p>(<a href="TODO"><strong>1,594 Builds</strong></a> across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)</p>
+<p>(<a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0"><strong>1,594 Build Targets</strong></a> across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)</p>
 <p><em>What happens inside the Continuous Integration?</em></p>
-<p>Head over to the <a href="TODO"><strong>NuttX Repository</strong></a>…</p>
+<p>Head over to the <a href="https://github.com/apache/nuttx"><strong>NuttX Repository</strong></a>…</p>
 <ol>
 <li>
 <p>Click <a href="https://github.com/apache/nuttx/actions/workflows/build.yml"><strong>GitHub Actions &gt; Workflows &gt; Build</strong></a></p>
@@ -158,28 +158,28 @@ Config: at32f437-mini/rtc
 <p>Here’s the <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0"><strong>complete list of Build Targets</strong></a>…</p>
 <ul>
 <li>
-<p><strong>Arm32:</strong> TODO targets</p>
-<p><em>(arm-01 to arm-TODO)</em></p>
+<p><strong>Arm32:</strong> 932 targets</p>
+<p><em>(arm-01 to arm-13)</em></p>
 </li>
 <li>
-<p><strong>RISC-V:</strong> TODO targets</p>
+<p><strong>RISC-V:</strong> 212 targets</p>
 <p><em>(riscv-01, riscv-02)</em></p>
 </li>
 <li>
-<p><strong>Xtensa:</strong> TODO targets</p>
+<p><strong>Xtensa:</strong> 195 targets</p>
 <p><em>(xtensa-01, xtensa-02)</em></p>
 </li>
 <li>
-<p><strong>Simulator:</strong> TODO targets</p>
-<p><em>(sim-01, TODO)</em></p>
+<p><strong>Simulator:</strong> 86 targets</p>
+<p><em>(sim-01, sim-02)</em></p>
 </li>
 <li>
-<p><strong>Others:</strong> TODO targets</p>
-<p><em>(TODO)</em></p>
+<p><strong>Others:</strong> 72 targets</p>
+<p><em>(other)</em></p>
 </li>
 <li>
-<p><strong>macOS and Windows:</strong> TODO targets</p>
-<p><em>(TODO)</em></p>
+<p><strong>macOS and Windows:</strong> 97 targets</p>
+<p><em>(macos, sim-01, sim-02, msys2)</em></p>
 </li>
 </ul>
 <p><em>Is this a problem?</em></p>
@@ -215,10 +215,10 @@ Linux:
 <p><a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners"><strong>Follow these Instructions</strong></a> from GitHub</p>
 </li>
 <li>
-<p>Apply the <a href="TODO"><strong>Fixes for Linux Runners</strong></a></p>
+<p>Apply the <a href="https://lupyuen.github.io/articles/ci#appendix-fixes-for-ubuntu-x64"><strong>Fixes for Linux Runners</strong></a></p>
 </li>
 <li>
-<p>And apply the <a href="TODO"><strong>Fixes for macOS Runners</strong></a></p>
+<p>And apply the <a href="https://lupyuen.github.io/articles/ci#appendix-fixes-for-macos-arm64"><strong>Fixes for macOS Runners</strong></a></p>
 </li>
 </ul>
 <p>They will run like this…</p>
@@ -241,7 +241,7 @@ Current runner version: &#39;2.319.1&#39;
 Listening for Jobs
 Running job: Linux (arm-01)
 </code></pre></div>
-<p>Beware of <a href="TODO"><strong>Security Concerns</strong></a>!</p>
+<p>Beware of <a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#self-hosted-runner-security"><strong>Security Concerns</strong></a>!</p>
 <ul>
 <li>
 <p>Ensure that Self-Hosted Runners will run only <strong>Approved Scripts and Commands</strong></p>
@@ -257,29 +257,34 @@ Running job: Linux (arm-01)
 <p><em>Our Self-Hosted Runners: Do they work for NuttX Builds?</em></p>
 <p>According to <a href="https://github.com/lupyuen3/runner-nuttx/actions"><strong>the result here</strong></a>, yep <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343"><strong>they work yay</strong></a>!</p>
 <p>That’s <strong>2 hours</strong> on a 10-year-old MacBook Pro with Intel i7.</p>
-<p>(Compare that with <strong>GitHub Runners</strong>, which will take <a href="TODO"><strong>TODO mins</strong></a>)</p>
+<p>(Compare that with <strong>GitHub Runners</strong>, which will take <strong>30 mins</strong> per job)</p>
 <p><img src="https://github.com/user-attachments/assets/2e2861bc-6af0-48f4-b3a1-d0083cd23155" alt="linux-build" /></p>
 <p><em>Do we need a faster PC?</em></p>
 <p>Not necessarily. We see some <strong>Network Throttling</strong> for our Self-Hosted Runners (in spite of our super-fast internet)…</p>
 <ul>
 <li>
-<p><strong>Docker Hub</strong> will throttle our downloading of Docker Images.</p>
+<p><strong>Docker Hub</strong> will throttle our downloading of the NuttX Docker Image. (Which is required for building the NuttX Targets)</p>
 <p>If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.</p>
 </li>
 <li>
 <p><strong>Downloading the NuttX Source Code</strong> (700 MB) from GitHub takes 25 minutes.</p>
-<p>(Compare with TODO mins for GitHub Runners)</p>
+<p>(For GitHub Runners: Under 10 seconds!)</p>
 <p><img src="https://github.com/user-attachments/assets/585bc261-bc39-4be4-8515-85894254aace" alt="Screenshot 2024-08-29 at 2 09 11 PM" /></p>
 </li>
 </ul>
-<p>TODO: Fetch-Source then Download Source Artifact</p>
-<p>TODO: Docker Pull</p>
 <p><em>Can we guesstimate the time to run a Build Job?</em></p>
 <p>Just browse the <strong>GitHub Actions Log</strong> for the Build Job. See the <strong>Line Numbers</strong>?</p>
 <p>Every Build Job will have roughly <strong>1,000 Lines of Log</strong> (by sheer coincidence). We can use this to guess the Job Duration.</p>
 <p><em>What about macOS on Arm64?</em></p>
 <p>Sadly the <a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml"><strong>Linux Builds</strong></a> won’t run on macOS Arm64 because they need <strong>Docker on Linux x64</strong>…</p>
-<p>TODO: Docker Articles</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci"><strong>“Building the Docker Image for NuttX CI”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pr#appendix-downloading-the-docker-image-for-nuttx-ci"><strong>“Downloading the Docker Image for NuttX CI”</strong></a></p>
+</li>
+</ul>
 <p>We’ll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS…</p>
 <h1 id="fetch-source-on-macos-arm64"><a class="doc-anchor" href="#fetch-source-on-macos-arm64">§</a>4 Fetch Source on macOS Arm64</h1>
 <p><em>We haven’t invoked the Runners for macOS Arm64?</em></p>
@@ -300,8 +305,15 @@ jobs:
 <p>Then it zips up the Source Code and passes the Zipped Source Code to the NuttX Builds.</p>
 <p>(<strong>700 MB</strong> of zipped source code)</p>
 <p><em>Anything else we can run on macOS Arm64?</em></p>
-<p>TODO: Appendix Other macOS Builds</p>
-<p>TODO: Appendix Doc Build</p>
+<p>Unfortunately not, we need some more fixes…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/ci#appendix-nuttx-ci-for-macos"><strong>“NuttX CI for macOS”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/ci#appendix-documentation-build-for-nuttx"><strong>“Documentation Build for NuttX”</strong></a></p>
+</li>
+</ul>
 <h1 id="utm-emulator-for-macos-arm64"><a class="doc-anchor" href="#utm-emulator-for-macos-arm64">§</a>5 UTM Emulator for macOS Arm64</h1>
 <p><em>So NuttX Builds run better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 more useful?</em></p>
 <p>Let’s test <a href="https://mac.getutm.app/"><strong>UTM Emulator for macOS Arm64</strong></a>, to emulate Ubuntu x64. (Spoiler: It’s really slow!)</p>
@@ -364,27 +376,28 @@ Current runner version: &#39;2.319.1&#39;
 <p>Does <strong>UTM Emulator</strong> work for NuttX Builds? Yeah kinda…</p>
 <p>But how long to build? <strong>4 hours!</strong></p>
 <p>(Instead of <strong>33 mins</strong> for GitHub Runners)</p>
-<p>TODO: Alternatively: Running a Self-Hosted Runner inside a Docker Container (Rancher Desktop) on macOS Arm64</p>
-<p>TODO But Then: It becomes a Linux Arm64 Runner, not a Linux x64 Runner. Which won’t work with our current NuttX CI Docker Image, which is x64 only.</p>
-<p>TODO: Unless: We create a Linux Arm64 Docker Image for NuttX CI? Like for <a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci">Compiling RISC-V Platforms</a>?</p>
-<p>TODO: We’ll chat about this in <a href="https://discord.com/channels/716091708336504884/1280436444141453313"><strong>NuttX Discord Channel</strong></a>.</p>
+<p><em>What if we run a Self-Hosted Runner inside a Docker Container on macOS Arm64? (Rancher Desktop)</em></p>
+<p>But it becomes a <strong>Linux Arm64 Runner</strong>, not a Linux x64 Runner. Which won’t work with our current NuttX Docker Image, which is x64 only.</p>
+<p>Unless we create a Linux Arm64 Docker Image? Like for <a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci"><strong>Compiling RISC-V Platforms</strong></a>.</p>
+<p>We’ll chat about this in <a href="https://discord.com/channels/716091708336504884/1280436444141453313"><strong>NuttX Discord Channel</strong></a>.</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>According to ASF Policy: We should reduce to <strong>15 Concurrent Runners</strong>…</p>
 <ol>
 <li>
-<p>We could review the Build Targets and decide which targets should be excluded. Or reprioritised to run earlier / later.</p>
+<p>We could review the <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0"><strong>1,594 Build Targets</strong></a> and decide which targets should be excluded. Or reprioritised to run earlier / later.</p>
 </li>
 <li>
-<p>We could run all 1,594 builds only when the PR is Approved. So we can save on Build Times for the Submission / Resubmission of the PR.</p>
+<p>We could run <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0"><strong>All 1,594 Builds</strong></a> only when the PR is Approved. So we can save on Build Times for the Submission / Resubmission of the PR.</p>
 </li>
 <li>
-<p>We need a quicker way to “fail fast” and prevent other CI Jobs from running. Which will reduce the number of Runners.</p>
+<p>We need a quicker way to <strong>“Fail Fast”</strong> and prevent other Build Jobs from running. Which will reduce the number of Runners.</p>
 </li>
 <li>
-<p>What if we could start earlier the CI Jobs that are impacted by the Modified Code in the PR? So if I modify something for Ox64 BL808 SBC, it should start the CI Job for <code>ox64:nsh</code>. If it fails, then don’t bother with the rest of the Arm / RISC-V / Simulator jobs.</p>
+<p>What if we could <strong>Start Earlier the Build Jobs</strong> that are impacted by the Modified Code in the PR?</p>
+<p>So if I modify something for Ox64 BL808 SBC, it should start the CI Job for <strong><code>ox64:nsh</code></strong>. If it fails, then don’t bother with the rest of the Arm / RISC-V / Simulator jobs.</p>
 </li>
 </ol>
-<p>We’ll discuss this some more.</p>
+<p>Let’s discuss!</p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md"><strong>lupyuen.github.io/src/ci.md</strong></a></p>
 <h1 id="appendix-fixes-for-ubuntu-x64"><a class="doc-anchor" href="#appendix-fixes-for-ubuntu-x64">§</a>7 Appendix: Fixes for Ubuntu x64</h1>
@@ -424,7 +437,38 @@ ls -ld /Users/runner
 
 ## Maybe need pip?
 brew install python
-</code></pre></div><h1 id="appendix-documentation-build-for-nuttx"><a class="doc-anchor" href="#appendix-documentation-build-for-nuttx">§</a>9 Appendix: Documentation Build for NuttX</h1>
+</code></pre></div><h1 id="appendix-nuttx-ci-for-macos"><a class="doc-anchor" href="#appendix-nuttx-ci-for-macos">§</a>9 Appendix: NuttX CI for macOS</h1>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml"><code>Build macOS (macos / sim-01 / sim-02)</code></a> on macOS Arm64: <code>setup-python</code> will <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343630883">hang because it’s prompting for password</a>. So we comment out <code>setup-python</code>.</p>
+<div class="example-wrap"><pre class="language-text"><code>Run actions/setup-python@v5
+Installed versions
+Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:9) was not found in the local cache
+Version 3.8 is available for downloading
+Download from &quot;https://github.com/actions/python-versions/releases/download/3.8.10-887[9](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:10)978422/python-3.8.10-darwin-arm64.tar.gz&quot;
+Extract downloaded archive
+/usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
+Execute installation script
+Check if Python hostedtoolcache folder exist...
+Install Python binaries from prebuilt package
+</code></pre></div>
+<p>Then it fails while <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349061179">downloading the toolchain</a></p>
+<div class="example-wrap"><pre class="language-text"><code>+ wget --quiet https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
++ xz -d arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
+xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected end of input
+</code></pre></div>
+<p>Retry and it <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29359739769">fails at objcopy sigh</a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>+ rm -f /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
++ ln -s /usr/local/opt/binutils/bin/objcopy /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
++ command objcopy --version
++ objcopy --version
+/Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found
+</code></pre></div>
+<p>TODO: Do we change the toolchain from x64 to Arm64?</p>
+</li>
+</ul>
+<h1 id="appendix-documentation-build-for-nuttx"><a class="doc-anchor" href="#appendix-documentation-build-for-nuttx">§</a>10 Appendix: Documentation Build for NuttX</h1>
 <p>TODO</p>
 <p><em>Does it work for Documentation Build?</em></p>
 <ul>
@@ -473,37 +517,6 @@ Deleting the contents of &#39;/home/luppy/actions-runner/_work/runner-nuttx/runn
 Error: File was unable to be removed Error: EACCES: permission denied, rmdir &#39;/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx/buildartifacts/at32f437-mini&#39;
 </code></pre></div>
 <p>TODO: Check the rmdir directory</p>
-</li>
-</ul>
-<h1 id="appendix-nuttx-ci-for-macos"><a class="doc-anchor" href="#appendix-nuttx-ci-for-macos">§</a>10 Appendix: NuttX CI for macOS</h1>
-<p>TODO</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml"><code>Build macOS (macos / sim-01 / sim-02)</code></a> on macOS Arm64: <code>setup-python</code> will <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343630883">hang because it’s prompting for password</a>. So we comment out <code>setup-python</code>.</p>
-<div class="example-wrap"><pre class="language-text"><code>Run actions/setup-python@v5
-Installed versions
-Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:9) was not found in the local cache
-Version 3.8 is available for downloading
-Download from &quot;https://github.com/actions/python-versions/releases/download/3.8.10-887[9](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:10)978422/python-3.8.10-darwin-arm64.tar.gz&quot;
-Extract downloaded archive
-/usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
-Execute installation script
-Check if Python hostedtoolcache folder exist...
-Install Python binaries from prebuilt package
-</code></pre></div>
-<p>Then it fails while <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349061179">downloading the toolchain</a></p>
-<div class="example-wrap"><pre class="language-text"><code>+ wget --quiet https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
-+ xz -d arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
-xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected end of input
-</code></pre></div>
-<p>Retry and it <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29359739769">fails at objcopy sigh</a>:</p>
-<div class="example-wrap"><pre class="language-text"><code>+ rm -f /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
-+ ln -s /usr/local/opt/binutils/bin/objcopy /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
-+ command objcopy --version
-+ objcopy --version
-/Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found
-</code></pre></div>
-<p>TODO: Do we change the toolchain from x64 to Arm64?</p>
 </li>
 </ul>
 <h1 id="appendix-ubuntu-x64-runner-in-action"><a class="doc-anchor" href="#appendix-ubuntu-x64-runner-in-action">§</a>11 Appendix: Ubuntu x64 Runner In Action</h1>
