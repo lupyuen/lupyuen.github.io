@@ -12,10 +12,10 @@
     content="Continuous Integration for Apache NuttX RTOS" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="This article explains how Apache NuttX RTOS is running Continuous Integration with GitHub Actions. Every NuttX Pull Request will trigger 1,594 NuttX Builds!"
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="This article explains how Apache NuttX RTOS is running Continuous Integration with GitHub Actions. Every NuttX Pull Request will trigger 1,594 NuttX Builds!">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/nuttx-ci.jpg">
 <meta property="og:type" 
@@ -218,7 +218,7 @@ Linux:
 <p>Apply the <a href="https://lupyuen.github.io/articles/ci#appendix-fixes-for-ubuntu-x64"><strong>Fixes for Linux Runners</strong></a></p>
 </li>
 <li>
-<p>And apply the <a href="https://lupyuen.github.io/articles/ci#appendix-fixes-for-macos-arm64"><strong>Fixes for macOS Runners</strong></a></p>
+<p>And the <a href="https://lupyuen.github.io/articles/ci#appendix-fixes-for-macos-arm64"><strong>Fixes for macOS Runners</strong></a></p>
 </li>
 </ul>
 <p>They will run like this…</p>
@@ -256,7 +256,7 @@ Running job: Linux (arm-01)
 <h1 id="running-the-runners"><a class="doc-anchor" href="#running-the-runners">§</a>3 Running the Runners</h1>
 <p><em>Our Self-Hosted Runners: Do they work for NuttX Builds?</em></p>
 <p>According to <a href="https://github.com/lupyuen3/runner-nuttx/actions"><strong>the result here</strong></a>, yep <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343"><strong>they work yay</strong></a>!</p>
-<p>That’s <strong>2 hours</strong> on a 10-year-old MacBook Pro with Intel i7.</p>
+<p>That’s <strong>2 hours</strong> on a 10-year-old MacBook Pro with Intel i7 on Ubuntu.</p>
 <p>(Compare that with <strong>GitHub Runners</strong>, which will take <strong>30 mins</strong> per job)</p>
 <p><img src="https://github.com/user-attachments/assets/2e2861bc-6af0-48f4-b3a1-d0083cd23155" alt="linux-build" /></p>
 <p><em>Do we need a faster PC?</em></p>
@@ -301,6 +301,7 @@ jobs:
     runs-on: [self-hosted, macOS, ARM64]
 </code></pre></div>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486"><strong>According to our log</strong></a>, Fetch Source runs OK on macOS Arm64.</p>
+<p>(Completes in about a minute)</p>
 <p><em>How is Fetch Source used?</em></p>
 <p><strong>Fetch Source</strong> happens before any NuttX Build. It checks out the Source Code from the NuttX Kernel Repo and NuttX Apps Repo.</p>
 <p>Then it zips up the Source Code and passes the Zipped Source Code to the NuttX Builds.</p>
