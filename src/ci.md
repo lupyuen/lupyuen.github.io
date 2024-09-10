@@ -122,7 +122,7 @@ TODO: Pic of NuttX Stats
 
 # Self-Hosted Runners
 
-We experiment with __Self-Hosted Runners__ to understand what's happens inside NuttX Continous Integration. We run them on two computers...
+We experiment with __Self-Hosted Runners__ to understand what happens inside NuttX Continous Integration. We run them on two computers...
 
 - __Older PC__ on Ubuntu x64 (Intel i7, 3.7 GHz)
 
@@ -150,14 +150,15 @@ Install __Self-Hosted Runners__ for Linux x64 and macOS Arm64...
 
 - [__Follow these Instructions__](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners) from GitHub
 
-- [__Apply the fixes for Linux Runners__](TODO)
+- Apply the [__Fixes for Linux Runners__](TODO)
 
-- [__Apply the fixes for macOS Runners__](TODO)
+- And apply the [__Fixes for macOS Runners__](TODO)
 
 They will run like this...
 
 ```bash
 ## Configure our Self-Hosted Runner for Linux x64
+$ cd actions-runner
 $ ./config.sh --url YOUR_REPO --token YOUR_TOKEN
 Enter the name of the runner group: <Press Enter>
 Enter the name of runner: <Press Enter>
@@ -282,7 +283,7 @@ Remember to __Force Multicore__ and bump up the __JIT Cache__...
 
 __Ubuntu Disk Space__ in the UTM Virtual Machine needs to be big enough for NuttX Docker Image...
 
-```text
+```bash
 $ neofetch
 OS:     Ubuntu 24.04.1 LTS x86_64
 Host:   KVM/QEMU (Standard PC (Q35 + ICH9, 2009) pc-q35-7.2)
@@ -306,10 +307,10 @@ $ ./run.sh
 
 Connected to GitHub
 Current runner version: '2.319.1'
-2024-08-30 02:33:17Z: Listening for Jobs
-2024-08-30 02:33:23Z: Running job: Linux (arm-04)
-2024-08-30 06:47:38Z: Job Linux (arm-04) completed with result: Succeeded
-2024-08-30 06:47:43Z: Running job: Linux (arm-01)
+02:33:17Z: Listening for Jobs
+02:33:23Z: Running job: Linux (arm-04)
+06:47:38Z: Job Linux (arm-04) completed with result: Succeeded
+06:47:43Z: Running job: Linux (arm-01)
 ```
 
 During `Run Builds`: CPU hits 100%
