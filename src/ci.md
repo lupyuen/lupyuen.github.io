@@ -18,13 +18,9 @@ Head over to the [__NuttX Repository__](TODO)...
 
 1.  Click [__GitHub Actions > Workflows > Build__](https://github.com/apache/nuttx/actions/workflows/build.yml)
 
-    TODO: Pic above
-
 1.  Click [__any one of the jobs__](https://github.com/apache/nuttx/actions/runs/10552464655)
 
 1.  Click [__Linux (arm-01) > Run Builds__](https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816)
-
-    TODO: Pic
 
 We'll see this __NuttX Build for Arm32__...
 
@@ -56,11 +52,11 @@ _What's in a NuttX Build?_
 
 Each __NuttX Build__ will be a...
 
-- Regular [__NuttX Make__](TODO) for a NuttX Target
+- Regular __NuttX Make__ for a NuttX Target
 
-- Or a [__NuttX CMake__](TODO) for Newer Targets
+- Or a __NuttX CMake__ for Newer Targets
 
-- Or a [__Python Test__](TODO) for POSIX Validation
+- Or a __Python Test__ for POSIX Validation
 
 _What about other NuttX Targets? Arm64, RISC-V, Xtensa, ..._
 
@@ -195,7 +191,7 @@ That's __2 hours__ on a 10-year-old MacBook Pro with Intel i7.
 
 (Compare that with __GitHub Runners__, which will take [__TODO mins__](TODO))
 
-TODO: Pic of Ubuntu Runner
+![linux-build](https://github.com/user-attachments/assets/2e2861bc-6af0-48f4-b3a1-d0083cd23155)
 
 _Do we need a faster PC?_
 
