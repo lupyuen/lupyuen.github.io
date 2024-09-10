@@ -6,19 +6,11 @@
 
 TODO
 
-Why are we doing this?
-
-- In case we need to reduce [GitHub Hosting Costs](https://docs.google.com/spreadsheets/d/1gY0VrSJvouXwDIclspQCFoBcoHhNCbGicNoVJRhJ-h4/edit?gid=0#gid=0). Or if we need to run the NuttX CI privately.
+_Why are we doing this?_
 
 - It's a great way to understand the Internals of NuttX CI!
 
-- Why is NuttX CI so heavy? That's because for every PR, it compiles every single NuttX Build Config: Arm, RISC-V, Simulator. (Hosting charges won't be cheap)
-
-TODO: We might need a quicker way to "fail fast" and prevent other CI Jobs from running? Which will reduce the number of Runners?
-
-TODO: What if we could start earlier the CI Jobs that are impacted by the Modified Code in the PR? So if I modify something for Ox64 BL808 SBC, it should start the CI Job for `ox64:nsh`. If it fails, then don't bother with the rest of the Arm / RISC-V / Simulator jobs.
-
-TODO: Suppose we need to throttle our GitHub Runners from 36 Runners down to 25 Runners (and cut costs). What would be the impact on NuttX CI Duration? Are there any tools for modeling the queueing duration? 
+- In case we need to reduce [__GitHub Hosting Costs__](https://docs.google.com/spreadsheets/d/1gY0VrSJvouXwDIclspQCFoBcoHhNCbGicNoVJRhJ-h4/edit?gid=0#gid=0). Or if we need to run the NuttX CI privately.
 
 TODO: Pic of GitHub Actions > Workflows > Build
 
@@ -388,6 +380,12 @@ TODO: We'll chat about this in [__NuttX Discord Channel__](https://discord.com/c
 # What's Next
 
 TODO
+
+TODO: We might need a quicker way to "fail fast" and prevent other CI Jobs from running? Which will reduce the number of Runners?
+
+TODO: What if we could start earlier the CI Jobs that are impacted by the Modified Code in the PR? So if I modify something for Ox64 BL808 SBC, it should start the CI Job for `ox64:nsh`. If it fails, then don't bother with the rest of the Arm / RISC-V / Simulator jobs.
+
+TODO: Suppose we need to throttle our GitHub Runners from 36 Runners down to 25 Runners (and cut costs). What would be the impact on NuttX CI Duration? Are there any tools for modeling the queueing duration? 
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
