@@ -550,7 +550,7 @@ xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected e
 <p><img src="https://github.com/user-attachments/assets/5ff0d94e-4a04-4cf4-8f0a-8e0ee9d1cd59" alt="Screenshot 2024-08-29 at 10 08 07 PM" /></p>
 <p><img src="https://github.com/user-attachments/assets/3a162236-9c14-4615-b9c7-c3a90ef7293c" alt="Screenshot 2024-08-29 at 10 08 25 PM" /></p>
 <p>Ubuntu Disk Space in UTM VM needs to be big enough for NuttX Docker Image:</p>
-<div class="example-wrap"><pre class="language-text"><code>user@ubuntu-emu-arm64:~$ neofetch
+<div class="example-wrap"><pre class="language-text"><code>$ neofetch
             .-/+oossssoo+/-.               user@ubuntu-emu-arm64
         `:+ssssssssssssssssss+:`           ---------------------
       -+ssssssssssssssssssyyssss+-         OS: Ubuntu 24.04.1 LTS x86_64
@@ -572,7 +572,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso   CPU: Intel i7 9xx (Nehalem i7, IBRS u
         `:+ssssssssssssssssss+:`
             .-/+oossssoo+/-.
 
-user@ubuntu-emu-arm64:~$ df -H
+$ df -H
 Filesystem      Size  Used Avail Use% Mounted on
 tmpfs           410M  1.7M  409M   1% /run
 /dev/sda2        67G   31G   33G  49% /
@@ -592,10 +592,9 @@ tmpfs           410M  115k  410M   1% /run/user/1000
 <p><img src="https://github.com/user-attachments/assets/a9dab4fd-a59f-4348-a3f7-397973797288" alt="Screenshot 2024-08-30 at 4 14 20 PM" /></p>
 <p><img src="https://github.com/user-attachments/assets/0ea9f33e-1e6f-412a-8f56-6f40dee7f699" alt="Screenshot 2024-08-29 at 10 43 39 PM" /></p>
 <p>Here’s how it runs:</p>
-<div class="example-wrap"><pre class="language-text"><code>user@ubuntu-emu-arm64:~$ cd actions-runner/
-user@ubuntu-emu-arm64:~/actions-runner$ sudo rm -rf _work/runner-nuttx
-[sudo] password for user: 
-user@ubuntu-emu-arm64:~/actions-runner$ df -H
+<div class="example-wrap"><pre class="language-text"><code>$ cd actions-runner/
+$ sudo rm -rf _work/runner-nuttx
+$ df -H
 Filesystem      Size  Used Avail Use% Mounted on
 tmpfs           410M  1.7M  408M   1% /run
 /dev/sda2        67G   28G   35G  45% /
@@ -604,9 +603,9 @@ tmpfs           5.3M  8.2k  5.3M   1% /run/lock
 efivarfs        263k  130k  128k  51% /sys/firmware/efi/efivars
 /dev/sda1       1.2G  6.5M  1.2G   1% /boot/efi
 tmpfs           410M  119k  410M   1% /run/user/1000
-user@ubuntu-emu-arm64:~/actions-runner$ ./run.sh 
 
-\u221a Connected to GitHub
+$ ./run.sh 
+Connected to GitHub
 Current runner version: &#39;2.319.1&#39;
 2024-08-30 02:33:17Z: Listening for Jobs
 2024-08-30 02:33:23Z: Running job: Linux (arm-04)
