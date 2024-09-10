@@ -351,9 +351,9 @@ During `Run Builds`: CPU hits 100%
 
 __Why emulate 32 CPUs?__ That's because we want to max out the macOS Arm64 CPU Utilisation. Our chance to watch Mac Mini run smokin' hot!
 
-![Screenshot 2024-08-30 at 4 14 05 PM](https://github.com/user-attachments/assets/bfd51e51-1bee-49c2-88a3-01698d51d8a4)
-
 ![Screenshot 2024-08-30 at 4 14 20 PM](https://github.com/user-attachments/assets/a9dab4fd-a59f-4348-a3f7-397973797288)
+
+![Screenshot 2024-08-30 at 4 14 05 PM](https://github.com/user-attachments/assets/bfd51e51-1bee-49c2-88a3-01698d51d8a4)
 
 ![Screenshot 2024-08-29 at 10 43 39 PM](https://github.com/user-attachments/assets/0ea9f33e-1e6f-412a-8f56-6f40dee7f699)
 
