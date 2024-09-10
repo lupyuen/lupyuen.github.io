@@ -10,17 +10,17 @@ Suppose we [__Submit a Pull Request__](https://lupyuen.github.io/articles/pr) fo
 
 That's why our Pull Request will trigger the __Continuous Integration Workflow__, to recompile NuttX for __All Hardware Platforms__.
 
-([__1,594 Build Targets__](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0) across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)
+That's [__1,594 Build Targets__](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0) across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!
 
 _What happens inside the Continuous Integration?_
 
 Head over to the [__NuttX Repository__](https://github.com/apache/nuttx)...
 
-1.  Click [__GitHub Actions > Workflows > Build__](https://github.com/apache/nuttx/actions/workflows/build.yml)
+- Click [__GitHub Actions > Workflows > Build__](https://github.com/apache/nuttx/actions/workflows/build.yml)
 
-1.  Click [__any one of the jobs__](https://github.com/apache/nuttx/actions/runs/10552464655)
+- Click [__any one of the jobs__](https://github.com/apache/nuttx/actions/runs/10552464655)
 
-1.  Click [__Linux (arm-01) > Run Builds__](https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816)
+- Click [__Linux (arm-01) > Run Builds__](https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816)
 
 We'll see this __NuttX Build for Arm32__...
 
@@ -114,7 +114,7 @@ Every single Pull Request will execute 24 Build Jobs in parallel.
 
 Which needs __24 GitHub Runners__ per Pull Request. And [__they ain't cheap__](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners)!
 
-TODO: Pic of NuttX Stats
+![GitHub Runners for Apache NuttX RTOS](https://lupyuen.github.io/images/nuttx-ci2.png)
 
 # Self-Hosted Runners
 
@@ -222,6 +222,8 @@ Sadly the [__Linux Builds__](https://github.com/lupyuen3/runner-nuttx/actions/wo
 - [__"Downloading the Docker Image for NuttX CI"__](https://lupyuen.github.io/articles/pr#appendix-downloading-the-docker-image-for-nuttx-ci)
 
 We'll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS...
+
+![Continuous Integration for Apache NuttX RTOS](https://lupyuen.github.io/images/nuttx-ci.jpg)
 
 # Fetch Source on macOS Arm64
 
@@ -348,6 +350,8 @@ But it becomes a __Linux Arm64 Runner__, not a Linux x64 Runner. Which won't wor
 Unless we create a Linux Arm64 Docker Image? Like for [__Compiling RISC-V Platforms__](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci).
 
 We'll chat about this in [__NuttX Discord Channel__](https://discord.com/channels/716091708336504884/1280436444141453313).
+
+![Continuous Integration for Apache NuttX RTOS](https://lupyuen.github.io/images/nuttx-ci.jpg)
 
 # What's Next
 
