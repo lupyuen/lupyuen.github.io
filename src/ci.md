@@ -269,7 +269,7 @@ _So NuttX Builds run better with a huge x64 Ubuntu PC. Can we make macOS on Arm6
 
 Let's test [__UTM Emulator for macOS Arm64__](https://mac.getutm.app/), to emulate Ubuntu x64. (Spoiler: It's really slow!)
 
-On a super duper Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with __32 CPUs and 4 GB RAM__ (because we don't need much RAM)
+On a super-duper Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with __32 CPUs and 4 GB RAM__ (because we don't need much RAM)
 
 ![Screenshot 2024-08-29 at 10 08 07 PM](https://github.com/user-attachments/assets/5ff0d94e-4a04-4cf4-8f0a-8e0ee9d1cd59)
 
@@ -351,7 +351,7 @@ We'll chat about this in [__NuttX Discord Channel__](https://discord.com/channel
 
 # What's Next
 
-According to ASF Policy: We should reduce to __15 Concurrent Runners__...
+According to [__ASF Policy__](https://infra.apache.org/github-actions-policy.html): We should reduce to __15 Concurrent GitHub Runners__. How?
 
 1.  We could review the [__1,594 Build Targets__](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0) and decide which targets should be excluded. Or reprioritised to run earlier / later.
 
@@ -371,7 +371,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Fixes for Ubuntu x64
 
-TODO
+To run the Self-Hosted Runners on Ubuntu x64, we need these fixes...
 
 ```bash
 ## TODO: Install Docker Engine: https://docs.docker.com/engine/install/ubuntu/
@@ -394,74 +394,76 @@ cd $HOME/actions-runner
 ## Restart the Ubuntu Machine, because the tasks are still running in background!
 ```
 
-TODO: Docker Engine [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29344966455):
+_Why Docker Engine? Not Podman Docker?_
 
-```text
-permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post "http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&tag=latest": dial unix /var/run/docker.sock: connect: permission denied
-  ```
-
-We apply [this Docker Fix](https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue). 
-
-TODO: Podman Docker on Linux x64 [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677). Might be a [problem with Podman](https://github.com/containers/podman/discussions/14238).
+Podman Docker on Linux x64 [fails with this error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677). Might be a [problem with Podman](https://github.com/containers/podman/discussions/14238)...
 
 ```text
 Writing manifest to image destination
 Error: statfs /var/run/docker.sock: permission denied
 ```
 
+Docker Engine [fails with a similar error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29344966455)...
+
+```text
+permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post "http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&tag=latest": dial unix /var/run/docker.sock: connect: permission denied
+```
+
+That's why we apply [this Docker Fix](https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue). 
+
 # Appendix: Fixes for macOS Arm64
 
-TODO
+To run the Self-Hosted Runners on macOS Arm64, we need these fixes...
 
 ```bash
 sudo mkdir /Users/runner
 sudo chown $USER /Users/runner
 sudo chgrp staff /Users/runner
 ls -ld /Users/runner
-
-## Maybe need pip?
-brew install python
 ```
 
 # Appendix: NuttX CI for macOS
 
-TODO
+We have challenges running NuttX CI on macOS Arm64...
 
-- [`Build macOS (macos / sim-01 / sim-02)`](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) on macOS Arm64: `setup-python` will [hang because it's prompting for password](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343630883). So we comment out `setup-python`.
+[`Build macOS (macos / sim-01 / sim-02)`](https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml) on macOS Arm64: `setup-python` will [hang because it's prompting for password](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343630883). So we comment out `setup-python`.
 
-  ```text
-  Run actions/setup-python@v5
-  Installed versions
-  Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:9) was not found in the local cache
-  Version 3.8 is available for downloading
-  Download from "https://github.com/actions/python-versions/releases/download/3.8.10-887[9](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:10)978422/python-3.8.10-darwin-arm64.tar.gz"
-  Extract downloaded archive
-  /usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
-  Execute installation script
-  Check if Python hostedtoolcache folder exist...
-  Install Python binaries from prebuilt package
-  ```
-  Then it fails while [downloading the toolchain](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349061179)
-  ```text
-  + wget --quiet https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
-  + xz -d arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
-  xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected end of input
-  ```
-  Retry and it [fails at objcopy sigh](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29359739769):
-  ```text
-  + rm -f /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
-  + ln -s /usr/local/opt/binutils/bin/objcopy /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
-  + command objcopy --version
-  + objcopy --version
-  /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found
-  ```
-  TODO: Do we change the toolchain from x64 to Arm64?
+```text
+Run actions/setup-python@v5
+Installed versions
+Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:9) was not found in the local cache
+Version 3.8 is available for downloading
+Download from "https://github.com/actions/python-versions/releases/download/3.8.10-887[9](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:10)978422/python-3.8.10-darwin-arm64.tar.gz"
+Extract downloaded archive
+/usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
+Execute installation script
+Check if Python hostedtoolcache folder exist...
+Install Python binaries from prebuilt package
+```
+
+Then it fails while [downloading the toolchain](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349061179):
+
+```text
++ wget --quiet https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
++ xz -d arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
+xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected end of input
+```
+
+Retry and it [fails at objcopy sigh](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29359739769):
+
+```text
++ rm -f /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
++ ln -s /usr/local/opt/binutils/bin/objcopy /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
++ command objcopy --version
++ objcopy --version
+/Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found
+```
+
+__TODO:__ Do we change the toolchain from x64 to Arm64?
 
 # Appendix: Documentation Build for NuttX
 
-TODO
-
-_Does it work for Documentation Build?_
+_Our Self-Hosted Runners: Do they work for Documentation Build?_
 
 - [`Documentation`](https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml) on macOS Arm64: [Hangs at setup-python](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677) because it prompts for password:
   ```text
@@ -499,7 +501,7 @@ _Does it work for Documentation Build?_
   ```text
   pip3: command not found
   ```
-  TODO: Switch to pipenv
+  __TODO:__ Switch to pipenv
 
 - [`Documentation`](https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml) on Linux x64: [Fails with rmdir error](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125174/job/29348045745)
   ```text
@@ -510,31 +512,35 @@ _Does it work for Documentation Build?_
   Deleting the contents of '/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx'
   Error: File was unable to be removed Error: EACCES: permission denied, rmdir '/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx/buildartifacts/at32f437-mini'
   ```
-  TODO: Check the rmdir directory
+  __TODO:__ Check the rmdir directory
 
 # Appendix: Ubuntu x64 Runner In Action
 
-TODO
+Let's watch the Ubuntu x64 Runner in action...
+
+- On an Intel PC
+
+- On macOS Arm64 with UTM Emulator
 
 ## Intel PC with Ubuntu x64
 
-TODO
+Our 10-year-old MacBook Pro (Intel i7) hits 100% when running the Linux Build for NuttX CI. But it works!
 
-Our 10-year-old MacBook Pro (Intel i7) hits 100% when running the Linux Build for NuttX CI: [Build for arm-02](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343)
+- [__Build for arm-02__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343)
 
 ![linux-build](https://github.com/user-attachments/assets/2e2861bc-6af0-48f4-b3a1-d0083cd23155)
 
 ## macOS Arm64 with UTM Emulator
 
-TODO
-
-On a powerful Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with 32 CPUs and 4 GB RAM (we don't need much RAM)
+On a super-duper Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with __32 CPUs and 4 GB RAM__ (because we don't need much RAM)
 
 ![Screenshot 2024-08-29 at 10 08 07 PM](https://github.com/user-attachments/assets/5ff0d94e-4a04-4cf4-8f0a-8e0ee9d1cd59)
 
+Remember to __Force Multicore__ and bump up the __JIT Cache__...
+
 ![Screenshot 2024-08-29 at 10 08 25 PM](https://github.com/user-attachments/assets/3a162236-9c14-4615-b9c7-c3a90ef7293c)
 
-Ubuntu Disk Space in UTM VM needs to be big enough for NuttX Docker Image:
+__Ubuntu Disk Space__ in the UTM Virtual Machine needs to be big enough for NuttX Docker Image...
 
 ```text
 $ neofetch
@@ -580,6 +586,8 @@ During `Run Builds`: CPU hits 100%
 
 Note: Don't leave System Monitor running, it consumes quite a bit of CPU!
 
+If the CI Job doesn't complete in __6 hours__: GitHub will cancel it! So we should give it as much CPU as possible.
+
 Why emulate 32 CPUs? That's because we want to max out the macOS Arm64 CPU Utilisation. Here's our chance to watch Mac Mini run smokin' hot!
 
 ![Screenshot 2024-08-30 at 4 14 05 PM](https://github.com/user-attachments/assets/bfd51e51-1bee-49c2-88a3-01698d51d8a4)
@@ -612,7 +620,7 @@ Current runner version: '2.319.1'
 2024-08-30 06:47:43Z: Running job: Linux (arm-01)
 ```
 
-Runner Options:
+Here are the Runner Options:
 
 ```text
 $ ./run.sh --help
