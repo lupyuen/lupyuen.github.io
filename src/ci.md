@@ -22,37 +22,38 @@ Suppose we [__Submit a Pull Request__](https://lupyuen.github.io/articles/pr) fo
 
 That's why our Pull Request will trigger the __Continuous Integration Workflow__, to recompile NuttX for __All Hardware Platforms__.
 
-(__1,594 Builds__ across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)
+([__1,594 Builds__](TODO) across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)
 
 _What happens inside the Continuous Integration?_
 
-Head over to the [__NuttX Repository__](TODO) and click [__GitHub Actions > Workflows > Build__](https://github.com/apache/nuttx/actions/workflows/build.yml)
+Head over to the [__NuttX Repository__](TODO)...
 
-TODO: Pic above
+1.  Click [__GitHub Actions > Workflows > Build__](https://github.com/apache/nuttx/actions/workflows/build.yml)
 
-Click [__one of the jobs__](https://github.com/apache/nuttx/actions/runs/10552464655)
+    TODO: Pic above
 
-Click [__Linux (arm-01) > Run Builds__](https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816)
+1.  Click [__one of the jobs__](https://github.com/apache/nuttx/actions/runs/10552464655)
 
-TODO: Pic
+1.  Click [__Linux (arm-01) > Run Builds__](https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816)
+
+    TODO: Pic
 
 We'll see this __NuttX Build for Arm32__...
 
 ```text
- ====================================================================================
+====================================================================================
 Configuration/Tool: pcduino-a10/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 2024-08-26 02:30:55
 ------------------------------------------------------------------------------------
-  Cleaning...
-  Configuring...
-  Disabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
-  Enabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
-  Building NuttX...
+Cleaning...
+Configuring...
+Enabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
+Building NuttX...
 arm-none-eabi-ld: warning: /github/workspace/sources/nuttx/nuttx has a LOAD segment with RWX permissions
-  Normalize pcduino-a10/nsh
+Normalize pcduino-a10/nsh
 ```
 
-Followed by many more Arm32 builds...
+Followed by __Many More Arm32 Builds__...
 
 ```text
 Config: beaglebone-black/nsh
@@ -63,13 +64,15 @@ Config: at32f437-mini/rtc
 ...
 ```
 
+_What's in a NuttX Build?_
+
 Each __NuttX Build__ will be a...
 
-- Regular [__NuttX Make__](TODO)
+- Regular [__NuttX Make__](TODO) for a NuttX Target
 
-- Or a [__NuttX CMake__](TODO)
+- Or a [__NuttX CMake__](TODO) for Newer Targets
 
-- Or a [__Python Test__](TODO)
+- Or a [__Python Test__](TODO) for POSIX Validation
 
 _What about other NuttX Targets? Arm64, RISC-V, Xtensa, ..._
 
