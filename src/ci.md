@@ -1,4 +1,4 @@
-# Self-Hosted Runners for Continuous Integration (Apache NuttX RTOS)
+# Continuous Integration for Apache NuttX RTOS
 
 📝 _19 Sep 2024_
 
