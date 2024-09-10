@@ -1,6 +1,6 @@
 # Continuous Integration for Apache NuttX RTOS
 
-📝 _19 Sep 2024_
+📝 _11 Sep 2024_
 
 ![Continuous Integration for Apache NuttX RTOS](https://lupyuen.github.io/images/nuttx-ci.jpg)
 
@@ -170,7 +170,7 @@ Enter name of work folder: <Press Enter>
 $ ./run.sh
 Current runner version: '2.319.1'
 Listening for Jobs
-Running job: TODO
+Running job: Linux (arm-01)
 ```
 
 Beware of [__Security Concerns__](TODO)!
@@ -229,7 +229,7 @@ We'll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on 
 
 _We haven't invoked the Runners for macOS Arm64?_
 
-[__`Fetch-Source`__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486) works OK on macOS Arm64. Let's try it now.
+[__Fetch Source__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486) works OK on macOS Arm64. Let's try it now.
 
 Head over to our NuttX Repo and update the __GitHub Actions Workflow__: [.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
 
@@ -247,15 +247,15 @@ Change __`runs-on`__ to...
     runs-on: [self-hosted, macOS, ARM64]
 ```
 
-TODO: [__`Fetch-Source`__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486) works OK!
-
-TODO: Pic of fetch source
+[__According to our log__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486), Fetch Source runs OK on macOS Arm64.
 
 _How is Fetch Source used?_
 
 __Fetch Source__ happens before any NuttX Build. It checks out the Source Code from the NuttX Kernel and NuttX Apps Repos.
 
 Then it zips up the Source Code and passes the Zipped Source Code to the NuttX Builds.
+
+(__700 MB__ of zipped source code)
 
 _Anything else we can run on macOS Arm64?_
 
@@ -309,7 +309,7 @@ Current runner version: '2.319.1'
 06:47:43Z: Running job: Linux (arm-01)
 ```
 
-During `Run Builds`: CPU hits 100%
+During __Run Builds__: CPU hits 100%...
 
 ![Screenshot 2024-08-29 at 4 56 06 PM](https://github.com/user-attachments/assets/60d4d3eb-d075-49c9-b3ac-bcfa74150668)
 
@@ -323,7 +323,7 @@ __Why emulate 32 CPUs?__ That's because we want to max out the macOS Arm64 CPU U
 
 ![Screenshot 2024-08-29 at 10 43 39 PM](https://github.com/user-attachments/assets/0ea9f33e-1e6f-412a-8f56-6f40dee7f699)
 
-Here's macOS Arm64 __emulating Ubuntu x64__ (24.04.1 LTS) with 4GB RAM...
+Results of macOS Arm64 __emulating Ubuntu x64__ (24.04.1 LTS) with 4GB RAM...
 
 - [__Build for arm-01__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29503152279)
 
@@ -335,13 +335,11 @@ Here's macOS Arm64 __emulating Ubuntu x64__ (24.04.1 LTS) with 4GB RAM...
 
 - [__Build for arm-04__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29456380032)
 
-Does UTM Emulator work for NuttX Docker Builds? Yeah kinda...
+Does __UTM Emulator__ work for NuttX Builds? Yeah kinda...
 
 But how long to build? __4 hours!__
 
 (Instead of __33 mins__ for GitHub Runners)
-
-TODO: Timeout
 
 TODO: Alternatively: Running a Self-Hosted Runner inside a Docker Container (Rancher Desktop) on macOS Arm64
 
@@ -353,33 +351,17 @@ TODO: We'll chat about this in [__NuttX Discord Channel__](https://discord.com/c
 
 # What's Next
 
-TODO
+According to ASF Policy: We should reduce to __15 Concurrent Runners__...
 
-TODO: Reduce to 15 concurrent
+1.  We could review the Build Targets and decide which targets should be excluded. Or reprioritised to run earlier / later.
 
-(Perhaps we could review the Build Targets above and decide which targets should be excluded? Or reprioritised to run earlier / later?)
+1.  We could run all 1,594 builds only when the PR is Approved. So we can save on Build Times for the Submission / Resubmission of the PR.
 
-(Or we could run all 1,594 builds only when the PR is Approved? So we can save on Build Times for the Submission / Resubmission of the PR?)
+1.  We need a quicker way to "fail fast" and prevent other CI Jobs from running. Which will reduce the number of Runners.
 
-_Isn't this a little excessive?_
+1. What if we could start earlier the CI Jobs that are impacted by the Modified Code in the PR? So if I modify something for Ox64 BL808 SBC, it should start the CI Job for `ox64:nsh`. If it fails, then don't bother with the rest of the Arm / RISC-V / Simulator jobs.
 
-TODO: But we don't know which platforms are impacted!
-
-TODO: Switch to Self-Hosted Runners
-
-TODO: We might need a quicker way to "fail fast" and prevent other CI Jobs from running? Which will reduce the number of Runners?
-
-TODO: What if we could start earlier the CI Jobs that are impacted by the Modified Code in the PR? So if I modify something for Ox64 BL808 SBC, it should start the CI Job for `ox64:nsh`. If it fails, then don't bother with the rest of the Arm / RISC-V / Simulator jobs.
-
-TODO: Suppose we need to throttle our GitHub Runners from 36 Runners down to 25 Runners (and cut costs). What would be the impact on NuttX CI Duration? Are there any tools for modeling the queueing duration? 
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+We'll discuss this some more.
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
