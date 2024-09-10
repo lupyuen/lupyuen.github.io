@@ -189,7 +189,7 @@ Config: at32f437-mini/rtc
 <p>Which needs <strong>24 GitHub Runners</strong> per Pull Request. And <a href="https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners"><strong>they ain’t cheap</strong></a>!</p>
 <p>TODO: Pic of NuttX Stats</p>
 <h1 id="self-hosted-runners"><a class="doc-anchor" href="#self-hosted-runners">§</a>2 Self-Hosted Runners</h1>
-<p>We experiment with <strong>Self-Hosted Runners</strong> to understand what’s happens inside NuttX Continous Integration. We run them on two computers…</p>
+<p>We experiment with <strong>Self-Hosted Runners</strong> to understand what happens inside NuttX Continous Integration. We run them on two computers…</p>
 <ul>
 <li>
 <p><strong>Older PC</strong> on Ubuntu x64 (Intel i7, 3.7 GHz)</p>
@@ -217,14 +217,15 @@ Linux:
 <p><a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners"><strong>Follow these Instructions</strong></a> from GitHub</p>
 </li>
 <li>
-<p><a href="TODO"><strong>Apply the fixes for Linux Runners</strong></a></p>
+<p>Apply the <a href="TODO"><strong>Fixes for Linux Runners</strong></a></p>
 </li>
 <li>
-<p><a href="TODO"><strong>Apply the fixes for macOS Runners</strong></a></p>
+<p>And apply the <a href="TODO"><strong>Fixes for macOS Runners</strong></a></p>
 </li>
 </ul>
 <p>They will run like this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Configure our Self-Hosted Runner for Linux x64
+$ cd actions-runner
 $ ./config.sh --url YOUR_REPO --token YOUR_TOKEN
 Enter the name of the runner group: &lt;Press Enter&gt;
 Enter the name of runner: &lt;Press Enter&gt;
@@ -311,7 +312,7 @@ jobs:
 <p>Remember to <strong>Force Multicore</strong> and bump up the <strong>JIT Cache</strong>…</p>
 <p><img src="https://github.com/user-attachments/assets/3a162236-9c14-4615-b9c7-c3a90ef7293c" alt="Screenshot 2024-08-29 at 10 08 25 PM" /></p>
 <p><strong>Ubuntu Disk Space</strong> in the UTM Virtual Machine needs to be big enough for NuttX Docker Image…</p>
-<div class="example-wrap"><pre class="language-text"><code>$ neofetch
+<div class="example-wrap"><pre class="language-bash"><code>$ neofetch
 OS:     Ubuntu 24.04.1 LTS x86_64
 Host:   KVM/QEMU (Standard PC (Q35 + ICH9, 2009) pc-q35-7.2)
 Kernel: 6.8.0-41-generic
@@ -334,10 +335,10 @@ $ ./run.sh
 
 Connected to GitHub
 Current runner version: &#39;2.319.1&#39;
-2024-08-30 02:33:17Z: Listening for Jobs
-2024-08-30 02:33:23Z: Running job: Linux (arm-04)
-2024-08-30 06:47:38Z: Job Linux (arm-04) completed with result: Succeeded
-2024-08-30 06:47:43Z: Running job: Linux (arm-01)
+02:33:17Z: Listening for Jobs
+02:33:23Z: Running job: Linux (arm-04)
+06:47:38Z: Job Linux (arm-04) completed with result: Succeeded
+06:47:43Z: Running job: Linux (arm-01)
 </code></pre></div>
 <p>During <code>Run Builds</code>: CPU hits 100%</p>
 <p><img src="https://github.com/user-attachments/assets/60d4d3eb-d075-49c9-b3ac-bcfa74150668" alt="Screenshot 2024-08-29 at 4 56 06 PM" /></p>
