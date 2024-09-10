@@ -20,7 +20,7 @@ Head over to the [__NuttX Repository__](TODO)...
 
     TODO: Pic above
 
-1.  Click [__one of the jobs__](https://github.com/apache/nuttx/actions/runs/10552464655)
+1.  Click [__any one of the jobs__](https://github.com/apache/nuttx/actions/runs/10552464655)
 
 1.  Click [__Linux (arm-01) > Run Builds__](https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816)
 
@@ -120,18 +120,6 @@ Which needs __24 GitHub Runners__ per Pull Request. And [__they ain't cheap__](h
 
 TODO: Pic of NuttX Stats
 
-TODO: Reduce to 15 concurrent
-
-(Perhaps we could review the Build Targets above and decide which targets should be excluded? Or reprioritised to run earlier / later?)
-
-(Or we could run all 1,594 builds only when the PR is Approved? So we can save on Build Times for the Submission / Resubmission of the PR?)
-
-_Isn't this a little excessive?_
-
-TODO: But we don't know which platforms are impacted!
-
-TODO: Switch to Self-Hosted Runners
-
 # Self-Hosted Runners
 
 We experiment with __Self-Hosted Runners__ to understand what's happens inside NuttX Continous Integration. We run them on two computers...
@@ -140,7 +128,7 @@ We experiment with __Self-Hosted Runners__ to understand what's happens inside N
 
 - __Newer Mac Mini__ on macOS Arm64 (M2 Pro)
 
-- With plenty of __Internet Bandwidth__ (Downlink 650 Mbps, Uplink 560 Mbps)
+- With plenty of __Internet Bandwidth__
 
 Look for this code in our __GitHub Actions Worklow__: [.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
 
@@ -162,7 +150,9 @@ Install __Self-Hosted Runners__ for Linux x64 and macOS Arm64...
 
 - [__Follow these Instructions__](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners) from GitHub
 
-- [__Apply these Fixes__](TODO) for Linux x64 and macOS Arm64
+- [__Apply the fixes for Linux Runners__](TODO)
+
+- [__Apply the fixes for macOS Runners__](TODO)
 
 They will run like this...
 
@@ -198,9 +188,9 @@ Beware of [__Security Concerns__](TODO)!
 
 _Our Self-Hosted Runners: Do they work for NuttX Builds?_
 
-Check out [__the result here__](https://github.com/lupyuen3/runner-nuttx/actions).
+According to [__the result here__](https://github.com/lupyuen3/runner-nuttx/actions), yep [__they work yay__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343)!
 
-Yep [__it works yay__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343)! That's __2 hours__ on a 10-year-old MacBook Pro with Intel i7.
+That's __2 hours__ on a 10-year-old MacBook Pro with Intel i7.
 
 (Compare that with __GitHub Runners__, which will take [__TODO mins__](TODO))
 
@@ -208,21 +198,17 @@ TODO: Pic of Ubuntu Runner
 
 _Do we need a faster PC?_
 
-Not necessarily? We see some __Network Throttling__ for our Self-Hosted Runners...
+Not necessarily. We see some __Network Throttling__ for our Self-Hosted Runners (in spite of our super-fast internet)...
 
-- __Docker Hub__ will throttle our downloading of Docker Images. If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.
+- __Docker Hub__ will throttle our downloading of Docker Images.
 
-- TODO: GitHub Download Source takes ???  mins
+  If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.
 
-  (Compare with ??? mins for GitHub Runners)
+- __Downloading the NuttX Source Code__ (700 MB) from GitHub takes 25 minutes.
 
-  During `Download Source Artifact`: GitHub seems to be throttling the download (total 700 MB over 25 mins)
+  (Compare with TODO mins for GitHub Runners)
 
   ![Screenshot 2024-08-29 at 2 09 11 PM](https://github.com/user-attachments/assets/585bc261-bc39-4be4-8515-85894254aace)
-
-TODO: And this is happening in spite of our super-fast [Fibre To The Home](http://speedtestsg.speedtestcustom.com/result/ca95c5c0-64eb-11ef-982f-dfa9296e96b3)
-
-TODO: Pic of fibre
 
 TODO: Fetch-Source then Download Source Artifact
 
@@ -371,6 +357,18 @@ TODO: We'll chat about this in [__NuttX Discord Channel__](https://discord.com/c
 # What's Next
 
 TODO
+
+TODO: Reduce to 15 concurrent
+
+(Perhaps we could review the Build Targets above and decide which targets should be excluded? Or reprioritised to run earlier / later?)
+
+(Or we could run all 1,594 builds only when the PR is Approved? So we can save on Build Times for the Submission / Resubmission of the PR?)
+
+_Isn't this a little excessive?_
+
+TODO: But we don't know which platforms are impacted!
+
+TODO: Switch to Self-Hosted Runners
 
 TODO: We might need a quicker way to "fail fast" and prevent other CI Jobs from running? Which will reduce the number of Runners?
 
