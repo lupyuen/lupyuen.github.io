@@ -578,7 +578,7 @@ On a powerful Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with 3
 Ubuntu Disk Space in UTM VM needs to be big enough for NuttX Docker Image:
 
 ```text
-user@ubuntu-emu-arm64:~$ neofetch
+$ neofetch
             .-/+oossssoo+/-.               user@ubuntu-emu-arm64
         `:+ssssssssssssssssss+:`           ---------------------
       -+ssssssssssssssssssyyssss+-         OS: Ubuntu 24.04.1 LTS x86_64
@@ -600,7 +600,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso   CPU: Intel i7 9xx (Nehalem i7, IBRS u
         `:+ssssssssssssssssss+:`
             .-/+oossssoo+/-.
 
-user@ubuntu-emu-arm64:~$ df -H
+$ df -H
 Filesystem      Size  Used Avail Use% Mounted on
 tmpfs           410M  1.7M  409M   1% /run
 /dev/sda2        67G   31G   33G  49% /
@@ -632,10 +632,9 @@ Why emulate 32 CPUs? That's because we want to max out the macOS Arm64 CPU Utili
 Here's how it runs:
 
 ```text
-user@ubuntu-emu-arm64:~$ cd actions-runner/
-user@ubuntu-emu-arm64:~/actions-runner$ sudo rm -rf _work/runner-nuttx
-[sudo] password for user: 
-user@ubuntu-emu-arm64:~/actions-runner$ df -H
+$ cd actions-runner/
+$ sudo rm -rf _work/runner-nuttx
+$ df -H
 Filesystem      Size  Used Avail Use% Mounted on
 tmpfs           410M  1.7M  408M   1% /run
 /dev/sda2        67G   28G   35G  45% /
@@ -644,9 +643,9 @@ tmpfs           5.3M  8.2k  5.3M   1% /run/lock
 efivarfs        263k  130k  128k  51% /sys/firmware/efi/efivars
 /dev/sda1       1.2G  6.5M  1.2G   1% /boot/efi
 tmpfs           410M  119k  410M   1% /run/user/1000
-user@ubuntu-emu-arm64:~/actions-runner$ ./run.sh 
 
-\u221a Connected to GitHub
+$ ./run.sh 
+Connected to GitHub
 Current runner version: '2.319.1'
 2024-08-30 02:33:17Z: Listening for Jobs
 2024-08-30 02:33:23Z: Running job: Linux (arm-04)
