@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Continuous Integration for Apache NuttX RTOS</title>
+            <link>https://lupyuen.github.io/articles/ci</link>
+            <description><![CDATA[This article explains how Apache NuttX RTOS is running Continuous Integration with GitHub Actions. Every NuttX Pull Request will trigger 1,594 NuttX Builds!]]></description>
+            <guid>https://lupyuen.github.io/articles/ci</guid>
+            <pubDate>Wed, 11 Sep 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Early Days of Rust Apps on Apache NuttX RTOS</title>
             <link>https://lupyuen.github.io/articles/rust6</link>
             <description><![CDATA[My student Rushabh Gala has just completed his project for Google Summer of Code, on creating Safer Rust Apps for Apache NuttX RTOS. In this article we walk through Rushabh’s contributions, and understand how we’re evolving Rust Apps for NuttX.]]></description>
