@@ -81,21 +81,15 @@
 <li><a href="#macos-arm64-with-utm-emulator">12.2 macOS Arm64 with UTM Emulator</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 Sep 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
-<p>Why are we doing this?</p>
+<p><em>Why are we doing this?</em></p>
 <ul>
-<li>
-<p>In case we need to reduce <a href="https://docs.google.com/spreadsheets/d/1gY0VrSJvouXwDIclspQCFoBcoHhNCbGicNoVJRhJ-h4/edit?gid=0#gid=0">GitHub Hosting Costs</a>. Or if we need to run the NuttX CI privately.</p>
-</li>
 <li>
 <p>It’s a great way to understand the Internals of NuttX CI!</p>
 </li>
 <li>
-<p>Why is NuttX CI so heavy? That’s because for every PR, it compiles every single NuttX Build Config: Arm, RISC-V, Simulator. (Hosting charges won’t be cheap)</p>
+<p>In case we need to reduce <a href="https://docs.google.com/spreadsheets/d/1gY0VrSJvouXwDIclspQCFoBcoHhNCbGicNoVJRhJ-h4/edit?gid=0#gid=0"><strong>GitHub Hosting Costs</strong></a>. Or if we need to run the NuttX CI privately.</p>
 </li>
 </ul>
-<p>TODO: We might need a quicker way to “fail fast” and prevent other CI Jobs from running? Which will reduce the number of Runners?</p>
-<p>TODO: What if we could start earlier the CI Jobs that are impacted by the Modified Code in the PR? So if I modify something for Ox64 BL808 SBC, it should start the CI Job for <code>ox64:nsh</code>. If it fails, then don’t bother with the rest of the Arm / RISC-V / Simulator jobs.</p>
-<p>TODO: Suppose we need to throttle our GitHub Runners from 36 Runners down to 25 Runners (and cut costs). What would be the impact on NuttX CI Duration? Are there any tools for modeling the queueing duration? </p>
 <p>TODO: Pic of GitHub Actions &gt; Workflows &gt; Build</p>
 <h1 id="continuous-integration-for-nuttx"><a class="doc-anchor" href="#continuous-integration-for-nuttx">§</a>1 Continuous Integration for NuttX</h1>
 <p><em>Why do we need Continuous Integration?</em></p>
@@ -387,6 +381,9 @@ Current runner version: &#39;2.319.1&#39;
 <p>TODO: We’ll chat about this in <a href="https://discord.com/channels/716091708336504884/1280436444141453313"><strong>NuttX Discord Channel</strong></a>.</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>TODO</p>
+<p>TODO: We might need a quicker way to “fail fast” and prevent other CI Jobs from running? Which will reduce the number of Runners?</p>
+<p>TODO: What if we could start earlier the CI Jobs that are impacted by the Modified Code in the PR? So if I modify something for Ox64 BL808 SBC, it should start the CI Job for <code>ox64:nsh</code>. If it fails, then don’t bother with the rest of the Arm / RISC-V / Simulator jobs.</p>
+<p>TODO: Suppose we need to throttle our GitHub Runners from 36 Runners down to 25 Runners (and cut costs). What would be the impact on NuttX CI Duration? Are there any tools for modeling the queueing duration? </p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
