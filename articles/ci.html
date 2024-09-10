@@ -263,7 +263,7 @@ Running job: Linux (arm-01)
 <p>Not necessarily. We see some <strong>Network Throttling</strong> for our Self-Hosted Runners (in spite of our super-fast internet)…</p>
 <ul>
 <li>
-<p><strong>Docker Hub</strong> will throttle our downloading of the NuttX Docker Image. (Which is required for building the NuttX Targets)</p>
+<p><strong>Docker Hub</strong> will throttle our downloading of the NuttX Docker Image. Which is required for building the NuttX Targets.</p>
 <p>If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.</p>
 </li>
 <li>
@@ -302,7 +302,7 @@ jobs:
 </code></pre></div>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486"><strong>According to our log</strong></a>, Fetch Source runs OK on macOS Arm64.</p>
 <p><em>How is Fetch Source used?</em></p>
-<p><strong>Fetch Source</strong> happens before any NuttX Build. It checks out the Source Code from the NuttX Kernel and NuttX Apps Repos.</p>
+<p><strong>Fetch Source</strong> happens before any NuttX Build. It checks out the Source Code from the NuttX Kernel Repo and NuttX Apps Repo.</p>
 <p>Then it zips up the Source Code and passes the Zipped Source Code to the NuttX Builds.</p>
 <p>(<strong>700 MB</strong> of zipped source code)</p>
 <p><em>Anything else we can run on macOS Arm64?</em></p>
@@ -354,6 +354,7 @@ Current runner version: &#39;2.319.1&#39;
 <p>During <strong>Run Builds</strong>: CPU hits 100%…</p>
 <p><img src="https://github.com/user-attachments/assets/60d4d3eb-d075-49c9-b3ac-bcfa74150668" alt="Screenshot 2024-08-29 at 4 56 06 PM" /></p>
 <p>(Don’t leave System Monitor running, it consumes quite a bit of CPU!)</p>
+<p>If the CI Job doesn’t complete in <strong>6 hours</strong>: GitHub will cancel it! So we should give it as much CPU as possible.</p>
 <p><strong>Why emulate 32 CPUs?</strong> That’s because we want to max out the macOS Arm64 CPU Utilisation. Our chance to watch Mac Mini run smokin’ hot!</p>
 <p><img src="https://github.com/user-attachments/assets/a9dab4fd-a59f-4348-a3f7-397973797288" alt="Screenshot 2024-08-30 at 4 14 20 PM" /></p>
 <p><img src="https://github.com/user-attachments/assets/bfd51e51-1bee-49c2-88a3-01698d51d8a4" alt="Screenshot 2024-08-30 at 4 14 05 PM" /></p>
@@ -378,7 +379,15 @@ Current runner version: &#39;2.319.1&#39;
 <p>But how long to build? <strong>4 hours!</strong></p>
 <p>(Instead of <strong>33 mins</strong> for GitHub Runners)</p>
 <p><em>What if we run a Self-Hosted Runner inside a Docker Container on macOS Arm64? (Rancher Desktop)</em></p>
-<p>But it becomes a <strong>Linux Arm64 Runner</strong>, not a Linux x64 Runner. Which won’t work with our current NuttX Docker Image, which is x64 only.</p>
+<p>But it becomes a <strong>Linux Arm64 Runner</strong>, not a Linux x64 Runner. Which won’t work with our current NuttX Docker Image, which is x64 only…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci"><strong>“Building the Docker Image for NuttX CI”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pr#appendix-downloading-the-docker-image-for-nuttx-ci"><strong>“Downloading the Docker Image for NuttX CI”</strong></a></p>
+</li>
+</ul>
 <p>Unless we create a Linux Arm64 Docker Image? Like for <a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci"><strong>Compiling RISC-V Platforms</strong></a>.</p>
 <p>We’ll chat about this in <a href="https://discord.com/channels/716091708336504884/1280436444141453313"><strong>NuttX Discord Channel</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-ci.jpg" alt="Continuous Integration for Apache NuttX RTOS" /></p>
@@ -392,11 +401,12 @@ Current runner version: &#39;2.319.1&#39;
 <p>We could run <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0"><strong>All 1,594 Builds</strong></a> only when the PR is Approved. So we can save on Build Times for the Submission / Resubmission of the PR.</p>
 </li>
 <li>
-<p>We need a quicker way to <strong>“Fail Fast”</strong> and prevent other Build Jobs from running. Which will reduce the number of Runners.</p>
+<p>We need a quicker way to <strong>“Fail Fast”</strong> and (in case of failure) prevent other Build Jobs from running. Which will reduce the number of Runners.</p>
 </li>
 <li>
 <p>What if we could <strong>Start Earlier the Build Jobs</strong> that are impacted by the Modified Code in the PR?</p>
 <p>So if I modify something for Ox64 BL808 SBC, it should start the CI Job for <strong><code>ox64:nsh</code></strong>. If it fails, then don’t bother with the rest of the Arm / RISC-V / Simulator jobs.</p>
+<p>(Maybe we dump the <strong>NuttX ELF Disassembly</strong> and figure out which Source Files are used for which NuttX Targets?)</p>
 </li>
 </ol>
 <p>Let’s discuss!</p>
