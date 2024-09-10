@@ -443,7 +443,7 @@ send_message             : Send LoRa message
 spi_result               : Show SPI counters
 </code></pre></div></li>
 <li>
-<p>First we <strong>initialise our LoRa Transceiver</strong>.</p>
+<p>First we <strong>initialise our LoRa Transceiver</strong>. </p>
 <p>Enter this command…</p>
 <div class="example-wrap"><pre class="language-text"><code>init_driver
 </code></pre></div>
@@ -509,7 +509,7 @@ Register 0x04 = 0x00
 Register 0x05 = 0x52
 ...
 </code></pre></div>
-<p>Take the values of <strong>Registers 2, 3, 4 and 5.</strong></p>
+<p>Take the values of <strong>Registers 2, 3, 4 and 5.</strong> </p>
 <p>Compare them with the <strong>Register Table</strong> in the SX1276 (or RF96) Datasheet.</p>
 <p>The values should be identical: <strong><code>0x1a</code>, <code>0x0b</code>, <code>0x00</code>, <code>0x52</code></strong></p>
 <p><img src="https://lupyuen.github.io/images/lora-registers.png" alt="Reading registers from our LoRa transceiver" /></p>
@@ -554,7 +554,7 @@ Register 0x08 = 0x00
 <p>By transmitting packets in this unique chirping pattern, LoRa ensures that packets will be delivered over long distances in spite of the noise and interference.</p>
 <p>(LoRa doesn’t guarantee 100% reliable delivery, of course)</p>
 <p><img src="https://lupyuen.github.io/images/lora-airspy2.jpg" alt="Airspy R2 SDR" /></p>
-<p><em>Airspy R2 SDR</em></p>
+<p><em>Airspy R2 SDR</em> </p>
 <h2 id="capture-lora-packets-with-airspy-sdr"><a class="doc-anchor" href="#capture-lora-packets-with-airspy-sdr">§</a>6.1 Capture LoRa packets with Airspy SDR</h2>
 <p>Let’s capture and visualise our LoRa Packet with <a href="https://www.itead.cc/airspy.html"><strong>Airspy R2 SDR</strong></a> (Software Defined Radio)…</p>
 <ol>
@@ -604,7 +604,7 @@ send_message
 <p><a href="https://en.wikipedia.org/wiki/LoRa#LoRaWAN">(More about LoRaWAN)</a></p>
 </li>
 <li>
-<p><strong>The Things Network</strong> = The free LoRaWAN network that’s operated by volunteers around the world.</p>
+<p><strong>The Things Network</strong> = The free LoRaWAN network that’s operated by volunteers around the world. </p>
 <p>People actually set up base stations and allow free access.</p>
 <p>Our garden sensors could connect to The Things Network… So that we may browse the sensor data conveniently.</p>
 <p><a href="https://lupyuen.github.io/articles/ttn">(More about The Things Network)</a></p>

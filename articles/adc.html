@@ -336,7 +336,7 @@ read_adc
 </ol>
 <p><img src="https://lupyuen.github.io/images/adc-gain2.png" alt="Setting the ADC Gain" /></p>
 <h2 id="set-the-adc-gain"><a class="doc-anchor" href="#set-the-adc-gain">§</a>1.5 Set the ADC Gain</h2>
-<p>Let’s chat about <strong>ADC Gain</strong>, which we used when reading the LED as a Light Sensor.</p>
+<p>Let’s chat about <strong>ADC Gain</strong>, which we used when reading the LED as a Light Sensor. </p>
 <p>(ADC Gain probably won’t be needed for reading most types of ADC Inputs)</p>
 <p><em>Why do we need ADC Gain when reading an LED?</em></p>
 <p>Our LED generates a <strong>tiny bit of current</strong> when exposed to light. To measure that tiny bit of current, we need to increase the ADC sensitivity.</p>
@@ -407,7 +407,7 @@ PROJECT_NAME := sdk_app_rust_adc
 export APP_NAME=sdk_app_rust_adc
 </code></pre></div></li>
 <li>
-<p>Replace the <strong>Rust Source Code</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs"><code>sdk_app_rust_adc/ rust/src/lib.rs</code></a></p>
+<p>Replace the <strong>Rust Source Code</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs"><code>sdk_app_rust_adc/ rust/src/lib.rs</code></a> </p>
 </li>
 <li>
 <p>See the Appendix for the steps to define the <strong>Rust Commands</strong> for the Command-Line Interface in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55"><code>sdk_app_rust_adc / demo.c</code></a></p>
@@ -899,9 +899,9 @@ blflash flash c:\blflash\sdk_app_lora.bin --port COM5
 <p>Connect to BL602’s UART Port at 2 Mbps like so…</p>
 <div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
 </code></pre></div>
-<p><strong>For Windows:</strong></p>
+<p><strong>For Windows:</strong> </p>
 <p>Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
-<p><strong>Alternatively:</strong></p>
+<p><strong>Alternatively:</strong> </p>
 <p>Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
 </li>
@@ -987,7 +987,7 @@ read_adc
 <p>(Even arrays and structs!)</p>
 </li>
 </ol>
-<p>Let’s talk about “<code>unsafe</code>” code in Rust…</p>
+<p>Let’s talk about “<code>unsafe</code>” code in Rust… </p>
 <h2 id="safer-rust"><a class="doc-anchor" href="#safer-rust">§</a>7.1 Safer Rust</h2>
 <p>Rust reminds us to be Extra Careful when we work with <strong>C Functions and C Pointers</strong>.</p>
 <p>That’s why we need to flag the following code as <strong><code>unsafe</code></strong>…</p>
@@ -1098,7 +1098,7 @@ read_adc
 [dependencies]
 bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.io/crates/bl602-sdk
 </code></pre></div>
-<p><a href="https://crates.io/crates/bl602-sdk">(Change <code>"0.0.6"</code> to the latest version on <code>crates.io</code>)</a></p>
+<p><a href="https://crates.io/crates/bl602-sdk">(Change <code>&quot;0.0.6&quot;</code> to the latest version on <code>crates.io</code>)</a></p>
 <p>The BL602 Rust Wrapper will be auto-downloaded from <code>crates.io</code> when building the project.</p>
 <p><img src="https://lupyuen.github.io/images/adc-doc2.png" alt="BL602 Rust Wrapper Documentation" /></p>
 <p><em>Is the BL602 Rust Wrapper documented?</em></p>
@@ -1125,7 +1125,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 </ol>
 <p><strong>LED Light Sensitivity</strong> is <a href="https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227">explained in this article</a>…</p>
 <blockquote>
-<p>As a photodiode, an LED is sensitive to <strong>wavelengths equal to or shorter than the predominant wavelength it emits</strong>. A green LED would be sensitive to blue light and to some green light, but not to yellow or red light.</p>
+<p>As a photodiode, an LED is sensitive to <strong>wavelengths equal to or shorter than the predominant wavelength it emits</strong>. A green LED would be sensitive to blue light and to some green light, but not to yellow or red light. </p>
 </blockquote>
 <p>Also according to <a href="https://twitter.com/SravanSenthiln1/status/1418044068567797765">Sravan Senthilnathan on Twitter</a>…</p>
 <blockquote>

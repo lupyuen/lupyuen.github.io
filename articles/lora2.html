@@ -172,7 +172,7 @@
 <p>However today we’re configuring our transceiver for <strong>Continuous Receive Mode</strong> so we won’t be using <code>DIO1</code>. We shall trigger receive timeouts with a BL602 Timer.</p>
 </li>
 <li>
-<p><strong><code>DIO2</code> Change Channel</strong>: This is used for <strong>Spread Spectrum Transmission</strong> (Frequency Hopping).</p>
+<p><strong><code>DIO2</code> Change Channel</strong>: This is used for <strong>Spread Spectrum Transmission</strong> (Frequency Hopping). </p>
 <p>When we transmit / receive LoRa Packets over multiple frequencies (spread spectrum), we reduce the likelihood of packet collisions over the airwaves.</p>
 <p>We won’t be using Spread Spectrum Transmission today, so <code>DIO2</code> shall stay idle.</p>
 </li>
@@ -733,7 +733,7 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
 <p><strong>Handling an interrupt</strong> gets tricky for any Embedded Program…</p>
 <ol>
 <li>
-<p><strong>Interrupts are Time-Sensitive</strong>: We can’t take too long to handle an interrupt… Other interrupts may be waiting on us!</p>
+<p><strong>Interrupts are Time-Sensitive</strong>: We can’t take too long to handle an interrupt… Other interrupts may be waiting on us! </p>
 <p>(Lag ensues)</p>
 </li>
 <li>
@@ -1148,7 +1148,7 @@ OnTxDone
 OnTxDone
 </code></pre></div></li>
 <li>
-<p>WisBlock is now transmitting a LoRa Packet (<code>"Hello"</code>) every 5 seconds. <a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/main/src/main.cpp#L104-L128">(See this)</a></p>
+<p>WisBlock is now transmitting a LoRa Packet (<code>&quot;Hello&quot;</code>) every 5 seconds. <a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/main/src/main.cpp#L104-L128">(See this)</a></p>
 </li>
 <li>
 <p>If we sniff the airwaves with a <strong>Software Defined Radio</strong>, we will see the distinctive <a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>LoRa Chirp</strong></a>…</p>
@@ -1332,7 +1332,7 @@ bl_sys_time_now          : sys time now
 <p>This command calls the function <code>create_task</code>, which we have seen earlier.</p>
 </li>
 <li>
-<p>Then we <strong>initialise our LoRa Transceiver</strong>.</p>
+<p>Then we <strong>initialise our LoRa Transceiver</strong>. </p>
 <p>Enter this command…</p>
 <div class="example-wrap"><pre class="language-text"><code>init_driver
 </code></pre></div>
@@ -1371,10 +1371,10 @@ SX1276 DIO0: Packet received
 Rx done: RadioEvents.RxDone
 </code></pre></div>
 <p>This says that the SX1276 Driver has <strong>received a LoRa Packet.</strong></p>
-<p>And the packet contains <code>"Hello"</code>…</p>
+<p>And the packet contains <code>&quot;Hello&quot;</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Rx done: 48 65 6c 6c 6f 
 </code></pre></div>
-<p>(That’s the ASCII code for <code>"Hello"</code>)</p>
+<p>(That’s the ASCII code for <code>&quot;Hello&quot;</code>)</p>
 <p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the receive video on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d"><strong>Check out the receive log</strong></a></p>
 </li>

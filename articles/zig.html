@@ -189,7 +189,7 @@ pub export fn hello_zig_main(
 <p><a href="https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers">(Here’s the full declaration)</a></p>
 <p><img src="https://lupyuen.github.io/images/zig-config1a.png" alt="Enable Zig App in NuttX" /></p>
 <h1 id="enable-zig-app"><a class="doc-anchor" href="#enable-zig-app">§</a>2 Enable Zig App</h1>
-<p>We’re ready to <strong>build our Zig App</strong> in NuttX!</p>
+<p>We’re ready to <strong>build our Zig App</strong> in NuttX! </p>
 <p>Follow these steps to <strong>download and configure NuttX</strong> for BL602…</p>
 <ul>
 <li>
@@ -381,7 +381,7 @@ $ riscv64-unknown-elf-readelf -h -A hello_zig_main.o
 Flags: 0x1, RVC, soft-float ABI
 Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;
 </code></pre></div>
-<p>The last line translates to <strong>RV32IMACF</strong>, which means that the RISC-V Instruction Set is indeed targeted for <strong>Hardware Floating-Point</strong>.</p>
+<p>The last line translates to <strong>RV32IMACF</strong>, which means that the RISC-V Instruction Set is indeed targeted for <strong>Hardware Floating-Point</strong>. </p>
 <p>We’re only editing the <strong>ELF Header</strong>, because it didn’t seem to reflect the correct ABI for the Object File.</p>
 <p><em>Is there a proper fix for this?</em></p>
 <p>In future the Zig Compiler might allow us to specify the <strong>Floating-Point ABI</strong> as the target…</p>

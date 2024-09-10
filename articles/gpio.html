@@ -168,7 +168,7 @@ int main(int argc, char **argv) {
 </blockquote>
 <ul>
 <li>
-<p>But with <strong>BL602 IoT SDK</strong> we’ll be locked in to BL602. Our programs won’t run on other microcontrollers.</p>
+<p>But with <strong>BL602 IoT SDK</strong> we’ll be locked in to BL602. Our programs won’t run on other microcontrollers. </p>
 <p>And we can’t easily port programs from other devices to BL602 either.</p>
 </li>
 </ul>
@@ -177,7 +177,7 @@ int main(int argc, char **argv) {
 </blockquote>
 <ul>
 <li>
-<p><strong>Arduino</strong> is kinda ancient for embedded coding. (And the Bit Banging looks disturbing)</p>
+<p><strong>Arduino</strong> is kinda ancient for embedded coding. (And the Bit Banging looks disturbing) </p>
 <p>Could there be a modern alternative that works better with today’s multitasking microcontrollers?</p>
 <p><a href="https://github.com/pine64/ArduinoCore-bouffalo">More about Arduino on BL602</a></p>
 </li>
@@ -196,7 +196,7 @@ int main(int argc, char **argv) {
 </blockquote>
 <ul>
 <li>
-<p>Maybe something simpler than <strong>Zephyr</strong>? As simple as the program above?</p>
+<p>Maybe something simpler than <strong>Zephyr</strong>? As simple as the program above? </p>
 <p>Something that compiles easily on Linux, macOS and Windows… Without WSL and Docker?</p>
 <p>(We’ll save Zephyr for the bravest embedded professionals)</p>
 <p><a href="https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst"><strong>UPDATE: Check out Zephyr for BL602</strong></a></p>
@@ -675,7 +675,7 @@ objsize
 </ul>
 </li>
 <li>
-<p><code>blinky.elf.map</code>: GCC Linker Map for our Mynewt Firmware.</p>
+<p><code>blinky.elf.map</code>: GCC Linker Map for our Mynewt Firmware. </p>
 <p>Shows the addresses of every function and global variable in our firmware.</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v2.0.0/blinky.elf.map">Download here</a></li>
@@ -774,7 +774,7 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <p><em>Sensors and actuators to be tested with PineCone BL602</em></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>We’ll be testing Mynewt on PineCone BL602 with an interesting mix of Sensors and Actuators shown above. <a href="https://lupyuen.github.io/articles/gpio#appendix-inventory-of-sensors-and-actuators">Here’s the list</a></p>
-<p>Most of the Sensors and Actuators will work fine with GPIO on Mynewt. But some require additional support from Mynewt: <strong>Pulse Width Modulation</strong> and <strong>Analog to Digital Converter</strong>.</p>
+<p>Most of the Sensors and Actuators will work fine with GPIO on Mynewt. But some require additional support from Mynewt: <strong>Pulse Width Modulation</strong> and <strong>Analog to Digital Converter</strong>. </p>
 <p>We shall integrate with Mynewt the respective Hardware Abstraction Layers from the BL602 IoT SDK.</p>
 <blockquote>
 <p><em>What about DHT11, the Temperature and Humidity Sensor? (Lower right corner)</em></p>

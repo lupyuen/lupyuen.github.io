@@ -117,7 +117,7 @@
 <p>Most development tools (like VSCode) work with OpenOCD for loading and debugging firmware.</p>
 <p>Thus it’s important to get PineCone talking to OpenOCD, so that our development tools will work with PineCone.</p>
 <p>(<a href="https://github.com/lupyuen/bl602-rust-guide">Rust for PineCone</a> also uses OpenOCD for loading and debugging)</p>
-<p>PineCone exposes a <strong>JTAG Port</strong> that works with OpenOCD for loading and debugging firmware.</p>
+<p>PineCone exposes a <strong>JTAG Port</strong> that works with OpenOCD for loading and debugging firmware. </p>
 <p><a href="https://lupyuen.github.io/articles/pinecone#other-flashing-tools">(JTAG and OpenOCD won’t work for flashing BL602)</a></p>
 <p>This is similar to the SWD Port that’s found in PineTime, STM32 Blue Pill and other Arm microcontrollers.</p>
 <p>We’ll learn about JTAG in the next section.</p>
@@ -568,7 +568,7 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 </li>
 <li>
 <p>When selecting the firmware file, remember to choose the <code>sdk_app_helloworld.bin</code> firmware that we have just downloaded.</p>
-<p>Make sure there are no spaces in the firmware pathname.</p>
+<p>Make sure there are no spaces in the firmware pathname. </p>
 </li>
 </ol>
 <h2 id="start-the-remap-firmware"><a class="doc-anchor" href="#start-the-remap-firmware">§</a>9.4 Start the Remap Firmware</h2>
@@ -624,7 +624,7 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 <p><strong>Only LED</strong>: We’ll remap the LED Pins to PWM so that we may control them.</p>
 </li>
 <li>
-<p><strong>Only JTAG</strong>: We’ll use the default JTAG Port. No remapping needed.</p>
+<p><strong>Only JTAG</strong>: We’ll use the default JTAG Port. No remapping needed. </p>
 <p>(And we get free disco lights during JTAG loading and debugging)</p>
 </li>
 <li>

@@ -246,7 +246,7 @@ static struct fb_overlayinfo_s overlayInfo[2] = {
 }
 </code></pre></div>
 <p>Remember that Framebuffer 1 is <strong>600 pixels</strong> wide… But the PinePhone Screen is <strong>720 pixels</strong> wide.</p>
-<p>We use <strong>sarea</strong> to specify that Framebuffer 1 will be rendered <strong>52 pixels</strong> from the left (X Offset), <strong>52 pixels</strong> from the top (Y Offset).</p>
+<p>We use <strong>sarea</strong> to specify that Framebuffer 1 will be rendered <strong>52 pixels</strong> from the left (X Offset), <strong>52 pixels</strong> from the top (Y Offset). </p>
 <p>(So it will be centered horizontally)</p>
 <h1 id="render-framebuffers"><a class="doc-anchor" href="#render-framebuffers">§</a>4 Render Framebuffers</h1>
 <p>We’ve defined the NuttX Framebuffers… Let’s <strong>render them with the Display Engine</strong>!</p>
@@ -606,7 +606,7 @@ nsh&gt; hello 0
 </li>
 </ul>
 <p><em>Where will the new drivers live inside the NuttX Kernel?</em></p>
-<p>The drivers for Display Backlight, LCD Panel and PMIC will go into the new <strong>PinePhone LCD Driver</strong>.</p>
+<p>The drivers for Display Backlight, LCD Panel and PMIC will go into the new <strong>PinePhone LCD Driver</strong>. </p>
 <p>Which will follow the design of the <a href="https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c"><strong>STM32F7 LCD Driver</strong></a> in NuttX…</p>
 <ol>
 <li>

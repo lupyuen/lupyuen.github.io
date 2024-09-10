@@ -424,13 +424,13 @@ Response: OK
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 146)</a></p>
 </li>
 <li>
-<p>“<strong><code>AT+CSCS="GSM"</code></strong>”</p>
+<p>“<strong><code>AT+CSCS=&quot;GSM&quot;</code></strong>”</p>
 <p>Select (7-bit ASCII-like) <strong>GSM Character Set</strong></p>
 <p>(Instead of 16-bit UCS2 Unicode)</p>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 25)</a></p>
 </li>
 <li>
-<p>“<strong><code>AT+CMGS="+1234567890"</code></strong>”</p>
+<p>“<strong><code>AT+CMGS=&quot;+1234567890&quot;</code></strong>”</p>
 <p>Send an SMS to the (imaginary) Phone Number “<strong><code>+1234567890</code></strong>”</p>
 <p>(Also works without country code, like “<strong><code>234567890</code></strong>”)</p>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
@@ -957,7 +957,7 @@ Response: +QDAI: 1,1,0,1,0,0,1,1
 <ul>
 <li>
 <p><strong>io = 1</strong></p>
-<p>Digital PCM Output</p>
+<p>Digital PCM Output </p>
 </li>
 <li>
 <p><strong>mode = 1</strong></p>
@@ -1070,11 +1070,11 @@ AT+QCFG=&quot;ims&quot;,1
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&amp;EG2x&amp;EG9x&amp;EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf">(See “<strong><code>AT+QCFG=ims</code></strong>”, Page 102)</a></p>
 <p>That’s because Quectel says we should <a href="https://forums.quectel.com/t/volte-on-eg25-g/13512"><strong>Force-Enable LTE IMS</strong></a> to support <a href="https://en.wikipedia.org/wiki/Voice_over_LTE"><strong>VoLTE (Voice-over-LTE)</strong></a>…</p>
-<p>“You can use <strong><code>AT+QCFG="ims",1</code></strong> to restart the module…”</p>
-<p>“And query <strong><code>AT+QCFG="ims"</code></strong> again to use the VoLTE function”</p>
+<p>“You can use <strong><code>AT+QCFG=&quot;ims&quot;,1</code></strong> to restart the module…”</p>
+<p>“And query <strong><code>AT+QCFG=&quot;ims&quot;</code></strong> again to use the VoLTE function”</p>
 <p><a href="https://forums.quectel.com/t/volte-on-eg25-g/13512">(Source)</a></p>
-<p>TODO: Run <code>AT+QCFG="ims"</code> on both SIM Cards to show IMS state</p>
-<p>TODO: Run <code>AT+QCFG="ims",1</code> or <code>AT+QCFG="ims",2</code> to enable / disable IMS on both SIM Cards</p>
+<p>TODO: Run <code>AT+QCFG=&quot;ims&quot;</code> on both SIM Cards to show IMS state</p>
+<p>TODO: Run <code>AT+QCFG=&quot;ims&quot;,1</code> or <code>AT+QCFG=&quot;ims&quot;,2</code> to enable / disable IMS on both SIM Cards</p>
 <p>TODO: Fetch Mobile Operator and auto-enable / disable LTE IMS according to Mobile Operator</p>
 <h1 id="appendix-sms-pdu-format"><a class="doc-anchor" href="#appendix-sms-pdu-format">§</a>14 Appendix: SMS PDU Format</h1>
 <p><em>Earlier we saw this command for sending SMS in PDU Mode…</em></p>
@@ -1190,7 +1190,7 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 <li>
 <p><strong>TP-Validity-Period</strong> (TP-VP): “<code>01</code>”</p>
 <p>Message is valid for 10 minutes, relative to current time:</p>
-<p><code>("01" + 1) x 5</code> minutes</p>
+<p><code>(&quot;01&quot; + 1) x 5</code> minutes</p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#Validity_Period">(GSM 03.40, Validity Period)</a></p>
 <p>(See <strong>TP-Validity-Period-Format</strong> above)</p>
 </li>

@@ -482,7 +482,7 @@ nsh&gt;
 </ul>
 <p>Let’s look at each section of the Flash Image.</p>
 <h2 id="xip-flash-memory-vs-boot-rom"><a class="doc-anchor" href="#xip-flash-memory-vs-boot-rom">§</a>2.1 XIP Flash Memory vs Boot ROM</h2>
-<p>In this article we’ll use “ROM” to refer to BL602’s <strong>XIP Flash Memory</strong> (at address <code>0x2300 0000</code> with size 16 MB).</p>
+<p>In this article we’ll use “ROM” to refer to BL602’s <strong>XIP Flash Memory</strong> (at address <code>0x2300 0000</code> with size 16 MB). </p>
 <p>(XIP means Execute In Place… BL602 lets us run firmware code from External Flash Memory without transferring to RAM first. <a href="https://lupyuen.github.io/articles/boot#bl602-boot2-bootloader">See this</a>)</p>
 <p>The <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a> uses “ROM” to refer to BL602’s <strong>Boot ROM</strong> (at address <code>0x2100 0000</code> with size 128 KB).</p>
 <p>BL602’s Boot ROM is explained here…</p>
@@ -615,7 +615,7 @@ blk64k_erase_cmd = 0xd8
 <li>
 <p>Which gets transformed with the <strong>EFuse Configuration</strong> (and Boot Header Configuration) to create (with firmware offset <code>0x2000</code>)…</p>
 <ul>
-<li><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/image/boot2image.bin"><code>boot2image.bin</code></a></li>
+<li><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/image/boot2image.bin"><code>boot2image.bin</code></a> </li>
 </ul>
 <p>(For development, we have disabled encryption in the EFuse Configuration)</p>
 </li>
@@ -945,7 +945,7 @@ blk64k_erase_cmd = 0xd8
 <li>
 <p>Do all BL602 boards use a jumper or switch for flashing the firmware?</p>
 <p>Yep because all BL602 boards run on the same Boot ROM… Which uses GPIO 8 to decide whether it should go into Flashing Mode.</p>
-<p>Hopefully somebody will create a smarter way to flash BL602 boards and reduce the build-flash-test cycle time.</p>
+<p>Hopefully somebody will create a smarter way to flash BL602 boards and reduce the build-flash-test cycle time. </p>
 <p><strong>UPDATE:</strong> Check out this article…</p>
 <p><a href="https://lupyuen.github.io/articles/auto"><strong>“Auto Flash and Test NuttX on RISC-V BL602”</strong></a></p>
 </li>

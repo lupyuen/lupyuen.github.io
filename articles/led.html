@@ -108,7 +108,7 @@
 <p>Let’s flash the <strong>GPIO Demo</strong> from the BL602 IoT SDK and interact with the above GPIO Pins…</p>
 <ol>
 <li>
-<p>Download the <strong>BL602 Demo Firmware Binaries</strong>…</p>
+<p>Download the <strong>BL602 Demo Firmware Binaries</strong>… </p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/customer_app.zip"><strong>BL602 Demo Firmware Binaries</strong>: <code>customer_app.zip</code></a></li>
 </ul>
@@ -266,7 +266,7 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/demo.c"><strong>GPIO Demo Source Code: <code>demo.c</code></strong></a></li>
 </ul>
 <h2 id="gpio-device-tree"><a class="doc-anchor" href="#gpio-device-tree">§</a>3.4 GPIO Device Tree</h2>
-<p>There is an alternative set of functions for controlling GPIO…</p>
+<p>There is an alternative set of functions for controlling GPIO… </p>
 <ul>
 <li><strong>GPIO Device Tree</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.h"><strong><code>hal_gpio.h</code></strong></a>, <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.c"><strong><code>hal_gpio.c</code></strong></a></li>
 </ul>
@@ -314,7 +314,7 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 <p>(The firmware was modified to run without a Device Tree. <a href="https://github.com/lupyuen/bl_iot_sdk/pull/1">More details</a>)</p>
 <ol>
 <li>
-<p>Download the <strong>BL602 Demo Firmware Binaries</strong>…</p>
+<p>Download the <strong>BL602 Demo Firmware Binaries</strong>… </p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/customer_app.zip"><strong>BL602 Demo Firmware Binaries</strong>: <code>customer_app.zip</code></a></li>
 </ul>
@@ -355,8 +355,8 @@ pwm_init 2 17 2000
 pwm_init 4 14 2000
 </code></pre></div></li>
 <li>
-<p>Set <strong>PWM Duty Cycle</strong> for all 3 PWM Channels to 100%.</p>
-<p>Which means that 100% of the time, the 3 PWM Channels will be set to 1 (High).</p>
+<p>Set <strong>PWM Duty Cycle</strong> for all 3 PWM Channels to 100%. </p>
+<p>Which means that 100% of the time, the 3 PWM Channels will be set to 1 (High). </p>
 <p>Which means total darkness: All 3 LEDs will be switched off 100% of the time.</p>
 <div class="example-wrap"><pre class="language-bash"><code>pwm_duty_set 1 100
 pwm_duty_set 2 100
@@ -369,7 +369,7 @@ pwm_start 2
 pwm_start 4
 </code></pre></div></li>
 <li>
-<p>Gradually decrease the PWM Duty Cycle for PWM Channel 1 (Blue) from 100% to 0%.</p>
+<p>Gradually decrease the PWM Duty Cycle for PWM Channel 1 (Blue) from 100% to 0%. </p>
 <p>This means the Blue LED will gradually get brighter.</p>
 <div class="example-wrap"><pre class="language-bash"><code>pwm_duty_set 1 75
 pwm_duty_set 1 50
@@ -450,7 +450,7 @@ int32_t bl_pwm_stop( uint8_t id);
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c"><strong>PWM Demo Source Code: <code>main.c</code></strong></a></li>
 </ul>
 <h2 id="pwm-device-tree"><a class="doc-anchor" href="#pwm-device-tree">§</a>6.4 PWM Device Tree</h2>
-<p>There is an alternative set of functions for controlling PWM…</p>
+<p>There is an alternative set of functions for controlling PWM… </p>
 <ul>
 <li><strong>PWM Device Tree</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_pwm.h"><strong><code>hal_pwm.h</code></strong></a>, <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_pwm.c"><strong><code>hal_pwm.c</code></strong></a></li>
 </ul>

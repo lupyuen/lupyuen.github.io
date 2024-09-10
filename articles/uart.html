@@ -100,7 +100,7 @@
 <p>BL602’s UART HAL is packaged as two levels…</p>
 <ol>
 <li>
-<p><strong>Low Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_uart.c"><code>bl_uart.c</code></a></strong>: This runs on BL602 Bare Metal.</p>
+<p><strong>Low Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_uart.c"><code>bl_uart.c</code></a></strong>: This runs on BL602 Bare Metal. </p>
 <p>The Low Level HAL manipulates the BL602 UART Registers directly to perform UART functions.</p>
 </li>
 <li>
@@ -112,12 +112,12 @@
 <p>Today we shall use the <strong>Low Level UART HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_uart.c"><code>bl_uart.c</code></a></strong> because…</p>
 <ul>
 <li>
-<p>The Low Level UART HAL is <strong>simpler to understand</strong>.</p>
+<p>The Low Level UART HAL is <strong>simpler to understand</strong>. </p>
 <p>We’ll learn all about the BL602 UART Hardware by calling the Low Level HAL Functions.</p>
 <p>(No Device Tree, no AliOS)</p>
 </li>
 <li>
-<p>The Low Level UART HAL <strong>works on all Embedded Operating Systems</strong>.</p>
+<p>The Low Level UART HAL <strong>works on all Embedded Operating Systems</strong>. </p>
 <p>(Not just FreeRTOS)</p>
 </li>
 </ul>
@@ -165,7 +165,7 @@ static void display_image(char *buf, int len, int argc, char **argv) {
 <ul>
 <li>
 <p><strong>UART Port:</strong> We select <strong>UART Port 1</strong>.</p>
-<p>BL602 has 2 UART Ports: 0 and 1.</p>
+<p>BL602 has 2 UART Ports: 0 and 1. </p>
 <p>UART Port 0 is reserved for the Command-Line Interface, so we should always use UART Port 1.</p>
 </li>
 <li>
@@ -248,7 +248,7 @@ void send_begin() {
 </code></pre></div>
 <p>(Looks very similar to the First Step)</p>
 <p>And we’re done with the Start Transfer Handshake!</p>
-<p>Note that we’re polling the UART Port, which is OK because we’re mostly transmitting data, and receiving little data.</p>
+<p>Note that we’re polling the UART Port, which is OK because we’re mostly transmitting data, and receiving little data. </p>
 <p>If we’re receiving lots of data through polling, we might lose some data. For such cases, we should use UART Interrupts or DMA.</p>
 <p>(The E-Ink Display code in this article was ported from Arduino to BL602. <a href="https://github.com/Seeed-Studio/Grove_Triple_Color_E-lnk_2.13/blob/master/examples/Eink_factory_code_213/Eink_factory_code_213.ino">See this</a>)</p>
 <h1 id="display-image"><a class="doc-anchor" href="#display-image">§</a>5 Display Image</h1>
@@ -321,7 +321,7 @@ static void send_data(const uint8_t* data, uint32_t data_len) {
     }
 }
 </code></pre></div>
-<p><code>send_data</code> calls <code>bl_uart_data_send</code> (from BL602 Low Level UART HAL) to transmit the data to the UART Port, one byte at a time.</p>
+<p><code>send_data</code> calls <code>bl_uart_data_send</code> (from BL602 Low Level UART HAL) to transmit the data to the UART Port, one byte at a time. </p>
 <p>(We’ve seen this earlier during the handshake)</p>
 <p>That’s all for the UART code that talks to the E-Ink Display!</p>
 <h1 id="build-and-run-the-firmware"><a class="doc-anchor" href="#build-and-run-the-firmware">§</a>6 Build and Run the Firmware</h1>

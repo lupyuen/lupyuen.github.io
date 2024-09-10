@@ -152,7 +152,7 @@
 <p>Porting uLisp to BL602 (as a C library <a href="https://github.com/lupyuen/ulisp-bl602"><code>ulisp-bl602</code></a>) was quick and easy.</p>
 <p>(More about this in a while.)</p>
 <p><em>What about porting the Arduino functions like <code>pinmode</code> and <code>digitalwrite</code>?</em></p>
-<p>The <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master"><strong>BL602 IoT SDK</strong></a> doesn’t have these GPIO functions.</p>
+<p>The <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master"><strong>BL602 IoT SDK</strong></a> doesn’t have these GPIO functions. </p>
 <p>So in BL602 uLisp we reimplemented these functions with the <strong>BL602 Hardware Abstraction Layer for GPIO</strong>.</p>
 <p>(While exposing the same old names to uLisp programs: <code>pinmode</code> and <code>digitalwrite</code>)</p>
 <p><em>Anything else we should know about uLisp?</em></p>
@@ -365,17 +365,17 @@ blflash flash c:\blflash\sdk_app_ulisp.bin --port COM5
 <p>We run the <code>blinky</code> function like so…</p>
 <div class="example-wrap"><pre class="language-text"><code>( blinky )
 </code></pre></div>
-<p>And the <strong>LED blinks every second!</strong></p>
+<p>And the <strong>LED blinks every second!</strong> </p>
 <p>(Restart the board to stop it, sorry)</p>
 <p><a href="https://youtu.be/TN4OaZNGjOA"><strong>Watch the demo on YouTube</strong></a></p>
 <p><a href="http://www.ulisp.com/show?1AEK">(Based on the Blinky function from uLisp)</a></p>
 <h1 id="now-add-blockly"><a class="doc-anchor" href="#now-add-blockly">§</a>4 Now add Blockly</h1>
 <p>According to the <a href="https://developers.google.com/blockly/guides/overview">Blockly Overview</a>…</p>
 <blockquote>
-<p>Blockly is a library that adds a <strong>visual code editor</strong> to web and mobile apps.</p>
+<p>Blockly is a library that adds a <strong>visual code editor</strong> to web and mobile apps. </p>
 </blockquote>
 <blockquote>
-<p>The Blockly editor uses <strong>interlocking, graphical blocks</strong> to represent code concepts like variables, logical expressions, loops, and more.</p>
+<p>The Blockly editor uses <strong>interlocking, graphical blocks</strong> to represent code concepts like variables, logical expressions, loops, and more. </p>
 </blockquote>
 <blockquote>
 <p>It allows users to apply programming principles <strong>without having to worry about syntax</strong> or the intimidation of a blinking cursor on the command line.</p>
@@ -684,7 +684,7 @@ async function runWebSerialCommand(command, expectedResponse) {
 <ol>
 <li>
 <p><strong>No Heap Memory, just Static Memory</strong></p>
-<p>uLisp needs only Static Memory, no Heap Memory.</p>
+<p>uLisp needs only Static Memory, no Heap Memory. </p>
 <p>This makes uLisp highly portable across microcontrollers: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L193-L194"><code>ulisp.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define WORKSPACESIZE     8000  //  Cells (8*bytes)
 #define SYMBOLTABLESIZE   1024  //  Bytes
@@ -694,7 +694,7 @@ char SymbolTable[SYMBOLTABLESIZE];
 </code></pre></div></li>
 <li>
 <p><strong>Reading from BL602 Flash Memory is simpler</strong></p>
-<p>On Arduino we access Flash Memory by calling <code>PSTR</code>.</p>
+<p>On Arduino we access Flash Memory by calling <code>PSTR</code>. </p>
 <p>That’s not necessary on BL602, so we stub out the Flash Memory functions: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L9-L11"><code>ulisp.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define PGM_P     const char *
 #define PROGMEM
@@ -1011,7 +1011,7 @@ int gserial() {
 <p>We modified these Blockly source files to load the Custom Blocks and generate uLisp code…</p>
 <ul>
 <li>
-<p><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/index.html"><code>demos/code/index.html</code></a></p>
+<p><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/index.html"><code>demos/code/index.html</code></a> </p>
 <p>This is the <strong>HTML source file</strong> for the Blockly Web Editor. (See pic above)</p>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-dcf2ffe98d7d8b4a0dd7b9f769557dbe8c9e0e726236ef229def25c956a43d8f">(See changes)</a></p>
 </li>

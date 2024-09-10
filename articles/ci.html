@@ -82,10 +82,10 @@
 <p><em>Why do we need Continuous Integration?</em></p>
 <p>Suppose we <a href="https://lupyuen.github.io/articles/pr"><strong>Submit a Pull Request</strong></a> for NuttX. We need to be sure that our Modified Code won’t break the Existing Builds in NuttX.</p>
 <p>That’s why our Pull Request will trigger the <strong>Continuous Integration Workflow</strong>, to recompile NuttX for <strong>All Hardware Platforms</strong>.</p>
-<p>(<a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0"><strong>1,594 Build Targets</strong></a> across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!)</p>
+<p>That’s <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0"><strong>1,594 Build Targets</strong></a> across Arm, RISC-V, Xtensa, AVR, i486, Simulator and more!</p>
 <p><em>What happens inside the Continuous Integration?</em></p>
 <p>Head over to the <a href="https://github.com/apache/nuttx"><strong>NuttX Repository</strong></a>…</p>
-<ol>
+<ul>
 <li>
 <p>Click <a href="https://github.com/apache/nuttx/actions/workflows/build.yml"><strong>GitHub Actions &gt; Workflows &gt; Build</strong></a></p>
 </li>
@@ -95,7 +95,7 @@
 <li>
 <p>Click <a href="https://github.com/apache/nuttx/actions/runs/10552464655/job/29231352816"><strong>Linux (arm-01) &gt; Run Builds</strong></a></p>
 </li>
-</ol>
+</ul>
 <p>We’ll see this <strong>NuttX Build for Arm32</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>====================================================================================
 Configuration/Tool: pcduino-a10/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
@@ -183,9 +183,9 @@ Config: at32f437-mini/rtc
 </li>
 </ul>
 <p><em>Is this a problem?</em></p>
-<p>Every single Pull Request will execute 24 Build Jobs in parallel.</p>
+<p>Every single Pull Request will execute 24 Build Jobs in parallel. </p>
 <p>Which needs <strong>24 GitHub Runners</strong> per Pull Request. And <a href="https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates-for-standard-runners"><strong>they ain’t cheap</strong></a>!</p>
-<p>TODO: Pic of NuttX Stats</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-ci2.png" alt="GitHub Runners for Apache NuttX RTOS" /></p>
 <h1 id="self-hosted-runners"><a class="doc-anchor" href="#self-hosted-runners">§</a>2 Self-Hosted Runners</h1>
 <p>We experiment with <strong>Self-Hosted Runners</strong> to understand what happens inside NuttX Continous Integration. We run them on two computers…</p>
 <ul>
@@ -286,6 +286,7 @@ Running job: Linux (arm-01)
 </li>
 </ul>
 <p>We’ll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS…</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-ci.jpg" alt="Continuous Integration for Apache NuttX RTOS" /></p>
 <h1 id="fetch-source-on-macos-arm64"><a class="doc-anchor" href="#fetch-source-on-macos-arm64">§</a>4 Fetch Source on macOS Arm64</h1>
 <p><em>We haven’t invoked the Runners for macOS Arm64?</em></p>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486"><strong>Fetch Source</strong></a> works OK on macOS Arm64. Let’s try it now.</p>
@@ -380,6 +381,7 @@ Current runner version: &#39;2.319.1&#39;
 <p>But it becomes a <strong>Linux Arm64 Runner</strong>, not a Linux x64 Runner. Which won’t work with our current NuttX Docker Image, which is x64 only.</p>
 <p>Unless we create a Linux Arm64 Docker Image? Like for <a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci"><strong>Compiling RISC-V Platforms</strong></a>.</p>
 <p>We’ll chat about this in <a href="https://discord.com/channels/716091708336504884/1280436444141453313"><strong>NuttX Discord Channel</strong></a>.</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-ci.jpg" alt="Continuous Integration for Apache NuttX RTOS" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>According to <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Policy</strong></a>: We should reduce to <strong>15 Concurrent GitHub Runners</strong>. How?</p>
 <ol>
@@ -429,7 +431,7 @@ Error: statfs /var/run/docker.sock: permission denied
 <p>Docker Engine <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29344966455">fails with a similar error</a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post &quot;http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&amp;tag=latest&quot;: dial unix /var/run/docker.sock: connect: permission denied
 </code></pre></div>
-<p>That’s why we apply <a href="https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue">this Docker Fix</a>.</p>
+<p>That’s why we apply <a href="https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue">this Docker Fix</a>. </p>
 <h1 id="appendix-fixes-for-macos-arm64"><a class="doc-anchor" href="#appendix-fixes-for-macos-arm64">§</a>8 Appendix: Fixes for macOS Arm64</h1>
 <p>To run the Self-Hosted Runners on macOS Arm64, we need these fixes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo mkdir /Users/runner

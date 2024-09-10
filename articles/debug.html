@@ -138,7 +138,7 @@
 </code></pre></div></li>
 </ol>
 <h2 id="install-rust"><a class="doc-anchor" href="#install-rust">§</a>1.2 Install Rust</h2>
-<p>Install Rust with support for nightly target <code>riscv32imac-unknown-none-elf</code>….</p>
+<p>Install Rust with support for nightly target <code>riscv32imac-unknown-none-elf</code>…. </p>
 <ol>
 <li>
 <p>Browse to <a href="https://rustup.rs/"><code>rustup.rs</code></a></p>
@@ -517,7 +517,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <p>Followed by the declaration of our Entry Function <code>main</code>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>main() -&gt; ! {</code></pre></div>
-<p>This means that our Rust Function <code>main</code> will be called when the firmware starts, after initialising the registers and RAM. (<a href="https://github.com/rust-embedded/riscv-rt/blob/master/asm.S">More details</a>)</p>
+<p>This means that our Rust Function <code>main</code> will be called when the firmware starts, after initialising the registers and RAM. (<a href="https://github.com/rust-embedded/riscv-rt/blob/master/asm.S">More details</a>) </p>
 <p>(The return type “<code>-&gt; !</code>” means that the function will loop forever, never returning)</p>
 <h2 id="fetch-the-peripheral-registers"><a class="doc-anchor" href="#fetch-the-peripheral-registers">§</a>5.2 Fetch the Peripheral Registers</h2>
 <p>Our BL602 Microcontroller supports multiple Peripheral Functions: Timer, UART, I2C, SPI, PWM, …</p>
@@ -621,7 +621,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <h2 id="terminating-openocd"><a class="doc-anchor" href="#terminating-openocd">§</a>6.2 Terminating OpenOCD</h2>
 <p>Before we start a new debugging session with <strong><code>Run → Start Debugging</code></strong>…</p>
 <p><em>We must always click <strong><code>Terminal → Run Build Task</code></strong> first!</em></p>
-<p>That’s because stopping the debugger will leave OpenOCD running (and locking up the connection to PineCone).</p>
+<p>That’s because stopping the debugger will leave OpenOCD running (and locking up the connection to PineCone). </p>
 <p>Clicking <strong><code>Run Build Task</code></strong> will terminate the OpenOCD task, so that the next debugging session can restart OpenOCD successfully.</p>
 <p>For Windows: Sorry we need to terminate the OpenOCD task manually with the Task Manager.</p>
 <p>In case of OpenOCD problems, check the OpenOCD log file…</p>
@@ -713,7 +713,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/debug.md"><code>lupyuen.github.io/src/debug.md</code></a></p>
 <h1 id="appendix-vscode-settings"><a class="doc-anchor" href="#appendix-vscode-settings">§</a>9 Appendix: VSCode Settings</h1><h2 id="debugger-settings"><a class="doc-anchor" href="#debugger-settings">§</a>9.1 Debugger Settings</h2>
 <p>The VSCode Debugger Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json"><code>.vscode/launch.json</code></a></p>
-<p>This file defines…</p>
+<p>This file defines… </p>
 <ul>
 <li>
 <p>Firmware Path (<code>target</code>)</p>

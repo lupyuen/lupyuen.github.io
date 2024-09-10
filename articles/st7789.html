@@ -421,7 +421,7 @@ FAR struct lcd_dev_s *board_lcd_getdev(int devno) {
 <h1 id="render-pink-screen"><a class="doc-anchor" href="#render-pink-screen">§</a>7 Render Pink Screen</h1>
 <p>In a while we’ll boot NuttX to load the ST7789 Driver but…</p>
 <p><em>How will we know if the ST7789 Driver is really working?</em></p>
-<p>Here’s an idea… Let’s <strong>render a Pink Screen</strong> at startup!</p>
+<p>Here’s an idea… Let’s <strong>render a Pink Screen</strong> at startup! </p>
 <p>This is how we do it: <a href="https://github.com/lupyuen/nuttx/blob/st7789/drivers/lcd/st7789.c#L752-L777">st7789.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Called by board_lcd_getdev during NuttX startup
 //  to init the ST7789 driver
@@ -710,7 +710,7 @@ Archive:  v8.2.0.zip
 unzip:  cannot find zipfile directory in one of v8.2.0.zip or
         v8.2.0.zip.zip, and cannot find v8.2.0.zip.ZIP, period.
 </code></pre></div>
-<p>It seems the NuttX Build needs to be fixed to support LVGL 8.</p>
+<p>It seems the NuttX Build needs to be fixed to support LVGL 8. </p>
 <p><em>LVGL 7.11.0 is the last version of LVGL 7. What happens if we switch to LVGL 7.11.0?</em></p>
 <p>NuttX Build fails when we switch to <strong>LVGL 7.11.0</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/apps/graphics/lvgl/lv_conf.h:86:50: error: incompatible types when initializing type &#39;short unsigned int&#39; using type &#39;lv_color_t&#39; {aka &#39;union &lt;anonymous&gt;&#39;}

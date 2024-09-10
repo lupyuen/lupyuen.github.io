@@ -229,7 +229,7 @@
 <p>BME280 has a <strong>Chip ID Register, at Register ID <code>0xD0</code></strong></p>
 </li>
 <li>
-<p>Reading the Chip ID Register will give us the <strong>Chip ID value <code>0x60</code></strong></p>
+<p>Reading the Chip ID Register will give us the <strong>Chip ID value <code>0x60</code></strong> </p>
 <p>(<code>0x60</code> identifies the chip as BME280. For BMP280 the Chip ID is <code>0x58</code>)</p>
 </li>
 </ol>
@@ -248,7 +248,7 @@
 <p><em>BL602 talks to BME280 over SPI, visualised by a Logic Analyser</em></p>
 <h1 id="initialise-spi-port"><a class="doc-anchor" href="#initialise-spi-port">§</a>4 Initialise SPI Port</h1>
 <p>Let’s dive into the code for our SPI Demo Firmware!</p>
-<p>Before we initialise the SPI Port, we define these constants and variables in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L45-L100"><code>sdk_app_spi_demo/demo.c</code></a></p>
+<p>Before we initialise the SPI Port, we define these constants and variables in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L45-L100"><code>sdk_app_spi_demo/demo.c</code></a> </p>
 <div class="example-wrap"><pre class="language-c"><code>/// Use SPI Port Number 0
 #define SPI_PORT   0
 
@@ -269,7 +269,7 @@ static spi_dev_t spi;
 <p><code>spi</code> is the device instance of the SPI Port</p>
 </li>
 </ul>
-<p>Our demo firmware initialises the SPI Port in the function <code>test_spi_init</code> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L45-L100"><code>sdk_app_spi_demo/demo.c</code></a></p>
+<p>Our demo firmware initialises the SPI Port in the function <code>test_spi_init</code> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L45-L100"><code>sdk_app_spi_demo/demo.c</code></a> </p>
 <div class="example-wrap"><pre class="language-c"><code>/// Init the SPI Port
 static void test_spi_init(char *buf, int len, int argc, char **argv) {
     //  Configure the SPI Port
@@ -330,7 +330,7 @@ static void test_spi_init(char *buf, int len, int argc, char **argv) {
 <p><strong>SPI Clock Pin:</strong> We select <strong>Pin 3</strong></p>
 </li>
 <li>
-<p><strong>Unused SPI Chip Select Pin:</strong> We select <strong>Pin 2</strong>.</p>
+<p><strong>Unused SPI Chip Select Pin:</strong> We select <strong>Pin 2</strong>. </p>
 <p>We won’t connect this pin to BME280, but it must NOT be the same as the Actual Chip Select Pin (14)</p>
 <p>(More about Chip Select later)</p>
 </li>
@@ -662,7 +662,7 @@ spi_transfer             : Transfer SPI data
 spi_result               : Show SPI data received
 </code></pre></div></li>
 <li>
-<p>First we <strong>initialise our SPI Port</strong>.</p>
+<p>First we <strong>initialise our SPI Port</strong>. </p>
 <p>Enter this command…</p>
 <div class="example-wrap"><pre class="language-text"><code>spi_init
 </code></pre></div>
@@ -836,7 +836,7 @@ assert(rc == 0);
 </tbody></table>
 </div>
 <p>This works perfectly fine, though it contradicts the BL602 Reference Manual.</p>
-<p>Because of this bug, we shall refer to <strong>Pin 1 as Serial Data In</strong> <em>(formerly MISO)</em>, and <strong>Pin 4 as Serial Data Out</strong> <em>(formerly MOSI)</em>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L45-L100"><code>sdk_app_spi_demo/demo.c</code></a></p>
+<p>Because of this bug, we shall refer to <strong>Pin 1 as Serial Data In</strong> <em>(formerly MISO)</em>, and <strong>Pin 4 as Serial Data Out</strong> <em>(formerly MOSI)</em>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L45-L100"><code>sdk_app_spi_demo/demo.c</code></a> </p>
 <div class="example-wrap"><pre class="language-c"><code>//  Configure the SPI Port
 int rc = spi_init(
     ...
@@ -847,7 +847,7 @@ int rc = spi_init(
 <p><a href="https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped"><strong>UPDATE:</strong> We may call GLB_Swap_SPI_0_MOSI_With_MISO to swap the two SPI Data Pins. (See this)</a></p>
 <h1 id="spi-phase-looks-sus"><a class="doc-anchor" href="#spi-phase-looks-sus">§</a>9 SPI Phase looks sus</h1>
 <p>Here’s another spooky problem: <strong>BL602 SPI Phase seems incorrect</strong>.</p>
-<p>Earlier we have configured BL602 for <strong>SPI Polarity 0 (CPOL), Phase 1 (CPHA)</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L45-L100"><code>sdk_app_spi_demo/demo.c</code></a></p>
+<p>Earlier we have configured BL602 for <strong>SPI Polarity 0 (CPOL), Phase 1 (CPHA)</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L45-L100"><code>sdk_app_spi_demo/demo.c</code></a> </p>
 <div class="example-wrap"><pre class="language-c"><code>//  Configure the SPI Port
 int rc = spi_init(
     ...
@@ -879,7 +879,7 @@ int rc = spi_init(
 <p>To summarise the spooky mysteries we have observed on BL602 SPI…</p>
 <ol>
 <li>
-<p>SPI Pins for <strong>Serial Data In</strong> and <strong>Serial Data Out</strong> seem to be flipped, when observed with a Logic Analyser.</p>
+<p>SPI Pins for <strong>Serial Data In</strong> and <strong>Serial Data Out</strong> seem to be flipped, when observed with a Logic Analyser. </p>
 <p>This contradicts the BL602 Reference Manual.</p>
 <p>To fix this, we <strong>flip the Serial Data In and Serial Data Out Pins</strong>.</p>
 </li>
@@ -907,7 +907,7 @@ int rc = spi_init(
 <p>We may port the BL602 SPI HAL to other operating systems by <strong>emulating these FreeRTOS functions for Event Groups</strong>…</p>
 <ol>
 <li>
-<p><code>xEventGroupCreate</code>: Create an Event Group</p>
+<p><code>xEventGroupCreate</code>: Create an Event Group </p>
 <p>(Used by the DMA Interrupt Handlers to notify the Foreground Task)</p>
 </li>
 <li>
@@ -1181,7 +1181,7 @@ READ: 0x60
 <p>We haven’t modified any logic in the SPI HAL. (Though we have added some debug code to understand how the HAL works)</p>
 <p>We added the function <code>spi_init</code> to initialise the SPI Port without using the AliOS Device Tree.</p>
 <h2 id="definitions"><a class="doc-anchor" href="#definitions">§</a>16.1 Definitions</h2>
-<p><code>HAL_SPI_DEBUG</code> is presently set to <code>1</code> to enable debug messages.</p>
+<p><code>HAL_SPI_DEBUG</code> is presently set to <code>1</code> to enable debug messages. </p>
 <p>For production we should change this to <code>0</code>.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L57-L58"><code>bl602_hal/hal_spi.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  TODO: Change to 0 for production to disable logging
@@ -1204,7 +1204,7 @@ READ: 0x60
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L524-L591"><code>vfs_spi_init_fullname</code></a></p>
 </li>
 </ul>
-<p>Note that there is only a <strong>single global instance of SPI Data.</strong></p>
+<p>Note that there is only a <strong>single global instance of SPI Data.</strong> </p>
 <p><strong><code>spi_init</code> shall only be called once by our firmware.</strong></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L838-L886"><code>bl602_hal/hal_spi.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Global single instance of SPI Data. 
@@ -1627,7 +1627,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         return -1;
     }
 </code></pre></div>
-<p><strong>For every chunk of SPI Transfer (max 2048 bytes):</strong></p>
+<p><strong>For every chunk of SPI Transfer (max 2048 bytes):</strong> </p>
 <p>We create the DMA Requests for each chunk of SPI Transmit and SPI Receive (max 2048 bytes)…</p>
 <div class="example-wrap"><pre class="language-c"><code>    for (i = 0; i &lt; count; i++) {
 </code></pre></div>

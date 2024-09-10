@@ -188,7 +188,7 @@ smh_call():
 <blockquote>
 <p>“EBREAK was primarily designed to be used by a debugger to cause execution to stop and fall back into the debugger”</p>
 </blockquote>
-<p>OK thanks but we’re not doing any debugging!</p>
+<p>OK thanks but we’re not doing any debugging! </p>
 <p>The next part is more helpful…</p>
 <blockquote>
 <p>“Another use of EBREAK is to support <strong>Semihosting</strong>, where the execution environment includes a debugger that can provide services over an Alternate System Call Interface built around the EBREAK instruction”</p>
@@ -836,7 +836,7 @@ printenv bootcmd_tftp
 saveenv
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp">(Remember to set <strong>tftp_server</strong> and <strong>boot_targets</strong>)</a></p>
-<p>Run the above commands in U-Boot.</p>
+<p>Run the above commands in U-Boot. </p>
 <p>Copy the Initial RAM Disk <strong>initrd</strong> to the TFTP Folder…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Binary Image, Device Tree and
 ## Initial RAM Disk to TFTP Folder
@@ -913,10 +913,10 @@ $ booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
 <p>RTOS Features &gt; RTOS hooks &gt; Custom board late initialization</p>
 </li>
 <li>
-<p>File Systems &gt; ROMFS file system</p>
+<p>File Systems &gt; ROMFS file system </p>
 </li>
 <li>
-<p>RTOS Features &gt; Tasks and Scheduling &gt; Auto-mount init file system</p>
+<p>RTOS Features &gt; Tasks and Scheduling &gt; Auto-mount init file system </p>
 <p>Set to <code>/system/bin</code></p>
 </li>
 <li>
@@ -945,7 +945,7 @@ CONFIG_INIT_MOUNT_SOURCE=&quot;&quot;
 <h1 id="appendix-ram-disk-address-for-risc-v-qemu"><a class="doc-anchor" href="#appendix-ram-disk-address-for-risc-v-qemu">§</a>12 Appendix: RAM Disk Address for RISC-V QEMU</h1>
 <p><em>We need the RAM Disk Address for RISC-V QEMU…</em></p>
 <p><em>Can we enable logging for RISC-V QEMU?</em></p>
-<p>Yep we use this QEMU Option: <strong><code>-trace "*"</code></strong></p>
+<p>Yep we use this QEMU Option: <strong><code>-trace &quot;*&quot;</code></strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start NuttX on QEMU
 ## with Initial RAM Disk `initrd`
 qemu-system-riscv64 \

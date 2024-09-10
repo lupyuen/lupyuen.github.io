@@ -177,7 +177,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
   );    
   assert(res == CborNoError);
 </code></pre></div>
-<p>The last parameter (<code>1</code>) is important: It must match the <strong>Number of Key-Value Pairs</strong> (like <code>"t": 1234</code>) that we shall encode.</p>
+<p>The last parameter (<code>1</code>) is important: It must match the <strong>Number of Key-Value Pairs</strong> (like <code>&quot;t&quot;: 1234</code>) that we shall encode.</p>
 <h2 id="encode-key-and-value"><a class="doc-anchor" href="#encode-key-and-value">§</a>1.3 Encode Key and Value</h2>
 <p>We encode the <strong>Key</strong> (“<code>t</code>”) into the CBOR Map…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Key
@@ -397,7 +397,7 @@ static void test_cbor2( ... ) {
 <p>(Negative integers only)</p>
 </li>
 <li>
-<p><strong>Floating-Point Number</strong> (16, 32 or 64 bits):</p>
+<p><strong>Floating-Point Number</strong> (16, 32 or 64 bits): </p>
 <p>(See the next chapter)</p>
 </li>
 </ul>

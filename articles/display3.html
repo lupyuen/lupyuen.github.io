@@ -398,7 +398,7 @@ saveenv
 ## Run the U-Boot Script to power up the Video Output
 run video_on
 </code></pre></div>
-<p>The U-Boot Script <strong><code>video_on</code></strong> is saved into our SBC’s <strong>Internal Flash Memory</strong>.</p>
+<p>The U-Boot Script <strong><code>video_on</code></strong> is saved into our SBC’s <strong>Internal Flash Memory</strong>. </p>
 <p>Which means we can switch on our SBC and run the script anytime…</p>
 <div class="example-wrap"><pre class="language-text"><code># run video_on
 295c0000: 00000004 00000004 00000004 0000000c  ................
@@ -508,7 +508,7 @@ run display_on
 <li>
 <p><strong>Chip ID</strong>: DC8200 AHB0 Offset <strong><code>0x30</code></strong></p>
 <p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/memory_map_display.html">(<strong>DC8200 AHB0</strong> Base Address is <strong><code>0x2940</code> <code>0000</code></strong>)</a></p>
-<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">(Source)</a></p>
+<p><a href="https://github.com/starfive-tech/linux/blob/JH7110_VisionFive2_devel/drivers/gpu/drm/verisilicon/vs_dc_hw.c#L1301-L1361">(Source)</a> </p>
 </li>
 </ul>
 <p>This is how we dump the <strong>Hardware Revision</strong> and <strong>Chip ID</strong> in U-Boot…</p>
