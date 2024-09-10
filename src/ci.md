@@ -148,7 +148,7 @@ Install __Self-Hosted Runners__ for Linux x64 and macOS Arm64...
 
 - Apply the [__Fixes for Linux Runners__](https://lupyuen.github.io/articles/ci#appendix-fixes-for-ubuntu-x64)
 
-- And apply the [__Fixes for macOS Runners__](https://lupyuen.github.io/articles/ci#appendix-fixes-for-macos-arm64)
+- And the [__Fixes for macOS Runners__](https://lupyuen.github.io/articles/ci#appendix-fixes-for-macos-arm64)
 
 They will run like this...
 
@@ -187,7 +187,7 @@ _Our Self-Hosted Runners: Do they work for NuttX Builds?_
 
 According to [__the result here__](https://github.com/lupyuen3/runner-nuttx/actions), yep [__they work yay__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343)!
 
-That's __2 hours__ on a 10-year-old MacBook Pro with Intel i7.
+That's __2 hours__ on a 10-year-old MacBook Pro with Intel i7 on Ubuntu.
 
 (Compare that with __GitHub Runners__, which will take __30 mins__ per job)
 
@@ -248,6 +248,8 @@ Change __`runs-on`__ to...
 ```
 
 [__According to our log__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486), Fetch Source runs OK on macOS Arm64.
+
+(Completes in about a minute)
 
 _How is Fetch Source used?_
 
