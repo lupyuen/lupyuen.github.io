@@ -364,7 +364,7 @@ Here's macOS Arm64 __emulating Ubuntu x64__ (24.04.1 LTS) with 4GB RAM...
 
 - [__Build for arm-04__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29456380032)
 
-Does UTM Emulator work for NuttX Docker Builds? Yeah kinda.
+Does UTM Emulator work for NuttX Docker Builds? Yeah kinda...
 
 But how long to build? __4 hours!__
 
