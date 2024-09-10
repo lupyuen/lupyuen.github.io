@@ -17,7 +17,7 @@
 <meta name="description" 
     content="">
 <meta property="og:image" 
-    content="https://lupyuen.github.io/images/ci-title.jpg">
+    content="https://lupyuen.github.io/images/nuttx-ci.jpg">
 <meta property="og:type" 
     content="article" data-rh="true">
 <link rel="canonical"
@@ -65,33 +65,20 @@
 
     <h1 class="title">Continuous Integration for Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#continuous-integration-for-nuttx">1 Continuous Integration for NuttX</a><ul></ul></li>
-<li><a href="#one-thousand-build-targets">2 One Thousand Build Targets</a><ul></ul></li>
-<li><a href="#self-hosted-runners">3 Self-Hosted Runners</a><ul></ul></li>
-<li><a href="#running-the-runners">4 Running the Runners</a><ul></ul></li>
-<li><a href="#fetch-source-on-macos-arm64">5 Fetch Source on macOS Arm64</a><ul></ul></li>
-<li><a href="#utm-emulator-for-macos-arm64">6 UTM Emulator for macOS Arm64</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-fixes-for-ubuntu-x64">8 Appendix: Fixes for Ubuntu x64</a><ul></ul></li>
-<li><a href="#appendix-fixes-for-macos-arm64">9 Appendix: Fixes for macOS Arm64</a><ul></ul></li>
-<li><a href="#appendix-documentation-build-for-nuttx">10 Appendix: Documentation Build for NuttX</a><ul></ul></li>
-<li><a href="#appendix-nuttx-ci-for-macos">11 Appendix: NuttX CI for macOS</a><ul></ul></li>
-<li><a href="#appendix-ubuntu-x64-runner-in-action">12 Appendix: Ubuntu x64 Runner In Action</a><ul>
-<li><a href="#intel-pc-with-ubuntu-x64">12.1 Intel PC with Ubuntu x64</a><ul></ul></li>
-<li><a href="#macos-arm64-with-utm-emulator">12.2 macOS Arm64 with UTM Emulator</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 Sep 2024</em></p>
-<p><img src="https://lupyuen.github.io/images/ci-title.jpg" alt="TODO" /></p>
-<p>TODO</p>
-<p><em>Why are we doing this?</em></p>
-<ul>
-<li>
-<p>It’s a great way to understand the Internals of NuttX CI!</p>
-</li>
-<li>
-<p>In case we need to reduce <a href="https://docs.google.com/spreadsheets/d/1gY0VrSJvouXwDIclspQCFoBcoHhNCbGicNoVJRhJ-h4/edit?gid=0#gid=0"><strong>GitHub Hosting Costs</strong></a>. Or if we need to run the NuttX CI privately.</p>
-</li>
-</ul>
-<p>TODO: Pic of GitHub Actions &gt; Workflows &gt; Build</p>
-<h1 id="continuous-integration-for-nuttx"><a class="doc-anchor" href="#continuous-integration-for-nuttx">§</a>1 Continuous Integration for NuttX</h1>
+<li><a href="#one-thousand-build-targets">1 One Thousand Build Targets</a><ul></ul></li>
+<li><a href="#self-hosted-runners">2 Self-Hosted Runners</a><ul></ul></li>
+<li><a href="#running-the-runners">3 Running the Runners</a><ul></ul></li>
+<li><a href="#fetch-source-on-macos-arm64">4 Fetch Source on macOS Arm64</a><ul></ul></li>
+<li><a href="#utm-emulator-for-macos-arm64">5 UTM Emulator for macOS Arm64</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-fixes-for-ubuntu-x64">7 Appendix: Fixes for Ubuntu x64</a><ul></ul></li>
+<li><a href="#appendix-fixes-for-macos-arm64">8 Appendix: Fixes for macOS Arm64</a><ul></ul></li>
+<li><a href="#appendix-documentation-build-for-nuttx">9 Appendix: Documentation Build for NuttX</a><ul></ul></li>
+<li><a href="#appendix-nuttx-ci-for-macos">10 Appendix: NuttX CI for macOS</a><ul></ul></li>
+<li><a href="#appendix-ubuntu-x64-runner-in-action">11 Appendix: Ubuntu x64 Runner In Action</a><ul>
+<li><a href="#intel-pc-with-ubuntu-x64">11.1 Intel PC with Ubuntu x64</a><ul></ul></li>
+<li><a href="#macos-arm64-with-utm-emulator">11.2 macOS Arm64 with UTM Emulator</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 Sep 2024</em></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-ci.jpg" alt="Continuous Integration for Apache NuttX RTOS" /></p>
 <p><em>Why do we need Continuous Integration?</em></p>
 <p>Suppose we <a href="https://lupyuen.github.io/articles/pr"><strong>Submit a Pull Request</strong></a> for NuttX. We need to be sure that our Modified Code won’t break the Existing Builds in NuttX.</p>
 <p>That’s why our Pull Request will trigger the <strong>Continuous Integration Workflow</strong>, to recompile NuttX for <strong>All Hardware Platforms</strong>.</p>
@@ -167,7 +154,7 @@ Config: at32f437-mini/rtc
 </li>
 </ul>
 <p>Each of the above 24 jobs will run for <strong>30 minutes to 2 hours</strong>. After 2 hours, we’ll know for sure whether our Modified Code will break any NuttX Build!</p>
-<h1 id="one-thousand-build-targets"><a class="doc-anchor" href="#one-thousand-build-targets">§</a>2 One Thousand Build Targets</h1>
+<h1 id="one-thousand-build-targets"><a class="doc-anchor" href="#one-thousand-build-targets">§</a>1 One Thousand Build Targets</h1>
 <p><em>Each of the 24 jobs above will run up to 2 hours. Why?</em></p>
 <p>That’s because the 24 Build Jobs will <strong>recompile 1,594 NuttX Targets</strong> from scratch!</p>
 <p>Here’s the <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0"><strong>complete list of Build Targets</strong></a>…</p>
@@ -207,7 +194,7 @@ Config: at32f437-mini/rtc
 <p><em>Isn’t this a little excessive?</em></p>
 <p>TODO: But we don’t know which platforms are impacted!</p>
 <p>TODO: Switch to Self-Hosted Runners</p>
-<h1 id="self-hosted-runners"><a class="doc-anchor" href="#self-hosted-runners">§</a>3 Self-Hosted Runners</h1>
+<h1 id="self-hosted-runners"><a class="doc-anchor" href="#self-hosted-runners">§</a>2 Self-Hosted Runners</h1>
 <p>We experiment with <strong>Self-Hosted Runners</strong> to understand what’s happens inside NuttX Continous Integration. We run them on two computers…</p>
 <ul>
 <li>
@@ -270,7 +257,7 @@ Running job: TODO
 <p><strong>Shut Down the Runners</strong> when we’re done with testing</p>
 </li>
 </ul>
-<h1 id="running-the-runners"><a class="doc-anchor" href="#running-the-runners">§</a>4 Running the Runners</h1>
+<h1 id="running-the-runners"><a class="doc-anchor" href="#running-the-runners">§</a>3 Running the Runners</h1>
 <p><em>Our Self-Hosted Runners: Do they work for NuttX Builds?</em></p>
 <p>Check out <a href="https://github.com/lupyuen3/runner-nuttx/actions"><strong>the result here</strong></a>.</p>
 <p>Yep <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343"><strong>it works yay</strong></a>! That’s <strong>2 hours</strong> on a 10-year-old MacBook Pro with Intel i7.</p>
@@ -300,7 +287,7 @@ Running job: TODO
 <p>Sadly the <a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml"><strong>Linux Builds</strong></a> won’t run on macOS Arm64 because they need <strong>Docker on Linux x64</strong>…</p>
 <p>TODO: Docker Articles</p>
 <p>We’ll talk about Emulating x64 on macOS Arm64. But first we run Fetch Source on macOS…</p>
-<h1 id="fetch-source-on-macos-arm64"><a class="doc-anchor" href="#fetch-source-on-macos-arm64">§</a>5 Fetch Source on macOS Arm64</h1>
+<h1 id="fetch-source-on-macos-arm64"><a class="doc-anchor" href="#fetch-source-on-macos-arm64">§</a>4 Fetch Source on macOS Arm64</h1>
 <p><em>We haven’t invoked the Runners for macOS Arm64?</em></p>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486"><strong><code>Fetch-Source</code></strong></a> works OK on macOS Arm64. Let’s try it now.</p>
 <p>Head over to our NuttX Repo and update the <strong>GitHub Actions Workflow</strong>: <a href="https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721">.github/workflows/build.yml</a></p>
@@ -321,7 +308,7 @@ jobs:
 <p><em>Anything else we can run on macOS Arm64?</em></p>
 <p>TODO: Appendix Other macOS Builds</p>
 <p>TODO: Appendix Doc Build</p>
-<h1 id="utm-emulator-for-macos-arm64"><a class="doc-anchor" href="#utm-emulator-for-macos-arm64">§</a>6 UTM Emulator for macOS Arm64</h1>
+<h1 id="utm-emulator-for-macos-arm64"><a class="doc-anchor" href="#utm-emulator-for-macos-arm64">§</a>5 UTM Emulator for macOS Arm64</h1>
 <p><em>So NuttX Builds run better with a huge x64 Ubuntu PC. Can we make macOS on Arm64 more useful?</em></p>
 <p>Let’s test <a href="https://mac.getutm.app/"><strong>UTM Emulator for macOS Arm64</strong></a>, to emulate Ubuntu x64. (Spoiler: It’s really slow!)</p>
 <p>On a super duper Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with <strong>32 CPUs and 4 GB RAM</strong> (because we don’t need much RAM)</p>
@@ -388,7 +375,7 @@ Current runner version: &#39;2.319.1&#39;
 <p>TODO But Then: It becomes a Linux Arm64 Runner, not a Linux x64 Runner. Which won’t work with our current NuttX CI Docker Image, which is x64 only.</p>
 <p>TODO: Unless: We create a Linux Arm64 Docker Image for NuttX CI? Like for <a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci">Compiling RISC-V Platforms</a>?</p>
 <p>TODO: We’ll chat about this in <a href="https://discord.com/channels/716091708336504884/1280436444141453313"><strong>NuttX Discord Channel</strong></a>.</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
 <p>TODO: We might need a quicker way to “fail fast” and prevent other CI Jobs from running? Which will reduce the number of Runners?</p>
 <p>TODO: What if we could start earlier the CI Jobs that are impacted by the Modified Code in the PR? So if I modify something for Ox64 BL808 SBC, it should start the CI Job for <code>ox64:nsh</code>. If it fails, then don’t bother with the rest of the Arm / RISC-V / Simulator jobs.</p>
@@ -399,18 +386,6 @@ Current runner version: &#39;2.319.1&#39;
 <p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Other Project: “NuttX for Ox64 BL808”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>Older Project: “NuttX for Star64 JH7110”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
-</li>
-<li>
 <p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
 </li>
 <li>
@@ -419,7 +394,7 @@ Current runner version: &#39;2.319.1&#39;
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md"><strong>lupyuen.github.io/src/ci.md</strong></a></p>
-<h1 id="appendix-fixes-for-ubuntu-x64"><a class="doc-anchor" href="#appendix-fixes-for-ubuntu-x64">§</a>8 Appendix: Fixes for Ubuntu x64</h1>
+<h1 id="appendix-fixes-for-ubuntu-x64"><a class="doc-anchor" href="#appendix-fixes-for-ubuntu-x64">§</a>7 Appendix: Fixes for Ubuntu x64</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>## TODO: Install Docker Engine: https://docs.docker.com/engine/install/ubuntu/
 ## TODO: Apply this fix: https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue
@@ -447,7 +422,7 @@ cd $HOME/actions-runner
 <p>TODO: Podman Docker on Linux x64 <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677">fails with this error</a>. Might be a <a href="https://github.com/containers/podman/discussions/14238">problem with Podman</a>.</p>
 <div class="example-wrap"><pre class="language-text"><code>Writing manifest to image destination
 Error: statfs /var/run/docker.sock: permission denied
-</code></pre></div><h1 id="appendix-fixes-for-macos-arm64"><a class="doc-anchor" href="#appendix-fixes-for-macos-arm64">§</a>9 Appendix: Fixes for macOS Arm64</h1>
+</code></pre></div><h1 id="appendix-fixes-for-macos-arm64"><a class="doc-anchor" href="#appendix-fixes-for-macos-arm64">§</a>8 Appendix: Fixes for macOS Arm64</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo mkdir /Users/runner
 sudo chown $USER /Users/runner
@@ -456,7 +431,7 @@ ls -ld /Users/runner
 
 ## Maybe need pip?
 brew install python
-</code></pre></div><h1 id="appendix-documentation-build-for-nuttx"><a class="doc-anchor" href="#appendix-documentation-build-for-nuttx">§</a>10 Appendix: Documentation Build for NuttX</h1>
+</code></pre></div><h1 id="appendix-documentation-build-for-nuttx"><a class="doc-anchor" href="#appendix-documentation-build-for-nuttx">§</a>9 Appendix: Documentation Build for NuttX</h1>
 <p>TODO</p>
 <p><em>Does it work for Documentation Build?</em></p>
 <ul>
@@ -507,7 +482,7 @@ Error: File was unable to be removed Error: EACCES: permission denied, rmdir &#3
 <p>TODO: Check the rmdir directory</p>
 </li>
 </ul>
-<h1 id="appendix-nuttx-ci-for-macos"><a class="doc-anchor" href="#appendix-nuttx-ci-for-macos">§</a>11 Appendix: NuttX CI for macOS</h1>
+<h1 id="appendix-nuttx-ci-for-macos"><a class="doc-anchor" href="#appendix-nuttx-ci-for-macos">§</a>10 Appendix: NuttX CI for macOS</h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -538,13 +513,13 @@ xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected e
 <p>TODO: Do we change the toolchain from x64 to Arm64?</p>
 </li>
 </ul>
-<h1 id="appendix-ubuntu-x64-runner-in-action"><a class="doc-anchor" href="#appendix-ubuntu-x64-runner-in-action">§</a>12 Appendix: Ubuntu x64 Runner In Action</h1>
+<h1 id="appendix-ubuntu-x64-runner-in-action"><a class="doc-anchor" href="#appendix-ubuntu-x64-runner-in-action">§</a>11 Appendix: Ubuntu x64 Runner In Action</h1>
 <p>TODO</p>
-<h2 id="intel-pc-with-ubuntu-x64"><a class="doc-anchor" href="#intel-pc-with-ubuntu-x64">§</a>12.1 Intel PC with Ubuntu x64</h2>
+<h2 id="intel-pc-with-ubuntu-x64"><a class="doc-anchor" href="#intel-pc-with-ubuntu-x64">§</a>11.1 Intel PC with Ubuntu x64</h2>
 <p>TODO</p>
 <p>Our 10-year-old MacBook Pro (Intel i7) hits 100% when running the Linux Build for NuttX CI: <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343">Build for arm-02</a></p>
 <p><img src="https://github.com/user-attachments/assets/2e2861bc-6af0-48f4-b3a1-d0083cd23155" alt="linux-build" /></p>
-<h2 id="macos-arm64-with-utm-emulator"><a class="doc-anchor" href="#macos-arm64-with-utm-emulator">§</a>12.2 macOS Arm64 with UTM Emulator</h2>
+<h2 id="macos-arm64-with-utm-emulator"><a class="doc-anchor" href="#macos-arm64-with-utm-emulator">§</a>11.2 macOS Arm64 with UTM Emulator</h2>
 <p>TODO</p>
 <p>On a powerful Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with 32 CPUs and 4 GB RAM (we don’t need much RAM)</p>
 <p><img src="https://github.com/user-attachments/assets/5ff0d94e-4a04-4cf4-8f0a-8e0ee9d1cd59" alt="Screenshot 2024-08-29 at 10 08 07 PM" /></p>
