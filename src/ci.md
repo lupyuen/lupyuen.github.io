@@ -197,7 +197,7 @@ _Do we need a faster PC?_
 
 Not necessarily. We see some __Network Throttling__ for our Self-Hosted Runners (in spite of our super-fast internet)...
 
-- __Docker Hub__ will throttle our downloading of the NuttX Docker Image. Which is required for building the NuttX Targets.
+- __Docker Hub__ will throttle our downloading of the NuttX Docker Image. Which is required for [__building the NuttX Targets__](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci).
 
   If it gets too slow, cancel the GitHub Workflow and restart. Throttling will magically disappear.
 
@@ -249,7 +249,7 @@ Change __`runs-on`__ to...
 
 [__According to our log__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486), Fetch Source runs OK on macOS Arm64.
 
-(Completes in about a minute)
+(Completes in about a minute, 700 MB GitHub Uploads are surprisingly quick)
 
 _How is Fetch Source used?_
 
