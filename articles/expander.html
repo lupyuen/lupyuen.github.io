@@ -445,7 +445,7 @@ static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pin
 <p>Note that the Interrupt Callback runs in the <strong>BL602 Interrupt Context</strong>.</p>
 <p>Be careful!</p>
 <h2 id="gpio-command"><a class="doc-anchor" href="#gpio-command">§</a>4.3 GPIO Command</h2>
-<p>Another way to test the Push Button Interrupt is to use the <strong>GPIO Command</strong>. </p>
+<p>Another way to test the Push Button Interrupt is to use the <strong>GPIO Command</strong>.</p>
 <p>(This only works if we don’t call <strong>IOEP_ATTACH</strong> to attach the Interrupt Callback)</p>
 <p>Enter this in the NuttX Shell…</p>
 <div class="example-wrap"><pre class="language-bash"><code>gpio -t 8 -w 1 /dev/gpio12
@@ -1067,7 +1067,7 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
   memset(gpio_is_used, 0, sizeof(gpio_is_used));
 </code></pre></div>
 <p>Now we handle the <strong>GPIO Inputs</strong>.</p>
-<p>Given the BL602 Pinset (from the Pin Definition), we call 
+<p>Given the BL602 Pinset (from the Pin Definition), we call
 <a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a> to <strong>configure each GPIO Input</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Configure and register the GPIO Inputs */
   for (int i = 0; i &lt; gpio_input_count; i++)

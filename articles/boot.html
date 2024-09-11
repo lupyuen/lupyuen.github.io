@@ -244,7 +244,7 @@ int main(void) {
 <p><strong>Outer Loop “<code>while</code>”</strong>: Loops until the writing (or rollback) of Application Firmware is complete</p>
 </li>
 <li>
-<p><strong>Inner Loop “<code>do</code>”</strong>: Loops through the Partition Table Entries until the writing of Application Firmware to XIP Flash Memory is complete </p>
+<p><strong>Inner Loop “<code>do</code>”</strong>: Loops through the Partition Table Entries until the writing of Application Firmware to XIP Flash Memory is complete</p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-c"><code>  while (1) {
@@ -536,7 +536,7 @@ len      = 0
 <p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table">(From this BL602 Partition Table)</a></p>
 <p>This Partition Table Entry says that our Application Firmware (compressed) is located in the Flash Image at <strong>offset <code>0x10000</code> with size <code>0xC8000</code></strong> (compressed).</p>
 <p>(But why are there two firmware sections <code>0x10000</code> and <code>0xD8000</code>?)</p>
-<p>With this information, our Bootloader will be able to decompress the Application Firmware and write to XIP Flash Memory… </p>
+<p>With this information, our Bootloader will be able to decompress the Application Firmware and write to XIP Flash Memory…</p>
 <div class="example-wrap"><pre class="language-c"><code>static int BLSP_Boot2_Do_FW_Copy( ... ) {
   //  Fetch the Partition Table Entry for the Application Firmware
   uint8_t activeIndex = ptEntry-&gt;activeIndex;

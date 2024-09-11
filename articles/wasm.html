@@ -94,7 +94,7 @@
 <p>So that Embedded Developers may <strong>preview their Blockly uLisp Apps in the Web Browser</strong>?</p>
 </li>
 </ol>
-<p>Today we shall build a simple simulator for the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V + WiFi SoC</strong></a> that will run Blockly uLisp Apps in a Web Browser. </p>
+<p>Today we shall build a simple simulator for the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V + WiFi SoC</strong></a> that will run Blockly uLisp Apps in a Web Browser.</p>
 <p>(No BL602 hardware needed!)</p>
 <ul>
 <li><a href="https://youtu.be/Ag2CERd1OzQ"><strong>Watch the BL602 Simulator demo on YouTube</strong></a></li>
@@ -114,11 +114,11 @@
     -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=[ &#39;cwrap&#39;, &#39;allocate&#39;, &#39;intArrayFromString&#39;, &#39;UTF8ToString&#39; ]&quot;
 </code></pre></div>
 <p>(See the Makefile <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm.mk"><strong><code>wasm.mk</code></strong></a>. More about <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c"><strong><code>wasm.c</code></strong></a> in a while)</p>
-<p>C programs that call the <strong>Standard C Libraries</strong> should build OK with Emscripten: <code>printf</code>, <code>&lt;stdio.h&gt;</code>, <code>&lt;stdlib.h&gt;</code>, <code>&lt;string.h&gt;</code>, … </p>
+<p>C programs that call the <strong>Standard C Libraries</strong> should build OK with Emscripten: <code>printf</code>, <code>&lt;stdio.h&gt;</code>, <code>&lt;stdlib.h&gt;</code>, <code>&lt;string.h&gt;</code>, …</p>
 <p>The Emscripten Compiler generates 3 output files…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.wasm"><strong><code>ulisp.wasm</code></strong></a>: Contains the <strong>WebAssembly Code</strong> generated for our C program. </p>
+<p><a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.wasm"><strong><code>ulisp.wasm</code></strong></a>: Contains the <strong>WebAssembly Code</strong> generated for our C program.</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.js"><strong><code>ulisp.js</code></strong></a>: JavaScript module that <strong>loads the WebAssembly Code</strong> into a Web Browser and runs it</p>
@@ -132,7 +132,7 @@
 <p><em>What are the <code>EXPORTED_FUNCTIONS</code>?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>-s &quot;EXPORTED_FUNCTIONS=[ &#39;_setup_ulisp&#39;, &#39;_execute_ulisp&#39;, &#39;_clear_simulation_events&#39;, &#39;_get_simulation_events&#39; ]&quot;
 </code></pre></div>
-<p>These are the C functions from our uLisp Interpreter <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L5312-L5384"><code>ulisp.c</code></a> that will be <strong>exported to JavaScript</strong>. </p>
+<p>These are the C functions from our uLisp Interpreter <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L5312-L5384"><code>ulisp.c</code></a> that will be <strong>exported to JavaScript</strong>.</p>
 <p>Our uLisp Interpreter won’t do anything meaningful in a Web Browser unless these 2 functions are called…</p>
 <ol>
 <li>
@@ -459,7 +459,7 @@ function runScript() {
 <p>We now have a static variable <strong><code>simulation_events</code></strong> that will store the Simulation Events</p>
 </li>
 <li>
-<p>We use a <strong><code>try...catch...finally</code></strong> block to deallocate the WebAssembly memory. </p>
+<p>We use a <strong><code>try...catch...finally</code></strong> block to deallocate the WebAssembly memory.</p>
 <p>(In case we hit errors in the JSON parsing)</p>
 </li>
 <li>
@@ -536,7 +536,7 @@ function simulateEvents() {
 </li>
 <li>
 <p><strong>Event Parameters</strong>: Like…</p>
-<p><code>{ &quot;pin&quot;: 11, &quot;value&quot;: 1 }</code></p>
+<p><code>{ "pin": 11, "value": 1 }</code></p>
 </li>
 </ol>
 <p>Next it <strong>handles each Event Type</strong>…</p>
@@ -961,7 +961,7 @@ Code.runJS = function() {
 <p><em>Dragging-and-dropping uLisp programs for microcontrollers… And running them WITHOUT a microcontroller!</em></p>
 <h1 id="can-we-simulate-any-bl602-firmware"><a class="doc-anchor" href="#can-we-simulate-any-bl602-firmware">§</a>12 Can We Simulate Any BL602 Firmware?</h1>
 <p><em>Our BL602 Simulator works OK for simulating a uLisp Program. Will it work for simulating BL602 Firmware coded in C?</em></p>
-<p>Our BL602 Simulator <strong>might work for BL602 Firmware coded in C</strong>! </p>
+<p>Our BL602 Simulator <strong>might work for BL602 Firmware coded in C</strong>!</p>
 <p>Let’s look at this <strong>BL602 Blinky Firmware</strong> in C: <a href="https://lupyuen.github.io/articles/rust#bl602-blinky-in-c"><code>sdk_app_blinky/demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Blink the BL602 LED
 void blinky(char *buf, int len, int argc, char **argv) {
@@ -1007,10 +1007,10 @@ uint32_t time_ms_to_ticks32(uint32_t millisec) { return millisec; }
 </code></pre></div>
 <p>These <strong>C Function Signatures are 100% identical</strong> to the BL602 Functions from the BL602 IoT SDK: <code>bl_gpio_output_set</code>, <code>bl_gpio_enable_output</code>, …</p>
 <p>So yep, the above <strong>BL602 Firmware Code will compile to WebAssembly</strong>!</p>
-<p>Similar to a uLisp Program, the BL602 Firmware Code (running in WebAssebly) will generate a <strong>JSON Stream of Simulation Events</strong>. </p>
+<p>Similar to a uLisp Program, the BL602 Firmware Code (running in WebAssebly) will generate a <strong>JSON Stream of Simulation Events</strong>.</p>
 <p>(Which we’ll feed to our <strong>BL602 Simulator</strong> in JavaScript)</p>
 <p><em>But can we simulate ALL functions from the BL602 IoT SDK: GPIO, I2C, SPI, ADC, DAC, LVGL, LoRa, …?</em></p>
-<p>This needs work of course. </p>
+<p>This needs work of course.</p>
 <p>To simulate any uLisp Program or BL602 Firmware we need to <strong>code the necessary Simulation Functions in JavaScript</strong> (like <code>gpio_output_set</code> and <code>time_delay</code>) for GPIO, I2C, SPI, ADC, DAC, LVGL, LoRa, …</p>
 <p>(Sounds like an interesting challenge!)</p>
 <h1 id="why-simulate-a-stream-of-events"><a class="doc-anchor" href="#why-simulate-a-stream-of-events">§</a>13 Why Simulate A Stream Of Events?</h1>

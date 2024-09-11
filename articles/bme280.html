@@ -285,7 +285,7 @@ Read   [0xEF]
 <h2 id="set-i2c-sub-address"><a class="doc-anchor" href="#set-i2c-sub-address">§</a>2.5 Set I2C Sub Address</h2>
 <p><em>Is there something special about BL602’s I2C Port?</em></p>
 <p>BL602 has a peculiar I2C Port…</p>
-<p>We need to send the <strong>I2C Sub Address</strong> (Register ID) separately from the I2C Data! </p>
+<p>We need to send the <strong>I2C Sub Address</strong> (Register ID) separately from the I2C Data!</p>
 <p>(Which might have caused the BMP280 Driver to fail)</p>
 <p><img src="https://lupyuen.github.io/images/bme280-subaddress2.png" alt="I2C Sub Address" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(From BL602 Reference Manual)</a></p>
@@ -387,7 +387,7 @@ SensorTest: Received message: baro0, number:10/10
 <p><em>Why not code the BME280 Driver based on the datasheet?</em></p>
 <p>Well yes we could… But then the rest of this article would become an academic exercise 😉</p>
 <p><em>Why port from Zephyr OS?</em></p>
-<p>Zephyr has an <a href="https://github.com/zephyrproject-rtos/zephyr/tree/main/drivers"><strong>extensive collection</strong></a> of drivers. </p>
+<p>Zephyr has an <a href="https://github.com/zephyrproject-rtos/zephyr/tree/main/drivers"><strong>extensive collection</strong></a> of drivers.</p>
 <p>The NuttX porting steps that we establish today might work for other Zephyr drivers, with minimal changes!</p>
 <p><em>Porting a driver from Zephyr to NuttX sounds hard!</em></p>
 <p>Zephyr’s BME280 Driver looks <strong>highly similar</strong> to NuttX’s BMP280 Driver. (Pic above)</p>
@@ -574,7 +574,7 @@ static int bme280_activate(
 <h2 id="standby-interval"><a class="doc-anchor" href="#standby-interval">§</a>3.4 Standby Interval</h2>
 <p><em>What’s the Standby Interval?</em></p>
 <p>BME280 automatically measures the Temperature, Humidity and Pressure at periodic intervals. (Without any intervention from our microcontroller)</p>
-<p>The time interval between measurements is the <strong>Standby Interval</strong>. </p>
+<p>The time interval between measurements is the <strong>Standby Interval</strong>.</p>
 <p>(<em>t_standby</em> in the pic above)</p>
 <p><em>Standby Intervals work differently in Zephyr vs NuttX?</em></p>
 <p>Zephyr defines the Standby Interval at <strong>Compile Time</strong>, it can’t be changed at runtime. <a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/sensor/bme280/Kconfig#L81-L103">(See this)</a></p>

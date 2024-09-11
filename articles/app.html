@@ -228,7 +228,7 @@ printf(
 <h1 id="nuttx-app-calls-nuttx-kernel"><a class="doc-anchor" href="#nuttx-app-calls-nuttx-kernel">§</a>2 NuttX App calls NuttX Kernel</h1>
 <p><em>Our app will print something to the console…</em></p>
 <p><em>But NuttX Apps can’t write directly to the Serial Device right?</em></p>
-<p>Nope! </p>
+<p>Nope!</p>
 <ul>
 <li>
 <p>NuttX Apps run in <strong>RISC-V User Mode</strong>…</p>
@@ -390,7 +390,7 @@ STUB_chown.c
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L105-L537"><strong>riscv_swint</strong></a> which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a> which calls the Kernel Stub Function (<strong>STUB_write</strong>) and… </p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a> which calls the Kernel Stub Function (<strong>STUB_write</strong>) and…</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/supervisor/riscv_syscall.S#L49-L177"><strong>sys_call2</strong></a> with A0 set to <strong>SYS_syscall_return</strong> (3) which calls…</p>
 </li>
 <li>
@@ -747,7 +747,7 @@ __ramdisk_size = LENGTH(ramdisk);
 __ramdisk_end  = ORIGIN(ramdisk) + LENGTH(ramdisk);
 </code></pre></div>
 <p><em>Who calls the code above?</em></p>
-<p>We locate and copy the Initial RAM Disk at the very top of our <strong>NuttX Start Code</strong>. </p>
+<p>We locate and copy the Initial RAM Disk at the very top of our <strong>NuttX Start Code</strong>.</p>
 <p>This just after <strong>erasing the BSS</strong> (Global and Static Variables), in case we need to print some messages and it uses Global and Static Variables: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L254-L284">bl808_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX Start Code
 void bl808_start(int mhartid) {

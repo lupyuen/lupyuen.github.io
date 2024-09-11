@@ -104,7 +104,7 @@
 <p>Handling UART Interrupts</p>
 </li>
 </ul>
-<p>And how we implemented PinePhone’s <strong>UART Driver</strong> for <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a>. </p>
+<p>And how we implemented PinePhone’s <strong>UART Driver</strong> for <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p>Let’s dive into our <strong>NuttX Porting Journal</strong> and learn how we made PinePhone chatty over UART…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
@@ -414,7 +414,7 @@ static void a64_uart_detach(struct uart_dev_s *dev)
 <p><img src="https://lupyuen.github.io/images/serial-enable.jpg" alt="A64 UART Interrupt Enable Register UART_IER" /></p>
 <p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>A64 UART Interrupt Enable Register UART_IER</em></a></p>
 <h2 id="enable-interrupt"><a class="doc-anchor" href="#enable-interrupt">§</a>3.2 Enable Interrupt</h2>
-<p>UART Interupts won’t happen until we <strong>enable UART Interrupts</strong>. </p>
+<p>UART Interupts won’t happen until we <strong>enable UART Interrupts</strong>.</p>
 <p>Page 565 of the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> tells us the UART Register for enabling UART Interrupts (pic above)…</p>
 <ul>
 <li>
@@ -700,7 +700,7 @@ void arm64_serialinit(void)
 </code></pre></div>
 <p>And we’re done with our PinePhone UART Driver for NuttX!</p>
 <h1 id="uart-in-action"><a class="doc-anchor" href="#uart-in-action">§</a>6 UART In Action</h1>
-<p>Let’s watch our UART Driver in action! </p>
+<p>Let’s watch our UART Driver in action!</p>
 <p>Follow these steps to <strong>build NuttX</strong> and copy to Jumpdrive microSD…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx"><strong>“PinePhone Boots NuttX”</strong></a></li>

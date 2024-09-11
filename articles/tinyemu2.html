@@ -274,11 +274,11 @@ target_write_slow:
 <p>We dig around the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>BL808 Reference Manual</strong></a> (pic above) and we discover these <strong>UART Registers</strong>…</p>
 <ul>
 <li>
-<p><strong><code>0x3000_2088</code></strong> is <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>uart_fifo_wdata</strong> (Page 428)</a> </p>
+<p><strong><code>0x3000_2088</code></strong> is <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>uart_fifo_wdata</strong> (Page 428)</a></p>
 <p>We write to this UART Register to <strong>print a character</strong> to UART Output.</p>
 </li>
 <li>
-<p><strong><code>0x3000_2084</code></strong> is <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>uart_fifo_config_1</strong> (Page 427)</a> </p>
+<p><strong><code>0x3000_2084</code></strong> is <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>uart_fifo_config_1</strong> (Page 427)</a></p>
 <p>We read this UART Register to check if <strong>UART Transmit is ready</strong> (for more output).</p>
 </li>
 <li>
@@ -313,7 +313,7 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
 <h2 id="emulate-the-uart-status"><a class="doc-anchor" href="#emulate-the-uart-status">§</a>5.1 Emulate the UART Status</h2>
 <p>Earlier we said…</p>
 <blockquote>
-<p><strong><code>0x3000_2084</code></strong> is <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>uart_fifo_config_1</strong> (Page 427)</a> </p>
+<p><strong><code>0x3000_2084</code></strong> is <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>uart_fifo_config_1</strong> (Page 427)</a></p>
 </blockquote>
 <blockquote>
 <p><em>We read this UART Register to check if <strong>UART Transmit is ready</strong> (for more output)</em></p>
@@ -362,7 +362,7 @@ void bl808_send(struct uart_dev_s *dev, int ch) {
 <h2 id="emulate-the-uart-output"><a class="doc-anchor" href="#emulate-the-uart-output">§</a>5.2 Emulate the UART Output</h2>
 <p>Earlier we saw…</p>
 <blockquote>
-<p><strong><code>0x3000_2088</code></strong> is <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>uart_fifo_wdata</strong> (Page 428)</a> </p>
+<p><strong><code>0x3000_2088</code></strong> is <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>uart_fifo_wdata</strong> (Page 428)</a></p>
 </blockquote>
 <blockquote>
 <p><em>We write to this UART Register to <strong>print a character</strong> to UART Output</em></p>
@@ -479,7 +479,7 @@ nuttx/syscall/proxies/PROXY_sched_getparam.c:8
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/69b832f89efe2dc31e6da40a19b78354">(See the <strong>Source Code</strong>)</a></p>
 <p><em>What’s this ECALL?</em></p>
-<p>At <code>0x19C6</code> we see the <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>RISC-V ECALL Instruction</strong></a> that will jump from our <strong>NuttX App</strong> (RISC-V User Mode) to <strong>NuttX Kernel</strong> (RISC-V Supervisor Mode). </p>
+<p>At <code>0x19C6</code> we see the <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>RISC-V ECALL Instruction</strong></a> that will jump from our <strong>NuttX App</strong> (RISC-V User Mode) to <strong>NuttX Kernel</strong> (RISC-V Supervisor Mode).</p>
 <p>Hence our NuttX Shell is making a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>System Call</strong></a> to NuttX Kernel. (Pic above)</p>
 <p>Why did it fail? We’ll come back to this, first we surf the web…</p>
 <p><a href="https://github.com/lupyuen/ox64-tinyemu/blob/main/riscv_cpu.c#L1142-L1147">(We quit if <strong>MCAUSE is 2</strong>, otherwise we loop forever)</a></p>

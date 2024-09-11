@@ -311,7 +311,7 @@ Ping!
 <li>
 <p>Download the <strong>Ox64 Binaries</strong>…</p>
 <ul>
-<li><a href="https://github.com/openbouffalo/buildroot_bouffalo/releases/download/v1.0.1/bl808-linux-pine64_ox64_full_defconfig.tar.gz">bl808-linux-pine64_ox64_full_defconfig.tar.gz</a> </li>
+<li><a href="https://github.com/openbouffalo/buildroot_bouffalo/releases/download/v1.0.1/bl808-linux-pine64_ox64_full_defconfig.tar.gz">bl808-linux-pine64_ox64_full_defconfig.tar.gz</a></li>
 </ul>
 <p>From the latest <strong>Ox64 Linux Release</strong>…</p>
 <ul>
@@ -460,7 +460,7 @@ BOOTP broadcast
 Retry time exceeded; starting again
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0b1a98781e86ba11c5538eb1e3058718">(Source)</a></p>
-<p>Which is OK because U-Boot Bootloader is waiting for our microSD Card. </p>
+<p>Which is OK because U-Boot Bootloader is waiting for our microSD Card.</p>
 </li>
 <li>
 <p><strong>If nothing appears:</strong> Check that we are using <a href="https://openbouffalo.org/static-assets/bldevcube/BouffaloLabDevCube-v1.8.3.zip"><strong>BL DevCube 1.8.3</strong></a></p>
@@ -739,7 +739,7 @@ Retry time exceeded; starting again
 <p>Let’s examine the <strong>Linux Kernel Image for Ox64</strong>, and we replicate the same format for NuttX. (Which is how we ported NuttX to 64-bit RISC-V Star64 JH7110 SBC)</p>
 <p>We download the <strong>Ox64 Binaries</strong>…</p>
 <ul>
-<li><a href="https://github.com/openbouffalo/buildroot_bouffalo/releases/download/v1.0.1/bl808-linux-pine64_ox64_full_defconfig.tar.gz">bl808-linux-pine64_ox64_full_defconfig.tar.gz</a> </li>
+<li><a href="https://github.com/openbouffalo/buildroot_bouffalo/releases/download/v1.0.1/bl808-linux-pine64_ox64_full_defconfig.tar.gz">bl808-linux-pine64_ox64_full_defconfig.tar.gz</a></li>
 </ul>
 <p>From the latest <strong>Ox64 Linux Release</strong>…</p>
 <ul>
@@ -774,7 +774,7 @@ d          96  extlinux
 <div class="example-wrap"><pre class="language-text"><code>4d 5a 6f 10 
 </code></pre></div></li>
 <li>
-<p><strong>code1</strong>: Executable code </p>
+<p><strong>code1</strong>: Executable code</p>
 <p>(4 bytes, offset <code>0x04</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>20 08 01 00 
 </code></pre></div></li>
@@ -784,12 +784,12 @@ d          96  extlinux
 <div class="example-wrap"><pre class="language-text"><code>00 00 20 00 00 00 00 00
 </code></pre></div></li>
 <li>
-<p><strong>image_size</strong>: Effective Image size, little endian </p>
+<p><strong>image_size</strong>: Effective Image size, little endian</p>
 <p>(8 bytes, offset <code>0x10</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>00 80 cd 00 00 00 00 00
 </code></pre></div></li>
 <li>
-<p><strong>flags</strong>: Kernel flags, little endian </p>
+<p><strong>flags</strong>: Kernel flags, little endian</p>
 <p>(8 bytes, offset <code>0x18</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>00 00 00 00 00 00 00 00
 </code></pre></div></li>
@@ -809,12 +809,12 @@ d          96  extlinux
 <div class="example-wrap"><pre class="language-text"><code>00 00 00 00 00 00 00 00
 </code></pre></div></li>
 <li>
-<p><strong>magic</strong>: Magic number, little endian, “RISCV\x00\x00\x00” </p>
+<p><strong>magic</strong>: Magic number, little endian, “RISCV\x00\x00\x00”</p>
 <p>(8 bytes, offset <code>0x30</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>52 49 53 43 56 00 00 00
 </code></pre></div></li>
 <li>
-<p><strong>magic2</strong>: Magic number 2, little endian, “RSC\x05” </p>
+<p><strong>magic2</strong>: Magic number 2, little endian, “RSC\x05”</p>
 <p>(4 bytes, offset <code>0x38</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>52 53 43 05
 </code></pre></div></li>
@@ -898,7 +898,7 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <p><strong>M0 Wireless Core</strong> (OpenBouffalo Firmware) will forward the <strong>Peripheral Interrupts</strong> to D0 Multimedia Core (Linux)</p>
 </li>
 <li>
-<p>The Forwarded Peripheral Interrupts are for <strong>SD Card Host Controller</strong> (SDH) and <strong>GPIO</strong> </p>
+<p>The Forwarded Peripheral Interrupts are for <strong>SD Card Host Controller</strong> (SDH) and <strong>GPIO</strong></p>
 </li>
 <li>
 <p>Which makes sense because the <strong>U-Boot Bootloader</strong> (on D0 Multimedia Core) needs to access the <strong>SD Card</strong> (for booting Linux)</p>
@@ -951,7 +951,7 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <p><em>Are there other ways to boot Linux on Ox64?</em></p>
 <p>According to <a href="https://web.archive.org/web/20231103055452/https://twitter.com/madushan1000/status/1719069431580524720?s=20"><strong>@madushan1000</strong></a>…</p>
 <blockquote>
-<p>“You can also use u-boot. <a href="https://github.com/openbouffalo/u-boot/releases/tag/bl808-2023-02-19">openbouffalo/u-boot/bl808-2023-02-19</a>. 
+<p>“You can also use u-boot. <a href="https://github.com/openbouffalo/u-boot/releases/tag/bl808-2023-02-19">openbouffalo/u-boot/bl808-2023-02-19</a>.
 You can also get rid of mailbox, but you will have to build the kernel yourself <a href="https://github.com/openbouffalo/linux/tree/bl808/all">openbouffalo/linux/bl808</a>”</p>
 </blockquote>
 

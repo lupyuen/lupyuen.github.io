@@ -525,7 +525,7 @@ SECTION_FUNC(text, up_lowputc)
   early_uart_transmit x15, w0     /* Transmit to UART       */
   ret
 </code></pre></div>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L81-L91">(Source)</a> </p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L81-L91">(Source)</a></p>
 <p>And calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L87-L94"><strong><code>early_uart_transmit</code></strong></a> Macro to transmit a character…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* UART transmit character
  * xb: register which contains the UART base address
@@ -1123,7 +1123,7 @@ strb w0, [x15, #0x0C]
 <h2 id="uart-driver"><a class="doc-anchor" href="#uart-driver">§</a>19.3 UART Driver</h2>
 <p>We have implemented the <strong>UART Driver</strong> for PinePhone’s Allwinner A64 UART Port…</p>
 <ul>
-<li><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c">arch/arm64/src/a64/a64_serial.c</a> </li>
+<li><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c">arch/arm64/src/a64/a64_serial.c</a></li>
 </ul>
 <p>Check out the details in this article…</p>
 <ul>

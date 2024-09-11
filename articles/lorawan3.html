@@ -138,7 +138,7 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sx1262#appendix-create-a-nuttx-library"><strong>“Create a NuttX Library”</strong></a></li>
 </ul>
-<p>Then we replaced the “liblorawan” folder by a <strong>Git Submodule</strong> that contains our LoRaWAN code… </p>
+<p>Then we replaced the “liblorawan” folder by a <strong>Git Submodule</strong> that contains our LoRaWAN code…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx/nuttx/libs
 rm -r liblorawan
 git rm -r liblorawan
@@ -645,7 +645,7 @@ static void PrepareTxFrame( void ) {
 </code></pre></div>
 <p><em>Why is our Data Packet marked Unconfirmed?</em></p>
 <p>Our Data Packet is marked Unconfirmed because we <strong>don’t expect an acknowledgement</strong> from the LoRaWAN Gateway.</p>
-<p>This is the typical mode for <strong>IoT Sensor Devices</strong>, which don’t handle acknowledgements to conserve battery power. </p>
+<p>This is the typical mode for <strong>IoT Sensor Devices</strong>, which don’t handle acknowledgements to conserve battery power.</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx6.png" alt="Sending a LoRaWAN Data Packet" /></p>
 <h2 id="message-size"><a class="doc-anchor" href="#message-size">§</a>9.1 Message Size</h2>
 <p><em>What’s the Maximum Message Size?</em></p>
@@ -707,7 +707,7 @@ TxPeriodicity = APP_TX_DUTYCYCLE +
   randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/boards/mcu/utilities.c#L48-L51">(<strong>randr</strong> is defined here)</a></p>
-<p>Thus our LoRaWAN Test App transmits a message every <strong>40 seconds</strong>. </p>
+<p>Thus our LoRaWAN Test App transmits a message every <strong>40 seconds</strong>.</p>
 <p>(±5 seconds of random delay)</p>
 <h1 id="rerun-the-firmware"><a class="doc-anchor" href="#rerun-the-firmware">§</a>10 Rerun The Firmware</h1>
 <p>Watch what happens when our LoRaWAN Test App <strong>transmits a Data Packet</strong>…</p>
@@ -1057,7 +1057,7 @@ chirpstack-network-server[5749]:
 <p>Thus we should <strong>disable Info Logging</strong> on NuttX…</p>
 <ol>
 <li>
-<p>In <strong>menuconfig</strong>, select <strong>“Build Setup”</strong> → <strong>“Debug Options”</strong> </p>
+<p>In <strong>menuconfig</strong>, select <strong>“Build Setup”</strong> → <strong>“Debug Options”</strong></p>
 </li>
 <li>
 <p><strong>Uncheck</strong> the following…</p>
@@ -1081,7 +1081,7 @@ chirpstack-network-server[5749]:
 <p>We’ll see this in the LoRaWAN Gateway…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack5.png" alt="Empty Message Payload" /></p>
 <p><a href="https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89">(Output Log)</a></p>
-<p>In the output for our LoRaWAN Test App, look for <strong>“maxSize”</strong> to verify the <strong>Maximum Message Size</strong> for our Data Rate and LoRaWAN Region… </p>
+<p>In the output for our LoRaWAN Test App, look for <strong>“maxSize”</strong> to verify the <strong>Maximum Message Size</strong> for our Data Rate and LoRaWAN Region…</p>
 <div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
 PrepareTxFrame: status=0, maxSize=11, currentSize=11
 </code></pre></div>
@@ -1253,7 +1253,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11
 </ol>
 <p><img src="https://lupyuen.github.io/images/lorawan3-config1.jpg" alt="Enable POSIX Timers and Message Queues in menuconfig" /></p>
 <h1 id="appendix-random-number-generator-with-entropy-pool"><a class="doc-anchor" href="#appendix-random-number-generator-with-entropy-pool">§</a>18 Appendix: Random Number Generator with Entropy Pool</h1>
-<p>Our LoRaWAN Library generates Nonces by calling a <strong>Random Number Generator with Entropy Pool</strong>. </p>
+<p>Our LoRaWAN Library generates Nonces by calling a <strong>Random Number Generator with Entropy Pool</strong>.</p>
 <p>Follow these steps to enable the <strong>Entropy Pool</strong> in <strong>menuconfig</strong>…</p>
 <ol>
 <li>
