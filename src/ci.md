@@ -337,9 +337,15 @@ Results of macOS Arm64 __emulating Ubuntu x64__ (24.04.1 LTS) with 4GB RAM...
 
 - [__Build for arm-02__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29508376208)
 
+  _(Completed in 1.7 hours, vs 1 hour for GitHub Runners)_
+
 - [__Build for arm-03__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29428211466)
 
+  _(Completed in 4 hours, vs 0.5 hours for GitHub Runners)_
+
 - [__Build for arm-04__](https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29456380032)
+
+  _(Completed in 4 hours, vs 0.5 hours for GitHub Runners)_
 
 Does __UTM Emulator__ work for NuttX Builds? Yeah kinda...
 
