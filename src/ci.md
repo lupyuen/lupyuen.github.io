@@ -389,6 +389,18 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/ci.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md)
 
+# Appendix: Phase 1 of CI Upgrade
+
+TODO
+
+# Appendix: Phase 2 of CI Upgrade
+
+TODO
+
+# Appendix: Phase 3 of CI Upgrade
+
+TODO
+
 # Appendix: Fixes for Ubuntu x64
 
 To run the Self-Hosted Runners on Ubuntu x64, we need these fixes...
